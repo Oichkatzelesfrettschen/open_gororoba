@@ -114,6 +114,9 @@ pub enum PioneerSpacecraft {
     P11,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::pioneer_fetch::PioneerProvider;
+
 /// Post-parse year fixup for Pioneer: 2-digit year (e.g. 72) -> 4-digit (1972).
 fn pioneer_year_fixup(r: &mut SpdfMergedRecord) {
     if r.year < 100 {

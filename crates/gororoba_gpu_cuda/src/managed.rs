@@ -44,11 +44,7 @@ impl<T> ManagedBuffer<T> {
     /// Allocate `len` elements of managed memory. The allocation is
     /// uninitialised; call `as_slice_mut().fill(...)` before first use
     /// if zero-initialised storage is needed.
-    pub fn new(
-        ctx: &Arc<CudaContext>,
-        len: usize,
-        residency: ManagedResidency,
-    ) -> Result<Self> {
+    pub fn new(ctx: &Arc<CudaContext>, len: usize, residency: ManagedResidency) -> Result<Self> {
         use cudarc::driver::sys;
         let bytes = len.saturating_mul(std::mem::size_of::<T>());
         let flags = match residency {
@@ -59,9 +55,8 @@ impl<T> ManagedBuffer<T> {
         // SAFETY: cuMemAllocManaged writes a device pointer to the
         // stack-local variable. The CUDA context is active via the
         // `ctx` Arc.
-        let result = unsafe {
-            sys::cuMemAllocManaged(&mut device_ptr as *mut _, bytes, flags as u32)
-        };
+        let result =
+            unsafe { sys::cuMemAllocManaged(&mut device_ptr as *mut _, bytes, flags as u32) };
         if result != sys::CUresult::CUDA_SUCCESS {
             return Err(crate::error::CudaError::Driver(
                 cudarc::driver::DriverError(result),

@@ -58,9 +58,13 @@
 
 use crate::probe_cuda_device_props;
 use anyhow::{Context as _, Result};
-use cudarc::{
-    driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg},
-    nvrtc::CompileOptions,
+use cudarc::driver::{
+    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig as CudarcLaunchConfig,
+    PushKernelArg,
+};
+use gororoba_gpu_cuda::{
+    CompileOptions as CudaCompileOptions, Context as CudaContextHelper,
+    LaunchConfig as CudaLaunchConfig, ModuleRegistry,
 };
 use std::sync::Arc;
 
@@ -107,34 +111,24 @@ fn compile_and_load(
     arch: &'static str,
     step_name: &str,
     init_name: &str,
-) -> Result<(CudaFunction, CudaFunction)> {
-    let opts = CompileOptions {
-        include_paths: if cuda_include {
-            vec!["/opt/cuda/include".to_string()]
-        } else {
-            vec![]
-        },
-        arch: Some(arch),
-        ..Default::default()
-    };
-    let ptx = cudarc::nvrtc::compile_ptx_with_opts(src, opts)?;
-    let module = ctx.load_module(ptx)?;
-    let step_k = module
-        .load_function(step_name)
+) -> Result<(CudaFunction, CudaFunction, ModuleRegistry)> {
+    let mut opts = CudaCompileOptions::with_arch(arch);
+    if cuda_include {
+        opts = opts.include_path("/opt/cuda/include");
+    }
+    let ptx = CudaCompileOptions::compile_ptx(src, &opts)?;
+    let module_registry = ModuleRegistry::load(ctx, ptx, &[step_name, init_name])?;
+    let step_k = module_registry
+        .get(step_name)
         .with_context(|| format!("load step kernel '{step_name}'"))?;
-    let init_k = module
-        .load_function(init_name)
+    let init_k = module_registry
+        .get(init_name)
         .with_context(|| format!("load init kernel '{init_name}'"))?;
-    Ok((step_k, init_k))
+    Ok((step_k, init_k, module_registry))
 }
 
-fn launch_cfg_1d(n_cells: usize, threads: u32) -> LaunchConfig {
-    let blocks = (n_cells as u32).div_ceil(threads).max(1);
-    LaunchConfig {
-        grid_dim: (blocks, 1, 1),
-        block_dim: (threads, 1, 1),
-        shared_mem_bytes: 0,
-    }
+fn launch_cfg_1d(n_cells: usize, threads: u32) -> CudarcLaunchConfig {
+    CudaLaunchConfig::launch_1d_with_block(n_cells as u32, threads)
 }
 
 // ============================================================================
@@ -157,6 +151,7 @@ pub struct BenchKernelRunner {
     d_u: CudaSlice<f32>,  // n_cells * 3
     d_force: CudaSlice<f32>, // n_cells * 3 (uniform zero)
     d_tau: CudaSlice<f32>, // n_cells (uniform 0.7)
+    _module_registry: ModuleRegistry,
     step_kernel: CudaFunction,
     nx: i32,
     ny: i32,
@@ -184,11 +179,13 @@ impl BenchKernelRunner {
         cuda_include: bool,
         threads_per_block: u32,
     ) -> Result<Self> {
-        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let ctx_helper =
+            CudaContextHelper::with_default_device().context("CUDA device 0 not available")?;
+        let ctx = ctx_helper.raw().clone();
         let stream = ctx.default_stream();
         let arch = arch_static();
 
-        let (step_kernel, init_kernel) = compile_and_load(
+        let (step_kernel, init_kernel, module_registry) = compile_and_load(
             &ctx,
             src,
             cuda_include,
@@ -272,6 +269,7 @@ impl BenchKernelRunner {
             d_u,
             d_force,
             d_tau,
+            _module_registry: module_registry,
             step_kernel,
             nx: nx as i32,
             ny: ny as i32,
@@ -449,6 +447,7 @@ pub struct SoaBenchRunner {
     d_u: CudaSlice<f32>,
     d_force: CudaSlice<f32>,
     d_tau: CudaSlice<f32>,
+    _module_registry: ModuleRegistry,
     step_kernel: CudaFunction,
     nx: i32,
     ny: i32,
@@ -485,11 +484,13 @@ impl SoaBenchRunner {
             cuda_include,
             cells_per_thread,
         } = spec;
-        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let ctx_helper =
+            CudaContextHelper::with_default_device().context("CUDA device 0 not available")?;
+        let ctx = ctx_helper.raw().clone();
         let stream = ctx.default_stream();
         let arch = arch_static();
 
-        let (step_kernel, init_kernel) = compile_and_load(
+        let (step_kernel, init_kernel, module_registry) = compile_and_load(
             &ctx,
             src,
             cuda_include,
@@ -569,6 +570,7 @@ impl SoaBenchRunner {
             d_u,
             d_force,
             d_tau,
+            _module_registry: module_registry,
             step_kernel,
             nx: nx as i32,
             ny: ny as i32,
@@ -994,18 +996,15 @@ impl SoaBenchRunner {
     /// only ~2 MB is read back per frame instead of multi-GB macroscopic.
     pub fn read_slice(&self, slice_axis: i32, slice_idx: i32) -> Result<(Vec<f32>, Vec<f32>)> {
         let arch = arch_static();
-        let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some(arch),
-            ..Default::default()
-        };
+        let opts = CudaCompileOptions::with_arch(arch);
         let kernel_name = if self.elem_bytes == 1 {
             "read_slice_int8_soa"
         } else {
             "read_slice_fp32_soa"
         };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SLICE_SRC, opts)?;
-        let module = self.ctx.load_module(ptx)?;
-        let slice_kernel = module.load_function(kernel_name)?;
+        let ptx = CudaCompileOptions::compile_ptx(KERNEL_SLICE_SRC, &opts)?;
+        let module_registry = ModuleRegistry::load(&self.ctx, ptx, &[kernel_name])?;
+        let slice_kernel = module_registry.get(kernel_name)?;
 
         let (sw, sh) = match slice_axis {
             0 => (self.ny as usize, self.nz as usize),
@@ -1067,6 +1066,7 @@ pub struct Int4BenchRunner {
     d_u: CudaSlice<f32>,
     d_force: CudaSlice<f32>,
     d_tau: CudaSlice<f32>,
+    _module_registry: ModuleRegistry,
     step_kernel: CudaFunction,
     nx: i32,
     ny: i32,
@@ -1086,18 +1086,24 @@ impl Int4BenchRunner {
             (nx * ny * nz).is_multiple_of(2),
             "INT4 kernel requires even n_cells (power-of-2 grids always satisfy this)"
         );
-        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let ctx_helper =
+            CudaContextHelper::with_default_device().context("CUDA device 0 not available")?;
+        let ctx = ctx_helper.raw().clone();
         let stream = ctx.default_stream();
         let arch = arch_static();
 
-        let opts = CompileOptions {
-            arch: Some(arch),
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_INT4_SRC, opts)?;
-        let module = ctx.load_module(ptx)?;
-        let step_kernel = module.load_function("lbm_step_fused_int4_kernel")?;
-        let init_kernel = module.load_function("initialize_uniform_int4_kernel")?;
+        let opts = CudaCompileOptions::with_arch(arch);
+        let ptx = CudaCompileOptions::compile_ptx(KERNEL_INT4_SRC, &opts)?;
+        let module_registry = ModuleRegistry::load(
+            &ctx,
+            ptx,
+            &[
+                "lbm_step_fused_int4_kernel",
+                "initialize_uniform_int4_kernel",
+            ],
+        )?;
+        let step_kernel = module_registry.get("lbm_step_fused_int4_kernel")?;
+        let init_kernel = module_registry.get("initialize_uniform_int4_kernel")?;
 
         let n_cells = nx * ny * nz;
         let half_cells = n_cells / 2;
@@ -1144,6 +1150,7 @@ impl Int4BenchRunner {
             d_u,
             d_force,
             d_tau,
+            _module_registry: module_registry,
             step_kernel,
             nx: nx as i32,
             ny: ny as i32,
@@ -1209,6 +1216,7 @@ pub struct Fp4BenchRunner {
     d_u: CudaSlice<f32>,
     d_force: CudaSlice<f32>,
     d_tau: CudaSlice<f32>,
+    _module_registry: ModuleRegistry,
     step_kernel: CudaFunction,
     nx: i32,
     ny: i32,
@@ -1225,18 +1233,21 @@ impl Fp4BenchRunner {
     /// Measured: 4727 MLUPS at 128^3 (bandwidth ceiling; physics broken).
     /// 23% slower than INT4 due to FP4_DECODE lookup table overhead per direction.
     pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
-        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let ctx_helper =
+            CudaContextHelper::with_default_device().context("CUDA device 0 not available")?;
+        let ctx = ctx_helper.raw().clone();
         let stream = ctx.default_stream();
         let arch = arch_static();
 
-        let opts = CompileOptions {
-            arch: Some(arch),
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_FP4_SRC, opts)?;
-        let module = ctx.load_module(ptx)?;
-        let step_kernel = module.load_function("lbm_step_fp4_kernel")?;
-        let init_kernel = module.load_function("initialize_uniform_fp4_kernel")?;
+        let opts = CudaCompileOptions::with_arch(arch);
+        let ptx = CudaCompileOptions::compile_ptx(KERNEL_FP4_SRC, &opts)?;
+        let module_registry = ModuleRegistry::load(
+            &ctx,
+            ptx,
+            &["lbm_step_fp4_kernel", "initialize_uniform_fp4_kernel"],
+        )?;
+        let step_kernel = module_registry.get("lbm_step_fp4_kernel")?;
+        let init_kernel = module_registry.get("initialize_uniform_fp4_kernel")?;
 
         let n_cells = nx * ny * nz;
         let half_cells = n_cells.div_ceil(2);
@@ -1281,6 +1292,7 @@ impl Fp4BenchRunner {
             d_u,
             d_force,
             d_tau,
+            _module_registry: module_registry,
             step_kernel,
             nx: nx as i32,
             ny: ny as i32,
@@ -1344,6 +1356,7 @@ pub struct DdBenchSolver {
     d_u: CudaSlice<f32>,
     d_force: CudaSlice<f32>,
     d_tau: CudaSlice<f32>,
+    _module_registry: ModuleRegistry,
     step_kernel: CudaFunction,
     nx: i32,
     ny: i32,
@@ -1358,18 +1371,21 @@ impl DdBenchSolver {
     /// Layout: i-major SoA with 4 distribution buffers (hi_a, lo_a, hi_b, lo_b).
     /// Measured: 58 MLUPS at 128^3 (8.4% peak). Use for reference validation only.
     pub fn new(nx: usize, ny: usize, nz: usize) -> Result<Self> {
-        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let ctx_helper =
+            CudaContextHelper::with_default_device().context("CUDA device 0 not available")?;
+        let ctx = ctx_helper.raw().clone();
         let stream = ctx.default_stream();
         let arch = arch_static();
 
-        let opts = CompileOptions {
-            arch: Some(arch),
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_DD_SRC, opts)?;
-        let module = ctx.load_module(ptx)?;
-        let step_kernel = module.load_function("lbm_step_fused_dd_kernel")?;
-        let init_kernel = module.load_function("initialize_uniform_dd_kernel")?;
+        let opts = CudaCompileOptions::with_arch(arch);
+        let ptx = CudaCompileOptions::compile_ptx(KERNEL_DD_SRC, &opts)?;
+        let module_registry = ModuleRegistry::load(
+            &ctx,
+            ptx,
+            &["lbm_step_fused_dd_kernel", "initialize_uniform_dd_kernel"],
+        )?;
+        let step_kernel = module_registry.get("lbm_step_fused_dd_kernel")?;
+        let init_kernel = module_registry.get("initialize_uniform_dd_kernel")?;
 
         let n_cells = nx * ny * nz;
         let f64_buf_bytes = n_cells * 19 * 8; // doubles
@@ -1418,6 +1434,7 @@ impl DdBenchSolver {
             d_u,
             d_force,
             d_tau,
+            _module_registry: module_registry,
             step_kernel,
             nx: nx as i32,
             ny: ny as i32,
@@ -1494,6 +1511,7 @@ pub struct TensorCoreProbe {
     int8_kernel: Option<CudaFunction>,
     int4_kernel: Option<CudaFunction>,
     bf16_kernel: Option<CudaFunction>,
+    _module_registry: Option<ModuleRegistry>,
     n_warps: usize,
 }
 
@@ -1508,34 +1526,43 @@ impl TensorCoreProbe {
     /// Results are GFLOPS, not MLUPS (Tensor Core WMMA is matrix-multiply,
     /// not LBM step throughput).
     pub fn new() -> Result<Self> {
-        let ctx = CudaContext::new(0).context("CUDA device 0 not available")?;
+        let ctx_helper =
+            CudaContextHelper::with_default_device().context("CUDA device 0 not available")?;
+        let ctx = ctx_helper.raw().clone();
         let stream = ctx.default_stream();
         let arch = arch_static();
 
-        let module_result: anyhow::Result<_> = (|| {
-            let opts = CompileOptions {
-                include_paths: vec!["/opt/cuda/include".to_string()],
-                arch: Some(arch),
-                ..Default::default()
-            };
-            let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_TC_SRC, opts)?;
-            Ok(ctx.load_module(ptx)?)
+        let module_result: anyhow::Result<ModuleRegistry> = (|| {
+            let opts = CudaCompileOptions::with_arch(arch).include_path("/opt/cuda/include");
+            let ptx = CudaCompileOptions::compile_ptx(KERNEL_TC_SRC, &opts)?;
+            Ok(ModuleRegistry::load(
+                &ctx,
+                ptx,
+                &[
+                    "tensor_core_tf32_proxy",
+                    "tensor_core_fp16_proxy",
+                    "tensor_core_int8_proxy",
+                    "tensor_core_int4_proxy",
+                    "tensor_core_bf16_proxy",
+                ],
+            )?)
         })();
 
-        let (tf32_kernel, fp16_kernel, int8_kernel, int4_kernel, bf16_kernel) = match module_result
-        {
-            Ok(ref m) => (
-                m.load_function("tensor_core_tf32_proxy").ok(),
-                m.load_function("tensor_core_fp16_proxy").ok(),
-                m.load_function("tensor_core_int8_proxy").ok(),
-                m.load_function("tensor_core_int4_proxy").ok(),
-                m.load_function("tensor_core_bf16_proxy").ok(),
-            ),
-            Err(ref e) => {
-                eprintln!("  [TC] WMMA compile failed ({e}); TC benchmark skipped");
-                (None, None, None, None, None)
-            }
-        };
+        let (tf32_kernel, fp16_kernel, int8_kernel, int4_kernel, bf16_kernel, module_registry) =
+            match module_result {
+                Ok(m) => (
+                    m.get("tensor_core_tf32_proxy").ok(),
+                    m.get("tensor_core_fp16_proxy").ok(),
+                    m.get("tensor_core_int8_proxy").ok(),
+                    m.get("tensor_core_int4_proxy").ok(),
+                    m.get("tensor_core_bf16_proxy").ok(),
+                    Some(m),
+                ),
+                Err(ref e) => {
+                    eprintln!("  [TC] WMMA compile failed ({e}); TC benchmark skipped");
+                    (None, None, None, None, None, None)
+                }
+            };
 
         let n_warps = 256usize;
 
@@ -1638,6 +1665,7 @@ impl TensorCoreProbe {
             int8_kernel,
             int4_kernel,
             bf16_kernel,
+            _module_registry: module_registry,
             n_warps,
         })
     }
@@ -1651,11 +1679,7 @@ impl TensorCoreProbe {
         let d_a = self.d_a_tf32.as_ref().context("TF32 A buffer")?;
         let d_b = self.d_b_tf32.as_ref().context("TF32 B buffer")?;
         let d_c = self.d_c_tf32.as_mut().context("TF32 C buffer")?;
-        let cfg = LaunchConfig {
-            grid_dim: (self.n_warps as u32, 1, 1),
-            block_dim: (32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = CudaLaunchConfig::launch_blocks_1d(self.n_warps as u32, 32);
         let mut b = self.stream.launch_builder(kernel);
         b.arg(d_a).arg(d_b).arg(d_c).arg(&n_iters);
         unsafe { b.launch(cfg) }?;
@@ -1670,11 +1694,7 @@ impl TensorCoreProbe {
         let d_a = self.d_a_fp16.as_ref().context("FP16 A")?;
         let d_b = self.d_b_fp16.as_ref().context("FP16 B")?;
         let d_c = self.d_c_fp16.as_mut().context("FP16 C")?;
-        let cfg = LaunchConfig {
-            grid_dim: (self.n_warps as u32, 1, 1),
-            block_dim: (32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = CudaLaunchConfig::launch_blocks_1d(self.n_warps as u32, 32);
         let mut b = self.stream.launch_builder(kernel);
         b.arg(d_a).arg(d_b).arg(d_c).arg(&n_iters);
         unsafe { b.launch(cfg) }?;
@@ -1689,11 +1709,7 @@ impl TensorCoreProbe {
         let d_a = self.d_a_int8.as_ref().context("INT8 A")?;
         let d_b = self.d_b_int8.as_ref().context("INT8 B")?;
         let d_c = self.d_c_int8.as_mut().context("INT8 C")?;
-        let cfg = LaunchConfig {
-            grid_dim: (self.n_warps as u32, 1, 1),
-            block_dim: (32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = CudaLaunchConfig::launch_blocks_1d(self.n_warps as u32, 32);
         let mut b = self.stream.launch_builder(kernel);
         b.arg(d_a).arg(d_b).arg(d_c).arg(&n_iters);
         unsafe { b.launch(cfg) }?;
@@ -1708,11 +1724,7 @@ impl TensorCoreProbe {
         let d_a = self.d_a_int4.as_ref().context("INT4 A")?;
         let d_b = self.d_b_int4.as_ref().context("INT4 B")?;
         let d_c = self.d_c_int4.as_mut().context("INT4 C")?;
-        let cfg = LaunchConfig {
-            grid_dim: (self.n_warps as u32, 1, 1),
-            block_dim: (32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = CudaLaunchConfig::launch_blocks_1d(self.n_warps as u32, 32);
         let mut b = self.stream.launch_builder(kernel);
         b.arg(d_a).arg(d_b).arg(d_c).arg(&n_iters);
         unsafe { b.launch(cfg) }?;
@@ -1744,11 +1756,7 @@ impl TensorCoreProbe {
         let d_a = self.d_a_bf16.as_ref().context("BF16 A")?;
         let d_b = self.d_b_bf16.as_ref().context("BF16 B")?;
         let d_c = self.d_c_bf16.as_mut().context("BF16 C")?;
-        let cfg = LaunchConfig {
-            grid_dim: (self.n_warps as u32, 1, 1),
-            block_dim: (32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = CudaLaunchConfig::launch_blocks_1d(self.n_warps as u32, 32);
         let mut b = self.stream.launch_builder(kernel);
         b.arg(d_a).arg(d_b).arg(d_c).arg(&n_iters);
         unsafe { b.launch(cfg) }?;

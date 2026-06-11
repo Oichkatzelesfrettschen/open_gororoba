@@ -92,7 +92,7 @@ pub struct DfaResult {
 /// Calculate the Hurst exponent using the variance-based method.
 ///
 /// This method estimates H from the scaling of the standard deviation
-/// of lagged differences: std(X[t+lag] - X[t]) ~ lag^H
+/// of lagged differences: `std(X[t+lag] - X[t]) ~ lag^H`
 ///
 /// # Arguments
 /// * `series` - Time series data

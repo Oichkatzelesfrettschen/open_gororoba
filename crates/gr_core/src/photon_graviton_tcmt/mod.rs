@@ -15,8 +15,8 @@
 //!
 //! The TCMT equations follow Ruan-Fan Eq. 8 extended to coupled modes:
 //! ```text
-//! d/dt [a_ph]   = [-i*omega_0,ph - gamma_ph/2    -i*kappa_coupling] [a_ph]
-//!       [a_grav]   [-i*kappa_coupling             -i*omega_0,grav - gamma_grav/2] [a_grav]
+//! d/dt `[a_ph]`   = `[-i*omega_0,ph - gamma_ph/2    -i*kappa_coupling]` `[a_ph]`
+//!       `[a_grav]`   `[-i*kappa_coupling             -i*omega_0,grav - gamma_grav/2]` `[a_grav]`
 //! ```
 //!
 //! ## Asymmetry Parameter q_grav

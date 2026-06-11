@@ -32,6 +32,9 @@ pub fn wow_char_to_intensity(c: char) -> Option<u32> {
     }
 }
 
+#[cfg(feature = "fetch")]
+pub use super::wow_fetch::{Bl6equj5ManifestProvider, WowPrintoutProvider};
+
 /// A single row from the Wow! signal printout transcription.
 #[derive(Debug, Clone)]
 pub struct WowPrintoutRow {

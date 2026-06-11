@@ -11,13 +11,13 @@
 
 // -- Fundamental constants (CGS) --
 
-/// Speed of light [cm/s]
+/// Speed of light `[cm/s]`
 pub const C_CGS: f64 = 2.997_924_58e10;
 
 /// Gravitational constant [cm^3 g^-1 s^-2]
 pub const G_CGS: f64 = 6.674_30e-8;
 
-/// Reduced Planck constant [erg s]
+/// Reduced Planck constant `[erg s]`
 pub const HBAR_CGS: f64 = 1.054_571_817e-27;
 
 /// Boltzmann constant [erg K^-1]
@@ -26,10 +26,10 @@ pub const K_B_CGS: f64 = 1.380_649e-16;
 /// Stefan-Boltzmann constant [erg cm^-2 s^-1 K^-4]
 pub const SIGMA_SB_CGS: f64 = 5.670_374_419e-5;
 
-/// Proton mass [g]
+/// Proton mass `[g]`
 pub const M_PROTON_CGS: f64 = 1.672_621_924e-24;
 
-/// Electron mass [g]
+/// Electron mass `[g]`
 pub const M_ELECTRON_CGS: f64 = 9.109_383_702e-28;
 
 /// Electron charge [esu = statcoulomb]
@@ -40,45 +40,45 @@ pub const SIGMA_THOMSON: f64 = 6.652_458_732e-25;
 
 // -- Solar parameters (IAU 2015 nominal) --
 
-/// Solar mass [g]
+/// Solar mass `[g]`
 pub const M_SUN_CGS: f64 = 1.988_41e33;
 
-/// Solar radius [cm]
+/// Solar radius `[cm]`
 pub const R_SUN_CGS: f64 = 6.957e10;
 
-/// Solar luminosity [erg/s]
+/// Solar luminosity `[erg/s]`
 pub const L_SUN_CGS: f64 = 3.828e33;
 
 // -- Distance units --
 
-/// Parsec [cm]
+/// Parsec `[cm]`
 pub const PARSEC_CGS: f64 = 3.085_677_581e18;
 
-/// Megaparsec [cm]
+/// Megaparsec `[cm]`
 pub const MPC_CGS: f64 = 3.085_677_581e24;
 
-/// Astronomical unit [cm]
+/// Astronomical unit `[cm]`
 pub const AU_CGS: f64 = 1.495_978_707e13;
 
 // -- Derived GR quantities --
 
-/// Schwarzschild radius per solar mass: r_s = 2GM/c^2 [cm]
+/// Schwarzschild radius per solar mass: r_s = 2GM/c^2 `[cm]`
 pub const R_SCHW_PER_MSUN: f64 = 2.0 * G_CGS * M_SUN_CGS / (C_CGS * C_CGS);
 
-/// Gravitational radius per solar mass: r_g = GM/c^2 [cm]
+/// Gravitational radius per solar mass: r_g = GM/c^2 `[cm]`
 pub const R_GRAV_PER_MSUN: f64 = G_CGS * M_SUN_CGS / (C_CGS * C_CGS);
 
-/// ISCO radius for Schwarzschild: 6 * r_g = 6 GM/c^2 [cm per solar mass]
+/// ISCO radius for Schwarzschild: 6 * r_g = 6 GM/c^2 `[cm per solar mass]`
 pub const R_ISCO_SCHW_PER_MSUN: f64 = 6.0 * R_GRAV_PER_MSUN;
 
-/// Time unit per solar mass: t_g = GM/c^3 [s]
+/// Time unit per solar mass: t_g = GM/c^3 `[s]`
 pub const T_GRAV_PER_MSUN: f64 = G_CGS * M_SUN_CGS / (C_CGS * C_CGS * C_CGS);
 
-/// Hawking temperature per solar mass: T_H = hbar c^3 / (8 pi G M k_B) [K]
+/// Hawking temperature per solar mass: T_H = hbar c^3 / (8 pi G M k_B) `[K]`
 pub const T_HAWKING_PER_MSUN: f64 =
     HBAR_CGS * C_CGS * C_CGS * C_CGS / (8.0 * std::f64::consts::PI * G_CGS * M_SUN_CGS * K_B_CGS);
 
-/// Eddington luminosity per solar mass: L_Edd = 4 pi G M m_p c / sigma_T [erg/s]
+/// Eddington luminosity per solar mass: L_Edd = 4 pi G M m_p c / sigma_T `[erg/s]`
 pub const L_EDDINGTON_PER_MSUN: f64 =
     4.0 * std::f64::consts::PI * G_CGS * M_SUN_CGS * M_PROTON_CGS * C_CGS / SIGMA_THOMSON;
 
@@ -87,22 +87,22 @@ pub const L_EDDINGTON_PER_MSUN: f64 =
 // 1 simulation step = 1 t_P, establishing dimensional consistency
 // for the latency law: T [t_P] ~ r [l_P]^gamma.
 
-/// Planck length [cm]: l_P = sqrt(hbar * G / c^3)
+/// Planck length `[cm]`: l_P = sqrt(hbar * G / c^3)
 pub const L_PLANCK_CGS: f64 = 1.616_255e-33;
 
-/// Planck time [s]: t_P = l_P / c = sqrt(hbar * G / c^5)
+/// Planck time `[s]`: t_P = l_P / c = sqrt(hbar * G / c^5)
 pub const T_PLANCK_CGS: f64 = 5.391_247e-44;
 
-/// Planck mass [g]: m_P = sqrt(hbar * c / G)
+/// Planck mass `[g]`: m_P = sqrt(hbar * c / G)
 pub const M_PLANCK_CGS: f64 = 2.176_434e-5;
 
-/// Planck energy [erg]: E_P = m_P * c^2
+/// Planck energy `[erg]`: E_P = m_P * c^2
 pub const E_PLANCK_CGS: f64 = 1.956_1e16;
 
-/// Planck temperature [K]: Theta_P = E_P / k_B
+/// Planck temperature `[K]`: Theta_P = E_P / k_B
 pub const THETA_PLANCK_CGS: f64 = 1.416_784e32;
 
-/// Planck charge [esu]: q_P = sqrt(4 * pi * epsilon_0 * hbar * c) ~ e / sqrt(alpha)
+/// Planck charge `[esu]`: q_P = sqrt(4 * pi * epsilon_0 * hbar * c) ~ e / sqrt(alpha)
 pub const Q_PLANCK_CGS: f64 = 1.875_546e-18;
 
 /// Convert a length in cm to Planck lengths.
@@ -122,22 +122,22 @@ pub fn g_to_planck_mass(g: f64) -> f64 {
 
 // -- Conversion utilities --
 
-/// Convert mass in solar masses to gravitational radius [cm].
+/// Convert mass in solar masses to gravitational radius `[cm]`.
 pub fn mass_to_r_grav(m_solar: f64) -> f64 {
     m_solar * R_GRAV_PER_MSUN
 }
 
-/// Convert mass in solar masses to Schwarzschild radius [cm].
+/// Convert mass in solar masses to Schwarzschild radius `[cm]`.
 pub fn mass_to_r_schw(m_solar: f64) -> f64 {
     m_solar * R_SCHW_PER_MSUN
 }
 
-/// Convert mass in solar masses to Hawking temperature [K].
+/// Convert mass in solar masses to Hawking temperature `[K]`.
 pub fn mass_to_hawking_temp(m_solar: f64) -> f64 {
     T_HAWKING_PER_MSUN / m_solar
 }
 
-/// Convert mass in solar masses to Eddington luminosity [erg/s].
+/// Convert mass in solar masses to Eddington luminosity `[erg/s]`.
 pub fn mass_to_eddington_luminosity(m_solar: f64) -> f64 {
     m_solar * L_EDDINGTON_PER_MSUN
 }
@@ -150,7 +150,7 @@ pub fn mass_to_eddington_luminosity(m_solar: f64) -> f64 {
 ///
 /// where gamma is the adiabatic index, P is pressure, and epsilon is
 /// the total energy density (including rest mass). In natural units (c=1),
-/// this gives a dimensionless quantity bounded by [0, 1].
+/// this gives a dimensionless quantity bounded by `[0, 1]`.
 ///
 /// Limits:
 /// - Ultrarelativistic (P = epsilon/3, gamma = 4/3): c_s^2 = 1/3
@@ -162,7 +162,7 @@ pub fn mass_to_eddington_luminosity(m_solar: f64) -> f64 {
 /// on cosmology_core::eos.
 ///
 /// # Arguments
-/// * `pressure` - Pressure [any consistent units]
+/// * `pressure` - Pressure `[any consistent units]`
 /// * `energy_density` - Total energy density (same units as pressure)
 /// * `gamma` - Adiabatic index (ratio of specific heats)
 pub fn relativistic_sound_speed_sq(pressure: f64, energy_density: f64, gamma: f64) -> f64 {

@@ -1,7 +1,7 @@
 //! SIMD-accelerated Lloyd-Max codebook lookup.
 //!
 //! For b-bit quantization with 2^b centroids, the quantization operation is:
-//!   index = argmin_j |x - centroid[j]|
+//!   index = argmin_j |x - centroid`[j]`|
 //!
 //! The boundary-search variant (sort centroids, count comparisons) is already
 //! faster than argmin.  This module adds true SIMD parallelism via the `wide`
@@ -10,8 +10,8 @@
 //!
 //! # Approach: boundary-count via SIMD
 //!
-//! For sorted boundaries b[0] < b[1] < ... < b[2^bits - 2]:
-//!   index = count(b[j] < x for all j)
+//! For sorted boundaries b`[0]` < b`[1]` < ... < b`[2^bits - 2]`:
+//!   index = count(b`[j]` < x for all j)
 //!
 //! With f32x8, we broadcast x into all 8 lanes, compare against boundaries
 //! packed in a single register, and popcount the comparison mask.

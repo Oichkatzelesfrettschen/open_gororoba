@@ -94,7 +94,7 @@ impl FLRWMetric {
     }
 
     /// Metric tensor component g_munu at position (t, r, theta, phi).
-    /// Returns diagonal components [g_tt, g_rr, g_thetatheta, g_phiphi]
+    /// Returns diagonal components `[g_tt, g_rr, g_thetatheta, g_phiphi]`
     pub fn metric_diagonal(&self, r: f64, theta: f64) -> [f64; 4] {
         let sin_theta = theta.sin();
         let spatial_part_r = if self.k == 0 {
@@ -292,8 +292,8 @@ impl CosmologicalParameters {
 
 /// Lie algebra structure: Conservation laws as commutation relations.
 ///
-/// [H, rho] = 3H rho (continuity equation: drho/dt + 3H(rho+p) = 0)
-/// [H, a] = a_dot (definition: H = a_dot/a)
+/// `[H, rho]` = 3H rho (continuity equation: drho/dt + 3H(rho+p) = 0)
+/// `[H, a]` = a_dot (definition: H = a_dot/a)
 #[derive(Debug, Clone)]
 pub struct ConservationLaw {
     /// Quantity being conserved (e.g., "energy", "number")

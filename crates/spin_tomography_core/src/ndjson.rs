@@ -6,7 +6,7 @@
 //! Rust) agree on the same truth state.
 //!
 //! HOW: Each line is a JSON object matching schema/event.json:
-//!   {"u": [ux, uy, uz], "v": [vx, vy, vz], "weight": 1.0, "dR": 0.0}
+//!   {"u": `[ux, uy, uz]`, "v": `[vx, vy, vz]`, "weight": 1.0, "dR": 0.0}
 //!
 //! The file is produced by: `stack exec spin-tomography-exe` in the QCD repo.
 

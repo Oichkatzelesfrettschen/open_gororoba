@@ -112,7 +112,7 @@ pub fn magnon_frequency_homogeneous(
 
 /// Holstein-Primakoff validity bound: maximum magnon occupation number.
 ///
-/// The HP transformation is valid when <n> << 2S, where S is the spin
+/// The HP transformation is valid when `<n> << 2S`, where S is the spin
 /// quantum number per magnetic unit cell. For YIG with 20 Fe3+ ions per
 /// formula unit (S=5/2 each), the effective spin is large.
 ///

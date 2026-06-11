@@ -677,7 +677,7 @@ impl SedenionAInfinity {
         cd_kernel::cd_multiply(a, b)
     }
 
-    /// Evaluate m_3: the Cayley-Dickson associator [a,b,c] = (ab)c - a(bc).
+    /// Evaluate m_3: the Cayley-Dickson associator `[a,b,c] = (ab)c - a(bc)`.
     pub fn m3(&self, a: &[f64], b: &[f64], c: &[f64]) -> Vec<f64> {
         assert_eq!(a.len(), self.dim);
         assert_eq!(b.len(), self.dim);
@@ -702,7 +702,7 @@ impl SedenionAInfinity {
         residual.sqrt()
     }
 
-    /// Build the symmetric obstruction matrix O[i][j] = ||m_3(e_i, *, e_j)||^2.
+    /// Build the symmetric obstruction matrix `O[i][j] = ||m_3(e_i, *, e_j)||^2`.
     pub fn obstruction_matrix(&self) -> Vec<Vec<f64>> {
         let d = self.dim;
         let mut obs_matrix = vec![vec![0.0f64; d]; d];

@@ -27,6 +27,11 @@ pub struct SolarOrbiterRpwHfrRecord {
     pub band_count: usize,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::solar_orbiter_rpw_hfr_fetch::{
+    SolarOrbiterRpwHfrProvider, parse_solar_orbiter_rpw_hfr_file,
+};
+
 #[derive(Default)]
 pub(crate) struct HfrAccumulator {
     pub r_sum: f64,

@@ -1,7 +1,7 @@
 //! Registry compat-export rendering helpers.
 //!
-//! These functions render `ClaimRecord`, `InsightRecord`,
-//! `ExperimentRecord`, `BinaryRecord`, and external-source rows into
+//! These functions render claim, insight, experiment, binary, and
+//! external-source rows into
 //! the canonical TOML/Markdown compatibility exports consumed by
 //! `registry/*.toml` and `docs/generated/*.md`.
 //!
@@ -15,18 +15,21 @@
 use std::{fs, path::Path};
 
 use anyhow::{Context, Result};
-use provenance_core::{BinaryRecord, ClaimRecord, ExperimentRecord, InsightRecord};
+use provenance_core::{BinaryRecord, ClaimRecord};
 use toml::Value;
 
-use super::migrations::{
-    CONTROL_PLANE_DB_PATH, CONTROL_PLANE_EXPORT_COMMAND, EXTERNAL_SOURCES_EXPORT_COMMAND,
+use super::{
+    migrations::{
+        CONTROL_PLANE_DB_PATH, CONTROL_PLANE_EXPORT_COMMAND, EXTERNAL_SOURCES_EXPORT_COMMAND,
+    },
+    types::{ExperimentCompatRecord, InsightCompatRecord},
 };
 
 pub(crate) fn render_claims_registry(claims: &[ClaimRecord]) -> String {
     render_array_of_tables_registry("claims", "claim", claims.iter().map(render_claim_row))
 }
 
-pub(crate) fn render_insights_registry(insights: &[InsightRecord]) -> String {
+pub(crate) fn render_insights_registry(insights: &[InsightCompatRecord]) -> String {
     render_array_of_tables_registry(
         "insights",
         "insight",
@@ -36,7 +39,7 @@ pub(crate) fn render_insights_registry(insights: &[InsightRecord]) -> String {
 
 pub(crate) fn render_experiments_registry(
     header_toml: &str,
-    experiments: &[ExperimentRecord],
+    experiments: &[ExperimentCompatRecord],
 ) -> String {
     let mut lines = compat_toml_export_header("experiments");
     let header = rebuild_experiments_header_toml(header_toml, experiments);
@@ -55,7 +58,7 @@ pub(crate) fn render_experiments_registry(
 
 pub(crate) fn rebuild_experiments_header_toml(
     header_toml: &str,
-    experiments: &[ExperimentRecord],
+    experiments: &[ExperimentCompatRecord],
 ) -> String {
     // Use toml::from_str rather than .parse::<Value>(): in toml 1.1 the FromStr
     // implementation rejects multi-line key-value documents.
@@ -112,7 +115,7 @@ pub(crate) fn rebuild_experiments_header_toml(
         .to_string()
 }
 
-pub(crate) fn experiment_row_table(row: &ExperimentRecord) -> Option<toml::value::Table> {
+pub(crate) fn experiment_row_table(row: &ExperimentCompatRecord) -> Option<toml::value::Table> {
     // Use toml::from_str rather than .parse::<Value>(): in toml 1.1 the FromStr
     // implementation rejects multi-line key-value documents (e.g. compat_toml_text).
     toml::from_str::<Value>(row.compat_toml_text.trim())
@@ -120,11 +123,11 @@ pub(crate) fn experiment_row_table(row: &ExperimentRecord) -> Option<toml::value
         .and_then(|value| value.as_table().cloned())
 }
 
-pub(crate) fn experiment_row_flag(row: &ExperimentRecord, key: &str) -> Option<bool> {
+pub(crate) fn experiment_row_flag(row: &ExperimentCompatRecord, key: &str) -> Option<bool> {
     experiment_row_table(row).and_then(|table| table.get(key).and_then(Value::as_bool))
 }
 
-pub(crate) fn experiment_row_has_seed(row: &ExperimentRecord) -> bool {
+pub(crate) fn experiment_row_has_seed(row: &ExperimentCompatRecord) -> bool {
     experiment_row_table(row)
         .and_then(|table| table.get("seed").cloned())
         .is_some()
@@ -175,7 +178,7 @@ pub(crate) fn render_claim_row(row: &ClaimRecord) -> String {
     }
 }
 
-pub(crate) fn render_insight_row(row: &InsightRecord) -> String {
+pub(crate) fn render_insight_row(row: &InsightCompatRecord) -> String {
     if row.compat_toml_text.trim().is_empty() {
         let mut lines = vec![
             format!("id = {:?}", row.id),
@@ -197,7 +200,7 @@ pub(crate) fn render_insight_row(row: &InsightRecord) -> String {
     }
 }
 
-pub(crate) fn render_experiment_row(row: &ExperimentRecord) -> String {
+pub(crate) fn render_experiment_row(row: &ExperimentCompatRecord) -> String {
     if row.compat_toml_text.trim().is_empty() {
         let mut lines = vec![
             format!("id = {:?}", row.id),

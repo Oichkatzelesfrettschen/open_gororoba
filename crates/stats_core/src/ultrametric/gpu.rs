@@ -13,9 +13,10 @@
 //! cores, FP32). A full ultrametric test with 10M triples x 200 permutations
 //! x 20 epsilons completes in ~0.2 seconds per attribute subset.
 
-use cudarc::{
-    driver::{CudaContext, CudaFunction, CudaStream, LaunchConfig, PushKernelArg},
-    nvrtc::compile_ptx,
+use cudarc::driver::{CudaStream, PushKernelArg};
+use gororoba_gpu_cuda::{
+    Buffer, CompileOptions, Context as CudaContextHelper, KernelHandle, LaunchConfig,
+    ModuleRegistry,
 };
 use std::sync::Arc;
 
@@ -98,7 +99,7 @@ extern "C" __global__ void ultrametric_triples(
     }
 
     // Check ALL epsilon thresholds for this triple (one atomic per epsilon).
-    // epsilons[] now contains squared-distance thresholds pre-computed by host.
+    // epsilons[] contains squared-distance thresholds pre-computed by host.
     for (int e = 0; e < n_eps; e++) {
         if (rel_diff_sq < epsilons[e]) {
             atomicAdd(&counts[e], 1);
@@ -112,9 +113,9 @@ extern "C" __global__ void ultrametric_triples(
 /// Holds a compiled CUDA module and device context. Create once at startup
 /// and reuse for all datasets and subsets.
 pub struct GpuUltrametricEngine {
-    _ctx: Arc<CudaContext>,
+    _ctx: CudaContextHelper,
     stream: Arc<CudaStream>,
-    kernel: CudaFunction,
+    kernel: KernelHandle,
 }
 
 impl GpuUltrametricEngine {
@@ -123,15 +124,9 @@ impl GpuUltrametricEngine {
     /// This uses dynamic loading: the binary works on machines without CUDA,
     /// it just won't have GPU acceleration.
     pub fn try_new() -> Option<Self> {
-        // Route through gpu_cuda::Context so the get_count + ordinal
-        // checks happen in one place; None on missing-device matches
-        // the prior `.ok()?` short-circuit.
-        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device().ok()?;
-        let ctx = ctx_wrapper.raw().clone();
+        let ctx = CudaContextHelper::with_default_device().ok()?;
         let stream = ctx.default_stream();
-        let ptx = compile_ptx(KERNEL_SRC).ok()?;
-        let module = ctx.load_module(ptx).ok()?;
-        let kernel = module.load_function("ultrametric_triples").ok()?;
+        let kernel = load_kernel(&ctx)?;
         Some(Self {
             _ctx: ctx,
             stream,
@@ -148,7 +143,7 @@ impl GpuUltrametricEngine {
     /// Internally converts epsilon thresholds to squared-distance space:
     /// `eps_sq = 1 - (1 - eps)^2` before uploading to the GPU kernel.
     ///
-    /// Returns a Vec<f64> of fractions, one per epsilon.
+    /// Returns a `Vec<f64>` of fractions, one per epsilon.
     pub fn fraction_multi_eps(
         &self,
         data_f32: &[f32],
@@ -157,42 +152,36 @@ impl GpuUltrametricEngine {
         n_triples: usize,
         seed: u64,
         epsilons: &[f32],
-    ) -> Result<Vec<f64>, cudarc::driver::DriverError> {
+    ) -> gororoba_gpu_cuda::Result<Vec<f64>> {
         // Convert distance-space epsilons to squared-distance-space thresholds
         let epsilons_sq: Vec<f32> = epsilons
             .iter()
             .map(|&eps| 1.0 - (1.0 - eps).powi(2))
             .collect();
-        let data_dev = self.stream.clone_htod(data_f32)?;
-        let eps_dev = self.stream.clone_htod(&epsilons_sq)?;
-        let mut counts_dev = self.stream.alloc_zeros::<i32>(epsilons.len())?;
+        let data_dev = Buffer::htod(&self.stream, data_f32)?;
+        let eps_dev = Buffer::htod(&self.stream, &epsilons_sq)?;
+        let mut counts_dev = Buffer::<i32>::alloc_zeros(&self.stream, epsilons.len())?;
 
         let n_i32 = n as i32;
         let d_i32 = d as i32;
         let n_eps_i32 = epsilons.len() as i32;
         let n_triples_i32 = n_triples as i32;
 
-        let block_size = 256_u32;
-        let grid_size = (n_triples as u32).div_ceil(block_size);
-        let cfg = LaunchConfig {
-            block_dim: (block_size, 1, 1),
-            grid_dim: (grid_size, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d(n_triples as u32);
 
         let mut builder = self.stream.launch_builder(&self.kernel);
-        builder.arg(&data_dev);
+        builder.arg(data_dev.raw());
         builder.arg(&n_i32);
         builder.arg(&d_i32);
         builder.arg(&seed);
-        builder.arg(&eps_dev);
+        builder.arg(eps_dev.raw());
         builder.arg(&n_eps_i32);
         builder.arg(&n_triples_i32);
-        builder.arg(&mut counts_dev);
+        builder.arg(counts_dev.raw_mut());
 
         unsafe { builder.launch(cfg) }?;
 
-        let counts: Vec<i32> = self.stream.clone_dtoh(&counts_dev)?;
+        let counts: Vec<i32> = counts_dev.dtoh_vec()?;
         Ok(counts
             .iter()
             .map(|&c| c as f64 / n_triples as f64)
@@ -214,7 +203,7 @@ impl GpuUltrametricEngine {
         n_triples: usize,
         n_permutations: usize,
         seed: u64,
-    ) -> Result<GpuTestResult, cudarc::driver::DriverError> {
+    ) -> gororoba_gpu_cuda::Result<GpuTestResult> {
         let epsilons: Vec<f32> = (1..=20).map(|i| i as f32 * 0.01).collect();
         let n_eps = epsilons.len();
 
@@ -310,6 +299,13 @@ impl GpuUltrametricEngine {
             },
         })
     }
+}
+
+fn load_kernel(ctx: &CudaContextHelper) -> Option<KernelHandle> {
+    let opts = CompileOptions::empty();
+    let ptx = CompileOptions::compile_ptx(KERNEL_SRC, &opts).ok()?;
+    let registry = ModuleRegistry::load(ctx.raw(), ptx, &["ultrametric_triples"]).ok()?;
+    registry.get("ultrametric_triples").ok()
 }
 
 /// Convert f64 column-major data to f32 for GPU.

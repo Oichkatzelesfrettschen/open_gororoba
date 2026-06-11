@@ -1,32 +1,32 @@
 //! CUDA kernel launch wrappers for TurboQuant.
 //!
-//! Pattern proven in lbm_3d_cuda/src/lib.rs (steinmarder SoA design):
-//!   CudaContext::new -> compile_ptx -> load_module -> load_function -> launch
-//!
-//! Wave C2.3 migrated the context acquisition, PTX module load, and
-//! launch-config helpers to `gororoba_gpu_cuda`. The
-//! `TurboQuantCudaKernels` struct still owns the resolved `CudaFunction`
-//! handles directly so the per-call launch path stays a thin builder
-//! against cudarc::driver (which gpu_cuda does not yet wrap).
+//! Context acquisition, PTX module load, launch-shape helpers, and
+//! stream-attached buffer ownership route through `gororoba_gpu_cuda`.
+//! The per-call launch path still uses cudarc's raw launch builder because
+//! `gororoba_gpu_cuda` intentionally does not wrap every kernel argument
+//! specialization.
 
 #[cfg(feature = "cuda")]
 use std::sync::Arc;
 
 #[cfg(feature = "cuda")]
 #[allow(deprecated)]
-use cudarc::driver::{CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg};
+use cudarc::driver::{CudaStream, PushKernelArg};
+#[cfg(feature = "cuda")]
+use gororoba_gpu_cuda::{Buffer, KernelHandle, ModuleRegistry};
 
 /// Compiled TurboQuant CUDA kernel handles.
 #[cfg(feature = "cuda")]
 #[allow(deprecated, dead_code)]
 pub struct TurboQuantCudaKernels {
     _ctx: gororoba_gpu_cuda::Context,
+    _module_registry: ModuleRegistry,
     stream: Arc<CudaStream>,
-    quantize_fn: CudaFunction,
-    dequant_dot_fn: CudaFunction,
-    fast_jl_fn: CudaFunction,
-    sign_dot_fn: CudaFunction,
-    dequant_dot_q16_fn: CudaFunction,
+    quantize_fn: KernelHandle,
+    dequant_dot_fn: KernelHandle,
+    fast_jl_fn: KernelHandle,
+    sign_dot_fn: KernelHandle,
+    dequant_dot_q16_fn: KernelHandle,
 }
 
 #[cfg(feature = "cuda")]
@@ -80,6 +80,7 @@ impl TurboQuantCudaKernels {
 
         Ok(TurboQuantCudaKernels {
             _ctx: ctx,
+            _module_registry: registry,
             stream,
             quantize_fn,
             dequant_dot_fn,
@@ -87,28 +88,6 @@ impl TurboQuantCudaKernels {
             sign_dot_fn,
             dequant_dot_q16_fn,
         })
-    }
-
-    /// 1D launch config: thin wrapper around
-    /// `gororoba_gpu_cuda::LaunchConfig::launch_1d` so the call site
-    /// reads the same as before.
-    fn launch_config_1d(n: u32) -> LaunchConfig {
-        gororoba_gpu_cuda::LaunchConfig::launch_1d(n)
-    }
-
-    /// 2D launch config: cd_kernel turboquant uses a 1D block of 256
-    /// threads paired with `n_y` as the y-axis grid dimension (one row
-    /// of queries per slice). `gpu_cuda::LaunchConfig::launch_2d`'s
-    /// 16x16 block is a different convention, so this fn keeps the
-    /// hand-rolled shape rather than delegate.
-    fn launch_config_2d(n_x: u32, n_y: u32) -> LaunchConfig {
-        let block = 256u32;
-        let grid_x = n_x.div_ceil(block);
-        LaunchConfig {
-            grid_dim: (grid_x, n_y, 1),
-            block_dim: (block, 1, 1),
-            shared_mem_bytes: 0,
-        }
     }
 
     /// Quantize a batch of f32 values on GPU.
@@ -119,34 +98,24 @@ impl TurboQuantCudaKernels {
         let n_boundaries = boundaries.len() as i32;
         let n_i32 = n as i32;
 
-        let d_values: CudaSlice<f32> = self
-            .stream
-            .memcpy_stod(values)
+        let d_values = Buffer::<f32>::htod(&self.stream, values)
             .map_err(|e| format!("memcpy values: {}", e))?;
-        let d_boundaries: CudaSlice<f32> = self
-            .stream
-            .memcpy_stod(boundaries)
+        let d_boundaries = Buffer::<f32>::htod(&self.stream, boundaries)
             .map_err(|e| format!("memcpy boundaries: {}", e))?;
-        let mut d_indices: CudaSlice<u8> = self
-            .stream
-            .alloc_zeros(n)
+        let mut d_indices = Buffer::<u8>::alloc_zeros(&self.stream, n)
             .map_err(|e| format!("alloc indices: {}", e))?;
 
-        let config = Self::launch_config_1d(n as u32);
+        let config = gororoba_gpu_cuda::LaunchConfig::launch_1d(n as u32);
 
         let mut b = self.stream.launch_builder(&self.quantize_fn);
-        b.arg(&d_boundaries)
-            .arg(&d_values)
-            .arg(&mut d_indices)
+        b.arg(d_boundaries.raw())
+            .arg(d_values.raw())
+            .arg(d_indices.raw_mut())
             .arg(&n_boundaries)
             .arg(&n_i32);
         unsafe { b.launch(config) }.map_err(|e| format!("quantize launch: {}", e))?;
 
-        let mut host_indices = vec![0u8; n];
-        self.stream
-            .memcpy_dtoh(&d_indices, &mut host_indices)
-            .map_err(|e| format!("readback: {}", e))?;
-        Ok(host_indices)
+        d_indices.dtoh_vec().map_err(|e| format!("readback: {}", e))
     }
 
     /// Dequantize + dot product on GPU.
@@ -186,46 +155,39 @@ impl TurboQuantCudaKernels {
         }
         let dims = validated.kernel_dims_i32()?;
 
-        let d_query: CudaSlice<f32> = self
-            .stream
-            .memcpy_stod(queries)
+        let d_query = Buffer::<f32>::htod(&self.stream, queries)
             .map_err(|e| format!("memcpy query: {}", e))?;
-        let d_key_indices: CudaSlice<u8> = self
-            .stream
-            .memcpy_stod(key_indices)
+        let d_key_indices = Buffer::<u8>::htod(&self.stream, key_indices)
             .map_err(|e| format!("memcpy keys: {}", e))?;
-        let d_centroids: CudaSlice<f32> = self
-            .stream
-            .memcpy_stod(centroids)
+        let d_centroids = Buffer::<f32>::htod(&self.stream, centroids)
             .map_err(|e| format!("memcpy centroids: {}", e))?;
-        let d_key_norms: CudaSlice<f32> = self
-            .stream
-            .memcpy_stod(key_norms)
+        let d_key_norms = Buffer::<f32>::htod(&self.stream, key_norms)
             .map_err(|e| format!("memcpy key_norms: {}", e))?;
-        let mut d_scores: CudaSlice<f32> = self
-            .stream
-            .alloc_zeros(validated.expected_scores)
+        let mut d_scores = Buffer::<f32>::alloc_zeros(&self.stream, validated.expected_scores)
             .map_err(|e| format!("alloc scores: {}", e))?;
 
-        let config = Self::launch_config_2d(dims.n_keys as u32, dims.n_queries as u32);
+        let block = 256u32;
+        let grid_x = (dims.n_keys as u32).div_ceil(block);
+        let config = gororoba_gpu_cuda::LaunchConfig::launch_blocks_2d(
+            grid_x,
+            dims.n_queries as u32,
+            block,
+            1,
+        );
 
         let mut b = self.stream.launch_builder(&self.dequant_dot_fn);
-        b.arg(&d_query)
-            .arg(&d_key_indices)
-            .arg(&d_centroids)
-            .arg(&d_key_norms)
-            .arg(&mut d_scores)
+        b.arg(d_query.raw())
+            .arg(d_key_indices.raw())
+            .arg(d_centroids.raw())
+            .arg(d_key_norms.raw())
+            .arg(d_scores.raw_mut())
             .arg(&dims.d)
             .arg(&dims.n_queries)
             .arg(&dims.n_keys)
             .arg(&dims.n_levels);
         unsafe { b.launch(config) }.map_err(|e| format!("dequant_dot launch: {}", e))?;
 
-        let mut host_scores = vec![0.0f32; validated.expected_scores];
-        self.stream
-            .memcpy_dtoh(&d_scores, &mut host_scores)
-            .map_err(|e| format!("readback: {}", e))?;
-        Ok(host_scores)
+        d_scores.dtoh_vec().map_err(|e| format!("readback: {}", e))
     }
 }
 

@@ -55,7 +55,7 @@ pub mod tensor_networks;
 pub mod tight_binding;
 pub mod two_fluid;
 
-#[cfg(feature = "gpu")]
+#[cfg(any(feature = "gpu", feature = "cubecl", feature = "vulkan"))]
 pub mod gpu;
 
 pub use faer::c64 as Complex64;

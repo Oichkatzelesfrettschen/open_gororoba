@@ -10,12 +10,12 @@ stale_test_count_pattern = "\\b[0-9][0-9,]*(?:\\+)?\\s+(?:Rust\\s+)?tests\\b"
 require_ignore_runtime_seconds = 30
 runtime_comment_pattern = '(?i)runtime:\s*~?([0-9]+)(?:-([0-9]+))?\s*(s|sec|secs|second|seconds|min|mins|minute|minutes|hr|hrs|hour|hours)\b'
 name_hints_require_ignore = [
-  "full_sweep",
-  "full_basepoint_sweep",
-  "dim512_full",
-  "dim1024",
-  "dim2048",
-  "census",
+    "full_sweep",
+    "full_basepoint_sweep",
+    "dim512_full",
+    "dim1024",
+    "dim2048",
+    "census",
 ]
 
 [[rust_smoke_target]]

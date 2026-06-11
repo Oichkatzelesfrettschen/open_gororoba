@@ -6,7 +6,21 @@ updated = "deterministic"
 authoritative = true
 version = 1
 signature_count = 13
-registry_paths = ["registry/bibliography.toml", "registry/binaries.toml", "registry/claims.toml", "registry/claims_evidence_edges.toml", "registry/dataset_label_aliases.toml", "registry/experiments.toml", "registry/external_sources.toml", "registry/insights.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/equation_atoms_v2.toml", "registry/knowledge/equation_symbol_table.toml", "registry/knowledge/proof_skeletons.toml", "registry/lacunae.toml"]
+registry_paths = [
+    "registry/bibliography.toml",
+    "registry/binaries.toml",
+    "registry/claims.toml",
+    "registry/claims_evidence_edges.toml",
+    "registry/dataset_label_aliases.toml",
+    "registry/experiments.toml",
+    "registry/external_sources.toml",
+    "registry/insights.toml",
+    "registry/knowledge/derivation_steps.toml",
+    "registry/knowledge/equation_atoms_v2.toml",
+    "registry/knowledge/equation_symbol_table.toml",
+    "registry/knowledge/proof_skeletons.toml",
+    "registry/lacunae.toml",
+]
 
 [[signature]]
 id = "SIG-0001"

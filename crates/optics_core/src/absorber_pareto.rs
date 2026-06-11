@@ -29,7 +29,7 @@ pub fn integrate_trapezoidal(y: &[f64], dx: f64) -> f64 {
 pub struct FractionalSchrodingerConfig {
     /// Number of spatial grid points.
     pub n: usize,
-    /// Domain half-width (spatial domain is [-l_domain, +l_domain]).
+    /// Domain half-width (spatial domain is `[-l_domain, +l_domain]`).
     pub l_domain: f64,
     /// Fractional exponent (1 < alpha <= 2; alpha=2 is standard QM).
     pub alpha: f64,
@@ -78,7 +78,7 @@ pub struct ParetoPoint {
 /// Evolve a Gaussian wave packet under the fractional Schrodinger equation,
 /// optionally with an absorbing boundary layer.
 ///
-/// Returns the final wavefunction psi(x) as a Vec<Complex64>.
+/// Returns the final wavefunction psi(x) as a `Vec<Complex64>`.
 pub fn fractional_schrodinger_evolve(
     cfg: &FractionalSchrodingerConfig,
     wp: &WavePacketConfig,

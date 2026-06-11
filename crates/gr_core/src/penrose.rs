@@ -35,7 +35,7 @@ pub fn penrose_maximum_efficiency(a_star: f64) -> f64 {
 
 /// Irreducible mass in CGS units.
 ///
-/// M_irr = M * sqrt((1 + sqrt(1 - a*^2)) / 2) [g]
+/// M_irr = M * sqrt((1 + sqrt(1 - a*^2)) / 2) `[g]`
 ///
 /// This mass cannot be reduced by any classical process; it only increases
 /// (Hawking area theorem).
@@ -45,7 +45,7 @@ pub fn irreducible_mass_cgs(mass_g: f64, a_star: f64) -> f64 {
     mass_g * ((1.0 + sqrt_f) / 2.0).sqrt()
 }
 
-/// Rotational energy: E_rot = (M - M_irr) c^2 [erg].
+/// Rotational energy: E_rot = (M - M_irr) c^2 `[erg]`.
 ///
 /// This is the maximum energy extractable via the Penrose process.
 /// For a maximally spinning BH, E_rot = M c^2 (1 - 1/sqrt(2)) ~ 29.3% Mc^2.
@@ -54,9 +54,9 @@ pub fn rotational_energy(mass_g: f64, a_star: f64) -> f64 {
     (mass_g - m_irr) * C_CGS * C_CGS
 }
 
-/// Horizon angular velocity in CGS [rad/s].
+/// Horizon angular velocity in CGS `[rad/s]`.
 ///
-/// Omega_H = a c / (r+^2 + a^2) where r+ and a are in geometric units [cm].
+/// Omega_H = a c / (r+^2 + a^2) where r+ and a are in geometric units `[cm]`.
 pub fn horizon_angular_velocity_cgs(mass_g: f64, a_star: f64) -> f64 {
     let a_star = a_star.abs().clamp(0.0, 0.9999);
     let m_geo = G_CGS * mass_g / (C_CGS * C_CGS);
@@ -69,7 +69,7 @@ pub fn horizon_angular_velocity_cgs(mass_g: f64, a_star: f64) -> f64 {
 // Blandford-Znajek mechanism
 // ============================================================================
 
-/// Blandford-Znajek power output [erg/s].
+/// Blandford-Znajek power output `[erg/s]`.
 ///
 /// P_BZ ~ kappa * Phi^2 * Omega_H^2 / c
 ///
@@ -78,9 +78,9 @@ pub fn horizon_angular_velocity_cgs(mass_g: f64, a_star: f64) -> f64 {
 /// (Tchekhovskoy, Narayan, McKinney 2010).
 ///
 /// Arguments:
-///   mass_g: black hole mass [g]
+///   mass_g: black hole mass `[g]`
 ///   a_star: dimensionless spin |a*| <= 1
-///   b_gauss: magnetic field strength at the horizon [Gauss]
+///   b_gauss: magnetic field strength at the horizon `[Gauss]`
 pub fn blandford_znajek_power(mass_g: f64, a_star: f64, b_gauss: f64) -> f64 {
     let a_star = a_star.abs().clamp(0.0, 0.998);
     let m_geo = G_CGS * mass_g / (C_CGS * C_CGS);
@@ -93,7 +93,7 @@ pub fn blandford_znajek_power(mass_g: f64, a_star: f64, b_gauss: f64) -> f64 {
     kappa * phi_sq * omega_h * omega_h / C_CGS
 }
 
-/// Magnetic field required for Eddington-limited BZ power [Gauss].
+/// Magnetic field required for Eddington-limited BZ power `[Gauss]`.
 ///
 /// Inverts the BZ formula: for P_BZ = L_Edd, find B.
 pub fn bz_eddington_field(mass_g: f64, a_star: f64) -> f64 {
@@ -122,9 +122,9 @@ pub fn bz_eddington_field(mass_g: f64, a_star: f64) -> f64 {
 /// Waves with omega < m * Omega_H can extract energy from a rotating BH.
 ///
 /// Arguments:
-///   omega: wave frequency [rad/s]
+///   omega: wave frequency `[rad/s]`
 ///   m_mode: azimuthal mode number
-///   mass_g: black hole mass [g]
+///   mass_g: black hole mass `[g]`
 ///   a_star: dimensionless spin
 pub fn is_superradiant(omega: f64, m_mode: i32, mass_g: f64, a_star: f64) -> bool {
     let omega_h = horizon_angular_velocity_cgs(mass_g, a_star);

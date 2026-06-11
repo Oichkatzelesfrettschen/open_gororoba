@@ -32,7 +32,7 @@ pub struct ResonatorChannel {
 pub struct MultiResonatorSystem {
     /// The resonator channels (one per box-kite component).
     pub channels: Vec<ResonatorChannel>,
-    /// Coupling matrix: coupling[i][j] = coupling strength between channels.
+    /// Coupling matrix: coupling`[i]``[j]` = coupling strength between channels.
     /// For disconnected box-kites, this is block-diagonal (zero off-diagonal).
     pub coupling: Vec<Vec<f64>>,
 }
@@ -51,9 +51,9 @@ pub struct MultiResonatorState {
 pub struct MultiResonatorTrace {
     /// Time points.
     pub times: Vec<f64>,
-    /// Per-channel amplitude trajectories: amplitudes[channel][time_step].
+    /// Per-channel amplitude trajectories: amplitudes`[channel]``[time_step]`.
     pub amplitudes: Vec<Vec<Complex64>>,
-    /// Per-channel energy trajectories: energies[channel][time_step].
+    /// Per-channel energy trajectories: energies`[channel]``[time_step]`.
     pub energies: Vec<Vec<f64>>,
 }
 

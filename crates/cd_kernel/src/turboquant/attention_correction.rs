@@ -4,16 +4,16 @@
 //! quantization error distribution to debias attention scores.
 //!
 //! The key insight: scalar quantization with a Lloyd-Max codebook
-//! introduces a known per-coordinate distortion E[e^2] = distortion.
+//! introduces a known per-coordinate distortion E`[e^2]` = distortion.
 //! The dot product error between query q and quantized key k_q is:
 //!
 //!   <q, k> - <q, k_q> = <q, k - k_q> = <q, e>
 //!
 //! where e = k - k_q is the quantization error.
 //!
-//! For i.i.d. error with E[e_i] = 0 and Var[e_i] = distortion/d:
-//!   E[<q, e>] = 0  (unbiased)
-//!   Var[<q, e>] = ||q||^2 * distortion / d
+//! For i.i.d. error with E`[e_i]` = 0 and Var`[e_i]` = distortion/d:
+//!   E`[<q, e>]` = 0  (unbiased)
+//!   Var`[<q, e>]` = ||q||^2 * distortion / d
 //!
 //! The attention score variance can be corrected to improve ranking quality.
 
@@ -25,7 +25,7 @@ use crate::lloyd_max;
 /// `d`: head dimension
 /// `bits`: quantization bits
 ///
-/// Returns Var[<q, e>] = ||q||^2 * codebook_distortion / d
+/// Returns Var`[<q, e>]` = ||q||^2 * codebook_distortion / d
 pub fn attention_score_variance(query_norm_sq: f64, d: usize, bits: u32) -> f64 {
     let codebook = lloyd_max::get_codebook(d, bits);
     query_norm_sq * codebook.distortion / d as f64

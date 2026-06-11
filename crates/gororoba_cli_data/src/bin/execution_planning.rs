@@ -2419,7 +2419,7 @@ fn choose_lineage_id(existing: &str, used: &mut BTreeSet<String>, sequence: &mut
 /// Bundle of cross-reference ID sets used by `verify_dependencies` to
 /// validate dependency strings. Seven `BTreeSet<String>` references that
 /// always travel together. Bundling keeps the verifier under
-/// clippy::too_many_arguments without #[allow] suppression.
+/// clippy::too_many_arguments without `#[allow]` suppression.
 struct DependencyIdSets<'a> {
     claim_ids: &'a BTreeSet<String>,
     insight_ids: &'a BTreeSet<String>,
@@ -2718,7 +2718,7 @@ fn sync_or_write_experiments_registry(repo_root: &Path, args: &Args, content: &s
         let binaries = repo_root.join("registry/binaries.toml");
         let theorems = repo_root.join("docs/THEOREMS.md");
         let theorems_mirror = repo_root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
-        store.export_control_plane_compat(
+        store.export_control_plane_compat_paths(
             repo_root,
             provenance_store::CompatExportPaths {
                 claims: &claims,
@@ -2860,7 +2860,7 @@ deterministic = true
         let theorems_mirror = fixture
             .root
             .join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
-        store.verify_control_plane_compat_exports(
+        store.verify_control_plane_compat_exports_paths(
             &fixture.root,
             provenance_store::CompatExportPaths {
                 claims: &claims,
@@ -2985,7 +2985,7 @@ experiment = "E-001"
         let binaries = root.join("registry/binaries.toml");
         let theorems = root.join("docs/THEOREMS.md");
         let theorems_mirror = root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
-        store.export_control_plane_compat(
+        store.export_control_plane_compat_paths(
             &root,
             provenance_store::CompatExportPaths {
                 claims: &claims,

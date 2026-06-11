@@ -14,7 +14,14 @@ slug = "CONVOS_CLAIMS_INBOX"
 title = "Convos Claims Inbox (Triage Queue, ANSI-safe UTF-8)"
 content_kind = "claims_inbox"
 claim_refs = ["C-403", "C-404", "C-405", "C-406", "C-407", "C-408"]
-path_refs = ["convos/", "data/external/...", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "reports/convos_claim_candidates.md", "reports/convos_claim_candidates_prioritized.md"]
+path_refs = [
+    "convos/",
+    "data/external/...",
+    "docs/CLAIMS_EVIDENCE_MATRIX.md",
+    "docs/CLAIMS_TASKS.md",
+    "reports/convos_claim_candidates.md",
+    "reports/convos_claim_candidates_prioritized.md",
+]
 line_count = 143
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -168,7 +175,13 @@ slug = "README"
 title = "Convos audit workspace"
 content_kind = "convo_note"
 claim_refs = []
-path_refs = ["convos/", "convos/1_read_nonuser_lines_cont.md:L<line>", "docs/", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "docs/convos/audit_1_read_nonuser_lines_cont.md"]
+path_refs = [
+    "convos/",
+    "convos/1_read_nonuser_lines_cont.md:L<line>",
+    "docs/",
+    "docs/CONVOS_CONCEPTS_STATUS_INDEX.md",
+    "docs/convos/audit_1_read_nonuser_lines_cont.md",
+]
 line_count = 44
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -223,7 +236,38 @@ slug = "audit_1_read_nonuser_lines_cont"
 title = "Audit: convos/1_read_nonuser_lines_cont.md"
 content_kind = "audit_extract"
 claim_refs = []
-path_refs = ["//text{...}", "1/x", "MatplotlibDeprecationWarning: Auto-removal of grids by pcolormesh() is deprecated...", "T_neg = exp(-(1/x)^2)", "T_{-d}(x) = T_d(1/x)", "ax.grid(False)", "convos/1_read_nonuser_lines_cont.md", "convos/1_read_nonuser_lines_cont.md:L<line>", "data/artifacts/", "data/external/planck/", "dg/dlog Lambda = beta(g) + sum omega_ijk g_k", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "docs/WHEELS_DIVISION_BY_ZERO.md", "edgecolors=...", "fft2(...).real", "fft2(bulk_space).real", "networkx.laplacian_matrix", "np.tensordot", "np.zeros_like(mu_initial)", "nx.nx_agraph.graphviz_layout(..., prog='dot')", "pd.DataFrame(...)", "plt.show()", "surreal_times = tan(t) * exp(-0.5 t^2)", "surreal_times = tan(t) * exp(-t^2/2)", "tan(t)*exp(-t^2/2)", "tensor_state_reduced = np.random.rand(dim, dim, spin_index)", "x -> 1/x", "x in [0.5,5]", "|Tr(U^dagger V)|^2 / d^2"]
+path_refs = [
+    "//text{...}",
+    "1/x",
+    "MatplotlibDeprecationWarning: Auto-removal of grids by pcolormesh() is deprecated...",
+    "T_neg = exp(-(1/x)^2)",
+    "T_{-d}(x) = T_d(1/x)",
+    "ax.grid(False)",
+    "convos/1_read_nonuser_lines_cont.md",
+    "convos/1_read_nonuser_lines_cont.md:L<line>",
+    "data/artifacts/",
+    "data/external/planck/",
+    "dg/dlog Lambda = beta(g) + sum omega_ijk g_k",
+    "docs/CLAIMS_EVIDENCE_MATRIX.md",
+    "docs/CONVOS_CONCEPTS_STATUS_INDEX.md",
+    "docs/WHEELS_DIVISION_BY_ZERO.md",
+    "edgecolors=...",
+    "fft2(...).real",
+    "fft2(bulk_space).real",
+    "networkx.laplacian_matrix",
+    "np.tensordot",
+    "np.zeros_like(mu_initial)",
+    "nx.nx_agraph.graphviz_layout(..., prog='dot')",
+    "pd.DataFrame(...)",
+    "plt.show()",
+    "surreal_times = tan(t) * exp(-0.5 t^2)",
+    "surreal_times = tan(t) * exp(-t^2/2)",
+    "tan(t)*exp(-t^2/2)",
+    "tensor_state_reduced = np.random.rand(dim, dim, spin_index)",
+    "x -> 1/x",
+    "x in [0.5,5]",
+    "|Tr(U^dagger V)|^2 / d^2",
+]
 line_count = 1109
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -1343,7 +1387,17 @@ slug = "implement_next_from_1_read_nonuser_lines_cont"
 title = "Implement-next backlog (from convos/1_read_nonuser_lines_cont.md)"
 content_kind = "implementation_extract"
 claim_refs = []
-path_refs = ["//text{...}", "convos/1_read_nonuser_lines_cont.md", "data/artifacts/", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "docs/convos/audit_1_read_nonuser_lines_cont.md", "docs/convos/keywords_1_read_nonuser_lines_cont.md", "plt.show()", "src/verification/verify_generated_artifacts.py", "x -> 1/x"]
+path_refs = [
+    "//text{...}",
+    "convos/1_read_nonuser_lines_cont.md",
+    "data/artifacts/",
+    "docs/CONVOS_CONCEPTS_STATUS_INDEX.md",
+    "docs/convos/audit_1_read_nonuser_lines_cont.md",
+    "docs/convos/keywords_1_read_nonuser_lines_cont.md",
+    "plt.show()",
+    "src/verification/verify_generated_artifacts.py",
+    "x -> 1/x",
+]
 line_count = 59
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->

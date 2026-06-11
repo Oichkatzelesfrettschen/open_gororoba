@@ -6,10 +6,10 @@
 //! Falsification: no halos at any k -> model cannot produce CDG-2 structures.
 //!
 //! Usage:
-//!   dark-halo-hunt                                    # Default k=[4,8,16,32]
-//!   dark-halo-hunt --grid 128 --k-values 4,8,16      # Quick scan
-//!   dark-halo-hunt --output data/evidence/halos.toml  # Custom output
-//!   dark-halo-hunt --dry-run                          # Spectral dim only (no GPU)
+//!   `dark-halo-hunt`                                  # Default `k=[4,8,16,32]`
+//!   `dark-halo-hunt --grid 128 --k-values 4,8,16`    # Quick scan
+//!   `dark-halo-hunt --output data/evidence/halos.toml` # Custom output
+//!   `dark-halo-hunt --dry-run`                        # Spectral dim only (no GPU)
 
 use clap::Parser;
 use cosmology_core::{

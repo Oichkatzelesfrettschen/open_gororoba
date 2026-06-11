@@ -28,14 +28,22 @@
   "excludes": [
     ".cache/**",
     "target/**",
+    "archive/**",
+    "curated/**",
+    "data/**",
     "proofs/**/*.vo",
     "proofs/**/*.glob",
+    "reports/**",
     "**/node_modules/**",
     "**/*-lock.json",
     "Cargo.lock",
     "registry/artifact_source_of_truth.toml",
     "registry/claims_evidence_edges.toml",
-    "registry/claims.toml"
+    "registry/claims.toml",
+    "registry/*_atoms.toml",
+    "registry/data/**",
+    "registry/knowledge/**",
+    "registry/source_lanes/**"
   ],
   "plugins": [
     "https://plugins.dprint.dev/exec-0.6.0.json@a054130d458f124f9b5c91484833828950723a5af3f8ff2bd1523bd47b83b364",

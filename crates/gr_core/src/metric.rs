@@ -13,7 +13,7 @@
 //!
 //! # Conventions
 //! - Signature: (-,+,+,+)
-//! - Coordinates: [t, r, theta, phi] (Boyer-Lindquist for Kerr family)
+//! - Coordinates: `[t, r, theta, phi]` (Boyer-Lindquist for Kerr family)
 //! - Natural units: G = c = 1, mass M as parameter
 //!
 //! # Literature
@@ -31,14 +31,14 @@ pub const DIM: usize = 4;
 /// The covariant metric tensor g_{mu nu} at a point, stored as a symmetric 4x4.
 pub type MetricComponents = [[f64; DIM]; DIM];
 
-/// Christoffel symbols Gamma^alpha_{mu nu}, stored as [alpha][mu][nu].
+/// Christoffel symbols Gamma^alpha_{mu nu}, stored as `[alpha]``[mu]``[nu]`.
 /// Symmetric in lower indices: Gamma^a_{mn} = Gamma^a_{nm}.
 pub type ChristoffelComponents = [[[f64; DIM]; DIM]; DIM];
 
-/// Riemann tensor R^alpha_{beta mu nu}, stored as [alpha][beta][mu][nu].
+/// Riemann tensor R^alpha_{beta mu nu}, stored as `[alpha]``[beta]``[mu]``[nu]`.
 pub type RiemannComponents = [[[[f64; DIM]; DIM]; DIM]; DIM];
 
-/// Ricci tensor R_{mu nu}, stored as [mu][nu].
+/// Ricci tensor R_{mu nu}, stored as `[mu]``[nu]`.
 pub type RicciComponents = [[f64; DIM]; DIM];
 
 /// Result of computing curvature tensors at a single spacetime point.
@@ -69,7 +69,7 @@ pub struct CurvatureResult {
 pub trait SpacetimeMetric {
     /// Compute the covariant metric tensor g_{mu nu} at coordinates x.
     ///
-    /// Coordinates are [t, r, theta, phi] in the natural coordinate
+    /// Coordinates are `[t, r, theta, phi]` in the natural coordinate
     /// system for this metric.
     fn metric_components(&self, x: &[f64; DIM]) -> MetricComponents;
 

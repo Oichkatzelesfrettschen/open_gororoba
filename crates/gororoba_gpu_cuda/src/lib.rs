@@ -4,7 +4,7 @@
 //! independently spin up a `CudaContext::new(0)`, 35+ sites repeat the
 //! same NVRTC compile-options pattern, 28+ sites load PTX + functions,
 //! 60+ allocate buffers, 40+ memcpy. Three competing error patterns
-//! coexist (anyhow::Result, Result<T, String>, Option<T>) and two
+//! coexist (`anyhow::Result`, `Result<T, String>`, `Option<T>`) and two
 //! competing device-property structs (`cd_kernel::turboquant::cuda::CudaDeviceProps`
 //! and `gororoba_gpu_bridge::HardwareCaps`).
 //!
@@ -58,6 +58,8 @@ mod probe;
 pub use buffer::Buffer;
 #[cfg(feature = "cudarc")]
 pub use context::Context;
+#[cfg(feature = "cudarc")]
+pub use cudarc::nvrtc::Ptx;
 #[cfg(feature = "cudarc")]
 pub use error::{CudaError, Result};
 #[cfg(feature = "cudarc")]

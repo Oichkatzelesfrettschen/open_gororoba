@@ -26,7 +26,7 @@ use super::fp8::Fp8E4M3;
 /// Packed 2-bit indices: 4 values per byte.
 #[derive(Clone, Debug)]
 pub struct Packed2BitIndices {
-    /// Packed bytes: byte[i] contains indices[4i..4i+4].
+    /// Packed bytes: byte`[i]` contains indices`[4i..4i+4]`.
     pub data: Vec<u8>,
     /// Number of actual indices (may not be multiple of 4).
     pub len: usize,

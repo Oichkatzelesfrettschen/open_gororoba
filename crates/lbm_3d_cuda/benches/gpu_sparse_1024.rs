@@ -3,7 +3,8 @@
 //! Validates the YSU-Engine inspired occupancy-grid and A-A streaming
 //! pattern to fit massive sparse domains in consumer GPUs.
 
-use cudarc::driver::{CudaContext, LaunchConfig, PushKernelArg};
+use cudarc::driver::PushKernelArg;
+use gororoba_gpu_cuda::{CompileOptions, Context, LaunchConfig, ModuleRegistry};
 use lbm_3d_cuda::{
     probe_cuda_ada_available,
     sparse::{SparseBrickMap, SparseLbmSolver, SparseMemoryMode},
@@ -21,8 +22,9 @@ fn main() {
         return;
     }
 
-    let ctx = CudaContext::new(0).expect("Failed to initialize CUDA context");
-    let stream = ctx.default_stream();
+    let cuda = Context::with_default_device().expect("Failed to initialize CUDA context");
+    let ctx = cuda.raw().clone();
+    let stream = cuda.default_stream();
     let memory_mode = match env::var("GOROROBA_SPARSE_MEMORY_MODE")
         .unwrap_or_else(|_| "device".to_string())
         .as_str()
@@ -80,9 +82,14 @@ fn main() {
     }
     "#;
 
-    let ptx = cudarc::nvrtc::compile_ptx_with_opts(init_mask_src, Default::default()).unwrap();
-    let module = ctx.load_module(ptx).unwrap();
-    let init_mask_kernel = module.load_function("init_mask").unwrap();
+    let module = ModuleRegistry::compile_and_load(
+        &ctx,
+        init_mask_src,
+        &CompileOptions::default(),
+        &["init_mask"],
+    )
+    .unwrap();
+    let init_mask_kernel = module.get("init_mask").unwrap();
 
     let threads = 256;
     let blocks = (total_cells as u32).div_ceil(threads);
@@ -98,12 +105,8 @@ fn main() {
         .arg(&nz_i)
         .arg(&radius);
     unsafe {
-        b.launch(LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        })
-        .unwrap();
+        b.launch(LaunchConfig::launch_blocks_1d(blocks, threads))
+            .unwrap();
     }
     ctx.synchronize().unwrap();
 

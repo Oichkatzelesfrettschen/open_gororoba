@@ -10,9 +10,9 @@
 //! The 7-rule ladder:
 //!   1. status in (Refuted, Falsified, Closed_negative_result, Closed_refuted)
 //!      -> na_empirical
-//!   2. arXiv: or doi.org/ in where_stated  -> external:<extracted>
-//!   3. proofs/verified/<id>_*.v exists      -> proofs/verified/<file>
-//!   4. proofs/theories/<id>_*.v exists      -> proofs/theories/<file>
+//!   2. arXiv: or doi.org/ in where_stated  -> `external:<extracted>`
+//!   3. `proofs/verified/<id>_*.v` exists    -> `proofs/verified/<file>`
+//!   4. `proofs/theories/<id>_*.v` exists    -> `proofs/theories/<file>`
 //!   5. LBM / GPU / simulation in statement  -> na_methodology:simulation
 //!   6. observed / measured / detected in statement -> na_observational
 //!   7. otherwise                            -> pending:reviewed_pending
@@ -179,7 +179,7 @@ fn main() -> Result<()> {
 }
 
 /// Bundle of `classify` arguments. Keeps the function under
-/// clippy::too_many_arguments without resorting to #[allow]; each field is
+/// clippy::too_many_arguments without resorting to `#[allow]`; each field is
 /// borrowed so the input itself is zero-copy at call sites.
 struct ClassifyInput<'a> {
     id: &'a str,

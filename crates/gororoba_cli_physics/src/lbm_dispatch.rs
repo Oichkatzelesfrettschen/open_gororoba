@@ -1,7 +1,7 @@
 //! Unified LBM solver dispatcher: bridges CPU (AVX2/AoSoA) and GPU (CUDA/SoA)
 //! solvers behind a common interface.
 //!
-//! The dispatcher handles f64<->f32 precision conversion, layout differences
+//! The dispatcher handles `f64<->f32` precision conversion, layout differences
 //! (AoSoA on CPU, SoA on GPU), and fallible vs infallible API bridging
 //! transparently. Callers interact with a single `LbmBackend` enum that
 //! auto-detects hardware at construction time.

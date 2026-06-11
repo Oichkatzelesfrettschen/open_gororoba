@@ -67,7 +67,7 @@ enum Commands {
         #[arg(long, default_value = "256")]
         n: usize,
 
-        /// Domain size [-L, L]
+        /// Domain size `[-L, L]`
         #[arg(long, default_value = "15.0")]
         l: f64,
 

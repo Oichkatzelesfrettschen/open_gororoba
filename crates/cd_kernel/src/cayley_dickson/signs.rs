@@ -1,7 +1,7 @@
 //! Cayley-Dickson basis product sign table: the primitive truth of the algebra.
 //!
 //! # Prerequisite modules: none (this is the foundation)
-//! # Depended on by: [`arith`], [`signature`], [`sedenion`]
+//! # Depended on by: `arith`, `signature`, `sedenion`
 //!
 //! # Why this module matters
 //!
@@ -103,7 +103,7 @@ pub fn cd_basis_mul_sign_iter(dim: usize, mut p: usize, mut q: usize) -> i32 {
 /// Bit = 1 means sign = -1; bit = 0 means sign = +1.
 /// Layout: row-major, `bits[p * dim + q]` encodes sign(p, q).
 ///
-/// # Why bitvec instead of manual Vec<u64>?
+/// # Why bitvec instead of manual `Vec<u64>`?
 ///
 /// - Eliminates manual `idx / 64` and `idx % 64` indexing
 /// - Provides `.count_ones()`, `.iter()`, bitwise AND/OR/XOR

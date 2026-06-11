@@ -1,10 +1,10 @@
 [package]
 name = "gororoba_cli_governance"
 version = "0.1.0"
-edition = { workspace = true }
-description = "Slim governance and routing operator binaries for gororoba"
-license = "MIT"
 autobins = false
+edition = { workspace = true }
+license = "MIT"
+description = "Slim governance and routing operator binaries for gororoba"
 
 [[bin]]
 name = "workspace-routing-proxy"

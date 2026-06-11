@@ -13,76 +13,82 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [workspace]
 resolver = "3"
 members = [
-    "crates/fixed_point_lbm",
-    "crates/cd_kernel",
-    "crates/hurwitz_1898",
-    "crates/dickson_1919",
-    "crates/de_marrais_2000",
-    "crates/schafer_1945",
-    "crates/wilmot_2025",
-    "crates/brown_1967",
-    "crates/brown_1972",
-    "crates/moreno_1997",
-    "crates/cd_papers",
     "crates/algebra_analysis",
     "crates/algebra_experimental",
+    "crates/brown_1967",
+    "crates/brown_1972",
+    "crates/casimir_core",
+    "crates/cd_kernel",
+    "crates/cd_papers",
+    "crates/cd_spin_bridge",
+    "crates/control_core",
+    "crates/cosmic_scheduler",
+    "crates/cosmology_core",
+    "crates/cr_transport",
+    "crates/data_artifacts_core",
+    "crates/data_core",
+    "crates/de_marrais_2000",
+    "crates/dickson_1919",
+    "crates/docpipe",
+    "crates/fixed_point_lbm",
+    "crates/flavor_lifts",
+    "crates/gororoba_algebra",
+    "crates/gororoba_cli",
+    "crates/gororoba_cli_algebra",
+    "crates/gororoba_cli_data",
+    "crates/gororoba_cli_governance",
+    "crates/gororoba_cli_physics",
+    "crates/gororoba_cli_provenance",
+    "crates/gororoba_cli_quantum",
+    "crates/gororoba_cli_warp",
+    "crates/gororoba_contracts",
+    "crates/gororoba_db",
+    "crates/gororoba_engine",
+    "crates/gororoba_gpu_bridge",
+    "crates/gororoba_gpu_cubecl",
+    "crates/gororoba_gpu_cuda",
+    "crates/gororoba_gpu_readback",
+    "crates/gororoba_gpu_vulkan",
+    "crates/gororoba_optix",
+    "crates/gororoba_pipeline",
+    "crates/gororoba_sparse_grid",
+    "crates/gororoba_structurable",
+    "crates/gororoba_view_core",
+    "crates/gororoba_view_raster",
+    "crates/gr_core",
+    "crates/grmhd_core",
+    "crates/hurwitz_1898",
+    "crates/lattice_filtration",
+    "crates/lbm_3d",
+    "crates/lbm_3d_cuda",
+    "crates/lbm_core",
+    "crates/lbm_vulkan",
+    "crates/lit_search",
+    "crates/manga_experiments",
+    "crates/materials_core",
+    "crates/materials_data",
+    "crates/moreno_1997",
+    "crates/neural_homotopy",
+    "crates/optics_core",
+    "crates/pathion_ellip",
     "crates/provenance_core",
     "crates/provenance_ops",
     "crates/provenance_store",
-    "crates/gororoba_algebra",
-    "crates/control_core",
-    "crates/cosmology_core",
-    "crates/data_artifacts_core",
-    "crates/data_core",
-    "crates/docpipe",
-    "crates/scrolls_core",
-    "crates/materials_core",
-    "crates/materials_data",
-    "crates/optics_core",
-    "crates/quantum_core",
-    "crates/gr_core",
-    "crates/grmhd_core",
-    "crates/stats_core",
-    "crates/spectral_core",
-    "crates/lbm_core",
-    "crates/gororoba_cli",
-    "crates/snia_core",
-    "crates/tensor_core",
-    "crates/cosmic_scheduler",
-    "crates/sign_imbalance",
-    "crates/lbm_3d",
-    "crates/lbm_3d_cuda",
-    "crates/gororoba_optix",
-    "crates/gororoba_gpu_readback",
-    "crates/gororoba_sparse_grid",
-    "crates/gororoba_view_core",
-    "crates/gororoba_view_raster",
-    "crates/lattice_filtration",
-    "crates/neural_homotopy",
-    "crates/gororoba_pipeline", "crates/gororoba_gpu_bridge",
-    "crates/gororoba_gpu_vulkan",
-    "crates/gororoba_gpu_cubecl",
-    "crates/gororoba_gpu_cuda",
-    "crates/gororoba_engine", "crates/gororoba_contracts", "crates/spin_tomography_core", "crates/cd_spin_bridge", "crates/lbm_vulkan",
     "crates/qgp_scaling",
-    "crates/gororoba_cli_algebra",
-    "crates/gororoba_cli_physics",
-    "crates/gororoba_cli_data",
+    "crates/quantum_core",
     "crates/repo_utilities",
-    "crates/gororoba_cli_governance",
-    "crates/gororoba_cli_provenance",
-    "crates/gororoba_cli_warp",
-    "crates/gororoba_cli_quantum",
-    "crates/casimir_core",
-    "crates/verified_core", "crates/pathion_ellip",
-    "crates/cr_transport",
-    "crates/manga_experiments",
-    "crates/gororoba_db",
-    "xtask",
-    "crates/lit_search",
-    "crates/flavor_lifts",
-    "crates/gororoba_structurable",
+    "crates/schafer_1945",
+    "crates/scrolls_core",
+    "crates/sign_imbalance",
+    "crates/snia_core",
+    "crates/spectral_core",
+    "crates/spin_tomography_core",
+    "crates/stats_core",
     "crates/surreal_algebra",
+    "crates/tensor_core",
+    "crates/verified_core",
+    "crates/wilmot_2025",
+    "xtask",
 ]
 
 [workspace.metadata.execution_policy]
@@ -115,19 +121,19 @@ ignored = ["wide"]
 # Shared dependencies across workspace
 [workspace.dependencies]
 # Workspace-internal crates (extracted from gororoba_algebra)
-cd_kernel = { path = "crates/cd_kernel" }
 algebra_analysis = { path = "crates/algebra_analysis" }
 algebra_experimental = { path = "crates/algebra_experimental" }
+cd_kernel = { path = "crates/cd_kernel" }
 gororoba_gpu_bridge = { path = "crates/gororoba_gpu_bridge" }
-gororoba_gpu_vulkan = { path = "crates/gororoba_gpu_vulkan" }
 gororoba_gpu_cubecl = { path = "crates/gororoba_gpu_cubecl" }
 gororoba_gpu_cuda = { path = "crates/gororoba_gpu_cuda" }
-gororoba_optix = { path = "crates/gororoba_optix" }
 gororoba_gpu_readback = { path = "crates/gororoba_gpu_readback" }
+gororoba_gpu_vulkan = { path = "crates/gororoba_gpu_vulkan" }
+gororoba_optix = { path = "crates/gororoba_optix" }
 gororoba_sparse_grid = { path = "crates/gororoba_sparse_grid" }
+gororoba_structurable = { path = "crates/gororoba_structurable" }
 gororoba_view_core = { path = "crates/gororoba_view_core" }
 gororoba_view_raster = { path = "crates/gororoba_view_raster" }
-gororoba_structurable = { path = "crates/gororoba_structurable" }
 
 # Core numerics
 # PINNED: statrs 0.18.0 requires nalgebra ^0.33 (<0.34). gauss-quad 0.2.4 pulls
@@ -139,37 +145,37 @@ num-complex = "0.4"
 num-traits = "0.2"
 
 # Graph algorithms
-petgraph = "0.8"
 bitvec = "1.0"
 fixedbitset = "0.5"
+petgraph = "0.8"
 
 # Topological Data Analysis
 tda = "0.1.0"
 
 # Statistics
-statrs = "0.18"
-adjustp = "0.1.6"              # BH/BY/Bonferroni p-value correction (MIT)
+adjustp = "0.1.6" # BH/BY/Bonferroni p-value correction (MIT)
 rand = "0.10"
 rand_chacha = "0.10"
 rand_distr = "0.6"
+statrs = "0.18"
 
 # Algebra extensions
-wheel = "0.1.0"              # Wheel algebra (division-by-zero semantics)
-padic = "0.1.6"              # P-adic numbers
-atlas-embeddings = "0.1.1"   # Exceptional Lie groups (E6/E7/E8) from resonance classes
-num-bigint = "0.4"           # Arbitrary precision integers (Monster group order)
-diffusionx = "0.11.3"        # fBm, Levy, OU processes (requires mimalloc)
+atlas-embeddings = "0.1.1" # Exceptional Lie groups (E6/E7/E8) from resonance classes
+diffusionx = "0.11.3" # fBm, Levy, OU processes (requires mimalloc)
+num-bigint = "0.4" # Arbitrary precision integers (Monster group order)
+padic = "0.1.6" # P-adic numbers
+wheel = "0.1.0" # Wheel algebra (division-by-zero semantics)
 
 # Hierarchical clustering and spatial indexing
-kodama = "0.3.0"             # Agglomerative hierarchical clustering (dendrograms)
-kiddo = "5.3.0"              # High-performance k-d trees (AVX2/SIMD)
+kiddo = "5.3.0" # High-performance k-d trees (AVX2/SIMD)
+kodama = "0.3.0" # Agglomerative hierarchical clustering (dendrograms)
 
 # Dense linear algebra (eigensolvers, SVD)
 faer = "0.24"
 
 # FFT and spectral analysis
-rustfft = "6.4.1"            # High-performance FFT (pure Rust, AVX/SSE)
-ndrustfft = "0.6.2"          # N-dimensional FFT on ndarray (C2C, R2C, DCT)
+ndrustfft = "0.6.2" # N-dimensional FFT on ndarray (C2C, R2C, DCT)
+rustfft = "6.4.1" # High-performance FFT (pure Rust, AVX/SSE)
 
 # Vulkan and Windowing
 ash = "0.38.0"
@@ -178,20 +184,20 @@ gpu-allocator = "0.28.0"
 # used by lbm_vulkan (wgsl::parse_str, valid::Validator, back::spv::Writer)
 # is identical between naga 27 and 28. Upgrade when Bevy ships naga 28+.
 naga = "29.0.1"
-winit = "0.30.13"
 raw-window-handle = "0.6.2"
+winit = "0.30.13"
 
 # Half-precision types
 half = "2.7.1"
-periodic-table-on-an-enum = "0.3.2"  # Element enum with atomic data
-moyo = "0.7"                         # Crystal symmetry finder (pure Rust, spglib team)
+moyo = "0.7" # Crystal symmetry finder (pure Rust, spglib team)
+periodic-table-on-an-enum = "0.3.2" # Element enum with atomic data
 
 # Numerical quadrature
-gauss-quad = "0.3.1"         # Gauss-Legendre quadrature (replaces hand-rolled Simpson)
+gauss-quad = "0.3.1" # Gauss-Legendre quadrature (replaces hand-rolled Simpson)
 
 # ODE solvers
-ode_solvers = "0.6.1"        # Dormand-Prince 5(4), Dop853, RK4 (nalgebra-based)
-qua_ten_net = "0.2.0"        # Tensor networks for quantum computing
+ode_solvers = "0.6.1" # Dormand-Prince 5(4), Dop853, RK4 (nalgebra-based)
+qua_ten_net = "0.2.0" # Tensor networks for quantum computing
 
 # Astrodynamics / Ephemeris
 # anise: pure Rust, thread-safe JPL .bsp/SPK parser (machine-epsilon precision).
@@ -221,18 +227,18 @@ core_affinity = "0.8"
 fwht = { path = "../cratesgororobas/fwht" }
 
 # SIMD types + dispatch + distance
-wide = "1.2"                 # Named SIMD types (f64x4, f32x8) for explicit vectorization
-pulp = "0.22"                # Runtime-dispatched SIMD autovectorization (powers faer)
-simsimd = "6"                # Hardware-accelerated distance functions (L2, cosine, dot)
+pulp = "0.22" # Runtime-dispatched SIMD autovectorization (powers faer)
+simsimd = "6" # Hardware-accelerated distance functions (L2, cosine, dot)
+wide = "1.2" # Named SIMD types (f64x4, f32x8) for explicit vectorization
 
 # Parallelism (rayon already in workspace) + concurrency hygiene
-crossbeam-utils = "0.8"      # CachePadded (false-sharing), Backoff, scoped threads
+crossbeam-utils = "0.8" # CachePadded (false-sharing), Backoff, scoped threads
 
 # Buffer/alignment/zero-copy layer
-aligned-vec = "0.6"          # AVec/ABox: runtime-aligned allocation for SIMD + cache
-dyn-stack = "0.13"           # Reusable scratch workspace (dynamic temp arrays, no alloc churn)
-bytemuck = { version = "1.25", features = ["derive"] }  # POD/slice casting + derive macros
-smallvec = "1.15"            # Inline small buffers, heap spill only when needed
+aligned-vec = "0.6" # AVec/ABox: runtime-aligned allocation for SIMD + cache
+bytemuck = { version = "1.25", features = ["derive"] } # POD/slice casting + derive macros
+dyn-stack = "0.13" # Reusable scratch workspace (dynamic temp arrays, no alloc churn)
+smallvec = "1.15" # Inline small buffers, heap spill only when needed
 
 # Memory-mapped I/O (memmap2 already in data_core/cli_physics directly)
 
@@ -259,10 +265,7 @@ cubecl-core = { version = "0.10.0", default-features = false }
 cubecl-wgpu = { version = "0.10.0", default-features = false }
 
 # GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
-cudarc = { version = "0.19", default-features = false, features = [
-    "std", "driver", "runtime", "nvrtc", "dynamic-loading", "cuda-version-from-build-system",
-    "cublas", "cufft", "curand", "cusolver",
-] }
+cudarc = { version = "0.19.7", default-features = false, features = ["std", "driver", "runtime", "nvrtc", "dynamic-loading", "cuda-version-from-build-system", "cublas", "cufft", "curand", "cusolver"] }
 
 # Dynamic library loading (OptiX FFI)
 libloading = "0.9"
@@ -277,62 +280,62 @@ nvml-wrapper = "0.12"
 burn = { version = "0.20", default-features = false, features = ["std", "autodiff"] }
 
 # Error handling
-thiserror = "2.0"
 anyhow = "1.0"
+thiserror = "2.0"
 
 # CLI and serialization
+anstyle = "1.0"
+# DSP / spectral analysis
+apodize = "1.0" # Window functions (Hann, Hamming, Blackman) for FFT spectral analysis
+axum = "0.8"
+backon = "1.6" # Exponential backoff helpers for resumable HTTP range downloads
+blake3 = "1.8" # Fast content hashing for ingest fingerprints
+cdf = "0.1.4" # Pure-Rust NASA CDF reader for heliosphere mission products
+chardetng = "1.0" # Charset detection for non-UTF8 intake text
 clap = { version = "4.6", features = ["derive"] }
+csv = "1.4"
+encoding_rs = "0.8" # Decoding support for lossy/non-UTF8 source ingest
+fitsio = { version = "0.21", features = ["default"] } # cfitsio bindings for FITS astronomy file I/O
+glob = "0.3" # Unix shell pattern matching for artifact paths
+globset = "0.4" # Compiled glob rules for provenance source selection
+ignore = "0.4" # Gitignore-aware repo traversal for provenance indexing
+linkify = "0.10" # URL extraction from prose without ad hoc regex-only parsing
+md5 = { package = "md-5", version = "0.11.0" } # Zenodo checksum verification (crate exports as md5)
+pulldown-cmark = "0.13" # Markdown parser for provenance extraction
+quick-xml = "0.39" # SAX-style XML parser for VOTable and VO Cone Search responses
+regex = "1.12" # Claims matrix parsing, pattern matching
+reqwest = { version = "0.13", default-features = false, features = ["blocking", "rustls-no-provider", "gzip", "brotli", "deflate", "form"] } # Standardized blocking HTTP transfer stack for universal recovery routing without pinning unrelated test binaries to the aws-lc provider lane
+rusqlite = { version = "0.39", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
+rusqlite_migration = "2.5" # SQLite schema migrations for provenance_store
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
-anstyle = "1.0"
-axum = "0.8"
+sha2 = "0.11" # SHA-256 checksums for data provenance
 tokio = { version = "1.51", features = ["rt-multi-thread", "macros"] }
-csv = "1.4"
-regex = "1.12"                # Claims matrix parsing, pattern matching
-walkdir = "2.5"               # Recursive directory traversal for evidence link checks
-ignore = "0.4"                # Gitignore-aware repo traversal for provenance indexing
-globset = "0.4"               # Compiled glob rules for provenance source selection
-glob = "0.3"                  # Unix shell pattern matching for artifact paths
-pulldown-cmark = "0.13"       # Markdown parser for provenance extraction
-linkify = "0.10"              # URL extraction from prose without ad hoc regex-only parsing
-url = "2.5"                   # URL parsing for provenance and artifact reconciliation
-reqwest = { version = "0.13", default-features = false, features = ["blocking", "rustls-no-provider", "gzip", "brotli", "deflate", "form"] } # Standardized blocking HTTP transfer stack for universal recovery routing without pinning unrelated test binaries to the aws-lc provider lane
-backon = "1.6"                # Exponential backoff helpers for resumable HTTP range downloads
-rusqlite = { version = "0.39", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
-rusqlite_migration = "2.5"    # SQLite schema migrations for provenance_store
-cdf = "0.1.4"                 # Pure-Rust NASA CDF reader for heliosphere mission products
-chardetng = "1.0"             # Charset detection for non-UTF8 intake text
-encoding_rs = "0.8"           # Decoding support for lossy/non-UTF8 source ingest
-blake3 = "1.8"                # Fast content hashing for ingest fingerprints
-sha2 = "0.11"                 # SHA-256 checksums for data provenance
-md5 = { package = "md-5", version = "0.11.0" } # Zenodo checksum verification (crate exports as md5)
-ureq = "3"                    # Minimal sync HTTP client for data fetching
-fitsio = { version = "0.21", features = ["default"] } # cfitsio bindings for FITS astronomy file I/O
-quick-xml = "0.39"            # SAX-style XML parser for VOTable and VO Cone Search responses
-# DSP / spectral analysis
-apodize = "1.0"               # Window functions (Hann, Hamming, Blackman) for FFT spectral analysis
+ureq = "3" # Minimal sync HTTP client for data fetching
+url = "2.5" # URL parsing for provenance and artifact reconciliation
+walkdir = "2.5" # Recursive directory traversal for evidence link checks
 
-flate2 = "1.1"                # Gzip compression/decompression
-zip = "8.5"                   # ZIP archive extraction
-tar = "0.4"                   # Tar archive reading (WMAP/Planck chain extraction)
+flate2 = "1.1" # Gzip compression/decompression
+tar = "0.4" # Tar archive reading (WMAP/Planck chain extraction)
+zip = "8.5" # ZIP archive extraction
 
 # PDF extraction (pdfium-render is primary; lopdf/pdf-extract are pure-Rust fallback)
-pdfium-render = "0.9"            # High-level PDFium wrapper (text, images, rendering)
-image = { version = "0.25", default-features = false, features = ["png", "jpeg"] }  # PNG/JPEG only; avif disabled to drop rav1e -> core2 chain (RUSTSEC-2026-0105)
-lopdf = "0.40"                   # Pure Rust PDF parser (fallback, object-level access)
-pdf-extract = "0.10"             # Pure Rust PDF text extraction (fallback, wraps lopdf)
-unpdf = "0.2"                    # Scientific PDF extraction with math support
-chromiumoxide = "0.9"            # Pure Rust headless chrome client
-parquet = { version = "58.1.0", default-features = false, features = ["arrow", "snap"] }
 arrow-array = "58.1.0"
 arrow-ipc = "58.1.0"
 arrow-schema = "58.1.0"
-toml = "1.1"                     # TOML serialization/deserialization
-toml_edit = "0.25"               # Deterministic TOML emission/editing for compatibility exports
-camino = "1.2"                   # UTF-8 canonical repo-relative paths in provenance layers
-strsim = "0.11"                  # String similarity (Jaro-Winkler, Levenshtein)
-scraper = "0.26"                 # HTML scraping with CSS selectors (Google Scholar)
-unicode-normalization = "0.1"    # Unicode normalization for ANSI-safe UTF-8 sanitation
+camino = "1.2" # UTF-8 canonical repo-relative paths in provenance layers
+chromiumoxide = "0.9" # Pure Rust headless chrome client
+image = { version = "0.25", default-features = false, features = ["png", "jpeg"] } # PNG/JPEG only; avif disabled to drop rav1e -> core2 chain (RUSTSEC-2026-0105)
+lopdf = "0.40" # Pure Rust PDF parser (fallback, object-level access)
+parquet = { version = "58.1.0", default-features = false, features = ["arrow", "snap"] }
+pdf-extract = "0.10" # Pure Rust PDF text extraction (fallback, wraps lopdf)
+pdfium-render = "0.9" # High-level PDFium wrapper (text, images, rendering)
+scraper = "0.26" # HTML scraping with CSS selectors (Google Scholar)
+strsim = "0.11" # String similarity (Jaro-Winkler, Levenshtein)
+toml = "1.1" # TOML serialization/deserialization
+toml_edit = "0.25" # Deterministic TOML emission/editing for compatibility exports
+unicode-normalization = "0.1" # Unicode normalization for ANSI-safe UTF-8 sanitation
+unpdf = "0.2" # Scientific PDF extraction with math support
 
 # HDF5 data export (requires system libhdf5)
 # Using hdf5-metno fork which supports HDF5 2.0 (Arch/CachyOS ships 2.0.0-3.1)
@@ -350,8 +353,8 @@ hdf5 = { package = "hdf5-metno", version = "0.12" }
 # NetCDF support (pure Rust, no C dependencies)
 # netcdf3: read/write NetCDF-3 classic format (BOUT++ grid files, legacy datasets)
 # netcdf-reader: unified read-only for both NC3 classic and NC4/HDF5 (BOUT++ output)
-netcdf3 = "0.6"
 netcdf-reader = "0.2"
+netcdf3 = "0.6"
 
 # Zarr v2/v3 multidimensional array storage (pure Rust)
 # Used for FAIR-MAST tokamak data (S3 bucket, blosc/lz4 compressed)
@@ -359,36 +362,36 @@ zarrs = { version = "0.23", features = ["blosc", "ndarray"] }
 zarrs_filesystem = "0.3"
 
 # Visualization
+pgfplots = "0.5.1" # PGFPlots (LaTeX-quality figures)
 plotters = "0.3"
-pgfplots = "0.5.1"                   # PGFPlots (LaTeX-quality figures)
 
 # LaTeX generation
 chrono = { version = "0.4", features = ["serde"] }
 hifitime = "4.2.6"
 
 # Logging and Config
-log = "0.4"
 env_logger = "0.11"
+log = "0.4"
 tracing = "0.1"
 tracing-subscriber = "0.3"
 tracing-tracy = "0.11.4"
 
 # Python bindings
-pyo3 = { version = "0.28", features = ["extension-module"] }
 numpy = "0.28"
+pyo3 = { version = "0.28", features = ["extension-module"] }
 
 # Testing
 approx = "0.5"
-tempfile = "3.27"
-proptest = "1.11"
+argmin = "0.11.0"
+argmin-math = { version = "0.5.1", default-features = false, features = ["vec"] }
 # Upgraded from 0.5 to 0.8 (2026-03-20, T-042). API surface unchanged:
 # criterion_group!, criterion_main!, Criterion, BenchmarkId, black_box.
 criterion = { version = "0.8.2", features = ["html_reports"] }
 iai-callgrind = "0.16.1"
-argmin = "0.11.0"
-argmin-math = { version = "0.5.1", default-features = false, features = ["vec"] }
 nalgebra-sparse = "0.11.0"
 polars = { version = "0.53.0", default-features = false, features = ["csv", "fmt", "temporal", "dtype-slim"] }
+proptest = "1.11"
+tempfile = "3.27"
 
 [workspace.lints.clippy]
 all = { level = "warn", priority = -1 }
@@ -430,12 +433,12 @@ trait_method_added = "warn"
 # CGU=16 saturates the 12-thread CPU (Ryzen 5 5600X3D) without thrashing.
 # 256 CGUs caused OS-level thread thrashing with multiple crates compiling in parallel.
 [profile.dev]
-opt-level = 2              # Cranelift max; does not support opt-level 3
-debug = 1                  # line tables only: file+line for stack traces, flamegraph, perf
+opt-level = 2 # Cranelift max; does not support opt-level 3
+debug = 1 # line tables only: file+line for stack traces, flamegraph, perf
 strip = "none"
-lto = "off"                # Cranelift does not support LTO (LLVM-only)
-codegen-units = 16         # saturates 12-thread CPU; 256 causes thrashing
-incremental = false        # user-local Cargo config (~/.cargo/config.toml) may also enforce this
+lto = "off" # Cranelift does not support LTO (LLVM-only)
+codegen-units = 16 # saturates 12-thread CPU; 256 causes thrashing
+incremental = false # user-local Cargo config (~/.cargo/config.toml) may also enforce this
 overflow-checks = true
 debug-assertions = true
 panic = "unwind"
@@ -444,13 +447,13 @@ codegen-backend = "cranelift"
 # Test: fast compile iteration. Cranelift for sub-minute cold test builds.
 # For numerically-sensitive tests: cargo test --profile parity
 [profile.test]
-opt-level = 1              # Cranelift: opt-level 1 inlines generics, enough for tests
-lto = "off"                # Cranelift does not support LTO
-codegen-units = 256        # max Cranelift parallelism within each crate (no LLVM opt tradeoff)
-incremental = false        # user-local Cargo config (~/.cargo/config.toml) may also enforce this
+opt-level = 1 # Cranelift: opt-level 1 inlines generics, enough for tests
+lto = "off" # Cranelift does not support LTO
+codegen-units = 256 # max Cranelift parallelism within each crate (no LLVM opt tradeoff)
+incremental = false # user-local Cargo config (~/.cargo/config.toml) may also enforce this
 overflow-checks = true
 codegen-backend = "cranelift"
-debug = 1                  # line tables only (~60% smaller .o than full DWARF)
+debug = 1 # line tables only (~60% smaller .o than full DWARF)
 split-debuginfo = "unpacked" # per-object .dwo files; mold links without re-reading all DWARF
 
 # Heavy math tests: LLVM backend for vectorization + FMA on eigensolvers,
@@ -707,12 +710,12 @@ codegen-backend = "llvm"
 # Use for final binaries, benchmarks against baselines, and published artifacts.
 [profile.release]
 opt-level = 3
-debug = false               # no debug info in production binaries
-strip = "symbols"           # remove symbol table for smaller binary
-lto = "fat"                 # full cross-crate LTO (slowest compile, best runtime)
-codegen-units = 1           # single codegen unit = maximum LLVM optimization
-overflow-checks = true      # keep arithmetic behavior aligned with dev/test lanes
-panic = "unwind"            # required: quantum_core/src/gpu/peps.rs:204 uses catch_unwind
+debug = false # no debug info in production binaries
+strip = "symbols" # remove symbol table for smaller binary
+lto = "fat" # full cross-crate LTO (slowest compile, best runtime)
+codegen-units = 1 # single codegen unit = maximum LLVM optimization
+overflow-checks = true # keep arithmetic behavior aligned with dev/test lanes
+panic = "unwind" # required: quantum_core/src/gpu/peps.rs:204 uses catch_unwind
 
 # Gate: fast-compile release for governance gate binaries (TOML parsing + SHA-256).
 # Why not full release: fat LTO + 1 codegen-unit takes 2-9 minutes for binaries
@@ -720,10 +723,10 @@ panic = "unwind"            # required: quantum_core/src/gpu/peps.rs:204 uses ca
 # compiles in ~15s and runs within 10% of fat-LTO speed for I/O-bound workloads.
 [profile.release-gate]
 inherits = "release"
-lto = "thin"                # 10x faster link vs fat LTO; <5% runtime difference for TOML parsing
-codegen-units = 6           # parallel codegen; matches physical core count
-debug = "line-tables-only"  # perf/flamegraph profiling without full DWARF
-strip = "none"              # keep symbols for perf report
+lto = "thin" # 10x faster link vs fat LTO; <5% runtime difference for TOML parsing
+codegen-units = 6 # parallel codegen; matches physical core count
+debug = "line-tables-only" # perf/flamegraph profiling without full DWARF
+strip = "none" # keep symbols for perf report
 overflow-checks = true
 
 # Per-package codegen-units=1 override for gororoba_cli in release-gate.
@@ -774,9 +777,9 @@ codegen-units = 1
 # Bench: release-level optimization with fat LTO for baseline parity.
 [profile.bench]
 opt-level = 3
-debug = "line-tables-only"  # minimal debug info for flamegraph profiling
-lto = "fat"                 # benchmark against production-optimized code paths
-codegen-units = 1           # single codegen for consistent benchmark results
+debug = "line-tables-only" # minimal debug info for flamegraph profiling
+lto = "fat" # benchmark against production-optimized code paths
+codegen-units = 1 # single codegen for consistent benchmark results
 
 # Parity: bit-exact numerical match with release for validation.
 # Uses LLVM (codegen-backend = "llvm" overrides dev's cranelift).
@@ -785,9 +788,9 @@ codegen-units = 1           # single codegen for consistent benchmark results
 # Use: cargo test --profile=parity -p <crate>
 [profile.parity]
 inherits = "dev"
-opt-level = 3              # LLVM opt-level 3 for release parity
-lto = "fat"                # full cross-crate LTO for exact release parity
-codegen-units = 1          # single codegen unit for deterministic output
-incremental = false        # do not pollute cache with LTO artifacts
-codegen-backend = "llvm"   # override dev cranelift; LTO requires LLVM
+opt-level = 3 # LLVM opt-level 3 for release parity
+lto = "fat" # full cross-crate LTO for exact release parity
+codegen-units = 1 # single codegen unit for deterministic output
+incremental = false # do not pollute cache with LTO artifacts
+codegen-backend = "llvm" # override dev cranelift; LTO requires LLVM
 # No new string, just remove the old one

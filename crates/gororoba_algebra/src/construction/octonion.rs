@@ -15,7 +15,7 @@
 use std::fmt;
 
 /// Octonion: 8-dimensional composition algebra.
-/// Represented as 8 real components: [c0, c1, c2, ..., c7]
+/// Represented as 8 real components: `[c0, c1, c2, ..., c7]`
 /// where c0 is scalar part and c1-c7 are imaginary parts {e1, e2, ..., e7}.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Octonion {
@@ -284,20 +284,20 @@ impl Octonion {
             .sum()
     }
 
-    /// Commutator bracket: [x, y] = xy - yx.
+    /// Commutator bracket: `[x, y]` = xy - yx.
     pub fn commutator(&self, other: &Octonion) -> Octonion {
         let xy = self.multiply(other);
         let yx = other.multiply(self);
         xy.sub(&yx)
     }
 
-    /// Cross product on imaginary octonions: x * y = [x,y]/2.
+    /// Cross product on imaginary octonions: x * y = `[x,y]`/2.
     /// Only meaningful when both x and y are purely imaginary.
     pub fn cross_product(&self, other: &Octonion) -> Octonion {
         self.commutator(other).scale(0.5)
     }
 
-    /// Associator: [x, y, z] = (xy)z - x(yz).
+    /// Associator: `[x, y, z]` = (xy)z - x(yz).
     /// For octonions, this is nonzero (non-associative).
     pub fn associator(&self, y: &Octonion, z: &Octonion) -> Octonion {
         let lhs = self.multiply(y).multiply(z);

@@ -9,7 +9,7 @@
 //!         |
 //! ```
 //!
-//! Each tensor T[i,j] has 5 indices: (left, right, up, down, physical).
+//! Each tensor `T[i,j]` has 5 indices: (left, right, up, down, physical).
 //!
 //! # Complexity
 //!
@@ -135,7 +135,7 @@ impl PepsTensor {
 /// Projected Entangled Pair State for 2D quantum systems.
 #[derive(Clone, Debug)]
 pub struct Peps {
-    /// Grid of PEPS tensors, indexed [row][col]
+    /// Grid of PEPS tensors, indexed `[row][col]`
     pub tensors: Vec<Vec<PepsTensor>>,
     /// Number of rows in the grid
     pub rows: usize,
@@ -356,9 +356,24 @@ impl Peps {
                 if u.len() == l.len() {
                     #[cfg(feature = "gpu")]
                     {
-                        // Try GPU acceleration for large tensors
                         if u.len() > 1000 {
                             let result = crate::gpu::peps::gpu_contract_rows_peps(u, l);
+                            return result;
+                        }
+                    }
+                    #[cfg(all(not(feature = "gpu"), feature = "cubecl"))]
+                    {
+                        if u.len() > 1000 {
+                            let result =
+                                crate::gpu::peps_cubecl::cubecl_contract_rows_peps_fp32(u, l);
+                            return result;
+                        }
+                    }
+                    #[cfg(all(not(feature = "gpu"), not(feature = "cubecl"), feature = "vulkan"))]
+                    {
+                        if u.len() > 1000 {
+                            let result =
+                                crate::gpu::peps_vulkan::vulkan_contract_rows_peps_fp32(u, l);
                             return result;
                         }
                     }
@@ -649,7 +664,7 @@ impl Peps {
         result
     }
 
-    /// Compute <Z> expectation value at a site.
+    /// Compute `<Z>` expectation value at a site.
     pub fn expectation_z(&self, row: usize, col: usize) -> f64 {
         let z = [
             c64::new(1.0, 0.0),
@@ -660,7 +675,7 @@ impl Peps {
         self.expectation_local(row, col, &z).re
     }
 
-    /// Compute <X> expectation value at a site.
+    /// Compute `<X>` expectation value at a site.
     pub fn expectation_x(&self, row: usize, col: usize) -> f64 {
         let x = [
             c64::new(0.0, 0.0),

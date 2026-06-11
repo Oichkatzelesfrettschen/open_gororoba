@@ -107,6 +107,9 @@ pub struct UlyssesSwoopsRecord {
     pub temperature: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::ulysses_fetch::{UlyssesAmdaProvider, UlyssesProvider, merge_ulysses_amda};
+
 /// Raw Ulysses VHM/FGM magnetometer record (hourly).
 #[derive(Debug, Clone)]
 pub struct UlyssesMagRecord {

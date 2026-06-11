@@ -24,8 +24,8 @@ pub fn gourlay_epsilon(v: &[f64; 16]) -> [f64; 16] {
 
 /// Gourlay/Gresnigt psi automorphism (order 3).
 ///
-///   psi(A + B*e_8) = (1/4)[A + 3A* + sqrt(3)(B - B*)]
-///                   + (1/4)[B + 3B* - sqrt(3)(A - A*)] * e_8
+///   psi(A + B*e_8) = (1/4)`[A + 3A* + sqrt(3)(B - B*)]`
+///                   + (1/4)`[B + 3B* - sqrt(3)(A - A*)]` * e_8
 ///
 /// where A* is the octonion conjugate of A (negate imaginary, keep real).
 ///
@@ -74,7 +74,7 @@ pub fn gourlay_psi_n(v: &[f64; 16], n: usize) -> [f64; 16] {
 /// Cross-generational signed friction between subalgebra O_i and O_j.
 ///
 /// Measures how much topological friction exists between generations by
-/// computing the associator [A_rot, X, Y] where X is in O_i and Y is in O_j.
+/// computing the associator `[A_rot, X, Y]` where X is in O_i and Y is in O_j.
 ///
 /// This observable is Euclidean/compact in its current interpretation and
 /// should not be reused silently as a split-signature diagnostic.

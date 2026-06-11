@@ -184,10 +184,10 @@ impl OptiXPipeline {
 
 2. optixDeviceContextCreate(CUcontext, &options, &context)
    - Creates an OptiX context from the CUDA context.
-   - CUcontext obtained from cudarc::driver::CudaDevice::cu_primary_ctx().
+   - CUcontext obtained from the current CUDA context.
 
 3. NVRTC compile optix_tracer.cu -> PTX string
-   - Use cudarc::nvrtc::compile_ptx() with include paths for optix headers.
+   - Use gororoba_gpu_cuda::CompileOptions with include paths for optix headers.
    - Pass -I/usr/include/optix as a compile option.
 
 4. optixModuleCreate(context, &module_options, ptx, ptx_len, log, &module)
@@ -277,8 +277,8 @@ impl LiveOptiXPipeline {
     ///
     /// # Safety
     ///
-    /// A CUDA context must be current on the calling thread (e.g., via
-    /// `CudaContext::new(0)` or `ctx.bind_to_thread()`).
+    /// A CUDA context must be current on the calling thread before creating
+    /// the OptiX device context.
     #[allow(unsafe_op_in_unsafe_fn)]
     pub unsafe fn init(
         pipeline_config: OptiXPipelineConfig,
@@ -384,7 +384,7 @@ mod tests {
     #[test]
     fn test_live_optix_probe() {
         // Initialize CUDA context first -- OptiX requires CUDA driver init.
-        let _ctx = cudarc::driver::CudaContext::new(0);
+        let _ctx = gororoba_gpu_cuda::Context::with_default_device();
         match LiveOptiXPipeline::probe() {
             Ok(msg) => eprintln!("OptiX probe: {msg}"),
             Err(e) => eprintln!("OptiX probe: {e} (expected without GPU/CI)"),

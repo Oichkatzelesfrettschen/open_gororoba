@@ -339,10 +339,10 @@ pub(crate) enum ClaimMutationAction {
         #[arg(long)]
         id: String,
         /// New formal_proof value. Per docs/engineering/formal_proof_field_schema_2026_05_09.md
-        /// this should be one of: na_empirical[:rationale],
-        /// na_observational[:source], na_methodology[:tool], pending[:reason],
-        /// proofs/verified/<file>.v[#theorem], proofs/theories/<file>.v[#theorem],
-        /// or external:<citation>.
+        /// this should be one of: `na_empirical[:rationale]`,
+        /// `na_observational[:source]`, `na_methodology[:tool]`, `pending[:reason]`,
+        /// `proofs/verified/<file>.v[#theorem]`, `proofs/theories/<file>.v[#theorem]`,
+        /// or `external:<citation>`.
         #[arg(long)]
         formal_proof: String,
         /// Reviewer name. Defaults to $USER.

@@ -13,7 +13,7 @@
 //!      statistical quality of besag_clifford.wgsl::shuffle_imbalance.
 //!
 //!   2. `transform_viscosity_kernel` (re-used from transform_viscosity_cubecl):
-//!      tau[i] = 3 * nu_base * exp(lambda * (phi[i] - phi_mean)) + 0.5.
+//!      `tau[i] = 3 * nu_base * exp(lambda * (phi[i] - phi_mean)) + 0.5`.
 //!
 //! The regional-correlation reduction and count_extreme comparison run on CPU:
 //! cubecl 0.10 does not support mutable f32 phi-nodes in the expand IR, making
@@ -24,8 +24,10 @@
 use cubecl::prelude::*;
 use cubecl_wgpu::{WgpuDevice, WgpuRuntime};
 
-use crate::transform_viscosity_cpu::ViscosityTransformInputs;
-use crate::transform_viscosity_cubecl::{transform_viscosity_cubecl, CubeclViscosityError};
+use crate::{
+    transform_viscosity_cpu::ViscosityTransformInputs,
+    transform_viscosity_cubecl::{CubeclViscosityError, transform_viscosity_cubecl},
+};
 
 #[derive(Debug, thiserror::Error)]
 pub enum BcCubeclError {

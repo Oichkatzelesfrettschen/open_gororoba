@@ -8,7 +8,7 @@
 //! - `oscillator_quality_factor`: Q = omega_0/gamma of the strongest
 //!   Lorentz oscillator.
 //! - `drude_quality`: Q_Drude = omega/gamma for the free-carrier response.
-//! - `figure_of_merit_spp`: Re[k_spp] / (2*Im[k_spp]) -- number of SPP
+//! - `figure_of_merit_spp`: `Re[k_spp] / (2*Im[k_spp])` -- number of SPP
 //!   wavelengths before 1/e decay.
 //! - `spectral_weight_window`: partial sigma_1 integral over a frequency band.
 //! - `optical_path_length`: (n*d, kappa*d) for thin-film interference.

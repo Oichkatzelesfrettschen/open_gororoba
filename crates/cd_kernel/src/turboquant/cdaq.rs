@@ -64,7 +64,7 @@ use super::{
 pub struct ChannelCalibration {
     /// Per-channel magnitude sums from calibration data.
     pub channel_magnitudes: Vec<f64>,
-    /// Permutation: channel_perm[i] = original channel index for position i.
+    /// Permutation: channel_perm`[i]` = original channel index for position i.
     pub channel_perm: Vec<usize>,
     /// Inverse permutation for unpermuting.
     pub channel_perm_inv: Vec<usize>,

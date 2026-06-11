@@ -6,30 +6,30 @@ license = "GPL-2.0-or-later"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
-gororoba_algebra = { path = "../gororoba_algebra", version = "0.1" }
+anyhow = { workspace = true }
 cosmology_core = { path = "../cosmology_core", version = "0.1" }
+cudarc = { workspace = true, optional = true }
+gororoba_algebra = { path = "../gororoba_algebra", version = "0.1" }
+gororoba_gpu_cuda = { workspace = true, optional = true }
 gr_core = { path = "../gr_core", version = "0.1" }
 nalgebra = { workspace = true }
 petgraph = { workspace = true }
-rayon = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+rayon = { workspace = true }
 statrs = { workspace = true }
-anyhow = { workspace = true }
-cudarc = { workspace = true, optional = true }
-gororoba_gpu_cuda = { workspace = true, optional = true }
 thiserror.workspace = true
 
 [dev-dependencies]
-stats_core = { path = "../stats_core" }
 criterion = { workspace = true }
+stats_core = { path = "../stats_core" }
 
 [features]
 default = []
-# `gpu` chains gororoba_gpu_cuda/cudarc so the consolidated Context
-# helper is available behind the same flag that previously enabled
-# raw cudarc usage.
-gpu = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
+# The explicit cudarc feature preserves the old public feature name while gpu
+# enables the same CUDA surface.
+cudarc = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
+gpu = ["cudarc"]
 
 [[bench]]
 name = "imbalance_bench"

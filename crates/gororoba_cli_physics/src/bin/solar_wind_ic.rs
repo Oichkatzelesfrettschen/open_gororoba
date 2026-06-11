@@ -54,7 +54,7 @@ use types::*;
 
 /// Built-in OMNI2 sample: real data from 2024 DOY 1, hours 0-23.
 /// Includes actual measured Bx/By/Bz (GSE) alongside plasma parameters.
-/// Source: https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/omni2_2024.dat
+/// Source: <https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/omni2_2024.dat>
 const BUILTIN_OMNI_SAMPLE: &str = "\
 2024   1  0 2596 51 52  60  36   5.3   5.1  -7.3 322.9   4.0  -3.0  -0.6  -2.8  -1.3   0.1   1.5   0.3   0.4   1.5   31114.   7.4  306.  -2.3   2.8 0.042  1.35    4691.   0.4    2.   0.3   1.3 0.007   0.40   1.75   7.9  7  55     0   20 999999.99 99999.99 99999.99 99999.99 99999.99 99999.99  0   3 131.2   0.3    -9    11  5.0
 2024   1  1 2596 51 52  53  33   5.4   5.2 -21.3 333.4   4.4  -2.2  -1.9  -1.7  -2.3   0.1   1.1   0.5   0.4   1.0   28455.   6.5  301.  -2.1   1.9 0.040  1.14    4102.   0.4    4.   0.4   1.2 0.008   0.69   1.45   7.1  7  55     2   25 999999.99 99999.99 99999.99 99999.99 99999.99 99999.99  0   3 131.2   0.3   -11    14  4.7
@@ -132,9 +132,9 @@ struct UnitConversion {
     v_ref: f64,
     /// LBM velocity scale. u_lbm = (v / v_ref) * u_scale.
     u_scale: f64,
-    /// Density clamp range in LBM units: [min, max].
+    /// Density clamp range in LBM units: `[min, max]`.
     density_clamp: [f64; 2],
-    /// Speed clamp range in LBM units: [min, max].
+    /// Speed clamp range in LBM units: `[min, max]`.
     speed_clamp: [f64; 2],
 }
 
@@ -191,7 +191,7 @@ impl UnitConversion {
     }
 }
 
-/// Parse a "min,max" string into [f64; 2].
+/// Parse a "min,max" string into `[f64; 2]`.
 fn parse_clamp_range(s: &str) -> [f64; 2] {
     let parts: Vec<&str> = s.split(',').collect();
     if parts.len() == 2 {
@@ -364,7 +364,7 @@ fn filter_valid_omni(records: &[OmniRecord]) -> Vec<OmniRecord> {
 /// STEREO MAG). Accepts rows where at least one B-field component is valid,
 /// even when plasma fields (density, speed) are NaN. This is a legacy path
 /// for the OmniRecord adapter; new spacecraft integrations should implement
-/// PlasmaBoundaryProvider where Option<f64> naturally expresses partial data.
+/// PlasmaBoundaryProvider where `Option<f64>` naturally expresses partial data.
 fn filter_valid_omni_mag(records: &[OmniRecord]) -> Vec<OmniRecord> {
     records
         .iter()
@@ -1256,7 +1256,7 @@ fn generate_radial_ic(
 }
 
 /// Load outer heliosphere spacecraft data and merge into a single
-/// Vec<OmniRecord> for radial profile construction.
+/// `Vec<OmniRecord>` for radial profile construction.
 fn load_outer_heliosphere(cli: &Cli) -> anyhow::Result<Vec<OmniRecord>> {
     let mut all_records: Vec<OmniRecord> = Vec::new();
 

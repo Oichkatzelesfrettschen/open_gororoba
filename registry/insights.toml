@@ -31,7 +31,19 @@ summary = "Identified key crates preventing reimplementation: kodama 0.3.0 (dend
 title = "Existing Rust Crate Ecosystem for Cosmological Analysis"
 
 [[insight]]
-claims = ["C-200", "C-201", "C-202", "C-203", "C-204", "C-205", "C-206", "C-207", "C-208", "C-209", "C-210"]
+claims = [
+    "C-200",
+    "C-201",
+    "C-202",
+    "C-203",
+    "C-204",
+    "C-205",
+    "C-206",
+    "C-207",
+    "C-208",
+    "C-209",
+    "C-210",
+]
 date = "2026-02-06"
 id = "I-004"
 sprint = 6
@@ -103,7 +115,39 @@ summary = "10M triples x 1000 permutations x RTX 4070 Ti via cudarc 0.19. 82/472
 title = "GPU Ultrametric Sweep (9 catalogs)"
 
 [[insight]]
-claims = ["C-443", "C-444", "C-445", "C-446", "C-447", "C-448", "C-480", "C-481", "C-489", "C-515", "C-516", "C-517", "C-519", "C-520", "C-521", "C-522", "C-523", "C-524", "C-525", "C-526", "C-527", "C-528", "C-529", "C-530", "C-532", "C-533", "C-534", "C-535", "C-557", "C-558", "C-559"]
+claims = [
+    "C-443",
+    "C-444",
+    "C-445",
+    "C-446",
+    "C-447",
+    "C-448",
+    "C-480",
+    "C-481",
+    "C-489",
+    "C-515",
+    "C-516",
+    "C-517",
+    "C-519",
+    "C-520",
+    "C-521",
+    "C-522",
+    "C-523",
+    "C-524",
+    "C-525",
+    "C-526",
+    "C-527",
+    "C-528",
+    "C-529",
+    "C-530",
+    "C-532",
+    "C-533",
+    "C-534",
+    "C-535",
+    "C-557",
+    "C-558",
+    "C-559",
+]
 date = "2026-02-09"
 extension_sprint = 27
 id = "I-012"
@@ -164,7 +208,21 @@ summary = "Three experiments testing ALP (C-476) and Sky-Limit-Set (C-477). E-01
 title = "Cross-Stack Locality and Coxeter Correspondence (E-011/E-012/E-013)"
 
 [[insight]]
-claims = ["C-515", "C-516", "C-517", "C-518", "C-519", "C-520", "C-521", "C-522", "C-523", "C-524", "C-525", "C-526", "C-527"]
+claims = [
+    "C-515",
+    "C-516",
+    "C-517",
+    "C-518",
+    "C-519",
+    "C-520",
+    "C-521",
+    "C-522",
+    "C-523",
+    "C-524",
+    "C-525",
+    "C-526",
+    "C-527",
+]
 date = "2026-02-09"
 id = "I-018"
 sprint = 25
@@ -581,7 +639,16 @@ insight = "TX-1 (imbalance-modulated collision dynamics) reveals non-monotonic d
 phase = "Phase 2 Week 3"
 related_claims = ["C-665", "C-666", "C-667", "C-668", "C-669", "C-670"]
 sprint = 39
-supporting_evidence = ["C-665", "C-666", "C-667", "C-668", "C-669", "data/thesis_lab/tx1/tx1_report.toml", "data/thesis_lab/thesis2_3d/thesis2_3d.toml", "data/thesis_lab/tx2/tx2_report.toml"]
+supporting_evidence = [
+    "C-665",
+    "C-666",
+    "C-667",
+    "C-668",
+    "C-669",
+    "data/thesis_lab/tx1/tx1_report.toml",
+    "data/thesis_lab/thesis2_3d/thesis2_3d.toml",
+    "data/thesis_lab/tx2/tx2_report.toml",
+]
 title = "Cross-Thesis Non-Monotonic Coupling Reveals Optimal Imbalance Regime"
 verified_date = "2026-02-12"
 
@@ -593,7 +660,15 @@ insight = "The algebraic associator tensor m_3 is a local minimum in the 65536-d
 phase = "Phase 3"
 related_claims = ["C-671", "C-672", "C-673"]
 sprint = 40
-supporting_evidence = ["C-671", "C-672", "C-673", "C-674", "data/evidence/e029_neural_homotopy.toml", "data/evidence/e029_algebraic/e029_neural_homotopy.toml", "data/evidence/e029_perturb/e029_neural_homotopy.toml"]
+supporting_evidence = [
+    "C-671",
+    "C-672",
+    "C-673",
+    "C-674",
+    "data/evidence/e029_neural_homotopy.toml",
+    "data/evidence/e029_algebraic/e029_neural_homotopy.toml",
+    "data/evidence/e029_perturb/e029_neural_homotopy.toml",
+]
 title = "Neural Initialization Escapes Associator Basin in Pentagon Optimization"
 verified_date = "2026-02-12"
 
@@ -605,7 +680,13 @@ insight = "The Kubo linear-response formula applied to a CD-interpolated Heisenb
 phase = "Phase 2 Week 3"
 related_claims = ["C-678", "C-679", "C-680", "C-681"]
 sprint = 41
-supporting_evidence = ["C-678", "C-679", "C-680", "C-681", "data/kubo_transport/coupling_analysis.toml"]
+supporting_evidence = [
+    "C-678",
+    "C-679",
+    "C-680",
+    "C-681",
+    "data/kubo_transport/coupling_analysis.toml",
+]
 title = "First-Principles Kubo Coupling Replaces Tautological Viscosity Postulate"
 verified_date = "2026-02-13"
 
@@ -1864,7 +1945,18 @@ summary = "Three-perspective synthesis of nine hypothesis tests yields three key
 title = "Three-perspective synthesis: robust null, intrinsic spectral floor, outlier-dominated estimator"
 
 [[insight]]
-claims = ["C-1430", "C-1431", "C-1432", "C-1433", "C-1434", "C-1435", "C-1436", "C-1437", "C-1438", "C-1439"]
+claims = [
+    "C-1430",
+    "C-1431",
+    "C-1432",
+    "C-1433",
+    "C-1434",
+    "C-1435",
+    "C-1436",
+    "C-1437",
+    "C-1438",
+    "C-1439",
+]
 id = "I-206"
 sprint = "S84"
 summary = "E-201/E-202 decisive experiment yields five actionable conclusions for the GHOST paper: (1) H1 face-on reanalysis confirms null (all modes within 1.58 sigma of envelope, C-1430). (2) The red-noise slope gamma=0.808 is an INCLINATION ARTIFACT -- face-on galaxies have gamma=-0.01 (flat spectrum, C-1431). This is the most significant new finding: the baryonic spectral floor shape depends on sample inclination distribution, not intrinsic galaxy physics. (3) H2 Q3 injection recovery DECISIVELY falsifies the Q3 SNR=3.60 'detection' as a sparse-bin artifact: pipeline is blind at 6 bins, delta_SNR=0 at all injection levels (C-1432). (4) Whitened matched filter after red-noise correction gives p=0.42, confirming no periodic structure survives spectral detrending (C-1433). (5) All spectral diagnostics (bispectral Fano ratio=1.0, persistence N=1, dip D=0.46 algebra-universal, MI NMI=0.0) confirm algebra-universal null across all statistical orders (C-1436-C-1439)."
@@ -1907,11 +1999,24 @@ summary = "Several refuted claims remain useful boundary markers: entropy fits a
 title = "Negative-result observational lanes separate structure from tunability"
 
 [[insight]]
-claims = ["C-781", "C-783", "C-792", "C-793", "C-794", "C-795", "C-842", "C-844", "C-845", "C-846", "C-932", "C-1103", "C-1329"]
+claims = [
+    "C-781",
+    "C-783",
+    "C-792",
+    "C-793",
+    "C-794",
+    "C-795",
+    "C-842",
+    "C-844",
+    "C-845",
+    "C-846",
+    "C-932",
+    "C-1103",
+    "C-1329",
+]
 date = "2026-03-18"
 id = "I-211"
 sprint = "S84"
 status = "verified"
 summary = "The later refutation wave is still informative: associator entropy shifts mark algebraic boundaries, but ghost frequencies, pulsed forcing gains, pathion sinks, eta-wake corrections, heavy-ion scaling collapses, and 0.1764 slope ratios are bounded by discretization, instability ceilings, or coincidence cancellation rather than a transported mechanism."
 title = "Late-stage falsification sweeps reveal artifact ceilings, not transported physics"
-

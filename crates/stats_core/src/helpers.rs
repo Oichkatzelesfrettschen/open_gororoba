@@ -173,7 +173,7 @@ pub fn singular_values(matrix: &[Vec<f64>]) -> Vec<f64> {
 ///
 /// # When to prefer this over [`singular_values`]
 ///
-/// nalgebra's full SVD ([`DMatrix::svd`]) can stall on heavily
+/// nalgebra's full SVD (`DMatrix::svd`) can stall on heavily
 /// ill-conditioned inputs (the bidiagonalization plus QR iteration
 /// loop fails to converge within the default iteration cap). For
 /// **rectangular tall** matrices arising from multi-diagnostic delay

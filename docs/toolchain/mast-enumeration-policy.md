@@ -37,12 +37,12 @@ registered fetchers stay accurate as MAST evolves.
 
 ## Endpoints
 
-| Purpose                      | URL                                                          |
-|------------------------------|--------------------------------------------------------------|
-| REST base                    | https://mast.stsci.edu/api/v0                                 |
-| Missions list                | https://mast.stsci.edu/api/v0.1/Download/file_ids?mission=    |
-| FAIR-MAST Zarr (S3)          | https://s3.echo.stfc.ac.uk/mast                               |
-| TAP (if needed for enumeration) | https://vao.stsci.edu/CAOMTAP/TapService.aspx             |
+| Purpose                         | URL                                                        |
+| ------------------------------- | ---------------------------------------------------------- |
+| REST base                       | https://mast.stsci.edu/api/v0                              |
+| Missions list                   | https://mast.stsci.edu/api/v0.1/Download/file_ids?mission= |
+| FAIR-MAST Zarr (S3)             | https://s3.echo.stfc.ac.uk/mast                            |
+| TAP (if needed for enumeration) | https://vao.stsci.edu/CAOMTAP/TapService.aspx              |
 
 Note: STScI also operates a VAO TAP service at the CAOMTAP URL for
 richer queries. Currently unused; consider for future HEASARC-style
@@ -54,8 +54,8 @@ enumeration if richer introspection is needed.
 [mast_catalogs]
 updated = "YYYY-MM-DD"
 source_urls = [
-  "https://mast.stsci.edu/api/v0",
-  "https://vao.stsci.edu/CAOMTAP/TapService.aspx",
+    "https://mast.stsci.edu/api/v0",
+    "https://vao.stsci.edu/CAOMTAP/TapService.aspx",
 ]
 
 [[mission]]
@@ -75,7 +75,7 @@ last_verified = "YYYY-MM-DD"
   feed (alternative: scrape the missions page).
 - Ad hoc when a new active dataset row lands with
   `server_ref = "mast_api"`: walker verifies the referenced mission
-  + instrument is present in the current snapshot.
+  - instrument is present in the current snapshot.
 
 ## Known failure modes
 

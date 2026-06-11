@@ -75,9 +75,9 @@ use wide::f64x4;
 /// - `$simd_count`: `$dim / 4` -- the number of `f64x4` lanes needed.
 ///
 /// # What this generates
-/// A `pub struct $name { pub data: [f64x4; $simd_count] }` with four methods:
+/// A `pub struct $name { pub data: `[f64x4; $simd_count]` }` with four methods:
 /// - `zero()`: additive identity.
-/// - `from_slice(arr: &[f64; $dim])`: pack a scalar array into SIMD lanes.
+/// - `from_slice(arr: &`[f64; $dim]`)`: pack a scalar array into SIMD lanes.
 /// - `to_slice()`: unpack SIMD lanes back to a scalar array.
 /// - `mul(other)`: full CD basis multiplication via the XOR-sign rule.
 ///

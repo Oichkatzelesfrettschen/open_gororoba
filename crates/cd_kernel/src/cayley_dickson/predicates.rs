@@ -127,7 +127,7 @@ pub fn cd_tilde(x: &[f64]) -> Vec<f64> {
 /// if the associator vanishes on all basis vectors, it vanishes on all of `A_n`
 /// by bilinearity of the associator in the first two slots.
 ///
-/// Basis vectors are always alternative (Schafer [8]). In `A_3` (octonions)
+/// Basis vectors are always alternative (Schafer `[8]`). In `A_3` (octonions)
 /// ALL elements are alternative because `A_3` is an alternative algebra.
 /// Starting from `A_4` (sedenions), general linear combinations may fail.
 ///

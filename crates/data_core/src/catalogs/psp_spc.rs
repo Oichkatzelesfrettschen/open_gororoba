@@ -28,6 +28,9 @@ pub struct PspSpcL3iRecord {
     pub temperature_k: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::psp_spc_fetch::{PspSpcL3iProvider, parse_psp_spc_l3i_file};
+
 #[derive(Default)]
 pub(crate) struct SpcAccumulator {
     pub density_sum: f64,

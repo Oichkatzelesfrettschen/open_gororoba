@@ -27,6 +27,9 @@ pub struct SwarmMagMinuteRecord {
     pub b_magnitude: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::swarm_mag_fetch::SwarmMagProvider;
+
 pub(crate) fn parse_amda_f64(s: Option<&str>) -> f64 {
     let s = s.unwrap_or("").trim();
     if s.is_empty() || s == "NaN" || s == "nan" {

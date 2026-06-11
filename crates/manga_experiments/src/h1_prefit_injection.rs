@@ -73,7 +73,7 @@ pub struct GalaxyInjectionResult {
     pub injected_power: f64,
     /// Recovered Fourier power after NFW re-fit.
     pub recovered_power: f64,
-    /// Absorption fraction: 1 - recovered/injected.  Clamped to [0,1].
+    /// Absorption fraction: 1 - recovered/injected.  Clamped to `[0,1]`.
     pub absorption: f64,
     /// Detection SNR of residuals.
     pub snr: f64,

@@ -12,8 +12,8 @@
 //! 2. **Image data** (future): Full 2D vector magnetogram arrays (Bp, Br, Bt)
 //!    in FITS IMAGE format. Requires FITS image reader (fitsio or fitsrs).
 //!
-//! JSOC API: http://jsoc.stanford.edu/cgi-bin/ajax/jsoc_info
-//! SHARP docs: http://jsoc.stanford.edu/doc/data/hmi/sharp/sharp.htm
+//! JSOC API: <http://jsoc.stanford.edu/cgi-bin/ajax/jsoc_info>
+//! SHARP docs: <http://jsoc.stanford.edu/doc/data/hmi/sharp/sharp.htm>
 //!
 //! Reference: Bobra et al. (2014), "The Helioseismic and Magnetic Imager (HMI)
 //! Vector Magnetic Field Pipeline: SHARPs -- Space-Weather HMI Active Region
@@ -213,7 +213,7 @@ pub fn sharp_embedding_vector(
 /// Build sliding-window embeddings from a SHARP time series.
 ///
 /// Returns (embedded_vectors, record_indices) where each vector has
-/// dim = SHARP_CHANNELS * steps, and record_indices[i] is the index
+/// dim = SHARP_CHANNELS * steps, and `record_indices[i]` is the index
 /// of the LAST record in the i-th window.
 pub fn sharp_takens_embed(
     series: &SharpTimeSeries,

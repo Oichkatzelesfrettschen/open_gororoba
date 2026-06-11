@@ -16,17 +16,17 @@ Results are organized into three epistemic bins (see registry/scorecard.toml):
 
 **Bin 1 -- Framework-backed predictions (zero free parameters):**
 
-| Observable | Prediction | PDG 2024 | Error | Strength |
-|-----------|-----------|----------|-------|----------|
-| m_mu/m_e | 207.0 | 206.768 | 0.1% | strong |
-| m_tau/m_e | 3477 | 3477.2 | 0.0% | strong |
-| m_c/m_u | 542 | 550 | 1.4% | strong |
-| m_t/m_c | 128 | 130 | 1.6% | strong |
-| r = dm21/dm31 | 0.0304 | 0.0307 | 1.0% | strong |
-| m_b/m_s | 52.3 | 51.5 | 1.5% | strong |
-| m_s/m_d | 15.7 | ~20 | 22% | weak |
-| sin^2(theta_W) | 0.250 | 0.231 | 8.1% | heuristic |
-| Mass ordering | Normal | Normal | Correct | categorical |
+| Observable     | Prediction | PDG 2024 | Error   | Strength    |
+| -------------- | ---------- | -------- | ------- | ----------- |
+| m_mu/m_e       | 207.0      | 206.768  | 0.1%    | strong      |
+| m_tau/m_e      | 3477       | 3477.2   | 0.0%    | strong      |
+| m_c/m_u        | 542        | 550      | 1.4%    | strong      |
+| m_t/m_c        | 128        | 130      | 1.6%    | strong      |
+| r = dm21/dm31  | 0.0304     | 0.0307   | 1.0%    | strong      |
+| m_b/m_s        | 52.3       | 51.5     | 1.5%    | strong      |
+| m_s/m_d        | 15.7       | ~20      | 22%     | weak        |
+| sin^2(theta_W) | 0.250      | 0.231    | 8.1%    | heuristic   |
+| Mass ordering  | Normal     | Normal   | Correct | categorical |
 
 Note: sin^2(theta_W) = 0.250 is a tree-level structural estimate from
 the G2 stabilizer/coset structure constant ratio, NOT a precision
@@ -35,21 +35,21 @@ mass ratios and requires a different triple structure.
 
 **Bin 2 -- Optimized angle-sector fits (4-parameter model):**
 
-| Observable | Prediction | PDG 2024 | Error | Params |
-|-----------|-----------|----------|-------|--------|
-| theta_12 (PMNS) | 33.36 deg | 33.41 | 0.15% | 4 |
-| theta_13 (PMNS) | 8.54 deg | 8.54 | 0.01% | 4 |
-| theta_23 (PMNS) | 48.99 deg | 49.0 | 0.02% | 4 |
-| |V_us| (CKM) | 0.245 | 0.225 | 8.9% | 2 |
-| |V_ub| (CKM) | 0.00382 | 0.00373 | 2.4% | 2 |
-| |V_cb| (CKM) | 0.044 | 0.042 | 5.0% | 2 |
+| Observable      | Prediction | PDG 2024 | Error   | Params  |
+| --------------- | ---------- | -------- | ------- | ------- |
+| theta_12 (PMNS) | 33.36 deg  | 33.41    | 0.15%   | 4       |
+| theta_13 (PMNS) | 8.54 deg   | 8.54     | 0.01%   | 4       |
+| theta_23 (PMNS) | 48.99 deg  | 49.0     | 0.02%   | 4       |
+|                 | V_us       | (CKM)    | 0.245   | 0.225   |
+|                 | V_ub       | (CKM)    | 0.00382 | 0.00373 |
+|                 | V_cb       | (CKM)    | 0.044   | 0.042   |
 
 **Bin 3 -- CP violation (exploratory, two pipelines):**
 
-| Observable | CP-A (phase-only) | CP-B (joint 3D) | PDG |
-|-----------|-------------------|----------------------|-----|
-| |J_CP| | 8.5e-3 (C-1494) | 3.33e-2 = J_max (C-1497) | 8.6e-3 |
-| delta_CP | ~165 deg | ~93 deg (maximal) | 195 deg |
+| Observable | CP-A (phase-only) | CP-B (joint 3D)   | PDG             |
+| ---------- | ----------------- | ----------------- | --------------- |
+|            | J_CP              |                   | 8.5e-3 (C-1494) |
+| delta_CP   | ~165 deg          | ~93 deg (maximal) | 195 deg         |
 
 AMENDED (2026-03-22): |J_CP| = 3.33e-2 is the kinematic maximum
 J_max = c12*s12*c23*s23*s13*c13^2, attained because the framework
@@ -81,7 +81,7 @@ bug fix plus 32D pathion SIMD support. The granular commit audit lives in
 
 The 16-dimensional Sedenion algebra S contains three canonical octonionic
 subalgebras O_1, O_2, O_3 whose S_3 permutation symmetry corresponds to the
-three observed generations of fermions.  The non-associative multiplication
+three observed generations of fermions. The non-associative multiplication
 table generates a "topological friction" that varies across generations,
 breaking the flavor symmetry and producing mass hierarchies.
 
@@ -138,13 +138,13 @@ is the minimal successful project lift, not yet derived from the algebra.
 The SU(3) quadratic Casimir C_2 = sum_a T_a * T_a, projected onto each
 octonionic subalgebra, produces a 3x3 mass matrix M_ij = Re(C_2|O_i . C_2|O_j*).
 This baseline matrix has rank 1 and is S_3-symmetric: all three generations
-share identical mass.  The Casimir alone cannot produce a hierarchy.
+share identical mass. The Casimir alone cannot produce a hierarchy.
 
 ### Topological Friction as Yukawa Coupling
 
 Braiding two Majorana modes (e_i, e_j) within a subalgebra O_k accumulates
 an "associator flux" -- the signed sum of all associator values [A_rot, X, B]
-for probe basis elements X in O_k.  This signed friction f_k is:
+for probe basis elements X in O_k. This signed friction f_k is:
 
     f_k = sum_{X in O_k} [A_rot(theta), X, e_j]
 
@@ -152,7 +152,7 @@ where A_rot = cos(theta)*e_i + sin(theta)*e_j is the braided state.
 
 For theta = pi/4 and specific braid pairs, the three friction values
 {f_1, f_2, f_3} break S_3 completely (21 of 105 pairs) or partially
-(48 of 105 pairs).  The 36 remaining pairs preserve S_3 and correspond
+(48 of 105 pairs). The 36 remaining pairs preserve S_3 and correspond
 to flavor-universal gauge interactions (Gresnigt Cl(8) correspondence, C-1460).
 
 ### The 1/sqrt(2) Geometric Coupling (Suggestive)
@@ -165,7 +165,7 @@ charged lepton mass ratios yields weights:
     |w_asym / w_sym| = 0.061
 
 The proximity of w_sym to 1/sqrt(2) = cos(pi/4) = sin(pi/4) is suggestive
-of a self-consistent link to the braid angle theta = pi/4.  This observation
+of a self-consistent link to the braid angle theta = pi/4. This observation
 requires further stabilization: it must be shown to persist across selector
 orbits, basis changes, and equivalent symmetry representatives before it
 can be elevated to a derived constant.
@@ -175,10 +175,10 @@ can be elevated to a derived constant.
 The signed friction (orientation-sensitive observable) breaks S_3 more
 selectively than the unsigned norm:
 
-| Observable     | Full splits | Degenerate | Partial | Total |
-|----------------|-------------|------------|---------|-------|
-| Unsigned |f|   | 54          | 51         | 0       | 105   |
-| Signed f       | 21          | 36         | 48      | 105   |
+| Observable | Full splits | Degenerate | Partial | Total |
+| ---------- | ----------- | ---------- | ------- | ----- |
+| Unsigned   | f           |            | 54      | 51    |
+| Signed f   | 21          | 36         | 48      | 105   |
 
 The signed friction resolves more structure because sign cancellations
 restore some S_3 symmetries that the norm discards.
@@ -192,7 +192,7 @@ from unsigned norm alone. Signed friction unlocks the remaining splits.
 
 ### Charged Leptons
 
-Selectors: Sel(e_1, e_4) and Sel(e_2, e_4).  Assignment: e=O_2, mu=O_3, tau=O_1.
+Selectors: Sel(e_1, e_4) and Sel(e_2, e_4). Assignment: e=O_2, mu=O_3, tau=O_1.
 
     F_g = w_1 * Sel_1(g) + w_2 * Sel_2(g)
     m_mu / m_e = exp(F_mu - F_e) = 207.0  (PDG: 206.8, exact to 5e-16)
@@ -206,10 +206,10 @@ fit (w_1=-0.9488, w_2=-0.9609) nails mu and tau to machine precision.
 ### 3-Blade Zero-Divisor Hierarchy (C-1459)
 
 Escalating from 2-blade to 3-blade topological defects (triples e_i, e_j, e_k)
-produces 231 / 455 = 50.8% full splits.  The best friction ratio is
-exactly 3/2 (target 1.529, error 1.9%).  All friction values are integer
+produces 231 / 455 = 50.8% full splits. The best friction ratio is
+exactly 3/2 (target 1.529, error 1.9%). All friction values are integer
 multiples of 2*sqrt(2), confirming that the CD doubling process enforces a
-rigid discrete spectrum.  The sedenion friction manifold is a crystal,
+rigid discrete spectrum. The sedenion friction manifold is a crystal,
 not a smooth continuum.
 
 ### Quarks (Project-Specific Selector Scan)
@@ -227,11 +227,11 @@ Best pair: up = (e_11, e_12), down = (e_10, e_11).
 3-blade friction scan (207,025 triple pairs) with the SAME weights (w1, w2)
 fitted to the lepton sector:
 
-| Ratio | Prediction | PDG 2024 | Error |
-|-------|-----------|----------|-------|
-| m_c/m_u | 542.4 | 550 | **1.4%** |
-| m_t/m_c | 127.9 | 130 | **1.6%** |
-| m_t/m_u | 69,363 | 71,500 | **3.0%** |
+| Ratio   | Prediction | PDG 2024 | Error    |
+| ------- | ---------- | -------- | -------- |
+| m_c/m_u | 542.4      | 550      | **1.4%** |
+| m_t/m_c | 127.9      | 130      | **1.6%** |
+| m_t/m_u | 69,363     | 71,500   | **3.0%** |
 
 Best: up = (5,6,7), down = (1,2,12). Zero free parameters. The quark
 mass hierarchy (m_t/m_u ~ 69,000) is 20x steeper than the lepton
@@ -242,14 +242,14 @@ hierarchy (m_tau/m_e ~ 3,500), both produced naturally by the same
 
 ### Quark Sector: CKM (C-1456)
 
-| Parameter  | This work | PDG 2025 | Error |
-|------------|-----------|----------|-------|
-| |V_us|     | 0.245     | 0.225    | 8.9%  |
-| |V_ub|     | 0.00382   | 0.00373  | 2.4%  |
-| |V_cb|     | 0.044     | 0.042    | 5.0%  |
-| theta_12   | 14.19 deg | 12.99    | 9.2%  |
-| theta_13   | 0.219 deg | 0.214    | 2.3%  |
-| theta_23   | 2.52 deg  | 2.40     | 4.8%  |
+| Parameter | This work | PDG 2025 | Error   |
+| --------- | --------- | -------- | ------- |
+|           | V_us      |          | 0.245   |
+|           | V_ub      |          | 0.00382 |
+|           | V_cb      |          | 0.044   |
+| theta_12  | 14.19 deg | 12.99    | 9.2%    |
+| theta_13  | 0.219 deg | 0.214    | 2.3%    |
+| theta_23  | 2.52 deg  | 2.40     | 4.8%    |
 
 The CKM matrix is nearly diagonal because the up and down selector pairs
 share the element e_11 (overlapping "outer shell" of the sedenion), producing
@@ -261,19 +261,19 @@ Best pair: charged lepton = (e_11, e_12), neutrino = (e_7, e_8).
 
 **Diagonal-only friction (baseline):**
 
-| Parameter  | This work | PDG 2025 | Error |
-|------------|-----------|----------|-------|
-| theta_12   | 29.2 deg  | 33.4     | 12.6% |
-| theta_13   | 8.64 deg  | 8.54     | 1.2%  |
-| theta_23   | 32.3 deg  | 49.0     | 34%   |
+| Parameter | This work | PDG 2025 | Error |
+| --------- | --------- | -------- | ----- |
+| theta_12  | 29.2 deg  | 33.4     | 12.6% |
+| theta_13  | 8.64 deg  | 8.54     | 1.2%  |
+| theta_23  | 32.3 deg  | 49.0     | 34%   |
 
 **With psi-automorphism off-diagonal coupling (C-1464):**
 
-| Parameter  | This work | PDG 2025 | Error |
-|------------|-----------|----------|-------|
-| theta_12   | 28.5 deg  | 33.4     | 15%   |
-| theta_13   | 8.63 deg  | 8.54     | 1.1%  |
-| theta_23   | 47.1 deg  | 49.0     | 3.9%  |
+| Parameter | This work | PDG 2025 | Error |
+| --------- | --------- | -------- | ----- |
+| theta_12  | 28.5 deg  | 33.4     | 15%   |
+| theta_13  | 8.63 deg  | 8.54     | 1.1%  |
+| theta_23  | 47.1 deg  | 49.0     | 3.9%  |
 
 The off-diagonal coupling uses the Gourlay/Gresnigt psi automorphism
 (order-3 S3 generator) to inject cross-generational friction.
@@ -284,13 +284,13 @@ confirming the S3 120-degree rotation directly drives atmospheric mixing.
 
 **theta_23 progression** (the ceiling-breaking arc):
 
-| Step | theta_23 | Mechanism |
-|------|----------|-----------|
-| Diagonal-only baseline | 32.3 deg | Ceiling identified: no off-diagonal coupling |
-| First psi injection | 37.6 deg | Ceiling broken: psi couples M_ij for i != j |
-| Full-profile psi overlap | 39.0 deg | Score 0.044 (3x improvement) |
-| Two-param (alpha_ch, alpha_nu) | 47.1 deg | Near-maximal: 3.9% PDG error (C-1464) |
-| Gauss-Newton 4-param | 48.99 deg | 0.02% PDG error (C-1492) |
+| Step                           | theta_23  | Mechanism                                    |
+| ------------------------------ | --------- | -------------------------------------------- |
+| Diagonal-only baseline         | 32.3 deg  | Ceiling identified: no off-diagonal coupling |
+| First psi injection            | 37.6 deg  | Ceiling broken: psi couples M_ij for i != j  |
+| Full-profile psi overlap       | 39.0 deg  | Score 0.044 (3x improvement)                 |
+| Two-param (alpha_ch, alpha_nu) | 47.1 deg  | Near-maximal: 3.9% PDG error (C-1464)        |
+| Gauss-Newton 4-param           | 48.99 deg | 0.02% PDG error (C-1492)                     |
 
 The charged lepton selector (e_11, e_12) is identical to the CKM up-type
 selector -- consistent with the SU(5) prediction that charged leptons
@@ -318,6 +318,7 @@ This is a **structural null result** for the (12/12/6) partition (first-pass
 projection heuristic): cos(g_12, g_13) = -1.0 (perfectly anti-collinear).
 
 The FlavorLift trait makes the mapping pluggable. Three implementations tested:
+
 - Partition(12/12/6): null (collinear gradients, S(u) = -0.04)
 - DirectOffDiagonal: decorrelated (cos = 0.47), theta_12 moves 14-46 deg
   but g_13/g_12 = 1.7x prevents solar isolation within theta_13 constraint
@@ -331,11 +332,11 @@ This is a no-go for the 42D->3D lift family, not all V_6 couplings.
 of 7 assessors mapping to all 6 independent Herm_3 elements) breaks the lock.
 Residual fraction = 75.7%. Constrained Gram-Schmidt direction at t=2.47:
 
-| Parameter  | This work | PDG 2025 | Error |
-|------------|-----------|----------|-------|
-| theta_12   | 33.42 deg | 33.41    | 0.02% |
-| theta_13   | 8.63 deg  | 8.54     | 1.05% |
-| theta_23   | 47.08 deg | 49.0     | 3.93% |
+| Parameter | This work | PDG 2025 | Error |
+| --------- | --------- | -------- | ----- |
+| theta_12  | 33.42 deg | 33.41    | 0.02% |
+| theta_13  | 8.63 deg  | 8.54     | 1.05% |
+| theta_23  | 47.08 deg | 49.0     | 3.93% |
 
 **1D solar correction** (3 parameters: alpha_ch=3.75, alpha_nu=1.30, t_V6=2.47).
 
@@ -361,19 +362,19 @@ not the primary statement of meaning.
 
 **Joint 4D optimization** (C-1491, 4 parameters re-optimized jointly):
 
-| Parameter  | This work | PDG 2025 | Error |
-|------------|-----------|----------|-------|
-| theta_12   | 33.84 deg | 33.41    | 1.28% |
-| theta_13   | 8.56 deg  | 8.54     | 0.24% |
-| theta_23   | 48.74 deg | 49.0     | 0.54% |
+| Parameter | This work | PDG 2025 | Error |
+| --------- | --------- | -------- | ----- |
+| theta_12  | 33.84 deg | 33.41    | 1.28% |
+| theta_13  | 8.56 deg  | 8.54     | 0.24% |
+| theta_23  | 48.74 deg | 49.0     | 0.54% |
 
 **Gauss-Newton optimized** (C-1492, 4 parameters):
 
-| Parameter  | This work | PDG 2025 | Error |
-|------------|-----------|----------|-------|
-| theta_12   | 33.36 deg | 33.41    | 0.15% |
-| theta_13   | 8.54 deg  | 8.54     | 0.01% |
-| theta_23   | 48.99 deg | 49.0     | 0.02% |
+| Parameter | This work | PDG 2025 | Error |
+| --------- | --------- | -------- | ----- |
+| theta_12  | 33.36 deg | 33.41    | 0.15% |
+| theta_13  | 8.54 deg  | 8.54     | 0.01% |
+| theta_23  | 48.99 deg | 49.0     | 0.02% |
 
 alpha_ch=3.00, alpha_nu=1.35, t_solar=1.35, t_atmo=2.24. Score: 2e-6.
 All three angles within 0.15% of PDG. Gauss-Newton + LM damping (34s runtime).
@@ -417,7 +418,7 @@ dimension 14 = dim(G_2), confirmed by numerical Jacobian rank test
 ### Koebisu V_2(R^8) Holonomy (C-1461, Complementary to Reggiani)
 
 Koebisu (arXiv:2512.13002) decomposes each sedenion as a pair of octonions
-s = (a, b) where a = s[0..8], b = s[8..16].  The ZD condition becomes
+s = (a, b) where a = s[0..8], b = s[8..16]. The ZD condition becomes
 |a| = |b| and <a,b> = 0, identifying the normalized ZD set with the
 Stiefel manifold V_2(R^8).
 
@@ -430,20 +431,20 @@ Related to the left-multiplication determinant: D_1(v)^4 * D_2(v)^2 = det(L_v).
 Implemented in cd_kernel::is_zero_divisor_koebisu().
 
 Note: Koebisu's V_2(R^8) and Reggiani's V_2(R^7) are complementary results
-using different mathematical frameworks.  Koebisu uses the full octonion
+using different mathematical frameworks. Koebisu uses the full octonion
 pair including the real component; Reggiani restricts to the imaginary sector.
 
 ### Wilmot Calibration Connection
 
 Wilmot (AACA 2026, arXiv:2505.06011) derives sedenions from a 14-simplex
-calibration on Pin(15).  The 14-dimensional calibration space matches
+calibration on Pin(15). The 14-dimensional calibration space matches
 dim(G_2) = 14, providing a calibration-theoretic origin for the G_2 isometry.
 
 **Note on Aut(S)**: Wilmot (arXiv:2512.07210) resolves the Schafer/Brown
-discrepancy in favor of Schafer: Aut(S) = G_2.  Brown's sigma'
+discrepancy in favor of Schafer: Aut(S) = G_2. Brown's sigma'
 transformation (eq. 11) changes the e_{1234567} term of Phi_O, so it is
-not an automorphism.  Only Phi_O^{C(1)} (cyclic sign variations) embeds
-as a 15-dimensional G_2 representation.  Gresnigt's S_3 from Cl(8) acts
+not an automorphism. Only Phi_O^{C(1)} (cyclic sign variations) embeds
+as a 15-dimensional G_2 representation. Gresnigt's S_3 from Cl(8) acts
 on generation labels (a DIFFERENT structure), not as algebra automorphisms,
 and is compatible with Aut(S) = G_2.
 
@@ -459,8 +460,8 @@ All C(15,3) = 455 triads of imaginary sedenion basis elements decompose as:
     252 Type X non-associative (all three orderings nonzero)
     0 Type A
 
-This decomposition uses the standard associator [x,y,z] = (x*y)*z - x*(y*z)
-in all three orderings.  Wilmot's Table 2 for U_1 gives 35+60+360=455
+This decomposition uses the standard associator [x,y,z] = (x*y)_z - x_(y*z)
+in all three orderings. Wilmot's Table 2 for U_1 gives 35+60+360=455
 (the 155 in Table 2 belongs to U_2, not U_1).
 
 ### ZD-Triad Incidence (Chirality Conjecture Falsified)
@@ -469,7 +470,7 @@ The incidence matrix between 420 non-associative triads and 42 ZD assessor
 pairs reveals **universal coverage, not chiral partition**:
 
 | Type | Triads | Assessors covered | Hits per assessor |
-|------|--------|-------------------|-------------------|
+| ---- | ------ | ----------------- | ----------------- |
 | B    | 84     | 42/42             | 36 (uniform)      |
 | C    | 84     | 42/42             | 36 (uniform)      |
 | X    | 252    | 42/42             | 96 (uniform)      |
@@ -479,10 +480,10 @@ The 84:84:252 decomposition is a **cardinality structure** from the
 non-associativity theorem, not a chiral partition of the ZD manifold.
 
 The earlier conjecture that "Type B = left-handed ZDs, Type C = right-handed
-ZDs" is **falsified** by this incidence matrix.  The correct statement is:
+ZDs" is **falsified** by this incidence matrix. The correct statement is:
 
 The 35+84+84+252=455 refinement is a uniform cover structure over the
-42 assessors.  Type B, C, and X are coverage classes, not flavor labels.
+42 assessors. Type B, C, and X are coverage classes, not flavor labels.
 
 Note: an initial count reported 112 Type B triads, but these were artifacts
 of single-ordering checks. Corrected to 84 after evaluating all three
@@ -495,6 +496,7 @@ B and C have identical singular-value spectra (spectral identity).
 ### Literature Axiom Verification
 
 10 axioms from Tang/Tang (2024) and Gresnigt (2025) independently verified:
+
 - Shared quaternion subalgebra across O_1, O_2, O_3
 - Octonion subalgebra closure under CD multiplication
 - Anticommutation of all 120 sedenion basis pairs ({e_i, e_j} = 0 for i != j)
@@ -504,10 +506,10 @@ B and C have identical singular-value spectra (spectral identity).
 
 ### Scheme Comparison (Interleaved vs Contiguous)
 
-| Parameter | Interleaved stride | Tang contiguous | PDG |
-|-----------|--------------------|-----------------|-----|
-| Score     | 0.010              | 0.834           | --  |
-| |V_us|    | 0.245              | 0.188           | 0.225 |
+| Parameter | Interleaved stride | Tang contiguous | PDG   |
+| --------- | ------------------ | --------------- | ----- |
+| Score     | 0.010              | 0.834           | --    |
+|           | V_us               |                 | 0.245 |
 | theta_23  | 2.52 deg           | 0.99 deg        | 2.40  |
 
 Within the current selector/friction observable class, the interleaved
@@ -550,6 +552,7 @@ this to the SU(5) GUT mass/scalar infrastructure. The bridge is
 explicitly project-specific, not literature-dictated.
 
 **Epistemic classification**:
+
 - PR1: largely algebra/geometry extraction and verification
 - PR2: representation-theoretic cross-validation, convention-sensitive
 - PR3: bridge/lift construction, project-specific until intertwiners solved
@@ -654,13 +657,13 @@ Rephasing the real PMNS matrix with the cross-sector Gram phases preserves
 mixing angles (|U_ij| unchanged) while introducing a nonzero Jarlskog
 invariant:
 
-| alpha_CP | theta_12 | theta_13 | theta_23 | J_CP      | delta_CP |
-|----------|----------|----------|----------|-----------|----------|
-| 0.0      | 28.54    | 8.63     | 47.07    | 0         | 0        |
-| 0.4      | 28.54    | 8.63     | 47.07    | 2.43e-2   | 52.2     |
-| 0.6      | 28.54    | 8.63     | 47.07    | 3.14e-2   | 90.0     |
-| 0.8      | 28.54    | 8.63     | 47.07    | 3.33e-2   | 90.0     |
-| 1.0      | 28.54    | 8.63     | 47.07    | 2.99e-2   | 76.6     |
+| alpha_CP | theta_12 | theta_13 | theta_23 | J_CP    | delta_CP |
+| -------- | -------- | -------- | -------- | ------- | -------- |
+| 0.0      | 28.54    | 8.63     | 47.07    | 0       | 0        |
+| 0.4      | 28.54    | 8.63     | 47.07    | 2.43e-2 | 52.2     |
+| 0.6      | 28.54    | 8.63     | 47.07    | 3.14e-2 | 90.0     |
+| 0.8      | 28.54    | 8.63     | 47.07    | 3.33e-2 | 90.0     |
+| 1.0      | 28.54    | 8.63     | 47.07    | 2.99e-2 | 76.6     |
 
 **Jarlskog magnitude**: |J_CP| = 3.3e-2 at alpha_CP ~ 0.8 (PDG target: ~3e-2).
 The magnitude matches within 10%.
@@ -683,12 +686,12 @@ off-diagonal 45.00 deg (cross-generation):
 This is determined by the cross-sector Gram matrix with ZERO free
 parameters. All four quartets:
 
-| Quartet | arg (deg) | Note |
-|---------|-----------|------|
-| e1*mu3/e3*mu1 | +116.57 | Primary |
-| e2*mu3/e3*mu2 | -116.57 | Sign conjugate |
-| e1*mu2/e2*mu1 | -126.87 | Different pair |
-| e1*tau3/e3*tau1 | +116.57 | tau sector |
+| Quartet         | arg (deg) | Note           |
+| --------------- | --------- | -------------- |
+| e1*mu3/e3*mu1   | +116.57   | Primary        |
+| e2*mu3/e3*mu2   | -116.57   | Sign conjugate |
+| e1*mu2/e2*mu1   | -126.87   | Different pair |
+| e1*tau3/e3*tau1 | +116.57   | tau sector     |
 
 PDG 2024: delta_CP = 195 deg (= -165 deg). With flavor assignment
 optimization (O1=e, O2=mu, O3=tau, column perm (0,2,1)):
@@ -699,10 +702,10 @@ optimization (O1=e, O2=mu, O3=tau, column perm (0,2,1)):
 
 Scanning all 11,025 selector pair combinations reveals an angle-CP tradeoff:
 
-| Pair | theta_12 | theta_13 | theta_23 | delta_CP | |
-|------|----------|----------|----------|----------|--|
-| (11,12)/(7,8) | 33.4 (0.15%) | 8.54 (0.01%) | 49.0 (0.02%) | -126.9 | Best angles |
-| (11,13)/(11,14) | 5.9 (82%) | 7.72 (9.6%) | 9.4 (81%) | **-166.0** | Best delta_CP |
+| Pair            | theta_12     | theta_13     | theta_23     | delta_CP   |               |
+| --------------- | ------------ | ------------ | ------------ | ---------- | ------------- |
+| (11,12)/(7,8)   | 33.4 (0.15%) | 8.54 (0.01%) | 49.0 (0.02%) | -126.9     | Best angles   |
+| (11,13)/(11,14) | 5.9 (82%)    | 7.72 (9.6%)  | 9.4 (81%)    | **-166.0** | Best delta_CP |
 
 Three symmetry-equivalent pairs give delta_CP = -166.0 deg (1 deg from PDG):
 (11,13)/(11,14), (9,14)/(9,15), (10,15)/(10,13). All use upper-block
@@ -716,7 +719,7 @@ rank-1 mass matrix). Psi coupling cannot rescue the CP-optimal pair.
 ### Composite Selector Blend
 
 Blending angle-optimal and CP-optimal friction profiles with weight w:
-    profile_blended = (1-w) * profile_(11,12)/(7,8) + w * profile_(11,13)/(11,14)
+profile_blended = (1-w) * profile_(11,12)/(7,8) + w * profile_(11,13)/(11,14)
 
 Profile cosine similarity: 0.1667 (nearly orthogonal in 16D).
 The Gram phase interpolates smoothly with w:
@@ -780,7 +783,7 @@ The value 116.57 = 180 - arctan(2) arises from the
 diagonal:off-diagonal Gram ratio -9:3 = -3:1.
 
 The rephasing formula:
-    U_CP[i][j] = |U_real[i][j]| * exp(i * alpha_CP * arg(G_ij))
+U_CP[i][j] = |U_real[i][j]| * exp(i * alpha_CP * arg(G_ij))
 where G_ij is the cross-sector Gram matrix. At alpha_CP ~ 0.8, the
 accumulated phase alpha_CP * arg(G_12) = 0.8 * 45 = 36 degrees per
 element, producing sin(delta) ~ 1 (maximal CP violation) because
@@ -819,6 +822,7 @@ is the natural Fano-derived complex angle from the G2 stabilizer.
 | PDG | -- | 33.41 | 8.54 | 49.0 | 3.3e-2 | 195 |
 
 Key observations:
+
 - All mixing angles within 1.5% of PDG (vs 50-300% distortion with additive)
 - |J_CP| = 8.5e-3 (25% of PDG target) with alpha_CP = 0.05
 - Z_2 conjugation symmetry: k and (8-k) give |J| same, sign flipped
@@ -850,13 +854,13 @@ Nelder-Mead refinement yields chi2 table: angles < 0.2 sigma, but
 
 ### Pipeline Levels
 
-| Level                        | chi2  | chi2/3 | t12   | t13  | t23   |
-|------------------------------|-------|--------|-------|------|-------|
-| Diagonal only                | 262.3 | 87.4   | 29.2  | 8.64 | 32.3  |
-| Psi coupling (C-1464)        | 32.7  | 10.9   | 29.2  | 8.64 | 47.1  |
-| V_6 correction (C-1490)      | 2.6   | 0.87   | 33.42 | 8.63 | 47.08 |
-| 4D joint optimum (C-1491)    | 0.41  | 0.14   | 33.84 | 8.56 | 48.74 |
-| Gauss-Newton (C-1492)        | ~0.01 | ~0.003 | 33.36 | 8.54 | 48.99 |
+| Level                     | chi2  | chi2/3 | t12   | t13  | t23   |
+| ------------------------- | ----- | ------ | ----- | ---- | ----- |
+| Diagonal only             | 262.3 | 87.4   | 29.2  | 8.64 | 32.3  |
+| Psi coupling (C-1464)     | 32.7  | 10.9   | 29.2  | 8.64 | 47.1  |
+| V_6 correction (C-1490)   | 2.6   | 0.87   | 33.42 | 8.63 | 47.08 |
+| 4D joint optimum (C-1491) | 0.41  | 0.14   | 33.84 | 8.56 | 48.74 |
+| Gauss-Newton (C-1492)     | ~0.01 | ~0.003 | 33.36 | 8.54 | 48.99 |
 
 All pulls below 0.6 sigma at the 4D optimum. The Gauss-Newton optimizer
 achieves all angles within 0.15% of PDG.
@@ -889,20 +893,21 @@ The 3-blade result is a **380x improvement** over 2-blade. The friction
 spectrum's discrete quantization provides the exact eigenvalue spacing
 for the solar/atmospheric mass hierarchy. m3/m1 = 10.4 at the 3-blade
 optimum (weaker than PDG ~50, but r matches because mass-squared
-*differences* can agree even with a weaker absolute hierarchy).
+_differences_ can agree even with a weaker absolute hierarchy).
 
 ### Absolute Mass Reconstruction
 
 Given algebraic ratio r and one input m1 (lightest mass):
+
 - m2 = sqrt(m1^2 + dm21_sq), m3 = sqrt(m1^2 + dm31_sq)
 - Cosmological bound: sum(m_i) < 0.12 eV (Planck+DESI)
 - KATRIN bound: m_beta < 0.45 eV
 
 | m1 (meV) | m1    | m2     | m3     | sum (eV) | Status   |
-|-----------|-------|--------|--------|----------|----------|
-| 0         | 0.000 | 0.0087 | 0.0495 | 0.058    | OK       |
-| 10        | 0.010 | 0.0132 | 0.0505 | 0.074    | OK       |
-| 50        | 0.050 | 0.0507 | 0.0705 | 0.171    | EXCLUDED |
+| -------- | ----- | ------ | ------ | -------- | -------- |
+| 0        | 0.000 | 0.0087 | 0.0495 | 0.058    | OK       |
+| 10       | 0.010 | 0.0132 | 0.0505 | 0.074    | OK       |
+| 50       | 0.050 | 0.0507 | 0.0705 | 0.171    | EXCLUDED |
 
 ### One-sentence synthesis
 
@@ -915,6 +920,7 @@ Given algebraic ratio r and one input m1 (lightest mass):
 ### Roadmap
 
 **Completed (this session)**:
+
 1. [x] G2 stabilizer extraction (PR1): stab(e_k) dim=8, u(3) embedding
 2. [x] Constructive SU(3) (PR2): 3x3 anti-Hermitian, Gell-Mann alignment
 3. [x] Physics bridge (PR3): SU(5) cross-validation, scalar projection
@@ -924,16 +930,17 @@ Given algebraic ratio r and one input m1 (lightest mass):
 7. [x] Mass ordering: normal ordering predicted
 
 **Open**:
+
 1. [x] Mass ratio: 3-blade friction gives r = 0.0304 (PDG 0.0307, 1.0% error)
 2. [x] Rocq SU(3): COMPLETE Jacobi in Z[sqrt(3)] -- all 56 triples verified
 3. [x] Delta_CP + J_CP: joint 3D scan gives |J_CP|=3.33e-2 = J_max (C-1497 AMENDED).
-   Framework predicts maximal CP (delta~93), PDG measures non-maximal (delta=195, |J|=8.6e-3).
-   Discrepancy 3.9x. Phase-only baseline: |J_CP|=8.5e-3 (C-1494). 16D vs 6D: null (C-1496).
+       Framework predicts maximal CP (delta~93), PDG measures non-maximal (delta=195, |J|=8.6e-3).
+       Discrepancy 3.9x. Phase-only baseline: |J_CP|=8.5e-3 (C-1494). 16D vs 6D: null (C-1496).
 4. [x] TensorElementLift: S_3 intertwiner proves NO equivariant map exists
-   (null space dim=0, V_6 scalar representation incompatible with Sym_3(R)).
-   The lift is response-fitted, not algebraically canonical.
-   A cleaner algebraic bridge may still improve the source-side symmetry
-   language, but it does not by itself make the PMNS/CKM map canonical.
+       (null space dim=0, V_6 scalar representation incompatible with Sym_3(R)).
+       The lift is response-fitted, not algebraically canonical.
+       A cleaner algebraic bridge may still improve the source-side symmetry
+       language, but it does not by itself make the PMNS/CKM map canonical.
 5. [x] Complete Rocq SU(3): Z[sqrt(3)] Jacobi proof (SU3JacobiFull.v)
 6. [x] Unified 3-blade test: confirms angle-mass tradeoff is structural
 7. [x] Gauss-Newton 4D: all angles within 0.15% PDG (C-1492)
@@ -941,7 +948,7 @@ Given algebraic ratio r and one input m1 (lightest mass):
 9. [x] CDDoubleTower Rocq: generic functor chain R through Pathion (C-1495)
 10. [x] Cariow analysis: 122 muls vs 256 naive; not adopted for SIMD (C-1493)
 11. [x] J_CP gap closure: 16D J_k null result (C-1496); joint 3D scan achieves
-    |J_CP|=3.33e-2 = J_max (C-1497 AMENDED). This is 3.9x > PDG |J|=8.6e-3.
+        |J_CP|=3.33e-2 = J_max (C-1497 AMENDED). This is 3.9x > PDG |J|=8.6e-3.
 12. Unification beyond 3x3 mass matrices: need higher-dimensional framework
     (6x6 block-diagonal, or separate mass/mixing matrices) to decouple the
     mass-ratio and mixing-angle mechanisms.
@@ -954,14 +961,14 @@ The associator trilinearity property Assoc(alpha*x, y, z) = alpha*Assoc(x,y,z)
 is proved by boolean reflection for ALL Cayley-Dickson dimensions from 16D
 (sedenion) through 65536D (2^16). The proof uses tower lifts:
 
-| Dimension | Time  | Technique                        |
-|-----------|-------|----------------------------------|
-| 16D       | 0.1s  | cbv [whitelist] + ring           |
-| 32D       | 2.0s  | tower rewrite + reflexivity      |
-| 64-256D   | 1.7s  | batch tower lift                 |
-| 512-1024D | 2.4s  | fuel recursion (C-1474)          |
-| 16384D    | 3.6s  | HigherCD.v tower                 |
-| 65536D    | 2.2s  | THE SUMMIT -- boolean reflection |
+| Dimension | Time | Technique                        |
+| --------- | ---- | -------------------------------- |
+| 16D       | 0.1s | cbv [whitelist] + ring           |
+| 32D       | 2.0s | tower rewrite + reflexivity      |
+| 64-256D   | 1.7s | batch tower lift                 |
+| 512-1024D | 2.4s | fuel recursion (C-1474)          |
+| 16384D    | 3.6s | HigherCD.v tower                 |
+| 65536D    | 2.2s | THE SUMMIT -- boolean reflection |
 
 Key technique: `rewrite sed_mul_scale_left + rewrite <- sed_scale_sub +
 reflexivity` = 3s. The previous monolithic approach (`dest_sed + ring` on
@@ -993,6 +1000,7 @@ constraints, dim(stab) = dim(g2) - 6 = 14 - 6 = 8.
 
 The 7 rational SU(3) structure constants (2*f_{abc} as integers, avoiding
 sqrt(3)) verified by boolean reflection:
+
 - f_{123} = 1, f_{147} = f_{246} = f_{257} = f_{345} = 1/2
 - f_{156} = f_{367} = -1/2
 - Total antisymmetry: vm_compute verified for all permutations
@@ -1045,6 +1053,7 @@ Section 2.1, p.7; arXiv:math/0105155) added to every theorem.
 
 Registered in _RocqProject. Formalizes the arithmetic and combinatorial facts
 of the Baez-Dixon octonion->Standard Model embedding:
+
 - `g2_contains_su3_dims`: dim G2 = 14, dim SU(3) = 8, coset = 6
 - `oct_su3_decomposition`: 7 = 3 + 3 + 1 (quark + anti-quark + singlet)
 - `quark_triplet_is_fano_line`: {1,2,3} is the first Fano line
@@ -1055,6 +1064,7 @@ of the Baez-Dixon octonion->Standard Model embedding:
 ### HurwitzTheorem.v Completeness (2026-03-25)
 
 Paper audit against Hurwitz (1898), pp.309-316. Additions:
+
 - `hurwitz_A0_dim8_valid`: Explicit octonion A_0 matrix (Part V, p.314)
   previously missing -- n=2 and n=4 existed but n=8 did not
 - `cd_tower_rho`: Cross-reference theorem verifying the finite match in
@@ -1072,6 +1082,7 @@ Paper audit against Hurwitz (1898), pp.309-316. Additions:
 
 The Gourlay epsilon automorphism (parity flip on upper octonion block [8..15])
 splits the 24 SU(5) generators:
+
 - alpha_1..3 (SU(3) sector, lower octonion): PRESERVED by epsilon
 - alpha_4,5 (leptoquark sector, upper octonion): NEGATED by epsilon
 
@@ -1081,6 +1092,7 @@ generations. Consistent with Gourlay 2024.
 ### Psi: S_3 Generation Symmetry
 
 The psi automorphism (order 3) cycles O_1 -> O_2 -> O_3. Key properties:
+
 - psi^3 = Id (verified computationally); U-conjugation: U^3 = -I
 - Orbit sum = 3/2 exact (sum of psi eigenvalues on friction profiles)
 - Psi overlap/norm ratio = cos(2*pi/3) = -0.5 for all generation pairs
@@ -1106,22 +1118,22 @@ theta_23 progression: 32.3 (diagonal) -> 37.6 (1st coupling) -> 39.0
 Flat SIMD multiply via AVX2 f64x4 lanes, from quaternion (4D) through
 DekaVoudon (1024D). Speedups over recursive scalar:
 
-| Dimension | Speedup | Technique              |
-|-----------|---------|------------------------|
-| 4D        | 83x     | Inline AVX2            |
-| 8D        | 96x     | Flat octonion SIMD     |
-| 16D       | 126x    | Flat sedenion SIMD     |
-| 32D       | ~100x   | Blocked + SIMD         |
-| 64-256D   | ~80x    | Generalized flat       |
+| Dimension | Speedup | Technique          |
+| --------- | ------- | ------------------ |
+| 4D        | 83x     | Inline AVX2        |
+| 8D        | 96x     | Flat octonion SIMD |
+| 16D       | 126x    | Flat sedenion SIMD |
+| 32D       | ~100x   | Blocked + SIMD     |
+| 64-256D   | ~80x    | Generalized flat   |
 
 ### Governance Gate Optimization
 
 | Configuration           | Cold build | Incremental | Runtime |
-|-------------------------|-----------|-------------|---------|
-| Original (7x cargo run) | N/A       | N/A         | ~30s    |
-| Batch + build-once      | N/A       | N/A         | 7.8s    |
-| Unified release         | 2.5 min   | 2-9 min     | 3.3s    |
-| release-gate profile    | 5 min     | 10s         | 3.2s    |
+| ----------------------- | ---------- | ----------- | ------- |
+| Original (7x cargo run) | N/A        | N/A         | ~30s    |
+| Batch + build-once      | N/A        | N/A         | 7.8s    |
+| Unified release         | 2.5 min    | 2-9 min     | 3.3s    |
+| release-gate profile    | 5 min      | 10s         | 3.2s    |
 
 release-gate profile: thin LTO + 6 codegen-units + line-tables debug info.
 Fat LTO was the root cause of 2-9 minute recompile times (confirmed via
@@ -1133,16 +1145,17 @@ Systematic elimination of heap allocation from the algebraic computation
 hot paths. All changes validated against numerical regression baselines
 (119 cd_kernel tests + regression snapshot at commit 83c4254f).
 
-| Optimization | File | Before | After | Speedup |
-|---|---|---|---|---|
-| cd_multiply_into workspace fix | arith.rs | Workspace ignored, called allocating cd_multiply | True recursive workspace multiply, zero alloc | ~10x for dim>=32 |
-| cd_conjugate_into | arith.rs | Vec::to_vec() per call | Caller-provided buffer, zero alloc | Eliminates ~64 allocs per dim=16 multiply |
-| Zero-divisor sign-table enum | zero_divisors.rs | O(dim^4) cd_multiply calls | O(1) sign table + XOR | ~1000x for dim=32 |
-| Bell inequality merge-join | bell_inequality.rs | O(n^2) HashSet alloc | Sorted-Vec two-pointer merge | Zero per-pair alloc |
-| extract_vk_basis rayon | neutrino_sector.rs | Sequential triple loop | rayon fold+reduce, i64 accum | ~4-8x on 8 cores |
-| Gram matrix accumulation | neutrino_sector.rs | Full DMatrix row storage | Sparse outer product, integer Gram | ~30x memory reduction |
+| Optimization                   | File               | Before                                           | After                                         | Speedup                                   |
+| ------------------------------ | ------------------ | ------------------------------------------------ | --------------------------------------------- | ----------------------------------------- |
+| cd_multiply_into workspace fix | arith.rs           | Workspace ignored, called allocating cd_multiply | True recursive workspace multiply, zero alloc | ~10x for dim>=32                          |
+| cd_conjugate_into              | arith.rs           | Vec::to_vec() per call                           | Caller-provided buffer, zero alloc            | Eliminates ~64 allocs per dim=16 multiply |
+| Zero-divisor sign-table enum   | zero_divisors.rs   | O(dim^4) cd_multiply calls                       | O(1) sign table + XOR                         | ~1000x for dim=32                         |
+| Bell inequality merge-join     | bell_inequality.rs | O(n^2) HashSet alloc                             | Sorted-Vec two-pointer merge                  | Zero per-pair alloc                       |
+| extract_vk_basis rayon         | neutrino_sector.rs | Sequential triple loop                           | rayon fold+reduce, i64 accum                  | ~4-8x on 8 cores                          |
+| Gram matrix accumulation       | neutrino_sector.rs | Full DMatrix row storage                         | Sparse outer product, integer Gram            | ~30x memory reduction                     |
 
 Key design decisions:
+
 - **Integer accumulation** in rayon: Gram updates are `+= 1` counts, accumulated
   as i64 thread-locally, converted to f64 ONCE after reduce. This gives
   bit-identical results regardless of thread scheduling (rayon does not
@@ -1157,52 +1170,53 @@ Key design decisions:
 ### Eigensolver Backend Swap: nalgebra -> faer (2026-03-22)
 
 The `extract_vk_basis` function performs two eigendecompositions on dense
-Gram matrices built from Cayley-Dickson associator triads.  The first
+Gram matrices built from Cayley-Dickson associator triads. The first
 decomposes the B/C Gram to find the bilinear Cayley column space; the
 second decomposes the orthogonal complement of that space projected
 onto the cross-term Gram, revealing the "V_k" basis -- the non-associative
 directions that steer PMNS mixing angles.
 
 The bottleneck at dim=64 is the 930x930 eigendecomposition (930 assessor
-pairs from low in 1..31, high in 33..63, excluding same-offset).  This
+pairs from low in 1..31, high in 33..63, excluding same-offset). This
 motivated a measurement-driven backend swap from nalgebra to faer.
 
 #### Why faer instead of nalgebra
 
 nalgebra's `symmetric_eigen()` uses Jacobi rotations: iteratively zeroing
-off-diagonal elements one (i,j) pair at a time.  Convergence is quadratic
+off-diagonal elements one (i,j) pair at a time. Convergence is quadratic
 but each "sweep" costs O(n^2) Givens rotations, and multiple sweeps are
-needed.  The algorithm has poor cache behavior because it accesses
+needed. The algorithm has poor cache behavior because it accesses
 arbitrary (i,j) pairs across the full matrix.
 
 faer's `selfadjoint_eigendecomposition()` uses Householder tridiagonalization
 (O(n^3) once, sequential and cache-friendly) followed by divide-and-conquer
-on the tridiagonal form.  D&C recursively splits the n-by-n problem into
+on the tridiagonal form. D&C recursively splits the n-by-n problem into
 two ~n/2 problems via a rank-1 perturbation, then merges with a secular
-equation solve.  This parallelizes naturally and has O(n^2) merge cost
+equation solve. This parallelizes naturally and has O(n^2) merge cost
 per level, giving O(n^2 log n) total for the tridiagonal phase.
 
 For the 42x42 Gram at dim=16, the difference is negligible (~4ms either
-way).  At 930x930 (dim=64), D&C completes both eigendecompositions in
+way). At 930x930 (dim=64), D&C completes both eigendecompositions in
 0.56s combined -- approximately 500x faster than Jacobi's estimated ~250s.
 
 #### Instrumentation (8 profiled stages)
 
 Set `VK_PROFILE=1` to emit per-stage wall-clock timing and structural
-diagnostics to stderr.  The stages and their roles:
+diagnostics to stderr. The stages and their roles:
 
 ```text
-  Stage 1: Sign table construction              -- O(dim^2) precompute
-  Stage 2: Rayon parallel Gram accumulation      -- C(dim-1, 3) triads
-  Stage 3: i64 -> f64 faer::Mat conversion       -- exact, single pass
-  Stage 4: Eigendecomp gram_bc (faer D&C)        -- finds B/C column space
-  Stage 5: Projector P_BC from retained eigvecs  -- sum |v_k><v_k|
-  Stage 6: Complement matmul P_perp*G_x*P_perp  -- isolates V_k Gram
-  Stage 7: Eigendecomp gram_vk (faer D&C)        -- extracts V_k basis
-  Stage 8: Threshold + descending sort + extract -- final basis matrix
+Stage 1: Sign table construction              -- O(dim^2) precompute
+Stage 2: Rayon parallel Gram accumulation      -- C(dim-1, 3) triads
+Stage 3: i64 -> f64 faer::Mat conversion       -- exact, single pass
+Stage 4: Eigendecomp gram_bc (faer D&C)        -- finds B/C column space
+Stage 5: Projector P_BC from retained eigvecs  -- sum |v_k><v_k|
+Stage 6: Complement matmul P_perp*G_x*P_perp  -- isolates V_k Gram
+Stage 7: Eigendecomp gram_vk (faer D&C)        -- extracts V_k basis
+Stage 8: Threshold + descending sort + extract -- final basis matrix
 ```
 
 At each eigendecomp input, the profiler also reports:
+
 - `max_asym_pre`: max |M[i,j] - M[j,i]| before symmetrization
 - `max_asym_post`: same, after symmetrization (should be 0.0)
 - `nnz_fraction`: fraction of entries with |M[i,j]| > 1e-12
@@ -1228,15 +1242,15 @@ At each eigendecomp input, the profiler also reports:
 
 Two key findings from these diagnostics:
 
-1. **nnz_fraction = 1.0** for both matrices.  Sparse eigensolvers (sprs,
+1. **nnz_fraction = 1.0** for both matrices. Sparse eigensolvers (sprs,
    ARPACK-style) would gain nothing here; the Gram matrices are fully dense
-   despite the sparse incidence structure of the triad rows.  This happens
+   despite the sparse incidence structure of the triad rows. This happens
    because the XOR product indices `b^c`, `b^d`, `c^d` spread across
    nearly all assessor pairs, filling the Gram matrix densely.
 
-2. **gram_vk asymmetry ~ 7e-15**.  The complement matmul
+2. **gram_vk asymmetry ~ 7e-15**. The complement matmul
    `P_perp * G_x * P_perp` introduces roundoff asymmetry even though G_x
-   is perfectly symmetric (integer).  The explicit symmetrization step
+   is perfectly symmetric (integer). The explicit symmetrization step
    erases this before the eigendecomp, preventing backend-dependent
    sensitivity to upper-vs-lower triangle conventions.
 
@@ -1270,9 +1284,9 @@ The Frobenius ratio provides 4 orders of magnitude of separation between
 genuine signals and noise:
 
 ```text
-  dim=16:  sv_max / ||G_x||_F = 2.1e-3   -> false (rank = 6, genuine)
-  dim=32:  sv_max / ||G_x||_F = 1.0e-4   -> false (rank = 1, genuine)
-  dim=64:  sv_max / ||G_x||_F = 7.5e-12  -> true  (rank = 0, noise)
+dim=16:  sv_max / ||G_x||_F = 2.1e-3   -> false (rank = 6, genuine)
+dim=32:  sv_max / ||G_x||_F = 1.0e-4   -> false (rank = 1, genuine)
+dim=64:  sv_max / ||G_x||_F = 7.5e-12  -> true  (rank = 0, noise)
 ```
 
 Rank pattern: dim=16 -> 6, dim=32 -> 1, dim=64 -> 0.
@@ -1281,16 +1295,16 @@ This is an observed numerical pattern, not a uniqueness theorem.
 #### Measured dim=64 per-stage timing (930x930 Gram, release, 2 threads)
 
 ```text
-  Stage 1: Sign table              0.000s  ( 0%)
-  Stage 2: Rayon Gram accumulation  0.763s  (46%)  <-- NEW BOTTLENECK
-  Stage 3: i64 -> f64 conversion    0.014s  ( 1%)
-  Stage 4: Eigendecomp gram_bc      0.313s  (19%)
-  Stage 5: Projector P_BC           0.175s  (11%)
-  Stage 6: Complement matmul        0.146s  ( 9%)
-  Stage 7: Eigendecomp gram_vk      0.247s  (15%)
-  Stage 8: Postprocessing           0.000s  ( 0%)
-  -----------------------------------------------
-  TOTAL                             1.66s   (was ~280s with nalgebra)
+Stage 1: Sign table              0.000s  ( 0%)
+Stage 2: Rayon Gram accumulation  0.763s  (46%)  <-- NEW BOTTLENECK
+Stage 3: i64 -> f64 conversion    0.014s  ( 1%)
+Stage 4: Eigendecomp gram_bc      0.313s  (19%)
+Stage 5: Projector P_BC           0.175s  (11%)
+Stage 6: Complement matmul        0.146s  ( 9%)
+Stage 7: Eigendecomp gram_vk      0.247s  (15%)
+Stage 8: Postprocessing           0.000s  ( 0%)
+-----------------------------------------------
+TOTAL                             1.66s   (was ~280s with nalgebra)
 ```
 
 The bottleneck migrated from eigendecomposition (Stages 4+7: was ~90% of
@@ -1305,16 +1319,16 @@ is only 9% of total, well below the threshold for optimization effort.
 
 `test_faer_vs_nalgebra_eigendecomp` (dim=16, 42x42 Gram):
 
-| Metric | Tolerance | Measured |
-|--------|-----------|----------|
-| Effective rank agreement | exact | 6 = 6 |
-| Leading SV difference | < 1e-6 | ~ 1e-15 |
-| Orthonormality (faer) | < 1e-10 | ~ 1e-15 |
-| Orthonormality (nalgebra) | < 1e-10 | ~ 1e-15 |
-| Projector agreement |P_f - P_n|_F | < 1e-8 | ~ 1e-14 |
+| Metric                    | Tolerance | Measured |
+| ------------------------- | --------- | -------- |
+| Effective rank agreement  | exact     | 6 = 6    |
+| Leading SV difference     | < 1e-6    | ~ 1e-15  |
+| Orthonormality (faer)     | < 1e-10   | ~ 1e-15  |
+| Orthonormality (nalgebra) | < 1e-10   | ~ 1e-15  |
+| Projector agreement       | P_f - P_n | _F       |
 
 The nalgebra fallback (`extract_vk_basis_nalgebra`) is retained behind
-`#[cfg(test)]` for this comparison.  It can be removed once dim=64
+`#[cfg(test)]` for this comparison. It can be removed once dim=64
 timing results are recorded and the projector agreement is confirmed
 at that scale.
 
@@ -1326,9 +1340,9 @@ at that scale.
   Stage 6 is only 9% at dim=64. The new bottleneck is Stage 2 (rayon
   Gram accumulation, 46%).
 - **Stage 2 optimization**: the triple loop over C(dim-1, 3) triads is
-  embarrassingly parallel but has O(dim^3) work.  Potential approaches:
+  embarrassingly parallel but has O(dim^3) work. Potential approaches:
   sign-table precomputation to skip non-contributing triads, or blocked
-  iteration with SIMD accumulation.  Currently 0.76s at dim=64 -- fast
+  iteration with SIMD accumulation. Currently 0.76s at dim=64 -- fast
   enough for interactive use but would matter at dim=128 (C(127,3) = 333,375).
 - **egg/egglog**: proof-lemma generation backlog (unrelated).
 - **noether**: trait refactor backlog (unrelated).
@@ -1341,7 +1355,7 @@ observable prediction, with verification references at each step.
 ### Step 1: Cayley-Dickson Doubling Axioms
 
 **Axiom**: Given an algebra A with conjugation, the doubled algebra
-CD(A) = A x A with multiplication (a,b)(c,d) = (ac - d*b, da + bc*)
+CD(A) = A x A with multiplication (a,b)(c,d) = (ac - d_b, da + bc_)
 and conjugation (a,b)* = (a*, -b).
 
 **Verification**: CDDoubleFunctor.v (7 auto-linearity axioms proven).
@@ -1360,9 +1374,9 @@ triads (35 + 112 split, Rocq boolean reflection).
 
 **Theorem**: S contains exactly three canonical octonionic subalgebras
 O_1, O_2, O_3 with basis indices:
-  O_1 = {0,1,4,5,8,9,12,13}
-  O_2 = {0,2,4,6,8,10,12,14}
-  O_3 = {0,3,4,7,8,11,12,15}
+O_1 = {0,1,4,5,8,9,12,13}
+O_2 = {0,2,4,6,8,10,12,14}
+O_3 = {0,3,4,7,8,11,12,15}
 
 **Verification**: three_fermion_generations.rs (C-029, Rocq verified).
 Subalgebra closure verified via vm_compute (C-1466, 384 products).
@@ -1496,10 +1510,10 @@ algebraic CD structure persists through the lift into flavor space.
 The sign-table associator on sedenion imaginary indices {1..15}
 produces a DIFFERENT 455-decomposition from Wilmot's retraction m3:
 
-| Decomposition | Fano-like | Middle | Genuine | Total |
-|--------------|-----------|--------|---------|-------|
-| Wilmot (retraction m3) | 35 (U_1) | 252 (U_2) | 168 (U_3) | 455 |
-| Sign-table (cd_sign) | 35 | 112 | 308 | 455 |
+| Decomposition          | Fano-like | Middle    | Genuine   | Total |
+| ---------------------- | --------- | --------- | --------- | ----- |
+| Wilmot (retraction m3) | 35 (U_1)  | 252 (U_2) | 168 (U_3) | 455   |
+| Sign-table (cd_sign)   | 35        | 112       | 308       | 455   |
 
 The 672 ordered cross-subalgebra-zero triples (112 unordered) are
 triples where XOR != 0 but the sign-table associator vanishes because
@@ -1518,13 +1532,13 @@ rather than unstated weaknesses discovered in peer review.
 
 ### Quantitative Tensions Table (2026-03-22)
 
-| # | Observable | Framework | PDG | Pull | Type |
-|---|-----------|-----------|-----|------|------|
-| T1 | delta_CP | ~93 deg | 195 +/- 25 deg | **FALSIFIED** | Structural |
-| T2 | |J_CP| | 3.33e-2 (J_max) | 8.6e-3 | +11.9 sigma | Structural |
-| T3 | r = dm21/dm31 (at NM opt.) | 0.0353 | 0.0307 +/- 0.001 | +4.6 sigma | Parametric |
-| T4 | sin^2(theta_W) | 0.250 | 0.231 | ~8% | Tree-level |
-| T5 | m_s/m_d | 15.7 | 20.2 | ~22% | Weak sector |
+| #  | Observable                 | Framework | PDG              | Pull            | Type        |
+| -- | -------------------------- | --------- | ---------------- | --------------- | ----------- |
+| T1 | delta_CP                   | ~93 deg   | 195 +/- 25 deg   | **FALSIFIED**   | Structural  |
+| T2 |                            | J_CP      |                  | 3.33e-2 (J_max) | 8.6e-3      |
+| T3 | r = dm21/dm31 (at NM opt.) | 0.0353    | 0.0307 +/- 0.001 | +4.6 sigma      | Parametric  |
+| T4 | sin^2(theta_W)             | 0.250     | 0.231            | ~8%             | Tree-level  |
+| T5 | m_s/m_d                    | 15.7      | 20.2             | ~22%            | Weak sector |
 
 **Structural** = cannot be resolved by parameter tuning within the framework.
 **Parametric** = depends on the optimizer trade-off (Pareto frontier).
@@ -1589,6 +1603,7 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
 ### TIER 1: Directly Integrated (Layer A backbone + Layer C foundations)
 
 **Zero-divisor geometry and G2 structure:**
+
 - Reggiani (2024): "Geometry of sedenion zero divisors" [arXiv:2411.18881]
   Z(S) homeomorphic to G2. Principal bundle SU(2)->G2->V_2(R^7). 84 standard ZDs.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/reggiani_2024_2411.18881.pdf
@@ -1610,6 +1625,7 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/moreno_2005_math0512516_companion.pdf
 
 **Alternative CD constructions:**
+
 - Flipped Polynomial Rings (2024): "CD algebras from flipped Ore extensions" [arXiv:2403.03763]
   ALL CD algebras arise as quotients of flipped non-associative polynomial rings.
   Parity-dependent multiplication: tau_n(r,s) = rs if n even, sr if n odd.
@@ -1618,6 +1634,7 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf
 
 **CD tower structure and non-associativity:**
+
 - Wilmot (2026): "G_2 from Clifford calibrations" [arXiv:2505.06011]
 - Wilmot (2026): "Structure of CD algebras" [arXiv:2505.11747]
   Graded CD construction. 35+60+360=455 triad count (U_1). A/B/C/X stratification.
@@ -1633,27 +1650,29 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
   ZD counts: 84 (sedenions), 252 (pathions).
   Integration: cd_tower.rs naming conventions, AlgebraDim enum, XOR sign cocycle
   Papers:
-    math/0011260 (2000): Original assessor/box-kite framework
-    math/0207003 (2002): Placeholder substructures I (ZD equivalence classes)
-    math/0403113 (2004): Box-kites III (mock octonions, quizzical quaternions)
-    Wolfram (2004): Visual box-kite geometry presentation
-    math/0603281 (2006): Presto digitization I (CDP bit-string encoding)
-    0704.0026 (2007): Catamaran sails (pathion ZD patterns)
-    0704.0112 (2007): Sedenions XOR (explicit XOR multiplication framework)
-    math/0703745 (2007): Placeholder substructures III (closure properties)
-  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/de_marrais_*.pdf
+  math/0011260 (2000): Original assessor/box-kite framework
+  math/0207003 (2002): Placeholder substructures I (ZD equivalence classes)
+  math/0403113 (2004): Box-kites III (mock octonions, quizzical quaternions)
+  Wolfram (2004): Visual box-kite geometry presentation
+  math/0603281 (2006): Presto digitization I (CDP bit-string encoding)
+  0704.0026 (2007): Catamaran sails (pathion ZD patterns)
+  0704.0112 (2007): Sedenions XOR (explicit XOR multiplication framework)
+  math/0703745 (2007): Placeholder substructures III (closure properties)
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/_/de_marrais__.pdf
 
 - Anon (2025): "Cayley-Dickson tower mnemonic" [arXiv:2512.22134v3]
   Pedagogical overview of doubling tower naming and dimensional structure.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/cd_tower_structure/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf
 
 **Canonical mathematical reference:**
+
 - Baez (2002): "The Octonions" [arXiv:math/0105155]
   Division algebra tower R->C->H->O. Fano plane. G2=Aut(O). Triality.
   Exceptional groups E6/E7/E8/F4. Hurwitz theorem. Freudenthal-Tits magic square.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_math0105155_baez_2002_octonions.pdf
 
 **Interleaved generation framework (Layer B):**
+
 - Gresnigt (2019): "Intersecting octonion subalgebras" [arXiv:1904.03186]
 - Gresnigt (2025): "Electroweak + S_3 from Cl(8)" [arXiv:2601.07857]
 - Gourlay & Gresnigt (2024): "Three generations from Cl(8)" [arXiv:2407.01580]
@@ -1672,6 +1691,7 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
   ZD kernel structure. Second convergence radius.
 
 **G2/SU(3) stabilizer validation:**
+
 - AACA (2025): "G2 via CD doubling" [Adv. Appl. Clifford Algebras 35:14]
   Explicit G2 construction. SU(3) = Stab_G2(1-form). Validates PR1/PR2.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/s00006-025-01423-5.pdf
@@ -1685,6 +1705,7 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf
 
 **Fano plane and octonion geometry:**
+
 - Ruan & Fan (2009): "Fano plane from quadratic residues" [arXiv:0909.3323]
   Construction of PG(2,2) from residues mod 7. Octonion multiplication encoding.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf
@@ -1694,10 +1715,11 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf
 
 **Zero divisor theory (adjacent):**
+
 - Carlstrom (2001): "Wheels -- On Division by Zero" [KTH Report]
   Extends division algebras to handle division by zero via wheel structure.
-  Tangential to ZD analysis: if v is a ZD (v*w=0), wheels formalize "dividing by v."
-  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/carlstrom_2001_wheels_report.pdf
+  Tangential to ZD analysis: if v is a ZD (v_w=0), wheels formalize "dividing by v."
+  Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/_/carlstrom_2001_wheels_report.pdf
 
 ### TIER 2: Architectural Precedent
 
@@ -1723,6 +1745,7 @@ No point has angles < 2% AND r < 3 sigma. (Complementarity theorem)
 The Cayley-Dickson multiplication table uses structure constants in {0, +1, -1}.
 Therefore, for ANY coefficient field K extending R (including the surreal
 numbers No), the scalar extension A_n(K) = K tensor_R A_n(R) inherits:
+
 - the same basis multiplication table
 - the same zero-divisor identities
 - the same universal law class tracked by the kernel:
@@ -1734,25 +1757,26 @@ their images in A_n(K) also satisfy uv = 0.
 
 ### Surreal CD Tower
 
-| Stage | Algebra | dim | Properties over No |
-|-------|---------|-----|-------------------|
-| A_0 | No | 1 | Ordered real-closed field |
-| A_1 | C_No | 2 | Commutative, associative, division |
-| A_2 | H_No | 4 | Noncommutative, associative, division |
-| A_3 | O_No | 8 | Alternative, division, norm multiplicative |
-| A_4 | S_No | 16 | Non-alternative, zero divisors, norm NOT multiplicative |
+| Stage | Algebra | dim | Properties over No                                      |
+| ----- | ------- | --- | ------------------------------------------------------- |
+| A_0   | No      | 1   | Ordered real-closed field                               |
+| A_1   | C_No    | 2   | Commutative, associative, division                      |
+| A_2   | H_No    | 4   | Noncommutative, associative, division                   |
+| A_3   | O_No    | 8   | Alternative, division, norm multiplicative              |
+| A_4   | S_No    | 16  | Non-alternative, zero divisors, norm NOT multiplicative |
 
 Through A_3 (surreal octonions): N(x) = sum x_i^2 is anisotropic over
 any ordered field (sum of squares = 0 iff all zero). Hence division holds.
 
 At A_4: norm multiplicativity fails. Explicit ZD witnesses verified:
-  (e1+e10)(e5+e14) = 0, (e3+e10)(e6-e15) = 0, (e1+e10)(e4-e15) = 0
+(e1+e10)(e5+e14) = 0, (e3+e10)(e6-e15) = 0, (e1+e10)(e4-e15) = 0
 
 ### What Changes Over No
 
 The multiplication table does NOT change. What changes:
+
 - Coefficients can be infinitesimal, finite, or infinite surreal values
-- ZD geometry persists at every surreal scale: (alpha*x)(y) = alpha*(xy) = 0
+- ZD geometry persists at every surreal scale: (alpha_x)(y) = alpha_(xy) = 0
 - The ZD locus contains infinitesimal and infinite rays
 - Transseries-like asymptotics can be encoded directly in coefficients
 
@@ -1775,6 +1799,7 @@ All constructions above work over any such K.
 
 The surreal extension does not change any physics predictions (which depend
 on the multiplication table, not the coefficient field). However, it provides:
+
 - A natural framework for scale-separated perturbation theory
 - Infinitesimal/infinite coefficient regimes for asymptotic analysis
 - A formal language for "near-zero-divisor" deformations
@@ -1788,12 +1813,14 @@ a transferred cubic operation on octonions:
     m3(x,y,z) = p(h(i(x)*i(y))*i(z)) - p(i(x)*h(i(y)*i(z)))
 
 Classification of all 210 ordered triples (e_i, e_j, e_k):
+
 - **42 scalar outputs** (m3 = +/-2 e_0): ALL on Fano-line triples
   (7 lines * 3! orderings = 42)
 - **168 imaginary outputs** (m3 = +/-2 e_l): ALL on non-Fano triples
 - **0 zero outputs**: m3 is nonzero for every triple
 
 This encodes the two fundamental G2 calibration forms:
+
 - phi (3-form, scalar on Fano lines) = the G2-invariant 3-form
 - psi (4-form dual, imaginary on non-Fano) = the co-associative 4-form
 
@@ -1802,16 +1829,17 @@ This encodes the two fundamental G2 calibration forms:
 At each CD level, the retraction m3 classifies triads into the Wilmot
 triad decomposition of the target algebra:
 
-| CD level | Target | Scalar | Imaginary (=Assoc) | Zero | Total |
-|----------|--------|--------|-------------------|------|-------|
-| S -> O | Octonion | 42 (Fano) | 168 (non-Fano) | 0 | 210 |
-| P -> S | Sedenion | 35 (assoc) | 252 (Type X) | 168 (B+C) | 455 |
+| CD level | Target   | Scalar     | Imaginary (=Assoc) | Zero      | Total |
+| -------- | -------- | ---------- | ------------------ | --------- | ----- |
+| S -> O   | Octonion | 42 (Fano)  | 168 (non-Fano)     | 0         | 210   |
+| P -> S   | Sedenion | 35 (assoc) | 252 (Type X)       | 168 (B+C) | 455   |
 
 The 168 zero m3 at the pathion level = Wilmot Type B (84) + Type C (84).
 This is a UNIVERSAL structural theorem connecting homotopy transfer to
 the Wilmot non-associativity classification.
 
 **KEY RESULT (octonion level)**: m3 decomposes into two components:
+
 - **Non-Fano triples (168)**: m3(x,y,z) = Assoc(x,y,z) EXACTLY (ratio 1.0)
   where Assoc = (xy)z - x(yz) is the octonionic associator
 - **Fano triples (42)**: m3(x,y,z) = +/-2 e_0 (scalar), while Assoc = 0
@@ -1830,6 +1858,7 @@ GROWS, not converges. The A-infinity structure is genuinely infinite.
 ### m4-Zero Classification: Fano Incidence Hierarchy
 
 Complete classification of C(7,4) = 35 four-element sets:
+
 - **28 sets with exactly 1 Fano sub-triple**: m4 = 0 for 6/24 orderings
   (those where the Fano triple occupies positions 1-3)
 - **7 sets with 0 Fano sub-triples** ("co-Fano"): m4 nonzero for ALL
@@ -1910,6 +1939,7 @@ magnitudes, hence different Archimedean classes), then the product is
 nonzero. Zero divisors REQUIRE equal-magnitude coefficients.
 
 This means:
+
 - Over R: the ZD variety is a single connected 14D manifold (Reggiani G_2)
 - Over No: it stratifies into infinitely many copies, one per Archimedean class
 - Cross-class ZDs do not exist
@@ -1952,13 +1982,13 @@ and fp_norm_sq for explicit computation.
 
 Five precision tiers are operational for CD algebra computation:
 
-| Tier | Method | Precision | Key claim |
-|------|--------|-----------|-----------|
-| x87 FP-80 oracle | 80-bit accumulation | ~18.5 digits | C-1518 |
-| x87 FTST exact zero | No epsilon threshold | Exact IEEE | C-1514 |
-| Dual-pipe verified | x87 validates f64 | Flagged divergence | C-1519 |
-| FMA single-rounding | VFMADD231PD | Half ULP | C-1516 |
-| i8 SignTableI8 | SIMD-ready layout | Exact integer | C-1515 |
+| Tier                | Method               | Precision          | Key claim |
+| ------------------- | -------------------- | ------------------ | --------- |
+| x87 FP-80 oracle    | 80-bit accumulation  | ~18.5 digits       | C-1518    |
+| x87 FTST exact zero | No epsilon threshold | Exact IEEE         | C-1514    |
+| Dual-pipe verified  | x87 validates f64    | Flagged divergence | C-1519    |
+| FMA single-rounding | VFMADD231PD          | Half ULP           | C-1516    |
+| i8 SignTableI8      | SIMD-ready layout    | Exact integer      | C-1515    |
 
 CacheHierarchy auto-detects L1d/L2/L3/L4 via CPUID (C-1517).
 bitvec 1.0 integrated into SignTable and SplitSignTable.
@@ -2002,11 +2032,11 @@ by 2.3x, constraining its 42->6 block assignment.
 **Outcome: CORROBORATED WITH CAVEAT** (evid E -- exact integer computation)
 
 The index structure O1/O2/O3 (each = dim/4 exclusive indices), shared = dim/4,
-was tested at dim=16, 32, 64, 128, 256.  The formula holds EXACTLY at every
-tested dimension.  Fano-like triples: 7 -> 35 -> 155 -> 651 (dim/4 - 1 shared).
+was tested at dim=16, 32, 64, 128, 256. The formula holds EXACTLY at every
+tested dimension. Fano-like triples: 7 -> 35 -> 155 -> 651 (dim/4 - 1 shared).
 
 **Caveat -- active vs inheritance**: Psi is an ORDER-3 automorphism at dim=16
-(by Gourlay/Gresnigt construction).  At dim=32+ the psi action is inherited by
+(by Gourlay/Gresnigt construction). At dim=32+ the psi action is inherited by
 index replication, not by a new order-3 automorphism acting on the full algebra.
 The generation INDEX PATTERN persists; the psi MECHANISM is dim=16-specific.
 
@@ -2020,14 +2050,16 @@ See: `surreal_algebra/src/surreal_cd.rs::test_generation_falsification_64_128_25
 
 **Mixing angles (Bin 2, evid B)**:
 All three PMNS angles sit inside NuFit 6.0 1-sigma (NO + SK atmospheric):
+
 - theta_12 = 33.36 deg vs NuFit 33.41 (pull = -0.067, inside 1-sigma)
 - theta_13 = 8.54 deg vs NuFit 8.54 (pull = 0.000)
 - theta_23 = 48.99 deg vs NuFit 49.0 (pull = -0.009)
 
 **CP phase (Bin 3, evid F -- FALSIFICATION TARGETS)**:
-- CP-A (~165 deg): INSIDE NuFit 1-sigma [138, 258].  DUNE reach ~3.5 sigma.
-- CP-B (~93 deg): OUTSIDE NuFit 1-sigma (maximal CP).  DUNE reach ~5 sigma.
-- Both values are falsification targets.  DUNE/HyperK will resolve.
+
+- CP-A (~165 deg): INSIDE NuFit 1-sigma [138, 258]. DUNE reach ~3.5 sigma.
+- CP-B (~93 deg): OUTSIDE NuFit 1-sigma (maximal CP). DUNE reach ~5 sigma.
+- Both values are falsification targets. DUNE/HyperK will resolve.
 - JUNO: mass ordering + dm^2 precision ONLY -- not sensitive to delta_CP.
 
 See: `algebra_experimental/src/experimental_predictions.rs`
@@ -2035,17 +2067,18 @@ See: `algebra_experimental/src/experimental_predictions.rs`
 ### Phase D: Associator Flux Quantization Scaling (2026-03-23)
 
 **Scaling (evid E -- exact)**: The count formula
-  n_0 = dim/2-dim/8-1, n_1 = dim/2, n_sqrt2 = dim/8
+n_0 = dim/2-dim/8-1, n_1 = dim/2, n_sqrt2 = dim/8
 holds EXACTLY at dim = 16, 32, 64, 128, 256, 512, 1024.
 
 **Null baseline results**:
+
 - Permutation: level set CHANGES to {0,1,sqrt2,sqrt3,2} (CD not permutation-invariant)
 - Random signs: level names survive but counts DIFFER from CD formula
 - Commutative XOR: all-zero (XOR is associative -- expected)
 
 **Casimir comparison (evid H -- heuristic)**:
 No exceptional group (G2, F4, E6, E7, E8) dimension or Casimir eigenvalue
-matches the flux count formula directly.  The level names {1, sqrt(2)} coincide
+matches the flux count formula directly. The level names {1, sqrt(2)} coincide
 with root norms in G2 and B2, but this likely reflects the sparse ±{0,1,2}
 witness arithmetic rather than exceptional Lie structure.
 
@@ -2134,6 +2167,7 @@ C-1487: SU(5)/SU(3) cross-validation: sum f_{abc}^2 = 24 for both embeddings
 C-1488: Real-part projection: e_0 component is unique commutative-associative scalar
 
 **Subalgebra and subloop structure:**
+
 - Cawagas et al. (2009): "Trigintaduonion subalgebra structure" [arXiv:0907.2047]
   32D pathion loop T_L: 373 non-trivial subloops. Full 32x32 multiplication table.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf
@@ -2143,6 +2177,7 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/CawagasMatimyas.pdf
 
 **Annihilator and zero divisor theory:**
+
 - Biss, Christensen, Dugger, Isaksen (2007): "Large annihilators in CD algebras II" [arXiv:math/0702075]
   Codimension-4 splitting simplifies multiplication. Theorem 5.10: annihilator dimension formula.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/0702075v2.pdf
@@ -2156,12 +2191,14 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/0804.3416v2.pdf
 
 **Sedenionic matrix algebra:**
+
 - Gursoy & Bektas (2024): "Sedenionic matrices and their properties" [GUJS 14(3)]
   Matrix algebra with sedenion coefficients. Addition, multiplication, conjugation, transpose.
   Vector space over R/C, module structure over quaternions.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/10.17714-gumusfenbil.1415410-3642320.pdf
 
 **Octonionic gauge theory:**
+
 - Chanyal, Sharma, Negi (2015): "Octonionic gravi-electromagnetism and dark matter" [arXiv:1502.05293]
   Split octonion gauge formulation for SU(2)xU(1) and SU(3)xSU(2)xU(1). Dark matter field equations.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf
@@ -2174,6 +2211,7 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Quantized Poisson bracket from algebra-operator interaction on loop space.
 
 **Subalgebra classification and alternativity:**
+
 - Chan & Dokovic (2018): "Conjugacy classes of subalgebras of the real sedenions" [Cambridge]
   Complete classification of sedenion subalgebra conjugacy classes.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/chan_dokovic_conjugacy_sedenion_subalgebras.pdf
@@ -2184,6 +2222,7 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/biss_2009_0905.2987_alternativity_fails_cd.pdf
 
 **Alternative algebraic constructions:**
+
 - Flaut (2021): "Twisted group algebra structure for CD algebras" [arXiv:2103.12805]
   CD algebras as twisted group algebras over Z_2^n.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/flaut_2021_2103.12805_twisted_group_algebra_cd.pdf
@@ -2193,11 +2232,13 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/arxiv_2401.01166_sedenion_like_associative.pdf
 
 **Annihilator / eigentheory / alternativity (Biss-Dugger-Isaksen sequence):**
+
 - Biss, Dugger, Isaksen (2005): "Large annihilators in CD algebras" [arXiv:math/0511691]
   Part I -- predecessor to the already-listed Part II. Extremal zero-divisor bounds.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/biss_2005_math0511691_large_annihilators_I.pdf
 
 **Loop automorphisms and structure:**
+
 - Kirshtein (2011): "Automorphism groups of Cayley-Dickson loops" [arXiv:1102.5151]
   Loop automorphism structure across the CD tower.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/kirshtein_2011_1102.5151_automorphism_groups_cd_loops.pdf
@@ -2207,17 +2248,20 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/culbert_2007_cd_algebras_and_loops.pdf
 
 **Zero-divisor orthogonality and graph structure:**
+
 - Zhilina (2021): "Orthogonality graphs of real CD algebras I: doubly alternative ZDs" [arXiv:2106.00926]
   Zero-divisor graph structure, hexagon patterns. Directly relevant to incidence analysis.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/zhilina_2021_orthogonality_graphs_cd.pdf
 
 **Sedenion physics (Gillard-Gresnigt precursor):**
+
 - Gillard & Gresnigt (2019): "Three fermion generations with two unbroken gauge symmetries
   from the complex sedenions" [arXiv:1904.03186]
   Complex sedenions for fermion generations. Precursor to Gresnigt-Gourlay-Varma 2023.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/gillard_gresnigt_2019_1904.03186_three_fermion_complex_sedenions.pdf
 
 **Broader CD algebra theory:**
+
 - Darpo (2020): "CD algebras of dimension >= 4 with isotropic norm" [arXiv:1608.04898]
   Nondivision/isotropic regime above octonions. General CD structure.
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/darpo_2020_1608.04898_cd_isotropic_norm.pdf
@@ -2228,6 +2272,7 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/*/chapman_2022_2205.05605_roots_polynomials_cd.pdf
 
 **Formerly paywalled (now acquired):**
+
 - Imaeda & Imaeda (2000): "Sedenions: algebra and analysis" [Appl. Math. Comp. 115:77-88]
   Foundational sedenion paper. DOI: 10.1016/S0096-3003(99)00140-X
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/imaeda_2000_sedenions_algebra_analysis.pdf
@@ -2244,6 +2289,7 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
   Local: ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/adjacent/cariow_2013_fast_sedenion_multiplication.pdf
 
 **Paywalled (chase via ILL or author contact):**
+
 - Eakin & Sathaye (1990): "Automorphisms and derivations of CD algebras" [J. Algebra 129]
   DOI: 10.1016/0021-8693(90)90221-9
 
@@ -2255,35 +2301,35 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 
 ### Doubling Tower (named algebras)
 
-| Dim | Name | arXiv/de Marrais name | Properties Lost at This Level |
-|-----|------|----------------------|-------------------------------|
-| 1   | Reals (R) | -- | -- |
-| 2   | Complex numbers (C) | -- | Ordering |
-| 4   | Quaternions (H) | -- | Commutativity |
-| 8   | Octonions (O) | -- | Associativity |
-| 16  | Sedenions (S) | -- | Alternativity, norm multiplicativity |
-| 32  | Pathions / Trigintaduonions (T) | 2^5-ions | Power-associativity |
-| 64  | Chingons | 2^6-ions | Flexibility |
-| 128 | Routons | 2^7-ions | (purely multiplicative) |
-| 256 | Voudons | 2^8-ions | (purely multiplicative) |
-| 512 | Eriston | 2^9-ions | -- |
-| 1024 | DekaVoudon | 2^10-ions | -- |
-| 16384 | Tessareskaidekavoudon | 2^14-ions | -- |
+| Dim   | Name                            | arXiv/de Marrais name | Properties Lost at This Level        |
+| ----- | ------------------------------- | --------------------- | ------------------------------------ |
+| 1     | Reals (R)                       | --                    | --                                   |
+| 2     | Complex numbers (C)             | --                    | Ordering                             |
+| 4     | Quaternions (H)                 | --                    | Commutativity                        |
+| 8     | Octonions (O)                   | --                    | Associativity                        |
+| 16    | Sedenions (S)                   | --                    | Alternativity, norm multiplicativity |
+| 32    | Pathions / Trigintaduonions (T) | 2^5-ions              | Power-associativity                  |
+| 64    | Chingons                        | 2^6-ions              | Flexibility                          |
+| 128   | Routons                         | 2^7-ions              | (purely multiplicative)              |
+| 256   | Voudons                         | 2^8-ions              | (purely multiplicative)              |
+| 512   | Eriston                         | 2^9-ions              | --                                   |
+| 1024  | DekaVoudon                      | 2^10-ions             | --                                   |
+| 16384 | Tessareskaidekavoudon           | 2^14-ions             | --                                   |
 
 ### Key Structural Concepts
 
 **Zero divisors**: Elements a,b != 0 with a*b = 0. First appear at 16D (sedenions).
-  84 standard ZDs in sedenions (Moreno 1997, Reggiani 2024).
-  ZD set Z(S) homeomorphic to G2 (Reggiani 2024).
+84 standard ZDs in sedenions (Moreno 1997, Reggiani 2024).
+ZD set Z(S) homeomorphic to G2 (Reggiani 2024).
 
 **Box-kites**: Octahedral vertex figures organizing ZD geometry (de Marrais 2000).
-  7 box-kites in sedenions, each with 6 assessor vertices.
+7 box-kites in sedenions, each with 6 assessor vertices.
 
 **Assessors**: The 42 diagonal axis-pair systems of ZDs in 16D (de Marrais 2000).
-  Each assessor pair (low, high) with low in 1..7, high in 9..15.
+Each assessor pair (low, high) with low in 1..7, high in 9..15.
 
 **Emanation tables**: Systematic ZD-pair organization within box-kites (de Marrais 2006).
-  72 emanation tables in pathions (32D).
+72 emanation tables in pathions (32D).
 
 **Sand mandalas**: Recursive ZD organization patterns in higher CD algebras (de Marrais 2002).
 
@@ -2292,17 +2338,17 @@ C-1488: Real-part projection: e_0 component is unique commutative-associative sc
 **Quasi-octonion**: A non-standard 8D subalgebra of sedenions containing ZDs (Cawagas 2005).
 
 **Fano plane**: PG(2,2), the projective plane of order 2. Encodes octonion multiplication.
-  7 points, 7 lines, 3 points per line, 3 lines per point.
-  Automorphism group: PSL(2,7) of order 168.
+7 points, 7 lines, 3 points per line, 3 lines per point.
+Automorphism group: PSL(2,7) of order 168.
 
 **Complex structure J_k**: Left-multiplication by e_k on e_k^perp defines C^3 structure.
-  3 Fano-derived complex lines per fixed imaginary unit (PR1 g2_stabilizer.rs).
+3 Fano-derived complex lines per fixed imaginary unit (PR1 g2_stabilizer.rs).
 
 **Psi automorphism**: Order-3 S3 generator cycling O_1->O_2->O_3.
-  Overlap ratio cos(2*pi/3) = -0.5 for all generation pairs.
+Overlap ratio cos(2*pi/3) = -0.5 for all generation pairs.
 
 **Epsilon automorphism**: Order-2 parity flip on upper octonion block [8..15].
-  Splits SU(5) into SU(3) + leptoquark sectors.
+Splits SU(5) into SU(3) + leptoquark sectors.
 
 ### Universal CD Law Class
 
@@ -2321,12 +2367,12 @@ should treat as authoritative.
 
 ### Zero Divisor Counts by Dimension
 
-| Dim | Standard ZDs | Annihilator dim range | Source |
-|-----|-------------|----------------------|--------|
-| 8   | 0 | -- | Hurwitz |
-| 16  | 84 | 4 | Moreno 1997, Cawagas 2004 |
-| 32  | 252+ | 4-8 | de Marrais 2002 |
-| 64  | multiples of 84 | -- | Wilmot 2026 |
+| Dim | Standard ZDs    | Annihilator dim range | Source                    |
+| --- | --------------- | --------------------- | ------------------------- |
+| 8   | 0               | --                    | Hurwitz                   |
+| 16  | 84              | 4                     | Moreno 1997, Cawagas 2004 |
+| 32  | 252+            | 4-8                   | de Marrais 2002           |
+| 64  | multiples of 84 | --                    | Wilmot 2026               |
 
 ### Foundational papers added from gap-fill audit
 
@@ -2801,10 +2847,12 @@ claims we should trust and which search lanes are worth burning time on.
 The following citations were corrected or added during the research expansion:
 
 **CORRECTED -- wrong arXiv previously used:**
+
 - T2K+NOvA joint (2025): arXiv:2510.19888 / Nature 646, 818-824 (was: 2405.12360)
 - math/0702075: "Large annihilators in Cayley-Dickson algebras II" (not "Theory of 2^n-ions")
 
 **ADDED -- previously missing:**
+
 - DUNE TDR physics volume: arXiv:2002.03005. CP sensitivity shown as CONTOURS, not single sigma.
 - Hyper-K Design Report: arXiv:1805.04163
 - JUNO Yellow Book: arXiv:1507.05613 (mass ordering only -- NOT sensitive to delta_CP)
@@ -2815,7 +2863,7 @@ The following citations were corrected or added during the research expansion:
 **STATUS of g-2 claim**: The 2021 "g-2 anomaly" is NO LONGER a strong discrepancy.
 Delta_a_mu = 38(63) x 10^-11 (2025 Theory WP) is compatible within uncertainties.
 Any text in this document referencing "the muon g-2 anomaly" should be read as
-historical framing only.  The G_2 structural estimate for sin^2(theta_W) = 0.250
+historical framing only. The G_2 structural estimate for sin^2(theta_W) = 0.250
 (evid H, heuristic) is analogous and stands independently of the g-2 situation.
 
 All new bibliography entries are at BIB-0435 through BIB-0442 in registry/bibliography.toml.

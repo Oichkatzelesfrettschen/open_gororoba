@@ -16,20 +16,20 @@ Priority rule:
 
 ## Ranked paper queue
 
-| Rank | Paper family | Source status | Current repo landing | Next concrete tranche | Blocker |
-|------|--------------|---------------|----------------------|-----------------------|---------|
-| 1 | Hurwitz 1898 | exact source on disk | paired Rust + Rocq | extend from fixed-point / composition lane to fuller all-`n` converse and matrix classification surface | proof |
-| 2 | Wedderburn 1914 | exact source on disk | Rocq paper surface | lift beyond the landed `n=2` cyclic/matric surfaces to the broader all-`n` primitive/matric theorem layer | proof |
-| 3 | Dickson 1921 | exact source on disk | Rocq paper surface | extend the landed presentation-to-obstruction surfaces to fuller field-abstract obstruction semantics | proof |
-| 4 | Dickson 1919 | exact source on disk | paired Rust + Rocq | strengthen the constructive tower/presentation handoff into the 1921 obstruction lane | proof |
-| 5 | Dickson 1906 / 1912 / 1914 | exact / near-exact packets on disk | tracker + cache dossiers | split the early Dickson papers into explicit theorem lanes instead of leaving them as source cache only | proof + tracker |
-| 6 | Zorn 1935 | source on disk | tracker only | create a paper lane for alternative / composition-adjacent structural results | proof |
-| 7 | Jacobson 1939 | source on disk | tracker only | create a paper lane for pre-Schafer structural algebra results relevant to derivations and isotopes | proof |
-| 8 | Albert 1942 | source on disk | tracker only | isolate the pre-Schafer structural results that feed later Brown / Schafer semantics | proof |
-| 9 | Schafer 1945 | source on disk | paired Rust + Rocq | keep as completed predecessor lane; only refresh if Brown Chapter III/IV needs new references | low |
-| 10 | Euler 1770 | source on disk | reference only | add a short provenance-backed chronology distillation row and, if useful, a sums-of-squares companion note | tracker |
-| 11 | Degen 1818 | source on disk | reference only | add a short provenance-backed chronology distillation row and eight-square predecessor note | tracker |
-| 12 | Hamilton / Graves / Cayley / Cockle 1835-1866 | source packet family on disk | reference only | distill into a single precursor-chain report plus a small chronology update, not a theorem lane | tracker |
+| Rank | Paper family                                  | Source status                      | Current repo landing     | Next concrete tranche                                                                                      | Blocker         |
+| ---- | --------------------------------------------- | ---------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------- | --------------- |
+| 1    | Hurwitz 1898                                  | exact source on disk               | paired Rust + Rocq       | extend from fixed-point / composition lane to fuller all-`n` converse and matrix classification surface    | proof           |
+| 2    | Wedderburn 1914                               | exact source on disk               | Rocq paper surface       | lift beyond the landed `n=2` cyclic/matric surfaces to the broader all-`n` primitive/matric theorem layer  | proof           |
+| 3    | Dickson 1921                                  | exact source on disk               | Rocq paper surface       | extend the landed presentation-to-obstruction surfaces to fuller field-abstract obstruction semantics      | proof           |
+| 4    | Dickson 1919                                  | exact source on disk               | paired Rust + Rocq       | strengthen the constructive tower/presentation handoff into the 1921 obstruction lane                      | proof           |
+| 5    | Dickson 1906 / 1912 / 1914                    | exact / near-exact packets on disk | tracker + cache dossiers | split the early Dickson papers into explicit theorem lanes instead of leaving them as source cache only    | proof + tracker |
+| 6    | Zorn 1935                                     | source on disk                     | tracker only             | create a paper lane for alternative / composition-adjacent structural results                              | proof           |
+| 7    | Jacobson 1939                                 | source on disk                     | tracker only             | create a paper lane for pre-Schafer structural algebra results relevant to derivations and isotopes        | proof           |
+| 8    | Albert 1942                                   | source on disk                     | tracker only             | isolate the pre-Schafer structural results that feed later Brown / Schafer semantics                       | proof           |
+| 9    | Schafer 1945                                  | source on disk                     | paired Rust + Rocq       | keep as completed predecessor lane; only refresh if Brown Chapter III/IV needs new references              | low             |
+| 10   | Euler 1770                                    | source on disk                     | reference only           | add a short provenance-backed chronology distillation row and, if useful, a sums-of-squares companion note | tracker         |
+| 11   | Degen 1818                                    | source on disk                     | reference only           | add a short provenance-backed chronology distillation row and eight-square predecessor note                | tracker         |
+| 12   | Hamilton / Graves / Cayley / Cockle 1835-1866 | source packet family on disk       | reference only           | distill into a single precursor-chain report plus a small chronology update, not a theorem lane            | tracker         |
 
 ## Immediate theorem-lane order after the current Brown dissertation tranche
 

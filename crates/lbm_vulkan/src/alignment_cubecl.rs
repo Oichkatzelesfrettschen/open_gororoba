@@ -11,11 +11,11 @@
 //! Input layout (all flat arrays):
 //!   vectors:      f32[n_vectors * 16]   -- sedenion components, row-major
 //!   orientations: u32[n_orientations * 16]   -- permutation table
-//!   bk_basis:     u32[84]  -- 7 box-kites * 12 unique basis indices each
+//!   bk_basis:     `u32[84]`  -- 7 box-kites * 12 unique basis indices each
 //! Intermediate (GPU):
 //!   out_scores:   f32[n_vectors * n_orientations]  -- max bk weight per pair
 //! Output (host argmax):
-//!   (max_align, best_orient): (Vec<f32>, Vec<u32>) per vector
+//!   (max_align, best_orient): (`Vec<f32>`, `Vec<u32>`) per vector
 //!
 //! Kernel design: one thread per (vector, orientation) pair.  The 7 * 12 = 84
 //! basis reads and the 16 norm components are unrolled as immutable let bindings
@@ -74,7 +74,13 @@ pub fn box_kite_score_kernel(
     let c13 = vectors[v_off + 13usize];
     let c14 = vectors[v_off + 14usize];
     let c15 = vectors[v_off + 15usize];
-    let norm_sq = c0 * c0 + c1 * c1 + c2 * c2 + c3 * c3 + c4 * c4 + c5 * c5 + c6 * c6
+    let norm_sq = c0 * c0
+        + c1 * c1
+        + c2 * c2
+        + c3 * c3
+        + c4 * c4
+        + c5 * c5
+        + c6 * c6
         + c7 * c7
         + c8 * c8
         + c9 * c9
@@ -358,7 +364,10 @@ pub fn box_kite_score_kernel(
     // Max over 7 box-kites via f32::max chains (no mutable accumulator).
     let max_raw = f32::max(
         k0w,
-        f32::max(k1w, f32::max(k2w, f32::max(k3w, f32::max(k4w, f32::max(k5w, k6w))))),
+        f32::max(
+            k1w,
+            f32::max(k2w, f32::max(k3w, f32::max(k4w, f32::max(k5w, k6w)))),
+        ),
     );
     out_scores[pair_idx] = max_raw * inv_norm_sq;
 }
@@ -408,7 +417,9 @@ pub fn box_kite_alignment_scan_cubecl(
         });
     }
     if bk_basis.len() != 84 {
-        return Err(CubeclAlignmentError::BkBasisWrongLength { got: bk_basis.len() });
+        return Err(CubeclAlignmentError::BkBasisWrongLength {
+            got: bk_basis.len(),
+        });
     }
 
     let n_vectors = vectors.len() / 16;

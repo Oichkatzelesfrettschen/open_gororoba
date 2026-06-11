@@ -16,11 +16,12 @@
 
 #![cfg(feature = "cubecl")]
 
-use lbm_3d::lattice::D3Q19Lattice;
-use lbm_3d::solver::LbmSolver3D;
+use lbm_3d::{lattice::D3Q19Lattice, solver::LbmSolver3D};
 use lbm_vulkan::lbm_d3q19_cubecl::{evolve_d3q19_cubecl, is_available};
-use rand::SeedableRng;
-use rand::distr::{Distribution, Uniform};
+use rand::{
+    SeedableRng,
+    distr::{Distribution, Uniform},
+};
 use rand_chacha::ChaCha20Rng;
 
 const NX: usize = 16;
@@ -107,7 +108,11 @@ fn cpu_vs_cubecl_parity_16cubed_10steps() {
         let cpu_rho = cpu.rho[cell];
         let gpu_rho = r as f64;
         let cpu_u = cpu.u[cell];
-        let gpu_u = [(mx * inv_r) as f64, (my * inv_r) as f64, (mz * inv_r) as f64];
+        let gpu_u = [
+            (mx * inv_r) as f64,
+            (my * inv_r) as f64,
+            (mz * inv_r) as f64,
+        ];
 
         let rho_err = (cpu_rho - gpu_rho).abs();
         let rho_rel = rho_err / cpu_rho.abs().max(1e-12);

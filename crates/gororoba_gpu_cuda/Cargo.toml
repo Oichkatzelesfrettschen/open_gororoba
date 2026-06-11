@@ -11,9 +11,9 @@ gororoba_gpu_bridge = { workspace = true }
 gororoba_optix = { workspace = true }
 
 cudarc = { workspace = true, optional = true }
+log = { workspace = true, optional = true }
 nvml-wrapper = { workspace = true, optional = true }
 thiserror = { workspace = true, optional = true }
-log = { workspace = true, optional = true }
 
 [features]
 default = []

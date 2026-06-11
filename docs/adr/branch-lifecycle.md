@@ -11,10 +11,10 @@ ends without merging or deleting the branch ref.
 At the start of the elucidate-and-build-out-nested-hollerith plan
 (2026-04-30, baseline `970b4da3`) two such branches existed:
 
-| Branch                      | SHA       |
-|-----------------------------|-----------|
-| `worktree-agent-ac02ad93`   | `b0fb87d6` |
-| `worktree-agent-afe06576`   | `b0fb87d6` |
+| Branch                    | SHA        |
+| ------------------------- | ---------- |
+| `worktree-agent-ac02ad93` | `b0fb87d6` |
+| `worktree-agent-afe06576` | `b0fb87d6` |
 
 Both pointed to `b0fb87d6`, an ancestor of the then-current main.
 Zero unique commits relative to main; no worktree checked out at

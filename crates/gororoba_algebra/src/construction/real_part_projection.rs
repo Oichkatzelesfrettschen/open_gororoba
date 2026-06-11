@@ -7,7 +7,7 @@
 //! This module provides pure algebraic operations for extracting and analyzing
 //! the real (e_0) component of CD algebra elements and operators.
 //!
-//! Basis ordering convention: elements are stored as [e_0, e_1, ..., e_{n-1}]
+//! Basis ordering convention: elements are stored as `[e_0, e_1, ..., e_{n-1}]`
 //! where index 0 is the real part.
 
 /// Extract the real (e_0) component of a CD algebra element.
@@ -27,7 +27,7 @@ pub fn project(element: &[f64]) -> f64 {
 /// Compute the scalar fraction: |e_0 component|^2 / |full element|^2.
 ///
 /// Returns the fraction of the element's norm-squared that lives in the
-/// real (e_0) direction. Bounded in [0, 1].
+/// real (e_0) direction. Bounded in `[0, 1]`.
 ///
 /// Returns 0.0 if the element is the zero vector.
 pub fn scalar_fraction(element: &[f64]) -> f64 {

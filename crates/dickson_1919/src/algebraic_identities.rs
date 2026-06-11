@@ -66,7 +66,7 @@ pub fn norm_conjugate_error(x: &[f64]) -> f64 {
 
 /// Check the quadratic identity: x^2 - t(x)*x + n(x)*1 = 0.
 /// Schafer (1961) Ch III, eq.25.
-/// Where t(x) = 2*x[0] (trace) and n(x) = ||x||^2 (norm).
+/// Where `t(x) = 2*x[0]` (trace) and `n(x) = ||x||^2` (norm).
 pub fn quadratic_identity_error(x: &[f64]) -> f64 {
     let x2 = cd_multiply(x, x);
     let trace = 2.0 * x[0];

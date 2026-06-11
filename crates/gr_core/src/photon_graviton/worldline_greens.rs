@@ -1,7 +1,7 @@
 //! Worldline Green's functions on the circle.
 //!
 //! These are the fundamental building blocks for one-loop amplitudes in the
-//! worldline formalism. The worldline is parametrized by tau in [0, T] with
+//! worldline formalism. The worldline is parametrized by tau in `[0, T]` with
 //! periodic boundary conditions. The Green's function G_B(tau_1, tau_2) is
 //! the propagator on this circle, modified by the constant background field.
 //!
@@ -20,7 +20,7 @@
 ///
 /// # Arguments
 /// * `z` -- dimensionless field parameter eB*T
-/// * `u` -- worldline modulus in [0, 1], with v = 1-2u
+/// * `u` -- worldline modulus in `[0, 1]`, with v = 1-2u
 pub fn sb12(z: f64, u: f64) -> f64 {
     let v = 1.0 - 2.0 * u;
     if z.abs() < 1e-10 {
@@ -45,7 +45,7 @@ pub fn sb12(z: f64, u: f64) -> f64 {
 ///
 /// # Arguments
 /// * `z` -- dimensionless field parameter eB*T (must be > 0 for the 1/z term)
-/// * `u` -- worldline modulus in [0, 1]
+/// * `u` -- worldline modulus in `[0, 1]`
 pub fn ab12(z: f64, u: f64) -> f64 {
     let v = 1.0 - 2.0 * u;
     if z.abs() < 1e-10 {
@@ -80,7 +80,7 @@ pub fn ab_coincidence(z: f64) -> f64 {
 ///
 /// # Arguments
 /// * `z` -- dimensionless field parameter eB*T
-/// * `u` -- worldline modulus in [0, 1]
+/// * `u` -- worldline modulus in `[0, 1]`
 pub fn sf12(z: f64, u: f64) -> f64 {
     let v = 1.0 - 2.0 * u;
     if z.abs() < 1e-10 {
@@ -150,7 +150,7 @@ pub fn ab12_dot(z: f64, u: f64) -> f64 {
 /// vacuum polarization integrand.
 ///
 /// For a pure magnetic field along z with photon 4-momentum
-/// k = omega * (sin(theta), 0, cos(theta), i) [Euclidean]:
+/// k = omega * (sin(theta), 0, cos(theta), i) `[Euclidean]`:
 ///
 /// k . Phi_B . k = omega^2 * sin^2(theta) * (u(1-u) - SB12^2/(4z)) * T
 ///

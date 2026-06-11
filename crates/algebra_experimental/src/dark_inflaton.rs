@@ -67,7 +67,7 @@ pub fn lorentz_boost(state: &QuantumState, rapidity: f64, direction: [f64; 3]) -
 /// Generate a random SO(3) rotation matrix from 3 standard normal samples.
 ///
 /// Uses the exponential map: sample a random axis-angle vector,
-/// then compute exp(theta * [n]_x) via Rodrigues' formula.
+/// then compute `exp(theta * [n]_x)` via Rodrigues' formula.
 fn random_so3(rng: &mut ChaCha8Rng) -> [[f64; 3]; 3] {
     let normal = StandardNormal;
     let v: [f64; 3] = [normal.sample(rng), normal.sample(rng), normal.sample(rng)];

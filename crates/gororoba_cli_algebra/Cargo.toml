@@ -1,10 +1,10 @@
 [package]
 name = "gororoba_cli_algebra"
 version = "0.1.0"
-edition = { workspace = true }
-description = "Algebra domain CLI binaries for gororoba"
-license = "MIT"
 autobins = false
+edition = { workspace = true }
+license = "MIT"
+description = "Algebra domain CLI binaries for gororoba"
 
 [[bin]]
 name = "zd-search"
@@ -184,26 +184,26 @@ path = "src/bin/structured_spectrum_bench.rs"
 
 [dependencies]
 algebra_analysis = { workspace = true }
-cd_kernel.workspace = true
-gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
 algebra_experimental = { workspace = true }
-gororoba_engine = { path = "../gororoba_engine" }
-spectral_core = { path = "../spectral_core" }
-stats_core = { path = "../stats_core" }
+anyhow.workspace = true
+cd_kernel.workspace = true
 clap = { workspace = true }
 csv = { workspace = true }
 env_logger = { workspace = true }
+flate2 = { workspace = true }
+glob.workspace = true
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
+gororoba_engine = { path = "../gororoba_engine" }
+hdf5-metno = "0.12.4"
+rand.workspace = true
+rand_chacha.workspace = true
+serde = { workspace = true }
+serde_json = { workspace = true }
+spectral_core = { path = "../spectral_core" }
+stats_core = { path = "../stats_core" }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 tracing-tracy = { workspace = true, optional = true }
-rand.workspace = true
-rand_chacha.workspace = true
-anyhow.workspace = true
-flate2 = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
-hdf5-metno = "0.12.4"
-glob.workspace = true
 
 [features]
 default = []

@@ -2,8 +2,8 @@
 name = "de_marrais_2000"
 version = "0.1.0"
 edition = { workspace = true }
-description = "de Marrais (2000) -- The 42 Assessors and the Box-Kites they fly"
 license = "GPL-2.0-or-later"
+description = "de Marrais (2000) -- The 42 Assessors and the Box-Kites they fly"
 
 # Source: R.P.C. de Marrais (2000),
 #   "The 42 Assessors and the Box-Kites they fly:

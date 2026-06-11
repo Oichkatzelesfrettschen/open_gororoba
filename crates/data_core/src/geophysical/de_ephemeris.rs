@@ -4,7 +4,7 @@
 //! spacecraft navigation and high-accuracy solar-system dynamics.
 //!
 //! Source: NAIF/JPL
-//! https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/
+//! <https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/>
 
 use crate::fetcher::FetchError;
 use std::path::Path;

@@ -9,14 +9,9 @@
 //! validation provides 5x speedup over CPU.
 
 #[cfg(feature = "gpu")]
-use cudarc::driver::{CudaContext, LaunchConfig, PushKernelArg};
+use cudarc::driver::PushKernelArg;
 #[cfg(feature = "gpu")]
-use cudarc::nvrtc::compile_ptx;
-#[cfg(feature = "gpu")]
-use std::sync::Arc;
-
-#[cfg(not(feature = "gpu"))]
-use std::sync::Arc;
+use gororoba_gpu_cuda::{Buffer, CompileOptions, LaunchConfig, ModuleRegistry};
 
 /// NVRTC CUDA kernel source for parallel edge validation.
 #[cfg(feature = "gpu")]
@@ -125,65 +120,86 @@ impl ImbalanceGpu {
             }
         }
 
-        // Phase 2: GPU parallel edge validation
-        let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
-        let stream = ctx.default_stream();
-
-        let ptx = compile_ptx(IMBALANCE_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
-
-        let module = ctx
-            .load_module(ptx)
-            .map_err(|e| format!("Module load: {}", e))?;
-
-        let kernel = module
-            .load_function("validate_edges_parallel")
-            .map_err(|e| format!("Kernel load: {}", e))?;
-
         let n_edges = edges.len();
+        if n_edges == 0 {
+            return Self::compute_imbalance_cpu(edges, n_nodes, eta_values);
+        }
+        if eta_values.len() < n_edges {
+            return Err(format!(
+                "GPU imbalance requires eta for each edge: edges={}, eta={}",
+                n_edges,
+                eta_values.len()
+            ));
+        }
+        if let Some((edge_idx, &(u, v))) = edges
+            .iter()
+            .enumerate()
+            .find(|&(_, &(u, v))| u >= n_nodes || v >= n_nodes)
+        {
+            return Err(format!(
+                "GPU imbalance edge {} has endpoint outside node count: ({}, {}) >= {}",
+                edge_idx, u, v, n_nodes
+            ));
+        }
 
         // Convert edges to separate u/v arrays
-        let edge_u: Vec<u32> = edges.iter().map(|&(u, _)| u as u32).collect();
-        let edge_v: Vec<u32> = edges.iter().map(|&(_, v)| v as u32).collect();
+        let n_edges_u32 = u32::try_from(n_edges)
+            .map_err(|_| format!("Edge count exceeds CUDA u32 launch range: {}", n_edges))?;
+        let edge_u: Vec<u32> = edges
+            .iter()
+            .map(|&(u, _)| {
+                u32::try_from(u).map_err(|_| format!("Edge endpoint exceeds u32: {}", u))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        let edge_v: Vec<u32> = edges
+            .iter()
+            .map(|&(_, v)| {
+                u32::try_from(v).map_err(|_| format!("Edge endpoint exceeds u32: {}", v))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+
+        // Phase 2: GPU parallel edge validation
+        let ctx = gororoba_gpu_cuda::Context::with_default_device()
+            .map_err(|e| format!("CUDA init: {}", e))?;
+        let stream = ctx.default_stream();
+
+        let opts = CompileOptions::empty();
+        let ptx = CompileOptions::compile_ptx(IMBALANCE_KERNEL_SRC, &opts)
+            .map_err(|e| format!("NVRTC compile: {}", e))?;
+
+        let registry = ModuleRegistry::load(ctx.raw(), ptx, &["validate_edges_parallel"])
+            .map_err(|e| format!("Module load: {}", e))?;
+
+        let kernel = registry
+            .get("validate_edges_parallel")
+            .map_err(|e| format!("Kernel load: {}", e))?;
 
         // Upload to GPU
-        let edge_u_dev = stream
-            .clone_htod(&edge_u)
-            .map_err(|e| format!("Upload edge_u: {}", e))?;
+        let edge_u_dev =
+            Buffer::htod(&stream, &edge_u).map_err(|e| format!("Upload edge_u: {}", e))?;
 
-        let edge_v_dev = stream
-            .clone_htod(&edge_v)
-            .map_err(|e| format!("Upload edge_v: {}", e))?;
+        let edge_v_dev =
+            Buffer::htod(&stream, &edge_v).map_err(|e| format!("Upload edge_v: {}", e))?;
 
-        let eta_dev = stream
-            .clone_htod(eta_values)
-            .map_err(|e| format!("Upload eta: {}", e))?;
+        let eta_dev =
+            Buffer::htod(&stream, eta_values).map_err(|e| format!("Upload eta: {}", e))?;
 
-        let delta_dev = stream
-            .clone_htod(&delta)
-            .map_err(|e| format!("Upload delta: {}", e))?;
+        let delta_dev =
+            Buffer::htod(&stream, &delta).map_err(|e| format!("Upload delta: {}", e))?;
 
-        let mut frustrated_dev = stream
-            .alloc_zeros::<u32>(1)
+        let mut frustrated_dev = Buffer::<u32>::alloc_zeros(&stream, 1)
             .map_err(|e| format!("Alloc frustrated: {}", e))?;
 
         // Launch kernel
-        let block_size = 256u32;
-        let grid_size = (n_edges as u32).div_ceil(block_size);
-        let cfg = LaunchConfig {
-            grid_dim: (grid_size, 1, 1),
-            block_dim: (block_size, 1, 1),
-            shared_mem_bytes: 0,
-        };
-
-        let n_edges_u32 = n_edges as u32;
+        let cfg = LaunchConfig::launch_1d(n_edges_u32);
 
         let mut builder = stream.launch_builder(&kernel);
-        builder.arg(&edge_u_dev);
-        builder.arg(&edge_v_dev);
-        builder.arg(&eta_dev);
-        builder.arg(&delta_dev);
+        builder.arg(edge_u_dev.raw());
+        builder.arg(edge_v_dev.raw());
+        builder.arg(eta_dev.raw());
+        builder.arg(delta_dev.raw());
         builder.arg(&n_edges_u32);
-        builder.arg(&mut frustrated_dev);
+        builder.arg(frustrated_dev.raw_mut());
 
         unsafe {
             builder
@@ -192,8 +208,8 @@ impl ImbalanceGpu {
         }
 
         // Copy result
-        let frustrated_vec: Vec<u32> = stream
-            .clone_dtoh(&frustrated_dev)
+        let frustrated_vec: Vec<u32> = frustrated_dev
+            .dtoh_vec()
             .map_err(|e| format!("Copy frustrated: {}", e))?;
 
         let frustrated_count = frustrated_vec[0] as usize;

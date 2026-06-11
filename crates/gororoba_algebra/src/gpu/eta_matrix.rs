@@ -7,11 +7,9 @@
 //! The parallel XOR operations provide 20-100x speedup over CPU.
 
 #[cfg(feature = "gpu")]
-use cudarc::driver::{CudaContext, LaunchConfig, PushKernelArg};
+use cudarc::driver::PushKernelArg;
 #[cfg(feature = "gpu")]
-use cudarc::nvrtc::compile_ptx;
-#[cfg(feature = "gpu")]
-use std::sync::Arc;
+use gororoba_gpu_cuda::{Buffer, CompileOptions, LaunchConfig, ModuleRegistry};
 
 /// GPU-accelerated eta matrix computation.
 pub struct EtaMatrixGpu;
@@ -142,45 +140,43 @@ impl EtaMatrixGpu {
     /// the psi_fn parameter is not needed in the GPU path.
     #[cfg(feature = "gpu")]
     fn compute_eta_gpu(dim: usize) -> Result<Vec<u8>, String> {
-        let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
-        let stream = ctx.default_stream(); // Returns Arc<CudaStream>, not Result
+        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
+            .map_err(|e| format!("CUDA init: {}", e))?;
+        let stream = ctx_wrapper.default_stream();
 
-        let ptx = compile_ptx(ETA_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
+        let opts = CompileOptions::empty();
+        let ptx = CompileOptions::compile_ptx(ETA_KERNEL_SRC, &opts)
+            .map_err(|e| format!("NVRTC compile: {}", e))?;
 
-        let module = ctx
-            .load_module(ptx)
+        let registry = ModuleRegistry::load(ctx_wrapper.raw(), ptx, &["compute_eta_matrix"])
             .map_err(|e| format!("Module load: {}", e))?;
-
-        let kernel = module
-            .load_function("compute_eta_matrix")
+        let kernel = registry
+            .get("compute_eta_matrix")
             .map_err(|e| format!("Kernel load: {}", e))?;
 
         let dim_half = dim / 2;
-        let total = dim_half * dim_half;
+        let total = dim_half
+            .checked_mul(dim_half)
+            .ok_or_else(|| format!("eta matrix shape {dim_half}x{dim_half} overflows usize"))?;
+        let dim_u32 = u32::try_from(dim)
+            .map_err(|_| format!("eta matrix dimension {dim} exceeds u32 dispatch"))?;
+        let dim_half_u32 = u32::try_from(dim_half)
+            .map_err(|_| format!("eta matrix half dimension {dim_half} exceeds u32 dispatch"))?;
+        let total_u32 = u32::try_from(total)
+            .map_err(|_| format!("eta matrix element count {total} exceeds u32 dispatch"))?;
 
         // Allocate device memory
-        let eta_dev = stream
-            .alloc_zeros::<u8>(total)
+        let mut eta_dev = Buffer::<u8>::alloc_zeros(&stream, total)
             .map_err(|e| format!("Alloc device: {}", e))?;
 
         // Launch kernel
         // Use 256 threads per block (common choice)
-        let block_size = 256u32;
-        let num_blocks = (total as u32).div_ceil(block_size);
-
-        let cfg = LaunchConfig {
-            grid_dim: (num_blocks, 1, 1),
-            block_dim: (block_size, 1, 1),
-            shared_mem_bytes: 0,
-        };
-
-        let dim_u32 = dim as u32;
-        let dim_half_u32 = dim_half as u32;
+        let cfg = LaunchConfig::launch_1d(total_u32);
 
         let mut builder = stream.launch_builder(&kernel);
         builder.arg(&dim_u32);
         builder.arg(&dim_half_u32);
-        builder.arg(&eta_dev);
+        builder.arg(eta_dev.raw_mut());
 
         unsafe {
             builder
@@ -189,9 +185,7 @@ impl EtaMatrixGpu {
         }
 
         // Copy result back to host
-        let eta_host = stream
-            .clone_dtoh(&eta_dev)
-            .map_err(|e| format!("Copy D2H: {}", e))?;
+        let eta_host = eta_dev.dtoh_vec().map_err(|e| format!("Copy D2H: {}", e))?;
 
         Ok(eta_host)
     }

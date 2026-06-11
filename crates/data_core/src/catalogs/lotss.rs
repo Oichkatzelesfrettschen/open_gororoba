@@ -2,11 +2,11 @@
 //!
 //! Supports three releases:
 //! - DR1: ~325K sources, Shimwell et al. 2019, A&A 622 A1
-//!   https://lofar-surveys.org/public/LOFAR_HBA_T1_DR1_catalog_v1.0.srl.fits
+//!   <https://lofar-surveys.org/public/LOFAR_HBA_T1_DR1_catalog_v1.0.srl.fits>
 //! - DR2: ~4.4M sources, Shimwell et al. 2022, A&A 659 A1
-//!   https://lofar-surveys.org/public/LoTSS_DR2_v110.srl.fits
+//!   <https://lofar-surveys.org/public/LoTSS_DR2_v110.srl.fits>
 //! - DR3: ~13.7M sources (Feb 2026), 88% northern sky at 144 MHz, 6" resolution
-//!   VO Cone Search: https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml
+//!   VO Cone Search: <https://vo.astron.nl/lotss_dr3/q/src_cone/scs.xml>
 //!
 //! DR1/DR2 bulk catalogs are FITS BINTABLE; DR3 is accessed via VO Cone Search
 //! returning VOTable XML or FITS depending on the requested format.

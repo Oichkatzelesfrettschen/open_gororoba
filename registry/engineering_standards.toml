@@ -29,9 +29,9 @@ python_ratchet_policy = "Required Python linting applies only to changed files u
 mode = "two_speed"
 fast_iteration_scope = "crate_local"
 fast_iteration_commands = [
-  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo check -p <crate> --all-targets",
-  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET RAYON_NUM_THREADS=$WORKER_BUDGET RUST_TEST_THREADS=$WORKER_BUDGET cargo nextest run --build-jobs $WORKER_BUDGET --test-threads $WORKER_BUDGET -p <crate> <filter-or-test>",
-  "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo clippy -p <crate> --all-targets -- -D warnings",
+    "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo check -p <crate> --all-targets",
+    "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET RAYON_NUM_THREADS=$WORKER_BUDGET RUST_TEST_THREADS=$WORKER_BUDGET cargo nextest run --build-jobs $WORKER_BUDGET --test-threads $WORKER_BUDGET -p <crate> <filter-or-test>",
+    "WORKER_BUDGET=$(sh scripts/detect_worker_budget.sh) CARGO_BUILD_JOBS=$WORKER_BUDGET cargo clippy -p <crate> --all-targets -- -D warnings",
 ]
 checkpoint_push_policy = "Allowed via git push --no-verify for rapid iteration only after focused crate gates pass."
 milestone_gate_policy = "Required for production claims and major merges: make check plus make rust-regression, with algebra_analysis and gr_core routed through cargo nextest --cargo-profile test-heavy, and with Python lint enforced as a changed-file ratchet rather than a full-repo legacy sweep."

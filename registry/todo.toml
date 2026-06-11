@@ -12,7 +12,17 @@ status_allowlist = ["open", "in_progress", "done", "blocked", "deferred"]
 priority_allowlist = ["high", "medium", "low"]
 
 [todo.schema]
-required_fields = ["id", "area", "title", "description", "priority", "status", "status_token", "dependencies", "acceptance_criteria"]
+required_fields = [
+    "id",
+    "area",
+    "title",
+    "description",
+    "priority",
+    "status",
+    "status_token",
+    "dependencies",
+    "acceptance_criteria",
+]
 dependency_id_pattern = "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*"
 
 [[item]]
@@ -24,7 +34,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -36,7 +49,10 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -48,7 +64,10 @@ priority = "low"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -60,7 +79,10 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -72,7 +94,11 @@ priority = "low"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["data/papers/"]
 
 [[item]]
@@ -84,7 +110,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-010"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -96,7 +125,10 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-010"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -108,7 +140,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-011"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -120,7 +155,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-011"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -132,7 +170,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-453"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -144,7 +185,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-453"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -156,7 +200,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-452", "C-453"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -168,7 +215,10 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -180,7 +230,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["docs/latex/main_paper.tex"]
 
 [[item]]
@@ -192,7 +246,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["I-018"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -204,7 +261,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -216,7 +276,10 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -228,7 +291,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-792", "C-793", "E-060"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -240,7 +306,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-691", "C-692", "C-694"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -252,7 +321,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-807", "C-818"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -264,7 +336,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -276,7 +351,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -288,7 +366,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -300,7 +381,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -312,7 +396,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-807", "C-818"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -324,7 +411,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["data/external/"]
 
 [[item]]
@@ -336,7 +427,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -348,7 +442,10 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -360,7 +457,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["data/artifacts"]
 
 [[item]]
@@ -372,7 +473,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["data/external/SOURCES.toml"]
 
 [[item]]
@@ -384,7 +489,11 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["registry/data_generated_patterns.toml"]
 
 [[item]]
@@ -396,7 +505,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -408,7 +520,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -420,7 +535,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -432,7 +550,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -444,7 +565,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -456,7 +580,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -468,7 +595,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["data/external"]
 
 [[item]]
@@ -480,7 +611,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -492,7 +626,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["data/external"]
 
 [[item]]
@@ -504,7 +642,10 @@ priority = "low"
 status = "open"
 status_token = "OPEN"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -516,7 +657,10 @@ priority = "low"
 status = "open"
 status_token = "OPEN"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -528,7 +672,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -540,7 +687,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -552,7 +702,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -564,7 +717,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -576,7 +732,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -588,7 +747,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -600,7 +762,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -612,7 +777,10 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -624,7 +792,10 @@ priority = "medium"
 status = "open"
 status_token = "OPEN"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -636,7 +807,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -648,7 +822,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -660,7 +837,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["crates/data_core/src/catalogs/psp.rs"]
 
 [[item]]
@@ -672,7 +853,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["crates/data_core/src/catalogs/helios.rs"]
 
 [[item]]
@@ -684,7 +869,11 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["crates/data_core/src/catalogs/solo.rs"]
 
 [[item]]
@@ -696,7 +885,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -708,7 +900,10 @@ priority = "medium"
 status = "open"
 status_token = "OPEN"
 dependencies = ["E-128"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -720,7 +915,11 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["crates/data_core/src/catalogs/ulysses.rs"]
 
 [[item]]
@@ -732,7 +931,11 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["crates/data_core/src/catalogs/juno.rs"]
 
 [[item]]
@@ -744,7 +947,11 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "Evidence references point to maintained canonical paths.",
+]
 evidence_refs = ["crates/data_core/src/catalogs/wind.rs"]
 
 [[item]]
@@ -756,7 +963,10 @@ priority = "low"
 status = "open"
 status_token = "OPEN"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -768,7 +978,10 @@ priority = "low"
 status = "open"
 status_token = "OPEN"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+]
 evidence_refs = []
 
 [[item]]
@@ -780,7 +993,11 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable.", "The Brown Chapter VII public surface exports only the corrected theorem shape."]
+acceptance_criteria = [
+    "todo_item status is constrained to declared enum values.",
+    "todo_item dependencies are explicit and machine-parseable.",
+    "The Brown Chapter VII public surface exports only the corrected theorem shape.",
+]
 evidence_refs = ["proofs/theories/Brown1972ChapterVII.v", "proofs/theories/SStructuralGaps.v"]
 
 [[item]]

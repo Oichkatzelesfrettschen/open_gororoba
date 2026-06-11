@@ -1,0 +1,93 @@
+[meta]
+generated_at = "2026-06-09T22:55:05Z"
+binary = "repo-audit"
+roots = [
+    "crates",
+    "proofs",
+    "xtask",
+]
+method = "regex-anchored on comment-stripped Rust; line-anchored on Rocq (.v)"
+
+[totals]
+rust_files = 2474
+rocq_files = 282
+other_files = 16615
+unsafe_blocks = 3908
+safety_comments = 163
+ignore_attrs = 131
+allow_clippy_attrs = 190
+allow_clippy_unjustified = 64
+allow_dead_code_attrs = 185
+todo_fixme_xxx_hack = 0
+unimplemented_macros = 0
+todo_macros = 0
+unreachable_macros = 41
+rocq_admitted_strict = 0
+rocq_admit_strict = 0
+rocq_axiom_strict = 31
+rocq_axiom_indented = 84
+rocq_parameter_strict = 8
+rocq_parameter_indented = 49
+
+[by_root.crates]
+rust_files = 2343
+rocq_files = 0
+other_files = 184
+unsafe_blocks = 488
+safety_comments = 163
+ignore_attrs = 131
+allow_clippy_attrs = 124
+allow_clippy_unjustified = 0
+allow_dead_code_attrs = 83
+todo_fixme_xxx_hack = 0
+unimplemented_macros = 0
+todo_macros = 0
+unreachable_macros = 41
+rocq_admitted_strict = 0
+rocq_admit_strict = 0
+rocq_axiom_strict = 0
+rocq_axiom_indented = 0
+rocq_parameter_strict = 0
+rocq_parameter_indented = 0
+
+[by_root.proofs]
+rust_files = 130
+rocq_files = 282
+other_files = 16430
+unsafe_blocks = 3420
+safety_comments = 0
+ignore_attrs = 0
+allow_clippy_attrs = 66
+allow_clippy_unjustified = 64
+allow_dead_code_attrs = 102
+todo_fixme_xxx_hack = 0
+unimplemented_macros = 0
+todo_macros = 0
+unreachable_macros = 0
+rocq_admitted_strict = 0
+rocq_admit_strict = 0
+rocq_axiom_strict = 31
+rocq_axiom_indented = 84
+rocq_parameter_strict = 8
+rocq_parameter_indented = 49
+
+[by_root.xtask]
+rust_files = 1
+rocq_files = 0
+other_files = 1
+unsafe_blocks = 0
+safety_comments = 0
+ignore_attrs = 0
+allow_clippy_attrs = 0
+allow_clippy_unjustified = 0
+allow_dead_code_attrs = 0
+todo_fixme_xxx_hack = 0
+unimplemented_macros = 0
+todo_macros = 0
+unreachable_macros = 0
+rocq_admitted_strict = 0
+rocq_admit_strict = 0
+rocq_axiom_strict = 0
+rocq_axiom_indented = 0
+rocq_parameter_strict = 0
+rocq_parameter_indented = 0

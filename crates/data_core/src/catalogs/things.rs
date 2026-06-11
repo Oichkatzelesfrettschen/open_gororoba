@@ -36,6 +36,12 @@ pub struct ThingsCubeManifestEntry {
     pub url: String,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::things_fetch::{
+    ThingsPreferredCubesProvider, ThingsTablesProvider, discover_things_cube_manifest,
+    parse_things_cube_manifest_html,
+};
+
 #[cfg_attr(not(feature = "fetch"), allow(dead_code))]
 pub(crate) fn extract_href_values(html: &str) -> Vec<String> {
     let mut hrefs = Vec::new();

@@ -38,4 +38,3 @@ kind = "metadata_confirmed_pdf_path_resolution"
 dossier_json = "docs/reports/cd_cache_dossiers/dickson_1935_exact_pdf_20260327.json"
 dossier_markdown = "docs/reports/cd_cache_dossiers/dickson_1935_exact_pdf_20260327.md"
 suggestion_count = 2
-

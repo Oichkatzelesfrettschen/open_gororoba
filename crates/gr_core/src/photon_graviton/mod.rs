@@ -63,16 +63,16 @@ pub use types::*;
 // Legacy SI-unit functions (preserved from the original photon_graviton.rs)
 // ============================================================================
 
-/// Electron mass [kg]
+/// Electron mass `[kg]`
 const M_E_SI: f64 = 9.109_383_701_5e-31;
 
-/// Speed of light [m/s]
+/// Speed of light `[m/s]`
 const C_SI: f64 = 2.997_924_58e8;
 
-/// Elementary charge [C]
+/// Elementary charge `[C]`
 const E_SI: f64 = 1.602_176_634e-19;
 
-/// Reduced Planck constant [J*s]
+/// Reduced Planck constant `[J*s]`
 const HBAR_SI: f64 = 1.054_571_817e-34;
 
 /// Gravitational constant [m^3 kg^-1 s^-2]
@@ -81,7 +81,7 @@ const G_SI: f64 = 6.674_30e-11;
 /// Fine-structure constant (dimensionless)
 const ALPHA_EM_LEGACY: f64 = 1.0 / 137.036;
 
-/// Schwinger critical magnetic field B_cr = m_e^2 c^2 / (e hbar) [T].
+/// Schwinger critical magnetic field B_cr = m_e^2 c^2 / (e hbar) `[T]`.
 ///
 /// Above this field strength, vacuum pair production becomes significant.
 /// B_cr ~ 4.41e9 T.
@@ -89,7 +89,7 @@ pub fn schwinger_critical_field() -> f64 {
     M_E_SI * M_E_SI * C_SI * C_SI / (E_SI * HBAR_SI)
 }
 
-/// Gravitational coupling constant kappa = sqrt(16 pi G / c^4) [SI].
+/// Gravitational coupling constant kappa = sqrt(16 pi G / c^4) `[SI]`.
 ///
 /// This sets the scale of gravitational interactions in linearized GR.
 /// kappa ~ 2.04e-22 in SI units.

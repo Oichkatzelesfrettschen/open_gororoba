@@ -2,8 +2,8 @@
 
 # Grand Synthesis Plan: Research Roadmap and Execution Priority
 
-**Date:** 2026-03-15  
-**Status:** Active planning document  
+**Date:** 2026-03-15\
+**Status:** Active planning document\
 **Related documents:** `docs/GRAND_SYNTHESIS.md`, `docs/NAVIGATOR.md`
 
 ---
@@ -86,14 +86,14 @@ This document captures the execution plan for the grand synthesis research progr
 
 ## Priority Ordering (Sprint 84+)
 
-| Priority | Task | Blocking dependency | Expected sprint |
-|----------|------|--------------------|-----------------| 
-| P0 | Pioneer D_f(r) scale-dependence sweep | Doppler residual data | S85 |
-| P1 | Gap universality Rocq proof at dim=64 | dim=32 proof passes CI | S85 |
-| P0 | LBM Re > 105 fractal floor measurement | GPU resources | S86 |
-| P2 | 7-bridge metamaterial coupling bound | Annihilator geometry analysis | S87 |
-| P2 | Flyby 7-channel decomposition | All flyby geometry data | S88 |
-| P3 | Tight-binding AVT entropy gap | Experimental/DFT collaboration | TBD |
+| Priority | Task                                   | Blocking dependency            | Expected sprint |
+| -------- | -------------------------------------- | ------------------------------ | --------------- |
+| P0       | Pioneer D_f(r) scale-dependence sweep  | Doppler residual data          | S85             |
+| P1       | Gap universality Rocq proof at dim=64  | dim=32 proof passes CI         | S85             |
+| P0       | LBM Re > 105 fractal floor measurement | GPU resources                  | S86             |
+| P2       | 7-bridge metamaterial coupling bound   | Annihilator geometry analysis  | S87             |
+| P2       | Flyby 7-channel decomposition          | All flyby geometry data        | S88             |
+| P3       | Tight-binding AVT entropy gap          | Experimental/DFT collaboration | TBD             |
 
 ---
 
@@ -113,4 +113,4 @@ Each new claim must specify a concrete falsification criterion. For the D_f(r) c
 
 ---
 
-*This document is updated at the start of each sprint. For current sprint status, see `registry/next_actions.toml`.*
+_This document is updated at the start of each sprint. For current sprint status, see `registry/next_actions.toml`._

@@ -197,7 +197,7 @@ fn anomalies_to_lattice_states(
 ///
 /// Maps the spacecraft's physical trajectory position (km) to lattice coordinates,
 /// then computes Newtonian gravity with Plummer softening at every grid node.
-/// The resulting Vec<[f64; 3]> is passed to `set_force_field()` for Guo forcing.
+/// The resulting `Vec<[f64; 3]>` is passed to `set_force_field()` for Guo forcing.
 ///
 /// Coordinate convention: grid center (nx/2, ny/2, nz/2) = Earth center.
 /// Physical-to-lattice scale: dx_km = 2 * soi_radius_km / max(nx, ny, nz).

@@ -179,7 +179,7 @@ pub fn compute_constrained_atmospheric_direction(
 /// Gauss-Newton solver for 2D (t_solar, t_atmo) optimization.
 ///
 /// Minimizes the weighted residual ||r(t)||^2 where
-///   r = [w_i * (theta_i - pdg_i) / pdg_i]
+///   r = `[w_i * (theta_i - pdg_i) / pdg_i]`
 /// using Levenberg-Marquardt damped normal equations with backtracking
 /// line search.
 ///

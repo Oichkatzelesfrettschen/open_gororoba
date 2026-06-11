@@ -74,12 +74,12 @@ The project tracks every conjecture, measurement, and computation as a
 status (`Verified`, `Refuted`, `Provisional`), a source location in
 the codebase, and optionally a formal proof in Rocq.
 
-| Registry | Entries | Purpose |
-|----------|---------|---------|
-| `registry/claims.toml` | 1412 | Conjectures, theorems, measurements |
-| `registry/insights.toml` | 182 | Cross-domain research discoveries |
-| `registry/experiments.toml` | 210 | Reproducible experiment definitions |
-| `registry/binaries.toml` | 377 | CLI binary inventory |
+| Registry                    | Entries | Purpose                             |
+| --------------------------- | ------- | ----------------------------------- |
+| `registry/claims.toml`      | 1412    | Conjectures, theorems, measurements |
+| `registry/insights.toml`    | 182     | Cross-domain research discoveries   |
+| `registry/experiments.toml` | 210     | Reproducible experiment definitions |
+| `registry/binaries.toml`    | 377     | CLI binary inventory                |
 
 ### SQLite source of truth
 
@@ -128,31 +128,31 @@ The workspace is organized into domain-specific crates:
 
 ### Core libraries
 
-| Crate | Purpose |
-|-------|---------|
-| `cd_kernel` | Cayley-Dickson algebra engine (signs, zero divisors, AVX2 SIMD) |
-| `algebra_analysis` | Box-kite alignment, spectral analysis, obstruction theory |
-| `algebra_experimental` | Experimental algebraic structures (SU(5), braiding, imbalance) |
-| `gororoba_algebra` | Lie algebras, Golay code, Leech lattice, GPU dispatch |
-| `verified_core` | Formally verified computations (unified action, spectral dim) |
-| `cosmology_core` | NFW halos, harmonic stacking, DC14 profiles |
-| `quantum_core` | Quantum field manifolds, renormalization |
-| `gr_core` | General relativity, ADM formalism, NanoGrav fitting |
-| `stats_core` | Bootstrap CI, mutual information, quantile regression |
-| `tensor_core` | Tensor-train cross approximation |
-| `spectral_core` | Surrogate models, spectral methods |
-| `lbm_3d` / `lbm_3d_cuda` | Lattice-Boltzmann 3D (CPU + CUDA MRT + Vulkan) |
+| Crate                    | Purpose                                                         |
+| ------------------------ | --------------------------------------------------------------- |
+| `cd_kernel`              | Cayley-Dickson algebra engine (signs, zero divisors, AVX2 SIMD) |
+| `algebra_analysis`       | Box-kite alignment, spectral analysis, obstruction theory       |
+| `algebra_experimental`   | Experimental algebraic structures (SU(5), braiding, imbalance)  |
+| `gororoba_algebra`       | Lie algebras, Golay code, Leech lattice, GPU dispatch           |
+| `verified_core`          | Formally verified computations (unified action, spectral dim)   |
+| `cosmology_core`         | NFW halos, harmonic stacking, DC14 profiles                     |
+| `quantum_core`           | Quantum field manifolds, renormalization                        |
+| `gr_core`                | General relativity, ADM formalism, NanoGrav fitting             |
+| `stats_core`             | Bootstrap CI, mutual information, quantile regression           |
+| `tensor_core`            | Tensor-train cross approximation                                |
+| `spectral_core`          | Surrogate models, spectral methods                              |
+| `lbm_3d` / `lbm_3d_cuda` | Lattice-Boltzmann 3D (CPU + CUDA MRT + Vulkan)                  |
 
 ### Data and provenance
 
-| Crate | Purpose |
-|-------|---------|
-| `data_core` | Catalog loaders (MaNGA, LoTSS, FITS, VOTable, OMNI, Ulysses) |
-| `provenance_store` | SQLite-backed artifact and metadata store |
-| `provenance_core` | Provenance data model |
-| `provenance_ops` | Data ingest pipelines (ORIX, HEASARC, AMDA HAPI) |
-| `gororoba_db` | `gororoba-db` CLI for database operations |
-| `lit_search` | Repo-owned Rust literature search, deduplication, citation verification, and PDF retrieval |
+| Crate              | Purpose                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------ |
+| `data_core`        | Catalog loaders (MaNGA, LoTSS, FITS, VOTable, OMNI, Ulysses)                               |
+| `provenance_store` | SQLite-backed artifact and metadata store                                                  |
+| `provenance_core`  | Provenance data model                                                                      |
+| `provenance_ops`   | Data ingest pipelines (ORIX, HEASARC, AMDA HAPI)                                           |
+| `gororoba_db`      | `gororoba-db` CLI for database operations                                                  |
+| `lit_search`       | Repo-owned Rust literature search, deduplication, citation verification, and PDF retrieval |
 
 `lit_search` reads optional keyed-source credentials from user-local
 environment variables only. See
@@ -168,13 +168,13 @@ is documented in `docs/engineering/runtime_env_inventory.txt`.
 
 ### CLI binaries (377 registered)
 
-| Crate | Representative binaries |
-|-------|------------------------|
-| `gororoba_cli_data` | NanoGrav timing, LoTSS fetch, CD cache, entropy audit |
-| `gororoba_cli_physics` | Heliosphere pipeline (15 bins), box-kite alignment, LBM sims |
-| `gororoba_cli_algebra` | Spectral flow, Majorana braiding, ZD resonance |
-| `gororoba_cli_quantum` | Fracton codes, pseudospectrum, absorber Pareto |
-| `gororoba_cli_governance` | Registry integrity resolution, markdown registry |
+| Crate                     | Representative binaries                                      |
+| ------------------------- | ------------------------------------------------------------ |
+| `gororoba_cli_data`       | NanoGrav timing, LoTSS fetch, CD cache, entropy audit        |
+| `gororoba_cli_physics`    | Heliosphere pipeline (15 bins), box-kite alignment, LBM sims |
+| `gororoba_cli_algebra`    | Spectral flow, Majorana braiding, ZD resonance               |
+| `gororoba_cli_quantum`    | Fracton codes, pseudospectrum, absorber Pareto               |
+| `gororoba_cli_governance` | Registry integrity resolution, markdown registry             |
 
 ## Heliosphere research pipeline
 
@@ -209,15 +209,15 @@ compilation vs O(hours) for monolithic `ring`.
 
 ## Quality gates
 
-| Gate | Command | Enforced |
-|------|---------|----------|
-| Clippy | `make rust-clippy` | Warnings-as-errors (`-D warnings`) |
-| SemVer | `make rust-semver-check` | Public API compatibility |
-| Tests | `cargo test --workspace` | Full suite, 0 tolerance |
-| ASCII | `make ansi-check` | No Unicode/emoji in source |
-| Terminology | `make terminology-gate` | 8 banned patterns |
-| Governance | `make governance-gate` | 7-check registry + integrity |
-| Pre-push | `make pre-push-gate` | Scoped clippy + test + governance |
+| Gate        | Command                  | Enforced                           |
+| ----------- | ------------------------ | ---------------------------------- |
+| Clippy      | `make rust-clippy`       | Warnings-as-errors (`-D warnings`) |
+| SemVer      | `make rust-semver-check` | Public API compatibility           |
+| Tests       | `cargo test --workspace` | Full suite, 0 tolerance            |
+| ASCII       | `make ansi-check`        | No Unicode/emoji in source         |
+| Terminology | `make terminology-gate`  | 8 banned patterns                  |
+| Governance  | `make governance-gate`   | 7-check registry + integrity       |
+| Pre-push    | `make pre-push-gate`     | Scoped clippy + test + governance  |
 
 ## Toolchain
 

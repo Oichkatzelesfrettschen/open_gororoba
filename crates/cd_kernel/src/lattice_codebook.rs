@@ -20,7 +20,7 @@
 //! # Base universe
 //!
 //! ```text
-//! S_base = { l in {-1,0,1}^8 : l[0] != +1,
+//! S_base = { l in {-1,0,1}^8 : l`[0]` != +1,
 //!            sum(l_i) == 0 mod 2,
 //!            #{i : l_i != 0} == 0 mod 2 }
 //! |S_base| = 2187 = 3^7
@@ -33,15 +33,15 @@
 //! # Filtration hierarchy
 //!
 //! ```text
-//! S_base (2187) --[-139]--> Lambda_2048
+//! S_base (2187) --`[-139]`--> Lambda_2048
 //!     |
-//!     +--[-70]-->  Lambda_1024 (off by 2: 1026 actual, 2 singletons unknown)
+//!     +--`[-70]`-->  Lambda_1024 (off by 2: 1026 actual, 2 singletons unknown)
 //!     |
-//!     +--[-512]--> Lambda_512
+//!     +--`[-512]`--> Lambda_512
 //!     |
-//!     +--[-256]--> Lambda_256
+//!     +--`[-256]`--> Lambda_256
 //!     |
-//!     +--[-224]--> Lambda_32
+//!     +--`[-224]`--> Lambda_32
 //! ```
 //!
 //! # Validated counts (C-1513)
@@ -69,7 +69,7 @@ pub type LatticePoint = [i8; 8];
 /// Check if a point is in the base universe S_base.
 ///
 /// Constraints:
-/// 1. l[0] != +1
+/// 1. l`[0]` != +1
 /// 2. sum(l_i) == 0 mod 2
 /// 3. count(l_i != 0) == 0 mod 2
 pub fn in_base_universe(l: &LatticePoint) -> bool {
@@ -87,9 +87,9 @@ pub fn in_base_universe(l: &LatticePoint) -> bool {
 /// Check if a point is in Lambda_2048.
 ///
 /// Lambda_2048 = S_base minus points with forbidden prefixes:
-/// - (l[0], l[1], l[2]) = (0, 1, 1)
-/// - (l[0], l[1], l[2], l[3], l[4]) = (0, 1, 0, 1, 1)
-/// - (l[0], l[1], l[2], l[3], l[4], l[5]) = (0, 1, 0, 1, 0, 1)
+/// - (l`[0]`, l`[1]`, l`[2]`) = (0, 1, 1)
+/// - (l`[0]`, l`[1]`, l`[2]`, l`[3]`, l`[4]`) = (0, 1, 0, 1, 1)
+/// - (l`[0]`, l`[1]`, l`[2]`, l`[3]`, l`[4]`, l`[5]`) = (0, 1, 0, 1, 0, 1)
 pub fn in_lambda_2048(l: &LatticePoint) -> bool {
     if !in_base_universe(l) {
         return false;
@@ -111,7 +111,7 @@ pub fn in_lambda_2048(l: &LatticePoint) -> bool {
 
 /// Check if a point is in Lambda_1024.
 ///
-/// Lambda_1024 = Lambda_2048 intersect {l[0] = -1} minus additional exclusions:
+/// Lambda_1024 = Lambda_2048 intersect {l`[0]` = -1} minus additional exclusions:
 /// - (-1, 1, 1, 1) prefix (41 points)
 /// - (-1, 1, 1, 0, 0) prefix (14 points)
 /// - (-1, 1, 1, 0, 1) prefix (13 points)
@@ -137,13 +137,13 @@ pub fn in_lambda_1024(l: &LatticePoint) -> bool {
 
 /// Check if a point is in Lambda_512.
 ///
-/// Lambda_512 = Lambda_1024 minus points where (independent of l[7]):
-/// - l[1] = 1, OR
-/// - l[1] = 0 and l[2] = 1, OR
-/// - l[1] = l[2] = 0 and l[3] = 0, OR
-/// - l[1] = l[2] = 0 and l[3] = 1, OR
-/// - l[1] = l[2] = 0 and l[3] = -1 and l[4] = 1, OR
-/// - l[1] = l[2] = 0 and l[3] = -1 and l[4] = 0 and l[5] = 1 and l[6] = 1
+/// Lambda_512 = Lambda_1024 minus points where (independent of l`[7]`):
+/// - l`[1]` = 1, OR
+/// - l`[1]` = 0 and l`[2]` = 1, OR
+/// - l`[1]` = l`[2]` = 0 and l`[3]` = 0, OR
+/// - l`[1]` = l`[2]` = 0 and l`[3]` = 1, OR
+/// - l`[1]` = l`[2]` = 0 and l`[3]` = -1 and l`[4]` = 1, OR
+/// - l`[1]` = l`[2]` = 0 and l`[3]` = -1 and l`[4]` = 0 and l`[5]` = 1 and l`[6]` = 1
 pub fn in_lambda_512(l: &LatticePoint) -> bool {
     if !in_lambda_1024(l) {
         return false;
@@ -205,8 +205,8 @@ pub fn in_lambda_256(l: &LatticePoint) -> bool {
 
 /// Check if a point is in Lambda_32.
 ///
-/// Lambda_32 = Lambda_256 with (l[0..4]) = (-1,-1,-1,-1)
-///             and (l[4] != 1 or l[5] = -1).
+/// Lambda_32 = Lambda_256 with (l`[0..4]`) = (-1,-1,-1,-1)
+///             and (l`[4]` != 1 or l`[5]` = -1).
 pub fn in_lambda_32(l: &LatticePoint) -> bool {
     if !in_lambda_256(l) {
         return false;

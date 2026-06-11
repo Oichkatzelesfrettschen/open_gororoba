@@ -1,7 +1,7 @@
 //! # The Quantum Error Correction Duality
 //!
 //! This section explores the deep symmetry mapping between the 7 box-kites
-//! of sedenion zero divisors and the Steane [[7,1,3]] quantum code.
+//! of sedenion zero divisors and the Steane `[[7,1,3]]` quantum code.
 //!
 //! ## 1. $PSL(2,7)$ and the Fano Plane
 //!

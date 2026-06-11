@@ -52,8 +52,8 @@ pub fn evaluate_interference(
     (complex_probability, quaternionic_probability)
 }
 
-/// Computes the commutator [A, B] = A*B - B*A.
-/// In standard QM (complex numbers), scalar phases commute: [A, B] = 0.
+/// Computes the commutator `[A, B]` = A*B - B*A.
+/// In standard QM (complex numbers), scalar phases commute: `[A, B]` = 0.
 /// In Quaternionic QM, scalar phases (if they involve j, k) do not commute.
 pub fn phase_commutator(a: &[f64], b: &[f64]) -> Vec<f64> {
     let dim = a.len();

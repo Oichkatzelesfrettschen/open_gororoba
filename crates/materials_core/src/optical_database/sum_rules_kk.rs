@@ -9,7 +9,7 @@
 //! - `f_sum_ratio`: Drude-normalised f-sum convergence check.
 //! - `plasmon_energy_ev`: bulk plasmon from loss-function peak.
 //! - `loss_spectral_weight`: omega-weighted integral of -Im[1/eps].
-//! - `screened_plasma_ev`: first Re[eps] = 0 crossing.
+//! - `screened_plasma_ev`: first `Re[eps] = 0` crossing.
 //! - `intraband_weight`: Drude contribution to f-sum (pi/2 * omega_p^2 * eps_0).
 //! - `interband_weight`: Lorentz oscillator contribution.
 //! - `kramers_kronig_error`: RMS relative error of KK-reconstructed eps_1

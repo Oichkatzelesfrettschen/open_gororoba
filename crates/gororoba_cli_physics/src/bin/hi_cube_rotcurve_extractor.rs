@@ -83,7 +83,7 @@ struct Cli {
 
 /// HI velocity cube loaded into RAM.
 struct HiCube {
-    /// Flattened [n_ch, ny, nx] data in C row-major order (channel outermost).
+    /// Flattened `[n_ch, ny, nx]` data in C row-major order (channel outermost).
     data: Vec<f32>,
     n_ch: usize,
     ny: usize,
@@ -99,8 +99,8 @@ struct HiCube {
 /// Load a HI FITS velocity cube from disk.
 ///
 /// Handles PRIMARY HDU shapes:
-///   - 3D [n_ch, ny, nx]         (standard THINGS format)
-///   - 4D [1, n_ch, ny, nx]      (single-Stokes wrapper)
+///   - 3D `[n_ch, ny, nx]`         (standard THINGS format)
+///   - 4D `[1, n_ch, ny, nx]`      (single-Stokes wrapper)
 ///
 /// Velocity axis is reconstructed from WCS keywords CRPIX3, CRVAL3, CDELT3.
 /// CTYPE3 = FREQ is converted to radio velocity using the HI 21cm rest frequency.
@@ -213,7 +213,7 @@ fn estimate_rms(cube: &HiCube) -> f64 {
 
 /// Compute the flux-weighted mean velocity (moment-1) map with sigma-clip masking.
 ///
-/// Returns a flat [ny * nx] array. Pixels with no unmasked emission are NaN.
+/// Returns a flat `[ny * nx]` array. Pixels with no unmasked emission are NaN.
 fn moment1_map(cube: &HiCube, sigma_clip: f64) -> Vec<f64> {
     let rms = estimate_rms(cube);
     let threshold = sigma_clip * rms;

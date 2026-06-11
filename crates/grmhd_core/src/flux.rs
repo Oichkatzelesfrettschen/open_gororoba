@@ -23,9 +23,9 @@ use wide::f64x4;
 /// Avoids repeated sqrt/trig during the flux loop.
 /// Pattern from steinmarder: `__constant__` memory for LBM weights.
 pub struct MetricCache {
-    /// gcov[5] per cell: [g_tt, g_rr, g_thth, g_phph, g_tph]
+    /// `gcov[5]` per cell: `[g_tt, g_rr, g_thth, g_phph, g_tph]`
     pub gcov: Vec<[f64; 5]>,
-    /// gcon[5] per cell
+    /// `gcon[5]` per cell
     pub gcon: Vec<[f64; 5]>,
     /// sqrt(-g) * Jacobian per cell
     pub sqrt_neg_g: Vec<f64>,

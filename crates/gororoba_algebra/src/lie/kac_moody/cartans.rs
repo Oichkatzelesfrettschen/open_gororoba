@@ -5,7 +5,7 @@
 //! long arm at node `0` (`E_9`), and beyond (`E_10`, `E_11`).
 //!
 //! Sister convention: [`crate::lie::e8::root_system::e8_cartan_matrix`]
-//! returns the same 8x8 entries as [`e8_cartan`] but as a `[[i32; 8]; 8]`
+//! returns the same 8x8 entries as [`e8_cartan`] but as a `[`[i32; 8]`; 8]`
 //! rather than a [`super::GeneralizedCartanMatrix`].
 
 use super::GeneralizedCartanMatrix;

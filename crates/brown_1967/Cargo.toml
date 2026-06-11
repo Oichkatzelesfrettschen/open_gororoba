@@ -2,8 +2,8 @@
 name = "brown_1967"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Brown (1967) Generalized Cayley-Dickson Algebras -- verified Rust implementation"
 license = "GPL-2.0-or-later"
+description = "Brown (1967) Generalized Cayley-Dickson Algebras -- verified Rust implementation"
 
 # Source: Brown, R.B. (1967) "On Generalized Cayley-Dickson Algebras",
 # Pacific J. Math., 20(3), pp. 415-422.

@@ -121,11 +121,11 @@ pub(crate) struct ProofInventory {
 // the `types` submodule.
 pub mod types;
 pub use types::{
-    ActionCompatRow, ActionItem, CompatExportPaths, ControlPlaneCompatKind, EntityFieldTarget,
-    ManifestRow, NotebookSessionRow, NotebookSessionSummary, PlanningCompatTable,
-    RequirementCoverageGapCompatRow, RequirementCoverageGapItem, RequirementModuleCompatRow,
-    RequirementModuleItem, RequirementsMeta, RequirementsMetaCompatRow, ResearchNarrativeRow,
-    RoadmapCompatRow, RoadmapItem, StatusNoteRevision,
+    ActionCompatRow, ActionItem, ActionItemWithEvidence, CompatExportPaths, ControlPlaneCompatKind,
+    EntityFieldTarget, ManifestRow, NotebookSessionRow, NotebookSessionSummary,
+    PlanningCompatTable, RequirementCoverageGapCompatRow, RequirementCoverageGapItem,
+    RequirementModuleCompatRow, RequirementModuleItem, RequirementsMeta, RequirementsMetaCompatRow,
+    ResearchNarrativeRow, RoadmapCompatRow, RoadmapItem, RoadmapItemWithLinks, StatusNoteRevision,
 };
 
 /// Hex-encoded SHA-256 of `s`. Used by the status_note mutators to
@@ -432,31 +432,34 @@ impl ProvenanceStore {
         }
         for insight in &insights {
             tx.execute(
-                "INSERT INTO insights(id, title, status, claim_refs_json, compat_toml_text)
-                 VALUES(?1, ?2, ?3, ?4, ?5)
+                "INSERT INTO insights(id, title, status, claim_refs_json, status_note, compat_toml_text)
+                 VALUES(?1, ?2, ?3, ?4, ?5, ?6)
                  ON CONFLICT(id) DO UPDATE SET
                     title=excluded.title,
                     status=excluded.status,
                     claim_refs_json=excluded.claim_refs_json,
+                    status_note=excluded.status_note,
                     compat_toml_text=excluded.compat_toml_text",
                 params![
                     insight.id,
                     insight.title,
                     insight.status,
                     serde_json::to_string(&insight.claim_refs)?,
+                    insight.status_note,
                     insight.compat_toml_text
                 ],
             )?;
         }
         for experiment in &experiments {
             tx.execute(
-                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, compat_toml_text)
-                 VALUES(?1, ?2, ?3, ?4, ?5, ?6)
+                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
+                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)
                  ON CONFLICT(id) DO UPDATE SET
                     title=excluded.title,
                     status=excluded.status,
                     binary_name=excluded.binary_name,
                     claim_refs_json=excluded.claim_refs_json,
+                    status_note=excluded.status_note,
                     compat_toml_text=excluded.compat_toml_text",
                 params![
                     experiment.id,
@@ -464,6 +467,7 @@ impl ProvenanceStore {
                     experiment.status,
                     experiment.binary,
                     serde_json::to_string(&experiment.claim_refs)?,
+                    experiment.status_note,
                     experiment.compat_toml_text
                 ],
             )?;
@@ -596,7 +600,7 @@ impl ProvenanceStore {
         })
     }
 
-    pub fn export_control_plane_compat(
+    pub fn export_control_plane_compat_paths(
         &mut self,
         repo_root: &Path,
         paths: CompatExportPaths<'_>,
@@ -625,6 +629,32 @@ impl ProvenanceStore {
         Ok(())
     }
 
+    // Separate path arguments mirror the CLI/export surface; CompatExportPaths
+    // keeps the implementation typed after the public wrapper boundary.
+    #[allow(clippy::too_many_arguments)]
+    pub fn export_control_plane_compat(
+        &mut self,
+        repo_root: &Path,
+        claims_path: &Path,
+        insights_path: &Path,
+        experiments_path: &Path,
+        binaries_path: &Path,
+        theorems_path: &Path,
+        theorems_mirror_path: &Path,
+    ) -> Result<()> {
+        self.export_control_plane_compat_paths(
+            repo_root,
+            CompatExportPaths {
+                claims: claims_path,
+                insights: insights_path,
+                experiments: experiments_path,
+                binaries: binaries_path,
+                theorems: theorems_path,
+                theorems_mirror: theorems_mirror_path,
+            },
+        )
+    }
+
     pub fn replace_control_plane_experiments_from_registry_text(
         &mut self,
         repo_root: &Path,
@@ -644,14 +674,15 @@ impl ProvenanceStore {
         write_registry_snapshot(&tx, repo_root, "experiments", source_path, raw, &indexed_at)?;
         for experiment in &experiments {
             tx.execute(
-                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, compat_toml_text)
-                 VALUES(?1, ?2, ?3, ?4, ?5, ?6)",
+                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
+                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)",
                 params![
                     experiment.id,
                     experiment.title,
                     experiment.status,
                     experiment.binary,
                     serde_json::to_string(&experiment.claim_refs)?,
+                    experiment.status_note,
                     experiment.compat_toml_text
                 ],
             )?;
@@ -687,7 +718,7 @@ impl ProvenanceStore {
         Ok(text)
     }
 
-    pub fn verify_control_plane_compat_exports(
+    pub fn verify_control_plane_compat_exports_paths(
         &mut self,
         repo_root: &Path,
         paths: CompatExportPaths<'_>,
@@ -724,6 +755,32 @@ impl ProvenanceStore {
             );
         }
         Ok(())
+    }
+
+    // Separate path arguments mirror the CLI/verify surface; CompatExportPaths
+    // keeps the implementation typed after the public wrapper boundary.
+    #[allow(clippy::too_many_arguments)]
+    pub fn verify_control_plane_compat_exports(
+        &mut self,
+        repo_root: &Path,
+        claims_path: &Path,
+        insights_path: &Path,
+        experiments_path: &Path,
+        binaries_path: &Path,
+        theorems_path: &Path,
+        theorems_mirror_path: &Path,
+    ) -> Result<()> {
+        self.verify_control_plane_compat_exports_paths(
+            repo_root,
+            CompatExportPaths {
+                claims: claims_path,
+                insights: insights_path,
+                experiments: experiments_path,
+                binaries: binaries_path,
+                theorems: theorems_path,
+                theorems_mirror: theorems_mirror_path,
+            },
+        )
     }
 
     pub fn verify_control_plane_invariants(&self, repo_root: &Path) -> Result<()> {
@@ -1338,8 +1395,11 @@ impl ProvenanceStore {
             .unwrap_or_default();
         Ok(ControlPlaneCompatOutputs {
             claims: render_claims_registry(&self.list_claims()?),
-            insights: render_insights_registry(&self.list_insights()?),
-            experiments: render_experiments_registry(&experiments_meta, &self.list_experiments()?),
+            insights: render_insights_registry(&self.list_insights_for_compat()?),
+            experiments: render_experiments_registry(
+                &experiments_meta,
+                &self.list_experiments_for_compat()?,
+            ),
             binaries: render_binaries_registry(&self.list_binaries()?),
             theorems: render_theorem_markdown(
                 "SQLite canonical database (compatibility export)",
@@ -1398,12 +1458,30 @@ impl ProvenanceStore {
 
     pub fn list_insights(&self) -> Result<Vec<InsightRecord>> {
         let mut stmt = self.conn.prepare(
-            "SELECT id, title, status, claim_refs_json, status_note, compat_toml_text
+            "SELECT id, title, status, claim_refs_json, compat_toml_text
              FROM insights ORDER BY id",
         )?;
         let rows = stmt.query_map([], |row| {
             let claim_refs_json: String = row.get(3)?;
             Ok(InsightRecord {
+                id: row.get(0)?,
+                title: row.get(1)?,
+                status: row.get(2)?,
+                claim_refs: serde_json::from_str(&claim_refs_json).unwrap_or_default(),
+                compat_toml_text: row.get(4)?,
+            })
+        })?;
+        collect_rows(rows)
+    }
+
+    fn list_insights_for_compat(&self) -> Result<Vec<types::InsightCompatRecord>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, title, status, claim_refs_json, status_note, compat_toml_text
+             FROM insights ORDER BY id",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            let claim_refs_json: String = row.get(3)?;
+            Ok(types::InsightCompatRecord {
                 id: row.get(0)?,
                 title: row.get(1)?,
                 status: row.get(2)?,
@@ -1417,12 +1495,31 @@ impl ProvenanceStore {
 
     pub fn list_experiments(&self) -> Result<Vec<ExperimentRecord>> {
         let mut stmt = self.conn.prepare(
-            "SELECT id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text
+            "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
              FROM experiments_cp ORDER BY id",
         )?;
         let rows = stmt.query_map([], |row| {
             let claim_refs_json: String = row.get(4)?;
             Ok(ExperimentRecord {
+                id: row.get(0)?,
+                title: row.get(1)?,
+                status: row.get(2)?,
+                binary: row.get(3)?,
+                claim_refs: serde_json::from_str(&claim_refs_json).unwrap_or_default(),
+                compat_toml_text: row.get(5)?,
+            })
+        })?;
+        collect_rows(rows)
+    }
+
+    fn list_experiments_for_compat(&self) -> Result<Vec<types::ExperimentCompatRecord>> {
+        let mut stmt = self.conn.prepare(
+            "SELECT id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text
+             FROM experiments_cp ORDER BY id",
+        )?;
+        let rows = stmt.query_map([], |row| {
+            let claim_refs_json: String = row.get(4)?;
+            Ok(types::ExperimentCompatRecord {
                 id: row.get(0)?,
                 title: row.get(1)?,
                 status: row.get(2)?,
@@ -2533,6 +2630,34 @@ impl ProvenanceStore {
 
     /// Insert or replace a roadmap item.
     pub fn upsert_roadmap_item(&self, item: &RoadmapItem<'_>) -> Result<()> {
+        self.upsert_roadmap_item_columns(item, "[]", "")
+    }
+
+    /// Insert or replace a roadmap item including claim and insight links.
+    pub fn upsert_roadmap_item_with_links(&self, item: &RoadmapItemWithLinks<'_>) -> Result<()> {
+        let base = RoadmapItem {
+            id: item.id,
+            name: item.name,
+            priority: item.priority,
+            status: item.status,
+            status_token: item.status_token,
+            description: item.description,
+            sprint: item.sprint,
+            dependencies_json: item.dependencies_json,
+            acceptance_criteria_json: item.acceptance_criteria_json,
+            primary_outputs_json: item.primary_outputs_json,
+            evidence_refs_json: item.evidence_refs_json,
+            lacunae_json: item.lacunae_json,
+        };
+        self.upsert_roadmap_item_columns(&base, item.claims_json, item.insight)
+    }
+
+    fn upsert_roadmap_item_columns(
+        &self,
+        item: &RoadmapItem<'_>,
+        claims_json: &str,
+        insight: &str,
+    ) -> Result<()> {
         self.conn.execute(
             "INSERT OR REPLACE INTO roadmap_items
              (id, name, priority, status, status_token, description, sprint,
@@ -2552,8 +2677,8 @@ impl ProvenanceStore {
                 item.primary_outputs_json,
                 item.evidence_refs_json,
                 item.lacunae_json,
-                item.claims_json,
-                item.insight,
+                claims_json,
+                insight,
             ],
         )?;
         Ok(())
@@ -2567,11 +2692,38 @@ impl ProvenanceStore {
 
     /// Insert or replace a todo item.
     pub fn upsert_todo_item(&self, item: &ActionItem<'_>) -> Result<()> {
+        self.upsert_action_item_in_table("todo_items", item, "[]")
+    }
+
+    /// Insert or replace a todo item including evidence references.
+    pub fn upsert_todo_item_with_evidence(&self, item: &ActionItemWithEvidence<'_>) -> Result<()> {
+        let base = ActionItem {
+            id: item.id,
+            area: item.area,
+            title: item.title,
+            description: item.description,
+            priority: item.priority,
+            status: item.status,
+            status_token: item.status_token,
+            dependencies_json: item.dependencies_json,
+            acceptance_criteria_json: item.acceptance_criteria_json,
+        };
+        self.upsert_action_item_in_table("todo_items", &base, item.evidence_refs_json)
+    }
+
+    fn upsert_action_item_in_table(
+        &self,
+        table_name: &str,
+        item: &ActionItem<'_>,
+        evidence_refs_json: &str,
+    ) -> Result<()> {
         self.conn.execute(
-            "INSERT OR REPLACE INTO todo_items
+            &format!(
+                "INSERT OR REPLACE INTO {table_name}
              (id, area, title, description, priority, status, status_token,
               dependencies_json, acceptance_criteria_json, evidence_refs_json, updated_at)
-             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10, datetime('now'))",
+             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10, datetime('now'))"
+            ),
             params![
                 item.id,
                 item.area,
@@ -2582,7 +2734,7 @@ impl ProvenanceStore {
                 item.status_token,
                 item.dependencies_json,
                 item.acceptance_criteria_json,
-                item.evidence_refs_json,
+                evidence_refs_json,
             ],
         )?;
         Ok(())
@@ -2883,25 +3035,26 @@ impl ProvenanceStore {
 
     /// Insert or replace a next-action item.
     pub fn upsert_next_action(&self, item: &ActionItem<'_>) -> Result<()> {
-        self.conn.execute(
-            "INSERT OR REPLACE INTO next_action_items
-             (id, area, title, description, priority, status, status_token,
-              dependencies_json, acceptance_criteria_json, evidence_refs_json, updated_at)
-             VALUES (?1,?2,?3,?4,?5,?6,?7,?8,?9,?10, datetime('now'))",
-            params![
-                item.id,
-                item.area,
-                item.title,
-                item.description,
-                item.priority,
-                item.status,
-                item.status_token,
-                item.dependencies_json,
-                item.acceptance_criteria_json,
-                item.evidence_refs_json,
-            ],
-        )?;
-        Ok(())
+        self.upsert_action_item_in_table("next_action_items", item, "[]")
+    }
+
+    /// Insert or replace a next-action item including evidence references.
+    pub fn upsert_next_action_with_evidence(
+        &self,
+        item: &ActionItemWithEvidence<'_>,
+    ) -> Result<()> {
+        let base = ActionItem {
+            id: item.id,
+            area: item.area,
+            title: item.title,
+            description: item.description,
+            priority: item.priority,
+            status: item.status,
+            status_token: item.status_token,
+            dependencies_json: item.dependencies_json,
+            acceptance_criteria_json: item.acceptance_criteria_json,
+        };
+        self.upsert_action_item_in_table("next_action_items", &base, item.evidence_refs_json)
     }
 
     pub fn delete_next_action(&self, id: &str) -> Result<()> {
@@ -3730,14 +3883,13 @@ impl ProvenanceStore {
                 status: row.get(2)?,
                 binary: row.get(3)?,
                 claim_refs: serde_json::from_str(&row.get::<_, String>(4)?).unwrap_or_default(),
-                status_note: row.get(5)?,
-                compat_toml_text: row.get::<_, String>(6).unwrap_or_default(),
+                compat_toml_text: row.get::<_, String>(5).unwrap_or_default(),
             })
         };
         let mut out = Vec::new();
         if let Some(s) = status {
             let mut stmt = self.conn.prepare(
-                "SELECT id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text
+                "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
                  FROM experiments_cp WHERE status = ?1 ORDER BY id LIMIT ?2",
             )?;
             let rows = stmt.query_map(params![s, limit as i64], map_row)?;
@@ -3746,7 +3898,7 @@ impl ProvenanceStore {
             }
         } else {
             let mut stmt = self.conn.prepare(
-                "SELECT id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text
+                "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
                  FROM experiments_cp ORDER BY id LIMIT ?1",
             )?;
             let rows = stmt.query_map(params![limit as i64], map_row)?;

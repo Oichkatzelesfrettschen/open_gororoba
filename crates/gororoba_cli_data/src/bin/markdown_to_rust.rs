@@ -7,8 +7,10 @@
 //! Migrated from convert_all_md.py, convert_remaining.py, and convert_git_md.py.
 
 use anyhow::{Context, Result};
-use std::fs;
-use std::path::{Path, PathBuf};
+use std::{
+    fs,
+    path::{Path, PathBuf},
+};
 
 struct ConversionJob {
     src: &'static str,

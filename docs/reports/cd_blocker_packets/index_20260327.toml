@@ -11,8 +11,8 @@ followup_actions = "docs/reports/cd_blocker_packets/freudenthal_1951_holder_foll
 draft_message = "docs/reports/cd_blocker_packets/freudenthal_1951_leipzig_followup_20260327.eml"
 primary_search_target = "freudenthal_1951_exact_original"
 primary_sessions = [
-  "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_heidelberg_de_65684364/session.toml",
-  "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117/session.toml",
+    "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_heidelberg_de_65684364/session.toml",
+    "reports/acquisition_sessions/cayley_dickson_freudenthal_1951_exact_original_cir_nii_ac_jp_1570291224321248768_katalog_ub_uni_leipzig_de_0_1356848117/session.toml",
 ]
 
 [[packet]]
@@ -24,9 +24,9 @@ followup_actions = "docs/reports/cd_blocker_packets/jacobson_1958_delivery_follo
 draft_message = "docs/reports/cd_blocker_packets/jacobson_1958_bielefeld_chapter_followup_20260327.eml"
 primary_search_target = "jacobson_1958_exact_original"
 primary_sessions = [
-  "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind_www_subito_doc_de_details/session.toml",
-  "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_katalogplus_ub_uni_bielefeld_de_991023901549706442/session.toml",
-  "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_link_springer_com_978_1_4612_3694_8_24/session.toml",
+    "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_search_subito_doc_de_vufind_www_subito_doc_de_details/session.toml",
+    "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_cir_nii_ac_jp_1361137044884354944_katalogplus_ub_uni_bielefeld_de_991023901549706442/session.toml",
+    "reports/acquisition_sessions/cayley_dickson_jacobson_1958_exact_original_link_springer_com_978_1_4612_3694_8_24/session.toml",
 ]
 
 [[packet]]
@@ -36,7 +36,7 @@ kind = "catalog_browser_workflow"
 report = "docs/reports/cd_blocker_packets/dickson_1935_catalog_browser_packet_20260327.md"
 primary_search_target = "dickson_1935_exact_pdf"
 primary_sessions = [
-  "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short_projecteuclid_org_previewfirstpage/session.toml",
-  "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_catalog_hathitrust_org_home/session.toml",
-  "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_search_worldcat_org_search/session.toml",
+    "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_www_semanticscholar_org_fd3d64c4d98c38ba5aab882abab1c29ee57bf94f_projecteuclid_org_s0012_7094_35_00112_0_short_projecteuclid_org_previewfirstpage/session.toml",
+    "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_catalog_hathitrust_org_home/session.toml",
+    "reports/acquisition_sessions/cayley_dickson_dickson_1935_exact_pdf_search_worldcat_org_search/session.toml",
 ]

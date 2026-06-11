@@ -227,7 +227,7 @@ impl ConstraintSystem for E10DynkinSystem {
 /// Two generators are adjacent if the corresponding basis elements
 /// form a zero-divisor pair (their product has non-trivial kernel).
 pub struct SedenionZdSystem {
-    /// Adjacency matrix: zd_adjacent[i][j] for i,j in 0..15.
+    /// Adjacency matrix: `zd_adjacent[i][j]` for `i,j in 0..15`.
     /// Index 0 = basis element e_1, etc. (shifted by 1 from basis index).
     zd_adjacent: Vec<Vec<bool>>,
 }
@@ -307,7 +307,7 @@ impl ConstraintSystem for SedenionZdSystem {
 pub struct EtDmzSystem {
     /// Number of cells (rows * cols of the ET grid).
     n_cells: usize,
-    /// Adjacency: dmz_adjacent[cell_a][cell_b] for linearized (row, col) indices.
+    /// Adjacency: `dmz_adjacent[cell_a][cell_b]` for linearized (row, col) indices.
     dmz_adjacent: Vec<Vec<bool>>,
     /// ET dimensions (K x K).
     k: usize,
@@ -388,7 +388,7 @@ impl ConstraintSystem for EtDmzSystem {
 pub struct TwistNavigationSystem {
     /// 7 generators, indexed 0..6 (mapping to strut constants 1,3,5,7,9,11,13).
     strut_to_index: Vec<Option<usize>>,
-    /// Adjacency matrix: twist_adjacent[i][j] if struts are twist-connected.
+    /// Adjacency matrix: `twist_adjacent[i][j]` if struts are twist-connected.
     twist_adjacent: [[bool; 7]; 7],
     /// Strut constants in order.
     struts: [usize; 7],

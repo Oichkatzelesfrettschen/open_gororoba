@@ -36,7 +36,7 @@ pub struct HeadSensitivity {
 
 /// Score each head's quantization sensitivity using CD associator.
 ///
-/// `residuals_per_head`: residuals[head_idx] = Vec of per-token residual vectors.
+/// `residuals_per_head`: residuals`[head_idx]` = Vec of per-token residual vectors.
 /// Returns per-head sensitivity scores (sorted by sensitivity, descending).
 pub fn score_head_sensitivity(
     residuals_per_head: &[Vec<Vec<f64>>],

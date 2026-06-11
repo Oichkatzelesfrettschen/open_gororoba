@@ -10,7 +10,7 @@ use std::sync::Arc;
 
 use ash::vk;
 
-use crate::{device::Device, error::Result};
+use crate::{buffer::HostVisibleBuffer, device::Device, error::Result};
 
 /// Descriptor type vocabulary aligned with the workspace's prior usage.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -138,6 +138,133 @@ impl Drop for DescriptorSetLayout {
             self.device
                 .raw()
                 .destroy_descriptor_set_layout(self.raw, None);
+        }
+    }
+}
+
+/// Owned descriptor pool sized for one or more sets matching a layout.
+pub struct DescriptorPool {
+    device: Arc<Device>,
+    raw: vk::DescriptorPool,
+}
+
+impl DescriptorPool {
+    pub fn for_layout(
+        device: &Device,
+        layout: &DescriptorSetLayout,
+        max_sets: u32,
+    ) -> Result<Self> {
+        let mut storage_buffers = 0u32;
+        let mut uniform_buffers = 0u32;
+        let mut storage_images = 0u32;
+        for binding in layout.bindings() {
+            let count = binding.count.saturating_mul(max_sets);
+            match binding.descriptor_type {
+                DescriptorType::StorageBuffer => storage_buffers += count,
+                DescriptorType::UniformBuffer => uniform_buffers += count,
+                DescriptorType::StorageImage => storage_images += count,
+            }
+        }
+        let mut pool_sizes = Vec::new();
+        if storage_buffers != 0 {
+            pool_sizes.push(vk::DescriptorPoolSize {
+                ty: vk::DescriptorType::STORAGE_BUFFER,
+                descriptor_count: storage_buffers,
+            });
+        }
+        if uniform_buffers != 0 {
+            pool_sizes.push(vk::DescriptorPoolSize {
+                ty: vk::DescriptorType::UNIFORM_BUFFER,
+                descriptor_count: uniform_buffers,
+            });
+        }
+        if storage_images != 0 {
+            pool_sizes.push(vk::DescriptorPoolSize {
+                ty: vk::DescriptorType::STORAGE_IMAGE,
+                descriptor_count: storage_images,
+            });
+        }
+        let pool_ci = vk::DescriptorPoolCreateInfo::default()
+            .max_sets(max_sets)
+            .pool_sizes(&pool_sizes);
+        // SAFETY: pool_sizes outlives this call; ash copies it into a
+        // driver-owned pool object.
+        let raw = unsafe { device.raw().create_descriptor_pool(&pool_ci, None) }?;
+        Ok(Self {
+            device: Arc::new(device.clone()),
+            raw,
+        })
+    }
+
+    pub fn allocate_set(&self, layout: &DescriptorSetLayout) -> Result<DescriptorSet> {
+        let layouts = [layout.raw()];
+        let alloc_info = vk::DescriptorSetAllocateInfo::default()
+            .descriptor_pool(self.raw)
+            .set_layouts(&layouts);
+        // SAFETY: pool and layout are live and created on the same device.
+        let sets = unsafe { self.device.raw().allocate_descriptor_sets(&alloc_info) }?;
+        let raw = sets
+            .first()
+            .copied()
+            .ok_or(crate::error::VulkanError::UnsupportedFeature(
+                "allocate_descriptor_sets returned empty vec",
+            ))?;
+        Ok(DescriptorSet {
+            device: Arc::clone(&self.device),
+            raw,
+        })
+    }
+}
+
+impl Drop for DescriptorPool {
+    fn drop(&mut self) {
+        // SAFETY: self.raw was created by for_layout above; Arc<Device>
+        // keeps the device alive past this Drop.
+        unsafe {
+            self.device.raw().destroy_descriptor_pool(self.raw, None);
+        }
+    }
+}
+
+/// Descriptor set handle owned by a DescriptorPool.
+pub struct DescriptorSet {
+    device: Arc<Device>,
+    raw: vk::DescriptorSet,
+}
+
+impl DescriptorSet {
+    pub fn raw(&self) -> vk::DescriptorSet {
+        self.raw
+    }
+
+    pub fn write_storage_buffer(&self, binding: u32, buffer: &HostVisibleBuffer) {
+        self.write_buffer(binding, buffer, vk::DescriptorType::STORAGE_BUFFER);
+    }
+
+    pub fn write_uniform_buffer(&self, binding: u32, buffer: &HostVisibleBuffer) {
+        self.write_buffer(binding, buffer, vk::DescriptorType::UNIFORM_BUFFER);
+    }
+
+    fn write_buffer(
+        &self,
+        binding: u32,
+        buffer: &HostVisibleBuffer,
+        descriptor_type: vk::DescriptorType,
+    ) {
+        let buffer_info = [vk::DescriptorBufferInfo::default()
+            .buffer(buffer.raw())
+            .offset(0)
+            .range(buffer.size())];
+        let write = [vk::WriteDescriptorSet::default()
+            .dst_set(self.raw)
+            .dst_binding(binding)
+            .dst_array_element(0)
+            .descriptor_type(descriptor_type)
+            .buffer_info(&buffer_info)];
+        // SAFETY: descriptor set, binding, and buffer are live on the same
+        // device. Vulkan copies the descriptor info during the call.
+        unsafe {
+            self.device.raw().update_descriptor_sets(&write, &[]);
         }
     }
 }

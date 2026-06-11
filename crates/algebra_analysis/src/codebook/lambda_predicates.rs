@@ -104,7 +104,7 @@ pub fn is_in_lambda_2048(v: &LatticeVector) -> bool {
 /// 1. Trinary: all coordinates in {-1, 0, 1}
 /// 2. Even coordinate sum: sum(v) mod 2 = 0
 /// 3. Even Hamming weight: |{i : v_i != 0}| mod 2 = 0
-/// 4. l_0 constraint: v[0] != +1
+/// 4. l_0 constraint: `v[0] != +1`
 ///
 /// These are structurally forced by the octonion algebra (C-589).
 pub fn is_in_lambda_4096(v: &LatticeVector) -> bool {

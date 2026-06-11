@@ -12,8 +12,10 @@
 //! Data layout: SoA (NPRIM * N_total) for coalesced GPU access.
 
 use anyhow::{Context, Result};
-use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
+use cudarc::driver::{CudaStream, PushKernelArg};
+use gororoba_gpu_cuda::{
+    Buffer, CompileOptions, Context as CudaContextHelper, KernelHandle, LaunchConfig,
+    ModuleRegistry,
 };
 use std::sync::Arc;
 
@@ -23,26 +25,10 @@ const NCONS: usize = 8;
 
 /// GPU GRMHD solver state.
 pub struct GrmhdGpu {
-    _ctx: Arc<CudaContext>,
+    _ctx: CudaContextHelper,
     stream: Arc<CudaStream>,
-
-    // Kernels
-    precompute_metric: CudaFunction,
-    compute_flux: CudaFunction,
-    prim2con: CudaFunction,
-    euler_update: CudaFunction,
-    flux_divergence: CudaFunction,
-
-    // Device buffers
-    d_prims: CudaSlice<f64>,    // [NPRIM * N_total]
-    d_cons: CudaSlice<f64>,     // [NCONS * N_total]
-    d_cons_new: CudaSlice<f64>, // [NCONS * N_total]
-    d_flux: CudaSlice<f64>,     // [NCONS * N_total] (reused per direction)
-    d_rhs: CudaSlice<f64>,      // [NCONS * N_total]
-    d_gcov: CudaSlice<f64>,     // [5 * N1 * N2]
-    d_gcon: CudaSlice<f64>,     // [5 * N1 * N2]
-    d_sqrt_g: CudaSlice<f64>,   // [N1 * N2]
-    d_lapse: CudaSlice<f64>,    // [N1 * N2]
+    kernels: GrmhdKernels,
+    buffers: GrmhdBuffers,
 
     // Grid dimensions
     n1: usize,
@@ -60,6 +46,70 @@ pub struct GrmhdGpu {
     dx3: f64,
 }
 
+struct GrmhdKernels {
+    precompute_metric: KernelHandle,
+    compute_flux: KernelHandle,
+    prim2con: KernelHandle,
+    euler_update: KernelHandle,
+    flux_divergence: KernelHandle,
+}
+
+struct GrmhdBuffers {
+    prims: Buffer<f64>,    // [NPRIM * N_total]
+    cons: Buffer<f64>,     // [NCONS * N_total]
+    cons_new: Buffer<f64>, // [NCONS * N_total]
+    flux: Buffer<f64>,     // [NCONS * N_total] (reused per direction)
+    rhs: Buffer<f64>,      // [NCONS * N_total]
+    gcov: Buffer<f64>,     // [5 * N1 * N2]
+    gcon: Buffer<f64>,     // [5 * N1 * N2]
+    sqrt_g: Buffer<f64>,   // [N1 * N2]
+    lapse: Buffer<f64>,    // [N1 * N2]
+}
+
+fn load_kernels(ctx: &CudaContextHelper) -> Result<GrmhdKernels> {
+    let opts = CompileOptions::for_arch(7, 0);
+    let ptx =
+        CompileOptions::compile_ptx(KERNEL_SRC, &opts).context("NVRTC compile kernels_grmhd.cu")?;
+    let registry = ModuleRegistry::load(
+        ctx.raw(),
+        ptx,
+        &[
+            "precompute_metric_kernel",
+            "compute_flux_kernel",
+            "prim2con_kernel",
+            "euler_update_kernel",
+            "flux_divergence_kernel",
+        ],
+    )
+    .context("Load GRMHD CUDA module")?;
+
+    Ok(GrmhdKernels {
+        precompute_metric: registry.get("precompute_metric_kernel")?,
+        compute_flux: registry.get("compute_flux_kernel")?,
+        prim2con: registry.get("prim2con_kernel")?,
+        euler_update: registry.get("euler_update_kernel")?,
+        flux_divergence: registry.get("flux_divergence_kernel")?,
+    })
+}
+
+fn allocate_buffers(
+    stream: &Arc<CudaStream>,
+    n_total: usize,
+    n_met: usize,
+) -> Result<GrmhdBuffers> {
+    Ok(GrmhdBuffers {
+        prims: Buffer::alloc_zeros(stream, NPRIM * n_total)?,
+        cons: Buffer::alloc_zeros(stream, NCONS * n_total)?,
+        cons_new: Buffer::alloc_zeros(stream, NCONS * n_total)?,
+        flux: Buffer::alloc_zeros(stream, NCONS * n_total)?,
+        rhs: Buffer::alloc_zeros(stream, NCONS * n_total)?,
+        gcov: Buffer::alloc_zeros(stream, 5 * n_met)?,
+        gcon: Buffer::alloc_zeros(stream, 5 * n_met)?,
+        sqrt_g: Buffer::alloc_zeros(stream, n_met)?,
+        lapse: Buffer::alloc_zeros(stream, n_met)?,
+    })
+}
+
 impl GrmhdGpu {
     /// Initialize the GPU solver: compile kernels, allocate buffers,
     /// precompute the metric.
@@ -72,42 +122,13 @@ impl GrmhdGpu {
         kerr_a: f64,
         gamma: f64,
     ) -> Result<Self> {
-        // Delegate context acquisition to gpu_cuda::Context so the
-        // `cudart_device::get_count` + ordinal-range checks happen in
-        // one place across the workspace.
-        let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
-            .context("CUDA init for GRMHD")?;
-        let ctx = ctx_wrapper.raw().clone();
+        let ctx = CudaContextHelper::with_default_device().context("CUDA init for GRMHD")?;
         let stream = ctx.default_stream();
-
-        // Compile kernels via NVRTC
-        let opts = cudarc::nvrtc::CompileOptions {
-            arch: Some("sm_70"), // V100+
-            ..Default::default()
-        };
-        let ptx = cudarc::nvrtc::compile_ptx_with_opts(KERNEL_SRC, opts)
-            .context("NVRTC compile kernels_grmhd.cu")?;
-        let module = ctx.load_module(ptx).context("Load GRMHD CUDA module")?;
-
-        let precompute_metric = module.load_function("precompute_metric_kernel")?;
-        let compute_flux = module.load_function("compute_flux_kernel")?;
-        let prim2con = module.load_function("prim2con_kernel")?;
-        let euler_update = module.load_function("euler_update_kernel")?;
-        let flux_divergence = module.load_function("flux_divergence_kernel")?;
+        let kernels = load_kernels(&ctx)?;
 
         let n_total = n1 * n2 * n3;
         let n_met = n1 * n2;
-
-        // Allocate device buffers
-        let d_prims = stream.alloc_zeros::<f64>(NPRIM * n_total)?;
-        let d_cons = stream.alloc_zeros::<f64>(NCONS * n_total)?;
-        let d_cons_new = stream.alloc_zeros::<f64>(NCONS * n_total)?;
-        let d_flux = stream.alloc_zeros::<f64>(NCONS * n_total)?;
-        let d_rhs = stream.alloc_zeros::<f64>(NCONS * n_total)?;
-        let d_gcov = stream.alloc_zeros::<f64>(5 * n_met)?;
-        let d_gcon = stream.alloc_zeros::<f64>(5 * n_met)?;
-        let d_sqrt_g = stream.alloc_zeros::<f64>(n_met)?;
-        let d_lapse = stream.alloc_zeros::<f64>(n_met)?;
+        let buffers = allocate_buffers(&stream, n_total, n_met)?;
 
         let dx1 = (r_max / r_min).ln() / n1 as f64;
         let dx2 = std::f64::consts::PI / n2 as f64;
@@ -116,20 +137,8 @@ impl GrmhdGpu {
         let mut solver = Self {
             _ctx: ctx,
             stream,
-            precompute_metric,
-            compute_flux,
-            prim2con,
-            euler_update,
-            flux_divergence,
-            d_prims,
-            d_cons,
-            d_cons_new,
-            d_flux,
-            d_rhs,
-            d_gcov,
-            d_gcon,
-            d_sqrt_g,
-            d_lapse,
+            kernels,
+            buffers,
             n1,
             n2,
             n3,
@@ -151,14 +160,7 @@ impl GrmhdGpu {
 
     fn precompute_metric_gpu(&mut self) -> Result<()> {
         let n_met = (self.n1 * self.n2) as u32;
-        let threads = 256u32;
-        let blocks = n_met.div_ceil(threads);
-
-        let cfg = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d(n_met);
 
         let kerr_a = self.kerr_a;
         let r_min = self.r_min;
@@ -166,11 +168,11 @@ impl GrmhdGpu {
         let n1_i = self.n1 as i32;
         let n2_i = self.n2 as i32;
 
-        let mut builder = self.stream.launch_builder(&self.precompute_metric);
-        builder.arg(&self.d_gcov);
-        builder.arg(&self.d_gcon);
-        builder.arg(&self.d_sqrt_g);
-        builder.arg(&self.d_lapse);
+        let mut builder = self.stream.launch_builder(&self.kernels.precompute_metric);
+        builder.arg(self.buffers.gcov.raw_mut());
+        builder.arg(self.buffers.gcon.raw_mut());
+        builder.arg(self.buffers.sqrt_g.raw_mut());
+        builder.arg(self.buffers.lapse.raw_mut());
         builder.arg(&kerr_a);
         builder.arg(&r_min);
         builder.arg(&r_max);
@@ -184,35 +186,25 @@ impl GrmhdGpu {
     /// Upload primitive variables from host to device (SoA layout).
     pub fn upload_prims(&mut self, prims_soa: &[f64]) -> Result<()> {
         assert_eq!(prims_soa.len(), NPRIM * self.n_total);
-        self.d_prims = self
-            .stream
-            .clone_htod(prims_soa)
-            .context("Upload prims to GPU")?;
+        self.buffers.prims =
+            Buffer::htod(&self.stream, prims_soa).context("Upload prims to GPU")?;
         Ok(())
     }
 
     /// Download primitive variables from device to host.
     pub fn download_prims(&self, prims_soa: &mut [f64]) -> Result<()> {
         assert_eq!(prims_soa.len(), NPRIM * self.n_total);
-        let host = self
-            .stream
-            .clone_dtoh(&self.d_prims)
+        self.buffers
+            .prims
+            .dtoh(prims_soa)
             .context("Download prims from GPU")?;
-        prims_soa.copy_from_slice(&host);
         Ok(())
     }
 
     /// Compute fluxes in one direction and accumulate into RHS.
     fn compute_flux_direction(&mut self, dir: usize) -> Result<()> {
         let nt = self.n_total as u32;
-        let threads = 256u32;
-        let blocks = nt.div_ceil(threads);
-
-        let cfg = LaunchConfig {
-            grid_dim: (blocks, 1, 1),
-            block_dim: (threads, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d(nt);
 
         // Compute flux
         let gam_m1 = self.gam_m1;
@@ -222,11 +214,11 @@ impl GrmhdGpu {
         let n3_i = self.n3 as i32;
         let nt_i = self.n_total as i32;
 
-        let mut builder = self.stream.launch_builder(&self.compute_flux);
-        builder.arg(&self.d_prims);
-        builder.arg(&self.d_gcov);
-        builder.arg(&self.d_sqrt_g);
-        builder.arg(&self.d_flux);
+        let mut builder = self.stream.launch_builder(&self.kernels.compute_flux);
+        builder.arg(self.buffers.prims.raw());
+        builder.arg(self.buffers.gcov.raw());
+        builder.arg(self.buffers.sqrt_g.raw());
+        builder.arg(self.buffers.flux.raw_mut());
         builder.arg(&gam_m1);
         builder.arg(&dir_i);
         builder.arg(&n1_i);
@@ -242,9 +234,9 @@ impl GrmhdGpu {
             _ => 1.0 / self.dx3,
         };
 
-        let mut builder = self.stream.launch_builder(&self.flux_divergence);
-        builder.arg(&self.d_flux);
-        builder.arg(&self.d_rhs);
+        let mut builder = self.stream.launch_builder(&self.kernels.flux_divergence);
+        builder.arg(self.buffers.flux.raw());
+        builder.arg(self.buffers.rhs.raw_mut());
         builder.arg(&inv_dx);
         builder.arg(&dir_i);
         builder.arg(&n1_i);
@@ -265,32 +257,23 @@ impl GrmhdGpu {
     pub fn step(&mut self, dt: f64) -> Result<()> {
         let nt = self.n_total;
         let total_vars = (NCONS * nt) as u32;
-        let threads = 256u32;
 
         // Zero RHS by reallocating a zeroed buffer
-        self.d_rhs = self
-            .stream
-            .alloc_zeros::<f64>(NCONS * nt)
-            .context("Zero RHS")?;
+        self.buffers.rhs = Buffer::alloc_zeros(&self.stream, NCONS * nt).context("Zero RHS")?;
 
         // Compute prim2con
         {
-            let blocks = (nt as u32).div_ceil(threads);
-            let cfg = LaunchConfig {
-                grid_dim: (blocks, 1, 1),
-                block_dim: (threads, 1, 1),
-                shared_mem_bytes: 0,
-            };
+            let cfg = LaunchConfig::launch_1d(nt as u32);
             let gam_m1 = self.gam_m1;
             let n1_i = self.n1 as i32;
             let n2_i = self.n2 as i32;
             let n3_i = self.n3 as i32;
             let nt_i = self.n_total as i32;
-            let mut builder = self.stream.launch_builder(&self.prim2con);
-            builder.arg(&self.d_prims);
-            builder.arg(&self.d_gcov);
-            builder.arg(&self.d_sqrt_g);
-            builder.arg(&self.d_cons);
+            let mut builder = self.stream.launch_builder(&self.kernels.prim2con);
+            builder.arg(self.buffers.prims.raw());
+            builder.arg(self.buffers.gcov.raw());
+            builder.arg(self.buffers.sqrt_g.raw());
+            builder.arg(self.buffers.cons.raw_mut());
             builder.arg(&gam_m1);
             builder.arg(&n1_i);
             builder.arg(&n2_i);
@@ -306,24 +289,19 @@ impl GrmhdGpu {
 
         // Euler update
         {
-            let blocks = total_vars.div_ceil(threads);
-            let cfg = LaunchConfig {
-                grid_dim: (blocks, 1, 1),
-                block_dim: (threads, 1, 1),
-                shared_mem_bytes: 0,
-            };
+            let cfg = LaunchConfig::launch_1d(total_vars);
             let total_vars_i = total_vars as i32;
-            let mut builder = self.stream.launch_builder(&self.euler_update);
-            builder.arg(&self.d_cons);
-            builder.arg(&self.d_rhs);
-            builder.arg(&self.d_cons_new);
+            let mut builder = self.stream.launch_builder(&self.kernels.euler_update);
+            builder.arg(self.buffers.cons.raw());
+            builder.arg(self.buffers.rhs.raw());
+            builder.arg(self.buffers.cons_new.raw_mut());
             builder.arg(&dt);
             builder.arg(&total_vars_i);
             unsafe { builder.launch(cfg) }.context("Launch euler_update")?;
         }
 
         // Swap cons <-> cons_new
-        std::mem::swap(&mut self.d_cons, &mut self.d_cons_new);
+        std::mem::swap(&mut self.buffers.cons, &mut self.buffers.cons_new);
 
         Ok(())
     }

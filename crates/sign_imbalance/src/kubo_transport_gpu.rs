@@ -37,8 +37,9 @@ use cudarc::{
         sys::cublasOperation_t,
     },
     cusolver::sys::{self as cusolver_sys, cublasFillMode_t, cusolverEigMode_t, cusolverStatus_t},
-    driver::{CudaContext, CudaStream, DevicePtr, DevicePtrMut},
+    driver::{CudaStream, DevicePtr, DevicePtrMut},
 };
+use gororoba_gpu_cuda::{Buffer, Context as CudaContextHelper};
 
 use super::kubo_transport::{
     HeisenbergModel, KuboTransport, build_energy_current_operator, build_hamiltonian_matrix,
@@ -58,7 +59,7 @@ pub struct GpuExactDiagResult {
 ///
 /// Holds cuSOLVER and cuBLAS handles, reused across multiple model evaluations.
 pub struct GpuKuboContext {
-    _ctx: Arc<CudaContext>,
+    _ctx: CudaContextHelper,
     stream: Arc<CudaStream>,
     blas: CudaBlas,
     solver_handle: cusolver_sys::cusolverDnHandle_t,
@@ -67,7 +68,7 @@ pub struct GpuKuboContext {
 impl GpuKuboContext {
     /// Create a new GPU context on device 0.
     pub fn new() -> anyhow::Result<Self> {
-        let ctx = CudaContext::new(0)?;
+        let ctx = CudaContextHelper::with_default_device()?;
         let stream = ctx.default_stream();
         let blas = CudaBlas::new(stream.clone())?;
 
@@ -107,8 +108,8 @@ impl GpuKuboContext {
         let h = build_hamiltonian_matrix(model);
 
         // Upload to GPU
-        let mut d_a = self.stream.clone_htod(&h)?;
-        let mut d_w = self.stream.alloc_zeros::<f64>(dim)?;
+        let mut d_a = Buffer::<f64>::htod(&self.stream, &h)?;
+        let mut d_w = Buffer::<f64>::alloc_zeros(&self.stream, dim)?;
 
         let n_ffi = dim as i32;
         let lda = dim as i32;
@@ -118,8 +119,8 @@ impl GpuKuboContext {
         // Query workspace size
         let mut lwork: i32 = 0;
         {
-            let (a_ptr, _guard_a) = d_a.device_ptr(&self.stream);
-            let (w_ptr, _guard_w) = d_w.device_ptr(&self.stream);
+            let (a_ptr, _guard_a) = d_a.raw().device_ptr(&self.stream);
+            let (w_ptr, _guard_w) = d_w.raw().device_ptr(&self.stream);
             let stat = unsafe {
                 cusolver_sys::cusolverDnDsyevd_bufferSize(
                     self.solver_handle,
@@ -137,15 +138,15 @@ impl GpuKuboContext {
             }
         }
 
-        let mut d_work = self.stream.alloc_zeros::<f64>(lwork.max(1) as usize)?;
-        let mut d_info = self.stream.alloc_zeros::<i32>(1)?;
+        let mut d_work = Buffer::<f64>::alloc_zeros(&self.stream, lwork.max(1) as usize)?;
+        let mut d_info = Buffer::<i32>::alloc_zeros(&self.stream, 1)?;
 
         // Run syevd (in-place: overwrites d_a with eigenvectors, d_w with eigenvalues)
         {
-            let (a_ptr, _guard_a) = d_a.device_ptr_mut(&self.stream);
-            let (w_ptr, _guard_w) = d_w.device_ptr_mut(&self.stream);
-            let (work_ptr, _guard_work) = d_work.device_ptr_mut(&self.stream);
-            let (info_ptr, _guard_info) = d_info.device_ptr_mut(&self.stream);
+            let (a_ptr, _guard_a) = d_a.raw_mut().device_ptr_mut(&self.stream);
+            let (w_ptr, _guard_w) = d_w.raw_mut().device_ptr_mut(&self.stream);
+            let (work_ptr, _guard_work) = d_work.raw_mut().device_ptr_mut(&self.stream);
+            let (info_ptr, _guard_info) = d_info.raw_mut().device_ptr_mut(&self.stream);
 
             let stat = unsafe {
                 cusolver_sys::cusolverDnDsyevd(
@@ -167,11 +168,11 @@ impl GpuKuboContext {
         }
 
         // Download results to host
-        let eigenvalues = self.stream.clone_dtoh(&d_w)?;
-        let eigenvectors = self.stream.clone_dtoh(&d_a)?;
+        let eigenvalues = d_w.dtoh_vec()?;
+        let eigenvectors = d_a.dtoh_vec()?;
 
         // Check convergence
-        let info = self.stream.clone_dtoh(&d_info)?;
+        let info = d_info.dtoh_vec()?;
         if info[0] != 0 {
             anyhow::bail!("cusolverDnDsyevd: info = {} (convergence failure)", info[0]);
         }
@@ -195,10 +196,10 @@ impl GpuKuboContext {
         eigenvectors: &[f64],
         dim: usize,
     ) -> anyhow::Result<Vec<f64>> {
-        let d_j = self.stream.clone_htod(current_op)?;
-        let d_v = self.stream.clone_htod(eigenvectors)?;
-        let mut d_temp = self.stream.alloc_zeros::<f64>(dim * dim)?;
-        let mut d_result = self.stream.alloc_zeros::<f64>(dim * dim)?;
+        let d_j = Buffer::<f64>::htod(&self.stream, current_op)?;
+        let d_v = Buffer::<f64>::htod(&self.stream, eigenvectors)?;
+        let mut d_temp = Buffer::<f64>::alloc_zeros(&self.stream, dim * dim)?;
+        let mut d_result = Buffer::<f64>::alloc_zeros(&self.stream, dim * dim)?;
 
         let n = dim as i32;
 
@@ -215,7 +216,10 @@ impl GpuKuboContext {
             beta: 0.0f64,
             ldc: n,
         };
-        unsafe { self.blas.gemm(cfg1, &d_j, &d_v, &mut d_temp)? };
+        unsafe {
+            self.blas
+                .gemm(cfg1, d_j.raw(), d_v.raw(), d_temp.raw_mut())?
+        };
 
         // Step 2: result = V^T * temp
         let cfg2 = GemmConfig {
@@ -230,9 +234,12 @@ impl GpuKuboContext {
             beta: 0.0f64,
             ldc: n,
         };
-        unsafe { self.blas.gemm(cfg2, &d_v, &d_temp, &mut d_result)? };
+        unsafe {
+            self.blas
+                .gemm(cfg2, d_v.raw(), d_temp.raw(), d_result.raw_mut())?
+        };
 
-        Ok(self.stream.clone_dtoh(&d_result)?)
+        Ok(d_result.dtoh_vec()?)
     }
 
     /// Compute full Kubo transport using GPU-accelerated ED and basis transformation.

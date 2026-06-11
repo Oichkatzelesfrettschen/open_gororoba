@@ -25,7 +25,7 @@ use super::magic_square::DivisionAlgebra;
 // ============================================================================
 
 /// One of the two anomaly-free heterotic gauge groups.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum HeteroticGaugeGroup {
     /// `E_8 x E_8` (heterotic-E8 string).
     E8xE8,

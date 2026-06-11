@@ -100,8 +100,25 @@ pub fn lbm_d3q19_step_kernel(
     let f18 = f_in[18 * n_cells + cell];
 
     // Macroscopic moments (rho, mx, my, mz -> ux, uy, uz).
-    let rho = f0 + f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8 + f9 + f10 + f11 + f12 + f13 + f14
-        + f15 + f16 + f17 + f18;
+    let rho = f0
+        + f1
+        + f2
+        + f3
+        + f4
+        + f5
+        + f6
+        + f7
+        + f8
+        + f9
+        + f10
+        + f11
+        + f12
+        + f13
+        + f14
+        + f15
+        + f16
+        + f17
+        + f18;
     let inv_rho = 1.0_f32 / rho;
     let mx = f1 - f2 + f7 - f8 + f9 - f10 + f11 - f12 + f13 - f14;
     let my = f3 - f4 + f7 - f8 - f9 + f10 + f15 - f16 + f17 - f18;
@@ -387,7 +404,10 @@ mod tests {
     fn rejects_length_mismatch() {
         let bad = vec![1.0_f32; 7];
         match evolve_d3q19_cubecl(2, 2, 2, 1.0, &bad, 1) {
-            Err(CubeclLbmError::LengthMismatch { got: 7, expected: 152 }) => {}
+            Err(CubeclLbmError::LengthMismatch {
+                got: 7,
+                expected: 152,
+            }) => {}
             other => panic!("expected LengthMismatch, got {other:?}"),
         }
     }

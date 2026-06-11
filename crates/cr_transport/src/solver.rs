@@ -174,7 +174,7 @@ impl PteSolver {
     }
 
     /// Thomas algorithm (tridiagonal matrix algorithm) for a 1D tridiagonal system.
-    /// Solves (a[i]*f[i-1] + b[i]*f[i] + c[i]*f[i+1]) = d[i].
+    /// Solves `(a[i]*f[i-1] + b[i]*f[i] + c[i]*f[i+1]) = d[i]`.
     /// Uses Dirichlet at x=nx-1 (ISM boundary) and zero-flux at x=0 (inner boundary).
     ///
     /// Returns solution vector of length n.
@@ -412,7 +412,7 @@ impl PteSolver {
     }
 
     /// Extract differential flux J = p^2 * f at a single spatial cell.
-    /// Returns Vec<f64> of length n_p.
+    /// Returns `Vec<f64>` of length n_p.
     pub fn flux_at(&self, x: usize, y: usize, z: usize) -> Vec<f64> {
         let idx = self.idx(x, y, z);
         (0..self.n_p)

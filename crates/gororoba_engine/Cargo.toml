@@ -7,47 +7,57 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
 # Sub-crate decomposition: pipeline traits + GPU bridge
-gororoba_pipeline = { path = "../gororoba_pipeline" }
 gororoba_gpu_bridge = { path = "../gororoba_gpu_bridge" }
+gororoba_pipeline = { path = "../gororoba_pipeline" }
 
 # Domain physics crates
-sign_imbalance = { path = "../sign_imbalance" }
-lbm_core = { path = "../lbm_core" }
-neural_homotopy = { path = "../neural_homotopy" }
-lattice_filtration = { path = "../lattice_filtration" }
-spin_tomography_core = { path = "../spin_tomography_core" }
-cd_spin_bridge = { path = "../cd_spin_bridge" }
-gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
-algebra_experimental = { path = "../algebra_experimental" }
 algebra_analysis = { path = "../algebra_analysis", optional = true }
-stats_core = { path = "../stats_core" }
-lbm_3d = { path = "../lbm_3d" }
-gr_core = { version = "0.1.0", path = "../gr_core" }
-spectral_core = { version = "0.1.0", path = "../spectral_core" }
-optics_core = { path = "../optics_core" }
-cosmology_core = { path = "../cosmology_core" }
-quantum_core = { path = "../quantum_core" }
-num-complex = { workspace = true }
-ndarray = { workspace = true }
+algebra_experimental = { path = "../algebra_experimental" }
 anyhow = { workspace = true }
-lbm_3d_cuda = { path = "../lbm_3d_cuda" }
-cudarc = { workspace = true, optional = true }
-nalgebra = { workspace = true }
-rand = { workspace = true }
+cd_spin_bridge = { path = "../cd_spin_bridge" }
 chrono.workspace = true
-sha2.workspace = true
+cosmology_core = { path = "../cosmology_core" }
+cudarc = { workspace = true, optional = true }
+gororoba_algebra = { path = "../gororoba_algebra", features = ["lie"] }
+gororoba_gpu_cuda = { workspace = true, optional = true }
+gr_core = { version = "0.1.0", path = "../gr_core" }
+lattice_filtration = { path = "../lattice_filtration" }
+lbm_3d = { path = "../lbm_3d" }
+lbm_3d_cuda = { path = "../lbm_3d_cuda" }
+lbm_core = { path = "../lbm_core" }
+nalgebra = { workspace = true }
+ndarray = { workspace = true }
+neural_homotopy = { path = "../neural_homotopy" }
+num-complex = { workspace = true }
+optics_core = { path = "../optics_core" }
+quantum_core = { path = "../quantum_core" }
+rand = { workspace = true }
 serde.workspace = true
+sha2.workspace = true
+sign_imbalance = { path = "../sign_imbalance" }
+spectral_core = { version = "0.1.0", path = "../spectral_core" }
+spin_tomography_core = { path = "../spin_tomography_core" }
+stats_core = { path = "../stats_core" }
 
 [dev-dependencies]
-proptest = { workspace = true }
 criterion = { workspace = true }
+proptest = { workspace = true }
 
 [[bench]]
 name = "pipeline_bench"
 harness = false
 
 [features]
-gpu = ["lbm_3d_cuda/cufft", "gororoba_algebra/gpu", "algebra_experimental/gpu", "stats_core/gpu", "cufft", "dep:cudarc"]
+gpu = [
+    "lbm_3d_cuda/cufft",
+    "gororoba_algebra/gpu",
+    "algebra_experimental/gpu",
+    "stats_core/gpu",
+    "cufft",
+    "dep:cudarc",
+    "dep:gororoba_gpu_cuda",
+    "gororoba_gpu_cuda/cudarc",
+]
 cufft = []
 analysis-examples = ["dep:algebra_analysis"]
 

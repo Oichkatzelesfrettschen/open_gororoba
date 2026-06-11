@@ -7,13 +7,13 @@
 //! Registered experiment: E-198 (LoTSS-MaNGA Kinematic Bisection)
 //!
 //! Usage:
-//!   lotss-fetch download --release dr1|dr2|dr3
-//!   lotss-fetch cone-search --release dr3 --ra-center <deg> --dec-center <deg> --radius <deg>
-//!   lotss-fetch verify --release dr1|dr2|dr3
-//!   lotss-fetch summary --input <fits-path>
-//!   lotss-fetch manga-footprint [--tile-dir path] [--summary-out path]
-//!       [--manga-selection path] [--manga-drpall path] [--full-bounding-box]
-//!   lotss-fetch manga-preflight [--manga-selection path] [--manga-drpall path] [--report path]
+//!   `lotss-fetch download --release dr1|dr2|dr3`
+//!   `lotss-fetch cone-search --release dr3 --ra-center <deg> --dec-center <deg> --radius <deg>`
+//!   `lotss-fetch verify --release dr1|dr2|dr3`
+//!   `lotss-fetch summary --input <fits-path>`
+//!   `lotss-fetch manga-footprint [--tile-dir path] [--summary-out path]`
+//!       `[--manga-selection path] [--manga-drpall path] [--full-bounding-box]`
+//!   `lotss-fetch manga-preflight [--manga-selection path] [--manga-drpall path] [--report path]`
 //!   lotss-fetch crossmatch-manga --release dr1|dr2|dr3 [--input-format fits|dr3-tiles] [--input path]
 //!       [--manga-selection path] [--manga-drpall path] [--radius-arcsec 3.0]
 //!       [--output path] [--report path] [--summary path] [--allow-partial]

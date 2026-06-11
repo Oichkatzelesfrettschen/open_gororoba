@@ -124,5 +124,6 @@ box-counting + chingon, lifting the score from 3/15 to 4/15.
 ## When this lands
 
 Score in `docs/engineering/cubecl_vulkan_cuda_parity_matrix.md` updates:
+
 - "LBM D3Q19 stream + collide" row: YES on all four columns + parity test.
 - Summary count: 4 of 15 kernels with full 3-way parity (was 3 after #18).

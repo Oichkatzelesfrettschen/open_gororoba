@@ -1,15 +1,18 @@
 #[cfg(feature = "gpu")]
-use cudarc::driver::{
-    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
-};
+use cudarc::driver::{CudaSlice, CudaStream, PushKernelArg};
 #[cfg(feature = "gpu")]
-use cudarc::nvrtc::{CompileOptions, Ptx, compile_ptx_with_opts};
+use cudarc::nvrtc::Ptx;
+#[cfg(feature = "gpu")]
+use gororoba_gpu_cuda::{
+    Buffer, CompileOptions, Context as CudaHelperContext, DeviceProbe, KernelHandle, LaunchConfig,
+    ModuleRegistry,
+};
 #[cfg(feature = "gpu")]
 use sha2::{Digest, Sha256};
 #[cfg(feature = "gpu")]
 use std::fs;
 #[cfg(feature = "gpu")]
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 #[cfg(feature = "gpu")]
 use std::sync::{Arc, OnceLock};
 
@@ -17,19 +20,14 @@ use super::TensorAVT;
 
 #[cfg(feature = "gpu")]
 fn tensor_compile_opts() -> CompileOptions {
-    let cuda_include = if std::path::Path::new("/opt/cuda/include/mma.h").exists() {
-        "-I/opt/cuda/include"
+    let cuda_include = if Path::new("/opt/cuda/include/mma.h").exists() {
+        "/opt/cuda/include"
     } else {
-        "-I/usr/local/cuda/include"
+        "/usr/local/cuda/include"
     };
-    CompileOptions {
-        options: vec![
-            "-arch=sm_89".to_string(),
-            cuda_include.to_string(),
-            "-std=c++14".to_string(),
-        ],
-        ..Default::default()
-    }
+    CompileOptions::for_arch(8, 9)
+        .include_path(cuda_include)
+        .option("-std=c++14")
 }
 
 #[cfg(feature = "gpu")]
@@ -64,7 +62,7 @@ fn compile_tensor_avt_ptx() -> Result<Ptx, String> {
         return Ok(Ptx::from_file(cache_path));
     }
 
-    let ptx = compile_ptx_with_opts(TENSOR_AVT_KERNEL_SRC, opts)
+    let ptx = CompileOptions::compile_ptx(TENSOR_AVT_KERNEL_SRC, &opts)
         .map_err(|e| format!("NVRTC compile: {}", e))?;
     let ptx_src = ptx.to_src();
     if let Some(parent) = cache_path.parent() {
@@ -76,49 +74,59 @@ fn compile_tensor_avt_ptx() -> Result<Ptx, String> {
 
 #[cfg(feature = "gpu")]
 struct TensorAvtGpuRuntime {
-    ctx: Arc<CudaContext>,
+    ctx: CudaHelperContext,
     default_stream: Arc<CudaStream>,
     sm_count: u32,
-    tensor_avt_basis_kernel: CudaFunction,
-    tensor_avt_dense_kernel: CudaFunction,
-    tensor_cd_mul_kernel: CudaFunction,
-    tensor_cd_mul_batched_kernel: CudaFunction,
-    tensor_norm_sq_kernel: CudaFunction,
+    _module_registry: ModuleRegistry,
+    tensor_avt_basis_kernel: KernelHandle,
+    tensor_avt_dense_kernel: KernelHandle,
+    tensor_cd_mul_kernel: KernelHandle,
+    tensor_cd_mul_batched_kernel: KernelHandle,
+    tensor_norm_sq_kernel: KernelHandle,
 }
 
 #[cfg(feature = "gpu")]
 impl TensorAvtGpuRuntime {
     fn initialize() -> Result<Arc<Self>, String> {
-        let ctx = CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?;
+        let ctx =
+            CudaHelperContext::with_default_device().map_err(|e| format!("CUDA init: {e}"))?;
         let default_stream = ctx.default_stream();
-        let sm_count = ctx
-            .attribute(
-                cudarc::driver::sys::CUdevice_attribute_enum::CU_DEVICE_ATTRIBUTE_MULTIPROCESSOR_COUNT,
-            )
-            .map_err(|e| format!("SM count query: {}", e))? as u32;
+        let sm_count = DeviceProbe::query()
+            .map_err(|e| format!("CUDA device probe: {e}"))?
+            .sm_count;
         let ptx = compile_tensor_avt_ptx()?;
-        let module = ctx
-            .load_module(ptx)
+        let module_registry = ModuleRegistry::load(
+            ctx.raw(),
+            ptx,
+            &[
+                "tensor_avt_basis_kernel",
+                "tensor_avt_dense_kernel",
+                "tensor_cd_mul_kernel",
+                "tensor_cd_mul_batched_kernel",
+                "tensor_norm_sq_kernel",
+            ],
+        )
+        .map_err(|e| format!("Module load: {e}"))?;
+        let tensor_avt_basis_kernel = module_registry
+            .get("tensor_avt_basis_kernel")
             .map_err(|e| format!("Module load: {}", e))?;
-        let tensor_avt_basis_kernel = module
-            .load_function("tensor_avt_basis_kernel")
+        let tensor_avt_dense_kernel = module_registry
+            .get("tensor_avt_dense_kernel")
             .map_err(|e| format!("Kernel load: {}", e))?;
-        let tensor_avt_dense_kernel = module
-            .load_function("tensor_avt_dense_kernel")
+        let tensor_cd_mul_kernel = module_registry
+            .get("tensor_cd_mul_kernel")
             .map_err(|e| format!("Kernel load: {}", e))?;
-        let tensor_cd_mul_kernel = module
-            .load_function("tensor_cd_mul_kernel")
+        let tensor_cd_mul_batched_kernel = module_registry
+            .get("tensor_cd_mul_batched_kernel")
             .map_err(|e| format!("Kernel load: {}", e))?;
-        let tensor_cd_mul_batched_kernel = module
-            .load_function("tensor_cd_mul_batched_kernel")
-            .map_err(|e| format!("Kernel load: {}", e))?;
-        let tensor_norm_sq_kernel = module
-            .load_function("tensor_norm_sq_kernel")
+        let tensor_norm_sq_kernel = module_registry
+            .get("tensor_norm_sq_kernel")
             .map_err(|e| format!("Kernel load: {}", e))?;
         Ok(Arc::new(Self {
             ctx,
             default_stream,
             sm_count,
+            _module_registry: module_registry,
             tensor_avt_basis_kernel,
             tensor_avt_dense_kernel,
             tensor_cd_mul_kernel,
@@ -326,11 +334,11 @@ impl TensorAVT {
                 slice.len()
             ));
         }
-        if slice.context() != &runtime.ctx {
+        if slice.context() != runtime.ctx.raw() {
             return Err(format!(
                 "{label} device buffer belongs to CUDA device {}, expected {}",
                 slice.context().ordinal(),
-                runtime.ctx.ordinal()
+                runtime.ctx.raw().ordinal()
             ));
         }
         Ok(())
@@ -348,11 +356,7 @@ impl TensorAVT {
         self.ensure_gpu_slice(d_x, self.dim, "x", runtime)?;
         self.ensure_gpu_slice(d_y, self.dim, "y", runtime)?;
 
-        let cfg = LaunchConfig {
-            grid_dim: (self.tile_count as u32, 1, 1),
-            block_dim: (256, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_blocks_1d(self.tile_count as u32, 256);
         let dim_u = self.dim as u32;
         let mut builder = stream.launch_builder(&runtime.tensor_cd_mul_kernel);
         builder.arg(d_a);
@@ -381,11 +385,7 @@ impl TensorAVT {
 
         let (warps_per_block, grid_x, grid_y) =
             tensor_avt_batch_launch_shape(self.dim, batch_size, runtime.sm_count);
-        let cfg = LaunchConfig {
-            grid_dim: (grid_x, grid_y, 1),
-            block_dim: (warps_per_block * 32, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_blocks_2d(grid_x, grid_y, warps_per_block * 32, 1);
 
         let dim_u = self.dim as u32;
         let batch_u = batch_size as u32;
@@ -416,11 +416,7 @@ impl TensorAVT {
         let block_size = 256u32.min(self.dim as u32);
         let dim_i = self.dim as i32;
         let n_vec_i = n_vectors as i32;
-        let cfg = LaunchConfig {
-            grid_dim: (n_vectors as u32, 1, 1),
-            block_dim: (block_size, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_blocks_1d(n_vectors as u32, block_size);
 
         let mut builder = stream.launch_builder(&runtime.tensor_norm_sq_kernel);
         builder.arg(d_vectors);
@@ -664,20 +660,13 @@ impl TensorAVT {
         seed: u32,
     ) -> Result<Vec<f32>, String> {
         let runtime = tensor_avt_gpu_runtime()?;
-        let stream = runtime.ctx.default_stream();
+        let stream = runtime.default_stream.clone();
 
         let n_cells = nx * ny * nz;
-        let mut d_field = stream
-            .alloc_zeros::<f32>(n_cells)
-            .map_err(|e| format!("Alloc: {}", e))?;
+        let mut d_field =
+            Buffer::<f32>::alloc_zeros(&stream, n_cells).map_err(|e| format!("Alloc: {}", e))?;
 
-        let block_size = 256u32;
-        let grid_size = (n_cells as u32).div_ceil(block_size);
-        let cfg = LaunchConfig {
-            grid_dim: (grid_size, 1, 1),
-            block_dim: (block_size, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d(n_cells as u32);
 
         let nx_i = nx as i32;
         let ny_i = ny as i32;
@@ -685,7 +674,7 @@ impl TensorAVT {
         let dim_u = self.dim as u32;
 
         let mut builder = stream.launch_builder(&runtime.tensor_avt_basis_kernel);
-        builder.arg(&mut d_field);
+        builder.arg(d_field.raw_mut());
         builder.arg(&nx_i);
         builder.arg(&ny_i);
         builder.arg(&nz_i);
@@ -696,9 +685,7 @@ impl TensorAVT {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        stream
-            .clone_dtoh(&d_field)
-            .map_err(|e| format!("Copy back: {}", e))
+        d_field.dtoh_vec().map_err(|e| format!("Copy back: {}", e))
     }
 
     pub fn compute_dense_avt_field(
@@ -711,20 +698,13 @@ impl TensorAVT {
         seed: u32,
     ) -> Result<Vec<f32>, String> {
         let runtime = tensor_avt_gpu_runtime()?;
-        let stream = runtime.ctx.default_stream();
+        let stream = runtime.default_stream.clone();
 
         let n_cells = nx * ny * nz;
-        let mut d_field = stream
-            .alloc_zeros::<f32>(n_cells)
-            .map_err(|e| format!("Alloc: {}", e))?;
+        let mut d_field =
+            Buffer::<f32>::alloc_zeros(&stream, n_cells).map_err(|e| format!("Alloc: {}", e))?;
 
-        let block_size = 256u32;
-        let grid_size = (n_cells as u32).div_ceil(block_size);
-        let cfg = LaunchConfig {
-            grid_dim: (grid_size, 1, 1),
-            block_dim: (block_size, 1, 1),
-            shared_mem_bytes: 0,
-        };
+        let cfg = LaunchConfig::launch_1d(n_cells as u32);
 
         let nx_i = nx as i32;
         let ny_i = ny as i32;
@@ -732,7 +712,7 @@ impl TensorAVT {
         let dim_u = self.dim as u32;
 
         let mut builder = stream.launch_builder(&runtime.tensor_avt_dense_kernel);
-        builder.arg(&mut d_field);
+        builder.arg(d_field.raw_mut());
         builder.arg(&nx_i);
         builder.arg(&ny_i);
         builder.arg(&nz_i);
@@ -744,9 +724,7 @@ impl TensorAVT {
             builder.launch(cfg).map_err(|e| format!("Launch: {}", e))?;
         }
 
-        stream
-            .clone_dtoh(&d_field)
-            .map_err(|e| format!("Copy back: {}", e))
+        d_field.dtoh_vec().map_err(|e| format!("Copy back: {}", e))
     }
 
     pub fn compute_cd_mul(&self, a: &[f32], x: &[f32]) -> Result<Vec<f32>, String> {
@@ -754,20 +732,13 @@ impl TensorAVT {
         assert_eq!(x.len(), self.dim, "x must have dim elements");
 
         let runtime = tensor_avt_gpu_runtime()?;
-        let stream = runtime.ctx.default_stream();
-        let d_a = stream
-            .clone_htod(a)
-            .map_err(|e| format!("Upload a: {}", e))?;
-        let d_x = stream
-            .clone_htod(x)
-            .map_err(|e| format!("Upload x: {}", e))?;
-        let mut d_y = stream
-            .alloc_zeros::<f32>(self.dim)
-            .map_err(|e| format!("Alloc y: {}", e))?;
-        self.launch_cd_mul_device(&stream, &runtime, &d_a, &d_x, &mut d_y)?;
-        stream
-            .clone_dtoh(&d_y)
-            .map_err(|e| format!("Copy y: {}", e))
+        let stream = runtime.default_stream.clone();
+        let d_a = Buffer::<f32>::htod(&stream, a).map_err(|e| format!("Upload a: {}", e))?;
+        let d_x = Buffer::<f32>::htod(&stream, x).map_err(|e| format!("Upload x: {}", e))?;
+        let mut d_y =
+            Buffer::<f32>::alloc_zeros(&stream, self.dim).map_err(|e| format!("Alloc y: {}", e))?;
+        self.launch_cd_mul_device(&stream, &runtime, d_a.raw(), d_x.raw(), d_y.raw_mut())?;
+        d_y.dtoh_vec().map_err(|e| format!("Copy y: {}", e))
     }
 
     pub fn compute_cd_mul_batch(
@@ -784,20 +755,21 @@ impl TensorAVT {
         );
 
         let runtime = tensor_avt_gpu_runtime()?;
-        let stream = runtime.ctx.default_stream();
-        let d_a = stream
-            .clone_htod(a)
-            .map_err(|e| format!("Upload a: {}", e))?;
-        let d_x = stream
-            .clone_htod(x_batch)
-            .map_err(|e| format!("Upload x_batch: {}", e))?;
-        let mut d_y = stream
-            .alloc_zeros::<f32>(batch_size * self.dim)
+        let stream = runtime.default_stream.clone();
+        let d_a = Buffer::<f32>::htod(&stream, a).map_err(|e| format!("Upload a: {}", e))?;
+        let d_x =
+            Buffer::<f32>::htod(&stream, x_batch).map_err(|e| format!("Upload x_batch: {}", e))?;
+        let mut d_y = Buffer::<f32>::alloc_zeros(&stream, batch_size * self.dim)
             .map_err(|e| format!("Alloc y_batch: {}", e))?;
-        self.launch_cd_mul_batch_device(&stream, &runtime, &d_a, &d_x, &mut d_y, batch_size)?;
-        stream
-            .clone_dtoh(&d_y)
-            .map_err(|e| format!("Copy y_batch: {}", e))
+        self.launch_cd_mul_batch_device(
+            &stream,
+            &runtime,
+            d_a.raw(),
+            d_x.raw(),
+            d_y.raw_mut(),
+            batch_size,
+        )?;
+        d_y.dtoh_vec().map_err(|e| format!("Copy y_batch: {}", e))
     }
 
     pub fn compute_norm_sq_batch(
@@ -812,17 +784,19 @@ impl TensorAVT {
         );
 
         let runtime = tensor_avt_gpu_runtime()?;
-        let stream = runtime.ctx.default_stream();
-        let d_vectors = stream
-            .clone_htod(vectors)
-            .map_err(|e| format!("Upload vectors: {}", e))?;
-        let mut d_norms = stream
-            .alloc_zeros::<f32>(n_vectors)
+        let stream = runtime.default_stream.clone();
+        let d_vectors =
+            Buffer::<f32>::htod(&stream, vectors).map_err(|e| format!("Upload vectors: {}", e))?;
+        let mut d_norms = Buffer::<f32>::alloc_zeros(&stream, n_vectors)
             .map_err(|e| format!("Alloc norms: {}", e))?;
-        self.launch_norm_sq_batch_device(&stream, &runtime, &d_vectors, &mut d_norms, n_vectors)?;
-        stream
-            .clone_dtoh(&d_norms)
-            .map_err(|e| format!("Copy norms: {}", e))
+        self.launch_norm_sq_batch_device(
+            &stream,
+            &runtime,
+            d_vectors.raw(),
+            d_norms.raw_mut(),
+            n_vectors,
+        )?;
+        d_norms.dtoh_vec().map_err(|e| format!("Copy norms: {}", e))
     }
 }
 

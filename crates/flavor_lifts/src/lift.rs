@@ -152,7 +152,7 @@ impl FlavorLift for DirectOffDiagonalLift {
 /// (psi^3 != I on V_6), so gradients are weak. This is a strong provisional
 /// result, not yet the final S_3-equivariant lift.
 pub struct PsiEquivariantLift {
-    /// For each assessor index: (off-diag contribution weights [f_12, f_13, f_23])
+    /// For each assessor index: (off-diag contribution weights `[f_12, f_13, f_23]`)
     weights: Vec<[f64; 3]>,
 }
 
@@ -261,11 +261,11 @@ impl FlavorLift for TensorElementLift {
 
 /// Apply a V_6 perturbation to a mass matrix using a pluggable lift.
 ///
-/// For each V_6 direction k with coefficient beta[k], computes the combined
+/// For each V_6 direction k with coefficient beta`[k]`, computes the combined
 /// assessor-space vector, then delegates to the `FlavorLift` implementation
 /// to map it into the mass matrix.
 ///
-/// Invariant: beta = [0; 6] leaves m unchanged.
+/// Invariant: beta = `[0; 6]` leaves m unchanged.
 pub fn apply_v6_perturbation(
     m: &mut faer::Mat<f64>,
     v6_basis: &nalgebra::DMatrix<f64>,

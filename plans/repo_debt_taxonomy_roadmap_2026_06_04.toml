@@ -25,7 +25,7 @@
 
 [meta]
 id = "REPO-DEBT-TAXONOMY-ROADMAP-2026-06-04"
-updated = "2026-06-04"
+updated = "2026-06-09"
 status = "active"
 authoritative = true
 scope = "open_gororoba repository: code structure, build/toolchain/delivery, test/verification, data/provenance, scientific/methodology, documentation/organizational debt"
@@ -34,8 +34,8 @@ supersedes = "plans/repo_debt_roadmap_2026_04_11.toml"
 subsumes = ["plans/post_gate_optimization_2026_05_12.toml"]
 evidence_baseline = "data/output/debt_baseline_2026_06_04.toml"
 predecessor_baselines = [
-  "data/output/debt_baseline_2026_04_30.toml",
-  "data/output/debt_baseline_2026_05_09.toml",
+    "data/output/debt_baseline_2026_04_30.toml",
+    "data/output/debt_baseline_2026_05_09.toml",
 ]
 
 [meta.relationship_to_predecessors]
@@ -71,57 +71,57 @@ class_count = 21
 [taxonomy.axes.A_code_structure]
 label = "Code and structure debt"
 classes = [
-  "DEBT-MODULARIZATION",
-  "DEBT-STRUCTURAL-ARCHITECTURE",
-  "DEBT-DUPLICATION",
-  "DEBT-GENERATED-ARTIFACT",
-  "DEBT-MEMORY-SAFETY",
+    "DEBT-MODULARIZATION",
+    "DEBT-STRUCTURAL-ARCHITECTURE",
+    "DEBT-DUPLICATION",
+    "DEBT-GENERATED-ARTIFACT",
+    "DEBT-MEMORY-SAFETY",
 ]
 review_lane = "cargo clippy + cpd-audit + repo-audit (unsafe/SAFETY) + monolith inventory"
 
 [taxonomy.axes.B_build_toolchain_delivery]
 label = "Build, toolchain, package-manager, and delivery debt"
 classes = [
-  "DEBT-BUILD-WORKSPACE",
-  "DEBT-SUPPLY-CHAIN",
+    "DEBT-BUILD-WORKSPACE",
+    "DEBT-SUPPLY-CHAIN",
 ]
 review_lane = "Makefile/xtask migration, cargo-deny, dep-audit, semver-check, toolchain pin"
 
 [taxonomy.axes.C_test_verification]
 label = "Test and verification debt"
 classes = [
-  "DEBT-TEST-VERIFICATION",
-  "DEBT-FORMAL-VERIFICATION",
-  "DEBT-PROOF-EXTRACTION-FIDELITY",
-  "DEBT-OBSERVABILITY",
+    "DEBT-TEST-VERIFICATION",
+    "DEBT-FORMAL-VERIFICATION",
+    "DEBT-PROOF-EXTRACTION-FIDELITY",
+    "DEBT-OBSERVABILITY",
 ]
 review_lane = "nextest coverage, proofs/ vos+vok, extraction parity, gate-timing telemetry"
 
 [taxonomy.axes.D_data_provenance]
 label = "Data and provenance debt"
 classes = [
-  "DEBT-DATA-PROVENANCE",
-  "DEBT-DATA-TRANSCRIPTION",
+    "DEBT-DATA-PROVENANCE",
+    "DEBT-DATA-TRANSCRIPTION",
 ]
 review_lane = "provenance registry, source hashing, transcribed-table codegen-from-source"
 
 [taxonomy.axes.E_scientific_methodology]
 label = "Scientific and methodology debt (domain-aligned)"
 classes = [
-  "DEBT-NUMERICAL-ALGORITHM",
-  "DEBT-NUMERICAL-REPRODUCIBILITY",
-  "DEBT-DIMENSIONAL-UNITS",
-  "DEBT-SCIENTIFIC-EVIDENCE",
-  "DEBT-METHODOLOGY",
+    "DEBT-NUMERICAL-ALGORITHM",
+    "DEBT-NUMERICAL-REPRODUCIBILITY",
+    "DEBT-DIMENSIONAL-UNITS",
+    "DEBT-SCIENTIFIC-EVIDENCE",
+    "DEBT-METHODOLOGY",
 ]
 review_lane = "solver parity tests, determinism/seed control, unit-correctness, claim-evidence linkage, falsifiability discipline"
 
 [taxonomy.axes.F_documentation_organizational]
 label = "Documentation and organizational debt"
 classes = [
-  "DEBT-DOCUMENTATION-REQUIREMENTS",
-  "DEBT-ORGANIZATIONAL",
-  "DEBT-TAXONOMY-COHERENCE",
+    "DEBT-DOCUMENTATION-REQUIREMENTS",
+    "DEBT-ORGANIZATIONAL",
+    "DEBT-TAXONOMY-COHERENCE",
 ]
 review_lane = "registry-driven docs regeneration, plan/branch lifecycle, agent coordination, this taxonomy"
 
@@ -151,17 +151,20 @@ risk = "Multi-thousand-line hand-written .rs files slow language servers, defeat
 current_magnitude = "33 non-generated .rs files exceed the 2000-line warn threshold; 5 exceed the 4000-line target_max; 0 exceed the 8000-line urgent threshold (down from 1 at 2026-05-12). Worst: optical_database.rs 7638, boxkites/tests.rs 7016, repo_visuals.rs 4394, emanation/tests.rs 4327, provenance_store/lib.rs 4220."
 magnitude_reproduce = "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | sort -rn | head -25"
 confirmed_examples = [
-  "crates/materials_core/src/optical_database.rs (7638; but see DEBT-DATA-TRANSCRIPTION -- this is transcribed data, not logic)",
-  "crates/algebra_analysis/src/boxkites/tests.rs (7016; boxkites.rs main split into submodules already, tests remain bulky)",
-  "crates/gororoba_cli_data/src/bin/repo_visuals.rs (4394)",
-  "crates/provenance_store/src/lib.rs (4220; was 5335, one 4850-line impl block partially decomposed)",
-  "xtask/src/main.rs (3411; manual string-dispatcher monolith)",
+    "crates/materials_core/src/optical_database.rs (7638; but see DEBT-DATA-TRANSCRIPTION -- this is transcribed data, not logic)",
+    "crates/algebra_analysis/src/boxkites/tests.rs (7016; boxkites.rs main split into submodules already, tests remain bulky)",
+    "crates/gororoba_cli_data/src/bin/repo_visuals.rs (4394)",
+    "crates/provenance_store/src/lib.rs (4220; was 5335, one 4850-line impl block partially decomposed)",
+    "xtask/src/main.rs (3411; manual string-dispatcher monolith)",
 ]
 resolution_pattern = "Split monoliths by logical surface (types vs algorithms vs IO vs phenomenon classes), keep the public API stable via pub use re-exports from the original module path, validate per-crate with cargo check + clippy + nextest under workspace deny-warnings. Test-heavy files (boxkites/tests, emanation/tests) use the #[cfg(test)] mod tests; + sibling parent/tests.rs relocation."
 falsifiable_acceptance = "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | awk '$1>=4000' yields only TRANSCRIBED-DATA files (optical_database, crystal_symmetry) AND test-only files explicitly exempted; no production-logic .rs over 4000 lines."
 status = "in_progress"
 predecessor_ids = ["DEBT-MODULARIZATION (PH-MOD)"]
-cross_links = ["plans/post_gate_optimization_2026_05_12.toml task #116-#127", "DEBT-DATA-TRANSCRIPTION"]
+cross_links = [
+    "plans/post_gate_optimization_2026_05_12.toml task #116-#127",
+    "DEBT-DATA-TRANSCRIPTION",
+]
 
 [[debt_class]]
 id = "DEBT-STRUCTURAL-ARCHITECTURE"
@@ -171,8 +174,8 @@ risk = "Blurred crate boundaries obscure ownership; CLI crates depending directl
 current_magnitude = "data_core still mixes pure model/parse/validate with fetch/cache/provider surfaces; some CLI crates depend directly on faer/wide rather than through a domain facade. Qualitative -- tracked by cargo tree depth-1 audits per CLI crate."
 magnitude_reproduce = "cargo tree -p gororoba_cli_data --depth 1 ; cargo tree -p data_core --no-default-features"
 confirmed_examples = [
-  "crates/data_core fetch/parse/validate mixing (docs/engineering/data_core_surface_audit_2026_04_06.txt)",
-  "CLI-to-substrate direct deps (docs/engineering/simd_algorithmic_cayley_dickson_audit_2026_04_06.txt)",
+    "crates/data_core fetch/parse/validate mixing (docs/engineering/data_core_surface_audit_2026_04_06.txt)",
+    "CLI-to-substrate direct deps (docs/engineering/simd_algorithmic_cayley_dickson_audit_2026_04_06.txt)",
 ]
 resolution_pattern = "Split pure core from IO/network planes; move math behind domain facades (algebra_analysis, spectral_core, quantum_core); make opt-in features explicit; thin CLI crates to parse/dispatch/report."
 falsifiable_acceptance = "cargo tree --depth 1 for each gororoba_cli_* crate shows no direct faer or wide edge; cargo check -p data_core --no-default-features succeeds with an empty default feature set."
@@ -188,8 +191,8 @@ risk = "Repeated hand-written logic causes drift, review fatigue, and inconsiste
 current_magnitude = "Tracked by PMD CPD token-clusters; the make lanes already separate domain logic (cpd-audit), tooling (cpd-audit-tooling), and generated surfaces (cpd-audit-generated). Strict gate (cpd-audit-strict) is held behind generated-surface and lexical-error triage."
 magnitude_reproduce = "make cpd-audit CPD_TOP=20"
 confirmed_examples = [
-  "Historical: bounded_nelder_mead duplicated between cosmology bounce and observational fitting (resolved -- hoisted to shared module).",
-  "CPD clusters in algebra_analysis boxkites, spectral_core neg_dim, heliosphere feature cube.",
+    "Historical: bounded_nelder_mead duplicated between cosmology bounce and observational fitting (resolved -- hoisted to shared module).",
+    "CPD clusters in algebra_analysis boxkites, spectral_core neg_dim, heliosphere feature cube.",
 ]
 resolution_pattern = "Separate generated/table duplication from hand-written logic duplication; extract shared helpers with parity checks; promote cpd-audit-strict to a gate only after generated-surface quarantine and lexical triage."
 falsifiable_acceptance = "make cpd-audit-strict exits zero at the agreed minimum-token threshold with the generated and tooling lanes excluded."
@@ -205,8 +208,8 @@ risk = "Large generated Rust mirrors drown language servers and CPD reports and 
 current_magnitude = "crates/data_core/src/registry_mirrors/ holds hundreds of generated Rust files mirroring the SQLite control plane; these are excluded from monolith and CPD logic lanes by design."
 magnitude_reproduce = "find crates/data_core/src/registry_mirrors -name '*.rs' | wc -l ; make registry-verify-mirrors"
 confirmed_examples = [
-  "crates/data_core/src/registry_mirrors/ (generated from registry/canonical/control_plane.sqlite3)",
-  "registry/*.toml (AUTO-GENERATED read-only compat exports; header on line 1 of each).",
+    "crates/data_core/src/registry_mirrors/ (generated from registry/canonical/control_plane.sqlite3)",
+    "registry/*.toml (AUTO-GENERATED read-only compat exports; header on line 1 of each).",
 ]
 resolution_pattern = "Mark every generated surface with source + generator + regeneration command metadata; keep separate CPD reports for generated vs hand-written; never hand-edit a file whose first line is the AUTO-GENERATED header."
 falsifiable_acceptance = "make registry-verify-mirrors and the governance-gate-readonly schema_signatures check both pass, proving mirrors match canonical SQLite."
@@ -222,13 +225,18 @@ risk = "unsafe blocks without a SAFETY justification cannot be reviewed for the 
 current_magnitude = "488 unsafe blocks in crates/ with 163 SAFETY comments (33.4% block-level coverage) as of the 2026-06-04 anchored audit, up from 65/392 = 16.6% at 2026-05-09; a separate 3420 unsafe blocks live in proofs/ Rust test/verifier scaffolding (audited as its own lane). Coverage is improving but block count grew with the workspace, so the absolute uncovered surface (325) is the live target."
 magnitude_reproduce = "make repo-audit  # reads unsafe_blocks vs safety_comments per root"
 confirmed_examples = [
-  "crates/cd_kernel raw-pointer SoA indexing (UnsafeAoSoAPtr highest-risk per unsafe audit).",
-  "proofs/ Rust scaffolding 3420 unsafe blocks (DEBT-UNSAFE-PROOFS-SCAFFOLDING lane).",
+    "crates/cd_kernel raw-pointer SoA indexing (UnsafeAoSoAPtr highest-risk per unsafe audit).",
+    "proofs/ Rust scaffolding 3420 unsafe blocks (DEBT-UNSAFE-PROOFS-SCAFFOLDING lane).",
 ]
 resolution_pattern = "Add a // SAFETY: comment immediately above every unsafe block stating the upheld invariant; drive crates/ block-level coverage toward 100% with documented exceptions; keep the proofs/ scaffolding lane separate (test-only, lower priority)."
 falsifiable_acceptance = "repo-audit reports safety_comments >= unsafe_blocks for crates/ (100% block coverage) OR a documented exceptions list accounts for every uncovered block."
 status = "in_progress"
-predecessor_ids = ["DEBT-UNSAFE-1", "DEBT-UNSAFE-CRATES", "DEBT-UNSAFE-PROOFS", "DEBT-UNSAFE-PROOFS-SCAFFOLDING"]
+predecessor_ids = [
+    "DEBT-UNSAFE-1",
+    "DEBT-UNSAFE-CRATES",
+    "DEBT-UNSAFE-PROOFS",
+    "DEBT-UNSAFE-PROOFS-SCAFFOLDING",
+]
 cross_links = ["docs/engineering/unsafe_safety_methodology_2026_05_09.md", "make geiger"]
 
 # ----------------------------------------------------------------------------
@@ -243,9 +251,9 @@ risk = "Makefile sprawl, implicit feature defaults, toolchain-pin drift, and a m
 current_magnitude = "xtask migration is PARTIAL: xtask/ exists as a workspace member exposing ~20 subcommands (gate-audit, audit-deep, ci-route, ascii-check, terminology-gate, cpd-file-list, gate-timing-*, sparse-profile, gpu-profile, worker-budget, ...) but via a 3411-line manual string-match dispatcher, while policy-heavy logic still lives in Makefile recipes. Toolchain pinned at nightly-2026-04-05 (rust-toolchain.toml), matching the requirements narrative; but the prose guides AGENTS.md, CLAUDE.md, and the per-project MEMORY still cite the older nightly-2026-03-05 -- a stale-doc drift to reconcile (the pin file is authoritative)."
 magnitude_reproduce = "grep -c '=> run_' xtask/src/main.rs ; grep -rn nightly rust-toolchain.toml registry/requirements_narrative.toml AGENTS.md CLAUDE.md"
 confirmed_examples = [
-  "xtask/src/main.rs (3411-line manual dispatcher; also a DEBT-MODULARIZATION item).",
-  "Makefile policy-heavy recipes (cpd-audit-strict, integrity, governance) still shell-driven.",
-  "Stale-doc drift: AGENTS.md/CLAUDE.md/MEMORY cite nightly-2026-03-05 while rust-toolchain.toml and the requirements narrative are at nightly-2026-04-05.",
+    "xtask/src/main.rs (3411-line manual dispatcher; also a DEBT-MODULARIZATION item).",
+    "Makefile policy-heavy recipes (cpd-audit-strict, integrity, governance) still shell-driven.",
+    "Stale-doc drift: AGENTS.md/CLAUDE.md/MEMORY cite nightly-2026-03-05 while rust-toolchain.toml and the requirements narrative are at nightly-2026-04-05.",
 ]
 resolution_pattern = "Keep make as the user-facing front door; migrate policy-heavy parsing into typed xtask subcommands with structured JSON/TOML output; convert the manual string dispatcher to a clap Subcommand enum; update the stale nightly references in the prose guides to the authoritative pin."
 falsifiable_acceptance = "xtask exposes its subcommands via a clap derive enum (xtask --help lists them); AGENTS.md, CLAUDE.md, and the requirements narrative all cite the same nightly date as rust-toolchain.toml; make audit-deep delegates to xtask for all parsing."
@@ -261,9 +269,9 @@ risk = "Advisories, duplicate dependency versions, unused deps, and accumulating
 current_magnitude = "deny.toml has 6 active RUSTSEC ignores, down from 7 at the 2026-04-30 baseline (the rustls-webpki cluster 0098/0099/0104 was resolved via 0.103.13; core2 0105 was added). An earlier 7->9 figure was a measurement artifact: grep -c RUSTSEC counts the 3 resolved ids named in the deny.toml resolution comment. Use grep -cE '^\\s*\"RUSTSEC' for the true active count. 2160 duplicate-dependency lines in cargo tree -d; cargo-machete reports 0 unused deps (Stage A)."
 magnitude_reproduce = "grep -cE '^\\s*\"RUSTSEC' deny.toml ; cargo tree -d | wc -l ; make machete"
 confirmed_examples = [
-  "deny.toml has 6 active RUSTSEC ignores, each already annotated with the blocking dependency and dependency path, plus docs/adr/rustsec-dispositions.md.",
-  "rustls-webpki 0098/0099/0104 resolved 2026-04-30 via cargo update -p rustls-webpki --precise 0.103.13.",
-  "2160 duplicate-dependency lines (cargo tree -d).",
+    "deny.toml has 6 active RUSTSEC ignores, each already annotated with the blocking dependency and dependency path, plus docs/adr/rustsec-dispositions.md.",
+    "rustls-webpki 0098/0099/0104 resolved 2026-04-30 via cargo update -p rustls-webpki --precise 0.103.13.",
+    "2160 duplicate-dependency lines (cargo tree -d).",
 ]
 resolution_pattern = "Keep cargo-deny as the hard gate; for each RUSTSEC ignore record the blocking dependency and a re-check trigger (already present in deny.toml + the ADR); use duplicate-version audits for planning, not as a hard gate. Count active ignores with the anchored regex, never a bare grep -c."
 falsifiable_acceptance = "Every entry in deny.toml [advisories].ignore has an adjacent comment naming the blocking dependency and a re-check trigger (satisfied); grep -cE '^\\s*\"RUSTSEC' deny.toml does not exceed the prior snapshot without a recorded justification."
@@ -280,17 +288,26 @@ id = "DEBT-TEST-VERIFICATION"
 axis = "C_test_verification"
 label = "Test coverage, ignored tests, and verification gates"
 risk = "High-value behavior lacking narrow reproducible hooks forces slow full-workspace validation or under-validated changes. #[ignore] tests silently skip coverage; unjustified clippy allows hide real lints."
-current_magnitude = "131 #[ignore] attributes in crates/ (GPU-only or network-only gating, mostly legitimate); 124 allow(clippy::*) in crates/ + 66 in proofs/ scaffolding; allow_clippy_unjustified REGRESSED from 0 to 7 in crates/ since Stage-B closure (the repo-audit-strict-unjustified-per-root 0 gate would now exit non-zero) plus 64 in proofs/ scaffolding; 0 TODO/FIXME and 0 unimplemented!/todo! macros (TODO closed from 3); 41 unreachable! (exhaustiveness pins, informational)."
+current_magnitude = "131 #[ignore] attributes in crates/ (GPU-only or network-only gating, mostly legitimate); 126 allow(clippy::*) in crates/ + 66 in proofs/ scaffolding; allow_clippy_unjustified is verified at 0 in crates/ by data/output/audit/repo_audit/repo_audit_anchored_2026_06_10.toml and make repo-audit-strict-unjustified; 0 TODO/FIXME and 0 unimplemented!/todo! macros (TODO closed from 3); 41 unreachable! (exhaustiveness pins, informational)."
 magnitude_reproduce = "make repo-audit  # ignore_attrs, allow_clippy_attrs, todo_fixme_xxx_hack, *_macro_calls"
 confirmed_examples = [
-  "109 #[ignore] tests (GPU/network gating; exercised via opt-in --ignored lane).",
-  "gate-audit historically omitted CPD/semver/deny/docs-freshness (now composed in make audit-deep).",
+    "109 #[ignore] tests (GPU/network gating; exercised via opt-in --ignored lane).",
+    "gate-audit historically omitted CPD/semver/deny/docs-freshness (now composed in make audit-deep).",
 ]
 resolution_pattern = "Add crate-scoped smoke/parity hooks first, compose into opt-in deeper gates; keep allow_clippy_unjustified at 0; audit #[ignore] tests against the --ignored opt-in run to confirm each is exercised somewhere."
 falsifiable_acceptance = "make repo-audit-strict-unjustified passes with per-root cap 0; every #[ignore] test is either run in the --ignored lane or carries a one-line reason on the attribute."
-status = "in_progress"  # allow_clippy_unjustified regressed 0 -> 7 in crates/
-predecessor_ids = ["DEBT-TEST-VERIFICATION", "DEBT-TEST-1", "DEBT-TEST-2", "DEBT-PLACEHOLDER-1", "DEBT-PLACEHOLDER-2"]
-cross_links = ["docs/engineering/repo_audit_metric_taxonomy.md", "docs/engineering/clippy_allow_inventory_2026_05_09.md"]
+status = "in_progress" # strict-unjustified gate passes; ignored-test audit remains
+predecessor_ids = [
+    "DEBT-TEST-VERIFICATION",
+    "DEBT-TEST-1",
+    "DEBT-TEST-2",
+    "DEBT-PLACEHOLDER-1",
+    "DEBT-PLACEHOLDER-2",
+]
+cross_links = [
+    "docs/engineering/repo_audit_metric_taxonomy.md",
+    "docs/engineering/clippy_allow_inventory_2026_05_09.md",
+]
 
 [[debt_class]]
 id = "DEBT-FORMAL-VERIFICATION"
@@ -300,8 +317,8 @@ risk = "Admitted proofs, top-level axioms, and parameters that should be theorem
 current_magnitude = "282 .v files in proofs/. 2026-06-04 anchored audit: 0 strict Admitted, 0 strict admit; 31 top-level Axiom + 84 indented Axiom = 115 axioms; 8 top-level + 49 indented Parameter = 57 parameters; 172 total proof gaps (down from 196 at 2026-05-09). Most top-level axioms are necessary external-theorem axiomatizations, classified in axiom_dispositions.toml."
 magnitude_reproduce = "make repo-audit  # rocq_admitted_strict, rocq_axiom_strict/_indented, rocq_parameter_strict/_indented"
 confirmed_examples = [
-  "data/output/audit/2026-05-09/axiom_dispositions.toml (1773 lines classifying every axiom).",
-  "Resolved: inconsistent C1543 H-module axiom dropped (commit 9492771f); non-alternative witnesses added.",
+    "data/output/audit/2026-05-09/axiom_dispositions.toml (1773 lines classifying every axiom).",
+    "Resolved: inconsistent C1543 H-module axiom dropped (commit 9492771f); non-alternative witnesses added.",
 ]
 resolution_pattern = "Hold strict Admitted/admit at zero; for each top-level Axiom record a disposition (necessary external theorem vs provable-but-deferred); convert interface-obligation indented axioms to derived lemmas where feasible; never ship an axiom that introduces inconsistency (test with a derived False-witness check)."
 falsifiable_acceptance = "make -C proofs vos && make -C proofs vok both succeed; repo-audit rocq_admitted_strict == 0 && rocq_admit_strict == 0; every top-level Axiom has a disposition row in axiom_dispositions.toml."
@@ -317,31 +334,38 @@ risk = "A proof can be internally complete yet prove a property of an idealized 
 current_magnitude = "The repo proves theorems about Cayley-Dickson structures (Moreno 1997, Brown 1972) and ships Rust kernels (cd_kernel) computing in those algebras. The first explicit proof-to-executable binding now exists: crates/cd_kernel/tests/proof_extraction_fidelity.rs reimplements the Rocq CDDoubleFunctor::cd_mul / cd_conj recurrence as an independent oracle and asserts all three production multiply paths (recursive cd_multiply, SIMD cd_multiply_simd, sign-table multiply_via_table) match it on seeded random inputs at dims 8..256, plus the octonion composition identity at dim 8. Remaining: most of the other 144-of-1441 proof-backed claims still bind by naming convention, not by a parity test."
 magnitude_reproduce = "grep -c 'formal_proof' registry/claims.toml ; ls proofs/extraction 2>/dev/null ; rg 'Brown1972|Moreno1997' crates/cd_kernel/src | wc -l"
 confirmed_examples = [
-  "cd_kernel Rust multiplication vs Rocq sed_mul / oct_mul definitions (parity asserted by naming, not by a generated oracle).",
-  "FidelityCD / tower-instantiation proofs referenced in scattered DEBT-PROOF tags.",
+    "cd_kernel Rust multiplication vs Rocq sed_mul / oct_mul definitions (parity asserted by naming, not by a generated oracle).",
+    "FidelityCD / tower-instantiation proofs referenced in scattered DEBT-PROOF tags.",
 ]
 resolution_pattern = "For each safety-critical algebraic identity, add a property-based Rust test (proptest) whose oracle is the same recurrence the Rocq proof uses, so the executable is checked against the proven recurrence on random inputs; record the theorem-id <-> Rust-function binding in the claim registry's formal_proof field."
 falsifiable_acceptance = "cargo nextest run -p cd_kernel --test proof_extraction_fidelity passes (recurrence-binding landed); and each claim with formal_proof_present names both a Rocq theorem id AND a Rust test that exercises the corresponding executable path."
-status = "in_progress"  # first binding landed: cd_kernel multiply <-> CDDoubleFunctor::cd_mul
+status = "in_progress" # first binding landed: cd_kernel multiply <-> CDDoubleFunctor::cd_mul
 predecessor_ids = []
-cross_links = ["DEBT-FORMAL-VERIFICATION", "DEBT-SCIENTIFIC-EVIDENCE", "crates/cd_kernel/tests/proof_extraction_fidelity.rs"]
+cross_links = [
+    "DEBT-FORMAL-VERIFICATION",
+    "DEBT-SCIENTIFIC-EVIDENCE",
+    "crates/cd_kernel/tests/proof_extraction_fidelity.rs",
+]
 
 [[debt_class]]
 id = "DEBT-OBSERVABILITY"
 axis = "C_test_verification"
 label = "Gate-timing telemetry and audit reproducibility instrumentation"
 risk = "Without timing telemetry and regression checks, gate slowdowns and audit-number drift go unnoticed until they block a push. A regression check wired with continue-on-error provides no protection."
-current_magnitude = "gate-timing-summary / gate-timing-regression-check exist in xtask and emit JSONL under data/output/audit/<date>/gate-timing-*.jsonl. The CI gate-timing-regression-check ran with continue-on-error:true through a soak window ending 2026-05-26; it should now be a hard gate."
-magnitude_reproduce = "grep -n 'continue-on-error' .github/workflows/ci.yml ; ls data/output/audit/*/gate-timing-*.jsonl"
+current_magnitude = "gate-timing-summary / gate-timing-regression-check exist in xtask and emit JSONL under data/output/audit/<date>/gate-timing-*.jsonl. The CI gate-timing-regression-check is now a hard gate: .github/workflows/ci.yml carries the HARD GATE comment and no continue-on-error on the timing step."
+magnitude_reproduce = "rg -n 'continue-on-error|timing' .github/workflows/ci.yml ; ls data/output/audit/*/gate-timing-*.jsonl"
 confirmed_examples = [
-  ".github/workflows/ci.yml gate-timing-regression-check (was soak_active, soak_end 2026-05-26).",
-  "xtask gate-timing-summary, gate-tools-status.",
+    ".github/workflows/ci.yml gate-timing-regression-check hard gate (soak window ended 2026-05-26).",
+    "xtask gate-timing-summary, gate-tools-status.",
 ]
-resolution_pattern = "After the soak window with a baseline accumulated, remove continue-on-error so the timing regression check becomes a hard gate; keep the JSONL telemetry as the durable evidence surface."
+resolution_pattern = "Keep gate-timing-regression-check as a hard gate and keep the JSONL telemetry as the durable evidence surface."
 falsifiable_acceptance = "grep continue-on-error .github/workflows/ci.yml shows the gate-timing-regression-check step no longer carries it; a deliberately-slowed gate fails CI."
-status = "soak_complete_pending_hard_gate"
+status = "controlled"
 predecessor_ids = []
-cross_links = ["plans/post_gate_optimization_2026_05_12.toml task 122-followup", "docs/engineering/pre_push_gate_optimization.md"]
+cross_links = [
+    "plans/post_gate_optimization_2026_05_12.toml task 122-followup",
+    "docs/engineering/pre_push_gate_optimization.md",
+]
 
 # ----------------------------------------------------------------------------
 # AXIS D -- DATA AND PROVENANCE DEBT
@@ -355,8 +379,8 @@ risk = "Network access, cache mutation, and source provenance can leak into pure
 current_magnitude = "270 provenance records; 114180 external files under data/external (gitignored except README). Registry counter reconciliation: project.toml binary_count=485 (canonical SQLite) vs binaries.toml 452 [[binary]] (compat export) -- the 33-entry gap is BY DESIGN (retired/derived binaries hidden from compat), documented, not drift. data_core default features should remain network-free."
 magnitude_reproduce = "grep binary_count registry/project.toml ; grep -c '^\\[\\[binary\\]\\]' registry/binaries.toml ; cargo tree -p data_core --no-default-features"
 confirmed_examples = [
-  "data/external/ provenance hashing (270 records).",
-  "Registry counter gap 485 vs 452 (documented-by-design compat filtering).",
+    "data/external/ provenance hashing (270 records).",
+    "Registry counter gap 485 vs 452 (documented-by-design compat filtering).",
 ]
 resolution_pattern = "Keep default network features empty; route fetches through explicit provider binaries; hash and index external artifacts; mutate registry counters only via gororoba-db -> provenance export-control-plane -> integrity-resolution, never by hand-editing the AUTO-GENERATED TOMLs."
 falsifiable_acceptance = "cargo check -p data_core --no-default-features succeeds; make governance-gate-readonly passes (schema_signatures match); no registry counter is hand-edited (git blame shows export-tool authorship)."
@@ -372,14 +396,17 @@ risk = "Large literature-transcribed constant tables (optical dielectric functio
 current_magnitude = "optical_database.rs 7638 lines transcribed from Palik (1998) and Klimchitskaya et al. (2009); crystal_symmetry.rs 4599 lines transcribed from the International Tables for Crystallography and Burns & Glazer (1990). Both carry explicit TRANSCRIBED-DATA headers and #![allow(clippy::all)]."
 magnitude_reproduce = "rg -l 'TRANSCRIBED-DATA' crates ; wc -l crates/materials_core/src/optical_database.rs crates/materials_core/src/crystal_symmetry.rs"
 confirmed_examples = [
-  "crates/materials_core/src/optical_database.rs (Palik 1998, Klimchitskaya 2009).",
-  "crates/materials_core/src/crystal_symmetry.rs (International Tables, Burns & Glazer 1990).",
+    "crates/materials_core/src/optical_database.rs (Palik 1998, Klimchitskaya 2009).",
+    "crates/materials_core/src/crystal_symmetry.rs (International Tables, Burns & Glazer 1990).",
 ]
 resolution_pattern = "Move the transcribed data into a checked-in TOML/JSON source with explicit per-row citation (page/table), generate the Rust table via build.rs from that source, and add a spot-check test against a handful of independently-cited reference values so a transcription error fails the build. This converts DEBT-DATA-TRANSCRIPTION into a controlled DEBT-GENERATED-ARTIFACT surface."
 falsifiable_acceptance = "optical_database.rs and crystal_symmetry.rs are generated by build.rs from a cited TOML/JSON source; a reference-value spot-check test (e.g. gold n,k at known wavelengths; known space-group multiplicities) passes; the hand-keyed .rs no longer appears in the monolith inventory."
 status = "alternate_approach"
 predecessor_ids = ["PH-MOD-ALTERNATE-PATH"]
-cross_links = ["plans/post_gate_optimization_2026_05_12.toml task #127", "data/output/audit/2026-05-13/optical_database_metadata_gaps.toml"]
+cross_links = [
+    "plans/post_gate_optimization_2026_05_12.toml task #127",
+    "data/output/audit/2026-05-13/optical_database_metadata_gaps.toml",
+]
 
 # ----------------------------------------------------------------------------
 # AXIS E -- SCIENTIFIC AND METHODOLOGY DEBT (domain-aligned)
@@ -393,8 +420,8 @@ risk = "Divergent optimizers, tolerances, and floating-point edge behavior can p
 current_magnitude = "Qualitative; primary historical instance (bounded_nelder_mead duplicated across cosmology bounce and observational fitting) resolved by hoisting to a shared module. Ongoing: ensure every fitted-parameter pathway uses the shared optimizer with explicit tolerance config."
 magnitude_reproduce = "rg -n 'nelder_mead|fn .*optimi[sz]e|tolerance' crates --type rust | rg -v test | wc -l"
 confirmed_examples = [
-  "Shared bounded_nelder_mead module (post-hoist).",
-  "Gauss-Legendre quadrature usage standardized via gauss-quad 0.2.4.",
+    "Shared bounded_nelder_mead module (post-hoist).",
+    "Gauss-Legendre quadrature usage standardized via gauss-quad 0.2.4.",
 ]
 resolution_pattern = "Hoist solvers into shared domain-owned modules, parameterize with closures/configs, preserve parity tests around fitted outputs, and forbid per-module re-implementations."
 falsifiable_acceptance = "CPD reports no duplicated optimizer/solver token cluster across crates; each fit call site references the shared optimizer module."
@@ -410,13 +437,13 @@ risk = "A scientific result that does not reproduce bit-for-bit (or within a sta
 current_magnitude = "36 entropy-seeded RNG sites (rand::rng() / ThreadRng) across 22 crates/ files seed computations nondeterministically. NOTE: rand 0.10 renamed thread_rng() to rand::rng(), so a thread_rng/from_entropy grep is a false-negative detector (it reports 0 while the nondeterminism persists under the new name) -- detect with 'rand::rng\\(\\)|ThreadRng'. Also 241 Instant::now() call sites (telemetry is fine, but must never seed a computation). GPU kernels run FP32 while CPU reference runs FP64, with an empirically-characterized ~1e-4 relative drift per D3Q19 step at low Mach, documented but not universally asserted by a parity test. The seeded-ChaCha discipline is exemplified in crates/cd_kernel/tests/proof_extraction_fidelity.rs."
 magnitude_reproduce = "rg -c 'rand::rng\\(\\)|ThreadRng|thread_rng|from_entropy' crates --type rust | awk -F: '{s+=$2} END{print s}' ; rg -c 'Instant::now\\(\\)' crates --type rust | awk -F: '{s+=$2} END{print s}'"
 confirmed_examples = [
-  "36 rand::rng()/ThreadRng sites in 22 files (gororoba_algebra species_audit, lattice_filtration zero_divisor_census, cosmology_core mass_ladder, many gororoba_cli_physics bins).",
-  "241 Instant::now() sites (telemetry vs computation must be separable).",
-  "GPU FP32 vs CPU FP64 LBM drift (~1e-4 rel/step; documented in cd_kernel/lbm comments).",
+    "36 rand::rng()/ThreadRng sites in 22 files (gororoba_algebra species_audit, lattice_filtration zero_divisor_census, cosmology_core mass_ladder, many gororoba_cli_physics bins).",
+    "241 Instant::now() sites (telemetry vs computation must be separable).",
+    "GPU FP32 vs CPU FP64 LBM drift (~1e-4 rel/step; documented in cd_kernel/lbm comments).",
 ]
 resolution_pattern = "Seed every stochastic pathway from an explicit u64 (rand::rng()/ThreadRng forbidden in a computation; expose a --seed CLI flag defaulting to a fixed value so a run is reproducible yet a sweep can vary the seed); keep Instant::now strictly for telemetry; add cross-backend parity tests asserting GPU-vs-CPU agreement within a stated tolerance recorded as a claim. The 36-site conversion is a careful per-site sweep (a blind global hardcoded seed would break Monte-Carlo null-test semantics), not a single mechanical edit."
 falsifiable_acceptance = "rg 'rand::rng\\(\\)|ThreadRng|thread_rng|from_entropy' crates --type rust outside tests yields zero; a GPU-vs-CPU parity test asserts a bounded relative error at fixed seed for at least one LBM and one cd_kernel pathway."
-status = "open"  # detector corrected; 36-site seed-parameterization sweep remaining
+status = "open" # detector corrected; 36-site seed-parameterization sweep remaining
 predecessor_ids = []
 cross_links = ["DEBT-SCIENTIFIC-EVIDENCE", "DEBT-PROOF-EXTRACTION-FIDELITY"]
 
@@ -428,12 +455,12 @@ risk = "Mixing physical units or conflating a quantity with its complement is a 
 current_magnitude = "The specific void-fraction notation hazard is RESOLVED: generate_topological_voids.rs now documents vf = void_count/total_cells (void fraction = exclusion) vs (1-vf) = baryon filling fraction in its header and labels both at the print site, with a debug_assert!((0.0..=1.0).contains(&vf)) range invariant. Broader debt remains: cross-domain unit conventions (Mpc, AU, eV, lattice units) are documented by comment, not enforced by a newtype, so a unit mix-up is not a compile error."
 magnitude_reproduce = "rg -n 'void_fraction|filling_fraction' crates --type rust ; rg -c 'AU|Mpc|redshift|lattice_units|eV' crates --type rust | awk -F: '{s+=$2} END{print s}'"
 confirmed_examples = [
-  "LBM void-fraction notation hazard resolved in generate_topological_voids.rs (header + labeled prints + range debug_assert).",
-  "Cross-domain unit conventions still documented by comment, not by newtype.",
+    "LBM void-fraction notation hazard resolved in generate_topological_voids.rs (header + labeled prints + range debug_assert).",
+    "Cross-domain unit conventions still documented by comment, not by newtype.",
 ]
 resolution_pattern = "Where a quantity and its complement coexist, encode the convention in the name (filling_fraction vs void_fraction) and ideally a newtype; document the unit system per module header; add assertions on physical ranges (0<=fraction<=1, redshift>=0) at lane boundaries."
 falsifiable_acceptance = "Each physics crate header declares its unit system; boundary assertions catch out-of-range physical quantities; no variable conflates a quantity with its complement (vf/(1-vf) instance closed)."
-status = "in_progress"  # vf instance resolved; cross-domain unit type-safety remains
+status = "in_progress" # vf instance resolved; cross-domain unit type-safety remains
 predecessor_ids = []
 cross_links = ["MEMORY notation bug B-C1", "DEBT-NUMERICAL-REPRODUCIBILITY"]
 
@@ -445,8 +472,8 @@ risk = "Mathematical, materials, cosmology, algebra, and physics claims can outp
 current_magnitude = "1441 claims (1201+ verified, 121 provisional, 57 refuted, plus closed/falsified categories); 227 experiments with 33 flagged binary_registered=false; 182 insights; 144 claims carry formal_proof_present. The verified:provisional ratio is healthy; the 33 binary-less experiments are the actionable surface (DEBT-EXPERIMENT-1)."
 magnitude_reproduce = "grep -c '^\\[\\[claim\\]\\]' registry/claims.toml ; rg -c 'binary_registered = false' registry/experiments.toml"
 confirmed_examples = [
-  "33 experiments with binary_registered=false (docs/engineering/experiments_missing_binary_disposition_2026_05_09.md).",
-  "MaNGA null result chain E-183/E-192/E-201/E-202 with offline CSV evidence.",
+    "33 experiments with binary_registered=false (docs/engineering/experiments_missing_binary_disposition_2026_05_09.md).",
+    "MaNGA null result chain E-183/E-192/E-201/E-202 with offline CSV evidence.",
 ]
 resolution_pattern = "Convert claims into hypothesis records with data/source/code evidence; require each experiment to register a runnable binary or a disposition explaining why none exists; add offline verifiers (no live network) for cosmology, materials, algebra, spectral outputs."
 falsifiable_acceptance = "Every experiment with binary_registered=false has a disposition row; each Verified claim links a data path + a code path that re-derives it offline; make integrity passes."
@@ -462,8 +489,8 @@ risk = "A pipeline can produce a confident number that is a methodological artif
 current_magnitude = "Qualitative, with a worked precedent: the MaNGA Q3 SNR=3.60 (C-1408) was confirmed to be a SPARSE-BIN ARTIFACT, and a blind-injection test (E-202) proved the pipeline was blind at 6 bins. This establishes the methodology bar; the debt is making blind-injection and artifact-control standard for every signal-detection claim, not retrofit after the fact."
 magnitude_reproduce = "rg -n 'blind|injection|null|artifact|multiple comparison|look-elsewhere' registry/insights.toml registry/claims.toml | wc -l"
 confirmed_examples = [
-  "MaNGA Q3 SNR artifact -> blind-injection falsification (C-1408, C-1432, E-202).",
-  "E-197 miscalibrated, correctly flagged as unusable for sensitivity validation (C-1409).",
+    "MaNGA Q3 SNR artifact -> blind-injection falsification (C-1408, C-1432, E-202).",
+    "E-197 miscalibrated, correctly flagged as unusable for sensitivity validation (C-1409).",
 ]
 resolution_pattern = "For every signal-detection claim: pre-state the test and bin scheme; run a blind signal-injection to measure recovery; correct for multiple comparisons / look-elsewhere; distinguish a measured null (with quantified sensitivity) from an absence of analysis. Record the methodology as an insight."
 falsifiable_acceptance = "Each Verified signal-detection claim cites a blind-injection recovery measurement and a multiple-comparison treatment; each null result states the sensitivity at which it is null."
@@ -480,13 +507,13 @@ id = "DEBT-DOCUMENTATION-REQUIREMENTS"
 axis = "F_documentation_organizational"
 label = "Registry-driven docs freshness and install/verify coverage"
 risk = "Generated docs drift from their registry sources and omit operational install or verification commands; a hand-edited generated doc desyncs silently."
-current_magnitude = "docs/REQUIREMENTS.md is AUTO-GENERATED from registry/requirements_narrative.toml (authoritative=true, 13 documents). docs-freshness gate is currently BLOCKED by mathematical bracket notation [a,b,c] tripping the broken-intra-doc-links check; semver-check is BLOCKED by an fwht external path dep. Per-crate module requirements exist under docs/requirements/."
+current_magnitude = "docs/REQUIREMENTS.md is AUTO-GENERATED from registry/requirements_narrative.toml (authoritative=true, 13 documents). docs-freshness strict-rustdoc false positives were reduced to the docs-site redirect checker after mathematical bracket notation, generic types, and invalid Rust example fences were normalized. rust-semver-check no longer dies on cargo-semver-checks baseline checkout filename-component length or /tmp quota: the lane now extracts v1.0-methods with git archive into .cache/semver-baselines, uses repo-local semver cache/TMPDIR paths, excludes crates introduced after v1.0-methods, and reaches real public-API compatibility findings."
 magnitude_reproduce = "make docs-freshness ; make rust-semver-check"
 confirmed_examples = [
-  "docs-freshness blocked by [a,b,c] bracket notation (intra-doc-link false positive).",
-  "rust-semver-check blocked by fwht external path dep in git temp checkout.",
+    "docs-freshness strict rustdoc blockers in cd_kernel, gr_core, gororoba_cli_physics, grmhd_core, qgp_scaling, gororoba_gpu_cuda, cr_transport, and verified_core.",
+    "rust-semver-check reaches real API findings: removed modules/functions in algebra_experimental, data_core, and gororoba_algebra; removed cudarc features in gororoba_algebra, quantum_core, sign_imbalance, and stats_core; constructible struct field additions in provenance_core and provenance_store; constructor or method arity changes in provenance_store and snia_core; enum discriminant/order changes in gororoba_gpu_bridge; auto-trait changes in neural_homotopy and gr_core.",
 ]
-resolution_pattern = "Edit registry narrative/requirements SOURCE then regenerate markdown (never hand-edit the AUTO-GENERATED docs); unblock docs-freshness by escaping or excluding mathematical bracket notation; resolve the fwht path-dep so semver-check can run."
+resolution_pattern = "Edit registry narrative/requirements SOURCE then regenerate markdown (never hand-edit the AUTO-GENERATED docs); keep Rust docs strict-clean under make docs-freshness; make rust-semver-check green by restoring public compatibility shims for accidental breakage or deliberately advancing SEMVER_BASELINE_REV after an intentional public-API break is documented."
 falsifiable_acceptance = "make docs-freshness and make rust-semver-check both exit zero; every audit tool in REQUIREMENTS.md has a working make target and install command."
 status = "in_progress"
 predecessor_ids = ["DEBT-DOCUMENTATION-REQUIREMENTS"]
@@ -500,9 +527,9 @@ risk = "Plan proliferation, stale branches, undisciplined multi-agent concurrent
 current_magnitude = "2 active plans + 10 archived (plan proliferation managed via plans/archive/); 1 local branch, 1 worktree (clean); registry mutation has a mandatory SQLite-canonical workflow; multi-agent commits require a git-log check before push (background agents commit concurrently)."
 magnitude_reproduce = "ls plans/*.toml | wc -l ; git branch | wc -l ; git worktree list"
 confirmed_examples = [
-  "plans/archive/ holds 10 retired plans (lifecycle discipline working).",
-  "Branch-lifecycle ADR (docs/adr/branch-lifecycle.md) governs worktree-agent cleanup.",
-  "Registry mutation workflow: gororoba-db -> provenance export -> integrity-resolution (AGENTS.md).",
+    "plans/archive/ holds 10 retired plans (lifecycle discipline working).",
+    "Branch-lifecycle ADR (docs/adr/branch-lifecycle.md) governs worktree-agent cleanup.",
+    "Registry mutation workflow: gororoba-db -> provenance export -> integrity-resolution (AGENTS.md).",
 ]
 resolution_pattern = "Archive superseded plans promptly; delete zero-unique-commit branches; always git log before push when agents run concurrently; mutate the registry only through the canonical CLI chain; keep one authoritative roadmap (this file) rather than parallel competing plans."
 falsifiable_acceptance = "At most one authoritative active debt roadmap exists; no branch with zero unique commits persists; every registry-counter change in git history is authored by the export tool, not a hand edit."
@@ -518,8 +545,8 @@ risk = "When canonical debt CLASSES and ephemeral Stage-B work-item TAGS share t
 current_magnitude = "Before this file: 24 distinct DEBT-* identifiers (12 canonical classes + ~12 work-item tags/placeholders) with no reconciliation map. After this file: 21 canonical classes in 6 axes + one [[identifier_reconciliation]] table mapping every legacy tag onto a class."
 magnitude_reproduce = "rg -o 'DEBT-[A-Z0-9-]+' -g '!*.lock' -g '!.cache/**' -g '!target/**' . | sort -u | wc -l"
 confirmed_examples = [
-  "Placeholder tags DEBT-PLACEHOLDER-1/-2 carried no durable category.",
-  "DEBT-UNSAFE-1 split into -CRATES / -PROOFS / -PROOFS-SCAFFOLDING across docs with no index.",
+    "Placeholder tags DEBT-PLACEHOLDER-1/-2 carried no durable category.",
+    "DEBT-UNSAFE-1 split into -CRATES / -PROOFS / -PROOFS-SCAFFOLDING across docs with no index.",
 ]
 resolution_pattern = "Maintain exactly one authoritative taxonomy (this file). New work-item tags must reference a canonical class id; placeholders are forbidden. The [[identifier_reconciliation]] table is the single lookup from any legacy tag to its class."
 falsifiable_acceptance = "Every DEBT-* string in the repo either is one of the 21 canonical class ids OR appears as a from= entry in [[identifier_reconciliation]]; no new DEBT-PLACEHOLDER-* is introduced."
@@ -621,16 +648,16 @@ axis = "F_documentation_organizational"
 horizon = "immediate"
 goal = "Lock current numbers and make this file the single authoritative roadmap."
 tasks = [
-  "Emit data/output/debt_baseline_2026_06_04.toml via make repo-audit (anchored, SQLite-linked).",
-  "Mark plans/repo_debt_roadmap_2026_04_11.toml superseded (header note) and keep post_gate tracker as task-history.",
-  "Adopt the 21-class / 6-axis taxonomy; route any new DEBT-* tag through [[identifier_reconciliation]].",
+    "Emit data/output/debt_baseline_2026_06_04.toml via make repo-audit (anchored, SQLite-linked).",
+    "Mark plans/repo_debt_roadmap_2026_04_11.toml superseded (header note) and keep post_gate tracker as task-history.",
+    "Adopt the 21-class / 6-axis taxonomy; route any new DEBT-* tag through [[identifier_reconciliation]].",
 ]
 acceptance_hooks = [
-  "test -f data/output/debt_baseline_2026_06_04.toml",
-  "rg -o 'DEBT-[A-Z0-9-]+' -g '!.cache/**' -g '!target/**' . | sort -u  # every entry resolvable here",
+    "test -f data/output/debt_baseline_2026_06_04.toml",
+    "rg -o 'DEBT-[A-Z0-9-]+' -g '!.cache/**' -g '!target/**' . | sort -u  # every entry resolvable here",
 ]
 risk_controls = [
-  "Do not delete predecessor plans; supersede in place so git history and cross-refs survive.",
+    "Do not delete predecessor plans; supersede in place so git history and cross-refs survive.",
 ]
 
 [[phase]]
@@ -640,18 +667,18 @@ axis = "A_code_structure"
 horizon = "1_to_3_sprints"
 goal = "No production-logic .rs over 4000 lines; crates/ unsafe blocks fully SAFETY-commented or exception-listed."
 tasks = [
-  "Decompose provenance_store/src/lib.rs (4220) below 2000 by extracting the remaining impl ProvenanceStore surface into inherent-impl files behind pub use.",
-  "Relocate algebra_analysis/boxkites/tests.rs (7016) and algebra_experimental/emanation/tests.rs (4327) bulk via #[cfg(test)] mod sub-files; production code stays under threshold.",
-  "Convert xtask/src/main.rs (3411) string dispatcher into a clap Subcommand enum across sibling modules.",
-  "Add // SAFETY: comments to every crates/ unsafe block lacking one; produce a documented exceptions list for any that genuinely cannot carry one.",
+    "Decompose provenance_store/src/lib.rs (4220) below 2000 by extracting the remaining impl ProvenanceStore surface into inherent-impl files behind pub use.",
+    "Relocate algebra_analysis/boxkites/tests.rs (7016) and algebra_experimental/emanation/tests.rs (4327) bulk via #[cfg(test)] mod sub-files; production code stays under threshold.",
+    "Convert xtask/src/main.rs (3411) string dispatcher into a clap Subcommand enum across sibling modules.",
+    "Add // SAFETY: comments to every crates/ unsafe block lacking one; produce a documented exceptions list for any that genuinely cannot carry one.",
 ]
 acceptance_hooks = [
-  "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | awk '$1>=4000'  # only transcribed-data + exempt tests",
-  "make repo-audit  # safety_comments >= unsafe_blocks for crates/, or exceptions documented",
-  "cargo clippy --workspace --all-targets -- -D warnings",
+    "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | awk '$1>=4000'  # only transcribed-data + exempt tests",
+    "make repo-audit  # safety_comments >= unsafe_blocks for crates/, or exceptions documented",
+    "cargo clippy --workspace --all-targets -- -D warnings",
 ]
 risk_controls = [
-  "Splits behaviour-preserving; no API renames in the same commit; each submodule re-exported via pub use.",
+    "Splits behaviour-preserving; no API renames in the same commit; each submodule re-exported via pub use.",
 ]
 
 [[phase]]
@@ -661,17 +688,17 @@ axis = "B_build_toolchain_delivery"
 horizon = "2_to_4_sprints"
 goal = "Typed xtask owns policy parsing; toolchain pin reconciled; the RUSTSEC ignore list shrinks, not grows."
 tasks = [
-  "Update the stale nightly-2026-03-05 references in AGENTS.md, CLAUDE.md, and the per-project MEMORY to the authoritative nightly-2026-04-05 pin in rust-toolchain.toml (the requirements narrative already matches).",
-  "Migrate Makefile policy-heavy parsing (cpd report, integrity, governance) into xtask subcommands with structured output; keep make as a thin front door.",
-  "Keep each deny.toml RUSTSEC ignore annotated with the blocking dependency and a re-check trigger (already satisfied) and remove any whose upstream fix has landed (rustls-webpki cluster already removed).",
+    "Update the stale nightly-2026-03-05 references in AGENTS.md, CLAUDE.md, and the per-project MEMORY to the authoritative nightly-2026-04-05 pin in rust-toolchain.toml (the requirements narrative already matches).",
+    "Migrate Makefile policy-heavy parsing (cpd report, integrity, governance) into xtask subcommands with structured output; keep make as a thin front door.",
+    "Keep each deny.toml RUSTSEC ignore annotated with the blocking dependency and a re-check trigger (already satisfied) and remove any whose upstream fix has landed (rustls-webpki cluster already removed).",
 ]
 acceptance_hooks = [
-  "grep -rn nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l  # == 1",
-  "make cargo-deny-check ; grep -cE '^\\s*\"RUSTSEC' deny.toml  # active count not above prior snapshot without justification",
-  "xtask --help  # subcommands discoverable via clap",
+    "grep -rn nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l  # == 1",
+    "make cargo-deny-check ; grep -cE '^\\s*\"RUSTSEC' deny.toml  # active count not above prior snapshot without justification",
+    "xtask --help  # subcommands discoverable via clap",
 ]
 risk_controls = [
-  "Keep exploratory/noisy tools report-only; do not hard-gate a tool until its false-positive inventory is documented.",
+    "Keep exploratory/noisy tools report-only; do not hard-gate a tool until its false-positive inventory is documented.",
 ]
 
 [[phase]]
@@ -681,19 +708,19 @@ axis = "C_test_verification"
 horizon = "2_to_5_sprints"
 goal = "Proven theorems bind to executable code via property tests; gate-timing regression is a hard gate."
 tasks = [
-  "Bind cd_kernel multiply to the proven recurrence with a seeded property test whose oracle is transcribed from Rocq CDDoubleFunctor::cd_mul; pass at dims 8..256 (LANDED: crates/cd_kernel/tests/proof_extraction_fidelity.rs). Extend the pattern to the next safety-critical proven identity.",
-  "Record the Rocq-theorem-id <-> Rust-function binding in the formal_proof field for each proof-backed claim.",
-  "Hold strict Admitted/admit at 0; keep a disposition row for every top-level Axiom.",
-  "Remove continue-on-error from the CI gate-timing-regression-check now that the soak window (ended 2026-05-26) is complete.",
+    "Bind cd_kernel multiply to the proven recurrence with a seeded property test whose oracle is transcribed from Rocq CDDoubleFunctor::cd_mul; pass at dims 8..256 (LANDED: crates/cd_kernel/tests/proof_extraction_fidelity.rs). Extend the pattern to the next safety-critical proven identity.",
+    "Record the Rocq-theorem-id <-> Rust-function binding in the formal_proof field for each proof-backed claim.",
+    "Hold strict Admitted/admit at 0; keep a disposition row for every top-level Axiom.",
+    "Keep CI gate-timing-regression-check as a hard gate; it no longer carries continue-on-error after the soak window ending 2026-05-26.",
 ]
 acceptance_hooks = [
-  "cargo nextest run -p cd_kernel  # recurrence parity proptest green",
-  "make -C proofs vos && make -C proofs vok",
-  "make repo-audit  # rocq_admitted_strict==0 && rocq_admit_strict==0",
-  "grep continue-on-error .github/workflows/ci.yml  # not on the timing step",
+    "cargo nextest run -p cd_kernel  # recurrence parity proptest green",
+    "make -C proofs vos && make -C proofs vok",
+    "make repo-audit  # rocq_admitted_strict==0 && rocq_admit_strict==0",
+    "grep continue-on-error .github/workflows/ci.yml  # not on the timing step",
 ]
 risk_controls = [
-  "Proptest tolerance is exact for integer/rational identities and a stated epsilon for float paths; record the epsilon as a claim.",
+    "Proptest tolerance is exact for integer/rational identities and a stated epsilon for float paths; record the epsilon as a claim.",
 ]
 
 [[phase]]
@@ -703,17 +730,17 @@ axis = "D_data_provenance"
 horizon = "3_to_5_sprints"
 goal = "Transcribed physics tables are generated from a cited TOML/JSON source with reference-value spot checks."
 tasks = [
-  "Extract optical_database.rs data into a cited TOML/JSON (per-row Palik/Klimchitskaya page reference); generate the Rust table via build.rs.",
-  "Do the same for crystal_symmetry.rs (International Tables / Burns & Glazer page references).",
-  "Add a reference-value spot-check test (gold n,k at known wavelengths; known space-group multiplicities) so a transcription error fails the build.",
+    "Extract optical_database.rs data into a cited TOML/JSON (per-row Palik/Klimchitskaya page reference); generate the Rust table via build.rs.",
+    "Do the same for crystal_symmetry.rs (International Tables / Burns & Glazer page references).",
+    "Add a reference-value spot-check test (gold n,k at known wavelengths; known space-group multiplicities) so a transcription error fails the build.",
 ]
 acceptance_hooks = [
-  "test -f crates/materials_core/data/optical_constants.toml  # cited source",
-  "cargo nextest run -p materials_core  # reference-value spot check green",
-  "find crates -name '*.rs' | xargs wc -l | awk '$1>=4000'  # transcribed monoliths gone",
+    "test -f crates/materials_core/data/optical_constants.toml  # cited source",
+    "cargo nextest run -p materials_core  # reference-value spot check green",
+    "find crates -name '*.rs' | xargs wc -l | awk '$1>=4000'  # transcribed monoliths gone",
 ]
 risk_controls = [
-  "Parity hash or spot-check must pass before deleting the hand-keyed .rs surface.",
+    "Parity hash or spot-check must pass before deleting the hand-keyed .rs surface.",
 ]
 
 [[phase]]
@@ -723,18 +750,18 @@ axis = "E_scientific_methodology"
 horizon = "ongoing"
 goal = "Every result reproduces at a fixed seed; units are unambiguous; signal claims carry blind-injection evidence."
 tasks = [
-  "Replace the 36 rand::rng()/ThreadRng computation sites (22 files) with explicit seeded RNG behind a --seed flag (detect with 'rand::rng\\(\\)|ThreadRng'; rand 0.10 renamed thread_rng to rand::rng); keep Instant::now for telemetry only.",
-  "Add at least one GPU-vs-CPU parity test asserting bounded relative error at a fixed seed (LBM and cd_kernel).",
-  "Declare unit systems in physics-crate headers and add 0..1 range assertions at fraction lane boundaries (the vf vs (1-vf) notation hazard in generate_topological_voids.rs is already resolved: header distinguishes vf=void fraction from (1-vf)=baryon filling fraction, with a debug_assert range invariant on vf).",
-  "For each signal-detection claim, attach a blind-injection recovery measurement and a multiple-comparison treatment; record as an insight.",
+    "Replace the 36 rand::rng()/ThreadRng computation sites (22 files) with explicit seeded RNG behind a --seed flag (detect with 'rand::rng\\(\\)|ThreadRng'; rand 0.10 renamed thread_rng to rand::rng); keep Instant::now for telemetry only.",
+    "Add at least one GPU-vs-CPU parity test asserting bounded relative error at a fixed seed (LBM and cd_kernel).",
+    "Declare unit systems in physics-crate headers and add 0..1 range assertions at fraction lane boundaries (the vf vs (1-vf) notation hazard in generate_topological_voids.rs is already resolved: header distinguishes vf=void fraction from (1-vf)=baryon filling fraction, with a debug_assert range invariant on vf).",
+    "For each signal-detection claim, attach a blind-injection recovery measurement and a multiple-comparison treatment; record as an insight.",
 ]
 acceptance_hooks = [
-  "rg 'rand::rng\\(\\)|ThreadRng|thread_rng|from_entropy' crates --type rust | rg -v test  # empty in computation paths",
-  "cargo nextest run  # GPU-vs-CPU parity test green",
-  "rg -n 'void_fraction|filling_fraction' crates --type rust  # unambiguous naming",
+    "rg 'rand::rng\\(\\)|ThreadRng|thread_rng|from_entropy' crates --type rust | rg -v test  # empty in computation paths",
+    "cargo nextest run  # GPU-vs-CPU parity test green",
+    "rg -n 'void_fraction|filling_fraction' crates --type rust  # unambiguous naming",
 ]
 risk_controls = [
-  "Online research may seed provenance, but tests and gates must never depend on live network access.",
+    "Online research may seed provenance, but tests and gates must never depend on live network access.",
 ]
 
 [[phase]]
@@ -744,16 +771,16 @@ axis = "F_documentation_organizational"
 horizon = "continuous"
 goal = "docs-freshness and semver-check run green; exactly one authoritative roadmap; no orphan DEBT-* tags."
 tasks = [
-  "Unblock docs-freshness by escaping/excluding mathematical [a,b,c] bracket notation from the intra-doc-link check.",
-  "Resolve the fwht external path dep so rust-semver-check can run from a git temp checkout.",
-  "Update registry/requirements_narrative.toml to reference this taxonomy and every audit lane; regenerate docs.",
-  "Reject any new DEBT-PLACEHOLDER-* and any DEBT-* tag not resolvable via [[identifier_reconciliation]].",
+    "Keep docs-freshness green under strict rustdoc by code-spanning mathematical bracket notation, generic types, and non-Rust examples.",
+    "Resolve rust-semver-check API findings by restoring compatibility shims or advancing SEMVER_BASELINE_REV after documenting intentional public-API breaks.",
+    "Update registry/requirements_narrative.toml to reference this taxonomy and every audit lane; regenerate docs.",
+    "Reject any new DEBT-PLACEHOLDER-* and any DEBT-* tag not resolvable via [[identifier_reconciliation]].",
 ]
 acceptance_hooks = [
-  "make docs-freshness && make rust-semver-check",
-  "make registry-build registry-export-markdown  # docs regenerated from source",
-  "rg -o 'DEBT-[A-Z0-9-]+' -g '!.cache/**' -g '!target/**' . | sort -u  # all resolvable",
+    "make docs-freshness && make rust-semver-check",
+    "make registry-build registry-export-markdown  # docs regenerated from source",
+    "rg -o 'DEBT-[A-Z0-9-]+' -g '!.cache/**' -g '!target/**' . | sort -u  # all resolvable",
 ]
 risk_controls = [
-  "Never hand-edit AUTO-GENERATED docs; edit the registry narrative source then regenerate.",
+    "Never hand-edit AUTO-GENERATED docs; edit the registry narrative source then regenerate.",
 ]

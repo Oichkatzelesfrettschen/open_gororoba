@@ -25,12 +25,12 @@
 //!    can plan around it.
 //!
 //! Output format (matches what turboquant-real-kv reads):
-//!   <out-dir>/metadata.json           JSON with n_layers, n_heads,
+//!   `<out-dir>/metadata.json`         JSON with n_layers, n_heads,
 //!                                     seq_len, head_dim, model, n_params
-//!   <out-dir>/keys_layer{NN}.f64      float64, row-major, one file
+//!   `<out-dir>/keys_layer{NN}.f64`    float64, row-major, one file
 //!                                     per transformer layer, shape
 //!                                     (seq_len * n_heads * head_dim)
-//!   <out-dir>/values_layer{NN}.f64    ditto for value projection
+//!   `<out-dir>/values_layer{NN}.f64`  ditto for value projection
 
 use std::{
     fs::{self, File},

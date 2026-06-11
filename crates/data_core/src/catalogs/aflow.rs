@@ -38,6 +38,9 @@ pub struct AflowMaterial {
 }
 
 #[cfg(feature = "fetch")]
+pub use super::aflow_fetch::{AflowProvider, fetch_aflow_dataset};
+
+#[cfg(feature = "fetch")]
 /// AFLUX base URL for the REST API.
 const AFLUX_BASE: &str = "https://aflow.org/API/aflux/";
 

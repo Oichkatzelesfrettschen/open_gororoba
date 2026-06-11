@@ -8,17 +8,17 @@ description = "SQLite-backed provenance index for open_gororoba"
 
 [dependencies]
 anyhow = { workspace = true }
+blake3 = { workspace = true }
 camino = { workspace = true, features = ["serde1"] }
 chrono = { workspace = true }
 provenance_core = { path = "../provenance_core" }
 rusqlite = { workspace = true }
 rusqlite_migration = { workspace = true }
-serde_json = { workspace = true }
 serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
 toml = { workspace = true }
 toml_edit = { workspace = true }
-blake3 = { workspace = true }
-sha2 = { workspace = true }
 url = { workspace = true }
 
 [lints]

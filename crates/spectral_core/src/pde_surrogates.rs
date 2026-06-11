@@ -135,7 +135,7 @@ impl ForcedDiffusion {
 
     /// Generate a pulsed forcing schedule.
     /// Returns a `Vec<bool>` of length `total_steps` where `true` means forcing is active.
-    /// `duty_cycle` in [0,1]: fraction of steps with active forcing.
+    /// `duty_cycle` in `[0,1]`: fraction of steps with active forcing.
     /// Pattern alternates in blocks: `on_block` active steps, then `off_block` quench steps.
     pub fn pulsed_schedule(total_steps: usize, duty_cycle: f64) -> Vec<bool> {
         assert!(

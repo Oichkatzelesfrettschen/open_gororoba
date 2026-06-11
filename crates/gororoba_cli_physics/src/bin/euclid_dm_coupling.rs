@@ -15,7 +15,7 @@
 //!
 //! Usage (Euclid catalog):
 //!   euclid-dm-coupling --catalog data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet --index 0
-//!   euclid-dm-coupling --catalog <path> --object-id 12345
+//!   `euclid-dm-coupling --catalog <path> --object-id 12345`
 //!
 //! Usage (explicit params with provenance):
 //!   euclid-dm-coupling --sersic-n 4.2 --r-e-kpc 6.1 --i-e 0.8 \

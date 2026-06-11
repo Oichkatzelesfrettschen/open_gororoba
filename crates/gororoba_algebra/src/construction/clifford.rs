@@ -30,7 +30,7 @@ impl CliffordSignature {
     }
 
     /// Euclidean square of basis vector k in the geometric sense.
-    /// Returns +1 if k is in positive part [1..p+1], -1 if in negative part [p+1..p+q+1].
+    /// Returns +1 if k is in positive part `[1..p+1]`, -1 if in negative part `[p+1..p+q+1]`.
     pub fn basis_square(&self, k: usize) -> i32 {
         if k <= self.p {
             1 // Positive signature basis

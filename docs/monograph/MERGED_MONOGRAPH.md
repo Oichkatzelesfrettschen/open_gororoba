@@ -32,16 +32,16 @@ where gamma = -1 yields the standard tower: R -> C -> H -> O -> S -> P -> ...
 The parameter gamma controls the metric signature. Standard CD uses gamma = -1 at
 every level, producing:
 
-| Level n | dim = 2^n | Algebra | Name       |
-|---------|-----------|---------|------------|
-| 0       | 1         | R       | Reals      |
-| 1       | 2         | C       | Complex    |
-| 2       | 4         | H       | Quaternions|
-| 3       | 8         | O       | Octonions  |
-| 4       | 16        | S       | Sedenions  |
-| 5       | 32        | P       | Pathions   |
-| 6       | 64        |         | Chingons   |
-| ...     | ...       |         | ...        |
+| Level n | dim = 2^n | Algebra | Name        |
+| ------- | --------- | ------- | ----------- |
+| 0       | 1         | R       | Reals       |
+| 1       | 2         | C       | Complex     |
+| 2       | 4         | H       | Quaternions |
+| 3       | 8         | O       | Octonions   |
+| 4       | 16        | S       | Sedenions   |
+| 5       | 32        | P       | Pathions    |
+| 6       | 64        |         | Chingons    |
+| ...     | ...       |         | ...         |
 
 **Theorem 1.1** (CD Property Loss Tower -- Rocq-verified C-1007). Each CD doubling
 for n >= 2 loses at least one algebraic property:
@@ -50,7 +50,7 @@ for n >= 2 loses at least one algebraic property:
 - dim = 8 (O): loses associativity (C-909, C-921)
 - dim = 16 (S): loses division (zero divisors appear) and norm composition (C-002, C-908)
 
-*Proof*: Verified in Rocq 9.1.1 via `C1007_CDPropertyLoss.v`. The quaternion witness
+_Proof_: Verified in Rocq 9.1.1 via `C1007_CDPropertyLoss.v`. The quaternion witness
 i * j != j * i proves non-commutativity at dim=4. The octonion witness
 (e1 * e2) * e4 != e1 * (e2 * e4) proves non-associativity at dim=8. The sedenion
 Moreno-Froloff witness (e3 + e10)(e6 - e15) = 0 with both factors nonzero proves
@@ -70,7 +70,7 @@ This failure is not merely algebraic pathology -- it is the structural origin of
 zero divisors. If norm composition held, then |ab| = 0 would imply |a| = 0 or
 |b| = 0. Its failure permits |ab| = 0 with |a|, |b| > 0.
 
-*Rocq verification*: `C031_HurwitzComplete.v` proves norm multiplicativity at
+_Rocq verification_: `C031_HurwitzComplete.v` proves norm multiplicativity at
 dims 1, 2, 4, 8 and exhibits a concrete counterexample at dim 16.
 
 The Brahmagupta-Fibonacci identity at dim=2 (C-895):
@@ -91,14 +91,14 @@ are determined by a three-level hierarchy:
     LEVEL 2 (SECONDARY): Dimension
     LEVEL 3 (TERTIARY):  Metric Parameters (gamma signatures)
 
-*Evidence*: Comprehensive census across CD, Clifford, and Jordan families:
+_Evidence_: Comprehensive census across CD, Clifford, and Jordan families:
 
-| Family   | Construction        | Commutativity | dim=4 | dim=8 | dim=16 |
-|----------|---------------------|---------------|-------|-------|--------|
-| CD       | Doubling            | 0%            | 0%    | 0%    | 0%     |
-| Clifford | Quadratic relations | 80-90%        | 80%   | 85%   | 90%    |
-| Jordan   | Symmetrized product | 100%          | 100%  | 100%  | 100%   |
-| Tessarine| Tensor product CxC  | 100%          | 100%  | --    | --     |
+| Family    | Construction        | Commutativity | dim=4 | dim=8 | dim=16 |
+| --------- | ------------------- | ------------- | ----- | ----- | ------ |
+| CD        | Doubling            | 0%            | 0%    | 0%    | 0%     |
+| Clifford  | Quadratic relations | 80-90%        | 80%   | 85%   | 90%    |
+| Jordan    | Symmetrized product | 100%          | 100%  | 100%  | 100%   |
+| Tessarine | Tensor product CxC  | 100%          | 100%  | --    | --     |
 
 The tessarine result (C-552) is decisive: tessarines have dim=4 like quaternions
 but are fully commutative, proving that construction mechanism (tensor product vs
@@ -157,7 +157,7 @@ zero divisors organize into exactly 42 assessors partitioned into 7 box-kites of
 
     |Assessors| = 42,    |Box-kites| = 7,    |Assessors per box-kite| = 6
 
-*Proof*: Verified in `C003_AssessorsBoxkites.v`. The assessor count, box-kite count,
+_Proof_: Verified in `C003_AssessorsBoxkites.v`. The assessor count, box-kite count,
 uniform partition size, and completeness of the partition are all kernel-checked.
 
 **Definition 2.2** (Assessor). An assessor is a pair of sedenion basis indices (i, j)
@@ -177,6 +177,7 @@ according to the automorphism group of the Fano plane.
     |PSL(2,7)| = 168 = 7 * 24 = 7! / (7 * 6 * 5 / 168)
 
 The Fano plane F_7 has:
+
 - 7 points (octonion basis indices e_1, ..., e_7)
 - 7 lines (each containing 3 points)
 - Each point lies on exactly 3 lines (C-013)
@@ -236,6 +237,7 @@ three octonionic subalgebras mirrors the three observed generations of fermions
 ### 3.1 The Reggiani Partner Adjacency Matrix
 
 **Definition 3.1** (Partner Graph). The Reggiani partner graph G_R = (V, E) has:
+
 - Vertices V: the 84 primitive sedenion zero-divisor 2-blades
 - Edges E: (u, v) in E iff u * v = 0 (partner relation)
 
@@ -253,7 +255,7 @@ partner adjacency matrix has exactly 5 distinct eigenvalues:
 This is a palindromic spectrum: the degeneracy sequence {7, 14, 42, 14, 7} is
 symmetric about the zero eigenvalue.
 
-*Key structural decomposition*:
+_Key structural decomposition_:
 
     7 + 14 + 42 + 14 + 7 = 84 = |V|
 
@@ -317,12 +319,13 @@ where psi(i, j) is the GF(2) twist exponent from the CD doubling formula.
 
 The 2-bit invariant F in GF(2)^2 produces the ratio via the Klein-four fiber
 structure:
+
 - 1 zero state (pure triangle): F = (0, 0)
 - 3 nonzero states (mixed triangle): F in {(0,1), (1,0), (1,1)}
 
 This forces the 1:3 ratio COMBINATORIALLY, independent of dimension.
 
-*Verification*: Zero mismatches across 50.3M+ triangles at dims 128, 256 combined.
+_Verification_: Zero mismatches across 50.3M+ triangles at dims 128, 256 combined.
 The mechanism traces to the conjugation asymmetry in the CD doubling formula
 (a, b)* = (a*, -b) -- the minus sign on b is the ultimate origin.
 
@@ -353,6 +356,7 @@ field v(r) admits a Fourier expansion:
     v(r) = v_NFW(r) * [1 + alpha_zd * sum_{k in K_D} c_k * cos(k * r/r_s)]
 
 where:
+
 - v_NFW(r) is the standard NFW velocity profile
 - alpha_zd is the global signal amplitude
 - K_D is the set of algebraically determined wavenumbers at CD dimension D
@@ -368,12 +372,12 @@ corresponding to the 7 CD-ZD modes from the 7 box-kites.
 
 Four independent algebraic frameworks predict distinct mode structures:
 
-| Framework       | Wavenumbers K                              | # Modes |
-|-----------------|--------------------------------------------|---------|
-| CD-ZD (D=16)   | {2*pi*n/7 : n=1..7}                       | 7       |
-| G2 Aut(O)      | {2*pi*n/6 : n=1..6} (6 positive roots)    | 6       |
-| Albert J3(O)   | {2*pi*n/3 : n=1..3} (rank-3 Peirce frame) | 3       |
-| sl(2) partner  | {2,4} * 2*pi/7 (spin-2 non-zero weights)  | 2       |
+| Framework     | Wavenumbers K                             | # Modes |
+| ------------- | ----------------------------------------- | ------- |
+| CD-ZD (D=16)  | {2*pi*n/7 : n=1..7}                       | 7       |
+| G2 Aut(O)     | {2*pi*n/6 : n=1..6} (6 positive roots)    | 6       |
+| Albert J3(O)  | {2*pi*n/3 : n=1..3} (rank-3 Peirce frame) | 3       |
+| sl(2) partner | {2,4} * 2*pi/7 (spin-2 non-zero weights)  | 2       |
 
 The sl(2) framework additionally predicts a degeneracy ratio:
 
@@ -425,6 +429,7 @@ the final data release of SDSS-IV. 10,000+ galaxies with spatially resolved
 integral-field spectroscopy.
 
 **Selection cuts** (DAPall Guillotine):
+
 - Sersic index n < 2.5 (disk-dominated morphology)
 - Inclination 30 < i < 70 degrees (avoiding face-on beam-smearing and edge-on projection)
 - H-alpha equivalent width > 2 Angstroms (emission-line detectable)
@@ -435,18 +440,21 @@ integral-field spectroscopy.
 ### 5.2 Pipeline Architecture
 
 **Stage 1**: MAPS pseudo-slit extraction
+
 - Download per-galaxy MAPS FITS files from data.sdss.org (6 parallel threads)
 - Extract 1D rotation curves from 2D H-alpha EMLINE_GVEL velocity maps
 - Pseudo-slit along kinematic position angle
 - Deproject: v_circ(r) = v_los(r) / sin(i)
 
 **Stage 2**: NFW normalization
+
 - Stellar-mass-to-halo-mass relation (Moster+2013) determines (M_200, c_200)
 - NFW scale radius: r_s = r_200 / c_200
 - Normalize: x = r / r_s
 - Fractional residual: delta(x) = v_obs(x) / v_NFW(x) - 1
 
 **Stage 3**: Population stacking
+
 - Stack delta(x) across all N galaxies at 200 uniform x-bins in [0.5, 10.0]
 - Compute mean, SEM, and Fourier transform at each CD dimension
 
@@ -454,14 +462,14 @@ integral-field spectroscopy.
 
 **C-1365** (MaNGA Null Result):
 
-| Quantity              | Value                          |
-|-----------------------|--------------------------------|
-| Final sample          | N = 6992 galaxies              |
-| Peak Fourier SNR      | 0.29 (x = 0.5-10.0)           |
-| Inner-halo SNR        | 0.25 (x = 0.5-1.25)           |
-| RMS residual          | 0.075083 (full)                |
-| Detection threshold   | alpha_zd >= 0.002392           |
-| Profile coverage      | x = 0.5 to ~1.35 r/r_s only   |
+| Quantity            | Value                       |
+| ------------------- | --------------------------- |
+| Final sample        | N = 6992 galaxies           |
+| Peak Fourier SNR    | 0.29 (x = 0.5-10.0)         |
+| Inner-halo SNR      | 0.25 (x = 0.5-1.25)         |
+| RMS residual        | 0.075083 (full)             |
+| Detection threshold | alpha_zd >= 0.002392        |
+| Profile coverage    | x = 0.5 to ~1.35 r/r_s only |
 
 The detection threshold 0.002392 is 40% BELOW the SKA (2030) design sensitivity
 of alpha_zd = 0.004.
@@ -474,12 +482,12 @@ assessor fraction identity (C-1349).
 
 **C-1367** (Inclination-Dependent Projection Artifact):
 
-| Sub-sample       | N    | SNR  | Physical interpretation         |
-|------------------|------|------|---------------------------------|
-| Low-i (30-45)    | 3140 | 0.98 | Cleanest projection geometry    |
-| Mid-i (45-60)    | 2677 | 0.59 | Intermediate contamination      |
-| High-i (60-70)   | 1175 | 1.30 | Projection artifact dominant    |
-| Full sample      | 6992 | 0.29 | Inclination effects cancel      |
+| Sub-sample     | N    | SNR  | Physical interpretation      |
+| -------------- | ---- | ---- | ---------------------------- |
+| Low-i (30-45)  | 3140 | 0.98 | Cleanest projection geometry |
+| Mid-i (45-60)  | 2677 | 0.59 | Intermediate contamination   |
+| High-i (60-70) | 1175 | 1.30 | Projection artifact dominant |
+| Full sample    | 6992 | 0.29 | Inclination effects cancel   |
 
 **Critical diagnostic** (I-181): A genuine ZD gravitational forcing signal would
 be inclination-INDEPENDENT (gravity acts in 3D, not along the line of sight).
@@ -492,6 +500,7 @@ not ZD forcing.
 **C-1368** (DC-Peak Red Noise):
 
 The full-frequency power spectrum of the stacking profile:
+
 - Peaks at k -> 0 (DC component = -9% mean baryonic offset)
 - Decreases MONOTONICALLY through all 7 CD-ZD modes (k = 0.897 to 6.283)
 - Falls as approximately 1/k^2 (Wiener spectrum of spatially correlated noise)
@@ -537,12 +546,12 @@ Apply three alternative algebraic wavenumber sets to the E-183 stacked profile:
 
 **C-1372** (Algebra-Universal Null):
 
-| Algebra         | Modes | SNR (full) | SNR (low-i) |
-|-----------------|-------|------------|-------------|
-| CD-ZD D=16      | 7     | 0.29       | 0.98        |
-| G2 Aut(O)       | 6     | 0.29       | 0.98        |
-| Albert J3(O)    | 3     | 0.29       | 0.91        |
-| sl(2) partner   | 2     | 0.23       | 0.93        |
+| Algebra       | Modes | SNR (full) | SNR (low-i) |
+| ------------- | ----- | ---------- | ----------- |
+| CD-ZD D=16    | 7     | 0.29       | 0.98        |
+| G2 Aut(O)     | 6     | 0.29       | 0.98        |
+| Albert J3(O)  | 3     | 0.29       | 0.91        |
+| sl(2) partner | 2     | 0.23       | 0.93        |
 
 ALL null. The baryonic noise floor RMS = 0.075 exceeds the ZD detection threshold
 (0.002392) by 30-38x regardless of which algebraic wavenumber set is analyzed.
@@ -556,6 +565,7 @@ The sl(2,R) spin-2 degeneracy prediction:
     P(k=1.795) / P(k=3.590) = 14/7 = 2.0    (predicted)
 
 Observed:
+
 - Low-inclination sub-sample: ratio = 1.53
 - Full N=6992 sample: ratio = 0.55 (INVERTED)
 
@@ -606,6 +616,7 @@ Discriminatory power requires N >> 1/SNR^2 ~ 1700 bins.
 ### 7.2 Integrated Null Confirmation
 
 All three non-static diagnostics independently confirm:
+
 - Baryonic-dominated residual (STFT localizes power at inner core)
 - No oscillatory signal structure (derivative DFT shows wrong spectral slope)
 - Phase stability is a small-N artifact, not evidence of coherent forcing
@@ -700,16 +711,17 @@ N = 2000 MaNGA-calibrated synthetic galaxies. Five seeds (42, 137, 256, 789, 102
 
 **Table: Main Null Results**
 
-| Condition        | Abbrev | RMS    | SNR (mean) | SNR (std) | Detected? |
-|------------------|--------|--------|------------|-----------|-----------|
-| NFW-only WLS     | NFW    | 0.1245 | 128.2853   | 0.0000    | (control) |
-| Baryonic WLS     | BAR    | 0.0916 | 2.5272     | 0.0000    | No        |
-| Harmonic stack   | HARM   | 0.0916 | 2.0308     | 0.0487    | No        |
-| Multi-algebra    | MDFT   | 0.0916 | 2.3470     | 0.0681    | No        |
-| No inclination   | NOINC  | 0.0916 | 2.4942     | 0.0000    | No        |
-| Single CD dim    | SCDM   | 0.0916 | 1.8529     | 0.0820    | No        |
+| Condition      | Abbrev | RMS    | SNR (mean) | SNR (std) | Detected? |
+| -------------- | ------ | ------ | ---------- | --------- | --------- |
+| NFW-only WLS   | NFW    | 0.1245 | 128.2853   | 0.0000    | (control) |
+| Baryonic WLS   | BAR    | 0.0916 | 2.5272     | 0.0000    | No        |
+| Harmonic stack | HARM   | 0.0916 | 2.0308     | 0.0487    | No        |
+| Multi-algebra  | MDFT   | 0.0916 | 2.3470     | 0.0681    | No        |
+| No inclination | NOINC  | 0.0916 | 2.4942     | 0.0000    | No        |
+| Single CD dim  | SCDM   | 0.0916 | 1.8529     | 0.0820    | No        |
 
 Key findings:
+
 - Baryonic decomposition: 26.4% RMS reduction (0.1245 -> 0.0916)
 - NFW-only positive control: SNR = 128.3 (pipeline correctly detects real signals)
 - All ZD-search conditions: SNR = 1.85 to 2.53, uniformly below T* = 3
@@ -721,6 +733,7 @@ Prior real MaNGA DR17 analysis: SNR = 0.23-0.29.
 Synthetic validation: SNR = 1.85-2.53.
 
 The discrepancy (factor ~8x) reflects:
+
 - Real residual kurtosis ~ 284 (vs Gaussian kurtosis = 3)
 - ~5% of galaxies contribute majority of DFT power (IFU edge artifacts)
 - SEM denominator inflated by outliers, suppressing T = mean/SEM
@@ -747,8 +760,9 @@ winsorized stacking, per-galaxy outlier downweighting).
 The complete CD property cascade from dim=1 to dim=16:
 
 **dim = 2 (Complex Numbers)** -- 7 proofs:
+
 - Commutativity (C-893): z*w = w*z for all z, w in C
-- Associativity (C-894): (z*w)*u = z*(w*u) for all z, w, u in C
+- Associativity (C-894): (z*w)_u = z_(w*u) for all z, w, u in C
 - Norm multiplicativity (C-895): |z*w|^2 = |z|^2 * |w|^2 (Brahmagupta-Fibonacci)
 - Conjugate anti-morphism (C-896): conj(z*w) = conj(w)*conj(z)
 - Conjugate involution: conj(conj(z)) = z
@@ -756,13 +770,14 @@ The complete CD property cascade from dim=1 to dim=16:
 - Property tower confirmation (C-918)
 
 **dim = 4 (Quaternions)** -- 15 proofs:
+
 - Associativity (C-897): quaternions ARE associative
 - Norm multiplicativity (C-898): Hurwitz at dim=4
 - Non-commutativity (C-907): witness i*j != j*i
 - Real part commutativity (C-900): Re(p*q) = Re(q*p) despite non-commutativity
 - Quadratic identity (C-901): q^2 = 2*Re(q)*q - |q|^2
 - Imaginary square (C-902): pure imaginary q^2 = -|q|^2
-- Jordan identity (C-905): (a^2*b)*a = a^2*(b*a)
+- Jordan identity (C-905): (a^2*b)_a = a^2_(b*a)
 - Two-sided inverse (C-906): q*inv(q) = inv(q)*q = 1
 - Associator vanishes (C-904): [p,q,r] = 0 for all quaternions
 - Rotation equivalence (C-876): q*v*conj(q) = R(q)*v for unit quaternions
@@ -771,12 +786,14 @@ The complete CD property cascade from dim=1 to dim=16:
 - Preservation of associativity (C-920)
 
 **dim = 8 (Octonions)** -- 12+ proofs:
-- Non-associativity (C-909): witness (e1*e2)*e4 != e1*(e2*e4)
+
+- Non-associativity (C-909): witness (e1*e2)_e4 != e1_(e2*e4)
 - Left and right alternative identity (C-910): 10 files, all 8 basis elements
 - First loss of associativity (C-921)
 - Conjugate involution verified
 
 **dim = 16 (Sedenions)** -- 20+ proofs:
+
 - Zero divisor existence (C-908, C-002)
 - Annihilator structure (C-005, C-014, C-015)
 - 42/7 partition (C-003)
@@ -818,6 +835,7 @@ zero-divisor cancellation:
 Both are null eigenvectors of cycle-signed adjacency matrices on frustrated graphs.
 
 **Theorem 9.3** (FHS Berry Curvature Generalization -- C-1233, C-1234, Rocq):
+
 - Total Chern number = 0 under time-reversal symmetry (TRS)
 - Valley Chern numbers: VCN(K) = -VCN(K') under TRS
 - Flat band group velocity bounded: perfectly flat -> zero velocity (C-1236)
@@ -851,6 +869,7 @@ trivially.
 ### 10.1 Observationally Falsified Claims
 
 **C-932** (Orthoplex Thawing Dark Energy):
+
 - Original: delta-BIC = -3.58 (preferred over LCDM) with diagonal errors
 - WITH full Pantheon+ STAT+SYS 1578x1578 covariance: delta-BIC = +705.48
 - 70x ABOVE pre-registered falsification threshold
@@ -860,6 +879,7 @@ trivially.
   mathematically consistent but observationally obliterated
 
 **C-923** (Cross-Dimensional d_s Plateau Flow):
+
 - No plateau exists at any CD dimension (16-512)
 - ZD graph components are near-complete graphs with uniform eigenvalue spectra
 - Calcagni 2->4 spectral dimension flow does NOT emerge from individual
@@ -870,29 +890,35 @@ trivially.
 ### 10.2 Computationally Falsified Claims
 
 **C-789** (Ghost Peak FWHM Convergence):
+
 - FWHM = 0.0008 was an interpolation artifact below FFT resolution limit 1/N
 - Cubic interpolation below FFT resolution limit produces spurious convergence
 - Fix: peak_fwhm_clamped() now floors at 1/N
 
 **C-842** (QGP R_AA Scaling Collapse):
+
 - R_AA(pT) does NOT collapse onto universal curve with reduced chi2 < 2
 - Per-bin chi2/ndf ranges from 28 (60-70%) to 758 (0-5%)
 - Simple power-law R_AA model fails against ALICE data
 
 **C-844, C-845** (Multi-System Density Scaling):
+
 - Beta and K both falsified at pT > 5 GeV
 - However, beta recovers Arleo-Falmagne value at low pT where fractional
   energy loss eps/pT is large
 
 **C-846** (Hadron v2 Linear Relation):
+
 - beta_hadrons = 0.021, R^2 = -0.94
 - R^2 < 0 means the linear model is WORSE than a constant
 
 **C-1103** (ETA_WAKE Gravitational Focusing):
+
 - Reduces Rosetta-I magnitude by ~18% at ETA_WAKE = 0.20
 - CANNOT flip the sign; would need ETA_WAKE ~ 2.2 (unphysical)
 
 **C-1329** (Slope Ratio 42^2/10000 Numerology):
+
 - 0.1764 at power index n=1.5 is numerical coincidence with 42^2/10000
 - Associator norm ||m3|| cancels exactly in the slope ratio
 - Ratio depends ONLY on n and strain-rate grid sampling points
@@ -901,12 +927,12 @@ trivially.
 
 Synthesizing the audit (I-173, I-174):
 
-| Tier | Domain       | Status    | Examples                          |
-|------|-------------|-----------|-----------------------------------|
-| 1    | Algebra     | VERIFIED  | C-001 to C-032, C-1262 (Rocq)    |
-| 2    | Computation | Consistent| C-611 to C-615, C-1313/C-1314    |
-| 3    | Observation | NULL      | C-1365 to C-1374, C-1338/C-1340  |
-| 4    | Cosmology   | DISCONNECTED| Gravastar TOV, orthoplex w(z)  |
+| Tier | Domain      | Status       | Examples                        |
+| ---- | ----------- | ------------ | ------------------------------- |
+| 1    | Algebra     | VERIFIED     | C-001 to C-032, C-1262 (Rocq)   |
+| 2    | Computation | Consistent   | C-611 to C-615, C-1313/C-1314   |
+| 3    | Observation | NULL         | C-1365 to C-1374, C-1338/C-1340 |
+| 4    | Cosmology   | DISCONNECTED | Gravastar TOV, orthoplex w(z)   |
 
 Tier 1 claims survive because they are kernel-checkable and unit-independent.
 Tier 4 claims fail because they require a "bridge function" connecting Chain A
@@ -923,6 +949,7 @@ OBSTRUCTS local metamaterial design, requiring explicit non-local bridges.
 ### 11.1 Painleve-Gullstrand Coordinates
 
 **Theorem 11.1** (PG Properties -- Rocq C-868):
+
 - PG lapse function: alpha_PG = 1
 - PG shift vector: beta^r >= 0 (infalling)
 - PG spatial metric: flat (delta_ij)
@@ -965,6 +992,7 @@ behavior but do NOT connect to observational predictions (Tier 4 disconnect).
 **Theorem 12.2** (BD Gamma Range -- Rocq C-887): gamma in (1/2, 1) for omega > 0.
 
 **Observational bounds** (all Rocq-verified):
+
 - Cassini: omega > 43477 (C-889)
 - Nordtvedt: omega > 1998 (C-890)
 - Gravity Probe B: omega > 177 (C-891)
@@ -972,11 +1000,13 @@ behavior but do NOT connect to observational predictions (Tier 4 disconnect).
 ### 12.2 Spectral Dimension and Dark Energy EOS
 
 **Theorem 12.3** (Calcagni Spectral Dimension -- Rocq C-883):
+
 - d_S(s) in (2, 4) for all s > 0
 - Strictly increasing (UV: d_S -> 2, IR: d_S -> 4)
 - Injective (C-040): unique scale for each value
 
 **Theorem 12.4** (Dark Energy EOS Tuning -- Rocq C-038):
+
 - w = -5/6 requires specific tuning beta * d_s = 1/6
 - Negative dimension EOS depends only on eta*(alpha + 3/2) (C-884)
 
@@ -1006,6 +1036,7 @@ violated. Cayley-Dickson algebraic structure does not produce quantum nonlocalit
 ### 13.2 Energy Conditions
 
 **Theorem 13.2** (Energy Condition Hierarchy -- Rocq):
+
 - WEC implies NEC
 - SEC implies NEC
 - DEC implies WEC
@@ -1028,12 +1059,12 @@ by 16x.
 
 Four-tier accumulation (I-177):
 
-| Tier | Method                    | Precision   | Use case               |
-|------|---------------------------|-------------|------------------------|
-| 1    | x87 FP-80 oracle          | 64-bit mant.| Sedenion reductions    |
-| 2    | Kahan compensated sum     | ~2x f64     | Large Berry-phase grids|
-| 3    | AVX2 + FMA3               | binary64    | SIMD-parallel batches  |
-| 4    | Naive f64                 | binary64    | Non-critical paths     |
+| Tier | Method                | Precision    | Use case                |
+| ---- | --------------------- | ------------ | ----------------------- |
+| 1    | x87 FP-80 oracle      | 64-bit mant. | Sedenion reductions     |
+| 2    | Kahan compensated sum | ~2x f64      | Large Berry-phase grids |
+| 3    | AVX2 + FMA3           | binary64     | SIMD-parallel batches   |
+| 4    | Naive f64             | binary64     | Non-critical paths      |
 
 **Crossover** (I-178, Ogita-Rump-Oishi): N=2048 -- sedenion-sized reductions
 (dim <= 1024) on x87 side; large grids toward Kahan/double-double.
@@ -1105,15 +1136,15 @@ larger galaxy samples and alternative fractal dimension estimators.
 
 Across the full research program:
 
-| Category                | Claims tested | Verified | Falsified | Null  |
-|-------------------------|---------------|----------|-----------|-------|
-| CD algebra (Rocq)       | 125           | 125      | 0         | 0     |
-| MaNGA observations      | 10            | 10       | 0*        | 10    |
-| QGP scaling             | 5             | 0        | 5         | 0     |
-| Dark energy             | 1             | 0        | 1         | 0     |
-| Spectral dimension      | 1             | 0        | 1         | 0     |
-| Numerology              | 2             | 0        | 2         | 0     |
-| Fractal dimension       | 1             | 1        | 0         | 0     |
+| Category           | Claims tested | Verified | Falsified | Null |
+| ------------------ | ------------- | -------- | --------- | ---- |
+| CD algebra (Rocq)  | 125           | 125      | 0         | 0    |
+| MaNGA observations | 10            | 10       | 0*        | 10   |
+| QGP scaling        | 5             | 0        | 5         | 0    |
+| Dark energy        | 1             | 0        | 1         | 0    |
+| Spectral dimension | 1             | 0        | 1         | 0    |
+| Numerology         | 2             | 0        | 2         | 0    |
+| Fractal dimension  | 1             | 1        | 0         | 0    |
 
 *The 10 MaNGA claims are "verified" in the sense that the null result is
 confirmed -- the ABSENCE of signal is verified, not its presence.
@@ -1129,6 +1160,7 @@ confirmed -- the ABSENCE of signal is verified, not its presence.
 The contrarian critique is correct: searching for a 0.2% signal atop 10-15%
 NFW model errors is a category error. The DC14 profile (Di Cintio+2014),
 parameterized by stellar-to-halo-mass ratio, should:
+
 - Reduce residual RMS from 0.075 to < 0.04 (predicted 1.8x improvement)
 - Produce 5x tighter exclusion: alpha_zd < 0.0005 across x = 0.5-0.85
 - Include phase-shift scan delta_x in [-0.5, +0.5] as robustness check
@@ -1138,6 +1170,7 @@ parameterized by stellar-to-halo-mass ratio, should:
 
 The CD dimension scan HAS effective N=1 (assessor fraction identity guarantees
 identical results). The inter-algebra correlation must be measured:
+
 - If CD/G2/J3(O)/sl(2) modes correlate at r > 0.95, the "four independent
   frameworks" claim reduces to ~1.3 effective frameworks
 - Must test: compute Pearson correlation between per-galaxy projection
@@ -1155,6 +1188,7 @@ distribution, it independently confirms the baryonic origin of all residuals.
 
 34 THINGS galaxies with HI 21cm data extending to x > 10 r/r_s.
 For the first time, ZD predictions can be tested in the OUTER halo where:
+
 - Baryonic noise floor drops by ~10x
 - ZD harmonic amplitude GROWS (predictions peak at x ~ 3-5)
 - IFU projection artifacts are absent
@@ -1218,6 +1252,7 @@ numerical coincidences with 42 do not survive scrutiny.
 **Connection 3: The Fano-Steiner Triple System**
 
 The Fano plane PG(2,2) is the smallest Steiner triple system S(2,3,7):
+
 - 7 points, 7 blocks of size 3
 - Each pair of points in exactly 1 block
 
@@ -1362,53 +1397,53 @@ The path forward REQUIRES:
 ### 18.2 The Inter-Domain Coupling Map
 
 ```
-                    ALGEBRAIC STRUCTURE (Tier 1, Rocq-verified)
-                              |
-              +---------------+---------------+
-              |                               |
-    CD Tower Properties              ZD Graph Topology
-    (commutativity loss,             (42 assessors, 7 BK,
-     associativity loss,              partner graph spectrum
-     Hurwitz failure)                 {-4,-2,0,+2,+4})
-              |                               |
-              |                     Flat Band (fbf=0.5)
-              |                               |
-    +-----+---+---+-----+          +---------+---------+
-    |     |       |     |          |                   |
- Tang  3 Fermion  ADM  Bell    Tight-Binding     Fractal Dim
- Lepton Gen.     Bridge CHSH   Magnonic Crystal  D_f = 2.7268
- Masses (C-029) (C-877) (C-959) (I-126, I-131)   (E-166)
-    |              |       |          |               |
-    |         [DISCONNECTED]  [NO QM]  |          [POSITIVE]
-    |              |       |          |               |
-    +-----+--------+-------+----------+------+--------+
-          |                                  |
-      PHYSICAL PREDICTIONS                OBSERVATIONS
-    (alpha_zd amplitude,                (MaNGA E-183/184/192,
-     halo forcing modes)                 Euclid Q1 100 galaxies)
-          |                                  |
-          +----------------------------------+
-                          |
-                    NULL RESULT (Tier 3)
-                    SNR = 0.23-0.29 (real data)
-                    SNR = 1.85-2.53 (synthetic)
-                    Baryonic noise floor: 30-38x above threshold
+                   ALGEBRAIC STRUCTURE (Tier 1, Rocq-verified)
+                             |
+             +---------------+---------------+
+             |                               |
+   CD Tower Properties              ZD Graph Topology
+   (commutativity loss,             (42 assessors, 7 BK,
+    associativity loss,              partner graph spectrum
+    Hurwitz failure)                 {-4,-2,0,+2,+4})
+             |                               |
+             |                     Flat Band (fbf=0.5)
+             |                               |
+   +-----+---+---+-----+          +---------+---------+
+   |     |       |     |          |                   |
+Tang  3 Fermion  ADM  Bell    Tight-Binding     Fractal Dim
+Lepton Gen.     Bridge CHSH   Magnonic Crystal  D_f = 2.7268
+Masses (C-029) (C-877) (C-959) (I-126, I-131)   (E-166)
+   |              |       |          |               |
+   |         [DISCONNECTED]  [NO QM]  |          [POSITIVE]
+   |              |       |          |               |
+   +-----+--------+-------+----------+------+--------+
+         |                                  |
+     PHYSICAL PREDICTIONS                OBSERVATIONS
+   (alpha_zd amplitude,                (MaNGA E-183/184/192,
+    halo forcing modes)                 Euclid Q1 100 galaxies)
+         |                                  |
+         +----------------------------------+
+                         |
+                   NULL RESULT (Tier 3)
+                   SNR = 0.23-0.29 (real data)
+                   SNR = 1.85-2.53 (synthetic)
+                   Baryonic noise floor: 30-38x above threshold
 ```
 
 ### 18.3 Priority-Ranked Next Steps
 
-| Priority | Action                              | Time  | Resources        |
-|----------|-------------------------------------|-------|------------------|
-| 1        | DC14 baseline exclusion surface     | 1 day | CPU, ~300 LOC    |
-| 2        | Inter-algebra correlation matrix    | 1 day | Existing data    |
-| 3        | IllustrisTNG mock pipeline          | 1 week| Simulation data  |
-| 4        | THINGS 21cm rotation curves (E-193) | 1 mo  | FITS cubes       |
-| 5        | Galaxy-ensemble Rayleigh (E-194)    | 1 week| Existing data    |
-| 6        | LoTSS cross-match (E-198)           | 1 week| FITS catalogs    |
-| 7        | Robust estimators for real data     | 2 weeks| Code development|
-| 8        | Theoretical alpha_zd prediction     | Open  | Theory           |
-| 9        | SKA Phase 1 proposal                | 2028+ | Telescope time   |
-| 10       | Euclid DR1+ lensing analysis        | 2027+ | Public data      |
+| Priority | Action                              | Time    | Resources        |
+| -------- | ----------------------------------- | ------- | ---------------- |
+| 1        | DC14 baseline exclusion surface     | 1 day   | CPU, ~300 LOC    |
+| 2        | Inter-algebra correlation matrix    | 1 day   | Existing data    |
+| 3        | IllustrisTNG mock pipeline          | 1 week  | Simulation data  |
+| 4        | THINGS 21cm rotation curves (E-193) | 1 mo    | FITS cubes       |
+| 5        | Galaxy-ensemble Rayleigh (E-194)    | 1 week  | Existing data    |
+| 6        | LoTSS cross-match (E-198)           | 1 week  | FITS catalogs    |
+| 7        | Robust estimators for real data     | 2 weeks | Code development |
+| 8        | Theoretical alpha_zd prediction     | Open    | Theory           |
+| 9        | SKA Phase 1 proposal                | 2028+   | Telescope time   |
+| 10       | Euclid DR1+ lensing analysis        | 2027+   | Public data      |
 
 ---
 
@@ -1459,101 +1494,101 @@ excluded in the inner halo at current sensitivity.
 
 ### A.1 Claims by Experiment
 
-| Experiment | Claims                        | Status    |
-|------------|-------------------------------|-----------|
-| E-001      | C-100 to C-110                | Active    |
-| E-002      | C-071, C-436 to C-440         | Active    |
-| E-003      | C-200 to C-210                | Active    |
-| E-166      | C-1287, C-1288, C-1289        | Definitive|
-| E-177      | C-1300 to C-1307              | Planned   |
-| E-183      | C-1365 to C-1368              | Completed |
-| E-184      | C-1369 to C-1373              | Completed |
-| E-185      | C-1353, C-1354                | Active    |
-| E-192      | C-1374                        | Active    |
-| E-193      | (none yet)                    | Planned   |
-| E-194      | (none yet)                    | Planned   |
-| E-198      | (none yet)                    | Active    |
+| Experiment | Claims                 | Status     |
+| ---------- | ---------------------- | ---------- |
+| E-001      | C-100 to C-110         | Active     |
+| E-002      | C-071, C-436 to C-440  | Active     |
+| E-003      | C-200 to C-210         | Active     |
+| E-166      | C-1287, C-1288, C-1289 | Definitive |
+| E-177      | C-1300 to C-1307       | Planned    |
+| E-183      | C-1365 to C-1368       | Completed  |
+| E-184      | C-1369 to C-1373       | Completed  |
+| E-185      | C-1353, C-1354         | Active     |
+| E-192      | C-1374                 | Active     |
+| E-193      | (none yet)             | Planned    |
+| E-194      | (none yet)             | Planned    |
+| E-198      | (none yet)             | Active     |
 
 ### A.2 Rocq Proof Files by Domain
 
-| Domain                     | Proof files | Key claims           |
-|----------------------------|-------------|----------------------|
-| Complex properties         | 7           | C-893 to C-918       |
-| Quaternion properties      | 15          | C-897 to C-920, C-876|
-| Octonion properties        | 12+         | C-909, C-910, C-921  |
-| CD tower / Hurwitz         | 6           | C-001, C-031, C-1007 |
-| Sedenion ZD structure      | 20+         | C-002 to C-030       |
-| Partner graph / flat band  | 3           | C-1262, C-1313       |
-| Topological friction       | 5           | C-1134, C-1137       |
-| Pathion gaps               | 4           | C-1140               |
-| ADM / warp metrics         | 8           | C-868 to C-880       |
-| Brans-Dicke                | 6           | C-886 to C-891       |
-| Spectral dimension / DE    | 8           | C-883, C-884, C-932  |
-| Casimir energy             | 5           | C-871 to C-873, C-035|
-| Magnonic topology          | 3           | C-1233, C-1234, C-1236|
-| Bell/CHSH                  | 1           | C-959                |
-| Braiding / Majorana        | 2           | C-1133, C-1138       |
-| Harmonic halos             | 2           | C-1363, C-1364       |
-| Miscellaneous              | 10+         | C-036, C-885, etc.   |
+| Domain                    | Proof files | Key claims             |
+| ------------------------- | ----------- | ---------------------- |
+| Complex properties        | 7           | C-893 to C-918         |
+| Quaternion properties     | 15          | C-897 to C-920, C-876  |
+| Octonion properties       | 12+         | C-909, C-910, C-921    |
+| CD tower / Hurwitz        | 6           | C-001, C-031, C-1007   |
+| Sedenion ZD structure     | 20+         | C-002 to C-030         |
+| Partner graph / flat band | 3           | C-1262, C-1313         |
+| Topological friction      | 5           | C-1134, C-1137         |
+| Pathion gaps              | 4           | C-1140                 |
+| ADM / warp metrics        | 8           | C-868 to C-880         |
+| Brans-Dicke               | 6           | C-886 to C-891         |
+| Spectral dimension / DE   | 8           | C-883, C-884, C-932    |
+| Casimir energy            | 5           | C-871 to C-873, C-035  |
+| Magnonic topology         | 3           | C-1233, C-1234, C-1236 |
+| Bell/CHSH                 | 1           | C-959                  |
+| Braiding / Majorana       | 2           | C-1133, C-1138         |
+| Harmonic halos            | 2           | C-1363, C-1364         |
+| Miscellaneous             | 10+         | C-036, C-885, etc.     |
 
 ### A.3 Insights by Domain
 
-| Domain                  | Insights     | Key range     |
-|-------------------------|-------------|---------------|
-| CD algebra core         | I-011 to I-032 | 22 insights |
-| MaNGA null result       | I-179 to I-183 | 5 insights  |
-| Magnonic / tight-binding| I-125 to I-133 | 9 insights  |
-| Formal verification     | I-173, I-174   | 2 insights  |
-| Numerical precision     | I-175 to I-178 | 4 insights  |
-| Ultrametric surveys     | I-011, I-013   | 2 insights  |
+| Domain                   | Insights       | Key range   |
+| ------------------------ | -------------- | ----------- |
+| CD algebra core          | I-011 to I-032 | 22 insights |
+| MaNGA null result        | I-179 to I-183 | 5 insights  |
+| Magnonic / tight-binding | I-125 to I-133 | 9 insights  |
+| Formal verification      | I-173, I-174   | 2 insights  |
+| Numerical precision      | I-175 to I-178 | 4 insights  |
+| Ultrametric surveys      | I-011, I-013   | 2 insights  |
 
 ---
 
 ## Appendix B: Notation and Symbols
 
-| Symbol          | Definition                                          |
-|-----------------|-----------------------------------------------------|
-| S               | Sedenion algebra (dim = 16)                         |
-| P               | Pathion algebra (dim = 32)                          |
-| e_i             | Basis element i of CD algebra (e_0 = 1)             |
-| [a,b,c]         | Associator: (ab)c - a(bc)                           |
-| ZD              | Zero divisor                                        |
-| BK              | Box-kite                                            |
-| fbf             | Flat band fraction                                  |
-| x = r/r_s       | NFW-normalized galactocentric radius                |
-| alpha_zd        | ZD signal amplitude parameter                       |
-| K_D             | Algebraic wavenumber set at CD dimension D          |
-| T               | Detection statistic (max SNR over modes)            |
-| T*              | Detection threshold (= 3)                           |
-| SEM             | Standard error of the mean                          |
-| RMS             | Root mean square                                    |
-| DFT             | Discrete Fourier Transform                          |
-| STFT            | Short-Time Fourier Transform                        |
-| WLS             | Weighted Least Squares                              |
-| IFU             | Integral Field Unit                                 |
-| MaNGA           | Mapping Nearby Galaxies at Apache Point Observatory |
-| SKA             | Square Kilometre Array                              |
-| GHOST           | Galactic Harmonic Orthogonal Stacking Test          |
-| NFW             | Navarro-Frenk-White (dark matter halo profile)      |
-| DC14            | Di Cintio et al. 2014 (feedback-modified profile)   |
-| PG              | Painleve-Gullstrand (coordinates)                   |
-| ADM             | Arnowitt-Deser-Misner (formalism)                   |
-| PPN             | Parametrized Post-Newtonian                         |
-| BD              | Brans-Dicke (scalar-tensor gravity)                 |
-| VCN             | Valley Chern Number                                 |
-| FHS             | Fukui-Hatsugai-Suzuki (Berry curvature algorithm)   |
-| TRS             | Time-Reversal Symmetry                              |
-| GF(2)           | Galois field with 2 elements                        |
-| PG(n,q)         | Projective geometry of dimension n over GF(q)       |
-| F_7             | Fano plane = PG(2,2)                                |
-| S(2,3,7)        | Steiner triple system                               |
-| K_6             | Stasheff associahedron (6 leaves)                   |
-| C_n             | Catalan number                                      |
+| Symbol    | Definition                                          |
+| --------- | --------------------------------------------------- |
+| S         | Sedenion algebra (dim = 16)                         |
+| P         | Pathion algebra (dim = 32)                          |
+| e_i       | Basis element i of CD algebra (e_0 = 1)             |
+| [a,b,c]   | Associator: (ab)c - a(bc)                           |
+| ZD        | Zero divisor                                        |
+| BK        | Box-kite                                            |
+| fbf       | Flat band fraction                                  |
+| x = r/r_s | NFW-normalized galactocentric radius                |
+| alpha_zd  | ZD signal amplitude parameter                       |
+| K_D       | Algebraic wavenumber set at CD dimension D          |
+| T         | Detection statistic (max SNR over modes)            |
+| T*        | Detection threshold (= 3)                           |
+| SEM       | Standard error of the mean                          |
+| RMS       | Root mean square                                    |
+| DFT       | Discrete Fourier Transform                          |
+| STFT      | Short-Time Fourier Transform                        |
+| WLS       | Weighted Least Squares                              |
+| IFU       | Integral Field Unit                                 |
+| MaNGA     | Mapping Nearby Galaxies at Apache Point Observatory |
+| SKA       | Square Kilometre Array                              |
+| GHOST     | Galactic Harmonic Orthogonal Stacking Test          |
+| NFW       | Navarro-Frenk-White (dark matter halo profile)      |
+| DC14      | Di Cintio et al. 2014 (feedback-modified profile)   |
+| PG        | Painleve-Gullstrand (coordinates)                   |
+| ADM       | Arnowitt-Deser-Misner (formalism)                   |
+| PPN       | Parametrized Post-Newtonian                         |
+| BD        | Brans-Dicke (scalar-tensor gravity)                 |
+| VCN       | Valley Chern Number                                 |
+| FHS       | Fukui-Hatsugai-Suzuki (Berry curvature algorithm)   |
+| TRS       | Time-Reversal Symmetry                              |
+| GF(2)     | Galois field with 2 elements                        |
+| PG(n,q)   | Projective geometry of dimension n over GF(q)       |
+| F_7       | Fano plane = PG(2,2)                                |
+| S(2,3,7)  | Steiner triple system                               |
+| K_6       | Stasheff associahedron (6 leaves)                   |
+| C_n       | Catalan number                                      |
 
 ---
 
-*End of Merged Monograph*
-*Synthesized from 5 ARC pipeline passes: rc-20260317-174935, rc-20260317-205413,*
-*rc-20260318-001650, rc-20260318-095951, rc-20260318-205156*
-*Registry snapshot: 1374 claims, 183 insights, 125 Rocq proofs, 195 experiments*
-*Date: 2026-03-19*
+_End of Merged Monograph_
+_Synthesized from 5 ARC pipeline passes: rc-20260317-174935, rc-20260317-205413,_
+_rc-20260318-001650, rc-20260318-095951, rc-20260318-205156_
+_Registry snapshot: 1374 claims, 183 insights, 125 Rocq proofs, 195 experiments_
+_Date: 2026-03-19_

@@ -162,7 +162,7 @@ pub fn verify_adjoined_associator_property(a: &[f64], b: &[f64]) -> f64 {
 
 /// Verify Lemma 6.8: xe = ex iff T(a_2) = 0 (for x = a_1 + ea_2).
 /// Commutativity with the adjoined element depends on the trace of the upper half.
-/// The condition T(a_2) = 0 means a_2[0] = 0 (pure imaginary upper half).
+/// The condition T(a_2) = 0 means `a_2[0] = 0` (pure imaginary upper half).
 /// Mirrors: Brown (1972) Lemma 6.8.
 pub fn verify_commutativity_condition(a_2: &[f64]) -> f64 {
     // T(a_2) = 2 * a_2[0]

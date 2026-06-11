@@ -101,7 +101,7 @@ impl SedenionField3D {
 /// Advance a sedenion field one step using the Cayley-Dickson product.
 ///
 /// Each element of `phi` is a 16-component sedenion.  The update rule is
-///   phi[p] += dt * (phi[p] * phi[p])
+///   `phi[p] += dt * (phi[p] * phi[p])`
 /// where `*` is the full Cayley-Dickson product from `cd_kernel`.
 ///
 /// This is the correct replacement for the component-wise stub in

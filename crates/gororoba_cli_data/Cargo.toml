@@ -1,10 +1,10 @@
 [package]
 name = "gororoba_cli_data"
 version = "0.1.0"
-edition = { workspace = true }
-description = "Data, registry, and governance CLI binaries for gororoba"
-license = "MIT"
 autobins = false
+edition = { workspace = true }
+license = "MIT"
+description = "Data, registry, and governance CLI binaries for gororoba"
 
 # ---- Audit (anchored debt-baseline counter) ----
 
@@ -522,62 +522,60 @@ name = "cd-row-upgrade-batch"
 path = "src/bin/cd_row_upgrade_batch.rs"
 
 [dependencies]
-polars = { workspace = true }
-quick-xml = { workspace = true }
 algebra_analysis = { workspace = true }
 algebra_experimental = { workspace = true }
-cd_kernel = { workspace = true }
-gororoba_algebra = { path = "../gororoba_algebra", features = ["gpu"] }
-provenance_core = { path = "../provenance_core" }
-provenance_store = { path = "../provenance_store" }
-provenance_ops = { path = "../provenance_ops" }
-lit_search = { path = "../lit_search" }
-gororoba_cli = { path = "../gororoba_cli" }
-docpipe = { path = "../docpipe", features = ["fallback"] }
-data_core = { path = "../data_core", default-features = false, features = ["fetch", "fits", "nanograv-engine"] }
-data_artifacts_core = { path = "../data_artifacts_core" }
-cosmology_core = { path = "../cosmology_core", features = ["euclid-catalog"] }
-gr_core = { path = "../gr_core" }
-materials_core = { path = "../materials_core" }
-fitsio = { workspace = true }
-verified_core = { path = "../verified_core" }
-scrolls_core = { path = "../scrolls_core" }
-stats_core = { path = "../stats_core" }
-clap = { workspace = true }
-serde = { workspace = true }
-serde_json = { workspace = true }
-csv = { workspace = true }
-toml = { workspace = true }
-regex = { workspace = true }
-url = { workspace = true }
-sha2 = { workspace = true }
-walkdir = { workspace = true }
-glob = { workspace = true }
-chrono = { workspace = true }
-hifitime = { workspace = true }
-ureq = { workspace = true }
-core_affinity = { workspace = true }
-env_logger = { workspace = true }
 anyhow = { workspace = true }
-reqwest = { workspace = true }
-tokio = { workspace = true }
-md5 = { workspace = true }
-rayon = { workspace = true }
-rand = { workspace = true }
-rand_chacha = { workspace = true }
-rand_distr = { workspace = true }
-tracing-subscriber = { workspace = true }
-anstyle = { workspace = true }
-unicode-normalization = { workspace = true }
-rusqlite = { workspace = true }
-parquet = { workspace = true }
 arrow-array = { workspace = true }
 arrow-ipc = { workspace = true }
 arrow-schema = { workspace = true }
-tempfile = { workspace = true }
-plotters = { workspace = true }
+cd_kernel = { workspace = true }
+chrono = { workspace = true }
+clap = { workspace = true }
+core_affinity = { workspace = true }
+cosmology_core = { path = "../cosmology_core", features = ["euclid-catalog"] }
+csv = { workspace = true }
+data_artifacts_core = { path = "../data_artifacts_core" }
+data_core = { path = "../data_core", default-features = false, features = ["fetch", "fits", "nanograv-engine"] }
+docpipe = { path = "../docpipe", features = ["fallback"] }
+env_logger = { workspace = true }
+fitsio = { workspace = true }
+glob = { workspace = true }
+gororoba_algebra = { path = "../gororoba_algebra", features = ["gpu"] }
+gororoba_cli = { path = "../gororoba_cli" }
+gr_core = { path = "../gr_core" }
 hdf5 = { workspace = true }
+hifitime = { workspace = true }
+lit_search = { path = "../lit_search" }
 lopdf = { workspace = true }
+materials_core = { path = "../materials_core" }
+md5 = { workspace = true }
+parquet = { workspace = true }
+plotters = { workspace = true }
+polars = { workspace = true }
+provenance_core = { path = "../provenance_core" }
+provenance_ops = { path = "../provenance_ops" }
+provenance_store = { path = "../provenance_store" }
+quick-xml = { workspace = true }
+rand = { workspace = true }
+rand_chacha = { workspace = true }
+rand_distr = { workspace = true }
+rayon = { workspace = true }
+regex = { workspace = true }
+reqwest = { workspace = true }
+rusqlite = { workspace = true }
+scrolls_core = { path = "../scrolls_core" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
+stats_core = { path = "../stats_core" }
+tempfile = { workspace = true }
+tokio = { workspace = true }
+toml = { workspace = true }
+tracing-subscriber = { workspace = true }
+ureq = { workspace = true }
+url = { workspace = true }
+verified_core = { path = "../verified_core" }
+walkdir = { workspace = true }
 
 [features]
 hdf5-export = ["data_core/hdf5-export", "data_artifacts_core/hdf5-export"]

@@ -478,7 +478,7 @@ impl TcmtSolver {
     /// - If there are 3 positive roots u1 < u2 < u3: u1, u3 stable; u2 unstable
     ///
     /// We use the derivative of the effective potential to determine stability:
-    /// Stable if d/du[u*denom - P] > 0 at the solution (positive slope).
+    /// Stable if d/du`[u*denom - P]` > 0 at the solution (positive slope).
     fn check_stability(&self, a: Complex64, input: &InputField) -> bool {
         let delta = input.omega - self.cavity.omega_0;
         let gamma_tot = self.cavity.gamma_total();
@@ -664,7 +664,7 @@ pub fn linear_transmission(cavity: &KerrCavity, detuning: f64) -> f64 {
 ///
 /// In normalized units (Liu et al. 2013), the steady-state equation is:
 /// ```text
-///   u^2 = y * [(y - Omega)^2 + 1]
+///   u^2 = y * `[(y - Omega)^2 + 1]`
 /// ```
 /// where:
 /// - y = normalized intracavity energy = gamma_kerr * |a|^2 / g
@@ -688,7 +688,7 @@ pub struct NormalizedSteadyState {
 ///
 /// Given normalized input u^2 and detuning Omega, solves:
 /// ```text
-///   u^2 = y * [(y - Omega)^2 + 1]
+///   u^2 = y * `[(y - Omega)^2 + 1]`
 /// ```
 /// for y >= 0.
 ///
@@ -801,7 +801,7 @@ pub fn denormalize_energy(cavity: &KerrCavity, y: f64) -> f64 {
 /// 1. |Omega| > sqrt(3) (detuning beyond critical point)
 /// 2. u^2 in the bistable window: u_lower < u^2 < u_upper
 ///
-/// For Omega = 2, the bistable window is approximately [50/27, 2].
+/// For Omega = 2, the bistable window is approximately `[50/27, 2]`.
 ///
 /// # Arguments
 /// * `omega` - Normalized detuning

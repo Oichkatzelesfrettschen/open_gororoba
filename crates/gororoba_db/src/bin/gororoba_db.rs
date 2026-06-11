@@ -426,34 +426,36 @@ fn cmd_import_planning(
                     let er = json_array_field(item, "evidence_refs");
                     let lac = json_array_field(item, "lacunae");
                     let claims = json_array_field(item, "claims");
-                    store.upsert_roadmap_item(&provenance_store::RoadmapItem {
-                        id,
-                        name: item.get("name").and_then(|v| v.as_str()).unwrap_or(""),
-                        priority: item
-                            .get("priority")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("medium"),
-                        status: item
-                            .get("status")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("planned"),
-                        status_token: item
-                            .get("status_token")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("PLANNED"),
-                        description: item
-                            .get("description")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or(""),
-                        sprint: item.get("sprint").and_then(|v| v.as_str()).unwrap_or(""),
-                        dependencies_json: &deps,
-                        acceptance_criteria_json: &ac,
-                        primary_outputs_json: &po,
-                        evidence_refs_json: &er,
-                        lacunae_json: &lac,
-                        claims_json: &claims,
-                        insight: item.get("insight").and_then(|v| v.as_str()).unwrap_or(""),
-                    })?;
+                    store.upsert_roadmap_item_with_links(
+                        &provenance_store::RoadmapItemWithLinks {
+                            id,
+                            name: item.get("name").and_then(|v| v.as_str()).unwrap_or(""),
+                            priority: item
+                                .get("priority")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("medium"),
+                            status: item
+                                .get("status")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("planned"),
+                            status_token: item
+                                .get("status_token")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("PLANNED"),
+                            description: item
+                                .get("description")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or(""),
+                            sprint: item.get("sprint").and_then(|v| v.as_str()).unwrap_or(""),
+                            dependencies_json: &deps,
+                            acceptance_criteria_json: &ac,
+                            primary_outputs_json: &po,
+                            evidence_refs_json: &er,
+                            lacunae_json: &lac,
+                            claims_json: &claims,
+                            insight: item.get("insight").and_then(|v| v.as_str()).unwrap_or(""),
+                        },
+                    )?;
                     count += 1;
                 }
             }
@@ -485,30 +487,32 @@ fn cmd_import_planning(
                     let deps = json_array_field(item, "dependencies");
                     let ac = json_array_field(item, "acceptance_criteria");
                     let er = json_array_field(item, "evidence_refs");
-                    store.upsert_todo_item(&provenance_store::ActionItem {
-                        id,
-                        area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
-                        title: item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
-                        description: item
-                            .get("description")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or(""),
-                        priority: item
-                            .get("priority")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("medium"),
-                        status: item
-                            .get("status")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("open"),
-                        status_token: item
-                            .get("status_token")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("OPEN"),
-                        dependencies_json: &deps,
-                        acceptance_criteria_json: &ac,
-                        evidence_refs_json: &er,
-                    })?;
+                    store.upsert_todo_item_with_evidence(
+                        &provenance_store::ActionItemWithEvidence {
+                            id,
+                            area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
+                            title: item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
+                            description: item
+                                .get("description")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or(""),
+                            priority: item
+                                .get("priority")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("medium"),
+                            status: item
+                                .get("status")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("open"),
+                            status_token: item
+                                .get("status_token")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("OPEN"),
+                            dependencies_json: &deps,
+                            acceptance_criteria_json: &ac,
+                            evidence_refs_json: &er,
+                        },
+                    )?;
                     count += 1;
                 }
             }
@@ -537,30 +541,32 @@ fn cmd_import_planning(
                     let deps = json_array_field(item, "dependencies");
                     let ac = json_array_field(item, "acceptance_criteria");
                     let er = json_array_field(item, "evidence_refs");
-                    store.upsert_next_action(&provenance_store::ActionItem {
-                        id,
-                        area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
-                        title: item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
-                        description: item
-                            .get("description")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or(""),
-                        priority: item
-                            .get("priority")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("medium"),
-                        status: item
-                            .get("status")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("open"),
-                        status_token: item
-                            .get("status_token")
-                            .and_then(|v| v.as_str())
-                            .unwrap_or("OPEN"),
-                        dependencies_json: &deps,
-                        acceptance_criteria_json: &ac,
-                        evidence_refs_json: &er,
-                    })?;
+                    store.upsert_next_action_with_evidence(
+                        &provenance_store::ActionItemWithEvidence {
+                            id,
+                            area: item.get("area").and_then(|v| v.as_str()).unwrap_or(""),
+                            title: item.get("title").and_then(|v| v.as_str()).unwrap_or(""),
+                            description: item
+                                .get("description")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or(""),
+                            priority: item
+                                .get("priority")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("medium"),
+                            status: item
+                                .get("status")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("open"),
+                            status_token: item
+                                .get("status_token")
+                                .and_then(|v| v.as_str())
+                                .unwrap_or("OPEN"),
+                            dependencies_json: &deps,
+                            acceptance_criteria_json: &ac,
+                            evidence_refs_json: &er,
+                        },
+                    )?;
                     count += 1;
                 }
             }
@@ -1140,7 +1146,7 @@ fn cmd_planning_mutation(
             let lacunae_json = json_array(lacunae)?;
             let claims_json = json_array(claims)?;
             let status_token = status_token_or_default(status, status_token);
-            store.upsert_roadmap_item(&provenance_store::RoadmapItem {
+            store.upsert_roadmap_item_with_links(&provenance_store::RoadmapItemWithLinks {
                 id,
                 name,
                 priority,
@@ -1178,7 +1184,7 @@ fn cmd_planning_mutation(
             let acceptance_criteria_json = json_array(acceptance_criteria)?;
             let evidence_refs_json = json_array(evidence_refs)?;
             let status_token = status_token_or_default(status, status_token);
-            store.upsert_todo_item(&provenance_store::ActionItem {
+            store.upsert_todo_item_with_evidence(&provenance_store::ActionItemWithEvidence {
                 id,
                 area,
                 title,
@@ -1212,7 +1218,7 @@ fn cmd_planning_mutation(
             let acceptance_criteria_json = json_array(acceptance_criteria)?;
             let evidence_refs_json = json_array(evidence_refs)?;
             let status_token = status_token_or_default(status, status_token);
-            store.upsert_next_action(&provenance_store::ActionItem {
+            store.upsert_next_action_with_evidence(&provenance_store::ActionItemWithEvidence {
                 id,
                 area,
                 title,

@@ -104,7 +104,7 @@ pub struct OctonionSkeletonMap {
     pub imaginary_directions: [[i8; 8]; 7],
     /// Fano plane triples: each (i,j,k) satisfies e_i * e_j = e_k in octonions.
     pub fano_triples: [(usize, usize, usize); 7],
-    /// The real-part parity constraint: v[0] encodes sign information.
+    /// The real-part parity constraint: `v[0]` encodes sign information.
     pub real_parity_constraint: &'static str,
     /// Hurwitz dimensions: 1, 2, 4, 8 (the only normed division algebras).
     pub hurwitz_dimensions: [usize; 4],

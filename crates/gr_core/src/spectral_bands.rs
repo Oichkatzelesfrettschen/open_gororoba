@@ -19,10 +19,10 @@
 // Physical constants for spectral calculations (SI)
 // ============================================================================
 
-/// Speed of light [m/s] (SI, for wavelength conversions).
+/// Speed of light `[m/s]` (SI, for wavelength conversions).
 const C_SI: f64 = 2.997_924_58e8;
 
-/// Planck constant [J s] (SI).
+/// Planck constant `[J s]` (SI).
 const H_SI: f64 = 6.626_070_15e-34;
 
 /// eV to Joules conversion.
@@ -40,9 +40,9 @@ const KEV_TO_JOULES: f64 = 1e3 * EV_TO_JOULES;
 pub struct SpectralBand {
     /// Band name.
     pub name: &'static str,
-    /// Center frequency [Hz].
+    /// Center frequency `[Hz]`.
     pub center_hz: f64,
-    /// Bandwidth (FWHM) [Hz].
+    /// Bandwidth (FWHM) `[Hz]`.
     pub bandwidth_hz: f64,
 }
 
@@ -80,7 +80,7 @@ pub const BAND_XRAY: SpectralBand = SpectralBand {
 // Unit conversions
 // ============================================================================
 
-/// Convert frequency [Hz] to wavelength [m].
+/// Convert frequency `[Hz]` to wavelength `[m]`.
 ///
 /// lambda = c / nu
 pub fn frequency_to_wavelength(frequency: f64) -> f64 {
@@ -90,7 +90,7 @@ pub fn frequency_to_wavelength(frequency: f64) -> f64 {
     C_SI / frequency
 }
 
-/// Convert wavelength [m] to frequency [Hz].
+/// Convert wavelength `[m]` to frequency `[Hz]`.
 ///
 /// nu = c / lambda
 pub fn wavelength_to_frequency(wavelength: f64) -> f64 {
@@ -100,14 +100,14 @@ pub fn wavelength_to_frequency(wavelength: f64) -> f64 {
     C_SI / wavelength
 }
 
-/// Convert photon energy [keV] to frequency [Hz].
+/// Convert photon energy `[keV]` to frequency `[Hz]`.
 ///
 /// nu = E / h
 pub fn energy_kev_to_frequency(energy_kev: f64) -> f64 {
     energy_kev * KEV_TO_JOULES / H_SI
 }
 
-/// Convert frequency [Hz] to photon energy [keV].
+/// Convert frequency `[Hz]` to photon energy `[keV]`.
 ///
 /// E = h * nu
 pub fn frequency_to_energy_kev(frequency: f64) -> f64 {
@@ -134,7 +134,7 @@ pub fn gaussian_filter(frequency: f64, center_hz: f64, bandwidth_hz: f64) -> f64
 
 /// Rectangular (top-hat) filter response.
 ///
-/// Returns 1.0 if frequency is within [center - bw/2, center + bw/2], else 0.0.
+/// Returns 1.0 if frequency is within `[center - bw/2, center + bw/2]`, else 0.0.
 pub fn rectangular_filter(frequency: f64, center_hz: f64, bandwidth_hz: f64) -> f64 {
     let half_bw = bandwidth_hz / 2.0;
     if frequency >= center_hz - half_bw && frequency <= center_hz + half_bw {
@@ -187,7 +187,7 @@ pub const VEGA_V_FLUX: f64 = 3.64e-20;
 /// Uses trapezoidal integration with the band's Gaussian filter response.
 ///
 /// Arguments:
-///   frequencies: frequency samples [Hz], must be sorted ascending
+///   frequencies: frequency samples `[Hz]`, must be sorted ascending
 ///   fluxes: corresponding flux densities [erg s^-1 cm^-2 Hz^-1]
 ///   band: the spectral band to integrate through
 ///

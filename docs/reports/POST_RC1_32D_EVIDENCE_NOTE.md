@@ -4,6 +4,7 @@
 
 The RC1 tightening established a 16D sedenion Takens embedding over a
 100,943-row feature cube spanning 13 missions. Key RC1 results:
+
 - Quench transition at 132.5-137.5 AU (sparse, mission_diversity=1)
 - OMNI at 1 AU below both null families (suppression ratio 0.58-0.65)
 - CPU/Vulkan backend parity to 1 ULP
@@ -21,6 +22,7 @@ The RC1 tightening established a 16D sedenion Takens embedding over a
 ## Densified Cube (commit f694446e)
 
 1,153,207 rows (11.4x over RC1):
+
 - Voyager 1: 423,962 rows (1977-2024, 1-166 AU)
 - Voyager 2: 389,044 rows (1977-2020, 1-126 AU)
 - Ulysses: 175,320 rows (1990-2009, all 3 polar orbits, 1-5.4 AU)
@@ -29,6 +31,7 @@ The RC1 tightening established a 16D sedenion Takens embedding over a
 ## 32D Quench Map (87 bins, 2.5-167.5 AU)
 
 The densified cube resolves the quench transition in continuous 5 AU steps:
+
 - Inner plateau: mean ~10 (r < 107 AU), no strong radial trend
 - Steep descent: 107 -> 122 AU (factor 45x drop over 15 AU)
 - ISM floor: mean ~0.02 (r > 127 AU)
@@ -40,18 +43,19 @@ shock (~84-94 AU).
 
 At inner heliosphere distances (1 AU, all near-Earth missions):
 
-| Null Family | Type | Base/Null Ratio | Interpretation |
-|-------------|------|-----------------|----------------|
-| temporal-shuffle | Harsh | 0.52 | Strong separation |
-| channel-permutation | Harsh | 0.84 | Moderate separation |
-| block-shuffle (K=10) | Moderate | 0.93 | Marginal |
-| phase-randomized | Spectral | 0.99 | **Indistinguishable** |
+| Null Family          | Type     | Base/Null Ratio | Interpretation        |
+| -------------------- | -------- | --------------- | --------------------- |
+| temporal-shuffle     | Harsh    | 0.52            | Strong separation     |
+| channel-permutation  | Harsh    | 0.84            | Moderate separation   |
+| block-shuffle (K=10) | Moderate | 0.93            | Marginal              |
+| phase-randomized     | Spectral | 0.99            | **Indistinguishable** |
 
 The inner-heliosphere 32D signal is primarily spectral autocorrelation.
 The algebraic structure detected at 1 AU is almost entirely explained
 by the B-field power spectrum shape, not by nonlinear phase coupling.
 
 Classification per mission (phase_ratio / block_ratio):
+
 - SPECTRAL_ONLY: Helios 1/2, PSP, STEREO-A, Solar Orbiter
 - BEYOND_BLOCK_AUTOCORRELATION: ACE, Cassini, OMNI, Ulysses, Voyager 1, WIND
 - BEYOND_SPECTRUM: IMP 8
@@ -83,13 +87,13 @@ shock (~84-94 AU). The ISM floor at >127 AU is real quenching.
 
 ### Fast vs Slow Wind
 
-| r_au | Fast Wind | Slow Wind | Ratio | Interpretation |
-|------|-----------|-----------|-------|----------------|
-| 2.5 | 11.4 | 11.2 | 1.01 | No discrimination |
-| 27.5 | 12.5 | 6.0 | 2.09 | Fast wind amplified |
-| 42.5 | 22.0 | 10.0 | 2.19 | Strong |
-| 77.5 | 35.8 | 12.5 | 2.87 | Very strong |
-| 82.5 | **68.2** | 15.8 | **4.33** | Strongest signal in fleet |
+| r_au | Fast Wind | Slow Wind | Ratio    | Interpretation            |
+| ---- | --------- | --------- | -------- | ------------------------- |
+| 2.5  | 11.4      | 11.2      | 1.01     | No discrimination         |
+| 27.5 | 12.5      | 6.0       | 2.09     | Fast wind amplified       |
+| 42.5 | 22.0      | 10.0      | 2.19     | Strong                    |
+| 77.5 | 35.8      | 12.5      | 2.87     | Very strong               |
+| 82.5 | **68.2**  | 15.8      | **4.33** | Strongest signal in fleet |
 
 The 32D embedding discriminates fast Alfvenic polar wind from slow
 equatorial wind at mid-heliosphere distances (27-82 AU). This is
@@ -154,10 +158,10 @@ Verdict: quench transition is structurally robust under leave-one-out.
 ## Dimension Ladder: 16D -> 32D -> 64D
 
 | Dim | Inner (2.5 AU) | Transition (117.5 AU) | ISM (137.5 AU) | V2 mv-phase ratio |
-|-----|----------------|-----------------------|-----------------|--------------------|
-| 16D | 3.95 | 0.16 | 0.16 | N/A |
-| 32D | 11.03 | 2.39 | 0.022 | 0.574 |
-| 64D | 37.58 | 8.84 | 0.072 | 0.544 |
+| --- | -------------- | --------------------- | -------------- | ----------------- |
+| 16D | 3.95           | 0.16                  | 0.16           | N/A               |
+| 32D | 11.03          | 2.39                  | 0.022          | 0.574             |
+| 64D | 37.58          | 8.84                  | 0.072          | 0.544             |
 
 64D/32D ratio is uniform 3.1-3.8x. No qualitative new structure emerges.
 The excess algebraic order signal at 32D is diluted at 64D because additional
@@ -167,6 +171,7 @@ components do not carry physically meaningful cross-channel coupling.
 
 19 active heliosphere catalogs, 67 total catalog modules.
 Key coverage after densification:
+
 - 0.05-0.87 AU: PSP
 - 0.29-1.0 AU: Helios 1/2, OMNI, ACE, WIND, STEREO-A
 - 0.7-9.0 AU: Cassini cruise (1998-2004)
@@ -180,46 +185,46 @@ Voyager high-res MAG (48-sec), Galileo cruise.
 
 ## Artifact Index
 
-| File | Description |
-|------|-------------|
-| `quench_scan_densified_32d.csv` | 87-bin quench map on 1.15M-row cube |
-| `densified_null_audit_32d_4family.json` | 4-family null audit (10 iterations) |
-| `spectral_excess_by_mission_32d.csv` | Per-mission spectral classification |
-| `diagnostic_stack_densified_32d.csv` | 87-bin diagnostic stack |
-| `quench_scan_densified_32d_fast_wind.csv` | Fast wind (>550 km/s) regime map |
-| `quench_scan_densified_32d_slow_wind.csv` | Slow wind regime map |
-| `quench_scan_densified_32d_br_pos.csv` | Br-positive polarity map |
-| `quench_scan_densified_32d_br_neg.csv` | Br-negative polarity map |
-| `invariance_no_voyager2_32d.csv` | Leave-V2-out quench map |
-| `invariance_no_ulysses_32d.csv` | Leave-Ulysses-out quench map |
-| `invariance_fast_wind_no_ulysses_32d.csv` | Fast wind without Ulysses |
-| `densified_provenance_qa.json` | Provenance QA report |
-| `v2_5family_null_audit_32d.json` | Voyager 2 five-family null (incl. multivariate) |
-| `v2_5family_null_audit_64d.json` | Voyager 2 five-family null at 64D |
-| `heliosheath_block_sweep_32d.csv` | Heliosheath-specific K-sweep |
-| `heliosheath_5family_64d.json` | Heliosheath 64D null audit |
-| `block_size_sensitivity_32d.csv` | OMNI + V2 block-size sweep |
-| `quench_scan_densified_64d.csv` | 64D quench map (dimension ladder) |
-| `quench_scan_densified_v3_32d.csv` | 32D on v3 cube (with Cassini cruise) |
-| `magnetic_plasma_takens_32d.csv` | Mixed mag+plasma embedding results |
-| `omni_5family_null_audit_64d.json` | OMNI 64D null audit |
-| `data_source_audit.json` | Comprehensive source audit (19 active, 9 potential) |
-| `quench_v2_inner_32d.csv` | V2 inner half (1-60 AU) |
-| `quench_v2_outer_32d.csv` | V2 outer half (60-126 AU) |
+| File                                      | Description                                         |
+| ----------------------------------------- | --------------------------------------------------- |
+| `quench_scan_densified_32d.csv`           | 87-bin quench map on 1.15M-row cube                 |
+| `densified_null_audit_32d_4family.json`   | 4-family null audit (10 iterations)                 |
+| `spectral_excess_by_mission_32d.csv`      | Per-mission spectral classification                 |
+| `diagnostic_stack_densified_32d.csv`      | 87-bin diagnostic stack                             |
+| `quench_scan_densified_32d_fast_wind.csv` | Fast wind (>550 km/s) regime map                    |
+| `quench_scan_densified_32d_slow_wind.csv` | Slow wind regime map                                |
+| `quench_scan_densified_32d_br_pos.csv`    | Br-positive polarity map                            |
+| `quench_scan_densified_32d_br_neg.csv`    | Br-negative polarity map                            |
+| `invariance_no_voyager2_32d.csv`          | Leave-V2-out quench map                             |
+| `invariance_no_ulysses_32d.csv`           | Leave-Ulysses-out quench map                        |
+| `invariance_fast_wind_no_ulysses_32d.csv` | Fast wind without Ulysses                           |
+| `densified_provenance_qa.json`            | Provenance QA report                                |
+| `v2_5family_null_audit_32d.json`          | Voyager 2 five-family null (incl. multivariate)     |
+| `v2_5family_null_audit_64d.json`          | Voyager 2 five-family null at 64D                   |
+| `heliosheath_block_sweep_32d.csv`         | Heliosheath-specific K-sweep                        |
+| `heliosheath_5family_64d.json`            | Heliosheath 64D null audit                          |
+| `block_size_sensitivity_32d.csv`          | OMNI + V2 block-size sweep                          |
+| `quench_scan_densified_64d.csv`           | 64D quench map (dimension ladder)                   |
+| `quench_scan_densified_v3_32d.csv`        | 32D on v3 cube (with Cassini cruise)                |
+| `magnetic_plasma_takens_32d.csv`          | Mixed mag+plasma embedding results                  |
+| `omni_5family_null_audit_64d.json`        | OMNI 64D null audit                                 |
+| `data_source_audit.json`                  | Comprehensive source audit (19 active, 9 potential) |
+| `quench_v2_inner_32d.csv`                 | V2 inner half (1-60 AU)                             |
+| `quench_v2_outer_32d.csv`                 | V2 outer half (60-126 AU)                           |
 
 ## 48-Second MAG Multi-Timescale Analysis
 
 Voyager 2 48-sec MAG data (2017-2018, 406K records) reveals scale-dependent
 heliopause crossing:
 
-| Timescale | Window | Quench Front | Pre-crossing | ISM Floor |
-|-----------|--------|-------------|--------------|-----------|
-| 6.4 min | 8x48s, lag=1 | 120.8 AU | ~0.3-0.5 | 0.009-0.028 |
-| 12.8 min | 8x48s, lag=2 | 120.8 AU | ~0.3-0.5 | 0.010-0.032 |
-| 25.6 min | 8x48s, lag=4 | 120.8 AU | ~0.3-0.5 | 0.011-0.035 |
-| 51.2 min | 8x48s, lag=8 | 120.8 AU | ~0.4-0.7 | 0.013-0.041 |
-| 102 min | 8x48s, lag=16 | 120.8 AU | ~0.5-0.8 | 0.014-0.051 |
-| 8 hours | hourly, lag=1 | 118.8 AU | 4-6 | 0.04-0.12 |
+| Timescale | Window        | Quench Front | Pre-crossing | ISM Floor   |
+| --------- | ------------- | ------------ | ------------ | ----------- |
+| 6.4 min   | 8x48s, lag=1  | 120.8 AU     | ~0.3-0.5     | 0.009-0.028 |
+| 12.8 min  | 8x48s, lag=2  | 120.8 AU     | ~0.3-0.5     | 0.010-0.032 |
+| 25.6 min  | 8x48s, lag=4  | 120.8 AU     | ~0.3-0.5     | 0.011-0.035 |
+| 51.2 min  | 8x48s, lag=8  | 120.8 AU     | ~0.4-0.7     | 0.013-0.041 |
+| 102 min   | 8x48s, lag=16 | 120.8 AU     | ~0.5-0.8     | 0.014-0.051 |
+| 8 hours   | hourly, lag=1 | 118.8 AU     | 4-6          | 0.04-0.12   |
 
 Within the V2 2017-2018 48-sec data, the quench front is threshold-invariant
 at 120.8 AU from ~6 min to ~8 hr under the 3x-ISM-floor persistence criterion
@@ -234,6 +239,7 @@ is warranted.
 ## Voyager 1 ISM Confirmation (48-sec)
 
 V1 48-sec MAG (2012-2013, 415K records) independently detects the heliopause:
+
 - V1 quench front at 122-124 AU (accepted crossing: 2012 August, ~121.6 AU)
 - V1 ISM floor: 0.013-0.019 (V2 floor: 0.009-0.010)
 - ISM floor is spacecraft-independent at 48-sec timescale
@@ -272,6 +278,7 @@ intrinsic. V1 shows r_c at 122.2-123.8 AU with modest lag dependence.
 ### Partial Coherence Robustness
 
 Bandwise analysis confirms the ISM directional phase organization is:
+
 - REAL (not a control-procedure artifact): phase-scrambled |B| surrogate
   gives only 1.1x amplification vs 4.6x for real |B| control
 - Band-specific: strongest in the 30 min-2 hr regime-boundary band (4.6x)
@@ -294,11 +301,11 @@ consistent with a draped interstellar field.
 
 Band-resolved field-aligned polarization (circular bootstrap, 500 resamples):
 
-| Zone | 30 min-2 hr perp | CI | 2-8 hr perp | CI |
-|------|-----------------|-----|------------|-----|
-| Heliosheath | 59.9% | [59.5%, 60.4%] | 71.0% | [70.8%, 71.1%] |
-| Transition | 54.1% | [53.3%, 55.1%] | 28.8% | [28.5%, 29.1%] |
-| ISM | 61.5% | [58.9%, 63.7%] | 0.4% | [0.3%, 0.4%] |
+| Zone        | 30 min-2 hr perp | CI             | 2-8 hr perp | CI             |
+| ----------- | ---------------- | -------------- | ----------- | -------------- |
+| Heliosheath | 59.9%            | [59.5%, 60.4%] | 71.0%       | [70.8%, 71.1%] |
+| Transition  | 54.1%            | [53.3%, 55.1%] | 28.8%       | [28.5%, 29.1%] |
+| ISM         | 61.5%            | [58.9%, 63.7%] | 0.4%        | [0.3%, 0.4%]   |
 
 The ISM exhibits frequency-dependent polarization: the 30 min-2 hr band
 is transverse-dominant (61.5% perp), while the 2-8 hr band is compressive/

@@ -23,7 +23,7 @@
 //!
 //! Store quantized indices as u8, promote to f32 centroid values only at
 //! the point of arithmetic (dot product accumulation).  SoA layout
-//! (indices[coord_idx * n_vectors + vector_idx]) for coalesced access.
+//! (indices`[coord_idx * n_vectors + vector_idx]`) for coalesced access.
 
 pub mod device;
 pub mod jit;

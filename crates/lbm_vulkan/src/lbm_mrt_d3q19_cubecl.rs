@@ -77,8 +77,25 @@ pub fn lbm_mrt_d3q19_step_kernel(
     let f18 = f_in[18 * n_cells + cell];
 
     // Phase 2: macroscopic moments.
-    let rho = f0 + f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8 + f9 + f10 + f11 + f12 + f13 + f14
-        + f15 + f16 + f17 + f18;
+    let rho = f0
+        + f1
+        + f2
+        + f3
+        + f4
+        + f5
+        + f6
+        + f7
+        + f8
+        + f9
+        + f10
+        + f11
+        + f12
+        + f13
+        + f14
+        + f15
+        + f16
+        + f17
+        + f18;
     let inv_rho = 1.0_f32 / rho;
     let mx = f1 - f2 + f7 - f8 + f9 - f10 + f11 - f12 + f13 - f14;
     let my = f3 - f4 + f7 - f8 - f9 + f10 + f15 - f16 + f17 - f18;
@@ -90,8 +107,7 @@ pub fn lbm_mrt_d3q19_step_kernel(
 
     // Phase 3: forward transform m = M * f (d'Humieres D3Q19 orthogonal basis).
     let m0 = rho;
-    let m1 = -30.0_f32 * f0
-        - 11.0_f32 * (f1 + f2 + f3 + f4 + f5 + f6)
+    let m1 = -30.0_f32 * f0 - 11.0_f32 * (f1 + f2 + f3 + f4 + f5 + f6)
         + 8.0_f32 * (f7 + f8 + f9 + f10 + f11 + f12 + f13 + f14 + f15 + f16 + f17 + f18);
     let m2 = 12.0_f32 * f0 - 4.0_f32 * (f1 + f2 + f3 + f4 + f5 + f6)
         + (f7 + f8 + f9 + f10 + f11 + f12 + f13 + f14 + f15 + f16 + f17 + f18);
@@ -101,12 +117,11 @@ pub fn lbm_mrt_d3q19_step_kernel(
     let m6 = -4.0_f32 * (f3 - f4) + f7 - f8 - f9 + f10 + f15 - f16 + f17 - f18;
     let m7 = f5 - f6 + f11 - f12 - f13 + f14 + f15 - f16 - f17 + f18;
     let m8 = -4.0_f32 * (f5 - f6) + f11 - f12 - f13 + f14 + f15 - f16 - f17 + f18;
-    let m9 = 2.0_f32 * (f1 + f2) - (f3 + f4 + f5 + f6) + f7 + f8 + f9 + f10 + f11 + f12
-        + f13 + f14
+    let m9 = 2.0_f32 * (f1 + f2) - (f3 + f4 + f5 + f6) + f7 + f8 + f9 + f10 + f11 + f12 + f13 + f14
         - 2.0_f32 * (f15 + f16 + f17 + f18);
-    let m10 = -2.0_f32 * (f1 + f2) + (f3 + f4 + f5 + f6) + f7 + f8 + f9 + f10 + f11 + f12
-        + f13 + f14
-        - 2.0_f32 * (f15 + f16 + f17 + f18);
+    let m10 =
+        -2.0_f32 * (f1 + f2) + (f3 + f4 + f5 + f6) + f7 + f8 + f9 + f10 + f11 + f12 + f13 + f14
+            - 2.0_f32 * (f15 + f16 + f17 + f18);
     let m11 = (f3 + f4) - (f5 + f6) + f7 + f8 + f9 + f10 - (f11 + f12 + f13 + f14);
     let m12 = -(f3 + f4) + (f5 + f6) + f7 + f8 + f9 + f10 - (f11 + f12 + f13 + f14);
     let m13 = f7 + f8 - f9 - f10;
@@ -180,46 +195,28 @@ pub fn lbm_mrt_d3q19_step_kernel(
 
     // Phase 7: inverse transform f_post = M^T_scaled * ms.
     let p0 = s0 - 30.0_f32 * s1 + 12.0_f32 * s2;
-    let p1 = s0 - 11.0_f32 * s1 - 4.0_f32 * s2 + s3 - 4.0_f32 * s4 + 2.0_f32 * s9
-        - 2.0_f32 * s10;
-    let p2 = s0 - 11.0_f32 * s1 - 4.0_f32 * s2 - s3 + 4.0_f32 * s4 + 2.0_f32 * s9
-        - 2.0_f32 * s10;
+    let p1 = s0 - 11.0_f32 * s1 - 4.0_f32 * s2 + s3 - 4.0_f32 * s4 + 2.0_f32 * s9 - 2.0_f32 * s10;
+    let p2 = s0 - 11.0_f32 * s1 - 4.0_f32 * s2 - s3 + 4.0_f32 * s4 + 2.0_f32 * s9 - 2.0_f32 * s10;
     let p3 = s0 - 11.0_f32 * s1 - 4.0_f32 * s2 + s5 - 4.0_f32 * s6 - s9 + s10 + s11 - s12;
     let p4 = s0 - 11.0_f32 * s1 - 4.0_f32 * s2 - s5 + 4.0_f32 * s6 - s9 + s10 + s11 - s12;
     let p5 = s0 - 11.0_f32 * s1 - 4.0_f32 * s2 + s7 - 4.0_f32 * s8 - s9 + s10 - s11 + s12;
     let p6 = s0 - 11.0_f32 * s1 - 4.0_f32 * s2 - s7 + 4.0_f32 * s8 - s9 + s10 - s11 + s12;
-    let p7 = s0 + 8.0_f32 * s1 + s2 + s3 + s4 + s5 + s6 + s9 + s10 + s11 + s12 + s13 + s16
-        - s17;
-    let p8 = s0 + 8.0_f32 * s1 + s2 - s3 - s4 - s5 - s6 + s9 + s10 + s11 + s12 + s13 - s16
-        + s17;
-    let p9 = s0 + 8.0_f32 * s1 + s2 + s3 + s4 - s5 - s6 + s9 + s10 + s11 + s12 - s13 - s16
-        - s17;
-    let p10 = s0 + 8.0_f32 * s1 + s2 - s3 - s4 + s5 + s6 + s9 + s10 + s11 + s12 - s13 + s16
-        + s17;
-    let p11 = s0 + 8.0_f32 * s1 + s2 + s3 + s4 + s7 + s8 + s9 + s10 - s11 - s12 + s14 - s16
-        + s18;
-    let p12 = s0 + 8.0_f32 * s1 + s2 - s3 - s4 - s7 - s8 + s9 + s10 - s11 - s12 + s14 + s16
-        - s18;
-    let p13 = s0 + 8.0_f32 * s1 + s2 + s3 + s4 - s7 - s8 + s9 + s10 - s11 - s12 - s14 + s16
-        + s18;
-    let p14 = s0 + 8.0_f32 * s1 + s2 - s3 - s4 + s7 + s8 + s9 + s10 - s11 - s12 - s14 - s16
-        - s18;
-    let p15 = s0 + 8.0_f32 * s1 + s2 + s5 + s6 + s7 + s8 - 2.0_f32 * s9 - 2.0_f32 * s10
-        + s15
-        + s17
-        - s18;
-    let p16 = s0 + 8.0_f32 * s1 + s2 - s5 - s6 - s7 - s8 - 2.0_f32 * s9 - 2.0_f32 * s10
-        + s15
-        - s17
-        + s18;
-    let p17 = s0 + 8.0_f32 * s1 + s2 + s5 + s6 - s7 - s8 - 2.0_f32 * s9 - 2.0_f32 * s10
-        - s15
-        - s17
-        - s18;
-    let p18 = s0 + 8.0_f32 * s1 + s2 - s5 - s6 + s7 + s8 - 2.0_f32 * s9 - 2.0_f32 * s10
-        - s15
-        + s17
-        + s18;
+    let p7 = s0 + 8.0_f32 * s1 + s2 + s3 + s4 + s5 + s6 + s9 + s10 + s11 + s12 + s13 + s16 - s17;
+    let p8 = s0 + 8.0_f32 * s1 + s2 - s3 - s4 - s5 - s6 + s9 + s10 + s11 + s12 + s13 - s16 + s17;
+    let p9 = s0 + 8.0_f32 * s1 + s2 + s3 + s4 - s5 - s6 + s9 + s10 + s11 + s12 - s13 - s16 - s17;
+    let p10 = s0 + 8.0_f32 * s1 + s2 - s3 - s4 + s5 + s6 + s9 + s10 + s11 + s12 - s13 + s16 + s17;
+    let p11 = s0 + 8.0_f32 * s1 + s2 + s3 + s4 + s7 + s8 + s9 + s10 - s11 - s12 + s14 - s16 + s18;
+    let p12 = s0 + 8.0_f32 * s1 + s2 - s3 - s4 - s7 - s8 + s9 + s10 - s11 - s12 + s14 + s16 - s18;
+    let p13 = s0 + 8.0_f32 * s1 + s2 + s3 + s4 - s7 - s8 + s9 + s10 - s11 - s12 - s14 + s16 + s18;
+    let p14 = s0 + 8.0_f32 * s1 + s2 - s3 - s4 + s7 + s8 + s9 + s10 - s11 - s12 - s14 - s16 - s18;
+    let p15 =
+        s0 + 8.0_f32 * s1 + s2 + s5 + s6 + s7 + s8 - 2.0_f32 * s9 - 2.0_f32 * s10 + s15 + s17 - s18;
+    let p16 =
+        s0 + 8.0_f32 * s1 + s2 - s5 - s6 - s7 - s8 - 2.0_f32 * s9 - 2.0_f32 * s10 + s15 - s17 + s18;
+    let p17 =
+        s0 + 8.0_f32 * s1 + s2 + s5 + s6 - s7 - s8 - 2.0_f32 * s9 - 2.0_f32 * s10 - s15 - s17 - s18;
+    let p18 =
+        s0 + 8.0_f32 * s1 + s2 - s5 - s6 + s7 + s8 - 2.0_f32 * s9 - 2.0_f32 * s10 - s15 + s17 + s18;
 
     // Phase 8: PUSH post-collision values to periodic-neighbor cells.
     f_out[cell] = p0;
@@ -411,7 +408,10 @@ mod tests {
     fn rejects_length_mismatch() {
         let bad = vec![1.0_f32; 7];
         match evolve_mrt_d3q19_cubecl(2, 2, 2, 1.0, &bad, 1) {
-            Err(CubeclMrtLbmError::LengthMismatch { got: 7, expected: 152 }) => {}
+            Err(CubeclMrtLbmError::LengthMismatch {
+                got: 7,
+                expected: 152,
+            }) => {}
             other => panic!("expected LengthMismatch, got {other:?}"),
         }
     }

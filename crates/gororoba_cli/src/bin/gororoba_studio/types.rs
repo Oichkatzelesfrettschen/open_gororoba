@@ -3,7 +3,7 @@
 //! axum HTTP API + studio pipeline catalog types + UI asset
 //! include_str! constants + per-endpoint timeout/version constants.
 //!
-//! Fields and constants are pub(crate). Uses #[path] indirection
+//! Fields and constants are pub(crate). Uses `#[path]` indirection
 //! because the binary has an explicit Cargo.toml path.
 
 use clap::Parser;

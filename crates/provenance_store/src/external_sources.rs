@@ -2,12 +2,12 @@
 //! renderers.
 //!
 //! - `load_external_source_contracts_from_registry`: parses the
-//!   `registry/external_sources.toml` [external_sources] meta header
-//!   and [[source]] rows into (ExternalSourceContractsMeta,
-//!   Vec<ExternalSourceContractRecord>).
+//!   `registry/external_sources.toml` `[external_sources]` meta header
+//!   and `[[source]]` rows into (ExternalSourceContractsMeta,
+//!   `Vec<ExternalSourceContractRecord>`).
 //! - `load_external_source_dossiers_from_registry`: parses the
 //!   external_source_dossiers.toml file into (ExternalSourceDossiersMeta,
-//!   Vec<ExternalSourceDossierRecord>), defaulting `source_markdown`
+//!   `Vec<ExternalSourceDossierRecord>`), defaulting `source_markdown`
 //!   via `default_external_source_markdown_path` when the row omits it.
 //! - `render_external_source_contracts_registry`: emits the compat TOML
 //!   for the contracts surface.

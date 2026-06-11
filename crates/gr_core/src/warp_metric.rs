@@ -6,7 +6,7 @@
 //! azimuthally, each with its own warp field. The interior-flat gating
 //! function W_g ensures K_ij = 0 inside the bubble, eliminating tidal forces.
 //!
-//! # Metric form (Cartesian coordinates [t, x, y, z])
+//! # Metric form (Cartesian coordinates `[t, x, y, z]`)
 //!
 //! ds^2 = -dt^2 + (dx - beta_x dt)^2 + dy^2 + dz^2
 //!
@@ -261,7 +261,7 @@ pub fn modulation(rho: f64, phi: f64, params: &NacelleWarpParams) -> f64 {
 /// beta_x = -v_s * f(r_s) * M(rho, phi) * W_x(x)
 /// beta_y = beta_z = 0
 ///
-/// Coordinates: [t, x, y, z], spatial = {x, y, z}.
+/// Coordinates: `[t, x, y, z]`, spatial = {x, y, z}.
 pub fn shift_vector(_t: f64, x: f64, y: f64, z: f64, params: &NacelleWarpParams) -> SpatialVector {
     let dx = x - params.x_center;
     let rho = (y * y + z * z).sqrt();
@@ -326,7 +326,7 @@ pub fn nacelle_york_time(x: f64, y: f64, z: f64, params: &NacelleWarpParams) -> 
 
 /// Nacelle warp bubble spacetime (implements SpacetimeMetric).
 ///
-/// Coordinates: [t, x, y, z] (Cartesian).
+/// Coordinates: `[t, x, y, z]` (Cartesian).
 ///
 /// g_{00} = -(1 - beta_x^2)
 /// g_{0x} = beta_x (= -v_s * f * M * W_x, typically negative)

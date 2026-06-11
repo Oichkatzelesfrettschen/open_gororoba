@@ -18,12 +18,15 @@
 
 #![cfg(feature = "cubecl")]
 
-use lbm_3d::lattice::D3Q19Lattice;
-use lbm_3d::solver::LbmSolver3D;
-use lbm_vulkan::lbm_mrt_d3q19_cubecl::{evolve_mrt_d3q19_cubecl, is_available};
-use lbm_vulkan::lbm_mrt_d3q19_vulkan::LbmMrtD3Q19Vulkan;
-use rand::SeedableRng;
-use rand::distr::{Distribution, Uniform};
+use lbm_3d::{lattice::D3Q19Lattice, solver::LbmSolver3D};
+use lbm_vulkan::{
+    lbm_mrt_d3q19_cubecl::{evolve_mrt_d3q19_cubecl, is_available},
+    lbm_mrt_d3q19_vulkan::LbmMrtD3Q19Vulkan,
+};
+use rand::{
+    SeedableRng,
+    distr::{Distribution, Uniform},
+};
 use rand_chacha::ChaCha20Rng;
 
 const NX: usize = 16;
@@ -68,8 +71,7 @@ fn three_way_mrt_parity_16cubed_10steps() {
             let c = lattice.velocity(i);
             let cu = (c[0] as f32) * ux + (c[1] as f32) * uy + (c[2] as f32) * uz;
             let w_i = lattice.weight(i) as f32;
-            f_init[i * n_cells + cell] =
-                w_i * rho * (1.0 + 3.0 * cu + 4.5 * cu * cu - 1.5 * u_sq);
+            f_init[i * n_cells + cell] = w_i * rho * (1.0 + 3.0 * cu + 4.5 * cu * cu - 1.5 * u_sq);
         }
     }
 
@@ -124,12 +126,13 @@ fn three_way_mrt_parity_16cubed_10steps() {
                         }
                         let inv_r = 1.0 / r;
                         let g = |i: usize| f_out[i * n_cells + cell];
-                        let mx = g(1) - g(2) + g(7) - g(8) + g(9) - g(10)
-                            + g(11) - g(12) + g(13) - g(14);
-                        let my = g(3) - g(4) + g(7) - g(8) - g(9) + g(10)
-                            + g(15) - g(16) + g(17) - g(18);
-                        let mz = g(5) - g(6) + g(11) - g(12) - g(13) + g(14)
-                            + g(15) - g(16) - g(17) + g(18);
+                        let mx = g(1) - g(2) + g(7) - g(8) + g(9) - g(10) + g(11) - g(12) + g(13)
+                            - g(14);
+                        let my = g(3) - g(4) + g(7) - g(8) - g(9) + g(10) + g(15) - g(16) + g(17)
+                            - g(18);
+                        let mz =
+                            g(5) - g(6) + g(11) - g(12) - g(13) + g(14) + g(15) - g(16) - g(17)
+                                + g(18);
                         (
                             r as f64,
                             [
@@ -207,9 +210,7 @@ fn three_way_mrt_parity_16cubed_10steps() {
                 &mut max_vv_u,
             );
         }
-        eprintln!(
-            "Vulkan-vs-cubecl MRT: max_rho_err={max_vv_rho:.3e}, max_u_err={max_vv_u:.3e}"
-        );
+        eprintln!("Vulkan-vs-cubecl MRT: max_rho_err={max_vv_rho:.3e}, max_u_err={max_vv_u:.3e}");
     }
 
     if vulkan_result.is_some() {

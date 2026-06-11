@@ -191,7 +191,7 @@ pub fn component_raw_xor_key(comp: &MotifComponent) -> Option<usize> {
 
 /// Map motif components to PG points via their XOR-key labels.
 ///
-/// Returns Some(mapping) where mapping[i] is the PG point for component i,
+/// Returns Some(mapping) where `mapping[i]` is the PG point for component i,
 /// or None if the mapping fails (mixed keys or missing points).
 pub fn map_components_to_pg(
     components: &[MotifComponent],

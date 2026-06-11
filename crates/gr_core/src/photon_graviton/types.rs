@@ -102,7 +102,7 @@ pub struct FieldConfig {
     pub k_squared: f64,
     /// Photon energy in natural units (omega / m_e).
     pub omega: f64,
-    /// Angle between photon propagation and B field [radians].
+    /// Angle between photon propagation and B field `[radians]`.
     pub theta: f64,
 }
 
@@ -112,7 +112,7 @@ impl FieldConfig {
     /// # Arguments
     /// * `b_over_bcr` -- B / B_critical (dimensionless ratio)
     /// * `omega_over_m` -- photon energy / electron mass
-    /// * `theta` -- angle between k and B [radians]
+    /// * `theta` -- angle between k and B `[radians]`
     pub fn pure_magnetic(b_over_bcr: f64, omega_over_m: f64, theta: f64) -> Self {
         // In natural units with m_e = 1:
         // eB = (B/B_cr) since B_cr = m_e^2/(e) = 1/e in natural units

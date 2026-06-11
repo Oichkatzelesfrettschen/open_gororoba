@@ -26,7 +26,7 @@ const RNG_SEED: u64 = 0x0C0D_E206;
 const ERG_PER_GEV: f64 = 1.602_176_634e-3;
 const EULER_GAMMA: f64 = 0.577_215_664_901_532_9;
 
-/// Row-major 3x3 matrix: m[row][col].
+/// Row-major 3x3 matrix: `m[row][col]`.
 type Mat3 = [[f64; 3]; 3];
 const ZERO3: Mat3 = [[0.0; 3]; 3];
 

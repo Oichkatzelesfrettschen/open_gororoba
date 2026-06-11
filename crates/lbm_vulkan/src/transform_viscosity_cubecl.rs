@@ -2,7 +2,7 @@
 //!
 //! Pointwise transform (no atomics, no RNG, embarrassingly parallel):
 //!
-//!   tau[i] = 3 * nu_base * exp(lambda * (phi[i] - phi_mean)) + 0.5
+//!   `tau[i] = 3 * nu_base * exp(lambda * (phi[i] - phi_mean)) + 0.5`
 //!
 //! This is the simplest cubecl parity port in the matrix and closes the
 //! pointwise-transform cell of #136 Phase 2.

@@ -59,7 +59,7 @@ fn norm_sq3(a: [f64; 3]) -> f64 {
 }
 
 /// State of a single body for ABM integration.
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Abm8BodyState {
     pub pos: [f64; 3],
     pub vel: [f64; 3],

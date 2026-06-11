@@ -118,8 +118,8 @@ impl InstanceBuilder {
             ValidationPolicy::Enable => {
                 let validation_layer_name = c"VK_LAYER_KHRONOS_validation";
                 // SAFETY: entry is alive; enumerate returns owned Vec.
-                let advertised = unsafe { entry.enumerate_instance_layer_properties() }
-                    .unwrap_or_default();
+                let advertised =
+                    unsafe { entry.enumerate_instance_layer_properties() }.unwrap_or_default();
                 let validation_available = advertised.iter().any(|layer| {
                     // SAFETY: layer_name is a NUL-terminated [c_char; 256]
                     // populated by the Vulkan loader.

@@ -35,7 +35,7 @@ pub mod kernel_names {
 ///     ctx.raw(), ptx, &[kernel_names::QUANTIZE_BOUNDARY])?;
 /// ```
 #[cfg(feature = "cuda")]
-pub fn compile_kernels(major: u32, minor: u32) -> Result<cudarc::nvrtc::Ptx, String> {
+pub fn compile_kernels(major: u32, minor: u32) -> Result<gororoba_gpu_cuda::Ptx, String> {
     let opts = gororoba_gpu_cuda::CompileOptions::for_arch(major, minor);
     gororoba_gpu_cuda::CompileOptions::compile_ptx(KERNEL_SRC, &opts)
         .map_err(|e| format!("NVRTC compilation failed for sm_{}{}: {}", major, minor, e))

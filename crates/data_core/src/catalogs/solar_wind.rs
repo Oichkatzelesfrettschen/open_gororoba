@@ -35,6 +35,9 @@ pub struct SwepamRecord {
     pub ion_temperature: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::solar_wind_fetch::AceSwepamProvider;
+
 const FILL_DENSITY: f64 = -9999.9;
 const FILL_SPEED: f64 = -9999.9;
 const FILL_TEMP: f64 = -1.00e+05;

@@ -8,7 +8,7 @@
 //! 1. Generate SedenionField with spatial variation
 //! 2. Compute per-cell imbalance density
 //! 3. Convert imbalance -> viscosity via ImbalanceViscosityBridge
-//! 4. Convert viscosity -> tau field: tau[i] = 3*nu[i] + 0.5
+//! 4. Convert viscosity -> tau field: `tau[i] = 3*nu[i] + 0.5`
 //! 5. Run actual LBM evolution (D3Q19 streaming + collision)
 //! 6. Extract velocity point cloud from LBM output
 //! 7. Partition grid into subregions

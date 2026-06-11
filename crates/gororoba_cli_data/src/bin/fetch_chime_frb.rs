@@ -6,7 +6,7 @@
 //!
 //! The CHIME website is a JavaScript SPA, so this fetcher uses the
 //! known API endpoints for CSV export. If those fail, the user should
-//! download manually from https://www.chime-frb.ca/catalog and place
+//! download manually from <https://www.chime-frb.ca/catalog> and place
 //! the CSV in data/external/.
 //!
 //! Usage:

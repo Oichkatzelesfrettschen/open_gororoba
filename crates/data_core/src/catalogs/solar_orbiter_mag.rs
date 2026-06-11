@@ -22,6 +22,9 @@ pub struct SolarOrbiterMagRecord {
     pub b_magnitude: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::solar_orbiter_mag_fetch::SolarOrbiterMagProvider;
+
 #[derive(Default)]
 struct MagAccumulator {
     br_sum: f64,

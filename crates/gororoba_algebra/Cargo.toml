@@ -2,29 +2,32 @@
 name = "gororoba_algebra"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Cayley-Dickson algebras, Clifford algebras, and algebraic structures for physics"
 license = "GPL-2.0-or-later"
+description = "Cayley-Dickson algebras, Clifford algebras, and algebraic structures for physics"
 
 [dependencies]
-cd_kernel = { workspace = true }
 algebra_analysis = { workspace = true, optional = true }
+cd_kernel = { workspace = true }
+csv = { workspace = true }
+cubecl = { workspace = true, optional = true }
+cubecl-wgpu = { workspace = true, optional = true }
 gororoba_gpu_bridge = { workspace = true }
+gororoba_gpu_cubecl = { workspace = true, optional = true }
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
 num-traits = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
-sha2 = { workspace = true }
-wide = { workspace = true }
 rustfft = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
-csv = { workspace = true }
+sha2 = { workspace = true }
+wide = { workspace = true }
 
 # External algebra crates (workspace)
-padic = { workspace = true }
 atlas-embeddings = { workspace = true }
+padic = { workspace = true }
 
 # Stochastic processes and fractal analysis (workspace)
 diffusionx = { workspace = true }
@@ -32,6 +35,7 @@ diffusionx = { workspace = true }
 # GPU acceleration (optional, feature-gated)
 cudarc = { workspace = true, optional = true }
 gororoba_gpu_cuda = { workspace = true, optional = true }
+gororoba_gpu_vulkan = { workspace = true, optional = true }
 verified_core = { version = "0.1.0", path = "../verified_core" }
 
 [features]
@@ -48,12 +52,22 @@ physics = ["core", "lie"]
 # E8 lattice, E7 geometry, Kac-Moody, group theory, nilpotent orbits, Lyndon.
 # No cross-module deps beyond self-referential.
 lie = []
-# GPU acceleration (CUDA via cudarc). Chains gororoba_gpu_cuda/cudarc
-# so the consolidated Context helper is available alongside raw cudarc.
-gpu = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
+# GPU acceleration (CUDA via cudarc). The explicit cudarc feature preserves
+# the old public feature name while gpu enables the same CUDA surface.
+cudarc = ["dep:cudarc", "dep:gororoba_gpu_cuda", "gororoba_gpu_cuda/cudarc"]
+gpu = ["analysis", "physics", "cudarc"]
+vulkan = ["analysis", "physics", "dep:gororoba_gpu_vulkan", "gororoba_gpu_vulkan/ash"]
+cubecl = [
+    "analysis",
+    "physics",
+    "dep:cubecl",
+    "dep:cubecl-wgpu",
+    "dep:gororoba_gpu_cubecl",
+    "gororoba_gpu_cubecl/cubecl",
+]
 wedged = []
 # CD tower feature gates: each level enables the one below.
-cd-512  = []
+cd-512 = []
 cd-1024 = ["cd-512"]
 # Meta-feature: full upper tower (32D through 1024D with all SIMD types).
 higher-cd = ["cd-1024"]
@@ -64,6 +78,7 @@ physics-sm = []
 approx = { workspace = true }
 criterion = { workspace = true }
 iai-callgrind = { workspace = true }
+naga = { workspace = true, features = ["wgsl-in", "spv-out"] }
 
 [[bench]]
 name = "algebra_bench"

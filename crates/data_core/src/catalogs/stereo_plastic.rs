@@ -59,6 +59,9 @@ pub struct StereoPlasticRecord {
     pub vn: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::stereo_plastic_fetch::{StereoMagProvider, StereoPlasticProvider};
+
 // ---------------------------------------------------------------------------
 // STEREO IMPACT/MAG (magnetic field, from MAGPLASMA CDAWeb export)
 // ---------------------------------------------------------------------------

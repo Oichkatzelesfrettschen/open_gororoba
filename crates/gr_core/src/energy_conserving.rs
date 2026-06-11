@@ -116,14 +116,14 @@ pub fn extract_conserved_quantities(
 // Geodesic state (8-component: 4 positions + 4 velocities)
 // ============================================================================
 
-/// Full 8-component geodesic state: [x^mu, v^mu] = [t, r, theta, phi, vt, vr, vth, vph].
+/// Full 8-component geodesic state: [x^mu, v^mu] = `[t, r, theta, phi, vt, vr, vth, vph]`.
 ///
 /// Unlike the Kerr-specific `GeodesicState` in `kerr.rs` (which stores only
 /// r, theta, v_r, v_theta because t, phi are cyclic), this generic state
 /// carries all 8 components for use with arbitrary metrics.
 #[derive(Debug, Clone, Copy)]
 pub struct FullGeodesicState {
-    /// Coordinate positions [t, r, theta, phi]
+    /// Coordinate positions `[t, r, theta, phi]`
     pub x: [f64; DIM],
     /// 4-velocity components [v^t, v^r, v^theta, v^phi]
     pub v: [f64; DIM],

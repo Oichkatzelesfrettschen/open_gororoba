@@ -32,6 +32,9 @@ pub struct HstPublicObservation {
     pub calib_level: String,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::hst_fetch::HstPublicMetadataProvider;
+
 pub fn parse_hst_public_metadata_json(
     content: &str,
 ) -> Result<Vec<HstPublicObservation>, FetchError> {

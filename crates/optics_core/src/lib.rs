@@ -20,6 +20,8 @@
 
 pub mod absorber_benchmark;
 pub mod absorber_pareto;
+#[cfg(any(feature = "gpu", feature = "vulkan", feature = "cubecl"))]
+pub mod algebraic_lensing_gpu;
 pub mod bessel;
 pub mod entropy_trap;
 pub mod fano_tcmt;
@@ -35,6 +37,19 @@ pub use grin::{
     AbsorbingGrinMedium, GrinFiber, GrinMedium, HomogeneousMedium, Ray, RayState, RayTraceResult,
     Vec3, central_difference_gradient, rk4_step, rk4_step_absorbing, trace_ray,
     trace_ray_absorbing,
+};
+
+#[cfg(any(feature = "gpu", feature = "vulkan", feature = "cubecl"))]
+pub use algebraic_lensing_gpu::GpuVec3;
+#[cfg(feature = "cubecl")]
+pub use algebraic_lensing_gpu::{
+    AlgebraicLensingCubecl, AlgebraicLensingCubeclConfig, trace_rays_cpu_reference_cubecl,
+};
+#[cfg(feature = "gpu")]
+pub use algebraic_lensing_gpu::{AlgebraicLensingGpu, AlgebraicLensingGpuConfig};
+#[cfg(feature = "vulkan")]
+pub use algebraic_lensing_gpu::{
+    AlgebraicLensingVulkan, AlgebraicLensingVulkanConfig, trace_rays_cpu_reference,
 };
 
 pub use tcmt::{

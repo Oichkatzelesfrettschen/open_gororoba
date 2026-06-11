@@ -32,6 +32,9 @@ pub struct ThemisFgmMinuteRecord {
     pub b_magnitude: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::themis_fetch::ThemisFgmProvider;
+
 /// Hourly THEMIS FGM record.
 #[derive(Debug, Clone)]
 pub struct ThemisFgmRecord {

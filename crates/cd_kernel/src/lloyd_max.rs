@@ -75,7 +75,7 @@ fn gaussian_pdf(x: f64, d: usize) -> f64 {
 ///
 /// f(x) = Gamma(d/2) / (sqrt(pi) * Gamma((d-1)/2)) * (1 - x^2)^((d-3)/2)
 ///
-/// Supported on [-1, 1].  More accurate than the Gaussian approximation
+/// Supported on `[-1, 1]`.  More accurate than the Gaussian approximation
 /// for d < 50 where the tails differ significantly.
 ///
 /// Ported from turboquant-pytorch/lloyd_max.py:beta_pdf and validated
@@ -198,7 +198,7 @@ fn integrate_simpson(f: impl Fn(f64) -> f64, a: f64, b: f64, n_steps: usize) -> 
 
 /// Solve the Lloyd-Max optimal quantizer for the coordinate distribution.
 ///
-/// For d < 50: uses the exact Beta marginal PDF (supported on [-1, 1])
+/// For d < 50: uses the exact Beta marginal PDF (supported on `[-1, 1]`)
 /// For d >= 50: uses Gaussian N(0, 1/d) approximation (supported on R)
 ///
 /// The PDF selection matches the turboquant crate's approach and provides

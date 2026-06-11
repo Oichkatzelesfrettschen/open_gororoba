@@ -38,7 +38,7 @@
 //! The resolution adopts the branch-at-node-4 convention used by `kac_moody`
 //! so the Cartan now strictly derives from the simple roots via
 //! `A_ij = 2 (alpha_i, alpha_j) / (alpha_i, alpha_i)`. The cross-derivation
-//! is asserted in [`tests::cartan_matrix_derives_from_simple_roots`].
+//! is asserted in `tests::cartan_matrix_derives_from_simple_roots`.
 
 use std::collections::HashMap;
 
@@ -257,7 +257,7 @@ pub fn e8_cartan_matrix() -> [[i32; 8]; 8] {
 /// branches off `alpha_4` into the half-integer leaf `alpha_7`. The Cartan
 /// matrix [`e8_cartan_matrix`] is derived from these via
 /// `A_ij = 2 (alpha_i, alpha_j) / (alpha_i, alpha_i)` -- see
-/// [`tests::cartan_matrix_derives_from_simple_roots`].
+/// `tests::cartan_matrix_derives_from_simple_roots`.
 pub fn e8_simple_roots() -> [E8Root; 8] {
     [
         E8Root::new([1.0, -1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]),

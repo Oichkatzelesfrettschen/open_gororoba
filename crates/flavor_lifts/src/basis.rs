@@ -26,7 +26,7 @@ use nalgebra::DMatrix;
 /// Extract the V_6 basis from the sedenion (dim=16) incidence matrix algebra.
 ///
 /// The sedenion triad classification yields three types (B, C, X) based on
-/// which permutations of the associator [a,b,c] are nonzero. The Type X triads
+/// which permutations of the associator `[a,b,c]` are nonzero. The Type X triads
 /// (all three permutations nonzero) span a 27-dimensional column space in
 /// assessor coordinates. Projecting out the B/C column space (rank 21) leaves
 /// a 6-dimensional complement V_6 that is spectrally isotropic (all singular
@@ -177,7 +177,7 @@ pub fn extract_v6_basis() -> (DMatrix<f64>, Vec<f64>, Vec<(usize, usize)>) {
 
 /// O(1) associator nonzero check via sign table.
 ///
-/// [a,b,c] = (a*b)*c - a*(b*c) is nonzero iff the left and right sign
+/// `[a,b,c]` = (a*b)*c - a*(b*c) is nonzero iff the left and right sign
 /// paths through the CD construction disagree.
 fn assoc_nonzero_via_stab(stab: &SignTable, a: usize, b: usize, c: usize) -> bool {
     let sab = stab.sign(a, b);

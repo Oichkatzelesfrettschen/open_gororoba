@@ -106,7 +106,7 @@ impl PolarizationState {
 
 /// Jones vector representation of polarization.
 ///
-/// 2D complex vector [Ex, Ey] representing electric field components.
+/// 2D complex vector `[Ex, Ey]` representing electric field components.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct JonesVector {
     /// x-component (real, imaginary)

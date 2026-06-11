@@ -70,7 +70,7 @@ fn wavenumber(omega: f64, eps: Complex64) -> Complex64 {
     omega_c * eps.sqrt()
 }
 
-/// 2x2 complex matrix stored as [[a, b], [c, d]].
+/// 2x2 complex matrix stored as `[[a, b]`, `[c, d]`].
 type Mat2 = [[Complex64; 2]; 2];
 
 fn mat2_mul(a: &Mat2, b: &Mat2) -> Mat2 {
@@ -96,14 +96,14 @@ fn _mat2_identity() -> Mat2 {
 /// Interface transfer matrix at radius rho between media with wavenumbers k_in and k_out.
 ///
 /// Continuity of E_z and (1/k) * dE_z/drho at rho gives:
-///   [A_out]     [J_l(k_out*rho)  Y_l(k_out*rho)]^{-1}   [J_l(k_in*rho)   Y_l(k_in*rho) ]   [A_in]
-///   [B_out]  =  [J_l'(k_out*rho) Y_l'(k_out*rho)]     * [k_in/k_out * J_l'  k_in/k_out * Y_l'] * [B_in]
+///   `[A_out]`     `[J_l(k_out*rho)  Y_l(k_out*rho)]`^{-1}   `[J_l(k_in*rho)   Y_l(k_in*rho) ]`   `[A_in]`
+///   `[B_out]`  =  `[J_l'(k_out*rho) Y_l'(k_out*rho)]`     * `[k_in/k_out * J_l'  k_in/k_out * Y_l']` * `[B_in]`
 ///
 /// Actually for TM: E_z continuous and (1/mu) * dE_z/drho continuous (mu=1 everywhere).
 /// So: A_in*J(x_in) + B_in*Y(x_in) = A_out*J(x_out) + B_out*Y(x_out)
-///     k_in*[A_in*J'(x_in) + B_in*Y'(x_in)] = k_out*[A_out*J'(x_out) + B_out*Y'(x_out)]
+///     k_in*`[A_in*J'(x_in) + B_in*Y'(x_in)]` = k_out*`[A_out*J'(x_out) + B_out*Y'(x_out)]`
 ///
-/// We solve for [A_out, B_out] in terms of [A_in, B_in].
+/// We solve for `[A_out, B_out]` in terms of `[A_in, B_in]`.
 fn interface_matrix(l: i32, k_in: Complex64, k_out: Complex64, rho: f64) -> Mat2 {
     let x_in = k_in * rho;
     let x_out = k_out * rho;
@@ -139,7 +139,7 @@ fn interface_matrix(l: i32, k_in: Complex64, k_out: Complex64, rho: f64) -> Mat2
 /// Scattering coefficient S_l for a concentric cylinder at angular frequency omega.
 ///
 /// The algorithm:
-/// 1. Start from core: [A_0, B_0] = [1, 0] (regularity at origin).
+/// 1. Start from core: `[A_0, B_0]` = `[1, 0]` (regularity at origin).
 /// 2. Chain transfer matrices through all interfaces.
 /// 3. In exterior, convert J/Y coefficients to H^(1)/H^(2) coefficients.
 /// 4. S_l = -(outgoing coefficient) / (incoming coefficient) after subtracting

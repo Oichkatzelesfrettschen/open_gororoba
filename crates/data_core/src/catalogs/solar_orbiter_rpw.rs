@@ -19,6 +19,9 @@ pub struct SolarOrbiterRpwRecord {
     pub psp: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::solar_orbiter_rpw_fetch::{SolarOrbiterRpwProvider, parse_solar_orbiter_rpw_file};
+
 #[derive(Default)]
 pub(crate) struct ScalarAccumulator {
     pub scpot_sum: f64,

@@ -1,7 +1,7 @@
 //! Inline CD operations for small dimensions via SmallVec.
 //!
 //! For d <= 16 (quaternion through sedenion), all CD multiplication
-//! intermediates fit inline in SmallVec<[f64; 16]> without heap allocation.
+//! intermediates fit inline in SmallVec<`[f64; 16]`> without heap allocation.
 //! This eliminates the Vec allocation overhead in the associator hot loop.
 //!
 //! Performance impact: at d=16, the associator triplet computation
@@ -60,7 +60,7 @@ pub fn cd_multiply_inline(a: &[f64], b: &[f64]) -> SmallVec<[f64; 16]> {
 
 /// Inline CD associator norm for d <= 16.
 ///
-/// Computes ||[a, b, c]|| = ||(a*b)*c - a*(b*c)||
+/// Computes ||`[a, b, c]`|| = ||(a*b)*c - a*(b*c)||
 /// with zero heap allocation for d <= 16.
 pub fn cd_associator_norm_inline(a: &[f64], b: &[f64], c: &[f64]) -> f64 {
     let ab = cd_multiply_inline(a, b);

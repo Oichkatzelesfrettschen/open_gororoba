@@ -16,8 +16,8 @@
 //! A tessarine is represented as (z_1, z_2) where z_1, z_2 in C.
 //! Multiplication: (a_1, a_2)(b_1, b_2) = (a_1b_1, a_2b_2)
 //!
-//! Equivalent to 4D vector [x, y, u, v] where:
-//! - (x + yi, u + vi) <-> [x, y, u, v]
+//! Equivalent to 4D vector `[x, y, u, v]` where:
+//! - (x + yi, u + vi) <-> `[x, y, u, v]`
 //! - Multiplication is component-wise in complex pairs
 
 /// Tessarine number: (z1, z2) where z1, z2 in C
@@ -148,12 +148,12 @@ impl Tessarine {
         t_sq.norm_squared() < tolerance
     }
 
-    /// Convert to 4D vector: [x, y, u, v] for (x+yi, u+vi)
+    /// Convert to 4D vector: `[x, y, u, v]` for (x+yi, u+vi)
     pub fn to_vector(&self) -> Vec<f64> {
         vec![self.z1_real, self.z1_imag, self.z2_real, self.z2_imag]
     }
 
-    /// Create from 4D vector: [x, y, u, v] -> (x+yi, u+vi)
+    /// Create from 4D vector: `[x, y, u, v]` -> (x+yi, u+vi)
     pub fn from_vector(v: &[f64]) -> Self {
         assert_eq!(v.len(), 4);
         Self::new(v[0], v[1], v[2], v[3])

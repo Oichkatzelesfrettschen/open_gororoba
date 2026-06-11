@@ -2,16 +2,16 @@
 name = "verified_core"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Rocq-verified operations extracted to Rust"
 license = "GPL-2.0-or-later"
+description = "Rocq-verified operations extracted to Rust"
 
 # Most modules in this crate are pure arithmetic derived from Rocq extraction.
 # The topology helper is intentionally host-facing and depends on runtime CPU
 # discovery plus a pinned Rayon pool for deterministic parallel execution.
 
 [dev-dependencies]
-gororoba_algebra = { path = "../gororoba_algebra" }
 cosmology_core = { path = "../cosmology_core" }
+gororoba_algebra = { path = "../gororoba_algebra" }
 gr_core = { path = "../gr_core" }
 optics_core = { path = "../optics_core" }
 
@@ -20,7 +20,7 @@ workspace = true
 
 [dependencies]
 core_affinity.workspace = true
-rayon = { workspace = true }
-raw-cpuid = "11.6.0"
 nalgebra.workspace = true
 rand.workspace = true
+raw-cpuid = "11.6.0"
+rayon = { workspace = true }

@@ -20,12 +20,12 @@
 
 use std::sync::Arc;
 
-use ash::vk;
 use crate::MacroFields;
+use ash::vk;
 use gororoba_gpu_vulkan::{
-    Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorSetLayout,
-    DescriptorSetLayoutSpec, Device, DeviceBuilder, DispatchScope, Instance, InstanceBuilder,
-    QueueFamilyRequirement, ShaderModule, ValidationPolicy, VulkanError,
+    Adapter, ComputePipeline, ComputePipelineBuilder, DescriptorSetLayout, DescriptorSetLayoutSpec,
+    Device, DeviceBuilder, DispatchScope, Instance, InstanceBuilder, QueueFamilyRequirement,
+    ShaderModule, ValidationPolicy, VulkanError,
 };
 
 const WGSL_SOURCE: &str = include_str!("../shaders/lbm_d3q19.wgsl");
@@ -47,9 +47,7 @@ pub enum LbmD3Q19Error {
     GridTooLarge(u64),
     #[error("tau must satisfy tau > 0.5 for BGK stability (got {0})")]
     UnstableTau(f32),
-    #[error(
-        "input f slice length {got} does not match nx*ny*nz*19 = {expected}"
-    )]
+    #[error("input f slice length {got} does not match nx*ny*nz*19 = {expected}")]
     UploadLengthMismatch { got: usize, expected: usize },
 }
 
@@ -182,13 +180,13 @@ impl LbmD3Q19Vulkan {
 
         // Ping-pong storage buffers sized to `n_cells * 19 * 4` bytes
         // each (f32 SoA).
-        let buffer_bytes = (n_cells * D3Q19_CHANNELS * std::mem::size_of::<f32>()) as vk::DeviceSize;
+        let buffer_bytes =
+            (n_cells * D3Q19_CHANNELS * std::mem::size_of::<f32>()) as vk::DeviceSize;
         let f_buf0 = allocate_storage_buffer(&device, &adapter, &instance, buffer_bytes)?;
         let f_buf1 = allocate_storage_buffer(&device, &adapter, &instance, buffer_bytes)?;
 
         let params_bytes = std::mem::size_of::<ParamsUbo>() as vk::DeviceSize;
-        let params_buffer =
-            allocate_uniform_buffer(&device, &adapter, &instance, params_bytes)?;
+        let params_buffer = allocate_uniform_buffer(&device, &adapter, &instance, params_bytes)?;
 
         // Initialise both f buffers to equilibrium at rest: f[i, cell] = w_i.
         let weights = d3q19_weights_f32();
@@ -345,10 +343,8 @@ impl LbmD3Q19Vulkan {
             // Pull the per-channel values once.
             let g = |i: usize| f[i * n + cell];
             let mx = g(1) - g(2) + g(7) - g(8) + g(9) - g(10) + g(11) - g(12) + g(13) - g(14);
-            let my =
-                g(3) - g(4) + g(7) - g(8) - g(9) + g(10) + g(15) - g(16) + g(17) - g(18);
-            let mz =
-                g(5) - g(6) + g(11) - g(12) - g(13) + g(14) + g(15) - g(16) - g(17) + g(18);
+            let my = g(3) - g(4) + g(7) - g(8) - g(9) + g(10) + g(15) - g(16) + g(17) - g(18);
+            let mz = g(5) - g(6) + g(11) - g(12) - g(13) + g(14) + g(15) - g(16) - g(17) + g(18);
             rho[cell] = r;
             ux[cell] = mx * inv_r;
             uy[cell] = my * inv_r;
@@ -466,9 +462,7 @@ fn allocate_buffer(
         unsafe {
             device.raw().destroy_buffer(buffer, None);
         }
-        return Err(LbmD3Q19Error::Vk(
-            vk::Result::ERROR_OUT_OF_DEVICE_MEMORY,
-        ));
+        return Err(LbmD3Q19Error::Vk(vk::Result::ERROR_OUT_OF_DEVICE_MEMORY));
     }
     // SAFETY: req.size + mem_type_index are produced by Vulkan; size
     // is at most the buffer size which is bounded.

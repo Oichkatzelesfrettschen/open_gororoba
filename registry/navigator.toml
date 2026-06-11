@@ -8,8 +8,8 @@ mission = "Navigate algebra, physics, and computation with evidence-first discip
 source_markdown = ["NAVIGATOR.md"]
 authoritative_toml = ["registry/navigator.toml"]
 generated_mirror = [
-  "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md",
-  "crates/data_core/src/registry_mirrors/navigator_registry_mirror.rs",
+    "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md",
+    "crates/data_core/src/registry_mirrors/navigator_registry_mirror.rs",
 ]
 
 [navigator.disclaimer]

@@ -19,8 +19,8 @@
 //! Q3 SNR=3.6 is a sparse-bin artifact"). This aggregator walks the
 //! four output trees, parses the canonical columns, and writes:
 //!
-//!   data/output/manga_null_synthesis_<DATE>.csv  flat per-experiment table
-//!   data/output/manga_null_synthesis_<DATE>.md   narrative synthesis
+//!   `data/output/manga_null_synthesis_<DATE>.csv`  flat per-experiment table
+//!   `data/output/manga_null_synthesis_<DATE>.md`   narrative synthesis
 //!
 //! # Why a Rust aggregator and not a Python notebook?
 //!
@@ -38,7 +38,7 @@
 //!   data/results/e201/face_on_red_noise_rayleigh.csv      E-201
 //!   data/results/e202/q3_injection_recovery.csv           E-202
 //!
-//! # Output schema (manga_null_synthesis_<DATE>.csv)
+//! # Output schema (`manga_null_synthesis_<DATE>.csv`)
 //!
 //!   experiment, dataset_label, statistic, value, n, note
 //!

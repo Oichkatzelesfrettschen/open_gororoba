@@ -21,6 +21,9 @@ pub struct VoyagerPwsRecord {
     pub band_count: usize,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::voyager_pws_fetch::{VoyagerPwsProvider, VoyagerPwsSpacecraft};
+
 #[derive(Default)]
 struct PwsAccumulator {
     spectral_sum: f64,

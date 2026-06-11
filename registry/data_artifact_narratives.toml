@@ -8,15 +8,15 @@ source_markdown_count = 9
 document_count = 9
 
 source_markdown = [
-  "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
-  "data/artifacts/BIBLIOGRAPHY.md",
-  "data/artifacts/FINAL_REPORT.md",
-  "data/artifacts/QUANTUM_REPORT.md",
-  "data/artifacts/SIMULATION_REPORT.md",
-  "data/artifacts/extracted_equations.md",
-  "data/artifacts/reality_check_and_synthesis.md",
-  "data/artifacts/WARP_RING_REPORT.md",
-  "data/artifacts/THESIS_3D_SYNTHESIS.md",
+    "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
+    "data/artifacts/BIBLIOGRAPHY.md",
+    "data/artifacts/FINAL_REPORT.md",
+    "data/artifacts/QUANTUM_REPORT.md",
+    "data/artifacts/SIMULATION_REPORT.md",
+    "data/artifacts/extracted_equations.md",
+    "data/artifacts/reality_check_and_synthesis.md",
+    "data/artifacts/WARP_RING_REPORT.md",
+    "data/artifacts/THESIS_3D_SYNTHESIS.md",
 ]
 
 [[document]]
@@ -79,7 +79,10 @@ slug = "WARP_RING_REPORT"
 title = "Warp Ring Integration: Algebra-Fluid Duality Visualized"
 content_kind = "simulation_report"
 claim_refs = []
-path_refs = ["crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "data/artifacts/warp_ring_integration.png"]
+path_refs = [
+    "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs",
+    "data/artifacts/warp_ring_integration.png",
+]
 line_count = 33
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -218,7 +221,15 @@ slug = "SIMULATION_REPORT"
 title = "Advanced Simulation Report: pushing the Boundaries"
 content_kind = "simulation_report"
 claim_refs = []
-path_refs = ["chingon_zd_edges.csv", "data/artifacts/modular_chaos_plot.png", "data/artifacts/sedenion_field_3d_plot.png", "data/csv/modular_chaos_N*.csv", "data/csv/sedenion_field_metrics_3d.csv", "src/modular_classical_sim.py", "src/sedenion_field_sim.py"]
+path_refs = [
+    "chingon_zd_edges.csv",
+    "data/artifacts/modular_chaos_plot.png",
+    "data/artifacts/sedenion_field_3d_plot.png",
+    "data/csv/modular_chaos_N*.csv",
+    "data/csv/sedenion_field_metrics_3d.csv",
+    "src/modular_classical_sim.py",
+    "src/sedenion_field_sim.py",
+]
 line_count = 48
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -325,7 +336,12 @@ slug = "FINAL_REPORT"
 title = "Final Technical Report: Topology, Spectral Flow, and Holography"
 content_kind = "final_report"
 claim_refs = []
-path_refs = ["data/artifacts/4d_entropy_mosaic.png", "data/artifacts/spectral_flow_plot.png", "src/spectral_flow_sim.py", "src/vis_4d_slicer.py"]
+path_refs = [
+    "data/artifacts/4d_entropy_mosaic.png",
+    "data/artifacts/spectral_flow_plot.png",
+    "src/spectral_flow_sim.py",
+    "src/vis_4d_slicer.py",
+]
 line_count = 69
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->
@@ -482,7 +498,12 @@ slug = "ALGEBRAIC_FOUNDATIONS"
 title = "Algebraic Foundations: Re-Deriving $G_2$ Structure via Homotopy Transfer"
 content_kind = "algebraic_foundations"
 claim_refs = []
-path_refs = ["data/csv/m3_table.csv", "m3_table_cd.py", "src/cd_hpl_example.py", "src/m3_table_cd.py"]
+path_refs = [
+    "data/csv/m3_table.csv",
+    "m3_table_cd.py",
+    "src/cd_hpl_example.py",
+    "src/m3_table_cd.py",
+]
 line_count = 93
 body_markdown = '''
 <!-- AUTO-GENERATED: DO NOT EDIT -->

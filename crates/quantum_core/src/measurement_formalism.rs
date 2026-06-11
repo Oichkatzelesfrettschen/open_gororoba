@@ -23,7 +23,7 @@ impl KrausChannel {
     }
 }
 
-/// Computes the Lindblad dissipator D[L](rho) = L * rho * L^dagger - 0.5 * {L^dagger * L, rho}
+/// Computes the Lindblad dissipator `D[L](rho) = L * rho * L^dagger - 0.5 * {L^dagger * L, rho}`.
 pub fn lindblad_dissipator(l: &Matrix2x2, rho: &DensityMatrix1Q) -> DensityMatrix1Q {
     let l_adj = l.map(|c| c.conj()).transpose();
     let l_rho_l_adj = l * rho * l_adj;
@@ -55,7 +55,7 @@ pub fn lindblad_evolve(
 }
 
 /// Wiseman-Milburn stochastic master equation step for continuous homodyne detection
-/// d rho = dt(-i[H, rho] + D[c]rho) + sqrt(eta) dW H[c]rho
+/// `d rho = dt(-i[H, rho] + D[c]rho) + sqrt(eta) dW H[c]rho`
 pub fn wiseman_milburn_step(
     rho: &DensityMatrix1Q,
     h: &Matrix2x2,

@@ -40,12 +40,12 @@ impl He3Params {
     /// T_c ~ 0.929 mK at SVP (Greywall 1986).
     pub fn standard() -> Self {
         Self {
-            mass: 5.0082e-27,      // 3.016 u in kg
-            e_f: 3.28e-23,         // ~2.38 mK in J (Fermi temperature ~38 mK)
-            n0: 1.39e47,           // states/J/m^3 (from specific heat)
-            v_p: 0.25,             // effective p-wave coupling
-            t_c_a: 0.929,          // mK at SVP (A phase)
-            t_c_b: 0.929,          // mK at SVP (B phase, same at zero field)
+            mass: 5.0082e-27, // 3.016 u in kg
+            e_f: 3.28e-23,    // ~2.38 mK in J (Fermi temperature ~38 mK)
+            n0: 1.39e47,      // states/J/m^3 (from specific heat)
+            v_p: 0.25,        // effective p-wave coupling
+            t_c_a: 0.929,     // mK at SVP (A phase)
+            t_c_b: 0.929,     // mK at SVP (B phase, same at zero field)
         }
     }
 
@@ -55,11 +55,11 @@ impl He3Params {
     pub fn high_pressure() -> Self {
         Self {
             mass: 5.0082e-27,
-            e_f: 4.5e-23,          // Enhanced at high pressure
-            n0: 2.0e47,            // Enhanced DOS
+            e_f: 4.5e-23, // Enhanced at high pressure
+            n0: 2.0e47,   // Enhanced DOS
             v_p: 0.30,
-            t_c_a: 2.491,          // mK at ~34 bar
-            t_c_b: 2.273,          // mK at ~34 bar (B below A)
+            t_c_a: 2.491, // mK at ~34 bar
+            t_c_b: 2.273, // mK at ~34 bar (B below A)
         }
     }
 }
@@ -104,8 +104,8 @@ pub fn bcs_gap_pwave(temperature_mk: f64, t_c_mk: f64) -> f64 {
 pub fn gap_anisotropy(phase: He3Phase) -> f64 {
     match phase {
         He3Phase::Normal => 0.0,
-        He3Phase::SuperfluidA => 0.0,  // Axial nodes
-        He3Phase::SuperfluidB => 1.0,  // Isotropic
+        He3Phase::SuperfluidA => 0.0, // Axial nodes
+        He3Phase::SuperfluidB => 1.0, // Isotropic
     }
 }
 
@@ -115,11 +115,7 @@ pub fn gap_anisotropy(phase: He3Phase) -> f64 {
 /// A-phase (equal-spin pairing): chi/chi_n ~ 1 (unchanged from normal).
 /// B-phase (spin-singlet-like mixing): chi/chi_n ~ 2/3 at T=0
 /// (Leggett 1975, strong-coupling: ~0.5-0.7).
-pub fn magnetic_susceptibility_ratio(
-    phase: He3Phase,
-    temperature_mk: f64,
-    t_c_mk: f64,
-) -> f64 {
+pub fn magnetic_susceptibility_ratio(phase: He3Phase, temperature_mk: f64, t_c_mk: f64) -> f64 {
     match phase {
         He3Phase::Normal => 1.0,
         He3Phase::SuperfluidA => {
@@ -155,11 +151,7 @@ pub fn magnetic_susceptibility_ratio(
 /// The `pressure_bar` parameter controls the A-B splitting.
 /// At P = 0: T_c_A = T_c_B (no A phase region).
 /// At P = 34 bar: T_c_A ~ 2.49 mK, T_c_B ~ 2.27 mK.
-pub fn equilibrium_phase(
-    temperature_mk: f64,
-    t_c_a_mk: f64,
-    t_c_b_mk: f64,
-) -> He3Phase {
+pub fn equilibrium_phase(temperature_mk: f64, t_c_a_mk: f64, t_c_b_mk: f64) -> He3Phase {
     if temperature_mk >= t_c_a_mk {
         He3Phase::Normal
     } else if temperature_mk >= t_c_b_mk {
@@ -233,11 +225,7 @@ mod tests {
     fn test_bcs_gap_above_tc_zero() {
         // Above T_c, gap is zero
         let gap = bcs_gap_pwave(1.5, 0.929);
-        assert!(
-            gap.abs() < 1e-10,
-            "gap above T_c should be 0, got {}",
-            gap
-        );
+        assert!(gap.abs() < 1e-10, "gap above T_c should be 0, got {}", gap);
     }
 
     #[test]
@@ -259,7 +247,9 @@ mod tests {
         assert!(
             gap_low > gap_mid && gap_mid > gap_high,
             "gap should decrease with T: {:.4} > {:.4} > {:.4}",
-            gap_low, gap_mid, gap_high
+            gap_low,
+            gap_mid,
+            gap_high
         );
     }
 
@@ -364,7 +354,8 @@ mod tests {
         assert!(
             he3_tc < he4_t_lambda / 1000.0,
             "He-3 T_c ({} mK) should be << He-4 T_lambda ({} mK)",
-            he3_tc, he4_t_lambda
+            he3_tc,
+            he4_t_lambda
         );
     }
 
@@ -393,7 +384,8 @@ mod tests {
         assert!(
             rho_s_low > rho_s_mid,
             "rho_s should decrease: {:.4} > {:.4}",
-            rho_s_low, rho_s_mid
+            rho_s_low,
+            rho_s_mid
         );
     }
 }

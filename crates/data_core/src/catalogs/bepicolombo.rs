@@ -84,6 +84,9 @@ pub fn parse_bepicolombo_position_hapi_csv(content: &str) -> Vec<SpdfMergedRecor
     rows
 }
 
+#[cfg(feature = "fetch")]
+pub use super::bepicolombo_fetch::BepicolomboProvider;
+
 /// Parse a BepiColombo position file from disk.
 pub fn parse_bepicolombo_file(path: &std::path::Path) -> Result<Vec<SpdfMergedRecord>, FetchError> {
     let content = std::fs::read_to_string(path)

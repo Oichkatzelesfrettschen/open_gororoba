@@ -10,7 +10,7 @@
 //! in coincidence count data survives wavelet compression, NOT a physical experiment.
 //!
 //! The Haar DWT coarsest scaling coefficient encodes the signal total exactly
-//! (c[0] = sum(signal)/sqrt(n)), so chsh_correlation -- which sums all time bins --
+//! (`c[0] = sum(signal)/sqrt(n)`), so chsh_correlation -- which sums all time bins --
 //! is invariant under compression. delta_S = 0 is the expected result and
 //! confirms that the scaling coefficient alone fully preserves the Bell parameter.
 

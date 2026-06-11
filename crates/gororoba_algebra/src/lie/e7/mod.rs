@@ -5,10 +5,5 @@
 //! - [`structure`] -- structure constants `N(k, p)` for `E_7` and the
 //!   Chevalley-Tits extraspecial cocycle used by [`super::lyndon_basis`].
 //!
-//! # Consolidation note (2026-05-08)
-//!
-//! Promoted from sibling files `e7_geometry.rs` and `e7_structure.rs` directly
-//! under `lie/`. Hard-renamed; no compatibility shim.
-
 pub mod geometry;
 pub mod structure;

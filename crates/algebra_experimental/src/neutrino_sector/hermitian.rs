@@ -50,7 +50,7 @@ pub fn cconj(a: C2) -> C2 {
 ///
 /// # Callers
 ///
-/// - [`test_cp_violation_joint_3d_scan`]: inner scan loop
+/// - `test_cp_violation_joint_3d_scan`: inner scan loop
 /// - Any future tight-loop PMNS computation
 ///
 /// Returns `(eigenvalues_sorted, eigenvectors_as_columns)` where

@@ -4,9 +4,9 @@
 //! Dimension: 27 = 3*1 (diagonal reals) + 3*8 (off-diagonal octonions)
 //!
 //! An element X in J_3(O) is:
-//!   X = [ xi_1    x_3*    x_2  ]
-//!       [ x_3     xi_2    x_1* ]
-//!       [ x_2*    x_1     xi_3 ]
+//!   X = `[ xi_1    x_3*    x_2  ]`
+//!       `[ x_3     xi_2    x_1* ]`
+//!       `[ x_2*    x_1     xi_3 ]`
 //!
 //! where xi_1, xi_2, xi_3 in R and x_1, x_2, x_3 in O (octonions).
 //! The * denotes octonion conjugation.
@@ -44,9 +44,9 @@ use num_complex::Complex;
 /// Layout: 3 complex diagonal entries + 3 complex octonion off-diagonal entries.
 ///
 /// The matrix is:
-///   [ d[0]     o[2]^\dagger   o[1]  ]
-///   [ o[2]     d[1]           o[0]^\dagger ]
-///   [ o[1]^\dagger o[0]       d[2]  ]
+///   `[ d[0]`     o`[2]`^\dagger   o`[1]`  ]
+///   `[ o[2]`     d`[1]`           o`[0]`^\dagger ]
+///   `[ o[1]`^\dagger o`[0]`       d`[2]`  ]
 ///
 /// where ^\dagger denotes the Hermitian conjugate (octonion + complex conjugation).
 #[derive(Debug, Clone)]
@@ -96,7 +96,7 @@ impl ComplexAlbertElement {
         triple_diag + re_triple - diag_norm_terms
     }
 
-    /// Characteristic polynomial coefficients [a, b, c] where
+    /// Characteristic polynomial coefficients `[a, b, c]` where
     /// lambda^3 - a*lambda^2 + b*lambda - c = 0.
     pub fn characteristic_coefficients(&self) -> (Complex<f64>, Complex<f64>, Complex<f64>) {
         (self.trace(), self.s2(), self.det())
@@ -123,9 +123,9 @@ impl ComplexAlbertElement {
 /// Layout: 3 real diagonal entries + 3 octonion off-diagonal entries = 27D.
 ///
 /// The matrix is:
-///   [ d[0]     o[2]*   o[1]  ]
-///   [ o[2]     d[1]    o[0]* ]
-///   [ o[1]*    o[0]    d[2]  ]
+///   `[ d[0]`     o`[2]`*   o`[1]`  ]
+///   `[ o[2]`     d`[1]`    o`[0]`* ]
+///   `[ o[1]`*    o`[0]`    d`[2]`  ]
 ///
 /// where * denotes octonion conjugation.
 #[derive(Debug, Clone)]
@@ -199,7 +199,7 @@ impl AlbertElement {
         triple_diag + re_triple - diag_norm_terms
     }
 
-    /// Characteristic polynomial coefficients [a, b, c] where
+    /// Characteristic polynomial coefficients `[a, b, c]` where
     /// lambda^3 - a*lambda^2 + b*lambda - c = 0.
     pub fn characteristic_coefficients(&self) -> (f64, f64, f64) {
         (self.trace(), self.s2(), self.det())

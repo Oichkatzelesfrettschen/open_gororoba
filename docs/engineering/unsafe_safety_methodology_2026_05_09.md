@@ -8,10 +8,10 @@ the anchored audit reveals a more nuanced picture.
 
 ## Anchored counts (debt-baseline-v1, 2026-05-09)
 
-| Tree            | Rust files | unsafe blocks | SAFETY comments |
-|-----------------|-----------:|--------------:|----------------:|
-| crates/         |       2131 |           392 |              65 |
-| proofs/         |        130 |          3420 |               0 |
+| Tree    | Rust files | unsafe blocks | SAFETY comments |
+| ------- | ---------: | ------------: | --------------: |
+| crates/ |       2131 |           392 |              65 |
+| proofs/ |        130 |          3420 |               0 |
 
 The proofs/ tree's 3420 unsafe blocks are in scaffolding (test harnesses,
 verifiers, ad-hoc reproducers). They are categorically different from the
@@ -24,23 +24,23 @@ is misleading.
 
 ## Top crates by unsafe-block density (crates/ only)
 
-| File                                          | unsafe blocks | risk band  |
-|-----------------------------------------------|--------------:|------------|
-| crates/lbm_vulkan/src/compute.rs               |            59 | high       |
-| crates/lbm_vulkan/src/besag_clifford_vulkan.rs |            52 | high       |
-| crates/lbm_3d_cuda/src/lib.rs                  |            49 | high       |
-| crates/cd_kernel/src/avx2_primitives.rs        |            26 | medium     |
-| crates/lbm_3d_cuda/src/bench_kernels.rs        |            18 | medium     |
-| crates/grmhd_core/src/flux.rs                  |            18 | medium     |
-| crates/lbm_vulkan/src/alignment_vulkan.rs      |            17 | medium     |
-| crates/cd_kernel/src/x87_ext80.rs              |            17 | medium     |
-| crates/lbm_vulkan/src/lib.rs                   |            10 | medium     |
-| crates/sign_imbalance/src/kubo_transport_gpu.rs |            8 | low-medium |
-| crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs |     8 | low-medium |
-| crates/cd_kernel/src/x87_primitives.rs         |             8 | low-medium |
-| crates/lbm_3d/src/solver.rs                    |             7 | (verified) |
-| crates/lbm_3d_cuda/src/sparse/mod.rs           |             7 | low-medium |
-| crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs   |     7 | low-medium |
+| File                                                    | unsafe blocks | risk band  |
+| ------------------------------------------------------- | ------------: | ---------- |
+| crates/lbm_vulkan/src/compute.rs                        |            59 | high       |
+| crates/lbm_vulkan/src/besag_clifford_vulkan.rs          |            52 | high       |
+| crates/lbm_3d_cuda/src/lib.rs                           |            49 | high       |
+| crates/cd_kernel/src/avx2_primitives.rs                 |            26 | medium     |
+| crates/lbm_3d_cuda/src/bench_kernels.rs                 |            18 | medium     |
+| crates/grmhd_core/src/flux.rs                           |            18 | medium     |
+| crates/lbm_vulkan/src/alignment_vulkan.rs               |            17 | medium     |
+| crates/cd_kernel/src/x87_ext80.rs                       |            17 | medium     |
+| crates/lbm_vulkan/src/lib.rs                            |            10 | medium     |
+| crates/sign_imbalance/src/kubo_transport_gpu.rs         |             8 | low-medium |
+| crates/gororoba_cli_physics/src/bin/kerr_pathion_gpu.rs |             8 | low-medium |
+| crates/cd_kernel/src/x87_primitives.rs                  |             8 | low-medium |
+| crates/lbm_3d/src/solver.rs                             |             7 | (verified) |
+| crates/lbm_3d_cuda/src/sparse/mod.rs                    |             7 | low-medium |
+| crates/gororoba_cli_physics/src/bin/dark_halo_hunt.rs   |             7 | low-medium |
 
 The top 4 files (lbm_vulkan/compute, lbm_vulkan/besag_clifford_vulkan,
 lbm_3d_cuda/lib, cd_kernel/avx2_primitives) account for 186 of the 392

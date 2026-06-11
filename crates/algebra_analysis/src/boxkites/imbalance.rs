@@ -8,7 +8,7 @@
 //! 2. Run a BFS coboundary that propagates a vertex delta value across
 //!    the component; the BFS chooses a delta assignment that explains as
 //!    many edges as possible.
-//! 3. Edges where (delta[u] XOR delta[v]) does not match eta(u,v) are
+//! 3. Edges where `delta[u] XOR delta[v]` does not match eta(u,v) are
 //!    "frustrated" -- GF(2) cocycle defects.
 //! 4. The imbalance ratio is total_frustrated / total_b1 across all
 //!    components.

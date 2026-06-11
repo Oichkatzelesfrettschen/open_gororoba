@@ -571,7 +571,7 @@ fn run_export_control_plane(
     let binaries = repo_path(repo_root, &args.binaries);
     let theorems = repo_path(repo_root, &args.theorems);
     let theorems_mirror = repo_path(repo_root, &args.theorems_mirror);
-    store.export_control_plane_compat(
+    store.export_control_plane_compat_paths(
         repo_root,
         provenance_store::CompatExportPaths {
             claims: &claims,
@@ -609,7 +609,7 @@ fn run_verify_control_plane(
         let binaries = repo_path(repo_root, &args.binaries);
         let theorems = repo_path(repo_root, &args.theorems);
         let theorems_mirror = repo_path(repo_root, &args.theorems_mirror);
-        store.verify_control_plane_compat_exports(
+        store.verify_control_plane_compat_exports_paths(
             repo_root,
             provenance_store::CompatExportPaths {
                 claims: &claims,

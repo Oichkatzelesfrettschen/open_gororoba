@@ -14,14 +14,14 @@
 //! Sedenion field imbalance.
 
 use crate::bridge::SedenionField;
-use optics_core::grin::{central_difference_gradient, GrinMedium, Vec3};
+use optics_core::grin::{GrinMedium, Vec3, central_difference_gradient};
 
 /// A refractive medium driven by algebraic imbalance.
 pub struct AlgebraicLensingMedium {
     /// Precomputed imbalance density field (flattened 3D grid)
     density_field: Vec<f64>,
     grid_size: (usize, usize, usize),
-    pub alpha: f64, // Coupling constant: strength of ZD-refraction
+    pub alpha: f64,        // Coupling constant: strength of ZD-refraction
     pub background_n: f64, // Base refractive index (usually 1.0)
 }
 
@@ -31,7 +31,7 @@ impl AlgebraicLensingMedium {
     pub fn new(field: &SedenionField, dim: usize, alpha: f64) -> Self {
         // Compute the full density field upfront
         let density_field = field.local_imbalance_density(dim);
-        
+
         Self {
             density_field,
             grid_size: (field.nx, field.ny, field.nz),
@@ -43,7 +43,7 @@ impl AlgebraicLensingMedium {
     /// Trilinear interpolation of density field.
     fn sample_density(&self, p: Vec3) -> f64 {
         let (nx, ny, nz) = self.grid_size;
-        
+
         // Wrap coordinates (periodic boundary)
         let x = p[0].rem_euclid(nx as f64);
         let y = p[1].rem_euclid(ny as f64);
@@ -94,7 +94,7 @@ impl AlgebraicLensingMedium {
 impl GrinMedium for AlgebraicLensingMedium {
     fn gradient_and_n(&self, p: Vec3) -> (Vec3, f64) {
         // Use central difference for gradient estimation
-        let eps = 0.1; 
+        let eps = 0.1;
         central_difference_gradient(p, |pos| self.refractive_index(pos), eps)
     }
 }
@@ -103,13 +103,13 @@ impl GrinMedium for AlgebraicLensingMedium {
 mod tests {
     use super::*;
     use crate::bridge::SedenionField;
-    use optics_core::grin::{trace_ray, Ray};
-    
+    use optics_core::grin::{Ray, trace_ray};
+
     #[test]
     fn test_algebraic_lensing_medium_creation() {
         let field = SedenionField::uniform(8, 8, 8); // 8^3 grid
         let medium = AlgebraicLensingMedium::new(&field, 16, 0.5);
-        
+
         let n = medium.refractive_index([4.0, 4.0, 4.0]);
         // Imbalance attractor is 0.375
         // n = 1.0 + 0.5 * 0.375 = 1.1875
@@ -120,24 +120,27 @@ mod tests {
     fn test_ray_bending_by_algebraic_vacuum() {
         // Create a field with a gradient (manually modify data to simulate APT evolution)
         let mut field = SedenionField::uniform(8, 8, 8);
-        
+
         // Introduce a dense "core" at center (4,4,4)
         for z in 0..8 {
             for y in 0..8 {
                 for x in 0..8 {
                     let s = field.get_mut(x, y, z);
-                    let dist = ((x as f64 - 4.0).powi(2) + (y as f64 - 4.0).powi(2) + (z as f64 - 4.0).powi(2)).sqrt();
+                    let dist = ((x as f64 - 4.0).powi(2)
+                        + (y as f64 - 4.0).powi(2)
+                        + (z as f64 - 4.0).powi(2))
+                    .sqrt();
                     // Modulate basis weights based on distance
                     if dist < 3.0 {
                         // High imbalance core: mix basis elements
                         s[1] = 1.0;
-                        s[2] = 1.0; 
+                        s[2] = 1.0;
                         s[3] = 1.0;
                     }
                 }
             }
         }
-        
+
         let medium = AlgebraicLensingMedium::new(&field, 16, 5.0); // Strong coupling
 
         // Shoot a ray that passes near the core
@@ -151,12 +154,16 @@ mod tests {
         // Check if the ray deviated from a straight line
         let initial_dir = result.directions[0];
         let final_dir = *result.directions.last().unwrap();
-        
-        let deviation = (initial_dir[0] - final_dir[0]).abs() 
-                      + (initial_dir[1] - final_dir[1]).abs() 
-                      + (initial_dir[2] - final_dir[2]).abs();
+
+        let deviation = (initial_dir[0] - final_dir[0]).abs()
+            + (initial_dir[1] - final_dir[1]).abs()
+            + (initial_dir[2] - final_dir[2]).abs();
 
         // In a structured Sedenion vacuum, rays should bend
-        assert!(deviation > 1e-6, "Ray should bend in algebraic vacuum, deviation={}", deviation);
+        assert!(
+            deviation > 1e-6,
+            "Ray should bend in algebraic vacuum, deviation={}",
+            deviation
+        );
     }
 }

@@ -37,7 +37,7 @@ use std::f64::consts::PI;
 // Constants
 // ============================================================================
 
-/// Mass of the observable universe [g].
+/// Mass of the observable universe `[g]`.
 ///
 /// Estimated from critical density rho_c ~ 9.5e-30 g/cm^3 times the
 /// comoving Hubble volume V_H ~ 4/3 pi (4.4e28 cm)^3.
@@ -98,11 +98,11 @@ pub fn check_qi_satisfied(energy_density: f64, duration: f64) -> bool {
 /// This is always non-positive (negative or zero), violating the WEC.
 ///
 /// # Arguments
-/// * `v_s` - Warp bubble velocity [cm/s].
-/// * `r_s` - Distance from bubble center [cm].  Must be > 0.
-/// * `y` - Transverse coordinate y [cm].
-/// * `z` - Transverse coordinate z [cm].
-/// * `df_dr` - Derivative of the shape function f(r_s) w.r.t. r_s [1/cm].
+/// * `v_s` - Warp bubble velocity `[cm/s]`.
+/// * `r_s` - Distance from bubble center `[cm]`.  Must be > 0.
+/// * `y` - Transverse coordinate y `[cm]`.
+/// * `z` - Transverse coordinate z `[cm]`.
+/// * `df_dr` - Derivative of the shape function f(r_s) w.r.t. r_s `[1/cm]`.
 ///
 /// # Returns
 /// Energy density in CGS [erg/cm^3].  Always <= 0.
@@ -121,9 +121,9 @@ pub fn alcubierre_energy_density(v_s: f64, r_s: f64, y: f64, z: f64, df_dr: f64)
 /// This is always negative, and |E| grows as v_s^2 and R^2.
 ///
 /// # Arguments
-/// * `v_s` - Bubble velocity [cm/s].
-/// * `r_bubble` - Bubble radius [cm].
-/// * `delta` - Wall thickness [cm].  Must be > 0.
+/// * `v_s` - Bubble velocity `[cm/s]`.
+/// * `r_bubble` - Bubble radius `[cm]`.
+/// * `delta` - Wall thickness `[cm]`.  Must be > 0.
 ///
 /// # Returns
 /// Total energy in erg (negative).
@@ -145,7 +145,7 @@ pub fn warp_bubble_total_energy(v_s: f64, r_bubble: f64, delta: f64) -> f64 {
 /// but is always >> 0.
 ///
 /// # Arguments
-/// * `v_s` - Bubble velocity [cm/s].
+/// * `v_s` - Bubble velocity `[cm/s]`.
 ///
 /// # Returns
 /// Minimum wall thickness in cm.
@@ -165,9 +165,9 @@ pub fn warp_wall_thickness_bound(v_s: f64) -> f64 {
 /// need millions of times the total mass-energy of the observable universe.
 ///
 /// # Arguments
-/// * `v_s` - Bubble velocity [cm/s].
-/// * `r_bubble` - Bubble radius [cm].
-/// * `delta` - Wall thickness [cm].
+/// * `v_s` - Bubble velocity `[cm/s]`.
+/// * `r_bubble` - Bubble radius `[cm]`.
+/// * `delta` - Wall thickness `[cm]`.
 ///
 /// # Returns
 /// Dimensionless ratio |E_warp| / (M_universe c^2).

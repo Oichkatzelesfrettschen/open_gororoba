@@ -2,6 +2,8 @@ use gororoba_gpu_bridge::ComputeBackend;
 
 #[cfg(feature = "gpu")]
 use super::cuda;
+#[cfg(feature = "vulkan")]
+use super::vulkan;
 use super::{
     cpu::{TensorAvtCpuMulSession, TensorAvtCpuNormSession},
     policy,
@@ -9,7 +11,6 @@ use super::{
         TensorAvtMulSession, TensorAvtMulSessionInner, TensorAvtNormSession,
         TensorAvtNormSessionInner,
     },
-    vulkan,
 };
 
 /// Tensor Core AVT contraction engine.
@@ -55,7 +56,24 @@ impl TensorAVT {
                     Err("TensorAVT CPU SIMD backend unavailable on this machine".into())
                 }
             }
-            ComputeBackend::Vulkan => Err(vulkan::tensor_avt_vulkan_error()),
+            ComputeBackend::Vulkan => {
+                #[cfg(feature = "vulkan")]
+                {
+                    if vulkan::tensor_avt_vulkan_available() {
+                        Ok(backend)
+                    } else {
+                        Err("TensorAVT Vulkan backend unavailable on this machine".into())
+                    }
+                }
+                #[cfg(not(feature = "vulkan"))]
+                {
+                    let _ = self;
+                    Err(
+                        "TensorAVT Vulkan backend requires building gororoba_algebra with --features vulkan"
+                            .into(),
+                    )
+                }
+            }
             ComputeBackend::Cuda => {
                 #[cfg(feature = "gpu")]
                 {
@@ -94,7 +112,12 @@ impl TensorAVT {
             ComputeBackend::Cuda => {
                 TensorAvtMulSessionInner::Cuda(self.new_gpu_mul_workspace(max_batch_size)?)
             }
-            ComputeBackend::Vulkan => unreachable!("validated unsupported Vulkan above"),
+            #[cfg(feature = "vulkan")]
+            ComputeBackend::Vulkan => TensorAvtMulSessionInner::Vulkan(Box::new(
+                self.new_vulkan_mul_workspace(max_batch_size)?,
+            )),
+            #[cfg(not(feature = "vulkan"))]
+            ComputeBackend::Vulkan => unreachable!("validated unavailable Vulkan above"),
             #[cfg(not(feature = "gpu"))]
             ComputeBackend::Cuda => unreachable!("validated unavailable CUDA above"),
         };
@@ -123,7 +146,12 @@ impl TensorAVT {
             ComputeBackend::Cuda => {
                 TensorAvtNormSessionInner::Cuda(self.new_gpu_norm_workspace(max_vectors)?)
             }
-            ComputeBackend::Vulkan => unreachable!("validated unsupported Vulkan above"),
+            #[cfg(feature = "vulkan")]
+            ComputeBackend::Vulkan => TensorAvtNormSessionInner::Vulkan(Box::new(
+                self.new_vulkan_norm_workspace(max_vectors)?,
+            )),
+            #[cfg(not(feature = "vulkan"))]
+            ComputeBackend::Vulkan => unreachable!("validated unavailable Vulkan above"),
             #[cfg(not(feature = "gpu"))]
             ComputeBackend::Cuda => unreachable!("validated unavailable CUDA above"),
         };

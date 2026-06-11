@@ -12,8 +12,8 @@
 //!
 //! Detection A: R^2 > 0.45 AND corrected RMS < 0.126 (original)
 //! Failure A: R^2 < 0.35 OR corrected RMS >= 0.126
-//! Detection C: gamma in [0.5, 1.5] AND predicted/observed R ratio in [0.5, 2.0] for >= 5/7 modes
-//! Failure C: gamma outside [0.2, 2.0]
+//! Detection C: gamma in `[0.5, 1.5]` AND predicted/observed R ratio in `[0.5, 2.0]` for >= 5/7 modes
+//! Failure C: gamma outside `[0.2, 2.0]`
 
 use clap::Parser;
 use cosmology_core::{

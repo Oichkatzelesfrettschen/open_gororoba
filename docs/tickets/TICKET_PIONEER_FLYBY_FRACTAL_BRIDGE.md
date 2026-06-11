@@ -3,9 +3,9 @@
 
 # Ticket: Pioneer/Flyby Fractal Bridge
 
-Owner: 
-Created: 
-Status: 
+Owner:
+Created:
+Status:
 
 ## Goal
 

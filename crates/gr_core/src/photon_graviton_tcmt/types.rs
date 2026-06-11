@@ -8,23 +8,23 @@ use std::fmt;
 #[derive(Clone, Copy, Debug)]
 pub struct GravitationalCoupling {
     /// Photon-graviton coupling strength (from E-073 irreducible diagram)
-    /// Units: [frequency]
+    /// Units: `[frequency]`
     pub coupling_strength: f64,
 
     /// Radiative decay rate of photonic mode (from tadpole contribution)
-    /// Units: [frequency]
+    /// Units: `[frequency]`
     pub gamma_radiative: f64,
 
     /// Non-radiative decay rate (absorption/scattering losses)
-    /// Units: [frequency]
+    /// Units: `[frequency]`
     pub gamma_nonradiative: f64,
 
     /// Gravitational contribution to decay rate
-    /// Units: [frequency], typically << gamma_radiative in weak-field
+    /// Units: `[frequency]`, typically << gamma_radiative in weak-field
     pub gamma_gravitational: f64,
 
     /// Resonance frequency (photonic mode center)
-    /// Units: [frequency]
+    /// Units: `[frequency]`
     pub resonance_frequency: f64,
 
     /// Coupling phase (from E-073 external-leg diagram)
@@ -107,7 +107,7 @@ pub struct AsymmetryParameter {
     pub q: f64,
 
     /// Alternative form: cot(phi/2) where phi is phase delay
-    /// Relationship: q = -cot(phi/2) [Ruan-Fan convention]
+    /// Relationship: q = -cot(phi/2) `[Ruan-Fan convention]`
     pub phase_factor: f64,
 
     /// Effective gravitational contribution to asymmetry
@@ -222,7 +222,7 @@ impl TCMTState {
 #[derive(Clone, Copy, Debug)]
 pub struct CrossSections {
     /// Scattering cross-section (elastic scattering)
-    /// Units: [frequency]^{-2} or [area] depending on normalization
+    /// Units: `[frequency]`^{-2} or `[area]` depending on normalization
     pub c_scattering: f64,
 
     /// Absorption cross-section (inelastic loss)

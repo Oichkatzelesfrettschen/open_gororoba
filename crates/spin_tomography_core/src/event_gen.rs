@@ -61,7 +61,7 @@ pub fn joint_pdf(
 ///
 /// WHY: This is the numerically stable estimator that matches the Python and Haskell
 /// implementations. It accumulates raw projections u_i = n1.e_i and v_j = n2.e_j
-/// (bounded in [-1, 1]) and scales by 9/(alpha1*alpha2) only after averaging.
+/// (bounded in `[-1, 1]`) and scales by 9/(alpha1*alpha2) only after averaging.
 /// This gives variance per event O(1) instead of O(16) from pre-scaling, making
 /// it converge with ~2000 events vs ~50000 for TomographyMoments.
 ///

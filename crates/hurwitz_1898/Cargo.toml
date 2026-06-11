@@ -2,8 +2,8 @@
 name = "hurwitz_1898"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Hurwitz (1898) Composition of Quadratic Forms -- verified Rust implementation"
 license = "GPL-2.0-or-later"
+description = "Hurwitz (1898) Composition of Quadratic Forms -- verified Rust implementation"
 
 # Source: Hurwitz, A. (1898) "Ueber die Composition der quadratischen Formen
 # von beliebig vielen Variablen", Nachr. Ges. Wiss. Goettingen, pp. 309-316.

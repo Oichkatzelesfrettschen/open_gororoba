@@ -2,8 +2,8 @@
 name = "schafer_1945"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Schafer (1945) Division Algebras of Order 16 -- verified Rust implementation"
 license = "GPL-2.0-or-later"
+description = "Schafer (1945) Division Algebras of Order 16 -- verified Rust implementation"
 
 # Source: Schafer, R.D. (1945) "On a Construction for Division Algebras of
 # Order 16", Bull. Amer. Math. Soc., 51, pp. 532-534.
@@ -17,8 +17,8 @@ license = "GPL-2.0-or-later"
 
 [dependencies]
 cd_kernel.workspace = true
-hurwitz_1898 = { path = "../hurwitz_1898" }
 dickson_1919 = { path = "../dickson_1919" }
+hurwitz_1898 = { path = "../hurwitz_1898" }
 
 [lints]
 workspace = true

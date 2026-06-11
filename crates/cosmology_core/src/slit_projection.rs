@@ -5,8 +5,8 @@
 //! a Gaussian PSF beam and a finite slit aperture. This module provides:
 //!
 //! 1. `compute_projection_matrix`: builds the N x N PSF projection matrix M,
-//!    where M[i][j] describes how emission at radius r[j] contributes to the
-//!    observed velocity at radius r[i].
+//!    where `M[i][j]` describes how emission at radius `r[j]` contributes to the
+//!    observed velocity at radius `r[i]`.
 //!
 //! 2. `deproject_rotation_curve`: Tikhonov-regularized inversion of M to
 //!    recover the intrinsic circular velocity v_circ from v_obs.

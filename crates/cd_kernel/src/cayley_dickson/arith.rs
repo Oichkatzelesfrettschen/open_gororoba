@@ -30,7 +30,7 @@
 ///
 /// `x* = (x0, -x1, -x2, ..., -x_{n-1})`
 ///
-/// Allocates a new Vec. For non-allocating variant, see [`cd_conjugate_into`].
+/// Allocates a new Vec. For non-allocating variant, see `cd_conjugate_into`.
 #[inline]
 pub fn cd_conjugate(x: &[f64]) -> Vec<f64> {
     let mut res = x.to_vec();
@@ -118,7 +118,7 @@ pub(crate) fn allclose(a: &[f64], b: &[f64], atol: f64) -> bool {
     a.iter().zip(b.iter()).all(|(x, y)| (x - y).abs() <= atol)
 }
 
-/// Minimum workspace length for [`cd_multiply_into`] at dimension `dim`.
+/// Minimum workspace length for `cd_multiply_into` at dimension `dim`.
 ///
 /// # Workspace layout (per recursion level)
 ///
@@ -132,8 +132,8 @@ pub(crate) fn allclose(a: &[f64], b: &[f64], atol: f64) -> bool {
 ///
 /// # Callers
 ///
-/// - [`cd_multiply_into`]: asserts `workspace.len() >= cd_multiply_workspace_len(dim)`
-/// - [`cd_multiply_mut`]: allocates workspace of this size
+/// - `cd_multiply_into`: asserts `workspace.len() >= cd_multiply_workspace_len(dim)`
+/// - `cd_multiply_mut`: allocates workspace of this size
 #[inline]
 pub fn cd_multiply_workspace_len(dim: usize) -> usize {
     if dim <= 1 {
@@ -150,7 +150,7 @@ pub fn cd_multiply_workspace_len(dim: usize) -> usize {
 ///
 /// # Why this exists
 ///
-/// [`cd_conjugate`] allocates a Vec per call. Inside [`cd_multiply_into`],
+/// `cd_conjugate` allocates a Vec per call. Inside `cd_multiply_into`,
 /// conjugates are stored in workspace slices, avoiding heap allocation
 /// in the recursive multiply.
 #[inline]
@@ -232,7 +232,7 @@ pub fn cd_multiply_into(a: &[f64], b: &[f64], res: &mut [f64], workspace: &mut [
 /// In-place Cayley-Dickson multiplication.
 ///
 /// Allocates `res[dim]` + `workspace[cd_multiply_workspace_len(dim)]` once,
-/// then delegates to the non-allocating [`cd_multiply_into`].
+/// then delegates to the non-allocating `cd_multiply_into`.
 pub fn cd_multiply_mut(a: &mut Vec<f64>, b: &[f64]) {
     let dim = a.len();
     let mut res = vec![0.0; dim];
@@ -241,7 +241,7 @@ pub fn cd_multiply_mut(a: &mut Vec<f64>, b: &[f64]) {
     *a = res;
 }
 
-/// Construct the left-multiplication matrix L_a where L_a[i][j] = (a * e_j)[i].
+/// Construct the left-multiplication matrix L_a where L_a`[i]``[j]` = (a * e_j)`[i]`.
 pub fn left_mult_operator(a: &[f64], dim: usize) -> Vec<f64> {
     debug_assert_eq!(a.len(), dim);
     let mut matrix = vec![0.0; dim * dim];

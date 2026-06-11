@@ -71,4 +71,3 @@ kind = "article_or_chapter_delivery_followup"
 dossier_json = "docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.json"
 dossier_markdown = "docs/reports/cd_cache_dossiers/jacobson_1958_exact_original_20260327.md"
 suggestion_count = 5
-

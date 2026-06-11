@@ -444,9 +444,9 @@ pub fn detection_threshold(n_galaxies: usize, sigma_v_frac: f64) -> f64 {
 /// post-hoc multi-algebra analysis without re-running the full stacking.
 ///
 /// The normalization matches `fourier_at_predicted_wavenumbers`:
-///   re = sum(delta[j] * cos(k * x[j])) / count
-///   im = sum(delta[j] * sin(k * x[j])) / count
-///   power = re^2 + im^2
+///   `re = sum(delta[j] * cos(k * x[j])) / count`
+///   `im = sum(delta[j] * sin(k * x[j])) / count`
+///   `power = re^2 + im^2`
 ///
 /// Returns (power, phase) vectors of length wavenumbers.len().
 pub fn fourier_at_wavenumbers(
@@ -1106,7 +1106,7 @@ pub struct EigenmodeStackResult {
     pub zd_overlaps: Vec<f64>,
     /// Cumulative fraction of total variance per mode (length n_modes_kept).
     pub explained_variance: Vec<f64>,
-    /// max_k(zd_overlaps[k] * sqrt(lambda_k / lambda_mean)).
+    /// `max_k(zd_overlaps[k] * sqrt(lambda_k / lambda_mean))`.
     pub reconstruction_snr: f64,
     /// Number of galaxies used.
     pub n_galaxies: usize,

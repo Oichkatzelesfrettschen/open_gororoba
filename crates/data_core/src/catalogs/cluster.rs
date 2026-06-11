@@ -34,6 +34,9 @@ pub struct ClusterFgmMinuteRecord {
     pub z_gse_km: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::cluster_fetch::ClusterFgmProvider;
+
 /// Parse Cluster FGM SPIN HAPI CSV into minute-averaged records.
 pub fn parse_cluster_fgm_hapi_csv_minutes(
     content: &str,

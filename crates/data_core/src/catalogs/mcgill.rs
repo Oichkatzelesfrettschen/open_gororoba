@@ -4,7 +4,7 @@
 //! (SGRs and AXPs). Small dataset (~30 objects) but critical for
 //! compact object population studies.
 //!
-//! Source: http://www.physics.mcgill.ca/~pulsar/magnetar/main.html
+//! Source: <http://www.physics.mcgill.ca/~pulsar/magnetar/main.html>
 //! Reference: Olausen & Kaspi (2014), ApJS 212, 6
 
 use crate::{

@@ -21,6 +21,9 @@ pub struct SolarOrbiterRpwDensityRecord {
     pub density_cm3: f64,
 }
 
+#[cfg(feature = "fetch")]
+pub use super::solar_orbiter_rpw_density_fetch::SolarOrbiterRpwDensityProvider;
+
 pub fn parse_solar_orbiter_rpw_density_csv(content: &str) -> Vec<SolarOrbiterRpwDensityRecord> {
     let mut reader = ReaderBuilder::new()
         .has_headers(true)

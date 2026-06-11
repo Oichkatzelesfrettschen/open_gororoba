@@ -24,15 +24,20 @@ Working directory for repo-internal roadmaps and execution plans.
   `~/.claude/plans/<topic>.md`; either location is valid as long as one
   of them is referenced from `registry/project.toml` or a commit message.
 
-## Current state (2026-04-30)
+## Current state (2026-06-09)
 
-- Active: `repo_debt_roadmap_2026_04_11.toml` -- the legacy debt roadmap
-  whose execution is being subsumed and elaborated by the
-  `elucidate-and-build-out-nested-hollerith` plan (mirror in
-  `~/.claude/plans/`).
+- Active: `repo_debt_taxonomy_roadmap_2026_06_04.toml` -- the canonical
+  debt taxonomy and forward roadmap. It supersedes
+  `repo_debt_roadmap_2026_04_11.toml` and subsumes
+  `post_gate_optimization_2026_05_12.toml`.
+- Active GPU companion: `../README_GPU_STEPS.md` -- the GPU backend parity
+  roadmap. Keep this file synchronized with concrete source and test
+  evidence before changing any OPEN/DONE status.
+- Superseded but retained at top level:
+  `repo_debt_roadmap_2026_04_11.toml` remains as historical input until the
+  next sprint-close archive pass.
 - Archived (10 files): see `plans/archive/`. All predate
-  `repo_debt_roadmap_2026_04_11.toml` and were retired in T-102 of the
-  Phase 0 baseline pass.
+  `repo_debt_roadmap_2026_04_11.toml` and were retired in the baseline pass.
 
 ## Sprint-close ritual
 

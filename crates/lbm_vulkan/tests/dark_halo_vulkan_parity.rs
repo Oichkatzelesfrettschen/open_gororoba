@@ -32,8 +32,15 @@ const TAU_AMP: f32 = 0.3;
 const STEPS: usize = 5;
 
 /// Replicate dark_halo_viscosity.wgsl `pos_hash` + tau formula on CPU.
-fn cpu_tau(nx: usize, ny: usize, nz: usize, seed: u32, k_dim: u32,
-           tau_base: f32, tau_amp: f32) -> Vec<f32> {
+fn cpu_tau(
+    nx: usize,
+    ny: usize,
+    nz: usize,
+    seed: u32,
+    k_dim: u32,
+    tau_base: f32,
+    tau_amp: f32,
+) -> Vec<f32> {
     let lambda = (k_dim as f32).ln();
     let n_cells = nx * ny * nz;
     let mut tau = vec![0.0_f32; n_cells];
@@ -120,8 +127,7 @@ fn deterministic_zd_count() {
     eprintln!(
         "ZD parity OK on {}x{}x{} after {} steps: \
          gpu_halo_count={}, cpu_halo_count={}, diff={}, fraction={:.3}",
-        NX, NY, NZ, STEPS,
-        result.halo_count, expected_count, diff, result.halo_fraction
+        NX, NY, NZ, STEPS, result.halo_count, expected_count, diff, result.halo_fraction
     );
 }
 
@@ -154,14 +160,15 @@ fn all_pass_all_fail() {
         .run(None, &all_pass_config)
         .expect("all-pass run succeeds");
     assert_eq!(
-        all_pass.halo_count,
-        n_cells as u32,
+        all_pass.halo_count, n_cells as u32,
         "expected all {} cells to be halos with trivially-passing thresholds, \
          got {}",
-        n_cells,
-        all_pass.halo_count
+        n_cells, all_pass.halo_count
     );
-    eprintln!("all-pass: halo_count = {} / {} = 1.000", all_pass.halo_count, n_cells);
+    eprintln!(
+        "all-pass: halo_count = {} / {} = 1.000",
+        all_pass.halo_count, n_cells
+    );
 
     // No cells should be halo candidates: ZD proxy always <= 1 < 2.0.
     let all_fail_config = DarkHaloConfig {
@@ -178,8 +185,7 @@ fn all_pass_all_fail() {
         .run(None, &all_fail_config)
         .expect("all-fail run succeeds");
     assert_eq!(
-        all_fail.halo_count,
-        0,
+        all_fail.halo_count, 0,
         "expected 0 halo cells with impossibly-high ZD threshold, got {}",
         all_fail.halo_count
     );

@@ -2,11 +2,10 @@
 name = "cosmology_core"
 version = "0.1.0"
 edition = { workspace = true }
-description = "Cosmology simulations: gravastar TOV, spectral dimensions, fractal cosmology"
 license = "MIT"
+description = "Cosmology simulations: gravastar TOV, spectral dimensions, fractal cosmology"
 
 [dependencies]
-
 # Numerical quadrature
 gauss-quad = { workspace = true }
 
@@ -21,22 +20,22 @@ rand_distr = { workspace = true }
 nalgebra = { workspace = true }
 
 # Parallel chi2 evaluation across SN data points
-rayon = { workspace = true }
 algebra_analysis = { path = "../algebra_analysis" }
-quantum_core = { path = "../quantum_core" }
 argmin = { workspace = true, optional = true }
 argmin-math = { workspace = true, optional = true }
+quantum_core = { path = "../quantum_core" }
+rayon = { workspace = true }
 
 # Euclid catalog reader: Apache Arrow parquet (pure Rust, zero-copy columnar)
-parquet = { workspace = true, optional = true }
 arrow-array = { workspace = true, optional = true }
+csv = { workspace = true }
 data_core = { version = "0.1.0", path = "../data_core", default-features = false }
-stats_core = { version = "0.1.0", path = "../stats_core" }
+gr_core = { version = "0.1.0", path = "../gr_core" }
 ndarray = { workspace = true }
+parquet = { workspace = true, optional = true }
 rustfft = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
-csv = { workspace = true }
-gr_core = { version = "0.1.0", path = "../gr_core" }
+stats_core = { version = "0.1.0", path = "../stats_core" }
 
 [features]
 default = []

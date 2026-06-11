@@ -1,7 +1,7 @@
 //! Dark matter source term injection into the Parker Transport Equation.
 //!
 //! The source term is applied as a tabulated spectrum over kinetic energy:
-//!   Q_DM(r, K) = (rho_DM(r)^2 / (2 m_chi^2)) * <sigma v> * dN/dlog10(K)
+//!   `Q_DM(r, K) = (rho_DM(r)^2 / (2 m_chi^2)) * <sigma v> * dN/dlog10(K)`
 //!
 //! The solver evolves on a rigidity grid, so this module integrates the
 //! tabulated kinetic-energy spectrum over each rigidity bin before injection.

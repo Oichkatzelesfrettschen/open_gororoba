@@ -125,7 +125,7 @@ impl Rational {
         self.num == 0
     }
 
-    /// Check if in [0, 1].
+    /// Check if in `[0, 1]`.
     pub fn in_unit_interval(&self) -> bool {
         self.num >= 0 && (self.num as u64) <= self.den
     }
@@ -238,12 +238,12 @@ impl CantorDigits {
     }
 }
 
-/// Compute the first `n_digits` base-3 digits of q in [0,1].
+/// Compute the first `n_digits` base-3 digits of q in `[0,1]`.
 ///
 /// Exact for rationals with denominator a power of 3.
 ///
 /// # Errors
-/// - If q is not in [0, 1]
+/// - If q is not in `[0, 1]`
 pub fn ternary_digits_power3(q: Rational, n_digits: usize) -> AlgebraResult<CantorDigits> {
     if !q.in_unit_interval() {
         return Err(AlgebraError::NumericalError(
@@ -283,7 +283,7 @@ pub fn ternary_digits_power3(q: Rational, n_digits: usize) -> AlgebraResult<Cant
 /// Returns the value as a rational.
 ///
 /// # Errors
-/// - If q is not in [0, 1]
+/// - If q is not in `[0, 1]`
 /// - If q's ternary expansion contains 1s (not a Cantor set point)
 pub fn cantor_function_on_cantor(q: Rational, n_digits: usize) -> AlgebraResult<Rational> {
     let digs = ternary_digits_power3(q, n_digits)?;

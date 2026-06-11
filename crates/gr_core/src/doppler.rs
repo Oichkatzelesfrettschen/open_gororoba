@@ -146,7 +146,7 @@ pub fn relativistic_beaming_flux(f_emit: f64, beta: f64, theta: f64, alpha: f64)
     f_emit * delta.powf(3.0 + alpha)
 }
 
-/// Apparent superluminal velocity [units of c].
+/// Apparent superluminal velocity `[units of c]`.
 ///
 /// beta_app = beta sin(theta) / (1 - beta cos(theta))
 ///
@@ -174,7 +174,7 @@ pub fn superluminal_optimal_angle(beta: f64) -> f64 {
     beta.clamp(-1.0, 1.0).acos()
 }
 
-/// Maximum apparent superluminal velocity [units of c].
+/// Maximum apparent superluminal velocity `[units of c]`.
 ///
 /// beta_app_max = gamma * beta
 pub fn superluminal_velocity_max(beta: f64) -> f64 {
@@ -251,8 +251,8 @@ pub fn k_correction_factor(z: f64, alpha: f64) -> f64 {
 /// Arguments:
 ///   r: radius in units of M
 ///   a_star: dimensionless spin (-1 < a* < 1)
-///   phi: azimuthal angle [rad] (0 = approaching)
-///   inclination: disk inclination [rad] (0 = face-on, pi/2 = edge-on)
+///   phi: azimuthal angle `[rad]` (0 = approaching)
+///   inclination: disk inclination `[rad]` (0 = face-on, pi/2 = edge-on)
 ///   alpha: spectral index (F_nu ~ nu^alpha), use 0 for blackbody
 ///
 /// References:

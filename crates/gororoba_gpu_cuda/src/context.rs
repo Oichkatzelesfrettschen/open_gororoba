@@ -6,8 +6,10 @@
 
 use std::sync::Arc;
 
-use cudarc::driver::{CudaContext, CudaStream};
-use cudarc::runtime::result::device as cudart_device;
+use cudarc::{
+    driver::{CudaContext, CudaStream},
+    runtime::result::device as cudart_device,
+};
 
 use crate::error::{CudaError, Result};
 

@@ -25,7 +25,7 @@
 //!
 //! ## Postulate 3: Topological QEC Stabilizers
 //!
-//! **Claim:** The topological stability of the vacuum is ensured by a [[7,1,3]] Steane
+//! **Claim:** The topological stability of the vacuum is ensured by a `[[7,1,3]]` Steane
 //! code structure encoded in the 7 octahedral box-kites of Sedenion zero-divisors.
 //!
 //! **Prediction:** The zero-divisor manifold is invariant under $PSL(2,7)$ and

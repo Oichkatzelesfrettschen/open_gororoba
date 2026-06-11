@@ -10,7 +10,7 @@
 //! WHAT: Three runs on the same THEMIS window: boxcar (paper baseline), Hamming
 //! (alpha=0.54), and Hann (alpha=0.5) windows applied to the channels of each
 //! lag sample before the delay vector is formed.  Report F1 and CI for each.
-//! The window is applied per-sample (all 4 channels scaled by w[s]) over the
+//! The window is applied per-sample (all 4 channels scaled by `w[s]`) over the
 //! n_lags samples in the Takens embedding.
 //!
 //! HOW:
@@ -42,9 +42,9 @@ const MAD_SCALE_FACTOR: f64 = 1.5;
 enum WindowFn {
     /// Uniform weights -- the paper baseline.
     Boxcar,
-    /// Hamming window: w[n] = 0.54 - 0.46 * cos(2*pi*n / (N-1))
+    /// Hamming window: `w[n] = 0.54 - 0.46 * cos(2*pi*n / (N-1))`
     Hamming,
-    /// Hann window: w[n] = 0.5 * (1 - cos(2*pi*n / (N-1)))
+    /// Hann window: `w[n] = 0.5 * (1 - cos(2*pi*n / (N-1)))`
     Hann,
 }
 
