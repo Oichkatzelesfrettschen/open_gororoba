@@ -192,3 +192,5 @@ theories/Brown1972ChapterV.v
 theories/Brown1972ChapterVI.v
 theories/Brown1972ChapterVII.v
 theories/Brown1972.v
+theories/QuatNormalize.v
+theories/OctonionSandwichNorm.v
