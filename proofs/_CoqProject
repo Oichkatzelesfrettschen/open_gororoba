@@ -194,3 +194,6 @@ theories/Brown1972ChapterVII.v
 theories/Brown1972.v
 theories/QuatNormalize.v
 theories/OctonionSandwichNorm.v
+theories/CDQuatRotationMatrix.v
+theories/OctonionInverse.v
+theories/QuatTranscendental.v
