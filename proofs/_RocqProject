@@ -274,3 +274,5 @@ theories/SedenionXorGroup.v
 theories/BrownAssessorEquivalence.v
 theories/G2OctonionAutomorphisms.v
 theories/OctonionStandardModel.v
+theories/QuatNormalize.v
+theories/OctonionSandwichNorm.v
