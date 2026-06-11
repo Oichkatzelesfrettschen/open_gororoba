@@ -93,7 +93,7 @@ impl ImbalanceGpu {
     ) -> Result<ImbalanceResult, String> {
         use std::collections::VecDeque;
 
-        // Phase 1: CPU BFS to assign delta values
+        // CPU BFS assigns delta values before edge validation.
         let mut delta = vec![0u8; n_nodes];
         let mut visited = vec![false; n_nodes];
         let mut adj: Vec<Vec<(usize, u8)>> = vec![Vec::new(); n_nodes];
@@ -158,17 +158,19 @@ impl ImbalanceGpu {
             })
             .collect::<Result<Vec<_>, _>>()?;
 
-        // Phase 2: GPU parallel edge validation
+        // GPU threads validate edges in parallel.
         let ctx = gororoba_gpu_cuda::Context::with_default_device()
             .map_err(|e| format!("CUDA init: {}", e))?;
         let stream = ctx.default_stream();
 
         let opts = CompileOptions::empty();
-        let ptx = CompileOptions::compile_ptx(IMBALANCE_KERNEL_SRC, &opts)
-            .map_err(|e| format!("NVRTC compile: {}", e))?;
-
-        let registry = ModuleRegistry::load(ctx.raw(), ptx, &["validate_edges_parallel"])
-            .map_err(|e| format!("Module load: {}", e))?;
+        let registry = ModuleRegistry::compile_and_load(
+            ctx.raw(),
+            IMBALANCE_KERNEL_SRC,
+            &opts,
+            &["validate_edges_parallel"],
+        )
+        .map_err(|e| format!("Module compile/load: {}", e))?;
 
         let kernel = registry
             .get("validate_edges_parallel")

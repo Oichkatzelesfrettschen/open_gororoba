@@ -133,10 +133,13 @@ impl Cd256FrustrationKernel {
         let stream = ctx_wrapper.default_stream();
 
         let opts = CompileOptions::empty();
-        let ptx = CompileOptions::compile_ptx(VOUDON_KERNEL_SRC, &opts)
-            .map_err(|e| format!("NVRTC compile: {}", e))?;
-        let registry = ModuleRegistry::load(ctx_wrapper.raw(), ptx, &["voudon_frustration_kernel"])
-            .map_err(|e| format!("Module load: {}", e))?;
+        let registry = ModuleRegistry::compile_and_load(
+            ctx_wrapper.raw(),
+            VOUDON_KERNEL_SRC,
+            &opts,
+            &["voudon_frustration_kernel"],
+        )
+        .map_err(|e| format!("Module compile/load: {}", e))?;
         let kernel = registry
             .get("voudon_frustration_kernel")
             .map_err(|e| format!("Kernel load: {}", e))?;

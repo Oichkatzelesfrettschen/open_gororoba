@@ -124,11 +124,10 @@ impl DarkHaloCudaSolver {
             .prec_sqrt(false)
             .ftz(true)
             .fmad(true);
-        let ptx = CompileOptions::compile_ptx(KERNEL_DARK_HALO_SRC, &opts)
-            .context("NVRTC compilation of dark halo kernels")?;
-        let module_registry = ModuleRegistry::load(
+        let module_registry = ModuleRegistry::compile_and_load(
             ctx.raw(),
-            ptx,
+            KERNEL_DARK_HALO_SRC,
+            &opts,
             &[
                 "lbm_step_soa_fused",
                 "dark_halo_detector",
@@ -136,7 +135,7 @@ impl DarkHaloCudaSolver {
                 "convergence_check",
             ],
         )
-        .context("Load dark halo CUDA module")?;
+        .context("Compile/load dark halo CUDA module")?;
 
         let lbm_step_kernel = module_registry.get("lbm_step_soa_fused")?;
         let halo_detector_kernel = module_registry.get("dark_halo_detector")?;

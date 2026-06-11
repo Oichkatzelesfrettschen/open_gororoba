@@ -91,18 +91,17 @@ struct BesagCliffordKernels {
 
 fn load_kernels(ctx: &CudaContextHelper) -> Result<BesagCliffordKernels> {
     let opts = CompileOptions::empty();
-    let ptx = CompileOptions::compile_ptx(BESAG_CLIFFORD_KERNELS, &opts)
-        .context("Failed to compile CUDA kernels")?;
-    let registry = ModuleRegistry::load(
+    let registry = ModuleRegistry::compile_and_load(
         ctx.raw(),
-        ptx,
+        BESAG_CLIFFORD_KERNELS,
+        &opts,
         &[
             "shuffle_imbalance_batch_kernel",
             "transform_to_viscosity_batch_kernel",
             "count_extreme_batch_kernel",
         ],
     )
-    .context("Failed to load Besag-Clifford CUDA module")?;
+    .context("Failed to compile/load Besag-Clifford CUDA module")?;
 
     Ok(BesagCliffordKernels {
         shuffle: registry

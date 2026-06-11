@@ -1,7 +1,7 @@
 // FP64 (double-precision) D3Q19 LBM kernels for multi-precision comparison.
 // Mechanical translation of kernels.cu: float -> double, f-suffix removed.
 // WHY: Reference implementation to determine whether ghost spectral artifacts
-// are BF16 quantization noise or genuine physics (Sprint 50B, E-069).
+// are BF16 quantization noise or genuine physics.
 
 // D3Q19 lattice velocities (shared with FP32/BF16 kernels)
 __constant__ int D3Q19_CX_D[19] = {
@@ -29,7 +29,7 @@ __constant__ double D3Q19_WD[19] = {
 __device__ const double CS_SQ_D = 1.0 / 3.0;
 
 __device__ __forceinline__ bool finite_f64(double x) {
-    return (x == x) && (x <= 1.7976931348623157e308) && (x >= -1.7976931348623157e308);
+    return isfinite(x);
 }
 
 // Compute equilibrium distribution (double) -- FMA-optimized Horner form.

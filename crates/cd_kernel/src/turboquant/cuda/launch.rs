@@ -34,11 +34,10 @@ pub struct TurboQuantCudaKernels {
 impl TurboQuantCudaKernels {
     /// Initialize: probe device, NVRTC compile, load all 5 kernel functions.
     ///
-    /// Routes through `gororoba_gpu_cuda::Context::with_default_device` and
-    /// `gororoba_gpu_cuda::ModuleRegistry::load` so the cudarc-init
-    /// boilerplate stays in one place. The function preserves the
-    /// `Result<Self, String>` shape so the `BackendQuantizer::try_quantize`
-    /// call site keeps compiling without an import change.
+    /// Routes context acquisition through
+    /// `gororoba_gpu_cuda::Context::with_default_device`. The JIT layer
+    /// returns PTX so tests and launch code can share one compiled artifact;
+    /// this constructor loads that PTX through `ModuleRegistry`.
     pub fn new() -> Result<Self, String> {
         let props =
             super::device::probe_device().ok_or_else(|| "No CUDA device available".to_string())?;
