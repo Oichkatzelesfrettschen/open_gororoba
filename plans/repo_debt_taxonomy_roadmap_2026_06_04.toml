@@ -266,15 +266,15 @@ id = "DEBT-SUPPLY-CHAIN"
 axis = "B_build_toolchain_delivery"
 label = "Security, license, and dependency-advisory currency"
 risk = "Advisories, duplicate dependency versions, unused deps, and accumulating RUSTSEC ignores enter through wide workspace growth; an ignore list that only grows hides unaddressed advisories."
-current_magnitude = "deny.toml has 6 active RUSTSEC ignores, down from 7 at the 2026-04-30 baseline (the rustls-webpki cluster 0098/0099/0104 was resolved via 0.103.13; core2 0105 was added). An earlier 7->9 figure was a measurement artifact: grep -c RUSTSEC counts the 3 resolved ids named in the deny.toml resolution comment. Use grep -cE '^\\s*\"RUSTSEC' for the true active count. 2160 duplicate-dependency lines in cargo tree -d; cargo-machete reports 0 unused deps (Stage A)."
-magnitude_reproduce = "grep -cE '^\\s*\"RUSTSEC' deny.toml ; cargo tree -d | wc -l ; make machete"
+current_magnitude = "deny.toml has 6 active RUSTSEC ignores, down from 7 at the 2026-04-30 baseline (the rustls-webpki cluster 0098/0099/0104 was resolved via 0.103.13; core2 0105 was added). An earlier 7->9 figure was a measurement artifact: grep -c RUSTSEC counts the 3 resolved ids named in the deny.toml resolution comment. Use grep -cE '^[[:space:]]*\"RUSTSEC' for the true active count. 2160 duplicate-dependency lines in cargo tree -d; cargo-machete reports 0 unused deps (Stage A)."
+magnitude_reproduce = "grep -cE '^[[:space:]]*\"RUSTSEC' deny.toml ; cargo tree -d | wc -l ; make machete"
 confirmed_examples = [
     "deny.toml has 6 active RUSTSEC ignores, each already annotated with the blocking dependency and dependency path, plus docs/adr/rustsec-dispositions.md.",
     "rustls-webpki 0098/0099/0104 resolved 2026-04-30 via cargo update -p rustls-webpki --precise 0.103.13.",
     "2160 duplicate-dependency lines (cargo tree -d).",
 ]
 resolution_pattern = "Keep cargo-deny as the hard gate; for each RUSTSEC ignore record the blocking dependency and a re-check trigger (already present in deny.toml + the ADR); use duplicate-version audits for planning, not as a hard gate. Count active ignores with the anchored regex, never a bare grep -c."
-falsifiable_acceptance = "Every entry in deny.toml [advisories].ignore has an adjacent comment naming the blocking dependency and a re-check trigger (satisfied); grep -cE '^\\s*\"RUSTSEC' deny.toml does not exceed the prior snapshot without a recorded justification."
+falsifiable_acceptance = "Every entry in deny.toml [advisories].ignore has an adjacent comment naming the blocking dependency and a re-check trigger (satisfied); grep -cE '^[[:space:]]*\"RUSTSEC' deny.toml does not exceed the prior snapshot without a recorded justification."
 status = "controlled"
 predecessor_ids = ["DEBT-SUPPLY-CHAIN"]
 cross_links = ["make cargo-deny-check", "make dep-audit"]
@@ -452,15 +452,15 @@ id = "DEBT-DIMENSIONAL-UNITS"
 axis = "E_scientific_methodology"
 label = "Physical-unit correctness and non-dimensionalization conventions"
 risk = "Mixing physical units or conflating a quantity with its complement is a classic silent physics bug. In a workspace spanning cosmology (Mpc, redshift), heliosphere (AU), materials (eV, nm), and LBM (lattice units), an undeclared unit or an inverted convention corrupts results without a compiler error."
-current_magnitude = "The specific void-fraction notation hazard is RESOLVED: generate_topological_voids.rs now documents vf = void_count/total_cells (void fraction = exclusion) vs (1-vf) = baryon filling fraction in its header and labels both at the print site, with a debug_assert!((0.0..=1.0).contains(&vf)) range invariant. Broader debt remains: cross-domain unit conventions (Mpc, AU, eV, lattice units) are documented by comment, not enforced by a newtype, so a unit mix-up is not a compile error."
+current_magnitude = "The specific void-fraction notation hazard is RESOLVED: generate_topological_voids.rs uses void_fraction = void_count/total_cells for the exclusion fraction and baryon_filling_fraction = 1.0 - void_fraction for the CDG-2 complement. The print site labels both quantities, and assert!((0.0..=1.0).contains(&void_fraction)) enforces the range invariant in every build profile. Broader debt remains: cross-domain unit conventions (Mpc, AU, eV, lattice units) are documented by comment, not enforced by a newtype, so a unit mix-up is not a compile error."
 magnitude_reproduce = "rg -n 'void_fraction|filling_fraction' crates --type rust ; rg -c 'AU|Mpc|redshift|lattice_units|eV' crates --type rust | awk -F: '{s+=$2} END{print s}'"
 confirmed_examples = [
-    "LBM void-fraction notation hazard resolved in generate_topological_voids.rs (header + labeled prints + range debug_assert).",
+    "LBM void-fraction notation hazard resolved in generate_topological_voids.rs (explicit void_fraction and baryon_filling_fraction names + labeled prints + range assert).",
     "Cross-domain unit conventions still documented by comment, not by newtype.",
 ]
 resolution_pattern = "Where a quantity and its complement coexist, encode the convention in the name (filling_fraction vs void_fraction) and ideally a newtype; document the unit system per module header; add assertions on physical ranges (0<=fraction<=1, redshift>=0) at lane boundaries."
-falsifiable_acceptance = "Each physics crate header declares its unit system; boundary assertions catch out-of-range physical quantities; no variable conflates a quantity with its complement (vf/(1-vf) instance closed)."
-status = "in_progress" # vf instance resolved; cross-domain unit type-safety remains
+falsifiable_acceptance = "Each physics crate header declares its unit system; boundary assertions catch out-of-range physical quantities; no variable conflates a quantity with its complement (void_fraction/baryon_filling_fraction instance closed)."
+status = "in_progress" # named fraction instance resolved; cross-domain unit type-safety remains
 predecessor_ids = []
 cross_links = ["MEMORY notation bug B-C1", "DEBT-NUMERICAL-REPRODUCIBILITY"]
 
@@ -694,7 +694,7 @@ tasks = [
 ]
 acceptance_hooks = [
     "grep -rn nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l  # == 1",
-    "make cargo-deny-check ; grep -cE '^\\s*\"RUSTSEC' deny.toml  # active count not above prior snapshot without justification",
+    "make cargo-deny-check ; grep -cE '^[[:space:]]*\"RUSTSEC' deny.toml  # active count not above prior snapshot without justification",
     "xtask --help  # subcommands discoverable via clap",
 ]
 risk_controls = [
@@ -752,7 +752,7 @@ goal = "Every result reproduces at a fixed seed; units are unambiguous; signal c
 tasks = [
     "Replace the 36 rand::rng()/ThreadRng computation sites (22 files) with explicit seeded RNG behind a --seed flag (detect with 'rand::rng\\(\\)|ThreadRng'; rand 0.10 renamed thread_rng to rand::rng); keep Instant::now for telemetry only.",
     "Add at least one GPU-vs-CPU parity test asserting bounded relative error at a fixed seed (LBM and cd_kernel).",
-    "Declare unit systems in physics-crate headers and add 0..1 range assertions at fraction lane boundaries (the vf vs (1-vf) notation hazard in generate_topological_voids.rs is already resolved: header distinguishes vf=void fraction from (1-vf)=baryon filling fraction, with a debug_assert range invariant on vf).",
+    "Declare unit systems in physics-crate headers and add 0..1 range assertions at fraction lane boundaries (the void_fraction vs baryon_filling_fraction notation hazard in generate_topological_voids.rs is already resolved with explicit names and an assert range invariant).",
     "For each signal-detection claim, attach a blind-injection recovery measurement and a multiple-comparison treatment; record as an insight.",
 ]
 acceptance_hooks = [

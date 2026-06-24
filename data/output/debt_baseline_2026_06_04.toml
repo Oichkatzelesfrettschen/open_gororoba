@@ -112,7 +112,7 @@ claims_with_formal_proof  = 144
 # Supply chain.
 # ----------------------------------------------------------------------------
 [supply_chain]
-# Count active entries only: grep -cE '^\s*"RUSTSEC' deny.toml
+# Count active entries only: grep -cE '^[[:space:]]*"RUSTSEC' deny.toml
 # (a naive grep -c RUSTSEC overcounts by 3 -- it matches resolved ids
 # named in the deny.toml resolution comment, the same comment-vs-code
 # artifact the repo_audit metric taxonomy warns about).
