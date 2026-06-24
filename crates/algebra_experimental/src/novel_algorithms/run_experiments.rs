@@ -34,9 +34,9 @@ pub fn execute_all_prototypes() {
     );
 
     // 3. Deep Factorization
-    let blocks = heurstic_tensor_contraction(64, 0.5);
+    let blocks = heuristic_tensor_contraction(64, 0.5);
     println!(
-        "[3/25] 64D Deep Factorization: Found {} low-density blocks suitable for Kariow compression",
+        "[3/25] 64D Deep Factorization: Found {} low-density blocks for Cariow-style screening",
         blocks.len()
     );
 
