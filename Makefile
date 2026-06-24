@@ -367,11 +367,11 @@ GATE_TOOLS_DIR := $(REPO_CARGO_TARGET_DIR)/gate-tools
 WORKSPACE_ROUTING_CACHE := $(GATE_TOOLS_DIR)/workspace-routing
 HOST_PROFILE_CACHE := $(GATE_TOOLS_DIR)/host-profile.sh
 
-# workspace-routing dep set: only the bin source + its package manifest.
-# The bin imports only external crates (anyhow, clap, std) so workspace-
-# crate changes do not invalidate it.
+# workspace-routing dep set: only the bin source + the slim governance package
+# manifest.  The bin imports only external crates (anyhow, clap, std), so
+# workspace crate changes do not invalidate it.
 WORKSPACE_ROUTING_DEPS := crates/gororoba_cli_data/src/bin/workspace_routing.rs \
-                          crates/gororoba_cli_data/Cargo.toml
+                          crates/gororoba_cli_governance/Cargo.toml
 
 # xtask host-profile dep set: xtask's main.rs (where detect_host_profile
 # lives) plus the xtask manifest. Most xtask edits won't touch the
@@ -381,8 +381,8 @@ HOST_PROFILE_DEPS := xtask/src/main.rs xtask/Cargo.toml
 $(WORKSPACE_ROUTING_CACHE): $(WORKSPACE_ROUTING_DEPS)
 	@mkdir -p $(GATE_TOOLS_DIR)
 	@echo "[gate-tools] rebuilding workspace-routing (source changed)"
-	@$(CARGO_ENV) cargo build --release -q -p gororoba_cli_data --bin workspace-routing
-	@cp -f $(REPO_CARGO_TARGET_DIR)/release/workspace-routing $@
+	@$(CARGO_ENV) cargo build --release -q -p gororoba_cli_governance --bin workspace-routing-proxy
+	@cp -f $(REPO_CARGO_TARGET_DIR)/release/workspace-routing-proxy $@
 	@touch $@
 
 $(HOST_PROFILE_CACHE): $(HOST_PROFILE_DEPS)
@@ -896,7 +896,7 @@ rust-regression-scoped:
 	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
 	        "$(WORKSPACE_ROUTING_CACHE)" --local 2> >(tee /dev/stderr); \
 	    else \
-	        $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local; \
+	        $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing-proxy -- --local; \
 	    fi || echo "--workspace"))
 	# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
 	# WHY: clippy lints fire on the package owning the source -- a change in a
@@ -907,7 +907,7 @@ rust-regression-scoped:
 	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
 	        "$(WORKSPACE_ROUTING_CACHE)" --local --direct-only 2> >(tee /dev/stderr); \
 	    else \
-	        $(CARGO_ENV) cargo run -q -p gororoba_cli_data --bin workspace-routing -- --local --direct-only; \
+	        $(CARGO_ENV) cargo run -q -p gororoba_cli_governance --bin workspace-routing-proxy -- --local --direct-only; \
 	    fi || echo "$(RUST_SCOPE)"))
 	# Nextest in the LOCAL pre-push fast path also runs only on directly
 	# changed crates. Trust the layered model:
