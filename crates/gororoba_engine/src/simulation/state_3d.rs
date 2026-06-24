@@ -3,8 +3,20 @@ use anyhow::Context;
 use anyhow::Result;
 use gororoba_algebra::physics::octonion_field::FieldParams;
 use lbm_3d::solver::LbmSolver3D;
-use lbm_3d_cuda::{LbmSolver3DCuda, Precision};
+#[cfg(feature = "gpu")]
+use lbm_3d_cuda::LbmSolver3DCuda;
 use ndarray::Array3;
+
+#[cfg(feature = "gpu")]
+pub type Precision = lbm_3d_cuda::Precision;
+
+#[cfg(not(feature = "gpu"))]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Precision {
+    FP32,
+    BF16,
+    FP64,
+}
 
 /// Configuration for the simulation, used to create `SimulationState3D`.
 #[derive(Debug, Clone)]
@@ -24,7 +36,10 @@ pub struct SimulationConfig3D {
 #[allow(clippy::large_enum_variant)]
 pub enum LbmBackend3D {
     Cpu(LbmSolver3D),
+    #[cfg(feature = "gpu")]
     Gpu(LbmSolver3DCuda),
+    #[cfg(not(feature = "gpu"))]
+    Gpu,
 }
 
 /// Trait for a 3D imbalance field.
@@ -49,7 +64,12 @@ impl LbmBackend3D {
                 solver.evolve_one_step();
                 Ok(())
             }
+            #[cfg(feature = "gpu")]
             LbmBackend3D::Gpu(solver) => solver.step(),
+            #[cfg(not(feature = "gpu"))]
+            LbmBackend3D::Gpu => Err(anyhow::anyhow!(
+                "GPU backend unavailable: build gororoba_engine with --features gpu"
+            )),
         }
     }
 
@@ -64,7 +84,7 @@ impl LbmBackend3D {
                 .context("failed to compute GPU mean density")?
                 as f64),
             #[cfg(not(feature = "gpu"))]
-            LbmBackend3D::Gpu(_) => Err(anyhow::anyhow!(
+            LbmBackend3D::Gpu => Err(anyhow::anyhow!(
                 "GPU backend unavailable: build gororoba_engine with --features gpu"
             )),
         }
@@ -114,7 +134,7 @@ impl LbmBackend3D {
                 Ok(rms_from_velocity_field(&solver.u, n_cells))
             }
             #[cfg(not(feature = "gpu"))]
-            LbmBackend3D::Gpu(_) => Err(anyhow::anyhow!(
+            LbmBackend3D::Gpu => Err(anyhow::anyhow!(
                 "GPU backend unavailable: build gororoba_engine with --features gpu"
             )),
         }
@@ -164,7 +184,7 @@ impl LbmBackend3D {
                 .context("failed to compute GPU enstrophy")?
                 as f64),
             #[cfg(not(feature = "gpu"))]
-            LbmBackend3D::Gpu(_) => Err(anyhow::anyhow!(
+            LbmBackend3D::Gpu => Err(anyhow::anyhow!(
                 "GPU backend unavailable: build gororoba_engine with --features gpu"
             )),
         }
@@ -180,7 +200,7 @@ impl LbmBackend3D {
                 .set_force_field(force_field)
                 .context("failed to set GPU force field"),
             #[cfg(not(feature = "gpu"))]
-            LbmBackend3D::Gpu(_) => Err(anyhow::anyhow!(
+            LbmBackend3D::Gpu => Err(anyhow::anyhow!(
                 "GPU backend unavailable: build gororoba_engine with --features gpu"
             )),
         }
@@ -222,7 +242,7 @@ impl LbmBackend3D {
                 }
             }
             #[cfg(not(feature = "gpu"))]
-            LbmBackend3D::Gpu(_) => {
+            LbmBackend3D::Gpu => {
                 return Err(anyhow::anyhow!(
                     "GPU backend unavailable: build gororoba_engine with --features gpu"
                 ));

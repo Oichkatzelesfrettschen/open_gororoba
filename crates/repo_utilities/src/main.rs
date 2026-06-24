@@ -170,6 +170,48 @@ const SOURCE_ANALYSIS_MCP_TOOLS: &[&str] = &[
     "source_analysis_doctor",
 ];
 
+const DOCS_REDIRECT_REQUIRED_FILES: &[&str] = &[
+    "404.html",
+    "book.html",
+    "rustdoc.html",
+    "index.html",
+    ".nojekyll",
+];
+
+const DOCS_REDIRECT_REQUIRED_MARKERS: &[(&str, &str)] = &[
+    ("404.html", "/.cache/cargo-default-target/doc"),
+    ("404.html", "/cache/gate-target/doc"),
+    ("404.html", "window.location.replace"),
+    ("book.html", "./book/"),
+    ("rustdoc.html", "./rustdoc/"),
+];
+
+const DOCS_REDIRECT_LEGACY_PREFIXES: &[&str] = &[
+    "/.cache/cargo-default-target/doc",
+    "/cache/cargo-default-target/doc",
+    "/.cache/gate-target/doc",
+    "/cache/gate-target/doc",
+    "/target/docs-target/doc",
+    "/target/doc",
+];
+
+const DOCS_REDIRECT_CASES: &[(&str, &str)] = &[
+    (
+        "/.cache/cargo-default-target/doc/pkg/struct.SomeType.html",
+        "/rustdoc/pkg/struct.SomeType.html",
+    ),
+    ("/cache/gate-target/doc/index.html", "/rustdoc/index.html"),
+    (
+        "/repo/.cache/gate-target/doc/pkg/index.html",
+        "/repo/rustdoc/pkg/index.html",
+    ),
+    ("/book", "/book/"),
+    ("/rustdoc", "/rustdoc/"),
+    ("/repo/book", "/repo/book/"),
+    ("/repo/rustdoc", "/repo/rustdoc/"),
+    ("/repo/other", "/repo/"),
+];
+
 #[derive(Parser, Debug)]
 #[command(
     name = "repo-utilities",
@@ -188,6 +230,8 @@ enum Commands {
     Doctor,
     #[command(name = "mcp-smoke")]
     McpSmoke,
+    #[command(name = "docs-redirect-check")]
+    DocsRedirectCheck(DocsRedirectArgs),
     #[command(name = "rocq-prepare-confine", visible_alias = "coq-prepare-confine")]
     RocqPrepareConfine(CoqArgs),
 }
@@ -222,6 +266,12 @@ struct TerminologyArgs {
 struct CoqArgs {
     src: PathBuf,
     dst: PathBuf,
+}
+
+#[derive(Args, Debug)]
+struct DocsRedirectArgs {
+    #[arg(default_value = "target/site-docs")]
+    docs_site_dir: PathBuf,
 }
 
 #[derive(Clone)]
@@ -895,6 +945,85 @@ fn run_rocq_prepare_confine(args: CoqArgs) -> Result<()> {
     Ok(())
 }
 
+fn docs_redirect_root(path: &str) -> String {
+    let first_segment = path
+        .strip_prefix('/')
+        .unwrap_or(path)
+        .split('/')
+        .next()
+        .unwrap_or_default();
+    if !first_segment.is_empty() && first_segment != "book" && first_segment != "rustdoc" {
+        format!("/{first_segment}/")
+    } else {
+        "/".to_string()
+    }
+}
+
+fn simulate_docs_redirect(path: &str) -> String {
+    let mut root = docs_redirect_root(path);
+    for prefix in DOCS_REDIRECT_LEGACY_PREFIXES {
+        if let Some(prefix_index) = path.find(prefix) {
+            let prefix_part = &path[..prefix_index];
+            root = if !prefix_part.is_empty() && prefix_part != "/" {
+                format!("{}/", prefix_part.trim_end_matches('/'))
+            } else {
+                "/".to_string()
+            };
+            let suffix = &path[prefix_index + prefix.len()..];
+            return format!("{root}rustdoc{suffix}");
+        }
+    }
+
+    let book = format!("{root}book");
+    let book_slash = format!("{root}book/");
+    if path == root || path == book || path == book_slash {
+        return book_slash;
+    }
+
+    let rustdoc = format!("{root}rustdoc");
+    let rustdoc_slash = format!("{root}rustdoc/");
+    if path == rustdoc || path == rustdoc_slash {
+        return rustdoc_slash;
+    }
+
+    root
+}
+
+fn require_docs_file(docs_site_dir: &Path, relative_path: &str) -> Result<()> {
+    let path = docs_site_dir.join(relative_path);
+    if !path.is_file() {
+        bail!("required docs artifact missing: {}", path.display());
+    }
+    Ok(())
+}
+
+fn require_docs_marker(docs_site_dir: &Path, relative_path: &str, marker: &str) -> Result<()> {
+    let path = docs_site_dir.join(relative_path);
+    let text = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+    if !text.contains(marker) {
+        bail!("expected marker missing in {}: {}", path.display(), marker);
+    }
+    Ok(())
+}
+
+fn run_docs_redirect_check(args: DocsRedirectArgs) -> Result<()> {
+    for relative_path in DOCS_REDIRECT_REQUIRED_FILES {
+        require_docs_file(&args.docs_site_dir, relative_path)?;
+    }
+    for (relative_path, marker) in DOCS_REDIRECT_REQUIRED_MARKERS {
+        require_docs_marker(&args.docs_site_dir, relative_path, marker)?;
+    }
+    for (input, expected) in DOCS_REDIRECT_CASES {
+        let output = simulate_docs_redirect(input);
+        if output != *expected {
+            bail!("redirect mismatch for '{input}': expected '{expected}', got '{output}'");
+        }
+        println!("OK: {input} -> {output}");
+    }
+    println!("OK: docs redirect checks passed.");
+    Ok(())
+}
+
 fn main() -> ExitCode {
     let cli = Cli::parse();
     let result = match cli.command {
@@ -902,6 +1031,7 @@ fn main() -> ExitCode {
         Commands::TerminologyGate(args) => run_terminology_gate(args),
         Commands::Doctor => run_doctor(),
         Commands::McpSmoke => run_mcp_smoke(),
+        Commands::DocsRedirectCheck(args) => run_docs_redirect_check(args),
         Commands::RocqPrepareConfine(args) => run_rocq_prepare_confine(args),
     };
     match result {
@@ -916,5 +1046,46 @@ fn main() -> ExitCode {
             }
             ExitCode::from(2)
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn docs_redirect_cases_match_legacy_policy() {
+        for (input, expected) in DOCS_REDIRECT_CASES {
+            assert_eq!(simulate_docs_redirect(input), *expected, "input={input}");
+        }
+    }
+
+    #[test]
+    fn docs_redirect_check_accepts_minimal_site() {
+        let temp_dir = std::env::temp_dir().join(format!(
+            "gororoba_docs_redirect_{}_{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .expect("system time after unix epoch")
+                .as_nanos()
+        ));
+        fs::create_dir_all(&temp_dir).expect("create temp docs site");
+        fs::write(
+            temp_dir.join("404.html"),
+            "/.cache/cargo-default-target/doc\n/cache/gate-target/doc\nwindow.location.replace\n",
+        )
+        .expect("write 404.html");
+        fs::write(temp_dir.join("book.html"), "./book/").expect("write book.html");
+        fs::write(temp_dir.join("rustdoc.html"), "./rustdoc/").expect("write rustdoc.html");
+        fs::write(temp_dir.join("index.html"), "index").expect("write index.html");
+        fs::write(temp_dir.join(".nojekyll"), "").expect("write .nojekyll");
+
+        run_docs_redirect_check(DocsRedirectArgs {
+            docs_site_dir: temp_dir.clone(),
+        })
+        .expect("minimal docs redirect site passes");
+
+        let _ = fs::remove_dir_all(temp_dir);
     }
 }

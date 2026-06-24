@@ -33,7 +33,7 @@ Status: COMPLETE (2026-04-17). All four scripts removed from `bin/`.
 | ---------------------------------------------------------- | ----- | -------- | ------------------------------------------------------------------- |
 | `scripts/cargo_cache_prune.sh`                             | 24    | PORT     | Alias/merge with `make cache-sweep` (already exists).               |
 | `scripts/cargo_cache_status.sh`                            | 89    | PORT     | Merge capabilities into `make cache-status` or a new `cache-audit`. |
-| `scripts/docs-redirect-check.sh`                           | 104   | PORT     | New `make docs-redirect-check`; or absorb into governance-gate.     |
+| `scripts/docs-redirect-check.sh`                           | 104   | DONE     | Replaced by `repo-utilities docs-redirect-check` through `make docs-redirect-check`. |
 | `scripts/run_nanograv_timing_phase1_independent_locked.sh` | 8     | PORT     | One-shot wrapper; convert to `make nanograv-phase1`.                |
 
 ### Category C -- PORT TO RUST BINARY (non-trivial logic)

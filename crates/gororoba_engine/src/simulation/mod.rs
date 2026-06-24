@@ -368,6 +368,7 @@ impl SimulationState {
         self.fluid.bounce_back_top_bottom();
     }
 }
+#[cfg(feature = "gpu")]
 pub mod state_4d;
 
 #[cfg(test)]

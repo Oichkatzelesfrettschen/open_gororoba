@@ -476,6 +476,7 @@ path = "src/bin/cosmology_dimension_ladder.rs"
 [[bin]]
 name = "nanograv-avt-filter"
 path = "src/bin/nanograv_avt_filter.rs"
+required-features = ["gpu"]
 
 [[bin]]
 name = "nanograv-synthetic-gen"
@@ -540,7 +541,7 @@ docpipe = { path = "../docpipe", features = ["fallback"] }
 env_logger = { workspace = true }
 fitsio = { workspace = true }
 glob = { workspace = true }
-gororoba_algebra = { path = "../gororoba_algebra", features = ["gpu"] }
+gororoba_algebra = { path = "../gororoba_algebra" }
 gororoba_cli = { path = "../gororoba_cli" }
 gr_core = { path = "../gr_core" }
 hdf5 = { workspace = true }
@@ -579,7 +580,7 @@ walkdir = { workspace = true }
 
 [features]
 hdf5-export = ["data_core/hdf5-export", "data_artifacts_core/hdf5-export"]
-gpu = ["stats_core/gpu"]
+gpu = ["gororoba_algebra/gpu", "stats_core/gpu"]
 
 [lints]
 workspace = true

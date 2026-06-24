@@ -25,7 +25,8 @@ use std::{
 };
 
 pub const DEFAULT_CALIBRATION_ID: &str = "nonlocal_cable_chen_2023";
-pub const DEFAULT_CALIBRATION_CSV: &str = "data/csv/c010_nonlocal_material_calibrations.csv";
+pub const DEFAULT_CALIBRATION_CSV: &str =
+    "registry/data/project_csv/canonical/PC-0006_c010_nonlocal_material_calibrations.toml";
 const DEFAULT_OUTPUT_DIR: &str = "data/evidence/thesis_42_support";
 const HARMONIC_REFERENCE_POINTS: usize = 64;
 const HARMONIC_REFERENCE_M200_SOLAR: f64 = 1.0e12;

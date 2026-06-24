@@ -323,7 +323,8 @@ registry-verify-markdown-governance:
 # $(GATE_TOOLS_DIR)/. Cache vars + rules live below where
 # GATE_TOOLS_DIR is defined (search "MARKDOWN_REGISTRY_CACHE").
 # Here we just consume them.
-governance-gate-readonly: $(MARKDOWN_REGISTRY_CACHE) $(GOVERNANCE_VERIFY_CACHE) $(INTEGRITY_RESOLUTION_CACHE)
+.SECONDEXPANSION:
+governance-gate-readonly: $$(MARKDOWN_REGISTRY_CACHE) $$(GOVERNANCE_VERIFY_CACHE) $$(INTEGRITY_RESOLUTION_CACHE)
 	$(MARKDOWN_REGISTRY_CACHE) verify-gate-all
 	$(GOVERNANCE_VERIFY_CACHE) gate-all
 	@echo ""
@@ -2023,7 +2024,7 @@ docs-gate: docs-site
 	@echo "OK: docs-gate generated unified docs bundle."
 
 docs-redirect-check:
-	./scripts/docs-redirect-check.sh $(DOCS_SITE_DIR)
+	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- docs-redirect-check $(DOCS_SITE_DIR)
 
 terminology-gate:
 	$(CARGO_ENV) cargo run --release -p repo_utilities --bin repo-utilities -- terminology-gate
