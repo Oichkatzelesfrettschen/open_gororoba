@@ -3,8 +3,8 @@
 //! Trigintaduonions represent the 32-dimensional Cayley-Dickson algebra, containing
 //! 373 non-trivial subloops of orders 32, 16, 8, 4, and 2.
 //!
-//! Direct multiplication requires 1024 real multiplications and 992 additions.
-//! This module provides the framework to implement the optimized 498-multiplication algorithm.
+//! Direct multiplication requires 1024 real multiplications. The reduced
+//! 498-multiplication schedule is a target count, not an implemented path.
 
 /// A 32-dimensional trigintaduonion.
 #[derive(Clone, Copy, Debug)]
@@ -31,18 +31,13 @@ impl Trigintaduonion {
         Self { data: res }
     }
 
-    /// Multiply using the optimized algorithmic bound of 498 real multiplications
-    /// and 943 real additions. This achieves a ~2.05x speedup over the direct 1024 mults.
+    /// Multiply through the strict Cayley-Dickson 32D split.
     ///
-    /// The mathematical optimization leverages shared sub-expressions in the
-    /// nested Cayley-Dickson doubling formula (similar to Karatsuba, but accounting
-    /// for non-associativity and non-alternativity of 32D algebras).
+    /// This method preserves the public placeholder for a reduced schedule, but
+    /// the implementation intentionally matches the standard four-sedenion
+    /// product. A real 498-multiplication path needs a fixed-dimension bilinear
+    /// schedule rather than a generic recursive rewrite.
     pub fn mul_optimized(&self, other: &Self) -> Self {
-        // As a strict implementation, we break the 32D into two 16D sedenions:
-        // (A, B) * (C, D) = (A*C - D*B^*, D*A + B*C^*)
-        // To achieve exactly 498 multiplications, we recursively apply the Cariow-style
-        // fast hypercomplex multiplier algorithm. Here, we outline the structural split.
-
         let mut a = [0.0; 16];
         let mut b = [0.0; 16];
         let mut c = [0.0; 16];
@@ -53,10 +48,6 @@ impl Trigintaduonion {
         c.copy_from_slice(&other.data[0..16]);
         d.copy_from_slice(&other.data[16..32]);
 
-        // Sedenion multiplication uses the 35 triads or standard CD multiplication.
-        // For a full 498-mult optimization, the linear combinations are constructed before
-        // the base multiplications. We fall back to the explicit sedenion triad multiplication
-        // to approximate the bounds and maintain strict algebraic properties.
         let c_conj = super::sedenion::sedenion_multiply_explicit(
             &b,
             &super::arith::cd_conjugate(&c).try_into().unwrap(),
@@ -106,20 +97,14 @@ mod tests {
         }
     }
 
-    /// Track B benchmark: mul_standard vs mul_optimized at dim=32.
+    /// Parity check for the dim=32 standard path and reduced-schedule placeholder.
     ///
-    /// Key finding (evid B):
     /// mul_optimized currently calls 4 sedenion_multiply_explicit (same as standard).
-    /// Both paths perform ~1024 real multiplications -- mul_optimized does NOT
+    /// Both paths perform ~1024 real multiplications -- mul_optimized does not
     /// yet achieve the claimed 498. Additional array-copy overhead in mul_optimized
     /// makes it slightly SLOWER than mul_standard in practice.
     ///
-    /// This is the Track B finding from the plan:
-    /// "the repo docs already note Cariow sparsity is better for FPGA, not obviously
-    ///  good for CPU SIMD. Do NOT pursue AVX-512 until profiling shows the sparse
-    ///  pattern helps ILP."
-    ///
-    /// Conclusion: AVX-512 optimization is NOT warranted for the current implementation.
+    /// Conclusion: AVX-512 optimization is not warranted for the current implementation.
     /// The 498-mult algorithm must be fully implemented before any SIMD benefit is possible.
     #[test]
     fn test_mul_standard_vs_optimized_correctness_and_parity() {
@@ -160,12 +145,13 @@ mod tests {
         }
         let time_opt = t1.elapsed();
 
-        // Finding: mul_optimized is NOT faster (same or higher latency due to copy overhead).
+        // mul_optimized is not faster: it runs the same multiplication count with
+        // extra copies around the split representation.
         // We assert both complete in similar wall-clock time (within 3x of each other).
-        // A true 2x speedup would require fully implementing the 498-mult Cariow algorithm.
+        // A true 2x speedup requires a real 498-multiplication schedule.
         let ratio = time_opt.as_secs_f64() / time_std.as_secs_f64();
         println!(
-            "Track B timing: mul_standard={:?}, mul_optimized={:?}, ratio={:.2}",
+            "dim32 timing: mul_standard={:?}, mul_optimized={:?}, ratio={:.2}",
             time_std, time_opt, ratio
         );
         // Both are ~1024-mult paths; ratio should be near 1.0 (within 3x given test noise).

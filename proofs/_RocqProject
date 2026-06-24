@@ -278,6 +278,11 @@ theories/QuatNormalize.v
 theories/OctonionSandwichNorm.v
 verified/C1628_IDCT8ButterflyCompaction.v
 verified/C1629_IDCT8DP4ExactBound.v
+verified/C1630_SedenionOctonionDowncast.v
+verified/C1636_Cariow2013SedenionSchedule.v
+verified/C1637_R300SedenionZeroDivisor.v
+verified/C1638_OctonionDowncastNoZeroDivisors.v
+verified/C1635_SedenionDriverSemantics.v
 theories/CDQuatRotationMatrix.v
 theories/OctonionInverse.v
 theories/QuatTranscendental.v
