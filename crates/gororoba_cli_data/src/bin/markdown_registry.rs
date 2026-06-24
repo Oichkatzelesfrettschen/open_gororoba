@@ -117,6 +117,9 @@ enum Command {
     /// Normalize narrative overlays bootstrap (stub)
     NormalizeNarrativeOverlays,
 
+    /// Remove owner-map entries whose markdown files are absent from disk.
+    PruneStaleOwnerMap,
+
     /// Register one or more markdown files in
     /// registry/markdown_owner_map.toml. Idempotent: re-registering an
     /// existing path is a no-op. Bumps the document_count field.
@@ -186,6 +189,7 @@ fn main() -> Result<()> {
             println!("OK: migrate-corpus (stub)");
             Ok(())
         }
+        Command::PruneStaleOwnerMap => prune_stale_owner_map(&repo_root),
         Command::PromoteResearchNarratives => {
             println!("OK: promote-research-narratives (stub)");
             Ok(())
@@ -220,6 +224,105 @@ fn main() -> Result<()> {
             removal_reason.as_deref(),
         ),
     }
+}
+
+fn owner_path_from_line(line: &str) -> Option<String> {
+    let rest = line.trim().strip_prefix("path")?.trim_start();
+    let rest = rest.strip_prefix('=')?.trim_start();
+    let quoted = rest.strip_prefix('"')?;
+    let end = quoted.find('"')?;
+    Some(quoted[..end].replace('\\', "/"))
+}
+
+fn emit_owner_block_if_current(
+    output: &mut String,
+    block: &str,
+    path: Option<&str>,
+    stale_paths: &BTreeSet<String>,
+) -> bool {
+    let is_stale = path.is_some_and(|value| stale_paths.contains(value));
+    if !is_stale {
+        output.push_str(block);
+    }
+    !is_stale
+}
+
+fn prune_owner_map_text(original: &str, stale_paths: &BTreeSet<String>) -> String {
+    let mut output = String::new();
+    let mut block = String::new();
+    let mut block_path: Option<String> = None;
+    let mut in_owner_block = false;
+    let mut kept_owner_count = 0usize;
+
+    for line in original.split_inclusive('\n') {
+        if line.trim() == "[[owner]]" {
+            if in_owner_block
+                && emit_owner_block_if_current(
+                    &mut output,
+                    &block,
+                    block_path.as_deref(),
+                    stale_paths,
+                )
+            {
+                kept_owner_count += 1;
+            }
+            block.clear();
+            block.push_str(line);
+            block_path = None;
+            in_owner_block = true;
+            continue;
+        }
+
+        if in_owner_block {
+            if block_path.is_none() {
+                block_path = owner_path_from_line(line);
+            }
+            block.push_str(line);
+        } else {
+            output.push_str(line);
+        }
+    }
+
+    if in_owner_block
+        && emit_owner_block_if_current(&mut output, &block, block_path.as_deref(), stale_paths)
+    {
+        kept_owner_count += 1;
+    }
+
+    let count_re = regex::Regex::new(r"(?m)^document_count\s*=\s*\d+\s*$").expect("static regex");
+    count_re
+        .replace(
+            &output,
+            format!("document_count = {kept_owner_count}").as_str(),
+        )
+        .into_owned()
+}
+
+fn prune_stale_owner_map(repo_root: &Path) -> Result<()> {
+    let map_path = repo_root.join("registry/markdown_owner_map.toml");
+    let original =
+        fs::read_to_string(&map_path).with_context(|| format!("read {}", map_path.display()))?;
+    let owner_map: toml::Value =
+        toml::from_str(&original).context("parse markdown_owner_map.toml")?;
+    let on_disk: BTreeSet<String> = list_markdown_files(repo_root)?.into_iter().collect();
+    let stale_paths: BTreeSet<String> = table_array(&owner_map, "owner")
+        .iter()
+        .map(|row| table_str(row, "path").replace('\\', "/"))
+        .filter(|path| !path.is_empty() && !on_disk.contains(path))
+        .collect();
+
+    if stale_paths.is_empty() {
+        eprintln!("owner map has no stale markdown paths");
+        return Ok(());
+    }
+
+    let updated = prune_owner_map_text(&original, &stale_paths);
+    fs::write(&map_path, updated).with_context(|| format!("write {}", map_path.display()))?;
+    eprintln!("pruned {} stale owner-map path(s)", stale_paths.len());
+    for path in &stale_paths {
+        eprintln!("  - {path}");
+    }
+    Ok(())
 }
 
 /// Register one or more markdown files in

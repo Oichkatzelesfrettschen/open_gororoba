@@ -6,7 +6,8 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-const COMMITTED_CSV: &str = "data/csv/c053_pathion_tmm_summary.csv";
+const CANONICAL_TOML: &str =
+    "registry/data/project_csv/canonical/PC-0007_c053_pathion_tmm_summary.toml";
 
 fn repo_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))
@@ -50,6 +51,65 @@ fn read_rows(path: &std::path::Path) -> Vec<PathionToyLayer> {
         .expect("deserialize CSV rows")
 }
 
+fn read_canonical_rows(path: &std::path::Path) -> Vec<PathionToyLayer> {
+    let raw = fs::read_to_string(path).expect("read canonical TOML");
+    let mut rows = Vec::new();
+    let mut in_rows = false;
+    let mut current_row: Option<Vec<String>> = None;
+    for line in raw.lines() {
+        let trimmed = line.trim();
+        if !in_rows {
+            in_rows = trimmed == "rows = [";
+            continue;
+        }
+        match trimmed {
+            "]" => break,
+            "[" => current_row = Some(Vec::new()),
+            "]," => rows.push(current_row.take().expect("row opened")),
+            _ => {
+                if let Some(value) = parse_project_csv_string_cell(trimmed) {
+                    current_row.as_mut().expect("row opened").push(value);
+                }
+            }
+        }
+    }
+    rows.into_iter()
+        .map(|cells| PathionToyLayer {
+            layer_id: cells[0].parse().expect("usize layer_id"),
+            pathion_indices: cells[1].clone(),
+            diag_abs_mean: cells[2].clone(),
+            n_real: cells[3].clone(),
+            n_imag: cells[4].clone(),
+            thickness_nm: cells[5].clone(),
+            tmm_absorptance: cells[6].clone(),
+            degeneracy_note: cells[7].clone(),
+        })
+        .collect()
+}
+
+fn parse_project_csv_string_cell(line: &str) -> Option<String> {
+    let trimmed = line.trim_end_matches(',');
+    let mut chars = trimmed.chars();
+    if chars.next()? != '"' {
+        return None;
+    }
+    let mut value = String::new();
+    let mut escaped = false;
+    for ch in chars {
+        if escaped {
+            value.push(ch);
+            escaped = false;
+        } else if ch == '\\' {
+            escaped = true;
+        } else if ch == '"' {
+            return Some(value);
+        } else {
+            value.push(ch);
+        }
+    }
+    None
+}
+
 fn run_c053(args: &[&str]) -> Output {
     Command::new(c053_binary_path())
         .args(args)
@@ -88,7 +148,7 @@ fn rust_generator_writes_expected_uniform_csv() {
 
 #[test]
 fn committed_csv_matches_rust_generator() {
-    let committed = read_rows(&repo_root().join(COMMITTED_CSV));
+    let committed = read_canonical_rows(&repo_root().join(CANONICAL_TOML));
     let regenerated = default_c053_layers().expect("default rows");
     assert_eq!(committed, regenerated);
 }

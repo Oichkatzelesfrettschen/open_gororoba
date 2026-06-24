@@ -78,7 +78,7 @@ impl ImbalanceField3D for E7SpectralFilter {
             #[cfg(feature = "gpu")]
             LbmBackend3D::Gpu(solver) => solver.calculate_enstrophy()?,
             #[cfg(not(feature = "gpu"))]
-            LbmBackend3D::Gpu(_) => panic!("GPU backend not enabled"),
+            LbmBackend3D::Gpu => panic!("GPU backend not enabled"),
         };
 
         let alpha = (enstrophy / self.enstrophy_crit).tanh();
@@ -161,7 +161,7 @@ impl ImbalanceField3D for E7SpectralFilter {
                 }
             }
             #[cfg(not(feature = "gpu"))]
-            LbmBackend3D::Gpu(_) => panic!("GPU backend not enabled"),
+            LbmBackend3D::Gpu => panic!("GPU backend not enabled"),
         }
         Ok(())
     }

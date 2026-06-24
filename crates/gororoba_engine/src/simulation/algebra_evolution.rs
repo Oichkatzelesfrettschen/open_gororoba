@@ -38,7 +38,7 @@ fn advect_sedenion_field(field: &mut Array3<[f64; 16]>, fluid: &LbmBackend3D, co
                 .collect()
         }
         #[cfg(not(feature = "gpu"))]
-        LbmBackend3D::Gpu(_) => panic!("GPU backend not enabled"),
+        LbmBackend3D::Gpu => panic!("GPU backend not enabled"),
     };
 
     for z in 0..nz {

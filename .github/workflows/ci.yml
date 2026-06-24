@@ -180,7 +180,7 @@ jobs:
           path: docs-site
 
       - name: Verify docs freshness and redirect wiring
-        run: ./scripts/docs-redirect-check.sh docs-site
+        run: cargo run --release -p repo_utilities --bin repo-utilities -- docs-redirect-check docs-site
 
   gate-audit-report:
     needs:

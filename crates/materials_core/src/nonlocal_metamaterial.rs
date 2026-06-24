@@ -308,12 +308,17 @@ impl SyntheticCouplingModel {
 pub fn load_calibration_records(
     path: impl AsRef<Path>,
 ) -> Result<Vec<MaterialCalibrationRecord>, String> {
-    let mut reader = csv::Reader::from_path(path.as_ref()).map_err(|err| {
-        format!(
-            "failed to open calibration CSV {}: {err}",
-            path.as_ref().display()
-        )
-    })?;
+    let path = path.as_ref();
+    if path
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .is_some_and(|ext| ext.eq_ignore_ascii_case("toml"))
+    {
+        return load_calibration_records_from_project_csv_toml(path);
+    }
+
+    let mut reader = csv::Reader::from_path(path)
+        .map_err(|err| format!("failed to open calibration CSV {}: {err}", path.display()))?;
     let mut rows = Vec::new();
     for row in reader.deserialize() {
         let record: MaterialCalibrationRecord =
@@ -324,6 +329,185 @@ pub fn load_calibration_records(
         return Err("calibration CSV contained no records".to_string());
     }
     Ok(rows)
+}
+
+fn load_calibration_records_from_project_csv_toml(
+    path: &Path,
+) -> Result<Vec<MaterialCalibrationRecord>, String> {
+    let raw = std::fs::read_to_string(path)
+        .map_err(|err| format!("failed to read calibration TOML {}: {err}", path.display()))?;
+    let header = project_csv_string_block(path, &raw, "header")?;
+    let rows = project_csv_rows(path, &raw)?;
+
+    let mut columns = std::collections::BTreeMap::new();
+    for (index, name) in header.iter().enumerate() {
+        columns.insert(name.clone(), index);
+    }
+
+    let mut records = Vec::new();
+    for row in rows {
+        records.push(MaterialCalibrationRecord {
+            id: project_csv_string(path, &columns, &row, "id")?,
+            platform: project_csv_string(path, &columns, &row, "platform")?,
+            carrier_material: project_csv_string(path, &columns, &row, "carrier_material")?,
+            data_provenance_class: project_csv_string(
+                path,
+                &columns,
+                &row,
+                "data_provenance_class",
+            )?,
+            citation_key: project_csv_string(path, &columns, &row, "citation_key")?,
+            citation_url: project_csv_string(path, &columns, &row, "citation_url")?,
+            coupling_scale: project_csv_f64(path, &columns, &row, "coupling_scale")?,
+            modulation_depth: project_csv_f64(path, &columns, &row, "modulation_depth")?,
+            loss_tangent: project_csv_f64(path, &columns, &row, "loss_tangent")?,
+            phase_bias_rad: project_csv_f64(path, &columns, &row, "phase_bias_rad")?,
+            modulation_frequency_hz: project_csv_f64(
+                path,
+                &columns,
+                &row,
+                "modulation_frequency_hz",
+            )?,
+            quality_factor: project_csv_f64(path, &columns, &row, "quality_factor")?,
+            nonlocality_score: project_csv_f64(path, &columns, &row, "nonlocality_score")?,
+            notes: project_csv_string(path, &columns, &row, "notes")?,
+        });
+    }
+    if records.is_empty() {
+        return Err("calibration TOML contained no records".to_string());
+    }
+    Ok(records)
+}
+
+fn project_csv_string_block(
+    path: &Path,
+    raw: &str,
+    block_name: &str,
+) -> Result<Vec<String>, String> {
+    let start = format!("{block_name} = [");
+    let mut in_block = false;
+    let mut values = Vec::new();
+    for line in raw.lines() {
+        let trimmed = line.trim();
+        if !in_block {
+            in_block = trimmed == start;
+            continue;
+        }
+        if trimmed == "]" {
+            return Ok(values);
+        }
+        if let Some(value) = parse_project_csv_string_cell(trimmed) {
+            values.push(value);
+        }
+    }
+    Err(format!(
+        "calibration TOML {} missing {block_name} block",
+        path.display()
+    ))
+}
+
+fn project_csv_rows(path: &Path, raw: &str) -> Result<Vec<Vec<String>>, String> {
+    let mut in_rows = false;
+    let mut current_row: Option<Vec<String>> = None;
+    let mut rows = Vec::new();
+    for line in raw.lines() {
+        let trimmed = line.trim();
+        if !in_rows {
+            in_rows = trimmed == "rows = [";
+            continue;
+        }
+        match trimmed {
+            "]" => return Ok(rows),
+            "[" => {
+                if current_row.is_some() {
+                    return Err(format!(
+                        "calibration TOML {} has nested dataset.rows entry",
+                        path.display()
+                    ));
+                }
+                current_row = Some(Vec::new());
+            }
+            "]," => {
+                let row = current_row.take().ok_or_else(|| {
+                    format!(
+                        "calibration TOML {} closes a row before opening it",
+                        path.display()
+                    )
+                })?;
+                rows.push(row);
+            }
+            _ => {
+                if let Some(value) = parse_project_csv_string_cell(trimmed) {
+                    let row = current_row.as_mut().ok_or_else(|| {
+                        format!(
+                            "calibration TOML {} has a value outside a row",
+                            path.display()
+                        )
+                    })?;
+                    row.push(value);
+                }
+            }
+        }
+    }
+    Err(format!(
+        "calibration TOML {} missing dataset.rows block",
+        path.display()
+    ))
+}
+
+fn parse_project_csv_string_cell(line: &str) -> Option<String> {
+    let trimmed = line.trim_end_matches(',');
+    let mut chars = trimmed.chars();
+    if chars.next()? != '"' {
+        return None;
+    }
+    let mut value = String::new();
+    let mut escaped = false;
+    for ch in chars {
+        if escaped {
+            value.push(ch);
+            escaped = false;
+        } else if ch == '\\' {
+            escaped = true;
+        } else if ch == '"' {
+            return Some(value);
+        } else {
+            value.push(ch);
+        }
+    }
+    None
+}
+
+fn project_csv_string(
+    path: &Path,
+    columns: &std::collections::BTreeMap<String, usize>,
+    row: &[String],
+    name: &str,
+) -> Result<String, String> {
+    let index = *columns
+        .get(name)
+        .ok_or_else(|| format!("calibration TOML {} missing column {name}", path.display()))?;
+    row.get(index).cloned().ok_or_else(|| {
+        format!(
+            "calibration TOML {} missing string value for column {name}",
+            path.display()
+        )
+    })
+}
+
+fn project_csv_f64(
+    path: &Path,
+    columns: &std::collections::BTreeMap<String, usize>,
+    row: &[String],
+    name: &str,
+) -> Result<f64, String> {
+    let raw = project_csv_string(path, columns, row, name)?;
+    raw.parse::<f64>().map_err(|err| {
+        format!(
+            "calibration TOML {} has invalid f64 in column {name}: {err}",
+            path.display()
+        )
+    })
 }
 
 /// Select one calibration row by id.
@@ -579,6 +763,15 @@ mod tests {
         }
     }
 
+    fn repo_root() -> std::path::PathBuf {
+        std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .parent()
+            .expect("crate parent")
+            .parent()
+            .expect("workspace root")
+            .to_path_buf()
+    }
+
     fn benchmark_cavity() -> KerrCavity {
         KerrCavity::new(
             2.0 * std::f64::consts::PI * 193.0e12,
@@ -596,6 +789,22 @@ mod tests {
         assert_eq!(topology.nodes.len(), 42);
         assert_eq!(topology.boxkite_sizes, vec![6; 7]);
         assert_eq!(topology.edge_count(), 7 * 15);
+    }
+
+    #[test]
+    fn calibration_loader_reads_project_csv_toml_mirror() {
+        let path = repo_root().join(
+            "registry/data/project_csv/canonical/PC-0006_c010_nonlocal_material_calibrations.toml",
+        );
+        let records = load_calibration_records(path).expect("load canonical TOML mirror");
+        let default = find_calibration_record(&records, "nonlocal_cable_chen_2023")
+            .expect("default calibration row");
+        assert_eq!(records.len(), 7);
+        assert_eq!(default.citation_key, "Chen2023");
+        assert_eq!(
+            default.data_provenance_class,
+            "published_response_normalized"
+        );
     }
 
     #[test]
