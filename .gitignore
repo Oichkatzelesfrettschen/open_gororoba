@@ -176,6 +176,7 @@ archive/external_nonreproducible_snapshots/**
 
 # SQLite databases (all derived; source of truth is TOML)
 *.db
+.gororoba.db
 *.sqlite3
 # SQLite WAL-mode companion files. Created when a connection is open;
 # normally cleaned up at last-disconnect, but a crash or hung process can
