@@ -4,11 +4,27 @@
 //! Optimized for Ada Lovelace (SM89) hardware.
 
 #[cfg(any(feature = "gpu", feature = "vulkan", feature = "cubecl"))]
+#[repr(C)]
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct GpuVec3 {
     pub x: f32,
     pub y: f32,
     pub z: f32,
+}
+
+#[cfg(all(test, any(feature = "gpu", feature = "vulkan", feature = "cubecl")))]
+mod gpu_vec3_layout_tests {
+    use super::GpuVec3;
+    use std::mem::{align_of, offset_of, size_of};
+
+    #[test]
+    fn gpu_vec3_uses_cuda_vector_abi_layout() {
+        assert_eq!(size_of::<GpuVec3>(), 3 * size_of::<f32>());
+        assert_eq!(align_of::<GpuVec3>(), align_of::<f32>());
+        assert_eq!(offset_of!(GpuVec3, x), 0);
+        assert_eq!(offset_of!(GpuVec3, y), size_of::<f32>());
+        assert_eq!(offset_of!(GpuVec3, z), 2 * size_of::<f32>());
+    }
 }
 
 #[cfg(feature = "gpu")]

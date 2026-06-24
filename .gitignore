@@ -174,14 +174,15 @@ archive/external_nonreproducible_snapshots/**
 !archive/external_nonreproducible_snapshots/
 !archive/external_nonreproducible_snapshots/RETIREMENT_MANIFEST.toml
 
-# SQLite databases (all derived; source of truth is TOML)
+# Workspace-local SQLite databases and ad hoc DB files stay untracked.
+# Checked-in canonical databases under registry/canonical are tracked explicitly.
 *.db
 .gororoba.db
 *.sqlite3
 # SQLite WAL-mode companion files. Created when a connection is open;
 # normally cleaned up at last-disconnect, but a crash or hung process can
-# leave them behind. They are not version-controllable (binary, frequently
-# updated, machine-specific) -- the .sqlite3 file is the canonical state.
+# leave them behind. They are machine-local; the owning database file carries
+# the durable state.
 *.sqlite3-wal
 *.sqlite3-shm
 

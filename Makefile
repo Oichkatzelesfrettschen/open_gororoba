@@ -75,13 +75,10 @@ CARGO_JOBS ?= $(WORKER_BUDGET)
 NEXTEST_TEST_THREADS ?= $(WORKER_BUDGET)
 RUST_TEST_THREADS ?= $(WORKER_BUDGET)
 RAYON_THREADS ?= $(WORKER_BUDGET)
-# Clippy targets default to --all-targets. Originally tier-4 (2026-05-12)
-# tried dropping --all-targets to halve clippy compile time, but
-# measurement showed that with --all-targets, clippy builds dev-profile
-# test artifacts that the subsequent `cargo nextest run --lib` reuses
-# (via cargo's profile-shared artifact cache). Removing --all-targets
-# saved clippy time but forced nextest to rebuild the test profile
-# from scratch, NET LONGER. Keeping --all-targets as the default.
+# Clippy targets default to --all-targets because those dev-profile test
+# artifacts are reused by the subsequent `cargo nextest run --lib` lane.
+# Dropping --all-targets shortens clippy itself, but forces nextest to
+# rebuild the test profile from scratch and lengthens the combined gate.
 #
 # Override per invocation: RUST_SCOPED_CLIPPY_TARGETS=""
 RUST_SCOPED_CLIPPY_TARGETS ?= --all-targets
@@ -218,7 +215,7 @@ geiger:
 	cd crates/gororoba_algebra && cargo geiger 2>&1 | tail -5
 	cd crates/provenance_store && cargo geiger 2>&1 | tail -5
 
-# supply-chain-gate (T-118): aggregated check chaining cargo-deny + machete +
+# supply-chain-gate: aggregated check chaining cargo-deny + machete +
 # a register_custom_getrandom non-existence grep (keeps RUSTSEC-2026-0097
 # exposure provably zero per docs/adr/rustsec-dispositions.md).
 # Runs deterministically; safe in pre-push-gate-strict.
@@ -231,7 +228,7 @@ supply-chain-gate:
 	cargo machete > /dev/null 2>&1 || { echo "FAIL: cargo machete (unused deps)"; fail=1; }; \
 	echo "[supply-chain] register_custom_getrandom non-existence grep ..."; \
 	if grep -rn 'register_custom_getrandom' crates/ --include='*.rs' >/dev/null 2>&1; then \
-		echo "FAIL: register_custom_getrandom callers found -- RUSTSEC-2026-0097 exposure now nonzero"; \
+		echo "FAIL: register_custom_getrandom callers found -- RUSTSEC-2026-0097 exposure is nonzero"; \
 		grep -rn 'register_custom_getrandom' crates/ --include='*.rs'; \
 		fail=1; \
 	fi; \
@@ -299,12 +296,11 @@ audit-deep:
 
 test: rust-regression
 
-# PERF FIX (2026-05-11): build repo-utilities once, then invoke the binary
-# directly. `cargo run --release ...` triggers a full workspace metadata
-# walk on every invocation (~53s cold per fresh cargo process). With a
-# single `cargo build` at the top of `check`, subsequent ansi-check +
+# Build repo_utilities once, then invoke the binary directly.
+# `cargo run --release ...` triggers a full workspace metadata walk on
+# every invocation (~53s cold per fresh cargo process). A single
+# `cargo build` at the top of `check` lets subsequent ansi-check and
 # terminology-gate calls execute the cached binary directly (<1s each).
-# Net saving: ~55s per push when nothing in gororoba_cli_data changed.
 REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/release/repo-utilities
 
 check:
@@ -319,10 +315,10 @@ registry-verify-markdown-governance:
 	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
 	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-removal-policy
 
-# TIER-6 governance gate binaries are cached at stable paths under
-# $(GATE_TOOLS_DIR)/. Cache vars + rules live below where
+# Governance gate binaries are cached at stable paths under
+# $(GATE_TOOLS_DIR)/. Cache vars and rules live below where
 # GATE_TOOLS_DIR is defined (search "MARKDOWN_REGISTRY_CACHE").
-# Here we just consume them.
+# This target consumes those cache entries.
 .SECONDEXPANSION:
 governance-gate-readonly: $$(MARKDOWN_REGISTRY_CACHE) $$(GOVERNANCE_VERIFY_CACHE) $$(INTEGRITY_RESOLUTION_CACHE)
 	$(MARKDOWN_REGISTRY_CACHE) verify-gate-all
@@ -346,11 +342,10 @@ governance-gate-readonly: $$(MARKDOWN_REGISTRY_CACHE) $$(GOVERNANCE_VERIFY_CACHE
 governance-gate: governance-gate-readonly ndlb-gate
 	@echo "OK: governance-gate is a compatibility alias for governance-gate-readonly."
 
-# NDLB gate: No-Dataset-Left-Behind invariant (plan Phase 6A.S3).
-# Armed in strict mode after 2026-04-17 triage (P6A.S4). Every
-# data/external/* subdir must be one of: active (experiment-bound),
-# synthetic (local artifact), or deferred (tombstoned with a
-# defer_to_sprint target). Unknown / dark dirs fail fast.
+# NDLB gate: No-Dataset-Left-Behind invariant. Every data/external/*
+# subdir must be one of: active (experiment-bound), synthetic
+# (local artifact), or deferred (tombstoned with a defer_to_sprint
+# target). Unknown or dark dirs fail fast.
 ndlb-gate:
 	@echo "[ndlb-gate] validating dataset/server/experiment invariants..."
 	$(CARGO_ENV) cargo run --profile release-gate -q -p gororoba_cli_data --bin ndlb-gate
@@ -359,11 +354,10 @@ ndlb-gate:
 wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
-# TIER-3 (2026-05-12): cache gate-tool binaries and host-profile output.
-# Each `cargo run -q -p X --bin Y` invocation pays ~30-60s of metadata
-# walk overhead even when nothing changed. By caching binaries at
-# stable paths with Make-tracked dependency timestamps, we skip cargo
-# entirely when source is unchanged.
+# Cache gate-tool binaries and host-profile output. Each
+# `cargo run -q -p X --bin Y` invocation pays ~30-60s of metadata walk
+# overhead even when nothing changed. Stable paths with Make-tracked
+# dependency timestamps skip cargo entirely when source is unchanged.
 GATE_TOOLS_DIR := $(REPO_CARGO_TARGET_DIR)/gate-tools
 WORKSPACE_ROUTING_CACHE := $(GATE_TOOLS_DIR)/workspace-routing
 HOST_PROFILE_CACHE := $(GATE_TOOLS_DIR)/host-profile.sh
@@ -392,17 +386,16 @@ $(HOST_PROFILE_CACHE): $(HOST_PROFILE_DEPS)
 	@$(CARGO_ENV) cargo run -q -p xtask -- host-profile --format shell > $@.tmp
 	@mv $@.tmp $@
 
-# TIER-5B (2026-05-12): xtask binary cached for the optional
-# gate-local-xtask driver. Source-dep tracking keeps it skipping
-# cargo's metadata walk when xtask source is unchanged.
+# The xtask binary is cached for the optional gate-local-xtask driver.
+# Source-dep tracking skips cargo's metadata walk when xtask source is
+# unchanged.
 XTASK_CACHE := $(GATE_TOOLS_DIR)/xtask
 
-# TIER-6 (2026-05-12): cache governance gate binaries at stable paths
-# under $(GATE_TOOLS_DIR)/. Without caching, every push that triggers
-# run_governance=True paid a 5m 24s rebuild of these three binaries
-# in release-gate profile (separate from release/dev/test profile
-# caches, so they go cold whenever the others are exercised in
-# isolation). Same pattern fixed in tier-2 for repo_utilities.
+# Cache governance gate binaries at stable paths under
+# $(GATE_TOOLS_DIR)/. Without caching, every push that triggers
+# run_governance=True pays a 5m 24s rebuild of these three binaries in
+# release-gate profile, separate from release/dev/test profile caches.
+# The repo_utilities check uses the same cached-binary pattern.
 #
 # Source dep tracking via Make: rebuild triggers ONLY when the bin
 # source or its package manifest changes. Most pushes (including
@@ -455,13 +448,11 @@ gate-tools-clean:
 	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
 	@echo "OK: gate-tools cache cleared."
 
-# TIER-2-CLEANUP (2026-05-12): gate-lock file. When gate-local starts,
-# it writes $(GATE_LOCK) with its PID + start time. A sibling `make
-# gate-lock-status` target lets editors check whether a gate is in
-# flight. The lock is removed in a shell trap on EXIT so even crashed
-# gates clean up. Wave-2 push of the PH-MOD session failed because
-# I edited mod.rs while a gate was mid-read; this lock surfaces that
-# class of bug before it bites.
+# gate-local writes $(GATE_LOCK) with its PID and start time. A sibling
+# `make gate-lock-status` target lets editors check whether a gate is in
+# flight. The lock is removed in a shell trap on EXIT so crashed gates
+# clean up. The lock surfaces edit-during-read hazards before a gate
+# consumes inconsistent source.
 GATE_LOCK := $(REPO_CARGO_TARGET_DIR)/gate-tools/gate-local.lock
 
 .PHONY: gate-lock-status
@@ -603,8 +594,7 @@ data-core-pure-check:
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force cache-sweep-dry-run
 
 cache-status:
-	@# TIER-8 (2026-05-12): single cargo target dir at .cache/gate-target.
-	@# CLI cargo and gate cargo both write there (via .cargo/config.toml
+	@# CLI cargo and gate cargo both write to .cache/gate-target (via .cargo/config.toml
 	@# build.target-dir or CARGO_TARGET_DIR env override).
 	@printf '=== Cargo target dir (canonical) ===\n'
 	@du -sh .cache/gate-target 2>/dev/null || printf '(missing)\n'
@@ -619,12 +609,10 @@ cache-status:
 	@printf '=== Residual target/ (cargo doc + mdbook, NOT cargo build) ===\n'
 	@du -sh target 2>/dev/null || printf '(missing)\n'
 
-# TIER-2-CLEANUP (2026-05-12): cache-sweep policy changed from
-# `--maxsize 100GB` + unconditional gate-cbuild wipe to age-based
-# preservation. The prior policy wiped 119GB of debug artifacts in a
-# single run during PH-MOD, forcing a cold rebuild on the next push.
-# `cargo sweep --time N` keeps artifacts accessed within the last N
-# days; this preserves the incremental working set across sessions.
+# cache-sweep uses age-based preservation instead of an unconditional
+# gate-cbuild wipe. `cargo sweep --time N` keeps artifacts accessed
+# within the last N days; this preserves the incremental working set
+# across sessions.
 #
 # Tunables:
 #   CACHE_SWEEP_KEEP_DAYS (default 7): cargo-sweep --time argument.
@@ -639,11 +627,10 @@ CACHE_SWEEP_DEBUG_KEEP_DAYS ?= 14
 CACHE_SWEEP_PRESSURE_TARGET_MB ?= $(CACHE_CHECK_SOFT_MB)
 
 cache-sweep:
-	@# TIER-8 (2026-05-12): single canonical target dir at .cache/gate-target.
+	@# cache-sweep operates on .cache/gate-target and gate-cbuild only.
 	@# Legacy cargo-default-target / .cache/cargo / .cache/sparse-cargo-home /
-	@# orphan target dirs were removed in commit 031ea9fe; this target no
-	@# longer references them. Residual target/ holds only cargo doc +
-	@# mdbook output (no cargo build artifacts post tier-8).
+	@# orphan target dirs are outside this lane. Residual target/ holds only
+	@# cargo doc and mdbook output.
 	@echo "Pre-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
 	@echo "Sweeping .cache/gate-target (keep artifacts accessed in last $(CACHE_SWEEP_KEEP_DAYS) days)..."
 	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: target absent or not a cargo project)"
@@ -710,20 +697,19 @@ cache-purge-exp:
 	rm -rf .cache/exp-*-target
 	@echo "OK: experimental target dirs purged."
 
-# Cache size check: FAILS at configurable thresholds (plan P1.S3.T5).
-# WHY: prior target was warn-only and let 669 GB accumulate before
-# discovery in 2026-04 audit. Hard cap blocks push via pre-push hook.
+# Cache size check: fails at configurable thresholds. Hard cap blocks
+# push via the pre-push hook.
 # Soft cap is also an error: warnings-as-errors means gate diagnostics must be
 # actionable failures, not non-blocking noise.
 #
 # Tunable via env vars:
 #   CACHE_CHECK_SOFT_MB  (default 153600  = 150 GB)
 #   CACHE_CHECK_HARD_MB  (default 256000  = 250 GB)
-# TIER-4 (2026-05-12): memoize cache-check with a 30-min TTL. The four
-# `du -sm` walks over hundreds of GB take ~10s of wall time per push.
-# The cache size grows slowly during a session; checking once every
-# 30 minutes (or on explicit `make cache-check-force`) gives the same
-# safety guarantee with ~0s overhead for in-session pushes.
+# Memoize cache-check with a 30-minute TTL. The four `du -sm` walks
+# over hundreds of GB take ~10s of wall time per push. The cache size
+# grows slowly during a session; checking once every 30 minutes (or on
+# explicit `make cache-check-force`) gives the same safety guarantee
+# with near-zero overhead for in-session pushes.
 CACHE_CHECK_SENTINEL := $(REPO_CARGO_TARGET_DIR)/gate-tools/cache-check.last
 CACHE_CHECK_TTL_SECS ?= 1800
 
@@ -740,9 +726,8 @@ cache-check:
 	$(MAKE) -s cache-check-force | tee "$(CACHE_CHECK_SENTINEL)"
 
 cache-check-force:
-	@# TIER-8 (2026-05-12): single canonical target dir. Legacy ambient
-	@# target removed; cache-check totals now sum gate-target + gate-cbuild
-	@# + residual target/ (cargo doc + mdbook output only, no build artifacts).
+	@# Cache accounting sums gate-target, gate-cbuild, and residual target/.
+	@# Residual target/ is reserved for cargo doc and mdbook output.
 	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
 	CBUILD_MB=$$(du -sm .cache/gate-cbuild 2>/dev/null | cut -f1 || printf '0'); \
 	TARGET_MB=$$(du -sm target 2>/dev/null | cut -f1 || printf '0'); \
@@ -829,7 +814,7 @@ rust-semver-check:
 	@# most recent git tag so we catch accidental public-API breakage since that tag.
 	@# To advance the baseline after deliberate breaking changes: git tag -f $(SEMVER_BASELINE_REV) HEAD
 	@#
-	@# cargo-semver-checks --baseline-rev cannot clone the current baseline tag on
+	@# cargo-semver-checks --baseline-rev cannot clone the configured baseline tag on
 	@# ext4: two generated registry_mirrors filenames have 238+ byte components,
 	@# and cargo-semver-checks appends a temp suffix during checkout. Extracting
 	@# the tag with git archive preserves the legal filename component and lets
@@ -879,18 +864,18 @@ rust-regression: rust-clippy
 	@echo "OK: Rust regression lane passed."
 
 rust-regression-scoped:
-	# The workspace-routing source lives beside the data CLI, but the gate cache
-	# builds it through the slim governance proxy binary.  That keeps scope
-	# classification independent of the full data CLI dependency graph while
-	# preserving the routing behavior repaired by commit a9edfd86.
+	# workspace-routing source lives beside the data CLI, but
+	# rust-regression-scoped builds it through the slim governance proxy binary.
+	# That keeps scope classification independent of the full data CLI
+	# dependency graph while preserving workspace-routing semantics.
 	#
-	# TIER-3 (2026-05-12): prefer the cached binary at $(WORKSPACE_ROUTING_CACHE)
-	# to skip cargo's metadata walk. The cached binary IS rebuilt by its own
-	# target-dep rules in gate-tools when workspace_routing.rs changes.
+	# Prefer the cached binary at $(WORKSPACE_ROUTING_CACHE) to skip cargo's
+	# metadata walk. The gate-tools target dependencies rebuild the cached binary
+	# when workspace_routing.rs changes.
 	#
-	# TIER-2-CLEANUP (2026-05-12): we no longer suppress stderr from the
-	# routing CLI. Errors surface to the gate operator so silent
-	# fallbacks like the original wave-3 bug cannot repeat.
+	# Preserve routing CLI stderr so scope-selection failures reach the gate
+	# operator. The fallback remains "--workspace" after the diagnostic is
+	# emitted.
 	$(eval RUST_SCOPE ?= $(shell \
 	    if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
 	        "$(WORKSPACE_ROUTING_CACHE)" --local 2> >(tee /dev/stderr); \
@@ -1567,7 +1552,7 @@ ref-audit:
 ref-audit-strict:
 	python3 scripts/check_refs.py --strict docs/latex/heliosphere/refs_heliosphere.bib
 
-# ===== Ablation campaign targets (Phase 2, plan P6A.S2) ======================
+# ===== Ablation campaign targets =============================================
 # All binaries read from data/external/themis/ (cached) and write JSON to
 # data/output/heliosphere/ablations/.  Run ablation-all for the full campaign.
 
@@ -1817,13 +1802,9 @@ registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry
 # through several data tools, and cg_clif still ICEs on AVX f32x8 lowering in that
 # lane on nightly 2026-04-05.
 registry-export-markdown: registry-refresh registry-build
-# PH-5.B migration: the 54-line shell heredoc that used to live here
-# (23 sequential `registry-emit Xmirror --output Y` calls plus 4 stale
-# `markdown-registry build-*` calls that referenced subcommands which
-# no longer exist) has been promoted to the xtask command
-# `registry-emit-all-mirrors`. The xtask owns the (kind, output_path)
-# list as Rust data with proper error propagation; the Makefile is
-# now a thin delegation.
+# registry-emit-all-mirrors owns the mirror (kind, output_path) list as
+# Rust data with proper error propagation. The Makefile delegates to
+# that typed command instead of carrying a shell heredoc.
 	$(CARGO_ENV) cargo run -p xtask -- registry-emit-all-mirrors
 
 # Keep mirror freshness and governance checks on the LLVM-backed gate lane for the
@@ -2396,17 +2377,16 @@ cpd-audit-tooling:
 	pmd cpd --language rust --minimum-tokens $(CPD_TOOLING_TOKENS) --file-list $(_CPD_TOOLING_FILE_LIST) --format xml 2>/dev/null \
 		| $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin cpd-report -- --top $(CPD_TOP)
 
-# ---- PH-4: Generated artifact header patching ----
+# ---- Generated artifact header patching -------------------------------------
 # Back-fills the standard AUTO-GENERATED header on all static registry_mirrors .rs
-# files that predate the generated_doc_header() convention (commit 20d93a12 mass-
-# conversion via markdown_to_rust did not emit headers).  Safe to run repeatedly.
+# files that lack the generated_doc_header() convention. Safe to run repeatedly.
 .PHONY: patch-static-mirror-headers
 
 patch-static-mirror-headers:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin registry-emit -- \
 		patch-static-mirror-headers
 
-# ---- PH-4: Generated surface CPD audit lane ----
+# ---- Generated surface CPD audit lane ---------------------------------------
 # Scans registry_mirrors/ and other purely-generated Rust surfaces separately from
 # hand-written logic.  Uses a much higher token threshold (200) because generated
 # code has structural repetition by design.  Never gates CI -- report-only semantics.
