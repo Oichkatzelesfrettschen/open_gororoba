@@ -1,7 +1,7 @@
 use clap::Parser;
 use gororoba_cli::thesis_42_support::{
-    DEFAULT_CALIBRATION_ID, Thesis42SupportConfig, generate_thesis_42_support_report,
-    write_thesis_42_support_bundle,
+    DEFAULT_CALIBRATION_CSV, DEFAULT_CALIBRATION_ID, Thesis42SupportConfig,
+    generate_thesis_42_support_report, write_thesis_42_support_bundle,
 };
 use std::path::PathBuf;
 
@@ -12,10 +12,7 @@ struct Args {
     #[arg(long, default_value = DEFAULT_CALIBRATION_ID)]
     calibration_id: String,
 
-    #[arg(
-        long,
-        default_value = "data/csv/c010_nonlocal_material_calibrations.csv"
-    )]
+    #[arg(long, default_value = DEFAULT_CALIBRATION_CSV)]
     calibration_csv: PathBuf,
 
     #[arg(long, default_value_t = 16)]

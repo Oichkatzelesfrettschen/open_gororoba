@@ -23,7 +23,7 @@ gororoba_gpu_cuda = { workspace = true, optional = true }
 gr_core = { version = "0.1.0", path = "../gr_core" }
 lattice_filtration = { path = "../lattice_filtration" }
 lbm_3d = { path = "../lbm_3d" }
-lbm_3d_cuda = { path = "../lbm_3d_cuda" }
+lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 lbm_core = { path = "../lbm_core" }
 nalgebra = { workspace = true }
 ndarray = { workspace = true }
@@ -49,6 +49,7 @@ harness = false
 
 [features]
 gpu = [
+    "dep:lbm_3d_cuda",
     "lbm_3d_cuda/cufft",
     "gororoba_algebra/gpu",
     "algebra_experimental/gpu",

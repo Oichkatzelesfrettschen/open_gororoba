@@ -18,7 +18,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
-const DEFAULT_CALIBRATION_CSV: &str = "data/csv/c010_nonlocal_material_calibrations.csv";
+const DEFAULT_CALIBRATION_CSV: &str =
+    "registry/data/project_csv/canonical/PC-0006_c010_nonlocal_material_calibrations.toml";
 
 #[derive(Parser)]
 #[command(

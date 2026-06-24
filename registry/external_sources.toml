@@ -24,7 +24,7 @@ truth_surfaces = [
 artifact_contract_paths = [
     "crates/materials_core/src/nonlocal_metamaterial.rs",
     "crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs",
-    "data/csv/c010_nonlocal_material_calibrations.csv",
+    "registry/data/project_csv/canonical/PC-0006_c010_nonlocal_material_calibrations.toml",
 ]
 has_full_transcript = false
 claim_refs = [
@@ -203,7 +203,7 @@ truth_surfaces = [
 artifact_contract_paths = [
     "crates/materials_core/src/pathion_toy_mapping.rs",
     "crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs",
-    "data/csv/c053_pathion_tmm_summary.csv",
+    "registry/data/project_csv/canonical/PC-0007_c053_pathion_tmm_summary.toml",
     "crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs",
 ]
 has_full_transcript = false
@@ -7558,8 +7558,8 @@ truth_surfaces = [
     "observation_benchmark",
 ]
 artifact_contract_paths = [
-    "data/external/sparc/",
     "crates/data_core/src/catalogs/sparc.rs",
+    "registry/dataset_label_aliases.toml",
 ]
 has_full_transcript = false
 claim_refs = [
@@ -7592,8 +7592,8 @@ truth_surfaces = [
     "observation_benchmark",
 ]
 artifact_contract_paths = [
-    "data/external/sparc_nfw/",
-    "crates/data_core/src/catalogs",
+    "crates/data_core/src/catalogs/sparc.rs",
+    "registry/dataset_label_aliases.toml",
 ]
 has_full_transcript = false
 claim_refs = [
@@ -7626,7 +7626,7 @@ truth_surfaces = [
     "observation_benchmark",
 ]
 artifact_contract_paths = [
-    "data/external/manga/",
+    "data/external/SOURCES.toml",
     "crates/data_core/src/catalogs/manga.rs",
 ]
 has_full_transcript = false
@@ -7658,7 +7658,8 @@ truth_surfaces = [
     "observation_benchmark",
 ]
 artifact_contract_paths = [
-    "data/external/manga/",
+    "data/external/SOURCES.toml",
+    "crates/data_core/src/catalogs/manga.rs",
 ]
 has_full_transcript = false
 claim_refs = []

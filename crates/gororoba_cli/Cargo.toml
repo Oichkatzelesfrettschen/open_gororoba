@@ -107,10 +107,6 @@ name = "detect-worker-budget"
 path = "src/bin/detect_worker_budget.rs"
 
 [[bin]]
-name = "docs-redirect-check"
-path = "src/bin/docs_redirect_check.rs"
-
-[[bin]]
 name = "proof-dep-graph"
 path = "src/bin/proof_dep_graph.rs"
 
