@@ -1,12 +1,12 @@
 //! generate-topological-voids: Generate macroscopic topological voids
 //! to match the CDG-2 astrophysical constraint that the baryon filling
-//! fraction (1 - vf) is below 0.0006 (Li et al. 2025, arXiv:2506.15644).
+//! fraction is below 0.0006 (Li et al. 2025, arXiv:2506.15644).
 //!
-//! Notation: vf = void_count / total_cells in the LBM grid (the fraction
-//! of cells classified as topological voids). The complement (1 - vf) is
-//! the baryon filling fraction. Earlier prose described the CDG-2 target
-//! as "VF=0.0"; the precise statement is "(1 - vf) < 0.0006", i.e. dark
-//! matter fraction >= 99.94%.
+//! Notation: void_fraction = void_count / total_cells in the LBM grid
+//! (the fraction of cells classified as topological voids). The complement
+//! baryon_filling_fraction = 1.0 - void_fraction is the CDG-2 quantity.
+//! Earlier prose described the target as "VF=0.0"; the precise statement is
+//! baryon_filling_fraction < 0.0006, i.e. dark matter fraction >= 99.94%.
 //!
 //! Creates a 3D density field where baryonic matter is excluded from
 //! regions of high Cayley-Dickson associator frustration.
@@ -203,29 +203,33 @@ fn main() -> anyhow::Result<()> {
         }
     }
 
-    let vf = void_count as f64 / total_cells as f64;
-    // vf is a fraction of grid cells, so it must lie in [0, 1]; a value
+    let void_fraction = void_count as f64 / total_cells as f64;
+    // void_fraction is a fraction of grid cells, so it must lie in [0, 1]; a value
     // outside that range means void_count or total_cells was miscomputed.
-    debug_assert!(
-        (0.0..=1.0).contains(&vf),
-        "void fraction out of range: {vf}"
+    assert!(
+        (0.0..=1.0).contains(&void_fraction),
+        "void fraction out of range: {void_fraction}"
     );
+    let baryon_filling_fraction = 1.0 - void_fraction;
     eprintln!("Void Generation Complete.");
     eprintln!("  Threshold: {}", args.threshold);
-    eprintln!("  Void fraction (vf = exclusion):           {:.6}", vf);
     eprintln!(
-        "  Baryon filling fraction (1 - vf):         {:.6}",
-        1.0 - vf
+        "  Void fraction (void_fraction):            {:.6}",
+        void_fraction
+    );
+    eprintln!(
+        "  Baryon filling fraction:                  {:.6}",
+        baryon_filling_fraction
     );
 
-    if (1.0 - vf) < 0.0006 {
+    if baryon_filling_fraction < 0.0006 {
         eprintln!(
             "  [SUCCESS] Matches CDG-2 (Li et al. 2025, arXiv:2506.15644): \
-             baryon filling fraction (1 - vf) < 0.0006"
+             baryon filling fraction < 0.0006"
         );
     } else {
         eprintln!(
-            "  [NOTICE] Baryon filling fraction (1 - vf) exceeds CDG-2 bound. \
+            "  [NOTICE] Baryon filling fraction exceeds CDG-2 bound. \
              Lower threshold or increase coupling."
         );
     }
