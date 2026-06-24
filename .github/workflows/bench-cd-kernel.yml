@@ -29,18 +29,31 @@ jobs:
           free -h
           uname -a
       - name: Prepare sibling crate and build-dir
+        id: prepare
         run: |
-          git clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas
+          auth_header="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
+          if git -c http.https://github.com/.extraheader="AUTHORIZATION: basic ${auth_header}" \
+            clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas; then
+            echo "bench_ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Skipping cd_kernel benchmark because cratesgororobas could not be cloned with workflow credentials."
+            echo "bench_ready=false" >> "$GITHUB_OUTPUT"
+          fi
           sed -i 's|build-dir = .*|build-dir = "target/ambient"|' .cargo/config.toml
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Build benchmark binary
+        if: steps.prepare.outputs.bench_ready == 'true'
         run: cargo build --release -p cd_kernel --test bench_multiplatform
         env:
           CARGO_TARGET_DIR: target
       - name: Run CD kernel benchmark
+        if: steps.prepare.outputs.bench_ready == 'true'
         run: cargo test --release -p cd_kernel -- bench_multiplatform --nocapture 2>&1 | tee bench_x86.txt
         env:
           CARGO_TARGET_DIR: target
       - uses: actions/upload-artifact@v4
+        if: steps.prepare.outputs.bench_ready == 'true'
         with:
           name: bench-x86
           path: bench_x86.txt
@@ -63,18 +76,31 @@ jobs:
           free -h
           uname -a
       - name: Prepare sibling crate and build-dir
+        id: prepare
         run: |
-          git clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas
+          auth_header="$(printf 'x-access-token:%s' "$GITHUB_TOKEN" | base64 -w0)"
+          if git -c http.https://github.com/.extraheader="AUTHORIZATION: basic ${auth_header}" \
+            clone --depth 1 https://github.com/Oichkatzelesfrettschen/cratesgororobas.git ../cratesgororobas; then
+            echo "bench_ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Skipping cd_kernel benchmark because cratesgororobas could not be cloned with workflow credentials."
+            echo "bench_ready=false" >> "$GITHUB_OUTPUT"
+          fi
           sed -i 's|build-dir = .*|build-dir = "target/ambient"|' .cargo/config.toml
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Build benchmark binary
+        if: steps.prepare.outputs.bench_ready == 'true'
         run: cargo build --release -p cd_kernel --test bench_multiplatform
         env:
           CARGO_TARGET_DIR: target
       - name: Run CD kernel benchmark
+        if: steps.prepare.outputs.bench_ready == 'true'
         run: cargo test --release -p cd_kernel -- bench_multiplatform --nocapture 2>&1 | tee bench_arm.txt
         env:
           CARGO_TARGET_DIR: target
       - uses: actions/upload-artifact@v4
+        if: steps.prepare.outputs.bench_ready == 'true'
         with:
           name: bench-arm
           path: bench_arm.txt
