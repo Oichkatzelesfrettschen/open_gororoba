@@ -59,10 +59,10 @@ jobs:
       - name: Full Rust gate
         run: ./makew gate-ci-rust
 
-      # Tier-5C (2026-05-12): gate-timing regression check. Reads
+      # Gate-timing regression check. Reads
       # data/output/audit/<date>/gate-timing-*.jsonl artifacts from
-      # prior runs (committed by post-merge tooling or restored from
-      # actions/cache) and compares the latest run's per-phase
+      # prior runs, filters by the artifact timestamp rather than
+      # checkout mtime, and compares the latest run's per-phase
       # elapsed_sec against the baseline median.
       #
       # HARD GATE: the 2-week observation window has elapsed. The check
