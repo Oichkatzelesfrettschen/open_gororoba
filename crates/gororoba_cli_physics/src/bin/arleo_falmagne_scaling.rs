@@ -288,6 +288,34 @@ fn validate_npart_pbpb(bins: &[CentralityBinGeometry]) {
     }
 }
 
+fn alice_straggling_pt_range(
+    centrality_data: &[(f64, f64, Vec<RaaDataPoint>)],
+) -> Option<(f64, f64)> {
+    let mut pt_min = f64::INFINITY;
+    let mut pt_max = f64::NEG_INFINITY;
+
+    for (_, _, data_points) in centrality_data {
+        for data_point in data_points {
+            if data_point.pt.is_finite() && data_point.pt > 0.0 {
+                pt_min = pt_min.min(data_point.pt);
+                pt_max = pt_max.max(data_point.pt);
+            }
+        }
+    }
+
+    if !pt_min.is_finite() {
+        return None;
+    }
+
+    if pt_max > pt_min {
+        return Some((pt_min, pt_max));
+    }
+
+    let lower = (pt_min * 0.95).max(f64::MIN_POSITIVE);
+    let upper = (pt_min * 1.05).max(lower + f64::EPSILON);
+    Some((lower, upper))
+}
+
 fn run_alice(data_dir: &str, pt_min: f64, use_straggling: bool, kappa: f64) {
     eprintln!("=== Arleo-Falmagne Scaling: ALICE Pb-Pb 5.02 TeV ===");
     if use_straggling {
@@ -321,12 +349,53 @@ fn run_alice(data_dir: &str, pt_min: f64, use_straggling: bool, kappa: f64) {
 
     let n_spectral = 6.1; // Spectral index for 5.02 TeV pp spectrum
 
-    // Build straggling grid once before the per-centrality loop (expensive but one-time)
+    let mut alice_centrality_data = Vec::new();
+
+    for (c_lo, c_hi, tables) in &broad_cents {
+        let mut all_data = Vec::new();
+        for &table_index in tables {
+            let path = alice_dir.join(format!("table_{}.csv", table_index));
+            if !path.exists() {
+                eprintln!("  WARNING: {} not found, skipping", path.display());
+                continue;
+            }
+            match hic_raa::parse_raa_csv(&path) {
+                Ok(points) => {
+                    for point in points {
+                        if point.pt >= pt_min {
+                            all_data.push(RaaDataPoint {
+                                pt: point.pt,
+                                raa: point.raa,
+                                stat_err: point.stat_err,
+                                syst_err: point.syst_err_up,
+                            });
+                        }
+                    }
+                }
+                Err(error) => eprintln!("  WARNING: {}", error),
+            }
+        }
+        alice_centrality_data.push((*c_lo, *c_hi, all_data));
+    }
+
     let straggling_grid = if use_straggling {
-        eprintln!("[2.5/4] Building straggling grid (kappa = {kappa:.3}, n = {n_spectral:.1})...");
-        let t0 = std::time::Instant::now();
-        let grid = StragglingGrid::new((1.0, 100.0), 200, (0.1, 30.0), 150, n_spectral, kappa);
-        eprintln!("        Grid built in {:.2}s", t0.elapsed().as_secs_f64());
+        let Some(pt_range) = alice_straggling_pt_range(&alice_centrality_data) else {
+            eprintln!(
+                "  ERROR: no positive finite pT samples remain for straggling grid construction"
+            );
+            return;
+        };
+
+        eprintln!(
+            "[2.5/4] Building straggling grid (pT = {:.3}-{:.3} GeV, kappa = {kappa:.3}, n = {n_spectral:.1})...",
+            pt_range.0, pt_range.1
+        );
+        let started_at = std::time::Instant::now();
+        let grid = StragglingGrid::new(pt_range, 200, (0.1, 30.0), 150, n_spectral, kappa);
+        eprintln!(
+            "        Grid built in {:.2}s",
+            started_at.elapsed().as_secs_f64()
+        );
         Some(grid)
     } else {
         None
@@ -343,42 +412,21 @@ fn run_alice(data_dir: &str, pt_min: f64, use_straggling: bool, kappa: f64) {
         "Centrality", "eps_bar", "+err", "-err", "chi2/ndf", "N_pts"
     );
 
-    for (c_lo, c_hi, tables) in &broad_cents {
-        // Load and merge data from relevant tables
-        let mut all_data = Vec::new();
-        for &t in tables {
-            let path = alice_dir.join(format!("table_{}.csv", t));
-            if !path.exists() {
-                eprintln!("  WARNING: {} not found, skipping", path.display());
-                continue;
-            }
-            match hic_raa::parse_raa_csv(&path) {
-                Ok(pts) => {
-                    for p in pts {
-                        if p.pt >= pt_min {
-                            all_data.push(RaaDataPoint {
-                                pt: p.pt,
-                                raa: p.raa,
-                                stat_err: p.stat_err,
-                                syst_err: p.syst_err_up,
-                            });
-                        }
-                    }
-                }
-                Err(e) => eprintln!("  WARNING: {}", e),
-            }
-        }
-
+    for (c_lo, c_hi, all_data) in &alice_centrality_data {
         if all_data.is_empty() {
             eprintln!("  {:>4.0}-{:<5.0}% -- no data", c_lo * 100.0, c_hi * 100.0);
             continue;
         }
 
         // Extract epsilon_bar: use straggling-smeared model if requested
-        let result = if let Some(ref grid) = straggling_grid {
-            extract_epsilon_straggling(&all_data, 0.1, 20.0, 1e-6, grid)
+        let result = if use_straggling {
+            let Some(grid) = straggling_grid.as_ref() else {
+                eprintln!("  ERROR: straggling grid unavailable during epsilon extraction");
+                return;
+            };
+            extract_epsilon_straggling(all_data, 0.1, 20.0, 1e-6, grid)
         } else {
-            extract_epsilon(&all_data, n_spectral, 0.1, 20.0, 1e-6)
+            extract_epsilon(all_data, n_spectral, 0.1, 20.0, 1e-6)
         };
 
         eprintln!(
@@ -1505,6 +1553,7 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
 
 #[cfg(test)]
 mod tests {
+    use super::{RaaDataPoint, alice_straggling_pt_range};
     use qgp_scaling::quenching::{r_aa_model, scaling_function};
 
     #[test]
@@ -1525,5 +1574,51 @@ mod tests {
                 sf
             );
         }
+    }
+
+    #[test]
+    fn test_alice_straggling_pt_range_uses_filtered_samples() {
+        let centrality_data = vec![
+            (
+                0.0,
+                0.05,
+                vec![
+                    RaaDataPoint {
+                        pt: 0.35,
+                        raa: 0.25,
+                        stat_err: 0.01,
+                        syst_err: 0.02,
+                    },
+                    RaaDataPoint {
+                        pt: 12.0,
+                        raa: 0.55,
+                        stat_err: 0.01,
+                        syst_err: 0.02,
+                    },
+                ],
+            ),
+            (
+                0.05,
+                0.10,
+                vec![RaaDataPoint {
+                    pt: 125.0,
+                    raa: 0.75,
+                    stat_err: 0.02,
+                    syst_err: 0.03,
+                }],
+            ),
+        ];
+
+        let range = alice_straggling_pt_range(&centrality_data).expect("range from data");
+        assert!(
+            (range.0 - 0.35).abs() < 1e-12,
+            "grid pt_min should follow filtered data, got {}",
+            range.0
+        );
+        assert!(
+            (range.1 - 125.0).abs() < 1e-12,
+            "grid pt_max should follow filtered data, got {}",
+            range.1
+        );
     }
 }
