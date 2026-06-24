@@ -352,14 +352,14 @@ id = "DEBT-OBSERVABILITY"
 axis = "C_test_verification"
 label = "Gate-timing telemetry and audit reproducibility instrumentation"
 risk = "Without timing telemetry and regression checks, gate slowdowns and audit-number drift go unnoticed until they block a push. A regression check wired with continue-on-error provides no protection."
-current_magnitude = "gate-timing-summary / gate-timing-regression-check exist in xtask and emit JSONL under data/output/audit/<date>/gate-timing-*.jsonl. The CI gate-timing-regression-check is now a hard gate: .github/workflows/ci.yml carries the HARD GATE comment and no continue-on-error on the timing step."
+current_magnitude = "gate-timing-summary / gate-timing-regression-check exist in xtask and emit JSONL under data/output/audit/<date>/gate-timing-*.jsonl. The checker filters history by the gate-timing-<unix-ts>.jsonl artifact timestamp, not checkout mtime. The CI gate-timing-regression-check is now a hard gate: .github/workflows/ci.yml carries the HARD GATE comment and no continue-on-error on the timing step."
 magnitude_reproduce = "rg -n 'continue-on-error|timing' .github/workflows/ci.yml ; ls data/output/audit/*/gate-timing-*.jsonl"
 confirmed_examples = [
     ".github/workflows/ci.yml gate-timing-regression-check hard gate (soak window ended 2026-05-26).",
     "xtask gate-timing-summary, gate-tools-status.",
 ]
 resolution_pattern = "Keep gate-timing-regression-check as a hard gate and keep the JSONL telemetry as the durable evidence surface."
-falsifiable_acceptance = "grep continue-on-error .github/workflows/ci.yml shows the gate-timing-regression-check step no longer carries it; a deliberately-slowed gate fails CI."
+falsifiable_acceptance = "awk '/name: Gate-timing regression check/{inside=1; next} inside && /^      - name: /{inside=0} inside && /continue-on-error/{found=1} END{exit found}' .github/workflows/ci.yml; a deliberately-slowed gate fails CI."
 status = "controlled"
 predecessor_ids = []
 cross_links = [
@@ -717,7 +717,7 @@ acceptance_hooks = [
     "cargo nextest run -p cd_kernel  # recurrence parity proptest green",
     "make -C proofs vos && make -C proofs vok",
     "make repo-audit  # rocq_admitted_strict==0 && rocq_admit_strict==0",
-    "grep continue-on-error .github/workflows/ci.yml  # not on the timing step",
+    "awk '/name: Gate-timing regression check/{inside=1; next} inside && /^      - name: /{inside=0} inside && /continue-on-error/{found=1} END{exit found}' .github/workflows/ci.yml",
 ]
 risk_controls = [
     "Proptest tolerance is exact for integer/rational identities and a stated epsilon for float paths; record the epsilon as a claim.",

@@ -1,6 +1,6 @@
 use anstyle::{AnsiColor, Color, Style};
 use anyhow::{Context, Result, bail};
-use chrono::{Local, SecondsFormat};
+use chrono::{Local, NaiveDate, SecondsFormat};
 use clap::Parser;
 use provenance_store::ProvenanceStore;
 use rusqlite::Connection;
@@ -179,17 +179,17 @@ struct LocalNextestCli {
     packages: Vec<String>,
 }
 
-/// Tier-5B (2026-05-12): `cargo xtask gate-local` -- pre-push gate
-/// driver with structured timing output.
+/// `cargo xtask gate-local` -- pre-push gate driver with structured
+/// timing output.
 ///
 /// Wraps the three Make sub-targets (check, rust-regression-scoped,
 /// governance-gate-readonly) and records per-phase elapsed time +
 /// exit code to a JSONL timing log under
 /// `data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl`.
 ///
-/// This is the replacement for the inline shell loop in `gate-local`.
-/// Currently the Makefile target still drives end-to-end orchestration;
-/// the xtask version is an opt-in via `make gate-local-xtask`.
+/// This replaces the inline shell loop in `gate-local`. The Makefile
+/// target drives end-to-end orchestration, and the xtask version is
+/// available via `make gate-local-xtask`.
 #[derive(Parser, Debug)]
 #[command(
     name = "gate-local",
@@ -2763,7 +2763,7 @@ fn repo_root() -> Result<PathBuf> {
 }
 
 // ===========================================================================
-// gate-local xtask driver (Tier-5B, 2026-05-12)
+// gate-local xtask driver
 // ===========================================================================
 
 /// Routing flags emitted by workspace-routing CLI (parsed from stderr lines
@@ -2963,13 +2963,13 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
 }
 
 // ===========================================================================
-// gate-timing-summary + gate-timing-regression-check (Tier-5C, 2026-05-12)
+// gate-timing summary and regression checks
 // ===========================================================================
 
 /// One phase record parsed out of a gate-timing-*.jsonl file.
 #[derive(Debug, Clone)]
 struct PhaseRecord {
-    file_mtime_secs: u64,
+    artifact_time_secs: u64,
     phase: String,
     elapsed_sec: f64,
     exit_code: i64,
@@ -2979,13 +2979,38 @@ fn default_audit_root() -> Result<PathBuf> {
     Ok(repo_root()?.join("data/output/audit"))
 }
 
-/// Walk audit_root for date directories within `since_days`, collect
-/// gate-timing-*.jsonl phase records.
 fn collect_phase_records(audit_root: &Path, since_days: u64) -> Result<Vec<PhaseRecord>> {
     let now = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .context("system clock before unix epoch")?
         .as_secs();
+    collect_phase_records_since(audit_root, since_days, now)
+}
+
+fn gate_timing_filename_secs(path: &Path) -> Option<u64> {
+    let name = path.file_name()?.to_str()?;
+    name.strip_prefix("gate-timing-")?
+        .strip_suffix(".jsonl")?
+        .parse()
+        .ok()
+}
+
+fn gate_timing_parent_date_secs(path: &Path) -> Option<u64> {
+    let date_name = path.parent()?.file_name()?.to_str()?;
+    let date = NaiveDate::parse_from_str(date_name, "%Y-%m-%d").ok()?;
+    let timestamp = date.and_hms_opt(0, 0, 0)?.and_utc().timestamp();
+    u64::try_from(timestamp).ok()
+}
+
+fn gate_timing_artifact_secs(path: &Path) -> Option<u64> {
+    gate_timing_filename_secs(path).or_else(|| gate_timing_parent_date_secs(path))
+}
+
+fn collect_phase_records_since(
+    audit_root: &Path,
+    since_days: u64,
+    now: u64,
+) -> Result<Vec<PhaseRecord>> {
     let cutoff = now.saturating_sub(since_days * 86_400);
 
     let mut records = Vec::new();
@@ -3009,14 +3034,10 @@ fn collect_phase_records(audit_root: &Path, since_days: u64) -> Result<Vec<Phase
             if !name.starts_with("gate-timing-") || !name.ends_with(".jsonl") {
                 continue;
             }
-            let meta = jsonl.metadata()?;
-            let mtime_secs = meta
-                .modified()
-                .ok()
-                .and_then(|t| t.duration_since(std::time::UNIX_EPOCH).ok())
-                .map(|d| d.as_secs())
-                .unwrap_or(0);
-            if mtime_secs < cutoff {
+            let Some(artifact_time_secs) = gate_timing_artifact_secs(&path) else {
+                continue;
+            };
+            if artifact_time_secs < cutoff {
                 continue;
             }
             let text =
@@ -3043,7 +3064,7 @@ fn collect_phase_records(audit_root: &Path, since_days: u64) -> Result<Vec<Phase
                 };
                 let exit_code = value.get("exit_code").and_then(|v| v.as_i64()).unwrap_or(0);
                 records.push(PhaseRecord {
-                    file_mtime_secs: mtime_secs,
+                    artifact_time_secs,
                     phase,
                     elapsed_sec,
                     exit_code,
@@ -3051,7 +3072,7 @@ fn collect_phase_records(audit_root: &Path, since_days: u64) -> Result<Vec<Phase
             }
         }
     }
-    records.sort_by_key(|r| r.file_mtime_secs);
+    records.sort_by_key(|r| r.artifact_time_secs);
     Ok(records)
 }
 
@@ -3167,7 +3188,7 @@ fn run_gate_timing_summary(cli: GateTimingSummaryCli) -> Result<()> {
                         "  {}  {:<28}  {:>10.3}s  exit={}",
                         chrono::DateTime::<chrono::Local>::from(
                             std::time::UNIX_EPOCH
-                                + std::time::Duration::from_secs(r.file_mtime_secs)
+                                + std::time::Duration::from_secs(r.artifact_time_secs)
                         )
                         .format("%Y-%m-%d %H:%M"),
                         r.phase,
@@ -3455,5 +3476,60 @@ fn run_gate_timing_regression_check(cli: GateTimingRegressionCheckCli) -> Result
     } else {
         eprintln!("[gate-timing-regression-check] OK: no regressions detected");
         Ok(0)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn write_gate_timing_record(
+        audit_root: &Path,
+        date_dir: &str,
+        artifact_time_secs: u64,
+        phase: &str,
+        elapsed_sec: f64,
+    ) {
+        let directory = audit_root.join(date_dir);
+        fs::create_dir_all(&directory).expect("create gate timing date directory");
+        let path = directory.join(format!("gate-timing-{artifact_time_secs}.jsonl"));
+        let line = serde_json::json!({
+            "kind": "phase",
+            "phase": phase,
+            "elapsed_sec": elapsed_sec,
+            "exit_code": 0,
+        });
+        fs::write(path, format!("{line}\n")).expect("write gate timing record");
+    }
+
+    #[test]
+    fn gate_timing_records_use_artifact_time_not_file_mtime() {
+        let temp_dir = tempdir().expect("create audit tempdir");
+        let audit_root = temp_dir.path();
+        let now = 1_700_000_000;
+        let old_artifact = now - 20 * 86_400;
+        let recent_artifact = now - 60;
+
+        write_gate_timing_record(
+            audit_root,
+            "2023-10-25",
+            old_artifact,
+            "old-checkout-fresh-file",
+            90.0,
+        );
+        write_gate_timing_record(
+            audit_root,
+            "2023-11-14",
+            recent_artifact,
+            "recent-artifact",
+            1.0,
+        );
+
+        let records = collect_phase_records_since(audit_root, 14, now)
+            .expect("collect synthetic gate timing records");
+
+        assert_eq!(records.len(), 1);
+        assert_eq!(records[0].phase, "recent-artifact");
+        assert_eq!(records[0].artifact_time_secs, recent_artifact);
     }
 }
