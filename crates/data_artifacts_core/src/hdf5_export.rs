@@ -84,6 +84,13 @@ fn write_or_replace_str_dataset(
     Ok(())
 }
 
+fn clear_group_members(group: &hdf5::Group) -> hdf5::Result<()> {
+    for name in group.member_names()? {
+        group.unlink(&name)?;
+    }
+    Ok(())
+}
+
 /// Export a Warp Ring Experiment contract to HDF5.
 ///
 /// Serializes the contract metadata as attributes and groups.
@@ -290,12 +297,14 @@ pub fn export_simulation_trace_bundle(
     let file = H5File::append(path)?;
     let simulation = ensure_simulation_group(&file)?;
     let trace_group = ensure_child_group(&simulation, "trace")?;
+    clear_group_members(&trace_group)?;
     write_or_replace_f64_dataset(&trace_group, "time", &bundle.time)?;
     for (name, values) in &bundle.channels {
         write_or_replace_f64_dataset(&trace_group, name, values)?;
     }
 
     let trace_meta_group = ensure_child_group(&simulation, "trace_meta")?;
+    clear_group_members(&trace_meta_group)?;
     if !bundle.metadata.is_empty() {
         let mut keys = Vec::with_capacity(bundle.metadata.len());
         let mut values = Vec::with_capacity(bundle.metadata.len());
@@ -689,6 +698,14 @@ pub fn export_rho_quality_metrics(
 /// Writes claim IDs, statuses as variable-length string datasets under
 /// `/registry/claims/`.
 pub fn export_claims_summary(path: &Path, ids: &[String], statuses: &[String]) -> hdf5::Result<()> {
+    if ids.len() != statuses.len() {
+        return Err(hdf5::Error::from(format!(
+            "claim summary length mismatch: ids has {}, statuses has {}",
+            ids.len(),
+            statuses.len()
+        )));
+    }
+
     let file = H5File::append(path)?;
     let group = file.create_group("registry/claims")?;
 
@@ -792,5 +809,70 @@ mod tests {
         let group = file.group("registry/claims").unwrap();
         let count: usize = group.attr("count").unwrap().read_scalar().unwrap();
         assert_eq!(count, 2);
+    }
+
+    #[test]
+    fn test_claims_summary_rejects_column_length_mismatch() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("test_claims_mismatch.h5");
+
+        let ids = vec!["C-001".to_string(), "C-002".to_string()];
+        let statuses = vec!["Verified".to_string()];
+
+        let err = export_claims_summary(&path, &ids, &statuses).unwrap_err();
+        assert!(
+            err.to_string().contains("claim summary length mismatch"),
+            "unexpected error: {err}"
+        );
+    }
+
+    #[test]
+    fn test_trace_reexport_removes_stale_optional_channels() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("test_trace_stale.h5");
+
+        let mut first_channels = BTreeMap::new();
+        first_channels.insert("rho_mean".to_string(), vec![1.0, 1.1]);
+        first_channels.insert("enstrophy".to_string(), vec![0.1, 0.2]);
+        first_channels.insert("algebra_norm".to_string(), vec![2.0, 2.1]);
+        first_channels.insert("obsolete_channel".to_string(), vec![9.0, 9.1]);
+
+        let mut metadata = BTreeMap::new();
+        metadata.insert("run".to_string(), "old".to_string());
+
+        export_simulation_trace_bundle(
+            &path,
+            &SimulationTraceBundle {
+                time: vec![0.0, 1.0],
+                channels: first_channels,
+                metadata,
+            },
+        )
+        .unwrap();
+
+        let mut second_channels = BTreeMap::new();
+        second_channels.insert("rho_mean".to_string(), vec![3.0]);
+        second_channels.insert("enstrophy".to_string(), vec![0.3]);
+        second_channels.insert("algebra_norm".to_string(), vec![4.0]);
+
+        export_simulation_trace_bundle(
+            &path,
+            &SimulationTraceBundle {
+                time: vec![2.0],
+                channels: second_channels,
+                metadata: BTreeMap::new(),
+            },
+        )
+        .unwrap();
+
+        let file = H5File::open(&path).unwrap();
+        let trace = file.group("simulation/trace").unwrap();
+        assert!(!trace.link_exists("obsolete_channel"));
+        let rho_mean: Vec<f64> = trace.dataset("rho_mean").unwrap().read_raw().unwrap();
+        assert_eq!(rho_mean, vec![3.0]);
+
+        let trace_meta = file.group("simulation/trace_meta").unwrap();
+        assert!(!trace_meta.link_exists("keys"));
+        assert!(!trace_meta.link_exists("values"));
     }
 }
