@@ -878,12 +878,10 @@ rust-regression: rust-clippy
 	@echo "OK: Rust regression lane passed."
 
 rust-regression-scoped:
-	# BUG FIX (2026-05-11): workspace-routing lives in gororoba_cli_data, NOT
-	# gororoba_cli_governance. Prior invocations silently failed (cargo errored
-	# on the missing -p, the original 2>/dev/null swallowed the error, the
-	# `||` fallback fired) so RUST_CLIPPY_SCOPE always degraded to RUST_SCOPE
-	# -- defeating the clippy/nextest scope split from commit a9edfd86.
-	# See data/output/audit/2026-05-11/pre-push-gate-rca-v2-comprehensive.md.
+	# The workspace-routing source lives beside the data CLI, but the gate cache
+	# builds it through the slim governance proxy binary.  That keeps scope
+	# classification independent of the full data CLI dependency graph while
+	# preserving the routing behavior repaired by commit a9edfd86.
 	#
 	# TIER-3 (2026-05-12): prefer the cached binary at $(WORKSPACE_ROUTING_CACHE)
 	# to skip cargo's metadata walk. The cached binary IS rebuilt by its own
