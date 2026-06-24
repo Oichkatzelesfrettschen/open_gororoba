@@ -14,5 +14,8 @@ thiserror = { workspace = true }
 default = []
 hdf5-export = ["dep:hdf5"]
 
+[dev-dependencies]
+tempfile = { workspace = true }
+
 [lints]
 workspace = true

@@ -3194,6 +3194,7 @@ version = "0.1.0"
 dependencies = [
  "gororoba_contracts",
  "hdf5-metno",
+ "tempfile",
  "thiserror 2.0.18",
 ]
 

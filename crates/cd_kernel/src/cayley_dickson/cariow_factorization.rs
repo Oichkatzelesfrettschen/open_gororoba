@@ -277,8 +277,8 @@ pub fn cariow_pure_3x_bound(dim: usize) -> usize {
 /// For dim=64: C(64) <= 3 * C(32) = 3 * 498 = 1494, if a top-level Cariow
 /// reduction applies and each sub-problem uses a real dim=32 schedule.
 ///
-/// This target is conditional on C(32) = 498 being achievable. The current
-/// trigintaduonion::mul_optimized does not achieve 498; it uses 4 sedenion
+/// This target is conditional on C(32) = 498 being achievable. The
+/// `trigintaduonion::mul_optimized` path does not achieve 498; it uses 4 sedenion
 /// multiplications = 4 * 256 = 1024 mults (the standard count).
 ///
 /// Evidentiary class: dim=16 is implemented and Rocq-proved.  Other nontrivial
@@ -355,7 +355,7 @@ pub fn print_mult_count_table() {
     println!("NOTE: target for dim=64 is 3*498=1494 (conditional, unverified).");
     println!("NOTE: pure_3x is an optimism marker, not a generic CD implementation count.");
     println!("NOTE: C(32)=498 in trigintaduonion::mul_optimized is not implemented");
-    println!("  (current impl falls back to 4*sedenion_multiply = 1024 mults).");
+    println!("  (the checked-in path falls back to 4*sedenion_multiply = 1024 mults).");
 }
 
 #[cfg(test)]
