@@ -21,9 +21,7 @@ source_document = "C-020"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "REFUTED: Legacy 16D \"Zero-Divisor Adjacency Matrix\" does NOT represent valid algebra. Found to be noise/hallucination when verified against commutator/parity matrices.",
-]
+positive_evidence = ["REFUTED: Legacy 16D \"Zero-Divisor Adjacency Matrix\" does NOT represent valid algebra. Found to be noise/hallucination when verified against commutator/parity matrices."]
 negative_evidence = ["REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -39,9 +37,7 @@ source_document = "C-021"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "REFUTED: Hypothesis tested: 1024D Basis-to-Lattice mapping is a consistent function.... Result: This claim was empirically refuted.",
-]
+positive_evidence = ["REFUTED: Hypothesis tested: 1024D Basis-to-Lattice mapping is a consistent function.... Result: This claim was empirically refuted."]
 negative_evidence = ["REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -57,9 +53,7 @@ source_document = "C-025"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned frame). REFUTED at the statistical level: sky distribution is consistent with isotropy.",
-]
+positive_evidence = ["GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned frame). REFUTED at the statistical level: sky distribution is consistent with isotropy."]
 negative_evidence = ["REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -76,9 +70,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O). In the CD tower at dim=16 (sedenions), norm composition fails and zero divisors exist; therefore any sedenion-valued field theory must specify an associative representation (or restrict to associative subalgebras) to define a unique action and a compatible Hilbert-space structure.",
-]
+negative_evidence = ["By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O). In the CD tower at dim=16 (sedenions), norm composition fails and zero divisors exist; therefore any sedenion-valued field theory must specify an associative representation (or restrict to associative subalgebras) to define a unique action and a compatible Hilbert-space structure."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -110,9 +102,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Random probing fails to find algebraic ZDs; diagonal ZDs lifted via CD doubling exhibit kernel doubling (kernel=8 at dim=32, 16 at dim=64, 32 at dim=128).",
-]
+negative_evidence = ["Random probing fails to find algebraic ZDs; diagonal ZDs lifted via CD doubling exhibit kernel doubling (kernel=8 at dim=32, 16 at dim=64, 32 at dim=128)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -128,9 +118,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "512D Cayley-Dickson CHSH S-value = -1.528 (does NOT violate classical bound |S|<=2). Associator-based measurement model with sedenion-lifted ZD pairs produces dimension-invariant S ~ -1.5 across 16D through 512D. The correlators are uniformly anti-correlated (~-0.85) with insufficient angular dependence for CHSH violation.",
-]
+negative_evidence = ["512D Cayley-Dickson CHSH S-value = -1.528 (does NOT violate classical bound |S|<=2). Associator-based measurement model with sedenion-lifted ZD pairs produces dimension-invariant S ~ -1.5 across 16D through 512D. The correlators are uniformly anti-correlated (~-0.85) with insufficient angular dependence for CHSH violation."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -146,9 +134,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Non-associativity at dim 8 (octonions) lifts to dim 16 (sedenions) via Cayley-Dickson doubling embedding (x, 0). The AVT violation set is non-empty at all dims >= 8. Constructive proof: the octonion witness (e1, e2, e4) embedded in sedenions still fails associativity. Kernel-checked via Rocq 9.1.",
-]
+negative_evidence = ["Non-associativity at dim 8 (octonions) lifts to dim 16 (sedenions) via Cayley-Dickson doubling embedding (x, 0). The AVT violation set is non-empty at all dims >= 8. Constructive proof: the octonion witness (e1, e2, e4) embedded in sedenions still fails associativity. Kernel-checked via Rocq 9.1."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -164,9 +150,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Moufang ratio||M(a,b,c)||^2/||A(a,b,c)||^2 converges to M_inf = 1.561 +/- 0.017, consistent with pi/2 (0.6 sigma), inconsistent with 3/2 (3.6 sigma).",
-]
+negative_evidence = ["Moufang ratio||M(a,b,c)||^2/||A(a,b,c)||^2 converges to M_inf = 1.561 +/- 0.017, consistent with pi/2 (0.6 sigma), inconsistent with 3/2 (3.6 sigma)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -182,9 +166,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Multi-seed bootstrap: Moufang ratio converges to M_inf = 1.519 +/- 0.013, consistent with 3/2 (1.5 sigma), INCONSISTENT with pi/2 (4.1 sigma). Corrects C-113.",
-]
+negative_evidence = ["Multi-seed bootstrap: Moufang ratio converges to M_inf = 1.519 +/- 0.013, consistent with 3/2 (1.5 sigma), INCONSISTENT with pi/2 (4.1 sigma). Corrects C-113."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -200,9 +182,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Artin's theorem (2-generated subalgebras are associative) holds through dim=8 and fails at dim=16. However, flexibility within 2-generated subalgebras (x(yx) = (xy)x) holds at ALL dims through 256 to machine precision.",
-]
+negative_evidence = ["Artin's theorem (2-generated subalgebras are associative) holds through dim=8 and fails at dim=16. However, flexibility within 2-generated subalgebras (x(yx) = (xy)x) holds at ALL dims through 256 to machine precision."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -218,9 +198,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Multi-galaxy D_f sweep pipeline (prepare_galaxy) correctly filters invalid galaxies (NaN, r_e=0, z<=0) and returns None, with skip count tracked in DfSweepSummary.",
-]
+negative_evidence = ["Multi-galaxy D_f sweep pipeline (prepare_galaxy) correctly filters invalid galaxies (NaN, r_e=0, z<=0) and returns None, with skip count tracked in DfSweepSummary."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -235,9 +213,7 @@ source_document = "C-1290"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "MRT ghost-moment damping (s_ghost=1.0) provides a modest stability advantage over BGK at matched tau=0.7 on 16^3 grid (E-167): both modes survive to contrast~15.7 (Ma~1.1); MRT retains a grace period at contrast~29.1 (Ma~3.9) while BGK diverges catastrophically at contrast~23.7. The originally claimed Ma~0.3 BGK threshold and Ma~1.5 MRT ceiling are not reproduced; actual MRT advantage is ~1.5x at the divergence threshold.",
-]
+positive_evidence = ["MRT ghost-moment damping (s_ghost=1.0) provides a modest stability advantage over BGK at matched tau=0.7 on 16^3 grid (E-167): both modes survive to contrast~15.7 (Ma~1.1); MRT retains a grace period at contrast~29.1 (Ma~3.9) while BGK diverges catastrophically at contrast~23.7. The originally claimed Ma~0.3 BGK threshold and Ma~1.5 MRT ceiling are not reproduced; actual MRT advantage is ~1.5x at the divergence threshold."]
 negative_evidence = ["REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -254,9 +230,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["ESTABLISHED"]
-negative_evidence = [
-    "Smagorinsky tau mutation invalidates CUDA Graph cache: Smagorinsky LES updates tau every N steps based on local strain rate tensor. Since tau is a kernel parameter captured in the graph, any mutation requires graph reconstruction. step_n() correctly falls back to per-step loop when Smagorinsky is active.",
-]
+negative_evidence = ["Smagorinsky tau mutation invalidates CUDA Graph cache: Smagorinsky LES updates tau every N steps based on local strain rate tensor. Since tau is a kernel parameter captured in the graph, any mutation requires graph reconstruction. step_n() correctly falls back to per-step loop when Smagorinsky is active."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -272,9 +246,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "x87 80-bit extended precision Jacobi eigenvalue solver achieves null-space eigenvalue precision < 1e-13 for sedenion obstruction matrices (condition number ~5e4), vs ~1e-9 with f64. The x87 FPU 64-bit mantissa (~19 decimal digits) provides ~4 extra digits over f64 (53-bit, ~15 digits), preventing catastrophic cancellation during Givens rotation accumulation.",
-]
+negative_evidence = ["x87 80-bit extended precision Jacobi eigenvalue solver achieves null-space eigenvalue precision < 1e-13 for sedenion obstruction matrices (condition number ~5e4), vs ~1e-9 with f64. The x87 FPU 64-bit mantissa (~19 decimal digits) provides ~4 extra digits over f64 (53-bit, ~15 digits), preventing catastrophic cancellation during Givens rotation accumulation."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -290,9 +262,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Topological friction (C-1134, friction >= 4 for dim >= 16) is cumulative associator norm along a braid path -- an algebraic obstruction invariant, not physical dissipation. Wick damping (C-1138, F(theta) = F(0)*exp(-H*sin(theta))) is algebraic complex-time rotation. The friction dimensional scaling (C-1136, Open) is empirical: friction grows with dim but the exact F ~ L*(1-2/n)*||AVT||_rms formula is unformalized. Braid 'fidelity' (BraidResult.fidelity) is exactly 1.0 only when total_friction < 1e-12, which never occurs at dim >= 16 by C-1134.",
-]
+negative_evidence = ["Topological friction (C-1134, friction >= 4 for dim >= 16) is cumulative associator norm along a braid path -- an algebraic obstruction invariant, not physical dissipation. Wick damping (C-1138, F(theta) = F(0)*exp(-H*sin(theta))) is algebraic complex-time rotation. The friction dimensional scaling (C-1136, Open) is empirical: friction grows with dim but the exact F ~ L*(1-2/n)*||AVT||_rms formula is unformalized. Braid 'fidelity' (BraidResult.fidelity) is exactly 1.0 only when total_friction < 1e-12, which never occurs at dim >= 16 by C-1134."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -307,9 +277,7 @@ source_document = "C-1357"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "The A-infinity obstruction norm 8.725 (C-612) mapped to Bowers-Liang anisotropy (C-613) produces a stable gravastar (C-614, C-615) for coupling in [0, 0.01]. However, the claim that this 'drives dark energy' is architecturally unsupported: (a) gravastar solver outputs (mass, compactness, c_s) at r~10 km scale with no cosmological observable; (b) actual dark energy EOS (orthoplex_diffusion.rs, C-931/C-932) uses orthoplex heat kernel spectral dimension, not gravastar anisotropy; (c) DarkEnergyEOS.v proves w(z) from diffusion_time(z, alpha, t_0) with no reference to obstruction_norm or homotopy_bridge; (d) no code bridges Chain A (gravastar TOV) to Chain B (orthoplex w(z)); (e) obstruction_norm normalization (frobenius / dim^1.5) has free choice of norm type, exponent, truncation order; (f) coupling parameter in [0, 0.01] is a free parameter.",
-]
+positive_evidence = ["The A-infinity obstruction norm 8.725 (C-612) mapped to Bowers-Liang anisotropy (C-613) produces a stable gravastar (C-614, C-615) for coupling in [0, 0.01]. However, the claim that this 'drives dark energy' is architecturally unsupported: (a) gravastar solver outputs (mass, compactness, c_s) at r~10 km scale with no cosmological observable; (b) actual dark energy EOS (orthoplex_diffusion.rs, C-931/C-932) uses orthoplex heat kernel spectral dimension, not gravastar anisotropy; (c) DarkEnergyEOS.v proves w(z) from diffusion_time(z, alpha, t_0) with no reference to obstruction_norm or homotopy_bridge; (d) no code bridges Chain A (gravastar TOV) to Chain B (orthoplex w(z)); (e) obstruction_norm normalization (frobenius / dim^1.5) has free choice of norm type, exponent, truncation order; (f) coupling parameter in [0, 0.01] is a free parameter."]
 negative_evidence = ["CLOSED_REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -325,9 +293,7 @@ source_document = "C-1358"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "FORMAL KILL SHOT: The A-infinity obstruction norm of 8.725 has no standing as a physical driver of dark energy. Measured normalization sensitivity at dim=16 (E-186, 2026-03-12): frobenius/dim^1.5=8.725 (current), frobenius/dim=34.900, frobenius/sqrt(d)=139.599, frobenius/dim^2=2.181, spectral_radius/dim^1.5=7.764. Relative spread = 98.4% (63x range, min 2.18 to max 139.6). A true physical constant driving a macroscopic observable (cosmological constant Lambda) must be invariant under change of basis and coordinate transformation. The 8.725 value is an artifact of choosing one of at least 5 valid matrix norm conventions; changing convention shifts the value by 2 orders of magnitude. This belongs in the same graveyard as the 0.1764 metamaterial grid artifact (C-1329). SECONDARY FINDING: spectral_radius/dim^1.5 = 7.764 is close to frobenius/dim^1.5 = 8.725, indicating the m_3 associator tensor at D=16 has energy concentrated in its dominant eigenmodes (low-rank-dominated operator), not diffusely distributed -- a genuine algebraic structural property of the sedenion m_3 operator, but not a cosmological observable.",
-]
+positive_evidence = ["FORMAL KILL SHOT: The A-infinity obstruction norm of 8.725 has no standing as a physical driver of dark energy. Measured normalization sensitivity at dim=16 (E-186, 2026-03-12): frobenius/dim^1.5=8.725 (current), frobenius/dim=34.900, frobenius/sqrt(d)=139.599, frobenius/dim^2=2.181, spectral_radius/dim^1.5=7.764. Relative spread = 98.4% (63x range, min 2.18 to max 139.6). A true physical constant driving a macroscopic observable (cosmological constant Lambda) must be invariant under change of basis and coordinate transformation. The 8.725 value is an artifact of choosing one of at least 5 valid matrix norm conventions; changing convention shifts the value by 2 orders of magnitude. This belongs in the same graveyard as the 0.1764 metamaterial grid artifact (C-1329). SECONDARY FINDING: spectral_radius/dim^1.5 = 7.764 is close to frobenius/dim^1.5 = 8.725, indicating the m_3 associator tensor at D=16 has energy concentrated in its dominant eigenmodes (low-rank-dominated operator), not diffusely distributed -- a genuine algebraic structural property of the sedenion m_3 operator, but not a cosmological observable."]
 negative_evidence = ["CLOSED_REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -344,9 +310,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Under the explicit linear homotopy bridge law lambda = coupling * obstruction_norm, zero coupling gives lambda = 0 and exact isotropic recovery p_t = p_r, while positive rho, p_r, obstruction_norm, and coupling imply a strictly positive anisotropy correction. This is a bridge-law consequence under explicit assumptions, not a derivation of physical stress-energy from the algebra.",
-]
+negative_evidence = ["Under the explicit linear homotopy bridge law lambda = coupling * obstruction_norm, zero coupling gives lambda = 0 and exact isotropic recovery p_t = p_r, while positive rho, p_r, obstruction_norm, and coupling imply a strictly positive anisotropy correction. This is a bridge-law consequence under explicit assumptions, not a derivation of physical stress-energy from the algebra."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -362,9 +326,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "DC14 vs NFW stacking comparison (H3, Michelson-Morley inversion): DC14 feedback-modified profiles (Di Cintio et al. 2014) reduce stacked residual RMS by 31.4% vs NFW (0.087 vs 0.126) at matched (rho_s, r_s). However, DC14 residuals are uniformly more negative (-0.14 to -0.35 vs NFW -0.05 to +0.15) because the DC14 core reduces enclosed mass relative to NFW cusp, producing systematic v_DC14 < v_NFW. The DC14 Fourier power is 1.8-61x HIGHER than NFW across all 7 modes (opposite of what a better model should produce). Chi2/dof = 0.80 (spectral shape). Result is INCONCLUSIVE: the comparison is confounded by parameter reuse (DC14 needs its own best-fit rho_s, r_s per galaxy, not the NFW-calibrated values). A proper test requires DC14-specific SMHM-to-profile fitting.",
-]
+negative_evidence = ["DC14 vs NFW stacking comparison (H3, Michelson-Morley inversion): DC14 feedback-modified profiles (Di Cintio et al. 2014) reduce stacked residual RMS by 31.4% vs NFW (0.087 vs 0.126) at matched (rho_s, r_s). However, DC14 residuals are uniformly more negative (-0.14 to -0.35 vs NFW -0.05 to +0.15) because the DC14 core reduces enclosed mass relative to NFW cusp, producing systematic v_DC14 < v_NFW. The DC14 Fourier power is 1.8-61x HIGHER than NFW across all 7 modes (opposite of what a better model should produce). Chi2/dof = 0.80 (spectral shape). Result is INCONCLUSIVE: the comparison is confounded by parameter reuse (DC14 needs its own best-fit rho_s, r_s per galaxy, not the NFW-calibrated values). A proper test requires DC14-specific SMHM-to-profile fitting."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -380,9 +342,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "STFT phase gradient analysis (H4, chirp detection analogy): linear regression of phase vs x_center across 32 STFT windows shows R^2 > 0.999 for all 7 modes, but fitted slopes are near zero (-0.015 to -0.074) vs predicted wavenumber k (0.90 to 6.28). Slope/k ratios range from -0.002 to -0.055, meaning phases are essentially FLAT across the x-range. Modes 1-4 are degenerate (< 0.5 full wavelengths in the 0.72 r/r_s window). The high R^2 reflects the smooth baryonic baseline imprinting a slowly-varying phase, not coherent harmonic forcing. No chirp-like phase evolution detected. Hypothesis INCONCLUSIVE (limited by radial coverage) but strongly disfavored.",
-]
+negative_evidence = ["STFT phase gradient analysis (H4, chirp detection analogy): linear regression of phase vs x_center across 32 STFT windows shows R^2 > 0.999 for all 7 modes, but fitted slopes are near zero (-0.015 to -0.074) vs predicted wavenumber k (0.90 to 6.28). Slope/k ratios range from -0.002 to -0.055, meaning phases are essentially FLAT across the x-range. Modes 1-4 are degenerate (< 0.5 full wavelengths in the 0.72 r/r_s window). The high R^2 reflects the smooth baryonic baseline imprinting a slowly-varying phase, not coherent harmonic forcing. No chirp-like phase evolution detected. Hypothesis INCONCLUSIVE (limited by radial coverage) but strongly disfavored."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -398,9 +358,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Fourier anomaly detection (Hypothesis B): Top 70 galaxies ranked by total Fourier power at 7 CD-ZD wavenumbers show Rayleigh R > 0.98 at all modes, but this is an ARTIFACT of selection: galaxies with highest per-galaxy Fourier power are those with extreme rotation curves (very few data points, poor radial coverage), producing large DFT power from noise at individual radial bins. When stacked, these 70 galaxies yield zero valid bins (RMS = 0.000, SNR = 0.000) because their sparse radial coverage fails the min_galaxies_per_bin threshold. The bottom 70 galaxies (lowest Fourier power, best-behaved rotation curves) stack normally with RMS = 0.047, SNR = 0.63. Lesson: per-galaxy Fourier power at CD-ZD wavenumbers is dominated by DATA QUALITY (radial coverage, number of points), not by physical signal strength. Anomaly detection on raw Fourier power requires a data-quality correction (normalization by effective coverage).",
-]
+negative_evidence = ["Fourier anomaly detection (Hypothesis B): Top 70 galaxies ranked by total Fourier power at 7 CD-ZD wavenumbers show Rayleigh R > 0.98 at all modes, but this is an ARTIFACT of selection: galaxies with highest per-galaxy Fourier power are those with extreme rotation curves (very few data points, poor radial coverage), producing large DFT power from noise at individual radial bins. When stacked, these 70 galaxies yield zero valid bins (RMS = 0.000, SNR = 0.000) because their sparse radial coverage fails the min_galaxies_per_bin threshold. The bottom 70 galaxies (lowest Fourier power, best-behaved rotation curves) stack normally with RMS = 0.047, SNR = 0.63. Lesson: per-galaxy Fourier power at CD-ZD wavenumbers is dominated by DATA QUALITY (radial coverage, number of points), not by physical signal strength. Anomaly detection on raw Fourier power requires a data-quality correction (normalization by effective coverage)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -416,9 +374,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "H4 cross-algebra mutual information FALSIFIED as ZD-selective: KSG MI estimator (k=5 neighbors, unit-circle phase embedding) shows strong algebra-universal dependence across all 6 cross-algebra pairs. MI ranges from 2.82 nats (J3O vs sl2) to 4.45 nats (CD-ZD vs G2), with Pearson correlations r=0.85-0.96 confirming overwhelmingly linear coupling. No selective cross-algebraic pattern detected: all pairs show similar MI magnitude. NMI normalization fails due to negative differential entropy on compact circular domain (artifact, not physical). The quasi-degeneracy (rho > 0.97 from E-184) extends to the full non-linear dependence structure.",
-]
+negative_evidence = ["H4 cross-algebra mutual information FALSIFIED as ZD-selective: KSG MI estimator (k=5 neighbors, unit-circle phase embedding) shows strong algebra-universal dependence across all 6 cross-algebra pairs. MI ranges from 2.82 nats (J3O vs sl2) to 4.45 nats (CD-ZD vs G2), with Pearson correlations r=0.85-0.96 confirming overwhelmingly linear coupling. No selective cross-algebraic pattern detected: all pairs show similar MI magnitude. NMI normalization fails due to negative differential entropy on compact circular domain (artifact, not physical). The quasi-degeneracy (rho > 0.97 from E-184) extends to the full non-linear dependence structure."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -434,9 +390,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "D3 window function sensitivity: contrarian hypothesis that the 0.72 r/r_s data window makes long-wavelength modes undetectable was REFUTED. Targeted DFT on the actual data grid shows >100% recovery at ALL 7 modes: mode 1 at 185%, mode 2 at 151%, modes 3-7 at 102-119%. The overrecovery at modes 1-2 is spectral leakage from the non-periodic window boundary, which artificially amplifies low-frequency power. Effective DOF = 14.0 (no reduction). The null result is NOT invalidated by the data window. However, the 185% overrecovery at mode 1 means smooth baryonic gradients (cusp-to-bulge transition) leak into low-k Fourier coefficients, partially explaining the red-noise spectral structure.",
-]
+negative_evidence = ["D3 window function sensitivity: contrarian hypothesis that the 0.72 r/r_s data window makes long-wavelength modes undetectable was REFUTED. Targeted DFT on the actual data grid shows >100% recovery at ALL 7 modes: mode 1 at 185%, mode 2 at 151%, modes 3-7 at 102-119%. The overrecovery at modes 1-2 is spectral leakage from the non-periodic window boundary, which artificially amplifies low-frequency power. Effective DOF = 14.0 (no reduction). The null result is NOT invalidated by the data window. However, the 185% overrecovery at mode 1 means smooth baryonic gradients (cusp-to-bulge transition) leak into low-k Fourier coefficients, partially explaining the red-noise spectral structure."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -452,9 +406,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "E-201 H1 free-gamma ablation: face-on galaxies have gamma=-0.011 (essentially flat power spectrum), vs full-sample gamma=0.808. The red-noise spectral slope is predominantly an INCLINATION ARTIFACT: high-inclination galaxies create the k^{-0.78} structure via projection effects. Face-on galaxies have intrinsically flat spectral floors. This invalidates the gamma=0.808 prior for face-on analysis.",
-]
+negative_evidence = ["E-201 H1 free-gamma ablation: face-on galaxies have gamma=-0.011 (essentially flat power spectrum), vs full-sample gamma=0.808. The red-noise spectral slope is predominantly an INCLINATION ARTIFACT: high-inclination galaxies create the k^{-0.78} structure via projection effects. Face-on galaxies have intrinsically flat spectral floors. This invalidates the gamma=0.808 prior for face-on analysis."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -470,9 +422,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Inner derivation D(a,b)(x) = [[a,b],x] + [[a,x],b] + [[x,b],a] satisfies the Leibniz rule D(xy) = D(x)y + xD(y) exactly at dim=4 and dim=8 (alternative algebras). Fails at dim=16+ with relative residual ~ 1.1-1.7. Inner derivations are non-trivial at dim >= 4.",
-]
+negative_evidence = ["Inner derivation D(a,b)(x) = [[a,b],x] + [[a,x],b] + [[x,b],a] satisfies the Leibniz rule D(xy) = D(x)y + xD(y) exactly at dim=4 and dim=8 (alternative algebras). Fails at dim=16+ with relative residual ~ 1.1-1.7. Inner derivations are non-trivial at dim >= 4."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -488,9 +438,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Wilmot (2512.07210) Aut(S) = G_2 (Schafer confirmed). Brown's sigma' transformation changes e_{1234567} of Phi_O, invalidating it as automorphism. Only Phi_O^{C(1)} (cyclic sign variations) provides connected G_2 automorphisms in 15 dimensions. 105 primary invariants x 4 sign variations = 420 total.",
-]
+negative_evidence = ["Wilmot (2512.07210) Aut(S) = G_2 (Schafer confirmed). Brown's sigma' transformation changes e_{1234567} of Phi_O, invalidating it as automorphism. Only Phi_O^{C(1)} (cyclic sign variations) provides connected G_2 automorphisms in 15 dimensions. 105 primary invariants x 4 sign variations = 420 total."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -506,9 +454,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "ZD variety stratifies by Archimedean class over No. Equal-class coefficients preserve ZDs; mixed-class coefficients break them. Cross-ratio condition alpha*delta = beta*gamma fails across classes. First genuinely surreal result.",
-]
+negative_evidence = ["ZD variety stratifies by Archimedean class over No. Equal-class coefficients preserve ZDs; mixed-class coefficients break them. Cross-ratio condition alpha*delta = beta*gamma fails across classes. First genuinely surreal result."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -524,9 +470,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Artin's theorem: any 2-generated subalgebra is associative at dim=4 and dim=8 (alternative algebras). Fails at dim >= 16 with max associator norm > 1.0. Mean associator norm grows with dim beyond the Hurwitz boundary.",
-]
+negative_evidence = ["Artin's theorem: any 2-generated subalgebra is associative at dim=4 and dim=8 (alternative algebras). Fails at dim >= 16 with max associator norm > 1.0. Mean associator norm grows with dim beyond the Hurwitz boundary."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -542,9 +486,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Jacobi identity [[a,b],c] + [[b,c],a] + [[c,a],b] = 0 holds exactly at dim=2 (commutative, all commutators zero) and dim=4 (quaternion Lie algebra). Fails at dim >= 8 with relative Jacobi defect ~ 3.5-4.1, converging toward ~3.5 at high dim. The commutator does NOT form a Lie algebra at dim >= 8.",
-]
+negative_evidence = ["Jacobi identity [[a,b],c] + [[b,c],a] + [[c,a],b] = 0 holds exactly at dim=2 (commutative, all commutators zero) and dim=4 (quaternion Lie algebra). Fails at dim >= 8 with relative Jacobi defect ~ 3.5-4.1, converging toward ~3.5 at high dim. The commutator does NOT form a Lie algebra at dim >= 8."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -560,9 +502,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["ESTABLISHED"]
-negative_evidence = [
-    "PMD-equivalent static analysis gap audit of the 41-crate open_gororoba workspace (2026-04-15) reveals: (1) cargo-machete finds unused dependencies in 13 crates including ort (ONNX Runtime) in gororoba_cli_physics, ash+cubecl-core (GPU stubs) in cd_kernel, and pulp appearing unused in 4 crates (cd_kernel, data_core, materials_core, lbm_3d); (2) pmd-cpd with 80-token minimum detects 1596 total duplicate blocks, but only 3 cross-crate duplicates at 100+ tokens (LoTSS parsing in data_core/gororoba_cli_data/gororoba_cli_physics, turboquant cosine boilerplate in 7 binaries); (3) clippy cognitive_complexity lint (threshold 25) finds 7 violations across the workspace -- worst is source_provenance.rs:1788 at 37/25, followed by lbm_vulkan/compute.rs:2231 at 33/25 and flavor_lifts/basis.rs:214 at 31/25; (4) cargo miri on cd_kernel: 15 AVX2 tests pass clean, 12 predicates tests pass clean, test_high_dim_workspace fails due to rayon/crossbeam-epoch stacked borrows incompatibility with miri (not a cd_kernel UB). rust-code-analysis-cli cannot be installed due to tree-sitter ABI break in nightly-2026-04-05.",
-]
+negative_evidence = ["PMD-equivalent static analysis gap audit of the 41-crate open_gororoba workspace (2026-04-15) reveals: (1) cargo-machete finds unused dependencies in 13 crates including ort (ONNX Runtime) in gororoba_cli_physics, ash+cubecl-core (GPU stubs) in cd_kernel, and pulp appearing unused in 4 crates (cd_kernel, data_core, materials_core, lbm_3d); (2) pmd-cpd with 80-token minimum detects 1596 total duplicate blocks, but only 3 cross-crate duplicates at 100+ tokens (LoTSS parsing in data_core/gororoba_cli_data/gororoba_cli_physics, turboquant cosine boilerplate in 7 binaries); (3) clippy cognitive_complexity lint (threshold 25) finds 7 violations across the workspace -- worst is source_provenance.rs:1788 at 37/25, followed by lbm_vulkan/compute.rs:2231 at 33/25 and flavor_lifts/basis.rs:214 at 31/25; (4) cargo miri on cd_kernel: 15 AVX2 tests pass clean, 12 predicates tests pass clean, test_high_dim_workspace fails due to rayon/crossbeam-epoch stacked borrows incompatibility with miri (not a cd_kernel UB). rust-code-analysis-cli cannot be installed due to tree-sitter ABI break in nightly-2026-04-05."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -578,9 +518,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Inner product preservation <ax,ay> =||a||^2 <x,y> holds EXACTLY at composition dimensions (dim <= 8) and FAILS at dim >= 16. Mean deviation decreases with dim: 0.106 (dim=16), 0.092 (dim=64), 0.062 (dim=128). This is equivalent to the norm composition property.",
-]
+negative_evidence = ["Inner product preservation <ax,ay> =||a||^2 <x,y> holds EXACTLY at composition dimensions (dim <= 8) and FAILS at dim >= 16. Mean deviation decreases with dim: 0.106 (dim=16), 0.092 (dim=64), 0.062 (dim=128). This is equivalent to the norm composition property."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -596,9 +534,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Quadratic representation U_a(x) = 2a(ax) - (a^2)x is NOT an algebra endomorphism at any CD dimension. Relative deviation 1.7 (dim=4) to 2.6 (dim=64). The fundamental identity U_a(U_b(x)) = U_{U_a(b)}(x) also fails everywhere (deviation 1.7-3.0). CD algebras are Jordan-admissible but not Jordan algebras.",
-]
+negative_evidence = ["Quadratic representation U_a(x) = 2a(ax) - (a^2)x is NOT an algebra endomorphism at any CD dimension. Relative deviation 1.7 (dim=4) to 2.6 (dim=64). The fundamental identity U_a(U_b(x)) = U_{U_a(b)}(x) also fails everywhere (deviation 1.7-3.0). CD algebras are Jordan-admissible but not Jordan algebras."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -614,9 +550,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Associator alternation: A(a,b,c) + A(b,a,c) = 0 (skew-symmetry in first two slots) holds EXACTLY at dim <= 8 (alternative algebras) and FAILS at dim >= 16. Similarly for swap(2,3). Both swap defects are approximately equal. Relative defect grows from 0.61 (dim=16) toward 0.97 (dim=256).",
-]
+negative_evidence = ["Associator alternation: A(a,b,c) + A(b,a,c) = 0 (skew-symmetry in first two slots) holds EXACTLY at dim <= 8 (alternative algebras) and FAILS at dim >= 16. Similarly for swap(2,3). Both swap defects are approximately equal. Relative defect grows from 0.61 (dim=16) toward 0.97 (dim=256)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -632,9 +566,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Iterated commutator:||[[a,b],c]||/||[a,b]||-> 2.0 as dim increases (1.34 at dim=4, 1.98 at dim=256). Jacobi identity holds EXACTLY at dim=4 (associative -> commutator is Lie bracket with Jacobi=0). Jacobi fails at dim >= 8 (relative defect 2.37 at dim=8, decreasing to 1.79 at dim=256).",
-]
+negative_evidence = ["Iterated commutator:||[[a,b],c]||/||[a,b]||-> 2.0 as dim increases (1.34 at dim=4, 1.98 at dim=256). Jacobi identity holds EXACTLY at dim=4 (associative -> commutator is Lie bracket with Jacobi=0). Jacobi fails at dim >= 8 (relative defect 2.37 at dim=8, decreasing to 1.79 at dim=256)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -650,9 +582,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Malcev identity [J(a,b,c), a] + J(a, b, [c,a]) = 0 holds EXACTLY at dim=8 (with opposite sign convention: LHS = -RHS). Trivially true at dim=4 (J=0). Fails at dim >= 16 with increasing defect. The sign flip means the octonion commutator forms a Malcev algebra under the convention J + [J,a] = 0.",
-]
+negative_evidence = ["Malcev identity [J(a,b,c), a] + J(a, b, [c,a]) = 0 holds EXACTLY at dim=8 (with opposite sign convention: LHS = -RHS). Trivially true at dim=4 (J=0). Fails at dim >= 16 with increasing defect. The sign flip means the octonion commutator forms a Malcev algebra under the convention J + [J,a] = 0."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -668,9 +598,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Bol identity a(b(ac)) = (a(ba))c holds EXACTLY at dim <= 8 (alternative algebras). Fails at dim >= 16 with increasing defect: left/right Bol defects are approximately equal (ratio 0.9-1.1), confirming symmetric failure. Left and right Bol mean defects grow from ~0.8 (dim=16) to ~1.57 (dim=128).",
-]
+negative_evidence = ["Bol identity a(b(ac)) = (a(ba))c holds EXACTLY at dim <= 8 (alternative algebras). Fails at dim >= 16 with increasing defect: left/right Bol defects are approximately equal (ratio 0.9-1.1), confirming symmetric failure. Left and right Bol mean defects grow from ~0.8 (dim=16) to ~1.57 (dim=128)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -686,9 +614,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Artin's theorem: the subalgebra generated by any two elements {a, b, ab, ba, ...} is associative at dim <= 8 (alternative algebras). All four tested associator combinations A(a,b,ab), A(a,b,ba), A(ab,a,b), A(a,ab,b) are exactly zero. Fails at dim >= 16 with growing defect.",
-]
+negative_evidence = ["Artin's theorem: the subalgebra generated by any two elements {a, b, ab, ba, ...} is associative at dim <= 8 (alternative algebras). All four tested associator combinations A(a,b,ab), A(a,b,ba), A(ab,a,b), A(a,ab,b) are exactly zero. Fails at dim >= 16 with growing defect."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -704,9 +630,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Middle Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim <= 8 (alternative/Moufang). Fails at dim >= 16 with growing defect: mean 0.79 (dim=16), 1.22 (dim=32), 1.59 (dim=128). Combined with left/right Bol (C-190), this verifies all three Moufang identities hold iff dim <= 8.",
-]
+negative_evidence = ["Middle Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim <= 8 (alternative/Moufang). Fails at dim >= 16 with growing defect: mean 0.79 (dim=16), 1.22 (dim=32), 1.59 (dim=128). Combined with left/right Bol (C-190), this verifies all three Moufang identities hold iff dim <= 8."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -722,9 +646,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Left/right alternative laws a(ab) = (aa)b and (ba)a = b(aa) hold EXACTLY at dim <= 8. Both fail symmetrically at dim >= 16 (left mean = right mean to within 1%). Left inverse property a^{-1}(ab) = b also holds exactly at dim <= 8 and fails at dim >= 16 with the same defect magnitude as the alternative laws.",
-]
+negative_evidence = ["Left/right alternative laws a(ab) = (aa)b and (ba)a = b(aa) hold EXACTLY at dim <= 8. Both fail symmetrically at dim >= 16 (left mean = right mean to within 1%). Left inverse property a^{-1}(ab) = b also holds exactly at dim <= 8 and fails at dim >= 16 with the same defect magnitude as the alternative laws."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -740,9 +662,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Inner derivation D(a,b)(c) = A(a,b,c) - A(b,a,c) is generically NOT a derivation. The Leibniz rule D(xy) = D(x)y + xD(y) fails for random (a,b) at ALL non-associative dims (8+). Max deviation is O(1) (6-9). This explains why C-178 found derivation map dimension 21 at dim=8 instead of 14 (G2): most D(a,b) maps are not actual derivations.",
-]
+negative_evidence = ["Inner derivation D(a,b)(c) = A(a,b,c) - A(b,a,c) is generically NOT a derivation. The Leibniz rule D(xy) = D(x)y + xD(y) fails for random (a,b) at ALL non-associative dims (8+). Max deviation is O(1) (6-9). This explains why C-178 found derivation map dimension 21 at dim=8 instead of 14 (G2): most D(a,b) maps are not actual derivations."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -758,9 +678,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Composition algebra test N(xy) = N(x)N(y): exact at dim<=8 (Hurwitz theorem). Fails at dim>=16 but mean ratio N(xy)/(N(x)N(y)) -> 1.0 with std decreasing: 0.18 (dim=16), 0.15 (dim=64), 0.09 (dim=256), 0.06 (dim=512). This is the quadratic form version of C-195 (submultiplicativity).",
-]
+negative_evidence = ["Composition algebra test N(xy) = N(x)N(y): exact at dim<=8 (Hurwitz theorem). Fails at dim>=16 but mean ratio N(xy)/(N(x)N(y)) -> 1.0 with std decreasing: 0.18 (dim=16), 0.15 (dim=64), 0.09 (dim=256), 0.06 (dim=512). This is the quadratic form version of C-195 (submultiplicativity)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -776,9 +694,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Jordan product {a,b} = (ab+ba)/2: the Jordan identity {a, {b, a^2}} = {{a,b}, a^2} holds EXACTLY at ALL CD dims (4-128 tested). However, general Jordan associativity {a, {b, c}} = {{a,b}, c} fails even at dim=4 (quaternions). The Jordan identity is universal (follows from flexibility), but Jordan associativity requires commutativity.",
-]
+negative_evidence = ["Jordan product {a,b} = (ab+ba)/2: the Jordan identity {a, {b, a^2}} = {{a,b}, a^2} holds EXACTLY at ALL CD dims (4-128 tested). However, general Jordan associativity {a, {b, c}} = {{a,b}, c} fails even at dim=4 (quaternions). The Jordan identity is universal (follows from flexibility), but Jordan associativity requires commutativity."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -794,9 +710,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Left alternative law x(xy) = (xx)y holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.51 (dim=16) to 0.96 (dim=256), saturating near 1.0. This verifies the alternative property (C-199) from the specific left-alternative perspective and shows the failure magnitude approaches a finite limit.",
-]
+negative_evidence = ["Left alternative law x(xy) = (xx)y holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.51 (dim=16) to 0.96 (dim=256), saturating near 1.0. This verifies the alternative property (C-199) from the specific left-alternative perspective and shows the failure magnitude approaches a finite limit."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -812,9 +726,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Right Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8, fails at dim>=16. Failure grows: mean 0.79 (dim=16) to 1.59 (dim=128). This complements the left Moufang (C-190/Bol) and middle Moufang (C-198), confirming all three Moufang identities hold iff dim<=8.",
-]
+negative_evidence = ["Right Moufang identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8, fails at dim>=16. Failure grows: mean 0.79 (dim=16) to 1.59 (dim=128). This complements the left Moufang (C-190/Bol) and middle Moufang (C-198), confirming all three Moufang identities hold iff dim<=8."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -830,9 +742,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Right alternative law y(xx) = (yx)x holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.51 (dim=16) to 0.96 (dim=256), saturating near 1.0. Mirrors the left alternative (C-233), confirming the full alternative property at composition dimensions.",
-]
+negative_evidence = ["Right alternative law y(xx) = (yx)x holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.51 (dim=16) to 0.96 (dim=256), saturating near 1.0. Mirrors the left alternative (C-233), confirming the full alternative property at composition dimensions."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -848,9 +758,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Artin's theorem: the subalgebra generated by any 2 elements is associative at dim<=8 (alternative algebras). Verified via A(a, b, ab) = A(a, b, ba) = A(a, ab, b) = 0 at dim<=8. Fails at dim>=16 with max associator > 1.0.",
-]
+negative_evidence = ["Artin's theorem: the subalgebra generated by any 2 elements is associative at dim<=8 (alternative algebras). Verified via A(a, b, ab) = A(a, b, ba) = A(a, ab, b) = 0 at dim<=8. Fails at dim>=16 with max associator > 1.0."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -866,9 +774,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Left Bol identity ((ab)c)b = a((bc)b) holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.79 (dim=16) to 1.59 (dim=128). Complements C-190 (left Bol/Moufang already verified) with the explicit left Bol formulation.",
-]
+negative_evidence = ["Left Bol identity ((ab)c)b = a((bc)b) holds EXACTLY at dim<=8, fails at dim>=16. Mean failure grows from 0.79 (dim=16) to 1.59 (dim=128). Complements C-190 (left Bol/Moufang already verified) with the explicit left Bol formulation."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -884,9 +790,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Left multiplication operator: L_a^2 = L_{a^2} (as matrices) holds EXACTLY at dim<=8 and fails at dim>=16. This is equivalent to the left alternative law a(ax) = (aa)x. Spectral radius of L_a^2 grows from 1.0 (dim<=8) to 3.1 (dim=64).",
-]
+negative_evidence = ["Left multiplication operator: L_a^2 = L_{a^2} (as matrices) holds EXACTLY at dim<=8 and fails at dim>=16. This is equivalent to the left alternative law a(ax) = (aa)x. Spectral radius of L_a^2 grows from 1.0 (dim<=8) to 3.1 (dim=64)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -902,9 +806,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Product norm ratio:||ab||/(||a||*||b||) = 1.0 EXACTLY at dim<=8 (composition property). At dim>=16, the ratio has mean ~ 1.0 but std > 0 (spread). The mean stays near 1.0 at all dims (unbiased), but the variance decreases with dim. Norm multiplicativity fails symmetrically.",
-]
+negative_evidence = ["Product norm ratio:||ab||/(||a||*||b||) = 1.0 EXACTLY at dim<=8 (composition property). At dim>=16, the ratio has mean ~ 1.0 but std > 0 (spread). The mean stays near 1.0 at all dims (unbiased), but the variance decreases with dim. Norm multiplicativity fails symmetrically."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -920,9 +822,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 (composition algebras). Fails at dim>=16 with relative errors ~0.4-0.75. This identity requires norm multiplicativity and alternativity, both of which break at dim>=16. The failure magnitude stabilizes rather than growing with dimension.",
-]
+negative_evidence = ["Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 (composition algebras). Fails at dim>=16 with relative errors ~0.4-0.75. This identity requires norm multiplicativity and alternativity, both of which break at dim>=16. The failure magnitude stabilizes rather than growing with dimension."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -938,9 +838,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the Leibniz rule D(xy) = D(x)y + xD(y) at dim<=8 (alternative algebras). Fails at dim>=16 with Leibniz violations growing to ~4-6. This verifies D(a,b) is a proper derivation exactly on the alternative/composition algebras. The derivation algebra Der(O) is 14-dimensional (= g2).",
-]
+negative_evidence = ["Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the Leibniz rule D(xy) = D(x)y + xD(y) at dim<=8 (alternative algebras). Fails at dim>=16 with Leibniz violations growing to ~4-6. This verifies D(a,b) is a proper derivation exactly on the alternative/composition algebras. The derivation algebra Der(O) is 14-dimensional (= g2)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -956,9 +854,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop). Fails at dim>=16 with violations growing from ~1.4 (dim=16) to ~2.2 (dim=64). This verifies the unit elements of R,C,H,O form a Moufang loop but sedenions and beyond do not. Combined with C-250 (Bol), C-236 (right Moufang), the full Moufang quartet is now verified.",
-]
+negative_evidence = ["Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop). Fails at dim>=16 with violations growing from ~1.4 (dim=16) to ~2.2 (dim=64). This verifies the unit elements of R,C,H,O form a Moufang loop but sedenions and beyond do not. Combined with C-250 (Bol), C-236 (right Moufang), the full Moufang quartet is now verified."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -974,9 +870,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Artin's theorem: subalgebra generated by any two elements is associative at dim<=8 (alternative algebras). All products a,b,ab,ba,a^2,b^2 and their triple products have zero associator. Fails at dim>=16 with||A||~ 1.0-1.8. This is a direct computational verification of Artin's classical theorem for CD algebras.",
-]
+negative_evidence = ["Artin's theorem: subalgebra generated by any two elements is associative at dim<=8 (alternative algebras). All products a,b,ab,ba,a^2,b^2 and their triple products have zero associator. Fails at dim>=16 with||A||~ 1.0-1.8. This is a direct computational verification of Artin's classical theorem for CD algebras."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -992,9 +886,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufang loop) and FAILS at dim>=16. The failure ratio increases monotonically: 0.80 (dim=16), 1.21 (dim=32), 1.48 (dim=64), 1.58 (dim=128). The Moufang property is a composition algebra boundary phenomenon.",
-]
+negative_evidence = ["Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufang loop) and FAILS at dim>=16. The failure ratio increases monotonically: 0.80 (dim=16), 1.21 (dim=32), 1.48 (dim=64), 1.58 (dim=128). The Moufang property is a composition algebra boundary phenomenon."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1010,9 +902,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Right Bol identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8 and FAILS at dim>=16. The failure ratio increases monotonically: 0.78 (dim=16), 1.21 (dim=32), 1.46 (dim=64), 1.59 (dim=128). The Bol identity is a composition algebra boundary property, similar to but distinct from the Moufang identity (C-292).",
-]
+negative_evidence = ["Right Bol identity (ab)(ca) = a((bc)a) holds EXACTLY at dim<=8 and FAILS at dim>=16. The failure ratio increases monotonically: 0.78 (dim=16), 1.21 (dim=32), 1.46 (dim=64), 1.59 (dim=128). The Bol identity is a composition algebra boundary property, similar to but distinct from the Moufang identity (C-292)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1028,9 +918,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Inverse composition: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 and FAILS at dim>=16. The failure ratio is 0.14 (dim=16), 0.14 (dim=32), 0.12 (dim=64), 0.08 (dim=128). The ratio DECREASES at high dim (concentration of measure reduces the inverse composition error).",
-]
+negative_evidence = ["Inverse composition: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 and FAILS at dim>=16. The failure ratio is 0.14 (dim=16), 0.14 (dim=32), 0.12 (dim=64), 0.08 (dim=128). The ratio DECREASES at high dim (concentration of measure reduces the inverse composition error)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1046,9 +934,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Associator (2,3)-swap: A(a,b,c) = -A(a,c,b) holds EXACTLY at dim<=8 and FAILS at dim>=16. The swap ratio increases: 0.64 (dim=16), 0.80 (dim=32), 0.93 (dim=64), 0.94 (dim=128). This completes the associator swap picture: (1,3)-swap is UNIVERSAL (C-302), (1,2)-swap is dim<=8 only (C-290), (2,3)-swap is dim<=8 only (C-311).",
-]
+negative_evidence = ["Associator (2,3)-swap: A(a,b,c) = -A(a,c,b) holds EXACTLY at dim<=8 and FAILS at dim>=16. The swap ratio increases: 0.64 (dim=16), 0.80 (dim=32), 0.93 (dim=64), 0.94 (dim=128). This completes the associator swap picture: (1,3)-swap is UNIVERSAL (C-302), (1,2)-swap is dim<=8 only (C-290), (2,3)-swap is dim<=8 only (C-311)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1064,9 +950,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "L_a quadratic identity: L_a^2 - 2*Re(a)*L_a + ||a||^2*I = 0 holds at dim<=8 (composition algebras) and FAILS at dim>=16. At dim=4 and dim=8, the residual is <1e-15 (exact). At dim>=16, residuals grow: 2.63 (dim=16), 4.71 (dim=32), 7.96 (dim=64). This characterizes composition algebras: L_a is a root of the quadratic x^2 - 2*Re(a)*x + ||a||^2.",
-]
+negative_evidence = ["L_a quadratic identity: L_a^2 - 2*Re(a)*L_a + ||a||^2*I = 0 holds at dim<=8 (composition algebras) and FAILS at dim>=16. At dim=4 and dim=8, the residual is <1e-15 (exact). At dim>=16, residuals grow: 2.63 (dim=16), 4.71 (dim=32), 7.96 (dim=64). This characterizes composition algebras: L_a is a root of the quadratic x^2 - 2*Re(a)*x + ||a||^2."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1082,9 +966,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Left-alternative identity: (aa)b = a(ab) holds EXACTLY at dim<=8 and FAILS at dim>=16. Diffs grow: 65.6 (dim=16), 119.3 (dim=32), 245.9 (dim=64), 588.1 (dim=128). This is one of the two defining identities of alternative algebras. Combined with right-alternative (C-323), characterizes the octonions as the largest alternative CD algebra.",
-]
+negative_evidence = ["Left-alternative identity: (aa)b = a(ab) holds EXACTLY at dim<=8 and FAILS at dim>=16. Diffs grow: 65.6 (dim=16), 119.3 (dim=32), 245.9 (dim=64), 588.1 (dim=128). This is one of the two defining identities of alternative algebras. Combined with right-alternative (C-323), characterizes the octonions as the largest alternative CD algebra."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1100,9 +982,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Right-alternative identity: (ba)a = b(aa) holds EXACTLY at dim<=8 and FAILS at dim>=16. This mirrors the left-alternative (C-322). Together they define the class of alternative algebras, which by Zorn's theorem includes only R, C, H, O and their split forms.",
-]
+negative_evidence = ["Right-alternative identity: (ba)a = b(aa) holds EXACTLY at dim<=8 and FAILS at dim>=16. This mirrors the left-alternative (C-322). Together they define the class of alternative algebras, which by Zorn's theorem includes only R, C, H, O and their split forms."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1118,9 +998,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Left Moufang identity: a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 and FAILS at dim>=16. Moufang identities are stronger than alternating and characterize Moufang loops. The failure at dim>=16 is dramatic: diff=435 (dim=16), 1216 (dim=32), 3844 (dim=64), 10587 (dim=128). Combined with C-292 (right Moufang), verifies octonions are the largest Moufang CD algebra.",
-]
+negative_evidence = ["Left Moufang identity: a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 and FAILS at dim>=16. Moufang identities are stronger than alternating and characterize Moufang loops. The failure at dim>=16 is dramatic: diff=435 (dim=16), 1216 (dim=32), 3844 (dim=64), 10587 (dim=128). Combined with C-292 (right Moufang), verifies octonions are the largest Moufang CD algebra."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1136,9 +1014,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Artin's theorem: (a, b, ab) = 0 (the associator of a, b, and their product vanishes) at dim<=8 (alternative algebras). This is a consequence of Artin's theorem: in an alternative algebra, any 2-generated subalgebra is associative. Fails at dim>=16: diff=476 (dim=16), 1031 (dim=32).",
-]
+negative_evidence = ["Artin's theorem: (a, b, ab) = 0 (the associator of a, b, and their product vanishes) at dim<=8 (alternative algebras). This is a consequence of Artin's theorem: in an alternative algebra, any 2-generated subalgebra is associative. Fails at dim>=16: diff=476 (dim=16), 1031 (dim=32)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1154,9 +1030,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Norm of product of conjugates: ||conj(a)*conj(b)||= ||a||*||b||iff dim<=8 (norm multiplicativity via conjugates). Since ||conj(x)||= ||x||, this is equivalent to full norm multiplicativity. Fails at dim>=16 with relative errors ~0.12-0.24.",
-]
+negative_evidence = ["Norm of product of conjugates: ||conj(a)*conj(b)||= ||a||*||b||iff dim<=8 (norm multiplicativity via conjugates). Since ||conj(x)||= ||x||, this is equivalent to full norm multiplicativity. Fails at dim>=16 with relative errors ~0.12-0.24."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1172,9 +1046,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Middle Moufang identity: (ab)(ca) = a((bc)a) at ALL CD dims<=8 (alternative algebras). Fails at dim>=16 with diffs ~450-9500. Completes the Moufang triple together with left Moufang (C-327) and right Moufang (C-351).",
-]
+negative_evidence = ["Middle Moufang identity: (ab)(ca) = a((bc)a) at ALL CD dims<=8 (alternative algebras). Fails at dim>=16 with diffs ~450-9500. Completes the Moufang triple together with left Moufang (C-327) and right Moufang (C-351)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1190,9 +1062,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Right Moufang identity: ((ab)c)b = a(b(cb)) at ALL CD dims<=8 (alternative algebras). Fails at dim>=16 with diffs ~477-9945. Together with left (C-327) and middle (C-348), all three Moufang identities are now verified as equivalent characterizations of alternativity (dim<=8).",
-]
+negative_evidence = ["Right Moufang identity: ((ab)c)b = a(b(cb)) at ALL CD dims<=8 (alternative algebras). Fails at dim>=16 with diffs ~477-9945. Together with left (C-327) and middle (C-348), all three Moufang identities are now verified as equivalent characterizations of alternativity (dim<=8)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1208,9 +1078,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Malcev identity: J(x,y,xz) = J(x,y,z)*x where J is the Jacobian of double commutators. Holds at dim<=8 (octonions form a Malcev algebra under commutator). At dim<=4 both sides are zero (Jacobi holds). At dim>=16 fails with relative errors 10-18. This is the alternative-algebra generalization of the Jacobi identity.",
-]
+negative_evidence = ["Malcev identity: J(x,y,xz) = J(x,y,z)*x where J is the Jacobian of double commutators. Holds at dim<=8 (octonions form a Malcev algebra under commutator). At dim<=4 both sides are zero (Jacobi holds). At dim>=16 fails with relative errors 10-18. This is the alternative-algebra generalization of the Jacobi identity."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1226,9 +1094,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Schafer identity: J(a,b,c) = 6*[a,b,c] in alternative algebras (dim<=8). The Jacobian of double commutators equals 6 times the associator. At dim<=4 both sides are zero. At dim>=16, the relation fails with absolute diffs ~500-3000. Reference: Schafer, \"An Introduction to Nonassociative Algebras\" (1966).",
-]
+negative_evidence = ["Schafer identity: J(a,b,c) = 6*[a,b,c] in alternative algebras (dim<=8). The Jacobian of double commutators equals 6 times the associator. At dim<=4 both sides are zero. At dim>=16, the relation fails with absolute diffs ~500-3000. Reference: Schafer, \"An Introduction to Nonassociative Algebras\" (1966)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1244,9 +1110,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Artin's theorem (2-generated subalgebra associativity): any subalgebra generated by two elements is associative at dim<=8. Tested with products (ab)*a, a*(ba), (ab)*(ba) and their nested associativity. At dim>=16, associativity fails with diffs ~1764-38839. This is the definitive test of alternativity via Artin.",
-]
+negative_evidence = ["Artin's theorem (2-generated subalgebra associativity): any subalgebra generated by two elements is associative at dim<=8. Tested with products (ab)*a, a*(ba), (ab)*(ba) and their nested associativity. At dim>=16, associativity fails with diffs ~1764-38839. This is the definitive test of alternativity via Artin."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1262,9 +1126,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alternative algebras). At dim>=16, the relation fails with diffs ~0.001-0.025. This is because non-alternativity breaks the cancellation needed for inverse reversal.",
-]
+negative_evidence = ["Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alternative algebras). At dim>=16, the relation fails with diffs ~0.001-0.025. This is because non-alternativity breaks the cancellation needed for inverse reversal."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1280,9 +1142,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8. In a Moufang loop, left and right Bol identities both hold. At dim>=16, fails with diffs ~300-10600. Together with the three Moufang identities (C-327, C-348, C-351), this verifies the complete Moufang loop structure at dim<=8.",
-]
+negative_evidence = ["Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8. In a Moufang loop, left and right Bol identities both hold. At dim>=16, fails with diffs ~300-10600. Together with the three Moufang identities (C-327, C-348, C-351), this verifies the complete Moufang loop structure at dim<=8."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1298,9 +1158,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Right Bol identity: ((xy)z)y = x(y(zy)) iff dim<=8 (alternative algebras). At dim>=16, fails with diffs ~320-10800. Together with left Bol (C-365), verifies the complete Bol loop structure of unit elements in composition algebras.",
-]
+negative_evidence = ["Right Bol identity: ((xy)z)y = x(y(zy)) iff dim<=8 (alternative algebras). At dim>=16, fails with diffs ~320-10800. Together with left Bol (C-365), verifies the complete Bol loop structure of unit elements in composition algebras."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1316,9 +1174,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Normed division algebra (Hurwitz theorem):||xy||=||x||*||y||exactly iff dim in {1,2,4,8}. At dim>=16, norm multiplicativity fails: min(||xy||/(||x||*||y||)) drops to ~0.66-0.88. This is the classical Hurwitz theorem verified computationally. Only R, C, H, O are normed division algebras.",
-]
+negative_evidence = ["Normed division algebra (Hurwitz theorem):||xy||=||x||*||y||exactly iff dim in {1,2,4,8}. At dim>=16, norm multiplicativity fails: min(||xy||/(||x||*||y||)) drops to ~0.66-0.88. This is the classical Hurwitz theorem verified computationally. Only R, C, H, O are normed division algebras."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1334,9 +1190,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Commutator Jacobi identity: J(a,b,c) = [a,[b,c]] + [b,[c,a]] + [c,[a,b]] = 0 iff dim<=4 (associative). At dim>=8, the Jacobi identity fails with||J||/(||a||*||b||*||c||) mean ~6.6-7.5. This verifies that the commutator algebra is NOT a Lie algebra beyond dim=4 (but IS a Malcev algebra at dim=8, C-352).",
-]
+negative_evidence = ["Commutator Jacobi identity: J(a,b,c) = [a,[b,c]] + [b,[c,a]] + [c,[a,b]] = 0 iff dim<=4 (associative). At dim>=8, the Jacobi identity fails with||J||/(||a||*||b||*||c||) mean ~6.6-7.5. This verifies that the commutator algebra is NOT a Lie algebra beyond dim=4 (but IS a Malcev algebra at dim=8, C-352)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1352,9 +1206,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet symplectic integrator, 7 Noether charges from octonionic U(1) rotations, and free-field dispersion relation omega^2 = k^2 + m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction.",
-]
+negative_evidence = ["Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet symplectic integrator, 7 Noether charges from octonionic U(1) rotations, and free-field dispersion relation omega^2 = k^2 + m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1370,9 +1222,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8 heptacross + 7 mixed-degree) requires a degree-3 (cubic) GF(2) polynomial for separation in PG(3,2). Degree 1 (linear) and degree 2 (quadratic) are insufficient. This establishes a non-linear geometric obstruction in the Cayley-Dickson zero-divisor hierarchy starting at the first post-sedenion doubling.",
-]
+negative_evidence = ["The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8 heptacross + 7 mixed-degree) requires a degree-3 (cubic) GF(2) polynomial for separation in PG(3,2). Degree 1 (linear) and degree 2 (quadratic) are insufficient. This establishes a non-linear geometric obstruction in the Cayley-Dickson zero-divisor hierarchy starting at the first post-sedenion doubling."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1388,9 +1238,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Algebraic Locality Principle (ALP): In sparse constraint graphs (edge density < 0.5), generator sequences in algebraic constraint systems concentrate on locally adjacent moves in the constraint graph Gamma, because nonlocal moves are either dynamically suppressed (long collision times, low measure) or annihilated (zero product, absorption). This produces geometric locality in the observed chaos. Evidence across two sparse stacks: (A) E10 billiard r=1.0 vs r_null=0.20, p=0.000; (B) ET DMZ r=1.0 vs r_null=0.01, p=0.000. FAILS for dense graphs (sedenion ZD at 86.7% edge density: r_null=0.87, p=1.0).",
-]
+negative_evidence = ["Algebraic Locality Principle (ALP): In sparse constraint graphs (edge density < 0.5), generator sequences in algebraic constraint systems concentrate on locally adjacent moves in the constraint graph Gamma, because nonlocal moves are either dynamically suppressed (long collision times, low measure) or annihilated (zero product, absorption). This produces geometric locality in the observed chaos. Evidence across two sparse stacks: (A) E10 billiard r=1.0 vs r_null=0.20, p=0.000; (B) ET DMZ r=1.0 vs r_null=0.01, p=0.000. FAILS for dense graphs (sedenion ZD at 86.7% edge density: r_null=0.87, p=1.0)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1406,9 +1254,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Coset Obstruction Theorem: Lambda_n (n <= 1024) has exactly 0% closure under both Z-addition and F_3-addition because all lattice vectors have l_0 = -1. Z-addition gives l_0 = (-1)+(-1) = -2, leaving the trinary range {-1,0,1}. F_3-addition gives l_0 = (-1)+(-1) = +1 (mod 3), mapping to the forbidden l_0=+1 coset excluded by is_in_base_universe(). This applies to ALL pairs without exception. The zero vector [0,...,0] is NOT in any Lambda_n (fails l_0=-1 at Lambda_1024), so there is no additive identity.",
-]
+negative_evidence = ["Coset Obstruction Theorem: Lambda_n (n <= 1024) has exactly 0% closure under both Z-addition and F_3-addition because all lattice vectors have l_0 = -1. Z-addition gives l_0 = (-1)+(-1) = -2, leaving the trinary range {-1,0,1}. F_3-addition gives l_0 = (-1)+(-1) = +1 (mod 3), mapping to the forbidden l_0=+1 coset excluded by is_in_base_universe(). This applies to ALL pairs without exception. The zero vector [0,...,0] is NOT in any Lambda_n (fails l_0=-1 at Lambda_1024), so there is no additive identity."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1423,9 +1269,7 @@ source_document = "C-585"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "Singh's delta^2 = 3/8 is NOT reproduced for arbitrary trace-free real J_3(O) elements. Observed delta^2 values range from 2.5 to 3.75. The result likely requires specific normalized idempotent constructions in the complexified algebra J_3(O_C).",
-]
+positive_evidence = ["Singh's delta^2 = 3/8 is NOT reproduced for arbitrary trace-free real J_3(O) elements. Observed delta^2 values range from 2.5 to 3.75. The result likely requires specific normalized idempotent constructions in the complexified algebra J_3(O_C)."]
 negative_evidence = ["CLOSED_NEGATIVE_RESULT"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -1442,9 +1286,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "The 8D lattice dimension in CD codebook is structurally driven by octonion algebra (Hurwitz unique 8D normed division algebra), NOT by E8 roots or arbitrary design. Evidence: (1) C-453 verified 8D dimension invariant across ALL CD dimensions (256-2048); (2) C-455 refuted E8 root involvement (zero E8 roots in ZD-adjacent differences); (3) C-458 verified all lattice points satisfy octonion-like parity constraints (trinary, even-sum, even-weight); (4) Filtration hierarchy (Lambda_2048->1024->512->256) partitions base universe injectively into 8D space.",
-]
+negative_evidence = ["The 8D lattice dimension in CD codebook is structurally driven by octonion algebra (Hurwitz unique 8D normed division algebra), NOT by E8 roots or arbitrary design. Evidence: (1) C-453 verified 8D dimension invariant across ALL CD dimensions (256-2048); (2) C-455 refuted E8 root involvement (zero E8 roots in ZD-adjacent differences); (3) C-458 verified all lattice points satisfy octonion-like parity constraints (trinary, even-sum, even-weight); (4) Filtration hierarchy (Lambda_2048->1024->512->256) partitions base universe injectively into 8D space."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1460,9 +1302,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Norm multiplicativity property ||ab||=||a||||b|| is preserved only in standard (Euclidean) CD algebras (all gamma=-1); fails universally in split algebras (gamma=+1 at any level).",
-]
+negative_evidence = ["Norm multiplicativity property ||ab||=||a||||b|| is preserved only in standard (Euclidean) CD algebras (all gamma=-1); fails universally in split algebras (gamma=+1 at any level)."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1478,9 +1318,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "The sedenion obstruction spectrum has Frobenius norm 8.725, spectral radius 496.9, and rank fraction 15/16=0.9375. The m_3 tensor is nearly full-rank, confirming non-associativity is algebraically pervasive.",
-]
+negative_evidence = ["The sedenion obstruction spectrum has Frobenius norm 8.725, spectral radius 496.9, and rank fraction 15/16=0.9375. The m_3 tensor is nearly full-rank, confirming non-associativity is algebraically pervasive."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1496,9 +1334,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "The homotopy gravastar bridge maps obstruction_norm to Bowers-Liang anisotropy parameter lambda via homotopy_lambda(obs, coupling) = coupling * obs. At zero coupling, isotropic gravastar solution is recovered exactly.",
-]
+negative_evidence = ["The homotopy gravastar bridge maps obstruction_norm to Bowers-Liang anisotropy parameter lambda via homotopy_lambda(obs, coupling) = coupling * obs. At zero coupling, isotropic gravastar solution is recovered exactly."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1514,9 +1350,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "A stable gravastar solution exists for obstruction_norm=8.725 with coupling in [0, 0.01]. The stability window is nonempty, indicating the A-infinity bypass resolves the C-030 non-associativity obstruction.",
-]
+negative_evidence = ["A stable gravastar solution exists for obstruction_norm=8.725 with coupling in [0, 0.01]. The stability window is nonempty, indicating the A-infinity bypass resolves the C-030 non-associativity obstruction."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1532,9 +1366,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "The homotopy-corrected gravastar satisfies causality (c_s < c) for coupling < 0.01, where the radial sound speed includes anisotropic pressure contributions from the m_3 obstruction tensor.",
-]
+negative_evidence = ["The homotopy-corrected gravastar satisfies causality (c_s < c) for coupling < 0.01, where the radial sound speed includes anisotropic pressure contributions from the m_3 obstruction tensor."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1550,9 +1382,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Tessarines norm multiplicativity fails component-wise: ||t1 * t2|| != ||t1|| * ||t2|| in general, despite C preserving norm multiplicativity.",
-]
+negative_evidence = ["Tessarines norm multiplicativity fails component-wise: ||t1 * t2|| != ||t1|| * ||t2|| in general, despite C preserving norm multiplicativity."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1568,9 +1398,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "TX-2 Null Result at All Grid Scales: The viscosity-to-filtration cross-thesis (T2 x T4) produces 'Undetermined' latency law classification at 16^3, 32^3, and 64^3 grids. Gamma values range 0.10-0.14, insufficient for power-law or exponential classification. Kolmogorov shear produces smooth velocity gradients incompatible with sharp return-time structures. Documented negative result.",
-]
+negative_evidence = ["TX-2 Null Result at All Grid Scales: The viscosity-to-filtration cross-thesis (T2 x T4) produces 'Undetermined' latency law classification at 16^3, 32^3, and 64^3 grids. Gamma values range 0.10-0.14, insufficient for power-law or exponential classification. Kolmogorov shear produces smooth velocity gradients incompatible with sharp return-time structures. Documented negative result."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1586,9 +1414,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Anharmonic and multiphonon methods (anharmonic linewidth, multiphonon absorption, two-phonon density of states, infrared combination bands) extend the harmonic DL model to temperature-dependent and multi-phonon effects. Anharmonic linewidth gamma(T) = gamma_0 + A*(1+2*n_BE(omega/2,T)) captures cubic decay. Multiphonon absorption uses exponential tail above one-phonon cutoff. Oscillator frequencies are in eV (matching omega_0_ev field). 7 tests verify temperature dependence, zero below cutoff, DOS peaks, sorted bands, and None for invalid indices.",
-]
+negative_evidence = ["Anharmonic and multiphonon methods (anharmonic linewidth, multiphonon absorption, two-phonon density of states, infrared combination bands) extend the harmonic DL model to temperature-dependent and multi-phonon effects. Anharmonic linewidth gamma(T) = gamma_0 + A*(1+2*n_BE(omega/2,T)) captures cubic decay. Multiphonon absorption uses exponential tail above one-phonon cutoff. Oscillator frequencies are in eV (matching omega_0_ev field). 7 tests verify temperature dependence, zero below cutoff, DOS peaks, sorted bands, and None for invalid indices."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1604,9 +1430,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "The scalar relative polarization parameter P is insufficient to distinguish entangled states from classically correlated states in Lambda-pair systems.",
-]
+negative_evidence = ["The scalar relative polarization parameter P is insufficient to distinguish entangled states from classically correlated states in Lambda-pair systems."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1621,9 +1445,7 @@ source_document = "C-785"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections.",
-]
+positive_evidence = ["Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections."]
 negative_evidence = ["REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -1639,9 +1461,7 @@ source_document = "C-786"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection.",
-]
+positive_evidence = ["Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection."]
 negative_evidence = ["REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -1657,9 +1477,7 @@ source_document = "C-789"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138.",
-]
+positive_evidence = ["FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138."]
 negative_evidence = ["REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -1675,9 +1493,7 @@ source_document = "C-791"
 section_label = "statement"
 line_start = 0
 line_end = 0
-positive_evidence = [
-    "ALICE Pb-Pb R_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed with higher statistics (LHC Run 3), this would indicate the Sedenion ZD lattice operates at the QGP deconfinement scale, not only at cosmological path lengths.",
-]
+positive_evidence = ["ALICE Pb-Pb R_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed with higher statistics (LHC Run 3), this would indicate the Sedenion ZD lattice operates at the QGP deconfinement scale, not only at cosmological path lengths."]
 negative_evidence = ["REFUTED"]
 jaccard_overlap = 0.000000
 notes = "Refuted/negative status conflicts with positive language in statement."
@@ -1694,9 +1510,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Commutativity fails at dim=4 (property tower: first loss). Quaternions are the first CD level to lose commutativity. Same witness as C-907.",
-]
+negative_evidence = ["Commutativity fails at dim=4 (property tower: first loss). Quaternions are the first CD level to lose commutativity. Same witness as C-907."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 
@@ -1712,9 +1526,7 @@ section_label = "statement"
 line_start = 0
 line_end = 0
 positive_evidence = ["VERIFIED"]
-negative_evidence = [
-    "Associativity fails at dim=8 (property tower: second loss). Octonions are the first CD level to lose associativity. References C-909 witness.",
-]
+negative_evidence = ["Associativity fails at dim=8 (property tower: second loss). Octonions are the first CD level to lose associativity. References C-909 witness."]
 jaccard_overlap = 0.000000
 notes = "Verified status conflicts with negative language in statement."
 

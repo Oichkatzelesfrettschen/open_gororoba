@@ -1336,15 +1336,32 @@ fn render_narrative_paragraph_atoms(
 }
 
 fn normalize_claim_refs(values: Vec<String>, claim_id: &str) -> Result<Vec<String>> {
-    let claim_re = Regex::new(r"\bC-\d{3}\b")?;
-    let mut refs = values
-        .into_iter()
-        .filter(|item| claim_re.is_match(item))
-        .collect::<BTreeSet<_>>();
-    if claim_re.is_match(claim_id) {
+    let claim_re = Regex::new(r"\b(?:C-\d{3,4}|T-\d{3})\b")?;
+    let mut refs = BTreeSet::new();
+    for value in values {
+        for matched in claim_re.find_iter(&value) {
+            let claim_ref = matched.as_str();
+            if is_registry_claim_id(claim_ref) {
+                refs.insert(claim_ref.to_string());
+            }
+        }
+    }
+    if is_registry_claim_id(claim_id) {
         refs.insert(claim_id.to_string());
     }
     Ok(refs.into_iter().collect())
+}
+
+fn is_registry_claim_id(id: &str) -> bool {
+    let Some((prefix, digits)) = id.split_once('-') else {
+        return false;
+    };
+    let expected_len = match prefix {
+        "C" => 3..=4,
+        "T" => 3..=3,
+        _ => return false,
+    };
+    expected_len.contains(&digits.len()) && digits.chars().all(|ch| ch.is_ascii_digit())
 }
 
 fn classify_step(text: &str) -> String {
@@ -1618,7 +1635,7 @@ fn split_blocks(text: &str) -> Vec<(usize, usize, String)> {
 fn claim_set(rows: &[Value]) -> BTreeSet<String> {
     rows.iter()
         .map(|row| table_str(row, "id").to_string())
-        .filter(|id| id.starts_with("C-") || id.starts_with("T-"))
+        .filter(|id| is_registry_claim_id(id))
         .collect()
 }
 
@@ -1781,5 +1798,61 @@ where
         let mut values = self.cloned().collect::<Vec<_>>();
         values.sort_by_key(|item| f(item));
         values
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn claim_id_filter_rejects_malformed_prefix_matches() {
+        assert!(is_registry_claim_id("C-703"));
+        assert!(is_registry_claim_id("C-1619"));
+        assert!(is_registry_claim_id("T-065"));
+        assert!(!is_registry_claim_id("C-70"));
+        assert!(!is_registry_claim_id("C-16190"));
+        assert!(!is_registry_claim_id("T-65"));
+        assert!(!is_registry_claim_id("T-065-extra"));
+        assert!(!is_registry_claim_id("T-ABC"));
+        assert!(!is_registry_claim_id("X-001"));
+    }
+
+    #[test]
+    fn normalize_claim_refs_extracts_strict_tokens() -> Result<()> {
+        let refs = normalize_claim_refs(
+            vec![
+                "C-703".to_string(),
+                "derived from C-1619 and malformed T-65".to_string(),
+                "T-065".to_string(),
+                "C-16190".to_string(),
+            ],
+            "C-709",
+        )?;
+        assert_eq!(refs, vec!["C-1619", "C-703", "C-709", "T-065"]);
+        Ok(())
+    }
+
+    #[test]
+    fn claim_set_uses_strict_registry_ids() {
+        let rows = vec![
+            Value::Table(toml::map::Map::from_iter([(
+                "id".to_string(),
+                Value::String("C-703".to_string()),
+            )])),
+            Value::Table(toml::map::Map::from_iter([(
+                "id".to_string(),
+                Value::String("T-065".to_string()),
+            )])),
+            Value::Table(toml::map::Map::from_iter([(
+                "id".to_string(),
+                Value::String("T-65".to_string()),
+            )])),
+        ];
+        let ids = claim_set(&rows);
+        assert_eq!(
+            ids,
+            BTreeSet::from(["C-703".to_string(), "T-065".to_string()])
+        );
     }
 }

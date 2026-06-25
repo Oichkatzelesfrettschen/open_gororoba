@@ -16,16 +16,7 @@ status_allowlist = ["planned", "active", "in_progress", "done", "paused", "block
 priority_allowlist = ["high", "medium", "low"]
 
 [roadmap.schema]
-required_fields = [
-    "id",
-    "name",
-    "priority",
-    "status",
-    "status_token",
-    "description",
-    "dependencies",
-    "acceptance_criteria",
-]
+required_fields = ["id", "name", "priority", "status", "status_token", "description", "dependencies", "acceptance_criteria"]
 dependency_id_pattern = "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*"
 
 [roadmap.sections]
@@ -42,26 +33,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 description = "Synthesize E7 Lie Algebra roots and Navier-Stokes turbulence triads (k+p+q=0) into a unified visual and mathematical framework. Includes spectral analysis, hypergraph metrics (Clustering, Betti), and Kerr-optics lensing."
-primary_outputs = [
-    "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs",
-    "CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)",
-    "crates/lbm_core/src/turbulence.rs",
-    "registry/monograph.toml",
-    "registry/lacunae.toml",
-]
+primary_outputs = ["crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)", "crates/lbm_core/src/turbulence.rs", "registry/monograph.toml", "registry/lacunae.toml"]
 dependencies = []
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)",
-    "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs",
-    "crates/lbm_core/src/turbulence.rs",
-    "registry/lacunae.toml",
-    "registry/monograph.toml",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)", "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "crates/lbm_core/src/turbulence.rs", "registry/lacunae.toml", "registry/monograph.toml"]
 lacunae = ["L-001", "L-002", "L-003", "L-004", "L-005"]
 
 [[workstream]]
@@ -73,11 +48,7 @@ status_token = "ACTIVE"
 description = "Maintain claim lifecycle with TOML registry authority and markdown mirrors. Perpetual-maintenance workstream: no terminal deliverable, the discipline is in place and operating."
 primary_outputs = ["registry/claims.toml", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md"]
 dependencies = []
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "registry/claims.toml"]
 
 [[workstream]]
@@ -88,27 +59,12 @@ status = "done"
 status_token = "DONE"
 description = "Phase 6 verified that CD non-commutativity at dim>=4 is universal across the standard parameter space. Literature search across 7 mathematical domains (20+ papers) found zero counterexamples. Exhaustive computational verification across all 28 standard gamma signatures (dim=4: 4, dim=8: 8, dim=16: 16, dim=32: 8 sampled) found 0 commuting pairs in ~1200 basis element pairs. Combined confidence: 99%. This cross-validates C-589 (octonion-driven lattice) and strengthens C-546 (universal non-commutativity) by establishing it as a STRUCTURAL property of the CD doubling formula's conjugation asymmetry."
 sprint = "S30"
-primary_outputs = [
-    "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)",
-    "registry/claims.toml",
-    "registry/insights.toml",
-    "docs/PHASE_5_6_CONSOLIDATION.md",
-]
+primary_outputs = ["CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)", "registry/claims.toml", "registry/insights.toml", "docs/PHASE_5_6_CONSOLIDATION.md"]
 claims = ["C-591", "C-546", "C-550", "C-552"]
 insight = "I-042"
 dependencies = ["C-546", "C-550", "C-552", "C-589", "C-591", "I-042"]
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Claim references remain resolvable in registry/claims.toml.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)",
-    "docs/PHASE_5_6_CONSOLIDATION.md",
-    "registry/claims.toml",
-    "registry/insights.toml",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["CURRENT::PATH crates/cd_kernel/src/cayley_dickson/mod.rs (LEGACY::PATH crates/cd_kernel/src/cayley_dickson.rs)", "docs/PHASE_5_6_CONSOLIDATION.md", "registry/claims.toml", "registry/insights.toml"]
 
 [[workstream]]
 id = "WS-FACESIGN-001"
@@ -119,57 +75,9 @@ status_token = "DONE"
 description = "Extended box-kite face sign census from dim=16 to dim=512 (33 regimes, 214M triangles). Discovered the Universal 3:1 Theorem (C-487): OneSameTwoOpp=3*AllSame AND TwoSameOneOpp=3*AllOpposite in ALL components at ALL dimensions. Derived the mechanism via Anti-Diagonal Parity Theorem (WS-MECHANISM-001)."
 sprint = "S20-S25"
 primary_outputs = ["crates/algebra_analysis/src/boxkites.rs"]
-claims = [
-    "C-478",
-    "C-479",
-    "C-480",
-    "C-481",
-    "C-482",
-    "C-483",
-    "C-484",
-    "C-485",
-    "C-486",
-    "C-487",
-    "C-488",
-    "C-489",
-    "C-490",
-    "C-491",
-    "C-492",
-    "C-493",
-    "C-494",
-    "C-495",
-    "C-496",
-    "C-497",
-]
-dependencies = [
-    "C-478",
-    "C-479",
-    "C-480",
-    "C-481",
-    "C-482",
-    "C-483",
-    "C-484",
-    "C-485",
-    "C-486",
-    "C-487",
-    "C-488",
-    "C-489",
-    "C-490",
-    "C-491",
-    "C-492",
-    "C-493",
-    "C-494",
-    "C-495",
-    "C-496",
-    "C-497",
-    "WS-MECHANISM-001",
-]
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Claim references remain resolvable in registry/claims.toml.",
-    "Evidence references point to maintained canonical paths.",
-]
+claims = ["C-478", "C-479", "C-480", "C-481", "C-482", "C-483", "C-484", "C-485", "C-486", "C-487", "C-488", "C-489", "C-490", "C-491", "C-492", "C-493", "C-494", "C-495", "C-496", "C-497"]
+dependencies = ["C-478", "C-479", "C-480", "C-481", "C-482", "C-483", "C-484", "C-485", "C-486", "C-487", "C-488", "C-489", "C-490", "C-491", "C-492", "C-493", "C-494", "C-495", "C-496", "C-497", "WS-MECHANISM-001"]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/algebra_analysis/src/boxkites.rs"]
 
 [[workstream]]
@@ -181,12 +89,7 @@ status_token = "DONE"
 description = "DONE (CP-GATES-2026-03): gate-local, gate-ci-registry, and gate-ci-rust all pass with exit code 0 as of 2026-04-11. Fixed toml 1.1 parse regressions, restored pyproject.toml, corrected binary_count and experiment counters, added missing license fields, updated deny.toml advisory list."
 primary_outputs = []
 dependencies = []
-acceptance_criteria = [
-    "gate-local passes",
-    "gate-ci-registry passes",
-    "gate-ci-rust passes",
-    "gate-audit reports all exit code 0",
-]
+acceptance_criteria = ["gate-local passes", "gate-ci-registry passes", "gate-ci-rust passes", "gate-audit reports all exit code 0"]
 evidence_refs = ["reports/gates/2026-04-11/102425/summary.md", "registry/next_actions.toml"]
 
 [[workstream]]
@@ -197,27 +100,12 @@ status = "done"
 status_token = "DONE"
 description = "Phase 5 combined GPU tensor network implementation (PEPS row contraction via cudarc 0.19.1) with the octonion-lattice connection breakthrough. GPU benchmarking revealed memory transfer overhead dominates at small problem sizes (~130 ms baseline). The critical finding was I-040: the 8D lattice dimension in CD codebook is structurally driven by octonion algebra (Hurwitz unique 8D normed division algebra), NOT by E8 roots. Evidence chain: C-453 (8D invariance), C-455 (E8 refuted), C-458 (parity constraints), C-589 (octonion-driven lattice). 199 quantum_core tests pass."
 sprint = "S30"
-primary_outputs = [
-    "crates/quantum_core/",
-    "registry/claims.toml",
-    "registry/insights.toml",
-    "docs/PHASE_5_6_CONSOLIDATION.md",
-]
+primary_outputs = ["crates/quantum_core/", "registry/claims.toml", "registry/insights.toml", "docs/PHASE_5_6_CONSOLIDATION.md"]
 claims = ["C-589", "C-453", "C-455", "C-458"]
 insight = "I-040"
 dependencies = ["C-453", "C-455", "C-458", "C-589", "I-040"]
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Claim references remain resolvable in registry/claims.toml.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "crates/quantum_core/",
-    "docs/PHASE_5_6_CONSOLIDATION.md",
-    "registry/claims.toml",
-    "registry/insights.toml",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/quantum_core/", "docs/PHASE_5_6_CONSOLIDATION.md", "registry/claims.toml", "registry/insights.toml"]
 
 [[workstream]]
 id = "WS-MECHANISM-001"
@@ -227,55 +115,12 @@ status = "done"
 status_token = "DONE"
 description = "Complete mechanistic explanation for the Universal 3:1 Theorem (C-487). The GF(2) twist exponent psi(i,j) per edge yields a 2-bit anti-diagonal XOR invariant eta. Per triangle, the Klein-four invariant F = (eta_ab XOR eta_bc, eta_bc XOR eta_ac) in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256. Key sub-results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta=1 XOR eta_half (C-526), psi ANF degree=log2(dim) and eta degree=log2(dim)-1 (C-527)."
 sprint = "S25"
-primary_outputs = [
-    "crates/algebra_analysis/src/boxkites.rs",
-    "registry/claims.toml",
-    "registry/insights.toml",
-]
-claims = [
-    "C-515",
-    "C-516",
-    "C-517",
-    "C-518",
-    "C-519",
-    "C-520",
-    "C-521",
-    "C-522",
-    "C-523",
-    "C-524",
-    "C-525",
-    "C-526",
-    "C-527",
-]
+primary_outputs = ["crates/algebra_analysis/src/boxkites.rs", "registry/claims.toml", "registry/insights.toml"]
+claims = ["C-515", "C-516", "C-517", "C-518", "C-519", "C-520", "C-521", "C-522", "C-523", "C-524", "C-525", "C-526", "C-527"]
 insight = "I-018"
-dependencies = [
-    "C-487",
-    "C-515",
-    "C-516",
-    "C-517",
-    "C-518",
-    "C-519",
-    "C-520",
-    "C-521",
-    "C-522",
-    "C-523",
-    "C-524",
-    "C-525",
-    "C-526",
-    "C-527",
-    "I-018",
-]
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Claim references remain resolvable in registry/claims.toml.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "crates/algebra_analysis/src/boxkites.rs",
-    "registry/claims.toml",
-    "registry/insights.toml",
-]
+dependencies = ["C-487", "C-515", "C-516", "C-517", "C-518", "C-519", "C-520", "C-521", "C-522", "C-523", "C-524", "C-525", "C-526", "C-527", "I-018"]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/algebra_analysis/src/boxkites.rs", "registry/claims.toml", "registry/insights.toml"]
 
 [[workstream]]
 id = "WS-OPTICS-GR-001"
@@ -285,56 +130,11 @@ status = "in_progress"
 status_token = "IN_PROGRESS"
 description = "Sprint 56: Expand materials_core with Landy 2008 metamaterial absorber TMM reproduction (Byrnes amplitude transfer matrix, Lorentz effective-medium model, impedance matching, multilayer convergence). Expand gr_core PPN constraint framework from 7 to 13 gates (GP-B geodetic, preferred-frame alpha_1/2/3, Whitehead xi, MICROSCOPE WEP). Create immirzi_bridge.rs in sign_imbalance connecting CD imbalance density to Barbero-Immirzi parameter via entropy mapping. Fix complex Bessel functions (J_n sign, Y_n Euler gamma) and Fano TCMT tests in optics_core."
 sprint = "S56"
-primary_outputs = [
-    "crates/materials_core/src/landy_absorber.rs",
-    "crates/materials_core/src/effective_medium.rs",
-    "crates/gr_core/src/ppn_constraints.rs",
-    "crates/sign_imbalance/src/immirzi_bridge.rs",
-    "crates/optics_core/src/bessel.rs",
-    "crates/optics_core/src/fano_tcmt.rs",
-]
-claims = [
-    "C-852",
-    "C-853",
-    "C-854",
-    "C-855",
-    "C-856",
-    "C-857",
-    "C-858",
-    "C-859",
-    "C-860",
-    "C-861",
-    "C-862",
-    "C-863",
-]
-dependencies = [
-    "C-852",
-    "C-853",
-    "C-854",
-    "C-855",
-    "C-856",
-    "C-857",
-    "C-858",
-    "C-859",
-    "C-860",
-    "C-861",
-    "C-862",
-    "C-863",
-]
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Claim references remain resolvable in registry/claims.toml.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "crates/gr_core/src/ppn_constraints.rs",
-    "crates/materials_core/src/effective_medium.rs",
-    "crates/materials_core/src/landy_absorber.rs",
-    "crates/optics_core/src/bessel.rs",
-    "crates/optics_core/src/fano_tcmt.rs",
-    "crates/sign_imbalance/src/immirzi_bridge.rs",
-]
+primary_outputs = ["crates/materials_core/src/landy_absorber.rs", "crates/materials_core/src/effective_medium.rs", "crates/gr_core/src/ppn_constraints.rs", "crates/sign_imbalance/src/immirzi_bridge.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs"]
+claims = ["C-852", "C-853", "C-854", "C-855", "C-856", "C-857", "C-858", "C-859", "C-860", "C-861", "C-862", "C-863"]
+dependencies = ["C-852", "C-853", "C-854", "C-855", "C-856", "C-857", "C-858", "C-859", "C-860", "C-861", "C-862", "C-863"]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/gr_core/src/ppn_constraints.rs", "crates/materials_core/src/effective_medium.rs", "crates/materials_core/src/landy_absorber.rs", "crates/optics_core/src/bessel.rs", "crates/optics_core/src/fano_tcmt.rs", "crates/sign_imbalance/src/immirzi_bridge.rs"]
 
 [[workstream]]
 id = "WS-PUB-001"
@@ -343,30 +143,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 description = "LLM-Scaffold monograph prepared for arXiv submission. Paper compiles clean (120pp, 0 errors). 818 claims in appendix. arXiv package in docs/latex/arxiv/. Evidence package verified. All 4 theses PASS. 742 Verified, 3 Established, 34 Refuted, 13 Falsified, 10 Superseded claims."
-primary_outputs = [
-    "docs/latex/llm_scaffold_paper.tex",
-    "docs/latex/out/llm_scaffold_paper.pdf",
-    "docs/latex/claims_appendix.tex",
-    "docs/latex/experiments_appendix.tex",
-    "docs/latex/insights_appendix.tex",
-    "docs/latex/reproducibility_appendix.tex",
-    "docs/latex/arxiv/",
-]
+primary_outputs = ["docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "docs/latex/reproducibility_appendix.tex", "docs/latex/arxiv/"]
 dependencies = []
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "docs/latex/arxiv/",
-    "docs/latex/claims_appendix.tex",
-    "docs/latex/experiments_appendix.tex",
-    "docs/latex/insights_appendix.tex",
-    "docs/latex/llm_scaffold_paper.tex",
-    "docs/latex/out/llm_scaffold_paper.pdf",
-    "docs/latex/reproducibility_appendix.tex",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["docs/latex/arxiv/", "docs/latex/claims_appendix.tex", "docs/latex/experiments_appendix.tex", "docs/latex/insights_appendix.tex", "docs/latex/llm_scaffold_paper.tex", "docs/latex/out/llm_scaffold_paper.pdf", "docs/latex/reproducibility_appendix.tex"]
 
 [[workstream]]
 id = "WS-QUALITY-001"
@@ -377,11 +157,7 @@ status_token = "ACTIVE"
 description = "All Python and Rust checks run with warnings treated as failures. Perpetual-maintenance workstream: no terminal deliverable, the discipline is in place and operating."
 primary_outputs = ["Makefile", "docs/REQUIREMENTS.md", "AGENTS.md"]
 dependencies = []
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["AGENTS.md", "Makefile", "docs/REQUIREMENTS.md"]
 
 [[workstream]]
@@ -391,50 +167,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 description = "Move markdown operational docs into structured registries with generated markdown mirrors."
-primary_outputs = [
-    "registry/knowledge_sources.toml",
-    "registry/knowledge/documents.toml",
-    "registry/roadmap.toml",
-    "registry/todo.toml",
-    "registry/next_actions.toml",
-    "registry/requirements.toml",
-    "registry/claims_tasks.toml",
-    "registry/claims_domains.toml",
-    "registry/claim_tickets.toml",
-    "registry/lacunae.toml",
-    "registry/monograph.toml",
-    "crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs",
-    "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
-    "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
-    "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md",
-    "docs/CLAIMS_TASKS.md",
-    "docs/claims/INDEX.md",
-]
+primary_outputs = ["registry/knowledge_sources.toml", "registry/knowledge/documents.toml", "registry/roadmap.toml", "registry/todo.toml", "registry/next_actions.toml", "registry/requirements.toml", "registry/claims_tasks.toml", "registry/claims_domains.toml", "registry/claim_tickets.toml", "registry/lacunae.toml", "registry/monograph.toml", "crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md", "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md", "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md", "docs/CLAIMS_TASKS.md", "docs/claims/INDEX.md"]
 dependencies = []
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs",
-    "docs/CLAIMS_TASKS.md",
-    "docs/claims/INDEX.md",
-    "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
-    "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
-    "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md",
-    "registry/claim_tickets.toml",
-    "registry/claims_domains.toml",
-    "registry/claims_tasks.toml",
-    "registry/knowledge/documents.toml",
-    "registry/knowledge_sources.toml",
-    "registry/lacunae.toml",
-    "registry/monograph.toml",
-    "registry/next_actions.toml",
-    "registry/requirements.toml",
-    "registry/roadmap.toml",
-    "registry/todo.toml",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/gororoba_cli_data/src/bin/verify_registry_mirror_freshness.rs", "docs/CLAIMS_TASKS.md", "docs/claims/INDEX.md", "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md", "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md", "registry/claim_tickets.toml", "registry/claims_domains.toml", "registry/claims_tasks.toml", "registry/knowledge/documents.toml", "registry/knowledge_sources.toml", "registry/lacunae.toml", "registry/monograph.toml", "registry/next_actions.toml", "registry/requirements.toml", "registry/roadmap.toml", "registry/todo.toml"]
 
 [[workstream]]
 id = "WS-REGISTRY-002"
@@ -443,28 +179,10 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 description = "Reduce remaining narrative free-text by moving claims, equations, proofs, provenance, and planning metadata into stricter TOML schemas."
-primary_outputs = [
-    "registry/strict_toml_granularization_plan.toml",
-    "registry/claims_atoms.toml",
-    "registry/claims_evidence_edges.toml",
-    "registry/knowledge/proof_skeletons.toml",
-    "registry/knowledge/derivation_steps.toml",
-    "registry/bibliography_normalized.toml",
-]
+primary_outputs = ["registry/strict_toml_granularization_plan.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/knowledge/proof_skeletons.toml", "registry/knowledge/derivation_steps.toml", "registry/bibliography_normalized.toml"]
 dependencies = []
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "registry/bibliography_normalized.toml",
-    "registry/claims_atoms.toml",
-    "registry/claims_evidence_edges.toml",
-    "registry/knowledge/derivation_steps.toml",
-    "registry/knowledge/proof_skeletons.toml",
-    "registry/strict_toml_granularization_plan.toml",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["registry/bibliography_normalized.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/proof_skeletons.toml", "registry/strict_toml_granularization_plan.toml"]
 
 [[workstream]]
 id = "WS-THESIS-002"
@@ -473,31 +191,8 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 description = "Expand and harden falsifiability for C-010 (Holographic Entropy Trap), C-011 (Sedenion-Gravastar Equivalence), and C-452/C-453 (Universal 8D Lattice Embedding) with stricter tests, explicit obstruction criteria, and primary-source triangulation."
-primary_outputs = [
-    "crates/gororoba_cli_data/src/bin/repo_utilities.rs",
-    "crates/gororoba_cli_physics/src/bin/entropy_trap.rs",
-    "crates/gororoba_cli/tests/integration_gravastar.rs",
-    "crates/algebra_experimental/src/cd_external.rs",
-    "registry/claims.toml",
-    "registry/insights.toml",
-    "registry/next_actions.toml",
-    "registry/todo.toml",
-]
+primary_outputs = ["crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli_physics/src/bin/entropy_trap.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "crates/algebra_experimental/src/cd_external.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml"]
 claims = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 dependencies = ["C-010", "C-011", "C-452", "C-453", "C-589"]
-acceptance_criteria = [
-    "workstream status is constrained to declared enum values.",
-    "workstream dependencies are explicit and machine-parseable.",
-    "Claim references remain resolvable in registry/claims.toml.",
-    "Evidence references point to maintained canonical paths.",
-]
-evidence_refs = [
-    "crates/algebra_experimental/src/cd_external.rs",
-    "crates/gororoba_cli/tests/integration_gravastar.rs",
-    "crates/gororoba_cli_data/src/bin/repo_utilities.rs",
-    "crates/gororoba_cli_physics/src/bin/entropy_trap.rs",
-    "registry/claims.toml",
-    "registry/insights.toml",
-    "registry/next_actions.toml",
-    "registry/todo.toml",
-]
+acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
+evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli_physics/src/bin/entropy_trap.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml"]

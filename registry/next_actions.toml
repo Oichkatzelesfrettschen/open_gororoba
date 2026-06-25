@@ -12,17 +12,7 @@ status_allowlist = ["todo", "in_progress", "done", "blocked", "deferred"]
 priority_allowlist = ["high", "medium", "low"]
 
 [next_actions.schema]
-required_fields = [
-    "id",
-    "area",
-    "title",
-    "description",
-    "priority",
-    "status",
-    "status_token",
-    "dependencies",
-    "acceptance_criteria",
-]
+required_fields = ["id", "area", "title", "description", "priority", "status", "status_token", "dependencies", "acceptance_criteria"]
 dependency_id_pattern = "WS-*|T-*|NA-*|C-*|I-*|E-*|REQ-*"
 
 [[action]]
@@ -34,11 +24,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/optics_core"]
 
 [[action]]
@@ -50,10 +36,7 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -65,10 +48,7 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -80,10 +60,7 @@ priority = "low"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -95,10 +72,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-010"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -110,10 +84,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-010"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -125,10 +96,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-011"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -140,10 +108,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-011"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -155,10 +120,7 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-011"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -170,10 +132,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-453"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -185,10 +144,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -200,10 +156,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -215,10 +168,7 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -230,11 +180,7 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/gororoba_cli/Cargo.toml", "registry/binaries.toml"]
 
 [[action]]
@@ -246,11 +192,7 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-    "Evidence references point to maintained canonical paths.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["registry/project.toml"]
 
 [[action]]
@@ -262,10 +204,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["C-010", "C-011", "C-452", "C-453"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -277,10 +216,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -292,10 +228,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -307,10 +240,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["E-029"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -322,10 +252,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -337,10 +264,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -352,10 +276,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -367,10 +288,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -382,10 +300,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -397,10 +312,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -412,10 +324,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -427,10 +336,7 @@ priority = "medium"
 status = "deferred"
 status_token = "DEFERRED"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -442,10 +348,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["E-033", "I-013", "I-018"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -457,10 +360,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = ["E-027", "E-033"]
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -472,10 +372,7 @@ priority = "medium"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -487,10 +384,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -502,10 +396,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -517,10 +408,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable."]
 evidence_refs = []
 
 [[action]]
@@ -532,9 +420,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "rust-regression-scoped workspace path uses --lib --tests; RUST_LOCAL_SKIP_FILTERSET covers all heavy-research tests listed in .config/nextest.toml; gate-audit passes",
-]
+acceptance_criteria = ["rust-regression-scoped workspace path uses --lib --tests; RUST_LOCAL_SKIP_FILTERSET covers all heavy-research tests listed in .config/nextest.toml; gate-audit passes"]
 evidence_refs = []
 
 [[action]]
@@ -558,11 +444,7 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "gate-local",
-    " gate-ci-registry",
-    " and gate-ci-rust all pass with exit code 0",
-]
+acceptance_criteria = ["gate-local", " gate-ci-registry", " and gate-ci-rust all pass with exit code 0"]
 evidence_refs = []
 
 [[action]]
@@ -574,24 +456,17 @@ priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "next_action status is constrained to declared enum values.",
-    "next_action dependencies are explicit and machine-parseable.",
-    "The Brown Chapter VII anchor surface points only at the corrected 7.19(iii) theorem.",
-]
+acceptance_criteria = ["next_action status is constrained to declared enum values.", "next_action dependencies are explicit and machine-parseable.", "The Brown Chapter VII anchor surface points only at the corrected 7.19(iii) theorem."]
 evidence_refs = ["proofs/theories/Brown1972ChapterVII.v", "proofs/theories/SStructuralGaps.v"]
 
 [[action]]
 id = "NA-038"
 area = "algebra"
 title = "Complete Moreno 1.16 Arbitrary-a Concrete Bridge"
-description = "Paper-facing Theorem 1.16 bridge complete: three forms in Moreno1997.v (universal, section, module functor), no Admitted axioms, vos+vok current. C1542_MorVlambdaOrbit.v has all four packages. Deep geometric derivation of V_lambda block structure from first principles is a future separate task."
+description = "DONE: Moreno 1.16 now has a paper-facing arbitrary-a concrete geometry bridge. C1542_MorVlambdaArbClose.v records Moreno16ArbitraryAConcreteVlambdaGeometry, derives the zero-dimensional witness from actual V_lambda(a) triviality for lambda <> 1, and Moreno1997.v exposes the geometry-to-witness and derived arbitrary-a bridges. The remaining Moreno work moves to Theorem 2.9 arbitrary-alternative discharge, not this 1.16 package."
 priority = "high"
 status = "done"
 status_token = "DONE"
 dependencies = []
-acceptance_criteria = [
-    "Moreno1997.v compiles with no Admitted",
-    " three bridge forms present; C1542 packages present; gate-audit passes",
-]
-evidence_refs = []
+acceptance_criteria = ["Moreno1997.v compiles with no Admitted", "C1542_MorVlambdaArbClose.v exposes concrete geometry-to-witness bridge", "Registry evidence refs name the proof files"]
+evidence_refs = ["proofs/theories/C1542_MorVlambdaArbClose.v", "proofs/theories/Moreno1997.v"]
