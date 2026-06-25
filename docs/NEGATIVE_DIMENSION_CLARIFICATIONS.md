@@ -34,9 +34,6 @@ The durable repo surfaces are:
 
 - `docs/GRAND_SYNTHESIS.md`
 - `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`
-- `docs/PHYSICAL_INTERPRETATION.md`
-- `docs/NEGATIVE_DIMENSION_DARK_ENERGY_MODEL.md`
-- `docs/NEG_DIM_MULTIPROBE_EXPERIMENT.md`
 - `proofs/verified/C008_AlphaFreeParameter.v`
 - `proofs/verified/C011_AssociatorObstruction.v`
 - `proofs/verified/C012_NegDimRefuted.v`
