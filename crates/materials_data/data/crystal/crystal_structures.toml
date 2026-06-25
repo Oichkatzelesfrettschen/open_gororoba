@@ -2202,8 +2202,8 @@ reference = "Wyckoff (1963) vol. 1 (MgF2 rutile-type, UV optics window)."
 [[structure]]
 name = "bbo_beta_barium_borate"
 sg_num = 158
-sg_sym = "P3"
-point_group = "C3"
+sg_sym = "P3c1"
+point_group = "C3v"
 lattice_system = "Hexagonal"
 centering = "P"
 a = 12.532
@@ -2302,23 +2302,6 @@ z = 4
 density = 3.32
 reference = "Dollase (1968) Z. Kristallogr. 126, 119 (Ca2Al3(SiO4)3(OH) zoisite/tanzanite)."
 
-[[structure]]
-name = "opal_amorphous"
-sg_num = 1
-sg_sym = "amorphous"
-point_group = "C1"
-lattice_system = "Triclinic"
-centering = "P"
-a = 1.0
-b = 1.0
-c = 1.0
-alpha = 90.0
-beta = 90.0
-gamma = 90.0
-z = 1
-density = 2.09
-reference = "Sanders (1964) Nature 204, 1151 (SiO2.nH2O amorphous gem; lattice parameters are placeholder)."
-
 # ----- Refractory + structural ceramics -----
 [[structure]]
 name = "zirconia_cubic_yttria_stabilized"
@@ -2409,7 +2392,7 @@ reference = "Schorr (2011) Solar Energy Mater. Solar Cells 95, 1482 (CZTS kester
 # ----- Additional minerals with strong optical/gemstone interest -----
 [[structure]]
 name = "epidote_clinozoisite"
-sg_num = 14
+sg_num = 11
 sg_sym = "P2_1/m"
 point_group = "C2h"
 lattice_system = "Monoclinic"
@@ -3911,8 +3894,8 @@ reference = "Klemmer et al. (1995) Scr. Metall. Mater. 33, 1793 (FePt L10-ordere
 
 [[structure]]
 name = "nd2fe14b_neomag"
-sg_num = 137
-sg_sym = "P4_2/nmc"
+sg_num = 136
+sg_sym = "P4_2/mnm"
 point_group = "D4h"
 lattice_system = "Tetragonal"
 centering = "P"
