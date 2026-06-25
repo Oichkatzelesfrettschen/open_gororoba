@@ -24,9 +24,9 @@ The entire research programme rests on Cayley-Dickson algebra. All other layers 
 | Concept                    | Key claims     | Code                                              |
 | -------------------------- | -------------- | ------------------------------------------------- |
 | CD non-associativity onset | C-001, C-002   | `crates/algebra_analysis/src/cd_mul.rs`           |
-| 42 assessors / 7 box-kites | C-003, C-013   | `src/boxkites.rs`, `src/reggiani.rs`              |
-| PSL(2,7) symmetry          | C-004          | `src/boxkites.rs`                                 |
-| Annihilator geometry (S^3) | C-014          | `src/annihilator.rs`                              |
+| 42 assessors / 7 box-kites | C-003, C-013   | `crates/algebra_analysis/src/boxkites.rs`, `crates/algebra_analysis/src/reggiani.rs` |
+| PSL(2,7) symmetry          | C-004          | `crates/algebra_analysis/src/boxkites.rs`         |
+| Annihilator geometry (S^3) | C-014          | `crates/algebra_analysis/src/annihilator.rs`      |
 | Hurwitz theorem            | C-031          | `crates/algebra_analysis/src/hurwitz.rs`          |
 | Quantised gap (dim=16,32)  | C-1137, C-1140 | `crates/algebra_analysis/src/phase_transition.rs` |
 | ZD graph structure         | C-1141         | `crates/algebra_analysis/src/phase_transition.rs` |
@@ -127,20 +127,20 @@ SPDF/PDS-PPI -> data_core parsers -> OMNI-merged hourly CSV
 
 ```
 CD algebra (L0)
-    ├── ZD graph topology  ──▶ metamaterial design (L1) [negative result: C-010]
-    │                      ──▶ Wick friction bridge (L0->L5) [C-1138]
-    ├── dimensional tower  ──▶ DFT force map (speculative)
-    │                      ──▶ Chingon flyby coupling (L4) [provisional: C-952]
-    ├── associator gap=4   ──▶ universal conjecture (gap universality)
-    └── defect density     ──▶ fractal floor D_f ~ 2.73 conjecture
+    +-- ZD graph topology  -> metamaterial design (L1) [negative result: C-010]
+    |                       -> Wick friction bridge (L0->L5) [C-1138]
+    +-- dimensional tower   -> DFT force map (speculative)
+    |                       -> Chingon flyby coupling (L4) [provisional: C-952]
+    +-- associator gap=4    -> universal conjecture (gap universality)
+    +-- defect density      -> fractal floor D_f ~ 2.73 conjecture
 heliospheric data (L3)
-    ├── Parker spiral      ──▶ B-field scaling verified
-    ├── DM contribution    ──▶ null result verified
-    └── LBM boundary       ──▶ Knudsen breakdown at 30-50 AU
+    +-- Parker spiral       -> B-field scaling verified
+    +-- DM contribution     -> null result verified
+    +-- LBM boundary        -> Knudsen breakdown at 30-50 AU
 Pioneer/flyby (L4)
-    └── D_f ~ 2.7          ──▶ correct sign, magnitude mismatch
+    +-- D_f ~ 2.7           -> correct sign, magnitude mismatch
 LBM galaxy sims (L5)
-    └── D_f = 2.732 ± 0.034 ──▶ near-coincidence with Pioneer metric [open]
+    +-- D_f = 2.732 +/- 0.034 -> near-coincidence with Pioneer metric [open]
 ```
 
 ---
@@ -176,32 +176,32 @@ The default crate is `gororoba_algebra`. Override with `CRATE=<name>`, e.g.
 
 ```
 mod lie: pub #[cfg(feature = "lie")]
-├── mod e6: pub
-│   ├── mod casimir: pub
-│   └── mod root_system: pub
-├── mod e7: pub
-│   ├── mod geometry: pub
-│   └── mod structure: pub
-├── mod e8: pub
-│   ├── mod atlas_bridge: pub
-│   ├── mod heterotic: pub
-│   ├── mod magic_square: pub
-│   └── mod root_system: pub
-├── mod f4: pub
-│   └── mod casimir: pub
-├── mod g2: pub
-│   ├── mod stabilizer: pub
-│   └── mod su3_representation: pub
-├── mod group_theory: pub
-│   └── mod exceptional: pub
-├── mod kac_moody: pub
-│   ├── mod cartans: pub
-│   ├── mod e_series: pub  // E_9, E_10, E_11 root systems
-│   └── mod roots: pub
-├── mod lyndon_basis: pub
-├── mod nilpotent_orbits: pub
-├── mod su5_gut: pub #[cfg(feature = "physics-sm")]
-└── mod three_fermion_generations: pub
++-- mod e6: pub
+|   +-- mod casimir: pub
+|   +-- mod root_system: pub
++-- mod e7: pub
+|   +-- mod geometry: pub
+|   +-- mod structure: pub
++-- mod e8: pub
+|   +-- mod atlas_bridge: pub
+|   +-- mod heterotic: pub
+|   +-- mod magic_square: pub
+|   +-- mod root_system: pub
++-- mod f4: pub
+|   +-- mod casimir: pub
++-- mod g2: pub
+|   +-- mod stabilizer: pub
+|   +-- mod su3_representation: pub
++-- mod group_theory: pub
+|   +-- mod exceptional: pub
++-- mod kac_moody: pub
+|   +-- mod cartans: pub
+|   +-- mod e_series: pub  // E_9, E_10, E_11 root systems
+|   +-- mod roots: pub
++-- mod lyndon_basis: pub
++-- mod nilpotent_orbits: pub
++-- mod su5_gut: pub #[cfg(feature = "physics-sm")]
++-- mod three_fermion_generations: pub
 ```
 
 **Quick lookups for the Lie/exceptional-algebra cluster:**
