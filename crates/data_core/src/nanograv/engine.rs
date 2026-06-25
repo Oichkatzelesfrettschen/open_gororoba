@@ -2643,18 +2643,30 @@ mod tests {
         ell1h_shapiro_exact_seconds, equatorial_to_ecliptic, matern_three_halves,
         parse_tempo2_toas,
     };
-    use std::path::Path;
 
     #[test]
     fn parses_format1_tim_and_subgroup() {
-        let path = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../../data/external/nanograv_15yr_timing/NANOGrav15yr_PulsarTiming_v2.1.0/wideband/tim/J2214+3000_PINT_20230131.wb.tim");
-        let toas = parse_tempo2_toas(&path).expect("parse TOAs");
-        assert!(!toas.is_empty());
+        let fixture = tempfile::Builder::new()
+            .suffix(".tim")
+            .tempfile()
+            .expect("tim fixture");
+        std::fs::write(
+            fixture.path(),
+            "\
+FORMAT 1
+JTEST 1400.0 59000.0 0.25 AO -f Rcvr_800_GUPPI -pp_dm 12.34 -pp_dme 0.02
+JTEST 1500.0 59001.0 0.30 GB -f Rcvr_800_GUPPI -pp_dm 12.35 -pp_dme 0.03
+JTEST 1600.0 59002.0 0.35 6 -f Rcvr_1400_GUPPI -pp_dm 12.36 -pp_dme 0.04
+",
+        )
+        .expect("write tim fixture");
+
+        let toas = parse_tempo2_toas(fixture.path()).expect("parse TOAs");
+        assert_eq!(toas.len(), 3);
         assert!(toas.iter().all(|toa| toa.flags.contains_key("-f")));
         let (subgroup, count) = dominant_subgroup(&toas).expect("dominant subgroup");
-        assert!(!subgroup.is_empty());
-        assert!(count > 0);
+        assert_eq!(subgroup, "Rcvr_800_GUPPI");
+        assert_eq!(count, 2);
     }
 
     #[test]
