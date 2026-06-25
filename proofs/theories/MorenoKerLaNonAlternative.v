@@ -1,6 +1,5 @@
 (** * MorenoKerLaNonAlternative: Ker(L_a) for a NON-ALTERNATIVE doubly-pure
-      sedenion a, witnessed in the regime where Moreno Thm 1.16 / Cor 1.17
-      have content.
+      sedenion representative.
 
     Moreno 1997 (arXiv:q-alg/9710013v1) Thm 1.15-1.16 / Cor 1.17 describe the
     structure of Ker(L_a) for a doubly-pure unit-norm a in A_n, n >= 4: the
@@ -10,28 +9,30 @@
     is injective and Ker(L_a) = {0}.
 
     The Moreno-Froloff zero divisor a = e3 + e10 is doubly pure and
-    NON-alternative (its left-multiplication operator is not injective).  This
-    file exhibits, by direct sedenion computation:
+    NON-alternative (its left-multiplication operator is not injective), but it
+    is not normalized: OctonionNorm.sed_zd_a_norm gives norm squared 2.  This
+    file proves facts for that concrete representative only:
 
-      (1) a is purely imaginary (conj a = -a) and doubly pure (both
-          octonion halves, e3 and e2, are imaginary);
+      (1) a is purely imaginary (conj a = -a) and doubly pure: sed_lo is
+          octonion e3, and sed_hi is octonion e2, i.e. sedenion e10;
       (2) Ker(L_a) is nontrivial -- sed_zd_b = e6 - e15 is a nonzero element
           (so L_a is not injective, i.e. a is non-alternative);
       (3) Ker(L_a) contains FOUR linearly independent elements, so
           dim_R Ker(L_a) >= 4 -- the concrete lower bound matching Moreno's
-          mod-4 structure and the Rust SVD result dim = 4
-          (crates/algebra_analysis/src/zero_divisors.rs).
+          mod-4 structure.
 
     The four annihilators are the boxkite_7 partner assessors of (3,10) with
     the sign that annihilates a: (4,13)+, (5,12)-, (6,15)-, (7,14)+.  The
     fifth partner (2,11) is the strut-opposite and annihilates with neither
-    sign; this is why the kernel is exactly 4-dimensional.  Their basis
-    supports are disjoint, so independence is a single component extraction.
+    sign in this direct computation.  Their basis supports are disjoint, so
+    independence is a single component extraction.  This file does not prove an
+    upper bound on Ker(L_a).
 
     This closes, for a concrete non-alternative a, the H_a-orbit lower-bound
     step that the C-1627 abstract orbit lane leaves as a caller obligation. *)
 
-From OpenGororoba Require Import Prelude CayleyDicksonAlgebra Sedenion OctonionNorm.
+From OpenGororoba Require Import
+  Prelude CayleyDicksonAlgebra Sedenion OctonionNorm C1538_MorZDSymmetry.
 Open Scope R_scope.
 
 (** The shared reduction: unfold the sedenion product on concrete basis
@@ -53,9 +54,10 @@ Proof.
   repeat f_equal; ring.
 Qed.
 
-(** Doubly pure: both octonion halves (sed_lo = e3, sed_hi = e2) are
-    purely imaginary octonions.  This is Moreno's stronger condition on a,
-    strictly above the purely-imaginary condition proved above. *)
+(** Doubly pure: both octonion halves are purely imaginary octonions.  The
+    high half is octonion e2, corresponding to sedenion e10 under CD doubling.
+    This is Moreno's stronger condition on a, strictly above the
+    purely-imaginary condition proved above. *)
 Lemma sed_zd_a_doubly_pure :
   oct_conj (sed_lo sed_zd_a) = oct_neg (sed_lo sed_zd_a) /\
   oct_conj (sed_hi sed_zd_a) = oct_neg (sed_hi sed_zd_a).
@@ -68,19 +70,11 @@ Qed.
 
 (** ** (2) Ker(L_a) is nontrivial: sed_zd_b is a nonzero annihilator. *)
 
-Lemma sed_zd_b_nonzero : sed_zd_b <> sed_zero.
-Proof.
-  intro H.
-  assert (Hc := f_equal (fun s => qc (oct_hi (sed_lo s))) H).
-  cbv [sed_zd_b sed_zero sed_lo oct_hi oct_zero quat_zero qc] in Hc.
-  lra.
-Qed.
-
 Theorem ker_La_nontrivial :
   exists y, y <> sed_zero /\ sed_mul sed_zd_a y = sed_zero.
 Proof.
   exists sed_zd_b. split.
-  - exact sed_zd_b_nonzero.
+  - exact C1538_MorZDSymmetry.sed_zd_b_nonzero.
   - exact sed_zd_product_zero.
 Qed.
 
@@ -91,7 +85,7 @@ Theorem sed_zd_a_L_not_injective :
   exists y, y <> sed_zero /\ sed_mul sed_zd_a y = sed_mul sed_zd_a sed_zero.
 Proof.
   exists sed_zd_b. split.
-  - exact sed_zd_b_nonzero.
+  - exact C1538_MorZDSymmetry.sed_zd_b_nonzero.
   - rewrite sed_zd_product_zero.
     cbv [sed_mul sed_zd_a sed_zero oct_mul oct_conj oct_zero
          quat_mul quat_add quat_neg quat_conj quat_zero quat_one
