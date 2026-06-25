@@ -202,6 +202,7 @@ enum Command {
     ParityAliasPolicy(CommonArgs),
     RestoredRegistrySources(CommonArgs),
     NoReportsWrites(CommonArgs),
+    SourceCommentChronology(CommonArgs),
     MarkdownRemovalPolicy(CommonArgs),
     MarkdownHeaders(CommonArgs),
     MarkdownParity(CommonArgs),
@@ -238,6 +239,7 @@ fn main() -> Result<()> {
         Command::ParityAliasPolicy(args) => verify_parity_alias_policy(&args),
         Command::RestoredRegistrySources(args) => verify_restored_registry_sources(&args),
         Command::NoReportsWrites(args) => verify_no_reports_writes(&args),
+        Command::SourceCommentChronology(args) => verify_source_comment_chronology(&args),
         Command::MarkdownRemovalPolicy(args) => verify_markdown_removal_policy(&args),
         Command::MarkdownHeaders(args) => verify_markdown_headers(&args),
         Command::MarkdownParity(args) => verify_markdown_parity(&args),
@@ -283,6 +285,10 @@ fn run_gate_all(args: &CommonArgs) -> Result<()> {
     run_check!(
         "restored-registry-sources",
         verify_restored_registry_sources
+    );
+    run_check!(
+        "source-comment-chronology",
+        verify_source_comment_chronology
     );
     run_check!(
         "external-source-operational-contracts",
@@ -1036,6 +1042,115 @@ fn verify_no_reports_writes(args: &CommonArgs) -> Result<()> {
     }
     println!("OK: verifiers do not write under reports/");
     Ok(())
+}
+
+fn verify_source_comment_chronology(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let pr_reference = Regex::new(r"\bPR\s+#[0-9]+")?;
+    let mut failures = Vec::new();
+
+    for rel_path in source_comment_chronology_policy_files(&root)? {
+        let path = root.join(&rel_path);
+        let text = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+        for line_number in forbidden_pr_chronology_lines(&rel_path, &text, &pr_reference) {
+            failures.push(format!(
+                "{rel_path}:{line_number}: move PR-number review chronology to commit messages or markdown audit notes"
+            ));
+        }
+    }
+
+    if !failures.is_empty() {
+        bail!(failures.join("\n"));
+    }
+    println!("OK: source comment chronology policy verified");
+    Ok(())
+}
+
+fn source_comment_chronology_policy_files(root: &Path) -> Result<Vec<String>> {
+    let mut files = Vec::new();
+    for search_root in ["crates", "registry"] {
+        let path = root.join(search_root);
+        if !path.exists() {
+            continue;
+        }
+        for entry in WalkDir::new(path).into_iter().flatten() {
+            let path = entry.path();
+            if !entry.file_type().is_file() || !looks_like_source_chronology_surface(path) {
+                continue;
+            }
+            let rel = path
+                .strip_prefix(root)
+                .context("strip source chronology path prefix")?
+                .to_string_lossy()
+                .replace('\\', "/");
+            if is_source_chronology_policy_excluded(&rel) {
+                continue;
+            }
+            files.push(rel);
+        }
+    }
+    files.sort();
+    Ok(files)
+}
+
+fn looks_like_source_chronology_surface(path: &Path) -> bool {
+    matches!(
+        path.extension().and_then(|ext| ext.to_str()),
+        Some(
+            "rs" | "toml"
+                | "wgsl"
+                | "cu"
+                | "cuh"
+                | "c"
+                | "cc"
+                | "cpp"
+                | "h"
+                | "hpp"
+                | "yml"
+                | "yaml"
+        )
+    )
+}
+
+fn is_source_chronology_policy_excluded(rel: &str) -> bool {
+    rel.starts_with("crates/data_core/src/registry_mirrors/")
+        || rel.starts_with("registry/markdown_export/")
+}
+
+fn forbidden_pr_chronology_lines(rel_path: &str, text: &str, pr_reference: &Regex) -> Vec<usize> {
+    text.lines()
+        .enumerate()
+        .filter_map(|(index, line)| {
+            if line_has_forbidden_pr_chronology(rel_path, line, pr_reference) {
+                Some(index + 1)
+            } else {
+                None
+            }
+        })
+        .collect()
+}
+
+fn line_has_forbidden_pr_chronology(rel_path: &str, line: &str, pr_reference: &Regex) -> bool {
+    if !pr_reference.is_match(line) {
+        return false;
+    }
+    let Some(ext) = Path::new(rel_path).extension().and_then(|ext| ext.to_str()) else {
+        return false;
+    };
+    let trimmed = line.trim_start();
+    match ext {
+        "toml" | "yml" | "yaml" => trimmed.starts_with('#'),
+        "rs" | "wgsl" | "cu" | "cuh" | "c" | "cc" | "cpp" | "h" | "hpp" => {
+            let pr_offset = pr_reference.find(line).map(|found| found.start());
+            let comment_offset = line.find("//").or_else(|| line.find("/*"));
+            match (pr_offset, comment_offset) {
+                (Some(pr_start), Some(comment_start)) => comment_start < pr_start,
+                (Some(_), None) => trimmed.starts_with('*'),
+                _ => false,
+            }
+        }
+        _ => false,
+    }
 }
 
 fn verify_markdown_removal_policy(args: &CommonArgs) -> Result<()> {
@@ -3015,4 +3130,105 @@ fn looks_like_anomaly_surface_experiment(row: &Value, markers: &[&str]) -> bool 
         }
     }
     false
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn temp_policy_root(name: &str) -> PathBuf {
+        let stamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .expect("system time")
+            .as_nanos();
+        let root = std::env::temp_dir().join(format!(
+            "gororoba_governance_verify_{}_{}_{}",
+            std::process::id(),
+            name,
+            stamp
+        ));
+        let _ = fs::remove_dir_all(&root);
+        root
+    }
+
+    fn common_args(root: &Path) -> CommonArgs {
+        CommonArgs {
+            repo_root: root.to_path_buf(),
+            db: PathBuf::from("registry/canonical/control_plane.sqlite3"),
+        }
+    }
+
+    #[test]
+    fn source_comment_chronology_rejects_rust_and_toml_comments() {
+        let root = temp_policy_root("rejects");
+        fs::create_dir_all(root.join("crates/demo/src")).expect("create crate dir");
+        fs::create_dir_all(root.join("registry")).expect("create registry dir");
+        fs::write(
+            root.join("crates/demo/src/lib.rs"),
+            concat!(
+                "pub fn ok() {}\n",
+                "// PR ",
+                "#19 review chronology belongs elsewhere\n"
+            ),
+        )
+        .expect("write rust fixture");
+        fs::write(
+            root.join("registry/example.toml"),
+            concat!(
+                "# PR ",
+                "#21 review chronology belongs elsewhere\n",
+                "value = 1\n"
+            ),
+        )
+        .expect("write toml fixture");
+
+        let err = verify_source_comment_chronology(&common_args(&root)).expect_err("must fail");
+        let message = err.to_string();
+        assert!(message.contains("crates/demo/src/lib.rs:2"));
+        assert!(message.contains("registry/example.toml:1"));
+        let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn source_comment_chronology_allows_strings_docs_and_generated_mirrors() {
+        let root = temp_policy_root("allows");
+        fs::create_dir_all(root.join("crates/demo/src")).expect("create crate dir");
+        fs::create_dir_all(root.join("crates/data_core/src/registry_mirrors"))
+            .expect("create mirror dir");
+        fs::create_dir_all(root.join("registry/markdown_export")).expect("create markdown dir");
+        fs::create_dir_all(root.join("docs")).expect("create docs dir");
+        fs::write(
+            root.join("crates/demo/src/lib.rs"),
+            concat!(
+                "pub const BODY: &str = \"PR ",
+                "#19 is ordinary data here\";\n",
+                "// PR#3 is a de Marrais production-rule name, not a pull request.\n"
+            ),
+        )
+        .expect("write rust fixture");
+        fs::write(
+            root.join("crates/data_core/src/registry_mirrors/generated.rs"),
+            concat!("//! PR ", "#19 generated mirror chronology is excluded\n"),
+        )
+        .expect("write crate mirror fixture");
+        fs::write(
+            root.join("registry/markdown_export/generated.rs"),
+            concat!(
+                "//! PR ",
+                "#21 generated markdown mirror chronology is excluded\n"
+            ),
+        )
+        .expect("write registry mirror fixture");
+        fs::write(
+            root.join("docs/audit.md"),
+            concat!(
+                "PR ",
+                "#21 markdown chronology can be triangulated in narrative docs.\n"
+            ),
+        )
+        .expect("write docs fixture");
+
+        verify_source_comment_chronology(&common_args(&root)).expect("policy passes");
+        let _ = fs::remove_dir_all(root);
+    }
 }

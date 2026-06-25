@@ -277,11 +277,9 @@ mod tests {
 
     #[test]
     fn polymorph_aliases_resolve_to_distinct_metadata() {
-        // PR #19 review flagged that rutile + anatase + brookite were
-        // all resolving to tio2_metadata even though they have distinct
-        // refractive indices. This regression test pins the polymorph
-        // specialisation: each TiO2 polymorph must return its own n_o
-        // and n_e values matching primary literature.
+        // Rutile, anatase, and brookite have distinct refractive indices.
+        // The structure-to-metadata bridge must preserve TiO2 polymorph
+        // identity instead of collapsing all three names to one record.
         let rutile = metadata_for_structure("rutile_tio2").expect("rutile");
         let anatase = metadata_for_structure("anatase_tio2").expect("anatase");
         let brookite = metadata_for_structure("brookite_tio2").expect("brookite");
