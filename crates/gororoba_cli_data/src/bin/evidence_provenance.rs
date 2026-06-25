@@ -671,9 +671,25 @@ fn load_claim_ids(repo_root: &Path, canonical_db: &Path) -> Result<BTreeSet<Stri
 
 fn load_claim_ref_ids(repo_root: &Path, canonical_db: &Path) -> Result<BTreeSet<String>> {
     let mut ids = load_claim_ids(repo_root, canonical_db)?;
-    let todo_raw = load_toml(&repo_root.join("registry/todo.toml"))?;
-    ids.extend(claim_set(table_array(&todo_raw, "item")));
+    ids.extend(load_todo_ids(repo_root, canonical_db)?);
     Ok(ids)
+}
+
+fn load_todo_ids(repo_root: &Path, canonical_db: &Path) -> Result<BTreeSet<String>> {
+    let db_path = repo_root.join(canonical_db);
+    if db_path.exists() {
+        let store = ProvenanceStore::open(&db_path)
+            .with_context(|| format!("open canonical db {}", db_path.display()))?;
+        let todo_items = store
+            .list_todo_items(None)
+            .with_context(|| format!("load todo items from {}", db_path.display()))?;
+        if !todo_items.is_empty() {
+            return Ok(todo_items.into_iter().map(|row| row.0).collect());
+        }
+    }
+
+    let todo_raw = load_toml(&repo_root.join("registry/todo.toml"))?;
+    Ok(claim_set(table_array(&todo_raw, "item")))
 }
 
 fn build_derivation_steps(proof_rows: &[Value]) -> Result<(Vec<DerivationStep>, DerivationMeta)> {
@@ -1904,6 +1920,46 @@ id = "T-065"
 
         assert!(ids.contains("C-703"));
         assert!(ids.contains("T-065"));
+        Ok(())
+    }
+
+    #[test]
+    fn claim_ref_set_loads_todo_ids_from_canonical_db_first() -> Result<()> {
+        let temp = tempfile::tempdir()?;
+        let registry = temp.path().join("registry");
+        std::fs::create_dir_all(&registry)?;
+        std::fs::write(
+            registry.join("claims.toml"),
+            r#"
+[[claim]]
+id = "C-703"
+"#,
+        )?;
+        std::fs::write(
+            registry.join("todo.toml"),
+            r#"
+[[item]]
+id = "T-065"
+"#,
+        )?;
+        let db_path = temp.path().join("control_plane.sqlite3");
+        let store = ProvenanceStore::open(&db_path)?;
+        store.upsert_todo_item(&provenance_store::ActionItem {
+            id: "T-066",
+            area: "proofs",
+            title: "Canonical todo",
+            description: "Canonical todo row",
+            priority: "high",
+            status: "open",
+            status_token: "OPEN",
+            dependencies_json: "[]",
+            acceptance_criteria_json: "[]",
+        })?;
+
+        let ids = load_claim_ref_ids(temp.path(), Path::new("control_plane.sqlite3"))?;
+
+        assert!(ids.contains("T-066"));
+        assert!(!ids.contains("T-065"));
         Ok(())
     }
 

@@ -2881,6 +2881,12 @@ deterministic = true
     }
 
     #[test]
+    fn extract_paths_does_not_normalize_basename_inside_real_path() {
+        let paths = extract_paths("Read data/archive/claims.toml before registry export.");
+        assert_eq!(paths, vec!["data/archive/claims.toml"]);
+    }
+
+    #[test]
     fn experiment_lineage_surfaces_bare_claims_registry_input() -> Result<()> {
         let raw: Value = toml::from_str(
             r#"
@@ -3085,6 +3091,7 @@ fn extract_id_refs(text: &str) -> Vec<String> {
 }
 
 fn extract_paths(text: &str) -> Vec<String> {
+    let cleaned = ascii_clean(text);
     let mut out = Vec::new();
     let mut seen = BTreeSet::new();
     let mut push_path = |item: String| {
@@ -3092,18 +3099,37 @@ fn extract_paths(text: &str) -> Vec<String> {
             out.push(item);
         }
     };
-    for found in path_regex().find_iter(&ascii_clean(text)) {
+    for found in path_regex().find_iter(&cleaned) {
         let item = collapse(found.as_str())
             .trim_end_matches(|ch: char| ['.', ',', ';', ':', ')'].contains(&ch))
             .to_string();
         push_path(item);
     }
-    for found in registry_basename_regex().find_iter(&ascii_clean(text)) {
+    for found in registry_basename_regex().find_iter(&cleaned) {
+        if !registry_basename_match_is_bare(&cleaned, found.start(), found.end()) {
+            continue;
+        }
         if let Some(path) = registry_basename_path(found.as_str()) {
             push_path(path);
         }
     }
     out
+}
+
+fn registry_basename_match_is_bare(text: &str, start: usize, end: usize) -> bool {
+    fn is_path_continuation(ch: char) -> bool {
+        matches!(ch, '/' | '\\' | '.' | '-' | '_') || ch.is_ascii_alphanumeric()
+    }
+
+    let previous_is_clear = match text[..start].chars().next_back() {
+        Some(ch) => !is_path_continuation(ch),
+        None => true,
+    };
+    let next_is_clear = match text[end..].chars().next() {
+        Some(ch) => !is_path_continuation(ch),
+        None => true,
+    };
+    previous_is_clear && next_is_clear
 }
 
 fn registry_basename_path(name: &str) -> Option<String> {
