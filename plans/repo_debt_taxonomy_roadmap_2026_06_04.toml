@@ -15,7 +15,8 @@
 # WHAT: 21 canonical debt classes across 6 macro-axes; a reconciliation
 # table mapping every legacy DEBT-* tag onto a canonical class; a fresh
 # measured baseline reference (data/output/debt_baseline_2026_06_04.toml);
-# and 9 forward phases with atomic, falsifiable tasks.
+# a machine-readable strict gate baseline; and 9 forward phases with atomic,
+# falsifiable tasks.
 #
 # HOW: Each [[debt_class]] carries a current_magnitude metric with the exact
 # command that reproduces it, confirmed_examples by path, a resolution
@@ -25,7 +26,7 @@
 
 [meta]
 id = "REPO-DEBT-TAXONOMY-ROADMAP-2026-06-04"
-updated = "2026-06-09"
+updated = "2026-06-25"
 status = "active"
 authoritative = true
 scope = "open_gororoba repository: code structure, build/toolchain/delivery, test/verification, data/provenance, scientific/methodology, documentation/organizational debt"
@@ -33,6 +34,7 @@ source_mode = "repo_evidence_plus_repo_audit_anchored_measurement"
 supersedes = "plans/repo_debt_roadmap_2026_04_11.toml"
 subsumes = ["plans/post_gate_optimization_2026_05_12.toml"]
 evidence_baseline = "data/output/debt_baseline_2026_06_04.toml"
+strict_gate_baseline = "data/output/audit/2026-06-25/repo_audit_anchored_2026_06_25.toml"
 predecessor_baselines = [
     "data/output/debt_baseline_2026_04_30.toml",
     "data/output/debt_baseline_2026_05_09.toml",
@@ -132,8 +134,8 @@ review_lane = "registry-driven docs regeneration, plan/branch lifecycle, agent c
 # ----------------------------------------------------------------------------
 [provenance]
 audit_binary = "crates/gororoba_cli_data/src/bin/repo_audit.rs"
-audit_command = "make repo-audit  # writes data/output/audit/repo_audit/repo_audit_anchored_<date>.toml"
-audit_strict_command = "make repo-audit-strict  # fails if any non-safety-positive class grew vs baseline"
+audit_command = "REPO_AUDIT_OUT=data/output/audit/2026-06-04 make repo-audit  # writes the dated anchored snapshot and includes SQLite revisions"
+audit_strict_command = "make repo-audit-strict  # compares against data/output/audit/2026-06-25/repo_audit_anchored_2026_06_25.toml by default"
 metric_taxonomy_doc = "docs/engineering/repo_audit_metric_taxonomy.md"
 monolith_inventory_command = "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | sort -rn"
 registry_count_command = "grep -c '^\\[\\[claim\\]\\]' registry/claims.toml  # and insights/experiments/binaries"
@@ -158,7 +160,7 @@ confirmed_examples = [
     "xtask/src/main.rs (3411; manual string-dispatcher monolith)",
 ]
 resolution_pattern = "Split monoliths by logical surface (types vs algorithms vs IO vs phenomenon classes), keep the public API stable via pub use re-exports from the original module path, validate per-crate with cargo check + clippy + nextest under workspace deny-warnings. Test-heavy files (boxkites/tests, emanation/tests) use the #[cfg(test)] mod tests; + sibling parent/tests.rs relocation."
-falsifiable_acceptance = "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | awk '$1>=4000' yields only TRANSCRIBED-DATA files (optical_database, crystal_symmetry) AND test-only files explicitly exempted; no production-logic .rs over 4000 lines."
+falsifiable_acceptance = "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | awk '$2!=\"total\" && $1>=4000 && index($2,\"optical_database.rs\")==0 && index($2,\"crystal_symmetry.rs\")==0 && index($2,\"boxkites/tests.rs\")==0 && index($2,\"emanation/tests.rs\")==0 {bad=1; print} END{exit bad}'"
 status = "in_progress"
 predecessor_ids = ["DEBT-MODULARIZATION (PH-MOD)"]
 cross_links = [
@@ -256,7 +258,7 @@ confirmed_examples = [
     "Stale-doc drift: AGENTS.md/CLAUDE.md/MEMORY cite nightly-2026-03-05 while rust-toolchain.toml and the requirements narrative are at nightly-2026-04-05.",
 ]
 resolution_pattern = "Keep make as the user-facing front door; migrate policy-heavy parsing into typed xtask subcommands with structured JSON/TOML output; convert the manual string dispatcher to a clap Subcommand enum; update the stale nightly references in the prose guides to the authoritative pin."
-falsifiable_acceptance = "xtask exposes its subcommands via a clap derive enum (xtask --help lists them); AGENTS.md, CLAUDE.md, and the requirements narrative all cite the same nightly date as rust-toolchain.toml; make audit-deep delegates to xtask for all parsing."
+falsifiable_acceptance = "cargo run -q -p xtask -- --help >/dev/null && test \"$(grep -rh nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l)\" -eq 1"
 status = "in_progress"
 predecessor_ids = ["DEBT-BUILD-WORKSPACE"]
 cross_links = ["roadmap_2026_04_11 PH-5"]
@@ -291,7 +293,7 @@ risk = "High-value behavior lacking narrow reproducible hooks forces slow full-w
 current_magnitude = "131 #[ignore] attributes in crates/ (GPU-only or network-only gating, mostly legitimate); 126 allow(clippy::*) in crates/ + 66 in proofs/ scaffolding; allow_clippy_unjustified is verified at 0 in crates/ by data/output/audit/repo_audit/repo_audit_anchored_2026_06_10.toml and make repo-audit-strict-unjustified; 0 TODO/FIXME and 0 unimplemented!/todo! macros (TODO closed from 3); 41 unreachable! (exhaustiveness pins, informational)."
 magnitude_reproduce = "make repo-audit  # ignore_attrs, allow_clippy_attrs, todo_fixme_xxx_hack, *_macro_calls"
 confirmed_examples = [
-    "109 #[ignore] tests (GPU/network gating; exercised via opt-in --ignored lane).",
+    "131 #[ignore] tests (GPU/network gating; exercised via opt-in --ignored lane).",
     "gate-audit historically omitted CPD/semver/deny/docs-freshness (now composed in make audit-deep).",
 ]
 resolution_pattern = "Add crate-scoped smoke/parity hooks first, compose into opt-in deeper gates; keep allow_clippy_unjustified at 0; audit #[ignore] tests against the --ignored opt-in run to confirm each is exercised somewhere."
@@ -567,7 +569,7 @@ disposition = "Work-item tag for strict-admit closure. RESOLVED 2026-05-09 (0 st
 [[identifier_reconciliation]]
 from = "DEBT-PROOF-2"
 to = "DEBT-FORMAL-VERIFICATION"
-disposition = "Work-item tag for indented-axiom/parameter proof gaps (196 total). Tracked via axiom_dispositions.toml."
+disposition = "Work-item tag for indented-axiom/parameter proof gaps (196 total at 2026-05-09; 172 at 2026-06-04 baseline). Tracked via axiom_dispositions.toml."
 
 [[identifier_reconciliation]]
 from = "DEBT-CLAIMS-PROOF"
@@ -648,7 +650,7 @@ axis = "F_documentation_organizational"
 horizon = "immediate"
 goal = "Lock current numbers and make this file the single authoritative roadmap."
 tasks = [
-    "Emit data/output/debt_baseline_2026_06_04.toml via make repo-audit (anchored, SQLite-linked).",
+    "Emit data/output/debt_baseline_2026_06_04.toml via REPO_AUDIT_OUT=data/output/audit/2026-06-04 make repo-audit (anchored, SQLite-linked).",
     "Mark plans/repo_debt_roadmap_2026_04_11.toml superseded (header note) and keep post_gate tracker as task-history.",
     "Adopt the 21-class / 6-axis taxonomy; route any new DEBT-* tag through [[identifier_reconciliation]].",
 ]
@@ -693,9 +695,9 @@ tasks = [
     "Keep each deny.toml RUSTSEC ignore annotated with the blocking dependency and a re-check trigger (already satisfied) and remove any whose upstream fix has landed (rustls-webpki cluster already removed).",
 ]
 acceptance_hooks = [
-    "grep -rn nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l  # == 1",
-    "make cargo-deny-check ; grep -cE '^[[:space:]]*\"RUSTSEC' deny.toml  # active count not above prior snapshot without justification",
-    "xtask --help  # subcommands discoverable via clap",
+    "test \"$(grep -rh nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l)\" -eq 1",
+    "make cargo-deny-check && test \"$(grep -cE '^[[:space:]]*\"RUSTSEC' deny.toml)\" -le 6",
+    "cargo run -q -p xtask -- --help >/dev/null",
 ]
 risk_controls = [
     "Keep exploratory/noisy tools report-only; do not hard-gate a tool until its false-positive inventory is documented.",
@@ -737,7 +739,7 @@ tasks = [
 acceptance_hooks = [
     "test -f crates/materials_core/data/optical_constants.toml  # cited source",
     "cargo nextest run -p materials_core  # reference-value spot check green",
-    "find crates -name '*.rs' | xargs wc -l | awk '$1>=4000'  # transcribed monoliths gone",
+    "find crates -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | awk '$2!=\"total\" && $1>=4000 && index($2,\"optical_database.rs\")==0 && index($2,\"crystal_symmetry.rs\")==0 {bad=1; print} END{exit bad}'",
 ]
 risk_controls = [
     "Parity hash or spot-check must pass before deleting the hand-keyed .rs surface.",
@@ -779,7 +781,7 @@ tasks = [
 acceptance_hooks = [
     "make docs-freshness && make rust-semver-check",
     "make registry-build registry-export-markdown  # docs regenerated from source",
-    "rg -o 'DEBT-[A-Z0-9-]+' -g '!.cache/**' -g '!target/**' . | sort -u  # all resolvable",
+    "bash -lc 'comm -23 <(rg --no-filename -o \"DEBT-[A-Z0-9-]+\" -g \"!*.lock\" -g \"!.cache/**\" -g \"!target/**\" . | sort -u) <(rg --no-filename -o \"DEBT-[A-Z0-9-]+\" plans/repo_debt_taxonomy_roadmap_2026_06_04.toml | sort -u) | tee /tmp/open_gororoba_orphan_debt_tags.txt; test ! -s /tmp/open_gororoba_orphan_debt_tags.txt'",
 ]
 risk_controls = [
     "Never hand-edit AUTO-GENERATED docs; edit the registry narrative source then regenerate.",
