@@ -1132,7 +1132,9 @@ fn forbidden_pr_chronology_lines(rel_path: &str, text: &str, pr_reference: &Rege
         Some(ChronologyCommentStyle::Hash) => {
             forbidden_hash_comment_lines(text, pr_reference, matches!(ext, "yml" | "yaml"))
         }
-        Some(ChronologyCommentStyle::Slash) => forbidden_slash_comment_lines(text, pr_reference),
+        Some(ChronologyCommentStyle::Slash) => {
+            forbidden_slash_comment_lines(text, pr_reference, ext == "rs")
+        }
         None => Vec::new(),
     }
 }
@@ -1157,10 +1159,14 @@ enum SlashScanState {
     Normal,
     DoubleQuoted { escaped: bool },
     RawString { hashes: usize },
-    BlockComment,
+    BlockComment { depth: usize },
 }
 
-fn forbidden_slash_comment_lines(text: &str, pr_reference: &Regex) -> Vec<usize> {
+fn forbidden_slash_comment_lines(
+    text: &str,
+    pr_reference: &Regex,
+    nested_block_comments: bool,
+) -> Vec<usize> {
     let mut failures = BTreeSet::new();
     let mut state = SlashScanState::Normal;
     let mut line_number = 1usize;
@@ -1183,7 +1189,7 @@ fn forbidden_slash_comment_lines(text: &str, pr_reference: &Regex) -> Vec<usize>
                     comment_line.clear();
                 }
                 b'/' if bytes.get(index + 1) == Some(&b'*') => {
-                    state = SlashScanState::BlockComment;
+                    state = SlashScanState::BlockComment { depth: 1 };
                     index += 2;
                 }
                 b'r' => {
@@ -1237,13 +1243,22 @@ fn forbidden_slash_comment_lines(text: &str, pr_reference: &Regex) -> Vec<usize>
                     index += 1;
                 }
             },
-            SlashScanState::BlockComment => match bytes[index] {
+            SlashScanState::BlockComment { depth } => match bytes[index] {
+                b'/' if nested_block_comments && bytes.get(index + 1) == Some(&b'*') => {
+                    state = SlashScanState::BlockComment { depth: depth + 1 };
+                    index += 2;
+                }
                 b'*' if bytes.get(index + 1) == Some(&b'/') => {
-                    if pr_reference.is_match(&comment_line) {
-                        failures.insert(line_number);
+                    let next_depth = depth.saturating_sub(1);
+                    if next_depth == 0 {
+                        if pr_reference.is_match(&comment_line) {
+                            failures.insert(line_number);
+                        }
+                        comment_line.clear();
+                        state = SlashScanState::Normal;
+                    } else {
+                        state = SlashScanState::BlockComment { depth: next_depth };
                     }
-                    comment_line.clear();
-                    state = SlashScanState::Normal;
                     index += 2;
                 }
                 b'\n' => {
@@ -1262,7 +1277,8 @@ fn forbidden_slash_comment_lines(text: &str, pr_reference: &Regex) -> Vec<usize>
         }
     }
 
-    if matches!(state, SlashScanState::BlockComment) && pr_reference.is_match(&comment_line) {
+    if matches!(state, SlashScanState::BlockComment { .. }) && pr_reference.is_match(&comment_line)
+    {
         failures.insert(line_number);
     }
 
@@ -3462,7 +3478,9 @@ mod tests {
                 "#19 review chronology belongs elsewhere\n",
                 "*/\n",
                 "// pr ",
-                "#20 review chronology belongs elsewhere\n"
+                "#20 review chronology belongs elsewhere\n",
+                "/* outer /* inner */ PR ",
+                "#25 nested Rust chronology belongs elsewhere */\n"
             ),
         )
         .expect("write rust fixture");
@@ -3494,6 +3512,7 @@ mod tests {
         let message = err.to_string();
         assert!(message.contains("crates/demo/src/lib.rs:3"));
         assert!(message.contains("crates/demo/src/lib.rs:5"));
+        assert!(message.contains("crates/demo/src/lib.rs:6"));
         assert!(message.contains("crates/demo/shaders/kernel.comp:1"));
         assert!(message.contains("registry/example.toml:1"));
         assert!(message.contains("registry/example.toml:2"));
