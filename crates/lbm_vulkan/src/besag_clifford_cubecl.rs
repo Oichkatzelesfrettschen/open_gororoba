@@ -24,24 +24,23 @@
 use cubecl::prelude::*;
 use cubecl_wgpu::{WgpuDevice, WgpuRuntime};
 
-use crate::{
-    transform_viscosity_cpu::ViscosityTransformInputs,
-    transform_viscosity_cubecl::{CubeclViscosityError, transform_viscosity_cubecl},
-};
+use crate::transform_viscosity_cubecl::{CubeclViscosityError, transform_viscosity_kernel};
 
 #[derive(Debug, thiserror::Error)]
 pub enum BcCubeclError {
     #[error("cubecl adapter not available on this host")]
     AdapterUnavailable,
+    #[error("input length {len} exceeds u32 index range")]
+    InputTooLarge { len: usize },
     #[error("viscosity transform failed: {0}")]
     TransformFailed(#[from] CubeclViscosityError),
 }
 
 /// Approximate parallel PCG shuffle kernel.
 ///
-/// Output cell `pos` receives `imbalance_in[pcg_hash(seed_xor_batch ^ pos) % n_cells]`.
-/// `seed_xor_batch` = `seed ^ batch_idx` (pre-computed by the host so each batch
-/// derives a distinct permutation from the same kernel specialization).
+/// Output cell `pos` receives `imbalance_in[pcg_hash(seed ^ batch_idx ^ pos) % n_cells]`.
+/// `seed` and `batch_idx` are scalar launch arguments, so permutation batches
+/// do not require a fresh shader specialization.
 ///
 /// This is a direct-read shuffle (each thread reads from the original input),
 /// which is statistically equivalent to the WGSL scratch-copy swap: both are
@@ -50,15 +49,16 @@ pub enum BcCubeclError {
 pub fn pcg_shuffle_kernel(
     imbalance_in: &Array<f32>,
     shuffled_out: &mut Array<f32>,
-    #[comptime] n_cells: u32,
-    #[comptime] seed_xor_batch: u32,
+    seed: u32,
+    batch_idx: u32,
 ) {
     let pos = ABSOLUTE_POS;
-    if pos >= n_cells as usize {
+    if pos >= shuffled_out.len() {
         terminate!();
     }
+    let n_cells = shuffled_out.len() as u32;
     let tid = pos as u32;
-    let rng_in = seed_xor_batch ^ tid;
+    let rng_in = seed ^ batch_idx ^ tid;
     // PCG hash matching pcg_hash in besag_clifford.wgsl
     let state = rng_in * 747796405_u32 + 2891336453_u32;
     let word = ((state >> ((state >> 28_u32) + 4_u32)) ^ state) * 277803737_u32;
@@ -86,6 +86,7 @@ pub fn shuffle_imbalance_cubecl(
     if n == 0 {
         return Ok(vec![]);
     }
+    validate_shuffle_len(n)?;
     if !is_available() {
         return Err(BcCubeclError::AdapterUnavailable);
     }
@@ -102,7 +103,8 @@ pub fn shuffle_imbalance_cubecl(
     let cube_count = CubeCount::new_1d(n.div_ceil(256) as u32);
 
     // SAFETY: imbalance_handle and shuffled_handle each cover n f32 elements.
-    // n_cells and seed_xor_batch are compile-time constants baked into the shader.
+    // The kernel derives n_cells from shuffled_out.len() and uses seed/batch as
+    // runtime scalar launch arguments.
     unsafe {
         pcg_shuffle_kernel::launch_unchecked::<WgpuRuntime>(
             &client,
@@ -110,8 +112,8 @@ pub fn shuffle_imbalance_cubecl(
             cube_dim,
             ArrayArg::from_raw_parts(imbalance_handle, n),
             ArrayArg::from_raw_parts(shuffled_handle, n),
-            n as u32,
-            seed ^ batch_idx,
+            seed,
+            batch_idx,
         );
     }
 
@@ -133,15 +135,65 @@ pub fn shuffle_and_transform_cubecl(
     seed: u32,
     batch_idx: u32,
 ) -> Result<Vec<f32>, BcCubeclError> {
-    let shuffled = shuffle_imbalance_cubecl(imbalance, seed, batch_idx)?;
-    let inputs = ViscosityTransformInputs {
-        phi: shuffled,
-        nu_base,
-        lambda,
-        phi_mean,
-    };
-    let tau = transform_viscosity_cubecl(&inputs)?;
-    Ok(tau)
+    let n = imbalance.len();
+    if n == 0 {
+        return Ok(vec![]);
+    }
+    validate_shuffle_len(n)?;
+    if !is_available() {
+        return Err(BcCubeclError::AdapterUnavailable);
+    }
+
+    let device = WgpuDevice::default();
+    let client = WgpuRuntime::client(&device);
+
+    let imbalance_handle = client.create_from_slice(bytemuck::cast_slice(imbalance));
+    let shuffled_handle = client.empty(std::mem::size_of_val(imbalance));
+    let shuffled_for_transform = shuffled_handle.clone();
+    let tau_handle = client.empty(std::mem::size_of_val(imbalance));
+    let tau_readback = tau_handle.clone();
+
+    let cube_dim = CubeDim::new_1d(256);
+    let cube_count = CubeCount::new_1d(n.div_ceil(256) as u32);
+    let transform_cube_dim = CubeDim::new_1d(256);
+    let transform_cube_count = CubeCount::new_1d(n.div_ceil(256) as u32);
+
+    // SAFETY: both kernels receive f32 buffers with n logical elements. The
+    // shuffled buffer is written by pcg_shuffle_kernel and then consumed by
+    // transform_viscosity_kernel on the same cubecl client before readback.
+    unsafe {
+        pcg_shuffle_kernel::launch_unchecked::<WgpuRuntime>(
+            &client,
+            cube_count,
+            cube_dim,
+            ArrayArg::from_raw_parts(imbalance_handle, n),
+            ArrayArg::from_raw_parts(shuffled_handle, n),
+            seed,
+            batch_idx,
+        );
+        transform_viscosity_kernel::launch_unchecked::<WgpuRuntime>(
+            &client,
+            transform_cube_count,
+            transform_cube_dim,
+            ArrayArg::from_raw_parts(shuffled_for_transform, n),
+            ArrayArg::from_raw_parts(tau_handle, n),
+            n as u32,
+            nu_base.to_bits(),
+            lambda.to_bits(),
+            phi_mean.to_bits(),
+        );
+    }
+
+    let tau_bytes = client.read_one_unchecked(tau_readback);
+    let tau: &[f32] = bytemuck::cast_slice(&tau_bytes);
+    Ok(tau.to_vec())
+}
+
+fn validate_shuffle_len(len: usize) -> Result<(), BcCubeclError> {
+    if len > u32::MAX as usize {
+        return Err(BcCubeclError::InputTooLarge { len });
+    }
+    Ok(())
 }
 
 #[cfg(test)]
