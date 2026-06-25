@@ -41,11 +41,9 @@ pub fn box_kite_score_kernel(
     orientations: &Array<u32>,
     bk_basis: &Array<u32>,
     out_scores: &mut Array<f32>,
-    #[comptime] n_pairs: u32,
-    #[comptime] n_orientations: u32,
-    #[comptime] n_vectors: u32,
+    n_pairs: u32,
+    n_orientations: u32,
 ) {
-    let _ = n_vectors; // used by host only; declared comptime for documentation
     let pair_idx = ABSOLUTE_POS;
     if pair_idx >= n_pairs as usize {
         terminate!();
@@ -468,7 +466,6 @@ pub fn box_kite_alignment_scan_cubecl(
             ArrayArg::from_raw_parts(scores_handle, n_pairs),
             n_pairs as u32,
             n_orientations as u32,
-            n_vectors as u32,
         );
     }
 
