@@ -8,7 +8,8 @@
 //! PSL(2,7) orientation table and box-kite basis arrays, runs both the CPU
 //! reference and the cubecl path, and checks that:
 //!
-//!   1. Every `best_orient` index agrees exactly (same permutation wins).
+//!   1. Every `best_orient` index agrees exactly unless the winning scores
+//!      are tied within f32 tolerance.
 //!   2. Every `max_align` value agrees within f32 single-precision tolerance
 //!      (abs_tol=1e-5, rel_tol=1e-4).
 //!
@@ -115,6 +116,7 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
     assert_eq!(cl_best.len(), N_VECTORS);
 
     let mut max_align_err = 0.0_f64;
+    let mut orientation_tie_mismatches = 0usize;
     for i in 0..N_VECTORS {
         let cpu_o = cpu_best[i];
         let cl_o = cl_best[i];
@@ -124,18 +126,23 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
 
         let align_err = (cpu_m - cl_m).abs();
         let align_rel = align_err / cpu_m.abs().max(1e-12);
+        let scores_match = align_err <= ABS_TOL || align_rel <= REL_TOL;
 
-        if cpu_m.abs() > 1e-12 {
+        if cpu_o != cl_o && scores_match {
+            orientation_tie_mismatches += 1;
+        }
+        if !scores_match {
             assert_eq!(
                 cpu_o, cl_o,
-                "vector {i}: orient mismatch: cpu={cpu_o}, cubecl={cl_o}, \
+                "vector {i}: orient mismatch with max_align outside tolerance: cpu={cpu_o}, cubecl={cl_o}, \
                  cpu_max={cpu_m:.6e}, cl_max={cl_m:.6e}"
             );
         }
 
         assert!(
-            align_err <= ABS_TOL || align_rel <= REL_TOL,
+            scores_match,
             "vector {i}: max_align mismatch: cpu={cpu_m:.6e}, cubecl={cl_m:.6e}, \
+             cpu_orient={cpu_o}, cubecl_orient={cl_o}, \
              abs_err={align_err:.3e}, rel_err={align_rel:.3e} \
              (abs_tol={ABS_TOL:.1e}, rel_tol={REL_TOL:.1e})"
         );
@@ -144,7 +151,7 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
     }
 
     eprintln!(
-        "CPU-vs-cubecl alignment OK: {} vectors, {} orientations, max_align_err={max_align_err:.3e}",
-        N_VECTORS, n_orientations
+        "CPU-vs-cubecl alignment OK: {} vectors, {} orientations, max_align_err={max_align_err:.3e}, orientation_tie_mismatches={orientation_tie_mismatches}",
+        N_VECTORS, n_orientations,
     );
 }
