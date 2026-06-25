@@ -8,8 +8,8 @@
 //! PSL(2,7) orientation table and box-kite basis arrays, runs both the CPU
 //! reference and the cubecl path, and checks that:
 //!
-//!   1. Every `best_orient` index agrees exactly unless the winning scores
-//!      are tied within f32 tolerance.
+//!   1. Every `best_orient` index agrees exactly unless both chosen
+//!      orientations cross-score as ties within f32 tolerance.
 //!   2. Every `max_align` value agrees within f32 single-precision tolerance
 //!      (abs_tol=1e-5, rel_tol=1e-4).
 //!
@@ -41,23 +41,85 @@ const ABS_TOL: f64 = 1e-5;
 const REL_TOL: f64 = 1e-4;
 const SEED: u64 = 0x00A1_19B0_7CA1_6EDC;
 
-fn flatten_boxkite_basis(boxkites: &[BoxKite]) -> Vec<u32> {
-    let mut basis = Vec::with_capacity(boxkites.len() * 12);
+fn boxkite_basis_sets(boxkites: &[BoxKite]) -> Vec<Vec<usize>> {
+    let mut basis_sets = Vec::with_capacity(boxkites.len());
     for (boxkite_idx, boxkite) in boxkites.iter().enumerate() {
         let mut indices = std::collections::BTreeSet::new();
         for assessor in &boxkite.assessors {
             indices.insert(assessor.low);
             indices.insert(assessor.high);
         }
-        let boxkite_basis: Vec<u32> = indices.into_iter().map(|i| i as u32).collect();
+        let boxkite_basis: Vec<usize> = indices.into_iter().collect();
         assert_eq!(
             boxkite_basis.len(),
             12,
             "box-kite {boxkite_idx} must have exactly 12 unique basis indices"
         );
-        basis.extend(boxkite_basis);
+        basis_sets.push(boxkite_basis);
     }
-    basis
+    basis_sets
+}
+
+fn flatten_boxkite_basis(basis_sets: &[Vec<usize>]) -> Vec<u32> {
+    basis_sets
+        .iter()
+        .flat_map(|basis_set| basis_set.iter().map(|&i| i as u32))
+        .collect()
+}
+
+fn scores_close(lhs: f64, rhs: f64) -> bool {
+    let err = (lhs - rhs).abs();
+    let scale = lhs.abs().max(rhs.abs()).max(1e-12);
+    err <= ABS_TOL || err / scale <= REL_TOL
+}
+
+fn alignment_score_f64(
+    vector: &[f64; 16],
+    orientation: &[usize; 16],
+    basis_sets: &[Vec<usize>],
+) -> f64 {
+    let norm_sq: f64 = vector.iter().map(|value| value * value).sum();
+    if norm_sq < 1e-30 {
+        return 0.0;
+    }
+
+    basis_sets
+        .iter()
+        .map(|basis_set| {
+            let proj_sq: f64 = basis_set
+                .iter()
+                .map(|&basis_idx| {
+                    let permuted_idx = orientation[basis_idx];
+                    vector[permuted_idx] * vector[permuted_idx]
+                })
+                .sum();
+            proj_sq / norm_sq
+        })
+        .fold(f64::NEG_INFINITY, f64::max)
+}
+
+fn alignment_score_f32(
+    vector: &[f32],
+    orientation: &[usize; 16],
+    basis_sets: &[Vec<usize>],
+) -> f64 {
+    let norm_sq: f32 = vector.iter().map(|value| value * value).sum();
+    let inv_norm_sq = 1.0_f32 / (norm_sq + 1e-30_f32);
+
+    basis_sets
+        .iter()
+        .map(|basis_set| {
+            let proj_sq: f32 = basis_set
+                .iter()
+                .map(|&basis_idx| {
+                    let permuted_idx = orientation[basis_idx];
+                    vector[permuted_idx] * vector[permuted_idx]
+                })
+                .sum();
+            proj_sq * inv_norm_sq
+        })
+        .fold(f32::NEG_INFINITY, f32::max)
+        .max(0.0) as f64
 }
 
 #[test]
@@ -89,6 +151,7 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
     // Box-kite structures from algebra_analysis.
     let boxkites = cached_sedenion_boxkites();
     assert_eq!(boxkites.len(), 7, "expected exactly 7 sedenion box-kites");
+    let basis_sets = boxkite_basis_sets(boxkites);
 
     // CPU oracle.
     let (cpu_max, cpu_best) =
@@ -105,7 +168,7 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
         .flat_map(|perm| perm.iter().map(|&i| i as u32))
         .collect();
 
-    let bk_basis = flatten_boxkite_basis(boxkites);
+    let bk_basis = flatten_boxkite_basis(&basis_sets);
     assert_eq!(bk_basis.len(), 84);
 
     // cubecl path.
@@ -125,18 +188,31 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
         let cl_m = cl_max[i] as f64;
 
         let align_err = (cpu_m - cl_m).abs();
-        let align_rel = align_err / cpu_m.abs().max(1e-12);
-        let scores_match = align_err <= ABS_TOL || align_rel <= REL_TOL;
+        let align_rel = align_err / cpu_m.abs().max(cl_m.abs()).max(1e-12);
+        let scores_match = scores_close(cpu_m, cl_m);
 
-        if cpu_o != cl_o && scores_match {
-            orientation_tie_mismatches += 1;
-        }
-        if !scores_match {
-            assert_eq!(
-                cpu_o, cl_o,
-                "vector {i}: orient mismatch with max_align outside tolerance: cpu={cpu_o}, cubecl={cl_o}, \
-                 cpu_max={cpu_m:.6e}, cl_max={cl_m:.6e}"
+        if cpu_o != cl_o {
+            let cpu_score_at_cubecl_orient = alignment_score_f64(
+                &vectors_f64[i],
+                &orientations_usize[cl_o as usize],
+                &basis_sets,
             );
+            let vector_f32 = &vectors_f32[i * 16..(i + 1) * 16];
+            let cubecl_score_at_cpu_orient =
+                alignment_score_f32(vector_f32, &orientations_usize[cpu_o as usize], &basis_sets);
+            let cpu_tie = scores_close(cpu_m, cpu_score_at_cubecl_orient);
+            let cubecl_tie = scores_close(cl_m, cubecl_score_at_cpu_orient);
+
+            assert!(
+                scores_match && cpu_tie && cubecl_tie,
+                "vector {i}: orient mismatch without verified tie: cpu={cpu_o}, cubecl={cl_o}, \
+                 cpu_max={cpu_m:.6e}, cl_max={cl_m:.6e}, \
+                 cpu_score_at_cubecl_orient={cpu_score_at_cubecl_orient:.6e}, \
+                 cubecl_score_at_cpu_orient={cubecl_score_at_cpu_orient:.6e}, \
+                 scores_match={scores_match}, cpu_tie={cpu_tie}, cubecl_tie={cubecl_tie}"
+            );
+
+            orientation_tie_mismatches += 1;
         }
 
         assert!(
