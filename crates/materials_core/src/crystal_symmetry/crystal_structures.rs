@@ -839,6 +839,34 @@ mod tests {
     }
 
     #[test]
+    fn named_crystal_entries_use_consistent_space_groups() {
+        let bbo = structure_by_name("bbo_beta_barium_borate").unwrap();
+        assert_eq!(bbo.space_group_number, 158);
+        assert_eq!(bbo.space_group_symbol, "P3c1");
+        assert_eq!(bbo.point_group, PointGroup::C3v);
+        assert_eq!(bbo.bravais_centering, 'P');
+
+        let epidote = structure_by_name("epidote_clinozoisite").unwrap();
+        assert_eq!(epidote.space_group_number, 11);
+        assert_eq!(epidote.space_group_symbol, "P2_1/m");
+        assert_eq!(epidote.point_group, PointGroup::C2h);
+        assert_eq!(epidote.bravais_centering, 'P');
+
+        let neomag = structure_by_name("nd2fe14b_neomag").unwrap();
+        assert_eq!(neomag.space_group_number, 136);
+        assert_eq!(neomag.space_group_symbol, "P4_2/mnm");
+        assert_eq!(neomag.point_group, PointGroup::D4h);
+        assert_eq!(neomag.bravais_centering, 'P');
+
+        assert!(structure_by_name("opal_amorphous").is_none());
+        assert!(
+            known_crystal_structures()
+                .iter()
+                .all(|structure| structure.space_group_symbol != "amorphous")
+        );
+    }
+
+    #[test]
     fn cubic_lattices_have_a_equals_b_equals_c() {
         for s in known_crystal_structures()
             .iter()
