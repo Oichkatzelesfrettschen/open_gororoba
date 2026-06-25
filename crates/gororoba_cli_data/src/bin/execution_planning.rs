@@ -2881,9 +2881,21 @@ deterministic = true
     }
 
     #[test]
+    fn extract_paths_normalizes_bare_registry_basename_before_sentence_period() {
+        let paths = extract_paths(r#"input = "Compare against claims.toml.""#);
+        assert_eq!(paths, vec!["registry/claims.toml"]);
+    }
+
+    #[test]
     fn extract_paths_does_not_normalize_basename_inside_real_path() {
         let paths = extract_paths("Read data/archive/claims.toml before registry export.");
         assert_eq!(paths, vec!["data/archive/claims.toml"]);
+    }
+
+    #[test]
+    fn extract_paths_does_not_normalize_registry_basename_with_suffix() {
+        let paths = extract_paths("Read claims.toml.bak before registry export.");
+        assert!(paths.is_empty());
     }
 
     #[test]
@@ -3117,18 +3129,25 @@ fn extract_paths(text: &str) -> Vec<String> {
 }
 
 fn registry_basename_match_is_bare(text: &str, start: usize, end: usize) -> bool {
-    fn is_path_continuation(ch: char) -> bool {
+    fn is_previous_path_continuation(ch: char) -> bool {
         matches!(ch, '/' | '\\' | '.' | '-' | '_') || ch.is_ascii_alphanumeric()
+    }
+    fn is_next_path_continuation(after_match: &str) -> bool {
+        let mut chars = after_match.chars();
+        match chars.next() {
+            Some('.') => chars
+                .next()
+                .is_some_and(|ch| ch == '_' || ch == '-' || ch.is_ascii_alphanumeric()),
+            Some(ch) => matches!(ch, '/' | '\\' | '-' | '_') || ch.is_ascii_alphanumeric(),
+            None => false,
+        }
     }
 
     let previous_is_clear = match text[..start].chars().next_back() {
-        Some(ch) => !is_path_continuation(ch),
+        Some(ch) => !is_previous_path_continuation(ch),
         None => true,
     };
-    let next_is_clear = match text[end..].chars().next() {
-        Some(ch) => !is_path_continuation(ch),
-        None => true,
-    };
+    let next_is_clear = !is_next_path_continuation(&text[end..]);
     previous_is_clear && next_is_clear
 }
 
