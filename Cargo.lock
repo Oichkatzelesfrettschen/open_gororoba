@@ -117,7 +117,7 @@ dependencies = [
  "criterion",
  "cubecl 0.10.0",
  "cubecl-wgpu 0.10.0",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "faer",
  "flavor_lifts",
  "gororoba_algebra",
@@ -1531,7 +1531,7 @@ dependencies = [
  "cubecl 0.10.0",
  "cubecl-core 0.10.0",
  "cubecl-wgpu 0.10.0",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "dyn-stack",
  "fwht",
  "gauss-quad",
@@ -3030,9 +3030,9 @@ dependencies = [
 
 [[package]]
 name = "cudarc"
-version = "0.19.7"
+version = "0.19.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1cea5f10a99e025c1b44ae2354c2d8326b25ddbd0baf76bde8e55cfd4018a2cc"
+checksum = "42310153e06cf4cd532901f7096beb27504d681736a29ee90728ae4e2d93b2a8"
 dependencies = [
  "libloading 0.9.0",
 ]
@@ -4799,7 +4799,7 @@ dependencies = [
  "csv",
  "cubecl 0.10.0",
  "cubecl-wgpu 0.10.0",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "diffusionx",
  "gororoba_gpu_bridge",
  "gororoba_gpu_cubecl",
@@ -5101,7 +5101,7 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "clap",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "data_artifacts_core",
  "env_logger",
  "glob",
@@ -5161,7 +5161,7 @@ dependencies = [
  "chrono",
  "cosmology_core",
  "criterion",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "gororoba_algebra",
  "gororoba_gpu_bridge",
  "gororoba_gpu_cuda",
@@ -5208,7 +5208,7 @@ dependencies = [
 name = "gororoba_gpu_cuda"
 version = "0.1.0"
 dependencies = [
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "gororoba_gpu_bridge",
  "gororoba_optix",
  "log",
@@ -5366,7 +5366,7 @@ dependencies = [
  "anyhow",
  "cubecl 0.10.0",
  "cubecl-wgpu 0.10.0",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "gororoba_gpu_cubecl",
  "gororoba_gpu_cuda",
  "gororoba_gpu_vulkan",
@@ -6326,7 +6326,7 @@ dependencies = [
  "anyhow",
  "approx",
  "cosmology_core",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "gororoba_algebra",
  "gororoba_gpu_bridge",
  "gororoba_gpu_cuda",
@@ -8161,7 +8161,7 @@ dependencies = [
  "approx",
  "cubecl 0.10.0",
  "cubecl-wgpu 0.10.0",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "gororoba_gpu_cubecl",
  "gororoba_gpu_cuda",
  "gororoba_gpu_vulkan",
@@ -9596,7 +9596,7 @@ dependencies = [
  "criterion",
  "cubecl 0.10.0",
  "cubecl-wgpu 0.10.0",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "faer",
  "gororoba_gpu_cubecl",
  "gororoba_gpu_cuda",
@@ -10769,7 +10769,7 @@ dependencies = [
  "anyhow",
  "cosmology_core",
  "criterion",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "gororoba_algebra",
  "gororoba_gpu_cuda",
  "gr_core",
@@ -11150,7 +11150,7 @@ dependencies = [
  "clarabel",
  "cubecl 0.10.0",
  "cubecl-wgpu 0.10.0",
- "cudarc 0.19.7",
+ "cudarc 0.19.8",
  "gororoba_algebra",
  "gororoba_gpu_cubecl",
  "gororoba_gpu_cuda",

@@ -265,7 +265,7 @@ cubecl-core = { version = "0.10.0", default-features = false }
 cubecl-wgpu = { version = "0.10.0", default-features = false }
 
 # GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
-cudarc = { version = "0.19.7", default-features = false, features = ["std", "driver", "runtime", "nvrtc", "dynamic-loading", "cuda-version-from-build-system", "cublas", "cufft", "curand", "cusolver"] }
+cudarc = { version = "0.19.8", default-features = false, features = ["std", "driver", "runtime", "nvrtc", "dynamic-loading", "cuda-version-from-build-system", "cublas", "cufft", "curand", "cusolver"] }
 
 # Dynamic library loading (OptiX FFI)
 libloading = "0.9"

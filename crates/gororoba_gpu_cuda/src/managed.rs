@@ -52,9 +52,10 @@ impl<T> ManagedBuffer<T> {
             ManagedResidency::HostFirst => sys::CUmemAttach_flags_enum::CU_MEM_ATTACH_HOST,
         };
         let mut device_ptr: sys::CUdeviceptr = 0;
+        ctx.bind_to_thread()?;
         // SAFETY: cuMemAllocManaged writes a device pointer to the
-        // stack-local variable. The CUDA context is active via the
-        // `ctx` Arc.
+        // stack-local variable. The CUDA context has been made current
+        // on this thread before the raw driver call.
         let result =
             unsafe { sys::cuMemAllocManaged(&mut device_ptr as *mut _, bytes, flags as u32) };
         if result != sys::CUresult::CUDA_SUCCESS {
@@ -119,10 +120,14 @@ impl<T> Drop for ManagedBuffer<T> {
     fn drop(&mut self) {
         use cudarc::driver::sys;
         if !self.ptr.is_null() {
+            self.ctx.record_err(self.ctx.bind_to_thread());
             // SAFETY: pointer was returned by cuMemAllocManaged in
-            // Self::new and has not been freed.
-            unsafe {
-                let _ = sys::cuMemFree_v2(self.ptr as sys::CUdeviceptr);
+            // Self::new, has not been freed, and the context bind result
+            // has been recorded before issuing the raw driver free.
+            let result = unsafe { sys::cuMemFree_v2(self.ptr as sys::CUdeviceptr) };
+            if result != sys::CUresult::CUDA_SUCCESS {
+                self.ctx
+                    .record_err::<()>(Err(cudarc::driver::DriverError(result)));
             }
         }
     }
