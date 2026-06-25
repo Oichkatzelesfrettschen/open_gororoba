@@ -54,6 +54,16 @@ pub enum DarkHaloError {
     GridTooLarge(u64),
     #[error("tau_base must satisfy tau_base > 0.5 for BGK stability (got {0})")]
     UnstableTauBase(f32),
+    #[error("k_dim must be positive for ln(k_dim) in the viscosity formula (got {0})")]
+    InvalidKDim(u32),
+    #[error(
+        "tau range must stay finite and above 0.5 for BGK stability (tau_base={tau_base}, tau_amp={tau_amp}, min_tau={min_tau})"
+    )]
+    UnstableTauRange {
+        tau_base: f32,
+        tau_amp: f32,
+        min_tau: f32,
+    },
     #[error("initial f slice length {got} does not match nx*ny*nz*19 = {expected}")]
     UploadLengthMismatch { got: usize, expected: usize },
 }
@@ -321,10 +331,7 @@ impl DarkHaloVulkan {
         )?;
 
         // Initialise both f buffers to the D3Q19 equilibrium rest state.
-        let weights = d3q19_weights_f32();
-        let f_init: Vec<f32> = (0..n_cells * D3Q19_CHANNELS)
-            .map(|k| weights[k / n_cells])
-            .collect();
+        let f_init = d3q19_rest_state(n_cells);
         upload_f32_slice(&device, &f_buf0, &f_init)?;
         upload_f32_slice(&device, &f_buf1, &f_init)?;
 
@@ -426,17 +433,13 @@ impl DarkHaloVulkan {
         f_init: Option<&[f32]>,
         config: &DarkHaloConfig,
     ) -> Result<DarkHaloVulkanResult, DarkHaloError> {
-        if config.tau_base.is_nan() || config.tau_base <= 0.5 {
-            return Err(DarkHaloError::UnstableTauBase(config.tau_base));
-        }
+        validate_config(config)?;
         let n = self.n_cells;
         let group_1d = (n as u32).div_ceil(WORKGROUP_1D);
         let gx_det = (self.nx as u32).div_ceil(WORKGROUP_DET);
         let gy_det = (self.ny as u32).div_ceil(WORKGROUP_DET);
         let gz_det = (self.nz as u32).div_ceil(WORKGROUP_DET);
 
-        // Upload initial f state if provided; otherwise the equilibrium
-        // rest state written at construction is already in f_bufs[0].
         self.current_in = 0;
         if let Some(f_host) = f_init {
             if f_host.len() != n * D3Q19_CHANNELS {
@@ -446,6 +449,9 @@ impl DarkHaloVulkan {
                 });
             }
             upload_f32_slice(&self.device, &self.f_bufs[0], f_host)?;
+        } else {
+            let rest_state = d3q19_rest_state(n);
+            upload_f32_slice(&self.device, &self.f_bufs[0], &rest_state)?;
         }
 
         // Step 1: dispatch viscosity to fill tau_buf.
@@ -594,7 +600,33 @@ fn d3q19_weights_f32() -> [f32; 19] {
     ]
 }
 
-// ---- Vulkan memory helpers (identical contract to lbm_d3q19_vulkan.rs) ----
+fn d3q19_rest_state(n_cells: usize) -> Vec<f32> {
+    let weights = d3q19_weights_f32();
+    (0..n_cells * D3Q19_CHANNELS)
+        .map(|k| weights[k / n_cells])
+        .collect()
+}
+
+fn validate_config(config: &DarkHaloConfig) -> Result<(), DarkHaloError> {
+    if config.k_dim == 0 {
+        return Err(DarkHaloError::InvalidKDim(config.k_dim));
+    }
+    let min_tau = config.tau_base - config.tau_amp.abs();
+    if !config.tau_base.is_finite()
+        || !config.tau_amp.is_finite()
+        || !min_tau.is_finite()
+        || min_tau <= 0.5
+    {
+        return Err(DarkHaloError::UnstableTauRange {
+            tau_base: config.tau_base,
+            tau_amp: config.tau_amp,
+            min_tau,
+        });
+    }
+    Ok(())
+}
+
+// ---- Vulkan memory helpers ----
 
 fn allocate_storage_buffer(
     device: &Device,
@@ -682,7 +714,7 @@ fn allocate_buffer(
         device: device.clone(),
         buffer,
         memory,
-        size: req.size,
+        size,
     })
 }
 
@@ -913,8 +945,7 @@ mod tests {
     #[test]
     fn compute_macroscopic_cpu_rest_state() {
         let n = 8usize;
-        let weights = d3q19_weights_f32();
-        let f: Vec<f32> = (0..n * D3Q19_CHANNELS).map(|k| weights[k / n]).collect();
+        let f = d3q19_rest_state(n);
         let (rho, u_flat, rho_mean) = compute_macroscopic_cpu(&f, n);
         for cell in 0..n {
             assert!(
@@ -927,5 +958,58 @@ mod tests {
             assert!(u_flat[2 * n + cell].abs() < 1e-6, "uz[{cell}] non-zero");
         }
         assert!((rho_mean - 1.0).abs() < 1e-6, "rho_mean = {rho_mean}");
+    }
+
+    #[test]
+    fn rest_state_uses_soa_channel_blocks() {
+        let n = 4usize;
+        let f = d3q19_rest_state(n);
+        let weights = d3q19_weights_f32();
+        assert_eq!(f.len(), n * D3Q19_CHANNELS);
+        for channel in 0..D3Q19_CHANNELS {
+            for cell in 0..n {
+                assert_eq!(
+                    f[channel * n + cell],
+                    weights[channel],
+                    "channel={channel} cell={cell}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn validate_config_rejects_invalid_tau_inputs() {
+        let valid = DarkHaloConfig {
+            k_dim: 16,
+            steps: 1,
+            seed: 7,
+            tau_base: 1.0,
+            tau_amp: 0.3,
+            zd_threshold: 0.0,
+            velocity_epsilon: 2.0,
+            density_factor: 0.0,
+        };
+        assert!(validate_config(&valid).is_ok());
+
+        let mut invalid = valid.clone();
+        invalid.k_dim = 0;
+        assert!(matches!(
+            validate_config(&invalid),
+            Err(DarkHaloError::InvalidKDim(0))
+        ));
+
+        invalid = valid.clone();
+        invalid.tau_amp = 0.6;
+        assert!(matches!(
+            validate_config(&invalid),
+            Err(DarkHaloError::UnstableTauRange { .. })
+        ));
+
+        invalid = valid;
+        invalid.tau_amp = f32::NAN;
+        assert!(matches!(
+            validate_config(&invalid),
+            Err(DarkHaloError::UnstableTauRange { .. })
+        ));
     }
 }
