@@ -124,7 +124,7 @@ label_normalized = "themis_mp_crossings_v2.txt"
 canonical_dataset_id = "EX-0028"
 status = "active"
 status_token = "ACTIVE"
-notes = "Filename alias for THEMIS magnetopause crossing list v2 (EX-0028). Used in E-227 dataset_label_refs and truth_surface_consumption."
+notes = "Filename alias for THEMIS magnetopause crossing list v2 (EX-0028). Used in E-227 input_path_refs."
 
 [[alias]]
 id = "DLA-013"
