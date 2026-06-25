@@ -32,7 +32,7 @@ full audit.
 
 | #  | Kernel / Subsystem                 | Crate(s)                     | Dims     | CPU | CUDA    | Vulkan | cubecl | Parity test           |
 | -- | ---------------------------------- | ---------------------------- | -------- | --- | ------- | ------ | ------ | --------------------- |
-| 1  | TurboQuant quantize (3-bit, 128-d) | cd_kernel                    | 128      | YES | n/a     | YES    | YES    | YES (both)            |
+| 1  | TurboQuant quantize (3-bit, 128-d) | cd_kernel                    | 128      | YES | YES     | YES    | YES    | YES (VK/cubecl; CUDA contract) |
 | 2  | LBM D3Q19 stream + collide (BGK)   | lbm_vulkan / lbm_3d          | 3D grid  | YES | YES     | YES    | YES    | YES (3-way)           |
 | 3  | LBM MRT collision                  | lbm_vulkan / lbm_3d_cuda     | 3D grid  | YES | YES     | YES    | YES    | YES (3-way)           |
 | 4  | Sparse-grid LBM (direct bricks)    | lbm_3d_cuda + lbm_vulkan     | 8^3+     | YES | YES     | YES    | YES    | YES (CPU/VK/cubecl)   |
@@ -58,6 +58,11 @@ full audit.
 
 Legend: YES = wired and tested. NO = absent. STUB = module exists, returns
 "not implemented". n/a = backend does not apply to this kernel.
+
+Row 1 marks CUDA as wired because `Backend::Cuda` dispatches quantize through
+`TurboQuantCudaKernels::quantize_batch`. The direct quantize parity tests cover
+CPU == Vulkan and CPU == cubecl; CUDA coverage is the runtime-guarded fused
+dequant-dot contract smoke.
 
 ## What NOT to port
 
@@ -117,8 +122,8 @@ module per value, caching automatically. The caller must pass a consistent
 compile-time value per launch; runtime dispatch sits outside `#[cube]`.
 
 **CUDA (existing):**
-NVRTC `#define CD_DIM <dim>` via `-DCDIM=<dim>` in compile options. The
-`gororoba_gpu_cuda::CompileOptions::define("CD_DIM", dim)` builder covers this.
+NVRTC `#define CD_DIM <dim>` is emitted as `-DCD_DIM=<dim>` in compile options.
+The `gororoba_gpu_cuda::CompileOptions::define("CD_DIM", dim)` builder covers this.
 Calls at new dim values incur a one-time PTX recompile; the ModuleRegistry
 caches the result.
 
