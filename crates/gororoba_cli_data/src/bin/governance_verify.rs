@@ -2,6 +2,7 @@ use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
 use provenance_store::{ControlPlaneCompatKind, ProvenanceStore};
 use regex::Regex;
+use rusqlite::{Connection, OpenFlags};
 use serde_json::json;
 use sha2::{Digest, Sha256};
 use std::{
@@ -303,6 +304,10 @@ fn run_gate_all(args: &CommonArgs) -> Result<()> {
 fn verify_canonical_control_plane(args: &CommonArgs) -> Result<()> {
     let root = resolve_root(args)?;
     let canonical_path = "registry/canonical/control_plane.sqlite3";
+    let tracked_sqlite_paths = [
+        canonical_path,
+        "registry/canonical/csv_holding_payloads.sqlite3",
+    ];
     let legacy_path = ".cache/registry.sqlite3";
     let required_files = [
         "README.md",
@@ -327,12 +332,49 @@ fn verify_canonical_control_plane(args: &CommonArgs) -> Result<()> {
         }
     }
 
+    for rel in tracked_sqlite_paths {
+        let path = root.join(rel);
+        if !path.exists() {
+            failures.push(format!("{rel}: missing tracked canonical SQLite file"));
+            continue;
+        }
+
+        let journal_mode = sqlite_journal_mode(&path)
+            .with_context(|| format!("read SQLite journal mode for {}", path.display()))?;
+        if journal_mode.eq_ignore_ascii_case("wal") {
+            failures.push(format!(
+                "{rel}: journal_mode=wal; run `sqlite3 {rel} 'PRAGMA wal_checkpoint(TRUNCATE); PRAGMA journal_mode=DELETE;'` before committing"
+            ));
+        }
+
+        for sidecar in [format!("{rel}-wal"), format!("{rel}-shm")] {
+            if root.join(&sidecar).exists() {
+                failures.push(format!(
+                    "{rel}: live SQLite sidecar `{sidecar}` exists; close writers and checkpoint before committing"
+                ));
+            }
+        }
+    }
+
     if !failures.is_empty() {
         bail!(failures.join("\n"));
     }
 
     println!("OK: canonical control-plane declarations are aligned");
     Ok(())
+}
+
+fn sqlite_journal_mode(path: &Path) -> Result<String> {
+    let connection = Connection::open_with_flags(path, OpenFlags::SQLITE_OPEN_READ_ONLY)
+        .with_context(|| {
+            format!(
+                "open {} read-only to inspect SQLite journal mode",
+                path.display()
+            )
+        })?;
+    connection
+        .query_row("PRAGMA journal_mode;", [], |row| row.get::<_, String>(0))
+        .with_context(|| format!("query PRAGMA journal_mode for {}", path.display()))
 }
 
 fn verify_planning_requirements_authority(args: &CommonArgs) -> Result<()> {
