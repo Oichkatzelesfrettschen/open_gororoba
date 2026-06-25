@@ -152,6 +152,8 @@ fn main() -> Result<()> {
             eprintln!("[done] verify-inventory-toml-first");
             verify_owner_map(&repo_root)?;
             eprintln!("[done] verify-owner-map");
+            verify_research_narrative_root_docs(&repo_root)?;
+            eprintln!("[done] verify-research-narrative-root-docs");
             Ok(())
         }
         // Non-gate subcommands: print a clear message rather than silently succeeding.
@@ -190,10 +192,7 @@ fn main() -> Result<()> {
             Ok(())
         }
         Command::PruneStaleOwnerMap => prune_stale_owner_map(&repo_root),
-        Command::PromoteResearchNarratives => {
-            println!("OK: promote-research-narratives (stub)");
-            Ok(())
-        }
+        Command::PromoteResearchNarratives => promote_research_narratives(&repo_root),
         Command::PromoteDocsRootNarratives => {
             println!("OK: promote-docs-root-narratives (stub)");
             Ok(())
@@ -492,6 +491,152 @@ fn table_array<'a>(value: &'a toml::Value, key: &str) -> &'a [toml::Value] {
         .unwrap_or(&[])
 }
 
+const RESEARCH_NARRATIVE_SOURCE_GLOBS: &[&str] = &[
+    "docs/theory/*.md",
+    "docs/engineering/*.md",
+    "docs/research/*.md",
+    "docs/*.md",
+];
+
+const ROOT_RESEARCH_NARRATIVE_PATHS: &[&str] = &[
+    "docs/GRAND_SYNTHESIS.md",
+    "docs/NAVIGATOR.md",
+    "docs/EXCEPTIONAL_COSMOLOGY.md",
+    "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md",
+    "docs/GRAND_SYNTHESIS_PLAN.md",
+];
+
+fn research_narrative_globs_literal() -> String {
+    let joined = RESEARCH_NARRATIVE_SOURCE_GLOBS
+        .iter()
+        .map(|item| format!("\"{item}\""))
+        .collect::<Vec<_>>()
+        .join(", ");
+    format!("source_markdown_globs = [{joined}]")
+}
+
+fn set_research_narrative_header(original: &str, document_count: usize) -> String {
+    let mut output = String::new();
+    let mut in_header = true;
+    let mut wrote_globs = false;
+    let mut wrote_count = false;
+
+    for line in original.split_inclusive('\n') {
+        let trimmed = line.trim();
+        if trimmed == "[[document]]" {
+            if in_header {
+                if !wrote_globs {
+                    output.push_str(&research_narrative_globs_literal());
+                    output.push('\n');
+                }
+                if !wrote_count {
+                    output.push_str(&format!("document_count = {document_count}\n"));
+                }
+                in_header = false;
+            }
+            output.push_str(line);
+            continue;
+        }
+
+        if in_header && trimmed.starts_with("source_markdown_globs") {
+            output.push_str(&research_narrative_globs_literal());
+            output.push('\n');
+            wrote_globs = true;
+            continue;
+        }
+
+        if in_header && trimmed.starts_with("document_count") {
+            output.push_str(&format!("document_count = {document_count}\n"));
+            wrote_count = true;
+            continue;
+        }
+
+        output.push_str(line);
+    }
+
+    output
+}
+
+fn research_narrative_root_doc_failures(repo_root: &Path, value: &toml::Value) -> Vec<String> {
+    let mut failures = Vec::new();
+    let meta = value.get("research_narratives");
+    let globs: BTreeSet<String> = meta
+        .and_then(|row| row.get("source_markdown_globs"))
+        .and_then(toml::Value::as_array)
+        .into_iter()
+        .flatten()
+        .filter_map(toml::Value::as_str)
+        .map(ToString::to_string)
+        .collect();
+    for required_glob in RESEARCH_NARRATIVE_SOURCE_GLOBS {
+        if !globs.contains(*required_glob) {
+            failures.push(format!(
+                "research_narratives.source_markdown_globs missing {required_glob}"
+            ));
+        }
+    }
+
+    let rows = table_array(value, "document");
+    let declared_count = meta
+        .and_then(|row| row.get("document_count"))
+        .and_then(toml::Value::as_integer);
+    if declared_count != Some(rows.len() as i64) {
+        failures.push(format!(
+            "research_narratives.document_count={declared_count:?} but found {} document rows",
+            rows.len()
+        ));
+    }
+
+    let source_rows: BTreeSet<String> = rows
+        .iter()
+        .map(|row| table_str(row, "source_markdown").to_string())
+        .filter(|path| !path.is_empty())
+        .collect();
+    for required_path in ROOT_RESEARCH_NARRATIVE_PATHS {
+        if !source_rows.contains(*required_path) {
+            failures.push(format!(
+                "registry/research_narratives.toml missing document row for {required_path}"
+            ));
+        }
+        if !repo_root.join(required_path).is_file() {
+            failures.push(format!(
+                "research narrative source_markdown path does not exist: {required_path}"
+            ));
+        }
+    }
+
+    failures
+}
+
+fn verify_research_narrative_root_docs(repo_root: &Path) -> Result<()> {
+    let path = repo_root.join("registry/research_narratives.toml");
+    let text = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+    let value: toml::Value =
+        toml::from_str(&text).context("parse registry/research_narratives.toml")?;
+    let failures = research_narrative_root_doc_failures(repo_root, &value);
+    if !failures.is_empty() {
+        bail!("{}", failures.join("\n"));
+    }
+    Ok(())
+}
+
+fn promote_research_narratives(repo_root: &Path) -> Result<()> {
+    let path = repo_root.join("registry/research_narratives.toml");
+    let original = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+    let value: toml::Value =
+        toml::from_str(&original).context("parse registry/research_narratives.toml")?;
+    let rows = table_array(&value, "document");
+
+    let updated = set_research_narrative_header(&original, rows.len());
+    fs::write(&path, updated).with_context(|| format!("write {}", path.display()))?;
+    verify_research_narrative_root_docs(repo_root)?;
+    println!(
+        "OK: promote-research-narratives refreshed docs/*.md coverage for {} document rows",
+        rows.len()
+    );
+    Ok(())
+}
+
 /// `verify-inventory-toml-first`: legacy command name for verifying that every
 /// `.md` file on disk is registered in the owner map, and every owner-map path
 /// corresponds to a file that exists on disk.
@@ -651,4 +796,70 @@ fn verify_owner_map(repo_root: &Path) -> Result<()> {
         println!("  {status}={count}");
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        ROOT_RESEARCH_NARRATIVE_PATHS, research_narrative_root_doc_failures,
+        set_research_narrative_header,
+    };
+    use std::{fs, path::Path};
+
+    fn write_root_docs(repo_root: &Path) {
+        fs::create_dir_all(repo_root.join("docs")).unwrap();
+        for path in ROOT_RESEARCH_NARRATIVE_PATHS {
+            fs::write(repo_root.join(path), "# root doc\n").unwrap();
+        }
+    }
+
+    #[test]
+    fn research_narrative_header_repair_adds_root_glob_and_count() {
+        let input = "# header\n[research_narratives]\nsource_markdown_globs = [\"docs/theory/*.md\"]\ndocument_count = 1\n\n[[document]]\nid = \"RN-040\"\nsource_markdown = \"docs/GRAND_SYNTHESIS.md\"\n";
+
+        let repaired = set_research_narrative_header(input, 5);
+
+        assert!(repaired.contains(
+            "source_markdown_globs = [\"docs/theory/*.md\", \"docs/engineering/*.md\", \"docs/research/*.md\", \"docs/*.md\"]"
+        ));
+        assert!(repaired.contains("document_count = 5"));
+    }
+
+    #[test]
+    fn research_narrative_root_doc_check_accepts_registered_root_rows() {
+        let temp = tempfile::tempdir().unwrap();
+        write_root_docs(temp.path());
+        let value: toml::Value = toml::from_str(
+            r#"
+[research_narratives]
+source_markdown_globs = ["docs/theory/*.md", "docs/engineering/*.md", "docs/research/*.md", "docs/*.md"]
+document_count = 5
+
+[[document]]
+id = "RN-040"
+source_markdown = "docs/GRAND_SYNTHESIS.md"
+
+[[document]]
+id = "RN-041"
+source_markdown = "docs/NAVIGATOR.md"
+
+[[document]]
+id = "RN-042"
+source_markdown = "docs/EXCEPTIONAL_COSMOLOGY.md"
+
+[[document]]
+id = "RN-043"
+source_markdown = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+
+[[document]]
+id = "RN-044"
+source_markdown = "docs/GRAND_SYNTHESIS_PLAN.md"
+"#,
+        )
+        .unwrap();
+
+        let failures = research_narrative_root_doc_failures(temp.path(), &value);
+
+        assert!(failures.is_empty());
+    }
 }
