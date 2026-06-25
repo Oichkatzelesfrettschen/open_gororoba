@@ -36,6 +36,12 @@ const NZ: u32 = 16;
 const N_CELLS: usize = (NX * NY * NZ) as usize;
 const SEED: u32 = 0xCA7E_C0FF;
 const BATCH_IDX: u32 = 7;
+const SHUFFLE_CASES: [(u32, u32); 4] = [
+    (SEED, 0),
+    (SEED, 1),
+    (SEED, BATCH_IDX),
+    (SEED ^ 0x1357_9BDF, 257),
+];
 const NU_BASE: f32 = 0.01;
 const LAMBDA: f32 = 1.5;
 const PHI_MEAN: f32 = 0.375;
@@ -80,35 +86,67 @@ fn shuffle_matches_cpu_pcg() {
     }
 
     let imbalance = random_imbalance(N_CELLS);
-    let cpu_shuffled = cpu_pcg_shuffle(&imbalance, SEED, BATCH_IDX);
 
-    let gpu_shuffled =
-        shuffle_imbalance_cubecl(&imbalance, SEED, BATCH_IDX).expect("shuffle cubecl succeeds");
+    for (seed, batch_idx) in SHUFFLE_CASES {
+        let cpu_shuffled = cpu_pcg_shuffle(&imbalance, seed, batch_idx);
 
-    assert_eq!(
-        cpu_shuffled.len(),
-        gpu_shuffled.len(),
-        "output length mismatch"
-    );
+        let gpu_shuffled =
+            shuffle_imbalance_cubecl(&imbalance, seed, batch_idx).expect("shuffle cubecl succeeds");
 
-    let mismatches: Vec<usize> = cpu_shuffled
-        .iter()
-        .zip(gpu_shuffled.iter())
-        .enumerate()
-        .filter(|(_, (c, g))| c.to_bits() != g.to_bits())
-        .map(|(i, _)| i)
-        .collect();
+        assert_eq!(
+            cpu_shuffled.len(),
+            gpu_shuffled.len(),
+            "output length mismatch for seed={seed:#x} batch_idx={batch_idx}"
+        );
 
-    assert!(
-        mismatches.is_empty(),
-        "PCG shuffle mismatch at {} / {} cells: first few indices={:?}",
-        mismatches.len(),
+        let mismatches: Vec<usize> = cpu_shuffled
+            .iter()
+            .zip(gpu_shuffled.iter())
+            .enumerate()
+            .filter(|(_, (c, g))| c.to_bits() != g.to_bits())
+            .map(|(i, _)| i)
+            .collect();
+
+        assert!(
+            mismatches.is_empty(),
+            "PCG shuffle mismatch at {} / {} cells for seed={seed:#x} batch_idx={batch_idx}: first few indices={:?}",
+            mismatches.len(),
+            N_CELLS,
+            &mismatches[..mismatches.len().min(5)]
+        );
+    }
+    eprintln!(
+        "shuffle_matches_cpu_pcg OK: {} cells, {} launch-argument cases, 0 bit mismatches",
         N_CELLS,
-        &mismatches[..mismatches.len().min(5)]
+        SHUFFLE_CASES.len()
+    );
+}
+
+fn assert_tau_matches_cpu(cpu_tau: &[f32], gpu_tau: &[f32], seed: u32, batch_idx: u32) {
+    assert_eq!(cpu_tau.len(), gpu_tau.len(), "output length mismatch");
+
+    let mut max_abs_err = 0.0f32;
+    let mut n_fail = 0usize;
+    for (i, (&c, &g)) in cpu_tau.iter().zip(gpu_tau.iter()).enumerate() {
+        let abs_err = (c - g).abs();
+        let rel_err = abs_err / c.abs().max(1e-9_f32);
+        if abs_err > ABS_TOL && rel_err > REL_TOL {
+            n_fail += 1;
+            if n_fail <= 3 {
+                eprintln!(
+                    "seed={seed:#x} batch_idx={batch_idx} cell {i}: cpu={c:.8e} gpu={g:.8e} abs={abs_err:.3e} rel={rel_err:.3e}"
+                );
+            }
+        }
+        max_abs_err = max_abs_err.max(abs_err);
+    }
+    assert_eq!(
+        n_fail, 0,
+        "{n_fail} / {} cells exceed tolerance for seed={seed:#x} batch_idx={batch_idx} (abs_tol={ABS_TOL:.1e}, rel_tol={REL_TOL:.1e})",
+        N_CELLS
     );
     eprintln!(
-        "shuffle_matches_cpu_pcg OK: {} cells, 0 bit mismatches",
-        N_CELLS
+        "shuffle_and_transform case seed={seed:#x} batch_idx={batch_idx} OK: max_abs_err={max_abs_err:.3e}"
     );
 }
 
@@ -122,41 +160,24 @@ fn shuffle_and_transform_matches_cpu() {
 
     let imbalance = random_imbalance(N_CELLS);
 
-    // CPU reference: PCG shuffle then transform_viscosity
-    let cpu_shuffled = cpu_pcg_shuffle(&imbalance, SEED, BATCH_IDX);
-    let cpu_tau = transform_viscosity_cpu(&ViscosityTransformInputs {
-        phi: cpu_shuffled,
-        nu_base: NU_BASE,
-        lambda: LAMBDA,
-        phi_mean: PHI_MEAN,
-    });
+    for (seed, batch_idx) in SHUFFLE_CASES {
+        let cpu_shuffled = cpu_pcg_shuffle(&imbalance, seed, batch_idx);
+        let cpu_tau = transform_viscosity_cpu(&ViscosityTransformInputs {
+            phi: cpu_shuffled,
+            nu_base: NU_BASE,
+            lambda: LAMBDA,
+            phi_mean: PHI_MEAN,
+        });
 
-    let gpu_tau =
-        shuffle_and_transform_cubecl(&imbalance, NU_BASE, LAMBDA, PHI_MEAN, SEED, BATCH_IDX)
-            .expect("shuffle_and_transform_cubecl succeeds");
+        let gpu_tau =
+            shuffle_and_transform_cubecl(&imbalance, NU_BASE, LAMBDA, PHI_MEAN, seed, batch_idx)
+                .expect("shuffle_and_transform_cubecl succeeds");
 
-    assert_eq!(cpu_tau.len(), gpu_tau.len(), "output length mismatch");
-
-    let mut max_abs_err = 0.0f32;
-    let mut n_fail = 0usize;
-    for (i, (&c, &g)) in cpu_tau.iter().zip(gpu_tau.iter()).enumerate() {
-        let abs_err = (c - g).abs();
-        let rel_err = abs_err / c.abs().max(1e-9_f32);
-        if abs_err > ABS_TOL && rel_err > REL_TOL {
-            n_fail += 1;
-            if n_fail <= 3 {
-                eprintln!("cell {i}: cpu={c:.8e} gpu={g:.8e} abs={abs_err:.3e} rel={rel_err:.3e}");
-            }
-        }
-        max_abs_err = max_abs_err.max(abs_err);
+        assert_tau_matches_cpu(&cpu_tau, &gpu_tau, seed, batch_idx);
     }
-    assert_eq!(
-        n_fail, 0,
-        "{n_fail} / {} cells exceed tolerance (abs_tol={ABS_TOL:.1e}, rel_tol={REL_TOL:.1e})",
-        N_CELLS
-    );
     eprintln!(
-        "shuffle_and_transform_matches_cpu OK: {} cells, max_abs_err={max_abs_err:.3e}",
-        N_CELLS
+        "shuffle_and_transform_matches_cpu OK: {} cells, {} launch-argument cases",
+        N_CELLS,
+        SHUFFLE_CASES.len()
     );
 }
