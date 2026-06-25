@@ -83,7 +83,7 @@ pub fn evolve_sparse_d3q19_cubecl(
 }
 
 #[cube(launch_unchecked)]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // CubeCL launch ABI keeps buffers and comptime grid scalars as separate kernel IR values.
 pub fn sparse_d3q19_step_kernel(
     f: &mut Array<f32>,
     active_brick_ids: &Array<u32>,
@@ -215,7 +215,7 @@ pub fn sparse_d3q19_step_kernel(
 }
 
 #[cube]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // Sparse-grid lookup keeps wrapped coordinates and brick-table scalars explicit in kernel IR.
 fn neighbor_tid(
     x: i32,
     y: i32,

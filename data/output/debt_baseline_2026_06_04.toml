@@ -5,13 +5,18 @@
 # consumes these numbers is plans/repo_debt_taxonomy_roadmap_2026_06_04.toml.
 #
 # Re-run procedure:
-#   make repo-audit
-#   # writes data/output/audit/2026-06-04/repo_audit_anchored_2026_06_04.toml
-#   # this file is the hand-curated summary of that machine emission plus the
+#   REPO_AUDIT_OUT=data/output/audit/2026-06-04 make repo-audit
+#   # writes data/output/audit/2026-06-04/repo_audit_anchored_<date>.toml
+#   # and includes the revisions block from registry/canonical/control_plane.sqlite3.
+#   # This file is the hand-curated summary of that machine emission plus the
 #   # supplementary find/wc/ripgrep census recorded under [monolith], [registry],
 #   # and [supply_chain].
 #
 # Source artifact: data/output/audit/2026-06-04/repo_audit_anchored_2026_06_04.toml
+# Strict gate artifact: data/output/audit/2026-06-25/repo_audit_anchored_2026_06_25.toml
+# The strict gate uses the later machine-readable snapshot after the clippy
+# allow justifications were closed; this file remains the curated June 4
+# evidence baseline.
 
 [meta]
 generated_at = "2026-06-04"
@@ -42,7 +47,7 @@ unreachable_macro_calls             = 41     # exhaustiveness pins, informationa
 safety_block_coverage = "163/488 = 33.4% (block-level); up from 65/392 = 16.6% at 2026-05-09"
 allow_clippy_unjustified_regression = """
 allow_clippy_unjustified rose 0 -> 7 in crates/ since the Stage-B closure.
-make repo-audit-strict-unjustified-per-root 0 would now exit non-zero.
+make repo-audit-strict-unjustified would now exit non-zero.
 Action: add a one-line rationale comment immediately above each of the 7
 new suppressions, or remove them. Tracked under DEBT-TEST-VERIFICATION.
 """

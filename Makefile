@@ -2325,13 +2325,15 @@ cpd-audit:
 # See crates/gororoba_cli_data/src/bin/repo_audit.rs for what is counted
 # and the limitations of the regex-on-stripped-source approach.
 REPO_AUDIT_OUT ?= data/output/audit/repo_audit
-REPO_AUDIT_BASELINE ?= data/output/debt_baseline_2026_05_09.toml
+REPO_AUDIT_BASELINE ?= data/output/audit/2026-06-25/repo_audit_anchored_2026_06_25.toml
+REPO_AUDIT_SQLITE ?= registry/canonical/control_plane.sqlite3
 REPO_AUDIT_TMPDIR ?= $(CURDIR)/.cache/repo-audit-tmp
 
 repo-audit:
 	@mkdir -p "$(REPO_AUDIT_TMPDIR)"
 	TMPDIR=$(REPO_AUDIT_TMPDIR) $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
-		--output-dir $(REPO_AUDIT_OUT)
+		--output-dir $(REPO_AUDIT_OUT) \
+		--sqlite $(REPO_AUDIT_SQLITE)
 
 # CI gate: re-run the audit and fail if any debt class grew vs the
 # committed baseline. SAFETY-positive classes (more SAFETY comments) are
@@ -2340,6 +2342,7 @@ repo-audit-strict:
 	@mkdir -p "$(REPO_AUDIT_TMPDIR)"
 	TMPDIR=$(REPO_AUDIT_TMPDIR) $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
 		--output-dir $(REPO_AUDIT_OUT) \
+		--sqlite $(REPO_AUDIT_SQLITE) \
 		--baseline-compare $(REPO_AUDIT_BASELINE) \
 		--strict
 
@@ -2353,6 +2356,7 @@ repo-audit-strict-unjustified:
 	@mkdir -p "$(REPO_AUDIT_TMPDIR)"
 	TMPDIR=$(REPO_AUDIT_TMPDIR) $(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin repo-audit -- \
 		--output-dir $(REPO_AUDIT_OUT) \
+		--sqlite $(REPO_AUDIT_SQLITE) \
 		--root crates \
 		--strict-unjustified-per-root 0
 
