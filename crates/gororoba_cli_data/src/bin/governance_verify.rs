@@ -1046,7 +1046,7 @@ fn verify_no_reports_writes(args: &CommonArgs) -> Result<()> {
 
 fn verify_source_comment_chronology(args: &CommonArgs) -> Result<()> {
     let root = resolve_root(args)?;
-    let pr_reference = Regex::new(r"\bPR\s+#[0-9]+")?;
+    let pr_reference = Regex::new(r"(?i)\bpr\s+#[0-9]+")?;
     let mut failures = Vec::new();
 
     for rel_path in source_comment_chronology_policy_files(&root)? {
@@ -1099,6 +1099,13 @@ fn looks_like_source_chronology_surface(path: &Path) -> bool {
         Some(
             "rs" | "toml"
                 | "wgsl"
+                | "glsl"
+                | "comp"
+                | "vert"
+                | "frag"
+                | "geom"
+                | "tesc"
+                | "tese"
                 | "cu"
                 | "cuh"
                 | "c"
@@ -1118,39 +1125,321 @@ fn is_source_chronology_policy_excluded(rel: &str) -> bool {
 }
 
 fn forbidden_pr_chronology_lines(rel_path: &str, text: &str, pr_reference: &Regex) -> Vec<usize> {
-    text.lines()
-        .enumerate()
-        .filter_map(|(index, line)| {
-            if line_has_forbidden_pr_chronology(rel_path, line, pr_reference) {
-                Some(index + 1)
-            } else {
-                None
-            }
-        })
-        .collect()
+    let Some(ext) = Path::new(rel_path).extension().and_then(|ext| ext.to_str()) else {
+        return Vec::new();
+    };
+    match chronology_comment_style(ext) {
+        Some(ChronologyCommentStyle::Hash) => {
+            forbidden_hash_comment_lines(text, pr_reference, matches!(ext, "yml" | "yaml"))
+        }
+        Some(ChronologyCommentStyle::Slash) => forbidden_slash_comment_lines(text, pr_reference),
+        None => Vec::new(),
+    }
 }
 
-fn line_has_forbidden_pr_chronology(rel_path: &str, line: &str, pr_reference: &Regex) -> bool {
-    if !pr_reference.is_match(line) {
-        return false;
-    }
-    let Some(ext) = Path::new(rel_path).extension().and_then(|ext| ext.to_str()) else {
-        return false;
-    };
-    let trimmed = line.trim_start();
+#[derive(Clone, Copy)]
+enum ChronologyCommentStyle {
+    Slash,
+    Hash,
+}
+
+fn chronology_comment_style(ext: &str) -> Option<ChronologyCommentStyle> {
     match ext {
-        "toml" | "yml" | "yaml" => trimmed.starts_with('#'),
-        "rs" | "wgsl" | "cu" | "cuh" | "c" | "cc" | "cpp" | "h" | "hpp" => {
-            let pr_offset = pr_reference.find(line).map(|found| found.start());
-            let comment_offset = line.find("//").or_else(|| line.find("/*"));
-            match (pr_offset, comment_offset) {
-                (Some(pr_start), Some(comment_start)) => comment_start < pr_start,
-                (Some(_), None) => trimmed.starts_with('*'),
-                _ => false,
+        "toml" | "yml" | "yaml" => Some(ChronologyCommentStyle::Hash),
+        "rs" | "wgsl" | "glsl" | "comp" | "vert" | "frag" | "geom" | "tesc" | "tese" | "cu"
+        | "cuh" | "c" | "cc" | "cpp" | "h" | "hpp" => Some(ChronologyCommentStyle::Slash),
+        _ => None,
+    }
+}
+
+#[derive(Clone, Copy)]
+enum SlashScanState {
+    Normal,
+    DoubleQuoted { escaped: bool },
+    RawString { hashes: usize },
+    BlockComment,
+}
+
+fn forbidden_slash_comment_lines(text: &str, pr_reference: &Regex) -> Vec<usize> {
+    let mut failures = BTreeSet::new();
+    let mut state = SlashScanState::Normal;
+    let mut line_number = 1usize;
+    let mut index = 0usize;
+    let bytes = text.as_bytes();
+    let mut comment_line = String::new();
+
+    while index < bytes.len() {
+        match state {
+            SlashScanState::Normal => match bytes[index] {
+                b'/' if bytes.get(index + 1) == Some(&b'/') => {
+                    index += 2;
+                    while index < bytes.len() && bytes[index] != b'\n' {
+                        comment_line.push(bytes[index] as char);
+                        index += 1;
+                    }
+                    if pr_reference.is_match(&comment_line) {
+                        failures.insert(line_number);
+                    }
+                    comment_line.clear();
+                }
+                b'/' if bytes.get(index + 1) == Some(&b'*') => {
+                    state = SlashScanState::BlockComment;
+                    index += 2;
+                }
+                b'r' => {
+                    if let Some((hashes, width)) = raw_string_start(bytes, index) {
+                        state = SlashScanState::RawString { hashes };
+                        index += width;
+                    } else {
+                        index += 1;
+                    }
+                }
+                b'"' => {
+                    state = SlashScanState::DoubleQuoted { escaped: false };
+                    index += 1;
+                }
+                b'\n' => {
+                    line_number += 1;
+                    index += 1;
+                }
+                _ => {
+                    index += 1;
+                }
+            },
+            SlashScanState::DoubleQuoted { escaped } => {
+                match bytes[index] {
+                    b'\\' if !escaped => {
+                        state = SlashScanState::DoubleQuoted { escaped: true };
+                    }
+                    b'"' if !escaped => {
+                        state = SlashScanState::Normal;
+                    }
+                    b'\n' => {
+                        line_number += 1;
+                        state = SlashScanState::DoubleQuoted { escaped: false };
+                    }
+                    _ => {
+                        state = SlashScanState::DoubleQuoted { escaped: false };
+                    }
+                }
+                index += 1;
+            }
+            SlashScanState::RawString { hashes } => match bytes[index] {
+                b'"' if raw_string_closes(bytes, index, hashes) => {
+                    state = SlashScanState::Normal;
+                    index += 1 + hashes;
+                }
+                b'\n' => {
+                    line_number += 1;
+                    index += 1;
+                }
+                _ => {
+                    index += 1;
+                }
+            },
+            SlashScanState::BlockComment => match bytes[index] {
+                b'*' if bytes.get(index + 1) == Some(&b'/') => {
+                    if pr_reference.is_match(&comment_line) {
+                        failures.insert(line_number);
+                    }
+                    comment_line.clear();
+                    state = SlashScanState::Normal;
+                    index += 2;
+                }
+                b'\n' => {
+                    if pr_reference.is_match(&comment_line) {
+                        failures.insert(line_number);
+                    }
+                    comment_line.clear();
+                    line_number += 1;
+                    index += 1;
+                }
+                byte => {
+                    comment_line.push(byte as char);
+                    index += 1;
+                }
+            },
+        }
+    }
+
+    if matches!(state, SlashScanState::BlockComment) && pr_reference.is_match(&comment_line) {
+        failures.insert(line_number);
+    }
+
+    failures.into_iter().collect()
+}
+
+fn raw_string_start(bytes: &[u8], index: usize) -> Option<(usize, usize)> {
+    if bytes.get(index) != Some(&b'r') {
+        return None;
+    }
+    let mut cursor = index + 1;
+    while bytes.get(cursor) == Some(&b'#') {
+        cursor += 1;
+    }
+    if bytes.get(cursor) == Some(&b'"') {
+        Some((cursor - index - 1, cursor - index + 1))
+    } else {
+        None
+    }
+}
+
+fn raw_string_closes(bytes: &[u8], index: usize, hashes: usize) -> bool {
+    bytes.get(index) == Some(&b'"')
+        && (0..hashes).all(|offset| bytes.get(index + 1 + offset) == Some(&b'#'))
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum HashTripleString {
+    Double,
+    Single,
+}
+
+fn forbidden_hash_comment_lines(
+    text: &str,
+    pr_reference: &Regex,
+    yaml_block_scalars: bool,
+) -> Vec<usize> {
+    let mut failures = Vec::new();
+    let mut triple_string = None;
+    let mut yaml_block_indent = None;
+
+    for (index, line) in text.lines().enumerate() {
+        let line_number = index + 1;
+        if yaml_block_scalars && yaml_line_is_inside_block_scalar(line, &mut yaml_block_indent) {
+            continue;
+        }
+        if let Some(comment) = hash_comment_segment(line, &mut triple_string)
+            && pr_reference.is_match(comment)
+        {
+            failures.push(line_number);
+        }
+        if yaml_block_scalars && triple_string.is_none() && yaml_line_starts_block_scalar(line) {
+            yaml_block_indent = Some(line_indent(line));
+        }
+    }
+
+    failures
+}
+
+fn hash_comment_segment<'a>(
+    line: &'a str,
+    triple_string: &mut Option<HashTripleString>,
+) -> Option<&'a str> {
+    let bytes = line.as_bytes();
+    let mut index = 0usize;
+    while index < bytes.len() {
+        if let Some(kind) = *triple_string {
+            let delimiter: &[u8] = match kind {
+                HashTripleString::Double => b"\"\"\"",
+                HashTripleString::Single => b"'''",
+            };
+            if bytes[index..].starts_with(delimiter) {
+                *triple_string = None;
+                index += delimiter.len();
+            } else {
+                index += 1;
+            }
+            continue;
+        }
+
+        match bytes[index] {
+            b'"' if bytes[index..].starts_with(b"\"\"\"") => {
+                *triple_string = Some(HashTripleString::Double);
+                index += 3;
+            }
+            b'\'' if bytes[index..].starts_with(b"'''") => {
+                *triple_string = Some(HashTripleString::Single);
+                index += 3;
+            }
+            b'"' => {
+                index = skip_quoted_line_segment(bytes, index + 1, b'"', true);
+            }
+            b'\'' => {
+                index = skip_quoted_line_segment(bytes, index + 1, b'\'', false);
+            }
+            b'#' => return line.get(index + 1..),
+            _ => {
+                index += 1;
             }
         }
-        _ => false,
     }
+    None
+}
+
+fn skip_quoted_line_segment(
+    bytes: &[u8],
+    mut index: usize,
+    delimiter: u8,
+    backslash_escapes: bool,
+) -> usize {
+    let mut escaped = false;
+    while index < bytes.len() {
+        let byte = bytes[index];
+        if backslash_escapes && byte == b'\\' && !escaped {
+            escaped = true;
+            index += 1;
+            continue;
+        }
+        if byte == delimiter && !escaped {
+            return index + 1;
+        }
+        escaped = false;
+        index += 1;
+    }
+    index
+}
+
+fn yaml_line_is_inside_block_scalar(line: &str, yaml_block_indent: &mut Option<usize>) -> bool {
+    let Some(block_indent) = *yaml_block_indent else {
+        return false;
+    };
+    if line.trim().is_empty() {
+        return true;
+    }
+    if line_indent(line) > block_indent {
+        return true;
+    }
+    *yaml_block_indent = None;
+    false
+}
+
+fn yaml_line_starts_block_scalar(line: &str) -> bool {
+    let code = yaml_code_before_comment(line).trim_end();
+    let Some(colon_index) = code.rfind(':') else {
+        return false;
+    };
+    matches!(
+        code[colon_index + 1..].trim(),
+        "|" | "|-" | "|+" | ">" | ">-" | ">+"
+    )
+}
+
+fn yaml_code_before_comment(line: &str) -> &str {
+    let bytes = line.as_bytes();
+    let mut index = 0usize;
+    while index < bytes.len() {
+        match bytes[index] {
+            b'"' => {
+                index = skip_quoted_line_segment(bytes, index + 1, b'"', true);
+            }
+            b'\'' => {
+                index = skip_quoted_line_segment(bytes, index + 1, b'\'', false);
+            }
+            b'#' => return line.get(..index).unwrap_or(line),
+            _ => {
+                index += 1;
+            }
+        }
+    }
+    line
+}
+
+fn line_indent(line: &str) -> usize {
+    line.as_bytes()
+        .iter()
+        .take_while(|byte| **byte == b' ')
+        .count()
 }
 
 fn verify_markdown_removal_policy(args: &CommonArgs) -> Result<()> {
@@ -3162,30 +3451,53 @@ mod tests {
     fn source_comment_chronology_rejects_rust_and_toml_comments() {
         let root = temp_policy_root("rejects");
         fs::create_dir_all(root.join("crates/demo/src")).expect("create crate dir");
+        fs::create_dir_all(root.join("crates/demo/shaders")).expect("create shader dir");
         fs::create_dir_all(root.join("registry")).expect("create registry dir");
         fs::write(
             root.join("crates/demo/src/lib.rs"),
             concat!(
                 "pub fn ok() {}\n",
-                "// PR ",
-                "#19 review chronology belongs elsewhere\n"
+                "/*\n",
+                "  PR ",
+                "#19 review chronology belongs elsewhere\n",
+                "*/\n",
+                "// pr ",
+                "#20 review chronology belongs elsewhere\n"
             ),
         )
         .expect("write rust fixture");
+        fs::write(
+            root.join("crates/demo/shaders/kernel.comp"),
+            concat!("// PR ", "#23 shader chronology belongs elsewhere\n"),
+        )
+        .expect("write shader fixture");
         fs::write(
             root.join("registry/example.toml"),
             concat!(
                 "# PR ",
                 "#21 review chronology belongs elsewhere\n",
-                "value = 1\n"
+                "value = 1 # PR ",
+                "#22 inline chronology belongs elsewhere\n"
             ),
         )
         .expect("write toml fixture");
+        fs::write(
+            root.join("registry/example.yaml"),
+            concat!(
+                "value: 1 # PR ",
+                "#24 inline chronology belongs elsewhere\n"
+            ),
+        )
+        .expect("write yaml fixture");
 
         let err = verify_source_comment_chronology(&common_args(&root)).expect_err("must fail");
         let message = err.to_string();
-        assert!(message.contains("crates/demo/src/lib.rs:2"));
+        assert!(message.contains("crates/demo/src/lib.rs:3"));
+        assert!(message.contains("crates/demo/src/lib.rs:5"));
+        assert!(message.contains("crates/demo/shaders/kernel.comp:1"));
         assert!(message.contains("registry/example.toml:1"));
+        assert!(message.contains("registry/example.toml:2"));
+        assert!(message.contains("registry/example.yaml:1"));
         let _ = fs::remove_dir_all(root);
     }
 
@@ -3200,12 +3512,33 @@ mod tests {
         fs::write(
             root.join("crates/demo/src/lib.rs"),
             concat!(
-                "pub const BODY: &str = \"PR ",
+                "pub const BODY: &str = \"// PR ",
                 "#19 is ordinary data here\";\n",
+                "pub const RAW: &str = r#\"// PR ",
+                "#20 is ordinary raw-string data here\"#;\n",
                 "// PR#3 is a de Marrais production-rule name, not a pull request.\n"
             ),
         )
         .expect("write rust fixture");
+        fs::write(
+            root.join("registry/narrative.toml"),
+            concat!(
+                "body = \"\"\"\n",
+                "# PR ",
+                "#21 audit context is narrative data\n",
+                "\"\"\"\n"
+            ),
+        )
+        .expect("write toml narrative fixture");
+        fs::write(
+            root.join("registry/narrative.yaml"),
+            concat!(
+                "body: |\n",
+                "  # PR ",
+                "#21 audit context is narrative data\n"
+            ),
+        )
+        .expect("write yaml narrative fixture");
         fs::write(
             root.join("crates/data_core/src/registry_mirrors/generated.rs"),
             concat!("//! PR ", "#19 generated mirror chronology is excluded\n"),

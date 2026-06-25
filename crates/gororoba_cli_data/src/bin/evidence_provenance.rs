@@ -661,7 +661,11 @@ fn load_claim_ids(repo_root: &Path, canonical_db: &Path) -> Result<BTreeSet<Stri
             .list_claims()
             .with_context(|| format!("load claims from {}", db_path.display()))?;
         if !claims.is_empty() {
-            return Ok(claims.into_iter().map(|row| row.id).collect());
+            return Ok(claims
+                .into_iter()
+                .map(|row| row.id)
+                .filter(|id| is_registry_claim_id(id))
+                .collect());
         }
     }
 
@@ -684,7 +688,11 @@ fn load_todo_ids(repo_root: &Path, canonical_db: &Path) -> Result<BTreeSet<Strin
             .list_todo_items(None)
             .with_context(|| format!("load todo items from {}", db_path.display()))?;
         if !todo_items.is_empty() {
-            return Ok(todo_items.into_iter().map(|row| row.0).collect());
+            return Ok(todo_items
+                .into_iter()
+                .map(|row| row.0)
+                .filter(|id| is_registry_claim_id(id))
+                .collect());
         }
     }
 
@@ -1955,10 +1963,22 @@ id = "T-065"
             dependencies_json: "[]",
             acceptance_criteria_json: "[]",
         })?;
+        store.upsert_todo_item(&provenance_store::ActionItem {
+            id: "T-66",
+            area: "proofs",
+            title: "Malformed canonical todo",
+            description: "Malformed canonical todo row",
+            priority: "high",
+            status: "open",
+            status_token: "OPEN",
+            dependencies_json: "[]",
+            acceptance_criteria_json: "[]",
+        })?;
 
         let ids = load_claim_ref_ids(temp.path(), Path::new("control_plane.sqlite3"))?;
 
         assert!(ids.contains("T-066"));
+        assert!(!ids.contains("T-66"));
         assert!(!ids.contains("T-065"));
         Ok(())
     }
