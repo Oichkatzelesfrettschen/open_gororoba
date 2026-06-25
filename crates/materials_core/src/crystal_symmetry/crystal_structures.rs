@@ -391,12 +391,10 @@ mod tests {
 
     #[test]
     fn two_d_entries_document_slab_convention() {
-        // PR #21 review followup: 2D materials (germanene, stanene, etc.) use
-        // a finite c-axis as a slab-supercell convention; their density value
-        // is therefore not a physical observable. Any entry whose name ends
-        // in "_2d" must acknowledge the 2D / monolayer / buckled / slab
-        // character in its primary_reference so future readers do not
-        // misinterpret the bulk density.
+        // 2D materials use a finite c-axis as a slab-supercell convention.
+        // The density value is therefore not a physical observable. Any
+        // entry whose name ends in "_2d" must acknowledge the monolayer,
+        // buckled, honeycomb, slab, or 2D character in its primary_reference.
         let two_d_keywords = ["monolayer", "buckled", "honeycomb", "slab", "2D"];
         let all = known_crystal_structures();
         let two_d_entries: Vec<&CrystalStructureInfo> =
