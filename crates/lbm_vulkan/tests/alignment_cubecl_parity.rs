@@ -26,7 +26,7 @@
 
 use algebra_analysis::{
     boxkite_alignment::{box_kite_alignment_scan_cpu, generate_psl_2_7_permutations_16d},
-    boxkites::cached_sedenion_boxkites,
+    boxkites::{BoxKite, cached_sedenion_boxkites},
 };
 use lbm_vulkan::alignment_cubecl::{box_kite_alignment_scan_cubecl, is_available};
 use rand::{
@@ -39,6 +39,25 @@ const N_VECTORS: usize = 64;
 const ABS_TOL: f64 = 1e-5;
 const REL_TOL: f64 = 1e-4;
 const SEED: u64 = 0x00A1_19B0_7CA1_6EDC;
+
+fn flatten_boxkite_basis(boxkites: &[BoxKite]) -> Vec<u32> {
+    let mut basis = Vec::with_capacity(boxkites.len() * 12);
+    for (boxkite_idx, boxkite) in boxkites.iter().enumerate() {
+        let mut indices = std::collections::BTreeSet::new();
+        for assessor in &boxkite.assessors {
+            indices.insert(assessor.low);
+            indices.insert(assessor.high);
+        }
+        let boxkite_basis: Vec<u32> = indices.into_iter().map(|i| i as u32).collect();
+        assert_eq!(
+            boxkite_basis.len(),
+            12,
+            "box-kite {boxkite_idx} must have exactly 12 unique basis indices"
+        );
+        basis.extend(boxkite_basis);
+    }
+    basis
+}
 
 #[test]
 #[ignore = "gpu (cubecl-wgpu adapter required)"]
@@ -85,25 +104,7 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
         .flat_map(|perm| perm.iter().map(|&i| i as u32))
         .collect();
 
-    // bk_basis: 7 * 12 flat u32 -- unique basis indices per box-kite.
-    // Derived the same way as the CPU oracle: collect unique {low, high} per assessor.
-    let bk_basis: Vec<u32> = boxkites
-        .iter()
-        .flat_map(|bk| {
-            let mut indices = std::collections::BTreeSet::new();
-            for a in &bk.assessors {
-                indices.insert(a.low);
-                indices.insert(a.high);
-            }
-            let v: Vec<u32> = indices.into_iter().map(|i| i as u32).collect();
-            assert_eq!(
-                v.len(),
-                12,
-                "each box-kite must have exactly 12 unique basis indices"
-            );
-            v
-        })
-        .collect();
+    let bk_basis = flatten_boxkite_basis(boxkites);
     assert_eq!(bk_basis.len(), 84);
 
     // cubecl path.
@@ -115,21 +116,16 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
 
     let mut max_align_err = 0.0_f64;
     for i in 0..N_VECTORS {
-        // best_orient must be identical (same permutation wins).
         let cpu_o = cpu_best[i];
         let cl_o = cl_best[i];
 
-        // When cpu_max[i] is very close to zero (degenerate), ties in the
-        // best-orient index are acceptable -- skip the exact-match check.
         let cpu_m = cpu_max[i];
         let cl_m = cl_max[i] as f64;
 
         let align_err = (cpu_m - cl_m).abs();
         let align_rel = align_err / cpu_m.abs().max(1e-12);
 
-        // Orient index may differ only when alignments are within tolerance
-        // (tie-breaking differs between f32/f64 paths).
-        if align_err > ABS_TOL && align_rel > REL_TOL {
+        if cpu_m.abs() > 1e-12 {
             assert_eq!(
                 cpu_o, cl_o,
                 "vector {i}: orient mismatch: cpu={cpu_o}, cubecl={cl_o}, \
