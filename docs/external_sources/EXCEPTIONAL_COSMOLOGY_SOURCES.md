@@ -35,10 +35,8 @@ predictions.
 ## Empirical And Code Surfaces
 
 - `crates/cosmology_core/src/spectral.rs`
-- `data/csv/c039_spectral_dimension_bigraph_curve.csv`
-- `data/csv/c039_spectral_dimension_bigraph_summary.csv`
-- `data/csv/c040_primordial_tilt_deff_curve.csv`
-- `data/csv/c040_primordial_tilt_summary.csv`
+- `crates/gororoba_cli_data/src/bin/zd_spectral_dimension.rs`
+- `data/results/spectral_dimension_manifold_coupling.csv`
 
 ## Source Boundary
 
