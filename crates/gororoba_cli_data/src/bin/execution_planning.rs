@@ -2874,6 +2874,56 @@ deterministic = true
         Ok(())
     }
 
+    #[test]
+    fn extract_paths_normalizes_bare_registry_claims_file() {
+        let paths = extract_paths("None (hardcoded stream statuses from claims.toml)");
+        assert_eq!(paths, vec!["registry/claims.toml"]);
+    }
+
+    #[test]
+    fn experiment_lineage_surfaces_bare_claims_registry_input() -> Result<()> {
+        let raw: Value = toml::from_str(
+            r#"
+[[experiment]]
+id = "E-079"
+title = "Sterile-Neutrino Null-Result Audit"
+status = "active"
+binary = "sterile-neutrino-audit"
+claims = ["C-703"]
+input = "None (hardcoded stream statuses from claims.toml)"
+output = ["reports/sterile_neutrino_audit.toml"]
+deterministic = true
+"#,
+        )?;
+        let experiment_rows = build_experiment_rows(
+            &table_array(
+                raw.as_table()
+                    .context("experiment fixture root must be table")?,
+                "experiment",
+            )?,
+            &BTreeMap::new(),
+            &BTreeSet::new(),
+            &BTreeMap::new(),
+            &BTreeMap::new(),
+        )?;
+        assert_eq!(
+            experiment_rows[0].input_path_refs,
+            vec!["registry/claims.toml"]
+        );
+
+        let claim_ids = BTreeSet::from(["C-703".to_string()]);
+        let (lineages, edges) =
+            build_experiment_lineage(&experiment_rows, &claim_ids, &BTreeSet::new());
+
+        assert_eq!(lineages[0].input_path_refs, vec!["registry/claims.toml"]);
+        assert!(edges.iter().any(|edge| {
+            edge.from_id == "E-079"
+                && edge.to_ref == "registry/claims.toml"
+                && edge.edge_kind == "consumes_path"
+        }));
+        Ok(())
+    }
+
     fn make_test_workspace(label: &str) -> Result<TestWorkspace> {
         let unique = SystemTime::now()
             .duration_since(UNIX_EPOCH)
@@ -3037,15 +3087,32 @@ fn extract_id_refs(text: &str) -> Vec<String> {
 fn extract_paths(text: &str) -> Vec<String> {
     let mut out = Vec::new();
     let mut seen = BTreeSet::new();
+    let mut push_path = |item: String| {
+        if !item.is_empty() && seen.insert(item.clone()) {
+            out.push(item);
+        }
+    };
     for found in path_regex().find_iter(&ascii_clean(text)) {
         let item = collapse(found.as_str())
             .trim_end_matches(|ch: char| ['.', ',', ';', ':', ')'].contains(&ch))
             .to_string();
-        if !item.is_empty() && seen.insert(item.clone()) {
-            out.push(item);
+        push_path(item);
+    }
+    for found in registry_basename_regex().find_iter(&ascii_clean(text)) {
+        if let Some(path) = registry_basename_path(found.as_str()) {
+            push_path(path);
         }
     }
     out
+}
+
+fn registry_basename_path(name: &str) -> Option<String> {
+    match name {
+        "binaries.toml" | "claims.toml" | "experiments.toml" | "insights.toml" | "todo.toml" => {
+            Some(format!("registry/{name}"))
+        }
+        _ => None,
+    }
 }
 
 fn normalize_binary_name(value: &str) -> String {
@@ -3261,6 +3328,13 @@ fn path_regex() -> &'static Regex {
     static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
     ONCE.get_or_init(|| {
         Regex::new(r"(?:data|registry|docs|crates|src|tests)/[A-Za-z0-9_./{}:+-]+").unwrap()
+    })
+}
+
+fn registry_basename_regex() -> &'static Regex {
+    static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
+    ONCE.get_or_init(|| {
+        Regex::new(r"\b(?:binaries|claims|experiments|insights|todo)\.toml\b").unwrap()
     })
 }
 
