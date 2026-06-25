@@ -21,7 +21,7 @@ const OP_FLUX_DIVERGENCE: u32 = 3;
 const OP_EULER_UPDATE: u32 = 4;
 
 #[cube(launch_unchecked)]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // CubeCL launch ABI keeps SoA buffers and comptime scalars as separate kernel IR values.
 pub fn grmhd_cubecl_step_kernel(
     prims: &Array<f32>,
     cons: &mut Array<f32>,
@@ -96,7 +96,7 @@ pub fn grmhd_cubecl_step_kernel(
 }
 
 #[cube]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // Metric precompute takes buffer handles and Kerr grid scalars as separate device arguments.
 fn precompute_metric(
     cell: usize,
     gcov: &mut Array<f32>,
@@ -199,7 +199,7 @@ fn prim2con(
 }
 
 #[cube]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // Flux evaluation keeps primitive, metric, grid, and direction lanes explicit in device IR.
 fn compute_flux(
     cell: usize,
     prims: &Array<f32>,
@@ -294,7 +294,7 @@ fn compute_flux(
 }
 
 #[cube]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // Divergence stencil keeps grid extents and spacing bits explicit for CubeCL indexing.
 fn flux_divergence(
     cell: usize,
     flux: &Array<f32>,
@@ -628,7 +628,7 @@ fn launch_flux_direction(
     )
 }
 
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // Host launcher mirrors the CubeCL kernel ABI and descriptor ordering.
 fn launch_op(
     client: &ComputeClient<WgpuRuntime>,
     prims_handle: &Handle,

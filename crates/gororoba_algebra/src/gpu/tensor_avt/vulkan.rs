@@ -536,7 +536,7 @@ fn build_pipeline(device: &Device) -> Result<TensorAvtVulkanPipeline, String> {
 }
 
 #[cfg(feature = "vulkan")]
-#[allow(clippy::too_many_arguments)]
+#[allow(clippy::too_many_arguments)] // Dispatch binds three storage buffers plus TensorAVT shape and operation scalars.
 fn dispatch(
     runtime: &TensorAvtVulkanRuntime,
     left_buffer: &HostVisibleBuffer,
