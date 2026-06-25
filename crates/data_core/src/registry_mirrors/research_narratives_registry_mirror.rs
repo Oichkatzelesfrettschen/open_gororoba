@@ -7,7 +7,7 @@
 //! Authoritative source: `registry/research_narratives.toml`.
 //!
 //! - Updated: 2026-03-15
-//! - Source markdown globs: `docs/theory/*.md`, `docs/engineering/*.md`, `docs/research/*.md`
+//! - Source markdown globs: `docs/theory/*.md`, `docs/engineering/*.md`, `docs/research/*.md`, `docs/*.md`
 //! - Document count: `18`
 //!
 //! ## Documents

@@ -868,5 +868,9 @@
 //! - Description: DONE: Moreno Theorem 1.16 arbitrary-a CDOct closure is exposed through C1542_MorVlambdaArbClose.v and Moreno1997.v. For unit imaginary a, oct_unit_imag_left_sq_neg gives L_a^2 = -I, so every V_lambda(a) with lambda > 0 and lambda <> 1 is trivial; the dimension witness is the zero H-module.
 //! - Dependencies: (none)
 //! - Acceptance criteria:
+//!   - The Moreno paper lane exposes a source-faithful arbitrary-a bridge from concrete V_lambda data to the mod-4 theorem.
+//!   - The proof surface is anchored in C1542_MorVlambdaArbClose.v and re-exported through Moreno1997.v.
+//!   - The TODO row has explicit evidence refs so generated mirrors can be audited without reading prose descriptions.
 //! - Evidence refs:
-//!   - (none)
+//!   - `proofs/theories/C1542_MorVlambdaArbClose.v`
+//!   - `proofs/theories/Moreno1997.v`
