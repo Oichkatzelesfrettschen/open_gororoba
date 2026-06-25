@@ -1,7 +1,7 @@
 // Copyright (c) 2026 Terascale Functionalists
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-//! CPU (algebra_analysis, f64) vs cubecl-wgpu (f32) parity test for the
+//! CPU (algebra_analysis, FP64) vs cubecl-wgpu (FP32) parity test for the
 //! box-kite alignment scan.
 //!
 //! The test generates N=64 random 16-component sedenion vectors, prepares the
@@ -9,12 +9,12 @@
 //! reference and the cubecl path, and checks that:
 //!
 //!   1. Every `best_orient` index agrees exactly unless both chosen
-//!      orientations cross-score as ties within f32 tolerance.
-//!   2. Every `max_align` value agrees within f32 single-precision tolerance
+//!      orientations cross-score as ties within FP32 tolerance.
+//!   2. Every `max_align` value agrees within FP32 single-precision tolerance
 //!      (abs_tol=1e-5, rel_tol=1e-4).
 //!
-//! Tolerances are wider than integer-exact because the cubecl path works in
-//! f32 while the CPU oracle uses f64.
+//! Tolerances are wider than integer-exact because the cubecl path uses
+//! FP32 while the CPU oracle uses FP64.
 //!
 //! Gated `#[ignore = "gpu (cubecl-wgpu adapter required)"]`; skipped cleanly
 //! when no wgpu adapter is present.
@@ -133,7 +133,7 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
     let mut rng = ChaCha20Rng::seed_from_u64(SEED);
     let dist = Uniform::new(-1.0_f64, 1.0_f64).expect("range valid");
 
-    // Generate random 16-component sedenion vectors (f64 for CPU oracle).
+    // Generate random 16-component sedenion vectors (FP64 for CPU oracle).
     let vectors_f64: Vec<[f64; 16]> = (0..N_VECTORS)
         .map(|_| {
             let mut v = [0.0_f64; 16];
@@ -159,7 +159,7 @@ fn cpu_vs_cubecl_boxkite_alignment_64vectors() {
     assert_eq!(cpu_max.len(), N_VECTORS);
     assert_eq!(cpu_best.len(), N_VECTORS);
 
-    // Prepare flat f32 arrays for the cubecl kernel.
+    // Prepare flat FP32 arrays for the cubecl kernel.
     let vectors_f32: Vec<f32> = vectors_f64.iter().flatten().map(|&x| x as f32).collect();
 
     // orientations: flat u32, 16 per orientation (permuted index per slot).
