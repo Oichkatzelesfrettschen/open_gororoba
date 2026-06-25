@@ -276,6 +276,8 @@ theories/G2OctonionAutomorphisms.v
 theories/OctonionStandardModel.v
 theories/QuatNormalize.v
 theories/OctonionSandwichNorm.v
+theories/IDCT8EvenOdd.v
+theories/IDCT8DP4ExactBound.v
 verified/C1628_IDCT8ButterflyCompaction.v
 verified/C1629_IDCT8DP4ExactBound.v
 verified/C1630_SedenionOctonionDowncast.v
