@@ -2201,11 +2201,11 @@ reference = "Wyckoff (1963) vol. 1 (MgF2 rutile-type, UV optics window)."
 
 [[structure]]
 name = "bbo_beta_barium_borate"
-sg_num = 158
-sg_sym = "P3c1"
+sg_num = 161
+sg_sym = "R3c"
 point_group = "C3v"
 lattice_system = "Hexagonal"
-centering = "P"
+centering = "R"
 a = 12.532
 b = 12.532
 c = 12.717

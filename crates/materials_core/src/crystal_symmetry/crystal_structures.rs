@@ -841,10 +841,10 @@ mod tests {
     #[test]
     fn named_crystal_entries_use_consistent_space_groups() {
         let bbo = structure_by_name("bbo_beta_barium_borate").unwrap();
-        assert_eq!(bbo.space_group_number, 158);
-        assert_eq!(bbo.space_group_symbol, "P3c1");
+        assert_eq!(bbo.space_group_number, 161);
+        assert_eq!(bbo.space_group_symbol, "R3c");
         assert_eq!(bbo.point_group, PointGroup::C3v);
-        assert_eq!(bbo.bravais_centering, 'P');
+        assert_eq!(bbo.bravais_centering, 'R');
 
         let epidote = structure_by_name("epidote_clinozoisite").unwrap();
         assert_eq!(epidote.space_group_number, 11);
