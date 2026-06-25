@@ -264,6 +264,7 @@ fn verify_evidence_provenance(repo_root: &Path, args: &Args) -> Result<()> {
     }
 
     let claim_ids = load_claim_ids(repo_root, &args.canonical_db)?;
+    let claim_ref_ids = load_claim_ref_ids(repo_root, &args.canonical_db)?;
     let proof_raw = load_toml(&repo_root.join("registry/knowledge/proof_skeletons.toml"))?;
     let bib_raw = load_toml(&repo_root.join("registry/bibliography.toml"))?;
     let external_raw = load_toml(&repo_root.join("registry/external_sources.toml"))?;
@@ -320,7 +321,7 @@ fn verify_evidence_provenance(repo_root: &Path, args: &Args) -> Result<()> {
             ));
         }
         for claim_ref in string_list(row, "claim_refs") {
-            if !claim_ids.contains(&claim_ref) {
+            if !claim_ref_ids.contains(&claim_ref) {
                 failures.push(format!(
                     "derivation step contains unknown claim ref: {} -> {}",
                     step_id, claim_ref
@@ -410,7 +411,7 @@ fn verify_evidence_provenance(repo_root: &Path, args: &Args) -> Result<()> {
             ));
         }
         for claim_ref in string_list(row, "claim_refs") {
-            if !claim_ids.contains(&claim_ref) {
+            if !claim_ref_ids.contains(&claim_ref) {
                 failures.push(format!(
                     "bibliography_normalized unknown claim_ref: {} -> {}",
                     source_id, claim_ref
@@ -468,7 +469,7 @@ fn verify_evidence_provenance(repo_root: &Path, args: &Args) -> Result<()> {
             }
         }
         for claim_ref in string_list(row, "claim_refs") {
-            if !claim_ids.contains(&claim_ref) {
+            if !claim_ref_ids.contains(&claim_ref) {
                 failures.push(format!(
                     "provenance_sources unknown claim_ref: {} -> {}",
                     table_str(row, "id"),
@@ -548,7 +549,7 @@ fn verify_evidence_provenance(repo_root: &Path, args: &Args) -> Result<()> {
             failures.push(format!("narrative paragraph invalid line span: {}", pid));
         }
         for claim_ref in string_list(row, "claim_refs") {
-            if !claim_ids.contains(&claim_ref) {
+            if !claim_ref_ids.contains(&claim_ref) {
                 failures.push(format!(
                     "narrative paragraph unknown claim_ref: {} -> {}",
                     pid, claim_ref
@@ -666,6 +667,13 @@ fn load_claim_ids(repo_root: &Path, canonical_db: &Path) -> Result<BTreeSet<Stri
 
     let claims_raw = load_toml(&repo_root.join("registry/claims.toml"))?;
     Ok(claim_set(table_array(&claims_raw, "claim")))
+}
+
+fn load_claim_ref_ids(repo_root: &Path, canonical_db: &Path) -> Result<BTreeSet<String>> {
+    let mut ids = load_claim_ids(repo_root, canonical_db)?;
+    let todo_raw = load_toml(&repo_root.join("registry/todo.toml"))?;
+    ids.extend(claim_set(table_array(&todo_raw, "item")));
+    Ok(ids)
 }
 
 fn build_derivation_steps(proof_rows: &[Value]) -> Result<(Vec<DerivationStep>, DerivationMeta)> {
@@ -1336,20 +1344,51 @@ fn render_narrative_paragraph_atoms(
 }
 
 fn normalize_claim_refs(values: Vec<String>, claim_id: &str) -> Result<Vec<String>> {
-    let claim_re = Regex::new(r"\b(?:C-\d{3,4}|T-\d{3})\b")?;
+    let claim_re = Regex::new(r"(?:C-\d{3,4}|T-\d{3})")?;
     let mut refs = BTreeSet::new();
     for value in values {
-        for matched in claim_re.find_iter(&value) {
-            let claim_ref = matched.as_str();
-            if is_registry_claim_id(claim_ref) {
-                refs.insert(claim_ref.to_string());
-            }
-        }
+        refs.extend(extract_registry_claim_refs(&value, &claim_re));
     }
     if is_registry_claim_id(claim_id) {
         refs.insert(claim_id.to_string());
     }
     Ok(refs.into_iter().collect())
+}
+
+fn extract_registry_claim_refs(value: &str, claim_re: &Regex) -> BTreeSet<String> {
+    claim_re
+        .find_iter(value)
+        .filter(|matched| {
+            is_registry_ref_start_boundary(value, matched.start())
+                && is_registry_ref_end_boundary(value, matched.end())
+                && is_registry_claim_id(matched.as_str())
+        })
+        .map(|matched| matched.as_str().to_string())
+        .collect()
+}
+
+fn is_registry_ref_start_boundary(value: &str, byte_index: usize) -> bool {
+    if byte_index == 0 || byte_index >= value.len() {
+        return true;
+    }
+    value[..byte_index]
+        .chars()
+        .next_back()
+        .is_none_or(is_registry_ref_delimiter)
+}
+
+fn is_registry_ref_end_boundary(value: &str, byte_index: usize) -> bool {
+    if byte_index == 0 || byte_index >= value.len() {
+        return true;
+    }
+    value[byte_index..]
+        .chars()
+        .next()
+        .is_none_or(is_registry_ref_delimiter)
+}
+
+fn is_registry_ref_delimiter(ch: char) -> bool {
+    !(ch.is_ascii_alphanumeric() || ch == '-' || ch == '_')
 }
 
 fn is_registry_claim_id(id: &str) -> bool {
@@ -1826,10 +1865,45 @@ mod tests {
                 "derived from C-1619 and malformed T-65".to_string(),
                 "T-065".to_string(),
                 "C-16190".to_string(),
+                "reject T-065-extra and C-1619-old".to_string(),
+                "reject embedded xC-703 and C-703_suffix".to_string(),
+                "accept delimited (C-704), [T-066], and C-705.".to_string(),
             ],
             "C-709",
         )?;
-        assert_eq!(refs, vec!["C-1619", "C-703", "C-709", "T-065"]);
+        assert_eq!(
+            refs,
+            vec![
+                "C-1619", "C-703", "C-704", "C-705", "C-709", "T-065", "T-066"
+            ]
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn claim_ref_set_loads_todo_ids_from_registry() -> Result<()> {
+        let temp = tempfile::tempdir()?;
+        let registry = temp.path().join("registry");
+        std::fs::create_dir_all(&registry)?;
+        std::fs::write(
+            registry.join("claims.toml"),
+            r#"
+[[claim]]
+id = "C-703"
+"#,
+        )?;
+        std::fs::write(
+            registry.join("todo.toml"),
+            r#"
+[[item]]
+id = "T-065"
+"#,
+        )?;
+
+        let ids = load_claim_ref_ids(temp.path(), Path::new("missing.sqlite3"))?;
+
+        assert!(ids.contains("C-703"));
+        assert!(ids.contains("T-065"));
         Ok(())
     }
 
