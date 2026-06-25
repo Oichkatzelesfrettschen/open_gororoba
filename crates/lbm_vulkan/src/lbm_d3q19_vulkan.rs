@@ -85,6 +85,9 @@ struct DeviceBuffer {
     device: Device,
     buffer: vk::Buffer,
     memory: vk::DeviceMemory,
+    // Logical byte length requested by the caller. Vulkan may require a
+    // larger memory allocation, but descriptor ranges and host readback
+    // lengths must stay tied to the actual buffer payload.
     size: vk::DeviceSize,
 }
 
@@ -464,8 +467,9 @@ fn allocate_buffer(
         }
         return Err(LbmD3Q19Error::Vk(vk::Result::ERROR_OUT_OF_DEVICE_MEMORY));
     }
-    // SAFETY: req.size + mem_type_index are produced by Vulkan; size
-    // is at most the buffer size which is bounded.
+    // SAFETY: req.size + mem_type_index are produced by Vulkan. req.size
+    // may be larger than the logical buffer size because it includes
+    // driver alignment padding required for binding.
     let memory = unsafe {
         device.raw().allocate_memory(
             &vk::MemoryAllocateInfo::default()
@@ -482,7 +486,7 @@ fn allocate_buffer(
         device: device.clone(),
         buffer,
         memory,
-        size: req.size,
+        size,
     })
 }
 
