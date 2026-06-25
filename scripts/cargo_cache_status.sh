@@ -9,6 +9,8 @@ ambient_root="${tmp_root}/ambient"
 repo_budget_gib="${CARGO_CACHE_REPO_BUDGET_GIB:-150}"
 tmp_budget_gib="${CARGO_CACHE_TMP_BUDGET_GIB:-16}"
 status=0
+repo_cache_over_budget=0
+tmp_cache_over_budget=0
 
 show_path() {
     local path="$1"
@@ -46,6 +48,14 @@ emit_budget_status() {
     if [ "$kib" -gt "$budget_kib" ]; then
         echo "status.${label}=over-budget"
         status=1
+        case "$label" in
+            repo_cache)
+                repo_cache_over_budget=1
+                ;;
+            tmp_cache)
+                tmp_cache_over_budget=1
+                ;;
+        esac
     else
         echo "status.${label}=ok"
     fi
@@ -95,6 +105,11 @@ emit_budget_status "repo_cache" "$repo_total_kib" "$repo_budget_gib"
 emit_budget_status "tmp_cache" "$tmp_total_kib" "$tmp_budget_gib"
 
 if [ "$status" -ne 0 ]; then
-    echo "remediation=make cache-sweep-soft"
+    if [ "$repo_cache_over_budget" -ne 0 ]; then
+        echo "remediation.repo_cache=make cache-sweep-soft"
+    fi
+    if [ "$tmp_cache_over_budget" -ne 0 ]; then
+        echo "remediation.tmp_cache=inspect and remove stale tmp cache under ${tmp_root}"
+    fi
     exit "$status"
 fi
