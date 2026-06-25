@@ -611,9 +611,17 @@ fn validate_config(config: &DarkHaloConfig) -> Result<(), DarkHaloError> {
     if config.k_dim == 0 {
         return Err(DarkHaloError::InvalidKDim(config.k_dim));
     }
-    let min_tau = config.tau_base - config.tau_amp.abs();
+    let lambda = (config.k_dim as f32).ln();
+    let (min_sin, max_sin) = sine_bounds_zero_to(lambda);
+    let extremal_sin = if config.tau_amp.is_sign_negative() {
+        max_sin
+    } else {
+        min_sin
+    };
+    let min_tau = config.tau_base + config.tau_amp * extremal_sin;
     if !config.tau_base.is_finite()
         || !config.tau_amp.is_finite()
+        || !lambda.is_finite()
         || !min_tau.is_finite()
         || min_tau <= 0.5
     {
@@ -624,6 +632,23 @@ fn validate_config(config: &DarkHaloConfig) -> Result<(), DarkHaloError> {
         });
     }
     Ok(())
+}
+
+fn sine_bounds_zero_to(lambda: f32) -> (f32, f32) {
+    const HALF_PI: f32 = std::f32::consts::FRAC_PI_2;
+    const PI: f32 = std::f32::consts::PI;
+    const THREE_HALF_PI: f32 = 3.0 * std::f32::consts::FRAC_PI_2;
+
+    let end = lambda.sin();
+    let min_sin = if lambda >= THREE_HALF_PI {
+        -1.0
+    } else if lambda > PI {
+        end
+    } else {
+        0.0
+    };
+    let max_sin = if lambda >= HALF_PI { 1.0 } else { end.max(0.0) };
+    (min_sin, max_sin)
 }
 
 // ---- Vulkan memory helpers ----
@@ -999,7 +1024,7 @@ mod tests {
         ));
 
         invalid = valid.clone();
-        invalid.tau_amp = 0.6;
+        invalid.tau_amp = -0.6;
         assert!(matches!(
             validate_config(&invalid),
             Err(DarkHaloError::UnstableTauRange { .. })
@@ -1009,6 +1034,28 @@ mod tests {
         invalid.tau_amp = f32::NAN;
         assert!(matches!(
             validate_config(&invalid),
+            Err(DarkHaloError::UnstableTauRange { .. })
+        ));
+    }
+
+    #[test]
+    fn validate_config_uses_actual_sine_interval() {
+        let low_k_positive_amp = DarkHaloConfig {
+            k_dim: 16,
+            steps: 1,
+            seed: 7,
+            tau_base: 0.55,
+            tau_amp: 0.2,
+            zd_threshold: 0.0,
+            velocity_epsilon: 2.0,
+            density_factor: 0.0,
+        };
+        assert!(validate_config(&low_k_positive_amp).is_ok());
+
+        let mut high_k_positive_amp = low_k_positive_amp.clone();
+        high_k_positive_amp.k_dim = 128;
+        assert!(matches!(
+            validate_config(&high_k_positive_amp),
             Err(DarkHaloError::UnstableTauRange { .. })
         ));
     }
