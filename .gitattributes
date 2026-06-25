@@ -4,7 +4,8 @@ papers/pdf/*.pdf filter=lfs diff=lfs merge=lfs -text
 data/external/documents_ingest/**/*.pdf filter=lfs diff=lfs merge=lfs -text
 data/external/documents_extracted/**/*.png filter=lfs diff=lfs merge=lfs -text
 data/output/heliosphere/soho/celias_pm_native_5min.csv filter=lfs diff=lfs merge=lfs -text
-# SQLite databases removed from git tracking (derived from TOML source of truth)
+# Canonical SQLite registry files are source artifacts; keep them as Git blobs.
+registry/canonical/*.sqlite3 -filter -diff -merge -text
 *.csv filter=lfs diff=lfs merge=lfs -text
 *.bin filter=lfs diff=lfs merge=lfs -text
 *.pdf filter=lfs diff=lfs merge=lfs -text
