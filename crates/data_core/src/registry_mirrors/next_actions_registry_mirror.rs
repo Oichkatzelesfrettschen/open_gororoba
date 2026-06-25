@@ -242,5 +242,7 @@
 //! ### NA-038 (high): Complete Moreno 1.16 Arbitrary-a Concrete Bridge
 //!
 //! - Status: `done`
-//! - Description: Paper-facing Theorem 1.16 bridge complete: three forms in Moreno1997.v (universal, section, module functor), no Admitted axioms, vos+vok current. C1542_MorVlambdaOrbit.v has all four packages. Deep geometric derivation of V_lambda block structure from first principles is a future separate task.
+//! - Description: DONE: Moreno 1.16 now has a paper-facing arbitrary-a concrete geometry bridge. C1542_MorVlambdaArbClose.v records Moreno16ArbitraryAConcreteVlambdaGeometry, derives the zero-dimensional witness from actual V_lambda(a) triviality for lambda <> 1, and Moreno1997.v exposes the geometry-to-witness and derived arbitrary-a bridges. The remaining Moreno work moves to Theorem 2.9 arbitrary-alternative discharge, not this 1.16 package.
 //! - References:
+//!   - `proofs/theories/C1542_MorVlambdaArbClose.v`
+//!   - `proofs/theories/Moreno1997.v`

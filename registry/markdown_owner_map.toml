@@ -12,7 +12,7 @@ updated = "2026-05-17"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 89
+document_count = 93
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -528,5 +528,25 @@ removal_status = "active"
 
 [[owner]]
 path = "docs/engineering/issue_136_lbm_d3q19_vulkan_scope.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md"
 owner_group = "project"
 removal_status = "active"

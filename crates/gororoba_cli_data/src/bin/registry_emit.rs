@@ -170,6 +170,15 @@ fn str_field(table: &toml::map::Map<String, Value>, key: &str) -> String {
         .to_string()
 }
 
+fn label_value_line(label: &str, value: &str) -> String {
+    let trimmed_value = value.trim();
+    if trimmed_value.is_empty() {
+        label.to_string()
+    } else {
+        format!("{label} {trimmed_value}")
+    }
+}
+
 fn raw_str_field(table: &toml::map::Map<String, Value>, key: &str) -> String {
     table
         .get(key)
@@ -1363,8 +1372,8 @@ fn emit_insights_mirror(args: InsightsMirrorArgs) -> Result<(), String> {
             str_field(row, "title")
         ));
         lines.push(String::new());
-        lines.push(format!("- Date: {}", str_field(row, "date")));
-        lines.push(format!("- Status: {}", str_field(row, "status")));
+        lines.push(label_value_line("- Date:", &str_field(row, "date")));
+        lines.push(label_value_line("- Status:", &str_field(row, "status")));
         lines.push(format!("- Sprint: {}", int_field(row, "sprint")));
         lines.push(format!(
             "- Claims: {}",
@@ -1477,18 +1486,21 @@ fn emit_claims_mirror(args: ClaimsMirrorArgs) -> Result<(), String> {
         lines.push(format!("## {}", str_field(row, "id")));
         lines.push(String::new());
         lines.push(format!("- Status: `{}`", str_field(row, "status")));
-        lines.push(format!(
-            "- Last verified: {}",
-            str_field(row, "last_verified")
+        lines.push(label_value_line(
+            "- Last verified:",
+            &str_field(row, "last_verified"),
         ));
-        lines.push(format!("- Statement: {}", str_field(row, "statement")));
-        lines.push(format!(
-            "- Where stated: {}",
-            str_field(row, "where_stated")
+        lines.push(label_value_line(
+            "- Statement:",
+            &str_field(row, "statement"),
         ));
-        lines.push(format!(
-            "- What would verify/refute it: {}",
-            str_field(row, "what_would_verify_refute")
+        lines.push(label_value_line(
+            "- Where stated:",
+            &str_field(row, "where_stated"),
+        ));
+        lines.push(label_value_line(
+            "- What would verify/refute it:",
+            &str_field(row, "what_would_verify_refute"),
         ));
         lines.push(String::new());
     }
@@ -1676,7 +1688,7 @@ fn emit_experiments_mirror(args: ExperimentsMirrorArgs) -> Result<(), String> {
         ));
         lines.push(String::new());
         lines.push(format!("- Binary: `{}`", str_field(row, "binary")));
-        lines.push(format!("- Input: {}", str_field(row, "input")));
+        lines.push(label_value_line("- Input:", &str_field(row, "input")));
         let outputs = array_of_strings(row, "output");
         lines.push(format!(
             "- Output: {}",
@@ -2380,8 +2392,8 @@ fn emit_claim_tickets_mirror(args: ClaimTicketsMirrorArgs) -> Result<(), String>
             str_field(row, "source_markdown")
         ));
         lines.push(format!("- Kind: `{}`", str_field(row, "ticket_kind")));
-        lines.push(format!("- Owner: {}", str_field(row, "owner")));
-        lines.push(format!("- Created: {}", str_field(row, "created")));
+        lines.push(label_value_line("- Owner:", &str_field(row, "owner")));
+        lines.push(label_value_line("- Created:", &str_field(row, "created")));
         lines.push(format!(
             "- Status: `{}` ({})",
             str_field(row, "status_token"),
@@ -2451,8 +2463,8 @@ fn emit_claim_tickets_legacy(args: ClaimTicketsLegacyArgs) -> Result<(), String>
         let mut lines = generated_doc_header("registry/claim_tickets.toml");
         lines.push(format!("# {}", str_field(row, "title")));
         lines.push(String::new());
-        lines.push(format!("Owner: {}", str_field(row, "owner")));
-        lines.push(format!("Created: {}", str_field(row, "created")));
+        lines.push(label_value_line("Owner:", &str_field(row, "owner")));
+        lines.push(label_value_line("Created:", &str_field(row, "created")));
         lines.push(format!("Status: {}", str_field(row, "status_raw")));
         lines.push(String::new());
         lines.push("## Goal".to_string());
