@@ -23,8 +23,9 @@
 //! - Operational role: `claim_bridge`
 //! - Source lineage summary: Bundy, K. et al. (2015) ApJ 798 7. Overview of the SDSS-IV MaNGA survey: instrument, target selection, and scientific goals.
 //! - Truth surfaces: observation_benchmark
-//! - Artifact contract paths (1):
-//!   - `data/external/manga/`
+//! - Artifact contract paths (2):
+//!   - `data/external/SOURCES.toml`
+//!   - `crates/data_core/src/catalogs/manga.rs`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - URL refs (1):
@@ -44,7 +45,7 @@
 //! - Artifact contract paths (3):
 //!   - `crates/materials_core/src/nonlocal_metamaterial.rs`
 //!   - `crates/gororoba_cli_physics/src/bin/nonlocal_algebraic_metamaterial.rs`
-//!   - `data/csv/c010_nonlocal_material_calibrations.csv`
+//!   - `registry/data/project_csv/canonical/PC-0006_c010_nonlocal_material_calibrations.toml`
 //! - Has full transcript: `false`
 //! - Line count: 126
 //! - Claim refs (1): C-010
@@ -72,7 +73,7 @@
 //! - Artifact contract paths (4):
 //!   - `crates/materials_core/src/pathion_toy_mapping.rs`
 //!   - `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`
-//!   - `data/csv/c053_pathion_tmm_summary.csv`
+//!   - `registry/data/project_csv/canonical/PC-0007_c053_pathion_tmm_summary.toml`
 //!   - `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`
 //! - Has full transcript: `false`
 //! - Line count: 48
@@ -279,8 +280,8 @@
 //! - Source lineage summary: Lelli, F., McGaugh, S.S., Schombert, J.M. (2016) AJ 152 157. SPARC database of 175 nearby disk galaxies with Spitzer photometry and HI/Halpha rotation curves.
 //! - Truth surfaces: observation_benchmark
 //! - Artifact contract paths (2):
-//!   - `data/external/sparc/`
 //!   - `crates/data_core/src/catalogs/sparc.rs`
+//!   - `registry/dataset_label_aliases.toml`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - Claim refs (1): C-1338
@@ -300,8 +301,8 @@
 //! - Source lineage summary: Li, P., Lelli, F., McGaugh, S.S., Schombert, J.M. (2020) ApJS 247 31. Bayesian analysis of SPARC galaxy rotation curves with NFW and other halo profiles.
 //! - Truth surfaces: observation_benchmark
 //! - Artifact contract paths (2):
-//!   - `data/external/sparc_nfw/`
-//!   - `crates/data_core/src/catalogs`
+//!   - `crates/data_core/src/catalogs/sparc.rs`
+//!   - `registry/dataset_label_aliases.toml`
 //! - Has full transcript: `false`
 //! - Line count: 0
 //! - Claim refs (1): C-1338
@@ -447,7 +448,7 @@
 //! - Source lineage summary: Westfall, K.B. et al. (2019) AJ 158 231. Description of the MaNGA Data Analysis Pipeline (DAP) and DRP used to produce MAPS FITS files.
 //! - Truth surfaces: observation_benchmark
 //! - Artifact contract paths (2):
-//!   - `data/external/manga/`
+//!   - `data/external/SOURCES.toml`
 //!   - `crates/data_core/src/catalogs/manga.rs`
 //! - Has full transcript: `false`
 //! - Line count: 0

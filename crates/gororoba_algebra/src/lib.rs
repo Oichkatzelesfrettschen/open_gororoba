@@ -47,7 +47,7 @@ pub use physics::clifford::{kron, kron2, pauli_matrices};
 pub mod lie;
 
 // -- gpu -----------------------------------------------------------------
-#[cfg(any(feature = "gpu", feature = "vulkan", feature = "cubecl"))]
+#[cfg(feature = "core")]
 pub mod gpu;
 
 // -- types ---------------------------------------------------------------

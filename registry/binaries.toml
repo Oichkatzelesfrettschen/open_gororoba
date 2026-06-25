@@ -74,6 +74,16 @@ crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
 [[binary]]
+name = "analyze_bitwise_anti_diagonal"
+crate = "algebra_experimental"
+description = "Workspace binary discovered from cargo metadata in crate algebra_experimental; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "analyze_top_bucket_annihilator"
+crate = "algebra_experimental"
+description = "Workspace binary discovered from cargo metadata in crate algebra_experimental; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "arleo-falmagne-scaling"
 crate = "gororoba_cli"
 description = "QGP path-length scaling reproduction (Arleo & Falmagne arXiv:2411.13258): Optical Glauber geometry, R_AA epsilon extraction, multi-system density scaling fit"
@@ -444,6 +454,11 @@ crate = "gororoba_cli"
 description = "Bulk dataset download orchestrator: iterates all DatasetProvider implementations, reports cache status, fetches missing datasets"
 
 [[binary]]
+name = "dataset-hash-sweep"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "dataset-routing-ledger"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
@@ -487,11 +502,6 @@ description = "Sweep Cayley-Dickson dims 16..4096 measuring associator norms, ze
 name = "dm-ultrametric"
 crate = "gororoba_cli"
 description = "Dispersion measure ultrametric analysis"
-
-[[binary]]
-name = "docs-redirect-check"
-crate = "gororoba_cli"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "download-recovery"
@@ -601,6 +611,11 @@ description = "Experiment C-756: Topological Entropy Locking video export. GPU-a
 experiment = "E-038"
 
 [[binary]]
+name = "experiment-dataset-refs-migrate"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "export-hdf5"
 crate = "gororoba_cli"
 description = "Export computed data to HDF5 format (feature-gated)"
@@ -629,6 +644,11 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "extract-papers"
 crate = "gororoba_cli"
 description = "Batch PDF extraction to structured TOML via docpipe"
+
+[[binary]]
+name = "extract-real-kv-cache"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "face-on-red-noise-rayleigh"
@@ -666,6 +686,16 @@ experiment = "E-091"
 name = "flyby-residual-audit"
 crate = "gororoba_cli_physics"
 description = "Quantify classical (Newtonian + DM density) residual delta-V for the governed Anderson et al. flyby catalog, validate the staged external observation table against internal config values, and emit a reproducible observed-vs-modeled CSV artifact."
+
+[[binary]]
+name = "formal-proof-backfill"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "formal-proof-tighten"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "frac-laplacian"
@@ -873,6 +903,11 @@ crate = "gororoba_cli"
 description = "Helium-4 superfluid thermodynamics and Gross-Pitaevskii validation suite"
 
 [[binary]]
+name = "heasarc-enumerate"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-algebra-decompose"
 crate = "gororoba_cli_physics"
 description = "Compute descriptive algebraic summaries from heliosphere feature cubes without elevating speculative physical interpretations into claims."
@@ -890,6 +925,11 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 
 [[binary]]
 name = "heliosphere-beta-join"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-bootstrap-f1"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
@@ -912,6 +952,11 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "heliosphere-catalog-audit"
 crate = "gororoba_cli_data"
 description = "Audit staged heliosphere datasets, source families, and valid chronology-pack overlap windows"
+
+[[binary]]
+name = "heliosphere-commutator-baseline"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "heliosphere-cross-mission-invariance"
@@ -939,6 +984,11 @@ crate = "gororoba_cli_physics"
 description = "Classify CD false-alarm transitions by B-field signature (TD/FTE_candidate/Mirror_mode/Partial_crossing/Compressive/Unclassified). Outputs attribution JSON with per-type statistics (mean rotation, |B| jump, CV, associator norm), overall precision/recall/F1 at default threshold, FN count, and optional PR curve (--out-pr-curve, 50 log-spaced threshold steps)."
 
 [[binary]]
+name = "heliosphere-fa-cross-mission-table"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-falsification-audit"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
@@ -956,6 +1006,11 @@ description = "Build normalized, differenced, and differenced-normalized heliosp
 experiment = "E-119"
 
 [[binary]]
+name = "heliosphere-fte-case-study"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-full-sweep"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
@@ -969,6 +1024,16 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "heliosphere-instrument-coverage"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
+name = "heliosphere-l2-delay-baseline"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-lag-depth-sweep"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "heliosphere-lbm-cube-run"
@@ -992,6 +1057,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "heliosphere-mms-sitl-labeled"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-norm-dump"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
@@ -1002,14 +1072,29 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "heliosphere-pca-variance-baseline"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-predictive-eval"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
+name = "heliosphere-psp-alfven-control"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-psp-encounter-summary"
 crate = "gororoba_cli_physics"
 description = "Consolidate PSP switchback omega results across E1/E4/E6/E10 perihelion encounters. Computes trend statistics on ratio_switchback_to_quiet vs encounter number. Result: monotonically decreasing with Spearman rho=-1.0 (switchbacks more Alfvenic at closer perihelia)."
+
+[[binary]]
+name = "heliosphere-psp-switchback-correlation"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "heliosphere-q2-transverse"
@@ -1020,6 +1105,26 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "heliosphere-quench-scan"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "heliosphere-r16-ablation"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-r64-ablation"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-random-trilinear"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-random-trilinear-sparse"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "heliosphere-rosetta-ablation-summary"
@@ -1057,9 +1162,34 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "heliosphere-takens-tau-sweep"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "heliosphere-temporal-overlay"
 crate = "gororoba_cli_physics"
 description = "Time-aligned 4D overlay report for OMNI, Voyager merged hourly, and Voyager CRS daily-flux datasets. Uses true observed epochs, reports simultaneous-day windows, and marks missing upstream products explicitly."
+
+[[binary]]
+name = "heliosphere-themis-general-benchmark"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-themis-staples-labeled"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-voyager-heliopause"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "heliosphere-window-sensitivity"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "heliosphere-zd-audit"
@@ -1257,6 +1387,11 @@ crate = "gororoba_cli_data"
 description = "Rust-native LoTSS analysis suite replacing src/lotss_analysis Python utilities. Subcommands cover DR1/DR2/DR3 flux-distribution fits, MaNGA radio-loud versus radio-quiet kinematic bisection, and LoTSS DR1 ultrametric null testing."
 
 [[binary]]
+name = "lotss-enumerate"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "lotss-fetch"
 crate = "gororoba_cli_data"
 description = "LoTSS DR1/DR2/DR3 bulk FITS downloader, DR3 MaNGA-footprint tile cache fallback, and MaNGA crossmatch utility. Subcommands: download, cone-search, verify, summary, manga-footprint, manga-preflight, crossmatch-manga. Emits CSV/TOML reports for E-198 coverage ceilings and DR2/DR3 detection fractions."
@@ -1293,6 +1428,11 @@ name = "manga-maps-extractor"
 crate = "gororoba_cli_physics"
 description = "Rust-native MaNGA MAPS rotation curve extractor. Downloads MAPS FITS.gz files via ureq, parses with fitsio (cfitsio), extracts pseudo-slit rotation curves vectorized over radius x slit-width, parallelized with Rayon. Replaces Python manga_maps_to_rotcurves.py for full CPU core saturation. Resume capability via master CSV."
 experiment = "E-183"
+
+[[binary]]
+name = "manga-null-synthesis"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "markdown-registry"
@@ -1344,6 +1484,11 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "mast-program-clustering"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
+name = "mast-verify"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "materials-baseline"
@@ -1485,6 +1630,11 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "nanograv-vacuum-symmetry"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
+
+[[binary]]
+name = "ndlb-gate"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "neg-dim-eigen"
@@ -1708,6 +1858,11 @@ name = "registry-event-tracker"
 crate = "gororoba_cli"
 description = "Registry event tracking and reconciliation infrastructure workflow"
 experiment = "E-024"
+
+[[binary]]
+name = "repo-audit"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "repo-utilities"
@@ -2148,6 +2303,11 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 
 [[binary]]
 name = "voyager-pws-ingest"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "voyager2-bartol-amda-crossval"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
