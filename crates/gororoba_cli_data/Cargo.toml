@@ -476,7 +476,6 @@ path = "src/bin/cosmology_dimension_ladder.rs"
 [[bin]]
 name = "nanograv-avt-filter"
 path = "src/bin/nanograv_avt_filter.rs"
-required-features = ["gpu"]
 
 [[bin]]
 name = "nanograv-synthetic-gen"
