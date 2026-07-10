@@ -249,7 +249,7 @@ impl SimulationState {
     /// 2. Update Algebra (advected by Fluid, frustrated by Metric)
     /// 3. Update Fluid (viscosity modulated by Algebra)
     pub fn step(&mut self) {
-        // 1. Metric Update (Static for now)
+        // 1. Metric update: metric stays static, no back-reaction applied.
 
         // 2. Algebra Update
         // Advect algebraic field using fluid velocity

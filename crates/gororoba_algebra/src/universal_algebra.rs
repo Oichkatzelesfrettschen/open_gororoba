@@ -59,7 +59,7 @@ impl UniversalAlgebra {
         };
 
         // Populate blocks (placeholder logic based on 16-D chunks)
-        // 256 blocks total. Assign first half to A, second to B for now.
+        // 256 blocks total. First half assigned to A, second half to B.
         for k in 0..128 {
             let start = k * 16;
             let indices = (start..start + 16).collect();

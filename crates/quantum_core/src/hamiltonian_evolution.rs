@@ -210,7 +210,7 @@ impl HamiltonianND {
         let psi_mat = Array2::from_shape_vec((dim_a, dim_b), psi.to_vec())
             .unwrap_or_else(|_| Array2::zeros((dim_a, dim_b)));
 
-        // SVD via nalgebra (simpler than ndarray for now)
+        // SVD via nalgebra DMatrix (ndarray Array2 has no built-in SVD)
         let h_matrix = DMatrix::from_fn(dim_a, dim_b, |i, j| psi_mat[[i, j]]);
         let svd = h_matrix.svd(true, true);
 

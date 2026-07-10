@@ -209,7 +209,7 @@ fn run_lbm_stability_test(args: &Args, use_filter: bool) -> Result<usize, Box<dy
     // or just run simulate_kolmogorov_flow multiple times? No, that resets state.
     // lbm_core likely doesn't expose a step-by-step public API for external loops easily.
     // Inspecting lbm_core would be needed.
-    // Assuming for now we can't easily hook into CPU loop for filtering without modifying lbm_core.
+    // lbm_core exposes no step-by-step CPU API for an external filtering loop without modification.
     // We will return dummy value for CPU case to avoid build errors, or panic.
 
     Err("CPU fallback for interactive filtering not implemented in this experiment script. Please enable GPU feature.".into())

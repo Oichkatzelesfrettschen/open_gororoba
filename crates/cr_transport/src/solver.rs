@@ -385,7 +385,8 @@ impl PteSolver {
         dm_density: &[f64],
         lis: Option<&dyn Fn(f64) -> f64>,
     ) {
-        // Half-step diffusion (x-sweep only for now; full 3D ADI is expensive)
+        // Half-step diffusion: x-sweep only, via diffuse_x_sweep.
+        // TODO: add y-sweep and z-sweep to complete the 3D ADI operator.
         for p in 0..self.n_p {
             let r_gv = self.grid.rigidity(p);
             self.diffuse_x_sweep(b_field, r_gv, p);

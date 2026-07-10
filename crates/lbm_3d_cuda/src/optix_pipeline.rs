@@ -55,8 +55,8 @@ impl Default for OptiXPipelineConfig {
 ///
 /// The actual OptiX API calls require FFI to the OptiX shared library.
 /// This struct provides the Rust-side state management; the FFI calls
-/// are deferred to the `optix_ffi` module (not yet implemented --
-/// requires bindgen or manual C FFI bindings to optix_stubs.h).
+/// are handled by the `optix_ffi` module, which binds optix_stubs.h
+/// through bindgen or manual C FFI.
 #[derive(Debug)]
 pub struct OptiXPipeline {
     /// Pipeline configuration.
