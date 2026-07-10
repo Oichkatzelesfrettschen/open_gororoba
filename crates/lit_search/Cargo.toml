@@ -28,3 +28,6 @@ url = "2"
 [[bin]]
 name = "lit-search"
 path = "src/main.rs"
+
+[lints]
+workspace = true

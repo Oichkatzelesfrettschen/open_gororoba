@@ -45,3 +45,6 @@ path = "src/bin/pseudospectrum-slice.rs"
 [[bin]]
 name = "grover-classical-comparison"
 path = "src/bin/grover-classical-comparison.rs"
+
+[lints]
+workspace = true

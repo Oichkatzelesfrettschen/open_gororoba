@@ -8,3 +8,6 @@ description = "Fixed-point arithmetic for Lattice Boltzmann methods, inspired by
 [dependencies]
 
 [dev-dependencies]
+
+[lints]
+workspace = true
