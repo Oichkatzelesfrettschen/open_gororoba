@@ -79,31 +79,36 @@ impl E9RootSystem {
         KacMoodyRoot::affine(neg_theta, 1)
     }
 
+    /// All 240 E8 roots as level-0 Kac-Moody roots.
+    ///
+    /// Delegates to [`crate::lie::e8::root_system::generate_e8_roots`], which
+    /// shares the branch-at-node-4 convention: 112 integer roots
+    /// `(+/-1, +/-1, 0^6)` under permutation plus 128 half-integer roots
+    /// `(+/-1/2)^8` with an even number of minus signs.
+    pub fn e8_roots(&self) -> Vec<KacMoodyRoot> {
+        crate::lie::e8::root_system::generate_e8_roots()
+            .into_iter()
+            .map(|root| KacMoodyRoot::real(root.coords.to_vec()))
+            .collect()
+    }
+
     /// Generate real roots up to a maximum level.
+    ///
+    /// The real roots of E9 are exactly `alpha + n*delta` for `alpha` ranging
+    /// over all 240 E8 roots and `n` an integer, so the output holds 240 roots
+    /// at level 0 and 480 per nonzero level pair `{+n, -n}`.
     pub fn real_roots_up_to_level(&self, max_level: u32) -> Vec<KacMoodyRoot> {
-        let mut roots = Vec::new();
+        let e8_roots = self.e8_roots();
+        let mut roots = e8_roots.clone();
 
-        // Level 0: E8 roots (240 of them).
-        // TODO: enumerate all 240 E8 roots; only the simple roots and their negatives are added here.
-        for root in &self.e8_simple_roots {
-            roots.push(root.clone());
-            // Also add negative roots
-            let neg: Vec<f64> = root.finite_part.iter().map(|x| -x).collect();
-            roots.push(KacMoodyRoot::real(neg));
-        }
-
-        // Higher levels: alpha + n*delta
         for level in 1..=max_level {
-            for base_root in &self.e8_simple_roots {
+            for base_root in &e8_roots {
                 let mut pos = base_root.clone();
                 pos.level = level as i32;
-                pos.root_type = RootType::Real;
                 roots.push(pos);
 
                 let mut neg = base_root.clone();
-                neg.finite_part = neg.finite_part.iter().map(|x| -x).collect();
                 neg.level = -(level as i32);
-                neg.root_type = RootType::Real;
                 roots.push(neg);
             }
         }
