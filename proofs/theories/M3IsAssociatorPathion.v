@@ -26,7 +26,7 @@ Import ListNotations.
 Open Scope Z_scope.
 
 (** Import the recursive sign computation from M3IsAssociator. *)
-Require Import CDProofs.M3IsAssociator.
+From OpenGororoba Require Import M3IsAssociator.
 
 (** Pathion sign: fuel=6 (log2(32)+1), dim=32. *)
 Definition path_sign (i j : nat) : Z := cd_sign_fuel 6 32 i j.

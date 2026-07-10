@@ -9,9 +9,9 @@ metrics/
 .Makefile.coq.d
 Makefile.coq
 Makefile.coq.conf
-.Makefile.rocq.d
+.Makefile.rocq*.d
 Makefile.rocq
-Makefile.rocq.conf
+Makefile.rocq.*
 extraction/*.vo
 extraction/*.glob
 # Stale generated SQLite planning exports (canonical source is registry/ at repo root)

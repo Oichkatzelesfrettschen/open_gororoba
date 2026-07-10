@@ -14,7 +14,7 @@
     Mirrors: crates/gororoba_algebra/src/construction/cd_tower.rs *)
 
 From Stdlib Require Import Reals Lra.
-Require Import CDProofs.CDDoubleFunctor.
+From OpenGororoba Require Import CDDoubleFunctor.
 Open Scope R_scope.
 
 (* =========================================================================

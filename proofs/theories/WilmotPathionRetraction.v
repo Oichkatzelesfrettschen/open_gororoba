@@ -23,7 +23,7 @@ From Stdlib Require Import ZArith Bool List Arith.
 Import ListNotations.
 Open Scope Z_scope.
 
-Require Import CDProofs.M3IsAssociator.
+From OpenGororoba Require Import M3IsAssociator.
 
 (** Sedenion sign: fuel=5, dim=16. *)
 Definition sed_sign (i j : nat) : Z := cd_sign_fuel 5 16 i j.

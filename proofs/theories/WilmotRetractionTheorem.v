@@ -30,7 +30,7 @@
 
 From Stdlib Require Import List Arith Bool ZArith.
 Import ListNotations.
-Require Import CDProofs.HomotopyTransferAssociator.
+From OpenGororoba Require Import HomotopyTransferAssociator.
 
 (** * Octonion level: the 42/168 split is the Wilmot U_1/U_3 decomposition.
 
