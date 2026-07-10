@@ -12,10 +12,10 @@
 # six-axis taxonomy, grounds every class in a reproducible measurement, and
 # defines the forward phasewise/stepwise/taskwise program.
 #
-# WHAT: 21 canonical debt classes across 6 macro-axes; a reconciliation
+# WHAT: 22 canonical debt classes across 6 macro-axes; a reconciliation
 # table mapping every legacy DEBT-* tag onto a canonical class; a fresh
 # measured baseline reference (data/output/debt_baseline_2026_06_04.toml);
-# a machine-readable strict gate baseline; and 9 forward phases with atomic,
+# a machine-readable strict gate baseline; and 8 forward phases with atomic,
 # falsifiable tasks.
 #
 # HOW: Each [[debt_class]] carries a current_magnitude metric with the exact
@@ -26,7 +26,7 @@
 
 [meta]
 id = "REPO-DEBT-TAXONOMY-ROADMAP-2026-06-04"
-updated = "2026-06-25"
+updated = "2026-07-09"
 status = "active"
 authoritative = true
 scope = "open_gororoba repository: code structure, build/toolchain/delivery, test/verification, data/provenance, scientific/methodology, documentation/organizational debt"
@@ -34,7 +34,7 @@ source_mode = "repo_evidence_plus_repo_audit_anchored_measurement"
 supersedes = "plans/repo_debt_roadmap_2026_04_11.toml"
 subsumes = ["plans/post_gate_optimization_2026_05_12.toml"]
 evidence_baseline = "data/output/debt_baseline_2026_06_04.toml"
-strict_gate_baseline = "data/output/audit/2026-06-25/repo_audit_anchored_2026_06_25.toml"
+strict_gate_baseline = "data/output/audit/2026-07-09/repo_audit_anchored_2026_07_10.toml"
 predecessor_baselines = [
     "data/output/debt_baseline_2026_04_30.toml",
     "data/output/debt_baseline_2026_05_09.toml",
@@ -68,7 +68,7 @@ comment_hygiene = "no_task_pr_phase_or_deictic_refs_in_source"
 # ----------------------------------------------------------------------------
 [taxonomy]
 axis_count = 6
-class_count = 21
+class_count = 22
 
 [taxonomy.axes.A_code_structure]
 label = "Code and structure debt"
@@ -96,8 +96,9 @@ classes = [
     "DEBT-FORMAL-VERIFICATION",
     "DEBT-PROOF-EXTRACTION-FIDELITY",
     "DEBT-OBSERVABILITY",
+    "DEBT-MEASUREMENT-VALIDITY",
 ]
-review_lane = "nextest coverage, proofs/ vos+vok, extraction parity, gate-timing telemetry"
+review_lane = "nextest coverage, proofs/ vos+vok, extraction parity, gate-timing telemetry, audit-instrument population validity"
 
 [taxonomy.axes.D_data_provenance]
 label = "Data and provenance debt"
@@ -135,7 +136,7 @@ review_lane = "registry-driven docs regeneration, plan/branch lifecycle, agent c
 [provenance]
 audit_binary = "crates/gororoba_cli_data/src/bin/repo_audit.rs"
 audit_command = "REPO_AUDIT_OUT=data/output/audit/2026-06-04 make repo-audit  # writes the dated anchored snapshot and includes SQLite revisions"
-audit_strict_command = "make repo-audit-strict  # compares against data/output/audit/2026-06-25/repo_audit_anchored_2026_06_25.toml by default"
+audit_strict_command = "make repo-audit-strict  # compares against data/output/audit/2026-07-09/repo_audit_anchored_2026_07_10.toml by default (cache-invariant walker + shadow marker + kernel metrics)"
 metric_taxonomy_doc = "docs/engineering/repo_audit_metric_taxonomy.md"
 monolith_inventory_command = "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | sort -rn"
 registry_count_command = "grep -c '^\\[\\[claim\\]\\]' registry/claims.toml  # and insights/experiments/binaries"
@@ -150,14 +151,15 @@ id = "DEBT-MODULARIZATION"
 axis = "A_code_structure"
 label = "Hand-written monolith modularization"
 risk = "Multi-thousand-line hand-written .rs files slow language servers, defeat focused review, and concentrate merge conflicts. Single impl blocks running thousands of lines mask coupling and obscure module boundaries."
-current_magnitude = "33 non-generated .rs files exceed the 2000-line warn threshold; 5 exceed the 4000-line target_max; 0 exceed the 8000-line urgent threshold (down from 1 at 2026-05-12). Worst: optical_database.rs 7638, boxkites/tests.rs 7016, repo_visuals.rs 4394, emanation/tests.rs 4327, provenance_store/lib.rs 4220."
+current_magnitude = "2026-07-09 census: worst non-generated files are optical_database.rs 7638 (transcribed data), boxkites/tests.rs 7016 (relocated test sibling), repo_visuals.rs 4394, provenance_store/lib.rs 4372 (REGREW +152 from 4220 post-split -- the only prior split that is regressing), emanation/tests.rs 4327. The dominant hand-written hotspot class is the CLI bin/ tree: registry_emit.rs 3779, human_acquire.rs 3707, governance_verify.rs 3586, execution_planning.rs 3434, plus xtask/src/main.rs 3535. All other PH-MOD splits held within a few lines (heliosphere_eval 1932, source_provenance 2303, codebook 2397, boxkites parent 638, sedenion_subalgebras parent 105); residual over-2500 stragglers: cd_external.rs 2823, nanograv/engine.rs 2714, lbm_3d_cuda/lib.rs 2546."
 magnitude_reproduce = "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | sort -rn | head -25"
 confirmed_examples = [
     "crates/materials_core/src/optical_database.rs (7638; but see DEBT-DATA-TRANSCRIPTION -- this is transcribed data, not logic)",
     "crates/algebra_analysis/src/boxkites/tests.rs (7016; boxkites.rs main split into submodules already, tests remain bulky)",
     "crates/gororoba_cli_data/src/bin/repo_visuals.rs (4394)",
-    "crates/provenance_store/src/lib.rs (4220; was 5335, one 4850-line impl block partially decomposed)",
-    "xtask/src/main.rs (3411; manual string-dispatcher monolith)",
+    "crates/provenance_store/src/lib.rs (4372; was 5335, split to 4220, regrew +152 -- re-split candidate)",
+    "xtask/src/main.rs (3535; manual string-dispatcher monolith, still growing)",
+    "CLI bin/ hotspot class: registry_emit.rs 3779, human_acquire.rs 3707, governance_verify.rs 3586, execution_planning.rs 3434",
 ]
 resolution_pattern = "Split monoliths by logical surface (types vs algorithms vs IO vs phenomenon classes), keep the public API stable via pub use re-exports from the original module path, validate per-crate with cargo check + clippy + nextest under workspace deny-warnings. Test-heavy files (boxkites/tests, emanation/tests) use the #[cfg(test)] mod tests; + sibling parent/tests.rs relocation."
 falsifiable_acceptance = "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | awk '$2!=\"total\" && $1>=4000 && index($2,\"optical_database.rs\")==0 && index($2,\"crystal_symmetry.rs\")==0 && index($2,\"boxkites/tests.rs\")==0 && index($2,\"emanation/tests.rs\")==0 {bad=1; print} END{exit bad}'"
@@ -224,11 +226,11 @@ id = "DEBT-MEMORY-SAFETY"
 axis = "A_code_structure"
 label = "Unsafe-block SAFETY-comment coverage"
 risk = "unsafe blocks without a SAFETY justification cannot be reviewed for the invariant they assume. Highest-risk pattern is raw-pointer AoSoA indexing in the Cayley-Dickson SIMD kernels."
-current_magnitude = "488 unsafe blocks in crates/ with 163 SAFETY comments (33.4% block-level coverage) as of the 2026-06-04 anchored audit, up from 65/392 = 16.6% at 2026-05-09; a separate 3420 unsafe blocks live in proofs/ Rust test/verifier scaffolding (audited as its own lane). Coverage is improving but block count grew with the workspace, so the absolute uncovered surface (325) is the live target."
-magnitude_reproduce = "make repo-audit  # reads unsafe_blocks vs safety_comments per root"
+current_magnitude = "520 unsafe blocks in crates/ with 193 SAFETY comments (37.1% block-level coverage) at the 2026-07-09 anchored audit, up from 65/392 = 16.6% at 2026-05-09. The absolute uncovered surface (327) is the live target. The previously-reported separate lane of 3420 unsafe blocks in proofs/ Rust test/verifier scaffolding is a MEASUREMENT ARTIFACT, not project code: no .rs file has ever been git-tracked under proofs/, and the 130-file/3420-block count reappears in any audit run while proofs/.cache/gate-target holds dependency build-script outputs. The proofs scaffolding lane is retired; see DEBT-MEASUREMENT-VALIDITY."
+magnitude_reproduce = "make repo-audit  # reads unsafe_blocks vs safety_comments per root; crates/ row only -- the proofs row is cache-contaminated until the exclusion fix lands"
 confirmed_examples = [
     "crates/cd_kernel raw-pointer SoA indexing (UnsafeAoSoAPtr highest-risk per unsafe audit).",
-    "proofs/ Rust scaffolding 3420 unsafe blocks (DEBT-UNSAFE-PROOFS-SCAFFOLDING lane).",
+    "Retired artifact: by_root.proofs 3420 unsafe blocks = dependency build outputs under proofs/.cache/gate-target (0 when the cache is pruned; git log --all shows zero .rs ever tracked under proofs/).",
 ]
 resolution_pattern = "Add a // SAFETY: comment immediately above every unsafe block stating the upheld invariant; drive crates/ block-level coverage toward 100% with documented exceptions; keep the proofs/ scaffolding lane separate (test-only, lower priority)."
 falsifiable_acceptance = "repo-audit reports safety_comments >= unsafe_blocks for crates/ (100% block coverage) OR a documented exceptions list accounts for every uncovered block."
@@ -250,15 +252,18 @@ id = "DEBT-BUILD-WORKSPACE"
 axis = "B_build_toolchain_delivery"
 label = "Build system, package-manager, root workspace, and delivery"
 risk = "Makefile sprawl, implicit feature defaults, toolchain-pin drift, and a manual xtask dispatcher obscure the real release contract and resist typed validation."
-current_magnitude = "xtask migration is PARTIAL: xtask/ exists as a workspace member exposing ~20 subcommands (gate-audit, audit-deep, ci-route, ascii-check, terminology-gate, cpd-file-list, gate-timing-*, sparse-profile, gpu-profile, worker-budget, ...) but via a 3411-line manual string-match dispatcher, while policy-heavy logic still lives in Makefile recipes. Toolchain pinned at nightly-2026-04-05 (rust-toolchain.toml), matching the requirements narrative; but the prose guides AGENTS.md, CLAUDE.md, and the per-project MEMORY still cite the older nightly-2026-03-05 -- a stale-doc drift to reconcile (the pin file is authoritative)."
+current_magnitude = "xtask migration is PARTIAL: 20 subcommands behind a 3535-line manual string-match dispatcher, while only 11 of ~191 Makefile cargo-run sites route through xtask (Makefile: 2497 lines, ~316 targets; coverage 5-10%). Toolchain pinned nightly-2026-04-05; the stale nightly-2026-03-05 prose in CLAUDE.md and AGENTS.md was corrected 2026-07-09. WARNINGS-NET HOLE: 5 workspace members carry no [lints] block (fixed_point_lbm, gororoba_cli_quantum, lit_search, manga_experiments, xtask), and cargo requires the explicit [lints] workspace = true opt-in, so workspace warnings = deny does NOT apply to them. The .githooks/pre-push prose disagrees with itself (header enumerates 5 steps, runtime echo says 4-gate, AGENTS.md canonically documents 6; all six logical gates do run). 12 live .sh scripts contradict the flat no-shell policy; several are declared xtask fallbacks (detect_worker_budget.sh) but the policy admits no exception ledger."
 magnitude_reproduce = "grep -c '=> run_' xtask/src/main.rs ; grep -rn nightly rust-toolchain.toml registry/requirements_narrative.toml AGENTS.md CLAUDE.md"
 confirmed_examples = [
     "xtask/src/main.rs (3411-line manual dispatcher; also a DEBT-MODULARIZATION item).",
     "Makefile policy-heavy recipes (cpd-audit-strict, integrity, governance) still shell-driven.",
-    "Stale-doc drift: AGENTS.md/CLAUDE.md/MEMORY cite nightly-2026-03-05 while rust-toolchain.toml and the requirements narrative are at nightly-2026-04-05.",
+    "Stale-doc drift RESOLVED 2026-07-09: AGENTS.md:89 and CLAUDE.md:96 corrected to nightly-2026-04-05.",
+    "Warnings-net hole: crates/fixed_point_lbm, crates/gororoba_cli_quantum, crates/lit_search, crates/manga_experiments, xtask lack [lints] workspace = true.",
+    "12 tracked .sh files (bin/, scripts/) vs the no-shell policy; no exception ledger exists.",
+    "proofs/Makefile toolchain guard accepts ANY rocq on PATH as fallback: with the rocq-certirocq switch active, the system Rocq (OCaml 5.5.0) ran against a .vo tree built by the pinned rocq-9.1.1 switch (OCaml 5.4.0), yielding mixed-toolchain parse errors instead of a fail-fast message naming the documented opam env remedy.",
 ]
 resolution_pattern = "Keep make as the user-facing front door; migrate policy-heavy parsing into typed xtask subcommands with structured JSON/TOML output; convert the manual string dispatcher to a clap Subcommand enum; update the stale nightly references in the prose guides to the authoritative pin."
-falsifiable_acceptance = "cargo run -q -p xtask -- --help >/dev/null && test \"$(grep -rh nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l)\" -eq 1"
+falsifiable_acceptance = "cargo run -q -p xtask -- --help >/dev/null && test \"$(grep -rh nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l)\" -eq 1; every workspace member Cargo.toml (and xtask/Cargo.toml) contains a [lints] table inheriting workspace = true; .githooks/pre-push header, runtime echo, and AGENTS.md agree on one gate count; each tracked .sh file is either absorbed into xtask or listed in a shell-exception ledger with rationale"
 status = "in_progress"
 predecessor_ids = ["DEBT-BUILD-WORKSPACE"]
 cross_links = ["roadmap_2026_04_11 PH-5"]
@@ -290,7 +295,7 @@ id = "DEBT-TEST-VERIFICATION"
 axis = "C_test_verification"
 label = "Test coverage, ignored tests, and verification gates"
 risk = "High-value behavior lacking narrow reproducible hooks forces slow full-workspace validation or under-validated changes. #[ignore] tests silently skip coverage; unjustified clippy allows hide real lints."
-current_magnitude = "131 #[ignore] attributes in crates/ (GPU-only or network-only gating, mostly legitimate); 126 allow(clippy::*) in crates/ + 66 in proofs/ scaffolding; allow_clippy_unjustified is verified at 0 in crates/ by data/output/audit/repo_audit/repo_audit_anchored_2026_06_10.toml and make repo-audit-strict-unjustified; 0 TODO/FIXME and 0 unimplemented!/todo! macros (TODO closed from 3); 41 unreachable! (exhaustiveness pins, informational)."
+current_magnitude = "176 #[ignore] attributes in crates/ at 2026-07-09. Lane audit (2026-07-09): exactly ONE lane dispatches ignored tests -- make heavy (Makefile:987-990, --run-ignored only, two invocations covering the workspace) -- and it is MANUAL-ONLY; no CI workflow runs any ignored test. Classification: 79 GPU/hardware-gated (self-skipping without an adapter; legitimate), 68 heavy-research-lane, 1 known-limitation (harper_chern.rs:617, fix-or-delete), 3 GPU-overlap not-implemented (boxkites Monte Carlo x2, besag_clifford_cuda.rs:478 -- dead even with hardware), 28 bare-attribute (27 with runtime comments, 1 truly bare). Five tests are PROVABLY DEAD: documented runtimes (boxkites/tests.rs:6916 ~17h, :6904 ~2h, :6954 ~60m, :6239 ~35-40m; cd_tower_violations.rs:801 ~9m) exceed the heavy lane's terminate budgets (20 min heavy-math, 6 min elsewhere), so the only lane that dispatches them kills them; the non-heavy-math invocation also compiles UNOPTIMIZED, worsening every runtime comment. allow_clippy_unjustified holds at 0 in crates/, but that gate's population excludes allow(dead_code): 282 item-level #[allow] attrs show ~40% adjacent-rationale coverage on a 20-site sample (~170 bare, dead_code-dominant). Anchored todo_fixme_xxx_hack = 0 counts only non-comment tokens; the comment-resident actionable census is ~26 TODO/FIXME (registry-mirror data excluded) plus 4 in lbm_3d_cuda .cu kernels outside the .rs-only scan (see DEBT-MEASUREMENT-VALIDITY). 0 unimplemented!/todo! macros; 41 unreachable! (exhaustiveness pins, informational). Test-surface reproducibility is clean: 0 zero-test crates, 0 sleeps/network/absolute-path hazards inside test code."
 magnitude_reproduce = "make repo-audit  # ignore_attrs, allow_clippy_attrs, todo_fixme_xxx_hack, *_macro_calls"
 confirmed_examples = [
     "131 #[ignore] tests (GPU/network gating; exercised via opt-in --ignored lane).",
@@ -316,14 +321,14 @@ id = "DEBT-FORMAL-VERIFICATION"
 axis = "C_test_verification"
 label = "Rocq proof completeness (admits, axioms, parameters)"
 risk = "Admitted proofs, top-level axioms, and parameters that should be theorems weaken the formal-verification guarantee. A high axiom count can hide an inconsistent axiomatization (the Moreno Ker L_a case found an outright inconsistent H-module axiom)."
-current_magnitude = "282 .v files in proofs/. 2026-06-04 anchored audit: 0 strict Admitted, 0 strict admit; 31 top-level Axiom + 84 indented Axiom = 115 axioms; 8 top-level + 49 indented Parameter = 57 parameters; 172 total proof gaps (down from 196 at 2026-05-09). Most top-level axioms are necessary external-theorem axiomatizations, classified in axiom_dispositions.toml."
+current_magnitude = "297 .v files on disk (296 tracked; QuatRotationLaws.v is an in-flight commit-candidate with its _RocqProject hunk). 2026-07-09 anchored audit: 0 strict Admitted/admit; 31 top-level + 84 indented Axiom = 115; 8 + 49 Parameter = 57; 172 total proof gaps. FINDINGS 2026-07-09, remediated same day: (a) BUILD-MANIFEST ORPHANS -- _RocqProject listed 286 of 297 on-disk files; the 9 substantive orphans are now registered (295 total; the 2 extraction/ orphans stay intentional), after fixing the rot the registration exposed: five orphans still imported the retired CDProofs.* namespace (renamed to OpenGororoba), and CDFidelity.v (relocated from the unmapped proofs root into theories/) failed its first-ever body check -- a broken lra branch AND an inconsistent free axiom (wht_preserves_associator quantified before/after norms independently, proving any two reals equal -- the C1543 failure pattern again). Remediation: two vacuous exists-form axioms converted to proved lemmas (witness 0), the WHT axiom restated soundly over a wht_assoc_image function symbol, the negative Rcase_abs branch closed by contradiction. (b) PLACEHOLDER-DATA TABLE -- C1467_XORSignCocycle.v shipped 9 of 16 sign-table rows marked PLACEHOLDER (and the unmarked rows were wrong too); the table is regenerated from the in-file cd_sign_fuel recurrence and bound to it by the new sed_sign_table_correct vm_compute theorem. (c) Free (non-Module-Type) axioms concentrate in: SStructuralGaps.v (deliberate gap registry), CarlsonIntegrals.v, TightBindingTopology.v, C958_ZDGraphTopology.v, PathionZDGraph.v, CDFidelity.v (1 sound axiom post-remediation); the interface files Sedenion.v/OctonionNorm.v/CayleyDicksonAlgebra.v carry zero axioms."
 magnitude_reproduce = "make repo-audit  # rocq_admitted_strict, rocq_axiom_strict/_indented, rocq_parameter_strict/_indented"
 confirmed_examples = [
     "data/output/audit/2026-05-09/axiom_dispositions.toml (1773 lines classifying every axiom).",
     "Resolved: inconsistent C1543 H-module axiom dropped (commit 9492771f); non-alternative witnesses added.",
 ]
 resolution_pattern = "Hold strict Admitted/admit at zero; for each top-level Axiom record a disposition (necessary external theorem vs provable-but-deferred); convert interface-obligation indented axioms to derived lemmas where feasible; never ship an axiom that introduces inconsistency (test with a derived False-witness check)."
-falsifiable_acceptance = "make -C proofs vos && make -C proofs vok both succeed; repo-audit rocq_admitted_strict == 0 && rocq_admit_strict == 0; every top-level Axiom has a disposition row in axiom_dispositions.toml."
+falsifiable_acceptance = "make -C proofs vos && make -C proofs vok both succeed; repo-audit rocq_admitted_strict == 0 && rocq_admit_strict == 0; every top-level Axiom has a disposition row in axiom_dispositions.toml; the diff between on-disk non-extraction .v files and _RocqProject entries is empty; C1467_XORSignCocycle.v carries zero PLACEHOLDER rows or moves out of verified/."
 status = "controlled"
 predecessor_ids = ["DEBT-FORMAL-VERIFICATION", "DEBT-PROOF-1", "DEBT-PROOF-2", "DEBT-CLAIMS-PROOF"]
 cross_links = ["docs/engineering/formal_proof_field_schema_2026_05_09.md"]
@@ -369,6 +374,29 @@ cross_links = [
     "docs/engineering/pre_push_gate_optimization.md",
 ]
 
+[[debt_class]]
+id = "DEBT-MEASUREMENT-VALIDITY"
+axis = "C_test_verification"
+label = "Audit-instrument population validity (meta-measurement)"
+risk = "An audit metric that scans the wrong population reports confident numbers about nothing: debt work gets aimed at phantom surfaces, real surfaces stay invisible, and baseline deltas flip sign with environmental state (build caches) rather than code changes. The repo's own metric-taxonomy doc warns about comment-vs-code grep artifacts; the flagship debt baselines carried instrument artifacts of the same species."
+current_magnitude = "Five instances confirmed 2026-07-09. (1) CACHE CONTAMINATION -- RESOLVED same day: repo_audit.rs now prunes .cache/ and target/ under every root (EXCLUDED_DIR_NAMES) and declares the exclusion set in [meta]; with the cache present the fixed walker reports by_root.proofs 0/0/0, matching the cache-pruned 2026-06-25 row, vs 130 rust_files / 3420 unsafe_blocks / 64 allow_clippy_unjustified from the pre-fix walker -- git history contains no .rs ever tracked under proofs/. Every prior '3420 proofs scaffolding' figure was this artifact. (2) COMPLEMENT-POPULATION METRIC -- RESOLVED same day: the new todo_fixme_comment_resident shadow metric (raw-minus-stripped count, registry_mirrors excluded) reports 47 comment-resident markers alongside the anchored 0. (3) EXTENSION BLINDNESS -- RESOLVED same day: .cu/.wgsl files are scanned into kernel_files (76) and kernel_marker_count (4). Both new fields carry serde defaults so pre-existing baselines parse; both register as regression classes in the strict delta. (4) UNANCHORED COUNTERS -- OPEN: project.toml proof_files=186 equals no measurable population; binary_count=485 vs 484 in both compat TOML and canonical SQLite; resync via the SQLite lane remains. (5) GATE-SCOPE GAP -- OPEN: allow_clippy_unjustified=0 polices clippy allows only; ~170 bare allow(dead_code) sit outside every gate. (6) STALE GATE BINARY -- FOUND 2026-07-10: governance-gate-readonly consumes cached gate-tools binaries, so the scanner hardening landed in source (fix(governance) commits) while the cached pre-hardening binary kept passing; a cache refresh exposed 138 pre-existing UNREGISTERED markdown files. The gate binary cache needs a source-hash invalidation key so the gate that runs is always the gate that is committed."
+magnitude_reproduce = "grep -A4 'by_root.proofs' data/output/audit/2026-07-09/repo_audit_anchored_2026_07_09_cache_contaminated.toml data/output/audit/2026-07-09/repo_audit_anchored_2026_07_10.toml  # 3420 -> 0 unsafe across the walker fix, cache present in both; git log --all --name-only -- 'proofs/**/*.rs' | grep -c rs  # 0"
+confirmed_examples = [
+    "Fixture pair: repo_audit_anchored_2026_07_09_cache_contaminated.toml by_root.proofs (pre-fix walker, cache present: 130/3420/64) vs repo_audit_anchored_2026_07_10.toml (excluding walker, cache present: 0/0/0); the 2026-06-25 snapshot (cache pruned) matches the fixed row.",
+    "crates/lbm_3d_cuda/src/kernels_dark_halo.cu lines 15-18: four real TODO/FIXME invisible to the .rs-only marker scan.",
+    "registry/project.toml proof_files=186 (disk 297 / tracked 296 / _RocqProject 286 / theories 132 / SQLite theorems 131).",
+]
+resolution_pattern = "Every audit metric declares its scanned population (roots, file extensions, exclusion globs) in the emitted TOML; repo-audit excludes .cache/ and target/ under every root; comment-resident markers get their own shadow metric instead of being stripped into vacuity; kernel-source extensions (.cu, .wgsl) join the marker scan; every project.toml counter names its reproduction command; strict-gate comparisons pin the exclusion set so cache state cannot flip a delta."
+falsifiable_acceptance = "Two consecutive repo-audit runs, one with proofs/.cache present and one with it pruned, emit identical by_root.proofs numbers (satisfied by the fixture pair); the emitted [meta] block lists exclusion globs (satisfied); a comment-resident TODO/FIXME shadow metric row exists; every project.toml counter reproduces via its named command."
+status = "in_progress" # instance 1 (cache contamination) resolved; shadow metric, extension scan, allow-audit widening, counter resync remain
+predecessor_ids = ["DEBT-UNSAFE-PROOFS", "DEBT-UNSAFE-PROOFS-SCAFFOLDING"]
+cross_links = [
+    "DEBT-OBSERVABILITY",
+    "DEBT-MEMORY-SAFETY",
+    "DEBT-DATA-PROVENANCE",
+    "docs/engineering/repo_audit_metric_taxonomy.md",
+]
+
 # ----------------------------------------------------------------------------
 # AXIS D -- DATA AND PROVENANCE DEBT
 # ----------------------------------------------------------------------------
@@ -378,7 +406,7 @@ id = "DEBT-DATA-PROVENANCE"
 axis = "D_data_provenance"
 label = "External-source provenance and network isolation"
 risk = "Network access, cache mutation, and source provenance can leak into pure scientific computation lanes; registry counters can drift from their canonical SQLite source."
-current_magnitude = "270 provenance records; 114180 external files under data/external (gitignored except README). Registry counter reconciliation: project.toml binary_count=485 (canonical SQLite) vs binaries.toml 452 [[binary]] (compat export) -- the 33-entry gap is BY DESIGN (retired/derived binaries hidden from compat), documented, not drift. data_core default features should remain network-free."
+current_magnitude = "270 provenance records; 114180 external files under data/external (gitignored except README). Registry counter state 2026-07-09: compat binaries.toml and canonical SQLite binaries_cp now AGREE at 484 (the historical 452-vs-485 compat gap has closed), but registry/project.toml still declares binary_count=485 (off-by-one) and proof_files=186, a figure matching NO measurable population (disk 297, tracked 296, _RocqProject 286, theories/ 132; SQLite theorems table 131). Both counters need the canonical resync lane; see DEBT-MEASUREMENT-VALIDITY. Claims/experiments/insights counters are fully coherent across declared/compat/SQLite (1441/227/182). data_core default features should remain network-free."
 magnitude_reproduce = "grep binary_count registry/project.toml ; grep -c '^\\[\\[binary\\]\\]' registry/binaries.toml ; cargo tree -p data_core --no-default-features"
 confirmed_examples = [
     "data/external/ provenance hashing (270 records).",
@@ -544,7 +572,7 @@ id = "DEBT-TAXONOMY-COHERENCE"
 axis = "F_documentation_organizational"
 label = "Coherence of the debt taxonomy itself (meta-debt)"
 risk = "When canonical debt CLASSES and ephemeral Stage-B work-item TAGS share the DEBT-* namespace, a reader cannot tell a durable category from a one-off task. ~24 distinct DEBT-* strings existed across plans/data/docs/source with no single reconciliation point; this fragmentation defeats navigation and invites double-counting."
-current_magnitude = "Before this file: 24 distinct DEBT-* identifiers (12 canonical classes + ~12 work-item tags/placeholders) with no reconciliation map. After this file: 21 canonical classes in 6 axes + one [[identifier_reconciliation]] table mapping every legacy tag onto a class."
+current_magnitude = "Before this file: 24 distinct DEBT-* identifiers (12 canonical classes + ~12 work-item tags/placeholders) with no reconciliation map. After this file: 22 canonical classes in 6 axes + one [[identifier_reconciliation]] table mapping every legacy tag onto a class (DEBT-MEASUREMENT-VALIDITY added 2026-07-09 with the retired DEBT-UNSAFE-PROOFS/-SCAFFOLDING tags retargeted onto it)."
 magnitude_reproduce = "rg -o 'DEBT-[A-Z0-9-]+' -g '!*.lock' -g '!.cache/**' -g '!target/**' . | sort -u | wc -l"
 confirmed_examples = [
     "Placeholder tags DEBT-PLACEHOLDER-1/-2 carried no durable category.",
@@ -588,13 +616,13 @@ disposition = "crates/ unsafe lane (392 blocks, 65 SAFETY comments). The actiona
 
 [[identifier_reconciliation]]
 from = "DEBT-UNSAFE-PROOFS"
-to = "DEBT-MEMORY-SAFETY"
-disposition = "proofs/ Rust scaffolding unsafe lane (test-only; lower priority)."
+to = "DEBT-MEASUREMENT-VALIDITY"
+disposition = "Retired 2026-07-09: the lane counted dependency build-script outputs under proofs/.cache/gate-target, not project code (no .rs ever git-tracked under proofs/)."
 
 [[identifier_reconciliation]]
 from = "DEBT-UNSAFE-PROOFS-SCAFFOLDING"
-to = "DEBT-MEMORY-SAFETY"
-disposition = "Same as DEBT-UNSAFE-PROOFS (3420 blocks in test/verifier scaffolding)."
+to = "DEBT-MEASUREMENT-VALIDITY"
+disposition = "Same artifact as DEBT-UNSAFE-PROOFS: the 3420-block count is proofs/.cache contamination that flips to 0 when the cache is pruned. Retired 2026-07-09."
 
 [[identifier_reconciliation]]
 from = "DEBT-TEST-1"
@@ -663,6 +691,33 @@ risk_controls = [
 ]
 
 [[phase]]
+id = "DBT-INSTRUMENT"
+title = "Audit-instrument validity: exclusion sets, shadow metrics, counter re-anchoring"
+axis = "C_test_verification"
+horizon = "immediate"
+goal = "Every debt number measures a declared population; cache state cannot move a metric; every counter reproduces via a named command."
+tasks = [
+    "Exclude .cache/ and target/ under every scanned root in repo_audit.rs's directory walk; emit the exclusion globs in the output [meta] block.",
+    "Prove the fix with a fixture pair: run repo-audit with proofs/.cache/gate-target present and pruned; assert identical by_root.proofs output; retain both snapshots.",
+    "Retire the phantom proofs-scaffolding unsafe lane from remaining prose surfaces (this file done 2026-07-09; per-project MEMORY; docs/engineering/unsafe_safety_methodology_2026_05_09.md if it cites the 3420 figure).",
+    "Add a comment-resident TODO/FIXME shadow metric (comment-preserving scan, registry_mirrors and meta-tooling excluded) alongside the stripped metric so both populations are visible.",
+    "Extend the marker scan to kernel-source extensions (.cu, .wgsl) -- lbm_3d_cuda/src/kernels_dark_halo.cu carries 4 real markers today.",
+    "Extend the allow-rationale audit to all #[allow] attributes (dead_code included) or record a scoping decision in the metric taxonomy doc; current bare-allow census ~170 of 282.",
+    "Resync registry/project.toml binary_count to 484 and re-anchor proof_files to a named population (tracked .v under proofs/) via gororoba-db -> provenance export-control-plane -> make integrity-resolution; guard the known complete_experiment_count zeroing side-effect and revert it after the run.",
+    "After the exclusion fix lands, emit a clean anchored snapshot and advance strict_gate_baseline in [meta] above (the raw 2026-07-09 snapshot itself carries the contamination in [totals] and must not become the comparison baseline).",
+]
+acceptance_hooks = [
+    "make repo-audit twice (proofs/.cache present, then pruned): by_root.proofs blocks are byte-identical",
+    "grep -q 'exclu' data/output/audit/<latest>/repo_audit_anchored_*.toml  # exclusion set declared in [meta]",
+    "grep proof_files registry/project.toml  # value reproduces via the command named beside it",
+    "make repo-audit-strict  # green against the post-fix baseline",
+]
+risk_controls = [
+    "Fix the instrument before re-baselining: a baseline cut from a contaminated snapshot institutionalizes the artifact.",
+    "Counter resync goes through the SQLite-canonical lane only; never hand-edit the AUTO-GENERATED TOMLs.",
+]
+
+[[phase]]
 id = "DBT-A"
 title = "Code and structure: finish monolith split and SAFETY coverage"
 axis = "A_code_structure"
@@ -673,6 +728,8 @@ tasks = [
     "Relocate algebra_analysis/boxkites/tests.rs (7016) and algebra_experimental/emanation/tests.rs (4327) bulk via #[cfg(test)] mod sub-files; production code stays under threshold.",
     "Convert xtask/src/main.rs (3411) string dispatcher into a clap Subcommand enum across sibling modules.",
     "Add // SAFETY: comments to every crates/ unsafe block lacking one; produce a documented exceptions list for any that genuinely cannot carry one.",
+    "Re-split provenance_store/src/lib.rs (regrew 4220 -> 4372) and add a per-file line-count regression check so a split does not silently regrow.",
+    "Start the CLI bin/ hotspot class: registry_emit.rs 3779, human_acquire.rs 3707, governance_verify.rs 3586, execution_planning.rs 3434 -- split by subcommand/report surface with pub use stability.",
 ]
 acceptance_hooks = [
     "find crates xtask -name '*.rs' -not -path '*/registry_mirrors/*' | xargs wc -l | awk '$1>=4000'  # only transcribed-data + exempt tests",
@@ -693,6 +750,7 @@ tasks = [
     "Update the stale nightly-2026-03-05 references in AGENTS.md, CLAUDE.md, and the per-project MEMORY to the authoritative nightly-2026-04-05 pin in rust-toolchain.toml (the requirements narrative already matches).",
     "Migrate Makefile policy-heavy parsing (cpd report, integrity, governance) into xtask subcommands with structured output; keep make as a thin front door.",
     "Keep each deny.toml RUSTSEC ignore annotated with the blocking dependency and a re-check trigger (already satisfied) and remove any whose upstream fix has landed (rustls-webpki cluster already removed).",
+    "Harden the proofs/Makefile toolchain guard: verify the rocq binary's OCaml build matches the existing .vo tree (or that the switch is rocq-9.1.1) before compiling, and fail fast naming the opam env remedy when it does not.",
 ]
 acceptance_hooks = [
     "test \"$(grep -rh nightly rust-toolchain.toml AGENTS.md CLAUDE.md registry/requirements_narrative.toml | grep -o 'nightly-[0-9-]*' | sort -u | wc -l)\" -eq 1",
@@ -714,6 +772,12 @@ tasks = [
     "Record the Rocq-theorem-id <-> Rust-function binding in the formal_proof field for each proof-backed claim.",
     "Hold strict Admitted/admit at 0; keep a disposition row for every top-level Axiom.",
     "Keep CI gate-timing-regression-check as a hard gate; it no longer carries continue-on-error after the soak window ending 2026-05-26.",
+    "Register the 9 substantive _RocqProject orphans (CDFidelity.v, verified/C1474_FuelAdequacy.v, 7 theories/ files) in the build manifest and fix whatever breaks; add an orphan-diff check to the proofs gate so a new .v cannot silently skip compilation.",
+    "Replace the 9 PLACEHOLDER sign-table rows in proofs/verified/C1467_XORSignCocycle.v with values derived from cd_sign_fuel (or the sign-table oracle in cd_kernel) and re-verify the cocycle reflection.",
+    "Compile-verify and commit the in-flight proofs/theories/QuatRotationLaws.v with its _RocqProject registration hunk.",
+    "Give the 5 provably-dead long-runners (boxkites/tests.rs:6916/:6904/:6954/:6239, cd_tower_violations.rs:801) an ultra-heavy nextest profile whose slow-timeout matches their multi-hour runtimes plus a manual make target, or downscale them to a tractable dimension; the heavy lane's terminate budget currently kills all five.",
+    "Add a scheduled (nightly or weekly) CI job invoking make heavy so the 68 research-lane ignored tests stop rotting unexercised; add the reserved gpu-test target (cargo nextest run -P gpu --run-ignored only) on optional self-hosted hardware for the 79 GPU-gated tests.",
+    "Fix or delete the known-limitation test harper_chern.rs:617 and the 3 not-implemented GPU placeholders (boxkites Monte Carlo x2, besag_clifford_cuda.rs:478); convert the 28 bare #[ignore] attributes to #[ignore = \"reason\"] so they route to the intended budget.",
 ]
 acceptance_hooks = [
     "cargo nextest run -p cd_kernel  # recurrence parity proptest green",

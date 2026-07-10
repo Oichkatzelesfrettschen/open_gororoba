@@ -86,7 +86,7 @@ hardware-specific tables are replaced with the scientific stack.
 
 ## Build environment
 
-- Toolchain: `rust-toolchain.toml` pins nightly-2026-03-05,
+- Toolchain: `rust-toolchain.toml` pins nightly-2026-04-05,
   edition 2024.
 - Default target dir for gates: `CARGO_TARGET_DIR=.cache/gate-target`.
 - Per-worktree experimental dirs: `.cache/exp-<name>-target/`.
