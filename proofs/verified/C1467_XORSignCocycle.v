@@ -11,38 +11,34 @@ From Stdlib Require Import Arith PeanoNat Bool List ZArith.
 Import ListNotations.
 
 (** Precomputed sedenion sign table: sigma(i, j) for 0 <= i,j <= 15.
-    Generated from cd_basis_mul_sign(16, i, j). *)
+    Every row is generated from cd_sign_fuel 5 16 i j (the bounded
+    Cayley-Dickson sign recurrence below) and bound to it by the
+    sed_sign_table_correct reflection theorem, so a transcription error
+    in any cell fails vm_compute. *)
 Definition sed_sign (i j : nat) : Z :=
   let idx := i * 16 + j in
   (* Row-major 16x16 table. Each row is sigma(i, 0..15). *)
   nth idx
     [ 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1;   (* i=0 *)
-      1;-1; 1;-1;-1; 1;-1; 1; 1;-1; 1;-1;-1; 1;-1; 1;   (* i=1 *)
-      1;-1;-1; 1; 1;-1;-1; 1; 1;-1;-1; 1; 1;-1;-1; 1;   (* i=2 *)
-      1; 1;-1;-1;-1;-1; 1; 1; 1; 1;-1;-1;-1;-1; 1; 1;   (* i=3 *)
-      1; 1;-1; 1;-1;-1; 1;-1; 1; 1;-1; 1;-1;-1; 1;-1;   (* i=4 *)
-      1;-1; 1; 1; 1;-1;-1;-1; 1;-1; 1; 1; 1;-1;-1;-1;   (* i=5 *)
-      1; 1; 1;-1;-1;-1;-1; 1;-1; 1;-1;-1; 1; 1; 1;-1;   (* i=6 -- PLACEHOLDER *)
-      1;-1;-1;-1; 1; 1;-1;-1;-1; 1;-1; 1;-1; 1; 1;-1;   (* i=7 -- PLACEHOLDER *)
-      1;-1;-1;-1;-1;-1; 1; 1;-1; 1; 1;-1; 1;-1;-1; 1;   (* i=8 *)
-      1; 1; 1;-1;-1; 1;-1;-1;-1;-1;-1; 1; 1;-1; 1; 1;   (* i=9 -- PLACEHOLDER *)
-      1;-1; 1; 1; 1;-1; 1;-1;-1; 1;-1;-1;-1; 1;-1; 1;   (* i=10 -- PLACEHOLDER *)
-      1; 1;-1; 1;-1;-1; 1;-1; 1;-1; 1;-1;-1;-1; 1; 1;   (* i=11 -- PLACEHOLDER *)
-      1; 1;-1; 1; 1;-1;-1; 1;-1;-1; 1;-1;-1; 1;-1;-1;   (* i=12 -- PLACEHOLDER *)
-      1;-1; 1; 1;-1; 1;-1;-1; 1; 1;-1; 1;-1;-1; 1;-1;   (* i=13 -- PLACEHOLDER *)
-      1; 1; 1;-1;-1; 1;-1;-1; 1;-1; 1;-1; 1;-1;-1;-1;   (* i=14 -- PLACEHOLDER *)
-      1;-1;-1;-1; 1; 1; 1; 1;-1; 1; 1; 1;-1;-1;-1;-1    (* i=15 -- PLACEHOLDER *)
+      1;-1; 1;-1; 1;-1;-1; 1; 1;-1;-1; 1;-1; 1; 1;-1;   (* i=1 *)
+      1;-1;-1; 1; 1; 1;-1;-1; 1; 1;-1;-1;-1;-1; 1; 1;   (* i=2 *)
+      1; 1;-1;-1; 1;-1; 1;-1; 1;-1; 1;-1;-1; 1;-1; 1;   (* i=3 *)
+      1;-1;-1;-1;-1; 1; 1; 1; 1; 1; 1; 1;-1;-1;-1;-1;   (* i=4 *)
+      1; 1;-1; 1;-1;-1;-1; 1; 1;-1; 1;-1; 1;-1; 1;-1;   (* i=5 *)
+      1; 1; 1;-1;-1; 1;-1;-1; 1;-1;-1; 1; 1;-1;-1; 1;   (* i=6 *)
+      1;-1; 1; 1;-1;-1; 1;-1; 1; 1;-1;-1; 1; 1;-1;-1;   (* i=7 *)
+      1;-1;-1;-1;-1;-1;-1;-1;-1; 1; 1; 1; 1; 1; 1; 1;   (* i=8 *)
+      1; 1;-1; 1;-1; 1; 1;-1;-1;-1;-1; 1;-1; 1; 1;-1;   (* i=9 *)
+      1; 1; 1;-1;-1;-1; 1; 1;-1; 1;-1;-1;-1;-1; 1; 1;   (* i=10 *)
+      1;-1; 1; 1;-1; 1;-1; 1;-1;-1; 1;-1;-1; 1;-1; 1;   (* i=11 *)
+      1; 1; 1; 1; 1;-1;-1;-1;-1; 1; 1; 1;-1;-1;-1;-1;   (* i=12 *)
+      1;-1; 1;-1; 1; 1; 1;-1;-1;-1; 1;-1; 1;-1; 1;-1;   (* i=13 *)
+      1;-1;-1; 1; 1;-1; 1; 1;-1;-1;-1; 1; 1;-1;-1; 1;   (* i=14 *)
+      1; 1;-1;-1; 1; 1;-1; 1;-1; 1;-1;-1; 1; 1;-1;-1    (* i=15 *)
     ]%Z 0%Z.
 
-(** NOTE: The table above has PLACEHOLDER rows (marked) that need to be
-    verified against the actual cd_basis_mul_sign output. The exact signs
-    depend on the specific Fano plane convention used.
-
-    Rather than guessing, let me use the Rust engine to generate the
-    correct table and come back. For now, verify the structural properties
-    using the COMPUTABLE sign function approach with bounded recursion. *)
-
-(** Alternative: use bounded recursion with a fuel parameter. *)
+(** Bounded Cayley-Dickson sign recurrence. Fuel 5 covers the descent
+    16 -> 8 -> 4 -> 2 -> 1; fuel adequacy is the C-1474 theorem. *)
 Fixpoint cd_sign_fuel (fuel dim p q : nat) : Z :=
   match fuel with
   | O => 0%Z
@@ -68,6 +64,15 @@ Fixpoint cd_sign_fuel (fuel dim p q : nat) : Z :=
 (** With fuel = 5 (enough for dim = 16 -> 8 -> 4 -> 2 -> 1), all
     sedenion signs are correctly computed. *)
 Definition sed_sign_f (i j : nat) : Z := cd_sign_fuel 5 16 i j.
+
+(** The literal table and the recurrence agree on all 256 pairs. *)
+Definition check_table_matches : bool :=
+  forallb (fun i =>
+    forallb (fun j => Z.eqb (sed_sign i j) (sed_sign_f i j)) (seq 0 16)
+  ) (seq 0 16).
+
+Theorem sed_sign_table_correct : check_table_matches = true.
+Proof. vm_compute. reflexivity. Qed.
 
 (** Identity: sigma(i, 0) = +1. *)
 Definition check_identity : bool :=

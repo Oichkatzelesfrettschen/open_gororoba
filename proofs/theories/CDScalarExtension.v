@@ -51,7 +51,7 @@ Open Scope R_scope.
     The point: the proofs use ONLY ring, never lra or order.
     Any commutative ring could be substituted. *)
 
-Require Import CDProofs.CDDoubleFunctor.
+From OpenGororoba Require Import CDDoubleFunctor.
 
 Module GenericRingBase <: CDAlgLinear.
 

@@ -6,6 +6,7 @@
 theories/Prelude.v
 theories/Tanh.v
 theories/Quaternion.v
+theories/QuatRotationLaws.v
 theories/ADM.v
 theories/ADMAlgebraBridge.v
 theories/Casimir.v
@@ -288,3 +289,12 @@ verified/C1635_SedenionDriverSemantics.v
 theories/CDQuatRotationMatrix.v
 theories/OctonionInverse.v
 theories/QuatTranscendental.v
+theories/ArchimedeanStratification.v
+theories/CardanoEigensolver.v
+theories/CDScalarExtension.v
+theories/CDTowerInstantiation.v
+theories/M3IsAssociatorPathion.v
+theories/WilmotPathionRetraction.v
+theories/WilmotRetractionTheorem.v
+theories/CDFidelity.v
+verified/C1474_FuelAdequacy.v
