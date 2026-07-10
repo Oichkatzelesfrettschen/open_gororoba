@@ -83,6 +83,10 @@ struct Counts {
     rust_files: u64,
     rocq_files: u64,
     other_files: u64,
+    /// Kernel source files scanned (extension `cu` or `wgsl`). Counted apart
+    /// from `other_files` so C-like/WGSL device code has its own census.
+    #[serde(default)]
+    kernel_files: u64,
     // Rust source counts (after comment/string stripping).
     unsafe_blocks: u64,
     safety_comments: u64,
@@ -96,6 +100,18 @@ struct Counts {
     allow_clippy_unjustified: u64,
     allow_dead_code_attrs: u64,
     todo_fixme_xxx_hack: u64,
+    /// TODO/FIXME/XXX/HACK tokens resident inside Rust comments (line +
+    /// block). Computed as raw-source marker count minus comment-stripped
+    /// marker count, so it captures markers the comment-context regex
+    /// misses. Files under `registry_mirrors` are excluded: they are
+    /// generated doc-comment mirrors of planning documents whose marker
+    /// mentions are noise.
+    #[serde(default)]
+    todo_fixme_comment_resident: u64,
+    /// TODO/FIXME/XXX/HACK tokens in kernel source (`cu` / `wgsl`), matched
+    /// by plain regex on raw text since these are C-like/WGSL device code.
+    #[serde(default)]
+    kernel_marker_count: u64,
     unimplemented_macros: u64,
     todo_macros: u64,
     unreachable_macros: u64,
@@ -162,8 +178,15 @@ struct Meta {
     generated_at: String,
     binary: String,
     roots: Vec<String>,
+    excluded_dirs: Vec<String>,
     method: String,
 }
+
+/// Directory names pruned from every root walk. Build caches under a scanned
+/// root (e.g. proofs/.cache/gate-target) hold dependency build-script outputs
+/// whose unsafe blocks and allow attrs would enter the census and swing the
+/// per-root counts with cache state instead of tracked-source changes.
+const EXCLUDED_DIR_NAMES: &[&str] = &[".cache", "target"];
 
 /// Strip block comments, line comments, and string/byte/char literals.
 /// Returns the stripped source. Comments are replaced with spaces of the
@@ -253,6 +276,7 @@ struct Patterns {
     allow_clippy: Regex,
     allow_dead_code: Regex,
     todo_fixme: Regex,
+    marker_plain: Regex,
     unimplemented_macro: Regex,
     todo_macro: Regex,
     unreachable_macro: Regex,
@@ -279,6 +303,10 @@ impl Patterns {
             // Comment-context patterns: applied to ORIGINAL source.
             safety_comment: Regex::new(r"(?m)^\s*(?://|/\*)\s*SAFETY\s*:")?,
             todo_fixme: Regex::new(r"(?m)^\s*(?://|/\*)\s*(?:TODO|FIXME|XXX|HACK)\b")?,
+            // Plain marker regex: matches TODO/FIXME/XXX/HACK anywhere. Used
+            // for the comment-resident diff (raw minus stripped) and for
+            // kernel-source scanning.
+            marker_plain: Regex::new(r"\b(?:TODO|FIXME|XXX|HACK)\b")?,
             // Rocq patterns: anchored to line start; case-sensitive.
             rocq_admitted_strict: Regex::new(r"(?m)^[[:space:]]*Admitted[[:space:]]*\.\s*$")?,
             rocq_admit_strict: Regex::new(r"(?m)^[[:space:]]*admit[[:space:]]*\.\s*$")?,
@@ -290,10 +318,22 @@ impl Patterns {
     }
 }
 
-fn count_in_rust_file(src: &str, patterns: &Patterns) -> Counts {
+fn count_in_rust_file(src: &str, path: &Path, patterns: &Patterns) -> Counts {
     let stripped = strip_rust(src);
+    // Markers present in raw source but absent from comment-stripped source
+    // live inside comments (line + block). registry_mirrors files are
+    // generated doc-comment mirrors of planning documents; their marker
+    // mentions are noise, so the metric skips them.
+    let comment_resident = if path.to_string_lossy().contains("registry_mirrors") {
+        0
+    } else {
+        let raw = patterns.marker_plain.find_iter(src).count() as u64;
+        let code = patterns.marker_plain.find_iter(&stripped).count() as u64;
+        raw.saturating_sub(code)
+    };
     Counts {
         rust_files: 1,
+        todo_fixme_comment_resident: comment_resident,
         unsafe_blocks: patterns.unsafe_block.find_iter(&stripped).count() as u64,
         ignore_attrs: patterns.ignore_attr.find_iter(&stripped).count() as u64,
         allow_clippy_attrs: patterns.allow_clippy.find_iter(&stripped).count() as u64,
@@ -356,6 +396,17 @@ fn count_in_rocq_file(src: &str, patterns: &Patterns) -> Counts {
         rocq_axiom_indented: patterns.rocq_axiom_indented.find_iter(src).count() as u64,
         rocq_parameter_strict: patterns.rocq_parameter_top.find_iter(src).count() as u64,
         rocq_parameter_indented: patterns.rocq_parameter_indented.find_iter(src).count() as u64,
+        ..Counts::default()
+    }
+}
+
+/// Count TODO/FIXME/XXX/HACK markers in a kernel source file (`cu` /
+/// `wgsl`). These are C-like/WGSL device sources, so the plain marker regex
+/// runs against the raw text.
+fn count_in_kernel_file(src: &str, patterns: &Patterns) -> Counts {
+    Counts {
+        kernel_files: 1,
+        kernel_marker_count: patterns.marker_plain.find_iter(src).count() as u64,
         ..Counts::default()
     }
 }
@@ -443,6 +494,7 @@ fn merge(into: &mut Counts, from: &Counts) {
     into.rust_files += from.rust_files;
     into.rocq_files += from.rocq_files;
     into.other_files += from.other_files;
+    into.kernel_files += from.kernel_files;
     into.unsafe_blocks += from.unsafe_blocks;
     into.safety_comments += from.safety_comments;
     into.ignore_attrs += from.ignore_attrs;
@@ -450,6 +502,8 @@ fn merge(into: &mut Counts, from: &Counts) {
     into.allow_clippy_unjustified += from.allow_clippy_unjustified;
     into.allow_dead_code_attrs += from.allow_dead_code_attrs;
     into.todo_fixme_xxx_hack += from.todo_fixme_xxx_hack;
+    into.todo_fixme_comment_resident += from.todo_fixme_comment_resident;
+    into.kernel_marker_count += from.kernel_marker_count;
     into.unimplemented_macros += from.unimplemented_macros;
     into.todo_macros += from.todo_macros;
     into.unreachable_macros += from.unreachable_macros;
@@ -466,6 +520,12 @@ fn process_root(root: &Path, patterns: &Patterns) -> Result<Counts> {
     for entry in WalkDir::new(root)
         .follow_links(false)
         .into_iter()
+        .filter_entry(|e| {
+            !(e.file_type().is_dir()
+                && e.file_name()
+                    .to_str()
+                    .is_some_and(|name| EXCLUDED_DIR_NAMES.contains(&name)))
+        })
         .filter_map(|r| r.ok())
     {
         if !entry.file_type().is_file() {
@@ -479,7 +539,7 @@ fn process_root(root: &Path, patterns: &Patterns) -> Result<Counts> {
                     Ok(s) => s,
                     Err(_) => continue,
                 };
-                merge(&mut total, &count_in_rust_file(&src, patterns));
+                merge(&mut total, &count_in_rust_file(&src, p, patterns));
             }
             "v" => {
                 let src = match fs::read_to_string(p) {
@@ -487,6 +547,13 @@ fn process_root(root: &Path, patterns: &Patterns) -> Result<Counts> {
                     Err(_) => continue,
                 };
                 merge(&mut total, &count_in_rocq_file(&src, patterns));
+            }
+            "cu" | "wgsl" => {
+                let src = match fs::read_to_string(p) {
+                    Ok(s) => s,
+                    Err(_) => continue,
+                };
+                merge(&mut total, &count_in_kernel_file(&src, patterns));
             }
             _ => {
                 total.other_files += 1;
@@ -531,6 +598,17 @@ fn compute_delta(baseline_path: &Path, prior: &Counts, curr: &Counts) -> Baselin
             "todo_fixme_xxx_hack",
             prior.todo_fixme_xxx_hack,
             curr.todo_fixme_xxx_hack,
+        ),
+        (
+            "todo_fixme_comment_resident",
+            prior.todo_fixme_comment_resident,
+            curr.todo_fixme_comment_resident,
+        ),
+        ("kernel_files", prior.kernel_files, curr.kernel_files),
+        (
+            "kernel_marker_count",
+            prior.kernel_marker_count,
+            curr.kernel_marker_count,
         ),
         (
             "unimplemented_macros",
@@ -653,6 +731,7 @@ fn main() -> Result<()> {
             generated_at: now,
             binary: env!("CARGO_BIN_NAME").to_string(),
             roots: args.roots.clone(),
+            excluded_dirs: EXCLUDED_DIR_NAMES.iter().map(|s| s.to_string()).collect(),
             method: "regex-anchored on comment-stripped Rust; line-anchored on Rocq (.v)"
                 .to_string(),
         },

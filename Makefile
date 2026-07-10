@@ -2325,7 +2325,7 @@ cpd-audit:
 # See crates/gororoba_cli_data/src/bin/repo_audit.rs for what is counted
 # and the limitations of the regex-on-stripped-source approach.
 REPO_AUDIT_OUT ?= data/output/audit/repo_audit
-REPO_AUDIT_BASELINE ?= data/output/audit/2026-06-25/repo_audit_anchored_2026_06_25.toml
+REPO_AUDIT_BASELINE ?= data/output/audit/2026-07-09/repo_audit_anchored_2026_07_10.toml
 REPO_AUDIT_SQLITE ?= registry/canonical/control_plane.sqlite3
 REPO_AUDIT_TMPDIR ?= $(CURDIR)/.cache/repo-audit-tmp
 
