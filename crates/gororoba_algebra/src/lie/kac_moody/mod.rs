@@ -209,15 +209,34 @@ mod tests {
         let e9 = E9RootSystem::new();
         let roots = e9.real_roots_up_to_level(2);
 
-        // Should have roots at levels -2, -1, 0, 1, 2
-        // Level 0: 16 (8 simple + 8 negative)
-        // Levels +/-1: 16 each
-        // Levels +/-2: 16 each
-        assert!(roots.len() >= 16); // At minimum level 0
+        // Real roots are alpha + n*delta over all 240 E8 roots:
+        // 240 at level 0 plus 480 per level pair {+n, -n}.
+        assert_eq!(roots.len(), 240 + 2 * 480);
 
-        // Check some roots are at different levels
-        let levels: std::collections::HashSet<i32> = roots.iter().map(|r| r.level).collect();
-        assert!(levels.contains(&0));
+        for level in [-2, -1, 0, 1, 2] {
+            assert_eq!(
+                roots.iter().filter(|r| r.level == level).count(),
+                240,
+                "level {level} must carry all 240 E8 roots"
+            );
+        }
+
+        // Every real root has finite part of squared length 2, and the
+        // level-0 slice is closed under negation.
+        for root in &roots {
+            let norm_sq: f64 = root.finite_part.iter().map(|x| x * x).sum();
+            assert!((norm_sq - 2.0).abs() < 1e-10);
+            assert_eq!(root.root_type, RootType::Real);
+        }
+        let level0: Vec<Vec<i64>> = roots
+            .iter()
+            .filter(|r| r.level == 0)
+            .map(|r| r.finite_part.iter().map(|x| (x * 2.0) as i64).collect())
+            .collect();
+        for coords in &level0 {
+            let neg: Vec<i64> = coords.iter().map(|c| -c).collect();
+            assert!(level0.contains(&neg));
+        }
     }
 
     #[test]
