@@ -93,7 +93,7 @@ both:
 
 ### Build and test gate
 
-- Toolchain: nightly-2026-03-05 pinned via `rust-toolchain.toml`.
+- Toolchain: nightly-2026-04-05 pinned via `rust-toolchain.toml`.
   Edition 2024.
 - Warnings-as-errors via `[workspace.lints]` in root `Cargo.toml`.
   Do NOT bypass with crate-local `#![allow(warnings)]`. If a lint

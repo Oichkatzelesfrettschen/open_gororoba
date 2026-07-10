@@ -86,7 +86,7 @@ for experiments registered after 2026-04-30.
 
 ## Backwards compatibility
 
-Existing 251 experiments have no obligation to backfill these fields. The
+Existing experiments have no obligation to backfill these fields. The
 schema extension is additive: missing fields simply mean "reproducibility
 class undeclared". The governance gate must remain green during the
 transition period.
