@@ -677,8 +677,8 @@ impl BesagCliffordVulkanEngine {
         let bc_set = sets[0];
 
         // Write BC descriptor set: bind all 7 buffers
-        // binding(0) = imbalance_in (from LBM rho as a proxy for now;
-        //              actual imbalance data will be uploaded separately)
+        // binding(0) = imbalance_in: LBM rho serves as the imbalance proxy.
+        //              Dedicated imbalance data binds through a separate upload.
         let infos = [
             vk::DescriptorBufferInfo {
                 buffer: imbalance_buffer.buffer,

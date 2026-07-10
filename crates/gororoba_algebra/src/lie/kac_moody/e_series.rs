@@ -83,8 +83,8 @@ impl E9RootSystem {
     pub fn real_roots_up_to_level(&self, max_level: u32) -> Vec<KacMoodyRoot> {
         let mut roots = Vec::new();
 
-        // Level 0: E8 roots (240 of them)
-        // We just generate a sample for now
+        // Level 0: E8 roots (240 of them).
+        // TODO: enumerate all 240 E8 roots; only the simple roots and their negatives are added here.
         for root in &self.e8_simple_roots {
             roots.push(root.clone());
             // Also add negative roots

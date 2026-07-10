@@ -31,7 +31,7 @@
 //!
 //! # Recommendation
 //!
-//! Keep `wide` for now. Our SIMD usage is limited to:
+//! `wide` is retained. The SIMD usage is limited to:
 //! 1. simd_codebook.rs: f32x8 broadcast-compare-popcount (7 boundaries)
 //! 2. Potential WHT butterfly SIMD (not yet implemented)
 //!

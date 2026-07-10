@@ -6,8 +6,8 @@ use std::{env, process::Command};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("[pre-push] running ./makew gate-local");
 
-    // We assume makew is still available as a script for now,
-    // or we use cargo xtask directly if ported.
+    // Runs the ./makew gate-local script directly.
+    // TODO: call the gate-local cargo xtask subcommand once the makew logic is ported.
     let status = Command::new("./makew").arg("gate-local").status()?;
 
     if !status.success() {

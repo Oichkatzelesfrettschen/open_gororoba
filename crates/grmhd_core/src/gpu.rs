@@ -7,7 +7,7 @@
 //!   3. compute_flux_kernel (x3 directions)
 //!   4. flux_divergence_kernel (x3 directions)
 //!   5. euler_update_kernel
-//!   6. con2prim (CPU fallback for now)
+//!   6. con2prim (runs on the CPU)
 //!
 //! Data layout: SoA (NPRIM * N_total) for coalesced GPU access.
 

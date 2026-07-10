@@ -539,7 +539,8 @@ impl SuperconductingProfile {
     /// Uses heavy-hex topology with CX/CZ native gates.
     /// Typical IBM Falcon/Hummingbird parameters.
     pub fn ibm(n_qubits: usize) -> Self {
-        // IBM uses heavy-hex topology, approximate as grid for now
+        // IBM uses heavy-hex topology, modeled here as a square grid.
+        // TODO: represent heavy-hex connectivity in QubitTopology instead of Grid.
         let side = (n_qubits as f64).sqrt().ceil() as usize;
         Self {
             n_qubits,
