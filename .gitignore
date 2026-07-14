@@ -275,3 +275,10 @@ credentials.*
 *.h5
 .venv/
 h_trace_*.csv
+
+# CertiRocq (rocq-certirocq) verified Gallina->C extraction output
+proofs/OpenGororoba.*.c
+proofs/OpenGororoba.*.h
+proofs/extraction/OpenGororoba.*.c
+proofs/extraction/OpenGororoba.*.h
+proofs/extraction/glue.*
