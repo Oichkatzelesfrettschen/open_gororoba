@@ -197,3 +197,6 @@ theories/OctonionSandwichNorm.v
 theories/CDQuatRotationMatrix.v
 theories/OctonionInverse.v
 theories/QuatTranscendental.v
+theories/IDCT8DP4ExactBound.v
+theories/FP24Representable.v
+verified/C1629_IDCT8DP4ExactBound.v
