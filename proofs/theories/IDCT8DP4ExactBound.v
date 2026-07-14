@@ -54,6 +54,32 @@ Section DP8_AccumulatorBound.
   Proof.
     intros. unfold dp8. nia.
   Qed.
+
+  (* Operation-level refinement: the DP4 lane evaluates the accumulator as two
+     four-term dot products summed, and no intermediate leaves the 8 B^2 envelope.
+     A single product has magnitude at most B^2, a four-term DP4 half at most
+     4 B^2, and the full accumulator at most 8 B^2 (dp8_abs_bound).  With
+     8 B^2 <= 2^17 (dp8_exact_threshold) every product, every DP4 half, and the
+     final sum sits inside the FP24 window, so the lane rounds at no step.  The
+     absolute-value bounds make this independent of accumulation order. *)
+  Theorem prod_abs_bound :
+    forall B : Z, 0 <= B -> -B <= a0 <= B -> -B <= b0 <= B ->
+      - (B * B) <= a0 * b0 <= B * B.
+  Proof. intros B HB Ha Hb. nia. Qed.
+
+  Theorem dp4_lo_abs_bound :
+    forall B : Z, 0 <= B ->
+      -B <= a0 <= B -> -B <= a1 <= B -> -B <= a2 <= B -> -B <= a3 <= B ->
+      -B <= b0 <= B -> -B <= b1 <= B -> -B <= b2 <= B -> -B <= b3 <= B ->
+      - (4 * B * B) <= a0*b0 + a1*b1 + a2*b2 + a3*b3 <= 4 * B * B.
+  Proof. intros. nia. Qed.
+
+  Theorem dp4_hi_abs_bound :
+    forall B : Z, 0 <= B ->
+      -B <= a4 <= B -> -B <= a5 <= B -> -B <= a6 <= B -> -B <= a7 <= B ->
+      -B <= b4 <= B -> -B <= b5 <= B -> -B <= b6 <= B -> -B <= b7 <= B ->
+      - (4 * B * B) <= a4*b4 + a5*b5 + a6*b6 + a7*b7 <= 4 * B * B.
+  Proof. intros. nia. Qed.
 End DP8_AccumulatorBound.
 
 (* FP24 exact-integer window and the accumulator's exactness threshold.
@@ -78,9 +104,12 @@ Lemma dp8_exact_threshold :
   forall B : Z, 0 <= B -> (8 * B * B <= 2 ^ 17 <-> B <= 128).
 Proof. intros B HB. change (2 ^ 17) with 131072. nia. Qed.
 
-(* The r300 R2VB admission gate keeps the strict form 8 * B^2 < 2^17 (B <= 127):
-   a fail-closed choice that declines the exact-but-boundary B = 128 rather than
-   asserting it inexact.  R300_MP_FP24_EXACT_INT = 131072 in r300_numeric_domain.c. *)
+(* Conservative IDCT-operand policy: the strict form 8 * B^2 < 2^17 (B <= 127)
+   declines the exact-but-boundary B = 128 as a fail-closed choice rather than
+   asserting it inexact.  This is distinct from the typed-carry value gate, which
+   is inclusive (|n| <= 2^17); see fp24_value_admit and the sint/uint range
+   predicates in FP24Representable.v, faithful to r300_nir_ssa_cut.c lines
+   433-439.  R300_MP_FP24_EXACT_INT = 131072 in r300_numeric_domain.c. *)
 Definition fp24_admit_strict (B : Z) : bool := (8 * B * B <? 131072)%Z.
 
 Lemma fp24_admit_strict_spec :
