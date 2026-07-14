@@ -142,6 +142,31 @@ extract-check: extract
 	  (echo "DIFF: extraction output differs from golden file"; exit 1); \
 	else echo "SKIP: no golden file yet"; fi
 
+# Verified Gallina -> C emission via CertiRocq (rocq-certirocq 0.9.1+9.1).
+# Compiles the proven fp24_value_admit gate to Clight/C; output lands in
+# extraction/ (gitignored, reproducible).  Run under the rocq-certirocq switch.
+extract-c: all
+	@echo "Emitting verified C from Rocq via CertiRocq..."
+	@if [ -f extraction/ExtractFP24Admit.v ]; then \
+	  rocq compile -R theories OpenGororoba -R verified OpenGororobaVerified \
+	    extraction/ExtractFP24Admit.v && \
+	  mv -f OpenGororoba.FP24Representable.fp24_value_admit.c \
+	        OpenGororoba.FP24Representable.fp24_value_admit.h extraction/ 2>/dev/null && \
+	  echo "Emitted extraction/OpenGororoba.FP24Representable.fp24_value_admit.{c,h}"; \
+	fi
+
+# Compile-check the emitted C against the CertiRocq runtime headers.  CertiCoq
+# puns function pointers into value (long), valid CompCert-C, so int-conversion
+# and implicit-declaration are permitted for this translation unit.
+extract-c-check: extract-c
+	@RT="$$(opam var lib)/coq/user-contrib/CertiRocq/Plugin/runtime"; \
+	echo "Compile-checking emitted C against $$RT ..."; \
+	gcc -c -std=gnu11 -Wno-int-conversion -Wno-implicit-function-declaration \
+	    -I "$$RT" -o /dev/null \
+	    extraction/OpenGororoba.FP24Representable.fp24_value_admit.c && \
+	echo "MATCH: emitted C compiles clean" || \
+	(echo "FAIL: emitted C did not compile"; exit 1)
+
 count:
 	@echo "Theory files:  $$(ls theories/*.v 2>/dev/null | wc -l)"
 	@echo "Verified files: $$(ls verified/*.v 2>/dev/null | wc -l)"
@@ -150,4 +175,4 @@ count:
 	@echo "Interfaces .vos: $$(ls theories/*.vos verified/*.vos 2>/dev/null | wc -l)"
 	@echo "Checked .vok:    $$(ls theories/*.vok verified/*.vok 2>/dev/null | wc -l)"
 
-.PHONY: all vos vok clean check extract extract-check count rocq-makefile-check
+.PHONY: all vos vok clean check extract extract-check extract-c extract-c-check count rocq-makefile-check
