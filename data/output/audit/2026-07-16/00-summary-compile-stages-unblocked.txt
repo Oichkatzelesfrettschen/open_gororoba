@@ -1,0 +1,44 @@
+# Audit refresh 2026-07-16 -- compile stages unblocked and green
+
+## Supersedes
+data/output/audit/2026-07-14/00-BLOCKER-compile-stages.md. Both blockers
+recorded there are resolved by commit 4a5f17a1:
+- Toolchain: rust-toolchain.toml pins stable 1.97.0 (clippy, rustfmt);
+  `rustup toolchain list` shows it installed and `cargo metadata` loads
+  the full 76-member workspace.
+- fwht sibling path: Cargo.toml resolves fwht via a pinned git rev from
+  Oichkatzelesfrettschen/cratesgororobas instead of the absent
+  ../cratesgororobas path.
+
+The static stages from 2026-07-14 (scc, tokei, preflight) remain valid
+and are not re-run; this bundle carries the compile stages they blocked.
+
+## Stages in this bundle
+- 11-clippy-workspace.log -- `make rust-clippy` (workspace clippy,
+  deny warnings): PASS, exit 0. Includes the new
+  gororoba_cli_physics::staple_associator module and its two binaries.
+- 13-dep-audit.log -- `make dep-audit` (cargo tree -d duplicate-version
+  survey + advisory scan): PASS, exit 0, "OK: dependency audit
+  completed."
+- 12-geiger-cd_kernel.log -- `cargo geiger` unsafe census scoped to
+  cd_kernel (the unsafe hotspot per the 2026-03-29 unsafe audit;
+  full-workspace geiger is impractical at 76 members). cd_kernel
+  itself: 5/5 unsafe functions, 147/327 unsafe expressions, 4/4 unsafe
+  impls; dep-tree total 171/1069 functions, 13550/62824 expressions.
+  Exit 1 is geiger's unsafe-found convention (303 warnings). Geiger
+  emits benign "Failed to match (ignoring source)" noise for the
+  git-sourced fwht dependency, and needs an otherwise-idle machine --
+  a concurrent clippy/proof build starves it into a multi-hour stall.
+
+## Same-day verification context
+- Full clean Rocq proof-tree rebuild: 296 .vo, exit 0, Rocq 9.1.1 /
+  OCaml 5.5.0 (stale .vo cache from a different OCaml build was purged
+  first; treat proofs/.vo as per-toolchain artifacts).
+- staple_associator unit tests: 4/4 pass (mult-table vs recursive
+  multiply, staple packing, quaternionic associator vanishing,
+  log-moment stats).
+- themis-staples-score-export reproduces the retired numpy benchmark
+  worker to 0.1% (24.32M vs 24.35M samples, 2.54% vs 2.53% positives)
+  over 834 THEMIS-A files in 39 s.
+- heliosphere-selfsim-logstats matches the retired numpy selfsim worker
+  at printed precision for all eight missions in 11 s.

@@ -1,0 +1,31 @@
+# Audit refresh 2026-07-14 — compile-stage blocker
+
+## Status
+Static stages COMPLETE: scc (02-scc.json/.txt), tokei (03-tokei.txt), preflight (00-preflight.txt).
+Compile stages (clippy, cargo-geiger, cargo-audit, llvm-cov) BLOCKED by two issues.
+
+## Blocker (a): no Rust toolchain present
+`rustup toolchain list` -> "no installed toolchains". The repo pins nightly-2026-04-05
+(rust-toolchain.toml, components clippy/rustfmt/rustc-codegen-cranelift). A toolchain must
+be installed before any cargo/clippy/geiger stage can run. The rustup download hosts
+(static.rust-lang.org) and crates.io index/static are the network endpoints an install
+needs; if those are blocked by the sandbox allowlist, request access at install time.
+Note: rustup state under ~/.rustup is not guaranteed to persist across sandbox resumes,
+so treat toolchain install as a per-session preflight step.
+
+## Blocker (b): missing sibling repo (persists regardless)
+    cd_kernel -> fwht = { path = "../cratesgororobas/fwht" }
+`/home/eirikr/Github/cratesgororobas/` does not exist here and is NOT a git submodule
+(.gitmodules absent). Because nearly every crate depends on cd_kernel (which depends on
+fwht), `cargo metadata`/`clippy`/`geiger` fail to load the workspace manifest before
+compilation with:
+    failed to read `/home/eirikr/Github/cratesgororobas/fwht/Cargo.toml`
+`git ls-remote https://github.com/Oichkatzelesfrettschen/cratesgororobas.git` fails with a
+credentials prompt (private repo; no GITHUB_TOKEN / credential configured in this sandbox).
+
+## To unblock
+1. Install the pinned toolchain: `rustup toolchain install nightly-2026-04-05 -c clippy`
+   (grant static.rust-lang.org + crates.io if the allowlist blocks it).
+2. Make the sibling present at /home/eirikr/Github/cratesgororobas (clone locally, grant
+   host access, or add a GitHub credential so it can be cloned here).
+Then: `cargo clippy --workspace`, `cargo geiger`, `cargo audit`.

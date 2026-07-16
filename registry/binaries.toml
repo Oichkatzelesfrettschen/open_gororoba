@@ -1182,6 +1182,16 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "themis-staples-score-export"
+crate = "gororoba_cli_physics"
+description = "Exports per-sample CD staple-associator, |B|-gradient, and rotation-angle scores for THEMIS-A daily FGM files with +/-2 min Staples-catalog crossing labels, one flat CSV for ROC/PR method comparison. Rust port of the numpy benchmark worker; reproduces it to 0.1% on 834 files."
+
+[[binary]]
+name = "heliosphere-selfsim-logstats"
+crate = "gororoba_cli_physics"
+description = "Cross-mission log-associator self-similarity survey: unnormalized staple-associator log-moment statistics (median, CV, log-sigma, skew, excess kurtosis) per sampled file across PSP, MESSENGER, ACE, THEMIS, Cluster, and Voyager 1/2, aggregated to JSON by mission and heliocentric distance. Rust port of the numpy selfsim worker; matches it at printed precision for all eight missions."
+
+[[binary]]
 name = "heliosphere-voyager-heliopause"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."

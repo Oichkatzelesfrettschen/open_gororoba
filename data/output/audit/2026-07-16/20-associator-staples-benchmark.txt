@@ -1,0 +1,60 @@
+# CD associator as a magnetopause-crossing detector -- Staples THEMIS benchmark
+
+_2026-07-16. Ground truth: Staples et al. 2020 THEMIS Magnetopause Crossings V2
+(2007-2016), `data/external/crossing_lists/themis_mp_crossings_v2.txt`._
+
+## Setup
+- **Ground truth:** 9,490 THEMIS-A magnetopause crossings (of 29,141 total across probes
+  a/b/c/d/e), at median 11.5 R_E (6.8-19.2), matched to 835 THEMIS-A FGM files by day.
+- **Detector:** normalized (dimensionless) CD sedenion associator -- b_field=[Bx,By,Bz,|B|],
+  4-sample sedenion stack, associator norm over 3 consecutive sedenions, divided by
+  |a||b||c| to remove the degree-3 |B| homogeneity.
+- **Task:** per-timepoint binary detection; positive = within +/-2 min of a catalogued
+  crossing. **24.3M points, 617k positives (2.53% base rate).**
+- **Baselines:** |dB/dt| (compression), field rotation angle, |B|, and a naive
+  rotationxcompression product.
+
+## Results
+| detector | ROC-AUC | best-F1 |
+|---|---|---|
+| **CD associator (normalized)** | **0.826** | 0.136 |
+| rotation angle | 0.820 | 0.138 |
+| naive rotx|dB/dt| | 0.743 | -- |
+| |dB/dt| (compression) | 0.706 | 0.091 |
+| |B| | 0.302 | -- |
+
+**Honest headline:** the associator is the best single scalar (ROC-AUC 0.826) but
+**essentially ties plain field-rotation angle (0.820)** on bulk detection. It does not
+beat the best conventional metric outright.
+
+## Where the associator actually wins: robustness across crossing subtypes
+Splitting positives into compressive (high |dB/dt|) vs rotational (low |dB/dt|) halves:
+
+| detector | compressive AUC | rotational AUC | **worst-case** |
+|---|---|---|---|
+| **CD associator** | 0.898 | 0.754 | **0.754** |
+| rotation angle | 0.889 | 0.752 | 0.752 |
+| |dB/dt| | 0.867 | 0.545 | 0.545 |
+
+**|dB/dt| collapses to 0.545 on rotational crossings** -- the subtype it cannot see. Rotation
+angle does NOT collapse: it stays strong on both (0.889 compressive, 0.752 rotational),
+because most magnetopause crossings involve a field rotation. The associator matches this
+robust rotation baseline on both subtypes (0.898 / 0.754) and edges slightly ahead -- so it
+provides robustness equal to the best conventional metric (rotation angle) plus a small
+edge on compressive events, without the |dB/dt|-style blind spot. Its value is **robustness
+in one scalar**, not a large margin over rotation angle.
+
+## Caveats (what would raise the numbers)
+- Absolute F1 ~0.14 is low because this is raw per-timepoint, single-threshold, single-feature
+  detection with no orbit-phase gating, no temporal smoothing, no ML. The repo's own pipeline
+  (windowed descriptors + logistic regression + Takens embedding) is expected to score much
+  higher; this measures raw discriminative power of one feature.
+- +/-2 min label window and the compressive/rotational median split are design choices; the
+  qualitative ordering (associator >= rotation > |dB/dt| >> |B|, associator best worst-case) is
+  stable to reasonable variations.
+- THEMIS-A only; probes c/d/e (18k more crossings) not yet included.
+
+## Artifacts
+- `associator_staples_benchmark.png` -- ROC curves, subtype-stratified AUC, worst-case robustness.
+- `data/output/benchmark_scores.npz` -- 24.3M pooled (assoc, dbdt, rot, Bmag, label).
+- `data/output/benchmark_worker.py` -- reproducible parallel benchmark (12-core, 42s).
