@@ -46,7 +46,7 @@ hardware-specific tables are replaced with the scientific stack.
 | Path                                                  | Why it matters                                                                                              |
 | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `Cargo.toml` (root)                                   | Workspace members + `[workspace.lints]` (warnings-as-errors source of truth)                                |
-| `rust-toolchain.toml`                                 | Nightly pin; do not bump without coordinating the gate.                                                     |
+| `rust-toolchain.toml`                                 | Stable pin (`1.97.0`); do not bump without coordinating the gate.                                           |
 | `.githooks/pre-push`                                  | Six-gate chain (lfs, cache, ansi, terminology, rust-regression, governance).                                |
 | `Makefile`                                            | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`).                                   |
 | `registry/canonical/control_plane.sqlite3`            | Canonical write target for the claim/insight/experiment registry.                                           |
@@ -86,7 +86,7 @@ hardware-specific tables are replaced with the scientific stack.
 
 ## Build environment
 
-- Toolchain: `rust-toolchain.toml` pins nightly-2026-04-05,
+- Toolchain: `rust-toolchain.toml` pins stable `1.97.0`,
   edition 2024.
 - Default target dir for gates: `CARGO_TARGET_DIR=.cache/gate-target`.
 - Per-worktree experimental dirs: `.cache/exp-<name>-target/`.

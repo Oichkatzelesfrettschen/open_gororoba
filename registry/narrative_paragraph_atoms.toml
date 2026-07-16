@@ -18317,7 +18317,7 @@ paragraph_index = 3
 line_start = 5
 line_end = 8
 paragraph_kind = "list_block"
-text = "- **Channel:** `nightly` (Required for `cudarc`, `nvrtc`, and some SIMD intrinsics). - **Edition:** 2021 (Move to 2024 when stable). - **Lockfile:** Checked in. `Cargo.lock` must be up to date. - **Strictness:** CI runs with `RUSTFLAGS=\"-D warnings\"`. No warnings allowed in main branch."
+text = "- **Channel:** stable `1.97.0` (pinned in `rust-toolchain.toml`; LLVM codegen only). - **Edition:** 2024. - **Lockfile:** Checked in. `Cargo.lock` must be up to date. - **Strictness:** CI runs with `RUSTFLAGS=\"-D warnings\"`. No warnings allowed in main branch."
 text_sha256 = "866d602c483e7d12365857de2c427dceffb81f80ba44789ff0b13212b061b28c"
 claim_refs = []
 equation_refs = []

@@ -94,9 +94,10 @@ files are read-only compatibility exports. The database provides:
 - Knowledge graph (equation atoms, proof skeletons, derivation steps)
 
 See [docs/db/ARCHITECTURE.md](docs/db/ARCHITECTURE.md) for the full
-schema and migration workflow. For the current cg_clif SIMD containment
-policy that keeps the `wide` / `pulp` / `simsimd` / `faer` subtree on LLVM in
-dev/test, see `docs/engineering/cg_clif_simd_containment.txt`. For the
+schema and migration workflow. The workspace pins stable Rust with default
+LLVM codegen; the historical cg_clif SIMD containment note for the
+`wide` / `pulp` / `simsimd` / `faer` subtree lives in
+`docs/engineering/cg_clif_simd_containment.txt`. For the
 claim-bearing parity contract and one traced Cayley-Dickson vertical slice,
 see `docs/engineering/simd_scalar_parity_contract_2026_04_06.txt` and
 `docs/engineering/cayley_dickson_associator_vertical_slice_2026_04_06.txt`.
@@ -221,10 +222,9 @@ compilation vs O(hours) for monolithic `ring`.
 
 ## Toolchain
 
-- **Rust**: nightly-2026-04-05 (pinned via `rust-toolchain.toml`)
+- **Rust**: stable `1.97.0` (pinned via `rust-toolchain.toml`)
 - **Edition**: 2024
-- **Build**: Cranelift-oriented dev lane with LLVM containment overrides for the
-  SIMD-sensitive numerical stack; LLVM for release
+- **Build**: default LLVM codegen for all profiles (stable pin; no Cranelift)
 - **GPU**: CUDA via `cudarc 0.19.1`, Vulkan via `ash` (feature-gated)
 - **Formal proofs**: Rocq 9.1.1
 - **Allocator**: mimalloc (workspace default)

@@ -30,8 +30,8 @@ jobs:
           echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
           echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
 
-      - name: Install Rust toolchain (nightly, with clippy)
-        uses: dtolnay/rust-toolchain@nightly
+      - name: Install Rust toolchain (stable 1.97.0, with clippy)
+        uses: dtolnay/rust-toolchain@1.97.0
         with:
           components: clippy
 
@@ -104,8 +104,8 @@ jobs:
           echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
           echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
 
-      - name: Install Rust toolchain (nightly)
-        uses: dtolnay/rust-toolchain@nightly
+      - name: Install Rust toolchain (stable 1.97.0)
+        uses: dtolnay/rust-toolchain@1.97.0
 
       - name: Cache cargo registry and build artifacts
         uses: actions/cache@v4
@@ -138,8 +138,8 @@ jobs:
           echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
           echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
 
-      - name: Install Rust toolchain (nightly)
-        uses: dtolnay/rust-toolchain@nightly
+      - name: Install Rust toolchain (stable 1.97.0)
+        uses: dtolnay/rust-toolchain@1.97.0
 
       - name: Cache cargo registry and docs artifacts
         uses: actions/cache@v4
@@ -206,8 +206,8 @@ jobs:
           echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
           echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
 
-      - name: Install Rust toolchain (nightly, with clippy)
-        uses: dtolnay/rust-toolchain@nightly
+      - name: Install Rust toolchain (stable 1.97.0, with clippy)
+        uses: dtolnay/rust-toolchain@1.97.0
         with:
           components: clippy
 

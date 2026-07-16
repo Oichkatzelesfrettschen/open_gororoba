@@ -3,7 +3,10 @@ cg_clif SIMD containment note
 
 Status
 ------
-Active policy as of 2026-04-06.
+Historical (superseded 2026-07-14). The workspace pins stable Rust 1.97.0
+with default LLVM codegen; Cranelift and per-package codegen-backend
+overrides are no longer in root Cargo.toml. Keep this note as RCA for the
+former cg_clif f32x8 ICE on the SIMD-sensitive stack.
 
 Problem statement
 -----------------

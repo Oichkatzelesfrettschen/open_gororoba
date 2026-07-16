@@ -37,33 +37,6 @@ const SIMD_SENSITIVE_LOW_LEVEL_CRATES: &[&str] = &[
     "private-gemm-x86",
 ];
 
-const SIMD_SENSITIVE_HOST_CRATES: &[&str] = &[
-    "lbm_3d",
-    "lbm_3d_cuda",
-    "cd_kernel",
-    "data_core",
-    "algebra_experimental",
-    "gororoba_algebra",
-    "materials_core",
-    "stats_core",
-    "gr_core",
-    "cosmology_core",
-    "quantum_core",
-    "tensor_core",
-    "flavor_lifts",
-    "gororoba_cli_data",
-    "spectral_core",
-    "sign_imbalance",
-    "cd_spin_bridge",
-    "grmhd_core",
-    "gororoba_cli",
-    "gororoba_engine",
-    "gororoba_cli_algebra",
-    "gororoba_cli_quantum",
-    "gororoba_cli_physics",
-    "gororoba_cli_warp",
-];
-
 const RESTORED_REGISTRY_SOURCES: &[&str] = &[
     "registry/knowledge_migration_plan.toml",
     "registry/navigator.toml",
@@ -577,40 +550,33 @@ fn verify_simd_containment_policy(args: &CommonArgs) -> Result<()> {
     let root = resolve_root(args)?;
     let cargo_toml = read_ascii_text(&root.join("Cargo.toml"))?;
     let physics_cargo_toml = read_ascii_text(&root.join("crates/gororoba_cli_physics/Cargo.toml"))?;
+    let toolchain_toml = read_ascii_text(&root.join("rust-toolchain.toml"))?;
     let mut failures = Vec::new();
 
-    for crate_name in SIMD_SENSITIVE_LOW_LEVEL_CRATES
-        .iter()
-        .chain(SIMD_SENSITIVE_HOST_CRATES.iter())
-    {
-        for profile in ["dev", "test"] {
-            let header = profile_package_header(profile, crate_name);
-            let pattern = format!("{header}\ncodegen-backend = \"llvm\"");
-            if !cargo_toml.contains(&pattern) {
-                failures.push(format!(
-                    "Cargo.toml missing SIMD containment override for crate `{crate_name}` in profile `{profile}`"
-                ));
-            }
-        }
-    }
-
-    if !cargo_toml.contains("cg_clif currently")
-        || !cargo_toml.contains("wide: explicit fixed-width vector types")
-        || !cargo_toml.contains("pulp: runtime SIMD dispatch")
-        || !cargo_toml.contains("simsimd: external C/C++ SIMD distance kernels")
-    {
+    // Stable pin uses default LLVM codegen only. The former Cranelift
+    // dev/test lane plus per-package codegen-backend = "llvm" overrides
+    // required nightly cargo-features and are forbidden under the stable
+    // pin. Historical cg_clif notes remain in docs/engineering for RCA.
+    let uses_codegen_backend_feature = cargo_toml.contains("codegen-backend")
+        || cargo_toml.contains("cargo-features = [\"codegen-backend\"]");
+    let pins_stable_channel = toolchain_toml.contains("channel = \"1.")
+        || toolchain_toml.contains("channel = \"stable\"");
+    if uses_codegen_backend_feature {
         failures.push(
-            "Cargo.toml is missing the documented SIMD containment rationale block".to_string(),
+            "Cargo.toml must not set cargo-features/codegen-backend under the stable LLVM pin"
+                .to_string(),
+        );
+    }
+    if !pins_stable_channel {
+        failures.push(
+            "rust-toolchain.toml must pin a stable channel (version or \"stable\")".to_string(),
         );
     }
 
+    // Inventory SIMD-sensitive dependency exposures for operator visibility.
+    // On stable LLVM every package is codegen-compatible; no override set.
     let mut dependency_exposures = BTreeMap::<String, BTreeSet<String>>::new();
     for manifest in workspace_manifests(&root)? {
-        let rel = manifest
-            .strip_prefix(&root)
-            .context("strip manifest prefix")?
-            .to_string_lossy()
-            .replace('\\', "/");
         let raw = fs::read_to_string(&manifest)
             .with_context(|| format!("read workspace manifest {}", manifest.display()))?;
         let parsed: Value = toml::from_str(&raw)
@@ -634,26 +600,22 @@ fn verify_simd_containment_policy(args: &CommonArgs) -> Result<()> {
         if sensitive_hits.is_empty() {
             continue;
         }
-        dependency_exposures.insert(package_name.clone(), sensitive_hits.clone());
-        let protected = SIMD_SENSITIVE_LOW_LEVEL_CRATES.contains(&package_name.as_str())
-            || SIMD_SENSITIVE_HOST_CRATES.contains(&package_name.as_str());
-        if !protected {
-            failures.push(format!(
-                "{rel}: crate `{package_name}` depends on SIMD-sensitive subtree {} but is not listed in the containment override set",
-                sensitive_hits.into_iter().collect::<Vec<_>>().join(", ")
-            ));
-        }
+        dependency_exposures.insert(package_name, sensitive_hits);
     }
 
     let readme = read_ascii_text(&root.join("README.md"))?;
-    if readme.contains("Cranelift backend for dev (opt-level 2), LLVM for release") {
+    if readme.contains("Cranelift backend for dev (opt-level 2), LLVM for release")
+        || readme.contains("Cranelift-oriented dev lane")
+    {
         failures.push(
-            "README.md still claims a blanket Cranelift dev lane; document the SIMD containment carve-out explicitly".to_string(),
+            "README.md still claims a Cranelift dev lane; document the stable LLVM pin instead"
+                .to_string(),
         );
     }
     if !readme.contains("docs/engineering/cg_clif_simd_containment.txt") {
         failures.push(
-            "README.md is missing a cross-reference to docs/engineering/cg_clif_simd_containment.txt".to_string(),
+            "README.md is missing a cross-reference to docs/engineering/cg_clif_simd_containment.txt"
+                .to_string(),
         );
     }
 
@@ -684,7 +646,7 @@ fn verify_simd_containment_policy(args: &CommonArgs) -> Result<()> {
     }
 
     println!(
-        "OK: SIMD containment policy verified across {} workspace manifests",
+        "OK: SIMD containment policy verified for stable LLVM pin ({} SIMD-exposed crates inventoried)",
         dependency_exposures.len()
     );
     Ok(())
@@ -910,14 +872,6 @@ fn looks_like_text_policy_surface(path: &Path) -> bool {
         path.extension().and_then(|ext| ext.to_str()),
         Some("md" | "txt" | "toml" | "sh" | "rs" | "py" | "yml" | "yaml" | "json")
     )
-}
-
-fn profile_package_header(profile: &str, crate_name: &str) -> String {
-    if crate_name.contains('-') {
-        format!("[profile.{profile}.package.\"{crate_name}\"]")
-    } else {
-        format!("[profile.{profile}.package.{crate_name}]")
-    }
 }
 
 fn workspace_manifests(root: &Path) -> Result<Vec<PathBuf>> {
