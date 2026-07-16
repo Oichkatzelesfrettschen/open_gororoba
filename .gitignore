@@ -114,6 +114,9 @@ data/output/**/*.npz
 data/output/**/*.pkl
 data/output/*.png
 !data/output/audit/**
+# Multi-megabyte regenerable snapshots stay out of the tracked audit bundles;
+# `cargo metadata` reproduces them from the lockfile at any commit.
+data/output/audit/**/*cargo-metadata*.json
 data/artifacts/frames_*/
 data/e027/
 data/test-e027/

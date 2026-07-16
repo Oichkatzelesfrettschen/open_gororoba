@@ -1,0 +1,16 @@
+=== retry: make -C proofs vos with opam env, started at 2026-04-30T17:23:51-07:00 ===
+OCAML_TOPLEVEL_PATH=/home/eirikr/.opam/rocq-9.1.1/lib/toplevel
+OCAMLTOP_INCLUDE_PATH=/home/eirikr/.opam/rocq-9.1.1/lib/toplevel
+OPAM_SWITCH_PREFIX=/home/eirikr/.opam/rocq-9.1.1
+OPAM_LAST_ENV=/home/eirikr/.opam/.last-env/env-c2bf9d27d23c18b486f8212e1f641d39-0
+
+make: Entering directory '/home/eirikr/Github/open_gororoba/proofs'
+/usr/bin/taskset -c 0,1,2,3,4,5 make -j6 -f Makefile.rocq vos
+make[1]: Entering directory '/home/eirikr/Github/open_gororoba/proofs'
+make[1]: warning: -j6 forced in submake: resetting jobserver mode.
+make[1]: Nothing to be done for 'vos'.
+make[1]: Leaving directory '/home/eirikr/Github/open_gororoba/proofs'
+make: Leaving directory '/home/eirikr/Github/open_gororoba/proofs'
+
+=== exit code: 0 ===
+=== finished at 2026-04-30T17:23:51-07:00 ===
