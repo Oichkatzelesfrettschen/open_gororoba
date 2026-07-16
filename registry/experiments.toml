@@ -5959,3 +5959,29 @@ status = "active"
 status_token = "ACTIVE"
 title = "PMD-equivalent static analysis gap audit: machete + cpd + cognitive-complexity + miri (C-1626)"
 truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-roc-block-bootstrap"
+binary_experiment_declared = ""
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-235"
+input = "data/output/benchmark_scores.csv: 24,320,815 per-sample rows (assoc,dbdt,rot,bmag,label) exported by themis-staples-score-export from 834 THEMIS-A daily FGM files with +/-2 min Staples et al. 2020 crossing labels (617k positives, 2.54% base rate)"
+input_path_refs = ["data/output/benchmark_scores.csv"]
+lineage_id = "XL-235"
+method = "Moving-block bootstrap (Kunsch 1989) over contiguous 29,000-sample blocks matching the THEMIS-A daily-file autocorrelation scale; 200 paired resamples recompute average-rank Mann-Whitney AUC for the normalized CD staple-associator and the field-rotation-angle baseline on identical resampled index sets; percentile 95% CIs on each AUC and on the paired delta; ChaCha8 seed 42 makes every interval bit-reproducible."
+output = ["data/output/staples_roc_block_bootstrap.json"]
+output_path_refs = ["data/output/staples_roc_block_bootstrap.json"]
+reproducibility_class = "deterministic"
+run = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-block-bootstrap -- --scores data/output/benchmark_scores.csv --out data/output/staples_roc_block_bootstrap.json"
+run_command_sha256 = "de0abc7a5d58d881e2d4214a6cbfbaa5df3f381691ebeb8d1650aa582c00a7d6"
+status = "active"
+status_token = "ACTIVE"
+title = "Block-bootstrap ROC-AUC uncertainty for the staple-associator magnetopause benchmark"
+truth_surface_consumption = []

@@ -23,9 +23,18 @@ _2026-07-16. Ground truth: Staples et al. 2020 THEMIS Magnetopause Crossings V2
 | |dB/dt| (compression) | 0.706 | 0.091 |
 | |B| | 0.302 | -- |
 
-**Honest headline:** the associator is the best single scalar (ROC-AUC 0.826) but
-**essentially ties plain field-rotation angle (0.820)** on bulk detection. It does not
-beat the best conventional metric outright.
+**Honest headline (CI-backed):** the associator is the best single scalar and its
+edge over field-rotation angle is small but statistically decisive. The paired
+moving-block bootstrap (E-235: 29,000-sample blocks matching the daily-file
+autocorrelation scale, 200 paired resamples, ChaCha8 seed 42;
+data/output/staples_roc_block_bootstrap.json) gives
+AUC_assoc = 0.8260 [0.8186, 0.8329], AUC_rot = 0.8203 [0.8139, 0.8274], and
+paired delta = +0.0056 [0.0049, 0.0067]; the delta CI excludes zero and
+rotation wins in 0 of 200 resamples. The per-detector CIs overlap, which is
+exactly why the PAIRED delta is the honest statistic: both detectors face the
+same resampled days, so day-to-day difficulty variation cancels. The advantage
+is real but modest on bulk detection; the subtype robustness below remains the
+stronger differentiator.
 
 ## Where the associator actually wins: robustness across crossing subtypes
 Splitting positives into compressive (high |dB/dt|) vs rotational (low |dB/dt|) halves:
