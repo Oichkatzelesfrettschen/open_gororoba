@@ -1,0 +1,17 @@
+info: syncing channel updates for 1.97.0-x86_64-unknown-linux-gnu
+info: latest update on 2026-07-09 for version 1.97.0 (2d8144b78 2026-07-07)
+info: downloading 6 components
+error: failed to load manifest for workspace member `/home/eirikr/Github/open_gororoba/crates/algebra_analysis`
+referenced by workspace at `/home/eirikr/Github/open_gororoba/Cargo.toml`
+
+Caused by:
+  failed to load manifest for dependency `cd_kernel`
+
+Caused by:
+  failed to load manifest for dependency `fwht`
+
+Caused by:
+  failed to read `/home/eirikr/Github/cratesgororobas/fwht/Cargo.toml`
+
+Caused by:
+  No such file or directory (os error 2)
