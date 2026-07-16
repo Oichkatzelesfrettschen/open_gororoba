@@ -2,10 +2,11 @@
 //!
 //! Consumes the flat score CSV written by `themis-staples-score-export`
 //! (columns `assoc,dbdt,rot,bmag,label`) and decides the paper-grade
-//! question the point estimates leave open: does the normalized CD
+//! questions the point estimates leave open: does the normalized CD
 //! staple-associator beat the field-rotation-angle baseline on bulk
-//! magnetopause-crossing detection, or do the two detectors tie within
-//! sampling uncertainty?
+//! magnetopause-crossing detection, does the edge survive within each
+//! crossing subtype, and is the conclusion stable under the block-length
+//! choice?
 //!
 //! Per-sample scores from magnetometer time series are strongly
 //! autocorrelated, so an i.i.d. bootstrap understates the variance and
@@ -13,14 +14,25 @@
 //! 1989, Ann. Statist. 17) resamples contiguous blocks whose length
 //! matches the daily-file scale (~29k samples per THEMIS-A FGM day at
 //! spin cadence), preserving within-day dependence while treating days
-//! as approximately exchangeable.
+//! as approximately exchangeable. A half/double block-length sweep
+//! reports the bulk delta CI at each length as a sensitivity check.
+//!
+//! Crossing subtypes follow the benchmark's fixed feature definition:
+//! positives split at the median |dB/dt| among positives, compressive
+//! above the median and rotational below; each subtype scores against
+//! the full negative class. The split point is computed once on the
+//! full dataset and reused across resamples, since it is a feature
+//! definition rather than a resampled statistic. The worst-case AUC
+//! (min over subtypes, per detector, per resample) quantifies the
+//! robustness claim with a paired CI of its own.
 //!
 //! AUC is the Mann-Whitney U statistic normalized by n_pos * n_neg,
 //! computed from average ranks so tied scores contribute 1/2 -- the
 //! standard identity AUC = (R_pos - n_pos(n_pos+1)/2) / (n_pos n_neg).
 //!
-//! The RNG is a fixed-seed ChaCha8 stream, so a rerun with the same
-//! inputs reproduces every interval bit-for-bit.
+//! The RNG is a fixed-seed ChaCha8 stream keyed on (seed, block_len,
+//! resample index), so a rerun with the same inputs reproduces every
+//! interval bit-for-bit.
 //!
 //! Usage:
 //!   staples-roc-block-bootstrap \
@@ -53,6 +65,11 @@ struct Args {
     #[arg(long, default_value_t = 29_000)]
     block_len: usize,
 
+    /// Comma-separated block lengths for the bulk-delta sensitivity
+    /// sweep; the default brackets the primary length by half/double.
+    #[arg(long, default_value = "14500,58000")]
+    block_len_sweep: String,
+
     /// Number of bootstrap resamples.
     #[arg(long, default_value_t = 200)]
     resamples: usize,
@@ -61,6 +78,12 @@ struct Args {
     #[arg(long, default_value_t = 42)]
     seed: u64,
 }
+
+/// Sample tags: negative, rotational-subtype positive (|dB/dt| below the
+/// positive-class median), compressive-subtype positive (above).
+const TAG_NEG: u8 = 0;
+const TAG_POS_ROTATIONAL: u8 = 1;
+const TAG_POS_COMPRESSIVE: u8 = 2;
 
 /// Average-rank Mann-Whitney AUC over (score, label) pairs.
 ///
@@ -103,6 +126,91 @@ fn rank_auc(scores: &[f32], labels: &[u8]) -> f64 {
     (rank_sum_pos - n_pos_f * (n_pos_f + 1.0) / 2.0) / (n_pos_f * n_neg as f64)
 }
 
+/// AUC of one crossing subtype against the full negative class: samples
+/// carrying the other subtype's tag drop out, the requested tag becomes
+/// the positive label.
+fn subtype_auc(scores: &[f32], tags: &[u8], subtype_tag: u8) -> f64 {
+    let mut s: Vec<f32> = Vec::with_capacity(scores.len());
+    let mut l: Vec<u8> = Vec::with_capacity(scores.len());
+    for (&sc, &t) in scores.iter().zip(tags) {
+        if t == TAG_NEG || t == subtype_tag {
+            s.push(sc);
+            l.push(u8::from(t == subtype_tag));
+        }
+    }
+    rank_auc(&s, &l)
+}
+
+/// One paired resample's statistics for both detectors.
+struct BootDraw {
+    bulk_assoc: f64,
+    bulk_rot: f64,
+    rotational_assoc: f64,
+    rotational_rot: f64,
+    compressive_assoc: f64,
+    compressive_rot: f64,
+}
+
+/// Moving-block bootstrap: each resample draws ceil(n / block_len) block
+/// start positions uniformly, concatenates the blocks, and recomputes
+/// every statistic on the identical resampled index set so each delta
+/// draw is a paired comparison. `with_subtypes` gates the four subtype
+/// AUCs, which triple the per-resample sort cost.
+fn bootstrap(
+    assoc: &[f32],
+    rot: &[f32],
+    tags: &[u8],
+    block_len: usize,
+    resamples: usize,
+    seed: u64,
+    with_subtypes: bool,
+) -> Vec<BootDraw> {
+    let n = tags.len();
+    let n_blocks = n.div_ceil(block_len);
+    let max_start = n - block_len;
+    (0..resamples)
+        .into_par_iter()
+        .map(|rep| {
+            // A per-resample stream keyed on (seed, block_len, rep) keeps
+            // the draw sequence independent of rayon scheduling order and
+            // distinct across sweep lengths.
+            let mut rng = ChaCha8Rng::seed_from_u64(
+                seed.wrapping_add(rep as u64)
+                    .wrapping_add((block_len as u64) << 32),
+            );
+            let mut s_assoc: Vec<f32> = Vec::with_capacity(n_blocks * block_len);
+            let mut s_rot: Vec<f32> = Vec::with_capacity(n_blocks * block_len);
+            let mut s_tag: Vec<u8> = Vec::with_capacity(n_blocks * block_len);
+            for _ in 0..n_blocks {
+                let start = rng.random_range(0..=max_start);
+                let end = start + block_len;
+                s_assoc.extend_from_slice(&assoc[start..end]);
+                s_rot.extend_from_slice(&rot[start..end]);
+                s_tag.extend_from_slice(&tags[start..end]);
+            }
+            let bulk_labels: Vec<u8> = s_tag.iter().map(|&t| u8::from(t != TAG_NEG)).collect();
+            let (ra, rr, ca, cr) = if with_subtypes {
+                (
+                    subtype_auc(&s_assoc, &s_tag, TAG_POS_ROTATIONAL),
+                    subtype_auc(&s_rot, &s_tag, TAG_POS_ROTATIONAL),
+                    subtype_auc(&s_assoc, &s_tag, TAG_POS_COMPRESSIVE),
+                    subtype_auc(&s_rot, &s_tag, TAG_POS_COMPRESSIVE),
+                )
+            } else {
+                (f64::NAN, f64::NAN, f64::NAN, f64::NAN)
+            };
+            BootDraw {
+                bulk_assoc: rank_auc(&s_assoc, &bulk_labels),
+                bulk_rot: rank_auc(&s_rot, &bulk_labels),
+                rotational_assoc: ra,
+                rotational_rot: rr,
+                compressive_assoc: ca,
+                compressive_rot: cr,
+            }
+        })
+        .collect()
+}
+
 /// Percentile of a sorted sample via linear interpolation.
 fn percentile(sorted: &[f64], q: f64) -> f64 {
     let n = sorted.len();
@@ -117,15 +225,28 @@ struct CiSummary {
     point: f64,
     lo: f64,
     hi: f64,
+    p_le_zero: f64,
 }
 
-fn ci(point: f64, draws: &mut [f64]) -> CiSummary {
-    draws.sort_unstable_by(|a, b| a.partial_cmp(b).expect("bootstrap draws are finite"));
+/// Percentile 95% CI plus the fraction of draws at or below zero (the
+/// one-sided bootstrap evidence that the paired delta is positive).
+fn ci(point: f64, draws: &[f64]) -> CiSummary {
+    let mut finite: Vec<f64> = draws.iter().copied().filter(|x| x.is_finite()).collect();
+    finite.sort_unstable_by(|a, b| a.partial_cmp(b).expect("finite draws"));
+    let p_le_zero = finite.iter().filter(|&&d| d <= 0.0).count() as f64 / finite.len() as f64;
     CiSummary {
         point,
-        lo: percentile(draws, 0.025),
-        hi: percentile(draws, 0.975),
+        lo: percentile(&finite, 0.025),
+        hi: percentile(&finite, 0.975),
+        p_le_zero,
     }
+}
+
+fn json_ci(s: &CiSummary) -> String {
+    format!(
+        "{{\"point\": {:.6}, \"ci95\": [{:.6}, {:.6}], \"p_le_zero\": {:.4}}}",
+        s.point, s.lo, s.hi, s.p_le_zero
+    )
 }
 
 fn main() -> anyhow::Result<()> {
@@ -159,73 +280,129 @@ fn main() -> anyhow::Result<()> {
     let n_pos = labels.iter().filter(|&&l| l == 1).count();
     eprintln!("loaded {} samples, {} positives", n, n_pos);
 
+    // Fixed subtype definition: median |dB/dt| among positives splits
+    // compressive (above) from rotational (at or below).
+    let mut pos_dbdt: Vec<f32> = labels
+        .iter()
+        .zip(&dbdt)
+        .filter(|&(&l, _)| l == 1)
+        .map(|(_, &d)| d)
+        .collect();
+    pos_dbdt.sort_unstable_by(|a, b| a.partial_cmp(b).expect("finite dbdt"));
+    let split = pos_dbdt[pos_dbdt.len() / 2];
+    let tags: Vec<u8> = labels
+        .iter()
+        .zip(&dbdt)
+        .map(|(&l, &d)| {
+            if l == 0 {
+                TAG_NEG
+            } else if d > split {
+                TAG_POS_COMPRESSIVE
+            } else {
+                TAG_POS_ROTATIONAL
+            }
+        })
+        .collect();
+    let n_comp = tags.iter().filter(|&&t| t == TAG_POS_COMPRESSIVE).count();
+    eprintln!(
+        "subtype split at |dB/dt|={:.6e}: {} compressive, {} rotational",
+        split,
+        n_comp,
+        n_pos - n_comp
+    );
+
+    // Point estimates on the full dataset.
     let auc_assoc = rank_auc(&assoc, &labels);
     let auc_rot = rank_auc(&rot, &labels);
     let auc_dbdt = rank_auc(&dbdt, &labels);
+    let pt_rot_assoc = subtype_auc(&assoc, &tags, TAG_POS_ROTATIONAL);
+    let pt_rot_rot = subtype_auc(&rot, &tags, TAG_POS_ROTATIONAL);
+    let pt_comp_assoc = subtype_auc(&assoc, &tags, TAG_POS_COMPRESSIVE);
+    let pt_comp_rot = subtype_auc(&rot, &tags, TAG_POS_COMPRESSIVE);
     eprintln!(
-        "point AUC: assoc={:.4} rot={:.4} dbdt={:.4}",
-        auc_assoc, auc_rot, auc_dbdt
+        "point AUC: bulk assoc={:.4} rot={:.4} dbdt={:.4}; rotational {:.4}/{:.4}; compressive {:.4}/{:.4}",
+        auc_assoc, auc_rot, auc_dbdt, pt_rot_assoc, pt_rot_rot, pt_comp_assoc, pt_comp_rot
     );
 
-    // Moving-block bootstrap: each resample draws ceil(n / block_len)
-    // block start positions uniformly, concatenates the blocks, and
-    // recomputes both AUCs on the identical resampled index set so the
-    // delta draw is a paired comparison.
-    let n_blocks = n.div_ceil(args.block_len);
-    let max_start = n - args.block_len;
-
-    let draws: Vec<(f64, f64)> = (0..args.resamples)
-        .into_par_iter()
-        .map(|rep| {
-            // A per-resample stream keyed on (seed, rep) keeps the draw
-            // sequence independent of the rayon scheduling order.
-            let mut rng = ChaCha8Rng::seed_from_u64(args.seed.wrapping_add(rep as u64));
-            let mut s_assoc: Vec<f32> = Vec::with_capacity(n_blocks * args.block_len);
-            let mut s_rot: Vec<f32> = Vec::with_capacity(n_blocks * args.block_len);
-            let mut s_lab: Vec<u8> = Vec::with_capacity(n_blocks * args.block_len);
-            for _ in 0..n_blocks {
-                let start = rng.random_range(0..=max_start);
-                let end = start + args.block_len;
-                s_assoc.extend_from_slice(&assoc[start..end]);
-                s_rot.extend_from_slice(&rot[start..end]);
-                s_lab.extend_from_slice(&labels[start..end]);
-            }
-            (rank_auc(&s_assoc, &s_lab), rank_auc(&s_rot, &s_lab))
-        })
-        .collect();
-
-    let mut d_assoc: Vec<f64> = draws.iter().map(|&(a, _)| a).filter(|x| x.is_finite()).collect();
-    let mut d_rot: Vec<f64> = draws.iter().map(|&(_, r)| r).filter(|x| x.is_finite()).collect();
-    let mut d_delta: Vec<f64> = draws
-        .iter()
-        .filter(|(a, r)| a.is_finite() && r.is_finite())
-        .map(|&(a, r)| a - r)
-        .collect();
-    let p_delta_le_zero =
-        d_delta.iter().filter(|&&d| d <= 0.0).count() as f64 / d_delta.len() as f64;
-
-    let s_assoc = ci(auc_assoc, &mut d_assoc);
-    let s_rot = ci(auc_rot, &mut d_rot);
-    let s_delta = ci(auc_assoc - auc_rot, &mut d_delta);
-
-    let report = format!(
-        "{{\n  \"n_samples\": {},\n  \"n_positives\": {},\n  \"block_len\": {},\n  \"resamples\": {},\n  \"seed\": {},\n  \"auc_assoc\": {{\"point\": {:.6}, \"ci95\": [{:.6}, {:.6}]}},\n  \"auc_rot\": {{\"point\": {:.6}, \"ci95\": [{:.6}, {:.6}]}},\n  \"auc_dbdt_point\": {:.6},\n  \"auc_delta_assoc_minus_rot\": {{\"point\": {:.6}, \"ci95\": [{:.6}, {:.6}]}},\n  \"p_delta_le_zero\": {:.4}\n}}\n",
-        n,
-        n_pos,
+    // Primary run carries the subtype statistics.
+    let draws = bootstrap(
+        &assoc,
+        &rot,
+        &tags,
         args.block_len,
         args.resamples,
         args.seed,
-        s_assoc.point,
-        s_assoc.lo,
-        s_assoc.hi,
-        s_rot.point,
-        s_rot.lo,
-        s_rot.hi,
+        true,
+    );
+
+    let collect = |f: &dyn Fn(&BootDraw) -> f64| -> Vec<f64> { draws.iter().map(f).collect() };
+    let s_bulk_assoc = ci(auc_assoc, &collect(&|d| d.bulk_assoc));
+    let s_bulk_rot = ci(auc_rot, &collect(&|d| d.bulk_rot));
+    let s_bulk_delta = ci(
+        auc_assoc - auc_rot,
+        &collect(&|d| d.bulk_assoc - d.bulk_rot),
+    );
+    let s_rotational_delta = ci(
+        pt_rot_assoc - pt_rot_rot,
+        &collect(&|d| d.rotational_assoc - d.rotational_rot),
+    );
+    let s_compressive_delta = ci(
+        pt_comp_assoc - pt_comp_rot,
+        &collect(&|d| d.compressive_assoc - d.compressive_rot),
+    );
+    // Worst-case AUC (min over subtypes) is the robustness statistic;
+    // its paired delta asks whether the associator's floor beats the
+    // rotation baseline's floor.
+    let s_worst_delta = ci(
+        pt_rot_assoc.min(pt_comp_assoc) - pt_rot_rot.min(pt_comp_rot),
+        &collect(&|d| {
+            d.rotational_assoc.min(d.compressive_assoc) - d.rotational_rot.min(d.compressive_rot)
+        }),
+    );
+
+    // Block-length sensitivity sweep: bulk delta only.
+    let mut sweep_json: Vec<String> = Vec::new();
+    for tok in args.block_len_sweep.split(',') {
+        let bl: usize = tok.trim().parse()?;
+        if bl == 0 || bl >= n {
+            continue;
+        }
+        let sw = bootstrap(&assoc, &rot, &tags, bl, args.resamples, args.seed, false);
+        let deltas: Vec<f64> = sw.iter().map(|d| d.bulk_assoc - d.bulk_rot).collect();
+        let s = ci(auc_assoc - auc_rot, &deltas);
+        eprintln!(
+            "sweep block_len={}: delta {:.6} [{:.6}, {:.6}]",
+            bl, s.point, s.lo, s.hi
+        );
+        sweep_json.push(format!(
+            "    {{\"block_len\": {}, \"delta_assoc_minus_rot\": {}}}",
+            bl,
+            json_ci(&s)
+        ));
+    }
+
+    let report = format!(
+        "{{\n  \"n_samples\": {},\n  \"n_positives\": {},\n  \"n_compressive\": {},\n  \"n_rotational\": {},\n  \"subtype_split_dbdt\": {:.6e},\n  \"block_len\": {},\n  \"resamples\": {},\n  \"seed\": {},\n  \"auc_assoc\": {},\n  \"auc_rot\": {},\n  \"auc_dbdt_point\": {:.6},\n  \"auc_delta_assoc_minus_rot\": {},\n  \"subtype_rotational\": {{\"auc_assoc_point\": {:.6}, \"auc_rot_point\": {:.6}, \"delta_assoc_minus_rot\": {}}},\n  \"subtype_compressive\": {{\"auc_assoc_point\": {:.6}, \"auc_rot_point\": {:.6}, \"delta_assoc_minus_rot\": {}}},\n  \"worst_case_delta_assoc_minus_rot\": {},\n  \"block_len_sweep\": [\n{}\n  ]\n}}\n",
+        n,
+        n_pos,
+        n_comp,
+        n_pos - n_comp,
+        split,
+        args.block_len,
+        args.resamples,
+        args.seed,
+        json_ci(&s_bulk_assoc),
+        json_ci(&s_bulk_rot),
         auc_dbdt,
-        s_delta.point,
-        s_delta.lo,
-        s_delta.hi,
-        p_delta_le_zero
+        json_ci(&s_bulk_delta),
+        pt_rot_assoc,
+        pt_rot_rot,
+        json_ci(&s_rotational_delta),
+        pt_comp_assoc,
+        pt_comp_rot,
+        json_ci(&s_compressive_delta),
+        json_ci(&s_worst_delta),
+        sweep_json.join(",\n")
     );
     File::create(&args.out)?.write_all(report.as_bytes())?;
     println!("{}", report);
