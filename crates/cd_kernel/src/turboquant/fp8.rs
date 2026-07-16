@@ -30,7 +30,9 @@ pub struct Fp8E4M3(pub u8);
 #[repr(transparent)]
 pub struct Fp8E5M2(pub u8);
 
-// SAFETY: Both are #[repr(transparent)] wrappers around u8
+// SAFETY: Both types are #[repr(transparent)] wrappers around u8, so they
+// carry no padding, every bit pattern is a valid value, and the all-zeros
+// pattern is the valid +0.0 encoding -- the full Pod + Zeroable contract.
 unsafe impl bytemuck::Pod for Fp8E4M3 {}
 unsafe impl bytemuck::Zeroable for Fp8E4M3 {}
 unsafe impl bytemuck::Pod for Fp8E5M2 {}
