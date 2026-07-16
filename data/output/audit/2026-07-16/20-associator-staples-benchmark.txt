@@ -48,10 +48,24 @@ Splitting positives into compressive (high |dB/dt|) vs rotational (low |dB/dt|) 
 **|dB/dt| collapses to 0.545 on rotational crossings** -- the subtype it cannot see. Rotation
 angle does NOT collapse: it stays strong on both (0.889 compressive, 0.752 rotational),
 because most magnetopause crossings involve a field rotation. The associator matches this
-robust rotation baseline on both subtypes (0.898 / 0.754) and edges slightly ahead -- so it
-provides robustness equal to the best conventional metric (rotation angle) plus a small
-edge on compressive events, without the |dB/dt|-style blind spot. Its value is **robustness
-in one scalar**, not a large margin over rotation angle.
+robust rotation baseline on both subtypes (0.898 / 0.754) and edges ahead on BOTH -- the
+paired block bootstrap (E-235) puts every subtype delta above zero: compressive
++0.0093 [0.0083, 0.0104], rotational +0.0020 [0.0008, 0.0034], and the worst-case-AUC
+(min over subtypes) delta +0.0020 [0.0008, 0.0034]. The associator therefore strictly
+dominates the rotation baseline: better in bulk, better on each subtype, and a higher
+floor, without the |dB/dt|-style blind spot. The margins stay modest -- the value is
+**robustness in one scalar with a uniformly positive edge**, not a large margin.
+The bulk delta is insensitive to the block-length choice: half/double sweep
+(14,500 / 29,000 / 58,000 samples) moves the 95% CI endpoints by less than 0.0002.
+
+## Companion survey: cross-mission log-sigma CIs (E-236)
+File-level bootstrap CIs (10,000 resamples over daily files) on the selfsim survey's
+per-mission mean log-sigma expose an instrument/regime confound the point estimates hid:
+the three 1-AU missions separate with non-overlapping CIs -- ACE 1.52 [1.45, 1.59],
+Cluster 2.27 [1.95, 2.59], THEMIS 3.23 [2.94, 3.49] -- so same-distance spread exceeds
+any distance trend, and the PSP magnetometer point (3.64 [2.99, 4.29]) rests on 2 files.
+A heliocentric-distance reading of log-sigma requires instrument and plasma-regime
+covariates before it supports any claim.
 
 ## Caveats (what would raise the numbers)
 - Absolute F1 ~0.14 is low because this is raw per-timepoint, single-threshold, single-feature
