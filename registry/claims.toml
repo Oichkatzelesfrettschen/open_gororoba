@@ -10794,3 +10794,12 @@ status = "Provisional"
 status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending"
 where_stated = "crates/gr_core/src/forces/chingon_drag.rs"
 
+
+[[claim]]
+formal_proof = "proofs/theories/AlternatorTraceExclusion.v"
+id = "C-1627"
+last_verified = "2026-07-16"
+statement = "The alternator Delta_a on a 2^n-dimensional Cayley-Dickson algebra cannot have rank 4 (equivalently, dim Eig_1(M_a) != 2^n - 4). Given the eigentheory hypotheses of Biss-Christensen-Dugger-Isaksen Question 9.2 -- M_a symmetric PSD with integer trace 2^n and every eigenspace dimension divisible by 4 -- a rank-4 alternator forces a single 4-dimensional complement eigenspace whose eigenvalue lambda satisfies (2^n - 4) + 4*lambda = 2^n, hence lambda = 1, contradicting lambda != 1. Scaling by |a|^2 makes the trace identity an exact integer equation; the Rocq proof of that integer core is axiom-free and kernel-checked."
+status = "Verified"
+status_note = "Kernel-checked under Rocq 9.1.1 in the full proof-tree build (296 .vo, exit 0). The BCDI eigenspace-divisibility and integer-trace hypotheses are taken as premises, not proved here; this is the easy half of Question 9.2."
+where_stated = "proofs/theories/AlternatorTraceExclusion.v (alternator_no_codim4, dim_eig1_neq_codim4)"
