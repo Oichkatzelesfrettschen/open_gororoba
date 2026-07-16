@@ -1182,9 +1182,14 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "selfsim-logsigma-bootstrap"
+crate = "gororoba_cli_physics"
+description = "File-level bootstrap CIs for the per-mission selfsim log-sigma survey: 10,000 resamples of each mission's mean staple-associator log-normal shape parameter over its daily-file records, percentile 95% CIs, fixed ChaCha8 seed for bit-reproducible intervals."
+
+[[binary]]
 name = "staples-roc-block-bootstrap"
 crate = "gororoba_cli_physics"
-description = "Block-bootstrap ROC-AUC comparison for the Staples THEMIS benchmark: average-rank Mann-Whitney AUC for the normalized CD staple-associator vs field-rotation and |B|-gradient baselines, with moving-block (Kunsch 1989) percentile 95% CIs on each AUC and the paired delta; fixed ChaCha8 seed makes every interval bit-reproducible."
+description = "Block-bootstrap ROC-AUC comparison for the Staples THEMIS benchmark: average-rank Mann-Whitney AUC for the normalized CD staple-associator vs field-rotation and |B|-gradient baselines, with moving-block (Kunsch 1989) percentile 95% CIs on each AUC, the paired bulk delta, per-subtype (compressive/rotational) paired deltas, the worst-case-AUC delta, and a half/double block-length sensitivity sweep; fixed ChaCha8 seed makes every interval bit-reproducible."
 
 [[binary]]
 name = "themis-staples-score-export"
