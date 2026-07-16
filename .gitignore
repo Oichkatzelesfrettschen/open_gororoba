@@ -109,9 +109,11 @@ data/output/**/*.json
 data/output/**/*.jsonl
 data/output/**/*.csv
 data/output/**/*.md
-data/output/**/_tmp_*.npy
+data/output/**/*.npy
 data/output/**/*.npz
 data/output/**/*.pkl
+data/output/*.png
+!data/output/audit/**
 data/artifacts/frames_*/
 data/e027/
 data/test-e027/
