@@ -112,6 +112,12 @@ impl TurboQuantCudaKernels {
             .arg(d_indices.raw_mut())
             .arg(&n_boundaries)
             .arg(&n_i32);
+        // SAFETY: launch is unsafe because cudarc cannot check the arg list
+        // against the PTX signature. The five args match the quantize kernel
+        // exactly (boundaries ptr, values ptr, indices ptr, n_boundaries,
+        // n); each device buffer was allocated above with the length its
+        // pointer arg implies, and launch_1d(n) never dispatches a thread
+        // index outside the kernel's own i < n guard.
         unsafe { b.launch(config) }.map_err(|e| format!("quantize launch: {}", e))?;
 
         d_indices.dtoh_vec().map_err(|e| format!("readback: {}", e))
@@ -184,6 +190,11 @@ impl TurboQuantCudaKernels {
             .arg(&dims.n_queries)
             .arg(&dims.n_keys)
             .arg(&dims.n_levels);
+        // SAFETY: same contract as the quantize launch -- the arg list
+        // matches the dequant_dot PTX signature (query, key_indices, centroids,
+        // key_norms, scores pointers plus the four dims scalars), every
+        // device buffer carries the length its pointer arg implies, and the
+        // kernel guards its global index against n_queries * n_keys.
         unsafe { b.launch(config) }.map_err(|e| format!("dequant_dot launch: {}", e))?;
 
         d_scores.dtoh_vec().map_err(|e| format!("readback: {}", e))

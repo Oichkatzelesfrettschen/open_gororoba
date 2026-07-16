@@ -67,6 +67,7 @@ proofs/Makefile.coq.conf
 proofs/.Makefile.coq.d
 *.lia.cache
 *.nra.cache
+*.nia.cache
 
 # ------------------------------------------------------------------------------
 # 3. Project Artifact Infrastructure (Standardized)

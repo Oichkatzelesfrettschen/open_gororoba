@@ -5473,12 +5473,11 @@ dependencies = [
 
 [[package]]
 name = "hdf5-metno-derive"
-version = "0.10.0"
+version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e5f5b353c797530e868881b12c1c307c0994cd3400195391d7021e6e6db02da6"
+checksum = "5071e6eb3474ce3c38c2e6e01061c4224e49be8314b11ea8cad97a70efaa000a"
 dependencies = [
  "proc-macro-crate",
- "proc-macro-error2",
  "proc-macro2",
  "quote",
  "syn 2.0.117",

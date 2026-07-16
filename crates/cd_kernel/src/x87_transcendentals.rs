@@ -22,6 +22,10 @@ pub struct X87ReductionResult {
 #[must_use]
 pub fn pi_ext80() -> Ext80 {
     let mut out = Ext80::ZERO;
+    // SAFETY: `dst` points at the 10-byte `out` local, which `fstp tbyte`
+    // writes exactly once; every x87 stack register is declared clobbered,
+    // and `options(nostack)` holds because the sequence never touches the
+    // CPU stack.
     unsafe {
         asm!(
             "fldpi",
@@ -52,6 +56,10 @@ pub fn atan2_ext80(y: Ext80, x: Ext80) -> X87ValueStatus<Ext80> {
     let mut out = Ext80::ZERO;
     let mut status = 0_u16;
 
+    // SAFETY: `y` and `x` point at live 10-byte `Ext80` values that
+    // `fld tbyte` only reads; `out` and `status` point at locals sized
+    // for the `fstp tbyte` and `fnstsw word` stores; the full x87 stack
+    // is declared clobbered and the sequence never touches the CPU stack.
     unsafe {
         asm!(
             "fld tbyte ptr [{y}]",
@@ -87,6 +95,10 @@ pub fn sincos_ext80(angle: Ext80) -> X87ValueStatus<(Ext80, Ext80)> {
     let mut cos_out = Ext80::ZERO;
     let mut status = 0_u16;
 
+    // SAFETY: `angle` points at a live 10-byte `Ext80` that `fld tbyte`
+    // only reads; `sin_out`, `cos_out`, and `status` point at locals
+    // sized for their stores; the full x87 stack is declared clobbered
+    // and the sequence never touches the CPU stack.
     unsafe {
         asm!(
             "fld tbyte ptr [{angle}]",
@@ -131,6 +143,12 @@ pub fn fprem1_ext80(dividend: Ext80, modulus: Ext80) -> X87ValueStatus<Ext80> {
     let mut out = Ext80::ZERO;
     let mut status = 0_u16;
 
+    // SAFETY: `modulus` and `dividend` point at live 10-byte `Ext80`
+    // values that `fld tbyte` only reads; `out` and `status` point at
+    // locals sized for the `fstp tbyte` and `fnstsw word` stores; the
+    // full x87 stack is declared clobbered and the single fprem1 step
+    // never touches the CPU stack (the C2 retry loop lives in the safe
+    // caller `reduce_trig_argument_ext80`).
     unsafe {
         asm!(
             "fld tbyte ptr [{modulus}]",
