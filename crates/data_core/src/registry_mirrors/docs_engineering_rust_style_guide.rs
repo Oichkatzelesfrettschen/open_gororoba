@@ -6,8 +6,8 @@
 //!
 //! ## 1. Toolchain & Environment
 //!
-//! - **Channel:** `nightly` (Required for `cudarc`, `nvrtc`, and some SIMD intrinsics).
-//! - **Edition:** 2021 (Move to 2024 when stable).
+//! - **Channel:** stable `1.97.0` (pinned in `rust-toolchain.toml`; LLVM codegen only).
+//! - **Edition:** 2024.
 //! - **Lockfile:** Checked in. `Cargo.lock` must be up to date.
 //! - **Strictness:** CI runs with `RUSTFLAGS="-D warnings"`. No warnings allowed in main branch.
 //!

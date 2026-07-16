@@ -4,7 +4,7 @@
 #      to regenerate the emitted markdown files under docs/, apps/, and crate README targets.
 
 [requirements_narrative]
-updated = "2026-04-11"
+updated = "2026-07-14"
 authoritative = true
 document_count = 13
 
@@ -31,7 +31,7 @@ human-facing compatibility docs from the same source-of-truth.
 
 ## Toolchain baseline
 
-- Rust: `nightly-2026-04-05` via `rust-toolchain.toml`
+- Rust: stable `1.97.0` via `rust-toolchain.toml`
 - Edition: `2024`
 - Python: `3.11` or `3.12` recommended; `3.13+` allowed with optional-extras caveats
 - Formal proofs: Rocq `9.1.1`
@@ -164,8 +164,7 @@ Notes:
 
 - The core algebra replication/validation code depends only on the base install extras.
 - Keep `PYTHONWARNINGS=error` enabled in scripts and CI; warnings are errors here.
-- The workspace manifest requires nightly Cargo because the root `Cargo.toml`
-  uses the unstable `codegen-backend` feature.
+- The workspace pins stable Rust (`1.97.0`); root profiles use default LLVM codegen.
 - Native BLAS backends for the Burn-based `neural_homotopy` path are explicit
   Cargo feature opt-ins, not defaults.
 - Use `make doctor-blas` or `sh scripts/detect_native_blas.sh` to see which
@@ -182,12 +181,12 @@ Artifact generation entrypoints:
 Recommended verification commands:
 
 ```ignore
-cargo +nightly test -p cd_kernel --lib
-cargo +nightly test -p algebra_analysis --lib x87_jacobi
-cargo +nightly test -p algebra_analysis --lib reference_jacobi
-cargo +nightly test -p gororoba_cli_algebra --bin x87_strategy_bench
-cargo +nightly check -p gororoba_cli_algebra --bin jacobi-backend-sweep
-cargo +nightly clippy -p cd_kernel -p algebra_analysis -p gororoba_cli_algebra --all-targets -- -D warnings
+cargo test -p cd_kernel --lib
+cargo test -p algebra_analysis --lib x87_jacobi
+cargo test -p algebra_analysis --lib reference_jacobi
+cargo test -p gororoba_cli_algebra --bin x87_strategy_bench
+cargo check -p gororoba_cli_algebra --bin jacobi-backend-sweep
+cargo clippy -p cd_kernel -p algebra_analysis -p gororoba_cli_algebra --all-targets -- -D warnings
 ```
 '''
 
@@ -529,7 +528,7 @@ Host assumptions:
 
 - NVIDIA GPU and driver stack visible to the process
 - CUDA runtime/NVRTC support compatible with `cudarc`
-- Rust nightly toolchain matching the workspace policy
+- Rust stable toolchain matching the workspace pin (`1.97.0`)
 
 Notes:
 

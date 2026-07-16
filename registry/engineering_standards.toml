@@ -7,8 +7,9 @@ updated = "2026-02-17"
 status = "active"
 
 [engineering_standards.toolchain]
-channel = "nightly"
-reason = "Required for cudarc, nvrtc, and SIMD intrinsics"
+channel = "stable"
+pin = "1.97.0"
+reason = "Workspace pin via rust-toolchain.toml; LLVM codegen only on stable"
 edition = "2024"
 lockfile_policy = "checked_in"
 ci_strictness = "deny_warnings"

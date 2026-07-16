@@ -808,7 +808,7 @@ fn build_lacunae(
             dangling += 1;
             let lacuna_id = format!(
                 "L-DANGLING-{}-{:03}",
-                &source_name[..1].to_uppercase(),
+                source_name[..1].to_uppercase(),
                 dangling
             );
             if !seen_ids.insert(lacuna_id.clone()) {

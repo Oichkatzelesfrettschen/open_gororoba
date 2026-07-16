@@ -204,7 +204,8 @@ impl SpkReader {
         while curr != center {
             let (prev, seg_idx, is_fwd) = visited[&curr].unwrap();
 
-            if let Some(state) = self.evaluate_segment(seg_idx, jed) {
+            {
+                let state = self.evaluate_segment(seg_idx, jed)?;
                 let sign = if is_fwd { 1.0 } else { -1.0 };
                 pos[0] += sign * state.position[0];
                 pos[1] += sign * state.position[1];
@@ -212,8 +213,6 @@ impl SpkReader {
                 vel[0] += sign * state.velocity[0];
                 vel[1] += sign * state.velocity[1];
                 vel[2] += sign * state.velocity[2];
-            } else {
-                return None;
             }
 
             curr = prev;

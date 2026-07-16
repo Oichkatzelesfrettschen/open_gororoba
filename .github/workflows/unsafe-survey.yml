@@ -37,8 +37,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust toolchain (nightly)
-        uses: dtolnay/rust-toolchain@nightly
+      - name: Install Rust toolchain (stable 1.97.0)
+        uses: dtolnay/rust-toolchain@1.97.0
 
       - name: Cache cargo registry and target
         uses: actions/cache@v4

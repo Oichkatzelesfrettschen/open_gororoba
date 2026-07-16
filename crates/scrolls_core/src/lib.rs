@@ -366,7 +366,7 @@ fn infer_type(values: &[String]) -> String {
 }
 
 fn detect_delimiter(sample: &str) -> u8 {
-    let candidates = [b',', b';', b'\t', b'|'];
+    let candidates = *b",;\t|";
     let mut best = (b',', 0usize);
     for candidate in candidates {
         let mut score = 0usize;

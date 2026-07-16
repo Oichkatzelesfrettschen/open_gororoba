@@ -18,7 +18,7 @@ Host assumptions:
 
 - NVIDIA GPU and driver stack visible to the process
 - CUDA runtime/NVRTC support compatible with `cudarc`
-- Rust nightly toolchain matching the workspace policy
+- Rust stable toolchain matching the workspace pin (`1.97.0`)
 
 Notes:
 

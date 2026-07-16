@@ -1251,7 +1251,7 @@ fn print_revision_summary(entity_kind: &str, revision: &provenance_store::Status
         revision.revision_id,
         revision.actor,
         revision.prev_value_sha256.as_deref().unwrap_or("(none)"),
-        &revision.new_value_sha256
+        revision.new_value_sha256
     );
 }
 

@@ -3831,9 +3831,9 @@ dependencies = [
 
 [[package]]
 name = "ethnum"
-version = "1.5.2"
+version = "1.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ca81e6b4777c89fd810c25a4be2b1bd93ea034fbe58e6a75216a34c6b82c539b"
+checksum = "40404c3f5f511ec4da6fe866ddf6a717c309fdbb69fbbad7b0f3edab8f2e835f"
 
 [[package]]
 name = "euclid"
@@ -4319,6 +4319,7 @@ dependencies = [
 [[package]]
 name = "fwht"
 version = "0.1.0"
+source = "git+https://github.com/Oichkatzelesfrettschen/cratesgororobas?rev=28b5310d3a6755b81b7c1ceb79f9f79f67f1af70#28b5310d3a6755b81b7c1ceb79f9f79f67f1af70"
 dependencies = [
  "rand 0.9.3",
  "rand_chacha 0.9.0",
