@@ -1,0 +1,117 @@
+=== cargo clippy --workspace --all-targets started at 2026-04-30T17:23:48-07:00 ===
+    Checking verified_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/verified_core)
+   Compiling simsimd v6.5.16
+    Checking gororoba_gpu_bridge v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_gpu_bridge)
+   Compiling libmimalloc-sys v0.1.44
+    Checking cudarc v0.19.4
+    Checking lbm_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_core)
+   Compiling ring v0.17.14
+   Compiling zstd-sys v2.0.16+zstd.1.5.7
+    Checking gororoba_sparse_grid v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_sparse_grid)
+    Checking optics_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/optics_core)
+    Checking cosmic_scheduler v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cosmic_scheduler)
+    Checking gororoba_gpu_readback v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_gpu_readback)
+   Compiling libsqlite3-sys v0.37.0
+    Checking snia_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/snia_core)
+   Compiling materials_data v0.1.0 (/home/eirikr/Github/open_gororoba/crates/materials_data)
+    Checking lbm_vulkan v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_vulkan)
+    Checking gororoba_view_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_view_core)
+    Checking gororoba_contracts v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_contracts)
+   Compiling minifb v0.28.0
+    Checking qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba/crates/qgp_scaling)
+    Checking data_artifacts_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_artifacts_core)
+    Checking gororoba_view_raster v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_view_raster)
+    Checking tensor_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/tensor_core)
+    Checking grmhd_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/grmhd_core)
+    Checking casimir_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/casimir_core)
+    Checking cr_transport v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cr_transport)
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_3d_cuda)
+    Checking gororoba_optix v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_optix)
+    Checking gororoba_pipeline v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_pipeline)
+   Compiling blake3 v1.8.4
+    Checking provenance_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/provenance_core)
+   Compiling psm v0.1.30
+    Checking docpipe v0.1.0 (/home/eirikr/Github/open_gororoba/crates/docpipe)
+    Checking scrolls_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/scrolls_core)
+    Checking fixed_point_lbm v0.1.0 (/home/eirikr/Github/open_gororoba/crates/fixed_point_lbm)
+    Checking stacker v0.1.23
+    Checking polars-utils v0.53.0
+    Checking de_marrais_2000 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/de_marrais_2000)
+    Checking polars-schema v0.53.0
+    Checking polars-arrow v0.53.0
+    Checking mimalloc v0.1.48
+    Checking control_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/control_core)
+    Checking diffusionx v0.11.3
+    Checking polars-dtype v0.53.0
+    Checking polars-compute v0.53.0
+    Checking cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_kernel)
+   Compiling rustls v0.23.37
+    Checking moreno_1997 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/moreno_1997)
+    Checking gororoba_structurable v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_structurable)
+    Checking algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis)
+    Checking flavor_lifts v0.1.0 (/home/eirikr/Github/open_gororoba/crates/flavor_lifts)
+    Checking rustls-webpki v0.103.10
+    Checking polars-row v0.53.0
+    Checking polars-core v0.53.0
+    Checking hurwitz_1898 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/hurwitz_1898)
+    Checking wilmot_2025 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/wilmot_2025)
+    Checking dickson_1919 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/dickson_1919)
+    Checking brown_1967 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/brown_1967)
+    Checking schafer_1945 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/schafer_1945)
+    Checking brown_1972 v0.1.0 (/home/eirikr/Github/open_gororoba/crates/brown_1972)
+    Checking gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_algebra)
+    Checking cd_papers v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_papers)
+    Checking tokio-rustls v0.26.4
+    Checking rustls-platform-verifier v0.6.2
+    Checking ureq v3.3.0
+    Checking hyper-rustls v0.27.7
+    Checking reqwest v0.13.2
+    Checking chromiumoxide v0.9.1
+    Checking surreal_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/surreal_algebra)
+    Checking algebra_experimental v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_experimental)
+    Checking gr_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gr_core)
+    Checking stats_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/stats_core)
+    Checking spin_tomography_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/spin_tomography_core)
+    Checking materials_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/materials_core)
+    Checking lit_search v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lit_search)
+    Checking quantum_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/quantum_core)
+    Checking pathion_ellip v0.1.0 (/home/eirikr/Github/open_gororoba/crates/pathion_ellip)
+    Checking polars-ops v0.53.0
+    Checking gororoba_cli_quantum v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_quantum)
+    Checking polars-time v0.53.0
+    Checking polars-io v0.53.0
+    Checking polars v0.53.0
+   Compiling zstd-safe v7.2.4
+    Checking zstd v0.13.3
+    Checking zip v8.5.0
+    Checking data_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/data_core)
+    Checking cosmology_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cosmology_core)
+    Checking lbm_3d v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lbm_3d)
+    Checking sign_imbalance v0.1.0 (/home/eirikr/Github/open_gororoba/crates/sign_imbalance)
+    Checking neural_homotopy v0.1.0 (/home/eirikr/Github/open_gororoba/crates/neural_homotopy)
+    Checking manga_experiments v0.1.0 (/home/eirikr/Github/open_gororoba/crates/manga_experiments)
+    Checking spectral_core v0.1.0 (/home/eirikr/Github/open_gororoba/crates/spectral_core)
+    Checking cd_spin_bridge v0.1.0 (/home/eirikr/Github/open_gororoba/crates/cd_spin_bridge)
+    Checking lattice_filtration v0.1.0 (/home/eirikr/Github/open_gororoba/crates/lattice_filtration)
+    Checking gororoba_engine v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_engine)
+error: field assignment outside of initializer for an instance created with Default::default()
+   --> crates/spectral_core/src/cd_embedding.rs:394:9
+    |
+394 |         params.lag_secs = 60.0;
+    |         ^^^^^^^^^^^^^^^^^^^^^^^
+    |
+note: consider initializing the variable with `cd_embedding::CdEmbeddingParams { lag_secs: 60.0, ..Default::default() }` and removing relevant reassignments
+   --> crates/spectral_core/src/cd_embedding.rs:393:9
+    |
+393 |         let mut params = CdEmbeddingParams::default();
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#field_reassign_with_default
+    = note: `-D clippy::field-reassign-with-default` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::field_reassign_with_default)]`
+
+    Checking gororoba_cli_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_algebra)
+error: could not compile `spectral_core` (lib test) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+
+=== exit code: 101 ===
+=== finished at 2026-04-30T17:24:55-07:00 ===

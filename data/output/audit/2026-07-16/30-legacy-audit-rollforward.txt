@@ -1,0 +1,56 @@
+Legacy audit reconciliation -- single active audit log
+=======================================================
+
+This file is the one active audit log. Earlier bundle files under
+data/output/audit/<date>/ are frozen evidence snapshots; their open items
+either close here (with the closing evidence named) or roll forward into
+the ACTIVE section below. A future audit bundle supersedes this file by
+carrying its own rollforward that closes or re-rolls each ACTIVE item.
+
+RESOLVED (stays resolved; do not re-open without new evidence)
+--------------------------------------------------------------
+- 2026-04-30/11-clippy.log: workspace clippy exit 0 (7m20s). Superseded by
+  2026-07-16/11-clippy-workspace.log (PASS, deny-warnings, stable 1.97.0).
+- 2026-04-30/12-nextest-norun.log: workspace test-profile build exit 0.
+  Superseded by the six-gate pre-push chain (34/34 nextest, 2026-07-16).
+- 2026-04-30/13-proofs-vos.log: proofs vos exit 0 ("Nothing to be done",
+  incremental). Superseded by the full clean rebuild: 296 .vo exit 0 under
+  Rocq 9.1.1 / OCaml 5.5.0 (2026-07-16, commit 365eafa0).
+- 2026-04-30/14-geiger.log: `cargo geiger --workspace` fails with "virtual
+  manifest ... requires an actual package" (exit 1). Closed by the scoped
+  invocation with an absolute --manifest-path against cd_kernel:
+  2026-07-16/12-geiger-cd_kernel.log.
+- 2026-04-30/14-geiger-cd-kernel.log: unsafe census snapshot, dep tree
+  376/1067 fns, 25200/62444 exprs, "544 warnings" (geiger's count of
+  unsafe-bearing crates, exit 1 is the unsafe-found convention, not an
+  error). Superseded by 2026-07-16/12-geiger-cd_kernel.log: cd_kernel
+  5/5 fns, 147/327 exprs, 4/4 impls; dep tree 171/1069, 13550/62824.
+  The dep-tree shrink 376->171 fns tracks the stable-toolchain repin and
+  fwht git-rev resolution (commit 4a5f17a1).
+- 2026-04-30/01-cargo-metadata-{full,no-deps}.json: 6.5 MB of regenerable
+  `cargo metadata` output. Gitignored (data/output/audit/**/*cargo-
+  metadata*.json); the lockfile at any commit reproduces them.
+- 2026-07-14/00-BLOCKER-compile-stages.txt: all three blocked stages
+  (clippy, geiger, dep-audit) ran green 2026-07-16; see
+  00-summary-compile-stages-unblocked.txt in this bundle.
+
+ACTIVE (rolls forward; close with named evidence in the next bundle)
+--------------------------------------------------------------------
+- proc-macro-error2 v2.0.1 future-incompatibility: cargo reports the
+  crate "contains code that will be rejected by a future version of
+  Rust" on every workspace build (2026-04-30/12-nextest-norun.log and
+  the 2026-07-16 gate run both show it). Trace the dependents with
+  `cargo tree -i proc-macro-error2` and either bump the parents or pin
+  a fixed release; verify with
+  `cargo report future-incompatibilities`.
+- cd_kernel unsafe surface: 5 unsafe fns / 147 unsafe exprs with
+  crates/-wide SAFETY-comment coverage at 37.1% (unsafe audit,
+  2026-07-09). The census above is measurement, not closure; the close
+  condition is SAFETY comments on each unsafe block in cd_kernel,
+  re-measured by the todo_fixme_comment_resident shadow metric lane.
+- proofs/.nia.cache churns as a tracked file on every proof session.
+  Decide: gitignore it (matching the *.lia.cache / *.nra.cache pattern)
+  or document why it stays tracked; then apply.
+- 2026-05-12/gate-timing-1778607296.jsonl is a single 6-phase timing
+  sample from the gate-optimization work (total 16.2 s scoped run).
+  It is now tracked as frozen evidence; no further action.

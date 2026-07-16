@@ -1,0 +1,6 @@
+{"elapsed_sec":0.318340468,"kind":"routing","run_check":true,"run_governance":false,"run_rust":true,"scope":"-p xtask"}
+{"elapsed_sec":0.030139664,"exit_code":0,"kind":"phase","phase":"cache-check"}
+{"elapsed_sec":8.961279832,"exit_code":0,"kind":"phase","phase":"check"}
+{"elapsed_sec":6.885162772,"exit_code":0,"kind":"phase","phase":"rust-regression-scoped","scope":"-p xtask"}
+{"kind":"skip","phase":"governance-gate-readonly","reason":"run_governance=False"}
+{"kind":"summary","returncode":0,"run_count":0,"skip_count":0,"total_elapsed_sec":16.196497596}
