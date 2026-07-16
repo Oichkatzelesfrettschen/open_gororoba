@@ -109,6 +109,9 @@ data/output/**/*.json
 data/output/**/*.jsonl
 data/output/**/*.csv
 data/output/**/*.md
+data/output/**/_tmp_*.npy
+data/output/**/*.npz
+data/output/**/*.pkl
 data/artifacts/frames_*/
 data/e027/
 data/test-e027/
