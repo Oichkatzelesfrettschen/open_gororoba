@@ -34,23 +34,50 @@ RESOLVED (stays resolved; do not re-open without new evidence)
   (clippy, geiger, dep-audit) ran green 2026-07-16; see
   00-summary-compile-stages-unblocked.txt in this bundle.
 
+RESOLVED IN THIS BUNDLE (closing evidence inline)
+--------------------------------------------------
+- proc-macro-error2 v2.0.1 future-incompatibility (E0365, private
+  proc_macro re-export at proc-macro-error2 src/lib.rs:494): the
+  release-build path is CLOSED. `cargo tree -i proc-macro-error2`
+  showed two parents: hdf5-metno-derive 0.10.0 (release path via
+  hdf5-metno 0.12.4) and iai-callgrind-macros 0.6.1 (dev-only, bench
+  harness). hdf5-metno-derive 0.10.1 drops the proc-macro-error2
+  dependency entirely (crates.io index deps list); `cargo update -p
+  hdf5-metno-derive` locks 0.10.1. RESIDUAL (dev-only, upstream-
+  blocked): iai-callgrind-macros 0.6.1 is the latest release and still
+  depends on proc-macro-error2 2.0.1, itself the latest release with no
+  fixed successor; the warning therefore persists in --all-targets
+  builds until either upstream ships a fix. Tracking:
+  https://github.com/GnomedDev/proc-macro-error-2.
+- cd_kernel SAFETY-comment coverage: CLOSED. Every unsafe site now
+  carries a discharge: x87_transcendentals.rs (4 asm blocks),
+  x87_jacobi_kernels.rs (1 asm block), turboquant/cuda/launch.rs (2
+  kernel launches), turboquant/fp8.rs (Pod/Zeroable contract expanded).
+  avx2_primitives.rs, x87_primitives.rs, x87_ext80.rs, and the cubecl
+  launcher already discharged each block; turboquant/vulkan/quantizer.rs
+  discharges through its file-level "Universal SAFETY argument" plus
+  targeted comments, mirroring lbm_vulkan/compute.rs. Verified: clippy
+  -p cd_kernel --all-targets clean, 395/395 lib tests pass.
+- proofs/.nia.cache: CLOSED as gitignored. The file is a Rocq nia
+  tactic binary cache (Coq! magic header), the direct sibling of the
+  already-ignored *.lia.cache / *.nra.cache; nothing in _RocqProject,
+  the Makefile, the registries, or the hooks references it. Untracked
+  via `git rm --cached` with *.nia.cache added to the cache pattern
+  block in .gitignore.
+- themis-staples-score-export empty-file guard: post-merge review
+  (staple_associator module + both binaries) found one hardening gap --
+  a file parsing to zero valid rows indexes times[0] when
+  --min-samples 0 is passed. Fixed with an explicit rows.is_empty()
+  guard. The review confirmed the embedding, table-multiply,
+  associator, and log-moment math sound and the permissive-row-skip
+  parsing intentional.
+
 ACTIVE (rolls forward; close with named evidence in the next bundle)
 --------------------------------------------------------------------
-- proc-macro-error2 v2.0.1 future-incompatibility: cargo reports the
-  crate "contains code that will be rejected by a future version of
-  Rust" on every workspace build (2026-04-30/12-nextest-norun.log and
-  the 2026-07-16 gate run both show it). Trace the dependents with
-  `cargo tree -i proc-macro-error2` and either bump the parents or pin
-  a fixed release; verify with
-  `cargo report future-incompatibilities`.
-- cd_kernel unsafe surface: 5 unsafe fns / 147 unsafe exprs with
-  crates/-wide SAFETY-comment coverage at 37.1% (unsafe audit,
-  2026-07-09). The census above is measurement, not closure; the close
-  condition is SAFETY comments on each unsafe block in cd_kernel,
-  re-measured by the todo_fixme_comment_resident shadow metric lane.
-- proofs/.nia.cache churns as a tracked file on every proof session.
-  Decide: gitignore it (matching the *.lia.cache / *.nra.cache pattern)
-  or document why it stays tracked; then apply.
+- iai-callgrind-macros -> proc-macro-error2 dev-only residual (see
+  above): re-check `cargo info iai-callgrind-macros` and the
+  proc-macro-error2 repository for releases; close by cargo update once
+  either ships without the E0365 pattern.
 - 2026-05-12/gate-timing-1778607296.jsonl is a single 6-phase timing
   sample from the gate-optimization work (total 16.2 s scoped run).
-  It is now tracked as frozen evidence; no further action.
+  It is tracked as frozen evidence; no further action.

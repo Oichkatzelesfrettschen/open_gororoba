@@ -113,7 +113,9 @@ fn score_file(
             rows.push([bx, by, bz]);
         }
     }
-    if rows.len() < args.min_samples {
+    // The emptiness check stands on its own: --min-samples 0 must still
+    // skip a file that parses to zero valid rows rather than index times[0].
+    if rows.is_empty() || rows.len() < args.min_samples {
         return None;
     }
 
