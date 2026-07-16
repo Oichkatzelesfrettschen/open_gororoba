@@ -10,6 +10,7 @@ pub mod heliosphere_boundary;
 pub mod heliosphere_eval;
 pub mod lbm_dispatch;
 pub mod nonlocal_report;
+pub mod staple_associator;
 pub mod voyager_arrow;
 pub mod voyager_encounter;
 
