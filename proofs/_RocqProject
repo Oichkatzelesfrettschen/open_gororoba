@@ -296,5 +296,6 @@ theories/CDTowerInstantiation.v
 theories/M3IsAssociatorPathion.v
 theories/WilmotPathionRetraction.v
 theories/WilmotRetractionTheorem.v
+theories/AlternatorTraceExclusion.v
 theories/CDFidelity.v
 verified/C1474_FuelAdequacy.v
