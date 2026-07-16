@@ -68,6 +68,11 @@ pub fn x87_givens_diagonal_update(
 ) -> (f64, f64) {
     let mut new_pp: f64 = 0.0;
     let mut new_qq: f64 = 0.0;
+    // SAFETY: every memory operand is an `in(reg)` pointer to a live f64
+    // parameter or to the `new_pp`/`new_qq` locals; loads read 8 bytes and
+    // the final stores write exactly those locals; the full x87 register
+    // stack is declared clobbered and the sequence never touches the CPU
+    // stack.
     unsafe {
         asm!(
             "fld qword ptr [{cos_t}]",
