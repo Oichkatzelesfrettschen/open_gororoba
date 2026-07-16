@@ -1,0 +1,17 @@
+CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=6 RAYON_NUM_THREADS=6 RUST_TEST_THREADS=6 cargo clippy --workspace -- -D warnings
+    Checking polars-ops v0.53.0
+    Checking gororoba_db v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_db)
+    Checking xtask v0.1.0 (/home/eirikr/Github/open_gororoba/xtask)
+    Checking gororoba_cli_physics v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_physics)
+    Checking polars-time v0.53.0
+    Checking polars-io v0.53.0
+    Checking polars v0.53.0
+    Checking gororoba_cli_data v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_data)
+    Checking gororoba_cli_quantum v0.1.0 (/home/eirikr/Github/open_gororoba/crates/gororoba_cli_quantum)
+    Checking manga_experiments v0.1.0 (/home/eirikr/Github/open_gororoba/crates/manga_experiments)
+    Checking algebra_experimental v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_experimental)
+    Checking algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba/crates/algebra_analysis)
+    Checking surreal_algebra v0.1.0 (/home/eirikr/Github/open_gororoba/crates/surreal_algebra)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 44.17s
+warning: the following packages contain code that will be rejected by a future version of Rust: proc-macro-error2 v2.0.1
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`

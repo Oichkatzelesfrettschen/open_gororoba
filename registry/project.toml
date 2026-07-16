@@ -6,14 +6,14 @@ version = "0.13.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-or-later"
 test_count = 5399
-claim_count = 1441
+claim_count = 1442
 insight_count = 182
 experiment_count = 227
 complete_experiment_count = 0
 paper_count = 111
-binary_count = 485
+binary_count = 486
 kernel_checked_claims = 152
-proof_files = 186
+proof_files = 300
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
 # Baseline / milestone tags created by the debt-resolution program.

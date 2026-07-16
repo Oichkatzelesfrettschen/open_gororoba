@@ -382,6 +382,12 @@ path = "src/bin/heliosphere_mms_sitl_labeled.rs"
 [[bin]]
 name = "heliosphere-themis-staples-labeled"
 path = "src/bin/heliosphere_themis_staples_labeled.rs"
+[[bin]]
+name = "themis-staples-score-export"
+path = "src/bin/themis_staples_score_export.rs"
+[[bin]]
+name = "heliosphere-selfsim-logstats"
+path = "src/bin/heliosphere_selfsim_logstats.rs"
 
 [[bin]]
 name = "heliosphere-bootstrap-f1"
