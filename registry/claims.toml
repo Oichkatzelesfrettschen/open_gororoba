@@ -10803,3 +10803,27 @@ statement = "The alternator Delta_a on a 2^n-dimensional Cayley-Dickson algebra 
 status = "Verified"
 status_note = "Kernel-checked under Rocq 9.1.1 in the full proof-tree build (296 .vo, exit 0). The BCDI eigenspace-divisibility and integer-trace hypotheses are taken as premises, not proved here; this is the easy half of Question 9.2."
 where_stated = "proofs/theories/AlternatorTraceExclusion.v (alternator_no_codim4, dim_eig1_neq_codim4)"
+
+[[claim]]
+id = "C-1628"
+last_verified = "2026-07-16"
+statement = "On the committed THEMIS-A Staples benchmark (24,320,815 time points, 616,895 positives, 834 daily files, E-235/E-237 inputs), the normalized 16D Cayley-Dickson staple-associator strictly dominates the field-rotation-angle baseline on ROC-AUC across the three selected coordinates simultaneously: bulk delta +0.005642, high-gradient-positive stratum delta +0.009304, low-gradient-positive stratum delta +0.001980, hence simultaneous margin M = min(deltas) = +0.001980 > 0. These are exact pooled point estimates from deterministic computation, closed by rerunning E-237; the strata are per-time-point sample regimes (median |dB/dt| split among positives), not crossing-event classes. Scope: AUC dominance only (rotation retains the higher best-F1, 0.138 vs 0.136) against the four implemented baselines; equal-receptive-field controls (PVI, cumulative six-sample rotation, curvature/torsion) are not yet in the comparison."
+status = "Verified"
+status_note = "Deterministic computational claim on the fixed benchmark; verified by E-237's pooled estimands (data/output/staples_roc_cluster_bootstrap.json, seed-independent point values). Shares the associator observable with C-1617/C-1618 but is related to, not supporting of, their cross-domain precursor mechanism."
+where_stated = "data/output/audit/2026-07-16/20-associator-staples-benchmark.txt; E-237"
+
+[[claim]]
+id = "C-1629"
+last_verified = "2026-07-16"
+statement = "The staple-associator's componentwise ROC-AUC advantage over field rotation generalizes across independently sampled THEMIS-A crossing days: the file-cluster bootstrap (E-237, 2,000 resamples of intact daily files, every sample within each drawn file retained) puts the simultaneous margin M at +0.00198 with 95% CI [0.00078, 0.00317] (1 nonpositive draw in 2,000, p_le_zero = 0.001), and the mean daily AUC delta at +0.0051 [0.0040, 0.0064]. The intact-cluster design supersedes the E-235 moving-block intervals for population inference because blocks straddling file boundaries mix days instead of resampling them."
+status = "Provisional"
+status_note = "Provisional pending: per-probe THEMIS C/D/E replication (separate probe-level lower bounds, not pooled), year-stratified resampling, crossing-event-level resampling, and equal-information baselines. Related to C-1617/C-1618 through the shared associator observable; does not independently validate their mechanism."
+where_stated = "data/output/staples_roc_cluster_bootstrap.json; E-237"
+
+[[claim]]
+id = "C-1630"
+last_verified = "2026-07-16"
+statement = "The 16D Cayley-Dickson basis-associator coefficient tensor [e_i,e_j,e_k] = (s(i,j)s(i XOR j,k) - s(j,k)s(i,j XOR k)) e_(i XOR j XOR k) has every coefficient in {-2, 0, +2} with the exact census: 2248 zeros, 924 coefficients +2, 924 coefficients -2 (1848 nonzero of 4096 ordered triples, 45.1171875% support, signs exactly balanced). The scalar component e0 receives zero associator terms, e8 receives 168 nonzero ordered contributions, and every other imaginary component receives 120. The staple-associator detector is therefore the norm of a fixed sparse cubic filter with 1848 terms over six consecutive magnetometer samples. The quaternion (dim 4) tensor vanishes identically; the octonion (dim 8) tensor is sign-balanced."
+status = "Verified"
+status_note = "Machine-checked by E-238 against the SHA-256-verified CdMultTable: exhaustive 4096-triple enumeration with both association orders asserted to land on the same output component; regression tests pin every census number (cargo test -p gororoba_cli_physics --bin sedenion-associator-coefficient-census, 3/3)."
+where_stated = "crates/gororoba_cli_physics/src/bin/sedenion_associator_coefficient_census.rs; data/output/audit/2026-07-16/21-associator-coefficient-census.txt"
