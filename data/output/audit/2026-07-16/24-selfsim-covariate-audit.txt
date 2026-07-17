@@ -1,0 +1,53 @@
+Selfsim survey covariate audit (2026-07-16)
+===========================================
+
+Question: which covariates (cadence, epoch, coordinate frame,
+instrument) are recoverable for the 8 mission dirs the selfsim survey
+reads, and where is a common-cadence redesign feasible?
+
+Per-mission inventory (heliosphere_selfsim_logstats.rs MISSIONS table;
+sample_files reads TOP-LEVEL files only -- subdirectories like
+psp/berkeley_fields are invisible to the survey):
+
+  dir         files  naming (epoch)                    cadence     frame   instrument
+  psp             2  psp_coho1hr_..._YYYY.csv (year)   3600 s      RTN     COHO1HR merged MAG+plasma
+  psp_fields     15  psp_fields_mag_YYYYMMDD_YYYYMMDD  60 s        RTN     PSP FIELDS MAG L2 1-min
+  messenger       7  messenger_mag_YYYY_DDD.csv        0.05 s      RTN*    MESSENGER MAG (headerless)
+  ace            24  ac_h0_mfi_YYYY.csv                16 s        GSE*    ACE MFI H0 (headerless)
+  themis       1855  a_fgm_YYYY_DDD.csv                2.887 s     GSE     THEMIS-A FGM spin-fit
+  cluster        14  c1_fgm_spin_YYYY_DDD.csv          4.026 s     GSE     Cluster-1 FGM SPIN
+  voyager1       48  vy1_YYYY.asc                      3600 s      RTN     Voyager-1 MAG hourly
+  voyager2       44  vy2_YYYY.asc                      3600 s      RTN     Voyager-2 MAG hourly
+
+  * frame inferred, not documented on disk: messenger and ace files are
+    headerless and neither dir has a SOURCES.toml entry. Frames for
+    psp/psp_fields/themis/cluster come from column headers; voyager
+    from column position.
+
+Cadence evidence: median inter-sample spacing measured from actual
+rows (e.g. themis a_fgm_2015_305.csv rows 2-6 step 2.887 s; messenger
+2011_083 steps 0.050 s; ace ac_h0_mfi_2000 steps 16 s; cluster
+c1_fgm_spin_2002_001 steps 4.026 s with gaps to 40 s).
+
+Provenance coverage: data/external/SOURCES.toml documents only the
+psp/ tree among the eight dirs. The voyager SOURCES entries point at a
+DIFFERENT path (voyager/voyager1/vy1_*_amda_merged_hourly.asc) than
+the vy1_YYYY.asc files the survey reads. messenger, ace (top-level),
+psp_fields, themis, cluster: no path_glob hit at all.
+
+Common-cadence feasibility with current on-disk data:
+- Shared 3600 s (hourly) grid: ALL 8 missions (psp-coho and both
+  voyagers are natively hourly; everything else downsamples cleanly).
+  This is the only cadence where all eight co-exist.
+- Shared 60 s grid: 5 missions (psp_fields, messenger, ace, themis,
+  cluster); psp-coho and voyagers cannot upsample.
+- Sub-second grid: messenger alone.
+
+Redesign constraints surfaced:
+1. The survey's per-mission file counts are wildly uneven (psp 2 files
+   vs themis 1855) and psp's richer sub-dir products are unread.
+2. Cluster files carry multi-second gaps; resampling must gap-tolerate.
+3. messenger/ace covariates must be asserted from provenance (and
+   SOURCES.toml entries added) rather than read from files.
+4. Every mission has an absolute-time index, so per-file epoch spans
+   and solar-cycle covariates are derivable from filenames plus rows.
