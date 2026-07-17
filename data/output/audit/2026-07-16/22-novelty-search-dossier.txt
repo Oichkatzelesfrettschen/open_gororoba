@@ -1,0 +1,290 @@
+NOVELTY CLAIM LITERATURE-SEARCH DOSSIER
+========================================
+
+Search date: 2026-07-16
+Search engine: general web search (US-indexed), 20 distinct query strings
+across 5 angles plus 7 gap-filling queries.
+
+CLAIM UNDER TEST
+----------------
+No prior public work uses a Cayley-Dickson (sedenion, 16-dimensional)
+ASSOCIATOR norm -- the non-associativity defect |(ab)c - a(bc)| of
+hypercomplex-embedded magnetometer samples -- as a magnetopause-crossing
+or plasma-boundary detection score.
+
+SCOPE CAVEAT
+------------
+Absence of evidence in web search does not prove absence in paywalled,
+non-indexed, preprint-embargoed, or non-English literature. Conference
+abstracts (AGU, EGU, URSI), theses, and closed-access IEEE/Elsevier
+full texts are only partially visible to web search. This dossier
+establishes "not found in indexed public web sources as of 2026-07-16,"
+not a formal freedom-to-operate or exhaustive systematic review.
+
+
+ANGLE 1: SEDENION / CAYLEY-DICKSON x SPACE PLASMA / MAGNETOMETER
+----------------------------------------------------------------
+Queries used:
+  1a. sedenion magnetometer time series
+  1b. "Cayley-Dickson" magnetopause OR "solar wind" OR "space plasma"
+  1c. sedenion "boundary detection" OR "anomaly detection" time series
+  1d. "sedenion" signal processing application
+  1e. octonion OR sedenion "solar wind" magnetic field data analysis
+  1f. "sedenion" OR "hypercomplex" embedding spacecraft magnetic field
+      boundary score detector
+
+Most relevant results:
+  R1. Saoud & Al-Marzouqi, "Metacognitive Sedenion-Valued Neural Network
+      and its Learning Algorithm," IEEE Access, 2020.
+      https://ieeexplore.ieee.org/document/9160921/
+      Verdict: sedenions for time-series FORECASTING (currency, sunspot
+      number, power demand, temperature); no associator, no boundary
+      detection, no magnetometer data. Sunspot series is the closest
+      touch to heliophysics; still forecasting, not detection.
+  R2. Bojesomo et al., Deep Sedenion Network, Traffic4cast 2020.
+      https://github.com/bojesomo/Traffic4Cast2020-Deep-Sedenion-Network
+      Verdict: sedenion-valued deep net for traffic video prediction;
+      sedenion used as a compact 16-channel container, associator unused.
+  R3. Weng, "Color Confinement and Spatial Dimensions in the
+      Complex-sedenion Space," arXiv:1704.02240 (2017); also
+      trigintaduonion field papers arXiv:0704.0136.
+      Verdict: speculative unified-field theory in sedenion space; no
+      data analysis, no magnetometer, no detection score.
+  R4. Saturn/Cassini and Earth boundary-detection literature returned by
+      the same queries (e.g., Daigavane et al., unsupervised Saturn
+      boundary crossing detection, Computers & Geosciences 2022,
+      https://www.researchgate.net/publication/358231598) uses PCA/
+      autoencoder features, never hypercomplex embeddings.
+Angle verdict: NO prior art found combining sedenions or the
+Cayley-Dickson construction with magnetometer, magnetopause, solar-wind,
+or space-plasma boundary data.
+
+
+ANGLE 2: ASSOCIATOR x SIGNAL PROCESSING / ANOMALY DETECTION / GEOPHYSICS
+------------------------------------------------------------------------
+Queries used:
+  2a. "associator" non-associative algebra "signal processing"
+  2b. "associator" "time series" feature anomaly detection
+  2c. "associator norm" octonion OR sedenion application
+  2d. "associator" geophysics OR geomagnetic detection
+  2e. arxiv associator norm time series nonassociative measure data
+      analysis
+  2f. "associator" magnetopause OR magnetosheath OR "bow shock"
+
+Most relevant results:
+  R5. J. D. Cook, "How close is octonion multiplication to being
+      associative?" blog, 2018.
+      https://www.johndcook.com/blog/2018/07/09/octonion-associator/
+      Verdict: computes the expected associator norm of random unit
+      octonions (approx 1.0947) as a mathematical curiosity; the closest
+      public computation of an "associator norm statistic," but on random
+      octonions, with no signal or detection application.
+  R6. "Octonion associators," arXiv:1509.07718 (2015).
+      https://arxiv.org/pdf/1509.07718
+      Verdict: pure algebra (identities satisfied by associators);
+      no data application.
+  R7. Xu et al., "Anomaly Transformer: Time Series Anomaly Detection
+      with Association Discrepancy," ICLR 2022.
+      https://www.researchgate.net/publication/355110504
+      Verdict: NAME COLLISION ONLY -- "association discrepancy" is an
+      attention-distribution divergence, unrelated to algebraic
+      associators; recorded to preempt reviewer confusion.
+  R8. "Non-Associativity Induced Modifications of Open-System Quantum
+      Dynamics," arXiv:2604.16626 (2026).
+      Verdict: associator structures appear in a quantum master
+      equation, not as a data-analysis feature.
+Angle verdict: NO prior art found using the algebraic associator as a
+signal-processing feature, time-series feature, anomaly score, or
+geophysical detector. The associator appears in public literature only
+as an algebraic object or a quantum-theoretic deformation term.
+
+
+ANGLE 3: HYPERCOMPLEX SIGNAL PROCESSING SURVEYS / NON-ASSOCIATIVITY
+AS A FEATURE
+-------------------------------------------------------------------
+Queries used:
+  3a. hypercomplex signal processing survey quaternion octonion
+  3b. octonion-valued neural network non-associativity feature
+  3c. quaternion signal processing geomagnetic OR magnetometer space
+      weather
+  3d. "non-associativity" as feature machine learning octonion algebra
+  3e. "Metacognitive Sedenion-Valued Neural Network" time series
+      forecasting
+  3f. quaternion adaptive filter QLMS geophysical wind three-dimensional
+      signal Mandic
+  3g. "trigintaduonion" OR "sedenion" Fourier transform signal
+
+Most relevant results (nearest established prior-art fields):
+  R9. Took & Mandic, "The Quaternion LMS Algorithm for Adaptive
+      Filtering of Hypercomplex Processes," IEEE Trans. Signal
+      Processing, 2009.
+      https://www.commsp.ee.ic.ac.uk/~mandic/research/wind/quaternion_lms_ieee_tsp_2009.pdf
+      Verdict: canonical quaternion adaptive filtering of 3D/4D
+      geophysical processes (wind fields); associative algebra, no
+      associator, no boundary detection.
+  R10. "An Invitation to Hypercomplex Phase Retrieval: Theory and
+      Applications," arXiv:2310.17660; and "Hypercomplex Phase
+      Retrieval," arXiv:2602.23946.
+      Verdict: current surveys of quaternion/octonion signal processing
+      (QFT, OFT, wavelets, LCT, deep learning); non-associativity is
+      treated as an obstacle to be managed, never as a signal feature.
+  R11. Popa, "Octonion-Valued Neural Networks," ICANN 2016; and OVNN
+      stability literature (e.g., ScienceDirect S0893608018301606).
+      Verdict: OVNN papers explicitly DECOMPOSE octonions into 4 complex
+      or 8 real channels precisely to AVOID non-associativity; the
+      opposite design stance from using the associator as information.
+  R12. Octonion Fourier Transform literature (Springer chapter,
+      https://link.springer.com/chapter/10.1007/978-3-031-28375-8_5;
+      Octonion Phase Retrieval, arXiv:2308.15784).
+      Verdict: octonion transforms for color/multichannel images;
+      no space-physics data, no associator statistic.
+Angle verdict: quaternion/octonion signal processing is an established
+field, but every located work either uses an associative algebra
+(quaternions) or engineers AROUND octonion/sedenion non-associativity.
+NO work found that measures non-associativity of embedded data and uses
+it as a feature or score.
+
+
+ANGLE 4: MAGNETOPAUSE-CROSSING DETECTION STATE OF THE ART
+(conventional-detector landscape the claim competes against)
+-------------------------------------------------------------
+Queries used:
+  4a. magnetopause crossing detection machine learning gradient boosting
+      Nguyen 2022
+  4b. magnetopause crossing automatic detection CNN neural network MMS
+  4c. partial variance of increments PVI solar wind boundary
+      discontinuity detection
+  4d. wavelet method magnetopause boundary layer identification
+      magnetometer
+
+Most relevant results:
+  R13. Nguyen et al., "Massive Multi-Mission Statistical Study and
+       Analytical Modeling of the Earth's Magnetopause: 1. A Gradient
+       Boosting Based Automatic Detection of Near-Earth Regions," JGR
+       Space Physics, 2022.
+       https://agupubs.onlinelibrary.wiley.com/doi/abs/10.1029/2021JA029773
+       Verdict: state of the art; gradient boosting on B-field + plasma
+       moments; 15,062 magnetopause crossings across 11 spacecraft.
+       Features are physical (|B|, density, velocity, temperature),
+       not algebraic.
+  R14. Argall et al., LSTM magnetopause-crossing detector for the MMS
+       SITL pipeline, Front. Astron. Space Sci. 2020;
+       https://www.frontiersin.org/journals/astronomy-and-space-sciences/articles/10.3389/fspas.2020.00054/full
+       and helioml.org chapter 08. Verdict: operational deep-learning
+       detector; raw physical features.
+  R15. Cheng et al. / Frontiers 2022, "Automated bow shock and
+       magnetopause boundary detection with Cassini using threshold and
+       deep learning methods."
+       https://www.frontiersin.org/journals/astronomy-and-space-sciences/articles/10.3389/fspas.2022.1016453/full
+       Verdict: threshold + ResNet CNN on field/spectrogram images.
+  R16. Greco, Matthaeus et al., "Partial Variance of Increments Method
+       in Solar Wind Observations and Plasma Simulations," Space Sci.
+       Rev., 2018. https://link.springer.com/article/10.1007/s11214-017-0435-8
+       Verdict: PVI = normalized increment magnitude; the standard
+       coherent-structure/discontinuity score since 2008; structurally
+       the closest CONVENTIONAL analogue to an associator score (both
+       are scalar per-sample "spikiness" statistics on B), but PVI is a
+       first-order increment norm, algebra-free.
+  R17. Suvorova et al. / Adv. Space Res. 2022, "Identification of the
+       planetary magnetosphere boundaries with the wavelet
+       multi-resolution analysis" (Haar wavelets).
+       https://www.sciencedirect.com/science/article/abs/pii/S1364682622000189
+       Also: wavelet-decision-tree classifier, Remote Sensing 17:1565,
+       https://doi.org/10.3390/rs17091565; 3D-CNN on ion distributions,
+       arXiv:1908.05715; MMS bow-shock ML database, arXiv:2203.04680.
+       Verdict: wavelet-energy/entropy and distribution-function
+       features; no hypercomplex embedding anywhere in the landscape.
+Angle verdict: the conventional landscape is thresholds, gradient
+boosting (Nguyen 2022), LSTM/CNN classifiers, wavelet multiresolution,
+and PVI. None uses any hypercomplex algebraic structure. PVI is the
+nearest methodological cousin (scalar boundary score from B-field
+increments).
+
+
+ANGLE 5: NON-ASSOCIATIVITY AS PHYSICAL OBSERVABLE IN PLASMA / MHD
+------------------------------------------------------------------
+Queries used:
+  5a. non-associativity physical observable magnetohydrodynamics plasma
+  5b. nonassociative algebra magnetic monopole magnetic charge quantum
+      mechanics observable
+  5c. octonion magnetohydrodynamics turbulence formulation
+  5d. "hypercomplex" magnetopause OR heliosphere detection
+
+Most relevant results:
+  R18. Bunk, Kupriyanov, Szabo et al. line: "Magnetic monopoles and
+       nonassociative deformations of quantum theory,"
+       arXiv:1709.10080 (2017/2018); Bojowald et al., "Small Magnetic
+       Charges and Monopoles in Nonassociative Quantum Mechanics,"
+       Phys. Rev. Lett. 121, 201602 (2018).
+       https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.121.201602
+       Verdict: nonassociativity (Jacobiator of velocity operators) is a
+       genuine physical structure for electrons in monopole backgrounds;
+       theoretical QM, not classical plasma data analysis, and never
+       proposed as a spacecraft-data observable.
+  R19. "Nonassociativity, Dirac monopoles and Aharonov-Bohm effect,"
+       arXiv:hep-th/0503034; "Exceptionality, Supersymmetry and
+       Non-associativity in Physics," arXiv:2507.17938.
+       Verdict: same theoretical family; no measurement pipeline.
+  R20. Demir, Tanisli et al., "Octonic formulations of Maxwell type
+       fluid equations" (2015); "Octonionic formulation of the fully
+       symmetric Maxwell's equations," arXiv:1310.3807.
+       Verdict: octonion rewrites of electromagnetism/fluid equations;
+       elegance exercises, no turbulence data, no detection statistic.
+Angle verdict: non-associativity appears as a physical structure only
+in monopole/string-theoretic quantum mechanics. NO work found treating
+a non-associativity defect as an empirical observable computed from
+plasma or MHD measurements.
+
+
+OVERALL VERDICT
+---------------
+NOVELTY NOT FALSIFIED (as of 2026-07-16, indexed public web sources).
+
+No located work: (i) embeds magnetometer or any space-plasma time
+series into a sedenion or any Cayley-Dickson algebra; (ii) computes an
+associator or associator norm on measured data of any kind; or (iii)
+uses a non-associativity defect as a boundary, crossing, or anomaly
+detection score. The three ingredients of the claim (sedenion
+embedding, associator norm as data statistic, magnetopause detection)
+each live in separate literatures that do not cite one another.
+
+NEAREST PRIOR ART, RANKED BY PROXIMITY
+--------------------------------------
+  1. PVI (Greco/Matthaeus, Space Sci. Rev. 2018, R16): nearest in
+     FUNCTION -- a scalar per-sample statistic on magnetometer data used
+     as a boundary/structure score; algebra-free first-order increments.
+  2. Nguyen et al. JGR 2022 (R13): nearest in TASK -- the reference
+     automatic magnetopause detector; supervised ML on physical
+     features.
+  3. Saoud & Al-Marzouqi 2020 Mc-SVNN (R1): nearest in ALGEBRA-x-DATA --
+     sedenion-valued network on time series (incl. sunspot numbers);
+     forecasting, associator unused.
+  4. J. D. Cook 2018 octonion-associator note (R5) + arXiv:1509.07718
+     (R6): nearest in STATISTIC -- literal associator-norm computation,
+     but on random octonions with no application.
+  5. Took & Mandic QLMS 2009 (R9) and octonion Fourier/phase-retrieval
+     surveys (R10, R12): nearest in FIELD -- hypercomplex signal
+     processing on geophysical 3D data; associative or
+     nonassociativity-avoiding by design.
+  6. Nonassociative QM of monopoles (PRL 121, 201602, R18): nearest in
+     PHYSICS -- non-associativity as physically meaningful structure in
+     magnetic backgrounds; purely theoretical.
+  7. Anomaly Transformer "association discrepancy" (R7): name collision
+     only; flag in any paper to avoid reviewer confusion.
+
+RESIDUAL RISK NOTES
+-------------------
+- Paywalled IEEE/Elsevier hypercomplex signal-processing venues and
+  AGU/EGU conference abstracts are under-indexed; a targeted
+  Scopus/Web of Science sweep on ("associator" AND ("signal" OR
+  "detection")) would tighten the claim.
+- Weng's complex-sedenion field-theory corpus (arXiv, 2006-2020s) is
+  large and idiosyncratic; it discusses electromagnetic and
+  "field-strength" quantities in sedenion spaces. Spot checks show no
+  data analysis and no detection statistic, but an exhaustive read of
+  that corpus was not performed.
+- The Mc-SVNN patent (US 12,524,654, metacognitive sedenion-valued
+  neural networks) shows sedenion time-series IP exists; it does not
+  claim associator features or space-physics boundary detection.
+
+END OF DOSSIER
