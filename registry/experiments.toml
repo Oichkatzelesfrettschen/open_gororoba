@@ -6011,3 +6011,55 @@ status = "active"
 status_token = "ACTIVE"
 title = "File-level bootstrap CIs for the cross-mission staple-associator log-sigma survey"
 truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-roc-cluster-bootstrap"
+binary_experiment_declared = ""
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-237"
+input = "data/output/benchmark_scores.csv: 24,320,815 per-sample rows (file_id,assoc,dbdt,rot,bmag,label) over 834 THEMIS-A daily files; file_id names the intact sampling cluster, sidecar benchmark_scores.files.csv maps file_id to source path"
+input_path_refs = ["data/output/benchmark_scores.csv"]
+lineage_id = "XL-237"
+method = "File-cluster bootstrap: 2,000 resamples draw whole daily files with replacement and keep every sample within each selected file (intact-cluster resampling gives better interval coverage than contiguous blocks that straddle file boundaries). Per-detector global sort once, then O(n) multiplicity-weighted rank walks compute bulk plus high/low-gradient-positive stratum AUCs per resample. Three estimands: pooled time-point AUC (descriptive), mean daily AUC over two-class files, and cluster-resampled paired deltas. The simultaneous margin M = min(delta_bulk, delta_high_gradient, delta_low_gradient) recomputes inside every resample so strict componentwise dominance is one CI-backed proposition. Tail proportions report as < 1/(B+1) when zero nonpositive draws occur. ChaCha8 seed 42."
+output = ["data/output/staples_roc_cluster_bootstrap.json"]
+output_path_refs = ["data/output/staples_roc_cluster_bootstrap.json"]
+reproducibility_class = "deterministic"
+run = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --out data/output/staples_roc_cluster_bootstrap.json"
+run_command_sha256 = "63c5164d7dc5e7eca1fb876a1af1a20d3f079be68ffc2bd70f195a571bea3d34"
+status = "active"
+status_token = "ACTIVE"
+title = "File-cluster bootstrap with simultaneous dominance margin for the staples benchmark"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "sedenion-associator-coefficient-census"
+binary_experiment_declared = ""
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-238"
+input = "cd_kernel::mult_table::CdMultTable::generate(16): the SHA-256-verified Cayley-Dickson twist recurrence; no external data"
+input_path_refs = ["crates/cd_kernel/src/mult_table.rs"]
+lineage_id = "XL-238"
+method = "Exact enumeration of all 16^3 = 4096 ordered basis triples: coefficient of [e_i,e_j,e_k] on e_(i XOR j XOR k) is s(i,j)s(i^j,k) - s(j,k)s(i,j^k), read off the multiplication table with both association orders asserted to land on the same component. Census: value histogram over {-2,0,+2}, per-output-component nonzero counts, sign balance. Regression tests pin the census; lower-dimension sanity checks confirm the quaternion tensor vanishes identically and the octonion tensor is sign-balanced."
+output = ["data/output/audit/2026-07-16/21-associator-coefficient-census.txt"]
+output_path_refs = ["data/output/audit/2026-07-16/21-associator-coefficient-census.txt"]
+reproducibility_class = "deterministic"
+run = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin sedenion-associator-coefficient-census"
+run_command_sha256 = "7a4d4defbf43401550e6204ee0cbe5548e7b1fa6bc583229c9e59f71e28b1b15"
+status = "active"
+status_token = "ACTIVE"
+title = "Exact coefficient census of the sedenion basis associator tensor"
+truth_surface_consumption = []

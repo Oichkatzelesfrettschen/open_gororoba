@@ -13,7 +13,9 @@
 //! norms plus the two conventional baselines, labels each sample within
 //! +/- 2 minutes of a catalogued magnetopause crossing on that UTC day, and
 //! concatenates everything into one flat CSV of
-//! (assoc, dbdt, rot, bmag, label).
+//! (file_id, assoc, dbdt, rot, bmag, label), where file_id names the
+//! source daily file -- the intact cluster a file-aware bootstrap
+//! resamples on. A sidecar <out>.files.csv maps file_id to path.
 //!
 //! HOW:
 //!   cargo run --release -p gororoba_cli_physics \
@@ -195,27 +197,32 @@ fn main() -> Result<()> {
         .filter_map(|r| r.ok().and_then(|r| r.get(path_col).map(str::to_owned)))
         .collect();
 
-    let scored: Vec<Scored> = files
+    // Pair every score block with its source path so the CSV carries the
+    // cluster identity a file-aware bootstrap resamples on. rayon's
+    // filter_map preserves input order on collect, so file_id is stable
+    // across reruns of the same matched-files table.
+    let scored: Vec<(&String, Scored)> = files
         .par_iter()
-        .filter_map(|f| score_file(f, &crossings, &args))
+        .filter_map(|f| score_file(f, &crossings, &args).map(|s| (f, s)))
         .collect();
 
-    let total: usize = scored.iter().map(|s| s.assoc.len()).sum();
+    let total: usize = scored.iter().map(|(_, s)| s.assoc.len()).sum();
     let positives: usize = scored
         .iter()
-        .map(|s| s.label.iter().filter(|&&l| l).count())
+        .map(|(_, s)| s.label.iter().filter(|&&l| l).count())
         .sum();
 
     let mut out = std::io::BufWriter::new(
         fs::File::create(&args.out)
             .with_context(|| format!("create {}", args.out.display()))?,
     );
-    writeln!(out, "assoc,dbdt,rot,bmag,label")?;
-    for s in &scored {
+    writeln!(out, "file_id,assoc,dbdt,rot,bmag,label")?;
+    for (file_id, (_, s)) in scored.iter().enumerate() {
         for k in 0..s.assoc.len() {
             writeln!(
                 out,
-                "{:e},{:e},{:e},{:e},{}",
+                "{},{:e},{:e},{:e},{:e},{}",
+                file_id,
                 s.assoc[k],
                 s.dbdt[k],
                 s.rot[k],
@@ -223,6 +230,17 @@ fn main() -> Result<()> {
                 u8::from(s.label[k])
             )?;
         }
+    }
+
+    // Sidecar map ties each file_id back to its source path for
+    // provenance and for event-level attribution later.
+    let map_path = args.out.with_extension("files.csv");
+    let mut map_out = std::io::BufWriter::new(
+        fs::File::create(&map_path).with_context(|| format!("create {}", map_path.display()))?,
+    );
+    writeln!(map_out, "file_id,path")?;
+    for (file_id, (path, _)) in scored.iter().enumerate() {
+        writeln!(map_out, "{},{}", file_id, path)?;
     }
 
     println!(

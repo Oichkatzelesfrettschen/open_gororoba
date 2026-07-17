@@ -33,30 +33,63 @@ paired delta = +0.0056 [0.0049, 0.0067]; the delta CI excludes zero and
 rotation wins in 0 of 200 resamples. The per-detector CIs overlap, which is
 exactly why the PAIRED delta is the honest statistic: both detectors face the
 same resampled days, so day-to-day difficulty variation cancels. The advantage
-is real but modest on bulk detection; the subtype robustness below remains the
-stronger differentiator.
+is real but modest on bulk detection; the sample-regime robustness below remains
+the stronger differentiator. "Best single scalar" means best among the four
+implemented baselines (rotation angle, |dB/dt|, |B|, rot x |dB/dt|).
 
-## Where the associator actually wins: robustness across crossing subtypes
-Splitting positives into compressive (high |dB/dt|) vs rotational (low |dB/dt|) halves:
+## Where the associator actually wins: robustness across sample regimes
+Positive TIME POINTS split at the median |dB/dt| among positives into
+high-gradient and low-gradient SAMPLE REGIMES (per-point strata, deliberately
+not called crossing subtypes: one crossing event can contribute points to both
+strata, and event-level compressive/rotational classification needs integrated
+per-event statistics this scorer does not compute):
 
-| detector | compressive AUC | rotational AUC | **worst-case** |
+| detector | high-gradient AUC | low-gradient AUC | **worst-case** |
 |---|---|---|---|
 | **CD associator** | 0.898 | 0.754 | **0.754** |
 | rotation angle | 0.889 | 0.752 | 0.752 |
 | |dB/dt| | 0.867 | 0.545 | 0.545 |
 
-**|dB/dt| collapses to 0.545 on rotational crossings** -- the subtype it cannot see. Rotation
-angle does NOT collapse: it stays strong on both (0.889 compressive, 0.752 rotational),
-because most magnetopause crossings involve a field rotation. The associator matches this
-robust rotation baseline on both subtypes (0.898 / 0.754) and edges ahead on BOTH -- the
-paired block bootstrap (E-235) puts every subtype delta above zero: compressive
-+0.0093 [0.0083, 0.0104], rotational +0.0020 [0.0008, 0.0034], and the worst-case-AUC
-(min over subtypes) delta +0.0020 [0.0008, 0.0034]. The associator therefore strictly
-dominates the rotation baseline: better in bulk, better on each subtype, and a higher
-floor, without the |dB/dt|-style blind spot. The margins stay modest -- the value is
-**robustness in one scalar with a uniformly positive edge**, not a large margin.
+**|dB/dt| collapses to 0.545 on low-gradient positives** -- the regime it cannot see.
+Rotation angle does NOT collapse: it stays strong on both (0.889 high-gradient, 0.752
+low-gradient), because most magnetopause crossings involve a field rotation. The
+associator matches this robust rotation baseline on both regimes (0.898 / 0.754) and
+edges ahead on BOTH -- the paired block bootstrap (E-235) puts every stratum delta above
+zero: high-gradient +0.0093 [0.0083, 0.0104], low-gradient +0.0020 [0.0008, 0.0034], and
+the worst-case-AUC (min over strata) delta +0.0020 [0.0008, 0.0034]. The associator
+therefore strictly dominates the rotation baseline ON ROC-AUC across the selected
+coordinates -- bulk, high-gradient, low-gradient, and the floor -- without the
+|dB/dt|-style blind spot. Scope limits on that sentence: rotation retains the slightly
+higher reported best-F1 (0.138 vs 0.136), so this is AUC dominance, not universal
+detector dominance; and "best conventional" means best among the four implemented
+baselines -- PVI, cumulative six-sample rotation, windowed magnetic shear, temporal
+torsion, and wavelet energy remain unimplemented equal-information controls. The margins
+stay modest -- the value is **robustness in one scalar with a uniformly positive AUC
+edge**, not a large margin.
 The bulk delta is insensitive to the block-length choice: half/double sweep
 (14,500 / 29,000 / 58,000 samples) moves the 95% CI endpoints by less than 0.0002.
+
+## Cluster-level inference and the simultaneous dominance certificate (E-237)
+The flat CSV concatenates 834 daily files, so contiguous blocks can straddle file
+boundaries; the file-cluster bootstrap (2,000 resamples of INTACT daily files, every
+sample within each drawn file retained, exporter now emits file_id) is the valid
+sampling-unit design for population inference and supersedes the E-235 block intervals
+for that purpose. Results (data/output/staples_roc_cluster_bootstrap.json):
+bulk delta +0.0056 [0.0047, 0.0065]; high-gradient +0.0093 [0.0083, 0.0103];
+low-gradient +0.0020 [0.0008, 0.0032]; SIMULTANEOUS MARGIN
+M = min(three paired deltas, recomputed inside every resample) = +0.0020
+[0.0008, 0.0032] with 1 nonpositive draw in 2,000 (p_le_zero = 0.001) -- strict
+componentwise AUC dominance certified as ONE proposition, not inferred from three
+marginal intervals. Mean daily AUC (typical crossing day): assoc 0.8196, rot 0.8145,
+delta +0.0051 [0.0040, 0.0064]. Tail proportions report as < 1/(B+1) when zero
+nonpositive draws occur; Monte Carlo zeros are resolution statements, not exact.
+Claims: C-1628 (Verified, deterministic benchmark dominance), C-1629 (Provisional,
+population-level, pending probe replication and equal-information baselines),
+C-1630 (Verified, coefficient census: 1848-term sparse cubic filter, e0 empty,
+e8=168, others 120). The exact tensor census (E-238) identifies the detector as a
+fixed sparse cubic filter over six samples -- the mechanism question is now whether
+the CD coefficient pattern beats matched generic cubic filters, not whether more
+samples are needed.
 
 ## Companion survey: cross-mission log-sigma CIs (E-236)
 File-level bootstrap CIs (10,000 resamples over daily files) on the selfsim survey's
@@ -72,7 +105,7 @@ covariates before it supports any claim.
   detection with no orbit-phase gating, no temporal smoothing, no ML. The repo's own pipeline
   (windowed descriptors + logistic regression + Takens embedding) is expected to score much
   higher; this measures raw discriminative power of one feature.
-- +/-2 min label window and the compressive/rotational median split are design choices; the
+- +/-2 min label window and the high/low-gradient median split are design choices; the
   qualitative ordering (associator >= rotation > |dB/dt| >> |B|, associator best worst-case) is
   stable to reasonable variations.
 - THEMIS-A only; probes c/d/e (18k more crossings) not yet included.
