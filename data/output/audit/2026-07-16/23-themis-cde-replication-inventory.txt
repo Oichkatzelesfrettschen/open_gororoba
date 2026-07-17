@@ -1,0 +1,49 @@
+THEMIS probe C/D/E replication inventory (2026-07-16)
+======================================================
+
+Question: what does per-probe C/D/E replication of the staples
+magnetopause benchmark need, and what is on disk today?
+
+On-disk FGM data (data/external/themis/, 3.4 GB, 1855 files,
+{prefix}_fgm_YYYY_DDD.csv naming):
+
+  probe A (tha_fgm_*)  1783 files, 2007-2016
+  probe A (a_fgm_*)      65 files, 2015-2016 (alternate naming)
+  probe B (thb_fgm_*)     7 files, 2012 only
+  probe C/D/E             0 files
+
+Catalog coverage (data/external/crossing_lists/themis_mp_crossings_v2.txt,
+Staples et al. 2020 v2, 29,141 crossings 2007-2016, PROBE = column 8):
+
+  a 9490    b 840    c 1372    d 8754    e 8685
+
+C/D/E hold 18,811 ground-truth crossings with labels ready and zero
+matching FGM time series on disk.
+
+Producer of the score-export inputs: data/output/tha_matched_files.csv
+(year,doy,path) and data/output/cat_themis_a.csv (TIMESTAMP,R,year,doy)
+have NO in-repo producer -- themis_staples_score_export.rs only consumes
+them, both are untracked, and the catalog-splitting step is
+unimplemented in-tree. The parsing building block exists:
+crates/data_core/src/catalogs/themis.rs::parse_staples_crossing_catalog
+takes a probe_filter but nothing calls it to emit these CSVs.
+
+Fetch infrastructure is probe-parameterized and ready:
+crates/data_core/src/catalogs/themis_fetch.rs::ThemisFgmProvider pulls
+CDAWeb HAPI dataset {PROBE}_L2_FGM@0 (param {probe}_fgs_gse) for any of
+THA..THE, invoked by heliosphere-full-sweep --probe a..e and
+heliosphere-boundary-survey --mission themis-a..themis-e. No
+SOURCES.toml entry documents THEMIS; no dedicated Makefile fetch target.
+
+Blocking gaps for C/D/E replication (all three needed):
+1. Fetch C/D/E FGM daily files via the existing provider (mechanical).
+2. Build the missing per-probe catalog + matched-files generator that
+   feeds themis-staples-score-export (cat_themis_{c,d,e}.csv and
+   {probe}_matched_files.csv).
+3. Fix the hardcoded filename bug: themis_cd_crossing_survey.rs accepts
+   --probe and filters the catalog by it, but hardcodes
+   tha_fgm_{year}_{doy:03}.csv, so probe C data would never be read.
+
+Analysis plan per the burndown: each probe stays separate; per-probe
+deltas and heterogeneity precede pooling; the target result is four
+probe-specific lower bounds above zero, not a narrower pooled CI.
