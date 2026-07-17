@@ -1,0 +1,24 @@
+dim = 16
+ordered triples = 4096
+zeros = 2248
++2 = 924
+-2 = 924
+outside {-2,0,+2} = 0
+nonzero support = 1848 (45.1171875%)
+per-output-component nonzero counts:
+  e0  0
+  e1  120
+  e2  120
+  e3  120
+  e4  120
+  e5  120
+  e6  120
+  e7  120
+  e8  168
+  e9  120
+  e10 120
+  e11 120
+  e12 120
+  e13 120
+  e14 120
+  e15 120

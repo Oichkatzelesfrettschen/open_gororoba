@@ -5,7 +5,7 @@
 //! questions the point estimates leave open: does the normalized CD
 //! staple-associator beat the field-rotation-angle baseline on bulk
 //! magnetopause-crossing detection, does the edge survive within each
-//! crossing subtype, and is the conclusion stable under the block-length
+//! sample regime, and is the conclusion stable under the block-length
 //! choice?
 //!
 //! Per-sample scores from magnetometer time series are strongly
@@ -17,13 +17,13 @@
 //! as approximately exchangeable. A half/double block-length sweep
 //! reports the bulk delta CI at each length as a sensitivity check.
 //!
-//! Crossing subtypes follow the benchmark's fixed feature definition:
-//! positives split at the median |dB/dt| among positives, compressive
-//! above the median and rotational below; each subtype scores against
+//! Sample-regime strata follow the benchmark's fixed feature definition:
+//! positives split at the median |dB/dt| among positives, high-gradient
+//! above the median and low-gradient at or below; each stratum scores against
 //! the full negative class. The split point is computed once on the
 //! full dataset and reused across resamples, since it is a feature
 //! definition rather than a resampled statistic. The worst-case AUC
-//! (min over subtypes, per detector, per resample) quantifies the
+//! (min over strata, per detector, per resample) quantifies the
 //! robustness claim with a paired CI of its own.
 //!
 //! AUC is the Mann-Whitney U statistic normalized by n_pos * n_neg,
@@ -79,11 +79,11 @@ struct Args {
     seed: u64,
 }
 
-/// Sample tags: negative, rotational-subtype positive (|dB/dt| below the
-/// positive-class median), compressive-subtype positive (above).
+/// Sample tags: negative, low-gradient positive (|dB/dt| at or below the
+/// positive-class median), high-gradient positive (above). Per-time-point strata, not crossing-event classes.
 const TAG_NEG: u8 = 0;
-const TAG_POS_ROTATIONAL: u8 = 1;
-const TAG_POS_COMPRESSIVE: u8 = 2;
+const TAG_POS_LOW_GRADIENT: u8 = 1;
+const TAG_POS_HIGH_GRADIENT: u8 = 2;
 
 /// Average-rank Mann-Whitney AUC over (score, label) pairs.
 ///
@@ -126,16 +126,16 @@ fn rank_auc(scores: &[f32], labels: &[u8]) -> f64 {
     (rank_sum_pos - n_pos_f * (n_pos_f + 1.0) / 2.0) / (n_pos_f * n_neg as f64)
 }
 
-/// AUC of one crossing subtype against the full negative class: samples
-/// carrying the other subtype's tag drop out, the requested tag becomes
+/// AUC of one sample-regime stratum against the full negative class: samples
+/// carrying the other stratum's tag drop out, the requested tag becomes
 /// the positive label.
-fn subtype_auc(scores: &[f32], tags: &[u8], subtype_tag: u8) -> f64 {
+fn stratum_auc(scores: &[f32], tags: &[u8], stratum_tag: u8) -> f64 {
     let mut s: Vec<f32> = Vec::with_capacity(scores.len());
     let mut l: Vec<u8> = Vec::with_capacity(scores.len());
     for (&sc, &t) in scores.iter().zip(tags) {
-        if t == TAG_NEG || t == subtype_tag {
+        if t == TAG_NEG || t == stratum_tag {
             s.push(sc);
-            l.push(u8::from(t == subtype_tag));
+            l.push(u8::from(t == stratum_tag));
         }
     }
     rank_auc(&s, &l)
@@ -145,16 +145,16 @@ fn subtype_auc(scores: &[f32], tags: &[u8], subtype_tag: u8) -> f64 {
 struct BootDraw {
     bulk_assoc: f64,
     bulk_rot: f64,
-    rotational_assoc: f64,
-    rotational_rot: f64,
-    compressive_assoc: f64,
-    compressive_rot: f64,
+    low_gradient_assoc: f64,
+    low_gradient_rot: f64,
+    high_gradient_assoc: f64,
+    high_gradient_rot: f64,
 }
 
 /// Moving-block bootstrap: each resample draws ceil(n / block_len) block
 /// start positions uniformly, concatenates the blocks, and recomputes
 /// every statistic on the identical resampled index set so each delta
-/// draw is a paired comparison. `with_subtypes` gates the four subtype
+/// draw is a paired comparison. `with_strata` gates the four stratum
 /// AUCs, which triple the per-resample sort cost.
 fn bootstrap(
     assoc: &[f32],
@@ -163,7 +163,7 @@ fn bootstrap(
     block_len: usize,
     resamples: usize,
     seed: u64,
-    with_subtypes: bool,
+    with_strata: bool,
 ) -> Vec<BootDraw> {
     let n = tags.len();
     let n_blocks = n.div_ceil(block_len);
@@ -189,12 +189,12 @@ fn bootstrap(
                 s_tag.extend_from_slice(&tags[start..end]);
             }
             let bulk_labels: Vec<u8> = s_tag.iter().map(|&t| u8::from(t != TAG_NEG)).collect();
-            let (ra, rr, ca, cr) = if with_subtypes {
+            let (ra, rr, ca, cr) = if with_strata {
                 (
-                    subtype_auc(&s_assoc, &s_tag, TAG_POS_ROTATIONAL),
-                    subtype_auc(&s_rot, &s_tag, TAG_POS_ROTATIONAL),
-                    subtype_auc(&s_assoc, &s_tag, TAG_POS_COMPRESSIVE),
-                    subtype_auc(&s_rot, &s_tag, TAG_POS_COMPRESSIVE),
+                    stratum_auc(&s_assoc, &s_tag, TAG_POS_LOW_GRADIENT),
+                    stratum_auc(&s_rot, &s_tag, TAG_POS_LOW_GRADIENT),
+                    stratum_auc(&s_assoc, &s_tag, TAG_POS_HIGH_GRADIENT),
+                    stratum_auc(&s_rot, &s_tag, TAG_POS_HIGH_GRADIENT),
                 )
             } else {
                 (f64::NAN, f64::NAN, f64::NAN, f64::NAN)
@@ -202,10 +202,10 @@ fn bootstrap(
             BootDraw {
                 bulk_assoc: rank_auc(&s_assoc, &bulk_labels),
                 bulk_rot: rank_auc(&s_rot, &bulk_labels),
-                rotational_assoc: ra,
-                rotational_rot: rr,
-                compressive_assoc: ca,
-                compressive_rot: cr,
+                low_gradient_assoc: ra,
+                low_gradient_rot: rr,
+                high_gradient_assoc: ca,
+                high_gradient_rot: cr,
             }
         })
         .collect()
@@ -259,12 +259,19 @@ fn main() -> anyhow::Result<()> {
     let mut labels: Vec<u8> = Vec::new();
 
     let reader = BufReader::new(File::open(&args.scores)?);
+    // The exporter's schema gained a leading file_id column; both
+    // layouts parse, keyed off the header.
+    let mut has_file_id = false;
     for (line_no, line) in reader.lines().enumerate() {
         let line = line?;
         if line_no == 0 {
+            has_file_id = line.starts_with("file_id,");
             continue;
         }
         let mut cols = line.split(',');
+        if has_file_id {
+            cols.next();
+        }
         let a: f32 = cols.next().ok_or_else(|| anyhow::anyhow!("row"))?.parse()?;
         let d: f32 = cols.next().ok_or_else(|| anyhow::anyhow!("row"))?.parse()?;
         let r: f32 = cols.next().ok_or_else(|| anyhow::anyhow!("row"))?.parse()?;
@@ -280,8 +287,8 @@ fn main() -> anyhow::Result<()> {
     let n_pos = labels.iter().filter(|&&l| l == 1).count();
     eprintln!("loaded {} samples, {} positives", n, n_pos);
 
-    // Fixed subtype definition: median |dB/dt| among positives splits
-    // compressive (above) from rotational (at or below).
+    // Fixed stratum definition: median |dB/dt| among positives splits
+    // high-gradient (above) from low-gradient (at or below).
     let mut pos_dbdt: Vec<f32> = labels
         .iter()
         .zip(&dbdt)
@@ -297,15 +304,15 @@ fn main() -> anyhow::Result<()> {
             if l == 0 {
                 TAG_NEG
             } else if d > split {
-                TAG_POS_COMPRESSIVE
+                TAG_POS_HIGH_GRADIENT
             } else {
-                TAG_POS_ROTATIONAL
+                TAG_POS_LOW_GRADIENT
             }
         })
         .collect();
-    let n_comp = tags.iter().filter(|&&t| t == TAG_POS_COMPRESSIVE).count();
+    let n_comp = tags.iter().filter(|&&t| t == TAG_POS_HIGH_GRADIENT).count();
     eprintln!(
-        "subtype split at |dB/dt|={:.6e}: {} compressive, {} rotational",
+        "stratum split at |dB/dt|={:.6e}: {} high-gradient, {} low-gradient",
         split,
         n_comp,
         n_pos - n_comp
@@ -315,16 +322,16 @@ fn main() -> anyhow::Result<()> {
     let auc_assoc = rank_auc(&assoc, &labels);
     let auc_rot = rank_auc(&rot, &labels);
     let auc_dbdt = rank_auc(&dbdt, &labels);
-    let pt_rot_assoc = subtype_auc(&assoc, &tags, TAG_POS_ROTATIONAL);
-    let pt_rot_rot = subtype_auc(&rot, &tags, TAG_POS_ROTATIONAL);
-    let pt_comp_assoc = subtype_auc(&assoc, &tags, TAG_POS_COMPRESSIVE);
-    let pt_comp_rot = subtype_auc(&rot, &tags, TAG_POS_COMPRESSIVE);
+    let pt_rot_assoc = stratum_auc(&assoc, &tags, TAG_POS_LOW_GRADIENT);
+    let pt_rot_rot = stratum_auc(&rot, &tags, TAG_POS_LOW_GRADIENT);
+    let pt_comp_assoc = stratum_auc(&assoc, &tags, TAG_POS_HIGH_GRADIENT);
+    let pt_comp_rot = stratum_auc(&rot, &tags, TAG_POS_HIGH_GRADIENT);
     eprintln!(
-        "point AUC: bulk assoc={:.4} rot={:.4} dbdt={:.4}; rotational {:.4}/{:.4}; compressive {:.4}/{:.4}",
+        "point AUC: bulk assoc={:.4} rot={:.4} dbdt={:.4}; low-gradient {:.4}/{:.4}; high-gradient {:.4}/{:.4}",
         auc_assoc, auc_rot, auc_dbdt, pt_rot_assoc, pt_rot_rot, pt_comp_assoc, pt_comp_rot
     );
 
-    // Primary run carries the subtype statistics.
+    // Primary run carries the stratum statistics.
     let draws = bootstrap(
         &assoc,
         &rot,
@@ -342,21 +349,21 @@ fn main() -> anyhow::Result<()> {
         auc_assoc - auc_rot,
         &collect(&|d| d.bulk_assoc - d.bulk_rot),
     );
-    let s_rotational_delta = ci(
+    let s_low_gradient_delta = ci(
         pt_rot_assoc - pt_rot_rot,
-        &collect(&|d| d.rotational_assoc - d.rotational_rot),
+        &collect(&|d| d.low_gradient_assoc - d.low_gradient_rot),
     );
-    let s_compressive_delta = ci(
+    let s_high_gradient_delta = ci(
         pt_comp_assoc - pt_comp_rot,
-        &collect(&|d| d.compressive_assoc - d.compressive_rot),
+        &collect(&|d| d.high_gradient_assoc - d.high_gradient_rot),
     );
-    // Worst-case AUC (min over subtypes) is the robustness statistic;
+    // Worst-case AUC (min over strata) is the robustness statistic;
     // its paired delta asks whether the associator's floor beats the
     // rotation baseline's floor.
     let s_worst_delta = ci(
         pt_rot_assoc.min(pt_comp_assoc) - pt_rot_rot.min(pt_comp_rot),
         &collect(&|d| {
-            d.rotational_assoc.min(d.compressive_assoc) - d.rotational_rot.min(d.compressive_rot)
+            d.low_gradient_assoc.min(d.high_gradient_assoc) - d.low_gradient_rot.min(d.high_gradient_rot)
         }),
     );
 
@@ -382,7 +389,7 @@ fn main() -> anyhow::Result<()> {
     }
 
     let report = format!(
-        "{{\n  \"n_samples\": {},\n  \"n_positives\": {},\n  \"n_compressive\": {},\n  \"n_rotational\": {},\n  \"subtype_split_dbdt\": {:.6e},\n  \"block_len\": {},\n  \"resamples\": {},\n  \"seed\": {},\n  \"auc_assoc\": {},\n  \"auc_rot\": {},\n  \"auc_dbdt_point\": {:.6},\n  \"auc_delta_assoc_minus_rot\": {},\n  \"subtype_rotational\": {{\"auc_assoc_point\": {:.6}, \"auc_rot_point\": {:.6}, \"delta_assoc_minus_rot\": {}}},\n  \"subtype_compressive\": {{\"auc_assoc_point\": {:.6}, \"auc_rot_point\": {:.6}, \"delta_assoc_minus_rot\": {}}},\n  \"worst_case_delta_assoc_minus_rot\": {},\n  \"block_len_sweep\": [\n{}\n  ]\n}}\n",
+        "{{\n  \"n_samples\": {},\n  \"n_positives\": {},\n  \"n_high_gradient_positive\": {},\n  \"n_low_gradient_positive\": {},\n  \"stratum_split_dbdt\": {:.6e},\n  \"block_len\": {},\n  \"resamples\": {},\n  \"seed\": {},\n  \"auc_assoc\": {},\n  \"auc_rot\": {},\n  \"auc_dbdt_point\": {:.6},\n  \"auc_delta_assoc_minus_rot\": {},\n  \"stratum_low_gradient_positive\": {{\"auc_assoc_point\": {:.6}, \"auc_rot_point\": {:.6}, \"delta_assoc_minus_rot\": {}}},\n  \"stratum_high_gradient_positive\": {{\"auc_assoc_point\": {:.6}, \"auc_rot_point\": {:.6}, \"delta_assoc_minus_rot\": {}}},\n  \"worst_case_delta_assoc_minus_rot\": {},\n  \"block_len_sweep\": [\n{}\n  ]\n}}\n",
         n,
         n_pos,
         n_comp,
@@ -397,10 +404,10 @@ fn main() -> anyhow::Result<()> {
         json_ci(&s_bulk_delta),
         pt_rot_assoc,
         pt_rot_rot,
-        json_ci(&s_rotational_delta),
+        json_ci(&s_low_gradient_delta),
         pt_comp_assoc,
         pt_comp_rot,
-        json_ci(&s_compressive_delta),
+        json_ci(&s_high_gradient_delta),
         json_ci(&s_worst_delta),
         sweep_json.join(",\n")
     );
