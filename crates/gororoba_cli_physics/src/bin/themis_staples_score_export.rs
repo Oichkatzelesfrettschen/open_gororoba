@@ -28,6 +28,9 @@ use anyhow::{Context, Result};
 use chrono::{DateTime, Duration, DurationRound, Utc};
 use clap::Parser;
 use gororoba_cli_physics::staple_associator::{joint_associator_norms, staple_embedding};
+use gororoba_cli_physics::staple_controls::{
+    permute_channels, six_sample_baselines, SparseCubicTensor,
+};
 use rayon::prelude::*;
 use std::{fs, io::Write, path::PathBuf};
 
@@ -56,12 +59,21 @@ struct Args {
 }
 
 /// One scored sample; label is true within the crossing pad window.
+/// The six trailing vectors are the equal-receptive-field controls:
+/// classical six-sample statistics plus the two tensor controls
+/// (sign-scrambled CD tensor, channel-permuted-input associator).
 struct Scored {
     assoc: Vec<f64>,
     dbdt: Vec<f64>,
     rot: Vec<f64>,
     bmag: Vec<f64>,
     label: Vec<bool>,
+    cumrot6: Vec<f64>,
+    maxrot6: Vec<f64>,
+    pvi6: Vec<f64>,
+    gram6: Vec<f64>,
+    scram: Vec<f64>,
+    chperm: Vec<f64>,
 }
 
 fn parse_timestamp(s: &str) -> Option<DateTime<Utc>> {
@@ -93,6 +105,8 @@ fn score_file(
     path: &str,
     crossings: &[DateTime<Utc>],
     args: &Args,
+    scrambled: &SparseCubicTensor,
+    cd_tensor: &SparseCubicTensor,
 ) -> Option<Scored> {
     let mut reader = csv::ReaderBuilder::new()
         .has_headers(false)
@@ -167,6 +181,17 @@ fn score_file(
         .collect();
     let bmag_aligned: Vec<f64> = bmag[4..4 + n].to_vec();
 
+    // Equal-receptive-field controls on the identical alignment: the
+    // six-sample window k spans rows k..k+5, exactly the associator's
+    // footprint, so every control column indexes 1:1 with assoc.
+    let base = six_sample_baselines(&rows);
+    let scram = scrambled.scores(&staples);
+    let permuted_staples = staple_embedding(&permute_channels(&rows, [1, 2, 0]));
+    let chperm = cd_tensor.scores(&permuted_staples);
+    debug_assert_eq!(base.cum_rotation.len(), n);
+    debug_assert_eq!(scram.len(), n);
+    debug_assert_eq!(chperm.len(), n);
+
     let keep: Vec<usize> = (0..n)
         .filter(|&k| assoc[k].is_finite() && dbdt[k].is_finite() && rot[k].is_finite())
         .collect();
@@ -176,6 +201,12 @@ fn score_file(
         rot: keep.iter().map(|&k| rot[k]).collect(),
         bmag: keep.iter().map(|&k| bmag_aligned[k]).collect(),
         label: keep.iter().map(|&k| label[k]).collect(),
+        cumrot6: keep.iter().map(|&k| base.cum_rotation[k]).collect(),
+        maxrot6: keep.iter().map(|&k| base.max_rotation[k]).collect(),
+        pvi6: keep.iter().map(|&k| base.max_pvi[k]).collect(),
+        gram6: keep.iter().map(|&k| base.max_gram_volume[k]).collect(),
+        scram: keep.iter().map(|&k| scram[k]).collect(),
+        chperm: keep.iter().map(|&k| chperm[k]).collect(),
     })
 }
 
@@ -201,9 +232,16 @@ fn main() -> Result<()> {
     // cluster identity a file-aware bootstrap resamples on. rayon's
     // filter_map preserves input order on collect, so file_id is stable
     // across reruns of the same matched-files table.
+    // Tensor controls are file-independent: build once, share across
+    // the rayon workers. The scramble seed is fixed so the control
+    // column is reproducible.
+    let table = cd_kernel::mult_table::CdMultTable::generate(16);
+    let cd_tensor = SparseCubicTensor::from_associator(&table);
+    let scrambled = cd_tensor.sign_scrambled(42);
+
     let scored: Vec<(&String, Scored)> = files
         .par_iter()
-        .filter_map(|f| score_file(f, &crossings, &args).map(|s| (f, s)))
+        .filter_map(|f| score_file(f, &crossings, &args, &scrambled, &cd_tensor).map(|s| (f, s)))
         .collect();
 
     let total: usize = scored.iter().map(|(_, s)| s.assoc.len()).sum();
@@ -216,18 +254,27 @@ fn main() -> Result<()> {
         fs::File::create(&args.out)
             .with_context(|| format!("create {}", args.out.display()))?,
     );
-    writeln!(out, "file_id,assoc,dbdt,rot,bmag,label")?;
+    writeln!(
+        out,
+        "file_id,assoc,dbdt,rot,bmag,label,cumrot6,maxrot6,pvi6,gram6,scram,chperm"
+    )?;
     for (file_id, (_, s)) in scored.iter().enumerate() {
         for k in 0..s.assoc.len() {
             writeln!(
                 out,
-                "{},{:e},{:e},{:e},{:e},{}",
+                "{},{:e},{:e},{:e},{:e},{},{:e},{:e},{:e},{:e},{:e},{:e}",
                 file_id,
                 s.assoc[k],
                 s.dbdt[k],
                 s.rot[k],
                 s.bmag[k],
-                u8::from(s.label[k])
+                u8::from(s.label[k]),
+                s.cumrot6[k],
+                s.maxrot6[k],
+                s.pvi6[k],
+                s.gram6[k],
+                s.scram[k],
+                s.chperm[k]
             )?;
         }
     }

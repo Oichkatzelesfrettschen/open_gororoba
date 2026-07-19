@@ -386,6 +386,9 @@ path = "src/bin/heliosphere_themis_staples_labeled.rs"
 name = "themis-staples-score-export"
 path = "src/bin/themis_staples_score_export.rs"
 [[bin]]
+name = "themis-probe-crossing-day-catalog"
+path = "src/bin/themis_probe_crossing_day_catalog.rs"
+[[bin]]
 name = "staples-roc-block-bootstrap"
 path = "src/bin/staples_roc_block_bootstrap.rs"
 [[bin]]
