@@ -236,10 +236,7 @@ credentials.*
 !docs/adr/*.md
 !docs/research/high_dimensional_algebra_unification_2026.md
 !docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md
-!docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md
-!docs/external_sources/NANOGRAV_15YR_PRIMARY_SOURCES.md
-!docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md
-!docs/external_sources/ysu_engine_gpu_patterns.md
+!docs/external_sources/*.md
 !docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md
 !docs/GRAND_SYNTHESIS.md
 !docs/NAVIGATOR.md

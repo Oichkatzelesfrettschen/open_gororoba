@@ -4,7 +4,7 @@
 # Compatibility export lane: source_contracts
 
 [external_sources]
-updated = "2026-07-19T03:48:29.053160393+00:00"
+updated = "2026-07-19T05:08:08.382645045+00:00"
 authoritative = true
 policy_version = "v1"
 
@@ -2743,16 +2743,16 @@ scientific_validator_refs = [
 blocked_action_plan = []
 
 [[source]]
-id = "SRC-THEMIS-FGM-DAILY"
-path_glob = "data/external/themis/th?_fgm_*.csv"
+id = "SRC-THEMIS-THA-FGM-DAILY"
+path_glob = "data/external/themis/tha_fgm_*.csv"
 canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=THA_L2_FGM"
 mirror_urls = []
 access_class = "public"
 status = "active"
-retrieval_method = "cargo run --release -p gororoba_cli_physics --bin heliosphere-full-sweep -- --probe a --year-start 2007 --year-end 2016 (fetches missing daily files via ThemisFgmProvider CDAWeb HAPI CSV; verify cache with: cargo run --release -p gororoba_cli_data --bin external-cache-manifest -- verify --root data/external/themis --manifest data/output/external_manifests/themis_tha_fgm_cache_manifest.txt --prefix tha_fgm_)"
+retrieval_method = "cargo run --release -p gororoba_cli_physics --bin heliosphere-full-sweep -- --probe a --year-start 2007 --year-end 2016 (ThemisFgmProvider fetches missing daily files from CDAWeb HAPI dataset THA_L2_FGM, parameter tha_fgs_gse; verify with: cargo run --release -p gororoba_cli_data --bin external-cache-manifest -- verify --root data/external/themis --manifest data/output/external_manifests/themis_tha_fgm_cache_manifest.txt --prefix tha_fgm_)"
 attempt_deadline_utc = ""
 resolution_deadline_utc = ""
-blocker_note = "Cache is gitignored and out of Git LFS by policy; reproducibility contract is the tracked sha256 manifest under data/output/external_manifests/ plus HAPI re-download."
+blocker_note = "THA-scoped contract; probes B/C/D/E get one contract and one manifest each as replication caches land. The cache is gitignored and outside Git LFS; the tracked manifest pins expected cache content (1810 validated data files), the retrieval method attempts reconstruction, and verification detects upstream drift. HAPI no-data JSON responses stay on disk as fetch-attempt markers and are excluded from manifest scope by payload validation."
 evidence_refs = []
 manual_manifest_refs = [
   "data/output/external_manifests/themis_tha_fgm_cache_manifest.txt",
