@@ -1914,3 +1914,12 @@ sprint = "S84"
 status = "verified"
 summary = "The later refutation wave is still informative: associator entropy shifts mark algebraic boundaries, but ghost frequencies, pulsed forcing gains, pathion sinks, eta-wake corrections, heavy-ion scaling collapses, and 0.1764 slope ratios are bounded by discretization, instability ceilings, or coincidence cancellation rather than a transported mechanism."
 title = "Late-stage falsification sweeps reveal artifact ceilings, not transported physics"
+
+[[insight]]
+claims = ["C-1628", "C-1631", "C-1633"]
+date = "2026-07-18"
+id = "I-212"
+sprint = ""
+status = "verified"
+summary = "Matching only input variables and labels is insufficient when detectors consume different temporal windows: the staple-associator reads six raw samples while one-step rotation reads two, and equal-receptive-field controls (cumrot6, maxrot6) reverse the apparent associator-versus-rotation ranking on the same benchmark. Temporal support is a load-bearing confound; every baseline battery must state and match the receptive field per detector before a dominance claim is registered."
+title = "Equal-receptive-field controls expose temporal support as a benchmark confound"

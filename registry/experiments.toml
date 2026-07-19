@@ -6063,3 +6063,29 @@ status = "active"
 status_token = "ACTIVE"
 title = "Exact coefficient census of the sedenion basis associator tensor"
 truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-roc-cluster-bootstrap"
+binary_experiment_declared = ""
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-239"
+input = "data/output/benchmark_scores.csv regenerated on the deduplicated 813-file THEMIS-A matched list (23,664,374 rows, 578,320 positives; the prior 834-file list double-counted 21 days under two filename conventions, preserved as data/output/tha_matched_files_dup_defect.csv). Twelve score columns: assoc, dbdt, rot, bmag, plus equal-receptive-field controls cumrot6, maxrot6, pvi6, gram6 (classical six-sample statistics), scram (sign-scrambled CD tensor, ChaCha8 seed 42), chperm (channel permutation [1,2,0] through the intact CD tensor)."
+input_path_refs = ["data/output/benchmark_scores.csv", "data/output/tha_matched_files.csv"]
+lineage_id = "XL-239"
+method = "Nine paired file-cluster bootstraps (E-237 design unchanged: 2,000 intact-daily-file resamples, ChaCha8 seed 42, average-rank Mann-Whitney AUC, per-resample simultaneous margin M = min of the three paired deltas) comparing assoc against each of rot, dbdt, bmag, cumrot6, maxrot6, pvi6, gram6, scram, chperm via --col-a/--col-b column selection. The six-sample controls consume exactly the raw samples B_t..B_t+5 spanned by the three overlapping staples, isolating the receptive-field confound in one-step comparisons."
+output = ["data/output/staples_cluster_bootstrap_assoc_vs_rot.json", "data/output/staples_cluster_bootstrap_assoc_vs_dbdt.json", "data/output/staples_cluster_bootstrap_assoc_vs_bmag.json", "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json", "data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json", "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json", "data/output/staples_cluster_bootstrap_assoc_vs_gram6.json", "data/output/staples_cluster_bootstrap_assoc_vs_scram.json", "data/output/staples_cluster_bootstrap_assoc_vs_chperm.json"]
+output_path_refs = ["data/output/staples_cluster_bootstrap_assoc_vs_rot.json", "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json", "data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json", "data/output/staples_cluster_bootstrap_assoc_vs_scram.json"]
+reproducibility_class = "deterministic"
+run = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --col-a assoc --col-b <control> --out data/output/staples_cluster_bootstrap_assoc_vs_<control>.json"
+run_command_sha256 = "c23f61aff46137a33ef7466d39efaabd5e156edbbec1ee4f5ff7f150dd4f3829"
+status = "active"
+status_token = "ACTIVE"
+title = "Equal-receptive-field control battery on the deduplicated staples benchmark"
+truth_surface_consumption = []
