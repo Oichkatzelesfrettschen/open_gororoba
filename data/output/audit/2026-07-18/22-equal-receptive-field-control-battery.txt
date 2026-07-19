@@ -2,8 +2,10 @@ Equal-receptive-field control battery on the deduplicated staples benchmark (E-2
 Date: 2026-07-18  Seed: ChaCha8 42  Resamples: 2000 (file-cluster, intact daily files)
 
 Benchmark dedup: old tha_matched_files.csv double-listed 21 days under a_fgm_/tha_fgm_
-filename variants (834 rows -> 815 unique days, 813 files parse OK).
-Defective list preserved: data/output/tha_matched_files_dup_defect.csv
+filename variants: 836 data rows (834 parsed) -> 815 unique days, of which 813 files parse OK.
+Defective list preserved: data/output/tha_matched_files_dup_defect.csv (on disk) and
+data/output/audit/2026-07-18/tha_matched_files_dup_defect.txt (tracked verbatim copy;
+.txt because *.csv is LFS-bound and the LFS budget blocks new objects)
 Samples: 23,664,374  Positives: 578,320 (2.44%)  Files: 813
 
 Pooled AUC (assoc): 0.827449 [0.820525, 0.834788]
@@ -18,6 +20,12 @@ pvi6	0.771349	0.056099	[0.036509, 0.050594] m=0.043572	< 0.000500
 gram6	0.784741	0.042708	[0.018430, 0.024935] m=0.021609	< 0.000500
 scram	0.475043	0.352406	[0.196182, 0.229040] m=0.212819	< 0.000500
 chperm	0.828080	-0.000631	[-0.000913, -0.000727] m=-0.000817	1.000000
+
+Deduplication leaves the thin one-step advantage essentially unchanged
+(M +0.001980 -> +0.002063); the receptive-field conclusion comes from the
+cumrot6/maxrot6 reversal, not from movement in the one-step comparison.
+The seed-42 scramble is near-chance and anti-ranked: AUC 0.4750 with
+cluster CI [0.4661, 0.4840] excluding 0.5.
 
 Ranking (pooled AUC): maxrot6 0.8383 > cumrot6 0.8352 > chperm 0.8281 ~ assoc 0.8274 > rot 0.8219 > gram6 0.7847 > pvi6 0.7713 > dbdt 0.7065 > scram 0.4750 > bmag 0.3019
 
