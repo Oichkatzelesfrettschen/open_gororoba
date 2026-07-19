@@ -40,7 +40,7 @@ struct Cli {
     )]
     crossings_txt: PathBuf,
 
-    /// Directory containing tha_fgm_{year}_{doy:03}.csv files.
+    /// Directory containing th{probe}_fgm_{year}_{doy:03}.csv files.
     #[arg(long, default_value = "data/external/themis")]
     fgm_dir: PathBuf,
 
@@ -311,7 +311,9 @@ fn main() -> Result<()> {
     let half = cli.precursor_window / 2;
 
     for ((year, doy), crossing_secs) in &crossing_groups {
-        let fgm_path = cli.fgm_dir.join(format!("tha_fgm_{}_{:03}.csv", year, doy));
+        let fgm_path = cli
+            .fgm_dir
+            .join(format!("th{}_fgm_{}_{:03}.csv", cli.probe, year, doy));
         if !fgm_path.exists() {
             n_skipped += crossing_secs.len();
             continue;

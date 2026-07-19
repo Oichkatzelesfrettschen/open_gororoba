@@ -244,7 +244,7 @@ fn main() -> Result<()> {
         let doy = date.ordinal();
         let fname = format!(
             "{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(),
+            spacecraft.to_lowercase(),
             date.year(),
             doy
         );
@@ -277,7 +277,7 @@ fn main() -> Result<()> {
         let date = start + chrono::Duration::days(day_offset as i64);
         let fname = format!(
             "{}_fgm_{:04}_{:03}.csv",
-            probe_upper.to_lowercase(),
+            spacecraft.to_lowercase(),
             date.year(),
             date.ordinal()
         );
