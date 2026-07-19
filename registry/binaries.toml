@@ -1187,6 +1187,11 @@ crate = "gororoba_cli_physics"
 description = "File-cluster bootstrap for the Staples THEMIS benchmark: resamples intact daily files (2,000 draws), computes bulk plus high/low-gradient-positive stratum AUCs via O(n) multiplicity-weighted rank walks, reports pooled, mean-daily, and cluster-resampled estimands with the simultaneous dominance margin M = min of the three paired deltas; tail proportions report as < 1/(B+1), never exact zero."
 
 [[binary]]
+name = "themis-probe-crossing-day-catalog"
+crate = "gororoba_cli_physics"
+description = "Per-probe THEMIS crossing-day catalog generator: parses the Staples et al. 2020 magnetopause crossing list for one probe (a-e, never pooled), emits a matched-files CSV (year,doy,path) compatible with themis-staples-score-export plus a full day catalog with per-day crossing counts, first/last crossing timestamps, and data-file presence; crossing-free data days surface as control-day candidates and missing-data crossing days form the download work list for probe replication."
+
+[[binary]]
 name = "sedenion-associator-coefficient-census"
 crate = "gororoba_cli_physics"
 description = "Exact enumeration of all 4096 sedenion basis-associator coefficients from the SHA-256-verified CdMultTable: value histogram over {-2,0,+2}, per-output-component nonzero counts, sign balance; regression tests pin the census (2248 zeros, 924 each sign, e0 empty, e8=168, other imaginaries 120)."

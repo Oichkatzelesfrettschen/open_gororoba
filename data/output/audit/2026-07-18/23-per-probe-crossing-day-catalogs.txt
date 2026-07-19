@@ -1,0 +1,27 @@
+Per-probe THEMIS crossing-day catalogs (themis-probe-crossing-day-catalog, binary 491)
+Date: 2026-07-18  Source: data/external/crossing_lists/themis_mp_crossings_v2.txt (Staples et al. 2020, doi:10.1029/2019JA027190)
+Window: 2007-01-01 .. 2016-12-31, one catalog per probe, never pooled.
+
+probe  crossings  crossing_days  data_days      matched_days  missing_data_days  control_days
+THA    9490       815            1813           815           0                  998
+THB    840        106            7              0             106                7
+THC    1372       185            0              0             185                0
+THD    8754       728            0              0             728                0
+THE    8685       841            0              0             841                0
+
+THA crossing days are fully covered on disk; the 998 crossing-free THA data days
+are control-day candidates for the operational-benchmark upgrade. THB/THC/THD/THE
+missing-data crossing days form the external-replication download work list.
+
+SHA-256:
+5bd2ff07fb6233e5e25decf0af8a4678cf68e721c98115ac09f6504044bca09b  data/output/tha_matched_files_generated.csv
+f834ea11526d589ca9ade41b31e551b2f4663320bcf97fe5d3ec35ff82f12bae  data/output/thb_matched_files_generated.csv
+f834ea11526d589ca9ade41b31e551b2f4663320bcf97fe5d3ec35ff82f12bae  data/output/thc_matched_files_generated.csv
+f834ea11526d589ca9ade41b31e551b2f4663320bcf97fe5d3ec35ff82f12bae  data/output/thd_matched_files_generated.csv
+f834ea11526d589ca9ade41b31e551b2f4663320bcf97fe5d3ec35ff82f12bae  data/output/the_matched_files_generated.csv
+594a1b4bbbeecb3b29bc47e8e2f96e20cd9e8120495cf8b3b7440dd3f2e63d72  data/output/tha_crossing_day_catalog.csv
+a96cdd0906796faf0dbde0dfd4c954bf852358daa6be4cda1e3adb9e2e21c48a  data/output/thb_crossing_day_catalog.csv
+b08bd97dbf5932f0c264bf50d6f71d4b5971e0b2e45c1290cce81e8b4374d595  data/output/thc_crossing_day_catalog.csv
+0e77fcf9f07a24287b3fac45212086b82d222967ffceb0e4a69275761ce35e28  data/output/thd_crossing_day_catalog.csv
+e672a4c530915270e2b303234a2a7e505c39fcfdc7a8c735cc352b01eed935fb  data/output/the_crossing_day_catalog.csv
+807b79b73b1266981d24c20627d8f85bca585475d07260d4162277a22ce660b5  data/external/crossing_lists/themis_mp_crossings_v2.txt

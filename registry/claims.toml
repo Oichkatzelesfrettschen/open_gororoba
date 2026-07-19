@@ -10806,19 +10806,19 @@ where_stated = "proofs/theories/AlternatorTraceExclusion.v (alternator_no_codim4
 
 [[claim]]
 id = "C-1628"
-last_verified = "2026-07-16"
-statement = "On the committed THEMIS-A Staples benchmark (24,320,815 time points, 616,895 positives, 834 daily files, E-235/E-237 inputs), the normalized 16D Cayley-Dickson staple-associator strictly dominates the field-rotation-angle baseline on ROC-AUC across the three selected coordinates simultaneously: bulk delta +0.005642, high-gradient-positive stratum delta +0.009304, low-gradient-positive stratum delta +0.001980, hence simultaneous margin M = min(deltas) = +0.001980 > 0. These are exact pooled point estimates from deterministic computation, closed by rerunning E-237; the strata are per-time-point sample regimes (median |dB/dt| split among positives), not crossing-event classes. Scope: AUC dominance only (rotation retains the higher best-F1, 0.138 vs 0.136) against the four implemented baselines; equal-receptive-field controls (PVI, cumulative six-sample rotation, curvature/torsion) are not yet in the comparison."
+last_verified = "2026-07-18"
+statement = "On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files parsing from 815 unique days; the prior matched list carried 836 rows, 834 parsing successfully, and double-listed 21 days under two filename conventions; it is superseded), the normalized 16D Cayley-Dickson staple-associator strictly dominates the one-step field-rotation-angle baseline on ROC-AUC across the three selected coordinates simultaneously: bulk delta +0.005572, high-gradient-positive stratum delta +0.009081, low-gradient-positive stratum delta +0.002063, hence simultaneous margin M = min(deltas) = +0.002063 > 0. These are exact pooled point estimates from deterministic computation (E-239 rerun of the E-237 design); the strata are per-time-point sample regimes (median |dB/dt| split among positives), not crossing-event classes. Scope: AUC dominance over the one-step baselines only; when temporal receptive fields are matched at six samples, cumulative and maximum rotation exceed the associator (C-1633), so the advantage over one-step rotation partly measures temporal-context asymmetry. The negative class consists of non-crossing samples on known crossing days, not arbitrary operational days."
 status = "Verified"
-status_note = "Deterministic computational claim on the fixed benchmark; verified by E-237's pooled estimands (data/output/staples_roc_cluster_bootstrap.json, seed-independent point values). Shares the associator observable with C-1617/C-1618 but is related to, not supporting of, their cross-domain precursor mechanism."
-where_stated = "data/output/audit/2026-07-16/20-associator-staples-benchmark.txt; E-237"
+status_note = "Deterministic computational claim on the fixed deduplicated benchmark; verified by E-239's pooled estimands (data/output/staples_cluster_bootstrap_assoc_vs_rot.json, seed-independent point values). Shares the associator observable with C-1617/C-1618 but is related to, not supporting of, their cross-domain precursor mechanism."
+where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_rot.json; E-239"
 
 [[claim]]
 id = "C-1629"
-last_verified = "2026-07-16"
-statement = "The staple-associator's componentwise ROC-AUC advantage over field rotation generalizes across independently sampled THEMIS-A crossing days: the file-cluster bootstrap (E-237, 2,000 resamples of intact daily files, every sample within each drawn file retained) puts the simultaneous margin M at +0.00198 with 95% CI [0.00078, 0.00317] (1 nonpositive draw in 2,000, p_le_zero = 0.001), and the mean daily AUC delta at +0.0051 [0.0040, 0.0064]. The intact-cluster design supersedes the E-235 moving-block intervals for population inference because blocks straddling file boundaries mix days instead of resampling them."
+last_verified = "2026-07-18"
+statement = "The staple-associator's componentwise ROC-AUC advantage over one-step field rotation generalizes across independently sampled THEMIS-A crossing days: the file-cluster bootstrap on the deduplicated 813-file benchmark (E-239, 2,000 resamples of intact daily files, every sample within each drawn file retained) puts the simultaneous margin M at +0.00206 with 95% CI [0.00081, 0.00328] (p_le_zero = 0.001), and the mean daily AUC delta at +0.00508 [0.00372, 0.00634]. The intact-cluster design supersedes the E-235 moving-block intervals for population inference because blocks straddling file boundaries mix days instead of resampling them. This margin is scoped to the one-step rotation baseline; matched six-sample rotation statistics reverse the sign (C-1633)."
 status = "Provisional"
-status_note = "Provisional pending: per-probe THEMIS C/D/E replication (separate probe-level lower bounds, not pooled), year-stratified resampling, crossing-event-level resampling, and equal-information baselines. Related to C-1617/C-1618 through the shared associator observable; does not independently validate their mechanism."
-where_stated = "data/output/staples_roc_cluster_bootstrap.json; E-237"
+status_note = "Provisional pending: per-probe THEMIS C/D/E replication (separate probe-level lower bounds, not pooled), year-stratified resampling, and crossing-event-level resampling. Equal-receptive-field baselines landed with E-239 and bound the claim's scope to one-step comparisons. Related to C-1617/C-1618 through the shared associator observable; does not independently validate their mechanism."
+where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_rot.json; E-239"
 
 [[claim]]
 id = "C-1630"
@@ -10827,3 +10827,27 @@ statement = "The 16D Cayley-Dickson basis-associator coefficient tensor [e_i,e_j
 status = "Verified"
 status_note = "Machine-checked by E-238 against the SHA-256-verified CdMultTable: exhaustive 4096-triple enumeration with both association orders asserted to land on the same output component; regression tests pin every census number (cargo test -p gororoba_cli_physics --bin sedenion-associator-coefficient-census, 3/3)."
 where_stated = "crates/gororoba_cli_physics/src/bin/sedenion_associator_coefficient_census.rs; data/output/audit/2026-07-16/21-associator-coefficient-census.txt"
+
+[[claim]]
+id = "C-1631"
+last_verified = "2026-07-18"
+statement = "On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.8274 with file-cluster-bootstrap 95% CI [0.8205, 0.8348], and it strictly outperforms the matched six-sample PVI and Gram-determinant controls across bulk and both predeclared gradient strata: assoc-minus-PVI6 simultaneous margin +0.0436 [0.0365, 0.0506], assoc-minus-Gram6 simultaneous margin +0.0216 [0.0184, 0.0249] (2,000 intact-daily-file resamples, ChaCha8 seed 42, all tail proportions < 1/2001). The associator therefore exceeds equal-receptive-field increment-magnitude and volume statistics, not merely one-step baselines."
+status = "Verified"
+status_note = "Deterministic file-cluster bootstrap on the fixed benchmark (E-239). Controls consume exactly the six raw samples B_t..B_t+5 that the three overlapping staples consume. Related to C-1617/C-1618 through the shared observable; does not support their precursor mechanism."
+where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json; data/output/staples_cluster_bootstrap_assoc_vs_gram6.json; E-239"
+
+[[claim]]
+id = "C-1632"
+last_verified = "2026-07-18"
+statement = "Replacing the Cayley-Dickson multiplication-sign structure of the staple-associator's sparse cubic tensor with one sign-scrambled tensor (identical 1848-term support, identical six-sample architecture, ChaCha8 seed 42) collapses ROC-AUC from 0.8274 to 0.4750 on the deduplicated THEMIS-A Staples benchmark: assoc-minus-scramble bulk delta +0.3524 [0.3394, 0.3658], simultaneous margin +0.2128 [0.1962, 0.2290]. The committed CD sign arrangement therefore contributes essential ranking structure relative to this null tensor; the detector does not succeed by pooling six-sample magnitude or polynomial energy. Scope: one scramble draw at fixed support; the claim that CD signs occupy an extreme tail among matched sparse cubic tensors requires the planned multi-scramble null hierarchy and remains open."
+status = "Verified"
+status_note = "Deterministic on the fixed benchmark and the fixed seed-42 scramble (E-239). A single scramble is one draw from the sign null space; ensemble p-value p_sign = (1 + #{AUC_scramble >= AUC_CD}) / (1 + N_scramble) is future work, as are cocycle-consistent twists and algebra-isomorphic relabelings."
+where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_scram.json; E-239"
+
+[[claim]]
+id = "C-1633"
+last_verified = "2026-07-18"
+statement = "When temporal receptive fields are matched at six samples on the deduplicated THEMIS-A Staples benchmark, direct angular statistics outperform the staple-associator: six-sample cumulative rotation reaches ROC-AUC 0.8352 and maximum stepwise rotation 0.8383 versus the associator's 0.8274, with assoc-minus-control bulk deltas -0.0077 [-0.0086, -0.0069] and -0.0109 [-0.0118, -0.0099] and negative simultaneous margins -0.0104 and -0.0137 (all 2,000 file-cluster resamples nonpositive-favoring-control). The associator therefore does not dominate conventional angular statistics at equal temporal support, and its advantage over one-step rotation (C-1628) partly measures temporal-context asymmetry rather than uniquely non-associative information. The tested channel permutation [1,2,0] through the intact CD tensor is practically AUC-equivalent to the canonical assignment (0.8281 vs 0.8274, delta -0.0006 [-0.0007, -0.0006]); this is predictive equivalence of one permutation, not algebraic invariance. Standalone rotation-family dominance is established; subsumption (zero conditional information from the associator given cumrot6 and maxrot6) is untested."
+status = "Verified"
+status_note = "Negative-result claim, deterministic on the fixed benchmark (E-239). Ranking on pooled AUC: maxrot6 > cumrot6 > assoc > gram6 > pvi6. The chperm delta is consistently negative across all 2,000 draws but tiny; a formal equivalence test with a predeclared margin has not been run. Conditional-information (joint-model) analysis is the designated follow-up."
+where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_chperm.json; E-239"
