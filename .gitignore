@@ -239,6 +239,7 @@ credentials.*
 !docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md
 !docs/external_sources/NANOGRAV_15YR_PRIMARY_SOURCES.md
 !docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md
+!docs/external_sources/ysu_engine_gpu_patterns.md
 !docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md
 !docs/GRAND_SYNTHESIS.md
 !docs/NAVIGATOR.md
