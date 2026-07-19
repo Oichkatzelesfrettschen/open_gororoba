@@ -1,0 +1,9 @@
+<!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+<!-- Source of truth: registry/external_sources.toml -->
+<!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
+<!-- Source label: XS-024 -->
+<!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources -->
+
+Lelli, F., McGaugh, S.S., Schombert, J.M. (2016) AJ 152 157.
+SPARC: Mass Models for 175 Disk Galaxies with Spitzer Photometry and Accurate Rotation Curves.
+Used as primary observational dataset for harmonic halo stacking (E-179, E-180, E-182).
