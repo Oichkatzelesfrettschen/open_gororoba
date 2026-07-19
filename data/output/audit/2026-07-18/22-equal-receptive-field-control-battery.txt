@@ -1,0 +1,38 @@
+Equal-receptive-field control battery on the deduplicated staples benchmark (E-239)
+Date: 2026-07-18  Seed: ChaCha8 42  Resamples: 2000 (file-cluster, intact daily files)
+
+Benchmark dedup: old tha_matched_files.csv double-listed 21 days under a_fgm_/tha_fgm_
+filename variants (834 rows -> 815 unique days, 813 files parse OK).
+Defective list preserved: data/output/tha_matched_files_dup_defect.csv
+Samples: 23,664,374  Positives: 578,320 (2.44%)  Files: 813
+
+Pooled AUC (assoc): 0.827449 [0.820525, 0.834788]
+
+control  auc_b      delta_bulk  simultaneous_margin_ci95     p_le_zero
+rot	0.821877	0.005572	[0.000812, 0.003277] m=0.002063	0.001000
+dbdt	0.706547	0.120902	[0.029258, 0.035369] m=0.032345	< 0.000500
+bmag	0.301913	0.525535	[0.384175, 0.417371] m=0.400218	< 0.000500
+cumrot6	0.835164	-0.007716	[-0.011220, -0.009648] m=-0.010427	1.000000
+maxrot6	0.838306	-0.010857	[-0.014703, -0.012787] m=-0.013731	1.000000
+pvi6	0.771349	0.056099	[0.036509, 0.050594] m=0.043572	< 0.000500
+gram6	0.784741	0.042708	[0.018430, 0.024935] m=0.021609	< 0.000500
+scram	0.475043	0.352406	[0.196182, 0.229040] m=0.212819	< 0.000500
+chperm	0.828080	-0.000631	[-0.000913, -0.000727] m=-0.000817	1.000000
+
+Ranking (pooled AUC): maxrot6 0.8383 > cumrot6 0.8352 > chperm 0.8281 ~ assoc 0.8274 > rot 0.8219 > gram6 0.7847 > pvi6 0.7713 > dbdt 0.7065 > scram 0.4750 > bmag 0.3019
+
+Claims: C-1631 (positive structure), C-1632 (sign ablation), C-1633 (matched-window negative)
+Updated: C-1628/C-1629 rescoped to deduped benchmark and one-step comparisons; insight I-212
+
+SHA-256:
+9a62e24484d7ae7a3b371d1a772b0030486c0b7f5277f1393b05347cc8c52e6a  data/output/benchmark_scores.csv
+5bd2ff07fb6233e5e25decf0af8a4678cf68e721c98115ac09f6504044bca09b  data/output/tha_matched_files.csv
+18c976706932433ec312f699c0c56fe1d8005f491d53aeb2d77c160acab10b6a  data/output/staples_cluster_bootstrap_assoc_vs_bmag.json
+818b56db07a3a56797ef89c52f5d86dd169e3abc1361b8dcee7701a29d765dcf  data/output/staples_cluster_bootstrap_assoc_vs_chperm.json
+2ac2524e4c1dbdc32c530241018d3ffa81d5906326ef8eb215bbd06c1b19c811  data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json
+2e0ed218c1c8f954d3d03fa3f246839a1e668d7fe117d50c591b3cb4d0c7080d  data/output/staples_cluster_bootstrap_assoc_vs_dbdt.json
+3458b5e2a22ab4d80582077ade5ceba34f8e2d349533749674293b183b9b9049  data/output/staples_cluster_bootstrap_assoc_vs_gram6.json
+8f32abfe7309f18c7aabe04dc56cbc3579eb546804f88a03486b765728e74ffc  data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json
+5842a2b60a4f252394c81f4b79041f9235c76011380da558317d154c696cd609  data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json
+6466df229a26540dd87af7246e1f8908d7a0cad78f3047dba5a19b2395e5bb15  data/output/staples_cluster_bootstrap_assoc_vs_rot.json
+02a1d4bce20f64e7cd295499c69f619dc4b2887a0bb4cc0ae472bee68a98fb73  data/output/staples_cluster_bootstrap_assoc_vs_scram.json
