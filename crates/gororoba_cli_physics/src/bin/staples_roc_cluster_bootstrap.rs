@@ -74,6 +74,14 @@ struct Args {
     /// RNG seed for the ChaCha8 bootstrap stream.
     #[arg(long, default_value_t = 42)]
     seed: u64,
+
+    /// Detector A column name (the candidate).
+    #[arg(long, default_value = "assoc")]
+    col_a: String,
+
+    /// Detector B column name (the baseline the deltas subtract).
+    #[arg(long, default_value = "rot")]
+    col_b: String,
 }
 
 /// Sample strata: negative, low-gradient positive (|dB/dt| at or below
@@ -276,6 +284,13 @@ fn main() -> anyhow::Result<()> {
     let mut rot: Vec<f32> = Vec::new();
     let mut labels: Vec<u8> = Vec::new();
 
+    // Column positions resolve from the header by name so any exported
+    // control column can stand in as either detector.
+    let mut idx_a = usize::MAX;
+    let mut idx_b = usize::MAX;
+    let mut idx_dbdt = usize::MAX;
+    let mut idx_label = usize::MAX;
+
     let reader = BufReader::new(File::open(&args.scores)?);
     for (line_no, line) in reader.lines().enumerate() {
         let line = line?;
@@ -284,20 +299,25 @@ fn main() -> anyhow::Result<()> {
                 line.starts_with("file_id,"),
                 "scores CSV lacks the file_id column; re-export with the current exporter"
             );
+            let names: Vec<&str> = line.split(',').collect();
+            let find = |want: &str| -> anyhow::Result<usize> {
+                names
+                    .iter()
+                    .position(|&h| h == want)
+                    .ok_or_else(|| anyhow::anyhow!("column {want} absent from {names:?}"))
+            };
+            idx_a = find(&args.col_a)?;
+            idx_b = find(&args.col_b)?;
+            idx_dbdt = find("dbdt")?;
+            idx_label = find("label")?;
             continue;
         }
-        let mut cols = line.split(',');
-        let f: u32 = cols.next().ok_or_else(|| anyhow::anyhow!("row"))?.parse()?;
-        let a: f32 = cols.next().ok_or_else(|| anyhow::anyhow!("row"))?.parse()?;
-        let d: f32 = cols.next().ok_or_else(|| anyhow::anyhow!("row"))?.parse()?;
-        let r: f32 = cols.next().ok_or_else(|| anyhow::anyhow!("row"))?.parse()?;
-        let _bmag = cols.next();
-        let l: u8 = cols.next().ok_or_else(|| anyhow::anyhow!("row"))?.parse()?;
-        file_id.push(f);
-        assoc.push(a);
-        dbdt.push(d);
-        rot.push(r);
-        labels.push(l);
+        let cols: Vec<&str> = line.split(',').collect();
+        file_id.push(cols[0].parse()?);
+        assoc.push(cols[idx_a].parse()?);
+        dbdt.push(cols[idx_dbdt].parse()?);
+        rot.push(cols[idx_b].parse()?);
+        labels.push(cols[idx_label].parse()?);
     }
     let n = labels.len();
     let n_files = (*file_id.iter().max().ok_or_else(|| anyhow::anyhow!("empty"))? + 1) as usize;
@@ -352,20 +372,25 @@ fn main() -> anyhow::Result<()> {
         e.0 = e.0.min(idx);
         e.1 = e.1.max(idx + 1);
     }
-    let daily: Vec<(f64, f64)> = file_ranges
+    // Per-file AUCs computed once; the bootstrap only reweights them,
+    // so each draw's daily-mean delta is an O(n_files) dot product
+    // instead of a rescan of the sample arrays.
+    let daily: Vec<(usize, f64, f64)> = file_ranges
         .par_iter()
-        .filter_map(|&(s, e)| {
+        .enumerate()
+        .filter_map(|(fidx, &(s, e))| {
             if s == usize::MAX {
                 return None;
             }
             let a = rank_auc(&assoc[s..e], &labels[s..e]);
             let r = rank_auc(&rot[s..e], &labels[s..e]);
-            (a.is_finite() && r.is_finite()).then_some((a, r))
+            (a.is_finite() && r.is_finite()).then_some((fidx, a, r))
         })
         .collect();
     let n_daily = daily.len();
-    let mean_daily_assoc = daily.iter().map(|d| d.0).sum::<f64>() / n_daily as f64;
-    let mean_daily_rot = daily.iter().map(|d| d.1).sum::<f64>() / n_daily as f64;
+    let mean_daily_assoc = daily.iter().map(|d| d.1).sum::<f64>() / n_daily as f64;
+    let mean_daily_rot = daily.iter().map(|d| d.2).sum::<f64>() / n_daily as f64;
+    let daily_delta: Vec<(usize, f64)> = daily.iter().map(|&(f, a, r)| (f, a - r)).collect();
     eprintln!(
         "mean daily AUC over {} two-class files: assoc {:.4} rot {:.4}",
         n_daily, mean_daily_assoc, mean_daily_rot
@@ -395,25 +420,15 @@ fn main() -> anyhow::Result<()> {
             let weight: Vec<u32> = file_id.iter().map(|&f| file_count[f as usize]).collect();
             let (ab, al, ah) = walk_auc_three_strata(&assoc, &det_assoc, &tags, &weight);
             let (rb, rl, rh) = walk_auc_three_strata(&rot, &det_rot, &tags, &weight);
-            // Daily-mean delta reuses the per-file AUCs weighted by the
-            // same draw counts, matching the cluster design. Two-class
-            // file k appears daily[k] times; recover its file index by
-            // walking files with both classes in the same order.
+            // Daily-mean delta reuses the precomputed per-file deltas
+            // weighted by the same draw counts, matching the cluster
+            // design at O(n_files) per draw.
             let mut acc = 0.0f64;
             let mut tot = 0u64;
-            let mut daily_iter = daily.iter();
-            for &(s, e) in &file_ranges {
-                if s == usize::MAX {
-                    continue;
-                }
-                let has_pos = labels[s..e].contains(&1);
-                let has_neg = labels[s..e].contains(&0);
-                if has_pos && has_neg {
-                    let &(da, dr) = daily_iter.next().expect("daily list aligned");
-                    let w = u64::from(file_count[file_id[s] as usize]);
-                    acc += (da - dr) * w as f64;
-                    tot += w;
-                }
+            for &(fidx, delta) in &daily_delta {
+                let w = u64::from(file_count[fidx]);
+                acc += delta * w as f64;
+                tot += w;
             }
             Draw {
                 bulk_assoc: ab,
@@ -440,7 +455,9 @@ fn main() -> anyhow::Result<()> {
     );
 
     let report = format!(
-        "{{\n  \"design\": \"file_cluster_bootstrap\",\n  \"n_samples\": {},\n  \"n_positives\": {},\n  \"n_files\": {},\n  \"n_two_class_files\": {},\n  \"stratum_split_dbdt\": {:.6e},\n  \"resamples\": {},\n  \"seed\": {},\n  \"pooled_auc_assoc\": {},\n  \"pooled_auc_rot\": {},\n  \"delta_bulk\": {},\n  \"delta_low_gradient_positive\": {},\n  \"delta_high_gradient_positive\": {},\n  \"simultaneous_margin_m\": {},\n  \"mean_daily_auc\": {{\"assoc\": {:.6}, \"rot\": {:.6}, \"delta\": {}}}\n}}\n",
+        "{{\n  \"design\": \"file_cluster_bootstrap\",\n  \"detector_a\": \"{}\",\n  \"detector_b\": \"{}\",\n  \"n_samples\": {},\n  \"n_positives\": {},\n  \"n_files\": {},\n  \"n_two_class_files\": {},\n  \"stratum_split_dbdt\": {:.6e},\n  \"resamples\": {},\n  \"seed\": {},\n  \"pooled_auc_a\": {},\n  \"pooled_auc_b\": {},\n  \"delta_bulk\": {},\n  \"delta_low_gradient_positive\": {},\n  \"delta_high_gradient_positive\": {},\n  \"simultaneous_margin_m\": {},\n  \"mean_daily_auc\": {{\"a\": {:.6}, \"b\": {:.6}, \"delta\": {}}}\n}}\n",
+        args.col_a,
+        args.col_b,
         n,
         n_pos,
         n_files,
