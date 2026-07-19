@@ -631,6 +631,11 @@ crate = "gororoba_cli"
 description = "Append-only ledger updater for blocked external sources. Records retry/status attempts with phase, actor, command, and evidence references."
 
 [[binary]]
+name = "external-cache-manifest"
+crate = "gororoba_cli_data"
+description = "Hash-addressed manifest for gitignored external data caches: generate walks a cache root into a tracked sha256/size/path manifest; verify recomputes and fails on missing, drifted, or extra files."
+
+[[binary]]
 name = "external-redownload-audit"
 crate = "gororoba_cli"
 description = "Exhaustive external origin audit and optional re-download verification with backend fallback order (wget -> curl -> fetch), checksum comparison, and blocked-source deadline policy reporting."
