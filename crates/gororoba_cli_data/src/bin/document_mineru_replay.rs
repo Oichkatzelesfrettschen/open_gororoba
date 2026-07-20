@@ -409,13 +409,19 @@ fn run_inventory(args: &InventoryArgs) -> Result<()> {
             .next()
             .cloned()
             .unwrap_or_else(|| identity.sha256.clone());
-        let extraction = identity
+        // A byte-identical collapse gives one identity several manifest ids,
+        // and docpipe extracted each id's slug separately. Consume every one of
+        // those extraction dirs so a twin derivative of a known source is not
+        // later mislabeled an orphan; reconcile against the first by id order.
+        let matched: Vec<(String, PathBuf)> = identity
             .manifest_ids
             .iter()
-            .find_map(|id| extractions.get(id).map(|dir| (id.clone(), dir.clone())));
-        if let Some((id, _)) = &extraction {
+            .filter_map(|id| extractions.get(id).map(|dir| (id.clone(), dir.clone())))
+            .collect();
+        for (id, _) in &matched {
             consumed_extractions.insert(id.clone());
         }
+        let extraction = matched.into_iter().next();
         let (contract_id, retrieval_ref, access_class) =
             match_contract(&contracts, &identity.aliases);
         records.push(build_record(
@@ -565,7 +571,7 @@ fn build_record(
     let mut paper_toml_sha = None;
 
     if let Some((_, dir)) = extraction {
-        docpipe_output = normalize_rel(&dir.to_string_lossy());
+        docpipe_output = emit_path(&normalize_rel(&dir.to_string_lossy()));
         let paper_toml = dir.join("paper.toml");
         match std::fs::read_to_string(&paper_toml) {
             Ok(text) => match toml::from_str::<StoredExtraction>(&text) {
@@ -600,7 +606,7 @@ fn build_record(
         media_type: identity.media_type.as_str().to_string(),
         parse_status: identity.parse_status.as_str().to_string(),
         page_count: identity.page_count,
-        alias_paths: identity.aliases.iter().cloned().collect(),
+        alias_paths: identity.aliases.iter().map(|a| emit_path(a)).collect(),
         manifest_ids: identity.manifest_ids.iter().cloned().collect(),
         corpus_lanes: identity.corpus_lanes.iter().cloned().collect(),
         source_contract: contract_id.to_string(),
@@ -813,7 +819,7 @@ fn missing_record(id: &str, rel: &str) -> DocumentRecord {
         media_type: MediaType::Missing.as_str().to_string(),
         parse_status: ParseStatus::Missing.as_str().to_string(),
         page_count: None,
-        alias_paths: vec![rel.to_string()],
+        alias_paths: vec![emit_path(rel)],
         manifest_ids: vec![id.to_string()],
         corpus_lanes: vec!["documents_ingest".to_string()],
         source_contract: String::new(),
@@ -862,7 +868,7 @@ fn orphan_record(id: &str, dir: &Path) -> DocumentRecord {
         retrieval_manifest_ref: String::new(),
         license_state: "unknown".to_string(),
         derivative_tracking: "no_new_tracked_content".to_string(),
-        docpipe_output: normalize_rel(&dir.to_string_lossy()),
+        docpipe_output: emit_path(&normalize_rel(&dir.to_string_lossy())),
         docpipe_status: "orphaned".to_string(),
         paper_toml_sha256: None,
         full_text_chars: 0,
@@ -1026,14 +1032,21 @@ fn sha256_hex(bytes: &[u8]) -> String {
     out
 }
 
-/// Normalize a path for emission: `/` separators and pure ASCII. Non-ASCII
-/// bytes and any literal `%` are percent-encoded so the tracked inventory stays
-/// ASCII while remaining a reversible pointer; the SHA-256 carries the exact
-/// identity regardless.
+/// Normalize a path to `/` separators, preserving the exact bytes so it still
+/// resolves on disk. This is the value used for existence checks, reads, and
+/// directory walks.
 fn normalize_rel(path: &str) -> String {
-    let slashed = path.replace('\\', "/");
-    let mut out = String::with_capacity(slashed.len());
-    for &byte in slashed.as_bytes() {
+    path.replace('\\', "/")
+}
+
+/// Encode a normalized path for emission into the tracked inventory: non-ASCII
+/// bytes and any literal `%` become `%XX` so the artifact stays ASCII while the
+/// alias remains a reversible pointer. The SHA-256 carries the exact identity;
+/// this is applied only when a path string enters an output record, never to a
+/// path used to touch the filesystem.
+fn emit_path(path: &str) -> String {
+    let mut out = String::with_capacity(path.len());
+    for &byte in path.as_bytes() {
         if byte < 0x80 && byte != b'%' {
             out.push(byte as char);
         } else {

@@ -469,13 +469,73 @@ fn paths_with_spaces_round_trip() {
 }
 
 #[test]
-fn non_ascii_path_is_percent_encoded_reversibly() {
+fn emit_path_encodes_reversibly_but_normalize_preserves_bytes() {
+    // emit_path is ASCII-only for the tracked artifact.
     // Bytes: en-dash U+2013 -> UTF-8 E2 80 93 -> %E2%80%93.
-    assert_eq!(normalize_rel("a/b\u{2013}c.pdf"), "a/b%E2%80%93c.pdf");
+    assert_eq!(emit_path("a/b\u{2013}c.pdf"), "a/b%E2%80%93c.pdf");
     // A literal percent is escaped so decoding is unambiguous.
-    assert_eq!(normalize_rel("a/50%.pdf"), "a/50%25.pdf");
+    assert_eq!(emit_path("a/50%.pdf"), "a/50%25.pdf");
     // Pure ASCII including spaces is unchanged.
-    assert_eq!(normalize_rel("my paper.pdf"), "my paper.pdf");
+    assert_eq!(emit_path("my paper.pdf"), "my paper.pdf");
+    // normalize_rel keeps the exact bytes so the path still resolves on disk;
+    // it only swaps separators.
+    assert_eq!(normalize_rel("a\\b\u{2013}c.pdf"), "a/b\u{2013}c.pdf");
+}
+
+#[test]
+fn non_ascii_named_source_resolves_and_is_not_blocked() {
+    // Guards against encoding the filesystem path: a real en-dash filename must
+    // be read, hashed, and routed by content, with only the emitted alias
+    // percent-encoded.
+    let tmp = tempfile::tempdir().unwrap();
+    let root = tmp.path();
+    std::fs::create_dir_all(root.join("ingest")).unwrap();
+    let named = root.join("ingest/E10 Billiards Zero\u{2011}Divisor.pdf");
+    write_pdf(&named, 4);
+    write_manifest(root, &[("e10", &named)]);
+    write_extraction(&root.join("extracted/e10"), &"body ".repeat(3000), 1, 0, 0);
+
+    let args = base_args(root);
+    run_inventory(&args).unwrap();
+    let d = docs(&read_out(&args));
+    assert_eq!(d.len(), 1);
+    assert_ne!(routing_of(&d[0]), "blocked_source");
+    assert!(!d[0].get("source_sha256").unwrap().as_str().unwrap().is_empty());
+    let alias = d[0].get("alias_paths").unwrap().as_array().unwrap()[0]
+        .as_str()
+        .unwrap();
+    assert!(alias.contains("Zero%E2%80%91Divisor.pdf"), "alias must be encoded: {alias}");
+}
+
+#[test]
+fn duplicate_twin_extractions_are_not_orphaned() {
+    // Two byte-identical sources, each with its own docpipe slug. The identity
+    // collapses; both extraction dirs must be consumed, not surfaced as
+    // sourceless orphans.
+    let tmp = tempfile::tempdir().unwrap();
+    let root = tmp.path();
+    std::fs::create_dir_all(root.join("ingest")).unwrap();
+    let a = root.join("ingest/twin_a.pdf");
+    let b = root.join("ingest/twin_b.pdf");
+    write_pdf(&a, 5);
+    std::fs::copy(&a, &b).unwrap();
+    write_manifest(root, &[("twin_a", &a), ("twin_b", &b)]);
+    let body = "text ".repeat(3000);
+    write_extraction(&root.join("extracted/twin_a"), &body, 1, 0, 0);
+    write_extraction(&root.join("extracted/twin_b"), &body, 1, 0, 0);
+
+    let args = base_args(root);
+    run_inventory(&args).unwrap();
+    let d = docs(&read_out(&args));
+    assert_eq!(d.len(), 1, "twins collapse to one record");
+    assert_ne!(routing_of(&d[0]), "manual_review");
+    // No orphan record emitted.
+    assert!(!d.iter().any(|r| r
+        .get("canonical_id")
+        .unwrap()
+        .as_str()
+        .unwrap()
+        .starts_with("orphan:")));
 }
 
 #[test]
