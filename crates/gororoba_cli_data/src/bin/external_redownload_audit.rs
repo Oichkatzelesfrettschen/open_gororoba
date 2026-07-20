@@ -769,6 +769,15 @@ fn rewrite_replay_command_for_staging(
         }
         return Ok(rewritten);
     }
+    if retrieval_method.contains("--bin themis-fgm-cache-restore") {
+        let mut rewritten = strip_option_and_value(retrieval_method, "data-dir");
+        rewritten = strip_option_optional_value(&rewritten, "refresh");
+        rewritten.push_str(&format!(" --data-dir {staging_quoted}"));
+        if args.force_refresh_replay {
+            rewritten.push_str(" --refresh true");
+        }
+        return Ok(rewritten);
+    }
     if retrieval_method.contains("--bin hepdata-refresh") {
         let mut rewritten = strip_option_and_value(retrieval_method, "root");
         rewritten.push_str(&format!(" --root {staging_quoted}"));
@@ -964,6 +973,35 @@ mod tests {
             blocked_action_plan: Vec::new(),
             scientific_validator_refs: Vec::new(),
         }
+    }
+
+    #[test]
+    fn rewrite_cache_restore_for_staging() {
+        let args = Args {
+            root: PathBuf::from("data/external"),
+            sources: PathBuf::from(DEFAULT_EXTERNAL_SOURCES_PATH),
+            provenance: PathBuf::from(DEFAULT_EXTERNAL_PROVENANCE_PATH),
+            out: None,
+            execute: true,
+            replay_mode: ReplayMode::Staging,
+            staging_root: PathBuf::from("target/external_replay_staging"),
+            fail_on_replay_side_effects: true,
+            force_refresh_replay: true,
+            require_replay_success: true,
+            backend_order: "wget,curl,fetch".to_string(),
+            timeout_seconds: 600,
+            max_files: None,
+            fail_on_unmatched_source: true,
+            fail_on_blocked_overdue: true,
+            fail_on_missing_action_plan: true,
+        };
+        let command = "cargo run --release -p gororoba_cli_data --bin themis-fgm-cache-restore -- --probe a --manifest data/output/external_manifests/themis_tha_fgm_cache_manifest.txt --data-dir data/external";
+        let rewritten =
+            rewrite_replay_command_for_staging(command, Path::new("target/staging"), &args)
+                .expect("rewrite");
+        assert!(rewritten.contains("--data-dir 'target/staging'"));
+        assert!(rewritten.contains("--refresh true"));
+        assert!(!rewritten.contains("--data-dir data/external"));
     }
 
     #[test]

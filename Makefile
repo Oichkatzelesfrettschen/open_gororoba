@@ -153,7 +153,8 @@ FREUDENTHAL_ROW_UPGRADE_ROWS ?= --row-id F51-DEF-01 --row-id F51-THM-01 --row-id
 
 REGISTRY_SOURCES := $(wildcard registry/claims.toml registry/insights.toml \
     registry/experiments.toml registry/binaries.toml registry/project.toml \
-    registry/external_sources.toml registry/bibliography.toml \
+    registry/external_sources.toml data/external/SOURCES.toml \
+    registry/bibliography.toml \
     registry/claims_evidence_edges.toml registry/experiment_lineage.toml \
     registry/lacunae.toml registry/roadmap.toml registry/todo.toml \
     registry/next_actions.toml registry/requirements.toml \

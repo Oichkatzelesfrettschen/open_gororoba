@@ -31,3 +31,10 @@ This index and all files under `docs/external_sources/*.md` are generated from T
 - `XS-021` `UNVERIFIED`: `docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md`
 - `XS-022` `ACTIVE`: `docs/external_sources/WOW_SIGNAL_SOURCES.md`
 - `XS-023` `REFERENCE`: `docs/external_sources/ysu_engine_gpu_patterns.md`
+
+- `XS-024` `ACTIVE`: `docs/external_sources/LELLI_2016_SPARC.md`
+- `XS-025` `ACTIVE`: `docs/external_sources/LI_2020_SPARC_NFW_FITS.md`
+- `XS-026` `ACTIVE`: `docs/external_sources/WESTFALL_2019_MANGA_DRP.md`
+- `XS-027` `ACTIVE`: `docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md`
+- `XS-028` `ACTIVE`: `docs/external_sources/MOSTER_2013_SMHM.md`
+- `XS-029` `REFERENCE`: `docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md`

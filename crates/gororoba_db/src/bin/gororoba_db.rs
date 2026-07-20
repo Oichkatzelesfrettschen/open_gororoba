@@ -2060,6 +2060,28 @@ fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
         println!("  Bibliography: {count} entries");
     }
 
+    // Ingest external-source contracts and dossiers. build_fresh deletes the
+    // prior database file, so the external-source control plane must be
+    // reimported from its committed compatibility exports on every build;
+    // otherwise a routine rebuild silently erases the canonical contract and
+    // dossier tables.
+    let source_contracts_path = repo_root.join("data/external/SOURCES.toml");
+    let dossiers_path = repo_root.join("registry/external_sources.toml");
+    if source_contracts_path.exists() && dossiers_path.exists() {
+        let (contract_count, dossier_count) = store.reindex_external_sources_from_compat(
+            repo_root,
+            &source_contracts_path,
+            &dossiers_path,
+        )?;
+        println!("  External sources: {contract_count} contracts, {dossier_count} dossiers");
+        if contract_count == 0 {
+            anyhow::bail!(
+                "external-source reimport produced zero contracts while {} exists",
+                source_contracts_path.display()
+            );
+        }
+    }
+
     // Ingest evidence edges.
     let edges_path = repo_root.join("registry/claims_evidence_edges.toml");
     if edges_path.exists() {
