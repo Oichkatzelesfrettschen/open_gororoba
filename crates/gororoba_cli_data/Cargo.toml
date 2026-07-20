@@ -529,6 +529,12 @@ path = "src/bin/cd_gap_binders.rs"
 name = "cd-row-upgrade-batch"
 path = "src/bin/cd_row_upgrade_batch.rs"
 
+# ---- Document extraction inventory (1) ----
+
+[[bin]]
+name = "document-mineru-replay"
+path = "src/bin/document_mineru_replay.rs"
+
 [dependencies]
 algebra_analysis = { workspace = true }
 algebra_experimental = { workspace = true }
