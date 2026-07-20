@@ -1,0 +1,131 @@
+<!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+<!-- Source of truth: registry/external_sources.toml -->
+<!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
+<!-- Source label: XS-001 -->
+<!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources -->
+
+# C-010 Non-Local Algebraic Metamaterials Sources
+
+## Scope
+
+This dossier replaces the old local-absorber source lane for C-010.
+The claim is now explicitly about non-local or active coupling media that
+can realize the disconnected 42-assessor / 7 x K6 topology after the local
+3D route was closed as a negative result.
+
+## Primary algebra / topology anchors
+
+- de Marrais (2000), "The 42 Assessors and the Box-Kites they Fly".
+  Local manifest entry: `papers/MANIFEST.toml` (`demarrais-2000-math0011260`).
+- Reggiani (2024), "The Geometry of Sedenion Zero Divisors".
+  Local manifest entry: `papers/MANIFEST.toml` (`reggiani-2024-241118881`).
+- Repo-local algebra realization:
+  `crates/algebra_analysis/src/boxkites.rs`,
+  `crates/algebra_analysis/src/reggiani.rs`,
+  `crates/algebra_analysis/src/crystal_bands.rs`,
+  `crates/algebra_analysis/src/homotopy_algebra.rs`.
+
+## Non-local implementation pack
+
+### 1. Electric-circuit non-local connectivity
+
+- Wang, Y., Price, H. M., Zhang, B., Chong, Y. D. (2020).
+  "Circuit implementation of a four-dimensional topological insulator."
+  Nature Communications 11, 2356.
+  DOI: https://doi.org/10.1038/s41467-020-15940-3
+- Local PDF: `data/papers/corpus/wang_2020_4d_topological_insulator.pdf`
+- SHA256:
+  `5efd4e5ab05ca6bf9773459b11fbb0a429f48c6a22fcd54f1f9dec72180039c0`
+- Why used here:
+  explicit circuit wiring realizes topology that is not constrained by the
+  dimensionality of local Euclidean embedding, which is the exact design gap
+  exposed by the closed local C-010 lane.
+
+### 2. Synthetic-frequency Floquet dimension
+
+- Yuan, L., Xiao, M., Lin, Q., Fan, S. (2017).
+  "Synthetic space with arbitrary dimensions in a few rings undergoing dynamic modulation."
+  arXiv:1710.01373.
+  URL: https://arxiv.org/abs/1710.01373
+- Local PDF: `data/papers/corpus/yuan_2017_synthetic_space_arbitrary_dimensions.pdf`
+- SHA256:
+  `a990c804071fe12f28478f6117a95b49091d9dc7ff53df14b94ba8af9ebe3766`
+- Why used here:
+  establishes the synthetic-dimension route in which modulation phases act as
+  gauge potentials, giving a direct template for a Floquet backend.
+
+### 3. Synthetic-frequency boundaries and chiral transport
+
+- Dutt, A., Yuan, L., Yang, K. Y., Wang, K., Buddhiraju, S., Vuckovic, J., Fan, S. (2022).
+  "Creating boundaries along a synthetic frequency dimension."
+  Nature Communications 13, 3377.
+  DOI: https://doi.org/10.1038/s41467-022-31140-7
+- Local PDF: `data/papers/corpus/dutt_2022_synthetic_frequency_boundaries.pdf`
+- SHA256:
+  `fc7d9c1ebf588e5a9b00e003af4d73836f86d18f1da918710f0acd80018b1fc8`
+- Why used here:
+  shows how to terminate and route synthetic-frequency transport, which is
+  important for enforcing disconnected algebraic sectors without relying on
+  physical distance alone.
+
+### 4. Graphene-like dynamics in synthetic space
+
+- Yu, D., Li, G., Xiao, M., Wang, D.-W., Wan, Y., Yuan, L., Chen, X. (2021).
+  "Simulating graphene dynamics in synthetic space with photonic rings."
+  Communications Physics 4, 219.
+  DOI: https://doi.org/10.1038/s42005-021-00719-9
+- Local PDF: `data/papers/corpus/yu_2021_graphene_synthetic_photonic_rings.pdf`
+- SHA256:
+  `4594a252613b9e9a879c1568459fb8d850c2df798c8cf7bf3274de9109c6d4ec`
+- Why used here:
+  supplies the graphene / Dirac / valley comparison lane requested for this
+  tranche, but inside a reconfigurable synthetic-space ring platform.
+
+### 5. Nonlocal optical metasurface tuning
+
+- van Gorp, F., Liu, W., Coulais, C., van de Groep, J. (2025).
+  "Nonlocal Mechano-Optical Metasurfaces."
+  ACS Photonics 12(11), 5978-5984.
+  DOI: https://doi.org/10.1021/acsphotonics.5c01385
+- Local PDF: `data/papers/corpus/vangorp_2025_nonlocal_mechano_optical_metasurfaces.pdf`
+- SHA256:
+  `fa3db13186e1d18ea08bbf76c2fc96567010e5144ff658467d73a0516753eedd`
+- Why used here:
+  demonstrates an optical route where nonlocal resonances are tuned through
+  inter-particle spacing, useful as a metasurface-side comparison against the
+  LC/topolectrical backend.
+
+### 6. Cable-network non-locality
+
+- Chen, Y., Abouelatta, M. A. A., Wang, K., Kadic, M., Wegener, M. (2023).
+  "Nonlocal Cable-Network Metamaterials."
+  Advanced Materials 35(15), e2209988.
+  DOI: https://doi.org/10.1002/adma.202209988
+- Abstract mirror:
+  https://pubmed.ncbi.nlm.nih.gov/36655553/
+- KIT project page:
+  https://www.aph.kit.edu/wegener/english/21_1085.php
+- Why used here:
+  explicit example where dispersion is dominated by network-mediated non-local
+  interactions instead of resonant inclusions, closely matching the C-010 need.
+
+## Comparison lane
+
+- Repo-local magnonic reference:
+  `registry/bibliography.toml` entry for Kaman et al. (2026),
+  `crates/quantum_core/src/magnonic_crystal.rs`.
+  This gives the graphene-like Dirac / kagome flat-band comparison surface.
+- Repo-local Sersic layout tool:
+  `crates/cosmology_core/src/sersic.rs`.
+  This is used only for non-gating radial weighting diagnostics.
+
+## Calibration lane
+
+- Calibration CSV:
+  `data/csv/c010_nonlocal_material_calibrations.csv`
+- The CSV intentionally mixes two provenance classes:
+  - `measured_table`: direct numerical values from a cited table already encoded in-repo.
+  - `published_*_normalized`: normalized surrogate coefficients fitted to
+    published response classes or model Hamiltonians.
+- These normalized rows are design-ranking aids only. They are not treated as
+  primary experimental confirmation of the C-010 thesis.

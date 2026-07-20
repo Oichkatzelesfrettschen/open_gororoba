@@ -1,0 +1,53 @@
+<!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+<!-- Source of truth: registry/external_sources.toml -->
+<!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
+<!-- Source label: XS-002 -->
+<!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources -->
+
+# C-053 Pathion Metamaterial Mapping Sources
+
+## Claim scope
+
+C-053 is retained only as a toy model:
+
+`Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval).`
+
+The purpose of this repair is to restore the missing deterministic artifact and
+make the diagonal-only degeneracy explicit. It is not a claim of physical
+realizability.
+
+## Artifact lane
+
+- Core mapping:
+  `crates/materials_core/src/pathion_toy_mapping.rs`
+- CLI binary:
+  `crates/gororoba_cli_physics/src/bin/c053_pathion_metamaterial_mapping.rs`
+- CSV:
+  `data/csv/c053_pathion_tmm_summary.csv`
+- Rust test:
+  `crates/gororoba_cli_physics/tests/c053_pathion_metamaterial_mapping.rs`
+
+## Source logic
+
+- Pathion context is taken only from the repo's existing Cayley-Dickson stack
+  and legacy claim lineage.
+- Optics / TMM interpretation is deliberately minimal and pedagogical:
+  diagonal-only algebraic data is grouped into dielectric layers with a single
+  deterministic surrogate absorptance value.
+- Because only diagonal entries are used, every layer inherits the same
+  magnitude class and the resulting optical summary is intentionally degenerate.
+
+## Interpretation boundary
+
+- What is shown:
+  a deterministic, reproducible toy mapping from a 32-entry diagonal into an
+  8-layer dielectric summary.
+- What is not shown:
+  any non-local coupling, off-diagonal tensor physics, fabrication design, or
+  experimentally grounded absorber claim.
+
+## Repair note
+
+The old claim lane pointed at missing files. This repaired dossier exists so
+the claim remains reproducible and explicitly narrow rather than silently
+relying on absent legacy artifacts or Python-side stopgaps.
