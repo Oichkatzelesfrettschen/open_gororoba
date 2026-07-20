@@ -139,6 +139,14 @@ name = "analyze-warp-h5"
 path = "src/bin/analyze_warp_h5.rs"
 
 [[bin]]
+name = "themis-fgm-cache-restore"
+path = "src/bin/themis_fgm_cache_restore.rs"
+
+[[bin]]
+name = "external-cache-manifest"
+path = "src/bin/external_cache_manifest.rs"
+
+[[bin]]
 name = "external-redownload-audit"
 path = "src/bin/external_redownload_audit.rs"
 

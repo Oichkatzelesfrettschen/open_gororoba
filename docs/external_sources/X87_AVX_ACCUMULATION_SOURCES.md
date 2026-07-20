@@ -1,56 +1,41 @@
-# x87 / AVX Precision Hardening Sources
+<!-- AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT. -->
+<!-- Source of truth: registry/external_sources.toml -->
+<!-- Canonical write path: registry/canonical/control_plane.sqlite3 -->
+<!-- Source label: XS-029 -->
+<!-- Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-external-sources -->
 
-Primary source bundle for TICKET-TICKET-X87-AVX-PRECISION-HARDENING and claim C-1362.
+# x87 / AVX Accumulation Sources
 
 ## Scope
 
-Sources supporting the crossover heuristic: x87 extended-precision intermediates
-(80-bit, u_x87 = 2^-64) are a reliable oracle for accumulations up to N = 2048,
-beyond which Kahan compensated summation is the safer default for scalar paths
-and AVX2/FMA is the throughput-optimal path for vectorizable accumulations.
+This dossier hardens the x87 / AVX accumulation claim cluster:
 
-## Primary Sources
+- `C-1359`: x87 `FDIVR` / `FUCOMPP` semantics inside the Givens rotation path
+- `C-1360`: AVX packed-double vs `fma` feature split and single-rounding wording
+- `C-1361`: measured x87 norm-squared throughput win
+- `C-1362`: Ogita-Rump-Oishi crossover heuristic and dispatch guidance
 
-1. T. Ogita, S. M. Rump, S. Oishi, "Accurate Sum and Dot Product."
-   SIAM Journal on Scientific Computing 26(6), 2005, pp. 1955-1988.
-   doi:10.1137/030601818
-   The crossover argument comes directly from this paper:
-   u_f64 / u_x87 = 2^-53 / 2^-64 = 2^11 = 2048. For N <= u_x87/u_f64 the
-   x87 extended-precision path produces a result correct to machine epsilon
-   for f64 without the 2x overhead of Kahan summation.
+## Primary instruction-set references
 
-2. N. J. Higham, "Accuracy and Stability of Numerical Algorithms", 2nd ed.
-   SIAM, 2002, Chapter 4 (Summation) and Chapter 3 (Floating-point arithmetic).
-   Standard reference for the relationship between floating-point unit roundoff
-   and accumulation error bounds (cond * u * n for naive summation).
+- AMD64 Architecture Programmer's Manual, Volume 5:
+  instruction semantics for `FDIVR` and `FUCOMPP`
+- AMD64 Architecture Programmer's Manual, Volume 4:
+  SIMD / AVX / F16C / FMA-family opcode tables adjacent to the packed-double path
+- Intel intrinsic reference for `_mm256_fmadd_pd`:
+  explicit statement that the fused multiply-add forms the product and sum with
+  an infinite-precision intermediate and rounds once to `float64`
+- Rust intrinsic docs for `_mm256_extractf128_pd` and `_mm256_hadd_pd`:
+  confirms the AVX packed-double reduction path used by `hsum256`
 
-3. Intel 64 and IA-32 Architectures Software Developer's Manual, Volume 1,
-   Chapter 8.1 (x87 FPU Overview).
-   Documents the 80-bit extended-double format: 1 sign bit, 15 exponent bits,
-   64 mantissa bits (explicit integer bit). Provides u_x87 = 2^-64.
+## Numerical-analysis reference
 
-4. Intel 64 and IA-32 Architectures Optimization Reference Manual,
-   Section 11.6 (Floating-Point Usage and Precision).
-   Describes the throughput and latency of x87 vs SSE2 vs AVX2 instructions.
-   Confirms that AVX2/FMA throughput advantage makes it the correct choice
-   for vectorizable accumulations where N/latency > precision requirement.
+- Ogita, Rump, Oishi (2005), "Accurate Sum and Dot Product":
+  provides the compensated-summation error bounds used for the `N = 2048`
+  crossover arithmetic (`2^-53 / 2^-64`)
 
-## Benchmark Artifact
+## Provenance note
 
-`data/csv/x87_avx_fma_followup_benchmark_summary.csv` records measured
-Criterion midpoints for sum, dot, and norm_sq at N=512 on the development
-machine. Key observations:
-
-- AVX2/FMA: 32-62 ns (10x faster than naive f64)
-- x87_fp80: 238-388 ns (comparable to naive f64, with extended precision)
-- Kahan: ~1380 ns (4-5x slower than x87, with f64-level precision)
-
-This confirms the heuristic for N <= 1024 (sedenion reductions):
-x87 is better precision than f64 at comparable throughput.
-For N >> 2048 (Berry-phase sums with n_grid^2 terms), AVX2+Kahan is preferred.
-
-## Deterministic Crossover Verification
-
-`crates/algebra_analysis/tests/precision_tier_dispatch.rs` contains the test
-`x87_kahan_crossover_is_2048_terms` which verifies the N=2048 crossover from
-the Ogita-Rump-Oishi unit-roundoff ratio. Exit 0 on all relevant CI paths.
+The user referenced local files `26568.pdf` / `26569.pdf` during review, but
+those artifacts are not present inside this repository. The governed source lane
+for this claim cluster is therefore the official vendor / doc URLs above plus
+the Ogita-Rump-Oishi paper and the repo-scoped verifier / benchmark artifacts.

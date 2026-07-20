@@ -4,7 +4,7 @@
 # Compatibility export lane: source_contracts
 
 [external_sources]
-updated = "2026-03-18T21:21:07.271931812+00:00"
+updated = "2026-07-20T04:44:51.885254359+00:00"
 authoritative = true
 policy_version = "v1"
 
@@ -2740,6 +2740,24 @@ manual_manifest_refs = []
 scientific_validator_refs = [
   "tensor_core_hpc",
 ]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-THEMIS-THA-FGM-DAILY"
+path_glob = "data/external/themis/tha_fgm_*.csv"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=THA_L2_FGM"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run --release -p gororoba_cli_data --bin themis-fgm-cache-restore -- --probe a --manifest data/output/external_manifests/themis_tha_fgm_cache_manifest.txt --data-dir data/external"
+attempt_deadline_utc = ""
+resolution_deadline_utc = ""
+blocker_note = "THA-scoped contract; probes B/C/D/E get one contract and one manifest each as replication caches land. The cache is gitignored and outside Git LFS; the tracked manifest pins expected cache content (1810 validated data files under payload policy hapi-fgm-csv), themis-fgm-cache-restore fetches each absent manifest day via ThemisFgmProvider (CDAWeb HAPI dataset THA_L2_FGM, parameter tha_fgs_gse) independently of crossing catalogs and then verifies every manifest hash, and verification detects upstream drift. Standalone verify: external-cache-manifest verify --root data/external/themis --manifest data/output/external_manifests/themis_tha_fgm_cache_manifest.txt --prefix tha_fgm_ --payload-policy hapi-fgm-csv. HAPI no-data JSON responses stay on disk as fetch-attempt markers, excluded from manifest scope by parsed-status payload validation."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/themis_tha_fgm_cache_manifest.txt",
+]
+scientific_validator_refs = []
 blocked_action_plan = []
 
 [[source]]
