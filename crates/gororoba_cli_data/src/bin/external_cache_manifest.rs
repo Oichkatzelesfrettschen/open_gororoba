@@ -9,11 +9,16 @@
 //! and integrity; it cannot force an upstream archive to retain historical
 //! bytes.
 //!
-//! Payload validation excludes fetch-attempt markers from both generation
-//! and verification: an HTTP-era cache accumulates JSON ("no data for time
-//! range") and HTML error bodies alongside real data files, and those
-//! markers stay on disk so re-fetch skips the day, but they never enter the
-//! manifest and never count as extra files.
+//! Payload scope is an explicit policy applied identically to generation
+//! and verification. The `raw` default hashes every nonempty regular file,
+//! so JSON caches, metadata collections, and structured extraction outputs
+//! stay inside the integrity contract. The `hapi-fgm-csv` policy serves
+//! HAPI CSV day caches, where fetch-attempt markers (HAPI status JSON
+//! bodies such as "no data for time range", HTML error pages) accumulate
+//! under data filenames: those markers stay on disk so re-fetch skips the
+//! day, but they never enter the manifest and never count as extra files.
+//! Only a parsed HAPI status document is excluded; arbitrary JSON that a
+//! future cache legitimately contains still gets hashed.
 
 use anyhow::{Context, Result, bail};
 use clap::{Parser, Subcommand};
@@ -49,6 +54,9 @@ enum Command {
         /// Only include files whose name matches this prefix (e.g. tha_fgm_).
         #[arg(long)]
         prefix: Option<String>,
+        /// Which payloads belong to the manifest scope.
+        #[arg(long, value_enum, default_value_t = PayloadPolicy::Raw)]
+        payload_policy: PayloadPolicy,
     },
     /// Recompute hashes under the cache root and compare against the manifest.
     Verify {
@@ -62,7 +70,19 @@ enum Command {
         /// Only consider cache files whose name matches this prefix.
         #[arg(long)]
         prefix: Option<String>,
+        /// Which payloads belong to the manifest scope.
+        #[arg(long, value_enum, default_value_t = PayloadPolicy::Raw)]
+        payload_policy: PayloadPolicy,
     },
+}
+
+#[derive(clap::ValueEnum, Clone, Copy, Debug, PartialEq, Eq)]
+enum PayloadPolicy {
+    /// Hash every nonempty regular file.
+    Raw,
+    /// HAPI CSV day cache: exclude empty files, HTML error bodies, and
+    /// parsed HAPI status JSON documents; hash everything else.
+    HapiFgmCsv,
 }
 
 const MANIFEST_SEPARATOR: &str = "  ";
@@ -85,15 +105,50 @@ fn sha256_file(path: &Path) -> Result<String> {
         .collect())
 }
 
-/// A data payload starts with neither a JSON brace nor an HTML/XML angle
-/// bracket; empty files carry no data. Error bodies cached under a data
-/// filename (HAPI status JSON, HTML error pages) are fetch-attempt markers,
-/// excluded from manifest scope on both sides of the comparison.
-fn is_data_payload(path: &Path) -> Result<bool> {
-    let mut file = fs::File::open(path).with_context(|| format!("open {}", path.display()))?;
-    let mut first = [0u8; 1];
-    let read = file.read(&mut first)?;
-    Ok(read == 1 && first[0] != b'{' && first[0] != b'<')
+/// Reads at most this many bytes when deciding whether a JSON-looking file
+/// is a HAPI status document; real status bodies are under 200 bytes.
+const HAPI_STATUS_PROBE_LIMIT: u64 = 65536;
+
+/// A HAPI status document is a JSON object carrying both a "HAPI" version
+/// field and a "status" field (HAPI 3.0 specification, section on error
+/// responses). Anything that fails to parse as such an object is data.
+fn is_hapi_status_document(path: &Path, size: u64) -> Result<bool> {
+    if size > HAPI_STATUS_PROBE_LIMIT {
+        return Ok(false);
+    }
+    let bytes = fs::read(path).with_context(|| format!("read {}", path.display()))?;
+    let Ok(value) = serde_json::from_slice::<serde_json::Value>(&bytes) else {
+        return Ok(false);
+    };
+    let Some(object) = value.as_object() else {
+        return Ok(false);
+    };
+    Ok(object.contains_key("HAPI") && object.contains_key("status"))
+}
+
+fn in_payload_scope(path: &Path, size: u64, policy: PayloadPolicy) -> Result<bool> {
+    if size == 0 {
+        return Ok(false);
+    }
+    match policy {
+        PayloadPolicy::Raw => Ok(true),
+        PayloadPolicy::HapiFgmCsv => {
+            let mut file =
+                fs::File::open(path).with_context(|| format!("open {}", path.display()))?;
+            let mut first = [0u8; 1];
+            let read = file.read(&mut first)?;
+            if read == 0 {
+                return Ok(false);
+            }
+            if first[0] == b'<' {
+                return Ok(false);
+            }
+            if first[0] == b'{' {
+                return Ok(!is_hapi_status_document(path, size)?);
+            }
+            Ok(true)
+        }
+    }
 }
 
 fn validate_manifest_path(rel: &str) -> Result<()> {
@@ -116,16 +171,32 @@ fn validate_digest(digest: &str) -> Result<()> {
     Ok(())
 }
 
+/// The manifest's own absolute location, resolved in the same canonical
+/// path domain the scan walks in. For a not-yet-created manifest the parent
+/// directory canonicalizes and the filename appends.
+fn canonical_manifest_location(out: &Path) -> Option<PathBuf> {
+    if let Ok(existing) = out.canonicalize() {
+        return Some(existing);
+    }
+    let parent = out.parent()?.canonicalize().ok()?;
+    Some(parent.join(out.file_name()?))
+}
+
 /// Relative path -> (sha256, size). BTreeMap keeps manifest order
-/// deterministic. `exclude` drops one absolute path from the scan so a
+/// deterministic. The root canonicalizes before walking so `exclude` (a
+/// canonical manifest location) compares in one absolute path domain and a
 /// manifest written beneath its own root never pins itself.
 fn scan_cache(
     root: &Path,
     prefix: Option<&str>,
     exclude: Option<&Path>,
+    policy: PayloadPolicy,
 ) -> Result<BTreeMap<String, (String, u64)>> {
+    let root = root
+        .canonicalize()
+        .with_context(|| format!("canonicalize {}", root.display()))?;
     let mut entries = BTreeMap::new();
-    for item in WalkDir::new(root).sort_by_file_name() {
+    for item in WalkDir::new(&root).sort_by_file_name() {
         let item = item?;
         if !item.file_type().is_file() {
             continue;
@@ -141,17 +212,17 @@ fn scan_cache(
                 continue;
             }
         }
-        if !is_data_payload(item.path())? {
+        let size = item.metadata()?.len();
+        if !in_payload_scope(item.path(), size, policy)? {
             continue;
         }
         let rel = item
             .path()
-            .strip_prefix(root)
+            .strip_prefix(&root)
             .expect("walkdir yields paths under root")
             .to_string_lossy()
             .replace('\\', "/");
         validate_manifest_path(&rel).context("unrepresentable path in cache")?;
-        let size = item.metadata()?.len();
         let digest = sha256_file(item.path())?;
         entries.insert(rel, (digest, size));
     }
@@ -239,12 +310,17 @@ fn verification_failed(outcome: &VerifyOutcome, fail_on_extra: bool) -> bool {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     match cli.command {
-        Command::Generate { root, out, prefix } => {
-            let exclude = out.canonicalize().ok();
-            let entries = scan_cache(&root, prefix.as_deref(), exclude.as_deref())?;
+        Command::Generate {
+            root,
+            out,
+            prefix,
+            payload_policy,
+        } => {
             if let Some(parent) = out.parent() {
                 fs::create_dir_all(parent)?;
             }
+            let exclude = canonical_manifest_location(&out);
+            let entries = scan_cache(&root, prefix.as_deref(), exclude.as_deref(), payload_policy)?;
             fs::write(&out, render_manifest(&root, &entries))
                 .with_context(|| format!("write {}", out.display()))?;
             let total_bytes: u64 = entries.values().map(|(_, size)| size).sum();
@@ -260,12 +336,13 @@ fn main() -> Result<()> {
             manifest,
             fail_on_extra,
             prefix,
+            payload_policy,
         } => {
             let text = fs::read_to_string(&manifest)
                 .with_context(|| format!("read {}", manifest.display()))?;
             let expected = parse_manifest_text(&text)?;
-            let exclude = manifest.canonicalize().ok();
-            let actual = scan_cache(&root, prefix.as_deref(), exclude.as_deref())?;
+            let exclude = canonical_manifest_location(&manifest);
+            let actual = scan_cache(&root, prefix.as_deref(), exclude.as_deref(), payload_policy)?;
             let outcome = compare(&expected, &actual);
             for rel in &outcome.missing {
                 println!("MISSING  {rel}");
@@ -342,12 +419,12 @@ mod tests {
         fs::write(dir.join("keep.csv"), "1,2,3\n").unwrap();
         fs::write(dir.join("drift.csv"), "4,5,6\n").unwrap();
         fs::write(dir.join("gone.csv"), "7,8,9\n").unwrap();
-        let expected = scan_cache(&dir, None, None).unwrap();
+        let expected = scan_cache(&dir, None, None, PayloadPolicy::Raw).unwrap();
 
         fs::write(dir.join("drift.csv"), "changed\n").unwrap();
         fs::remove_file(dir.join("gone.csv")).unwrap();
         fs::write(dir.join("extra.csv"), "9,9,9\n").unwrap();
-        let actual = scan_cache(&dir, None, None).unwrap();
+        let actual = scan_cache(&dir, None, None, PayloadPolicy::Raw).unwrap();
 
         let outcome = compare(&expected, &actual);
         assert_eq!(outcome.missing, vec!["gone.csv"]);
@@ -357,14 +434,41 @@ mod tests {
     }
 
     #[test]
-    fn json_and_html_payloads_excluded_both_sides() {
+    fn hapi_policy_excludes_status_and_html_but_keeps_general_json() {
         let dir = temp_dir("payload");
         fs::write(dir.join("data.csv"), "1,2\n").unwrap();
-        fs::write(dir.join("hapi_error.csv"), "{\"status\": 1201}\n").unwrap();
+        fs::write(
+            dir.join("hapi_error.csv"),
+            "{\n\"HAPI\": \"2.0\",\n\"status\": {\"code\": 1201, \"message\": \"OK - no data for time range\"}\n}\n",
+        )
+        .unwrap();
         fs::write(dir.join("html_error.csv"), "<html></html>\n").unwrap();
         fs::write(dir.join("empty.csv"), "").unwrap();
-        let entries = scan_cache(&dir, None, None).unwrap();
-        assert_eq!(entries.keys().collect::<Vec<_>>(), vec!["data.csv"]);
+        fs::write(dir.join("metadata.json"), "{\"pages\": 12}\n").unwrap();
+        let entries = scan_cache(&dir, None, None, PayloadPolicy::HapiFgmCsv).unwrap();
+        assert_eq!(
+            entries.keys().collect::<Vec<_>>(),
+            vec!["data.csv", "metadata.json"]
+        );
+        fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn raw_policy_hashes_every_nonempty_file() {
+        let dir = temp_dir("raw");
+        fs::write(dir.join("data.csv"), "1,2\n").unwrap();
+        fs::write(
+            dir.join("hapi_error.csv"),
+            "{\"HAPI\": \"2.0\", \"status\": {\"code\": 1201}}\n",
+        )
+        .unwrap();
+        fs::write(dir.join("page.html"), "<html></html>\n").unwrap();
+        fs::write(dir.join("empty.csv"), "").unwrap();
+        let entries = scan_cache(&dir, None, None, PayloadPolicy::Raw).unwrap();
+        assert_eq!(
+            entries.keys().collect::<Vec<_>>(),
+            vec!["data.csv", "hapi_error.csv", "page.html"]
+        );
         fs::remove_dir_all(&dir).unwrap();
     }
 
@@ -373,9 +477,35 @@ mod tests {
         let dir = temp_dir("selfref");
         fs::write(dir.join("data.csv"), "1,2\n").unwrap();
         let manifest = dir.join("manifest.txt");
-        let entries = scan_cache(&dir, None, None).unwrap();
+        let entries = scan_cache(&dir, None, None, PayloadPolicy::Raw).unwrap();
         fs::write(&manifest, render_manifest(&dir, &entries)).unwrap();
-        let rescanned = scan_cache(&dir, None, Some(&manifest.canonicalize().unwrap())).unwrap();
+        let exclude = canonical_manifest_location(&manifest).unwrap();
+        let rescanned = scan_cache(&dir, None, Some(&exclude), PayloadPolicy::Raw).unwrap();
+        assert_eq!(rescanned, entries);
+        fs::remove_dir_all(&dir).unwrap();
+    }
+
+    #[test]
+    fn relative_root_and_out_exclude_existing_manifest() {
+        let dir = temp_dir("reldomain");
+        fs::write(dir.join("data.csv"), "1,2\n").unwrap();
+        let entries = scan_cache(&dir, None, None, PayloadPolicy::Raw).unwrap();
+        fs::write(dir.join("manifest.txt"), render_manifest(&dir, &entries)).unwrap();
+
+        // A non-canonical root (parent/../dir) walks in the canonical domain,
+        // so the canonical manifest location still matches and self-excludes.
+        let noncanonical_root = dir.parent().unwrap().join("..").join(
+            dir.parent()
+                .unwrap()
+                .file_name()
+                .expect("parent has a name"),
+        );
+        let noncanonical_root = noncanonical_root.join(dir.file_name().unwrap());
+        let noncanonical_out = noncanonical_root.join("manifest.txt");
+        let exclude = canonical_manifest_location(&noncanonical_out).unwrap();
+        let rescanned =
+            scan_cache(&noncanonical_root, None, Some(&exclude), PayloadPolicy::Raw).unwrap();
+
         assert_eq!(rescanned, entries);
         fs::remove_dir_all(&dir).unwrap();
     }
@@ -385,7 +515,7 @@ mod tests {
         let dir = temp_dir("prefix");
         fs::write(dir.join("tha_fgm_x.csv"), "1\n").unwrap();
         fs::write(dir.join("thb_fgm_x.csv"), "2\n").unwrap();
-        let entries = scan_cache(&dir, Some("tha_fgm_"), None).unwrap();
+        let entries = scan_cache(&dir, Some("tha_fgm_"), None, PayloadPolicy::Raw).unwrap();
         assert_eq!(entries.keys().collect::<Vec<_>>(), vec!["tha_fgm_x.csv"]);
         fs::remove_dir_all(&dir).unwrap();
     }
