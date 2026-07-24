@@ -850,3 +850,105 @@ acceptance_hooks = [
 risk_controls = [
     "Never hand-edit AUTO-GENERATED docs; edit the registry narrative source then regenerate.",
 ]
+
+# ----------------------------------------------------------------------------
+# PR REVIEW RECONCILIATION (2026-07-24).
+#
+# WHY: The merged data-pipeline PRs (#107-#115) accumulated 26 substantive
+# Codex/CodeRabbit review findings against already-landed code. A finding on a
+# merged PR is invisible debt: it survives only in the PR thread, not the tree.
+# This section triages every finding against HEAD, records its disposition, and
+# gives each surviving item a falsifiable acceptance hook -- turning PR-thread
+# breadcrumbs into tracked, greppable debt.
+#
+# WHAT: 20 findings closed (16 already resolved by post-merge follow-up commits;
+# 4 resolved on branch audit-refresh-pr-comment-reconciliation-2026-07-23), and
+# 6 tracked (2 evidence-contradicted, 4 output-changing "evolve" decisions).
+#
+# HOW: Verdicts were established by inspecting current source per finding; the
+# audit refresh (data/output/debt_baseline_delta_2026_07_24.toml) independently
+# surfaced F115-9 as the sole allow_clippy_unjustified regression, corroborating
+# the CodeRabbit flag on the same line.
+# ----------------------------------------------------------------------------
+[pr_review_reconciliation_2026_07_24]
+source_prs = [107, 108, 109, 110, 111, 112, 113, 115]
+note_114 = "GitHub issue (document inventory/classification), not a PR; closed by #115."
+findings_total = 26
+findings_closed = 20
+findings_tracked = 6
+resolved_pre_existing = [
+    "F112-1", "F113-1", "F113-2", "F113-3", "F113-4", "F113-5", "F113-6",
+    "F113-7", "F113-8", "F113-9", "F113-10", "F113-11", "F113-12", "F113-13",
+    "F115-1", "F115-2",
+]
+resolved_this_branch = ["F115-9", "F115-4", "F115-8", "F113-14"]
+
+[[pr_finding_disposition]]
+id = "F115-9"
+canonical_class = "DEBT-TEST-VERIFICATION"
+site = "crates/gororoba_cli_data/src/bin/document_mineru_replay.rs classify()"
+disposition = "RESOLVED. Bare #[allow(clippy::too_many_lines)] gained a mechanism-first rationale; this is the same line the audit surfaced as the lone allow_clippy_unjustified regression."
+falsifier = "make repo-audit-strict-unjustified exits 0"
+
+[[pr_finding_disposition]]
+id = "F115-4"
+canonical_class = "DEBT-DATA-PROVENANCE"
+site = "document_mineru_replay.rs match_contract()"
+disposition = "RESOLVED. match_contract now returns the most-restrictive matching contract, so a permissive alias cannot unlock track_compact on bytes another alias marks restricted. Unit test match_contract_most_restrictive_wins_across_aliases."
+falsifier = "cargo test -p gororoba_cli_data --bin document-mineru-replay match_contract_most_restrictive_wins_across_aliases"
+
+[[pr_finding_disposition]]
+id = "F115-8"
+canonical_class = "DEBT-DATA-PROVENANCE"
+site = "document_mineru_replay.rs corpus lane"
+disposition = "RESOLVED. Corpus ids key on the path relative to the corpus root, not the bare file stem, so two files sharing a stem under different subdirs no longer collide and trip the inverse-identity guard."
+falsifier = "cargo test -p gororoba_cli_data --bin document-mineru-replay"
+
+[[pr_finding_disposition]]
+id = "F113-14"
+canonical_class = "DEBT-DATA-PROVENANCE"
+site = "themis_fgm_cache_restore.rs verify pass"
+disposition = "RESOLVED. The verifier now scans the cache for th<p>_fgm_*.csv files carrying no manifest entry and fails on any such unaudited extra. Pure predicate is_unlisted_cache_extra with unit test unlisted_probe_csv_flagged_as_extra."
+falsifier = "cargo test -p gororoba_cli_data --bin themis-fgm-cache-restore unlisted_probe_csv_flagged_as_extra"
+
+[[pr_finding_disposition]]
+id = "F113-15"
+canonical_class = "DEBT-DATA-PROVENANCE"
+site = "data/external/SOURCES.toml SRC-THEMIS-* active source"
+disposition = "TRACKED (premise contradicted). The finding claimed an active source with empty scientific_validator_refs fails data-governance-gate --enforce-origin, but 41 active sources in the committed file share empty validator refs, so the claimed consequence does not hold. Open policy question -- should active sources require a validator ref -- not a live gate failure."
+falsifier = "make data-governance-gate  # currently green; a policy change that requires validator refs would flip it"
+
+[[pr_finding_disposition]]
+id = "F115-5"
+canonical_class = "DEBT-DATA-PROVENANCE"
+site = "document_mineru_replay.rs index_extractions()"
+disposition = "TRACKED (evidence-contradicted the proposed fix). A hard bail on an absent extraction root was reverted: the test suite (valid_pdf_without_extraction_requires_mineru) encodes that an absent extraction root is a valid pre-extraction state, not misconfiguration. Fail-loud needs a design decision (opt-in --require-extractions flag or a warning), not a silent bail."
+falsifier = "a --require-extractions run over a config with an absent extraction root exits nonzero, while the default run still tolerates it"
+
+[[pr_finding_disposition]]
+id = "F112-2"
+canonical_class = "DEBT-SCIENTIFIC-EVIDENCE"
+site = "themis_probe_crossing_day_catalog.rs cache sweep"
+disposition = "TRACKED (evolve; output-changing). Cache-only days outside --start-date/--end-date are added as n_crossings=0 control candidates though crossings were parsed only inside the window. Filtering them changes the control-day catalog and downstream statistics, so it belongs in a reviewed evidence change, not an audit-refresh batch."
+falsifier = "control_candidate_days counts only days within [start,end]; a matched benchmark re-run reproduces within stated tolerance"
+
+[[pr_finding_disposition]]
+id = "F115-3"
+canonical_class = "DEBT-DATA-PROVENANCE"
+site = "document_mineru_replay.rs ingest lane path resolution"
+disposition = "TRACKED (needs config semantics). Relative manifest paths are checked in CWD, never joined against configured source roots; a --source-root corpus with relative manifest paths routes present sources as source_missing. Correct resolution order across multiple roots needs a decision before implementation."
+falsifier = "a manifest with paths relative to a configured source root resolves present sources as found, not source_missing"
+
+[[pr_finding_disposition]]
+id = "F115-6"
+canonical_class = "DEBT-DATA-PROVENANCE"
+site = "document_mineru_replay.rs duplicate-id reconciliation"
+disposition = "TRACKED (evolve; interacts with F115-1). Byte-identical manifest ids reconcile against the lexicographically first docpipe dir; a malformed first twin routes the whole identity mineru_required even when a later twin is valid. Preferring a usable (paper.toml-bearing) duplicate needs a defined usability predicate."
+falsifier = "an identity with a malformed first twin and a valid later twin routes on the valid twin"
+
+[[pr_finding_disposition]]
+id = "F115-7"
+canonical_class = "DEBT-SCIENTIFIC-EVIDENCE"
+site = "document_mineru_replay.rs table-risk heuristic"
+disposition = "TRACKED (evolve; output-changing). Two-column tables (one gutter per row) never count toward TABLE_ALIGNED_LINES_MIN, so a doc with table_count==0 can miss table_risk. Counting single-gutter rows reclassifies committed inventory and needs a reviewed threshold re-tune."
+falsifier = "a two-column-table fixture raises table_risk; the committed inventory diff is reviewed and intended"

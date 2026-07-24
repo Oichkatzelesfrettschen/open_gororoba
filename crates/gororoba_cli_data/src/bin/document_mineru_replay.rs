@@ -374,15 +374,19 @@ fn run_inventory(args: &InventoryArgs) -> Result<()> {
             if rel.ends_with("MANIFEST.toml") {
                 continue;
             }
-            let stem = entry
+            // Key the corpus id on the path relative to the corpus root, not the
+            // bare file stem: two files sharing a stem under different subdirs
+            // (a/paper.pdf, b/paper.pdf) must not collide onto one id and trip
+            // the inverse-identity guard as if one id resolved to two byte streams.
+            let rel_to_root = entry
                 .path()
-                .file_stem()
-                .map(|s| s.to_string_lossy().to_string())
-                .unwrap_or_else(|| rel.clone());
+                .strip_prefix(corpus_root)
+                .unwrap_or_else(|_| entry.path());
+            let corpus_key = normalize_rel(&rel_to_root.to_string_lossy());
             ingest_identity(
                 entry.path(),
                 &rel,
-                &format!("corpus:{stem}"),
+                &format!("corpus:{corpus_key}"),
                 "papers_corpus",
                 &mut identities,
                 &mut manifest_id_to_sha,
@@ -717,6 +721,11 @@ fn state(evaluated: bool, unavailable_reason: &str) -> String {
     }
 }
 
+// classify is one flat routing decision-table: each arm inspects media type,
+// reconciliation state, and signal states, then returns a terminal inventory
+// bucket. The arms share the `reasons` accumulator and fire in priority order,
+// so the length is inherent to the routing surface -- splitting arms into
+// helpers would fragment one decision the reader must hold whole.
 #[allow(clippy::too_many_lines)]
 fn classify(
     identity: &SourceIdentity,
@@ -908,13 +917,28 @@ fn load_contracts(path: &Path) -> Result<Vec<SourceContract>> {
     Ok(parsed.source)
 }
 
-/// Return (contract id, retrieval manifest ref, access class) for the first
-/// contract whose glob covers any alias. Empty contract id marks an uncovered
-/// source.
+/// Rank an access class by restrictiveness so most-restrictive wins when a
+/// single identity's aliases span several contracts. `manual_or_licensed`
+/// outranks any unrecognized class, which in turn outranks the permissive
+/// classes, matching the license_policy split that gates track_compact.
+fn access_rank(access_class: &str) -> u8 {
+    match access_class {
+        "public" | "public_api" | "open" => 0,
+        "manual_or_licensed" => 2,
+        _ => 1,
+    }
+}
+
+/// Return (contract id, retrieval manifest ref, access class) for the most
+/// restrictive contract whose glob covers any alias. A permissive alias
+/// cannot unlock track_compact on bytes another alias marks restricted, so
+/// the governing contract is the highest-ranked match, not the first in TOML
+/// order. Empty contract id marks an uncovered source.
 fn match_contract(
     contracts: &[SourceContract],
     aliases: &BTreeSet<String>,
 ) -> (String, String, String) {
+    let mut governing: Option<&SourceContract> = None;
     for contract in contracts {
         if contract.path_glob.is_empty() {
             continue;
@@ -923,11 +947,21 @@ fn match_contract(
             continue;
         };
         if aliases.iter().any(|a| pattern.matches(a)) {
-            let retrieval = contract.manual_manifest_refs.first().cloned().unwrap_or_default();
-            return (contract.id.clone(), retrieval, contract.access_class.clone());
+            let more_restrictive = governing
+                .map(|prev| access_rank(&contract.access_class) > access_rank(&prev.access_class))
+                .unwrap_or(true);
+            if more_restrictive {
+                governing = Some(contract);
+            }
         }
     }
-    (String::new(), String::new(), String::new())
+    match governing {
+        Some(contract) => {
+            let retrieval = contract.manual_manifest_refs.first().cloned().unwrap_or_default();
+            (contract.id.clone(), retrieval, contract.access_class.clone())
+        }
+        None => (String::new(), String::new(), String::new()),
+    }
 }
 
 fn license_policy(access_class: &str) -> (String, String) {

@@ -1,0 +1,64 @@
+# Debt baseline delta: 2026-07-10 anchor -> 2026-07-24 refresh.
+#
+# WHY: A dated re-measurement keeps the debt taxonomy honest between full
+# baseline rewrites. This delta answers one question -- which debt classes
+# moved since the strict-gate anchor -- and links the one actionable
+# regression to the PR review that independently flagged the same line.
+#
+# WHAT: The per-metric move from the strict-gate anchor
+# (data/output/audit/2026-07-09/repo_audit_anchored_2026_07_10.toml) to the
+# refreshed machine snapshot
+# (data/output/audit/2026-07-24/repo_audit_anchored_2026_07_24.toml).
+#
+# HOW: Re-run procedure:
+#   REPO_AUDIT_OUT=data/output/audit/2026-07-24 make repo-audit
+#   diff the [totals] block against the prior anchor.
+
+[meta]
+measured_at = "2026-07-24"
+anchor = "data/output/audit/2026-07-09/repo_audit_anchored_2026_07_10.toml"
+snapshot = "data/output/audit/2026-07-24/repo_audit_anchored_2026_07_24.toml"
+taxonomy_reference = "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"
+git_branch = "audit-refresh-pr-comment-reconciliation-2026-07-23"
+
+# Totals: value_2026_07_10 -> value_2026_07_24 (delta). Metrics omitted here
+# are unchanged from the anchor.
+[totals_delta]
+rust_files = { was = 2399, now = 2412, delta = 13, note = "workspace grew" }
+rocq_files = { was = 297, now = 300, delta = 3, note = "three tracked proofs added" }
+unsafe_blocks = { was = 520, now = 520, delta = 0, note = "flat despite +13 rust files -- no new unsafe surface" }
+safety_comments = { was = 193, now = 200, delta = 7, note = "SAFETY-positive; block coverage improved" }
+allow_clippy_attrs = { was = 139, now = 140, delta = 1, note = "one new suppression (the classify allow below)" }
+allow_clippy_unjustified = { was = 0, now = 1, delta = 1, note = "REGRESSION -> RESOLVED this branch; see actionable_regression below" }
+allow_dead_code_attrs = { was = 99, now = 102, delta = 3, note = "three new dead_code allows; below strict cap, informational" }
+todo_fixme_xxx_hack = { was = 4, now = 3, delta = -1, note = "improved" }
+todo_fixme_comment_resident = { was = 47, now = 46, delta = -1, note = "improved" }
+unreachable_macros = { was = 41, now = 42, delta = 1, note = "exhaustiveness pin, informational" }
+rocq_axiom_strict = { was = 29, now = 29, delta = 0 }
+
+[actionable_regression]
+metric = "allow_clippy_unjustified"
+canonical_class = "DEBT-TEST-VERIFICATION"
+site = "crates/gororoba_cli_data/src/bin/document_mineru_replay.rs classify()"
+description = """
+A bare #[allow(clippy::too_many_lines)] on classify() entered the tree with the
+document-inventory work. It trips make repo-audit-strict-unjustified (per-root
+cap 0) and was independently flagged by CodeRabbit on PR #115 as finding F115-9.
+The audit metric and the human review point at the same line.
+"""
+resolution = """
+Added a mechanism-first rationale immediately above the attribute: classify() is
+one flat routing decision-table whose arms share the reasons accumulator and fire
+in priority order, so the length is inherent to the routing surface. This
+re-justifies the allow, returning allow_clippy_unjustified to 0 in crates/.
+"""
+falsifier = "make repo-audit-strict-unjustified exits 0"
+
+[interpretation]
+summary = """
+The window is healthy. Memory-safety debt held flat (unsafe 520/520) while the
+workspace grew and SAFETY coverage rose (+7). Placeholder markers fell. The sole
+non-SAFETY regression -- one unjustified clippy allow -- is closed on this branch,
+so a re-pin of REPO_AUDIT_BASELINE is unnecessary: the gate passes against the
+existing 2026-07-10 anchor once this branch merges.
+"""
