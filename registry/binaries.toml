@@ -504,6 +504,11 @@ crate = "gororoba_cli"
 description = "Dispersion measure ultrametric analysis"
 
 [[binary]]
+name = "document-mineru-replay"
+crate = "gororoba_cli_data"
+description = "Document extraction-quality inventory: identifies source documents by SHA-256 read-only, reconciles the ingest manifest with existing docpipe derivatives, and routes each unique identity to retain_docpipe, mineru_candidate, mineru_required, blocked_source, or manual_review with deterministic reason codes; no OCR execution."
+
+[[binary]]
 name = "download-recovery"
 crate = "gororoba_cli_data"
 description = "Rust-native resilient download recovery and route inspection utility. Probes host capabilities, classifies rsync/http-range/VOTable/TAP surfaces, and prints backend decisions for future large-survey fetchers."
