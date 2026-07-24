@@ -216,6 +216,40 @@ fn contract_glob_matches_alias() {
 }
 
 #[test]
+fn match_contract_most_restrictive_wins_across_aliases() {
+    // A permissive contract listed first must not govern an identity whose
+    // aliases also match a restricted contract: the restricted class wins
+    // regardless of TOML order, so track_compact stays gated.
+    let permissive = || SourceContract {
+        id: "SRC-PUBLIC".to_string(),
+        path_glob: "data/pub/**".to_string(),
+        access_class: "public".to_string(),
+        manual_manifest_refs: vec!["pub.txt".to_string()],
+    };
+    let restricted = || SourceContract {
+        id: "SRC-LICENSED".to_string(),
+        path_glob: "data/lic/**".to_string(),
+        access_class: "manual_or_licensed".to_string(),
+        manual_manifest_refs: vec!["lic.txt".to_string()],
+    };
+    let mut aliases = BTreeSet::new();
+    aliases.insert("data/pub/paper.pdf".to_string());
+    aliases.insert("data/lic/paper.pdf".to_string());
+
+    // Permissive-first ordering.
+    let forward = vec![permissive(), restricted()];
+    let (id, refp, class) = match_contract(&forward, &aliases);
+    assert_eq!(id, "SRC-LICENSED");
+    assert_eq!(refp, "lic.txt");
+    assert_eq!(class, "manual_or_licensed");
+    assert_eq!(license_policy(&class).1, "no_new_tracked_content");
+
+    // Reversed ordering yields the same governing contract.
+    let reversed = vec![restricted(), permissive()];
+    assert_eq!(match_contract(&reversed, &aliases).0, "SRC-LICENSED");
+}
+
+#[test]
 fn classify_formula_risk_on_math_dense_zero_equations() {
     let identity = pdf_identity(20);
     let mut metrics = ExtractionMetrics {

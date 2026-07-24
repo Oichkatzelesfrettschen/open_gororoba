@@ -51,6 +51,18 @@ struct ManifestEntry {
     doy: u16,
 }
 
+/// A cache file is an unaudited extra when it matches this probe's daily-file
+/// rule (`th<p>_fgm_*.csv`) yet carries no manifest entry. Such a file still
+/// satisfies the THEMIS source glob and, lacking a provenance hash, would pass
+/// every downstream origin check on trust alone.
+fn is_unlisted_cache_extra(
+    name: &str,
+    probe_prefix: &str,
+    listed: &std::collections::BTreeSet<&str>,
+) -> bool {
+    name.starts_with(probe_prefix) && name.ends_with(".csv") && !listed.contains(name)
+}
+
 fn sha256_file(path: &Path) -> Result<String> {
     let mut file = fs::File::open(path).with_context(|| format!("open {}", path.display()))?;
     let mut hasher = Sha256::new();
@@ -159,6 +171,8 @@ fn main() -> Result<()> {
 
     let mut missing = 0usize;
     let mut drifted = 0usize;
+    let listed: std::collections::BTreeSet<&str> =
+        entries.iter().map(|entry| entry.rel.as_str()).collect();
     for entry in &entries {
         let target = cache_dir.join(&entry.rel);
         if !target.exists() {
@@ -173,13 +187,29 @@ fn main() -> Result<()> {
             drifted += 1;
         }
     }
+    // Scan for cache files that match this probe's daily-file rule yet carry no
+    // manifest entry: such a file still satisfies the THEMIS source glob and,
+    // lacking a provenance hash, would pass every downstream origin check
+    // unaudited. The manifest is the sole authority on cache membership.
+    let mut extra = 0usize;
+    let probe_prefix = format!("th{}_fgm_", cli.probe);
+    if let Ok(read_dir) = fs::read_dir(&cache_dir) {
+        for dir_entry in read_dir.filter_map(|e| e.ok()) {
+            let name = dir_entry.file_name().to_string_lossy().to_string();
+            if is_unlisted_cache_extra(&name, &probe_prefix, &listed) {
+                println!("EXTRA    {name}");
+                extra += 1;
+            }
+        }
+    }
     println!(
-        "manifest verification: {} entries, {} missing, {} drifted",
+        "manifest verification: {} entries, {} missing, {} drifted, {} extra",
         entries.len(),
         missing,
-        drifted
+        drifted,
+        extra
     );
-    if missing > 0 || drifted > 0 || fetch_errors > 0 {
+    if missing > 0 || drifted > 0 || extra > 0 || fetch_errors > 0 {
         bail!("cache does not match manifest after restore");
     }
     Ok(())
@@ -200,5 +230,19 @@ mod tests {
     #[test]
     fn manifest_paths_with_directories_rejected_as_day_files() {
         assert_eq!(parse_day_filename("sub/tha_fgm_2008_153.csv", "a"), None);
+    }
+
+    #[test]
+    fn unlisted_probe_csv_flagged_as_extra() {
+        let listed: std::collections::BTreeSet<&str> =
+            ["tha_fgm_2008_153.csv"].into_iter().collect();
+        // Listed manifest day: audited, not an extra.
+        assert!(!is_unlisted_cache_extra("tha_fgm_2008_153.csv", "tha_fgm_", &listed));
+        // Same probe rule, no manifest entry, no provenance hash: an extra.
+        assert!(is_unlisted_cache_extra("tha_fgm_2008_200.csv", "tha_fgm_", &listed));
+        // Another probe's file does not match this probe's rule.
+        assert!(!is_unlisted_cache_extra("thb_fgm_2008_200.csv", "tha_fgm_", &listed));
+        // Non-payload extension is out of scope.
+        assert!(!is_unlisted_cache_extra("tha_fgm_2008_200.txt", "tha_fgm_", &listed));
     }
 }
