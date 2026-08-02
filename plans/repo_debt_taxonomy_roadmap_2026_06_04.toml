@@ -971,13 +971,13 @@ document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08
 [[frontier]]
 row_id = "p0-planning-row-reconciliation"
 priority = "P0"
-status = "partial"
+status = "closed"
 owner_surface = "registry/canonical/control_plane.sqlite3 planning tables and typed gororoba-db planning CLI"
-claim = "Obsolete endpoint-probing work closes through retained evidence while live Voyager and optics boundaries remain open until their evidence conditions are met."
-evidence_refs = ["data/output/pds_sbn_nh_swap_endpoints_2026_05_10.txt", "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md", "registry/todo.toml", "registry/roadmap.toml", "registry/next_actions.toml"]
+claim = "Obsolete endpoint-probing work and stale registry views reconcile through retained evidence while live Voyager, optics, and missing external-input boundaries remain open."
+evidence_refs = ["data/output/pds_sbn_nh_swap_endpoints_2026_05_10.txt", "docs/engineering/local-governance-gate-evidence-2026_08_01.md", "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md", "reports/gates/2026-08-01/212938/summary.md", "registry/todo.toml", "registry/roadmap.toml", "registry/next_actions.toml"]
 falsifier = "A closed row lacks the named retained artifact, or a live row is marked closed while its stated falsifier remains possible."
-next_action = "Run the current gate audit, refresh stale dependency-watch rows, and preserve open Voyager and optics rows."
-closure_condition = "T-062 and T-063 are done with evidence references; T-058, T-051, and WS-OPTICS-GR-001 retain explicit open boundaries or pass their own acceptance gates."
+next_action = "Preserve the explicit T-051 external-input boundary, keep T-058 and WS-OPTICS-GR-001 open, and admit the two missing datasets before the next full Rust gate."
+closure_condition = "T-062 and T-063 are done with evidence references; registry acceptance passes; T-051 records its two missing external-input falsifiers; and T-058 plus WS-OPTICS-GR-001 retain explicit open boundaries."
 document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
 
 [[frontier]]
