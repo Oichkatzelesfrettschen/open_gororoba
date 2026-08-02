@@ -6,27 +6,30 @@
 This repo contains `.v` files under `proofs/` and companion curated theory
 surfaces.
 
-Install Rocq, for example with `opam`:
+Install the pinned Rocq and Flocq packages in the same `opam` switch:
 
-```ignore
-opam install rocq
+```bash
+opam install rocq-core.9.1.1 rocq-stdlib.9.1.1 coq-flocq.4.2.2
+eval "$(opam env --switch rocq-9.1.1)"
 ```
 
 Then run:
 
-```ignore
+```bash
+make rocq-project-check
 make rocq-makefile-check
-make rocq
+make -C proofs vos
+make -C proofs vok
 ```
 
 Notes:
 
-- The Makefile checks for `coqc` on `PATH`.
-- The proof Makefile also requires `rocq` on `PATH` for the native Rocq 9.x
-  proof lane.
-- Prefer `eval "$(opam env --switch rocq-9.1.1)"` for the pinned local switch,
-  but the proof lane may run in CI if a compatible `rocq` binary is already on
-  `PATH`.
+- The proof Makefile requires `OPAM_SWITCH_PREFIX`, which keeps Rocq and the
+  compiled Flocq objects in one opam switch.
+- `coq-flocq.4.2.2` supplies the `Flocq.Core` dependency used by
+  `FP24Representable.v`.
+- `make rocq-project-check` compares every `.v` file under `proofs/theories`
+  and `proofs/verified` with `_RocqProject` in both directions.
 - `make rocq-makefile-check` treats any `rocq makefile` warning as an error.
   This specifically blocks logical-root drift such as "No common logical root."
 - Keep proof checking as an explicit toolchain lane with its own versioned
