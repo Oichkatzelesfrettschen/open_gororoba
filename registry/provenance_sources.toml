@@ -6,9 +6,9 @@ updated = "deterministic"
 authoritative = true
 source_registry = "registry/external_sources.toml"
 document_count = 29
-record_count = 270
+record_count = 276
 url_record_count = 102
-path_record_count = 161
+path_record_count = 167
 hash_record_count = 7
 
 [[record]]
@@ -1654,7 +1654,7 @@ id = "PSR-00118"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
+source_ref = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1668,7 +1668,7 @@ id = "PSR-00119"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
+source_ref = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1682,7 +1682,7 @@ id = "PSR-00120"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
+source_ref = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1696,7 +1696,7 @@ id = "PSR-00121"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/DATASET_MANIFEST.md"
+source_ref = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1710,7 +1710,7 @@ id = "PSR-00122"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
+source_ref = "docs/external_sources/DATASET_MANIFEST.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1724,7 +1724,7 @@ id = "PSR-00123"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
+source_ref = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1738,7 +1738,7 @@ id = "PSR-00124"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
+source_ref = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1752,7 +1752,7 @@ id = "PSR-00125"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+source_ref = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1766,7 +1766,7 @@ id = "PSR-00126"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
+source_ref = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1780,7 +1780,7 @@ id = "PSR-00127"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
+source_ref = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1794,7 +1794,7 @@ id = "PSR-00128"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
+source_ref = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1808,7 +1808,7 @@ id = "PSR-00129"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
+source_ref = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1822,7 +1822,7 @@ id = "PSR-00130"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/INDEX.md"
+source_ref = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1836,7 +1836,7 @@ id = "PSR-00131"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/INVERSE_CD_FORMALISM.md"
+source_ref = "docs/external_sources/INDEX.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1850,7 +1850,7 @@ id = "PSR-00132"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
+source_ref = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1864,7 +1864,7 @@ id = "PSR-00133"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+source_ref = "docs/external_sources/LELLI_2016_SPARC.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1878,7 +1878,7 @@ id = "PSR-00134"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
+source_ref = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1892,7 +1892,7 @@ id = "PSR-00135"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+source_ref = "docs/external_sources/MOSTER_2013_SMHM.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1906,7 +1906,7 @@ id = "PSR-00136"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+source_ref = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1920,7 +1920,7 @@ id = "PSR-00137"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
+source_ref = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1934,7 +1934,7 @@ id = "PSR-00138"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+source_ref = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1948,7 +1948,7 @@ id = "PSR-00139"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+source_ref = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1962,7 +1962,7 @@ id = "PSR-00140"
 document_id = "XS-013"
 source_markdown = "docs/external_sources/INDEX.md"
 source_kind = "path"
-source_ref = "docs/external_sources/ysu_engine_gpu_patterns.md"
+source_ref = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 sha256 = ""
 retrieved_date = ""
 claim_refs = []
@@ -1973,6 +1973,90 @@ notes = "Auto-generated index of external source dossiers; source of truth is re
 
 [[record]]
 id = "PSR-00141"
+document_id = "XS-013"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00142"
+document_id = "XS-013"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00143"
+document_id = "XS-013"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00144"
+document_id = "XS-013"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00145"
+document_id = "XS-013"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00146"
+document_id = "XS-013"
+source_markdown = "docs/external_sources/INDEX.md"
+source_kind = "path"
+source_ref = "docs/external_sources/ysu_engine_gpu_patterns.md"
+sha256 = ""
+retrieved_date = ""
+claim_refs = []
+authority_level = "auto_generated"
+verification_level = "operational"
+content_kind = "generated_index"
+notes = "Auto-generated index of external source dossiers; source of truth is registry/external_sources.toml."
+
+[[record]]
+id = "PSR-00147"
 document_id = "XS-014"
 source_markdown = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 source_kind = "path"
@@ -1986,7 +2070,7 @@ content_kind = "conversation_extraction"
 notes = "Conversation-derived formalism notes flagged as unverified in-file."
 
 [[record]]
-id = "PSR-00142"
+id = "PSR-00148"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2000,7 +2084,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00143"
+id = "PSR-00149"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2014,7 +2098,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00144"
+id = "PSR-00150"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2028,7 +2112,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00145"
+id = "PSR-00151"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2042,7 +2126,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00146"
+id = "PSR-00152"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2056,7 +2140,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00147"
+id = "PSR-00153"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2070,7 +2154,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00148"
+id = "PSR-00154"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2084,7 +2168,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00149"
+id = "PSR-00155"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2098,7 +2182,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00150"
+id = "PSR-00156"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2112,7 +2196,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00151"
+id = "PSR-00157"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2126,7 +2210,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00152"
+id = "PSR-00158"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2140,7 +2224,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00153"
+id = "PSR-00159"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2154,7 +2238,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00154"
+id = "PSR-00160"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2168,7 +2252,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00155"
+id = "PSR-00161"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2182,7 +2266,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00156"
+id = "PSR-00162"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2196,7 +2280,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00157"
+id = "PSR-00163"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2210,7 +2294,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00158"
+id = "PSR-00164"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2224,7 +2308,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00159"
+id = "PSR-00165"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2238,7 +2322,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00160"
+id = "PSR-00166"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2252,7 +2336,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00161"
+id = "PSR-00167"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2266,7 +2350,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00162"
+id = "PSR-00168"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2280,7 +2364,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00163"
+id = "PSR-00169"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2294,7 +2378,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00164"
+id = "PSR-00170"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2308,7 +2392,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00165"
+id = "PSR-00171"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2322,7 +2406,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00166"
+id = "PSR-00172"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2336,7 +2420,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00167"
+id = "PSR-00173"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2350,7 +2434,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00168"
+id = "PSR-00174"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2364,7 +2448,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00169"
+id = "PSR-00175"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2378,7 +2462,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00170"
+id = "PSR-00176"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2392,7 +2476,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00171"
+id = "PSR-00177"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2406,7 +2490,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00172"
+id = "PSR-00178"
 document_id = "XS-015"
 source_markdown = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 source_kind = "path"
@@ -2420,118 +2504,49 @@ content_kind = "claim_dataset_provenance"
 notes = "Documents the staged OMNI mixed-lineage lane and year-by-year local coverage."
 
 [[record]]
-id = "PSR-00173"
+id = "PSR-00179"
 document_id = "XS-016"
 source_markdown = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 source_kind = "path"
 source_ref = "docs/CLAIMS_EVIDENCE_MATRIX.md"
 sha256 = ""
 retrieved_date = ""
-claim_refs = [
-    "C-043",
-    "C-082",
-    "C-087",
-    "C-092",
-    "C-094",
-    "C-096",
-    "C-099",
-    "C-102",
-    "C-103",
-    "C-108",
-    "C-109",
-    "C-120",
-    "C-123",
-    "C-128",
-    "C-129",
-    "C-130",
-    "C-132",
-    "C-135",
-    "C-417",
-    "C-426",
-    "C-427",
-    "C-432",
-]
+claim_refs = ["C-043", "C-082", "C-087", "C-092", "C-094", "C-096", "C-099", "C-102", "C-103", "C-108", "C-109", "C-120", "C-123", "C-128", "C-129", "C-130", "C-132", "C-135", "C-417", "C-426", "C-427", "C-432"]
 authority_level = "project_tracking_index"
 verification_level = "workflow_control"
 content_kind = "claims_inbox_index"
 notes = "Inbox index for open claims pending dedicated source dossiers."
 
 [[record]]
-id = "PSR-00174"
+id = "PSR-00180"
 document_id = "XS-016"
 source_markdown = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 source_kind = "path"
 source_ref = "docs/external_sources/"
 sha256 = ""
 retrieved_date = ""
-claim_refs = [
-    "C-043",
-    "C-082",
-    "C-087",
-    "C-092",
-    "C-094",
-    "C-096",
-    "C-099",
-    "C-102",
-    "C-103",
-    "C-108",
-    "C-109",
-    "C-120",
-    "C-123",
-    "C-128",
-    "C-129",
-    "C-130",
-    "C-132",
-    "C-135",
-    "C-417",
-    "C-426",
-    "C-427",
-    "C-432",
-]
+claim_refs = ["C-043", "C-082", "C-087", "C-092", "C-094", "C-096", "C-099", "C-102", "C-103", "C-108", "C-109", "C-120", "C-123", "C-128", "C-129", "C-130", "C-132", "C-135", "C-417", "C-426", "C-427", "C-432"]
 authority_level = "project_tracking_index"
 verification_level = "workflow_control"
 content_kind = "claims_inbox_index"
 notes = "Inbox index for open claims pending dedicated source dossiers."
 
 [[record]]
-id = "PSR-00175"
+id = "PSR-00181"
 document_id = "XS-016"
 source_markdown = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 source_kind = "path"
 source_ref = "docs/external_sources/*.md"
 sha256 = ""
 retrieved_date = ""
-claim_refs = [
-    "C-043",
-    "C-082",
-    "C-087",
-    "C-092",
-    "C-094",
-    "C-096",
-    "C-099",
-    "C-102",
-    "C-103",
-    "C-108",
-    "C-109",
-    "C-120",
-    "C-123",
-    "C-128",
-    "C-129",
-    "C-130",
-    "C-132",
-    "C-135",
-    "C-417",
-    "C-426",
-    "C-427",
-    "C-432",
-]
+claim_refs = ["C-043", "C-082", "C-087", "C-092", "C-094", "C-096", "C-099", "C-102", "C-103", "C-108", "C-109", "C-120", "C-123", "C-128", "C-129", "C-130", "C-132", "C-135", "C-417", "C-426", "C-427", "C-432"]
 authority_level = "project_tracking_index"
 verification_level = "workflow_control"
 content_kind = "claims_inbox_index"
 notes = "Inbox index for open claims pending dedicated source dossiers."
 
 [[record]]
-id = "PSR-00176"
+id = "PSR-00182"
 document_id = "XS-017"
 source_markdown = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 source_kind = "path"
@@ -2545,7 +2560,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs."
 
 [[record]]
-id = "PSR-00177"
+id = "PSR-00183"
 document_id = "XS-017"
 source_markdown = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 source_kind = "path"
@@ -2559,7 +2574,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs."
 
 [[record]]
-id = "PSR-00178"
+id = "PSR-00184"
 document_id = "XS-017"
 source_markdown = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 source_kind = "path"
@@ -2573,7 +2588,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs."
 
 [[record]]
-id = "PSR-00179"
+id = "PSR-00185"
 document_id = "XS-017"
 source_markdown = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 source_kind = "path"
@@ -2587,7 +2602,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs."
 
 [[record]]
-id = "PSR-00180"
+id = "PSR-00186"
 document_id = "XS-017"
 source_markdown = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 source_kind = "path"
@@ -2601,7 +2616,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Primary-source and benchmark index for Pioneer anomaly and Earth-flyby audit inputs."
 
 [[record]]
-id = "PSR-00181"
+id = "PSR-00187"
 document_id = "XS-018"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "url"
@@ -2615,7 +2630,7 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00182"
+id = "PSR-00188"
 document_id = "XS-018"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
@@ -2629,7 +2644,7 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00183"
+id = "PSR-00189"
 document_id = "XS-018"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
@@ -2643,7 +2658,7 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00184"
+id = "PSR-00190"
 document_id = "XS-018"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
@@ -2657,7 +2672,7 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00185"
+id = "PSR-00191"
 document_id = "XS-018"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
@@ -2671,7 +2686,7 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00186"
+id = "PSR-00192"
 document_id = "XS-018"
 source_markdown = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 source_kind = "path"
@@ -2685,7 +2700,7 @@ content_kind = "paper_claim_bridge"
 notes = "Distinguishes paper-asserted manifold claims from replicated algebraic checks."
 
 [[record]]
-id = "PSR-00187"
+id = "PSR-00193"
 document_id = "XS-019"
 source_markdown = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 source_kind = "url"
@@ -2699,7 +2714,7 @@ content_kind = "evidence_synthesis"
 notes = "Combines primary-source statements with codebase verification references."
 
 [[record]]
-id = "PSR-00188"
+id = "PSR-00194"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2713,7 +2728,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00189"
+id = "PSR-00195"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2727,7 +2742,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00190"
+id = "PSR-00196"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2741,7 +2756,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00191"
+id = "PSR-00197"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2755,7 +2770,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00192"
+id = "PSR-00198"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2769,7 +2784,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00193"
+id = "PSR-00199"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2783,7 +2798,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00194"
+id = "PSR-00200"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2797,7 +2812,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00195"
+id = "PSR-00201"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2811,7 +2826,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00196"
+id = "PSR-00202"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2825,7 +2840,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00197"
+id = "PSR-00203"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2839,7 +2854,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00198"
+id = "PSR-00204"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2853,7 +2868,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00199"
+id = "PSR-00205"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2867,7 +2882,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00200"
+id = "PSR-00206"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2881,7 +2896,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00201"
+id = "PSR-00207"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2895,7 +2910,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00202"
+id = "PSR-00208"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2909,7 +2924,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00203"
+id = "PSR-00209"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2923,7 +2938,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00204"
+id = "PSR-00210"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2937,7 +2952,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00205"
+id = "PSR-00211"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2951,7 +2966,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00206"
+id = "PSR-00212"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2965,7 +2980,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00207"
+id = "PSR-00213"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2979,7 +2994,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00208"
+id = "PSR-00214"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -2993,7 +3008,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00209"
+id = "PSR-00215"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3007,7 +3022,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00210"
+id = "PSR-00216"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3021,7 +3036,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00211"
+id = "PSR-00217"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3035,7 +3050,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00212"
+id = "PSR-00218"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3049,7 +3064,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00213"
+id = "PSR-00219"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3063,7 +3078,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00214"
+id = "PSR-00220"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3077,7 +3092,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00215"
+id = "PSR-00221"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3091,7 +3106,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00216"
+id = "PSR-00222"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3105,7 +3120,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00217"
+id = "PSR-00223"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3119,7 +3134,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00218"
+id = "PSR-00224"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3133,7 +3148,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00219"
+id = "PSR-00225"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3147,7 +3162,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00220"
+id = "PSR-00226"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3161,7 +3176,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00221"
+id = "PSR-00227"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3175,7 +3190,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00222"
+id = "PSR-00228"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3189,7 +3204,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00223"
+id = "PSR-00229"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3203,7 +3218,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00224"
+id = "PSR-00230"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3217,7 +3232,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00225"
+id = "PSR-00231"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3231,7 +3246,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00226"
+id = "PSR-00232"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3245,7 +3260,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00227"
+id = "PSR-00233"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3259,7 +3274,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00228"
+id = "PSR-00234"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3273,7 +3288,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00229"
+id = "PSR-00235"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3287,7 +3302,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00230"
+id = "PSR-00236"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3301,7 +3316,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00231"
+id = "PSR-00237"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "url"
@@ -3315,7 +3330,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00232"
+id = "PSR-00238"
 document_id = "XS-020"
 source_markdown = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 source_kind = "path"
@@ -3329,7 +3344,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Endpoint audit for SOHO archive retrieval surfaces and host-dependent mirror behavior."
 
 [[record]]
-id = "PSR-00233"
+id = "PSR-00239"
 document_id = "XS-021"
 source_markdown = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 source_kind = "path"
@@ -3343,7 +3358,7 @@ content_kind = "conversation_extraction"
 notes = "Conversation-extracted taxonomy with explicit naming-collision warning."
 
 [[record]]
-id = "PSR-00234"
+id = "PSR-00240"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "url"
@@ -3357,7 +3372,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00235"
+id = "PSR-00241"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "url"
@@ -3371,7 +3386,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00236"
+id = "PSR-00242"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "url"
@@ -3385,7 +3400,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00237"
+id = "PSR-00243"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "url"
@@ -3399,7 +3414,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00238"
+id = "PSR-00244"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "url"
@@ -3413,7 +3428,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00239"
+id = "PSR-00245"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "path"
@@ -3427,7 +3442,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00240"
+id = "PSR-00246"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "path"
@@ -3441,7 +3456,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00241"
+id = "PSR-00247"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "path"
@@ -3455,7 +3470,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00242"
+id = "PSR-00248"
 document_id = "XS-022"
 source_markdown = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 source_kind = "path"
@@ -3469,7 +3484,7 @@ content_kind = "claim_dataset_provenance"
 notes = "Provenance chain for Wow! signal archival data and BL 6EQUJ5 follow-up."
 
 [[record]]
-id = "PSR-00243"
+id = "PSR-00249"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "url"
@@ -3483,7 +3498,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00244"
+id = "PSR-00250"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3497,7 +3512,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00245"
+id = "PSR-00251"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3511,7 +3526,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00246"
+id = "PSR-00252"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3525,7 +3540,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00247"
+id = "PSR-00253"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3539,7 +3554,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00248"
+id = "PSR-00254"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3553,7 +3568,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00249"
+id = "PSR-00255"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3567,7 +3582,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00250"
+id = "PSR-00256"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3581,7 +3596,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00251"
+id = "PSR-00257"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3595,7 +3610,7 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00252"
+id = "PSR-00258"
 document_id = "XS-023"
 source_markdown = "docs/external_sources/ysu_engine_gpu_patterns.md"
 source_kind = "path"
@@ -3609,35 +3624,35 @@ content_kind = "technical_reference"
 notes = "Technique-reference capture mapping external GPU optimization patterns onto local CUDA/LBM work."
 
 [[record]]
-id = "PSR-00253"
+id = "PSR-00259"
 document_id = "XS-024"
 source_markdown = "docs/external_sources/LELLI_2016_SPARC.md"
 source_kind = "url"
 source_ref = "https://doi.org/10.3847/0004-6256/152/6/157"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1338"]
 authority_level = "primary_paper"
 verification_level = "source_reference"
 content_kind = "observational_dataset_paper"
 notes = "Primary SPARC database paper. Source for E-179, E-180, E-182 rotation curve stacking experiments."
 
 [[record]]
-id = "PSR-00254"
+id = "PSR-00260"
 document_id = "XS-025"
 source_markdown = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
 source_kind = "url"
 source_ref = "https://doi.org/10.3847/1538-4365/ab700e"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1338"]
 authority_level = "primary_paper"
 verification_level = "source_reference"
 content_kind = "observational_dataset_paper"
 notes = "Published NFW fitting parameters for SPARC sample. Used to initialize NFW priors in E-180, E-182 stacking."
 
 [[record]]
-id = "PSR-00255"
+id = "PSR-00261"
 document_id = "XS-026"
 source_markdown = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
 source_kind = "url"
@@ -3651,7 +3666,7 @@ content_kind = "observational_dataset_paper"
 notes = "MaNGA DAP/DRP pipeline paper. Describes the MAPS FITS format consumed by manga-maps-extractor (E-183)."
 
 [[record]]
-id = "PSR-00256"
+id = "PSR-00262"
 document_id = "XS-027"
 source_markdown = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
 source_kind = "url"
@@ -3665,7 +3680,7 @@ content_kind = "observational_dataset_paper"
 notes = "MaNGA survey overview paper. Context for E-183 MaNGA rotation curve stacking experiment."
 
 [[record]]
-id = "PSR-00257"
+id = "PSR-00263"
 document_id = "XS-028"
 source_markdown = "docs/external_sources/MOSTER_2013_SMHM.md"
 source_kind = "url"
@@ -3679,98 +3694,14 @@ content_kind = "observational_dataset_paper"
 notes = "Moster+2013 SMHM relation used to normalize MaNGA/SPARC rotation curves by NFW v_200 in E-180, E-182, E-183."
 
 [[record]]
-id = "PSR-00258"
+id = "PSR-00264"
 document_id = "XS-029"
 source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
 source_kind = "url"
 source_ref = "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_extractf128_pd.html"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
-authority_level = "primary_vendor_reference"
-verification_level = "source_capture"
-content_kind = "technical_reference"
-notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
-
-[[record]]
-id = "PSR-00259"
-document_id = "XS-029"
-source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "url"
-source_ref = "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_hadd_pd.html"
-sha256 = ""
-retrieved_date = ""
-claim_refs = []
-authority_level = "primary_vendor_reference"
-verification_level = "source_capture"
-content_kind = "technical_reference"
-notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
-
-[[record]]
-id = "PSR-00260"
-document_id = "XS-029"
-source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "url"
-source_ref = "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
-sha256 = ""
-retrieved_date = ""
-claim_refs = []
-authority_level = "primary_vendor_reference"
-verification_level = "source_capture"
-content_kind = "technical_reference"
-notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
-
-[[record]]
-id = "PSR-00261"
-document_id = "XS-029"
-source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "url"
-source_ref = "https://epubs.siam.org/doi/10.1137/030601818"
-sha256 = ""
-retrieved_date = ""
-claim_refs = []
-authority_level = "primary_vendor_reference"
-verification_level = "source_capture"
-content_kind = "technical_reference"
-notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
-
-[[record]]
-id = "PSR-00262"
-document_id = "XS-029"
-source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "url"
-source_ref = "https://www.intel.com/content/www/us/en/docs/cpp-compiler/developer-guide-reference/2021-8/mm-fmadd-pd-mm256-fmadd-pd.html"
-sha256 = ""
-retrieved_date = ""
-claim_refs = []
-authority_level = "primary_vendor_reference"
-verification_level = "source_capture"
-content_kind = "technical_reference"
-notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
-
-[[record]]
-id = "PSR-00263"
-document_id = "XS-029"
-source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "path"
-source_ref = "26568.pdf"
-sha256 = ""
-retrieved_date = ""
-claim_refs = []
-authority_level = "primary_vendor_reference"
-verification_level = "source_capture"
-content_kind = "technical_reference"
-notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
-
-[[record]]
-id = "PSR-00264"
-document_id = "XS-029"
-source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "path"
-source_ref = "26569.pdf"
-sha256 = ""
-retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
 authority_level = "primary_vendor_reference"
 verification_level = "source_capture"
 content_kind = "technical_reference"
@@ -3780,11 +3711,11 @@ notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files ar
 id = "PSR-00265"
 document_id = "XS-029"
 source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "path"
-source_ref = "2^-53 / 2^-64"
+source_kind = "url"
+source_ref = "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_hadd_pd.html"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
 authority_level = "primary_vendor_reference"
 verification_level = "source_capture"
 content_kind = "technical_reference"
@@ -3794,11 +3725,11 @@ notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files ar
 id = "PSR-00266"
 document_id = "XS-029"
 source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "path"
-source_ref = "crates/algebra_analysis/benches/x87_bench.rs"
+source_kind = "url"
+source_ref = "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
 authority_level = "primary_vendor_reference"
 verification_level = "source_capture"
 content_kind = "technical_reference"
@@ -3808,11 +3739,11 @@ notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files ar
 id = "PSR-00267"
 document_id = "XS-029"
 source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "path"
-source_ref = "crates/algebra_analysis/src/x87_jacobi.rs"
+source_kind = "url"
+source_ref = "https://epubs.siam.org/doi/10.1137/030601818"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
 authority_level = "primary_vendor_reference"
 verification_level = "source_capture"
 content_kind = "technical_reference"
@@ -3822,11 +3753,11 @@ notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files ar
 id = "PSR-00268"
 document_id = "XS-029"
 source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
-source_kind = "path"
-source_ref = "crates/cd_kernel/src/avx2_primitives.rs"
+source_kind = "url"
+source_ref = "https://www.intel.com/content/www/us/en/docs/cpp-compiler/developer-guide-reference/2021-8/mm-fmadd-pd-mm256-fmadd-pd.html"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
 authority_level = "primary_vendor_reference"
 verification_level = "source_capture"
 content_kind = "technical_reference"
@@ -3837,10 +3768,10 @@ id = "PSR-00269"
 document_id = "XS-029"
 source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
 source_kind = "path"
-source_ref = "crates/cd_kernel/src/x87_primitives.rs"
+source_ref = "26568.pdf"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
 authority_level = "primary_vendor_reference"
 verification_level = "source_capture"
 content_kind = "technical_reference"
@@ -3851,10 +3782,94 @@ id = "PSR-00270"
 document_id = "XS-029"
 source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
 source_kind = "path"
+source_ref = "26569.pdf"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
+authority_level = "primary_vendor_reference"
+verification_level = "source_capture"
+content_kind = "technical_reference"
+notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
+
+[[record]]
+id = "PSR-00271"
+document_id = "XS-029"
+source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+source_kind = "path"
+source_ref = "2^-53 / 2^-64"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
+authority_level = "primary_vendor_reference"
+verification_level = "source_capture"
+content_kind = "technical_reference"
+notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
+
+[[record]]
+id = "PSR-00272"
+document_id = "XS-029"
+source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+source_kind = "path"
+source_ref = "crates/algebra_analysis/benches/x87_bench.rs"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
+authority_level = "primary_vendor_reference"
+verification_level = "source_capture"
+content_kind = "technical_reference"
+notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
+
+[[record]]
+id = "PSR-00273"
+document_id = "XS-029"
+source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+source_kind = "path"
+source_ref = "crates/algebra_analysis/src/x87_jacobi.rs"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
+authority_level = "primary_vendor_reference"
+verification_level = "source_capture"
+content_kind = "technical_reference"
+notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
+
+[[record]]
+id = "PSR-00274"
+document_id = "XS-029"
+source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+source_kind = "path"
+source_ref = "crates/cd_kernel/src/avx2_primitives.rs"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
+authority_level = "primary_vendor_reference"
+verification_level = "source_capture"
+content_kind = "technical_reference"
+notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
+
+[[record]]
+id = "PSR-00275"
+document_id = "XS-029"
+source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+source_kind = "path"
+source_ref = "crates/cd_kernel/src/x87_primitives.rs"
+sha256 = ""
+retrieved_date = ""
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
+authority_level = "primary_vendor_reference"
+verification_level = "source_capture"
+content_kind = "technical_reference"
+notes = "The user referenced local `26568.pdf` / `26569.pdf`, but those files are not present in-repo. This dossier anchors the claim cluster to official online AMD / Intel / Rust references plus the Ogita-Rump-Oishi paper so the repo no longer depends on personal local paths."
+
+[[record]]
+id = "PSR-00276"
+document_id = "XS-029"
+source_markdown = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+source_kind = "path"
 source_ref = "data/csv/x87_avx_fma_followup_benchmark_summary.csv"
 sha256 = ""
 retrieved_date = ""
-claim_refs = []
+claim_refs = ["C-1359", "C-1360", "C-1361", "C-1362"]
 authority_level = "primary_vendor_reference"
 verification_level = "source_capture"
 content_kind = "technical_reference"

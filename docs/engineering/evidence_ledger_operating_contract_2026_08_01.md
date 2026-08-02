@@ -51,7 +51,7 @@ not claim global absence.
 | Row | State | Evidence surface | Closure condition |
 | --- | --- | --- | --- |
 | `p0-document-index` | closed | `registry/knowledge_sources.toml`, `registry/markdown_governance.toml`, provenance document tables | Fresh generators emit 128 rows, provenance reindex stores 128 documents, and parity plus governance checks agree on the same document set |
-| `p0-planning-row-reconciliation` | partial | SQLite planning tables and generated planning exports | Obsolete PDS-SBN rows close through the typed CLI; live Voyager and optics rows retain their real open boundaries |
+| `p0-planning-row-reconciliation` | closed | SQLite planning tables, generated planning exports, and retained gate reports | T-062 and T-063 close through retained evidence; registry acceptance passes; T-051 retains the two missing external-input boundaries; T-058 and WS-OPTICS-GR-001 remain explicitly open |
 | `p0-local-gate-substitute` | closed | `Makefile`, `.githooks/pre-push`, local gate output, retained gate evidence | The local gate reproduces the required governance, registry, ASCII, terminology, and Rust checks with retained output |
 
 ## P1: scientific and formal evidence closure

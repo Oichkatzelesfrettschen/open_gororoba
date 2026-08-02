@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 227
-edge_count = 1083
+lineage_count = 232
+edge_count = 1113
 
 [[lineage]]
 id = "XL-001"
@@ -4139,6 +4139,96 @@ external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo machete && pmd cpd --language rust --minimum-tokens 80 -d crates/ --no-fail-on-error -f text && RUSTFLAGS='' cargo clippy --workspace -- -W clippy::cognitive_complexity && cargo miri test -p cd_kernel", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-235"
+experiment_id = "E-235"
+binary = "staples-roc-block-bootstrap"
+deterministic = true
+gpu = false
+run_command = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-block-bootstrap -- --scores data/output/benchmark_scores.csv --out data/output/staples_roc_block_bootstrap.json"
+run_command_sha256 = "de0abc7a5d58d881e2d4214a6cbfbaa5df3f381691ebeb8d1650aa582c00a7d6"
+claim_refs = []
+input_path_refs = ["data/output/benchmark_scores.csv"]
+output_path_refs = ["data/output/staples_roc_block_bootstrap.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-block-bootstrap -- --scores data/output/benchmark_scores.csv --out data/output/staples_roc_block_bootstrap.json", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-236"
+experiment_id = "E-236"
+binary = "selfsim-logsigma-bootstrap"
+deterministic = true
+gpu = false
+run_command = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin selfsim-logsigma-bootstrap -- --records data/output/agg_selfsim_rust.json --out data/output/selfsim_logsigma_bootstrap.json"
+run_command_sha256 = "7187487215876c854acbb5b992d69086de88204fb3f0c6f8514a80d551885409"
+claim_refs = []
+input_path_refs = ["data/output/agg_selfsim_rust.json"]
+output_path_refs = ["data/output/selfsim_logsigma_bootstrap.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin selfsim-logsigma-bootstrap -- --records data/output/agg_selfsim_rust.json --out data/output/selfsim_logsigma_bootstrap.json", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-237"
+experiment_id = "E-237"
+binary = "staples-roc-cluster-bootstrap"
+deterministic = true
+gpu = false
+run_command = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --out data/output/staples_roc_cluster_bootstrap.json"
+run_command_sha256 = "63c5164d7dc5e7eca1fb876a1af1a20d3f079be68ffc2bd70f195a571bea3d34"
+claim_refs = []
+input_path_refs = ["data/output/benchmark_scores.csv"]
+output_path_refs = ["data/output/staples_roc_cluster_bootstrap.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --out data/output/staples_roc_cluster_bootstrap.json", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-238"
+experiment_id = "E-238"
+binary = "sedenion-associator-coefficient-census"
+deterministic = true
+gpu = false
+run_command = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin sedenion-associator-coefficient-census"
+run_command_sha256 = "7a4d4defbf43401550e6204ee0cbe5548e7b1fa6bc583229c9e59f71e28b1b15"
+claim_refs = []
+input_path_refs = ["crates/cd_kernel/src/mult_table.rs"]
+output_path_refs = ["data/output/audit/2026-07-16/21-associator-coefficient-census.txt"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin sedenion-associator-coefficient-census", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-239"
+experiment_id = "E-239"
+binary = "staples-roc-cluster-bootstrap"
+deterministic = true
+gpu = false
+run_command = "for control in rot dbdt bmag cumrot6 maxrot6 pvi6 gram6 scram chperm; do CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --col-a assoc --col-b \"$control\" --out \"data/output/staples_cluster_bootstrap_assoc_vs_${control}.json\"; done"
+run_command_sha256 = "6c40141dd3ca48dd1de7fe57ee478e4ea2a5b8eac990bd111d7d6ff082982b97"
+claim_refs = ["C-1628", "C-1629", "C-1631", "C-1632", "C-1633"]
+input_path_refs = ["data/output/benchmark_scores.csv", "data/output/tha_matched_files.csv", "data/output/tha_matched_files_dup_defect.csv"]
+output_path_refs = ["data/output/staples_cluster_bootstrap_assoc_vs_bmag.json", "data/output/staples_cluster_bootstrap_assoc_vs_chperm.json", "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json", "data/output/staples_cluster_bootstrap_assoc_vs_dbdt.json", "data/output/staples_cluster_bootstrap_assoc_vs_gram6.json", "data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json", "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json", "data/output/staples_cluster_bootstrap_assoc_vs_rot.json", "data/output/staples_cluster_bootstrap_assoc_vs_scram.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "for control in rot dbdt bmag cumrot6 maxrot6 pvi6 gram6 scram chperm; do CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --col-a assoc --col-b \"$control\" --out \"data/output/staples_cluster_bootstrap_assoc_vs_${control}.json\"; done", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
 id = "XLE-00001"
@@ -13886,3 +13976,274 @@ to_ref = "data/output/static_analysis/pmd_gap_audit_2026_04_15.txt"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
+
+[[edge]]
+id = "XLE-01084"
+lineage_id = "XL-235"
+from_id = "E-235"
+to_ref = "staples-roc-block-bootstrap"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01085"
+lineage_id = "XL-235"
+from_id = "E-235"
+to_ref = "data/output/benchmark_scores.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01086"
+lineage_id = "XL-235"
+from_id = "E-235"
+to_ref = "data/output/staples_roc_block_bootstrap.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01087"
+lineage_id = "XL-236"
+from_id = "E-236"
+to_ref = "selfsim-logsigma-bootstrap"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01088"
+lineage_id = "XL-236"
+from_id = "E-236"
+to_ref = "data/output/agg_selfsim_rust.json"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01089"
+lineage_id = "XL-236"
+from_id = "E-236"
+to_ref = "data/output/selfsim_logsigma_bootstrap.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01090"
+lineage_id = "XL-237"
+from_id = "E-237"
+to_ref = "staples-roc-cluster-bootstrap"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01091"
+lineage_id = "XL-237"
+from_id = "E-237"
+to_ref = "data/output/benchmark_scores.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01092"
+lineage_id = "XL-237"
+from_id = "E-237"
+to_ref = "data/output/staples_roc_cluster_bootstrap.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01093"
+lineage_id = "XL-238"
+from_id = "E-238"
+to_ref = "sedenion-associator-coefficient-census"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01094"
+lineage_id = "XL-238"
+from_id = "E-238"
+to_ref = "crates/cd_kernel/src/mult_table.rs"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01095"
+lineage_id = "XL-238"
+from_id = "E-238"
+to_ref = "data/output/audit/2026-07-16/21-associator-coefficient-census.txt"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01096"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "staples-roc-cluster-bootstrap"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01097"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "C-1628"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01098"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "C-1629"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01099"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "C-1631"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01100"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "C-1632"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01101"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "C-1633"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01102"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/benchmark_scores.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01103"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/tha_matched_files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01104"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/tha_matched_files_dup_defect.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01105"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_bmag.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01106"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_chperm.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01107"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01108"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_dbdt.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01109"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_gram6.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01110"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01111"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01112"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_rot.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01113"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_scram.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+

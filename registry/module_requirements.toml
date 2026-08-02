@@ -953,8 +953,8 @@ id = "PKG-00046"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "fwht"
-constraint = "{\"path\":\"../cratesgororobas/fwht\"}"
-spec = "fwht {\"path\":\"../cratesgororobas/fwht\"}"
+constraint = "{\"git\":\"https://github.com/Oichkatzelesfrettschen/cratesgororobas\",\"rev\":\"28b5310d3a6755b81b7c1ceb79f9f79f67f1af70\"}"
+spec = "fwht {\"git\":\"https://github.com/Oichkatzelesfrettschen/cratesgororobas\",\"rev\":\"28b5310d3a6755b81b7c1ceb79f9f79f67f1af70\"}"
 group = "workspace.dependencies"
 optional = false
 source = "Cargo.toml"
@@ -2036,3 +2036,4 @@ spec = "zip 8.5"
 group = "workspace.dependencies"
 optional = false
 source = "Cargo.toml"
+
