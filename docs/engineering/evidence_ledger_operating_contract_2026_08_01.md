@@ -21,7 +21,7 @@ original claims and remain outside this ledger's rewrite scope.
 | Markdown content inventory | on-disk Markdown plus owner-map coverage | `registry/knowledge_sources.toml` | `make registry-knowledge` |
 | Markdown lifecycle policy | `registry/knowledge_sources.toml` plus header evidence | `registry/markdown_governance.toml` | `make registry-governance` |
 | Document search index | `registry/canonical/control_plane.sqlite3` | `documents` and `document_search` tables | `provenance index --knowledge-sources registry/knowledge_sources.toml` |
-| Formal proof status | `proofs/`, `_RocqProject`, retained proof reports | proof gate output and dated evidence notes | `make -C proofs vos` and `make -C proofs vok` |
+| Formal proof status | `proofs/`, `_RocqProject`, retained proof reports | proof gate output and dated evidence notes | `make rocq-project-check`, `make -C proofs vos`, and `make -C proofs vok` |
 
 Generated TOML and Markdown views are read-only compatibility artifacts. A
 generated view never becomes a manual source because a consumer reads it.
@@ -59,7 +59,7 @@ not claim global absence.
 | Row | State | Evidence surface | Closure condition |
 | --- | --- | --- | --- |
 | `p1-voyager-bartol-amda-comparator` | partial | Voyager finding document, source manifest, and exact downloaded or bounded-missing data | Bartol and AMDA use the same time basis and units, or the missing AMDA boundary remains explicitly blocked |
-| `p1-rocq-project-completeness` | partial | `_RocqProject`, `proofs/theories`, `make -C proofs vos`, `make -C proofs vok` | Every intended theorem file is admitted-free or a named axiom boundary is registered with a falsifier |
+| `p1-rocq-project-completeness` | partial | `_RocqProject`, `rocq-project-audit`, pinned `vos` and `vok` outputs | Project parity and both gates pass; every remaining axiom or parameter has a named disposition with a falsifier |
 | `p1-formal-evidence-registry` | partial | formal proof field schema and proof evidence outputs | Proof counts, theorem status, assumptions, and gate results share one dated evidence record |
 
 ## P2: reproducibility and structural debt
@@ -81,6 +81,7 @@ CARGO_TARGET_DIR=.cache/cli-target cargo run -q -p gororoba_cli_data --bin markd
 CARGO_TARGET_DIR=.cache/cli-target cargo run -q -p gororoba_cli_data --bin provenance -- index --knowledge-sources registry/knowledge_sources.toml
 make registry-verify-mirrors
 make registry-acceptance-gate-readonly
+make rocq-project-check
 make -C proofs vos
 make -C proofs vok
 ```
