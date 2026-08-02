@@ -7,16 +7,20 @@ evidence_class: formal-verification-evidence
 # Rocq proof gate evidence
 
 The pinned Rocq 9.1.1 toolchain passes both interface and body compilation in
-the isolated worktree. The proof result is strong for compilation and explicit
-about the remaining project-file and axiom boundaries.
+the isolated worktree with Flocq 4.2.2 installed in the same opam switch. The
+Rust project audit reports bidirectional parity for all 297 intended source
+files. The proof result is strong for compilation and explicit about the
+remaining axiom boundary.
 
 ## Gate results
 
 | Check | Result | Replay command |
 | --- | --- | --- |
+| Project/source parity | PASS, 297 listed and 297 inventory sources | `make rocq-project-check` |
 | Interface compilation | PASS | `make -C proofs vos` |
 | Body compilation | PASS | `make -C proofs vok` |
-| Rocq version | `9.1.1`, OCaml `5.5.0` | `rocq --version` |
+| Rocq version | `9.1.1`, OCaml `5.4.0` | `rocq --version` |
+| Flocq version | `4.2.2` | `opam list --short` |
 | Rust toolchain | `1.97.0` | `rust-toolchain.toml` |
 | Executable `Admitted.` commands | 0 | `rg -n '^Admitted\\.$' proofs/theories proofs/verified` |
 | `C1467_XORSignCocycle.v` placeholder markers | 0 | `rg -n 'PLACEHOLDER' proofs/verified/C1467_XORSignCocycle.v` |
@@ -29,14 +33,11 @@ proof bodies.
 
 The checkout contains 300 `.v` files. The intended source directories contain
 297 files: 135 under `proofs/theories` and 162 under `proofs/verified`. The
-Rocq project file lists 296 source files. The bidirectional difference is
-`proofs/theories/FP24Representable.v`: `_CoqProject` lists it, while
-`_RocqProject` does not. The three extraction files are intentionally outside
-the source project set.
-
-This is a project-coverage discrepancy, not a failed proof gate. The next
-formal-lane action is to reconcile `_RocqProject` with the intended source set
-or record why the FP24 file remains outside the active Rocq project.
+active `_RocqProject` lists all 297 source files. The Rust `rocq-project-audit`
+binary compares the project file and both intended source directories in both
+directions, and rejects missing, extra, duplicate, or non-regular source
+entries. The three extraction files are intentionally outside the source
+project set.
 
 ## Axiom boundary
 
@@ -48,8 +49,8 @@ source for the detailed assumption classification.
 
 The research-quality claim is therefore bounded: the compiled theorem bodies
 are replayable under the pinned toolchain, while theorem strength still depends
-on the declared axioms and parameters. A future closure record carries the
-axiom disposition hash, project-file parity result, and both gate outputs.
+on the declared axioms and parameters. The P1 row remains partial until every
+remaining axiom or parameter has a named disposition and falsifier.
 
 ## Registry boundary
 

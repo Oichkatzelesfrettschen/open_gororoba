@@ -1009,12 +1009,12 @@ row_id = "p1-rocq-project-completeness"
 priority = "P1"
 status = "partial"
 owner_surface = "proofs/_RocqProject; proofs/theories; proofs/Makefile"
-claim = "The formal proof surface is measurable by project inclusion, admitted and axiom scans, and both pinned Rocq gate results."
-evidence_refs = ["proofs/_RocqProject", "proofs/Makefile", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md"]
-falsifier = "vos or vok fails, an intended theorem file is absent from _RocqProject, or an admitted or undispositioned axiom row appears."
-next_action = "Run vos and vok, reconcile the project-file delta, and record proof counts and assumptions in a retained evidence note."
-closure_condition = "The intended project set and retained proof report agree, both gates pass, and every remaining axiom has a named disposition."
-document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+claim = "The formal proof surface has bidirectional source parity and replayable pinned Rocq gates, while explicit axiom and parameter declarations remain a separate assumption boundary."
+evidence_refs = ["proofs/_RocqProject", "proofs/Makefile", "crates/gororoba_cli_data/src/bin/rocq_project_audit.rs", ".github/workflows/proofs.yml", "docs/engineering/rocq-proof-gate-evidence-2026_08_01.md"]
+falsifier = "rocq-project-audit reports a mismatch, a pinned vos or vok gate fails, or an axiom or parameter lacks a named disposition and falsifier."
+next_action = "Maintain rocq-project-audit and the pinned vos/vok replay, then bind the 169 remaining axiom or parameter declarations to named dispositions."
+closure_condition = "rocq-project-audit reports 297 listed and 297 inventory sources, both pinned gates pass, and every remaining axiom or parameter has a named disposition with a falsifier."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/rocq-proof-gate-evidence-2026_08_01.md", "docs/requirements/rocq.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
 
 [[frontier]]
 row_id = "p1-formal-evidence-registry"

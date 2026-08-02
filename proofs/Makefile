@@ -7,14 +7,27 @@
 #
 # REQUIRES: opam switch rocq-9.1.1 with rocq-core >= 9.1.1.
 
-# Guard: prefer the pinned opam switch, but allow a valid Rocq 9.x binary on
-# PATH so non-opam CI/user environments can still run the proof lane.
-HAVE_ROCQ := $(shell command -v rocq >/dev/null 2>&1 && echo yes)
+# Guard: require an opam switch with the pinned Rocq toolchain and the
+# matching Flocq compiled library. Compiled Flocq objects carry the OCaml
+# runtime identity, so a Rocq binary from one switch cannot consume objects
+# built by another switch.
 ifndef OPAM_SWITCH_PREFIX
-ifneq ($(HAVE_ROCQ),yes)
-$(error OPAM_SWITCH_PREFIX is not set and rocq is not on PATH. Run: eval "$$(opam env --switch rocq-9.1.1)")
+$(error OPAM_SWITCH_PREFIX is not set. Run: eval "$$(opam env --switch rocq-9.1.1)")
 endif
+
+# FP24Representable.v imports Flocq.Core. Keep the dependency in the active
+# opam switch and map its physical installation to the Flocq logical root.
+# FLOCQ_ROOT remains overrideable for reproducible CI or a hermetic build.
+FLOCQ_ROOT ?= $(if $(OPAM_SWITCH_PREFIX),$(OPAM_SWITCH_PREFIX)/lib/coq/user-contrib/Flocq,$(shell opam var lib 2>/dev/null)/coq/user-contrib/Flocq)
+FLOCQ_CORE_VO := $(FLOCQ_ROOT)/Core/Core.vo
+ifeq ($(wildcard $(FLOCQ_CORE_VO)),)
+$(error Flocq Core.vo is missing at $(FLOCQ_CORE_VO). Install coq-flocq.4.2.2 in the active Rocq switch.)
 endif
+ROCQ_EXTERNAL_ARGS := -R "$(FLOCQ_ROOT)" Flocq
+# The dependency scanner must not turn installed Flocq sources into build
+# targets under the opam prefix. Compiler invocations receive ROCQ_EXTERNAL_ARGS
+# and consume the installed .vo objects directly.
+ROCQ_PROJECT_FLAGS := -f _RocqProject
 
 ROCQMAKEFILE := rocq makefile
 ROCQMAKEFILE_WARN_RE := [Ww]arning
@@ -91,7 +104,8 @@ rocq-makefile-check:
 	echo "OK: rocq makefile completed without warnings."
 
 all: Makefile.rocq
-	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq all
+	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq all \
+		COQEXTRAFLAGS="$(ROCQ_EXTERNAL_ARGS)" VDFILE_FLAGS="$(ROCQ_PROJECT_FLAGS)"
 
 # --- Fast two-phase build pipeline ---
 #
@@ -108,10 +122,12 @@ all: Makefile.rocq
 #   make vok   # full proof verification (CI / pre-commit)
 
 vos: Makefile.rocq
-	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq vos
+	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq vos \
+		COQEXTRAFLAGS="$(ROCQ_EXTERNAL_ARGS)" VDFILE_FLAGS="$(ROCQ_PROJECT_FLAGS)"
 
 vok: Makefile.rocq
-	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq vok
+	$(PINNED) $(MAKE) -j$(JOBS) -f Makefile.rocq vok \
+		COQEXTRAFLAGS="$(ROCQ_EXTERNAL_ARGS)" VDFILE_FLAGS="$(ROCQ_PROJECT_FLAGS)"
 
 # --- Standard targets ---
 
@@ -148,7 +164,7 @@ extract-check: extract
 extract-c: all
 	@echo "Emitting verified C from Rocq via CertiRocq..."
 	@if [ -f extraction/ExtractFP24Admit.v ]; then \
-	  rocq compile -R theories OpenGororoba -R verified OpenGororobaVerified \
+	  rocq compile $(ROCQ_EXTERNAL_ARGS) -R theories OpenGororoba -R verified OpenGororobaVerified \
 	    extraction/ExtractFP24Admit.v && \
 	  mv -f OpenGororoba.FP24Representable.fp24_value_admit.c \
 	        OpenGororoba.FP24Representable.fp24_value_admit.h extraction/ 2>/dev/null && \
