@@ -447,8 +447,8 @@ name = "evidence-provenance"
 path = "src/bin/evidence_provenance.rs"
 
 [[bin]]
-name = "integrity-resolution"
-path = "src/bin/integrity_resolution.rs"
+name = "registry-integrity"
+path = "src/bin/registry_integrity.rs"
 
 [[bin]]
 name = "execution-planning"

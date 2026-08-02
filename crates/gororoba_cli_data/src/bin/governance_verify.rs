@@ -186,10 +186,11 @@ enum Command {
     Crossrefs(CommonArgs),
     DatasetLabelAliases(CommonArgs),
     ExternalSourceOperationalContracts(CommonArgs),
-    /// Run all governance-gate checks in a single process invocation.
+    /// Run all registry policy checks in a single process invocation.
     /// Equivalent to: schema-signatures + crossrefs + dataset-label-aliases
     /// + external-source-operational-contracts + markdown-removal-policy.
-    GateAll(CommonArgs),
+    #[command(name = "validate-all", visible_alias = "gate-all")]
+    ValidateAll(CommonArgs),
 }
 
 #[derive(Parser, Debug, Clone)]
@@ -225,11 +226,11 @@ fn main() -> Result<()> {
         Command::ExternalSourceOperationalContracts(args) => {
             verify_external_source_operational_contracts(&args)
         }
-        Command::GateAll(args) => run_gate_all(&args),
+        Command::ValidateAll(args) => run_validate_all(&args),
     }
 }
 
-fn run_gate_all(args: &CommonArgs) -> Result<()> {
+fn run_validate_all(args: &CommonArgs) -> Result<()> {
     let mut failed: Vec<&str> = Vec::new();
 
     macro_rules! run_check {
@@ -274,7 +275,7 @@ fn run_gate_all(args: &CommonArgs) -> Result<()> {
         Ok(())
     } else {
         bail!(
-            "governance-gate: {} check(s) failed: {}",
+            "registry policy validation: {} check(s) failed: {}",
             failed.len(),
             failed.join(", ")
         )
@@ -1762,7 +1763,7 @@ fn verify_schema_signatures(args: &CommonArgs) -> Result<()> {
         let normalized = serde_json::to_string(&payload)?;
         let schema_sha = hex_hash(normalized.as_bytes());
         // content_sha256 comparison REMOVED: it fails on every content edit
-        // (adding claims, ASOT entries, etc.) requiring manual integrity-resolution.
+        // (adding claims, ASOT entries, etc.) requiring manual registry-integrity.
         // The schema_sha256 check catches real structural violations (wrong-type
         // fields, missing tables) which is the actual value proposition.
         if schema_sha != table_str(row, "schema_sha256") {
@@ -2005,15 +2006,15 @@ fn verify_crossrefs(args: &CommonArgs) -> Result<()> {
         .filter(|value| !value.is_empty())
         .collect();
 
-    let claim_re = Regex::new(r"\bC-\d{3}\b")?;
-    let insight_re = Regex::new(r"\bI-\d{3}\b")?;
-    let experiment_re = Regex::new(r"\bE-\d{3}\b")?;
+    let claim_re = Regex::new(r"\bC-\d{3,}\b")?;
+    let insight_re = Regex::new(r"\bI-\d{3,}\b")?;
+    let experiment_re = Regex::new(r"\bE-\d{3,}\b")?;
     let source_re = Regex::new(r"\bXS-\d{3}\b")?;
     let source_contract_re = Regex::new(r"\bSRC-[A-Z0-9-]+\b")?;
     let dataset_re = Regex::new(r"\b(?:PC|PG|EX|AR|CU)-\d{4}\b")?;
     let workstream_re = Regex::new(r"\bWS-[A-Z0-9-]+\b")?;
-    let todo_re = Regex::new(r"\bT-\d{3}\b")?;
-    let action_re = Regex::new(r"\bNA-\d{3}\b")?;
+    let todo_re = Regex::new(r"\bT-\d{3,}\b")?;
+    let action_re = Regex::new(r"\bNA-\d{3,}\b")?;
     let req_re = Regex::new(r"\bREQ-[A-Z0-9-]+\b")?;
 
     let mut failures = Vec::new();

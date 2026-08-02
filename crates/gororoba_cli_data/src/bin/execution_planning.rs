@@ -3364,8 +3364,10 @@ fn sha256_hex(bytes: &[u8]) -> String {
 fn id_ref_regex() -> &'static Regex {
     static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
     ONCE.get_or_init(|| {
-        Regex::new(r"\b(?:WS-[A-Z0-9-]+|T-\d{3}|NA-\d{3}|C-\d{3}|I-\d{3}|E-\d{3}|REQ-[A-Z0-9-]+)\b")
-            .unwrap()
+        Regex::new(
+            r"\b(?:WS-[A-Z0-9-]+|T-\d{3,}|NA-\d{3,}|C-\d{3,}|I-\d{3,}|E-\d{3,}|REQ-[A-Z0-9-]+)\b",
+        )
+        .unwrap()
     })
 }
 
@@ -3400,17 +3402,17 @@ fn lineage_id_regex() -> &'static Regex {
 
 fn claim_regex() -> &'static Regex {
     static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
-    ONCE.get_or_init(|| Regex::new(r"^C-\d{3}$").unwrap())
+    ONCE.get_or_init(|| Regex::new(r"^C-\d{3,}$").unwrap())
 }
 
 fn insight_regex() -> &'static Regex {
     static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
-    ONCE.get_or_init(|| Regex::new(r"^I-\d{3}$").unwrap())
+    ONCE.get_or_init(|| Regex::new(r"^I-\d{3,}$").unwrap())
 }
 
 fn experiment_regex() -> &'static Regex {
     static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
-    ONCE.get_or_init(|| Regex::new(r"^E-\d{3}$").unwrap())
+    ONCE.get_or_init(|| Regex::new(r"^E-\d{3,}$").unwrap())
 }
 
 fn workstream_regex() -> &'static Regex {
@@ -3420,12 +3422,12 @@ fn workstream_regex() -> &'static Regex {
 
 fn todo_regex() -> &'static Regex {
     static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
-    ONCE.get_or_init(|| Regex::new(r"^T-\d{3}$").unwrap())
+    ONCE.get_or_init(|| Regex::new(r"^T-\d{3,}$").unwrap())
 }
 
 fn action_regex() -> &'static Regex {
     static ONCE: std::sync::OnceLock<Regex> = std::sync::OnceLock::new();
-    ONCE.get_or_init(|| Regex::new(r"^NA-\d{3}$").unwrap())
+    ONCE.get_or_init(|| Regex::new(r"^NA-\d{3,}$").unwrap())
 }
 
 fn req_regex() -> &'static Regex {

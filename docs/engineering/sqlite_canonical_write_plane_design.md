@@ -246,8 +246,8 @@ The extension is complete when:
     except for the changed status_note.
   - A regenerated `registry/schema_signatures.toml` matching the new
     content_sha256.
-  - `make integrity-resolution` exits 0.
-  - `make governance-gate` exits 0.
+  - `make registry-integrity` exits 0.
+  - `make validate-governance` exits 0.
 
 - The same flow works for `insight update` and `experiment update`.
 - Invalid row values are rejected with clap-friendly errors.

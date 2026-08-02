@@ -4,7 +4,7 @@
 
 [meta]
 updated = "2026-05-14"
-description = "Tools invoked by `make audit-deep` and related quality targets."
+description = "Tools invoked by `make audit-comprehensive` and related quality targets."
 
 [[tool]]
 id = "rust-clippy"
@@ -12,7 +12,7 @@ name = "Clippy"
 make_target = "rust-clippy"
 install = "rustup component add clippy"
 description = "Workspace-wide Rust lint pass with warnings-as-errors (-D warnings)."
-audit_deep = true
+audit_comprehensive = true
 status = "active"
 
 [[tool]]
@@ -21,7 +21,7 @@ name = "cargo-deny"
 make_target = "cargo-deny-check"
 install = "cargo install cargo-deny"
 description = "License, advisory, ban, and source policy checks (deny.toml)."
-audit_deep = true
+audit_comprehensive = true
 status = "active"
 
 [[tool]]
@@ -30,7 +30,7 @@ name = "Dependency Audit"
 make_target = "dep-audit"
 install = ""
 description = "Duplicate dependency version report via `cargo tree -d`."
-audit_deep = true
+audit_comprehensive = true
 status = "active"
 
 [[tool]]
@@ -39,7 +39,7 @@ name = "PMD CPD"
 make_target = "cpd-audit"
 install = "GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch."
 description = "Cross/within-crate Rust copy-paste detection (42-token minimum)."
-audit_deep = true
+audit_comprehensive = true
 status = "active"
 
 [[tool]]
@@ -48,7 +48,7 @@ name = "PMD CPD (Tooling)"
 make_target = "cpd-audit-tooling"
 install = "GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch."
 description = "CPD scan of xtask, scripts, and CLI bin surfaces (80-token minimum, report-only)."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
@@ -57,7 +57,7 @@ name = "PMD CPD (Generated)"
 make_target = "cpd-audit-generated"
 install = "GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch."
 description = "CPD scan of registry_mirrors/ generated Rust surfaces (200-token minimum, report-only, never gates CI)."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
@@ -66,7 +66,7 @@ name = "cargo-semver-checks"
 make_target = "rust-semver-check"
 install = "cargo install cargo-semver-checks"
 description = "Public API SemVer compliance against baseline tag."
-audit_deep = false
+audit_comprehensive = false
 status = "blocked"
 blocked_reason = "fwht external path dep cannot resolve from git temp checkout."
 
@@ -76,7 +76,7 @@ name = "Docs Freshness"
 make_target = "docs-freshness"
 install = ""
 description = "Validates docs site builds and redirect checks pass."
-audit_deep = false
+audit_comprehensive = false
 status = "blocked"
 blocked_reason = "Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links."
 
@@ -91,7 +91,7 @@ name = "repo-audit"
 make_target = "repo-audit"
 install = ""
 description = "Anchored debt-baseline counter (Rocq + Rust). Comment/string stripping eliminates phantom matches; --sqlite splices the canonical revisions audit into the report."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
@@ -100,7 +100,7 @@ name = "repo-audit (strict baseline)"
 make_target = "repo-audit-strict"
 install = ""
 description = "repo-audit with --baseline-compare against data/output/debt_baseline_2026_04_30.toml + --strict. Fails the build if any debt class grew vs baseline."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
@@ -109,7 +109,7 @@ name = "repo-audit (strict unjustified)"
 make_target = "repo-audit-strict-unjustified"
 install = ""
 description = "repo-audit with --strict-unjustified-per-root 0 over crates/. Gates against any new #[allow(clippy::*)] in crates/ that lacks a justification comment."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
@@ -118,16 +118,16 @@ name = "Cache Sweep"
 make_target = "cache-sweep-soft"
 install = "cargo install cargo-sweep"
 description = "Runs age-based cargo-sweep first, then removes regenerable gate-cbuild/<hash>/ intermediates when repo-local cargo cache pressure still exceeds the 150 GB soft cap. cache-check fails at both soft and hard caps."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
-id = "audit-deep-structured"
-name = "audit-deep (structured)"
-make_target = "audit-deep-structured"
+id = "audit-comprehensive-structured"
+name = "audit-comprehensive (structured)"
+make_target = "audit-comprehensive-structured"
 install = ""
-description = "xtask audit-deep variant: same 4-step chain as Makefile audit-deep but emits per-step exit codes, log files, Markdown summary, and structured TOML record under reports/audit-deep/<date>/<time>/. Use for tranche-acceptance archival."
-audit_deep = false
+description = "xtask audit-comprehensive variant: same 4-step chain as Makefile audit-comprehensive but emits per-step exit codes, log files, Markdown summary, and structured TOML record under reports/audit-comprehensive/<date>/<time>/. Use for tranche-acceptance archival."
+audit_comprehensive = false
 status = "active"
 
 # -----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ name = "gororoba-db"
 make_target = ""
 install = ""
 description = "Canonical mutator for claims, insights, experiments, planning, requirements. Writes to registry/canonical/control_plane.sqlite3 with append-only revisions audit. Run via `cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>`."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
@@ -151,16 +151,16 @@ name = "provenance export-control-plane"
 make_target = ""
 install = ""
 description = "Re-emit registry/*.toml from canonical SQLite. Run after any SQLite mutation with --regen-toml=false; auto-invoked when --regen-toml=true. Lives in crates/gororoba_cli_provenance."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
-id = "integrity-resolution"
-name = "integrity-resolution"
-make_target = "integrity-resolution"
+id = "registry-integrity"
+name = "registry-integrity"
+make_target = "registry-integrity"
 install = ""
 description = "Recompute registry/schema_signatures.toml after legitimate Layer-2 TOML changes. Required for the governance gate's content_sha check to pass."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 # -----------------------------------------------------------------------------
@@ -173,7 +173,7 @@ name = "turboquant-onnx-eval"
 make_target = ""
 install = "Vendored option: enable `ort` crate `download-binaries` feature (auto-fetches ONNX Runtime; +50 MB CI cache). System-pkg fallback: paru -S onnxruntime-opt-cuda on Arch; Microsoft GitHub release: https://github.com/microsoft/onnxruntime/releases."
 description = "TurboQuant real-model evaluation lane. Uses ort 2.0.0-rc.12 with load-dynamic + api-18; loads libonnxruntime.so via ORT_DYLIB_PATH. End-to-end verified on distilgpt2.onnx (12 layers, 24 KV tensors). Run --features onnx-eval."
-audit_deep = false
+audit_comprehensive = false
 status = "active"
 
 [[tool]]
@@ -182,5 +182,5 @@ name = "Vulkan SPIR-V build"
 make_target = ""
 install = "GitHub release: https://github.com/google/shaderc/releases (prebuilt glslc tarball). System-pkg fallback: paru -S shaderc on Arch."
 description = "cd_kernel build.rs compiles quantize.comp + dequant_dot.comp to SPIR-V via glslc. Required for the cd_kernel vulkan feature; if shaderc is missing, build.rs writes 0-byte placeholders and VulkanQuantizer::is_available() returns false."
-audit_deep = false
+audit_comprehensive = false
 status = "active"

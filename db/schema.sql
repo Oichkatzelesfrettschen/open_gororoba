@@ -104,6 +104,24 @@ CREATE TABLE claim_insight_refs (
 
 CREATE INDEX idx_cir_insight ON claim_insight_refs(insight_id);
 
+CREATE TABLE claim_revisions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    claim_id TEXT NOT NULL,
+    field_name TEXT NOT NULL,
+    prev_value_sha256 TEXT,
+    new_value_sha256 TEXT NOT NULL,
+    actor TEXT NOT NULL,
+    reason TEXT,
+    ts_utc TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    operation TEXT NOT NULL CHECK (operation IN ('update', 'touch', 'create', 'delete')),
+    application_id INTEGER,
+    FOREIGN KEY (claim_id) REFERENCES claims(id) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE INDEX claim_revisions_by_actor ON claim_revisions(actor, ts_utc);
+
+CREATE INDEX claim_revisions_by_claim ON claim_revisions(claim_id, ts_utc);
+
 CREATE TRIGGER claims_fts_ad
 AFTER DELETE ON claims BEGIN
     DELETE FROM claims_fts WHERE rowid = old.rowid;
@@ -277,13 +295,32 @@ CREATE INDEX idx_ee_source ON evidence_edges(source_id);
 
 CREATE INDEX idx_ee_target ON evidence_edges(target_id);
 
+CREATE TABLE experiment_revisions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    experiment_id TEXT NOT NULL,
+    field_name TEXT NOT NULL,
+    prev_value_sha256 TEXT,
+    new_value_sha256 TEXT NOT NULL,
+    actor TEXT NOT NULL,
+    reason TEXT,
+    ts_utc TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    operation TEXT NOT NULL CHECK (operation IN ('update', 'touch', 'create', 'delete')),
+    application_id INTEGER,
+    -- experiments_cp is the compat-export table; the FK targets that.
+    FOREIGN KEY (experiment_id) REFERENCES experiments_cp(id) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE INDEX experiment_revisions_by_actor ON experiment_revisions(actor, ts_utc);
+
+CREATE INDEX experiment_revisions_by_experiment ON experiment_revisions(experiment_id, ts_utc);
+
 CREATE TABLE experiments_cp (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     status TEXT NOT NULL,
     binary_name TEXT,
     claim_refs_json TEXT NOT NULL
-, compat_toml_text TEXT NOT NULL DEFAULT '');
+, compat_toml_text TEXT NOT NULL DEFAULT '', status_note TEXT);
 
 CREATE TABLE export_runs (
     id INTEGER PRIMARY KEY,
@@ -363,6 +400,24 @@ CREATE TABLE ingest_fingerprints (
     indexed_at TEXT NOT NULL
 );
 
+CREATE TABLE insight_revisions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    insight_id TEXT NOT NULL,
+    field_name TEXT NOT NULL,
+    prev_value_sha256 TEXT,
+    new_value_sha256 TEXT NOT NULL,
+    actor TEXT NOT NULL,
+    reason TEXT,
+    ts_utc TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+    operation TEXT NOT NULL CHECK (operation IN ('update', 'touch', 'create', 'delete')),
+    application_id INTEGER,
+    FOREIGN KEY (insight_id) REFERENCES insights(id) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE INDEX insight_revisions_by_actor ON insight_revisions(actor, ts_utc);
+
+CREATE INDEX insight_revisions_by_insight ON insight_revisions(insight_id, ts_utc);
+
 CREATE TRIGGER insights_fts_ad
 AFTER DELETE ON insights BEGIN
     DELETE FROM insights_fts WHERE rowid = old.rowid;
@@ -386,7 +441,7 @@ CREATE TABLE insights (
     title TEXT NOT NULL,
     status TEXT NOT NULL,
     claim_refs_json TEXT NOT NULL
-, compat_toml_text TEXT NOT NULL DEFAULT '');
+, compat_toml_text TEXT NOT NULL DEFAULT '', status_note TEXT);
 
 CREATE VIRTUAL TABLE insights_fts USING fts5(
     id,

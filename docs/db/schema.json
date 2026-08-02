@@ -1,6 +1,6 @@
 {
   "generated_from": "db/migrations/*.sql via SQLite pragma introspection",
-  "object_count": 56,
+  "object_count": 59,
   "objects": [
     {
       "schema": "main",
@@ -819,6 +819,186 @@
               "seqno": 1,
               "cid": 1,
               "name": "insight_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_revisions",
+      "object_type": "table",
+      "column_count": 10,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "claim_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "field_name",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "prev_value_sha256",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "new_value_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "actor",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "reason",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "ts_utc",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 8,
+          "name": "operation",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 9,
+          "name": "application_id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "claim_revisions_by_actor",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 5,
+              "name": "actor",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 7,
+              "name": "ts_utc",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "claim_revisions_by_claim",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 7,
+              "name": "ts_utc",
               "descending": false,
               "collation": "BINARY",
               "key": true
@@ -2237,9 +2417,189 @@
     },
     {
       "schema": "main",
+      "name": "experiment_revisions",
+      "object_type": "table",
+      "column_count": 10,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "experiment_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "field_name",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "prev_value_sha256",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "new_value_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "actor",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "reason",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "ts_utc",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 8,
+          "name": "operation",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 9,
+          "name": "application_id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "experiments_cp",
+          "from_column": "experiment_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "experiment_revisions_by_actor",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 5,
+              "name": "actor",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 7,
+              "name": "ts_utc",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "experiment_revisions_by_experiment",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "experiment_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 7,
+              "name": "ts_utc",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
       "name": "experiments_cp",
       "object_type": "table",
-      "column_count": 6,
+      "column_count": 7,
       "without_rowid": false,
       "strict": false,
       "columns": [
@@ -2294,6 +2654,15 @@
           "declared_type": "TEXT",
           "not_null": true,
           "default_value": "''",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "status_note",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
           "primary_key_position": 0,
           "hidden": 0
         }
@@ -3111,9 +3480,189 @@
     },
     {
       "schema": "main",
+      "name": "insight_revisions",
+      "object_type": "table",
+      "column_count": 10,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "insight_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "field_name",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "prev_value_sha256",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "new_value_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "actor",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "reason",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "ts_utc",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "strftime('%Y-%m-%dT%H:%M:%fZ', 'now')",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 8,
+          "name": "operation",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 9,
+          "name": "application_id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "insights",
+          "from_column": "insight_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "insight_revisions_by_actor",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 5,
+              "name": "actor",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 7,
+              "name": "ts_utc",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "insight_revisions_by_insight",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "insight_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 7,
+              "name": "ts_utc",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
       "name": "insights",
       "object_type": "table",
-      "column_count": 5,
+      "column_count": 6,
       "without_rowid": false,
       "strict": false,
       "columns": [
@@ -3159,6 +3708,15 @@
           "declared_type": "TEXT",
           "not_null": true,
           "default_value": "''",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "status_note",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
           "primary_key_position": 0,
           "hidden": 0
         }

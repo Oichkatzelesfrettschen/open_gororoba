@@ -94,12 +94,8 @@ fn begin_refresh_backup(target: &Path) -> Result<Option<PathBuf>> {
     if backup.exists() {
         bail!("refresh backup already exists: {}", backup.display());
     }
-    fs::rename(target, &backup).with_context(|| {
-        format!(
-            "move {} aside before refresh",
-            target.display()
-        )
-    })?;
+    fs::rename(target, &backup)
+        .with_context(|| format!("move {} aside before refresh", target.display()))?;
     Ok(Some(backup))
 }
 
@@ -300,7 +296,10 @@ mod tests {
 
     #[test]
     fn day_filename_parses_year_and_doy() {
-        assert_eq!(parse_day_filename("tha_fgm_2008_153.csv", "a"), Some((2008, 153)));
+        assert_eq!(
+            parse_day_filename("tha_fgm_2008_153.csv", "a"),
+            Some((2008, 153))
+        );
         assert_eq!(parse_day_filename("thb_fgm_2008_153.csv", "a"), None);
         assert_eq!(parse_day_filename("tha_fgm_2008_153.txt", "a"), None);
         assert_eq!(parse_day_filename("tha_fgm_bad.csv", "a"), None);
@@ -316,13 +315,29 @@ mod tests {
         let listed: std::collections::BTreeSet<&str> =
             ["tha_fgm_2008_153.csv"].into_iter().collect();
         // Listed manifest day: audited, not an extra.
-        assert!(!is_unlisted_cache_extra("tha_fgm_2008_153.csv", "tha_fgm_", &listed));
+        assert!(!is_unlisted_cache_extra(
+            "tha_fgm_2008_153.csv",
+            "tha_fgm_",
+            &listed
+        ));
         // Same probe rule, no manifest entry, no provenance hash: an extra.
-        assert!(is_unlisted_cache_extra("tha_fgm_2008_200.csv", "tha_fgm_", &listed));
+        assert!(is_unlisted_cache_extra(
+            "tha_fgm_2008_200.csv",
+            "tha_fgm_",
+            &listed
+        ));
         // Another probe's file does not match this probe's rule.
-        assert!(!is_unlisted_cache_extra("thb_fgm_2008_200.csv", "tha_fgm_", &listed));
+        assert!(!is_unlisted_cache_extra(
+            "thb_fgm_2008_200.csv",
+            "tha_fgm_",
+            &listed
+        ));
         // Non-payload extension is out of scope.
-        assert!(!is_unlisted_cache_extra("tha_fgm_2008_200.txt", "tha_fgm_", &listed));
+        assert!(!is_unlisted_cache_extra(
+            "tha_fgm_2008_200.txt",
+            "tha_fgm_",
+            &listed
+        ));
     }
 
     #[test]

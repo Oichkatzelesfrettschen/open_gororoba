@@ -21,15 +21,16 @@ ignore = [
     # instant 0.1.13 (unmaintained). Runtime via minifb -> gororoba_cli_physics
     # for UI display timing. Migration tracked: see ADR rustsec-dispositions.md.
     "RUSTSEC-2024-0384",
-    # rand soundness with custom-logger initialization. We do not install a
-    # custom rand logger anywhere in the workspace; exposure is zero.
-    # Tracked for upgrade once a non-breaking rand patch ships.
-    "RUSTSEC-2026-0097",
-    # core2 0.4.0 (unmaintained, all versions yanked). Path:
-    #   image -> ravif -> rav1e -> bitstream-io -> core2.
-    # No safe upgrade is available; alternatives (embedded-io, no-std-io2)
-    # would require image/rav1e to migrate. Tracked as upstream blocker.
-    "RUSTSEC-2026-0105",
+    # proc-macro-error2 is a dev-only benchmark proc-macro with no safe
+    # maintained replacement in iai-callgrind.
+    "RUSTSEC-2026-0173",
+    # ttf-parser is transitive through plotters and lopdf; RustSec reports no
+    # safe upgrade for the maintained consumers.
+    "RUSTSEC-2026-0192",
+    # quick-xml 0.39 is a build-only transitive dependency of wayland-scanner.
+    # Runtime XML consumers use quick-xml 0.41.
+    "RUSTSEC-2026-0194",
+    "RUSTSEC-2026-0195",
     #
     # RESOLVED 2026-04-30 by `cargo update -p rustls-webpki --precise 0.103.13`:
     #   RUSTSEC-2026-0098 (rustls-webpki name constraint bug)

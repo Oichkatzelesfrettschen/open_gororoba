@@ -1133,9 +1133,9 @@ DekaVoudon (1024D). Speedups over recursive scalar:
 | Original (7x cargo run) | N/A        | N/A         | ~30s    |
 | Batch + build-once      | N/A        | N/A         | 7.8s    |
 | Unified release         | 2.5 min    | 2-9 min     | 3.3s    |
-| release-gate profile    | 5 min      | 10s         | 3.2s    |
+| validation profile    | 5 min      | 10s         | 3.2s    |
 
-release-gate profile: thin LTO + 6 codegen-units + line-tables debug info.
+The validation profile uses thin LTO, six codegen-units, and line-tables debug info.
 Fat LTO was the root cause of 2-9 minute recompile times (confirmed via
 perf record: 14% build_conflict_markers, 7% malloc, 7% memcmp).
 

@@ -1,17 +1,15 @@
 //! pre_push_hook: Pure Rust port of `.githooks/pre-push`.
-//! Runs `makew gate-local` and `git-lfs pre-push`.
+//! Runs `make validate-local` and `git-lfs pre-push`.
 
 use std::{env, process::Command};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("[pre-push] running ./makew gate-local");
+    println!("[pre-push] running make validate-local");
 
-    // Runs the ./makew gate-local script directly.
-    // TODO: call the gate-local cargo xtask subcommand once the makew logic is ported.
-    let status = Command::new("./makew").arg("gate-local").status()?;
+    let status = Command::new("make").arg("validate-local").status()?;
 
     if !status.success() {
-        eprintln!("Pre-push hook failed: makew gate-local exited with error.");
+        eprintln!("Pre-push validation failed: make validate-local exited with error.");
         std::process::exit(status.code().unwrap_or(1));
     }
 

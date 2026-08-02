@@ -27,7 +27,7 @@ checks, and reproducible outputs.
 | Component           | Why it matters                                                  |
 | ------------------- | --------------------------------------------------------------- |
 | Canonical store     | SQLite file with signed migrations and deterministic schema     |
-| Verification target | `make governance-gate` verifies source integrity and references |
+| Verification target | `make validate-governance` verifies source integrity and references |
 | Query performance   | FTS5 and indexed relational paths for fast interactive use      |
 
 ## Layer 2: Compatibility TOML Layer
@@ -118,18 +118,18 @@ gororoba-db schema
 | FTS5 + Crossrefs        | claims_fts, insights_fts, bibliography_fts, evidence_edges, crossref tables                      | 0011       |
 | Literature Verification | literature_verification_runs, literature_verification_results, literature_novelty_similar_papers | 0012       |
 
-## Governance Gate
+## Registry policy validation
 
-The governance gate validates the canonical SQLite data plus TOML compatibility
-invariants.
+The registry policy validation lane validates the canonical SQLite data plus
+TOML compatibility invariants.
 
 ```bash
-make governance-gate    # Schema signatures, crossrefs, labels, etc.
+make validate-governance    # Schema signatures, crossrefs, labels, etc.
 ```
 
 The `schema_signatures.toml` file remains the canonical governance snapshot committed
 to git. It contains content and schema hashes for governance validation.
-Regenerate with `make integrity-resolution`.
+Regenerate with `make registry-integrity`.
 
 ## Technology Stack
 
@@ -148,19 +148,19 @@ Regenerate with `make integrity-resolution`.
 To modify the registry:
 
 ```bash
-# 1. Update compatibility TOMLs as needed for lanes that are still authored there
-vim registry/claims.toml
+# 1. Mutate the canonical SQLite store through gororoba-db.
+cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>
 
-# 2. Regenerate schema signatures (if governance gate requires it)
-make integrity-resolution
+# 2. Re-export compatibility TOMLs and derived mirrors.
+cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane
 
-# 3. Rebuild canonical DB and compatibility artifacts
-make registry-build
+# 3. Refresh registry signatures after the export.
+make registry-integrity
 
-# 4. Query to verify
+# 4. Query the canonical store to verify the mutation.
 gororoba-db claims show C-1375
 gororoba-db xref dangling
 
-# 5. Run governance gate before push
-make governance-gate
+# 5. Run registry policy validation before push.
+make validate-governance
 ```

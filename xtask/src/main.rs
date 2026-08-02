@@ -109,7 +109,7 @@ struct HostProfile {
 }
 
 const INLINE_TEST_MARKERS: &[&str] = &["#[test]", "#[cfg(test)]", "mod tests"];
-const GATE_AUDIT_TAIL_LINE_COUNT: usize = 20;
+const VALIDATION_TAIL_LINE_COUNT: usize = 20;
 const XTASK_COMMANDS: &[(&str, &str)] = &[
     ("db-docs", "Generate or check database documentation."),
     ("host-profile", "Print host worker-budget settings."),
@@ -118,20 +118,37 @@ const XTASK_COMMANDS: &[(&str, &str)] = &[
         "Run a package-aware grouped local nextest plan.",
     ),
     (
-        "gate-local",
-        "Run the local pre-push gate with timing JSONL.",
-    ),
-    ("gate-tools-status", "Inspect cached gate-tool freshness."),
-    (
-        "gate-timing-summary",
-        "Aggregate gate-local timing JSONL files.",
+        "validate-local",
+        "Run scoped local validation with timing JSONL.",
     ),
     (
-        "gate-timing-regression-check",
-        "Check latest gate timing against baseline medians.",
+        "validation-tools-status",
+        "Inspect cached validation-tool freshness.",
     ),
-    ("gate-audit", "Run the structured fast gate audit."),
-    ("audit-deep", "Run the structured deep audit composite."),
+    (
+        "validation-timing-summary",
+        "Aggregate local validation timing JSONL files.",
+    ),
+    (
+        "validation-timing-regression-check",
+        "Check latest validation timing against baseline medians.",
+    ),
+    (
+        "validate-ci",
+        "Run the single-session CI validation workflow.",
+    ),
+    (
+        "validate-repository",
+        "Run the structured repository validation.",
+    ),
+    (
+        "validate-repository-fast",
+        "Run registry-only repository validation.",
+    ),
+    (
+        "audit-comprehensive",
+        "Run the structured comprehensive audit composite.",
+    ),
     (
         "registry-emit-all-mirrors",
         "Emit all registry markdown mirrors.",
@@ -149,7 +166,7 @@ const XTASK_COMMANDS: &[(&str, &str)] = &[
 ];
 
 #[derive(Debug, Serialize)]
-struct GateAuditStepRecord {
+struct ValidationStepRecord {
     name: String,
     exit_code: i32,
     log: String,
@@ -179,29 +196,29 @@ struct LocalNextestCli {
     packages: Vec<String>,
 }
 
-/// `cargo xtask gate-local` -- pre-push gate driver with structured
+/// `cargo xtask validate-local` -- pre-push validation driver with structured
 /// timing output.
 ///
 /// Wraps the three Make sub-targets (check, rust-regression-scoped,
-/// governance-gate-readonly) and records per-phase elapsed time +
+/// validate-governance) and records per-phase elapsed time +
 /// exit code to a JSONL timing log under
-/// `data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl`.
+/// `data/output/audit/<YYYY-MM-DD>/validation-timing-<unix-ts>.jsonl`.
 ///
-/// This replaces the inline shell loop in `gate-local`. The Makefile
+/// This replaces the inline shell loop in `validate-local`. The Makefile
 /// target drives end-to-end orchestration, and the xtask version is
-/// available via `make gate-local-xtask`.
+/// available via `make validate-local-xtask`.
 #[derive(Parser, Debug)]
 #[command(
-    name = "gate-local",
-    about = "Run pre-push gate with structured timing JSONL output"
+    name = "validate-local",
+    about = "Run scoped local validation with structured timing JSONL output"
 )]
-struct GateLocalCli {
+struct ValidateLocalCli {
     /// Path to the workspace-routing binary cache (default:
-    /// .cache/gate-target/gate-tools/workspace-routing).
+    /// .cache/gate-target/validation-tools/workspace-routing).
     #[arg(long)]
     routing_bin: Option<PathBuf>,
     /// Write timing JSONL to this path. Default:
-    /// `data/output/audit/<YYYY-MM-DD>/gate-timing-<unix-ts>.jsonl`
+    /// `data/output/audit/<YYYY-MM-DD>/validation-timing-<unix-ts>.jsonl`
     #[arg(long)]
     timing_json: Option<PathBuf>,
     /// Force run rust-regression-scoped regardless of routing.
@@ -210,42 +227,42 @@ struct GateLocalCli {
     /// Force run make check regardless of routing.
     #[arg(long)]
     force_check: bool,
-    /// Force run governance-gate-readonly regardless of routing.
+    /// Force run validate-governance regardless of routing.
     #[arg(long)]
     force_governance: bool,
 }
 
-/// `cargo xtask gate-tools-status` -- inspect cached gate-tool binary
+/// `cargo xtask validation-tools-status` -- inspect cached validation-tool binary
 /// freshness.
 ///
 /// Prints, for each cached binary under
-/// `.cache/gate-target/gate-tools/`, its mtime, size, and whether its
+/// `.cache/gate-target/validation-tools/`, its mtime, size, and whether its
 /// declared Makefile source dependencies are newer (would trigger
-/// rebuild on next gate-local invocation).
+/// rebuild on the next validate-local invocation).
 #[derive(Parser, Debug)]
 #[command(
-    name = "gate-tools-status",
-    about = "Inspect cached gate-tool binaries and source-dep freshness"
+    name = "validation-tools-status",
+    about = "Inspect cached validation-tool binaries and source-dep freshness"
 )]
-struct GateToolsStatusCli {
-    /// Override the gate-tools cache root.
-    /// Default: $(REPO_CARGO_TARGET_DIR)/gate-tools = .cache/gate-target/gate-tools.
+struct ValidationToolsStatusCli {
+    /// Override the validation-tools cache root.
+    /// Default: $(REPO_CARGO_TARGET_DIR)/validation-tools = .cache/gate-target/validation-tools.
     #[arg(long)]
     tools_dir: Option<PathBuf>,
 }
 
-/// `cargo xtask gate-timing-summary` -- aggregate recent gate-local
+/// `cargo xtask validation-timing-summary` -- aggregate recent local validation
 /// timing JSONL files into a per-phase stats table.
 ///
-/// Reads files under `data/output/audit/<YYYY-MM-DD>/gate-timing-*.jsonl`
+/// Reads files under `data/output/audit/<YYYY-MM-DD>/validation-timing-*.jsonl`
 /// and computes count/mean/median/p95/max/min for each phase's
 /// `elapsed_sec`.
 #[derive(Parser, Debug)]
 #[command(
-    name = "gate-timing-summary",
-    about = "Aggregate gate-local timing JSONL"
+    name = "validation-timing-summary",
+    about = "Aggregate local validation timing JSONL"
 )]
-struct GateTimingSummaryCli {
+struct ValidationTimingSummaryCli {
     /// Look-back window in days. Default 30.
     #[arg(long, default_value_t = 30)]
     since_days: u64,
@@ -254,7 +271,7 @@ struct GateTimingSummaryCli {
     #[arg(long)]
     audit_root: Option<PathBuf>,
     /// Filter to a single phase name (cache-check, check,
-    /// rust-regression-scoped, governance-gate-readonly).
+    /// rust-regression-scoped, validate-governance).
     #[arg(long)]
     phase: Option<String>,
     /// Output format: `table` (default) or `json`.
@@ -265,19 +282,19 @@ struct GateTimingSummaryCli {
     last: usize,
 }
 
-/// `cargo xtask gate-timing-regression-check` -- detect regressions
+/// `cargo xtask validation-timing-regression-check` -- detect regressions
 /// vs a baseline.
 ///
-/// Loads recent gate-timing JSONL files (same source as
-/// gate-timing-summary), computes per-phase median over baseline,
+/// Loads recent validation-timing JSONL files (same source as
+/// validation-timing-summary), computes per-phase median over baseline,
 /// then checks the latest run's elapsed against `baseline_median *
 /// threshold`. Non-zero exit if any phase regressed.
 #[derive(Parser, Debug)]
 #[command(
-    name = "gate-timing-regression-check",
-    about = "Compare latest gate timing to baseline median; fail on regression"
+    name = "validation-timing-regression-check",
+    about = "Compare latest validation timing to baseline median; fail on regression"
 )]
-struct GateTimingRegressionCheckCli {
+struct ValidationTimingRegressionCheckCli {
     /// Baseline look-back in days. Default 14.
     #[arg(long, default_value_t = 14)]
     baseline_days: u64,
@@ -484,51 +501,60 @@ fn main() -> Result<()> {
         "local-nextest-plan" => run_local_nextest_plan(LocalNextestCli::try_parse_from(
             std::iter::once("local-nextest-plan".to_string()).chain(args),
         )?),
-        "gate-local" => {
-            let cli = GateLocalCli::try_parse_from(
-                std::iter::once("gate-local".to_string()).chain(args),
+        "validate-local" | "gate-local" => {
+            let cli = ValidateLocalCli::try_parse_from(
+                std::iter::once("validate-local".to_string()).chain(args),
             )?;
-            let exit_code = run_gate_local(cli)?;
+            let exit_code = run_validate_local(cli)?;
             if exit_code != 0 {
                 std::process::exit(exit_code);
             }
             Ok(())
         }
-        "gate-timing-summary" => {
-            let cli = GateTimingSummaryCli::try_parse_from(
-                std::iter::once("gate-timing-summary".to_string()).chain(args),
+        "validation-timing-summary" | "gate-timing-summary" => {
+            let cli = ValidationTimingSummaryCli::try_parse_from(
+                std::iter::once("validation-timing-summary".to_string()).chain(args),
             )?;
-            run_gate_timing_summary(cli)
+            run_validation_timing_summary(cli)
         }
-        "gate-tools-status" => {
-            let cli = GateToolsStatusCli::try_parse_from(
-                std::iter::once("gate-tools-status".to_string()).chain(args),
+        "validation-tools-status" => {
+            let cli = ValidationToolsStatusCli::try_parse_from(
+                std::iter::once("validation-tools-status".to_string()).chain(args),
             )?;
-            run_gate_tools_status(cli)
+            run_validation_tools_status(cli)
         }
-        "gate-timing-regression-check" => {
-            let cli = GateTimingRegressionCheckCli::try_parse_from(
-                std::iter::once("gate-timing-regression-check".to_string()).chain(args),
+        "validation-timing-regression-check" | "gate-timing-regression-check" => {
+            let cli = ValidationTimingRegressionCheckCli::try_parse_from(
+                std::iter::once("validation-timing-regression-check".to_string()).chain(args),
             )?;
-            let exit_code = run_gate_timing_regression_check(cli)?;
+            let exit_code = run_validation_timing_regression_check(cli)?;
             if exit_code != 0 {
                 std::process::exit(exit_code);
             }
             Ok(())
         }
-        "gate-audit" => {
-            let cfg = parse_gate_audit_args(args)?;
-            run_gate_audit(cfg)
+        "validate-ci" => {
+            let cfg = parse_validation_report_args(args)?;
+            run_validation_report(cfg)
         }
-        "audit-deep" => {
-            // PH-5.A: structured audit-deep composite. Wraps the
-            // Makefile audit-deep chain (rust-clippy + cargo-deny-check +
+        "validate-repository" | "gate-audit" => {
+            let cfg = parse_validation_report_args(args)?;
+            run_validation_report(cfg)
+        }
+        "validate-repository-fast" => {
+            let mut cfg = parse_validation_report_args(args)?;
+            cfg.fast = true;
+            run_validation_report(cfg)
+        }
+        "audit-comprehensive" | "audit-deep" => {
+            // PH-5.A: structured audit-comprehensive composite. Wraps the
+            // Makefile audit-comprehensive chain (rust-clippy + cargo-deny-check +
             // dep-audit + cpd-audit) but emits per-step exit codes,
             // log files, and a Markdown summary instead of unstructured
-            // shell output. Mirrors the run_gate_audit reporting
+            // shell output. Mirrors the run_validation_report reporting
             // surface so a single archival workflow can consume both.
-            let cfg = parse_gate_audit_args(args)?;
-            run_audit_deep(cfg)
+            let cfg = parse_validation_report_args(args)?;
+            run_audit_comprehensive(cfg)
         }
         "registry-emit-all-mirrors" => {
             // PH-5.B: replaces the 54-line shell heredoc that the
@@ -1375,15 +1401,17 @@ fn mode_label(mode: &str) -> &'static str {
     }
 }
 
-struct GateAuditConfig {
+struct ValidationReportConfig {
     output_dir: Option<PathBuf>,
-    // When true: only gate-ci-registry runs (no Rust compilation). Fails fast on
+    // When true: only validate-ci-registry runs (no Rust compilation). Fails fast on
     // the first failing step. Useful for registry/governance-only validation
     // where the 9-minute rust-regression compile is unnecessary overhead.
     fast: bool,
 }
 
-fn parse_gate_audit_args(args: impl Iterator<Item = String>) -> Result<GateAuditConfig> {
+fn parse_validation_report_args(
+    args: impl Iterator<Item = String>,
+) -> Result<ValidationReportConfig> {
     let mut output_dir = None;
     let mut fast = false;
     let mut iter = args.peekable();
@@ -1391,17 +1419,21 @@ fn parse_gate_audit_args(args: impl Iterator<Item = String>) -> Result<GateAudit
         match arg.as_str() {
             "--output-dir" => {
                 let Some(value) = iter.next() else {
-                    bail!("gate-audit --output-dir requires a value");
+                    bail!("validation command --output-dir requires a value");
                 };
                 output_dir = Some(PathBuf::from(value));
             }
             "--fast" => {
                 fast = true;
             }
-            other => bail!("unknown gate-audit argument: {other}"),
+            "--ci" => {
+                // The active validation report always uses the same two CI
+                // lanes. Keep the option as a compatibility spelling.
+            }
+            other => bail!("unknown validation argument: {other}"),
         }
     }
-    Ok(GateAuditConfig { output_dir, fast })
+    Ok(ValidationReportConfig { output_dir, fast })
 }
 
 fn run_host_profile(format: &str) -> Result<()> {
@@ -1464,60 +1496,46 @@ fn run_db_docs(check_only: bool) -> Result<()> {
     Ok(())
 }
 
-fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
+fn run_validation_report(cfg: ValidationReportConfig) -> Result<()> {
     let repo_root = repo_root()?;
     let generated_at = Local::now();
     let timestamp = generated_at.format("%Y-%m-%d/%H%M%S").to_string();
     let output_dir = match cfg.output_dir {
         Some(path) if path.is_absolute() => path,
         Some(path) => repo_root.join(path),
-        None => repo_root.join("reports").join("gates").join(timestamp),
+        None => repo_root.join("reports").join("validation").join(timestamp),
     };
     fs::create_dir_all(&output_dir).with_context(|| {
         format!(
-            "create gate-audit output directory {}",
+            "create repository validation output directory {}",
             output_dir.display()
         )
     })?;
 
     // Fast mode: registry-only, fails on first step failure.
-    // WHY: gate-ci-rust runs rust-regression (full workspace compile + test run,
+    // WHY: validate-ci-rust runs rust-regression (full workspace compile + test run,
     // ~9 min). For governance/registry-only changes, that compile overhead is
     // pure waste. --fast lets developers iterate on TOML edits in ~2 min instead
     // of ~12 min, without sacrificing correctness guarantees for registry changes.
     //
-    // Full mode: all three steps. Uses cargo check --workspace --tests instead of
-    // cargo nextest list for the workspace-compile-check step. cargo check skips
-    // LLVM codegen (~3-5x faster than nextest list on a cold cache) while still
-    // verifying that every test-gated compilation unit typechecks. Since
-    // rust-regression already ran all tests in gate-ci-rust, the nextest list
-    // was redundant for correctness; cargo check preserves the compile-check
-    // intent at lower cost.
+    // Full mode uses the same two validation lanes as CI. The Rust lane already
+    // compiles every test-gated unit while running clippy and nextest, so a
+    // trailing cargo check would repeat the same compilation without adding a
+    // distinct invariant.
     let commands: Vec<(&str, Vec<String>)> = if cfg.fast {
         vec![(
-            "gate-ci-registry",
-            vec!["make".to_string(), "gate-ci-registry".to_string()],
+            "validate-ci-registry",
+            vec!["make".to_string(), "validate-ci-registry".to_string()],
         )]
     } else {
         vec![
             (
-                "gate-ci-registry",
-                vec!["make".to_string(), "gate-ci-registry".to_string()],
+                "validate-ci-registry",
+                vec!["make".to_string(), "validate-ci-registry".to_string()],
             ),
             (
-                "gate-ci-rust",
-                vec!["make".to_string(), "gate-ci-rust".to_string()],
-            ),
-            (
-                // cargo check skips LLVM codegen; verifies test-gated code compiles
-                // without paying the nextest list compilation + linking tax.
-                "workspace-check",
-                vec![
-                    "cargo".to_string(),
-                    "check".to_string(),
-                    "--workspace".to_string(),
-                    "--tests".to_string(),
-                ],
+                "validate-ci-rust",
+                vec!["make".to_string(), "validate-ci-rust".to_string()],
             ),
         ]
     };
@@ -1527,7 +1545,7 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
 
     let mut summary_lines = vec![
         format!(
-            "# Gate Audit ({})",
+            "# Repository Validation ({})",
             generated_at.to_rfc3339_opts(SecondsFormat::Secs, false)
         ),
         String::new(),
@@ -1541,7 +1559,7 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
     ];
 
     let mut failures = 0usize;
-    let mut step_rows = Vec::<GateAuditStepRecord>::new();
+    let mut step_rows = Vec::<ValidationStepRecord>::new();
 
     for (name, command) in commands {
         let log_path = output_dir.join(format!("{name}.log"));
@@ -1551,7 +1569,7 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
             .env("CARGO_HOME", &cargo_home)
             .env("CARGO_TARGET_DIR", &cargo_target_dir)
             .output()
-            .with_context(|| format!("run {}", format_command(&command)))?;
+            .with_context(|| format!("run validation step {}", format_command(&command)))?;
         let exit_code = output.status.code().unwrap_or(1);
         let stdout = String::from_utf8_lossy(&output.stdout);
         let stderr = String::from_utf8_lossy(&output.stderr);
@@ -1562,11 +1580,11 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
             format_command(&command)
         );
         fs::write(&log_path, log_text)
-            .with_context(|| format!("write gate-audit step log {}", log_path.display()))?;
+            .with_context(|| format!("write validation step log {}", log_path.display()))?;
 
         let log_rel = repo_relative(&log_path, &repo_root);
         summary_lines.push(format!("| `{name}` | `{exit_code}` | `{log_rel}` |"));
-        step_rows.push(GateAuditStepRecord {
+        step_rows.push(ValidationStepRecord {
             name: name.to_string(),
             exit_code,
             log: log_rel,
@@ -1580,7 +1598,7 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
         summary_lines.push("```text".to_string());
         summary_lines.extend(render_tail_block(
             &combined_output,
-            GATE_AUDIT_TAIL_LINE_COUNT,
+            VALIDATION_TAIL_LINE_COUNT,
         ));
         summary_lines.push("```".to_string());
 
@@ -1588,7 +1606,7 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
             failures += 1;
             // Fail fast: no point waiting for Rust compilation if registry checks
             // already failed. The developer needs to fix the registry first.
-            if cfg.fast || name == "gate-ci-registry" {
+            if cfg.fast || name == "validate-ci-registry" {
                 break;
             }
         }
@@ -1596,9 +1614,9 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
 
     summary_lines.push(String::new());
     summary_lines.push(if failures == 0 {
-        "Gate audit passed.".to_string()
+        "Repository validation passed.".to_string()
     } else {
-        format!("Gate audit failed in {failures} step(s).")
+        format!("Repository validation failed in {failures} step(s).")
     });
     summary_lines.push(String::new());
     summary_lines.push("Review the per-step logs for full output.".to_string());
@@ -1606,21 +1624,25 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
 
     let summary_path = output_dir.join("summary.md");
     let summary_text = summary_lines.join("\n");
-    fs::write(&summary_path, format!("{summary_text}\n"))
-        .with_context(|| format!("write gate-audit summary {}", summary_path.display()))?;
-
-    let reports_gates_root = repo_root.join("reports").join("gates");
-    fs::create_dir_all(&reports_gates_root).with_context(|| {
+    fs::write(&summary_path, format!("{summary_text}\n")).with_context(|| {
         format!(
-            "create reports/gates directory {}",
-            reports_gates_root.display()
+            "write repository validation summary {}",
+            summary_path.display()
         )
     })?;
-    let latest_summary_path = reports_gates_root.join("LATEST.md");
-    let latest_manifest_path = reports_gates_root.join("latest.json");
+
+    let reports_validation_root = repo_root.join("reports").join("validation");
+    fs::create_dir_all(&reports_validation_root).with_context(|| {
+        format!(
+            "create reports/validation directory {}",
+            reports_validation_root.display()
+        )
+    })?;
+    let latest_summary_path = reports_validation_root.join("LATEST.md");
+    let latest_manifest_path = reports_validation_root.join("latest.json");
     fs::write(&latest_summary_path, format!("{summary_text}\n")).with_context(|| {
         format!(
-            "write latest gate-audit summary {}",
+            "write latest repository validation summary {}",
             latest_summary_path.display()
         )
     })?;
@@ -1637,31 +1659,31 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
     )
     .with_context(|| {
         format!(
-            "write gate-audit manifest {}",
+            "write repository validation manifest {}",
             latest_manifest_path.display()
         )
     })?;
 
     println!("Wrote: {}", repo_relative(&summary_path, &repo_root));
     if failures != 0 {
-        bail!("gate-audit failed in {failures} step(s)");
+        bail!("repository validation failed in {failures} step(s)");
     }
     Ok(())
 }
 
-/// PH-5.A: structured audit-deep composite lane.
+/// PH-5.A: structured audit-comprehensive composite lane.
 ///
 /// # Purpose and call sites
 ///
-/// Wraps the Makefile `audit-deep` chain (rust-clippy, cargo-deny-check,
+/// Wraps the Makefile `audit-comprehensive` chain (rust-clippy, cargo-deny-check,
 /// dep-audit, cpd-audit) and emits per-step exit codes, log files,
-/// and a Markdown summary in the same format as `run_gate_audit`. The
+/// and a Markdown summary in the same format as `run_validation_report`. The
 /// Makefile target still exists as the user-facing entry point; this
 /// xtask variant adds structured archival for CI and tranche-acceptance
 /// evidence.
 ///
-/// Called from `cargo run -p xtask -- audit-deep`. The Makefile target
-/// `make audit-deep-structured` will be added in a follow-up to give
+/// Called from `cargo run -p xtask -- audit-comprehensive`. The Makefile target
+/// `make audit-comprehensive-structured` provides the stable entry point.
 /// developers a familiar Makefile entry point.
 ///
 /// # What this owns vs delegates
@@ -1676,7 +1698,7 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
 /// - `make dep-audit` (cargo-audit advisory scan)
 /// - `make cpd-audit` (PMD copy-paste detector)
 ///
-/// # Why skip the same things audit-deep Makefile skips
+/// # Why skip the same things audit-comprehensive Makefile skips
 ///
 /// The Makefile target skips rust-semver-check (fwht path-dep
 /// resolution issue) and docs-freshness (bracket notation in math
@@ -1686,26 +1708,29 @@ fn run_gate_audit(cfg: GateAuditConfig) -> Result<()> {
 ///
 /// # Cross-references
 ///
-/// - Sibling: [`run_gate_audit`] (this fn mirrors its reporting surface).
-/// - Makefile: `audit-deep` target with full rationale comments.
+/// - Sibling: [`run_validation_report`] (this fn mirrors its reporting surface).
+/// - Makefile: `audit-comprehensive` target with full rationale comments.
 /// - PH-5 roadmap: `plans/repo_debt_roadmap_2026_04_11.toml`.
-fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
+fn run_audit_comprehensive(cfg: ValidationReportConfig) -> Result<()> {
     let repo_root = repo_root()?;
     let generated_at = Local::now();
     let timestamp = generated_at.format("%Y-%m-%d/%H%M%S").to_string();
     let output_dir = match cfg.output_dir {
         Some(path) if path.is_absolute() => path,
         Some(path) => repo_root.join(path),
-        None => repo_root.join("reports").join("audit-deep").join(timestamp),
+        None => repo_root
+            .join("reports")
+            .join("audit-comprehensive")
+            .join(timestamp),
     };
     fs::create_dir_all(&output_dir).with_context(|| {
         format!(
-            "create audit-deep output directory {}",
+            "create audit-comprehensive output directory {}",
             output_dir.display()
         )
     })?;
 
-    // The four Makefile steps, in the same order as `audit-deep` runs
+    // The four Makefile steps, in the same order as `audit-comprehensive` runs
     // them. We do NOT add semver-check or docs-freshness here; see the
     // Makefile rationale comments.
     let commands: Vec<(&str, Vec<String>)> = vec![
@@ -1746,7 +1771,7 @@ fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
     ];
 
     let mut failures = 0usize;
-    let mut step_rows = Vec::<GateAuditStepRecord>::new();
+    let mut step_rows = Vec::<ValidationStepRecord>::new();
 
     for (name, command) in commands {
         let log_path = output_dir.join(format!("{name}.log"));
@@ -1766,12 +1791,13 @@ fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
             "# Step: {name}\n# Command: {}\n# Exit Code: {exit_code}\n\n{combined_output}",
             format_command(&command)
         );
-        fs::write(&log_path, log_text)
-            .with_context(|| format!("write audit-deep step log {}", log_path.display()))?;
+        fs::write(&log_path, log_text).with_context(|| {
+            format!("write audit-comprehensive step log {}", log_path.display())
+        })?;
 
         let log_rel = repo_relative(&log_path, &repo_root);
         summary_lines.push(format!("| `{name}` | `{exit_code}` | `{log_rel}` |"));
-        step_rows.push(GateAuditStepRecord {
+        step_rows.push(ValidationStepRecord {
             name: name.to_string(),
             exit_code,
             log: log_rel,
@@ -1783,23 +1809,27 @@ fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
     }
 
     let summary_path = output_dir.join("SUMMARY.md");
-    fs::write(&summary_path, summary_lines.join("\n"))
-        .with_context(|| format!("write audit-deep summary {}", summary_path.display()))?;
+    fs::write(&summary_path, summary_lines.join("\n")).with_context(|| {
+        format!(
+            "write audit-comprehensive summary {}",
+            summary_path.display()
+        )
+    })?;
 
     // Structured TOML record (parallel to the SUMMARY.md) so downstream
     // tooling can index runs without parsing Markdown.
-    let toml_path = output_dir.join("audit_deep.toml");
+    let toml_path = output_dir.join("audit_comprehensive.toml");
     let record = serde_json::json!({
         "generated_at": generated_at.to_rfc3339_opts(SecondsFormat::Secs, false),
         "failures": failures,
         "steps": step_rows,
     });
     fs::write(&toml_path, toml::to_string_pretty(&record)?)
-        .with_context(|| format!("write audit-deep toml {}", toml_path.display()))?;
+        .with_context(|| format!("write audit-comprehensive toml {}", toml_path.display()))?;
 
     println!("Wrote: {}", repo_relative(&summary_path, &repo_root));
     if failures != 0 {
-        bail!("audit-deep failed in {failures} step(s)");
+        bail!("audit-comprehensive failed in {failures} step(s)");
     }
     Ok(())
 }
@@ -1846,7 +1876,7 @@ fn run_audit_deep(cfg: GateAuditConfig) -> Result<()> {
 ///
 /// - Memory: `feedback_install_source_priority.md` (Makefile -> xtask
 ///   migration policy).
-/// - Sibling: [`run_audit_deep`] (same xtask reporting pattern).
+/// - Sibling: [`run_audit_comprehensive`] (same xtask reporting pattern).
 /// - Replaced shell: Makefile line 1495 `registry-export-markdown`.
 fn run_registry_emit_all_mirrors() -> Result<()> {
     let repo_root = repo_root()?;
@@ -1915,14 +1945,14 @@ fn run_registry_emit_all_mirrors() -> Result<()> {
     ];
 
     // Step 1: build registry-emit + markdown-registry once. Use the
-    // release-gate profile (matches the Makefile heredoc; both binaries
+    // validation profile (matches the Makefile heredoc; both binaries
     // are stable so we don't need full release LTO).
     println!("Building registry-emit + markdown-registry ...");
     let build_status = Command::new("cargo")
         .args([
             "build",
             "--profile",
-            "release-gate",
+            "validation",
             "-p",
             "gororoba_cli_data",
             "--bin",
@@ -1942,7 +1972,7 @@ fn run_registry_emit_all_mirrors() -> Result<()> {
         );
     }
 
-    let registry_emit = cargo_target_dir.join("release-gate").join("registry-emit");
+    let registry_emit = cargo_target_dir.join("validation").join("registry-emit");
     let mirror_dir = repo_root
         .join("crates")
         .join("data_core")
@@ -2763,7 +2793,7 @@ fn repo_root() -> Result<PathBuf> {
 }
 
 // ===========================================================================
-// gate-local xtask driver
+// validate-local xtask driver
 // ===========================================================================
 
 /// Routing flags emitted by workspace-routing CLI (parsed from stderr lines
@@ -2815,13 +2845,13 @@ fn run_make_target(root: &Path, target: &str, env: &[(&str, &str)]) -> Result<(i
     Ok((status.code().unwrap_or(-1), elapsed))
 }
 
-fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
+fn run_validate_local(cli: ValidateLocalCli) -> Result<i32> {
     let root = repo_root()?;
     let routing_bin = cli
         .routing_bin
-        .unwrap_or_else(|| root.join(".cache/gate-target/gate-tools/workspace-routing"));
+        .unwrap_or_else(|| root.join(".cache/gate-target/validation-tools/workspace-routing"));
 
-    // Default timing path: data/output/audit/<date>/gate-timing-<ts>.jsonl
+    // Default timing path: data/output/audit/<date>/validation-timing-<ts>.jsonl
     let timing_path = cli.timing_json.unwrap_or_else(|| {
         let now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
@@ -2830,7 +2860,7 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
         let date = chrono::Local::now().format("%Y-%m-%d").to_string();
         root.join("data/output/audit")
             .join(date)
-            .join(format!("gate-timing-{now}.jsonl"))
+            .join(format!("validation-timing-{now}.jsonl"))
     });
 
     let timing = TimingRecorder::new(Some(timing_path.clone()));
@@ -2856,7 +2886,7 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
         flags = parse_routing_flags(&stderr, &stdout);
     } else {
         eprintln!(
-            "[gate-local] WARNING: workspace-routing cache not found at {}; running full workspace",
+            "[validate-local] WARNING: workspace-routing cache not found at {}; running full workspace",
             routing_bin.display()
         );
     }
@@ -2896,7 +2926,7 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
             return Ok(code);
         }
     } else {
-        eprintln!("[gate-local] SKIP: no check-relevant (non-Rust) file changes detected.");
+        eprintln!("[validate-local] SKIP: no check-relevant (non-Rust) file changes detected.");
         timing.write(serde_json::json!({
             "kind": "skip",
             "phase": "check",
@@ -2925,7 +2955,7 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
             total_exit = code;
         }
     } else {
-        eprintln!("[gate-local] SKIP: no Rust-relevant changes detected.");
+        eprintln!("[validate-local] SKIP: no Rust-relevant changes detected.");
         timing.write(serde_json::json!({
             "kind": "skip",
             "phase": "rust-regression-scoped",
@@ -2933,12 +2963,12 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
         }))?;
     }
 
-    // Phase: governance-gate-readonly.
+    // Phase: validate-governance.
     if flags.run_governance || cli.force_governance {
-        let (code, elapsed) = run_make_target(&root, "governance-gate-readonly", &[])?;
+        let (code, elapsed) = run_make_target(&root, "validate-governance", &[])?;
         timing.write(serde_json::json!({
             "kind": "phase",
-            "phase": "governance-gate-readonly",
+            "phase": "validate-governance",
             "exit_code": code,
             "elapsed_sec": elapsed,
         }))?;
@@ -2946,27 +2976,27 @@ fn run_gate_local(cli: GateLocalCli) -> Result<i32> {
             total_exit = code;
         }
     } else {
-        eprintln!("[gate-local] SKIP: no governance-relevant changes detected.");
+        eprintln!("[validate-local] SKIP: no governance-relevant changes detected.");
         timing.write(serde_json::json!({
             "kind": "skip",
-            "phase": "governance-gate-readonly",
+            "phase": "validate-governance",
             "reason": "run_governance=False",
         }))?;
     }
 
     timing.record_summary(total_exit)?;
     eprintln!(
-        "[gate-local] xtask driver complete. Timing JSONL at {}",
+        "[validate-local] xtask driver complete. Timing JSONL at {}",
         timing_path.display()
     );
     Ok(total_exit)
 }
 
 // ===========================================================================
-// gate-timing summary and regression checks
+// validation-timing summary and regression checks
 // ===========================================================================
 
-/// One phase record parsed out of a gate-timing-*.jsonl file.
+/// One phase record parsed out of a validation-timing-*.jsonl file.
 #[derive(Debug, Clone)]
 struct PhaseRecord {
     artifact_time_secs: u64,
@@ -2987,23 +3017,25 @@ fn collect_phase_records(audit_root: &Path, since_days: u64) -> Result<Vec<Phase
     collect_phase_records_since(audit_root, since_days, now)
 }
 
-fn gate_timing_filename_secs(path: &Path) -> Option<u64> {
+fn validation_timing_filename_secs(path: &Path) -> Option<u64> {
     let name = path.file_name()?.to_str()?;
-    name.strip_prefix("gate-timing-")?
+    ["validation-timing-", "gate-timing-"]
+        .iter()
+        .find_map(|prefix| name.strip_prefix(prefix))?
         .strip_suffix(".jsonl")?
         .parse()
         .ok()
 }
 
-fn gate_timing_parent_date_secs(path: &Path) -> Option<u64> {
+fn validation_timing_parent_date_secs(path: &Path) -> Option<u64> {
     let date_name = path.parent()?.file_name()?.to_str()?;
     let date = NaiveDate::parse_from_str(date_name, "%Y-%m-%d").ok()?;
     let timestamp = date.and_hms_opt(0, 0, 0)?.and_utc().timestamp();
     u64::try_from(timestamp).ok()
 }
 
-fn gate_timing_artifact_secs(path: &Path) -> Option<u64> {
-    gate_timing_filename_secs(path).or_else(|| gate_timing_parent_date_secs(path))
+fn validation_timing_artifact_secs(path: &Path) -> Option<u64> {
+    validation_timing_filename_secs(path).or_else(|| validation_timing_parent_date_secs(path))
 }
 
 fn collect_phase_records_since(
@@ -3031,10 +3063,12 @@ fn collect_phase_records_since(
             let jsonl = jsonl?;
             let path = jsonl.path();
             let name = path.file_name().and_then(|s| s.to_str()).unwrap_or("");
-            if !name.starts_with("gate-timing-") || !name.ends_with(".jsonl") {
+            if !(name.starts_with("validation-timing-") || name.starts_with("gate-timing-"))
+                || !name.ends_with(".jsonl")
+            {
                 continue;
             }
-            let Some(artifact_time_secs) = gate_timing_artifact_secs(&path) else {
+            let Some(artifact_time_secs) = validation_timing_artifact_secs(&path) else {
                 continue;
             };
             if artifact_time_secs < cutoff {
@@ -3131,7 +3165,7 @@ fn compute_phase_stats(records: &[PhaseRecord]) -> Vec<PhaseStats> {
     out
 }
 
-fn run_gate_timing_summary(cli: GateTimingSummaryCli) -> Result<()> {
+fn run_validation_timing_summary(cli: ValidationTimingSummaryCli) -> Result<()> {
     let audit_root = match cli.audit_root {
         Some(p) => p,
         None => default_audit_root()?,
@@ -3143,7 +3177,7 @@ fn run_gate_timing_summary(cli: GateTimingSummaryCli) -> Result<()> {
 
     if records.is_empty() {
         eprintln!(
-            "[gate-timing-summary] no records under {} within last {} days",
+            "[validation-timing-summary] no records under {} within last {} days",
             audit_root.display(),
             cli.since_days
         );
@@ -3203,7 +3237,7 @@ fn run_gate_timing_summary(cli: GateTimingSummaryCli) -> Result<()> {
     Ok(())
 }
 
-/// One entry in the gate-tools-status table.
+/// One entry in the validation-tools-status table.
 struct ToolStatusEntry {
     name: &'static str,
     cached_path: PathBuf,
@@ -3211,8 +3245,8 @@ struct ToolStatusEntry {
     source_deps: Vec<PathBuf>,
     /// True when the entry is a transient runtime artifact whose
     /// missing/absent state is the EXPECTED steady-state (e.g.,
-    /// gate-local.lock is written at gate start and removed by trap
-    /// at gate end -- absence means no gate is running).
+    /// validation.lock is written at validation start and removed by trap
+    /// at validation end -- absence means no validation is running).
     runtime_artifact: bool,
 }
 
@@ -3232,13 +3266,13 @@ fn format_age(now: u64, then: u64) -> String {
     }
 }
 
-fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
+fn run_validation_tools_status(cli: ValidationToolsStatusCli) -> Result<()> {
     let root = repo_root()?;
     let tools_dir = cli
         .tools_dir
-        .unwrap_or_else(|| root.join(".cache/gate-target/gate-tools"));
+        .unwrap_or_else(|| root.join(".cache/gate-target/validation-tools"));
 
-    let entries = vec![
+    let mut entries = vec![
         ToolStatusEntry {
             name: "workspace-routing",
             cached_path: tools_dir.join("workspace-routing"),
@@ -3267,52 +3301,48 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
             runtime_artifact: false,
         },
         ToolStatusEntry {
-            name: "markdown-registry",
-            cached_path: tools_dir.join("markdown-registry"),
-            source_deps: vec![
-                root.join("crates/gororoba_cli_data/src/bin/markdown_registry.rs"),
-                root.join("crates/gororoba_cli_data/Cargo.toml"),
-            ],
-            runtime_artifact: false,
-        },
-        ToolStatusEntry {
-            name: "governance-verify",
-            cached_path: tools_dir.join("governance-verify"),
-            source_deps: vec![
-                root.join("crates/gororoba_cli_data/src/bin/governance_verify.rs"),
-                root.join("crates/gororoba_cli_data/Cargo.toml"),
-            ],
-            runtime_artifact: false,
-        },
-        ToolStatusEntry {
-            name: "integrity-resolution",
-            cached_path: tools_dir.join("integrity-resolution"),
-            source_deps: vec![
-                root.join("crates/gororoba_cli_data/src/bin/integrity_resolution.rs"),
-                root.join("crates/gororoba_cli_data/Cargo.toml"),
-            ],
-            runtime_artifact: false,
-        },
-        ToolStatusEntry {
             name: "cache-check.last",
             cached_path: tools_dir.join("cache-check.last"),
             source_deps: vec![],
             runtime_artifact: true,
         },
         ToolStatusEntry {
-            name: "gate-local.lock",
-            cached_path: tools_dir.join("gate-local.lock"),
+            name: "validation.lock",
+            cached_path: tools_dir.join("validation.lock"),
             source_deps: vec![],
             runtime_artifact: true,
         },
     ];
+
+    for (name, source_file) in [
+        ("claims-verify", "claims_verify.rs"),
+        ("registry-check", "registry_check.rs"),
+        ("test-inventory", "test_inventory.rs"),
+        ("semantic-atoms", "semantic_atoms.rs"),
+        ("evidence-provenance", "evidence_provenance.rs"),
+        ("registry-integrity", "registry_integrity.rs"),
+        ("execution-planning", "execution_planning.rs"),
+        ("governance-verify", "governance_verify.rs"),
+        ("markdown-registry", "markdown_registry.rs"),
+    ] {
+        entries.push(ToolStatusEntry {
+            name,
+            cached_path: tools_dir.join(name),
+            source_deps: vec![
+                root.join("crates/gororoba_cli_data/src/bin")
+                    .join(source_file),
+                root.join("crates/gororoba_cli_data/Cargo.toml"),
+            ],
+            runtime_artifact: false,
+        });
+    }
 
     let now = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .map(|d| d.as_secs())
         .unwrap_or(0);
 
-    println!("Gate tools cache at {}", tools_dir.display());
+    println!("Validation tools cache at {}", tools_dir.display());
     println!();
     println!("tool                       size_kb          mtime          age  status");
     println!("------------------------------------------------------------------------------");
@@ -3389,14 +3419,14 @@ fn run_gate_tools_status(cli: GateToolsStatusCli) -> Result<()> {
 
     println!();
     if any_stale {
-        println!("Some tools are stale or missing. Run `make gate-tools` to refresh.");
+        println!("Some tools are stale or missing. Run `make validation-tools` to refresh.");
     } else {
-        println!("All cached gate tools fresh.");
+        println!("All cached validation tools fresh.");
     }
     Ok(())
 }
 
-fn run_gate_timing_regression_check(cli: GateTimingRegressionCheckCli) -> Result<i32> {
+fn run_validation_timing_regression_check(cli: ValidationTimingRegressionCheckCli) -> Result<i32> {
     let audit_root = match cli.audit_root {
         Some(p) => p,
         None => default_audit_root()?,
@@ -3404,7 +3434,7 @@ fn run_gate_timing_regression_check(cli: GateTimingRegressionCheckCli) -> Result
     let records = collect_phase_records(&audit_root, cli.baseline_days)?;
     if records.is_empty() {
         eprintln!(
-            "[gate-timing-regression-check] no records under {} within last {} days; skipping",
+            "[validation-timing-regression-check] no records under {} within last {} days; skipping",
             audit_root.display(),
             cli.baseline_days
         );
@@ -3469,12 +3499,12 @@ fn run_gate_timing_regression_check(cli: GateTimingRegressionCheckCli) -> Result
 
     if regressed {
         eprintln!(
-            "[gate-timing-regression-check] FAIL: at least one phase regressed >{:.2}x median",
+            "[validation-timing-regression-check] FAIL: at least one phase regressed >{:.2}x median",
             cli.threshold
         );
         Ok(2)
     } else {
-        eprintln!("[gate-timing-regression-check] OK: no regressions detected");
+        eprintln!("[validation-timing-regression-check] OK: no regressions detected");
         Ok(0)
     }
 }
@@ -3483,7 +3513,7 @@ fn run_gate_timing_regression_check(cli: GateTimingRegressionCheckCli) -> Result
 mod tests {
     use super::*;
 
-    fn write_gate_timing_record(
+    fn write_validation_timing_record(
         audit_root: &Path,
         date_dir: &str,
         artifact_time_secs: u64,
@@ -3491,33 +3521,33 @@ mod tests {
         elapsed_sec: f64,
     ) {
         let directory = audit_root.join(date_dir);
-        fs::create_dir_all(&directory).expect("create gate timing date directory");
-        let path = directory.join(format!("gate-timing-{artifact_time_secs}.jsonl"));
+        fs::create_dir_all(&directory).expect("create validation timing date directory");
+        let path = directory.join(format!("validation-timing-{artifact_time_secs}.jsonl"));
         let line = serde_json::json!({
             "kind": "phase",
             "phase": phase,
             "elapsed_sec": elapsed_sec,
             "exit_code": 0,
         });
-        fs::write(path, format!("{line}\n")).expect("write gate timing record");
+        fs::write(path, format!("{line}\n")).expect("write validation timing record");
     }
 
     #[test]
-    fn gate_timing_records_use_artifact_time_not_file_mtime() {
+    fn validation_timing_records_use_artifact_time_not_file_mtime() {
         let temp_dir = tempdir().expect("create audit tempdir");
         let audit_root = temp_dir.path();
         let now = 1_700_000_000;
         let old_artifact = now - 20 * 86_400;
         let recent_artifact = now - 60;
 
-        write_gate_timing_record(
+        write_validation_timing_record(
             audit_root,
             "2023-10-25",
             old_artifact,
             "old-checkout-fresh-file",
             90.0,
         );
-        write_gate_timing_record(
+        write_validation_timing_record(
             audit_root,
             "2023-11-14",
             recent_artifact,
@@ -3526,7 +3556,7 @@ mod tests {
         );
 
         let records = collect_phase_records_since(audit_root, 14, now)
-            .expect("collect synthetic gate timing records");
+            .expect("collect synthetic validation timing records");
 
         assert_eq!(records.len(), 1);
         assert_eq!(records[0].phase, "recent-artifact");
