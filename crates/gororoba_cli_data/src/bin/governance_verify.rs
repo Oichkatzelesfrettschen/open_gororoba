@@ -9,6 +9,7 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
     path::{Path, PathBuf},
+    process, str,
 };
 use toml::Value;
 use walkdir::WalkDir;
@@ -1576,11 +1577,45 @@ fn verify_mirror_immutability(args: &CommonArgs) -> Result<()> {
     Ok(())
 }
 
+fn git_governed_markdown_paths(root: &Path) -> Result<BTreeSet<String>> {
+    let output = process::Command::new("git")
+        .args([
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            "-z",
+            "--",
+            "*.md",
+        ])
+        .current_dir(root)
+        .output()
+        .context("run git ls-files for claim-ticket mirrors")?;
+    if !output.status.success() {
+        bail!(
+            "git ls-files failed for claim-ticket mirrors: {}",
+            String::from_utf8_lossy(&output.stderr).trim()
+        );
+    }
+    output
+        .stdout
+        .split(|byte| *byte == 0)
+        .filter(|path| !path.is_empty())
+        .map(|path| {
+            Ok(str::from_utf8(path)
+                .context("Git returned a non-UTF-8 claim-ticket path")?
+                .replace('\\', "/"))
+        })
+        .collect()
+}
+
 fn verify_claim_ticket_mirrors(args: &CommonArgs) -> Result<()> {
     let root = resolve_root(args)?;
     let tickets = load_toml(&root.join("registry/claim_tickets.toml"))?;
+    let governed_markdown = git_governed_markdown_paths(&root)?;
     let mut failures = Vec::new();
     let mut expected = BTreeSet::new();
+    let mut skipped_ignored = 0usize;
     for row in table_array(&tickets, "ticket") {
         let rel = table_str(row, "source_markdown").trim();
         let id = table_str(row, "id");
@@ -1589,6 +1624,10 @@ fn verify_claim_ticket_mirrors(args: &CommonArgs) -> Result<()> {
             continue;
         }
         expected.insert(rel.to_string());
+        if !governed_markdown.contains(rel) {
+            skipped_ignored += 1;
+            continue;
+        }
         let path = root.join(rel);
         if !path.exists() {
             failures.push(format!("missing ticket markdown mirror: {rel}"));
@@ -1615,11 +1654,13 @@ fn verify_claim_ticket_mirrors(args: &CommonArgs) -> Result<()> {
             if path.file_name().and_then(|v| v.to_str()) == Some("INDEX.md") {
                 continue;
             }
-            existing.insert(
-                path.strip_prefix(&root)?
-                    .to_string_lossy()
-                    .replace('\\', "/"),
-            );
+            let rel = path
+                .strip_prefix(&root)?
+                .to_string_lossy()
+                .replace('\\', "/");
+            if governed_markdown.contains(&rel) {
+                existing.insert(rel);
+            }
         }
     }
     for extra in existing.difference(&expected) {
@@ -1628,7 +1669,9 @@ fn verify_claim_ticket_mirrors(args: &CommonArgs) -> Result<()> {
         ));
     }
     let index_path = tickets_dir.join("INDEX.md");
-    if !index_path.exists() {
+    if !governed_markdown.contains("docs/tickets/INDEX.md") {
+        skipped_ignored += 1;
+    } else if !index_path.exists() {
         failures.push("missing docs/tickets/INDEX.md".to_string());
     } else {
         let head = fs::read_to_string(&index_path)?
@@ -1643,7 +1686,13 @@ fn verify_claim_ticket_mirrors(args: &CommonArgs) -> Result<()> {
     if !failures.is_empty() {
         bail!(failures.join("\n"));
     }
-    println!("OK: claim ticket mirrors verified");
+    if skipped_ignored == 0 {
+        println!("OK: claim ticket mirrors verified");
+    } else {
+        println!(
+            "OK: claim ticket mirrors verified; skipped {skipped_ignored} ignored local paths outside the Git-governed Markdown surface"
+        );
+    }
     Ok(())
 }
 
@@ -3415,6 +3464,57 @@ mod tests {
             repo_root: root.to_path_buf(),
             db: PathBuf::from("registry/canonical/control_plane.sqlite3"),
         }
+    }
+
+    #[test]
+    fn claim_ticket_mirrors_ignore_untracked_ignored_paths() {
+        let root = temp_policy_root("ticket_boundary");
+        fs::create_dir_all(root.join("docs/tickets")).expect("create ticket dir");
+        fs::create_dir_all(root.join("registry")).expect("create registry dir");
+        fs::write(
+            root.join(".gitignore"),
+            "*.md\n!docs/tickets/tracked.md\n!docs/tickets/INDEX.md\n",
+        )
+        .expect("write ignore policy");
+        fs::write(
+            root.join("docs/tickets/tracked.md"),
+            "<!-- AUTO-GENERATED: test mirror -->\n",
+        )
+        .expect("write tracked ticket");
+        fs::write(
+            root.join("docs/tickets/ignored.md"),
+            "local acquisition note\n",
+        )
+        .expect("write ignored ticket");
+        fs::write(
+            root.join("docs/tickets/INDEX.md"),
+            "<!-- AUTO-GENERATED: test index -->\n",
+        )
+        .expect("write ticket index");
+        fs::write(
+            root.join("registry/claim_tickets.toml"),
+            concat!(
+                "[claim_tickets]\n",
+                "ticket_count = 2\n\n",
+                "[[ticket]]\n",
+                "id = \"tracked\"\n",
+                "source_markdown = \"docs/tickets/tracked.md\"\n\n",
+                "[[ticket]]\n",
+                "id = \"ignored\"\n",
+                "source_markdown = \"docs/tickets/ignored.md\"\n"
+            ),
+        )
+        .expect("write ticket registry");
+        let init = process::Command::new("git")
+            .args(["init", "--quiet"])
+            .current_dir(&root)
+            .status()
+            .expect("initialize test repository");
+        assert!(init.success());
+
+        verify_claim_ticket_mirrors(&common_args(&root))
+            .expect("ignored local ticket mirrors stay outside the gate");
+        let _ = fs::remove_dir_all(root);
     }
 
     #[test]

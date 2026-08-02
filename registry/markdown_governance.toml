@@ -6,11 +6,11 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 128
+document_count = 129
 generated_artifact_count = 38
 manual_narrative_count = 38
 toml_generated_mirror_count = 15
-toml_manual_source_count = 37
+toml_manual_source_count = 38
 
 [policy]
 safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]
@@ -375,7 +375,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/materials-data-source-contract-2026_08_01.md"
+path = "docs/engineering/markdown-governance-ignored-boundary.md"
 id = "MDG-0041"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -384,7 +384,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/pre_push_gate_optimization.md"
+path = "docs/engineering/materials-data-source-contract-2026_08_01.md"
 id = "MDG-0042"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -393,7 +393,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/registry_canonical_architecture.md"
+path = "docs/engineering/pre_push_gate_optimization.md"
 id = "MDG-0043"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -402,7 +402,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/registry_sqlite_canonical_rca_2026_05_17.md"
+path = "docs/engineering/registry_canonical_architecture.md"
 id = "MDG-0044"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -411,7 +411,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/repo_audit_metric_taxonomy.md"
+path = "docs/engineering/registry_sqlite_canonical_rca_2026_05_17.md"
 id = "MDG-0045"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -420,7 +420,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/rocq-proof-gate-evidence-2026_08_01.md"
+path = "docs/engineering/repo_audit_metric_taxonomy.md"
 id = "MDG-0046"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -429,7 +429,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/sqlite_canonical_write_plane_design.md"
+path = "docs/engineering/rocq-proof-gate-evidence-2026_08_01.md"
 id = "MDG-0047"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -438,7 +438,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/unsafe_safety_methodology_2026_05_09.md"
+path = "docs/engineering/sqlite_canonical_write_plane_design.md"
 id = "MDG-0048"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -447,7 +447,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md"
+path = "docs/engineering/unsafe_safety_methodology_2026_05_09.md"
 id = "MDG-0049"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -456,16 +456,16 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
+path = "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md"
 id = "MDG-0050"
-kind = "generated_markdown"
-mode = "generated_artifact"
+kind = "manual_source"
+mode = "toml_manual_source"
 header_required = false
-source_toml_refs = ["registry/external_sources.toml"]
-notes = "Generated or retained artifact without a TOML mirror contract."
+source_toml_refs = ["registry/research_narratives.toml"]
+notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
+path = "docs/external_sources/BUNDY_2015_MANGA_OVERVIEW.md"
 id = "MDG-0051"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -474,7 +474,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
+path = "docs/external_sources/C010_NONLOCAL_ALGEBRAIC_METAMATERIALS_SOURCES.md"
 id = "MDG-0052"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -483,7 +483,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
+path = "docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md"
 id = "MDG-0053"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -492,7 +492,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/DATASET_MANIFEST.md"
+path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 id = "MDG-0054"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -501,7 +501,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
+path = "docs/external_sources/DATASET_MANIFEST.md"
 id = "MDG-0055"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -510,7 +510,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
+path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 id = "MDG-0056"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -519,7 +519,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
+path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 id = "MDG-0057"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -528,7 +528,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 id = "MDG-0058"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -537,7 +537,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
+path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 id = "MDG-0059"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -546,7 +546,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
+path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 id = "MDG-0060"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -555,7 +555,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
+path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 id = "MDG-0061"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -564,8 +564,17 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md"
+path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 id = "MDG-0062"
+kind = "generated_markdown"
+mode = "generated_artifact"
+header_required = false
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated or retained artifact without a TOML mirror contract."
+
+[[document]]
+path = "docs/external_sources/EXCEPTIONAL_COSMOLOGY_SOURCES.md"
+id = "MDG-0063"
 kind = "manual_source"
 mode = "toml_manual_source"
 header_required = false
@@ -574,15 +583,6 @@ notes = "Manual Markdown source with a declared TOML destination; mirror promoti
 
 [[document]]
 path = "docs/external_sources/HELIOSPHERE_DATASET_PROGRESS_2026-03-09.md"
-id = "MDG-0063"
-kind = "generated_markdown"
-mode = "generated_artifact"
-header_required = false
-source_toml_refs = ["registry/external_sources.toml"]
-notes = "Generated or retained artifact without a TOML mirror contract."
-
-[[document]]
-path = "docs/external_sources/INDEX.md"
 id = "MDG-0064"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -591,7 +591,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
+path = "docs/external_sources/INDEX.md"
 id = "MDG-0065"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -600,7 +600,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/LELLI_2016_SPARC.md"
+path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 id = "MDG-0066"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -609,7 +609,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
+path = "docs/external_sources/LELLI_2016_SPARC.md"
 id = "MDG-0067"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -618,8 +618,17 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/MERGUS_BRIDGE_SOURCES.md"
+path = "docs/external_sources/LI_2020_SPARC_NFW_FITS.md"
 id = "MDG-0068"
+kind = "generated_markdown"
+mode = "generated_artifact"
+header_required = false
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated or retained artifact without a TOML mirror contract."
+
+[[document]]
+path = "docs/external_sources/MERGUS_BRIDGE_SOURCES.md"
+id = "MDG-0069"
 kind = "manual_source"
 mode = "toml_manual_source"
 header_required = false
@@ -628,7 +637,7 @@ notes = "Manual Markdown source with a declared TOML destination; mirror promoti
 
 [[document]]
 path = "docs/external_sources/MOSTER_2013_SMHM.md"
-id = "MDG-0069"
+id = "MDG-0070"
 kind = "generated_markdown"
 mode = "generated_artifact"
 header_required = false
@@ -637,15 +646,6 @@ notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
 path = "docs/external_sources/NANOGRAV_15YR_PRIMARY_SOURCES.md"
-id = "MDG-0070"
-kind = "manual_source"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/external_sources.toml"]
-notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
-
-[[document]]
-path = "docs/external_sources/NANOGRAV_TIMING_ENGINE_SOURCES.md"
 id = "MDG-0071"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -654,16 +654,16 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
+path = "docs/external_sources/NANOGRAV_TIMING_ENGINE_SOURCES.md"
 id = "MDG-0072"
-kind = "generated_markdown"
-mode = "generated_artifact"
+kind = "manual_source"
+mode = "toml_manual_source"
 header_required = false
 source_toml_refs = ["registry/external_sources.toml"]
-notes = "Generated or retained artifact without a TOML mirror contract."
+notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+path = "docs/external_sources/OMNI_DATA_AUDIT_2026-03-10.md"
 id = "MDG-0073"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -672,7 +672,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
+path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 id = "MDG-0074"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -681,7 +681,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+path = "docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md"
 id = "MDG-0075"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -690,7 +690,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 id = "MDG-0076"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -699,7 +699,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
+path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 id = "MDG-0077"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -708,7 +708,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
+path = "docs/external_sources/SOHO_ARCHIVE_MIRROR_AUDIT_2026-03-09.md"
 id = "MDG-0078"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -717,7 +717,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+path = "docs/external_sources/WESTFALL_2019_MANGA_DRP.md"
 id = "MDG-0079"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -726,7 +726,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
+path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 id = "MDG-0080"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -735,7 +735,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
+path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 id = "MDG-0081"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -744,7 +744,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/external_sources/ysu_engine_gpu_patterns.md"
+path = "docs/external_sources/X87_AVX_ACCUMULATION_SOURCES.md"
 id = "MDG-0082"
 kind = "generated_markdown"
 mode = "generated_artifact"
@@ -753,8 +753,17 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
-path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
+path = "docs/external_sources/ysu_engine_gpu_patterns.md"
 id = "MDG-0083"
+kind = "generated_markdown"
+mode = "generated_artifact"
+header_required = false
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated or retained artifact without a TOML mirror contract."
+
+[[document]]
+path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
+id = "MDG-0084"
 kind = "generated_markdown"
 mode = "generated_artifact"
 header_required = false
@@ -762,15 +771,6 @@ notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
 path = "docs/glossary.md"
-id = "MDG-0084"
-kind = "manual_source"
-mode = "toml_manual_source"
-header_required = false
-source_toml_refs = ["registry/docs_root_narratives.toml"]
-notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
-
-[[document]]
-path = "docs/lions_commentary_cd_kernel.md"
 id = "MDG-0085"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -779,15 +779,16 @@ source_toml_refs = ["registry/docs_root_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/monograph/MERGED_MONOGRAPH.md"
+path = "docs/lions_commentary_cd_kernel.md"
 id = "MDG-0086"
 kind = "manual_source"
-mode = "manual_narrative"
+mode = "toml_manual_source"
 header_required = false
-notes = "Manual narrative source retained until a canonical registry lane is assigned."
+source_toml_refs = ["registry/docs_root_narratives.toml"]
+notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/physics/sedenion_standard_model.md"
+path = "docs/monograph/MERGED_MONOGRAPH.md"
 id = "MDG-0087"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -795,7 +796,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/preregistered/README.md"
+path = "docs/physics/sedenion_standard_model.md"
 id = "MDG-0088"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -803,7 +804,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md"
+path = "docs/preregistered/README.md"
 id = "MDG-0089"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -811,7 +812,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/POST_RC1_CROSS_DOMAIN_EVIDENCE_NOTE.md"
+path = "docs/reports/POST_RC1_32D_EVIDENCE_NOTE.md"
 id = "MDG-0090"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -819,7 +820,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/RC1_EVIDENCE_NOTE.md"
+path = "docs/reports/POST_RC1_CROSS_DOMAIN_EVIDENCE_NOTE.md"
 id = "MDG-0091"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -827,7 +828,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/brown_1972_dissertation_roadmap_2026-03-27.md"
+path = "docs/reports/RC1_EVIDENCE_NOTE.md"
 id = "MDG-0092"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -835,7 +836,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/cd_cross_domain_synthesis_2026_03_28.md"
+path = "docs/reports/brown_1972_dissertation_roadmap_2026-03-27.md"
 id = "MDG-0093"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -843,7 +844,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/cd_legacy_pre1954_roadmap_2026-03-27.md"
+path = "docs/reports/cd_cross_domain_synthesis_2026_03_28.md"
 id = "MDG-0094"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -851,7 +852,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/diii_d_project_proposal_draft.md"
+path = "docs/reports/cd_legacy_pre1954_roadmap_2026-03-27.md"
 id = "MDG-0095"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -859,7 +860,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/fusion_enrollment_forms_ready_to_submit.md"
+path = "docs/reports/diii_d_project_proposal_draft.md"
 id = "MDG-0096"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -867,7 +868,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/bielefeld_jacobson_prefilled_form.md"
+path = "docs/reports/fusion_enrollment_forms_ready_to_submit.md"
 id = "MDG-0097"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -875,7 +876,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/cdaweb-voyager-datasets.md"
+path = "docs/reports/root_promoted/bielefeld_jacobson_prefilled_form.md"
 id = "MDG-0098"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -883,7 +884,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/jacobson_googlebooks_accessible_berkeley.md"
+path = "docs/reports/root_promoted/cdaweb-voyager-datasets.md"
 id = "MDG-0099"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -891,7 +892,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/jacobson_googlebooks_accessible_virginia.md"
+path = "docs/reports/root_promoted/jacobson_googlebooks_accessible_berkeley.md"
 id = "MDG-0100"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -899,7 +900,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/jacobson_googlebooks_classic_search_results.md"
+path = "docs/reports/root_promoted/jacobson_googlebooks_accessible_virginia.md"
 id = "MDG-0101"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -907,7 +908,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/jacobson_googlebooks_search_results.md"
+path = "docs/reports/root_promoted/jacobson_googlebooks_classic_search_results.md"
 id = "MDG-0102"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -915,7 +916,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/leipzig_freudenthal_request_login.md"
+path = "docs/reports/root_promoted/jacobson_googlebooks_search_results.md"
 id = "MDG-0103"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -923,7 +924,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/researchgate_huang_security_check.md"
+path = "docs/reports/root_promoted/leipzig_freudenthal_request_login.md"
 id = "MDG-0104"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -931,7 +932,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/root_promoted/ucsd_jacobson_chapter_detail.md"
+path = "docs/reports/root_promoted/researchgate_huang_security_check.md"
 id = "MDG-0105"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -939,7 +940,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/sedenion_standard_model_commit_audit_2026-03-27.md"
+path = "docs/reports/root_promoted/ucsd_jacobson_chapter_detail.md"
 id = "MDG-0106"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -947,7 +948,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/turboquant_architecture_2026-03-29.md"
+path = "docs/reports/sedenion_standard_model_commit_audit_2026-03-27.md"
 id = "MDG-0107"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -955,7 +956,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/turboquant_cd_optimization_analysis.md"
+path = "docs/reports/turboquant_architecture_2026-03-29.md"
 id = "MDG-0108"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -963,7 +964,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/reports/turboquant_claims_2026-03-28.md"
+path = "docs/reports/turboquant_cd_optimization_analysis.md"
 id = "MDG-0109"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -971,15 +972,15 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/requirements/algebra.md"
+path = "docs/reports/turboquant_claims_2026-03-28.md"
 id = "MDG-0110"
-kind = "generated_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-notes = "Generated Markdown mirror with an explicit immutable header."
+kind = "manual_source"
+mode = "manual_narrative"
+header_required = false
+notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/requirements/analysis.md"
+path = "docs/requirements/algebra.md"
 id = "MDG-0111"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -987,7 +988,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/requirements/astro.md"
+path = "docs/requirements/analysis.md"
 id = "MDG-0112"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -995,7 +996,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/requirements/cpp.md"
+path = "docs/requirements/astro.md"
 id = "MDG-0113"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1003,7 +1004,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/requirements/heliosphere.md"
+path = "docs/requirements/cpp.md"
 id = "MDG-0114"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1011,7 +1012,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/requirements/latex.md"
+path = "docs/requirements/heliosphere.md"
 id = "MDG-0115"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1019,7 +1020,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/requirements/materials.md"
+path = "docs/requirements/latex.md"
 id = "MDG-0116"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1027,7 +1028,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/requirements/particle.md"
+path = "docs/requirements/materials.md"
 id = "MDG-0117"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1035,7 +1036,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/requirements/quantum-docker.md"
+path = "docs/requirements/particle.md"
 id = "MDG-0118"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1043,7 +1044,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/requirements/rocq.md"
+path = "docs/requirements/quantum-docker.md"
 id = "MDG-0119"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1051,8 +1052,16 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md"
+path = "docs/requirements/rocq.md"
 id = "MDG-0120"
+kind = "generated_markdown"
+mode = "toml_generated_mirror"
+header_required = true
+notes = "Generated Markdown mirror with an explicit immutable header."
+
+[[document]]
+path = "docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md"
+id = "MDG-0121"
 kind = "manual_source"
 mode = "toml_manual_source"
 header_required = false
@@ -1061,7 +1070,7 @@ notes = "Manual Markdown source with a declared TOML destination; mirror promoti
 
 [[document]]
 path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
-id = "MDG-0121"
+id = "MDG-0122"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
 header_required = true
@@ -1069,14 +1078,6 @@ notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
 path = "docs/toolchain/heasarc-catalog-walker.md"
-id = "MDG-0122"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source retained until a canonical registry lane is assigned."
-
-[[document]]
-path = "docs/toolchain/mast-enumeration-policy.md"
 id = "MDG-0123"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1084,7 +1085,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/toolchain/nightly-2026-04-05-ice.md"
+path = "docs/toolchain/mast-enumeration-policy.md"
 id = "MDG-0124"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1092,7 +1093,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/toolchain/shell-retirement.md"
+path = "docs/toolchain/nightly-2026-04-05-ice.md"
 id = "MDG-0125"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1100,7 +1101,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "plans/README.md"
+path = "docs/toolchain/shell-retirement.md"
 id = "MDG-0126"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1108,8 +1109,16 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "reports/browser_profiles/ams_1906_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
+path = "plans/README.md"
 id = "MDG-0127"
+kind = "manual_source"
+mode = "manual_narrative"
+header_required = false
+notes = "Manual narrative source retained until a canonical registry lane is assigned."
+
+[[document]]
+path = "reports/browser_profiles/ams_1906_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
+id = "MDG-0128"
 kind = "artifact_report"
 mode = "generated_artifact"
 header_required = false
@@ -1118,7 +1127,7 @@ notes = "Generated or retained artifact without a TOML mirror contract."
 
 [[document]]
 path = "reports/browser_profiles/ams_1912_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
-id = "MDG-0128"
+id = "MDG-0129"
 kind = "artifact_report"
 mode = "generated_artifact"
 header_required = false

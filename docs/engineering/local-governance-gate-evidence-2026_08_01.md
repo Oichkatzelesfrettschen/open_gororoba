@@ -6,10 +6,10 @@ evidence_class: executed_gate
 
 # Local governance gate evidence
 
-The isolated evidence-ledger worktree passes the repository local gate after
-the Markdown registry generators restore their authority and regeneration
-headers. The gate runs against `origin/main`, detects 17 changed files, and
-selects `gororoba_cli_data` as the direct Rust scope.
+The isolated evidence-ledger worktree passes the registry, governance, full
+nextest, and workspace-check lanes. The keep-going audit remains nonzero only
+in `integrity-rust`, where the registry checker reports bounded baseline drift
+outside the external-input admission change.
 
 ## Executed result
 
@@ -19,8 +19,9 @@ selects `gororoba_cli_data` as the direct Rust scope.
 | Shared check suite | pass | ANSI check, terminology gate over 8767 files, and report-write policy |
 | Rust clippy | pass | `gororoba_cli_data` direct scope with `-D warnings` |
 | Rust nextest | pass | 19 library tests passed, nextest run `c8e02897-3c5d-4f73-8296-68f28abf92b8` |
-| Markdown inventory | pass | registered=128, on_disk=128, owner entries=128 |
+| Markdown inventory | pass | registered=129, on_disk=129, owner entries=129 |
 | Governance gate | pass | schema signatures, crossrefs, aliases, authority, headers, and removal policy |
+| Registry mirror freshness | pass | Generated mirrors are fresh; claim-ticket verification skips 15 ignored local paths |
 
 ## Prior registry acceptance boundary
 
@@ -43,20 +44,27 @@ control plane. The registry acceptance target now passes.
 | Execution planning | pass | experiments=232, lineages=232, edges=1113, workstreams=13, todo=65, actions=38 |
 | Registry acceptance | pass | semantic atoms, evidence provenance, integrity resolution, execution planning, crossrefs, aliases, inventory, and owner-map checks exit zero |
 
-The full keep-going audit writes `reports/gates/2026-08-01/212938/`. The
-registry step and workspace check pass. The Rust regression step remains open:
-6104 tests run with 6102 passed, 2 failed, and 48 skipped. Both failures are
-missing-input failures for these retained intake paths:
+The full keep-going audit writes `reports/gates/2026-08-01/233501/`. The
+registry step, standard and heavy nextest lanes, and workspace check pass. The
+Rust regression step completes all tests, then remains nonzero in
+`integrity-rust` because the registry checker reports three bounded drift
+classes:
 
-| Missing input | Failing tests | Intake condition |
+| Surface or drift class | Observed evidence | Required follow-up |
 | --- | --- | --- |
-| `data/external/pdg_2025/mass_subset.csv` | `c068_subset_match_uses_full_eigenlevel_count` | Admit the CSV with source provenance and a content hash |
-| `data/external/nanograv_15yr_freespectrum.csv` | `c070_quantile_curve_has_expected_length` | Admit the CSV with source provenance and a content hash |
+| Standard nextest | 6105 passed, 48 skipped | No missing-input failures remain |
+| Heavy nextest | 1346 passed, 68 skipped | No missing-input failures remain |
+| Claim identity baseline | 46 identity-gap claims, `C-1551` through `C-1596` | Reconcile the registry-check baseline |
+| Binary registry | `experiment-manifest` and `rocq-project-audit` are absent from `binaries.toml` | Register both Cargo binaries through the canonical registry workflow |
+| Experiment count | `project.toml` declares 228; `experiments.toml` contains 232 | Reconcile the canonical project count |
 
 | Command | Result | Observed evidence |
 | --- | --- | --- |
 | `make registry-acceptance-gate-readonly` | pass | Current generated lanes and governance checks exit zero |
-| `make gate-audit` | partial | `gate-ci-registry` and `workspace-check` exit zero; `gate-ci-rust` exits 2 on the two missing external inputs |
+| standard nextest | pass | 6105 tests passed, 48 skipped |
+| heavy nextest | pass | 1346 tests passed, 68 skipped |
+| `workspace-check` | pass | `cargo check --workspace --tests` exits zero |
+| `make gate-audit` | partial | `gate-ci-registry` and `workspace-check` exit zero; `gate-ci-rust` exits 2 in `integrity-rust` on the bounded drift classes above |
 
 ## Replay commands
 
@@ -76,8 +84,11 @@ workspace regression result.
 
 ## Closure boundary
 
-This record closes the P0 local-gate substitute row for the current batch. It
-records the current registry acceptance pass and the explicit T-051 Rust input
-boundary. It does not claim that the two missing external datasets or every
-historical experiment, proof axiom, or structural debt row is resolved. Those
-boundaries remain in the active roadmap and the P1/P2 evidence records.
+This record closes the two T-051 external-input failure boundaries. The PDG
+mass subset and NANOGrav free-spectrum files have retained source contracts,
+content hashes, and replay notes, while production file-backed audits retain
+the external source boundary and unit tests use deterministic injected rows.
+T-051 remains open because `integrity-rust` does not exit zero until the
+identity-gap, binary-registry, and experiment-count drift is reconciled. This
+record does not claim that T-058, WS-OPTICS-GR-001, or every historical
+experiment, proof axiom, or structural debt row is resolved.

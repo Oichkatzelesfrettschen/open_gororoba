@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total claims: 1441
+//! Total claims: 1448
 //!
 //! ## C-001
 //!
@@ -11534,4 +11534,60 @@
 //! - Last verified: 2026-04-15
 //! - Statement: PMD-equivalent static analysis gap audit of the 41-crate open_gororoba workspace (2026-04-15) reveals: (1) cargo-machete finds unused dependencies in 13 crates including ort (ONNX Runtime) in gororoba_cli_physics, ash+cubecl-core (GPU stubs) in cd_kernel, and pulp appearing unused in 4 crates (cd_kernel, data_core, materials_core, lbm_3d); (2) pmd-cpd with 80-token minimum detects 1596 total duplicate blocks, but only 3 cross-crate duplicates at 100+ tokens (LoTSS parsing in data_core/gororoba_cli_data/gororoba_cli_physics, turboquant cosine boilerplate in 7 binaries); (3) clippy cognitive_complexity lint (threshold 25) finds 7 violations across the workspace -- worst is source_provenance.rs:1788 at 37/25, followed by lbm_vulkan/compute.rs:2231 at 33/25 and flavor_lifts/basis.rs:214 at 31/25; (4) cargo miri on cd_kernel: 15 AVX2 tests pass clean, 12 predicates tests pass clean, test_high_dim_workspace fails due to rayon/crossbeam-epoch stacked borrows incompatibility with miri (not a cd_kernel UB). rust-code-analysis-cli cannot be installed due to tree-sitter ABI break in nightly-2026-04-05.
 //! - Where stated: E-234 PMD static analysis gap audit (2026-04-15)
+//! - What would verify/refute it:
+//!
+//! ## C-1627
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-07-16
+//! - Statement: The alternator Delta_a on a 2^n-dimensional Cayley-Dickson algebra cannot have rank 4 (equivalently, dim Eig_1(M_a) != 2^n - 4). Given the eigentheory hypotheses of Biss-Christensen-Dugger-Isaksen Question 9.2 -- M_a symmetric PSD with integer trace 2^n and every eigenspace dimension divisible by 4 -- a rank-4 alternator forces a single 4-dimensional complement eigenspace whose eigenvalue lambda satisfies (2^n - 4) + 4*lambda = 2^n, hence lambda = 1, contradicting lambda != 1. Scaling by |a|^2 makes the trace identity an exact integer equation; the Rocq proof of that integer core is axiom-free and kernel-checked.
+//! - Where stated: proofs/theories/AlternatorTraceExclusion.v (alternator_no_codim4, dim_eig1_neq_codim4)
+//! - What would verify/refute it:
+//!
+//! ## C-1628
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-07-18
+//! - Statement: On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files parsing from 815 unique days; the prior matched list carried 836 rows, 834 parsing successfully, and double-listed 21 days under two filename conventions; it is superseded), the normalized 16D Cayley-Dickson staple-associator strictly dominates the one-step field-rotation-angle baseline on ROC-AUC across the three selected coordinates simultaneously: bulk delta +0.005572, high-gradient-positive stratum delta +0.009081, low-gradient-positive stratum delta +0.002063, hence simultaneous margin M = min(deltas) = +0.002063 > 0. These are exact pooled point estimates from deterministic computation (E-239 rerun of the E-237 design); the strata are per-time-point sample regimes (median |dB/dt| split among positives), not crossing-event classes. Scope: AUC dominance over the one-step baselines only; when temporal receptive fields are matched at six samples, cumulative and maximum rotation exceed the associator (C-1633), so the advantage over one-step rotation partly measures temporal-context asymmetry. The negative class consists of non-crossing samples on known crossing days, not arbitrary operational days.
+//! - Where stated: data/output/staples_cluster_bootstrap_assoc_vs_rot.json; E-239
+//! - What would verify/refute it:
+//!
+//! ## C-1629
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-07-18
+//! - Statement: The staple-associator's componentwise ROC-AUC advantage over one-step field rotation generalizes across independently sampled THEMIS-A crossing days: the file-cluster bootstrap on the deduplicated 813-file benchmark (E-239, 2,000 resamples of intact daily files, every sample within each drawn file retained) puts the simultaneous margin M at +0.00206 with 95% CI [0.00081, 0.00328] (p_le_zero = 0.001), and the mean daily AUC delta at +0.00508 [0.00372, 0.00634]. The intact-cluster design supersedes the E-235 moving-block intervals for population inference because blocks straddling file boundaries mix days instead of resampling them. This margin is scoped to the one-step rotation baseline; matched six-sample rotation statistics reverse the sign (C-1633).
+//! - Where stated: data/output/staples_cluster_bootstrap_assoc_vs_rot.json; E-239
+//! - What would verify/refute it:
+//!
+//! ## C-1630
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-07-16
+//! - Statement: The 16D Cayley-Dickson basis-associator coefficient tensor [e_i,e_j,e_k] = (s(i,j)s(i XOR j,k) - s(j,k)s(i,j XOR k)) e_(i XOR j XOR k) has every coefficient in {-2, 0, +2} with the exact census: 2248 zeros, 924 coefficients +2, 924 coefficients -2 (1848 nonzero of 4096 ordered triples, 45.1171875% support, signs exactly balanced). The scalar component e0 receives zero associator terms, e8 receives 168 nonzero ordered contributions, and every other imaginary component receives 120. The staple-associator detector is therefore the norm of a fixed sparse cubic filter with 1848 terms over six consecutive magnetometer samples. The quaternion (dim 4) tensor vanishes identically; the octonion (dim 8) tensor is sign-balanced.
+//! - Where stated: crates/gororoba_cli_physics/src/bin/sedenion_associator_coefficient_census.rs; data/output/audit/2026-07-16/21-associator-coefficient-census.txt
+//! - What would verify/refute it:
+//!
+//! ## C-1631
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-07-18
+//! - Statement: On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.8274 with file-cluster-bootstrap 95% CI [0.8205, 0.8348], and it strictly outperforms the matched six-sample PVI and Gram-determinant controls across bulk and both predeclared gradient strata: assoc-minus-PVI6 simultaneous margin +0.0436 [0.0365, 0.0506], assoc-minus-Gram6 simultaneous margin +0.0216 [0.0184, 0.0249] (2,000 intact-daily-file resamples, ChaCha8 seed 42, all tail proportions < 1/2001). The associator therefore exceeds equal-receptive-field increment-magnitude and volume statistics, not merely one-step baselines.
+//! - Where stated: data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json; data/output/staples_cluster_bootstrap_assoc_vs_gram6.json; E-239
+//! - What would verify/refute it:
+//!
+//! ## C-1632
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-07-18
+//! - Statement: Replacing the Cayley-Dickson multiplication-sign structure of the staple-associator's sparse cubic tensor with one sign-scrambled tensor (identical 1848-term support, identical six-sample architecture, ChaCha8 seed 42) collapses ROC-AUC from 0.8274 to 0.4750 on the deduplicated THEMIS-A Staples benchmark: assoc-minus-scramble bulk delta +0.3524 [0.3394, 0.3658], simultaneous margin +0.2128 [0.1962, 0.2290]. The committed CD sign arrangement therefore contributes essential ranking structure relative to this null tensor; the detector does not succeed by pooling six-sample magnitude or polynomial energy. Scope: one scramble draw at fixed support; the claim that CD signs occupy an extreme tail among matched sparse cubic tensors requires the planned multi-scramble null hierarchy and remains open.
+//! - Where stated: data/output/staples_cluster_bootstrap_assoc_vs_scram.json; E-239
+//! - What would verify/refute it:
+//!
+//! ## C-1633
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-07-18
+//! - Statement: When temporal receptive fields are matched at six samples on the deduplicated THEMIS-A Staples benchmark, direct angular statistics outperform the staple-associator: six-sample cumulative rotation reaches ROC-AUC 0.8352 and maximum stepwise rotation 0.8383 versus the associator's 0.8274, with assoc-minus-control bulk deltas -0.0077 [-0.0086, -0.0069] and -0.0109 [-0.0118, -0.0099] and negative simultaneous margins -0.0104 and -0.0137 (all 2,000 file-cluster resamples nonpositive-favoring-control). The associator therefore does not dominate conventional angular statistics at equal temporal support, and its advantage over one-step rotation (C-1628) partly measures temporal-context asymmetry rather than uniquely non-associative information. The tested channel permutation [1,2,0] through the intact CD tensor is practically AUC-equivalent to the canonical assignment (0.8281 vs 0.8274, delta -0.0006 [-0.0007, -0.0006]); this is predictive equivalence of one permutation, not algebraic invariance. Standalone rotation-family dominance is established; subsumption (zero conditional information from the associator given cumrot6 and maxrot6) is untested.
+//! - Where stated: data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_chperm.json; E-239
 //! - What would verify/refute it:

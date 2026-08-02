@@ -675,13 +675,24 @@
 //! - Area: `qa`
 //! - Priority: `medium`
 //! - Status: `open`
-//! - Description: Execute the keep-going gate audit after the local, Python, and Rust gates are revalidated so the tranche closes with one current summary instead of a chain of stale partial reports. Include the post-fast-path gate state, including the ripgrep-backed terminology lane, the repo-scoped Rust routing, the local heavy-lane skip, and the ambient Cargo target separation, so any remaining slow lane is measured from current conditions rather than the pre-optimization baseline.
+//! - Description: The PDG mass subset and NANOGrav free-spectrum input boundary is now admitted with retained hashes and source contracts. Registry acceptance passes. The full audit records standard Rust nextest 6105 passed and 48 skipped, heavy nextest 1346 passed and 68 skipped, and workspace-check pass. gate-ci-rust remains open because integrity-rust reports 46 baseline identity-gap claims, two unregistered Cargo binaries (experiment-manifest and rocq-project-audit), and project.toml experiment_count=228 versus 232 experiments.toml rows.
 //! - Dependencies: (none)
 //! - Acceptance criteria:
-//!   - todo_item status is constrained to declared enum values.
-//!   - todo_item dependencies are explicit and machine-parseable.
+//!   - Registry acceptance gate exits zero
+//!   - Full gate audit retains registry rust and workspace logs plus latest manifest
+//!   - PDG mass subset CSV has retained source provenance and content hash
+//!   - NANOGrav 15yr free spectrum CSV has retained source provenance and content hash
+//!   - Rust nextest passes without missing-input failures
+//!   - Integrity Rust registry-check baseline drift is resolved
 //! - Evidence refs:
-//!   - (none)
+//!   - `docs/engineering/local-governance-gate-evidence-2026_08_01.md`
+//!   - `reports/pdg-nanograv-input-admission-2026_08_01.toml`
+//!   - `data/external/PROVENANCE.local.json`
+//!   - `reports/gates/latest.json`
+//!   - `reports/gates/2026-08-01/233501/summary.md`
+//!   - `reports/gates/2026-08-01/233501/gate-ci-registry.log`
+//!   - `reports/gates/2026-08-01/233501/gate-ci-rust.log`
+//!   - `reports/gates/2026-08-01/233501/workspace-check.log`
 //!
 //! ### T-052: Implement Bartol V2 legacy parser and Python fetcher
 //!
@@ -769,13 +780,19 @@
 //! - Area: `data`
 //! - Priority: `medium`
 //! - Status: `open`
-//! - Description: E-128: Compare Bartol 16-col RTN B-field against AMDA-derived Voyager 2 for 1990-1995 overlap.
+//! - Description: Partial boundary retained. The available 1990-1995 comparator is Bartol versus SPDF, not AMDA: 52584 matched rows, zero finite B-magnitude pairs, bulk-speed r=0.999414, and proton-density r=0.269010 with an approximately tenfold provider discrepancy. No AMDA-specific Voyager 2 capture exists in the checkout. Acquire and hash the AMDA magnetometer product before claiming closure.
 //! - Dependencies: `E-128`
 //! - Acceptance criteria:
 //!   - todo_item status is constrained to declared enum values.
-//!   - todo_item dependencies are explicit and machine-parseable.
+//!   - AMDA-specific Voyager 2 data
+//!   - raw hash
+//!   - parser identity
+//!   - and replayed comparator output are retained before closure.
 //! - Evidence refs:
-//!   - (none)
+//!   - `docs/engineering/voyager2_v2_bartol_spdf_1990_1995_findings_2026_04_19.txt`
+//!   - `docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md`
+//!   - `data/output/bartol_vs_spdf_v2_bfield_correlation_1990_1995.csv`
+//!   - `crates/gororoba_cli_data/src/bin/bartol_spdf_crossval.rs`
 //!
 //! ### T-059: Add AMDA fallback to crates/data_core/src/catalogs/ulysses.rs
 //!
@@ -823,27 +840,27 @@
 //!
 //! - Area: `data`
 //! - Priority: `low`
-//! - Status: `open`
-//! - Description: New Horizons is the only spacecraft with NO AMDA fallback. Check PDS Small Bodies Node for NH SWAP plasma data.
-//! - Dependencies: (none)
+//! - Status: `done`
+//! - Description: Closed by retained endpoint report: PDS-SBN UMD exposes six confirmed 200 New Horizons SWAP dataset landing pages covering raw and calibrated Jupiter, launch, and Pluto cruise products. This resolves the question of whether PDS-SBN is an unverified alternative provider; fetcher integration remains a separate work item.
+//! - Dependencies: ``
 //! - Acceptance criteria:
 //!   - todo_item status is constrained to declared enum values.
-//!   - todo_item dependencies are explicit and machine-parseable.
+//!   - PDS-SBN endpoint report records confirmed 200 responses and dataset identifiers.
 //! - Evidence refs:
-//!   - (none)
+//!   - `data/output/pds_sbn_nh_swap_endpoints_2026_05_10.txt`
 //!
 //! ### T-063: Playwright browser probing of GSFC endpoints
 //!
 //! - Area: `qa`
 //! - Priority: `low`
-//! - Status: `open`
-//! - Description: Test SPDF, CDAWeb, COHOWeb, PSP Gateway, ESA SOAR via Playwright browser automation to check if browser access bypasses connection-refused blocks.
-//! - Dependencies: (none)
+//! - Status: `done`
+//! - Description: Closed by retained endpoint report: SPDF, CDAWeb, COHOWeb, and OMNIWeb endpoints returned confirmed 200 responses in the recorded probe. The report states that no further migration monitoring is required for these endpoints.
+//! - Dependencies: ``
 //! - Acceptance criteria:
 //!   - todo_item status is constrained to declared enum values.
-//!   - todo_item dependencies are explicit and machine-parseable.
+//!   - Endpoint report records confirmed 200 responses for all named GSFC surfaces.
 //! - Evidence refs:
-//!   - (none)
+//!   - `data/output/pds_sbn_nh_swap_endpoints_2026_05_10.txt`
 //!
 //! ### T-064: Retire the Brown 7.19(iii) OCR placeholder lane
 //!

@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total insights: 182
+//! Total insights: 183
 //!
 //! ## I-001: Macquart Relation Fills the Comoving Distance Gap
 //!
@@ -1649,3 +1649,12 @@
 //! - Claims: C-781, C-783, C-792, C-793, C-794, C-795, C-842, C-844, C-845, C-846, C-932, C-1103, C-1329
 //!
 //! The later refutation wave is still informative: associator entropy shifts mark algebraic boundaries, but ghost frequencies, pulsed forcing gains, pathion sinks, eta-wake corrections, heavy-ion scaling collapses, and 0.1764 slope ratios are bounded by discretization, instability ceilings, or coincidence cancellation rather than a transported mechanism.
+//!
+//! ## I-212: Equal-receptive-field controls expose temporal support as a benchmark confound
+//!
+//! - Date: 2026-07-18
+//! - Status: verified
+//! - Sprint: 0
+//! - Claims: C-1628, C-1631, C-1633
+//!
+//! Matching only input variables and labels is insufficient when detectors consume different temporal windows: the staple-associator reads six raw samples while one-step rotation reads two, and equal-receptive-field controls (cumrot6, maxrot6) reverse the apparent associator-versus-rotation ranking on the same benchmark. Temporal support is a load-bearing confound; every baseline battery must state and match the receptive field per detector before a dominance claim is registered.

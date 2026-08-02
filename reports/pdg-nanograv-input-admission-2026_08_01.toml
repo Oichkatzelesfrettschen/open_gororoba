@@ -1,0 +1,49 @@
+title = "PDG 2025 and NANOGrav input admission"
+verified_at_utc = "2026-08-02T05:35:02.000Z"
+status = "admitted_local_cache"
+scope = "Two external CSV inputs required by E-207 and its C-068/C-070 audit lane"
+source_contract = "data/external/SOURCES.toml"
+provenance_index = "data/external/PROVENANCE.local.json"
+surface_audit = "reports/pdg_nanograv_surface_audit.toml"
+replay_command = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --all --skip-existing --output-dir data/external"
+hash_command = "sha256sum data/external/pdg_2025/mass_subset.csv data/external/nanograv_15yr_freespectrum.csv"
+
+[[input]]
+id = "pdg_2025_mass_subset"
+path = "data/external/pdg_2025/mass_subset.csv"
+source_contract_id = "SRC-PDG-2025-MASS-SURFACES"
+provenance_source_id = "SRC-PDG-2025-MASS-SURFACES"
+availability = "present_in_canonical_checkout"
+cache_policy = "external_cache_ignored_by_git"
+size_bytes = 623
+data_rows = 11
+sha256 = "341d93fcb418aa0b7bc1727c053ba95355974b9917d7b6de09905f29660c822a"
+schema = "particle,mass_gev,uncertainty_gev,source_file,source_page"
+evidence_refs = [
+  "docs/external_sources/DATASET_MANIFEST.md",
+  "reports/pdg_nanograv_surface_audit.toml",
+  "crates/data_core/src/catalogs/pdg.rs",
+  "crates/gororoba_cli_data/src/bin/cd_pattern_baseline_audit.rs",
+]
+
+[[input]]
+id = "nanograv_15yr_free_spectrum"
+path = "data/external/nanograv_15yr_freespectrum.csv"
+source_contract_id = "SRC-NANOGRAV-15YR-KDE-ZIP"
+provenance_source_id = "SRC-EXTERNAL-FETCH-ROOT"
+availability = "present_in_canonical_checkout"
+cache_policy = "external_cache_ignored_by_git"
+size_bytes = 1436
+data_rows = 30
+sha256 = "6ee2c04175168b83a18aac740da908927a55ae4b0d23fd05ce1154d751b3b9d5"
+schema = "frequency,log10_rho,log10_rho_lo,log10_rho_hi"
+evidence_refs = [
+  "docs/external_sources/DATASET_MANIFEST.md",
+  "docs/external_sources/NANOGRAV_15YR_PRIMARY_SOURCES.md",
+  "reports/pdg_nanograv_surface_audit.toml",
+  "registry/manifests/external_csv_holding_manifest.txt",
+  "crates/data_core/src/catalogs/nanograv.rs",
+  "crates/gororoba_cli_data/src/bin/cd_pattern_baseline_audit.rs",
+]
+
+replay_boundary = "A clean checkout must fetch the external cache before running the file-backed E-207 audit binary. Unit tests use injected deterministic inputs and do not depend on ignored cache state."
