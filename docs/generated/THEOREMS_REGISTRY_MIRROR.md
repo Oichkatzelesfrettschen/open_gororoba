@@ -6,7 +6,7 @@
 
 # Theorems
 
-This file is generated from the canonical SQLite control plane and currently indexes 132 Rocq proof files.
+This file is generated from the canonical SQLite control plane and currently indexes 162 Rocq proof files.
 
 | Theorem | Proof File | Status | Linked Claims |
 |---|---|---|---|
@@ -52,6 +52,25 @@ This file is generated from the canonical SQLite control plane and currently ind
 | `C038_WDarkEnergy` | `proofs/verified/C038_WDarkEnergy.v` | kernel_checked | C-038 |
 | `C039_SpectralDimensionRunning` | `proofs/verified/C039_SpectralDimensionRunning.v` | kernel_checked | C-039 |
 | `C040_PrimordialTiltRefuted` | `proofs/verified/C040_PrimordialTiltRefuted.v` | kernel_checked | C-040 |
+| `C1007_CDPropertyLoss` | `proofs/verified/C1007_CDPropertyLoss.v` | kernel_checked | - |
+| `C1133_BraidParityPreservation` | `proofs/verified/C1133_BraidParityPreservation.v` | kernel_checked | C-1133 |
+| `C1134_TopologicalFrictionBound` | `proofs/verified/C1134_TopologicalFrictionBound.v` | kernel_checked | C-1134 |
+| `C1135_BoxKiteFusionRules` | `proofs/verified/C1135_BoxKiteFusionRules.v` | kernel_checked | C-1135 |
+| `C1137_MissingEdgeQuantizedGap` | `proofs/verified/C1137_MissingEdgeQuantizedGap.v` | kernel_checked | C-1137, C-1352, C-1356 |
+| `C1138_WickDampingFriction` | `proofs/verified/C1138_WickDampingFriction.v` | kernel_checked | C-1138 |
+| `C1140_PathionQuantizedGap` | `proofs/verified/C1140_PathionQuantizedGap.v` | kernel_checked | C-1140 |
+| `C1140a_PathionGap_1_5` | `proofs/verified/C1140a_PathionGap_1_5.v` | kernel_checked | C-1140 |
+| `C1140b_PathionGap_6_10` | `proofs/verified/C1140b_PathionGap_6_10.v` | kernel_checked | C-1140 |
+| `C1140c_PathionGap_11_15` | `proofs/verified/C1140c_PathionGap_11_15.v` | kernel_checked | C-1140 |
+| `C1141_ZDGraphGeneralStructure` | `proofs/verified/C1141_ZDGraphGeneralStructure.v` | kernel_checked | C-1141 |
+| `C1142_XORScatterGatherDuality` | `proofs/verified/C1142_XORScatterGatherDuality.v` | kernel_checked | C-1142 |
+| `C1233_ChernSumZero` | `proofs/verified/C1233_ChernSumZero.v` | kernel_checked | C-1233 |
+| `C1234_ValleyChernAntisymmetry` | `proofs/verified/C1234_ValleyChernAntisymmetry.v` | kernel_checked | C-1234 |
+| `C1236_FlatBandGroupVelocity` | `proofs/verified/C1236_FlatBandGroupVelocity.v` | kernel_checked | C-1236 |
+| `C1262_FlatBandFractionHalf` | `proofs/verified/C1262_FlatBandFractionHalf.v` | kernel_checked | C-1262, C-1270, C-1274 |
+| `C1313_Thesis42Arithmetic` | `proofs/verified/C1313_Thesis42Arithmetic.v` | kernel_checked | C-1313 |
+| `C1363_HarmonicHaloExactRecovery` | `proofs/verified/C1363_HarmonicHaloExactRecovery.v` | kernel_checked | C-1363 |
+| `C1364_HomotopyBridgeLaw` | `proofs/verified/C1364_HomotopyBridgeLaw.v` | kernel_checked | C-1364 |
 | `C1455_AssociatorTrilinear` | `proofs/verified/C1455_AssociatorTrilinear.v` | kernel_checked | C-1455, C-1463 |
 | `C1463_ArithmeticInventory` | `proofs/verified/C1463_ArithmeticInventory.v` | kernel_checked | C-1463 |
 | `C1464_SedenionAnticommutation` | `proofs/verified/C1464_SedenionAnticommutation.v` | kernel_checked | C-1464 |
@@ -62,7 +81,14 @@ This file is generated from the canonical SQLite control plane and currently ind
 | `C1469_TowerTrilinearity` | `proofs/verified/C1469_TowerTrilinearity.v` | kernel_checked | C-1469 |
 | `C1470_PathionTrilinearity` | `proofs/verified/C1470_PathionTrilinearity.v` | kernel_checked | C-1470 |
 | `C1471_HigherCDTrilinearity` | `proofs/verified/C1471_HigherCDTrilinearity.v` | kernel_checked | C-1471 |
+| `C1474_FuelAdequacy` | `proofs/verified/C1474_FuelAdequacy.v` | kernel_checked | C-1474 |
+| `C1628_IDCT8ButterflyCompaction` | `proofs/verified/C1628_IDCT8ButterflyCompaction.v` | kernel_checked | C-1628 |
 | `C1629_IDCT8DP4ExactBound` | `proofs/verified/C1629_IDCT8DP4ExactBound.v` | kernel_checked | C-1629 |
+| `C1630_SedenionOctonionDowncast` | `proofs/verified/C1630_SedenionOctonionDowncast.v` | kernel_checked | C-1630 |
+| `C1635_SedenionDriverSemantics` | `proofs/verified/C1635_SedenionDriverSemantics.v` | kernel_checked | - |
+| `C1636_Cariow2013SedenionSchedule` | `proofs/verified/C1636_Cariow2013SedenionSchedule.v` | kernel_checked | - |
+| `C1637_R300SedenionZeroDivisor` | `proofs/verified/C1637_R300SedenionZeroDivisor.v` | kernel_checked | - |
+| `C1638_OctonionDowncastNoZeroDivisors` | `proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v` | kernel_checked | - |
 | `C868_PainleveGullstrand` | `proofs/verified/C868_PainleveGullstrand.v` | kernel_checked | C-868 |
 | `C869_InteriorFlat` | `proofs/verified/C869_InteriorFlat.v` | kernel_checked | C-869 |
 | `C870_NacelleModulationDistinct` | `proofs/verified/C870_NacelleModulationDistinct.v` | kernel_checked | C-870 |
@@ -132,6 +158,10 @@ This file is generated from the canonical SQLite control plane and currently ind
 | `C956_RoutonAVT` | `proofs/verified/C956_RoutonAVT.v` | kernel_checked | C-1128 |
 | `C957_VoudonZD` | `proofs/verified/C957_VoudonZD.v` | kernel_checked | C-1129 |
 | `C958_ZDGraphTopology` | `proofs/verified/C958_ZDGraphTopology.v` | kernel_checked | - |
+| `C958b_ZDAdjacencyAnalytical` | `proofs/verified/C958b_ZDAdjacencyAnalytical.v` | kernel_checked | - |
+| `C959_CHSHClassicalBound` | `proofs/verified/C959_CHSHClassicalBound.v` | kernel_checked | - |
+| `C993_CarlsonBranchFree` | `proofs/verified/C993_CarlsonBranchFree.v` | kernel_checked | - |
+| `C999_PathionEntropyBound` | `proofs/verified/C999_PathionEntropyBound.v` | kernel_checked | - |
 | `C_ConjugateInvolution` | `proofs/verified/C_ConjugateInvolution.v` | kernel_checked | - |
 | `C_NormConjugate` | `proofs/verified/C_NormConjugate.v` | kernel_checked | - |
 | `C_OctConjInvolution` | `proofs/verified/C_OctConjInvolution.v` | kernel_checked | - |

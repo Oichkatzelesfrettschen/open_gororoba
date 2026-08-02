@@ -130,8 +130,8 @@ The 36 `registry/*.toml` files. Each starts with the header
 `# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.` Regenerated via
 `cargo run -p gororoba_cli_data --bin provenance -- export-control-plane`.
 
-### integrity-resolution
+### registry-integrity
 
 The binary that regenerates `registry/schema_signatures.toml` after any
-upstream change. Required by the governance gate (the gate fails on
-content_sha mismatch).
+legitimate compatibility-layer change. Required before `make
+validate-governance`, which rejects content_sha mismatches.

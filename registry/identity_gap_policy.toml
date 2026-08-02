@@ -9,7 +9,10 @@
 
 [claims]
 # Intentional gaps in C-0933..C-1547 range from restructured/retired experiments.
-# Computed from registry/claims.toml: 139 total gap IDs.
+# C-1551..C-1596 were retired when the pre-rebuild claim batch was replaced by
+# the current canonical registry; the historical rows remain recoverable from
+# Git history but are not live claims.
+# Computed from registry/claims.toml: 185 total gap IDs.
 governed_gap_ids = [
     "C-0933..C-0935",
     "C-0940",
@@ -28,6 +31,7 @@ governed_gap_ids = [
     "C-1081..C-1089",
     "C-1091..C-1099",
     "C-1293..C-1294",
+    "C-1551..C-1596",
 ]
 
 [insights]

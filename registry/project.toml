@@ -8,12 +8,12 @@ license = "GPL-2.0-or-later"
 test_count = 5399
 claim_count = 1448
 insight_count = 183
-experiment_count = 228
+experiment_count = 232
 complete_experiment_count = 0
 paper_count = 111
-binary_count = 494
-kernel_checked_claims = 152
-proof_files = 300
+binary_count = 496
+kernel_checked_claims = 156
+proof_files = 297
 scope_guardrails = "docs/SCOPE_GUARDRAILS.md"
 
 # Baseline / milestone tags created by the debt-resolution program.

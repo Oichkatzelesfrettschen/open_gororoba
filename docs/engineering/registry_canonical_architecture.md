@@ -70,7 +70,7 @@ The Markdown lane has an explicit source and derived-view contract:
 
 | Surface | Role | Command |
 | --- | --- | --- |
-| `registry/markdown_owner_map.toml` | Ownership, removal status, and registration gate | `markdown-registry register` |
+| `registry/markdown_owner_map.toml` | Ownership, removal status, and registration validation | `markdown-registry register` |
 | On-disk Markdown | Content bytes and measured source metadata | Read-only inventory walk |
 | `registry/knowledge_sources.toml` | Hashes, line counts, source hints, and document search input | `make registry-knowledge` |
 | `registry/markdown_governance.toml` | Lifecycle modes and mirror header policy | `make registry-governance` |
@@ -80,7 +80,7 @@ The document builders use the owner-map inventory boundary and emit one row per
 Markdown file. A strict `AUTO-GENERATED: DO NOT EDIT` plus `Source of truth:`
 header is required before a document receives the `toml_generated_mirror`
 mode. A generated marker without that header remains a retained artifact,
-which prevents the governance gate from granting an unsupported authority
+which prevents registry policy validation from granting an unsupported authority
 claim.
 
 The active crosswalk, frontier rows, evidence states, and retention policy live
@@ -177,21 +177,21 @@ TOML`) on 2026-05-10. Before that commit, mutations to
 `formal_proof` and `status_note` landed in SQLite but never reached the
 consumer surface, making the entire mutator decorative.
 
-## Hash chain: how the gate stays consistent
+## Hash chain: how signature validation stays consistent
 
-After any Layer-2 change, the governance gate hashes each Layer-2 TOML
+After any Layer-2 change, registry policy validation hashes each Layer-2 TOML
 and compares to the recorded signatures in
 `registry/schema_signatures.toml`. To refresh the signatures after a
 legitimate Layer-2 change, run:
 
 ```
-make integrity-resolution
+make registry-integrity
 ```
 
-This invokes `gororoba_cli_data --bin integrity-resolution` which
+This invokes `gororoba_cli_data --bin registry-integrity` which
 recomputes both `content_sha256` (the file's literal SHA) and
 `schema_sha256` (the SHA of the normalized shape JSON including
-`row_count`). The gate refuses pushes where the file SHA on disk does
+`row_count`). Validation rejects pushes where the file SHA on disk does
 not match the recorded SHA in `schema_signatures.toml`.
 
 ## Audit trail: how to ask "what changed since last week"
@@ -218,14 +218,14 @@ report.
 ## Known footguns
 
 - **Editing `registry/*.toml` by hand.** The `# AUTO-GENERATED` header
-  is the warning. If you edit anyway and run `make integrity-resolution`,
+  is the warning. If you edit anyway and run `make registry-integrity`,
   your edit _will_ land in `schema_signatures.toml` -- and then be
   silently overwritten the next time anyone runs
   `provenance export-control-plane`. Always edit Layer 1.
 
 - **Forgetting `make registry-export-markdown` after a batch with
   `--regen-toml false`.** Layer 1 will be ahead of Layer 2; consumers
-  of Layer 2 see stale data; the gate will eventually fail when it
+  of Layer 2 see stale data; validation eventually fails when it
   notices the SHA mismatch.
 
 - **Editing `compat_toml_text` directly in SQLite.** This is the cached

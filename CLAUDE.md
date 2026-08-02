@@ -91,7 +91,7 @@ both:
 - The `ansi-check` and `terminology-gate` pre-push hooks reject
   violations.
 
-### Build and test gate
+### Build and validation workflow
 
 - Toolchain: stable `1.97.0` pinned via `rust-toolchain.toml`.
   Edition 2024.
@@ -100,9 +100,9 @@ both:
   must be suppressed, write `#[allow(clippy::<lint>)]` at the
   narrowest scope with a documented rationale.
 - Default target dir: `CARGO_TARGET_DIR=.cache/gate-target` for
-  gate runs.
+  repository validation; the physical path remains a compatibility path.
 - Pre-push hook at `.githooks/pre-push` (active via
-  `core.hooksPath`): six-gate chain documented in `AGENTS.md`.
+  `core.hooksPath`): six-step validation chain documented in `AGENTS.md`.
 - Verify hook state: `git config --get core.hooksPath` should print
   `.githooks`.
 
@@ -112,7 +112,7 @@ See `AGENTS.md` section "Registry: SQLite-canonical" for the
 mutation workflow. The summary: edit via `gororoba-db` against
 `registry/canonical/control_plane.sqlite3`; re-export via
 `provenance export-control-plane`; refresh hashes via
-`make integrity-resolution`; commit atomically.
+`make registry-integrity`; commit atomically.
 
 ### Documentation policy
 
@@ -140,13 +140,13 @@ mutation workflow. The summary: edit via `gororoba-db` against
 - `make cpd-audit CPD_TOP=20`: PMD-driven duplication audit.
 - `make rust-clippy`: workspace clippy with deny warnings.
 - `make rust-semver-check`: semver-checks for crate API stability.
-- `make cargo-deny-check`: license, advisory, source policy gate.
+- `make cargo-deny-check`: license, advisory, and source policy validation.
 - `make dep-audit`: cargo-audit advisory scan.
 - `make docs-freshness`: confirms generated docs match source
   registries.
 - `make integrity`: runs the verify lane (mirror + license +
   overflow checks).
-- `make integrity-resolution`: regenerates
+- `make registry-integrity`: regenerates
   `schema_signatures.toml`.
 
 ### Scientific stack pinning

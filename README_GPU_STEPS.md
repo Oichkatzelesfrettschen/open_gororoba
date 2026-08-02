@@ -177,7 +177,7 @@ Completed slices:
   inline NVRTC, direct module/function loading, and literal launch geometry now
   route through `gororoba_gpu_cuda`. Direct cudarc use remains only at the
   managed-memory allocation, raw stream, sparse solver ABI, and `PushKernelArg`
-  launch-builder boundaries. The release-gate checks, clippy, MCP source
+  launch-builder boundaries. The validation checks, clippy, MCP source
   search, ctags, lizard, and the three-test sparse managed CUDA smoke passed.
 - `crates/optics_core/src/algebraic_lensing_gpu.rs`: CUDA context
   acquisition, NVRTC compile options, PTX compile, module/function loading,
@@ -222,7 +222,7 @@ Completed slices:
   default NVRTC compile, module/function loading, stream-attached
   upload/readback, and 1D launch configuration now route through
   `gororoba_gpu_cuda`. Direct cudarc use remains only at the raw stream and
-  launch-builder boundary. The crate release-gate check, all-targets clippy,
+  launch-builder boundary. The crate validation check, all-targets clippy,
   targeted source inventory, and lizard complexity pass succeeded.
 - `crates/lbm_3d_cuda/src/unified_runner.rs`: CUDA context acquisition,
   detected-arch NVRTC compile options, step/init and lazy slice module/function
@@ -230,7 +230,7 @@ Completed slices:
   128-thread 1D launch configuration now route through `gororoba_gpu_cuda`.
   Direct cudarc use remains only at the raw stream, launch-builder, and
   `UnifiedSlice` boundary because the runner intentionally owns managed memory.
-  The crate release-gate check, all-targets clippy, targeted source inventory,
+  The crate validation check, all-targets clippy, targeted source inventory,
   and lizard complexity pass succeeded.
 - `crates/lbm_3d_cuda/src/box_counting_gpu.rs`: default NVRTC compile,
   module/function loading, module lifetime ownership, scratch-buffer
@@ -250,7 +250,7 @@ Completed slices:
   `gororoba_gpu_cuda`. Direct cudarc use remains only at the raw stream,
   launch-builder, and `PushKernelArg` boundary because the Chingon pipeline
   passes a long scalar argument list into pre-existing CUDA kernels. The crate
-  release-gate check, all-targets clippy, MCP source search, MCP lizard
+  validation check, all-targets clippy, MCP source search, MCP lizard
   complexity, clangd CUDA kernel check, ctags, cscope, and cflow probes passed
   on the migrated slice.
 - `crates/lbm_3d_cuda/src/dark_halo.rs`: CUDA context acquisition, selected
@@ -260,7 +260,7 @@ Completed slices:
   launch configuration now route through `gororoba_gpu_cuda`. Direct cudarc use
   remains at the raw stream, L2 access-policy driver calls, pinned-host-memory
   readback, and `PushKernelArg` boundary because those paths exercise CUDA
-  residency and DMA APIs directly. The crate release-gate check, all-targets
+  residency and DMA APIs directly. The crate validation check, all-targets
   clippy, MCP source search, clangd CUDA kernel check, ctags, cscope, and cflow
   probes passed. MCP lizard ran and reported high-complexity warnings for the
   existing `DarkHaloCudaSolver::new` and `DarkHaloCudaSolver::run_k_value`
@@ -274,7 +274,7 @@ Completed slices:
   at the raw context, stream, `CudaSlice`, `UnifiedSlice`, device pointer,
   managed prefetch, event, and launch-builder boundary because the sparse API
   exposes raw device buffers and owns unified-memory tile movement. The crate
-  release-gate check, all-targets clippy, live sparse managed/tiled CUDA smoke
+  validation check, all-targets clippy, live sparse managed/tiled CUDA smoke
   tests, MCP source search, MCP lizard complexity, ctags, cscope, cflow, and
   direct clang CUDA syntax checks passed. `clangd --check` parsed
   `kernels_sparse_map.cu` with 0 errors; on `kernels_sparse_lbm.cu`, clangd
@@ -290,7 +290,7 @@ Completed slices:
   stream, slice, graph, device-pointer, launch-builder, one-element
   `LaunchConfig::for_num_elems(1)`, cuFFT, L2 access-policy driver call, and
   `PushKernelArg` boundaries because the production solver still exposes or
-  calls those CUDA APIs directly. Format, release-gate check, all-targets
+  calls those CUDA APIs directly. Format, validation check, all-targets
   clippy, focused `launch_config_1d` tests, broad CUDA-dependent crate check,
   MCP source search, MCP lizard complexity, ctags, cscope, cflow, direct clang
   CUDA syntax checking, and MCP clangd LSP checking passed on this slice.
@@ -305,7 +305,7 @@ Completed slices:
   launches now route through `gororoba_gpu_cuda`. Direct cudarc use remains at
   raw stream, `CudaSlice`, launch-builder, `PushKernelArg`, and the typed
   launch-config return boundary because the benchmark runners still own raw
-  device buffers and launch builders directly. Format, release-gate check,
+  device buffers and launch builders directly. Format, validation check,
   all-targets clippy, broad CUDA-dependent crate check, benchmark-filtered
   lib test compilation, MCP source search, MCP lizard complexity, ctags,
   cscope, cflow, direct clang CUDA syntax checking, and MCP clangd LSP checking
@@ -320,7 +320,7 @@ Completed slices:
   module-load, context-probe, and raw cudarc `Ptx` references now route through
   the helper vocabulary. `gororoba_gpu_cuda` re-exports the PTX type so JIT
   producers and `ModuleRegistry` consumers share one import surface while still
-  using cudarc's underlying PTX representation. Format, focused release-gate
+  using cudarc's underlying PTX representation. Format, focused validation
   checking across `gororoba_gpu_cuda`, `cd_kernel/cuda`, and `lbm_3d_cuda`, and
   the direct-surface sweep passed.
 - Workspace `cudarc` dependency: updated from the locked `0.19.4` line to
@@ -351,7 +351,7 @@ Completed slices:
   `gororoba_algebra/gpu` now includes the `analysis` and `physics` feature
   closure needed by the CUDA module graph, so
   `cargo check -p gororoba_algebra --no-default-features --features gpu`
-  passes under `release-gate`. The Voudon-focused library tests, all-targets
+  passes under `validation`. The Voudon-focused library tests, all-targets
   clippy, and local source-analysis probes passed.
 - `crates/gororoba_algebra/src/gpu/eta_matrix.rs`: CUDA context acquisition,
   default NVRTC compile, module/function loading, zeroed device-buffer ownership,
@@ -448,24 +448,24 @@ Validation evidence for the gororoba_algebra Vulkan paths:
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features vulkan --test eta_matrix_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features vulkan --test imbalance_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features vulkan \
   --test graph_construction_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features vulkan --test dimensional_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features vulkan --test voudon_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 ```
 
 ### H4 -- gororoba_algebra cubecl paths + 3-way parity (~2-3 hours)
@@ -509,49 +509,49 @@ Validation evidence for the gororoba_algebra cubecl paths:
 
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
-  --no-default-features --features cubecl --lib --profile release-gate \
+  --no-default-features --features cubecl --lib --profile validation \
   eta_cubecl -- --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features 'vulkan cubecl' \
   --test eta_matrix_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
-  --no-default-features --features cubecl --lib --profile release-gate \
+  --no-default-features --features cubecl --lib --profile validation \
   imbalance_cubecl -- --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features 'vulkan cubecl' \
   --test imbalance_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
-  --no-default-features --features cubecl --lib --profile release-gate \
+  --no-default-features --features cubecl --lib --profile validation \
   graph_cubecl -- --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features 'vulkan cubecl' \
   --test graph_construction_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
-  --no-default-features --features cubecl --lib --profile release-gate \
+  --no-default-features --features cubecl --lib --profile validation \
   dimensional_cubecl -- --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features 'vulkan cubecl' \
   --test dimensional_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
-  --no-default-features --features cubecl --lib --profile release-gate \
+  --no-default-features --features cubecl --lib --profile validation \
   voudon_cubecl -- --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features 'vulkan cubecl' \
   --test voudon_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 ```
 
 ### H5 -- stats_core ultrametric Vulkan + cubecl
@@ -567,30 +567,30 @@ Validation evidence:
 
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p stats_core \
-  --no-default-features --features cubecl --lib --profile release-gate \
+  --no-default-features --features cubecl --lib --profile validation \
   ultrametric_cubecl -- --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p stats_core \
   --no-default-features --features cubecl \
   --test ultrametric_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p stats_core \
-  --no-default-features --features vulkan --profile release-gate
+  --no-default-features --features vulkan --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p stats_core \
   --no-default-features --features vulkan --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p stats_core \
   --no-default-features --features vulkan --lib ultrametric_vulkan \
-  --profile release-gate -- --nocapture --test-threads=1
+  --profile validation -- --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p stats_core \
   --no-default-features --features vulkan \
   --test ultrametric_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture --test-threads=1
+  --profile validation -- --ignored --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p stats_core \
-  --no-default-features --features 'vulkan cubecl' --profile release-gate
+  --no-default-features --features 'vulkan cubecl' --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p stats_core \
   --no-default-features --features 'vulkan cubecl' --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 ```
 
 ### H6 -- Dark-halo ZD cubecl (~2-3 hours)
@@ -609,12 +609,12 @@ Validation evidence:
 
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p lbm_vulkan \
-  --features cubecl --lib --profile release-gate \
+  --features cubecl --lib --profile validation \
   dark_halo_cubecl -- --nocapture
 
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p lbm_vulkan \
   --features cubecl --test dark_halo_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 ```
 
 ### H7 -- GRMHD Vulkan + cubecl advance step (~3-4 hours)
@@ -641,26 +641,26 @@ Validation evidence for the GRMHD Vulkan + cubecl advance path:
 
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p grmhd_core \
-  --no-default-features --features vulkan --lib --profile release-gate \
+  --no-default-features --features vulkan --lib --profile validation \
   vulkan -- --nocapture
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p grmhd_core \
-  --no-default-features --features vulkan --lib --profile release-gate \
+  --no-default-features --features vulkan --lib --profile validation \
   grmhd_vulkan_matches_cpu_reference_for_cuda_style_advance \
   -- --ignored --nocapture
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p grmhd_core \
   --no-default-features --features vulkan --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p grmhd_core \
-  --no-default-features --features cubecl --profile release-gate
+  --no-default-features --features cubecl --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p grmhd_core \
   --no-default-features --features cubecl --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p grmhd_core \
-  --no-default-features --features cubecl --lib --profile release-gate \
+  --no-default-features --features cubecl --lib --profile validation \
   cubecl -- --nocapture
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p grmhd_core \
   --no-default-features --features cubecl --test grmhd_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture
+  --profile validation -- --ignored --nocapture
 lizard crates/grmhd_core/src/gpu.rs crates/grmhd_core/src/vulkan.rs \
   crates/grmhd_core/src/cubecl.rs crates/grmhd_core/src/kernels_grmhd.cu
 cloc crates/grmhd_core/src/gpu.rs crates/grmhd_core/src/vulkan.rs \
@@ -688,8 +688,8 @@ position/direction readback.
 Validation:
 
 ```bash
-cargo test -p optics_core --no-default-features --features vulkan --lib --profile release-gate algebraic_lensing -- --nocapture
-cargo test -p optics_core --no-default-features --features vulkan --lib --profile release-gate algebraic_lensing_vulkan -- --ignored --nocapture
+cargo test -p optics_core --no-default-features --features vulkan --lib --profile validation algebraic_lensing -- --nocapture
+cargo test -p optics_core --no-default-features --features vulkan --lib --profile validation algebraic_lensing_vulkan -- --ignored --nocapture
 lizard crates/optics_core/src/algebraic_lensing_gpu.rs crates/gororoba_gpu_vulkan/src/buffer.rs
 ```
 
@@ -729,37 +729,37 @@ Validation evidence:
 
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p quantum_core \
-  --no-default-features --features cubecl --profile release-gate
+  --no-default-features --features cubecl --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p quantum_core \
   --no-default-features --features cubecl --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p quantum_core \
   --no-default-features --features cubecl --lib peps_cubecl \
-  --profile release-gate
+  --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p quantum_core \
   --no-default-features --features cubecl --test peps_cubecl_parity \
-  --profile release-gate
+  --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p quantum_core \
-  --no-default-features --features 'gpu cubecl' --profile release-gate
+  --no-default-features --features 'gpu cubecl' --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p quantum_core \
   --no-default-features --features 'gpu cubecl' --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p quantum_core \
-  --no-default-features --features vulkan --profile release-gate
+  --no-default-features --features vulkan --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p quantum_core \
   --no-default-features --features vulkan --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p quantum_core \
   --no-default-features --features vulkan --lib peps_vulkan \
-  --profile release-gate -- --nocapture --test-threads=1
+  --profile validation -- --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p quantum_core \
   --no-default-features --features vulkan --test peps_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture --test-threads=1
+  --profile validation -- --ignored --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p quantum_core \
-  --no-default-features --features 'vulkan cubecl' --profile release-gate
+  --no-default-features --features 'vulkan cubecl' --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p quantum_core \
   --no-default-features --features 'vulkan cubecl' --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 ```
 
 ### H11 -- Optics algebraic lensing cubecl
@@ -789,21 +789,21 @@ Validation evidence:
 
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p optics_core \
-  --no-default-features --features cubecl --profile release-gate
+  --no-default-features --features cubecl --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p optics_core \
   --no-default-features --features cubecl --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p optics_core \
   --no-default-features --features cubecl --lib algebraic_lensing \
-  --profile release-gate
+  --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p optics_core \
   --no-default-features --features cubecl \
-  --test algebraic_lensing_cubecl_parity --profile release-gate
+  --test algebraic_lensing_cubecl_parity --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p optics_core \
-  --no-default-features --features 'vulkan cubecl' --profile release-gate
+  --no-default-features --features 'vulkan cubecl' --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p optics_core \
   --no-default-features --features 'vulkan cubecl' --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 ```
 
 ### H12 -- algebra_experimental Voudon stabilizer Vulkan + cubecl
@@ -838,32 +838,32 @@ Validation evidence:
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p algebra_experimental \
   --no-default-features --features cubecl --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p algebra_experimental \
   --no-default-features --features cubecl --lib voudon_stabilizer \
-  --profile release-gate
+  --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p algebra_experimental \
   --no-default-features --features cubecl --test voudon_cubecl_parity \
-  --profile release-gate -- --ignored
+  --profile validation -- --ignored
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p algebra_experimental \
-  --no-default-features --features vulkan --profile release-gate
+  --no-default-features --features vulkan --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p algebra_experimental \
   --no-default-features --features vulkan --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p algebra_experimental \
   --no-default-features --features vulkan --lib voudon_stabilizer \
-  --profile release-gate -- --test-threads=1 --nocapture
+  --profile validation -- --test-threads=1 --nocapture
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p algebra_experimental \
   --no-default-features --features vulkan --test voudon_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture --test-threads=1
+  --profile validation -- --ignored --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p algebra_experimental \
-  --no-default-features --features 'gpu cubecl vulkan' --profile release-gate
+  --no-default-features --features 'gpu cubecl vulkan' --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p algebra_experimental \
   --no-default-features --features 'gpu cubecl vulkan' --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p algebra_experimental \
   --no-default-features --features 'cubecl vulkan' --lib voudon_stabilizer \
-  --profile release-gate -- --test-threads=1 --nocapture
+  --profile validation -- --test-threads=1 --nocapture
 ```
 
 ### H13 -- gororoba_algebra Tensor AVT Vulkan + cubecl
@@ -896,32 +896,32 @@ Validation evidence:
 
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p gororoba_algebra \
-  --no-default-features --features vulkan --profile release-gate
+  --no-default-features --features vulkan --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p gororoba_algebra \
   --no-default-features --features vulkan --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features vulkan --lib tensor_avt \
-  --profile release-gate -- --nocapture --test-threads=1
+  --profile validation -- --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features vulkan --test tensor_avt_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture --test-threads=1
+  --profile validation -- --ignored --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p gororoba_algebra \
-  --no-default-features --features cubecl --profile release-gate
+  --no-default-features --features cubecl --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p gororoba_algebra \
   --no-default-features --features cubecl --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features cubecl --lib tensor_avt \
-  --profile release-gate -- --nocapture --test-threads=1
+  --profile validation -- --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p gororoba_algebra \
   --no-default-features --features cubecl --test tensor_avt_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture --test-threads=1
+  --profile validation -- --ignored --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p gororoba_algebra \
-  --no-default-features --features 'vulkan cubecl' --profile release-gate
+  --no-default-features --features 'vulkan cubecl' --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p gororoba_algebra \
   --no-default-features --features 'vulkan cubecl' --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 ```
 
 ## Shared component strengthening
@@ -973,19 +973,19 @@ Validation:
 
 ```bash
 CARGO_TARGET_DIR=.cache/gate-target cargo check -p lbm_vulkan \
-  --no-default-features --features cubecl --profile release-gate
+  --no-default-features --features cubecl --profile validation
 CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p lbm_vulkan \
   --no-default-features --features cubecl --all-targets \
-  --profile release-gate -- -D warnings
+  --profile validation -- -D warnings
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p lbm_vulkan \
   --no-default-features --features cubecl --lib sparse_lbm \
-  --profile release-gate -- --nocapture --test-threads=1
+  --profile validation -- --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p lbm_vulkan \
   --no-default-features --features cubecl --test sparse_lbm_vulkan_parity \
-  --profile release-gate -- --ignored --nocapture --test-threads=1
+  --profile validation -- --ignored --nocapture --test-threads=1
 CARGO_TARGET_DIR=.cache/gate-target cargo test -p lbm_vulkan \
   --no-default-features --features cubecl --test sparse_lbm_cubecl_parity \
-  --profile release-gate -- --ignored --nocapture --test-threads=1
+  --profile validation -- --ignored --nocapture --test-threads=1
 ```
 
 The portable scope intentionally does not claim CUDA managed-memory

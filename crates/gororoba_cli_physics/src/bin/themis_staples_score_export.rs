@@ -29,7 +29,7 @@ use chrono::{DateTime, Duration, DurationRound, Utc};
 use clap::Parser;
 use gororoba_cli_physics::staple_associator::{joint_associator_norms, staple_embedding};
 use gororoba_cli_physics::staple_controls::{
-    permute_channels, six_sample_baselines, SparseCubicTensor,
+    SparseCubicTensor, permute_channels, six_sample_baselines,
 };
 use rayon::prelude::*;
 use std::{fs, io::Write, path::PathBuf};
@@ -84,8 +84,8 @@ fn parse_timestamp(s: &str) -> Option<DateTime<Utc>> {
 }
 
 fn read_catalog(path: &PathBuf) -> Result<Vec<DateTime<Utc>>> {
-    let mut reader = csv::Reader::from_path(path)
-        .with_context(|| format!("open catalog {}", path.display()))?;
+    let mut reader =
+        csv::Reader::from_path(path).with_context(|| format!("open catalog {}", path.display()))?;
     let ts_col = reader
         .headers()?
         .iter()
@@ -174,8 +174,7 @@ fn score_file(
         .map(|k| {
             let (p, q) = (&rows[k + 3], &rows[k + 4]);
             let (mp, mq) = (bmag[k + 3] + 1e-30, bmag[k + 4] + 1e-30);
-            let cosine =
-                (p[0] * q[0] + p[1] * q[1] + p[2] * q[2]) / (mp * mq);
+            let cosine = (p[0] * q[0] + p[1] * q[1] + p[2] * q[2]) / (mp * mq);
             cosine.clamp(-1.0, 1.0).acos()
         })
         .collect();
@@ -251,8 +250,7 @@ fn main() -> Result<()> {
         .sum();
 
     let mut out = std::io::BufWriter::new(
-        fs::File::create(&args.out)
-            .with_context(|| format!("create {}", args.out.display()))?,
+        fs::File::create(&args.out).with_context(|| format!("create {}", args.out.display()))?,
     );
     writeln!(
         out,

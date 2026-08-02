@@ -50,7 +50,11 @@ pub fn staple_embedding(rows: &[[f64; 3]]) -> Vec<[f64; STAPLE_DIM]> {
         .collect()
 }
 
-fn table_multiply(table: &CdMultTable, a: &[f64; STAPLE_DIM], b: &[f64; STAPLE_DIM]) -> [f64; STAPLE_DIM] {
+fn table_multiply(
+    table: &CdMultTable,
+    a: &[f64; STAPLE_DIM],
+    b: &[f64; STAPLE_DIM],
+) -> [f64; STAPLE_DIM] {
     let mut out = [0.0_f64; STAPLE_DIM];
     for (i, &ai) in a.iter().enumerate() {
         if ai == 0.0 {
@@ -73,10 +77,7 @@ fn norm(v: &[f64; STAPLE_DIM]) -> f64 {
 /// Entry k is |(V_k V_{k+1}) V_{k+2} - V_k (V_{k+1} V_{k+2})|; when
 /// `normalized` is set, each entry is divided by |V_k| |V_{k+1}| |V_{k+2}|
 /// (plus 1e-30 to guard empty windows).
-pub fn joint_associator_norms(
-    staples: &[[f64; STAPLE_DIM]],
-    normalized: bool,
-) -> Vec<f64> {
+pub fn joint_associator_norms(staples: &[[f64; STAPLE_DIM]], normalized: bool) -> Vec<f64> {
     if staples.len() < 3 {
         return Vec::new();
     }
@@ -179,7 +180,12 @@ mod tests {
 
     #[test]
     fn staple_embedding_packs_four_lags_with_magnitude() {
-        let rows = [[3.0, 4.0, 0.0], [0.0, 0.0, 1.0], [1.0, 0.0, 0.0], [0.0, 2.0, 0.0]];
+        let rows = [
+            [3.0, 4.0, 0.0],
+            [0.0, 0.0, 1.0],
+            [1.0, 0.0, 0.0],
+            [0.0, 2.0, 0.0],
+        ];
         let staples = staple_embedding(&rows);
         assert_eq!(staples.len(), 1);
         let v = &staples[0];
@@ -203,7 +209,10 @@ mod tests {
             })
             .collect();
         for a in joint_associator_norms(&staples, false) {
-            assert!(a.abs() < 1e-12, "quaternionic associator must vanish, got {a}");
+            assert!(
+                a.abs() < 1e-12,
+                "quaternionic associator must vanish, got {a}"
+            );
         }
     }
 

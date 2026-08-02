@@ -412,7 +412,7 @@ confirmed_examples = [
     "data/external/ provenance hashing (270 records).",
     "Registry counter gap 485 vs 452 (documented-by-design compat filtering).",
 ]
-resolution_pattern = "Keep default network features empty; route fetches through explicit provider binaries; hash and index external artifacts; mutate registry counters only via gororoba-db -> provenance export-control-plane -> integrity-resolution, never by hand-editing the AUTO-GENERATED TOMLs."
+resolution_pattern = "Keep default network features empty; route fetches through explicit provider binaries; hash and index external artifacts; mutate registry counters only via gororoba-db -> provenance export-control-plane -> registry-integrity, never by hand-editing the AUTO-GENERATED TOMLs."
 falsifiable_acceptance = "cargo check -p data_core --no-default-features succeeds; make governance-gate-readonly passes (schema_signatures match); no registry counter is hand-edited (git blame shows export-tool authorship)."
 status = "controlled"
 predecessor_ids = ["DEBT-DATA-PROVENANCE", "DEBT-EXPERIMENT-1"]
@@ -559,7 +559,7 @@ magnitude_reproduce = "ls plans/*.toml | wc -l ; git branch | wc -l ; git worktr
 confirmed_examples = [
     "plans/archive/ holds 10 retired plans (lifecycle discipline working).",
     "Branch-lifecycle ADR (docs/adr/branch-lifecycle.md) governs worktree-agent cleanup.",
-    "Registry mutation workflow: gororoba-db -> provenance export -> integrity-resolution (AGENTS.md).",
+    "Registry mutation workflow: gororoba-db -> provenance export -> registry-integrity (AGENTS.md).",
 ]
 resolution_pattern = "Archive superseded plans promptly; delete zero-unique-commit branches; always git log before push when agents run concurrently; mutate the registry only through the canonical CLI chain; keep one authoritative roadmap (this file) rather than parallel competing plans."
 falsifiable_acceptance = "At most one authoritative active debt roadmap exists; no branch with zero unique commits persists; every registry-counter change in git history is authored by the export tool, not a hand edit."
@@ -703,7 +703,7 @@ tasks = [
     "Add a comment-resident TODO/FIXME shadow metric (comment-preserving scan, registry_mirrors and meta-tooling excluded) alongside the stripped metric so both populations are visible.",
     "Extend the marker scan to kernel-source extensions (.cu, .wgsl) -- lbm_3d_cuda/src/kernels_dark_halo.cu carries 4 real markers today.",
     "Extend the allow-rationale audit to all #[allow] attributes (dead_code included) or record a scoping decision in the metric taxonomy doc; current bare-allow census ~170 of 282.",
-    "Resync registry/project.toml binary_count to 484 and re-anchor proof_files to a named population (tracked .v under proofs/) via gororoba-db -> provenance export-control-plane -> make integrity-resolution; guard the known complete_experiment_count zeroing side-effect and revert it after the run.",
+    "Resync registry/project.toml binary_count to 484 and re-anchor proof_files to a named population (tracked .v under proofs/) via gororoba-db -> provenance export-control-plane -> make registry-integrity; guard the known complete_experiment_count zeroing side-effect and revert it after the run.",
     "After the exclusion fix lands, emit a clean anchored snapshot and advance strict_gate_baseline in [meta] above (the raw 2026-07-09 snapshot itself carries the contamination in [totals] and must not become the comparison baseline).",
 ]
 acceptance_hooks = [
@@ -961,11 +961,11 @@ row_id = "p0-document-index"
 priority = "P0"
 status = "closed"
 owner_surface = "registry/markdown_owner_map.toml; registry/knowledge_sources.toml; registry/markdown_governance.toml; registry/canonical/control_plane.sqlite3"
-claim = "The Markdown inventory, governance overlay, and SQLite document search index contain the same 128-document set."
-evidence_refs = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/registry_canonical_architecture.md", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/canonical/control_plane.sqlite3"]
-falsifier = "markdown-registry verify-gate-all, governance-verify markdown-parity, or a provenance index reports a document-count or path mismatch"
+claim = "The Markdown inventory, governance overlay, and SQLite document search index contain the same 131-document set."
+evidence_refs = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/registry_canonical_architecture.md", "docs/engineering/validation-workflow-rca-2026_08_02.md", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/canonical/control_plane.sqlite3"]
+falsifier = "markdown-registry verify-all, governance-verify validate-all, or a provenance index reports a document-count or path mismatch"
 next_action = "Regenerate the two Markdown registry views after every governed Markdown change, then reindex SQLite."
-closure_condition = "The generators emit 128 rows, provenance indexes documents=128, and the inventory, owner-map, parity, header, and mirror checks pass."
+closure_condition = "The generators emit 131 rows, provenance indexes documents=131, and the inventory, owner-map, parity, header, and mirror checks pass."
 document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/registry_canonical_architecture.md"]
 
 [[frontier]]
@@ -976,21 +976,21 @@ owner_surface = "registry/canonical/control_plane.sqlite3 planning tables and ty
 claim = "Obsolete endpoint-probing work and stale registry views reconcile through retained evidence while live Voyager, optics, and missing external-input boundaries remain open."
 evidence_refs = ["data/output/pds_sbn_nh_swap_endpoints_2026_05_10.txt", "docs/engineering/local-governance-gate-evidence-2026_08_01.md", "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md", "reports/gates/2026-08-01/212938/summary.md", "registry/todo.toml", "registry/roadmap.toml", "registry/next_actions.toml"]
 falsifier = "A closed row lacks the named retained artifact, or a live row is marked closed while its stated falsifier remains possible."
-next_action = "Preserve the explicit T-051 external-input boundary, keep T-058 and WS-OPTICS-GR-001 open, and admit the two missing datasets before the next full Rust gate."
-closure_condition = "T-062 and T-063 are done with evidence references; registry acceptance passes; T-051 records its two missing external-input falsifiers; and T-058 plus WS-OPTICS-GR-001 retain explicit open boundaries."
+next_action = "Preserve the explicit T-058 external-input boundary, keep WS-OPTICS-GR-001 open, and admit the two missing datasets before the next full Rust validation."
+closure_condition = "T-062 and T-063 are done with evidence references; T-051 records its interrupted legacy run and current passing validation result; and T-058 plus WS-OPTICS-GR-001 retain explicit open boundaries."
 document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
 
 [[frontier]]
-row_id = "p0-local-gate-substitute"
+row_id = "p0-validation-pipeline"
 priority = "P0"
 status = "closed"
-owner_surface = "Makefile; .githooks/pre-push; local Rust and registry gate commands"
-claim = "The local gate provides a reproducible substitute for dormant or incomplete remote workflow coverage."
-evidence_refs = ["Makefile", ".githooks/pre-push", "docs/engineering/local-governance-gate-evidence-2026_08_01.md", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md"]
-falsifier = "A required local gate is absent, silently non-blocking, or cannot be replayed from a clean isolated worktree."
-next_action = "Repeat the local gate after governed changes and retain a dated result for each release batch."
-closure_condition = "The local governance gate, Markdown registry checks, ASCII, terminology, and scoped Rust lanes pass with retained output and no bypass flags; the broader registry-acceptance target and audit-deep remain separate lanes."
-document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/local-governance-gate-evidence-2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+owner_surface = "Makefile; .githooks/pre-push; xtask/src/main.rs; local Rust and registry validation commands"
+claim = "The active validation pipeline provides a reproducible substitute for dormant or incomplete remote workflow coverage without repeating the same verifier or build session."
+evidence_refs = ["Makefile", ".githooks/pre-push", "xtask/src/main.rs", "docs/engineering/validation-workflow-rca-2026_08_02.md", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md"]
+falsifier = "A required validation is absent, silently non-blocking, invokes a compatibility alias in an active path, rebuilds the shared tool bundle more than once per run, or cannot be replayed from a clean isolated worktree."
+next_action = "Use the retained validation report as the baseline, then measure future dependency-closure reductions before changing the broad validation package boundary."
+closure_condition = "validate-local, validate-ci, validate-registry, validate-static, ASCII, terminology, and scoped Rust lanes pass with retained output and no bypass flags; the shared validation tools build once; legacy acceptance and formatter-baseline work remain identified as historical or separate compatibility surfaces."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/validation-workflow-rca-2026_08_02.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
 
 [[frontier]]
 row_id = "p1-voyager-bartol-amda-comparator"

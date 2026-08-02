@@ -7,10 +7,11 @@
 .PHONY: heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast data-core-pure-check
+.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-lock-status data-core-pure-check
+.PHONY: gate-local gate-local-xtask gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
-.PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly
+.PHONY: registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validate-registry-integrity validate-rust-integrity
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
 .PHONY: verify-pantheon-physicsforge-mapping verify-pantheon-physicsforge-license-headers
@@ -37,7 +38,7 @@
 .PHONY: registry-embedded-markdown registry-verify-embedded-markdown
 .PHONY: registry-build-semantic-atoms registry-verify-semantic-atoms registry-semantic-atoms-gate
 .PHONY: registry-build-evidence-provenance registry-verify-evidence-provenance registry-evidence-provenance-gate
-.PHONY: integrity-resolution registry-build-integrity-resolution registry-verify-integrity-resolution registry-integrity-resolution-gate
+.PHONY: registry-integrity integrity-resolution registry-build-integrity-resolution registry-verify-integrity-resolution registry-integrity-resolution-gate
 .PHONY: registry-build-execution-planning registry-verify-execution-planning registry-execution-planning-gate
 .PHONY: registry-strict-toml-batch1-build registry-verify-strict-toml-batch1 registry-strict-toml-batch1 registry-wave5-batch1-build registry-verify-wave5-batch1 registry-wave5-batch1
 .PHONY: registry-strict-toml-batch2-build registry-verify-strict-toml-batch2 registry-strict-toml-batch2 registry-wave5-batch2-build registry-verify-wave5-batch2 registry-wave5-batch2 registry-acceptance-gate registry-wave5
@@ -63,7 +64,7 @@
 .PHONY: cpd-audit cpd-audit-strict cpd-audit-tooling cpd-audit-generated patch-static-mirror-headers cargo-cache-status cargo-cache-prune cargo-cache-smoke
 .PHONY: cd-row-upgrade-batch cd-row-upgrade-jacobson cd-row-upgrade-freudenthal
 
-.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check gate-local gate-ci-registry gate-ci-rust gate-audit gate-audit-fast pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly
+.NOTPARALLEL: bootstrap-dev check smoke integrity integrity-rust validate-rust-integrity rust-smoke rust-regression rust-regression-scoped heavy cargo-deny-check validate-local validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-supply-chain validate-dataset-experiments pre-push-gate pre-push-gate-scoped pre-push-gate-strict governance-gate governance-gate-readonly registry-control-plane-gate-readonly registry-acceptance-gate-readonly validate-registry validation-tools
 
 # Non-cargo make fanout: 75% of logical CPUs, minimum 1.
 # Cargo and Rust test runners use a shared worker budget equal to logical threads / 2.
@@ -130,7 +131,7 @@ PGO_DIR ?= /tmp/pgo-data
 SYNTHESIS_CONTRACT_DATE ?= 2026_02_14
 SYNTHESIS_CONTRACT_REPORT ?= reports/synthesis_execution_contract_$(SYNTHESIS_CONTRACT_DATE).toml
 PROFILE_TIMESTAMP := $(shell date +%Y-%m-%d/%H%M%S)
-PROFILE_ROOT ?= reports/gates/profiles/$(PROFILE_TIMESTAMP)
+PROFILE_ROOT ?= reports/validation/profiles/$(PROFILE_TIMESTAMP)
 
 CD_CACHE_ROOT ?= /home/eirikr/Documents/Projects/CayleyDickson
 CD_ROW_UPGRADE_OPERATOR ?= Codex
@@ -193,14 +194,12 @@ fmt:
 fmt-check:
 	DPRINT_CACHE_DIR=$(DPRINT_CACHE_DIR) dprint check
 
-# ---- Parallelized lint gates ----
-# Tier 1: lightweight checks (no cargo compilation, safe to parallelize).
-# Tier 2: cargo-heavy checks (require compilation, serialize).
-#
-# gate-fast: Tier 1 only (<10s). Use for pre-push and rapid feedback.
-# gate-deep: Tier 1 + Tier 2 (minutes). Use for CI and thorough audits.
+# ---- Validation and audit commands ----
+# Lightweight checks run without Rust compilation. Cargo-heavy checks remain
+# opt-in and serialize through the repository worker budget.
 
-.PHONY: gate-fast gate-warm gate-deep audit-deep typos machete audit geiger supply-chain-gate
+.PHONY: validate-static validate-static-and-registry validate-comprehensive
+.PHONY: audit-comprehensive audit-comprehensive-structured validate-supply-chain validate-dataset-experiments gate-fast gate-warm gate-deep audit-deep audit-deep-structured typos machete audit geiger supply-chain-gate ndlb-gate
 
 # Tier 1 targets (no cargo lock contention, run in parallel)
 typos:
@@ -217,12 +216,12 @@ geiger:
 	cd crates/gororoba_algebra && cargo geiger 2>&1 | tail -5
 	cd crates/provenance_store && cargo geiger 2>&1 | tail -5
 
-# supply-chain-gate: aggregated check chaining cargo-deny + machete +
+# validate-supply-chain: aggregated check chaining cargo-deny + machete +
 # a register_custom_getrandom non-existence grep (keeps RUSTSEC-2026-0097
 # exposure provably zero per docs/adr/rustsec-dispositions.md).
-# Runs deterministically; safe in pre-push-gate-strict.
-supply-chain-gate:
-	@echo "=== supply-chain-gate ==="
+# Runs deterministically; safe in validate-comprehensive.
+validate-supply-chain:
+	@echo "=== validate-supply-chain ==="
 	@fail=0; \
 	echo "[supply-chain] cargo deny --workspace check ..."; \
 	cargo deny --workspace check 2>&1 | tail -2 | grep -E 'ok|advisories ok, bans ok' || { echo "FAIL: cargo deny check"; fail=1; }; \
@@ -234,51 +233,59 @@ supply-chain-gate:
 		grep -rn 'register_custom_getrandom' crates/ --include='*.rs'; \
 		fail=1; \
 	fi; \
-	if [ "$$fail" -ne 0 ]; then echo "=== supply-chain-gate: FAILED ==="; exit 1; fi
-	@echo "=== supply-chain-gate: PASSED ==="
+	if [ "$$fail" -ne 0 ]; then echo "=== validate-supply-chain: FAILED ==="; exit 1; fi
+	@echo "=== validate-supply-chain: PASSED ==="
 
-# gate-fast: parallel Tier 1 checks (no cargo compilation required).
-# Runs dprint, typos, and machete concurrently. ~5s on warm cache.
-# WHY: Catches formatting, spelling, and dead-dep issues before expensive compilation.
-# NOTE: ansi-check and terminology-gate use `cargo run` so they belong in Tier 2
-# on a cold cache but are fast (~0s) on a warm cache. They run in gate-warm.
-gate-fast:
-	@echo "=== gate-fast: parallel zero-compile checks ==="
-	@fail=0; \
-	DPRINT_CACHE_DIR=$(DPRINT_CACHE_DIR) dprint check || { echo "FAIL: dprint check"; fail=1; }; \
-	cargo machete || { echo "FAIL: cargo-machete (unused deps detected)"; fail=1; }; \
-	typos || echo "WARN: typos found issues (review above, non-blocking for now)"; \
-	if [ "$$fail" -ne 0 ]; then echo "=== gate-fast: FAILED ==="; exit 1; fi
-	@echo "=== gate-fast: PASSED ==="
+supply-chain-gate: validate-supply-chain
+	@echo "DEPRECATED: make supply-chain-gate is a compatibility alias for make validate-supply-chain."
 
-# gate-warm: gate-fast + governance checks that reuse cached cargo binaries.
+# validate-static: lightweight hygiene and dependency checks.
+# Runs the cached ASCII/terminology check and cargo-machete without compiling
+# the workspace Rust test closure. Formatter convergence remains the explicit
+# `fmt-check` surface until its 59-file baseline is reconciled deliberately.
+validate-static:
+	@echo "=== validate-static: lightweight hygiene checks ==="
+	$(MAKE) check
+	cargo machete
+	@echo "=== validate-static: PASSED ==="
+
+# validate-static-and-registry: lightweight checks plus registry policy checks.
 # ~10s if binaries are cached, ~2min on cold cache (first compilation).
-gate-warm: gate-fast
-	@echo "=== gate-warm: governance checks (cached binaries) ==="
-	$(MAKE) ansi-check
-	$(MAKE) terminology-gate
-	$(MAKE) governance-gate-readonly
-	@echo "=== gate-warm: PASSED ==="
+validate-static-and-registry: validate-static
+	@echo "=== validate-static-and-registry: policy checks ==="
+	$(MAKE) validate-governance
+	@echo "=== validate-static-and-registry: PASSED ==="
 
-# gate-deep: gate-warm + full cargo-heavy checks (clippy, tests, audits).
+# validate-comprehensive: static, registry, Rust, and dependency checks.
 # WHY: Full CI-grade audit. Catches everything including API compat and advisories.
-gate-deep: gate-warm
-	@echo "=== gate-deep: cargo-heavy checks (serialized) ==="
-	$(MAKE) rust-clippy
+validate-comprehensive: validate-static-and-registry
+	@echo "=== validate-comprehensive: Rust and dependency checks ==="
+	# rust-regression owns the clippy prerequisite and the two nextest profiles.
 	$(MAKE) rust-regression
 	cargo audit
 	$(MAKE) cargo-deny-check
-	@echo "=== gate-deep: PASSED ==="
+	@echo "=== validate-comprehensive: PASSED ==="
 
-# audit-deep: opt-in composite audit. NOT required by default make or CI on every PR.
+# Compatibility aliases. New automation uses the descriptive validate-* names.
+gate-fast: validate-static
+	@echo "DEPRECATED: make gate-fast is a compatibility alias for make validate-static."
+
+gate-warm: validate-static-and-registry
+	@echo "DEPRECATED: make gate-warm is a compatibility alias for make validate-static-and-registry."
+
+gate-deep: validate-comprehensive
+	@echo "DEPRECATED: make gate-deep is a compatibility alias for make validate-comprehensive."
+
+# audit-comprehensive: opt-in composite audit. It is not required by default
+# make or CI on every pull request.
 # WHY: Aggregates all expensive one-off audit tools (semver, deny, dep-audit, CPD,
 #      docs-freshness) into a single reviewable target for pre-release or periodic runs.
-# HOW: make audit-deep  (standalone, no preconditions required)
+# HOW: make audit-comprehensive (standalone, no preconditions required)
 # NOTE: cpd-audit requires pmd; the target will self-report if pmd is absent.
-audit-deep:
-	@echo "=== audit-deep: full opt-in audit suite ==="
+audit-comprehensive:
+	@echo "=== audit-comprehensive: full opt-in audit suite ==="
 	$(MAKE) rust-clippy
-	@# rust-semver-check is intentionally SKIPPED in audit-deep.
+	@# rust-semver-check is intentionally skipped in audit-comprehensive.
 	@# WHY: cargo-semver-checks --baseline-rev checks out the baseline tag into a temp dir.
 	@#   fwht = { path = "../cratesgororobas/fwht" } in the root Cargo.toml is an external
 	@#   sibling-directory path dep that cannot be resolved from a git temp checkout.
@@ -287,26 +294,26 @@ audit-deep:
 	@#   crates.io (see TODO at Cargo.toml line 211) or into the workspace.
 	$(MAKE) cargo-deny-check
 	$(MAKE) dep-audit
-	@# docs-freshness is intentionally SKIPPED in audit-deep.
+	@# docs-freshness is intentionally skipped in audit-comprehensive.
 	@# WHY: cargo doc --workspace fails with -D rustdoc::broken-intra-doc-links because
 	@#   mathematical notation like [a,b,c] and X[t] in doc comments is misread as doc
 	@#   links. Affected crates: algebra_analysis, algebra_experimental, brown_1972,
 	@#   wilmot_2025 (and potentially more). These are pre-existing; run separately as
 	@#   `make docs-freshness` to track progress. Fix: escape brackets as \[a,b,c\].
 	$(MAKE) cpd-audit
-	@echo "=== audit-deep: PASSED ==="
+	@echo "=== audit-comprehensive: PASSED ==="
+
+audit-deep: audit-comprehensive
+	@echo "DEPRECATED: make audit-deep is a compatibility alias for make audit-comprehensive."
 
 test: rust-regression
 
-# Build repo_utilities once, then invoke the binary directly.
-# `cargo run --release ...` triggers a full workspace metadata walk on
-# every invocation (~53s cold per fresh cargo process). A single
-# `cargo build` at the top of `check` lets subsequent ansi-check and
-# terminology-gate calls execute the cached binary directly (<1s each).
-REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/release/repo-utilities
+# Build repo_utilities once in the shared validation profile, then invoke the
+# binary directly. A separate release-profile build adds a second target tree
+# without improving the ASCII or terminology checks.
+REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/validation-tools/repo-utilities
 
-check:
-	@$(CARGO_ENV) cargo build --release -p repo_utilities --bin repo-utilities
+check: $(REPO_UTILITIES_BIN)
 	@$(REPO_UTILITIES_BIN) ansi-check --check
 	@$(REPO_UTILITIES_BIN) terminology-gate
 	$(MAKE) verify-no-reports-writes
@@ -314,20 +321,19 @@ check:
 
 # Governance verifier targets
 registry-verify-markdown-governance:
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-removal-policy
+	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify markdown-removal-policy
 
-# Governance gate binaries are cached at stable paths under
-# $(GATE_TOOLS_DIR)/. Cache vars and rules live below where
-# GATE_TOOLS_DIR is defined (search "MARKDOWN_REGISTRY_CACHE").
+# Registry validation binaries are cached at stable paths under
+# $(VALIDATION_TOOLS_DIR)/. Cache vars and rules live below where
+# VALIDATION_TOOLS_DIR is defined (search "MARKDOWN_REGISTRY_CACHE").
 # This target consumes those cache entries.
-.SECONDEXPANSION:
-governance-gate-readonly: $$(MARKDOWN_REGISTRY_CACHE) $$(GOVERNANCE_VERIFY_CACHE) $$(INTEGRITY_RESOLUTION_CACHE)
-	$(MARKDOWN_REGISTRY_CACHE) verify-gate-all
-	$(GOVERNANCE_VERIFY_CACHE) gate-all
+validate-governance: registry-validation-tools
+	$(MARKDOWN_REGISTRY_CACHE) verify-all
+	$(GOVERNANCE_VERIFY_CACHE) validate-all
 	@echo ""
 	@echo "=========================================="
-	@echo "READ-ONLY GOVERNANCE GATE: PASSED"
+	@echo "REGISTRY GOVERNANCE VALIDATION: PASSED"
 	@echo "=========================================="
 	@echo "[done] Markdown inventory validated (SQLite-first with TOML compatibility checks)"
 	@echo "[done] Markdown owner map verified"
@@ -341,150 +347,162 @@ governance-gate-readonly: $$(MARKDOWN_REGISTRY_CACHE) $$(GOVERNANCE_VERIFY_CACHE
 	@echo "SQLite-first governance checks are operational."
 	@echo "=========================================="
 
-governance-gate: governance-gate-readonly ndlb-gate
-	@echo "OK: governance-gate is a compatibility alias for governance-gate-readonly."
+governance-gate-readonly: validate-governance
+	@echo "DEPRECATED: make governance-gate-readonly is a compatibility alias for make validate-governance."
+
+governance-gate: validate-governance validate-dataset-experiments
+	@echo "DEPRECATED: make governance-gate is a compatibility alias for make validate-governance plus make validate-dataset-experiments."
 
 # NDLB gate: No-Dataset-Left-Behind invariant. Every data/external/*
 # subdir must be one of: active (experiment-bound), synthetic
 # (local artifact), or deferred (tombstoned with a defer_to_sprint
 # target). Unknown or dark dirs fail fast.
-ndlb-gate:
-	@echo "[ndlb-gate] validating dataset/server/experiment invariants..."
-	$(CARGO_ENV) cargo run --profile release-gate -q -p gororoba_cli_data --bin ndlb-gate
-	@echo "[ndlb-gate] OK."
+validate-dataset-experiments:
+	@echo "[validate-dataset-experiments] validating dataset/server/experiment invariants..."
+	$(CARGO_ENV) cargo run --profile validation -q -p gororoba_cli_data --bin ndlb-gate
+	@echo "[validate-dataset-experiments] OK."
+
+ndlb-gate: validate-dataset-experiments
+	@echo "DEPRECATED: make ndlb-gate is a compatibility alias for make validate-dataset-experiments."
 
 wave6-gate: governance-gate
 	@echo "DEPRECATED: make wave6-gate is a legacy alias. Use make governance-gate."
 
-# Cache gate-tool binaries and host-profile output. Each
+# Cache validation binaries and host-profile output. Each
 # `cargo run -q -p X --bin Y` invocation pays ~30-60s of metadata walk
-# overhead even when nothing changed. Stable paths with Make-tracked
-# dependency timestamps skip cargo entirely when source is unchanged.
-GATE_TOOLS_DIR := $(REPO_CARGO_TARGET_DIR)/gate-tools
-WORKSPACE_ROUTING_CACHE := $(GATE_TOOLS_DIR)/workspace-routing
-HOST_PROFILE_CACHE := $(GATE_TOOLS_DIR)/host-profile.sh
+# overhead even when nothing changed. Stable paths and one Cargo build per
+# dependency tier eliminate repeated package selection, linking, and process
+# startup without forcing a local source edit to build the broad registry CLI.
+VALIDATION_TOOLS_DIR := $(REPO_CARGO_TARGET_DIR)/validation-tools
+WORKSPACE_ROUTING_CACHE := $(VALIDATION_TOOLS_DIR)/workspace-routing
+HOST_PROFILE_CACHE := $(VALIDATION_TOOLS_DIR)/host-profile.sh
+REPO_UTILITIES_SOURCE_DEPS := $(shell find crates/repo_utilities -type f \( -name '*.rs' -o -name 'Cargo.toml' \) -print) \
+                              Cargo.toml Cargo.lock rust-toolchain.toml
 
-# workspace-routing dep set: only the bin source + the slim governance package
-# manifest.  The bin imports only external crates (anyhow, clap, std), so
-# workspace crate changes do not invalidate it.
-WORKSPACE_ROUTING_DEPS := crates/gororoba_cli_data/src/bin/workspace_routing.rs \
-                          crates/gororoba_cli_governance/Cargo.toml
-
-# xtask host-profile dep set: xtask's main.rs (where detect_host_profile
-# lives) plus the xtask manifest. Most xtask edits won't touch the
-# host-profile codepath, so we accept slight over-invalidation.
-HOST_PROFILE_DEPS := xtask/src/main.rs xtask/Cargo.toml
-
-$(WORKSPACE_ROUTING_CACHE): $(WORKSPACE_ROUTING_DEPS)
-	@mkdir -p $(GATE_TOOLS_DIR)
-	@echo "[gate-tools] rebuilding workspace-routing (source changed)"
-	@$(CARGO_ENV) cargo build --release -q -p gororoba_cli_governance --bin workspace-routing-proxy
-	@cp -f $(REPO_CARGO_TARGET_DIR)/release/workspace-routing-proxy $@
+$(REPO_UTILITIES_BIN): $(REPO_UTILITIES_SOURCE_DEPS)
+	@mkdir -p $(VALIDATION_TOOLS_DIR)
+	@echo "[validation-tools] building repo-utilities in the validation profile"
+	@$(CARGO_ENV) cargo build --profile validation -p repo_utilities --bin repo-utilities
+	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/repo-utilities $@
 	@touch $@
 
-$(HOST_PROFILE_CACHE): $(HOST_PROFILE_DEPS)
-	@mkdir -p $(GATE_TOOLS_DIR)
-	@echo "[gate-tools] refreshing host-profile snapshot (xtask source changed)"
-	@$(CARGO_ENV) cargo run -q -p xtask -- host-profile --format shell > $@.tmp
+# The core bundle depends on workspace crates through provenance and verified
+# data paths. Track the full Rust and manifest source set so a copied binary
+# cannot outlive a changed transitive dependency. Cargo's incremental cache
+# still limits recompilation to the actual dependency closure.
+CORE_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs' -o -name 'Cargo.toml' \) -print) \
+                               Cargo.toml Cargo.lock rust-toolchain.toml Makefile
+
+# The routing proxy and xtask share one slim Cargo session. The local
+# validation path needs both, while the broad registry bundle below remains a
+# separate tier so ordinary Rust edits do not pay for all registry binaries.
+XTASK_CACHE := $(VALIDATION_TOOLS_DIR)/xtask
+CORE_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/core-validation.stamp
+
+$(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS)
+	@mkdir -p $(VALIDATION_TOOLS_DIR)
+	@echo "[validation-tools] building routing and xtask tools in one Cargo session"
+	@$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy -p xtask --bin xtask
+	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/workspace-routing-proxy $(WORKSPACE_ROUTING_CACHE)
+	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/xtask $(XTASK_CACHE)
+	@touch $(CORE_VALIDATION_STAMP) $(WORKSPACE_ROUTING_CACHE) $(XTASK_CACHE)
+
+$(WORKSPACE_ROUTING_CACHE) $(XTASK_CACHE): $(CORE_VALIDATION_STAMP)
+	@touch $@
+
+$(HOST_PROFILE_CACHE): $(CORE_VALIDATION_STAMP)
+	@mkdir -p $(VALIDATION_TOOLS_DIR)
+	@echo "[validation-tools] refreshing host-profile snapshot (xtask source changed)"
+	@$(XTASK_CACHE) host-profile --format shell > $@.tmp
 	@mv $@.tmp $@
 
-# The xtask binary is cached for the optional gate-local-xtask driver.
-# Source-dep tracking skips cargo's metadata walk when xtask source is
-# unchanged.
-XTASK_CACHE := $(GATE_TOOLS_DIR)/xtask
+# Cache every read-only registry and Rust-integrity executable from one
+# validation-profile Cargo invocation. The source set deliberately covers all
+# workspace Rust and manifest files, so a transitive code change cannot leave a
+# stale copied executable behind. Registry TOML edits do not rebuild tools:
+# every executable reads the current working tree at runtime.
+REGISTRY_VALIDATION_BINS := claims-verify registry-check test-inventory \
+                            semantic-atoms evidence-provenance registry-integrity \
+                            execution-planning governance-verify markdown-registry \
+                            project-counter-sync provenance
+REGISTRY_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs' -o -name 'Cargo.toml' \) -print) \
+                                   Cargo.toml Cargo.lock rust-toolchain.toml Makefile
+REGISTRY_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/registry-validation.stamp
+REGISTRY_VALIDATION_CACHE_FILES := $(addprefix $(VALIDATION_TOOLS_DIR)/,$(REGISTRY_VALIDATION_BINS))
+MARKDOWN_REGISTRY_CACHE := $(VALIDATION_TOOLS_DIR)/markdown-registry
+GOVERNANCE_VERIFY_CACHE := $(VALIDATION_TOOLS_DIR)/governance-verify
+REGISTRY_INTEGRITY_CACHE := $(VALIDATION_TOOLS_DIR)/registry-integrity
+PROJECT_COUNTER_CACHE := $(VALIDATION_TOOLS_DIR)/project-counter-sync
+PROVENANCE_CACHE := $(VALIDATION_TOOLS_DIR)/provenance
 
-# Cache governance gate binaries at stable paths under
-# $(GATE_TOOLS_DIR)/. Without caching, every push that triggers
-# run_governance=True pays a 5m 24s rebuild of these three binaries in
-# release-gate profile, separate from release/dev/test profile caches.
-# The repo_utilities check uses the same cached-binary pattern.
-#
-# Source dep tracking via Make: rebuild triggers ONLY when the bin
-# source or its package manifest changes. Most pushes (including
-# docs/registry-only commits) reuse the cached binaries instantly.
-GOV_GATE_DEPS := crates/gororoba_cli_data/src/bin/markdown_registry.rs \
-                 crates/gororoba_cli_data/src/bin/governance_verify.rs \
-                 crates/gororoba_cli_data/src/bin/integrity_resolution.rs \
-                 crates/gororoba_cli_data/Cargo.toml
-MARKDOWN_REGISTRY_CACHE := $(GATE_TOOLS_DIR)/markdown-registry
-GOVERNANCE_VERIFY_CACHE := $(GATE_TOOLS_DIR)/governance-verify
-INTEGRITY_RESOLUTION_CACHE := $(GATE_TOOLS_DIR)/integrity-resolution
+# One rule produces the complete validation tool set. The stamp is the only
+# Make dependency; the copied binaries are stable execution paths.
+$(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS)
+	@mkdir -p $(VALIDATION_TOOLS_DIR)
+	@echo "[validation-tools] building registry validation tools in one Cargo session"
+	@$(CARGO_ENV) cargo build --profile validation \
+		-p gororoba_cli_data $(foreach binary,$(filter-out provenance,$(REGISTRY_VALIDATION_BINS)),--bin $(binary)) \
+		-p gororoba_cli_provenance --bin provenance
+	@for binary in $(REGISTRY_VALIDATION_BINS); do \
+		cp -f "$(REPO_CARGO_TARGET_DIR)/validation/$$binary" "$(VALIDATION_TOOLS_DIR)/$$binary"; \
+	done
+	@touch $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_VALIDATION_CACHE_FILES)
 
-# Single rule produces all three binaries; use ordering deps so
-# downstream targets can list any subset.
-$(MARKDOWN_REGISTRY_CACHE): $(GOV_GATE_DEPS)
-	@mkdir -p $(GATE_TOOLS_DIR)
-	@echo "[gate-tools] rebuilding governance gate binaries (source changed)"
-	@$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin markdown-registry --bin governance-verify --bin integrity-resolution
-	@cp -f $(REPO_CARGO_TARGET_DIR)/release-gate/markdown-registry $(MARKDOWN_REGISTRY_CACHE)
-	@cp -f $(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify $(GOVERNANCE_VERIFY_CACHE)
-	@cp -f $(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution $(INTEGRITY_RESOLUTION_CACHE)
-	@touch $(MARKDOWN_REGISTRY_CACHE) $(GOVERNANCE_VERIFY_CACHE) $(INTEGRITY_RESOLUTION_CACHE)
+registry-validation-tools: $(REGISTRY_VALIDATION_STAMP)
+	@echo "OK: registry validation tools cached at $(VALIDATION_TOOLS_DIR)/."
+validation-tools: $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE) registry-validation-tools
+	@echo "OK: validation-tools cached at $(VALIDATION_TOOLS_DIR)/."
 
-$(GOVERNANCE_VERIFY_CACHE): $(MARKDOWN_REGISTRY_CACHE)
-	@: # built alongside markdown-registry above
+# validate-local-xtask: opt-in Rust-driven validation. Same result as
+# `make validate-local`, but writes per-phase timing JSONL to
+# data/output/audit/<date>/validation-timing-<unix-ts>.jsonl for regression
+# tracking. Set VALIDATION_DRIVER=xtask to make this the default in CI.
+.PHONY: validate-local-xtask
+validate-local-xtask: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE)
+	@$(XTASK_CACHE) validate-local --routing-bin $(WORKSPACE_ROUTING_CACHE) $(if $(VALIDATION_TIMING_OUT),--timing-json $(VALIDATION_TIMING_OUT),)
 
-$(INTEGRITY_RESOLUTION_CACHE): $(MARKDOWN_REGISTRY_CACHE)
-	@: # built alongside markdown-registry above
-XTASK_DEPS := xtask/src/main.rs xtask/Cargo.toml
+gate-local-xtask: validate-local-xtask
+	@echo "DEPRECATED: make gate-local-xtask is a compatibility alias for make validate-local-xtask."
 
-$(XTASK_CACHE): $(XTASK_DEPS)
-	@mkdir -p $(GATE_TOOLS_DIR)
-	@echo "[gate-tools] rebuilding xtask binary (source changed)"
-	@$(CARGO_ENV) cargo build --release -q -p xtask --bin xtask
-	@cp -f $(REPO_CARGO_TARGET_DIR)/release/xtask $@
-	@touch $@
-
-gate-tools: $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE)
-	@echo "OK: gate-tools cached at $(GATE_TOOLS_DIR)/."
-
-# gate-local-xtask: opt-in Rust-driven gate. Same end result as
-# `make gate-local`, but writes per-phase timing JSONL to
-# data/output/audit/<date>/gate-timing-<unix-ts>.jsonl for regression
-# tracking. Set GATE_DRIVER=xtask to make this the default in CI.
-.PHONY: gate-local-xtask
-gate-local-xtask: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) $(XTASK_CACHE)
-	@$(XTASK_CACHE) gate-local --routing-bin $(WORKSPACE_ROUTING_CACHE) $(if $(GATE_TIMING_OUT),--timing-json $(GATE_TIMING_OUT),)
-
-gate-tools-clean:
+validation-tools-clean:
 	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
-	@echo "OK: gate-tools cache cleared."
+	@echo "OK: validation-tools cache cleared."
 
-# gate-local writes $(GATE_LOCK) with its PID and start time. A sibling
-# `make gate-lock-status` target lets editors check whether a gate is in
+# validate-local writes $(VALIDATION_LOCK) with its PID and start time. A sibling
+# `make validation-lock-status` target lets editors check whether validation is in
 # flight. The lock is removed in a shell trap on EXIT so crashed gates
 # clean up. The lock surfaces edit-during-read hazards before a gate
 # consumes inconsistent source.
-GATE_LOCK := $(REPO_CARGO_TARGET_DIR)/gate-tools/gate-local.lock
+VALIDATION_LOCK := $(REPO_CARGO_TARGET_DIR)/validation-tools/validation.lock
 
-.PHONY: gate-lock-status
-gate-lock-status:
-	@if [ -f "$(GATE_LOCK)" ]; then \
-	    pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(GATE_LOCK)" 2>/dev/null || echo ""); \
-	    started=$$(awk '/^started=/ {sub("started=",""); print}' "$(GATE_LOCK)" 2>/dev/null || echo ""); \
+.PHONY: validation-lock-status
+validation-lock-status:
+	@if [ -f "$(VALIDATION_LOCK)" ]; then \
+	    pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
+	    started=$$(awk '/^started=/ {sub("started=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
 	    if [ -n "$$pid" ] && kill -0 "$$pid" 2>/dev/null; then \
-	        printf 'gate-local IN FLIGHT: pid=%s started=%s\n' "$$pid" "$$started"; \
+        printf 'validate-local IN FLIGHT: pid=%s started=%s\n' "$$pid" "$$started"; \
 	        exit 1; \
 	    else \
-	        printf 'gate-lock stale (pid %s not running); removing\n' "$$pid"; \
-	        rm -f "$(GATE_LOCK)"; \
+        printf 'validation lock stale (pid %s not running); removing\n' "$$pid"; \
+	        rm -f "$(VALIDATION_LOCK)"; \
 	    fi; \
 	else \
-	    echo 'no gate-local in flight'; \
+        echo 'no validate-local in flight'; \
 	fi
 
-gate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
-	@mkdir -p $(dir $(GATE_LOCK))
-	@if [ -f "$(GATE_LOCK)" ]; then \
-	    prev_pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(GATE_LOCK)" 2>/dev/null || echo ""); \
+validate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
+	@mkdir -p $(dir $(VALIDATION_LOCK))
+	@if [ -f "$(VALIDATION_LOCK)" ]; then \
+	    prev_pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
 	    if [ -n "$$prev_pid" ] && kill -0 "$$prev_pid" 2>/dev/null; then \
-	        echo "[gate-local] another gate-local already in flight (pid=$$prev_pid). Wait or `make gate-lock-status`."; \
+        echo "[validate-local] another validation run is in flight (pid=$$prev_pid). Wait or `make validation-lock-status`."; \
 	        exit 1; \
 	    fi; \
-	    rm -f "$(GATE_LOCK)"; \
+	    rm -f "$(VALIDATION_LOCK)"; \
 	fi
-	@trap 'rm -f "$(GATE_LOCK)"' EXIT INT TERM; \
-	printf 'pid=%s\nstarted=%s\n' "$$$$" "$$(date -Iseconds)" > "$(GATE_LOCK)"; \
+	@trap 'rm -f "$(VALIDATION_LOCK)"' EXIT INT TERM; \
+	printf 'pid=%s\nstarted=%s\n' "$$$$" "$$(date -Iseconds)" > "$(VALIDATION_LOCK)"; \
 	set -e; \
 	scope=""; \
 	run_rust="true"; \
@@ -492,8 +510,8 @@ gate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
 	run_check="true"; \
 	eval "$$(cat $(HOST_PROFILE_CACHE))"; \
 	submake_env="WORKER_BUDGET=$$HOST_WORKER_BUDGET CARGO_JOBS=$$HOST_CARGO_JOBS NEXTEST_TEST_THREADS=$$HOST_NEXTEST_TEST_THREADS RUST_TEST_THREADS=$$HOST_RUST_TEST_THREADS RAYON_THREADS=$$HOST_RAYON_THREADS"; \
-	echo "[gate-local] host profile: physical_cores=$$HOST_PHYSICAL_CORES core_ids=$$HOST_PHYSICAL_CORE_IDS l3_cache_bytes=$$HOST_L3_CACHE_BYTES l3_safe_bytes=$$HOST_L3_SAFE_WORKING_SET_BYTES worker_budget=$$HOST_WORKER_BUDGET"; \
-	echo "[gate-local] determining scope..."; \
+        echo "[validate-local] host profile: physical_cores=$$HOST_PHYSICAL_CORES core_ids=$$HOST_PHYSICAL_CORE_IDS l3_cache_bytes=$$HOST_L3_CACHE_BYTES l3_safe_bytes=$$HOST_L3_SAFE_WORKING_SET_BYTES worker_budget=$$HOST_WORKER_BUDGET"; \
+        echo "[validate-local] determining scope..."; \
 	if [ -x "$(WORKSPACE_ROUTING_CACHE)" ]; then \
 	    scope_file="$$(mktemp)"; \
 	    meta_file="$$(mktemp)"; \
@@ -506,73 +524,97 @@ gate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
 	    printf '%s\n' "$$routing_meta" | grep -q 'run_governance=False' && run_governance="false" || true; \
 	    printf '%s\n' "$$routing_meta" | grep -q 'run_check=False' && run_check="false" || true; \
 	else \
-	    echo "[gate-local] WARNING: workspace-routing unavailable, running full workspace"; \
+        echo "[validate-local] WARNING: workspace-routing unavailable, running full workspace"; \
 	    scope="--workspace"; \
 	fi; \
 	if [ "$$run_check" = "true" ]; then \
 	    $(MAKE) check $$submake_env; \
 	else \
-	    echo "[gate-local] SKIP: no check-relevant (non-Rust) file changes detected."; \
+        echo "[validate-local] SKIP: no check-relevant (non-Rust) file changes detected."; \
 	fi; \
 	if [ "$$run_rust" = "true" ]; then \
 	    if [ -z "$$scope" ]; then scope="--workspace"; fi; \
-	    echo "[gate-local] rust scope: $$scope"; \
-	    if [ -n "$(LOCAL_NEXTEST_TIMING_JSON)" ]; then echo "[gate-local] local nextest timing: $(LOCAL_NEXTEST_TIMING_JSON)"; fi; \
+        echo "[validate-local] rust scope: $$scope"; \
+        if [ -n "$(LOCAL_NEXTEST_TIMING_JSON)" ]; then echo "[validate-local] local nextest timing: $(LOCAL_NEXTEST_TIMING_JSON)"; fi; \
 	    $(MAKE) rust-regression-scoped RUST_SCOPE="$$scope" RUST_RUN_HEAVY=0 $$submake_env; \
 	else \
-	    echo "[gate-local] SKIP: no Rust-relevant changes detected."; \
+        echo "[validate-local] SKIP: no Rust-relevant changes detected."; \
 	fi; \
 	if [ "$$run_governance" = "true" ]; then \
-	    $(MAKE) governance-gate-readonly $$submake_env; \
+        $(MAKE) validate-governance $$submake_env; \
 	else \
-	    echo "[gate-local] SKIP: no governance-relevant changes detected."; \
+        echo "[validate-local] SKIP: no registry-policy changes detected."; \
 	fi; \
-	echo "[gate-local] OK: local gate passed."
+    echo "[validate-local] OK: scoped validation passed."
 
-pre-push-gate: gate-local
-	@echo "OK: pre-push-gate is a compatibility alias for gate-local."
+gate-local: validate-local
+	@echo "DEPRECATED: make gate-local is a compatibility alias for make validate-local."
 
-gate-ci-registry:
-	$(MAKE) governance-gate-readonly
-	$(MAKE) registry-control-plane-gate-readonly
-	$(MAKE) registry-acceptance-gate-readonly
-	@echo "OK: gate-ci-registry passed."
+pre-push-gate: validate-local
+	@echo "DEPRECATED: make pre-push-gate is a compatibility alias for make validate-local."
 
-gate-ci-rust:
+validate-ci-registry: validate-registry
+	@echo "OK: CI registry validation passed."
+
+gate-ci-registry: validate-ci-registry
+	@echo "DEPRECATED: make gate-ci-registry is a compatibility alias for make validate-ci-registry."
+
+validate-ci-rust:
+	$(MAKE) validation-tools
 	$(MAKE) rust-regression CARGO_ENV="$(CARGO_ENV_CI)"
-	$(MAKE) integrity-rust CARGO_ENV="$(CARGO_ENV_CI)"
+	$(MAKE) validate-rust-integrity CARGO_ENV="$(CARGO_ENV_CI)"
 	$(MAKE) cargo-deny-check CARGO_ENV="$(CARGO_ENV_CI)"
 	$(MAKE) db-schema-drift-check CARGO_ENV="$(CARGO_ENV_CI)"
-	@echo "OK: gate-ci-rust passed."
+	@echo "OK: CI Rust validation passed."
 
-db-schema-drift-check:
-	$(CARGO_ENV) cargo run -p xtask -- db-docs --check
+gate-ci-rust: validate-ci-rust
+	@echo "DEPRECATED: make gate-ci-rust is a compatibility alias for make validate-ci-rust."
+
+db-schema-drift-check: $(XTASK_CACHE)
+	$(CARGO_ENV) $(XTASK_CACHE) db-docs --check
 	@echo "OK: db-schema-drift-check passed."
 
-host-profile:
-	cargo run -q -p xtask -- host-profile --format json
+host-profile: $(XTASK_CACHE)
+	$(XTASK_CACHE) host-profile --format json
 
-gate-audit:
-	$(CARGO_ENV) cargo run -p xtask -- gate-audit
-	@echo "OK: gate-audit completed."
+validate-ci:
+	$(MAKE) validation-tools
+	$(CARGO_ENV) $(XTASK_CACHE) validate-ci
+	@echo "OK: CI validation completed."
 
-# PH-5.A: structured audit-deep composite (rust-clippy + cargo-deny +
+validate-repository:
+	$(MAKE) validation-tools
+	$(CARGO_ENV) $(XTASK_CACHE) validate-repository
+	@echo "OK: repository validation completed."
+
+gate-audit: validate-repository
+	@echo "DEPRECATED: make gate-audit is a compatibility alias for make validate-repository."
+
+# PH-5.A: structured audit-comprehensive composite (rust-clippy + cargo-deny +
 # dep-audit + cpd-audit) with per-step log capture, Markdown summary,
-# and TOML record under reports/audit-deep/<date>/<time>/. Use this
-# for tranche-acceptance evidence; use plain `make audit-deep` for
+# and TOML record under reports/audit-comprehensive/<date>/<time>/. Use this
+# for tranche-acceptance evidence; use plain `make audit-comprehensive` for
 # interactive runs.
-audit-deep-structured:
-	$(CARGO_ENV) cargo run -p xtask -- audit-deep
-	@echo "OK: audit-deep-structured completed."
+audit-comprehensive-structured:
+	$(CARGO_ENV) cargo run -p xtask -- audit-comprehensive
+	@echo "OK: audit-comprehensive-structured completed."
 
-# WHY: gate-ci-rust runs rust-regression (full workspace compile + nextest run,
+audit-deep-structured: audit-comprehensive-structured
+	@echo "DEPRECATED: make audit-deep-structured is a compatibility alias for make audit-comprehensive-structured."
+
+# WHY: validate-ci-rust runs rust-regression (full workspace compile + nextest run,
 # ~9 min). For registry/governance-only edits -- TOML updates, schema changes,
-# claims.toml regeneration -- that compile overhead is pure waste. gate-audit-fast
-# skips Rust compilation entirely: only gate-ci-registry (governance + schema
+# claims.toml regeneration -- that compile overhead is pure waste. The fast
+# repository validation path skips Rust compilation entirely: only
+# validate-ci-registry (governance + schema
 # checks, ~2 min) runs, and it fails fast on the first error.
-gate-audit-fast:
-	$(CARGO_ENV) cargo run -p xtask -- gate-audit --fast
-	@echo "OK: gate-audit (fast/registry-only) completed."
+validate-repository-fast:
+	$(MAKE) validation-tools
+	$(CARGO_ENV) $(XTASK_CACHE) validate-repository --fast
+	@echo "OK: fast repository validation completed."
+
+gate-audit-fast: validate-repository-fast
+	@echo "DEPRECATED: make gate-audit-fast is a compatibility alias for make validate-repository-fast."
 
 # WHY: PH-2 acceptance gate -- verify data_core pure-core (no network plane).
 # Must stay green after any data_core Cargo.toml or feature change.
@@ -604,8 +646,8 @@ cache-status:
 	@du -sh .cache/cargo-home 2>/dev/null || true
 	@printf '=== Build-dir intermediates ===\n'
 	@du -sh .cache/gate-cbuild 2>/dev/null || printf '(empty)\n'
-	@printf '=== Gate tools cache ===\n'
-	@du -sh .cache/gate-target/gate-tools 2>/dev/null || printf '(empty)\n'
+	@printf '=== Validation tools cache ===\n'
+	@du -sh .cache/gate-target/validation-tools 2>/dev/null || printf '(empty)\n'
 	@printf '=== Experimental dirs (.cache/exp-*-target) ===\n'
 	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
 	@printf '=== Residual target/ (cargo doc + mdbook, NOT cargo build) ===\n'
@@ -712,7 +754,7 @@ cache-purge-exp:
 # grows slowly during a session; checking once every 30 minutes (or on
 # explicit `make cache-check-force`) gives the same safety guarantee
 # with near-zero overhead for in-session pushes.
-CACHE_CHECK_SENTINEL := $(REPO_CARGO_TARGET_DIR)/gate-tools/cache-check.last
+CACHE_CHECK_SENTINEL := $(REPO_CARGO_TARGET_DIR)/validation-tools/cache-check.last
 CACHE_CHECK_TTL_SECS ?= 1800
 
 cache-check:
@@ -746,15 +788,15 @@ cache-check-force:
 		printf '[cache-check] OK: cargo dirs at %dMB (soft=%dGB hard=%dGB)\n' "$$TOTAL" "$$((SOFT / 1024))" "$$((HARD / 1024))"; \
 	fi
 
-pre-push-gate-strict: gate-audit
-	@echo "OK: pre-push-gate-strict is a compatibility alias for gate-audit."
+pre-push-gate-strict: validate-repository
+	@echo "DEPRECATED: make pre-push-gate-strict is a compatibility alias for make validate-repository."
 
 hooks-install:
 	@mkdir -p "$(HOOKS_DIR)"
 	@chmod +x "$(HOOKS_DIR)/pre-push"
 	@git config core.hooksPath "$(HOOKS_DIR)"
 	@echo "OK: git hooks installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "Pre-push will run: make gate-local"
+	@echo "Pre-push will run: make validate-local"
 
 hooks-install-strict:
 	@mkdir -p "$(HOOKS_DIR)"
@@ -764,13 +806,13 @@ hooks-install-strict:
 		'set -euo pipefail' \
 		'repo_root="$$(git rev-parse --show-toplevel)"' \
 		'cd "$$repo_root"' \
-		'echo "[pre-push] running make gate-local"' \
-		'make gate-local' \
+		'echo "[pre-push] running make validate-local"' \
+		'make validate-local' \
 		> "$(HOOKS_DIR)/pre-push"
 	@chmod +x "$(HOOKS_DIR)/pre-push"
 	@git config core.hooksPath "$(HOOKS_DIR)"
 	@echo "OK: strict git hook installed. core.hooksPath=$$(git config --get core.hooksPath)"
-	@echo "Pre-push will run: make gate-local"
+	@echo "Pre-push will run: make validate-local"
 
 hooks-status:
 	@echo "core.hooksPath=$$(git config --get core.hooksPath || echo .git/hooks)"
@@ -779,10 +821,14 @@ hooks-status:
 smoke: check rust-smoke
 	@echo "OK: smoke lane passed."
 
-registry-control-plane-gate-readonly:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-corpus
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-toml-inventory
-	@echo "OK: read-only registry control-plane gate passed."
+validate-rust-integrity: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/claims-verify --check providers
+	$(VALIDATION_TOOLS_DIR)/test-inventory --check
+	$(VALIDATION_TOOLS_DIR)/registry-check --typed-policy error
+	@echo "OK: Rust integrity validation passed."
+
+registry-control-plane-gate-readonly: validate-governance
+	@echo "DEPRECATED: make registry-control-plane-gate-readonly is a compatibility alias for make validate-governance."
 
 integrity:
 	$(MAKE) verify-pantheon-physicsforge-mapping
@@ -792,14 +838,11 @@ integrity:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin verify-registry-mirror-freshness -- --out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" --emit-legacy --legacy-claims-sync true
 	@echo "OK: integrity lane passed."
 
-integrity-rust:
-	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin claims-verify -- --check providers
-	$(MAKE) test-inventory
-	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin registry-check -- --typed-policy error
-	@echo "OK: Rust integrity lane passed."
+integrity-rust: validate-rust-integrity
+	@echo "DEPRECATED: make integrity-rust is a compatibility alias for make validate-rust-integrity."
 
-test-inventory:
-	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin test-inventory -- --check
+test-inventory: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/test-inventory --check
 
 math-verify: rust-regression
 	@echo "OK: math validation suite complete. See docs/MATH_VALIDATION_REPORT.md"
@@ -872,10 +915,10 @@ rust-regression-scoped:
 	# dependency graph while preserving workspace-routing semantics.
 	#
 	# Prefer the cached binary at $(WORKSPACE_ROUTING_CACHE) to skip cargo's
-	# metadata walk. The gate-tools target dependencies rebuild the cached binary
+	# metadata walk. The validation-tools target dependencies rebuild the cached binary
 	# when workspace_routing.rs changes.
 	#
-	# Preserve routing CLI stderr so scope-selection failures reach the gate
+	# Preserve routing CLI stderr so scope-selection failures reach the validation
 	# operator. The fallback remains "--workspace" after the diagnostic is
 	# emitted.
 	$(eval RUST_SCOPE ?= $(shell \
@@ -898,7 +941,7 @@ rust-regression-scoped:
 	# Nextest in the LOCAL pre-push fast path also runs only on directly
 	# changed crates. Trust the layered model:
 	#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
-	#   - Full reverse-closure regression = CI on PR open (gate-ci-rust).
+	#   - Full reverse-closure regression = CI on PR open (validate-ci-rust).
 	# Set RUST_NEXTEST_SCOPE_MODE=closure to opt back into the wide scope for
 	# a single invocation when needed (e.g. after toolchain bumps).
 	$(eval RUST_NEXTEST_SCOPE_MODE ?= direct)
@@ -909,7 +952,7 @@ rust-regression-scoped:
 	# 441-binary link phase, ~4m30s); restricting to --lib at pre-push
 	# makes the gate a true smoke gate. CI on PR open runs the full
 	# `all` suite. Override per invocation:
-	#   make gate-local RUST_NEXTEST_KIND_MODE=all
+	#   make validate-local RUST_NEXTEST_KIND_MODE=all
 	$(eval RUST_NEXTEST_KIND_MODE ?= lib)
 	$(eval RUST_NEXTEST_KINDS ?= $(if $(filter lib,$(RUST_NEXTEST_KIND_MODE)),--lib,--lib --tests))
 	$(eval RUST_RUN_HEAVY ?= 1)
@@ -960,9 +1003,9 @@ rust-regression-scoped:
 	    elif [ -n "$$local_light_packages" ]; then \
 	        if [ -n "$$filterset" ]; then \
 	            echo "[rust-regression-scoped] local skip filter enabled"; \
-	            $(CARGO_ENV) cargo run -q -p xtask -- local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
+	            $(CARGO_ENV) $(XTASK_CACHE) local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) --filterset "$$filterset" $$local_light_packages; \
 	        else \
-	            $(CARGO_ENV) cargo run -q -p xtask -- local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
+	            $(CARGO_ENV) $(XTASK_CACHE) local-nextest-plan --build-jobs $(CARGO_JOBS) --test-threads $(NEXTEST_TEST_THREADS) --kinds $(RUST_NEXTEST_KIND_MODE) $(if $(LOCAL_NEXTEST_TIMING_JSON),--timing-json-out $(LOCAL_NEXTEST_TIMING_JSON),) $$local_light_packages; \
 	        fi; \
 	    fi; \
 	    if [ -n "$$heavy_scope" ] && [ "$(RUST_RUN_HEAVY)" = "1" ]; then \
@@ -970,7 +1013,7 @@ rust-regression-scoped:
 	    elif [ -n "$$heavy_scope" ]; then \
 	        echo "[rust-regression-scoped] SKIP heavy nextest in local fast path: $$heavy_scope"; \
 	    fi; \
-	    echo "OK: Rust regression gate passed (scoped: clippy + nextest)."; \
+	    echo "OK: scoped Rust validation passed (clippy + nextest)."; \
 	fi
 
 # WHY: Miri catches UB in unsafe Cayley-Dickson arithmetic (pointer provenance,
@@ -1023,7 +1066,7 @@ x87-strategy-bench:
 
 x87-strategy-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-strategy-bench
-	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench \
+	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/validation/x87-strategy-bench \
 		--len $${LEN:-262144} \
 		--repeats $${REPEATS:-5} \
 		--worker-counts $${WORKER_COUNTS:-1,2,4,6} \
@@ -1034,10 +1077,10 @@ x87-strategy-perf:
 x87-strategy-hyperfine:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-strategy-bench
 	hyperfine --shell=none --warmup $${WARMUP:-1} --runs $${RUNS:-5} \
-		'$(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 1 --output /tmp/x87_strategy_hyperfine_1.csv' \
-		'$(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 2 --output /tmp/x87_strategy_hyperfine_2.csv' \
-		'$(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 4 --output /tmp/x87_strategy_hyperfine_4.csv' \
-		'$(REPO_CARGO_TARGET_DIR)/release-gate/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 6 --output /tmp/x87_strategy_hyperfine_6.csv'
+		'$(REPO_CARGO_TARGET_DIR)/validation/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 1 --output /tmp/x87_strategy_hyperfine_1.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/validation/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 2 --output /tmp/x87_strategy_hyperfine_2.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/validation/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 4 --output /tmp/x87_strategy_hyperfine_4.csv' \
+		'$(REPO_CARGO_TARGET_DIR)/validation/x87-strategy-bench --len '$${LEN:-262144}' --repeats '$${REPEATS:-3}' --worker-counts 6 --output /tmp/x87_strategy_hyperfine_6.csv'
 	@echo "OK: x87 strategy hyperfine sweep completed."
 
 x87-strategy-flamegraph:
@@ -1061,7 +1104,7 @@ x87-givens-microbench:
 x87-givens-microbench-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin x87-givens-microbench
 	perf stat -x, -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-5} \
-		$(REPO_CARGO_TARGET_DIR)/release-gate/x87-givens-microbench \
+		$(REPO_CARGO_TARGET_DIR)/validation/x87-givens-microbench \
 		--iterations $${ITERATIONS:-200000} \
 		--repeats $${REPEATS:-9} \
 		$${CASES:+--cases $${CASES}} \
@@ -1089,7 +1132,7 @@ gpu-bench-ncu:
 		--set $${NCU_SECTIONS:-SpeedOfLight,MemoryWorkloadAnalysis,ComputeWorkloadAnalysis} \
 		--target-processes all \
 		--export data/benchmarks/ncu/cuda_kernels_$$(date +%Y%m%d_%H%M%S) \
-		$(REPO_CARGO_TARGET_DIR)/release-gate/cuda-precision-bench \
+		$(REPO_CARGO_TARGET_DIR)/validation/cuda-precision-bench \
 		--output data/benchmarks/cuda_kernel_baseline_ncu.csv \
 		$${GRIDS:+--grids $${GRIDS}} \
 		$${WORKLOADS:+--workloads $${WORKLOADS}} \
@@ -1103,7 +1146,7 @@ gpu-bench-nsys:
 		--trace=$${NSYS_TRACE:-cuda,nvtx} \
 		--output data/benchmarks/nsys/cuda_pipeline_$$(date +%Y%m%d_%H%M%S) \
 		--force-overwrite true \
-		$(REPO_CARGO_TARGET_DIR)/release-gate/cuda-precision-bench \
+		$(REPO_CARGO_TARGET_DIR)/validation/cuda-precision-bench \
 		--output data/benchmarks/cuda_kernel_baseline_nsys.csv \
 		$${GRIDS:+--grids $${GRIDS}} \
 		$${WORKLOADS:+--workloads $${WORKLOADS}} \
@@ -1122,7 +1165,7 @@ cpu-bench-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_physics --bin cpu-lbm-bench
 	@mkdir -p reports/benchmarks
 	perf stat -d \
-		$(REPO_CARGO_TARGET_DIR)/release-gate/cpu-lbm-bench \
+		$(REPO_CARGO_TARGET_DIR)/validation/cpu-lbm-bench \
 		--grids $${GRIDS:-64} --workloads $${WORKLOADS:-bgk} \
 		--output /dev/null \
 		2> $${COUNTERS_OUT:-reports/benchmarks/cpu_lbm_perf.stat}
@@ -1133,7 +1176,7 @@ cpu-bench-cachegrind:
 	@mkdir -p reports/benchmarks
 	valgrind --tool=cachegrind \
 		--cachegrind-out-file=$${CGOUT:-reports/benchmarks/cachegrind.out.cpu_lbm} \
-		$(REPO_CARGO_TARGET_DIR)/release-gate/cpu-lbm-bench \
+		$(REPO_CARGO_TARGET_DIR)/validation/cpu-lbm-bench \
 		--grids $${GRIDS:-32} --workloads $${WORKLOADS:-bgk} --steps-small 10 \
 		--output /dev/null
 	@echo "OK: cachegrind output saved. Annotate with: cg_annotate $${CGOUT:-reports/benchmarks/cachegrind.out.cpu_lbm}"
@@ -1206,7 +1249,7 @@ structured-spectrum-bench:
 
 jacobi-backend-perf:
 	$(CARGO_ENV) cargo build --release -p gororoba_cli_algebra --bin jacobi-backend-sweep
-	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/release-gate/jacobi-backend-sweep \
+	perf stat -e $${PERF_EVENTS:-cycles:u,instructions:u,branches:u,branch-misses:u} -r $${PERF_RUNS:-3} $(REPO_CARGO_TARGET_DIR)/validation/jacobi-backend-sweep \
 		--sizes $${SIZES:-68} \
 		--repeats $${REPEATS:-3} \
 		$${FAMILIES:+--families $${FAMILIES}} \
@@ -1270,7 +1313,9 @@ dep-audit:
 
 cargo-deny-check:
 	@command -v cargo-deny >/dev/null 2>&1 || { echo "ERROR: cargo-deny not found. Install with: cargo install cargo-deny"; exit 1; }
-	$(CARGO_ENV) cargo deny check --config deny.toml --show-stats --hide-inclusion-graph advisories bans licenses sources
+	# cargo-deny discovers deny.toml from the workspace root. cargo-deny 0.20
+	# treats --config as a value for a different command and rejects it here.
+	$(CARGO_ENV) cargo deny check --show-stats --hide-inclusion-graph advisories bans licenses sources
 	@echo "OK: cargo-deny policy gate passed."
 
 mcp-smoke:
@@ -1372,7 +1417,7 @@ registry-bootstrap-external-sources: registry-normalize-external-sources
 	@echo "External sources markdown->TOML bootstrap completed."
 
 registry-normalize-research-narratives:
-	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin markdown-registry -- promote-research-narratives
+	$(CARGO_ENV) cargo run --profile validation -p gororoba_cli_data --bin markdown-registry -- promote-research-narratives
 
 registry-bootstrap-research-narratives: registry-normalize-research-narratives
 	@echo "Research narratives markdown->TOML bootstrap completed."
@@ -1384,7 +1429,7 @@ registry-bootstrap-book-docs: registry-normalize-book-docs
 	@echo "mdBook markdown->TOML bootstrap completed."
 
 registry-normalize-docs-root-narratives:
-	$(CARGO_ENV) cargo run --profile release-gate -p gororoba_cli_data --bin markdown-registry -- promote-docs-root-narratives
+	$(CARGO_ENV) cargo run --profile validation -p gororoba_cli_data --bin markdown-registry -- promote-docs-root-narratives
 
 registry-bootstrap-docs-root-narratives: registry-normalize-docs-root-narratives
 	@echo "Root docs markdown->TOML bootstrap completed."
@@ -1486,8 +1531,8 @@ registry-strict-toml-batch1-build: registry-markdown-owner-map
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin semantic-atoms -- --repo-root .
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-payloads
 
-registry-verify-strict-toml-batch1:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin semantic-atoms -- --verify --repo-root .
+registry-verify-strict-toml-batch1: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/semantic-atoms --verify --repo-root .
 
 registry-strict-toml-batch1: registry-verify-strict-toml-batch1
 	@echo "OK: semantic-atoms registry lane complete (legacy wave5-batch1 compatibility)."
@@ -1510,8 +1555,8 @@ registry-wave5-batch1: registry-strict-toml-batch1
 registry-strict-toml-batch2-build: registry-strict-toml-batch1-build
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin evidence-provenance -- --repo-root .
 
-registry-verify-strict-toml-batch2:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin evidence-provenance -- --verify --repo-root .
+registry-verify-strict-toml-batch2: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/evidence-provenance --verify --repo-root .
 
 registry-strict-toml-batch2: registry-verify-strict-toml-batch2
 	@echo "OK: evidence-provenance registry lane complete (legacy wave5-batch2 compatibility)."
@@ -1539,16 +1584,18 @@ registry-wave5-batch2: registry-strict-toml-batch2
 # build if it exists (~1.2s vs ~180s).
 #
 # When to use: after editing any registry/*.toml file, run
-#   make integrity-resolution
+#   make registry-integrity
 # to regenerate registry/schema_signatures.toml before committing.
-# The governance gate will fail on content_sha mismatch otherwise.
-integrity-resolution:
-	@if [ -x "$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution" ]; then \
-		$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .; \
-	else \
-		$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution; \
-		$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .; \
-	fi
+# Registry validation will fail on content_sha mismatch otherwise.
+registry-integrity: registry-validation-tools
+	$(REGISTRY_INTEGRITY_CACHE) --repo-root .
+
+validate-registry-integrity: registry-validation-tools
+	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
+	@echo "OK: registry consistency records are current."
+
+integrity-resolution: registry-integrity
+	@echo "DEPRECATED: make integrity-resolution is a compatibility alias for make registry-integrity."
 
 # DOI audit for refs_heliosphere.bib via CrossRef REST API.
 # Flags fabricated citations, wrong metadata, and 404 DOIs.
@@ -1603,59 +1650,57 @@ voyager-heliopause-v2:
 ablation-all: ablation-baselines ablation-axis-a ablation-axis-b ablation-window-sensitivity ablation-mad-decorrelation
 
 registry-strict-toml-batch3-build:
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution
-	$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --repo-root .
+	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_data --bin registry-integrity
+	$(REPO_CARGO_TARGET_DIR)/validation/registry-integrity --repo-root .
 
 registry-verify-schema-signatures:
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify schema-signatures
+	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify schema-signatures
 
 registry-verify-crossrefs:
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify crossrefs
+	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify crossrefs
 
 registry-verify-dataset-label-aliases:
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify dataset-label-aliases
+	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify dataset-label-aliases
 
 registry-verify-external-source-operational-contracts:
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify external-source-operational-contracts
+	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_data --bin governance-verify
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify external-source-operational-contracts
 
-registry-verify-strict-toml-batch3:
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin integrity-resolution --bin governance-verify
-	$(REPO_CARGO_TARGET_DIR)/release-gate/integrity-resolution --verify --repo-root .
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify crossrefs
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify dataset-label-aliases
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify external-source-operational-contracts
+registry-verify-strict-toml-batch3: registry-validation-tools
+	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
+	$(GOVERNANCE_VERIFY_CACHE) validate-all
 
 registry-strict-toml-batch3: registry-verify-strict-toml-batch3
-	@echo "OK: integrity-resolution registry lane complete (legacy wave5-batch3 compatibility)."
+	@echo "OK: registry-integrity registry lane complete (legacy batch3 compatibility)."
 
-registry-build-integrity-resolution: registry-strict-toml-batch3-build
+registry-build-integrity-resolution: registry-integrity
+	@echo "DEPRECATED: make registry-build-integrity-resolution is a compatibility alias for make registry-integrity."
 
-registry-verify-integrity-resolution: registry-verify-strict-toml-batch3
+registry-verify-integrity-resolution: validate-registry-integrity
+	@echo "DEPRECATED: make registry-verify-integrity-resolution is a compatibility alias for make validate-registry-integrity."
 
-registry-integrity-resolution-gate: registry-strict-toml-batch3
+registry-integrity-resolution-gate: validate-registry
+	@echo "DEPRECATED: make registry-integrity-resolution-gate is a compatibility alias for make validate-registry."
 
 registry-wave5-batch3-build: registry-strict-toml-batch3-build
-	@echo "DEPRECATED: make registry-wave5-batch3-build is a legacy alias. Use make registry-build-integrity-resolution."
+	@echo "DEPRECATED: make registry-wave5-batch3-build is a legacy alias. Use make registry-integrity."
 
 registry-verify-wave5-batch3: registry-verify-strict-toml-batch3
-	@echo "DEPRECATED: make registry-verify-wave5-batch3 is a legacy alias. Use make registry-verify-integrity-resolution."
+	@echo "DEPRECATED: make registry-verify-wave5-batch3 is a legacy alias. Use make validate-registry-integrity."
 
-registry-wave5-batch3: registry-strict-toml-batch3
-	@echo "DEPRECATED: make registry-wave5-batch3 is a legacy alias. Use make registry-integrity-resolution-gate."
+registry-wave5-batch3: validate-registry
+	@echo "DEPRECATED: make registry-wave5-batch3 is a legacy alias. Use make validate-registry."
 
 registry-strict-toml-batch4-build:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin execution-planning -- --repo-root .
 
-registry-verify-strict-toml-batch4:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin execution-planning -- --verify --repo-root .
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- crossrefs
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin governance-verify -- dataset-label-aliases
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
+registry-verify-strict-toml-batch4: registry-validation-tools
+	$(VALIDATION_TOOLS_DIR)/execution-planning --verify --repo-root .
+	$(GOVERNANCE_VERIFY_CACHE) validate-all
+	$(MARKDOWN_REGISTRY_CACHE) verify-all
 
 registry-strict-toml-batch4: registry-verify-strict-toml-batch4
 	@echo "OK: execution-planning registry lane complete (legacy wave5-batch4 compatibility)."
@@ -1675,18 +1720,25 @@ registry-verify-wave5-batch4: registry-verify-strict-toml-batch4
 registry-wave5-batch4: registry-strict-toml-batch4
 	@echo "DEPRECATED: make registry-wave5-batch4 is a legacy alias. Use make registry-execution-planning-gate."
 
-registry-acceptance-gate-readonly:
-	$(MAKE) registry-verify-semantic-atoms
-	$(MAKE) registry-verify-evidence-provenance
-	$(MAKE) registry-verify-integrity-resolution
-	$(MAKE) registry-verify-execution-planning
-	@echo "OK: registry acceptance gate complete."
+validate-registry: registry-validation-tools
+	$(PROVENANCE_CACHE) --repo-root . verify-control-plane --verify-compat-exports
+	$(PROJECT_COUNTER_CACHE) --check
+	$(MARKDOWN_REGISTRY_CACHE) verify-all
+	$(GOVERNANCE_VERIFY_CACHE) validate-all
+	$(VALIDATION_TOOLS_DIR)/semantic-atoms --verify --repo-root .
+	$(VALIDATION_TOOLS_DIR)/evidence-provenance --verify --repo-root .
+	$(REGISTRY_INTEGRITY_CACHE) --verify --repo-root .
+	$(VALIDATION_TOOLS_DIR)/execution-planning --verify --repo-root .
+	@echo "OK: registry validation completed in one tool session."
 
-registry-acceptance-gate: registry-acceptance-gate-readonly
-	@echo "OK: registry-acceptance-gate is a compatibility alias for registry-acceptance-gate-readonly."
+registry-acceptance-gate-readonly: validate-registry
+	@echo "DEPRECATED: make registry-acceptance-gate-readonly is a compatibility alias for make validate-registry."
 
-registry-wave5: registry-acceptance-gate
-	@echo "DEPRECATED: make registry-wave5 is a legacy alias. Use make registry-acceptance-gate."
+registry-acceptance-gate: validate-registry
+	@echo "DEPRECATED: make registry-acceptance-gate is a compatibility alias for make validate-registry."
+
+registry-wave5: validate-registry
+	@echo "DEPRECATED: make registry-wave5 is a legacy alias. Use make validate-registry."
 
 registry-csv-inventory:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin csv-canonicalization -- --repo-root . inventory
@@ -1805,7 +1857,7 @@ registry-csv-scope: registry-csv-inventory
 registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-csv-pipeline-gate registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope registry-control-plane-gate
 	@echo "OK: CSV data registry lane complete."
 
-# Use release-gate here instead of dev/cg_clif: gororoba_cli_data pulls faer/pulp
+# Use validation here instead of dev/cg_clif: gororoba_cli_data pulls faer/pulp
 # through several data tools, and cg_clif still ICEs on AVX f32x8 lowering in that
 # lane on nightly 2026-04-05.
 registry-export-markdown: registry-refresh registry-build
@@ -1821,14 +1873,14 @@ registry-verify-mirrors:
 	legacy_flag=""; \
 	claims_value="true"; \
 	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then claims_value="false"; fi; \
-	$(CARGO_ENV) cargo build --profile release-gate -p gororoba_cli_data --bin verify-registry-mirror-freshness --bin governance-verify --bin registry-emit; \
-	$(REPO_CARGO_TARGET_DIR)/release-gate/verify-registry-mirror-freshness \
+	$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_data --bin verify-registry-mirror-freshness --bin governance-verify --bin registry-emit; \
+	$(REPO_CARGO_TARGET_DIR)/validation/verify-registry-mirror-freshness \
 		--out-dir "crates/data_core/src/registry_mirrors" $$legacy_flag --legacy-claims-sync $$claims_value
 	$(MAKE) registry-verify-markdown-toml-first
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-headers
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify markdown-parity
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify mirror-immutability
-	$(REPO_CARGO_TARGET_DIR)/release-gate/governance-verify claim-ticket-mirrors
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify markdown-headers
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify markdown-parity
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify mirror-immutability
+	$(REPO_CARGO_TARGET_DIR)/validation/governance-verify claim-ticket-mirrors
 
 registry-sync-project-counters:
 	$(CARGO_ENV) cargo run --release --bin project-counter-sync
@@ -2451,9 +2503,15 @@ help:
 	@echo "    make rust-smoke           Dedicated Rust smoke suites via nextest"
 	@echo "    make rust-regression      Full Rust regression lane"
 	@echo "    make rust-regression-scoped Scoped Rust regression lane"
-	@echo "    make gate-local           Canonical scoped local push gate"
-	@echo "    make gate-ci-registry     Rust-native governance + registry contract CI gate"
-	@echo "    make gate-ci-rust         Full Rust CI gate"
+	@echo "    make validate-local       Canonical scoped local validation"
+	@echo "    make validate-static      Lightweight hygiene and dependency validation"
+	@echo "    make validate-static-and-registry  Hygiene plus registry validation"
+	@echo "    make validate-comprehensive  Full Rust and dependency validation"
+	@echo "    make validate-supply-chain  Dependency and unsafe-source policy validation"
+	@echo "    make validate-dataset-experiments  Dataset and experiment invariant validation"
+	@echo "    make validate-registry    Registry and evidence validation"
+	@echo "    make validate-ci          Single-session CI validation"
+	@echo "    make audit-comprehensive  Opt-in broad audit with structured aliases"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"

@@ -311,10 +311,7 @@ impl ParseStatus {
 
 fn run_inventory(args: &InventoryArgs) -> Result<()> {
     if !args.ingest_manifest.exists() {
-        bail!(
-            "ingest manifest absent: {}",
-            args.ingest_manifest.display()
-        );
+        bail!("ingest manifest absent: {}", args.ingest_manifest.display());
     }
     for root in &args.source_roots {
         if !Path::new(root).exists() {
@@ -468,9 +465,8 @@ fn run_inventory(args: &InventoryArgs) -> Result<()> {
 
     // Optional diagnostic filter; applied after ordering so schema is stable.
     if let Some(filter) = &args.only {
-        records.retain(|r| {
-            r.canonical_id == *filter || r.source_sha256.starts_with(filter.as_str())
-        });
+        records
+            .retain(|r| r.canonical_id == *filter || r.source_sha256.starts_with(filter.as_str()));
     }
 
     let summary = summarize(&records, duplicate_identities);
@@ -524,9 +520,7 @@ fn ingest_identity(
     // byte stream. Two distinct SHAs for one id is a reconciliation failure.
     if let Some(prev) = manifest_id_to_sha.get(manifest_id) {
         if prev != &sha {
-            bail!(
-                "manifest id {manifest_id} resolves to two byte streams: {prev} and {sha}"
-            );
+            bail!("manifest id {manifest_id} resolves to two byte streams: {prev} and {sha}");
         }
     } else {
         manifest_id_to_sha.insert(manifest_id.to_string(), sha.clone());
@@ -618,8 +612,13 @@ fn build_record(
     }
 
     let signals = evaluate_signals(identity, &docpipe_status);
-    let (routing, reason_codes, manual_review_required) =
-        classify(identity, &metrics, &docpipe_status, extraction.is_some(), &signals);
+    let (routing, reason_codes, manual_review_required) = classify(
+        identity,
+        &metrics,
+        &docpipe_status,
+        extraction.is_some(),
+        &signals,
+    );
 
     Ok(DocumentRecord {
         canonical_id: canonical_id.to_string(),
@@ -975,8 +974,16 @@ fn match_contract(
     }
     match governing {
         Some(contract) => {
-            let retrieval = contract.manual_manifest_refs.first().cloned().unwrap_or_default();
-            (contract.id.clone(), retrieval, contract.access_class.clone())
+            let retrieval = contract
+                .manual_manifest_refs
+                .first()
+                .cloned()
+                .unwrap_or_default();
+            (
+                contract.id.clone(),
+                retrieval,
+                contract.access_class.clone(),
+            )
         }
         None => (String::new(), String::new(), String::new()),
     }
@@ -1149,10 +1156,7 @@ fn detect_media_type(bytes: &[u8]) -> MediaType {
     let head = String::from_utf8_lossy(&bytes[..head_len]);
     let trimmed = head.trim_start();
     let lower = trimmed.to_ascii_lowercase();
-    if trimmed.starts_with('<')
-        || lower.contains("<!doctype html")
-        || lower.contains("<html")
-    {
+    if trimmed.starts_with('<') || lower.contains("<!doctype html") || lower.contains("<html") {
         return MediaType::Html;
     }
     MediaType::Other

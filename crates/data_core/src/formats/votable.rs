@@ -16,7 +16,7 @@ use crate::fetcher::FetchError;
 use std::collections::HashMap;
 
 #[cfg(feature = "fits")]
-use quick_xml::{Reader, events::Event};
+use quick_xml::{Reader, XmlVersion, events::Event};
 
 /// Parse a VOTable XML document and extract selected columns.
 ///
@@ -47,11 +47,17 @@ pub fn parse_votable(
     let mut current_row: Option<Vec<String>> = None;
     let mut current_td: Option<String> = None;
     let mut rows: Vec<HashMap<String, String>> = Vec::new();
+    let mut xml_version = XmlVersion::Implicit1_0;
 
     let mut buf = Vec::new();
 
     loop {
         match reader.read_event_into(&mut buf) {
+            Ok(Event::Decl(ref declaration)) => {
+                xml_version = declaration.xml_version().map_err(|error| {
+                    FetchError::Validation(format!("VOTable XML declaration error: {error}"))
+                })?;
+            }
             Ok(Event::Start(ref e)) => {
                 let tag = std::str::from_utf8(e.name().as_ref())
                     .unwrap_or("")
@@ -66,7 +72,11 @@ pub fn parse_votable(
                                     .map(|k| k.eq_ignore_ascii_case("name"))
                                     .unwrap_or(false)
                             })
-                            .and_then(|a| a.unescape_value().ok().map(|v| v.trim().to_uppercase()))
+                            .and_then(|a| {
+                                a.normalized_value(xml_version)
+                                    .ok()
+                                    .map(|v| v.trim().to_uppercase())
+                            })
                             .unwrap_or_default();
                         field_names.push(field_name);
                     }
@@ -95,7 +105,11 @@ pub fn parse_votable(
                                 .map(|k| k.eq_ignore_ascii_case("name"))
                                 .unwrap_or(false)
                         })
-                        .and_then(|a| a.unescape_value().ok().map(|v| v.trim().to_uppercase()))
+                        .and_then(|a| {
+                            a.normalized_value(xml_version)
+                                .ok()
+                                .map(|v| v.trim().to_uppercase())
+                        })
                         .unwrap_or_default();
                     field_names.push(field_name);
                 }
@@ -173,9 +187,15 @@ pub fn votable_field_names(xml: &str) -> Result<Vec<String>, FetchError> {
 
     let mut names: Vec<String> = Vec::new();
     let mut buf = Vec::new();
+    let mut xml_version = XmlVersion::Implicit1_0;
 
     loop {
         match reader.read_event_into(&mut buf) {
+            Ok(Event::Decl(ref declaration)) => {
+                xml_version = declaration.xml_version().map_err(|error| {
+                    FetchError::Validation(format!("VOTable XML declaration error: {error}"))
+                })?;
+            }
             Ok(Event::Start(ref e)) | Ok(Event::Empty(ref e)) => {
                 let tag = std::str::from_utf8(e.name().as_ref())
                     .unwrap_or("")
@@ -189,7 +209,11 @@ pub fn votable_field_names(xml: &str) -> Result<Vec<String>, FetchError> {
                                 .map(|k| k.eq_ignore_ascii_case("name"))
                                 .unwrap_or(false)
                         })
-                        .and_then(|a| a.unescape_value().ok().map(|v| v.trim().to_uppercase()))
+                        .and_then(|a| {
+                            a.normalized_value(xml_version)
+                                .ok()
+                                .map(|v| v.trim().to_uppercase())
+                        })
                         .unwrap_or_default();
                     names.push(field_name);
                 }

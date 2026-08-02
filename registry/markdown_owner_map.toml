@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 129
+document_count = 131
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -758,5 +758,15 @@ removal_status = "active"
 
 [[owner]]
 path = "docs/engineering/markdown-governance-ignored-boundary.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/scientific-frontier-map-2026_08_02.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/validation-workflow-rca-2026_08_02.md"
 owner_group = "project"
 removal_status = "active"

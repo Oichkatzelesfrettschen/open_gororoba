@@ -46,8 +46,8 @@ hardware-specific tables are replaced with the scientific stack.
 | Path                                                  | Why it matters                                                                                              |
 | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | `Cargo.toml` (root)                                   | Workspace members + `[workspace.lints]` (warnings-as-errors source of truth)                                |
-| `rust-toolchain.toml`                                 | Stable pin (`1.97.0`); do not bump without coordinating the gate.                                           |
-| `.githooks/pre-push`                                  | Six-gate chain (lfs, cache, ansi, terminology, rust-regression, governance).                                |
+| `rust-toolchain.toml`                                 | Stable pin (`1.97.0`); do not bump without coordinating repository validation.                               |
+| `.githooks/pre-push`                                  | Six-step validation chain (lfs, cache, ansi, terminology, rust-regression, registry policy).                 |
 | `Makefile`                                            | Top-level lanes (`make rust-clippy`, `make integrity`, `make cpd-audit`).                                   |
 | `registry/canonical/control_plane.sqlite3`            | Canonical write target for the claim/insight/experiment registry.                                           |
 | `registry/*.toml`                                     | AUTO-GENERATED read-only compat exports. Do NOT hand-edit.                                                  |
@@ -80,7 +80,8 @@ hardware-specific tables are replaced with the scientific stack.
 - **No symlinks** as workarounds. Use a separate `CARGO_TARGET_DIR`
   per worktree.
 - **Pre-push hook** at `.githooks/pre-push` (active via
-  `core.hooksPath`) runs the 6-gate chain. Do not skip with
+  `core.hooksPath`) runs `make validate-local`, the six-step local
+  validation chain. Do not skip with
   `--no-verify` unless explicitly directed and rationale documented
   in the commit message.
 
@@ -88,7 +89,9 @@ hardware-specific tables are replaced with the scientific stack.
 
 - Toolchain: `rust-toolchain.toml` pins stable `1.97.0`,
   edition 2024.
-- Default target dir for gates: `CARGO_TARGET_DIR=.cache/gate-target`.
+- Default target dir for repository validation: `CARGO_TARGET_DIR=.cache/gate-target`.
+  The physical path is retained for cache compatibility; the logical workflow
+  uses `validate-*` targets.
 - Per-worktree experimental dirs: `.cache/exp-<name>-target/`.
 - Cache budget: gate-target <= 200G; full `.cache` <= 250G; sweep
   with `make cache-sweep` (cargo-sweep --maxsize 100GB) or
@@ -97,26 +100,26 @@ hardware-specific tables are replaced with the scientific stack.
 ### Canonical build
 
 ```bash
-CARGO_TARGET_DIR=.cache/gate-target cargo build --workspace --profile release-gate
+CARGO_TARGET_DIR=.cache/gate-target cargo build --workspace --profile validation
 ```
 
-Per-crate, with gate semantics:
+Per-crate, with validation semantics:
 
 ```bash
-CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p <crate> --all-targets --profile release-gate -- -D warnings
-CARGO_TARGET_DIR=.cache/gate-target cargo nextest run -p <crate> --lib --cargo-profile release-gate
+CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p <crate> --all-targets --profile validation -- -D warnings
+CARGO_TARGET_DIR=.cache/gate-target cargo nextest run -p <crate> --lib --cargo-profile validation
 ```
 
-### Pre-push 6-gate chain
+### Pre-push validation chain
 
-| # | Gate                     | Purpose                                                                          |
+| # | Check                    | Purpose                                                                          |
 | - | ------------------------ | -------------------------------------------------------------------------------- |
 | 1 | git-lfs handoff          | Pre-push hook chains to lfs                                                      |
 | 2 | cache-check              | Soft cap (150G) + hard cap (200G) on `.cache/`                                   |
 | 3 | terminology-gate         | 8 banned legacy terms; prefer `sign_imbalance` for the renamed crate vocabulary. |
 | 4 | ansi-check               | Reject non-ASCII bytes                                                           |
 | 5 | rust-regression-scoped   | Scoped clippy + nextest on changed-crate closure                                 |
-| 6 | governance-gate-readonly | Verify registry `schema_signatures.toml` matches checked-in TOMLs                |
+| 6 | validate-governance      | Verify registry policy, signatures, cross-references, and checked-in TOMLs      |
 
 Verify hook state: `git config --get core.hooksPath` should print
 `.githooks`. The file at `.git/hooks/pre-push` is an unused git-lfs
@@ -141,14 +144,14 @@ stub kept for transparency.
    SQLite.
 2. Re-export compatibility lanes:
    `cargo run -p gororoba_cli_data --bin provenance -- export-control-plane`.
-3. Refresh integrity hashes:
-   `make integrity-resolution`.
+3. Refresh registry signatures:
+   `make registry-integrity`.
 4. Commit the SQLite delta + regenerated TOMLs + regenerated
    markdown together in a single atomic commit.
 
 Never hand-edit a file whose first line is the AUTO-GENERATED
 header. Doing so will desync the canonical store and produce
-content_sha mismatches at the next governance-gate run.
+content_sha mismatches at the next `validate-governance` run.
 
 ## GPU backend foundation (Wave B)
 
@@ -183,7 +186,7 @@ Tracked in `plans/repo_debt_roadmap_2026_04_11.toml`:
 1. `DEBT-NUMERICAL-ALGORITHM` (e.g., bounded_nelder_mead duplication)
 2. `DEBT-STRUCTURAL-ARCHITECTURE` (e.g., data_core fetch/parse mixing)
 3. `DEBT-DUPLICATION` (CPD clusters; PMD CPD lane in `make cpd-audit`)
-4. `DEBT-TEST-VERIFICATION` (gate-audit narrowness; coverage)
+4. `DEBT-TEST-VERIFICATION` (repository validation scope; coverage)
 5. `DEBT-BUILD-WORKSPACE` (Makefile sprawl; xtask migration target)
 6. `DEBT-DATA-PROVENANCE` (default features and network isolation)
 7. `DEBT-GENERATED-ARTIFACT` (registry_mirrors quarantine)

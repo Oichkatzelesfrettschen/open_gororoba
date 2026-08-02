@@ -215,7 +215,7 @@ fn parse_vosi_tableset(xml: &str) -> Result<Vec<Table>, String> {
                 }
             }
             Event::Text(t) => {
-                // quick-xml 0.39: BytesText does NOT expose unescape() directly;
+                // quick-xml 0.41: BytesText does NOT expose unescape() directly;
                 // use UTF-8 decode and strip common XML entities inline.
                 let raw = std::str::from_utf8(t.as_ref()).unwrap_or("").to_string();
                 let txt = raw

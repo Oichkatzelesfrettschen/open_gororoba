@@ -78,7 +78,10 @@ fn write_manifest(root: &Path, entries: &[(&str, &Path)]) {
     let mut s = String::new();
     for (id, path) in entries {
         s.push_str("[[paper]]\n");
-        s.push_str(&format!("id = {}\n", toml::Value::String((*id).to_string())));
+        s.push_str(&format!(
+            "id = {}\n",
+            toml::Value::String((*id).to_string())
+        ));
         s.push_str(&format!(
             "local_pdf = {}\n\n",
             toml::Value::String(path.to_string_lossy().to_string())
@@ -178,16 +181,40 @@ fn multicolumn_detection() {
     let mut spans = Vec::new();
     for row in 0..5 {
         let y = 100.0 + f64::from(row) * 20.0;
-        spans.push(PositionedSpan { x: 10.0, y, height: 10.0 });
-        spans.push(PositionedSpan { x: 300.0, y, height: 10.0 });
+        spans.push(PositionedSpan {
+            x: 10.0,
+            y,
+            height: 10.0,
+        });
+        spans.push(PositionedSpan {
+            x: 300.0,
+            y,
+            height: 10.0,
+        });
     }
     assert!(detect_multicolumn(&spans));
     // Single column: all spans share one x band.
     let single = vec![
-        PositionedSpan { x: 10.0, y: 100.0, height: 10.0 },
-        PositionedSpan { x: 11.0, y: 120.0, height: 10.0 },
-        PositionedSpan { x: 10.0, y: 140.0, height: 10.0 },
-        PositionedSpan { x: 11.0, y: 160.0, height: 10.0 },
+        PositionedSpan {
+            x: 10.0,
+            y: 100.0,
+            height: 10.0,
+        },
+        PositionedSpan {
+            x: 11.0,
+            y: 120.0,
+            height: 10.0,
+        },
+        PositionedSpan {
+            x: 10.0,
+            y: 140.0,
+            height: 10.0,
+        },
+        PositionedSpan {
+            x: 11.0,
+            y: 160.0,
+            height: 10.0,
+        },
     ];
     assert!(!detect_multicolumn(&single));
 }
@@ -197,7 +224,10 @@ fn license_policy_mapping() {
     assert_eq!(license_policy("public").0, "known_permissive");
     assert_eq!(license_policy("open").1, "track_compact");
     assert_eq!(license_policy("manual_or_licensed").0, "known_restricted");
-    assert_eq!(license_policy("manual_or_licensed").1, "no_new_tracked_content");
+    assert_eq!(
+        license_policy("manual_or_licensed").1,
+        "no_new_tracked_content"
+    );
     assert_eq!(license_policy("mystery").0, "unknown");
     assert_eq!(license_policy("mystery").1, "no_new_tracked_content");
 }
@@ -339,7 +369,10 @@ fn valid_pdf_with_reconciled_extraction_retains_docpipe() {
     assert_eq!(d.len(), 1);
     assert_eq!(routing_of(&d[0]), "retain_docpipe");
     assert_eq!(
-        d[0].get("signal_state_reading_order").unwrap().as_str().unwrap(),
+        d[0].get("signal_state_reading_order")
+            .unwrap()
+            .as_str()
+            .unwrap(),
         "positioned_text_unavailable"
     );
 }
@@ -365,7 +398,11 @@ fn html_under_pdf_suffix_is_blocked_by_content() {
     let root = tmp.path();
     std::fs::create_dir_all(root.join("ingest")).unwrap();
     let fake = root.join("ingest/malitson.pdf");
-    std::fs::write(&fake, b"<!DOCTYPE html><html><body>404 Not Found</body></html>").unwrap();
+    std::fs::write(
+        &fake,
+        b"<!DOCTYPE html><html><body>404 Not Found</body></html>",
+    )
+    .unwrap();
     write_manifest(root, &[("malitson", &fake)]);
 
     let args = base_args(root);
@@ -434,7 +471,10 @@ fn missing_source_routes_blocked() {
     run_inventory(&args).unwrap();
     let d = docs(&read_out(&args));
     assert_eq!(routing_of(&d[0]), "blocked_source");
-    assert_eq!(d[0].get("parse_status").unwrap().as_str().unwrap(), "missing");
+    assert_eq!(
+        d[0].get("parse_status").unwrap().as_str().unwrap(),
+        "missing"
+    );
 }
 
 #[test]
@@ -528,8 +568,18 @@ fn relative_manifest_path_resolves_against_source_root() {
     run_inventory(&args).unwrap();
     let d = docs(&read_out(&args));
     assert_eq!(d.len(), 1);
-    assert_eq!(d[0].get("canonical_id").unwrap().as_str().unwrap(), "mounted");
-    assert!(!d[0].get("source_sha256").unwrap().as_str().unwrap().is_empty());
+    assert_eq!(
+        d[0].get("canonical_id").unwrap().as_str().unwrap(),
+        "mounted"
+    );
+    assert!(
+        !d[0]
+            .get("source_sha256")
+            .unwrap()
+            .as_str()
+            .unwrap()
+            .is_empty()
+    );
     assert_eq!(
         d[0].get("alias_paths").unwrap().as_array().unwrap()[0]
             .as_str()
@@ -570,11 +620,21 @@ fn non_ascii_named_source_resolves_and_is_not_blocked() {
     let d = docs(&read_out(&args));
     assert_eq!(d.len(), 1);
     assert_ne!(routing_of(&d[0]), "blocked_source");
-    assert!(!d[0].get("source_sha256").unwrap().as_str().unwrap().is_empty());
+    assert!(
+        !d[0]
+            .get("source_sha256")
+            .unwrap()
+            .as_str()
+            .unwrap()
+            .is_empty()
+    );
     let alias = d[0].get("alias_paths").unwrap().as_array().unwrap()[0]
         .as_str()
         .unwrap();
-    assert!(alias.contains("Zero%E2%80%91Divisor.pdf"), "alias must be encoded: {alias}");
+    assert!(
+        alias.contains("Zero%E2%80%91Divisor.pdf"),
+        "alias must be encoded: {alias}"
+    );
 }
 
 #[test]
@@ -600,12 +660,13 @@ fn duplicate_twin_extractions_are_not_orphaned() {
     assert_eq!(d.len(), 1, "twins collapse to one record");
     assert_ne!(routing_of(&d[0]), "manual_review");
     // No orphan record emitted.
-    assert!(!d.iter().any(|r| r
-        .get("canonical_id")
-        .unwrap()
-        .as_str()
-        .unwrap()
-        .starts_with("orphan:")));
+    assert!(!d.iter().any(|r| {
+        r.get("canonical_id")
+            .unwrap()
+            .as_str()
+            .unwrap()
+            .starts_with("orphan:")
+    }));
 }
 
 #[test]
@@ -632,8 +693,17 @@ fn duplicate_extractions_prefer_parseable_derivative() {
     run_inventory(&args).unwrap();
     let d = docs(&read_out(&args));
     assert_eq!(d.len(), 1);
-    assert_eq!(d[0].get("docpipe_status").unwrap().as_str().unwrap(), "reconciled");
-    assert!(d[0].get("docpipe_output").unwrap().as_str().unwrap().ends_with("twin_b"));
+    assert_eq!(
+        d[0].get("docpipe_status").unwrap().as_str().unwrap(),
+        "reconciled"
+    );
+    assert!(
+        d[0].get("docpipe_output")
+            .unwrap()
+            .as_str()
+            .unwrap()
+            .ends_with("twin_b")
+    );
 }
 
 #[test]

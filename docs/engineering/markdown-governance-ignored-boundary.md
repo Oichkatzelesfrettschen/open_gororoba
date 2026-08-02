@@ -21,7 +21,7 @@ and are not deleted by this policy.
 
 The claim-ticket mirror verifier applies the same boundary. It checks
 Git-governed ticket paths and skips 15 ignored local ticket paths, including
-the ignored index, with an explicit gate message. The registry still records
+the ignored index, with an explicit validation message. The registry still records
 those source contracts for a future ticket-mirror admission or retirement
 decision.
 
@@ -51,7 +51,7 @@ Run the cached registry binary from the repository root to re-enumerate the
 local boundary:
 
 ```bash
-.cache/gate-target/gate-tools/markdown-registry verify-inventory-toml-first
+.cache/gate-target/validation-tools/markdown-registry verify-all
 ```
 
 The expected local result before the Git-boundary change is 136

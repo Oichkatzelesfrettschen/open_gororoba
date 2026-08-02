@@ -32,6 +32,54 @@ either gets resolved or has a written, exposure-bounded rationale.
 
 After: `advisories ok, bans ok, licenses ok, sources ok`.
 
+## 2026-08-02 dependency refresh
+
+The current cargo-deny 0.20.2 database adds advisories for dependencies that
+were not present in the April baseline. The fixed releases are adopted in the
+workspace lockfile:
+
+| Crate | Old versions | Locked release | Resolution |
+| ----- | ------------ | -------------- | ---------- |
+| anyhow | 1.0.102 | 1.0.103 | `cargo update -p anyhow --precise 1.0.103` |
+| crossbeam-epoch | 0.9.18 | 0.9.20 | `cargo update -p crossbeam-epoch --precise 0.9.20` |
+| lopdf | 0.38, 0.39, 0.40 | 0.42.0 | upgrade `lopdf`, `pdf-extract`, and `unpdf` |
+| memmap2 | 0.9.10 | 0.9.11 | workspace minimum and lockfile update |
+| quick-xml | 0.39.2 direct use | 0.41.0 | workspace minimum and lockfile update |
+
+RUSTSEC-2026-0097 and RUSTSEC-2026-0105 no longer match the current resolved
+graph, so their stale deny.toml entries are removed. The historical entries
+above remain as the record of their earlier dispositions.
+
+The lockfile retains quick-xml 0.39.2 only through the build-time
+`wayland-scanner` proc-macro. Wayland protocol XML is trusted build input, and
+the application XML readers use quick-xml 0.41.0. RUSTSEC-2026-0194 and
+RUSTSEC-2026-0195 therefore remain explicitly bounded exceptions until
+wayland-scanner changes its dependency range.
+
+The lockfile retains `proc-macro-error2` only through the `iai-callgrind`
+development benchmark macros. RustSec reports no safe upgrade, so
+RUSTSEC-2026-0173 remains an explicit compile-time exception.
+
+The lockfile retains `ttf-parser` 0.20.0 through plotters and 0.25.1 through
+lopdf. RustSec reports these releases as unmaintained with no safe upgrade.
+The exceptions are limited to plotting font support and PDF font parsing;
+they do not hide a known fixed vulnerability. RUSTSEC-2026-0192 remains an
+explicit upstream-maintenance exception.
+
+`spin 0.10.0` remains a yanked transitive dependency through Burn 0.20.1 and
+CubeCL 0.9.0. The workspace does not request `spin` directly, and the current
+Burn dependency range does not accept the latest `spin 0.12.x` release.
+Replacing or locally patching that crate would change the numerical backend
+closure without a demonstrated security fix. The warning remains visible in
+the cargo-deny report and is tracked for the next compatible Burn or CubeCL
+upgrade; no deny ignore hides it.
+
+Removal triggers for the four advisory exceptions are an upstream
+dependency-range change or a verified replacement that preserves the affected
+feature. The `spin` warning is removed only after Burn or CubeCL adopts a
+non-yanked compatible release. The `cargo deny check` command remains
+warnings-visible and fails on any new advisory that is not listed here.
+
 ## Per-advisory analysis
 
 ### RUSTSEC-2026-0098 / 0099 / 0104 -- rustls-webpki (RESOLVED)

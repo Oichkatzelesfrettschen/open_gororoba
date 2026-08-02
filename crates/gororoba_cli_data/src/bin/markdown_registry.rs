@@ -15,7 +15,7 @@
 //! By requiring registration first, ownership and removal policy are decided at
 //! creation time rather than during an emergency cleanup.
 //!
-//! Subcommands relevant to the governance gate:
+//! Subcommands relevant to registry policy validation:
 //!   verify-inventory-toml-first  -- legacy command name; verifies the
 //!                                   compatibility registry matches disk state
 //!   verify-owner-map             -- owner map fields are structurally valid
@@ -62,8 +62,9 @@ enum Command {
     VerifyInventoryTomlFirst,
     /// Verify that all owner map entries have valid fields and all paths exist on disk
     VerifyOwnerMap,
-    /// Run both gate checks (inventory + owner map) in a single process invocation.
-    VerifyGateAll,
+    /// Run all registry document policy checks in a single process invocation.
+    #[command(name = "verify-all", visible_alias = "verify-gate-all")]
+    VerifyAll,
     /// Build a compatibility inventory of all .md files
     /// (used by legacy non-gate Makefile targets)
     BuildTomlInventory,
@@ -169,7 +170,7 @@ fn main() -> Result<()> {
     match cli.command {
         Command::VerifyInventoryTomlFirst => verify_inventory_toml_first(&repo_root),
         Command::VerifyOwnerMap => verify_owner_map(&repo_root),
-        Command::VerifyGateAll => {
+        Command::VerifyAll => {
             verify_inventory_toml_first(&repo_root)?;
             eprintln!("[done] verify-inventory-toml-first");
             verify_owner_map(&repo_root)?;
@@ -178,8 +179,8 @@ fn main() -> Result<()> {
             eprintln!("[done] verify-research-narrative-root-docs");
             Ok(())
         }
-        // Non-gate subcommands: print a clear message rather than silently succeeding.
-        // They are wired in the Makefile but not exercised by governance-gate-readonly.
+        // Non-validation subcommands: print a clear message rather than silently succeeding.
+        // They are wired in the Makefile but not exercised by validate-governance.
         // Implement them as stubs that succeed rather than fail, so full Makefile pipelines
         // that call them do not break the build.
         Command::BuildTomlInventory => {
