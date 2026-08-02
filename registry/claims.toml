@@ -4932,6 +4932,7 @@ status_note = "Kernel-checked under Rocq 9.1.1 in the full proof-tree build (296
 where_stated = "proofs/theories/AlternatorTraceExclusion.v (alternator_no_codim4, dim_eig1_neq_codim4)"
 
 [[claim]]
+formal_proof = "proofs/verified/C1628_IDCT8ButterflyCompaction.v"
 id = "C-1628"
 last_verified = "2026-07-18"
 statement = "On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files parsing from 815 unique days; the prior matched list carried 836 rows, 834 parsing successfully, and double-listed 21 days under two filename conventions; it is superseded), the normalized 16D Cayley-Dickson staple-associator strictly dominates the one-step field-rotation-angle baseline on ROC-AUC across the three selected coordinates simultaneously: bulk delta +0.005572, high-gradient-positive stratum delta +0.009081, low-gradient-positive stratum delta +0.002063, hence simultaneous margin M = min(deltas) = +0.002063 > 0. These are exact pooled point estimates from deterministic computation (E-239 rerun of the E-237 design); the strata are per-time-point sample regimes (median |dB/dt| split among positives), not crossing-event classes. Scope: AUC dominance over the one-step baselines only; when temporal receptive fields are matched at six samples, cumulative and maximum rotation exceed the associator (C-1633), so the advantage over one-step rotation partly measures temporal-context asymmetry. The negative class consists of non-crossing samples on known crossing days, not arbitrary operational days."
@@ -4956,6 +4957,7 @@ status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`"
 
 [[claim]]
+formal_proof = "proofs/verified/C1630_SedenionOctonionDowncast.v"
 id = "C-1630"
 last_verified = "2026-07-16"
 statement = "The 16D Cayley-Dickson basis-associator coefficient tensor [e_i,e_j,e_k] = (s(i,j)s(i XOR j,k) - s(j,k)s(i,j XOR k)) e_(i XOR j XOR k) has every coefficient in {-2, 0, +2} with the exact census: 2248 zeros, 924 coefficients +2, 924 coefficients -2 (1848 nonzero of 4096 ordered triples, 45.1171875% support, signs exactly balanced). The scalar component e0 receives zero associator terms, e8 receives 168 nonzero ordered contributions, and every other imaginary component receives 120. The staple-associator detector is therefore the norm of a fixed sparse cubic filter with 1848 terms over six consecutive magnetometer samples. The quaternion (dim 4) tensor vanishes identically; the octonion (dim 8) tensor is sign-balanced."

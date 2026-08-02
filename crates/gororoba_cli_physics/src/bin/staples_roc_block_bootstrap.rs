@@ -363,7 +363,8 @@ fn main() -> anyhow::Result<()> {
     let s_worst_delta = ci(
         pt_rot_assoc.min(pt_comp_assoc) - pt_rot_rot.min(pt_comp_rot),
         &collect(&|d| {
-            d.low_gradient_assoc.min(d.high_gradient_assoc) - d.low_gradient_rot.min(d.high_gradient_rot)
+            d.low_gradient_assoc.min(d.high_gradient_assoc)
+                - d.low_gradient_rot.min(d.high_gradient_rot)
         }),
     );
 

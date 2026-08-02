@@ -85,7 +85,7 @@ fn main() -> Result<()> {
                 }
                 b"codefragment" => {
                     if let Some(ref mut dup) = current_dup {
-                        dup.codefragment = reader.read_text(e.name())?.to_string();
+                        dup.codefragment = reader.read_text(e.name())?.decode()?.into_owned();
                     }
                 }
                 _ => {}

@@ -32,7 +32,7 @@ human-facing compatibility docs from the same source-of-truth.
 cargo build --workspace -j"$(nproc)"
 cargo test --workspace -j"$(nproc)"
 cargo clippy --workspace -j"$(nproc)" -- -D warnings
-make governance-gate
+make validate-governance
 make rust-semver-check
 make cargo-deny-check
 make dep-audit
@@ -85,7 +85,7 @@ TOMLs from canonical SQLite. Walk-through:
 | `gororoba-db` | `crates/gororoba_db` | `cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>` | Canonical mutator for claims/insights/experiments + planning/requirements |
 | `provenance` | `crates/gororoba_cli_provenance` | `cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane` | Re-emit `registry/*.toml` from canonical SQLite |
 | `repo-audit` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin repo-audit` | Anchored debt counter; supports `--sqlite` for revisions audit |
-| `integrity-resolution` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin integrity-resolution` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
+| `registry-integrity` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin registry-integrity` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
 
 ## ONNX runtime (turboquant-onnx-eval)
 
@@ -107,11 +107,12 @@ real-model RMSE / top-1 / kv-byte metrics per requested bit count.
 
 ## Cache budget policy
 
-The local pre-push 4-gate chain enforces a 250 GB hard cap (and 150 GB
+The local pre-push validation chain enforces a 250 GB hard cap (and 150 GB
 soft cap) on cargo build artifacts in `.cache/`. Run `make cache-sweep`
-when the gate complains; the sweep target now also clears stale
-debug-profile artifacts in `.cache/gate-cbuild/<hash>/debug/` (the
-local 4-gate chain only uses `--profile release-gate`).
+when validation reports cache pressure; the sweep target also clears stale
+debug-profile artifacts in `.cache/gate-cbuild/<hash>/debug/`. The logical
+workflow uses `make validate-local` and the `validation` Cargo profile; the
+`.cache/gate-target` path remains a physical compatibility path.
 
 ## Module docs
 
@@ -129,3 +130,28 @@ For module-specific requirements, see:
 - `docs/requirements/rocq.md`
 - `crates/lbm_3d_cuda/README.md`
 - `apps/gororoba_studio/README.md`
+
+## Audit Tools
+
+Each tool listed below is available via a dedicated `make` target. Tools marked **audit-comprehensive** are included in `make audit-comprehensive`.
+
+| Tool | Make Target | Install | audit-comprehensive | Status |
+| --- | --- | --- | ---: | --- |
+| Clippy | `make rust-clippy` | `rustup component add clippy` | yes | active |
+| cargo-deny | `make cargo-deny-check` | `cargo install cargo-deny` | yes | active |
+| Dependency Audit | `make dep-audit` | (built-in) | yes | active |
+| PMD CPD | `make cpd-audit` | `GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch.` | yes | active |
+| PMD CPD (Tooling) | `make cpd-audit-tooling` | `GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch.` | no | active |
+| PMD CPD (Generated) | `make cpd-audit-generated` | `GitHub release: https://github.com/pmd/pmd/releases (Java tool; download tarball + JAVA_HOME). System-package fallback: paru -S pmd on Arch.` | no | active |
+| cargo-semver-checks | `make rust-semver-check` | `cargo install cargo-semver-checks` | no | blocked -- fwht external path dep cannot resolve from git temp checkout. |
+| Docs Freshness | `make docs-freshness` | (built-in) | no | blocked -- Mathematical bracket notation [a,b,c] triggers broken-intra-doc-links. |
+| repo-audit | `make repo-audit` | (built-in) | no | active |
+| repo-audit (strict baseline) | `make repo-audit-strict` | (built-in) | no | active |
+| repo-audit (strict unjustified) | `make repo-audit-strict-unjustified` | (built-in) | no | active |
+| Cache Sweep | `make cache-sweep-soft` | `cargo install cargo-sweep` | no | active |
+| audit-comprehensive (structured) | `make audit-comprehensive-structured` | (built-in) | no | active |
+| gororoba-db | -- | (built-in) | no | active |
+| provenance export-control-plane | -- | (built-in) | no | active |
+| registry-integrity | `make registry-integrity` | (built-in) | no | active |
+| turboquant-onnx-eval | -- | `Vendored option: enable `ort` crate `download-binaries` feature (auto-fetches ONNX Runtime; +50 MB CI cache). System-pkg fallback: paru -S onnxruntime-opt-cuda on Arch; Microsoft GitHub release: https://github.com/microsoft/onnxruntime/releases.` | no | active |
+| Vulkan SPIR-V build | -- | `GitHub release: https://github.com/google/shaderc/releases (prebuilt glslc tarball). System-pkg fallback: paru -S shaderc on Arch.` | no | active |

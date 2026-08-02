@@ -11,7 +11,7 @@ companion_docs = ["docs/TODO.md", "docs/NEXT_ACTIONS.md"]
 status = "active"
 status_token = "ACTIVE"
 authoritative = true
-workstream_count = 13
+workstream_count = 14
 status_allowlist = ["planned", "active", "in_progress", "done", "paused", "blocked"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -196,3 +196,15 @@ claims = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 dependencies = ["C-010", "C-011", "C-452", "C-453", "C-589"]
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Claim references remain resolvable in registry/claims.toml.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["crates/algebra_experimental/src/cd_external.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "crates/gororoba_cli_data/src/bin/repo_utilities.rs", "crates/gororoba_cli_physics/src/bin/entropy_trap.rs", "registry/claims.toml", "registry/insights.toml", "registry/next_actions.toml", "registry/todo.toml"]
+
+[[workstream]]
+id = "WS-VALIDATION-001"
+name = "Validation Cost and Evidence Pipeline"
+priority = "high"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+description = "Replace nested gate orchestration with a descriptive validation pipeline that shares compiled tools and records elapsed cost. Couple the pipeline to the scientific frontier queue so registry counts, claim status, experiment manifests, formal proof records, and document ledgers advance together."
+primary_outputs = ["Makefile", "xtask/src/main.rs", "docs/engineering/validation-workflow-rca-2026_08_02.md", "docs/engineering/scientific-frontier-map-2026_08_02.md", "registry/canonical/control_plane.sqlite3"]
+dependencies = ["T-051", "T-066", "T-067", "T-068", "T-069"]
+acceptance_criteria = ["validate-local validate-ci validate-repository and validate-registry have distinct scopes", "One validation tool build serves repeated registry checks", "Validation timing retains phase cost and cache state", "Scientific frontiers have claim-specific falsifiers and retained artifacts", "Canonical SQLite and compatibility exports remain synchronized"]
+evidence_refs = ["docs/engineering/validation-workflow-rca-2026_08_02.md", "docs/engineering/scientific-frontier-map-2026_08_02.md", "registry/todo.toml", "registry/roadmap.toml"]

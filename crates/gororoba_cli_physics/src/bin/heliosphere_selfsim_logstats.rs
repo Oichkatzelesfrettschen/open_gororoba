@@ -25,7 +25,11 @@ use gororoba_cli_physics::staple_associator::{
 };
 use rayon::prelude::*;
 use serde::Serialize;
-use std::{collections::BTreeMap, fs, path::{Path, PathBuf}};
+use std::{
+    collections::BTreeMap,
+    fs,
+    path::{Path, PathBuf},
+};
 
 #[derive(Parser, Debug)]
 #[command(about = "Cross-mission log-associator self-similarity survey")]
@@ -67,19 +71,61 @@ struct MissionSpec {
 }
 
 const MISSIONS: &[MissionSpec] = &[
-    MissionSpec { name: "psp", distance_au: 0.15, reader: Reader::NamedCsv, pattern: "csv" },
-    MissionSpec { name: "psp_fields", distance_au: 0.15, reader: Reader::NamedCsv, pattern: "csv" },
-    MissionSpec { name: "messenger", distance_au: 0.39, reader: Reader::MessengerCsv, pattern: "csv" },
-    MissionSpec { name: "ace", distance_au: 1.0, reader: Reader::NamedCsv, pattern: "csv" },
-    MissionSpec { name: "themis", distance_au: 1.0, reader: Reader::NamedCsv, pattern: "csv" },
-    MissionSpec { name: "cluster", distance_au: 1.0, reader: Reader::NamedCsv, pattern: "csv" },
-    MissionSpec { name: "voyager1", distance_au: 100.0, reader: Reader::VoyagerAsc, pattern: "asc" },
-    MissionSpec { name: "voyager2", distance_au: 80.0, reader: Reader::VoyagerAsc, pattern: "asc" },
+    MissionSpec {
+        name: "psp",
+        distance_au: 0.15,
+        reader: Reader::NamedCsv,
+        pattern: "csv",
+    },
+    MissionSpec {
+        name: "psp_fields",
+        distance_au: 0.15,
+        reader: Reader::NamedCsv,
+        pattern: "csv",
+    },
+    MissionSpec {
+        name: "messenger",
+        distance_au: 0.39,
+        reader: Reader::MessengerCsv,
+        pattern: "csv",
+    },
+    MissionSpec {
+        name: "ace",
+        distance_au: 1.0,
+        reader: Reader::NamedCsv,
+        pattern: "csv",
+    },
+    MissionSpec {
+        name: "themis",
+        distance_au: 1.0,
+        reader: Reader::NamedCsv,
+        pattern: "csv",
+    },
+    MissionSpec {
+        name: "cluster",
+        distance_au: 1.0,
+        reader: Reader::NamedCsv,
+        pattern: "csv",
+    },
+    MissionSpec {
+        name: "voyager1",
+        distance_au: 100.0,
+        reader: Reader::VoyagerAsc,
+        pattern: "asc",
+    },
+    MissionSpec {
+        name: "voyager2",
+        distance_au: 80.0,
+        reader: Reader::VoyagerAsc,
+        pattern: "asc",
+    },
 ];
 
 /// Reject cached error pages saved under a data filename.
 fn is_html(path: &Path) -> bool {
-    let Ok(bytes) = fs::read(path) else { return true };
+    let Ok(bytes) = fs::read(path) else {
+        return true;
+    };
     let head = &bytes[..bytes.len().min(200)];
     let lower: Vec<u8> = head.to_ascii_lowercase();
     lower.windows(5).any(|w| w == b"<html")
@@ -188,7 +234,9 @@ struct MissionAggregate {
 }
 
 fn sample_files(dir: &Path, extension: &str, count: usize) -> Vec<PathBuf> {
-    let Ok(entries) = fs::read_dir(dir) else { return Vec::new() };
+    let Ok(entries) = fs::read_dir(dir) else {
+        return Vec::new();
+    };
     let mut files: Vec<PathBuf> = entries
         .filter_map(|e| e.ok().map(|e| e.path()))
         .filter(|p| p.extension().is_some_and(|e| e == extension))
@@ -232,7 +280,10 @@ fn main() -> Result<()> {
         if !records.is_empty() {
             aggregate.insert(
                 spec.name,
-                MissionAggregate { distance_au: spec.distance_au, records },
+                MissionAggregate {
+                    distance_au: spec.distance_au,
+                    records,
+                },
             );
         }
     }
@@ -243,9 +294,8 @@ fn main() -> Result<()> {
     for (name, agg) in &aggregate {
         let sigmas: Vec<f64> = agg.records.iter().map(|r| r.log_std).collect();
         let mean = sigmas.iter().sum::<f64>() / sigmas.len() as f64;
-        let std = (sigmas.iter().map(|s| (s - mean).powi(2)).sum::<f64>()
-            / sigmas.len() as f64)
-            .sqrt();
+        let std =
+            (sigmas.iter().map(|s| (s - mean).powi(2)).sum::<f64>() / sigmas.len() as f64).sqrt();
         println!(
             "{name:11} d={:6.1} ok={:3} logsigma={mean:.2}+-{std:.2}",
             agg.distance_au,

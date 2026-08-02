@@ -1297,7 +1297,7 @@ fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
         ));
     }
     eprintln!(
-        "regen complete; remember to run `make integrity-resolution` to refresh schema_signatures.toml."
+        "regen complete; remember to run `make registry-integrity` to refresh schema_signatures.toml."
     );
     Ok(())
 }

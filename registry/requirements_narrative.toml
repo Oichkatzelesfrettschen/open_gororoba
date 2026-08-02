@@ -43,7 +43,7 @@ human-facing compatibility docs from the same source-of-truth.
 cargo build --workspace -j"$(nproc)"
 cargo test --workspace -j"$(nproc)"
 cargo clippy --workspace -j"$(nproc)" -- -D warnings
-make governance-gate
+make validate-governance
 make rust-semver-check
 make cargo-deny-check
 make dep-audit
@@ -96,7 +96,7 @@ TOMLs from canonical SQLite. Walk-through:
 | `gororoba-db` | `crates/gororoba_db` | `cargo run --release -p gororoba_db --bin gororoba-db -- <subcommand>` | Canonical mutator for claims/insights/experiments + planning/requirements |
 | `provenance` | `crates/gororoba_cli_provenance` | `cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane` | Re-emit `registry/*.toml` from canonical SQLite |
 | `repo-audit` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin repo-audit` | Anchored debt counter; supports `--sqlite` for revisions audit |
-| `integrity-resolution` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin integrity-resolution` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
+| `registry-integrity` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin registry-integrity` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
 
 ## ONNX runtime (turboquant-onnx-eval)
 
@@ -118,11 +118,12 @@ real-model RMSE / top-1 / kv-byte metrics per requested bit count.
 
 ## Cache budget policy
 
-The local pre-push 4-gate chain enforces a 250 GB hard cap (and 150 GB
+The local pre-push validation chain enforces a 250 GB hard cap (and 150 GB
 soft cap) on cargo build artifacts in `.cache/`. Run `make cache-sweep`
-when the gate complains; the sweep target now also clears stale
-debug-profile artifacts in `.cache/gate-cbuild/<hash>/debug/` (the
-local 4-gate chain only uses `--profile release-gate`).
+when validation reports cache pressure; the sweep target also clears stale
+debug-profile artifacts in `.cache/gate-cbuild/<hash>/debug/`. The logical
+workflow uses `make validate-local` and the `validation` Cargo profile; the
+`.cache/gate-target` path remains a physical compatibility path.
 
 ## Module docs
 

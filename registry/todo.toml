@@ -7,7 +7,7 @@
 updated = "2026-02-10"
 status = "active"
 status_token = "ACTIVE"
-item_count = 65
+item_count = 69
 status_allowlist = ["open", "in_progress", "done", "blocked", "deferred"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -618,14 +618,14 @@ evidence_refs = []
 [[item]]
 id = "T-051"
 area = "qa"
-title = "Run gate-audit and archive tranche acceptance evidence"
-description = "The PDG mass subset and NANOGrav free-spectrum input boundary is now admitted with retained hashes and source contracts. Registry acceptance passes. The full audit records standard Rust nextest 6105 passed and 48 skipped, heavy nextest 1346 passed and 68 skipped, and workspace-check pass. gate-ci-rust remains open because integrity-rust reports 46 baseline identity-gap claims, two unregistered Cargo binaries (experiment-manifest and rocq-project-audit), and project.toml experiment_count=228 versus 232 experiments.toml rows."
+title = "Run repository validation and archive acceptance evidence"
+description = "DONE: the legacy release-profile acceptance run remains explicitly partial and historical. The descriptive validate-* workflow produces a retained passing repository report with registry and Rust logs, preserves the interrupted boundary, and keeps identity and project counters synchronized."
 priority = "medium"
-status = "open"
-status_token = "OPEN"
+status = "done"
+status_token = "DONE"
 dependencies = []
-acceptance_criteria = ["Registry acceptance gate exits zero", "Full gate audit retains registry rust and workspace logs plus latest manifest", "PDG mass subset CSV has retained source provenance and content hash", "NANOGrav 15yr free spectrum CSV has retained source provenance and content hash", "Rust nextest passes without missing-input failures", "Integrity Rust registry-check baseline drift is resolved"]
-evidence_refs = ["docs/engineering/local-governance-gate-evidence-2026_08_01.md", "reports/pdg-nanograv-input-admission-2026_08_01.toml", "data/external/PROVENANCE.local.json", "reports/gates/latest.json", "reports/gates/2026-08-01/233501/summary.md", "reports/gates/2026-08-01/233501/gate-ci-registry.log", "reports/gates/2026-08-01/233501/gate-ci-rust.log", "reports/gates/2026-08-01/233501/workspace-check.log"]
+acceptance_criteria = ["Registry validation exits zero", "Full repository validation retains registry and Rust logs plus latest manifest", "The interrupted legacy acceptance result is not reported as a pass", "Identity and project counter drift remain resolved"]
+evidence_refs = ["docs/engineering/validation-workflow-rca-2026_08_02.md", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "registry/canonical/control_plane.sqlite3"]
 
 [[item]]
 id = "T-052"
@@ -794,3 +794,51 @@ status_token = "DONE"
 dependencies = []
 acceptance_criteria = ["The Moreno paper lane exposes a source-faithful arbitrary-a bridge from concrete V_lambda data to the mod-4 theorem.", "The proof surface is anchored in C1542_MorVlambdaArbClose.v and re-exported through Moreno1997.v.", "The TODO row has explicit evidence refs so generated mirrors can be audited without reading prose descriptions."]
 evidence_refs = ["proofs/theories/C1542_MorVlambdaArbClose.v", "proofs/theories/Moreno1997.v"]
+
+[[item]]
+id = "T-066"
+area = "qa"
+title = "Consolidate repository validation into a single evidence pipeline"
+description = "DONE: validate-local, validate-ci, validate-repository, and validate-registry replace active nested gate wrappers. The validation tools build once per source state, cached binaries execute directly, timing and lane reports remain retained, and compatibility aliases remain inactive."
+priority = "high"
+status = "done"
+status_token = "DONE"
+dependencies = ["T-051"]
+acceptance_criteria = ["The active pre-push and CI paths use validate-* names", "One validation tool bundle build serves the registry lane", "Registry and Rust lanes do not repeat the same verifier", "The retained RCA records measured costs and falsifiers"]
+evidence_refs = ["docs/engineering/validation-workflow-rca-2026_08_02.md", "Makefile", "xtask/src/main.rs", ".githooks/pre-push", ".github/workflows/ci.yml"]
+
+[[item]]
+id = "T-067"
+area = "scientific"
+title = "Falsify photon-graviton Ward and TCMT invariants"
+description = "Rework the Ward identity and TCMT unitarity checks so they contract independent diagram contributions and evaluate a complex S-matrix residual. Retain convergence data, on-shell and off-shell residuals, parameter extraction, and declared tolerances before promoting C-820 C-822 C-864 and C-866."
+priority = "high"
+status = "open"
+status_token = "OPEN"
+dependencies = ["C-820", "C-822", "C-864", "C-866", "E-073"]
+acceptance_criteria = ["Independent irreducible tadpole and external-leg contractions are retained", "The on-shell zero factor cannot make the residual pass by itself", "Complex transmission and reflection satisfy a declared flux tolerance", "The registry rows record the resulting evidence status"]
+evidence_refs = ["docs/engineering/scientific-frontier-map-2026_08_02.md", "crates/gr_core/src/photon_graviton/", "crates/gr_core/src/photon_graviton_tcmt/", "registry/claims.toml", "registry/experiments.toml"]
+
+[[item]]
+id = "T-068"
+area = "numerical"
+title = "Reproduce Mie TCMT and SFWM primary comparisons"
+description = "Run the Ruan-Fan cylindrical Mie and TCMT comparisons and the Son-Chekhova SFWM calibration paths with fixed inputs. Separate paper-calibrated and Sellmeier-derived mismatch values and retain one-point and sweep artifacts before promoting C-832 C-839 C-849 and C-850."
+priority = "high"
+status = "open"
+status_token = "OPEN"
+dependencies = ["C-832", "C-839", "C-849", "C-850", "E-074", "E-076"]
+acceptance_criteria = ["Lossless and lossy Mie TCMT cases are retained", "The multi-channel sweep covers the declared angular channels", "Paper-calibrated and Sellmeier paths are not mixed", "Rate dominance fringe and monotonicity tolerances are recorded", "The registry rows receive reproduced or falsified status"]
+evidence_refs = ["docs/engineering/scientific-frontier-map-2026_08_02.md", "crates/optics_core/src/mie_cylinder.rs", "crates/optics_core/src/sfwm.rs", "crates/optics_core/tests/test_sfwm_son_chekhova.rs", "registry/claims.toml", "registry/experiments.toml"]
+
+[[item]]
+id = "T-069"
+area = "evidence"
+title = "Bind formal and numerical rows to replay manifests"
+description = "Create claim-specific evidence records for Rocq completeness, the Voyager AMDA boundary, LBM precision and stability, flyby sign matrices, and fractal-metric parameter grids. Each record carries source identity, input hashes, toolchain, coefficients, tolerance, falsifier, and output hash."
+priority = "medium"
+status = "open"
+status_token = "OPEN"
+dependencies = ["I-137", "I-140", "I-141", "C-1101", "C-1120", "C-1121", "E-128"]
+acceptance_criteria = ["Formal theorem assumptions and proof outputs share one dated record", "AMDA-specific input bytes and parser identity are retained", "CPU and GPU LBM runs use identical inputs and metadata", "Parameter grids include boundary cases", "Every result has a named falsifier and content hash"]
+evidence_refs = ["docs/engineering/scientific-frontier-map-2026_08_02.md", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "proofs/", "crates/gr_core/", "crates/lbm_3d/", "crates/lbm_3d_cuda/", "registry/claims.toml", "registry/experiments.toml"]

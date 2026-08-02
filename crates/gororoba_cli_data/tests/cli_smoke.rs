@@ -79,8 +79,8 @@ fn smoke_project_counter_sync_help() {
 // =============================================================================
 
 #[test]
-fn smoke_integrity_resolution_help() {
-    assert_help_succeeds("CARGO_BIN_EXE_integrity-resolution");
+fn smoke_registry_integrity_help() {
+    assert_help_succeeds("CARGO_BIN_EXE_registry-integrity");
 }
 
 #[test]
