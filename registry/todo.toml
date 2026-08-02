@@ -703,13 +703,13 @@ evidence_refs = []
 id = "T-058"
 area = "data"
 title = "Cross-validate Bartol vs AMDA B-field for Voyager 2 overlap"
-description = "E-128: Compare Bartol 16-col RTN B-field against AMDA-derived Voyager 2 for 1990-1995 overlap."
+description = "Partial boundary retained. The available 1990-1995 comparator is Bartol versus SPDF, not AMDA: 52584 matched rows, zero finite B-magnitude pairs, bulk-speed r=0.999414, and proton-density r=0.269010 with an approximately tenfold provider discrepancy. No AMDA-specific Voyager 2 capture exists in the checkout. Acquire and hash the AMDA magnetometer product before claiming closure."
 priority = "medium"
 status = "open"
 status_token = "OPEN"
 dependencies = ["E-128"]
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "AMDA-specific Voyager 2 data", " raw hash", " parser identity", " and replayed comparator output are retained before closure."]
+evidence_refs = ["docs/engineering/voyager2_v2_bartol_spdf_1990_1995_findings_2026_04_19.txt", "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md", "data/output/bartol_vs_spdf_v2_bfield_correlation_1990_1995.csv", "crates/gororoba_cli_data/src/bin/bartol_spdf_crossval.rs"]
 
 [[item]]
 id = "T-059"
@@ -751,25 +751,25 @@ evidence_refs = ["crates/data_core/src/catalogs/wind.rs"]
 id = "T-062"
 area = "data"
 title = "Investigate PDS-SBN for New Horizons SWAP data"
-description = "New Horizons is the only spacecraft with NO AMDA fallback. Check PDS Small Bodies Node for NH SWAP plasma data."
+description = "Closed by retained endpoint report: PDS-SBN UMD exposes six confirmed 200 New Horizons SWAP dataset landing pages covering raw and calibrated Jupiter, launch, and Pluto cruise products. This resolves the question of whether PDS-SBN is an unverified alternative provider; fetcher integration remains a separate work item."
 priority = "low"
-status = "open"
-status_token = "OPEN"
-dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+status = "done"
+status_token = "DONE"
+dependencies = [""]
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "PDS-SBN endpoint report records confirmed 200 responses and dataset identifiers."]
+evidence_refs = ["data/output/pds_sbn_nh_swap_endpoints_2026_05_10.txt"]
 
 [[item]]
 id = "T-063"
 area = "qa"
 title = "Playwright browser probing of GSFC endpoints"
-description = "Test SPDF, CDAWeb, COHOWeb, PSP Gateway, ESA SOAR via Playwright browser automation to check if browser access bypasses connection-refused blocks."
+description = "Closed by retained endpoint report: SPDF, CDAWeb, COHOWeb, and OMNIWeb endpoints returned confirmed 200 responses in the recorded probe. The report states that no further migration monitoring is required for these endpoints."
 priority = "low"
-status = "open"
-status_token = "OPEN"
-dependencies = []
-acceptance_criteria = ["todo_item status is constrained to declared enum values.", "todo_item dependencies are explicit and machine-parseable."]
-evidence_refs = []
+status = "done"
+status_token = "DONE"
+dependencies = [""]
+acceptance_criteria = ["todo_item status is constrained to declared enum values.", "Endpoint report records confirmed 200 responses for all named GSFC surfaces."]
+evidence_refs = ["data/output/pds_sbn_nh_swap_endpoints_2026_05_10.txt"]
 
 [[item]]
 id = "T-064"
