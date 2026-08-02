@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 123
+document_count = 128
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -730,3 +730,28 @@ path = "docs/external_sources/WOW_SIGNAL_SOURCES.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
+
+[[owner]]
+path = "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/rocq-proof-gate-evidence-2026_08_01.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/materials-data-source-contract-2026_08_01.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/local-governance-gate-evidence-2026_08_01.md"
+owner_group = "project"
+removal_status = "active"

@@ -26,7 +26,7 @@
 
 [meta]
 id = "REPO-DEBT-TAXONOMY-ROADMAP-2026-06-04"
-updated = "2026-07-09"
+updated = "2026-08-01"
 status = "active"
 authoritative = true
 scope = "open_gororoba repository: code structure, build/toolchain/delivery, test/verification, data/provenance, scientific/methodology, documentation/organizational debt"
@@ -952,3 +952,114 @@ canonical_class = "DEBT-SCIENTIFIC-EVIDENCE"
 site = "document_mineru_replay.rs table-risk heuristic"
 disposition = "TRACKED (evolve; output-changing). Two-column tables (one gutter per row) never count toward TABLE_ALIGNED_LINES_MIN, so a doc with table_count==0 can miss table_risk. Counting single-gutter rows reclassifies committed inventory and needs a reviewed threshold re-tune."
 falsifier = "a two-column-table fixture raises table_risk; the committed inventory diff is reviewed and intended"
+
+# Live P0-P2 frontier. These rows are the active execution ledger; historical
+# debt-class measurements above retain their original measurement dates.
+
+[[frontier]]
+row_id = "p0-document-index"
+priority = "P0"
+status = "closed"
+owner_surface = "registry/markdown_owner_map.toml; registry/knowledge_sources.toml; registry/markdown_governance.toml; registry/canonical/control_plane.sqlite3"
+claim = "The Markdown inventory, governance overlay, and SQLite document search index contain the same 128-document set."
+evidence_refs = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/registry_canonical_architecture.md", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/canonical/control_plane.sqlite3"]
+falsifier = "markdown-registry verify-gate-all, governance-verify markdown-parity, or a provenance index reports a document-count or path mismatch"
+next_action = "Regenerate the two Markdown registry views after every governed Markdown change, then reindex SQLite."
+closure_condition = "The generators emit 128 rows, provenance indexes documents=128, and the inventory, owner-map, parity, header, and mirror checks pass."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/registry_canonical_architecture.md"]
+
+[[frontier]]
+row_id = "p0-planning-row-reconciliation"
+priority = "P0"
+status = "partial"
+owner_surface = "registry/canonical/control_plane.sqlite3 planning tables and typed gororoba-db planning CLI"
+claim = "Obsolete endpoint-probing work closes through retained evidence while live Voyager and optics boundaries remain open until their evidence conditions are met."
+evidence_refs = ["data/output/pds_sbn_nh_swap_endpoints_2026_05_10.txt", "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md", "registry/todo.toml", "registry/roadmap.toml", "registry/next_actions.toml"]
+falsifier = "A closed row lacks the named retained artifact, or a live row is marked closed while its stated falsifier remains possible."
+next_action = "Run the current gate audit, refresh stale dependency-watch rows, and preserve open Voyager and optics rows."
+closure_condition = "T-062 and T-063 are done with evidence references; T-058, T-051, and WS-OPTICS-GR-001 retain explicit open boundaries or pass their own acceptance gates."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+
+[[frontier]]
+row_id = "p0-local-gate-substitute"
+priority = "P0"
+status = "closed"
+owner_surface = "Makefile; .githooks/pre-push; local Rust and registry gate commands"
+claim = "The local gate provides a reproducible substitute for dormant or incomplete remote workflow coverage."
+evidence_refs = ["Makefile", ".githooks/pre-push", "docs/engineering/local-governance-gate-evidence-2026_08_01.md", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md"]
+falsifier = "A required local gate is absent, silently non-blocking, or cannot be replayed from a clean isolated worktree."
+next_action = "Repeat the local gate after governed changes and retain a dated result for each release batch."
+closure_condition = "The local governance gate, Markdown registry checks, ASCII, terminology, and scoped Rust lanes pass with retained output and no bypass flags; the broader registry-acceptance target and audit-deep remain separate lanes."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/local-governance-gate-evidence-2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+
+[[frontier]]
+row_id = "p1-voyager-bartol-amda-comparator"
+priority = "P1"
+status = "partial"
+owner_surface = "crates/data_core/src/catalogs/voyager.rs; crates/gororoba_cli_data/src/bin/bartol_spdf_crossval.rs; Voyager source lane"
+claim = "The retained comparison validates the SPDF proxy for speed but does not validate the requested Bartol to AMDA B-field comparison."
+evidence_refs = ["docs/engineering/voyager2_v2_bartol_spdf_1990_1995_findings_2026_04_19.txt", "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md", "data/output/bartol_vs_spdf_v2_bfield_correlation_1990_1995.csv"]
+falsifier = "A hashed AMDA Voyager 2 magnetometer capture for 1990-1995 and a replayed AMDA comparator output enter the checkout."
+next_action = "Acquire the declared AMDA product, retain raw bytes and hashes, add the source row, and replay the comparator."
+closure_condition = "The AMDA-specific capture, parser identity, units, overlap counts, and comparator output are retained and reviewed."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/voyager2-bartol-amda-boundary-2026_08_01.md"]
+
+[[frontier]]
+row_id = "p1-rocq-project-completeness"
+priority = "P1"
+status = "partial"
+owner_surface = "proofs/_RocqProject; proofs/theories; proofs/Makefile"
+claim = "The formal proof surface is measurable by project inclusion, admitted and axiom scans, and both pinned Rocq gate results."
+evidence_refs = ["proofs/_RocqProject", "proofs/Makefile", "docs/engineering/evidence_ledger_operating_contract_2026_08_01.md"]
+falsifier = "vos or vok fails, an intended theorem file is absent from _RocqProject, or an admitted or undispositioned axiom row appears."
+next_action = "Run vos and vok, reconcile the project-file delta, and record proof counts and assumptions in a retained evidence note."
+closure_condition = "The intended project set and retained proof report agree, both gates pass, and every remaining axiom has a named disposition."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+
+[[frontier]]
+row_id = "p1-formal-evidence-registry"
+priority = "P1"
+status = "partial"
+owner_surface = "formal proof field schema, registry theorem rows, and retained proof reports"
+claim = "Formal proof status becomes research-quality only when theorem identity, assumptions, gate result, toolchain, and evidence hash share one record."
+evidence_refs = ["docs/engineering/formal_proof_field_schema_2026_05_09.md", "docs/engineering/rocq-proof-gate-evidence-2026_08_01.md", "registry/canonical/control_plane.sqlite3", "registry/markdown_export/theorems_registry_mirror.rs", "proofs/"]
+falsifier = "A theorem is described as proved without a replayable gate result or without an explicit assumption boundary."
+next_action = "Bind the retained Rocq gate report to the formal proof registry with one typed theorem-evidence record shape."
+closure_condition = "The formal registry and retained proof report expose the same theorem count, assumption set, toolchain, and gate status."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/rocq-proof-gate-evidence-2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+
+[[frontier]]
+row_id = "p2-randomness-run-manifests"
+priority = "P2"
+status = "partial"
+owner_surface = "rand call sites, experiment binaries, and data/output run manifests"
+claim = "A scientific run is replayable only when its seed, generator, toolchain, feature set, hardware, and input hashes are retained."
+evidence_refs = ["docs/engineering/experiment_manifest_schema.md", "crates/gororoba_cli_data/src/bin/experiment_manifest.rs", "crates/", "data/output/"]
+falsifier = "A stochastic experiment can produce a committed result without a seed, generator identity, or input hash."
+next_action = "Classify the direct entropy call sites and require new scoped runs to pass experiment-manifest before evidence registration."
+closure_condition = "Every scoped stochastic experiment emits a complete manifest and the manifest verifier rejects missing identity fields."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+
+[[frontier]]
+row_id = "p2-materials-source-contract"
+priority = "P2"
+status = "partial"
+owner_surface = "crates/materials_data/data; crates/materials_data/build.rs; crates/materials_core/src/optical_database.rs; crates/materials_core/src/crystal_symmetry.rs"
+claim = "Large transcribed materials tables require explicit source, units, provenance, and hash metadata before they support research claims."
+evidence_refs = ["crates/materials_data/data", "crates/materials_data/build.rs", "crates/materials_core/src/optical_database.rs", "crates/materials_core/src/crystal_symmetry.rs", "docs/engineering/materials-data-source-contract-2026_08_01.md", "docs/engineering/experiment_manifest_schema.md"]
+falsifier = "The source tables, units, and replayable provenance manifest are present and validated by a source-contract gate."
+next_action = "Retain hashes for the canonical materials_data inputs and add a source-contract verifier before declaring parity complete."
+closure_condition = "Optical and crystal data consumers resolve to versioned source records with units, hashes, and a passing source-contract verifier."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "docs/engineering/materials-data-source-contract-2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+
+[[frontier]]
+row_id = "p2-structural-debt-slices"
+priority = "P2"
+status = "open"
+owner_surface = "largest hand-written Rust modules and their public crate boundaries"
+claim = "Structural splits reduce coupling only when the public API, tests, and measured behavior remain stable."
+evidence_refs = ["crates/materials_core/src/optical_database.rs", "crates/algebra_analysis/src/boxkites/tests.rs", "crates/provenance_store/src/lib.rs", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]
+falsifier = "A proposed split changes public behavior, loses tests, or has no before and after measurement."
+next_action = "Choose one mechanism boundary, measure its baseline, split through re-exports, and run scoped clippy and nextest."
+closure_condition = "Each structural slice has a named owner, stable API checks, passing tests, and a retained line-count and dependency delta."
+document_updates = ["docs/engineering/evidence_ledger_operating_contract_2026_08_01.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml"]

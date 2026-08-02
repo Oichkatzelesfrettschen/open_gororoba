@@ -27,6 +27,7 @@
 .PHONY: registry-normalize-entrypoint-docs registry-bootstrap-entrypoint-docs
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
+.PHONY: experiment-manifest-verify
 .PHONY: registry-markdown-inventory registry-markdown-corpus registry-toml-inventory
 .PHONY: registry-markdown-origin-audit
 .PHONY: registry-knowledge-atoms registry-verify-knowledge-atoms
@@ -1343,6 +1344,11 @@ registry-knowledge:
 
 registry-governance: registry-knowledge
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-governance
+
+EXPERIMENT_MANIFEST ?=
+experiment-manifest-verify:
+	@test -n "$(EXPERIMENT_MANIFEST)" || (echo "EXPERIMENT_MANIFEST=<path> is required"; exit 2)
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin experiment-manifest -- verify "$(EXPERIMENT_MANIFEST)"
 
 registry-migrate-corpus: registry-knowledge
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- migrate-corpus --prune-stale

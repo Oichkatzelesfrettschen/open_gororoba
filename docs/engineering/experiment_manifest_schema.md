@@ -1,13 +1,21 @@
+---
+description: executable reproducibility manifest contract for registered experiments
+last_verified: 2026-08-01
+evidence_class: operational_schema
+---
+
 # Experiment reproducibility manifest schema
 
-This file defines the fields that every entry in `registry/experiments.toml`
-should carry to make experiments reproducible. It is a definition document
-only; no backfill of existing experiments is implied.
+This file defines the fields for a standalone experiment run manifest. The
+manifest is checked by `experiment-manifest verify` before its evidence is
+described as replayable. Existing rows in `registry/experiments.toml` remain
+legacy compatibility records until they are deliberately backfilled through
+the SQLite canonical write path.
 
 ## Why this file exists
 
-`registry/experiments.toml` currently has 251 entries. They have a
-`run_command_sha256` field but lack:
+The compatibility export currently contains 227 experiment rows. Most legacy
+rows have a `run_command_sha256` field but lack:
 
 - `code_commit_sha`: which git commit the experiment was run against.
 - `input_hashes`: SHA256 of each input file at execution time.
@@ -34,6 +42,11 @@ A string token from the controlled vocabulary below.
 Default: `numeric_close` for floating-point pipelines, `bit_exact` for
 deterministic integer/symbolic pipelines.
 
+The executable verifier accepts only the five tokens in the table. Legacy
+tokens such as `deterministic_replay`, `seeded_stochastic_replay`, and
+`non_deterministic` remain valid in the compatibility export but do not pass
+the new standalone manifest gate until they are classified.
+
 ### `code_commit_sha`
 
 40-char lowercase hex git SHA. The commit at which the experiment was last
@@ -49,10 +62,13 @@ fields if the entry is added after 2026-Q3 (faster, but document the change).
 
 ### `output_hash_refs`
 
-An array of `{artifact_id, sha256}` records, one per output file. The
-`artifact_id` references `registry/binaries.toml` or
-`data/artifacts/ARTIFACTS_MANIFEST.csv`. `sha256` is the hash of the output
-content at execution time.
+An array of `{artifact_id, path, sha256}` records, one per output file.
+`artifact_id` names an artifact in the canonical SQLite registry. `path` is
+the exact repository-relative path registered for that artifact in
+`artifact_paths` or `canonical_download_path`. `sha256` is the hash of the
+retained output content at execution time. The verifier checks the identity to
+path relation before hashing, so a path cannot be relabeled under another
+artifact ID.
 
 ### `numeric_tolerance` (only for `reproducibility_class = "numeric_close"`)
 
@@ -77,12 +93,41 @@ abs_tol = 1e-9
 The governance gate should warn (not fail) on missing `actual_timestamp`
 for experiments registered after 2026-04-30.
 
-## Hashing tools
+### Execution environment and randomness
 
-- `sha256sum <path>` for input/output hashes (POSIX standard).
-- `cargo run -p gororoba_cli_data --bin manifest-hash <path>` is the
-  preferred binary; it normalizes line endings and strips inferred
-  timestamps before hashing, ensuring stability across git checkouts.
+Every standalone manifest also records:
+
+| Field | Contract |
+| --- | --- |
+| `run_command` | Exact command string used for the run. |
+| `run_command_sha256` | Lowercase SHA-256 of the UTF-8 bytes in `run_command`. |
+| `toolchain` | Compiler, interpreter, or solver version string. |
+| `features` | Explicit array of enabled features, including an empty array when none are enabled. |
+| `hardware` | Host, accelerator, or simulator identity relevant to the result. |
+| `randomness_mode` | `none`, `seeded`, or `external_entropy`. |
+| `random_seed` | Required with `randomness_mode = "seeded"`. |
+| `random_generator` | Required for seeded or external entropy runs. |
+| `randomness_source` | Required for external entropy runs. |
+
+`experiment-manifest verify` compares `code_commit_sha` with the checked-out
+commit, resolves every input `path` below the repo root, checks every output
+`artifact_id` and `path` against the read-only SQLite artifact registry, and
+recomputes every SHA-256. It therefore requires output files to be retained and
+registered before verification. `numeric_close` manifests also require at
+least one `numeric_tolerance` row with nonnegative finite values.
+
+## Hashing and verification tools
+
+- `cargo run -p gororoba_cli_data --bin experiment-manifest -- hash <path>`
+  prints a byte-preserving SHA-256 for one retained file.
+- `cargo run -p gororoba_cli_data --bin experiment-manifest -- verify
+  <manifest.toml>` checks the complete manifest contract.
+- `make experiment-manifest-verify EXPERIMENT_MANIFEST=<manifest.toml>` runs
+  the same gate through the repository Makefile.
+
+The verifier does not normalize input or output bytes. Scientific evidence
+uses the exact retained bytes, so line-ending conversion is a content change
+and must produce a new hash.
 
 ## Backwards compatibility
 
@@ -114,14 +159,22 @@ claim_refs = ["C-1432", "C-1433"]
 reproducibility_class = "numeric_close"
 code_commit_sha = "8c3a4d7e0e8f2b1a6c5d9e3f7a2b8c4d1e6f9a3b"
 actual_timestamp = "2026-03-18T14:32:00Z"
-run_command_sha256 = "abc123..."
+run_command = "cargo run -p example --release -- --seed 42"
+run_command_sha256 = "<sha256 of run_command>"
+toolchain = "rustc 1.97.0"
+features = ["default"]
+hardware = "x86_64 host CPU"
+randomness_mode = "seeded"
+random_seed = 42
+random_generator = "ChaCha8Rng"
 
 [[experiment.input_hashes]]
 path = "data/external/manga/manga_rotcurves_all.csv"
 sha256 = "deadbeef..."
 
 [[experiment.output_hash_refs]]
-artifact_id = "data/results/e201/face_on_chi2.csv"
+artifact_id = "ASOT-0984"
+path = "data/csv/apt_dimensional_census_summary.csv"
 sha256 = "feedface..."
 
 [[experiment.numeric_tolerance]]
@@ -136,5 +189,7 @@ abs_tol = 1e-6
 - `registry/source_manifest.toml` -- declares which TOMLs are subject to
   compatibility round-trip verification.
 - `data/artifacts/ARTIFACTS_MANIFEST.csv` -- canonical artifact index.
-- Stage B plan task B-Doc4 (this file is the deliverable).
-- The Turing Way reproducibility chapter for cross-disciplinary precedent.
+- `docs/engineering/evidence_ledger_operating_contract_2026_08_01.md` -- P2
+  ledger row and closure conditions.
+- `crates/gororoba_cli_data/src/bin/experiment_manifest.rs` -- executable
+  validator and unit tests.
