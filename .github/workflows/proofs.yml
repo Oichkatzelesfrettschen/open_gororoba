@@ -39,7 +39,7 @@ jobs:
           opam init --bare --disable-sandboxing --yes
           opam switch create rocq-9.1.1 ocaml-base-compiler.5.4.0 --yes || true
           eval $(opam env --switch=rocq-9.1.1)
-          opam install rocq-core.9.1.1 rocq-stdlib.9.1.1 --yes
+          opam install rocq-core.9.1.1 rocq-stdlib.9.1.1 coq-flocq.4.2.2 --yes
 
       - name: Compile all proofs
         working-directory: proofs

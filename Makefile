@@ -3,7 +3,7 @@
 .PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
 .PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
-.PHONY: rocq-proofs rocq-proofs-check rocq-makefile-check lva-paper
+.PHONY: rocq-proofs rocq-proofs-check rocq-project-check rocq-makefile-check lva-paper
 .PHONY: heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
@@ -2180,7 +2180,10 @@ rocq-proofs-check:
 	    echo "SKIP: proofs/ not present (submodule not initialized? run: make submodule-sync)"; \
 	fi
 
-rocq-makefile-check:
+rocq-project-check:
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin rocq-project-audit -- --repo-root .
+
+rocq-makefile-check: rocq-project-check
 	@command -v rocq >/dev/null 2>&1 || { echo "ERROR: rocq not found. See docs/requirements/rocq.md"; exit 1; }
 	@if [ -f proofs/Makefile ]; then \
 	    $(MAKE) -C proofs rocq-makefile-check; \

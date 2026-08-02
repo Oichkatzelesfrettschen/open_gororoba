@@ -87,6 +87,10 @@ name = "experiment-manifest"
 path = "src/bin/experiment_manifest.rs"
 
 [[bin]]
+name = "rocq-project-audit"
+path = "src/bin/rocq_project_audit.rs"
+
+[[bin]]
 name = "agents-render"
 path = "src/bin/agents_render.rs"
 
