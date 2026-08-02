@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-03-10T19:51:52.983Z",
+  "generated_at_utc": "2026-08-02T05:35:02.000Z",
   "root": "data/external",
   "hash_backend": "rust",
   "hashes": [
@@ -2337,9 +2337,9 @@
     },
     {
       "path": "nanograv_15yr_freespectrum.csv",
-      "size_bytes": 886,
-      "mtime_utc": "2026-02-24T08:43:38.764Z",
-      "sha256": "a730304cdb50058d95be822a1ac87d0bdff5d396b69bc4eb2d9612de74b4304c",
+      "size_bytes": 1436,
+      "mtime_utc": "2026-03-18T20:03:51.548Z",
+      "sha256": "6ee2c04175168b83a18aac740da908927a55ae4b0d23fd05ce1154d751b3b9d5",
       "source_id": "SRC-EXTERNAL-FETCH-ROOT",
       "source_status": "active",
       "source_access_class": "public",
@@ -2840,6 +2840,17 @@
       "source_access_class": "public",
       "source_canonical_url": "https://github.com/eirikr/open_gororoba/blob/main/docs/external_sources/DATASET_MANIFEST.md",
       "source_retrieval_method": "cargo run -p gororoba_cli --bin fetch-datasets -- --all --skip-existing"
+    },
+    {
+      "path": "pdg_2025/mass_subset.csv",
+      "size_bytes": 623,
+      "mtime_utc": "2026-03-18T21:15:14.133Z",
+      "sha256": "341d93fcb418aa0b7bc1727c053ba95355974b9917d7b6de09905f29660c822a",
+      "source_id": "SRC-PDG-2025-MASS-SURFACES",
+      "source_status": "active",
+      "source_access_class": "public",
+      "source_canonical_url": "https://pdg.lbl.gov/2025/index.html",
+      "source_retrieval_method": "manual_primary_source_cache_2026_03_18"
     },
     {
       "path": "pioneer/p10_1979_1979_manifest.json",

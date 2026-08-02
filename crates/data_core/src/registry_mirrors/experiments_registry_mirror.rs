@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 227
+//! Total experiments: 232
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -3911,4 +3911,89 @@
 //! Run command:
 //! ```bash
 //! cargo machete && pmd cpd --language rust --minimum-tokens 80 -d crates/ --no-fail-on-error -f text && RUSTFLAGS='' cargo clippy --workspace -- -W clippy::cognitive_complexity && cargo miri test -p cd_kernel
+//! ```
+//!
+//! ## E-235: Block-bootstrap ROC-AUC uncertainty for the staple-associator magnetopause benchmark
+//!
+//! - Binary: `staples-roc-block-bootstrap`
+//! - Input: data/output/benchmark_scores.csv: 24,320,815 per-sample rows (assoc,dbdt,rot,bmag,label) exported by themis-staples-score-export from 834 THEMIS-A daily FGM files with +/-2 min Staples et al. 2020 crossing labels (617k positives, 2.54% base rate)
+//! - Output: data/output/staples_roc_block_bootstrap.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Moving-block bootstrap (Kunsch 1989) over contiguous 29,000-sample blocks matching the THEMIS-A daily-file autocorrelation scale; 200 paired resamples recompute average-rank Mann-Whitney AUC for the normalized CD staple-associator and the field-rotation-angle baseline on identical resampled index sets; percentile 95% CIs on each AUC, the paired bulk delta, per-subtype paired deltas (positives split at the median |dB/dt| among positives into compressive/rotational, each vs the full negative class), and the worst-case-AUC (min over subtypes) delta; a 14,500/58,000 block-length sweep checks bulk-delta sensitivity; ChaCha8 stream keyed on (seed 42, block_len, resample) makes every interval bit-reproducible.
+//!
+//! Run command:
+//! ```bash
+//! CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-block-bootstrap -- --scores data/output/benchmark_scores.csv --out data/output/staples_roc_block_bootstrap.json
+//! ```
+//!
+//! ## E-236: File-level bootstrap CIs for the cross-mission staple-associator log-sigma survey
+//!
+//! - Binary: `selfsim-logsigma-bootstrap`
+//! - Input: data/output/agg_selfsim_rust.json: per-file staple-associator log-moment records for 8 heliospheric missions (PSP 0.15 AU through Voyager 1 100 AU) produced by heliosphere-selfsim-logstats
+//! - Output: data/output/selfsim_logsigma_bootstrap.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Ordinary bootstrap over daily files (independent sampling units; within-file autocorrelation is absorbed into the per-file log_std statistic): 10,000 resamples of the per-mission mean log-sigma, percentile 95% CIs, ChaCha8 stream keyed on (seed 42, mission index) for bit-reproducible intervals. Decides which cross-mission log-sigma orderings survive the modest per-mission file counts.
+//!
+//! Run command:
+//! ```bash
+//! CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin selfsim-logsigma-bootstrap -- --records data/output/agg_selfsim_rust.json --out data/output/selfsim_logsigma_bootstrap.json
+//! ```
+//!
+//! ## E-237: File-cluster bootstrap with simultaneous dominance margin for the staples benchmark
+//!
+//! - Binary: `staples-roc-cluster-bootstrap`
+//! - Input: data/output/benchmark_scores.csv: 24,320,815 per-sample rows (file_id,assoc,dbdt,rot,bmag,label) over 834 THEMIS-A daily files; file_id names the intact sampling cluster, sidecar benchmark_scores.files.csv maps file_id to source path
+//! - Output: data/output/staples_roc_cluster_bootstrap.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! File-cluster bootstrap: 2,000 resamples draw whole daily files with replacement and keep every sample within each selected file (intact-cluster resampling gives better interval coverage than contiguous blocks that straddle file boundaries). Per-detector global sort once, then O(n) multiplicity-weighted rank walks compute bulk plus high/low-gradient-positive stratum AUCs per resample. Three estimands: pooled time-point AUC (descriptive), mean daily AUC over two-class files, and cluster-resampled paired deltas. The simultaneous margin M = min(delta_bulk, delta_high_gradient, delta_low_gradient) recomputes inside every resample so strict componentwise dominance is one CI-backed proposition. Tail proportions report as < 1/(B+1) when zero nonpositive draws occur. ChaCha8 seed 42.
+//!
+//! Run command:
+//! ```bash
+//! CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --out data/output/staples_roc_cluster_bootstrap.json
+//! ```
+//!
+//! ## E-238: Exact coefficient census of the sedenion basis associator tensor
+//!
+//! - Binary: `sedenion-associator-coefficient-census`
+//! - Input: cd_kernel::mult_table::CdMultTable::generate(16): the SHA-256-verified Cayley-Dickson twist recurrence; no external data
+//! - Output: data/output/audit/2026-07-16/21-associator-coefficient-census.txt
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Exact enumeration of all 16^3 = 4096 ordered basis triples: coefficient of [e_i,e_j,e_k] on e_(i XOR j XOR k) is s(i,j)s(i^j,k) - s(j,k)s(i,j^k), read off the multiplication table with both association orders asserted to land on the same component. Census: value histogram over {-2,0,+2}, per-output-component nonzero counts, sign balance. Regression tests pin the census; lower-dimension sanity checks confirm the quaternion tensor vanishes identically and the octonion tensor is sign-balanced.
+//!
+//! Run command:
+//! ```bash
+//! CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin sedenion-associator-coefficient-census
+//! ```
+//!
+//! ## E-239: Equal-receptive-field control battery on the deduplicated staples benchmark
+//!
+//! - Binary: `staples-roc-cluster-bootstrap`
+//! - Input: data/output/benchmark_scores.csv regenerated on the deduplicated THEMIS-A matched list (815 unique days, 813 files parsing, 23,664,374 rows, 578,320 positives; the prior list carried 836 rows, 834 parsing, with 21 days double-listed under two filename conventions, preserved as data/output/tha_matched_files_dup_defect.csv). Twelve score columns: assoc, dbdt, rot, bmag, plus equal-receptive-field controls cumrot6, maxrot6, pvi6, gram6 (classical six-sample statistics), scram (sign-scrambled CD tensor, ChaCha8 seed 42), chperm (channel permutation [1,2,0] through the intact CD tensor).
+//! - Output: data/output/staples_cluster_bootstrap_assoc_vs_rot.json, data/output/staples_cluster_bootstrap_assoc_vs_dbdt.json, data/output/staples_cluster_bootstrap_assoc_vs_bmag.json, data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json, data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json, data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json, data/output/staples_cluster_bootstrap_assoc_vs_gram6.json, data/output/staples_cluster_bootstrap_assoc_vs_scram.json, data/output/staples_cluster_bootstrap_assoc_vs_chperm.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1628, C-1629, C-1631, C-1632, C-1633
+//!
+//! Method:
+//! Nine paired file-cluster bootstraps (E-237 design unchanged: 2,000 intact-daily-file resamples, ChaCha8 seed 42, average-rank Mann-Whitney AUC, per-resample simultaneous margin M = min of the three paired deltas) comparing assoc against each of rot, dbdt, bmag, cumrot6, maxrot6, pvi6, gram6, scram, chperm via --col-a/--col-b column selection. The six-sample controls consume exactly the raw samples B_t..B_t+5 spanned by the three overlapping staples, isolating the receptive-field confound in one-step comparisons.
+//!
+//! Run command:
+//! ```bash
+//! for control in rot dbdt bmag cumrot6 maxrot6 pvi6 gram6 scram chperm; do CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --col-a assoc --col-b "$control" --out "data/output/staples_cluster_bootstrap_assoc_vs_${control}.json"; done
 //! ```

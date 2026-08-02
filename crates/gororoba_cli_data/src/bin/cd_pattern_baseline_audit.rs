@@ -10,7 +10,8 @@ use algebra_analysis::reggiani::{partner_graph_degeneracies, partner_graph_stats
 use algebra_experimental::so7_drift::angle_sweep;
 use clap::Parser;
 use data_core::{
-    catalogs::nanograv::bestfit, parse_nanograv_free_spectrum, parse_pdg_mass_reference_csv,
+    catalogs::nanograv::{FreeSpectrumPoint, bestfit},
+    parse_nanograv_free_spectrum, parse_pdg_mass_reference_csv,
 };
 use stats_core::{frechet_distance, frechet_null_test, normalize_spectrum};
 use std::{
@@ -154,6 +155,46 @@ fn load_pdg_masses_or_exit() -> (String, Vec<ParticleMass>) {
     ("data/external/pdg_2025/mass_subset.csv".to_string(), masses)
 }
 
+fn summarize_c068_from_masses(
+    pdg_source_path: String,
+    pdg_masses: Vec<ParticleMass>,
+) -> C068Summary {
+    let degeneracies = partner_graph_degeneracies(1.0e-9);
+    let unique_eigenvalues: Vec<f64> = degeneracies.iter().map(|(value, _)| *value).collect();
+    let counts: Vec<usize> = degeneracies.iter().map(|(_, count)| *count).collect();
+    let positive_unique_eigenvalue_count = unique_eigenvalues
+        .iter()
+        .filter(|&&value| value > 1.0e-12)
+        .count();
+    let zero_eigenvalue_degeneracy = degeneracies
+        .iter()
+        .find_map(|(value, count)| {
+            if value.abs() < 1.0e-12 {
+                Some(*count)
+            } else {
+                None
+            }
+        })
+        .unwrap_or(0);
+
+    let best_log_match = best_mass_subset_match(&pdg_masses, transform_log10, &unique_eigenvalues);
+    let best_linear_match =
+        best_mass_subset_match(&pdg_masses, transform_linear, &unique_eigenvalues);
+
+    C068Summary {
+        pdg_source_path,
+        unique_eigenvalues,
+        degeneracies: counts,
+        unique_eigenvalue_count: degeneracies.len(),
+        positive_unique_eigenvalue_count,
+        zero_eigenvalue_degeneracy,
+        pdg_mass_count: pdg_masses.len(),
+        subset_changed_between_bases: best_log_match.subset_names != best_linear_match.subset_names,
+        best_log_match,
+        best_linear_match,
+    }
+}
+
 fn basis_vector(dim: usize, index: usize) -> Vec<f64> {
     let mut out = vec![0.0; dim];
     out[index] = 1.0;
@@ -294,45 +335,10 @@ fn best_mass_subset_match(
 
 fn summarize_c068() -> C068Summary {
     let (pdg_source_path, pdg_masses) = load_pdg_masses_or_exit();
-    let degeneracies = partner_graph_degeneracies(1.0e-9);
-    let unique_eigenvalues: Vec<f64> = degeneracies.iter().map(|(value, _)| *value).collect();
-    let counts: Vec<usize> = degeneracies.iter().map(|(_, count)| *count).collect();
-    let positive_unique_eigenvalue_count = unique_eigenvalues
-        .iter()
-        .filter(|&&value| value > 1.0e-12)
-        .count();
-    let zero_eigenvalue_degeneracy = degeneracies
-        .iter()
-        .find_map(|(value, count)| {
-            if value.abs() < 1.0e-12 {
-                Some(*count)
-            } else {
-                None
-            }
-        })
-        .unwrap_or(0);
-
-    let best_log_match = best_mass_subset_match(&pdg_masses, transform_log10, &unique_eigenvalues);
-    let best_linear_match =
-        best_mass_subset_match(&pdg_masses, transform_linear, &unique_eigenvalues);
-
-    C068Summary {
-        pdg_source_path,
-        unique_eigenvalues,
-        degeneracies: counts,
-        unique_eigenvalue_count: degeneracies.len(),
-        positive_unique_eigenvalue_count,
-        zero_eigenvalue_degeneracy,
-        pdg_mass_count: pdg_masses.len(),
-        subset_changed_between_bases: best_log_match.subset_names != best_linear_match.subset_names,
-        best_log_match,
-        best_linear_match,
-    }
+    summarize_c068_from_masses(pdg_source_path, pdg_masses)
 }
 
-fn summarize_c070() -> C070Summary {
-    let nanograv_path = repo_path("data/external/nanograv_15yr_freespectrum.csv");
-    let nanograv_rows = parse_nanograv_or_exit(&nanograv_path);
+fn summarize_c070_from_rows(nanograv_rows: &[FreeSpectrumPoint]) -> C070Summary {
     let nanograv_matches_embedded_bestfit = nanograv_rows.len() == bestfit::N_BINS
         && nanograv_rows
             .iter()
@@ -383,6 +389,12 @@ fn summarize_c070() -> C070Summary {
         },
         template_distances,
     }
+}
+
+fn summarize_c070() -> C070Summary {
+    let nanograv_path = repo_path("data/external/nanograv_15yr_freespectrum.csv");
+    let nanograv_rows = parse_nanograv_or_exit(&nanograv_path);
+    summarize_c070_from_rows(&nanograv_rows)
 }
 
 fn summarize_c092() -> C092Summary {
@@ -628,7 +640,29 @@ mod tests {
 
     #[test]
     fn c068_subset_match_uses_full_eigenlevel_count() {
-        let summary = summarize_c068();
+        let masses = vec![
+            ParticleMass {
+                name: "mass_a".to_string(),
+                mass_gev: 1.0e-3,
+            },
+            ParticleMass {
+                name: "mass_b".to_string(),
+                mass_gev: 1.0e-1,
+            },
+            ParticleMass {
+                name: "mass_c".to_string(),
+                mass_gev: 1.0,
+            },
+            ParticleMass {
+                name: "mass_d".to_string(),
+                mass_gev: 10.0,
+            },
+            ParticleMass {
+                name: "mass_e".to_string(),
+                mass_gev: 100.0,
+            },
+        ];
+        let summary = summarize_c068_from_masses("test-fixture".to_string(), masses);
         assert_eq!(summary.unique_eigenvalue_count, 5);
         assert_eq!(summary.best_log_match.subset_names.len(), 5);
         assert_eq!(summary.best_linear_match.subset_names.len(), 5);
@@ -636,7 +670,8 @@ mod tests {
 
     #[test]
     fn c070_quantile_curve_has_expected_length() {
-        let summary = summarize_c070();
+        let summary = summarize_c070_from_rows(&bestfit::HD_FREE_SPECTRUM);
+        assert!(summary.nanograv_matches_embedded_bestfit);
         assert_eq!(summary.quantile_curve_count, bestfit::N_BINS);
         assert_eq!(summary.associator_quantiles.len(), bestfit::N_BINS);
         for pair in summary.associator_quantiles.windows(2) {
