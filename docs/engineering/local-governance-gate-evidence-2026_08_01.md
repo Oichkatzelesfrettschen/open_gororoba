@@ -6,6 +6,14 @@ evidence_class: executed_gate
 
 # Local governance gate evidence
 
+This record is a historical 2026-08-01 capture. The active workflow and the
+current synchronized counts live in
+`docs/engineering/validation-workflow-rca-2026_08_02.md` and
+`docs/engineering/evidence_ledger_operating_contract_2026_08_01.md`. The old
+commands below remain compatibility aliases; use `validate-local`,
+`validate-governance`, `validate-registry`, and `validate-repository` for new
+replays.
+
 The isolated evidence-ledger worktree passes the registry, governance, full
 nextest, and workspace-check lanes. The keep-going audit remains nonzero only
 in `integrity-rust`, where the registry checker reports bounded baseline drift
@@ -72,10 +80,10 @@ Run from the repository root with the pinned toolchain and a worktree-local
 target directory:
 
 ```bash
-make gate-local
-make governance-gate-readonly
-make registry-acceptance-gate-readonly
-make gate-audit
+make validate-local
+make validate-governance
+make validate-registry
+make validate-repository
 ```
 
 The scoped Rust lane uses library tests by default. The CI lane must run the

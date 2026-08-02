@@ -22,7 +22,7 @@ gororoba_sparse_grid = { workspace = true }
 hdf5 = { workspace = true, optional = true }
 hifitime = { workspace = true }
 log = { workspace = true }
-memmap2 = "0.9.10"
+memmap2 = "0.9.11"
 nalgebra = { workspace = true }
 netcdf-reader = { workspace = true, optional = true }
 netcdf3 = { workspace = true, optional = true }

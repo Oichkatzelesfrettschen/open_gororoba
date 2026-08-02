@@ -320,9 +320,16 @@ fn main() -> anyhow::Result<()> {
         labels.push(cols[idx_label].parse()?);
     }
     let n = labels.len();
-    let n_files = (*file_id.iter().max().ok_or_else(|| anyhow::anyhow!("empty"))? + 1) as usize;
+    let n_files = (*file_id
+        .iter()
+        .max()
+        .ok_or_else(|| anyhow::anyhow!("empty"))?
+        + 1) as usize;
     let n_pos = labels.iter().filter(|&&l| l == 1).count();
-    eprintln!("loaded {} samples, {} positives, {} files", n, n_pos, n_files);
+    eprintln!(
+        "loaded {} samples, {} positives, {} files",
+        n, n_pos, n_files
+    );
 
     // Fixed stratum definition: median |dB/dt| among positives.
     let mut pos_dbdt: Vec<f32> = labels

@@ -12,11 +12,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  rust-quality:
+  validation:
     runs-on: ubuntu-latest
     env:
       CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
-      CARGO_TARGET_DIR: ${{ github.workspace }}/target
+      CARGO_TARGET_DIR: ${{ github.workspace }}/.cache/gate-target
     steps:
       - uses: actions/checkout@v4
 
@@ -48,6 +48,7 @@ jobs:
             ${{ env.CARGO_HOME }}/registry
             ${{ env.CARGO_HOME }}/git
             ${{ env.CARGO_TARGET_DIR }}
+            ${{ github.workspace }}/.cache/gate-cbuild
           key: rust-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
           restore-keys: rust-${{ runner.os }}-
 
@@ -56,11 +57,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libhdf5-dev pkg-config
 
-      - name: Full Rust gate
-        run: ./makew gate-ci-rust
+      - name: Single-session repository validation
+        run: ./makew validate-ci
 
-      # Gate-timing regression check. Reads
-      # data/output/audit/<date>/gate-timing-*.jsonl artifacts from
+      # Validation-timing regression check. Reads
+      # data/output/audit/<date>/validation-timing-*.jsonl artifacts from
       # prior runs, filters by the artifact timestamp rather than
       # checkout mtime, and compares the latest run's per-phase
       # elapsed_sec against the baseline median.
@@ -70,15 +71,15 @@ jobs:
       # records is reported as "warmup" and never fails -- so the gate stays
       # dormant until enough committed history accrues, then catches a phase
       # whose latest elapsed_sec exceeds --threshold x the baseline median.
-      - name: Gate-timing regression check
+      - name: Validation-timing regression check
         run: |
           if [ -d data/output/audit ]; then
-            cargo run -q -p xtask -- gate-timing-regression-check \
+            "$CARGO_TARGET_DIR/validation-tools/xtask" validation-timing-regression-check \
               --baseline-days 14 \
               --threshold 2.0 \
               --min-samples 5
           else
-            echo "No gate-timing JSONL history yet; skipping regression check."
+            echo "No validation-timing JSONL history yet; skipping regression check."
           fi
 
       - name: Warp artifact acceptance gate (when HDF5 artifacts are present)
@@ -86,39 +87,13 @@ jobs:
         run: |
           cargo run -p gororoba_cli_warp --features gpu,hdf5-export --bin warp-acceptance-gate --allow-empty -- "data/h5/**/*.h5"
 
-  registry-contract:
-    runs-on: ubuntu-latest
-    env:
-      CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
-      CARGO_TARGET_DIR: ${{ github.workspace }}/target
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Detect worker budget from logical threads / 2
-        run: |
-          WORKER_BUDGET="$(sh scripts/detect_worker_budget.sh)"
-          echo "WORKER_BUDGET=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "RAYON_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "CARGO_JOBS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "NEXTEST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
-
-      - name: Install Rust toolchain (stable 1.97.0)
-        uses: dtolnay/rust-toolchain@1.97.0
-
-      - name: Cache cargo registry and build artifacts
-        uses: actions/cache@v4
+      - name: Upload validation reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
         with:
-          path: |
-            ${{ env.CARGO_HOME }}/registry
-            ${{ env.CARGO_HOME }}/git
-            ${{ env.CARGO_TARGET_DIR }}
-          key: rust-registry-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
-          restore-keys: rust-registry-${{ runner.os }}-
-
-      - name: Rust-native registry contract gate
-        run: ./makew gate-ci-registry
+          name: repository-validation-reports
+          path: reports/validation/**
+          if-no-files-found: ignore
 
   docs-gate:
     runs-on: ubuntu-latest
@@ -166,8 +141,7 @@ jobs:
 
   docs-freshness:
     needs:
-      - rust-quality
-      - registry-contract
+      - validation
       - docs-gate
     runs-on: ubuntu-latest
     steps:
@@ -181,67 +155,6 @@ jobs:
 
       - name: Verify docs freshness and redirect wiring
         run: cargo run --release -p repo_utilities --bin repo-utilities -- docs-redirect-check docs-site
-
-  gate-audit-report:
-    needs:
-      - rust-quality
-      - registry-contract
-    if: ${{ always() && failure() }}
-    runs-on: ubuntu-latest
-    env:
-      CARGO_HOME: ${{ github.workspace }}/.cache/cargo-home
-      CARGO_TARGET_DIR: ${{ github.workspace }}/target
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Detect worker budget from logical threads / 2
-        run: |
-          WORKER_BUDGET="$(sh scripts/detect_worker_budget.sh)"
-          echo "WORKER_BUDGET=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "RAYON_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "CARGO_JOBS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "NEXTEST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "RUST_TEST_THREADS=$WORKER_BUDGET" >> "$GITHUB_ENV"
-          echo "Detected worker budget $WORKER_BUDGET from logical threads / 2."
-
-      - name: Install Rust toolchain (stable 1.97.0, with clippy)
-        uses: dtolnay/rust-toolchain@1.97.0
-        with:
-          components: clippy
-
-      - name: Install cargo-nextest
-        uses: taiki-e/install-action@nextest
-
-      - name: Install cargo-deny
-        uses: taiki-e/install-action@cargo-deny
-
-      - name: Cache cargo registry and build artifacts
-        uses: actions/cache@v4
-        with:
-          path: |
-            ${{ env.CARGO_HOME }}/registry
-            ${{ env.CARGO_HOME }}/git
-            ${{ env.CARGO_TARGET_DIR }}
-          key: rust-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
-          restore-keys: rust-${{ runner.os }}-
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libhdf5-dev pkg-config
-
-      - name: Generate keep-going gate audit
-        run: |
-          ./makew gate-audit || true
-
-      - name: Upload gate audit reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: gate-audit-reports
-          path: reports/gates/**
-          if-no-files-found: ignore
 
   docs-deploy:
     needs:

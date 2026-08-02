@@ -34,7 +34,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::PathBuf;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use chrono::{Datelike, NaiveDate};
 use clap::Parser;
 use data_core::catalogs::themis::parse_staples_crossing_catalog;
@@ -47,7 +47,10 @@ struct Args {
     probe: String,
 
     /// Staples et al. 2020 crossing list (tab-separated txt).
-    #[arg(long, default_value = "data/external/crossing_lists/themis_mp_crossings_v2.txt")]
+    #[arg(
+        long,
+        default_value = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
+    )]
     catalog: PathBuf,
 
     /// External data root containing the `themis/` daily FGM cache.
@@ -84,19 +87,12 @@ struct DayEntry {
     data_file: Option<PathBuf>,
 }
 
-fn cache_day_in_window(
-    year: i32,
-    doy: u32,
-    start: NaiveDate,
-    end: NaiveDate,
-) -> Option<NaiveDate> {
+fn cache_day_in_window(year: i32, doy: u32, start: NaiveDate, end: NaiveDate) -> Option<NaiveDate> {
     let date = NaiveDate::from_yo_opt(year, doy)?;
     (start..=end).contains(&date).then_some(date)
 }
 
-fn render_event_catalog(
-    crossings: &[data_core::catalogs::mms::MmsEventInterval],
-) -> String {
+fn render_event_catalog(crossings: &[data_core::catalogs::mms::MmsEventInterval]) -> String {
     let mut output = String::from("TIMESTAMP\n");
     for event in crossings {
         output.push_str(&format!("{}Z\n", event.start.format("%Y-%m-%dT%H:%M:%S")));
@@ -159,7 +155,9 @@ fn main() -> Result<()> {
             let Some(name) = path.file_name().and_then(|n| n.to_str()) else {
                 continue;
             };
-            let Some(rest) = name.strip_prefix(&prefix).and_then(|r| r.strip_suffix(".csv"))
+            let Some(rest) = name
+                .strip_prefix(&prefix)
+                .and_then(|r| r.strip_suffix(".csv"))
             else {
                 continue;
             };
@@ -174,7 +172,9 @@ fn main() -> Result<()> {
                 continue;
             };
             data_day_count += 1;
-            days.entry((date.year(), date.ordinal())).or_default().data_file = Some(path);
+            days.entry((date.year(), date.ordinal()))
+                .or_default()
+                .data_file = Some(path);
         }
     }
 
@@ -190,7 +190,9 @@ fn main() -> Result<()> {
         let date = NaiveDate::from_yo_opt(year, doy)
             .with_context(|| format!("invalid year/doy {year}/{doy}"))?;
         let fmt_ts = |ts: Option<chrono::NaiveDateTime>| {
-            ts.map_or(String::new(), |t| format!("{}Z", t.format("%Y-%m-%dT%H:%M:%S")))
+            ts.map_or(String::new(), |t| {
+                format!("{}Z", t.format("%Y-%m-%dT%H:%M:%S"))
+            })
         };
         day_rows.push_str(&format!(
             "{stem},{year},{doy:03},{date},{},{},{},{}\n",
@@ -247,10 +249,7 @@ mod tests {
     fn cache_days_are_bounded_by_requested_window() {
         let start = NaiveDate::from_ymd_opt(2007, 4, 20).unwrap();
         let end = NaiveDate::from_ymd_opt(2007, 4, 21).unwrap();
-        assert_eq!(
-            cache_day_in_window(2007, 110, start, end),
-            Some(start)
-        );
+        assert_eq!(cache_day_in_window(2007, 110, start, end), Some(start));
         assert_eq!(cache_day_in_window(2007, 111, start, end), Some(end));
         assert_eq!(cache_day_in_window(2007, 112, start, end), None);
         assert_eq!(cache_day_in_window(2007, 0, start, end), None);
@@ -266,7 +265,9 @@ mod tests {
         );
         let start = NaiveDate::from_ymd_opt(2007, 4, 20).unwrap();
         let crossings = parse_staples_crossing_catalog(content, 'c', start, start, 0);
-        assert_eq!(render_event_catalog(&crossings),
-            "TIMESTAMP\n2007-04-20T04:05:06Z\n2007-04-20T07:08:09Z\n");
+        assert_eq!(
+            render_event_catalog(&crossings),
+            "TIMESTAMP\n2007-04-20T04:05:06Z\n2007-04-20T07:08:09Z\n"
+        );
     }
 }

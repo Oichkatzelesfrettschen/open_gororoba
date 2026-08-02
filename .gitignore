@@ -82,6 +82,9 @@ reports/benchmark_*.txt
 reports/*.csv
 reports/*.txt
 reports/*.json
+# Validation reports are CI/worktree artifacts. Durable findings and measured
+# baselines belong in governed docs/engineering records.
+reports/validation/
 
 # LaTeX build outputs
 docs/latex/out/

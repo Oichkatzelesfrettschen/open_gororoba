@@ -38,6 +38,10 @@ pub(crate) const CANONICAL_INSIGHT_STATUSES: &[&str] = &[
 
 pub(crate) const JUSTIFIED_UNLINKED_THEOREM_IDS: &[&str] = &[
     "C1007_CDPropertyLoss",
+    "C1635_SedenionDriverSemantics",
+    "C1636_Cariow2013SedenionSchedule",
+    "C1637_R300SedenionZeroDivisor",
+    "C1638_OctonionDowncastNoZeroDivisors",
     "C958_ZDGraphTopology",
     "C958b_ZDAdjacencyAnalytical",
     "C959_CHSHClassicalBound",

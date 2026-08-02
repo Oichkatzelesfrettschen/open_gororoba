@@ -58,7 +58,8 @@ impl SparseCubicTensor {
                     let (s_ij_k, _) = table.multiply_basis(ij, k);
                     let (s_jk, jk) = table.multiply_basis(j, k);
                     let (s_i_jk, _) = table.multiply_basis(i, jk);
-                    let c = i32::from(s_ij) * i32::from(s_ij_k) - i32::from(s_jk) * i32::from(s_i_jk);
+                    let c =
+                        i32::from(s_ij) * i32::from(s_ij_k) - i32::from(s_jk) * i32::from(s_i_jk);
                     if c != 0 {
                         terms.push((i as u8, j as u8, k as u8, c as i8));
                     }
@@ -286,7 +287,16 @@ mod tests {
         assert_eq!(base.cum_rotation.len(), assoc.len());
         assert_eq!(base.max_pvi.len(), assoc.len());
         assert_eq!(base.max_gram_volume.len(), assoc.len());
-        assert!(base.cum_rotation.iter().all(|&x| (0.0..=5.0 * std::f64::consts::PI).contains(&x)));
-        assert!(base.max_rotation.iter().zip(&base.cum_rotation).all(|(m, c)| m <= c));
+        assert!(
+            base.cum_rotation
+                .iter()
+                .all(|&x| (0.0..=5.0 * std::f64::consts::PI).contains(&x))
+        );
+        assert!(
+            base.max_rotation
+                .iter()
+                .zip(&base.cum_rotation)
+                .all(|(m, c)| m <= c)
+        );
     }
 }

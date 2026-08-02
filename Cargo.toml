@@ -277,7 +277,7 @@ nvml-wrapper = "0.12"
 burn = { version = "0.20", default-features = false, features = ["std", "autodiff"] }
 
 # Error handling
-anyhow = "1.0"
+anyhow = "1.0.103"
 thiserror = "2.0"
 
 # CLI and serialization
@@ -299,7 +299,7 @@ ignore = "0.4" # Gitignore-aware repo traversal for provenance indexing
 linkify = "0.10" # URL extraction from prose without ad hoc regex-only parsing
 md5 = { package = "md-5", version = "0.11.0" } # Zenodo checksum verification (crate exports as md5)
 pulldown-cmark = "0.13" # Markdown parser for provenance extraction
-quick-xml = "0.39" # SAX-style XML parser for VOTable and VO Cone Search responses
+quick-xml = "0.41" # SAX-style XML parser for VOTable and VO Cone Search responses
 regex = "1.12" # Claims matrix parsing, pattern matching
 reqwest = { version = "0.13", default-features = false, features = ["blocking", "rustls-no-provider", "gzip", "brotli", "deflate", "form"] } # Standardized blocking HTTP transfer stack for universal recovery routing without pinning unrelated test binaries to the aws-lc provider lane
 rusqlite = { version = "0.39", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
@@ -323,16 +323,16 @@ arrow-schema = "58.1.0"
 camino = "1.2" # UTF-8 canonical repo-relative paths in provenance layers
 chromiumoxide = "0.9" # Pure Rust headless chrome client
 image = { version = "0.25", default-features = false, features = ["png", "jpeg"] } # PNG/JPEG only; avif disabled to drop rav1e -> core2 chain (RUSTSEC-2026-0105)
-lopdf = "0.40" # Pure Rust PDF parser (fallback, object-level access)
+lopdf = "0.42" # Pure Rust PDF parser (fallback, object-level access)
 parquet = { version = "58.1.0", default-features = false, features = ["arrow", "snap"] }
-pdf-extract = "0.10" # Pure Rust PDF text extraction (fallback, wraps lopdf)
+pdf-extract = "0.12" # Pure Rust PDF text extraction (fallback, wraps lopdf)
 pdfium-render = "0.9" # High-level PDFium wrapper (text, images, rendering)
 scraper = "0.26" # HTML scraping with CSS selectors (Google Scholar)
 strsim = "0.11" # String similarity (Jaro-Winkler, Levenshtein)
 toml = "1.1" # TOML serialization/deserialization
 toml_edit = "0.25" # Deterministic TOML emission/editing for compatibility exports
 unicode-normalization = "0.1" # Unicode normalization for ANSI-safe UTF-8 sanitation
-unpdf = "0.2" # Scientific PDF extraction with math support
+unpdf = "0.7" # Scientific PDF extraction with math support
 
 # HDF5 data export (requires system libhdf5)
 # Using hdf5-metno fork which supports HDF5 2.0 (Arch/CachyOS ships 2.0.0-3.1)
@@ -468,11 +468,11 @@ codegen-units = 1 # single codegen unit = maximum LLVM optimization
 overflow-checks = true # keep arithmetic behavior aligned with dev/test lanes
 panic = "unwind" # required: quantum_core/src/gpu/peps.rs:204 uses catch_unwind
 
-# Gate: fast-compile release for governance gate binaries (TOML parsing + SHA-256).
+# Validation: optimized diagnostic build for registry and tooling binaries.
 # Why not full release: fat LTO + 1 codegen-unit takes 2-9 minutes for binaries
 # that spend 90% of runtime in TOML deserialization. Thin LTO + 6 codegen-units
 # compiles in ~15s and runs within 10% of fat-LTO speed for I/O-bound workloads.
-[profile.release-gate]
+[profile.validation]
 inherits = "release"
 lto = "thin" # 10x faster link vs fat LTO; <5% runtime difference for TOML parsing
 codegen-units = 6 # parallel codegen; matches physical core count
@@ -480,14 +480,14 @@ debug = "line-tables-only" # perf/flamegraph profiling without full DWARF
 strip = "none" # keep symbols for perf report
 overflow-checks = true
 
-# Per-package codegen-units=1 override for gororoba_cli in release-gate.
+# Per-package codegen-units=1 override for gororoba_cli in validation.
 # Why: thin-LTO + codegen-units=6 creates dangling references to gemm/pulp
 # SIMD trampolines (gemm_microkernel_c64_simd256_*, libpulp_v0_22_2_st_b32s_*)
 # in the thesis-42-support binary. The bug reproduces with both rust-lld
 # and gnu gold; root cause is multi-cgu LTO discarding "duplicate" symbols
 # while still keeping references in the survivor cgu. cgu=1 forces a single
 # cgu so LTO has nothing to discard. Other workspace crates remain at cgu=6.
-[profile.release-gate.package.gororoba_cli]
+[profile.validation.package.gororoba_cli]
 codegen-units = 1
 
 # NOTE (2026-05-12, task #132 -- exhausted, deferred to upstream fix):
@@ -512,12 +512,12 @@ codegen-units = 1
 #     cargo with "lto may not be specified in a package profile."
 #   * `pulp = "0.22.3"` or newer -- not yet published; 0.22.2 is the
 #     latest as of 2026-05-12.
-# Working alternative: build with the `release-gate` profile, which
+# Working alternative: build with the `validation` profile, which
 # inherits release but uses lto="thin" + cgu=6 and does NOT trigger
-# the COMDAT folding. gate-ci-rust uses this profile, so the binary
+# the COMDAT folding. CI validation uses this profile, so the binary
 # is exercised by CI.
 # Production workaround:
-#   cargo build --profile release-gate -p gororoba_cli_physics \
+#   cargo build --profile validation -p gororoba_cli_physics \
 #     --bin nonlocal-algebraic-metamaterial
 # Durable fixes require either upstream pulp/gemm cleanup (smaller
 # COMDAT groups or different visibility for monomorphized SIMD

@@ -971,7 +971,7 @@ lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 lbm_core = { path = "../lbm_core" }
 lbm_vulkan = { path = "../lbm_vulkan" }
 materials_core = { path = "../materials_core" }
-memmap2 = "0.9.10"
+memmap2 = "0.9.11"
 mimalloc = { workspace = true }
 minifb = { workspace = true }
 netcdf3 = { workspace = true, optional = true }

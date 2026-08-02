@@ -2,12 +2,12 @@
 # ============================================================================
 # open_gororoba pre-push hook
 #
-# Chains the governance gate so no push lands without:
+# Runs the local validation workflow so no push lands without:
 #   1. Git-LFS handoff (preserves existing LFS behavior).
 #   2. cache-check (fails on ballooned target dirs).
 #   3. terminology-gate + ansi-check (repo hygiene).
 #   4. rust-regression-scoped (warnings-as-errors, scoped tests).
-#   5. governance-gate-readonly (registry integrity, schema sigs).
+#   5. validate-governance (registry integrity and schema signatures).
 #
 # Bypass escape hatch (documented in docs/toolchain/hooks.md if added):
 #   git -c core.hooksPath=/dev/null push ...
@@ -56,12 +56,13 @@ fi
 repo_root="$(git rev-parse --show-toplevel)"
 cd "$repo_root"
 
-echo '[pre-push] running make gate-local (4-gate chain)'
-# gate-local internally runs:
+# The local validation entrypoint performs one scoped workflow:
+#
 #   - cache-check
 #   - workspace routing + scoped clippy/test (warnings-as-errors)
-#   - governance-gate-readonly (which includes terminology-gate and
+#   - validate-governance (which includes terminology-gate and
 #     ansi-check via the markdown/TOML invariant gate)
-make gate-local
+echo '[pre-push] running make validate-local'
+make validate-local
 
-echo '[pre-push] OK: gate passed, push allowed.'
+echo '[pre-push] OK: validation passed, push allowed.'

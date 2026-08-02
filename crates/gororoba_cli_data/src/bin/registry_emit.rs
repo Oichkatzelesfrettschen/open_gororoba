@@ -913,17 +913,19 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
                 lines.push(String::new());
                 lines.push(
                     "Each tool listed below is available via a dedicated `make` target. \
-                     Tools marked **audit-deep** are included in `make audit-deep`."
+                     Tools marked **audit-comprehensive** are included in `make audit-comprehensive`."
                         .to_string(),
                 );
                 lines.push(String::new());
-                lines.push("| Tool | Make Target | Install | audit-deep | Status |".to_string());
+                lines.push(
+                    "| Tool | Make Target | Install | audit-comprehensive | Status |".to_string(),
+                );
                 lines.push("| --- | --- | --- | ---: | --- |".to_string());
                 for tool in &tool_rows {
                     let name = str_field(tool, "name");
                     let make_target = str_field(tool, "make_target");
                     let install = str_field(tool, "install");
-                    let in_audit_deep = bool_field(tool, "audit_deep");
+                    let in_audit_comprehensive = bool_field(tool, "audit_comprehensive");
                     let status = str_field(tool, "status");
                     let blocked = str_field(tool, "blocked_reason");
                     let status_cell = if blocked.is_empty() {
@@ -949,7 +951,7 @@ fn emit_requirements_legacy(args: RequirementsLegacyArgs) -> Result<(), String> 
                         } else {
                             format!("`{}`", install)
                         },
-                        if in_audit_deep { "yes" } else { "no" },
+                        if in_audit_comprehensive { "yes" } else { "no" },
                         status_cell,
                     ));
                 }

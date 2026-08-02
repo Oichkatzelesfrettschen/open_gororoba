@@ -621,6 +621,11 @@ crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "experiment-manifest"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "export-hdf5"
 crate = "gororoba_cli"
 description = "Export computed data to HDF5 format (feature-gated)"
@@ -1247,11 +1252,6 @@ crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
-name = "integrity-resolution"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
-
-[[binary]]
 name = "ism-multichannel-null"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
@@ -1875,6 +1875,11 @@ description = "Registry event tracking and reconciliation infrastructure workflo
 experiment = "E-024"
 
 [[binary]]
+name = "registry-integrity"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "repo-audit"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
@@ -1904,6 +1909,11 @@ name = "riemann-resonance-sweep"
 crate = "gororoba_cli_physics"
 description = "Orthoplex Laplacian spacing-statistics sweep for Brody-parameter and quantum-chaos diagnostics."
 experiment = "E-093"
+
+[[binary]]
+name = "rocq-project-audit"
+crate = "gororoba_cli_data"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "routon-chaos-crucible"

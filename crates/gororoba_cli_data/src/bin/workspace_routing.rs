@@ -111,7 +111,7 @@ struct ChangeClassification {
     /// non-build TOML, shell scripts, configs, etc.) -- the file types
     /// that `make check` (ansi-check + terminology-gate) actually scans
     /// for hygiene violations. Pure Rust-source commits set this false
-    /// so gate-local can skip the `make check` rebuild entirely.
+    /// so validate-local can skip the `make check` rebuild entirely.
     has_check_relevant_changes: bool,
 }
 
