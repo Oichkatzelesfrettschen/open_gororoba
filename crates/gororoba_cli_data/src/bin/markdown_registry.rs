@@ -1,11 +1,13 @@
 //! Markdown document registry management.
 //!
 //! Enforces the markdown governance compatibility discipline for a SQLite-first
-//! repository: every .md file in the repository must have a corresponding
+//! repository: every Git-governed .md file must have a corresponding
 //! `[[owner]]` entry in registry/markdown_owner_map.toml BEFORE it is added to the
 //! repo. The owner map remains authoritative for this lane until markdown
 //! governance is promoted into the SQLite control plane; files on disk are
-//! derived artifacts of the decisions recorded there.
+//! derived artifacts of the decisions recorded there. Ignored local overlays,
+//! generated caches, and retained acquisition notes stay outside this corpus
+//! and are classified by the evidence-retention ledger.
 //!
 //! WHY registry-first ownership?
 //! Markdown files accumulate silently. Without a registry, documents are added,
@@ -27,9 +29,9 @@ use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
     path::{Path, PathBuf},
+    process, str,
 };
 use toml::Value;
-use walkdir::WalkDir;
 
 const IMMUTABLE_AGENT_OVERLAYS: &[&str] = &["CLAUDE.md", "GEMINI.md"];
 const GENERATED_MARKERS: &[&str] = &[
@@ -971,27 +973,51 @@ const SKIP_DIRS: &[&str] = &[
     "audit",
 ];
 
-/// Returns all .md paths relative to repo_root, sorted, excluding skip dirs.
+/// Returns Git-governed .md paths relative to repo_root, sorted, excluding skip dirs.
+///
+/// Git is the boundary because `*.md` is intentionally ignored for local
+/// research captures and generated overlays. Walking the full filesystem makes
+/// the gate depend on whichever private cache happens to be present, while the
+/// index plus unignored working-tree paths describes the reproducible repository
+/// surface.
 fn list_markdown_files(repo_root: &Path) -> Result<Vec<String>> {
+    let output = process::Command::new("git")
+        .args([
+            "ls-files",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+            "-z",
+            "--",
+            "*.md",
+        ])
+        .current_dir(repo_root)
+        .output()
+        .context("run git ls-files for markdown inventory")?;
+    if !output.status.success() {
+        bail!(
+            "git ls-files failed for markdown inventory: {}",
+            String::from_utf8_lossy(&output.stderr).trim()
+        );
+    }
+
     let mut out = Vec::new();
-    let walker = WalkDir::new(repo_root).into_iter().filter_entry(|entry| {
-        if entry.file_type().is_dir()
-            && let Some(name) = entry.file_name().to_str()
-        {
-            return !SKIP_DIRS.contains(&name);
-        }
-        true
-    });
-    for entry in walker.filter_map(Result::ok) {
-        let path = entry.path();
-        if !entry.file_type().is_file() || path.extension().and_then(|v| v.to_str()) != Some("md") {
+    for raw_path in output.stdout.split(|byte| *byte == 0) {
+        if raw_path.is_empty() {
             continue;
         }
-        let rel = path
-            .strip_prefix(repo_root)
-            .with_context(|| format!("strip prefix for {}", path.display()))?
-            .to_string_lossy()
+        let rel = str::from_utf8(raw_path)
+            .context("Git returned a non-UTF-8 markdown path")?
             .replace('\\', "/");
+        if Path::new(&rel).extension().and_then(|v| v.to_str()) != Some("md") {
+            continue;
+        }
+        if rel
+            .split('/')
+            .any(|component| SKIP_DIRS.contains(&component))
+        {
+            continue;
+        }
         out.push(rel);
     }
     out.sort();
@@ -1335,7 +1361,7 @@ fn verify_owner_map(repo_root: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::{
-        ROOT_RESEARCH_NARRATIVE_PATHS, research_narrative_root_doc_failures,
+        ROOT_RESEARCH_NARRATIVE_PATHS, list_markdown_files, research_narrative_root_doc_failures,
         set_research_narrative_header,
     };
     use std::{fs, path::Path};
@@ -1395,5 +1421,33 @@ source_markdown = "docs/GRAND_SYNTHESIS_PLAN.md"
         let failures = research_narrative_root_doc_failures(temp.path(), &value);
 
         assert!(failures.is_empty());
+    }
+
+    #[test]
+    fn markdown_inventory_excludes_ignored_local_documents() {
+        let temp = tempfile::tempdir().unwrap();
+        fs::write(temp.path().join(".gitignore"), "*.md\n!tracked.md\n").unwrap();
+        fs::write(temp.path().join("tracked.md"), "# tracked\n").unwrap();
+        fs::write(temp.path().join("ignored.md"), "# ignored\n").unwrap();
+        fs::create_dir(temp.path().join("nested")).unwrap();
+        fs::write(temp.path().join("nested/ignored.md"), "# ignored\n").unwrap();
+
+        let init = std::process::Command::new("git")
+            .args(["init", "--quiet"])
+            .current_dir(temp.path())
+            .status()
+            .unwrap();
+        assert!(init.success());
+        let add = std::process::Command::new("git")
+            .args(["add", "--", ".gitignore", "tracked.md"])
+            .current_dir(temp.path())
+            .status()
+            .unwrap();
+        assert!(add.success());
+
+        assert_eq!(
+            list_markdown_files(temp.path()).unwrap(),
+            vec!["tracked.md"]
+        );
     }
 }

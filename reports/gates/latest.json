@@ -1,23 +1,23 @@
 {
   "failure_count": 1,
-  "generated_at": "2026-08-01T21:42:40-07:00",
-  "output_dir": "reports/gates/2026-08-01/212938",
+  "generated_at": "2026-08-01T23:38:50-07:00",
+  "output_dir": "reports/gates/2026-08-01/233501",
   "steps": [
     {
       "exit_code": 0,
-      "log": "reports/gates/2026-08-01/212938/gate-ci-registry.log",
+      "log": "reports/gates/2026-08-01/233501/gate-ci-registry.log",
       "name": "gate-ci-registry"
     },
     {
       "exit_code": 2,
-      "log": "reports/gates/2026-08-01/212938/gate-ci-rust.log",
+      "log": "reports/gates/2026-08-01/233501/gate-ci-rust.log",
       "name": "gate-ci-rust"
     },
     {
       "exit_code": 0,
-      "log": "reports/gates/2026-08-01/212938/workspace-check.log",
+      "log": "reports/gates/2026-08-01/233501/workspace-check.log",
       "name": "workspace-check"
     }
   ],
-  "summary": "reports/gates/2026-08-01/212938/summary.md"
+  "summary": "reports/gates/2026-08-01/233501/summary.md"
 }

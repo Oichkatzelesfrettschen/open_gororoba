@@ -7,7 +7,7 @@
 //!
 //! # Theorems
 //!
-//! This file is generated from the canonical SQLite control plane and currently indexes 131 Rocq proof files.
+//! This file is generated from the canonical SQLite control plane and currently indexes 132 Rocq proof files.
 //!
 //! | Theorem | Proof File | Status | Linked Claims |
 //! |---|---|---|---|
@@ -63,6 +63,7 @@
 //! | `C1469_TowerTrilinearity` | `proofs/verified/C1469_TowerTrilinearity.v` | kernel_checked | C-1469 |
 //! | `C1470_PathionTrilinearity` | `proofs/verified/C1470_PathionTrilinearity.v` | kernel_checked | C-1470 |
 //! | `C1471_HigherCDTrilinearity` | `proofs/verified/C1471_HigherCDTrilinearity.v` | kernel_checked | C-1471 |
+//! | `C1629_IDCT8DP4ExactBound` | `proofs/verified/C1629_IDCT8DP4ExactBound.v` | kernel_checked | C-1629 |
 //! | `C868_PainleveGullstrand` | `proofs/verified/C868_PainleveGullstrand.v` | kernel_checked | C-868 |
 //! | `C869_InteriorFlat` | `proofs/verified/C869_InteriorFlat.v` | kernel_checked | C-869 |
 //! | `C870_NacelleModulationDistinct` | `proofs/verified/C870_NacelleModulationDistinct.v` | kernel_checked | C-870 |

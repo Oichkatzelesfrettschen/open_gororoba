@@ -619,13 +619,13 @@ evidence_refs = []
 id = "T-051"
 area = "qa"
 title = "Run gate-audit and archive tranche acceptance evidence"
-description = "Run the keep-going gate audit and archive the current tranche acceptance evidence. The registry acceptance gate passes with semantic-atoms claims=1448 edges=5370 proof_skeletons=1454, evidence-provenance derivations=4358 bibliography_normalized=442 provenance_records=276 narrative_paragraphs=1992, integrity-resolution markers=108 lacunae=186, and execution-planning experiments=232 lineages=232 edges=1113 todo=65 actions=38. The full audit records 6102 passed tests and 48 skipped tests, with two input failures because the PDG mass subset and NANOGrAV free-spectrum inputs are absent. Re-run after both inputs enter the retained external-source contract with hashes and provenance."
+description = "The PDG mass subset and NANOGrav free-spectrum input boundary is now admitted with retained hashes and source contracts. Registry acceptance passes. The full audit records standard Rust nextest 6105 passed and 48 skipped, heavy nextest 1346 passed and 68 skipped, and workspace-check pass. gate-ci-rust remains open because integrity-rust reports 46 baseline identity-gap claims, two unregistered Cargo binaries (experiment-manifest and rocq-project-audit), and project.toml experiment_count=228 versus 232 experiments.toml rows."
 priority = "medium"
 status = "open"
 status_token = "OPEN"
 dependencies = []
-acceptance_criteria = ["Registry acceptance gate exits zero", "Full gate audit retains registry rust and workspace logs plus latest manifest", "PDG mass subset CSV is present under data/external/pdg_2025 and has retained provenance before rerun", "NANOGrAV 15yr free spectrum CSV is present under data/external and has retained provenance before rerun", "Rust nextest passes without missing-input failures"]
-evidence_refs = ["docs/engineering/local-governance-gate-evidence-2026_08_01.md", "reports/gates/latest.json", "reports/gates/2026-08-01/212938/summary.md", "reports/gates/2026-08-01/212938/gate-ci-registry.log", "reports/gates/2026-08-01/212938/gate-ci-rust.log", "reports/gates/2026-08-01/212938/workspace-check.log"]
+acceptance_criteria = ["Registry acceptance gate exits zero", "Full gate audit retains registry rust and workspace logs plus latest manifest", "PDG mass subset CSV has retained source provenance and content hash", "NANOGrav 15yr free spectrum CSV has retained source provenance and content hash", "Rust nextest passes without missing-input failures", "Integrity Rust registry-check baseline drift is resolved"]
+evidence_refs = ["docs/engineering/local-governance-gate-evidence-2026_08_01.md", "reports/pdg-nanograv-input-admission-2026_08_01.toml", "data/external/PROVENANCE.local.json", "reports/gates/latest.json", "reports/gates/2026-08-01/233501/summary.md", "reports/gates/2026-08-01/233501/gate-ci-registry.log", "reports/gates/2026-08-01/233501/gate-ci-rust.log", "reports/gates/2026-08-01/233501/workspace-check.log"]
 
 [[item]]
 id = "T-052"
