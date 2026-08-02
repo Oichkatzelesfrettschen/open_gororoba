@@ -337,13 +337,13 @@ fn run_inventory(args: &InventoryArgs) -> Result<()> {
         .with_context(|| format!("parse ingest manifest {}", args.ingest_manifest.display()))?;
     for paper in &manifest.paper {
         let rel = normalize_rel(&paper.local_pdf);
-        let path = Path::new(&rel);
+        let path = resolve_source_path(&rel, &args.source_roots);
         if !path.exists() {
             missing_sources.push((paper.id.clone(), rel));
             continue;
         }
         ingest_identity(
-            path,
+            &path,
             &rel,
             &paper.id,
             "documents_ingest",
@@ -386,7 +386,7 @@ fn run_inventory(args: &InventoryArgs) -> Result<()> {
             ingest_identity(
                 entry.path(),
                 &rel,
-                &format!("corpus:{corpus_key}"),
+                &format!("corpus:{}", emit_path(&corpus_key)),
                 "papers_corpus",
                 &mut identities,
                 &mut manifest_id_to_sha,
@@ -425,7 +425,7 @@ fn run_inventory(args: &InventoryArgs) -> Result<()> {
         for (id, _) in &matched {
             consumed_extractions.insert(id.clone());
         }
-        let extraction = matched.into_iter().next();
+        let extraction = select_extraction(&matched);
         let (contract_id, retrieval_ref, access_class) =
             match_contract(&contracts, &identity.aliases);
         records.push(build_record(
@@ -551,6 +551,24 @@ fn ingest_identity(
     identity.manifest_ids.insert(manifest_id.to_string());
     identity.corpus_lanes.insert(lane.to_string());
     Ok(())
+}
+
+/// Resolve a manifest path against configured source roots in declaration
+/// order, then fall back to the repository working directory. The manifest
+/// path remains the stable alias used for contracts and emitted provenance;
+/// only the filesystem read path changes when a mounted root supplies bytes.
+fn resolve_source_path(manifest_path: &str, roots: &[String]) -> PathBuf {
+    let relative = Path::new(manifest_path);
+    if relative.is_absolute() {
+        return relative.to_path_buf();
+    }
+    for root in roots {
+        let candidate = Path::new(root).join(relative);
+        if candidate.is_file() {
+            return candidate;
+        }
+    }
+    relative.to_path_buf()
 }
 
 fn build_record(
@@ -1008,6 +1026,25 @@ fn index_extractions(roots: &[String]) -> BTreeMap<String, PathBuf> {
     map
 }
 
+/// Prefer a parseable derivative when byte-identical source aliases have
+/// multiple extraction directories. Every matched id is consumed by the
+/// caller; this helper only selects the best directory for the one output
+/// record. A deterministic first candidate remains the fallback so malformed
+/// and missing derivatives stay visible in the inventory.
+fn select_extraction(matched: &[(String, PathBuf)]) -> Option<(String, PathBuf)> {
+    matched
+        .iter()
+        .find(|(_, dir)| {
+            let paper_toml = dir.join("paper.toml");
+            std::fs::read_to_string(paper_toml)
+                .ok()
+                .and_then(|text| toml::from_str::<StoredExtraction>(&text).ok())
+                .is_some()
+        })
+        .cloned()
+        .or_else(|| matched.first().cloned())
+}
+
 fn summarize(records: &[DocumentRecord], duplicate_identities: usize) -> Summary {
     let mut s = Summary {
         duplicate_identities,
@@ -1205,10 +1242,11 @@ fn math_char_ratio(text: &str) -> f64 {
     count as f64 / non_ws as f64
 }
 
-/// Count lines that carry two or more multi-space gutters, the residue of
-/// column-aligned tabular layout after text extraction.
+/// Count lines that carry one or more multi-space gutters, the residue of
+/// column-aligned tabular layout after text extraction. One gutter is enough
+/// to identify a two-column row.
 fn table_aligned_line_count(text: &str) -> usize {
-    text.lines().filter(|line| count_gutters(line) >= 2).count()
+    text.lines().filter(|line| count_gutters(line) >= 1).count()
 }
 
 fn count_gutters(line: &str) -> usize {
@@ -1223,6 +1261,9 @@ fn count_gutters(line: &str) -> usize {
             }
             run = 0;
         }
+    }
+    if run >= 2 {
+        gutters += 1;
     }
     gutters
 }

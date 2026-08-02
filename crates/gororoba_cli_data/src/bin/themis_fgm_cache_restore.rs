@@ -5,16 +5,16 @@
 //! tool iterates its entries independently of crossing catalogs or analysis
 //! state, fetches each absent day through ThemisFgmProvider (CDAWeb HAPI
 //! daily CSV), leaves existing files alone unless `--refresh true`, and
-//! preserves HAPI no-data markers by never deleting a file it did not
-//! fetch. After retrieval it recomputes every manifest hash and fails on
-//! any mismatch, so a zero exit means the cache byte-matches the pinned
-//! content and a nonzero exit surfaces upstream drift or retrieval gaps.
+//! keeps provider retrieval failures as errors even when a stale manifest
+//! file already exists. After retrieval it recomputes every manifest hash
+//! and fails on any mismatch, so a zero exit means the cache byte-matches the
+//! pinned content and every requested retrieval completed.
 
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 use data_core::{
     catalogs::themis_fetch::ThemisFgmProvider,
-    fetcher::{DatasetProvider, FetchConfig},
+    fetcher::{FetchConfig, is_hapi_no_data_response},
 };
 use sha2::{Digest, Sha256};
 use std::{
@@ -61,6 +61,63 @@ fn is_unlisted_cache_extra(
     listed: &std::collections::BTreeSet<&str>,
 ) -> bool {
     name.starts_with(probe_prefix) && name.ends_with(".csv") && !listed.contains(name)
+}
+
+fn cache_probe_prefix(probe: &str) -> String {
+    format!("th{}_fgm_", probe.to_ascii_lowercase())
+}
+
+fn is_hapi_no_data_marker(path: &Path) -> bool {
+    let Ok(metadata) = fs::metadata(path) else {
+        return false;
+    };
+    if metadata.len() > 65536 {
+        return false;
+    }
+    fs::read_to_string(path)
+        .map(|body| is_hapi_no_data_response(&body))
+        .unwrap_or(false)
+}
+
+fn refresh_backup_path(target: &Path) -> PathBuf {
+    target.with_extension("csv.refresh-backup")
+}
+
+fn begin_refresh_backup(target: &Path) -> Result<Option<PathBuf>> {
+    if !target.exists() {
+        return Ok(None);
+    }
+    if !target.is_file() {
+        bail!("refresh target is not a regular file: {}", target.display());
+    }
+    let backup = refresh_backup_path(target);
+    if backup.exists() {
+        bail!("refresh backup already exists: {}", backup.display());
+    }
+    fs::rename(target, &backup).with_context(|| {
+        format!(
+            "move {} aside before refresh",
+            target.display()
+        )
+    })?;
+    Ok(Some(backup))
+}
+
+fn rollback_refresh(target: &Path, backup: Option<&Path>) -> Result<()> {
+    if target.exists() {
+        fs::remove_file(target)
+            .with_context(|| format!("remove failed refresh output {}", target.display()))?;
+    }
+    if let Some(backup) = backup {
+        fs::rename(backup, target).with_context(|| {
+            format!(
+                "restore refresh backup {} to {}",
+                backup.display(),
+                target.display()
+            )
+        })?;
+    }
+    Ok(())
 }
 
 fn sha256_file(path: &Path) -> Result<String> {
@@ -153,12 +210,33 @@ fn main() -> Result<()> {
             doy_start: entry.doy,
             doy_end: entry.doy,
         };
-        match provider.fetch(&config) {
-            Ok(_) => fetched += 1,
+        let mut backup = if cli.refresh {
+            begin_refresh_backup(&target)?
+        } else {
+            None
+        };
+        match provider.fetch_raw(&config) {
+            Ok(_) if target.is_file() => fetched += 1,
+            Ok(_) => {
+                rollback_refresh(&target, backup.as_deref())?;
+                backup = None;
+                eprintln!(
+                    "FETCH-ERROR  {}: provider returned success without materializing {}",
+                    entry.rel,
+                    target.display()
+                );
+                fetch_errors += 1;
+            }
             Err(err) => {
+                rollback_refresh(&target, backup.as_deref())?;
+                backup = None;
                 eprintln!("FETCH-ERROR  {}: {err}", entry.rel);
                 fetch_errors += 1;
             }
+        }
+        if let Some(backup) = backup {
+            fs::remove_file(&backup)
+                .with_context(|| format!("remove refresh backup {}", backup.display()))?;
         }
     }
     println!(
@@ -188,15 +266,16 @@ fn main() -> Result<()> {
         }
     }
     // Scan for cache files that match this probe's daily-file rule yet carry no
-    // manifest entry: such a file still satisfies the THEMIS source glob and,
-    // lacking a provenance hash, would pass every downstream origin check
-    // unaudited. The manifest is the sole authority on cache membership.
+    // manifest entry. Payloads without a provenance hash remain extras, while
+    // an explicit HAPI no-data marker stays as an out-of-scope fetch attempt.
     let mut extra = 0usize;
-    let probe_prefix = format!("th{}_fgm_", cli.probe);
+    let probe_prefix = cache_probe_prefix(&probe);
     if let Ok(read_dir) = fs::read_dir(&cache_dir) {
         for dir_entry in read_dir.filter_map(|e| e.ok()) {
             let name = dir_entry.file_name().to_string_lossy().to_string();
-            if is_unlisted_cache_extra(&name, &probe_prefix, &listed) {
+            if is_unlisted_cache_extra(&name, &probe_prefix, &listed)
+                && !is_hapi_no_data_marker(&dir_entry.path())
+            {
                 println!("EXTRA    {name}");
                 extra += 1;
             }
@@ -244,5 +323,44 @@ mod tests {
         assert!(!is_unlisted_cache_extra("thb_fgm_2008_200.csv", "tha_fgm_", &listed));
         // Non-payload extension is out of scope.
         assert!(!is_unlisted_cache_extra("tha_fgm_2008_200.txt", "tha_fgm_", &listed));
+    }
+
+    #[test]
+    fn cache_prefix_normalizes_uppercase_probe() {
+        assert_eq!(cache_probe_prefix("A"), "tha_fgm_");
+        assert_eq!(cache_probe_prefix("c"), "thc_fgm_");
+    }
+
+    #[test]
+    fn hapi_no_data_marker_is_not_an_extra() {
+        let marker = "{\n  \"HAPI\": \"2.0\",\n  \"status\": {\"code\": 1201, \"message\": \"OK - no data for time range\"}\n}\n";
+        assert!(is_hapi_no_data_response(marker));
+        assert!(!is_hapi_no_data_response("{\"pages\": 12}\n"));
+    }
+
+    #[test]
+    fn refresh_rollback_restores_existing_payload() {
+        let temp = tempfile::tempdir().unwrap();
+        let target = temp.path().join("tha_fgm_2008_153.csv");
+        fs::write(&target, "old payload").unwrap();
+
+        let backup = begin_refresh_backup(&target).unwrap();
+        assert!(!target.exists());
+        fs::write(&target, "partial replacement").unwrap();
+        rollback_refresh(&target, backup.as_deref()).unwrap();
+
+        assert_eq!(fs::read_to_string(&target).unwrap(), "old payload");
+        assert!(!refresh_backup_path(&target).exists());
+    }
+
+    #[test]
+    fn refresh_rollback_removes_partial_payload_without_backup() {
+        let temp = tempfile::tempdir().unwrap();
+        let target = temp.path().join("tha_fgm_2008_153.csv");
+        fs::write(&target, "partial replacement").unwrap();
+
+        rollback_refresh(&target, None).unwrap();
+
+        assert!(!target.exists());
     }
 }

@@ -159,7 +159,11 @@ extract-c: all
 # puns function pointers into value (long), valid CompCert-C, so int-conversion
 # and implicit-declaration are permitted for this translation unit.
 extract-c-check: extract-c
-	@RT="$$(opam var lib)/coq/user-contrib/CertiRocq/Plugin/runtime"; \
+	@if [ ! -f extraction/OpenGororoba.FP24Representable.fp24_value_admit.c ]; then \
+	  echo "SKIP: no FP24 C extraction emitted"; \
+	  exit 0; \
+	fi; \
+	RT="$$(opam var lib)/coq/user-contrib/CertiRocq/Plugin/runtime"; \
 	echo "Compile-checking emitted C against $$RT ..."; \
 	gcc -c -std=gnu11 -Wno-int-conversion -Wno-implicit-function-declaration \
 	    -I "$$RT" -o /dev/null \

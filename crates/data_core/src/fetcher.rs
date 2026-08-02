@@ -134,10 +134,39 @@ struct HapiParameterDef {
 
 /// Return true when a HAPI response encodes "no data for time range".
 pub fn is_hapi_no_data_response(body: &str) -> bool {
-    let trimmed = body.trim_start();
-    trimmed.starts_with('{')
-        && trimmed.contains("\"code\": 1201")
-        && trimmed.to_ascii_lowercase().contains("no data")
+    let Ok(value) = serde_json::from_str::<Value>(body) else {
+        return false;
+    };
+    let Some(object) = value.as_object() else {
+        return false;
+    };
+    let Some(status) = object.get("status").and_then(Value::as_object) else {
+        return false;
+    };
+    let code = status.get("code").and_then(Value::as_u64);
+    let message = status.get("message").and_then(Value::as_str);
+    object.contains_key("HAPI")
+        && code == Some(1201)
+        && message
+            .map(|message| message.to_ascii_lowercase().contains("no data"))
+            .unwrap_or(false)
+}
+
+fn hapi_data_url(
+    dataset_id: &str,
+    time_min: &str,
+    time_max: &str,
+    parameters: Option<&[&str]>,
+) -> String {
+    let mut url =
+        format!("{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv");
+    if let Some(parameters) = parameters
+        && !parameters.is_empty()
+    {
+        url.push_str("&parameters=");
+        url.push_str(&parameters.join(","));
+    }
+    url
 }
 
 fn hapi_parameter_defs(dataset_id: &str) -> Result<Vec<HapiParameterDef>, FetchError> {
@@ -242,6 +271,32 @@ fn synthesize_hapi_header_if_missing(
     Ok(format!("{header}\n{body}"))
 }
 
+/// Download raw CSV bytes from the CDAWeb HAPI endpoint.
+///
+/// The returned string preserves the server serialization, including whether
+/// CDAWeb supplied a CSV header. No-data status documents and other JSON
+/// responses fail before they can become cache payloads.
+pub fn download_hapi_csv_raw(
+    dataset_id: &str,
+    time_min: &str,
+    time_max: &str,
+    parameters: Option<&[&str]>,
+) -> Result<String, FetchError> {
+    let url = hapi_data_url(dataset_id, time_min, time_max, parameters);
+    let body = download_to_string(&url)?;
+    if is_hapi_no_data_response(&body) {
+        return Err(FetchError::Validation(format!(
+            "dataset {dataset_id} returned no data for requested window {time_min}..{time_max}"
+        )));
+    }
+    if body.trim_start().starts_with('{') {
+        return Err(FetchError::Validation(format!(
+            "dataset {dataset_id} returned JSON instead of tabular CSV"
+        )));
+    }
+    Ok(body)
+}
+
 /// Download CSV rows from the CDAWeb HAPI endpoint and synthesize a header.
 pub fn download_hapi_csv(
     dataset_id: &str,
@@ -249,20 +304,7 @@ pub fn download_hapi_csv(
     time_max: &str,
     parameters: Option<&[&str]>,
 ) -> Result<String, FetchError> {
-    let mut url =
-        format!("{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv");
-    if let Some(parameters) = parameters
-        && !parameters.is_empty()
-    {
-        url.push_str("&parameters=");
-        url.push_str(&parameters.join(","));
-    }
-    let body = download_to_string(&url)?;
-    if is_hapi_no_data_response(&body) {
-        return Err(FetchError::Validation(format!(
-            "dataset {dataset_id} returned no data for requested window {time_min}..{time_max}"
-        )));
-    }
+    let body = download_hapi_csv_raw(dataset_id, time_min, time_max, parameters)?;
     synthesize_hapi_header_if_missing(dataset_id, &body, parameters)
 }
 
@@ -278,14 +320,7 @@ pub fn download_hapi_csv_to_file(
     parameters: Option<&[&str]>,
     output: &Path,
 ) -> Result<u64, FetchError> {
-    let mut url =
-        format!("{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv");
-    if let Some(parameters) = parameters
-        && !parameters.is_empty()
-    {
-        url.push_str("&parameters=");
-        url.push_str(&parameters.join(","));
-    }
+    let url = hapi_data_url(dataset_id, time_min, time_max, parameters);
 
     // Download raw CSV to a temp file first
     let tmp = output.with_extension("csv.tmp");
@@ -353,15 +388,7 @@ pub fn download_hapi_csv_auto(
             // No output path given for a large dataset -- fall back to string
             // with extended timeout via download_to_string_with_timeout
             let timeout = std::time::Duration::from_secs(600);
-            let mut url = format!(
-                "{HAPI_ROOT}?id={dataset_id}&time.min={time_min}&time.max={time_max}&format=csv"
-            );
-            if let Some(parameters) = parameters
-                && !parameters.is_empty()
-            {
-                url.push_str("&parameters=");
-                url.push_str(&parameters.join(","));
-            }
+            let url = hapi_data_url(dataset_id, time_min, time_max, parameters);
             let body = download_to_string_with_timeout(&url, timeout)?;
             if is_hapi_no_data_response(&body) {
                 return Err(FetchError::Validation(format!(
@@ -732,5 +759,18 @@ BatchEnd\n";
             expand_hapi_parameter_columns(&def),
             vec!["BGSEc_0", "BGSEc_1", "BGSEc_2"]
         );
+    }
+
+    #[test]
+    fn hapi_no_data_response_requires_hapi_status_shape() {
+        let marker = "{\n  \"HAPI\": \"2.0\",\n  \"status\": {\"code\": 1201, \"message\": \"OK - no data for time range\"}\n}\n";
+        assert!(is_hapi_no_data_response(marker));
+        assert!(is_hapi_no_data_response(
+            "{\"HAPI\":\"2.0\",\"status\":{\"code\":1201,\"message\":\"no data\"}}"
+        ));
+        assert!(!is_hapi_no_data_response(
+            "{\"status\":{\"code\":1201,\"message\":\"no data\"}}"
+        ));
+        assert!(!is_hapi_no_data_response("{\"pages\":12}"));
     }
 }
