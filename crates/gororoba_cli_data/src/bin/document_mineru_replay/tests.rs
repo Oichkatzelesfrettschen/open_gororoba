@@ -154,7 +154,14 @@ fn math_ratio_and_gutters() {
     assert!(math_char_ratio("plain english prose without symbols") < 0.020);
     // Two multi-space gutters split three columns.
     assert_eq!(count_gutters("col1    col2    col3"), 2);
+    // One multi-space gutter is a valid two-column row.
+    assert_eq!(count_gutters("left    right"), 1);
     assert_eq!(count_gutters("single spaced words here"), 0);
+    let rows = (0..8)
+        .map(|index| format!("row{index}    value{index}"))
+        .collect::<Vec<_>>()
+        .join("\n");
+    assert_eq!(table_aligned_line_count(&rows), TABLE_ALIGNED_LINES_MIN);
 }
 
 #[test]
@@ -503,6 +510,35 @@ fn paths_with_spaces_round_trip() {
 }
 
 #[test]
+fn relative_manifest_path_resolves_against_source_root() {
+    let tmp = tempfile::tempdir().unwrap();
+    let root = tmp.path();
+    let source_root = root.join("mounted-source");
+    std::fs::create_dir_all(&source_root).unwrap();
+    let pdf = source_root.join("paper.pdf");
+    write_pdf(&pdf, 2);
+    std::fs::write(
+        root.join("MANIFEST.toml"),
+        "[[paper]]\nid = \"mounted\"\nlocal_pdf = \"paper.pdf\"\n",
+    )
+    .unwrap();
+
+    let mut args = base_args(root);
+    args.source_roots = vec![source_root.to_string_lossy().to_string()];
+    run_inventory(&args).unwrap();
+    let d = docs(&read_out(&args));
+    assert_eq!(d.len(), 1);
+    assert_eq!(d[0].get("canonical_id").unwrap().as_str().unwrap(), "mounted");
+    assert!(!d[0].get("source_sha256").unwrap().as_str().unwrap().is_empty());
+    assert_eq!(
+        d[0].get("alias_paths").unwrap().as_array().unwrap()[0]
+            .as_str()
+            .unwrap(),
+        "paper.pdf"
+    );
+}
+
+#[test]
 fn emit_path_encodes_reversibly_but_normalize_preserves_bytes() {
     // emit_path is ASCII-only for the tracked artifact.
     // Bytes: en-dash U+2013 -> UTF-8 E2 80 93 -> %E2%80%93.
@@ -570,6 +606,56 @@ fn duplicate_twin_extractions_are_not_orphaned() {
         .as_str()
         .unwrap()
         .starts_with("orphan:")));
+}
+
+#[test]
+fn duplicate_extractions_prefer_parseable_derivative() {
+    let tmp = tempfile::tempdir().unwrap();
+    let root = tmp.path();
+    std::fs::create_dir_all(root.join("ingest")).unwrap();
+    let a = root.join("ingest/twin_a.pdf");
+    let b = root.join("ingest/twin_b.pdf");
+    write_pdf(&a, 5);
+    std::fs::copy(&a, &b).unwrap();
+    write_manifest(root, &[("twin_a", &a), ("twin_b", &b)]);
+    std::fs::create_dir_all(root.join("extracted/twin_a")).unwrap();
+    std::fs::write(root.join("extracted/twin_a/paper.toml"), "not = [valid").unwrap();
+    write_extraction(
+        &root.join("extracted/twin_b"),
+        &"text ".repeat(3000),
+        1,
+        0,
+        0,
+    );
+
+    let args = base_args(root);
+    run_inventory(&args).unwrap();
+    let d = docs(&read_out(&args));
+    assert_eq!(d.len(), 1);
+    assert_eq!(d[0].get("docpipe_status").unwrap().as_str().unwrap(), "reconciled");
+    assert!(d[0].get("docpipe_output").unwrap().as_str().unwrap().ends_with("twin_b"));
+}
+
+#[test]
+fn corpus_manifest_ids_are_ascii_and_path_specific() {
+    let tmp = tempfile::tempdir().unwrap();
+    let root = tmp.path();
+    std::fs::create_dir_all(root.join("ingest")).unwrap();
+    std::fs::create_dir_all(root.join("corpus/nested")).unwrap();
+    std::fs::write(root.join("MANIFEST.toml"), "").unwrap();
+    std::fs::write(root.join("corpus/MANIFEST.toml"), "# corpus header\n").unwrap();
+    write_pdf(&root.join("corpus/nested/paper\u{2011}name.pdf"), 1);
+
+    let mut args = base_args(root);
+    args.include_corpus = true;
+    run_inventory(&args).unwrap();
+    let output = std::fs::read(&args.out).unwrap();
+    assert!(output.iter().all(u8::is_ascii));
+    let d = docs(&read_out(&args));
+    assert_eq!(d.len(), 1);
+    let ids = d[0].get("manifest_ids").unwrap().as_array().unwrap();
+    assert_eq!(ids.len(), 1);
+    assert!(ids[0].as_str().unwrap().contains("paper%E2%80%91name.pdf"));
 }
 
 #[test]
