@@ -1,0 +1,24 @@
+# Claims Status Inventory
+
+Matrix: `registry/canonical/control_plane.sqlite3 (rendered legacy matrix)`
+Total claims parsed: 1448
+
+## Counts by canonical status token
+
+- Verified: 1190
+- Theoretical: 4
+- Refuted: 58
+- Established: 44
+- Other: 152
+
+## Open claims (oldest first)
+
+- C-401 (Theoretical, last_verified=2026-02-02): A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscal...
+- C-1273 (Theoretical, last_verified=2026-03-11): ZD algebraic forcing adds topological confinement: F_zd(r) = -alpha_zd  0.5  exp(-r/R_e)  F_target  r_hat p...
+- C-1538 (Theoretical, last_verified=2026-03-23): Moreno Corollary 1.6 (ZD symmetry): In A_n (n>=4), xy=0 iff yx=0 iff x_bary=0 iff xy_bar=0. If xy=0 and x!=...
+- C-1539 (Theoretical, last_verified=2026-03-23): Moreno Proposition 1.7 (skew-symmetry): For x in circ-A_n (purely imaginary), L_x and R_x are skew-symmetri...
+
+## Metadata hygiene notes
+
+- Rows with missing/weak `Where stated` pointers: 99
+- Rows with legacy inline experiment tags: 0

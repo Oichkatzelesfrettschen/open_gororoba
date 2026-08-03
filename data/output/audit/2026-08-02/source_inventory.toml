@@ -1,0 +1,111 @@
+# Source inventory for photon-graviton Ward and TCMT contracts.
+
+[meta]
+artifact_id = "p0-photon-graviton-tcmt-source-inventory"
+observed_local_date = "2026-08-02"
+head_sha = "954696e5eaf96530207ddcbea1c8f1ef9c259ceb"
+local_code_scope = ["crates/gr_core/src/photon_graviton", "crates/gr_core/src/photon_graviton_tcmt", "crates/optics_core/src/fano_tcmt.rs"]
+source_registry = "registry/source_lanes/web_references.toml"
+source_contract = "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
+
+[[source]]
+source_id = "gr-qc/0412095"
+authors = "Bastianelli and Schubert"
+title = "Photon-graviton mixing in an electromagnetic field"
+url = "https://arxiv.org/abs/gr-qc/0412095"
+role = "worldline one-loop photon-graviton amplitude and polarization conventions"
+local_reference = "crates/gr_core/src/photon_graviton/mod.rs"
+
+[[source]]
+source_id = "0710.5572"
+authors = "Bastianelli et al."
+title = "One-loop photon-graviton mixing in an electromagnetic field"
+url = "https://arxiv.org/abs/0710.5572"
+role = "worldline structure and on-shell polarization component analysis"
+local_reference = "crates/gr_core/src/photon_graviton/mod.rs"
+
+[[source]]
+source_id = "2601.23279"
+authors = "Ahmadiniaz, Bastianelli, Karbstein, and Schubert"
+title = "One loop photon-graviton mixing in an electromagnetic field: Part 3"
+url = "https://arxiv.org/abs/2601.23279"
+role = "three-diagram amplitude, tadpole contribution, and Ward identity source"
+local_reference = "crates/gr_core/src/photon_graviton/{irreducible,tadpole,external,ward}.rs"
+
+[[source]]
+source_id = "0909.3323"
+authors = "Ruan and Fan"
+title = "Temporal coupled-mode theory for Fano resonance in light scattering by a single obstacle"
+url = "https://arxiv.org/abs/0909.3323"
+role = "cylindrical angular-momentum channel scattering and TCMT definitions"
+local_reference = "crates/optics_core/src/fano_tcmt.rs"
+
+[[source]]
+source_id = "2505.00396"
+authors = "Maksimov et al."
+title = "Generic temporal coupled-mode theory constraints from symmetry"
+url = "https://arxiv.org/abs/2505.00396"
+role = "energy-conservation and time-reversal constraints requiring explicit model assumptions"
+local_reference = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs"
+
+[ward.gauge]
+identity = "k_alpha * Gamma_d^{mn,alpha} = 0 for each diagram d in {irreducible, tadpole, external}"
+required_observable = "tensor contraction components before scalar projection"
+legacy_observation = "irreducible scalar residual multiplied by a hardcoded zero; tadpole and external residuals returned as asserted zeros"
+source_contract_status = "source-level identity identified; implementation conformance remains open"
+
+[ward.gravitational]
+off_shell_identity = "contracted amplitude equals a declared lower-point right-hand side"
+on_shell_irreducible_external = "Gamma_irr(delta_eps_0) + Gamma_ext(delta_eps_0) = 0"
+on_shell_tadpole = "Gamma_tadpole(delta_eps_0) = 0"
+required_observable = "lhs and lower-point rhs tensor components with diagram decomposition"
+legacy_observation = "check_gravitational_ward reuses the irreducible gauge residual"
+source_contract_status = "off-shell component formula must be transcribed from the primary source before P1 implementation"
+
+[ward.conventions]
+metric_signature = "unresolved; must be declared before implementation"
+continuation = "local code documents Euclidean momentum components; Minkowski continuation is unresolved"
+index_placement = "unresolved; must bind raised and lowered momentum and polarization indices"
+momentum_conservation = "must be an explicit fixture invariant"
+shell_mode = "must distinguish on-shell k_squared=0 from off-shell k_squared != 0"
+polarization_basis = "must bind photon polarization, graviton polarization, and diffeomorphism vector components"
+renormalization_state = "must distinguish renormalized and unrenormalized diagram contributions"
+residual_norms = "absolute component norm and scale-normalized norm must both be retained"
+
+[scattering.ruan_fan]
+radial_reflection = "R_l = h_l_minus / h_l_plus"
+lossless_constraint = "abs(R_l) = 1"
+scattering_coefficient = "S_l = (R_l - 1) / 2"
+channel_kind = "cylindrical angular-momentum radial channel"
+not_a_generic_matrix = true
+
+[scattering.multiport]
+object = "complex scattering matrix S"
+lossless_constraint = "S dagger * S = I after flux normalization"
+reciprocity_constraint = "must be stated separately from unitarity and tied to the port basis"
+time_reversal_constraint = "must be stated separately from lossless unitarity"
+passive_loss_constraint = "S dagger * S <= I after flux normalization"
+absorption_balance = "incoming flux = outgoing flux + explicit internal absorption"
+
+[scattering.cross_sections]
+scattering = "C_sct = factor * sum_l abs(S_l)^2"
+absorption = "C_abs = -factor * sum_l (Re(S_l) + abs(S_l)^2)"
+extinction = "C_ext = -factor * sum_l Re(S_l)"
+legacy_risk = "CrossSections::new and the optics Fano helper define extinction from scattering plus absorption, so their ratio can be tautological"
+
+[tcmt.mapping]
+coupling_strength = "extracted from abs(irreducible_amplitude) * graviton_coupling_strength * photon_frequency, then floored at 1e-20"
+radiative_decay = "derived as 2 * abs(tadpole_imag_part), then floored at 1e-20"
+external_phase = "real scalar modulo 2*pi; complex phase is not represented"
+nonradiative_decay = "hardcoded as 0.1 * gamma_radiative"
+gravitational_decay = "hardcoded as 0.01 * gamma_radiative"
+weak_field_parameter = "coupling_strength / (total_decay_rate * resonance_frequency)"
+parameter_units = "declared as frequency for coupling and decay, radians for phase, dimensionless for weak-field parameter"
+identifiability_status = "underidentified; no source-derived port normalization or independent complex-amplitude fit"
+dependency_closure = ["C-864", "C-865", "C-866", "C-867"]
+
+[tcmt.required_split]
+lossless_unitarity = "flux-normalized complex scattering matrix is unitary when all internal loss is zero"
+reciprocity = "port-basis relation independent of lossless energy balance"
+time_reversal = "symmetry relation independent of a blanket unitarity assertion"
+passive_loss = "contractivity and explicit absorption balance when internal loss is nonzero"
