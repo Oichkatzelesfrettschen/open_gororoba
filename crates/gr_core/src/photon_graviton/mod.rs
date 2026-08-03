@@ -42,16 +42,28 @@
 pub mod benchmarks;
 pub mod constants;
 pub mod external;
+pub mod external_tensor;
 pub mod gertsenshtein;
+pub mod gravitational_ward;
+#[cfg(test)]
+mod independent_falsifier;
 pub mod irreducible;
+pub mod irreducible_tensor;
+pub mod one_photon;
 pub mod quadrature;
 pub mod special_functions;
 pub mod tadpole;
+pub mod tadpole_tensor;
+pub mod tensor_integrands;
+pub mod tensor_types;
+pub mod tensor_ward;
 pub mod tree_level;
 pub mod types;
 pub mod vacuum_pol;
+pub mod vacuum_pol_tensor;
 pub mod ward;
 pub mod worldline_greens;
+pub mod worldline_tensor;
 
 use num_complex::Complex64;
 use std::f64::consts::PI;

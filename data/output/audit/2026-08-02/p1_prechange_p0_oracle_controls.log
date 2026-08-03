@@ -1,0 +1,133 @@
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+   Compiling autocfg v1.5.0
+   Compiling libm v0.2.16
+   Compiling libc v0.2.184
+   Compiling cfg-if v1.0.4
+   Compiling typenum v1.19.0
+   Compiling paste v1.0.15
+   Compiling shlex v1.3.0
+   Compiling find-msvc-tools v0.1.9
+   Compiling crossbeam-utils v0.8.21
+   Compiling rand_core v0.10.0
+   Compiling zerocopy v0.8.48
+   Compiling cc v1.2.59
+   Compiling getrandom v0.3.4
+   Compiling crossbeam-epoch v0.9.20
+   Compiling rawpointer v0.2.1
+   Compiling cpufeatures v0.3.0
+   Compiling getrandom v0.4.2
+   Compiling rayon-core v1.13.0
+   Compiling num-traits v0.2.19
+   Compiling matrixmultiply v0.3.10
+   Compiling chacha20 v0.10.0
+   Compiling serde_core v1.0.228
+   Compiling thiserror v2.0.18
+   Compiling bitflags v2.11.0
+   Compiling radium v0.7.0
+   Compiling either v1.15.0
+   Compiling version_check v0.9.5
+   Compiling syn v2.0.117
+   Compiling raw-cpuid v11.6.0
+   Compiling pulp v0.22.2
+   Compiling const-oid v0.10.2
+   Compiling crossbeam-deque v0.8.6
+   Compiling hybrid-array v0.4.10
+   Compiling tap v1.0.1
+   Compiling wyz v0.5.1
+   Compiling num_cpus v1.17.0
+   Compiling rand_core v0.9.5
+   Compiling rand v0.10.1
+   Compiling rayon v1.11.0
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.0
+   Compiling core_affinity v0.8.3
+   Compiling simsimd v6.5.16
+   Compiling num-integer v0.1.46
+   Compiling approx v0.5.1
+   Compiling rand_distr v0.6.0
+   Compiling libmimalloc-sys v0.1.44
+   Compiling pulp-wasm-simd-flag v0.1.0
+   Compiling digest v0.11.2
+   Compiling num-rational v0.4.2
+   Compiling funty v2.0.0
+   Compiling dyn-stack-macros v0.1.3
+   Compiling serde v1.0.228
+   Compiling reborrow v0.5.5
+   Compiling cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/crates/cd_kernel)
+   Compiling strength_reduce v0.2.4
+   Compiling transpose v0.2.3
+   Compiling bitvec v1.0.1
+   Compiling sha2 v0.11.0
+   Compiling primal-check v0.3.4
+   Compiling gororoba_gpu_bridge v0.1.0 (/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/crates/gororoba_gpu_bridge)
+   Compiling smallvec v1.15.1
+   Compiling hashbrown v0.16.1
+   Compiling memchr v2.8.0
+   Compiling thiserror v1.0.69
+   Compiling foldhash v0.1.5
+   Compiling zmij v1.0.21
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.15.5
+   Compiling fixedbitset v0.5.7
+   Compiling serde_json v1.0.149
+   Compiling itoa v1.0.18
+   Compiling diffusionx v0.11.3
+   Compiling indexmap v2.13.1
+   Compiling csv-core v0.1.13
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_xoshiro v0.8.0
+   Compiling bytemuck_derive v1.10.2
+   Compiling nalgebra-macros v0.3.0
+   Compiling thiserror-impl v2.0.18
+   Compiling equator-macro v0.4.2
+   Compiling rand_chacha v0.9.0
+   Compiling rand_chacha v0.10.0
+   Compiling serde_derive v1.0.228
+   Compiling thiserror-impl v1.0.69
+   Compiling rand v0.9.3
+   Compiling equator v0.4.2
+   Compiling petgraph v0.8.3
+   Compiling aligned-vec v0.6.4
+   Compiling nalgebra-macros v0.2.2
+   Compiling ryu v1.0.23
+   Compiling padic v0.1.6
+   Compiling bytemuck v1.25.0
+   Compiling num-complex v0.4.6
+   Compiling safe_arch v0.7.4
+   Compiling rand_distr v0.5.1
+   Compiling safe_arch v1.0.0
+   Compiling dyn-stack v0.13.2
+   Compiling atlas-embeddings v0.1.1
+   Compiling wide v0.7.33
+   Compiling csv v1.4.0
+   Compiling wide v1.2.0
+   Compiling fwht v0.1.0 (https://github.com/Oichkatzelesfrettschen/cratesgororobas?rev=28b5310d3a6755b81b7c1ceb79f9f79f67f1af70#28b5310d)
+   Compiling rustfft v6.4.1
+   Compiling mimalloc v0.1.48
+   Compiling simba v0.9.1
+   Compiling realfft v3.5.0
+   Compiling nalgebra v0.34.2
+   Compiling nalgebra v0.33.3
+   Compiling gauss-quad v0.3.1
+   Compiling verified_core v0.1.0 (/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/crates/verified_core)
+   Compiling ode_solvers v0.6.1
+   Compiling moreno_1997 v0.1.0 (/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/crates/moreno_1997)
+   Compiling algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/crates/algebra_analysis)
+   Compiling gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/crates/gororoba_algebra)
+   Compiling gr_core v0.1.0 (/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/crates/gr_core)
+    Finished `test` profile [optimized + debuginfo] target(s) in 29.47s
+     Running unittests src/lib.rs (.cache/exp-p1-prechange-target/debug/deps/gr_core-4d566f93d48b6110)
+
+running 8 tests
+test photon_graviton_tcmt::amplitude_bridge::tests::audit_c865_tolerance_does_not_match_claim ... ok
+test photon_graviton_tcmt::amplitude_bridge::tests::audit_c866_scalar_unitarity_ignores_complex_channels ... ok
+test photon_graviton_tcmt::fano_lineshape::tests::audit_c867_base_profile_is_even_in_detuning ... ok
+test photon_graviton_tcmt::tcmt_equations::tests::audit_c866_lossless_case_retains_gravitational_decay ... ok
+test photon_graviton_tcmt::tcmt_equations::tests::audit_c866_rk4_refines_against_exact_lossless_solution ... ok
+test photon_graviton_tcmt::types::tests::audit_c866_cross_section_ratio_is_tautological ... ok
+test photon_graviton::irreducible::tests::audit_c820_on_shell_factor_hides_nonzero_integrand ... ok
+test photon_graviton::ward::tests::audit_c822_gravitational_gate_ignores_other_diagrams ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 843 filtered out; finished in 0.00s

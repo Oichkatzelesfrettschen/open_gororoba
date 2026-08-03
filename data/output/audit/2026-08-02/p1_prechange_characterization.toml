@@ -1,0 +1,87 @@
+# P1 pre-change characterization of the P0 handoff.
+
+[meta]
+artifact_id = "p1-photon-graviton-prechange-characterization"
+observed_utc = "2026-08-03T08:00:00Z"
+repository = "open_gororoba"
+scope = "tensor-valued photon-graviton Ward verification only"
+excluded_lanes = ["photon-graviton TCMT", "Mie", "SFWM", "heliosphere", "LBM", "ultrametric", "GPU", "algebra-family consolidation", "WS-CLAIM-TRANSITION-001"]
+
+[checkout]
+worktree = "/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward"
+branch = "agent/photon-graviton-tensor-ward"
+head_sha = "53f4e7c1926fe7a39ebf81c4aacb23bc240d9dce"
+origin_main_sha = "53f4e7c1926fe7a39ebf81c4aacb23bc240d9dce"
+worktree_status = "clean before P1 evidence log; only the retained P1 log is new"
+hooks_path = ".githooks"
+merge_commit_is_ancestor = true
+source_commit_is_ancestor = true
+
+[toolchain]
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+llvm = "22.1.6"
+host = "x86_64-unknown-linux-gnu"
+
+[source_pdf]
+source_id = "2601.23279v1"
+title = "One loop photon-graviton mixing in an electromagnetic field: Part 3"
+url = "https://arxiv.org/pdf/2601.23279"
+canonical_version = "v1"
+retrieval_date = "2026-08-02"
+size_bytes = 1374894
+sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+page_count = 29
+identity_basis = "official arXiv PDF; hash matches the retained source identity"
+
+[source_tex]
+url = "https://arxiv.org/e-print/2601.23279"
+sha256 = "f40175b2d463b914bb1da4740294b1a56cc8bf4308c46700ff0166cfc1ba9fbc"
+role = "primary-source equation transcription aid; not a substitute for the PDF identity"
+
+[p0_controls]
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-prechange-target cargo test -p gr_core --lib audit_c8 -- --nocapture"
+exit_code = 0
+passed = 8
+failed = 0
+ignored = 0
+filtered = 843
+log_path = "data/output/audit/2026-08-02/p1_prechange_p0_oracle_controls.log"
+log_sha256 = "ceac9249dc87c2085907e5c97927fe9c828509e693f5fec9cd2d229ea4c99f0d"
+result = "all eight P0 controls pass as retained negative controls"
+
+[[handoff_artifact]]
+path = "docs/engineering/claims-oracle-quarantine-report-2026-08-02.md"
+sha256 = "eaa3ffc9de47db7d3ae02df5e6c60ad3fccad0443a76d42fea418d8c6ea95f63"
+required = true
+agrees_with_p0_handoff = true
+
+[[handoff_artifact]]
+path = "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
+sha256 = "b9332a0556e44e297967cc22935ebc06a4336dab0530c46148c7035eef0fc84d"
+required = true
+agrees_with_p0_handoff = true
+
+[[handoff_artifact]]
+path = "data/output/audit/2026-08-02/negative_controls.toml"
+sha256 = "a0cbcb0b1c2909d2d2075f80f3abd4240b0ad84371fbbd1e6ab613b76c358c51"
+required = true
+agrees_with_p0_handoff = true
+
+[[handoff_artifact]]
+path = "data/output/audit/2026-08-02/source_inventory.toml"
+sha256 = "d30f4efb51c7d653f998aa399ea90c877879b57d7c4d848bb12e12b9019a1f22"
+required = true
+agrees_with_p0_handoff = true
+
+[[handoff_artifact]]
+path = "data/output/audit/2026-08-02/claim_transition_results.toml"
+sha256 = "69b388fddc9b79a3a6aa5c422e8e71eef025c1661036905f0a85a357ad0dc838"
+required = true
+agrees_with_p0_handoff = true
+
+[known_p0_boundary]
+manifest_path = "data/output/audit/2026-08-02/p0_oracle_quarantine_manifest.toml"
+manifest_status = "blocked_by_unregistered_output_artifacts"
+transition_schema_status = "deferred; no typed claim transition operation"
+preservation_rule = "retain P0 controls and do not treat the blocked manifest as replayable evidence"

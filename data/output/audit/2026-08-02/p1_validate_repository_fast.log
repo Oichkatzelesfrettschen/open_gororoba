@@ -1,0 +1,4 @@
+command=TMPDIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-tmp REPO_TMPDIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-tmp REPO_CARGO_TARGET_DIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-governance-target REPO_CARGO_BUILD_DIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-governance-build make validate-repository-fast
+exit_code=0
+result=OK: fast repository validation completed
+generated_summary=reports/validation/2026-08-02/233153/summary.md

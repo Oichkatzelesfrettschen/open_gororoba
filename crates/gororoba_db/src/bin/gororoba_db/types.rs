@@ -99,6 +99,9 @@ pub(crate) enum Commands {
     /// modulo the target table (experiments_cp). Requires migration 0016 applied.
     Experiment(ExperimentMutationArgs),
 
+    /// Register retained local evidence paths in canonical SQLite.
+    Artifact(ArtifactArgs),
+
     /// Query rows from any table by name with optional status filter.
     Query(QueryArgs),
 
@@ -395,6 +398,46 @@ pub(crate) enum InsightMutationAction {
 pub(crate) struct ExperimentMutationArgs {
     #[command(subcommand)]
     pub(crate) action: ExperimentMutationAction,
+}
+
+#[derive(Parser, Debug)]
+pub(crate) struct ArtifactArgs {
+    #[command(subcommand)]
+    pub(crate) action: ArtifactAction,
+}
+
+#[derive(Subcommand, Debug)]
+pub(crate) enum ArtifactAction {
+    /// Register a local evidence bundle and its repository-relative paths.
+    RegisterLocal {
+        /// Stable artifact identity.
+        #[arg(long)]
+        id: String,
+        /// Unique canonical artifact key.
+        #[arg(long)]
+        key: String,
+        /// Human-readable artifact title.
+        #[arg(long)]
+        title: String,
+        /// Citation or provenance description.
+        #[arg(long)]
+        citation: String,
+        /// Repository-relative retained path. Repeat for every bundle member.
+        #[arg(long = "path", required = true)]
+        paths: Vec<String>,
+        /// Existing canonical lane used for the registration.
+        #[arg(long, default_value = "web_references")]
+        lane: String,
+        /// Source reference. Repeat for every source reference.
+        #[arg(long = "source-ref")]
+        source_refs: Vec<String>,
+        /// Actor recorded in the export-run details.
+        #[arg(long)]
+        actor: Option<String>,
+        /// Reason recorded in the export-run details.
+        #[arg(long)]
+        reason: Option<String>,
+    },
 }
 
 #[derive(Subcommand, Debug)]

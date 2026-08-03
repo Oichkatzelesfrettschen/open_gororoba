@@ -1,0 +1,54 @@
+# Canonical ownership record for the retained P1 tensor Ward evidence.
+
+[bundle]
+canonical_artifact_id = "LOCAL-P1-TENSOR-WARD"
+canonical_artifact_key = "local:p1-photon-graviton-tensor-ward"
+title = "Photon-graviton tensor Ward evidence bundle"
+lane = "web_references"
+registration_command = "gororoba-db artifact register-local"
+registration_status = "registered_in_canonical_sqlite"
+exporter_status = "not_run: pre-existing empty slides_artifacts lane rejects the compatibility exporter"
+registered_path_count = 23
+canonical_download_path = "data/output/audit/2026-08-02/claim_transition_results.toml"
+registration_command_log = "data/output/audit/2026-08-02/p1_artifact_registration_command.log"
+reregistration_command_log = "data/output/audit/2026-08-02/p1_artifact_reregistration_command.log"
+source_pdf_id = "2601.23279v1"
+source_pdf_sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+
+source_refs = [
+  "https://arxiv.org/abs/2601.23279",
+  "data/output/audit/2026-08-02/source_inventory.toml",
+  "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
+]
+
+path_refs = [
+  "docs/engineering/claims-oracle-quarantine-report-2026-08-02.md",
+  "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md",
+  "data/output/audit/2026-08-02/negative_controls.toml",
+  "data/output/audit/2026-08-02/source_inventory.toml",
+  "data/output/audit/2026-08-02/claim_transition_results.toml",
+  "data/output/audit/2026-08-02/p1_prechange_characterization.toml",
+  "data/output/audit/2026-08-02/p1_prechange_p0_oracle_controls.log",
+  "data/output/audit/2026-08-02/p1_validate_governance_initial_failure.log",
+  "data/output/audit/2026-08-02/p1_validate_governance_rerun.log",
+  "data/output/audit/2026-08-02/p1_validate_repository_fast.log",
+  "data/output/audit/2026-08-02/p1_artifact_registration_command.log",
+  "data/output/audit/2026-08-02/p1_artifact_reregistration_command.log",
+  "data/output/audit/2026-08-02/p1_source_equation_ledger.toml",
+  "data/output/audit/2026-08-02/p1_numerical_protocol.toml",
+  "data/output/audit/2026-08-02/p1_calibration_results.toml",
+  "data/output/audit/2026-08-02/p1_final_grid.toml",
+  "data/output/audit/2026-08-02/p1_independent_fixtures.toml",
+  "data/output/audit/2026-08-02/p1_mutation_results.toml",
+  "data/output/audit/2026-08-02/p1_on_shell_controls.toml",
+  "data/output/audit/2026-08-02/p1_claim_results.toml",
+  "data/output/audit/2026-08-02/p1_validation_results.toml",
+  "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml",
+  "data/output/audit/2026-08-02/p1_artifact_registration.toml"
+]
+
+notes = [
+  "The bundle retains tensor components before norms and records incomplete C-820 and C-822 verdicts without refuting the source identity.",
+  "The exporter was not rerun because its pre-existing empty slides_artifacts lane produces unrelated generated drift.",
+  "The typed local registration command writes the canonical artifact, path, lane, source, and export-run rows in one transaction."
+]

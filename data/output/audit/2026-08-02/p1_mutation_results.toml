@@ -1,0 +1,102 @@
+# Tensor Ward mutation and input controls.
+[meta]
+artifact_id = "p1-photon-graviton-mutation-controls"
+detection_threshold = 1.00000000000000004e-10
+mutation_source = "irreducible J1, J2, J3 assembly and Appendix B projector inputs"
+
+[[mutation]]
+loop_type = "Scalar"
+mutation = "FlipJ1Sign"
+rank_three_l2_difference = 3.73292420990036400e-4
+detected = true
+
+[[mutation]]
+loop_type = "Scalar"
+mutation = "FlipJ2Sign"
+rank_three_l2_difference = 8.16116445028629810e-4
+detected = true
+
+[[mutation]]
+loop_type = "Scalar"
+mutation = "FlipJ3Sign"
+rank_three_l2_difference = 3.76092960201097393e-7
+detected = true
+
+[[mutation]]
+loop_type = "Scalar"
+mutation = "OmitJ1"
+rank_three_l2_difference = 1.86646210495018281e-4
+detected = true
+
+[[mutation]]
+loop_type = "Scalar"
+mutation = "OmitJ2"
+rank_three_l2_difference = 4.08058222514314851e-4
+detected = true
+
+[[mutation]]
+loop_type = "Scalar"
+mutation = "OmitJ3"
+rank_three_l2_difference = 1.88046480100500389e-7
+detected = true
+
+[[mutation]]
+loop_type = "Scalar"
+mutation = "TransposeAntisymmetricProjector"
+rank_three_l2_difference = 3.09566891354594710e-7
+detected = true
+
+[[mutation]]
+loop_type = "Spinor"
+mutation = "FlipJ1Sign"
+rank_three_l2_difference = 1.49299836024153923e-3
+detected = true
+
+[[mutation]]
+loop_type = "Spinor"
+mutation = "FlipJ2Sign"
+rank_three_l2_difference = 2.33890435480304908e-3
+detected = true
+
+[[mutation]]
+loop_type = "Spinor"
+mutation = "FlipJ3Sign"
+rank_three_l2_difference = 4.49912193460698973e-6
+detected = true
+
+[[mutation]]
+loop_type = "Spinor"
+mutation = "OmitJ1"
+rank_three_l2_difference = 7.46499180120769289e-4
+detected = true
+
+[[mutation]]
+loop_type = "Spinor"
+mutation = "OmitJ2"
+rank_three_l2_difference = 1.16945217740152454e-3
+detected = true
+
+[[mutation]]
+loop_type = "Spinor"
+mutation = "OmitJ3"
+rank_three_l2_difference = 2.24956096730349741e-6
+detected = true
+
+[[mutation]]
+loop_type = "Spinor"
+mutation = "TransposeAntisymmetricProjector"
+rank_three_l2_difference = 6.21951457112040779e-7
+detected = true
+
+[input_control]
+control = "nonmatching_contraction_momentum"
+absolute_norm_difference = 2.65817185332876006e-3
+detected = true
+
+[input_control]
+control = "non_antisymmetric_field_strength"
+rejected_by_kinematic_validation = true
+
+[p0_control]
+control = "audit_c820_on_shell_factor_hides_nonzero_integrand"
+status = "retained_and_passing"

@@ -1,0 +1,179 @@
+# P1 validation commands, exit codes, and retained result hashes.
+
+[meta]
+artifact_id = "p1-photon-graviton-validation-results"
+implementation_commit = "475f58aecc7406565dde111f2d237b244491fd13"
+target_directory = ".cache/exp-p1-target"
+wrapper = "RUSTC_WRAPPER="
+host = "x86_64-unknown-linux-gnu"
+toolchain = "rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30); LLVM 22.1.6"
+scope = "tensor-valued photon-graviton Ward implementation, falsifier, evidence, and registry gates"
+
+[[gate]]
+name = "rustfmt-check"
+command = "cargo fmt --all -- --check"
+exit_code = 0
+result = "pass; stable rustfmt reports existing nightly-only configuration warnings"
+
+[[gate]]
+name = "gr-core-clippy"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo clippy -p gr_core --all-targets -- -D warnings"
+exit_code = 0
+result = "pass"
+
+[[gate]]
+name = "photon-graviton-tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo test -p gr_core --lib photon_graviton"
+exit_code = 0
+result = "236 passed; 0 failed; 0 ignored"
+
+[[gate]]
+name = "evidence-generation"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target P1_CALIBRATION_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_calibration_results.toml P1_FINAL_GRID_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_final_grid.toml P1_INDEPENDENT_FIXTURES_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_independent_fixtures.toml P1_MUTATION_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_mutation_results.toml P1_ON_SHELL_CONTROLS_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_on_shell_controls.toml cargo test -p gr_core --lib photon_graviton -- --nocapture"
+exit_code = 0
+result = "236 passed; 102 final-grid records; all retained output paths used absolute repository paths because unit-test processes run from the crate directory"
+
+[[gate]]
+name = "p0-oracle-controls"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo test -p gr_core --lib audit_c8 -- --nocapture"
+exit_code = 0
+result = "8 passed; 0 failed; P0 controls retained before P1 changes"
+log_path = "data/output/audit/2026-08-02/p1_prechange_p0_oracle_controls.log"
+log_sha256 = "b378f66c1dc1095b1cf9b051f732eb44e8047176531d5df508f14a33cac34974"
+
+[[gate]]
+name = "governance-default-environment"
+command = "make validate-governance"
+exit_code = 2
+result = "environmental build failure: the shared /tmp tmpfs rejected libsqlite3-sys assembly output with Disk quota exceeded"
+log_path = "data/output/audit/2026-08-02/p1_validate_governance_initial_failure.log"
+
+[[gate]]
+name = "governance-worktree-local-rerun"
+command = "TMPDIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-tmp REPO_TMPDIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-tmp REPO_CARGO_TARGET_DIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-governance-target REPO_CARGO_BUILD_DIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-governance-build make validate-governance"
+exit_code = 0
+result = "REGISTRY GOVERNANCE VALIDATION: PASSED; all declared governance subchecks passed"
+log_path = "data/output/audit/2026-08-02/p1_validate_governance_rerun.log"
+log_sha256 = "667efdc414336ddae08f4b1c789290577a80d19482b76bdcee6cbccdc454a126"
+
+[[gate]]
+name = "registry-validation"
+command = "TMPDIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-tmp REPO_TMPDIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-tmp REPO_CARGO_TARGET_DIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-governance-target REPO_CARGO_BUILD_DIR=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/.cache/p1-governance-build make validate-registry"
+exit_code = 0
+result = "control-plane, project-counter, markdown, governance, semantic-atoms, evidence-provenance, registry-integrity, and execution-planning checks passed"
+
+[[gate]]
+name = "provenance-store-tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo test -p provenance_store --all-targets -- --nocapture"
+exit_code = 0
+result = "3 passed; 0 failed"
+
+[[gate]]
+name = "gororoba-db-tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo test -p gororoba_db --all-targets -- --nocapture"
+exit_code = 0
+result = "1 passed; 0 failed"
+
+[[gate]]
+name = "all-gr-core-tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo test -p gr_core --lib"
+exit_code = 0
+result = "893 passed; 0 failed"
+
+[[gate]]
+name = "repository-fast-validation"
+command = "See p1_validate_repository_fast.log for the exact replay command."
+exit_code = 0
+result = "validate-repository --fast and its registry sublane passed"
+command_log = "data/output/audit/2026-08-02/p1_validate_repository_fast.log"
+
+[[gate]]
+name = "typed-artifact-registration"
+command = "See p1_artifact_reregistration_command.log for the exact replay command."
+exit_code = 0
+result = "LOCAL-P1-TENSOR-WARD registered in one transaction with 23 retained paths, one lane, and three source references"
+command_log = "data/output/audit/2026-08-02/p1_artifact_reregistration_command.log"
+
+[[gate]]
+name = "canonical-artifact-path-query"
+command = "sqlite3 -readonly registry/canonical/control_plane.sqlite3 SELECT artifact identity, path count, lane, and source references for LOCAL-P1-TENSOR-WARD"
+exit_code = 0
+result = "status=downloaded; minimum_requirement_met=1; canonical path exists; registered_paths=23; lane=web_references"
+
+[[gate]]
+name = "experiment-manifest-verification"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo run -p gororoba_cli_data --bin experiment-manifest -- verify data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+exit_code = 0
+result = "verified E-P1-PHOTON-GRAVITON-TENSOR-WARD at implementation revision 475f58ae before later evidence and registry ownership commits"
+
+[[gate]]
+name = "source-formula-lizard"
+command = "lizard -l rust -C 50 on touched tensor Ward, falsifier, provenance-store, and gororoba-db files"
+exit_code = 0
+result = "lizard 1.23.0; no thresholds exceeded; long source-formula kernels map to visible equation blocks and have focused tests"
+
+[[gate]]
+name = "repository-diff-hygiene"
+command = "git diff --check"
+exit_code = 0
+result = "pass"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_prechange_characterization.toml"
+sha256 = "7475cfb9569b950852ce9c1b58ebec6e93fae165677bb47d0faa01dd0ec589d9"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_source_equation_ledger.toml"
+sha256 = "4d7134b7ad9bdca2102378ef8850b55ea05d6b94c34603311020ae2452192dd2"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_numerical_protocol.toml"
+sha256 = "4d80ddb3b0469686a32bb7523af4b2f22131e59178979dbf7bacae74e2a08d3c"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_calibration_results.toml"
+sha256 = "b77fb4c841d4785667a8275414eff5eb3229d49ec0cb6a40cab3a40e20eb7527"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_final_grid.toml"
+sha256 = "4a2f1ad15b2fe30397b0bf94ad8cc21ef730e78001f2fd2dad674ff5eb28720f"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_independent_fixtures.toml"
+sha256 = "66c67bcc6fb198f933bcf4f053313272fd29fcda529c53058e64d7d9506f666f"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_mutation_results.toml"
+sha256 = "c3c603b98e908ea152c0b5a550689cd8157bd6e3136f70425d67bf652d6af111"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_on_shell_controls.toml"
+sha256 = "9bb06b2299a87bb3dc5abeaf39cecca5d18b5c5255541fd0eb943ac0c26a12c1"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_artifact_registration.toml"
+sha256 = "5e1ba04d7fb77ac5c8aa64f003c466cdb9ac3e16f3e4a5289b5e339262b19ca0"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_artifact_registration_command.log"
+sha256 = "dc6cca4bbac2bb64c9ecd500be794a5f289811990e795a8b4cbc67e616ed571e"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_artifact_reregistration_command.log"
+sha256 = "01bb92e4ea2e99f7fcf6797fcacb3f3b01fc28bf156667a47739126e224da350"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_validate_governance_initial_failure.log"
+sha256 = "ba02a35deaec83b5878c073f3d664f9887b52d59929fcbdf16681233797c7fa1"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_validate_governance_rerun.log"
+sha256 = "667efdc414336ddae08f4b1c789290577a80d19482b76bdcee6cbccdc454a126"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_validate_repository_fast.log"
+sha256 = "e4b01143dbb7edf5ccba6280eaccd2b2349f8cced7467db60d9a4d75b2cfdf3c"
+
+[[artifact]]
+path = "data/output/audit/2026-08-02/p1_claim_results.toml"
+sha256 = "b9b764d07fd5e1028b4cc135f961aea68c4c371829967610bb0da2d2b7b767ca"
