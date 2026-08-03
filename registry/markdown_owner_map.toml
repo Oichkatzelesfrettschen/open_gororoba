@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 131
+document_count = 133
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -768,5 +768,15 @@ removal_status = "active"
 
 [[owner]]
 path = "docs/engineering/validation-workflow-rca-2026_08_02.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/claims-oracle-quarantine-report-2026-08-02.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
 owner_group = "project"
 removal_status = "active"
