@@ -47,11 +47,13 @@ pub mod irreducible;
 pub mod quadrature;
 pub mod special_functions;
 pub mod tadpole;
+pub mod tensor_types;
 pub mod tree_level;
 pub mod types;
 pub mod vacuum_pol;
 pub mod ward;
 pub mod worldline_greens;
+pub mod worldline_tensor;
 
 use num_complex::Complex64;
 use std::f64::consts::PI;
