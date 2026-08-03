@@ -11,7 +11,7 @@ companion_docs = ["docs/TODO.md", "docs/NEXT_ACTIONS.md"]
 status = "active"
 status_token = "ACTIVE"
 authoritative = true
-workstream_count = 14
+workstream_count = 15
 status_allowlist = ["planned", "active", "in_progress", "done", "paused", "blocked"]
 priority_allowlist = ["high", "medium", "low"]
 
@@ -38,6 +38,20 @@ dependencies = []
 acceptance_criteria = ["workstream status is constrained to declared enum values.", "workstream dependencies are explicit and machine-parseable.", "Evidence references point to maintained canonical paths."]
 evidence_refs = ["CURRENT::PATH crates/gororoba_algebra/src/lie/e7_geometry.rs (LEGACY::PATH crates/algebra_core/src/lie/e7_geometry.rs)", "crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs", "crates/lbm_core/src/turbulence.rs", "registry/lacunae.toml", "registry/monograph.toml"]
 lacunae = ["L-001", "L-002", "L-003", "L-004", "L-005"]
+
+[[workstream]]
+id = "WS-CLAIM-TRANSITION-001"
+name = "Canonical Claim Transition Schema"
+priority = "high"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+description = "Add typed canonical claim status transitions, successor claim creation, and transition-event persistence to gororoba-db. Preserve prior status, experiment verdict, evidence, falsifier, rationale, successor links, and unresolved assumptions without using direct SQLite edits."
+primary_outputs = ["crates/gororoba_db/src/bin/gororoba_db/types.rs", "crates/provenance_store/src/lib.rs", "db/migrations"]
+claims = ["C-820", "C-822", "C-865", "C-866"]
+dependencies = ["C-820", "C-822", "C-865", "C-866"]
+acceptance_criteria = ["gororoba-db exposes typed claim transition mutation", "claim_revisions or successor tables retain complete transition history", "compatibility exporters preserve transition-linked status and notes", "registry validation covers successor references and transition events"]
+evidence_refs = ["data/output/audit/2026-08-02/claim_transition_schema_blocker.toml", "data/output/audit/2026-08-02/claim_transition_proposals.toml"]
+lacunae = ["typed status mutation absent", "successor IDs cannot be created through current CLI", "source and implementation claims remain conflated"]
 
 [[workstream]]
 id = "WS-CLAIMS-001"

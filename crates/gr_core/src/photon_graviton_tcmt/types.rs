@@ -304,4 +304,13 @@ mod tests {
         let cs = CrossSections::new(0.5, 0.3);
         assert!(cs.verify_optical_theorem(1e-10));
     }
+
+    #[test]
+    fn audit_c866_cross_section_ratio_is_tautological() {
+        let cs = CrossSections::new(3.25, -1.75);
+
+        assert_eq!(cs.c_extinction, 1.5);
+        assert_eq!(cs.optical_theorem_ratio, 1.0);
+        assert!(cs.verify_optical_theorem(1e-15));
+    }
 }

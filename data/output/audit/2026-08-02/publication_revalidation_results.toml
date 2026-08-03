@@ -1,0 +1,93 @@
+# Revalidation of the P0 publication branch after the origin/main rebase.
+
+[meta]
+artifact_id = "p0-publication-revalidation-results"
+observed_utc = "2026-08-03T03:20:00Z"
+head_sha = "9d77c602"
+publication_base_sha = "743ad2c6"
+target_directory = ".cache/exp-publish-target"
+wrapper = "RUSTC_WRAPPER="
+scope = "P0 oracle controls, touched gr_core code, optics characterization lanes, registry views, and fast shared checks"
+
+[[gate]]
+name = "scoped-rustfmt"
+command = "rustfmt --edition 2024 --check crates/gr_core/src/photon_graviton/irreducible.rs crates/gr_core/src/photon_graviton/ward.rs crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs crates/gr_core/src/photon_graviton_tcmt/tcmt_equations.rs crates/gr_core/src/photon_graviton_tcmt/types.rs"
+exit_code = 0
+result = "pass; stable rustfmt emitted warnings for nightly-only configuration keys"
+
+[[gate]]
+name = "focused-oracle-controls"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo test -p gr_core --lib audit_c8 -- --nocapture"
+exit_code = 0
+result = "8 passed; 0 failed; 843 filtered out"
+
+[[gate]]
+name = "gr-core-tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo test -p gr_core --lib"
+exit_code = 0
+result = "851 passed; 0 failed; 0 ignored"
+
+[[gate]]
+name = "gr-core-clippy"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo clippy -p gr_core --all-targets -- -D warnings"
+exit_code = 0
+result = "pass"
+
+[[gate]]
+name = "historical-profile-command"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo clippy -p gr_core --all-targets --profile release-gate -- -D warnings"
+exit_code = 101
+result = "profile release-gate is not defined in the rebased Cargo.toml; the repository-defined plain clippy command passed"
+
+[[gate]]
+name = "optics-mie-tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo test -p optics_core --lib mie_cylinder"
+exit_code = 0
+result = "6 passed; 0 failed"
+
+[[gate]]
+name = "optics-fano-tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo test -p optics_core --lib fano_tcmt"
+exit_code = 0
+result = "6 passed; 0 failed"
+
+[[gate]]
+name = "optics-tcmt-tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo test -p optics_core --lib tcmt"
+exit_code = 0
+result = "49 passed; 0 failed"
+
+[[gate]]
+name = "fast-shared-check"
+command = "RUSTC_WRAPPER= make check"
+exit_code = 0
+result = "terminology gate and no-reports-writes check passed"
+
+[[gate]]
+name = "control-plane-verify"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo run -p gororoba_cli_provenance --bin provenance -- verify-control-plane"
+exit_code = 0
+result = "claims 1448; insights 183; experiments 232; binaries 496; theorems 162; kernel_checked_claims 156; proof_files 297"
+
+[[gate]]
+name = "claims-verify"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo run -p gororoba_cli_data --bin claims-verify -- --check all"
+exit_code = 2
+result = "79 bounded path failures remain; no target claim row failure was introduced"
+
+[[gate]]
+name = "registry-check"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo run -p gororoba_cli_data --bin registry-check -- --typed-policy error"
+exit_code = 0
+result = "pass; no errors and no warnings"
+
+[[gate]]
+name = "provenance-verify"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo run -p gororoba_cli_provenance --bin provenance -- verify"
+exit_code = 1
+result = "baseline provenance inventory retains missing lane assignments and missing canonical paths"
+
+[interpretation]
+positive_evidence_promotion = "blocked for C-820, C-822, C-865, and C-866 until repaired validators detect the retained negative controls"
+rebase_effect = "origin/main changed registry inventory counts and removed the prior registry-check errors; canonical status-note mutations were replayed before validation"
+gpu_validation = "not run; the healthy NVIDIA and Vulkan host remains environment context only"

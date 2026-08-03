@@ -1,0 +1,227 @@
+# P0 oracle quarantine frontier record.
+# This record is a retained audit artifact, not a generated registry view.
+
+[meta]
+artifact_id = "p0-oracle-quarantine-frontier"
+observed_local_date = "2026-08-02"
+generated_at_utc = "2026-08-03T01:35:41.871952591Z"
+repository = "open_gororoba"
+branch = "main"
+head_sha = "954696e5eaf96530207ddcbea1c8f1ef9c259ceb"
+tracked_worktree = "clean; status rechecked with core.fsmonitor=false"
+scope = "P0 oracle quarantine, provenance binding, negative controls, and source contracts"
+out_of_scope = "P1 tensor Ward implementation, Mie repair, SFWM sweep, heliosphere, LBM, ultrametric, algebra consolidation"
+canonical_database = "registry/canonical/control_plane.sqlite3"
+compatibility_export = "registry/claims.toml"
+retained_artifact_root = "data/output/audit/2026-08-02"
+
+[baseline.host]
+os_boundary = "local Linux host"
+gpu_device = "NVIDIA GeForce RTX 4070 Ti"
+gpu_pci_id = "0x2782"
+nvidia_driver = "610.43.03"
+vulkan_api = "1.4.341"
+vulkan_driver_id = "DRIVER_ID_NVIDIA_PROPRIETARY"
+gpu_probe = "healthy; no P0 GPU workload launched"
+device_nodes = "/dev/nvidia0,/dev/nvidiactl,/dev/nvidia-modeset,/dev/nvidia-uvm,/dev/dri/card1,/dev/dri/renderD128"
+
+[baseline.toolchain]
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+llvm = "22.1.6"
+nextest = "cargo-nextest 0.9.140"
+clang = "clang version 22.1.8"
+mold = "mold 2.41.0"
+sccache = "sccache 0.15.0"
+pmd = "PMD 7.12.0"
+jscpd = "4.0.5"
+lizard = "1.23.0"
+sqlite3 = "3.53.3"
+target_directory = ".cache/exp-p0-target for audit builds; .cache/gate-target is the configured gate target"
+feature_configuration = "gr_core default features: cd_kernel, gauss-quad, nalgebra, num-complex, rayon, verified_core, gororoba_algebra, ode_solvers; dev feature approx"
+
+[baseline.runtime_boundary]
+rustc_wrapper_failure = "sccache returned Operation not permitted (os error 1) in the restricted child process"
+successful_build_boundary = "RUSTC_WRAPPER= disables the failing wrapper while preserving the pinned toolchain and target directory"
+fsmonitor_boundary = "git fsmonitor query returned unspecified error; read-only status was repeated with core.fsmonitor=false"
+
+[claims.live]
+source = "registry/canonical/control_plane.sqlite3 rendered by claims-audit"
+generated_at_utc = "2026-08-03T01:35:41.871952591+00:00"
+all_claim_count = 1448
+administrative_closed = 8
+empirical_falsification_core = 69
+open_investigation = 126
+positive_complete = 1234
+superseded = 11
+target_status_count = 69
+stale_before_2025_06_01 = 0
+missing_last_verified = 53
+contradictions = 0
+id_duplicates = 0
+id_report = "claims-id.txt"
+status_report = "claims-status.txt"
+staleness_report = "claims-staleness.txt"
+contradictions_report = "claims-contradictions.txt"
+campaign_report = "claims-falsification-campaign.toml"
+
+[claims.checkpoint]
+source = "reports/claims_falsification_campaign.toml"
+generated_at_utc = "2026-03-18T21:23:27.710346616+00:00"
+all_claim_count = 1300
+administrative_closed = 8
+empirical_falsification_core = 65
+open_investigation = 130
+positive_complete = 1086
+superseded = 11
+target_status_count = 65
+interpretation = "Historical checkpoint; its counts must not be substituted for the live SQLite state"
+
+[claims.reconciliation]
+count_delta = 148
+target_delta = 4
+open_investigation_delta = -4
+positive_complete_delta = 148
+provenance_conclusion = "The live frontier contains post-checkpoint claims and reclassified lanes; the source database and commit identity determine the current count"
+checkpoint_sha256 = "881d717b9803768baac05301633b58011d45edd266095c0dff0e536a06040fdf"
+live_campaign_sha256 = "5e3ba30c174fe88a441a0cd62df0abe03902fa096f3083540356f0ac484aa75b"
+
+[structural.pmd_cpd]
+tool = "PMD 7.12.0"
+command = "RUSTC_WRAPPER= make cpd-audit CPD_TOP=20"
+file_list_command = "cargo run -q -p xtask -- cpd-file-list --output /tmp/cpd_src_list.txt"
+path_scope = "2057 paths emitted by xtask cpd-file-list"
+language = "rust"
+minimum_tokens = 42
+clusters = 6771
+duplicated_lines = 79579
+report_scope = "repository CPD lane"
+comparison_note = "The checked-in May 2026 PMD report has 6120 clusters and 69450 duplicate lines; different file-list state or tool inputs prevent direct subtraction"
+
+[structural.jscpd]
+tool = "jscpd 4.0.5"
+command = "jscpd --min-lines 10 --min-tokens 100 --format rust --reporters console,json --output /tmp/open_gororoba_p0/jscpd --absolute crates/algebra_experimental/src crates/optics_core/src crates/gr_core/src crates/lbm_3d/src crates/lbm_3d_cuda/src crates/lbm_vulkan/src crates/gororoba_cli_physics/src crates/stats_core/src"
+path_scope = "eight targeted source roots"
+files_analyzed = 536
+total_lines = 165704
+total_tokens = 1443263
+clone_blocks = 251
+duplicated_lines = 6094
+duplicated_line_fraction = 0.0368
+duplicated_tokens = 72367
+duplicated_token_fraction = 0.0501
+raw_report = "jscpd-report.json"
+
+[structural.lizard]
+tool = "lizard 1.23.0"
+command = "lizard -l rust -C 15 -L 1000 --csv -o /tmp/open_gororoba_p0/lizard.csv crates/gr_core/src/photon_graviton crates/gr_core/src/photon_graviton_tcmt crates/optics_core/src/mie_cylinder.rs crates/optics_core/src/fano_tcmt.rs crates/optics_core/src/tcmt.rs"
+path_scope = "24 Rust files in the photon-graviton and optics TCMT surfaces"
+function_count = 438
+total_nloc = 5303
+complexity_threshold = 15
+length_threshold = 1000
+warnings = 1
+warning = "extract_fano_params in crates/optics_core/src/mie_cylinder.rs has CCN 16"
+raw_report = "lizard.csv"
+
+[[frontier]]
+claim_id = "C-820"
+dependency_claims = ["C-819", "C-821"]
+implementation_surfaces = ["crates/gr_core/src/photon_graviton/irreducible.rs", "crates/gr_core/src/photon_graviton/ward.rs"]
+current_status = "Verified"
+claimed_quantity = "gauge Ward contraction k_alpha * Pi^{mn,alpha}"
+actual_measured_quantity = "scalar polarization-channel projection multiplied by an on-shell k^2 factor and reported as zero"
+falsifier = "inject a nonzero pre-multiplication contraction and require the legacy verifier to detect it"
+evidence_validity = "methodology-invalid"
+proposed_transition = "split source-level gauge identity from implementation-conformance claim; implementation claim becomes provisional pending tensor verifier"
+next_experiment = "P1 tensor-valued Ward implementation with an independent dense-index contraction"
+
+[[frontier]]
+claim_id = "C-821"
+dependency_claims = []
+implementation_surfaces = ["crates/gr_core/src/photon_graviton/tadpole.rs"]
+current_status = "Verified"
+claimed_quantity = "nonzero tadpole amplitude and Bernoulli cross-validation"
+actual_measured_quantity = "scalar tree-tensor factor and weak numerical cross-validation"
+falsifier = "independently perturb the gravitational tensor contribution and test whether the full Ward gate changes"
+evidence_validity = "dependency inspection only; no P0 status change proposed"
+proposed_transition = "retain as a prerequisite input while separating scalar amplitude evidence from tensor Ward evidence"
+next_experiment = "P1 tensor-valued tadpole invariant and source-faithful lower-point relation"
+
+[[frontier]]
+claim_id = "C-822"
+dependency_claims = ["C-820", "C-821"]
+implementation_surfaces = ["crates/gr_core/src/photon_graviton/ward.rs", "crates/gr_core/src/photon_graviton/tadpole.rs", "crates/gr_core/src/photon_graviton/external.rs"]
+current_status = "Verified"
+claimed_quantity = "full one-loop gravitational Ward identity"
+actual_measured_quantity = "relabelled irreducible gauge residual plus asserted scalar zeros"
+falsifier = "independently perturb tadpole or external-leg gravitational contributions and require the legacy gate to change"
+evidence_validity = "methodology-invalid"
+proposed_transition = "split source-level gravitational identity from implementation-conformance claim; implementation claim becomes provisional pending tensor verifier"
+next_experiment = "P1 off-shell gravitational contraction against a declared lower-point right-hand side"
+
+[[frontier]]
+claim_id = "C-864"
+dependency_claims = ["C-820", "C-821", "C-822", "C-866"]
+implementation_surfaces = ["crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs", "crates/gr_core/src/photon_graviton_tcmt/types.rs"]
+current_status = "Verified"
+claimed_quantity = "source-derived map from three photon-graviton diagrams to Ruan-Fan TCMT"
+actual_measured_quantity = "phenomenological scalar map with an arbitrary coupling floor and fitted or assumed parameters"
+falsifier = "remove arbitrary floors and independently fit complex channel data with declared units"
+evidence_validity = "inconclusive; dependency closure underidentified"
+proposed_transition = "provisional phenomenological mapping hypothesis, not a verified derivation"
+next_experiment = "P2 source-faithful scattering semantics followed by P4 parameter identification"
+
+[[frontier]]
+claim_id = "C-865"
+dependency_claims = ["C-864"]
+implementation_surfaces = ["crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs", "crates/gr_core/src/photon_graviton_tcmt/tcmt_equations.rs"]
+current_status = "Verified"
+claimed_quantity = "kappa_1 - kappa_2 = gamma_l with relative error below 1e-10"
+actual_measured_quantity = "example identity accepted with tolerance 1.0"
+falsifier = "evaluate the observed discrepancy against the stated 1e-10 tolerance"
+evidence_validity = "methodology-invalid"
+proposed_transition = "provisional until the source constraint and machine-precision predicate are implemented"
+next_experiment = "P4 source-faithful TCMT identification with held-out complex amplitudes"
+
+[[frontier]]
+claim_id = "C-866"
+dependency_claims = ["C-864", "C-865"]
+implementation_surfaces = ["crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs", "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs", "crates/gr_core/src/photon_graviton_tcmt/cross_sections.rs", "crates/gr_core/src/photon_graviton_tcmt/tcmt_equations.rs"]
+current_status = "Verified"
+claimed_quantity = "time reversal guarantees a unitary transmission S-matrix, including a lossy case"
+actual_measured_quantity = "scalar T/R complement, tautological extinction ratio, and a weak lossless integration check"
+falsifier = "hold scalar transmission fixed while changing complex phase or flux normalization; inject arbitrary cross-section inputs; test Fano asymmetry"
+evidence_validity = "methodology-invalid"
+proposed_transition = "supersede with separate lossless flux-normalized unitarity, reciprocity/time reversal, passive-loss contractivity, and absorption-balance claims"
+next_experiment = "P2 channel-faithful Ruan-Fan scattering contract, then P4 TCMT model identification"
+
+[[frontier]]
+claim_id = "C-867"
+dependency_claims = ["C-864", "C-866"]
+implementation_surfaces = ["crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs", "crates/gr_core/src/photon_graviton_tcmt/tcmt_equations.rs"]
+current_status = "Verified"
+claimed_quantity = "Fano resonance peak and asymmetry agree with the weak-field source amplitude by more than 99 percent"
+actual_measured_quantity = "scalar profile and resonance or wing checks without an identified complex-amplitude phase comparison"
+falsifier = "run a predeclared phase and detuning sweep against held-out complex source amplitudes"
+evidence_validity = "inconclusive; evidence narrower than statement"
+proposed_transition = "provisional pending complex-amplitude phase sweep"
+next_experiment = "P4 complex-amplitude TCMT comparison after P2 channel semantics"
+
+[registry_baseline]
+claims_verify = "exit 2; 79 bounded baseline failures including missing where_stated and missing referenced paths"
+registry_check = "exit 1; 3 errors: 46 claim identity gaps, 139 governed-intent gaps, 29 insight governed gaps, 2 unregistered Cargo binaries, and project experiment count 228 versus 232"
+provenance_verify = "exit 0; claims 1448, insights 183, experiments 232, binaries 494, theorems 132, kernel_checked_claims 154, proof_files 194"
+interpretation = "These are retained pre-mutation baseline findings. They are not attributed to P0 code changes."
+
+[artifact_hashes]
+claims_id = "d337143b391f9c59c9fd18c41c383fdec59bcc5fde798a377d7114a1b95ac77b"
+claims_status = "d45937bf086a313c80bd553670753bb77e8dd4c3ac606b6e340be4a995ca40b5"
+claims_staleness = "367742a13a60f7a779fc0d7881d5c3a0c55cf1deb5a61537942f9711584e4cd6"
+claims_contradictions = "eab6bcbb4dc2583aac71cc1f00de0232d8edc18f62ad7d933002fa49e432a093"
+claims_campaign_text = "680ee53d3118185d5a561578cfd64ff34eaca5dcdfd9ed4f3756ea195b2769ef"
+claims_campaign_toml = "5e3ba30c174fe88a441a0cd62df0abe03902fa096f3083540356f0ac484aa75b"
+jscpd_json = "ded399c15079ada64443f911867fc0dd0b9bdc7a778e14dc11212e302cee49b2"
+lizard_csv = "f71e72cf056ad081fdefdd00c6acef81ddddf9232f8caa40e02e3f7a30cb0172"
+historical_campaign = "881d717b9803768baac05301633b58011d45edd266095c0dff0e536a06040fdf"
+historical_cpd = "f5864267d4899e6753d79616e0504d110fd347a988b61aa03a88972881151bde"
