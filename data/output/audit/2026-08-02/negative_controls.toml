@@ -1,0 +1,88 @@
+# Executable negative controls for legacy scientific validators.
+
+[meta]
+artifact_id = "p0-oracle-negative-controls"
+observed_local_date = "2026-08-02"
+head_sha = "954696e5eaf96530207ddcbea1c8f1ef9c259ceb"
+test_command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p0-target cargo test -p gr_core --lib audit_c8 -- --nocapture"
+test_result = "8 passed, 0 failed"
+purpose = "Demonstrate that legacy positive validators do not discriminate the defects required by their claim statements"
+evidence_class = "methodology-invalidating-negative-control"
+
+[[control]]
+claim_id = "C-820"
+test_name = "photon_graviton::irreducible::tests::audit_c820_on_shell_factor_hides_nonzero_integrand"
+injected_defect = "nonzero pre-multiplication integrand with legacy on-shell factor equal to zero"
+expected_detection = "a gauge Ward verifier must expose a nonzero injected contraction"
+observed_detection = "irreducible_ward_check reports exact zero"
+result = "legacy oracle does not discriminate the injection"
+verdict = "MethodologyInvalid"
+
+[[control]]
+claim_id = "C-822"
+test_name = "photon_graviton::ward::tests::audit_c822_gravitational_gate_ignores_other_diagrams"
+injected_defect = "tadpole residual 7.0 and external-leg residual -3.0"
+expected_detection = "the gravitational Ward result must change when either diagram contribution changes"
+observed_detection = "the legacy result remains the irreducible residual"
+result = "legacy oracle reuses the irreducible gauge residual and ignores the injected diagram values"
+verdict = "MethodologyInvalid"
+
+[[control]]
+claim_id = "C-865"
+test_name = "photon_graviton_tcmt::amplitude_bridge::tests::audit_c865_tolerance_does_not_match_claim"
+injected_defect = "relative error 0.9 in the fixture used by the existing test"
+expected_detection = "the stated relative error threshold is 1e-10"
+observed_detection = "the 1e-10 predicate fails, while the existing tolerance 1.0 predicate passes"
+result = "the positive test accepts a 90 percent discrepancy"
+verdict = "MethodologyInvalid"
+
+[[control]]
+claim_id = "C-866"
+test_name = "photon_graviton_tcmt::amplitude_bridge::tests::audit_c866_scalar_unitarity_ignores_complex_channels"
+injected_defect = "complex transmission channels with the same real scalar projection and different flux"
+expected_detection = "a unitary scattering check must inspect complex channel amplitudes and normalization"
+observed_detection = "the old scalar validator accepts the real projection 0.0 for both conceptual cases"
+result = "the validator cannot distinguish flux 1 from flux 2"
+verdict = "MethodologyInvalid"
+
+[[control]]
+claim_id = "C-866"
+test_name = "photon_graviton_tcmt::types::tests::audit_c866_cross_section_ratio_is_tautological"
+injected_defect = "arbitrary scattering 3.25 and absorption -1.75 inputs"
+expected_detection = "an optical theorem check must use an independently computed extinction quantity"
+observed_detection = "CrossSections::new defines extinction from the same inputs and returns ratio 1.0"
+result = "the ratio is tautological"
+verdict = "MethodologyInvalid"
+
+[[control]]
+claim_id = "C-867"
+test_name = "photon_graviton_tcmt::fano_lineshape::tests::audit_c867_base_profile_is_even_in_detuning"
+injected_defect = "q=2.5 with detuning +0.75 and -0.75 and gravitational correction disabled"
+expected_detection = "a Fano asymmetry parameter must change the profile under detuning reversal"
+observed_detection = "the base profile values are exactly equal"
+result = "the q parameter enters the base profile only through q squared"
+verdict = "MethodologyInvalid"
+
+[[control]]
+claim_id = "C-866"
+test_name = "photon_graviton_tcmt::tcmt_equations::tests::audit_c866_lossless_case_retains_gravitational_decay"
+injected_defect = "radiative and nonradiative rates set to zero while gravitational decay remains 1e-8"
+expected_detection = "a lossless case must have every declared decay term equal to zero"
+observed_detection = "the second-mode matrix entry has negative real decay and energy_decay_rate is positive"
+result = "the fixture is not lossless under the implemented model"
+verdict = "MethodologyInvalid"
+
+[[control]]
+claim_id = "C-866"
+test_name = "photon_graviton_tcmt::tcmt_equations::tests::audit_c866_rk4_refines_against_exact_lossless_solution"
+injected_defect = "finite-step RK4 integration compared with the exact equal-frequency two-mode solution"
+expected_detection = "refinement error must decrease independently of physical decay"
+observed_detection = "64 steps are closer to the exact solution than 4 steps"
+result = "the control separates integrator truncation from model decay"
+verdict = "SurvivesChallenge"
+
+[gate_rule]
+positive_evidence_rule = "No validator named by C-820, C-822, C-865, or C-866 may promote a claim until its corresponding negative control fails when the defect is removed and detects an independently injected defect"
+status_rule = "MethodologyInvalid is an experiment verdict, not an automatic claim status transition"
+retention_rule = "Keep all negative controls and their outputs after future oracle repair"
+independence_rule = "P1 and later experiments must not share the production projector, scalar reduction, or post-hoc selected configuration as their sole falsifier"

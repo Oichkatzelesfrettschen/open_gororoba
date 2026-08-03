@@ -216,6 +216,39 @@ mod tests {
     }
 
     #[test]
+    fn audit_c866_lossless_case_retains_gravitational_decay() {
+        let coupling = GravitationalCoupling::new(1e-3, 0.0, 0.0, 1e-8, 1e15, 0.5);
+        let system = TCMTSystem::new(coupling);
+
+        assert_eq!(coupling.gamma_radiative, 0.0);
+        assert_eq!(coupling.gamma_nonradiative, 0.0);
+        assert_ne!(coupling.gamma_gravitational, 0.0);
+        assert!(system.h11.re < 0.0);
+        assert!(energy_decay_rate(&system) > 0.0);
+    }
+
+    #[test]
+    fn audit_c866_rk4_refines_against_exact_lossless_solution() {
+        let coupling = GravitationalCoupling::new(0.2, 0.0, 0.0, 0.0, 1.0, 0.0);
+        let system = TCMTSystem::new(coupling);
+        let initial = TCMTState::new(C64::new(1.0, 0.0), C64::new(0.0, 0.0), 0.0);
+        let final_time = 0.8;
+        let coarse = integrate_to_time(&system, initial, final_time, 4);
+        let fine = integrate_to_time(&system, initial, final_time, 64);
+
+        let exact_phase = C64::from_polar(1.0, -final_time);
+        let exact_photon = exact_phase * (coupling.coupling_strength * final_time).cos();
+        let exact_graviton =
+            exact_phase * C64::new(0.0, -(coupling.coupling_strength * final_time).sin());
+        let coarse_error =
+            (coarse.a_photon - exact_photon).norm() + (coarse.a_graviton - exact_graviton).norm();
+        let fine_error =
+            (fine.a_photon - exact_photon).norm() + (fine.a_graviton - exact_graviton).norm();
+
+        assert!(fine_error < coarse_error);
+    }
+
+    #[test]
     fn energy_decays_with_dissipation() {
         let coupling = GravitationalCoupling::new(1e-3, 1e-6, 1e-7, 1e-8, 1e15, 0.5);
         let system = TCMTSystem::new(coupling);

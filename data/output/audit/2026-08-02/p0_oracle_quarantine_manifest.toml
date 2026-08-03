@@ -1,0 +1,110 @@
+# Standalone reproducibility manifest for the retained P0 audit evidence.
+# Output artifact registration is intentionally unresolved; the verifier must
+# reject this manifest until the canonical artifact path is registered.
+
+[experiment]
+id = "E-P0-ORACLE-QUARANTINE"
+title = "Photon-graviton oracle quarantine and claim transition audit"
+reproducibility_class = "inferential"
+code_commit_sha = "954696e5eaf96530207ddcbea1c8f1ef9c259ceb"
+inferred_timestamp = "2026-08-03T01:35:41Z"
+timestamp_provenance = "Inferred from the retained frontier generated_at_utc; legacy audit runners did not capture an actual execution timestamp."
+run_command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p0-target cargo test -p gr_core --lib audit_c8 -- --nocapture"
+run_command_sha256 = "fa0298b2c973e51c60fc0a4b93f5418f31d2a32cef15d39d0774a47013ce50d2"
+toolchain = "rustc 1.97.0; cargo 1.97.0; LLVM 22.1.6"
+features = ["gr_core default", "cd_kernel", "gauss-quad", "nalgebra", "num-complex", "rayon", "verified_core", "gororoba_algebra", "ode_solvers"]
+hardware = "x86_64 Linux host; NVIDIA GeForce RTX 4070 Ti visible through NVIDIA 610.43.03 and Vulkan 1.4.341; no GPU workload launched"
+randomness_mode = "none"
+evidence_class = "methodology-invalidating-negative-control"
+output_registration_status = "blocked: retained audit files are not present in canonical artifact_paths"
+verification_policy = "Do not treat this manifest as replayable until output artifact IDs and paths are registered through the canonical provenance workflow."
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/irreducible.rs"
+sha256 = "ae27b093396174328d275fc8dec8bf54daed19f37e71553607a2c27c3708b2d7"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/ward.rs"
+sha256 = "aefd81460e699fc92b741cae8168999a620eb979394cfc549a5fee377575a7c7"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs"
+sha256 = "f2cb6c18ac2601edff3b30bcbbe7fc3548b6b641e588041c30f0e54f3b66a73c"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs"
+sha256 = "40c8e7cc456fa82da2f660996e6c310719ede951a16e00263ffe373bcb234be1"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton_tcmt/tcmt_equations.rs"
+sha256 = "5f5de644c748a80d6d798df62ec685bfc7d2be8f93e7ce7255e9f0716e755662"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton_tcmt/types.rs"
+sha256 = "591add73580f4d59f31cbfd6a51a3a9d9d4d70275329e2427ad0a9380b37b9ed"
+
+[[experiment.input_hashes]]
+path = "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
+sha256 = "b9332a0556e44e297967cc22935ebc06a4336dab0530c46148c7035eef0fc84d"
+
+[[experiment.input_hashes]]
+path = "registry/canonical/control_plane.sqlite3"
+sha256 = "930800ef456c6736458018d9b83fe5517eaac2766a0a14b024dce05725eb5d8c"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P0-FRONTIER"
+path = "data/output/audit/2026-08-02/p0_frontier.toml"
+sha256 = "13a3c73809148156587740440be965e5896730832264cb30f94327c2bca72d88"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P0-LEGACY-SNAPSHOT"
+path = "data/output/audit/2026-08-02/legacy_behavior_snapshot.toml"
+sha256 = "8972adb3a0e6093c77aaefd9035dc19e272f9efd80eea105fdc72515f237377f"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P0-NEGATIVE-CONTROLS"
+path = "data/output/audit/2026-08-02/negative_controls.toml"
+sha256 = "a0cbcb0b1c2909d2d2075f80f3abd4240b0ad84371fbbd1e6ab613b76c358c51"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P0-SOURCE-INVENTORY"
+path = "data/output/audit/2026-08-02/source_inventory.toml"
+sha256 = "d30f4efb51c7d653f998aa399ea90c877879b57d7c4d848bb12e12b9019a1f22"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P0-CANONICAL-COMPARISON"
+path = "data/output/audit/2026-08-02/canonical_view_comparison.toml"
+sha256 = "53f551ba8701fdfae6aa62be582bf461dcbd03bcc93134193fc4aea6add35b12"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P0-TRANSITION-PROPOSALS"
+path = "data/output/audit/2026-08-02/claim_transition_proposals.toml"
+sha256 = "ac77344acdab29eaa956c1218c0fea2f29dc5372c9fc413e6aa7db9f25b8cd7d"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P0-TRANSITION-RESULTS"
+path = "data/output/audit/2026-08-02/claim_transition_results.toml"
+sha256 = "e92365e0749c2683c4cbf023592201a6f7cf52f08b780c6f19aa2f584852ccc7"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P0-TRANSITION-SCHEMA-BLOCKER"
+path = "data/output/audit/2026-08-02/claim_transition_schema_blocker.toml"
+sha256 = "786daa8c01c5f683838f080dcfdaec332a4ee536e12980ad1bee4eb02dd2767b"
+
+[[experiment.numeric_tolerance]]
+output_id = "negative_controls.toml"
+column = "verdict"
+rel_tol = 0.0
+abs_tol = 0.0
+
+[[experiment.numeric_tolerance]]
+output_id = "ward_and_tcmt_assertions"
+column = "declared residual or relative-error predicate"
+rel_tol = 1e-10
+abs_tol = 1e-12
+
+[verification]
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p0-target cargo run -p gororoba_cli_data --bin experiment-manifest -- verify data/output/audit/2026-08-02/p0_oracle_quarantine_manifest.toml"
+exit_code = 1
+result = "blocked_by_unregistered_output_artifacts"
+error = "experiment E-P0-ORACLE-QUARANTINE output artifact LOCAL-P0-FRONTIER is absent from the canonical artifact registry"

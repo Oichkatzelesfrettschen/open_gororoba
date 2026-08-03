@@ -202,6 +202,44 @@ mod tests {
     }
 
     #[test]
+    fn audit_c865_tolerance_does_not_match_claim() {
+        let coupling_photon = 1e-3_f64;
+        let coupling_graviton = 1e-4_f64;
+        let gamma_coupling = 1e-3_f64;
+        let relative_error = (coupling_photon - coupling_graviton).abs() / gamma_coupling.abs();
+
+        assert!((relative_error - 0.9).abs() < 1e-15);
+        assert!(relative_error > 1e-10);
+        assert!(validate_energy_conservation(
+            coupling_photon,
+            coupling_graviton,
+            gamma_coupling,
+            1.0,
+        ));
+        assert!(!validate_energy_conservation(
+            coupling_photon,
+            coupling_graviton,
+            gamma_coupling,
+            1e-10,
+        ));
+    }
+
+    #[test]
+    fn audit_c866_scalar_unitarity_ignores_complex_channels() {
+        let valid_transmission = num_complex::Complex64::new(0.0, 0.0);
+        let valid_reflection = num_complex::Complex64::new(1.0, 0.0);
+        let invalid_transmission = num_complex::Complex64::new(0.0, 1.0);
+        let invalid_reflection = num_complex::Complex64::new(1.0, 0.0);
+
+        let valid_flux = valid_transmission.norm_sqr() + valid_reflection.norm_sqr();
+        let invalid_flux = invalid_transmission.norm_sqr() + invalid_reflection.norm_sqr();
+        assert_eq!(valid_flux, 1.0);
+        assert_eq!(invalid_flux, 2.0);
+        assert_eq!(valid_transmission.re, invalid_transmission.re);
+        assert!(validate_unitarity(valid_transmission.re, 1e-10));
+    }
+
+    #[test]
     fn weak_field_from_three_diagrams() {
         let coupling = three_diagram_amplitude_to_tcmt(1e-10, 0.1, 1e-6, 0.5, 1e15, 1e-45);
         assert!(coupling.is_weak_field());

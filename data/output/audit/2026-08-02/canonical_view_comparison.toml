@@ -1,0 +1,98 @@
+# Canonical SQLite versus compatibility-view comparison before mutation.
+
+[meta]
+artifact_id = "p0-canonical-view-comparison"
+observed_local_date = "2026-08-02"
+head_sha = "954696e5eaf96530207ddcbea1c8f1ef9c259ceb"
+canonical_database = "registry/canonical/control_plane.sqlite3"
+claim_view = "registry/claims.toml"
+atom_view = "registry/claims_atoms.toml"
+experiment_view = "registry/experiments.toml"
+comparison_method = "SQLite read-only queries and tomlq selection by stable identifiers"
+
+[query]
+claims = "sqlite3 -readonly -header -separator '|' registry/canonical/control_plane.sqlite3 select id,status,last_verified,statement,status_note,where_stated from claims where id in target set"
+revisions = "sqlite3 -readonly -header -separator '|' registry/canonical/control_plane.sqlite3 select claim_id,field_name,actor,reason,operation,ts_utc from claim_revisions where claim_id in target set"
+links = "sqlite3 -readonly -header -separator '|' registry/canonical/control_plane.sqlite3 select claim_id,experiment_id from claim_experiment_refs where claim_id in target set"
+compat_claims = "tomlq target selection registry/claims.toml"
+compat_atoms = "tomlq target selection registry/claims_atoms.toml"
+compat_experiments = "tomlq E-073 selection registry/experiments.toml"
+
+[comparison]
+target_claims = ["C-820", "C-821", "C-822", "C-864", "C-865", "C-866", "C-867"]
+canonical_rows_found = 7
+compat_claim_rows_found = 7
+compat_atom_rows_found = 7
+status_discrepancies = []
+last_verified_discrepancies = []
+statement_discrepancies = []
+status_note_discrepancies = []
+where_stated_discrepancies = []
+revision_rows_before_mutation = 0
+experiment_rows = ["E-073"]
+experiment_linked_claims = ["C-820", "C-821", "C-822"]
+unlinked_target_claims = ["C-864", "C-865", "C-866", "C-867"]
+view_conclusion = "Compatibility views match canonical rows for all compared fields; no pre-mutation drift was found"
+
+[[row]]
+claim_id = "C-820"
+canonical_status = "Verified"
+canonical_last_verified = "2026-02-19"
+canonical_status_note = "Sprint 56: Ward identity residual is exactly 0.0 (on-shell k^2=0 factor). Test passes at tolerance 1e-8."
+view_status = "Verified"
+view_last_verified = "2026-02-19"
+view_note_match = true
+
+[[row]]
+claim_id = "C-821"
+canonical_status = "Verified"
+canonical_last_verified = "2026-02-19"
+canonical_status_note = "Sprint 56: Tadpole proper-time integral and Bernoulli series both return nonzero values at B/B_cr=0.01. Cross-validation within tolerance. 8 tests pass."
+view_status = "Verified"
+view_last_verified = "2026-02-19"
+view_note_match = true
+
+[[row]]
+claim_id = "C-822"
+canonical_status = "Verified"
+canonical_last_verified = "2026-02-19"
+canonical_status_note = "Sprint 56: All 4 Ward identity checks pass (gauge irr, gauge tadpole, gauge external, gravitational). 5 tests."
+view_status = "Verified"
+view_last_verified = "2026-02-19"
+view_note_match = true
+
+[[row]]
+claim_id = "C-864"
+canonical_status = "Verified"
+canonical_last_verified = "2026-02-26"
+canonical_status_note = "Sprint 56: Bridge from gr-qc/0412095, 0710.5572, 2601.23279 (worldline QFT) to 0909.3323 (TCMT). Maps irreducible -> \\kappa_coupling, tadpole -> \\gamma_rad, external-leg -> \\phi."
+view_status = "Verified"
+view_last_verified = "2026-02-26"
+view_note_match = true
+
+[[row]]
+claim_id = "C-865"
+canonical_status = "Verified"
+canonical_last_verified = "2026-02-19"
+canonical_status_note = "Sprint 56: Promoted from Proposed. Test energy_conservation_validates directly verifies kappa_1-kappa_2=gamma_l. 27 photon-graviton TCMT tests pass."
+view_status = "Verified"
+view_last_verified = "2026-02-19"
+view_note_match = true
+
+[[row]]
+claim_id = "C-866"
+canonical_status = "Verified"
+canonical_last_verified = "2026-02-19"
+canonical_status_note = "Sprint 56: Promoted from Proposed. Tests optical_theorem_at_resonance and optical_theorem_with_loss verify unitarity. integration_conserves_energy_lossless verifies energy conservation."
+view_status = "Verified"
+view_last_verified = "2026-02-19"
+view_note_match = true
+
+[[row]]
+claim_id = "C-867"
+canonical_status = "Verified"
+canonical_last_verified = "2026-02-26"
+canonical_status_note = "Sprint 56: Ultimate validation: TCMT lineshape must match original amplitude in weak-field regime. Tests at resonance (x=0) and wings (|x| > 5)."
+view_status = "Verified"
+view_last_verified = "2026-02-26"
+view_note_match = true

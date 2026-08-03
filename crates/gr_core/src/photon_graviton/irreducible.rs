@@ -380,6 +380,20 @@ mod tests {
     }
 
     #[test]
+    fn audit_c820_on_shell_factor_hides_nonzero_integrand() {
+        let injected_integrand = 1.0_f64;
+        let legacy_on_shell_factor = 0.0_f64;
+        let observed_residual = injected_integrand * legacy_on_shell_factor;
+
+        assert_ne!(injected_integrand, 0.0);
+        assert_eq!(observed_residual, 0.0);
+
+        let residual =
+            irreducible_ward_check(&weak_config(), LoopType::Spinor, &QuadratureConfig::fast());
+        assert_eq!(residual, 0.0);
+    }
+
+    #[test]
     fn test_weak_field_dichroism_ratio() {
         // The classic prediction: parallel:perpendicular = 4:7 for spinor QED
         // This comes from the Euler-Heisenberg coefficients 8:14 = 4:7
