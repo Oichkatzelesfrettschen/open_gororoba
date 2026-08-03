@@ -59,6 +59,7 @@ fn main() -> Result<()> {
         Commands::Claim(args) => cmd_claim_mutation(&mut store, &args),
         Commands::Insight(args) => cmd_insight_mutation(&mut store, &args),
         Commands::Experiment(args) => cmd_experiment_mutation(&mut store, &args),
+        Commands::Artifact(args) => cmd_artifact_mutation(&mut store, &cli.repo_root, &args),
         Commands::Requirements(args) => {
             cmd_requirements_mutation(&mut store, &cli.repo_root, &args)
         }
@@ -1413,6 +1414,41 @@ fn cmd_experiment_mutation(
                 Some(text) => println!("{}: {}", id, text),
                 None => println!("{}: (status_note is NULL)", id),
             }
+        }
+    }
+    Ok(())
+}
+
+fn cmd_artifact_mutation(
+    store: &mut ProvenanceStore,
+    repo_root: &Path,
+    args: &ArtifactArgs,
+) -> Result<()> {
+    match &args.action {
+        ArtifactAction::RegisterLocal {
+            id,
+            key,
+            title,
+            citation,
+            paths,
+            lane,
+            source_refs,
+            actor,
+            reason,
+        } => {
+            let registration = provenance_store::LocalArtifactRegistration {
+                id,
+                key,
+                title,
+                citation,
+                paths,
+                lane_name: lane,
+                source_refs,
+                actor: actor.as_deref(),
+                reason: reason.as_deref(),
+            };
+            let path_count = store.register_local_artifact(repo_root, &registration)?;
+            println!("Registered local artifact {id} with {path_count} retained paths in {lane}.");
         }
     }
     Ok(())

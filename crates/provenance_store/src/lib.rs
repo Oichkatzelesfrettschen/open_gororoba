@@ -16,7 +16,7 @@ use std::path::PathBuf;
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
-    path::Path,
+    path::{Component, Path},
 };
 use toml::Value;
 
@@ -80,6 +80,18 @@ pub struct ExternalSourceContractPatch<'a> {
     pub manual_manifest_refs: Option<&'a [String]>,
     pub blocked_action_plan: Option<&'a [String]>,
     pub scientific_validator_refs: Option<&'a [String]>,
+}
+
+pub struct LocalArtifactRegistration<'a> {
+    pub id: &'a str,
+    pub key: &'a str,
+    pub title: &'a str,
+    pub citation: &'a str,
+    pub paths: &'a [String],
+    pub lane_name: &'a str,
+    pub source_refs: &'a [String],
+    pub actor: Option<&'a str>,
+    pub reason: Option<&'a str>,
 }
 
 struct ControlPlaneCompatOutputs {
@@ -1949,6 +1961,167 @@ impl ProvenanceStore {
             ],
         )?;
         Ok(())
+    }
+
+    pub fn register_local_artifact(
+        &mut self,
+        repo_root: &Path,
+        registration: &LocalArtifactRegistration<'_>,
+    ) -> Result<usize> {
+        let LocalArtifactRegistration {
+            id,
+            key,
+            title,
+            citation,
+            paths,
+            lane_name,
+            source_refs,
+            actor,
+            reason,
+        } = *registration;
+        for (field_name, value) in [
+            ("id", id),
+            ("key", key),
+            ("title", title),
+            ("citation", citation),
+            ("lane", lane_name),
+        ] {
+            if value.trim().is_empty() {
+                bail!("local artifact {field_name} must not be empty");
+            }
+            if !value.is_ascii() {
+                bail!("local artifact {field_name} must contain ASCII only");
+            }
+        }
+        if !matches!(
+            lane_name,
+            "datasets" | "papers_pdf" | "slides_artifacts" | "web_references"
+        ) {
+            bail!("unsupported artifact lane {lane_name}");
+        }
+        if paths.is_empty() {
+            bail!("local artifact registration requires at least one path");
+        }
+
+        let mut relative_paths = BTreeSet::new();
+        for raw_path in paths {
+            if raw_path.trim().is_empty() || !raw_path.is_ascii() {
+                bail!("artifact paths must be non-empty ASCII strings");
+            }
+            let relative_path = Path::new(raw_path);
+            if relative_path.is_absolute()
+                || relative_path.components().any(|component| {
+                    matches!(
+                        component,
+                        Component::ParentDir | Component::RootDir | Component::Prefix(_)
+                    )
+                })
+            {
+                bail!("artifact path must be repository-relative: {raw_path}");
+            }
+            let full_path = repo_root.join(relative_path);
+            let metadata = fs::symlink_metadata(&full_path)
+                .with_context(|| format!("inspect artifact path {}", full_path.display()))?;
+            if metadata.file_type().is_symlink() || !metadata.file_type().is_file() {
+                bail!("artifact path is not a regular file: {raw_path}");
+            }
+            relative_paths.insert(raw_path.clone());
+        }
+        if relative_paths.is_empty() {
+            bail!("local artifact registration requires distinct paths");
+        }
+        for source_ref in source_refs {
+            if source_ref.trim().is_empty() || !source_ref.is_ascii() {
+                bail!("artifact source references must be non-empty ASCII strings");
+            }
+        }
+        if let Some(actor) = actor
+            && (actor.trim().is_empty() || !actor.is_ascii())
+        {
+            bail!("artifact actor must be a non-empty ASCII string");
+        }
+        if let Some(reason) = reason
+            && (reason.trim().is_empty() || !reason.is_ascii())
+        {
+            bail!("artifact reason must be a non-empty ASCII string");
+        }
+
+        let relative_paths = relative_paths.into_iter().collect::<Vec<_>>();
+        let canonical_path = relative_paths
+            .first()
+            .expect("non-empty artifact paths after validation");
+        let tx = self.conn.transaction()?;
+        let conflicting_id = tx
+            .query_row(
+                "SELECT id FROM artifacts WHERE key = ?1 AND id <> ?2",
+                params![key, id],
+                |row| row.get::<_, String>(0),
+            )
+            .optional()?;
+        if let Some(conflicting_id) = conflicting_id {
+            bail!("artifact key {key} already belongs to {conflicting_id}");
+        }
+
+        tx.execute(
+            "INSERT INTO artifacts (
+                id, key, title, citation, status,
+                minimum_requirement_met, canonical_functional_url, canonical_download_path
+            ) VALUES (?1, ?2, ?3, ?4, 'downloaded', 1, NULL, ?5)
+            ON CONFLICT(id) DO UPDATE SET
+                key = excluded.key,
+                title = excluded.title,
+                citation = excluded.citation,
+                status = excluded.status,
+                minimum_requirement_met = excluded.minimum_requirement_met,
+                canonical_functional_url = excluded.canonical_functional_url,
+                canonical_download_path = excluded.canonical_download_path",
+            params![id, key, title, citation, canonical_path],
+        )?;
+        tx.execute(
+            "DELETE FROM artifact_paths WHERE artifact_id = ?1 AND relation = 'downloaded'",
+            params![id],
+        )?;
+        tx.execute(
+            "DELETE FROM lane_assignments WHERE artifact_id = ?1",
+            params![id],
+        )?;
+        tx.execute(
+            "DELETE FROM record_sources WHERE entity_kind = 'artifact' AND entity_id = ?1",
+            params![id],
+        )?;
+        for path in &relative_paths {
+            tx.execute(
+                "INSERT INTO artifact_paths (artifact_id, path, relation) VALUES (?1, ?2, 'downloaded')",
+                params![id, path],
+            )?;
+        }
+        tx.execute(
+            "INSERT INTO lane_assignments (artifact_id, lane_name) VALUES (?1, ?2)",
+            params![id, lane_name],
+        )?;
+        for source_ref in source_refs {
+            tx.execute(
+                "INSERT INTO record_sources (entity_kind, entity_id, source_ref) VALUES ('artifact', ?1, ?2)",
+                params![id, source_ref],
+            )?;
+        }
+        let details = serde_json::json!({
+            "artifact_id": id,
+            "key": key,
+            "paths": &relative_paths,
+            "lane": lane_name,
+            "source_refs": source_refs,
+            "actor": actor,
+            "reason": reason,
+        });
+        tx.execute(
+            "INSERT INTO export_runs (
+                action, created_at, artifact_count, document_count, details_json
+            ) VALUES ('register-local-artifact', ?1, 1, 0, ?2)",
+            params![Utc::now().to_rfc3339(), details.to_string()],
+        )?;
+        tx.commit()?;
+        Ok(relative_paths.len())
     }
 
     pub fn artifact_by_needle(&self, needle: &str) -> Result<Option<ArtifactQueryResult>> {
