@@ -16,7 +16,9 @@ use super::{
         ComplexFourVector, ComplexLorentzMatrix, ComplexRankThreeTensor, WardKinematics,
     },
     types::LoopType,
-    vacuum_pol_tensor::vacuum_polarization_tensor_renormalized,
+    vacuum_pol_tensor::{
+        vacuum_polarization_tensor_renormalized, vacuum_polarization_tensor_unrenormalized,
+    },
     worldline_tensor::identity,
 };
 
@@ -57,6 +59,41 @@ pub fn external_tensor_off_shell(
     }
     let vacuum_polarization =
         vacuum_polarization_tensor_renormalized(kinematics, loop_type, loop_config, quadrature)?;
+    Ok(external_tensor_from_vacuum_polarization(
+        kinematics,
+        loop_config,
+        k_squared,
+        &vacuum_polarization,
+    ))
+}
+
+pub fn external_tensor_unrenormalized_off_shell(
+    kinematics: &WardKinematics,
+    loop_type: LoopType,
+    loop_config: TensorLoopConfig,
+    quadrature: &QuadratureConfig,
+) -> Result<ComplexRankThreeTensor, TensorEvaluationError> {
+    let (loop_config, _) = validate_tensor_inputs(kinematics, loop_config, quadrature)?;
+    let k_squared = bilinear(&kinematics.k, &identity(), &kinematics.k);
+    if k_squared.norm() <= kinematics.validation_tolerance {
+        return Err(TensorEvaluationError::ExternalOnShellSingularity);
+    }
+    let vacuum_polarization =
+        vacuum_polarization_tensor_unrenormalized(kinematics, loop_type, loop_config, quadrature)?;
+    Ok(external_tensor_from_vacuum_polarization(
+        kinematics,
+        loop_config,
+        k_squared,
+        &vacuum_polarization,
+    ))
+}
+
+pub(crate) fn external_tensor_from_vacuum_polarization(
+    kinematics: &WardKinematics,
+    loop_config: TensorLoopConfig,
+    k_squared: Complex64,
+    vacuum_polarization: &ComplexLorentzMatrix,
+) -> ComplexRankThreeTensor {
     let mut tensor = ComplexRankThreeTensor::from_fn(|_, _, _| Complex64::new(0.0, 0.0));
     for mu in 0..4 {
         for nu in 0..4 {
@@ -79,7 +116,7 @@ pub fn external_tensor_off_shell(
             }
         }
     }
-    Ok(symmetrize(tensor))
+    symmetrize(tensor)
 }
 
 pub fn external_amplitude_off_shell(

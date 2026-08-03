@@ -11,8 +11,8 @@ use super::{
     quadrature::QuadratureConfig,
     tensor_integrands::{
         SourceWorldlineNode, TensorEvaluationError, TensorLoopConfig, bilinear,
-        double_integrate_rank_three, rank_three_add, rank_three_scale, right_contract,
-        scalar_determinant, source_worldline_node, validate_tensor_inputs,
+        double_integrate_rank_three, even, left_contract, rank_three_add, rank_three_scale,
+        right_contract, scalar_determinant, source_worldline_node, validate_tensor_inputs,
     },
     tensor_types::{
         ComplexFourVector, ComplexLorentzMatrix, ComplexRankThreeTensor, WardKinematics,
@@ -93,16 +93,40 @@ pub fn irreducible_tensor_unrenormalized(
     loop_config: TensorLoopConfig,
     quadrature: &QuadratureConfig,
 ) -> Result<ComplexRankThreeTensor, TensorEvaluationError> {
+    irreducible_tensor_unrenormalized_with_mutation(
+        kinematics,
+        loop_type,
+        loop_config,
+        quadrature,
+        IrreducibleMutation::None,
+    )
+}
+
+/// Integrate the unrenormalized tensor with an explicit source mutation.
+///
+/// The mutation remains on the same source-owned path as the control tensor,
+/// so a zero-producing legacy shortcut cannot make a declared defect pass.
+pub fn irreducible_tensor_unrenormalized_with_mutation(
+    kinematics: &WardKinematics,
+    loop_type: LoopType,
+    loop_config: TensorLoopConfig,
+    quadrature: &QuadratureConfig,
+    mutation: IrreducibleMutation,
+) -> Result<ComplexRankThreeTensor, TensorEvaluationError> {
     let (loop_config, magnetic_field) =
         validate_tensor_inputs(kinematics, loop_config, quadrature)?;
     let kinematics = *kinematics;
     let tensor = double_integrate_rank_three(
         |proper_time, u| {
-            let node = source_worldline_node(magnetic_field, loop_config.charge, proper_time, u)?;
+            let node = mutate_worldline_node(
+                source_worldline_node(magnetic_field, loop_config.charge, proper_time, u)?,
+                mutation,
+            );
             let (j1, j2, j3) = match loop_type {
                 LoopType::Scalar => scalar_j_structures(&node, &kinematics.k),
                 LoopType::Spinor => spinor_j_structures(&node, &kinematics.k),
             };
+            let (j1, j2, j3) = apply_j_mutation(j1, j2, j3, mutation);
             let total = rank_three_add(&rank_three_add(&j1, &j2), &j3);
             let exponent = (-bilinear(&kinematics.k, &node.bar_g_b12, &kinematics.k)).exp();
             let factor = Complex64::new(
@@ -177,8 +201,14 @@ fn mutate_worldline_node(
         mutation,
         IrreducibleMutation::TransposeAntisymmetricProjector
     ) {
-        node.bar_dot_g_b12 = node.bar_dot_g_b12.transpose();
-        node.bar_dot_g_b21 = node.bar_dot_g_b21.transpose();
+        // Transpose the source dot-G_B field projector before rebuilding its
+        // even and odd parts. This keeps the mutation on the tensor path
+        // rather than changing an unused legacy-derived cache.
+        node.full.dot_g_b = node.full.dot_g_b.transpose();
+        node.dot_s_b12 = even(&node.full.dot_g_b);
+        node.dot_a_b12 = super::tensor_integrands::odd(&node.full.dot_g_b);
+        node.bar_dot_g_b12 = node.full.dot_g_b - node.coincidence.dot_g_b;
+        node.bar_dot_g_b21 = -node.full.dot_g_b.transpose() - node.coincidence.dot_g_b;
     }
     node
 }
@@ -221,20 +251,7 @@ fn scalar_j_structures(
     ComplexRankThreeTensor,
     ComplexRankThreeTensor,
 ) {
-    let ddot_b11 = node.coincidence.ddot_g_b.regular;
-    let bar_dot_k = right_contract(&node.bar_dot_g_b12, k);
-    let k_dot_bar_dot = super::tensor_integrands::left_contract(k, &node.bar_dot_g_b12);
-    let j1 = symmetrize(ComplexRankThreeTensor::from_fn(|mu, nu, alpha| {
-        ddot_b11[(mu, nu)] * k_dot_bar_dot[alpha]
-    }));
-    let j2 = symmetrize(ComplexRankThreeTensor::from_fn(|mu, nu, alpha| {
-        node.full.ddot_g_b[(mu, alpha)] * bar_dot_k[nu]
-            + node.full.ddot_g_b[(nu, alpha)] * bar_dot_k[mu]
-    }));
-    let j3 = symmetrize(ComplexRankThreeTensor::from_fn(|mu, nu, alpha| {
-        -bar_dot_k[mu] * bar_dot_k[nu] * k_dot_bar_dot[alpha]
-    }));
-    (j1, j2, j3)
+    tilde_j_structures(node, k, false)
 }
 
 fn spinor_j_structures(
@@ -245,39 +262,91 @@ fn spinor_j_structures(
     ComplexRankThreeTensor,
     ComplexRankThreeTensor,
 ) {
-    let ddot_b11 = node.coincidence.ddot_g_b.regular;
-    let dot_f11 = node.coincidence.dot_g_f.regular;
-    let gf11 = node.coincidence.g_f;
-    let gf22 = node.coincidence.g_f;
-    let gf12 = node.full.g_f;
-    let gf21 = -gf12.transpose();
-    let dot_gf12 = node.full.dot_g_f;
-    let ddot_b12 = node.full.ddot_g_b;
-    let bar_dot12 = node.bar_dot_g_b12;
-    let bar_dot21 = node.bar_dot_g_b21;
-    let first_vector = right_contract(&(bar_dot21 + gf22), k);
-    let bar_dot12_k = right_contract(&bar_dot12, k);
-    let gf12_k = right_contract(&gf12, k);
-    let gf21_k = right_contract(&gf21, k);
-    let dot_gf12_k = right_contract(&dot_gf12, k);
-    let bar_dot12_gf11_k = right_contract(&(bar_dot12 + gf11), k);
-    let dot_bilinear = bilinear(k, &node.full.dot_g_b, k);
-    let gf_bilinear = bilinear(k, &gf12, k);
+    tilde_j_structures(node, k, true)
+}
+
+fn tilde_j_structures(
+    node: &SourceWorldlineNode,
+    k: &ComplexFourVector,
+    include_fermion: bool,
+) -> (
+    ComplexRankThreeTensor,
+    ComplexRankThreeTensor,
+    ComplexRankThreeTensor,
+) {
+    let zero = ComplexLorentzMatrix::zeros();
+    let ddot_s_b11 = even(&node.coincidence.ddot_g_b.regular);
+    let ddot_s_b12 = even(&node.full.ddot_g_b);
+    let ddot_a_b12 = super::tensor_integrands::odd(&node.full.ddot_g_b);
+    let dot_s_b12 = node.dot_s_b12;
+    let dot_a_b12 = node.dot_a_b12 - super::tensor_integrands::odd(&node.coincidence.dot_g_b);
+    let dot_s_f11 = if include_fermion {
+        even(&node.coincidence.dot_g_f.regular)
+    } else {
+        zero
+    };
+    let a_f11 = if include_fermion {
+        super::tensor_integrands::odd(&node.coincidence.g_f)
+    } else {
+        zero
+    };
+    let s_f12 = if include_fermion { node.s_f12 } else { zero };
+    let a_f12 = if include_fermion { node.a_f12 } else { zero };
+    let dot_s_f12 = if include_fermion {
+        node.dot_s_f12
+    } else {
+        zero
+    };
+    let dot_a_f12 = if include_fermion {
+        node.dot_a_f12
+    } else {
+        zero
+    };
+    let bar_dot_a_plus_a_f11 = dot_a_b12 + a_f11;
+    let k_dot_bar_dot_a_plus_a_f11 = left_contract(k, &bar_dot_a_plus_a_f11);
+    let bar_dot_a_plus_a_f11_k = right_contract(&bar_dot_a_plus_a_f11, k);
+    let dot_s_b_k = right_contract(&dot_s_b12, k);
+    let k_dot_dot_s_b = left_contract(k, &dot_s_b12);
+    let s_f_k = right_contract(&s_f12, k);
+    let k_dot_s_f = left_contract(k, &s_f12);
+    let bar_dot_a_k = right_contract(&dot_a_b12, k);
+    let a_f_k = right_contract(&a_f12, k);
+    let ddot_s_b_k = right_contract(&ddot_s_b12, k);
+    let ddot_a_b_k = right_contract(&ddot_a_b12, k);
+    let dot_a_f_k = right_contract(&dot_a_f12, k);
+    let dot_s_f_k = right_contract(&dot_s_f12, k);
+    let dot_s_b_bilinear = bilinear(k, &dot_s_b12, k);
+    let s_f_bilinear = bilinear(k, &s_f12, k);
+    let k_dot_a_f = left_contract(k, &a_f12);
+    let k_dot_s_f_cached = k_dot_s_f;
 
     let j1 = symmetrize(ComplexRankThreeTensor::from_fn(|mu, nu, alpha| {
-        -(ddot_b11[(mu, nu)] - dot_f11[(mu, nu)]) * first_vector[alpha]
+        (ddot_s_b11[(mu, nu)] - dot_s_f11[(mu, nu)]) * k_dot_bar_dot_a_plus_a_f11[alpha]
     }));
     let j2 = symmetrize(ComplexRankThreeTensor::from_fn(|mu, nu, alpha| {
-        -bar_dot12[(mu, alpha)] * right_contract(&ddot_b12, k)[nu]
-            + gf12[(mu, alpha)] * dot_gf12_k[nu]
-            + ddot_b12[(nu, alpha)] * bar_dot12_gf11_k[mu]
-            - dot_gf12[(nu, alpha)] * gf12_k[mu]
+        -dot_s_b12[(mu, alpha)] * ddot_a_b_k[nu]
+            + s_f12[(mu, alpha)] * dot_a_f_k[nu]
+            + ddot_a_b12[(nu, alpha)] * dot_s_b_k[mu]
+            - dot_a_f12[(nu, alpha)] * s_f_k[mu]
+            - dot_a_b12[(mu, alpha)] * ddot_s_b_k[nu]
+            + a_f12[(mu, alpha)] * dot_s_f_k[nu]
+            + ddot_s_b12[(nu, alpha)] * bar_dot_a_plus_a_f11_k[mu]
+            - dot_s_f12[(nu, alpha)] * a_f_k[mu]
     }));
     let j3 = symmetrize(ComplexRankThreeTensor::from_fn(|mu, nu, alpha| {
-        bar_dot12_k[mu]
-            * (bar_dot12_gf11_k[nu] * first_vector[alpha] - gf12_k[nu] * gf21_k[alpha]
-                + bar_dot12[(nu, alpha)] * dot_bilinear
-                - gf12[(nu, alpha)] * gf_bilinear)
+        let first_bracket = dot_s_b_k[nu] * k_dot_bar_dot_a_plus_a_f11[alpha]
+            - s_f_k[nu] * k_dot_a_f[alpha]
+            + bar_dot_a_plus_a_f11_k[nu] * k_dot_dot_s_b[alpha]
+            - a_f_k[nu] * k_dot_s_f_cached[alpha]
+            - dot_a_b12[(nu, alpha)] * dot_s_b_bilinear
+            + a_f12[(nu, alpha)] * s_f_bilinear;
+        let second_bracket = dot_s_b_k[nu] * k_dot_dot_s_b[alpha]
+            - s_f_k[nu] * k_dot_s_f_cached[alpha]
+            + bar_dot_a_plus_a_f11_k[nu] * k_dot_bar_dot_a_plus_a_f11[alpha]
+            - a_f_k[nu] * k_dot_a_f[alpha]
+            - dot_s_b12[(nu, alpha)] * dot_s_b_bilinear
+            + s_f12[(nu, alpha)] * s_f_bilinear;
+        -dot_s_b_k[mu] * first_bracket - bar_dot_a_k[mu] * second_bracket
     }));
     (j1, j2, j3)
 }

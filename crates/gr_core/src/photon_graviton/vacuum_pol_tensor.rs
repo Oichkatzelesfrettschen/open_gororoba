@@ -149,15 +149,16 @@ fn scalar_vacuum_integrand(
     node: &super::tensor_integrands::SourceWorldlineNode,
     k: &ComplexFourVector,
 ) -> ComplexLorentzMatrix {
-    let k_dot_dot_g_b_k = bilinear(k, &node.full.dot_g_b, k);
+    let k_dot_dot_s_b_k = bilinear(k, &node.dot_s_b12, k);
+    let dot_a_bar = node.dot_a_b12 - super::tensor_integrands::odd(&node.coincidence.dot_g_b);
     let mut tensor = ComplexLorentzMatrix::zeros();
     for mu in 0..4 {
         for nu in 0..4 {
-            let mut value = node.full.dot_g_b[(mu, nu)] * k_dot_dot_g_b_k;
+            let mut value = node.dot_s_b12[(mu, nu)] * k_dot_dot_s_b_k;
             for lambda in 0..4 {
                 for kappa in 0..4 {
-                    value += node.bar_dot_g_b12[(mu, lambda)]
-                        * node.bar_dot_g_b21[(nu, kappa)]
+                    value += (-node.dot_s_b12[(mu, lambda)] * node.dot_s_b12[(nu, kappa)]
+                        + dot_a_bar[(mu, lambda)] * dot_a_bar[(nu, kappa)])
                         * k[lambda]
                         * k[kappa];
                 }
@@ -172,20 +173,22 @@ fn spinor_vacuum_integrand(
     node: &super::tensor_integrands::SourceWorldlineNode,
     k: &ComplexFourVector,
 ) -> ComplexLorentzMatrix {
-    let k_dot_dot_g_b_k = bilinear(k, &node.full.dot_g_b, k);
-    let k_dot_g_f_k = bilinear(k, &node.full.g_f, k);
-    let gf21 = -node.full.g_f.transpose();
-    let left_factor = node.coincidence.dot_g_b - node.coincidence.g_f - node.full.dot_g_b;
-    let right_factor = -node.full.dot_g_b.transpose() - node.coincidence.dot_g_b + node.full.g_f;
+    let k_dot_dot_s_b_k = bilinear(k, &node.dot_s_b12, k);
+    let k_dot_s_f_k = bilinear(k, &node.s_f12, k);
+    let dot_a_bar_plus_a_f = node.dot_a_b12
+        - super::tensor_integrands::odd(&node.coincidence.dot_g_b)
+        + super::tensor_integrands::odd(&node.coincidence.g_f);
     let mut tensor = ComplexLorentzMatrix::zeros();
     for mu in 0..4 {
         for nu in 0..4 {
-            let mut value = node.full.dot_g_b[(mu, nu)] * k_dot_dot_g_b_k
-                - node.full.g_f[(mu, nu)] * k_dot_g_f_k;
+            let mut value =
+                node.dot_s_b12[(mu, nu)] * k_dot_dot_s_b_k - node.s_f12[(mu, nu)] * k_dot_s_f_k;
             for lambda in 0..4 {
                 for kappa in 0..4 {
-                    value -= (left_factor[(mu, lambda)] * right_factor[(nu, kappa)]
-                        + node.full.g_f[(mu, lambda)] * gf21[(nu, kappa)])
+                    value += (-node.dot_s_b12[(mu, lambda)] * node.dot_s_b12[(nu, kappa)]
+                        + node.s_f12[(mu, lambda)] * node.s_f12[(nu, kappa)]
+                        + dot_a_bar_plus_a_f[(mu, lambda)] * dot_a_bar_plus_a_f[(nu, kappa)]
+                        - node.a_f12[(mu, lambda)] * node.a_f12[(nu, kappa)])
                         * k[lambda]
                         * k[kappa];
                 }

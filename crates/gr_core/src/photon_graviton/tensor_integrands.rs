@@ -12,7 +12,8 @@ use std::num::NonZeroUsize;
 use super::{
     quadrature::QuadratureConfig,
     tensor_types::{
-        ComplexFourVector, ComplexLorentzMatrix, ComplexRankThreeTensor, LORENTZ_DIMENSION,
+        ComplexFourVector, ComplexLorentzMatrix, ComplexRankThreeTensor, KinematicsError,
+        LORENTZ_DIMENSION,
     },
     worldline_tensor::{
         CoincidenceLimits, PureMagneticWorldline, WorldlineInputError, pure_magnetic_coincidence,
@@ -69,11 +70,18 @@ pub enum TensorEvaluationError {
     Worldline(WorldlineInputError),
     NonFiniteResult,
     ExternalOnShellSingularity,
+    Kinematics(KinematicsError),
 }
 
 impl From<WorldlineInputError> for TensorEvaluationError {
     fn from(error: WorldlineInputError) -> Self {
         Self::Worldline(error)
+    }
+}
+
+impl From<KinematicsError> for TensorEvaluationError {
+    fn from(error: KinematicsError) -> Self {
+        Self::Kinematics(error)
     }
 }
 
@@ -99,9 +107,7 @@ pub(crate) fn validate_tensor_inputs(
     loop_config: TensorLoopConfig,
     quadrature: &QuadratureConfig,
 ) -> Result<(TensorLoopConfig, f64), TensorEvaluationError> {
-    kinematics
-        .validate()
-        .map_err(|_| TensorEvaluationError::NonFiniteResult)?;
+    kinematics.validate()?;
     let loop_config = loop_config.validate()?;
     if quadrature.n_u == 0
         || quadrature.n_t == 0

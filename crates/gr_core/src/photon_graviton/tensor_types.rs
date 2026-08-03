@@ -454,6 +454,15 @@ pub fn matrix_frobenius_norm(matrix: &ComplexLorentzMatrix) -> f64 {
     matrix.iter().map(Complex64::norm_sqr).sum::<f64>().sqrt()
 }
 
+pub fn rank_three_frobenius_norm(tensor: &ComplexRankThreeTensor) -> f64 {
+    tensor
+        .components()
+        .iter()
+        .map(Complex64::norm_sqr)
+        .sum::<f64>()
+        .sqrt()
+}
+
 fn vector_is_finite(vector: &ComplexFourVector) -> bool {
     vector
         .iter()

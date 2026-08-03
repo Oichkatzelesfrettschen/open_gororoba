@@ -77,10 +77,15 @@ not a reason to promote a surrogate.
 The intended P1 result records are:
 
 ```rust
+type ComplexFourVector = SVector<Complex64, 4>;
+type ComplexLorentzMatrix = SMatrix<Complex64, 4, 4>;
+
 struct GaugeWardResidual {
     diagram: Diagram,
     shell_mode: ShellMode,
-    contracted_components: Vec<Complex64>,
+    renormalization_state: RenormalizationState,
+    contracted_components: ComplexLorentzMatrix,
+    conditioning_scale: f64,
     absolute_norm: f64,
     normalized_norm: f64,
     tolerance: ResidualTolerance,
@@ -88,19 +93,26 @@ struct GaugeWardResidual {
 
 struct GravitationalWardResidual {
     shell_mode: ShellMode,
-    lhs_components: Vec<Complex64>,
-    lower_point_rhs_components: Vec<Complex64>,
-    irreducible_contribution: Vec<Complex64>,
-    tadpole_contribution: Vec<Complex64>,
-    external_leg_contribution: Vec<Complex64>,
+    renormalization_state: RenormalizationState,
+    lhs_components: ComplexFourVector,
+    one_photon_rhs_components: ComplexFourVector,
+    two_photon_rhs_components: ComplexFourVector,
+    lower_point_rhs_components: ComplexFourVector,
+    defect_components: ComplexFourVector,
+    conditioning_scale: f64,
     absolute_defect: f64,
     normalized_defect: f64,
     tolerance: ResidualTolerance,
 }
 ```
 
-These are contracts for the next implementation boundary. They are not a
-claim that these types already exist in `gr_core`.
+Contract the photon index into the rank-two `ComplexLorentzMatrix` and the
+graviton indices into the rank-one `ComplexFourVector`. Retain every matrix or
+vector component before computing a Frobenius or Euclidean norm. Compare the
+off-shell gravitational contraction with its lower-point right-hand side; do
+not require either side to be nonzero. The fixed-rank implementations live in
+`crates/gr_core/src/photon_graviton/tensor_types.rs` and are exercised by the
+source-owned tensor paths.
 
 ## Scattering identities
 
