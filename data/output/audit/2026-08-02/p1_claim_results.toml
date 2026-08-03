@@ -1,0 +1,65 @@
+# P1 tensor-valued Ward evidence and bounded claim disposition.
+
+[meta]
+artifact_id = "p1-photon-graviton-claim-results"
+campaign_scope = "tensor-valued photon-graviton Ward verification only"
+source_equation_ledger = "data/output/audit/2026-08-02/p1_source_equation_ledger.toml"
+source_pdf_id = "2601.23279v1"
+source_pdf_sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+implementation_commit = "475f58aecc7406565dde111f2d237b244491fd13"
+final_grid = "data/output/audit/2026-08-02/p1_final_grid.toml"
+independent_fixtures = "data/output/audit/2026-08-02/p1_independent_fixtures.toml"
+mutation_controls = "data/output/audit/2026-08-02/p1_mutation_results.toml"
+on_shell_controls = "data/output/audit/2026-08-02/p1_on_shell_controls.toml"
+claim_update_method = "canonical SQLite status_note mutation; typed status transition schema remains unavailable"
+excluded_lanes = ["TCMT", "Mie", "SFWM", "heliosphere", "LBM", "ultrametric", "GPU", "algebra-family consolidation", "WS-CLAIM-TRANSITION-001"]
+
+[[claim]]
+id = "C-820"
+prior_status = "Verified"
+evidence_verdict = "Inconclusive"
+canonical_status_field_changed = false
+represented_predicates = ["per-diagram electromagnetic gauge contraction", "rank-three irreducible tensor contraction", "scalar and spinor loop paths"]
+rank_preservation = "gauge contraction retains a 4x4 complex matrix before norm evaluation"
+scalar_result = "per-diagram integrated gauge residuals pass across the scalar final-grid records; the independent dense-index reference agrees component by component"
+spinor_result = "irreducible gauge residual remains a stable contact or integration-by-parts boundary gap across fast, default, and high quadrature; tadpole and external paths pass"
+mutation_result = "all seven J-structure mutations are detected for scalar and spinor loops; nonmatching momentum and non-antisymmetric field controls are rejected"
+interpretation = "The spinor result is an implementation-completeness boundary, not a refutation of the source Ward identity. C-820 remains Inconclusive until the source contact and boundary terms are implemented and independently checked."
+
+[[claim]]
+id = "C-821"
+prior_status = "Verified"
+evidence_verdict = "Direct tensor-boundary update"
+canonical_status_field_changed = false
+represented_predicates = ["full tadpole trace inputs", "rank-one gravitational residual", "physical photon contraction of the on-shell tadpole variation"]
+result = "The tensor tadpole path retains the complete trace input and the rank-one residual before the physical photon contraction. The invariant physical contraction passes for scalar and spinor controls, and a trace perturbation is detected. This does not establish the original nonzero or Bernoulli weak-field claim."
+interpretation = "Update only the tensor-tadpole evidentiary boundary; do not promote the original scalar nonzero or weak-field statement."
+
+[[claim]]
+id = "C-822"
+prior_status = "Verified"
+evidence_verdict = "Inconclusive"
+canonical_status_field_changed = false
+represented_predicates = ["off-shell gravitational lower-point identity", "on-shell irreducible plus external cancellation", "separate tadpole invariance"]
+rank_preservation = "gravitational contraction retains a four-component complex vector before norm evaluation"
+off_shell_result = "The scalar off-shell irreducible contraction agrees with the one-photon plus two-photon lower-point right-hand side across the recorded scalar grid. The spinor comparison remains Inconclusive at the unresolved contact or boundary term."
+on_shell_result = "The separate external amplitude rejects zero virtuality explicitly; the combined irreducible plus external path uses a declared nonzero virtuality ladder and has a finite but nonpassing extrapolated residual under the frozen policy"
+tadpole_result = "The scalar and spinor tadpole physical contractions pass separately; rank-one components remain retained in evidence"
+mutation_result = "Diagram omission and tadpole-trace perturbation controls are detected for both loop types"
+interpretation = "C-822 is Inconclusive because only the scalar off-shell subset passes and the source-faithful on-shell cancellation remains unresolved without an arbitrary denominator floor. The source identity is not refuted."
+
+[[claim]]
+id = "C-864"
+action = "untouched"
+
+[[claim]]
+id = "C-865"
+action = "untouched"
+
+[[claim]]
+id = "C-866"
+action = "untouched"
+
+[[claim]]
+id = "C-867"
+action = "untouched"

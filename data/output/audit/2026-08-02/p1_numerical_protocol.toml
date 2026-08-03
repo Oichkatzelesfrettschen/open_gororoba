@@ -1,0 +1,95 @@
+# Frozen before final-grid evaluation. This protocol is the numerical
+# acceptance surface for the tensor Ward campaign.
+
+[meta]
+artifact_id = "p1-photon-graviton-numerical-protocol"
+status = "frozen-before-final-grid"
+source_equation_ledger = "data/output/audit/2026-08-02/p1_source_equation_ledger.toml"
+scope = "D=4 pure magnetic positive-z scalar and spinor tensor Ward paths"
+excluded_lanes = ["TCMT", "Mie", "SFWM", "heliosphere", "LBM", "ultrametric", "GPU", "algebra-family consolidation", "WS-CLAIM-TRANSITION-001"]
+
+[conventions]
+metric = "Euclidean delta_mu_nu without complex conjugation in bilinears"
+on_shell_momentum = "k=(omega*sin(theta),0,omega*cos(theta),i*omega)"
+off_shell_momentum = "replace i*omega by i*omega*sqrt(1-v/omega^2), so k dot k = v"
+off_shell_virtuality_rule = "v = 0.2*(omega/m)^2 for every off-shell case"
+sentinel_virtuality_rule = "v = 0.1*(omega/m)^2 for selected B=0.10, omega/m=0.20, theta=pi/3 cases"
+photon_polarization = "epsilon=(cos(theta),0,-sin(theta),0), so epsilon dot k = 0"
+diffeomorphism_vector = "zeta0=(0,1,0,0), so zeta0 dot k0 = 0"
+graviton_polarization = "epsilon0 is the symmetric Euclidean identity fixture; the gravitational variation is k0 outer zeta0 + zeta0 outer k0"
+momentum_rule = "k0=-k"
+renormalization_off_shell = "unrenormalized for the Eq. 7.2 lower-point comparison"
+renormalization_on_shell = "renormalized irreducible and external tensors for the combined finite-virtuality limit; unrenormalized tadpole control"
+
+[grid]
+field_ratio_b_over_bcr = [0.01, 0.10]
+omega_over_m = [0.05, 0.20]
+theta = ["pi/6", "pi/3"]
+loop_type = ["scalar", "spinor"]
+shell_mode = ["on_shell", "off_shell"]
+minimum_off_shell_cases = "one v=0.2*(omega/m)^2 case for every field, frequency, angle, and loop combination"
+sentinel_off_shell_cases = "v=0.1*(omega/m)^2 for B/Bcr=0.10, omega/m=0.20, theta=pi/3, scalar and spinor"
+symmetry_exclusions = ["theta=0", "theta=pi/2"]
+
+[[quadrature]]
+name = "fast"
+n_u = 32
+n_t = 64
+t_min = 1.0e-6
+t_max = 20.0
+
+[[quadrature]]
+name = "default"
+n_u = 64
+n_t = 128
+t_min = 1.0e-8
+t_max = 30.0
+
+[[quadrature]]
+name = "high"
+n_u = 96
+n_t = 192
+t_min = 1.0e-10
+t_max = 40.0
+
+[norms]
+gauge_absolute = "sqrt(sum_mu,nu abs(W_mu_nu)^2)"
+gravitational_absolute = "sqrt(sum_alpha abs(G_alpha)^2)"
+conditioning_scale = "maximum magnitude of the uncancelled tensor or RHS component groups"
+normalized = "absolute norm divided by conditioning_scale"
+component_defect = "retain complex component values before every norm"
+
+[calibration]
+purpose = "characterize quadrature, conditioning, cutoff, and contact-boundary behavior before final claims"
+fixture = "three non-grid D=4 pure-magnetic points; k0=-k; off-shell v=0.2*(omega/m)^2"
+points = ["B/Bcr=0.10, omega/m=0.20, theta=pi/3", "B/Bcr=0.05, omega/m=0.15, theta=pi/4", "B/Bcr=0.01, omega/m=0.10, theta=pi/6"]
+refinement_ladder = ["fast", "default", "high", "precision"]
+precision_quadrature = "n_u=128, n_t=256, t_min=1.0e-10, t_max=60.0"
+retained_results = "data/output/audit/2026-08-02/p1_calibration_results.toml"
+observed_scalar_max_absolute = 4.68284926976549099e-13
+observed_scalar_max_normalized = 4.68837317649063682e-07
+required_behavior = "monotonic or source-explained convergence; otherwise Inconclusive"
+proper_time_cutoff_sensitivity = "compare default and high t_min/t_max values"
+virtuality_sensitivity = "compare the primary and sentinel off-shell virtualities"
+contact_boundary_status = "do not infer endpoint delta prescriptions; a stable unresolved spinor residual remains Inconclusive"
+
+[tolerance]
+frozen_before_final_grid = true
+derivation = "calibration upper bounds plus a declared safety factor; do not fit to the final verdict"
+absolute_component = 1.0e-12
+normalized_component = 1.0e-6
+mutation_detection_threshold = 1.0e-10
+convergence_gate = "the refinement difference must be finite and explained; nonconvergence is Inconclusive"
+
+[on_shell]
+external_separate_amplitude = "explicitly undefined at k dot k = 0; no denominator floor"
+combined_path = "evaluate irreducible plus external at the declared nonzero virtuality ladder and extrapolate component by component to v=0"
+extrapolation = "linear two-point extrapolation in declared virtuality with adjacent-pair convergence estimate"
+virtuality_ladder_relative_to_omega_squared = [0.4, 0.2, 0.1, 0.05]
+stop_rule = "if the extrapolated combined limit is nonzero or fails convergence, retain the off-shell identity and classify C-822 Inconclusive"
+tadpole_rule = "evaluate the retained rank-one vector, then test its contraction with the physical transverse epsilon"
+
+[commands]
+calibration = "P1_CALIBRATION_OUTPUT=data/output/audit/2026-08-02/p1_calibration_results.toml RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo test -p gr_core --lib photon_graviton::gravitational_ward::tests::p1_calibration_records_scalar_identity_conditioning -- --nocapture"
+final_grid = "P1_FINAL_GRID_OUTPUT=data/output/audit/2026-08-02/p1_final_grid.toml RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo test -p gr_core --lib photon_graviton::gravitational_ward::tests::p1_final_grid -- --nocapture"
+independent_reference = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo test -p gr_core --lib independent_falsifier::dense_source_reference_agrees_component_by_component -- --nocapture"
