@@ -1,0 +1,191 @@
+# Experiment verdicts are separate from repository claim statuses.
+
+[meta]
+artifact_id = "p0-claim-transition-proposals"
+observed_local_date = "2026-08-02"
+head_sha = "954696e5eaf96530207ddcbea1c8f1ef9c259ceb"
+canonical_status_source = "registry/canonical/control_plane.sqlite3"
+experiment_verdict_source = "data/output/audit/2026-08-02/negative_controls.toml"
+status_mutation = "not applied in this artifact"
+
+[experiment_verdict]
+values = ["Falsifies", "MethodologyInvalid", "Inconclusive", "SurvivesChallenge", "Replicates"]
+meaning = "An observation about one experiment and its evidence path"
+
+[claim_status]
+values = ["Verified", "Provisional", "Refuted", "Superseded", "Theoretical", "Established"]
+meaning = "The repository state of a proposition after considering retained evidence"
+
+[mapping_policy]
+automatic_mapping = false
+methodology_invalid_means_claim_refuted = false
+survives_challenge_means_verified = false
+required_transition_fields = ["prior_claim_state", "experiment_verdict", "evidence_id", "falsifier", "proposed_state", "rationale", "successors", "unresolved_assumptions"]
+
+[[transition]]
+claim_id = "C-820"
+experiment_id = "E-P0-C820"
+prior_claim_state = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_id = "p0-oracle-negative-controls"
+falsifier = "nonzero Ward pre-factor hidden by the on-shell zero factor"
+proposed_state = "Provisional"
+rationale = "The scalar implementation claim is unsupported; the source-level gauge proposition is not refuted"
+successors = ["source-level gauge Ward identity", "tensor implementation conformance"]
+unresolved_assumptions = ["tensor contraction components", "metric and continuation conventions", "independent dense-index reference"]
+
+[[transition]]
+claim_id = "C-821"
+experiment_id = "E-P0-C821"
+prior_claim_state = "Verified"
+experiment_verdict = "Inconclusive"
+evidence_id = "p0-photon-graviton-tcmt-source-inventory"
+falsifier = "independent tensor perturbation of the tadpole contribution"
+proposed_state = "Provisional"
+rationale = "P0 preserves scalar tadpole cross-validation as a prerequisite but does not validate the tensor Ward role"
+successors = ["scalar tadpole cross-validation", "tensor tadpole Ward contribution"]
+unresolved_assumptions = ["tree tensor normalization", "renormalization state", "off-shell contraction"]
+
+[[transition]]
+claim_id = "C-822"
+experiment_id = "E-P0-C822"
+prior_claim_state = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_id = "p0-oracle-negative-controls"
+falsifier = "independent nonzero tadpole or external-leg gravitational contribution"
+proposed_state = "Provisional"
+rationale = "The full Ward gate ignores the independently perturbed diagram values; the source-level gravitational proposition is not refuted"
+successors = ["source-level gravitational Ward identity", "full tensor implementation conformance"]
+unresolved_assumptions = ["lower-point right-hand side", "diagram tensor decomposition", "off-shell kinematics"]
+
+[[transition]]
+claim_id = "C-864"
+experiment_id = "E-P0-C864"
+prior_claim_state = "Verified"
+experiment_verdict = "Inconclusive"
+evidence_id = "p0-photon-graviton-tcmt-source-inventory"
+falsifier = "source-faithful parameter identification with declared port normalization"
+proposed_state = "Provisional"
+rationale = "The scalar bridge contains floors, hardcoded ratios, and an underidentified phase mapping"
+successors = ["phenomenological TCMT mapping", "source-derived TCMT mapping"]
+unresolved_assumptions = ["complex amplitude normalization", "channel basis", "parameter identifiability"]
+
+[[transition]]
+claim_id = "C-865"
+experiment_id = "E-P0-C865"
+prior_claim_state = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_id = "p0-oracle-negative-controls"
+falsifier = "relative discrepancy evaluated against the stated 1e-10 threshold"
+proposed_state = "Provisional"
+rationale = "The current positive test accepts a relative discrepancy of 0.9 with tolerance 1.0"
+successors = ["source-faithful energy constraint", "implementation predicate with declared tolerance"]
+unresolved_assumptions = ["Maksimov parameter correspondence", "units", "independent source constraint"]
+
+[[transition]]
+claim_id = "C-866"
+experiment_id = "E-P0-C866"
+prior_claim_state = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_id = "p0-oracle-negative-controls"
+falsifier = "complex channel pair with the same scalar input and different flux, plus tautological cross-section and lossless controls"
+proposed_state = "Superseded"
+rationale = "The statement conflates time reversal, unitarity, passive loss, scalar cross-section bookkeeping, and physical port semantics"
+successors = ["lossless flux-normalized unitarity", "reciprocity", "time reversal", "passive-loss contractivity", "absorption balance"]
+unresolved_assumptions = ["port normalization", "complex scattering matrix", "internal loss model"]
+
+[[transition]]
+claim_id = "C-867"
+experiment_id = "E-P0-C867"
+prior_claim_state = "Verified"
+experiment_verdict = "Inconclusive"
+evidence_id = "p0-oracle-negative-controls"
+falsifier = "held-out complex-amplitude phase and detuning sweep"
+proposed_state = "Provisional"
+rationale = "The current evidence checks resonance and wings but does not compare the claimed complex source amplitude"
+successors = ["complex Fano amplitude comparison", "weak-field source reproduction"]
+unresolved_assumptions = ["phase convention", "held-out subset", "source amplitude normalization"]
+
+# Successor proposals intentionally have proposal IDs rather than claim IDs.
+# The canonical CLI has no typed claim-create or claim-status-transition action.
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c820-source-gauge-ward-identity"
+source_claim_id = "C-820"
+proposed_statement = "The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions."
+proposed_status = "Theoretical"
+implementation_boundary = "Source proposition only; no repository implementation conformance is implied."
+required_falsifier = "Independent tensor contraction produces a residual above the declared tolerance on a predeclared kinematic grid."
+canonical_claim_id = "not_created"
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c820-tensor-ward-conformance"
+source_claim_id = "C-820"
+proposed_statement = "The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid."
+proposed_status = "Provisional"
+implementation_boundary = "Requires a tensor-valued production path and an independent dense-index reference."
+required_falsifier = "Production and independent tensor contractions disagree beyond convergence and conditioning tolerances."
+canonical_claim_id = "not_created"
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c822-source-gravitational-ward-identity"
+source_claim_id = "C-822"
+proposed_statement = "The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side, with the on-shell irreducible and external-leg cancellation and separate tadpole invariance stated explicitly."
+proposed_status = "Theoretical"
+implementation_boundary = "Source proposition only; the lower-point tensor right-hand side must be represented explicitly."
+required_falsifier = "An independent contraction fails the lower-point identity or the declared on-shell decomposition."
+canonical_claim_id = "not_created"
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c822-tensor-ward-conformance"
+source_claim_id = "C-822"
+proposed_statement = "The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition across the predeclared kinematic grid."
+proposed_status = "Provisional"
+implementation_boundary = "Requires independent irreducible, tadpole, and external-leg tensor contributions."
+required_falsifier = "A diagram perturbation or independent tensor reference changes no reported residual, or the residual exceeds the declared tolerance."
+canonical_claim_id = "not_created"
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c866-lossless-flux-unitarity"
+source_claim_id = "C-866"
+proposed_statement = "The declared lossless, flux-normalized complex scattering matrix is unitary on the stated channel basis."
+proposed_status = "Provisional"
+implementation_boundary = "Requires an explicit complex scattering matrix and port normalization."
+required_falsifier = "S dagger S differs from the identity beyond the declared numerical tolerance for a lossless fixture."
+canonical_claim_id = "not_created"
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c866-reciprocity"
+source_claim_id = "C-866"
+proposed_statement = "The declared reciprocal scattering model satisfies the appropriate reciprocity relation for its channel basis."
+proposed_status = "Provisional"
+implementation_boundary = "Requires channel ordering, normalization, and the reciprocity operation to be declared."
+required_falsifier = "Independent forward and reverse channel calculations violate the declared reciprocity relation."
+canonical_claim_id = "not_created"
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c866-time-reversal"
+source_claim_id = "C-866"
+proposed_statement = "The declared time-reversed scattering construction satisfies its stated time-reversal relation."
+proposed_status = "Provisional"
+implementation_boundary = "Time reversal is tracked separately from unitarity and requires a declared loss model."
+required_falsifier = "The time-reversed construction fails its declared amplitude or channel relation."
+canonical_claim_id = "not_created"
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c866-passive-loss-contractivity"
+source_claim_id = "C-866"
+proposed_statement = "The declared passive lossy scattering matrix is contractive under the stated flux normalization."
+proposed_status = "Provisional"
+implementation_boundary = "Requires an explicit internal-loss model and a complex multiport representation."
+required_falsifier = "A passive fixture has an outgoing flux norm greater than its incoming flux norm."
+canonical_claim_id = "not_created"
+
+[[successor_claim_proposal]]
+proposal_id = "proposal-c866-absorption-balance"
+source_claim_id = "C-866"
+proposed_statement = "The declared scattering, absorption, and extinction observables satisfy an independently derived balance relation."
+proposed_status = "Provisional"
+implementation_boundary = "Requires non-tautological cross-section definitions and an independent complex channel calculation."
+required_falsifier = "The independently computed extinction defect exceeds the declared tolerance or absorption becomes negative for a passive fixture."
+canonical_claim_id = "not_created"

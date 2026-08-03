@@ -1,0 +1,112 @@
+# Append-only canonical status-note mutation results for the oracle quarantine.
+
+[meta]
+artifact_id = "p0-claim-transition-results"
+observed_utc = "2026-08-03T02:54:34.221Z"
+canonical_status_source = "registry/canonical/control_plane.sqlite3"
+mutation_command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo run -p gororoba_db --bin gororoba-db -- claim update-status-note"
+actor = "codex"
+status_field_mutated = false
+status_field_reason = "The canonical CLI exposes status_note and formal_proof mutation only; no typed claim-status transition or successor-claim creation operation exists."
+generated_views_pending = false
+generated_views_command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-publish-target cargo run -p gororoba_cli_provenance --bin provenance -- export-control-plane"
+mutation_replayed_after_rebase = true
+publication_base_sha = "743ad2c6"
+
+[[revision]]
+claim_id = "C-820"
+revision_id = 1
+operation = "update"
+field_name = "status_note"
+prior_status = "Verified"
+new_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_status = "Provisional"
+prev_value_sha256 = "59129db4412ab14bb2485acd7bc6b7c4a6f6aa76e6e42000aa89331d1847a9e5"
+new_value_sha256 = "15c46dd096ee65d2ccba9ffb3f02cec124f4dc4cb8b8a1506dcb2246a90403c3"
+reason = "Record non-discriminating Ward oracle and provisional transition proposal"
+ts_utc = "2026-08-03T02:53:20.902Z"
+
+[[revision]]
+claim_id = "C-821"
+revision_id = 2
+operation = "update"
+field_name = "status_note"
+prior_status = "Verified"
+new_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_status = "Provisional"
+prev_value_sha256 = "b5e897189fefa2beb1563b6306385e69329d8f5d875ba10424d9690e8ca47226"
+new_value_sha256 = "97d334740efd03af646fe694eb80aefa3e7c09e37ce04e41c5572b302726ee19"
+reason = "Record unresolved tensor role of tadpole evidence"
+ts_utc = "2026-08-03T02:54:32.622Z"
+
+[[revision]]
+claim_id = "C-822"
+revision_id = 3
+operation = "update"
+field_name = "status_note"
+prior_status = "Verified"
+new_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_status = "Provisional"
+prev_value_sha256 = "41fd9cfa0c50032cecc8416d70fe30bfa06754ba8d2370f849aab8cc4f167324"
+new_value_sha256 = "1fa07ad30c551a9415c8e29e8e52037a6835f3630febde93d4e9f71c2f7d6f73"
+reason = "Record non-discriminating gravitational Ward gate and provisional transition proposal"
+ts_utc = "2026-08-03T02:54:32.946Z"
+
+[[revision]]
+claim_id = "C-864"
+revision_id = 4
+operation = "update"
+field_name = "status_note"
+prior_status = "Verified"
+new_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_status = "Provisional"
+prev_value_sha256 = "6efa93a0c14792a548c28c5384ec2c7d685cc44533f8ff9f83be7e8cfa52204f"
+new_value_sha256 = "8ced328b3ff4c3304bf33707697d207ff3982a12c063cb6f5b49b2cdfa4da033"
+reason = "Record underidentified TCMT bridge mapping"
+ts_utc = "2026-08-03T02:54:33.264Z"
+
+[[revision]]
+claim_id = "C-865"
+revision_id = 5
+operation = "update"
+field_name = "status_note"
+prior_status = "Verified"
+new_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_status = "Provisional"
+prev_value_sha256 = "dfc8649f9e16f87d322c9326a95bce3c7e5dfe89e019b157ae76e32767f31f4d"
+new_value_sha256 = "48c204c221d5677e674c2342548e705b855f51345e6416c0df327237731600e1"
+reason = "Record energy-conservation tolerance mismatch"
+ts_utc = "2026-08-03T02:54:33.585Z"
+
+[[revision]]
+claim_id = "C-866"
+revision_id = 6
+operation = "update"
+field_name = "status_note"
+prior_status = "Verified"
+new_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_status = "Superseded"
+prev_value_sha256 = "f5a4250d30316ce6104f984b600c1ff2f62ccf4275e6e09659902414c07a2229"
+new_value_sha256 = "af60d098143b20592e21041934f39666f7bd2cdb48c190118704d8a48ba4f1ff"
+reason = "Record overbroad scattering claim and successor family"
+ts_utc = "2026-08-03T02:54:33.902Z"
+
+[[revision]]
+claim_id = "C-867"
+revision_id = 7
+operation = "update"
+field_name = "status_note"
+prior_status = "Verified"
+new_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_status = "Provisional"
+prev_value_sha256 = "fe1dafeb341008f34577f169a86981a60846f2315442827884401fcd06c5b8d7"
+new_value_sha256 = "7afc301b3bd0d5c69acfb1540b6ae0f00069563f90a5f1cd252fc2ac053d9313"
+reason = "Record insufficient complex Fano evidence"
+ts_utc = "2026-08-03T02:54:34.221Z"

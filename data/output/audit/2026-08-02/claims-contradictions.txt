@@ -1,0 +1,5 @@
+# Claims Status Contradictions
+
+Matrix: `registry/canonical/control_plane.sqlite3 (rendered legacy matrix)`
+
+No contradictions found.

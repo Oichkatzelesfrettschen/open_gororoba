@@ -1,0 +1,41 @@
+# Bounded schema blocker for typed claim transitions.
+
+[meta]
+artifact_id = "claim-transition-schema-blocker"
+observed_local_date = "2026-08-02"
+head_sha = "954696e5eaf96530207ddcbea1c8f1ef9c259ceb"
+canonical_database = "registry/canonical/control_plane.sqlite3"
+canonical_cli = "crates/gororoba_db/src/bin/gororoba_db"
+planning_row_id = "WS-CLAIM-TRANSITION-001"
+scope = "claim status transitions and successor claim creation only"
+
+[observed_capability]
+claims_table_has_status_column = true
+claim_mutation_supports_status_note = true
+claim_mutation_supports_formal_proof = true
+claim_mutation_supports_status_transition = false
+claim_mutation_supports_successor_claim_creation = false
+claim_revisions_supports_status_note_history = true
+claim_revisions_supports_typed_transition_event = false
+direct_sql_mutation_allowed = false
+
+[cli_surface]
+claim_mutation_variants = ["UpdateStatusNote", "ShowStatusNote", "UpdateFormalProof", "ShowFormalProof"]
+missing_operations = ["UpdateStatus", "CreateClaim", "CreateSuccessorClaim", "RecordClaimTransition"]
+source_types = ["crates/gororoba_db/src/bin/gororoba_db/types.rs", "crates/provenance_store/src/lib.rs"]
+schema_source = "db/migrations/0002_control_plane.sql"
+revision_source = "db/migrations/0015_revisions_audit.sql"
+
+[consequence]
+status_field_after_audit = "Verified for C-820, C-821, C-822, C-864, C-865, C-866, and C-867"
+evidence_verdicts = "Retained in status_note and claim_transition_results.toml"
+successor_ids = "Not created; proposal IDs are not canonical claim IDs"
+compatibility_exports = "Must be regenerated after status-note mutation"
+claim_counts = "Status counts still reflect the immutable status column"
+
+[intake_condition]
+required_operation = "Add a typed canonical mutation that records prior status, experiment verdict, evidence ID, falsifier, proposed status, rationale, successors, and unresolved assumptions."
+required_successor_operation = "Add typed creation or registration of successor claims with stable IDs and predecessor links."
+required_export_change = "Render transition events and predecessor/successor links into compatibility views without losing prior history."
+required_validation_change = "Verify transition verdicts, status values, successor references, and evidence references in registry validation."
+required_scope_boundary = "Do not implement this schema migration in the bounded oracle quarantine."

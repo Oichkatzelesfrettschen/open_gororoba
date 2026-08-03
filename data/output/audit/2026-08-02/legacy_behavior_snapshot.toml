@@ -1,0 +1,58 @@
+# Characterization-only snapshot of pre-quarantine tests.
+
+[meta]
+artifact_id = "p0-legacy-behavior-snapshot"
+observed_local_date = "2026-08-02"
+head_sha = "954696e5eaf96530207ddcbea1c8f1ef9c259ceb"
+target_directory = ".cache/exp-p0-target"
+rustc_wrapper = "disabled because sccache returned Operation not permitted"
+interpretation = "Passing tests record legacy behavior and are not scientific golden oracles"
+
+[[run]]
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p0-target cargo test -p gr_core --lib"
+package = "gr_core"
+filter = "all library tests"
+passed = 843
+failed = 0
+ignored = 0
+measured = 0
+result = "pass"
+relevant_surfaces = ["photon_graviton::irreducible", "photon_graviton::ward", "photon_graviton::tadpole", "photon_graviton_tcmt::amplitude_bridge", "photon_graviton_tcmt::cross_sections", "photon_graviton_tcmt::fano_lineshape", "photon_graviton_tcmt::tcmt_equations"]
+
+[[run]]
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p0-target cargo test -p optics_core --lib mie_cylinder"
+package = "optics_core"
+filter = "mie_cylinder"
+passed = 6
+failed = 0
+ignored = 0
+measured = 0
+result = "pass"
+relevant_surfaces = ["optics_core::mie_cylinder"]
+
+[[run]]
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p0-target cargo test -p optics_core --lib fano_tcmt"
+package = "optics_core"
+filter = "fano_tcmt"
+passed = 6
+failed = 0
+ignored = 0
+measured = 0
+result = "pass"
+relevant_surfaces = ["optics_core::fano_tcmt"]
+
+[[run]]
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p0-target cargo test -p optics_core --lib tcmt"
+package = "optics_core"
+filter = "tcmt"
+passed = 49
+failed = 0
+ignored = 0
+measured = 0
+result = "pass"
+relevant_surfaces = ["optics_core::tcmt"]
+
+[interpretation]
+preservation_rule = "A later refactor may preserve these outputs without promoting the underlying propositions"
+oracle_boundary = "The P0 negative controls must fail if a legacy validator is reused as positive evidence"
+known_legacy_assertions = ["Ward residual is exactly zero", "energy conservation accepts a 90 percent relative discrepancy", "scalar T/R complement is treated as unitarity", "Fano base profile is even in detuning"]

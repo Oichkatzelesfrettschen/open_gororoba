@@ -1,0 +1,17 @@
+# Claims Staleness Report
+
+Matrix: `registry/canonical/control_plane.sqlite3 (rendered legacy matrix)`
+Total claims: 1448
+Stale threshold: before 2025-06-01
+
+## Missing date: 53 claims
+
+- C-1147, C-1148, C-1149, C-1150, C-1151, C-1152, C-1153, C-1154, C-1155, C-1156, C-1157, C-1158, C-1159, C-1160, C-1161, C-1162
+- C-1163, C-1164, C-1166, C-1167, C-1168, C-1169, C-1171, C-1172, C-1173, C-1175, C-1178, C-1182, C-1183, C-1341, C-1342, C-1343
+- C-1344, C-1345, C-1346, C-1347, C-1348, C-1349, C-1369, C-1370, C-1371, C-1372, C-1373, C-1374, C-592, C-630, C-841, C-842
+- C-843, C-846, C-847, C-849, C-850
+
+## Invalid date format: 0 claims
+
+
+## Stale (before 2025-06-01): 0 claims
