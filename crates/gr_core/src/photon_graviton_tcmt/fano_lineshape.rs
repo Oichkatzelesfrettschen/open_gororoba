@@ -199,6 +199,15 @@ mod tests {
     }
 
     #[test]
+    fn audit_c867_base_profile_is_even_in_detuning() {
+        let asym = AsymmetryParameter::from_q(2.5);
+        let shape_pos = fano_lineshape(0.75, &asym, 0.0);
+        let shape_neg = fano_lineshape(-0.75, &asym, 0.0);
+
+        assert_eq!(shape_pos, shape_neg);
+    }
+
+    #[test]
     fn absorption_zero_loss_ratio() {
         let asym = AsymmetryParameter::from_q(1.0);
         let absorption = absorption_cross_section(0.0, &asym, 0.01, 1.0, 0.0);

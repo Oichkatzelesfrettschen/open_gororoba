@@ -200,6 +200,33 @@ mod tests {
         );
     }
 
+    fn legacy_gravitational_residual(
+        irreducible_residual: f64,
+        tadpole_residual: f64,
+        external_residual: f64,
+    ) -> f64 {
+        let _ = (tadpole_residual, external_residual);
+        irreducible_residual
+    }
+
+    #[test]
+    fn audit_c822_gravitational_gate_ignores_other_diagrams() {
+        let config = test_config();
+        let quad = QuadratureConfig::fast();
+        let gauge = check_gauge_ward_irreducible(&config, LoopType::Spinor, &quad, 1e-8);
+        let gravitational = check_gravitational_ward(&config, LoopType::Spinor, &quad, 1e-8);
+
+        assert_eq!(gravitational.residual, gauge.residual);
+
+        let perturbed_tadpole = 7.0_f64;
+        let perturbed_external = -3.0_f64;
+        let perturbed_legacy_result =
+            legacy_gravitational_residual(gauge.residual, perturbed_tadpole, perturbed_external);
+        assert_ne!(perturbed_tadpole, 0.0);
+        assert_ne!(perturbed_external, 0.0);
+        assert_eq!(perturbed_legacy_result, gravitational.residual);
+    }
+
     #[test]
     fn test_full_ward_check() {
         let config = test_config();
