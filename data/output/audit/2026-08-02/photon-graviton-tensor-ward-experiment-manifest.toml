@@ -1,0 +1,142 @@
+# Standalone reproducibility manifest for the retained P1 tensor Ward evidence.
+
+[experiment]
+id = "E-P1-PHOTON-GRAVITON-TENSOR-WARD"
+title = "Tensor-valued photon-graviton Ward verification"
+reproducibility_class = "numeric_close"
+code_commit_sha = "475f58aecc7406565dde111f2d237b244491fd13"
+actual_timestamp = "2026-08-03T05:59:17Z"
+run_command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target P1_CALIBRATION_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_calibration_results.toml P1_FINAL_GRID_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_final_grid.toml P1_INDEPENDENT_FIXTURES_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_independent_fixtures.toml P1_MUTATION_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_mutation_results.toml P1_ON_SHELL_CONTROLS_OUTPUT=/home/eirikr/Github/open_gororoba-photon-graviton-tensor-ward/data/output/audit/2026-08-02/p1_on_shell_controls.toml cargo test -p gr_core --lib photon_graviton -- --nocapture"
+run_command_sha256 = "1d848f876663f26b735bb49bb75cd24c992713acd8e18923139eadc4e85a608f"
+toolchain = "rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30); LLVM 22.1.6"
+features = ["gr_core default", "gauss-quad", "nalgebra", "num-complex"]
+hardware = "x86_64 Linux host; deterministic CPU execution; no GPU workload"
+randomness_mode = "none"
+source_pdf_id = "2601.23279v1"
+source_pdf_sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+scope = "D=4 Euclidean pure-magnetic scalar and spinor tensor Ward paths"
+verification_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/tensor_types.rs"
+sha256 = "76492a430db87f6ddddbf51648dc039ae4719ea7c0cbafa3c81229dfcc94265f"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/worldline_tensor.rs"
+sha256 = "d0bbe1d5d1e18922b0137b974e838b17fd3693f47fe0aa8878e746761d629671"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/tensor_integrands.rs"
+sha256 = "571ab6c9c95d6c4e3952d09cef0cc9883e58b5ad1d63cda3632c5eb1f511ffb7"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/vacuum_pol_tensor.rs"
+sha256 = "927efe2b8eeddedec233cd2e35d1aff5183ac4781da84fb92b2a1e3cdb99d7c6"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/irreducible_tensor.rs"
+sha256 = "5b0a9d362243511e831c22007ea2ebbcd87a2988b97cc24debc31c7eb98f8f1a"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/tadpole_tensor.rs"
+sha256 = "abc690ccb514c4d3791d243b6775756f4498235f1885587dd6ec0c2b2d4d862e"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/external_tensor.rs"
+sha256 = "1411342b706eaf8056e74d36563020fb712d1833a962d6ea39721567be8aac33"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/gravitational_ward.rs"
+sha256 = "7aa66f0b6272a1708f4536789a446eb3a3637c7a2864beda933cb611f115014b"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/tensor_ward.rs"
+sha256 = "d7c1c9f66fe41a7ff8a6b371c19df003b164601fa1b6a95a1605e1dc48260186"
+
+[[experiment.input_hashes]]
+path = "crates/gr_core/src/photon_graviton/independent_falsifier.rs"
+sha256 = "317d39f2ef11a931acae0ffe6149d24234b3ebd9e6437948f5b70c374df2e008"
+
+[[experiment.input_hashes]]
+path = "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
+sha256 = "05a81f933d44503bcd32d14e30fd640e02eac29c2add94940b2532fef4d5f00f"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-02/p1_source_equation_ledger.toml"
+sha256 = "4d7134b7ad9bdca2102378ef8850b55ea05d6b94c34603311020ae2452192dd2"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-02/p1_numerical_protocol.toml"
+sha256 = "4d80ddb3b0469686a32bb7523af4b2f22131e59178979dbf7bacae74e2a08d3c"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_prechange_characterization.toml"
+sha256 = "7475cfb9569b950852ce9c1b58ebec6e93fae165677bb47d0faa01dd0ec589d9"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_prechange_p0_oracle_controls.log"
+sha256 = "b378f66c1dc1095b1cf9b051f732eb44e8047176531d5df508f14a33cac34974"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_source_equation_ledger.toml"
+sha256 = "4d7134b7ad9bdca2102378ef8850b55ea05d6b94c34603311020ae2452192dd2"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_numerical_protocol.toml"
+sha256 = "4d80ddb3b0469686a32bb7523af4b2f22131e59178979dbf7bacae74e2a08d3c"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_calibration_results.toml"
+sha256 = "b77fb4c841d4785667a8275414eff5eb3229d49ec0cb6a40cab3a40e20eb7527"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_final_grid.toml"
+sha256 = "4a2f1ad15b2fe30397b0bf94ad8cc21ef730e78001f2fd2dad674ff5eb28720f"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_independent_fixtures.toml"
+sha256 = "66c67bcc6fb198f933bcf4f053313272fd29fcda529c53058e64d7d9506f666f"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_mutation_results.toml"
+sha256 = "c3c603b98e908ea152c0b5a550689cd8157bd6e3136f70425d67bf652d6af111"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_on_shell_controls.toml"
+sha256 = "9bb06b2299a87bb3dc5abeaf39cecca5d18b5c5255541fd0eb943ac0c26a12c1"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_claim_results.toml"
+sha256 = "b9b764d07fd5e1028b4cc135f961aea68c4c371829967610bb0da2d2b7b767ca"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P1-TENSOR-WARD"
+path = "data/output/audit/2026-08-02/p1_validation_results.toml"
+sha256 = "4e0b093c6e2d5c761614fbccfcc7320f5ed95b0fe9af67c735dda062866031b2"
+
+[[experiment.numeric_tolerance]]
+output_id = "p1_final_grid.toml"
+column = "absolute component residual"
+rel_tol = 1e-6
+abs_tol = 1e-12
+
+[[experiment.numeric_tolerance]]
+output_id = "p1_calibration_results.toml"
+column = "absolute and normalized gravitational defect"
+rel_tol = 1e-6
+abs_tol = 1e-12
+
+[verification]
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p1-target cargo run -p gororoba_cli_data --bin experiment-manifest -- verify data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+exit_code = 0
+result = "verified at implementation commit 475f58ae before the retained evidence and registry ownership commits"
