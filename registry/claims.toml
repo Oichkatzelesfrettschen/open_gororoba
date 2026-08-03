@@ -9731,7 +9731,7 @@ id = "C-820"
 last_verified = "2026-02-19"
 statement = "Irreducible photon-graviton amplitude satisfies gauge Ward identity (k_alpha * Pi^{mn,alpha} = 0) to machine precision."
 status = "Verified"
-status_note = "Sprint 56: Ward identity residual is exactly 0.0 (on-shell k^2=0 factor). Test passes at tolerance 1e-8."
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: nonzero Ward pre-factor hidden by the on-shell zero factor. Proposed transition: Provisional implementation claim, with separate source-level gauge Ward identity and tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: tensor contraction components; metric and continuation conventions; independent dense-index reference. Status remains Verified until the canonical CLI supports typed status transitions."
 where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs (irreducible_ward_check), crates/gr_core/src/photon_graviton/ward.rs"
 
 [[claim]]
@@ -9739,7 +9739,7 @@ id = "C-821"
 last_verified = "2026-02-19"
 statement = "Tadpole amplitude is nonzero and proper-time integral agrees with Bernoulli weak-field expansion."
 status = "Verified"
-status_note = "Sprint 56: Tadpole proper-time integral and Bernoulli series both return nonzero values at B/B_cr=0.01. Cross-validation within tolerance. 8 tests pass."
+status_note = "Evidence verdict: Inconclusive. Prior claim status: Verified. Evidence: p0-photon-graviton-tcmt-source-inventory. Falsifier: independent tensor perturbation of the tadpole contribution. Proposed transition: Provisional, with separate scalar tadpole cross-validation and tensor tadpole Ward contribution successors. Scalar cross-validation is retained as a prerequisite, not tensor Ward evidence. Unresolved: tree tensor normalization; renormalization state; off-shell contraction. Status remains Verified until the canonical CLI supports typed status transitions."
 where_stated = "crates/gr_core/src/photon_graviton/tadpole.rs (tadpole_proper_time, tadpole_bernoulli, tadpole_cross_validated)"
 
 [[claim]]
@@ -9747,7 +9747,7 @@ id = "C-822"
 last_verified = "2026-02-19"
 statement = "Full one-loop photon-graviton amplitude satisfies gravitational Ward identity to 1e-8."
 status = "Verified"
-status_note = "Sprint 56: All 4 Ward identity checks pass (gauge irr, gauge tadpole, gauge external, gravitational). 5 tests."
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: independent nonzero tadpole or external-leg gravitational contribution. Proposed transition: Provisional implementation claim, with separate source-level gravitational Ward identity and full tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: lower-point right-hand side; diagram tensor decomposition; off-shell kinematics. Status remains Verified until the canonical CLI supports typed status transitions."
 where_stated = "crates/gr_core/src/photon_graviton/ward.rs (check_gravitational_ward, full_ward_check)"
 
 [[claim]]
@@ -10083,7 +10083,7 @@ id = "C-864"
 last_verified = "2026-02-26"
 statement = "Photon-graviton TCMT equations map three-diagram worldline amplitude (irreducible, tadpole, external-leg from E-073) to Ruan-Fan framework with weak-field parameter epsilon < 0.1."
 status = "Verified"
-status_note = 'Sprint 56: Bridge from gr-qc/0412095, 0710.5572, 2601.23279 (worldline QFT) to 0909.3323 (TCMT). Maps irreducible -> \kappa_coupling, tadpole -> \gamma_rad, external-leg -> \phi.'
+status_note = "Evidence verdict: Inconclusive. Prior claim status: Verified. Evidence: p0-photon-graviton-tcmt-source-inventory. Falsifier: source-faithful parameter identification with declared port normalization. Proposed transition: Provisional, with separate phenomenological TCMT mapping and source-derived TCMT mapping successors. The scalar bridge contains floors, hardcoded ratios, and an underidentified phase mapping. Unresolved: complex amplitude normalization; channel basis; parameter identifiability. Status remains Verified until the canonical CLI supports typed status transitions."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (three_diagram_amplitude_to_tcmt, validate_weak_field)"
 
 [[claim]]
@@ -10091,7 +10091,7 @@ id = "C-865"
 last_verified = "2026-02-19"
 statement = "Asymmetry parameter q_grav from gravitational coupling satisfies Maksimov constraint: kappa_1 - kappa_2 = gamma_l to machine precision (relative error < 1e-10)."
 status = "Verified"
-status_note = "Sprint 56: Promoted from Proposed. Test energy_conservation_validates directly verifies kappa_1-kappa_2=gamma_l. 27 photon-graviton TCMT tests pass."
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: relative discrepancy evaluated against the stated 1e-10 threshold. Proposed transition: Provisional, with separate source-faithful energy constraint and implementation predicate with declared tolerance successors. The current positive test accepts a relative discrepancy of 0.9 with tolerance 1.0. Unresolved: Maksimov parameter correspondence; units; independent source constraint. Status remains Verified until the canonical CLI supports typed status transitions."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (validate_energy_conservation), tcmt_equations.rs (energy conservation test)"
 
 [[claim]]
@@ -10099,7 +10099,7 @@ id = "C-866"
 last_verified = "2026-02-19"
 statement = "Time-reversal symmetry of photon-graviton TCMT guarantees transmission S-matrix satisfies unitarity |T|^2 + |R|^2 = 1 to numerical precision (error < 1e-10)."
 status = "Verified"
-status_note = "Sprint 56: Promoted from Proposed. Tests optical_theorem_at_resonance and optical_theorem_with_loss verify unitarity. integration_conserves_energy_lossless verifies energy conservation."
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: complex channel pair with the same scalar input and different flux, plus tautological cross-section and lossless controls. Proposed transition: Superseded by separate lossless flux-normalized unitarity, reciprocity, time reversal, passive-loss contractivity, and absorption balance claims. The statement conflates time reversal, unitarity, passive loss, scalar cross-section bookkeeping, and physical port semantics. Unresolved: port normalization; complex scattering matrix; internal loss model. No successor IDs are invented. Status remains Verified until the canonical CLI supports typed status transitions and successor creation."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (scattering_coefficient), amplitude_bridge.rs (validate_unitarity)"
 
 [[claim]]
@@ -10107,7 +10107,7 @@ id = "C-867"
 last_verified = "2026-02-26"
 statement = "Fano lineshape from photon-graviton TCMT reproduces resonance peak and asymmetry observed in E-073 worldline amplitude weak-field limit (agreement > 99%)."
 status = "Verified"
-status_note = "Sprint 56: Ultimate validation: TCMT lineshape must match original amplitude in weak-field regime. Tests at resonance (x=0) and wings (|x| > 5)."
+status_note = "Evidence verdict: Inconclusive. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: held-out complex-amplitude phase and detuning sweep. Proposed transition: Provisional, with separate complex Fano amplitude comparison and weak-field source reproduction successors. The current evidence checks resonance and wings but does not compare the claimed complex source amplitude. Unresolved: phase convention; held-out subset; source amplitude normalization. Status remains Verified until the canonical CLI supports typed status transitions."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (fano_lineshape, compute_cross_sections), tcmt_equations.rs (integration tests)"
 
 [[claim]]
