@@ -16,6 +16,9 @@ use super::{
     worldline_tensor::{g_minus, g_plus, r_plus},
 };
 use num_complex::Complex64;
+use std::f64::consts::PI;
+
+const FOUR_DIMENSIONAL_LOOP_NORMALIZATION: f64 = 1.0 / (16.0 * PI * PI);
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct OnePhotonAmplitude {
@@ -51,8 +54,14 @@ pub fn one_photon_amplitude(
             let exponent =
                 (proper_time * 0.25 * bilinear(&momentum, &exponent_matrix, &momentum)).exp();
             let prefactor = match loop_type {
-                LoopType::Scalar => Complex64::new(0.0, -loop_config.charge),
-                LoopType::Spinor => Complex64::new(0.0, 2.0 * loop_config.charge),
+                LoopType::Scalar => Complex64::new(
+                    0.0,
+                    -loop_config.charge * FOUR_DIMENSIONAL_LOOP_NORMALIZATION,
+                ),
+                LoopType::Spinor => Complex64::new(
+                    0.0,
+                    2.0 * loop_config.charge * FOUR_DIMENSIONAL_LOOP_NORMALIZATION,
+                ),
             };
             let contraction = bilinear(&polarization, &q_kernel, &momentum);
             let determinant = scalar_determinant(loop_type, z);

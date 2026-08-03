@@ -44,6 +44,9 @@ pub mod constants;
 pub mod external;
 pub mod external_tensor;
 pub mod gertsenshtein;
+pub mod gravitational_ward;
+#[cfg(test)]
+mod independent_falsifier;
 pub mod irreducible;
 pub mod irreducible_tensor;
 pub mod one_photon;
@@ -53,6 +56,7 @@ pub mod tadpole;
 pub mod tadpole_tensor;
 pub mod tensor_integrands;
 pub mod tensor_types;
+pub mod tensor_ward;
 pub mod tree_level;
 pub mod types;
 pub mod vacuum_pol;
