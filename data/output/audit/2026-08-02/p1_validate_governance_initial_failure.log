@@ -1,0 +1,7 @@
+command=make validate-governance
+exit_code=2
+classification=environmental_build_quota
+failed_step=libsqlite3-sys v0.37.0 custom build
+error=error writing to /tmp/ccZE4qHB.s: Disk quota exceeded
+scope=The first governance attempt used the repository default gate build directory and shared /tmp tmpfs.
+action=Rerun the identical governance target with worktree-local Cargo build and temporary directories.
