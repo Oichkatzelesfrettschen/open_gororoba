@@ -6,6 +6,9 @@ source_url = "https://arxiv.org/abs/0909.3323"
 pdf_url = "https://arxiv.org/pdf/0909.3323v2"
 pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
 tex_source_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+figure3_capture_path = "/var/tmp/open_gororoba-p2a-source-ywcx0q/Fano-Resonator.png"
+figure3_capture_sha256 = "e9b3f4e38c90c14a73880552cc8fcdac2b1ae4c23057669f929e9d507e794e9a"
+tex_source_files = ["Fano_Scattering.tex", "Fano-Resonator.eps", "FanoTest.eps"]
 source_disposition = "resolved from the canonical arXiv v2 PDF and source archive"
 source_page_numbering = "printed page numbers in the PDF"
 

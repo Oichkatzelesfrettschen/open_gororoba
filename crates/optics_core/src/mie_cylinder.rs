@@ -1,48 +1,97 @@
-//! Concentric-cylinder Lorentz-Mie scattering solver (2D, TM polarization).
+//! Concentric-cylinder Lorentz-Mie scattering with explicit polarization.
 //!
-//! Implements the transfer-matrix method for multilayer cylindrical scatterers.
-//! Used to numerically validate the TCMT Fano lineshape formulas from
-//! Ruan & Fan (2009).
+//! The source uses TM for a nonzero H_z field. At a radial material interface
+//! the continuous state is H_z and (1/epsilon)*dH_z/drho. The alternate TE
+//! path uses E_z and (1/mu)*dE_z/drho. The validated solver keeps the complex
+//! incoming and outgoing channel amplitudes and computes observables from the
+//! source definitions.
 //!
-//! The scatterer is a set of concentric cylinders with given permittivities.
-//! For TM polarization (E_z, H_theta), the field in layer j is:
-//! ```text
-//!   E_z = A_j * J_l(k_j*rho) + B_j * Y_l(k_j*rho)
-//! ```
-//! Boundary conditions at each interface yield a 2x2 transfer matrix.
-//!
-//! # References
-//! - Ruan & Fan, arXiv:0909.3323v2 (2009)
-//! - Bohren & Huffman, Absorption and Scattering of Light by Small Particles
+//! See Ruan and Fan, "Temporal coupled-mode theory for Fano resonance in light
+//! scattering by a single obstacle", arXiv:0909.3323v2, Figures 3-5.
 
 use crate::{
     bessel::{bessel_j, bessel_j_prime, bessel_y, bessel_y_prime},
-    fano_tcmt::{CrossSections, FanoChannel, FanoDrudeParams, drude_epsilon},
+    fano_tcmt::{
+        ChannelCrossSections, CrossSections, FanoChannelError, FanoDrudeParams, try_drude_epsilon,
+    },
 };
 use num_complex::Complex64;
 use std::f64::consts::PI;
+use thiserror::Error;
 
-/// A single cylindrical layer with outer radius and permittivity.
-#[derive(Debug, Clone, Copy)]
+/// Longitudinal cylindrical polarization and its interface state.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum CylindricalPolarization {
+    /// TM source convention with nonzero H_z.
+    HzTm,
+    /// TE convention with nonzero E_z.
+    EzTe,
+}
+
+/// Material role retained in the source geometry ledger.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MaterialRole {
+    /// Drude material in the Ruan-Fan MDM geometry.
+    Metal,
+    /// Nonmetal source or test material.
+    Dielectric,
+    /// Compatibility role for a generic finite layer.
+    Generic,
+}
+
+/// A finite radial layer with explicit electromagnetic material data.
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct CylinderLayer {
     /// Outer radius of this layer.
     pub outer_radius: f64,
-    /// Relative permittivity (can be complex for metals).
+    /// Relative permittivity.
     pub epsilon: Complex64,
+    /// Relative permeability.
+    pub mu: Complex64,
+    /// Source or test material role.
+    pub material: MaterialRole,
 }
 
-/// Concentric cylinder geometry.
+impl CylinderLayer {
+    /// Construct a nonmagnetic finite layer with an explicit material role.
+    pub fn nonmagnetic(outer_radius: f64, epsilon: Complex64, material: MaterialRole) -> Self {
+        Self {
+            outer_radius,
+            epsilon,
+            mu: Complex64::new(1.0, 0.0),
+            material,
+        }
+    }
+}
+
+/// Concentric geometry and its exterior boundary data.
 #[derive(Debug, Clone)]
 pub struct ConcentricCylinder {
-    /// Layers from innermost (core) to outermost shell.
-    /// Each layer's outer_radius must be strictly increasing.
+    /// Layers from innermost to outermost shell.
     pub layers: Vec<CylinderLayer>,
-    /// Permittivity of the exterior medium (usually 1.0 for vacuum).
+    /// Exterior relative permittivity.
     pub eps_ext: Complex64,
+    /// Exterior relative permeability.
+    pub mu_ext: Complex64,
+    /// Declared longitudinal polarization.
+    pub polarization: CylindricalPolarization,
+    /// Optional frequency-dependent Drude model for layers marked Metal.
+    pub metal_drude: Option<FanoDrudeParams>,
 }
 
-/// Result for a single angular momentum channel.
-#[derive(Debug, Clone, Copy)]
+/// Defect between the two continuous interface state components.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct InterfaceContinuityResidual {
+    /// Difference in the longitudinal field component.
+    pub field_defect: Complex64,
+    /// Difference in the weighted radial flux component.
+    pub flux_defect: Complex64,
+    /// Largest component magnitude.
+    pub max_component: f64,
+}
+
+/// Complex observables and interface diagnostics for one angular channel.
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub struct ChannelResult {
     /// Angular momentum index l.
     pub l: i32,
@@ -50,28 +99,90 @@ pub struct ChannelResult {
     pub s_l: Complex64,
     /// Reflection coefficient R_l = 1 + 2*S_l.
     pub r_l: Complex64,
+    /// Independently defined normalized channel observables.
+    pub cross_sections: ChannelCrossSections,
+    /// Absorption computed from the R_l flux defect.
+    pub absorption_from_flux: f64,
+    /// Extinction - scattering - S-based absorption.
+    pub balance_defect: f64,
+    /// Maximum state continuity residual over interfaces.
+    pub interface_residual: InterfaceContinuityResidual,
+    /// Reciprocal determinant conditioning indicator.
+    pub conditioning_indicator: f64,
 }
 
-/// Full Mie scattering result.
+/// Aggregate observable residuals for a finite channel sweep.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct MieObservableResiduals {
+    /// Extinction - scattering - S-based absorption.
+    pub balance_defect: f64,
+    /// Maximum S, R, and closed-form absorption disagreement.
+    pub absorption_representation_defect: f64,
+    /// Maximum R-flux and closed-form absorption disagreement.
+    pub flux_representation_defect: f64,
+}
+
+/// Full Mie result for a declared finite channel range.
 #[derive(Debug, Clone)]
 pub struct MieResult {
-    /// Per-channel results.
+    /// Per-channel complex results and residuals.
     pub channels: Vec<ChannelResult>,
-    /// Total cross-sections (normalized by 2*lambda/pi).
+    /// Total cross-sections normalized by 2*lambda/pi.
     pub cross_sections: CrossSections,
+    /// Aggregate residuals retained before scalar verdicts.
+    pub observable_residuals: MieObservableResiduals,
     /// Angular frequency used.
     pub omega: f64,
 }
 
-/// Wavenumber k = omega * sqrt(epsilon) / c.
-/// We work in natural units where c=1.
-fn wavenumber(omega: f64, eps: Complex64) -> Complex64 {
-    let omega_c = Complex64::new(omega, 0.0);
-    omega_c * eps.sqrt()
+/// Error returned by the validated cylindrical solver.
+#[derive(Debug, Error, Clone, PartialEq)]
+pub enum MieError {
+    #[error("the cylinder has no finite layers")]
+    EmptyLayers,
+    #[error("{field} must be finite")]
+    NonFinite { field: &'static str },
+    #[error("omega must be positive")]
+    NonPositiveFrequency,
+    #[error("l_max must be nonnegative")]
+    NegativeLMax,
+    #[error("layer radii must be positive and strictly increasing")]
+    InvalidRadii,
+    #[error("epsilon and mu must be nonzero")]
+    ZeroMaterialParameter,
+    #[error("the interface determinant is singular for l={l} at rho={rho}")]
+    SingularInterface { l: i32, rho: f64 },
+    #[error("the exterior incoming amplitude is singular for l={l}")]
+    SingularExteriorAmplitude { l: i32 },
+    #[error("the cylindrical calculation produced a non-finite value")]
+    NonFiniteCalculation,
+    #[error("layer index {index} is out of range")]
+    LayerIndexOutOfRange { index: usize },
+    #[error("layer {index} is not marked as metal")]
+    NotMetalLayer { index: usize },
+    #[error("Drude validation failed: {0}")]
+    Drude(#[from] FanoChannelError),
 }
 
-/// 2x2 complex matrix stored as `[[a, b]`, `[c, d]`].
+/// 2x2 complex matrix stored in row-major order.
 type Mat2 = [[Complex64; 2]; 2];
+
+#[derive(Debug, Clone, Copy)]
+struct MaterialParameters {
+    epsilon: Complex64,
+    mu: Complex64,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct RadialState {
+    coefficients: [Complex64; 2],
+    k: Complex64,
+    material: MaterialParameters,
+}
+
+fn finite_complex(value: Complex64) -> bool {
+    value.re.is_finite() && value.im.is_finite()
+}
 
 fn mat2_mul(a: &Mat2, b: &Mat2) -> Mat2 {
     [
@@ -86,253 +197,464 @@ fn mat2_mul(a: &Mat2, b: &Mat2) -> Mat2 {
     ]
 }
 
-fn _mat2_identity() -> Mat2 {
+fn mat2_vec(matrix: &Mat2, vector: [Complex64; 2]) -> [Complex64; 2] {
     [
-        [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
-        [Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0)],
+        matrix[0][0] * vector[0] + matrix[0][1] * vector[1],
+        matrix[1][0] * vector[0] + matrix[1][1] * vector[1],
     ]
 }
 
-/// Interface transfer matrix at radius rho between media with wavenumbers k_in and k_out.
-///
-/// Continuity of E_z and (1/k) * dE_z/drho at rho gives:
-///   `[A_out]`     `[J_l(k_out*rho)  Y_l(k_out*rho)]`^{-1}   `[J_l(k_in*rho)   Y_l(k_in*rho) ]`   `[A_in]`
-///   `[B_out]`  =  `[J_l'(k_out*rho) Y_l'(k_out*rho)]`     * `[k_in/k_out * J_l'  k_in/k_out * Y_l']` * `[B_in]`
-///
-/// Actually for TM: E_z continuous and (1/mu) * dE_z/drho continuous (mu=1 everywhere).
-/// So: A_in*J(x_in) + B_in*Y(x_in) = A_out*J(x_out) + B_out*Y(x_out)
-///     k_in*`[A_in*J'(x_in) + B_in*Y'(x_in)]` = k_out*`[A_out*J'(x_out) + B_out*Y'(x_out)]`
-///
-/// We solve for `[A_out, B_out]` in terms of `[A_in, B_in]`.
-fn interface_matrix(l: i32, k_in: Complex64, k_out: Complex64, rho: f64) -> Mat2 {
-    let x_in = k_in * rho;
-    let x_out = k_out * rho;
-
-    let j_in = bessel_j(l, x_in);
-    let y_in = bessel_y(l, x_in);
-    let jp_in = bessel_j_prime(l, x_in);
-    let yp_in = bessel_y_prime(l, x_in);
-
-    let j_out = bessel_j(l, x_out);
-    let y_out = bessel_y(l, x_out);
-    let jp_out = bessel_j_prime(l, x_out);
-    let yp_out = bessel_y_prime(l, x_out);
-
-    // RHS matrix (inner side): maps [A_in, B_in] to [E_z, dE_z/drho]
-    // [J(x_in),       Y(x_in)      ]
-    // [k_in*J'(x_in), k_in*Y'(x_in)]
-    let rhs = [[j_in, y_in], [k_in * jp_in, k_in * yp_in]];
-
-    // LHS matrix (outer side): maps [A_out, B_out] to [E_z, dE_z/drho]
-    // [J(x_out),        Y(x_out)       ]
-    // [k_out*J'(x_out), k_out*Y'(x_out)]
-    // We need its inverse.
-    let det = j_out * k_out * yp_out - y_out * k_out * jp_out;
-    let lhs_inv = [
-        [k_out * yp_out / det, -y_out / det],
-        [-k_out * jp_out / det, j_out / det],
-    ];
-
-    mat2_mul(&lhs_inv, &rhs)
+fn material_weight(
+    polarization: CylindricalPolarization,
+    epsilon: Complex64,
+    mu: Complex64,
+) -> Result<Complex64, MieError> {
+    let weight = match polarization {
+        CylindricalPolarization::HzTm => Complex64::new(1.0, 0.0) / epsilon,
+        CylindricalPolarization::EzTe => Complex64::new(1.0, 0.0) / mu,
+    };
+    if !finite_complex(weight) {
+        return Err(MieError::NonFiniteCalculation);
+    }
+    Ok(weight)
 }
 
-/// Scattering coefficient S_l for a concentric cylinder at angular frequency omega.
-///
-/// The algorithm:
-/// 1. Start from core: `[A_0, B_0]` = `[1, 0]` (regularity at origin).
-/// 2. Chain transfer matrices through all interfaces.
-/// 3. In exterior, convert J/Y coefficients to H^(1)/H^(2) coefficients.
-/// 4. S_l = -(outgoing coefficient) / (incoming coefficient) after subtracting
-///    the incident wave.
-pub fn scattering_coefficient_l(geom: &ConcentricCylinder, l: i32, omega: f64) -> Complex64 {
-    if geom.layers.is_empty() {
-        return Complex64::new(0.0, 0.0);
+fn state_matrix(
+    l: i32,
+    k: Complex64,
+    material: MaterialParameters,
+    polarization: CylindricalPolarization,
+    rho: f64,
+) -> Result<Mat2, MieError> {
+    let argument = k * rho;
+    let weight = material_weight(polarization, material.epsilon, material.mu)?;
+    let matrix = [
+        [bessel_j(l, argument), bessel_y(l, argument)],
+        [
+            weight * k * bessel_j_prime(l, argument),
+            weight * k * bessel_y_prime(l, argument),
+        ],
+    ];
+    if matrix.iter().flatten().any(|value| !finite_complex(*value)) {
+        return Err(MieError::NonFiniteCalculation);
+    }
+    Ok(matrix)
+}
+
+fn interface_matrix(
+    l: i32,
+    k_in: Complex64,
+    material_in: MaterialParameters,
+    k_out: Complex64,
+    material_out: MaterialParameters,
+    polarization: CylindricalPolarization,
+    rho: f64,
+) -> Result<(Mat2, f64), MieError> {
+    let inner = state_matrix(l, k_in, material_in, polarization, rho)?;
+    let outer = state_matrix(l, k_out, material_out, polarization, rho)?;
+    let determinant = outer[0][0] * outer[1][1] - outer[0][1] * outer[1][0];
+    if determinant.norm_sqr() == 0.0 {
+        return Err(MieError::SingularInterface { l, rho });
+    }
+    let inverse = [
+        [outer[1][1] / determinant, -outer[0][1] / determinant],
+        [-outer[1][0] / determinant, outer[0][0] / determinant],
+    ];
+    let transfer = mat2_mul(&inverse, &inner);
+    if transfer
+        .iter()
+        .flatten()
+        .any(|value| !finite_complex(*value))
+    {
+        return Err(MieError::NonFiniteCalculation);
+    }
+    Ok((transfer, 1.0 / determinant.norm()))
+}
+
+fn state_residual(
+    l: i32,
+    rho: f64,
+    inner_state: RadialState,
+    outer_state: RadialState,
+    polarization: CylindricalPolarization,
+) -> Result<InterfaceContinuityResidual, MieError> {
+    let inner_matrix = state_matrix(l, inner_state.k, inner_state.material, polarization, rho)?;
+    let outer_matrix = state_matrix(l, outer_state.k, outer_state.material, polarization, rho)?;
+    let inner_values = mat2_vec(&inner_matrix, inner_state.coefficients);
+    let outer_values = mat2_vec(&outer_matrix, outer_state.coefficients);
+    let field_defect = outer_values[0] - inner_values[0];
+    let flux_defect = outer_values[1] - inner_values[1];
+    let max_component = field_defect.norm().max(flux_defect.norm());
+    if !max_component.is_finite() {
+        return Err(MieError::NonFiniteCalculation);
+    }
+    Ok(InterfaceContinuityResidual {
+        field_defect,
+        flux_defect,
+        max_component,
+    })
+}
+
+fn passive_sqrt(epsilon: Complex64) -> Result<Complex64, MieError> {
+    if !finite_complex(epsilon) {
+        return Err(MieError::NonFinite { field: "epsilon" });
+    }
+    let mut root = epsilon.sqrt();
+    if root.im < 0.0 || (root.im == 0.0 && root.re < 0.0) {
+        root = -root;
+    }
+    if !finite_complex(root) {
+        return Err(MieError::NonFiniteCalculation);
+    }
+    Ok(root)
+}
+
+/// Select the passive wavenumber branch for exp(-i*omega*t).
+fn wavenumber(omega: f64, epsilon: Complex64) -> Result<Complex64, MieError> {
+    let root = passive_sqrt(epsilon)?;
+    let result = Complex64::new(omega, 0.0) * root;
+    if !finite_complex(result) {
+        return Err(MieError::NonFiniteCalculation);
+    }
+    Ok(result)
+}
+
+impl ConcentricCylinder {
+    /// Validate geometry and dimensional material inputs at one frequency.
+    pub fn validate(&self, omega: f64) -> Result<(), MieError> {
+        if self.layers.is_empty() {
+            return Err(MieError::EmptyLayers);
+        }
+        if !omega.is_finite() {
+            return Err(MieError::NonFinite { field: "omega" });
+        }
+        if omega <= 0.0 {
+            return Err(MieError::NonPositiveFrequency);
+        }
+        if !finite_complex(self.eps_ext) || !finite_complex(self.mu_ext) {
+            return Err(MieError::NonFinite {
+                field: "exterior material",
+            });
+        }
+        if self.eps_ext.norm_sqr() == 0.0 || self.mu_ext.norm_sqr() == 0.0 {
+            return Err(MieError::ZeroMaterialParameter);
+        }
+        let mut previous_radius = 0.0;
+        for layer in &self.layers {
+            if !layer.outer_radius.is_finite()
+                || layer.outer_radius <= 0.0
+                || layer.outer_radius <= previous_radius
+                || !finite_complex(layer.epsilon)
+                || !finite_complex(layer.mu)
+            {
+                return Err(MieError::InvalidRadii);
+            }
+            if layer.epsilon.norm_sqr() == 0.0 || layer.mu.norm_sqr() == 0.0 {
+                return Err(MieError::ZeroMaterialParameter);
+            }
+            previous_radius = layer.outer_radius;
+        }
+        if let Some(drude) = self.metal_drude {
+            drude.validate()?;
+            for layer in &self.layers {
+                if layer.material == MaterialRole::Metal {
+                    let epsilon = try_drude_epsilon(&drude, omega)?;
+                    if epsilon.norm_sqr() == 0.0 {
+                        return Err(MieError::ZeroMaterialParameter);
+                    }
+                }
+            }
+        }
+        Ok(())
     }
 
-    // Core wavenumber
-    let k_core = wavenumber(omega, geom.layers[0].epsilon);
-    let k_ext = wavenumber(omega, geom.eps_ext);
+    fn material_at(&self, layer: CylinderLayer, omega: f64) -> Result<CylinderLayer, MieError> {
+        if layer.material == MaterialRole::Metal
+            && let Some(drude) = self.metal_drude
+        {
+            return Ok(CylinderLayer {
+                epsilon: try_drude_epsilon(&drude, omega)?,
+                ..layer
+            });
+        }
+        Ok(layer)
+    }
+}
 
-    // Start with [A, B] = [1, 0] in the core (B=0 for regularity)
-    let mut a = Complex64::new(1.0, 0.0);
-    let mut b = Complex64::new(0.0, 0.0);
+/// Compute one complex Mie channel and retain interface diagnostics.
+pub fn try_scattering_channel(
+    geom: &ConcentricCylinder,
+    l: i32,
+    omega: f64,
+) -> Result<ChannelResult, MieError> {
+    geom.validate(omega)?;
+    let core = geom.material_at(geom.layers[0], omega)?;
+    let k_core = wavenumber(omega, core.epsilon)?;
+    let k_ext = wavenumber(omega, geom.eps_ext)?;
+    let mut coefficients = [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)];
+    let mut maximum_interface_residual = InterfaceContinuityResidual {
+        field_defect: Complex64::new(0.0, 0.0),
+        flux_defect: Complex64::new(0.0, 0.0),
+        max_component: 0.0,
+    };
+    let mut conditioning_indicator: f64 = 0.0;
 
-    // Transfer through each interface
-    let n_layers = geom.layers.len();
-    for i in 0..n_layers {
-        let rho = geom.layers[i].outer_radius;
-        let k_in = if i == 0 {
+    for index in 0..geom.layers.len() {
+        let inner = if index == 0 {
+            core
+        } else {
+            geom.material_at(geom.layers[index], omega)?
+        };
+        let outer = if index + 1 == geom.layers.len() {
+            CylinderLayer {
+                outer_radius: geom.layers[index].outer_radius,
+                epsilon: geom.eps_ext,
+                mu: geom.mu_ext,
+                material: MaterialRole::Generic,
+            }
+        } else {
+            geom.material_at(geom.layers[index + 1], omega)?
+        };
+        let k_in = if index == 0 {
             k_core
         } else {
-            wavenumber(omega, geom.layers[i].epsilon)
+            wavenumber(omega, inner.epsilon)?
         };
-        let k_out = if i == n_layers - 1 {
+        let k_out = if index + 1 == geom.layers.len() {
             k_ext
         } else {
-            wavenumber(omega, geom.layers[i + 1].epsilon)
+            wavenumber(omega, outer.epsilon)?
         };
-
-        let m = interface_matrix(l, k_in, k_out, rho);
-        let new_a = m[0][0] * a + m[0][1] * b;
-        let new_b = m[1][0] * a + m[1][1] * b;
-        a = new_a;
-        b = new_b;
+        let before = coefficients;
+        let (transfer, determinant_indicator) = interface_matrix(
+            l,
+            k_in,
+            MaterialParameters {
+                epsilon: inner.epsilon,
+                mu: inner.mu,
+            },
+            k_out,
+            MaterialParameters {
+                epsilon: outer.epsilon,
+                mu: outer.mu,
+            },
+            geom.polarization,
+            geom.layers[index].outer_radius,
+        )?;
+        coefficients = mat2_vec(&transfer, before);
+        let residual = state_residual(
+            l,
+            geom.layers[index].outer_radius,
+            RadialState {
+                coefficients: before,
+                k: k_in,
+                material: MaterialParameters {
+                    epsilon: inner.epsilon,
+                    mu: inner.mu,
+                },
+            },
+            RadialState {
+                coefficients,
+                k: k_out,
+                material: MaterialParameters {
+                    epsilon: outer.epsilon,
+                    mu: outer.mu,
+                },
+            },
+            geom.polarization,
+        )?;
+        if residual.max_component > maximum_interface_residual.max_component {
+            maximum_interface_residual = residual;
+        }
+        conditioning_indicator = conditioning_indicator.max(determinant_indicator);
     }
 
-    // Now [a, b] are the J_l / Y_l coefficients in the exterior.
-    // The total field in the exterior is a*J_l(k_ext*rho) + b*Y_l(k_ext*rho).
-    // Decompose into Hankel functions:
-    //   J = (H1 + H2)/2,  Y = (H1 - H2)/(2i)
-    // So the H1 coefficient = a/2 + b/(2i) = a/2 - i*b/2
-    //    the H2 coefficient = a/2 - b/(2i) = a/2 + i*b/2
-    //
-    // The incident plane wave (in 2D) decomposes as:
-    //   E_inc = sum_l i^l * J_l(k*rho) * e^{i*l*theta}
-    //         = sum_l i^l * [H1 + H2]/2
-    // So the incident H2 coefficient is i^l / 2 (incoming wave).
-    //
-    // The scattered field = total - incident. The scattering coefficient is defined by:
-    //   scattered H1 coefficient = S_l * (incident H1 coefficient)
-    // But in our normalization, total H1 = a/2 - i*b/2, incident H1 = i^l/2.
-    // S_l = (total_H1 - incident_H1) / incident_H1
-    //
-    // Actually, S_l is defined via: the TOTAL outgoing amplitude = (1 + 2*S_l) * incident_outgoing
-    // Wait -- let's use the standard convention more carefully.
-    //
-    // For an incident plane wave, the field in channel l has:
-    //   inc_l = J_l(k*rho) = [H1_l + H2_l]/2
-    // The TOTAL field must be: inc_l + scattered_l
-    // The scattered field is purely outgoing: scattered_l = S_l * H1_l (with some normalization)
-    //
-    // Our transfer matrix gives the TOTAL field coefficients [a, b] in J/Y basis
-    // when the core has amplitude 1. We need to normalize so that the incident
-    // wave has the correct amplitude.
-    //
-    // Actually, the simplest approach: The total field in exterior is
-    //   a*J_l + b*Y_l = [(a - i*b)/2]*H1 + [(a + i*b)/2]*H2
-    //
-    // For a homogeneous cylinder (no scatterer), the field is just J_l everywhere,
-    // so a=1, b=0, giving H1 coeff = H2 coeff = 1/2. The S_l = 0 case.
-    //
-    // For a scatterer, the ratio of outgoing to incoming amplitudes is:
-    //   (a - i*b) / (a + i*b)
-    // And S_l = [(a - i*b)/(a + i*b) - 1] / 2
-    //
-    // But wait: our [a,b] are the coefficients of the TOTAL field matching
-    // the core condition [1,0]. The actual amplitude is determined by matching
-    // to the incident wave. The incoming H2 part must equal the incident:
-    //   (a + i*b)/2 * normalization = i^l / 2
-    // So normalization = i^l / (a + i*b)
-    // And the outgoing H1 coefficient = (a - i*b)/2 * i^l / (a + i*b)
-    // The incident outgoing = i^l / 2
-    // So the TOTAL outgoing / incident outgoing = (a - i*b) / (a + i*b)
-    // This is R_l (the reflection coefficient).
-    // S_l = (R_l - 1)/2
-
-    let i_c = Complex64::i();
-    let h1_coeff = a - i_c * b; // proportional to outgoing
-    let h2_coeff = a + i_c * b; // proportional to incoming
-
-    let r_l = h1_coeff / h2_coeff;
-    (r_l - 1.0) / 2.0
+    let imaginary_unit = Complex64::i();
+    let outgoing = coefficients[0] - imaginary_unit * coefficients[1];
+    let incoming = coefficients[0] + imaginary_unit * coefficients[1];
+    if incoming.norm_sqr() == 0.0 {
+        return Err(MieError::SingularExteriorAmplitude { l });
+    }
+    let reflection = outgoing / incoming;
+    let scattering = (reflection - 1.0) / 2.0;
+    if !finite_complex(reflection) || !finite_complex(scattering) {
+        return Err(MieError::NonFiniteCalculation);
+    }
+    let cross_sections = ChannelCrossSections {
+        scattering: scattering.norm_sqr(),
+        absorption: -(scattering.re + scattering.norm_sqr()),
+        extinction: -scattering.re,
+    };
+    let absorption_from_flux = (1.0 - reflection.norm_sqr()) / 4.0;
+    let balance_defect =
+        cross_sections.extinction - cross_sections.scattering - cross_sections.absorption;
+    Ok(ChannelResult {
+        l,
+        s_l: scattering,
+        r_l: reflection,
+        cross_sections,
+        absorption_from_flux,
+        balance_defect,
+        interface_residual: maximum_interface_residual,
+        conditioning_indicator,
+    })
 }
 
-/// Full Mie scattering for all channels |l| <= l_max.
-pub fn mie_scattering(geom: &ConcentricCylinder, omega: f64, l_max: i32) -> MieResult {
-    let mut channels = Vec::new();
-    let mut c_sct = 0.0;
-    let mut c_abs = 0.0;
+/// Compute one complex Mie channel with compatibility return type.
+pub fn scattering_coefficient_l(geom: &ConcentricCylinder, l: i32, omega: f64) -> Complex64 {
+    try_scattering_channel(geom, l, omega)
+        .unwrap_or_else(|error| panic!("invalid cylindrical channel input: {error}"))
+        .s_l
+}
 
-    for l in -l_max..=l_max {
-        let s_l = scattering_coefficient_l(geom, l, omega);
-        let r_l = Complex64::new(1.0, 0.0) + 2.0 * s_l;
-        channels.push(ChannelResult { l, s_l, r_l });
-        c_sct += s_l.norm_sqr();
-        c_abs += -s_l.re;
+/// Compute all channels in the declared range with explicit validation.
+pub fn try_mie_scattering(
+    geom: &ConcentricCylinder,
+    omega: f64,
+    l_max: i32,
+) -> Result<MieResult, MieError> {
+    if l_max < 0 {
+        return Err(MieError::NegativeLMax);
     }
-
-    MieResult {
+    let mut channels = Vec::new();
+    let mut scattering = 0.0;
+    let mut absorption = 0.0;
+    let mut extinction = 0.0;
+    let mut absorption_from_flux = 0.0;
+    let mut absorption_representation_defect: f64 = 0.0;
+    let mut flux_representation_defect: f64 = 0.0;
+    for l in -l_max..=l_max {
+        let channel = try_scattering_channel(geom, l, omega)?;
+        scattering += channel.cross_sections.scattering;
+        absorption += channel.cross_sections.absorption;
+        extinction += channel.cross_sections.extinction;
+        absorption_from_flux += channel.absorption_from_flux;
+        absorption_representation_defect = absorption_representation_defect
+            .max((channel.cross_sections.absorption - channel.absorption_from_flux).abs());
+        flux_representation_defect = flux_representation_defect
+            .max((channel.absorption_from_flux - channel.cross_sections.absorption).abs());
+        channels.push(channel);
+    }
+    let cross_sections = CrossSections {
+        c_sct: scattering,
+        c_abs: absorption,
+        c_ext: extinction,
+    };
+    Ok(MieResult {
         channels,
-        cross_sections: CrossSections {
-            c_sct,
-            c_abs,
-            c_ext: c_sct + c_abs,
+        cross_sections,
+        observable_residuals: MieObservableResiduals {
+            balance_defect: extinction - scattering - absorption,
+            absorption_representation_defect,
+            flux_representation_defect: (absorption_from_flux - absorption)
+                .abs()
+                .max(flux_representation_defect),
         },
         omega,
-    }
+    })
 }
 
-/// Frequency sweep: compute Mie scattering at multiple frequencies.
-pub fn mie_sweep(geom: &ConcentricCylinder, omegas: &[f64], l_max: i32) -> Vec<MieResult> {
+/// Compute all channels with compatibility return type.
+pub fn mie_scattering(geom: &ConcentricCylinder, omega: f64, l_max: i32) -> MieResult {
+    try_mie_scattering(geom, omega, l_max)
+        .unwrap_or_else(|error| panic!("invalid cylindrical geometry: {error}"))
+}
+
+/// Compute a validated frequency sweep.
+pub fn try_mie_sweep(
+    geom: &ConcentricCylinder,
+    omegas: &[f64],
+    l_max: i32,
+) -> Result<Vec<MieResult>, MieError> {
     omegas
         .iter()
-        .map(|&omega| mie_scattering(geom, omega, l_max))
+        .map(|&omega| try_mie_scattering(geom, omega, l_max))
         .collect()
 }
 
-/// Build the MDM (Metal-Dielectric-Metal) geometry from Fig. 4 of Ruan & Fan.
-///
-/// Geometry: dielectric core (eps_d), metal shell, dielectric shell, in vacuum.
-/// Radii: rho1 (core), rho2 (metal outer), rho3 (dielectric outer).
-/// In natural units: lambda_p = 2*pi/omega_p (since c=1).
+/// Compute a compatibility frequency sweep.
+pub fn mie_sweep(geom: &ConcentricCylinder, omegas: &[f64], l_max: i32) -> Vec<MieResult> {
+    try_mie_sweep(geom, omegas, l_max)
+        .unwrap_or_else(|error| panic!("invalid cylindrical geometry: {error}"))
+}
+
+fn source_mdm_geometry(
+    drude: &FanoDrudeParams,
+    inner_radius_over_lambda_p: f64,
+    dielectric_radius_over_lambda_p: f64,
+    outer_radius_over_lambda_p: f64,
+) -> ConcentricCylinder {
+    let lambda_p = 2.0 * PI / drude.omega_p;
+    let dielectric = Complex64::new(12.96, 0.0);
+    let metal_placeholder = Complex64::new(1.0, 0.0);
+    ConcentricCylinder {
+        layers: vec![
+            CylinderLayer::nonmagnetic(
+                inner_radius_over_lambda_p * lambda_p,
+                metal_placeholder,
+                MaterialRole::Metal,
+            ),
+            CylinderLayer::nonmagnetic(
+                dielectric_radius_over_lambda_p * lambda_p,
+                dielectric,
+                MaterialRole::Dielectric,
+            ),
+            CylinderLayer::nonmagnetic(
+                outer_radius_over_lambda_p * lambda_p,
+                metal_placeholder,
+                MaterialRole::Metal,
+            ),
+        ],
+        eps_ext: Complex64::new(1.0, 0.0),
+        mu_ext: Complex64::new(1.0, 0.0),
+        polarization: CylindricalPolarization::HzTm,
+        metal_drude: Some(*drude),
+    }
+}
+
+/// Build the source Figure 4 metal-dielectric-metal geometry.
 pub fn ruan_fan_mdm_fig4(drude: &FanoDrudeParams) -> ConcentricCylinder {
-    let lp = 2.0 * PI / drude.omega_p;
-    let eps_d = Complex64::new(12.96, 0.0);
-    ConcentricCylinder {
-        layers: vec![
-            CylinderLayer {
-                outer_radius: 0.285 * lp,
-                epsilon: eps_d,
-            },
-            CylinderLayer {
-                outer_radius: 1.0 * lp,
-                epsilon: Complex64::new(-1.0, 0.0), // placeholder, computed per-freq
-            },
-            CylinderLayer {
-                outer_radius: 1.5 * lp,
-                epsilon: eps_d,
-            },
-        ],
-        eps_ext: Complex64::new(1.0, 0.0),
-    }
+    source_mdm_geometry(drude, 0.285, 1.0, 1.5)
 }
 
-/// Build the MDM geometry from Fig. 5 of Ruan & Fan.
+/// Build the source Figure 5 metal-dielectric-metal geometry.
 pub fn ruan_fan_mdm_fig5(drude: &FanoDrudeParams) -> ConcentricCylinder {
-    let lp = 2.0 * PI / drude.omega_p;
-    let eps_d = Complex64::new(12.96, 0.0);
-    ConcentricCylinder {
-        layers: vec![
-            CylinderLayer {
-                outer_radius: 0.36 * lp,
-                epsilon: eps_d,
-            },
-            CylinderLayer {
-                outer_radius: 0.73 * lp,
-                epsilon: Complex64::new(-1.0, 0.0), // placeholder
-            },
-            CylinderLayer {
-                outer_radius: 1.0 * lp,
-                epsilon: eps_d,
-            },
-        ],
-        eps_ext: Complex64::new(1.0, 0.0),
-    }
+    source_mdm_geometry(drude, 0.36, 0.73, 1.0)
 }
 
-/// Update metal layer epsilon at a given frequency using Drude model.
+/// Update one explicitly marked metal layer with a Drude value.
+pub fn try_update_metal_epsilon(
+    geom: &mut ConcentricCylinder,
+    metal_layer_idx: usize,
+    drude: &FanoDrudeParams,
+    omega: f64,
+) -> Result<(), MieError> {
+    if metal_layer_idx >= geom.layers.len() {
+        return Err(MieError::LayerIndexOutOfRange {
+            index: metal_layer_idx,
+        });
+    }
+    if geom.layers[metal_layer_idx].material != MaterialRole::Metal {
+        return Err(MieError::NotMetalLayer {
+            index: metal_layer_idx,
+        });
+    }
+    geom.layers[metal_layer_idx].epsilon = try_drude_epsilon(drude, omega)?;
+    Ok(())
+}
+
+/// Compatibility wrapper for updating one metal layer.
 pub fn update_metal_epsilon(
     geom: &mut ConcentricCylinder,
     metal_layer_idx: usize,
     drude: &FanoDrudeParams,
     omega: f64,
 ) {
-    geom.layers[metal_layer_idx].epsilon = drude_epsilon(drude, omega);
+    try_update_metal_epsilon(geom, metal_layer_idx, drude, omega)
+        .unwrap_or_else(|error| panic!("invalid metal update: {error}"));
 }
 
-/// Compute Mie scattering for MDM geometry with frequency-dependent Drude metal.
-///
-/// The metal layer epsilon is updated at each frequency before computing.
+/// Compute a source MDM sweep using all role-tagged metal layers.
 pub fn mie_mdm_sweep(
     base_geom: &ConcentricCylinder,
     metal_layer_idx: usize,
@@ -340,111 +662,108 @@ pub fn mie_mdm_sweep(
     omegas: &[f64],
     l_max: i32,
 ) -> Vec<MieResult> {
+    let has_role_tagged_metal = base_geom
+        .layers
+        .iter()
+        .any(|layer| layer.material == MaterialRole::Metal);
     omegas
         .iter()
         .map(|&omega| {
-            let mut geom = base_geom.clone();
-            update_metal_epsilon(&mut geom, metal_layer_idx, drude, omega);
-            mie_scattering(&geom, omega, l_max)
+            let mut geometry = base_geom.clone();
+            if has_role_tagged_metal {
+                geometry.metal_drude = Some(*drude);
+            } else {
+                update_metal_epsilon(&mut geometry, metal_layer_idx, drude, omega);
+            }
+            mie_scattering(&geometry, omega, l_max)
         })
         .collect()
 }
 
-/// Extract Fano channel parameters from a Mie frequency sweep for a given channel l.
+/// Heuristic characterization extractor retained outside validated paths.
 ///
-/// Finds the resonance frequency (peak of |S_l|^2), width (HWHM), and
-/// background phase from the sweep data. Returns a FanoChannel.
-pub fn extract_fano_params(omegas: &[f64], results: &[MieResult], l: i32) -> Option<FanoChannel> {
+/// The source uses complex roots and a uniform metallic-cylinder background.
+/// This function deliberately does not claim that method. It returns None when
+/// the sweep cannot supply a positive measured half width; it has no range
+/// based fallback.
+pub fn extract_fano_params(
+    omegas: &[f64],
+    results: &[MieResult],
+    l: i32,
+) -> Option<crate::fano_tcmt::FanoChannel> {
     if omegas.len() != results.len() || omegas.is_empty() {
         return None;
     }
-
-    // Find peak |S_l|^2
     let mut max_s2 = 0.0_f64;
-    let mut peak_idx = 0;
-    for (i, result) in results.iter().enumerate() {
-        if let Some(ch) = result.channels.iter().find(|c| c.l == l) {
-            let s2 = ch.s_l.norm_sqr();
-            if s2 > max_s2 {
-                max_s2 = s2;
-                peak_idx = i;
+    let mut peak_idx = None;
+    for (index, result) in results.iter().enumerate() {
+        if let Some(channel) = result.channels.iter().find(|channel| channel.l == l) {
+            let scattering = channel.s_l.norm_sqr();
+            if scattering > max_s2 {
+                max_s2 = scattering;
+                peak_idx = Some(index);
             }
         }
     }
-
+    let peak_idx = peak_idx?;
     let omega_0 = omegas[peak_idx];
-
-    // Find HWHM: first point where |S_l|^2 drops below max/2
     let half_max = max_s2 / 2.0;
-    let mut gamma = 0.0;
-    for i in (peak_idx + 1)..omegas.len() {
-        if let Some(ch) = results[i].channels.iter().find(|c| c.l == l)
-            && ch.s_l.norm_sqr() < half_max
-        {
-            // Linear interpolation
-            let prev_s2 = results[i - 1]
+    let mut gamma = None;
+    for index in (peak_idx + 1)..omegas.len() {
+        let current = results[index]
+            .channels
+            .iter()
+            .find(|channel| channel.l == l)?
+            .s_l
+            .norm_sqr();
+        if current < half_max {
+            let previous = results[index - 1]
                 .channels
                 .iter()
-                .find(|c| c.l == l)
-                .map(|c| c.s_l.norm_sqr())
-                .unwrap_or(max_s2);
-            let frac = (half_max - prev_s2) / (ch.s_l.norm_sqr() - prev_s2);
-            let omega_half = omegas[i - 1] + frac * (omegas[i] - omegas[i - 1]);
-            gamma = omega_half - omega_0;
+                .find(|channel| channel.l == l)?
+                .s_l
+                .norm_sqr();
+            let denominator = current - previous;
+            if denominator == 0.0 {
+                return None;
+            }
+            let fraction = (half_max - previous) / denominator;
+            let half_frequency = omegas[index - 1] + fraction * (omegas[index] - omegas[index - 1]);
+            let width = half_frequency - omega_0;
+            if width > 0.0 && width.is_finite() {
+                gamma = Some(width);
+            }
             break;
         }
     }
-
-    if gamma <= 0.0 {
-        // Fallback: use 1/4 of sweep range
-        gamma = (omegas.last()? - omegas.first()?) / 4.0;
-    }
-
-    // Extract background phase from R_l far from resonance
+    let gamma = gamma?;
     let far_idx = if peak_idx > omegas.len() / 2 {
         0
     } else {
         omegas.len() - 1
     };
-    let phi = results[far_idx]
+    let phase = results[far_idx]
         .channels
         .iter()
-        .find(|c| c.l == l)
-        .map(|c| c.r_l.arg())
-        .unwrap_or(0.0);
-
-    // Estimate gamma_0 from peak absorption
-    // At resonance: |S|^2_max = gamma^2 / (gamma + gamma_0)^2 for phi that maximizes it
-    // But more robustly: -Re(S) at resonance = gamma*gamma_0 / (gamma+gamma_0)^2
-    let abs_at_peak = results[peak_idx]
+        .find(|channel| channel.l == l)?
+        .r_l
+        .arg();
+    let peak_channel = results[peak_idx]
         .channels
         .iter()
-        .find(|c| c.l == l)
-        .map(|c| -c.s_l.re)
-        .unwrap_or(0.0);
-
-    // From absorption at resonance and known gamma, solve for gamma_0:
-    // abs = gamma*gamma_0 / (gamma+gamma_0)^2
-    // Let r = gamma_0/gamma, then abs = r/(1+r)^2
-    // => abs*(1+r)^2 = r => abs*r^2 + (2*abs-1)*r + abs = 0
-    let gamma_0 = if abs_at_peak > 1e-15 {
-        let a = abs_at_peak;
-        let disc = (2.0 * a - 1.0).powi(2) - 4.0 * a * a;
-        if disc >= 0.0 {
-            let r = (-(2.0 * a - 1.0) + disc.sqrt()) / (2.0 * a);
-            if r > 0.0 { r * gamma } else { 0.0 }
-        } else {
-            0.0
-        }
+        .find(|channel| channel.l == l)?;
+    let absorption = -(peak_channel.s_l.re + peak_channel.s_l.norm_sqr());
+    let ratio = if absorption > 0.0 {
+        let discriminant = (1.0 - 2.0 * absorption).max(0.0);
+        (1.0 - 2.0 * absorption + discriminant.sqrt()) / (2.0 * absorption)
     } else {
         0.0
     };
-
-    Some(FanoChannel {
+    Some(crate::fano_tcmt::FanoChannel {
         omega_0,
         gamma,
-        gamma_0,
-        phi,
+        gamma_0: ratio * gamma,
+        phi: phase,
         l,
     })
 }
@@ -452,190 +771,260 @@ pub fn extract_fano_params(omegas: &[f64], results: &[MieResult], l: i32) -> Opt
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::bessel::{hankel_1, hankel_1_prime};
+    use crate::bessel::{
+        bessel_j, bessel_j_prime, hankel_1, hankel_1_prime, hankel_2, hankel_2_prime,
+    };
+
+    fn geometry(layers: Vec<CylinderLayer>) -> ConcentricCylinder {
+        ConcentricCylinder {
+            layers,
+            eps_ext: Complex64::new(1.0, 0.0),
+            mu_ext: Complex64::new(1.0, 0.0),
+            polarization: CylindricalPolarization::HzTm,
+            metal_drude: None,
+        }
+    }
 
     #[test]
     fn homogeneous_no_scattering() {
-        // eps=1 everywhere => no scattering
-        let geom = ConcentricCylinder {
-            layers: vec![CylinderLayer {
-                outer_radius: 1.0,
-                epsilon: Complex64::new(1.0, 0.0),
-            }],
-            eps_ext: Complex64::new(1.0, 0.0),
-        };
+        let geom = geometry(vec![CylinderLayer::nonmagnetic(
+            1.0,
+            Complex64::new(1.0, 0.0),
+            MaterialRole::Dielectric,
+        )]);
         for l in 0..=3 {
-            let s = scattering_coefficient_l(&geom, l, 2.0);
-            assert!(
-                s.norm() < 1e-10,
-                "S_{} should be 0 for homogeneous medium, got |S|={}",
-                l,
-                s.norm()
-            );
+            let result = try_scattering_channel(&geom, l, 2.0).expect("valid homogeneous layer");
+            assert!(result.s_l.norm() < 1e-10);
+            assert!(result.interface_residual.max_component < 1e-10);
         }
     }
 
     #[test]
-    fn single_dielectric_exact() {
-        // Single dielectric cylinder: compare against direct formula.
-        // For a single layer with eps_d and radius a in vacuum:
-        //   S_l = [sqrt(eps)*J_l'(k*a)*J_l(k0*a) - J_l(k*a)*J_l'(k0*a)]
-        //       / [J_l(k*a)*H1_l'(k0*a) - sqrt(eps)*J_l'(k*a)*H1_l(k0*a)]
-        //
-        // where k = omega*sqrt(eps), k0 = omega
-        let eps = Complex64::new(4.0, 0.0);
+    fn single_hz_dielectric_matches_direct_formula() {
+        let epsilon = Complex64::new(4.0, 0.0);
         let radius = 1.0;
         let omega = 2.0;
-        let geom = ConcentricCylinder {
-            layers: vec![CylinderLayer {
-                outer_radius: radius,
-                epsilon: eps,
-            }],
-            eps_ext: Complex64::new(1.0, 0.0),
-        };
-
+        let geom = geometry(vec![CylinderLayer::nonmagnetic(
+            radius,
+            epsilon,
+            MaterialRole::Dielectric,
+        )]);
         let k0 = Complex64::new(omega, 0.0);
-        let k = k0 * eps.sqrt();
+        let k = k0 * epsilon.sqrt();
         let x0 = k0 * radius;
         let x = k * radius;
-
+        let q_inside = k / epsilon;
+        let q_outside = k0;
         for l in 0..=2 {
-            let s_mie = scattering_coefficient_l(&geom, l, omega);
-
-            // Direct formula
-            let sqrt_eps = eps.sqrt();
-            let num = sqrt_eps * bessel_j_prime(l, x) * bessel_j(l, x0)
-                - bessel_j(l, x) * bessel_j_prime(l, x0);
-            let den = bessel_j(l, x) * hankel_1_prime(l, x0)
-                - sqrt_eps * bessel_j_prime(l, x) * hankel_1(l, x0);
-            // S_l = num/den, but sign convention: check
-            // The standard 2D Mie coefficient is:
-            //   a_l = num / den  (this is our S_l)
-            let s_direct = num / den;
-
-            let diff = (s_mie - s_direct).norm();
-            assert!(
-                diff < 1e-8,
-                "Single dielectric l={}: transfer matrix S={:.6}, direct S={:.6}, diff={:.2e}",
-                l,
-                s_mie,
-                s_direct,
-                diff
-            );
+            let result = try_scattering_channel(&geom, l, omega).expect("valid dielectric");
+            let numerator = q_outside * bessel_j(l, x) * hankel_2_prime(l, x0)
+                - q_inside * bessel_j_prime(l, x) * hankel_2(l, x0);
+            let denominator = q_inside * bessel_j_prime(l, x) * hankel_1(l, x0)
+                - q_outside * bessel_j(l, x) * hankel_1_prime(l, x0);
+            let direct_reflection = numerator / denominator;
+            let direct_scattering = (direct_reflection - 1.0) / 2.0;
+            assert!((result.s_l - direct_scattering).norm() < 1e-8);
         }
     }
 
     #[test]
-    fn energy_conservation_lossless() {
-        // For lossless (real eps) scatterer: |R_l| = 1 for each channel
-        let geom = ConcentricCylinder {
-            layers: vec![CylinderLayer {
-                outer_radius: 0.5,
-                epsilon: Complex64::new(9.0, 0.0),
-            }],
-            eps_ext: Complex64::new(1.0, 0.0),
-        };
-
-        let result = mie_scattering(&geom, 3.0, 3);
-        for ch in &result.channels {
-            let r_norm = ch.r_l.norm();
-            assert!(
-                (r_norm - 1.0).abs() < 1e-8,
-                "Lossless: |R_{}| should be 1.0, got {}",
-                ch.l,
-                r_norm
-            );
+    fn lossless_channel_is_flux_normalized() {
+        let geom = geometry(vec![CylinderLayer::nonmagnetic(
+            0.5,
+            Complex64::new(9.0, 0.0),
+            MaterialRole::Dielectric,
+        )]);
+        let result = try_mie_scattering(&geom, 3.0, 3).expect("valid lossless geometry");
+        for channel in &result.channels {
+            assert!((channel.r_l.norm() - 1.0).abs() < 1e-8);
+            assert!(channel.absorption_from_flux.abs() < 1e-8);
+            assert!(channel.interface_residual.max_component < 1e-8);
         }
     }
 
     #[test]
-    fn optical_theorem_numerical() {
-        // C_ext = C_sct + C_abs
-        let geom = ConcentricCylinder {
-            layers: vec![CylinderLayer {
-                outer_radius: 0.8,
-                epsilon: Complex64::new(4.0, 0.5),
-            }],
-            eps_ext: Complex64::new(1.0, 0.0),
-        };
-
-        let result = mie_scattering(&geom, 2.5, 4);
-        let cs = &result.cross_sections;
-        assert!(
-            (cs.c_ext - cs.c_sct - cs.c_abs).abs() < 1e-12,
-            "Optical theorem: C_ext={}, C_sct+C_abs={}",
-            cs.c_ext,
-            cs.c_sct + cs.c_abs
-        );
+    fn passive_channel_has_nonnegative_absorption() {
+        let geom = geometry(vec![CylinderLayer::nonmagnetic(
+            0.8,
+            Complex64::new(4.0, 0.5),
+            MaterialRole::Dielectric,
+        )]);
+        let result = try_mie_scattering(&geom, 2.5, 4).expect("valid passive geometry");
+        for channel in &result.channels {
+            assert!(channel.r_l.norm() <= 1.0 + 1e-8);
+            assert!(channel.cross_sections.absorption >= -1e-10);
+            assert!(channel.absorption_from_flux >= -1e-10);
+        }
+        assert!(result.observable_residuals.balance_defect.abs() < 1e-12);
     }
 
     #[test]
     fn channel_symmetry() {
-        // For a cylindrically symmetric scatterer: S_{-l} = S_l
-        let geom = ConcentricCylinder {
-            layers: vec![
-                CylinderLayer {
-                    outer_radius: 0.5,
-                    epsilon: Complex64::new(4.0, 0.1),
-                },
-                CylinderLayer {
-                    outer_radius: 1.0,
-                    epsilon: Complex64::new(2.0, 0.0),
-                },
-            ],
-            eps_ext: Complex64::new(1.0, 0.0),
-        };
-
+        let geom = geometry(vec![
+            CylinderLayer::nonmagnetic(0.5, Complex64::new(4.0, 0.1), MaterialRole::Dielectric),
+            CylinderLayer::nonmagnetic(1.0, Complex64::new(2.0, 0.0), MaterialRole::Dielectric),
+        ]);
         for l in 1..=3 {
-            let s_pos = scattering_coefficient_l(&geom, l, 2.0);
-            let s_neg = scattering_coefficient_l(&geom, -l, 2.0);
-            let diff = (s_pos - s_neg).norm();
-            assert!(diff < 1e-10, "S_{} != S_{}: diff={}", l, -l, diff);
+            let positive = scattering_coefficient_l(&geom, l, 2.0);
+            let negative = scattering_coefficient_l(&geom, -l, 2.0);
+            assert!((positive - negative).norm() < 1e-10);
         }
     }
 
     #[test]
-    fn mdm_resonance_near_paper_value() {
-        // The MDM geometry from Fig. 4 should have a resonance near 0.155*omega_p.
-        // We do a coarse sweep to verify a peak exists in the right neighborhood.
+    fn source_geometry_has_metal_dielectric_metal_order() {
+        let drude = FanoDrudeParams {
+            omega_p: 1.0,
+            gamma_d: 0.001,
+        };
+        let geometry = ruan_fan_mdm_fig4(&drude);
+        assert_eq!(geometry.polarization, CylindricalPolarization::HzTm);
+        assert_eq!(geometry.layers[0].material, MaterialRole::Metal);
+        assert_eq!(geometry.layers[1].material, MaterialRole::Dielectric);
+        assert_eq!(geometry.layers[2].material, MaterialRole::Metal);
+        assert_eq!(geometry.layers[1].epsilon, Complex64::new(12.96, 0.0));
+    }
+
+    #[test]
+    fn material_order_mutation_changes_the_channel_response() {
+        let drude = FanoDrudeParams {
+            omega_p: 1.0,
+            gamma_d: 0.001,
+        };
+        let source_geometry = ruan_fan_mdm_fig4(&drude);
+        let source =
+            try_scattering_channel(&source_geometry, 0, 0.1552).expect("valid source MDM geometry");
+        let mut swapped_geometry = source_geometry.clone();
+        swapped_geometry.layers[0].material = MaterialRole::Dielectric;
+        swapped_geometry.layers[0].epsilon = Complex64::new(12.96, 0.0);
+        swapped_geometry.layers[1].material = MaterialRole::Metal;
+        swapped_geometry.layers[1].epsilon = Complex64::new(1.0, 0.0);
+        let swapped =
+            try_scattering_channel(&swapped_geometry, 0, 0.1552).expect("valid mutated geometry");
+        assert!((source.s_l - swapped.s_l).norm() > 1e-6);
+    }
+
+    #[test]
+    fn source_mdm_resonance_has_nonzero_channel_response() {
         let drude = FanoDrudeParams {
             omega_p: 1.0,
             gamma_d: 0.0,
         };
-        let base_geom = ruan_fan_mdm_fig4(&drude);
-
-        let n_pts = 100;
-        let omega_min = 0.14;
-        let omega_max = 0.17;
-        let omegas: Vec<f64> = (0..n_pts)
-            .map(|i| omega_min + (omega_max - omega_min) * i as f64 / (n_pts - 1) as f64)
+        let geometry = ruan_fan_mdm_fig4(&drude);
+        let omegas: Vec<f64> = (0..25)
+            .map(|index| 0.14 + 0.03 * index as f64 / 24.0)
             .collect();
+        let results = mie_mdm_sweep(&geometry, 1, &drude, &omegas, 0);
+        let maximum = results
+            .iter()
+            .flat_map(|result| result.channels.iter())
+            .map(|channel| channel.s_l.norm_sqr())
+            .fold(0.0, f64::max);
+        assert!(maximum > 1e-6);
+    }
 
-        let results = mie_mdm_sweep(&base_geom, 1, &drude, &omegas, 0);
-
-        // Find peak |S_0|^2
-        let mut max_s2 = 0.0_f64;
-        let mut peak_omega = 0.0;
-        for (i, result) in results.iter().enumerate() {
-            if let Some(ch) = result.channels.iter().find(|c| c.l == 0) {
-                let s2 = ch.s_l.norm_sqr();
-                if s2 > max_s2 {
-                    max_s2 = s2;
-                    peak_omega = omegas[i];
-                }
+    #[test]
+    fn source_mdm_lossless_channels_are_flux_normalized() {
+        let drude = FanoDrudeParams {
+            omega_p: 1.0,
+            gamma_d: 0.0,
+        };
+        let geometry = ruan_fan_mdm_fig4(&drude);
+        for omega in [0.145, 0.1552, 0.17] {
+            let result = try_mie_scattering(&geometry, omega, 2).expect("valid lossless MDM");
+            for channel in result.channels {
+                assert!((channel.r_l.norm() - 1.0).abs() < 1e-7);
+                assert!(channel.cross_sections.absorption.abs() < 1e-7);
             }
         }
+    }
 
-        // Paper says resonance at ~0.1552*omega_p
+    #[test]
+    fn source_mdm_passive_channels_are_contractive() {
+        let drude = FanoDrudeParams {
+            omega_p: 1.0,
+            gamma_d: 0.001,
+        };
+        let geometry = ruan_fan_mdm_fig5(&drude);
+        for omega in [0.22, 0.226, 0.233] {
+            let result = try_mie_scattering(&geometry, omega, 2).expect("valid passive MDM");
+            for channel in result.channels {
+                assert!(channel.r_l.norm() <= 1.0 + 1e-7);
+                assert!(channel.cross_sections.absorption >= -1e-8);
+                assert!(channel.absorption_from_flux >= -1e-8);
+            }
+        }
+    }
+
+    #[test]
+    fn interface_polarization_changes_weighted_state() {
+        let layers = vec![CylinderLayer {
+            outer_radius: 0.8,
+            epsilon: Complex64::new(4.0, 0.0),
+            mu: Complex64::new(2.0, 0.0),
+            material: MaterialRole::Dielectric,
+        }];
+        let hz = ConcentricCylinder {
+            layers: layers.clone(),
+            eps_ext: Complex64::new(1.0, 0.0),
+            mu_ext: Complex64::new(1.0, 0.0),
+            polarization: CylindricalPolarization::HzTm,
+            metal_drude: None,
+        };
+        let ez = ConcentricCylinder {
+            polarization: CylindricalPolarization::EzTe,
+            ..hz.clone()
+        };
+        let hz_result = try_scattering_channel(&hz, 0, 2.5).expect("valid Hz geometry");
+        let ez_result = try_scattering_channel(&ez, 0, 2.5).expect("valid Ez geometry");
+        assert!((hz_result.s_l - ez_result.s_l).norm() > 1e-8);
+        assert!(hz_result.interface_residual.max_component < 1e-8);
+        assert!(ez_result.interface_residual.max_component < 1e-8);
+    }
+
+    #[test]
+    fn passive_branch_has_nonnegative_imaginary_wavenumber() {
+        let root = passive_sqrt(Complex64::new(-3.0, 0.2)).expect("valid passive material");
+        assert!(root.im >= 0.0);
+        assert!(root.re >= 0.0);
+    }
+
+    #[test]
+    fn invalid_geometry_is_rejected_without_clamping() {
+        let invalid = geometry(vec![CylinderLayer::nonmagnetic(
+            0.0,
+            Complex64::new(1.0, 0.0),
+            MaterialRole::Dielectric,
+        )]);
+        assert!(matches!(
+            try_mie_scattering(&invalid, 1.0, 0),
+            Err(MieError::InvalidRadii)
+        ));
+    }
+
+    #[test]
+    fn old_extinction_bookkeeping_is_not_the_observable() {
+        let geom = geometry(vec![CylinderLayer::nonmagnetic(
+            0.8,
+            Complex64::new(4.0, 0.5),
+            MaterialRole::Dielectric,
+        )]);
+        let result = try_mie_scattering(&geom, 2.5, 2).expect("valid passive geometry");
+        let old_absorption: f64 = result.channels.iter().map(|channel| -channel.s_l.re).sum();
+        assert!((old_absorption - result.cross_sections.c_abs).abs() > 1e-8);
         assert!(
-            (peak_omega - 0.155).abs() < 0.01,
-            "MDM resonance expected near 0.155*wp, found at {}",
-            peak_omega
+            (result.cross_sections.c_ext
+                - result.cross_sections.c_sct
+                - result.cross_sections.c_abs)
+                .abs()
+                < 1e-12
         );
-        assert!(
-            max_s2 > 0.1,
-            "MDM should show significant scattering at resonance, got |S|^2={}",
-            max_s2
-        );
+    }
+
+    #[test]
+    fn direct_hankel_basis_is_referenced_in_tests() {
+        let argument = Complex64::new(2.0, 0.3);
+        let value = hankel_1(0, argument) + hankel_2(0, argument);
+        assert!((value - 2.0 * bessel_j(0, argument)).norm() < 1e-10);
     }
 }
