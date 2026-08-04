@@ -1,0 +1,16 @@
+[transition]
+transition_key = "c-1644-ruan-fan-time-reversal-equations"
+source_claim_id = "C-1644"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+exercised_falsifier = "Perturb kappa, eta, or B independently and compare each source residual for |eta|^2 = 2*gamma, kappa*eta* = 2*gamma, B*eta* + eta = 0, and kappa = eta."
+proposed_claim_status = "Verified"
+rationale = "The four source coupling equations remain separate predicates, pass on the declared coupling grid, and each declared mutation exceeds its detection threshold independently of the lossless |R_l| predicate."
+unresolved_assumptions = ["The tested time-reversal construction remains the reduced single-channel source model."]
+actor = "p2a-channel-oracle-campaign"
+reason = "Record explicit source time-reversal equations separately from unitarity."
+transition_timestamp = "2026-08-04T20:25:00Z"
+expected_source_state_sha256 = "449e4d59ffc834bf4a45ad2fac362476d48dcaf49a60fc55929b67beabdd84bd"
+expected_claim_id_max = 1651

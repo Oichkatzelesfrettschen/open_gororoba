@@ -1,0 +1,230 @@
+format = "p2a-optics-call-map-v2"
+captured_date = "2026-08-04"
+scope = "optics_core Ruan-Fan channel, cylindrical Mie, and Bessel paths"
+semantic_limit = "ctags, cscope, and cflow provide lexical structure; executed Rust tests provide the semantic and numerical checks"
+
+[tools]
+ctags_command = "ctags --languages=Rust --output-format=json --fields=+n -L sources.list"
+ctags_version = "Universal Ctags 6.2.1"
+ctags_output_sha256 = "185523c04bce9061b486229e1ba558bec2dc115c0ebc835134442af853e75508"
+cscope_command = "cscope -b -q -f optics.cs -i sources.list"
+cscope_version = "cscope 15.9"
+cscope_database_sha256 = "fc01edfd3c8bfa00c0548ed4fb018e893c938cf2f0080f99cb1953b79114dc9a"
+cflow_command = "xargs cflow --format=posix --omit-arguments < sources.list"
+cflow_version = "GNU cflow 1.8"
+cflow_output_sha256 = "b3eb87639990eee7a2009cf6bbf5b33f886eaf5673876aaec35e2aec2a5a473d"
+cflow_diagnostic_sha256 = "e68341cc6468f0434cbddf2b66f6c4f855efa61c808d623bef8149c3a89c8c35"
+cflow_exit_code = 0
+source_list_sha256 = "4893113b138ea43e3242b302fecde9bcfbe4c2922f7c9690f977b4ac5c8f080e"
+cflow_diagnostic = "Rust syntax causes duplicate-name diagnostics and partial lexical roots; the typed call chains below are reviewed against cscope and Rust source."
+cscope_diagnostic = "Rust declarations are indexed lexically; unresolved Rust symbol queries are retained as empty results rather than inferred call edges."
+
+[[source_file]]
+path = "crates/optics_core/src/lib.rs"
+sha256 = "0da58f1e4517daeb15aad29449fb93a570c862c15e8f1832c407a4d66a640bf9"
+
+[[source_file]]
+path = "crates/optics_core/src/fano_tcmt.rs"
+sha256 = "54c5dc72cab2eaa3b0b3662e64e545b957545ee1e82acf78430839554a61f44f"
+
+[[source_file]]
+path = "crates/optics_core/src/mie_cylinder.rs"
+sha256 = "8f3c413ba6bd8b5af88101432ec431a40a44b1f9ed93a3e1d61548b9efc3bb60"
+
+[[source_file]]
+path = "crates/optics_core/src/bessel.rs"
+sha256 = "32421ea91835c8b3064043c34cf3e92247f893a3aeda4d95401754d43bdf8fdf"
+
+[[source_file]]
+path = "crates/optics_core/src/bin/p2a_legacy_optics_characterization.rs"
+sha256 = "4fb91b668fd7fc638fae1a904db8b7a55733616197e59a11741f079a9eb9b302"
+
+[[source_file]]
+path = "crates/optics_core/src/bin/p2a_channel_oracle_evidence.rs"
+sha256 = "071e437d39b3a9958325cf056b67c646f13f8776c2ba712957773848546c675c"
+
+[[call_chain]]
+name = "dimensionless_scattering"
+steps = [
+    "normalized_fano_c_sct",
+    "evaluate_dimensionless_channel",
+    "evaluate_channel",
+    "try_fano_reflection",
+    "ChannelCrossSections::scattering = abs(S)^2"
+]
+executed_controls = [
+    "lossless_phi_zero_lorentzian",
+    "lossless_phi_pi_antiresonance",
+    "absorption_is_phase_independent_and_even"
+]
+
+[[call_chain]]
+name = "independent_fano_observables"
+steps = [
+    "fano_cross_sections_normalized",
+    "evaluate_channel",
+    "try_fano_reflection",
+    "S-based absorption",
+    "R-flux absorption",
+    "closed-form absorption",
+    "extinction = -Re(S)",
+    "balance and representation defects"
+]
+executed_controls = [
+    "equal_damping_peak_absorption_is_one_quarter",
+    "independent_observables_satisfy_balance",
+    "old_absorption_oracle_is_detected"
+]
+
+[[call_chain]]
+name = "source_coupling_constraints"
+steps = [
+    "evaluate_source_constraints",
+    "try_fano_reflection",
+    "lossless flux defect",
+    "passive contractivity excess",
+    "eta norm residual",
+    "time-reversal drive residual",
+    "time-reversal background residual",
+    "reciprocal coupling residual"
+]
+executed_controls = ["source_constraints_are_separate_predicates"]
+
+[[call_chain]]
+name = "mie_channel"
+steps = [
+    "try_scattering_channel",
+    "ConcentricCylinder::validate",
+    "ConcentricCylinder::material_at",
+    "try_drude_epsilon for role-tagged metal",
+    "wavenumber",
+    "passive_sqrt",
+    "interface_matrix",
+    "state_matrix",
+    "bessel_j, bessel_y, and derivatives",
+    "state_residual",
+    "H^(1)/H^(2) decomposition",
+    "R_l and S_l",
+    "per-channel observables and residuals"
+]
+executed_controls = [
+    "homogeneous_no_scattering",
+    "single_hz_dielectric_matches_direct_formula",
+    "lossless_channel_is_flux_normalized",
+    "passive_channel_has_nonnegative_absorption",
+    "interface_polarization_changes_weighted_state"
+]
+
+[[call_chain]]
+name = "mie_aggregate"
+steps = [
+    "mie_scattering",
+    "try_mie_scattering",
+    "try_scattering_channel for l in -l_max..=l_max",
+    "independent channel sums",
+    "aggregate balance and flux defects"
+]
+executed_controls = [
+    "old_extinction_bookkeeping_is_not_the_observable",
+    "source_mdm_lossless_channels_are_flux_normalized",
+    "source_mdm_passive_channels_are_contractive"
+]
+
+[[call_chain]]
+name = "source_mdm_sweep"
+steps = [
+    "mie_mdm_sweep",
+    "role-tagged Metal layer detection",
+    "ConcentricCylinder::metal_drude assignment",
+    "mie_scattering",
+    "try_mie_scattering"
+]
+executed_controls = [
+    "source_geometry_has_metal_dielectric_metal_order",
+    "source_mdm_resonance_has_nonzero_channel_response"
+]
+
+[[call_chain]]
+name = "legacy_capture"
+steps = [
+    "p2a_legacy_optics_characterization::main",
+    "fano_reflection and fano_cross_sections_normalized",
+    "ruan_fan_mdm_fig4 and ruan_fan_mdm_fig5",
+    "mie_mdm_sweep",
+    "extract_fano_params",
+    "write characterization artifact"
+]
+capture_artifact = "data/output/audit/2026-08-04/p2a-legacy-optics-characterization.toml"
+capture_status = "generated before the source-faithful implementation edits"
+
+[[call_chain]]
+name = "independent_evidence_runner"
+steps = [
+    "p2a_channel_oracle_evidence::main",
+    "independent_channel: literal R_l, S_l, scattering, absorption, and extinction equations",
+    "evaluate_dimensionless_channel: production analytical path",
+    "component-wise comparison over the frozen 144-row grid",
+    "direct_single_hz_reference: literal single-cylinder boundary equation",
+    "try_scattering_channel: production Mie path",
+    "source-window Mie channels and interface residual retention",
+    "mutation controls and heuristic extractor quarantine"
+]
+executed_controls = [
+    "all_mutation_controls_detected",
+    "source_parameter_fit_not_executed",
+    "held_out_paper_comparison_not_executed"
+]
+capture_artifact = "data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml"
+capture_status = "generated after d7f7f5bf independent evidence runner commit"
+
+[[cscope_query]]
+symbol = "evaluate_channel"
+definition = "crates/optics_core/src/fano_tcmt.rs:317"
+call_sites = ["evaluate_dimensionless_channel", "try_multi_channel_evaluations", "fano_cross_sections_normalized", "p2a_channel_oracle_evidence::write_fano_grid", "focused tests"]
+
+[[cscope_query]]
+symbol = "try_scattering_channel"
+definition = "crates/optics_core/src/mie_cylinder.rs:385"
+call_sites = ["scattering_coefficient_l", "try_mie_scattering", "p2a_channel_oracle_evidence::write_mie_reference_controls", "p2a_channel_oracle_evidence::write_mie_mutations", "focused Mie tests"]
+
+[[cscope_query]]
+symbol = "try_mie_scattering"
+definition = "crates/optics_core/src/mie_cylinder.rs:511"
+call_sites = ["mie_scattering", "try_mie_sweep", "p2a_channel_oracle_evidence::write_mie_rows", "p2a_channel_oracle_evidence::write_heuristic_quarantine", "focused Mie tests"]
+
+[[cscope_query]]
+symbol = "state_matrix"
+definition = "crates/optics_core/src/mie_cylinder.rs:222"
+call_sites = ["interface_matrix", "state_residual"]
+
+[[cscope_query]]
+symbol = "bessel_j"
+definition = "crates/optics_core/src/bessel.rs:32"
+call_sites = ["bessel derivatives", "Hankel functions", "state_matrix", "direct reference tests"]
+
+[[cscope_query]]
+symbol = "independent_channel"
+definition = "crates/optics_core/src/bin/p2a_channel_oracle_evidence.rs:52"
+call_sites = ["write_fano_grid", "write_channel_mutations"]
+cscope_result = "not indexed as a Rust definition by cscope 15.9; edge reviewed in source and ctags output"
+
+[[cscope_query]]
+symbol = "write_fano_grid"
+definition = "crates/optics_core/src/bin/p2a_channel_oracle_evidence.rs:94"
+call_sites = ["main"]
+cscope_result = "not indexed as a Rust definition by cscope 15.9; edge reviewed in source and ctags output"
+
+[[instrumented_capture]]
+command = "CARGO_TARGET_DIR=.cache/exp-p2a-target cargo test -p optics_core --lib"
+result = "154 passed, 0 failed"
+semantic_role = "executed end-to-end crate control"
+
+[[instrumented_capture]]
+command = "CARGO_TARGET_DIR=.cache/exp-p2a-target cargo test -p optics_core bessel::tests::independent_scipy_fixtures_cover_source_domain --lib"
+result = "1 passed, 0 failed"
+semantic_role = "independent special-function reference control"
+
+[[instrumented_capture]]
+command = "CARGO_TARGET_DIR=.cache/exp-p2a-target cargo run -p optics_core --bin p2a-channel-oracle-evidence -- data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+result = "144 analytical rows, 9 source-constraint rows, 60 Mie channel rows, all mutation controls detected"
+semantic_role = "independent component-level oracle and retained P2A evidence"

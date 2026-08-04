@@ -1,0 +1,107 @@
+format = "experiment-manifest-v1"
+
+[experiment]
+id = "E-240"
+status = "completed"
+status_token = "COMPLETED"
+title = "Ruan-Fan source-faithful channel and cylindrical-Mie oracle repair"
+claim_refs = ["C-848", "C-1640", "C-1641", "C-1642", "C-1643", "C-1644"]
+reproducibility_class = "numeric_close"
+code_commit_sha = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+actual_timestamp = "2026-08-04T20:13:12Z"
+run_command = "CARGO_TARGET_DIR=.cache/exp-p2a-target cargo run -p optics_core --bin p2a-channel-oracle-evidence -- data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+run_command_sha256 = "7313daf2c58e3c16360f5d9b2afe75f3059de362d94dfc1168bfa93e4f263f22"
+toolchain = "rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30)"
+features = []
+hardware = "deterministic CPU execution on x86_64 Linux"
+randomness_mode = "none"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/Cargo.toml"
+sha256 = "577f310302df7eff52cb17c03f91ccfb979c4fdb92e1bae2e52cab14e5438e70"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/fano_tcmt.rs"
+sha256 = "54c5dc72cab2eaa3b0b3662e64e545b957545ee1e82acf78430839554a61f44f"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/mie_cylinder.rs"
+sha256 = "8f3c413ba6bd8b5af88101432ec431a40a44b1f9ed93a3e1d61548b9efc3bb60"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/bessel.rs"
+sha256 = "32421ea91835c8b3064043c34cf3e92247f893a3aeda4d95401754d43bdf8fdf"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/bin/p2a_channel_oracle_evidence.rs"
+sha256 = "071e437d39b3a9958325cf056b67c646f13f8776c2ba712957773848546c675c"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/ruan-fan-source-equation-figure-ledger.toml"
+sha256 = "fb305aaa09ab335408d8c3f61bade106072d88bc0cc218267c824be3287a7446"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/bessel-independent-fixtures.toml"
+sha256 = "b8553e160cf1e085c4c7217f09be5b05801285f45ad9ac32e02283b81d86543e"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/p2a-bind-baseline.toml"
+sha256 = "27296acf4c5cddf4beaecff33101bb3ff8deb17247fc2cea9a598876ad358abf"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"
+path = "data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml"
+sha256 = "ef52e760098f558993c3a4d373a051faf4589e1652b36359d7c21970dcb588a2"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"
+path = "data/output/audit/2026-08-04/p2a-optics-call-map.toml"
+sha256 = "2b35d25c438616a45f2d12161989e876e4a8bf25fd9d521914f4a4b376b165f3"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"
+path = "data/output/audit/2026-08-04/p2a-legacy-optics-characterization.toml"
+sha256 = "c51af97d8240147e21924394bfcc41ebf7d10b0bb6f474673e1bb5c1e077c6e7"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"
+path = "data/output/audit/2026-08-04/ruan-fan-source-equation-figure-ledger.toml"
+sha256 = "fb305aaa09ab335408d8c3f61bade106072d88bc0cc218267c824be3287a7446"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"
+path = "data/output/audit/2026-08-04/bessel-independent-fixtures.toml"
+sha256 = "b8553e160cf1e085c4c7217f09be5b05801285f45ad9ac32e02283b81d86543e"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"
+path = "data/output/audit/2026-08-04/p2a-bind-baseline.toml"
+sha256 = "27296acf4c5cddf4beaecff33101bb3ff8deb17247fc2cea9a598876ad358abf"
+
+[[experiment.numeric_tolerance]]
+output_id = "p2a-ruan-fan-channel-oracle-evidence.toml"
+column = "analytical component comparison"
+rel_tol = 0.0
+abs_tol = 1e-12
+
+[[experiment.numeric_tolerance]]
+output_id = "p2a-ruan-fan-channel-oracle-evidence.toml"
+column = "direct Mie complex comparison"
+rel_tol = 0.0
+abs_tol = 1e-8
+
+[[experiment.numeric_tolerance]]
+output_id = "p2a-ruan-fan-channel-oracle-evidence.toml"
+column = "interface residual"
+rel_tol = 0.0
+abs_tol = 1e-8
+
+[provenance]
+source_pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_pdf = "arXiv:0909.3323v2"
+manifest_role = "P2A oracle repair; no parameter fitting or held-out paper comparison"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"

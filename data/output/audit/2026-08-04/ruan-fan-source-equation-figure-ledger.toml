@@ -1,0 +1,427 @@
+format = "ruan-fan-source-equation-figure-ledger-v1"
+source_id = "0909.3323"
+authors = "Zhichao Ruan and Shanhui Fan"
+title = "Temporal coupled-mode theory for Fano resonance in light scattering by a single obstacle"
+source_url = "https://arxiv.org/abs/0909.3323"
+pdf_url = "https://arxiv.org/pdf/0909.3323v2"
+pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+tex_source_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+figure3_capture_path = "/var/tmp/open_gororoba-p2a-source-ywcx0q/Fano-Resonator.png"
+figure3_capture_sha256 = "e9b3f4e38c90c14a73880552cc8fcdac2b1ae4c23057669f929e9d507e794e9a"
+tex_source_files = ["Fano_Scattering.tex", "Fano-Resonator.eps", "FanoTest.eps"]
+source_disposition = "resolved from the canonical arXiv v2 PDF and source archive"
+source_page_numbering = "printed page numbers in the PDF"
+
+[conventions]
+time_dependence = "exp(-i*omega*t)"
+incoming_wave = "H^(2)"
+outgoing_wave = "H^(1)"
+tm_polarization = "H_z is the nonzero longitudinal field"
+te_polarization = "E_z is the nonzero longitudinal field"
+background_direction = "positive radial exterior with outgoing H^(1)"
+complex_sqrt = "select the passive branch with nonnegative imaginary wave number"
+normalized_cross_section = "2*lambda/pi"
+gamma_constraint = "gamma > 0"
+gamma0_constraint = "gamma0 >= 0"
+background_assumption = "B is a lossless real-phase background in the lossy ansatz"
+tcmt_validity = "(gamma + gamma0)/omega0 is retained and reported"
+layer_order = "innermost metal, dielectric middle layer, outer metal, air exterior"
+source_identity_layer = "equations and figures are source propositions"
+implementation_layer = "Rust tensor, channel, boundary, and reference conformance"
+mapping_layer = "TCMT to Mie or paper-fit comparison is a separate claim"
+
+[index_contract]
+channel_index = "l"
+radial_basis_order = "[J_l, Y_l] in finite layers; [H_l^(1), H_l^(2)] in exterior"
+reflection_ratio = "R_l = h_l^- / h_l^+ where h^- is outgoing and h^+ is incoming"
+scattering_ratio = "S_l = (R_l - 1)/2"
+source_symmetry = "cylindrical channels use the same radial order for incoming and outgoing waves"
+determinant_convention = "det([[a,b],[c,d]]) = a*d - b*c"
+
+[[equation]]
+number = 1
+page = 3
+source_equation = "total H field as incoming H^(2) plus outgoing H^(1) channel amplitudes"
+index_order = "l, then radial Hankel family"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "not applicable"
+code_owner = "crates/optics_core/src/mie_cylinder.rs"
+implementation_status = "implemented through explicit exterior Hankel decomposition"
+independent_reference_status = "independent Bessel and Hankel fixtures retained and passed"
+
+[[equation]]
+number = 2
+page = 3
+source_equation = "incoming and outgoing channel power normalization"
+index_order = "l"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "omega*epsilon0 normalization"
+renormalization_state = "source normalization"
+code_owner = "crates/optics_core/src/mie_cylinder.rs"
+implementation_status = "normalized channel observables preserve the source ratio"
+independent_reference_status = "independent R-flux and channel power controls retained and passed"
+
+[[equation]]
+number = 3
+page = 3
+source_equation = "magnetic-field normalization H0"
+index_order = "none"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "source field normalization"
+renormalization_state = "source normalization"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "represented by normalized channel convention"
+independent_reference_status = "not an optics_core dimensional input"
+
+[[equation]]
+number = 4
+page = 3
+source_equation = "R_l = h_l^- / h_l^+"
+index_order = "l"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "unrenormalized channel ratio"
+code_owner = "crates/optics_core/src/fano_tcmt.rs and mie_cylinder.rs"
+implementation_status = "implemented as complex reflection amplitude"
+independent_reference_status = "checked by Mie channel and analytical controls"
+
+[[equation]]
+number = 5
+page = 3
+source_equation = "lossless R_l has unit modulus"
+index_order = "l"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "lossless limit"
+code_owner = "crates/optics_core/src/fano_tcmt.rs and mie_cylinder.rs"
+implementation_status = "separate lossless flux predicate"
+independent_reference_status = "analytical and Mie controls"
+
+[[equation]]
+number = 6
+page = 4
+source_equation = "plane wave plus outgoing scattered Hankel expansion"
+index_order = "l"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "scattering field definition"
+code_owner = "crates/optics_core/src/mie_cylinder.rs"
+implementation_status = "represented by exterior channel decomposition"
+independent_reference_status = "independent Hankel fixtures retained and passed"
+
+[[equation]]
+number = 7
+page = 4
+source_equation = "incident plane wave expansion into H^(1) and H^(2)"
+index_order = "l"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "incident-field convention"
+code_owner = "crates/optics_core/src/mie_cylinder.rs"
+implementation_status = "encoded by R_l normalization"
+independent_reference_status = "covered by retained Hankel expansion and Mie channel controls"
+
+[[equation]]
+number = 8
+page = 4
+source_equation = "S_l = (R_l - 1)/2"
+index_order = "l"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "unrenormalized channel amplitude"
+code_owner = "crates/optics_core/src/fano_tcmt.rs and mie_cylinder.rs"
+implementation_status = "implemented without phase projection"
+independent_reference_status = "component-wise analytical and Mie comparison"
+
+[[equation]]
+number = 9
+page = 4
+source_equation = "P_sct proportional to |S_l|^2 and P_abs proportional to 1-|R_l|^2"
+index_order = "l"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "omega*epsilon0"
+renormalization_state = "flux-normalized unrenormalized power"
+code_owner = "crates/optics_core/src/fano_tcmt.rs and mie_cylinder.rs"
+implementation_status = "independent S and R absorption paths"
+independent_reference_status = "analytical closed form and passive Mie controls"
+
+[[equation]]
+number = 10
+page = 4
+source_equation = "single-channel scattering cross-section"
+index_order = "l"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "2*lambda/pi"
+renormalization_state = "normalized observable"
+code_owner = "crates/optics_core/src/fano_tcmt.rs and mie_cylinder.rs"
+implementation_status = "implemented independently from extinction"
+independent_reference_status = "analytical channel grid"
+
+[[equation]]
+number = 11
+page = 4
+source_equation = "total scattering cross-section sum over l"
+index_order = "l ascending from -infinity to infinity"
+symmetrization = "channel sum"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "2*lambda/pi"
+renormalization_state = "normalized observable"
+code_owner = "crates/optics_core/src/fano_tcmt.rs and mie_cylinder.rs"
+implementation_status = "finite declared l range for numerical runs"
+independent_reference_status = "per-channel fixture retention"
+
+[[equation]]
+number = 12
+page = 4
+source_equation = "total absorption cross-section = -(2*lambda/pi)*sum(Re(S_l)+|S_l|^2)"
+index_order = "l"
+symmetrization = "channel sum"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "2*lambda/pi"
+renormalization_state = "normalized observable"
+code_owner = "crates/optics_core/src/fano_tcmt.rs and mie_cylinder.rs"
+implementation_status = "corrected; independent from extinction"
+independent_reference_status = "R-flux and closed-form absorption"
+
+[[equation]]
+number = 13
+page = 4
+source_equation = "total extinction cross-section = -(2*lambda/pi)*sum Re(S_l)"
+index_order = "l"
+symmetrization = "channel sum"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "2*lambda/pi"
+renormalization_state = "normalized observable"
+code_owner = "crates/optics_core/src/fano_tcmt.rs and mie_cylinder.rs"
+implementation_status = "corrected; no construction from other cross-sections"
+independent_reference_status = "balance identity used only as a check"
+
+[[equation]]
+number = 14
+page = 5
+source_equation = "temporal coupled-mode equation and output relation"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "source model ansatz"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "source coupling values represented explicitly"
+independent_reference_status = "separate residual predicates"
+
+[[equation]]
+number = 15
+page = 5
+source_equation = "lossless resonator decay"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "lossless source derivation"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "represented by source constraint fixture"
+independent_reference_status = "time-reversal controls"
+
+[[equation]]
+number = 16
+page = 5
+source_equation = "energy decay balance"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "lossless source derivation"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "represented by eta norm residual"
+independent_reference_status = "mutation control"
+
+[[equation]]
+number = 17
+page = 5
+source_equation = "eta*eta_conjugate = 2*gamma"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "lossless source constraint"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "separate energy-normalization residual"
+independent_reference_status = "analytical exact fixture"
+
+[[equation]]
+number = 18
+page = 6
+source_equation = "kappa*eta_conjugate = 2*gamma and B*eta_conjugate + eta = 0"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "time-reversal source constraint"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "two separate complex residuals"
+independent_reference_status = "mutation controls"
+
+[[equation]]
+number = 19
+page = 6
+source_equation = "kappa = eta"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "reciprocal coupling constraint"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "separate complex residual"
+independent_reference_status = "mutation control"
+
+[[equation]]
+number = 20
+page = 6
+source_equation = "lossless coupling phase construction"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "lossless source ansatz"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "derived fixtures retain B and eta explicitly"
+independent_reference_status = "phase-family controls"
+
+[[equation]]
+number = 21
+page = 6
+source_equation = "complex reflection amplitude R"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "complex scalar denominator"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "unrenormalized TCMT amplitude"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "validated source-local amplitude API"
+independent_reference_status = "analytical closed-form controls"
+
+[[equation]]
+number = 22
+page = 7
+source_equation = "complex scattering amplitude S"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "not applicable"
+renormalization_state = "unrenormalized TCMT amplitude"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "validated source-local amplitude API"
+independent_reference_status = "phase and detuning mutation controls"
+
+[[equation]]
+number = 23
+page = 7
+source_equation = "scattering and absorption line shapes"
+index_order = "single declared channel"
+symmetrization = "none"
+determinant_convention = "not applicable"
+proper_time_power = "not applicable"
+loop_prefactor = "normalized 2*lambda/pi"
+renormalization_state = "source model observable"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "corrected independent observables"
+independent_reference_status = "full analytical grid"
+
+[[figure]]
+number = 1
+page = 8
+source_figure = "lossless phase-family scattering line shapes"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "dimensionless channel fixture"
+independent_reference_status = "analytical source equations"
+
+[[figure]]
+number = 2
+page = 8
+source_figure = "lossy phase-family scattering and absorption line shapes"
+code_owner = "crates/optics_core/src/fano_tcmt.rs"
+implementation_status = "dimensionless channel fixture"
+independent_reference_status = "analytical source equations"
+
+[[figure]]
+number = 3
+page = 9
+source_figure = "metal-dielectric-metal cylinder with air exterior"
+region_order = ["metal core", "dielectric middle layer", "metal outer layer", "air exterior"]
+dielectric_epsilon = 12.96
+metal_model = "1 - omega_p^2/(omega^2 + i*gamma_d*omega)"
+polarization = "TM with H_z"
+code_owner = "crates/optics_core/src/mie_cylinder.rs"
+implementation_status = "explicit material roles and HzTm boundary"
+independent_reference_status = "rendered EPS and source TeX agree"
+
+[[figure]]
+number = 4
+page = 10
+source_figure = "l=0 single-channel MDM comparison"
+radii_over_lambda_p = [0.285, 1.0, 1.5]
+lossless_resonance_over_omega_p = 0.1552
+lossless_gamma_over_omega_p = 0.000019166
+background_phase_over_pi = -0.4882
+parameter_method = "complex roots of the multilayer boundary equation and uniform metallic cylinder background"
+code_owner = "crates/optics_core/src/mie_cylinder.rs"
+implementation_status = "characterization geometry only in P2A"
+independent_reference_status = "source ledger; parameter fit deferred to P2B"
+
+[[figure]]
+number = 5
+page = 12
+source_figure = "five-channel MDM scattering and absorption"
+radii_over_lambda_p = [0.36, 0.73, 1.0]
+channels = [0, 1, -1, 2, -2]
+frequency_window_over_omega_p = [0.22, 0.233]
+code_owner = "crates/optics_core/src/mie_cylinder.rs"
+implementation_status = "characterization geometry only in P2A"
+independent_reference_status = "source ledger; parameter fit deferred to P2B"
+
+[boundary_conditions]
+hz_tm_state = "H_z and (1/epsilon)*dH_z/drho are continuous"
+ez_te_state = "E_z and (1/mu)*dE_z/drho are continuous"
+interface_order = "inner state maps to outer state through the determinant-preserving 2x2 matrix"
+contact_terms = "none in the radial material-interface contract"
+
+[validation_boundary]
+source_equations = "source identity"
+implementation_conformance = "independent component and mutation checks"
+paper_reproduction = "deferred to source-faithful parameter identification and held-out comparison"
+heuristic_extractor = "quarantined from validation"
+arbitrary_floor = "forbidden"
+claim_promotion = "C-849 and C-850 remain unchanged in P2A"

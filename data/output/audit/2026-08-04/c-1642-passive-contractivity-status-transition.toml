@@ -1,0 +1,16 @@
+[transition]
+transition_key = "c-1642-ruan-fan-passive-contractivity"
+source_claim_id = "C-1642"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+exercised_falsifier = "Evaluate complex R_l for gamma_0 >= 0 and passive cylindrical materials and detect any outgoing flux norm above one or negative independent absorption."
+proposed_claim_status = "Verified"
+rationale = "The declared passive analytical and Mie fixtures remain contractive and retain nonnegative independent absorption without clamping or gain substitution."
+unresolved_assumptions = ["The lossy source ansatz keeps the background approximately lossless as stated by the source."]
+actor = "p2a-channel-oracle-campaign"
+reason = "Record the bounded passive-loss contractivity predicate."
+transition_timestamp = "2026-08-04T20:23:00Z"
+expected_source_state_sha256 = "e1b954c3fe29ddf5b84f7888bfa9c54acc11844c28a255007af34200d98eadbc"
+expected_claim_id_max = 1651
