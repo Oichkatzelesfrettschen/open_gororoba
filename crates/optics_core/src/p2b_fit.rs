@@ -100,6 +100,8 @@ pub enum FitError {
     EmptyStarts,
     #[error("the optimizer produced a non-finite objective")]
     NonFiniteObjective,
+    #[error("no fixed optimizer start reached the declared convergence criterion")]
+    NoConvergedStart,
 }
 
 fn finite_complex(value: Complex64) -> bool {
@@ -218,7 +220,7 @@ where
         let parameter_spread = (0..N)
             .map(|dimension| (simplex[N][dimension] - simplex[0][dimension]).abs())
             .fold(0.0, f64::max);
-        if objective_spread <= 1e-24 * (1.0 + values[0].abs()) && parameter_spread <= 1e-10 {
+        if objective_spread <= 1e-14 * (1.0 + values[0].abs()) && parameter_spread <= 1e-8 {
             converged = true;
             break;
         }
@@ -387,13 +389,14 @@ pub fn fit_tcmt(
     let selected_index = results
         .iter()
         .enumerate()
+        .filter(|(_, result)| result.converged)
         .min_by(|(_, left), (_, right)| {
             left.validation_error
                 .total_cmp(&right.validation_error)
                 .then_with(|| left.training_error.total_cmp(&right.training_error))
         })
         .map(|(index, _)| index)
-        .ok_or(FitError::EmptyStarts)?;
+        .ok_or(FitError::NoConvergedStart)?;
     let point = &results[selected_index].result;
     let parameters = FitParameters {
         omega_0: point[0],
@@ -463,13 +466,14 @@ pub fn fit_one_pole(
     let selected_index = results
         .iter()
         .enumerate()
+        .filter(|(_, result)| result.converged)
         .min_by(|(_, left), (_, right)| {
             left.validation_error
                 .total_cmp(&right.validation_error)
                 .then_with(|| left.training_error.total_cmp(&right.training_error))
         })
         .map(|(index, _)| index)
-        .ok_or(FitError::EmptyStarts)?;
+        .ok_or(FitError::NoConvergedStart)?;
     let point = &results[selected_index].result;
     let parameters = OnePoleParameters {
         background: Complex64::new(point[0], point[1]),

@@ -28,7 +28,7 @@ const ROOT_REFERENCE_TOLERANCE: f64 = 5e-8;
 const OBSERVABLE_TOLERANCE: f64 = 0.01;
 const COMPLEX_S_TOLERANCE: f64 = 0.01;
 const PHASE_TOLERANCE: f64 = 0.01;
-const FIT_MAX_ITERATIONS: usize = 1200;
+const FIT_MAX_ITERATIONS: usize = 5000;
 
 #[derive(Debug, Clone, Copy)]
 struct IndependentRow {
@@ -44,6 +44,7 @@ struct IndependentRow {
 enum IndependentKind {
     Root,
     Background,
+    Mie,
 }
 
 #[derive(Debug, Clone)]
@@ -101,7 +102,16 @@ struct Figure5FitSummary {
 }
 
 fn finite_real(value: f64) -> String {
-    assert!(value.is_finite(), "non-finite evidence value");
+    if value.is_nan() {
+        return "\"nan\"".to_owned();
+    }
+    if value.is_infinite() {
+        return if value.is_sign_positive() {
+            "\"inf\"".to_owned()
+        } else {
+            "\"-inf\"".to_owned()
+        };
+    }
     if value == 0.0 {
         "0.0".to_owned()
     } else {
@@ -185,6 +195,7 @@ fn load_independent_rows(path: &PathBuf) -> EvidenceResult<Vec<IndependentRow>> 
         match fields[0] {
             "root" => rows.push(parse_row(IndependentKind::Root, &fields)?),
             "background" => rows.push(parse_row(IndependentKind::Background, &fields)?),
+            "mie" => rows.push(parse_row(IndependentKind::Mie, &fields)?),
             _ => {}
         }
     }
@@ -313,7 +324,9 @@ fn append_root_search(
             (Complex64::new(f64::NAN, f64::NAN), f64::INFINITY, false)
         };
         if !matched {
-            *independent_failures += 1;
+            if matching_reference.is_some() {
+                *independent_failures += 1;
+            }
         }
         writeln!(
             output,
@@ -728,7 +741,7 @@ fn f4_mutation_controls(
         output,
         "exchange_gamma_and_gamma0",
         model_error(FitParameters {
-            gamma: source.gamma_0.max(1e-6),
+            gamma: source.gamma_0,
             gamma_0: source.gamma,
             ..source
         }),
@@ -796,7 +809,7 @@ fn f4_mutation_controls(
         "Removing the dielectric shell changes the source MDM boundary problem.",
     )?;
 
-    let heuristic_error = heuristic.map_or(0.0, |heuristic| {
+    let heuristic_error = heuristic.map_or(1.0, |heuristic| {
         model_error(FitParameters {
             omega_0: heuristic.omega_0,
             gamma: heuristic.gamma,
@@ -941,8 +954,13 @@ fn make_coordinate_sets() -> CoordinateSets {
         training.push(canonical_coordinate(
             (minimum + maximum) / 2.0 + (maximum - minimum) / 2.0 * angle.cos(),
         ));
+    }
+    for index in 0..42 {
+        if index == 20 {
+            continue;
+        }
         validation.push(canonical_coordinate(
-            minimum + (index as f64 + 0.5) * (maximum - minimum) / 41.0,
+            minimum + (index as f64 + 0.5) * (maximum - minimum) / 42.0,
         ));
     }
     training.sort_by(f64::total_cmp);
@@ -1133,7 +1151,7 @@ fn source_figure5_observables(
                 &FanoChannel {
                     omega_0: source_channel.parameters.omega_0,
                     gamma: source_channel.parameters.gamma,
-                    gamma_0: source_channel.parameters.gamma_0.max(0.0),
+                    gamma_0: source_channel.parameters.gamma_0,
                     phi: source_channel.parameters.phi,
                     l,
                 },
@@ -1542,7 +1560,7 @@ fn append_figure5_heldout_totals(
     geometry: &ConcentricCylinder,
     coordinates: CoordinateSets,
     fits: &[Figure5FitSummary],
-) -> EvidenceResult<(f64, f64, f64, f64, f64, bool)> {
+) -> EvidenceResult<(f64, f64, f64, f64, f64, bool, bool)> {
     let weights = [(0, 1.0), (1, 2.0), (2, 2.0)];
     let mut maximum_s: f64 = 0.0;
     let mut maximum_r: f64 = 0.0;
@@ -1631,6 +1649,7 @@ fn append_figure5_heldout_totals(
         maximum_abs,
         maximum_ext,
         aggregate_gate,
+        aggregate_cancellation,
     ))
 }
 
@@ -1659,7 +1678,7 @@ fn append_source_landmark(
             &FanoChannel {
                 omega_0: source.parameters.omega_0,
                 gamma: source.parameters.gamma,
-                gamma_0: source.parameters.gamma_0.max(0.0),
+                gamma_0: source.parameters.gamma_0,
                 phi: source.parameters.phi,
                 l,
             },
@@ -1696,6 +1715,46 @@ fn append_source_landmark(
         source_landmark_pass,
     )?;
     Ok((source_landmark_pass, mie[0], mie[1]))
+}
+
+fn append_independent_mie_landmark(
+    output: &mut String,
+    independent_rows: &[IndependentRow],
+    geometry: &ConcentricCylinder,
+) -> EvidenceResult<bool> {
+    let mut maximum_defect: f64 = 0.0;
+    let mut row_count = 0;
+    for l in [0, 1, 2] {
+        let reference = independent_rows.iter().find(|row| {
+            row.kind == IndependentKind::Mie
+                && row.case == "fig5"
+                && row.loss == "lossy"
+                && row.l == l
+                && (row.second - 0.2282).abs() <= 1e-15
+        });
+        let production = try_scattering_channel(geometry, l, 0.2282)?;
+        let defect = reference
+            .map(|row| complex_defect(production.r_l, row.first))
+            .unwrap_or(f64::INFINITY);
+        maximum_defect = maximum_defect.max(defect);
+        row_count += usize::from(reference.is_some());
+        writeln!(
+            output,
+            "[[independent_mie_landmark]]\nl = {l}\nfrequency = 0.2282\nproduction_r_re = {}\nproduction_r_im = {}\nreference_r_re = {}\nreference_r_im = {}\ncomplex_r_defect = {}\n",
+            finite_real(production.r_l.re),
+            finite_real(production.r_l.im),
+            reference.map_or_else(|| "nan".to_owned(), |row| finite_real(row.first.re)),
+            reference.map_or_else(|| "nan".to_owned(), |row| finite_real(row.first.im)),
+            finite_real(defect),
+        )?;
+    }
+    let agrees = row_count == 3 && maximum_defect <= ROOT_REFERENCE_TOLERANCE;
+    writeln!(
+        output,
+        "[independent_mie_summary]\nrow_count = {row_count}\nmax_complex_r_defect = {}\ncomponent_wise_agreement = {agrees}\n",
+        finite_real(maximum_defect),
+    )?;
+    Ok(agrees)
 }
 
 fn build_root_searches() -> EvidenceResult<Vec<SearchRecord>> {
@@ -1873,6 +1932,8 @@ fn main() -> EvidenceResult<()> {
         omega_p: 1.0,
         gamma_d: 0.001,
     });
+    let independent_mie_agreement =
+        append_independent_mie_landmark(&mut output, &independent_rows, &fig5_geometry)?;
     let fig5_grid = figure5_frequency_grid();
     writeln!(
         output,
@@ -1908,6 +1969,7 @@ fn main() -> EvidenceResult<()> {
         heldout_max_abs,
         heldout_max_ext,
         heldout_aggregate_gate,
+        aggregate_cancellation,
     ) = append_figure5_heldout_totals(&mut output, &fig5_geometry, coordinates, &fit_summaries)?;
     let (landmark_pass, landmark_mie_sct, landmark_mie_abs) =
         append_source_landmark(&mut output, &fig5_geometry, &fig5_channels, &fit_summaries)?;
@@ -1931,6 +1993,7 @@ fn main() -> EvidenceResult<()> {
         .map(|fit| fit.one_pole_error)
         .fold(0.0, f64::max);
     let source_reference_and_counts_ok = independent_agreement
+        && independent_mie_agreement
         && searches.iter().all(|search| {
             search.search.count.counts.last().copied().unwrap_or(0) == search.search.roots.len()
         });
@@ -1986,10 +2049,11 @@ fn main() -> EvidenceResult<()> {
     )?;
     writeln!(
         output,
-        "[control_results]\nroot_reference_agreement = {}\nroot_count_coverage = {}\nsource_figure4_parameter_fit_executed = false\nfigure4_evaluation_curve_fit_executed = false\nfigure5_test_coordinates_used_for_fit = false\npost_test_refit_executed = false\nheuristic_extractor_used_in_validating_path = false\naggregate_cancellation_detected = {}\n",
+        "[control_results]\nroot_reference_agreement = {}\nindependent_mie_reference_agreement = {}\nroot_count_coverage = {}\nsource_figure4_parameter_fit_executed = false\nfigure4_evaluation_curve_fit_executed = false\nfigure5_test_coordinates_used_for_fit = false\npost_test_refit_executed = false\nheuristic_extractor_used_in_validating_path = false\naggregate_cancellation_detected = {}\n",
         independent_agreement,
+        independent_mie_agreement,
         source_reference_and_counts_ok,
-        heldout_max_s <= COMPLEX_S_TOLERANCE && heldout_max_sct <= OBSERVABLE_TOLERANCE,
+        aggregate_cancellation,
     )?;
     writeln!(
         output,

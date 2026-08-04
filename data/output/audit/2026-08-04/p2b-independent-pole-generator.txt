@@ -74,6 +74,29 @@ def uniform_reflection(order, omega, radius, omega_p, gamma_d):
     return (inner[0] * incoming[1] - incoming[0] * inner[1]) / determinant_value
 
 
+def layered_reflection(order, omega, radii, epsilon_d, omega_p, gamma_d):
+    metal = drude(omega, omega_p, gamma_d)
+    epsilons = [metal, epsilon_d, metal, 1]
+    region_bases = [["j"], ["j", "y"], ["j", "y"], ["h1"]]
+    region_columns = [[0], [1, 2], [3, 4], [5]]
+    matrix = mp.matrix(6, 6)
+    right_hand_side = mp.matrix(6, 1)
+    for interface, (inner, outer) in enumerate(((0, 1), (1, 2), (2, 3))):
+        radius = radii[interface]
+        for region, sign in ((inner, 1), (outer, -1)):
+            for basis_index, kind in enumerate(region_bases[region]):
+                column = region_columns[region][basis_index]
+                field, flux = state(kind, order, omega, epsilons[region], radius)
+                matrix[2 * interface, column] += sign * field
+                matrix[2 * interface + 1, column] += sign * flux
+        if interface == 2:
+            incoming_field, incoming_flux = state("h2", order, omega, 1, radius)
+            right_hand_side[2 * interface] = incoming_field
+            right_hand_side[2 * interface + 1] = incoming_flux
+    coefficients = mp.lu_solve(matrix, right_hand_side)
+    return coefficients[5]
+
+
 def refine(order, seed, radii, epsilon_d, omega_p, gamma_d):
     def real_equation(real, imaginary):
         value = determinant(order, real + 1j * imaginary, radii, epsilon_d, omega_p, gamma_d)
@@ -151,6 +174,28 @@ def main():
                         "modulus": mp.nstr(abs(reflection), 40),
                     }
                 )
+        if case == "fig5":
+            frequency = mp.mpf("0.2282")
+            for order in (0, 1, 2):
+                reflection = layered_reflection(
+                    order,
+                    frequency,
+                    configuration["radii"],
+                    epsilon_d,
+                    omega_p,
+                    mp.mpf("0.001"),
+                )
+                rows.append(
+                    {
+                        "kind": "mie",
+                        "case": case,
+                        "loss": "lossy",
+                        "l": order,
+                        "frequency": mp.nstr(frequency, 70),
+                        "re": mp.nstr(mp.re(reflection), 70),
+                        "im": mp.nstr(mp.im(reflection), 70),
+                    }
+                )
     output.parent.mkdir(parents=True, exist_ok=True)
     lines = ["format|p2b-independent-mpmath-pole-fixtures-v1", f"mpmath_version|{mp.__version__}", f"dps|{mp.mp.dps}"]
     for row in rows:
@@ -158,9 +203,13 @@ def main():
             lines.append(
                 "root|{case}|{loss}|{l}|{re}|{im}|{residual}".format(**row)
             )
-        else:
+        elif row["kind"] == "background":
             lines.append(
                 "background|{case}|{loss}|{l}|{re}|{im}|{frequency}".format(**row)
+            )
+        elif row["kind"] == "mie":
+            lines.append(
+                "mie|{case}|{loss}|{l}|{re}|{im}|{frequency}".format(**row)
             )
     output.write_text("\n".join(lines) + "\n")
 
