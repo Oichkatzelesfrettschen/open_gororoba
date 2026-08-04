@@ -1,0 +1,160 @@
+format = "p2b-ruan-fan-reproduction-preregistration-v1"
+captured_utc = "2026-08-04T21:40:00Z"
+source_id = "0909.3323v2"
+source_pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_tex_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+p2a_manifest_sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+p2a_generating_revision = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+code_base_revision = "e7b81543519600f9104f5ccc0839ba33c361fb56"
+randomness = "none"
+execution = "deterministic CPU"
+
+[scope]
+included = "complex pole identification, uniform-metal background phase, no-fit Figure 4 comparison, source-derived Figure 5 comparison, constrained held-out Figure 5 fitting"
+excluded = "P2A oracle changes, SFWM, photon-graviton, C-864, C-865, C-867, C-1638, C-1639, GPU, theorem identity infrastructure"
+paper_language = "Ruan and Fan report excellent agreement for Figure 4 and good agreement for Figure 5 without a universal 1% threshold"
+repository_language = "C-849 and the C-850 challenge use a predeclared repository-defined 0.01 unit-scale absolute observable gate"
+
+[c849]
+claim_id = "C-849"
+metric_name = "unit_scale_absolute_observable_error"
+metric_definition = "max over the frozen grid of abs(C_TCMT - C_Mie) for each required normalized observable"
+threshold = 0.01
+threshold_source = "repository claim predicate; not stated by Ruan and Fan"
+lossless_required_observables = ["c_sct"]
+lossy_required_observables = ["c_sct", "c_abs", "c_ext"]
+complex_amplitude_retained = true
+complex_s_threshold = 0.01
+complex_s_threshold_source = "repository-defined companion gate"
+complex_r_retained = true
+phase_error_threshold = 0.01
+phase_error_condition = "abs(S_Mie) >= 0.05"
+no_fit = true
+
+[c850]
+claim_id = "C-850"
+minimum_held_out_frequencies = 20
+channels = [0, 1, 2, -1, -2]
+unique_channels = [0, 1, 2]
+observable_threshold = 0.01
+observable_threshold_source = "repository-defined challenge; not stated by Ruan and Fan"
+complex_s_threshold = 0.01
+performance_rule = "constrained TCMT must improve held-out complex S error over background-only and fixed-phase Lorentzian baselines"
+aggregation_rule = "retain each channel before applying degeneracy weights 1,2,2"
+test_leakage_rule = "test coordinates do not enter initialization, bounds, optimizer choice, stopping, model selection, or tolerance choice"
+source_landmark_frequency = 0.2282
+source_landmark_scattering = 0.03
+source_landmark_absorption = 0.32
+source_landmark_uncertainty = "printed two-decimal source anchors; compare with declared graphical and numerical reading interval"
+
+[source_parameter_predicate]
+anchor_rule = "compare computed values with intervals implied by printed precision, independent root uncertainty, and high-precision reference"
+omega0_fig4 = 0.1552
+omega0_fig4_printed_interval_half_width = 0.00005
+gamma_fig4 = 0.000019166
+gamma_fig4_printed_interval_half_width = 0.0000000005
+phi_over_pi_fig4 = -0.4882
+phi_over_pi_fig4_printed_interval_half_width = 0.00005
+gamma_total_fig4_lossy = 0.00010492
+gamma_total_fig4_lossy_printed_interval_half_width = 0.000000005
+gamma0_fig4_lossy = 0.000085749
+gamma0_fig4_lossy_printed_interval_half_width = 0.0000000005
+source_parameter_fit_forbidden = true
+
+[convention]
+time_dependence = "exp(-i*omega*t)"
+incoming_wave = "H^(2)"
+outgoing_wave = "H^(1)"
+polarization = "HzTm"
+interface_state = "H_z and (1/epsilon)*radial_derivative(H_z)"
+drude = "epsilon_m = 1 - omega_p^2/(omega^2 + i*gamma_d*omega)"
+complex_root = "omega_tilde = omega_0 - i*Gamma with Gamma > 0"
+normalized_cross_sections = "2*lambda/pi"
+sqrt_branch = "passive branch with nonnegative imaginary square root and positive real square root on positive real epsilon"
+background_phase = "arg of uniform metallic cylinder R_l at the lossless extracted resonance"
+
+[figure4]
+geometry = "rho1=0.285*lambda_p, rho2=1.0*lambda_p, rho3=1.5*lambda_p, epsilon_d=12.96, l=0"
+lossless_gamma_d = 0.0
+lossy_gamma_d = 0.001
+source_window_min = 0.153
+source_window_max = 0.157
+source_window_points = 41
+source_window_rule = "inclusive arithmetic grid with 41 points"
+root_centered_x = [-50.0, -20.0, -10.0, -5.0, -3.0, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 5.0, 10.0, 20.0, 50.0]
+root_centered_rule = "omega = omega0_lossless + x*gamma_lossless"
+extra_frequency = 0.1552
+grid_union_rule = "sorted finite union of source-window, root-centered, exact source resonance, and computed lossless root real part"
+root_contour_re_min = 0.154
+root_contour_re_max = 0.1565
+root_contour_im_min = -0.0002
+root_contour_im_max = 0.00005
+root_contour_edge_samples = 128
+root_seed_re_points = 9
+root_seed_im_points = 7
+root_count_refinement = [64, 128, 256]
+root_count_stability_required = true
+pole_association = "l, declared frequency rectangle, continuation from lossless to lossy, and nearest source-domain real-frequency feature"
+
+[figure5]
+geometry = "rho1=0.36*lambda_p, rho2=0.73*lambda_p, rho3=1.0*lambda_p, epsilon_d=12.96, gamma_d=0.001, l=0,+/-1,+/-2"
+lossless_gamma_d = 0.0
+lossy_gamma_d = 0.001
+frequency_min = 0.22
+frequency_max = 0.233
+frequency_points = 201
+frequency_rule = "inclusive arithmetic grid with 201 points plus exact landmark 0.2282"
+root_contour_re_min = 0.20
+root_contour_re_max = 0.25
+root_contour_im_min = -0.015
+root_contour_im_max = 0.0005
+root_contour_edge_samples = 256
+root_seed_re_points = 16
+root_seed_im_points = 8
+root_count_refinement = [128, 256, 512]
+root_count_stability_required = true
+near_window_half_width = 0.005
+pole_relevance_rule = "retain every pole in the evaluation window or within near_window_half_width of it; retain all other counted poles as alternates"
+pole_selection_rule = "select the relevant pole nearest the evaluation interval, then use lossless-to-lossy continuation; do not select by final curve error"
+degeneracy_weights = [1, 2, 2]
+
+[fit]
+training_rule = "41 open Chebyshev nodes over [0.22,0.233]"
+validation_rule = "41 midpoint nodes over [0.22,0.233]"
+test_rule = "201 uniform nodes plus 0.2282 and a 31-node contiguous held-out interval [0.2275,0.2290], after canonicalized disjointness filtering"
+minimum_test_points = 20
+canonical_coordinate_digits = 15
+parameters = ["omega_0", "gamma", "gamma_0", "phi"]
+omega0_bounds = [0.20, 0.25]
+gamma_bounds = [0.000001, 0.02]
+gamma0_bounds = [0.0, 0.02]
+phi_bounds = [-3.141592653589793, 3.141592653589793]
+starts = [
+    [0.225, 0.002, 0.001, 0.0],
+    [0.230, 0.005, 0.001, -1.0],
+    [0.215, 0.005, 0.001, 1.0],
+    [0.233, 0.001, 0.005, 2.0]
+]
+optimizer = "deterministic bounded Nelder-Mead with fixed iteration limit and no random restarts"
+selection_rule = "minimum validation complex residual among finite training-converged starts; test data are unread"
+fit_target = "Re(S_l) and Im(S_l) jointly"
+baseline_background = "complex constant S_l equal to the training mean"
+baseline_fixed_phase = "Fano model with phi fixed at zero and omega0,gamma,gamma0 fitted on training only"
+baseline_unconstrained_pole = "complex b + a/(omega - (omega0 - i*gamma)) with complex b,a and positive gamma"
+identifiability = ["Jacobian singular values", "local condition number", "parameter profiles", "leave-one-training-node-out sensitivity", "start variation", "pole proximity", "validity ratio"]
+
+[verdict_rules]
+c849_survives = "independent roots agree, source anchors pass their envelopes, all required Figure 4 observable and complex S gates pass, and all mutations are detected without evaluation-curve fitting"
+c849_falsifies = "stable independently reproduced result violates the preregistered 0.01 observable gate"
+c849_inconclusive = "root ambiguity, root disagreement, nonconvergence, multiple-pole contamination, or conditioning defeats the frozen policy"
+c850_survives = "source-derived and held-out complex per-channel results pass, totals pass, at least 20 test frequencies pass, landmark agrees within declared uncertainty, constrained TCMT beats both baselines, and no cancellation hides a channel failure"
+c850_falsifies = "stable independent result violates the preregistered match criterion, a dominant channel needs multiple poles, or aggregate agreement is cancellation-only"
+c850_methodology_invalid = "test leakage, post-test restart, observable-specific refitting, heuristic extraction, or post-test channel selection occurs"
+c850_inconclusive = "source parameters are underdetermined, roots are ambiguous, fits are ill-conditioned, or graphical evidence is required but unavailable"
+
+[freeze_gate]
+policy_frozen_before_final_grid = true
+final_grid_hash_required = true
+fit_coordinate_hash_required = true
+tolerance_after_final_observation_forbidden = true
+post_test_refit_forbidden = true
