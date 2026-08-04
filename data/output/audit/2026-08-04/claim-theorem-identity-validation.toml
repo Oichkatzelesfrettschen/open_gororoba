@@ -1,0 +1,234 @@
+campaign = "claim-theorem-identity-disambiguation"
+date = "2026-08-04"
+scope = "typed theorem namespace, explicit formal links, reserved successor allocation, and post-transition falsification frontier"
+implementation_revision = "dd826c4c93d9f1f211662b25779714b99759223f"
+base_revision = "8e32976e086bb6b381920c316230c869f35b52e7"
+origin_main = "8e32976e086bb6b381920c316230c869f35b52e7"
+branch = "agent/claim-theorem-identity-disambiguation"
+worktree = "/home/eirikr/Github/open_gororoba-claim-theorem-identity"
+worktree_status_at_capture = "clean after implementation commit"
+hooks_path = ".githooks"
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+sqlite = "3.53.3 2026-06-26 d4c0e51e4aeb96955b99185ab9cde75c339e2c29c3f3f12428d364a10d78alt1"
+
+p0_merge = "53f4e7c1926fe7a39ebf81c4aacb23bc240d9dce"
+p1_merge = "55cd43199f98a73577572ba3e576e8eab0244557"
+transition_merge = "3216bd8c2280f68393aa9a94e92bf46032106731"
+exporter_repair_merge = "67a1dcb1309e1e7b359faf52ff3c0c843e0dc823"
+
+p1_manifest_path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_declared_code_commit = "475f58aecc7406565dde111f2d237b244491fd13"
+p1_manifest_preserved = true
+
+transition_event_count_before = 4
+transition_event_count_after = 4
+transition_relation_count_before = 11
+transition_relation_count_after = 11
+existing_transition_events_unchanged = true
+
+database_sha256_at_frontier_generation = "e0b6998368760da921d16f390a9f579c409711e10c3261128276167d296d832c"
+database_sha256_after_validation_registration = "89b45ecaa86da07110a38e2158c3d3e568fed3d22deecc609f0e4cd1a9e42904"
+validation_artifact_registration = "LOCAL-CLAIM-THEOREM-IDENTITY-VALIDATION"
+frontier_path = "data/output/audit/2026-08-04/post-transition-falsification-frontier.toml"
+frontier_sha256 = "9542eb0f4f8d22351fcd82ec04cf43d6a146950ca21f8c11735bf429fcfaea23"
+claim_count = 1464
+theorem_count = 162
+compound_claim_count = 374
+false_confidence_count = 1435
+open_adjudication_count = 223
+
+[identity_policy]
+claim_namespace = "C-*"
+theorem_namespace = "THM-*"
+legacy_theorem_names = "retained as proof filename aliases, never inferred claim IDs"
+implicit_numeric_prefix_linking = "forbidden"
+explicit_theorem_claim_relation = "formal_proposition"
+reserved_id_sources = ["canonical claims", "explicit reservations", "claim-like theorem aliases", "pending transition specifications"]
+
+[[identity_binding]]
+stable_id = "THM-SASS-DRIVER-001"
+legacy_name = "C1635_SedenionDriverSemantics"
+proof_path = "proofs/verified/C1635_SedenionDriverSemantics.v"
+claim_id = "C-1649"
+relation_kind = "formal_proposition"
+
+[[identity_binding]]
+stable_id = "THM-CARIOW-SEDENION-SCHEDULE-001"
+legacy_name = "C1636_Cariow2013SedenionSchedule"
+proof_path = "proofs/verified/C1636_Cariow2013SedenionSchedule.v"
+claim_id = "C-1646"
+relation_kind = "formal_proposition"
+
+[[identity_binding]]
+stable_id = "THM-R300-SEDENION-ZERO-DIVISOR-001"
+legacy_name = "C1637_R300SedenionZeroDivisor"
+proof_path = "proofs/verified/C1637_R300SedenionZeroDivisor.v"
+claim_id = "C-1648"
+relation_kind = "formal_proposition"
+
+[[identity_binding]]
+stable_id = "THM-OCTONION-DOWNCAST-ZERO-DIVISORS-001"
+legacy_name = "C1638_OctonionDowncastNoZeroDivisors"
+proof_path = "proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v"
+claim_id = "C-1647"
+relation_kind = "formal_proposition"
+
+[collision_result]
+legacy_numeric_prefix_control = "detected"
+unrelated_theorem_claim_associations = 0
+ward_claim_ids_preserved = ["C-1635", "C-1636", "C-1637", "C-1638"]
+formal_claim_ids_created = ["C-1646", "C-1647", "C-1648", "C-1649"]
+reserved_allocation_control = "deterministic skip of claim-like theorem numeric suffixes"
+
+[[retained_input]]
+path = "data/output/audit/2026-08-04/claim-theorem-identity-baseline.toml"
+sha256 = "605585c2c8e1eb7b5fe7c5e2f199a0c45d330441126b9f4cd231e0d5868e99e1"
+
+[[retained_input]]
+path = "data/output/audit/2026-08-04/claim-theorem-collision-matrix.toml"
+sha256 = "447f387bbcb7dcacbf1465eaf45c959ca8ca02e393c191b01e21de8e5aca0675"
+
+[[retained_input]]
+path = "data/output/audit/2026-08-04/formal-theorem-identity-binding.toml"
+sha256 = "9500e839531bc164ac801b676130cd3e43121aa3966c714c6e33a228599acaad"
+
+[[retained_input]]
+path = "data/output/audit/2026-08-04/claim-theorem-identity-call-map.toml"
+sha256 = "375ca3a9026235dee88d24bcf0a1a60a09c8f16c28d4d42c111aefaff972b521"
+
+[[retained_input]]
+path = "data/output/audit/2026-08-04/post-transition-falsification-frontier.toml"
+sha256 = "9542eb0f4f8d22351fcd82ec04cf43d6a146950ca21f8c11735bf429fcfaea23"
+
+[[negative_control]]
+name = "numeric-theorem-prefix-inference"
+result = "detected"
+evidence = "provenance_store::claim_proofs::numeric_theorem_prefix_does_not_link_an_unrelated_claim"
+
+[[negative_control]]
+name = "explicit-proof-path-link"
+result = "detected"
+evidence = "provenance_store::claim_proofs::explicit_proof_path_creates_the_only_claim_link"
+
+[[negative_control]]
+name = "reserved-successor-allocation"
+result = "detected"
+evidence = "provenance_store::claim_transitions::reserved_claim_ids_are_skipped_deterministically"
+
+[[negative_control]]
+name = "unresolved-identity"
+result = "rejected"
+evidence = "theorem identity validator rejects a claim-like theorem without an explicit link or alias"
+
+[[negative_control]]
+name = "semantically-different-shared-integer"
+result = "detected"
+evidence = "C1635_SedenionDriverSemantics remains separate from canonical C-1635"
+
+[[negative_control]]
+name = "four-formal-surface-binding"
+result = "detected"
+evidence = "all four links target C-1646 through C-1649 and none target C-1635 through C-1638"
+
+[[command]]
+name = "format"
+command = "cargo fmt --all -- --check"
+exit_code = 0
+output = "exit 0; rustfmt check passed; rustfmt printed existing unstable-option warnings"
+
+[[command]]
+name = "focused-clippy"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo clippy -p provenance_store -p gororoba_db -p gororoba_cli_data --all-targets -- -D warnings"
+exit_code = 0
+output = "exit 0; clippy completed with warnings denied"
+
+[[command]]
+name = "core-tests"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo test -p provenance_core --lib"
+exit_code = 0
+output = "2 passed; 0 failed"
+
+[[command]]
+name = "store-tests"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo test -p provenance_store --lib"
+exit_code = 0
+output = "20 passed; 0 failed"
+
+[[command]]
+name = "database-tests"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo test -p gororoba_db"
+exit_code = 0
+output = "1 passed; 0 failed"
+
+[[command]]
+name = "cli-tests"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo test -p gororoba_cli_provenance -p gororoba_cli_data"
+exit_code = 0
+output = "gororoba_cli_data library 19 passed; cli_smoke 28 passed; gororoba_cli_provenance 1 passed; all package tests passed"
+
+[[command]]
+name = "database-documentation"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo run -q -p xtask -- db-docs"
+exit_code = 0
+output = "db-docs OK: regenerated db/schema.sql docs/db/schema.json crates/data_core/src/registry_mirrors/db_catalog.rs"
+
+[[command]]
+name = "compatibility-export"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo run -q -p gororoba_cli_provenance --bin provenance -- export-control-plane"
+exit_code = 0
+output = "Exported control-plane compatibility outputs: claims=1464 insights=183 experiments=232 binaries=496 theorems=162"
+
+[[command]]
+name = "theorem-identity-validator"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo run -q -p gororoba_db --bin gororoba-db -- theorem identity validate"
+exit_code = 0
+output = "theorem identity validation passed"
+
+[[command]]
+name = "control-plane-verifier"
+command = "CARGO_TARGET_DIR=.cache/exp-claim-theorem-target cargo run -q -p gororoba_cli_provenance --bin provenance -- --db registry/canonical/control_plane.sqlite3 verify-control-plane --verify-compat-exports"
+exit_code = 0
+output = "claims=1464 insights=183 experiments=232 complete_experiments=0 binaries=496 theorems=162 kernel_checked_claims=161 proof_files=298"
+
+[[command]]
+name = "registry-validation"
+command = "CARGO_TARGET_DIR=.cache/gate-target TMPDIR=$PWD/.cache/exp-claim-theorem-tmp make validate-registry"
+exit_code = 0
+output = "registry validation completed in one tool session; claims=1464; theorems=162; kernel_checked_claims=161; proof_files=298; semantic atoms and evidence provenance passed"
+
+[[command]]
+name = "rocq-project-parity"
+command = "make rocq-project-check"
+exit_code = 0
+output = "verified Rocq project parity: 298 listed sources, 298 inventory sources"
+
+[[command]]
+name = "repository-fast-validation"
+command = "CARGO_TARGET_DIR=.cache/gate-target TMPDIR=$PWD/.cache/exp-claim-theorem-tmp make validate-repository-fast"
+exit_code = 0
+output = "OK: fast repository validation completed"
+
+[[command]]
+name = "pre-push-validation"
+command = "CARGO_TARGET_DIR=.cache/gate-target TMPDIR=$PWD/.cache/exp-claim-theorem-tmp make validate-local"
+exit_code = 0
+output = "571 tests run: 571 passed, 0 skipped; scoped Rust validation passed; governance validation passed"
+
+[[command]]
+name = "source-call-map"
+command = "ctags, cscope, and cflow over the focused Rust source list"
+exit_code = 0
+output = "ctags 1225 symbol lines; cscope index built; cflow one trivial output line with Rust parser diagnostics; typed call map retained as semantic authority"
+
+[[command]]
+name = "targeted-lizard"
+command = "lizard crates/provenance_store/src/theorem_identity.rs crates/provenance_store/src/claim_transitions.rs crates/gororoba_cli_data/src/bin/frontier_refresh.rs crates/gororoba_db/src/bin/gororoba_db.rs --CCN 15 --length 120 --warnings_only"
+exit_code = 1
+output = "advisory structural warnings reported for validator and frontier functions; clippy, tests, and repository gates passed; no lizard warning was promoted to a scientific or correctness verdict"
+advisory = true
+
+[gate]
+imperative = "Declare P1.5 complete only after every theorem has a stable typed identity, every claim-like prefix is explicitly linked or explicitly aliased, successor allocation skips reserved identifiers deterministically, the four formal surfaces link to C-1646 through C-1649, the refreshed queues come from the post-transition database, and the P1 manifest and transition events remain byte- and semantically intact."
+status = "validation artifact registered; final merge, post-merge verification, and cleanup remain"
