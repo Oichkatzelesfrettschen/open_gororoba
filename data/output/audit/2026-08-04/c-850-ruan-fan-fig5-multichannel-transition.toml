@@ -1,0 +1,74 @@
+[transition]
+transition_key = "c-850-ruan-fan-fig5-multichannel-heldout-challenge"
+source_claim_id = "C-850"
+expected_prior_status = "Provisional"
+experiment_verdict = "Falsifies"
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+experiment_ids = []
+exercised_falsifier = "Enumerate the relevant lossless and lossy poles before selection, derive source parameters without fitting the evaluation curve, compare every unique l in {0,1,2} through complex S_l and R_l, run a disjoint held-out complex fit, compare declared baselines, and test the rounded source landmark."
+proposed_claim_status = "Refuted"
+rationale = "The source-derived Figure 5 path has stable independently checked poles and component-wise agreement between production and the dense independent Mie reference, but it fails the preregistered per-channel and aggregate challenge. The source landmark at omega/omega_p=0.2282 is also not reproduced, and the held-out aggregate agreement is a cancellation artifact. The result refutes the compound repository challenge as stated; it does not refute the source channel identities or the paper theory."
+unresolved_assumptions = [
+    "The source text reports rounded Figure 5 landmark values that disagree with both independent numerical paths under the retained geometry and convention.",
+    "The EPS paths retain vector data, but curve and marker assignment is not mechanically separable without subjective selection.",
+    "The source-derived one-pole parameter mapping remains a useful bounded hypothesis even though the compound match claim fails.",
+]
+actor = "p2b-parameter-identification-campaign"
+reason = "Split the failed compound Figure 5 repository challenge into per-channel, aggregate, source-landmark, and parameter-identification boundaries."
+transition_timestamp = "2026-08-04T22:54:54Z"
+expected_source_state_sha256 = "744bce6dfb943fdea3085f9d394a5bc4db17c8727b9a30fa7442556ce6939766"
+expected_claim_id_max = 1653
+
+[[successor]]
+proposal_key = "c850-fig5-per-channel-complex-amplitude-envelope"
+statement = "The source-derived Figure 5 single-resonance TCMT path has a retained per-channel complex S_l and R_l error envelope for l=0,1,2 and their rotationally symmetric negative partners on the frozen frequency window."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Per-channel complex-amplitude conformance only; aggregate cancellation and source-landmark reproduction are separate predicates."
+required_falsifier = "An independent root, background, and real-frequency channel construction must disagree with the retained per-channel complex components beyond the declared reference tolerance, or the error envelope must fail to replay at the pinned revision."
+where_stated = [
+    "data/output/audit/2026-08-04/p2b-preregistration.toml",
+    "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml",
+]
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+predecessor_relation_kind = "implementation_split"
+
+[[successor]]
+proposal_key = "c850-fig5-five-channel-observable-envelope"
+statement = "The five-channel Figure 5 Mie and TCMT aggregate scattering, absorption, and extinction observables have a retained source-derived and held-out error envelope after per-channel values are preserved and degeneracy weights are applied."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Aggregate observable behavior only; this claim cannot promote a per-channel complex-amplitude failure through cancellation."
+required_falsifier = "A replay with the frozen 201-point source-derived grid and disjoint held-out coordinates must disagree with the retained aggregate components or fail to expose any cancellation artifact."
+where_stated = [
+    "data/output/audit/2026-08-04/p2b-preregistration.toml",
+    "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml",
+]
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+predecessor_relation_kind = "implementation_split"
+
+[[successor]]
+proposal_key = "c850-fig5-textual-source-landmark"
+statement = "The Ruan-Fan Figure 5 textual landmark at omega/omega_p=0.2282 has a separately adjudicated relationship to the repository Mie and TCMT totals under the declared geometry, normalization, and polarization convention."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Source-landmark reproduction only; the retained result records a source-versus-independent-numerical discrepancy and does not refute the source theory."
+required_falsifier = "A source-faithful, independently reproduced geometry or normalization must either reconcile the rounded source landmark with the retained numerical totals or establish a stable transcription error."
+where_stated = [
+    "https://arxiv.org/abs/0909.3323",
+    "data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml",
+    "data/output/audit/2026-08-04/p2b-source-figure-vector-extraction.toml",
+]
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+predecessor_relation_kind = "source_split"
+
+[[successor]]
+proposal_key = "c850-source-derived-fig5-parameter-identification"
+statement = "The Figure 5 complex-pole, lossless-to-lossy continuation, and uniform-metal-background procedure identifies one retained parameter tuple per unique channel under the declared single-resonance mapping, subject to the unresolved source-landmark discrepancy."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Source-derived parameter identification only; no direct reproduction of unpublished per-channel paper fit tuples is asserted."
+required_falsifier = "A refined contour count, independent high-precision determinant, or source-convention audit must reveal an omitted comparable pole, unstable loss subtraction, or background phase inconsistency under the frozen windows."
+where_stated = [
+    "https://arxiv.org/abs/0909.3323",
+    "data/output/audit/2026-08-04/p2b-preregistration.toml",
+    "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml",
+]
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+predecessor_relation_kind = "source_split"

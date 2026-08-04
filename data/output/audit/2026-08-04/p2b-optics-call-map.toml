@@ -1,0 +1,65 @@
+format = "p2b-optics-call-map-v1"
+captured_utc = "2026-08-04T23:38:18Z"
+implementation_revision = "cc482872db4ad8b52f05d32f2cc02817c0651119"
+scope = "P2B complex poles, source parameters, Mie/TCMT comparison, and held-out fitting"
+
+[static_tools]
+ctags = "Universal Ctags 6.2.1"
+ctags_command = "ctags --languages=Rust --output-format=xref --fields=+n -o /var/tmp/open_gororoba-p2b-ctags-v2.xref <six scoped Rust files>"
+ctags_exit_code = 0
+ctags_rows = 517
+ctags_output_sha256 = "e61ee4cb300c1784b33cf0b58573cbff06905150d6f873c1bfcde310a5f8d4cb"
+cscope = "cscope 15.9"
+cscope_command = "cscope -b -q -f /var/tmp/open_gororoba-p2b-cscope.out <six scoped Rust files>"
+cscope_exit_code = 0
+cscope_primary_sha256 = "0cc30867d1c0a3fc412617ad371e949dab5f0dbf83fce7dcee6c8c8d7acf9c4c"
+cscope_input_sha256 = "9b83df7b46f937657dd8ea231f702a8467e31a6ed118d42927125d74b4af1769"
+cscope_postings_sha256 = "6d7cd480272f52118f57c9bceff8fde46226cc7363e0a6c6ff0a8f06cfb3f1e4"
+cflow = "GNU cflow 1.8"
+cflow_command = "cflow --all --brief --format=posix <six scoped Rust files>"
+cflow_exit_code = 0
+cflow_rows = 56
+cflow_diagnostic_rows = 1520
+cflow_output_sha256 = "1e298758cb92853dc93f4afe2fee84df1cd3ba593ed3eaf99010d9ec0ff4477e"
+cflow_diagnostic_sha256 = "8ec54e2ecbbbcf4a0d4d3874efbced040cb3bc9934a77fe0a0a17662ca363aed"
+semantic_limit = "cflow and cscope parse Rust lexically and do not prove Rust module resolution, generic dispatch, or runtime reachability"
+
+[source_files]
+mie_poles = "48ab35c58f8448a680e7795ed4e46677af5e20b74d5bf54d4e21a67d44299847"
+p2b_fit = "5d01367709d76685195d2fcf6eeade6a6ab05b7115ea8c4c3596bb8f2654a120"
+runner = "b6030dfda7b811b7c2057c8d1888d49d1cbaafa71b6a4a547000d3ed02f3a203"
+fano_tcmt = "54c5dc72cab2eaa3b0b3662e64e545b957545ee1e82acf78430839554a61f44f"
+mie_cylinder = "8f3c413ba6bd8b5af88101432ec431a40a44b1f9ed93a3e1d61548b9efc3bb60"
+bessel = "32421ea91835c8b3064043c34cf3e92247f893a3aeda4d95401754d43bdf8fdf"
+
+[executed_paths]
+production_tests = "RUSTC_WRAPPER= TMPDIR=.cache/p2b-tmp CARGO_TARGET_DIR=.cache/exp-p2b-target cargo test -p optics_core --lib p2b_fit; cargo test -p optics_core --lib mie_poles"
+production_binary = "RUSTC_WRAPPER= TMPDIR=.cache/p2b-tmp CARGO_TARGET_DIR=.cache/exp-p2b-target cargo run -p optics_core --bin p2b-ruan-fan-reproduction -- <evidence> cc482872db4ad8b52f05d32f2cc02817c0651119 data/output/audit/2026-08-04/p2b-independent-pole-output.txt"
+independent_generator = "python3 data/output/audit/2026-08-04/p2b-independent-pole-generator.txt /var/tmp/open_gororoba-p2b-independent-poles.txt"
+independent_generator_sha256 = "adab3bab5eb14b02b116617be29dec3b2b2a98167cc5574617d7c1a76e01e8d5"
+independent_output_sha256 = "810dd48dcea5b13f7c8b8f6ba3250400d908e62483ed8c0e01d3c76f54642b0e"
+production_evidence_sha256 = "47667c6067c2e16c16ae9051427833848370980681c2494c772c7c32ccae0ceb"
+
+[call_graph]
+root_search = "runner::main -> build_root_searches -> root_search_record -> mie_poles::search_roots -> stable_root_count -> contour_count -> outgoing_determinant -> boundary_matrix -> state_value -> basis_value -> bessel and Hankel functions"
+root_refinement = "mie_poles::search_roots -> refine_root -> outgoing_determinant; local refinement runs only after contour root counting"
+source_background = "runner::build_fig4_source_channel and source_channel_for_figure5 -> mie_poles::uniform_metal_reflection -> boundary_matrix -> state_value -> basis_value"
+real_frequency_mie = "runner::run_figure4, source_figure5_observables, append_figure5_heldout_totals, and append_source_landmark -> mie_cylinder::try_scattering_channel -> state_matrix -> interface_matrix -> wavenumber and passive_sqrt -> bessel functions"
+real_frequency_aggregation = "mie_cylinder::try_mie_scattering -> try_scattering_channel for each l -> per-channel R_l and S_l -> independent scattering, absorption, extinction totals"
+tcmt_source_path = "runner::run_figure4 and source_figure5_observables -> fano_tcmt::evaluate_channel -> try_fano_reflection and try_scattering_coefficient -> source observables"
+heldout_fit = "runner::run_figure5_fit -> collect_samples and disjoint coordinate sets -> p2b_fit::fit_tcmt -> bounded_nelder_mead -> fano_tcmt::evaluate_channel"
+heldout_baselines = "runner::run_figure5_fit -> background_only, fixed-phase fit_tcmt, and p2b_fit::fit_one_pole -> shared training and validation coordinates"
+identifiability = "runner::append_fit_diagnostics -> tcmt_jacobian_singular_values, parameter profiles, leave-one-training-node-out fit, pole proximity, and validity ratio"
+legacy_boundary = "runner::f4_mutation_controls -> fano_tcmt::extract_fano_params only for a named heuristic mutation control; validating source and held-out paths do not call it"
+independent_mie_control = "runner::append_independent_mie_landmark -> production try_scattering_channel compared with retained mpmath layered_reflection rows"
+
+[independent_call_graph]
+source = "p2b-independent-pole-generator.txt"
+root_path = "main -> drude -> passive_sqrt -> state -> determinant -> refine"
+background_path = "main -> uniform_reflection -> state"
+mie_landmark_path = "main -> layered_reflection -> state -> mp.lu_solve"
+independence_boundary = "The generator does not import Rust modules, Rust determinant assembly, Rust Bessel functions, Rust transfer matrices, or the production fitter."
+
+[coverage]
+retained_component_outputs = "roots, determinant residuals, complex R_l, complex S_l, per-channel observables, fitted parameters, baseline errors, held-out errors, and source landmark values"
+retained_static_limit = "The lexical maps are evidence about symbol relationships; executed tests and the P2B runner establish the bounded runtime paths."
