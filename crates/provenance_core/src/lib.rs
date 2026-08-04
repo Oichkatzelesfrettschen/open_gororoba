@@ -345,9 +345,11 @@ pub struct BinaryRecord {
 #[derive(Clone, Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
 pub struct TheoremRecord {
     pub id: String,
+    pub legacy_name: String,
     pub title: String,
     pub proof_path: Utf8PathBuf,
     pub status: String,
+    pub identity_kind: String,
     pub linked_claim_ids: Vec<String>,
     pub source: String,
 }

@@ -34,6 +34,10 @@ path = "src/bin/claims_consolidate.rs"
 name = "claims-verify"
 path = "src/bin/claims_verify.rs"
 
+[[bin]]
+name = "frontier-refresh"
+path = "src/bin/frontier_refresh.rs"
+
 # ---- Registry (5) ----
 
 [[bin]]

@@ -2564,4 +2564,3 @@ name = "zd-spectral-dimension"
 crate = "gororoba_cli_data"
 description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
 experiment = "E-084"
-

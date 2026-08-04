@@ -147,6 +147,10 @@ pub(crate) fn render_array_of_tables_registry(
     lines.join("\n")
 }
 
+pub(crate) fn normalized_export_text(body: &str) -> String {
+    format!("{}\n", body.trim_end_matches('\n'))
+}
+
 pub(crate) fn render_claim_row(row: &ClaimRecord) -> String {
     if row.compat_toml_text.trim().is_empty() {
         let mut lines = vec![
@@ -335,7 +339,8 @@ pub(crate) fn write_text(path: &Path, body: &str) -> Result<()> {
         fs::create_dir_all(parent)
             .with_context(|| format!("create parent directory {}", parent.display()))?;
     }
-    fs::write(path, format!("{body}\n")).with_context(|| format!("write {}", path.display()))
+    fs::write(path, normalized_export_text(body))
+        .with_context(|| format!("write {}", path.display()))
 }
 
 #[cfg(test)]

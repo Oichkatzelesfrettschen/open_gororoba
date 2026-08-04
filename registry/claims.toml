@@ -4991,45 +4991,45 @@ where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json; dat
 
 [[claim]]
 id = "C-1634"
+last_verified = "2026-08-04"
 statement = "The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions."
 status = "Theoretical"
 where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/claim_transition_proposals.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1635"
+last_verified = "2026-08-04"
 statement = "The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid."
 status = "Provisional"
 where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1636"
+last_verified = "2026-08-04"
 statement = "The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side, with the on-shell irreducible and external-leg cancellation and separate tadpole invariance stated explicitly."
 status = "Theoretical"
 where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/claim_transition_proposals.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1637"
+last_verified = "2026-08-04"
 statement = "The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition across the predeclared kinematic grid."
 status = "Provisional"
 where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1638"
+last_verified = "2026-08-04"
 statement = "The photon-graviton TCMT implementation evaluates kappa_1 - kappa_2 = gamma_l against the declared relative tolerance."
 status = "Provisional"
 where_stated = "data/output/audit/2026-08-02/p0_frontier.toml; data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml; data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1639"
+last_verified = "2026-08-04"
 statement = "The source-faithful Maksimov energy constraint kappa_1 - kappa_2 = gamma_l holds under declared units and parameter correspondence."
 status = "Theoretical"
 where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/p0_frontier.toml; data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-164"
@@ -5040,38 +5040,83 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/cs
 
 [[claim]]
 id = "C-1640"
+last_verified = "2026-08-04"
 statement = "The declared scattering, absorption, and extinction observables satisfy an independently derived balance relation."
 status = "Provisional"
 where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/claim_transition_proposals.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1641"
+last_verified = "2026-08-04"
 statement = "The declared lossless, flux-normalized complex scattering matrix is unitary on the stated channel basis."
 status = "Provisional"
 where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1642"
+last_verified = "2026-08-04"
 statement = "The declared passive lossy scattering matrix is contractive under the stated flux normalization."
 status = "Provisional"
 where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1643"
+last_verified = "2026-08-04"
 statement = "The declared reciprocal scattering model satisfies the appropriate reciprocity relation for its channel basis."
 status = "Provisional"
 where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/claim_transition_proposals.toml"
-last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-1644"
+last_verified = "2026-08-04"
 statement = "The declared time-reversed scattering construction satisfies its stated time-reversal relation."
 status = "Provisional"
 where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+
+[[claim]]
+formal_proof = "proofs/theories/R2VBTransformDP4.v"
+id = "C-1645"
+last_verified = "2026-08-03"
+statement = "The R2VB four-DP4 matrix apply is FP24-exact under the operand gate 0 <= B and 4*B^2 <= 2^17: each lane accumulator stays inside the inclusive FP24 exact-integer window (dp4_operand_admit_exact, mvp4_rows_exact), with the tight admission boundary B = 181 (dp4_admit_boundary). The gate and the dp4 lane extract to C through CertiRocq (proofs/extraction/ExtractR2VBDP4.v, hashes in proofs/extraction/golden/r2vb_dp4_extraction.sha256), and the extracted artifacts agree with native references over nine dp4 fixtures and nine gate rows spanning the boundary (make -C proofs test-r2vb-correspondence)."
+status = "Verified"
+status_note = "Axiom-free over Flocq FLX radix2 prec 17; builds under rocq-9.1.1 and rocq-certirocq switches. Silicon and Mesa-producer correspondence are separate obligations tracked in the steinmarder-r300 frontier."
+where_stated = "proofs/theories/R2VBTransformDP4.v"
+
+[[claim]]
+formal_proof = "proofs/verified/C1636_Cariow2013SedenionSchedule.v"
+id = "C-1646"
 last_verified = "2026-08-04"
+statement = "The declared 16-dimensional Cariow schedule uses 16 diagonal products and 106 sparse correction products and is extensionally equal to the ordinary Cayley-Dickson sedenion product over R16."
+status = "Verified"
+status_note = "Kernel-checked formal proposition for THM-CARIOW-SEDENION-SCHEDULE-001. Scope is limited to the stated assumptions and does not establish a physical or implementation claim."
+where_stated = "proofs/verified/C1636_Cariow2013SedenionSchedule.v; docs/engineering/theorem-identity-disambiguation-2026_08_04.md"
+
+[[claim]]
+formal_proof = "proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v"
+id = "C-1647"
+last_verified = "2026-08-04"
+statement = "The octonion downcast product has no nonzero zero divisors, and a sedenion zero product with both hi-halves zero forces one operand to be zero."
+status = "Verified"
+status_note = "Kernel-checked formal proposition for THM-OCTONION-DOWNCAST-ZERO-DIVISORS-001. Scope is limited to the stated assumptions and does not establish a physical or implementation claim."
+where_stated = "proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v; docs/engineering/theorem-identity-disambiguation-2026_08_04.md"
+
+[[claim]]
+formal_proof = "proofs/verified/C1637_R300SedenionZeroDivisor.v"
+id = "C-1648"
+last_verified = "2026-08-04"
+statement = "The R300-facing sedenion witness (e1 + e10) times (e5 + e14) equals zero, both operands are nonzero, and the witness belongs to the declared box-kite and assessor surfaces."
+status = "Verified"
+status_note = "Kernel-checked formal proposition for THM-R300-SEDENION-ZERO-DIVISOR-001. Scope is limited to the stated assumptions and does not establish a physical or implementation claim."
+where_stated = "proofs/verified/C1637_R300SedenionZeroDivisor.v; docs/engineering/theorem-identity-disambiguation-2026_08_04.md"
+
+[[claim]]
+formal_proof = "proofs/verified/C1635_SedenionDriverSemantics.v"
+id = "C-1649"
+last_verified = "2026-08-04"
+statement = "The Rocq surface C1635_sedenion_driver_semantics_surface packages the declared sedenion downcast, zero-divisor, R300 witness, norm failure, box-kite, and Cariow schedule propositions under their stated assumptions."
+status = "Verified"
+status_note = "Kernel-checked formal proposition for THM-SASS-DRIVER-001. Scope is limited to the stated assumptions and does not establish a physical or implementation claim."
+where_stated = "proofs/verified/C1635_SedenionDriverSemantics.v; docs/engineering/theorem-identity-disambiguation-2026_08_04.md"
 
 [[claim]]
 id = "C-165"
@@ -10930,13 +10975,3 @@ statement = "The 64D Chingon algebra breaks alternativity, inducing a non-conser
 status = "Provisional"
 status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending"
 where_stated = "crates/gr_core/src/forces/chingon_drag.rs"
-
-
-[[claim]]
-formal_proof = "proofs/theories/R2VBTransformDP4.v"
-id = "C-1645"
-last_verified = "2026-08-03"
-statement = "The R2VB four-DP4 matrix apply is FP24-exact under the operand gate 0 <= B and 4*B^2 <= 2^17: each lane accumulator stays inside the inclusive FP24 exact-integer window (dp4_operand_admit_exact, mvp4_rows_exact), with the tight admission boundary B = 181 (dp4_admit_boundary). The gate and the dp4 lane extract to C through CertiRocq (proofs/extraction/ExtractR2VBDP4.v, hashes in proofs/extraction/golden/r2vb_dp4_extraction.sha256), and the extracted artifacts agree with native references over nine dp4 fixtures and nine gate rows spanning the boundary (make -C proofs test-r2vb-correspondence)."
-status = "Verified"
-status_note = "Axiom-free over Flocq FLX radix2 prec 17; builds under rocq-9.1.1 and rocq-certirocq switches. Silicon and Mesa-producer correspondence are separate obligations tracked in the steinmarder-r300 frontier."
-where_stated = "proofs/theories/R2VBTransformDP4.v"

@@ -4,22 +4,18 @@
 //! - `canonical_formal_proof_for_claim`: resolves the canonical
 //!   `formal_proof` path for a claim by checking the claim's own
 //!   formal_proof field, scanning where_stated/status_note/formal_proof
-//!   for `proofs/.../*.v` references, and falling back to a verified
-//!   proof from the inventory keyed by claim id.
-//! - `preferred_primary_verified_proof_for_claim`: picks the
-//!   shortest-suffix verified proof entry from the inventory, preferring
-//!   primary stems over suffixed variants.
-//! - `proof_entry_priority`: priority key for the sort above.
+//!   for `proofs/.../*.v` references. A missing explicit path remains
+//!   unresolved.
 //! - `render_normalized_claim_compat_toml`: re-emits a ClaimRecord into
 //!   compat_toml_text, splicing live SQLite columns.
 //! - `render_normalized_insight_compat_toml`: re-emits an insight TOML
 //!   table with the normalized status token applied.
 //! - `extract_proof_paths`: scrapes `proofs/...*.v` paths from a text
 //!   blob (where_stated / status_note / formal_proof).
-//! - `link_claims_for_proof`: enumerates ClaimRecord ids that reference
-//!   a given proof path or theorem stem.
-//! - `normalized_claim_id_from_theorem_stem`: maps a theorem stem
-//!   (e.g. C123_Foo) to the canonical claim id (C-123) when applicable.
+//! - `link_claims_for_proof`: enumerates ClaimRecord ids that explicitly
+//!   reference a given proof path.
+//! - `normalized_claim_id_from_theorem_stem`: parses a numeric prefix for
+//!   reservation and collision reporting only.
 
 use std::path::Path;
 
@@ -29,14 +25,13 @@ use provenance_core::ClaimRecord;
 use toml::Value;
 
 use super::{
-    ProofInventory, ProofInventoryEntry, status_normalize::normalize_insight_status,
-    toml_helpers::render_toml_table,
+    ProofInventory, status_normalize::normalize_insight_status, toml_helpers::render_toml_table,
 };
 
 pub(crate) fn canonical_formal_proof_for_claim(
     repo_root: &Path,
     claim: &ClaimRecord,
-    proof_inventory: &ProofInventory,
+    _proof_inventory: &ProofInventory,
 ) -> Option<String> {
     if let Some(formal_proof) = claim.formal_proof.as_deref()
         && !formal_proof.trim().is_empty()
@@ -56,49 +51,11 @@ pub(crate) fn canonical_formal_proof_for_claim(
     referenced_paths.sort();
     referenced_paths.dedup();
 
-    if let Some(primary_verified) =
-        preferred_primary_verified_proof_for_claim(claim, proof_inventory)
-    {
-        return Some(primary_verified);
-    }
-
     if referenced_paths.len() == 1 {
         return referenced_paths.into_iter().next();
     }
 
     None
-}
-
-pub(crate) fn preferred_primary_verified_proof_for_claim(
-    claim: &ClaimRecord,
-    proof_inventory: &ProofInventory,
-) -> Option<String> {
-    let claim_prefix = claim.id.strip_prefix("C-").unwrap_or(&claim.id);
-    let mut candidates = proof_inventory
-        .verified_by_claim_id
-        .get(&claim.id)
-        .cloned()
-        .unwrap_or_default();
-    candidates.sort_by(|lhs, rhs| {
-        proof_entry_priority(claim_prefix, lhs)
-            .cmp(&proof_entry_priority(claim_prefix, rhs))
-            .reverse()
-            .then_with(|| lhs.path.as_str().cmp(rhs.path.as_str()))
-    });
-    candidates
-        .first()
-        .map(|entry| entry.path.as_str().to_string())
-}
-
-fn proof_entry_priority(claim_prefix: &str, entry: &ProofInventoryEntry) -> (u8, usize) {
-    let suffix = entry.stem.strip_prefix('C').unwrap_or(&entry.stem);
-    let suffix = suffix.strip_prefix(claim_prefix).unwrap_or(suffix);
-    let primary_rank = if suffix.starts_with('_') || suffix.is_empty() {
-        2
-    } else {
-        1
-    };
-    (primary_rank, usize::MAX - entry.stem.len())
 }
 
 pub(crate) fn render_normalized_claim_compat_toml(row: &ClaimRecord) -> Result<String> {
@@ -195,20 +152,17 @@ pub(crate) fn extract_proof_paths(text: &str) -> Vec<String> {
 
 pub(crate) fn link_claims_for_proof(
     proof_path: &Utf8PathBuf,
-    stem: &str,
+    _stem: &str,
     claims: &[ClaimRecord],
 ) -> Vec<String> {
     let proof_path_str = proof_path.as_str();
-    let normalized_claim_id = normalized_claim_id_from_theorem_stem(stem);
     let mut out = Vec::new();
     for claim in claims {
-        let matches = claim.id == stem
-            || normalized_claim_id.as_deref() == Some(&claim.id)
-            || claim
-                .formal_proof
-                .as_deref()
-                .map(|path| path.trim() == proof_path_str)
-                .unwrap_or(false)
+        let matches = claim
+            .formal_proof
+            .as_deref()
+            .map(|path| path.trim() == proof_path_str)
+            .unwrap_or(false)
             || claim.where_stated.contains(proof_path_str)
             || claim
                 .status_note
@@ -234,4 +188,51 @@ pub(crate) fn normalized_claim_id_from_theorem_stem(stem: &str) -> Option<String
         return None;
     }
     Some(format!("C-{digits}"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::link_claims_for_proof;
+    use camino::Utf8PathBuf;
+    use provenance_core::ClaimRecord;
+
+    #[test]
+    fn numeric_theorem_prefix_does_not_link_an_unrelated_claim() {
+        let claim = ClaimRecord {
+            id: "C-1635".to_string(),
+            statement: "tensor electromagnetic Ward conformance".to_string(),
+            status: "Provisional".to_string(),
+            where_stated: "registry claim successor".to_string(),
+            last_verified: "2026-08-04".to_string(),
+            formal_proof: None,
+            status_note: None,
+            compat_toml_text: String::new(),
+        };
+        let links = link_claims_for_proof(
+            &Utf8PathBuf::from("proofs/verified/C1635_SedenionDriverSemantics.v"),
+            "C1635_SedenionDriverSemantics",
+            &[claim],
+        );
+        assert!(links.is_empty());
+    }
+
+    #[test]
+    fn explicit_proof_path_creates_the_only_claim_link() {
+        let claim = ClaimRecord {
+            id: "C-1649".to_string(),
+            statement: "sedenion driver semantics".to_string(),
+            status: "Verified".to_string(),
+            where_stated: "proofs/verified/C1635_SedenionDriverSemantics.v".to_string(),
+            last_verified: "2026-08-04".to_string(),
+            formal_proof: None,
+            status_note: None,
+            compat_toml_text: String::new(),
+        };
+        let links = link_claims_for_proof(
+            &Utf8PathBuf::from("proofs/verified/C1635_SedenionDriverSemantics.v"),
+            "C1635_SedenionDriverSemantics",
+            &[claim],
+        );
+        assert_eq!(links, ["C-1649"]);
+    }
 }

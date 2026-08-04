@@ -8,168 +8,167 @@
 
 This file is generated from the canonical SQLite control plane and currently indexes 162 Rocq proof files.
 
-| Theorem | Proof File | Status | Linked Claims |
-|---|---|---|---|
-| `C001_CDNonAssociative` | `proofs/verified/C001_CDNonAssociative.v` | kernel_checked | C-001 |
-| `C002_SedenionZDAndNormFail` | `proofs/verified/C002_SedenionZDAndNormFail.v` | kernel_checked | C-002 |
-| `C003_AssessorsBoxkites` | `proofs/verified/C003_AssessorsBoxkites.v` | kernel_checked | C-003 |
-| `C004_PSL27Order168` | `proofs/verified/C004_PSL27Order168.v` | kernel_checked | C-004 |
-| `C005_ZDAnnihilatorGeometry` | `proofs/verified/C005_ZDAnnihilatorGeometry.v` | kernel_checked | C-005 |
-| `C006_GWAlgebraicAnchor` | `proofs/verified/C006_GWAlgebraicAnchor.v` | kernel_checked | C-006 |
-| `C007_BHMassAlgebraicAnchor` | `proofs/verified/C007_BHMassAlgebraicAnchor.v` | kernel_checked | C-007 |
-| `C008_AlphaFreeParameter` | `proofs/verified/C008_AlphaFreeParameter.v` | kernel_checked | C-008 |
-| `C009_EntropyScalingRefuted` | `proofs/verified/C009_EntropyScalingRefuted.v` | kernel_checked | C-009 |
-| `C010_ConnectivityObstruction` | `proofs/verified/C010_ConnectivityObstruction.v` | kernel_checked | C-010, C-1331 |
-| `C010_ZDGraphDisconnected` | `proofs/verified/C010_ZDGraphDisconnected.v` | kernel_checked | C-010 |
-| `C011_AssociatorObstruction` | `proofs/verified/C011_AssociatorObstruction.v` | kernel_checked | C-011 |
-| `C012_NegDimRefuted` | `proofs/verified/C012_NegDimRefuted.v` | kernel_checked | C-012 |
-| `C013_AutomorphemesCoverage` | `proofs/verified/C013_AutomorphemesCoverage.v` | kernel_checked | C-013 |
-| `C014_AnnihilatorDim4` | `proofs/verified/C014_AnnihilatorDim4.v` | kernel_checked | C-014 |
-| `C015_FourPartners` | `proofs/verified/C015_FourPartners.v` | kernel_checked | C-015 |
-| `C016_M3TrilinearSplit` | `proofs/verified/C016_M3TrilinearSplit.v` | kernel_checked | C-016 |
-| `C016_ParityFlips` | `proofs/verified/C016_ParityFlips.v` | kernel_checked | C-016, C-1331 |
-| `C017_XORBucketNecessary` | `proofs/verified/C017_XORBucketNecessary.v` | kernel_checked | C-017 |
-| `C018_WheelsAxioms` | `proofs/verified/C018_WheelsAxioms.v` | kernel_checked | C-018 |
-| `C019_WheelsNoContent` | `proofs/verified/C019_WheelsNoContent.v` | kernel_checked | C-019 |
-| `C020_BasisNonzero` | `proofs/verified/C020_BasisNonzero.v` | kernel_checked | C-020 |
-| `C021_LatticeInconsistency` | `proofs/verified/C021_LatticeInconsistency.v` | kernel_checked | C-021 |
-| `C022_OrdinalAnalogy` | `proofs/verified/C022_OrdinalAnalogy.v` | kernel_checked | C-022 |
-| `C023_AssociatorNotHolonomy` | `proofs/verified/C023_AssociatorNotHolonomy.v` | kernel_checked | C-023 |
-| `C024_NormMultiplicativeAnchor` | `proofs/verified/C024_NormMultiplicativeAnchor.v` | kernel_checked | C-024 |
-| `C025_SkyAlgebraicAnchor` | `proofs/verified/C025_SkyAlgebraicAnchor.v` | kernel_checked | C-025 |
-| `C026_ZDGraphBlocks` | `proofs/verified/C026_ZDGraphBlocks.v` | kernel_checked | C-026 |
-| `C027_DeffHorizonToy` | `proofs/verified/C027_DeffHorizonToy.v` | kernel_checked | C-027 |
-| `C028_SedenionAutGroup` | `proofs/verified/C028_SedenionAutGroup.v` | kernel_checked | C-028 |
-| `C029_FermionGenerations` | `proofs/verified/C029_FermionGenerations.v` | kernel_checked | C-029 |
-| `C030_AssociatorNonzero` | `proofs/verified/C030_AssociatorNonzero.v` | kernel_checked | C-030 |
-| `C031_HurwitzComplete` | `proofs/verified/C031_HurwitzComplete.v` | kernel_checked | C-031 |
-| `C032_TangAssociatorAnchor` | `proofs/verified/C032_TangAssociatorAnchor.v` | kernel_checked | C-032 |
-| `C033_SU5GeneratorsWellDefined` | `proofs/verified/C033_SU5GeneratorsWellDefined.v` | kernel_checked | C-033 |
-| `C034_CDDoublingIdentity` | `proofs/verified/C034_CDDoublingIdentity.v` | kernel_checked | C-034 |
-| `C035_CasimirQuarter` | `proofs/verified/C035_CasimirQuarter.v` | kernel_checked | C-035 |
-| `C036_TrialityClusteringBound` | `proofs/verified/C036_TrialityClusteringBound.v` | kernel_checked | C-036 |
-| `C037_EpsilonNotGamma` | `proofs/verified/C037_EpsilonNotGamma.v` | kernel_checked | C-037 |
-| `C038_WDarkEnergy` | `proofs/verified/C038_WDarkEnergy.v` | kernel_checked | C-038 |
-| `C039_SpectralDimensionRunning` | `proofs/verified/C039_SpectralDimensionRunning.v` | kernel_checked | C-039 |
-| `C040_PrimordialTiltRefuted` | `proofs/verified/C040_PrimordialTiltRefuted.v` | kernel_checked | C-040 |
-| `C1007_CDPropertyLoss` | `proofs/verified/C1007_CDPropertyLoss.v` | kernel_checked | - |
-| `C1133_BraidParityPreservation` | `proofs/verified/C1133_BraidParityPreservation.v` | kernel_checked | C-1133 |
-| `C1134_TopologicalFrictionBound` | `proofs/verified/C1134_TopologicalFrictionBound.v` | kernel_checked | C-1134 |
-| `C1135_BoxKiteFusionRules` | `proofs/verified/C1135_BoxKiteFusionRules.v` | kernel_checked | C-1135 |
-| `C1137_MissingEdgeQuantizedGap` | `proofs/verified/C1137_MissingEdgeQuantizedGap.v` | kernel_checked | C-1137, C-1352, C-1356 |
-| `C1138_WickDampingFriction` | `proofs/verified/C1138_WickDampingFriction.v` | kernel_checked | C-1138 |
-| `C1140_PathionQuantizedGap` | `proofs/verified/C1140_PathionQuantizedGap.v` | kernel_checked | C-1140 |
-| `C1140a_PathionGap_1_5` | `proofs/verified/C1140a_PathionGap_1_5.v` | kernel_checked | C-1140 |
-| `C1140b_PathionGap_6_10` | `proofs/verified/C1140b_PathionGap_6_10.v` | kernel_checked | C-1140 |
-| `C1140c_PathionGap_11_15` | `proofs/verified/C1140c_PathionGap_11_15.v` | kernel_checked | C-1140 |
-| `C1141_ZDGraphGeneralStructure` | `proofs/verified/C1141_ZDGraphGeneralStructure.v` | kernel_checked | C-1141 |
-| `C1142_XORScatterGatherDuality` | `proofs/verified/C1142_XORScatterGatherDuality.v` | kernel_checked | C-1142 |
-| `C1233_ChernSumZero` | `proofs/verified/C1233_ChernSumZero.v` | kernel_checked | C-1233 |
-| `C1234_ValleyChernAntisymmetry` | `proofs/verified/C1234_ValleyChernAntisymmetry.v` | kernel_checked | C-1234 |
-| `C1236_FlatBandGroupVelocity` | `proofs/verified/C1236_FlatBandGroupVelocity.v` | kernel_checked | C-1236 |
-| `C1262_FlatBandFractionHalf` | `proofs/verified/C1262_FlatBandFractionHalf.v` | kernel_checked | C-1262, C-1270, C-1274 |
-| `C1313_Thesis42Arithmetic` | `proofs/verified/C1313_Thesis42Arithmetic.v` | kernel_checked | C-1313 |
-| `C1363_HarmonicHaloExactRecovery` | `proofs/verified/C1363_HarmonicHaloExactRecovery.v` | kernel_checked | C-1363 |
-| `C1364_HomotopyBridgeLaw` | `proofs/verified/C1364_HomotopyBridgeLaw.v` | kernel_checked | C-1364 |
-| `C1455_AssociatorTrilinear` | `proofs/verified/C1455_AssociatorTrilinear.v` | kernel_checked | C-1455, C-1463 |
-| `C1463_ArithmeticInventory` | `proofs/verified/C1463_ArithmeticInventory.v` | kernel_checked | C-1463 |
-| `C1464_SedenionAnticommutation` | `proofs/verified/C1464_SedenionAnticommutation.v` | kernel_checked | C-1464 |
-| `C1465_KoebisuEqualNorm` | `proofs/verified/C1465_KoebisuEqualNorm.v` | kernel_checked | C-1465 |
-| `C1466_SubalgebraClosure` | `proofs/verified/C1466_SubalgebraClosure.v` | kernel_checked | C-1466 |
-| `C1467_XORSignCocycle` | `proofs/verified/C1467_XORSignCocycle.v` | kernel_checked | C-1465, C-1467 |
-| `C1468_SlotShiftEquivariance` | `proofs/verified/C1468_SlotShiftEquivariance.v` | kernel_checked | C-1468 |
-| `C1469_TowerTrilinearity` | `proofs/verified/C1469_TowerTrilinearity.v` | kernel_checked | C-1469 |
-| `C1470_PathionTrilinearity` | `proofs/verified/C1470_PathionTrilinearity.v` | kernel_checked | C-1470 |
-| `C1471_HigherCDTrilinearity` | `proofs/verified/C1471_HigherCDTrilinearity.v` | kernel_checked | C-1471 |
-| `C1474_FuelAdequacy` | `proofs/verified/C1474_FuelAdequacy.v` | kernel_checked | C-1474 |
-| `C1628_IDCT8ButterflyCompaction` | `proofs/verified/C1628_IDCT8ButterflyCompaction.v` | kernel_checked | C-1628 |
-| `C1629_IDCT8DP4ExactBound` | `proofs/verified/C1629_IDCT8DP4ExactBound.v` | kernel_checked | C-1629 |
-| `C1630_SedenionOctonionDowncast` | `proofs/verified/C1630_SedenionOctonionDowncast.v` | kernel_checked | C-1630 |
-| `C1635_SedenionDriverSemantics` | `proofs/verified/C1635_SedenionDriverSemantics.v` | kernel_checked | - |
-| `C1636_Cariow2013SedenionSchedule` | `proofs/verified/C1636_Cariow2013SedenionSchedule.v` | kernel_checked | - |
-| `C1637_R300SedenionZeroDivisor` | `proofs/verified/C1637_R300SedenionZeroDivisor.v` | kernel_checked | - |
-| `C1638_OctonionDowncastNoZeroDivisors` | `proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v` | kernel_checked | - |
-| `C868_PainleveGullstrand` | `proofs/verified/C868_PainleveGullstrand.v` | kernel_checked | C-868 |
-| `C869_InteriorFlat` | `proofs/verified/C869_InteriorFlat.v` | kernel_checked | C-869 |
-| `C870_NacelleModulationDistinct` | `proofs/verified/C870_NacelleModulationDistinct.v` | kernel_checked | C-870 |
-| `C871_CasimirExact` | `proofs/verified/C871_CasimirExact.v` | kernel_checked | C-871 |
-| `C872_PillarCasimirFinite` | `proofs/verified/C872_PillarCasimirFinite.v` | kernel_checked | C-872 |
-| `C873_SphereInCylinderFinite` | `proofs/verified/C873_SphereInCylinderFinite.v` | kernel_checked | C-873 |
-| `C874_YorkTimeVanishesInterior` | `proofs/verified/C874_YorkTimeVanishesInterior.v` | kernel_checked | C-874 |
-| `C875_HamiltonianVacuum` | `proofs/verified/C875_HamiltonianVacuum.v` | kernel_checked | C-875 |
-| `C876_QuaternionRotation` | `proofs/verified/C876_QuaternionRotation.v` | kernel_checked | C-876 |
-| `C877_ZeroCoupling` | `proofs/verified/C877_ZeroCoupling.v` | kernel_checked | C-877 |
-| `C878_ImbalanceAttractor` | `proofs/verified/C878_ImbalanceAttractor.v` | kernel_checked | C-878 |
-| `C879_DimensionBijection` | `proofs/verified/C879_DimensionBijection.v` | kernel_checked | C-879 |
-| `C880_FoliationSlice` | `proofs/verified/C880_FoliationSlice.v` | kernel_checked | C-880 |
-| `C881_GF2CubicMinDegree` | `proofs/verified/C881_GF2CubicMinDegree.v` | kernel_checked | C-881 |
-| `C882_ParityCliqueExact` | `proofs/verified/C882_ParityCliqueExact.v` | kernel_checked | C-882 |
-| `C883_CalcagniMonotoneRange` | `proofs/verified/C883_CalcagniMonotoneRange.v` | kernel_checked | C-883 |
-| `C884_NegDimDegeneracy` | `proofs/verified/C884_NegDimDegeneracy.v` | kernel_checked | C-884 |
-| `C885_DemocraticMixing` | `proofs/verified/C885_DemocraticMixing.v` | kernel_checked | C-885 |
-| `C886_BDGammaDeviation` | `proofs/verified/C886_BDGammaDeviation.v` | kernel_checked | C-886 |
-| `C887_BDGammaRange` | `proofs/verified/C887_BDGammaRange.v` | kernel_checked | C-887 |
-| `C888_BDGammaMonotone` | `proofs/verified/C888_BDGammaMonotone.v` | kernel_checked | C-888 |
-| `C889_CassiniBound` | `proofs/verified/C889_CassiniBound.v` | kernel_checked | C-889 |
-| `C890_NordtvedtBound` | `proofs/verified/C890_NordtvedtBound.v` | kernel_checked | C-890 |
-| `C891_GPBGeodetic` | `proofs/verified/C891_GPBGeodetic.v` | kernel_checked | C-891 |
-| `C892_DichroismRatio` | `proofs/verified/C892_DichroismRatio.v` | kernel_checked | C-892 |
-| `C893_ComplexCommutativity` | `proofs/verified/C893_ComplexCommutativity.v` | kernel_checked | C-893 |
-| `C894_ComplexAssociativity` | `proofs/verified/C894_ComplexAssociativity.v` | kernel_checked | C-894 |
-| `C895_ComplexNormMultiplicative` | `proofs/verified/C895_ComplexNormMultiplicative.v` | kernel_checked | C-895 |
-| `C896_ComplexConjAntimorph` | `proofs/verified/C896_ComplexConjAntimorph.v` | kernel_checked | C-896 |
-| `C897_QuatAssociativity` | `proofs/verified/C897_QuatAssociativity.v` | kernel_checked | C-897 |
-| `C898_QuatNormMultiplicative` | `proofs/verified/C898_QuatNormMultiplicative.v` | kernel_checked | C-898 |
-| `C899_QuatConjAntimorph` | `proofs/verified/C899_QuatConjAntimorph.v` | kernel_checked | C-899 |
-| `C900_QuatReComm` | `proofs/verified/C900_QuatReComm.v` | kernel_checked | C-900 |
-| `C901_QuatQuadraticIdentity` | `proofs/verified/C901_QuatQuadraticIdentity.v` | kernel_checked | C-901 |
-| `C902_QuatImaginarySquare` | `proofs/verified/C902_QuatImaginarySquare.v` | kernel_checked | C-902 |
-| `C903_QuatReSquare` | `proofs/verified/C903_QuatReSquare.v` | kernel_checked | C-903 |
-| `C904_QuatAssociatorZero` | `proofs/verified/C904_QuatAssociatorZero.v` | kernel_checked | C-904 |
-| `C905_QuatJordanIdentity` | `proofs/verified/C905_QuatJordanIdentity.v` | kernel_checked | C-905 |
-| `C906_QuatInverse` | `proofs/verified/C906_QuatInverse.v` | kernel_checked | C-906 |
-| `C907_QuatNonCommutative` | `proofs/verified/C907_QuatNonCommutative.v` | kernel_checked | C-907 |
-| `C908_SedenionZeroDivisor` | `proofs/verified/C908_SedenionZeroDivisor.v` | kernel_checked | C-908 |
-| `C909_OctonionNonAssociative` | `proofs/verified/C909_OctonionNonAssociative.v` | kernel_checked | C-909 |
-| `C910_OctonionAlternative` | `proofs/verified/C910_OctonionAlternative.v` | kernel_checked | C-910 |
-| `C910_Right_e0` | `proofs/verified/C910_Right_e0.v` | kernel_checked | C-910 |
-| `C910_Right_e1` | `proofs/verified/C910_Right_e1.v` | kernel_checked | C-910 |
-| `C910_Right_e2` | `proofs/verified/C910_Right_e2.v` | kernel_checked | C-910 |
-| `C910_Right_e3` | `proofs/verified/C910_Right_e3.v` | kernel_checked | C-910 |
-| `C910_Right_e4` | `proofs/verified/C910_Right_e4.v` | kernel_checked | C-910 |
-| `C910_Right_e5` | `proofs/verified/C910_Right_e5.v` | kernel_checked | C-910 |
-| `C910_Right_e6` | `proofs/verified/C910_Right_e6.v` | kernel_checked | C-910 |
-| `C910_Right_e7` | `proofs/verified/C910_Right_e7.v` | kernel_checked | C-910 |
-| `C911_RotationPreservesNorm` | `proofs/verified/C911_RotationPreservesNorm.v` | kernel_checked | C-911 |
-| `C912_RotationComposition` | `proofs/verified/C912_RotationComposition.v` | kernel_checked | C-912 |
-| `C913_FanoAntiresonance` | `proofs/verified/C913_FanoAntiresonance.v` | kernel_checked | C-913 |
-| `C914_TCMTUnitarity` | `proofs/verified/C914_TCMTUnitarity.v` | kernel_checked | C-914 |
-| `C915_EntropySymmetry` | `proofs/verified/C915_EntropySymmetry.v` | kernel_checked | C-915 |
-| `C916_EntropyMaxValue` | `proofs/verified/C916_EntropyMaxValue.v` | kernel_checked | C-916 |
-| `C917_EntropyNonneg` | `proofs/verified/C917_EntropyNonneg.v` | kernel_checked | C-917 |
-| `C918_ComplexIsCommutative` | `proofs/verified/C918_ComplexIsCommutative.v` | kernel_checked | C-918 |
-| `C919_QuatLosesCommutativity` | `proofs/verified/C919_QuatLosesCommutativity.v` | kernel_checked | C-919 |
-| `C920_QuatIsAssociative` | `proofs/verified/C920_QuatIsAssociative.v` | kernel_checked | C-920 |
-| `C921_OctLosesAssociativity` | `proofs/verified/C921_OctLosesAssociativity.v` | kernel_checked | C-921 |
-| `C931_OrthoplexHeatKernel` | `proofs/verified/C931_OrthoplexHeatKernel.v` | kernel_checked | C-931 |
-| `C932_OrthoplexThawing` | `proofs/verified/C932_OrthoplexThawing.v` | kernel_checked | C-932 |
-| `C954_ThreeBodyBlocks` | `proofs/verified/C954_ThreeBodyBlocks.v` | kernel_checked | C-1101, C-1127 |
-| `C955_CrossBlockCoupling` | `proofs/verified/C955_CrossBlockCoupling.v` | kernel_checked | C-1102 |
-| `C956_RoutonAVT` | `proofs/verified/C956_RoutonAVT.v` | kernel_checked | C-1128 |
-| `C957_VoudonZD` | `proofs/verified/C957_VoudonZD.v` | kernel_checked | C-1129 |
-| `C958_ZDGraphTopology` | `proofs/verified/C958_ZDGraphTopology.v` | kernel_checked | - |
-| `C958b_ZDAdjacencyAnalytical` | `proofs/verified/C958b_ZDAdjacencyAnalytical.v` | kernel_checked | - |
-| `C959_CHSHClassicalBound` | `proofs/verified/C959_CHSHClassicalBound.v` | kernel_checked | - |
-| `C993_CarlsonBranchFree` | `proofs/verified/C993_CarlsonBranchFree.v` | kernel_checked | - |
-| `C999_PathionEntropyBound` | `proofs/verified/C999_PathionEntropyBound.v` | kernel_checked | - |
-| `C_ConjugateInvolution` | `proofs/verified/C_ConjugateInvolution.v` | kernel_checked | - |
-| `C_NormConjugate` | `proofs/verified/C_NormConjugate.v` | kernel_checked | - |
-| `C_OctConjInvolution` | `proofs/verified/C_OctConjInvolution.v` | kernel_checked | - |
-| `C_OverImbalancedSign` | `proofs/verified/C_OverImbalancedSign.v` | kernel_checked | - |
-| `C_QIBoundNegative` | `proofs/verified/C_QIBoundNegative.v` | kernel_checked | - |
-| `C_QITauScaling` | `proofs/verified/C_QITauScaling.v` | kernel_checked | - |
-| `C_SedConjInvolution` | `proofs/verified/C_SedConjInvolution.v` | kernel_checked | - |
-| `C_TraceTracefreeVanishes` | `proofs/verified/C_TraceTracefreeVanishes.v` | kernel_checked | - |
-| `C_WECImpliesNEC` | `proofs/verified/C_WECImpliesNEC.v` | kernel_checked | - |
-| `C_WarpEnergyNonpositive` | `proofs/verified/C_WarpEnergyNonpositive.v` | kernel_checked | - |
-
+| Stable Theorem ID | Legacy Name | Proof File | Status | Identity Kind | Linked Claims |
+|---|---|---|---|---|---|
+| `THM-CARIOW-SEDENION-SCHEDULE-001` | `C1636_Cariow2013SedenionSchedule` | `proofs/verified/C1636_Cariow2013SedenionSchedule.v` | kernel_checked | explicit_link | C-1646 |
+| `THM-LEGACY-C001_CDNonAssociative` | `C001_CDNonAssociative` | `proofs/verified/C001_CDNonAssociative.v` | kernel_checked | explicit_link | C-001 |
+| `THM-LEGACY-C002_SedenionZDAndNormFail` | `C002_SedenionZDAndNormFail` | `proofs/verified/C002_SedenionZDAndNormFail.v` | kernel_checked | explicit_link | C-002 |
+| `THM-LEGACY-C003_AssessorsBoxkites` | `C003_AssessorsBoxkites` | `proofs/verified/C003_AssessorsBoxkites.v` | kernel_checked | explicit_link | C-003 |
+| `THM-LEGACY-C004_PSL27Order168` | `C004_PSL27Order168` | `proofs/verified/C004_PSL27Order168.v` | kernel_checked | explicit_link | C-004 |
+| `THM-LEGACY-C005_ZDAnnihilatorGeometry` | `C005_ZDAnnihilatorGeometry` | `proofs/verified/C005_ZDAnnihilatorGeometry.v` | kernel_checked | explicit_link | C-005 |
+| `THM-LEGACY-C006_GWAlgebraicAnchor` | `C006_GWAlgebraicAnchor` | `proofs/verified/C006_GWAlgebraicAnchor.v` | kernel_checked | explicit_link | C-006 |
+| `THM-LEGACY-C007_BHMassAlgebraicAnchor` | `C007_BHMassAlgebraicAnchor` | `proofs/verified/C007_BHMassAlgebraicAnchor.v` | kernel_checked | explicit_link | C-007 |
+| `THM-LEGACY-C008_AlphaFreeParameter` | `C008_AlphaFreeParameter` | `proofs/verified/C008_AlphaFreeParameter.v` | kernel_checked | explicit_link | C-008 |
+| `THM-LEGACY-C009_EntropyScalingRefuted` | `C009_EntropyScalingRefuted` | `proofs/verified/C009_EntropyScalingRefuted.v` | kernel_checked | explicit_link | C-009 |
+| `THM-LEGACY-C010_ConnectivityObstruction` | `C010_ConnectivityObstruction` | `proofs/verified/C010_ConnectivityObstruction.v` | kernel_checked | explicit_link | C-1331 |
+| `THM-LEGACY-C010_ZDGraphDisconnected` | `C010_ZDGraphDisconnected` | `proofs/verified/C010_ZDGraphDisconnected.v` | kernel_checked | explicit_link | C-010 |
+| `THM-LEGACY-C011_AssociatorObstruction` | `C011_AssociatorObstruction` | `proofs/verified/C011_AssociatorObstruction.v` | kernel_checked | explicit_link | C-011 |
+| `THM-LEGACY-C012_NegDimRefuted` | `C012_NegDimRefuted` | `proofs/verified/C012_NegDimRefuted.v` | kernel_checked | explicit_link | C-012 |
+| `THM-LEGACY-C013_AutomorphemesCoverage` | `C013_AutomorphemesCoverage` | `proofs/verified/C013_AutomorphemesCoverage.v` | kernel_checked | explicit_link | C-013 |
+| `THM-LEGACY-C014_AnnihilatorDim4` | `C014_AnnihilatorDim4` | `proofs/verified/C014_AnnihilatorDim4.v` | kernel_checked | explicit_link | C-014 |
+| `THM-LEGACY-C015_FourPartners` | `C015_FourPartners` | `proofs/verified/C015_FourPartners.v` | kernel_checked | explicit_link | C-015 |
+| `THM-LEGACY-C016_M3TrilinearSplit` | `C016_M3TrilinearSplit` | `proofs/verified/C016_M3TrilinearSplit.v` | kernel_checked | explicit_link | C-016 |
+| `THM-LEGACY-C016_ParityFlips` | `C016_ParityFlips` | `proofs/verified/C016_ParityFlips.v` | kernel_checked | explicit_link | C-016, C-1331 |
+| `THM-LEGACY-C017_XORBucketNecessary` | `C017_XORBucketNecessary` | `proofs/verified/C017_XORBucketNecessary.v` | kernel_checked | explicit_link | C-017 |
+| `THM-LEGACY-C018_WheelsAxioms` | `C018_WheelsAxioms` | `proofs/verified/C018_WheelsAxioms.v` | kernel_checked | explicit_link | C-018 |
+| `THM-LEGACY-C019_WheelsNoContent` | `C019_WheelsNoContent` | `proofs/verified/C019_WheelsNoContent.v` | kernel_checked | explicit_link | C-019 |
+| `THM-LEGACY-C020_BasisNonzero` | `C020_BasisNonzero` | `proofs/verified/C020_BasisNonzero.v` | kernel_checked | explicit_link | C-020 |
+| `THM-LEGACY-C021_LatticeInconsistency` | `C021_LatticeInconsistency` | `proofs/verified/C021_LatticeInconsistency.v` | kernel_checked | explicit_link | C-021 |
+| `THM-LEGACY-C022_OrdinalAnalogy` | `C022_OrdinalAnalogy` | `proofs/verified/C022_OrdinalAnalogy.v` | kernel_checked | explicit_link | C-022 |
+| `THM-LEGACY-C023_AssociatorNotHolonomy` | `C023_AssociatorNotHolonomy` | `proofs/verified/C023_AssociatorNotHolonomy.v` | kernel_checked | explicit_link | C-023 |
+| `THM-LEGACY-C024_NormMultiplicativeAnchor` | `C024_NormMultiplicativeAnchor` | `proofs/verified/C024_NormMultiplicativeAnchor.v` | kernel_checked | explicit_link | C-024 |
+| `THM-LEGACY-C025_SkyAlgebraicAnchor` | `C025_SkyAlgebraicAnchor` | `proofs/verified/C025_SkyAlgebraicAnchor.v` | kernel_checked | explicit_link | C-025 |
+| `THM-LEGACY-C026_ZDGraphBlocks` | `C026_ZDGraphBlocks` | `proofs/verified/C026_ZDGraphBlocks.v` | kernel_checked | explicit_link | C-026 |
+| `THM-LEGACY-C027_DeffHorizonToy` | `C027_DeffHorizonToy` | `proofs/verified/C027_DeffHorizonToy.v` | kernel_checked | explicit_link | C-027 |
+| `THM-LEGACY-C028_SedenionAutGroup` | `C028_SedenionAutGroup` | `proofs/verified/C028_SedenionAutGroup.v` | kernel_checked | explicit_link | C-028 |
+| `THM-LEGACY-C029_FermionGenerations` | `C029_FermionGenerations` | `proofs/verified/C029_FermionGenerations.v` | kernel_checked | explicit_link | C-029 |
+| `THM-LEGACY-C030_AssociatorNonzero` | `C030_AssociatorNonzero` | `proofs/verified/C030_AssociatorNonzero.v` | kernel_checked | explicit_link | C-030 |
+| `THM-LEGACY-C031_HurwitzComplete` | `C031_HurwitzComplete` | `proofs/verified/C031_HurwitzComplete.v` | kernel_checked | explicit_link | C-031 |
+| `THM-LEGACY-C032_TangAssociatorAnchor` | `C032_TangAssociatorAnchor` | `proofs/verified/C032_TangAssociatorAnchor.v` | kernel_checked | explicit_link | C-032 |
+| `THM-LEGACY-C033_SU5GeneratorsWellDefined` | `C033_SU5GeneratorsWellDefined` | `proofs/verified/C033_SU5GeneratorsWellDefined.v` | kernel_checked | explicit_link | C-033 |
+| `THM-LEGACY-C034_CDDoublingIdentity` | `C034_CDDoublingIdentity` | `proofs/verified/C034_CDDoublingIdentity.v` | kernel_checked | explicit_link | C-034 |
+| `THM-LEGACY-C035_CasimirQuarter` | `C035_CasimirQuarter` | `proofs/verified/C035_CasimirQuarter.v` | kernel_checked | explicit_link | C-035 |
+| `THM-LEGACY-C036_TrialityClusteringBound` | `C036_TrialityClusteringBound` | `proofs/verified/C036_TrialityClusteringBound.v` | kernel_checked | explicit_link | C-036 |
+| `THM-LEGACY-C037_EpsilonNotGamma` | `C037_EpsilonNotGamma` | `proofs/verified/C037_EpsilonNotGamma.v` | kernel_checked | explicit_link | C-037 |
+| `THM-LEGACY-C038_WDarkEnergy` | `C038_WDarkEnergy` | `proofs/verified/C038_WDarkEnergy.v` | kernel_checked | explicit_link | C-038 |
+| `THM-LEGACY-C039_SpectralDimensionRunning` | `C039_SpectralDimensionRunning` | `proofs/verified/C039_SpectralDimensionRunning.v` | kernel_checked | explicit_link | C-039 |
+| `THM-LEGACY-C040_PrimordialTiltRefuted` | `C040_PrimordialTiltRefuted` | `proofs/verified/C040_PrimordialTiltRefuted.v` | kernel_checked | explicit_link | C-040 |
+| `THM-LEGACY-C1007_CDPropertyLoss` | `C1007_CDPropertyLoss` | `proofs/verified/C1007_CDPropertyLoss.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C1133_BraidParityPreservation` | `C1133_BraidParityPreservation` | `proofs/verified/C1133_BraidParityPreservation.v` | kernel_checked | explicit_link | C-1133 |
+| `THM-LEGACY-C1134_TopologicalFrictionBound` | `C1134_TopologicalFrictionBound` | `proofs/verified/C1134_TopologicalFrictionBound.v` | kernel_checked | explicit_link | C-1134 |
+| `THM-LEGACY-C1135_BoxKiteFusionRules` | `C1135_BoxKiteFusionRules` | `proofs/verified/C1135_BoxKiteFusionRules.v` | kernel_checked | explicit_link | C-1135 |
+| `THM-LEGACY-C1137_MissingEdgeQuantizedGap` | `C1137_MissingEdgeQuantizedGap` | `proofs/verified/C1137_MissingEdgeQuantizedGap.v` | kernel_checked | explicit_link | C-1137, C-1352, C-1356 |
+| `THM-LEGACY-C1138_WickDampingFriction` | `C1138_WickDampingFriction` | `proofs/verified/C1138_WickDampingFriction.v` | kernel_checked | explicit_link | C-1138 |
+| `THM-LEGACY-C1140_PathionQuantizedGap` | `C1140_PathionQuantizedGap` | `proofs/verified/C1140_PathionQuantizedGap.v` | kernel_checked | explicit_link | C-1140 |
+| `THM-LEGACY-C1140a_PathionGap_1_5` | `C1140a_PathionGap_1_5` | `proofs/verified/C1140a_PathionGap_1_5.v` | kernel_checked | explicit_link | C-1140 |
+| `THM-LEGACY-C1140b_PathionGap_6_10` | `C1140b_PathionGap_6_10` | `proofs/verified/C1140b_PathionGap_6_10.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C1140c_PathionGap_11_15` | `C1140c_PathionGap_11_15` | `proofs/verified/C1140c_PathionGap_11_15.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C1141_ZDGraphGeneralStructure` | `C1141_ZDGraphGeneralStructure` | `proofs/verified/C1141_ZDGraphGeneralStructure.v` | kernel_checked | explicit_link | C-1141 |
+| `THM-LEGACY-C1142_XORScatterGatherDuality` | `C1142_XORScatterGatherDuality` | `proofs/verified/C1142_XORScatterGatherDuality.v` | kernel_checked | explicit_link | C-1142 |
+| `THM-LEGACY-C1233_ChernSumZero` | `C1233_ChernSumZero` | `proofs/verified/C1233_ChernSumZero.v` | kernel_checked | explicit_link | C-1233 |
+| `THM-LEGACY-C1234_ValleyChernAntisymmetry` | `C1234_ValleyChernAntisymmetry` | `proofs/verified/C1234_ValleyChernAntisymmetry.v` | kernel_checked | explicit_link | C-1234 |
+| `THM-LEGACY-C1236_FlatBandGroupVelocity` | `C1236_FlatBandGroupVelocity` | `proofs/verified/C1236_FlatBandGroupVelocity.v` | kernel_checked | explicit_link | C-1236 |
+| `THM-LEGACY-C1262_FlatBandFractionHalf` | `C1262_FlatBandFractionHalf` | `proofs/verified/C1262_FlatBandFractionHalf.v` | kernel_checked | explicit_link | C-1262, C-1270, C-1274 |
+| `THM-LEGACY-C1313_Thesis42Arithmetic` | `C1313_Thesis42Arithmetic` | `proofs/verified/C1313_Thesis42Arithmetic.v` | kernel_checked | explicit_link | C-1313 |
+| `THM-LEGACY-C1363_HarmonicHaloExactRecovery` | `C1363_HarmonicHaloExactRecovery` | `proofs/verified/C1363_HarmonicHaloExactRecovery.v` | kernel_checked | explicit_link | C-1363 |
+| `THM-LEGACY-C1364_HomotopyBridgeLaw` | `C1364_HomotopyBridgeLaw` | `proofs/verified/C1364_HomotopyBridgeLaw.v` | kernel_checked | explicit_link | C-1364 |
+| `THM-LEGACY-C1455_AssociatorTrilinear` | `C1455_AssociatorTrilinear` | `proofs/verified/C1455_AssociatorTrilinear.v` | kernel_checked | explicit_link | C-1455, C-1463 |
+| `THM-LEGACY-C1463_ArithmeticInventory` | `C1463_ArithmeticInventory` | `proofs/verified/C1463_ArithmeticInventory.v` | kernel_checked | explicit_link | C-1463 |
+| `THM-LEGACY-C1464_SedenionAnticommutation` | `C1464_SedenionAnticommutation` | `proofs/verified/C1464_SedenionAnticommutation.v` | kernel_checked | explicit_link | C-1464 |
+| `THM-LEGACY-C1465_KoebisuEqualNorm` | `C1465_KoebisuEqualNorm` | `proofs/verified/C1465_KoebisuEqualNorm.v` | kernel_checked | explicit_link | C-1465 |
+| `THM-LEGACY-C1466_SubalgebraClosure` | `C1466_SubalgebraClosure` | `proofs/verified/C1466_SubalgebraClosure.v` | kernel_checked | explicit_link | C-1466 |
+| `THM-LEGACY-C1467_XORSignCocycle` | `C1467_XORSignCocycle` | `proofs/verified/C1467_XORSignCocycle.v` | kernel_checked | explicit_link | C-1465, C-1467 |
+| `THM-LEGACY-C1468_SlotShiftEquivariance` | `C1468_SlotShiftEquivariance` | `proofs/verified/C1468_SlotShiftEquivariance.v` | kernel_checked | explicit_link | C-1468 |
+| `THM-LEGACY-C1469_TowerTrilinearity` | `C1469_TowerTrilinearity` | `proofs/verified/C1469_TowerTrilinearity.v` | kernel_checked | explicit_link | C-1469 |
+| `THM-LEGACY-C1470_PathionTrilinearity` | `C1470_PathionTrilinearity` | `proofs/verified/C1470_PathionTrilinearity.v` | kernel_checked | explicit_link | C-1470 |
+| `THM-LEGACY-C1471_HigherCDTrilinearity` | `C1471_HigherCDTrilinearity` | `proofs/verified/C1471_HigherCDTrilinearity.v` | kernel_checked | explicit_link | C-1471 |
+| `THM-LEGACY-C1474_FuelAdequacy` | `C1474_FuelAdequacy` | `proofs/verified/C1474_FuelAdequacy.v` | kernel_checked | explicit_link | C-1474 |
+| `THM-LEGACY-C1628_IDCT8ButterflyCompaction` | `C1628_IDCT8ButterflyCompaction` | `proofs/verified/C1628_IDCT8ButterflyCompaction.v` | kernel_checked | explicit_link | C-1628 |
+| `THM-LEGACY-C1629_IDCT8DP4ExactBound` | `C1629_IDCT8DP4ExactBound` | `proofs/verified/C1629_IDCT8DP4ExactBound.v` | kernel_checked | explicit_link | C-1629 |
+| `THM-LEGACY-C1630_SedenionOctonionDowncast` | `C1630_SedenionOctonionDowncast` | `proofs/verified/C1630_SedenionOctonionDowncast.v` | kernel_checked | explicit_link | C-1630 |
+| `THM-LEGACY-C868_PainleveGullstrand` | `C868_PainleveGullstrand` | `proofs/verified/C868_PainleveGullstrand.v` | kernel_checked | explicit_link | C-868 |
+| `THM-LEGACY-C869_InteriorFlat` | `C869_InteriorFlat` | `proofs/verified/C869_InteriorFlat.v` | kernel_checked | explicit_link | C-869 |
+| `THM-LEGACY-C870_NacelleModulationDistinct` | `C870_NacelleModulationDistinct` | `proofs/verified/C870_NacelleModulationDistinct.v` | kernel_checked | explicit_link | C-870 |
+| `THM-LEGACY-C871_CasimirExact` | `C871_CasimirExact` | `proofs/verified/C871_CasimirExact.v` | kernel_checked | explicit_link | C-871 |
+| `THM-LEGACY-C872_PillarCasimirFinite` | `C872_PillarCasimirFinite` | `proofs/verified/C872_PillarCasimirFinite.v` | kernel_checked | explicit_link | C-872 |
+| `THM-LEGACY-C873_SphereInCylinderFinite` | `C873_SphereInCylinderFinite` | `proofs/verified/C873_SphereInCylinderFinite.v` | kernel_checked | explicit_link | C-873 |
+| `THM-LEGACY-C874_YorkTimeVanishesInterior` | `C874_YorkTimeVanishesInterior` | `proofs/verified/C874_YorkTimeVanishesInterior.v` | kernel_checked | explicit_link | C-874 |
+| `THM-LEGACY-C875_HamiltonianVacuum` | `C875_HamiltonianVacuum` | `proofs/verified/C875_HamiltonianVacuum.v` | kernel_checked | explicit_link | C-875 |
+| `THM-LEGACY-C876_QuaternionRotation` | `C876_QuaternionRotation` | `proofs/verified/C876_QuaternionRotation.v` | kernel_checked | explicit_link | C-876 |
+| `THM-LEGACY-C877_ZeroCoupling` | `C877_ZeroCoupling` | `proofs/verified/C877_ZeroCoupling.v` | kernel_checked | explicit_link | C-877 |
+| `THM-LEGACY-C878_ImbalanceAttractor` | `C878_ImbalanceAttractor` | `proofs/verified/C878_ImbalanceAttractor.v` | kernel_checked | explicit_link | C-878 |
+| `THM-LEGACY-C879_DimensionBijection` | `C879_DimensionBijection` | `proofs/verified/C879_DimensionBijection.v` | kernel_checked | explicit_link | C-879 |
+| `THM-LEGACY-C880_FoliationSlice` | `C880_FoliationSlice` | `proofs/verified/C880_FoliationSlice.v` | kernel_checked | explicit_link | C-880 |
+| `THM-LEGACY-C881_GF2CubicMinDegree` | `C881_GF2CubicMinDegree` | `proofs/verified/C881_GF2CubicMinDegree.v` | kernel_checked | explicit_link | C-881 |
+| `THM-LEGACY-C882_ParityCliqueExact` | `C882_ParityCliqueExact` | `proofs/verified/C882_ParityCliqueExact.v` | kernel_checked | explicit_link | C-882 |
+| `THM-LEGACY-C883_CalcagniMonotoneRange` | `C883_CalcagniMonotoneRange` | `proofs/verified/C883_CalcagniMonotoneRange.v` | kernel_checked | explicit_link | C-883 |
+| `THM-LEGACY-C884_NegDimDegeneracy` | `C884_NegDimDegeneracy` | `proofs/verified/C884_NegDimDegeneracy.v` | kernel_checked | explicit_link | C-884 |
+| `THM-LEGACY-C885_DemocraticMixing` | `C885_DemocraticMixing` | `proofs/verified/C885_DemocraticMixing.v` | kernel_checked | explicit_link | C-885 |
+| `THM-LEGACY-C886_BDGammaDeviation` | `C886_BDGammaDeviation` | `proofs/verified/C886_BDGammaDeviation.v` | kernel_checked | explicit_link | C-886 |
+| `THM-LEGACY-C887_BDGammaRange` | `C887_BDGammaRange` | `proofs/verified/C887_BDGammaRange.v` | kernel_checked | explicit_link | C-887 |
+| `THM-LEGACY-C888_BDGammaMonotone` | `C888_BDGammaMonotone` | `proofs/verified/C888_BDGammaMonotone.v` | kernel_checked | explicit_link | C-888 |
+| `THM-LEGACY-C889_CassiniBound` | `C889_CassiniBound` | `proofs/verified/C889_CassiniBound.v` | kernel_checked | explicit_link | C-889 |
+| `THM-LEGACY-C890_NordtvedtBound` | `C890_NordtvedtBound` | `proofs/verified/C890_NordtvedtBound.v` | kernel_checked | explicit_link | C-890 |
+| `THM-LEGACY-C891_GPBGeodetic` | `C891_GPBGeodetic` | `proofs/verified/C891_GPBGeodetic.v` | kernel_checked | explicit_link | C-891 |
+| `THM-LEGACY-C892_DichroismRatio` | `C892_DichroismRatio` | `proofs/verified/C892_DichroismRatio.v` | kernel_checked | explicit_link | C-892 |
+| `THM-LEGACY-C893_ComplexCommutativity` | `C893_ComplexCommutativity` | `proofs/verified/C893_ComplexCommutativity.v` | kernel_checked | explicit_link | C-893 |
+| `THM-LEGACY-C894_ComplexAssociativity` | `C894_ComplexAssociativity` | `proofs/verified/C894_ComplexAssociativity.v` | kernel_checked | explicit_link | C-894 |
+| `THM-LEGACY-C895_ComplexNormMultiplicative` | `C895_ComplexNormMultiplicative` | `proofs/verified/C895_ComplexNormMultiplicative.v` | kernel_checked | explicit_link | C-895 |
+| `THM-LEGACY-C896_ComplexConjAntimorph` | `C896_ComplexConjAntimorph` | `proofs/verified/C896_ComplexConjAntimorph.v` | kernel_checked | explicit_link | C-896 |
+| `THM-LEGACY-C897_QuatAssociativity` | `C897_QuatAssociativity` | `proofs/verified/C897_QuatAssociativity.v` | kernel_checked | explicit_link | C-897 |
+| `THM-LEGACY-C898_QuatNormMultiplicative` | `C898_QuatNormMultiplicative` | `proofs/verified/C898_QuatNormMultiplicative.v` | kernel_checked | explicit_link | C-898 |
+| `THM-LEGACY-C899_QuatConjAntimorph` | `C899_QuatConjAntimorph` | `proofs/verified/C899_QuatConjAntimorph.v` | kernel_checked | explicit_link | C-899 |
+| `THM-LEGACY-C900_QuatReComm` | `C900_QuatReComm` | `proofs/verified/C900_QuatReComm.v` | kernel_checked | explicit_link | C-900 |
+| `THM-LEGACY-C901_QuatQuadraticIdentity` | `C901_QuatQuadraticIdentity` | `proofs/verified/C901_QuatQuadraticIdentity.v` | kernel_checked | explicit_link | C-901 |
+| `THM-LEGACY-C902_QuatImaginarySquare` | `C902_QuatImaginarySquare` | `proofs/verified/C902_QuatImaginarySquare.v` | kernel_checked | explicit_link | C-902 |
+| `THM-LEGACY-C903_QuatReSquare` | `C903_QuatReSquare` | `proofs/verified/C903_QuatReSquare.v` | kernel_checked | explicit_link | C-903 |
+| `THM-LEGACY-C904_QuatAssociatorZero` | `C904_QuatAssociatorZero` | `proofs/verified/C904_QuatAssociatorZero.v` | kernel_checked | explicit_link | C-904 |
+| `THM-LEGACY-C905_QuatJordanIdentity` | `C905_QuatJordanIdentity` | `proofs/verified/C905_QuatJordanIdentity.v` | kernel_checked | explicit_link | C-905 |
+| `THM-LEGACY-C906_QuatInverse` | `C906_QuatInverse` | `proofs/verified/C906_QuatInverse.v` | kernel_checked | explicit_link | C-906 |
+| `THM-LEGACY-C907_QuatNonCommutative` | `C907_QuatNonCommutative` | `proofs/verified/C907_QuatNonCommutative.v` | kernel_checked | explicit_link | C-907 |
+| `THM-LEGACY-C908_SedenionZeroDivisor` | `C908_SedenionZeroDivisor` | `proofs/verified/C908_SedenionZeroDivisor.v` | kernel_checked | explicit_link | C-908 |
+| `THM-LEGACY-C909_OctonionNonAssociative` | `C909_OctonionNonAssociative` | `proofs/verified/C909_OctonionNonAssociative.v` | kernel_checked | explicit_link | C-909 |
+| `THM-LEGACY-C910_OctonionAlternative` | `C910_OctonionAlternative` | `proofs/verified/C910_OctonionAlternative.v` | kernel_checked | explicit_link | C-910 |
+| `THM-LEGACY-C910_Right_e0` | `C910_Right_e0` | `proofs/verified/C910_Right_e0.v` | kernel_checked | explicit_link | C-910 |
+| `THM-LEGACY-C910_Right_e1` | `C910_Right_e1` | `proofs/verified/C910_Right_e1.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C910_Right_e2` | `C910_Right_e2` | `proofs/verified/C910_Right_e2.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C910_Right_e3` | `C910_Right_e3` | `proofs/verified/C910_Right_e3.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C910_Right_e4` | `C910_Right_e4` | `proofs/verified/C910_Right_e4.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C910_Right_e5` | `C910_Right_e5` | `proofs/verified/C910_Right_e5.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C910_Right_e6` | `C910_Right_e6` | `proofs/verified/C910_Right_e6.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C910_Right_e7` | `C910_Right_e7` | `proofs/verified/C910_Right_e7.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C911_RotationPreservesNorm` | `C911_RotationPreservesNorm` | `proofs/verified/C911_RotationPreservesNorm.v` | kernel_checked | explicit_link | C-911 |
+| `THM-LEGACY-C912_RotationComposition` | `C912_RotationComposition` | `proofs/verified/C912_RotationComposition.v` | kernel_checked | explicit_link | C-912 |
+| `THM-LEGACY-C913_FanoAntiresonance` | `C913_FanoAntiresonance` | `proofs/verified/C913_FanoAntiresonance.v` | kernel_checked | explicit_link | C-913 |
+| `THM-LEGACY-C914_TCMTUnitarity` | `C914_TCMTUnitarity` | `proofs/verified/C914_TCMTUnitarity.v` | kernel_checked | explicit_link | C-914 |
+| `THM-LEGACY-C915_EntropySymmetry` | `C915_EntropySymmetry` | `proofs/verified/C915_EntropySymmetry.v` | kernel_checked | explicit_link | C-915 |
+| `THM-LEGACY-C916_EntropyMaxValue` | `C916_EntropyMaxValue` | `proofs/verified/C916_EntropyMaxValue.v` | kernel_checked | explicit_link | C-916 |
+| `THM-LEGACY-C917_EntropyNonneg` | `C917_EntropyNonneg` | `proofs/verified/C917_EntropyNonneg.v` | kernel_checked | explicit_link | C-917 |
+| `THM-LEGACY-C918_ComplexIsCommutative` | `C918_ComplexIsCommutative` | `proofs/verified/C918_ComplexIsCommutative.v` | kernel_checked | explicit_link | C-918 |
+| `THM-LEGACY-C919_QuatLosesCommutativity` | `C919_QuatLosesCommutativity` | `proofs/verified/C919_QuatLosesCommutativity.v` | kernel_checked | explicit_link | C-919 |
+| `THM-LEGACY-C920_QuatIsAssociative` | `C920_QuatIsAssociative` | `proofs/verified/C920_QuatIsAssociative.v` | kernel_checked | explicit_link | C-920 |
+| `THM-LEGACY-C921_OctLosesAssociativity` | `C921_OctLosesAssociativity` | `proofs/verified/C921_OctLosesAssociativity.v` | kernel_checked | explicit_link | C-921 |
+| `THM-LEGACY-C931_OrthoplexHeatKernel` | `C931_OrthoplexHeatKernel` | `proofs/verified/C931_OrthoplexHeatKernel.v` | kernel_checked | explicit_link | C-931 |
+| `THM-LEGACY-C932_OrthoplexThawing` | `C932_OrthoplexThawing` | `proofs/verified/C932_OrthoplexThawing.v` | kernel_checked | explicit_link | C-932 |
+| `THM-LEGACY-C954_ThreeBodyBlocks` | `C954_ThreeBodyBlocks` | `proofs/verified/C954_ThreeBodyBlocks.v` | kernel_checked | explicit_link | C-1101, C-1127 |
+| `THM-LEGACY-C955_CrossBlockCoupling` | `C955_CrossBlockCoupling` | `proofs/verified/C955_CrossBlockCoupling.v` | kernel_checked | explicit_link | C-1102 |
+| `THM-LEGACY-C956_RoutonAVT` | `C956_RoutonAVT` | `proofs/verified/C956_RoutonAVT.v` | kernel_checked | explicit_link | C-1128 |
+| `THM-LEGACY-C957_VoudonZD` | `C957_VoudonZD` | `proofs/verified/C957_VoudonZD.v` | kernel_checked | explicit_link | C-1129 |
+| `THM-LEGACY-C958_ZDGraphTopology` | `C958_ZDGraphTopology` | `proofs/verified/C958_ZDGraphTopology.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C958b_ZDAdjacencyAnalytical` | `C958b_ZDAdjacencyAnalytical` | `proofs/verified/C958b_ZDAdjacencyAnalytical.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C959_CHSHClassicalBound` | `C959_CHSHClassicalBound` | `proofs/verified/C959_CHSHClassicalBound.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C993_CarlsonBranchFree` | `C993_CarlsonBranchFree` | `proofs/verified/C993_CarlsonBranchFree.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C999_PathionEntropyBound` | `C999_PathionEntropyBound` | `proofs/verified/C999_PathionEntropyBound.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_ConjugateInvolution` | `C_ConjugateInvolution` | `proofs/verified/C_ConjugateInvolution.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_NormConjugate` | `C_NormConjugate` | `proofs/verified/C_NormConjugate.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_OctConjInvolution` | `C_OctConjInvolution` | `proofs/verified/C_OctConjInvolution.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_OverImbalancedSign` | `C_OverImbalancedSign` | `proofs/verified/C_OverImbalancedSign.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_QIBoundNegative` | `C_QIBoundNegative` | `proofs/verified/C_QIBoundNegative.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_QITauScaling` | `C_QITauScaling` | `proofs/verified/C_QITauScaling.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_SedConjInvolution` | `C_SedConjInvolution` | `proofs/verified/C_SedConjInvolution.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_TraceTracefreeVanishes` | `C_TraceTracefreeVanishes` | `proofs/verified/C_TraceTracefreeVanishes.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_WECImpliesNEC` | `C_WECImpliesNEC` | `proofs/verified/C_WECImpliesNEC.v` | kernel_checked | legacy_alias | - |
+| `THM-LEGACY-C_WarpEnergyNonpositive` | `C_WarpEnergyNonpositive` | `proofs/verified/C_WarpEnergyNonpositive.v` | kernel_checked | legacy_alias | - |
+| `THM-OCTONION-DOWNCAST-ZERO-DIVISORS-001` | `C1638_OctonionDowncastNoZeroDivisors` | `proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v` | kernel_checked | explicit_link | C-1647 |
+| `THM-R300-SEDENION-ZERO-DIVISOR-001` | `C1637_R300SedenionZeroDivisor` | `proofs/verified/C1637_R300SedenionZeroDivisor.v` | kernel_checked | explicit_link | C-1648 |
+| `THM-SASS-DRIVER-001` | `C1635_SedenionDriverSemantics` | `proofs/verified/C1635_SedenionDriverSemantics.v` | kernel_checked | explicit_link | C-1649 |
