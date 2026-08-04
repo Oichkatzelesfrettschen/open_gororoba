@@ -567,9 +567,9 @@ pub fn tcmt_jacobian_singular_values(
             derivatives.map(|derivative| derivative.im),
         ];
         for row in rows {
-            for left in 0..4 {
-                for right in 0..4 {
-                    gram[left][right] += row[left] * row[right];
+            for (left, left_value) in row.iter().enumerate() {
+                for (right, right_value) in row.iter().enumerate() {
+                    gram[left][right] += left_value * right_value;
                 }
             }
         }
@@ -587,10 +587,10 @@ fn symmetric_eigenvalues(mut matrix: [[f64; 4]; 4]) -> [f64; 4] {
     for _ in 0..100 {
         let mut pivot = (0, 1);
         let mut maximum = matrix[0][1].abs();
-        for left in 0..4 {
-            for right in (left + 1)..4 {
-                if matrix[left][right].abs() > maximum {
-                    maximum = matrix[left][right].abs();
+        for (left, row) in matrix.iter().enumerate() {
+            for (right, value) in row.iter().enumerate().skip(left + 1) {
+                if value.abs() > maximum {
+                    maximum = value.abs();
                     pivot = (left, right);
                 }
             }
@@ -603,15 +603,17 @@ fn symmetric_eigenvalues(mut matrix: [[f64; 4]; 4]) -> [f64; 4] {
             0.5 * (2.0 * matrix[left][right]).atan2(matrix[left][left] - matrix[right][right]);
         let cosine = angle.cos();
         let sine = angle.sin();
-        for index in 0..4 {
-            let left_value = matrix[left][index];
-            let right_value = matrix[right][index];
+        let left_row = matrix[left];
+        let right_row = matrix[right];
+        for (index, (left_value, right_value)) in left_row.into_iter().zip(right_row).enumerate() {
             matrix[left][index] = cosine * left_value + sine * right_value;
             matrix[right][index] = -sine * left_value + cosine * right_value;
         }
-        for index in 0..4 {
-            let left_value = matrix[index][left];
-            let right_value = matrix[index][right];
+        let left_column: [f64; 4] = std::array::from_fn(|index| matrix[index][left]);
+        let right_column: [f64; 4] = std::array::from_fn(|index| matrix[index][right]);
+        for (index, (left_value, right_value)) in
+            left_column.into_iter().zip(right_column).enumerate()
+        {
             matrix[index][left] = cosine * left_value + sine * right_value;
             matrix[index][right] = -sine * left_value + cosine * right_value;
         }

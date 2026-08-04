@@ -336,10 +336,11 @@ fn determinant(mut matrix: Matrix6) -> Result<Complex64, PoleError> {
             result = -result;
         }
         result *= pivot;
-        for row in (column + 1)..MATRIX_SIZE {
-            let factor = matrix[row][column] / pivot;
-            for index in (column + 1)..MATRIX_SIZE {
-                matrix[row][index] -= factor * matrix[column][index];
+        let pivot_values = matrix[column];
+        for row_values in matrix.iter_mut().skip(column + 1) {
+            let factor = row_values[column] / pivot;
+            for (index, value) in row_values.iter_mut().enumerate().skip(column + 1) {
+                *value -= factor * pivot_values[index];
             }
         }
     }
@@ -349,18 +350,23 @@ fn determinant(mut matrix: Matrix6) -> Result<Complex64, PoleError> {
     Ok(result)
 }
 
+#[derive(Clone, Copy)]
+struct BoundaryContext {
+    l: i32,
+    frequency: Complex64,
+    epsilons: [Complex64; 4],
+    radii: [f64; 3],
+}
+
 fn fill_interface_row(
     matrix: &mut Matrix6,
     row: usize,
     region: usize,
     sign: f64,
-    l: i32,
-    frequency: Complex64,
-    epsilons: [Complex64; 4],
-    radii: [f64; 3],
+    context: BoundaryContext,
     radius_index: usize,
 ) -> Result<(), PoleError> {
-    let radius = radii[radius_index];
+    let radius = context.radii[radius_index];
     let basis = match region {
         0 => [Some(BasisFunction::BesselJ), None],
         1 | 2 => [Some(BasisFunction::BesselJ), Some(BasisFunction::BesselY)],
@@ -376,7 +382,13 @@ fn fill_interface_row(
     };
     for (offset, function) in basis.into_iter().enumerate() {
         if let Some(function) = function {
-            let state = state_value(function, l, frequency, epsilons[region], radius)?;
+            let state = state_value(
+                function,
+                context.l,
+                context.frequency,
+                context.epsilons[region],
+                radius,
+            )?;
             matrix[row][columns[offset]] = Complex64::new(sign, 0.0) * state[0];
             matrix[row + 1][columns[offset]] = Complex64::new(sign, 0.0) * state[1];
         }
@@ -405,31 +417,17 @@ fn boundary_matrix(
         metal,
         Complex64::new(1.0, 0.0),
     ];
+    let context = BoundaryContext {
+        l,
+        frequency,
+        epsilons,
+        radii: geometry.radii,
+    };
     let mut matrix = zero_matrix();
     for (interface, (inner, outer)) in [(0usize, (0usize, 1usize)), (1, (1, 2)), (2, (2, 3))] {
         let row = 2 * interface;
-        fill_interface_row(
-            &mut matrix,
-            row,
-            inner,
-            1.0,
-            l,
-            frequency,
-            epsilons,
-            geometry.radii,
-            interface,
-        )?;
-        fill_interface_row(
-            &mut matrix,
-            row,
-            outer,
-            -1.0,
-            l,
-            frequency,
-            epsilons,
-            geometry.radii,
-            interface,
-        )?;
+        fill_interface_row(&mut matrix, row, inner, 1.0, context, interface)?;
+        fill_interface_row(&mut matrix, row, outer, -1.0, context, interface)?;
     }
     if matrix.iter().flatten().any(|value| !finite_complex(*value)) {
         return Err(PoleError::NonFiniteBoundaryMatrix);

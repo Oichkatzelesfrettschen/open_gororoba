@@ -81,6 +81,29 @@ struct ComparisonSummary {
 }
 
 #[derive(Debug, Clone, Copy)]
+struct ComparisonMetrics {
+    s_defect: f64,
+    r_defect: f64,
+    phase_defect: f64,
+    sct_defect: f64,
+    abs_defect: f64,
+    ext_defect: f64,
+    balance_defect: f64,
+    interface_defect: f64,
+}
+
+struct RootSearchRequest<'a> {
+    case: &'static str,
+    loss: &'static str,
+    l: i32,
+    gamma_d: f64,
+    geometry: &'a PoleGeometry,
+    rectangle: RootRectangle,
+    refinements: &'a [usize],
+    seeds: Vec<Complex64>,
+}
+
+#[derive(Debug, Clone, Copy)]
 struct CoordinateSets {
     training: &'static [f64],
     validation: &'static [f64],
@@ -171,7 +194,7 @@ fn load_independent_rows(path: &PathBuf) -> EvidenceResult<Vec<IndependentRow>> 
             continue;
         }
         let fields: Vec<&str> = line.split('|').collect();
-        if fields.len() < 1 {
+        if fields.is_empty() {
             continue;
         }
         let parse_row =
@@ -214,7 +237,7 @@ fn load_independent_rows(path: &PathBuf) -> EvidenceResult<Vec<IndependentRow>> 
     Ok(rows)
 }
 
-fn nearest_root<'a>(search: &'a RootSearch, target_re: f64) -> EvidenceResult<&'a ComplexPole> {
+fn nearest_root(search: &RootSearch, target_re: f64) -> EvidenceResult<&ComplexPole> {
     search
         .roots
         .iter()
@@ -236,11 +259,7 @@ fn distance_to_interval(value: f64, minimum: f64, maximum: f64) -> f64 {
     }
 }
 
-fn relevant_root<'a>(
-    search: &'a RootSearch,
-    minimum: f64,
-    maximum: f64,
-) -> EvidenceResult<&'a ComplexPole> {
+fn relevant_root(search: &RootSearch, minimum: f64, maximum: f64) -> EvidenceResult<&ComplexPole> {
     search
         .roots
         .iter()
@@ -252,10 +271,7 @@ fn relevant_root<'a>(
         .ok_or_else(|| "root search returned no relevant roots".into())
 }
 
-fn associated_lossy<'a>(
-    search: &'a RootSearch,
-    lossless: ComplexPole,
-) -> EvidenceResult<&'a ComplexPole> {
+fn associated_lossy(search: &RootSearch, lossless: ComplexPole) -> EvidenceResult<&ComplexPole> {
     search
         .roots
         .iter()
@@ -267,22 +283,20 @@ fn associated_lossy<'a>(
         .ok_or_else(|| "lossy root search returned no associated root".into())
 }
 
-fn root_search_record(
-    case: &'static str,
-    loss: &'static str,
-    l: i32,
-    gamma_d: f64,
-    geometry: &PoleGeometry,
-    rectangle: RootRectangle,
-    refinements: &[usize],
-    seeds: Vec<Complex64>,
-) -> EvidenceResult<SearchRecord> {
-    let search = search_roots(geometry, l, gamma_d, rectangle, refinements, &seeds)?;
+fn root_search_record(request: RootSearchRequest<'_>) -> EvidenceResult<SearchRecord> {
+    let search = search_roots(
+        request.geometry,
+        request.l,
+        request.gamma_d,
+        request.rectangle,
+        request.refinements,
+        &request.seeds,
+    )?;
     Ok(SearchRecord {
-        case,
-        loss,
-        l,
-        gamma_d,
+        case: request.case,
+        loss: request.loss,
+        l: request.l,
+        gamma_d: request.gamma_d,
         search,
     })
 }
@@ -332,10 +346,8 @@ fn append_root_search(
             *independent_failures += 1;
             (Complex64::new(f64::NAN, f64::NAN), f64::INFINITY, false)
         };
-        if !matched {
-            if matching_reference.is_some() {
-                *independent_failures += 1;
-            }
+        if !matched && matching_reference.is_some() {
+            *independent_failures += 1;
         }
         writeln!(
             output,
@@ -568,7 +580,7 @@ fn append_comparison_row(
     omega: f64,
     mie: &optics_core::ChannelResult,
     tcmt: &optics_core::ChannelEvaluation,
-) -> EvidenceResult<(f64, f64, f64, f64, f64, f64, f64, f64)> {
+) -> EvidenceResult<ComparisonMetrics> {
     let s_defect = complex_defect(mie.s_l, tcmt.amplitudes.scattering);
     let r_defect = complex_defect(mie.r_l, tcmt.amplitudes.reflection);
     let phase_defect = if mie.s_l.norm() >= 0.05 {
@@ -606,29 +618,29 @@ fn append_comparison_row(
         finite_real(mie.balance_defect),
         finite_real(mie.interface_residual.max_component),
     )?;
-    Ok((
+    Ok(ComparisonMetrics {
         s_defect,
         r_defect,
         phase_defect,
         sct_defect,
         abs_defect,
         ext_defect,
-        mie.balance_defect.abs(),
-        mie.interface_residual.max_component,
-    ))
+        balance_defect: mie.balance_defect.abs(),
+        interface_defect: mie.interface_residual.max_component,
+    })
 }
 
-fn update_summary(summary: &mut ComparisonSummary, row: (f64, f64, f64, f64, f64, f64, f64, f64)) {
+fn update_summary(summary: &mut ComparisonSummary, row: ComparisonMetrics) {
     summary.rows += 1;
-    summary.max_s = summary.max_s.max(row.0);
-    summary.rms_s += row.0 * row.0;
-    summary.max_r = summary.max_r.max(row.1);
-    summary.max_phase = summary.max_phase.max(row.2);
-    summary.max_sct = summary.max_sct.max(row.3);
-    summary.max_abs = summary.max_abs.max(row.4);
-    summary.max_ext = summary.max_ext.max(row.5);
-    summary.max_balance = summary.max_balance.max(row.6);
-    summary.max_interface = summary.max_interface.max(row.7);
+    summary.max_s = summary.max_s.max(row.s_defect);
+    summary.rms_s += row.s_defect * row.s_defect;
+    summary.max_r = summary.max_r.max(row.r_defect);
+    summary.max_phase = summary.max_phase.max(row.phase_defect);
+    summary.max_sct = summary.max_sct.max(row.sct_defect);
+    summary.max_abs = summary.max_abs.max(row.abs_defect);
+    summary.max_ext = summary.max_ext.max(row.ext_defect);
+    summary.max_balance = summary.max_balance.max(row.balance_defect);
+    summary.max_interface = summary.max_interface.max(row.interface_defect);
 }
 
 fn finalize_summary(summary: &mut ComparisonSummary) {
@@ -1785,29 +1797,29 @@ fn build_root_searches() -> EvidenceResult<Vec<SearchRecord>> {
     let fig5_seeds = root_seed_grid(fig5_rectangle, 16, 8);
     let mut records = Vec::new();
     for &(loss, gamma_d) in [("lossless", 0.0), ("lossy", 0.001)].iter() {
-        records.push(root_search_record(
-            "fig4",
+        records.push(root_search_record(RootSearchRequest {
+            case: "fig4",
             loss,
-            0,
+            l: 0,
             gamma_d,
-            &fig4_geometry,
-            fig4_rectangle,
-            &[64, 128, 256],
-            fig4_seeds.clone(),
-        )?);
+            geometry: &fig4_geometry,
+            rectangle: fig4_rectangle,
+            refinements: &[64, 128, 256],
+            seeds: fig4_seeds.clone(),
+        })?);
     }
     for l in [0, 1, 2] {
         for &(loss, gamma_d) in [("lossless", 0.0), ("lossy", 0.001)].iter() {
-            records.push(root_search_record(
-                "fig5",
+            records.push(root_search_record(RootSearchRequest {
+                case: "fig5",
                 loss,
                 l,
                 gamma_d,
-                &fig5_geometry,
-                fig5_rectangle,
-                &[128, 256, 512],
-                fig5_seeds.clone(),
-            )?);
+                geometry: &fig5_geometry,
+                rectangle: fig5_rectangle,
+                refinements: &[128, 256, 512],
+                seeds: fig5_seeds.clone(),
+            })?);
         }
     }
     Ok(records)
