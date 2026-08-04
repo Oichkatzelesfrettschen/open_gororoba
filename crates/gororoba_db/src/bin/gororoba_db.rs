@@ -34,6 +34,23 @@ fn main() -> Result<()> {
         return cmd_build(&cli.repo_root, &db_path, args);
     }
 
+    if let Commands::Claim(args) = &cli.command
+        && matches!(
+            &args.action,
+            ClaimMutationAction::Transition(transition_args)
+                if matches!(
+                    &transition_args.action,
+                    ClaimTransitionAction::Plan { .. }
+                        | ClaimTransitionAction::Show { .. }
+                        | ClaimTransitionAction::Fingerprint { .. }
+                )
+        )
+    {
+        let store = ProvenanceStore::open_read_only(&db_path)
+            .with_context(|| format!("open database read-only {}", db_path.display()))?;
+        return cmd_claim_transition_read_only(&store, &cli.repo_root, args);
+    }
+
     let mut store = ProvenanceStore::open(&db_path)
         .with_context(|| format!("open database {}", db_path.display()))?;
 
@@ -56,7 +73,7 @@ fn main() -> Result<()> {
         Commands::ExportPlanning(args) => cmd_export_planning(&store, &args),
         Commands::ExportRequirements(args) => cmd_export_requirements(&store, &args),
         Commands::Planning(args) => cmd_planning_mutation(&mut store, &cli.repo_root, &args),
-        Commands::Claim(args) => cmd_claim_mutation(&mut store, &args),
+        Commands::Claim(args) => cmd_claim_mutation(&mut store, &cli.repo_root, &args),
         Commands::Insight(args) => cmd_insight_mutation(&mut store, &args),
         Commands::Experiment(args) => cmd_experiment_mutation(&mut store, &args),
         Commands::Artifact(args) => cmd_artifact_mutation(&mut store, &cli.repo_root, &args),
@@ -1303,8 +1320,26 @@ fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
     Ok(())
 }
 
-fn cmd_claim_mutation(store: &mut ProvenanceStore, args: &ClaimMutationArgs) -> Result<()> {
+fn cmd_claim_mutation(
+    store: &mut ProvenanceStore,
+    repo_root: &Path,
+    args: &ClaimMutationArgs,
+) -> Result<()> {
     match &args.action {
+        ClaimMutationAction::Transition(transition_args) => {
+            let ClaimTransitionAction::Apply { spec, regen_toml } = &transition_args.action else {
+                unreachable!(
+                    "read-only claim transitions are dispatched before opening a write handle"
+                )
+            };
+            let spec_path = resolve_cli_path(repo_root, spec);
+            let raw_spec = fs::read_to_string(&spec_path)
+                .with_context(|| format!("read claim transition spec {}", spec_path.display()))?;
+            let parsed = ProvenanceStore::parse_claim_transition_spec(&raw_spec)?;
+            let result = store.apply_claim_transition(&parsed, &raw_spec)?;
+            println!("{}", serde_json::to_string_pretty(&result)?);
+            maybe_regen_toml(*regen_toml)?;
+        }
         ClaimMutationAction::UpdateStatusNote {
             id,
             status_note,
@@ -1356,6 +1391,52 @@ fn cmd_claim_mutation(store: &mut ProvenanceStore, args: &ClaimMutationArgs) -> 
         }
     }
     Ok(())
+}
+
+fn cmd_claim_transition_read_only(
+    store: &ProvenanceStore,
+    repo_root: &Path,
+    args: &ClaimMutationArgs,
+) -> Result<()> {
+    let ClaimMutationAction::Transition(transition_args) = &args.action else {
+        unreachable!("claim transition read-only dispatch received another claim action")
+    };
+    match &transition_args.action {
+        ClaimTransitionAction::Plan { spec } => {
+            let spec_path = resolve_cli_path(repo_root, spec);
+            let raw_spec = fs::read_to_string(&spec_path)
+                .with_context(|| format!("read claim transition spec {}", spec_path.display()))?;
+            let parsed = ProvenanceStore::parse_claim_transition_spec(&raw_spec)?;
+            let plan = store.plan_claim_transition(&parsed, &raw_spec)?;
+            println!("{}", serde_json::to_string_pretty(&plan)?);
+        }
+        ClaimTransitionAction::Show { key } => {
+            let event = store
+                .claim_transition_by_key(key)?
+                .with_context(|| format!("transition event {key} not found"))?;
+            println!("{}", serde_json::to_string_pretty(&event)?);
+        }
+        ClaimTransitionAction::Fingerprint { id } => {
+            let fingerprint = serde_json::json!({
+                "claim_id": id,
+                "source_state_sha256": store.claim_transition_source_state_sha256(id)?,
+                "expected_claim_id_max": store.claim_transition_expected_claim_id_max()?,
+            });
+            println!("{}", serde_json::to_string_pretty(&fingerprint)?);
+        }
+        ClaimTransitionAction::Apply { .. } => {
+            unreachable!("apply is dispatched through the mutable claim command")
+        }
+    }
+    Ok(())
+}
+
+fn resolve_cli_path(repo_root: &Path, path: &Path) -> PathBuf {
+    if path.is_absolute() {
+        path.to_path_buf()
+    } else {
+        repo_root.join(path)
+    }
 }
 
 fn cmd_insight_mutation(store: &mut ProvenanceStore, args: &InsightMutationArgs) -> Result<()> {
