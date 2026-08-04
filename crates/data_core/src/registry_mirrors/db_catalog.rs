@@ -9,7 +9,7 @@
 //! - Source of truth: `db/schema.sql`
 //! - Canonical migrations: `db/migrations/*.sql`
 //! - Regenerate with: `cargo run -p xtask -- db-docs`
-//! - Objects: `59`
+//! - Objects: `72`
 //!
 //! ## `artifact_links` (table)
 //!
@@ -201,6 +201,36 @@
 //! | 0 | `idx_cir_insight` | `false` | `c` | `false` | `insight_id, <expr>` |
 //! | 1 | `sqlite_autoindex_claim_insight_refs_1` | `true` | `pk` | `false` | `claim_id, insight_id, <expr>` |
 //!
+//! ## `claim_relations` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `5`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `predecessor_claim_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `successor_claim_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `relation_kind` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `transition_event_id` | `INTEGER` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claim_transition_events` | `transition_event_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `claims` | `successor_claim_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 2 | 0 | `claims` | `predecessor_claim_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `claim_relations_by_successor` | `false` | `c` | `false` | `successor_claim_id, relation_kind, <expr>` |
+//! | 1 | `claim_relations_by_predecessor` | `false` | `c` | `false` | `predecessor_claim_id, relation_kind, <expr>` |
+//! | 2 | `sqlite_autoindex_claim_relations_1` | `true` | `u` | `false` | `predecessor_claim_id, successor_claim_id, relation_kind, <expr>` |
+//!
 //! ## `claim_revisions` (table)
 //!
 //! - Strict: `false`
@@ -232,6 +262,218 @@
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `claim_revisions_by_actor` | `false` | `c` | `false` | `actor, ts_utc, <expr>` |
 //! | 1 | `claim_revisions_by_claim` | `false` | `c` | `false` | `claim_id, ts_utc, <expr>` |
+//!
+//! ## `claim_status_write_context` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `5`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `mode` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `transition_event_id` | `INTEGER` | `false` | `` | `0` | `0` |
+//! | 3 | `source_claim_id` | `TEXT` | `false` | `` | `0` | `0` |
+//! | 4 | `proposed_status` | `TEXT` | `false` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claims` | `source_claim_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `claim_transition_events` | `transition_event_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! ## `claim_transition_assumptions` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `3`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `transition_event_id` | `INTEGER` | `true` | `` | `1` | `0` |
+//! | 1 | `ordinal` | `INTEGER` | `true` | `` | `2` | `0` |
+//! | 2 | `assumption` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claim_transition_events` | `transition_event_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_claim_transition_assumptions_2` | `true` | `u` | `false` | `transition_event_id, assumption, <expr>` |
+//! | 1 | `sqlite_autoindex_claim_transition_assumptions_1` | `true` | `pk` | `false` | `transition_event_id, ordinal, <expr>` |
+//!
+//! ## `claim_transition_events` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `14`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `transition_key` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `source_claim_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `expected_prior_status` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `experiment_verdict` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 5 | `proposed_claim_status` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 6 | `exercised_falsifier` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 7 | `rationale` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 8 | `actor` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 9 | `reason` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 10 | `transition_ts_utc` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 11 | `transition_spec_sha256` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 12 | `expected_source_state_sha256` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 13 | `expected_claim_id_max` | `INTEGER` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claims` | `source_claim_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `claim_transition_events_by_source` | `false` | `c` | `false` | `source_claim_id, transition_ts_utc, <expr>` |
+//! | 1 | `sqlite_autoindex_claim_transition_events_1` | `true` | `u` | `false` | `transition_key, <expr>` |
+//!
+//! ## `claim_transition_evidence` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `transition_event_id` | `INTEGER` | `true` | `` | `1` | `0` |
+//! | 1 | `artifact_id` | `TEXT` | `true` | `` | `2` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `artifacts` | `artifact_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `claim_transition_events` | `transition_event_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_claim_transition_evidence_1` | `true` | `pk` | `false` | `transition_event_id, artifact_id, <expr>` |
+//!
+//! ## `claim_transition_experiments` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `transition_event_id` | `INTEGER` | `true` | `` | `1` | `0` |
+//! | 1 | `experiment_id` | `TEXT` | `true` | `` | `2` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `experiments_cp` | `experiment_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `claim_transition_events` | `transition_event_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_claim_transition_experiments_1` | `true` | `pk` | `false` | `transition_event_id, experiment_id, <expr>` |
+//!
+//! ## `claim_transition_successor_evidence` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `successor_id` | `INTEGER` | `true` | `` | `1` | `0` |
+//! | 1 | `artifact_id` | `TEXT` | `true` | `` | `2` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `artifacts` | `artifact_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `claim_transition_successors` | `successor_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_claim_transition_successor_evidence_1` | `true` | `pk` | `false` | `successor_id, artifact_id, <expr>` |
+//!
+//! ## `claim_transition_successor_where_stated` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `3`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `successor_id` | `INTEGER` | `true` | `` | `1` | `0` |
+//! | 1 | `ordinal` | `INTEGER` | `true` | `` | `2` | `0` |
+//! | 2 | `reference` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claim_transition_successors` | `successor_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_claim_transition_successor_where_stated_2` | `true` | `u` | `false` | `successor_id, reference, <expr>` |
+//! | 1 | `sqlite_autoindex_claim_transition_successor_where_stated_1` | `true` | `pk` | `false` | `successor_id, ordinal, <expr>` |
+//!
+//! ## `claim_transition_successors` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `9`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `transition_event_id` | `INTEGER` | `true` | `` | `0` | `0` |
+//! | 2 | `proposal_key` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `successor_claim_id` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `statement` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 5 | `initial_status` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 6 | `source_or_implementation_boundary` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 7 | `required_falsifier` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 8 | `predecessor_relation_kind` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claims` | `successor_claim_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `claim_transition_events` | `transition_event_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_claim_transition_successors_3` | `true` | `u` | `false` | `transition_event_id, statement, <expr>` |
+//! | 1 | `sqlite_autoindex_claim_transition_successors_2` | `true` | `u` | `false` | `transition_event_id, proposal_key, <expr>` |
+//! | 2 | `sqlite_autoindex_claim_transition_successors_1` | `true` | `u` | `false` | `successor_claim_id, <expr>` |
 //!
 //! ## `claims` (table)
 //!
@@ -1269,6 +1511,106 @@
 //! | seq | name | unique | origin | partial | columns |
 //! | --- | --- | --- | --- | --- | --- |
 //! | 0 | `sqlite_autoindex_source_of_truth_manifest_1` | `true` | `pk` | `false` | `table_name, <expr>` |
+//!
+//! ## `theorem_claim_links` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `3`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `theorem_stable_id` | `TEXT` | `true` | `` | `1` | `0` |
+//! | 1 | `claim_id` | `TEXT` | `true` | `` | `2` | `0` |
+//! | 2 | `relation_kind` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `claims` | `claim_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `theorem_identities` | `theorem_stable_id` | `stable_id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `theorem_claim_links_by_claim` | `false` | `c` | `false` | `claim_id, <expr>` |
+//! | 1 | `sqlite_autoindex_theorem_claim_links_1` | `true` | `pk` | `false` | `theorem_stable_id, claim_id, <expr>` |
+//!
+//! ## `theorem_identities` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `9`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `stable_id` | `TEXT` | `false` | `` | `1` | `0` |
+//! | 1 | `legacy_name` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `proof_path` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `identity_kind` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `assumptions` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 5 | `kernel_result` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 6 | `replay_command` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 7 | `falsifier` | `TEXT` | `true` | `''` | `0` | `0` |
+//! | 8 | `source` | `TEXT` | `true` | `'_RocqProject'` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_theorem_identities_3` | `true` | `u` | `false` | `proof_path, <expr>` |
+//! | 1 | `sqlite_autoindex_theorem_identities_2` | `true` | `u` | `false` | `legacy_name, <expr>` |
+//! | 2 | `sqlite_autoindex_theorem_identities_1` | `true` | `pk` | `false` | `stable_id, <expr>` |
+//!
+//! ## `theorem_identity_events` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `8`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `id` | `INTEGER` | `false` | `` | `1` | `0` |
+//! | 1 | `binding_key` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 2 | `spec_sha256` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 3 | `actor` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 4 | `reason` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 5 | `applied_at` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 6 | `theorem_ids_json` | `TEXT` | `true` | `` | `0` | `0` |
+//! | 7 | `claim_ids_json` | `TEXT` | `true` | `` | `0` | `0` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `sqlite_autoindex_theorem_identity_events_1` | `true` | `u` | `false` | `binding_key, <expr>` |
+//!
+//! ## `theorem_identity_evidence` (table)
+//!
+//! - Strict: `false`
+//! - Without rowid: `false`
+//! - Declared columns: `2`
+//!
+//! | cid | name | type | not null | default | pk | hidden |
+//! | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | `theorem_stable_id` | `TEXT` | `true` | `` | `1` | `0` |
+//! | 1 | `artifact_id` | `TEXT` | `true` | `` | `2` | `0` |
+//!
+//! Foreign keys:
+//!
+//! | id | seq | table | from | to | on update | on delete | match |
+//! | --- | --- | --- | --- | --- | --- | --- | --- |
+//! | 0 | 0 | `artifacts` | `artifact_id` | `id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//! | 1 | 0 | `theorem_identities` | `theorem_stable_id` | `stable_id` | `NO ACTION` | `NO ACTION` | `NONE` |
+//!
+//! Indexes:
+//!
+//! | seq | name | unique | origin | partial | columns |
+//! | --- | --- | --- | --- | --- | --- |
+//! | 0 | `theorem_identity_evidence_by_artifact` | `false` | `c` | `false` | `artifact_id, <expr>` |
+//! | 1 | `sqlite_autoindex_theorem_identity_evidence_1` | `true` | `pk` | `false` | `theorem_stable_id, artifact_id, <expr>` |
 //!
 //! ## `theorems` (table)
 //!

@@ -70,8 +70,12 @@ pub(crate) fn clear_control_plane_tables(conn: &Connection) -> Result<()> {
         "
         DELETE FROM registry_snapshots;
         DELETE FROM insights;
-        DELETE FROM experiments_cp;
+        DELETE FROM experiments_cp
+         WHERE id NOT IN (
+             SELECT experiment_id FROM claim_transition_experiments
+         );
         DELETE FROM binaries_cp;
+        DELETE FROM theorem_claim_links;
         DELETE FROM theorems;
         DELETE FROM control_plane_meta;
         ",
