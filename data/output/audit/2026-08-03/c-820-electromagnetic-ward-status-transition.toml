@@ -1,0 +1,45 @@
+[transition]
+transition_key = "c-820-electromagnetic-ward-status-boundary"
+source_claim_id = "C-820"
+expected_prior_status = "Verified"
+experiment_verdict = "Inconclusive"
+evidence_artifact_ids = ["LOCAL-P1-TENSOR-WARD", "LOCAL-CLAIM-TRANSITION-001"]
+experiment_ids = ["E-073"]
+exercised_falsifier = "Independent tensor contraction produces a residual above the frozen tolerance on the predeclared grid."
+proposed_claim_status = "Provisional"
+rationale = "The P1 experiment verdict is Inconclusive because the scalar integrated subset and independent dense-index path pass while the spinor irreducible path retains a contact or integration-by-parts boundary gap. Lower the broad repository status and split the source proposition from implementation conformance without refuting the source identity."
+unresolved_assumptions = [
+    "The missing spinor contact or integration-by-parts boundary contribution remains unresolved.",
+    "The source Euclidean continuation and tensor normalization remain the declared P1 conventions.",
+]
+actor = "canonical-claim-transition-campaign"
+reason = "Synchronize C-820 with the retained P1 tensor Ward verdict and create bounded successor claims."
+transition_timestamp = "2026-08-04T04:00:00Z"
+expected_source_state_sha256 = "962f3272fecc1cf5c8888efe043430bda329fc3585a26e75471409afcac1ec24"
+expected_claim_id_max = 1633
+
+[[successor]]
+proposal_key = "source-electromagnetic-gauge-ward-identity"
+statement = "The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions."
+initial_status = "Theoretical"
+source_or_implementation_boundary = "Source proposition only; no repository implementation conformance is implied."
+required_falsifier = "Independent tensor contraction produces a residual above the declared tolerance on a predeclared kinematic grid."
+where_stated = [
+    "https://arxiv.org/pdf/2601.23279",
+    "data/output/audit/2026-08-02/claim_transition_proposals.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "source_split"
+
+[[successor]]
+proposal_key = "tensor-electromagnetic-ward-conformance"
+statement = "The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Requires a tensor-valued production path and an independent dense-index reference."
+required_falsifier = "Production and independent tensor contractions disagree beyond convergence and conditioning tolerances."
+where_stated = [
+    "data/output/audit/2026-08-02/p1_claim_results.toml",
+    "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml",
+]
+evidence_artifact_ids = ["LOCAL-P1-TENSOR-WARD", "LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "implementation_split"

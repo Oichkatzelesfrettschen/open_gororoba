@@ -4990,11 +4990,88 @@ status_note = "Negative-result claim, deterministic on the fixed benchmark (E-23
 where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_chperm.json; E-239"
 
 [[claim]]
+id = "C-1634"
+statement = "The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions."
+status = "Theoretical"
+where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1635"
+statement = "The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1636"
+statement = "The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side, with the on-shell irreducible and external-leg cancellation and separate tadpole invariance stated explicitly."
+status = "Theoretical"
+where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1637"
+statement = "The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition across the predeclared kinematic grid."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1638"
+statement = "The photon-graviton TCMT implementation evaluates kappa_1 - kappa_2 = gamma_l against the declared relative tolerance."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-02/p0_frontier.toml; data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml; data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1639"
+statement = "The source-faithful Maksimov energy constraint kappa_1 - kappa_2 = gamma_l holds under declared units and parameter correspondence."
+status = "Theoretical"
+where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/p0_frontier.toml; data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
 id = "C-164"
 last_verified = "2026-02-01"
 statement = "n-fold product norms: at composition dimensions (dim <= 8),||a1*a2*...*an||= 1.0 exactly for ALL n up to 20. At dim >= 16, norms fluctuate but stay in [0.5, 2.0], with std growing slowly with n. No norm explosion or collapse."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`"
+
+[[claim]]
+id = "C-1640"
+statement = "The declared scattering, absorption, and extinction observables satisfy an independently derived balance relation."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1641"
+statement = "The declared lossless, flux-normalized complex scattering matrix is unitary on the stated channel basis."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1642"
+statement = "The declared passive lossy scattering matrix is contractive under the stated flux normalization."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1643"
+statement = "The declared reciprocal scattering model satisfies the appropriate reciprocity relation for its channel basis."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1644"
+statement = "The declared time-reversed scattering construction satisfies its stated time-reversal relation."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-165"
@@ -9730,8 +9807,8 @@ where_stated = "crates/gr_core/src/photon_graviton/worldline_greens.rs (sb12, ab
 id = "C-820"
 last_verified = "2026-02-19"
 statement = "Irreducible photon-graviton amplitude satisfies gauge Ward identity (k_alpha * Pi^{mn,alpha} = 0) to machine precision."
-status = "Verified"
-status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: nonzero Ward pre-factor hidden by the on-shell zero factor. Proposed transition: Provisional implementation claim, with separate source-level gauge Ward identity and tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: tensor contraction components; metric and continuation conventions; independent dense-index reference. Status remains Verified until the canonical CLI supports typed status transitions."
+status = "Provisional"
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: nonzero Ward pre-factor hidden by the on-shell zero factor. Proposed transition: Provisional implementation claim, with separate source-level gauge Ward identity and tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: tensor contraction components; metric and continuation conventions; independent dense-index reference. Canonical transition event applied: current status is Provisional; the source proposition remains unrefuted."
 where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs (irreducible_ward_check), crates/gr_core/src/photon_graviton/ward.rs"
 
 [[claim]]
@@ -9746,8 +9823,8 @@ where_stated = "crates/gr_core/src/photon_graviton/tadpole.rs (tadpole_proper_ti
 id = "C-822"
 last_verified = "2026-02-19"
 statement = "Full one-loop photon-graviton amplitude satisfies gravitational Ward identity to 1e-8."
-status = "Verified"
-status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: independent nonzero tadpole or external-leg gravitational contribution. Proposed transition: Provisional implementation claim, with separate source-level gravitational Ward identity and full tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: lower-point right-hand side; diagram tensor decomposition; off-shell kinematics. Status remains Verified until the canonical CLI supports typed status transitions."
+status = "Provisional"
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: independent nonzero tadpole or external-leg gravitational contribution. Proposed transition: Provisional implementation claim, with separate source-level gravitational Ward identity and full tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: lower-point right-hand side; diagram tensor decomposition; off-shell kinematics. Canonical transition event applied: current status is Provisional; the source proposition remains unrefuted."
 where_stated = "crates/gr_core/src/photon_graviton/ward.rs (check_gravitational_ward, full_ward_check)"
 
 [[claim]]
@@ -10090,16 +10167,16 @@ where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (thr
 id = "C-865"
 last_verified = "2026-02-19"
 statement = "Asymmetry parameter q_grav from gravitational coupling satisfies Maksimov constraint: kappa_1 - kappa_2 = gamma_l to machine precision (relative error < 1e-10)."
-status = "Verified"
-status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: relative discrepancy evaluated against the stated 1e-10 threshold. Proposed transition: Provisional, with separate source-faithful energy constraint and implementation predicate with declared tolerance successors. The current positive test accepts a relative discrepancy of 0.9 with tolerance 1.0. Unresolved: Maksimov parameter correspondence; units; independent source constraint. Status remains Verified until the canonical CLI supports typed status transitions."
+status = "Provisional"
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: relative discrepancy evaluated against the stated 1e-10 threshold. Proposed transition: Provisional, with separate source-faithful energy constraint and implementation predicate with declared tolerance successors. The current positive test accepts a relative discrepancy of 0.9 with tolerance 1.0. Unresolved: Maksimov parameter correspondence; units; independent source constraint. Canonical transition event applied: current status is Provisional; the source correspondence remains unresolved."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (validate_energy_conservation), tcmt_equations.rs (energy conservation test)"
 
 [[claim]]
 id = "C-866"
 last_verified = "2026-02-19"
 statement = "Time-reversal symmetry of photon-graviton TCMT guarantees transmission S-matrix satisfies unitarity |T|^2 + |R|^2 = 1 to numerical precision (error < 1e-10)."
-status = "Verified"
-status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: complex channel pair with the same scalar input and different flux, plus tautological cross-section and lossless controls. Proposed transition: Superseded by separate lossless flux-normalized unitarity, reciprocity, time reversal, passive-loss contractivity, and absorption balance claims. The statement conflates time reversal, unitarity, passive loss, scalar cross-section bookkeeping, and physical port semantics. Unresolved: port normalization; complex scattering matrix; internal loss model. No successor IDs are invented. Status remains Verified until the canonical CLI supports typed status transitions and successor creation."
+status = "Superseded"
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: complex channel pair with the same scalar input and different flux, plus tautological cross-section and lossless controls. Proposed transition: Superseded by separate lossless flux-normalized unitarity, reciprocity, time reversal, passive-loss contractivity, and absorption balance claims. The statement conflates time reversal, unitarity, passive loss, scalar cross-section bookkeeping, and physical port semantics. Unresolved: port normalization; complex scattering matrix; internal loss model. Canonical transition event applied: current status is Superseded; the five narrower predicates carry the next falsification surface."
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (scattering_coefficient), amplitude_bridge.rs (validate_unitarity)"
 
 [[claim]]

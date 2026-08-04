@@ -1,0 +1,175 @@
+# Instrumented control-plane call map for the typed claim transition paths.
+# Legacy C call-graph tools are retained as a suitability falsifier; the
+# Rust-aware and executed paths carry the semantic call graph.
+
+[meta]
+artifact_id = "canonical-claim-transition-call-map-2026-08-03"
+implementation_revision = "f3549de47cc50d4294ec1fcaab621834d5dc28ad"
+scope = "claim transition plan, apply, show, export, validation, experiment replacement, and SQLite trigger paths"
+ascii_policy = "all retained fields and source paths are ASCII"
+completion_gate = "Declare the phase complete only after every load-bearing path has a typed edge, an executed control, and a retained output field."
+
+[tool_versions]
+cflow = "GNU cflow 1.8"
+cscope = "cscope 15.9"
+universal_ctags = "Universal Ctags 6.2.1"
+rust_analyzer = "rust-analyzer 1 (7ea2b259ca 2026-06-07)"
+
+[legacy_tool_capture]
+bounded_files = [
+    "crates/gororoba_db/src/bin/gororoba_db.rs",
+    "crates/gororoba_db/src/bin/gororoba_db/types.rs",
+    "crates/provenance_store/src/lib.rs",
+    "crates/provenance_store/src/claim_transitions.rs",
+    "crates/provenance_store/src/migrations.rs",
+    "crates/provenance_store/src/table_ops.rs",
+    "crates/provenance_store/src/compat_render.rs",
+    "crates/gororoba_cli_data/src/bin/provenance.rs",
+]
+cflow_command = "cflow --format=posix --brief <bounded Rust files>"
+cflow_exit_code = 0
+cflow_observation = "The parser emits false C diagnostics such as redefined Rust imports, unterminated Rust strings, and unrelated pseudo-call nodes. The exit code is not treated as semantic success."
+cflow_verdict = "not a valid Rust call graph"
+cscope_command = "rg --files <bounded Rust directories> | cscope -b -q -i - -f /tmp/canonical-claim-cscope.out"
+cscope_exit_code = 0
+cscope_database_bytes = 324118
+cscope_database_sha256 = "6b7f4ca6a7ab0015257b632593b0853969702263e672b3e9eb51449e4f0f3c21"
+cscope_symbol_query_result = "Indexes Rust main definitions but provides no usable claim_transition definitions or references and no call semantics."
+cscope_verdict = "not a valid Rust call graph"
+rust_ctags_command = "ctags --languages=Rust --fields=+n --extras=+q -o /tmp/canonical-claim-rust.tags <bounded Rust files>"
+rust_ctags_tag_count = 832
+rust_ctags_sha256 = "9382d714301f6e9ab3483611bcf1e4ec9559b1b9674e6bc65057a168763e5386"
+rust_ctags_verdict = "symbol inventory only; no call semantics"
+rust_analyzer_command = "rust-analyzer analysis-stats . --only provenance_store::claim_transitions --no-test"
+rust_analyzer_exit_code = 0
+rust_analyzer_observation = "The workspace analysis completes with dependency-cycle warnings and 30 failed const evaluations in unrelated workspace analysis; the transition crate typechecks under cargo check and clippy."
+
+[instrumentation_contract]
+plan_fields = [
+    "transition_key",
+    "transition_spec_sha256",
+    "source_claim_id",
+    "current_status",
+    "expected_prior_status",
+    "proposed_claim_status",
+    "experiment_verdict",
+    "evidence_artifact_ids",
+    "experiment_ids",
+    "allocated_successors",
+    "status_count_delta",
+    "exact_replay",
+    "replay_event_id",
+]
+apply_fields = [
+    "transition_key",
+    "transition_spec_sha256",
+    "event_id",
+    "allocated_successors",
+    "exact_replay",
+]
+concurrency_fields = [
+    "expected_source_state_sha256",
+    "expected_claim_id_max",
+    "current_source_state_sha256",
+    "current_numeric_claim_id_max",
+]
+
+[call_graph]
+plan = "gororoba_db::main -> read-only transition dispatch -> ProvenanceStore::open_read_only -> cmd_claim_transition_read_only -> resolve_cli_path and fs::read_to_string -> ProvenanceStore::parse_claim_transition_spec -> ProvenanceStore::plan_claim_transition -> validate_spec -> transition_event_by_key -> claim_transition_source_state -> validate_source_state -> sha256_claim_state -> max_numeric_claim_id -> allocate_successors -> validate_successor_references -> validate_relation_graph -> serde_json output"
+apply = "gororoba_db::main -> ProvenanceStore::open -> migrations::to_latest -> cmd_claim_mutation -> parse_claim_transition_spec -> ProvenanceStore::apply_claim_transition -> IMMEDIATE transaction -> transition_event_by_key_on_conn -> apply_transition_replay OR apply_new_transition -> claim_transition_source_state_on_conn -> validate_source_state -> allocate_transition_successors -> validate_successor_references_on_conn -> insert_transition_event -> set_transition_write_context -> insert_transition_metadata -> insert_successor_claims -> insert_successor_claim and insert_successor_references -> update_source_claim_status -> clear context -> commit -> maybe_regen_toml -> provenance export-control-plane -> export_control_plane_compat_paths -> export_claim_transition_compat_paths"
+show = "gororoba_db::main -> read-only transition dispatch -> ProvenanceStore::open_read_only -> cmd_claim_transition_read_only -> claim_transition_by_key -> load_transition_assumptions -> load_transition_ids -> successors_for_event -> serde_json output"
+verify = "registry validation -> ProvenanceStore::verify_control_plane_invariants -> verify_claim_transition_invariants -> source status history check -> relation resolution check -> validate_relation_graph -> evidence and successor resolution check; compatibility validation -> claim_transition_compat_texts -> generated file byte comparison"
+reindex = "ProvenanceStore::reindex_control_plane_from_registries -> registry_reindex context -> clear_control_plane_tables -> registry claim upsert with transitioned-status preservation -> clear context -> commit"
+experiment_export = "execution_planning::build_execution_planning -> sync_or_write_experiments_registry -> ProvenanceStore::replace_control_plane_experiments_from_registry_text -> collect protected transition/revision experiment IDs -> rebuild claim_experiment_refs -> preserve protected experiments -> upsert incoming experiments -> export control-plane compatibility paths"
+compatibility_status_projection = "provenance export-control-plane -> render_claims_registry -> render_claim_row -> splice_compat_toml_overrides(status, formal_proof, status_note) -> registry/claims.toml"
+database = "0017_claim_transitions.sql -> foreign keys -> append-only UPDATE and DELETE triggers -> claims_status_requires_event trigger -> claim_transition_events and normalized child tables"
+
+[[executed_control]]
+name = "unit transition transaction controls"
+command = "CARGO_TARGET_DIR=.cache/transition-target cargo test -p provenance_store --lib"
+exit_code = 0
+observed = "16 tests passed, including live claim-status compatibility projection, transition-referenced experiment replacement, and claim-reference rebuild"
+
+[[executed_control]]
+name = "live claim-status compatibility projection"
+command = "CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_cli_provenance --bin provenance -- export-control-plane"
+exit_code = 0
+observed = "SQLite statuses for C-820, C-822, C-865, and C-866 match their generated registry/claims.toml status values."
+
+[[executed_control]]
+name = "typed transition lint"
+command = "TMPDIR=$PWD/.cache/transition-tmp CARGO_TARGET_DIR=.cache/transition-target cargo clippy -p provenance_store -p gororoba_db -p gororoba_cli_provenance -p gororoba_cli_data --all-targets -- -D warnings"
+exit_code = 0
+observed = "warnings-as-errors pass for canonical store, transition CLI, exporter, and validator packages"
+
+[[executed_control]]
+name = "CLI transition surface"
+command = "CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_db --bin gororoba-db -- claim transition --help"
+exit_code = 0
+observed = "plan, apply, show, and fingerprint commands are exposed"
+
+[[executed_control]]
+name = "canonical migration"
+command = "CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_db --bin gororoba-db -- --repo-root . stats"
+exit_code = 0
+observed = "migration 0017 is applied; 0 transition events and 0 relations exist before real application"
+
+[[executed_control]]
+name = "execution-planning compatibility replacement"
+command = "TMPDIR=$PWD/.cache/transition-tmp CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_cli_data --bin execution-planning -- --repo-root ."
+exit_code = 0
+observed = "232 experiment rows and 1113 lineage edges exported while preserving transition-referenced E-073"
+
+[[executed_control]]
+name = "full registry validation"
+command = "TMPDIR=$PWD/.cache/transition-tmp make validate-registry"
+exit_code = 0
+observed = "control plane, counters, compatibility views, semantic atoms, evidence provenance, registry integrity, and execution planning pass"
+
+[[load_bearing_edge]]
+from = "plan_claim_transition"
+to = "validate_source_state"
+invariant = "The plan rejects a stale status or complete source-state hash before allocating IDs."
+
+[[load_bearing_edge]]
+from = "apply_claim_transition"
+to = "transaction_with_behavior(Immediate)"
+invariant = "The event, children, successors, relations, revisions, and source status share one transaction."
+
+[[load_bearing_edge]]
+from = "apply_claim_transition"
+to = "claims_status_requires_event"
+invariant = "The status update succeeds only while the event-scoped transition context is live."
+
+[[load_bearing_edge]]
+from = "render_claim_row"
+to = "splice_compat_toml_overrides(status)"
+invariant = "Every generated claim row exposes the live canonical status instead of a stale cached status field."
+
+[[load_bearing_edge]]
+from = "apply_claim_transition"
+to = "claim_transition_events_append_only_update/delete"
+invariant = "Public replay can inspect an event but cannot mutate or delete it."
+
+[[load_bearing_edge]]
+from = "allocate_successors"
+to = "claim_transition_successors and claim_relations"
+invariant = "Proposal keys sort deterministically before canonical IDs and typed edges are written."
+
+[[load_bearing_edge]]
+from = "export_claim_transition_compat_paths"
+to = "registry/claim_transitions.toml and registry/claim_relations.toml"
+invariant = "Generated views expose prior status, verdict, evidence, assumptions, current status, and successor links without flattening history."
+
+[[load_bearing_edge]]
+from = "verify_claim_transition_invariants"
+to = "status history and relation graph"
+invariant = "Canonical rows, transition history, successor rows, relation edges, and evidence references resolve together."
+
+[path_falsifiers]
+stale_expected_status = "Change expected_prior_status or source-state hash; plan and apply reject without event or successor rows."
+missing_evidence = "Use an unknown artifact ID; the transaction rejects before commit and source status remains unchanged."
+changed_replay = "Reuse transition_key with changed raw specification; the stored content hash rejects the replay."
+direct_status_write = "Issue a status UPDATE without the event-scoped context; the SQLite trigger aborts."
+relation_cycle = "Inject a cycle into the typed relation graph; graph validation rejects it."
+legacy_graph_tool = "Run cflow or cscope on the bounded Rust files; false or empty graph output prevents accidental semantic trust."

@@ -1,0 +1,125 @@
+# Standalone reproducibility manifest for the canonical claim transition run.
+# This manifest pins the implementation revision that defines the transition
+# model. The later merge commit is recorded separately.
+
+[experiment]
+id = "E-CLAIM-TRANSITION-001"
+title = "Canonical claim transitions and successor-claim persistence"
+reproducibility_class = "bit_exact"
+code_commit_sha = "f3549de47cc50d4294ec1fcaab621834d5dc28ad"
+actual_timestamp = "2026-08-04T04:20:00Z"
+run_command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/transition-target cargo test -p provenance_store --lib"
+run_command_sha256 = "ea71b824bc794c846c3638bb02cf1f6f06a90a75dfade32593d48e0f2bce944c"
+toolchain = "rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30); SQLite via rusqlite"
+features = ["provenance_store", "gororoba_db", "canonical SQLite control plane"]
+hardware = "x86_64 Linux host; deterministic CPU execution; no domain-science workload"
+randomness_mode = "none"
+scope = "Typed claim status transitions, normalized evidence, successor claims, typed relations, replay, rollback, and compatibility export."
+
+[[experiment.input_hashes]]
+path = "crates/provenance_store/src/claim_transitions.rs"
+sha256 = "80febadcb1bd8733cc4d835ebfb53f21de0c26f782bf7ccf4b9621967158aefe"
+
+[[experiment.input_hashes]]
+path = "crates/provenance_store/src/lib.rs"
+sha256 = "4f53726326e3fccf9d20a8a0a9498cc6b54aeca4b23275a244f4766a565b665a"
+
+[[experiment.input_hashes]]
+path = "crates/provenance_store/src/compat_render.rs"
+sha256 = "c9a552a6ffbb89416e8525ac63dbe01de898af5110f5827dbb324e0b4e07e8c2"
+
+[[experiment.input_hashes]]
+path = "db/migrations/0017_claim_transitions.sql"
+sha256 = "9f0836301a97ddab0ab60125dd25caded98d4211e8ab3cf24e2932a2ac0c48e9"
+
+[[experiment.input_hashes]]
+path = "crates/gororoba_db/src/bin/gororoba_db.rs"
+sha256 = "a72edfb3e49f1bab373ff60d3b8a89c988deb6a226a1692716c2477267574936"
+
+[[experiment.input_hashes]]
+path = "crates/gororoba_db/src/bin/gororoba_db/types.rs"
+sha256 = "17f18ff5b0b9be9647582b94f270595bb55916ffe0a72f5a502e77d1509ba3f1"
+
+[[experiment.input_hashes]]
+path = "crates/gororoba_cli_data/src/bin/governance_verify.rs"
+sha256 = "18bd942e245531937f6ffb6e8459ac852248cd2ca415c116bca5513bf924ad98"
+
+[[experiment.input_hashes]]
+path = "registry/source_manifest.toml"
+sha256 = "cee34500fec56463fa6bd07c03683a5ff058708a121cf51b93f1e66d2bd90206"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-03/canonical-claim-transition-baseline.toml"
+sha256 = "0b63cf3b22aade4cf6e9c85fd829ba68e94c019784b38e9acfaca1358de6b09d"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml"
+sha256 = "679e5f16728d6aa79ff70ad703817b12fc60994e1213cdedbfeddebcaa68f90e"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml"
+sha256 = "88ce67d5ee58e0335ad4f96af219d077021f3ddccf4a35ed2d86f0b9271bd89f"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-03/canonical-claim-transition-call-map.toml"
+sha256 = "dac1da3750a5276f964def2324d9bc24faf2775e6e0f90ff939349f284a98586"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-03/c-820-electromagnetic-ward-status-transition.toml"
+sha256 = "f3f1842d7836a2fa927396b5fc6dbe8c92af76be25416ee1b3db0bfaf35ca501"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-03/c-822-gravitational-ward-status-transition.toml"
+sha256 = "f770fe980faa333ec950c6b8f2eedcf29298f83e64683d14edf958c47bc8a1be"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-03/c-865-energy-constraint-status-transition.toml"
+sha256 = "89c8e75b932a859b5fd5ab1c63710b336da152b48f66a07f8f3fd4e1b35f48a9"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-03/c-866-scattering-predicate-status-transition.toml"
+sha256 = "4d912e03d3bd481aa3356b721e2b5656e5beb1e751d06fb705158b7e81fae8c0"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+path = "data/output/audit/2026-08-03/canonical-claim-transition-baseline.toml"
+sha256 = "0b63cf3b22aade4cf6e9c85fd829ba68e94c019784b38e9acfaca1358de6b09d"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+path = "data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml"
+sha256 = "679e5f16728d6aa79ff70ad703817b12fc60994e1213cdedbfeddebcaa68f90e"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+path = "data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml"
+sha256 = "88ce67d5ee58e0335ad4f96af219d077021f3ddccf4a35ed2d86f0b9271bd89f"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+path = "data/output/audit/2026-08-03/canonical-claim-transition-call-map.toml"
+sha256 = "dac1da3750a5276f964def2324d9bc24faf2775e6e0f90ff939349f284a98586"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+path = "data/output/audit/2026-08-03/c-820-electromagnetic-ward-status-transition.toml"
+sha256 = "f3f1842d7836a2fa927396b5fc6dbe8c92af76be25416ee1b3db0bfaf35ca501"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+path = "data/output/audit/2026-08-03/c-822-gravitational-ward-status-transition.toml"
+sha256 = "f770fe980faa333ec950c6b8f2eedcf29298f83e64683d14edf958c47bc8a1be"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+path = "data/output/audit/2026-08-03/c-865-energy-constraint-status-transition.toml"
+sha256 = "89c8e75b932a859b5fd5ab1c63710b336da152b48f66a07f8f3fd4e1b35f48a9"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+path = "data/output/audit/2026-08-03/c-866-scattering-predicate-status-transition.toml"
+sha256 = "4d912e03d3bd481aa3356b721e2b5656e5beb1e751d06fb705158b7e81fae8c0"
+
+[verification]
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_cli_data --bin experiment-manifest -- verify data/output/audit/2026-08-03/canonical-claim-transition-experiment-manifest.toml --repo-root ."
+expected_result = "verify at implementation revision f3549de4 before the retained evidence and merge-attestation commits"

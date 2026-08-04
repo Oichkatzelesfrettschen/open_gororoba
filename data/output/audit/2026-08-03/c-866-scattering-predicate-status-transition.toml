@@ -1,0 +1,85 @@
+[transition]
+transition_key = "c-866-scattering-predicate-status-boundary"
+source_claim_id = "C-866"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+experiment_ids = []
+exercised_falsifier = "Hold scalar transmission fixed while changing complex phase or flux normalization, inject arbitrary cross-section inputs, and test the separated predicates."
+proposed_claim_status = "Superseded"
+rationale = "The original row conflates time reversal, lossless unitarity, passive loss, scalar cross-section bookkeeping, and physical port semantics. Replace it with five typed predicates whose channel basis, flux normalization, loss model, and cross-section definitions can be tested independently."
+unresolved_assumptions = [
+    "The complex port normalization remains to be declared.",
+    "The lossless and passive internal models remain to be implemented.",
+    "The absorption and extinction observables require non-tautological independent definitions.",
+]
+actor = "canonical-claim-transition-campaign"
+reason = "Supersede the conflated C-866 claim with five independently falsifiable scattering predicates."
+transition_timestamp = "2026-08-04T04:15:00Z"
+expected_source_state_sha256 = "9af45e4149cd12c4b84eb652c7194f4f9fa287158d8223bed032d88eb2bc5017"
+expected_claim_id_max = 1639
+
+[[successor]]
+proposal_key = "lossless-flux-normalized-unitarity"
+statement = "The declared lossless, flux-normalized complex scattering matrix is unitary on the stated channel basis."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Requires an explicit complex scattering matrix and port normalization."
+required_falsifier = "S dagger S differs from the identity beyond the declared numerical tolerance for a lossless fixture."
+where_stated = [
+    "https://arxiv.org/abs/2505.00396",
+    "data/output/audit/2026-08-02/claim_transition_proposals.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "narrows"
+
+[[successor]]
+proposal_key = "reciprocal-channel-scattering"
+statement = "The declared reciprocal scattering model satisfies the appropriate reciprocity relation for its channel basis."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Requires channel ordering, normalization, and the reciprocity operation to be declared."
+required_falsifier = "Independent forward and reverse channel calculations violate the declared reciprocity relation."
+where_stated = [
+    "https://arxiv.org/abs/0909.3323",
+    "data/output/audit/2026-08-02/claim_transition_proposals.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "narrows"
+
+[[successor]]
+proposal_key = "time-reversed-channel-scattering"
+statement = "The declared time-reversed scattering construction satisfies its stated time-reversal relation."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Time reversal is tracked separately from unitarity and requires a declared loss model."
+required_falsifier = "The time-reversed construction fails its declared amplitude or channel relation."
+where_stated = [
+    "https://arxiv.org/abs/2505.00396",
+    "data/output/audit/2026-08-02/claim_transition_proposals.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "narrows"
+
+[[successor]]
+proposal_key = "passive-loss-contractivity"
+statement = "The declared passive lossy scattering matrix is contractive under the stated flux normalization."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Requires an explicit internal-loss model and a complex multiport representation."
+required_falsifier = "A passive fixture has an outgoing flux norm greater than its incoming flux norm."
+where_stated = [
+    "https://arxiv.org/abs/2505.00396",
+    "data/output/audit/2026-08-02/claim_transition_proposals.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "narrows"
+
+[[successor]]
+proposal_key = "independent-absorption-balance"
+statement = "The declared scattering, absorption, and extinction observables satisfy an independently derived balance relation."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Requires non-tautological cross-section definitions and an independent complex channel calculation."
+required_falsifier = "The independently computed extinction defect exceeds the declared tolerance or absorption becomes negative for a passive fixture."
+where_stated = [
+    "https://arxiv.org/abs/0909.3323",
+    "data/output/audit/2026-08-02/claim_transition_proposals.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "narrows"

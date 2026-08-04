@@ -1,0 +1,84 @@
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
+# Compatibility export lane: claim_relations
+[meta]
+surface = "typed predecessor and successor claim relations"
+relation_count = 11
+relation_kinds = ["source_split", "implementation_split", "narrows", "refines", "supersedes"]
+
+[[relation]]
+relation_id = 1
+predecessor_claim_id = "C-820"
+successor_claim_id = "C-1634"
+relation_kind = "source_split"
+transition_event_id = 1
+
+[[relation]]
+relation_id = 2
+predecessor_claim_id = "C-820"
+successor_claim_id = "C-1635"
+relation_kind = "implementation_split"
+transition_event_id = 1
+
+[[relation]]
+relation_id = 3
+predecessor_claim_id = "C-822"
+successor_claim_id = "C-1636"
+relation_kind = "source_split"
+transition_event_id = 2
+
+[[relation]]
+relation_id = 4
+predecessor_claim_id = "C-822"
+successor_claim_id = "C-1637"
+relation_kind = "implementation_split"
+transition_event_id = 2
+
+[[relation]]
+relation_id = 5
+predecessor_claim_id = "C-865"
+successor_claim_id = "C-1638"
+relation_kind = "implementation_split"
+transition_event_id = 3
+
+[[relation]]
+relation_id = 6
+predecessor_claim_id = "C-865"
+successor_claim_id = "C-1639"
+relation_kind = "source_split"
+transition_event_id = 3
+
+[[relation]]
+relation_id = 7
+predecessor_claim_id = "C-866"
+successor_claim_id = "C-1640"
+relation_kind = "narrows"
+transition_event_id = 4
+[[relation]]
+relation_id = 8
+predecessor_claim_id = "C-866"
+successor_claim_id = "C-1641"
+relation_kind = "narrows"
+transition_event_id = 4
+
+[[relation]]
+relation_id = 9
+predecessor_claim_id = "C-866"
+successor_claim_id = "C-1642"
+relation_kind = "narrows"
+transition_event_id = 4
+
+[[relation]]
+relation_id = 10
+predecessor_claim_id = "C-866"
+successor_claim_id = "C-1643"
+relation_kind = "narrows"
+transition_event_id = 4
+
+[[relation]]
+relation_id = 11
+predecessor_claim_id = "C-866"
+successor_claim_id = "C-1644"
+relation_kind = "narrows"
+transition_event_id = 4

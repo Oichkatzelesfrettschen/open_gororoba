@@ -306,8 +306,43 @@ pub(crate) struct ClaimMutationArgs {
     pub(crate) action: ClaimMutationAction,
 }
 
+#[derive(Parser, Debug)]
+pub(crate) struct ClaimTransitionArgs {
+    #[command(subcommand)]
+    pub(crate) action: ClaimTransitionAction,
+}
+
+#[derive(Subcommand, Debug)]
+pub(crate) enum ClaimTransitionAction {
+    /// Validate a transition specification without writing the database.
+    Plan {
+        #[arg(long)]
+        spec: PathBuf,
+    },
+    /// Apply a validated transition specification in one transaction.
+    Apply {
+        #[arg(long)]
+        spec: PathBuf,
+        /// Run provenance export-control-plane after the SQLite update.
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
+    },
+    /// Show one append-only transition event and its normalized children.
+    Show {
+        #[arg(long)]
+        key: String,
+    },
+    /// Print the optimistic-concurrency fingerprint needed by a spec.
+    Fingerprint {
+        #[arg(long)]
+        id: String,
+    },
+}
+
 #[derive(Subcommand, Debug)]
 pub(crate) enum ClaimMutationAction {
+    /// Plan, apply, or show a typed claim transition.
+    Transition(ClaimTransitionArgs),
     /// Replace the status_note on one claim row inside a single
     /// BEGIN IMMEDIATE transaction. Appends to claim_revisions.
     UpdateStatusNote {

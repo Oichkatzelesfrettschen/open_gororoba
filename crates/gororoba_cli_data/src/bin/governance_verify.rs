@@ -16,6 +16,8 @@ use walkdir::WalkDir;
 
 const DB_BACKED_COMPAT_SIGNATURE_PATHS: &[&str] = &[
     "registry/claims.toml",
+    "registry/claim_transitions.toml",
+    "registry/claim_relations.toml",
     "registry/insights.toml",
     "registry/experiments.toml",
     "registry/binaries.toml",

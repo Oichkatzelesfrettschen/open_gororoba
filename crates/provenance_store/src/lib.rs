@@ -10,7 +10,7 @@ use provenance_core::{
     ExternalSourceDossiersMeta, IndexStats, InsightRecord, MirrorKind, MirrorObservationRecord,
     TheoremRecord,
 };
-use rusqlite::{Connection, OptionalExtension, params};
+use rusqlite::{Connection, OpenFlags, OptionalExtension, params};
 #[cfg(test)]
 use std::path::PathBuf;
 use std::{
@@ -60,6 +60,13 @@ mod planning_rows;
 // delete_requirement_coverage_gap) live in the `requirements_mut`
 // submodule via a second impl ProvenanceStore block.
 mod requirements_mut;
+
+mod claim_transitions;
+pub use claim_transitions::{
+    AllocatedSuccessor, ClaimRelationView, ClaimTransitionApplyResult, ClaimTransitionCompatPaths,
+    ClaimTransitionEventView, ClaimTransitionPlan, ClaimTransitionRequest, ClaimTransitionSpec,
+    SuccessorClaimSpec,
+};
 
 pub struct ProvenanceStore {
     conn: Connection,
@@ -172,6 +179,18 @@ impl ProvenanceStore {
         Ok(Self { conn })
     }
 
+    /// Open an already-migrated canonical database without running migrations.
+    ///
+    /// Read-only transition planning must not create directories, apply schema
+    /// changes, or acquire a write handle. The caller receives a clear error
+    /// when the database is absent or has not reached the expected schema.
+    pub fn open_read_only(db_path: &Path) -> Result<Self> {
+        let conn = Connection::open_with_flags(db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)
+            .with_context(|| format!("open read-only sqlite database {}", db_path.display()))?;
+        conn.pragma_update(None, "foreign_keys", "ON")?;
+        Ok(Self { conn })
+    }
+
     /// Execute a parameterized SQL statement with typed params.
     pub fn conn_exec<I, T>(&self, sql: &str, params: I) -> Result<()>
     where
@@ -257,7 +276,15 @@ impl ProvenanceStore {
                 "INSERT INTO artifacts (
                     id, key, title, citation, status,
                     minimum_requirement_met, canonical_functional_url, canonical_download_path
-                ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+                ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
+                ON CONFLICT(id) DO UPDATE SET
+                    key = excluded.key,
+                    title = excluded.title,
+                    citation = excluded.citation,
+                    status = excluded.status,
+                    minimum_requirement_met = excluded.minimum_requirement_met,
+                    canonical_functional_url = excluded.canonical_functional_url,
+                    canonical_download_path = excluded.canonical_download_path",
                 params![
                     artifact.id,
                     artifact.key,
@@ -281,7 +308,15 @@ impl ProvenanceStore {
             }
             for doi in &artifact.doi_list {
                 tx.execute(
-                    "INSERT INTO citations (artifact_id, citation_text, doi, canonical_url) VALUES (?1, ?2, ?3, ?4)",
+                    "INSERT INTO citations (artifact_id, citation_text, doi, canonical_url)
+                     SELECT ?1, ?2, ?3, ?4
+                     WHERE NOT EXISTS (
+                         SELECT 1 FROM citations
+                         WHERE artifact_id = ?1
+                           AND citation_text = ?2
+                           AND doi IS ?3
+                           AND canonical_url IS ?4
+                     )",
                     params![
                         artifact.id,
                         artifact.citation,
@@ -400,6 +435,17 @@ impl ProvenanceStore {
         let theorems = load_theorems_from_inventory(repo_root, &proof_inventory, &claims)?;
 
         let tx = self.conn.transaction()?;
+        tx.execute(
+            "INSERT INTO claim_status_write_context (
+                 id, mode, transition_event_id, source_claim_id, proposed_status
+             ) VALUES (1, 'registry_reindex', NULL, NULL, NULL)
+             ON CONFLICT(id) DO UPDATE SET
+                 mode = excluded.mode,
+                 transition_event_id = excluded.transition_event_id,
+                 source_claim_id = excluded.source_claim_id,
+                 proposed_status = excluded.proposed_status",
+            [],
+        )?;
         clear_control_plane_tables(&tx)?;
         for (kind, path, body) in [
             ("claims", claims_path, claims_text.as_str()),
@@ -424,7 +470,13 @@ impl ProvenanceStore {
                  VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
                  ON CONFLICT(id) DO UPDATE SET
                     statement=excluded.statement,
-                    status=excluded.status,
+                    status = CASE
+                        WHEN EXISTS (
+                            SELECT 1 FROM claim_transition_events
+                            WHERE source_claim_id = claims.id
+                        ) THEN claims.status
+                        ELSE excluded.status
+                    END,
                     where_stated=excluded.where_stated,
                     last_verified=excluded.last_verified,
                     formal_proof=excluded.formal_proof,
@@ -544,6 +596,7 @@ impl ProvenanceStore {
                 .to_string()
             ],
         )?;
+        tx.execute("DELETE FROM claim_status_write_context WHERE id = 1", [])?;
         tx.commit()?;
 
         Ok(IndexStats {
@@ -625,6 +678,15 @@ impl ProvenanceStore {
         write_text(paths.binaries, &outputs.binaries)?;
         write_text(paths.theorems, &outputs.theorems)?;
         write_text(paths.theorems_mirror, &outputs.theorems_mirror)?;
+        let transition_events = repo_root.join("registry/claim_transitions.toml");
+        let transition_relations = repo_root.join("registry/claim_relations.toml");
+        self.export_claim_transition_compat_paths(
+            repo_root,
+            ClaimTransitionCompatPaths {
+                events: &transition_events,
+                relations: &transition_relations,
+            },
+        )?;
 
         self.record_control_plane_run(
             "export_control_plane",
@@ -678,7 +740,46 @@ impl ProvenanceStore {
         let experiments_meta_toml =
             load_registry_table_toml(raw, "experiments")?.unwrap_or_default();
         let tx = self.conn.transaction()?;
-        tx.execute("DELETE FROM experiments_cp", [])?;
+        let incoming_experiment_ids = experiments
+            .iter()
+            .map(|experiment| experiment.id.as_str())
+            .collect::<BTreeSet<_>>();
+        let protected_experiment_ids = {
+            let mut statement = tx.prepare(
+                "SELECT experiment_id FROM claim_transition_experiments
+                 UNION
+                 SELECT experiment_id FROM experiment_revisions",
+            )?;
+            statement
+                .query_map([], |row| row.get::<_, String>(0))?
+                .collect::<std::result::Result<BTreeSet<_>, _>>()?
+        };
+        let missing_protected_ids = protected_experiment_ids
+            .iter()
+            .filter(|id| !incoming_experiment_ids.contains(id.as_str()))
+            .cloned()
+            .collect::<Vec<_>>();
+        if !missing_protected_ids.is_empty() {
+            bail!(
+                "experiment registry omits protected canonical experiments: {}",
+                missing_protected_ids.join(", ")
+            );
+        }
+
+        // Rebuild the derived claim-to-experiment join before replacing the
+        // experiment rows. Transition evidence and revision history retain
+        // their direct foreign keys and require their referenced experiments
+        // to remain present in the incoming registry.
+        tx.execute("DELETE FROM claim_experiment_refs", [])?;
+        tx.execute(
+            "DELETE FROM experiments_cp
+             WHERE id NOT IN (
+                 SELECT experiment_id FROM claim_transition_experiments
+                 UNION
+                 SELECT experiment_id FROM experiment_revisions
+             )",
+            [],
+        )?;
         tx.execute(
             "DELETE FROM control_plane_meta WHERE kind = 'experiments'",
             [],
@@ -687,7 +788,14 @@ impl ProvenanceStore {
         for experiment in &experiments {
             tx.execute(
                 "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
-                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)",
+                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)
+                 ON CONFLICT(id) DO UPDATE SET
+                    title = excluded.title,
+                    status = excluded.status,
+                    binary_name = excluded.binary_name,
+                    claim_refs_json = excluded.claim_refs_json,
+                    status_note = excluded.status_note,
+                    compat_toml_text = excluded.compat_toml_text",
                 params![
                     experiment.id,
                     experiment.title,
@@ -698,6 +806,14 @@ impl ProvenanceStore {
                     experiment.compat_toml_text
                 ],
             )?;
+            for claim_id in &experiment.claim_refs {
+                tx.execute(
+                    "INSERT INTO claim_experiment_refs (claim_id, experiment_id)
+                     VALUES (?1, ?2)
+                     ON CONFLICT(claim_id, experiment_id) DO NOTHING",
+                    params![claim_id, experiment.id],
+                )?;
+            }
         }
         tx.execute(
             "INSERT INTO control_plane_meta(kind, compat_toml_text)
@@ -745,6 +861,19 @@ impl ProvenanceStore {
             (paths.theorems, outputs.theorems.as_str()),
             (paths.theorems_mirror, outputs.theorems_mirror.as_str()),
         ];
+        let transition_events_path = repo_root.join("registry/claim_transitions.toml");
+        let transition_relations_path = repo_root.join("registry/claim_relations.toml");
+        let transition_checks =
+            if scalar_count(&self.conn, "SELECT COUNT(*) FROM claim_transition_events")? != 0
+                || transition_events_path.exists()
+                || transition_relations_path.exists()
+            {
+                let (transition_events, transition_relations) =
+                    self.claim_transition_compat_texts()?;
+                Some((transition_events, transition_relations))
+            } else {
+                None
+            };
         let mut failures = Vec::new();
         for (path, expected) in checks {
             if !path.exists() {
@@ -758,6 +887,28 @@ impl ProvenanceStore {
                     path.display(),
                     repo_root.display()
                 ));
+            }
+        }
+        if let Some((transition_events, transition_relations)) = transition_checks {
+            for (path, expected) in [
+                (transition_events_path.as_path(), transition_events.as_str()),
+                (
+                    transition_relations_path.as_path(),
+                    transition_relations.as_str(),
+                ),
+            ] {
+                if !path.exists() {
+                    failures.push(format!("missing compatibility export {}", path.display()));
+                    continue;
+                }
+                let actual = load_text(path)?;
+                if actual != format!("{expected}\n") {
+                    failures.push(format!(
+                        "stale compatibility export {} relative to {}",
+                        path.display(),
+                        repo_root.display()
+                    ));
+                }
             }
         }
         if !failures.is_empty() {
@@ -797,6 +948,9 @@ impl ProvenanceStore {
 
     pub fn verify_control_plane_invariants(&self, repo_root: &Path) -> Result<()> {
         let mut failures = Vec::new();
+        if let Err(error) = self.verify_claim_transition_invariants() {
+            failures.push(error.to_string());
+        }
         let counts = self.control_plane_counts()?;
         if counts.claim_count == 0 {
             failures.push("control-plane database has zero claims".to_string());
@@ -4404,6 +4558,7 @@ mod tests {
             &fixture.binaries,
             &fixture.rocq_project,
         )?;
+        store.build_crossrefs()?;
 
         let replacement = r#"
 [experiments]
@@ -4429,6 +4584,79 @@ claim_refs = ["C-001"]
         assert!(rendered.contains("id = \"E-002\""));
         assert!(!rendered.contains("id = \"E-001\""));
         assert!(rendered.contains("experiment_count = 1"));
+        Ok(())
+    }
+
+    #[test]
+    fn replace_preserves_transition_experiments_and_rebuilds_claim_refs() -> Result<()> {
+        let fixture = make_test_workspace("replace_transition_experiments")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            &fixture.claims,
+            &fixture.insights,
+            &fixture.experiments,
+            &fixture.binaries,
+            &fixture.rocq_project,
+        )?;
+        store.build_crossrefs()?;
+        store.conn.execute(
+            "INSERT INTO claim_transition_events (
+                 transition_key, source_claim_id, expected_prior_status,
+                 experiment_verdict, proposed_claim_status, exercised_falsifier,
+                 rationale, actor, reason, transition_ts_utc,
+                 transition_spec_sha256, expected_source_state_sha256,
+                 expected_claim_id_max
+             ) VALUES (
+                 'replace-transition-test', 'C-001', 'Verified', 'Inconclusive',
+                 'Provisional', 'test falsifier', 'test rationale', 'test actor',
+                 'test reason', '2026-08-04T00:00:00Z', 'spec-hash',
+                 'source-hash', 1
+             )",
+            [],
+        )?;
+        store.conn.execute(
+            "INSERT INTO claim_transition_experiments (transition_event_id, experiment_id)
+             VALUES (1, 'E-001')",
+            [],
+        )?;
+
+        let replacement = r#"
+[experiments]
+authoritative = true
+status_allowlist = ["active", "planned", "blocked", "deprecated"]
+
+[[experiment]]
+id = "E-001"
+title = "Retained transition experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+
+[[experiment]]
+id = "E-002"
+title = "New experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+"#;
+
+        store.replace_control_plane_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            replacement,
+        )?;
+
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        assert!(rendered.contains("id = \"E-001\""));
+        assert!(rendered.contains("Retained transition experiment"));
+        assert!(rendered.contains("id = \"E-002\""));
+        let reference_count: i64 = store.conn.query_row(
+            "SELECT COUNT(*) FROM claim_experiment_refs WHERE claim_id = 'C-001'",
+            [],
+            |row| row.get(0),
+        )?;
+        assert_eq!(reference_count, 2);
         Ok(())
     }
 

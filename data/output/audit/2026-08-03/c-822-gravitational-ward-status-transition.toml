@@ -1,0 +1,45 @@
+[transition]
+transition_key = "c-822-gravitational-ward-status-boundary"
+source_claim_id = "C-822"
+expected_prior_status = "Verified"
+experiment_verdict = "Inconclusive"
+evidence_artifact_ids = ["LOCAL-P1-TENSOR-WARD", "LOCAL-CLAIM-TRANSITION-001"]
+experiment_ids = ["E-073"]
+exercised_falsifier = "An independent rank-one contraction fails the lower-point right-hand side or a declared on-shell decomposition after all source boundary terms are represented."
+proposed_claim_status = "Provisional"
+rationale = "The P1 experiment verdict is Inconclusive because the scalar off-shell comparison passes while the spinor lower-point term remains unresolved and the combined on-shell limit fails the frozen convergence policy without a denominator floor. Lower the broad repository status and split the source identity from tensor implementation conformance."
+unresolved_assumptions = [
+    "The missing spinor lower-point contact or integration-by-parts boundary contribution remains unresolved.",
+    "The finite combined on-shell limit remains unrepresented without the source-faithful algebraic combination or a convergent virtuality extrapolation.",
+]
+actor = "canonical-claim-transition-campaign"
+reason = "Synchronize C-822 with the retained P1 gravitational Ward verdict and create bounded successor claims."
+transition_timestamp = "2026-08-04T04:05:00Z"
+expected_source_state_sha256 = "08b1c547499a062be8df768e0c23a2878e0b61bd16bcf54d37583869950fbf10"
+expected_claim_id_max = 1635
+
+[[successor]]
+proposal_key = "source-gravitational-ward-identity"
+statement = "The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side, with the on-shell irreducible and external-leg cancellation and separate tadpole invariance stated explicitly."
+initial_status = "Theoretical"
+source_or_implementation_boundary = "Source proposition only; the lower-point tensor right-hand side must be represented explicitly."
+required_falsifier = "An independent contraction fails the lower-point identity or the declared on-shell decomposition."
+where_stated = [
+    "https://arxiv.org/pdf/2601.23279",
+    "data/output/audit/2026-08-02/claim_transition_proposals.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "source_split"
+
+[[successor]]
+proposal_key = "tensor-gravitational-ward-conformance"
+statement = "The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition across the predeclared kinematic grid."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Requires independent irreducible, tadpole, and external-leg tensor contributions."
+required_falsifier = "A diagram perturbation or independent tensor reference changes no reported residual, or the residual exceeds the declared tolerance."
+where_stated = [
+    "data/output/audit/2026-08-02/p1_claim_results.toml",
+    "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml",
+]
+evidence_artifact_ids = ["LOCAL-P1-TENSOR-WARD", "LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "implementation_split"
