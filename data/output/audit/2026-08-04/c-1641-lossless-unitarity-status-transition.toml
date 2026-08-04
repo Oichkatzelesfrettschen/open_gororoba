@@ -1,0 +1,16 @@
+[transition]
+transition_key = "c-1641-ruan-fan-lossless-flux-unitarity"
+source_claim_id = "C-1641"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+exercised_falsifier = "Evaluate complex R_l on the declared lossless analytical and cylindrical-Mie fixtures and reject any channel whose flux norm differs from one beyond the declared tolerance."
+proposed_claim_status = "Verified"
+rationale = "The lossless analytical grid and lossless Mie sentinel channels preserve the declared flux normalization component-wise."
+unresolved_assumptions = ["The claim is bounded to the declared scalar channel basis and does not establish a general multiport theorem."]
+actor = "p2a-channel-oracle-campaign"
+reason = "Record the independently checked lossless channel flux predicate."
+transition_timestamp = "2026-08-04T20:22:00Z"
+expected_source_state_sha256 = "d5951fb1080f5cc727efcf2fb26b2af36b7adc19dac99e3be6a8dd0867e2772e"
+expected_claim_id_max = 1651

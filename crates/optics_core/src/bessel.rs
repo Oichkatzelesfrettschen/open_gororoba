@@ -350,4 +350,129 @@ mod tests {
             );
         }
     }
+
+    // SciPy fixtures retain enough decimal digits to distinguish independent
+    // implementations across complex arguments and derivatives.
+    #[allow(clippy::excessive_precision)]
+    #[test]
+    fn independent_scipy_fixtures_cover_source_domain() {
+        struct Fixture {
+            n: i32,
+            z: Complex64,
+            j: Complex64,
+            y: Complex64,
+            h1: Complex64,
+            h2: Complex64,
+            jp: Complex64,
+            yp: Complex64,
+            h1p: Complex64,
+            h2p: Complex64,
+        }
+
+        let fixtures = [
+            Fixture {
+                n: 0,
+                z: Complex64::new(0.15, 0.0),
+                j: Complex64::new(0.99438290521413997, 0.0),
+                y: Complex64::new(-1.2707763709278359, 0.0),
+                h1: Complex64::new(0.99438290521413997, -1.2707763709278359),
+                h2: Complex64::new(0.99438290521413997, 1.2707763709278359),
+                jp: Complex64::new(-0.074789260161235174, 0.0),
+                yp: Complex64::new(4.3636834640288882, 0.0),
+                h1p: Complex64::new(-0.074789260161235452, 4.3636834640288882),
+                h2p: Complex64::new(-0.074789260161235452, -4.3636834640288882),
+            },
+            Fixture {
+                n: 1,
+                z: Complex64::new(1.0, 0.0),
+                j: Complex64::new(0.44005058574493355, 0.0),
+                y: Complex64::new(-0.78121282130028891, 0.0),
+                h1: Complex64::new(0.44005058574493355, -0.78121282130028891),
+                h2: Complex64::new(0.44005058574493355, 0.78121282130028891),
+                jp: Complex64::new(0.32514710081303305, 0.0),
+                yp: Complex64::new(0.86946978551596588, 0.0),
+                h1p: Complex64::new(0.32514710081303289, 0.86946978551596588),
+                h2p: Complex64::new(0.32514710081303289, -0.86946978551596588),
+            },
+            Fixture {
+                n: -1,
+                z: Complex64::new(2.5, 0.0),
+                j: Complex64::new(-0.4970941024642741, 0.0),
+                y: Complex64::new(-0.14591813796678588, 0.0),
+                h1: Complex64::new(-0.49709410246427405, -0.14591813796678588),
+                h2: Complex64::new(-0.49709410246427405, 0.14591813796678588),
+                jp: Complex64::new(0.24722141745390758, 0.0),
+                yp: Complex64::new(-0.43970310442851762, 0.0),
+                h1p: Complex64::new(0.24722141745390769, -0.43970310442851762),
+                h2p: Complex64::new(0.24722141745390769, 0.43970310442851762),
+            },
+            Fixture {
+                n: 2,
+                z: Complex64::new(0.3, 0.4),
+                j: Complex64::new(-0.008197224817642559, 0.030346629232403118),
+                y: Complex64::new(1.0977043040544396, 4.8541341881336946),
+                h1: Complex64::new(-4.8623314129513373, 1.1280509332868427),
+                h2: Complex64::new(4.8459369633160518, -1.0673576748220366),
+                jp: Complex64::new(0.079870038790485084, 0.098105738283720115),
+                yp: Complex64::new(-19.182641918800744, -7.1887577317359286),
+                h1p: Complex64::new(7.2686277705264155, -19.084536180517027),
+                h2p: Complex64::new(-7.1088876929454425, 19.280747657084468),
+            },
+            Fixture {
+                n: -2,
+                z: Complex64::new(1.2, 2.0),
+                j: Complex64::new(-0.094507906664758043, 0.84611866702078942),
+                y: Complex64::new(-0.87082643998566722, 0.032976640918572567),
+                h1: Complex64::new(-0.12748454758333061, -0.024707772964877875),
+                h2: Complex64::new(-0.061531265746185469, 1.7169451070064565),
+                jp: Complex64::new(0.87445199656166039, 0.33850065182926925),
+                yp: Complex64::new(-0.50120889540060631, 0.80319218970698791),
+                h1p: Complex64::new(0.071259806854672605, -0.16270824357133698),
+                h2p: Complex64::new(1.6776441862686484, 0.83970954722987556),
+            },
+            Fixture {
+                n: 5,
+                z: Complex64::new(0.155, 5.9),
+                j: Complex64::new(1.3685193931675068, 6.8992380222915584),
+                y: Complex64::new(-6.9004620402458094, 1.3742334882961755),
+                h1: Complex64::new(-0.005714095128668586, -0.0012240179542504495),
+                h2: Complex64::new(2.7427528814636823, 13.799700062537369),
+                jp: Complex64::new(8.7332803707557041, -1.6297282859260624),
+                yp: Complex64::new(1.6219687981672837, 8.7315302514869462),
+                h1p: Complex64::new(0.0017501192687595529, -0.0077594877587788226),
+                h2p: Complex64::new(17.464810622242648, -3.2516970840933466),
+            },
+        ];
+
+        for fixture in fixtures {
+            assert_complex_approx(bessel_j(fixture.n, fixture.z), fixture.j, 1e-9, "SciPy J");
+            assert_complex_approx(bessel_y(fixture.n, fixture.z), fixture.y, 1e-8, "SciPy Y");
+            assert_complex_approx(hankel_1(fixture.n, fixture.z), fixture.h1, 1e-8, "SciPy H1");
+            assert_complex_approx(hankel_2(fixture.n, fixture.z), fixture.h2, 1e-8, "SciPy H2");
+            assert_complex_approx(
+                bessel_j_prime(fixture.n, fixture.z),
+                fixture.jp,
+                1e-8,
+                "SciPy J prime",
+            );
+            assert_complex_approx(
+                bessel_y_prime(fixture.n, fixture.z),
+                fixture.yp,
+                1e-7,
+                "SciPy Y prime",
+            );
+            assert_complex_approx(
+                hankel_1_prime(fixture.n, fixture.z),
+                fixture.h1p,
+                1e-7,
+                "SciPy H1 prime",
+            );
+            assert_complex_approx(
+                hankel_2_prime(fixture.n, fixture.z),
+                fixture.h2p,
+                1e-7,
+                "SciPy H2 prime",
+            );
+        }
+    }
 }

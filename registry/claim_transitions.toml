@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 4
+event_count = 10
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -133,3 +133,126 @@ relation_kind = "narrows"
 proposal_key = "time-reversed-channel-scattering"
 canonical_claim_id = "C-1644"
 relation_kind = "narrows"
+
+[[transition]]
+event_id = 5
+transition_key = "c-848-ruan-fan-compound-status-boundary"
+source_claim_id = "C-848"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_claim_status = "Superseded"
+current_status = "Superseded"
+exercised_falsifier = "Compare complex R_l and S_l, independently defined scattering, absorption, and extinction, phase-family controls, and source-region boundary controls against the old scalar oracle."
+rationale = "The prior row compounds source formulas, implementation conformance, phase-family behavior, and absorption behavior. Its retained evidence mislabels extinction as absorption and asserts phase-dependent absorption contrary to the source model. Supersede the compound row and retain narrower source and implementation boundaries."
+unresolved_assumptions = ["Complex-root resonance and background-phase identification remain deferred to P2B.", "The source equation claims remain distinct from paper-fit reproduction."]
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+actor = "p2a-channel-oracle-campaign"
+reason = "Replace the compound Fano row after repairing the channel observables without adjudicating the paper reproduction."
+transition_timestamp = "2026-08-04T20:20:00Z"
+transition_spec_sha256 = "6bf34c38170b7a01264c1f3ee894b98939315419945fd27a2c43b68e61fe8d72"
+
+[[transition.successors]]
+proposal_key = "source-faithful-ruan-fan-channel-oracle"
+canonical_claim_id = "C-1650"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "source-ruan-fan-channel-observable-identities"
+canonical_claim_id = "C-1651"
+relation_kind = "source_split"
+
+[[transition]]
+event_id = 6
+transition_key = "c-1640-ruan-fan-independent-absorption-balance"
+source_claim_id = "C-1640"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Compare absorption from S_l, absorption from the R_l flux defect, the closed-form Lorentzian, and independently computed extinction on the frozen grid and Mie sentinel channels."
+rationale = "All three absorption constructions agree component-wise within the declared tolerance, and extinction is computed independently as -Re(S_l) before the balance identity is checked."
+unresolved_assumptions = ["The observable is normalized to the declared 2*lambda/pi convention."]
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+actor = "p2a-channel-oracle-campaign"
+reason = "Record the repaired independent absorption and extinction balance predicate."
+transition_timestamp = "2026-08-04T20:21:00Z"
+transition_spec_sha256 = "4e4c148c1295f126da45e1266433e6c3c55283e8ec79595c8413acf649c0eb0f"
+successors = []
+
+[[transition]]
+event_id = 7
+transition_key = "c-1641-ruan-fan-lossless-flux-unitarity"
+source_claim_id = "C-1641"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Evaluate complex R_l on the declared lossless analytical and cylindrical-Mie fixtures and reject any channel whose flux norm differs from one beyond the declared tolerance."
+rationale = "The lossless analytical grid and lossless Mie sentinel channels preserve the declared flux normalization component-wise."
+unresolved_assumptions = ["The claim is bounded to the declared scalar channel basis and does not establish a general multiport theorem."]
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+actor = "p2a-channel-oracle-campaign"
+reason = "Record the independently checked lossless channel flux predicate."
+transition_timestamp = "2026-08-04T20:22:00Z"
+transition_spec_sha256 = "24c8f688254e62329b36cbe7d2c826a09db8e3150312f154e2269a0c863b1ff7"
+successors = []
+
+[[transition]]
+event_id = 8
+transition_key = "c-1642-ruan-fan-passive-contractivity"
+source_claim_id = "C-1642"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Evaluate complex R_l for gamma_0 >= 0 and passive cylindrical materials and detect any outgoing flux norm above one or negative independent absorption."
+rationale = "The declared passive analytical and Mie fixtures remain contractive and retain nonnegative independent absorption without clamping or gain substitution."
+unresolved_assumptions = ["The lossy source ansatz keeps the background approximately lossless as stated by the source."]
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+actor = "p2a-channel-oracle-campaign"
+reason = "Record the bounded passive-loss contractivity predicate."
+transition_timestamp = "2026-08-04T20:23:00Z"
+transition_spec_sha256 = "bd951e277a23887ca98327f33696cb508ebe18f8b913750bd4e00cdc9c22b289"
+successors = []
+
+[[transition]]
+event_id = 9
+transition_key = "c-1643-ruan-fan-reciprocity-boundary"
+source_claim_id = "C-1643"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Perturb the declared reduced-model input/output coupling relation and compare the resulting residual while retaining the distinction from rotational l/-l symmetry and time reversal."
+rationale = "The reduced source coupling predicate is explicit and its mutation is detected, but P2A does not execute an independent forward/reverse channel calculation. Preserve the claim as provisional rather than promoting coupling equality into general reciprocity."
+unresolved_assumptions = ["A forward/reverse channel basis and normalization remain unimplemented.", "Rotational l/-l degeneracy is not used as a reciprocity substitute."]
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+actor = "p2a-channel-oracle-campaign"
+reason = "Retain the narrow coupling control while refusing a broader reciprocity promotion."
+transition_timestamp = "2026-08-04T20:24:00Z"
+transition_spec_sha256 = "4b6ced40704dd8a29a728e43ffe44938417193653807e0178a86ac4ddfc08232"
+successors = []
+
+[[transition]]
+event_id = 10
+transition_key = "c-1644-ruan-fan-time-reversal-equations"
+source_claim_id = "C-1644"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Perturb kappa, eta, or B independently and compare each source residual for |eta|^2 = 2*gamma, kappa*eta* = 2*gamma, B*eta* + eta = 0, and kappa = eta."
+rationale = "The four source coupling equations remain separate predicates, pass on the declared coupling grid, and each declared mutation exceeds its detection threshold independently of the lossless |R_l| predicate."
+unresolved_assumptions = ["The tested time-reversal construction remains the reduced single-channel source model."]
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+actor = "p2a-channel-oracle-campaign"
+reason = "Record explicit source time-reversal equations separately from unitarity."
+transition_timestamp = "2026-08-04T20:25:00Z"
+transition_spec_sha256 = "37474a87953569c42a58d71dec3d2ffef429eeb67c2d21642f4fed9653a47351"
+successors = []

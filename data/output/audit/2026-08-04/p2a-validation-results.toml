@@ -1,0 +1,154 @@
+format = "p2a-validation-results-v1"
+campaign = "Ruan-Fan source-faithful channel and cylindrical-Mie oracle repair"
+completion_gate = "Declare P2A complete only after the oracle, independent controls, retained evidence, typed transitions, registry views, and merged-main checks pass."
+implementation_revision = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+branch_at_capture = "agent/ruan-fan-channel-oracle-repair"
+source_pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p2a_manifest_sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+evidence_sha256 = "ef52e760098f558993c3a4d373a051faf4589e1652b36359d7c21970dcb588a2"
+call_map_sha256 = "2b35d25c438616a45f2d12161989e876e4a8bf25fd9d521914f4a4b376b165f3"
+canonical_database_sha256_before_validation_artifact_registration = "aee1678d01d62e218c641f17d5ebd8e20e611f5b4341affd317f153386379b65"
+artifact_registration_mutates_canonical_db = true
+status_counts = "Provisional=130; Superseded=13; Theoretical=8; Verified=1194"
+transition_events = 10
+claim_relations = 13
+all_scientific_implementation_crates_untouched = true
+parameter_fit_executed = false
+held_out_paper_comparison_executed = false
+
+[[command]]
+name = "format"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p2a-target cargo fmt --all -- --check"
+exit_code = 0
+result = "pass"
+log_excerpt = "Rustfmt emitted stable-channel configuration warnings and returned zero."
+
+[[command]]
+name = "diff_check"
+command = "git diff --check"
+exit_code = 0
+result = "pass"
+log_excerpt = "No whitespace errors."
+
+[[command]]
+name = "optics_clippy"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p2a-target cargo clippy -p optics_core --all-targets -- -D warnings"
+exit_code = 0
+result = "pass"
+log_excerpt = "optics_core checked with warnings denied."
+
+[[command]]
+name = "optics_tests"
+command = "RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p2a-target cargo test -p optics_core --all-targets"
+exit_code = 0
+result = "pass"
+log_excerpt = "154 library tests and 5 SFWM integration tests passed."
+
+[[command]]
+name = "independent_oracle_runner"
+command = "CARGO_TARGET_DIR=.cache/exp-p2a-target cargo run -p optics_core --bin p2a-channel-oracle-evidence -- data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+exit_code = 0
+result = "pass"
+log_excerpt = "144 analytical rows, 9 source-constraint rows, 60 Mie channel rows, and all mutation controls were retained."
+
+[[command]]
+name = "p2a_manifest_declared_revision"
+command = ".cache/exp-p2a-target/debug/experiment-manifest verify data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml --repo-root ."
+exit_code = 0
+result = "pass"
+log_excerpt = "E-240 verified at its declared implementation revision before publication commits."
+
+[[command]]
+name = "control_plane_export"
+command = ".cache/exp-p2a-target/debug/provenance --repo-root . export-control-plane"
+exit_code = 0
+result = "pass"
+log_excerpt = "Exported claims=1466 insights=183 experiments=232 binaries=496 theorems=162."
+
+[[command]]
+name = "control_plane_verify"
+command = ".cache/exp-p2a-target/debug/provenance --repo-root . verify-control-plane --verify-compat-exports"
+exit_code = 0
+result = "pass"
+log_excerpt = "Canonical counts and compatibility exports verified."
+
+[[command]]
+name = "theorem_identity_verify"
+command = ".cache/exp-p2a-target/debug/gororoba-db --repo-root . theorem identity validate"
+exit_code = 0
+result = "pass"
+log_excerpt = "Theorem identity validation passed."
+
+[[command]]
+name = "provenance_store_tests"
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p2a-target cargo test -p provenance_store"
+exit_code = 0
+result = "pass"
+log_excerpt = "20 transition, theorem identity, rollback, replay, and compatibility tests passed."
+
+[[command]]
+name = "gororoba_db_tests"
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p2a-target cargo test -p gororoba_db --all-targets"
+exit_code = 0
+result = "pass"
+log_excerpt = "1 database CLI parsing test passed."
+
+[[command]]
+name = "registry_facing_clippy"
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p2a-target cargo clippy -p provenance_store -p gororoba_db -p gororoba_cli_data -p gororoba_cli_provenance --all-targets -- -D warnings"
+exit_code = 0
+result = "pass"
+log_excerpt = "Registry-facing crates checked with warnings denied."
+
+[[command]]
+name = "cli_smoke_tests"
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p2a-target cargo test -p gororoba_cli_data --test cli_smoke"
+exit_code = 0
+result = "pass"
+log_excerpt = "28 CLI help and registry tool smoke tests passed."
+
+[[command]]
+name = "physics_bin_check"
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= CARGO_TARGET_DIR=.cache/exp-p2a-target cargo check -p gororoba_cli_physics --bins"
+exit_code = 0
+result = "pass"
+log_excerpt = "All gororoba_cli_physics binaries checked."
+
+[[command]]
+name = "registry_integrity"
+command = ".cache/exp-p2a-target/validation-tools/registry-integrity --repo-root ."
+exit_code = 0
+result = "pass"
+log_excerpt = "Generated conflict_markers=108 lacunae=190 schema_signatures=13."
+
+[[command]]
+name = "full_registry_validation"
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= REPO_CARGO_TARGET_DIR=.cache/exp-p2a-target make validate-registry"
+exit_code = 0
+result = "pass"
+log_excerpt = "Project counters, compatibility exports, governance, semantic atoms, evidence provenance, registry integrity, and execution planning all passed."
+
+[[repair_checkpoint]]
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= REPO_CARGO_TARGET_DIR=.cache/exp-p2a-target make validate-registry"
+exit_code = 2
+defect = "project-counter-sync reported claim_count 1464 -> 1466"
+resolution = "Canonical project counter synchronization updated registry/project.toml to 1466."
+
+[[repair_checkpoint]]
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= REPO_CARGO_TARGET_DIR=.cache/exp-p2a-target make validate-registry"
+exit_code = 2
+defect = "semantic-atoms claim_id set did not match the canonical claims set"
+resolution = "The canonical semantic-atoms generator rebuilt claims_atoms and claim edges for 1466 claims."
+
+[[repair_checkpoint]]
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= REPO_CARGO_TARGET_DIR=.cache/exp-p2a-target make validate-registry"
+exit_code = 2
+defect = "schema signatures for claims_evidence_edges and proof_skeletons were stale"
+resolution = "The canonical registry-integrity generator refreshed schema signatures."
+
+[[repair_checkpoint]]
+command = "TMPDIR=/var/tmp/open_gororoba_p2a_build_tmp RUSTC_WRAPPER= REPO_CARGO_TARGET_DIR=.cache/exp-p2a-target make validate-registry"
+exit_code = 2
+defect = "evidence-provenance derivation skeleton_count metadata was stale"
+resolution = "The canonical evidence-provenance generator rebuilt derivation, bibliography, provenance, and paragraph registries."

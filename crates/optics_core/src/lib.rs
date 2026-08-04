@@ -137,13 +137,20 @@ pub use bessel::{
 };
 
 pub use fano_tcmt::{
-    CrossSections, FanoChannel, FanoDrudeParams, drude_epsilon, fano_cross_sections_normalized,
-    fano_q, fano_reflection, multi_channel_cross_sections, normalized_fano_c_abs,
-    normalized_fano_c_ext, normalized_fano_c_sct, scattering_coefficient,
+    ChannelAmplitudes, ChannelConstraintResiduals, ChannelCrossSections, ChannelEvaluation,
+    ChannelObservableResiduals, CrossSections, DimensionlessFanoChannel, FanoChannel,
+    FanoChannelError, FanoChannelParameters, FanoDrudeParams, SourceCouplingParameters,
+    drude_epsilon, evaluate_channel, evaluate_dimensionless_channel, evaluate_source_constraints,
+    fano_cross_sections_normalized, fano_q, fano_reflection, multi_channel_cross_sections,
+    normalized_fano_c_abs, normalized_fano_c_ext, normalized_fano_c_sct, scattering_coefficient,
+    try_drude_epsilon, try_fano_reflection, try_multi_channel_evaluations,
+    try_scattering_coefficient,
 };
 
 pub use mie_cylinder::{
-    ChannelResult, ConcentricCylinder, CylinderLayer, MieResult, extract_fano_params,
-    mie_mdm_sweep, mie_scattering, mie_sweep, ruan_fan_mdm_fig4, ruan_fan_mdm_fig5,
-    scattering_coefficient_l, update_metal_epsilon,
+    ChannelResult, ConcentricCylinder, CylinderLayer, CylindricalPolarization,
+    InterfaceContinuityResidual, MaterialRole, MieError, MieObservableResiduals, MieResult,
+    extract_fano_params, mie_mdm_sweep, mie_scattering, mie_sweep, ruan_fan_mdm_fig4,
+    ruan_fan_mdm_fig5, scattering_coefficient_l, try_mie_scattering, try_mie_sweep,
+    try_scattering_channel, try_update_metal_epsilon, update_metal_epsilon,
 };

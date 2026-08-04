@@ -1,0 +1,19 @@
+[transition]
+transition_key = "c-1643-ruan-fan-reciprocity-boundary"
+source_claim_id = "C-1643"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+exercised_falsifier = "Perturb the declared reduced-model input/output coupling relation and compare the resulting residual while retaining the distinction from rotational l/-l symmetry and time reversal."
+proposed_claim_status = "Provisional"
+rationale = "The reduced source coupling predicate is explicit and its mutation is detected, but P2A does not execute an independent forward/reverse channel calculation. Preserve the claim as provisional rather than promoting coupling equality into general reciprocity."
+unresolved_assumptions = [
+    "A forward/reverse channel basis and normalization remain unimplemented.",
+    "Rotational l/-l degeneracy is not used as a reciprocity substitute.",
+]
+actor = "p2a-channel-oracle-campaign"
+reason = "Retain the narrow coupling control while refusing a broader reciprocity promotion."
+transition_timestamp = "2026-08-04T20:24:00Z"
+expected_source_state_sha256 = "beb905abd512ea395c6162d105ef3cac3262a6b34e5d949d8992b9cfbc628bc9"
+expected_claim_id_max = 1651
