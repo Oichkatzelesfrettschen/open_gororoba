@@ -214,6 +214,20 @@ impl ProvenanceStore {
 
     pub fn verify_claim_transition_invariants(&self) -> Result<()> {
         let mut failures = Vec::new();
+        self.verify_transition_event_history(&mut failures)?;
+        self.verify_transition_relation_integrity(&mut failures)?;
+        self.verify_transition_reference_integrity(&mut failures)?;
+
+        if !failures.is_empty() {
+            bail!(
+                "claim transition invariants failed:\n- {}",
+                failures.join("\n- ")
+            );
+        }
+        Ok(())
+    }
+
+    fn verify_transition_event_history(&self, failures: &mut Vec<String>) -> Result<()> {
         let mut event_stmt = self.conn.prepare(
             "SELECT id, source_claim_id, expected_prior_status, proposed_claim_status
              FROM claim_transition_events ORDER BY id",
@@ -264,7 +278,10 @@ impl ProvenanceStore {
                 observed_status = expected_prior;
             }
         }
+        Ok(())
+    }
 
+    fn verify_transition_relation_integrity(&self, failures: &mut Vec<String>) -> Result<()> {
         let relation_count = scalar_count(&self.conn, "SELECT COUNT(*) FROM claim_relations")?;
         let resolved_relation_count = scalar_count(
             &self.conn,
@@ -294,7 +311,10 @@ impl ProvenanceStore {
                 "claim relation table contains {invalid_relation_count} invalid relation kinds"
             ));
         }
+        Ok(())
+    }
 
+    fn verify_transition_reference_integrity(&self, failures: &mut Vec<String>) -> Result<()> {
         let missing_successor_count = scalar_count(
             &self.conn,
             "SELECT COUNT(*) FROM claim_transition_successors AS successor
@@ -323,13 +343,6 @@ impl ProvenanceStore {
             failures.push(format!(
                 "{missing_evidence_count} transition evidence references are unresolved"
             ));
-        }
-
-        if !failures.is_empty() {
-            bail!(
-                "claim transition invariants failed:\n- {}",
-                failures.join("\n- ")
-            );
         }
         Ok(())
     }
@@ -413,235 +426,13 @@ impl ProvenanceStore {
         let tx = self
             .conn
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-
-        if let Some(existing) =
-            transition_event_by_key_on_conn(&tx, &spec.transition.transition_key)?
-        {
-            if existing.transition_spec_sha256 != spec_sha256 {
-                bail!(
-                    "transition key {} already exists with different content hash",
-                    spec.transition.transition_key
-                );
-            }
-            let successors = successors_for_event(&tx, existing.event_id)?;
-            tx.commit()?;
-            return Ok(ClaimTransitionApplyResult {
-                transition_key: existing.transition_key,
-                transition_spec_sha256: existing.transition_spec_sha256,
-                event_id: Some(existing.event_id),
-                allocated_successors: successors,
-                exact_replay: true,
-            });
-        }
-
-        let current = claim_transition_source_state_on_conn(&tx, &spec.transition.source_claim_id)?;
-        validate_source_state(spec, &current)?;
-        let max_claim_id = max_numeric_claim_id_on_conn(&tx)?;
-        if max_claim_id != spec.transition.expected_claim_id_max {
-            bail!(
-                "expected claim id max {} is stale; canonical max is {}",
-                spec.transition.expected_claim_id_max,
-                max_claim_id
-            );
-        }
-        let allocated_successors = allocate_successors(&spec.successors, max_claim_id)?;
-        validate_successor_references_on_conn(&tx, spec, &allocated_successors)?;
-
-        tx.execute(
-            "INSERT INTO claim_transition_events (
-                transition_key, source_claim_id, expected_prior_status,
-                experiment_verdict, proposed_claim_status, exercised_falsifier,
-                rationale, actor, reason, transition_ts_utc,
-                transition_spec_sha256, expected_source_state_sha256,
-                expected_claim_id_max
-             ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)",
-            params![
-                spec.transition.transition_key,
-                spec.transition.source_claim_id,
-                spec.transition.expected_prior_status,
-                spec.transition.experiment_verdict,
-                spec.transition.proposed_claim_status,
-                spec.transition.exercised_falsifier,
-                spec.transition.rationale,
-                spec.transition.actor,
-                spec.transition.reason,
-                spec.transition.transition_timestamp,
-                spec_sha256,
-                spec.transition.expected_source_state_sha256,
-                spec.transition.expected_claim_id_max,
-            ],
-        )?;
-        let event_id = tx.last_insert_rowid();
-
-        tx.execute(
-            "INSERT INTO claim_status_write_context (
-                 id, mode, transition_event_id, source_claim_id, proposed_status
-             ) VALUES (1, 'transition_apply', ?1, ?2, ?3)
-             ON CONFLICT(id) DO UPDATE SET
-                 mode = excluded.mode,
-                 transition_event_id = excluded.transition_event_id,
-                 source_claim_id = excluded.source_claim_id,
-                 proposed_status = excluded.proposed_status",
-            params![
-                event_id,
-                spec.transition.source_claim_id,
-                spec.transition.proposed_claim_status,
-            ],
-        )?;
-
-        for artifact_id in &spec.transition.evidence_artifact_ids {
-            tx.execute(
-                "INSERT INTO claim_transition_evidence (transition_event_id, artifact_id)
-                 VALUES (?1, ?2)",
-                params![event_id, artifact_id],
-            )?;
-        }
-        for experiment_id in &spec.transition.experiment_ids {
-            tx.execute(
-                "INSERT INTO claim_transition_experiments (transition_event_id, experiment_id)
-                 VALUES (?1, ?2)",
-                params![event_id, experiment_id],
-            )?;
-        }
-        for (ordinal, assumption) in spec.transition.unresolved_assumptions.iter().enumerate() {
-            tx.execute(
-                "INSERT INTO claim_transition_assumptions (transition_event_id, ordinal, assumption)
-                 VALUES (?1, ?2, ?3)",
-                params![event_id, ordinal as i64, assumption],
-            )?;
-        }
-
-        let source_date = spec
-            .transition
-            .transition_timestamp
-            .get(..10)
-            .context("transition timestamp must contain a YYYY-MM-DD date")?;
-        let mut ordered_successors = spec.successors.iter().collect::<Vec<_>>();
-        ordered_successors.sort_by(|left, right| left.proposal_key.cmp(&right.proposal_key));
-        for (successor, allocated) in ordered_successors
-            .into_iter()
-            .zip(allocated_successors.iter())
-        {
-            let where_stated = successor.where_stated.join("; ");
-            let compat_toml_text = render_new_claim_compat_text(
-                &allocated.canonical_claim_id,
-                &successor.statement,
-                &successor.initial_status,
-                &where_stated,
-                source_date,
-            );
-            tx.execute(
-                "INSERT INTO claims (
-                    id, statement, status, where_stated, last_verified,
-                    formal_proof, status_note, compat_toml_text
-                 ) VALUES (?1, ?2, ?3, ?4, ?5, NULL, NULL, ?6)",
-                params![
-                    allocated.canonical_claim_id,
-                    successor.statement,
-                    successor.initial_status,
-                    where_stated,
-                    source_date,
-                    compat_toml_text,
-                ],
-            )?;
-            tx.execute(
-                "INSERT INTO claim_revisions (
-                    claim_id, field_name, prev_value_sha256, new_value_sha256,
-                    actor, reason, operation, application_id
-                 ) VALUES (?1, 'claim', NULL, ?2, ?3, ?4, 'create', ?5)",
-                params![
-                    allocated.canonical_claim_id,
-                    sha256_claim_state(&ClaimSourceState {
-                        id: allocated.canonical_claim_id.clone(),
-                        statement: successor.statement.clone(),
-                        status: successor.initial_status.clone(),
-                        where_stated: where_stated.clone(),
-                        last_verified: source_date.to_string(),
-                        formal_proof: None,
-                        status_note: None,
-                        compat_toml_text: compat_toml_text.clone(),
-                    }),
-                    spec.transition.actor,
-                    spec.transition.reason,
-                    CLI_APPLICATION_ID,
-                ],
-            )?;
-            tx.execute(
-                "INSERT INTO claim_transition_successors (
-                    transition_event_id, proposal_key, successor_claim_id,
-                    statement, initial_status, source_or_implementation_boundary,
-                    required_falsifier, predecessor_relation_kind
-                 ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-                params![
-                    event_id,
-                    successor.proposal_key,
-                    allocated.canonical_claim_id,
-                    successor.statement,
-                    successor.initial_status,
-                    successor.source_or_implementation_boundary,
-                    successor.required_falsifier,
-                    successor.predecessor_relation_kind,
-                ],
-            )?;
-            let successor_id = tx.last_insert_rowid();
-            for (ordinal, reference) in successor.where_stated.iter().enumerate() {
-                tx.execute(
-                    "INSERT INTO claim_transition_successor_where_stated
-                     (successor_id, ordinal, reference) VALUES (?1, ?2, ?3)",
-                    params![successor_id, ordinal as i64, reference],
-                )?;
-            }
-            for artifact_id in &successor.evidence_artifact_ids {
-                tx.execute(
-                    "INSERT INTO claim_transition_successor_evidence
-                     (successor_id, artifact_id) VALUES (?1, ?2)",
-                    params![successor_id, artifact_id],
-                )?;
-            }
-            tx.execute(
-                "INSERT INTO claim_relations (
-                    predecessor_claim_id, successor_claim_id, relation_kind,
-                    transition_event_id
-                 ) VALUES (?1, ?2, ?3, ?4)",
-                params![
-                    spec.transition.source_claim_id,
-                    allocated.canonical_claim_id,
-                    successor.predecessor_relation_kind,
-                    event_id,
-                ],
-            )?;
-        }
-
-        tx.execute(
-            "UPDATE claims SET status = ?2 WHERE id = ?1",
-            params![
-                spec.transition.source_claim_id,
-                spec.transition.proposed_claim_status
-            ],
-        )?;
-        tx.execute(
-            "INSERT INTO claim_revisions (
-                claim_id, field_name, prev_value_sha256, new_value_sha256,
-                actor, reason, operation, application_id
-             ) VALUES (?1, 'status', ?2, ?3, ?4, ?5, 'update', ?6)",
-            params![
-                spec.transition.source_claim_id,
-                sha256_hex(&current.status),
-                sha256_hex(&spec.transition.proposed_claim_status),
-                spec.transition.actor,
-                spec.transition.reason,
-                CLI_APPLICATION_ID,
-            ],
-        )?;
+        let result = match transition_event_by_key_on_conn(&tx, &spec.transition.transition_key)? {
+            Some(existing) => apply_transition_replay(&tx, existing, spec, &spec_sha256)?,
+            None => apply_new_transition(&tx, spec, &spec_sha256)?,
+        };
         tx.execute("DELETE FROM claim_status_write_context WHERE id = 1", [])?;
         tx.commit()?;
-        Ok(ClaimTransitionApplyResult {
-            transition_key: spec.transition.transition_key.clone(),
-            transition_spec_sha256: spec_sha256,
-            event_id: Some(event_id),
-            allocated_successors,
-            exact_replay: false,
-        })
+        Ok(result)
     }
 
     pub fn claim_transition_by_key(&self, key: &str) -> Result<Option<ClaimTransitionEventView>> {
@@ -776,6 +567,316 @@ impl ProvenanceStore {
             replay_event_id: Some(existing.event_id),
         })
     }
+}
+
+fn apply_transition_replay(
+    tx: &rusqlite::Transaction<'_>,
+    existing: ExistingEvent,
+    spec: &ClaimTransitionSpec,
+    spec_sha256: &str,
+) -> Result<ClaimTransitionApplyResult> {
+    if existing.transition_spec_sha256 != spec_sha256 {
+        bail!(
+            "transition key {} already exists with different content hash",
+            spec.transition.transition_key
+        );
+    }
+    Ok(ClaimTransitionApplyResult {
+        transition_key: existing.transition_key,
+        transition_spec_sha256: existing.transition_spec_sha256,
+        event_id: Some(existing.event_id),
+        allocated_successors: successors_for_event(tx, existing.event_id)?,
+        exact_replay: true,
+    })
+}
+
+fn apply_new_transition(
+    tx: &rusqlite::Transaction<'_>,
+    spec: &ClaimTransitionSpec,
+    spec_sha256: &str,
+) -> Result<ClaimTransitionApplyResult> {
+    let current = claim_transition_source_state_on_conn(tx, &spec.transition.source_claim_id)?;
+    validate_source_state(spec, &current)?;
+    let allocated_successors = allocate_transition_successors(tx, spec)?;
+    let event_id = insert_transition_event(tx, spec, spec_sha256)?;
+    set_transition_write_context(tx, event_id, spec)?;
+    insert_transition_metadata(tx, event_id, spec)?;
+    insert_successor_claims(tx, event_id, spec, &allocated_successors)?;
+    update_source_claim_status(tx, spec, &current.status)?;
+    Ok(ClaimTransitionApplyResult {
+        transition_key: spec.transition.transition_key.clone(),
+        transition_spec_sha256: spec_sha256.to_string(),
+        event_id: Some(event_id),
+        allocated_successors,
+        exact_replay: false,
+    })
+}
+
+fn allocate_transition_successors(
+    tx: &rusqlite::Transaction<'_>,
+    spec: &ClaimTransitionSpec,
+) -> Result<Vec<AllocatedSuccessor>> {
+    let max_claim_id = max_numeric_claim_id_on_conn(tx)?;
+    if max_claim_id != spec.transition.expected_claim_id_max {
+        bail!(
+            "expected claim id max {} is stale; canonical max is {}",
+            spec.transition.expected_claim_id_max,
+            max_claim_id
+        );
+    }
+    let allocated_successors = allocate_successors(&spec.successors, max_claim_id)?;
+    validate_successor_references_on_conn(tx, spec, &allocated_successors)?;
+    Ok(allocated_successors)
+}
+
+fn insert_transition_event(
+    tx: &rusqlite::Transaction<'_>,
+    spec: &ClaimTransitionSpec,
+    spec_sha256: &str,
+) -> Result<i64> {
+    tx.execute(
+        "INSERT INTO claim_transition_events (
+            transition_key, source_claim_id, expected_prior_status,
+            experiment_verdict, proposed_claim_status, exercised_falsifier,
+            rationale, actor, reason, transition_ts_utc,
+            transition_spec_sha256, expected_source_state_sha256,
+            expected_claim_id_max
+         ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)",
+        params![
+            spec.transition.transition_key,
+            spec.transition.source_claim_id,
+            spec.transition.expected_prior_status,
+            spec.transition.experiment_verdict,
+            spec.transition.proposed_claim_status,
+            spec.transition.exercised_falsifier,
+            spec.transition.rationale,
+            spec.transition.actor,
+            spec.transition.reason,
+            spec.transition.transition_timestamp,
+            spec_sha256,
+            spec.transition.expected_source_state_sha256,
+            spec.transition.expected_claim_id_max,
+        ],
+    )?;
+    Ok(tx.last_insert_rowid())
+}
+
+fn set_transition_write_context(
+    tx: &rusqlite::Transaction<'_>,
+    event_id: i64,
+    spec: &ClaimTransitionSpec,
+) -> Result<()> {
+    tx.execute(
+        "INSERT INTO claim_status_write_context (
+             id, mode, transition_event_id, source_claim_id, proposed_status
+         ) VALUES (1, 'transition_apply', ?1, ?2, ?3)
+         ON CONFLICT(id) DO UPDATE SET
+             mode = excluded.mode,
+             transition_event_id = excluded.transition_event_id,
+             source_claim_id = excluded.source_claim_id,
+             proposed_status = excluded.proposed_status",
+        params![
+            event_id,
+            spec.transition.source_claim_id,
+            spec.transition.proposed_claim_status,
+        ],
+    )?;
+    Ok(())
+}
+
+fn insert_transition_metadata(
+    tx: &rusqlite::Transaction<'_>,
+    event_id: i64,
+    spec: &ClaimTransitionSpec,
+) -> Result<()> {
+    for artifact_id in &spec.transition.evidence_artifact_ids {
+        tx.execute(
+            "INSERT INTO claim_transition_evidence (transition_event_id, artifact_id)
+             VALUES (?1, ?2)",
+            params![event_id, artifact_id],
+        )?;
+    }
+    for experiment_id in &spec.transition.experiment_ids {
+        tx.execute(
+            "INSERT INTO claim_transition_experiments (transition_event_id, experiment_id)
+             VALUES (?1, ?2)",
+            params![event_id, experiment_id],
+        )?;
+    }
+    for (ordinal, assumption) in spec.transition.unresolved_assumptions.iter().enumerate() {
+        tx.execute(
+            "INSERT INTO claim_transition_assumptions (transition_event_id, ordinal, assumption)
+             VALUES (?1, ?2, ?3)",
+            params![event_id, ordinal as i64, assumption],
+        )?;
+    }
+    Ok(())
+}
+
+fn insert_successor_claims(
+    tx: &rusqlite::Transaction<'_>,
+    event_id: i64,
+    spec: &ClaimTransitionSpec,
+    allocated_successors: &[AllocatedSuccessor],
+) -> Result<()> {
+    let source_date = spec
+        .transition
+        .transition_timestamp
+        .get(..10)
+        .context("transition timestamp must contain a YYYY-MM-DD date")?;
+    let mut ordered_successors = spec.successors.iter().collect::<Vec<_>>();
+    ordered_successors.sort_by(|left, right| left.proposal_key.cmp(&right.proposal_key));
+    for (successor, allocated) in ordered_successors
+        .into_iter()
+        .zip(allocated_successors.iter())
+    {
+        insert_successor_claim(
+            tx,
+            event_id,
+            successor,
+            allocated,
+            source_date,
+            &spec.transition,
+        )?;
+    }
+    Ok(())
+}
+
+fn insert_successor_claim(
+    tx: &rusqlite::Transaction<'_>,
+    event_id: i64,
+    successor: &SuccessorClaimSpec,
+    allocated: &AllocatedSuccessor,
+    source_date: &str,
+    transition: &ClaimTransitionRequest,
+) -> Result<()> {
+    let where_stated = successor.where_stated.join("; ");
+    let compat_toml_text = render_new_claim_compat_text(
+        &allocated.canonical_claim_id,
+        &successor.statement,
+        &successor.initial_status,
+        &where_stated,
+        source_date,
+    );
+    tx.execute(
+        "INSERT INTO claims (
+            id, statement, status, where_stated, last_verified,
+            formal_proof, status_note, compat_toml_text
+         ) VALUES (?1, ?2, ?3, ?4, ?5, NULL, NULL, ?6)",
+        params![
+            allocated.canonical_claim_id,
+            successor.statement,
+            successor.initial_status,
+            where_stated,
+            source_date,
+            compat_toml_text,
+        ],
+    )?;
+    tx.execute(
+        "INSERT INTO claim_revisions (
+            claim_id, field_name, prev_value_sha256, new_value_sha256,
+            actor, reason, operation, application_id
+         ) VALUES (?1, 'claim', NULL, ?2, ?3, ?4, 'create', ?5)",
+        params![
+            allocated.canonical_claim_id,
+            sha256_claim_state(&ClaimSourceState {
+                id: allocated.canonical_claim_id.clone(),
+                statement: successor.statement.clone(),
+                status: successor.initial_status.clone(),
+                where_stated: where_stated.clone(),
+                last_verified: source_date.to_string(),
+                formal_proof: None,
+                status_note: None,
+                compat_toml_text: compat_toml_text.clone(),
+            }),
+            transition.actor,
+            transition.reason,
+            CLI_APPLICATION_ID,
+        ],
+    )?;
+    tx.execute(
+        "INSERT INTO claim_transition_successors (
+            transition_event_id, proposal_key, successor_claim_id,
+            statement, initial_status, source_or_implementation_boundary,
+            required_falsifier, predecessor_relation_kind
+         ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+        params![
+            event_id,
+            successor.proposal_key,
+            allocated.canonical_claim_id,
+            successor.statement,
+            successor.initial_status,
+            successor.source_or_implementation_boundary,
+            successor.required_falsifier,
+            successor.predecessor_relation_kind,
+        ],
+    )?;
+    let successor_id = tx.last_insert_rowid();
+    insert_successor_references(tx, successor_id, successor)?;
+    tx.execute(
+        "INSERT INTO claim_relations (
+            predecessor_claim_id, successor_claim_id, relation_kind,
+            transition_event_id
+         ) VALUES (?1, ?2, ?3, ?4)",
+        params![
+            transition.source_claim_id,
+            allocated.canonical_claim_id,
+            successor.predecessor_relation_kind,
+            event_id,
+        ],
+    )?;
+    Ok(())
+}
+
+fn insert_successor_references(
+    tx: &rusqlite::Transaction<'_>,
+    successor_id: i64,
+    successor: &SuccessorClaimSpec,
+) -> Result<()> {
+    for (ordinal, reference) in successor.where_stated.iter().enumerate() {
+        tx.execute(
+            "INSERT INTO claim_transition_successor_where_stated
+             (successor_id, ordinal, reference) VALUES (?1, ?2, ?3)",
+            params![successor_id, ordinal as i64, reference],
+        )?;
+    }
+    for artifact_id in &successor.evidence_artifact_ids {
+        tx.execute(
+            "INSERT INTO claim_transition_successor_evidence
+             (successor_id, artifact_id) VALUES (?1, ?2)",
+            params![successor_id, artifact_id],
+        )?;
+    }
+    Ok(())
+}
+
+fn update_source_claim_status(
+    tx: &rusqlite::Transaction<'_>,
+    spec: &ClaimTransitionSpec,
+    previous_status: &str,
+) -> Result<()> {
+    tx.execute(
+        "UPDATE claims SET status = ?2 WHERE id = ?1",
+        params![
+            spec.transition.source_claim_id,
+            spec.transition.proposed_claim_status
+        ],
+    )?;
+    tx.execute(
+        "INSERT INTO claim_revisions (
+            claim_id, field_name, prev_value_sha256, new_value_sha256,
+            actor, reason, operation, application_id
+         ) VALUES (?1, 'status', ?2, ?3, ?4, ?5, 'update', ?6)",
+        params![
+            spec.transition.source_claim_id,
+            sha256_hex(previous_status),
+            sha256_hex(&spec.transition.proposed_claim_status),
+            spec.transition.actor,
+            spec.transition.reason,
+            CLI_APPLICATION_ID,
+        ],
+    )?;
+    Ok(())
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -921,6 +1022,12 @@ fn existing_event_from_row(row: &Row<'_>) -> rusqlite::Result<ExistingEvent> {
 
 fn validate_spec(spec: &ClaimTransitionSpec) -> Result<()> {
     let request = &spec.transition;
+    validate_transition_request(request)?;
+    validate_successor_specs(&spec.successors)?;
+    Ok(())
+}
+
+fn validate_transition_request(request: &ClaimTransitionRequest) -> Result<()> {
     for (field, value) in [
         ("transition_key", request.transition_key.as_str()),
         ("source_claim_id", request.source_claim_id.as_str()),
@@ -977,31 +1084,14 @@ fn validate_spec(spec: &ClaimTransitionSpec) -> Result<()> {
         &request.unresolved_assumptions,
         true,
     )?;
+    Ok(())
+}
+
+fn validate_successor_specs(successors: &[SuccessorClaimSpec]) -> Result<()> {
     let mut proposal_keys = BTreeSet::new();
     let mut statements = BTreeSet::new();
-    for successor in &spec.successors {
-        validate_nonempty_ascii("successor.proposal_key", &successor.proposal_key)?;
-        validate_nonempty_ascii("successor.statement", &successor.statement)?;
-        validate_nonempty_ascii("successor.initial_status", &successor.initial_status)?;
-        validate_nonempty_ascii(
-            "successor.source_or_implementation_boundary",
-            &successor.source_or_implementation_boundary,
-        )?;
-        validate_nonempty_ascii(
-            "successor.required_falsifier",
-            &successor.required_falsifier,
-        )?;
-        validate_nonempty_ascii(
-            "successor.predecessor_relation_kind",
-            &successor.predecessor_relation_kind,
-        )?;
-        validate_claim_status(&successor.initial_status, "successor.initial_status")?;
-        if !CLAIM_RELATION_KINDS.contains(&successor.predecessor_relation_kind.as_str()) {
-            bail!(
-                "invalid predecessor relation kind {}",
-                successor.predecessor_relation_kind
-            );
-        }
+    for successor in successors {
+        validate_successor_spec(successor)?;
         if !proposal_keys.insert(&successor.proposal_key) {
             bail!(
                 "duplicate successor proposal key {}",
@@ -1011,13 +1101,39 @@ fn validate_spec(spec: &ClaimTransitionSpec) -> Result<()> {
         if !statements.insert(&successor.statement) {
             bail!("duplicate successor statement");
         }
-        validate_distinct_nonempty_ascii("successor.where_stated", &successor.where_stated, true)?;
-        validate_distinct_nonempty_ascii(
-            "successor.evidence_artifact_ids",
-            &successor.evidence_artifact_ids,
-            true,
-        )?;
     }
+    Ok(())
+}
+
+fn validate_successor_spec(successor: &SuccessorClaimSpec) -> Result<()> {
+    validate_nonempty_ascii("successor.proposal_key", &successor.proposal_key)?;
+    validate_nonempty_ascii("successor.statement", &successor.statement)?;
+    validate_nonempty_ascii("successor.initial_status", &successor.initial_status)?;
+    validate_nonempty_ascii(
+        "successor.source_or_implementation_boundary",
+        &successor.source_or_implementation_boundary,
+    )?;
+    validate_nonempty_ascii(
+        "successor.required_falsifier",
+        &successor.required_falsifier,
+    )?;
+    validate_nonempty_ascii(
+        "successor.predecessor_relation_kind",
+        &successor.predecessor_relation_kind,
+    )?;
+    validate_claim_status(&successor.initial_status, "successor.initial_status")?;
+    if !CLAIM_RELATION_KINDS.contains(&successor.predecessor_relation_kind.as_str()) {
+        bail!(
+            "invalid predecessor relation kind {}",
+            successor.predecessor_relation_kind
+        );
+    }
+    validate_distinct_nonempty_ascii("successor.where_stated", &successor.where_stated, true)?;
+    validate_distinct_nonempty_ascii(
+        "successor.evidence_artifact_ids",
+        &successor.evidence_artifact_ids,
+        true,
+    )?;
     Ok(())
 }
 
@@ -1110,17 +1226,47 @@ fn validate_successor_references_on_conn(
     spec: &ClaimTransitionSpec,
     allocated: &[AllocatedSuccessor],
 ) -> Result<()> {
-    for artifact_id in &spec.transition.evidence_artifact_ids {
+    validate_existing_artifact_ids(
+        conn,
+        &spec.transition.evidence_artifact_ids,
+        "evidence artifact",
+    )?;
+    validate_existing_experiment_ids(conn, &spec.transition.experiment_ids)?;
+    for successor in &spec.successors {
+        validate_existing_artifact_ids(
+            conn,
+            &successor.evidence_artifact_ids,
+            "successor evidence artifact",
+        )?;
+    }
+    validate_allocated_successor_ids(conn, &spec.transition.source_claim_id, allocated)?;
+    validate_relation_graph(conn, &spec.transition.source_claim_id, allocated)?;
+    Ok(())
+}
+
+fn validate_existing_artifact_ids(
+    conn: &rusqlite::Connection,
+    artifact_ids: &[String],
+    label: &str,
+) -> Result<()> {
+    for artifact_id in artifact_ids {
         let exists = conn.query_row(
             "SELECT EXISTS(SELECT 1 FROM artifacts WHERE id = ?1)",
             params![artifact_id],
             |row| row.get::<_, i64>(0),
         )?;
         if exists == 0 {
-            bail!("unresolved evidence artifact id {artifact_id}");
+            bail!("unresolved {label} id {artifact_id}");
         }
     }
-    for experiment_id in &spec.transition.experiment_ids {
+    Ok(())
+}
+
+fn validate_existing_experiment_ids(
+    conn: &rusqlite::Connection,
+    experiment_ids: &[String],
+) -> Result<()> {
+    for experiment_id in experiment_ids {
         let exists = conn.query_row(
             "SELECT EXISTS(SELECT 1 FROM experiments_cp WHERE id = ?1)",
             params![experiment_id],
@@ -1130,21 +1276,16 @@ fn validate_successor_references_on_conn(
             bail!("unresolved experiment id {experiment_id}");
         }
     }
-    for successor in &spec.successors {
-        for artifact_id in &successor.evidence_artifact_ids {
-            let exists = conn.query_row(
-                "SELECT EXISTS(SELECT 1 FROM artifacts WHERE id = ?1)",
-                params![artifact_id],
-                |row| row.get::<_, i64>(0),
-            )?;
-            if exists == 0 {
-                bail!("unresolved successor evidence artifact id {artifact_id}");
-            }
-        }
-    }
-    let source_claim_id = &spec.transition.source_claim_id;
+    Ok(())
+}
+
+fn validate_allocated_successor_ids(
+    conn: &rusqlite::Connection,
+    source_claim_id: &str,
+    allocated: &[AllocatedSuccessor],
+) -> Result<()> {
     for successor in allocated {
-        if successor.canonical_claim_id == *source_claim_id {
+        if successor.canonical_claim_id == source_claim_id {
             bail!("successor relation cannot point back to its source claim");
         }
         let collision = conn.query_row(
@@ -1156,7 +1297,6 @@ fn validate_successor_references_on_conn(
             bail!("successor id collision: {}", successor.canonical_claim_id);
         }
     }
-    validate_relation_graph(conn, &spec.transition.source_claim_id, allocated)?;
     Ok(())
 }
 
