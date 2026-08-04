@@ -1,0 +1,104 @@
+format = "p2a-bind-baseline-v1"
+captured_utc = "2026-08-04T19:50:18Z"
+branch = "agent/ruan-fan-channel-oracle-repair"
+head = "bd9f366fe9436ea36830cc47d5c4e8018088e628"
+origin_main = "bd9f366fe9436ea36830cc47d5c4e8018088e628"
+worktree = "/home/eirikr/Github/open_gororoba-ruan-fan-channel-oracle"
+worktree_status = "clean before P2A changes"
+hooks_path = ".githooks"
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+sqlite = "3.53.3 2026-06-26"
+canonical_database_sha256 = "89b45ecaa86da07110a38e2158c3d3e568fed3d22deecc609f0e4cd1a9e42904"
+p1_manifest_path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_manifest_declared_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+p1_manifest_preserved = true
+transition_event_count = 4
+claim_relation_count = 11
+artifact_count = 3254
+artifact_path_count = 3762
+theorem_identity_count = 162
+theorem_claim_link_count = 145
+
+[source_pdf]
+source_id = "0909.3323"
+title = "Temporal coupled-mode theory for Fano resonance in light scattering by a single obstacle"
+url = "https://arxiv.org/pdf/0909.3323v2"
+sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+capture_path = "/var/tmp/open_gororoba-p2a-source-ywcx0q/ruan-fan-0909.3323v2.pdf"
+capture_status = "hash matches the existing source inventory"
+
+[source_tex]
+url = "https://arxiv.org/e-print/0909.3323v2"
+sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+capture_path = "/var/tmp/open_gororoba-p2a-source-ywcx0q/ruan-fan-0909.3323v2-source.tar"
+
+[[claim_status]]
+claim_id = "C-848"
+status = "Verified"
+statement_sha256 = "not rehashed in this baseline"
+
+[[claim_status]]
+claim_id = "C-849"
+status = "Provisional"
+statement_sha256 = "not rehashed in this baseline"
+
+[[claim_status]]
+claim_id = "C-850"
+status = "Provisional"
+statement_sha256 = "not rehashed in this baseline"
+
+[[claim_status]]
+claim_id = "C-851"
+status = "Verified"
+statement_sha256 = "not rehashed in this baseline"
+
+[[claim_status]]
+claim_id = "C-1640"
+status = "Provisional"
+statement_sha256 = "not rehashed in this baseline"
+
+[[claim_status]]
+claim_id = "C-1641"
+status = "Provisional"
+statement_sha256 = "not rehashed in this baseline"
+
+[[claim_status]]
+claim_id = "C-1642"
+status = "Provisional"
+statement_sha256 = "not rehashed in this baseline"
+
+[[claim_status]]
+claim_id = "C-1643"
+status = "Provisional"
+statement_sha256 = "not rehashed in this baseline"
+
+[[claim_status]]
+claim_id = "C-1644"
+status = "Provisional"
+statement_sha256 = "not rehashed in this baseline"
+
+[legacy_characterization]
+command = "CARGO_TARGET_DIR=.cache/exp-p2a-target cargo test -p optics_core --lib"
+exit_code = 0
+test_count = 137
+scientific_status = "characterization only; legacy observables are not golden values"
+known_defects = [
+    "fano_cross_sections_normalized labels -Re(S) as absorption",
+    "fano_cross_sections_normalized constructs extinction from scattering plus absorption",
+    "absorption_lorentzian expects phase-dependent absorption",
+    "absorption_lorentzian expects equal-damping normalized peak absorption 0.5",
+    "mie_scattering repeats the absorption and extinction bookkeeping defect",
+    "the Mie interface uses an unweighted derivative for the source Hz polarization",
+    "Ruan-Fan constructors use dielectric-metal-dielectric order",
+    "extract_fano_params contains a quarter-range fallback"
+]
+
+[protected_branch_publication]
+p1_5_local_merge = "9a12a6094256354bf4a2b8dcb0a7d74eeac780dc"
+remote_merge_tip = "bd9f366fe9436ea36830cc47d5c4e8018088e628"
+ancestry_check_base = "8e32976e086bb6b381920c316230c869f35b52e7"
+local_merge_is_descendant_of_base = true
+local_merge_is_ancestor_of_remote_tip = true
+remote_tree_equals_local_p1_5_tree = true
