@@ -19,7 +19,7 @@ use std::{env, error::Error, f64::consts::PI, fmt::Write as _, fs, path::PathBuf
 type EvidenceResult<T> = Result<T, Box<dyn Error>>;
 
 const SOURCE_PDF_SHA256: &str = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a";
-const SOURCE_TEX_SHA256: &str = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75";
+const SOURCE_TEX_SHA256: &str = "625f2dc473e5d50abba49daa3d1382ee9bd70b17746cd945bf9b81c70bc28";
 const P1_MANIFEST_SHA256: &str = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f";
 const P2A_MANIFEST_SHA256: &str =
     "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada";
