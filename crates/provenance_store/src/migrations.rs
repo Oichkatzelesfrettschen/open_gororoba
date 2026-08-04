@@ -115,5 +115,8 @@ pub(crate) fn migrations() -> Migrations<'static> {
         M::up(include_str!(
             "../../../db/migrations/0016_status_note_columns.sql"
         )),
+        M::up(include_str!(
+            "../../../db/migrations/0017_claim_transitions.sql"
+        )),
     ])
 }
