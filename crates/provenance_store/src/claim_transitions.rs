@@ -64,6 +64,8 @@ pub struct ClaimTransitionRequest {
     pub transition_timestamp: String,
     pub expected_source_state_sha256: String,
     pub expected_claim_id_max: i64,
+    #[serde(default)]
+    pub reserved_claim_ids: Vec<String>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -99,6 +101,7 @@ pub struct ClaimTransitionPlan {
     pub evidence_artifact_ids: Vec<String>,
     pub experiment_ids: Vec<String>,
     pub allocated_successors: Vec<AllocatedSuccessor>,
+    pub skipped_reserved_claim_ids: Vec<String>,
     pub status_count_delta: BTreeMap<String, i64>,
     pub exact_replay: bool,
     pub replay_event_id: Option<i64>,
@@ -110,6 +113,7 @@ pub struct ClaimTransitionApplyResult {
     pub transition_spec_sha256: String,
     pub event_id: Option<i64>,
     pub allocated_successors: Vec<AllocatedSuccessor>,
+    pub skipped_reserved_claim_ids: Vec<String>,
     pub exact_replay: bool,
 }
 
@@ -393,7 +397,10 @@ impl ProvenanceStore {
                 max_claim_id
             );
         }
-        let allocated_successors = allocate_successors(&spec.successors, max_claim_id)?;
+        let reserved_ids =
+            reserved_numeric_claim_ids(&self.conn, &spec.transition.reserved_claim_ids)?;
+        let (allocated_successors, skipped_reserved_claim_ids) =
+            allocate_successors_with_reservations(&spec.successors, max_claim_id, &reserved_ids)?;
         validate_successor_references(self, spec, &allocated_successors)?;
         Ok(ClaimTransitionPlan {
             transition_key: spec.transition.transition_key.clone(),
@@ -406,6 +413,7 @@ impl ProvenanceStore {
             evidence_artifact_ids: spec.transition.evidence_artifact_ids.clone(),
             experiment_ids: spec.transition.experiment_ids.clone(),
             allocated_successors,
+            skipped_reserved_claim_ids,
             status_count_delta: status_count_delta_with_successors(
                 &spec.transition.expected_prior_status,
                 &spec.transition.proposed_claim_status,
@@ -558,6 +566,7 @@ impl ProvenanceStore {
                 existing.event_id,
             )?,
             allocated_successors,
+            skipped_reserved_claim_ids: Vec::new(),
             status_count_delta: status_count_delta_from_statuses(
                 &existing.expected_prior_status,
                 &existing.proposed_claim_status,
@@ -586,6 +595,7 @@ fn apply_transition_replay(
         transition_spec_sha256: existing.transition_spec_sha256,
         event_id: Some(existing.event_id),
         allocated_successors: successors_for_event(tx, existing.event_id)?,
+        skipped_reserved_claim_ids: Vec::new(),
         exact_replay: true,
     })
 }
@@ -597,7 +607,8 @@ fn apply_new_transition(
 ) -> Result<ClaimTransitionApplyResult> {
     let current = claim_transition_source_state_on_conn(tx, &spec.transition.source_claim_id)?;
     validate_source_state(spec, &current)?;
-    let allocated_successors = allocate_transition_successors(tx, spec)?;
+    let (allocated_successors, skipped_reserved_claim_ids) =
+        allocate_transition_successors(tx, spec)?;
     let event_id = insert_transition_event(tx, spec, spec_sha256)?;
     set_transition_write_context(tx, event_id, spec)?;
     insert_transition_metadata(tx, event_id, spec)?;
@@ -608,6 +619,7 @@ fn apply_new_transition(
         transition_spec_sha256: spec_sha256.to_string(),
         event_id: Some(event_id),
         allocated_successors,
+        skipped_reserved_claim_ids,
         exact_replay: false,
     })
 }
@@ -615,7 +627,7 @@ fn apply_new_transition(
 fn allocate_transition_successors(
     tx: &rusqlite::Transaction<'_>,
     spec: &ClaimTransitionSpec,
-) -> Result<Vec<AllocatedSuccessor>> {
+) -> Result<(Vec<AllocatedSuccessor>, Vec<String>)> {
     let max_claim_id = max_numeric_claim_id_on_conn(tx)?;
     if max_claim_id != spec.transition.expected_claim_id_max {
         bail!(
@@ -624,9 +636,11 @@ fn allocate_transition_successors(
             max_claim_id
         );
     }
-    let allocated_successors = allocate_successors(&spec.successors, max_claim_id)?;
+    let reserved_ids = reserved_numeric_claim_ids(tx, &spec.transition.reserved_claim_ids)?;
+    let (allocated_successors, skipped_reserved_claim_ids) =
+        allocate_successors_with_reservations(&spec.successors, max_claim_id, &reserved_ids)?;
     validate_successor_references_on_conn(tx, spec, &allocated_successors)?;
-    Ok(allocated_successors)
+    Ok((allocated_successors, skipped_reserved_claim_ids))
 }
 
 fn insert_transition_event(
@@ -1084,6 +1098,11 @@ fn validate_transition_request(request: &ClaimTransitionRequest) -> Result<()> {
         &request.unresolved_assumptions,
         true,
     )?;
+    validate_distinct_nonempty_ascii("reserved_claim_ids", &request.reserved_claim_ids, true)?;
+    for claim_id in &request.reserved_claim_ids {
+        parse_numeric_claim_id(claim_id)
+            .with_context(|| format!("invalid reserved claim id {claim_id}"))?;
+    }
     Ok(())
 }
 
@@ -1191,26 +1210,76 @@ fn validate_distinct_nonempty_ascii(
     Ok(())
 }
 
-fn allocate_successors(
+fn allocate_successors_with_reservations(
     successors: &[SuccessorClaimSpec],
     max_claim_id: i64,
-) -> Result<Vec<AllocatedSuccessor>> {
+    reserved_ids: &BTreeSet<i64>,
+) -> Result<(Vec<AllocatedSuccessor>, Vec<String>)> {
     let mut ordered = successors.iter().collect::<Vec<_>>();
     ordered.sort_by(|left, right| left.proposal_key.cmp(&right.proposal_key));
-    ordered
-        .into_iter()
-        .enumerate()
-        .map(|(offset, successor)| {
-            let numeric_id = max_claim_id
-                .checked_add(offset as i64 + 1)
+    let mut next_id = max_claim_id;
+    let mut skipped = Vec::new();
+    let mut allocated = Vec::with_capacity(ordered.len());
+    for successor in ordered {
+        loop {
+            next_id = next_id
+                .checked_add(1)
                 .context("successor claim id allocation overflow")?;
-            Ok(AllocatedSuccessor {
+            if reserved_ids.contains(&next_id) {
+                skipped.push(format!("C-{next_id}"));
+                continue;
+            }
+            allocated.push(AllocatedSuccessor {
                 proposal_key: successor.proposal_key.clone(),
-                canonical_claim_id: format!("C-{numeric_id}"),
+                canonical_claim_id: format!("C-{next_id}"),
                 relation_kind: successor.predecessor_relation_kind.clone(),
-            })
-        })
-        .collect()
+            });
+            break;
+        }
+    }
+    Ok((allocated, skipped))
+}
+
+fn reserved_numeric_claim_ids(
+    conn: &rusqlite::Connection,
+    requested_ids: &[String],
+) -> Result<BTreeSet<i64>> {
+    let mut reserved = BTreeSet::new();
+    let mut statement = conn.prepare("SELECT legacy_name FROM theorem_identities")?;
+    let rows = statement.query_map([], |row| row.get::<_, String>(0))?;
+    for row in rows {
+        if let Some(numeric_id) = numeric_prefix_id(&row?) {
+            reserved.insert(numeric_id);
+        }
+    }
+    for claim_id in requested_ids {
+        reserved.insert(parse_numeric_claim_id(claim_id)?);
+    }
+    Ok(reserved)
+}
+
+fn parse_numeric_claim_id(claim_id: &str) -> Result<i64> {
+    let number = claim_id
+        .strip_prefix("C-")
+        .context("claim id must use C-<digits> form")?;
+    if number.is_empty() || !number.bytes().all(|byte| byte.is_ascii_digit()) {
+        bail!("claim id must use C-<digits> form: {claim_id}");
+    }
+    number
+        .parse::<i64>()
+        .context("claim id number does not fit in i64")
+}
+
+fn numeric_prefix_id(value: &str) -> Option<i64> {
+    let suffix = value.strip_prefix('C')?;
+    let digits = suffix
+        .chars()
+        .take_while(|character| character.is_ascii_digit())
+        .collect::<String>();
+    if digits.is_empty() {
+        return None;
+    }
+    digits.parse().ok()
 }
 
 fn validate_successor_references(
@@ -1489,10 +1558,32 @@ mod tests {
                 predecessor_relation_kind: "refines".to_string(),
             },
         ];
-        let allocated = allocate_successors(&specs, 10).expect("allocation");
+        let (allocated, skipped) =
+            allocate_successors_with_reservations(&specs, 10, &BTreeSet::new())
+                .expect("allocation");
         assert_eq!(allocated[0].proposal_key, "a");
         assert_eq!(allocated[0].canonical_claim_id, "C-11");
         assert_eq!(allocated[1].canonical_claim_id, "C-12");
+        assert!(skipped.is_empty());
+    }
+
+    #[test]
+    fn allocation_skips_reserved_numeric_prefixes() {
+        let specs = vec![SuccessorClaimSpec {
+            proposal_key: "a".to_string(),
+            statement: "a statement".to_string(),
+            initial_status: "Provisional".to_string(),
+            source_or_implementation_boundary: "boundary".to_string(),
+            required_falsifier: "falsifier".to_string(),
+            where_stated: vec![],
+            evidence_artifact_ids: vec![],
+            predecessor_relation_kind: "narrows".to_string(),
+        }];
+        let reserved = BTreeSet::from([11_i64, 12_i64]);
+        let (allocated, skipped) =
+            allocate_successors_with_reservations(&specs, 10, &reserved).expect("allocation");
+        assert_eq!(allocated[0].canonical_claim_id, "C-13");
+        assert_eq!(skipped, ["C-11", "C-12"]);
     }
 
     #[test]
@@ -1568,6 +1659,7 @@ statement = "source statement""#;
                 transition_timestamp: "2026-08-03T00:00:00Z".to_string(),
                 expected_source_state_sha256: source_state_hash(),
                 expected_claim_id_max: 1,
+                reserved_claim_ids: Vec::new(),
             },
             successors: vec![SuccessorClaimSpec {
                 proposal_key: "successor-a".to_string(),

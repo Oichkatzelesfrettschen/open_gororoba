@@ -8,7 +8,7 @@
 
 use anyhow::{Context, Result, bail};
 use clap::Parser;
-use provenance_store::{PlanningCompatTable, ProvenanceStore};
+use provenance_store::{PlanningCompatTable, ProvenanceStore, parse_theorem_identity_spec};
 use serde::Deserialize;
 use std::{
     fs,
@@ -51,6 +51,18 @@ fn main() -> Result<()> {
         return cmd_claim_transition_read_only(&store, &cli.repo_root, args);
     }
 
+    if let Commands::Theorem(args) = &cli.command
+        && matches!(
+            &args.action,
+            TheoremAction::Identity(identity_args)
+                if matches!(&identity_args.action, TheoremIdentityAction::Validate)
+        )
+    {
+        let store = ProvenanceStore::open_read_only(&db_path)
+            .with_context(|| format!("open database read-only {}", db_path.display()))?;
+        return cmd_theorem_identity_read_only(&store, &cli.repo_root);
+    }
+
     let mut store = ProvenanceStore::open(&db_path)
         .with_context(|| format!("open database {}", db_path.display()))?;
 
@@ -77,6 +89,7 @@ fn main() -> Result<()> {
         Commands::Insight(args) => cmd_insight_mutation(&mut store, &args),
         Commands::Experiment(args) => cmd_experiment_mutation(&mut store, &args),
         Commands::Artifact(args) => cmd_artifact_mutation(&mut store, &cli.repo_root, &args),
+        Commands::Theorem(args) => cmd_theorem_mutation(&mut store, &cli.repo_root, &args),
         Commands::Requirements(args) => {
             cmd_requirements_mutation(&mut store, &cli.repo_root, &args)
         }
@@ -1532,6 +1545,35 @@ fn cmd_artifact_mutation(
             println!("Registered local artifact {id} with {path_count} retained paths in {lane}.");
         }
     }
+    Ok(())
+}
+
+fn cmd_theorem_mutation(
+    store: &mut ProvenanceStore,
+    repo_root: &Path,
+    args: &TheoremArgs,
+) -> Result<()> {
+    let TheoremAction::Identity(identity_args) = &args.action;
+    match &identity_args.action {
+        TheoremIdentityAction::Bind { spec, regen_toml } => {
+            let spec_path = resolve_cli_path(repo_root, spec);
+            let raw_spec = fs::read_to_string(&spec_path)
+                .with_context(|| format!("read theorem identity spec {}", spec_path.display()))?;
+            let parsed = parse_theorem_identity_spec(&raw_spec)?;
+            let result = store.bind_theorem_identities(repo_root, &parsed, &raw_spec)?;
+            println!("{}", serde_json::to_string_pretty(&result)?);
+            maybe_regen_toml(*regen_toml)?;
+        }
+        TheoremIdentityAction::Validate => {
+            unreachable!("theorem validation is dispatched through a read-only handle")
+        }
+    }
+    Ok(())
+}
+
+fn cmd_theorem_identity_read_only(store: &ProvenanceStore, repo_root: &Path) -> Result<()> {
+    store.verify_control_plane_invariants(repo_root)?;
+    println!("theorem identity validation passed");
     Ok(())
 }
 

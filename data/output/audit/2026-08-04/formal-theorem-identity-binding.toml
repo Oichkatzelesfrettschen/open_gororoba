@@ -1,0 +1,64 @@
+binding_key = "formal-theorem-identity-binding-2026-08-04"
+actor = "codex"
+reason = "Disambiguate legacy C#### theorem filenames from canonical claim IDs."
+applied_at = "2026-08-04T16:00:00Z"
+
+[[binding]]
+proposal_key = "sedenion-driver-semantics"
+stable_id = "THM-SASS-DRIVER-001"
+legacy_name = "C1635_SedenionDriverSemantics"
+proof_path = "proofs/verified/C1635_SedenionDriverSemantics.v"
+title = "Sedenion driver semantic boundary"
+statement = "The Rocq surface C1635_sedenion_driver_semantics_surface packages the declared sedenion downcast, zero-divisor, R300 witness, norm failure, box-kite, and Cariow schedule propositions under their stated assumptions."
+initial_status = "Verified"
+where_stated = ["proofs/verified/C1635_SedenionDriverSemantics.v", "docs/engineering/theorem-identity-disambiguation-2026_08_04.md"]
+assumptions = "Rocq 9.1 kernel checks the imported OpenGororoba definitions and the stated real-number algebra assumptions."
+kernel_result = "C1635_sedenion_driver_semantics_surface is definitionally constructed from kernel-checked component surfaces."
+replay_command = "make -C proofs vok"
+falsifier = "Remove one component surface or alter a defining equation and require the Rocq kernel or a source-level theorem comparison to detect the mismatch."
+evidence_artifact_ids = ["LOCAL-FORMAL-THEOREM-IDENTITY"]
+
+[[binding]]
+proposal_key = "cariow-sedenion-schedule"
+stable_id = "THM-CARIOW-SEDENION-SCHEDULE-001"
+legacy_name = "C1636_Cariow2013SedenionSchedule"
+proof_path = "proofs/verified/C1636_Cariow2013SedenionSchedule.v"
+title = "Cariow 2013 sedenion multiplication schedule"
+statement = "The declared 16-dimensional Cariow schedule uses 16 diagonal products and 106 sparse correction products and is extensionally equal to the ordinary Cayley-Dickson sedenion product over R16."
+initial_status = "Verified"
+where_stated = ["proofs/verified/C1636_Cariow2013SedenionSchedule.v", "docs/engineering/theorem-identity-disambiguation-2026_08_04.md"]
+assumptions = "The R16 coordinate order and real arithmetic definitions match the imported OpenGororoba Sedenion representation."
+kernel_result = "C1636_cariow2013_sedenion_schedule_surface contains the multiplier count and extensional equality theorem."
+replay_command = "make -C proofs vok"
+falsifier = "Compare an independently transcribed R16 schedule against the kernel theorem and mutate one sparse correction coefficient."
+evidence_artifact_ids = ["LOCAL-FORMAL-THEOREM-IDENTITY"]
+
+[[binding]]
+proposal_key = "r300-sedenion-zero-divisor"
+stable_id = "THM-R300-SEDENION-ZERO-DIVISOR-001"
+legacy_name = "C1637_R300SedenionZeroDivisor"
+proof_path = "proofs/verified/C1637_R300SedenionZeroDivisor.v"
+title = "R300-facing sedenion zero-divisor witness"
+statement = "The R300-facing sedenion witness (e1 + e10) times (e5 + e14) equals zero, both operands are nonzero, and the witness belongs to the declared box-kite and assessor surfaces."
+initial_status = "Verified"
+where_stated = ["proofs/verified/C1637_R300SedenionZeroDivisor.v", "docs/engineering/theorem-identity-disambiguation-2026_08_04.md"]
+assumptions = "The imported Cayley-Dickson definitions and finite assessor lists match the stated R300-facing coordinate convention."
+kernel_result = "R300SedenionZeroDivisorSurface packages the product, nonzero, hi-half, downcast, assessor, and box-kite propositions."
+replay_command = "make -C proofs vok"
+falsifier = "Evaluate the witness with an independent dense-index Cayley-Dickson implementation and mutate one basis sign."
+evidence_artifact_ids = ["LOCAL-FORMAL-THEOREM-IDENTITY"]
+
+[[binding]]
+proposal_key = "octonion-downcast-zero-divisors"
+stable_id = "THM-OCTONION-DOWNCAST-ZERO-DIVISORS-001"
+legacy_name = "C1638_OctonionDowncastNoZeroDivisors"
+proof_path = "proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v"
+title = "Octonion downcast zero-divisor exclusion"
+statement = "The octonion downcast product has no nonzero zero divisors, and a sedenion zero product with both hi-halves zero forces one operand to be zero."
+initial_status = "Verified"
+where_stated = ["proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v", "docs/engineering/theorem-identity-disambiguation-2026_08_04.md"]
+assumptions = "The imported Hurwitz norm theorem and downcast multiplication theorem hold for the declared real Cayley-Dickson definitions."
+kernel_result = "DowncastNoZeroDivisorSurface packages the octonion, downcast, and hi-zero operand propositions."
+replay_command = "make -C proofs vok"
+falsifier = "Search all finite basis pairs in the downcast implementation and compare the norm argument with an independent algebra implementation."
+evidence_artifact_ids = ["LOCAL-FORMAL-THEOREM-IDENTITY"]
