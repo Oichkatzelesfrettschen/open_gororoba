@@ -1,0 +1,134 @@
+# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.
+# Canonical write path: registry/canonical/control_plane.sqlite3
+# Regenerate with: cargo run -p gororoba_cli_data --bin provenance -- export-control-plane
+# Compatibility export lane: claim_transitions
+[meta]
+surface = "canonical claim transition events"
+event_count = 4
+history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
+
+[[transition]]
+event_id = 1
+transition_key = "c-820-electromagnetic-ward-status-boundary"
+source_claim_id = "C-820"
+expected_prior_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Independent tensor contraction produces a residual above the frozen tolerance on the predeclared grid."
+rationale = "The P1 experiment verdict is Inconclusive because the scalar integrated subset and independent dense-index path pass while the spinor irreducible path retains a contact or integration-by-parts boundary gap. Lower the broad repository status and split the source proposition from implementation conformance without refuting the source identity."
+unresolved_assumptions = ["The missing spinor contact or integration-by-parts boundary contribution remains unresolved.", "The source Euclidean continuation and tensor normalization remain the declared P1 conventions."]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001", "LOCAL-P1-TENSOR-WARD"]
+experiment_ids = ["E-073"]
+actor = "canonical-claim-transition-campaign"
+reason = "Synchronize C-820 with the retained P1 tensor Ward verdict and create bounded successor claims."
+transition_timestamp = "2026-08-04T04:00:00Z"
+transition_spec_sha256 = "f3f1842d7836a2fa927396b5fc6dbe8c92af76be25416ee1b3db0bfaf35ca501"
+
+[[transition.successors]]
+proposal_key = "source-electromagnetic-gauge-ward-identity"
+canonical_claim_id = "C-1634"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "tensor-electromagnetic-ward-conformance"
+canonical_claim_id = "C-1635"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 2
+transition_key = "c-822-gravitational-ward-status-boundary"
+source_claim_id = "C-822"
+expected_prior_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "An independent rank-one contraction fails the lower-point right-hand side or a declared on-shell decomposition after all source boundary terms are represented."
+rationale = "The P1 experiment verdict is Inconclusive because the scalar off-shell comparison passes while the spinor lower-point term remains unresolved and the combined on-shell limit fails the frozen convergence policy without a denominator floor. Lower the broad repository status and split the source identity from tensor implementation conformance."
+unresolved_assumptions = ["The missing spinor lower-point contact or integration-by-parts boundary contribution remains unresolved.", "The finite combined on-shell limit remains unrepresented without the source-faithful algebraic combination or a convergent virtuality extrapolation."]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001", "LOCAL-P1-TENSOR-WARD"]
+experiment_ids = ["E-073"]
+actor = "canonical-claim-transition-campaign"
+reason = "Synchronize C-822 with the retained P1 gravitational Ward verdict and create bounded successor claims."
+transition_timestamp = "2026-08-04T04:05:00Z"
+transition_spec_sha256 = "f770fe980faa333ec950c6b8f2eedcf29298f83e64683d14edf958c47bc8a1be"
+
+[[transition.successors]]
+proposal_key = "source-gravitational-ward-identity"
+canonical_claim_id = "C-1636"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "tensor-gravitational-ward-conformance"
+canonical_claim_id = "C-1637"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 3
+transition_key = "c-865-energy-constraint-status-boundary"
+source_claim_id = "C-865"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Evaluate the observed discrepancy against the stated 1e-10 threshold after independently identifying units and parameter correspondence."
+rationale = "The retained positive control accepts a relative discrepancy of 0.9 with tolerance 1.0 while the claim states a tolerance below 1e-10. Preserve the source correspondence as unresolved and separate it from the implementation predicate. The missing typed C-865 successor records are resolved only through the retained adjudication artifact."
+unresolved_assumptions = ["Maksimov parameter correspondence remains unproved.", "Units for kappa_1, kappa_2, and gamma_l remain undeclared.", "An independent source constraint fixture remains required."]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+experiment_ids = []
+actor = "canonical-claim-transition-campaign"
+reason = "Synchronize C-865 with its methodology-invalid retained control and the explicit adjudication artifact."
+transition_timestamp = "2026-08-04T04:10:00Z"
+transition_spec_sha256 = "89c8e75b932a859b5fd5ab1c63710b336da152b48f66a07f8f3fd4e1b35f48a9"
+
+[[transition.successors]]
+proposal_key = "energy-constraint-declared-tolerance"
+canonical_claim_id = "C-1638"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "source-faithful-energy-constraint"
+canonical_claim_id = "C-1639"
+relation_kind = "source_split"
+
+[[transition]]
+event_id = 4
+transition_key = "c-866-scattering-predicate-status-boundary"
+source_claim_id = "C-866"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_claim_status = "Superseded"
+current_status = "Superseded"
+exercised_falsifier = "Hold scalar transmission fixed while changing complex phase or flux normalization, inject arbitrary cross-section inputs, and test the separated predicates."
+rationale = "The original row conflates time reversal, lossless unitarity, passive loss, scalar cross-section bookkeeping, and physical port semantics. Replace it with five typed predicates whose channel basis, flux normalization, loss model, and cross-section definitions can be tested independently."
+unresolved_assumptions = ["The complex port normalization remains to be declared.", "The lossless and passive internal models remain to be implemented.", "The absorption and extinction observables require non-tautological independent definitions."]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+experiment_ids = []
+actor = "canonical-claim-transition-campaign"
+reason = "Supersede the conflated C-866 claim with five independently falsifiable scattering predicates."
+transition_timestamp = "2026-08-04T04:15:00Z"
+transition_spec_sha256 = "4d912e03d3bd481aa3356b721e2b5656e5beb1e751d06fb705158b7e81fae8c0"
+
+[[transition.successors]]
+proposal_key = "independent-absorption-balance"
+canonical_claim_id = "C-1640"
+relation_kind = "narrows"
+[[transition.successors]]
+proposal_key = "lossless-flux-normalized-unitarity"
+canonical_claim_id = "C-1641"
+relation_kind = "narrows"
+
+[[transition.successors]]
+proposal_key = "passive-loss-contractivity"
+canonical_claim_id = "C-1642"
+relation_kind = "narrows"
+
+[[transition.successors]]
+proposal_key = "reciprocal-channel-scattering"
+canonical_claim_id = "C-1643"
+relation_kind = "narrows"
+
+[[transition.successors]]
+proposal_key = "time-reversed-channel-scattering"
+canonical_claim_id = "C-1644"
+relation_kind = "narrows"
