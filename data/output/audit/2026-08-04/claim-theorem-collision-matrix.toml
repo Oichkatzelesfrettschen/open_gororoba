@@ -1,0 +1,55 @@
+campaign = "claim-theorem-identity-disambiguation"
+date = "2026-08-04"
+classification = "identity collision, not scientific equivalence"
+
+[[collision]]
+claim_id = "C-1635"
+claim_statement = "The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid."
+theorem_legacy_name = "C1635_SedenionDriverSemantics"
+theorem_proof_path = "proofs/verified/C1635_SedenionDriverSemantics.v"
+theorem_subject = "sedenion driver semantic boundary"
+stable_theorem_id_before_binding = "THM-LEGACY-C1635_SedenionDriverSemantics"
+current_explicit_claim_links = []
+prior_frontier_treatment = "Unlinked formal surface; reserve as legacy theorem alias."
+required_resolution = "Bind to a fresh formal claim and retain C-1635 for tensor Ward conformance."
+
+[[collision]]
+claim_id = "C-1636"
+claim_statement = "The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side, with the on-shell irreducible and external-leg cancellation and separate tadpole invariance stated explicitly."
+theorem_legacy_name = "C1636_Cariow2013SedenionSchedule"
+theorem_proof_path = "proofs/verified/C1636_Cariow2013SedenionSchedule.v"
+theorem_subject = "Cariow 2013 sedenion multiplication schedule"
+stable_theorem_id_before_binding = "THM-LEGACY-C1636_Cariow2013SedenionSchedule"
+current_explicit_claim_links = []
+prior_frontier_treatment = "Unlinked formal surface; reserve as legacy theorem alias."
+required_resolution = "Bind to a fresh formal claim and retain C-1636 for the source gravitational identity."
+
+[[collision]]
+claim_id = "C-1637"
+claim_statement = "The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition across the predeclared kinematic grid."
+theorem_legacy_name = "C1637_R300SedenionZeroDivisor"
+theorem_proof_path = "proofs/verified/C1637_R300SedenionZeroDivisor.v"
+theorem_subject = "R300-facing sedenion zero-divisor witness"
+stable_theorem_id_before_binding = "THM-LEGACY-C1637_R300SedenionZeroDivisor"
+current_explicit_claim_links = []
+prior_frontier_treatment = "Unlinked formal surface; reserve as legacy theorem alias."
+required_resolution = "Bind to a fresh formal claim and retain C-1637 for tensor gravitational conformance."
+
+[[collision]]
+claim_id = "C-1638"
+claim_statement = "The photon-graviton TCMT implementation evaluates kappa_1 - kappa_2 = gamma_l against the declared relative tolerance."
+theorem_legacy_name = "C1638_OctonionDowncastNoZeroDivisors"
+theorem_proof_path = "proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v"
+theorem_subject = "octonion downcast zero-divisor exclusion"
+stable_theorem_id_before_binding = "THM-LEGACY-C1638_OctonionDowncastNoZeroDivisors"
+current_explicit_claim_links = []
+prior_frontier_treatment = "Unlinked formal surface; reserve as legacy theorem alias."
+required_resolution = "Bind to a fresh formal claim and retain C-1638 for the energy constraint."
+
+[negative_control]
+name = "numeric-prefix-inference"
+input_claim_id = "C-1635"
+input_theorem = "C1635_SedenionDriverSemantics"
+old_inferred_relation = "C-1635"
+expected_result = "reject inferred relation; require exact proof path or declared legacy alias"
+observed_result = "new linker returns no relation and validator accepts only the explicit legacy alias"

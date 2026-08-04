@@ -1,6 +1,6 @@
 {
   "generated_from": "db/migrations/*.sql via SQLite pragma introspection",
-  "object_count": 59,
+  "object_count": 72,
   "objects": [
     {
       "schema": "main",
@@ -837,6 +837,202 @@
     },
     {
       "schema": "main",
+      "name": "claim_relations",
+      "object_type": "table",
+      "column_count": 5,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "predecessor_claim_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "successor_claim_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "relation_kind",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "transition_event_id",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claim_transition_events",
+          "from_column": "transition_event_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "successor_claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 2,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "predecessor_claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "claim_relations_by_successor",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 2,
+              "name": "successor_claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 3,
+              "name": "relation_kind",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "claim_relations_by_predecessor",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "predecessor_claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 3,
+              "name": "relation_kind",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "sqlite_autoindex_claim_relations_1",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "predecessor_claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 2,
+              "name": "successor_claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": 3,
+              "name": "relation_kind",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 3,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
       "name": "claim_revisions",
       "object_type": "table",
       "column_count": 10,
@@ -1005,6 +1201,987 @@
             },
             {
               "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_status_write_context",
+      "object_type": "table",
+      "column_count": 5,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "mode",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "transition_event_id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "source_claim_id",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "proposed_status",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "source_claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "claim_transition_events",
+          "from_column": "transition_event_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": []
+    },
+    {
+      "schema": "main",
+      "name": "claim_transition_assumptions",
+      "object_type": "table",
+      "column_count": 3,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "transition_event_id",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "ordinal",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 2,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "assumption",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claim_transition_events",
+          "from_column": "transition_event_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_claim_transition_assumptions_2",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "transition_event_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 2,
+              "name": "assumption",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_claim_transition_assumptions_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "transition_event_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 1,
+              "name": "ordinal",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_transition_events",
+      "object_type": "table",
+      "column_count": 14,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "transition_key",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "source_claim_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "expected_prior_status",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "experiment_verdict",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "proposed_claim_status",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "exercised_falsifier",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "rationale",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 8,
+          "name": "actor",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 9,
+          "name": "reason",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 10,
+          "name": "transition_ts_utc",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 11,
+          "name": "transition_spec_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 12,
+          "name": "expected_source_state_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 13,
+          "name": "expected_claim_id_max",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "source_claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "claim_transition_events_by_source",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 2,
+              "name": "source_claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 10,
+              "name": "transition_ts_utc",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_claim_transition_events_1",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "transition_key",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_transition_evidence",
+      "object_type": "table",
+      "column_count": 2,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "transition_event_id",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "artifact_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 2,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "artifacts",
+          "from_column": "artifact_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "claim_transition_events",
+          "from_column": "transition_event_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_claim_transition_evidence_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "transition_event_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 1,
+              "name": "artifact_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_transition_experiments",
+      "object_type": "table",
+      "column_count": 2,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "transition_event_id",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "experiment_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 2,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "experiments_cp",
+          "from_column": "experiment_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "claim_transition_events",
+          "from_column": "transition_event_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_claim_transition_experiments_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "transition_event_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 1,
+              "name": "experiment_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_transition_successor_evidence",
+      "object_type": "table",
+      "column_count": 2,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "successor_id",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "artifact_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 2,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "artifacts",
+          "from_column": "artifact_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "claim_transition_successors",
+          "from_column": "successor_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_claim_transition_successor_evidence_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "successor_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 1,
+              "name": "artifact_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_transition_successor_where_stated",
+      "object_type": "table",
+      "column_count": 3,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "successor_id",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "ordinal",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 2,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "reference",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claim_transition_successors",
+          "from_column": "successor_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_claim_transition_successor_where_stated_2",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "successor_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 2,
+              "name": "reference",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_claim_transition_successor_where_stated_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "successor_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 1,
+              "name": "ordinal",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "claim_transition_successors",
+      "object_type": "table",
+      "column_count": 9,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "transition_event_id",
+          "declared_type": "INTEGER",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "proposal_key",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "successor_claim_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "statement",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "initial_status",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "source_or_implementation_boundary",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "required_falsifier",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 8,
+          "name": "predecessor_relation_kind",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "successor_claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "claim_transition_events",
+          "from_column": "transition_event_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_claim_transition_successors_3",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "transition_event_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 4,
+              "name": "statement",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_claim_transition_successors_2",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "transition_event_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 2,
+              "name": "proposal_key",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "sqlite_autoindex_claim_transition_successors_1",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 3,
+              "name": "successor_claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
               "cid": -1,
               "name": null,
               "descending": false,
@@ -6157,6 +7334,514 @@
             },
             {
               "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "theorem_claim_links",
+      "object_type": "table",
+      "column_count": 3,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "theorem_stable_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "claim_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 2,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "relation_kind",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "claims",
+          "from_column": "claim_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "theorem_identities",
+          "from_column": "theorem_stable_id",
+          "to_column": "stable_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "theorem_claim_links_by_claim",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_theorem_claim_links_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "theorem_stable_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 1,
+              "name": "claim_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "theorem_identities",
+      "object_type": "table",
+      "column_count": 9,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "stable_id",
+          "declared_type": "TEXT",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "legacy_name",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "proof_path",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "identity_kind",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "assumptions",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "''",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "kernel_result",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "''",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "replay_command",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "''",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "falsifier",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "''",
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 8,
+          "name": "source",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": "'_RocqProject'",
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_theorem_identities_3",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 2,
+              "name": "proof_path",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_theorem_identities_2",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "legacy_name",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 2,
+          "name": "sqlite_autoindex_theorem_identities_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "stable_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "theorem_identity_events",
+      "object_type": "table",
+      "column_count": 8,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "id",
+          "declared_type": "INTEGER",
+          "not_null": false,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "binding_key",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 2,
+          "name": "spec_sha256",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 3,
+          "name": "actor",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 4,
+          "name": "reason",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 5,
+          "name": "applied_at",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 6,
+          "name": "theorem_ids_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        },
+        {
+          "cid": 7,
+          "name": "claim_ids_json",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 0,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "sqlite_autoindex_theorem_identity_events_1",
+          "unique": true,
+          "origin": "u",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "binding_key",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schema": "main",
+      "name": "theorem_identity_evidence",
+      "object_type": "table",
+      "column_count": 2,
+      "without_rowid": false,
+      "strict": false,
+      "columns": [
+        {
+          "cid": 0,
+          "name": "theorem_stable_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 1,
+          "hidden": 0
+        },
+        {
+          "cid": 1,
+          "name": "artifact_id",
+          "declared_type": "TEXT",
+          "not_null": true,
+          "default_value": null,
+          "primary_key_position": 2,
+          "hidden": 0
+        }
+      ],
+      "foreign_keys": [
+        {
+          "id": 0,
+          "seq": 0,
+          "ref_table": "artifacts",
+          "from_column": "artifact_id",
+          "to_column": "id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        },
+        {
+          "id": 1,
+          "seq": 0,
+          "ref_table": "theorem_identities",
+          "from_column": "theorem_stable_id",
+          "to_column": "stable_id",
+          "on_update": "NO ACTION",
+          "on_delete": "NO ACTION",
+          "match_kind": "NONE"
+        }
+      ],
+      "indexes": [
+        {
+          "seq": 0,
+          "name": "theorem_identity_evidence_by_artifact",
+          "unique": false,
+          "origin": "c",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 1,
+              "name": "artifact_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": -1,
+              "name": null,
+              "descending": false,
+              "collation": "BINARY",
+              "key": false
+            }
+          ]
+        },
+        {
+          "seq": 1,
+          "name": "sqlite_autoindex_theorem_identity_evidence_1",
+          "unique": true,
+          "origin": "pk",
+          "partial": false,
+          "columns": [
+            {
+              "seqno": 0,
+              "cid": 0,
+              "name": "theorem_stable_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 1,
+              "cid": 1,
+              "name": "artifact_id",
+              "descending": false,
+              "collation": "BINARY",
+              "key": true
+            },
+            {
+              "seqno": 2,
               "cid": -1,
               "name": null,
               "descending": false,

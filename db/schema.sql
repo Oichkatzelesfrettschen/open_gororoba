@@ -104,6 +104,44 @@ CREATE TABLE claim_insight_refs (
 
 CREATE INDEX idx_cir_insight ON claim_insight_refs(insight_id);
 
+CREATE TRIGGER claim_relations_append_only_delete
+BEFORE DELETE ON claim_relations
+BEGIN
+    SELECT RAISE(ABORT, 'claim relations are append-only');
+END;
+
+CREATE TRIGGER claim_relations_append_only_update
+BEFORE UPDATE ON claim_relations
+BEGIN
+    SELECT RAISE(ABORT, 'claim relations are append-only');
+END;
+
+CREATE TABLE claim_relations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    predecessor_claim_id TEXT NOT NULL,
+    successor_claim_id TEXT NOT NULL,
+    relation_kind TEXT NOT NULL CHECK (
+        relation_kind IN (
+            'source_split',
+            'implementation_split',
+            'narrows',
+            'refines',
+            'supersedes'
+        )
+    ),
+    transition_event_id INTEGER NOT NULL,
+    FOREIGN KEY (predecessor_claim_id) REFERENCES claims(id),
+    FOREIGN KEY (successor_claim_id) REFERENCES claims(id),
+    FOREIGN KEY (transition_event_id) REFERENCES claim_transition_events(id),
+    UNIQUE (predecessor_claim_id, successor_claim_id, relation_kind)
+);
+
+CREATE INDEX claim_relations_by_predecessor
+    ON claim_relations(predecessor_claim_id, relation_kind);
+
+CREATE INDEX claim_relations_by_successor
+    ON claim_relations(successor_claim_id, relation_kind);
+
 CREATE TABLE claim_revisions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     claim_id TEXT NOT NULL,
@@ -122,6 +160,206 @@ CREATE INDEX claim_revisions_by_actor ON claim_revisions(actor, ts_utc);
 
 CREATE INDEX claim_revisions_by_claim ON claim_revisions(claim_id, ts_utc);
 
+CREATE TABLE claim_status_write_context (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    mode TEXT NOT NULL CHECK (mode IN ('registry_reindex', 'transition_apply')),
+    transition_event_id INTEGER,
+    source_claim_id TEXT,
+    proposed_status TEXT,
+    FOREIGN KEY (transition_event_id) REFERENCES claim_transition_events(id),
+    FOREIGN KEY (source_claim_id) REFERENCES claims(id),
+    CHECK (
+        (mode = 'registry_reindex'
+            AND transition_event_id IS NULL
+            AND source_claim_id IS NULL
+            AND proposed_status IS NULL)
+        OR
+        (mode = 'transition_apply'
+            AND transition_event_id IS NOT NULL
+            AND source_claim_id IS NOT NULL
+            AND proposed_status IS NOT NULL)
+    )
+);
+
+CREATE TRIGGER claim_transition_assumptions_append_only_delete
+BEFORE DELETE ON claim_transition_assumptions
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition assumptions are append-only');
+END;
+
+CREATE TRIGGER claim_transition_assumptions_append_only_update
+BEFORE UPDATE ON claim_transition_assumptions
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition assumptions are append-only');
+END;
+
+CREATE TABLE claim_transition_assumptions (
+    transition_event_id INTEGER NOT NULL,
+    ordinal INTEGER NOT NULL,
+    assumption TEXT NOT NULL,
+    PRIMARY KEY (transition_event_id, ordinal),
+    UNIQUE (transition_event_id, assumption),
+    FOREIGN KEY (transition_event_id) REFERENCES claim_transition_events(id)
+);
+
+CREATE TRIGGER claim_transition_events_append_only_delete
+BEFORE DELETE ON claim_transition_events
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition events are append-only');
+END;
+
+CREATE TRIGGER claim_transition_events_append_only_update
+BEFORE UPDATE ON claim_transition_events
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition events are append-only');
+END;
+
+CREATE TABLE claim_transition_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    transition_key TEXT NOT NULL UNIQUE,
+    source_claim_id TEXT NOT NULL,
+    expected_prior_status TEXT NOT NULL,
+    experiment_verdict TEXT NOT NULL CHECK (
+        experiment_verdict IN (
+            'Falsifies',
+            'MethodologyInvalid',
+            'Inconclusive',
+            'SurvivesChallenge',
+            'Replicates'
+        )
+    ),
+    proposed_claim_status TEXT NOT NULL,
+    exercised_falsifier TEXT NOT NULL,
+    rationale TEXT NOT NULL,
+    actor TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    transition_ts_utc TEXT NOT NULL,
+    transition_spec_sha256 TEXT NOT NULL,
+    expected_source_state_sha256 TEXT NOT NULL,
+    expected_claim_id_max INTEGER NOT NULL,
+    FOREIGN KEY (source_claim_id) REFERENCES claims(id)
+);
+
+CREATE INDEX claim_transition_events_by_source
+    ON claim_transition_events(source_claim_id, transition_ts_utc);
+
+CREATE TRIGGER claim_transition_evidence_append_only_delete
+BEFORE DELETE ON claim_transition_evidence
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition evidence is append-only');
+END;
+
+CREATE TRIGGER claim_transition_evidence_append_only_update
+BEFORE UPDATE ON claim_transition_evidence
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition evidence is append-only');
+END;
+
+CREATE TABLE claim_transition_evidence (
+    transition_event_id INTEGER NOT NULL,
+    artifact_id TEXT NOT NULL,
+    PRIMARY KEY (transition_event_id, artifact_id),
+    FOREIGN KEY (transition_event_id) REFERENCES claim_transition_events(id),
+    FOREIGN KEY (artifact_id) REFERENCES artifacts(id)
+);
+
+CREATE TRIGGER claim_transition_experiments_append_only_delete
+BEFORE DELETE ON claim_transition_experiments
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition experiments are append-only');
+END;
+
+CREATE TRIGGER claim_transition_experiments_append_only_update
+BEFORE UPDATE ON claim_transition_experiments
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition experiments are append-only');
+END;
+
+CREATE TABLE claim_transition_experiments (
+    transition_event_id INTEGER NOT NULL,
+    experiment_id TEXT NOT NULL,
+    PRIMARY KEY (transition_event_id, experiment_id),
+    FOREIGN KEY (transition_event_id) REFERENCES claim_transition_events(id),
+    FOREIGN KEY (experiment_id) REFERENCES experiments_cp(id)
+);
+
+CREATE TRIGGER claim_transition_successor_evidence_append_only_delete
+BEFORE DELETE ON claim_transition_successor_evidence
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition successor evidence is append-only');
+END;
+
+CREATE TRIGGER claim_transition_successor_evidence_append_only_update
+BEFORE UPDATE ON claim_transition_successor_evidence
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition successor evidence is append-only');
+END;
+
+CREATE TABLE claim_transition_successor_evidence (
+    successor_id INTEGER NOT NULL,
+    artifact_id TEXT NOT NULL,
+    PRIMARY KEY (successor_id, artifact_id),
+    FOREIGN KEY (successor_id) REFERENCES claim_transition_successors(id),
+    FOREIGN KEY (artifact_id) REFERENCES artifacts(id)
+);
+
+CREATE TRIGGER claim_transition_successor_where_stated_append_only_delete
+BEFORE DELETE ON claim_transition_successor_where_stated
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition where-stated references are append-only');
+END;
+
+CREATE TRIGGER claim_transition_successor_where_stated_append_only_update
+BEFORE UPDATE ON claim_transition_successor_where_stated
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition where-stated references are append-only');
+END;
+
+CREATE TABLE claim_transition_successor_where_stated (
+    successor_id INTEGER NOT NULL,
+    ordinal INTEGER NOT NULL,
+    reference TEXT NOT NULL,
+    PRIMARY KEY (successor_id, ordinal),
+    UNIQUE (successor_id, reference),
+    FOREIGN KEY (successor_id) REFERENCES claim_transition_successors(id)
+);
+
+CREATE TRIGGER claim_transition_successors_append_only_delete
+BEFORE DELETE ON claim_transition_successors
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition successors are append-only');
+END;
+
+CREATE TRIGGER claim_transition_successors_append_only_update
+BEFORE UPDATE ON claim_transition_successors
+BEGIN
+    SELECT RAISE(ABORT, 'claim transition successors are append-only');
+END;
+
+CREATE TABLE claim_transition_successors (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    transition_event_id INTEGER NOT NULL,
+    proposal_key TEXT NOT NULL,
+    successor_claim_id TEXT NOT NULL UNIQUE,
+    statement TEXT NOT NULL,
+    initial_status TEXT NOT NULL,
+    source_or_implementation_boundary TEXT NOT NULL,
+    required_falsifier TEXT NOT NULL,
+    predecessor_relation_kind TEXT NOT NULL CHECK (
+        predecessor_relation_kind IN (
+            'source_split',
+            'implementation_split',
+            'narrows',
+            'refines',
+            'supersedes'
+        )
+    ),
+    FOREIGN KEY (transition_event_id) REFERENCES claim_transition_events(id),
+    FOREIGN KEY (successor_claim_id) REFERENCES claims(id),
+    UNIQUE (transition_event_id, proposal_key),
+    UNIQUE (transition_event_id, statement)
+);
+
 CREATE TRIGGER claims_fts_ad
 AFTER DELETE ON claims BEGIN
     DELETE FROM claims_fts WHERE rowid = old.rowid;
@@ -138,6 +376,25 @@ AFTER UPDATE ON claims BEGIN
     DELETE FROM claims_fts WHERE rowid = old.rowid;
     INSERT INTO claims_fts(rowid, id, statement, status)
     VALUES (new.rowid, new.id, new.statement, new.status);
+END;
+
+CREATE TRIGGER claims_status_requires_event
+BEFORE UPDATE OF status ON claims
+WHEN OLD.status IS NOT NEW.status
+    AND NOT EXISTS (
+        SELECT 1 FROM claim_status_write_context
+        WHERE id = 1 AND mode = 'registry_reindex'
+    )
+    AND NOT EXISTS (
+        SELECT 1
+        FROM claim_status_write_context
+        WHERE id = 1
+          AND mode = 'transition_apply'
+          AND source_claim_id = OLD.id
+          AND proposed_status = NEW.status
+    )
+BEGIN
+    SELECT RAISE(ABORT, 'claim status changes require a transition event');
 END;
 
 CREATE TABLE claims (
@@ -726,6 +983,66 @@ CREATE TABLE source_of_truth_manifest (
     migration_status TEXT NOT NULL DEFAULT 'pending',
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+CREATE TABLE theorem_claim_links (
+    theorem_stable_id TEXT NOT NULL,
+    claim_id TEXT NOT NULL,
+    relation_kind TEXT NOT NULL CHECK (relation_kind = 'formal_proposition'),
+    PRIMARY KEY (theorem_stable_id, claim_id),
+    FOREIGN KEY (theorem_stable_id) REFERENCES theorem_identities(stable_id),
+    FOREIGN KEY (claim_id) REFERENCES claims(id)
+);
+
+CREATE INDEX theorem_claim_links_by_claim
+    ON theorem_claim_links(claim_id);
+
+CREATE TABLE theorem_identities (
+    stable_id TEXT PRIMARY KEY CHECK (stable_id LIKE 'THM-%'),
+    legacy_name TEXT NOT NULL UNIQUE,
+    proof_path TEXT NOT NULL UNIQUE,
+    identity_kind TEXT NOT NULL CHECK (
+        identity_kind IN ('explicit_link', 'legacy_alias', 'unresolved')
+    ),
+    assumptions TEXT NOT NULL DEFAULT '',
+    kernel_result TEXT NOT NULL DEFAULT '',
+    replay_command TEXT NOT NULL DEFAULT '',
+    falsifier TEXT NOT NULL DEFAULT '',
+    source TEXT NOT NULL DEFAULT '_RocqProject'
+);
+
+CREATE TRIGGER theorem_identity_events_append_only_delete
+BEFORE DELETE ON theorem_identity_events
+BEGIN
+    SELECT RAISE(ABORT, 'theorem identity events are append-only');
+END;
+
+CREATE TRIGGER theorem_identity_events_append_only_update
+BEFORE UPDATE ON theorem_identity_events
+BEGIN
+    SELECT RAISE(ABORT, 'theorem identity events are append-only');
+END;
+
+CREATE TABLE theorem_identity_events (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    binding_key TEXT NOT NULL UNIQUE,
+    spec_sha256 TEXT NOT NULL,
+    actor TEXT NOT NULL,
+    reason TEXT NOT NULL,
+    applied_at TEXT NOT NULL,
+    theorem_ids_json TEXT NOT NULL,
+    claim_ids_json TEXT NOT NULL
+);
+
+CREATE TABLE theorem_identity_evidence (
+    theorem_stable_id TEXT NOT NULL,
+    artifact_id TEXT NOT NULL,
+    PRIMARY KEY (theorem_stable_id, artifact_id),
+    FOREIGN KEY (theorem_stable_id) REFERENCES theorem_identities(stable_id),
+    FOREIGN KEY (artifact_id) REFERENCES artifacts(id)
+);
+
+CREATE INDEX theorem_identity_evidence_by_artifact
+    ON theorem_identity_evidence(artifact_id);
 
 CREATE TABLE theorems (
     id TEXT PRIMARY KEY,
