@@ -1,0 +1,16 @@
+[transition]
+transition_key = "c-1640-ruan-fan-independent-absorption-balance"
+source_claim_id = "C-1640"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+exercised_falsifier = "Compare absorption from S_l, absorption from the R_l flux defect, the closed-form Lorentzian, and independently computed extinction on the frozen grid and Mie sentinel channels."
+proposed_claim_status = "Verified"
+rationale = "All three absorption constructions agree component-wise within the declared tolerance, and extinction is computed independently as -Re(S_l) before the balance identity is checked."
+unresolved_assumptions = ["The observable is normalized to the declared 2*lambda/pi convention."]
+actor = "p2a-channel-oracle-campaign"
+reason = "Record the repaired independent absorption and extinction balance predicate."
+transition_timestamp = "2026-08-04T20:21:00Z"
+expected_source_state_sha256 = "c24347ef68a92e36b697192bac1b7a30f35038609d4f20014864b684a8566546"
+expected_claim_id_max = 1651

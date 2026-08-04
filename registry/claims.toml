@@ -5042,21 +5042,21 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/cs
 id = "C-1640"
 last_verified = "2026-08-04"
 statement = "The declared scattering, absorption, and extinction observables satisfy an independently derived balance relation."
-status = "Provisional"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/claim_transition_proposals.toml"
 
 [[claim]]
 id = "C-1641"
 last_verified = "2026-08-04"
 statement = "The declared lossless, flux-normalized complex scattering matrix is unitary on the stated channel basis."
-status = "Provisional"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
 
 [[claim]]
 id = "C-1642"
 last_verified = "2026-08-04"
 statement = "The declared passive lossy scattering matrix is contractive under the stated flux normalization."
-status = "Provisional"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
 
 [[claim]]
@@ -5070,7 +5070,7 @@ where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/cl
 id = "C-1644"
 last_verified = "2026-08-04"
 statement = "The declared time-reversed scattering construction satisfies its stated time-reversal relation."
-status = "Provisional"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml"
 
 [[claim]]
@@ -5124,6 +5124,20 @@ last_verified = "2026-02-01"
 statement = "Generic SO(dim) rotations do NOT preserve associator norms. Relative difference||A_orig|"
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`; legacy: vs||A_rot||is 13-29% at all tested dims (8-64). CD automorphisms (G2 for dim=8) form a much smaller subgroup of SO(dim)."
+
+[[claim]]
+id = "C-1650"
+statement = "The optics_core Ruan-Fan channel path preserves complex R_l and S_l and computes scattering, absorption, and extinction independently across the frozen analytical grid with detected old-oracle mutations."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml; data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1651"
+statement = "The Ruan-Fan source channel identities define R_l, S_l, scattering, absorption, and extinction with the stated incoming and outgoing Hankel convention."
+status = "Theoretical"
+where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/ruan-fan-source-equation-figure-ledger.toml"
+last_verified = "2026-08-04"
 
 [[claim]]
 id = "C-166"
@@ -10076,7 +10090,7 @@ where_stated = "crates/qgp_scaling/src/v2_relation.rs (fit_v2_relation)"
 id = "C-848"
 last_verified = "2026-02-25"
 statement = "TCMT Fano lineshape (Ruan-Fan 2009 Eq. 23) reproduces lossless/lossy Fano asymmetry for phi=0, pi/2, pi."
-status = "Verified"
+status = "Superseded"
 status_note = "Sprint 56: Promoted from Proposed. Tests lossless_phi_zero_lorentzian (Lorentzian at phi=0) and absorption_lorentzian (lossy case) pass. 6 Fano tests total."
 where_stated = "crates/optics_core/src/fano_tcmt.rs (tests: lossless_phi_zero_lorentzian, absorption_lorentzian)"
 

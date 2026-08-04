@@ -1,0 +1,45 @@
+[transition]
+transition_key = "c-848-ruan-fan-compound-status-boundary"
+source_claim_id = "C-848"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+experiment_ids = []
+exercised_falsifier = "Compare complex R_l and S_l, independently defined scattering, absorption, and extinction, phase-family controls, and source-region boundary controls against the old scalar oracle."
+proposed_claim_status = "Superseded"
+rationale = "The prior row compounds source formulas, implementation conformance, phase-family behavior, and absorption behavior. Its retained evidence mislabels extinction as absorption and asserts phase-dependent absorption contrary to the source model. Supersede the compound row and retain narrower source and implementation boundaries."
+unresolved_assumptions = [
+    "Complex-root resonance and background-phase identification remain deferred to P2B.",
+    "The source equation claims remain distinct from paper-fit reproduction.",
+]
+actor = "p2a-channel-oracle-campaign"
+reason = "Replace the compound Fano row after repairing the channel observables without adjudicating the paper reproduction."
+transition_timestamp = "2026-08-04T20:20:00Z"
+expected_source_state_sha256 = "286697a268757cefda352eeb10f8009d360075e0118540e29f4e18e63d13620b"
+expected_claim_id_max = 1649
+
+[[successor]]
+proposal_key = "source-ruan-fan-channel-observable-identities"
+statement = "The Ruan-Fan source channel identities define R_l, S_l, scattering, absorption, and extinction with the stated incoming and outgoing Hankel convention."
+initial_status = "Theoretical"
+source_or_implementation_boundary = "Source proposition only; no optics_core implementation or paper-fit conformance is implied."
+required_falsifier = "Primary-source transcription or an independent derivation contradicts an equation or its declared incoming/outgoing convention."
+where_stated = [
+    "https://arxiv.org/abs/0909.3323",
+    "data/output/audit/2026-08-04/ruan-fan-source-equation-figure-ledger.toml",
+]
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+predecessor_relation_kind = "source_split"
+
+[[successor]]
+proposal_key = "source-faithful-ruan-fan-channel-oracle"
+statement = "The optics_core Ruan-Fan channel path preserves complex R_l and S_l and computes scattering, absorption, and extinction independently across the frozen analytical grid with detected old-oracle mutations."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Implementation conformance only; complex-root parameter identification and held-out paper comparison remain outside this claim."
+required_falsifier = "The independent dense-equation path disagrees component-wise, a declared mutation is not detected, or a frozen analytical residual exceeds the declared tolerance."
+where_stated = [
+    "data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml",
+    "data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml",
+]
+evidence_artifact_ids = ["LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"]
+predecessor_relation_kind = "implementation_split"

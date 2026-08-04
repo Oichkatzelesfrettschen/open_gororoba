@@ -1,0 +1,116 @@
+format = "p2a-claim-transition-results-v1"
+campaign = "Ruan-Fan channel oracle repair"
+canonical_database_write_path = "registry/canonical/control_plane.sqlite3"
+evidence_artifact_id = "LOCAL-P2A-RUAN-FAN-CHANNEL-ORACLE"
+transition_event_count_before = 4
+transition_event_count_after = 10
+claim_relation_count_before = 11
+claim_relation_count_after = 13
+successor_ids_allocated = ["C-1650", "C-1651"]
+successor_allocation_deterministic = true
+all_transition_plans_passed = true
+all_transition_applies_passed = true
+exact_replay_control_required = true
+stale_status_control_required = true
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_manifest_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+
+[status_counts_before]
+Provisional = 133
+Superseded = 12
+Theoretical = 7
+Verified = 1191
+
+[status_counts_after]
+Provisional = 130
+Superseded = 13
+Theoretical = 8
+Verified = 1194
+
+[[transition]]
+transition_key = "c-848-ruan-fan-compound-status-boundary"
+spec_path = "data/output/audit/2026-08-04/c-848-ruan-fan-compound-status-transition.toml"
+spec_sha256 = "6bf34c38170b7a01264c1f3ee894b98939315419945fd27a2c43b68e61fe8d72"
+event_id = 5
+source_claim_id = "C-848"
+prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_status = "Superseded"
+successor_ids = ["C-1650", "C-1651"]
+relation_kinds = ["source_split", "implementation_split"]
+canonical_status_field_changed = true
+dry_run_allocated_ids = ["C-1650", "C-1651"]
+
+[[transition]]
+transition_key = "c-1640-ruan-fan-independent-absorption-balance"
+spec_path = "data/output/audit/2026-08-04/c-1640-absorption-balance-status-transition.toml"
+spec_sha256 = "4e4c148c1295f126da45e1266433e6c3c55283e8ec79595c8413acf649c0eb0f"
+event_id = 6
+source_claim_id = "C-1640"
+prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_status = "Verified"
+successor_ids = []
+relation_kinds = []
+canonical_status_field_changed = true
+dry_run_allocated_ids = []
+
+[[transition]]
+transition_key = "c-1641-ruan-fan-lossless-flux-unitarity"
+spec_path = "data/output/audit/2026-08-04/c-1641-lossless-unitarity-status-transition.toml"
+spec_sha256 = "24c8f688254e62329b36cbe7d2c826a09db8e3150312f154e2269a0c863b1ff7"
+event_id = 7
+source_claim_id = "C-1641"
+prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_status = "Verified"
+successor_ids = []
+relation_kinds = []
+canonical_status_field_changed = true
+dry_run_allocated_ids = []
+
+[[transition]]
+transition_key = "c-1642-ruan-fan-passive-contractivity"
+spec_path = "data/output/audit/2026-08-04/c-1642-passive-contractivity-status-transition.toml"
+spec_sha256 = "bd951e277a23887ca98327f33696cb508ebe18f8b913750bd4e00cdc9c22b289"
+event_id = 8
+source_claim_id = "C-1642"
+prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_status = "Verified"
+successor_ids = []
+relation_kinds = []
+canonical_status_field_changed = true
+dry_run_allocated_ids = []
+
+[[transition]]
+transition_key = "c-1643-ruan-fan-reciprocity-boundary"
+spec_path = "data/output/audit/2026-08-04/c-1643-reciprocity-status-transition.toml"
+spec_sha256 = "4b6ced40704dd8a29a728e43ffe44938417193653807e0178a86ac4ddfc08232"
+event_id = 9
+source_claim_id = "C-1643"
+prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+proposed_status = "Provisional"
+successor_ids = []
+relation_kinds = []
+canonical_status_field_changed = false
+dry_run_allocated_ids = []
+
+[[transition]]
+transition_key = "c-1644-ruan-fan-time-reversal-equations"
+spec_path = "data/output/audit/2026-08-04/c-1644-time-reversal-status-transition.toml"
+spec_sha256 = "37474a87953569c42a58d71dec3d2ffef429eeb67c2d21642f4fed9653a47351"
+event_id = 10
+source_claim_id = "C-1644"
+prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_status = "Verified"
+successor_ids = []
+relation_kinds = []
+canonical_status_field_changed = true
+dry_run_allocated_ids = []
+
+[canonical_query_after]
+claim_statuses = "C-848=Superseded; C-849=Provisional; C-850=Provisional; C-851=Verified; C-1640=Verified; C-1641=Verified; C-1642=Verified; C-1643=Provisional; C-1644=Verified; C-1650=Provisional; C-1651=Theoretical"
+unmodified_claim_scope = "C-864, C-865, C-867, C-1638, and C-1639 were not transitioned"

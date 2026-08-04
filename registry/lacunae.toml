@@ -5,10 +5,10 @@
 updated = "deterministic"
 authoritative = true
 status = "active"
-lacuna_count = 189
-open_count = 3
+lacuna_count = 190
+open_count = 4
 high_priority_count = 72
-medium_priority_count = 111
+medium_priority_count = 112
 low_priority_count = 6
 origin_kind_count = 1
 
@@ -186,6 +186,18 @@ origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-1639"
 description = "C-1639 remains unresolved with status token THEORETICAL: The source-faithful Maksimov energy constraint kappa_1 - kappa_2 = gamma_l holds under declared units and parameter correspondence."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-1651"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-1651"
+description = "C-1651 remains unresolved with status token THEORETICAL: The Ruan-Fan source channel identities define R_l, S_l, scattering, absorption, and extinction with the stated incoming and outgoing Hankel convention."
 priority = "medium"
 status = "open"
 claim_refs = []
