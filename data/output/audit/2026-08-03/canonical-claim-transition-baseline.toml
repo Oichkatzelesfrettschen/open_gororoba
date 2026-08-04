@@ -1,0 +1,270 @@
+# Baseline for the canonical claim-transition control-plane implementation.
+
+[meta]
+artifact_id = "canonical-claim-transition-baseline-2026-08-03"
+captured_utc = "2026-08-04T03:38:19Z"
+repository = "open_gororoba"
+branch = "agent/canonical-claim-transitions"
+head_sha = "55cd43199f98a73577572ba3e576e8eab0244557"
+origin_main_sha = "55cd43199f98a73577572ba3e576e8eab0244557"
+worktree_status = "clean"
+hooks_path = ".githooks"
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+sqlite = "3.53.3 2026-06-26 20:14:12 d4c0e51e4aeb96955b99185ab9cde75c339e2c29c3f3f12428d364a10d78alt1 (64-bit)"
+sqlite_user_version = 16
+latest_migration_source = "0016_status_note_columns.sql"
+latest_migration_number = 16
+canonical_database = "registry/canonical/control_plane.sqlite3"
+canonical_database_sha256 = "5ebe19a309b6a2df45c49f4d0b7b983b7ecee1348cca725a2f9a694e508dcdbf"
+canonical_foreign_keys_when_opened_by_sqlite_cli = false
+canonical_evidence_edge_count = 0
+generated_claim_evidence_edge_count = 5370
+p1_manifest_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+p0_merge_is_ancestor = true
+p1_merge_is_ancestor = true
+completion_gate = "Declare the phase complete only after the transition model, schema, CLI, exports, controls, retained applications, and validation all agree."
+
+[status_counts]
+"Closed/Analogy" = 1
+"Closed/Methodology-Insufficient" = 2
+"Closed/Negative-Result" = 6
+"Closed/Obstructed" = 1
+"Closed/Refuted" = 3
+"Closed/Research-Program" = 3
+"Closed/Source-Insufficient" = 1
+"Closed/Toy" = 2
+Established = 44
+Inconclusive = 0
+Partial = 0
+Provisional = 122
+Refuted = 58
+Superseded = 11
+Theoretical = 4
+Verified = 1190
+
+[[generated_view]]
+path = "registry/claims.toml"
+sha256 = "aa6add7c3de478105748aab7549f30b1387a117012d305101d614db013aa7971"
+
+[[generated_view]]
+path = "registry/insights.toml"
+sha256 = "6dab3da8d379b68fd2e14550a2644c14b113041a0acb9af667fa16156169a038"
+
+[[generated_view]]
+path = "registry/experiments.toml"
+sha256 = "579600620f1936799ba8d65939b2f5dc402864ee9a770b0ae9385513804a67c8"
+
+[[generated_view]]
+path = "registry/binaries.toml"
+sha256 = "ef6902ec24215d0c9aeb1056255e243ccb699d57abcac2f03c359a43e35da69f"
+
+[[generated_view]]
+path = "docs/THEOREMS.md"
+sha256 = "134179a8814ac9c63507cffd1f99135a6660a1a7a6bc920dced03724a68accff"
+
+[[generated_view]]
+path = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
+sha256 = "923ab69a261bfcefe072656418c971be55fbe42132908724d596d50aaab2a304"
+
+[[generated_view]]
+path = "registry/source_manifest.toml"
+sha256 = "8011d5d6d3ed1d1bd5226b8323845e34e24306014fb6f6ff2f6fad6273e4af3a"
+
+[[generated_view]]
+path = "registry/schema_signatures.toml"
+sha256 = "8af7081e7813e560155c20d46623f0f9447ae7b8e527de6059ddfc45c2664e49"
+
+[[input]]
+path = "data/output/audit/2026-08-02/claim_transition_schema_blocker.toml"
+sha256 = "786daa8c01c5f683838f080dcfdaec332a4ee536e12980ad1bee4eb02dd2767b"
+
+[[input]]
+path = "data/output/audit/2026-08-02/claim_transition_proposals.toml"
+sha256 = "ac77344acdab29eaa956c1218c0fea2f29dc5372c9fc413e6aa7db9f25b8cd7d"
+
+[[input]]
+path = "data/output/audit/2026-08-02/negative_controls.toml"
+sha256 = "a0cbcb0b1c2909d2d2075f80f3abd4240b0ad84371fbbd1e6ab613b76c358c51"
+
+[[input]]
+path = "data/output/audit/2026-08-02/p1_claim_results.toml"
+sha256 = "b9b764d07fd5e1028b4cc135f961aea68c4c371829967610bb0da2d2b7b767ca0"
+
+[[input]]
+path = "data/output/audit/2026-08-02/p1_artifact_registration.toml"
+sha256 = "5e1ba04d7fb77ac5c8aa64f003c466cdb9ac3e16f3e4a5289b5e339262b19ca0"
+
+[[input]]
+path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+
+[[claim]]
+id = "C-820"
+statement = "Irreducible photon-graviton amplitude satisfies gauge Ward identity (k_alpha * Pi^{mn,alpha} = 0) to machine precision."
+status = "Verified"
+where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs (irreducible_ward_check), crates/gr_core/src/photon_graviton/ward.rs"
+last_verified = "2026-02-19"
+formal_proof_is_null = true
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: nonzero Ward pre-factor hidden by the on-shell zero factor. Proposed transition: Provisional implementation claim, with separate source-level gauge Ward identity and tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: tensor contraction components; metric and continuation conventions; independent dense-index reference. Status remains Verified until the canonical CLI supports typed status transitions."
+compat_toml_text = '''id = "C-820"
+last_verified = "2026-02-19"
+statement = "Irreducible photon-graviton amplitude satisfies gauge Ward identity (k_alpha * Pi^{mn,alpha} = 0) to machine precision."
+status = "Verified"
+status_note = "Sprint 56: Ward identity residual is exactly 0.0 (on-shell k^2=0 factor). Test passes at tolerance 1e-8."
+where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs (irreducible_ward_check), crates/gr_core/src/photon_graviton/ward.rs"
+'''
+experiment_ids = ["E-073"]
+evidence_tokens = ["p0-oracle-negative-controls", "LOCAL-P1-TENSOR-WARD"]
+
+[[claim]]
+id = "C-822"
+statement = "Full one-loop photon-graviton amplitude satisfies gravitational Ward identity to 1e-8."
+status = "Verified"
+where_stated = "crates/gr_core/src/photon_graviton/ward.rs (check_gravitational_ward, full_ward_check)"
+last_verified = "2026-02-19"
+formal_proof_is_null = true
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: independent nonzero tadpole or external-leg gravitational contribution. Proposed transition: Provisional implementation claim, with separate source-level gravitational Ward identity and full tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: lower-point right-hand side; diagram tensor decomposition; off-shell kinematics. Status remains Verified until the canonical CLI supports typed status transitions."
+compat_toml_text = '''id = "C-822"
+last_verified = "2026-02-19"
+statement = "Full one-loop photon-graviton amplitude satisfies gravitational Ward identity to 1e-8."
+status = "Verified"
+status_note = "Sprint 56: All 4 Ward identity checks pass (gauge irr, gauge tadpole, gauge external, gravitational). 5 tests."
+where_stated = "crates/gr_core/src/photon_graviton/ward.rs (check_gravitational_ward, full_ward_check)"
+'''
+experiment_ids = ["E-073"]
+evidence_tokens = ["p0-oracle-negative-controls", "LOCAL-P1-TENSOR-WARD"]
+
+[[claim]]
+id = "C-865"
+statement = "Asymmetry parameter q_grav from gravitational coupling satisfies Maksimov constraint: kappa_1 - kappa_2 = gamma_l to machine precision (relative error < 1e-10)."
+status = "Verified"
+where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (validate_energy_conservation), tcmt_equations.rs (energy conservation test)"
+last_verified = "2026-02-19"
+formal_proof_is_null = true
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: relative discrepancy evaluated against the stated 1e-10 threshold. Proposed transition: Provisional, with separate source-faithful energy constraint and implementation predicate with declared tolerance successors. The current positive test accepts a relative discrepancy of 0.9 with tolerance 1.0. Unresolved: Maksimov parameter correspondence; units; independent source constraint. Status remains Verified until the canonical CLI supports typed status transitions."
+compat_toml_text = '''id = "C-865"
+last_verified = "2026-02-19"
+statement = "Asymmetry parameter q_grav from gravitational coupling satisfies Maksimov constraint: kappa_1 - kappa_2 = gamma_l to machine precision (relative error < 1e-10)."
+status = "Verified"
+status_note = "Sprint 56: Promoted from Proposed. Test energy_conservation_validates directly verifies kappa_1-kappa_2=gamma_l. 27 photon-graviton TCMT tests pass."
+where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (validate_energy_conservation), tcmt_equations.rs (energy conservation test)"
+'''
+experiment_ids = []
+evidence_tokens = ["p0-oracle-negative-controls"]
+
+[[claim]]
+id = "C-866"
+statement = "Time-reversal symmetry of photon-graviton TCMT guarantees transmission S-matrix satisfies unitarity |T|^2 + |R|^2 = 1 to numerical precision (error < 1e-10)."
+status = "Verified"
+where_stated = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (scattering_coefficient), amplitude_bridge.rs (validate_unitarity)"
+last_verified = "2026-02-19"
+formal_proof_is_null = true
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: complex channel pair with the same scalar input and different flux, plus tautological cross-section and lossless controls. Proposed transition: Superseded by separate lossless flux-normalized unitarity, reciprocity, time reversal, passive-loss contractivity, and absorption balance claims. The statement conflates time reversal, unitarity, passive loss, scalar cross-section bookkeeping, and physical port semantics. Unresolved: port normalization; complex scattering matrix; internal loss model. No successor IDs are invented. Status remains Verified until the canonical CLI supports typed status transitions and successor creation."
+compat_toml_text = '''id = "C-866"
+last_verified = "2026-02-19"
+statement = "Time-reversal symmetry of photon-graviton TCMT guarantees transmission S-matrix satisfies unitarity |T|^2 + |R|^2 = 1 to numerical precision (error < 1e-10)."
+status = "Verified"
+status_note = "Sprint 56: Promoted from Proposed. Tests optical_theorem_at_resonance and optical_theorem_with_loss verify unitarity. integration_conserves_energy_lossless verifies energy conservation."
+where_stated = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (scattering_coefficient), amplitude_bridge.rs (validate_unitarity)"
+'''
+experiment_ids = []
+evidence_tokens = ["p0-oracle-negative-controls"]
+
+[[revision]]
+id = 1
+claim_id = "C-820"
+field_name = "status_note"
+prev_value_sha256 = "59129db4412ab14bb2485acd7bc6b7c4a6f6aa76e6e42000aa89331d1847a9e5"
+new_value_sha256 = "15c46dd096ee65d2ccba9ffb3f02cec124f4dc4cb8b8a1506dcb2246a90403c3"
+actor = "codex"
+reason = "Record non-discriminating Ward oracle and provisional transition proposal"
+ts_utc = "2026-08-03T02:53:20.902Z"
+operation = "update"
+application_id = 1735357039
+
+[[revision]]
+id = 3
+claim_id = "C-822"
+field_name = "status_note"
+prev_value_sha256 = "41fd9cfa0c50032cecc8416d70fe30bfa06754ba8d2370f849aab8cc4f167324"
+new_value_sha256 = "1fa07ad30c551a9415c8e29e8e52037a6835f3630febde93d4e9f71c2f7d6f73"
+actor = "codex"
+reason = "Record non-discriminating gravitational Ward gate and provisional transition proposal"
+ts_utc = "2026-08-03T02:54:32.946Z"
+operation = "update"
+application_id = 1735357039
+
+[[revision]]
+id = 5
+claim_id = "C-865"
+field_name = "status_note"
+prev_value_sha256 = "dfc8649f9e16f87d322c9326a95bce3c7e5dfe89e019b157ae76e32767f31f4d"
+new_value_sha256 = "48c204c221d5677e674c2342548e705b855f51345e6416c0df327237731600e1"
+actor = "codex"
+reason = "Record energy-conservation tolerance mismatch"
+ts_utc = "2026-08-03T02:54:33.585Z"
+operation = "update"
+application_id = 1735357039
+
+[[revision]]
+id = 6
+claim_id = "C-866"
+field_name = "status_note"
+prev_value_sha256 = "f5a4250d30316ce6104f984b600c1ff2f62ccf4275e6e09659902414c07a2229"
+new_value_sha256 = "af60d098143b20592e21041934f39666f7bd2cdb48c190118704d8a48ba4f1ff"
+actor = "codex"
+reason = "Record overbroad scattering claim and successor family"
+ts_utc = "2026-08-03T02:54:33.902Z"
+operation = "update"
+application_id = 1735357039
+
+[[experiment_ref]]
+claim_id = "C-820"
+experiment_id = "E-073"
+
+[[experiment_ref]]
+claim_id = "C-822"
+experiment_id = "E-073"
+
+[[generated_evidence_reference]]
+claim_id = "C-820"
+source = "registry/claims_evidence_edges.toml"
+edge_role = "where_stated"
+target_ref = "crates/gr_core/src/photon_graviton/irreducible.rs"
+
+[[generated_evidence_reference]]
+claim_id = "C-820"
+source = "registry/claims_evidence_edges.toml"
+edge_role = "where_stated"
+target_ref = "crates/gr_core/src/photon_graviton/ward.rs"
+
+[[generated_evidence_reference]]
+claim_id = "C-822"
+source = "registry/claims_evidence_edges.toml"
+edge_role = "where_stated"
+target_ref = "crates/gr_core/src/photon_graviton/ward.rs"
+
+[[generated_evidence_reference]]
+claim_id = "C-865"
+source = "registry/claims_evidence_edges.toml"
+edge_role = "where_stated"
+target_ref = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs"
+
+[[generated_evidence_reference]]
+claim_id = "C-865"
+source = "registry/claims_evidence_edges.toml"
+edge_role = "where_stated"
+target_ref = "tcmt_equations.rs"
+
+[[generated_evidence_reference]]
+claim_id = "C-866"
+source = "registry/claims_evidence_edges.toml"
+edge_role = "where_stated"
+target_ref = "crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs"
+
+[[generated_evidence_reference]]
+claim_id = "C-866"
+source = "registry/claims_evidence_edges.toml"
+edge_role = "where_stated"
+target_ref = "amplitude_bridge.rs"

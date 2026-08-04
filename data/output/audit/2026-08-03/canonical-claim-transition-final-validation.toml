@@ -1,0 +1,216 @@
+# Final validation record for canonical claim transitions and successor claims.
+# This record separates the database state captured before final evidence
+# registration from the later registration-side database hash change.
+
+schema_version = "canonical-claim-transition-final-validation-v1"
+campaign_id = "WS-CLAIM-TRANSITION-001"
+implementation_revision = "f3549de47cc50d4294ec1fcaab621834d5dc28ad"
+captured_utc = "2026-08-04T05:05:00Z"
+canonical_database = "registry/canonical/control_plane.sqlite3"
+database_hash_at_final_validation_capture = "b070034c0e95b58f6ca7a20a1f2731051fa4903d8e9f491a5d5436676aff33bb"
+database_hash_after_final_bundle_registration = "0641c3bacfbacab9f6049a05568d2170a4cecd17b7734d214097450feee3f4fc"
+database_hash_note = "Local artifact registration appends canonical export-run metadata and therefore changes the database hash after the validation capture. The post-registration hash is recorded here; the registered path remains canonical even though the record itself is updated with this attestation."
+roadmap_item = "WS-CLAIM-TRANSITION-001"
+roadmap_status = "done"
+roadmap_status_token = "DONE"
+scientific_scope = "Canonical claim status transitions, successor claims, typed relations, evidence references, compatibility exports, and claim-status coherence."
+excluded_scope = "gr_core, optics_core, heliosphere, LBM, ultrametric, GPU, algebra implementation, and P2 optics work."
+
+[status_counts]
+"Closed/Analogy" = 1
+"Closed/Methodology-Insufficient" = 2
+"Closed/Negative-Result" = 6
+"Closed/Obstructed" = 1
+"Closed/Refuted" = 3
+"Closed/Research-Program" = 3
+"Closed/Source-Insufficient" = 1
+"Closed/Toy" = 2
+Established = 44
+Provisional = 133
+Refuted = 58
+Superseded = 12
+Theoretical = 7
+Verified = 1186
+
+[transition_graph]
+event_count = 4
+relation_count = 11
+successor_count = 11
+event_evidence_count = 6
+unresolved_assumption_count = 10
+exact_replay_controls = 4
+status_note_revision_ids = [23, 24, 25, 26]
+status_note_coherence = true
+direct_status_mutation_without_event = false
+
+[[transition_graph.event]]
+event_id = 1
+transition_key = "c-820-electromagnetic-ward-status-boundary"
+source_claim_id = "C-820"
+expected_prior_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+successor_ids = ["C-1634", "C-1635"]
+exact_replay = true
+
+[[transition_graph.event]]
+event_id = 2
+transition_key = "c-822-gravitational-ward-status-boundary"
+source_claim_id = "C-822"
+expected_prior_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+successor_ids = ["C-1636", "C-1637"]
+exact_replay = true
+
+[[transition_graph.event]]
+event_id = 3
+transition_key = "c-865-energy-constraint-status-boundary"
+source_claim_id = "C-865"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_claim_status = "Provisional"
+successor_ids = ["C-1638", "C-1639"]
+exact_replay = true
+
+[[transition_graph.event]]
+event_id = 4
+transition_key = "c-866-scattering-predicate-status-boundary"
+source_claim_id = "C-866"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_claim_status = "Superseded"
+successor_ids = ["C-1640", "C-1641", "C-1642", "C-1643", "C-1644"]
+exact_replay = true
+
+[[target_claim]]
+claim_id = "C-820"
+status = "Provisional"
+experiment_verdict = "Inconclusive"
+source_successor = "C-1634"
+implementation_successor = "C-1635"
+evidence_boundary = "Scalar integrated and independent dense-index paths survive; spinor contact or integration-by-parts boundary remains unresolved."
+
+[[target_claim]]
+claim_id = "C-822"
+status = "Provisional"
+experiment_verdict = "Inconclusive"
+source_successor = "C-1636"
+implementation_successor = "C-1637"
+evidence_boundary = "Scalar off-shell lower-point comparison survives; spinor lower-point term and source-faithful on-shell combined limit remain unresolved."
+
+[[target_claim]]
+claim_id = "C-865"
+status = "Provisional"
+experiment_verdict = "MethodologyInvalid"
+source_successor = "C-1639"
+implementation_successor = "C-1638"
+evidence_boundary = "The prior tolerance control accepts relative discrepancy 0.9 at tolerance 1.0; the source correspondence and declared 1e-10 predicate remain unproved."
+
+[[target_claim]]
+claim_id = "C-866"
+status = "Superseded"
+experiment_verdict = "MethodologyInvalid"
+successor_ids = ["C-1640", "C-1641", "C-1642", "C-1643", "C-1644"]
+evidence_boundary = "The conflated statement is replaced by independent absorption balance, lossless flux-normalized unitarity, passive-loss contractivity, reciprocity, and time-reversal predicates."
+
+[unchanged_claims]
+ids = ["C-821", "C-864", "C-867"]
+reason = "The campaign scope transitions only C-820, C-822, C-865, and C-866; the excluded claims retain their prior evidence notes and statuses."
+
+[source_review]
+falsification_review = "data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml"
+photon_graviton_source = "https://arxiv.org/pdf/2601.23279"
+ruan_fan_source = "https://arxiv.org/abs/0909.3323"
+ruan_fan_pra_source = "https://journals.aps.org/pra/abstract/10.1103/PhysRevA.85.043828"
+maksimov_source = "https://arxiv.org/abs/2505.00396"
+source_scope_result = "The sources support separating channel observables, symmetry predicates, and source identities; they do not by themselves prove repository-specific parameter mappings."
+novel_insight = "The status defect is a three-layer collapse: source theorem, implementation conformance, and phenomenological bridge require separate claims and separate falsifiers."
+falsification_boundary = "A methodology-invalid or inconclusive implementation result lowers repository confidence without refuting the source theorem when the missing term, normalization, or mapping remains explicit."
+
+[call_graph]
+artifact = "data/output/audit/2026-08-03/canonical-claim-transition-call-map.toml"
+artifact_sha256 = "dac1da3750a5276f964def2324d9bc24faf2775e6e0f90ff939349f284a98586"
+legacy_cflow_verdict = "not a valid Rust call graph; retained as a parser-suitability falsifier"
+legacy_cscope_verdict = "not a valid Rust call graph; retained as an index-suitability falsifier"
+rust_ctags_verdict = "symbol inventory only; no call semantics"
+semantic_authority = "The typed Rust call map plus executed controls define the retained semantic graph."
+instrumented_paths = ["plan", "apply", "show", "verify", "reindex", "experiment_export", "database"]
+
+[manifest]
+p1_manifest = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_declared_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+p1_current_head_verification_exit_code = 1
+p1_current_head_verification_result = "Expected revision mismatch: manifest declares 475f58ae while the transition checkout is f3549de4."
+p1_declared_revision_verification_exit_code = 0
+p1_declared_revision_verification_result = "Detached declared-revision verification passed at 475f58ae."
+transition_manifest = "data/output/audit/2026-08-03/canonical-claim-transition-experiment-manifest.toml"
+transition_manifest_sha256 = "7f22366aeadcdb03f5a14a785619f6ad42a9a734b275c01094c53de41cd15e70"
+transition_manifest_verification_exit_code = 0
+transition_application = "data/output/audit/2026-08-03/canonical-claim-transition-application.toml"
+transition_application_sha256 = "3a04b7fe61c8adf40aeb70ab097c88ad74cf199f76d468040e171aacaca0463e"
+
+[generated_views]
+claims_sha256 = "99010cd659bab0bc6f50b263bb9862b692bf51feebe724341f2e4e317c5da8df"
+claim_transitions_sha256 = "3f3589885a2efa94d17241ccda421c1c3e1cf64ca232809629a6d69c643cd880"
+claim_relations_sha256 = "7fbf86b2b5671838cb2368e62a4cf9936305be531eaab591cc1b56de712b4f5a"
+claims_atoms_sha256 = "2a5595bc2b5c77537b21e166527d7658f60dd64843e3309cc193d420a801e2d0"
+claims_evidence_edges_sha256 = "28029ecd9bcec6c6f61d9e15bfb8b5382420813920d87daebf6a0e3ba34d7b1d"
+derivation_steps_sha256 = "23dbe1fc78b4dab5edc1879a351994624d4989ebebe9201124968c6a7b777733"
+proof_skeletons_sha256 = "00cdcc12df263ca433938b572c8e24852b11b14f6935b208cc796f23acc58c66"
+lacunae_sha256 = "26119bb417f25ac3dc61e1e6211a527f408c298be19a6997d497331a400510e1"
+module_requirements_sha256 = "adbdda3bfeed3b05550a6bc2937ba591f123c76749c9cbee11b156947ae082b4"
+project_sha256 = "8909344f180157f80dbf748ce9d376bfc8accff36c3bc12322d691fb02f606ce"
+roadmap_sha256 = "3442e218493df6f11698d29474af8adb9bdd7e7511e147070980cdced0ae8"
+schema_signatures_sha256 = "0dbf2f592e9670552765fe8e8fab5cbe8e6d4f34bfde6f0926c5c2d4c08aaa49"
+
+[commands]
+format = "cargo fmt --all -- --check"
+format_exit_code = 0
+clippy = "CARGO_TARGET_DIR=.cache/transition-target cargo clippy -p provenance_store -p gororoba_db -p gororoba_cli_provenance -p gororoba_cli_data --all-targets -- -D warnings"
+clippy_exit_code = 0
+provenance_store_tests = "CARGO_TARGET_DIR=.cache/transition-target TMPDIR=.cache/transition-tmp cargo test -p provenance_store --lib"
+provenance_store_tests_exit_code = 0
+provenance_store_tests_observed = "16 passed, 0 failed"
+gororoba_db_tests = "CARGO_TARGET_DIR=.cache/transition-target cargo test -p gororoba_db"
+gororoba_db_tests_exit_code = 0
+gororoba_db_tests_observed = "1 passed, 0 failed"
+cli_tests = "TMPDIR=$PWD/.cache/transition-tmp CARGO_TARGET_DIR=.cache/transition-target cargo test -p gororoba_cli_provenance -p gororoba_cli_data"
+cli_tests_exit_code = 0
+cli_tests_observed = "All library, binary, smoke, facade, re-export, and doc-test targets passed; gororoba_cli_data library 19 passed and smoke 28 passed."
+registry_integrity = "TMPDIR=$PWD/.cache/transition-tmp make registry-integrity"
+registry_integrity_exit_code = 0
+registry_integrity_observed = "conflict_markers=108, lacunae=189, schema_signatures=13"
+registry_validation = "TMPDIR=$PWD/.cache/transition-tmp make validate-registry"
+registry_validation_exit_code = 0
+registry_validation_observed = "claims=1459, insights=183, experiments=232, binaries=496, theorems=162, semantic edges=5408, execution-planning edges=1113"
+validate_local = "TMPDIR=$PWD/.cache/transition-tmp CARGO_TARGET_DIR=.cache/transition-target make validate-local"
+validate_local_exit_code = 0
+validate_local_observed = "Fast shared checks, terminology gate, directly changed-crate clippy, 35 nextest library tests, and governance validation passed."
+control_plane = "CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_cli_provenance --bin provenance -- --repo-root . verify-control-plane --verify-compat-exports"
+control_plane_exit_code = 0
+transition_manifest_verify_exit_code = 0
+exact_replay_plan_exit_code = 0
+exact_replay_observed = "All four transition plans report exact_replay=true with replay event IDs 1 through 4."
+new_transition_lizard = "lizard crates/provenance_store/src/claim_transitions.rs --CCN 15 --length 120 --warnings_only"
+new_transition_lizard_exit_code = 0
+compatibility_renderer_lizard = "lizard crates/provenance_store/src/compat_render.rs --CCN 15 --length 120 --warnings_only"
+compatibility_renderer_lizard_exit_code = 0
+touched_path_lizard_result = "The new transition and compatibility-renderer paths are clean. Legacy functions in provenance_store/src/lib.rs, gororoba_db.rs, and governance_verify.rs retain pre-existing complexity warnings."
+ascii_check_exit_code = 0
+git_diff_check_exit_code = 0
+
+[negative_controls]
+covered_by_unit_tests = ["stale expected status", "missing evidence", "missing experiment", "invalid verdict", "invalid status", "changed-content replay", "successor collision", "relation cycle", "self relation", "partial successor failure", "direct status mutation", "exporter loss of prior status", "exporter loss of successor links"]
+control_result = "Every declared negative control rejects the defect and preserves atomicity."
+
+[ownership]
+transition_evidence_artifact = "LOCAL-CLAIM-TRANSITION-001"
+p1_evidence_artifact = "LOCAL-P1-TENSOR-WARD"
+final_validation_path = "data/output/audit/2026-08-03/canonical-claim-transition-final-validation.toml"
+registration_requirement = "Register this path and all transition outputs through gororoba-db artifact register-local before standalone manifest verification."
+
+[gate]
+completion_gate = "Declare WS-CLAIM-TRANSITION-001 complete only after the canonical transition graph, status notes, evidence references, compatibility views, replay controls, manifest checks, validation commands, and merged-main verification agree."
+next_campaign = "P2A optics oracle repair starts only in a fresh context after this campaign is merged and pruned."

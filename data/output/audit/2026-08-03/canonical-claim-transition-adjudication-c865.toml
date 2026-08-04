@@ -1,0 +1,52 @@
+# Adjudication for the incomplete C-865 successor proposal input.
+# The retained transition row declares two successor concepts but the retained
+# proposal file does not provide typed successor records for C-865.
+
+[meta]
+artifact_id = "canonical-claim-transition-adjudication-c865-2026-08-03"
+claim_id = "C-865"
+decision = "derive_two_successor_specs_from_retained_statement_and_boundary"
+source_input = "data/output/audit/2026-08-02/p0_frontier.toml"
+proposal_input = "data/output/audit/2026-08-02/claim_transition_proposals.toml"
+reason = "The transition row declares two successor concepts, but no successor_claim_proposal records exist for C-865. The application preserves the missing-input defect and records the two bounded statements explicitly."
+scope = "C-865 only; no source theorem is inferred from the TCMT papers."
+
+[source_boundary]
+statement = "The source-faithful Maksimov energy constraint kappa_1 - kappa_2 = gamma_l holds under declared units and parameter correspondence."
+status = "Theoretical"
+boundary = "Source relation only; source parameter correspondence and units must be declared."
+falsifier = "Independent source transcription or parameter map violates the relation under declared units."
+relation_kind = "source_split"
+where_stated = [
+    "https://arxiv.org/abs/2505.00396",
+    "data/output/audit/2026-08-02/p0_frontier.toml",
+]
+
+[implementation_boundary]
+statement = "The photon-graviton TCMT implementation evaluates kappa_1 - kappa_2 = gamma_l against the declared relative tolerance."
+status = "Provisional"
+boundary = "Implementation predicate uses the declared 1e-10 tolerance and an independent fixture."
+falsifier = "Observed discrepancy exceeds 1e-10 or the implementation accepts under a looser tolerance."
+relation_kind = "implementation_split"
+where_stated = [
+    "data/output/audit/2026-08-02/p0_frontier.toml",
+    "data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml",
+]
+
+[retained_control]
+experiment_verdict = "MethodologyInvalid"
+observed_relative_discrepancy = 0.9
+previous_tolerance = 1.0
+declared_tolerance = 1e-10
+interpretation = "The positive control accepts a discrepancy of 0.9 with tolerance 1.0, so it does not exercise the declared predicate below 1e-10."
+
+[application_rule]
+canonical_status_before = "Verified"
+canonical_status_after = "Provisional"
+evidence_artifact_id = "LOCAL-CLAIM-TRANSITION-001"
+experiment_ids = []
+unresolved_assumptions = [
+    "Maksimov parameter correspondence remains unproved.",
+    "Units for kappa_1, kappa_2, and gamma_l remain undeclared.",
+    "An independent source constraint fixture remains required.",
+]
