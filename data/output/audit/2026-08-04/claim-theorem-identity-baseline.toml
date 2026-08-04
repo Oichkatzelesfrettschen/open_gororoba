@@ -1,0 +1,50 @@
+campaign = "claim-theorem-identity-disambiguation"
+date = "2026-08-04"
+scope = "typed theorem namespace, explicit formal links, successor reservation, frontier refresh"
+canonical_checkout = "/home/eirikr/Github/open_gororoba"
+isolated_worktree = "/home/eirikr/Github/open_gororoba-claim-theorem-identity"
+branch = "agent/claim-theorem-identity-disambiguation"
+head = "8e32976e086bb6b381920c316230c869f35b52e7"
+origin_main = "8e32976e086bb6b381920c316230c869f35b52e7"
+worktree_status_at_bind = "clean"
+hooks_path = ".githooks"
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+sqlite = "3.53.3 2026-06-26 d4c0e51e4aeb96955b99185ab9cde75c339e2c29c3f3f12428d364a10d78alt1"
+p0_merge = "53f4e7c1926fe7a39ebf81c4aacb23bc240d9dce"
+p1_merge = "55cd43199f98a73577572ba3e576e8eab0244557"
+transition_merge = "3216bd8c2280f68393aa9a94e92bf46032106731"
+exporter_repair_merge = "67a1dcb1309e1e7b359faf52ff3c0c843e0dc823"
+formal_proof_head = "8e32976e086bb6b381920c316230c869f35b52e7"
+pre_reconcile_database_sha256 = "4a4d99347fd73010da8123c6c7fb01b953c01897f51dfe7416d5093eb2f474ba"
+post_reconcile_database_sha256 = "38d663e04564d49428648a7612a65f3c8c15f26f1a8fdfdfb81dc1e5c717ad2d2"
+p1_manifest_path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_declared_code_commit = "475f58aecc7406565dde111f2d237b244491fd13"
+pre_identity_claim_count = 1460
+pre_identity_theorem_count = 162
+pre_identity_explicit_theorem_link_count = 141
+pre_identity_transition_event_count = 4
+pre_identity_claim_relation_count = 11
+
+[status_counts]
+"Closed/Analogy" = 1
+"Closed/Methodology-Insufficient" = 2
+"Closed/Negative-Result" = 6
+"Closed/Obstructed" = 1
+"Closed/Refuted" = 3
+"Closed/Research-Program" = 3
+"Closed/Source-Insufficient" = 1
+"Closed/Toy" = 2
+Established = 44
+Provisional = 133
+Refuted = 58
+Superseded = 12
+Theoretical = 7
+Verified = 1187
+
+[observed_hazards]
+formal_claim_view_contains_c1645 = true
+canonical_database_pre_reconcile_ended_at_c1644 = true
+numeric_prefix_linker_present_before_repair = true
+reindex_preserved_transition_experiment_foreign_keys = false

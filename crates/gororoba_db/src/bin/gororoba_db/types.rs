@@ -102,6 +102,9 @@ pub(crate) enum Commands {
     /// Register retained local evidence paths in canonical SQLite.
     Artifact(ArtifactArgs),
 
+    /// Manage stable theorem identities and explicit theorem claim bindings.
+    Theorem(TheoremArgs),
+
     /// Query rows from any table by name with optional status filter.
     Query(QueryArgs),
 
@@ -439,6 +442,37 @@ pub(crate) struct ExperimentMutationArgs {
 pub(crate) struct ArtifactArgs {
     #[command(subcommand)]
     pub(crate) action: ArtifactAction,
+}
+
+#[derive(Parser, Debug)]
+pub(crate) struct TheoremArgs {
+    #[command(subcommand)]
+    pub(crate) action: TheoremAction,
+}
+
+#[derive(Subcommand, Debug)]
+pub(crate) enum TheoremAction {
+    /// Bind theorem identities and formal proposition claims atomically.
+    Identity(TheoremIdentityArgs),
+}
+
+#[derive(Parser, Debug)]
+pub(crate) struct TheoremIdentityArgs {
+    #[command(subcommand)]
+    pub(crate) action: TheoremIdentityAction,
+}
+
+#[derive(Subcommand, Debug)]
+pub(crate) enum TheoremIdentityAction {
+    /// Apply a structured theorem identity binding specification.
+    Bind {
+        #[arg(long)]
+        spec: PathBuf,
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
+    },
+    /// Validate stable theorem identities and explicit claim links.
+    Validate,
 }
 
 #[derive(Subcommand, Debug)]

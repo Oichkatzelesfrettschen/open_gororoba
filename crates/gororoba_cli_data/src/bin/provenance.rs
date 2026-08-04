@@ -1446,10 +1446,12 @@ fn print_pantheon_seed_summary(summary: &PantheonSeedSummary) {
 }
 
 fn print_theorem_query(theorem: &TheoremRecord) {
-    println!("Theorem: {}", theorem.id);
+    println!("Stable Theorem ID: {}", theorem.id);
+    println!("Legacy Name: {}", theorem.legacy_name);
     println!("Title: {}", theorem.title);
     println!("Proof Path: {}", theorem.proof_path);
     println!("Status: {}", theorem.status);
+    println!("Identity Kind: {}", theorem.identity_kind);
     println!("Linked Claims: {}", theorem.linked_claim_ids.join(", "));
     println!("Source: {}", theorem.source);
 }

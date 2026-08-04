@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 133
+document_count = 135
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -778,5 +778,15 @@ removal_status = "active"
 
 [[owner]]
 path = "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/claim-theorem-identity-frontier-2026_08_04.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/theorem-identity-disambiguation-2026_08_04.md"
 owner_group = "project"
 removal_status = "active"

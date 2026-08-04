@@ -25,7 +25,7 @@ use toml::Value;
 // live in the `migrations` submodule. Items are pub(crate) and brought
 // back into lib.rs scope via plain use statements.
 mod migrations;
-use migrations::{JUSTIFIED_UNLINKED_THEOREM_IDS, migrations};
+use migrations::migrations;
 
 // Compatibility-TOML renderers for the three planning lanes
 // (render_roadmap_compat_toml, render_todo_compat_toml,
@@ -60,6 +60,15 @@ mod planning_rows;
 // delete_requirement_coverage_gap) live in the `requirements_mut`
 // submodule via a second impl ProvenanceStore block.
 mod requirements_mut;
+
+mod theorem_identity;
+pub use theorem_identity::{
+    TheoremBindingSpec, TheoremClaimMapping, TheoremIdentityBindResult, TheoremIdentitySpec,
+    bind_theorem_identities, parse_theorem_identity_spec,
+};
+use theorem_identity::{
+    default_stable_theorem_id, is_declared_legacy_alias, validate_theorem_identities,
+};
 
 mod claim_transitions;
 pub use claim_transitions::{
@@ -167,6 +176,15 @@ fn sha256_hex(s: &str) -> String {
 const CLI_APPLICATION_ID: i64 = 0x676f_726f;
 
 impl ProvenanceStore {
+    pub fn bind_theorem_identities(
+        &mut self,
+        repo_root: &Path,
+        spec: &TheoremIdentitySpec,
+        raw_spec: &str,
+    ) -> Result<TheoremIdentityBindResult> {
+        theorem_identity::bind_theorem_identities(&mut self.conn, repo_root, spec, raw_spec)
+    }
+
     pub fn open(db_path: &Path) -> Result<Self> {
         if let Some(parent) = db_path.parent() {
             fs::create_dir_all(parent)
@@ -561,6 +579,62 @@ impl ProvenanceStore {
             )?;
         }
         for theorem in &theorems {
+            let identity = tx
+                .query_row(
+                    "SELECT stable_id, identity_kind FROM theorem_identities
+                     WHERE legacy_name = ?1",
+                    params![theorem.legacy_name],
+                    |row| Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?)),
+                )
+                .optional()?;
+            let (stable_id, identity_kind) = if let Some(identity) = identity {
+                identity
+            } else {
+                let stable_id = default_stable_theorem_id(&theorem.legacy_name);
+                tx.execute(
+                    "INSERT INTO theorem_identities (
+                         stable_id, legacy_name, proof_path, identity_kind, source
+                     ) VALUES (?1, ?2, ?3, ?4, ?5)",
+                    params![
+                        stable_id,
+                        theorem.legacy_name,
+                        theorem.proof_path.as_str(),
+                        theorem.identity_kind,
+                        theorem.source
+                    ],
+                )?;
+                (stable_id, theorem.identity_kind.clone())
+            };
+            if theorem.linked_claim_ids.is_empty()
+                && is_declared_legacy_alias(&theorem.legacy_name)
+                && identity_kind != "legacy_alias"
+            {
+                tx.execute(
+                    "UPDATE theorem_identities SET identity_kind = 'legacy_alias'
+                     WHERE stable_id = ?1",
+                    params![stable_id],
+                )?;
+            } else if theorem.linked_claim_ids.is_empty() && identity_kind == "explicit_link" {
+                tx.execute(
+                    "UPDATE theorem_identities SET identity_kind = 'unresolved'
+                     WHERE stable_id = ?1",
+                    params![stable_id],
+                )?;
+            } else if !theorem.linked_claim_ids.is_empty() && identity_kind == "unresolved" {
+                tx.execute(
+                    "UPDATE theorem_identities SET identity_kind = 'explicit_link'
+                     WHERE stable_id = ?1",
+                    params![stable_id],
+                )?;
+            }
+            for claim_id in &theorem.linked_claim_ids {
+                tx.execute(
+                    "INSERT OR IGNORE INTO theorem_claim_links (
+                         theorem_stable_id, claim_id, relation_kind
+                     ) VALUES (?1, ?2, 'formal_proposition')",
+                    params![stable_id, claim_id],
+                )?;
+            }
             tx.execute(
                 "INSERT INTO theorems(id, title, proof_path, status, linked_claim_ids_json, source)
                  VALUES(?1, ?2, ?3, ?4, ?5, ?6)
@@ -571,7 +645,7 @@ impl ProvenanceStore {
                     linked_claim_ids_json=excluded.linked_claim_ids_json,
                     source=excluded.source",
                 params![
-                    theorem.id,
+                    theorem.legacy_name,
                     theorem.title,
                     theorem.proof_path.as_str(),
                     theorem.status,
@@ -881,7 +955,7 @@ impl ProvenanceStore {
                 continue;
             }
             let actual = load_text(path)?;
-            if actual != format!("{expected}\n") {
+            if actual != compat_render::normalized_export_text(expected) {
                 failures.push(format!(
                     "stale compatibility export {} relative to {}",
                     path.display(),
@@ -902,7 +976,7 @@ impl ProvenanceStore {
                     continue;
                 }
                 let actual = load_text(path)?;
-                if actual != format!("{expected}\n") {
+                if actual != compat_render::normalized_export_text(expected) {
                     failures.push(format!(
                         "stale compatibility export {} relative to {}",
                         path.display(),
@@ -974,19 +1048,15 @@ impl ProvenanceStore {
             }
         }
 
+        if let Err(error) = validate_theorem_identities(&self.conn, repo_root) {
+            failures.push(error.to_string());
+        }
+
         for theorem in self.list_theorems()? {
             if !repo_root.join(theorem.proof_path.as_str()).exists() {
                 failures.push(format!(
                     "{} proof path missing on disk: {}",
                     theorem.id, theorem.proof_path
-                ));
-            }
-            if theorem.linked_claim_ids.is_empty()
-                && !JUSTIFIED_UNLINKED_THEOREM_IDS.contains(&theorem.id.as_str())
-            {
-                failures.push(format!(
-                    "{} has no linked claims and is not in the justified unlinked theorem allowlist",
-                    theorem.id
                 ));
             }
             for claim_id in theorem.linked_claim_ids {
@@ -1251,7 +1321,7 @@ impl ProvenanceStore {
                 continue;
             }
             let actual = load_text(path)?;
-            if actual != format!("{expected}\n") {
+            if actual != compat_render::normalized_export_text(expected) {
                 failures.push(format!("stale compatibility export {}", path.display()));
             }
         }
@@ -1262,7 +1332,7 @@ impl ProvenanceStore {
                 continue;
             }
             let actual = load_text(&full)?;
-            if actual != format!("{expected}\n") {
+            if actual != compat_render::normalized_export_text(&expected) {
                 failures.push(format!("stale dossier export {}", full.display()));
             }
         }
@@ -1700,18 +1770,26 @@ impl ProvenanceStore {
 
     pub fn list_theorems(&self) -> Result<Vec<TheoremRecord>> {
         let mut stmt = self.conn.prepare(
-            "SELECT id, title, proof_path, status, linked_claim_ids_json, source
-             FROM theorems ORDER BY id",
+            "SELECT COALESCE(theorem_identities.stable_id, 'THM-LEGACY-' || theorems.id),
+                    theorems.id, theorems.title, theorems.proof_path, theorems.status,
+                    COALESCE(theorem_identities.identity_kind, 'unresolved'),
+                    theorems.linked_claim_ids_json, theorems.source
+             FROM theorems
+             LEFT JOIN theorem_identities
+               ON theorem_identities.legacy_name = theorems.id
+             ORDER BY theorem_identities.stable_id, theorems.id",
         )?;
         let rows = stmt.query_map([], |row| {
-            let links: String = row.get(4)?;
+            let links: String = row.get(6)?;
             Ok(TheoremRecord {
                 id: row.get(0)?,
-                title: row.get(1)?,
-                proof_path: Utf8PathBuf::from(row.get::<_, String>(2)?),
-                status: row.get(3)?,
+                legacy_name: row.get(1)?,
+                title: row.get(2)?,
+                proof_path: Utf8PathBuf::from(row.get::<_, String>(3)?),
+                status: row.get(4)?,
+                identity_kind: row.get(5)?,
                 linked_claim_ids: serde_json::from_str(&links).unwrap_or_default(),
-                source: row.get(5)?,
+                source: row.get(7)?,
             })
         })?;
         collect_rows(rows)
@@ -3783,7 +3861,7 @@ impl ProvenanceStore {
             }
             let actual =
                 fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?;
-            let expected = format!("{expected}\n");
+            let expected = compat_render::normalized_export_text(&expected);
             if actual != expected {
                 let rel = path
                     .strip_prefix(repo_root)
@@ -4418,8 +4496,8 @@ use binaries_loader::{load_binaries_from_registry, merge_workspace_binaries};
 mod status_normalize;
 
 // Claim <-> proof correlation and per-row compat-export rendering
-// (canonical_formal_proof_for_claim, preferred_primary_verified_proof_for_claim,
-// proof_entry_priority, render_normalized_claim_compat_toml,
+// (canonical_formal_proof_for_claim, proof_entry_priority,
+// render_normalized_claim_compat_toml,
 // render_normalized_insight_compat_toml, extract_proof_paths,
 // link_claims_for_proof, normalized_claim_id_from_theorem_stem) live
 // in the `claim_proofs` submodule. Items are pub(crate).

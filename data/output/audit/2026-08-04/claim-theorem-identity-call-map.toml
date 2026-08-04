@@ -1,0 +1,108 @@
+campaign = "claim-theorem-identity-disambiguation"
+date = "2026-08-04"
+scope = "Rust control-plane path and Rocq inventory path"
+call_graph_status = "instrumented lexical map plus executed command path"
+
+[[edge]]
+caller = "gororoba-db theorem identity bind"
+callee = "ProvenanceStore::bind_theorem_identities"
+mechanism = "typed TOML parse, SQLite transaction"
+source = "crates/gororoba_db/src/bin/gororoba_db.rs"
+
+[[edge]]
+caller = "ProvenanceStore::bind_theorem_identities"
+callee = "theorem_identity::bind_theorem_identities"
+mechanism = "claim creation, theorem identity update, explicit link, evidence link, append-only event"
+source = "crates/provenance_store/src/lib.rs"
+
+[[edge]]
+caller = "theorem_identity::bind_theorem_identities"
+callee = "theorem_identities"
+mechanism = "stable identity and legacy proof path lookup"
+source = "db/migrations/0018_theorem_identity_disambiguation.sql"
+
+[[edge]]
+caller = "theorem_identity::bind_theorem_identities"
+callee = "claims and claim_revisions"
+mechanism = "fresh formal proposition claim and create audit row"
+source = "db/migrations/0002_control_plane.sql; db/migrations/0015_revisions_audit.sql"
+
+[[edge]]
+caller = "theorem_identity::bind_theorem_identities"
+callee = "theorem_claim_links and theorem_identity_evidence"
+mechanism = "typed semantic relation and artifact foreign key"
+source = "db/migrations/0018_theorem_identity_disambiguation.sql; db/migrations/0019_theorem_identity_evidence.sql"
+
+[[edge]]
+caller = "provenance index-control-plane"
+callee = "ProvenanceStore::reindex_control_plane_from_registries"
+mechanism = "canonical compatibility input load"
+source = "crates/gororoba_cli_data/src/bin/provenance.rs; crates/provenance_store/src/lib.rs"
+
+[[edge]]
+caller = "ProvenanceStore::reindex_control_plane_from_registries"
+callee = "load_proof_inventory"
+mechanism = "parse proofs/_RocqProject and verified proof paths"
+source = "crates/provenance_store/src/proof_inventory.rs"
+
+[[edge]]
+caller = "load_theorems_from_inventory"
+callee = "link_claims_for_proof"
+mechanism = "exact formal_proof, where_stated, or status_note path only"
+source = "crates/provenance_store/src/claim_proofs.rs"
+
+[[edge]]
+caller = "ProvenanceStore::export_control_plane_compat_paths"
+callee = "render_theorem_markdown"
+mechanism = "generated stable ID, legacy name, identity kind, and explicit links"
+source = "crates/provenance_store/src/proof_inventory.rs"
+
+[[edge]]
+caller = "gororoba-db theorem identity validate"
+callee = "ProvenanceStore::verify_control_plane_invariants"
+mechanism = "read-only schema, identity, link, and compatibility checks"
+source = "crates/gororoba_db/src/bin/gororoba_db.rs"
+
+[[edge]]
+caller = "frontier-refresh"
+callee = "ProvenanceStore::list_claims"
+mechanism = "read-only canonical claim snapshot"
+source = "crates/gororoba_cli_data/src/bin/frontier_refresh.rs"
+
+[[edge]]
+caller = "frontier-refresh"
+callee = "classify_claim and queue ordering"
+mechanism = "source, implementation, mapping, statistics, backend, provenance, and formal layers"
+source = "crates/gororoba_cli_data/src/bin/frontier_refresh.rs"
+
+[tool_capture]
+source_count = 11
+source_list_sha256 = "bacdd2cd2bef8a4795d9c4a0c873d93ab888b7e320477cdfa5f660d351e02958"
+source_list = [
+    "crates/gororoba_db/src/bin/gororoba_db.rs",
+    "crates/gororoba_db/src/bin/gororoba_db/types.rs",
+    "crates/gororoba_cli_data/src/bin/provenance.rs",
+    "crates/gororoba_cli_data/src/bin/frontier_refresh.rs",
+    "crates/provenance_core/src/lib.rs",
+    "crates/provenance_store/src/lib.rs",
+    "crates/provenance_store/src/theorem_identity.rs",
+    "crates/provenance_store/src/claim_proofs.rs",
+    "crates/provenance_store/src/claim_transitions.rs",
+    "crates/provenance_store/src/compat_render.rs",
+    "crates/provenance_store/src/proof_inventory.rs",
+]
+ctags_command = "ctags --languages=Rust -x over the focused Rust source list"
+ctags_exit = 0
+ctags_symbol_lines = 1225
+ctags_output_sha256 = "4940a2426a0bca2efc465bcd003b48a34fdb21b5e3ca0b10dec23f45690c65d9"
+cscope_command = "cscope -b -q -k -f <temporary-index> over the focused Rust source list"
+cscope_exit = 0
+cscope_index_sha256 = "d54e39b3e5f3890b8a72f972429b463eab31b08b28a2b4a880ee3e681e5f82d7"
+cflow_command = "cflow --no-preprocess over the focused Rust source list"
+cflow_exit = 0
+cflow_output_lines = 1
+cflow_output_sha256 = "a8b6c5ba40d39d59b1f8f55b823765e05fb67439986c02df6bcaee2310ddf791"
+cflow_stderr_sha256 = "73d51af49b8d3d05dbcc18993af0300842dee5326922d7a5dfffb9e9b7095180"
+cflow_interpretation = "The C-oriented parser emits only a trivial main node and Rust redefinition diagnostics; it is not a semantic Rust call graph."
+cross_check = "rg call sites, cargo check, targeted CLI execution, SQLite foreign-key queries, and the typed edges above"
+generated_indexes = "not committed; command, source-list hash, output hashes, exit codes, and parser limits are retained here"
