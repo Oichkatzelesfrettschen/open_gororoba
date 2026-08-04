@@ -30,6 +30,7 @@ pub mod mie_cylinder;
 pub mod mie_poles;
 pub mod multi_resonator;
 pub mod optics_algebra_bridge;
+pub mod p2b_fit;
 pub mod phase_retrieval;
 pub mod sfwm;
 pub mod tcmt;
@@ -160,4 +161,11 @@ pub use mie_poles::{
     ComplexFrequency, ComplexPole, PoleError, PoleGeometry, RootAttempt, RootRectangle, RootSearch,
     StableRootCount, complex_drude_epsilon, outgoing_determinant, refine_root, root_seed_grid,
     search_roots, stable_root_count, uniform_metal_reflection,
+};
+
+pub use p2b_fit::{
+    ComplexSample, FitError, FitParameters, FitStartResult, OnePoleFitReport, OnePoleParameters,
+    TcmtFitReport, background_only, fit_one_pole, fit_tcmt, one_pole_error, one_pole_max_error,
+    one_pole_value, tcmt_error, tcmt_jacobian_singular_values, tcmt_max_error, tcmt_reflection,
+    tcmt_scattering,
 };
