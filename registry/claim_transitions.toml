@@ -113,6 +113,7 @@ transition_spec_sha256 = "4d912e03d3bd481aa3356b721e2b5656e5beb1e751d06fb705158b
 proposal_key = "independent-absorption-balance"
 canonical_claim_id = "C-1640"
 relation_kind = "narrows"
+
 [[transition.successors]]
 proposal_key = "lossless-flux-normalized-unitarity"
 canonical_claim_id = "C-1641"
@@ -132,3 +133,4 @@ relation_kind = "narrows"
 proposal_key = "time-reversed-channel-scattering"
 canonical_claim_id = "C-1644"
 relation_kind = "narrows"
+
