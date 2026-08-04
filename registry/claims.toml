@@ -10931,3 +10931,12 @@ status = "Provisional"
 status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending"
 where_stated = "crates/gr_core/src/forces/chingon_drag.rs"
 
+
+[[claim]]
+formal_proof = "proofs/theories/R2VBTransformDP4.v"
+id = "C-1645"
+last_verified = "2026-08-03"
+statement = "The R2VB four-DP4 matrix apply is FP24-exact under the operand gate 0 <= B and 4*B^2 <= 2^17: each lane accumulator stays inside the inclusive FP24 exact-integer window (dp4_operand_admit_exact, mvp4_rows_exact), with the tight admission boundary B = 181 (dp4_admit_boundary). The gate and the dp4 lane extract to C through CertiRocq (proofs/extraction/ExtractR2VBDP4.v, hashes in proofs/extraction/golden/r2vb_dp4_extraction.sha256), and the extracted artifacts agree with native references over nine dp4 fixtures and nine gate rows spanning the boundary (make -C proofs test-r2vb-correspondence)."
+status = "Verified"
+status_note = "Axiom-free over Flocq FLX radix2 prec 17; builds under rocq-9.1.1 and rocq-certirocq switches. Silicon and Mesa-producer correspondence are separate obligations tracked in the steinmarder-r300 frontier."
+where_stated = "proofs/theories/R2VBTransformDP4.v"
