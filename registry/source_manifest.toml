@@ -19,6 +19,18 @@ table = "claims"
 description = "1300+ formal research claims with verification status"
 
 [[source]]
+path = "registry/claim_transitions.toml"
+role = "evidence"
+table = "claim_transition_events"
+description = "Append-only claim transition events with verdicts, prior statuses, and evidence"
+
+[[source]]
+path = "registry/claim_relations.toml"
+role = "evidence"
+table = "claim_relations"
+description = "Typed predecessor and successor claim relations"
+
+[[source]]
 path = "registry/insights.toml"
 role = "core"
 table = "insights"
