@@ -50,7 +50,7 @@ loop_prefactor = "not applicable"
 renormalization_state = "not applicable"
 code_owner = "crates/optics_core/src/mie_cylinder.rs"
 implementation_status = "implemented through explicit exterior Hankel decomposition"
-independent_reference_status = "independent Bessel and Hankel fixtures pending"
+independent_reference_status = "independent Bessel and Hankel fixtures retained and passed"
 
 [[equation]]
 number = 2
@@ -64,7 +64,7 @@ loop_prefactor = "omega*epsilon0 normalization"
 renormalization_state = "source normalization"
 code_owner = "crates/optics_core/src/mie_cylinder.rs"
 implementation_status = "normalized channel observables preserve the source ratio"
-independent_reference_status = "pending independent flux fixtures"
+independent_reference_status = "independent R-flux and channel power controls retained and passed"
 
 [[equation]]
 number = 3
@@ -120,7 +120,7 @@ loop_prefactor = "not applicable"
 renormalization_state = "scattering field definition"
 code_owner = "crates/optics_core/src/mie_cylinder.rs"
 implementation_status = "represented by exterior channel decomposition"
-independent_reference_status = "independent Hankel fixture pending"
+independent_reference_status = "independent Hankel fixtures retained and passed"
 
 [[equation]]
 number = 7
@@ -134,7 +134,7 @@ loop_prefactor = "not applicable"
 renormalization_state = "incident-field convention"
 code_owner = "crates/optics_core/src/mie_cylinder.rs"
 implementation_status = "encoded by R_l normalization"
-independent_reference_status = "pending"
+independent_reference_status = "covered by retained Hankel expansion and Mie channel controls"
 
 [[equation]]
 number = 8
