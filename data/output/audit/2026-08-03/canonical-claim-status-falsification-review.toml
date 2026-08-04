@@ -1,0 +1,152 @@
+# Bounded status review for the canonical claim-transition campaign.
+# This review separates source propositions, repository predicates, and
+# experiment verdicts before any status mutation is applied.
+
+[meta]
+artifact_id = "canonical-claim-status-falsification-review-2026-08-03"
+observed_utc = "2026-08-04T03:38:19Z"
+repository = "open_gororoba"
+scope = "seven photon-graviton and TCMT claims named by the retained P0/P1 transition records"
+canonical_status_source = "registry/canonical/control_plane.sqlite3"
+experiment_verdict_source = "data/output/audit/2026-08-02/p1_claim_results.toml and retained P0 negative controls"
+mutation_policy = "Review is read-only. Apply only the retained C-820, C-822, C-865, and C-866 transition proposals through the typed CLI."
+completion_gate = "Declare the phase complete only after every reviewed status has an explicit source boundary, experiment verdict, falsifier, and next evidence gate."
+
+[status_snapshot]
+claim_count = 1448
+verified_count = 1190
+provisional_count = 122
+refuted_count = 58
+superseded_count = 11
+claims_with_evidence_verdict_notes = ["C-820", "C-821", "C-822", "C-864", "C-865", "C-866", "C-867"]
+claims_with_canonical_experiment_link = ["C-820", "C-821", "C-822"]
+claims_without_canonical_experiment_link = ["C-864", "C-865", "C-866", "C-867"]
+canonical_evidence_edge_row_count = 0
+compatibility_evidence_edge_row_count = 5370
+status_mismatch = "All seven rows retain Verified despite retained notes that report Inconclusive or MethodologyInvalid experiment verdicts."
+interpretation = "The mismatch is a control-plane defect. It is not evidence that every source proposition is false."
+
+[[source]]
+id = "2601.23279v1"
+title = "One loop photon-graviton mixing in an electromagnetic field: Part 3"
+url = "https://arxiv.org/pdf/2601.23279"
+sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+role = "Photon-graviton source equations and Ward identities"
+online_observation = "The paper states the per-diagram electromagnetic gauge identity, the off-shell gravitational lower-point identity, and the on-shell irreducible-plus-external and tadpole identities."
+
+[[source]]
+id = "0909.3323v2"
+title = "Temporal coupled-mode theory for Fano resonance in light scattering by a single obstacle"
+url = "https://arxiv.org/abs/0909.3323"
+role = "Ruan-Fan TCMT source"
+online_observation = "The abstract defines angle-momentum-channel TCMT for small cylindrical or spherical obstacles and gives scattering and absorption line-shape formulas validated by numerical simulation."
+
+[[source]]
+id = "2505.00396v2"
+title = "Temporal coupled mode theory for high-Q resonances in dielectric metasurfaces"
+url = "https://arxiv.org/abs/2505.00396"
+role = "Maksimov symmetry-constraint source"
+online_observation = "The abstract derives constraints from energy conservation and time reversal for lossless dielectric metasurfaces and permits asymmetric coupling and decoupling coefficients."
+
+[[claim_review]]
+id = "C-820"
+canonical_status_before = "Verified"
+retained_experiment_verdict = "Inconclusive"
+proposed_status = "Provisional"
+source_boundary = "The source proposition is the per-diagram electromagnetic gauge Ward identity. The repository predicate is a tensor-valued implementation claim."
+source_support = "The cited photon-graviton paper directly contains the per-diagram gauge identity in its Ward section."
+implementation_finding = "Scalar integrated records and the independent dense-index reference pass; the spinor irreducible path retains a stable contact or integration-by-parts boundary gap."
+falsifier = "Independent tensor contraction produces a residual above the frozen tolerance on the predeclared grid."
+next_gate = "Derive and implement the missing spinor contact or boundary contribution, then rerun the independent component comparison."
+transition_action = "apply_retained_transition"
+
+[[claim_review]]
+id = "C-821"
+canonical_status_before = "Verified"
+retained_experiment_verdict = "Direct tensor-boundary update"
+proposed_status = "unchanged"
+source_boundary = "The retained tensor result exercises the tadpole contraction but does not establish the original scalar nonzero and Bernoulli weak-field statement."
+source_support = "The cited photon-graviton source treats the tadpole contribution as a separate Ward component."
+implementation_finding = "The full trace input and rank-one residual are retained; the physical contraction passes and a trace perturbation is detected."
+falsifier = "Perturb the complete tadpole trace or independently reproduce the nonzero weak-field coefficient and compare the retained tensor components."
+next_gate = "Run the later source-faithful tadpole and weak-field campaign without changing this status in the transition campaign."
+transition_action = "do_not_transition"
+
+[[claim_review]]
+id = "C-822"
+canonical_status_before = "Verified"
+retained_experiment_verdict = "Inconclusive"
+proposed_status = "Provisional"
+source_boundary = "The source proposition is the off-shell lower-point gravitational identity plus its on-shell diagram decomposition. The repository predicate is a full tensor implementation claim."
+source_support = "The cited photon-graviton paper directly states the gravitational variation, effective lower-point vectors, off-shell identity, on-shell irreducible-plus-external cancellation, and separate tadpole invariance."
+implementation_finding = "The scalar off-shell comparison passes; the spinor lower-point term remains unresolved and the combined on-shell limit fails the frozen convergence policy without a denominator floor."
+falsifier = "An independent rank-one contraction fails the lower-point right-hand side or a declared on-shell decomposition after all source boundary terms are represented."
+next_gate = "Derive the spinor contact or boundary contribution or an algebraically combined on-shell limit, then rerun the off-shell and on-shell component gates."
+transition_action = "apply_retained_transition"
+
+[[claim_review]]
+id = "C-864"
+canonical_status_before = "Verified"
+retained_experiment_verdict = "Inconclusive"
+proposed_status = "unchanged"
+source_boundary = "This is a repository bridge claim from photon-graviton amplitudes to Ruan-Fan TCMT, not a proposition in the photon-graviton source paper."
+source_support = "Ruan-Fan supplies a photonic channel and scattering-matrix framework; it does not by itself derive the repository's gravitational three-diagram parameter map."
+implementation_finding = "The retained P0 review finds scalar mapping, arbitrary coupling floors, and underidentified phase and port normalization."
+falsifier = "A source-faithful complex channel map with declared units and port normalization fails held-out amplitudes."
+next_gate = "Repair channel semantics in the separate optics campaign before revisiting this bridge claim."
+transition_action = "do_not_transition"
+
+[[claim_review]]
+id = "C-865"
+canonical_status_before = "Verified"
+retained_experiment_verdict = "MethodologyInvalid"
+proposed_status = "Provisional"
+source_boundary = "The retained row claims a Maksimov energy constraint in the repository TCMT bridge. The photon-graviton source paper does not state this TCMT constraint."
+source_support = "The Maksimov paper concerns generic TCMT constraints from energy conservation and time reversal for lossless dielectric metasurfaces, but a source-level correspondence to the repository's kappa and gamma symbols is not established."
+implementation_finding = "The retained positive control accepts a relative discrepancy of 0.9 with tolerance 1.0 while the claim states a tolerance below 1e-10."
+falsifier = "Evaluate the observed discrepancy against the declared 1e-10 threshold after independently identifying units and parameter correspondence."
+next_gate = "Use the two retained C-865 successor statements from p0_frontier.toml as an adjudication-derived specification because claim_transition_proposals.toml declares two successors but retains no successor records."
+transition_action = "apply_retained_transition_with_adjudication_artifact"
+
+[[claim_review]]
+id = "C-866"
+canonical_status_before = "Verified"
+retained_experiment_verdict = "MethodologyInvalid"
+proposed_status = "Superseded"
+source_boundary = "The original row conflates time reversal, lossless unitarity, passive loss, scalar cross-section bookkeeping, and physical port semantics."
+source_support = "Ruan-Fan defines channel scattering and absorption observables; Maksimov derives symmetry constraints for a declared lossless metasurface model. Neither source transfers those predicates automatically to an arbitrary photon-graviton scalar bridge."
+implementation_finding = "The retained control exposes a scalar transmission/reflection complement, a tautological extinction construction, and no independently normalized complex multiport matrix."
+falsifier = "Hold scalar transmission fixed while changing complex phase or flux normalization, inject arbitrary cross-section inputs, and require the separated predicates to detect the change."
+next_gate = "Create and test the five retained successors: lossless flux-normalized unitarity, reciprocity, time reversal, passive-loss contractivity, and absorption balance."
+transition_action = "apply_retained_transition"
+
+[[claim_review]]
+id = "C-867"
+canonical_status_before = "Verified"
+retained_experiment_verdict = "Inconclusive"
+proposed_status = "unchanged"
+source_boundary = "This row claims a complex Fano-amplitude reproduction of a weak-field photon-graviton source. The cited TCMT sources describe photonic Fano models and numerical validation, not this gravitational source match."
+source_support = "Ruan-Fan supports a Fano line-shape framework; the repository evidence checks scalar resonance and wings but not a held-out complex phase and amplitude comparison."
+implementation_finding = "The retained P0 falsifier identifies the missing phase sweep and source-amplitude normalization."
+falsifier = "Run a predeclared complex-amplitude phase and detuning sweep against held-out source data."
+next_gate = "Run after the separate channel-semantics and held-out Mie/TCMT campaigns."
+transition_action = "do_not_transition"
+
+[synthesis]
+novel_insight = "The seven-row mismatch is not one problem. It is a three-layer collapse: a source theorem, a tensor implementation predicate, and a phenomenological TCMT bridge were stored as neighboring Verified rows while their evidence paths measured different objects."
+derived_consequence = "The typed transition graph must split source propositions from implementation conformance and from cross-domain model identification. Status counts then become a map of epistemic boundaries rather than a scoreboard of test counts."
+control_plane_defect = "The current SQLite evidence_edges table is empty while generated compatibility edges contain rows; transition evidence must reference canonical artifacts directly until that older edge lane is repaired separately."
+proposal_defect = "C-865 declares two successor concepts in its transition row but has no successor_claim_proposal entries. The transition application therefore requires a retained adjudication artifact and must not invent a silent interpretation."
+
+[call_graph_boundary]
+rust_aware_tools = ["universal-ctags 6.2.1", "rust-analyzer analysis-stats"]
+legacy_tools = ["cflow 1.8", "cscope 15.9"]
+bounded_scope = ["crates/gororoba_db/src/bin/gororoba_db.rs", "crates/gororoba_db/src/bin/gororoba_db/types.rs", "crates/provenance_store/src/lib.rs", "crates/provenance_store/src/claim_transitions.rs", "crates/provenance_store/src/migrations.rs", "crates/provenance_store/src/table_ops.rs", "crates/provenance_store/src/compat_render.rs", "crates/gororoba_cli_data/src/bin/provenance.rs"]
+cflow_result = "Nonzero exit with false C parsing diagnostics and no valid Rust call graph."
+cscope_result = "No usable Rust definitions or references in the bounded file set."
+rust_result = "Rust-aware symbols resolve the transition model and CLI entry points; executed transition tests will supply the load-bearing path evidence."
+instrumentation_boundary = "Capture spec hash, source-state hash, expected claim-id maximum, event id, successor allocation, replay result, and status-count delta in the typed plan/apply outputs."
+
+[online_review_limit]
+source_absence_rule = "Absence of a phrase in an abstract is a scope warning, not a mathematical refutation. Equation-level validation remains required before any source claim is downgraded."
+out_of_scope = ["P2 optics implementation", "TCMT code changes", "Mie or SFWM experiments", "C-864 and C-867 status mutations"]

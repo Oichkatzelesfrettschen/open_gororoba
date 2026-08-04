@@ -1,0 +1,48 @@
+[transition]
+transition_key = "c-865-energy-constraint-status-boundary"
+source_claim_id = "C-865"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+experiment_ids = []
+exercised_falsifier = "Evaluate the observed discrepancy against the stated 1e-10 threshold after independently identifying units and parameter correspondence."
+proposed_claim_status = "Provisional"
+rationale = "The retained positive control accepts a relative discrepancy of 0.9 with tolerance 1.0 while the claim states a tolerance below 1e-10. Preserve the source correspondence as unresolved and separate it from the implementation predicate. The missing typed C-865 successor records are resolved only through the retained adjudication artifact."
+unresolved_assumptions = [
+    "Maksimov parameter correspondence remains unproved.",
+    "Units for kappa_1, kappa_2, and gamma_l remain undeclared.",
+    "An independent source constraint fixture remains required.",
+]
+actor = "canonical-claim-transition-campaign"
+reason = "Synchronize C-865 with its methodology-invalid retained control and the explicit adjudication artifact."
+transition_timestamp = "2026-08-04T04:10:00Z"
+expected_source_state_sha256 = "e33e86dfff9480bdca76b3f0955c02daec828f878e846b9b43ab7ea0978bf751"
+expected_claim_id_max = 1637
+
+[[successor]]
+proposal_key = "source-faithful-energy-constraint"
+statement = "The source-faithful Maksimov energy constraint kappa_1 - kappa_2 = gamma_l holds under declared units and parameter correspondence."
+initial_status = "Theoretical"
+source_or_implementation_boundary = "Source relation only; source parameter correspondence and units must be declared."
+required_falsifier = "Independent source transcription or parameter map violates the relation under declared units."
+where_stated = [
+    "https://arxiv.org/abs/2505.00396",
+    "data/output/audit/2026-08-02/p0_frontier.toml",
+    "data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "source_split"
+
+[[successor]]
+proposal_key = "energy-constraint-declared-tolerance"
+statement = "The photon-graviton TCMT implementation evaluates kappa_1 - kappa_2 = gamma_l against the declared relative tolerance."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Implementation predicate uses the declared 1e-10 tolerance and an independent fixture."
+required_falsifier = "Observed discrepancy exceeds 1e-10 or the implementation accepts under a looser tolerance."
+where_stated = [
+    "data/output/audit/2026-08-02/p0_frontier.toml",
+    "data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml",
+    "data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml",
+]
+evidence_artifact_ids = ["LOCAL-CLAIM-TRANSITION-001"]
+predecessor_relation_kind = "implementation_split"

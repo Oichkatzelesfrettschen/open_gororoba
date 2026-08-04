@@ -1,0 +1,118 @@
+schema_version = "canonical-claim-transition-application-v1"
+campaign_id = "WS-CLAIM-TRANSITION-001"
+implementation_revision = "f3549de47cc50d4294ec1fcaab621834d5dc28ad"
+captured_utc = "2026-08-04T04:30:00Z"
+canonical_database = "registry/canonical/control_plane.sqlite3"
+database_hash_before_campaign = "5ebe19a309b6a2df45c49f4d0b7b983b7ecee1348cca725a2f9a694e508dcdbf"
+database_hash_after_transition_application = "e1abea6e196557f46003b2199efdf8c818533e32b859e55338b9ac3759f1ba11"
+database_hash_after_compatibility_and_planning_validation = "b070034c0e95b58f6ca7a20a1f2731051fa4903d8e9f491a5d5436676aff33bb"
+database_hash_after_final_registry_validation = "0641c3bacfbacab9f6049a05568d2170a4cecd17b7734d214097450feee3f4fc"
+schema_migration = "0017_claim_transitions.sql"
+transition_event_count = 4
+relation_count = 11
+successor_count = 11
+unmodified_claims = ["C-821", "C-864", "C-867"]
+status_note_revisions = [23, 24, 25, 26]
+
+[commands]
+plan_and_apply = "CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_db --bin gororoba-db -- --repo-root . claim transition plan/apply --spec <spec>"
+plan_exit_code = 0
+apply_exit_code = 0
+export = "CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_cli_provenance --bin provenance -- export-control-plane"
+export_exit_code = 0
+registry_integrity = "TMPDIR=$PWD/.cache/transition-tmp make registry-integrity"
+registry_integrity_exit_code = 0
+manifest_verify = "CARGO_TARGET_DIR=.cache/transition-target cargo run -p gororoba_cli_data --bin experiment-manifest -- verify data/output/audit/2026-08-03/canonical-claim-transition-experiment-manifest.toml --repo-root ."
+manifest_verify_exit_code = 0
+
+[before_status_counts]
+"Closed/Analogy" = 1
+"Closed/Methodology-Insufficient" = 2
+"Closed/Negative-Result" = 6
+"Closed/Obstructed" = 1
+"Closed/Refuted" = 3
+"Closed/Research-Program" = 3
+"Closed/Source-Insufficient" = 1
+"Closed/Toy" = 2
+Established = 44
+Provisional = 122
+Refuted = 58
+Superseded = 11
+Theoretical = 4
+Verified = 1190
+
+[after_status_counts]
+"Closed/Analogy" = 1
+"Closed/Methodology-Insufficient" = 2
+"Closed/Negative-Result" = 6
+"Closed/Obstructed" = 1
+"Closed/Refuted" = 3
+"Closed/Research-Program" = 3
+"Closed/Source-Insufficient" = 1
+"Closed/Toy" = 2
+Established = 44
+Provisional = 133
+Refuted = 58
+Superseded = 12
+Theoretical = 7
+Verified = 1186
+
+[[transition]]
+event_id = 1
+transition_key = "c-820-electromagnetic-ward-status-boundary"
+source_claim_id = "C-820"
+expected_prior_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+transition_spec_sha256 = "f3f1842d7836a2fa927396b5fc6dbe8c92af76be25416ee1b3db0bfaf35ca501"
+successor_ids = ["C-1634", "C-1635"]
+
+[[transition]]
+event_id = 2
+transition_key = "c-822-gravitational-ward-status-boundary"
+source_claim_id = "C-822"
+expected_prior_status = "Verified"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+transition_spec_sha256 = "f770fe980faa333ec950c6b8f2eedcf29298f83e64683d14edf958c47bc8a1be"
+successor_ids = ["C-1636", "C-1637"]
+
+[[transition]]
+event_id = 3
+transition_key = "c-865-energy-constraint-status-boundary"
+source_claim_id = "C-865"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_claim_status = "Provisional"
+transition_spec_sha256 = "89c8e75b932a859b5fd5ab1c63710b336da152b48f66a07f8f3fd4e1b35f48a9"
+successor_ids = ["C-1638", "C-1639"]
+
+[[transition]]
+event_id = 4
+transition_key = "c-866-scattering-predicate-status-boundary"
+source_claim_id = "C-866"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+proposed_claim_status = "Superseded"
+transition_spec_sha256 = "4d912e03d3bd481aa3356b721e2b5656e5beb1e751d06fb705158b7e81fae8c0"
+successor_ids = ["C-1640", "C-1641", "C-1642", "C-1643", "C-1644"]
+
+[generated_views]
+claims = "99010cd659bab0bc6f50b263bb9862b692bf51feebe724341f2e4e317c5da8df"
+claim_transitions = "3f3589885a2efa94d17241ccda421c1c3e1cf64ca232809629a6d69c643cd880"
+claim_relations = "7fbf86b2b5671838cb2368e62a4cf9936305be531eaab591cc1b56de712b4f5a"
+
+[provenance]
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_manifest_declared_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+p1_manifest_policy = "Preserved byte-for-byte; no retargeting after merge."
+transition_manifest = "data/output/audit/2026-08-03/canonical-claim-transition-experiment-manifest.toml"
+transition_manifest_declared_revision = "f3549de47cc50d4294ec1fcaab621834d5dc28ad"
+
+[controls]
+atomic_apply = "Four real transitions committed through one transaction per event; event, child rows, successor claims, relations, revisions, and source status are coupled."
+rollback = "Unit control rejects missing evidence, missing experiment, stale status, invalid status, invalid verdict, successor collision, and relation cycle without partial rows."
+replay = "Exact replay is a verified no-op; changed content under the same transition key is rejected."
+deterministic_allocation = "Plan output allocated the same successor IDs consumed by apply for each current canonical state."
+source_status = "C-820 and C-822 are Provisional; C-865 is Provisional; C-866 is Superseded."
+excluded_status_changes = "C-821, C-864, and C-867 have no transition event and retain their prior status and evidence notes."

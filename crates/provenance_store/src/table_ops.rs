@@ -16,13 +16,48 @@ pub(crate) fn clear_tables(conn: &Connection) -> Result<()> {
         "
         INSERT INTO document_search(document_search) VALUES('delete-all');
         DELETE FROM record_sources;
-        DELETE FROM citations;
-        DELETE FROM mirror_observations;
-        DELETE FROM artifact_links;
-        DELETE FROM artifact_paths;
-        DELETE FROM lane_assignments;
-        DELETE FROM links;
-        DELETE FROM artifacts;
+        DELETE FROM citations
+         WHERE artifact_id NOT IN (
+             SELECT artifact_id FROM claim_transition_evidence
+             UNION
+             SELECT artifact_id FROM claim_transition_successor_evidence
+         );
+        DELETE FROM mirror_observations
+         WHERE artifact_id NOT IN (
+             SELECT artifact_id FROM claim_transition_evidence
+             UNION
+             SELECT artifact_id FROM claim_transition_successor_evidence
+         );
+        DELETE FROM artifact_links
+         WHERE artifact_id NOT IN (
+             SELECT artifact_id FROM claim_transition_evidence
+             UNION
+             SELECT artifact_id FROM claim_transition_successor_evidence
+         );
+        DELETE FROM artifact_paths
+         WHERE artifact_id NOT IN (
+             SELECT artifact_id FROM claim_transition_evidence
+             UNION
+             SELECT artifact_id FROM claim_transition_successor_evidence
+         );
+        DELETE FROM lane_assignments
+         WHERE artifact_id NOT IN (
+             SELECT artifact_id FROM claim_transition_evidence
+             UNION
+             SELECT artifact_id FROM claim_transition_successor_evidence
+         );
+        DELETE FROM links
+         WHERE url NOT IN (
+             SELECT url FROM artifact_links
+             UNION
+             SELECT url FROM mirror_observations
+         );
+        DELETE FROM artifacts
+         WHERE id NOT IN (
+             SELECT artifact_id FROM claim_transition_evidence
+             UNION
+             SELECT artifact_id FROM claim_transition_successor_evidence
+         );
         DELETE FROM documents;
         DELETE FROM ingest_fingerprints;
         ",
@@ -34,7 +69,6 @@ pub(crate) fn clear_control_plane_tables(conn: &Connection) -> Result<()> {
     conn.execute_batch(
         "
         DELETE FROM registry_snapshots;
-        DELETE FROM claims;
         DELETE FROM insights;
         DELETE FROM experiments_cp;
         DELETE FROM binaries_cp;
