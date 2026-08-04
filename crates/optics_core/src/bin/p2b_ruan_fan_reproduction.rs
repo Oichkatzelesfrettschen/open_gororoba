@@ -119,6 +119,15 @@ fn finite_real(value: f64) -> String {
     }
 }
 
+fn toml_string(value: &str) -> String {
+    let escaped = value
+        .replace('\\', "\\\\")
+        .replace('"', "\\\"")
+        .replace('\n', "\\n")
+        .replace('\r', "\\r");
+    format!("\"{escaped}\"")
+}
+
 fn finite_complex(value: Complex64) -> bool {
     value.re.is_finite() && value.im.is_finite()
 }
@@ -362,17 +371,17 @@ fn append_root_search(
             finite_real(attempt.start.im),
             attempt
                 .root
-                .map_or_else(|| "nan".to_owned(), |value| finite_real(value.re)),
+                .map_or_else(|| "\"nan\"".to_owned(), |value| finite_real(value.re)),
             attempt
                 .root
-                .map_or_else(|| "nan".to_owned(), |value| finite_real(value.im)),
+                .map_or_else(|| "\"nan\"".to_owned(), |value| finite_real(value.im)),
             attempt.iterations,
             if attempt.residual.is_finite() {
                 finite_real(attempt.residual)
             } else {
-                "inf".to_owned()
+                "\"inf\"".to_owned()
             },
-            attempt.error.as_deref().unwrap_or(""),
+            toml_string(attempt.error.as_deref().unwrap_or("")),
         )?;
     }
     Ok(())
@@ -464,8 +473,8 @@ fn parameter_anchor(
         finite_real(half_width),
         finite_real(source_difference),
         source_pass,
-        reference.map_or_else(|| "nan".to_owned(), finite_real),
-        reference_difference.map_or_else(|| "nan".to_owned(), finite_real),
+        reference.map_or_else(|| "\"nan\"".to_owned(), finite_real),
+        reference_difference.map_or_else(|| "\"nan\"".to_owned(), finite_real),
     )?;
     Ok(source_pass)
 }
@@ -1743,8 +1752,8 @@ fn append_independent_mie_landmark(
             "[[independent_mie_landmark]]\nl = {l}\nfrequency = 0.2282\nproduction_r_re = {}\nproduction_r_im = {}\nreference_r_re = {}\nreference_r_im = {}\ncomplex_r_defect = {}\n",
             finite_real(production.r_l.re),
             finite_real(production.r_l.im),
-            reference.map_or_else(|| "nan".to_owned(), |row| finite_real(row.first.re)),
-            reference.map_or_else(|| "nan".to_owned(), |row| finite_real(row.first.im)),
+            reference.map_or_else(|| "\"nan\"".to_owned(), |row| finite_real(row.first.re)),
+            reference.map_or_else(|| "\"nan\"".to_owned(), |row| finite_real(row.first.im)),
             finite_real(defect),
         )?;
     }
