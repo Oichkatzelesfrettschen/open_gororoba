@@ -171,6 +171,26 @@ extract-c: all
 	  echo "Emitted extraction/OpenGororoba.FP24Representable.fp24_value_admit.{c,h}"; \
 	fi
 
+# Verified Gallina -> C emission of the R2VB DP4 transform kernel.  Pinned
+# command: rocq compile of extraction/ExtractR2VBDP4.v under the
+# rocq-certirocq switch emits dp4 and dp4_operand_admit plus the Z/positive/
+# bool constructor glue; outputs land in extraction/ and their hashes in
+# extraction/golden/r2vb_dp4_extraction.sha256.
+extract-r2vb-c:
+	@echo "Emitting verified R2VB DP4 C from Rocq via CertiRocq..."
+	@rocq compile $(ROCQ_EXTERNAL_ARGS) -R theories OpenGororoba -R verified OpenGororobaVerified 	  extraction/ExtractR2VBDP4.v && 	mv -f OpenGororoba.R2VBTransformDP4.dp4.c 	      OpenGororoba.R2VBTransformDP4.dp4.h 	      OpenGororoba.R2VBTransformDP4.dp4_operand_admit.c 	      OpenGororoba.R2VBTransformDP4.dp4_operand_admit.h 	      r2vb_dp4_glue.c r2vb_dp4_glue.h extraction/ && 	echo "Emitted extraction/OpenGororoba.R2VBTransformDP4.*.{c,h} and glue"
+
+# Hash the emitted artifacts and compare against the retained golden hashes.
+extract-r2vb-check: extract-r2vb-c
+	@cd extraction && sha256sum 	  OpenGororoba.R2VBTransformDP4.dp4.c 	  OpenGororoba.R2VBTransformDP4.dp4_operand_admit.c 	  r2vb_dp4_glue.c > /tmp/r2vb_dp4_extraction.sha256.new && 	diff -u golden/r2vb_dp4_extraction.sha256 /tmp/r2vb_dp4_extraction.sha256.new && 	echo "MATCH: R2VB extraction hashes match golden" || 	(echo "DIFF: R2VB extraction hashes differ from golden"; exit 1)
+
+# Build and run the correspondence harnesses: the extracted dp4 against a
+# native integer reference over nine fixtures spanning the B = 181 admission
+# boundary, and the extracted gate against its native predicate over five
+# known-good and four known-bad rows.
+test-r2vb-correspondence:
+	@RT="$$(opam var lib)/coq/user-contrib/CertiRocq/Plugin/runtime"; 	gcc -O1 -std=gnu11 -Wno-int-conversion -Wno-implicit-function-declaration 	  -I "$$RT" -o extraction/test_r2vb_dp4 	  extraction/test_r2vb_dp4_correspondence.c 	  extraction/OpenGororoba.R2VBTransformDP4.dp4.c 	  extraction/r2vb_dp4_glue.c "$$RT"/gc_stack.o && 	gcc -O1 -std=gnu11 -Wno-int-conversion -Wno-implicit-function-declaration 	  -I "$$RT" -o extraction/test_r2vb_dp4_admit 	  extraction/test_r2vb_dp4_admit_correspondence.c 	  extraction/OpenGororoba.R2VBTransformDP4.dp4_operand_admit.c 	  extraction/r2vb_dp4_glue.c "$$RT"/gc_stack.o && 	./extraction/test_r2vb_dp4 && ./extraction/test_r2vb_dp4_admit
+
 # Compile-check the emitted C against the CertiRocq runtime headers.  CertiCoq
 # puns function pointers into value (long), valid CompCert-C, so int-conversion
 # and implicit-declaration are permitted for this translation unit.

@@ -280,6 +280,7 @@ theories/OctonionSandwichNorm.v
 theories/IDCT8EvenOdd.v
 theories/IDCT8DP4ExactBound.v
 theories/FP24Representable.v
+theories/R2VBTransformDP4.v
 verified/C1628_IDCT8ButterflyCompaction.v
 verified/C1629_IDCT8DP4ExactBound.v
 verified/C1630_SedenionOctonionDowncast.v

@@ -292,3 +292,7 @@ proofs/OpenGororoba.*.h
 proofs/extraction/OpenGororoba.*.c
 proofs/extraction/OpenGororoba.*.h
 proofs/extraction/glue.*
+proofs/extraction/r2vb_dp4_glue.c
+proofs/extraction/r2vb_dp4_glue.h
+proofs/extraction/test_r2vb_dp4
+proofs/extraction/test_r2vb_dp4_admit
