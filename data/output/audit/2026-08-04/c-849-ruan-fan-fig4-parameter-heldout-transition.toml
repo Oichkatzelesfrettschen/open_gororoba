@@ -1,0 +1,47 @@
+[transition]
+transition_key = "c-849-ruan-fan-fig4-no-fit-parameter-identification"
+source_claim_id = "C-849"
+expected_prior_status = "Provisional"
+experiment_verdict = "Falsifies"
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+experiment_ids = []
+exercised_falsifier = "Run the frozen Figure 4 lossless and lossy grids with source-derived complex roots and a uniform-metal background, retain complex R_l and S_l before observables, and apply independent-root and mutation controls without fitting the evaluation curve."
+proposed_claim_status = "Refuted"
+rationale = "The independently checked no-fit Figure 4 path reproduces the published parameter anchors, but the repository-defined unit-scale 0.01 gate fails. The maximum complex S defect is 1.59400034798379067e-2 and the maximum scattering defect is 1.64658914989521676e-2. This refutes the repository's stronger 1% implementation predicate; it does not refute the Ruan-Fan source equations or the qualitative source comparison."
+unresolved_assumptions = [
+    "The source reports qualitative excellent agreement and does not state a universal 1% threshold.",
+    "The retained EPS comparison is bounded because solid curves and markers are not mechanically separable without subjective selection.",
+    "The source-parameter anchors pass within the declared printed-precision and independent-root envelope.",
+]
+actor = "p2b-parameter-identification-campaign"
+reason = "Record the failed repository-defined Figure 4 match while preserving the successful source-parameter result and measured error envelope."
+transition_timestamp = "2026-08-04T22:54:54Z"
+expected_source_state_sha256 = "e0f6d44285822adcb51255e6fdec66398cf24c89796ad7b068edf7a4530cf05f"
+expected_claim_id_max = 1651
+
+[[successor]]
+proposal_key = "c849-source-derived-fig4-parameter-anchors"
+statement = "The Ruan-Fan Figure 4 complex-pole and uniform-metal-background procedure reproduces the published single-channel source-parameter anchors within the declared printed-precision and independent-reference envelope."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Source-parameter identification only; no 1% real-frequency curve or general paper-reproduction claim is implied."
+required_falsifier = "An independent outgoing-mode determinant or high-precision reference must move a published anchor outside its declared precision and numerical uncertainty envelope."
+where_stated = [
+    "https://arxiv.org/abs/0909.3323",
+    "data/output/audit/2026-08-04/p2b-preregistration.toml",
+    "data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml",
+]
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+predecessor_relation_kind = "narrows"
+
+[[successor]]
+proposal_key = "c849-measured-fig4-complex-channel-error-envelope"
+statement = "The source-derived Ruan-Fan Figure 4 single-channel TCMT approximation has a measured no-fit complex-channel and normalized-observable error envelope on the frozen lossless and lossy grids."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Measured implementation behavior only; the retained envelope replaces the failed repository 1% threshold and does not assert a source-paper tolerance."
+required_falsifier = "A rerun at the pinned implementation revision must fail to reproduce the retained per-frequency complex and observable error components, or an independent implementation must produce a materially different envelope under the same conventions."
+where_stated = [
+    "data/output/audit/2026-08-04/p2b-preregistration.toml",
+    "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml",
+]
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+predecessor_relation_kind = "narrows"

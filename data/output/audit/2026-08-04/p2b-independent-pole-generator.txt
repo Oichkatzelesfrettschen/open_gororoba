@@ -1,0 +1,218 @@
+#!/usr/bin/env python3
+"""Independent high-precision Ruan-Fan pole and background generator.
+
+This source is retained as text because repository analysis programs remain
+Rust-owned. The command runs it with pinned mpmath and writes pipe-delimited
+fixtures. It does not import optics_core, Rust Bessel functions, or Rust
+matrix assembly.
+"""
+
+import sys
+from pathlib import Path
+
+import mpmath as mp
+
+mp.mp.dps = 80
+
+
+def drude(omega, omega_p, gamma_d):
+    return 1 - omega_p**2 / (omega**2 + 1j * gamma_d * omega)
+
+
+def passive_sqrt(value):
+    root = mp.sqrt(value)
+    if mp.im(root) < 0 or (mp.im(root) == 0 and mp.re(root) < 0):
+        root = -root
+    return root
+
+
+def basis(kind, order, argument):
+    if kind == "j":
+        return mp.besselj(order, argument), mp.diff(lambda x: mp.besselj(order, x), argument)
+    if kind == "y":
+        return mp.bessely(order, argument), mp.diff(lambda x: mp.bessely(order, x), argument)
+    if kind == "h1":
+        value = mp.hankel1(order, argument)
+        derivative = mp.diff(lambda x: mp.hankel1(order, x), argument)
+        return value, derivative
+    if kind == "h2":
+        value = mp.hankel2(order, argument)
+        derivative = mp.diff(lambda x: mp.hankel2(order, x), argument)
+        return value, derivative
+    raise ValueError(kind)
+
+
+def state(kind, order, omega, epsilon, radius):
+    wave_number = omega * passive_sqrt(epsilon)
+    field, derivative = basis(kind, order, wave_number * radius)
+    return field, wave_number * derivative / epsilon
+
+
+def determinant(order, omega, radii, epsilon_d, omega_p, gamma_d):
+    metal = drude(omega, omega_p, gamma_d)
+    epsilons = [metal, epsilon_d, metal, 1]
+    region_bases = [["j"], ["j", "y"], ["j", "y"], ["h1"]]
+    region_columns = [[0], [1, 2], [3, 4], [5]]
+    matrix = mp.matrix(6, 6)
+    for interface, (inner, outer) in enumerate(((0, 1), (1, 2), (2, 3))):
+        radius = radii[interface]
+        for region, sign in ((inner, 1), (outer, -1)):
+            for basis_index, kind in enumerate(region_bases[region]):
+                column = region_columns[region][basis_index]
+                field, flux = state(kind, order, omega, epsilons[region], radius)
+                matrix[2 * interface, column] += sign * field
+                matrix[2 * interface + 1, column] += sign * flux
+    return mp.det(matrix)
+
+
+def uniform_reflection(order, omega, radius, omega_p, gamma_d):
+    metal = drude(omega, omega_p, gamma_d)
+    inner = state("j", order, omega, metal, radius)
+    outgoing = state("h1", order, omega, 1, radius)
+    incoming = state("h2", order, omega, 1, radius)
+    determinant_value = inner[0] * (-outgoing[1]) - (-outgoing[0]) * inner[1]
+    return (inner[0] * incoming[1] - incoming[0] * inner[1]) / determinant_value
+
+
+def layered_reflection(order, omega, radii, epsilon_d, omega_p, gamma_d):
+    metal = drude(omega, omega_p, gamma_d)
+    epsilons = [metal, epsilon_d, metal, 1]
+    region_bases = [["j"], ["j", "y"], ["j", "y"], ["h1"]]
+    region_columns = [[0], [1, 2], [3, 4], [5]]
+    matrix = mp.matrix(6, 6)
+    right_hand_side = mp.matrix(6, 1)
+    for interface, (inner, outer) in enumerate(((0, 1), (1, 2), (2, 3))):
+        radius = radii[interface]
+        for region, sign in ((inner, 1), (outer, -1)):
+            for basis_index, kind in enumerate(region_bases[region]):
+                column = region_columns[region][basis_index]
+                field, flux = state(kind, order, omega, epsilons[region], radius)
+                matrix[2 * interface, column] += sign * field
+                matrix[2 * interface + 1, column] += sign * flux
+        if interface == 2:
+            incoming_field, incoming_flux = state("h2", order, omega, 1, radius)
+            right_hand_side[2 * interface] = incoming_field
+            right_hand_side[2 * interface + 1] = incoming_flux
+    coefficients = mp.lu_solve(matrix, right_hand_side)
+    return coefficients[5]
+
+
+def refine(order, seed, radii, epsilon_d, omega_p, gamma_d):
+    def real_equation(real, imaginary):
+        value = determinant(order, real + 1j * imaginary, radii, epsilon_d, omega_p, gamma_d)
+        return mp.re(value)
+
+    def imaginary_equation(real, imaginary):
+        value = determinant(order, real + 1j * imaginary, radii, epsilon_d, omega_p, gamma_d)
+        return mp.im(value)
+
+    real, imaginary = mp.findroot(
+        (real_equation, imaginary_equation), (seed[0], seed[1]), tol=mp.mpf("1e-60"), maxsteps=100
+    )
+    root = real + 1j * imaginary
+    value = determinant(order, root, radii, epsilon_d, omega_p, gamma_d)
+    return root, value
+
+
+def root_row(case, loss, order, seed, radii, epsilon_d, omega_p, gamma_d):
+    root, value = refine(order, seed, radii, epsilon_d, omega_p, gamma_d)
+    return {
+        "kind": "root",
+        "case": case,
+        "loss": loss,
+        "l": order,
+        "re": mp.nstr(mp.re(root), 70),
+        "im": mp.nstr(mp.im(root), 70),
+        "residual": mp.nstr(abs(value), 40),
+        "seed_re": mp.nstr(seed[0], 30),
+        "seed_im": mp.nstr(seed[1], 30),
+    }
+
+
+def main():
+    if len(sys.argv) != 2:
+        raise SystemExit("usage: python3 p2b-independent-pole-generator.txt <output.json>")
+    output = Path(sys.argv[1])
+    omega_p = mp.mpf("1")
+    lambda_p = 2 * mp.pi / omega_p
+    epsilon_d = mp.mpf("12.96")
+    cases = {
+        "fig4": {
+            "radii": [mp.mpf("0.285") * lambda_p, mp.mpf("1.0") * lambda_p, mp.mpf("1.5") * lambda_p],
+            "seeds": {0: [(mp.mpf("0.1552"), mp.mpf("-0.000019166"))]},
+        },
+        "fig5": {
+            "radii": [mp.mpf("0.36") * lambda_p, mp.mpf("0.73") * lambda_p, mp.mpf("1.0") * lambda_p],
+            "seeds": {
+                0: [(mp.mpf("0.2044"), mp.mpf("-0.00656")), (mp.mpf("0.23095"), mp.mpf("-0.00777"))],
+                1: [(mp.mpf("0.21584"), mp.mpf("-0.00564")), (mp.mpf("0.24573"), mp.mpf("-0.00809"))],
+                2: [(mp.mpf("0.20648"), mp.mpf("-0.00138")), (mp.mpf("0.23260"), mp.mpf("-0.00224"))],
+            },
+        },
+    }
+    rows = []
+    for case, configuration in cases.items():
+        for order, seeds in configuration["seeds"].items():
+            for loss, gamma_d in (("lossless", mp.mpf("0")), ("lossy", mp.mpf("0.001"))):
+                for seed in seeds:
+                    rows.append(
+                        root_row(case, loss, order, seed, configuration["radii"], epsilon_d, omega_p, gamma_d)
+                    )
+        if case == "fig4":
+            frequency = mp.mpf("0.15521513600289402613999664330805645")
+            for loss, gamma_d in (("lossless", mp.mpf("0")), ("lossy", mp.mpf("0.001"))):
+                reflection = uniform_reflection(0, frequency, configuration["radii"][2], omega_p, gamma_d)
+                rows.append(
+                    {
+                        "kind": "background",
+                        "case": case,
+                        "loss": loss,
+                        "l": 0,
+                        "frequency": mp.nstr(frequency, 70),
+                        "re": mp.nstr(mp.re(reflection), 70),
+                        "im": mp.nstr(mp.im(reflection), 70),
+                        "modulus": mp.nstr(abs(reflection), 40),
+                    }
+                )
+        if case == "fig5":
+            frequency = mp.mpf("0.2282")
+            for order in (0, 1, 2):
+                reflection = layered_reflection(
+                    order,
+                    frequency,
+                    configuration["radii"],
+                    epsilon_d,
+                    omega_p,
+                    mp.mpf("0.001"),
+                )
+                rows.append(
+                    {
+                        "kind": "mie",
+                        "case": case,
+                        "loss": "lossy",
+                        "l": order,
+                        "frequency": mp.nstr(frequency, 70),
+                        "re": mp.nstr(mp.re(reflection), 70),
+                        "im": mp.nstr(mp.im(reflection), 70),
+                    }
+                )
+    output.parent.mkdir(parents=True, exist_ok=True)
+    lines = ["format|p2b-independent-mpmath-pole-fixtures-v1", f"mpmath_version|{mp.__version__}", f"dps|{mp.mp.dps}"]
+    for row in rows:
+        if row["kind"] == "root":
+            lines.append(
+                "root|{case}|{loss}|{l}|{re}|{im}|{residual}".format(**row)
+            )
+        elif row["kind"] == "background":
+            lines.append(
+                "background|{case}|{loss}|{l}|{re}|{im}|{frequency}".format(**row)
+            )
+        elif row["kind"] == "mie":
+            lines.append(
+                "mie|{case}|{loss}|{l}|{re}|{im}|{frequency}".format(**row)
+            )
+    output.write_text("\n".join(lines) + "\n")
+
+
+if __name__ == "__main__":
+    main()
