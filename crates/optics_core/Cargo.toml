@@ -14,6 +14,10 @@ path = "src/bin/p2a_legacy_optics_characterization.rs"
 name = "p2a-channel-oracle-evidence"
 path = "src/bin/p2a_channel_oracle_evidence.rs"
 
+[[bin]]
+name = "p2b-ruan-fan-reproduction"
+path = "src/bin/p2b_ruan_fan_reproduction.rs"
+
 [dependencies]
 anyhow = { workspace = true, optional = true }
 cubecl = { workspace = true, optional = true }
@@ -24,6 +28,7 @@ gororoba_gpu_cuda = { workspace = true, optional = true }
 gororoba_gpu_vulkan = { workspace = true, optional = true }
 num-complex = { workspace = true }
 rustfft = { workspace = true }
+sha2 = { workspace = true }
 thiserror = { workspace = true }
 
 [features]

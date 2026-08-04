@@ -1,0 +1,43 @@
+format = "p2b-source-figure-vector-extraction-v1"
+captured_utc = "2026-08-04T22:30:00Z"
+source_id = "0909.3323v2"
+source_pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_archive_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+source_tex_sha256 = "625f2dc473e5d50abba49daa3d1382ee9bd70b17746cd945bf9b81c70bc28"
+figure4_eps_sha256 = "b77cfad1d5e6a5ffbacdaac5f96e3668ebe4e96147ff221a430ca9981683c7b8"
+figure5_scattering_eps_sha256 = "348ee1c05971c9abdfade0a05a20652c95f86a6ab5539cf7383e312e571fd384"
+figure5_absorption_eps_sha256 = "3ec6d19edad5f78632b7b015f3aac49b907f8213997aa9361f44b69c3df734d0"
+figure4_txtwrite_sha256 = "7618f3cb0b1b52a6dad2867e26fa7f9505dd4fa1e52af7b63240ecb3c2a2213a"
+ghostscript_version = "10.07.1"
+mutool_version = "1.28.0"
+pdftotext_version = "26.07.0"
+
+[commands]
+eps_text_conversion = "gs -q -dSAFER -dBATCH -dNOPAUSE -sDEVICE=txtwrite -sOutputFile=FanoTest.txt FanoTest.eps"
+marker_count = "awk '{gsub(/\\r/,\"\"); if ($NF==\"FO\") {count++}} END{print count+0}' <file>"
+source_text_search = "rg -n 'boundary|epsilon|H_z|0.2282|0.03|0.32|rho_1|rho_2' Fano_Scattering.tex"
+
+figure4_marker_count = 321
+figure5_scattering_marker_count = 0
+figure5_absorption_marker_count = 348
+figure4_contains_vector_paths = true
+figure5_scattering_contains_vector_paths = true
+figure5_absorption_contains_vector_paths = true
+solid_curve_and_marker_series_separable = false
+comparison_status = "bounded_graphical_comparison_not_used"
+textual_source_anchors_used = true
+source_anchor_frequency = 0.2282
+source_anchor_scattering = 0.03
+source_anchor_absorption = 0.32
+
+[limitation]
+statement = "The EPS files retain vector paths, but the available deterministic text conversion does not assign every path and marker to a unique panel and series without subjective curve selection."
+consequence = "P2B uses the source text anchors and the machine-generated numerical comparisons; it does not treat raster or unassigned vector pixels as exact numerical observations."
+follow_up = "Use a declared path-aware EPS parser if a future campaign requires numerical extraction from the plotted curves."
+
+[source_text]
+figure4_geometry = "rho1=0.285 lambda_p, rho2=1.0 lambda_p, rho3=1.5 lambda_p, epsilon_d=12.96"
+figure4_parameter_method = "complex roots of the layered-cylinder transcendental equation plus a uniform metallic-cylinder background"
+figure5_geometry = "rho1=0.36 lambda_p, rho2=0.73 lambda_p, rho3=1.0 lambda_p, gamma_d=0.001 omega_p"
+figure5_channels = "l=0,+/-1,+/-2"
+figure5_landmark = "At omega=0.2282 omega_p the text reports total scattering 0.03 and total absorption 0.32 in units of 2 lambda/pi."

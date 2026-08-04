@@ -1,0 +1,128 @@
+format = "p2b-bind-baseline-v1"
+captured_utc = "2026-08-04T21:34:56Z"
+branch = "agent/ruan-fan-parameter-identification-heldout-reproduction"
+head = "e7b81543519600f9104f5ccc0839ba33c361fb56"
+origin_main = "e7b81543519600f9104f5ccc0839ba33c361fb56"
+worktree = "/home/eirikr/Github/open_gororoba-ruan-fan-parameter-heldout"
+worktree_status = "clean before P2B changes"
+hooks_path = ".githooks"
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f486 2026-06-30)"
+sqlite = "3.53.3 2026-06-26 20:14:12 d4c0e51e4aeb96955b99185ab9cde75c339e2c29c3f3f12428d364a10d78alt1 (64-bit)"
+python = "Python 3.14.6"
+scipy = "1.18.0"
+numpy = "2.5.1"
+mpmath = "1.4.1"
+cpu = "AMD Ryzen 5 5600X3D, 12 logical CPUs, x86_64"
+kernel = "Linux x570-5600X3D 7.1.4-1-cachyos"
+canonical_database_sha256 = "5302168dbaeab33290b69d798b047c08e5e69598b8ea697541ce67b1ec37a4eb"
+claim_count = 1466
+claim_transition_event_count = 10
+claim_relation_count = 13
+source_pdf_id = "arXiv:0909.3323v2"
+source_pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_tex_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+source_figure3_sha256 = "e9b3f4e38c90c14a73880552cc8fcdac2b1ae4c23057669f929e9d507e794e9a"
+p1_manifest_path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_manifest_declared_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+p2a_manifest_path = "data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml"
+p2a_manifest_sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+p2a_manifest_declared_revision = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+p2a_evidence_sha256 = "ef52e760098f558993c3a4d373a051faf4589e1652b36359d7c21970dcb588a2"
+p2a_validation_sha256 = "79c5e90b2179ea7d25f38266e90a26983fd4eda371b4564ec76591975583d9ae"
+p2a_call_map_sha256 = "2b35d25c438616a45f2d12161989e876e4a8bf25fd9d521914f4a4b376b165f3"
+p1_manifest_preserved = true
+p2a_manifest_preserved = true
+p1_current_head_revision_check = "expected mismatch; verified at the declared revision in a detached worktree"
+p2a_current_head_revision_check = "expected mismatch; verified at the declared revision in a detached worktree"
+p1_declared_revision_verification = "verified with experiment-manifest from /home/eirikr/Github/open_gororoba/.cache/exp-p1-merged-target/debug/experiment-manifest"
+p2a_declared_revision_verification = "verified with experiment-manifest from /home/eirikr/Github/open_gororoba/.cache/exp-p1-merged-target/debug/experiment-manifest"
+p1_declared_revision_worktree = "/var/tmp/open_gororoba-p1-declared"
+p2a_declared_revision_worktree = "/var/tmp/open_gororoba-p2a-declared"
+p1_declared_revision_exit_code = 0
+p2a_declared_revision_exit_code = 0
+p1_current_head_exit_code = 1
+p2a_current_head_exit_code = 1
+
+[authority]
+scientific_authority = "canonical SQLite claims, typed transition exports, retained experiment manifests, and P2A oracle artifacts"
+non_authority = "docs/latex/claims_appendix.tex is a generated publication surface and is not used for P2B claim status"
+p2a_scope = "channel oracle correctness; source definitions and implementation boundary are immutable P2B inputs"
+p2b_scope = "parameter identification, single-resonance adequacy, and held-out Mie/TCMT comparison"
+
+[publication_view_discrepancy]
+path = "docs/latex/claims_appendix.tex"
+owner_command = "cargo run --release --bin generate-latex"
+observed = "C-848 is rendered as Verified while canonical SQLite is Superseded; C-849 and C-850 are rendered as Provisional"
+authority = "non-blocking generated-view discrepancy; canonical SQLite remains authoritative"
+disposition = "register now; regenerate in a separate minimal publication-view change"
+scientific_effect = "none"
+
+[[claim]]
+id = "C-848"
+status = "Superseded"
+statement = "TCMT Fano lineshape (Ruan-Fan 2009 Eq. 23) reproduces lossless/lossy Fano asymmetry for phi=0, pi/2, pi."
+
+[[claim]]
+id = "C-849"
+status = "Provisional"
+statement = "Cylindrical Lorentz-Mie solver matches TCMT within 1% for single-channel (l=0) MDM geometry (Ruan-Fan Fig. 4)."
+
+[[claim]]
+id = "C-850"
+status = "Provisional"
+statement = "Multi-channel (|l|<=2) Mie solver matches TCMT sum for MDM cloaked-sensor geometry (Ruan-Fan Fig. 5)."
+
+[[claim]]
+id = "C-851"
+status = "Verified"
+statement = "Fano antiresonance (C_sct=0) occurs at resonance frequency for background phase phi=pi in lossless scattering."
+
+[[claim]]
+id = "C-1640"
+status = "Verified"
+statement = "The declared scattering, absorption, and extinction observables satisfy an independently derived balance relation."
+
+[[claim]]
+id = "C-1641"
+status = "Verified"
+statement = "The declared lossless, flux-normalized complex scattering matrix is unitary on the stated channel basis."
+
+[[claim]]
+id = "C-1642"
+status = "Verified"
+statement = "The declared passive lossy scattering matrix is contractive under the stated flux normalization."
+
+[[claim]]
+id = "C-1643"
+status = "Provisional"
+statement = "The declared reciprocal scattering model satisfies the appropriate reciprocity relation for its channel basis."
+
+[[claim]]
+id = "C-1644"
+status = "Verified"
+statement = "The declared time-reversed scattering construction satisfies its stated time-reversal relation."
+
+[[claim]]
+id = "C-1650"
+status = "Provisional"
+statement = "The optics_core Ruan-Fan channel path preserves complex R_l and S_l and computes scattering, absorption, and extinction independently across the frozen analytical grid with detected old-oracle mutations."
+
+[[claim]]
+id = "C-1651"
+status = "Theoretical"
+statement = "The Ruan-Fan source channel identities define R_l, S_l, scattering, absorption, and extinction with the stated incoming and outgoing Hankel convention."
+
+[p2a_immutable_inputs]
+source_ledger = "data/output/audit/2026-08-04/ruan-fan-source-equation-figure-ledger.toml"
+source_ledger_sha256 = "fb305aaa09ab335408d8c3f61bade106072d88bc0cc218267c824be3287a7446"
+analytical_evidence = "data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml"
+call_map = "data/output/audit/2026-08-04/p2a-optics-call-map.toml"
+legacy_characterization = "data/output/audit/2026-08-04/p2a-legacy-optics-characterization.toml"
+
+[p2a_reference_observation]
+fig4_lossless_root = "0.15521513600289402614 - 0.0000191663660828564317382 i"
+fig4_lossy_root = "0.15521537818136597469 - 0.000104915295190444104713 i"
+fig4_uniform_metal_phase_over_pi = "-0.48822145581864559644"
+independent_reference = "mpmath 1.4.1, 70 decimal digits, six-equation H_z TM interface determinant"
