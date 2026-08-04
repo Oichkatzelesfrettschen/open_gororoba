@@ -740,7 +740,46 @@ impl ProvenanceStore {
         let experiments_meta_toml =
             load_registry_table_toml(raw, "experiments")?.unwrap_or_default();
         let tx = self.conn.transaction()?;
-        tx.execute("DELETE FROM experiments_cp", [])?;
+        let incoming_experiment_ids = experiments
+            .iter()
+            .map(|experiment| experiment.id.as_str())
+            .collect::<BTreeSet<_>>();
+        let protected_experiment_ids = {
+            let mut statement = tx.prepare(
+                "SELECT experiment_id FROM claim_transition_experiments
+                 UNION
+                 SELECT experiment_id FROM experiment_revisions",
+            )?;
+            statement
+                .query_map([], |row| row.get::<_, String>(0))?
+                .collect::<std::result::Result<BTreeSet<_>, _>>()?
+        };
+        let missing_protected_ids = protected_experiment_ids
+            .iter()
+            .filter(|id| !incoming_experiment_ids.contains(id.as_str()))
+            .cloned()
+            .collect::<Vec<_>>();
+        if !missing_protected_ids.is_empty() {
+            bail!(
+                "experiment registry omits protected canonical experiments: {}",
+                missing_protected_ids.join(", ")
+            );
+        }
+
+        // Rebuild the derived claim-to-experiment join before replacing the
+        // experiment rows. Transition evidence and revision history retain
+        // their direct foreign keys and require their referenced experiments
+        // to remain present in the incoming registry.
+        tx.execute("DELETE FROM claim_experiment_refs", [])?;
+        tx.execute(
+            "DELETE FROM experiments_cp
+             WHERE id NOT IN (
+                 SELECT experiment_id FROM claim_transition_experiments
+                 UNION
+                 SELECT experiment_id FROM experiment_revisions
+             )",
+            [],
+        )?;
         tx.execute(
             "DELETE FROM control_plane_meta WHERE kind = 'experiments'",
             [],
@@ -749,7 +788,14 @@ impl ProvenanceStore {
         for experiment in &experiments {
             tx.execute(
                 "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
-                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)",
+                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)
+                 ON CONFLICT(id) DO UPDATE SET
+                    title = excluded.title,
+                    status = excluded.status,
+                    binary_name = excluded.binary_name,
+                    claim_refs_json = excluded.claim_refs_json,
+                    status_note = excluded.status_note,
+                    compat_toml_text = excluded.compat_toml_text",
                 params![
                     experiment.id,
                     experiment.title,
@@ -760,6 +806,14 @@ impl ProvenanceStore {
                     experiment.compat_toml_text
                 ],
             )?;
+            for claim_id in &experiment.claim_refs {
+                tx.execute(
+                    "INSERT INTO claim_experiment_refs (claim_id, experiment_id)
+                     VALUES (?1, ?2)
+                     ON CONFLICT(claim_id, experiment_id) DO NOTHING",
+                    params![claim_id, experiment.id],
+                )?;
+            }
         }
         tx.execute(
             "INSERT INTO control_plane_meta(kind, compat_toml_text)
@@ -4504,6 +4558,7 @@ mod tests {
             &fixture.binaries,
             &fixture.rocq_project,
         )?;
+        store.build_crossrefs()?;
 
         let replacement = r#"
 [experiments]
@@ -4529,6 +4584,79 @@ claim_refs = ["C-001"]
         assert!(rendered.contains("id = \"E-002\""));
         assert!(!rendered.contains("id = \"E-001\""));
         assert!(rendered.contains("experiment_count = 1"));
+        Ok(())
+    }
+
+    #[test]
+    fn replace_preserves_transition_experiments_and_rebuilds_claim_refs() -> Result<()> {
+        let fixture = make_test_workspace("replace_transition_experiments")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            &fixture.claims,
+            &fixture.insights,
+            &fixture.experiments,
+            &fixture.binaries,
+            &fixture.rocq_project,
+        )?;
+        store.build_crossrefs()?;
+        store.conn.execute(
+            "INSERT INTO claim_transition_events (
+                 transition_key, source_claim_id, expected_prior_status,
+                 experiment_verdict, proposed_claim_status, exercised_falsifier,
+                 rationale, actor, reason, transition_ts_utc,
+                 transition_spec_sha256, expected_source_state_sha256,
+                 expected_claim_id_max
+             ) VALUES (
+                 'replace-transition-test', 'C-001', 'Verified', 'Inconclusive',
+                 'Provisional', 'test falsifier', 'test rationale', 'test actor',
+                 'test reason', '2026-08-04T00:00:00Z', 'spec-hash',
+                 'source-hash', 1
+             )",
+            [],
+        )?;
+        store.conn.execute(
+            "INSERT INTO claim_transition_experiments (transition_event_id, experiment_id)
+             VALUES (1, 'E-001')",
+            [],
+        )?;
+
+        let replacement = r#"
+[experiments]
+authoritative = true
+status_allowlist = ["active", "planned", "blocked", "deprecated"]
+
+[[experiment]]
+id = "E-001"
+title = "Retained transition experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+
+[[experiment]]
+id = "E-002"
+title = "New experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+"#;
+
+        store.replace_control_plane_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            replacement,
+        )?;
+
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        assert!(rendered.contains("id = \"E-001\""));
+        assert!(rendered.contains("Retained transition experiment"));
+        assert!(rendered.contains("id = \"E-002\""));
+        let reference_count: i64 = store.conn.query_row(
+            "SELECT COUNT(*) FROM claim_experiment_refs WHERE claim_id = 'C-001'",
+            [],
+            |row| row.get(0),
+        )?;
+        assert_eq!(reference_count, 2);
         Ok(())
     }
 
