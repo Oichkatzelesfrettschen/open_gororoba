@@ -32,7 +32,7 @@ The proof linker accepts only an explicit `formal_proof`, `where_stated`, or `st
 
 ## Refreshed ledger state
 
-The frontier generator reads `registry/canonical/control_plane.sqlite3` read-only and writes [post-transition-falsification-frontier.toml](../../data/output/audit/2026-08-04/post-transition-falsification-frontier.toml). The snapshot records database hash `e0b6998368760da921d16f390a9f579c409711e10c3261128276167d296d832c` at generation time. The final validation-bundle registration changes the database hash without changing the counted claims, theorem identities, or transition events.
+The frontier generator reads `registry/canonical/control_plane.sqlite3` read-only and writes [post-transition-falsification-frontier.toml](../../data/output/audit/2026-08-04/post-transition-falsification-frontier.toml). The snapshot records database hash `e0b6998368760da921d16f390a9f579c409711e10c3261128276167d296d832c` at generation time. Registration of the final validation artifact changes the database hash to `89b45ecaa86da07110a38e2158c3d3e568fed3d22deecc609f0e4cd1a9e42904` without changing the counted claims, theorem identities, or transition events.
 
 | Measure | Count |
 | --- | ---: |
