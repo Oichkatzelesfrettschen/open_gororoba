@@ -8,7 +8,7 @@
 //! All output starts with the standard
 //! AUTO-GENERATED / READ-ONLY COMPATIBILITY EXPORT banner. The
 //! `splice_compat_toml_overrides` helper re-projects live SQLite
-//! columns (formal_proof, status_note) into cached compat_toml_text
+//! columns (status, formal_proof, status_note) into cached compat_toml_text
 //! rows so mutations applied via the canonical SQLite write path
 //! reach every downstream consumer.
 
@@ -164,13 +164,14 @@ pub(crate) fn render_claim_row(row: &ClaimRecord) -> String {
         }
         lines.join("\n")
     } else {
-        // Splice live SQLite columns (formal_proof, status_note) into the
+        // Splice live SQLite columns (status, formal_proof, status_note) into the
         // cached compat_toml_text. Without this, mutations applied via
         // `gororoba-db claim update-*` land in the database but never reach
         // the registry/claims.toml consumer surface.
         splice_compat_toml_overrides(
             &row.compat_toml_text,
             &[
+                ("status", Some(row.status.as_str())),
                 ("formal_proof", row.formal_proof.as_deref()),
                 ("status_note", row.status_note.as_deref()),
             ],
@@ -335,4 +336,35 @@ pub(crate) fn write_text(path: &Path, body: &str) -> Result<()> {
             .with_context(|| format!("create parent directory {}", parent.display()))?;
     }
     fs::write(path, format!("{body}\n")).with_context(|| format!("write {}", path.display()))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::render_claim_row;
+    use provenance_core::ClaimRecord;
+
+    #[test]
+    fn render_claim_row_reprojects_live_status_over_cached_text() {
+        let row = ClaimRecord {
+            id: "C-820".to_string(),
+            statement: "A claim".to_string(),
+            status: "Provisional".to_string(),
+            where_stated: "source".to_string(),
+            last_verified: "2026-08-04".to_string(),
+            formal_proof: None,
+            status_note: Some("transition applied".to_string()),
+            compat_toml_text: "id = \"C-820\"\nstatus = \"Verified\"\n".to_string(),
+        };
+
+        let rendered = render_claim_row(&row);
+        let table: toml::Table = toml::from_str(&rendered).expect("rendered claim is valid TOML");
+        assert_eq!(
+            table.get("status").and_then(toml::Value::as_str),
+            Some("Provisional")
+        );
+        assert_eq!(
+            table.get("status_note").and_then(toml::Value::as_str),
+            Some("transition applied")
+        );
+    }
 }
