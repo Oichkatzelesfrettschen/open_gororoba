@@ -2,8 +2,8 @@
 //!
 //! - `load_proof_inventory(proofs_project_path)`: parses the
 //!   `_RocqProject` text file, extracts each `verified/*.v` entry,
-//!   computes the theorem stem, and indexes the entries by both stem
-//!   and the normalized claim id (`C-<digits>`) derived from the stem.
+//!   computes the theorem stem, and indexes numeric prefixes only for
+//!   collision reporting and identifier reservation.
 //! - `load_theorems_from_inventory`: builds `Vec<TheoremRecord>` from the
 //!   inventory, attaching claim-link backreferences and using the
 //!   referenced claim's statement as the theorem title when one
@@ -73,22 +73,25 @@ pub(crate) fn load_theorems_from_inventory(
     let mut out = Vec::new();
     for entry in &proof_inventory.verified_entries {
         let linked_claim_ids = link_claims_for_proof(&entry.path, &entry.stem, claims);
-        let normalized_claim_id = normalized_claim_id_from_theorem_stem(&entry.stem);
         let title = claims
             .iter()
-            .find(|claim| {
-                claim.id == entry.stem || normalized_claim_id.as_deref() == Some(&claim.id)
-            })
+            .find(|claim| linked_claim_ids.iter().any(|id| id == &claim.id))
             .map(|claim| claim.statement.clone())
             .unwrap_or_else(|| entry.stem.replace('_', " "));
         if !repo_root.join(entry.path.as_str()).exists() {
             continue;
         }
         out.push(TheoremRecord {
-            id: entry.stem.clone(),
+            id: format!("THM-LEGACY-{}", entry.stem),
+            legacy_name: entry.stem.clone(),
             title,
             proof_path: entry.path.clone(),
             status: "kernel_checked".to_string(),
+            identity_kind: if linked_claim_ids.is_empty() {
+                "unresolved".to_string()
+            } else {
+                "explicit_link".to_string()
+            },
             linked_claim_ids,
             source: "_RocqProject".to_string(),
         });
@@ -123,8 +126,8 @@ pub(crate) fn render_theorem_markdown(source_label: &str, theorems: &[TheoremRec
             theorems.len()
         ),
         String::new(),
-        "| Theorem | Proof File | Status | Linked Claims |".to_string(),
-        "|---|---|---|---|".to_string(),
+        "| Stable Theorem ID | Legacy Name | Proof File | Status | Identity Kind | Linked Claims |".to_string(),
+        "|---|---|---|---|---|---|".to_string(),
     ]);
     for theorem in theorems {
         let claims = if theorem.linked_claim_ids.is_empty() {
@@ -133,8 +136,13 @@ pub(crate) fn render_theorem_markdown(source_label: &str, theorems: &[TheoremRec
             theorem.linked_claim_ids.join(", ")
         };
         lines.push(format!(
-            "| `{}` | `{}` | {} | {} |",
-            theorem.id, theorem.proof_path, theorem.status, claims
+            "| `{}` | `{}` | `{}` | {} | {} | {} |",
+            theorem.id,
+            theorem.legacy_name,
+            theorem.proof_path,
+            theorem.status,
+            theorem.identity_kind,
+            claims
         ));
     }
     lines.push(String::new());
