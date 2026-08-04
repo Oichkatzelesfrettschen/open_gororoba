@@ -1,0 +1,20 @@
+format = "p2b-publication-view-disposition-v1"
+captured_utc = "2026-08-04T22:45:00Z"
+canonical_authority = "registry/canonical/control_plane.sqlite3 and generated transition exports"
+publication_surface = "docs/latex/claims_appendix.tex"
+
+[appendix_rows]
+c848 = "Verified"
+c849 = "Provisional"
+c850 = "Provisional"
+
+[canonical_rows]
+c848 = "Superseded"
+c849 = "Provisional"
+c850 = "Provisional"
+
+[disposition]
+blocking = false
+scientific_authority = "The LaTeX appendix is excluded from P2B claim authority until its owner command either regenerates it or declares it historical."
+action = "Retain this mismatch as a publication-view discrepancy; repair or mark the appendix in a separate minimal publication-view change."
+p2b_action = "Do not modify the appendix while generating P2B numerical evidence."

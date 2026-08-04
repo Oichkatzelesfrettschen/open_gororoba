@@ -1,0 +1,158 @@
+format = "experiment-manifest-v1"
+
+[experiment]
+id = "E-241"
+status = "completed"
+status_token = "COMPLETED"
+title = "Ruan-Fan source-parameter and held-out Mie-TCMT reproduction"
+claim_refs = ["C-849", "C-850"]
+reproducibility_class = "numeric_close"
+code_commit_sha = "cc482872db4ad8b52f05d32f2cc02817c0651119"
+actual_timestamp = "2026-08-04T23:38:18Z"
+run_command = "RUSTC_WRAPPER= TMPDIR=.cache/p2b-tmp CARGO_TARGET_DIR=.cache/exp-p2b-target cargo run -p optics_core --bin p2b-ruan-fan-reproduction -- data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml cc482872db4ad8b52f05d32f2cc02817c0651119 data/output/audit/2026-08-04/p2b-independent-pole-output.txt"
+run_command_sha256 = "0758c0bdc129c31057d816d4750c05f94b867760541f1d97687169382cfb4dd4"
+toolchain = "rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30); Python 3.14.6; mpmath 1.4.1"
+features = []
+hardware = "deterministic CPU execution on AMD Ryzen 5 5600X3D, x86_64 Linux"
+randomness_mode = "none"
+
+[[experiment.input_hashes]]
+path = "Cargo.lock"
+sha256 = "5c8af399c0948e417849066e39c260e8b82bcead47a7eba00dedf7f9fe556cf2"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/Cargo.toml"
+sha256 = "75fa847498439767b8685d9ff17cccb3c1a2cf0d9c849242c8c853ee9f6a9092"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/lib.rs"
+sha256 = "c59c69e5eda20f2bf5b65d7ff3808b9e041f12ed3326b6e9502805038f746594"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/fano_tcmt.rs"
+sha256 = "54c5dc72cab2eaa3b0b3662e64e545b957545ee1e82acf78430839554a61f44f"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/mie_cylinder.rs"
+sha256 = "8f3c413ba6bd8b5af88101432ec431a40a44b1f9ed93a3e1d61548b9efc3bb60"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/bessel.rs"
+sha256 = "32421ea91835c8b3064043c34cf3e92247f893a3aeda4d95401754d43bdf8fdf"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/mie_poles.rs"
+sha256 = "48ab35c58f8448a680e7795ed4e46677af5e20b74d5bf54d4e21a67d44299847"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/p2b_fit.rs"
+sha256 = "5d01367709d76685195d2fcf6eeade6a6ab05b7115ea8c4c3596bb8f2654a120"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/bin/p2b_ruan_fan_reproduction.rs"
+sha256 = "b6030dfda7b811b7c2057c8d1888d49d1cbaafa71b6a4a547000d3ed02f3a203"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/p2b-preregistration.toml"
+sha256 = "d0e98c1de502e70fb0412ad2d50b8c8b9f9b4aba97230cb5b6ba24ff96f865d6"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/p2b-bind-baseline.toml"
+sha256 = "c73c471b27cf26da4ac4998590642f0157b462503fea2833dc2b0d94eb822dff"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/p2b-independent-pole-generator.txt"
+sha256 = "adab3bab5eb14b02b116617be29dec3b2b2a98167cc5574617d7c1a76e01e8d5"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml"
+sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
+sha256 = "47667c6067c2e16c16ae9051427833848370980681c2494c772c7c32ccae0ceb"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-independent-pole-output.txt"
+sha256 = "810dd48dcea5b13f7c8b8f6ba3250400d908e62483ed8c0e01d3c76f54642b0e"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-source-figure-vector-extraction.toml"
+sha256 = "c3dbfc8f0a4ad742f6a1737407ec530fb09fe98603e758d0fc281cb18cced55d"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml"
+sha256 = "deedbe66e1495adc8bda8ad7aa26d716bb43d12606362343fee8ba7362d02b9f"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-optics-call-map.toml"
+sha256 = "aa9cc34e1417f1477f4dbd837079d3b5afa827e70406df53879dcd69dedb2bce"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-publication-view-disposition.toml"
+sha256 = "17b68b9f608a4570c474acf902cfaec0956e4250a09a579579d79ceebbe12b35"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/c-849-ruan-fan-fig4-parameter-heldout-transition.toml"
+sha256 = "74b2b8b56ff9ba347991dd065ea1a424a2c6357c8c875a0f0dfec2e3dbbf6b7d"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/c-850-ruan-fan-fig5-multichannel-transition.toml"
+sha256 = "e120c9f85f4d76a71ed4960193d52c1cedb71eb5769ab61362d15d1bcb4712d6"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-claim-transition-results.toml"
+sha256 = "73d62c1893be78ffb5fa45621f043d23b2fc1717c5fb9cccfc49b7d7d2cda22c"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-validation-results.toml"
+sha256 = "1159f02bc0d115eaccd9f4e0d0ed7af6c5bb3b28ea72725e6ec75f2dec6da7d3"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+path = "data/output/audit/2026-08-04/p2b-validation-command-log.txt"
+sha256 = "c36e6549febf74c4d2c45cdf917d3785ad62c37bb473037dd75a3fb6f757917d"
+
+[[experiment.numeric_tolerance]]
+output_id = "p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
+column = "independent complex channel comparison"
+rel_tol = 0.0
+abs_tol = 1e-8
+
+[[experiment.numeric_tolerance]]
+output_id = "p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
+column = "interface residual"
+rel_tol = 0.0
+abs_tol = 1e-8
+
+[[experiment.numeric_tolerance]]
+output_id = "p2b-independent-pole-output.txt"
+column = "high precision root residual"
+rel_tol = 0.0
+abs_tol = 1e-60
+
+[provenance]
+source_pdf = "arXiv:0909.3323v2"
+source_pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_archive_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+source_tex_sha256 = "625f2dc473e5d50abba49daa3d1382ee9bd70b17746cd945bf9b81c70bc28"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_manifest_declared_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+p2a_manifest_sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+p2a_manifest_declared_revision = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+manifest_role = "P2B source-parameter identification, no-fit Figure 4 comparison, source-derived Figure 5 comparison, and held-out complex-channel challenge"
+repository_one_percent_gate = "The 0.01 unit-scale absolute observable gate is a repository-defined C-849/C-850 challenge and is not attributed to Ruan and Fan."

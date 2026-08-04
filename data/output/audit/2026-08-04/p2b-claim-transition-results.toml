@@ -1,0 +1,91 @@
+format = "p2b-claim-transition-results-v1"
+captured_utc = "2026-08-04T23:38:18Z"
+implementation_revision = "cc482872db4ad8b52f05d32f2cc02817c0651119"
+evidence_artifact_id = "LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"
+
+[database]
+p2b_bind_database_sha256 = "5302168dbaeab33290b69d798b047c08e5e69598b8ea697541ce67b1ec37a4eb"
+first_artifact_registration_database_sha256 = "eea57885bf920ff18a41f2837e13c05c2166d04146c4624f6f72a6a27d797eed"
+after_transition_and_export_database_sha256 = "f322e31ce8a47f315022736b4c3eaa07ea240685efe9f6c65846744bff6ce312"
+immediate_pre_transition_database_sha256 = "not_captured_between_second_artifact_registration_and_event_11"
+pre_transition_hash_limitation = "The exact byte hash immediately before event 11 was not captured after the second idempotent artifact registration. The P2B bind hash, source claim fingerprints, counts, and post-transition hash remain retained."
+canonical_write_path = "registry/canonical/control_plane.sqlite3"
+foreign_key_validation = true
+
+[counts_before]
+claims = 1466
+transition_events = 10
+claim_relations = 13
+registered_p2b_paths = 9
+verified = 1194
+provisional = 130
+refuted = 58
+
+[counts_after]
+claims = 1472
+transition_events = 12
+claim_relations = 19
+registered_p2b_paths = 12
+verified = 1194
+provisional = 134
+refuted = 60
+
+[c849]
+transition_key = "c-849-ruan-fan-fig4-no-fit-parameter-identification"
+transition_spec_sha256 = "74b2b8b56ff9ba347991dd065ea1a424a2c6357c8c875a0f0dfec2e3dbbf6b7d"
+source_claim_id = "C-849"
+prior_status = "Provisional"
+experiment_verdict = "Falsifies"
+new_status = "Refuted"
+event_id = 11
+successor_ids = ["C-1652", "C-1653"]
+plan_allocated_ids = ["C-1652", "C-1653"]
+plan_exact_replay = true
+apply_exact_replay = true
+source_state_sha256 = "e0f6d44285822adcb51255e6fdec66398cf24c89796ad7b068edf7a4530cf05f"
+expected_claim_id_max = 1651
+evidence_reference_resolves = true
+experiment_reference_check = "no experiment IDs supplied because E-241 was not present canonically"
+
+[c850]
+transition_key = "c-850-ruan-fan-fig5-multichannel-heldout-challenge"
+transition_spec_sha256 = "e120c9f85f4d76a71ed4960193d52c1cedb71eb5769ab61362d15d1bcb4712d6"
+source_claim_id = "C-850"
+prior_status = "Provisional"
+experiment_verdict = "Falsifies"
+new_status = "Refuted"
+event_id = 12
+successor_ids = ["C-1654", "C-1655", "C-1656", "C-1657"]
+plan_allocated_ids = ["C-1654", "C-1655", "C-1656", "C-1657"]
+plan_exact_replay = true
+apply_exact_replay = true
+source_state_sha256 = "744bce6dfb943fdea3085f9d394a5bc4db17c8727b9a30fa7442556ce6939766"
+expected_claim_id_max = 1653
+evidence_reference_resolves = true
+experiment_reference_check = "no experiment IDs supplied because E-241 was not present canonically"
+
+[canonical_query]
+c849_status = "Refuted"
+c850_status = "Refuted"
+c849_successor_1 = "C-1652"
+c849_successor_2 = "C-1653"
+c850_successor_1 = "C-1654"
+c850_successor_2 = "C-1655"
+c850_successor_3 = "C-1656"
+c850_successor_4 = "C-1657"
+all_successor_statuses = "Provisional"
+all_event_evidence_refs_resolve = true
+all_successor_evidence_refs_resolve = true
+all_relations_resolve = true
+self_relations = 0
+relation_cycles_detected = 0
+
+[compatibility_export]
+command = "CARGO_TARGET_DIR=.cache/exp-p2b-target cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane"
+exit_code = 0
+changed_files = [
+    "registry/claims.toml",
+    "registry/claim_transitions.toml",
+    "registry/claim_relations.toml",
+]
+prior_history_preserved = true

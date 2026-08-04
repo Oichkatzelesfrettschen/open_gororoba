@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 10
+event_count = 12
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -256,3 +256,69 @@ reason = "Record explicit source time-reversal equations separately from unitari
 transition_timestamp = "2026-08-04T20:25:00Z"
 transition_spec_sha256 = "37474a87953569c42a58d71dec3d2ffef429eeb67c2d21642f4fed9653a47351"
 successors = []
+
+[[transition]]
+event_id = 11
+transition_key = "c-849-ruan-fan-fig4-no-fit-parameter-identification"
+source_claim_id = "C-849"
+expected_prior_status = "Provisional"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "Run the frozen Figure 4 lossless and lossy grids with source-derived complex roots and a uniform-metal background, retain complex R_l and S_l before observables, and apply independent-root and mutation controls without fitting the evaluation curve."
+rationale = "The independently checked no-fit Figure 4 path reproduces the published parameter anchors, but the repository-defined unit-scale 0.01 gate fails. The maximum complex S defect is 1.59400034798379067e-2 and the maximum scattering defect is 1.64658914989521676e-2. This refutes the repository's stronger 1% implementation predicate; it does not refute the Ruan-Fan source equations or the qualitative source comparison."
+unresolved_assumptions = ["The source reports qualitative excellent agreement and does not state a universal 1% threshold.", "The retained EPS comparison is bounded because solid curves and markers are not mechanically separable without subjective selection.", "The source-parameter anchors pass within the declared printed-precision and independent-root envelope."]
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+experiment_ids = []
+actor = "p2b-parameter-identification-campaign"
+reason = "Record the failed repository-defined Figure 4 match while preserving the successful source-parameter result and measured error envelope."
+transition_timestamp = "2026-08-04T22:54:54Z"
+transition_spec_sha256 = "74b2b8b56ff9ba347991dd065ea1a424a2c6357c8c875a0f0dfec2e3dbbf6b7d"
+
+[[transition.successors]]
+proposal_key = "c849-measured-fig4-complex-channel-error-envelope"
+canonical_claim_id = "C-1652"
+relation_kind = "narrows"
+
+[[transition.successors]]
+proposal_key = "c849-source-derived-fig4-parameter-anchors"
+canonical_claim_id = "C-1653"
+relation_kind = "narrows"
+
+[[transition]]
+event_id = 12
+transition_key = "c-850-ruan-fan-fig5-multichannel-heldout-challenge"
+source_claim_id = "C-850"
+expected_prior_status = "Provisional"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "Enumerate the relevant lossless and lossy poles before selection, derive source parameters without fitting the evaluation curve, compare every unique l in {0,1,2} through complex S_l and R_l, run a disjoint held-out complex fit, compare declared baselines, and test the rounded source landmark."
+rationale = "The source-derived Figure 5 path has stable independently checked poles and component-wise agreement between production and the dense independent Mie reference, but it fails the preregistered per-channel and aggregate challenge. The source landmark at omega/omega_p=0.2282 is also not reproduced, and the held-out aggregate agreement is a cancellation artifact. The result refutes the compound repository challenge as stated; it does not refute the source channel identities or the paper theory."
+unresolved_assumptions = ["The source text reports rounded Figure 5 landmark values that disagree with both independent numerical paths under the retained geometry and convention.", "The EPS paths retain vector data, but curve and marker assignment is not mechanically separable without subjective selection.", "The source-derived one-pole parameter mapping remains a useful bounded hypothesis even though the compound match claim fails."]
+evidence_artifact_ids = ["LOCAL-P2B-RUAN-FAN-MIE-TCMT-REPRODUCTION"]
+experiment_ids = []
+actor = "p2b-parameter-identification-campaign"
+reason = "Split the failed compound Figure 5 repository challenge into per-channel, aggregate, source-landmark, and parameter-identification boundaries."
+transition_timestamp = "2026-08-04T22:54:54Z"
+transition_spec_sha256 = "e120c9f85f4d76a71ed4960193d52c1cedb71eb5769ab61362d15d1bcb4712d6"
+
+[[transition.successors]]
+proposal_key = "c850-fig5-five-channel-observable-envelope"
+canonical_claim_id = "C-1654"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "c850-fig5-per-channel-complex-amplitude-envelope"
+canonical_claim_id = "C-1655"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "c850-fig5-textual-source-landmark"
+canonical_claim_id = "C-1656"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "c850-source-derived-fig5-parameter-identification"
+canonical_claim_id = "C-1657"
+relation_kind = "source_split"

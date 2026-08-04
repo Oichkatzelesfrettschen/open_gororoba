@@ -1,0 +1,40 @@
+format = "p2b-figure5-source-landmark-discrepancy-v1"
+captured_utc = "2026-08-04T23:38:18Z"
+source_id = "0909.3323v2"
+source_pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_tex_sha256 = "625f2dc473e5d50abba49daa3d1382ee9bd70b17746cd945bf9b81c70bc28"
+implementation_revision = "cc482872db4ad8b52f05d32f2cc02817c0651119"
+production_evidence_sha256 = "47667c6067c2e16c16ae9051427833848370980681c2494c772c7c32ccae0ceb"
+independent_generator_sha256 = "adab3bab5eb14b02b116617be29dec3b2b2a98167cc5574617d7c1a76e01e8d5"
+independent_output_sha256 = "810dd48dcea5b13f7c8b8f6ba3250400d908e62483ed8c0e01d3c76f54642b0e"
+
+[source_anchor]
+omega_over_omega_p = 0.2282
+scattering = 0.03
+absorption = 0.32
+interpretation = "Rounded textual source anchor in units of 2 lambda/pi; not an exact machine target."
+
+[production_result]
+scattering = 1.41739879640738142e-1
+absorption = 3.98104096787583850e-1
+extinction = 5.39843976428321992e-1
+
+[independent_result]
+component_wise_agreement = true
+max_complex_r_defect = 4.26085618060611520e-11
+scattering = 1.41739879640738142e-1
+absorption = 3.98104096787583850e-1
+
+[source_figure_evidence]
+eps_paths_present = true
+solid_curve_and_marker_series_separable = false
+textual_anchor_used = true
+graphical_comparison_used_for_verdict = false
+limitation = "The retained EPS paths do not assign every curve and marker to a unique series without subjective selection."
+
+[interpretation]
+production_reference_result = "The independent layered Mie construction reproduces the production complex channels at the source landmark within the retained component tolerance."
+source_discrepancy = "Both independent numerical paths disagree with the textual source landmark, whose scattering and absorption values are lower than the computed totals."
+source_theory_disposition = "The discrepancy does not refute the source channel identities or the source theory. It identifies an unresolved source-parameter, geometry, normalization, or figure-reading discrepancy."
+repository_claim_disposition = "The preregistered C-850 repository challenge fails because the source-derived Figure 5 comparison misses the rounded landmark and the held-out constrained model does not pass its channel gates."
+follow_up = "Keep the source-landmark mismatch as a narrower unresolved successor and investigate only with a separately declared source-parameter or figure-convention campaign."

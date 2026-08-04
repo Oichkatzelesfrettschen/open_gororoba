@@ -1,0 +1,196 @@
+format = "p2b-validation-results-v1"
+captured_utc = "2026-08-04T23:38:18Z"
+implementation_revision = "cc482872db4ad8b52f05d32f2cc02817c0651119"
+validation_scope = "P2B optics implementation, canonical transition evidence, generated compatibility views, and repository pre-push-equivalent gates"
+scientific_lanes_touched = ["optics_core", "canonical registry evidence and generated views"]
+scientific_lanes_excluded = ["photon-graviton tensor Ward", "SFWM", "heliosphere", "LBM", "ultrametric", "GPU", "theorem identity infrastructure"]
+warnings_as_errors = true
+ascii_policy = "All retained source and evidence files are ASCII-only. Unicode tool output is transliterated before retention in the command log."
+
+[authority]
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p2a_manifest_sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+p2a_generating_revision = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+p2b_manifest_sha256_before_validation_outputs = "566de1eef9888c5f43dd7dc1ed3acda6444b97a27e0ef7994c4362ff64e59555"
+p2b_evidence_sha256 = "47667c6067c2e16c16ae9051427833848370980681c2494c772c7c32ccae0ceb"
+p2b_call_map_sha256 = "aa9cc34e1417f1477f4dbd837079d3b5afa827e70406df53879dcd69dedb2bce"
+p2b_transition_results_sha256 = "73d62c1893be78ffb5fa45621f043d23b2fc1717c5fb9cccfc49b7d7d2cda22c"
+source_pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_archive_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+source_extracted_tex_sha256 = "625f2dc473e5d50abba49daa3d1382ee9bd70b17746cd945bf9b81c70bc28"
+
+[toolchain]
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+python = "Python 3.14.6"
+taplo = "taplo 0.10.0"
+lizard = "1.23.0"
+jscpd = "4.0.5"
+cpu = "AMD Ryzen 5 5600X3D, x86_64 Linux"
+target_dir = ".cache/exp-p2b-target"
+build_dir = ".cache/exp-p2b-build"
+scratch_dir = ".cache/p2b-tmp"
+
+[[command]]
+name = "cargo_fmt"
+command = "cargo fmt --all -- --check"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+notes = "Stable rustfmt emitted existing configuration warnings but returned zero."
+
+[[command]]
+name = "optics_clippy"
+command = "CARGO_TARGET_DIR=.cache/exp-p2b-target cargo clippy -p optics_core --all-targets -- -D warnings"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+
+[[command]]
+name = "optics_all_targets"
+command = "CARGO_TARGET_DIR=.cache/exp-p2b-target cargo test -p optics_core --all-targets"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+tests_passed = 159
+
+[[command]]
+name = "gororoba_db_tests"
+command = "CARGO_TARGET_DIR=.cache/exp-p2b-target cargo test -p gororoba_db --all-targets"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+notes = "The crate has no lib target; the earlier --lib probe was not applicable."
+
+[[command]]
+name = "provenance_store_tests"
+command = "CARGO_TARGET_DIR=.cache/exp-p2b-target cargo test -p provenance_store --lib"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+tests_passed = 20
+
+[[command]]
+name = "gororoba_cli_provenance_tests"
+command = "CARGO_TARGET_DIR=.cache/exp-p2b-target cargo test -p gororoba_cli_provenance --all-targets"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+
+[[command]]
+name = "experiment_manifest_verify"
+command = ".cache/exp-p2b-target/debug/experiment-manifest verify data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-experiment-manifest.toml"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+output = "verified E-241: Ruan-Fan source-parameter and held-out Mie-TCMT reproduction"
+
+[[command]]
+name = "taplo_check"
+command = "taplo check data/output/audit/2026-08-04/*.toml"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+
+[[command]]
+name = "ascii_check"
+command = "LC_ALL=C rg --pcre2 [^\\x00-\\x7F] on touched P2B files"
+exit_code = 1
+accepted_exit_code = 1
+status = "pass"
+interpretation = "ripgrep exit 1 means no non-ASCII match"
+
+[[command]]
+name = "lizard"
+command = "lizard crates/optics_core/src/mie_poles.rs crates/optics_core/src/p2b_fit.rs crates/optics_core/src/bin/p2b_ruan_fan_reproduction.rs"
+exit_code = 1
+accepted_exit_code = 1
+status = "pass_with_retained_analysis"
+warning_count = 7
+notes = "Warnings identify explicit source-formula and evidence-orchestration kernels. The kernels map to equation blocks and remain auditable; extraction for line-count reduction is not required."
+
+[[command]]
+name = "jscpd"
+command = "jscpd --reporters console --min-lines 10 --min-tokens 50 --threshold 100 crates/optics_core/src/mie_poles.rs crates/optics_core/src/p2b_fit.rs crates/optics_core/src/bin/p2b_ruan_fan_reproduction.rs"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass_with_retained_analysis"
+clone_count = 2
+duplicated_lines = 36
+duplicated_line_percent = 2.45
+notes = "The retained duplication belongs to auditable formula and fitting paths; no line-count refactor was introduced."
+
+[[command]]
+name = "registry_integrity"
+command = "TMPDIR=.cache/p2b-tmp make REPO_CARGO_TARGET_DIR=.cache/exp-p2b-target REPO_CARGO_BUILD_DIR=.cache/exp-p2b-build registry-integrity"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+output = "conflict_markers=108 lacunae=190 schema_signatures=13"
+
+[[command]]
+name = "validate_registry"
+command = "TMPDIR=.cache/p2b-tmp make REPO_CARGO_TARGET_DIR=.cache/exp-p2b-target REPO_CARGO_BUILD_DIR=.cache/exp-p2b-build validate-registry"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+output = "claims=1472 insights=183 experiments=232 binaries=496 theorems=162; semantic atoms, evidence provenance, governance, and execution planning passed"
+
+[[command]]
+name = "validate_repository_fast"
+command = "TMPDIR=.cache/p2b-tmp make REPO_CARGO_TARGET_DIR=.cache/exp-p2b-target REPO_CARGO_BUILD_DIR=.cache/exp-p2b-build validate-repository-fast"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+
+[[command]]
+name = "validate_local"
+command = "TMPDIR=.cache/p2b-tmp REPO_CARGO_TARGET_DIR=.cache/exp-p2b-target REPO_CARGO_BUILD_DIR=.cache/exp-p2b-build make validate-local"
+exit_code = 0
+accepted_exit_code = 0
+status = "pass"
+output = "scoped clippy and nextest passed for optics_core; governance validation passed"
+
+[recovery]
+registry_integrity_initial_exit_code = 2
+registry_integrity_initial_failure = "Bundled SQLite compilation exhausted the 16 GB /tmp tmpfs with Disk quota exceeded."
+registry_integrity_repair = "Use repository-local TMPDIR=.cache/p2b-tmp without deleting unrelated /tmp/open_gororoba-audit-target."
+project_counter_initial_exit_code = 2
+project_counter_initial_failure = "registry/project.toml claim_count drifted 1466 -> 1472 after canonical transitions."
+project_counter_repair = "Run canonical project-counter-sync without --check."
+semantic_atoms_initial_exit_code = 2
+semantic_atoms_initial_failure = "claims_atoms claim_id set did not match the canonical claims set."
+semantic_atoms_repair = "Regenerate semantic-atoms from canonical SQLite, then regenerate schema signatures."
+schema_signature_initial_exit_code = 2
+schema_signature_initial_failure = "claims_evidence_edges.toml and proof_skeletons.toml signatures were stale after generated-view refresh."
+schema_signature_repair = "Regenerate evidence-provenance and registry-integrity artifacts in canonical order."
+validation_log_self_reference_exit_code = 1
+validation_log_self_reference = "The first captured ASCII check scanned its own prior UTF-8 validation log. The final retained log is ASCII-transliterated and the final no-match check returned ripgrep exit 1."
+
+[generated_views]
+canonical_db_sha256_before_final_bundle_registration = "9a7e7cc0223d468644925dd365c1d46f3fa966e4b640e40e65a0978467a9ca86"
+claims_sha256 = "f5573f0b8a12582c292d26de28d8c62d147553577b05d9a8e3847d4754539bed"
+claim_transitions_sha256 = "c4dc69b52855875b588ca2547842a7d3180d606e42865252a03ccf0638874ef8"
+claim_relations_sha256 = "5f97745216ac6439b3d235663218f9ce5625564a1fb3444d1f49632a09267496"
+claims_atoms_sha256 = "e419e30f40bd646fd8af6748bf390ab4163029281af29fb8bc2ef874072bd86c"
+claims_evidence_edges_sha256 = "1a684c8a2f38c5ffe850b4097522bbbb9689dada572195e11d101316db62f4d3"
+derivation_steps_sha256 = "6a0c3e4ea23eb7bf7df43da4079395b9ead7c55e4877da7ac368f1843f079de5"
+proof_skeletons_sha256 = "324b080dd7c1584ff09f675302dc45d25364d64050116f08772f27b9309fc95f"
+project_sha256 = "75aff9e8a9e7eb129d8b15ddfc0134846359e81cdb3688e00d527f74b3bb3f67"
+schema_signatures_sha256 = "2ec72b5eb1bf278a794bcf1d4b680c3917e7fead5e975762a3c53c9f4390b712"
+
+[retained_log]
+path = "data/output/audit/2026-08-04/p2b-validation-command-log.txt"
+sha256 = "c36e6549febf74c4d2c45cdf917d3785ad62c37bb473037dd75a3fb6f757917d"
+encoding = "ASCII"
+bundle_path_count_before_registration = 12
+bundle_path_count_after_registration = 15
+
+[result]
+scoped_validation_complete = true
+repository_fast_validation_complete = true
+manifest_verification_complete = true
+registry_views_coherent = true
+pre_push_equivalent = "make validate-local"
+scientific_verdicts_unchanged_by_validation = true
+next_campaign = "Stop after P2B merge and cleanup; do not begin SFWM in this context."

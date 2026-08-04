@@ -5140,6 +5140,48 @@ where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/ru
 last_verified = "2026-08-04"
 
 [[claim]]
+id = "C-1652"
+statement = "The source-derived Ruan-Fan Figure 4 single-channel TCMT approximation has a measured no-fit complex-channel and normalized-observable error envelope on the frozen lossless and lossy grids."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1653"
+statement = "The Ruan-Fan Figure 4 complex-pole and uniform-metal-background procedure reproduces the published single-channel source-parameter anchors within the declared printed-precision and independent-reference envelope."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1654"
+statement = "The five-channel Figure 5 Mie and TCMT aggregate scattering, absorption, and extinction observables have a retained source-derived and held-out error envelope after per-channel values are preserved and degeneracy weights are applied."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1655"
+statement = "The source-derived Figure 5 single-resonance TCMT path has a retained per-channel complex S_l and R_l error envelope for l=0,1,2 and their rotationally symmetric negative partners on the frozen frequency window."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1656"
+statement = "The Ruan-Fan Figure 5 textual landmark at omega/omega_p=0.2282 has a separately adjudicated relationship to the repository Mie and TCMT totals under the declared geometry, normalization, and polarization convention."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml; data/output/audit/2026-08-04/p2b-source-figure-vector-extraction.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
+id = "C-1657"
+statement = "The Figure 5 complex-pole, lossless-to-lossy continuation, and uniform-metal-background procedure identifies one retained parameter tuple per unique channel under the declared single-resonance mapping, subject to the unresolved source-landmark discrepancy."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
+last_verified = "2026-08-04"
+
+[[claim]]
 id = "C-166"
 last_verified = "2026-02-01"
 statement = "The flexible identity (ab)a = a(ba) holds EXACTLY (machine epsilon) at ALL CD dimensions through 512. This is universal: CD algebras are flexible. Max residual < 5e-16 everywhere."
@@ -10098,7 +10140,7 @@ where_stated = "crates/optics_core/src/fano_tcmt.rs (tests: lossless_phi_zero_lo
 id = "C-849"
 last_verified = ""
 statement = "Cylindrical Lorentz-Mie solver matches TCMT within 1% for single-channel (l=0) MDM geometry (Ruan-Fan Fig. 4)."
-status = "Provisional"
+status = "Refuted"
 status_note = "Sprint 56: Transfer-matrix Mie solver implemented. Numerical validation pending: lossless and lossy MDM geometries. | Legacy status token: Proposed"
 where_stated = "crates/optics_core/src/mie_cylinder.rs (interface_transfer_matrix, scattering_coefficient_l)"
 
@@ -10106,7 +10148,7 @@ where_stated = "crates/optics_core/src/mie_cylinder.rs (interface_transfer_matri
 id = "C-850"
 last_verified = ""
 statement = "Multi-channel (|l|<=2) Mie solver matches TCMT sum for MDM cloaked-sensor geometry (Ruan-Fan Fig. 5)."
-status = "Provisional"
+status = "Refuted"
 status_note = "Sprint 56: Multi-channel implementation done. Validation against 20-point frequency sweep pending. | Legacy status token: Proposed"
 where_stated = "crates/optics_core/src/mie_cylinder.rs (mie_sweep, multi_channel_cross_sections)"
 
