@@ -27,6 +27,7 @@ pub mod entropy_trap;
 pub mod fano_tcmt;
 pub mod grin;
 pub mod mie_cylinder;
+pub mod mie_poles;
 pub mod multi_resonator;
 pub mod optics_algebra_bridge;
 pub mod phase_retrieval;
@@ -153,4 +154,10 @@ pub use mie_cylinder::{
     extract_fano_params, mie_mdm_sweep, mie_scattering, mie_sweep, ruan_fan_mdm_fig4,
     ruan_fan_mdm_fig5, scattering_coefficient_l, try_mie_scattering, try_mie_sweep,
     try_scattering_channel, try_update_metal_epsilon, update_metal_epsilon,
+};
+
+pub use mie_poles::{
+    ComplexFrequency, ComplexPole, PoleError, PoleGeometry, RootAttempt, RootRectangle, RootSearch,
+    StableRootCount, complex_drude_epsilon, outgoing_determinant, refine_root, root_seed_grid,
+    search_roots, stable_root_count, uniform_metal_reflection,
 };
