@@ -10,7 +10,7 @@ use provenance_core::{
     ExternalSourceDossiersMeta, IndexStats, InsightRecord, MirrorKind, MirrorObservationRecord,
     TheoremRecord,
 };
-use rusqlite::{Connection, OptionalExtension, params};
+use rusqlite::{Connection, OpenFlags, OptionalExtension, params};
 #[cfg(test)]
 use std::path::PathBuf;
 use std::{
@@ -60,6 +60,13 @@ mod planning_rows;
 // delete_requirement_coverage_gap) live in the `requirements_mut`
 // submodule via a second impl ProvenanceStore block.
 mod requirements_mut;
+
+mod claim_transitions;
+pub use claim_transitions::{
+    AllocatedSuccessor, ClaimRelationView, ClaimTransitionApplyResult, ClaimTransitionCompatPaths,
+    ClaimTransitionEventView, ClaimTransitionPlan, ClaimTransitionRequest, ClaimTransitionSpec,
+    SuccessorClaimSpec,
+};
 
 pub struct ProvenanceStore {
     conn: Connection,
@@ -172,6 +179,18 @@ impl ProvenanceStore {
         Ok(Self { conn })
     }
 
+    /// Open an already-migrated canonical database without running migrations.
+    ///
+    /// Read-only transition planning must not create directories, apply schema
+    /// changes, or acquire a write handle. The caller receives a clear error
+    /// when the database is absent or has not reached the expected schema.
+    pub fn open_read_only(db_path: &Path) -> Result<Self> {
+        let conn = Connection::open_with_flags(db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)
+            .with_context(|| format!("open read-only sqlite database {}", db_path.display()))?;
+        conn.pragma_update(None, "foreign_keys", "ON")?;
+        Ok(Self { conn })
+    }
+
     /// Execute a parameterized SQL statement with typed params.
     pub fn conn_exec<I, T>(&self, sql: &str, params: I) -> Result<()>
     where
@@ -257,7 +276,15 @@ impl ProvenanceStore {
                 "INSERT INTO artifacts (
                     id, key, title, citation, status,
                     minimum_requirement_met, canonical_functional_url, canonical_download_path
-                ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+                ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
+                ON CONFLICT(id) DO UPDATE SET
+                    key = excluded.key,
+                    title = excluded.title,
+                    citation = excluded.citation,
+                    status = excluded.status,
+                    minimum_requirement_met = excluded.minimum_requirement_met,
+                    canonical_functional_url = excluded.canonical_functional_url,
+                    canonical_download_path = excluded.canonical_download_path",
                 params![
                     artifact.id,
                     artifact.key,
@@ -281,7 +308,15 @@ impl ProvenanceStore {
             }
             for doi in &artifact.doi_list {
                 tx.execute(
-                    "INSERT INTO citations (artifact_id, citation_text, doi, canonical_url) VALUES (?1, ?2, ?3, ?4)",
+                    "INSERT INTO citations (artifact_id, citation_text, doi, canonical_url)
+                     SELECT ?1, ?2, ?3, ?4
+                     WHERE NOT EXISTS (
+                         SELECT 1 FROM citations
+                         WHERE artifact_id = ?1
+                           AND citation_text = ?2
+                           AND doi IS ?3
+                           AND canonical_url IS ?4
+                     )",
                     params![
                         artifact.id,
                         artifact.citation,
@@ -400,6 +435,17 @@ impl ProvenanceStore {
         let theorems = load_theorems_from_inventory(repo_root, &proof_inventory, &claims)?;
 
         let tx = self.conn.transaction()?;
+        tx.execute(
+            "INSERT INTO claim_status_write_context (
+                 id, mode, transition_event_id, source_claim_id, proposed_status
+             ) VALUES (1, 'registry_reindex', NULL, NULL, NULL)
+             ON CONFLICT(id) DO UPDATE SET
+                 mode = excluded.mode,
+                 transition_event_id = excluded.transition_event_id,
+                 source_claim_id = excluded.source_claim_id,
+                 proposed_status = excluded.proposed_status",
+            [],
+        )?;
         clear_control_plane_tables(&tx)?;
         for (kind, path, body) in [
             ("claims", claims_path, claims_text.as_str()),
@@ -424,7 +470,13 @@ impl ProvenanceStore {
                  VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)
                  ON CONFLICT(id) DO UPDATE SET
                     statement=excluded.statement,
-                    status=excluded.status,
+                    status = CASE
+                        WHEN EXISTS (
+                            SELECT 1 FROM claim_transition_events
+                            WHERE source_claim_id = claims.id
+                        ) THEN claims.status
+                        ELSE excluded.status
+                    END,
                     where_stated=excluded.where_stated,
                     last_verified=excluded.last_verified,
                     formal_proof=excluded.formal_proof,
@@ -544,6 +596,7 @@ impl ProvenanceStore {
                 .to_string()
             ],
         )?;
+        tx.execute("DELETE FROM claim_status_write_context WHERE id = 1", [])?;
         tx.commit()?;
 
         Ok(IndexStats {
@@ -625,6 +678,15 @@ impl ProvenanceStore {
         write_text(paths.binaries, &outputs.binaries)?;
         write_text(paths.theorems, &outputs.theorems)?;
         write_text(paths.theorems_mirror, &outputs.theorems_mirror)?;
+        let transition_events = repo_root.join("registry/claim_transitions.toml");
+        let transition_relations = repo_root.join("registry/claim_relations.toml");
+        self.export_claim_transition_compat_paths(
+            repo_root,
+            ClaimTransitionCompatPaths {
+                events: &transition_events,
+                relations: &transition_relations,
+            },
+        )?;
 
         self.record_control_plane_run(
             "export_control_plane",
@@ -745,6 +807,19 @@ impl ProvenanceStore {
             (paths.theorems, outputs.theorems.as_str()),
             (paths.theorems_mirror, outputs.theorems_mirror.as_str()),
         ];
+        let transition_events_path = repo_root.join("registry/claim_transitions.toml");
+        let transition_relations_path = repo_root.join("registry/claim_relations.toml");
+        let transition_checks =
+            if scalar_count(&self.conn, "SELECT COUNT(*) FROM claim_transition_events")? != 0
+                || transition_events_path.exists()
+                || transition_relations_path.exists()
+            {
+                let (transition_events, transition_relations) =
+                    self.claim_transition_compat_texts()?;
+                Some((transition_events, transition_relations))
+            } else {
+                None
+            };
         let mut failures = Vec::new();
         for (path, expected) in checks {
             if !path.exists() {
@@ -758,6 +833,28 @@ impl ProvenanceStore {
                     path.display(),
                     repo_root.display()
                 ));
+            }
+        }
+        if let Some((transition_events, transition_relations)) = transition_checks {
+            for (path, expected) in [
+                (transition_events_path.as_path(), transition_events.as_str()),
+                (
+                    transition_relations_path.as_path(),
+                    transition_relations.as_str(),
+                ),
+            ] {
+                if !path.exists() {
+                    failures.push(format!("missing compatibility export {}", path.display()));
+                    continue;
+                }
+                let actual = load_text(path)?;
+                if actual != format!("{expected}\n") {
+                    failures.push(format!(
+                        "stale compatibility export {} relative to {}",
+                        path.display(),
+                        repo_root.display()
+                    ));
+                }
             }
         }
         if !failures.is_empty() {
@@ -797,6 +894,9 @@ impl ProvenanceStore {
 
     pub fn verify_control_plane_invariants(&self, repo_root: &Path) -> Result<()> {
         let mut failures = Vec::new();
+        if let Err(error) = self.verify_claim_transition_invariants() {
+            failures.push(error.to_string());
+        }
         let counts = self.control_plane_counts()?;
         if counts.claim_count == 0 {
             failures.push("control-plane database has zero claims".to_string());
