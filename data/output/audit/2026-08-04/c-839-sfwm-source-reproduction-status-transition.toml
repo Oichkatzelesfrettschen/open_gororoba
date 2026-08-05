@@ -1,0 +1,19 @@
+[transition]
+transition_key = "c-839-sfwm-signed-maker-fringes"
+source_claim_id = "C-839"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+exercised_falsifier = "Compare analytic coherence-length extrema and 2*L_coh periods against frozen 0.1 um output and 0.05/0.01 um refinement grids while retaining the signed complex phase-matching components."
+proposed_claim_status = "Verified"
+rationale = "The corrected path preserves monotonic SFWM |F|^2 through its first coherence length and resolves SHG and SPDC Maker fringes with periods approaching twice their analytic coherence lengths under grid refinement. The signed SPDC representation does not alter scalar |F|^2 but is retained for the coherent amplitude path."
+unresolved_assumptions = [
+    "The claim remains a scalar phase-matching statement and does not establish experimental fringe calibration.",
+    "Absolute coherence lengths remain dependent on the declared material branch.",
+]
+actor = "son-chekhova-source-reproduction"
+reason = "Record scalar fringe structure after separating it from the coherent sign-sensitive rate calculation."
+transition_timestamp = "2026-08-05T03:49:05Z"
+expected_source_state_sha256 = "4729bc172bbdf6674067a454d53c14d74396310ccf7bd07a5dbd281190b25711"
+expected_claim_id_max = 1663

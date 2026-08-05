@@ -1,0 +1,19 @@
+[transition]
+transition_key = "c-832-sfwm-source-reproduction"
+source_claim_id = "C-832"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+exercised_falsifier = "Compare signed complex Eq. 6 and Eq. 8 amplitudes, complete Eq. 6 prefactor, source susceptibility tuple, extraordinary Sellmeier sensitivity, independent dense-index components, mpmath fixtures, and the frozen 10 um ratio."
+proposed_claim_status = "Verified"
+rationale = "The paper-input and extraordinary Sellmeier paths give cascaded-to-direct ratios 0.04774423559348579 and 0.04801092757771039 at 10 um. Both imply direct dominance greater than 5x, and the independent component paths detect sign, prefactor, and susceptibility mutations. The status is bounded to the declared source-model inputs and does not establish the experimental material identity."
+unresolved_assumptions = [
+    "The Wang chi^(3) sample and effective susceptibility convention remain unresolved for pristine thin LN.",
+    "The source does not provide Supplement 1 or a complete experimental total-rate model.",
+]
+actor = "son-chekhova-source-reproduction"
+reason = "Record the corrected signed coherent direct-dominance result without reusing the quarantined legacy oracle."
+transition_timestamp = "2026-08-05T03:49:05Z"
+expected_source_state_sha256 = "09cf5aa8697e5491e034aca4bc2752ce2899d59d9d8a911babcfc44555cbb0e1"
+expected_claim_id_max = 1663

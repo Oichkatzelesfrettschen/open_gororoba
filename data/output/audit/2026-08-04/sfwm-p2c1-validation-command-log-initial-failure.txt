@@ -1,0 +1,626 @@
+# workspace-routing source lives beside the data CLI, but
+# rust-regression-scoped builds it through the slim governance proxy binary.
+# That keeps scope classification independent of the full data CLI
+# dependency graph while preserving workspace-routing semantics.
+#
+# Prefer the cached binary at /home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/.cache/gate-target/validation-tools/workspace-routing to skip cargo's
+# metadata walk. The validation-tools target dependencies rebuild the cached binary
+# when workspace_routing.rs changes.
+#
+# Preserve routing CLI stderr so scope-selection failures reach the validation
+# operator. The fallback remains "--workspace" after the diagnostic is
+# emitted.
+# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
+# WHY: clippy lints fire on the package owning the source -- a change in a
+# hub crate cannot induce a new lint on a downstream consumer whose source
+# is unchanged. Skipping the closure for clippy saves the bulk of compile
+# time (gororoba_cli_data with 100+ binaries is the worst offender).
+# Nextest in the LOCAL pre-push fast path also runs only on directly
+# changed crates. Trust the layered model:
+#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
+#   - Full reverse-closure regression = CI on PR open (validate-ci-rust).
+# Set RUST_NEXTEST_SCOPE_MODE=closure to opt back into the wide scope for
+# a single invocation when needed (e.g. after toolchain bumps).
+# Pre-push test kind: `lib` runs only library unit tests; `all` runs
+# lib + integration test binaries (--lib --tests). Integration test
+# compile is the largest single contributor to gate wall-time (the
+# 441-binary link phase, ~4m30s); restricting to --lib at pre-push
+# makes the gate a true smoke gate. CI on PR open runs the full
+# `all` suite. Override per invocation:
+#   make validate-local RUST_NEXTEST_KIND_MODE=all
+[rust-regression-scoped] clippy scope: -p gororoba_cli_physics -p optics_core
+[rust-regression-scoped] nextest scope: -p gororoba_cli_physics -p optics_core (scope_mode=direct kinds=--lib)
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+    Checking cfg-if v1.0.4
+   Compiling libc v0.2.184
+   Compiling autocfg v1.5.0
+   Compiling serde_core v1.0.228
+   Compiling libm v0.2.16
+   Compiling num-traits v0.2.19
+   Compiling serde v1.0.228
+   Compiling zerocopy v0.8.48
+   Compiling find-msvc-tools v0.1.9
+   Compiling typenum v1.19.0
+   Compiling shlex v1.3.0
+    Checking getrandom v0.2.17
+   Compiling syn v2.0.117
+   Compiling jobserver v0.1.34
+    Checking rand_core v0.6.4
+    Checking num-integer v0.1.46
+   Compiling cc v1.2.59
+    Checking once_cell v1.21.4
+    Checking bitflags v2.11.0
+    Checking memchr v2.8.0
+   Compiling version_check v0.9.5
+   Compiling thiserror v2.0.18
+    Checking log v0.4.29
+    Checking smallvec v1.15.1
+   Compiling paste v1.0.15
+   Compiling getrandom v0.3.4
+    Checking equivalent v1.0.2
+   Compiling crossbeam-utils v0.8.21
+    Checking allocator-api2 v0.2.21
+    Checking foldhash v0.2.0
+   Compiling crossbeam-epoch v0.9.20
+    Checking either v1.15.0
+    Checking approx v0.5.1
+   Compiling matrixmultiply v0.3.10
+    Checking hashbrown v0.16.1
+    Checking rawpointer v0.2.1
+   Compiling rayon-core v1.13.0
+   Compiling pkg-config v0.3.32
+    Checking rand_core v0.9.5
+    Checking crossbeam-deque v0.8.6
+    Checking bytes v1.11.1
+    Checking simd-adler32 v0.3.9
+    Checking cpufeatures v0.3.0
+    Checking adler2 v2.0.1
+    Checking pin-project-lite v0.2.17
+    Checking itoa v1.0.18
+    Checking miniz_oxide v0.8.9
+    Checking hybrid-array v0.4.10
+    Checking raw-cpuid v11.6.0
+    Checking num-rational v0.4.2
+    Checking rayon v1.11.0
+    Checking const-oid v0.10.2
+   Compiling pulp v0.22.2
+    Checking crypto-common v0.2.2
+    Checking block-buffer v0.12.0
+    Checking strength_reduce v0.2.4
+   Compiling serde_derive v1.0.228
+   Compiling bytemuck_derive v1.10.2
+   Compiling zerocopy-derive v0.8.48
+   Compiling thiserror-impl v2.0.18
+    Checking bytemuck v1.25.0
+    Checking digest v0.11.2
+    Checking safe_arch v0.7.4
+    Checking rand_core v0.10.0
+    Checking sha2 v0.11.0
+    Checking transpose v0.2.3
+    Checking primal-check v0.3.4
+    Checking wide v0.7.33
+    Checking reborrow v0.5.5
+    Checking pulp-wasm-simd-flag v0.1.0
+    Checking num_cpus v1.17.0
+   Compiling getrandom v0.4.2
+    Checking futures-core v0.3.32
+   Compiling dyn-stack-macros v0.1.3
+    Checking dyn-stack v0.13.2
+   Compiling nalgebra-macros v0.3.0
+    Checking indexmap v2.13.1
+   Compiling crc32fast v1.5.0
+   Compiling cfg_aliases v0.2.1
+   Compiling equator-macro v0.4.2
+    Checking foldhash v0.1.5
+    Checking equator v0.4.2
+    Checking hashbrown v0.15.5
+    Checking core_affinity v0.8.3
+   Compiling syn v1.0.109
+   Compiling zmij v1.0.21
+    Checking chacha20 v0.10.0
+    Checking zlib-rs v0.6.3
+   Compiling nano-gemm-codegen v0.2.1
+    Checking futures-io v0.3.32
+   Compiling serde_json v1.0.149
+    Checking rand v0.10.1
+    Checking gororoba_gpu_bridge v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_gpu_bridge)
+   Compiling synstructure v0.13.2
+   Compiling object v0.37.3
+    Checking web-time v1.1.0
+    Checking gimli v0.32.3
+   Compiling radium v0.7.0
+    Checking flate2 v1.1.9
+   Compiling zerofrom-derive v0.1.7
+    Checking ppv-lite86 v0.2.21
+    Checking half v2.7.1
+    Checking rand_distr v0.6.0
+    Checking rand_chacha v0.3.1
+    Checking rand_chacha v0.9.0
+    Checking rand v0.8.6
+    Checking aligned-vec v0.6.4
+    Checking rand v0.9.3
+    Checking safe_arch v1.0.0
+    Checking num-complex v0.4.6
+    Checking addr2line v0.25.1
+    Checking rand_distr v0.5.1
+   Compiling simsimd v6.5.16
+    Checking fastrand v2.4.1
+    Checking rustc-demangle v0.1.27
+    Checking tap v1.0.1
+    Checking simba v0.9.1
+    Checking rustfft v6.4.1
+    Checking wyz v0.5.1
+    Checking wide v1.2.0
+    Checking rand_chacha v0.10.0
+    Checking zerofrom v0.1.7
+    Checking backtrace v0.3.76
+   Compiling yoke-derive v0.8.2
+   Compiling generic-array v0.14.7
+   Compiling fnv v1.0.7
+    Checking funty v2.0.0
+    Checking stable_deref_trait v1.2.1
+    Checking lazy_static v1.5.0
+   Compiling ident_case v1.0.1
+   Compiling cd_kernel v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/cd_kernel)
+    Checking bitvec v1.0.1
+    Checking yoke v0.8.2
+    Checking fwht v0.1.0 (https://github.com/Oichkatzelesfrettschen/cratesgororobas?rev=28b5310d3a6755b81b7c1ceb79f9f79f67f1af70#28b5310d)
+    Checking subtle v2.6.1
+   Compiling zerovec-derive v0.11.3
+    Checking num-bigint v0.4.6
+    Checking nalgebra v0.34.2
+   Compiling displaydoc v0.2.5
+   Compiling libmimalloc-sys v0.1.44
+    Checking socket2 v0.6.3
+    Checking zerovec v0.11.6
+    Checking mio v1.2.0
+   Compiling ucd-trie v0.1.7
+    Checking zeroize v1.8.2
+    Checking ryu v1.0.23
+   Compiling seq-macro v0.3.6
+   Compiling thiserror v1.0.69
+   Compiling heck v0.5.0
+    Checking tokio v1.51.0
+    Checking gemm-common v0.19.0
+   Compiling thiserror-impl v1.0.69
+   Compiling ring v0.17.14
+   Compiling pest v2.8.6
+    Checking aho-corasick v1.1.4
+    Checking tracing-core v0.1.36
+    Checking byteorder v1.5.0
+   Compiling unicode-xid v0.2.6
+    Checking regex-syntax v0.8.10
+   Compiling semver v1.0.28
+    Checking nano-gemm-core v0.2.1
+   Compiling anyhow v1.0.103
+   Compiling rustc_version v0.4.1
+   Compiling pest_meta v2.8.6
+    Checking rustls-pki-types v1.14.0
+    Checking regex-automata v0.4.14
+    Checking crypto-common v0.1.7
+    Checking realfft v3.5.0
+    Checking http v1.4.0
+    Checking csv-core v0.1.13
+    Checking futures-sink v0.3.32
+    Checking fixedbitset v0.5.7
+   Compiling diffusionx v0.11.3
+    Checking csv v1.4.0
+    Checking petgraph v0.8.3
+    Checking mimalloc v0.1.48
+   Compiling pest_generator v2.8.6
+    Checking regex v1.12.3
+    Checking tinystr v0.8.3
+   Compiling interpol v0.2.1
+   Compiling nano-gemm-f32 v0.2.1
+   Compiling nano-gemm-f64 v0.2.1
+   Compiling nano-gemm-c64 v0.2.1
+   Compiling nano-gemm-c32 v0.2.1
+    Checking rand_xoshiro v0.8.0
+   Compiling tracing-attributes v0.1.31
+    Checking crossbeam-channel v0.5.15
+    Checking gauss-quad v0.3.1
+    Checking verified_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/verified_core)
+    Checking crossbeam-queue v0.3.12
+   Compiling unicode-segmentation v1.13.2
+   Compiling defer v0.2.1
+    Checking scopeguard v1.2.0
+   Compiling httparse v1.10.1
+   Compiling rustversion v1.0.22
+   Compiling portable-atomic v1.13.1
+    Checking untrusted v0.9.0
+    Checking litemap v0.8.2
+   Compiling parking_lot_core v0.9.12
+    Checking writeable v0.6.3
+    Checking unicode-width v0.2.2
+   Compiling convert_case v0.10.0
+    Checking icu_locale_core v2.2.0
+    Checking lock_api v0.4.14
+   Compiling private-gemm-x86 v0.1.20
+    Checking crossbeam v0.8.4
+    Checking moreno_1997 v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/moreno_1997)
+    Checking tracing v0.1.44
+    Checking algebra_analysis v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/algebra_analysis)
+   Compiling pest_derive v2.8.6
+    Checking atlas-embeddings v0.1.1
+    Checking potential_utf v0.1.5
+    Checking zerotrie v0.2.4
+    Checking block-buffer v0.10.4
+   Compiling equator-macro v0.2.1
+    Checking atomic-wait v1.1.0
+    Checking libloading v0.8.9
+   Compiling icu_normalizer_data v2.2.0
+   Compiling strsim v0.10.0
+   Compiling rustls v0.23.37
+   Compiling icu_properties_data v2.2.0
+    Checking padic v0.1.6
+    Checking percent-encoding v2.3.2
+    Checking utf8_iter v1.0.4
+    Checking alloc-no-stdlib v2.0.4
+    Checking icu_collections v2.2.0
+   Compiling darling_core v0.14.4
+    Checking alloc-stdlib v0.2.2
+    Checking equator v0.2.2
+    Checking spindle v0.2.6
+    Checking digest v0.10.7
+    Checking icu_provider v2.2.0
+    Checking gororoba_algebra v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_algebra)
+    Checking py_literal v0.4.0
+   Compiling derive_more-impl v2.1.1
+    Checking http-body v1.0.1
+    Checking gemm-f32 v0.19.0
+    Checking gemm-c32 v0.19.0
+    Checking rustls-webpki v0.103.13
+    Checking gemm-f64 v0.19.0
+    Checking gemm-c64 v0.19.0
+    Checking qd v0.8.0
+   Compiling cubecl-common v0.9.0
+   Compiling derive-new v0.7.0
+   Compiling zstd-sys v2.0.16+zstd.1.5.7
+    Checking parking v2.2.1
+   Compiling rustix v1.1.4
+    Checking futures-task v0.3.32
+   Compiling equator-macro v0.6.0
+    Checking slab v0.4.12
+    Checking generativity v1.1.0
+    Checking equator v0.6.0
+    Checking gemm v0.19.0
+    Checking faer-traits v0.24.0
+    Checking futures-util v0.3.32
+    Checking futures-lite v2.6.1
+    Checking nano-gemm v0.2.2
+    Checking parking_lot v0.12.5
+    Checking spin v0.10.0
+   Compiling generator v0.8.8
+    Checking derive_more v2.1.1
+    Checking npyz v0.8.4
+   Compiling darling_macro v0.14.4
+    Checking brotli-decompressor v5.0.0
+    Checking ndarray v0.17.2
+    Checking rand_distr v0.4.3
+   Compiling nalgebra-macros v0.2.2
+    Checking serde_bytes v0.11.19
+    Checking lexical-util v1.0.7
+    Checking tower-service v0.3.3
+    Checking try-lock v0.2.5
+    Checking cpufeatures v0.2.17
+    Checking iana-time-zone v0.1.65
+    Checking base64 v0.22.1
+    Checking embassy-futures v0.1.2
+    Checking linux-raw-sys v0.12.1
+   Compiling fixed v1.31.0
+    Checking chrono v0.4.41
+    Checking lexical-parse-integer v1.0.6
+    Checking want v0.3.1
+    Checking nalgebra v0.33.3
+    Checking faer v0.24.0
+    Checking icu_properties v2.2.0
+    Checking brotli v8.0.2
+    Checking icu_normalizer v2.2.0
+   Compiling darling v0.14.4
+    Checking futures-channel v0.3.32
+    Checking tracing-log v0.2.0
+    Checking sharded-slab v0.1.7
+   Compiling naga v29.0.1
+    Checking thread_local v1.1.9
+    Checking winnow v1.0.1
+   Compiling zstd-safe v7.2.4
+    Checking nu-ansi-term v0.50.3
+    Checking atomic-waker v1.1.2
+    Checking bit-vec v0.9.1
+    Checking compression-core v0.4.31
+    Checking az v1.3.0
+    Checking bit-set v0.9.1
+    Checking hyper v1.9.0
+    Checking compression-codecs v0.4.37
+    Checking tracing-subscriber v0.3.23
+    Checking toml_parser v1.1.2+spec-1.1.0
+   Compiling derive_builder_core v0.11.2
+    Checking idna_adapter v1.2.1
+    Checking burn-std v0.20.1
+    Checking lexical-parse-float v1.0.6
+    Checking form_urlencoded v1.2.2
+    Checking gororoba_structurable v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_structurable)
+    Checking codespan-reporting v0.13.1
+    Checking argmin-math v0.5.1
+   Compiling snafu-derive v0.9.0
+    Checking inout v0.1.4
+    Checking optics_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/optics_core)
+    Checking cauchy v0.4.0
+    Checking sync_wrapper v1.0.2
+   Compiling katexit v0.1.5
+    Checking rand_xoshiro v0.7.0
+   Compiling fitsio-sys v0.5.7
+   Compiling ahash v0.8.12
+    Checking spirv v0.4.0+sdk-1.4.341.0
+    Checking toml_datetime v1.1.1+spec-1.1.0
+    Checking serde_spanned v1.1.1
+    Checking ordered-float v5.3.0
+    Checking cblas-sys v0.1.4
+    Checking lapack-sys v0.14.0
+    Checking rustc-hash v1.1.0
+    Checking bitflags v1.3.2
+    Checking cmov v0.5.3
+    Checking ipnet v2.12.0
+    Checking toml_writer v1.1.1+spec-1.1.0
+    Checking divrem v1.0.0
+    Checking sorted-vec v0.8.10
+    Checking array-init v2.1.0
+    Checking hexf-parse v0.2.1
+    Checking openssl-probe v0.2.1
+    Checking arrayvec v0.7.6
+    Checking powerfmt v0.2.0
+    Checking tower-layer v0.3.3
+    Checking deranged v0.5.8
+    Checking tower v0.5.3
+    Checking rustls-native-certs v0.8.3
+    Checking hyper-util v0.1.20
+    Checking toml v1.1.2+spec-1.1.0
+    Checking lax v0.17.0
+    Checking ndarray v0.16.1
+    Checking argmin v0.11.0
+    Checking kiddo v5.3.0
+    Checking snafu v0.9.0
+    Checking cipher v0.4.4
+    Checking lexical-core v1.0.6
+    Checking burn-backend v0.20.1
+   Compiling derive_builder_macro v0.11.2
+    Checking idna v1.1.0
+    Checking async-compression v0.4.41
+    Checking tokio-rustls v0.26.4
+    Checking sha2 v0.10.9
+    Checking http-body-util v0.1.3
+    Checking hmac v0.12.1
+    Checking dlib v0.5.3
+    Checking tokio-util v0.7.18
+    Checking time-core v0.1.8
+   Compiling qua_ten_net v0.2.0
+    Checking iri-string v0.7.12
+   Compiling clarabel v0.11.1
+    Checking bumpalo v3.20.2
+    Checking num-conv v0.2.1
+    Checking libbz2-rs-sys v0.2.2
+   Compiling xml-rs v0.8.28
+    Checking zopfli v0.8.3
+    Checking bzip2 v0.6.1
+    Checking time v0.3.47
+    Checking pbkdf2 v0.12.2
+   Compiling wayland-scanner v0.29.5
+    Checking lzma-rust2 v0.16.2
+    Checking tower-http v0.6.8
+    Checking hyper-rustls v0.27.7
+    Checking url v2.5.8
+    Checking derive_builder v0.11.2
+    Checking ndarray-linalg v0.17.0
+    Checking hifitime v4.2.6
+    Checking aes v0.8.4
+    Checking rustls-platform-verifier v0.6.2
+    Checking serde_urlencoded v0.7.1
+    Checking ode_solvers v0.6.1
+    Checking xattr v1.6.1
+    Checking ureq-proto v0.6.0
+    Checking sha1 v0.10.6
+   Compiling enum_dispatch v0.3.13
+    Checking webpki-roots v1.0.6
+    Checking serde-big-array v0.5.1
+    Checking gororoba_contracts v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_contracts)
+    Checking itertools v0.11.0
+    Checking amd v0.2.2
+    Checking filetime v0.2.27
+    Checking memmap2 v0.9.11
+   Compiling memoffset v0.6.5
+    Checking constant_time_eq v0.4.2
+    Checking deflate64 v0.1.12
+    Checking typed-path v0.12.3
+   Compiling strsim v0.11.1
+    Checking ppmd-rust v1.4.0
+   Compiling crunchy v0.2.4
+    Checking utf8-zero v0.8.1
+    Checking gororoba_sparse_grid v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_sparse_grid)
+   Compiling darling_core v0.20.11
+    Checking ureq v3.3.0
+    Checking tar v0.4.45
+    Checking flavor_lifts v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/flavor_lifts)
+    Checking algebra_experimental v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/algebra_experimental)
+    Checking gr_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gr_core)
+    Checking reqwest v0.13.2
+    Checking fitsio v0.21.1
+    Checking statrs v0.18.0
+    Checking lbm_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/lbm_core)
+    Checking backon v1.6.0
+    Checking fdeflate v0.3.7
+   Compiling wayland-sys v0.29.5
+    Checking quick-xml v0.41.0
+    Checking cdf v0.1.4
+    Checking kodama v0.3.0
+   Compiling tiny-keccak v2.0.2
+    Checking stats_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/stats_core)
+   Compiling darling_macro v0.20.11
+    Checking rmp v0.8.15
+    Checking unty v0.0.4
+    Checking utf8parse v0.2.2
+    Checking colored v3.1.1
+    Checking quantum_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/quantum_core)
+    Checking anstyle-parse v1.0.0
+    Checking burn-tensor v0.20.1
+    Checking rmp-serde v1.3.1
+    Checking bincode v2.0.1
+    Checking nix v0.24.3
+   Compiling darling v0.20.11
+   Compiling wayland-client v0.29.5
+   Compiling burn-derive v0.20.1
+   Compiling macerator v0.2.10
+   Compiling pathfinder_simd v0.5.5
+   Compiling freetype-sys v0.20.1
+   Compiling yeslogic-fontconfig-sys v6.0.0
+    Checking colorchoice v1.0.5
+    Checking is_terminal_polyfill v1.70.2
+    Checking anstyle-query v1.1.5
+    Checking data-encoding v2.10.0
+    Checking anstyle v1.0.14
+    Checking uuid v1.23.0
+   Compiling ash v0.38.0+1.3.281
+    Checking anstream v1.0.0
+    Checking wayland-commons v0.29.5
+    Checking burn-core v0.20.1
+   Compiling macerator-macros v0.1.4
+   Compiling const-random-macro v0.1.16
+    Checking arrow-buffer v58.1.0
+   Compiling proc-macro-error-attr2 v2.0.0
+    Checking arrow-schema v58.1.0
+   Compiling json v0.12.4
+   Compiling vcpkg v0.2.15
+    Checking option-ext v0.2.0
+   Compiling burn-ndarray v0.20.1
+    Checking downcast-rs v1.2.1
+    Checking color_quant v1.1.0
+    Checking scoped-tls v1.0.1
+    Checking moddef v0.3.0
+   Compiling libsqlite3-sys v0.37.0
+    Checking arrow-data v58.1.0
+   Compiling periodic-table-on-an-enum v0.3.2
+    Checking dirs-sys v0.5.0
+   Compiling materials_data v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/materials_data)
+   Compiling proc-macro-error2 v2.0.1
+    Checking const-random v0.1.18
+    Checking png v0.17.16
+   Compiling wayland-protocols v0.29.5
+    Checking burn-ir v0.20.1
+    Checking burn-autodiff v0.20.1
+   Compiling flatbuffers v25.12.19
+   Compiling x11-dl v2.21.0
+    Checking pxfm v0.1.28
+    Checking atomic_float v1.1.0
+    Checking zune-core v0.5.1
+    Checking presser v0.3.1
+    Checking weezl v0.1.12
+    Checking same-file v1.0.6
+    Checking plotters-backend v0.3.7
+   Compiling font-kit v0.14.3
+    Checking jpeg-decoder v0.3.2
+    Checking gororoba_gpu_readback v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_gpu_readback)
+    Checking bytecount v0.6.9
+    Checking papergrid v0.17.0
+    Checking image v0.24.9
+    Checking moxcms v0.8.1
+    Checking walkdir v2.5.0
+    Checking gif v0.12.0
+    Checking zune-jpeg v0.5.15
+    Checking pathfinder_geometry v0.5.1
+   Compiling tabled_derive v0.11.0
+    Checking arrow-array v58.1.0
+    Checking dirs v6.0.0
+    Checking burn-optim v0.20.1
+    Checking burn-nn v0.20.1
+    Checking png v0.18.1
+    Checking testing_table v0.3.0
+    Checking env_filter v1.0.1
+    Checking zstd v0.13.3
+   Compiling const_format_proc_macros v0.2.34
+   Compiling strum_macros v0.28.0
+    Checking zip v8.5.0
+    Checking rustdct v0.7.1
+   Compiling der_derive v0.7.3
+    Checking itertools v0.14.0
+    Checking data_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/data_core)
+   Compiling minifb v0.28.0
+    Checking float-ord v0.3.2
+   Compiling anise v0.9.6
+    Checking xcursor v0.3.10
+    Checking clap_lex v1.1.0
+    Checking strum v0.28.0
+    Checking jiff v0.2.23
+    Checking byteorder-lite v0.1.0
+    Checking gpu-allocator v0.28.0
+    Checking union-find v0.4.3
+    Checking moyo v0.7.9
+    Checking burn v0.20.1
+    Checking clap_builder v4.6.0
+    Checking gororoba_gpu_vulkan v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_gpu_vulkan)
+    Checking image v0.25.10
+    Checking wayland-cursor v0.29.5
+    Checking der v0.7.10
+    Checking env_logger v0.11.10
+    Checking ndrustfft v0.6.2
+    Checking const_format v0.2.35
+    Checking tabled v0.20.0
+    Checking arrow-select v58.1.0
+    Checking plotters-bitmap v0.3.7
+    Checking gororoba_view_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_view_core)
+    Checking plotters-svg v0.3.7
+    Checking tempfile v3.27.0
+    Checking spin_tomography_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/spin_tomography_core)
+   Compiling clap_derive v4.6.0
+    Checking cosmic_scheduler v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/cosmic_scheduler)
+    Checking cosmology_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/cosmology_core)
+    Checking hashlink v0.11.0
+    Checking adjustp v0.1.6
+    Checking fallible-iterator v0.3.0
+    Checking ttf-parser v0.20.0
+    Checking raw-window-handle v0.6.2
+    Checking sign_imbalance v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/sign_imbalance)
+    Checking fallible-streaming-iterator v0.1.9
+    Checking neural_homotopy v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/neural_homotopy)
+    Checking lbm_3d v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/lbm_3d)
+    Checking spectral_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/spectral_core)
+    Checking cd_spin_bridge v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/cd_spin_bridge)
+    Checking clap v4.6.0
+    Checking gororoba_view_raster v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/gororoba_view_raster)
+    Checking arrow-ipc v58.1.0
+    Checking materials_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/materials_core)
+    Checking plotters v0.3.7
+    Checking lbm_vulkan v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/lbm_vulkan)
+    Checking pathion_ellip v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/pathion_ellip)
+    Checking tensor_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/tensor_core)
+    Checking data_artifacts_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/data_artifacts_core)
+    Checking snia_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/snia_core)
+    Checking cr_transport v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/cr_transport)
+    Checking casimir_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/casimir_core)
+    Checking qgp_scaling v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/qgp_scaling)
+    Checking grmhd_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/grmhd_core)
+    Checking glob v0.3.3
+error: this function has too many arguments (9/7)
+  --> crates/optics_core/tests/test_sfwm_source_reference.rs:25:1
+   |
+25 | / fn reference_amplitudes(
+26 | |     chi2_m_per_v: f64,
+27 | |     chi3_m2_per_v2: f64,
+28 | |     pump_field_squared: f64,
+...  |
+34 | |     thickness_um: f64,
+35 | | ) -> (Complex64, Complex64) {
+   | |___________________________^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#too_many_arguments
+   = note: `-D clippy::too-many-arguments` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::too_many_arguments)]`
+
+error: could not compile `optics_core` (test "test_sfwm_source_reference") due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+make[1]: *** [Makefile:949: rust-regression-scoped] Error 101
+make[1]: Leaving directory '/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction'
+make: *** [Makefile:497: validate-local] Error 2
+EXIT_CODE: 2
+
+VALIDATION_FAILED=1

@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 15
+event_count = 21
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -330,7 +330,7 @@ source_claim_id = "C-832"
 expected_prior_status = "Verified"
 experiment_verdict = "MethodologyInvalid"
 proposed_claim_status = "Provisional"
-current_status = "Provisional"
+current_status = "Verified"
 exercised_falsifier = "Compare the legacy product-of-efficiencies result and reduced rate path with signed source Eq. 6 and Eq. 8, including the omitted prefactor, source susceptibility tuple, and material convention controls."
 rationale = "The retained positive path measures a surrogate and omits a source prefactor. It cannot support the direct-versus-cascaded source rate claim. The source equations remain unrefuted."
 unresolved_assumptions = ["Signed mismatch assignment requires a declared propagation convention.", "The source chi2 convention and the Wang chi3 sample identity remain unresolved.", "The corrected complex amplitude path has not run."]
@@ -406,3 +406,117 @@ relation_kind = "source_split"
 proposal_key = "c838-substrate-nonzero-amplitude"
 canonical_claim_id = "C-1663"
 relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 16
+transition_key = "c-832-sfwm-source-reproduction"
+source_claim_id = "C-832"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Compare signed complex Eq. 6 and Eq. 8 amplitudes, complete Eq. 6 prefactor, source susceptibility tuple, extraordinary Sellmeier sensitivity, independent dense-index components, mpmath fixtures, and the frozen 10 um ratio."
+rationale = "The paper-input and extraordinary Sellmeier paths give cascaded-to-direct ratios 0.04774423559348579 and 0.04801092757771039 at 10 um. Both imply direct dominance greater than 5x, and the independent component paths detect sign, prefactor, and susceptibility mutations. The status is bounded to the declared source-model inputs and does not establish the experimental material identity."
+unresolved_assumptions = ["The Wang chi^(3) sample and effective susceptibility convention remain unresolved for pristine thin LN.", "The source does not provide Supplement 1 or a complete experimental total-rate model."]
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+actor = "son-chekhova-source-reproduction"
+reason = "Record the corrected signed coherent direct-dominance result without reusing the quarantined legacy oracle."
+transition_timestamp = "2026-08-05T03:49:05Z"
+transition_spec_sha256 = "225f59445897f434c96ca7dcb8cdeb508c01413da5aa3cd99a4f1644dddabdb3"
+successors = []
+
+[[transition]]
+event_id = 17
+transition_key = "c-833-sfwm-extraordinary-sellmeier-hierarchy"
+source_claim_id = "C-833"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Evaluate signed extraordinary Zelmon mismatches at 1030, 770, 1550, and 515 nm, retain coherence lengths and branch envelopes, and compare the SFWM-to-SHG hierarchy against the declared greater-than-three predicate."
+rationale = "The extraordinary Sellmeier path gives SFWM and SHG coherence lengths of 25.2175205384 and 3.0753396127 um, a hierarchy above 3x. The paper-input anchor path independently preserves the same qualitative hierarchy. Absolute lengths remain branch-sensitive and are not promoted as exact paper anchors."
+unresolved_assumptions = ["The public source identifies the z tensor components and x-cut geometry but does not print an ordinary-versus-extraordinary label.", "Temperature and any source-specific dispersion correction remain unavailable."]
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+actor = "son-chekhova-source-reproduction"
+reason = "Record the bounded qualitative hierarchy under an explicit extraordinary branch."
+transition_timestamp = "2026-08-05T03:49:05Z"
+transition_spec_sha256 = "1c786f826859183cf96385bc749789960eedc7d7ed8b8f1c8c3cd8f8d6ad6c40"
+successors = []
+
+[[transition]]
+event_id = 18
+transition_key = "c-834-sfwm-source-rate-boundary"
+source_claim_id = "C-834"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Evaluate the corrected coherent paper-input rate at 10 um with signed closure and the full Eq. 6 prefactor, then retain the deterministic chi and wavelength endpoint envelope."
+rationale = "The nominal paper-input result is 0.04774423559348579 and is below the 0.05 boundary. The deterministic endpoint envelope is 0.04088750057509066 to 0.05578719347757, so the threshold is not robust to the declared input envelope. Preserve the result as provisional rather than promoting a nominal point into an uncertainty-robust claim."
+unresolved_assumptions = ["The source prints 0.048 without a formal uncertainty interval.", "The chi^(3) sample identity and effective tensor convention remain unresolved.", "The source-specific temperature and wavelength uncertainty are not fully supplied."]
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+actor = "son-chekhova-source-reproduction"
+reason = "Separate nominal source-anchor agreement from the uncertainty-sensitive five-percent boundary."
+transition_timestamp = "2026-08-05T03:49:05Z"
+transition_spec_sha256 = "f1101c678e8edf7fd356be80d562fb74b58a2b1613c7e0c935b2404e8360a1ed"
+successors = []
+
+[[transition]]
+event_id = 19
+transition_key = "c-839-sfwm-signed-maker-fringes"
+source_claim_id = "C-839"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Compare analytic coherence-length extrema and 2*L_coh periods against frozen 0.1 um output and 0.05/0.01 um refinement grids while retaining the signed complex phase-matching components."
+rationale = "The corrected path preserves monotonic SFWM |F|^2 through its first coherence length and resolves SHG and SPDC Maker fringes with periods approaching twice their analytic coherence lengths under grid refinement. The signed SPDC representation does not alter scalar |F|^2 but is retained for the coherent amplitude path."
+unresolved_assumptions = ["The claim remains a scalar phase-matching statement and does not establish experimental fringe calibration.", "Absolute coherence lengths remain dependent on the declared material branch."]
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+actor = "son-chekhova-source-reproduction"
+reason = "Record scalar fringe structure after separating it from the coherent sign-sensitive rate calculation."
+transition_timestamp = "2026-08-05T03:49:05Z"
+transition_spec_sha256 = "673d33a4eafeff07ad140b61835f2c61473eb7d3a682fb227066b1598aa3609f"
+successors = []
+
+[[transition]]
+event_id = 20
+transition_key = "c-1659-sfwm-source-implementation-conformance"
+source_claim_id = "C-1659"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Compare every retained complex amplitude and rate component against the dense-index Rust formula and the independent 80-digit mpmath fixture while running sign, prefactor, susceptibility, phase, and denominator mutations."
+rationale = "The source-owned implementation retains signed mismatch types, complex Eq. 6 and Eq. 8 amplitudes, the complete Eq. 6 prefactor, source and extraordinary Sellmeier input paths, explicit zero-rate handling, and independent component-level agreement."
+unresolved_assumptions = ["Implementation conformance does not establish the unresolved material identity or the experimental coincidence mapping."]
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+actor = "son-chekhova-source-reproduction"
+reason = "Promote only the implementation-conformance successor after independent component agreement and mutation detection."
+transition_timestamp = "2026-08-05T03:49:05Z"
+transition_spec_sha256 = "3f6f9cea8c1dbba0910d378ca392afdf444bc6c0b76f412e98d80712125cc773"
+successors = []
+
+[[transition]]
+event_id = 21
+transition_key = "c-1661-sfwm-source-rate-anchor-reproduction"
+source_claim_id = "C-1661"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Compare the 10 um paper-input and extraordinary Sellmeier ratios with the printed 0.048 anchor, the high-precision fixture, and the retained deterministic input envelope without fitting the ratio."
+rationale = "The paper-input ratio is 0.04774423559348579 and the extraordinary Sellmeier ratio is 0.04801092757771039. Both use the full coherent source amplitudes and agree with the rounded source anchor under the declared input convention."
+unresolved_assumptions = ["The source does not publish a numerical uncertainty for the rounded 0.048 anchor.", "The Wang chi^(3) sample identity and effective susceptibility convention remain unresolved."]
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+actor = "son-chekhova-source-reproduction"
+reason = "Record source-anchor reproduction separately from the uncertainty-sensitive C-834 threshold."
+transition_timestamp = "2026-08-05T03:49:05Z"
+transition_spec_sha256 = "9e09aa71f9ba614cd17b60f6cb802c6c4620d39c8b32b583910cf3ca03ba7245"
+successors = []

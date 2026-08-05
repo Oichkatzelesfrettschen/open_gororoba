@@ -1,0 +1,19 @@
+[transition]
+transition_key = "c-833-sfwm-extraordinary-sellmeier-hierarchy"
+source_claim_id = "C-833"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+exercised_falsifier = "Evaluate signed extraordinary Zelmon mismatches at 1030, 770, 1550, and 515 nm, retain coherence lengths and branch envelopes, and compare the SFWM-to-SHG hierarchy against the declared greater-than-three predicate."
+proposed_claim_status = "Verified"
+rationale = "The extraordinary Sellmeier path gives SFWM and SHG coherence lengths of 25.2175205384 and 3.0753396127 um, a hierarchy above 3x. The paper-input anchor path independently preserves the same qualitative hierarchy. Absolute lengths remain branch-sensitive and are not promoted as exact paper anchors."
+unresolved_assumptions = [
+    "The public source identifies the z tensor components and x-cut geometry but does not print an ordinary-versus-extraordinary label.",
+    "Temperature and any source-specific dispersion correction remain unavailable.",
+]
+actor = "son-chekhova-source-reproduction"
+reason = "Record the bounded qualitative hierarchy under an explicit extraordinary branch."
+transition_timestamp = "2026-08-05T03:49:05Z"
+expected_source_state_sha256 = "d79385be345aaa91961a283e68020374debdf636a5ed602d00c4ae15188322b0"
+expected_claim_id_max = 1663

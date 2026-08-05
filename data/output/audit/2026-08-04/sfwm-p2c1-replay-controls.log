@@ -1,0 +1,178 @@
+SPEC=data/output/audit/2026-08-04/c-832-sfwm-source-reproduction-status-transition.toml
+{
+  "transition_key": "c-832-sfwm-source-reproduction",
+  "transition_spec_sha256": "225f59445897f434c96ca7dcb8cdeb508c01413da5aa3cd99a4f1644dddabdb3",
+  "source_claim_id": "C-832",
+  "current_status": "Verified",
+  "expected_prior_status": "Provisional",
+  "proposed_claim_status": "Verified",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {
+    "Provisional": -1,
+    "Verified": 1
+  },
+  "exact_replay": true,
+  "replay_event_id": 16
+}
+{
+  "transition_key": "c-832-sfwm-source-reproduction",
+  "transition_spec_sha256": "225f59445897f434c96ca7dcb8cdeb508c01413da5aa3cd99a4f1644dddabdb3",
+  "event_id": 16,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": true
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.
+SPEC=data/output/audit/2026-08-04/c-833-sfwm-source-reproduction-status-transition.toml
+{
+  "transition_key": "c-833-sfwm-extraordinary-sellmeier-hierarchy",
+  "transition_spec_sha256": "1c786f826859183cf96385bc749789960eedc7d7ed8b8f1c8c3cd8f8d6ad6c40",
+  "source_claim_id": "C-833",
+  "current_status": "Verified",
+  "expected_prior_status": "Verified",
+  "proposed_claim_status": "Verified",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {},
+  "exact_replay": true,
+  "replay_event_id": 17
+}
+{
+  "transition_key": "c-833-sfwm-extraordinary-sellmeier-hierarchy",
+  "transition_spec_sha256": "1c786f826859183cf96385bc749789960eedc7d7ed8b8f1c8c3cd8f8d6ad6c40",
+  "event_id": 17,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": true
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.
+SPEC=data/output/audit/2026-08-04/c-834-sfwm-source-reproduction-status-transition.toml
+{
+  "transition_key": "c-834-sfwm-source-rate-boundary",
+  "transition_spec_sha256": "f1101c678e8edf7fd356be80d562fb74b58a2b1613c7e0c935b2404e8360a1ed",
+  "source_claim_id": "C-834",
+  "current_status": "Provisional",
+  "expected_prior_status": "Provisional",
+  "proposed_claim_status": "Provisional",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {},
+  "exact_replay": true,
+  "replay_event_id": 18
+}
+{
+  "transition_key": "c-834-sfwm-source-rate-boundary",
+  "transition_spec_sha256": "f1101c678e8edf7fd356be80d562fb74b58a2b1613c7e0c935b2404e8360a1ed",
+  "event_id": 18,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": true
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.
+SPEC=data/output/audit/2026-08-04/c-839-sfwm-source-reproduction-status-transition.toml
+{
+  "transition_key": "c-839-sfwm-signed-maker-fringes",
+  "transition_spec_sha256": "673d33a4eafeff07ad140b61835f2c61473eb7d3a682fb227066b1598aa3609f",
+  "source_claim_id": "C-839",
+  "current_status": "Verified",
+  "expected_prior_status": "Verified",
+  "proposed_claim_status": "Verified",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {},
+  "exact_replay": true,
+  "replay_event_id": 19
+}
+{
+  "transition_key": "c-839-sfwm-signed-maker-fringes",
+  "transition_spec_sha256": "673d33a4eafeff07ad140b61835f2c61473eb7d3a682fb227066b1598aa3609f",
+  "event_id": 19,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": true
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.
+SPEC=data/output/audit/2026-08-04/c-1659-sfwm-implementation-conformance-status-transition.toml
+{
+  "transition_key": "c-1659-sfwm-source-implementation-conformance",
+  "transition_spec_sha256": "3f6f9cea8c1dbba0910d378ca392afdf444bc6c0b76f412e98d80712125cc773",
+  "source_claim_id": "C-1659",
+  "current_status": "Verified",
+  "expected_prior_status": "Provisional",
+  "proposed_claim_status": "Verified",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {
+    "Provisional": -1,
+    "Verified": 1
+  },
+  "exact_replay": true,
+  "replay_event_id": 20
+}
+{
+  "transition_key": "c-1659-sfwm-source-implementation-conformance",
+  "transition_spec_sha256": "3f6f9cea8c1dbba0910d378ca392afdf444bc6c0b76f412e98d80712125cc773",
+  "event_id": 20,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": true
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.
+SPEC=data/output/audit/2026-08-04/c-1661-sfwm-rate-anchor-reproduction-status-transition.toml
+{
+  "transition_key": "c-1661-sfwm-source-rate-anchor-reproduction",
+  "transition_spec_sha256": "9e09aa71f9ba614cd17b60f6cb802c6c4620d39c8b32b583910cf3ca03ba7245",
+  "source_claim_id": "C-1661",
+  "current_status": "Verified",
+  "expected_prior_status": "Provisional",
+  "proposed_claim_status": "Verified",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {
+    "Provisional": -1,
+    "Verified": 1
+  },
+  "exact_replay": true,
+  "replay_event_id": 21
+}
+{
+  "transition_key": "c-1661-sfwm-source-rate-anchor-reproduction",
+  "transition_spec_sha256": "9e09aa71f9ba614cd17b60f6cb802c6c4620d39c8b32b583910cf3ca03ba7245",
+  "event_id": 21,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": true
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.
+replay_status=0

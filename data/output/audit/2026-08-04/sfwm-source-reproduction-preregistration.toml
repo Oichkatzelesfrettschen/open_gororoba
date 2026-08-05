@@ -1,0 +1,77 @@
+schema = "sfwm-source-reproduction-preregistration-v1"
+bundle_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+source_pdf = "arxiv:2601.23137v1"
+source_pdf_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e8"
+source_tex_sha256 = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f"
+source_intake_manifest_sha256 = "1bb7547ba0e588542d2e5c9fb09e37488444998baf7efd21042d8407aea71c97"
+implementation_revision = "6b0b0acf297bd8b83b89ddd40c0700e8a81e1778"
+final_output_revision = "6b0b0acf297bd8b83b89ddd40c0700e8a81e1778"
+
+[scope]
+included = "signed phase matching, complex Eqs. 6 and 8, source coherence anchors, extraordinary Sellmeier reconstruction, independent Rust reference, thickness fringes, and the 10 um rate ratio"
+excluded = "experimental figure fitting, raw count reconstruction, substrate percentage adjudication, and P2C2"
+legacy_path_status = "characterization only; the old magnitude/product oracle is not a final gate"
+independent_reference = "test-only dense formula implementation in test_sfwm_source_reference.rs"
+independent_reference_boundary = "The reference duplicates the source equations and literal constants. It does not call source constructors, source mismatch assembly, source amplitude assembly, or legacy SFWM functions."
+repository_policy_note = "The repository pure-Rust policy prohibits a checked-in Python analysis script. The independent reference therefore uses a separate Rust test path and retained component fixtures."
+
+[conventions]
+length_unit = "micrometre for wavelengths, thickness, and mismatches"
+propagation_axis = "+x"
+signed_mismatch = "Delta_k_SFWM = 2*k_p - k_s - k_i; Delta_k_SHG = 2*k_p - k_SH; Delta_k_SPDC = k_SH - k_s - k_i"
+identity = "Delta_k_SFWM = Delta_k_SHG + Delta_k_SPDC"
+coherence_length = "pi / abs(Delta_k)"
+phase_matching = "F(L) = L*sinc(Delta_k*L/2), with exact zero mismatch handled as F(L)=L"
+complex_phase = "exp(+i*Delta_k*L/2)"
+paper_anchor_policy = "Use the printed SFWM and SHG coherence lengths as independent rounded anchors, derive signed SPDC from identity, and retain the printed SPDC length as a residual check."
+sellmeier_branch = "Zelmon extraordinary LiNbO3 coefficients for z-polarized fields propagating along +x"
+source_susceptibilities = "chi2 = 2.5e-11 m/V; chi3 = 1.5e-20 m^2/V^2"
+chi3_identity_status = "unresolved material identity; no claim promotion depends on treating the Wang CuZn-implanted value as pristine LN"
+
+[equations]
+phase_matching = "Son-Chekhova Eq. 2"
+cascaded_amplitude = "Son-Chekhova Eq. 6 including 2*pi/(n_SH*lambda_SH*Delta_k_SHG)"
+direct_amplitude = "Son-Chekhova Eq. 8"
+cascaded_rate = "(4/9)*abs(A_cas)^2"
+direct_rate = "(9/16)*abs(A_dir)^2"
+
+[thickness_grid]
+start_um = 0.0
+stop_um = 100.0
+step_um = 0.1
+count = 1001
+generation = "integer index i from 0 through 1000, thickness_um = 0.1*i"
+grid_sha256 = "2902aa336f7fb63cc746bb47b7bc518b601af37443b1574db22cc5a78f45be55"
+ratio_at_um = 10.0
+refinement_steps_um = [0.1, 0.05, 0.01]
+refinement_role = "Calibration-only grid refinements quantify extrema and period resolution; the 0.1 um grid remains the frozen final output grid."
+
+[uncertainty]
+chi2_half_width_m_per_v = 5.0e-13
+chi3_half_width_m2_per_v2 = 5.0e-22
+pump_wavelength_half_width_um = 0.005
+signal_wavelength_half_width_um = 0.005
+idler_wavelength_half_width_um = 0.025
+thickness_half_width_um = 0.0
+thickness_status = "No fabrication uncertainty is supplied by the public source; no spread is invented."
+index_envelope = "Evaluate ordinary and extraordinary branches across the declared wavelength bands; report branch and wavelength envelopes separately from statistical uncertainty."
+numerical_tolerance = "Derived from f64 residuals and independent-reference agreement; never used as a physical uncertainty."
+
+[[case]]
+name = "paper-input"
+mismatch_source = "printed SFWM and SHG coherence anchors with signed SPDC derived by identity"
+index_prefactor_source = "extraordinary Sellmeier nominal n_SH because the source does not print n_SH"
+source_parameter_status = "source chi values and source wavelengths"
+
+[[case]]
+name = "sellmeier-derived"
+mismatch_source = "extraordinary Zelmon Sellmeier at 1030, 770, 1550, and 515 nm"
+index_prefactor_source = "same extraordinary branch at 515 nm"
+source_parameter_status = "source chi values and source wavelengths"
+
+[verdicts]
+C_832 = "Evaluate signed source phase-matching identity and coherence anchors separately from implementation conformance."
+C_833 = "Evaluate exact source prefactor and complex direct/cascaded amplitude ratio at 10 um."
+C_834 = "Evaluate thickness fringe extrema and periods from the corrected amplitude path."
+C_838 = "Remain Inconclusive while Supplement 1 or an equivalent complete substrate derivation is unavailable."
+C_839 = "Evaluate source-model conformance and retain paper-input versus Sellmeier-derived mismatch envelopes separately."

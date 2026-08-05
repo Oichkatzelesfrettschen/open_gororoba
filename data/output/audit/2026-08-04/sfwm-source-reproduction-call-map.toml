@@ -1,0 +1,145 @@
+schema = "sfwm-source-reproduction-call-map-v1"
+bundle_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+scope = "The new signed SFWM module, its CLI generator, the independent dense-index Rust tests, the pinned mpmath fixture boundary, and the legacy exclusion boundary."
+semantic_status = "The source map combines compiler-aware Rust tests with bounded ctags, cscope, cflow, ripgrep, and rust-analyzer captures. cflow and cscope remain lexical or C-oriented evidence, not Rust semantic proof."
+capture_root = "/var/tmp/open_gororoba-sfwm-source-reproduction-callmap-20260805T034434Z"
+
+[[file]]
+path = "crates/optics_core/src/sfwm_source.rs"
+role = "source-owned signed mismatch, complex amplitude, and rate implementation"
+
+[[file]]
+path = "crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs"
+role = "frozen grid, paper-input and Sellmeier-derived evaluation, convergence, and summary writer"
+
+[[file]]
+path = "crates/optics_core/tests/test_sfwm_source_reference.rs"
+role = "independent dense-index formula, mpmath fixture comparison, mutation controls, and fringe controls"
+
+[[file]]
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/independent-mpmath-fixtures.csv"
+role = "high-precision component fixture generated without Rust production calls"
+
+[[tool]]
+name = "ctags"
+version = "Universal Ctags 6.2.1"
+command = "ctags --languages=Rust --fields=+neKSt --output-format=xref -L file-list.tsv -o tags"
+output = "sfwm-source-reproduction-call-map/tags"
+diagnostics = "sfwm-source-reproduction-call-map/ctags-diagnostics.txt"
+
+[[tool]]
+name = "cscope"
+version = "cscope 15.9"
+command = "cscope -b -q -k -i file-list.tsv -f /var/tmp/open_gororoba-sfwm-source-reproduction-callmap-20260805T034434Z/cscope/cscope.out"
+output = "sfwm-source-reproduction-call-map/cscope-query-results.txt"
+diagnostics = "sfwm-source-reproduction-call-map/cscope-diagnostics.txt"
+limitation = "Rust method resolution is incomplete; the retained query output is an occurrence inventory."
+
+[[tool]]
+name = "cflow"
+version = "GNU cflow 1.8"
+command = "cflow --no-preprocess --depth=5 --main=main crates/optics_core/src/sfwm_source.rs"
+output = "sfwm-source-reproduction-call-map/cflow.txt"
+diagnostics = "sfwm-source-reproduction-call-map/cflow-diagnostics.txt"
+limitation = "GNU cflow parses C syntax and reports Rust redefinition diagnostics; its output is not a Rust call graph."
+
+[[tool]]
+name = "rust-analyzer"
+version = "rust-analyzer 1 (7ea2b259ca 2026-06-07)"
+command = "rust-analyzer analysis-stats . --only crates/optics_core/src/sfwm_source.rs --no-test --disable-build-scripts --skip-mir-stats --skip-data-layout"
+output = "sfwm-source-reproduction-call-map/rust-analyzer-analysis-stats.txt"
+diagnostics = "sfwm-source-reproduction-call-map/rust-analyzer-analysis-stats.log"
+status = "bounded capture returned no summary after workspace item-tree collection; compiler check and tests remain the semantic gate"
+
+[[edge]]
+caller = "sfwm-source-reproduction::main"
+callee = "frozen_thickness_grid"
+quantity = "declared 0.0 through 100.0 micrometre final coordinates"
+evidence = "sfwm_source_reproduction.rs"
+
+[[edge]]
+caller = "sfwm-source-reproduction::main"
+callee = "freeze_grid"
+quantity = "byte-stable grid and SHA-256"
+evidence = "sfwm_source_reproduction.rs"
+
+[[edge]]
+caller = "sfwm-source-reproduction::main"
+callee = "SourceMismatchAudit::from_source_anchors"
+quantity = "paper SFWM and SHG anchors with signed SPDC derived by closure"
+evidence = "sfwm_source_reproduction.rs"
+
+[[edge]]
+caller = "sfwm-source-reproduction::main"
+callee = "SfwmSourceParameters::wavevector_mismatches"
+quantity = "extraordinary Sellmeier signed mismatch path"
+evidence = "sfwm_source_reproduction.rs"
+
+[[edge]]
+caller = "write_case"
+callee = "evaluate_case_grid"
+quantity = "component rows and rate vectors"
+evidence = "sfwm_source_reproduction.rs"
+
+[[edge]]
+caller = "evaluate_case_grid"
+callee = "evaluate_source_case"
+quantity = "source amplitudes and rates at each thickness"
+evidence = "sfwm_source_reproduction.rs"
+
+[[edge]]
+caller = "evaluate_source_case"
+callee = "source_amplitudes"
+quantity = "complex Eq. 6 and Eq. 8 amplitudes"
+evidence = "sfwm_source.rs"
+
+[[edge]]
+caller = "evaluate_source_case"
+callee = "source_rates"
+quantity = "4/9 and 9/16 rate factors with explicit undefined ratio"
+evidence = "sfwm_source.rs"
+
+[[edge]]
+caller = "source_amplitudes"
+callee = "phase_matching_amplitude"
+quantity = "F(L) for signed SFWM, SHG, and SPDC mismatches"
+evidence = "sfwm_source.rs"
+
+[[edge]]
+caller = "source_amplitudes"
+callee = "Complex64::from_polar"
+quantity = "source phase retention before squaring"
+evidence = "sfwm_source.rs"
+
+[[edge]]
+caller = "grid_refinement"
+callee = "fringe_record"
+quantity = "first extrema and period errors at 0.1, 0.05, and 0.01 micrometre steps"
+evidence = "sfwm_source_reproduction.rs"
+
+[[edge]]
+caller = "independent_mpmath_fixtures_match_componentwise"
+callee = "independent-mpmath-fixtures.csv"
+quantity = "high-precision real and imaginary amplitude and rate components"
+evidence = "test_sfwm_source_reference.rs"
+
+[[edge]]
+caller = "independent_reference_matches_all_complex_components"
+callee = "reference_amplitudes"
+quantity = "literal duplicated Eq. 2, Eq. 6, and Eq. 8 assembly"
+evidence = "test_sfwm_source_reference.rs"
+
+[[edge]]
+caller = "legacy sfwm.rs consumers"
+callee = "new source-owned path"
+quantity = "no call edge; legacy API remains characterization-only"
+evidence = "Cargo module boundary and source-reproduction ledger"
+
+[map_outputs]
+file_list = "sfwm-source-reproduction-call-map/file-list.tsv"
+tags = "sfwm-source-reproduction-call-map/tags"
+cscope_query = "sfwm-source-reproduction-call-map/cscope-query-results.txt"
+cflow = "sfwm-source-reproduction-call-map/cflow.txt"
+call_candidates = "sfwm-source-reproduction-call-map/call-candidates.tsv"
+rust_analyzer = "sfwm-source-reproduction-call-map/rust-analyzer-analysis-stats.txt"
+runtime_semantic_gate = "targeted Rust tests and source-reproduction CLI output"

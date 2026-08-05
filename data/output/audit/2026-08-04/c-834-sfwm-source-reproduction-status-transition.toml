@@ -1,0 +1,20 @@
+[transition]
+transition_key = "c-834-sfwm-source-rate-boundary"
+source_claim_id = "C-834"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+exercised_falsifier = "Evaluate the corrected coherent paper-input rate at 10 um with signed closure and the full Eq. 6 prefactor, then retain the deterministic chi and wavelength endpoint envelope."
+proposed_claim_status = "Provisional"
+rationale = "The nominal paper-input result is 0.04774423559348579 and is below the 0.05 boundary. The deterministic endpoint envelope is 0.04088750057509066 to 0.05578719347757, so the threshold is not robust to the declared input envelope. Preserve the result as provisional rather than promoting a nominal point into an uncertainty-robust claim."
+unresolved_assumptions = [
+    "The source prints 0.048 without a formal uncertainty interval.",
+    "The chi^(3) sample identity and effective tensor convention remain unresolved.",
+    "The source-specific temperature and wavelength uncertainty are not fully supplied.",
+]
+actor = "son-chekhova-source-reproduction"
+reason = "Separate nominal source-anchor agreement from the uncertainty-sensitive five-percent boundary."
+transition_timestamp = "2026-08-05T03:49:05Z"
+expected_source_state_sha256 = "46b0448e6f0972060af8e52c37123777f78bc5de5c8cb1b595caae4d972ee5b7"
+expected_claim_id_max = 1663
