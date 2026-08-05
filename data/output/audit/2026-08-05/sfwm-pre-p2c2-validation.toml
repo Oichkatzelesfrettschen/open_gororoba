@@ -90,8 +90,8 @@ report_path = "reports/validation/2026-08-05/055520/summary.md"
 report_sha256 = "15005692adf8b7c4631bf3167b83ee3fb7aa0306c6de065b3d618303d29db815"
 
 [retained_hashes]
-source_blocker_review = "8064b09bc6370ff229376eb148fdcf3057b5c90bd7620b4a098b1eee5520fdf3"
-adversarial_review = "50f60ac157a8ff2ddc0b087c790d5aeb346f55ae08f5376a77da13fdf2f2ab2c"
+source_blocker_review = "4c2b8ff57c14395a1454847749bbbb3558a96aec085c84bef1656af30e4b3df7"
+adversarial_review = "038a5a52c33c3ad10073478575329b26d170756879471c85768640e86009d129"
 p1_manifest = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
 p2a_manifest = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
 p2b_manifest = "83c61321291791d8c154b8f6e347b987a64b4d114f8fc930b2e4ced99ed68ff0"
