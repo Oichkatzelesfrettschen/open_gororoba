@@ -402,7 +402,11 @@ fn insert_record<'a>(
 ) -> Result<()> {
     let index = hour_of_year(year, record.doy, record.hour)?;
     if index >= slots.len() {
-        return Ok(());
+        bail!(
+            "{source} timestamp key is outside the allocated year slots: year={year}, doy={}, hour={}",
+            record.doy,
+            record.hour
+        );
     }
     if slots[index].is_some() {
         bail!(
@@ -412,6 +416,24 @@ fn insert_record<'a>(
         );
     }
     slots[index] = Some(record);
+    Ok(())
+}
+
+fn require_year_coverage(year: u16, bartol_n_total: u64, amda_n_total: u64) -> Result<()> {
+    if bartol_n_total == 0 || amda_n_total == 0 {
+        bail!(
+            "requested year {year} has no parsed rows in {} input: Bartol rows={}, AMDA rows={}",
+            if bartol_n_total == 0 && amda_n_total == 0 {
+                "either"
+            } else if bartol_n_total == 0 {
+                "Bartol"
+            } else {
+                "AMDA"
+            },
+            bartol_n_total,
+            amda_n_total
+        );
+    }
     Ok(())
 }
 
@@ -677,6 +699,7 @@ fn main() -> Result<()> {
         .iter()
         .filter(|record| normalized_year(record.year) == year)
         .count() as u64;
+    require_year_coverage(year, bartol_n_total, amda_n_total)?;
 
     // # Index by hour-of-year
     //
@@ -803,9 +826,9 @@ fn main() -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::{
-        FieldSamples, collect_field, collect_timestamp_only, hour_of_year, insert_record,
-        parse_amda_input, sha256_hex, stats_from_samples, validate_amda_info_bytes,
-        validate_amda_info_document,
+        FieldSamples, VOYAGER2_AMDA_HAPI_INFO_SHA256, collect_field, collect_timestamp_only,
+        hour_of_year, insert_record, parse_amda_input, require_year_coverage, sha256_hex,
+        stats_from_samples, validate_amda_info_bytes, validate_amda_info_document,
     };
 
     #[test]
@@ -922,6 +945,26 @@ mod tests {
     }
 
     #[test]
+    fn captured_metadata_matches_pinned_hash_and_mutation_fails() {
+        const CAPTURED_INFO: &str = r##"{"startDate":"1977-01-01T00:00:00Z","stopDate":"2020-12-31T11:00:00Z","cadence":"PT1H","description":"<br/> Sampling: 1H<br/> Provider: CDAWeb","resourceID":"spase://CNES/NumericalData/CDPP-AMDA/Voyager2/MAG/vo2-mag-full","parameters":[{"name":"Time","type":"isotime","length":24,"units":"UTC","fill":null},{"name":"vo2_b_full","type":"double","size":[3],"units":"nT","fill":"-1e31"},{"name":"vo2_bmag_full","type":"double","units":"nT","fill":"-1e31","description":"Magnetic field magnitude (average of high time resolution magnitudes)"},{"name":"vo2_b_full_phi","type":"double","units":"degrees","fill":"-1e31","description":"Magnetic field phi angle"},{"name":"vo2_b_full_theta","type":"double","units":"degrees","fill":"-1e31","description":"Magnetic field theta angle"}],"HAPI":"2.0","status":{"code":1200,"message":"OK"}}"##;
+        let captured = CAPTURED_INFO.as_bytes();
+        assert_eq!(sha256_hex(captured), VOYAGER2_AMDA_HAPI_INFO_SHA256);
+        validate_amda_info_bytes(captured, VOYAGER2_AMDA_HAPI_INFO_SHA256)
+            .expect("captured metadata must pass the production hash and schema gate");
+
+        let mut modified = captured.to_vec();
+        modified[0] = b'[';
+        assert!(validate_amda_info_bytes(&modified, VOYAGER2_AMDA_HAPI_INFO_SHA256).is_err());
+    }
+
+    #[test]
+    fn requested_year_coverage_rejects_wrong_year_inputs() {
+        assert!(require_year_coverage(1990, 0, 1).is_err());
+        assert!(require_year_coverage(1990, 1, 0).is_err());
+        require_year_coverage(1990, 1, 1).expect("both inputs contain requested-year rows");
+    }
+
+    #[test]
     fn duplicate_timestamp_slots_are_rejected() {
         let first = data_core::catalogs::spdf_merged::SpdfMergedRecord {
             year: 1990,
@@ -943,5 +986,26 @@ mod tests {
             vec![None; 8784];
         insert_record(&mut slots, &first, 1990, "Bartol").expect("first timestamp");
         assert!(insert_record(&mut slots, &second, 1990, "Bartol").is_err());
+    }
+
+    #[test]
+    fn out_of_range_timestamp_slots_are_rejected() {
+        let record = data_core::catalogs::spdf_merged::SpdfMergedRecord {
+            year: 1990,
+            doy: 365,
+            hour: 23,
+            distance_au: f64::NAN,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+            b_magnitude: f64::NAN,
+            br: f64::NAN,
+            bt: f64::NAN,
+            bn: f64::NAN,
+            proton_density: f64::NAN,
+            bulk_speed: f64::NAN,
+            proton_temperature: f64::NAN,
+        };
+        let mut slots = vec![None; 1];
+        assert!(insert_record(&mut slots, &record, 1990, "Bartol").is_err());
     }
 }

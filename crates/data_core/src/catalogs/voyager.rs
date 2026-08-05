@@ -235,6 +235,8 @@ const VOYAGER2_AMDA_HAPI_COLUMNS: [&str; 7] = [
     "vo2_b_full_theta",
 ];
 
+const VOYAGER2_AMDA_HAPI_FILL: f64 = -1.0e31;
+
 /// A native Voyager 2 AMDA magnetic-field sample with its RTN frame intact.
 #[derive(Debug, Clone)]
 pub struct Voyager2AmdaHapiRecord {
@@ -365,8 +367,10 @@ fn parse_amda_hapi_value(value: &str) -> Option<f64> {
     if !value.is_finite() {
         return None;
     }
-    if value.abs() >= 1.0e30 {
+    if value == VOYAGER2_AMDA_HAPI_FILL {
         Some(f64::NAN)
+    } else if value.abs() >= 1.0e30 {
+        None
     } else {
         Some(value)
     }
@@ -682,6 +686,14 @@ mod tests {
     #[test]
     fn test_parse_voyager2_amda_hapi_rejects_invalid_numeric_fields() {
         let data = "1990-01-03T18:00:00Z,not-a-number,2,3,9,10,11\n";
+        let parsed = parse_voyager2_amda_hapi_detailed(data);
+        assert_eq!(parsed.accepted_rows, 0);
+        assert_eq!(parsed.rejected_rows, 1);
+    }
+
+    #[test]
+    fn test_parse_voyager2_amda_hapi_rejects_undeclared_large_sentinels() {
+        let data = "1990-01-03T18:00:00Z,1e31,2,3,9,10,11\n";
         let parsed = parse_voyager2_amda_hapi_detailed(data);
         assert_eq!(parsed.accepted_rows, 0);
         assert_eq!(parsed.rejected_rows, 1);
