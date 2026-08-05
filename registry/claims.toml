@@ -5182,11 +5182,53 @@ where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2
 last_verified = "2026-08-04"
 
 [[claim]]
+id = "C-1658"
+statement = "Son and Chekhova Eq. 6 and Eq. 8 define separate coherent cascaded and direct SFWM amplitudes with signed wavevector mismatches and rate prefactors 4/9 and 9/16."
+status = "Theoretical"
+where_stated = "https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
+last_verified = "2026-08-05"
+
+[[claim]]
+id = "C-1659"
+statement = "The optics_core SFWM implementation preserves signed complex cascaded and direct amplitudes, the full Eq. 6 prefactor, source and Sellmeier input paths, and an independent component-level falsifier."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml; data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml"
+last_verified = "2026-08-05"
+
+[[claim]]
 id = "C-166"
 last_verified = "2026-02-01"
 statement = "The flexible identity (ab)a = a(ba) holds EXACTLY (machine epsilon) at ALL CD dimensions through 512. This is universal: CD algebras are flexible. Max residual < 5e-16 everywhere."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
+
+[[claim]]
+id = "C-1660"
+statement = "Son and Chekhova report R_cas/R_dir = 0.048 at 10 um for the declared source inputs and coherent amplitudes."
+status = "Theoretical"
+where_stated = "https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
+last_verified = "2026-08-05"
+
+[[claim]]
+id = "C-1661"
+statement = "The optics_core SFWM path reproduces the Son-Chekhova 10 um cascaded-to-direct rate anchor under the declared source convention, input tuple, and complete amplitude prefactors."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml; data/output/audit/2026-08-04/sfwm-adversarial-review.md"
+last_verified = "2026-08-05"
+
+[[claim]]
+id = "C-1662"
+statement = "The Son-Chekhova source reports a fused-silica substrate contribution estimated as 25 percent of total coincidence rate, subject to Supplement 1 assumptions."
+status = "Theoretical"
+where_stated = "https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
+last_verified = "2026-08-05"
+
+[[claim]]
+id = "C-1663"
+statement = "A fused-silica chi^(3) phase-matching calculation can produce a nonzero standalone SFWM amplitude under declared dispersion and thickness inputs."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml; data/output/audit/2026-08-04/sfwm-legacy-oracle-audit.tsv"
+last_verified = "2026-08-05"
 
 [[claim]]
 id = "C-167"
@@ -10004,7 +10046,7 @@ where_stated = "crates/gr_core/src/scalar_tensor.rs (bianchi_violation_magnitude
 id = "C-832"
 last_verified = "2026-02-19"
 statement = "Direct SFWM |F|^2 exceeds cascaded SHG+SPDC by >5x at 10 um LiNbO3 (Son & Chekhova 2026)."
-status = "Verified"
+status = "Provisional"
 status_note = "Sprint 56: Using paper-calibrated dk values and chi3=2.4e-21 m^2/V^2, R_cas/R_dir < 0.15 at L=10 um. Direct SFWM dominates because L_coh_SFWM (33 um) >> crystal thickness >> L_coh_SHG (3.1 um)."
 where_stated = "crates/optics_core/src/sfwm.rs (rate_ratio_with_dk, test_direct_dominates_cascaded_at_10um), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_paper_dominance_ratio_at_10um)"
 
@@ -10020,7 +10062,7 @@ where_stated = "crates/optics_core/src/sfwm.rs (test_wavevector_mismatches_coher
 id = "C-834"
 last_verified = "2026-02-19"
 statement = "R_cas/R_dir < 5% at 10 um for paper-calibrated wavevector mismatches."
-status = "Verified"
+status = "Provisional"
 status_note = "Sprint 56: With paper dk values and chi3=2.4e-21, computed R_cas/R_dir ~ 0.088. Paper reports 0.048. Within tolerance for susceptibility value uncertainty."
 where_stated = "crates/optics_core/src/sfwm.rs (rate_ratio_with_dk), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_paper_dominance_ratio_at_10um)"
 
@@ -10052,7 +10094,7 @@ where_stated = "crates/optics_core/src/sfwm.rs (photon_number_spdc, g2_spdc_mode
 id = "C-838"
 last_verified = "2026-02-26"
 statement = "Fused silica substrate (500 um) contributes SFWM photons via chi(3), estimable from Malitson Sellmeier."
-status = "Verified"
+status = "Provisional"
 status_note = "Sprint 57B: Verified via substrate_sfwm_contribution(). Malitson Sellmeier gives dk_SFWM(SiO2)=-0.026 1/um, L_coh=121 um. At L=500 um (intermediate regime), F=15.9 um, rate_proxy=1.58e-41. Nonzero contribution confirmed. Binary sfwm-figure-repro now computes substrate analysis."
 where_stated = "crates/materials_core/src/optical_database.rs (fused_silica_sellmeier, test_fused_silica_at_1030nm), crates/optics_core/src/sfwm.rs (substrate_sfwm_contribution, test_substrate_sfwm_fused_silica_500um), crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs"
 

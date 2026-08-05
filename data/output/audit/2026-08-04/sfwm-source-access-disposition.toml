@@ -1,0 +1,114 @@
+schema = "sfwm-source-access-disposition-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+capture_root = "/var/tmp/open_gororoba-sfwm-source-intake-20260805T004849Z"
+
+[[source]]
+id = "SC-2026-ARXIV-PDF"
+access = "acquired"
+http = "200"
+mime = "application/pdf"
+redistribution = "not committed; source terms not asserted"
+source_role = "primary"
+
+[[source]]
+id = "SC-2026-ARXIV-SOURCE"
+access = "acquired"
+http = "redirected then 200"
+mime = "application/x-gzip"
+redistribution = "not committed; source terms not asserted"
+source_role = "primary"
+
+[[source]]
+id = "SC-2025-ARXIV-PDF"
+access = "acquired"
+http = "200"
+mime = "application/pdf"
+redistribution = "not committed; source terms not asserted"
+source_role = "context"
+
+[[source]]
+id = "SC-2025-ARXIV-SOURCE"
+access = "acquired"
+http = "redirected then 200"
+mime = "application/x-gzip"
+redistribution = "not committed; source terms not asserted"
+source_role = "context"
+
+[[source]]
+id = "SC-2010-ARXIV-PDF"
+access = "acquired"
+http = "200"
+mime = "application/pdf"
+redistribution = "not committed; source terms not asserted"
+source_role = "context"
+
+[[source]]
+id = "META-ZELMON-1997"
+access = "metadata acquired; publisher PDF returned challenge HTML"
+http = "202 HTML challenge"
+mime = "text/html"
+redistribution = "metadata retained; full text not committed"
+source_role = "dispersion metadata"
+
+[[source]]
+id = "META-SHOJI-1997"
+access = "metadata acquired; publisher PDF returned challenge HTML"
+http = "202 HTML challenge"
+mime = "text/html"
+redistribution = "metadata retained; full text not committed"
+source_role = "chi2 metadata"
+
+[[source]]
+id = "META-MALITSON-1965"
+access = "metadata acquired; publisher PDF returned challenge HTML"
+http = "202 HTML challenge"
+mime = "text/html"
+redistribution = "metadata retained; full text not committed"
+source_role = "fused silica metadata"
+
+[[source]]
+id = "META-RUBIN-1994"
+access = "Crossref metadata acquired; APS PDF download failed"
+http = "download_failed"
+mime = "not acquired"
+redistribution = "metadata retained; full text not committed"
+source_role = "SPDC theory metadata"
+
+[[source]]
+id = "META-GARAY-PALMETT-2010"
+access = "Crossref metadata acquired; APS PDF download failed"
+http = "download_failed"
+mime = "not acquired"
+redistribution = "metadata retained; full text not committed"
+source_role = "SFWM metadata"
+
+[[source]]
+id = "META-WANG-2019"
+access = "Crossref metadata acquired; ScienceDirect returned 403"
+http = "200 metadata; 403 landing page"
+mime = "application/json; text/html"
+redistribution = "metadata retained; full text not committed"
+source_role = "chi3 sample identity"
+
+[[source]]
+id = "SC-SUPPLEMENT-1"
+access = "not found in PDF, arXiv source archive, or abstract page"
+http = "not applicable"
+mime = "not acquired"
+redistribution = "not applicable"
+source_role = "substrate and polarization derivation"
+
+[[source]]
+id = "BOYD-NONLINEAR-OPTICS"
+access = "no authorized copy acquired in this intake"
+http = "not applicable"
+mime = "not acquired"
+redistribution = "authorized library or owned copy required"
+source_role = "background reference"
+
+[supplement]
+status = "blocked"
+searched = ["Son-Chekhova arXiv PDF", "Son-Chekhova arXiv source archive", "arXiv abstract page", "extracted source filenames"]
+candidate_count = 0
+author_request_prepared = true
+author_request_path = "data/output/audit/2026-08-04/sfwm-author-data-request.txt"

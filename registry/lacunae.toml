@@ -5,10 +5,10 @@
 updated = "deterministic"
 authoritative = true
 status = "active"
-lacuna_count = 190
-open_count = 4
+lacuna_count = 193
+open_count = 7
 high_priority_count = 72
-medium_priority_count = 112
+medium_priority_count = 115
 low_priority_count = 6
 origin_kind_count = 1
 
@@ -198,6 +198,42 @@ origin = "legacy_manual"
 area = "claims"
 title = "Unresolved claim status for C-1651"
 description = "C-1651 remains unresolved with status token THEORETICAL: The Ruan-Fan source channel identities define R_l, S_l, scattering, absorption, and extinction with the stated incoming and outgoing Hankel convention."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-1658"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-1658"
+description = "C-1658 remains unresolved with status token THEORETICAL: Son and Chekhova Eq. 6 and Eq. 8 define separate coherent cascaded and direct SFWM amplitudes with signed wavevector mismatches and rate prefactors 4/9 and 9/16."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-1660"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-1660"
+description = "C-1660 remains unresolved with status token THEORETICAL: Son and Chekhova report R_cas/R_dir = 0.048 at 10 um for the declared source inputs and coherent amplitudes."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-1662"
+origin = "legacy_manual"
+area = "claims"
+title = "Unresolved claim status for C-1662"
+description = "C-1662 remains unresolved with status token THEORETICAL: The Son-Chekhova source reports a fused-silica substrate contribution estimated as 25 percent of total coincidence rate, subject to Supplement 1 assumptions."
 priority = "medium"
 status = "open"
 claim_refs = []

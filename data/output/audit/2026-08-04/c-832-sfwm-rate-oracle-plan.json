@@ -1,0 +1,34 @@
+{
+  "transition_key": "c-832-sfwm-rate-oracle-source-boundary",
+  "transition_spec_sha256": "e9f38e2c0d00f295c32562b2a411fee5696ea0902aeed28c92b273d8fd118d88",
+  "source_claim_id": "C-832",
+  "current_status": "Verified",
+  "expected_prior_status": "Verified",
+  "proposed_claim_status": "Provisional",
+  "experiment_verdict": "MethodologyInvalid",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [
+    {
+      "proposal_key": "c832-source-coherent-rate-identities",
+      "canonical_claim_id": "C-1658",
+      "relation_kind": "source_split"
+    },
+    {
+      "proposal_key": "c832-source-faithful-rate-implementation",
+      "canonical_claim_id": "C-1659",
+      "relation_kind": "implementation_split"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {
+    "Provisional": 2,
+    "Theoretical": 1,
+    "Verified": -1
+  },
+  "exact_replay": false,
+  "replay_event_id": null
+}
+exit_code=0

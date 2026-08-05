@@ -1,0 +1,239 @@
+schema = "sfwm-implementation-source-matrix-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+implementation_file = "crates/optics_core/src/sfwm.rs"
+implementation_sha256 = "f9cd0ae408f02d3202d23a66de673471bcb88c7350f7137279741b4686cc2d63"
+matrix_scope = "all public SFWM functions and all public CLI consumers"
+source_authority = "sfwm-source-equation-ledger.toml"
+
+[[function]]
+name = "phase_matching_function"
+locator = "sfwm.rs:17"
+source_equations = ["SC-EQ-2"]
+current_quantity = "real scalar F(L)"
+source_faithful = "partial"
+tests = ["test_phase_matching_zero_mismatch", "test_phase_matching_small_mismatch"]
+quarantine_reason = "valid scalar building block; not a coherent cascaded amplitude"
+
+[[function]]
+name = "coherence_length"
+locator = "sfwm.rs:27"
+source_equations = ["SC-FIG-4-COHERENCE"]
+current_quantity = "pi/abs(Delta_k)"
+source_faithful = "partial"
+tests = ["test_coherence_lengths"]
+quarantine_reason = "uses magnitude and cannot determine the signed source convention"
+
+[[function]]
+name = "sfwm_dominance_check"
+locator = "sfwm.rs:61"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+current_quantity = "F_SFWM^2 divided by F_SHG^2*F_SPDC^2"
+source_faithful = "no"
+tests = ["test_direct_dominates_cascaded_at_10um"]
+quarantine_reason = "multiplies independent phase-matching intensities and omits coherent Eq. 6"
+numerical_hazard = "denominator uses max(1e-30)"
+
+[[function]]
+name = "thickness_sweep"
+locator = "sfwm.rs:104"
+source_equations = ["SC-EQ-2"]
+current_quantity = "sweep of sfwm_dominance_check"
+source_faithful = "no"
+tests = ["test_thickness_sweep"]
+quarantine_reason = "inherits the product-of-efficiencies surrogate"
+
+[[function]]
+name = "SfwmMaterialParams::linbo3_son_chekhova_2026"
+locator = "sfwm.rs:154"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+current_quantity = "paper-named material tuple with legacy chi and ordinary-ray n values"
+source_faithful = "no"
+tests = ["test_paper_calibrated_params"]
+quarantine_reason = "chi values differ from source and polarization/index branch is not explicit"
+
+[[function]]
+name = "SfwmMaterialParams::linbo3_paper_calibrated"
+locator = "sfwm.rs:179"
+source_equations = ["SC-FIG-4-COHERENCE", "SC-RATIO-10UM"]
+current_quantity = "positive mismatch magnitudes from reported coherence lengths"
+source_faithful = "no"
+tests = ["test_paper_calibrated_mismatches"]
+quarantine_reason = "positive-only values erase the sign needed by the source identity"
+
+[[function]]
+name = "SfwmMaterialParams::paper_wavevector_mismatches"
+locator = "sfwm.rs:210"
+source_equations = ["SC-EQ-6"]
+current_quantity = "three positive f64 mismatch magnitudes"
+source_faithful = "no"
+tests = ["test_paper_wavevector_mismatches"]
+quarantine_reason = "coherent signed relation cannot be reconstructed from magnitudes"
+
+[[function]]
+name = "SfwmMaterialParams::wavevector_mismatches"
+locator = "sfwm.rs:222"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+current_quantity = "signed f64 formulas from scalar wave numbers"
+source_faithful = "partial"
+tests = ["test_wavevector_mismatches"]
+quarantine_reason = "formula shape is useful, but branch, tensor, and sign convention are not bound"
+
+[[function]]
+name = "cascaded_amplitude_sq"
+locator = "sfwm.rs:240"
+source_equations = ["SC-EQ-6"]
+current_quantity = "squared reduced cascaded amplitude"
+source_faithful = "no"
+tests = ["test_cascaded_amplitude_zero_mismatch"]
+quarantine_reason = "delegates to a magnitude-only reduced path without Eq. 6 prefactor"
+
+[[function]]
+name = "cascaded_amplitude_sq_with_dk"
+locator = "sfwm.rs:252"
+source_equations = ["SC-EQ-6"]
+current_quantity = "chi2^4 times coherent-looking bracket squared"
+source_faithful = "no"
+tests = ["test_cascaded_amplitude_with_dk"]
+quarantine_reason = "omits 2*pi/(n_SH*lambda_SH*Delta_k_SHG) and exposes no complex amplitude"
+
+[[function]]
+name = "direct_amplitude_sq"
+locator = "sfwm.rs:271"
+source_equations = ["SC-EQ-8"]
+current_quantity = "squared direct amplitude"
+source_faithful = "partial"
+tests = ["test_direct_amplitude"]
+quarantine_reason = "magnitude is compatible with Eq. 8 but complex phase is discarded"
+
+[[function]]
+name = "direct_amplitude_sq_with_dk"
+locator = "sfwm.rs:280"
+source_equations = ["SC-EQ-8"]
+current_quantity = "chi3^2*F_SFWM^2"
+source_faithful = "partial"
+tests = ["test_direct_amplitude_with_dk"]
+quarantine_reason = "does not expose E_p or a complex amplitude and is paired with incomplete Eq. 6"
+
+[[function]]
+name = "rate_ratio"
+locator = "sfwm.rs:291"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+current_quantity = "(4/9)*A_cas_sq divided by (9/16)*A_dir_sq"
+source_faithful = "no"
+tests = ["test_rate_ratio"]
+quarantine_reason = "inherits omitted prefactor and uses max(1e-60) on denominator"
+
+[[function]]
+name = "rate_ratio_with_dk"
+locator = "sfwm.rs:299"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+current_quantity = "legacy ratio at a thickness and supplied mismatch tuple"
+source_faithful = "no"
+tests = ["test_paper_dominance_ratio_at_10um"]
+quarantine_reason = "old source anchor comparison is not a source-parameter reproduction"
+numerical_hazard = "denominator uses max(1e-60)"
+
+[[function]]
+name = "maker_fringe_sweep"
+locator = "sfwm.rs:333"
+source_equations = ["SC-EQ-2", "SC-FIG-4-COHERENCE"]
+current_quantity = "independent real F^2 sweeps for three scalar mismatches"
+source_faithful = "partial"
+tests = ["test_maker_fringe_sweep"]
+quarantine_reason = "qualitative fringe characterization only; source branch and signs remain open"
+
+[[function]]
+name = "rate_sweep"
+locator = "sfwm.rs:348"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+current_quantity = "legacy rate ratio thickness sweep"
+source_faithful = "no"
+tests = ["test_rate_sweep"]
+quarantine_reason = "inherits incomplete amplitude model and legacy material tuple"
+
+[[function]]
+name = "rate_sweep_with_dk"
+locator = "sfwm.rs:358"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+current_quantity = "legacy ratio sweep with supplied mismatch values"
+source_faithful = "no"
+tests = ["test_rate_sweep_with_dk"]
+quarantine_reason = "not admissible as final source reproduction"
+
+[[function]]
+name = "g2_sfwm_model"
+locator = "sfwm.rs:380"
+source_equations = ["SC-EQ-1"]
+current_quantity = "1 + a/P^2 phenomenological curve"
+source_faithful = "no"
+tests = ["test_g2_sfwm_model"]
+quarantine_reason = "does not consume measured Ncc, Nvis, and NIR"
+numerical_hazard = "power denominator uses max(1e-30)"
+
+[[function]]
+name = "g2_spdc_model"
+locator = "sfwm.rs:388"
+source_equations = ["SC-EQ-1"]
+current_quantity = "1 + a/P phenomenological curve"
+source_faithful = "no"
+tests = ["test_g2_spdc_model"]
+quarantine_reason = "does not consume measured count data"
+numerical_hazard = "power denominator uses max(1e-30)"
+
+[[function]]
+name = "photon_number_sfwm"
+locator = "sfwm.rs:393"
+source_equations = ["SC-EQ-1"]
+current_quantity = "alpha*P^2"
+source_faithful = "surrogate"
+tests = ["test_photon_number_scaling"]
+quarantine_reason = "scaling law is not an experimental reproduction"
+
+[[function]]
+name = "photon_number_spdc"
+locator = "sfwm.rs:398"
+source_equations = ["SC-EQ-1"]
+current_quantity = "alpha*P"
+source_faithful = "surrogate"
+tests = ["test_photon_number_scaling"]
+quarantine_reason = "scaling law is not an experimental reproduction"
+
+[[function]]
+name = "polarization_dependence"
+locator = "sfwm.rs:406"
+source_equations = ["source tensor statement near Main.tex line 102"]
+current_quantity = "cos^2(theta)"
+source_faithful = "no"
+tests = ["test_polarization_dependence"]
+quarantine_reason = "scalar angular surrogate is not a chi^(2)/chi^(3) tensor contraction"
+
+[[function]]
+name = "substrate_sfwm_contribution"
+locator = "sfwm.rs:454"
+source_equations = ["SC-SUBSTRATE-25-PERCENT"]
+current_quantity = "standalone substrate chi3^2*abs(F)^2 proxy"
+source_faithful = "no"
+tests = ["test_substrate_sfwm_contribution"]
+quarantine_reason = "cannot produce a percentage of total coincidences without a reference and collection model"
+
+[[consumer]]
+path = "crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs"
+uses = ["linbo3_ordinary_sellmeier", "g2_sfwm_model", "g2_spdc_model", "photon_number_sfwm", "photon_number_spdc", "polarization_dependence", "rate_sweep_with_dk", "substrate_sfwm_contribution"]
+status = "legacy characterization and misleading positive verdict path quarantined"
+
+[[consumer]]
+path = "crates/optics_core/tests/test_sfwm_son_chekhova.rs"
+uses = ["linbo3_paper_calibrated", "rate_ratio_with_dk", "maker_fringe_sweep", "coherence_length"]
+status = "legacy tests pass but do not support source-faithful claims"
+
+[[consumer]]
+path = "crates/optics_core/src/lib.rs"
+uses = ["all public sfwm reexports"]
+status = "public API boundary; no independent scientific validation"
+
+[matrix_conclusion]
+production_consumer_count = 1
+test_consumer_count = 1
+source_reproduction_path_exists = false
+legacy_oracle_is_quarantined = true
+corrected_implementation_deferred = true

@@ -1,0 +1,5 @@
+tool	command	version
+ctags	ctags --languages=Rust --fields=+neKSt --output-format=xref -L file-list.tsv	Universal Ctags 6.2.1
+cscope	cscope -b -q -k -i file-list.tsv	cscope 15.9
+cflow	cflow --no-preprocess --depth=4 --main=sfwm_dominance_check crates/optics_core/src/sfwm.rs	GNU cflow 1.8
+rg-symbol-occurrence-map	rg symbol candidates over the scoped file list	ripgrep repository tool

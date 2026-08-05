@@ -1,0 +1,122 @@
+schema = "sfwm-source-intake-manifest-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+campaign = "son-chekhova-sfwm-source-intake"
+capture_root = "/var/tmp/open_gororoba-sfwm-source-intake-20260805T004849Z"
+capture_timestamp_utc = "2026-08-05T00:48:49Z"
+implementation_revision = "533acbeed3894de11922c632ac166449c2b13c68"
+reproducibility_class = "external_only"
+network_required_for_reacquisition = true
+final_numerical_sweep_run = false
+corrected_sfwm_model_run = false
+experimental_figure_fit_run = false
+source_packet_committed = false
+
+[integrity]
+source_hash_file = "/var/tmp/open_gororoba-sfwm-source-intake-20260805T004849Z/SHA256SUMS"
+call_map_root = "/var/tmp/open_gororoba-sfwm-callmap-20260805T004849Z"
+source_hashes_verified = true
+call_map_hashes_verified = true
+
+[[input]]
+id = "SC-2026-ARXIV-PDF"
+path = "pdf/son-chekhova-2026-arxiv-2601.23137v1.pdf"
+sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e"
+url = "https://arxiv.org/pdf/2601.23137v1"
+role = "primary source paper"
+
+[[input]]
+id = "SC-2026-ARXIV-SOURCE"
+path = "source/son-chekhova-2026-arxiv-2601.23137v1-source.tar"
+sha256 = "88a04fc2f5327986cdd7ddb66f2915df5f42361c89b60cd370052a9ad4f5882a"
+url = "https://export.arxiv.org/e-print/2601.23137v1"
+role = "primary source TeX and figure packet"
+
+[[input]]
+id = "SC-2026-MAIN-TEX"
+path = "extracted/son-chekhova-2026-arxiv-2601.23137v1-source/Main.tex"
+sha256 = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f"
+role = "equation and source-convention transcription"
+
+[[input]]
+id = "SC-2025-ARXIV-PDF"
+path = "pdf/son-et-al-2025-arxiv-2502.01305v2.pdf"
+sha256 = "c7a4e31a81d352419f0eddd58c52bb10b82c51fbea1f46ad3b5c19d2f8007469"
+url = "https://arxiv.org/pdf/2502.01305v2"
+role = "substrate amplitude context source"
+
+[[input]]
+id = "SC-2025-ARXIV-SOURCE"
+path = "source/son-et-al-2025-arxiv-2502.01305v2-source.tar"
+sha256 = "ddbf42fa42c1af488611043564ee624add362d510cdcaead2e8df9725217a02b"
+url = "https://export.arxiv.org/e-print/2502.01305v2"
+role = "substrate amplitude context source"
+
+[[input]]
+id = "SC-2004-ARXIV-PDF"
+path = "pdf/saltiel-sukhorukov-kivshar-multistep.pdf"
+sha256 = "a27579aa7671f432574f9d0f2747279f5b3742546f926f24d608a9bdd292f378"
+url = "https://arxiv.org/pdf/nlin/0311013"
+role = "nonlinear source context"
+
+[[input]]
+id = "META-ZELMON-1997"
+path = "metadata/zelmon-1997-crossref.json"
+sha256 = "845ca1b1789c8fef2cc7112171aea352263d6d4f3a0f5eb6d37e1516d4a0fb40"
+url = "https://api.crossref.org/works/10.1364/josab.14.003319"
+role = "dispersion source metadata"
+
+[[input]]
+id = "META-SHOJI-1997"
+path = "metadata/shoji-1997-crossref.json"
+sha256 = "b3f86e133401296681d6cbb742000daaba3cea95571b254e5704941a8cdda52c"
+url = "https://api.crossref.org/works/10.1364/josab.14.002268"
+role = "chi2 source metadata"
+
+[[input]]
+id = "META-MALITSON-1965"
+path = "metadata/malitson-1965-crossref.json"
+sha256 = "d05bb676707bf6c78e8ec6da3599947db9188c523e9b7e22ec441ef946ca3089"
+url = "https://api.crossref.org/works/10.1364/josa.55.001205"
+role = "fused silica dispersion source metadata"
+
+[[input]]
+id = "META-WANG-2019"
+path = "metadata/wang-et-al-2019-crossref.json"
+sha256 = "9d4472cef0d42863abe0fe804f753ea9e4950bd86f05f434de12d7c8febcd060"
+url = "https://api.crossref.org/works/10.1016%2Fj.jallcom.2018.11.182"
+role = "chi3 material identity source metadata"
+
+[[input]]
+id = "META-RUBIN-1994"
+path = "metadata/rubin-1994-crossref.json"
+sha256 = "bb1ee3ef54376b811507544d80d71c3619b73851da6fa1e8a09dd77a24011989"
+url = "https://api.crossref.org/works/10.1103/PhysRevA.50.5122"
+role = "SPDC theory source metadata"
+
+[[input]]
+id = "META-GARAY-PALMETT-2010"
+path = "metadata/garay-palmett-2010-crossref.json"
+sha256 = "78739b0194168988c1ec96d98d28352703f3e179aba8e69e2fbacb7e0fa6a79e"
+url = "https://api.crossref.org/works/10.1103/PhysRevA.82.043809"
+role = "SFWM efficiency source metadata"
+
+[[input]]
+id = "META-SC-ABSTRACT"
+path = "metadata/son-chekhova-2026-arxiv-2601.23137v1-abs.html"
+sha256 = "60260f01be70d5f848bd1b76be43a206e443dce7e2a254b012b9a4a898e4de64"
+url = "https://arxiv.org/abs/2601.23137v1"
+role = "data-availability and supplement search surface"
+
+[blockers]
+supplement_status = "missing_from_public_arxiv_packet"
+raw_experimental_data_status = "not_publicly_available_per_source"
+publisher_full_text_status = "access_blocked_or_not_pdf_for_several_references"
+chi3_sample_identity_status = "unresolved"
+substrate_percentage_derivation_status = "blocked_without_supplement_or_author_data"
+
+[controls]
+source_packet_is_primary = true
+ocr_substitution_used = false
+unauthorized_boyd_copy_used = false
+source_theory_refuted = false
+legacy_oracles_quarantined = true
