@@ -22,6 +22,8 @@
 //!
 //! Source: <https://spdf.gsfc.nasa.gov/pub/data/voyager/>
 
+use chrono::{DateTime, Datelike, Timelike, Utc};
+
 use crate::{
     catalogs::{
         omni::OmniRecord,
@@ -218,6 +220,156 @@ pub fn parse_voyager_file(
         VoyagerSpacecraft::V2 => &VOYAGER2_MISSION,
     };
     mission.parse_file(path)
+}
+
+/// AMDA HAPI dataset identifier for the Voyager 2 cruise magnetic field.
+pub const VOYAGER2_AMDA_HAPI_DATASET: &str = "vo2-mag-full";
+
+const VOYAGER2_AMDA_HAPI_COLUMNS: [&str; 7] = [
+    "Time",
+    "vo2_b_full(0)",
+    "vo2_b_full(1)",
+    "vo2_b_full(2)",
+    "vo2_bmag_full",
+    "vo2_b_full_phi",
+    "vo2_b_full_theta",
+];
+
+/// A native Voyager 2 AMDA magnetic-field sample with its RTN frame intact.
+#[derive(Debug, Clone)]
+pub struct Voyager2AmdaHapiRecord {
+    pub timestamp: DateTime<Utc>,
+    pub b_rtn: [f64; 3],
+    pub b_magnitude: f64,
+    pub phi_deg: f64,
+    pub theta_deg: f64,
+}
+
+impl Voyager2AmdaHapiRecord {
+    /// Convert into the legacy merged-record shape with an explicit RTN mapping.
+    pub fn into_spdf_merged(self) -> SpdfMergedRecord {
+        SpdfMergedRecord {
+            year: self.timestamp.year() as u16,
+            doy: self.timestamp.ordinal() as u16,
+            hour: self.timestamp.hour() as u8,
+            distance_au: f64::NAN,
+            lat_deg: f64::NAN,
+            lon_deg: f64::NAN,
+            b_magnitude: self.b_magnitude,
+            br: self.b_rtn[0],
+            bt: self.b_rtn[1],
+            bn: self.b_rtn[2],
+            proton_density: f64::NAN,
+            bulk_speed: f64::NAN,
+            proton_temperature: f64::NAN,
+        }
+    }
+}
+
+/// Parse diagnostics for a native AMDA HAPI response.
+#[derive(Debug, Clone)]
+pub struct Voyager2AmdaHapiParse {
+    pub records: Vec<Voyager2AmdaHapiRecord>,
+    pub data_rows: u64,
+    pub accepted_rows: u64,
+    pub rejected_rows: u64,
+    pub header_present: bool,
+    pub header_matches: bool,
+}
+
+/// Parse native AMDA HAPI CSV and retain schema and row diagnostics.
+pub fn parse_voyager2_amda_hapi_detailed(content: &str) -> Voyager2AmdaHapiParse {
+    let mut records = Vec::new();
+    let mut data_rows = 0;
+    let mut accepted_rows = 0;
+    let mut rejected_rows = 0;
+    let mut header_present = false;
+    let mut header_matches = true;
+
+    for line in content.lines() {
+        let line = line.trim();
+        if line.is_empty() || line.starts_with('#') {
+            continue;
+        }
+
+        let fields: Vec<&str> = line.split(',').map(str::trim).collect();
+        if fields
+            .first()
+            .is_some_and(|field| field.trim_matches('"').eq_ignore_ascii_case("time"))
+        {
+            header_present = true;
+            header_matches = fields.len() == VOYAGER2_AMDA_HAPI_COLUMNS.len()
+                && fields
+                    .iter()
+                    .zip(VOYAGER2_AMDA_HAPI_COLUMNS)
+                    .all(|(actual, expected)| actual.trim_matches('"') == expected);
+            continue;
+        }
+
+        data_rows += 1;
+        match parse_voyager2_amda_hapi_line(line) {
+            Some(record) => {
+                accepted_rows += 1;
+                records.push(record);
+            }
+            None => rejected_rows += 1,
+        }
+    }
+
+    Voyager2AmdaHapiParse {
+        records,
+        data_rows,
+        accepted_rows,
+        rejected_rows,
+        header_present,
+        header_matches,
+    }
+}
+
+fn parse_voyager2_amda_hapi_line(line: &str) -> Option<Voyager2AmdaHapiRecord> {
+    let line = line.trim();
+    if line.is_empty() || line.starts_with('#') {
+        return None;
+    }
+
+    let fields: Vec<&str> = line.split(',').map(str::trim).collect();
+    let timestamp = fields.first()?.trim_matches('"');
+    if timestamp.eq_ignore_ascii_case("time") || fields.len() != 7 {
+        return None;
+    }
+
+    let parsed = DateTime::parse_from_rfc3339(timestamp).ok()?;
+    if parsed.offset().local_minus_utc() != 0 {
+        return None;
+    }
+    let utc = parsed.with_timezone(&Utc);
+    if utc.minute() != 0 || utc.second() != 0 || utc.nanosecond() != 0 {
+        return None;
+    }
+    let mut values = [f64::NAN; 6];
+    for (index, value) in fields[1..].iter().enumerate() {
+        values[index] = parse_amda_hapi_value(value)?;
+    }
+
+    Some(Voyager2AmdaHapiRecord {
+        timestamp: utc,
+        b_rtn: [values[0], values[1], values[2]],
+        b_magnitude: values[3],
+        phi_deg: values[4],
+        theta_deg: values[5],
+    })
+}
+
+fn parse_amda_hapi_value(value: &str) -> Option<f64> {
+    let value = value.trim_matches('"').parse::<f64>().ok()?;
+    if !value.is_finite() {
+        return None;
+    }
+    if value.abs() >= 1.0e30 {
+        Some(f64::NAN)
+    } else {
+        Some(value)
+    }
 }
 
 /// Convert Voyager records to OmniRecord format.
@@ -472,6 +624,90 @@ mod tests {
         assert!(r.proton_density.is_nan());
         assert!(r.bulk_speed.is_nan());
         assert!(r.proton_temperature.is_nan());
+    }
+
+    #[test]
+    fn test_parse_voyager2_amda_hapi_rtn_schema() {
+        let data = "Time,vo2_b_full(0),vo2_b_full(1),vo2_b_full(2),vo2_bmag_full,vo2_b_full_phi,vo2_b_full_theta\n\
+                    1990-01-03T16:00:00.000Z,0.026,-0.248,-0.103,7.5,275.985,-22.4435\n";
+        let records = parse_voyager2_amda_hapi_detailed(data).records;
+        assert_eq!(records.len(), 1);
+        let record = &records[0];
+        assert_eq!(record.timestamp.year(), 1990);
+        assert_eq!(record.timestamp.ordinal(), 3);
+        assert_eq!(record.timestamp.hour(), 16);
+        assert!((record.b_rtn[0] - 0.026).abs() < 1.0e-12);
+        assert!((record.b_rtn[1] + 0.248).abs() < 1.0e-12);
+        assert!((record.b_rtn[2] + 0.103).abs() < 1.0e-12);
+        assert!((record.b_magnitude - 7.5).abs() < 1.0e-12);
+        assert!((record.phi_deg - 275.985).abs() < 1.0e-12);
+        assert!((record.theta_deg + 22.4435).abs() < 1.0e-12);
+    }
+
+    #[test]
+    fn test_parse_voyager2_amda_hapi_preserves_source_magnitude_fill() {
+        let data = "1990-01-03T15:00:00.000Z,0.027,-0.229,-0.096,-1e31,-1e31,-1e31\n";
+        let records = parse_voyager2_amda_hapi_detailed(data).records;
+        assert_eq!(records.len(), 1);
+        let record = &records[0];
+        assert!((record.b_rtn[0] - 0.027).abs() < 1.0e-12);
+        assert!((record.b_rtn[1] + 0.229).abs() < 1.0e-12);
+        assert!((record.b_rtn[2] + 0.096).abs() < 1.0e-12);
+        assert!(record.b_magnitude.is_nan());
+    }
+
+    #[test]
+    fn test_parse_voyager2_amda_hapi_skips_malformed_rows() {
+        let data = "Time,br,bt,bn,bmag,phi,theta\n\
+                    not-a-timestamp,1,2,3,4,5,6\n\
+                    1990-01-03T16:00:00.000Z,1,2,3\n\
+                    1990-01-03T17:00:30.000Z,1,2,3,4,5,6\n\
+                    1990-01-03T18:00:00.000Z,1,2,3,4,5,6\n";
+        let parsed = parse_voyager2_amda_hapi_detailed(data);
+        assert_eq!(parsed.records.len(), 1);
+        assert_eq!(parsed.records[0].timestamp.hour(), 18);
+        assert_eq!(parsed.data_rows, 4);
+        assert_eq!(parsed.accepted_rows, 1);
+        assert_eq!(parsed.rejected_rows, 3);
+    }
+
+    #[test]
+    fn test_parse_voyager2_amda_hapi_rejects_non_utc_offsets() {
+        let data = "1990-01-03T18:00:00+01:00,1,2,3,9,10,11\n";
+        let parsed = parse_voyager2_amda_hapi_detailed(data);
+        assert_eq!(parsed.accepted_rows, 0);
+        assert_eq!(parsed.rejected_rows, 1);
+    }
+
+    #[test]
+    fn test_parse_voyager2_amda_hapi_rejects_invalid_numeric_fields() {
+        let data = "1990-01-03T18:00:00Z,not-a-number,2,3,9,10,11\n";
+        let parsed = parse_voyager2_amda_hapi_detailed(data);
+        assert_eq!(parsed.accepted_rows, 0);
+        assert_eq!(parsed.rejected_rows, 1);
+    }
+
+    #[test]
+    fn test_parse_voyager2_amda_hapi_reports_schema_and_rows() {
+        let data = "Time,vo2_b_full(0),vo2_b_full(1),vo2_b_full(2),vo2_bmag_full,vo2_b_full_phi,vo2_b_full_theta\n\
+                    1990-01-03T18:00:00.000Z,1,2,3,9,10,11\n\
+                    1990-01-03T19:00:00.000Z,1,2\n";
+        let parsed = parse_voyager2_amda_hapi_detailed(data);
+        assert!(parsed.header_present);
+        assert!(parsed.header_matches);
+        assert_eq!(parsed.data_rows, 2);
+        assert_eq!(parsed.accepted_rows, 1);
+        assert_eq!(parsed.rejected_rows, 1);
+    }
+
+    #[test]
+    fn test_parse_voyager2_amda_hapi_rejects_wrong_header() {
+        let data = "Time,wrong_r,wrong_t,wrong_n,bmag,phi,theta\n\
+                    1990-01-03T18:00:00.000Z,1,2,3,9,10,11\n";
+        let parsed = parse_voyager2_amda_hapi_detailed(data);
+        assert!(parsed.header_present);
+        assert!(!parsed.header_matches);
+        assert_eq!(parsed.accepted_rows, 1);
     }
 
     #[test]
