@@ -1,0 +1,56 @@
+year = 1993
+bartol_path = "/home/eirikr/Github/open_gororoba/data/external/voyager2/bartol/vy2_93.dat"
+amda_path = "/var/tmp/open_gororoba-amda-catalog-c1OKS1/vo2-mag-full-1990-1995.csv"
+amda_input_format = "native_amda_vo2_mag_full_hapi_csv"
+amda_info_path = "/var/tmp/open_gororoba-amda-catalog-c1OKS1/vo2-mag-full-info.json"
+amda_info_sha256 = "293f28a07f74a23c2bccc7214a01e4db0327c3f085173fff3c527ca032fa5f9a"
+amda_info_schema_validation = "validated_vo2_mag_full_resource_and_parameter_schema"
+bartol_sha256 = "f7a573cdd900636dbb8eb0ef703dde6bf2b1415b679eb83ca538d7fdfd697b28"
+amda_sha256 = "64f1f074d5178d0a6b8616ed074b64bed0262280a7a06ab893915d2bd9cd886f"
+amda_schema_validation = "validated_vo2_mag_full_dataset_id_and_pinned_metadata_exact_7_columns_without_header"
+amda_data_rows = 52569
+amda_accepted_rows = 52569
+amda_rejected_rows = 0
+report_schema = "voyager2_bartol_amda_crossval.v2"
+bartol_n_total = 8760
+amda_n_total = 8744
+paired_n_same_timestamp = 8744
+comparison_disposition = "no_finite_common_b_field"
+bartol_only_timestamp = 16
+amda_only_timestamp = 0
+
+[b_magnitude]
+n_paired = 0
+bartol_finite_only = 0
+amda_finite_only = 4155
+both_nonfinite = 4589
+bartol_finite_timestamp_only = 0
+amda_finite_timestamp_only = 0
+availability = "no_finite_overlap"
+
+[br]
+n_paired = 0
+bartol_finite_only = 0
+amda_finite_only = 4899
+both_nonfinite = 3845
+bartol_finite_timestamp_only = 0
+amda_finite_timestamp_only = 0
+availability = "no_finite_overlap"
+
+[bt]
+n_paired = 0
+bartol_finite_only = 0
+amda_finite_only = 4899
+both_nonfinite = 3845
+bartol_finite_timestamp_only = 0
+amda_finite_timestamp_only = 0
+availability = "no_finite_overlap"
+
+[bn]
+n_paired = 0
+bartol_finite_only = 0
+amda_finite_only = 4899
+both_nonfinite = 3845
+bartol_finite_timestamp_only = 0
+amda_finite_timestamp_only = 0
+availability = "no_finite_overlap"
