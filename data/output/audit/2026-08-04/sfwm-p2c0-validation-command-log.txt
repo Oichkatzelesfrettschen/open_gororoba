@@ -1,0 +1,83 @@
+P2C0 validation command log
+Repository: open_gororoba
+Branch: agent/son-chekhova-sfwm-source-intake
+Generating code revision: 533acbeed3894de11922c632ac166449c2b13c68
+
+Command: cargo fmt --all -- --check
+Exit code: 0
+Result: pass; stable-toolchain warnings report unsupported nightly rustfmt options.
+
+Command: CARGO_TARGET_DIR=.cache/exp-p2c0-target cargo clippy -p gororoba_cli_physics --bin sfwm-source-intake-audit --all-targets --profile validation -- -D warnings
+Exit code: 0
+Result: pass; future-incompatibility note for proc-macro-error2 is pre-existing toolchain output.
+
+Command: TMPDIR="$PWD/.cache/p2c0-tmp" CARGO_TARGET_DIR=.cache/exp-p2c0-target cargo test -p optics_core sfwm -- --nocapture
+Exit code: 0
+Result: 15 SFWM unit tests and 1 SFWM integration test passed.
+
+Command: .cache/exp-p2c0-target/debug/sfwm-source-intake-audit > /var/tmp/sfwm-legacy-oracle-audit-rerun.tsv && cmp -s /var/tmp/sfwm-legacy-oracle-audit-rerun.tsv data/output/audit/2026-08-04/sfwm-legacy-oracle-audit.tsv
+Exit code: 0
+Result: deterministic legacy characterization output matched the retained output byte-for-byte.
+
+Command: CARGO_TARGET_DIR=.cache/exp-p2c0-target cargo test -p gororoba_db --profile validation
+Exit code: 0
+Result: 1 CLI parsing test passed.
+
+Command: CARGO_TARGET_DIR=.cache/exp-p2c0-target cargo test -p provenance_store --lib --profile validation
+Exit code: 0
+Result: 20 transition, identity, compatibility, and store tests passed.
+
+Command: .cache/gate-target/validation-tools/provenance --repo-root . verify-control-plane --verify-compat-exports
+Exit code: 0
+Result: claims=1478 insights=183 experiments=232 complete_experiments=0 binaries=496 theorems=162 kernel_checked_claims=161 proof_files=298.
+
+Command: .cache/gate-target/validation/semantic-atoms --repo-root .
+Exit code: 0
+Result: claims_atoms=1478 claim_edges=5475 equation_atoms_v2=450 equation_symbols=870 proof_skeletons=1484.
+
+Command: .cache/gate-target/validation/evidence-provenance --repo-root .
+Exit code: 0
+Result: derivations=4478 bibliography=442 provenance=276 paragraphs=1992.
+
+Command: make registry-integrity
+Exit code: 0
+Result: conflict_markers=108 lacunae=193 schema_signatures=13.
+
+Command: make validate-registry
+Exit code: 0
+Result: registry validation completed in one tool session; all registry, semantic-atoms, evidence-provenance, integrity, and execution-planning lanes passed.
+
+Command: .cache/exp-p2c0-target/debug/experiment-manifest verify data/output/audit/2026-08-04/sfwm-source-intake-experiment-manifest.toml --repo-root .
+Exit code: 0
+Result: verified E-242: Son-Chekhova SFWM source intake and legacy oracle quarantine.
+
+Command: make validate-local
+Exit code: 0
+Result: scoped Rust validation passed; 38 nextest library tests passed; registry governance passed.
+
+Command: git diff --check
+Exit code: 0
+Result: pass.
+
+Command: git diff --quiet -- crates/optics_core/src/sfwm.rs crates/optics_core/tests/test_sfwm_son_chekhova.rs
+Exit code: 0
+Result: no SFWM implementation or legacy SFWM test source changed.
+
+Scope controls:
+corrected_final_sfwm_sweep_run = false
+experimental_figure_fit_run = false
+supplement_1_available = false
+raw_experimental_data_used = false
+source_theory_refuted = false
+
+Command: gororoba-db artifact register-local LOCAL-P2C0-SFWM-SOURCE-INTAKE with the complete retained P2C0 path set
+Exit code: 0
+Result: registered 49 retained evidence paths after extending the source-audit bundle.
+
+Command: .cache/exp-p2c0-target/debug/experiment-manifest verify data/output/audit/2026-08-04/sfwm-source-intake-experiment-manifest.toml --repo-root .
+Exit code: 0
+Result: verified E-242 at the declared generating revision.
+
+Command: make validate-registry after final artifact registration
+Exit code: 0
+Result: registry, compatibility-export, semantic-atoms, evidence-provenance, integrity, and execution-planning lanes passed.

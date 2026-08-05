@@ -1,0 +1,34 @@
+{
+  "transition_key": "c-838-sfwm-substrate-percentage-boundary",
+  "transition_spec_sha256": "64766b19ee10064a2c3234c6ccde827d5ef58f03a48b6406ac63e7d147025949",
+  "source_claim_id": "C-838",
+  "current_status": "Verified",
+  "expected_prior_status": "Verified",
+  "proposed_claim_status": "Provisional",
+  "experiment_verdict": "MethodologyInvalid",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [
+    {
+      "proposal_key": "c838-source-substrate-percentage",
+      "canonical_claim_id": "C-1662",
+      "relation_kind": "source_split"
+    },
+    {
+      "proposal_key": "c838-substrate-nonzero-amplitude",
+      "canonical_claim_id": "C-1663",
+      "relation_kind": "implementation_split"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {
+    "Provisional": 2,
+    "Theoretical": 1,
+    "Verified": -1
+  },
+  "exact_replay": false,
+  "replay_event_id": null
+}
+exit_code=0

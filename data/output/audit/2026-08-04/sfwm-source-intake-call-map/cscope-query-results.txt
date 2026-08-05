@@ -1,0 +1,78 @@
+
+CSCOPE SYMBOL sfwm_dominance_check definitions
+crates/optics_core/src/lib.rs sfwm_dominance_check 131 sfwm_dominance_check,
+CSCOPE SYMBOL sfwm_dominance_check callers
+
+CSCOPE SYMBOL thickness_sweep definitions
+crates/optics_core/src/lib.rs thickness_sweep 133 thickness_sweep,
+CSCOPE SYMBOL thickness_sweep callers
+
+CSCOPE SYMBOL paper_wavevector_mismatches definitions
+CSCOPE SYMBOL paper_wavevector_mismatches callers
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_paper_dominance_ratio_at_10um 14 let wm = p.paper_wavevector_mismatches();
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_maker_fringes_sfwm_monotonic_shg_oscillates 34 let wm = p.paper_wavevector_mismatches();
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_rate_sweep_direct_dominates_below_30um 72 let wm = p.paper_wavevector_mismatches();
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_maker_fringe_period_consistent_with_l_coh_shg 90 let wm = p.paper_wavevector_mismatches();
+
+CSCOPE SYMBOL wavevector_mismatches definitions
+CSCOPE SYMBOL wavevector_mismatches callers
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_sellmeier_coherence_lengths_order 126 let wm = p.wavevector_mismatches();
+
+CSCOPE SYMBOL cascaded_amplitude_sq_with_dk definitions
+crates/optics_core/src/lib.rs cascaded_amplitude_sq_with_dk 115 cascaded_amplitude_sq_with_dk,
+CSCOPE SYMBOL cascaded_amplitude_sq_with_dk callers
+
+CSCOPE SYMBOL direct_amplitude_sq_with_dk definitions
+crates/optics_core/src/lib.rs direct_amplitude_sq_with_dk 119 direct_amplitude_sq_with_dk,
+CSCOPE SYMBOL direct_amplitude_sq_with_dk callers
+
+CSCOPE SYMBOL rate_ratio_with_dk definitions
+crates/optics_core/src/lib.rs rate_ratio_with_dk 128 rate_ratio_with_dk,
+crates/optics_core/tests/test_sfwm_son_chekhova.rs rate_ratio_with_dk 7 SfwmMaterialParams, coherence_length, maker_fringe_sweep, rate_ratio_with_dk,
+CSCOPE SYMBOL rate_ratio_with_dk callers
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_paper_dominance_ratio_at_10um 15 let r = rate_ratio_with_dk(&p, &wm);
+
+CSCOPE SYMBOL maker_fringe_sweep definitions
+crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs maker_fringe_sweep 18 SfwmMaterialParams, SubstrateSfwmParams, g2_sfwm_model, g2_spdc_model, maker_fringe_sweep,
+crates/optics_core/src/lib.rs maker_fringe_sweep 122 maker_fringe_sweep,
+crates/optics_core/tests/test_sfwm_son_chekhova.rs maker_fringe_sweep 7 SfwmMaterialParams, coherence_length, maker_fringe_sweep, rate_ratio_with_dk,
+CSCOPE SYMBOL maker_fringe_sweep callers
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_maker_fringes_sfwm_monotonic_shg_oscillates 38 let fringes = maker_fringe_sweep(&p, &thicknesses);
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_maker_fringe_period_consistent_with_l_coh_shg 95 let fringes = maker_fringe_sweep(&p, &thicknesses);
+
+CSCOPE SYMBOL rate_sweep_with_dk definitions
+crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs rate_sweep_with_dk 19 photon_number_sfwm, photon_number_spdc, polarization_dependence, rate_sweep_with_dk,
+crates/optics_core/src/lib.rs rate_sweep_with_dk 130 rate_sweep_with_dk,
+crates/optics_core/tests/test_sfwm_son_chekhova.rs rate_sweep_with_dk 8 rate_sweep_with_dk,
+CSCOPE SYMBOL rate_sweep_with_dk callers
+crates/optics_core/tests/test_sfwm_son_chekhova.rs test_rate_sweep_direct_dominates_below_30um 74 let rates = rate_sweep_with_dk(&p, &wm, &thicknesses);
+
+CSCOPE SYMBOL g2_sfwm_model definitions
+crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs g2_sfwm_model 18 SfwmMaterialParams, SubstrateSfwmParams, g2_sfwm_model, g2_spdc_model, maker_fringe_sweep,
+crates/optics_core/src/lib.rs g2_sfwm_model 120 g2_sfwm_model,
+CSCOPE SYMBOL g2_sfwm_model callers
+
+CSCOPE SYMBOL g2_spdc_model definitions
+crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs g2_spdc_model 18 SfwmMaterialParams, SubstrateSfwmParams, g2_sfwm_model, g2_spdc_model, maker_fringe_sweep,
+crates/optics_core/src/lib.rs g2_spdc_model 121 g2_spdc_model,
+CSCOPE SYMBOL g2_spdc_model callers
+
+CSCOPE SYMBOL photon_number_sfwm definitions
+crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs photon_number_sfwm 19 photon_number_sfwm, photon_number_spdc, polarization_dependence, rate_sweep_with_dk,
+crates/optics_core/src/lib.rs photon_number_sfwm 124 photon_number_sfwm,
+CSCOPE SYMBOL photon_number_sfwm callers
+
+CSCOPE SYMBOL photon_number_spdc definitions
+crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs photon_number_spdc 19 photon_number_sfwm, photon_number_spdc, polarization_dependence, rate_sweep_with_dk,
+crates/optics_core/src/lib.rs photon_number_spdc 125 photon_number_spdc,
+CSCOPE SYMBOL photon_number_spdc callers
+
+CSCOPE SYMBOL polarization_dependence definitions
+crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs polarization_dependence 19 photon_number_sfwm, photon_number_spdc, polarization_dependence, rate_sweep_with_dk,
+crates/optics_core/src/lib.rs polarization_dependence 126 polarization_dependence,
+CSCOPE SYMBOL polarization_dependence callers
+
+CSCOPE SYMBOL substrate_sfwm_contribution definitions
+crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs substrate_sfwm_contribution 20 substrate_sfwm_contribution,
+crates/optics_core/src/lib.rs substrate_sfwm_contribution 132 substrate_sfwm_contribution,
+CSCOPE SYMBOL substrate_sfwm_contribution callers

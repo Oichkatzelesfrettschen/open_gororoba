@@ -1,0 +1,40 @@
+[transition]
+transition_key = "c-832-sfwm-rate-oracle-source-boundary"
+source_claim_id = "C-832"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+experiment_ids = []
+exercised_falsifier = "Compare the legacy product-of-efficiencies result and reduced rate path with signed source Eq. 6 and Eq. 8, including the omitted prefactor, source susceptibility tuple, and material convention controls."
+proposed_claim_status = "Provisional"
+rationale = "The retained positive path measures a surrogate and omits a source prefactor. It cannot support the direct-versus-cascaded source rate claim. The source equations remain unrefuted."
+unresolved_assumptions = [
+    "Signed mismatch assignment requires a declared propagation convention.",
+    "The source chi2 convention and the Wang chi3 sample identity remain unresolved.",
+    "The corrected complex amplitude path has not run."
+]
+actor = "son-chekhova-source-intake"
+reason = "Quarantine the legacy rate oracle before source-faithful numerical reconstruction."
+transition_timestamp = "2026-08-05T00:48:49Z"
+expected_source_state_sha256 = "76031afa1c0a22b771174864974d16d85d270cabb7cf175eaf5ff7a2b67085b8"
+expected_claim_id_max = 1657
+
+[[successor]]
+proposal_key = "c832-source-coherent-rate-identities"
+statement = "Son and Chekhova Eq. 6 and Eq. 8 define separate coherent cascaded and direct SFWM amplitudes with signed wavevector mismatches and rate prefactors 4/9 and 9/16."
+initial_status = "Theoretical"
+source_or_implementation_boundary = "Source proposition only; no implementation conformance or 10 um numerical reproduction is implied."
+required_falsifier = "Primary-source transcription or an independent derivation contradicts the displayed amplitude, signed mismatch relation, or rate prefactors."
+where_stated = ["https://arxiv.org/abs/2601.23137v1", "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"]
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+predecessor_relation_kind = "source_split"
+
+[[successor]]
+proposal_key = "c832-source-faithful-rate-implementation"
+statement = "The optics_core SFWM implementation preserves signed complex cascaded and direct amplitudes, the full Eq. 6 prefactor, source and Sellmeier input paths, and an independent component-level falsifier."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Implementation conformance only; direct-dominance magnitude and experiment interpretation remain separate."
+required_falsifier = "An independent amplitude implementation or mutation control must expose a component or prefactor disagreement under the frozen convention ledger."
+where_stated = ["data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml", "data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml"]
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+predecessor_relation_kind = "implementation_split"

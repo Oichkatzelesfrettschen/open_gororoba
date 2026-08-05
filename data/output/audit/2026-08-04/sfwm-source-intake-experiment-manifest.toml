@@ -1,0 +1,202 @@
+format = "experiment-manifest-v1"
+
+[experiment]
+id = "E-242"
+status = "completed"
+status_token = "COMPLETED"
+title = "Son-Chekhova SFWM source intake and legacy oracle quarantine"
+claim_refs = ["C-832", "C-833", "C-834", "C-838", "C-839"]
+reproducibility_class = "external_only"
+code_commit_sha = "533acbeed3894de11922c632ac166449c2b13c68"
+actual_timestamp = "2026-08-05T01:17:11Z"
+run_command = "TMPDIR=\"$PWD/.cache/p2c0-tmp\" CARGO_TARGET_DIR=.cache/exp-p2c0-target cargo run -q -p gororoba_cli_physics --bin sfwm-source-intake-audit > data/output/audit/2026-08-04/sfwm-legacy-oracle-audit.tsv"
+run_command_sha256 = "ee3e5adba6b90062b5f2c2eca650c889ff00be6768aefa21f49e5837ba242cf9"
+toolchain = "rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30); wget 1.25.0; pdftotext 26.07.0"
+features = []
+hardware = "deterministic CPU execution on AMD Ryzen 5 5600X3D, x86_64 Linux"
+randomness_mode = "none"
+
+[[experiment.input_hashes]]
+path = "Cargo.lock"
+sha256 = "5c8af399c0948e417849066e39c260e8b82bcead47a7eba00dedf7f9fe556cf2"
+
+[[experiment.input_hashes]]
+path = "crates/gororoba_cli_physics/Cargo.toml"
+sha256 = "7308dc55581f6ca45643a4527e0659b8746dcf2967e8127059a7c797b6da64d8"
+
+[[experiment.input_hashes]]
+path = "crates/gororoba_cli_physics/src/bin/sfwm_source_intake_audit.rs"
+sha256 = "b7f94d01bfacc785f6c038942547aa719e932c8fa0b48fc0feeceea45151b0cb"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/sfwm.rs"
+sha256 = "f9cd0ae408f02d3202d23a66de673471bcb88c7350f7137279741b4686cc2d63"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
+sha256 = "1452a4b48169f37a128eaf5b893cafcb99603843447841a251e80c7e499eabfc"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/sfwm-material-identity-audit.toml"
+sha256 = "d8eb663db1b7b3e88463bd7444ae08d68723d4ac1a74ef17b701db52c72cbf85"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/sfwm-source-intake-bind-baseline.toml"
+sha256 = "a777239c013c134a236a1edaf7093a3340ce40537abf84c85fc43391d0e807f7"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml"
+sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-experiment-manifest.toml"
+sha256 = "83c61321291791d8c154b8f6e347b987a64b4d114f8fc930b2e4ced99ed68ff0"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-source-intake-manifest.toml"
+sha256 = "05ca5fab8c49c1880f783f31118a4b5fc5fd20186e05b84854bdf73589da2c4d"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-source-access-disposition.toml"
+sha256 = "fe40fdf2424158fe655b1beb8121b23a2ff8e190a7192bcd0512f0bf77581893"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
+sha256 = "1452a4b48169f37a128eaf5b893cafcb99603843447841a251e80c7e499eabfc"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-material-identity-audit.toml"
+sha256 = "d8eb663db1b7b3e88463bd7444ae08d68723d4ac1a74ef17b701db52c72cbf85"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml"
+sha256 = "a7a8c3bf9469e4462f2231a927027ce800c3c59d2c9a7c6b087651b8c50bd236"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-oracle-negative-controls.toml"
+sha256 = "9331a75e86cca6b1f727bb0d7f2453e6dc727d3f298e078e2328ef4cb5ffc1f2"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-adversarial-review.md"
+sha256 = "73c18921fb48d1dfdbd44e6b8ed8dd62270fa23ac7bc86f67d8c92a04fe13b72"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-claim-layer-review.toml"
+sha256 = "7af098f1a68aee4ba950eeeb1377a53563831213670376b5ebdc543dbe21b854"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-legacy-oracle-audit.tsv"
+sha256 = "12610d3536d8d9fe17cb89371a874c7124829e8cede73d6e1fcbf9b56bb367d7"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-prechange-test-log.txt"
+sha256 = "5eda5722a6696761616fffe0c3d2ba6c3bca6bf3045ff943500d54c9208e62e3"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-call-map.toml"
+sha256 = "ee8668a931a6c489cc0805e1a94afc460501d1063eba4a362ec573abdc09ab5c"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-source-intake-call-map/cscope-query-results.txt"
+sha256 = "a985817cd9302c1cbd737079027c1ca347976fdcb2166cc2e1bf4a0ab36f6d8a"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-source-intake-call-map/cflow.txt"
+sha256 = "42cc4a15454771a91387be07c4352e7bf4bc41e2cf61f298141ff3df09f81bac"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-source-intake-call-map/call-candidates.tsv"
+sha256 = "754f81bcc62cf8b957f85050cd810a0db77d5a3e040e1c35ee9d7451096912b8"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-rust-analyzer-analysis-stats.txt"
+sha256 = "28d2850692f2e4670222882c8ec36c1caef7e0b95c5796369a0a1780595570f4"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-832-sfwm-rate-oracle-status-transition.toml"
+sha256 = "e9f38e2c0d00f295c32562b2a411fee5696ea0902aeed28c92b273d8fd118d88"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-834-sfwm-rate-anchor-status-transition.toml"
+sha256 = "62b4bb160d30d958f52d8159b124553ab103b1f6200b493568c576754a97d5ae"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-838-substrate-contribution-status-transition.toml"
+sha256 = "64766b19ee10064a2c3234c6ccde827d5ef58f03a48b6406ac63e7d147025949"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-832-sfwm-rate-oracle-plan.json"
+sha256 = "84673c0bb416be768fe882544b70f798f794159b1e397cc47b873b8b6fdeb07b"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-832-sfwm-rate-oracle-apply.json"
+sha256 = "95bce14f9c9127944c4059f62946cc2061d16abfc01778ad9a8d5492e6b9d474"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-834-sfwm-rate-anchor-plan.json"
+sha256 = "b56307a49243a28cd47d20fa76125a49b34e0e3c6d92b0788b802df5078c528c"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-834-sfwm-rate-anchor-apply.json"
+sha256 = "2b292c9380eed077da9d8fa6a359bb260dc48628fdc53eaf17c71bbe2ceb6aa8"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-838-substrate-contribution-plan.json"
+sha256 = "a5a67bab94411cf82c939937b6bcd2ca2b450d2408b24c6f1deba34a05ef477a"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/c-838-substrate-contribution-apply.json"
+sha256 = "292e89506df033ad22da6e861635b8947a7d4f6212f8cdf677cd138c8f3592ba"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-claim-transition-results.toml"
+sha256 = "f106b3bf78f9882bfdab3bd68a12058bc569d2a0ac1fc3805fc5c993bfab9107"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+path = "data/output/audit/2026-08-04/sfwm-p2c0-validation-command-log.txt"
+sha256 = "808470c2cb90e7fe7a02ca31ea4fccea43e3cc61706d5b045fe3279318d04711"
+
+[provenance]
+source_pdf = "arXiv:2601.23137v1"
+source_pdf_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e"
+source_archive_sha256 = "88a04fc2f5327986cdd7ddb66f2915df5f42361c89b60cd370052a9ad4f5882a"
+source_tex_sha256 = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_manifest_declared_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+p2a_manifest_sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+p2a_manifest_declared_revision = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+p2b_manifest_sha256 = "83c61321291791d8c154b8f6e347b987a64b4d114f8fc930b2e4ced99ed68ff0"
+p2b_manifest_declared_revision = "58a75fcd27146861a98f5c1408867a3f987e9458"
+supplement_status = "missing_from_public_arxiv_packet"
+raw_experimental_data_status = "not_publicly_available_per_source"
+manifest_role = "source acquisition, source equation and material audit, legacy oracle quarantine, and claim-layer disposition; no corrected final SFWM sweep"

@@ -1,0 +1,21 @@
+{
+  "transition_key": "c-838-sfwm-substrate-percentage-boundary",
+  "transition_spec_sha256": "64766b19ee10064a2c3234c6ccde827d5ef58f03a48b6406ac63e7d147025949",
+  "event_id": 15,
+  "allocated_successors": [
+    {
+      "proposal_key": "c838-source-substrate-percentage",
+      "canonical_claim_id": "C-1662",
+      "relation_kind": "source_split"
+    },
+    {
+      "proposal_key": "c838-substrate-nonzero-amplitude",
+      "canonical_claim_id": "C-1663",
+      "relation_kind": "implementation_split"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}
+Exported control-plane compatibility outputs: claims=1478 insights=183 experiments=232 binaries=496 theorems=162
+exit_code=0

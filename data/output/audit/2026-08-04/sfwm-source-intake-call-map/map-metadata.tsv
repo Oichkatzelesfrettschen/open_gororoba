@@ -1,0 +1,13 @@
+field	value
+schema	sfwm-call-map-v1
+campaign	son-chekhova-sfwm-source-intake
+repository_head	58a75fcd27146861a98f5c1408867a3f987e9458
+scope_root	crates/optics_core/src/sfwm.rs
+scope_consumers	crates/optics_core/tests/test_sfwm_son_chekhova.rs;crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs;crates/optics_core/src/lib.rs
+capture_root	/var/tmp/open_gororoba-sfwm-callmap-20260805T004849Z
+capture_utc	2026-08-05T00:48:49Z
+rust_semantic_index	false
+lexical_index	true
+cflow_semantic_for_rust	false
+source_edge_review	true
+runtime_path_coverage	prechange sfwm test subset

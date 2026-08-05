@@ -1,0 +1,106 @@
+1:Args             struct       26 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs struct Args {
+63:SfwmDominanceResult struct       33 crates/optics_core/src/sfwm.rs pub struct SfwmDominanceResult {
+64:SfwmMaterialParams implementation  139 crates/optics_core/src/sfwm.rs impl SfwmMaterialParams {
+65:SfwmMaterialParams struct      114 crates/optics_core/src/sfwm.rs pub struct SfwmMaterialParams {
+66:SfwmRateResult   struct      228 crates/optics_core/src/sfwm.rs pub struct SfwmRateResult {
+67:SubstrateSfwmParams struct      429 crates/optics_core/src/sfwm.rs pub struct SubstrateSfwmParams {
+68:SubstrateSfwmResult struct      412 crates/optics_core/src/sfwm.rs pub struct SubstrateSfwmResult {
+72:WavevectorMismatches struct      100 crates/optics_core/src/sfwm.rs pub struct WavevectorMismatches {
+73:a_cas_sq         field       232 crates/optics_core/src/sfwm.rs pub a_cas_sq: f64,
+74:a_dir_sq         field       230 crates/optics_core/src/sfwm.rs pub a_dir_sq: f64,
+115:build_params_from_sellmeier function     45 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs fn build_params_from_sellmeier(sellmeier_o: &SellmeierParams) -> SfwmMaterialParams {
+120:cascaded_amplitude_sq function    247 crates/optics_core/src/sfwm.rs pub fn cascaded_amplitude_sq(params: &SfwmMaterialParams) -> f64 {
+121:cascaded_amplitude_sq_with_dk function    252 crates/optics_core/src/sfwm.rs pub fn cascaded_amplitude_sq_with_dk(
+133:chi2_shg         field       116 crates/optics_core/src/sfwm.rs pub chi2_shg: f64,
+134:chi2_spdc        field       118 crates/optics_core/src/sfwm.rs pub chi2_spdc: f64,
+135:chi3             field       443 crates/optics_core/src/sfwm.rs pub chi3: f64,
+137:chi3_sfwm        field       120 crates/optics_core/src/sfwm.rs pub chi3_sfwm: f64,
+143:coherence_length function     27 crates/optics_core/src/sfwm.rs pub fn coherence_length(delta_k: f64) -> f64 {
+170:direct_amplitude_sq function    275 crates/optics_core/src/sfwm.rs pub fn direct_amplitude_sq(params: &SfwmMaterialParams) -> f64 {
+171:direct_amplitude_sq_with_dk function    280 crates/optics_core/src/sfwm.rs pub fn direct_amplitude_sq_with_dk(params: &SfwmMaterialParams, wm: &WavevectorMismatches) -> f64 {
+173:dk_sfwm          field       102 crates/optics_core/src/sfwm.rs pub dk_sfwm: f64,
+174:dk_sfwm          field       414 crates/optics_core/src/sfwm.rs pub dk_sfwm: f64,
+175:dk_shg           field       104 crates/optics_core/src/sfwm.rs pub dk_shg: f64,
+176:dk_spdc          field       106 crates/optics_core/src/sfwm.rs pub dk_spdc: f64,
+177:dominance_ratio  field        53 crates/optics_core/src/sfwm.rs pub dominance_ratio: f64,
+192:eff_cascaded     field        51 crates/optics_core/src/sfwm.rs pub eff_cascaded: f64,
+193:eff_direct       field        49 crates/optics_core/src/sfwm.rs pub eff_direct: f64,
+224:f_sfwm           field        43 crates/optics_core/src/sfwm.rs pub f_sfwm: f64,
+225:f_sfwm           field       236 crates/optics_core/src/sfwm.rs pub f_sfwm: f64,
+226:f_sfwm           field       416 crates/optics_core/src/sfwm.rs pub f_sfwm: f64,
+227:f_shg            field        45 crates/optics_core/src/sfwm.rs pub f_shg: f64,
+228:f_shg            field       237 crates/optics_core/src/sfwm.rs pub f_shg: f64,
+229:f_spdc           field        47 crates/optics_core/src/sfwm.rs pub f_spdc: f64,
+230:f_spdc           field       238 crates/optics_core/src/sfwm.rs pub f_spdc: f64,
+256:g2_sfwm_model    function    380 crates/optics_core/src/sfwm.rs pub fn g2_sfwm_model(power: f64, a: f64) -> f64 {
+257:g2_spdc_model    function    388 crates/optics_core/src/sfwm.rs pub fn g2_spdc_model(power: f64, a: f64) -> f64 {
+278:has_contribution field       424 crates/optics_core/src/sfwm.rs pub has_contribution: bool,
+294:l_coh_sfwm_um    field        37 crates/optics_core/src/sfwm.rs pub l_coh_sfwm_um: f64,
+295:l_coh_sfwm_um    field       422 crates/optics_core/src/sfwm.rs pub l_coh_sfwm_um: f64,
+296:l_coh_shg_um     field        39 crates/optics_core/src/sfwm.rs pub l_coh_shg_um: f64,
+297:l_coh_spdc_um    field        41 crates/optics_core/src/sfwm.rs pub l_coh_spdc_um: f64,
+299:lambda_idler     field       134 crates/optics_core/src/sfwm.rs pub lambda_idler: f64,
+300:lambda_idler     field       441 crates/optics_core/src/sfwm.rs pub lambda_idler: f64,
+301:lambda_pump      field       130 crates/optics_core/src/sfwm.rs pub lambda_pump: f64,
+302:lambda_pump      field       437 crates/optics_core/src/sfwm.rs pub lambda_pump: f64,
+303:lambda_signal    field       132 crates/optics_core/src/sfwm.rs pub lambda_signal: f64,
+304:lambda_signal    field       439 crates/optics_core/src/sfwm.rs pub lambda_signal: f64,
+316:linbo3_paper_calibrated method      179 crates/optics_core/src/sfwm.rs pub fn linbo3_paper_calibrated() -> Self {
+317:linbo3_son_chekhova_2026 method      154 crates/optics_core/src/sfwm.rs pub fn linbo3_son_chekhova_2026() -> Self {
+325:main             function     70 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs fn main() -> Result<()> {
+326:maker_fringe_sweep function    333 crates/optics_core/src/sfwm.rs pub fn maker_fringe_sweep(
+329:max_power_w      field        37 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs max_power_w: f64,
+330:max_thickness_um field        41 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs max_thickness_um: f64,
+345:n_idler          field       126 crates/optics_core/src/sfwm.rs pub n_idler: f64,
+346:n_idler          field       435 crates/optics_core/src/sfwm.rs pub n_idler: f64,
+348:n_points         field        33 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs n_points: usize,
+349:n_pump           field       122 crates/optics_core/src/sfwm.rs pub n_pump: f64,
+350:n_pump           field       431 crates/optics_core/src/sfwm.rs pub n_pump: f64,
+351:n_sh             field       128 crates/optics_core/src/sfwm.rs pub n_sh: f64,
+352:n_signal         field       124 crates/optics_core/src/sfwm.rs pub n_signal: f64,
+353:n_signal         field       433 crates/optics_core/src/sfwm.rs pub n_signal: f64,
+379:output_dir       field        29 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs output_dir: String,
+385:paper_wavevector_mismatches method      202 crates/optics_core/src/sfwm.rs pub fn paper_wavevector_mismatches(&self) -> WavevectorMismatches {
+398:phase_matching_function function     17 crates/optics_core/src/sfwm.rs pub fn phase_matching_function(delta_k: f64, thickness: f64) -> f64 {
+405:photon_number_sfwm function    393 crates/optics_core/src/sfwm.rs pub fn photon_number_sfwm(power: f64, alpha: f64) -> f64 {
+406:photon_number_spdc function    398 crates/optics_core/src/sfwm.rs pub fn photon_number_spdc(power: f64, alpha: f64) -> f64 {
+425:polarization_dependence function    406 crates/optics_core/src/sfwm.rs pub fn polarization_dependence(theta: f64) -> f64 {
+442:rate_proxy       field       418 crates/optics_core/src/sfwm.rs pub rate_proxy: f64,
+443:rate_ratio       function    292 crates/optics_core/src/sfwm.rs pub fn rate_ratio(params: &SfwmMaterialParams) -> SfwmRateResult {
+444:rate_ratio_cas_to_dir field       234 crates/optics_core/src/sfwm.rs pub rate_ratio_cas_to_dir: f64,
+445:rate_ratio_with_dk function    299 crates/optics_core/src/sfwm.rs pub fn rate_ratio_with_dk(
+446:rate_sweep       function    353 crates/optics_core/src/sfwm.rs pub fn rate_sweep(params: &SfwmMaterialParams, thicknesses: &[f64]) -> Vec<(f64, f64, f64)> {
+447:rate_sweep_with_dk function    358 crates/optics_core/src/sfwm.rs pub fn rate_sweep_with_dk(
+472:sfwm             module       35 crates/optics_core/src/lib.rs pub mod sfwm;
+473:sfwm_dominance_check function     61 crates/optics_core/src/sfwm.rs pub fn sfwm_dominance_check(thickness_um: f64) -> SfwmDominanceResult {
+503:substrate_sfwm_contribution function    454 crates/optics_core/src/sfwm.rs pub fn substrate_sfwm_contribution(params: &SubstrateSfwmParams) -> SubstrateSfwmResult {
+558:test_coherence_lengths_match_paper function    479 crates/optics_core/src/sfwm.rs fn test_coherence_lengths_match_paper() {
+587:test_direct_dominates_cascaded_at_10um function    565 crates/optics_core/src/sfwm.rs fn test_direct_dominates_cascaded_at_10um() {
+614:test_f_sfwm_much_larger_than_f_shg function    590 crates/optics_core/src/sfwm.rs fn test_f_sfwm_much_larger_than_f_shg() {
+633:test_g2_approaches_1_at_high_power function    609 crates/optics_core/src/sfwm.rs fn test_g2_approaches_1_at_high_power() {
+634:test_g2_sfwm_high_at_low_power function    602 crates/optics_core/src/sfwm.rs fn test_g2_sfwm_high_at_low_power() {
+708:test_maker_fringe_period_consistent_with_l_coh_shg function     88 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_maker_fringe_period_consistent_with_l_coh_shg() {
+709:test_maker_fringe_sweep_lengths function    627 crates/optics_core/src/sfwm.rs fn test_maker_fringe_sweep_lengths() {
+710:test_maker_fringes_sfwm_monotonic_shg_oscillates function     32 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_maker_fringes_sfwm_monotonic_shg_oscillates() {
+748:test_paper_dominance_ratio_at_10um function     12 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_paper_dominance_ratio_at_10um() {
+755:test_phase_matching_small_dk function    490 crates/optics_core/src/sfwm.rs fn test_phase_matching_small_dk() {
+770:test_polarization_cos2 function    674 crates/optics_core/src/sfwm.rs fn test_polarization_cos2() {
+788:test_rate_sweep_direct_dominates_below_30um function     70 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_rate_sweep_direct_dominates_below_30um() {
+803:test_sellmeier_coherence_lengths_order function    122 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_sellmeier_coherence_lengths_order() {
+804:test_sellmeier_direct_dominates_cascaded function    578 crates/optics_core/src/sfwm.rs fn test_sellmeier_direct_dominates_cascaded() {
+807:test_sfwm_dominates_at_10um function    500 crates/optics_core/src/sfwm.rs fn test_sfwm_dominates_at_10um() {
+808:test_sfwm_efficiency_positive function    514 crates/optics_core/src/sfwm.rs fn test_sfwm_efficiency_positive() {
+809:test_shg_oscillates_in_sweep function    649 crates/optics_core/src/sfwm.rs fn test_shg_oscillates_in_sweep() {
+834:test_substrate_sfwm_fused_silica_500um function    682 crates/optics_core/src/sfwm.rs fn test_substrate_sfwm_fused_silica_500um() {
+849:test_thickness_sweep_monotonic_count function    522 crates/optics_core/src/sfwm.rs fn test_thickness_sweep_monotonic_count() {
+867:test_wavevector_mismatches_coherence_lengths function    531 crates/optics_core/src/sfwm.rs fn test_wavevector_mismatches_coherence_lengths() {
+880:tests            module      475 crates/optics_core/src/sfwm.rs mod tests {
+883:thickness        field       136 crates/optics_core/src/sfwm.rs pub thickness: f64,
+884:thickness_sweep  function     89 crates/optics_core/src/sfwm.rs pub fn thickness_sweep(thicknesses_um: &[f64]) -> Vec<SfwmDominanceResult> {
+885:thickness_um     field        35 crates/optics_core/src/sfwm.rs pub thickness_um: f64,
+886:thickness_um     field       420 crates/optics_core/src/sfwm.rs pub thickness_um: f64,
+887:thickness_um     field       445 crates/optics_core/src/sfwm.rs pub thickness_um: f64,
+890:thin_film_reflectance method       22 crates/materials_core/src/optical_database/thin_film_coating.rs pub fn thin_film_reflectance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
+891:thin_film_transmittance method       39 crates/materials_core/src/optical_database/thin_film_coating.rs pub fn thin_film_transmittance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
+921:wavevector_mismatches method      211 crates/optics_core/src/sfwm.rs pub fn wavevector_mismatches(&self) -> WavevectorMismatches {
+928:write_csv        function     61 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs fn write_csv(path: &str, header: &str, rows: &[String]) -> Result<()> {
