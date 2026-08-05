@@ -1,0 +1,150 @@
+schema = "sfwm-source-equation-ledger-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+source_pdf = "arxiv:2601.23137v1"
+source_pdf_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e"
+source_tex = "extracted/son-chekhova-2026-arxiv-2601.23137v1-source/Main.tex"
+source_tex_sha256 = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f"
+convention_status = "source equations frozen; polarization and material identity remain open inputs"
+
+[global_conventions]
+length_unit = "metre in code; micrometre source anchors converted explicitly"
+wavelength_unit = "metre in code; source wavelengths stated in nm"
+field_amplitude = "complex amplitude for corrected implementation; legacy path stores squared magnitudes"
+time_dependence = "not stated explicitly in Main.tex; must be declared in P2C1"
+propagation_axis = "positive x in the source analysis"
+layer_orientation = "x-cut lithium niobate"
+source_polarization = "pump and outputs selected along z through chi^(2)_zzz and chi^(3)_zzzz"
+signed_mismatch = "Delta_k_SFWM = Delta_k_SHG + Delta_k_SPDC"
+coherence_length = "L_coh = pi / abs(Delta_k)"
+source_rate_prefactors = "R_cas proportional to (4/9)*abs(A_cas)^2; R_dir proportional to (9/16)*abs(A_dir)^2"
+susceptibility_convention = "source calls chi^(2) effective and reports chi_SFWM^(3); d versus chi must not be conflated"
+renormalization_state = "not applicable to this optical source audit"
+
+[[equation]]
+id = "SC-EQ-1"
+source_equation = "Eq. 1"
+source_page = 3
+source_tex_locator = "Main.tex lines 105-110, label eq:g2"
+formula_ascii = "g2(0) = <Ncc> / (<Nvis> * <NIR>)"
+semantic_level = "experimental observable definition"
+code_owner = "crates/optics_core/src/sfwm.rs:g2_sfwm_model; crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs"
+implementation_status = "surrogate algebraic model; no measured count inputs"
+independent_reference_status = "not yet reconstructed"
+known_gap = "The current model returns 1 + a/P^2 and does not calculate g2 from count data."
+
+[[equation]]
+id = "SC-EQ-2"
+source_equation = "Eq. 2"
+source_page = 3
+source_tex_locator = "Main.tex lines 128-133, label PMF"
+formula_ascii = "F(L) = L * sinc(Delta_k * L / 2)"
+semantic_level = "phase-matching amplitude"
+code_owner = "crates/optics_core/src/sfwm.rs:phase_matching_function"
+implementation_status = "scalar real function exists"
+independent_reference_status = "analytically checkable"
+known_gap = "The scalar helper is useful for characterization but cannot supply the signed coherent Eq. 6 amplitude by itself."
+
+[[equation]]
+id = "SC-EQ-3"
+source_equation = "Eq. 3"
+source_page = 3
+source_tex_locator = "Main.tex lines 142-148, label eq. SHG"
+formula_ascii = "E_SH(x) = (2*pi/lambda_SH) * chi_SHG^(2) * E_p^2 * (exp(i*Delta_k_SHG*x)-1) / Delta_k_SHG"
+semantic_level = "complex generated second-harmonic field"
+code_owner = "none; legacy cascaded path jumps directly to a combined bracket"
+implementation_status = "not implemented as a field amplitude"
+independent_reference_status = "source transcription retained"
+known_gap = "The missing field path prevents direct audit of the SHG prefactor and phase before SPDC integration."
+
+[[equation]]
+id = "SC-EQ-4"
+source_equation = "Eq. 4"
+source_page = 3
+source_tex_locator = "Main.tex lines 149-154, label eq. SPDC"
+formula_ascii = "H_SPDC = (2/3) * C * integral[chi_SPDC^(2) * E_SH(x) * exp(i*Delta_k_SPDC*x) * a_s_dagger * a_i_dagger] + H.c."
+semantic_level = "complex cascaded Hamiltonian integrand"
+code_owner = "none; crates/optics_core/src/sfwm.rs uses a reduced bracket"
+implementation_status = "not implemented"
+independent_reference_status = "source transcription retained"
+known_gap = "The current product-of-efficiencies validator has no coherent E_SH or SPDC integration."
+
+[[equation]]
+id = "SC-EQ-5"
+source_equation = "Eq. 5"
+source_page = 4
+source_tex_locator = "Main.tex lines 155-159, label eq. Hamiltonian SPDC"
+formula_ascii = "H_cas = (2/3) * C * A_cas * a_s_dagger * a_i_dagger + H.c."
+semantic_level = "cascaded pair-generation Hamiltonian"
+code_owner = "none"
+implementation_status = "not represented as a complex amplitude object"
+independent_reference_status = "source transcription retained"
+known_gap = "Rate-only APIs erase the phase and the distinction between amplitude and rate."
+
+[[equation]]
+id = "SC-EQ-6"
+source_equation = "Eq. 6"
+source_page = 4
+source_tex_locator = "Main.tex lines 160-167, label eq. amplitude cascade"
+formula_ascii = "A_cas = [2*pi*(chi^(2))^2*E_p^2/(n_SH*lambda_SH*Delta_k_SHG)] * exp(i*Delta_k_SPDC*L/2) * [exp(i*Delta_k_SHG*L/2)*F_SFWM(L) - F_SPDC(L)]"
+semantic_level = "complex cascaded amplitude"
+code_owner = "crates/optics_core/src/sfwm.rs:cascaded_amplitude_sq_with_dk"
+implementation_status = "reduced magnitude path; omitted 2*pi/(n_SH*lambda_SH*Delta_k_SHG)"
+independent_reference_status = "source formula transcribed; numerical reference deferred"
+known_gap = "The omitted prefactor does not cancel against A_dir and the legacy path does not retain the complex global phase."
+
+[[equation]]
+id = "SC-EQ-7"
+source_equation = "Eq. 7"
+source_page = 4
+source_tex_locator = "Main.tex lines 169-174, label eq:Ham dir"
+formula_ascii = "H_dir = (3/4) * C * integral[chi_SFWM^(3)*E_p^2*exp(i*Delta_k_SFWM*x)*a_s_dagger*a_i_dagger] + H.c."
+semantic_level = "direct SFWM Hamiltonian"
+code_owner = "crates/optics_core/src/sfwm.rs:direct_amplitude_sq_with_dk"
+implementation_status = "magnitude-only reduction"
+independent_reference_status = "source transcription retained"
+known_gap = "The current API does not expose A_dir as a complex amplitude."
+
+[[equation]]
+id = "SC-EQ-8"
+source_equation = "Eq. 8"
+source_page = 4
+source_tex_locator = "Main.tex lines 175-179, unlabeled displayed equation"
+formula_ascii = "A_dir = chi_SFWM^(3) * E_p^2 * exp(i*Delta_k_SFWM*L/2) * F_SFWM(L)"
+semantic_level = "complex direct amplitude and rate reduction"
+code_owner = "crates/optics_core/src/sfwm.rs:direct_amplitude_sq_with_dk and rate_ratio_with_dk"
+implementation_status = "squared magnitude and tensor prefactor retained; complex object absent"
+independent_reference_status = "source transcription retained"
+known_gap = "The source ratio requires both Eq. 6 and Eq. 8 amplitudes with their separate rate prefactors."
+
+[[source_anchor]]
+id = "SC-FIG-4-COHERENCE"
+source_locator = "Main.tex lines 128-133"
+values_ascii = "L_coh_SFWM=33.3 um; L_coh_SHG=3.1 um; L_coh_SPDC=3.4 um"
+code_owner = "SfwmMaterialParams::linbo3_paper_calibrated"
+implementation_status = "magnitudes only"
+source_faithful = false
+reason = "The source uses signed mismatch in the coherent identity; positive magnitudes cannot encode the cancellation convention."
+
+[[source_anchor]]
+id = "SC-RATIO-10UM"
+source_locator = "Main.tex line 181"
+values_ascii = "R_cas / R_dir = 0.048 at L=10 um"
+code_owner = "rate_ratio_with_dk and test_paper_dominance_ratio_at_10um"
+implementation_status = "legacy test accepts ratio < 0.15"
+source_faithful = false
+reason = "The current input susceptibilities and cascaded prefactor differ from the source, and the gate does not test the source anchor."
+
+[[source_anchor]]
+id = "SC-SUBSTRATE-25-PERCENT"
+source_locator = "Main.tex lines 112-113 and Supplement 1 reference"
+values_ascii = "fused silica contribution estimated as 25 percent of total coincidence rate"
+code_owner = "substrate_sfwm_contribution and sfwm-figure-repro"
+implementation_status = "standalone chi3^2*abs(F)^2 proxy"
+source_faithful = false
+reason = "The public packet lacks Supplement 1 and the code has no LN reference amplitude, interfaces, collection, filters, or total coincidence denominator."
+
+[audit_conclusion]
+source_theory_refuted = false
+legacy_positive_evidence_supported = false
+corrected_model_allowed = false
+next_required_campaign = "signed complex amplitudes, explicit index convention, preserved Eq. 6 prefactor, and independent fixture path"

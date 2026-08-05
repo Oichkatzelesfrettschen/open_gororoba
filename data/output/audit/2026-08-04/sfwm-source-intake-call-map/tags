@@ -1,0 +1,930 @@
+Args             struct       26 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs struct Args {
+Biaxial          enumerator  149 crates/materials_core/src/optical_database.rs Biaxial,
+C                constant     36 crates/materials_core/src/optical_database.rs pub const C: f64 = 299_792_458.0;
+CasimirModelFlag enum       1665 crates/materials_core/src/optical_database.rs pub enum CasimirModelFlag {
+ConductiveOxide  enumerator 1679 crates/materials_core/src/optical_database.rs ConductiveOxide,
+Constant         enumerator  325 crates/materials_core/src/optical_database.rs Constant { gamma_ev: f64 },
+Dielectric       enumerator 1677 crates/materials_core/src/optical_database.rs Dielectric,
+Drude            enumerator 1666 crates/materials_core/src/optical_database.rs Drude,
+DrudeLorentzParams implementation   16 crates/materials_core/src/optical_database/photoconductivity.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   16 crates/materials_core/src/optical_database/photovoltaic_solar.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   17 crates/materials_core/src/optical_database/fresnel.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   18 crates/materials_core/src/optical_database/anharmonic_multiphonon.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   18 crates/materials_core/src/optical_database/fluctuation_electrodynamics.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   18 crates/materials_core/src/optical_database/photonic_waveguide.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   18 crates/materials_core/src/optical_database/thin_film_coating.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   19 crates/materials_core/src/optical_database/mie_rayleigh.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   19 crates/materials_core/src/optical_database/phonon_polariton_ir.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   20 crates/materials_core/src/optical_database/bandgap_analysis.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   20 crates/materials_core/src/optical_database/coherence_quality_metrics.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   20 crates/materials_core/src/optical_database/photonic_crystals.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   20 crates/materials_core/src/optical_database/plasmonic_sensing.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   21 crates/materials_core/src/optical_database/electro_optic.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   22 crates/materials_core/src/optical_database/plasmonics.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   23 crates/materials_core/src/optical_database/effective_medium_methods.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   24 crates/materials_core/src/optical_database/transport.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   26 crates/materials_core/src/optical_database/sum_rules_kk.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   28 crates/materials_core/src/optical_database/eels_absorption_engineering.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   29 crates/materials_core/src/optical_database/ellipsometry_thermal_enz.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation   32 crates/materials_core/src/optical_database/temperature_dispersion.rs impl DrudeLorentzParams {
+DrudeLorentzParams implementation  449 crates/materials_core/src/optical_database.rs impl DrudeLorentzParams {
+DrudeLorentzParams struct      102 crates/materials_core/src/optical_database.rs pub struct DrudeLorentzParams {
+DrudeParams      implementation   79 crates/materials_core/src/optical_database.rs impl DrudeParams {
+DrudeParams      struct       70 crates/materials_core/src/optical_database.rs pub struct DrudeParams {
+DrudeSmith       enumerator  335 crates/materials_core/src/optical_database.rs DrudeSmith { gamma_ev: f64, backscatter_c: f64 },
+EPS_0            constant     42 crates/materials_core/src/optical_database.rs pub const EPS_0: f64 = 8.854_187_812_8e-12;
+EV_TO_RADS       constant     33 crates/materials_core/src/optical_database.rs pub const EV_TO_RADS: f64 = 1.519_267_447e15;
+E_CHARGE         constant     48 crates/materials_core/src/optical_database.rs pub const E_CHARGE: f64 = 1.602_176_634e-19;
+ExtendedDrudeParams implementation  396 crates/materials_core/src/optical_database.rs impl ExtendedDrudeParams {
+ExtendedDrudeParams struct      387 crates/materials_core/src/optical_database.rs pub struct ExtendedDrudeParams {
+HBAR_EV_S        constant     39 crates/materials_core/src/optical_database.rs pub const HBAR_EV_S: f64 = 6.582_119_569e-16;
+Isotropic        enumerator  151 crates/materials_core/src/optical_database.rs Isotropic,
+K_B_EV           constant     45 crates/materials_core/src/optical_database.rs pub const K_B_EV: f64 = 8.617_333_262e-5;
+LinearInOmega    enumerator  327 crates/materials_core/src/optical_database.rs LinearInOmega { gamma_0_ev: f64, alpha: f64 },
+Lorentz          enumerator 1668 crates/materials_core/src/optical_database.rs Lorentz,
+LorentzOscillator struct      115 crates/materials_core/src/optical_database.rs pub struct LorentzOscillator {
+M_E_KG           constant     51 crates/materials_core/src/optical_database.rs pub const M_E_KG: f64 = 9.109_383_701_5e-31;
+MaterialEntry    struct     1684 crates/materials_core/src/optical_database.rs pub struct MaterialEntry {
+MaterialType     enum       1674 crates/materials_core/src/optical_database.rs pub enum MaterialType {
+Metal            enumerator 1675 crates/materials_core/src/optical_database.rs Metal,
+Metamaterial     enumerator 1678 crates/materials_core/src/optical_database.rs Metamaterial,
+MineralMetadata  struct      165 crates/materials_core/src/optical_database.rs pub struct MineralMetadata {
+Negative         enumerator  146 crates/materials_core/src/optical_database.rs Negative,
+NotApplicable    enumerator 1669 crates/materials_core/src/optical_database.rs NotApplicable,
+OpticSign        enum        142 crates/materials_core/src/optical_database.rs pub enum OpticSign {
+Plasma           enumerator 1667 crates/materials_core/src/optical_database.rs Plasma,
+Positive         enumerator  144 crates/materials_core/src/optical_database.rs Positive,
+PowerLaw         enumerator  329 crates/materials_core/src/optical_database.rs PowerLaw {
+ScatteringModel  enum        323 crates/materials_core/src/optical_database.rs pub enum ScatteringModel {
+ScatteringModel  implementation  343 crates/materials_core/src/optical_database.rs impl ScatteringModel {
+SellmeierParams  implementation 2179 crates/materials_core/src/optical_database.rs impl SellmeierParams {
+SellmeierParams  struct     2170 crates/materials_core/src/optical_database.rs pub struct SellmeierParams {
+Semiconductor    enumerator 1676 crates/materials_core/src/optical_database.rs Semiconductor,
+SfwmDominanceResult struct       33 crates/optics_core/src/sfwm.rs pub struct SfwmDominanceResult {
+SfwmMaterialParams implementation  139 crates/optics_core/src/sfwm.rs impl SfwmMaterialParams {
+SfwmMaterialParams struct      114 crates/optics_core/src/sfwm.rs pub struct SfwmMaterialParams {
+SfwmRateResult   struct      228 crates/optics_core/src/sfwm.rs pub struct SfwmRateResult {
+SubstrateSfwmParams struct      429 crates/optics_core/src/sfwm.rs pub struct SubstrateSfwmParams {
+SubstrateSfwmResult struct      412 crates/optics_core/src/sfwm.rs pub struct SubstrateSfwmResult {
+Tabulated        enumerator  337 crates/materials_core/src/optical_database.rs Tabulated {
+UniaxialOptical  implementation  192 crates/materials_core/src/optical_database.rs impl UniaxialOptical {
+UniaxialOptical  struct      130 crates/materials_core/src/optical_database.rs pub struct UniaxialOptical {
+WavevectorMismatches struct      100 crates/optics_core/src/sfwm.rs pub struct WavevectorMismatches {
+a_cas_sq         field       232 crates/optics_core/src/sfwm.rs pub a_cas_sq: f64,
+a_dir_sq         field       230 crates/optics_core/src/sfwm.rs pub a_dir_sq: f64,
+absorber_benchmark module       21 crates/optics_core/src/lib.rs pub mod absorber_benchmark;
+absorber_pareto  module       22 crates/optics_core/src/lib.rs pub mod absorber_pareto;
+absorption_coefficient method      571 crates/materials_core/src/optical_database.rs pub fn absorption_coefficient(&self, omega: f64) -> f64 {
+absorption_cross_section_mie method       66 crates/materials_core/src/optical_database/mie_rayleigh.rs pub fn absorption_cross_section_mie(&self, omega: f64, radius_m: f64) -> f64 {
+absorption_onset_ev method      250 crates/materials_core/src/optical_database/bandgap_analysis.rs pub fn absorption_onset_ev(&self, threshold_fraction: f64) -> Option<f64> {
+absorption_per_pass method       81 crates/materials_core/src/optical_database/eels_absorption_engineering.rs pub fn absorption_per_pass(&self, omega: f64, thickness_m: f64) -> f64 {
+acoustooptic_figure_of_merit method       79 crates/materials_core/src/optical_database/electro_optic.rs pub fn acoustooptic_figure_of_merit(
+algebraic_lensing_gpu module       24 crates/optics_core/src/lib.rs pub mod algebraic_lensing_gpu;
+all_eight_tourmaline_species_resolve function    207 crates/materials_core/src/optical_database/cross_reference.rs fn all_eight_tourmaline_species_resolve() {
+alumina_metadata function    164 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn alumina_metadata() -> MineralMetadata {
+alumina_optical  function     44 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn alumina_optical() -> DrudeLorentzParams {
+aluminum_drude   function    929 crates/materials_core/src/optical_database.rs pub fn aluminum_drude() -> DrudeParams {
+aluminum_drude_lorentz function     93 crates/materials_core/src/optical_database/metals_dl.rs pub fn aluminum_drude_lorentz() -> DrudeLorentzParams {
+aluminum_metadata function    235 crates/materials_core/src/optical_database/metals_dl.rs pub fn aluminum_metadata() -> MineralMetadata {
+anatase_metadata function    246 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn anatase_metadata() -> MineralMetadata {
+anharmonic_linewidth method       23 crates/materials_core/src/optical_database/anharmonic_multiphonon.rs pub fn anharmonic_linewidth(
+anharmonic_multiphonon module     1130 crates/materials_core/src/optical_database.rs mod anharmonic_multiphonon;
+anisotropy_ratio method      258 crates/materials_core/src/optical_database.rs pub fn anisotropy_ratio(&self, omega: f64) -> Complex64 {
+antireflection_thickness method       57 crates/materials_core/src/optical_database/photovoltaic_solar.rs pub fn antireflection_thickness(&self, omega: f64) -> f64 {
+assert_metadata_sane function   7403 crates/materials_core/src/optical_database.rs fn assert_metadata_sane(m: MineralMetadata) {
+at_temperature   method       38 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn at_temperature(&self, temperature_k: f64, debye_t_k: Option<f64>) -> Self {
+axis_description field       136 crates/materials_core/src/optical_database.rs pub axis_description: &'static str,
+azo_metadata     function    425 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn azo_metadata() -> MineralMetadata {
+azo_optical      function    138 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn azo_optical() -> DrudeLorentzParams {
+b_coeffs         field      2172 crates/materials_core/src/optical_database.rs pub b_coeffs: Vec<f64>,
+bandgap_analysis module     1131 crates/materials_core/src/optical_database.rs mod bandgap_analysis;
+baselines        module       27 crates/materials_core/src/lib.rs pub mod baselines;
+bend_loss_critical_radius method       80 crates/materials_core/src/optical_database/photonic_waveguide.rs pub fn bend_loss_critical_radius(&self, omega: f64, n_cladding: f64) -> Option<f64> {
+beryllium_drude  function    947 crates/materials_core/src/optical_database.rs pub fn beryllium_drude() -> DrudeParams {
+beryllium_drude_lorentz function    102 crates/materials_core/src/optical_database/metals_dl.rs pub fn beryllium_drude_lorentz() -> DrudeLorentzParams {
+beryllium_metadata function    255 crates/materials_core/src/optical_database/metals_dl.rs pub fn beryllium_metadata() -> MineralMetadata {
+bessel           module       25 crates/optics_core/src/lib.rs pub mod bessel;
+beta_tpa_estimate method      172 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn beta_tpa_estimate(&self, omega: f64) -> Option<f64> {
+birefringence    field       179 crates/materials_core/src/optical_database.rs pub birefringence: f64,
+birefringence    method      238 crates/materials_core/src/optical_database.rs pub fn birefringence(&self, omega: f64) -> f64 {
+bose_einstein_occupation method       92 crates/materials_core/src/optical_database/phonon_polariton_ir.rs pub fn bose_einstein_occupation(omega: f64, temperature_k: f64) -> f64 {
+bragg_wavelength method       63 crates/materials_core/src/optical_database/photonic_crystals.rs pub fn bragg_wavelength(&self, period_m: f64, omega: f64) -> f64 {
+brewster_angle   method       51 crates/materials_core/src/optical_database/fresnel.rs pub fn brewster_angle(&self, omega: f64, n_incident: f64) -> Option<f64> {
+brookite_metadata function    266 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn brookite_metadata() -> MineralMetadata {
+bruggeman_mix    method       43 crates/materials_core/src/optical_database/effective_medium_methods.rs pub fn bruggeman_mix(
+build_params_from_sellmeier function     45 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs fn build_params_from_sellmeier(sellmeier_o: &SellmeierParams) -> SfwmMaterialParams {
+c_coeffs         field      2174 crates/materials_core/src/optical_database.rs pub c_coeffs: Vec<f64>,
+carrier_density  method      633 crates/materials_core/src/optical_database.rs pub fn carrier_density(&self, m_star_ratio: f64) -> Option<f64> {
+carrier_mobility method       43 crates/materials_core/src/optical_database/transport.rs pub fn carrier_mobility(&self, carrier_density: f64) -> Option<f64> {
+carrier_recombination_time method       92 crates/materials_core/src/optical_database/photoconductivity.rs pub fn carrier_recombination_time(delta_n: f64, generation_rate: f64) -> f64 {
+cascaded_amplitude_sq function    247 crates/optics_core/src/sfwm.rs pub fn cascaded_amplitude_sq(params: &SfwmMaterialParams) -> f64 {
+cascaded_amplitude_sq_with_dk function    252 crates/optics_core/src/sfwm.rs pub fn cascaded_amplitude_sq_with_dk(
+casimir_drude_plasma_discrepancy function   1627 crates/materials_core/src/optical_database.rs pub fn casimir_drude_plasma_discrepancy(
+casimir_energy_density function   1261 crates/materials_core/src/optical_database.rs pub fn casimir_energy_density(
+casimir_energy_ideal function   1398 crates/materials_core/src/optical_database.rs pub fn casimir_energy_ideal(separation_m: f64) -> f64 {
+casimir_eta      function   1407 crates/materials_core/src/optical_database.rs pub fn casimir_eta(
+casimir_force_density function   1367 crates/materials_core/src/optical_database.rs pub fn casimir_force_density(
+casimir_lifshitz_energy function   1485 crates/materials_core/src/optical_database.rs pub fn casimir_lifshitz_energy(
+casimir_lifshitz_eta function   1595 crates/materials_core/src/optical_database.rs pub fn casimir_lifshitz_eta(
+casimir_lifshitz_force function   1563 crates/materials_core/src/optical_database.rs pub fn casimir_lifshitz_force(
+casimir_model    field      1702 crates/materials_core/src/optical_database.rs pub casimir_model: CasimirModelFlag,
+cawo4_metadata   function    159 crates/materials_core/src/optical_database/tungstates.rs pub fn cawo4_metadata() -> MineralMetadata {
+cawo4_optical    function     94 crates/materials_core/src/optical_database/tungstates.rs pub fn cawo4_optical() -> DrudeLorentzParams {
+chi2_shg         field       116 crates/optics_core/src/sfwm.rs pub chi2_shg: f64,
+chi2_spdc        field       118 crates/optics_core/src/sfwm.rs pub chi2_spdc: f64,
+chi3             field       443 crates/optics_core/src/sfwm.rs pub chi3: f64,
+chi3_miller_estimate method      149 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn chi3_miller_estimate(&self, omega: f64) -> f64 {
+chi3_sfwm        field       120 crates/optics_core/src/sfwm.rs pub chi3_sfwm: f64,
+chromatic_dispersion_ps_nm_km method       90 crates/materials_core/src/optical_database/photonic_waveguide.rs pub fn chromatic_dispersion_ps_nm_km(&self, omega: f64) -> f64 {
+chromium_drude   function    957 crates/materials_core/src/optical_database.rs pub fn chromium_drude() -> DrudeParams {
+chromium_drude_lorentz function    111 crates/materials_core/src/optical_database/metals_dl.rs pub fn chromium_drude_lorentz() -> DrudeLorentzParams {
+chromium_metadata function    274 crates/materials_core/src/optical_database/metals_dl.rs pub fn chromium_metadata() -> MineralMetadata {
+cif_parser       module       28 crates/materials_core/src/lib.rs pub mod cif_parser;
+coherence_length function     27 crates/optics_core/src/sfwm.rs pub fn coherence_length(delta_k: f64) -> f64 {
+coherence_length method       93 crates/materials_core/src/optical_database/coherence_quality_metrics.rs pub fn coherence_length(&self, omega: f64, bandwidth_rad_s: f64) -> f64 {
+coherence_quality_metrics module     1132 crates/materials_core/src/optical_database.rs mod coherence_quality_metrics;
+color            field       187 crates/materials_core/src/optical_database.rs pub color: &'static str,
+color_coordinates_cie method       82 crates/materials_core/src/optical_database/thin_film_coating.rs pub fn color_coordinates_cie(&self, n_steps: usize) -> (f64, f64, f64) {
+composition_mismatched_aliases_return_none function    257 crates/materials_core/src/optical_database/cross_reference.rs fn composition_mismatched_aliases_return_none() {
+confinement_factor method       39 crates/materials_core/src/optical_database/photonic_waveguide.rs pub fn confinement_factor(
+constructive_interference_orders method       61 crates/materials_core/src/optical_database/thin_film_coating.rs pub fn constructive_interference_orders(&self, omega: f64, thickness_m: f64) -> Vec<u32> {
+copper_drude     function    919 crates/materials_core/src/optical_database.rs pub fn copper_drude() -> DrudeParams {
+copper_drude_lorentz function     84 crates/materials_core/src/optical_database/metals_dl.rs pub fn copper_drude_lorentz() -> DrudeLorentzParams {
+copper_metadata  function    215 crates/materials_core/src/optical_database/metals_dl.rs pub fn copper_metadata() -> MineralMetadata {
+cross_reference  module     1133 crates/materials_core/src/optical_database.rs mod cross_reference;
+cross_reference_covers_at_least_45_structures function    239 crates/materials_core/src/optical_database/cross_reference.rs fn cross_reference_covers_at_least_45_structures() {
+crystal_symmetry module       29 crates/materials_core/src/lib.rs pub mod crystal_symmetry;
+crystal_system   field       171 crates/materials_core/src/optical_database.rs pub crystal_system: &'static str,
+cs_wo3_metadata  function    140 crates/materials_core/src/optical_database/tungstates.rs pub fn cs_wo3_metadata() -> MineralMetadata {
+cs_wo3_optical   function     66 crates/materials_core/src/optical_database/tungstates.rs pub fn cs_wo3_optical() -> DrudeLorentzParams {
+cs_wo3_uniaxial  function     76 crates/materials_core/src/optical_database/tungstates.rs pub fn cs_wo3_uniaxial() -> UniaxialOptical {
+dc_conductivity  method      580 crates/materials_core/src/optical_database.rs pub fn dc_conductivity(&self) -> Option<f64> {
+dc_resistivity   method      111 crates/materials_core/src/optical_database/transport.rs pub fn dc_resistivity(&self) -> Option<f64> {
+decay_rate_enhancement method       70 crates/materials_core/src/optical_database/plasmonic_sensing.rs pub fn decay_rate_enhancement(&self, omega: f64, distance_m: f64) -> f64 {
+default_metadata function    322 crates/materials_core/src/optical_database/tourmaline.rs pub fn default_metadata() -> MineralMetadata {
+density_g_cm3    field       185 crates/materials_core/src/optical_database.rs pub density_g_cm3: f64,
+diamond_metadata function    184 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn diamond_metadata() -> MineralMetadata {
+diamond_optical  function     62 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn diamond_optical() -> DrudeLorentzParams {
+dichroism        method      248 crates/materials_core/src/optical_database.rs pub fn dichroism(&self, omega: f64) -> f64 {
+dielectric_contrast method       59 crates/materials_core/src/optical_database/effective_medium_methods.rs pub fn dielectric_contrast(&self, other: &DrudeLorentzParams, omega: f64) -> Complex64 {
+direct_amplitude_sq function    275 crates/optics_core/src/sfwm.rs pub fn direct_amplitude_sq(params: &SfwmMaterialParams) -> f64 {
+direct_amplitude_sq_with_dk function    280 crates/optics_core/src/sfwm.rs pub fn direct_amplitude_sq_with_dk(params: &SfwmMaterialParams, wm: &WavevectorMismatches) -> f64 {
+dispersion_regime method      114 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn dispersion_regime(&self, omega: f64) -> i32 {
+dk_sfwm          field       102 crates/optics_core/src/sfwm.rs pub dk_sfwm: f64,
+dk_sfwm          field       414 crates/optics_core/src/sfwm.rs pub dk_sfwm: f64,
+dk_shg           field       104 crates/optics_core/src/sfwm.rs pub dk_shg: f64,
+dk_spdc          field       106 crates/optics_core/src/sfwm.rs pub dk_spdc: f64,
+dominance_ratio  field        53 crates/optics_core/src/sfwm.rs pub dominance_ratio: f64,
+doped_silicon_metadata function    445 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn doped_silicon_metadata() -> MineralMetadata {
+doped_silicon_optical function    147 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn doped_silicon_optical() -> DrudeLorentzParams {
+doping_info      field      1700 crates/materials_core/src/optical_database.rs pub doping_info: Option<&'static str>,
+dravite_metadata function    110 crates/materials_core/src/optical_database/tourmaline.rs pub fn dravite_metadata() -> MineralMetadata {
+dravite_optical  function     96 crates/materials_core/src/optical_database/tourmaline.rs pub fn dravite_optical() -> UniaxialOptical {
+drude            field       104 crates/materials_core/src/optical_database.rs pub drude: Option<DrudeParams>,
+drude_contribution method      403 crates/materials_core/src/optical_database.rs pub fn drude_contribution(&self, omega: f64) -> Complex64 {
+drude_contribution_imaginary method      428 crates/materials_core/src/optical_database.rs pub fn drude_contribution_imaginary(&self, xi: f64) -> f64 {
+drude_quality    method       39 crates/materials_core/src/optical_database/coherence_quality_metrics.rs pub fn drude_quality(&self, omega: f64) -> Option<f64> {
+drude_smith_mobility method       83 crates/materials_core/src/optical_database/photoconductivity.rs pub fn drude_smith_mobility(&self, c_parameter: f64, carrier_density: f64) -> Option<f64> {
+drude_spectral_weight method      649 crates/materials_core/src/optical_database.rs pub fn drude_spectral_weight(&self) -> Option<f64> {
+drude_weight     method       28 crates/materials_core/src/optical_database/transport.rs pub fn drude_weight(&self) -> Option<f64> {
+e8_crystal_bridge module       30 crates/materials_core/src/lib.rs pub mod e8_crystal_bridge;
+eels_absorption_engineering module     1135 crates/materials_core/src/optical_database.rs mod eels_absorption_engineering;
+eff_cascaded     field        51 crates/optics_core/src/sfwm.rs pub eff_cascaded: f64,
+eff_direct       field        49 crates/optics_core/src/sfwm.rs pub eff_direct: f64,
+effective_medium module       31 crates/materials_core/src/lib.rs pub mod effective_medium;
+effective_medium_methods module     1136 crates/materials_core/src/optical_database.rs mod effective_medium_methods;
+effective_mode_area method       56 crates/materials_core/src/optical_database/photonic_waveguide.rs pub fn effective_mode_area(
+elbaite_metadata function    142 crates/materials_core/src/optical_database/tourmaline.rs pub fn elbaite_metadata() -> MineralMetadata {
+elbaite_optical  function    128 crates/materials_core/src/optical_database/tourmaline.rs pub fn elbaite_optical() -> UniaxialOptical {
+electro_optic    module     1137 crates/materials_core/src/optical_database.rs mod electro_optic;
+electron_mean_free_path method      661 crates/materials_core/src/optical_database.rs pub fn electron_mean_free_path(&self, v_fermi: f64) -> Option<f64> {
+ellipsometry_thermal_enz module     1138 crates/materials_core/src/optical_database.rs mod ellipsometry_thermal_enz;
+emissivity       method       48 crates/materials_core/src/optical_database/ellipsometry_thermal_enz.rs pub fn emissivity(&self, omega: f64) -> f64 {
+entropy_trap     module       26 crates/optics_core/src/lib.rs pub mod entropy_trap;
+enz_frequency    method      108 crates/materials_core/src/optical_database/ellipsometry_thermal_enz.rs pub fn enz_frequency(&self, scan_min: f64, scan_max: f64) -> Option<f64> {
+enz_group_velocity method      141 crates/materials_core/src/optical_database/ellipsometry_thermal_enz.rs pub fn enz_group_velocity(&self, scan_min: f64, scan_max: f64) -> Option<f64> {
+eps_inf          field        76 crates/materials_core/src/optical_database.rs pub eps_inf: f64,
+eps_inf          field       108 crates/materials_core/src/optical_database.rs pub eps_inf: f64,
+eps_inf          field       393 crates/materials_core/src/optical_database.rs pub eps_inf: f64,
+epsilon          method       81 crates/materials_core/src/optical_database.rs pub fn epsilon(&self, omega: f64) -> Complex64 {
+epsilon          method      398 crates/materials_core/src/optical_database.rs pub fn epsilon(&self, omega: f64) -> Complex64 {
+epsilon          method      451 crates/materials_core/src/optical_database.rs pub fn epsilon(&self, omega: f64) -> Complex64 {
+epsilon_at_matsubara method      302 crates/materials_core/src/optical_database.rs pub fn epsilon_at_matsubara(&self, temperature_k: f64, n_terms: usize) -> Vec<f64> {
+epsilon_at_matsubara method      680 crates/materials_core/src/optical_database.rs pub fn epsilon_at_matsubara(&self, temperature_k: f64, n_terms: usize) -> Vec<f64> {
+epsilon_imaginary method       92 crates/materials_core/src/optical_database.rs pub fn epsilon_imaginary(&self, xi: f64) -> f64 {
+epsilon_imaginary method      444 crates/materials_core/src/optical_database.rs pub fn epsilon_imaginary(&self, xi: f64) -> f64 {
+epsilon_imaginary method      478 crates/materials_core/src/optical_database.rs pub fn epsilon_imaginary(&self, xi: f64) -> f64 {
+epsilon_imaginary_parallel method      204 crates/materials_core/src/optical_database.rs pub fn epsilon_imaginary_parallel(&self, xi: f64) -> f64 {
+epsilon_imaginary_perpendicular method      209 crates/materials_core/src/optical_database.rs pub fn epsilon_imaginary_perpendicular(&self, xi: f64) -> f64 {
+epsilon_parallel method      194 crates/materials_core/src/optical_database.rs pub fn epsilon_parallel(&self, omega: f64) -> Complex64 {
+epsilon_perpendicular method      199 crates/materials_core/src/optical_database.rs pub fn epsilon_perpendicular(&self, omega: f64) -> Complex64 {
+ev_to_omega      function     59 crates/materials_core/src/optical_database.rs pub fn ev_to_omega(energy_ev: f64) -> f64 {
+evanescent_decay_length method       52 crates/materials_core/src/optical_database/plasmonics.rs pub fn evanescent_decay_length(&self, omega: f64) -> Option<f64> {
+extended_drude   field       110 crates/materials_core/src/optical_database.rs pub extended_drude: Option<ExtendedDrudeParams>,
+f_sfwm           field        43 crates/optics_core/src/sfwm.rs pub f_sfwm: f64,
+f_sfwm           field       236 crates/optics_core/src/sfwm.rs pub f_sfwm: f64,
+f_sfwm           field       416 crates/optics_core/src/sfwm.rs pub f_sfwm: f64,
+f_shg            field        45 crates/optics_core/src/sfwm.rs pub f_shg: f64,
+f_shg            field       237 crates/optics_core/src/sfwm.rs pub f_shg: f64,
+f_spdc           field        47 crates/optics_core/src/sfwm.rs pub f_spdc: f64,
+f_spdc           field       238 crates/optics_core/src/sfwm.rs pub f_spdc: f64,
+f_sum_ratio      method       50 crates/materials_core/src/optical_database/sum_rules_kk.rs pub fn f_sum_ratio(&self, cutoff_ev: f64, n_steps: usize) -> Option<(f64, f64)> {
+fabry_perot_finesse method       71 crates/materials_core/src/optical_database/thin_film_coating.rs pub fn fabry_perot_finesse(&self, omega: f64) -> f64 {
+fano_tcmt        module       27 crates/optics_core/src/lib.rs pub mod fano_tcmt;
+faraday_rotation method       99 crates/materials_core/src/optical_database/transport.rs pub fn faraday_rotation(&self, omega: f64, b_field: f64, carrier_density: f64) -> Option<f64> {
+featurizer       module       32 crates/materials_core/src/lib.rs pub mod featurizer;
+field_enhancement_factor method       52 crates/materials_core/src/optical_database/plasmonic_sensing.rs pub fn field_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64 {
+figure_of_merit_sensor method       36 crates/materials_core/src/optical_database/plasmonic_sensing.rs pub fn figure_of_merit_sensor(&self, eps_dielectric: f64) -> Option<f64> {
+figure_of_merit_spp method       57 crates/materials_core/src/optical_database/coherence_quality_metrics.rs pub fn figure_of_merit_spp(&self, omega: f64, eps_dielectric: f64) -> Option<f64> {
+fluctuation_dissipation_spectral method       22 crates/materials_core/src/optical_database/fluctuation_electrodynamics.rs pub fn fluctuation_dissipation_spectral(&self, omega: f64, temperature_k: f64) -> f64 {
+fluctuation_electrodynamics module     1139 crates/materials_core/src/optical_database.rs mod fluctuation_electrodynamics;
+fluctuation_induced_force_integrand method      120 crates/materials_core/src/optical_database/fluctuation_electrodynamics.rs pub fn fluctuation_induced_force_integrand(&self, xi: f64, distance_m: f64) -> f64 {
+foitite_metadata function    270 crates/materials_core/src/optical_database/tourmaline.rs pub fn foitite_metadata() -> MineralMetadata {
+foitite_optical  function    256 crates/materials_core/src/optical_database/tourmaline.rs pub fn foitite_optical() -> UniaxialOptical {
+formula          field       169 crates/materials_core/src/optical_database.rs pub formula: &'static str,
+formula          field      1688 crates/materials_core/src/optical_database.rs pub formula: &'static str,
+franz_keldysh_absorption method       51 crates/materials_core/src/optical_database/electro_optic.rs pub fn franz_keldysh_absorption(
+fresnel          module     1140 crates/materials_core/src/optical_database.rs mod fresnel;
+fresnel_rp       method       35 crates/materials_core/src/optical_database/fresnel.rs pub fn fresnel_rp(&self, omega: f64, theta_i: f64, n_incident: f64) -> Complex64 {
+fresnel_rs       method       22 crates/materials_core/src/optical_database/fresnel.rs pub fn fresnel_rs(&self, omega: f64, theta_i: f64, n_incident: f64) -> Complex64 {
+from_codegen     function     19 crates/materials_core/src/optical_database/oxides_tcos.rs fn from_codegen(
+from_codegen     function     21 crates/materials_core/src/optical_database/semiconductors.rs fn from_codegen(
+from_codegen     function     22 crates/materials_core/src/optical_database/tungstates.rs fn from_codegen(
+from_codegen     function     23 crates/materials_core/src/optical_database/metals_dl.rs fn from_codegen(
+from_codegen     function     44 crates/materials_core/src/optical_database/tourmaline.rs fn from_codegen(eps_inf: f64, oscillators: &'static [[f64; 3]]) -> DrudeLorentzParams {
+fused_silica_sellmeier function   2236 crates/materials_core/src/optical_database.rs pub fn fused_silica_sellmeier() -> SellmeierParams {
+g2_sfwm_model    function    380 crates/optics_core/src/sfwm.rs pub fn g2_sfwm_model(power: f64, a: f64) -> f64 {
+g2_spdc_model    function    388 crates/optics_core/src/sfwm.rs pub fn g2_spdc_model(power: f64, a: f64) -> f64 {
+gamma_at_ev      method      345 crates/materials_core/src/optical_database.rs pub fn gamma_at_ev(&self, omega_ev: f64) -> f64 {
+gamma_ev         field        74 crates/materials_core/src/optical_database.rs pub gamma_ev: f64,
+gamma_ev         field       121 crates/materials_core/src/optical_database.rs pub gamma_ev: f64,
+germanium_metadata function    172 crates/materials_core/src/optical_database/semiconductors.rs pub fn germanium_metadata() -> MineralMetadata {
+germanium_optical function     93 crates/materials_core/src/optical_database/semiconductors.rs pub fn germanium_optical() -> DrudeLorentzParams {
+get_material     function   1708 crates/materials_core/src/optical_database.rs pub fn get_material(name: &str) -> Option<MaterialEntry> {
+gold_drude       function    899 crates/materials_core/src/optical_database.rs pub fn gold_drude() -> DrudeParams {
+gold_drude_lorentz function     49 crates/materials_core/src/optical_database/metals_dl.rs pub fn gold_drude_lorentz() -> DrudeLorentzParams {
+gold_metadata    function    176 crates/materials_core/src/optical_database/metals_dl.rs pub fn gold_metadata() -> MineralMetadata {
+gold_rakic_ld    function     66 crates/materials_core/src/optical_database/metals_dl.rs pub fn gold_rakic_ld() -> DrudeLorentzParams {
+gold_structure_resolves_to_gold_metadata function    194 crates/materials_core/src/optical_database/cross_reference.rs fn gold_structure_resolves_to_gold_metadata() {
+grin             module       28 crates/optics_core/src/lib.rs pub mod grin;
+group_index      method     2202 crates/materials_core/src/optical_database.rs pub fn group_index(&self, lambda_um: f64) -> f64 {
+group_refractive_index method      711 crates/materials_core/src/optical_database.rs pub fn group_refractive_index(&self, omega: f64) -> f64 {
+group_velocity_at_band_edge method       71 crates/materials_core/src/optical_database/photonic_crystals.rs pub fn group_velocity_at_band_edge(&self, omega_center: f64, n_low: f64, n_pairs: u32) -> f64 {
+gvd_beta2        method       98 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn gvd_beta2(&self, omega: f64) -> f64 {
+gvd_fs2_per_mm   method      108 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn gvd_fs2_per_mm(&self, omega: f64) -> f64 {
+hagen_rubens_reflectivity method      701 crates/materials_core/src/optical_database.rs pub fn hagen_rubens_reflectivity(&self, omega: f64) -> Option<f64> {
+half_wave_voltage method       41 crates/materials_core/src/optical_database/electro_optic.rs pub fn half_wave_voltage(&self, omega: f64, r_eo: f64, crystal_length_m: f64) -> f64 {
+hardness_mohs    field       183 crates/materials_core/src/optical_database.rs pub hardness_mohs: f64,
+has_contribution field       424 crates/optics_core/src/sfwm.rs pub has_contribution: bool,
+hot_electron_generation_proxy method      104 crates/materials_core/src/optical_database/plasmonic_sensing.rs pub fn hot_electron_generation_proxy(&self, omega: f64) -> f64 {
+impedance_mismatch method      100 crates/materials_core/src/optical_database/eels_absorption_engineering.rs pub fn impedance_mismatch(&self, omega: f64) -> f64 {
+infrared_combination_bands method       96 crates/materials_core/src/optical_database/anharmonic_multiphonon.rs pub fn infrared_combination_bands(&self) -> Vec<f64> {
+integrated_emissivity method       73 crates/materials_core/src/optical_database/ellipsometry_thermal_enz.rs pub fn integrated_emissivity(
+interband_weight method      130 crates/materials_core/src/optical_database/sum_rules_kk.rs pub fn interband_weight(&self) -> f64 {
+intraband_weight method      117 crates/materials_core/src/optical_database/sum_rules_kk.rs pub fn intraband_weight(&self) -> Option<f64> {
+ir_activity_proxy method       76 crates/materials_core/src/optical_database/phonon_polariton_ir.rs pub fn ir_activity_proxy(&self, oscillator_index: usize) -> Option<f64> {
+isotope_shift_estimate method       83 crates/materials_core/src/optical_database/phonon_polariton_ir.rs pub fn isotope_shift_estimate(mass_ratio: f64) -> f64 {
+ito_metadata     function    326 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn ito_metadata() -> MineralMetadata {
+ito_optical      function    128 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn ito_optical() -> DrudeLorentzParams {
+joint_density_of_states method      293 crates/materials_core/src/optical_database/bandgap_analysis.rs pub fn joint_density_of_states(&self, omega: f64) -> f64 {
+kerr_electro_optic method       33 crates/materials_core/src/optical_database/electro_optic.rs pub fn kerr_electro_optic(&self, omega: f64, electric_field_v_m: f64, s_eo: f64) -> f64 {
+kerr_n2_estimate method      158 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn kerr_n2_estimate(&self, omega: f64) -> f64 {
+kramers_kronig   module       33 crates/materials_core/src/lib.rs pub mod kramers_kronig;
+kramers_kronig_error method      144 crates/materials_core/src/optical_database/sum_rules_kk.rs pub fn kramers_kronig_error(&self, cutoff_ev: f64, n_steps: usize) -> f64 {
+l_coh_sfwm_um    field        37 crates/optics_core/src/sfwm.rs pub l_coh_sfwm_um: f64,
+l_coh_sfwm_um    field       422 crates/optics_core/src/sfwm.rs pub l_coh_sfwm_um: f64,
+l_coh_shg_um     field        39 crates/optics_core/src/sfwm.rs pub l_coh_shg_um: f64,
+l_coh_spdc_um    field        41 crates/optics_core/src/sfwm.rs pub l_coh_spdc_um: f64,
+lamb_shift_fractional method       67 crates/materials_core/src/optical_database/eels_absorption_engineering.rs pub fn lamb_shift_fractional(&self, omega: f64, distance_m: f64) -> f64 {
+lambda_idler     field       134 crates/optics_core/src/sfwm.rs pub lambda_idler: f64,
+lambda_idler     field       441 crates/optics_core/src/sfwm.rs pub lambda_idler: f64,
+lambda_pump      field       130 crates/optics_core/src/sfwm.rs pub lambda_pump: f64,
+lambda_pump      field       437 crates/optics_core/src/sfwm.rs pub lambda_pump: f64,
+lambda_signal    field       132 crates/optics_core/src/sfwm.rs pub lambda_signal: f64,
+lambda_signal    field       439 crates/optics_core/src/sfwm.rs pub lambda_signal: f64,
+landy_absorber   module       34 crates/materials_core/src/lib.rs pub mod landy_absorber;
+latio3_metadata  function    405 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn latio3_metadata() -> MineralMetadata {
+latio3_optical   function    119 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn latio3_optical() -> DrudeLorentzParams {
+lf_r_te          function   1439 crates/materials_core/src/optical_database.rs fn lf_r_te(p: f64, eps: f64) -> f64 {
+lf_r_tm          function   1448 crates/materials_core/src/optical_database.rs fn lf_r_tm(p: f64, eps: f64) -> f64 {
+liddicoatite_metadata function    206 crates/materials_core/src/optical_database/tourmaline.rs pub fn liddicoatite_metadata() -> MineralMetadata {
+liddicoatite_optical function    192 crates/materials_core/src/optical_database/tourmaline.rs pub fn liddicoatite_optical() -> UniaxialOptical {
+lifshitz_integrand_te function   1231 crates/materials_core/src/optical_database.rs pub fn lifshitz_integrand_te(
+linbo3_extraordinary_sellmeier function   2224 crates/materials_core/src/optical_database.rs pub fn linbo3_extraordinary_sellmeier() -> SellmeierParams {
+linbo3_metadata  function    286 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn linbo3_metadata() -> MineralMetadata {
+linbo3_ordinary_sellmeier function   2215 crates/materials_core/src/optical_database.rs pub fn linbo3_ordinary_sellmeier() -> SellmeierParams {
+linbo3_paper_calibrated method      179 crates/optics_core/src/sfwm.rs pub fn linbo3_paper_calibrated() -> Self {
+linbo3_son_chekhova_2026 method      154 crates/optics_core/src/sfwm.rs pub fn linbo3_son_chekhova_2026() -> Self {
+liquid_crystal   module       35 crates/materials_core/src/lib.rs pub mod liquid_crystal;
+list_materials   function   2105 crates/materials_core/src/optical_database.rs pub fn list_materials() -> Vec<&'static str> {
+litao3_metadata  function    306 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn litao3_metadata() -> MineralMetadata {
+loss_function    method      529 crates/materials_core/src/optical_database.rs pub fn loss_function(&self, omega: f64) -> f64 {
+loss_spectral_weight method       81 crates/materials_core/src/optical_database/sum_rules_kk.rs pub fn loss_spectral_weight(&self, cutoff_ev: f64, n_steps: usize) -> f64 {
+lspr_frequency   method       64 crates/materials_core/src/optical_database/plasmonics.rs pub fn lspr_frequency(&self, eps_dielectric: f64) -> Option<f64> {
+luminous_reflectance method       83 crates/materials_core/src/optical_database/photovoltaic_solar.rs pub fn luminous_reflectance(&self, n_steps: usize) -> f64 {
+main             function     70 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs fn main() -> Result<()> {
+maker_fringe_sweep function    333 crates/optics_core/src/sfwm.rs pub fn maker_fringe_sweep(
+material_type    field      1690 crates/materials_core/src/optical_database.rs pub material_type: MaterialType,
+matsubara_frequencies method      671 crates/materials_core/src/optical_database.rs pub fn matsubara_frequencies(temperature_k: f64, n_terms: usize) -> Vec<f64> {
+max_power_w      field        37 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs max_power_w: f64,
+max_thickness_um field        41 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs max_thickness_um: f64,
+maxwell_garnett_mix method       28 crates/materials_core/src/optical_database/effective_medium_methods.rs pub fn maxwell_garnett_mix(
+metadata_for_structure function     47 crates/materials_core/src/optical_database/cross_reference.rs pub fn metadata_for_structure(name: &str) -> Option<MineralMetadata> {
+metals_dl        module     1102 crates/materials_core/src/optical_database.rs mod metals_dl;
+metamaterial     module       36 crates/materials_core/src/lib.rs pub mod metamaterial;
+mie_cylinder     module       29 crates/optics_core/src/lib.rs pub mod mie_cylinder;
+mie_extinction_efficiency method       45 crates/materials_core/src/optical_database/mie_rayleigh.rs pub fn mie_extinction_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
+mie_poles        module       30 crates/optics_core/src/lib.rs pub mod mie_poles;
+mie_rayleigh     module     1141 crates/materials_core/src/optical_database.rs mod mie_rayleigh;
+mie_scattering_albedo method       55 crates/materials_core/src/optical_database/mie_rayleigh.rs pub fn mie_scattering_albedo(&self, omega: f64, radius_m: f64) -> f64 {
+modal_birefringence method       73 crates/materials_core/src/optical_database/photonic_waveguide.rs pub fn modal_birefringence(&self, omega: f64) -> f64 {
+multi_resonator  module       31 crates/optics_core/src/lib.rs pub mod multi_resonator;
+multiphonon_absorption method       49 crates/materials_core/src/optical_database/anharmonic_multiphonon.rs pub fn multiphonon_absorption(&self, omega_ev: f64, temperature_k: f64, beta: f64) -> f64 {
+n_eff            method       32 crates/materials_core/src/optical_database/sum_rules_kk.rs pub fn n_eff(&self, cutoff_ev: f64, n_steps: usize) -> f64 {
+n_epsilon        field       177 crates/materials_core/src/optical_database.rs pub n_epsilon: f64,
+n_idler          field       126 crates/optics_core/src/sfwm.rs pub n_idler: f64,
+n_idler          field       435 crates/optics_core/src/sfwm.rs pub n_idler: f64,
+n_omega          field       175 crates/materials_core/src/optical_database.rs pub n_omega: f64,
+n_points         field        33 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs n_points: usize,
+n_pump           field       122 crates/optics_core/src/sfwm.rs pub n_pump: f64,
+n_pump           field       431 crates/optics_core/src/sfwm.rs pub n_pump: f64,
+n_sh             field       128 crates/optics_core/src/sfwm.rs pub n_sh: f64,
+n_signal         field       124 crates/optics_core/src/sfwm.rs pub n_signal: f64,
+n_signal         field       433 crates/optics_core/src/sfwm.rs pub n_signal: f64,
+name             field      1686 crates/materials_core/src/optical_database.rs pub name: &'static str,
+near_field_thermal_emission method       78 crates/materials_core/src/optical_database/fluctuation_electrodynamics.rs pub fn near_field_thermal_emission(
+nickel_drude     function    967 crates/materials_core/src/optical_database.rs pub fn nickel_drude() -> DrudeParams {
+nickel_drude_lorentz function    120 crates/materials_core/src/optical_database/metals_dl.rs pub fn nickel_drude_lorentz() -> DrudeLorentzParams {
+nickel_metadata  function    292 crates/materials_core/src/optical_database/metals_dl.rs pub fn nickel_metadata() -> MineralMetadata {
+niobate_tantalate_cross_reference_resolves function    296 crates/materials_core/src/optical_database/cross_reference.rs fn niobate_tantalate_cross_reference_resolves() {
+nonlocal_metamaterial module       37 crates/materials_core/src/lib.rs pub mod nonlocal_metamaterial;
+numerical_aperture method       21 crates/materials_core/src/optical_database/photonic_waveguide.rs pub fn numerical_aperture(&self, omega: f64, n_cladding: f64) -> Option<f64> {
+omega_0_ev       field       119 crates/materials_core/src/optical_database.rs pub omega_0_ev: f64,
+omega_p_ev       field        72 crates/materials_core/src/optical_database.rs pub omega_p_ev: f64,
+omega_p_ev       field       389 crates/materials_core/src/optical_database.rs pub omega_p_ev: f64,
+omega_to_ev      function     64 crates/materials_core/src/optical_database.rs pub fn omega_to_ev(omega: f64) -> f64 {
+omnidirectional_gap_condition method       81 crates/materials_core/src/optical_database/photonic_crystals.rs pub fn omnidirectional_gap_condition(&self, omega: f64, n_low: f64) -> bool {
+optic_sign       field       181 crates/materials_core/src/optical_database.rs pub optic_sign: OpticSign,
+optical          field      1692 crates/materials_core/src/optical_database.rs pub optical: DrudeLorentzParams,
+optical_conductivity_im method      548 crates/materials_core/src/optical_database.rs pub fn optical_conductivity_im(&self, omega: f64) -> f64 {
+optical_conductivity_re method      539 crates/materials_core/src/optical_database.rs pub fn optical_conductivity_re(&self, omega: f64) -> f64 {
+optical_database module       38 crates/materials_core/src/lib.rs pub mod optical_database;
+optical_effective_mass method       83 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn optical_effective_mass(&self, carrier_density: f64) -> Option<f64> {
+optical_gap_ev   method      733 crates/materials_core/src/optical_database.rs pub fn optical_gap_ev(&self, threshold_per_m: f64) -> Option<f64> {
+optical_path_length method       86 crates/materials_core/src/optical_database/coherence_quality_metrics.rs pub fn optical_path_length(&self, omega: f64, thickness_m: f64) -> (f64, f64) {
+optics_algebra_bridge module       32 crates/optics_core/src/lib.rs pub mod optics_algebra_bridge;
+optimal_absorber_thickness method       88 crates/materials_core/src/optical_database/eels_absorption_engineering.rs pub fn optimal_absorber_thickness(&self, omega: f64) -> Option<f64> {
+oscillator_quality_factor method       24 crates/materials_core/src/optical_database/coherence_quality_metrics.rs pub fn oscillator_quality_factor(&self) -> Option<f64> {
+oscillators      field       106 crates/materials_core/src/optical_database.rs pub oscillators: Vec<LorentzOscillator>,
+output_dir       field        29 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs output_dir: String,
+oxides_tcos      module     1084 crates/materials_core/src/optical_database.rs mod oxides_tcos;
+p2b_fit          module       33 crates/optics_core/src/lib.rs pub mod p2b_fit;
+palladium_drude  function    977 crates/materials_core/src/optical_database.rs pub fn palladium_drude() -> DrudeParams {
+palladium_drude_lorentz function    129 crates/materials_core/src/optical_database/metals_dl.rs pub fn palladium_drude_lorentz() -> DrudeLorentzParams {
+palladium_metadata function    311 crates/materials_core/src/optical_database/metals_dl.rs pub fn palladium_metadata() -> MineralMetadata {
+paper_wavevector_mismatches method      202 crates/optics_core/src/sfwm.rs pub fn paper_wavevector_mismatches(&self) -> WavevectorMismatches {
+parallel         field       132 crates/materials_core/src/optical_database.rs pub parallel: DrudeLorentzParams,
+pathion_toy_mapping module       39 crates/materials_core/src/lib.rs pub mod pathion_toy_mapping;
+pbwo4_metadata   function    191 crates/materials_core/src/optical_database/tungstates.rs pub fn pbwo4_metadata() -> MineralMetadata {
+pbwo4_optical    function    103 crates/materials_core/src/optical_database/tungstates.rs pub fn pbwo4_optical() -> DrudeLorentzParams {
+pedot_pss_metadata function   1049 crates/materials_core/src/optical_database.rs pub fn pedot_pss_metadata() -> MineralMetadata {
+pedot_pss_optical function   1027 crates/materials_core/src/optical_database.rs pub fn pedot_pss_optical() -> DrudeLorentzParams {
+penetration_depth_ratio method      104 crates/materials_core/src/optical_database/coherence_quality_metrics.rs pub fn penetration_depth_ratio(&self, omega: f64) -> f64 {
+penn_gap_ev      method      217 crates/materials_core/src/optical_database/bandgap_analysis.rs pub fn penn_gap_ev(&self) -> Option<f64> {
+perfect_metal_epsilon function   1175 crates/materials_core/src/optical_database.rs pub fn perfect_metal_epsilon(_omega: f64) -> Complex64 {
+perfect_metal_epsilon_imaginary function   1180 crates/materials_core/src/optical_database.rs pub fn perfect_metal_epsilon_imaginary(_xi: f64) -> f64 {
+periodic_table   module       40 crates/materials_core/src/lib.rs pub mod periodic_table;
+perpendicular    field       134 crates/materials_core/src/optical_database.rs pub perpendicular: DrudeLorentzParams,
+phase_matching_function function     17 crates/optics_core/src/sfwm.rs pub fn phase_matching_function(delta_k: f64, thickness: f64) -> f64 {
+phase_retrieval  module       34 crates/optics_core/src/lib.rs pub mod phase_retrieval;
+phonon_polariton_ir module     1142 crates/materials_core/src/optical_database.rs mod phonon_polariton_ir;
+phonon_polariton_wavevector method       56 crates/materials_core/src/optical_database/phonon_polariton_ir.rs pub fn phonon_polariton_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64 {
+photo_induced_absorption method       32 crates/materials_core/src/optical_database/photoconductivity.rs pub fn photo_induced_absorption(
+photoconductivity module     1143 crates/materials_core/src/optical_database.rs mod photoconductivity;
+photoelastic_delta_n method       71 crates/materials_core/src/optical_database/electro_optic.rs pub fn photoelastic_delta_n(&self, omega: f64, strain: f64, p_ij: f64) -> f64 {
+photon_number_sfwm function    393 crates/optics_core/src/sfwm.rs pub fn photon_number_sfwm(power: f64, alpha: f64) -> f64 {
+photon_number_spdc function    398 crates/optics_core/src/sfwm.rs pub fn photon_number_spdc(power: f64, alpha: f64) -> f64 {
+photon_tunneling_probability method      108 crates/materials_core/src/optical_database/fluctuation_electrodynamics.rs pub fn photon_tunneling_probability(&self, omega: f64, kappa_m: f64) -> f64 {
+photonic_band_gap_ratio method       54 crates/materials_core/src/optical_database/photonic_crystals.rs pub fn photonic_band_gap_ratio(&self, omega: f64, n_low: f64) -> f64 {
+photonic_crystals module     1144 crates/materials_core/src/optical_database.rs mod photonic_crystals;
+photonic_waveguide module     1145 crates/materials_core/src/optical_database.rs mod photonic_waveguide;
+photovoltaic_solar module     1146 crates/materials_core/src/optical_database.rs mod photovoltaic_solar;
+plasma_edge_ev   method      602 crates/materials_core/src/optical_database.rs pub fn plasma_edge_ev(&self) -> Option<f64> {
+plasma_frequency_from_density method       63 crates/materials_core/src/optical_database/transport.rs pub fn plasma_frequency_from_density(carrier_density: f64, m_star_ratio: f64) -> f64 {
+plasma_frequency_shift method       20 crates/materials_core/src/optical_database/photoconductivity.rs pub fn plasma_frequency_shift(&self, delta_n: f64, m_star_ratio: f64) -> Option<f64> {
+plasma_screening_ratio method       72 crates/materials_core/src/optical_database/effective_medium_methods.rs pub fn plasma_screening_ratio(&self) -> Option<f64> {
+plasmon_energy_ev method       61 crates/materials_core/src/optical_database/sum_rules_kk.rs pub fn plasmon_energy_ev(&self, scan_min_ev: f64, scan_max_ev: f64) -> f64 {
+plasmonic_sensing module     1147 crates/materials_core/src/optical_database.rs mod plasmonic_sensing;
+plasmonics       module     1148 crates/materials_core/src/optical_database.rs mod plasmonics;
+platinum_drude   function    987 crates/materials_core/src/optical_database.rs pub fn platinum_drude() -> DrudeParams {
+platinum_drude_lorentz function    138 crates/materials_core/src/optical_database/metals_dl.rs pub fn platinum_drude_lorentz() -> DrudeLorentzParams {
+platinum_metadata function    330 crates/materials_core/src/optical_database/metals_dl.rs pub fn platinum_metadata() -> MineralMetadata {
+pockels_delta_n  method       25 crates/materials_core/src/optical_database/electro_optic.rs pub fn pockels_delta_n(&self, omega: f64, electric_field_v_m: f64, r_eo: f64) -> f64 {
+polariton_group_velocity method       62 crates/materials_core/src/optical_database/phonon_polariton_ir.rs pub fn polariton_group_velocity(&self, omega: f64, eps_dielectric: f64) -> f64 {
+polarizability_clausius_mossotti method       22 crates/materials_core/src/optical_database/mie_rayleigh.rs pub fn polarizability_clausius_mossotti(&self, omega: f64, radius_m: f64) -> Complex64 {
+polarization_dependence function    406 crates/optics_core/src/sfwm.rs pub fn polarization_dependence(theta: f64) -> f64 {
+polycrystalline_average method      217 crates/materials_core/src/optical_database.rs pub fn polycrystalline_average(&self, omega: f64) -> Complex64 {
+polycrystalline_average_imaginary method      224 crates/materials_core/src/optical_database.rs pub fn polycrystalline_average_imaginary(&self, xi: f64) -> f64 {
+polycrystalline_carrier_density method      293 crates/materials_core/src/optical_database.rs pub fn polycrystalline_carrier_density(&self, m_star_ratio: f64) -> Option<f64> {
+polycrystalline_imaginary method      283 crates/materials_core/src/optical_database.rs pub fn polycrystalline_imaginary(&self, xi: f64) -> f64 {
+polycrystalline_reflectivity method      274 crates/materials_core/src/optical_database.rs pub fn polycrystalline_reflectivity(&self, omega: f64) -> f64 {
+polymorph_aliases_resolve_to_distinct_metadata function    279 crates/materials_core/src/optical_database/cross_reference.rs fn polymorph_aliases_resolve_to_distinct_metadata() {
+povondraite_metadata function    302 crates/materials_core/src/optical_database/tourmaline.rs pub fn povondraite_metadata() -> MineralMetadata {
+povondraite_optical function    288 crates/materials_core/src/optical_database/tourmaline.rs pub fn povondraite_optical() -> UniaxialOptical {
+psi_delta        method       33 crates/materials_core/src/optical_database/ellipsometry_thermal_enz.rs pub fn psi_delta(&self, omega: f64, theta_i: f64) -> (f64, f64) {
+purcell_factor   method       53 crates/materials_core/src/optical_database/eels_absorption_engineering.rs pub fn purcell_factor(&self, omega: f64, distance_m: f64) -> f64 {
+quantum_efficiency_near_surface method       82 crates/materials_core/src/optical_database/plasmonic_sensing.rs pub fn quantum_efficiency_near_surface(
+quarter_wave_stack_gap method       25 crates/materials_core/src/optical_database/photonic_crystals.rs pub fn quarter_wave_stack_gap(&self, omega_center: f64, n_low: f64) -> (f64, f64) {
+quarter_wave_stack_reflectivity method       38 crates/materials_core/src/optical_database/photonic_crystals.rs pub fn quarter_wave_stack_reflectivity(
+quartz_metadata  function    204 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn quartz_metadata() -> MineralMetadata {
+quartz_optical   function     72 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn quartz_optical() -> DrudeLorentzParams {
+radiation_pressure_efficiency method       78 crates/materials_core/src/optical_database/mie_rayleigh.rs pub fn radiation_pressure_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
+rate_proxy       field       418 crates/optics_core/src/sfwm.rs pub rate_proxy: f64,
+rate_ratio       function    292 crates/optics_core/src/sfwm.rs pub fn rate_ratio(params: &SfwmMaterialParams) -> SfwmRateResult {
+rate_ratio_cas_to_dir field       234 crates/optics_core/src/sfwm.rs pub rate_ratio_cas_to_dir: f64,
+rate_ratio_with_dk function    299 crates/optics_core/src/sfwm.rs pub fn rate_ratio_with_dk(
+rate_sweep       function    353 crates/optics_core/src/sfwm.rs pub fn rate_sweep(params: &SfwmMaterialParams, thicknesses: &[f64]) -> Vec<(f64, f64, f64)> {
+rate_sweep_with_dk function    358 crates/optics_core/src/sfwm.rs pub fn rate_sweep_with_dk(
+rayleigh_cross_section method       30 crates/materials_core/src/optical_database/mie_rayleigh.rs pub fn rayleigh_cross_section(&self, omega: f64, radius_m: f64) -> f64 {
+rayleigh_scattering_efficiency method       38 crates/materials_core/src/optical_database/mie_rayleigh.rs pub fn rayleigh_scattering_efficiency(&self, omega: f64, radius_m: f64) -> f64 {
+reference        field       189 crates/materials_core/src/optical_database.rs pub reference: &'static str,
+reference        field      1694 crates/materials_core/src/optical_database.rs pub reference: &'static str,
+reflectance_angular method       61 crates/materials_core/src/optical_database/fresnel.rs pub fn reflectance_angular(&self, omega: f64, theta_i: f64, n_incident: f64) -> (f64, f64) {
+reflection_te    function   1193 crates/materials_core/src/optical_database.rs pub fn reflection_te(eps: Complex64, omega: f64, k_parallel: f64) -> Complex64 {
+reflection_tm    function   1212 crates/materials_core/src/optical_database.rs pub fn reflection_tm(eps: Complex64, omega: f64, k_parallel: f64) -> Complex64 {
+reflectivity_anisotropy method      267 crates/materials_core/src/optical_database.rs pub fn reflectivity_anisotropy(&self, omega: f64) -> f64 {
+reflectivity_normal method      519 crates/materials_core/src/optical_database.rs pub fn reflectivity_normal(&self, omega: f64) -> f64 {
+refractive_index method      511 crates/materials_core/src/optical_database.rs pub fn refractive_index(&self, omega: f64) -> Complex64 {
+refractive_index method     2183 crates/materials_core/src/optical_database.rs pub fn refractive_index(&self, lambda_um: f64) -> f64 {
+refractive_index_at_omega method     2193 crates/materials_core/src/optical_database.rs pub fn refractive_index_at_omega(&self, omega: f64) -> f64 {
+refractive_index_sensitivity method       24 crates/materials_core/src/optical_database/plasmonic_sensing.rs pub fn refractive_index_sensitivity(&self, eps_dielectric: f64) -> Option<f64> {
+reststrahlen_band method      156 crates/materials_core/src/optical_database/ellipsometry_thermal_enz.rs pub fn reststrahlen_band(&self) -> Option<(f64, f64)> {
+rossmanite_metadata function    238 crates/materials_core/src/optical_database/tourmaline.rs pub fn rossmanite_metadata() -> MineralMetadata {
+rossmanite_optical function    224 crates/materials_core/src/optical_database/tourmaline.rs pub fn rossmanite_optical() -> UniaxialOptical {
+scattering       field       391 crates/materials_core/src/optical_database.rs pub scattering: ScatteringModel,
+scattering_time  method      126 crates/materials_core/src/optical_database/transport.rs pub fn scattering_time(&self) -> Option<f64> {
+schorl_metadata  function     77 crates/materials_core/src/optical_database/tourmaline.rs pub fn schorl_metadata() -> MineralMetadata {
+schorl_optical   function     62 crates/materials_core/src/optical_database/tourmaline.rs pub fn schorl_optical() -> UniaxialOptical {
+screened_plasma_ev method       97 crates/materials_core/src/optical_database/sum_rules_kk.rs pub fn screened_plasma_ev(&self, scan_min_ev: f64, scan_max_ev: f64) -> Option<f64> {
+selective_emitter_efficiency method      114 crates/materials_core/src/optical_database/photovoltaic_solar.rs pub fn selective_emitter_efficiency(
+semiconductors   module     1116 crates/materials_core/src/optical_database.rs mod semiconductors;
+sers_enhancement_factor method       62 crates/materials_core/src/optical_database/plasmonic_sensing.rs pub fn sers_enhancement_factor(&self, omega: f64, eps_dielectric: f64) -> f64 {
+sfwm             module       35 crates/optics_core/src/lib.rs pub mod sfwm;
+sfwm_dominance_check function     61 crates/optics_core/src/sfwm.rs pub fn sfwm_dominance_check(thickness_um: f64) -> SfwmDominanceResult {
+silica_casimir_metadata function    146 crates/materials_core/src/optical_database/semiconductors.rs pub fn silica_casimir_metadata() -> MineralMetadata {
+silica_casimir_optical function     75 crates/materials_core/src/optical_database/semiconductors.rs pub fn silica_casimir_optical() -> DrudeLorentzParams {
+silica_metadata  function    128 crates/materials_core/src/optical_database/semiconductors.rs pub fn silica_metadata() -> MineralMetadata {
+silica_optical   function     55 crates/materials_core/src/optical_database/semiconductors.rs pub fn silica_optical() -> DrudeLorentzParams {
+silicon_metadata function    110 crates/materials_core/src/optical_database/semiconductors.rs pub fn silicon_metadata() -> MineralMetadata {
+silicon_nitride_metadata function    153 crates/materials_core/src/optical_database/semiconductors.rs pub fn silicon_nitride_metadata() -> MineralMetadata {
+silicon_nitride_optical function     84 crates/materials_core/src/optical_database/semiconductors.rs pub fn silicon_nitride_optical() -> DrudeLorentzParams {
+silicon_optical  function     46 crates/materials_core/src/optical_database/semiconductors.rs pub fn silicon_optical() -> DrudeLorentzParams {
+silver_drude     function    909 crates/materials_core/src/optical_database.rs pub fn silver_drude() -> DrudeParams {
+silver_drude_lorentz function     75 crates/materials_core/src/optical_database/metals_dl.rs pub fn silver_drude_lorentz() -> DrudeLorentzParams {
+silver_metadata  function    195 crates/materials_core/src/optical_database/metals_dl.rs pub fn silver_metadata() -> MineralMetadata {
+skin_depth       method      557 crates/materials_core/src/optical_database.rs pub fn skin_depth(&self, omega: f64) -> Option<f64> {
+solar_absorptance method       20 crates/materials_core/src/optical_database/photovoltaic_solar.rs pub fn solar_absorptance(&self, n_steps: usize) -> f64 {
+solar_reflectance method       50 crates/materials_core/src/optical_database/photovoltaic_solar.rs pub fn solar_reflectance(&self, n_steps: usize) -> f64 {
+space_group      field       173 crates/materials_core/src/optical_database.rs pub space_group: &'static str,
+species_name     field       167 crates/materials_core/src/optical_database.rs pub species_name: &'static str,
+spectral_emittance method       55 crates/materials_core/src/optical_database/ellipsometry_thermal_enz.rs pub fn spectral_emittance(&self, omega: f64, temperature_k: f64) -> f64 {
+spectral_energy_density method       59 crates/materials_core/src/optical_database/fluctuation_electrodynamics.rs pub fn spectral_energy_density(omega: f64, temperature_k: f64) -> f64 {
+spectral_weight_window method       68 crates/materials_core/src/optical_database/coherence_quality_metrics.rs pub fn spectral_weight_window(&self, omega_min: f64, omega_max: f64, n_steps: usize) -> f64 {
+spp_propagation_length method       39 crates/materials_core/src/optical_database/plasmonics.rs pub fn spp_propagation_length(&self, omega: f64, eps_dielectric: f64) -> Option<f64> {
+spp_wavevector   method       28 crates/materials_core/src/optical_database/plasmonics.rs pub fn spp_wavevector(&self, omega: f64, eps_dielectric: f64) -> Complex64 {
+srtio3_doped_metadata function    393 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn srtio3_doped_metadata() -> MineralMetadata {
+srtio3_doped_optical function    110 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn srtio3_doped_optical() -> DrudeLorentzParams {
+srtio3_metadata  function    374 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn srtio3_metadata() -> MineralMetadata {
+srtio3_optical   function    100 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn srtio3_optical() -> DrudeLorentzParams {
+static_dielectric method      792 crates/materials_core/src/optical_database.rs pub fn static_dielectric(&self) -> Option<f64> {
+strength         field       117 crates/materials_core/src/optical_database.rs pub strength: f64,
+structures_with_metadata function    127 crates/materials_core/src/optical_database/cross_reference.rs pub fn structures_with_metadata() -> Vec<&'static str> {
+structures_with_metadata_list_is_complete function    226 crates/materials_core/src/optical_database/cross_reference.rs fn structures_with_metadata_list_is_complete() {
+substrate_sfwm_contribution function    454 crates/optics_core/src/sfwm.rs pub fn substrate_sfwm_contribution(params: &SubstrateSfwmParams) -> SubstrateSfwmResult {
+sum_rules_kk     module     1149 crates/materials_core/src/optical_database.rs mod sum_rules_kk;
+surface_impedance method      775 crates/materials_core/src/optical_database.rs pub fn surface_impedance(&self, omega: f64) -> Complex64 {
+surface_loss_function method       32 crates/materials_core/src/optical_database/eels_absorption_engineering.rs pub fn surface_loss_function(&self, omega: f64) -> f64 {
+surface_phonon_polariton_frequency method       23 crates/materials_core/src/optical_database/phonon_polariton_ir.rs pub fn surface_phonon_polariton_frequency(&self, eps_dielectric: f64) -> Option<f64> {
+tabulated_nk     module       41 crates/materials_core/src/lib.rs pub mod tabulated_nk;
+tang_mass        module       42 crates/materials_core/src/lib.rs pub mod tang_mass;
+tauc_gap_ev      method       32 crates/materials_core/src/optical_database/bandgap_analysis.rs pub fn tauc_gap_ev(&self, exponent: f64) -> Option<f64> {
+tcmt             module       36 crates/optics_core/src/lib.rs pub mod tcmt;
+temperature_dispersion module     1150 crates/materials_core/src/optical_database.rs mod temperature_dispersion;
+temperature_k    field      1698 crates/materials_core/src/optical_database.rs pub temperature_k: Option<f64>,
+test_absorption_coefficient_positive function   3138 crates/materials_core/src/optical_database.rs fn test_absorption_coefficient_positive() {
+test_absorption_cross_section_mie_nonneg function   6846 crates/materials_core/src/optical_database.rs fn test_absorption_cross_section_mie_nonneg() {
+test_absorption_onset_metal_none function   4371 crates/materials_core/src/optical_database.rs fn test_absorption_onset_metal_none() {
+test_absorption_onset_wo3 function   4351 crates/materials_core/src/optical_database.rs fn test_absorption_onset_wo3() {
+test_absorption_per_pass_thin_film function   5828 crates/materials_core/src/optical_database.rs fn test_absorption_per_pass_thin_film() {
+test_absorption_per_pass_transparent function   5848 crates/materials_core/src/optical_database.rs fn test_absorption_per_pass_transparent() {
+test_acoustooptic_figure_of_merit_positive function   7284 crates/materials_core/src/optical_database.rs fn test_acoustooptic_figure_of_merit_positive() {
+test_acoustooptic_scales_with_p_squared function   7299 crates/materials_core/src/optical_database.rs fn test_acoustooptic_scales_with_p_squared() {
+test_alumina_alias function   2365 crates/materials_core/src/optical_database.rs fn test_alumina_alias() {
+test_alumina_optical function   2350 crates/materials_core/src/optical_database.rs fn test_alumina_optical() {
+test_aluminum_enhanced_dl function   2492 crates/materials_core/src/optical_database.rs fn test_aluminum_enhanced_dl() {
+test_anharmonic_linewidth_increases_with_temperature function   7015 crates/materials_core/src/optical_database.rs fn test_anharmonic_linewidth_increases_with_temperature() {
+test_anharmonic_linewidth_invalid_index function   7027 crates/materials_core/src/optical_database.rs fn test_anharmonic_linewidth_invalid_index() {
+test_anharmonic_linewidth_srtio3 function   7000 crates/materials_core/src/optical_database.rs fn test_anharmonic_linewidth_srtio3() {
+test_antireflection_thickness_positive function   6162 crates/materials_core/src/optical_database.rs fn test_antireflection_thickness_positive() {
+test_azo_crossover function   2558 crates/materials_core/src/optical_database.rs fn test_azo_crossover() {
+test_bend_loss_critical_radius_positive function   6403 crates/materials_core/src/optical_database.rs fn test_bend_loss_critical_radius_positive() {
+test_beta_tpa_above_threshold_positive function   4841 crates/materials_core/src/optical_database.rs fn test_beta_tpa_above_threshold_positive() {
+test_beta_tpa_below_threshold_none function   4829 crates/materials_core/src/optical_database.rs fn test_beta_tpa_below_threshold_none() {
+test_beta_tpa_metal_none function   4818 crates/materials_core/src/optical_database.rs fn test_beta_tpa_metal_none() {
+test_bose_einstein_occupation_limits function   6658 crates/materials_core/src/optical_database.rs fn test_bose_einstein_occupation_limits() {
+test_bragg_wavelength function   7143 crates/materials_core/src/optical_database.rs fn test_bragg_wavelength() {
+test_brewster_angle_metal_none function   5141 crates/materials_core/src/optical_database.rs fn test_brewster_angle_metal_none() {
+test_brewster_angle_silica function   5126 crates/materials_core/src/optical_database.rs fn test_brewster_angle_silica() {
+test_bruggeman_interpolates function   4620 crates/materials_core/src/optical_database.rs fn test_bruggeman_interpolates() {
+test_bruggeman_symmetric function   4601 crates/materials_core/src/optical_database.rs fn test_bruggeman_symmetric() {
+test_carrier_mobility_dielectric_none function   5352 crates/materials_core/src/optical_database.rs fn test_carrier_mobility_dielectric_none() {
+test_carrier_mobility_gold function   5337 crates/materials_core/src/optical_database.rs fn test_carrier_mobility_gold() {
+test_carrier_recombination_time_finite function   6725 crates/materials_core/src/optical_database.rs fn test_carrier_recombination_time_finite() {
+test_carrier_recombination_time_zero_generation function   6741 crates/materials_core/src/optical_database.rs fn test_carrier_recombination_time_zero_generation() {
+test_casimir_asymmetric function   3907 crates/materials_core/src/optical_database.rs fn test_casimir_asymmetric() {
+test_casimir_distance_monotonic function   3924 crates/materials_core/src/optical_database.rs fn test_casimir_distance_monotonic() {
+test_casimir_energy_ideal function   3812 crates/materials_core/src/optical_database.rs fn test_casimir_energy_ideal() {
+test_casimir_eta_dielectric_small function   3877 crates/materials_core/src/optical_database.rs fn test_casimir_eta_dielectric_small() {
+test_casimir_force_gold function   3893 crates/materials_core/src/optical_database.rs fn test_casimir_force_gold() {
+test_casimir_gold_gold_attractive function   3848 crates/materials_core/src/optical_database.rs fn test_casimir_gold_gold_attractive() {
+test_casimir_gold_gold_eta function   3861 crates/materials_core/src/optical_database.rs fn test_casimir_gold_gold_eta() {
+test_casimir_ideal_scaling function   3834 crates/materials_core/src/optical_database.rs fn test_casimir_ideal_scaling() {
+test_cawo4_wide_gap_dielectric function   2931 crates/materials_core/src/optical_database.rs fn test_cawo4_wide_gap_dielectric() {
+test_chi3_metal_larger_than_dielectric function   4770 crates/materials_core/src/optical_database.rs fn test_chi3_metal_larger_than_dielectric() {
+test_chi3_miller_positive function   4761 crates/materials_core/src/optical_database.rs fn test_chi3_miller_positive() {
+test_chromatic_dispersion_units function   6394 crates/materials_core/src/optical_database.rs fn test_chromatic_dispersion_units() {
+test_coherence_length_finite function   6067 crates/materials_core/src/optical_database.rs fn test_coherence_length_finite() {
+test_coherence_length_monochromatic_infinite function   6080 crates/materials_core/src/optical_database.rs fn test_coherence_length_monochromatic_infinite() {
+test_coherence_lengths_match_paper function    479 crates/optics_core/src/sfwm.rs fn test_coherence_lengths_match_paper() {
+test_color_coordinates_gold_warm function   6563 crates/materials_core/src/optical_database.rs fn test_color_coordinates_gold_warm() {
+test_confinement_factor_bounds function   6350 crates/materials_core/src/optical_database.rs fn test_confinement_factor_bounds() {
+test_constant_scattering_imaginary_matches_regular function   2649 crates/materials_core/src/optical_database.rs fn test_constant_scattering_imaginary_matches_regular() {
+test_constant_scattering_matches_regular_drude function   2603 crates/materials_core/src/optical_database.rs fn test_constant_scattering_matches_regular_drude() {
+test_constructive_interference_thick_film function   6542 crates/materials_core/src/optical_database.rs fn test_constructive_interference_thick_film() {
+test_copper_enhanced_dl function   2474 crates/materials_core/src/optical_database.rs fn test_copper_enhanced_dl() {
+test_cs_wo3_anisotropy_ratio function   3281 crates/materials_core/src/optical_database.rs fn test_cs_wo3_anisotropy_ratio() {
+test_cs_wo3_birefringence function   3251 crates/materials_core/src/optical_database.rs fn test_cs_wo3_birefringence() {
+test_cs_wo3_dichroism function   3269 crates/materials_core/src/optical_database.rs fn test_cs_wo3_dichroism() {
+test_cs_wo3_has_uniaxial function   2991 crates/materials_core/src/optical_database.rs fn test_cs_wo3_has_uniaxial() {
+test_cs_wo3_matsubara_decreasing function   3608 crates/materials_core/src/optical_database.rs fn test_cs_wo3_matsubara_decreasing() {
+test_cs_wo3_polycrystalline_average function   2909 crates/materials_core/src/optical_database.rs fn test_cs_wo3_polycrystalline_average() {
+test_cs_wo3_polycrystalline_carrier_density function   3625 crates/materials_core/src/optical_database.rs fn test_cs_wo3_polycrystalline_carrier_density() {
+test_cs_wo3_polycrystalline_imaginary function   3591 crates/materials_core/src/optical_database.rs fn test_cs_wo3_polycrystalline_imaginary() {
+test_cs_wo3_reflectivity_anisotropy function   3294 crates/materials_core/src/optical_database.rs fn test_cs_wo3_reflectivity_anisotropy() {
+test_cs_wo3_uniaxial_anisotropy function   2891 crates/materials_core/src/optical_database.rs fn test_cs_wo3_uniaxial_anisotropy() {
+test_dc_conductivity_dielectric_none function   3194 crates/materials_core/src/optical_database.rs fn test_dc_conductivity_dielectric_none() {
+test_dc_conductivity_gold function   3175 crates/materials_core/src/optical_database.rs fn test_dc_conductivity_gold() {
+test_dc_conductivity_ranking function   3354 crates/materials_core/src/optical_database.rs fn test_dc_conductivity_ranking() {
+test_dc_resistivity_dielectric_none function   5314 crates/materials_core/src/optical_database.rs fn test_dc_resistivity_dielectric_none() {
+test_dc_resistivity_gold function   5300 crates/materials_core/src/optical_database.rs fn test_dc_resistivity_gold() {
+test_decay_rate_enhancement_near_surface function   6462 crates/materials_core/src/optical_database.rs fn test_decay_rate_enhancement_near_surface() {
+test_diamond_optical function   2371 crates/materials_core/src/optical_database.rs fn test_diamond_optical() {
+test_dielectric_contrast_matched function   4663 crates/materials_core/src/optical_database.rs fn test_dielectric_contrast_matched() {
+test_dielectric_contrast_vacuum function   4643 crates/materials_core/src/optical_database.rs fn test_dielectric_contrast_vacuum() {
+test_dielectric_imaginary_freq_positivity function   2414 crates/materials_core/src/optical_database.rs fn test_dielectric_imaginary_freq_positivity() {
+test_dielectric_low_reflectivity function   3081 crates/materials_core/src/optical_database.rs fn test_dielectric_low_reflectivity() {
+test_dielectric_no_carrier_density function   3409 crates/materials_core/src/optical_database.rs fn test_dielectric_no_carrier_density() {
+test_direct_dominates_cascaded_at_10um function    565 crates/optics_core/src/sfwm.rs fn test_direct_dominates_cascaded_at_10um() {
+test_dispersion_regime_metal_anomalous function   4735 crates/materials_core/src/optical_database.rs fn test_dispersion_regime_metal_anomalous() {
+test_doped_si    function   2578 crates/materials_core/src/optical_database.rs fn test_doped_si() {
+test_drude_lorentz_silicon function   2317 crates/materials_core/src/optical_database.rs fn test_drude_lorentz_silicon() {
+test_drude_quality_dielectric_none function   5984 crates/materials_core/src/optical_database.rs fn test_drude_quality_dielectric_none() {
+test_drude_quality_gold_high_in_ir function   5969 crates/materials_core/src/optical_database.rs fn test_drude_quality_gold_high_in_ir() {
+test_drude_smith_c0_matches_regular function   2687 crates/materials_core/src/optical_database.rs fn test_drude_smith_c0_matches_regular() {
+test_drude_smith_mobility_backscatter function   6704 crates/materials_core/src/optical_database.rs fn test_drude_smith_mobility_backscatter() {
+test_drude_smith_negative_c_suppresses_dc function   2726 crates/materials_core/src/optical_database.rs fn test_drude_smith_negative_c_suppresses_dc() {
+test_drude_spectral_weight function   3418 crates/materials_core/src/optical_database.rs fn test_drude_spectral_weight() {
+test_drude_weight_dielectric_none function   5274 crates/materials_core/src/optical_database.rs fn test_drude_weight_dielectric_none() {
+test_drude_weight_gold_positive function   5266 crates/materials_core/src/optical_database.rs fn test_drude_weight_gold_positive() {
+test_drude_weight_proportional_to_omega_p_sq function   5283 crates/materials_core/src/optical_database.rs fn test_drude_weight_proportional_to_omega_p_sq() {
+test_effective_mode_area_positive function   6365 crates/materials_core/src/optical_database.rs fn test_effective_mode_area_positive() {
+test_electron_mean_free_path_gold function   3441 crates/materials_core/src/optical_database.rs fn test_electron_mean_free_path_gold() {
+test_emissivity_dielectric_higher function   5515 crates/materials_core/src/optical_database.rs fn test_emissivity_dielectric_higher() {
+test_emissivity_metal_low function   5502 crates/materials_core/src/optical_database.rs fn test_emissivity_metal_low() {
+test_emissivity_plus_reflectivity_equals_one function   5528 crates/materials_core/src/optical_database.rs fn test_emissivity_plus_reflectivity_equals_one() {
+test_enz_frequency_dielectric_none function   5610 crates/materials_core/src/optical_database.rs fn test_enz_frequency_dielectric_none() {
+test_enz_frequency_gold function   5593 crates/materials_core/src/optical_database.rs fn test_enz_frequency_gold() {
+test_enz_group_velocity_gold function   5626 crates/materials_core/src/optical_database.rs fn test_enz_group_velocity_gold() {
+test_epsilon_at_matsubara_dielectric function   3519 crates/materials_core/src/optical_database.rs fn test_epsilon_at_matsubara_dielectric() {
+test_epsilon_at_matsubara_gold function   3492 crates/materials_core/src/optical_database.rs fn test_epsilon_at_matsubara_gold() {
+test_evanescent_decay_dielectric_none function   4945 crates/materials_core/src/optical_database.rs fn test_evanescent_decay_dielectric_none() {
+test_evanescent_decay_length_gold function   4930 crates/materials_core/src/optical_database.rs fn test_evanescent_decay_length_gold() {
+test_extended_drude_imaginary_freq_positive function   2815 crates/materials_core/src/optical_database.rs fn test_extended_drude_imaginary_freq_positive() {
+test_extended_drude_standalone_epsilon function   2836 crates/materials_core/src/optical_database.rs fn test_extended_drude_standalone_epsilon() {
+test_f_sfwm_much_larger_than_f_shg function    590 crates/optics_core/src/sfwm.rs fn test_f_sfwm_much_larger_than_f_shg() {
+test_f_sum_ratio_gold function   3984 crates/materials_core/src/optical_database.rs fn test_f_sum_ratio_gold() {
+test_fabry_perot_finesse_positive function   6555 crates/materials_core/src/optical_database.rs fn test_fabry_perot_finesse_positive() {
+test_faraday_rotation_dielectric_none function   5409 crates/materials_core/src/optical_database.rs fn test_faraday_rotation_dielectric_none() {
+test_faraday_rotation_gold_nonzero function   5396 crates/materials_core/src/optical_database.rs fn test_faraday_rotation_gold_nonzero() {
+test_field_enhancement_gold_at_lspr function   6421 crates/materials_core/src/optical_database.rs fn test_field_enhancement_gold_at_lspr() {
+test_figure_of_merit_sensor_gold function   6764 crates/materials_core/src/optical_database.rs fn test_figure_of_merit_sensor_gold() {
+test_fluctuation_dissipation_increases_with_temperature function   6887 crates/materials_core/src/optical_database.rs fn test_fluctuation_dissipation_increases_with_temperature() {
+test_fluctuation_dissipation_spectral_positive function   6874 crates/materials_core/src/optical_database.rs fn test_fluctuation_dissipation_spectral_positive() {
+test_fluctuation_force_decays_with_distance function   6986 crates/materials_core/src/optical_database.rs fn test_fluctuation_force_decays_with_distance() {
+test_fluctuation_induced_force_integrand_positive function   6973 crates/materials_core/src/optical_database.rs fn test_fluctuation_induced_force_integrand_positive() {
+test_fom_spp_gold_positive function   5994 crates/materials_core/src/optical_database.rs fn test_fom_spp_gold_positive() {
+test_fom_spp_increases_with_lower_frequency function   6008 crates/materials_core/src/optical_database.rs fn test_fom_spp_increases_with_lower_frequency() {
+test_franz_keldysh_above_gap_zero function   7258 crates/materials_core/src/optical_database.rs fn test_franz_keldysh_above_gap_zero() {
+test_franz_keldysh_below_gap function   7244 crates/materials_core/src/optical_database.rs fn test_franz_keldysh_below_gap() {
+test_fresnel_normal_incidence_matches_reflectivity function   5098 crates/materials_core/src/optical_database.rs fn test_fresnel_normal_incidence_matches_reflectivity() {
+test_fresnel_rp_minimum_near_brewster function   5152 crates/materials_core/src/optical_database.rs fn test_fresnel_rp_minimum_near_brewster() {
+test_fresnel_total_internal_reflection function   5115 crates/materials_core/src/optical_database.rs fn test_fresnel_total_internal_reflection() {
+test_fused_silica_at_1030nm function   7371 crates/materials_core/src/optical_database.rs fn test_fused_silica_at_1030nm() {
+test_g2_approaches_1_at_high_power function    609 crates/optics_core/src/sfwm.rs fn test_g2_approaches_1_at_high_power() {
+test_g2_sfwm_high_at_low_power function    602 crates/optics_core/src/sfwm.rs fn test_g2_sfwm_high_at_low_power() {
+test_get_material function   2295 crates/materials_core/src/optical_database.rs fn test_get_material() {
+test_get_tungsten_oxide_materials function   2963 crates/materials_core/src/optical_database.rs fn test_get_tungsten_oxide_materials() {
+test_gold_carrier_density function   3373 crates/materials_core/src/optical_database.rs fn test_gold_carrier_density() {
+test_gold_drude  function   2251 crates/materials_core/src/optical_database.rs fn test_gold_drude() {
+test_gold_high_reflectivity function   3070 crates/materials_core/src/optical_database.rs fn test_gold_high_reflectivity() {
+test_gold_imaginary_frequency function   2260 crates/materials_core/src/optical_database.rs fn test_gold_imaginary_frequency() {
+test_gold_plasma_edge function   3232 crates/materials_core/src/optical_database.rs fn test_gold_plasma_edge() {
+test_gold_rakic_5_oscillators function   5177 crates/materials_core/src/optical_database.rs fn test_gold_rakic_5_oscillators() {
+test_gold_rakic_database_lookup function   5244 crates/materials_core/src/optical_database.rs fn test_gold_rakic_database_lookup() {
+test_gold_rakic_effective_plasma_frequency function   5188 crates/materials_core/src/optical_database.rs fn test_gold_rakic_effective_plasma_frequency() {
+test_gold_rakic_lspr_closer_to_experiment_than_2osc function   5215 crates/materials_core/src/optical_database.rs fn test_gold_rakic_lspr_closer_to_experiment_than_2osc() {
+test_gold_rakic_lspr_near_experimental function   5200 crates/materials_core/src/optical_database.rs fn test_gold_rakic_lspr_near_experimental() {
+test_gold_rakic_metallic_in_visible function   5232 crates/materials_core/src/optical_database.rs fn test_gold_rakic_metallic_in_visible() {
+test_gold_rakic_reflectivity_high_in_ir function   5252 crates/materials_core/src/optical_database.rs fn test_gold_rakic_reflectivity_high_in_ir() {
+test_gold_refractive_index function   3052 crates/materials_core/src/optical_database.rs fn test_gold_refractive_index() {
+test_gold_skin_depth function   3106 crates/materials_core/src/optical_database.rs fn test_gold_skin_depth() {
+test_group_index_silica function   3573 crates/materials_core/src/optical_database.rs fn test_group_index_silica() {
+test_group_velocity_at_band_edge function   7157 crates/materials_core/src/optical_database.rs fn test_group_velocity_at_band_edge() {
+test_gvd_fs2_mm_conversion function   4720 crates/materials_core/src/optical_database.rs fn test_gvd_fs2_mm_conversion() {
+test_gvd_silica_normal_at_visible function   4707 crates/materials_core/src/optical_database.rs fn test_gvd_silica_normal_at_visible() {
+test_gvd_varies_with_frequency function   4749 crates/materials_core/src/optical_database.rs fn test_gvd_varies_with_frequency() {
+test_hagen_rubens_dielectric_none function   3564 crates/materials_core/src/optical_database.rs fn test_hagen_rubens_dielectric_none() {
+test_hagen_rubens_gold function   3532 crates/materials_core/src/optical_database.rs fn test_hagen_rubens_gold() {
+test_hagen_rubens_vs_full_model function   3546 crates/materials_core/src/optical_database.rs fn test_hagen_rubens_vs_full_model() {
+test_half_wave_voltage_positive function   7230 crates/materials_core/src/optical_database.rs fn test_half_wave_voltage_positive() {
+test_hot_electron_proxy_gold_visible function   6487 crates/materials_core/src/optical_database.rs fn test_hot_electron_proxy_gold_visible() {
+test_hot_silica_more_absorptive function   4530 crates/materials_core/src/optical_database.rs fn test_hot_silica_more_absorptive() {
+test_impedance_mismatch_dielectric_smaller function   5903 crates/materials_core/src/optical_database.rs fn test_impedance_mismatch_dielectric_smaller() {
+test_impedance_mismatch_metal_large function   5890 crates/materials_core/src/optical_database.rs fn test_impedance_mismatch_metal_large() {
+test_impedance_mismatch_zero_for_n_equals_1 function   5919 crates/materials_core/src/optical_database.rs fn test_impedance_mismatch_zero_for_n_equals_1() {
+test_infrared_combination_bands_count function   7091 crates/materials_core/src/optical_database.rs fn test_infrared_combination_bands_count() {
+test_infrared_combination_bands_sorted function   7080 crates/materials_core/src/optical_database.rs fn test_infrared_combination_bands_sorted() {
+test_integrated_emissivity_metal_vs_dielectric function   5577 crates/materials_core/src/optical_database.rs fn test_integrated_emissivity_metal_vs_dielectric() {
+test_interband_weight_gold function   4149 crates/materials_core/src/optical_database.rs fn test_interband_weight_gold() {
+test_intraband_dielectric_none function   4156 crates/materials_core/src/optical_database.rs fn test_intraband_dielectric_none() {
+test_intraband_weight_gold function   4129 crates/materials_core/src/optical_database.rs fn test_intraband_weight_gold() {
+test_ir_activity_proxy_out_of_range function   6631 crates/materials_core/src/optical_database.rs fn test_ir_activity_proxy_out_of_range() {
+test_ir_activity_proxy_srtio3 function   6617 crates/materials_core/src/optical_database.rs fn test_ir_activity_proxy_srtio3() {
+test_isotope_shift_heavier_lowers_frequency function   6641 crates/materials_core/src/optical_database.rs fn test_isotope_shift_heavier_lowers_frequency() {
+test_jdos_peak_near_oscillator function   4397 crates/materials_core/src/optical_database.rs fn test_jdos_peak_near_oscillator() {
+test_jdos_positive function   4380 crates/materials_core/src/optical_database.rs fn test_jdos_positive() {
+test_kerr_n2_proportional_to_chi3 function   4803 crates/materials_core/src/optical_database.rs fn test_kerr_n2_proportional_to_chi3() {
+test_kerr_n2_silica_order_of_magnitude function   4787 crates/materials_core/src/optical_database.rs fn test_kerr_n2_silica_order_of_magnitude() {
+test_kerr_quadratic_in_field function   7215 crates/materials_core/src/optical_database.rs fn test_kerr_quadratic_in_field() {
+test_kk_consistency_gold function   4211 crates/materials_core/src/optical_database.rs fn test_kk_consistency_gold() {
+test_kk_consistency_improves_with_resolution function   4238 crates/materials_core/src/optical_database.rs fn test_kk_consistency_improves_with_resolution() {
+test_kk_consistency_silica function   4226 crates/materials_core/src/optical_database.rs fn test_kk_consistency_silica() {
+test_kramers_kronig_causality function   2326 crates/materials_core/src/optical_database.rs fn test_kramers_kronig_causality() {
+test_lamb_shift_decreases_with_distance function   5814 crates/materials_core/src/optical_database.rs fn test_lamb_shift_decreases_with_distance() {
+test_lamb_shift_gold_nonzero function   5802 crates/materials_core/src/optical_database.rs fn test_lamb_shift_gold_nonzero() {
+test_latio3_mott_gap function   2545 crates/materials_core/src/optical_database.rs fn test_latio3_mott_gap() {
+test_lifshitz_drude_plasma_discrepancy_for_gold function   5063 crates/materials_core/src/optical_database.rs fn test_lifshitz_drude_plasma_discrepancy_for_gold() {
+test_lifshitz_energy_increases_with_separation function   5020 crates/materials_core/src/optical_database.rs fn test_lifshitz_energy_increases_with_separation() {
+test_lifshitz_energy_less_than_ideal function   5083 crates/materials_core/src/optical_database.rs fn test_lifshitz_energy_less_than_ideal() {
+test_lifshitz_energy_negative function   5008 crates/materials_core/src/optical_database.rs fn test_lifshitz_energy_negative() {
+test_lifshitz_gl_convergence function   5034 crates/materials_core/src/optical_database.rs fn test_lifshitz_gl_convergence() {
+test_lifshitz_si_stronger_than_sio2 function   5048 crates/materials_core/src/optical_database.rs fn test_lifshitz_si_stronger_than_sio2() {
+test_linbo3_extraordinary_at_1030nm function   7329 crates/materials_core/src/optical_database.rs fn test_linbo3_extraordinary_at_1030nm() {
+test_linbo3_negative_uniaxial function   7341 crates/materials_core/src/optical_database.rs fn test_linbo3_negative_uniaxial() {
+test_linbo3_ordinary_at_1030nm function   7317 crates/materials_core/src/optical_database.rs fn test_linbo3_ordinary_at_1030nm() {
+test_linbo3_ordinary_at_515nm function   7359 crates/materials_core/src/optical_database.rs fn test_linbo3_ordinary_at_515nm() {
+test_linear_scattering function   2782 crates/materials_core/src/optical_database.rs fn test_linear_scattering() {
+test_list_materials function   2306 crates/materials_core/src/optical_database.rs fn test_list_materials() {
+test_loss_function_peak_gold function   4014 crates/materials_core/src/optical_database.rs fn test_loss_function_peak_gold() {
+test_loss_function_peaks_near_plasma function   3091 crates/materials_core/src/optical_database.rs fn test_loss_function_peaks_near_plasma() {
+test_loss_function_positive_metals function   4001 crates/materials_core/src/optical_database.rs fn test_loss_function_positive_metals() {
+test_loss_spectral_weight_gold function   4032 crates/materials_core/src/optical_database.rs fn test_loss_spectral_weight_gold() {
+test_lspr_dielectric_none function   4984 crates/materials_core/src/optical_database.rs fn test_lspr_dielectric_none() {
+test_lspr_gold_in_vacuum function   4956 crates/materials_core/src/optical_database.rs fn test_lspr_gold_in_vacuum() {
+test_lspr_redshift_with_higher_eps_d function   4970 crates/materials_core/src/optical_database.rs fn test_lspr_redshift_with_higher_eps_d() {
+test_luminous_reflectance_gold_high function   6209 crates/materials_core/src/optical_database.rs fn test_luminous_reflectance_gold_high() {
+test_luminous_reflectance_gold_vs_silica function   6233 crates/materials_core/src/optical_database.rs fn test_luminous_reflectance_gold_vs_silica() {
+test_luminous_reflectance_silica_low function   6221 crates/materials_core/src/optical_database.rs fn test_luminous_reflectance_silica_low() {
+test_maker_fringe_period_consistent_with_l_coh_shg function     88 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_maker_fringe_period_consistent_with_l_coh_shg() {
+test_maker_fringe_sweep_lengths function    627 crates/optics_core/src/sfwm.rs fn test_maker_fringe_sweep_lengths() {
+test_maker_fringes_sfwm_monotonic_shg_oscillates function     32 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_maker_fringes_sfwm_monotonic_shg_oscillates() {
+test_material_count function   2591 crates/materials_core/src/optical_database.rs fn test_material_count() {
+test_material_count_sprint44 function   3039 crates/materials_core/src/optical_database.rs fn test_material_count_sprint44() {
+test_material_provenance_fields function   2342 crates/materials_core/src/optical_database.rs fn test_material_provenance_fields() {
+test_matsubara_frequencies_300k function   3452 crates/materials_core/src/optical_database.rs fn test_matsubara_frequencies_300k() {
+test_matsubara_frequencies_temperature_scaling function   3479 crates/materials_core/src/optical_database.rs fn test_matsubara_frequencies_temperature_scaling() {
+test_maxwell_garnett_limits function   4571 crates/materials_core/src/optical_database.rs fn test_maxwell_garnett_limits() {
+test_metadata_accessors_metals function   7448 crates/materials_core/src/optical_database.rs fn test_metadata_accessors_metals() {
+test_metadata_accessors_oxides function   7438 crates/materials_core/src/optical_database.rs fn test_metadata_accessors_oxides() {
+test_metadata_accessors_semiconductors function   7429 crates/materials_core/src/optical_database.rs fn test_metadata_accessors_semiconductors() {
+test_metadata_accessors_titanates_and_tcos function   7481 crates/materials_core/src/optical_database.rs fn test_metadata_accessors_titanates_and_tcos() {
+test_metadata_accessors_tourmaline_supergroup function   7585 crates/materials_core/src/optical_database.rs fn test_metadata_accessors_tourmaline_supergroup() {
+test_metadata_accessors_tungstates function   7463 crates/materials_core/src/optical_database.rs fn test_metadata_accessors_tungstates() {
+test_metadata_full_audit_coverage function   7514 crates/materials_core/src/optical_database.rs fn test_metadata_full_audit_coverage() {
+test_mie_extinction_efficiency_gold function   6822 crates/materials_core/src/optical_database.rs fn test_mie_extinction_efficiency_gold() {
+test_mie_scattering_albedo_bounded function   6833 crates/materials_core/src/optical_database.rs fn test_mie_scattering_albedo_bounded() {
+test_modal_birefringence_gold_nonzero function   6382 crates/materials_core/src/optical_database.rs fn test_modal_birefringence_gold_nonzero() {
+test_multiphonon_absorption_above_cutoff function   7037 crates/materials_core/src/optical_database.rs fn test_multiphonon_absorption_above_cutoff() {
+test_multiphonon_absorption_below_cutoff_zero function   7054 crates/materials_core/src/optical_database.rs fn test_multiphonon_absorption_below_cutoff_zero() {
+test_n_eff_gold_positive function   3949 crates/materials_core/src/optical_database.rs fn test_n_eff_gold_positive() {
+test_n_eff_monotonic function   3963 crates/materials_core/src/optical_database.rs fn test_n_eff_monotonic() {
+test_near_field_thermal_emission_enhancement function   6936 crates/materials_core/src/optical_database.rs fn test_near_field_thermal_emission_enhancement() {
+test_numerical_aperture_no_guiding function   6326 crates/materials_core/src/optical_database.rs fn test_numerical_aperture_no_guiding() {
+test_numerical_aperture_silica_positive function   6311 crates/materials_core/src/optical_database.rs fn test_numerical_aperture_silica_positive() {
+test_omnidirectional_gap_condition function   7171 crates/materials_core/src/optical_database.rs fn test_omnidirectional_gap_condition() {
+test_optical_conductivity_metals function   3156 crates/materials_core/src/optical_database.rs fn test_optical_conductivity_metals() {
+test_optical_effective_mass_dielectric_none function   4562 crates/materials_core/src/optical_database.rs fn test_optical_effective_mass_dielectric_none() {
+test_optical_effective_mass_gold function   4548 crates/materials_core/src/optical_database.rs fn test_optical_effective_mass_gold() {
+test_optical_gap_cawo4 function   3684 crates/materials_core/src/optical_database.rs fn test_optical_gap_cawo4() {
+test_optical_gap_metal_none function   3675 crates/materials_core/src/optical_database.rs fn test_optical_gap_metal_none() {
+test_optical_gap_no_transparent_window function   3699 crates/materials_core/src/optical_database.rs fn test_optical_gap_no_transparent_window() {
+test_optical_gap_two_pass_phonon function   3736 crates/materials_core/src/optical_database.rs fn test_optical_gap_two_pass_phonon() {
+test_optical_gap_weak_oscillator function   3710 crates/materials_core/src/optical_database.rs fn test_optical_gap_weak_oscillator() {
+test_optical_gap_wo3 function   3645 crates/materials_core/src/optical_database.rs fn test_optical_gap_wo3() {
+test_optical_path_length function   6048 crates/materials_core/src/optical_database.rs fn test_optical_path_length() {
+test_optimal_absorber_thickness_gold function   5868 crates/materials_core/src/optical_database.rs fn test_optimal_absorber_thickness_gold() {
+test_oscillator_quality_factor_no_oscillators function   5955 crates/materials_core/src/optical_database.rs fn test_oscillator_quality_factor_no_oscillators() {
+test_oscillator_quality_factor_srtio3 function   5941 crates/materials_core/src/optical_database.rs fn test_oscillator_quality_factor_srtio3() {
+test_paper_dominance_ratio_at_10um function     12 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_paper_dominance_ratio_at_10um() {
+test_pbwo4_scintillator function   2953 crates/materials_core/src/optical_database.rs fn test_pbwo4_scintillator() {
+test_penetration_depth_ratio_dielectric_large function   6104 crates/materials_core/src/optical_database.rs fn test_penetration_depth_ratio_dielectric_large() {
+test_penetration_depth_ratio_metal_small function   6091 crates/materials_core/src/optical_database.rs fn test_penetration_depth_ratio_metal_small() {
+test_penn_gap_consistency function   4415 crates/materials_core/src/optical_database.rs fn test_penn_gap_consistency() {
+test_penn_gap_metal_none function   4345 crates/materials_core/src/optical_database.rs fn test_penn_gap_metal_none() {
+test_penn_gap_silica function   4324 crates/materials_core/src/optical_database.rs fn test_penn_gap_silica() {
+test_phase_matching_small_dk function    490 crates/optics_core/src/sfwm.rs fn test_phase_matching_small_dk() {
+test_photo_induced_absorption_nonzero function   6750 crates/materials_core/src/optical_database.rs fn test_photo_induced_absorption_nonzero() {
+test_photoelastic_delta_n_proportional_to_strain function   7270 crates/materials_core/src/optical_database.rs fn test_photoelastic_delta_n_proportional_to_strain() {
+test_photon_tunneling_no_gap function   6961 crates/materials_core/src/optical_database.rs fn test_photon_tunneling_no_gap() {
+test_photon_tunneling_probability_bounded function   6949 crates/materials_core/src/optical_database.rs fn test_photon_tunneling_probability_bounded() {
+test_photonic_band_gap_ratio_positive function   7134 crates/materials_core/src/optical_database.rs fn test_photonic_band_gap_ratio_positive() {
+test_plasma_frequency_from_density function   5420 crates/materials_core/src/optical_database.rs fn test_plasma_frequency_from_density() {
+test_plasma_frequency_shift_positive_injection function   6677 crates/materials_core/src/optical_database.rs fn test_plasma_frequency_shift_positive_injection() {
+test_plasma_screening_ratio_dielectric_none function   4696 crates/materials_core/src/optical_database.rs fn test_plasma_screening_ratio_dielectric_none() {
+test_plasma_screening_ratio_gold function   4676 crates/materials_core/src/optical_database.rs fn test_plasma_screening_ratio_gold() {
+test_plasmon_vs_screened_plasma function   4189 crates/materials_core/src/optical_database.rs fn test_plasmon_vs_screened_plasma() {
+test_pockels_delta_n_sign function   7185 crates/materials_core/src/optical_database.rs fn test_pockels_delta_n_sign() {
+test_pockels_linear_in_field function   7200 crates/materials_core/src/optical_database.rs fn test_pockels_linear_in_field() {
+test_polariton_group_velocity_sublight function   6604 crates/materials_core/src/optical_database.rs fn test_polariton_group_velocity_sublight() {
+test_polarizability_clausius_mossotti_gold function   6775 crates/materials_core/src/optical_database.rs fn test_polarizability_clausius_mossotti_gold() {
+test_polarization_cos2 function    674 crates/optics_core/src/sfwm.rs fn test_polarization_cos2() {
+test_polycrystalline_reflectivity_bounded function   3307 crates/materials_core/src/optical_database.rs fn test_polycrystalline_reflectivity_bounded() {
+test_power_law_gamma_increases function   2756 crates/materials_core/src/optical_database.rs fn test_power_law_gamma_increases() {
+test_power_law_zero_frequency function   2771 crates/materials_core/src/optical_database.rs fn test_power_law_zero_frequency() {
+test_psi_delta_dielectric_brewster function   5487 crates/materials_core/src/optical_database.rs fn test_psi_delta_dielectric_brewster() {
+test_psi_delta_normal_incidence function   5452 crates/materials_core/src/optical_database.rs fn test_psi_delta_normal_incidence() {
+test_psi_delta_oblique_gold function   5467 crates/materials_core/src/optical_database.rs fn test_psi_delta_oblique_gold() {
+test_purcell_factor_dielectric_near_one function   5788 crates/materials_core/src/optical_database.rs fn test_purcell_factor_dielectric_near_one() {
+test_purcell_factor_far_from_surface function   5775 crates/materials_core/src/optical_database.rs fn test_purcell_factor_far_from_surface() {
+test_purcell_factor_near_gold_surface function   5759 crates/materials_core/src/optical_database.rs fn test_purcell_factor_near_gold_surface() {
+test_quantum_efficiency_bounds function   6475 crates/materials_core/src/optical_database.rs fn test_quantum_efficiency_bounds() {
+test_quarter_wave_stack_gap_symmetric function   7108 crates/materials_core/src/optical_database.rs fn test_quarter_wave_stack_gap_symmetric() {
+test_quarter_wave_stack_reflectivity_increases_with_pairs function   7124 crates/materials_core/src/optical_database.rs fn test_quarter_wave_stack_reflectivity_increases_with_pairs() {
+test_quartz_optical function   2385 crates/materials_core/src/optical_database.rs fn test_quartz_optical() {
+test_radiation_pressure_equals_extinction_rayleigh function   6858 crates/materials_core/src/optical_database.rs fn test_radiation_pressure_equals_extinction_rayleigh() {
+test_rakic_metals_exist function   2426 crates/materials_core/src/optical_database.rs fn test_rakic_metals_exist() {
+test_rakic_metals_imaginary_freq_monotonic function   2455 crates/materials_core/src/optical_database.rs fn test_rakic_metals_imaginary_freq_monotonic() {
+test_rakic_metals_metallic_sign function   2437 crates/materials_core/src/optical_database.rs fn test_rakic_metals_metallic_sign() {
+test_rate_sweep_direct_dominates_below_30um function     70 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_rate_sweep_direct_dominates_below_30um() {
+test_rayleigh_cross_section_gold function   6790 crates/materials_core/src/optical_database.rs fn test_rayleigh_cross_section_gold() {
+test_rayleigh_scattering_efficiency function   6808 crates/materials_core/src/optical_database.rs fn test_rayleigh_scattering_efficiency() {
+test_reflection_perfect_metal function   2285 crates/materials_core/src/optical_database.rs fn test_reflection_perfect_metal() {
+test_reflectivity_sum_rule function   3321 crates/materials_core/src/optical_database.rs fn test_reflectivity_sum_rule() {
+test_refractive_index_sensitivity_gold function   6448 crates/materials_core/src/optical_database.rs fn test_refractive_index_sensitivity_gold() {
+test_resistivity_mobility_consistency function   5432 crates/materials_core/src/optical_database.rs fn test_resistivity_mobility_consistency() {
+test_reststrahlen_band_metal_none function   5665 crates/materials_core/src/optical_database.rs fn test_reststrahlen_band_metal_none() {
+test_reststrahlen_band_srtio3 function   5642 crates/materials_core/src/optical_database.rs fn test_reststrahlen_band_srtio3() {
+test_reststrahlen_lst_consistency function   5680 crates/materials_core/src/optical_database.rs fn test_reststrahlen_lst_consistency() {
+test_scattering_time_gold function   5323 crates/materials_core/src/optical_database.rs fn test_scattering_time_gold() {
+test_screened_plasma_dielectric_reststrahlen function   4074 crates/materials_core/src/optical_database.rs fn test_screened_plasma_dielectric_reststrahlen() {
+test_screened_plasma_gold function   4051 crates/materials_core/src/optical_database.rs fn test_screened_plasma_gold() {
+test_selective_emitter_efficiency_bounds function   6247 crates/materials_core/src/optical_database.rs fn test_selective_emitter_efficiency_bounds() {
+test_selective_emitter_higher_gap_lower_efficiency function   6261 crates/materials_core/src/optical_database.rs fn test_selective_emitter_higher_gap_lower_efficiency() {
+test_sellmeier_coherence_lengths_order function    122 crates/optics_core/tests/test_sfwm_son_chekhova.rs fn test_sellmeier_coherence_lengths_order() {
+test_sellmeier_direct_dominates_cascaded function    578 crates/optics_core/src/sfwm.rs fn test_sellmeier_direct_dominates_cascaded() {
+test_sellmeier_group_index_greater_than_phase function   7383 crates/materials_core/src/optical_database.rs fn test_sellmeier_group_index_greater_than_phase() {
+test_sers_enhancement_fourth_power function   6433 crates/materials_core/src/optical_database.rs fn test_sers_enhancement_fourth_power() {
+test_sfwm_dominates_at_10um function    500 crates/optics_core/src/sfwm.rs fn test_sfwm_dominates_at_10um() {
+test_sfwm_efficiency_positive function    514 crates/optics_core/src/sfwm.rs fn test_sfwm_efficiency_positive() {
+test_shg_oscillates_in_sweep function    649 crates/optics_core/src/sfwm.rs fn test_shg_oscillates_in_sweep() {
+test_silica_casimir_optical_static_eps function   4996 crates/materials_core/src/optical_database.rs fn test_silica_casimir_optical_static_eps() {
+test_silica_dielectric function   2268 crates/materials_core/src/optical_database.rs fn test_silica_dielectric() {
+test_silica_no_skin_depth_in_gap function   3124 crates/materials_core/src/optical_database.rs fn test_silica_no_skin_depth_in_gap() {
+test_skin_depth_frequency_dependence function   3340 crates/materials_core/src/optical_database.rs fn test_skin_depth_frequency_dependence() {
+test_solar_absorptance_dielectric_high function   6137 crates/materials_core/src/optical_database.rs fn test_solar_absorptance_dielectric_high() {
+test_solar_absorptance_metal_low function   6125 crates/materials_core/src/optical_database.rs fn test_solar_absorptance_metal_low() {
+test_solar_reflectance_complement function   6149 crates/materials_core/src/optical_database.rs fn test_solar_reflectance_complement() {
+test_spectral_emittance_increases_with_temp function   5563 crates/materials_core/src/optical_database.rs fn test_spectral_emittance_increases_with_temp() {
+test_spectral_emittance_positive_at_room_temp function   5550 crates/materials_core/src/optical_database.rs fn test_spectral_emittance_positive_at_room_temp() {
+test_spectral_emittance_zero_at_zero_temp function   5542 crates/materials_core/src/optical_database.rs fn test_spectral_emittance_zero_at_zero_temp() {
+test_spectral_energy_density_positive_temp function   6930 crates/materials_core/src/optical_database.rs fn test_spectral_energy_density_positive_temp() {
+test_spectral_energy_density_zero_temp function   6921 crates/materials_core/src/optical_database.rs fn test_spectral_energy_density_zero_temp() {
+test_spectral_weight_ordering function   3428 crates/materials_core/src/optical_database.rs fn test_spectral_weight_ordering() {
+test_spectral_weight_partitioning function   4165 crates/materials_core/src/optical_database.rs fn test_spectral_weight_partitioning() {
+test_spectral_weight_window_positive function   6024 crates/materials_core/src/optical_database.rs fn test_spectral_weight_window_positive() {
+test_spectral_weight_window_wider_is_larger function   6035 crates/materials_core/src/optical_database.rs fn test_spectral_weight_window_wider_is_larger() {
+test_spp_higher_eps_d_longer_propagation function   4913 crates/materials_core/src/optical_database.rs fn test_spp_higher_eps_d_longer_propagation() {
+test_spp_propagation_length_gold function   4898 crates/materials_core/src/optical_database.rs fn test_spp_propagation_length_gold() {
+test_spp_wavevector_gold_larger_than_light_line function   4871 crates/materials_core/src/optical_database.rs fn test_spp_wavevector_gold_larger_than_light_line() {
+test_spp_wavevector_has_imaginary_part function   4886 crates/materials_core/src/optical_database.rs fn test_spp_wavevector_has_imaginary_part() {
+test_srtio3_doped_metallic function   2529 crates/materials_core/src/optical_database.rs fn test_srtio3_doped_metallic() {
+test_srtio3_soft_mode function   2516 crates/materials_core/src/optical_database.rs fn test_srtio3_soft_mode() {
+test_static_dielectric_metal_none function   4120 crates/materials_core/src/optical_database.rs fn test_static_dielectric_metal_none() {
+test_static_dielectric_silica function   4109 crates/materials_core/src/optical_database.rs fn test_static_dielectric_silica() {
+test_substrate_sfwm_fused_silica_500um function    682 crates/optics_core/src/sfwm.rs fn test_substrate_sfwm_fused_silica_500um() {
+test_surface_impedance_dielectric function   3794 crates/materials_core/src/optical_database.rs fn test_surface_impedance_dielectric() {
+test_surface_impedance_gold function   3775 crates/materials_core/src/optical_database.rs fn test_surface_impedance_gold() {
+test_surface_loss_function_gold_nonzero function   5707 crates/materials_core/src/optical_database.rs fn test_surface_loss_function_gold_nonzero() {
+test_surface_loss_peak_near_surface_plasmon function   5722 crates/materials_core/src/optical_database.rs fn test_surface_loss_peak_near_surface_plasmon() {
+test_surface_phonon_polariton_srtio3 function   6589 crates/materials_core/src/optical_database.rs fn test_surface_phonon_polariton_srtio3() {
+test_tabulated_scattering_interpolation function   2798 crates/materials_core/src/optical_database.rs fn test_tabulated_scattering_interpolation() {
+test_tauc_direct_gap_cawo4 function   4252 crates/materials_core/src/optical_database.rs fn test_tauc_direct_gap_cawo4() {
+test_tauc_direct_vs_indirect function   4284 crates/materials_core/src/optical_database.rs fn test_tauc_direct_vs_indirect() {
+test_tauc_metal_none function   4274 crates/materials_core/src/optical_database.rs fn test_tauc_metal_none() {
+test_thermal_broadening_drude_bloch_gruneisen function   4502 crates/materials_core/src/optical_database.rs fn test_thermal_broadening_drude_bloch_gruneisen() {
+test_thermal_broadening_increases_damping function   4446 crates/materials_core/src/optical_database.rs fn test_thermal_broadening_increases_damping() {
+test_thermal_broadening_low_t_limit function   4484 crates/materials_core/src/optical_database.rs fn test_thermal_broadening_low_t_limit() {
+test_thermal_broadening_preserves_oscillator_strength function   4466 crates/materials_core/src/optical_database.rs fn test_thermal_broadening_preserves_oscillator_strength() {
+test_thermal_noise_power_density_positive function   6896 crates/materials_core/src/optical_database.rs fn test_thermal_noise_power_density_positive() {
+test_thickness_sweep_monotonic_count function    522 crates/optics_core/src/sfwm.rs fn test_thickness_sweep_monotonic_count() {
+test_thin_film_energy_conservation function   6515 crates/materials_core/src/optical_database.rs fn test_thin_film_energy_conservation() {
+test_thin_film_phase_shift_positive function   6534 crates/materials_core/src/optical_database.rs fn test_thin_film_phase_shift_positive() {
+test_thin_film_reflectance_bounds function   6503 crates/materials_core/src/optical_database.rs fn test_thin_film_reflectance_bounds() {
+test_tio2_alias  function   2408 crates/materials_core/src/optical_database.rs fn test_tio2_alias() {
+test_tio2_optical function   2398 crates/materials_core/src/optical_database.rs fn test_tio2_optical() {
+test_tio_metallic function   2502 crates/materials_core/src/optical_database.rs fn test_tio_metallic() {
+test_tourmaline_supergroup_all_uniaxial_negative function   7601 crates/materials_core/src/optical_database.rs fn test_tourmaline_supergroup_all_uniaxial_negative() {
+test_transient_reflectivity_change_nonzero function   6690 crates/materials_core/src/optical_database.rs fn test_transient_reflectivity_change_nonzero() {
+test_two_phonon_density_of_states_peak function   7070 crates/materials_core/src/optical_database.rs fn test_two_phonon_density_of_states_peak() {
+test_uniaxial_imaginary_frequency function   3011 crates/materials_core/src/optical_database.rs fn test_uniaxial_imaginary_frequency() {
+test_urbach_energy_dielectric function   4295 crates/materials_core/src/optical_database.rs fn test_urbach_energy_dielectric() {
+test_urbach_metal_none function   4315 crates/materials_core/src/optical_database.rs fn test_urbach_metal_none() {
+test_v_parameter_single_mode function   6338 crates/materials_core/src/optical_database.rs fn test_v_parameter_single_mode() {
+test_voigt_eps_xy_gold_nonzero function   5361 crates/materials_core/src/optical_database.rs fn test_voigt_eps_xy_gold_nonzero() {
+test_voigt_eps_xy_proportional_to_b function   5380 crates/materials_core/src/optical_database.rs fn test_voigt_eps_xy_proportional_to_b() {
+test_volume_loss_weighted_proportional_to_omega function   5746 crates/materials_core/src/optical_database.rs fn test_volume_loss_weighted_proportional_to_omega() {
+test_wavelength_conversion function   2277 crates/materials_core/src/optical_database.rs fn test_wavelength_conversion() {
+test_wavevector_mismatches_coherence_lengths function    531 crates/optics_core/src/sfwm.rs fn test_wavevector_mismatches_coherence_lengths() {
+test_wien_peak_omega_positive function   6289 crates/materials_core/src/optical_database.rs fn test_wien_peak_omega_positive() {
+test_wien_peak_proportional_to_temperature function   6198 crates/materials_core/src/optical_database.rs fn test_wien_peak_proportional_to_temperature() {
+test_wien_peak_room_temperature function   6176 crates/materials_core/src/optical_database.rs fn test_wien_peak_room_temperature() {
+test_wien_peak_sun function   6187 crates/materials_core/src/optical_database.rs fn test_wien_peak_sun() {
+test_wo3_no_drude function   2854 crates/materials_core/src/optical_database.rs fn test_wo3_no_drude() {
+test_wo3_no_plasma_edge function   3223 crates/materials_core/src/optical_database.rs fn test_wo3_no_plasma_edge() {
+test_wo3_x_plasma_edge function   3203 crates/materials_core/src/optical_database.rs fn test_wo3_x_plasma_edge() {
+test_wo3_x_plasmonic function   2872 crates/materials_core/src/optical_database.rs fn test_wo3_x_plasmonic() {
+test_wo3x_carrier_density function   3391 crates/materials_core/src/optical_database.rs fn test_wo3x_carrier_density() {
+test_zero_dispersion_returns_none_for_narrow_range function   4857 crates/materials_core/src/optical_database.rs fn test_zero_dispersion_returns_none_for_narrow_range() {
+test_zero_point_energy_density function   6908 crates/materials_core/src/optical_database.rs fn test_zero_point_energy_density() {
+tests            module      190 crates/materials_core/src/optical_database/cross_reference.rs mod tests {
+tests            module      475 crates/optics_core/src/sfwm.rs mod tests {
+tests            module     2245 crates/materials_core/src/optical_database.rs mod tests {
+thermal_noise_power_density method       40 crates/materials_core/src/optical_database/fluctuation_electrodynamics.rs pub fn thermal_noise_power_density(&self, omega: f64, temperature_k: f64) -> f64 {
+thickness        field       136 crates/optics_core/src/sfwm.rs pub thickness: f64,
+thickness_sweep  function     89 crates/optics_core/src/sfwm.rs pub fn thickness_sweep(thicknesses_um: &[f64]) -> Vec<SfwmDominanceResult> {
+thickness_um     field        35 crates/optics_core/src/sfwm.rs pub thickness_um: f64,
+thickness_um     field       420 crates/optics_core/src/sfwm.rs pub thickness_um: f64,
+thickness_um     field       445 crates/optics_core/src/sfwm.rs pub thickness_um: f64,
+thin_film_coating module     1151 crates/materials_core/src/optical_database.rs mod thin_film_coating;
+thin_film_phase_shift method       54 crates/materials_core/src/optical_database/thin_film_coating.rs pub fn thin_film_phase_shift(&self, omega: f64, thickness_m: f64) -> f64 {
+thin_film_reflectance method       22 crates/materials_core/src/optical_database/thin_film_coating.rs pub fn thin_film_reflectance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
+thin_film_transmittance method       39 crates/materials_core/src/optical_database/thin_film_coating.rs pub fn thin_film_transmittance(&self, omega: f64, thickness_m: f64, n_substrate: f64) -> f64 {
+tio2_metadata    function    225 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn tio2_metadata() -> MineralMetadata {
+tio2_optical     function     81 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn tio2_optical() -> DrudeLorentzParams {
+tio_metadata     function    354 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn tio_metadata() -> MineralMetadata {
+tio_optical      function     90 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn tio_optical() -> DrudeLorentzParams {
+titanium_drude   function    997 crates/materials_core/src/optical_database.rs pub fn titanium_drude() -> DrudeParams {
+titanium_drude_lorentz function    147 crates/materials_core/src/optical_database/metals_dl.rs pub fn titanium_drude_lorentz() -> DrudeLorentzParams {
+titanium_metadata function    350 crates/materials_core/src/optical_database/metals_dl.rs pub fn titanium_metadata() -> MineralMetadata {
+tourmaline       module     1163 crates/materials_core/src/optical_database.rs mod tourmaline;
+tourmaline_metadata function    347 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn tourmaline_metadata() -> MineralMetadata {
+tourmaline_optical function     53 crates/materials_core/src/optical_database/oxides_tcos.rs pub fn tourmaline_optical() -> DrudeLorentzParams {
+transient_reflectivity_change method       57 crates/materials_core/src/optical_database/photoconductivity.rs pub fn transient_reflectivity_change(
+transport        module     1152 crates/materials_core/src/optical_database.rs mod transport;
+tungstates       module     1072 crates/materials_core/src/optical_database.rs mod tungstates;
+tungsten_drude   function   1007 crates/materials_core/src/optical_database.rs pub fn tungsten_drude() -> DrudeParams {
+tungsten_drude_lorentz function    156 crates/materials_core/src/optical_database/metals_dl.rs pub fn tungsten_drude_lorentz() -> DrudeLorentzParams {
+tungsten_metadata function    369 crates/materials_core/src/optical_database/metals_dl.rs pub fn tungsten_metadata() -> MineralMetadata {
+two_phonon_density_of_states method       79 crates/materials_core/src/optical_database/anharmonic_multiphonon.rs pub fn two_phonon_density_of_states(&self, omega_ev: f64) -> f64 {
+uniaxial         field      1704 crates/materials_core/src/optical_database.rs pub uniaxial: Option<UniaxialOptical>,
+unknown_name_returns_none function    201 crates/materials_core/src/optical_database/cross_reference.rs fn unknown_name_returns_none() {
+urbach_energy_ev method      117 crates/materials_core/src/optical_database/bandgap_analysis.rs pub fn urbach_energy_ev(&self) -> Option<f64> {
+uvite_metadata   function    174 crates/materials_core/src/optical_database/tourmaline.rs pub fn uvite_metadata() -> MineralMetadata {
+uvite_optical    function    160 crates/materials_core/src/optical_database/tourmaline.rs pub fn uvite_optical() -> UniaxialOptical {
+v_parameter      method       29 crates/materials_core/src/optical_database/photonic_waveguide.rs pub fn v_parameter(&self, omega: f64, core_radius_m: f64, n_cladding: f64) -> Option<f64> {
+validity_range_ev field      1696 crates/materials_core/src/optical_database.rs pub validity_range_ev: Option<(f64, f64)>,
+validity_range_um field      2176 crates/materials_core/src/optical_database.rs pub validity_range_um: (f64, f64),
+viscosity_database module       43 crates/materials_core/src/lib.rs pub mod viscosity_database;
+voigt_eps_xy     method       73 crates/materials_core/src/optical_database/transport.rs pub fn voigt_eps_xy(
+volume_loss_weighted method       45 crates/materials_core/src/optical_database/eels_absorption_engineering.rs pub fn volume_loss_weighted(&self, omega: f64) -> f64 {
+wavelength_to_omega function     54 crates/materials_core/src/optical_database.rs pub fn wavelength_to_omega(lambda_nm: f64) -> f64 {
+wavevector_mismatches method      211 crates/optics_core/src/sfwm.rs pub fn wavevector_mismatches(&self) -> WavevectorMismatches {
+wien_peak_ev     method       75 crates/materials_core/src/optical_database/photovoltaic_solar.rs pub fn wien_peak_ev(temperature_k: f64) -> f64 {
+wien_peak_omega  method       67 crates/materials_core/src/optical_database/photovoltaic_solar.rs pub fn wien_peak_omega(temperature_k: f64) -> f64 {
+wo3_metadata     function    120 crates/materials_core/src/optical_database/tungstates.rs pub fn wo3_metadata() -> MineralMetadata {
+wo3_optical      function     48 crates/materials_core/src/optical_database/tungstates.rs pub fn wo3_optical() -> DrudeLorentzParams {
+wo3_x_metadata   function    178 crates/materials_core/src/optical_database/tungstates.rs pub fn wo3_x_metadata() -> MineralMetadata {
+wo3_x_optical    function     57 crates/materials_core/src/optical_database/tungstates.rs pub fn wo3_x_optical() -> DrudeLorentzParams {
+write_csv        function     61 crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs fn write_csv(path: &str, header: &str, rows: &[String]) -> Result<()> {
+zero_dispersion_omega method      128 crates/materials_core/src/optical_database/temperature_dispersion.rs pub fn zero_dispersion_omega(&self, omega_min: f64, omega_max: f64) -> Option<f64> {
+zero_point_energy_density method       53 crates/materials_core/src/optical_database/fluctuation_electrodynamics.rs pub fn zero_point_energy_density(omega: f64) -> f64 {

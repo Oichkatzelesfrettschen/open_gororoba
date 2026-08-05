@@ -1,0 +1,28 @@
+cflow:crates/optics_core/src/sfwm.rs:100: pub redefined
+cflow:crates/optics_core/src/sfwm.rs:33: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:114: pub redefined
+cflow:crates/optics_core/src/sfwm.rs:100: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:139: SfwmMaterialParams redefined
+cflow:crates/optics_core/src/sfwm.rs:114: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:228: pub redefined
+cflow:crates/optics_core/src/sfwm.rs:114: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:336: f64 redefined
+cflow:crates/optics_core/src/sfwm.rs:11: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:336: f64 redefined
+cflow:crates/optics_core/src/sfwm.rs:336: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:336: f64 redefined
+cflow:crates/optics_core/src/sfwm.rs:336: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:353: f64 redefined
+cflow:crates/optics_core/src/sfwm.rs:336: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:353: f64 redefined
+cflow:crates/optics_core/src/sfwm.rs:353: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:362: f64 redefined
+cflow:crates/optics_core/src/sfwm.rs:353: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:362: f64 redefined
+cflow:crates/optics_core/src/sfwm.rs:362: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:363: thicknesses redefined
+cflow:crates/optics_core/src/sfwm.rs:338: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:412: pub redefined
+cflow:crates/optics_core/src/sfwm.rs:228: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm.rs:429: pub redefined
+cflow:crates/optics_core/src/sfwm.rs:412: this is the place of previous definition

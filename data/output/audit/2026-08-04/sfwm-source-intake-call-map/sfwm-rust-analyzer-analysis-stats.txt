@@ -1,0 +1,27 @@
+command=rust-analyzer analysis-stats . --only crates/optics_core/src/sfwm.rs --no-test --disable-build-scripts --skip-mir-stats --skip-data-layout
+tool=rust-analyzer
+Database loaded:     3.53s, 2693minstr, 496mb (metadata 1.12s, 36minstr, 4mb)
+  item trees: 2434
+  dependency lines of code: 12_260_560, item trees: 24_670
+  dependency item stats: traits: 6_506, impl: 176_024, mods: 31_826, macro calls: 36_302, macro rules: 8_320
+Item Tree Collection: 17.93s, 201ginstr, 3765mb
+  Total Statistics:
+    crates: 750, mods: 2020, decls: 27060, bodies: 23351, adts: 4060, consts: 1426, signatures: 34245, variants: 5481
+  Workspace:
+    traits: 51, macro_rules macros: 1, proc_macros: 0
+    lines of code: 831_423, item trees: 2_434
+    usages: traits: 52, impl: 1_538, mods: 2_614, macro calls: 77, macro rules: 3
+  Dependencies:
+    lines of code: 12_260_560, item trees: 24_670
+    declarations: traits: 6_506, impl: 176_024, mods: 31_826, macro calls: 36_302, macro rules: 8_320
+Item Collection:     18.44s, 181ginstr, 3362mb
+Crate lang items:    219.36ms, 1903minstr, 27mb
+Expression Store Lowering: 166.50ms, 1062minstr, 22mb
+  exprs: 0, ??ty: 0 (100%), ?ty: 0 (100%), !ty: 0
+  pats: 0, ??ty: 0 (100%), ?ty: 0 (100%), !ty: 0
+  panics: 0
+Inference:           10.06ms, 71minstr, 0b
+Const evaluation:    4.17s, 26ginstr, 666mb
+Failed const evals: 18 (1%)
+Total:               41.10s, 411ginstr, 7284mb
+exit_code=0

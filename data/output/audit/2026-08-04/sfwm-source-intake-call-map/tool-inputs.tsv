@@ -1,0 +1,6 @@
+tool	input
+ctags	file-list.tsv
+cscope	file-list.tsv
+cflow	crates/optics_core/src/sfwm.rs
+rg-symbol-occurrence-map	file-list.tsv
+manual-edge-review	symbol occurrence inventory plus source-level consumer review

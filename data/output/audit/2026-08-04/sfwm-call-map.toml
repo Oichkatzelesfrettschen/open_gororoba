@@ -1,0 +1,178 @@
+schema = "sfwm-call-map-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+source_root = "/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-intake"
+capture_root = "/var/tmp/open_gororoba-sfwm-callmap-20260805T004849Z"
+scope = "crates/optics_core/src/sfwm.rs, its public reexports, SFWM integration tests, the SFWM CLI, and optical material constructors"
+semantic_status = "bounded lexical and symbol-level map; cflow and cscope are not Rust semantic analyzers"
+
+[[tool]]
+name = "ctags"
+version = "Universal Ctags 6.2.1"
+command = "ctags --languages=Rust --fields=+neKSt --output-format=xref -L file-list.tsv"
+output = "tags"
+diagnostics = "ctags-diagnostics.txt"
+output_sha256 = "72668a7834446aa09fe7125b329a7c6ecedbea97cef77d3b9deb59aace73b019"
+diagnostics_sha256 = "a5be68bf4c392893a98734661f8bd80aba271525a5f1ebd7d807d8173ad0aa62"
+
+[[tool]]
+name = "cscope"
+version = "cscope 15.9"
+command = "cscope -b -q -k -i file-list.tsv"
+output = "cscope.out"
+query_output = "cscope-query-results.txt"
+diagnostics = "cscope-diagnostics.txt"
+output_sha256 = "4d558ad224ffcd15857fc3bcdd4e8eb5bcb710d98fe613326fcfc3e5b7e6661d"
+query_sha256 = "a985817cd9302c1cbd737079027c1ca347976fdcb2166cc2e1bf4a0ab36f6d8a"
+diagnostics_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+limitation = "Rust definitions and method calls are incomplete in cscope output; lexical matches remain useful"
+
+[[tool]]
+name = "cflow"
+version = "GNU cflow 1.8"
+command = "cflow --no-preprocess --depth=4 --main=sfwm_dominance_check crates/optics_core/src/sfwm.rs"
+output = "cflow.txt"
+diagnostics = "cflow-diagnostics.txt"
+output_sha256 = "42cc4a15454771a91387be07c4352e7bf4bc41e2cf61f298141ff3df09f81bac"
+diagnostics_sha256 = "d5de77635b7108815255451775c53bb2ebcb3cb0ff35b7433145a6694970cc44"
+limitation = "Cflow parses C syntax and reports Rust redefinition errors; its one-node result is not a semantic Rust call graph"
+
+[[tool]]
+name = "rg-symbol-occurrence-map"
+version = "ripgrep repository tool"
+command = "rg symbol candidates over the scoped file list"
+output = "call-candidates.tsv"
+output_sha256 = "754f81bcc62cf8b957f85050cd810a0db77d5a3e040e1c35ee9d7451096912b8"
+role = "lexical occurrence inventory used to assemble the bounded edge map"
+
+[[tool]]
+name = "rust-analyzer"
+version = "repository-installed rust-analyzer"
+command = "rust-analyzer analysis-stats . --only crates/optics_core/src/sfwm.rs --no-test --disable-build-scripts --skip-mir-stats --skip-data-layout"
+output = "sfwm-rust-analyzer-analysis-stats.txt"
+diagnostics = "sfwm-rust-analyzer-analysis-stats.log"
+role = "compiler-aware workspace analysis and unresolved-reference sanity check"
+limitation = "analysis-stats does not emit a call graph; it validates item collection and inference coverage"
+
+[[edge]]
+caller = "sfwm-figure-repro::main"
+callee = "build_params_from_sellmeier"
+evidence = "crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs"
+quantity = "CLI construction path"
+
+[[edge]]
+caller = "build_params_from_sellmeier"
+callee = "linbo3_ordinary_sellmeier"
+evidence = "sfwm_figure_repro.rs imports ordinary branch"
+quantity = "index branch"
+
+[[edge]]
+caller = "sfwm-figure-repro::main"
+callee = "photon_number_sfwm"
+evidence = "CLI synthetic power output"
+quantity = "alpha*P^2 characterization"
+
+[[edge]]
+caller = "sfwm-figure-repro::main"
+callee = "photon_number_spdc"
+evidence = "CLI synthetic power output"
+quantity = "alpha*P characterization"
+
+[[edge]]
+caller = "sfwm-figure-repro::main"
+callee = "g2_sfwm_model"
+evidence = "CLI synthetic g2 output"
+quantity = "1+a/P^2 characterization"
+
+[[edge]]
+caller = "sfwm-figure-repro::main"
+callee = "g2_spdc_model"
+evidence = "CLI synthetic g2 output"
+quantity = "1+a/P characterization"
+
+[[edge]]
+caller = "sfwm-figure-repro::main"
+callee = "polarization_dependence"
+evidence = "CLI synthetic polarization output"
+quantity = "cos^2(theta) characterization"
+
+[[edge]]
+caller = "sfwm-figure-repro::main"
+callee = "rate_sweep_with_dk"
+evidence = "CLI Figure 4(b) path"
+quantity = "legacy thickness ratio sweep"
+
+[[edge]]
+caller = "rate_sweep_with_dk"
+callee = "rate_ratio_with_dk"
+evidence = "sfwm.rs thickness loop"
+quantity = "legacy direct/cascaded ratio"
+
+[[edge]]
+caller = "rate_ratio_with_dk"
+callee = "cascaded_amplitude_sq_with_dk"
+evidence = "sfwm.rs ratio assembly"
+quantity = "incomplete Eq. 6 magnitude"
+
+[[edge]]
+caller = "rate_ratio_with_dk"
+callee = "direct_amplitude_sq_with_dk"
+evidence = "sfwm.rs ratio assembly"
+quantity = "Eq. 8 magnitude reduction"
+
+[[edge]]
+caller = "cascaded_amplitude_sq_with_dk"
+callee = "phase_matching_function"
+evidence = "sfwm.rs reduced bracket"
+quantity = "F_SFWM and F_SPDC"
+
+[[edge]]
+caller = "direct_amplitude_sq_with_dk"
+callee = "phase_matching_function"
+evidence = "sfwm.rs direct amplitude reduction"
+quantity = "F_SFWM"
+
+[[edge]]
+caller = "sfwm-figure-repro::main"
+callee = "substrate_sfwm_contribution"
+evidence = "CLI substrate verdict"
+quantity = "standalone proxy"
+
+[[edge]]
+caller = "thickness_sweep"
+callee = "sfwm_dominance_check"
+evidence = "sfwm.rs sweep helper"
+quantity = "product-of-efficiencies ratio"
+
+[[edge]]
+caller = "sfwm_dominance_check"
+callee = "phase_matching_function"
+evidence = "sfwm.rs direct and cascaded proxies"
+quantity = "three scalar phase-matching terms"
+
+[[edge]]
+caller = "test_paper_dominance_ratio_at_10um"
+callee = "rate_ratio_with_dk"
+evidence = "test_sfwm_son_chekhova.rs"
+quantity = "<0.15 gate"
+
+[[edge]]
+caller = "test_sellmeier_coherence_lengths_order"
+callee = "wavevector_mismatches"
+evidence = "test_sfwm_son_chekhova.rs"
+quantity = "ordinary Sellmeier hierarchy"
+
+[[edge]]
+caller = "test_maker_fringe_periods"
+callee = "maker_fringe_sweep"
+evidence = "test_sfwm_son_chekhova.rs"
+quantity = "scalar F^2 sweep"
+
+[map_outputs]
+file_list = "file-list.tsv"
+file_list_sha256 = "09db727ae18c24c2c6a997010e62b6a3dbe83459ad44b30f2d86e4043de45079"
+tags_filtered = "tags-sfwm.txt"
+tags_filtered_sha256 = "78c8878042e0d2a3a919bd138979f5f6656f8885893207f112502f140b40a556"
+cscope_stdout_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+cscope_binary_indexes_retained_in_var_tmp = true
+full_semantic_rust_call_graph = false
+reason = "The repository has no configured Rust compiler call-graph export in this bounded intake; the lexical graph is paired with source-level edge review and runtime test coverage."
