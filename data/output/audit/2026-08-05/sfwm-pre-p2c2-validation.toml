@@ -1,0 +1,109 @@
+schema = "sfwm-pre-p2c2-validation-v1"
+review_id = "SFWM-PRE-P2C2-SOURCE-BLOCKER-2026-08-05"
+branch = "agent/sfwm-pre-p2c2-source-blocker-review"
+base_commit = "3dd768253e68c045e8dc58f90e1ff96cb3131afb"
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+source_code_changed = false
+experimental_figure_fit_run = false
+p2c2_started = false
+
+[database]
+base_sha256 = "12c033ed64590f315beaba296b71bdb304250b2a23f27c0376340ada52a80597"
+after_artifact_registration_sha256 = "afecaf1c5e3fb4f57aa3d07efd08a36a5914d64282bd125c8fc3f5cea32181b5"
+claim_count = 1478
+artifact_count = 3259
+artifact_path_count = 3894
+new_artifact_id = "LOCAL-PRE-P2C2-SFWM-SOURCE-BLOCKER"
+new_artifact_path_count = 12
+
+[canonical_status_counts]
+verified = 1194
+provisional = 137
+refuted = 60
+superseded = 13
+theoretical = 11
+
+[[command]]
+command = "CARGO_TARGET_DIR=.cache/exp-pre-p2c2-target cargo test --locked -p optics_core --test test_sfwm_source_reference -- --nocapture"
+exit_code = 0
+result = "7 passed, 0 failed"
+
+[[command]]
+command = "CARGO_TARGET_DIR=.cache/exp-pre-p2c2-target cargo test --locked -p optics_core --test test_sfwm_son_chekhova -- --nocapture"
+exit_code = 0
+result = "5 passed, 0 failed"
+
+[[command]]
+command = "CARGO_TARGET_DIR=.cache/exp-pre-p2c2-target cargo clippy --locked -p optics_core --all-targets --profile validation -- -D warnings"
+exit_code = 0
+result = "finished validation profile without diagnostics"
+
+[[command]]
+command = "CARGO_TARGET_DIR=.cache/exp-pre-p2c2-target cargo clippy --locked -p gororoba_db -p provenance_store -p gororoba_cli_provenance --all-targets --profile validation -- -D warnings"
+exit_code = 0
+result = "finished validation profile without diagnostics"
+
+[[command]]
+command = "cargo fmt --all -- --check"
+exit_code = 0
+result = "format check passed"
+non_failing_output = "rustfmt reports existing nightly-only option warnings for imports_granularity and format_generated_files"
+
+[[command]]
+command = "make ansi-check"
+exit_code = 0
+result = "ASCII validation passed"
+
+[[command]]
+command = "CARGO_TARGET_DIR=.cache/exp-pre-p2c2-target cargo run --locked -p gororoba_db --bin gororoba-db -- --repo-root . artifact register-local --id LOCAL-PRE-P2C2-SFWM-SOURCE-BLOCKER"
+exit_code = 0
+result = "Registered local artifact with 11 retained paths in web_references"
+
+[[command]]
+command = "CARGO_TARGET_DIR=.cache/exp-pre-p2c2-target cargo run --locked -p gororoba_cli_data --bin provenance -- export-control-plane"
+exit_code = 101
+result = "expected command-owner mismatch; no repository mutation from this failed invocation"
+diagnostic = "no bin target named provenance in gororoba_cli_data; available bin is in gororoba_cli_provenance"
+
+[[command]]
+command = "CARGO_TARGET_DIR=.cache/exp-pre-p2c2-target cargo run --locked -p gororoba_cli_provenance --bin provenance -- export-control-plane"
+exit_code = 0
+result = "Exported control-plane compatibility outputs: claims=1478 insights=183 experiments=232 binaries=496 theorems=162"
+
+[[command]]
+command = "make registry-integrity"
+exit_code = 0
+result = "Wrote registry-integrity registry lane artifacts: conflict_markers=108 lacunae=193 schema_signatures=13"
+non_failing_output = "Cargo emitted a future-incompatibility warning for proc-macro-error2 v2.0.1"
+
+[[command]]
+command = "make validate-registry"
+exit_code = 0
+result = "canonical control-plane, compatibility, governance, evidence-provenance, registry-integrity, and execution-planning checks passed"
+
+[[command]]
+command = "make validate-repository-fast"
+exit_code = 0
+result = "fast repository validation completed"
+report_path = "reports/validation/2026-08-05/055520/summary.md"
+report_sha256 = "15005692adf8b7c4631bf3167b83ee3fb7aa0306c6de065b3d618303d29db815"
+
+[retained_hashes]
+source_blocker_review = "8064b09bc6370ff229376eb148fdcf3057b5c90bd7620b4a098b1eee5520fdf3"
+adversarial_review = "50f60ac157a8ff2ddc0b087c790d5aeb346f55ae08f5376a77da13fdf2f2ab2c"
+p1_manifest = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p2a_manifest = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+p2b_manifest = "83c61321291791d8c154b8f6e347b987a64b4d114f8fc930b2e4ced99ed68ff0"
+p2c0_manifest = "1bb7547ba0e588542d2e5c9fb09e37488444998baf7efd21042d8407aea71c97"
+p2c1_manifest = "6b81ccccaed3a6e39fa6b5fcd4f0aad3b131226c2bb0598bf914d7c7b572567c"
+
+[entry_boundary]
+claim_status_mutations = false
+scientific_implementation_mutations = false
+supplement_1 = "blocked"
+chi3_material_identity = "blocked"
+experimental_data = "blocked_pending_author_response"
+absolute_rate_normalization = "not_claimed"
+substrate_percentage = "not_adjudicated"
+next_action = "wait for lawful source/data response or retain an explicit bounded no-data decision before P2C2"
