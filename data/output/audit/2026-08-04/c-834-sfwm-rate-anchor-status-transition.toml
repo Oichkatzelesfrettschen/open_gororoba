@@ -16,7 +16,7 @@ actor = "son-chekhova-source-intake"
 reason = "Quarantine the non-discriminating rate-anchor gate before numerical reconstruction."
 transition_timestamp = "2026-08-05T00:48:49Z"
 expected_source_state_sha256 = "477d9ce2c14772ca55c35bde5da5cc63d68516ae7a8d8f27486aee2fae40d932"
-expected_claim_id_max = 1657
+expected_claim_id_max = 1659
 
 [[successor]]
 proposal_key = "c834-source-rate-anchor"

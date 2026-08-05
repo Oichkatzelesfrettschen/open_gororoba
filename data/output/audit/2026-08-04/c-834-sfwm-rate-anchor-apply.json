@@ -1,0 +1,21 @@
+{
+  "transition_key": "c-834-sfwm-rate-anchor-source-boundary",
+  "transition_spec_sha256": "62b4bb160d30d958f52d8159b124553ab103b1f6200b493568c576754a97d5ae",
+  "event_id": 14,
+  "allocated_successors": [
+    {
+      "proposal_key": "c834-source-rate-anchor",
+      "canonical_claim_id": "C-1660",
+      "relation_kind": "source_split"
+    },
+    {
+      "proposal_key": "c834-source-rate-reproduction",
+      "canonical_claim_id": "C-1661",
+      "relation_kind": "implementation_split"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": true
+}
+Exported control-plane compatibility outputs: claims=1476 insights=183 experiments=232 binaries=496 theorems=162
+exit_code=0

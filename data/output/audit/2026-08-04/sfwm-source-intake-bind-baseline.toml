@@ -20,9 +20,9 @@ tar = "GNU tar 1.35"
 [canonical_registry]
 database = "registry/canonical/control_plane.sqlite3"
 database_sha256 = "67bf432dfaf93856079326a3519fb4fb6d54a7037814d22987a59494c4a36c1b"
-claim_transition_count = 15
-claim_relation_count = 15
-experiment_count = 74
+claim_transition_count = 12
+claim_relation_count = 19
+experiment_count = 232
 artifact_count = 0
 
 [[manifest]]
