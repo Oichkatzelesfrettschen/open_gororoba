@@ -1,0 +1,42 @@
+schema = "sfwm-independent-mpmath-fixture-v1"
+fixture_path = "independent-mpmath-fixtures.csv"
+fixture_sha256 = "45ec9fc66b6bd482399761d12d92fd0c29347a7dbaa1e64d5b6f8b9a4e5279b3"
+python_version = "3.14.6"
+mpmath_version = "1.4.1"
+precision_digits = 80
+ci_dependency = false
+generator_role = "One-shot independent fixture generation; Python and mpmath are not a Rust or CI dependency."
+sellmeier_reference = "Zelmon extraordinary coefficients: B=[2.9804,0.5981,8.9543], C=[0.02047,0.06660,416.08] in micrometres squared."
+
+generator_source = '''
+import mpmath as mp
+mp.mp.dps = 80
+pi = mp.pi
+chi2 = mp.mpf('2.5e-11')
+chi3 = mp.mpf('1.5e-20')
+coeff_b = [mp.mpf('2.9804'), mp.mpf('0.5981'), mp.mpf('8.9543')]
+coeff_c = [mp.mpf('0.02047'), mp.mpf('0.06660'), mp.mpf('416.08')]
+def n(lam):
+    l2 = lam * lam
+    return mp.sqrt(1 + sum(b * l2 / (l2 - c) for b, c in zip(coeff_b, coeff_c)))
+def f(dk, thickness):
+    arg = dk * thickness / 2
+    return thickness if arg == 0 else mp.sin(arg) / (dk / 2)
+def amplitudes(thickness, dks):
+    dk_sfwm, dk_shg, dk_spdc = dks
+    f_sfwm = f(dk_sfwm, thickness)
+    f_spdc = f(dk_spdc, thickness)
+    phase_spdc = mp.e ** (1j * dk_spdc * thickness / 2)
+    phase_shg = mp.e ** (1j * dk_shg * thickness / 2)
+    prefactor = 2 * pi * chi2**2 / (n(mp.mpf('0.515')) * mp.mpf('0.515') * dk_shg)
+    a_cas = prefactor * phase_spdc * (phase_shg * f_sfwm - f_spdc)
+    a_dir = chi3 * mp.e ** (1j * dk_sfwm * thickness / 2) * f_sfwm
+    return a_cas, a_dir
+paper_dks = (pi / mp.mpf('33.3'), pi / mp.mpf('3.1'), pi / mp.mpf('33.3') - pi / mp.mpf('3.1'))
+npump, ns, ni, nsh = (n(mp.mpf(value)) for value in ('1.030', '0.770', '1.550', '0.515'))
+kp = 2 * pi * npump / mp.mpf('1.030')
+ks = 2 * pi * ns / mp.mpf('0.770')
+ki = 2 * pi * ni / mp.mpf('1.550')
+ksh = 2 * pi * nsh / mp.mpf('0.515')
+sellmeier_dks = (2 * kp - ks - ki, 2 * kp - ksh, ksh - ks - ki)
+'''

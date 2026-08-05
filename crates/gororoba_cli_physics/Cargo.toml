@@ -130,6 +130,10 @@ path = "src/bin/sfwm_figure_repro.rs"
 name = "sfwm-source-intake-audit"
 path = "src/bin/sfwm_source_intake_audit.rs"
 
+[[bin]]
+name = "sfwm-source-reproduction"
+path = "src/bin/sfwm_source_reproduction.rs"
+
 # ---- Materials (9) ----
 
 [[bin]]
