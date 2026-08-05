@@ -22,28 +22,41 @@ fn reference_phase_matching(delta_k_per_um: f64, thickness_um: f64) -> Complex64
     Complex64::new(value, 0.0)
 }
 
-fn reference_amplitudes(
+#[derive(Clone, Copy)]
+struct ReferenceAmplitudeInputs {
     chi2_m_per_v: f64,
     chi3_m2_per_v2: f64,
     pump_field_squared: f64,
     n_sh: f64,
     lambda_pump_um: f64,
-    delta_k_sfwm_per_um: f64,
-    delta_k_shg_per_um: f64,
-    delta_k_spdc_per_um: f64,
+}
+
+fn reference_inputs(parameters: &SfwmSourceParameters) -> ReferenceAmplitudeInputs {
+    ReferenceAmplitudeInputs {
+        chi2_m_per_v: parameters.chi2_m_per_v,
+        chi3_m2_per_v2: parameters.chi3_m2_per_v2,
+        pump_field_squared: parameters.pump_field_squared,
+        n_sh: parameters.n_sh,
+        lambda_pump_um: parameters.lambda_pump_um,
+    }
+}
+
+fn reference_amplitudes(
+    inputs: ReferenceAmplitudeInputs,
+    mismatches: SourceWavevectorMismatches,
     thickness_um: f64,
 ) -> (Complex64, Complex64) {
-    let f_sfwm = reference_phase_matching(delta_k_sfwm_per_um, thickness_um);
-    let f_spdc = reference_phase_matching(delta_k_spdc_per_um, thickness_um);
-    let phase_spdc = Complex64::from_polar(1.0, delta_k_spdc_per_um * thickness_um / 2.0);
-    let phase_shg = Complex64::from_polar(1.0, delta_k_shg_per_um * thickness_um / 2.0);
-    let lambda_sh_um = lambda_pump_um / 2.0;
-    let prefactor = 2.0 * PI * chi2_m_per_v.powi(2) * pump_field_squared
-        / (n_sh * lambda_sh_um * delta_k_shg_per_um);
+    let f_sfwm = reference_phase_matching(mismatches.sfwm.value_per_um, thickness_um);
+    let f_spdc = reference_phase_matching(mismatches.spdc.value_per_um, thickness_um);
+    let phase_spdc = Complex64::from_polar(1.0, mismatches.spdc.value_per_um * thickness_um / 2.0);
+    let phase_shg = Complex64::from_polar(1.0, mismatches.shg.value_per_um * thickness_um / 2.0);
+    let lambda_sh_um = inputs.lambda_pump_um / 2.0;
+    let prefactor = 2.0 * PI * inputs.chi2_m_per_v.powi(2) * inputs.pump_field_squared
+        / (inputs.n_sh * lambda_sh_um * mismatches.shg.value_per_um);
     let a_cas = prefactor * phase_spdc * (phase_shg * f_sfwm - f_spdc);
-    let a_dir = chi3_m2_per_v2
-        * pump_field_squared
-        * Complex64::from_polar(1.0, delta_k_sfwm_per_um * thickness_um / 2.0)
+    let a_dir = inputs.chi3_m2_per_v2
+        * inputs.pump_field_squared
+        * Complex64::from_polar(1.0, mismatches.sfwm.value_per_um * thickness_um / 2.0)
         * f_sfwm;
     (a_cas, a_dir)
 }
@@ -93,17 +106,8 @@ fn independent_reference_matches_all_complex_components() {
     for thickness_um in [0.1, 3.7, 10.0, 25.3, 75.0] {
         let actual =
             source_amplitudes(&parameters, mismatches, thickness_um).expect("valid source fixture");
-        let (expected_cas, expected_dir) = reference_amplitudes(
-            parameters.chi2_m_per_v,
-            parameters.chi3_m2_per_v2,
-            parameters.pump_field_squared,
-            parameters.n_sh,
-            parameters.lambda_pump_um,
-            mismatches.sfwm.value_per_um,
-            mismatches.shg.value_per_um,
-            mismatches.spdc.value_per_um,
-            thickness_um,
-        );
+        let (expected_cas, expected_dir) =
+            reference_amplitudes(reference_inputs(&parameters), mismatches, thickness_um);
         assert_component_close(actual.a_cas, expected_cas, "A_cas");
         assert_component_close(actual.a_dir, expected_dir, "A_dir");
         let rates = source_rates(actual).expect("valid source rates");
@@ -118,17 +122,8 @@ fn independent_reference_matches_all_complex_components() {
 fn omitted_eq6_prefactor_is_detected() {
     let (parameters, mismatches) = fixture();
     let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
-    let (mut mutated_cas, _) = reference_amplitudes(
-        parameters.chi2_m_per_v,
-        parameters.chi3_m2_per_v2,
-        parameters.pump_field_squared,
-        parameters.n_sh,
-        parameters.lambda_pump_um,
-        mismatches.sfwm.value_per_um,
-        mismatches.shg.value_per_um,
-        mismatches.spdc.value_per_um,
-        10.0,
-    );
+    let (mut mutated_cas, _) =
+        reference_amplitudes(reference_inputs(&parameters), mismatches, 10.0);
     let omitted_prefactor = 2.0 * PI
         / (parameters.n_sh * (parameters.lambda_pump_um / 2.0) * mismatches.shg.value_per_um);
     mutated_cas /= omitted_prefactor;
@@ -139,15 +134,11 @@ fn omitted_eq6_prefactor_is_detected() {
 fn positive_only_spdc_mismatch_is_detected() {
     let (parameters, mismatches) = fixture();
     let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
+    let mut positive_only_mismatches = mismatches;
+    positive_only_mismatches.spdc.value_per_um = positive_only_mismatches.spdc.value_per_um.abs();
     let (mutated_cas, _) = reference_amplitudes(
-        parameters.chi2_m_per_v,
-        parameters.chi3_m2_per_v2,
-        parameters.pump_field_squared,
-        parameters.n_sh,
-        parameters.lambda_pump_um,
-        mismatches.sfwm.value_per_um,
-        mismatches.shg.value_per_um,
-        mismatches.spdc.value_per_um.abs(),
+        reference_inputs(&parameters),
+        positive_only_mismatches,
         10.0,
     );
     assert!((actual.a_cas - mutated_cas).norm() > 1.0e-25);
@@ -157,17 +148,10 @@ fn positive_only_spdc_mismatch_is_detected() {
 fn source_susceptibility_substitution_is_detected() {
     let (parameters, mismatches) = fixture();
     let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
-    let (mutated_cas, mutated_dir) = reference_amplitudes(
-        27.0e-12,
-        2.4e-21,
-        parameters.pump_field_squared,
-        parameters.n_sh,
-        parameters.lambda_pump_um,
-        mismatches.sfwm.value_per_um,
-        mismatches.shg.value_per_um,
-        mismatches.spdc.value_per_um,
-        10.0,
-    );
+    let mut substituted_inputs = reference_inputs(&parameters);
+    substituted_inputs.chi2_m_per_v = 27.0e-12;
+    substituted_inputs.chi3_m2_per_v2 = 2.4e-21;
+    let (mutated_cas, mutated_dir) = reference_amplitudes(substituted_inputs, mismatches, 10.0);
     let actual_ratio = source_rates(actual)
         .expect("valid source rates")
         .ratio_cas_to_dir

@@ -1,0 +1,18 @@
+{
+  "transition_key": "c-839-sfwm-signed-maker-fringes",
+  "transition_spec_sha256": "673d33a4eafeff07ad140b61835f2c61473eb7d3a682fb227066b1598aa3609f",
+  "source_claim_id": "C-839",
+  "current_status": "Verified",
+  "expected_prior_status": "Verified",
+  "proposed_claim_status": "Verified",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {},
+  "exact_replay": false,
+  "replay_event_id": null
+}

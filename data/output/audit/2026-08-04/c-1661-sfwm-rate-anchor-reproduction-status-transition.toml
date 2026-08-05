@@ -1,0 +1,19 @@
+[transition]
+transition_key = "c-1661-sfwm-source-rate-anchor-reproduction"
+source_claim_id = "C-1661"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+exercised_falsifier = "Compare the 10 um paper-input and extraordinary Sellmeier ratios with the printed 0.048 anchor, the high-precision fixture, and the retained deterministic input envelope without fitting the ratio."
+proposed_claim_status = "Verified"
+rationale = "The paper-input ratio is 0.04774423559348579 and the extraordinary Sellmeier ratio is 0.04801092757771039. Both use the full coherent source amplitudes and agree with the rounded source anchor under the declared input convention."
+unresolved_assumptions = [
+    "The source does not publish a numerical uncertainty for the rounded 0.048 anchor.",
+    "The Wang chi^(3) sample identity and effective susceptibility convention remain unresolved.",
+]
+actor = "son-chekhova-source-reproduction"
+reason = "Record source-anchor reproduction separately from the uncertainty-sensitive C-834 threshold."
+transition_timestamp = "2026-08-05T03:49:05Z"
+expected_source_state_sha256 = "156e8820c03d62598ddc2e54214d4796bae2b25bf683ad7b9afc80bbdd68b54c"
+expected_claim_id_max = 1663

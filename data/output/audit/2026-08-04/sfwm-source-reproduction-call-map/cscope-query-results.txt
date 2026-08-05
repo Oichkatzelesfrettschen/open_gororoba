@@ -1,0 +1,15 @@
+crates/optics_core/src/sfwm_source.rs <global> 333 pub fn source_amplitudes(
+crates/optics_core/src/sfwm_source.rs <global> 396 let amplitudes = source_amplitudes(params, mismatches, thickness_um)?;
+crates/optics_core/src/sfwm_source.rs <global> 438 let amplitudes = source_amplitudes(&params, mismatches, 10.0).expect("valid amplitudes");
+crates/optics_core/src/sfwm_source.rs <global> 453 let amplitudes = source_amplitudes(&params, mismatches, 10.0).expect("valid amplitudes");
+crates/optics_core/src/sfwm_source.rs <global> 468 source_amplitudes(&params, mismatches, 10.0),
+crates/optics_core/src/sfwm_source.rs <global> 488 source_amplitudes(&params, mismatches, -0.1),
+crates/optics_core/tests/test_sfwm_source_reference.rs <global> 11 WavevectorMismatch, source_amplitudes, source_rates,
+crates/optics_core/tests/test_sfwm_source_reference.rs independent_reference_matches_all_complex_components 95 source_amplitudes(&parameters, mismatches, thickness_um).expect("valid source fixture");
+crates/optics_core/tests/test_sfwm_source_reference.rs omitted_eq6_prefactor_is_detected 120 let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
+crates/optics_core/tests/test_sfwm_source_reference.rs positive_only_spdc_mismatch_is_detected 141 let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
+crates/optics_core/tests/test_sfwm_source_reference.rs source_susceptibility_substitution_is_detected 159 let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
+crates/optics_core/tests/test_sfwm_source_reference.rs independent_mpmath_fixtures_match_componentwise 232 let actual = source_amplitudes(&parameters, mismatches, thickness_um)
+crates/optics_core/tests/test_sfwm_source_reference.rs corrected_paper_input_reproduces_the_source_ratio_boundary 296 source_amplitudes(&parameters, mismatches, 10.0).expect("valid paper source amplitudes");
+crates/optics_core/tests/test_sfwm_source_reference.rs corrected_phase_matching_preserves_source_fringe_structure 331 let amplitudes = source_amplitudes(&parameters, mismatches, thickness_um)
+crates/optics_core/tests/test_sfwm_source_reference.rs corrected_phase_matching_preserves_source_fringe_structure 345 let amplitudes = source_amplitudes(&parameters, mismatches, thickness_um)

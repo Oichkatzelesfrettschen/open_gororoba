@@ -1,0 +1,38 @@
+schema = "validation-inherited-blocker-v1"
+target = "make registry-verify-control-plane"
+status = "Inherited"
+scope = "validation-infrastructure"
+source_revision = "f1114897abf6250acfe144ae948d31dc7d5b96dc"
+base_revision_check = "The same referenced source paths are absent at the P2C0 base revision."
+scientific_effect = "none"
+canonical_gate = "make validate-registry"
+canonical_gate_result = "passed"
+legacy_lane_result = "blocked by repository state outside the SFWM source reconstruction"
+first_failure = "The target invokes markdown-registry verify-origin-audit, which is not a current CLI subcommand."
+second_failure = "Using the current verify-all subcommand reaches knowledge-atoms verification, which reports nineteen missing historical source paths."
+missing_source_count = 19
+resolution = "Retain the exact failure in the validation command log and defer historical registry repair to a separate bounded campaign."
+claim_status_impact = "none"
+do_not_use_as_scientific_result = true
+
+missing_source_paths = [
+    "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
+    "data/artifacts/BIBLIOGRAPHY.md",
+    "data/artifacts/FINAL_REPORT.md",
+    "data/artifacts/QUANTUM_REPORT.md",
+    "data/artifacts/SIMULATION_REPORT.md",
+    "data/artifacts/extracted_equations.md",
+    "data/artifacts/reality_check_and_synthesis.md",
+    "data/artifacts/WARP_RING_REPORT.md",
+    "data/artifacts/THESIS_3D_SYNTHESIS.md",
+    "docs/research/SPLIT_OCTONION_ATTractor.md",
+    "docs/research/high_dimensional_algebra_unification_2026.md",
+    "docs/engineering/RUST_STYLE_GUIDE.md",
+    "docs/engineering/SCOPE_ULTRA_THROUGHPUT.md",
+    "docs/engineering/WARP_RING_SPECIFICATION.md",
+    "docs/research/THESIS_2_3_4_NARRATIVE_PACK.md",
+    "docs/theory/OPTIMIZATION_BREAKTHROUGHS.md",
+    "docs/theory/THEORY_PHASE_3_HOLO_ALGEBRAIC_VACUUM.md",
+    "docs/theory/WARP_COMPRESSIBILITY_DERIVATION.md",
+    "docs/theory/WARP_RING_PHYSICS.md",
+]

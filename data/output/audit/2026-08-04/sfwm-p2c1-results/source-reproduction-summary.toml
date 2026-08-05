@@ -1,0 +1,323 @@
+schema = "sfwm-source-reproduction-v1"
+source_pdf_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e8"
+source_tex_sha256 = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f"
+grid_sha256 = "2902aa336f7fb63cc746bb47b7bc518b601af37443b1574db22cc5a78f45be55"
+grid_count = 1001
+grid_start_um = 0.0
+grid_stop_um = 100.0
+grid_step_um = 0.1
+grid_refinement_steps_um = [
+    0.1,
+    0.05,
+    0.01,
+]
+source_chi2_m_per_v = 0.000000000025
+source_chi3_m2_per_v2 = 0.000000000000000000015
+source_anchor_coherence_lengths_um = [
+    33.3,
+    3.1,
+    3.4,
+]
+source_anchor_derived_coherence_lengths_um = [
+    33.3,
+    3.0999999999999996,
+    3.418211920529801,
+]
+source_anchor_defects_um = [
+    0.0,
+    0.0000000000000004440892098500626,
+    0.01821192052980125,
+]
+
+[extraordinary_indices]
+branch = "extraordinary"
+nominal_pump = 2.1573850547172952
+nominal_signal = 2.178987531046263
+nominal_idler = 2.1375596497855565
+nominal_sh = 2.241115644643947
+pump_wavelength_envelope = [
+    2.157104309890875,
+    2.1576690460177024,
+]
+signal_wavelength_envelope = [
+    2.178372318044694,
+    2.1796148180015202,
+]
+idler_wavelength_envelope = [
+    2.136842257452776,
+    2.138286478610028,
+]
+sh_wavelength_envelope = [
+    2.2399485607814777,
+    2.2423037456509083,
+]
+uncertainty_status = "Deterministic Sellmeier and wavelength-band envelope; no statistical index uncertainty is supplied by the source."
+
+[ordinary_indices]
+branch = "ordinary"
+nominal_pump = 2.2342557355444552
+nominal_signal = 2.259374268658871
+nominal_idler = 2.2111110086535737
+nominal_sh = 2.332060638029874
+pump_wavelength_envelope = [
+    2.233929242347796,
+    2.2345859891781017,
+]
+signal_wavelength_envelope = [
+    2.2586582979988723,
+    2.2601043566379975,
+]
+idler_wavelength_envelope = [
+    2.210268312816961,
+    2.2119643462764054,
+]
+sh_wavelength_envelope = [
+    2.3306887384068364,
+    2.333457443670641,
+]
+uncertainty_status = "Deterministic Sellmeier and wavelength-band envelope; no statistical index uncertainty is supplied by the source."
+
+[uncertainty]
+chi2_half_width_m_per_v = 0.0000000000005
+chi3_half_width_m2_per_v2 = 0.0000000000000000000005
+chi2_interval_m_per_v = [
+    0.0000000000245,
+    0.0000000000255,
+]
+chi3_interval_m2_per_v2 = [
+    0.0000000000000000000145,
+    0.0000000000000000000155,
+]
+pump_wavelength_half_width_um = 0.005
+signal_wavelength_half_width_um = 0.005
+idler_wavelength_half_width_um = 0.025
+pump_wavelength_interval_um = [
+    1.025,
+    1.035,
+]
+signal_wavelength_interval_um = [
+    0.765,
+    0.775,
+]
+idler_wavelength_interval_um = [
+    1.525,
+    1.575,
+]
+thickness_half_width_um = 0.0
+thickness_interval_um = [
+    10.0,
+    10.0,
+]
+paper_ratio_interval_at_10_um = [
+    0.04088750057509066,
+    0.05578719347757,
+]
+sellmeier_ratio_interval_at_10_um = [
+    0.03146467379171226,
+    0.09589963406518912,
+]
+thickness_status = "No fabrication uncertainty is supplied by the public source; no spread is invented."
+index_status = "Branch and wavelength-band envelopes are retained; statistical index uncertainty is unavailable."
+propagated_status = "Deterministic endpoint corner envelope, not a statistical confidence interval."
+
+[[cases]]
+name = "paper-input"
+mismatch_per_um = [
+    0.09434212172942323,
+    1.0134169850289656,
+    -0.9190748632995424,
+]
+identity_defect_per_um = 0.0
+normalized_identity_defect = 0.0
+coherence_lengths_um = [
+    33.3,
+    3.0999999999999996,
+    3.418211920529801,
+]
+
+[cases.rate_at_10_um]
+cascaded = 0.0000000000000000000000000000000000000005607533662933179
+direct = 0.000000000000000000000000000000000000011744943851815001
+ratio = 0.04774423559348579
+
+[[cases.amplitudes_at_10_um]]
+real = 0.00000000000000000002796329486842396
+imaginary = 0.000000000000000000021903178177185604
+magnitude = 0.000000000000000000035520347326004084
+
+[[cases.amplitudes_at_10_um]]
+real = 0.00000000000000000012871840517790527
+imaginary = 0.00000000000000000006566180281915093
+magnitude = 0.00000000000000000014449878954857875
+
+[cases.fringes]
+expected_first_maximum_um = [
+    33.3,
+    3.0999999999999996,
+    3.418211920529801,
+]
+observed_first_grid_maximum_um = [
+    33.300000000000004,
+    3.1,
+    3.4000000000000004,
+]
+first_maximum_abs_error_um = [
+    0.000000000000007105427357601002,
+    0.0000000000000004440892098500626,
+    0.018211920529800807,
+]
+expected_period_um = [
+    66.6,
+    6.199999999999999,
+    6.836423841059602,
+]
+observed_period_um = [
+    66.6,
+    6.200000000000001,
+    6.9,
+]
+period_abs_error_um = [
+    0.0,
+    0.0000000000000017763568394002505,
+    0.06357615894039803,
+]
+
+[[cases.grid_refinement]]
+step_um = 0.1
+first_maximum_abs_error_um = [
+    0.000000000000007105427357601002,
+    0.0000000000000004440892098500626,
+    0.018211920529800807,
+]
+period_abs_error_um = [
+    0.0,
+    0.0000000000000017763568394002505,
+    0.06357615894039803,
+]
+
+[[cases.grid_refinement]]
+step_um = 0.05
+first_maximum_abs_error_um = [
+    0.000000000000007105427357601002,
+    0.0000000000000004440892098500626,
+    0.018211920529800807,
+]
+period_abs_error_um = [
+    0.0,
+    0.0000000000000017763568394002505,
+    0.01357615894039732,
+]
+
+[[cases.grid_refinement]]
+step_um = 0.01
+first_maximum_abs_error_um = [
+    0.0,
+    0.0000000000000004440892098500626,
+    0.0017880794701987668,
+]
+period_abs_error_um = [
+    0.000000000000014210854715202004,
+    0.0000000000000017763568394002505,
+    0.006423841059602253,
+]
+
+[[cases]]
+name = "sellmeier-derived"
+mismatch_per_um = [
+    -0.12457975988585446,
+    -1.0215433250264354,
+    0.896963565140581,
+]
+identity_defect_per_um = 0.0
+normalized_identity_defect = 0.0
+coherence_lengths_um = [
+    25.217520538394524,
+    3.0753396127457395,
+    3.502475212688725,
+]
+
+[cases.rate_at_10_um]
+cascaded = 0.0000000000000000000000000000000000000005330047415479572
+direct = 0.000000000000000000000000000000000000011101738050889287
+ratio = 0.04801092757771039
+
+[[cases.amplitudes_at_10_um]]
+real = -0.000000000000000000023703363887258463
+imaginary = 0.00000000000000000002524700395910602
+magnitude = 0.00000000000000000003463034317593321
+
+[[cases.amplitudes_at_10_um]]
+real = 0.00000000000000000011410173692702113
+imaginary = -0.00000000000000000008195862878195203
+magnitude = 0.00000000000000000014048638084021153
+
+[cases.fringes]
+expected_first_maximum_um = [
+    25.217520538394524,
+    3.0753396127457395,
+    3.502475212688725,
+]
+observed_first_grid_maximum_um = [
+    25.200000000000003,
+    3.1,
+    3.5,
+]
+first_maximum_abs_error_um = [
+    0.017520538394521168,
+    0.024660387254260563,
+    0.0024752126887248593,
+]
+expected_period_um = [
+    50.43504107678905,
+    6.150679225491479,
+    7.00495042537745,
+]
+observed_period_um = [
+    50.5,
+    6.100000000000001,
+    7.0,
+]
+period_abs_error_um = [
+    0.06495892321095198,
+    0.05067922549147763,
+    0.004950425377449719,
+]
+
+[[cases.grid_refinement]]
+step_um = 0.1
+first_maximum_abs_error_um = [
+    0.017520538394521168,
+    0.024660387254260563,
+    0.0024752126887248593,
+]
+period_abs_error_um = [
+    0.06495892321095198,
+    0.05067922549147763,
+    0.004950425377449719,
+]
+
+[[cases.grid_refinement]]
+step_um = 0.05
+first_maximum_abs_error_um = [
+    0.017520538394521168,
+    0.024660387254260563,
+    0.0024752126887248593,
+]
+period_abs_error_um = [
+    0.014958923210954822,
+    0.0006792254914786966,
+    0.004950425377449719,
+]
+
+[[cases.grid_refinement]]
+step_um = 0.01
+first_maximum_abs_error_um = [
+    0.002479461605474853,
+    0.004660387254260545,
+    0.0024752126887248593,
+]
+period_abs_error_um = [
+    0.005041076789041199,
+    0.0006792254914786966,
+    0.005049574622550068,
+]

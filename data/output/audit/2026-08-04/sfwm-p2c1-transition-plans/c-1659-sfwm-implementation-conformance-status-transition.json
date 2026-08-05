@@ -1,0 +1,21 @@
+{
+  "transition_key": "c-1659-sfwm-source-implementation-conformance",
+  "transition_spec_sha256": "3f6f9cea8c1dbba0910d378ca392afdf444bc6c0b76f412e98d80712125cc773",
+  "source_claim_id": "C-1659",
+  "current_status": "Provisional",
+  "expected_prior_status": "Provisional",
+  "proposed_claim_status": "Verified",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {
+    "Provisional": -1,
+    "Verified": 1
+  },
+  "exact_replay": false,
+  "replay_event_id": null
+}

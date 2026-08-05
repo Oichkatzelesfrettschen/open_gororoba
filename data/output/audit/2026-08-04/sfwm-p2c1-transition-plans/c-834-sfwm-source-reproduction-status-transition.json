@@ -1,0 +1,18 @@
+{
+  "transition_key": "c-834-sfwm-source-rate-boundary",
+  "transition_spec_sha256": "f1101c678e8edf7fd356be80d562fb74b58a2b1613c7e0c935b2404e8360a1ed",
+  "source_claim_id": "C-834",
+  "current_status": "Provisional",
+  "expected_prior_status": "Provisional",
+  "proposed_claim_status": "Provisional",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+  ],
+  "experiment_ids": [],
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {},
+  "exact_replay": false,
+  "replay_event_id": null
+}
