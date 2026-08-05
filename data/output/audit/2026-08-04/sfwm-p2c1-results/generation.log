@@ -1,0 +1,8 @@
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.35s
+warning: the following packages contain code that will be rejected by a future version of Rust: proc-macro-error2 v2.0.1
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+     Running `.cache/exp-p2c1-target/debug/sfwm-source-reproduction --output-dir data/output/audit/2026-08-04/sfwm-p2c1-results`
+grid_sha256=2902aa336f7fb63cc746bb47b7bc518b601af37443b1574db22cc5a78f45be55
+summary=data/output/audit/2026-08-04/sfwm-p2c1-results/source-reproduction-summary.toml
+source_pdf_sha256=25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e8
+source_tex_sha256=9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f

@@ -1,0 +1,81 @@
+schema = "sfwm-source-reproduction-source-matrix-v1"
+bundle_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+source_authority = "sfwm-source-reproduction-ledger.toml"
+implementation_revision = "6b0b0acf297bd8b83b89ddd40c0700e8a81e1778"
+legacy_matrix = "data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml"
+legacy_status = "retained as P2C0 characterization; no legacy positive result is reused as a corrected gate"
+
+[[function]]
+name = "WavevectorMismatch::new"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+quantity = "finite signed inverse-micrometre mismatch"
+source_faithful = true
+independent_control = "positive_only_spdc_mismatch_is_detected"
+
+[[function]]
+name = "SourceMismatchAudit::from_source_anchors"
+source_equations = ["SC-FIG-4-COHERENCE", "SC-EQ-6"]
+quantity = "SFWM and SHG printed anchors plus SPDC derived by signed closure"
+source_faithful = true
+independent_control = "corrected_phase_matching_preserves_source_fringe_structure"
+boundary = "The printed SPDC coherence length remains a rounded audit anchor and is not forced to override closure."
+
+[[function]]
+name = "SfwmSourceParameters::wavevector_mismatches"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+quantity = "signed 2*k_p-k_s-k_i, 2*k_p-k_SH, and k_SH-k_s-k_i"
+source_faithful = true
+independent_control = "independent_mpmath_fixtures_match_componentwise"
+branch = "Zelmon extraordinary LiNbO3 for z-polarized fields along +x"
+
+[[function]]
+name = "phase_matching_amplitude"
+source_equations = ["SC-EQ-2"]
+quantity = "real F(L) retained as a complex component with exact zero-mismatch handling"
+source_faithful = true
+independent_control = "independent_reference_matches_all_complex_components"
+
+[[function]]
+name = "source_amplitudes"
+source_equations = ["SC-EQ-6", "SC-EQ-8"]
+quantity = "complex A_cas and A_dir with relative phase and full Eq. 6 prefactor"
+source_faithful = true
+independent_control = "independent_reference_matches_all_complex_components; independent_mpmath_fixtures_match_componentwise"
+mutation_controls = ["omitted_eq6_prefactor_is_detected", "positive_only_spdc_mismatch_is_detected", "source_susceptibility_substitution_is_detected"]
+
+[[function]]
+name = "source_rates"
+source_equations = ["SC-RATE-CAS", "SC-RATE-DIR"]
+quantity = "4/9 abs(A_cas)^2, 9/16 abs(A_dir)^2, and explicit undefined direct-rate ratio"
+source_faithful = true
+independent_control = "corrected_paper_input_reproduces_the_source_ratio_boundary"
+floor_policy = "no denominator floor"
+
+[[function]]
+name = "sfwm-source-reproduction::main"
+source_equations = ["SC-EQ-2", "SC-EQ-6", "SC-EQ-8", "SC-FIG-4-COHERENCE"]
+quantity = "paper-input and Sellmeier-derived 0.0 through 100.0 micrometre component grids"
+source_faithful = true
+independent_control = "independent_mpmath_fixtures_match_componentwise"
+final_grid = "0.1 micrometre step, 1001 points, frozen before evaluation"
+calibration_grids = ["0.1 micrometre", "0.05 micrometre", "0.01 micrometre"]
+
+[[function]]
+name = "sfwm.rs legacy functions"
+source_equations = ["SC-EQ-2", "SC-EQ-6", "SC-EQ-8"]
+quantity = "legacy scalar magnitudes, product-of-efficiencies dominance, heuristic power curves, and substrate proxy"
+source_faithful = false
+status = "characterization-only quarantine"
+reason = "The legacy path omits coherent Eq. 6 scaling or maps a surrogate quantity to a source claim."
+
+[conclusion]
+signed_identity_checked = true
+complex_components_retained = true
+full_eq6_prefactor_checked = true
+source_and_sellmeier_inputs_separated = true
+extraordinary_branch_explicit = true
+independent_dense_rust_reference = true
+independent_mpmath_fixture = true
+final_thickness_sweep_run = true
+experimental_figure_fit_run = false
+substrate_percentage_adjudicated = false

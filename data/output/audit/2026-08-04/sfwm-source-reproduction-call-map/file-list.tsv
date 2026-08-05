@@ -1,0 +1,3 @@
+crates/optics_core/src/sfwm_source.rs
+crates/optics_core/tests/test_sfwm_source_reference.rs
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs

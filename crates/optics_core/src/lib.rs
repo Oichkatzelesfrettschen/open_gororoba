@@ -33,6 +33,7 @@ pub mod optics_algebra_bridge;
 pub mod p2b_fit;
 pub mod phase_retrieval;
 pub mod sfwm;
+pub mod sfwm_source;
 pub mod tcmt;
 
 pub use grin::{
@@ -131,6 +132,12 @@ pub use sfwm::{
     sfwm_dominance_check,
     substrate_sfwm_contribution,
     thickness_sweep,
+};
+
+pub use sfwm_source::{
+    SfwmSourceAmplitudes, SfwmSourceError, SfwmSourceParameters, SfwmSourceRates,
+    SourceCoherenceAnchors, SourceMismatchAudit, SourceWavevectorMismatches, WavevectorMismatch,
+    evaluate_source_case, source_amplitudes, source_rates,
 };
 
 pub use bessel::{

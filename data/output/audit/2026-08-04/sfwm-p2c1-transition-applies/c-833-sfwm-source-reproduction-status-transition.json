@@ -1,0 +1,9 @@
+{
+  "transition_key": "c-833-sfwm-extraordinary-sellmeier-hierarchy",
+  "transition_spec_sha256": "1c786f826859183cf96385bc749789960eedc7d7ed8b8f1c8c3cd8f8d6ad6c40",
+  "event_id": 17,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.

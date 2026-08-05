@@ -1,0 +1,76 @@
+cflow:crates/optics_core/src/sfwm_source.rs:31: SfwmSourceError redefined
+cflow:crates/optics_core/src/sfwm_source.rs:13: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:39: SfwmSourceError redefined
+cflow:crates/optics_core/src/sfwm_source.rs:31: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:41: value redefined
+cflow:crates/optics_core/src/sfwm_source.rs:32: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:48: Result redefined
+cflow:crates/optics_core/src/sfwm_source.rs:39: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:48: SfwmSourceError redefined
+cflow:crates/optics_core/src/sfwm_source.rs:39: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:50: value redefined
+cflow:crates/optics_core/src/sfwm_source.rs:41: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:59: pub redefined
+cflow:crates/optics_core/src/sfwm_source.rs:13: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:64: WavevectorMismatch redefined
+cflow:crates/optics_core/src/sfwm_source.rs:59: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:83: pub redefined
+cflow:crates/optics_core/src/sfwm_source.rs:59: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:92: SourceWavevectorMismatches redefined
+cflow:crates/optics_core/src/sfwm_source.rs:83: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:117: pub redefined
+cflow:crates/optics_core/src/sfwm_source.rs:83: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:126: SourceCoherenceAnchors redefined
+cflow:crates/optics_core/src/sfwm_source.rs:117: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:145: pub redefined
+cflow:crates/optics_core/src/sfwm_source.rs:117: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:156: SourceMismatchAudit redefined
+cflow:crates/optics_core/src/sfwm_source.rs:145: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:190: pub redefined
+cflow:crates/optics_core/src/sfwm_source.rs:145: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:213: SfwmSourceParameters redefined
+cflow:crates/optics_core/src/sfwm_source.rs:190: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:288: pub redefined
+cflow:crates/optics_core/src/sfwm_source.rs:190: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:303: pub redefined
+cflow:crates/optics_core/src/sfwm_source.rs:288: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:315: SfwmSourceError redefined
+cflow:crates/optics_core/src/sfwm_source.rs:48: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:324: value redefined
+cflow:crates/optics_core/src/sfwm_source.rs:50: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:325: thickness_um redefined
+cflow:crates/optics_core/src/sfwm_source.rs:317: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:327: argument redefined
+cflow:crates/optics_core/src/sfwm_source.rs:323: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:335: SourceWavevectorMismatches redefined
+cflow:crates/optics_core/src/sfwm_source.rs:92: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:336: thickness_um redefined
+cflow:crates/optics_core/src/sfwm_source.rs:325: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:336: f64 redefined
+cflow:crates/optics_core/src/sfwm_source.rs:8: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:337: Result redefined
+cflow:crates/optics_core/src/sfwm_source.rs:48: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:337: SfwmSourceAmplitudes redefined
+cflow:crates/optics_core/src/sfwm_source.rs:288: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:337: SfwmSourceError redefined
+cflow:crates/optics_core/src/sfwm_source.rs:315: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:340: thickness_um redefined
+cflow:crates/optics_core/src/sfwm_source.rs:336: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:346: mismatches redefined
+cflow:crates/optics_core/src/sfwm_source.rs:335: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:373: SfwmSourceError redefined
+cflow:crates/optics_core/src/sfwm_source.rs:337: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:393: mismatches redefined
+cflow:crates/optics_core/src/sfwm_source.rs:346: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:393: SourceWavevectorMismatches redefined
+cflow:crates/optics_core/src/sfwm_source.rs:335: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:394: thickness_um redefined
+cflow:crates/optics_core/src/sfwm_source.rs:340: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:394: f64 redefined
+cflow:crates/optics_core/src/sfwm_source.rs:336: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:395: Result redefined
+cflow:crates/optics_core/src/sfwm_source.rs:337: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:395: SfwmSourceAmplitudes redefined
+cflow:crates/optics_core/src/sfwm_source.rs:337: this is the place of previous definition
+cflow:crates/optics_core/src/sfwm_source.rs:395: SfwmSourceError redefined
+cflow:crates/optics_core/src/sfwm_source.rs:373: this is the place of previous definition

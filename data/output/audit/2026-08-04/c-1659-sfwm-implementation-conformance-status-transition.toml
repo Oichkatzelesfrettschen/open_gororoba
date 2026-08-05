@@ -1,0 +1,18 @@
+[transition]
+transition_key = "c-1659-sfwm-source-implementation-conformance"
+source_claim_id = "C-1659"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"]
+experiment_ids = []
+exercised_falsifier = "Compare every retained complex amplitude and rate component against the dense-index Rust formula and the independent 80-digit mpmath fixture while running sign, prefactor, susceptibility, phase, and denominator mutations."
+proposed_claim_status = "Verified"
+rationale = "The source-owned implementation retains signed mismatch types, complex Eq. 6 and Eq. 8 amplitudes, the complete Eq. 6 prefactor, source and extraordinary Sellmeier input paths, explicit zero-rate handling, and independent component-level agreement."
+unresolved_assumptions = [
+    "Implementation conformance does not establish the unresolved material identity or the experimental coincidence mapping.",
+]
+actor = "son-chekhova-source-reproduction"
+reason = "Promote only the implementation-conformance successor after independent component agreement and mutation detection."
+transition_timestamp = "2026-08-05T03:49:05Z"
+expected_source_state_sha256 = "03b11476d56755e6408dd2711af80a643a658ed0a731be4c5b2d8c18eded96f3"
+expected_claim_id_max = 1663

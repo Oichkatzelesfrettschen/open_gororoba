@@ -1,0 +1,259 @@
+format = "experiment-manifest-v1"
+
+[experiment]
+id = "E-243"
+status = "completed"
+status_token = "COMPLETED"
+title = "Son-Chekhova SFWM signed source reproduction and rate-anchor reconstruction"
+claim_refs = ["C-832", "C-833", "C-834", "C-838", "C-839", "C-1659", "C-1661"]
+reproducibility_class = "numeric_close"
+code_commit_sha = "6b0b0acf297bd8b83b89ddd40c0700e8a81e1778"
+actual_timestamp = "2026-08-05T03:49:05Z"
+run_command = "CARGO_TARGET_DIR=.cache/exp-p2c1-target cargo run --locked -p gororoba_cli_physics --bin sfwm-source-reproduction -- --output-dir data/output/audit/2026-08-04/sfwm-p2c1-results"
+run_command_sha256 = "0440bef9882cba74060ae53d0061a2e2163c46b995c91dfec255799f9c607ee5"
+toolchain = "rustc 1.97.0 (2d8144b78 2026-07-07); cargo 1.97.0 (c980f4866 2026-06-30); Python 3.14.6; mpmath 1.4.1 at 80 digits for one-shot independent fixtures"
+features = []
+hardware = "deterministic CPU execution on AMD Ryzen 5 5600X3D, x86_64 Linux"
+randomness_mode = "none"
+
+[[experiment.input_hashes]]
+path = "Cargo.lock"
+sha256 = "5c8af399c0948e417849066e39c260e8b82bcead47a7eba00dedf7f9fe556cf2"
+
+[[experiment.input_hashes]]
+path = "crates/gororoba_cli_physics/Cargo.toml"
+sha256 = "9a3d37d308e0e26d0107a9d0e6cf66b3972b19e3c64beecb8d6e5160f5f813d1"
+
+[[experiment.input_hashes]]
+path = "crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs"
+sha256 = "ada33995a87e88f17df98fb96223021bebd35261868e8add2a4c928ede918686"
+
+[[experiment.input_hashes]]
+path = "crates/optics_core/src/sfwm_source.rs"
+sha256 = "165887391350374a37e415f65011702bcf3109ae6705749c19f05d5ed168e343"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/sfwm-source-intake-experiment-manifest.toml"
+sha256 = "1bb7547ba0e588542d2e5c9fb09e37488444998baf7efd21042d8407aea71c97"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml"
+sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-experiment-manifest.toml"
+sha256 = "83c61321291791d8c154b8f6e347b987a64b4d114f8fc930b2e4ced99ed68ff0"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/sfwm-source-reproduction-preregistration.toml"
+sha256 = "5131d92c3a9972116ea72eb8d404850a5e3ae0b75f65a744d936a612b4269f88"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/sfwm-source-reproduction-ledger.toml"
+sha256 = "2c658d78ffb778955b695ae9d5adc7daa446efe224727be6835bf0ca06798112"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
+sha256 = "1452a4b48169f37a128eaf5b893cafcb99603843447841a251e80c7e499eabfc"
+
+[[experiment.input_hashes]]
+path = "data/output/audit/2026-08-04/sfwm-material-identity-audit.toml"
+sha256 = "d8eb663db1b7b3e88463bd7444ae08d68723d4ac1a74ef17b701db52c72cbf85"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-baseline/pre-change.log"
+sha256 = "19dcd6185f9df565d24c03bbd0e369b7354c0a0deba00268f3dfa283cc85ddea"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-baseline/source-intake-audit.log"
+sha256 = "12610d3536d8d9fe17cb89371a874c7124829e8cede73d6e1fcbf9b56bb367d7"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-source-reproduction-ledger.toml"
+sha256 = "2c658d78ffb778955b695ae9d5adc7daa446efe224727be6835bf0ca06798112"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-source-reproduction-source-matrix.toml"
+sha256 = "1509127846b190b660091faaeff4314fe20d369dac341e76b19b7e6f5d623411"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-source-reproduction-mutation-controls.toml"
+sha256 = "daf607743b045bb38245df31c4f3eb849324bbef7eac98243dc9acf3ced3f8bc"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-source-reproduction-adversarial-review.md"
+sha256 = "87663a48fe59b199abd9abe0b55728ed1a28756c4c4a71315be45f8171ffd769"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-source-reproduction-call-map.toml"
+sha256 = "067d2fc0cbfd8e57ebcf7f0a51d6d1be57a15454cb6dd37176e74f1dc1698bb1"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-source-reproduction-preregistration.toml"
+sha256 = "5131d92c3a9972116ea72eb8d404850a5e3ae0b75f65a744d936a612b4269f88"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-dimensional-audit.toml"
+sha256 = "f37da4bb64458a8c577a9d8fc5f826f17d60c78596afa3844e944b1d9a190cc8"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/generation.log"
+sha256 = "3e937bfb9a2080f19ae333f247cf8b4cdf7c231065a4aab4373fa33433e2a34a"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/thickness-grid-0-to-100um-step-0.1um.txt"
+sha256 = "2902aa336f7fb63cc746bb47b7bc518b601af37443b1574db22cc5a78f45be55"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/paper-input-thickness-components.csv"
+sha256 = "b303578ca9be01707b94880166cb10d73fd9aaeaf57abc3fb94ebd3d0e6bb6c2"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/sellmeier-derived-thickness-components.csv"
+sha256 = "b19972ede99f9188e272253dcf72c4d227c8a6834b3b2b413bb22381a0880269"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/source-reproduction-summary.toml"
+sha256 = "b1de0d7e7a6f347393e8caf57789bcb258f8827a69c9731d1d3caa6972ba7950"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/independent-mpmath-fixtures.csv"
+sha256 = "45ec9fc66b6bd482399761d12d92fd0c29347a7dbaa1e64d5b6f8b9a4e5279b3"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/independent-mpmath-fixture-metadata.toml"
+sha256 = "547768d71147fcfae340eca4137e723d81d879a021e51e402d96e25a5effe923"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-claim-transition-results.toml"
+sha256 = "a157d071c3df1510464f600538b171794fb512bffc982d55b825564f8d50c0c8"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-replay-controls.log"
+sha256 = "4f6fa1ac31d8fb2c37ec7a18d1b0c492d0b524915c21bc17a2e607b423a80d15"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/c-832-sfwm-source-reproduction-status-transition.toml"
+sha256 = "225f59445897f434c96ca7dcb8cdeb508c01413da5aa3cd99a4f1644dddabdb3"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/c-833-sfwm-source-reproduction-status-transition.toml"
+sha256 = "1c786f826859183cf96385bc749789960eedc7d7ed8b8f1c8c3cd8f8d6ad6c40"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/c-834-sfwm-source-reproduction-status-transition.toml"
+sha256 = "f1101c678e8edf7fd356be80d562fb74b58a2b1613c7e0c935b2404e8360a1ed"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/c-839-sfwm-source-reproduction-status-transition.toml"
+sha256 = "673d33a4eafeff07ad140b61835f2c61473eb7d3a682fb227066b1598aa3609f"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/c-1659-sfwm-implementation-conformance-status-transition.toml"
+sha256 = "3f6f9cea8c1dbba0910d378ca392afdf444bc6c0b76f412e98d80712125cc773"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/c-1661-sfwm-rate-anchor-reproduction-status-transition.toml"
+sha256 = "9e09aa71f9ba614cd17b60f6cb802c6c4620d39c8b32b583910cf3ca03ba7245"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-plans/c-832-sfwm-source-reproduction-status-transition.json"
+sha256 = "fb55a21c70942338dabbb2594de4e9715a4ed4816b636f7c4fe377ce1c225a58"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-plans/c-833-sfwm-source-reproduction-status-transition.json"
+sha256 = "8538307cf708444db1b7b3c1bafeb13c02ea08d3b6562a7e7ee12a5499122157"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-plans/c-834-sfwm-source-reproduction-status-transition.json"
+sha256 = "668b33ce1624a8e915c52cfa970e4d4f7460a75595a66a7c6dec7eca1d61b776"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-plans/c-839-sfwm-source-reproduction-status-transition.json"
+sha256 = "5e4c399fb17d17d106184bb6a119cb4885025d7df303059071a1e41a959e986b"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-plans/c-1659-sfwm-implementation-conformance-status-transition.json"
+sha256 = "3beb18915580110fafae3237fb09d2db79cbd026f1441a40d974f7e07f2b995f"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-plans/c-1661-sfwm-rate-anchor-reproduction-status-transition.json"
+sha256 = "718d5f2468a7ce2820cbea6e75f457ba185e889008a0ef4438835f22b60faabe"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-applies/c-832-sfwm-source-reproduction-status-transition.json"
+sha256 = "fb1079adbd6d4f8e5a0ca20077248e24d126cc7bb01467128beb8c127164de47"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-applies/c-833-sfwm-source-reproduction-status-transition.json"
+sha256 = "9c91874c1dd442ea037a668e28ffbd25764cc16c8960cac490c79eaed62390d7"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-applies/c-834-sfwm-source-reproduction-status-transition.json"
+sha256 = "1a3e489a6fe6e9834283d8175b094fed1c646ac2c1bd3b00f8e2e6f9983c5cbf"
+
+[[experiment.output_hash_refs]]
+artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-transition-applies/c-839-sfwm-source-reproduction-status-transition.json"
+sha256 = "29d2e4f222f11f252cbc25e74b40bdbfa7f39d4669dff62ef35c5d3c2ada001a"
+
+[[experiment.numeric_tolerance]]
+output_id = "sfwm-source-reproduction-summary.toml"
+column = "source-model ratios, signed mismatch closure, and component comparison"
+rel_tol = 1.0e-12
+abs_tol = 1.0e-30
+
+[provenance]
+source_pdf = "arXiv:2601.23137v1"
+source_pdf_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e8"
+source_archive_sha256 = "88a04fc2f5327986cdd7ddb66f2915df5f42361c89b60cd370052a9ad4f5882a"
+source_tex_sha256 = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p1_manifest_declared_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+p2a_manifest_sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+p2a_manifest_declared_revision = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+p2b_manifest_sha256 = "83c61321291791d8c154b8f6e347b987a64b4d114f8fc9300b2e4ced99ed68ff0"
+p2b_manifest_declared_revision = "58a75fcd27146861a98f5c1408867a3f987e9458"
+p2c0_manifest_sha256 = "1bb7547ba0e588542d2e5c9fb09e37488444998baf7efd21042d8407aea71c97"
+p2c0_manifest_declared_revision = "533acbeed3894de11922c632ac166449c2b13c68"
+supplement_status = "missing_from_public_arxiv_packet"
+raw_experimental_data_status = "not_publicly_available_per_source"
+chi3_material_identity_status = "unresolved_for_pristine_thin_lithium_niobate"
+manifest_role = "source-faithful signed SFWM reconstruction, independent component falsification, frozen thickness grid, and typed claim transitions; no experimental figure fitting"

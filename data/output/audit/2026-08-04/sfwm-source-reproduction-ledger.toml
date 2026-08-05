@@ -1,0 +1,100 @@
+schema = "sfwm-source-reproduction-ledger-v1"
+bundle_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+source_pdf = "arxiv:2601.23137v1"
+source_pdf_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e8"
+source_tex_sha256 = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f"
+implementation_module = "crates/optics_core/src/sfwm_source.rs"
+independent_reference = "crates/optics_core/tests/test_sfwm_source_reference.rs"
+legacy_module = "crates/optics_core/src/sfwm.rs"
+legacy_status = "characterization only; no corrected result uses the legacy magnitude or floor path"
+
+[conventions]
+metric = "one-dimensional propagation coordinate x along positive x"
+length_unit = "micrometre"
+wavelength_unit = "micrometre"
+wavevector_unit = "inverse micrometre"
+signed_mismatch = "Delta_k_SFWM = 2*k_p - k_s - k_i; Delta_k_SHG = 2*k_p - k_SH; Delta_k_SPDC = k_SH - k_s - k_i"
+identity = "Delta_k_SFWM = Delta_k_SHG + Delta_k_SPDC"
+coherence_length = "pi / abs(Delta_k)"
+phase_convention = "exp(+i*Delta_k*x) in the source amplitudes"
+complex_amplitude_state = "retain real and imaginary components through rate construction"
+zero_mismatch = "exact Delta_k = 0 returns F(L)=L; no numerical floor"
+zero_direct_rate = "ratio is represented as undefined when R_dir = 0"
+
+[[equation]]
+id = "SC-EQ-2"
+source_equation = "Eq. 2"
+formula = "F(L) = L*sinc(Delta_k*L/2)"
+code_owner = "sfwm_source::phase_matching_amplitude"
+status = "implemented and tested"
+independent_owner = "test_sfwm_source_reference::reference_phase_matching"
+
+[[equation]]
+id = "SC-EQ-6"
+source_equation = "Eq. 6"
+formula = "A_cas = [2*pi*chi2^2*E_p^2/(n_SH*lambda_SH*Delta_k_SHG)]*exp(i*Delta_k_SPDC*L/2)*[exp(i*Delta_k_SHG*L/2)*F_SFWM-F_SPDC]"
+code_owner = "sfwm_source::source_amplitudes"
+status = "implemented with full prefactor and complex phase"
+independent_owner = "test_sfwm_source_reference::reference_amplitudes"
+
+[[equation]]
+id = "SC-EQ-8"
+source_equation = "Eq. 8"
+formula = "A_dir = chi3*E_p^2*exp(i*Delta_k_SFWM*L/2)*F_SFWM"
+code_owner = "sfwm_source::source_amplitudes"
+status = "implemented with complex phase"
+independent_owner = "test_sfwm_source_reference::reference_amplitudes"
+
+[[equation]]
+id = "SC-RATE-CAS"
+source_equation = "Eq. 5 and Eq. 6 rate reduction"
+formula = "R_cas proportional to (4/9)*abs(A_cas)^2"
+code_owner = "sfwm_source::source_rates"
+status = "implemented"
+independent_owner = "test_sfwm_source_reference::independent_reference_matches_all_complex_components"
+
+[[equation]]
+id = "SC-RATE-DIR"
+source_equation = "Eq. 7 and Eq. 8 rate reduction"
+formula = "R_dir proportional to (9/16)*abs(A_dir)^2"
+code_owner = "sfwm_source::source_rates"
+status = "implemented"
+independent_owner = "test_sfwm_source_reference::independent_reference_matches_all_complex_components"
+
+[source_inputs]
+pump_wavelength_um = 1.030
+signal_wavelength_um = 0.770
+idler_wavelength_um = 1.550
+second_harmonic_wavelength_um = 0.515
+layer_thickness_um = 10.0
+chi2_m_per_v = 2.5e-11
+chi3_m2_per_v2 = 1.5e-20
+chi3_material_identity = "unresolved; Wang metadata identifies a CuZn-alloy nanoparticle implanted LiNbO3 sample"
+
+[paper_anchor_resolution]
+printed_coherence_lengths_um = [33.3, 3.1, 3.4]
+signed_anchor_policy = "set SFWM and SHG from printed positive magnitudes, derive SPDC by the signed identity, and retain the printed SPDC magnitude as an audit residual"
+expected_signs = ["positive", "positive", "negative"]
+rounded_anchor_status = "the printed values are rounded and do not independently close the signed identity"
+
+[sellmeier_resolution]
+reference = "Zelmon et al. 1997, extraordinary LiNbO3 branch"
+geometry = "x-cut layer, propagation along +x, z-polarized fields, chi2_zzz and chi3_zzzz"
+branch_status = "physical implementation inference; Main.tex does not print ordinary or extraordinary branch names"
+ordinary_branch_status = "retained as a sensitivity envelope, not the primary source path"
+
+[uncertainty]
+chi2_half_width_m_per_v = 5.0e-13
+chi3_half_width_m2_per_v2 = 5.0e-22
+pump_wavelength_half_width_um = 0.005
+signal_wavelength_half_width_um = 0.005
+idler_wavelength_half_width_um = 0.025
+thickness_half_width_um = 0.0
+index_status = "branch and wavelength-band envelopes are computed; the source supplies no statistical index uncertainty"
+refinement_steps_um = [0.1, 0.05, 0.01]
+refinement_policy = "Evaluate auxiliary grids before final adjudication and retain first-extremum and period errors; do not replace the frozen final grid after observing results."
+
+[stopping_boundaries]
+substrate_fraction = "blocked without Supplement 1 or an equivalent complete derivation"
+experimental_figures = "deferred to P2C2"
+final_claim = "no source claim is promoted by this ledger alone"

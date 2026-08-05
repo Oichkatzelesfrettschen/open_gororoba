@@ -1,0 +1,9 @@
+{
+  "transition_key": "c-834-sfwm-source-rate-boundary",
+  "transition_spec_sha256": "f1101c678e8edf7fd356be80d562fb74b58a2b1613c7e0c935b2404e8360a1ed",
+  "event_id": 18,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.

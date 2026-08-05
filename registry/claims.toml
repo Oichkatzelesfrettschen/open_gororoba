@@ -5191,7 +5191,7 @@ last_verified = "2026-08-05"
 [[claim]]
 id = "C-1659"
 statement = "The optics_core SFWM implementation preserves signed complex cascaded and direct amplitudes, the full Eq. 6 prefactor, source and Sellmeier input paths, and an independent component-level falsifier."
-status = "Provisional"
+status = "Verified"
 where_stated = "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml; data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml"
 last_verified = "2026-08-05"
 
@@ -5212,7 +5212,7 @@ last_verified = "2026-08-05"
 [[claim]]
 id = "C-1661"
 statement = "The optics_core SFWM path reproduces the Son-Chekhova 10 um cascaded-to-direct rate anchor under the declared source convention, input tuple, and complete amplitude prefactors."
-status = "Provisional"
+status = "Verified"
 where_stated = "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml; data/output/audit/2026-08-04/sfwm-adversarial-review.md"
 last_verified = "2026-08-05"
 
@@ -10046,7 +10046,7 @@ where_stated = "crates/gr_core/src/scalar_tensor.rs (bianchi_violation_magnitude
 id = "C-832"
 last_verified = "2026-02-19"
 statement = "Direct SFWM |F|^2 exceeds cascaded SHG+SPDC by >5x at 10 um LiNbO3 (Son & Chekhova 2026)."
-status = "Provisional"
+status = "Verified"
 status_note = "Sprint 56: Using paper-calibrated dk values and chi3=2.4e-21 m^2/V^2, R_cas/R_dir < 0.15 at L=10 um. Direct SFWM dominates because L_coh_SFWM (33 um) >> crystal thickness >> L_coh_SHG (3.1 um)."
 where_stated = "crates/optics_core/src/sfwm.rs (rate_ratio_with_dk, test_direct_dominates_cascaded_at_10um), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_paper_dominance_ratio_at_10um)"
 

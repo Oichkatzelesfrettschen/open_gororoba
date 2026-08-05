@@ -1,0 +1,9 @@
+{
+  "transition_key": "c-1661-sfwm-source-rate-anchor-reproduction",
+  "transition_spec_sha256": "9e09aa71f9ba614cd17b60f6cb802c6c4620d39c8b32b583910cf3ca03ba7245",
+  "event_id": 21,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.
