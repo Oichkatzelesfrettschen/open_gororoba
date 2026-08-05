@@ -1,0 +1,21 @@
+{
+  "transition_key": "c-832-sfwm-rate-oracle-source-boundary",
+  "transition_spec_sha256": "e9f38e2c0d00f295c32562b2a411fee5696ea0902aeed28c92b273d8fd118d88",
+  "event_id": 13,
+  "allocated_successors": [
+    {
+      "proposal_key": "c832-source-coherent-rate-identities",
+      "canonical_claim_id": "C-1658",
+      "relation_kind": "source_split"
+    },
+    {
+      "proposal_key": "c832-source-faithful-rate-implementation",
+      "canonical_claim_id": "C-1659",
+      "relation_kind": "implementation_split"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}
+Exported control-plane compatibility outputs: claims=1474 insights=183 experiments=232 binaries=496 theorems=162
+exit_code=0

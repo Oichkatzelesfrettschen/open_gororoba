@@ -1,0 +1,84 @@
+schema = "sfwm-claim-transition-results-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+canonical_database = "registry/canonical/control_plane.sqlite3"
+transition_policy = "Quarantine a positive status when the retained validator measures a surrogate or omits a source term; preserve the source proposition as a separate successor."
+source_theory_refuted = false
+corrected_final_sweep_run = false
+experimental_data_used = false
+
+[before]
+database_revision = "58a75fcd27146861a98f5c1408867a3f987e9458"
+claim_count = 1472
+claim_transition_count = 12
+claim_relation_count = 19
+bundle_artifact_count = 0
+status_counts = { "Closed/Analogy" = 1, "Closed/Methodology-Insufficient" = 2, "Closed/Negative-Result" = 6, "Closed/Obstructed" = 1, "Closed/Refuted" = 3, "Closed/Research-Program" = 3, "Closed/Source-Insufficient" = 1, "Closed/Toy" = 2, Established = 44, Provisional = 134, Refuted = 60, Superseded = 13, Theoretical = 8, Verified = 1194 }
+
+[after]
+claim_count = 1478
+claim_transition_count = 15
+claim_relation_count = 25
+bundle_artifact_count = 1
+bundle_artifact_path_count = 49
+status_counts = { "Closed/Analogy" = 1, "Closed/Methodology-Insufficient" = 2, "Closed/Negative-Result" = 6, "Closed/Obstructed" = 1, "Closed/Refuted" = 3, "Closed/Research-Program" = 3, "Closed/Source-Insufficient" = 1, "Closed/Toy" = 2, Established = 44, Provisional = 140, Refuted = 60, Superseded = 13, Theoretical = 11, Verified = 1191 }
+
+[[transition]]
+transition_key = "c-832-sfwm-rate-oracle-source-boundary"
+source_claim_id = "C-832"
+event_id = 13
+experiment_verdict = "MethodologyInvalid"
+prior_status = "Verified"
+current_status = "Provisional"
+successor_ids = ["C-1658", "C-1659"]
+plan_output = "data/output/audit/2026-08-04/c-832-sfwm-rate-oracle-plan.json"
+apply_output = "data/output/audit/2026-08-04/c-832-sfwm-rate-oracle-apply.json"
+spec = "data/output/audit/2026-08-04/c-832-sfwm-rate-oracle-status-transition.toml"
+
+[[transition]]
+transition_key = "c-834-sfwm-rate-anchor-source-boundary"
+source_claim_id = "C-834"
+event_id = 14
+experiment_verdict = "MethodologyInvalid"
+prior_status = "Verified"
+current_status = "Provisional"
+successor_ids = ["C-1660", "C-1661"]
+plan_output = "data/output/audit/2026-08-04/c-834-sfwm-rate-anchor-plan.json"
+apply_output = "data/output/audit/2026-08-04/c-834-sfwm-rate-anchor-apply.json"
+spec = "data/output/audit/2026-08-04/c-834-sfwm-rate-anchor-status-transition.toml"
+
+[[transition]]
+transition_key = "c-838-sfwm-substrate-percentage-boundary"
+source_claim_id = "C-838"
+event_id = 15
+experiment_verdict = "MethodologyInvalid"
+prior_status = "Verified"
+current_status = "Provisional"
+successor_ids = ["C-1662", "C-1663"]
+plan_output = "data/output/audit/2026-08-04/c-838-substrate-contribution-plan.json"
+apply_output = "data/output/audit/2026-08-04/c-838-substrate-contribution-apply.json"
+spec = "data/output/audit/2026-08-04/c-838-substrate-contribution-status-transition.toml"
+
+[[unchanged_claim]]
+id = "C-833"
+status = "Verified"
+boundary = "Retain only as a scalar qualitative hierarchy; source polarization and signed convention remain unresolved."
+
+[[unchanged_claim]]
+id = "C-839"
+status = "Verified"
+boundary = "Retain only as scalar phase-matching characterization; source parameter and polarization conformance remain unresolved."
+
+[[unchanged_claim]]
+id = "C-835"
+status = "Verified"
+boundary = "Experimental-data tranche remains deferred."
+
+[[unchanged_claim]]
+id = "C-836"
+status = "Verified"
+boundary = "Experimental-data tranche remains deferred."
+
+[[unchanged_claim]]
+id = "C-837"
+status = "Verified"
+boundary = "Experimental-data tranche remains deferred."
