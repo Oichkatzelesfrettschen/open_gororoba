@@ -1,0 +1,40 @@
+[transition]
+transition_key = "c-838-sfwm-substrate-percentage-boundary"
+source_claim_id = "C-838"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+experiment_ids = []
+exercised_falsifier = "Compare the standalone substrate chi3^2*F^2 proxy with the source's claimed percentage of total coincidences and require the complete Supplement 1 reference and collection model."
+proposed_claim_status = "Provisional"
+rationale = "The legacy validator proves only a nonzero standalone proxy. It cannot estimate a percentage of total detected coincidences, and Supplement 1 is absent."
+unresolved_assumptions = [
+    "Supplement 1 or equivalent substrate derivation is unavailable.",
+    "Relative LN and fused-silica amplitudes, interfaces, collection, filters, and detector response are unresolved.",
+    "The substrate chi3 convention and source identity require explicit material evidence."
+]
+actor = "son-chekhova-source-intake"
+reason = "Quarantine the substrate proxy before any percentage claim is evaluated."
+transition_timestamp = "2026-08-05T00:48:49Z"
+expected_source_state_sha256 = "ec77532d90cef7abf0fe81a61995c3a951a62d325c4d9eae7867f5eb9d4115ee"
+expected_claim_id_max = 1657
+
+[[successor]]
+proposal_key = "c838-source-substrate-percentage"
+statement = "The Son-Chekhova source reports a fused-silica substrate contribution estimated as 25 percent of total coincidence rate, subject to Supplement 1 assumptions."
+initial_status = "Theoretical"
+source_or_implementation_boundary = "Source-reported phenomenological estimate; the derivation and data are not available in the public packet."
+required_falsifier = "Supplement 1, author data, or an authoritative correction must contradict the reported percentage or its assumptions."
+where_stated = ["https://arxiv.org/abs/2601.23137v1", "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"]
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+predecessor_relation_kind = "source_split"
+
+[[successor]]
+proposal_key = "c838-substrate-nonzero-amplitude"
+statement = "A fused-silica chi^(3) phase-matching calculation can produce a nonzero standalone SFWM amplitude under declared dispersion and thickness inputs."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Implementation characterization only; it does not establish a fraction of total coincidences."
+required_falsifier = "An independent substrate amplitude calculation must produce zero under the same nonzero declared inputs or expose a mismatch in the phase-matching convention."
+where_stated = ["data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml", "data/output/audit/2026-08-04/sfwm-legacy-oracle-audit.tsv"]
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+predecessor_relation_kind = "implementation_split"

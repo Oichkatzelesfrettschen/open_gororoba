@@ -1,0 +1,6 @@
+tool	status	diagnostic
+ctags	limited	Cargo subparser and TOML parser warnings; Rust tags retained
+cscope	limited	Rust definitions and method calls are incomplete; lexical query results retained
+cflow	invalid-for-semantic-rust	Rust syntax produces redefinition diagnostics and a one-node output
+rg-symbol-occurrence-map	usable	Lexical occurrence inventory generated without parser diagnostics
+manual-edge-review	usable	Edges reviewed against source call sites and public consumers

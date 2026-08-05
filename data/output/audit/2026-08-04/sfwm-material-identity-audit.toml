@@ -1,0 +1,70 @@
+schema = "sfwm-material-identity-audit-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+
+[source_geometry]
+layer = "10 um x-cut lithium niobate on 500 um fused silica"
+propagation_axis = "positive x"
+pump_wavelength = "1030 nm"
+signal_wavelength = "770 nm"
+idler_wavelength = "1550 nm"
+source_tensor_components = ["chi^(2)_zzz", "chi^(3)_zzzz"]
+polarization_statement = "Main.tex says pump and outputs are most efficient when polarized along z"
+polarization_source_status = "source states tensor component and observed maximum; Supplement 1 derivation missing"
+
+[index_branch]
+source_explicit_branch = "not named as ordinary or extraordinary in Main.tex"
+required_physical_adjudication = "z-polarized fields in x propagation through an LN optic axis along z imply an extraordinary-wave branch under the standard uniaxial model"
+inference_status = "inference requiring explicit confirmation in P2C1"
+legacy_branch = "ordinary"
+legacy_owner = "crates/materials_core/src/optical_database.rs:linbo3_ordinary_sellmeier"
+legacy_cli_import = "crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs:build_params_from_sellmeier"
+
+[sellmeier_ordinary]
+reference = "Zelmon 1997 ordinary"
+b_coefficients = [2.6734, 1.2290, 12.614]
+c_coefficients = [0.01764, 0.05914, 474.60]
+
+[sellmeier_extraordinary]
+reference = "Zelmon 1997 extraordinary"
+b_coefficients = [2.9804, 0.5981, 8.9543]
+c_coefficients = [0.02047, 0.06660, 416.08]
+
+[susceptibility]
+source_chi2 = "2.5e-11 m/V"
+legacy_chi2 = "27e-12 m/V"
+source_chi3 = "1.5e-20 m^2/V^2"
+legacy_chi3 = "2.4e-21 m^2/V^2"
+substrate_chi3 = "3e-22 m^2/V^2"
+legacy_cli_substrate_chi3 = "2.5e-22 m^2/V^2"
+rate_ratio_leverage = "R_cas/R_dir scales as (chi2^4)/(chi3^2) before other factors"
+chi2_conversion_risk = "Shoji source may report an effective chi^(2); d=chi^(2)/2 must not be assumed without convention proof"
+chi3_identity_status = "unresolved"
+
+[wang_source]
+doi = "10.1016/j.jallcom.2018.11.182"
+title = "Enhanced nonlinear optical properties of LiNbO3 crystal embedded with CuZn alloy nanoparticles by ion implantation"
+metadata_sha256 = "9d4472cef0d42863abe0fe804f753ea9e4950bd86f05f434de12d7c8febcd060"
+sample_identity = "CuZn-alloy-nanoparticle implanted LiNbO3 according to title"
+pristine_lithium_niobate_support = "not established"
+full_text_status = "publisher landing page returned 403; Crossref metadata retained"
+required_resolution = "identify sample, tensor component, wavelength, units, and conversion supporting source chi^(3)"
+
+[mismatch]
+source_identity = "Delta_k_SFWM = Delta_k_SHG + Delta_k_SPDC"
+source_text_observation = "Main.tex describes abs(Delta_k_SFWM) as the difference of the larger SHG and SPDC magnitudes"
+legacy_paper_constructor = "stores pi/33.3, pi/3.1, and pi/3.4 as positive f64 values"
+legacy_sellmeier_constructor = "computes signed formulas from one ordinary-index branch"
+sign_status = "paper anchor signs unresolved; positive-only paper constructor cannot represent the cancellation explicitly"
+coherence_length_warning = "coherence-length magnitudes alone do not determine the sign assignment"
+
+[substrate]
+source_claim = "25 percent of total coincidence rate"
+legacy_proxy = "chi3^2 * abs(F)^2"
+missing_inputs = ["LN reference amplitude", "relative phase", "interfaces", "collection efficiency", "polarization tensor", "spectral filters", "detector response", "total coincidence denominator", "Supplement 1 derivation"]
+status = "blocked"
+
+[conclusion]
+ordinary_path_is_source_faithful = false
+extraordinary_path_is_implemented = false
+chi3_source_identity_is_resolved = false
+substrate_percentage_is_adjudicable = false

@@ -1,0 +1,39 @@
+[transition]
+transition_key = "c-834-sfwm-rate-anchor-source-boundary"
+source_claim_id = "C-834"
+expected_prior_status = "Verified"
+experiment_verdict = "MethodologyInvalid"
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+experiment_ids = []
+exercised_falsifier = "Replace the broad <0.15 gate with the source anchor 0.048, retain the complete Eq. 6 prefactor, and compare signed complex amplitudes before rates."
+proposed_claim_status = "Provisional"
+rationale = "The old test accepts values far from 0.048 and uses incomplete source inputs. It does not reproduce the source anchor."
+unresolved_assumptions = [
+    "The source susceptibility and index conventions are not yet fully identified.",
+    "No corrected thickness point has been evaluated."
+]
+actor = "son-chekhova-source-intake"
+reason = "Quarantine the non-discriminating rate-anchor gate before numerical reconstruction."
+transition_timestamp = "2026-08-05T00:48:49Z"
+expected_source_state_sha256 = "477d9ce2c14772ca55c35bde5da5cc63d68516ae7a8d8f27486aee2fae40d932"
+expected_claim_id_max = 1657
+
+[[successor]]
+proposal_key = "c834-source-rate-anchor"
+statement = "Son and Chekhova report R_cas/R_dir = 0.048 at 10 um for the declared source inputs and coherent amplitudes."
+initial_status = "Theoretical"
+source_or_implementation_boundary = "Source numerical anchor only; no code reproduction is implied."
+required_falsifier = "A primary-source correction or authoritative source data must contradict the printed 0.048 anchor."
+where_stated = ["https://arxiv.org/abs/2601.23137v1", "data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"]
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+predecessor_relation_kind = "source_split"
+
+[[successor]]
+proposal_key = "c834-source-rate-reproduction"
+statement = "The optics_core SFWM path reproduces the Son-Chekhova 10 um cascaded-to-direct rate anchor under the declared source convention, input tuple, and complete amplitude prefactors."
+initial_status = "Provisional"
+source_or_implementation_boundary = "Implementation conformance only; no experimental coincidence interpretation is implied."
+required_falsifier = "A frozen corrected run or independent fixture must exceed the declared source-anchor uncertainty after all input and prefactor controls pass."
+where_stated = ["data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml", "data/output/audit/2026-08-04/sfwm-adversarial-review.md"]
+evidence_artifact_ids = ["LOCAL-P2C0-SFWM-SOURCE-INTAKE"]
+predecessor_relation_kind = "implementation_split"

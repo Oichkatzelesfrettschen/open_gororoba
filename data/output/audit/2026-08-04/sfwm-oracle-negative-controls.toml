@@ -1,0 +1,111 @@
+schema = "sfwm-oracle-negative-controls-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+control_policy = "static source-to-code controls plus legacy characterization; no corrected final sweep"
+source_theory_refutation_allowed = false
+
+[[control]]
+id = "SC-NC-001"
+mutation = "replace signed Delta_k values with positive coherence-length magnitudes"
+source_requirement = "Delta_k_SFWM = Delta_k_SHG + Delta_k_SPDC"
+code_surface = "SfwmMaterialParams::paper_wavevector_mismatches"
+expected_failure = "the source cancellation sign cannot be represented"
+observed = "detected by source equation ledger and implementation matrix"
+result = "detected"
+scientific_interpretation = "legacy input is not source-faithful; source theory is not refuted"
+
+[[control]]
+id = "SC-NC-002"
+mutation = "omit 2*pi/(n_SH*lambda_SH*Delta_k_SHG) from cascaded amplitude"
+source_requirement = "Eq. 6 full prefactor"
+code_surface = "cascaded_amplitude_sq_with_dk"
+expected_failure = "rate ratio changes because the factor does not cancel against direct amplitude"
+observed = "body contains chi2 product and bracket but no Eq. 6 prefactor"
+result = "detected"
+scientific_interpretation = "legacy rate ratio cannot adjudicate the source anchor"
+
+[[control]]
+id = "SC-NC-003"
+mutation = "use legacy chi2=27e-12 and chi3=2.4e-21 in a source-named constructor"
+source_requirement = "source values chi2=2.5e-11 and chi3=1.5e-20"
+code_surface = "linbo3_son_chekhova_2026 and linbo3_paper_calibrated"
+expected_failure = "source-input reproduction is not an identity"
+observed = "literal mismatch retained in material identity audit"
+result = "detected"
+scientific_interpretation = "input substitution is an implementation mismatch, not a source refutation"
+
+[[control]]
+id = "SC-NC-004"
+mutation = "use ordinary Sellmeier branch for z-polarized fields in x-cut geometry without declaring it"
+source_requirement = "explicit polarization and refractive-index convention"
+code_surface = "build_params_from_sellmeier imports linbo3_ordinary_sellmeier"
+expected_failure = "material branch cannot be traced to the source tensor convention"
+observed = "detected; extraordinary branch exists in materials_core but is not used"
+result = "detected"
+scientific_interpretation = "source convention remains open for P2C1"
+
+[[control]]
+id = "SC-NC-005"
+mutation = "multiply independent SHG and SPDC phase-matching intensities"
+source_requirement = "coherent complex difference in Eq. 6"
+code_surface = "sfwm_dominance_check"
+expected_failure = "interference term and relative phase are absent"
+observed = "eff_cascaded = f_shg^2*f_spdc^2"
+result = "detected"
+scientific_interpretation = "qualitative hierarchy is not a cascaded rate calculation"
+
+[[control]]
+id = "SC-NC-006"
+mutation = "accept any ratio less than 0.15 as reproduction of the source value 0.048"
+source_requirement = "source reports 0.048; repository gate must distinguish the anchor"
+code_surface = "test_paper_dominance_ratio_at_10um and test_direct_dominates_cascaded_at_10um"
+expected_failure = "a value such as 0.14 passes while being far from the source anchor"
+observed = "legacy tests use <0.15 and do not assert 0.048"
+result = "detected"
+scientific_interpretation = "old gate is non-discriminating"
+
+[[control]]
+id = "SC-NC-007"
+mutation = "replace a zero or undefined denominator with max(denominator, floor)"
+source_requirement = "undefined ratios must be explicit errors or limits"
+code_surface = "rate_ratio_with_dk, sfwm_dominance_check, g2 models, substrate proxy"
+expected_failure = "singular or invalid inputs can return finite surrogates"
+observed = "1e-30 and 1e-60 floors are present"
+result = "detected"
+scientific_interpretation = "legacy finite output is not evidence of a finite physical ratio"
+
+[[control]]
+id = "SC-NC-008"
+mutation = "interpret standalone substrate proxy as 25 percent of total coincidences"
+source_requirement = "Supplement 1 total-rate derivation"
+code_surface = "substrate_sfwm_contribution and sfwm_figure_repro verdict"
+expected_failure = "no LN reference, collection, interface, or total denominator exists"
+observed = "proxy only; source supplement missing"
+result = "detected"
+scientific_interpretation = "C-838 evidence is methodologically insufficient"
+
+[[control]]
+id = "SC-NC-009"
+mutation = "replace tensor polarization dependence with cos^2(theta)"
+source_requirement = "explicit chi^(2)_zzz and chi^(3)_zzzz contraction"
+code_surface = "polarization_dependence"
+expected_failure = "a scalar angular curve cannot establish tensor selection rules"
+observed = "function returns cos(theta)^2"
+result = "detected"
+scientific_interpretation = "polarization path is a surrogate"
+
+[[control]]
+id = "SC-NC-010"
+mutation = "apply Wang chi3 value to pristine LN without sample identity"
+source_requirement = "sample and susceptibility convention must be matched"
+code_surface = "linbo3_son_chekhova_2026"
+expected_failure = "implanted CuZn-LN and pristine thin-film LN may not share the value"
+observed = "Wang metadata title identifies CuZn alloy implantation; source mapping is unresolved"
+result = "detected"
+scientific_interpretation = "material identity is blocked, not silently resolved"
+
+[summary]
+controls_declared = 10
+controls_detected = 10
+final_sweep_run = false
+old_outputs_retained_as_characterization = true
+claim_promotion_allowed = false

@@ -1,0 +1,97 @@
+schema = "sfwm-source-intake-bind-baseline-v1"
+campaign = "son-chekhova-sfwm-source-intake"
+captured_utc = "2026-08-05T00:48:49Z"
+repository = "git@github.com:Oichkatzelesfrettschen/open_gororoba.git"
+branch = "agent/son-chekhova-sfwm-source-intake"
+head = "58a75fcd27146861a98f5c1408867a3f987e9458"
+origin_main = "58a75fcd27146861a98f5c1408867a3f987e9458"
+worktree = "/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-intake"
+worktree_status = "clean before retained audit artifacts"
+hooks_path = ".githooks"
+
+[toolchain]
+rustc = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+cargo = "cargo 1.97.0 (c980f4866 2026-06-30)"
+sqlite = "3.53.3 2026-06-26"
+wget = "GNU Wget 1.25.0"
+pdftotext = "26.07.0"
+tar = "GNU tar 1.35"
+
+[canonical_registry]
+database = "registry/canonical/control_plane.sqlite3"
+database_sha256 = "67bf432dfaf93856079326a3519fb4fb6d54a7037814d22987a59494c4a36c1b"
+claim_transition_count = 15
+claim_relation_count = 15
+experiment_count = 74
+artifact_count = 0
+
+[[manifest]]
+name = "photon-graviton-tensor-ward-experiment-manifest.toml"
+path = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+declared_revision = "475f58aecc7406565dde111f2d237b244491fd13"
+preserved_byte_identical = true
+
+[[manifest]]
+name = "ruan-fan-channel-oracle-experiment-manifest.toml"
+path = "data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml"
+sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+declared_revision = "d7f7f5bf0168f6de86496b2ada50f78b9b02ce98"
+preserved_byte_identical = true
+
+[[manifest]]
+name = "p2b-ruan-fan-mie-tcmt-reproduction-experiment-manifest.toml"
+path = "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-experiment-manifest.toml"
+sha256 = "83c61321291791d8c154b8f6e347b987a64b4d114f8fc930b2e4ced99ed68ff0"
+declared_revision = "58a75fcd27146861a98f5c1408867a3f987e9458"
+preserved_byte_identical = true
+
+[implementation_baseline]
+sfwm_source = "crates/optics_core/src/sfwm.rs"
+sfwm_source_sha256 = "f9cd0ae408f02d3202d23a66de673471bcb88c7350f7137279741b4686cc2d63"
+sfwm_integration_test = "crates/optics_core/tests/test_sfwm_son_chekhova.rs"
+sfwm_integration_test_sha256 = "d71ac79c95fd7251aaa7d97b6f35a1d7c5e51ce43982a1fb7fcde5edf2a0c64"
+optics_library = "crates/optics_core/src/lib.rs"
+physics_cli = "crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs"
+materials_database = "crates/materials_data/data/optical/sellmeier_models.toml"
+
+[prechange_tests]
+command = "TMPDIR=$PWD/.cache/p2c0-tmp CARGO_TARGET_DIR=.cache/exp-p2c0-target cargo test -p optics_core sfwm -- --nocapture"
+selected_tests = 16
+passed = 16
+failed = 0
+log = "/var/tmp/open_gororoba-p2c0-prechange-sfwm-tests.log"
+
+[[claim]]
+id = "C-832"
+status = "Verified"
+statement_hash = "canonical-sqlite-query-retained"
+source_layer = "direct-versus-cascaded-rate"
+
+[[claim]]
+id = "C-833"
+status = "Verified"
+statement_hash = "canonical-sqlite-query-retained"
+source_layer = "dispersion-and-coherence"
+
+[[claim]]
+id = "C-834"
+status = "Verified"
+statement_hash = "canonical-sqlite-query-retained"
+source_layer = "direct-versus-cascaded-rate"
+
+[[claim]]
+id = "C-838"
+status = "Verified"
+statement_hash = "canonical-sqlite-query-retained"
+source_layer = "substrate-contribution"
+
+[[claim]]
+id = "C-839"
+status = "Verified"
+statement_hash = "canonical-sqlite-query-retained"
+source_layer = "thickness-fringes"
+
+[scope]
+included = ["source acquisition", "source equation ledger", "material identity audit", "legacy oracle audit", "claim layer review"]
+excluded = ["corrected sfwm implementation", "final thickness sweep", "experimental figure fitting", "heliosphere", "lbm", "ultrametric", "gpu"]

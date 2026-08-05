@@ -1,0 +1,1 @@
+sfwm_dominance_check()

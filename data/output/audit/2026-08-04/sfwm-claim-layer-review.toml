@@ -1,0 +1,117 @@
+schema = "sfwm-claim-layer-review-v1"
+bundle_id = "LOCAL-P2C0-SFWM-SOURCE-INTAKE"
+canonical_database = "registry/canonical/control_plane.sqlite3"
+review_basis = ["sfwm-source-equation-ledger.toml", "sfwm-material-identity-audit.toml", "sfwm-implementation-source-matrix.toml", "sfwm-oracle-negative-controls.toml", "sfwm-adversarial-review.md"]
+transition_policy = "change status only when the retained old positive path is shown to measure a different quantity or lacks a required source term"
+
+[layers]
+source_proposition = "equation, source parameter, or source-reported numerical anchor"
+implementation_conformance = "whether code implements the source proposition under declared conventions"
+material_assumption = "index branch, susceptibility identity, tensor component, or sample identity"
+phenomenological_mapping = "relation from calculation to detected counts, percentages, or experimental observables"
+evidence_rule = "evidence at one layer does not promote a claim at another layer"
+
+[[claim]]
+id = "C-832"
+prior_status = "Verified"
+statement_layer = "implementation conformance plus direct/cascaded rate claim"
+compound = true
+source_proposition = "Son-Chekhova Eq. 6 and Eq. 8 define coherent cascaded and direct amplitudes"
+implementation_layer = "legacy reduced rate ratio and product-of-efficiencies dominance path"
+material_layer = "legacy chi values and unbound polarization/index convention"
+phenomenological_layer = "direct rate exceeds cascaded rate by more than 5x"
+old_evidence_status = "MethodologyInvalid"
+proposed_status = "Provisional"
+disposition = "transition and split source identity from implementation conformance"
+reason = "The old path omits the Eq. 6 prefactor, uses a non-source susceptibility tuple, and uses a non-coherent dominance surrogate."
+transition_spec = "data/output/audit/2026-08-04/c-832-sfwm-rate-oracle-status-transition.toml"
+
+[[claim]]
+id = "C-833"
+prior_status = "Verified"
+statement_layer = "dispersion-derived qualitative hierarchy"
+compound = true
+source_proposition = "coherence lengths derive from signed wavevector mismatches under a declared material branch"
+implementation_layer = "ordinary Sellmeier branch and broad inequality test"
+material_layer = "source polarization does not explicitly identify ordinary or extraordinary branch"
+phenomenological_layer = "none"
+old_evidence_status = "Retain with boundary note"
+proposed_status = "Verified"
+disposition = "do not transition in source intake; quarantine absolute source-convention interpretation"
+reason = "The qualitative hierarchy is independently meaningful, but the source branch and signed convention remain unresolved for source reproduction."
+
+[[claim]]
+id = "C-834"
+prior_status = "Verified"
+statement_layer = "source numerical anchor plus implementation ratio"
+compound = true
+source_proposition = "The source reports R_cas/R_dir = 0.048 at 10 um"
+implementation_layer = "legacy ratio with incomplete Eq. 6 and legacy susceptibilities"
+material_layer = "source chi and index branch unresolved"
+phenomenological_layer = "none"
+old_evidence_status = "MethodologyInvalid"
+proposed_status = "Provisional"
+disposition = "transition and split source anchor from implementation reproduction"
+reason = "The old <0.15 gate does not test 0.048 and the implementation omits a non-canceling source factor."
+transition_spec = "data/output/audit/2026-08-04/c-834-sfwm-rate-anchor-status-transition.toml"
+
+[[claim]]
+id = "C-838"
+prior_status = "Verified"
+statement_layer = "substrate contribution plus phenomenological percentage"
+compound = true
+source_proposition = "The source reports a fused-silica contribution estimated as 25 percent of total coincidences"
+implementation_layer = "standalone nonzero substrate proxy"
+material_layer = "fused silica chi3 and polarization convention"
+phenomenological_layer = "fraction of total detected coincidences"
+old_evidence_status = "MethodologyInvalid"
+proposed_status = "Provisional"
+disposition = "transition and split nonzero proxy from total-coincidence percentage"
+reason = "The public source packet lacks Supplement 1 and the proxy has no total coincidence model."
+transition_spec = "data/output/audit/2026-08-04/c-838-substrate-contribution-status-transition.toml"
+
+[[claim]]
+id = "C-839"
+prior_status = "Verified"
+statement_layer = "scalar phase-matching fringe behavior"
+compound = true
+source_proposition = "Maker-fringe periods follow 2*L_coh for scalar F(L)^2"
+implementation_layer = "legacy scalar sweep"
+material_layer = "absolute Sellmeier branch remains separate"
+phenomenological_layer = "none"
+old_evidence_status = "Retain with boundary note"
+proposed_status = "Verified"
+disposition = "do not transition; retain as scalar characterization only"
+reason = "The sign of Delta_k does not change scalar F(L)^2, but source parameter and polarization conformance are not established."
+
+[[claim]]
+id = "C-849"
+prior_status = "Refuted"
+disposition = "unchanged; P2B authority remains canonical"
+
+[[claim]]
+id = "C-850"
+prior_status = "Refuted"
+disposition = "unchanged; P2B authority remains canonical"
+
+[[claim]]
+id = "C-835"
+prior_status = "Verified"
+disposition = "unchanged; experimental-data tranche required"
+
+[[claim]]
+id = "C-836"
+prior_status = "Verified"
+disposition = "unchanged; experimental-data tranche required"
+
+[[claim]]
+id = "C-837"
+prior_status = "Verified"
+disposition = "unchanged; experimental-data tranche required"
+
+[review_conclusion]
+status_contradictions_found = true
+status_changes_proposed = ["C-832 Verified -> Provisional", "C-834 Verified -> Provisional", "C-838 Verified -> Provisional"]
+source_theory_refuted = false
+corrected_sweep_run = false
+experimental_data_used = false

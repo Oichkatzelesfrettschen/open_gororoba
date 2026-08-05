@@ -1,0 +1,98 @@
+   Compiling libm v0.2.16
+   Compiling autocfg v1.5.0
+   Compiling proc-macro2 v1.0.106
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.45
+   Compiling typenum v1.19.0
+   Compiling cfg-if v1.0.4
+   Compiling thiserror v2.0.18
+   Compiling const-oid v0.10.2
+   Compiling strength_reduce v0.2.4
+   Compiling cpufeatures v0.3.0
+   Compiling zerocopy v0.8.48
+   Compiling cfg_aliases v0.2.1
+   Compiling foldhash v0.2.0
+   Compiling unicode-width v0.2.2
+   Compiling naga v29.0.1
+   Compiling bit-vec v0.9.1
+   Compiling hashbrown v0.16.1
+   Compiling equivalent v1.0.2
+   Compiling bitflags v2.11.0
+   Compiling num-traits v0.2.19
+   Compiling hexf-parse v0.2.1
+   Compiling once_cell v1.21.4
+   Compiling bit-set v0.9.1
+   Compiling arrayvec v0.7.6
+   Compiling rustc-hash v1.1.0
+   Compiling codespan-reporting v0.13.1
+   Compiling log v0.4.29
+   Compiling spirv v0.4.0+sdk-1.4.341.0
+   Compiling indexmap v2.13.1
+   Compiling syn v2.0.117
+   Compiling hybrid-array v0.4.10
+   Compiling block-buffer v0.12.0
+   Compiling crypto-common v0.2.2
+   Compiling num-integer v0.1.46
+   Compiling num-complex v0.4.6
+   Compiling approx v0.5.1
+   Compiling primal-check v0.3.4
+   Compiling transpose v0.2.3
+   Compiling rustfft v6.4.1
+   Compiling digest v0.11.2
+   Compiling sha2 v0.11.0
+   Compiling thiserror-impl v2.0.18
+   Compiling zerocopy-derive v0.8.48
+   Compiling optics_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-intake/crates/optics_core)
+   Compiling half v2.7.1
+    Finished `test` profile [optimized + debuginfo] target(s) in 29.45s
+     Running unittests src/lib.rs (.cache/exp-p2c0-target/debug/deps/optics_core-9d75a884520f6294)
+
+running 15 tests
+test sfwm::tests::test_coherence_lengths_match_paper ... ok
+test sfwm::tests::test_direct_dominates_cascaded_at_10um ... ok
+test sfwm::tests::test_f_sfwm_much_larger_than_f_shg ... ok
+test sfwm::tests::test_g2_approaches_1_at_high_power ... ok
+test sfwm::tests::test_g2_sfwm_high_at_low_power ... ok
+test sfwm::tests::test_maker_fringe_sweep_lengths ... ok
+test sfwm::tests::test_phase_matching_small_dk ... ok
+test sfwm::tests::test_polarization_cos2 ... ok
+test sfwm::tests::test_sellmeier_direct_dominates_cascaded ... ok
+test sfwm::tests::test_sfwm_dominates_at_10um ... ok
+test sfwm::tests::test_sfwm_efficiency_positive ... ok
+test sfwm::tests::test_shg_oscillates_in_sweep ... ok
+test sfwm::tests::test_substrate_sfwm_fused_silica_500um ... ok
+test sfwm::tests::test_thickness_sweep_monotonic_count ... ok
+test sfwm::tests::test_wavevector_mismatches_coherence_lengths ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 0.00s
+
+     Running unittests src/bin/p2a_channel_oracle_evidence.rs (.cache/exp-p2c0-target/debug/deps/p2a_channel_oracle_evidence-4503dd75fc96c4aa)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/p2a_legacy_optics_characterization.rs (.cache/exp-p2c0-target/debug/deps/p2a_legacy_optics_characterization-f514fb1dfa6fe575)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/p2b_ruan_fan_reproduction.rs (.cache/exp-p2c0-target/debug/deps/p2b_ruan_fan_reproduction-c4d3ed209d7cca92)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/algebraic_lensing_cubecl_parity.rs (.cache/exp-p2c0-target/debug/deps/algebraic_lensing_cubecl_parity-d124a70df1812e87)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/test_sfwm_son_chekhova.rs (.cache/exp-p2c0-target/debug/deps/test_sfwm_son_chekhova-dd888a4c1986593c)
+
+running 1 test
+test test_maker_fringes_sfwm_monotonic_shg_oscillates ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s

@@ -1,0 +1,26 @@
+Subject: Request for Supplement 1 and numerical data for arXiv:2601.23137
+
+Dear Dr. Son and Prof. Chekhova,
+
+I am independently reproducing the phase-matching and direct-versus-cascaded
+SFWM calculations in "Spontaneous four-wave mixing in a thin layer with
+second-order nonlinearity" (arXiv:2601.23137v1).
+
+Could you please provide:
+
+1. Supplement 1.
+2. The signed wavevector mismatches used for SFWM, SHG, and SPDC.
+3. The refractive-index model, polarization convention, temperature, and
+   crystal-orientation convention used for Figure 4.
+4. The numerical thickness-grid data underlying Figure 4.
+5. The derivation or numerical inputs for the estimated 25 percent fused
+   silica substrate contribution.
+6. The experimental data underlying Figures 2 and 3, if available.
+7. Clarification of which LiNbO3 sample and susceptibility convention support
+   chi^(3) = 1.5e-20 m^2/V^2.
+
+The reproduction will preserve the distinction between the paper source
+claims, implementation conformance, and repository-defined numerical
+challenges.
+
+Thank you.
