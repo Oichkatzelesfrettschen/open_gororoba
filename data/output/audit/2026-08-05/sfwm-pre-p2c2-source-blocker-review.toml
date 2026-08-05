@@ -1,0 +1,164 @@
+schema = "sfwm-pre-p2c2-source-blocker-review-v1"
+review_id = "SFWM-PRE-P2C2-SOURCE-BLOCKER-2026-08-05"
+base_commit = "3dd768253e68c045e8dc58f90e1ff96cb3131afb"
+campaign_boundary = "complete pre-P2C2 source, material, and author-data review"
+next_campaign = "P2C2 experimental figure and detected-count adjudication"
+next_campaign_status = "not_started"
+adversarial_review_skill = "applied"
+scientific_implementation_changed = false
+final_experimental_sweep_run = false
+
+[repository]
+canonical_database = "registry/canonical/control_plane.sqlite3"
+p1_manifest_sha256 = "7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f"
+p2a_manifest_sha256 = "1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada"
+p2b_manifest_sha256 = "83c61321291791d8c154b8f6e347b987a64b4d114f8fc930b2e4ced99ed68ff0"
+p2c0_manifest_sha256 = "1bb7547ba0e588542d2e5c9fb09e37488444998baf7efd21042d8407aea71c97"
+p2c1_manifest_sha256 = "6b81ccccaed3a6e39fa6b5fcd4f0aad3b131226c2bb0598bf914d7c7b572567c"
+p2c1_generating_commit = "6b0b0acf297bd8b83b89ddd40c0700e8a81e1778"
+
+[source_packet]
+capture_root = "/var/tmp/open_gororoba-sfwm-source-intake-20260805T004849Z"
+primary_pdf_url = "https://arxiv.org/pdf/2601.23137v1"
+primary_record_url = "https://arxiv.org/abs/2601.23137"
+primary_source_archive_url = "https://export.arxiv.org/e-print/2601.23137v1"
+primary_pdf_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e8"
+primary_source_archive_sha256 = "88a04fc2f5327986cdd7ddb66f2915df5f42361c89b60cd370052a9ad4f5882a"
+primary_main_tex_sha256 = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f"
+supplement_1_status = "not_found_in_public_packet"
+supplement_1_candidate_count = 0
+supplement_1_searched_surfaces = ["primary PDF", "arXiv source archive", "arXiv abstract page", "extracted source filenames"]
+supplement_1_required_for = ["substrate percentage", "experimental normalization", "polarization derivation"]
+
+[[source_packet.reference]]
+id = "ARXIV-2601.23137"
+url = "https://arxiv.org/abs/2601.23137"
+role = "primary paper record and author contact"
+accessed_utc = "2026-08-05T12:38:48Z"
+status = "accessible"
+
+[[source_packet.reference]]
+id = "ARXIV-2601.23137-PDF"
+url = "https://arxiv.org/pdf/2601.23137v1"
+role = "primary source equations and reported anchors"
+accessed_utc = "2026-08-05T12:38:48Z"
+status = "captured_and_hashed"
+
+[[source_packet.reference]]
+id = "WANG-2019-CROSSREF"
+doi = "10.1016/j.jallcom.2018.11.182"
+url = "https://www.sciencedirect.com/science/article/pii/S0925838818343111"
+role = "cited chi(3) material identity"
+crossref_metadata_sha256 = "9d4472cef0d42863abe0fe804f753ea9e4950bd86f05f434de12d7c8febcd060"
+publisher_capture_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+access_status = "metadata_acquired_publisher_landing_page_forbidden"
+
+[source_findings]
+geometry = "10 um x-cut lithium niobate layer on 500 um fused silica substrate"
+source_tensor_statement = "Main.tex identifies chi(2)_zzz and chi(3)_zzzz as the strongest components and says z-polarized pump and outputs maximize the rate"
+source_branch_label = "Main.tex does not name ordinary or extraordinary"
+branch_inference = "positive-x propagation with z-polarized fields implies the extraordinary branch under the standard uniaxial convention"
+branch_inference_status = "explicit_inference_not_source_label"
+source_chi2 = "2.5e-11 m/V"
+source_chi3 = "1.5e-20 m^2/V^2"
+fused_silica_chi3 = "3e-22 m^2/V^2"
+reported_ratio_at_10_um = 0.048
+reported_substrate_fraction = 0.25
+reported_substrate_fraction_status = "source_claim_delegated_to_missing_Supplement_1"
+source_chi3_citation_identity = "Wang 2019 title identifies CuZn alloy nanoparticle implanted LiNbO3"
+source_chi3_pristine_ln_support = "not established"
+source_chi3_resolution_required = ["sample identity", "tensor component", "wavelength", "unit system", "effective susceptibility conversion"]
+
+[p2c1_result_boundary]
+signed_mismatch_identity = "Delta_k_SFWM = Delta_k_SHG + Delta_k_SPDC"
+paper_input_ratio_at_10_um = 0.04774423559348579
+extraordinary_sellmeier_ratio_at_10_um = 0.04801092757771039
+paper_coherence_um = [33.3, 3.1, 3.4182119205]
+extraordinary_coherence_um = [25.2175205384, 3.0753396127, 3.5024752127]
+independent_reference_agrees = true
+dimensionless_ratio_adjudicated = true
+absolute_rate_adjudicated = false
+experimental_count_adjudicated = false
+substrate_percentage_adjudicated = false
+source_theory_refuted = false
+
+[implementation_boundary]
+legacy_positive_mismatch_constructor = "quarantined"
+legacy_omitted_eq6_prefactor_path = "quarantined"
+legacy_susceptibility_tuple_path = "quarantined"
+legacy_product_of_efficiencies_dominance_path = "quarantined"
+legacy_substrate_proxy = "quarantined"
+corrected_source_reproduction_path = "retained_in_LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+experimental_figure_path = "not_started"
+
+[[claim_boundary]]
+claim_id = "C-832"
+status = "Verified"
+disposition = "unchanged"
+boundary = "corrected source-model direct dominance under the declared source tuple; not an experimental count reproduction"
+
+[[claim_boundary]]
+claim_id = "C-833"
+status = "Verified"
+disposition = "unchanged"
+boundary = "qualitative coherence-length hierarchy; absolute branch-sensitive lengths remain separate"
+
+[[claim_boundary]]
+claim_id = "C-834"
+status = "Provisional"
+disposition = "unchanged"
+boundary = "nominal 10 um ratio is retained with uncertainty; material identity and absolute normalization remain open"
+
+[[claim_boundary]]
+claim_id = "C-838"
+status = "Provisional"
+disposition = "remain_blocked"
+boundary = "standalone substrate amplitude does not establish a fraction of total detected coincidences"
+
+[[claim_boundary]]
+claim_id = "C-839"
+status = "Verified"
+disposition = "unchanged"
+boundary = "scalar Maker-fringe characterization only; no experimental figure adjudication"
+
+[author_request]
+sent = true
+sent_at_utc = "2026-08-05T12:38:48Z"
+recipient = "changjin.son@mpl.mpg.de"
+recipient_source = "corresponding-author address displayed on the official arXiv PDF"
+subject = "Request for Supplement 1 and numerical data for arXiv:2601.23137"
+request_path = "data/output/audit/2026-08-04/sfwm-author-data-request.txt"
+requested_items = ["Supplement 1", "signed mismatches", "index and polarization convention", "Figure 4 thickness grid", "substrate 25 percent derivation", "Figures 2 and 3 data", "chi(3) sample and convention"]
+response_status = "pending"
+message_identifier_retained = false
+
+[[gate]]
+id = "P2C2-SUPPLEMENT-1"
+status = "blocked"
+condition = "Retain Supplement 1 or an equivalent complete substrate and polarization derivation"
+evidence = ["data/output/audit/2026-08-04/sfwm-source-access-disposition.toml", "data/output/audit/2026-08-05/sfwm-pre-p2c2-source-blocker-review.toml"]
+
+[[gate]]
+id = "P2C2-MATERIAL-IDENTITY"
+status = "blocked"
+condition = "Resolve whether chi(3) = 1.5e-20 m^2/V^2 applies to pristine LN or an implanted CuZn:LiNbO3 sample"
+evidence = ["data/output/audit/2026-08-04/sfwm-material-identity-audit.toml", "data/output/audit/2026-08-05/sfwm-pre-p2c2-adversarial-review.md"]
+
+[[gate]]
+id = "P2C2-EXPERIMENTAL-DATA"
+status = "blocked"
+condition = "Acquire lawful underlying count, coincidence, and g(2) data or retain a bounded no-data result"
+evidence = ["data/output/audit/2026-08-04/sfwm-author-data-request.txt", "data/output/audit/2026-08-05/sfwm-pre-p2c2-source-blocker-review.toml"]
+
+[[gate]]
+id = "P2C2-START"
+status = "not_started"
+condition = "Do not fit experimental figures or interpret detected counts before the source, material, and data gates resolve"
+evidence = ["data/output/audit/2026-08-05/sfwm-pre-p2c2-adversarial-review.md"]
+
+[review]
+severity_order = ["SERIOUS", "MODERATE", "SLOPPY", "SOUND"]
+serious_findings = ["missing Supplement 1 prevents a defensible 25 percent total-coincidence calculation", "Wang citation does not establish pristine-LN chi(3) identity", "experimental count and detector normalization inputs are unavailable"]
+moderate_findings = ["extraordinary Sellmeier branch is a geometry inference rather than an explicit source label", "source rounding and branch uncertainty affect absolute coherence lengths more than the dimensionless rate ratio"]
+sound_findings = ["signed coherent source equations are implemented and independently checked", "the Eq. 6 prefactor mutation is detected", "the author request is sent through the official corresponding-author address"]
+verdict = "No P2C2 experimental-data conclusion is admissible yet"
