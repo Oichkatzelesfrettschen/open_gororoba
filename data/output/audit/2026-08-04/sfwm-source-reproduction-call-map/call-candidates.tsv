@@ -1,0 +1,48 @@
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:12:    SourceMismatchAudit, SourceWavevectorMismatches, evaluate_source_case,
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:94:    grid_refinement: Vec<GridRefinementRecord>,
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:142:    grid_refinement_steps_um: [f64; 3],
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:325:fn evaluate_case_grid(
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:336:            evaluate_source_case(&case.parameters, case.mismatches, thickness_um)
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:352:fn grid_refinement(case: SourceCase) -> Result<Vec<GridRefinementRecord>> {
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:357:            let (amplitudes, _) = evaluate_case_grid(case, &grid)?;
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:368:fn write_case(output_dir: &Path, case: SourceCase, grid: &[f64]) -> Result<CaseRecord> {
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:369:    let (amplitudes, rates) = evaluate_case_grid(case, grid)?;
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:412:        grid_refinement: grid_refinement(case)?,
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:447:    let (_, rates) = evaluate_source_case(&parameters, mismatches, THICKNESS_AT_RATIO_UM)?;
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:510:                        let sellmeier_mismatches = sellmeier_parameters.wavevector_mismatches()?;
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:581:        mismatches: parameters.wavevector_mismatches()?,
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:584:        write_case(&args.output_dir, paper_case, &grid)?,
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:585:        write_case(&args.output_dir, sellmeier_case, &grid)?,
+crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs:596:        grid_refinement_steps_um: REFINEMENT_STEPS_UM,
+crates/optics_core/tests/test_sfwm_source_reference.rs:11:    WavevectorMismatch, source_amplitudes, source_rates,
+crates/optics_core/tests/test_sfwm_source_reference.rs:95:            source_amplitudes(&parameters, mismatches, thickness_um).expect("valid source fixture");
+crates/optics_core/tests/test_sfwm_source_reference.rs:109:        let rates = source_rates(actual).expect("valid source rates");
+crates/optics_core/tests/test_sfwm_source_reference.rs:120:    let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
+crates/optics_core/tests/test_sfwm_source_reference.rs:141:    let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
+crates/optics_core/tests/test_sfwm_source_reference.rs:159:    let actual = source_amplitudes(&parameters, mismatches, 10.0).expect("valid source fixture");
+crates/optics_core/tests/test_sfwm_source_reference.rs:171:    let actual_ratio = source_rates(actual)
+crates/optics_core/tests/test_sfwm_source_reference.rs:189:fn independent_mpmath_fixtures_match_componentwise() {
+crates/optics_core/tests/test_sfwm_source_reference.rs:232:        let actual = source_amplitudes(&parameters, mismatches, thickness_um)
+crates/optics_core/tests/test_sfwm_source_reference.rs:258:        let rates = source_rates(actual).expect("valid fixture rates");
+crates/optics_core/tests/test_sfwm_source_reference.rs:296:        source_amplitudes(&parameters, mismatches, 10.0).expect("valid paper source amplitudes");
+crates/optics_core/tests/test_sfwm_source_reference.rs:297:    let ratio = source_rates(amplitudes)
+crates/optics_core/tests/test_sfwm_source_reference.rs:331:        let amplitudes = source_amplitudes(&parameters, mismatches, thickness_um)
+crates/optics_core/tests/test_sfwm_source_reference.rs:345:        let amplitudes = source_amplitudes(&parameters, mismatches, thickness_um)
+crates/optics_core/src/sfwm_source.rs:272:    pub fn wavevector_mismatches(&self) -> Result<SourceWavevectorMismatches, SfwmSourceError> {
+crates/optics_core/src/sfwm_source.rs:312:fn phase_matching_amplitude(
+crates/optics_core/src/sfwm_source.rs:333:pub fn source_amplitudes(
+crates/optics_core/src/sfwm_source.rs:350:    let f_sfwm = phase_matching_amplitude(mismatches.sfwm, thickness_um)?;
+crates/optics_core/src/sfwm_source.rs:351:    let f_shg = phase_matching_amplitude(mismatches.shg, thickness_um)?;
+crates/optics_core/src/sfwm_source.rs:352:    let f_spdc = phase_matching_amplitude(mismatches.spdc, thickness_um)?;
+crates/optics_core/src/sfwm_source.rs:373:pub fn source_rates(amplitudes: SfwmSourceAmplitudes) -> Result<SfwmSourceRates, SfwmSourceError> {
+crates/optics_core/src/sfwm_source.rs:391:pub fn evaluate_source_case(
+crates/optics_core/src/sfwm_source.rs:396:    let amplitudes = source_amplitudes(params, mismatches, thickness_um)?;
+crates/optics_core/src/sfwm_source.rs:397:    let rates = source_rates(amplitudes)?;
+crates/optics_core/src/sfwm_source.rs:426:            .wavevector_mismatches()
+crates/optics_core/src/sfwm_source.rs:432:    fn source_amplitudes_retain_eq6_prefactor_and_phase() {
+crates/optics_core/src/sfwm_source.rs:438:        let amplitudes = source_amplitudes(&params, mismatches, 10.0).expect("valid amplitudes");
+crates/optics_core/src/sfwm_source.rs:453:        let amplitudes = source_amplitudes(&params, mismatches, 10.0).expect("valid amplitudes");
+crates/optics_core/src/sfwm_source.rs:454:        let rates = source_rates(amplitudes).expect("valid rates");
+crates/optics_core/src/sfwm_source.rs:468:            source_amplitudes(&params, mismatches, 10.0),
+crates/optics_core/src/sfwm_source.rs:485:            .wavevector_mismatches()
+crates/optics_core/src/sfwm_source.rs:488:            source_amplitudes(&params, mismatches, -0.1),

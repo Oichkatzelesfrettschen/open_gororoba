@@ -1,0 +1,9 @@
+{
+  "transition_key": "c-832-sfwm-source-reproduction",
+  "transition_spec_sha256": "225f59445897f434c96ca7dcb8cdeb508c01413da5aa3cd99a4f1644dddabdb3",
+  "event_id": 16,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.

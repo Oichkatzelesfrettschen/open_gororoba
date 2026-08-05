@@ -1,0 +1,201 @@
+Args             struct       36 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct Args {
+CHI2_SOURCE      constant     23 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const CHI2_SOURCE: f64 = 2.5e-11;
+CHI3_SOURCE      constant     24 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const CHI3_SOURCE: f64 = 1.5e-20;
+CaseRecord       struct       85 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct CaseRecord {
+ComplexRecord    struct       54 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct ComplexRecord {
+FringeRecord     struct       68 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct FringeRecord {
+GridRefinementRecord struct       78 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct GridRefinementRecord {
+IDLER_WAVELENGTH_UM constant     27 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const IDLER_WAVELENGTH_UM: f64 = 1.550;
+IndexRecord      struct       98 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct IndexRecord {
+Negative         enumerator   22 crates/optics_core/src/sfwm_source.rs Negative { field: &'static str, value: f64 },
+NonFinite        enumerator   16 crates/optics_core/src/sfwm_source.rs NonFinite { field: &'static str, value: f64 },
+NonPositive      enumerator   19 crates/optics_core/src/sfwm_source.rs NonPositive { field: &'static str, value: f64 },
+PUMP_WAVELENGTH_UM constant     25 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const PUMP_WAVELENGTH_UM: f64 = 1.030;
+REFINEMENT_STEPS_UM constant     31 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const REFINEMENT_STEPS_UM: [f64; 3] = [0.1, 0.05, 0.01];
+RateRecord       struct       61 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct RateRecord {
+SIGNAL_WAVELENGTH_UM constant     26 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const SIGNAL_WAVELENGTH_UM: f64 = 0.770;
+SOURCE_PDF_SHA256 constant     21 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const SOURCE_PDF_SHA256: &str = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e8";
+SOURCE_TEX_SHA256 constant     22 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const SOURCE_TEX_SHA256: &str = "9670f2b48f4efa5e5167aded959a53af34f233765aa0e37c268d0f3ba7b26d8f";
+SfwmSourceAmplitudes struct      288 crates/optics_core/src/sfwm_source.rs pub struct SfwmSourceAmplitudes {
+SfwmSourceError  enum         13 crates/optics_core/src/sfwm_source.rs pub enum SfwmSourceError {
+SfwmSourceParameters implementation  213 crates/optics_core/src/sfwm_source.rs impl SfwmSourceParameters {
+SfwmSourceParameters struct      190 crates/optics_core/src/sfwm_source.rs pub struct SfwmSourceParameters {
+SfwmSourceRates  struct      303 crates/optics_core/src/sfwm_source.rs pub struct SfwmSourceRates {
+SourceCase       struct       47 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct SourceCase {
+SourceCoherenceAnchors implementation  126 crates/optics_core/src/sfwm_source.rs impl SourceCoherenceAnchors {
+SourceCoherenceAnchors struct      117 crates/optics_core/src/sfwm_source.rs pub struct SourceCoherenceAnchors {
+SourceMismatchAudit implementation  156 crates/optics_core/src/sfwm_source.rs impl SourceMismatchAudit {
+SourceMismatchAudit struct      145 crates/optics_core/src/sfwm_source.rs pub struct SourceMismatchAudit {
+SourceWavevectorMismatches implementation   92 crates/optics_core/src/sfwm_source.rs impl SourceWavevectorMismatches {
+SourceWavevectorMismatches struct       83 crates/optics_core/src/sfwm_source.rs pub struct SourceWavevectorMismatches {
+Summary          struct      133 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct Summary {
+THICKNESS_AT_RATIO_UM constant     30 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const THICKNESS_AT_RATIO_UM: f64 = 10.0;
+THICKNESS_COUNT  constant     29 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const THICKNESS_COUNT: usize = 1001;
+THICKNESS_STEP_UM constant     28 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs const THICKNESS_STEP_UM: f64 = 0.1;
+UncertaintyRecord struct      112 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs struct UncertaintyRecord {
+UndefinedRateRatio enumerator   28 crates/optics_core/src/sfwm_source.rs UndefinedRateRatio,
+WavevectorMismatch implementation   64 crates/optics_core/src/sfwm_source.rs impl WavevectorMismatch {
+WavevectorMismatch struct       59 crates/optics_core/src/sfwm_source.rs pub struct WavevectorMismatch {
+ZeroShgMismatch  enumerator   25 crates/optics_core/src/sfwm_source.rs ZeroShgMismatch,
+a_cas            field       296 crates/optics_core/src/sfwm_source.rs pub a_cas: Complex64,
+a_dir            field       298 crates/optics_core/src/sfwm_source.rs pub a_dir: Complex64,
+amplitudes_at_10_um field        92 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs amplitudes_at_10_um: [ComplexRecord; 2],
+anchors          field       147 crates/optics_core/src/sfwm_source.rs pub anchors: SourceCoherenceAnchors,
+assert_component_close function     51 crates/optics_core/tests/test_sfwm_source_reference.rs fn assert_component_close(actual: Complex64, expected: Complex64, label: &str) {
+assert_high_precision_component_close function    180 crates/optics_core/tests/test_sfwm_source_reference.rs fn assert_high_precision_component_close(actual: f64, expected: f64, label: &str) {
+branch           field        99 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs branch: String,
+cascaded         field        62 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs cascaded: f64,
+cases            field       151 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs cases: Vec<CaseRecord>,
+chi2_half_width_m_per_v field       113 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs chi2_half_width_m_per_v: f64,
+chi2_interval_m_per_v field       115 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs chi2_interval_m_per_v: [f64; 2],
+chi2_m_per_v     field       192 crates/optics_core/src/sfwm_source.rs pub chi2_m_per_v: f64,
+chi3_half_width_m2_per_v2 field       114 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs chi3_half_width_m2_per_v2: f64,
+chi3_interval_m2_per_v2 field       116 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs chi3_interval_m2_per_v2: [f64; 2],
+chi3_m2_per_v2   field       194 crates/optics_core/src/sfwm_source.rs pub chi3_m2_per_v2: f64,
+coherence_length_defects_um field       153 crates/optics_core/src/sfwm_source.rs pub coherence_length_defects_um: [f64; 3],
+coherence_length_um method       72 crates/optics_core/src/sfwm_source.rs pub fn coherence_length_um(self) -> Option<f64> {
+coherence_lengths_um field        90 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs coherence_lengths_um: [Option<f64>; 3],
+complex_record   function    184 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn complex_record(value: num_complex::Complex64) -> ComplexRecord {
+component_csv_row function    200 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn component_csv_row(
+corrected_paper_input_reproduces_the_source_ratio_boundary function    278 crates/optics_core/tests/test_sfwm_source_reference.rs fn corrected_paper_input_reproduces_the_source_ratio_boundary() {
+corrected_phase_matching_preserves_source_fringe_structure function    310 crates/optics_core/tests/test_sfwm_source_reference.rs fn corrected_phase_matching_preserves_source_fringe_structure() {
+derived_coherence_lengths_um field       151 crates/optics_core/src/sfwm_source.rs pub derived_coherence_lengths_um: [f64; 3],
+direct           field        63 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs direct: f64,
+evaluate_case_grid function    325 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn evaluate_case_grid(
+evaluate_source_case function    391 crates/optics_core/src/sfwm_source.rs pub fn evaluate_source_case(
+expected_first_maximum_um field        69 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs expected_first_maximum_um: [Option<f64>; 3],
+expected_period_um field        72 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs expected_period_um: [Option<f64>; 3],
+extraordinary_indices field       148 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs extraordinary_indices: IndexRecord,
+f_sfwm           field       290 crates/optics_core/src/sfwm_source.rs pub f_sfwm: Complex64,
+f_shg            field       292 crates/optics_core/src/sfwm_source.rs pub f_shg: Complex64,
+f_spdc           field       294 crates/optics_core/src/sfwm_source.rs pub f_spdc: Complex64,
+first_maximum_abs_error_um field        71 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs first_maximum_abs_error_um: [Option<f64>; 3],
+first_maximum_abs_error_um field        80 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs first_maximum_abs_error_um: [Option<f64>; 3],
+fixture          function     63 crates/optics_core/tests/test_sfwm_source_reference.rs fn fixture() -> (SfwmSourceParameters, SourceWavevectorMismatches) {
+fn               constant    128 crates/optics_core/src/sfwm_source.rs pub const fn son_chekhova() -> Self {
+fn               constant    267 crates/optics_core/src/sfwm_source.rs pub const fn source_wavelengths_um() -> (f64, f64, f64) {
+freeze_grid      function    165 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn freeze_grid(output_dir: &Path, grid: &[f64]) -> Result<String> {
+freeze_only      field        43 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs freeze_only: bool,
+fringe_record    function    250 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn fringe_record(
+fringes          field        93 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fringes: FringeRecord,
+from_source_anchors method      163 crates/optics_core/src/sfwm_source.rs pub fn from_source_anchors(anchors: SourceCoherenceAnchors) -> Result<Self, SfwmSourceError> {
+frozen_thickness_grid function    159 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn frozen_thickness_grid() -> Vec<f64> {
+grid_count       field       138 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs grid_count: usize,
+grid_refinement  field        94 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs grid_refinement: Vec<GridRefinementRecord>,
+grid_refinement  function    352 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn grid_refinement(case: SourceCase) -> Result<Vec<GridRefinementRecord>> {
+grid_refinement_steps_um field       142 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs grid_refinement_steps_um: [f64; 3],
+grid_sha256      field       137 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs grid_sha256: String,
+grid_start_um    field       139 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs grid_start_um: f64,
+grid_step_um     field       141 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs grid_step_um: f64,
+grid_stop_um     field       140 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs grid_stop_um: f64,
+identity_defect_per_um field        88 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs identity_defect_per_um: f64,
+identity_defect_per_um method       94 crates/optics_core/src/sfwm_source.rs pub fn identity_defect_per_um(self) -> f64 {
+idler_wavelength_envelope field       106 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs idler_wavelength_envelope: [f64; 2],
+idler_wavelength_half_width_um field       119 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs idler_wavelength_half_width_um: f64,
+idler_wavelength_interval_um field       122 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs idler_wavelength_interval_um: [f64; 2],
+imaginary        field        56 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs imaginary: f64,
+independent_mpmath_fixtures_match_componentwise function    189 crates/optics_core/tests/test_sfwm_source_reference.rs fn independent_mpmath_fixtures_match_componentwise() {
+independent_reference_matches_all_complex_components function     91 crates/optics_core/tests/test_sfwm_source_reference.rs fn independent_reference_matches_all_complex_components() {
+index_envelope   function    416 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn index_envelope(sellmeier: &SellmeierParams, center_um: f64, half_width_um: f64) -> [f64; 2] {
+index_record     function    428 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn index_record(branch: &str, sellmeier: &SellmeierParams) -> IndexRecord {
+index_status     field       128 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs index_status: String,
+interval         function    453 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn interval(values: &[f64]) -> Result<[f64; 2]> {
+lambda_idler_um  field       210 crates/optics_core/src/sfwm_source.rs pub lambda_idler_um: f64,
+lambda_pump_um   field       206 crates/optics_core/src/sfwm_source.rs pub lambda_pump_um: f64,
+lambda_signal_um field       208 crates/optics_core/src/sfwm_source.rs pub lambda_signal_um: f64,
+local_maxima     function    238 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn local_maxima(rows: &[(f64, f64)]) -> Vec<f64> {
+magnitude        field        57 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs magnitude: f64,
+main             function    541 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn main() -> Result<()> {
+mismatch_per_um  field        87 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs mismatch_per_um: [f64; 3],
+mismatches       field        50 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs mismatches: SourceWavevectorMismatches,
+mismatches       field       149 crates/optics_core/src/sfwm_source.rs pub mismatches: SourceWavevectorMismatches,
+n_idler          field       202 crates/optics_core/src/sfwm_source.rs pub n_idler: f64,
+n_pump           field       198 crates/optics_core/src/sfwm_source.rs pub n_pump: f64,
+n_sh             field       204 crates/optics_core/src/sfwm_source.rs pub n_sh: f64,
+n_signal         field       200 crates/optics_core/src/sfwm_source.rs pub n_signal: f64,
+name             field        48 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs name: &'static str,
+name             field        86 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs name: String,
+negative_pump_field_squared_is_rejected function    474 crates/optics_core/src/sfwm_source.rs fn negative_pump_field_squared_is_rejected() {
+negative_thickness_is_rejected function    482 crates/optics_core/src/sfwm_source.rs fn negative_thickness_is_rejected() {
+new              method       66 crates/optics_core/src/sfwm_source.rs pub fn new(value_per_um: f64) -> Result<Self, SfwmSourceError> {
+new              method      216 crates/optics_core/src/sfwm_source.rs pub fn new(
+nominal_idler    field       102 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs nominal_idler: f64,
+nominal_pump     field       100 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs nominal_pump: f64,
+nominal_sh       field       103 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs nominal_sh: f64,
+nominal_signal   field       101 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs nominal_signal: f64,
+normalized_identity_defect field        89 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs normalized_identity_defect: f64,
+normalized_identity_defect method      100 crates/optics_core/src/sfwm_source.rs pub fn normalized_identity_defect(self) -> f64 {
+observed_first_grid_maximum_um field        70 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs observed_first_grid_maximum_um: [Option<f64>; 3],
+observed_period_um field        73 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs observed_period_um: [Option<f64>; 3],
+omitted_eq6_prefactor_is_detected function    118 crates/optics_core/tests/test_sfwm_source_reference.rs fn omitted_eq6_prefactor_is_detected() {
+ordinary_indices field       149 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs ordinary_indices: IndexRecord,
+output_dir       field        39 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs output_dir: PathBuf,
+paper_ratio_interval_at_10_um field       125 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs paper_ratio_interval_at_10_um: [f64; 2],
+parameters       field        49 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs parameters: SfwmSourceParameters,
+period_abs_error_um field        74 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs period_abs_error_um: [Option<f64>; 3],
+period_abs_error_um field        81 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs period_abs_error_um: [Option<f64>; 3],
+phase_matching_amplitude function    312 crates/optics_core/src/sfwm_source.rs fn phase_matching_amplitude(
+positive_only_spdc_mismatch_is_detected function    139 crates/optics_core/tests/test_sfwm_source_reference.rs fn positive_only_spdc_mismatch_is_detected() {
+propagated_status field       129 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs propagated_status: String,
+pump_field_squared field       196 crates/optics_core/src/sfwm_source.rs pub pump_field_squared: f64,
+pump_wavelength_envelope field       104 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs pump_wavelength_envelope: [f64; 2],
+pump_wavelength_half_width_um field       117 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs pump_wavelength_half_width_um: f64,
+pump_wavelength_interval_um field       120 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs pump_wavelength_interval_um: [f64; 2],
+r_cas            field       305 crates/optics_core/src/sfwm_source.rs pub r_cas: f64,
+r_dir            field       307 crates/optics_core/src/sfwm_source.rs pub r_dir: f64,
+rate_at_10_um    field        91 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs rate_at_10_um: RateRecord,
+rate_record      function    192 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn rate_record(value: SfwmSourceRates) -> RateRecord {
+ratio            field        64 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs ratio: Option<f64>,
+ratio_at_thickness function    443 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn ratio_at_thickness(
+ratio_cas_to_dir field       309 crates/optics_core/src/sfwm_source.rs pub ratio_cas_to_dir: Option<f64>,
+real             field        55 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs real: f64,
+reference_amplitudes function     25 crates/optics_core/tests/test_sfwm_source_reference.rs fn reference_amplitudes(
+reference_phase_matching function     15 crates/optics_core/tests/test_sfwm_source_reference.rs fn reference_phase_matching(delta_k_per_um: f64, thickness_um: f64) -> Complex64 {
+refinement_grid  function    344 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn refinement_grid(step_um: f64) -> Result<Vec<f64>> {
+require_finite   function     31 crates/optics_core/src/sfwm_source.rs fn require_finite(field: &'static str, value: f64) -> Result<(), SfwmSourceError> {
+require_nonnegative function     48 crates/optics_core/src/sfwm_source.rs fn require_nonnegative(field: &'static str, value: f64) -> Result<(), SfwmSourceError> {
+require_positive function     39 crates/optics_core/src/sfwm_source.rs fn require_positive(field: &'static str, value: f64) -> Result<(), SfwmSourceError> {
+schema           field       134 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs schema: String,
+sellmeier_mismatch_identity_closes function    424 crates/optics_core/src/sfwm_source.rs fn sellmeier_mismatch_identity_closes() {
+sellmeier_ratio_interval_at_10_um field       126 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs sellmeier_ratio_interval_at_10_um: [f64; 2],
+sfwm             field        85 crates/optics_core/src/sfwm_source.rs pub sfwm: WavevectorMismatch,
+sfwm_um          field       119 crates/optics_core/src/sfwm_source.rs pub sfwm_um: f64,
+sh_wavelength_envelope field       107 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs sh_wavelength_envelope: [f64; 2],
+sha256_hex       function    154 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn sha256_hex(bytes: &[u8]) -> String {
+shg              field        87 crates/optics_core/src/sfwm_source.rs pub shg: WavevectorMismatch,
+shg_um           field       121 crates/optics_core/src/sfwm_source.rs pub shg_um: f64,
+signal_wavelength_envelope field       105 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs signal_wavelength_envelope: [f64; 2],
+signal_wavelength_half_width_um field       118 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs signal_wavelength_half_width_um: f64,
+signal_wavelength_interval_um field       121 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs signal_wavelength_interval_um: [f64; 2],
+signed_source_anchors_close_by_derivation function    413 crates/optics_core/src/sfwm_source.rs fn signed_source_anchors_close_by_derivation() {
+son_chekhova     method      128 crates/optics_core/src/sfwm_source.rs pub const fn son_chekhova() -> Self {
+source_amplitudes function    333 crates/optics_core/src/sfwm_source.rs pub fn source_amplitudes(
+source_amplitudes_retain_eq6_prefactor_and_phase function    432 crates/optics_core/src/sfwm_source.rs fn source_amplitudes_retain_eq6_prefactor_and_phase() {
+source_anchor_coherence_lengths_um field       145 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs source_anchor_coherence_lengths_um: [f64; 3],
+source_anchor_defects_um field       147 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs source_anchor_defects_um: [f64; 3],
+source_anchor_derived_coherence_lengths_um field       146 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs source_anchor_derived_coherence_lengths_um: [f64; 3],
+source_chi2_m_per_v field       143 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs source_chi2_m_per_v: f64,
+source_chi3_m2_per_v2 field       144 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs source_chi3_m2_per_v2: f64,
+source_pdf_sha256 field       135 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs source_pdf_sha256: String,
+source_rates     function    373 crates/optics_core/src/sfwm_source.rs pub fn source_rates(amplitudes: SfwmSourceAmplitudes) -> Result<SfwmSourceRates, SfwmSourceError> {
+source_susceptibility_substitution_is_detected function    157 crates/optics_core/tests/test_sfwm_source_reference.rs fn source_susceptibility_substitution_is_detected() {
+source_tex_sha256 field       136 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs source_tex_sha256: String,
+source_wavelengths_um method      267 crates/optics_core/src/sfwm_source.rs pub const fn source_wavelengths_um() -> (f64, f64, f64) {
+spdc             field        89 crates/optics_core/src/sfwm_source.rs pub spdc: WavevectorMismatch,
+spdc_um          field       123 crates/optics_core/src/sfwm_source.rs pub spdc_um: f64,
+step_um          field        79 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs step_um: f64,
+test_parameters  function    405 crates/optics_core/src/sfwm_source.rs fn test_parameters() -> SfwmSourceParameters {
+tests            module      402 crates/optics_core/src/sfwm_source.rs mod tests {
+thickness_half_width_um field       123 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs thickness_half_width_um: f64,
+thickness_interval_um field       124 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs thickness_interval_um: [f64; 2],
+thickness_status field       127 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs thickness_status: String,
+uncertainty      field       150 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs uncertainty: UncertaintyRecord,
+uncertainty_record function    466 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn uncertainty_record(
+uncertainty_status field       108 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs uncertainty_status: String,
+validate         method      136 crates/optics_core/src/sfwm_source.rs fn validate(self) -> Result<(), SfwmSourceError> {
+validate         method      253 crates/optics_core/src/sfwm_source.rs pub fn validate(&self) -> Result<(), SfwmSourceError> {
+value_per_um     field        61 crates/optics_core/src/sfwm_source.rs pub value_per_um: f64,
+wavevector_mismatches method      272 crates/optics_core/src/sfwm_source.rs pub fn wavevector_mismatches(&self) -> Result<SourceWavevectorMismatches, SfwmSourceError> {
+write_case       function    368 crates/gororoba_cli_physics/src/bin/sfwm_source_reproduction.rs fn write_case(output_dir: &Path, case: SourceCase, grid: &[f64]) -> Result<CaseRecord> {
+zero_direct_rate_is_not_replaced_by_a_floor function    446 crates/optics_core/src/sfwm_source.rs fn zero_direct_rate_is_not_replaced_by_a_floor() {
+zero_shg_mismatch_is_an_explicit_error function    459 crates/optics_core/src/sfwm_source.rs fn zero_shg_mismatch_is_an_explicit_error() {

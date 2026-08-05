@@ -1,0 +1,114 @@
+schema = "sfwm-p2c1-claim-transition-results-v1"
+bundle_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+canonical_database = "registry/canonical/control_plane.sqlite3"
+implementation_revision = "6b0b0acf297bd8b83b89ddd40c0700e8a81e1778"
+source_theory_refuted = false
+corrected_final_sweep_run = true
+experimental_data_used = false
+substrate_percentage_adjudicated = false
+transition_policy = "Apply source-model results to the narrowest claim layer; retain unresolved material identity and missing Supplement 1 assumptions without promoting them across layers."
+
+[before]
+database_base_revision = "f1114897abf6250acfe144ae948d31dc7d5b96dc"
+claim_count = 1478
+claim_transition_count = 15
+claim_relation_count = 25
+artifact_count = 3257
+artifact_path_count = 3841
+status_counts = { "Closed/Analogy" = 1, "Closed/Methodology-Insufficient" = 2, "Closed/Negative-Result" = 6, "Closed/Obstructed" = 1, "Closed/Refuted" = 3, "Closed/Research-Program" = 3, "Closed/Source-Insufficient" = 1, "Closed/Toy" = 2, Established = 44, Provisional = 140, Refuted = 60, Superseded = 13, Theoretical = 11, Verified = 1191 }
+
+[after]
+claim_count = 1478
+claim_transition_count = 21
+claim_relation_count = 25
+bundle_artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+artifact_count_after_final_registration = 3258
+artifact_path_count_after_final_registration = 3882
+bundle_artifact_path_count_after_final_registration = 41
+status_counts = { "Closed/Analogy" = 1, "Closed/Methodology-Insufficient" = 2, "Closed/Negative-Result" = 6, "Closed/Obstructed" = 1, "Closed/Refuted" = 3, "Closed/Research-Program" = 3, "Closed/Source-Insufficient" = 1, "Closed/Toy" = 2, Established = 44, Provisional = 137, Refuted = 60, Superseded = 13, Theoretical = 11, Verified = 1194 }
+
+[[transition]]
+transition_key = "c-832-sfwm-source-reproduction"
+source_claim_id = "C-832"
+event_id = 16
+experiment_verdict = "SurvivesChallenge"
+prior_status = "Provisional"
+current_status = "Verified"
+evidence_artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+result_boundary = "Signed source phase matching and direct-versus-cascaded source-model dominance pass for the paper-input and extraordinary-Sellmeier paths."
+unresolved_assumptions = ["The chi^(3) sample identity and convention remain unresolved for pristine thin LN.", "Supplement 1 and raw experimental data remain unavailable."]
+
+[[transition]]
+transition_key = "c-833-sfwm-extraordinary-sellmeier-hierarchy"
+source_claim_id = "C-833"
+event_id = 17
+experiment_verdict = "SurvivesChallenge"
+prior_status = "Verified"
+current_status = "Verified"
+evidence_artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+result_boundary = "The signed Sellmeier-derived mismatch identity closes exactly, and the extraordinary branch preserves the stated coherence-length hierarchy."
+unresolved_assumptions = ["The source polarization and temperature convention are bounded by the retained source ledger."]
+
+[[transition]]
+transition_key = "c-834-sfwm-source-rate-boundary"
+source_claim_id = "C-834"
+event_id = 18
+experiment_verdict = "SurvivesChallenge"
+prior_status = "Provisional"
+current_status = "Provisional"
+evidence_artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+result_boundary = "The nominal paper-input ratio is 0.04774423559348579, below the 0.05 boundary, while the declared deterministic uncertainty envelope reaches 0.05578719347757."
+unresolved_assumptions = ["The source does not provide a statistical uncertainty model for chi^(2), chi^(3), wavelengths, or the printed anchor precision."]
+
+[[transition]]
+transition_key = "c-839-sfwm-signed-maker-fringes"
+source_claim_id = "C-839"
+event_id = 19
+experiment_verdict = "SurvivesChallenge"
+prior_status = "Verified"
+current_status = "Verified"
+evidence_artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+result_boundary = "The corrected complex phase-matching path produces signed SHG and SPDC Maker fringes with independent thickness-grid refinement and preserves the source phase-matching identity."
+unresolved_assumptions = ["The public source provides rounded coherence anchors rather than complete numerical fringe data."]
+
+[[transition]]
+transition_key = "c-1659-sfwm-source-implementation-conformance"
+source_claim_id = "C-1659"
+event_id = 20
+experiment_verdict = "SurvivesChallenge"
+prior_status = "Provisional"
+current_status = "Verified"
+evidence_artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+result_boundary = "Production and independent dense-index paths agree component by component, and sign, prefactor, susceptibility, and scalar-fringe mutations are detected."
+unresolved_assumptions = ["The independent Rust reference intentionally duplicates the equations and is cross-implementation evidence, not external replication."]
+
+[[transition]]
+transition_key = "c-1661-sfwm-source-rate-anchor-reproduction"
+source_claim_id = "C-1661"
+event_id = 21
+experiment_verdict = "SurvivesChallenge"
+prior_status = "Provisional"
+current_status = "Verified"
+evidence_artifact_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+result_boundary = "The corrected paper-input and extraordinary-Sellmeier paths reproduce the 10 micrometre source-rate anchor as 0.04774423559348579 and 0.04801092757771039, respectively."
+unresolved_assumptions = ["The source chi^(3) material identity remains unresolved; the ratio is a source-model result under declared inputs, not an experimental-data reproduction."]
+
+[[unchanged_claim]]
+id = "C-838"
+status = "Provisional"
+boundary = "Remain blocked from substrate-percentage adjudication because Supplement 1, interfaces, collection, polarization, spectral weighting, and total detected-coincidence inputs are unavailable."
+
+[[unchanged_claim]]
+id = "C-835"
+status = "Verified"
+boundary = "Leave the experimental-data tranche unchanged."
+
+[[unchanged_claim]]
+id = "C-836"
+status = "Verified"
+boundary = "Leave the experimental-data tranche unchanged."
+
+[[unchanged_claim]]
+id = "C-837"
+status = "Verified"
+boundary = "Leave the experimental-data tranche unchanged."

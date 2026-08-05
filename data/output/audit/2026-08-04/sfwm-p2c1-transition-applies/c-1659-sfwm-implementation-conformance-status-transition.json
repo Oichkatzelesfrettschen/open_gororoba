@@ -1,0 +1,9 @@
+{
+  "transition_key": "c-1659-sfwm-source-implementation-conformance",
+  "transition_spec_sha256": "3f6f9cea8c1dbba0910d378ca392afdf444bc6c0b76f412e98d80712125cc773",
+  "event_id": 20,
+  "allocated_successors": [],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}
+skipped TOML regen (--regen-toml false); run `make registry-export-markdown` later.

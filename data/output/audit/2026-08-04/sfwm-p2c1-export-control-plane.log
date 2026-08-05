@@ -1,0 +1,7 @@
+Exported control-plane compatibility outputs: claims=1478 insights=183 experiments=232 binaries=496 theorems=162
+COMMAND CARGO_TARGET_DIR=.cache/exp-p2c1 cargo run --locked -q -p gororoba_cli_provenance --bin provenance -- export-control-plane
+Exported control-plane compatibility outputs: claims=1478 insights=183 experiments=232 binaries=496 theorems=162
+EXIT_CODE=0
+COMMAND CARGO_TARGET_DIR=.cache/exp-p2c1 cargo run --locked -q -p gororoba_cli_provenance --bin provenance -- export-control-plane (complete bundle)
+Exported control-plane compatibility outputs: claims=1478 insights=183 experiments=232 binaries=496 theorems=162
+EXIT_CODE=0

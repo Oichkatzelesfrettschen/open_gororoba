@@ -1,0 +1,37 @@
+schema = "sfwm-p2c1-dimensional-audit-v1"
+bundle_id = "LOCAL-P2C1-SFWM-SOURCE-REPRODUCTION"
+status = "pass_for_dimensionless_ratio_and_phase_matching; absolute_rate_normalization_not_claimed"
+
+[units]
+wavelengths = "micrometre"
+thickness = "micrometre"
+wavevectors = "inverse micrometre"
+mismatches = "inverse micrometre"
+phase_matching_integral = "micrometre"
+dimensionless_phase = "inverse micrometre times micrometre"
+susceptibility_chi2 = "metre per volt"
+susceptibility_chi3 = "square metre per square volt"
+
+[checks]
+wavevector_times_thickness = "dimensionless"
+phase_argument = "Delta_k times L / 2 is dimensionless"
+coherence_length = "pi / abs(Delta_k) has micrometre units"
+eq2_zero_mismatch = "F(L)=L, with no denominator floor"
+eq6_complex_phase = "exp(+i Delta_k L / 2) is dimensionless in its argument"
+eq6_prefactor = "Retained exactly as source normalization; absolute SI rate is not inferred from the source packet"
+rate_ratio = "Dimensionless because the common amplitude normalization cancels only after separate rates are formed"
+ratio_zero_direct = "Explicit None/error state; no max(k_squared, floor) or rate floor is used"
+
+[normalization]
+pump_field_squared = 1.0
+pump_field_role = "Common symbolic normalization for the source-model ratio; not an experimental pump calibration"
+rate_scale_role = "The 4/9 and 9/16 source rate factors are retained; no claim is made about absolute detected counts"
+
+[verification]
+paper_input_identity_defect_per_um = 0.0
+sellmeier_identity_defect_per_um = 0.0
+paper_ratio_at_10_um = 0.04774423559348579
+sellmeier_ratio_at_10_um = 0.04801092757771039
+independent_mpmath_precision_digits = 80
+independent_reference_component_match = true
+source_theory_refuted = false

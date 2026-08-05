@@ -1,0 +1,27 @@
+2026-08-04T20:45:31.753426305-07:00  WARN cyclic deps: verified_core(Idx::<CrateBuilder>(767)) -> cosmology_core(Idx::<CrateBuilder>(59)), alternative path: cosmology_core(Idx::<CrateBuilder>(59)) -> algebra_analysis(Idx::<CrateBuilder>(21)) -> cd_kernel(Idx::<CrateBuilder>(42)) -> verified_core(Idx::<CrateBuilder>(767))
+2026-08-04T20:45:31.753461321-07:00  WARN cyclic deps: verified_core(Idx::<CrateBuilder>(767)) -> gororoba_algebra(Idx::<CrateBuilder>(71)), alternative path: gororoba_algebra(Idx::<CrateBuilder>(71)) -> algebra_analysis(Idx::<CrateBuilder>(21)) -> cd_kernel(Idx::<CrateBuilder>(42)) -> verified_core(Idx::<CrateBuilder>(767))
+2026-08-04T20:45:31.753470668-07:00  WARN cyclic deps: verified_core(Idx::<CrateBuilder>(767)) -> gr_core(Idx::<CrateBuilder>(638)), alternative path: gr_core(Idx::<CrateBuilder>(638)) -> cd_kernel(Idx::<CrateBuilder>(42)) -> verified_core(Idx::<CrateBuilder>(767))
+Database loaded:     2.81s, 2700minstr, 496mb (metadata 750.97ms, 36minstr, 4mb)
+  item trees: 2437
+  dependency lines of code: 12_260_560, item trees: 24_670
+  dependency item stats: traits: 6_506, impl: 176_024, mods: 31_826, macro calls: 36_302, macro rules: 8_320
+Item Tree Collection: 17.37s, 201ginstr, 3765mb
+  Total Statistics:
+    crates: 752, mods: 2023, decls: 27165, bodies: 23442, adts: 4078, consts: 1437, signatures: 34396, variants: 5503
+  Workspace:
+    traits: 51, macro_rules macros: 1, proc_macros: 0
+    lines of code: 832_902, item trees: 2_437
+    usages: traits: 52, impl: 1_543, mods: 2_616, macro calls: 77, macro rules: 3
+  Dependencies:
+    lines of code: 12_260_560, item trees: 24_670
+    declarations: traits: 6_506, impl: 176_024, mods: 31_826, macro calls: 36_302, macro rules: 8_320
+Item Collection:     17.90s, 181ginstr, 3362mb
+Crate lang items:    217.88ms, 1913minstr, 27mb
+Expression Store Lowering: 159.77ms, 1072minstr, 23mb
+  exprs: 0, ??ty: 0 (100%), ?ty: 0 (100%), !ty: 0
+  pats: 0, ??ty: 0 (100%), ?ty: 0 (100%), !ty: 0
+  panics: 0
+Inference:           9.71ms, 75minstr, 0b
+Const evaluation:    4.21s, 26ginstr, 666mb
+Failed const evals: 18 (1%)
+Total:               40.00s, 411ginstr, 7353mb

@@ -1,0 +1,119 @@
+=== toolchain ===
+rustc 1.97.0 (2d8144b78 2026-07-07)
+cargo 1.97.0 (c980f4866 2026-06-30)
+3.53.3 2026-06-26 20:14:12 d4c0e51e4aeb96955b99185ab9cde75c339e2c29c3f3f12428d364a10d78alt1 (64-bit)
+=== hooks ===
+.githooks
+=== source packet hashes ===
+526dc3085e5e9e1f4cc1c5a5f3e696c9951fc998960ccda31f2b616cf4b571fa  /var/tmp/open_gororoba-sfwm-source-intake-20260805T004849Z/SHA256SUMS
+1452a4b48169f37a128eaf5b893cafcb99603843447841a251e80c7e499eabfc  data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml
+d8eb663db1b7b3e88463bd7444ae08d68723d4ac1a74ef17b701db52c72cbf85  data/output/audit/2026-08-04/sfwm-material-identity-audit.toml
+=== manifests ===
+7b5e9ca7bd63969fd6b5cae471ce5143b2fe52305a549f6f91aaa7143cebc36f  data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml
+1507cfc2f25a26d29b58db112cd1e6d69823bf2adff3a7126caf4174f87e5ada  data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml
+83c61321291791d8c154b8f6e347b987a64b4d114f8fc930b2e4ced99ed68ff0  data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-experiment-manifest.toml
+1bb7547ba0e588542d2e5c9fb09e37488444998baf7efd21042d8407aea71c97  data/output/audit/2026-08-04/sfwm-source-intake-experiment-manifest.toml
+=== sfwm tests ===
+   Compiling autocfg v1.5.0
+   Compiling libm v0.2.16
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+   Compiling typenum v1.19.0
+   Compiling cfg-if v1.0.4
+   Compiling thiserror v2.0.18
+   Compiling const-oid v0.10.2
+   Compiling strength_reduce v0.2.4
+   Compiling cpufeatures v0.3.0
+   Compiling zerocopy v0.8.48
+   Compiling cfg_aliases v0.2.1
+   Compiling foldhash v0.2.0
+   Compiling bit-vec v0.9.1
+   Compiling naga v29.0.1
+   Compiling bitflags v2.11.0
+   Compiling equivalent v1.0.2
+   Compiling unicode-width v0.2.2
+   Compiling hashbrown v0.16.1
+   Compiling rustc-hash v1.1.0
+   Compiling log v0.4.29
+   Compiling num-traits v0.2.19
+   Compiling once_cell v1.21.4
+   Compiling bit-set v0.9.1
+   Compiling hexf-parse v0.2.1
+   Compiling spirv v0.4.0+sdk-1.4.341.0
+   Compiling arrayvec v0.7.6
+   Compiling codespan-reporting v0.13.1
+   Compiling indexmap v2.13.1
+   Compiling hybrid-array v0.4.10
+   Compiling syn v2.0.117
+   Compiling block-buffer v0.12.0
+   Compiling crypto-common v0.2.2
+   Compiling num-integer v0.1.46
+   Compiling num-complex v0.4.6
+   Compiling approx v0.5.1
+   Compiling transpose v0.2.3
+   Compiling primal-check v0.3.4
+   Compiling rustfft v6.4.1
+   Compiling digest v0.11.2
+   Compiling sha2 v0.11.0
+   Compiling thiserror-impl v2.0.18
+   Compiling zerocopy-derive v0.8.48
+   Compiling optics_core v0.1.0 (/home/eirikr/Github/open_gororoba-son-chekhova-sfwm-source-reconstruction/crates/optics_core)
+   Compiling half v2.7.1
+    Finished `test` profile [optimized + debuginfo] target(s) in 28.24s
+     Running unittests src/lib.rs (.cache/exp-p2c1-target/debug/deps/optics_core-9d75a884520f6294)
+
+running 15 tests
+test sfwm::tests::test_coherence_lengths_match_paper ... ok
+test sfwm::tests::test_direct_dominates_cascaded_at_10um ... ok
+test sfwm::tests::test_f_sfwm_much_larger_than_f_shg ... ok
+test sfwm::tests::test_g2_sfwm_high_at_low_power ... ok
+test sfwm::tests::test_g2_approaches_1_at_high_power ... ok
+test sfwm::tests::test_phase_matching_small_dk ... ok
+test sfwm::tests::test_maker_fringe_sweep_lengths ... ok
+test sfwm::tests::test_polarization_cos2 ... ok
+test sfwm::tests::test_sellmeier_direct_dominates_cascaded ... ok
+test sfwm::tests::test_sfwm_dominates_at_10um ... ok
+test sfwm::tests::test_sfwm_efficiency_positive ... ok
+test sfwm::tests::test_shg_oscillates_in_sweep ... ok
+test sfwm::tests::test_substrate_sfwm_fused_silica_500um ... ok
+test sfwm::tests::test_thickness_sweep_monotonic_count ... ok
+test sfwm::tests::test_wavevector_mismatches_coherence_lengths ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 144 filtered out; finished in 0.00s
+
+     Running unittests src/bin/p2a_channel_oracle_evidence.rs (.cache/exp-p2c1-target/debug/deps/p2a_channel_oracle_evidence-4503dd75fc96c4aa)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/p2a_legacy_optics_characterization.rs (.cache/exp-p2c1-target/debug/deps/p2a_legacy_optics_characterization-f514fb1dfa6fe575)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/p2b_ruan_fan_reproduction.rs (.cache/exp-p2c1-target/debug/deps/p2b_ruan_fan_reproduction-c4d3ed209d7cca92)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/algebraic_lensing_cubecl_parity.rs (.cache/exp-p2c1-target/debug/deps/algebraic_lensing_cubecl_parity-d124a70df1812e87)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/test_sfwm_son_chekhova.rs (.cache/exp-p2c1-target/debug/deps/test_sfwm_son_chekhova-dd888a4c1986593c)
+
+running 1 test
+test test_maker_fringes_sfwm_monotonic_shg_oscillates ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.00s
+
+=== source intake audit ===
+error: no bin target named `sfwm_source_intake_audit` in `gororoba_cli_physics` package
+
+help: a target with a similar name exists: `sfwm-source-intake-audit`

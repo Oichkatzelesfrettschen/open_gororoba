@@ -1,0 +1,16 @@
+is_finite() <is_finite () at crates/optics_core/src/sfwm_source.rs:32>:
+    Ok():
+        test_parameters()
+        new()
+        signed_source_anchors_close_by_derivation()
+        from_source_anchors()
+        son_chekhova()
+        sellmeier_mismatch_identity_closes()
+        source_amplitudes_retain_eq6_prefactor_and_phase()
+        source_amplitudes()
+        zero_direct_rate_is_not_replaced_by_a_floor()
+        source_rates()
+        zero_shg_mismatch_is_an_explicit_error()
+        Err()
+        negative_pump_field_squared_is_rejected()
+        negative_thickness_is_rejected()
