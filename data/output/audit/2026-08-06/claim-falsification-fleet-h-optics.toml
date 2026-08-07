@@ -1,0 +1,336 @@
+# Fleet return: block H_OPTICS, 14 claims. HTML entities restored to ASCII.
+# Orchestrator spot-check, CONFIRMED: the Son-Chekhova PDF hashes to
+#   25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e6
+# while data/output/audit/ records ...112ec8e8 seven times and the 63-character
+# truncation ...112ec8e three times. Zero occurrences of the correct hash in the
+# audit tree. The two commits titled "sfwm: reconcile retained evidence hashes"
+# appended a WRONG final character rather than the right one. The audit trail
+# fails its own integrity check; no claim's physics depends on it.
+# NO FETCH WAS REQUIRED for this block -- both primary PDFs were already on disk.
+
+[block]
+id = "H_OPTICS"
+claim_count = 14
+agent_note = "Two source families. The Son-Chekhova claims are decidable from the arXiv main text; the prior session's blocker gates a STRONGER proposition than any claim in this block states. The Ruan-Fan claims are the residue of a preregistered reproduction that FAILED ITS OWN GATE: C-849 and C-850 both read Falsifies in the retained evidence, and C-1652, C-1654, C-1655 are that failure restated as existence claims about a measured envelope."
+
+[[finding]]
+claim_id = "C-1652"
+decidability = "unfalsifiable_as_stated"
+falsifier = "As written there is none: once the comparison has been run, a measured error envelope exists by construction. Operationalized against the only predeclared threshold, false if max |C_TCMT - C_Mie| > 0.01 on the frozen Figure 4 grid for any required observable, or if max complex-S defect > 0.01."
+check_performed = "Read data/output/audit/2026-08-04/p2b-preregistration.toml [c849] and [freeze_gate]; read [figure4_summary] and [claim_results] of p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml; confirmed by git log that the preregistration was committed in de7a772a at 2026-08-04 14:41:46 -0700 and the evidence in fc7778e8 at 16:48:15 -0700."
+observed = "Figure 4, 120 rows: max_complex_s = 1.5940e-2, rms_complex_s = 7.4206e-3, max_complex_r = 3.1880e-2, max_wrapped_phase = 1.5941e-2, max_c_sct = 1.6466e-2, max_c_abs = 2.3409e-3, max_c_ext = 1.5901e-2. lossless_gate = false, lossy_gate = false, C849_VERDICT = 'Falsifies', threshold 0.01 with threshold_source = 'repository-defined unit-scale gate; not a Ruan-Fan universal criterion'. max_balance_defect = 0.0 and source_anchors_pass = true."
+verdict = "partially_confirmed"
+verdict_reason = "The literal statement is true and CARRIES NO INFORMATION: an envelope was measured. Under the only threshold anyone predeclared, the Figure 4 reproduction MISSES on scattering, extinction, complex S, complex R, and phase, by factors of 1.6 to 3.2. The predeclaration is genuine -- git ordering confirms the gate preceded the numbers -- so the failure is honest, but restating a failed gate as 'has a measured error envelope' REMOVES THE FALSIFIER."
+recommended_status = "Closed/Methodology-Insufficient"
+verification_rule = "Restate with the numbers, then gate: [figure4_summary] max_c_sct <= 1.7e-2, max_c_ext <= 1.6e-2, max_complex_s <= 1.6e-2, max_complex_r <= 3.2e-2 on the frozen 60-point grid with frequency_hash d41a3d23dccf26d41e5199c31df3a2317934b3e062e0b983880c8e879540b12e."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1654"
+decidability = "unfalsifiable_as_stated"
+falsifier = "As written none. Operationalized against the preregistered C-850 gate, false if the degeneracy-weighted five-channel aggregate observables miss 0.01 on either the source-derived or held-out comparison, or if aggregate agreement is achieved by cancellation between channels."
+check_performed = "Read [figure5_source_summary], [figure5_heldout_summary], [[figure5_source_total]], [claim_results], [control_results] of the P2B evidence against [c850] of the preregistration."
+observed = "Source-derived Figure 5, 606 rows: max_c_sct = 4.3407e-2, max_c_abs = 3.8140e-3, max_c_ext = 4.2922e-2, source_derived_gate = FALSE. Held-out, 227 test points: max_c_sct = 5.1307e-2, max_c_abs = 2.1936e-2, max_c_ext = 6.2664e-2, aggregate_gate = FALSE, AGGREGATE_CANCELLATION = TRUE. c850_verdict = 'Falsifies'. Degeneracy weights 1, 2, 2 are applied after per-channel values are retained, as claimed. SEPARATELY, the paper says of Figure 5 only that 'We use the above theory to fit these curves' -- IT DOES NOT DERIVE THE FIGURE 5 PARAMETERS FROM COMPLEX POLES."
+verdict = "partially_confirmed"
+verdict_reason = "The per-channel retention and weighting mechanics are as described, but the aggregate misses the preregistered gate by four to six times on extinction and scattering, and the evidence itself flags aggregate_cancellation = true, meaning the totals HIDE per-channel failures. The label 'source-derived' is also UNEARNED for Figure 5: the paper fits Figure 5, so the pole-derived procedure is a repository construction, not a reproduction of the paper's method."
+recommended_status = "Closed/Methodology-Insufficient"
+verification_rule = "[figure5_heldout_summary] max_c_ext <= 6.3e-2 and [figure5_source_summary] max_c_sct <= 4.4e-2 with aggregate_cancellation reported alongside; a restated claim must carry these numbers and MUST NOT use the word source-derived for Figure 5."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1655"
+decidability = "unfalsifiable_as_stated"
+falsifier = "As written none. Operationalized: false if per-channel complex S_l and R_l are not retained for l = 0, 1, 2, if the negative partners do not equal the positive ones under rotational symmetry, or if the retained per-channel envelope exceeds the preregistered 0.01 complex-S gate."
+check_performed = "Read [[figure5_source_channel]], [[figure5_rotational_symmetry]], [[comparison_row]] case = fig5_source_derived, and [figure5_source_summary]."
+observed = "Per-channel complex S and R are retained for every row. Rotational symmetry defects between l = +1 and l = -1 are 4.74e-12 and between l = +2 and l = -2 are 1.97e-13, so the negative partners are numerically identical. THE RETAINED ENVELOPE IS max_complex_s = 5.6902e-2 and max_complex_r = 1.1380e-1, both far above the preregistered 0.01. The worst row is at omega = 0.220, THE LOW EDGE of the frozen window, where the nearest resonance is at omega_0 = 0.22657."
+verdict = "partially_confirmed"
+verdict_reason = "Per-channel retention and the rotational-symmetry statement are confirmed to 1e-12. The envelope exists but is 5.7 TIMES the predeclared gate. The edge concentration is a real physical explanation, not an excuse: TCMT is a near-resonance approximation and the frozen window reaches 0.0066 in omega below the l = 1 resonance, about seven linewidths."
+recommended_status = "Closed/Methodology-Insufficient"
+verification_rule = "[[figure5_rotational_symmetry]] defect <= 1e-11 for l = 1 and l = 2, and [figure5_source_summary] max_complex_s <= 5.7e-2; a restated claim should report the envelope AS A FUNCTION OF DETUNING IN LINEWIDTHS, not as a single window maximum."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1653"
+decidability = "external"
+falsifier = "False if any computed Figure 4 source-parameter anchor falls outside the printed-precision interval implied by the digits Ruan and Fan actually print, or if the parameters were obtained by fitting the evaluation curve rather than by complex-pole solving plus a uniform-metal background."
+check_performed = "Read the Figure 4 parameter paragraph of the Ruan-Fan PDF (printed page 10) and compared each printed value with the [[source_parameter_anchor]] rows and [control_results]."
+observed = "The paper prints omega_0 = 0.1552*omega_p, gamma = 1.9166e-5*omega_p, phi = -0.4882*pi lossless, and omega_0 = 0.1552*omega_p with gamma + gamma_0 = 1.0492e-4*omega_p for gamma_d = 0.001*omega_p, and describes EXACTLY the procedure claimed: solving the complex roots of the transcendental boundary-matching equation, and establishing phi by calculating the scattering coefficient of a uniform metallic cylinder of the same size. Computed values are 1.55215136e-1, 1.91663668e-5, -4.88221456e-1 (in units of pi), 1.04915295e-4, 8.57489277e-5, EVERY ONE with within_printed_interval = true against last-digit half-widths. The independent 80-digit mpmath root agrees with the production root to 1.42e-12. control_results record source_figure4_parameter_fit_executed = false and figure4_evaluation_curve_fit_executed = false."
+verdict = "confirmed"
+verdict_reason = "THIS IS THE ONE CLAIM IN THE RUAN-FAN FAMILY THAT MAKES A GENUINE PREDICTION AND PASSES IT. The intervals are printed-precision rounding intervals rather than chosen tolerances, the procedure attribution is verbatim from the paper, and an independent arbitrary-precision root confirms the production root."
+recommended_status = "Verified"
+verification_rule = "[[source_parameter_anchor]] all rows within_printed_interval = true, together with [control_results] source_figure4_parameter_fit_executed = false and independent root defect <= 5e-8."
+source_url = "https://arxiv.org/abs/0909.3323"
+source_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_path = "data/papers/corpus/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1656"
+decidability = "external"
+falsifier = "False if Ruan and Fan print no such landmark at omega/omega_p = 0.2282, or if the retained artifacts do not in fact adjudicate the relationship between the landmark and the repository totals."
+check_performed = "Read printed page 12 of the Ruan-Fan PDF; read [source_anchor], [production_result], [interpretation] of p2b-figure5-source-landmark-discrepancy.toml."
+observed = "The paper states VERBATIM that at omega = 0.2282*omega_p the total scattering cross-section is only 0.03 (2*lambda/pi) while the total absorption cross-section is 0.32 (2*lambda/pi). The repository gives Mie totals 1.41739879640738142e-1 and 3.98104096787583850e-1, source-parameter TCMT 1.36786586e-1 and 4.01449076e-1, fitted TCMT 1.14283223e-1 and 3.80787663e-1. within_rounded_source_interval = FALSE against a printed half-width of 0.005. The independent layered-Mie construction agrees with the production Mie to 4.26e-11, so the disagreement is WITH THE PAPER, not between repository paths."
+verdict = "confirmed"
+verdict_reason = "True but VACUOUS: 'has a separately adjudicated relationship' is satisfied the moment the adjudication file exists. The substantive content is a 4.72x disagreement in scattering (0.1417 vs 0.03) and a 1.244x disagreement in absorption (0.3981 vs 0.32). BECAUSE THE TWO FACTORS DIFFER, no single normalization, unit, or scale error reconciles them -- that rules out the 2*lambda/pi convention, and also rules out a five-channel degeneracy division, since 0.1417/5 = 0.0283 is close to 0.03 but 0.3981/5 = 0.0796 is nowhere near 0.32. The residual explanations are geometry, source parameters, or the paper's own numerical simulation."
+recommended_status = "Closed/Methodology-Insufficient"
+verification_rule = "[production_result] vs [source_anchor] at omega/omega_p = 0.2282, with the scattering and absorption discrepancy factors reported SEPARATELY rather than as a single pass/fail; the claim text must carry 4.72x and 1.244x."
+source_url = "https://arxiv.org/abs/0909.3323"
+source_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_path = "data/papers/corpus/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1657"
+decidability = "internal"
+falsifier = "False if any unique channel l = 0, 1, 2 yields zero or more than one retained parameter tuple under the declared single-resonance mapping, or if the retained root counts are unstable under contour refinement."
+check_performed = "Read every [[figure5_source_channel]] and [[figure5_alternate_pole]] row and the [[root_count]] tables, against the [figure5] pole_selection_rule in the preregistration."
+observed = "EXACTLY ONE TUPLE PER UNIQUE CHANNEL: l = 0 gives omega_0 = 2.30015772e-1, gamma = 9.90353770e-4, gamma_0 = 1.51887378e-4, phi = -1.37608871; l = 1 gives 2.26566631e-1, 9.64735902e-4, 2.14848029e-4, 9.31681464e-1; l = 2 gives 2.27540268e-1, 4.74103139e-4, 2.84011726e-4, 7.94984341e-1. Every channel reports lossless_root_count = 1 and lossy_root_count = 1, with six further poles RETAINED SEPARATELY as alternates rather than discarded. Validity ratios (gamma + gamma_0)/omega_0 are 5.0e-3, 5.2e-3, 3.3e-3. The preregistration forbids selecting the pole by final curve error and control_results confirm no post-test refit."
+verdict = "confirmed"
+verdict_reason = "The uniqueness statement holds exactly as written, alternates are retained rather than suppressed, and the claim already carries the landmark discrepancy as an explicit caveat. THIS IS THE HONEST ONE OF THE FIGURE 5 TRIO."
+recommended_status = "Verified"
+verification_rule = "[[figure5_source_channel]] has exactly three rows with lossless_root_count = 1 and lossy_root_count = 1, and [control_results] post_test_refit_executed = false."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1650"
+decidability = "internal"
+falsifier = "False if any retained mutation control in the P2A evidence is undetected, if the independent channel reference disagrees with the production path beyond the frozen tolerance, or if the tolerance policy was set after the final grid was observed."
+check_performed = "Read data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml in full and ran the optics_core test binaries."
+observed = "tolerance_policy declares policy_frozen_before_final_grid = true with fano_component_absolute = 1e-12 and mie_direct_complex = 1e-8; the grid is marked frozen = true. EVERY mutation_control row carries detected = true with observed defects between 1e-1 and 1e0 against a 1e-12 threshold -- ELEVEN ORDERS OF MARGIN. Sampled fano_row entries show component_max_defect = 0.0 between production and independent reference, with absorption computed THREE INDEPENDENT WAYS (from S, from R, closed form) agreeing to 2e-17 and balance defect exactly 0."
+verdict = "confirmed"
+verdict_reason = "Complex R_l and S_l are retained, the three cross-sections are computed by independent routes rather than derived from one another, and the mutation battery is detected with enormous margin. The eleven-order margin means the specific tolerance value is NOT LOAD-BEARING, so the usual circularity attack does not apply here."
+recommended_status = "Verified"
+verification_rule = "p2a-ruan-fan-channel-oracle-evidence.toml mutation_control rows all detected = true and fano_row component_max_defect <= 1e-12."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1651"
+decidability = "external"
+falsifier = "False if Ruan and Fan 0909.3323v2 do not use exp(-i*omega*t) with H^(2) incoming and H^(1) outgoing, or define R_l and S_l or the cross-sections differently from the repository ledger."
+check_performed = "pdftotext -layout of the corpus PDF; read Eqs. (1)-(6) on printed page 3 and the cross-section axis normalization; compared with ruan-fan-source-equation-figure-ledger.toml [conventions] and [index_contract]."
+observed = "Eq. (1) expands the exterior total field as a sum of h_l^+ H_l^(2) and h_l^- H_l^(1) terms; the text states that, taking the convention that the field varies as exp(-i*omega*t), h_l^+ and h_l^- are the incoming and outgoing amplitudes. Eq. (4) defines R_l = h_l^-/h_l^+, Eq. (5) gives R_l = exp(i*phi_l) lossless, Eq. (6) expands the field as a plane wave plus a sum of i^l S_l H_l^(1). Figure axes are labelled in units of 2*lambda/pi. THE LEDGER REPRODUCES EVERY ONE. The retained pdf_sha256 matches the on-disk file exactly."
+verdict = "confirmed"
+verdict_reason = "Every convention asserted by the claim is present verbatim in the primary source and the PDF hash verifies. ONE PROVENANCE DEFECT: the ledger records tex_source_sha256 = 086721ff... while two P2B evidence files record 625f2dc4..., which is 61 hex characters and cannot be a sha256; the .tex itself is not on disk."
+recommended_status = "Verified"
+verification_rule = "sha256sum of the corpus PDF == a355dc5a..., and the [conventions] and [index_contract] tables against Eqs. (1), (4), (5), (6) on printed page 3."
+source_url = "https://arxiv.org/abs/0909.3323"
+source_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_path = "data/papers/corpus/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-834"
+decidability = "internal"
+falsifier = "False if the repository path named in where_stated yields R_cas/R_dir >= 0.05 at L = 10 um under the paper-calibrated wavevector mismatches."
+check_performed = "Read crates/optics_core/src/sfwm.rs and tests/test_sfwm_son_chekhova.rs; compared against sfwm_source.rs and tests/test_sfwm_source_reference.rs; ran both test binaries under a private CARGO_TARGET_DIR."
+observed = "THE CITED LEGACY PATH uses chi2 = 27.0e-12 m/V and chi3 = 2.4e-21 m^2/V^2 where the source states chi2 = 2.5e-11 and chi3 = 1.5e-20; sets dk_sfwm = pi/33.3, dk_shg = pi/3.1, dk_spdc = pi/3.4 ALL POSITIVE, violating the source identity dk_SFWM = dk_SHG + dk_SPDC (pi/3.1 + pi/3.4 = 1.937 != pi/33.3 = 0.0943); and OMITS the Eq. 6 prefactor 2*pi/(n_SH*lambda_SH*dk_SHG). Its own registry status_note records the resulting value as 0.088 -- 8.8 percent, VIOLATING the claim's 5 percent threshold. Its cited test asserts only ratio < 0.15. The SEPARATE CORRECTED path asserts ratio < 0.05 and pins the value to 0.0477442355934858 within 1e-14. The run passes 5 of 5 and 7 of 7, the latter including three mutation controls (omitted_eq6_prefactor_is_detected, positive_only_spdc_mismatch_is_detected, source_susceptibility_substitution_is_detected)."
+verdict = "partially_confirmed"
+verdict_reason = "The proposition is TRUE under the corrected signed source path (0.04774 < 0.05, cross-checked against an 80-digit mpmath fixture), but REFUTED under the path named in where_stated, whose recorded output is 0.088 and whose test gate is 0.15. THE CLAIM IS NOT BACKED BY THE EVIDENCE IT CITES. Three separate errors partially cancel to produce a plausible-looking number."
+recommended_status = "Verified"
+verification_rule = "cargo test -p optics_core --test test_sfwm_source_reference corrected_paper_input_reproduces_the_source_ratio_boundary; where_stated must be REBOUND from sfwm.rs to sfwm_source.rs and tests/test_sfwm_source_reference.rs, and the status_note value 0.088 removed."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1658"
+decidability = "external"
+falsifier = "False if Son and Chekhova's Eq. 6 and Eq. 8 do not give separate complex cascaded and direct amplitudes, if the wavevector mismatches are unsigned, or if the rate prefactors are not 4/9 and 9/16."
+check_performed = "Read the arXiv source Main.tex, the labelled equations and the sentence beginning 'Omitting the common factors'; cross-checked against the extracted PDF text."
+observed = "Eq. 6 is A_cas = [2*pi*(chi^(2))^2*E_p^2/(n_SH*lambda_SH*Delta_k_SHG)] * exp(i*Delta_k_SPDC*L/2) * [exp(i*Delta_k_SHG*L/2)*F_SFWM(L) - F_SPDC(L)], with the paper stating it used Delta_k_SFWM = Delta_k_SHG + Delta_k_SPDC. Eq. 8 is A_dir = chi_SFWM^(3)*E_p^2*exp(i*Delta_k_SFWM*L/2)*F_SFWM(L). THE PREFACTORS APPEAR IN THE SENTENCE 'Omitting the common factors in Eqs. (5, 7), we see that the rates ... are, respectively, R_cas proportional to (4/9)|A_cas|^2 and R_dir proportional to (9/16)|A_dir|^2'. The 4/9 is the square of the 2/3 in Eq. 5 and the 9/16 the square of the 3/4 in Eq. 7."
+verdict = "partially_confirmed"
+verdict_reason = "Both amplitudes, their complex form, and the signed mismatch identity are VERBATIM. The prefactors 4/9 and 9/16 are also correct, but they originate in Eq. 5 and Eq. 7, NOT Eq. 6 and Eq. 8; the claim attributes them to the wrong equations. That matters, because the amplitudes and the Hamiltonian prefactors are separate objects and the legacy repository path lost exactly this distinction."
+recommended_status = "Verified"
+verification_rule = "Main.tex labels eq. amplitude cascade and eq:Ham dir of arXiv:2601.23137v1; the claim text should read 'Eq. 6 and Eq. 8 define the amplitudes; Eq. 5 and Eq. 7 supply the rate prefactors 4/9 and 9/16'."
+source_url = "https://arxiv.org/abs/2601.23137v1"
+source_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e6"
+source_path = "data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1660"
+decidability = "external"
+falsifier = "False if the Son-Chekhova text does not report R_cas/R_dir = 0.048 at 10 um, or reports it at a different thickness or under different inputs."
+check_performed = "Read the paragraph following Eq. 8 in Main.tex and the corresponding line of the extracted PDF text."
+observed = "VERBATIM: 'For the calculation, we used the values of chi^(2) = 2.5e-11 m/V and chi_SFWM^(3) = 1.5e-20 m^2/V^2. The rates oscillate with the same period, equal to twice the coherence length of the SFWM process. ... At 10 um thickness, the ratio R_cas/R_dir is 0.048, which is in good correspondence to the experimental result.' The declared inputs are the stated chi^(2) and chi^(3) together with coherence lengths 33.3, 3.1, 3.4 um. The repository's corrected path reproduces 0.0477442355934858, which rounds to 0.048."
+verdict = "confirmed"
+verdict_reason = "The number, the thickness, and the input tuple are all present verbatim, and the reported value is independently reproduced to the printed precision from the paper's own inputs."
+recommended_status = "Verified"
+verification_rule = "grep for the ratio sentence in Main.tex, paired with cargo test -p optics_core --test test_sfwm_source_reference corrected_paper_input_reproduces_the_source_ratio_boundary."
+source_url = "https://arxiv.org/abs/2601.23137v1"
+source_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e6"
+source_path = "data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1662"
+decidability = "external"
+falsifier = "False if the Son-Chekhova text does not report a fused-silica substrate contribution of 25 percent of the total coincidence rate, or does not delegate the derivation to the Supplement."
+check_performed = "Read the substrate paragraph in Main.tex and the extracted PDF text; checked the retained supplement search in data/output/audit/2026-08-05/sfwm-pre-p2c2-source-blocker-review.toml."
+observed = "VERBATIM: 'Importantly, the fused silica substrate could also contribute to SFWM, due to its noticeable chi^(3) = 3e-22 m^2/V^2 and large length. Its contribution can be estimated from these parameters and the phase matching condition (see the Supplementary Information) as 25% of the total rate of coincidences.' The retained blocker review records supplement_1_status = not_found_in_public_packet after searching the primary PDF, the arXiv source archive, the abstract page, and the extracted source filenames, with ZERO candidates."
+verdict = "confirmed"
+verdict_reason = "The claim asserts ONLY what the source reports and explicitly conditions it on Supplement 1 assumptions; both halves are exactly what the text says. THE PRIOR SESSION'S remain_blocked DISPOSITION GATES A STRONGER PROPOSITION -- whether 25 percent is correct -- WHICH NO CLAIM IN THIS BLOCK STATES. Note the paper's own preceding paragraph gives a separate 5 percent figure for the cascaded contribution, and a commented-out passage in Main.tex revises it to 7.1 percent after accounting for the substrate, so the numbers here were still in flux at submission."
+recommended_status = "Verified"
+verification_rule = "grep for the substrate paragraph in Main.tex; the claim must retain the phrase 'subject to Supplement 1 assumptions' and MUST NOT be promoted to a repository-verified fraction."
+source_url = "https://arxiv.org/abs/2601.23137v1"
+source_sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e6"
+source_path = "data/papers/corpus/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-838"
+decidability = "internal"
+falsifier = "False if substrate_sfwm_contribution returns a zero or non-finite rate proxy at 500 um, or if the refractive indices it consumes are not reproducible from the Malitson 1965 fused-silica Sellmeier coefficients."
+check_performed = "Read sfwm.rs substrate_sfwm_contribution and materials_core optical_database.rs fused_silica_sellmeier; recomputed n from Malitson coefficients at 1.030, 0.770, 1.550 um; ran the optics_core test binaries."
+observed = "Independently recomputed Malitson indices are n(1.030) = 1.450044, n(0.770) = 1.453854, n(1.550) = 1.444023, matching the test's hardcoded values to five digits. dk_SFWM = -0.0257 per um, L_coh = 122 um, so a 500 um substrate sits well past the first coherence length and F(500) is nonzero. The test uses chi3 = 2.5e-22 (Adair 1989) while the source states 3e-22 (Boyd). 22 of 22 sfwm unit tests pass. The registry status_note records F = 15.9 um, rate_proxy = 1.58e-41; independent computation gives F = 10.2 um, rate_proxy = 6.6e-42."
+verdict = "confirmed"
+verdict_reason = "The statement holds, but is CLOSE TO DEFINITIONAL: a nonzero chi3 times a nonzero sinc gives a nonzero amplitude, falsifiable only by an exact sinc zero. The apparent 2.4x rate_proxy disagreement is fully explained by F alone: 15.9^2/10.2^2 = 2.43 against a recorded ratio of 2.39, and the note's rounded dk = -0.026 gives a sinc argument of 6.50 rad against 6.41, which at this point on the lobe moves F from 10.2 to 16.5. Nothing is wrong with chi3 or the formula; THE DISCREPANCY IS dk ROUNDING AMPLIFIED BY THE SINC, which is exactly the fragility the claim should carry. The claim survives, its recorded magnitude does not."
+recommended_status = "Verified"
+verification_rule = "cargo test -p optics_core sfwm::tests::test_substrate_sfwm_fused_silica_500um; plus a new fixture asserting the substrate indices equal materials_core::fused_silica_sellmeier evaluated at 1.030, 0.770, 1.550 um rather than hardcoded constants."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1663"
+decidability = "internal"
+falsifier = "False if the fused-silica standalone SFWM amplitude evaluates to zero or non-finite under the declared Malitson dispersion and 500 um thickness."
+check_performed = "Read substrate_sfwm_contribution and the sfwm-implementation-source-matrix audit; recomputed dk and F(500) independently; ran the optics_core test binaries."
+observed = "rate_proxy = chi3^2 * F(L)^2 with F(L) = L*sinc(dk*L/2). Independently: dk = -0.0257 per um, dk*L/2 = -6.41 rad, F(500) = 10.2 um, rate_proxy = 6.6e-42. has_contribution is true whenever |rate_proxy| > 1e-60."
+verdict = "confirmed"
+verdict_reason = "True and NEAR-TAUTOLOGICAL -- falsified only if the sinc lands exactly on a zero, a measure-zero coincidence. It also HAS NO DENOMINATOR, so it establishes a standalone amplitude and cannot support any statement about a fraction of a total rate. IT DUPLICATES C-838 with the fraction language stripped out."
+recommended_status = "Verified"
+verification_rule = "cargo test -p optics_core sfwm::tests::test_substrate_sfwm_fused_silica_500um; a stronger successor should assert the value of F(500) against an independently computed Malitson dk rather than assert nonzero."
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+The block splits into one family where the primary source decides everything and one
+where the repository's own predeclared gate already decided against it.
+
+THE RUAN-FAN FINDING IS STRUCTURAL. A GENUINE PREREGISTRATION EXISTS: git shows
+p2b-preregistration.toml landed in de7a772a at 2026-08-04 14:41:46 -0700 and the
+evidence in fc7778e8 at 16:48:15 -0700, and the file honestly labels its 0.01 gate as
+'repository claim predicate; not stated by Ruan and Fan'. THE GATE THEN FAILED. The
+retained evidence reads c849_verdict = 'Falsifies' and c850_verdict = 'Falsifies'.
+C-1652, C-1654, and C-1655 are the two failed reproduction claims RESTATED AS EXISTENCE
+CLAIMS about a measured envelope, with the threshold removed. The briefing predicted an
+envelope fitted to the residual; what actually happened is worse-shaped, because an
+unfalsifiable restatement cannot be caught by any tolerance audit. THE TELL IS
+GRAMMATICAL: 'has a measured error envelope' and 'has a retained error envelope' have
+no predicate that a number can violate. C-1653 and C-1657, written in the same batch,
+DO carry predicates and both survive -- so the defect is per-claim drafting, not a
+campaign-wide practice.
+
+A SECOND RUAN-FAN FINDING THE RETAINED EVIDENCE DOES NOT STATE: the paper does not
+derive its Figure 5 parameters at all. It says 'We use the above theory to fit these
+curves.' The complex-pole, lossless-to-lossy, uniform-background procedure is verbatim
+the paper's FIGURE 4 method, and the repository extended it to Figure 5 on its own.
+Every claim calling the Figure 5 path 'source-derived' (C-1654, C-1655, and by
+inheritance C-1657) MISATTRIBUTES A REPOSITORY CONSTRUCTION TO THE SOURCE. This also
+predicts the observed asymmetry: Figure 4, where the procedure is the paper's, misses
+the 0.01 gate by 1.6x, while Figure 5, where it is not, misses by 4x to 6x.
+
+A THIRD: [fit_summary] records maximum_source_derived_test_complex_s_error = 5.6902e-2
+against maximum_unconstrained_one_pole_test_complex_s_error = 3.0233e-2. THE
+SOURCE-DERIVED CONSTRAINED MODEL IS BEATEN ON HELD-OUT DATA BY A GENERIC UNCONSTRAINED
+SINGLE POLE, by a factor of 1.9. The preregistration's performance_rule required the
+constrained model to improve on its baselines. It did not.
+
+THE C-1656 LANDMARK DISCREPANCY IS UNEXPLAINED and the two-factor structure narrows it
+usefully: scattering is off by 4.72x, absorption by 1.244x. A single normalization,
+unit, or scale error produces ONE factor, not two, which eliminates the 2*lambda/pi
+convention and any per-channel division. The independent layered-Mie construction
+agrees with production to 4.26e-11, so this is the repository disagreeing with Ruan and
+Fan's numerical simulation, not with itself.
+
+ON THE SFWM SIDE THE PRIOR SESSION'S BLOCKER IS REAL BUT NARROWER THAN IT LOOKS.
+Supplement 1 is genuinely absent from the public packet, and it does block any
+adjudication of whether 25 percent is right. It does NOT block C-1662, which claims
+only that the source reports it, subject to Supplement 1 assumptions. The main text is
+on disk, hash-verified, and settles C-1658, C-1660, and C-1662 outright. No fetch was
+required for this block and no new host was contacted.
+
+C-834 EXPOSES AN EVIDENCE-LINKAGE DEFECT THAT THE PHYSICS HIDES. Its proposition is
+true: the corrected signed path gives 0.04774, under 5 percent, pinned to 1e-14 and
+cross-checked against an 80-digit fixture. But its where_stated points at
+crates/optics_core/src/sfwm.rs, whose linbo3_paper_calibrated uses chi3 = 2.4e-21
+against the source's 1.5e-20 and chi2 = 27e-12 against 2.5e-11, sets all three
+mismatches positive in violation of the source identity, omits the Eq. 6 prefactor
+entirely, records 0.088 in its own status_note, and is gated by a test asserting only
+< 0.15. THREE SEPARATE ERRORS PARTIALLY CANCEL to produce a plausible-looking number.
+The quarantine recorded in the P2C1 ledger was never propagated to the claim's
+where_stated field.
+
+FINALLY, THE RETAINED PROVENANCE CHAIN DOES NOT VERIFY. The Son-Chekhova PDF hashes to
+...112ec8e6 on disk and in the intake SHA256SUMS, but four evidence files record
+...112ec8e8 and two record the 63-character truncation ...112ec8e. The two commits
+titled 'sfwm: reconcile retained evidence hashes' APPENDED A WRONG FINAL CHARACTER
+rather than the right one. Independently, the Ruan-Fan ledger records tex_source_sha256
+= 086721ff... while two P2B evidence files record 625f2dc4... at 61 characters, and the
+.tex is not on disk to break the tie. BOTH PDFs VERIFY; only the derived records are
+wrong. No claim's physics depends on this, but the audit trail currently fails its own
+integrity check.
+"""
+new_claims_proposed = """
+1. 'Ruan and Fan obtain the Figure 5 parameters by FITTING the simulated cross-section
+   curves, not by complex-pole identification; the repository's pole-derived Figure 5
+   path is a repository construction.' FALSIFIER: any passage in 0909.3323v2 describing
+   a pole or root computation for the Figure 5 parameter set. The paper's only Figure 5
+   method sentence is 'We use the above theory to fit these curves.'
+
+2. 'The repository layered-Mie total cross-sections at omega/omega_p = 0.2282 exceed the
+   Ruan-Fan printed landmark by 4.72x in scattering and 1.244x in absorption; because
+   the two factors differ, no single normalization, unit, or channel-count factor
+   reconciles them.' FALSIFIER: a scale factor s with |0.1417/s - 0.03| <= 0.005 and
+   |0.3981/s - 0.32| <= 0.005 simultaneously; none exists.
+
+3. 'On the frozen Figure 5 held-out set the source-parameter constrained TCMT is WORSE
+   than an unconstrained single-pole fit, 5.69e-2 against 3.02e-2 maximum complex-S
+   error.' FALSIFIER: a rerun in which the constrained model's held-out error falls
+   below the unconstrained baseline's under the same frozen splits.
+
+4. 'The Figure 4 complex-S error envelope is 1.594e-2, exceeding the preregistered 1e-2
+   gate; the Figure 4 TCMT reproduction FAILS ITS OWN PREDECLARED CRITERION.'
+   FALSIFIER: a rerun on the frozen 60-point grid giving max_complex_s <= 1e-2.
+
+5. 'Every sha256 field under data/output/audit/ is 64 hexadecimal characters and equals
+   the hash of the artifact it names.' FALSIFIER: currently FALSE -- ...112ec8e8 and
+   ...112ec8e for the Son-Chekhova PDF whose true hash is ...112ec8e6, and the
+   61-character 625f2dc4... for the Ruan-Fan tex. THIS SHOULD BECOME A REPOSITORY GATE.
+
+6. 'C-1663 is subsumed by C-838.' FALSIFIER: an input regime where the standalone
+   fused-silica amplitude is nonzero but C-838's substrate contribution statement is not
+   established, or vice versa. None exists; both reduce to chi3 != 0 and sinc != 0.
+"""
+gaps = """
+THE 4.72x / 1.244x LANDMARK DISCREPANCY IS NOT RESOLVED. Deciding it needs one of: the
+Ruan-Fan numerical simulation data behind the Figure 5 circles; an independent
+layered-cylinder Mie implementation outside this repository at the declared geometry
+rho1 = 0.36*lambda_p, rho2 = 0.73*lambda_p, rho3 = lambda_p, epsilon_d = 12.96,
+gamma_d = 0.001*omega_p; or a digitization of the Figure 5 EPS curves that separates
+the solid TCMT lines from the circle markers. The retained extraction records
+solid_curve_and_marker_series_separable = false, so the third route is unavailable. The
+.tex is not on disk and its two recorded hashes conflict, so the figure sources cannot
+be re-derived without refetching from arXiv.
+
+WHETHER 25 PERCENT IS THE CORRECT FUSED-SILICA FRACTION IS NOT DECIDABLE. It needs
+Supplement 1, absent from the arXiv PDF, the source archive, and the abstract page. The
+author request was sent 2026-08-05 and is still pending. This does not affect C-1662 as
+written.
+
+WHETHER chi3 = 1.5e-20 m^2/V^2 APPLIES TO PRISTINE LITHIUM NIOBATE IS NOT DECIDABLE.
+The cited Wang 2019 record names CuZn alloy nanoparticle IMPLANTED LiNbO3, and the
+ScienceDirect landing page returned an empty body (capture sha256 e3b0c442... is the
+hash of zero bytes). Deciding it needs the Wang full text through an institutional
+route, and it bears on the absolute rates, not on the dimensionless ratio in C-834 or
+C-1660.
+
+THE C-1650 VERDICT RESTS ON THE RETAINED P2A EVIDENCE FILE rather than on a fresh
+re-execution of the channel oracle experiment. The optics_core test suites that were run
+(12 integration, 22 sfwm unit, all passing) do not include the P2A frozen-grid sweep,
+which lives in the experiment manifest rather than in cargo test. Regenerating and
+diffing would close this; the shared workspace target directory was under heavy
+contention.
+
+materials_core WAS NOT BUILT OR TESTED. The Malitson agreement reported for C-838 comes
+from an independent hand recomputation of the Sellmeier formula, not from calling
+fused_silica_sellmeier, whose coefficients are emitted through materials_data at build
+time and were read as source rather than evaluated.
+"""

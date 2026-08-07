@@ -456,7 +456,13 @@ file = "registry/engineering_standards.toml"
 purpose = "toolchain and engineering standards"
 
 [shared.conventions]
-ascii_only = true
+# The gate is anti-emoji, not anti-Unicode. `ansi-check --check` fails a file
+# only on an emoji or a control character other than tab, newline or carriage
+# return; curly quotes, dashes, arrows, Greek letters and box-drawing all pass.
+# The former key name was ascii_only, which read as a prohibition on all
+# non-ASCII text and caused agents to refuse legitimate mathematical notation.
+emoji_blocked = true
+ascii_preferred = true
 warnings_as_errors = true
 nightly_toolchain_required = true
 workspace_dependency_rule = "Define shared dependencies in root Cargo.toml; use workspace=true in crate manifests."

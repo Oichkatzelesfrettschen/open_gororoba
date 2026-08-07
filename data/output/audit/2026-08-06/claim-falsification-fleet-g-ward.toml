@@ -1,0 +1,274 @@
+# Fleet return: block G_WARD, 10 claims. HTML entities restored to ASCII.
+# Orchestrator spot-checks, all confirmed:
+#   - irreducible.rs:286 `let on_shell_factor = 0.0_f64; // k^2 = 0 exactly`,
+#     line 288 multiplies the entire integrand by it.
+#   - ward.rs:130 `let residual = irr_residual;` -- gravitational ALIASES gauge.
+#   - ward.rs:49 and :66 `let _ = config;` -- tadpole and external discard inputs.
+#   - AND irreducible.rs:383 already contains a test named
+#     audit_c820_on_shell_factor_hides_nonzero_integrand. THE DEFECT WAS ALREADY
+#     FOUND AND AN AUDIT TEST WRITTEN FOR IT; the claim was never transitioned.
+
+[block]
+id = "G_WARD"
+claim_count = 10
+agent_note = "Two layers with OPPOSITE evidential quality. The 2026-02 layer (C-820, C-822, C-865) rests on residuals that are a literal compile-time zero and on a source relation that does not exist in the cited paper. The 2026-08-04 layer is a REAL source-faithful reconstruction: its two source propositions against arXiv:2601.23279 confirm cleanly, its two tensor conformance claims hold on a well-delimited subset and fail the rest of their own predeclared grid, and its third source proposition against Maksimov cites a relation that paper does not contain."
+
+[[finding]]
+claim_id = "C-820"
+decidability = "internal"
+falsifier = "False if the residual returned by irreducible_ward_check / check_gauge_ward_irreducible is not a genuine contraction of the amplitude, or if an independent tensor-valued contraction of the same amplitude exceeds machine precision on the declared kinematic grid."
+check_performed = "Read irreducible.rs:232-296; ran an OUT-OF-REPO probe crate linking gr_core by path printing irreducible_ward_check, check_gauge_ward_irreducible and check_gravitational_ward at three field configurations x two loop types; cross-read data/output/audit/2026-08-02/p1_final_grid.toml (102 records)."
+observed = "irreducible.rs:288 sets `let on_shell_factor = 0.0_f64;` AND MULTIPLIES THE ENTIRE INTEGRAND BY IT. The probe returns raw_irr = 0.00000000000000000e0, gauge = 0.0, grav = 0.0, IEEE BIT PATTERN 0x0, at (B,omega,theta) = (0.01,0.1,pi/4), (0.5,0.7,0.3), (2.0,1.3,1.1) for BOTH Scalar and Spinor. The independent tensor instrument on the same amplitude gives gauge_irreducible_normalized_norm ~2.2e-18 to ~1.6e-17 for the scalar loop but 2.2586e-2 to >2.4e-2 for the SPINOR loop, against tolerance_normalized 1e-6."
+verdict = "refuted"
+verdict_reason = "The reported residual IS NOT A MEASUREMENT: it is the constant 0.0 produced by multiplying the integrand by a literal zero, so the check PASSES ANY POSITIVE TOLERANCE and has zero discriminating power. Where the amplitude is actually contracted, the spinor loop misses the identity by 2.3e-2, four orders above tolerance, so the quantifier 'to machine precision' is false as well as unsupported."
+recommended_status = "Refuted"
+verification_rule = "cargo test --release -p gr_core --lib photon_graviton::ward::tests::audit_c822_gravitational_gate_ignores_other_diagrams and photon_graviton::tensor_ward::tests::spinor_irreducible_residual_retains_the_contact_boundary_gap"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-822"
+decidability = "internal"
+falsifier = "False if check_gravitational_ward does not compute a gravitational contraction distinct from the gauge contraction, or if the source-declared on-shell decomposition exceeds 1e-8 on the declared grid."
+check_performed = "Read ward.rs:86-140; same probe crate; ran cargo test --release -p gr_core --lib photon_graviton -- --nocapture; read combined_on_shell_* fields of p1_final_grid.toml."
+observed = "check_gravitational_ward assigns `let residual = irr_residual;` -- BYTE-IDENTICAL to the gauge residual, and the in-repo test audit_c822_gravitational_gate_ignores_other_diagrams asserts exactly that equality AND that perturbing the tadpole to 7.0 and the external leg to -3.0 CHANGES NOTHING. Probe: grav = 0.0 (bits 0x0) at all six configurations. Live tensor instrument: on_shell_combined Scalar extrapolated_norm = 2.3626229167124594e-3 convergence 9.713e-8 passes=false; Spinor 5.8682402128125109e-3 convergence 2.478e-7 passes=false. Across the retained grid combined_on_shell_passes is true=0 FALSE=48. The off-shell scalar lower-point comparison DOES pass: defect absolute 1.0391664112067463e-15, normalized 6.1998919569017500e-11."
+verdict = "refuted"
+verdict_reason = "The gravitational Ward identity IS NEVER INDEPENDENTLY COMPUTED by the claimed code path; it returns the gauge residual, which is itself the constant zero. The instrument that does compute it fails the source on-shell decomposition on 48 of 48 records by three orders of magnitude."
+recommended_status = "Refuted"
+verification_rule = "cargo test --release -p gr_core --lib photon_graviton::gravitational_ward::tests::combined_on_shell_ladder_retains_limit_status_without_a_floor"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-865"
+decidability = "external"
+falsifier = "False if arXiv:2505.00396 contains no relation of the form kappa_1 - kappa_2 = gamma_l, or if no repository code path evaluates that relation at relative error below 1e-10."
+check_performed = "Fetched arXiv:2505.00396v1, pdftotext, searched for the energy-conservation constraint; read amplitude_bridge.rs:81-112 and its tests; grepped all call sites of validate_energy_conservation; opened the claim's SECOND where_stated locator, tcmt_equations.rs."
+observed = "The paper's ACTUAL TITLE is 'Temporal coupled mode theory for high-Q resonances in dielectric metasurfaces' (Maksimov, Pankin, Kim, Song, Peng, Bogdanov), NOT the title the repo inventory records. Its energy-conservation result is Eq. (48) kappa^2 = 2*gamma with Eq. (44) kappa^2 = kappa_left^dagger kappa_left; its symmetry constraints are MODULUS equalities, Eq. (68) |kappa_1| = |kappa_2|. NO RELATION kappa_1 - kappa_2 = gamma_l APPEARS ANYWHERE. validate_energy_conservation has NO PRODUCTION CALL SITE: only two unit tests and one example. The only positive control passes tolerance 1.0 and accepts relative error exactly 0.9; the in-repo test audit_c865_tolerance_does_not_match_claim asserts the same inputs are REJECTED at 1e-10. The second locator does not rescue it: tcmt_equations.rs's only test asserts nothing beyond e_initial > 0.0 and e_final > 0.0 -- it never compares the two, and its own comment reads 'Just verify that energies are positive and integration worked'."
+verdict = "refuted"
+verdict_reason = "THE ASSERTED MAKSIMOV CONSTRAINT IS NOT IN MAKSIMOV. The paper's relation is QUADRATIC in kappa (kappa^2 = 2*gamma), so kappa_1 - kappa_2 carries units of gamma^(1/2) and CANNOT equal gamma_l; the repo relation is dimensionally inconsistent as well as absent. The stated 1e-10 tolerance is exercised by nothing."
+recommended_status = "Refuted"
+verification_rule = "cargo test --release -p gr_core --lib photon_graviton_tcmt::amplitude_bridge::tests::audit_c865_tolerance_does_not_match_claim; source locator arXiv:2505.00396v1 Eq. (44), (48), (68)"
+source_url = "https://arxiv.org/pdf/2505.00396v1"
+source_sha256 = "bff27d8b1df3a3907f23aaa234a40d31e33013f4c18bb007b4b3c1c84adc48db"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/maksimov_2025_tcmt_symmetry_constraints_arxiv_2505_00396.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1639"
+decidability = "external"
+falsifier = "False if arXiv:2505.00396 contains no relation kappa_1 - kappa_2 = gamma_l under any declared unit or parameter correspondence, or if the relation it does state is structurally or dimensionally incompatible."
+check_performed = "Fetched arXiv:2505.00396v1 (deposited and hashed), read the derivation of the coupling constraints at pp. 4-6 and the symmetry constraint equations at pp. 8-11."
+observed = "The energy-conservation and time-reversal derivation yields Eq. (43) A = e^{i*zeta}*sqrt(2*gamma/kappa^2), Eq. (44) kappa^2 = kappa_left^dagger kappa_left = kappa_right^dagger kappa_right, and Eq. (48) the normalization kappa^2 = 2*gamma. The symmetry-imposed constraints are MODULI equalities: Eq. (68) |kappa_1| = |kappa_2|, |kappa_3| = |kappa_4|, and analogous single-mirror forms. THE STRING kappa_1 - kappa_2 DOES NOT OCCUR; no equation equates a difference of coupling components to a decay rate. Independently, Ruan and Fan arXiv:0909.3323 give eta*eta^* = 2*gamma (Eq. 17) and kappa*eta^* = 2*gamma (Eq. 18a); neither is a difference relation either."
+verdict = "refuted"
+verdict_reason = "The relation the claim calls source-faithful is ABSENT from the cited source. Maksimov's constraint is quadratic, kappa^2 = 2*gamma, fixing [kappa] = [gamma]^(1/2); a linear difference kappa_1 - kappa_2 therefore CANNOT equal gamma_l under any unit choice, so no parameter correspondence can rescue it. A SECOND INDEPENDENT FALSIFIER closes the 'under declared units' escape: source_inventory.toml declares parameter_units = 'declared as frequency for coupling and decay', giving kappa and gamma THE SAME dimension, which directly contradicts Eq. (48). The claim fails whether or not the relation is granted."
+recommended_status = "Refuted"
+verification_rule = "Source locator arXiv:2505.00396v1 Eqs. (43), (44), (48), (68); cross-check arXiv:0909.3323 Eqs. (17), (18a)"
+source_url = "https://arxiv.org/pdf/2505.00396v1"
+source_sha256 = "bff27d8b1df3a3907f23aaa234a40d31e33013f4c18bb007b4b3c1c84adc48db"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1638"
+decidability = "internal"
+falsifier = "False if no repository code path evaluates kappa_1 - kappa_2 = gamma_l at the declared 1e-10 relative tolerance, or if the retained positive control accepts a discrepancy larger than that tolerance."
+check_performed = "Grepped every call site of validate_energy_conservation; read amplitude_bridge.rs:97-112 and tests at 196-226; ran cargo test --release -p gr_core --lib photon_graviton (236 passed)."
+observed = "THREE CALL SITES EXIST AND NONE IS PRODUCTION: amplitude_bridge.rs:201 (test, tolerance 1.0), :213 and :219 (the audit test), and examples/photon_graviton_tcmt_demo.rs:145. The retained positive control energy_conservation_validates passes kappa_1=1e-3, kappa_2=1e-4, gamma=1e-3, tolerance=1.0, giving RELATIVE ERROR 0.9. The audit test audit_c865_tolerance_does_not_match_claim asserts relative_error == 0.9, > 1e-10, acceptance at tolerance 1.0, and rejection at 1e-10 -- AND IT PASSES."
+verdict = "refuted"
+verdict_reason = "The declared tolerance is 1e-10 per the C-865 adjudication artifact, and NO CODE PATH evaluates the relation at that tolerance; the only control accepts a relative error NINE ORDERS OF MAGNITUDE LOOSER. The function is a tolerance-parameterized comparison with no fixture that exercises the declared predicate."
+recommended_status = "Refuted"
+verification_rule = "cargo test --release -p gr_core --lib photon_graviton_tcmt::amplitude_bridge::tests::audit_c865_tolerance_does_not_match_claim"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1634"
+decidability = "external"
+falsifier = "False if arXiv:2601.23279 states the gauge Ward identity only for the summed amplitude, or under conventions different from those declared in p1_source_equation_ledger.toml."
+check_performed = "Read the Ward-identity section of the corpus text (printed page 17) and compared verbatim against the [conventions] and equation 7.1 rows of data/output/audit/2026-08-02/p1_source_equation_ledger.toml."
+observed = "Source text: 'It is easy to see that the gauge Ward identity holds for each of the three contributions separately, i.e. Gamma^{(irr),(tadpole),(ext)}(-k, eps_0; k, delta_eps; F) = 0, (7.1) where delta_eps_i^mu = k^mu.' The ledger row 7.1 declares per-diagram, off-shell unrenormalized, 'replace photon polarization delta_epsilon by k_alpha' -- AN EXACT MATCH including the gauge replacement and the renormalization state. The source also states 'Here there is no difference between the scalar and spinor-loop cases.' Conventions match: Euclidean metric, momentum rule k0 = -k."
+verdict = "confirmed"
+verdict_reason = "The repository transcription of the per-diagram gauge Ward identity, its gauge replacement, its off-shell unrenormalized scope, and its Euclidean conventions reproduce Eq. (7.1) and its surrounding text WITHOUT ALTERATION; no convention mismatch was found."
+recommended_status = "Verified"
+verification_rule = "Source locator arXiv:2601.23279v1 Eq. (7.1), printed page 17, cross-checked against p1_source_equation_ledger.toml row id 7.1"
+source_url = "https://arxiv.org/pdf/2601.23279"
+source_sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+source_path = "data/papers/corpus/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1636"
+decidability = "external"
+falsifier = "False if the off-shell identity has a right-hand side other than the one- plus two-photon amplitudes, or if the on-shell cancellation and separate tadpole invariance are not both stated, or if the effective-polarization normalizations differ from the repo declaration."
+check_performed = "Read printed page 17 of the source text and compared Eqs. (7.2) through (7.7) against p1_source_equation_ledger.toml rows 7.2-7.7."
+observed = "Eq. (7.2) delta_eps0^{mu nu} = k0^mu zeta0^nu + zeta0^mu k0^nu matches VERBATIM. Eq. (7.3) equals the one- and two-photon amplitudes -- ledger row 7.3 says 'rank-one gravitational contraction equals one-photon RHS plus two-photon RHS'. Eq. (7.4) eps_tilde_i^mu = kappa(f_i . zeta0)^mu and eps_tilde_F^mu = -i*kappa(F . zeta0)^mu -- ledger IDENTICAL including the factor -i and both kappa factors. Eq. (7.5) carries the explicit 1/k0^2 virtuality denominator and the ledger FORBIDS replacing it with a floor. Eq. (7.6) Gamma^(irr) + Gamma^(ext) = 0 at k0 = -k, and Eq. (7.7) Gamma^(tadpole) = 0 'using the on-shell relations k^2 = eps.k = zeta0.k0 = 0' -- the ledger's on_shell_constraints field states exactly those three."
+verdict = "confirmed"
+verdict_reason = "Every element the claim asserts -- off-shell lower-point right-hand side, on-shell irreducible plus external cancellation, and separate tadpole invariance -- appears in the source in the declared form, with kappa normalization, the factor -i, and the 1/k0^2 denominator transcribed without alteration."
+recommended_status = "Verified"
+verification_rule = "Source locator arXiv:2601.23279v1 Eqs. (7.2)-(7.7), printed page 17, cross-checked against p1_source_equation_ledger.toml rows 7.2-7.7"
+source_url = "https://arxiv.org/pdf/2601.23279"
+source_sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1635"
+decidability = "internal"
+falsifier = "False if any record of the predeclared kinematic grid reports a gauge Ward residual above the frozen tolerance, or if the mutation controls fail to detect a deliberate J-structure perturbation."
+check_performed = "Verified all ten photon_graviton tensor source files still hash-match the experiment manifest; ran cargo test --release -p gr_core --lib photon_graviton -- --nocapture (236 passed, 0 failed); tabulated gauge_irreducible_passes by loop_type over the 102 records; read p1_mutation_results.toml."
+observed = "gauge_irreducible_passes: TRUE=51, FALSE=51. THE SPLIT IS EXACTLY BY LOOP TYPE -- scalar 27 off_shell + 24 on_shell ALL TRUE, spinor 27 off_shell + 24 on_shell ALL FALSE. Scalar normalized residuals span 2.175e-18 to ~1.6e-17; spinor span 2.2585e-2 to >2.4e-2, against tolerance 1.0e-6. gauge_tadpole_passes 102/102 true, gauge_external_passes 54/54 true where defined (48 records report undefined_at_zero_virtuality). ALL SEVEN J-structure mutations are DETECTED for both loop types, rank_three_l2_difference 1.88e-7 to 2.34e-3 against threshold 1e-10."
+verdict = "partially_confirmed"
+verdict_reason = "Two of the three source predicates hold across every applicable record with REAL, NON-DEGENERATE residuals and WORKING mutation controls -- tadpole 102/102 and external 54/54. The third, the irreducible gauge contraction, passes for the scalar loop at 1e-17 but FAILS FOR THE SPINOR LOOP on all 51 records by four orders of magnitude, so the claim's universal quantifier over the grid is false. THE SOURCE EXPLICITLY STATES THERE IS NO SCALAR/SPINOR DIFFERENCE in the Ward identity, so the sixteen-order gap between the loop paths is an IMPLEMENTATION DEFECT in the spinor contact or integration-by-parts term, not a property of the physics."
+recommended_status = "Provisional"
+verification_rule = "cargo test --release -p gr_core --lib photon_graviton::tensor_ward::tests::scalar_integrated_gauge_residuals_pass_the_frozen_protocol and ...::spinor_irreducible_residual_retains_the_contact_boundary_gap"
+source_path = "data/output/audit/2026-08-02/p1_final_grid.toml"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1637"
+decidability = "internal"
+falsifier = "False if the gravitational residual exceeds the frozen tolerance anywhere on the predeclared grid, or if a diagram-omission or tadpole-trace control fails to change the reported residual."
+check_performed = "Ran cargo test --release -p gr_core --lib photon_graviton -- --nocapture and read the emitted off_shell and on_shell_combined records; tabulated tadpole_gravitational_passes and combined_on_shell_passes; read p1_on_shell_controls.toml."
+observed = "Off-shell scalar lower-point comparison PASSES: lhs and rhs agree componentwise, defect absolute 1.0391664112067463e-15, normalized 6.1998919569017500e-11 against 1e-6. tadpole_gravitational_passes 48/48 TRUE (absolute norms ~3.3e-23 to ~1.5e-22). combined_on_shell_passes 0 TRUE / 48 FALSE: live extrapolated norms 2.3626229167124594e-3 (Scalar) and 5.8682402128125109e-3 (Spinor), with convergence 9.71e-8 and 2.48e-7 -- THE VIRTUALITY LADDER CONVERGES TO A FINITE NONZERO LIMIT rather than to zero. Diagram decomposition controls DO work: omitting the external leg moves the scalar norm 2.3626e-3 -> 2.4161e-3 and omitting the irreducible moves it to 5.348e-5, both detected; tadpole trace perturbation moves the invariant trace 0 -> 1.972e-2 (scalar) and -3.935e-2 (spinor), both detected."
+verdict = "partially_confirmed"
+verdict_reason = "Two of the three source predicates hold with real, non-degenerate residuals and WORKING NEGATIVE CONTROLS -- the off-shell lower-point identity for the scalar loop and separate tadpole invariance 48/48. The third, the Eq. (7.6) on-shell irreducible-plus-external cancellation, FAILS ON EVERY ONE OF 48 applicable records by three orders of magnitude and converges to a FINITE NONZERO limit, so the claim's universal quantifier is false. Adjudicated on the same rule as C-1635, whose logical form is identical."
+recommended_status = "Provisional"
+verification_rule = "cargo test --release -p gr_core --lib photon_graviton::gravitational_ward::tests::off_shell_comparison_retains_all_lower_point_components, ...::combined_on_shell_ladder_retains_limit_status_without_a_floor, ...::on_shell_omission_and_tadpole_trace_controls_break_the_invariant"
+source_path = "data/output/audit/2026-08-02/p1_final_grid.toml"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1643"
+decidability = "internal"
+falsifier = "False if the implemented reciprocity residual is not the relation the cited channel basis actually imposes, if it is degenerate (identically zero by construction), or if a deliberate mutation of the coupling leaves it unchanged."
+check_performed = "Read Ruan and Fan arXiv:0909.3323 pp. 5-6 (Eqs. 14-20); read crates/optics_core/src/fano_tcmt.rs lines 173, 395, 615, 679; ran cargo test --release -p optics_core --lib fano_tcmt (13 passed, 0 failed)."
+observed = "The source derives eta*eta^* = 2*gamma from energy conservation (Eq. 17), kappa*eta^* = 2*gamma from time reversal (Eq. 18a), and concludes kappa = eta (Eq. 19), calling Eqs. (17)-(19) 'the main results of the Fano interference theory' for the single l-th cylindrical channel. fano_tcmt.rs:395 computes reciprocal_coupling_defect = coupling.kappa - coupling.eta, i.e. EXACTLY Eq. (19). Test source_constraints_are_separate_predicates asserts the defect norm < 1e-12 and PASSES; the NEGATIVE CONTROL source_constraint_mutations_are_detected asserts a mutated coupling drives the defect > 1e-3 and PASSES. The defect is held as a SEPARATE FIELD from the lossless-flux, contractivity, eta-norm and time-reversal residuals rather than folded into a blanket unitarity assertion."
+verdict = "confirmed"
+verdict_reason = "The implemented residual IS the source relation kappa = eta for the declared single-channel cylindrical basis, it is separated from the unitarity and time-reversal predicates, and it has a working negative control, so it is neither degenerate nor tautological."
+recommended_status = "Verified"
+verification_rule = "cargo test --release -p optics_core --lib fano_tcmt::tests::source_constraints_are_separate_predicates and fano_tcmt::tests::source_constraint_mutations_are_detected; source locator arXiv:0909.3323 Eq. (19)"
+source_url = "https://arxiv.org/abs/0909.3323"
+source_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+source_path = "data/papers/corpus/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf"
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+THE C-820 / C-822 'GAP' IS NEITHER PHYSICAL NOR A GAP. Both claims report THE SAME
+SCALAR. ward.rs check_gravitational_ward assigns `let residual = irr_residual;`, and
+irreducible.rs multiplies its entire integrand by `let on_shell_factor = 0.0_f64;`. The
+probe confirms both return IEEE 0x0 at every field configuration and both loop types.
+The two tolerances are TWO THRESHOLDS APPLIED TO ONE COMPILE-TIME CONSTANT, so the
+numbers are incomparable rather than discrepant, and neither is a measurement. This
+generalizes: THREE OF THE FOUR legacy Ward checks (tadpole and external return literal
+0.0 with `let _ = config;`, gravitational aliases the irreducible) NEVER TOUCH THE
+AMPLITUDE AT ALL.
+
+THE SUPERSESSION QUESTION RESOLVES MORE SHARPLY THAN PROPOSED. C-1635 and C-1637 do
+replace C-820 and C-822 with a real instrument, but they do not merely RELOCATE them --
+THEY CONTRADICT THEM. Where the tensor path actually contracts the amplitude, the spinor
+gauge residual is 2.3e-2 and the on-shell gravitational combination is 2.4e-3 to 5.9e-3,
+against a 1e-6 tolerance. So 'Superseded' UNDERSTATES the finding: the successor evidence
+FALSIFIES the predecessor quantifiers. Refuted is the correct disposition for C-820 and
+C-822, with the source propositions preserved intact in C-1634 and C-1636.
+
+THE SCALAR/SPINOR SPLIT IS THE BLOCK'S SHARPEST SINGLE FACT and it is new as a
+source-versus-implementation contradiction. The grid divides 51/51 EXACTLY along loop
+type: scalar normalized residuals 2.2e-18 to 1.6e-17, spinor 2.26e-2 to 2.4e-2 --
+SIXTEEN ORDERS APART. Ahmadiniaz et al. state directly, one sentence before Eq. (7.1),
+that 'there is no difference between the scalar and spinor-loop cases'. THE SOURCE
+THEREFORE PREDICTS THE TWO PATHS AGREE, AND THE REPOSITORY'S OWN EVIDENCE SHOWS THEY DO
+NOT. That localizes the defect to the spinor contact or integration-by-parts boundary
+term WITH SOURCE AUTHORITY behind the localization, which the retained audit artifacts
+describe only as an open 'boundary gap'. FALSIFIER: implement the missing spinor boundary
+term and the 51 failing records must drop to the scalar residual scale; if they do not,
+the defect is in the spinor determinant or J-structure assembly instead.
+
+THE TCMT SUB-BLOCK FAILS AT THE SOURCE LAYER, NOT THE NUMERICAL LAYER, AND THE FAILURE IS
+SHARED. C-865, C-1638 and C-1639 all rest on kappa_1 - kappa_2 = gamma_l, WHICH APPEARS
+IN NEITHER CITED PAPER. Maksimov gives kappa^2 = 2*gamma (Eq. 48) and moduli equalities
+|kappa_1| = |kappa_2| (Eq. 68); Ruan and Fan give eta*eta^* = 2*gamma and kappa*eta^* =
+2*gamma. The repo relation looks like A CONFLATION of Maksimov's kappa_1, kappa_2
+subscripts with Ruan-Fan's per-channel gamma_l, and the quadratic-versus-linear structure
+makes it DIMENSIONALLY IMPOSSIBLE rather than merely unattested. ONE FALSIFIER -- read
+Eq. (48) -- DECIDES ALL THREE CLAIMS AT ONCE, which is why they should be adjudicated
+together.
+
+THE TCMT REFUTATIONS PROPAGATE OUTSIDE THIS BLOCK. source_inventory.toml records
+dependency_closure = ["C-864", "C-865", "C-866", "C-867"] for the tcmt.mapping section,
+so refuting C-865, C-1638 and C-1639 puts C-864, C-866 and C-867 IN SCOPE for the same
+source audit. The test run already surfaces in-repo audit tests naming those claims --
+audit_c866_cross_section_ratio_is_tautological,
+audit_c866_lossless_case_retains_gravitational_decay, and
+audit_c867_base_profile_is_even_in_detuning -- ALL PASSING, meaning the defects they name
+are ASSERTED AS PRESENT. Those three claims were outside this block and were not
+adjudicated here.
+
+TWO CITATION-FIDELITY DEFECTS. source_inventory.toml records arXiv:2505.00396 as 'Generic
+temporal coupled-mode theory constraints from symmetry'; the fetched paper is titled
+'Temporal coupled mode theory for high-Q resonances in dielectric metasurfaces'. THE REPO
+TITLE IS A PARAPHRASE OF THE ROLE THE PAPER WAS ASSIGNED, which is precisely the failure
+mode that let a nonexistent equation be attributed to it. Separately, ward.rs cites
+'Bastianelli et al. (2026), Sec 7'; the section is 8 (its equations are tagged 7.x) and
+the first author is Ahmadiniaz.
+
+C-1643 AND THE ALREADY-VERIFIED C-1644 ARE NEAR-REDUNDANT. Ruan-Fan derives kappa = eta by
+combining energy conservation (Eq. 17) with time reversal (Eq. 18a), so a SINGLE computed
+quantity, kappa - eta, decides both the reciprocity claim and the time-reversal claim in
+the single-channel basis. In a 1x1 channel basis matrix reciprocity is trivially
+satisfied; the substantive content is entirely kappa = eta.
+
+A POSITIVE CONTROL ON THE WHOLE EXERCISE: all ten photon_graviton tensor source files
+still hash-match the experiment manifest, and the live run reproduces the retained grid to
+NINE OR MORE significant figures (on-shell scalar 2.3626229167124594e-3 live versus
+2.36262291743054948e-3 retained). THE 2026-08-02 EVIDENCE IS CURRENT, NOT STALE, so the
+refutations above are refutations of TODAY'S code.
+"""
+new_claims_proposed = """
+1. The photon-graviton gauge Ward residual is reproduced to better than 1e-16 normalized
+   for the SCALAR loop across the predeclared kinematic grid, while the SPINOR loop
+   residual is bounded BELOW by 2.2e-2 normalized on every grid record. FALSIFIER: any
+   scalar record above 1e-15 normalized, or any spinor record below 1e-3 normalized.
+
+2. The legacy Ward path in crates/gr_core/src/photon_graviton/{ward,irreducible}.rs
+   returns an IDENTICALLY ZERO residual for all inputs, so its four checks carry no
+   evidential content. FALSIFIER: any (B, omega, theta, loop_type) for which
+   irreducible_ward_check returns a value whose IEEE bit pattern is not 0x0.
+
+3. arXiv:2505.00396 imposes the energy-conservation constraint kappa^2 = 2*gamma and
+   constrains component MODULI by |kappa_i| = |kappa_j| under mirror symmetry; it imposes
+   NO linear difference relation between coupling components and a decay rate.
+   FALSIFIER: an equation in that paper equating a difference of coupling components to a
+   decay rate.
+
+4. The source-declared on-shell cancellation Gamma^(irr) + Gamma^(ext) = 0 is NOT
+   reproduced: the virtuality-ladder extrapolation CONVERGES (9.7e-8 scalar, 2.5e-7
+   spinor) to a FINITE NONZERO norm of 2.4e-3 and 5.9e-3. FALSIFIER: a convergent
+   extrapolation reaching below 1e-6 normalized without a denominator floor.
+
+5. Ruan-Fan reciprocity (kappa = eta) and Ruan-Fan time-reversal symmetry are decided by
+   THE SAME computed residual in the single cylindrical channel basis, so C-1643 and
+   C-1644 are NOT independent evidence. FALSIFIER: a channel basis in the repository of
+   rank greater than one where the two predicates can disagree.
+"""
+gaps = """
+THE CORRECT SPINOR CONTACT OR INTEGRATION-BY-PARTS BOUNDARY TERM WAS NOT DERIVED.
+Deciding whether the 2.3e-2 spinor gauge residual and the finite on-shell limit share a
+single missing term requires transcribing the spinor boundary contribution from
+arXiv:2601.23279 Section 6 and its Appendix B projector inputs and re-running the grid;
+that is an implementation task beyond a falsification pass. Until it is done, the spinor
+failure is established as a FACT but its CAUSE is inferred rather than demonstrated.
+
+WHETHER ANY DEFENSIBLE RELATION connects the photon-graviton TCMT parameters to a source
+constraint was not settled. The refutation shows kappa_1 - kappa_2 = gamma_l is not in
+Maksimov; it does not establish what the correct mapping IS. Deciding that needs a
+declared port normalization and an independent complex-amplitude fit, which
+source_inventory.toml already flags as UNDERIDENTIFIED (coupling floored at 1e-20,
+nonradiative decay hardcoded at 0.1*gamma_radiative, gravitational decay at
+0.01*gamma_radiative). Those hardcoded ratios have no source basis found in this pass.
+
+THE 48 RECORDS reporting gauge_external_status = undefined_at_zero_virtuality were not
+independently adjudicated. The implementation raises an explicit error at zero virtuality
+rather than applying a floor, which MATCHES the source treatment of the 1/k0^2 term in
+Eq. (7.5); whether the declared virtuality ladder is the right limit protocol is a
+numerical-analysis question this pass did not test.
+
+WHETHER arXiv:2601.23279 HAS A VERSION BEYOND v1 was not checked; all source claims here
+are decided against v1, sha256 c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90.
+"""

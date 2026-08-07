@@ -120,6 +120,10 @@ const NEGATIVE_TERMS: &[&str] = &[
     "inconclusive",
     "insufficient",
 ];
+/// Title prefix that identifies a lacuna derived from live claim status. Rows
+/// carrying it are re-derived on every run, so the prefix is both the writer's
+/// format and the reader's discriminator against the carried-forward set.
+const CLAIM_STATUS_LACUNA_TITLE_PREFIX: &str = "Unresolved claim status for ";
 const UNRESOLVED_STATUS_TOKENS: &[&str] = &[
     "PARTIAL",
     "INCONCLUSIVE",
@@ -674,14 +678,36 @@ fn build_lacunae(
     let mut rows = Vec::new();
     let mut seen_ids = BTreeSet::new();
 
+    // The prior lacunae file is an input, so a row derived from claim status on one
+    // run would otherwise be carried into the next and outlive the status that
+    // produced it: seen_ids is filled here before the live scan below runs, so a
+    // resolved claim keeps a frozen "unresolved" row forever. Derived rows are
+    // therefore dropped from the carry-forward set and re-derived from live status,
+    // and every surviving row keeps the origin it was recorded with rather than
+    // being relabelled legacy_manual, which is what made the two kinds
+    // indistinguishable.
     for row in legacy_lacunae {
         let lacuna_id = collapse(table_str(row, "id"));
-        if lacuna_id.is_empty() || !seen_ids.insert(lacuna_id.clone()) {
+        if lacuna_id.is_empty() {
+            continue;
+        }
+        let legacy_origin = collapse(table_str(row, "origin"));
+        let legacy_title = collapse(table_str(row, "title"));
+        if legacy_origin == "claims_status_scan"
+            || legacy_title.starts_with(CLAIM_STATUS_LACUNA_TITLE_PREFIX)
+        {
+            continue;
+        }
+        if !seen_ids.insert(lacuna_id.clone()) {
             continue;
         }
         rows.push(Lacuna {
             id: lacuna_id,
-            origin: "legacy_manual".to_string(),
+            origin: if legacy_origin.is_empty() {
+                "legacy_manual".to_string()
+            } else {
+                legacy_origin
+            },
             area: {
                 let area = collapse(table_str(row, "area"));
                 if area.is_empty() {
@@ -733,7 +759,7 @@ fn build_lacunae(
             id: lacuna_id,
             origin: "claims_status_scan".to_string(),
             area: "claims".to_string(),
-            title: format!("Unresolved claim status for {}", claim_id),
+            title: format!("{}{}", CLAIM_STATUS_LACUNA_TITLE_PREFIX, claim_id),
             description: format!(
                 "{} remains unresolved with status token {}: {}",
                 claim_id, status, statement
