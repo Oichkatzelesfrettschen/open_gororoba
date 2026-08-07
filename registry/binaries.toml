@@ -753,6 +753,11 @@ crate = "gororoba_cli"
 description = "FRB catalog ultrametric analysis"
 
 [[binary]]
+name = "frontier-refresh"
+crate = "gororoba_cli_data"
+description = "Regenerate the post-transition falsification frontier from canonical SQLite: status and epistemic-layer counts, compound and false-confidence queues, and the next bounded tranches."
+
+[[binary]]
 name = "generate-latex"
 crate = "gororoba_cli"
 description = "Publication export: generate LaTeX appendices from TOML registry (claims table, insights)"
@@ -1679,6 +1684,21 @@ crate = "gororoba_cli_physics"
 description = "Fit orthoplex dark energy model (K_{2,2,...,2} heat kernel) to Pantheon+ SN Ia + DESI DR1 BAO + CC + f*sigma8 RSD + CMB R. Supports --fixed_beta for 4-param model. Outputs w(z) table and model comparison."
 
 [[binary]]
+name = "p2a-channel-oracle-evidence"
+crate = "optics_core"
+description = "Retain source-faithful Ruan-Fan channel and Mie oracle evidence; the analytical reference calculations duplicate the source deliberately so the oracle stays independent of the production path."
+
+[[binary]]
+name = "p2a-legacy-optics-characterization"
+crate = "optics_core"
+description = "Capture the pre-repair optics observables as characterization data, recording the legacy formulas and production outputs before the repair so the change is measurable rather than asserted."
+
+[[binary]]
+name = "p2b-ruan-fan-reproduction"
+crate = "optics_core"
+description = "Execute the preregistered Ruan-Fan pole and held-out comparison campaign, writing component-level evidence from independently read inputs."
+
+[[binary]]
 name = "pantheon-physicsforge-verify"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from crates/gororoba_cli_data/Cargo.toml; registry metadata pending."
@@ -1955,6 +1975,16 @@ name = "sfwm-figure-repro"
 crate = "gororoba_cli"
 description = "Reproduce all 4 figures from Son & Chekhova (2026) arXiv:2601.23137v1: SFWM vs cascaded SHG+SPDC in thin LiNbO3. Outputs 8 CSV files (fig2a-d, fig3a-b, fig4a-b) covering power scaling, polarization, g(2), Maker fringes, and rate dominance."
 experiment = "E-074"
+
+[[binary]]
+name = "sfwm-source-intake-audit"
+crate = "gororoba_cli_physics"
+description = "Emit deterministic measurements of the legacy SFWM oracle boundaries by calling the pre-existing public API only, so the characterization cannot be contaminated by the replacement."
+
+[[binary]]
+name = "sfwm-source-reproduction"
+crate = "gororoba_cli_physics"
+description = "Generate the signed complex Son-Chekhova SFWM source reproduction, freezing thickness coordinates before evaluating either amplitude."
 
 [[binary]]
 name = "sharp-flare-cd"

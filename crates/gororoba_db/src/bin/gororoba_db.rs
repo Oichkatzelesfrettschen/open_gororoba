@@ -2158,6 +2158,28 @@ fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
         manifest.source.len()
     );
 
+    // build_fresh deletes the database file, and the importer below reads only the
+    // lanes named in registry/source_manifest.toml. Claim transition events, the
+    // relations they allocate, and the revision log have no compatibility TOML in
+    // that manifest, so a rebuild recreates those tables empty and the history is
+    // gone. The append-only triggers cannot catch it: removing the file issues no
+    // DELETE. Refuse rather than destroy, and make the operator say so explicitly.
+    if db_path.exists() {
+        let existing = ProvenanceStore::open(db_path)
+            .with_context(|| format!("open existing db {}", db_path.display()))?;
+        let event_count = existing.list_claim_transition_events()?.len();
+        if event_count != 0 && !args.allow_transition_history_loss {
+            bail!(
+                "refusing to rebuild {}: it holds {event_count} claim transition events that no \
+                 compatibility TOML can restore. Rebuilding recreates the event, relation and \
+                 revision tables empty. Export instead of rebuilding, or pass \
+                 --allow-transition-history-loss if discarding the adjudication history is \
+                 intended.",
+                db_path.display()
+            );
+        }
+    }
+
     // Create fresh DB (deletes any existing file).
     let mut store = ProvenanceStore::build_fresh(db_path)?;
     store.record_build_metadata("builder", "gororoba-db build")?;
