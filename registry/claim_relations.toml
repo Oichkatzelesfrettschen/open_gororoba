@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_relations
 [meta]
 surface = "typed predecessor and successor claim relations"
-relation_count = 25
+relation_count = 90
 relation_kinds = ["source_split", "implementation_split", "narrows", "refines", "supersedes"]
 
 [[relation]]
@@ -181,3 +181,458 @@ predecessor_claim_id = "C-838"
 successor_claim_id = "C-1663"
 relation_kind = "implementation_split"
 transition_event_id = 15
+
+[[relation]]
+relation_id = 26
+predecessor_claim_id = "C-820"
+successor_claim_id = "C-1664"
+relation_kind = "source_split"
+transition_event_id = 176
+
+[[relation]]
+relation_id = 27
+predecessor_claim_id = "C-820"
+successor_claim_id = "C-1665"
+relation_kind = "implementation_split"
+transition_event_id = 176
+
+[[relation]]
+relation_id = 28
+predecessor_claim_id = "C-820"
+successor_claim_id = "C-1666"
+relation_kind = "implementation_split"
+transition_event_id = 176
+
+[[relation]]
+relation_id = 29
+predecessor_claim_id = "C-820"
+successor_claim_id = "C-1667"
+relation_kind = "narrows"
+transition_event_id = 176
+
+[[relation]]
+relation_id = 30
+predecessor_claim_id = "C-820"
+successor_claim_id = "C-1668"
+relation_kind = "implementation_split"
+transition_event_id = 176
+
+[[relation]]
+relation_id = 31
+predecessor_claim_id = "C-1010"
+successor_claim_id = "C-1669"
+relation_kind = "implementation_split"
+transition_event_id = 177
+
+[[relation]]
+relation_id = 32
+predecessor_claim_id = "C-1010"
+successor_claim_id = "C-1670"
+relation_kind = "source_split"
+transition_event_id = 177
+
+[[relation]]
+relation_id = 33
+predecessor_claim_id = "C-1010"
+successor_claim_id = "C-1671"
+relation_kind = "narrows"
+transition_event_id = 177
+
+[[relation]]
+relation_id = 34
+predecessor_claim_id = "C-1010"
+successor_claim_id = "C-1672"
+relation_kind = "implementation_split"
+transition_event_id = 177
+
+[[relation]]
+relation_id = 35
+predecessor_claim_id = "C-1010"
+successor_claim_id = "C-1673"
+relation_kind = "source_split"
+transition_event_id = 177
+
+[[relation]]
+relation_id = 36
+predecessor_claim_id = "C-1010"
+successor_claim_id = "C-1674"
+relation_kind = "implementation_split"
+transition_event_id = 177
+
+[[relation]]
+relation_id = 37
+predecessor_claim_id = "C-1147"
+successor_claim_id = "C-1675"
+relation_kind = "implementation_split"
+transition_event_id = 178
+
+[[relation]]
+relation_id = 38
+predecessor_claim_id = "C-1147"
+successor_claim_id = "C-1676"
+relation_kind = "source_split"
+transition_event_id = 178
+
+[[relation]]
+relation_id = 39
+predecessor_claim_id = "C-1147"
+successor_claim_id = "C-1677"
+relation_kind = "source_split"
+transition_event_id = 178
+
+[[relation]]
+relation_id = 40
+predecessor_claim_id = "C-1147"
+successor_claim_id = "C-1678"
+relation_kind = "source_split"
+transition_event_id = 178
+
+[[relation]]
+relation_id = 41
+predecessor_claim_id = "C-1147"
+successor_claim_id = "C-1679"
+relation_kind = "source_split"
+transition_event_id = 178
+
+[[relation]]
+relation_id = 42
+predecessor_claim_id = "C-1147"
+successor_claim_id = "C-1680"
+relation_kind = "source_split"
+transition_event_id = 178
+
+[[relation]]
+relation_id = 43
+predecessor_claim_id = "C-1145"
+successor_claim_id = "C-1681"
+relation_kind = "implementation_split"
+transition_event_id = 179
+
+[[relation]]
+relation_id = 44
+predecessor_claim_id = "C-1145"
+successor_claim_id = "C-1682"
+relation_kind = "implementation_split"
+transition_event_id = 179
+
+[[relation]]
+relation_id = 45
+predecessor_claim_id = "C-1145"
+successor_claim_id = "C-1683"
+relation_kind = "implementation_split"
+transition_event_id = 179
+
+[[relation]]
+relation_id = 46
+predecessor_claim_id = "C-1145"
+successor_claim_id = "C-1684"
+relation_kind = "implementation_split"
+transition_event_id = 179
+
+[[relation]]
+relation_id = 47
+predecessor_claim_id = "C-1145"
+successor_claim_id = "C-1685"
+relation_kind = "implementation_split"
+transition_event_id = 179
+
+[[relation]]
+relation_id = 48
+predecessor_claim_id = "C-1145"
+successor_claim_id = "C-1686"
+relation_kind = "implementation_split"
+transition_event_id = 179
+
+[[relation]]
+relation_id = 49
+predecessor_claim_id = "C-1145"
+successor_claim_id = "C-1687"
+relation_kind = "implementation_split"
+transition_event_id = 179
+
+[[relation]]
+relation_id = 50
+predecessor_claim_id = "C-1231"
+successor_claim_id = "C-1688"
+relation_kind = "implementation_split"
+transition_event_id = 180
+
+[[relation]]
+relation_id = 51
+predecessor_claim_id = "C-1231"
+successor_claim_id = "C-1689"
+relation_kind = "implementation_split"
+transition_event_id = 180
+
+[[relation]]
+relation_id = 52
+predecessor_claim_id = "C-1231"
+successor_claim_id = "C-1690"
+relation_kind = "implementation_split"
+transition_event_id = 180
+
+[[relation]]
+relation_id = 53
+predecessor_claim_id = "C-1231"
+successor_claim_id = "C-1691"
+relation_kind = "implementation_split"
+transition_event_id = 180
+
+[[relation]]
+relation_id = 54
+predecessor_claim_id = "C-1231"
+successor_claim_id = "C-1692"
+relation_kind = "source_split"
+transition_event_id = 180
+
+[[relation]]
+relation_id = 55
+predecessor_claim_id = "C-1231"
+successor_claim_id = "C-1693"
+relation_kind = "implementation_split"
+transition_event_id = 180
+
+[[relation]]
+relation_id = 56
+predecessor_claim_id = "C-1231"
+successor_claim_id = "C-1694"
+relation_kind = "implementation_split"
+transition_event_id = 180
+
+[[relation]]
+relation_id = 57
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1695"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 58
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1696"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 59
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1697"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 60
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1698"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 61
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1699"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 62
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1700"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 63
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1701"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 64
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1702"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 65
+predecessor_claim_id = "C-1297"
+successor_claim_id = "C-1703"
+relation_kind = "implementation_split"
+transition_event_id = 181
+
+[[relation]]
+relation_id = 66
+predecessor_claim_id = "C-1653"
+successor_claim_id = "C-1704"
+relation_kind = "narrows"
+transition_event_id = 182
+
+[[relation]]
+relation_id = 67
+predecessor_claim_id = "C-1653"
+successor_claim_id = "C-1705"
+relation_kind = "implementation_split"
+transition_event_id = 182
+
+[[relation]]
+relation_id = 68
+predecessor_claim_id = "C-1653"
+successor_claim_id = "C-1706"
+relation_kind = "implementation_split"
+transition_event_id = 182
+
+[[relation]]
+relation_id = 69
+predecessor_claim_id = "C-1653"
+successor_claim_id = "C-1707"
+relation_kind = "implementation_split"
+transition_event_id = 182
+
+[[relation]]
+relation_id = 70
+predecessor_claim_id = "C-1653"
+successor_claim_id = "C-1708"
+relation_kind = "implementation_split"
+transition_event_id = 182
+
+[[relation]]
+relation_id = 71
+predecessor_claim_id = "C-1653"
+successor_claim_id = "C-1709"
+relation_kind = "source_split"
+transition_event_id = 182
+
+[[relation]]
+relation_id = 72
+predecessor_claim_id = "C-840"
+successor_claim_id = "C-1710"
+relation_kind = "implementation_split"
+transition_event_id = 183
+
+[[relation]]
+relation_id = 73
+predecessor_claim_id = "C-840"
+successor_claim_id = "C-1711"
+relation_kind = "implementation_split"
+transition_event_id = 183
+
+[[relation]]
+relation_id = 74
+predecessor_claim_id = "C-840"
+successor_claim_id = "C-1712"
+relation_kind = "source_split"
+transition_event_id = 183
+
+[[relation]]
+relation_id = 75
+predecessor_claim_id = "C-840"
+successor_claim_id = "C-1713"
+relation_kind = "source_split"
+transition_event_id = 183
+
+[[relation]]
+relation_id = 76
+predecessor_claim_id = "C-840"
+successor_claim_id = "C-1714"
+relation_kind = "source_split"
+transition_event_id = 183
+
+[[relation]]
+relation_id = 77
+predecessor_claim_id = "C-1291"
+successor_claim_id = "C-1715"
+relation_kind = "implementation_split"
+transition_event_id = 184
+
+[[relation]]
+relation_id = 78
+predecessor_claim_id = "C-1291"
+successor_claim_id = "C-1716"
+relation_kind = "implementation_split"
+transition_event_id = 184
+
+[[relation]]
+relation_id = 79
+predecessor_claim_id = "C-1291"
+successor_claim_id = "C-1717"
+relation_kind = "implementation_split"
+transition_event_id = 184
+
+[[relation]]
+relation_id = 80
+predecessor_claim_id = "C-1291"
+successor_claim_id = "C-1718"
+relation_kind = "narrows"
+transition_event_id = 184
+
+[[relation]]
+relation_id = 81
+predecessor_claim_id = "C-1532"
+successor_claim_id = "C-1719"
+relation_kind = "source_split"
+transition_event_id = 185
+
+[[relation]]
+relation_id = 82
+predecessor_claim_id = "C-1532"
+successor_claim_id = "C-1720"
+relation_kind = "source_split"
+transition_event_id = 185
+
+[[relation]]
+relation_id = 83
+predecessor_claim_id = "C-1532"
+successor_claim_id = "C-1721"
+relation_kind = "narrows"
+transition_event_id = 185
+
+[[relation]]
+relation_id = 84
+predecessor_claim_id = "C-1532"
+successor_claim_id = "C-1722"
+relation_kind = "source_split"
+transition_event_id = 185
+
+[[relation]]
+relation_id = 85
+predecessor_claim_id = "C-990"
+successor_claim_id = "C-1723"
+relation_kind = "implementation_split"
+transition_event_id = 186
+
+[[relation]]
+relation_id = 86
+predecessor_claim_id = "C-990"
+successor_claim_id = "C-1724"
+relation_kind = "implementation_split"
+transition_event_id = 186
+
+[[relation]]
+relation_id = 87
+predecessor_claim_id = "C-990"
+successor_claim_id = "C-1725"
+relation_kind = "implementation_split"
+transition_event_id = 186
+
+[[relation]]
+relation_id = 88
+predecessor_claim_id = "C-990"
+successor_claim_id = "C-1726"
+relation_kind = "implementation_split"
+transition_event_id = 186
+
+[[relation]]
+relation_id = 89
+predecessor_claim_id = "C-990"
+successor_claim_id = "C-1727"
+relation_kind = "implementation_split"
+transition_event_id = 186
+
+[[relation]]
+relation_id = 90
+predecessor_claim_id = "C-990"
+successor_claim_id = "C-1728"
+relation_kind = "implementation_split"
+transition_event_id = 186

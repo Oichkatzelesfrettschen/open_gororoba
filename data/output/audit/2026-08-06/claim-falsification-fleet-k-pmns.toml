@@ -1,0 +1,239 @@
+# Fleet return: block K_PMNS, 5 claims. HTML entities restored to ASCII.
+# Orchestrator spot-check: the NuFit60 struct literals at
+# crates/algebra_experimental/src/experimental_predictions.rs:118-163 were read
+# directly and match the agent's report exactly, including the doc comment
+# "Canonical values for normal ordering with SK atmospheric data" and the
+# delta_cp three_sigma band [0.0, 360.0].
+
+[block]
+id = "K_PMNS"
+claim_count = 5
+agent_note = "Two unrelated halves. The three PMNS/NuFit claims all rest on a hard-coded NuFit60::normal_ordering() struct whose contents are NOT NuFit 6.0: angle best-fits mix NuFit 5.0 and 5.2, mass splittings are verbatim PDG 2021/2022, and the delta_CP 1-sigma window [138,258] matches no published NuFit interval in any release v5.0 through v6.1. Against real NuFit 6.0 and current 6.1, two of three are refuted. The two Moreno claims are faithful transcriptions verified character-by-character against the arXiv LaTeX source; defects are two omitted sub-parts and one Remark-attributed-to-Proposition."
+
+[[finding]]
+claim_id = "C-1530"
+decidability = "external"
+falsifier = "False if any of the three scorecard angles (theta_12=33.36, theta_13=8.54, theta_23=48.99 deg, from scorecard OBS-010/011/012) falls outside the published NuFit 6.0 1-sigma interval under normal ordering, in the variant the code names (with SK)."
+check_performed = "Fetched v60.tbl-parameters.pdf (NuFIT 6.0, JHEP 12 (2024) 216, arXiv:2410.05380) and v61.tbl-parameters.pdf from nu-fit.org; pdftotext -layout; compared against scorecard OBS-010/011/012 and the NuFit60 literals at experimental_predictions.rs:117-163."
+observed = "NuFit 6.0 NO with SK (IC24): theta_12 = 33.68 +0.73/-0.70, theta_23 = 43.3 +1.0/-0.8, theta_13 = 8.56 +/-0.11. NuFit 6.0 NO without SK (IC19): theta_23 = 48.5 +0.7/-0.9. NuFit 6.1 NO with SK: theta_12 = 33.76 +0.42/-0.41, theta_23 = 43.29 +0.96/-0.79, theta_13 = 8.62 +/-0.11; without SK theta_23 = 43.27. The repo's 'NuFit 6.0' table instead holds theta_12=33.41 (= NuFit 5.2 best fit exactly), theta_13=8.54 (= NuFit 5.2/5.3 without-SK), theta_23=49.0 (= NuFit 5.0 without-SK), delta_CP=195 (= NuFit 5.0 without-SK). Scored against real NuFit 6.0 with SK: theta_12 pull -0.457 (inside), theta_13 pull -0.182 (inside), theta_23 pull +5.69 sigma, 1-sigma [42.50, 44.30], observed 48.99 -- FAR OUTSIDE (inside 3-sigma 41.3->49.9 only). Against NuFit 6.1 with SK theta_23 pull +5.94. Against NuFit 6.0 WITHOUT SK all three inside 1-sigma (theta_23 pull +0.70). At NuFit 6.1 the claim fails in BOTH SK variants because 6.1 puts theta_23 in the first octant regardless. Razor margin: theta_12=33.36 sits inside NuFit 6.1's [33.35, 34.18] by 0.01 deg."
+verdict = "refuted"
+verdict_reason = "The code doc comment explicitly names 'normal ordering (NO), with SK atmospheric', and in exactly that variant theta_23 = 48.99 lies OUTSIDE the NuFit 6.0-with-SK 1-sigma interval [42.50, 44.30] as the claim asserts it lies inside. Not variant ambiguity -- the variant is stated and it is the one that fails. SCOPE CORRECTION (orchestrator, post-write review): the pull value 5.69 is a LOCAL-GAUSSIAN pull against the upper 1-sigma half-width and MUST NOT be read as a confidence level. The delta-chi2 likelihood is visibly non-Gaussian, and 48.99 REMAINS INSIDE the published 3-sigma interval [41.3, 49.9] at both 6.0 and 6.1 with SK. The defensible statement is 'outside the claimed 1-sigma region, inside the published 3-sigma region', not '5.7 sigma excluded'. Survives only under NuFit 6.0 without SK; at the current release fails under both."
+recommended_status = "Refuted"
+verification_rule = "Replace the NuFit60 literal table with the published NuFit 6.1 IC24 (with SK) NO column from v61.tbl-parameters.pdf and re-run cargo test -p algebra_experimental --lib test_mixing_angles_in_1sigma; the theta_23 assertion must fail. Durable locator: v61.tbl-parameters.pdf theta_23 row, NO with-SK column."
+source_url = "http://www.nu-fit.org/sites/default/files/v60.tbl-parameters.pdf"
+source_sha256 = "d39bb902b607bb27d4271646aefb48d073005eb4c764d536e50b1bab9238c658"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/nufit_2024_v60_parameter_ranges_nu_fit_org_sites_default_files.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1531"
+decidability = "external"
+falsifier = "False if (a) CP-A = 165 deg lies outside published NuFit 6.0 1-sigma for delta_CP under NO, or (b) the quoted 1-sigma range [138,258] is not a published NuFit 6.0 interval, or (c) CP-B = 93 deg lies outside published NuFit 6.0 3-sigma (the claim asserts 3-sigma = full circle), or (d) the stated '2025 NuFit best-fit is 195 deg' is not the best fit of any 2025 NuFit release."
+check_performed = "Same two NuFit tables plus v5.0, v5.1, v5.2, v5.3 fetched from nu-fit.org to search the full release history for the quoted interval. Arithmetic on the quoted pulls reproduced against the repo's constants."
+observed = "delta_CP, NO: NuFit 6.0 with SK = 212 +26/-41, 1-sigma [171,238], 3-sigma 124->364. NuFit 6.0 without SK = 177 +19/-20, 1-sigma [157,196], 3-sigma 96->422. NuFit 6.1 with SK = 212 +26/-36, 1-sigma [176,238], 3-sigma 125->365. NuFit 6.1 without SK = 207 +23/-20, 1-sigma [187,230], 3-sigma 114->405. Historical best fits: v5.3 = 197/232; v5.2 = 197/232; v5.1 = 194/230; v5.0 = 195/197. (a) CP-A = 165 is OUTSIDE NuFit 6.0 with-SK 1-sigma (below 171); pull -1.146. Inside 1-sigma ONLY for 6.0 without SK. At 6.1 outside in both variants. (b) [138,258] appears as a 1-sigma interval in NONE of v5.0/5.1/5.2/5.3/6.0/6.1; it is the repo's own construction, 195-57 to 195+63. (c) NuFit 6.0/6.1 3-sigma is NOT the full circle: 240 deg wide with SK, 326 without. CP-B = 93 is OUTSIDE 3-sigma in ALL FOUR variants -- by 31 deg at 6.0-with-SK, 32 at 6.1-with-SK, 21 at 6.1-without-SK, 3 deg at 6.0-without-SK (lower edge 96). (d) The 2025 release best fit is 212 (with SK) / 207 (without), not 195; 195 is NuFit 5.0 (2020) without-SK. Quoted pulls: -0.526 = (165-195)/57 and -1.789 = (93-195)/57, computed against the repo's constructed contour, against NEITHER ordering NOR either SK variant of any published release. Claimed 1-sigma window spans 120 deg = 33.3 percent of the circle; real NuFit 6.0 with-SK spans 67 deg = 18.6 percent."
+verdict = "refuted"
+verdict_reason = "Three of four assertions fail against the published source: CP-A outside 1-sigma at 6.0-with-SK and both 6.1 variants; CP-B at 93 outside 3-sigma in every NuFit 6.0 and 6.1 analysis variant tested by this campaign (four variants); NuFit 1.0 through 5.3 were NOT replayed; and '2025 best-fit 195' is a 2020 number. The self-inflated window made the CP-B sub-test vacuous as written, yet against the real contour CP-B fails -- the inflation HID a genuine exclusion rather than manufacturing one."
+recommended_status = "Refuted"
+verification_rule = "Assert CP-A=165 and CP-B=93 against the delta_CP row of v61.tbl-parameters.pdf NO columns (both SK variants) rather than the NuFit60 literal; test_cp_a_in_nufit_one_sigma must fail and test_cp_b_outside_one_sigma's in_three_sigma assertion must fail."
+source_url = "http://www.nu-fit.org/sites/default/files/v61.tbl-parameters.pdf"
+source_sha256 = "a22a4538894dd911f0988831c8a857fc3d3b405806e0ccaa25a4b5d3458bcc61"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/nufit_2025_v61_parameter_ranges_nu_fit_org_sites_default_files.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1532"
+decidability = "external"
+falsifier = "False if |r_ours - r_NuFit| / r_NuFit >= 3 percent, where r_ours = 0.0304 (scorecard OBS-005) and r_NuFit = dm21_sq / dm31_sq from published NuFit 6.0 NO best fits."
+check_performed = "Ratio computed from the fetched v60/v61 tables; the repo's dm21_sq/dm31_sq literals cross-checked against PDG Summary Tables for leptons, 2020 through 2024."
+observed = "r_ours = 0.0304. NuFit 6.0 NO with SK: 7.49e-5/2.513e-3 = 0.029805 -> +2.00 percent. 6.0 without SK: 7.49e-5/2.534e-3 = 0.029558 -> +2.85 percent. 6.1 with SK: 0.030016 -> +1.28 percent. 6.1 without SK: 0.029897 -> +1.68 percent. All four below the 3 percent threshold. Separately: the repo's nufit_r_nu = 7.53e-5/2.453e-3 = 0.030697, numerically identical to scorecard OBS-005's pdg_value = 0.0307; and 7.53 +/- 0.18 and 2.453 +/- 0.033 are character-for-character the PDG 2021 and PDG 2022 Summary Table values for Delta_m^2_21 and Delta_m^2_32 (Normal order). The field is named dm31_sq but holds PDG's Delta_m^2_32. Correcting the convention (Delta_m^2_31 = Delta_m^2_32 + Delta_m^2_21 = 2.5283e-3) gives r = 0.029783, +2.07 percent, still inside 3 percent."
+verdict = "partially_confirmed"
+verdict_reason = "The proposition as stated is TRUE against real NuFit 6.0 (2.00 percent with SK, 2.85 without) and against 6.1, so it survives the update. But the evidence path does not: the code's 'NuFit 6.0 baseline' is provably the PDG 2021/2022 value wearing a NuFit label, under a field name that misstates which splitting it holds. The test passes for the wrong reason, and the without-SK margin of 2.85 against a 3 percent threshold means the correct baseline nearly fails."
+recommended_status = "Provisional"
+verification_rule = "Rebuild nufit_r_nu from the Delta_m^2_21 and Delta_m^2_3l rows of v61.tbl-parameters.pdf (NO, with SK) with an explicit Delta_m^2_31 vs Delta_m^2_32 convention note, then run test_juno_r_nu_within_three_percent."
+source_url = "http://www.nu-fit.org/sites/default/files/v60.tbl-parameters.pdf"
+source_sha256 = "d39bb902b607bb27d4271646aefb48d073005eb4c764d536e50b1bab9238c658"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/nufit_2024_v60_parameter_ranges_nu_fit_org_sites_default_files.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1538"
+decidability = "external"
+falsifier = "False if the four-way equivalence, the conjugate placement (x_bar*y vs x*y_bar), the trace hypothesis, or the index bound n >= 4 differs from Corollary 1.6 as published."
+check_performed = "Fetched the arXiv e-print LaTeX source of q-alg/9710013 (wget https://arxiv.org/e-print/q-alg/9710013, single gzipped thezero.tex) and read Corollary 1.6 verbatim at lines 341-368. Cross-checked against the local PDF at ~/Documents/Projects/CayleyDickson/tier1_core_cd_algebra/zero_divisors_geometry/moreno_1997_q-alg9710013_zero_divisors_cd_over_reals.pdf (sha256 69c07b17e648ee079605d464902cd917c0d4e05857db35fb119285d2fc83b71b). The LaTeX was NECESSARY because pdftotext drops the overbars, which is precisely where a dropped-conjugate error would hide. Also read proofs/theories/C1538_MorZDSymmetry.v in full."
+observed = "Published: 'Corollary 1.6. (Elementary facts on zero divisors). For x and y in A_n  n >= 4. 1. xy=0 <=> yx=0 <=> conj(x)y=0 <=> x conj(y)=0. 2. If x != 0 and xy = 0 then t(y)=0. 3. If y != 0 and xy = 0 then t(x)=0. 4. x^2 = 0 if and only if x = 0.' The claim's parts 1 and 2 are exact, including term order and each conjugate's placement. Index bound n >= 4 exact. Two deviations, both weakenings: the claim omits part 3 entirely, and renders part 4 as one-way 'x^2=0 implies x=0' where the paper states an iff. Formalization: C1538_MorZDSymmetry.v proves zd_symmetry : conj x = neg x -> x <> zero -> (mul x y = zero <-> mul y x = zero), i.e. only the xy=0 <=> yx=0 fragment, under two hypotheses Moreno does not need (x purely imaginary, x nonzero); the conjugate leg is a one-directional lemma zd_conj_vanishes. The file's header states this narrowing explicitly and honestly. Parts 3 and 4 are not formalized there."
+verdict = "confirmed"
+verdict_reason = "Character-by-character faithful transcription of Corollary 1.6 parts 1, 2 and (weakened to one direction) 4, correct index bound, no dropped or displaced conjugate. The only defects are the omission of part 3 and the iff-to-implication weakening, neither of which makes the claim as written false."
+recommended_status = "Theoretical"
+verification_rule = "Source locator: arXiv q-alg/9710013 e-print thezero.tex lines 341-368 (Corollary 1.6), sha256 ad9bf59860da8079a640648b7ac8bc2425042a746e0bb2711025ed46a6d3c928. Formal locator: proofs/theories/C1538_MorZDSymmetry.v theorems zd_symmetry, zd_conj_vanishes, C1538_full -- record as a PARTIAL formalization edge, not a full one."
+source_url = "https://arxiv.org/e-print/q-alg/9710013"
+source_sha256 = "ad9bf59860da8079a640648b7ac8bc2425042a746e0bb2711025ed46a6d3c928"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/moreno_1997_zero_divisors_cd_arxiv_e_print_q_alg_9710013.tex"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1539"
+decidability = "external"
+falsifier = "False if Proposition 1.7 is stated for a domain other than the trace-zero subspace, if it covers only one of L_x and R_x, if the form is not the Euclidean inner product, or if Ker(L_x) = Ker(R_x) is not part of the published statement."
+check_performed = "Same arXiv LaTeX source; read Proposition 1.7 and proof verbatim at lines 390-407, L_x/R_x definitions at 383-389, circ-A_n notation at 379, the Euclidean inner product at 169-173, and Lemma 1.3 (the adjoint identities the proof uses) at 272-291. Read proofs/theories/C1539_MorSkewSymm.v in full and checked its two adjoint axioms against Lemma 1.3."
+observed = "Published: 'circ-A_n = {x in A_n | t(x) = 0}'; 'L_x, R_x : A_n -> A_n by L_x(y) = xy and R_x(y) = yx for all y in A_n'; 'Proposition 1.7. For x in circ-A_n  L_x and R_x are skew-symmetric.' The inner product at line 173 is <x,y> = (1/2)(x conj(y) + y conj(x)), introduced at 169 as 'The Euclidian norm and inner product', so the claim's 'with respect to the Euclidean inner product' is the paper's own wording, not an inference. Domain, both operators, and conclusion match exactly. ONE deviation: 'Ker(L_x) = Ker(R_x)' is NOT part of Proposition 1.7. It appears in the unnumbered Remark immediately following ('x in circ-A_n is a zero divisor if and only if {0} != Ker L_x and {0} != Ker R_x also notice that Ker L_x = Ker R_x'). The claim attributes a Remark to a Proposition. Formalization: C1539_MorSkewSymm.v axiomatizes Lemma 1.3 correctly -- inner_adj_left : <xy,z> = <y, conj(x) z> and inner_adj_right : <xy,z> = <x, z conj(y)> are exact specializations of the published <x,yz> = <x conj(z), y> = <conj(y) x, z>. Its l_x_skew_symm and r_x_skew_symm reproduce the paper's four-step proof line for line. The header states that Ker(L_x) = Ker(R_x) is NOT closed there (gap (f), Im(L_x) = Im(R_x) requires CD structure beyond the abstract axioms); that part is proved only in C1538_MorZDSymmetry.v, and there only with the extra hypothesis x <> zero which Moreno's Remark does not carry."
+verdict = "confirmed"
+verdict_reason = "Proposition 1.7 transcribed exactly, including trace-zero domain, both operators, and the paper's own 'Euclidean inner product' wording. The single defect is provenance, not content: Ker(L_x) = Ker(R_x) belongs to the following Remark, and it is the one part the Rocq development does not establish at the claimed generality."
+recommended_status = "Theoretical"
+verification_rule = "Source locator: thezero.tex lines 390-407 (Proposition 1.7) and 408-412 (the Remark carrying Ker L_x = Ker R_x), sha256 ad9bf59860da8079a640648b7ac8bc2425042a746e0bb2711025ed46a6d3c928. Formal locator: proofs/theories/C1539_MorSkewSymm.v theorems l_x_skew_symm and r_x_skew_symm (full match); the Ker equality edge belongs to C1538_MorZDSymmetry.v and is hypothesis-narrowed."
+source_url = "https://arxiv.org/e-print/q-alg/9710013"
+source_sha256 = "ad9bf59860da8079a640648b7ac8bc2425042a746e0bb2711025ed46a6d3c928"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/moreno_1997_zero_divisors_cd_arxiv_e_print_q_alg_9710013.tex"
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+All three PMNS claims share one root object: the NuFit60::normal_ordering()
+literal at crates/algebra_experimental/src/experimental_predictions.rs:117-163,
+labelled 'NuFit 6.0 (2024) global oscillation fit -- normal ordering (NO), with
+SK atmospheric. Source: www.nu-fit.org, NuFit 6.0 release.' Every field is
+traceable, and none of them to NuFit 6.0:
+
+  theta_12 = 33.41             = NuFit 5.2 (2022) NO best fit, exactly
+  theta_13 = 8.54              = NuFit 5.2 / 5.3 NO without-SK best fit
+  theta_23 = 49.0              = NuFit 5.0 (2020) NO without-SK best fit
+  delta_CP = 195               = NuFit 5.0 (2020) NO without-SK best fit
+  dm21_sq  = 7.53e-5 +/-0.18   = PDG 2021/2022 Summary Table, exactly
+  dm31_sq  = 2.453e-3 +/-0.033 = PDG 2021/2022 Delta_m^2_32 (NO), exactly
+  delta_CP 1-sigma [138,258]   = matches NO published NuFit 1-sigma interval in
+                                 v5.0, v5.1, v5.2, v5.3, v6.0 or v6.1
+  delta_CP 3-sigma [0,360]     = no NuFit release has a full-circle 3-sigma;
+                                 v6.0 gives 124->364 (w/ SK), 96->422 (w/o SK)
+
+A four-source composite (two NuFit releases four years apart, two SK variants,
+and the PDG listing) published under a single 2024 label. The mislabel is the
+shared hidden assumption of the whole block and decides all three claims at
+once. It also explains the delta_CP arithmetic: pull -0.526 is exactly
+(165-195)/57 and -1.789 is exactly (93-195)/57, computed against the constructed
+contour -- against neither mass ordering nor either SK variant of any real
+release.
+
+No single NuFit variant makes the block coherent. There is exactly ONE variant
+-- NuFit 6.0 without SK -- under which C-1530's three angles AND C-1531's CP-A
+all land inside 1-sigma, and it is not the variant the code names. At that same
+variant C-1532 sits at 2.85 percent against its 3 percent threshold, the
+tightest of any. At NuFit 6.1 (2025) C-1530 and C-1531 fail under both SK
+variants because 6.1 places theta_23 firmly in the first octant (43.3) whether
+or not SK is included. Registry staleness is real and COMPOUND: the claims were
+stale relative to the release they cite on the day they were written
+(2026-03-23, sixteen months after NuFit 6.0), and are now additionally stale
+relative to 6.1.
+
+C-1531 contradicts the repo's own scorecard. registry/scorecard.toml OBS-017,
+amended 2026-03-22, states 'Framework prediction is genuinely falsified on
+delta_CP' and 'Sign systematics (8 combos) confirm NO route to delta=195'.
+C-1531, dated 2026-03-23, asserts CP-A is inside NuFit 1-sigma. That
+contradiction needed no external source at all and sat one day apart in the same
+registry for over four months.
+
+An inversion worth naming: the suspicion that a 120-degree window makes C-1531
+near-unfalsifiable is correct as far as it goes -- 120 deg is 33.3 percent of
+the circle against the 67 deg (18.6 percent) NuFit 6.0 with-SK reality, and the
+'3-sigma = [0,360]' sub-test is vacuous by construction. But the inflated window
+did not manufacture a pass. It CONCEALED a real exclusion: CP-B at 93 deg lies
+outside the published NuFit 3-sigma range in all four release/variant
+combinations checked. The framework's CP-B prediction is excluded at more than
+3 sigma by existing global data, today, without waiting for DUNE or HyperK.
+That is the strongest result in this block and the claim as written asserts the
+opposite.
+
+SCOPE LIMIT: these refutations are of the OVERLAY -- the NuFit comparison layer
+-- not of the underlying fit values. scorecard OBS-010/011/012 carry claim_id
+C-1492 and OBS-017 carries C-1494/C-1498; those claims are outside this block
+and are not touched. What is refuted is the assertion that the scorecard values
+sit inside NuFit 6.0 contours, not the derivation that produced the values.
+
+The two Moreno claims are unrelated and both survive. Their shared pattern is
+the mirror image of the PMNS half: the transcription is exact where it matters
+(conjugate placement, index bound, operator side, domain, form) and the defects
+are all UNDER-statement -- a dropped sub-part, an iff weakened to an
+implication, a Remark cited as a Proposition. The 2026-05-28 remediation and the
+feedback_moreno_plan_corrections note appear to have done their work: no
+transcription trap of the kind that memory warned about survives. What the Rocq
+files do NOT do is prove the claims at the stated generality, and both files say
+so in their own headers.
+"""
+new_claims_proposed = """
+1. The delta_CP value 93 deg (CP-B, the framework's maximal-CP extraction) is
+   excluded at more than 3 sigma by the NuFit global fit in every published
+   release/variant combination from NuFit 6.0 (2024) onward: below the 3-sigma
+   lower edge of 124 (6.0 with SK), 96 (6.0 without SK), 125 (6.1 with SK) and
+   114 (6.1 without SK). FALSIFIER: a NuFit release whose NO 3-sigma delta_CP
+   range includes 93 deg, or a corrected framework extraction moving CP-B above
+   the current lower edge. The 6.0-without-SK margin is only 3 deg, so a modest
+   future shift could reopen that one variant.
+
+2. WITHDRAWN 2026-08-06 (orchestrator post-write review). The withdrawn text
+   read: "The scorecard theta_23 = 48.99 deg is excluded at 5.7 sigma (with SK)
+   by NuFit 6.0 and 5.9 sigma by 6.1, because both place theta_23 in the first
+   octant (43.3). The framework's second-octant theta_23 is a FALSIFIED
+   prediction against current global data, not merely an untested one."
+   It is withdrawn because 5.69 and 5.9 are LOCAL-GAUSSIAN pulls formed against
+   the upper 1-sigma half-width of a visibly non-Gaussian delta-chi2 profile.
+   They are not confidence levels and must not be reported as exclusions.
+   48.99 deg lies INSIDE the published 3-sigma interval at both releases
+   ([41.3, 49.9] at 6.0 with SK; [41.27, 49.86] at 6.1 with SK).
+   REPLACEMENT PROPOSITION: theta_23 = 48.99 deg lies outside the 1-sigma
+   interval that the scorecard claims contains it, under NuFit 6.0 and 6.1 both
+   with and without SK, while remaining inside the published 3-sigma interval of
+   each. FALSIFIER: a NuFit release whose NO 1-sigma theta_23 interval contains
+   48.99 deg. The octant preference itself is unstable across releases and
+   sensitive to SK inclusion, so no exclusion strength attaches to it.
+
+3. The NuFit60 struct is a four-source composite (NuFit 5.0, NuFit 5.2, PDG
+   2021/2022) mislabelled as a single NuFit 6.0 with-SK NO column, and its
+   dm31_sq field holds PDG's Delta_m^2_32 rather than Delta_m^2_31. FALSIFIER:
+   any single published NuFit release column reproducing all six central values
+   and both sigma bands simultaneously. Six releases checked; none does.
+
+4. proofs/theories/C1538_MorZDSymmetry.v and C1539_MorSkewSymm.v establish
+   strictly weaker theorems than C-1538 and C-1539 assert -- the former needs x
+   purely imaginary and nonzero where Moreno needs neither, and neither closes
+   Ker(L_x) = Ker(R_x) at Moreno's generality. FALSIFIER: a Rocq theorem
+   discharging Corollary 1.6 part 1 with no hypotheses on x, or the Remark's
+   kernel equality for all x in circ-A_n including x = 0.
+"""
+gaps = """
+NOT RUN: cargo test -p algebra_experimental --lib never completed. Two attempts
+under CARGO_TARGET_DIR=.cache/gate-target (550 s and 500 s budgets) were killed
+by timeout while still in the dependency build, so 'these four named tests pass
+green against wrong constants' is an inference from reading the assertions in
+source (lines 541-621) rather than an observation. Requires a warm target dir or
+a longer budget. Affects no verdict -- all five rest on published-source
+comparison, and the constants the tests assert against were read from the source
+literals directly.
+
+NOT RUN: whether [138, 258] is some NuFit release's 2-SIGMA interval. The
+nu-fit.org tables publish only bfp +/- 1 sigma and the 3-sigma range; the
+2-sigma contour appears only in the chi-squared projection figures, which were
+not digitized. The finding stands regardless: the claim calls it a 1-sigma range
+and it is not one.
+
+NOT DECIDED: which edit introduced the mislabel and when. git log archaeology on
+experimental_predictions.rs was not performed; the composite provenance is
+established by value matching against six NuFit releases and five PDG editions,
+not by commit history. One git log -p away.
+
+RESOLVED 2026-08-06 (orchestrator post-write review), superseding the entry that
+read "NOT CHECKED: whether other claims cite the same NuFit60 struct or the same
+[138, 258] window." The blast radius was measured. Exactly three claims in
+registry/claims.toml mention NuFit -- C-1530, C-1531, C-1532 -- and all three are
+inside this block and adjudicated here. The [138, 258] window appears in one
+claim only (C-1531). The NuFit60 struct is declared and consumed in a single
+file, crates/algebra_experimental/src/experimental_predictions.rs, with six
+NuFit60:: call sites and no consumer outside that crate. The mislabelled constant
+therefore has no reach beyond the claims already transitioned by this block.
+
+DEPOSITS: three artifacts in data/papers/intake/2026_08_06_claim_falsification/
+pdf_success/. Two PDFs (NuFit v6.0, v6.1 parameter tables). The third is a .tex,
+not a PDF, deposited in the same directory because arXiv serves q-alg/9710013 as
+a bare gzipped LaTeX source and the LaTeX -- not the rendered PDF -- is what
+makes the character-by-character conjugate check possible, since pdftotext
+silently drops every overbar in Corollary 1.6. The Moreno PDF already exists
+outside the repo and was not duplicated in. No registry file written, nothing
+committed or staged.
+"""

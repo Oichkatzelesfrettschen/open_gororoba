@@ -1,0 +1,248 @@
+# Fleet return: block I_QGP, 7 claims. HTML entities restored to ASCII.
+# Orchestrator spot-checks, all confirmed directly:
+#   - alice_pbpb_5020_npart() and alice_pbpb_5020_mc_glauber() carry identical
+#     N_part values (382.8, 329.7, 260.5, 186.4, 128.9, 85.0, 52.8).
+#   - the mc_glauber eccentricity column is 0.029 at 0-5%.
+#   - competing_models.rs:158 sets n_params: 5 for CUJET, and the module doc at
+#     line 4 says "~5 free parameters" -- a tilde, an estimate not a source count.
+
+[block]
+id = "I_QGP"
+claim_count = 7
+agent_note = "Decided by four runs of the existing arleo-falmagne-scaling binary plus four fetched primary sources. The briefing called this block uniformly external; it is not -- only C-840, C-841, C-847 turn on a publication, while C-936/937/938/939 are internal claims about this repo's fits. Five of seven refute, three of them on the repo's OWN printed output: glauber-only prints FAIL for six of nine centrality bins (C-840), cross-validate prints UNIVERSALITY BREAKS at z = 27.9 (C-936), and bic-compare ranks CUJET3.0 ABOVE Arleo-Falmagne by delta-BIC 1207 (C-938). Common root cause: the Arleo-Falmagne power-law R_AA ansatz does not fit ALICE 5.02 TeV data at published precision."
+
+[[finding]]
+claim_id = "C-840"
+decidability = "external"
+falsifier = "False if any centrality bin's optical-Glauber N_part deviates from the ALICE PLB 772 (2017) published value by >= 5 percent, or if PLB 772 contains no per-centrality N_part table to compare against."
+check_performed = "Ran .cache/gate-target/release/arleo-falmagne-scaling glauber-only. Fetched arXiv:1612.08966v2 (ALICE, PLB 772 (2017) 567); pdftotext -layout; grepped for Npart and for the nine hardcoded values. Same for arXiv:1802.09145. Read data_tables.rs:32-89 and :146-181."
+observed = "Computed vs reference, Diff percent, Pass: 0-5% 369.2 vs 382.8 = 3.6 OK; 5-10% 312.1 vs 329.7 = 5.4 FAIL; 10-20% 252.8 vs 260.5 = 3.0 OK; 20-30% 191.9 vs 186.4 = 3.0 OK; 30-40% 144.4 vs 128.9 = 12.0 FAIL; 40-50% 108.1 vs 85.0 = 27.1 FAIL; 50-60% 76.0 vs 52.8 = 44.0 FAIL; 60-70% 54.0 vs 30.0 = 80.0 FAIL; 70-80% 34.6 vs 15.8 = 118.9 FAIL. Six of nine fail; the binary's own gate prints FAIL for each. Separately, PLB 772 contains NO per-centrality N_part table. The only N_part in the text is 'Npart = 7.3 +/- 0.1' for 80-90%; the mean N_part in Fig. 5 is attributed to a Glauber calculation in refs [10,14], not tabulated. None of the nine values appears in the paper; arXiv:1802.09145 has no such table either. alice_pbpb_5020_npart() and alice_pbpb_5020_mc_glauber() carry byte-identical N_part, so the 'published reference' and the 'MC Glauber alternative' are ONE uncited table."
+verdict = "refuted"
+verdict_reason = "Universally quantified over centrality bins; the repo's own gate prints FAIL for six of nine, up to 118.9 percent at 70-80%. The marginal 5-10% bin at 5.4 percent breaches the threshold the status_note calls OK. Independently, the cited source contains no such table, so the reference side is unsourced."
+recommended_status = "Refuted"
+verification_rule = "cargo run --release -p gororoba_cli_physics --bin arleo-falmagne-scaling -- glauber-only, asserting max |N_part_computed - N_part_ref| / N_part_ref < 0.05 over ALL bins; plus a provenance edge naming the actual source of alice_pbpb_5020_npart() (PLB 772 is not it)."
+source_url = "https://arxiv.org/pdf/1612.08966v2"
+source_sha256 = "7481abc0929e04a71e1f5eb9368d8efa394fb0eef8d61bee4e8b552f5f9d66da"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/alice_2017_charged_particle_pseudorapidity_density_pbpb_5020_plb772_arxiv_1612_08966.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-841"
+decidability = "internal"
+falsifier = "False if the power-law index fitted to the CMS pp 5.02 TeV reference spectrum falls outside 6.0-6.3, or if no such fit exists in the repo and n = 6.1 is an assumed INPUT rather than a fit output."
+check_performed = "Log-log OLS on data/external/hic_raa/cms_pp_5020_spectrum_table7.csv (HEPData 10.17182/hepdata.77101.v2/t7), column 4 vs column 1, over several pT windows. Read epsilon_fit.rs extract_epsilon signature and all call sites in arleo_falmagne_scaling.rs."
+observed = "extract_epsilon(data, n, eps_lo, eps_hi, tol) takes n as an INPUT; every call site passes the literal 6.1. No power-law fit to the pp spectrum exists anywhere in the crate. Independent fit: pT>=5 with no upper cut gives n = 6.415 +/- 0.033 (N=21); pT>=8: 6.479; pT>=10: 6.503; pT>=20: 6.598. Windowed: [3,20] 6.143; [5,20] 6.151; [5,30] 6.191; [5,50] 6.224; [5,100] 6.290; [2,10] 5.755. The spectrum is NOT a pure power law -- the local index rises monotonically across 5.76 to 6.60."
+verdict = "refuted"
+verdict_reason = "The claim asserts a value obtained from a power-law fit the repo never performs; and the fit performed here gives 6.42 at the analysis's own pT > 5 GeV cut, outside 6.0-6.3. The claimed range holds only for windows capped near 100 GeV, which the claim does not name, so it is also underdetermined as stated."
+recommended_status = "Refuted"
+verification_rule = "A binary fitting d2N/dpTdeta ~ pT^-n to data/external/hic_raa/cms_pp_5020_spectrum_table7.csv over an EXPLICITLY named pT window, asserting n in [6.0, 6.3]; the window must become part of the claim text."
+source_url = "https://www.hepdata.net/record/ins1496050"
+source_sha256 = "d72c173cf43e9cefbdf47579ef323075a84726d3eca4b50520624ad643d98632"
+source_path = "data/external/hic_raa/cms_pp_5020_spectrum_table7.csv"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-847"
+decidability = "external"
+falsifier = "False if the ATLAS-jet beta value or its uncertainty does not match the source, or if no ATLAS jet v2 data and no computation producing 1.03 exist in the repo."
+check_performed = "grep for '1.03' and '0.15' across qgp_scaling/src and the driver; find data/ for ATLAS v2 files; read Arleo-Falmagne arXiv:2411.13258 (on disk at data/papers/corpus/) lines 550-590."
+observed = "The paper states verbatim: 'a value beta_jets = 1.03 +/- 0.06 which is consistent with the value extracted from Eq. (4) for light hadrons.' The claim states +/- 0.15. The paper's hadron beta from the SAME v2/eccentricity relation is 'beta = 0.94 +/- 0.04 (fit uncertainties only)'; the density-scaling beta is 1.02 +0.09/-0.06. In the repo: no string '1.03' appears in qgp_scaling or the driver; data/external/ holds ATLAS jet R_AA (10 tables, ins1673184) but NO ATLAS jet v2; v2_relation.rs is fed exclusively by CMS charged-hadron v2 (ins1511868). The paper also footnotes that 0-5% (hadrons) and 0-10% (jets) were EXCLUDED from the v2/e fit because small eccentricity inflates v2/e uncertainties."
+verdict = "refuted"
+verdict_reason = "The uncertainty is mis-transcribed: source says +/- 0.06, claim says +/- 0.15 -- a 2.5x inflation that widens the very consistency band the claim then declares satisfied. The value is a literature quotation, not a repo result (no ATLAS jet v2 data, no code produces it), so 'gives beta_jets = ...' asserts a computation never run."
+recommended_status = "Refuted"
+verification_rule = "Restate as a source-quotation claim with the correct uncertainty (beta_jets = 1.03 +/- 0.06, arXiv:2411.13258 Sec. 4), OR implement fit_v2_relation against ATLAS jet v2 (HEPData ins1967021) plus ATLAS jet R_AA and assert the fitted value; the consistency target must be the paper's hadron v2/e beta = 0.94 +/- 0.04, not 1.02."
+source_url = "https://arxiv.org/abs/2411.13258"
+source_sha256 = "b9f0db61ad9cc06ccabcdcdfb0a8cee407b2e282f1116c4b1658ed376d015b03"
+source_path = "data/papers/corpus/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-936"
+decidability = "internal"
+falsifier = "False if cross-validate reports z >= 2, or if the two extractions are not independent (shared inputs), which voids the 'universality across independent observables' inference regardless of z."
+check_performed = "Ran arleo-falmagne-scaling cross-validate --pt-min 5.0, plus a code-path audit of run_cross_validate and of the Arleo-Falmagne source paper."
+observed = "beta_density = 0.3549 +0.0106/-0.0105 (chi2/ndf = 28.400); beta_azimuthal = 0.0214 +/- 0.0057 (R^2 = -0.9415, chi2/ndf = 0.618); delta_beta = 0.3335; combined_err = 0.0120; z = 27.867; the binary prints 'UNIVERSALITY BREAKS (z >= 2)'. Both extractions also miss the published beta entirely (density 0.355 vs published 1.02; azimuthal 0.021 vs 0.94), and the azimuthal fit's R^2 = -0.94 means the line through the origin describes the points WORSE than their own weighted mean. Structural findings independent of the run: (a) both branches consume the SAME ALICE R_AA tables and the SAME optical-Glauber compute_centrality_bins output, so they are NOT independent observables; (b) the azimuthal branch mis-pairs centralities -- raa_table = (c_lo*20.0) as usize + 1 maps 10-20% v2 to table_3 which is 10-15% R_AA, 20-30% to 20-25%, 30-40% to 30-35%, 40-50% to 40-45%; (c) V2SlopePoint.slope_err is hardcoded 0.01 and never enters fit_through_origin, whose beta_err derives from CMS statistical errors only, omitting the systematic -- the z denominator is too small, BIASING the test toward UNIVERSALITY BREAKS; (d) the run includes 0-5%, which Arleo-Falmagne explicitly exclude; (e) the published hadron v2/e beta is 0.94 +/- 0.04, not the 1.02 the repo compares against."
+verdict = "refuted"
+verdict_reason = "The claim's own threshold fails by a factor of 14: z = 27.9 against a stated z < 2, and the binary itself prints UNIVERSALITY BREAKS. The 'independent observables' premise is separately false -- both branches consume the same ALICE R_AA tables and the same optical-Glauber bin geometry -- so no z-score could have licensed the universality conclusion."
+recommended_status = "Refuted"
+verification_rule = "cargo run --release -p gororoba_cli_physics --bin arleo-falmagne-scaling -- cross-validate --pt-min 5.0, asserting z < 2 AND that the centrality pairing is exact (v2 bin == R_AA bin) AND that CMS systematic uncertainty propagates into beta_azimuthal_err."
+source_url = "https://arxiv.org/abs/2411.13258"
+source_sha256 = "b9f0db61ad9cc06ccabcdcdfb0a8cee407b2e282f1116c4b1658ed376d015b03"
+source_path = "data/papers/corpus/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-937"
+decidability = "internal"
+falsifier = "False if |delta_beta| >= 0.2 between the two eccentricity models, or if the table labelled 'MC Glauber epsilon_2{2}' is not in fact epsilon_2{2}, which voids the stated replacement."
+check_performed = "Ran arleo-falmagne-scaling ecc-compare --pt-min 5.0 and glauber-only. Read data_tables.rs:146-181 and :421-440; read run_ecc_compare; read commit 66d5ef05 which introduced the table."
+observed = "optical Glauber beta = 0.0214 +/- 0.0057 (R^2 = -0.9415); MC eps_2{2} beta = 0.0377 +/- 0.0101 (R^2 = -0.8223); delta_beta = 0.0162; verdict 'ROBUST (threshold 0.2)'. Threshold met by 12x, but both betas are near zero, an order of magnitude below the published 0.94, and BOTH fits have NEGATIVE R^2 -- the agreement is between two failed fits. On the table: the 'MC Glauber' column is 0.029 (0-5%), 0.075, 0.137, 0.202, 0.260, 0.318, 0.378, 0.440, 0.505 (70-80%), while the repo's own optical Glauber gives 0.0710 at 0-5%. MC Glauber epsilon_2{2} is fluctuation-dominated and MUST EXCEED the smooth optical value in central collisions; here it is 2.4x SMALLER -- backwards. The table carries no citation (doc comment reads only 'Published MC Glauber centrality geometry'), commit 66d5ef05 names no source, and its N_part column is byte-identical to alice_pbpb_5020_npart(), whose cited source contains no such table. The C-936 centrality mis-pairing affects both arms identically and largely cancels in delta_beta."
+verdict = "partially_confirmed"
+verdict_reason = "The numerical threshold passes (0.016 < 0.2) and reproduces from the binary. The claim it is taken to support does not: the two betas agree only because both fits collapse toward zero with negative R^2, and the column labelled 'MC Glauber epsilon_2{2}' cannot be epsilon_2{2}, since it falls below the repo's own optical eccentricity at 0-5% where fluctuations must push it above. Robustness of a quantity neither model constrains is not evidence."
+recommended_status = "Closed/Source-Insufficient"
+verification_rule = "ecc-compare --pt-min 5.0 asserting |delta_beta| < 0.2, GATED on a provenance edge citing the publication reporting epsilon_2{2} = 0.029 for 0-5% Pb-Pb 5.02 TeV; absent that citation the comparison is not the one the claim describes."
+source_url = ""
+source_sha256 = ""
+source_path = "crates/qgp_scaling/src/data_tables.rs"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-938"
+decidability = "internal"
+falsifier = "False if BIC(Arleo-Falmagne) >= BIC(CUJET3.0) on the ALICE 0-5% pT > 5 GeV points, or if the comparison is not valid model selection (competing model not refit, different data, different likelihood)."
+check_performed = "Read competing_models.rs in full and run_bic_compare. Independent recomputation of chi2 and BIC = chi2 + k*ln(n) for all three models against the six ALICE 0-5% points with pT >= 5 GeV from data/external/alice_pbpb_raa/table_1.csv, using total_err = sqrt(stat^2 + syst_up^2) exactly as compute_bic does, with the AF epsilon_bar obtained by grid-minimizing chi2 at n = 6.1 over [0.1, 20]. Fetched Xu, Liao, Gyulassy JHEP02(2016)169 (arXiv:1508.00552) to audit the parameter count."
+observed = "REPO RUN verbatim: 'CUJET3.0 Pb-Pb 2.76 TeV 0-5%  k=5  chi2=1200.1  n=6  chi2/n=200.010  excl=0  BIC=1209.0 (dBIC=0.0)'; 'Arleo-Falmagne  k=2  chi2=2412.6  n=6  chi2/n=402.102  excl=0  BIC=2416.2 (dBIC=1207.2)'; 'Frac. Langevin  k=3  chi2=3687.9  n=6  BIC=3693.3 (dBIC=2484.3)'. The binary prints 'Best model: CUJET3.0 ... Evidence strength vs second-best: VERY STRONG (delta-BIC = 1207.2)'. The six points are pT = 5.5, 7.0, 9.0, 11.5, 16.5, 25.0 GeV; all three curves cover them, so n_used = 6, n_excluded = 0 for every model, common data set. Independent recomputation reproduces CUJET (1200.1) and Langevin (3687.9) exactly and finds a BETTER AF optimum than the binary: grid-minimizing gives eps_bar = 3.404, chi2 = 1916.6, whereas the binary's Brent minimizer returns eps_bar = 2.921, chi2 = 2412.6. So the AF fit is not even at its own minimum, and at that minimum it STILL loses to CUJET by 716 in chi2. All model-selection validity conditions except likelihood form fail: CUJET3.0 and Langevin are frozen hardcoded vectors that CANNOT be refit (digitized figure readings), while AF's single parameter is fitted to the very six points it is scored on; the advertised k = 2 (beta, K) is a label, not a count of fitted parameters (one fitted eps_bar plus fixed n = 6.1); and the CUJET curve is Pb-Pb 2.76 TeV scored against 5.02 TeV data. The code PRINTS all of these as CAVEATS, so the invalidity was known when the claim was written. The parameter count is wrong in CUJET's disfavour: the source states 'The sQGMP model depends on two parameters: (1) alpha_c ... and (2) c_m = g*mu_E/mu_M', with alpha_c fixed by one reference datum and c_m scanned over three fixed schemes. k = 2, not 5. Correcting it lowers CUJET's BIC to 1203.7 and widens the margin to 716. The paper also states its predictions are for pT > 10 GeV, so scoring at 5.5, 7.0, 9.0 is outside its validity range -- which penalizes CUJET further, and it still wins."
+verdict = "refuted"
+verdict_reason = "The repo's own binary prints the opposite of the claim: CUJET3.0 attains BIC 1209.0 against Arleo-Falmagne's 2416.2, delta-BIC 1207, which the code itself labels VERY STRONG -- and it does so while carrying a fabricated 5-parameter penalty where the source says 2. The comparison is in addition not valid model selection: the competing model is a frozen digitized curve at the wrong collision energy while AF is fitted to the scored points."
+recommended_status = "Refuted"
+verification_rule = "bic-compare --pt-min 5.0 asserting BIC(Arleo-Falmagne) < BIC(CUJET3.0) AND n_points equal across models AND n_excluded == 0 for all; a valid restatement additionally requires a refittable CUJET3.0 at 5.02 TeV, which digitized curves cannot supply. Corollary regression: assert extract_epsilon reaches the global chi2 minimum (Brent returns eps_bar = 2.921 where 3.404 is better)."
+source_url = "https://arxiv.org/abs/1508.00552"
+source_sha256 = "6c892ea7dd988220ecde94074eff6a48c04d470ca15f3a28312d61386b484624"
+source_path = "data/external/alice_pbpb_raa/table_1.csv"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-939"
+decidability = "internal"
+falsifier = "False if BIC(Arleo-Falmagne) >= BIC(fractional Langevin) on the same ALICE R_AA points, or if the comparison is not valid model selection."
+check_performed = "Same bic-compare run as C-938, cross-checked by independent recomputation using langevin_pbpb_5020_0_10() (pT 2-40 GeV, k = 3) from competing_models.rs:207-221."
+observed = "Arleo-Falmagne k=2, chi2 = 2412.6, n = 6, BIC = 2416.2; Frac. Langevin k=3, chi2 = 3687.9, n = 6, BIC = 3693.3. AF wins by delta-BIC = 1277.1. n_excluded = 0 for both; independent recomputation reproduces the Langevin chi2 to 0.1. But the Langevin curve is a frozen digitized D-MESON prediction for 0-10% centrality, scored against light-charged-hadron data at 0-5%; not refit; and AF is fitted to the scored points. AF's own chi2/n is 402, roughly 20 sigma per point. The same run shows CUJET3.0 beating AF, so 'AF has the lowest BIC' is false even within this three-model comparison."
+verdict = "partially_confirmed"
+verdict_reason = "The numerical ordering reproduces from the binary and is robust (delta-BIC 1277, far beyond digitization uncertainty). The model-selection inference does not follow: the competitor is not refit, targets a different particle species and centrality class, and the winning model has chi2/n = 402."
+recommended_status = "Provisional"
+verification_rule = "bic-compare --pt-min 5.0 asserting BIC(Arleo-Falmagne) < BIC(Frac. Langevin) with equal n_points; the claim text must retain the flavour and centrality mismatch as a stated scope limit, and should state that neither model is refit."
+source_url = "https://arxiv.org/abs/2401.03757"
+source_sha256 = "6c892ea7dd988220ecde94074eff6a48c04d470ca15f3a28312d61386b484624"
+source_path = "data/external/alice_pbpb_raa/table_1.csv"
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+ONE UNCITED NINE-ROW TABLE IS LOAD-BEARING FOR THREE CLAIMS.
+alice_pbpb_5020_npart() and alice_pbpb_5020_mc_glauber() in
+crates/qgp_scaling/src/data_tables.rs carry byte-identical N_part columns
+(382.8, 329.7, 260.5, 186.4, 128.9, 85.0, 52.8, 30.0, 15.8). The first is cited
+to ALICE PLB 772 (2017) and supplies C-840's entire reference side; the second
+supplies C-937's 'MC Glauber' alternative and, through
+a_perp = sigma_NN * N_part^2 / (4 * N_coll), the geometry C-844 already found
+unphysical. PLB 772 (arXiv:1612.08966) contains NO per-centrality N_part table at
+all -- only N_part = 7.3 for 80-90%, with the Glauber calculation attributed to
+refs [10,14]. The introducing commit 66d5ef05 names no source for the 5.02 TeV MC
+Glauber row either. So C-840's 'published values' and C-937's 'independent
+eccentricity model' are the same unsourced numbers, and refuting the provenance
+decides both at once. Falsifier: produce the publication whose table lists all
+nine values including eccentricity 0.029 at 0-5%.
+
+EVERY CLAIM HERE THAT READS AS A VALIDATION IS A COMPARISON AGAINST A FROZEN
+NUMBER. C-841 compares a fit to a value (6.1) that is an input constant, not a
+fit output. C-847 quotes a literature value the repo cannot compute (no ATLAS jet
+v2 on disk) and inflates its uncertainty from +/- 0.06 to +/- 0.15. C-938 and
+C-939 'compare models' against digitized figure readings that cannot be refit,
+while the favoured model is fitted to the very points it is scored on. The shared
+hidden assumption is that a frozen curve or constant can stand in for a model or a
+measurement. It cannot: BIC is only defined over models fitted to a common data
+set, and a consistency band is only a test if it could have failed. The parameter
+counts carry the same defect: CUJET3.0's k is asserted as 5 where the source says
+2, and Arleo-Falmagne's k is asserted as 2 (beta, K) where the curve depends on
+one fitted epsilon_bar plus a fixed n = 6.1. Both errors point the SAME way,
+inflating the competitor's penalty and understating the favoured model's -- and
+C-938 still fails.
+
+C-938 FALSIFIES ITSELF IN ITS OWN FAVOURED DIRECTION, and the repo's own binary
+prints the refutation. On the six common ALICE 0-5% points above 5 GeV, CUJET3.0
+(frozen, wrong collision energy, charged a 5-parameter penalty its source says
+should be 2) reaches BIC 1209.0 against Arleo-Falmagne's 2416.2. The parameter
+penalty is irrelevant against a 1200-unit chi2 gap. The single root cause behind
+C-938, C-842 (Refuted, all per-bin chi2/ndf >> 2), C-844 (Refuted), and C-936 is
+the same: the AF power-law R_AA ansatz does not describe ALICE 5.02 TeV data at
+published precision -- AF's chi2/n here is 402, about 20 sigma per point. Any
+claim of the form 'AF beats X' is therefore measuring how bad X is, and any beta
+extracted from that ansatz is a fit artefact. That is why beta_density comes out
+0.355 and beta_azimuthal 0.021 against a published 1.02 and 0.94. Falsifier: an
+AF fit to any ALICE 5.02 TeV centrality bin reaching chi2/ndf below about 2 with
+published stat-plus-syst errors and no added nuisance parameters.
+
+THE ECCENTRICITY MISLABELLING is decided by the repo's own numbers, not by
+inference. glauber-only reports optical Glauber eccentricity 0.0710 at 0-5%, while
+the table labelled 'MC Glauber epsilon_2{2}' gives 0.029 for the same bin.
+Event-by-event epsilon_2{2} is fluctuation-dominated and must exceed the smooth
+optical value in central collisions; the labelled MC number is 2.4x smaller, so
+the ordering is inverted and the column cannot be epsilon_2{2}. C-937's
+'replacement' therefore compares optical Glauber against a second, smaller,
+uncited smooth-geometry number.
+
+CENTRALITY-PAIRING DEFECT shared by C-847, C-936, C-937:
+raa_table = (c_lo * 20.0) as usize + 1 pairs the 10-20% CMS v2 table with ALICE
+table_3, which is 10-15%, and likewise 20-30% with 20-25%, 30-40% with 30-35%,
+40-50% with 40-45%. The v2 and eccentricity are broad-bin, the R_AA log slope is
+narrow-bin. Cancels in C-937 (both arms share it); does not in C-936.
+
+ARLEO-FALMAGNE'S OWN PAPER CONTRADICTS THE REPO'S USAGE in two unexpected places.
+Their hadron beta from the v2/eccentricity relation is 0.94 +/- 0.04, not the
+1.02 +0.09/-0.06 the repo compares the azimuthal branch against -- 1.02 is the
+density-scaling value, and using it as the azimuthal target CONFLATES the two
+extractions the claim asserts are independent. And they explicitly exclude 0-5%
+(hadrons) and 0-10% (jets) from that fit because small eccentricity inflates
+v2/e uncertainties, while run_cross_validate and run_ecc_compare both include
+0-5%.
+"""
+new_claims_proposed = """
+1. On ALICE Pb-Pb 5.02 TeV 0-5% charged-hadron R_AA restricted to pT > 5 GeV, the
+   digitized CUJET3.0 2.76 TeV prediction attains a lower chi2 (1200) than the
+   BEST-FIT Arleo-Falmagne power-law ansatz (1917) over the identical six points,
+   so the AF ansatz is not the preferred description even before any parameter
+   penalty. Falsifier: an AF fit over the same six points with any (epsilon_bar, n)
+   reaching chi2 < 1200.
+
+2. CUJET3.0 carries two free parameters (alpha_c and c_m), not the five asserted in
+   crates/qgp_scaling/src/competing_models.rs, per Xu-Liao-Gyulassy JHEP02(2016)169
+   Sec. 6. Falsifier: a passage in that paper enumerating five independently varied
+   parameters rather than the stated pair with c_m scanned over three fixed schemes.
+
+3. The reference table alice_pbpb_5020_npart() is not sourced to ALICE PLB 772
+   (2017) 567; that paper tabulates no per-centrality N_part. Falsifier: a page or
+   table number in PLB 772 containing the nine values.
+
+4. The Arleo-Falmagne power-law R_AA ansatz is falsified against ALICE 5.02 TeV
+   data at published precision INDEPENDENTLY of any competitor, at chi2/ndf of
+   order 300 per centrality bin. Falsifier: chi2/ndf below about 2 for any
+   centrality with published stat-plus-syst errors and no additional nuisance
+   parameters.
+
+5. The 5.02 TeV eccentricity column in alice_pbpb_5020_mc_glauber() is not
+   epsilon_2{2}. Falsifier: a published MC Glauber table reporting
+   epsilon_2{2} = 0.029 for 0-5% Pb-Pb at 5.02 TeV.
+"""
+gaps = """
+RUN BINARY PROVENANCE: CLOSED, NO GAP REMAINS. The four subcommands were first run
+against a 2026-05-12 binary, with staleness argued from commit inspection (09a8e0d5
+confines its changes to run_alice's straggling grid; a6831142 changes two doc comments
+and reorders two Cargo.toml keys). THE CLEAN REBUILD FINISHED at 2026-08-06 18:52 after
+43 minutes of lock contention, and all four commands were re-run against it. EVERY
+NUMBER IS IDENTICAL: bic-compare CUJET3.0 BIC 1209.0 / AF 2416.2 / Langevin 3693.3;
+cross-validate beta_density 0.3549, beta_azimuthal 0.0214, z = 27.867, UNIVERSALITY
+BREAKS; ecc-compare delta_beta 0.0162, ROBUST; glauber-only six of nine bins FAIL at
+3.6/5.4/3.0/3.0/12.0/27.1/44.0/80.0/118.9 percent. Every verdict in this block rests on
+a current-source run.
+
+THE TRUE SOURCE OF THE N_part TABLE REMAINS UNIDENTIFIED. The values are close to
+but not equal to the widely circulated ALICE 5.02 TeV Glauber numbers (0-5%: 383.4
+vs 382.8; 5-10%: 331.2 vs 329.7), and retrieval of ALICE-PUBLIC-2018-011 from CDS
+returned HTML rather than a PDF. Deciding this needs the ALICE centrality-
+determination note or the corresponding HEPData record.
+
+DIGITIZATION ACCURACY of the CUJET3.0 and Langevin curves was not audited against
+the source figures (JHEP02(2016)169 Fig. 4; arXiv:2401.03757 Fig. 3). Does not
+affect the C-938 verdict -- a 5 percent reading error cannot close a 716-unit chi2
+gap -- but would be needed before quoting those chi2 values as measurements of
+those models.
+
+BRENT MINIMIZER DEFECT, BLAST RADIUS FOUR CLAIMS. extract_epsilon returns
+eps_bar = 2.921 (chi2 = 2412.6) on the 0-5% pT > 5 GeV points where a grid scan
+finds eps_bar = 3.404 (chi2 = 1916.6). Whether this is a bracketing failure, a
+tolerance issue, or a genuinely multimodal chi2 surface was not diagnosed. It
+affects no verdict here -- both values lose to CUJET3.0 -- but every epsilon_bar in
+this crate comes from that routine, so C-842's per-bin chi2/ndf (758 down to 28),
+C-843's monotonic ordering, and C-844's beta sweep may all rest on non-minimal
+fits. C-842 stays Refuted regardless (28 is far above its threshold of 2).
+"""

@@ -73,3 +73,63 @@ pub fn compute_bivector_chingon_drag(
     // that depends on the sign of the orbital angular momentum.
     drag * v_mag
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// The `k == 0` guard in `compute_bivector_chingon_drag` selects an empty
+    /// set. `e_0` is the multiplicative identity, so the associator
+    /// `[e_i, e_j, e_0]` vanishes identically and the symmetrised sum with it;
+    /// `exhaustive_capped` stores only non-zero sums, so no tuple with `k == 0`
+    /// is ever pushed. The dimensions cover the sedenion level where
+    /// alternativity first fails and the two levels above it.
+    #[test]
+    fn no_alternativity_violation_references_the_identity_axis() {
+        for dim in [16usize, 32, 64] {
+            let avt = AlternativityViolationTensor::new(dim);
+            assert!(
+                !avt.violations.is_empty(),
+                "dim {dim} must violate alternativity"
+            );
+            assert!(
+                avt.violations.iter().all(|&(_, _, k, _, _)| k != 0),
+                "dim {dim} stored a violation on the identity axis"
+            );
+        }
+    }
+
+    /// Consequence of the theorem above, asserted independently of it: the
+    /// accumulator body never executes, so the returned force is the zero
+    /// vector for every input. The arguments below are deliberately generic --
+    /// non-collinear position and velocity, a wind that leaves the relative
+    /// speed well above the early-return threshold, and a coupling of order
+    /// one -- so a non-zero return would signal a real contribution rather
+    /// than a degenerate configuration.
+    #[test]
+    fn bivector_chingon_drag_is_identically_zero() {
+        let avt = AlternativityViolationTensor::new(64);
+        let cases = [
+            (
+                Vector3::new(1.0, 2.0, 3.0),
+                Vector3::new(-4.0, 5.0, 6.0),
+                Vector3::new(0.5, -0.25, 0.75),
+            ),
+            (
+                Vector3::new(-7.0, 0.5, 2.5),
+                Vector3::new(3.0, -1.5, 0.25),
+                Vector3::new(-2.0, 2.0, -2.0),
+            ),
+        ];
+        for (pos, vel, wind) in cases {
+            for alpha in [1.0, 1.0e3, -5.0] {
+                let drag = compute_bivector_chingon_drag(pos, vel, wind, 0.3, alpha, &avt);
+                assert_eq!(
+                    drag,
+                    Vector3::zeros(),
+                    "pos {pos:?} vel {vel:?} wind {wind:?} alpha {alpha} produced a force"
+                );
+            }
+        }
+    }
+}
