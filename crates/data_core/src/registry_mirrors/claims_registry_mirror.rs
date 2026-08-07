@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total claims: 1448
+//! Total claims: 1478
 //!
 //! ## C-001
 //!
@@ -3210,7 +3210,7 @@
 //!
 //! ## C-401
 //!
-//! - Status: `Theoretical`
+//! - Status: `Refuted`
 //! - Last verified: 2026-02-02
 //! - Statement: A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble.
 //! - Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`
@@ -6146,7 +6146,7 @@
 //!
 //! ## C-768
 //!
-//! - Status: `Provisional`
+//! - Status: `Closed/Methodology-Insufficient`
 //! - Last verified: 2026-02-19
 //! - Statement: Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sedenion Zero-Divisor topology.
 //! - Where stated: `crates/lbm_vulkan/src/compute.rs`, `crates/lbm_vulkan/shaders/lbm.comp.glsl`, `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs`
@@ -6562,7 +6562,7 @@
 //!
 //! ## C-820
 //!
-//! - Status: `Verified`
+//! - Status: `Refuted`
 //! - Last verified: 2026-02-19
 //! - Statement: Irreducible photon-graviton amplitude satisfies gauge Ward identity (k_alpha * Pi^{mn,alpha} = 0) to machine precision.
 //! - Where stated: crates/gr_core/src/photon_graviton/irreducible.rs (irreducible_ward_check), crates/gr_core/src/photon_graviton/ward.rs
@@ -6578,7 +6578,7 @@
 //!
 //! ## C-822
 //!
-//! - Status: `Verified`
+//! - Status: `Refuted`
 //! - Last verified: 2026-02-19
 //! - Statement: Full one-loop photon-graviton amplitude satisfies gravitational Ward identity to 1e-8.
 //! - Where stated: crates/gr_core/src/photon_graviton/ward.rs (check_gravitational_ward, full_ward_check)
@@ -6674,7 +6674,7 @@
 //!
 //! ## C-834
 //!
-//! - Status: `Verified`
+//! - Status: `Provisional`
 //! - Last verified: 2026-02-19
 //! - Statement: R_cas/R_dir < 5% at 10 um for paper-calibrated wavevector mismatches.
 //! - Where stated: crates/optics_core/src/sfwm.rs (rate_ratio_with_dk), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_paper_dominance_ratio_at_10um)
@@ -6722,7 +6722,7 @@
 //!
 //! ## C-840
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-02-26
 //! - Statement: Optical Glauber Npart for Pb-Pb 5.02 TeV matches ALICE published values (PLB 772, 2017) within 5% per centrality bin.
 //! - Where stated: crates/qgp_scaling/src/glauber.rs (n_part_at_b, compute_centrality_bins), crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs (validate_npart_pbpb)
@@ -6730,7 +6730,7 @@
 //!
 //! ## C-841
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: pp spectral index n = 6.0-6.3 at 5.02 TeV from CMS pp reference spectrum power-law fit.
 //! - Where stated: crates/qgp_scaling/src/epsilon_fit.rs (extract_epsilon), plan Phase 3
@@ -6778,7 +6778,7 @@
 //!
 //! ## C-847
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: ATLAS jet v2/eccentricity vs d(ln R_AA)/d(ln pT) gives beta_jets = 1.03 +/- 0.15, consistent with hadron beta.
 //! - Where stated: crates/qgp_scaling/src/v2_relation.rs (fit_v2_relation)
@@ -6786,7 +6786,7 @@
 //!
 //! ## C-848
 //!
-//! - Status: `Verified`
+//! - Status: `Superseded`
 //! - Last verified: 2026-02-25
 //! - Statement: TCMT Fano lineshape (Ruan-Fan 2009 Eq. 23) reproduces lossless/lossy Fano asymmetry for phi=0, pi/2, pi.
 //! - Where stated: crates/optics_core/src/fano_tcmt.rs (tests: lossless_phi_zero_lorentzian, absorption_lorentzian)
@@ -6794,7 +6794,7 @@
 //!
 //! ## C-849
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Cylindrical Lorentz-Mie solver matches TCMT within 1% for single-channel (l=0) MDM geometry (Ruan-Fan Fig. 4).
 //! - Where stated: crates/optics_core/src/mie_cylinder.rs (interface_transfer_matrix, scattering_coefficient_l)
@@ -6802,7 +6802,7 @@
 //!
 //! ## C-850
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Multi-channel (|l|<=2) Mie solver matches TCMT sum for MDM cloaked-sensor geometry (Ruan-Fan Fig. 5).
 //! - Where stated: crates/optics_core/src/mie_cylinder.rs (mie_sweep, multi_channel_cross_sections)
@@ -6922,7 +6922,7 @@
 //!
 //! ## C-865
 //!
-//! - Status: `Verified`
+//! - Status: `Refuted`
 //! - Last verified: 2026-02-19
 //! - Statement: Asymmetry parameter q_grav from gravitational coupling satisfies Maksimov constraint: kappa_1 - kappa_2 = gamma_l to machine precision (relative error < 1e-10).
 //! - Where stated: crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (validate_energy_conservation), tcmt_equations.rs (energy conservation test)
@@ -6930,7 +6930,7 @@
 //!
 //! ## C-866
 //!
-//! - Status: `Verified`
+//! - Status: `Superseded`
 //! - Last verified: 2026-02-19
 //! - Statement: Time-reversal symmetry of photon-graviton TCMT guarantees transmission S-matrix satisfies unitarity |T|^2 + |R|^2 = 1 to numerical precision (error < 1e-10).
 //! - Where stated: crates/gr_core/src/photon_graviton_tcmt/fano_lineshape.rs (scattering_coefficient), amplitude_bridge.rs (validate_unitarity)
@@ -7394,7 +7394,7 @@
 //!
 //! ## C-924
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-03
 //! - Statement: Associator entropy upper bound via ZD count: H(dim) <= H(8) - k * ln(n_ZD_components + 1), where k is fit from the dim=16 data point. Zero divisors reduce entropy by constraining the associator-norm distribution.
 //! - Where stated: crates/algebra_analysis/src/associator_entropy.rs
@@ -7410,7 +7410,7 @@
 //!
 //! ## C-926
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-03
 //! - Statement: ZD graph spectral gap (lambda_2) census across CD dims 16-512. All components are expanders: gap_ratio = lambda_2/lambda_max > 1/(2n) at every dimension. Near-complete graph topology forces lambda_2 close to n, producing gap_ratio > 0.6 universally.
 //! - Where stated: crates/algebra_analysis/src/spectral_dimension.rs
@@ -7426,7 +7426,7 @@
 //!
 //! ## C-928
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-03
 //! - Statement: Immirzi bridge absolute ceiling gamma_max = ln(2)/(pi*sqrt(3)) = 0.12738. For all phi in (0,1): gamma(phi) <= gamma_max. Since gamma_BG = 0.2375 > gamma_max, the BG exclusion is structural: no CD imbalance density can ever reach gamma_BG through the entropy bridge.
 //! - Where stated: crates/sign_imbalance/src/immirzi_bridge.rs
@@ -7434,7 +7434,7 @@
 //!
 //! ## C-929
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-03
 //! - Statement: ZD graph Laplacian eigenvalue spectra are DegenerateIntegrable across all CD dimensions where NNSD is feasible (dim >= 128). Brody q = 0.0 with spacing variance >> 1.0 (59.0 at dim=128, 123.0 at dim=256) -- super-Poisson statistics from massive exact degeneracies in the near-complete multipartite Laplacian. These are integrable expanders: the spectral gap (C-926) arises from algebraic regularity (Ramanujan-like), not random-matrix chaos.
 //! - Where stated: crates/algebra_analysis/src/quantum_chaos.rs
@@ -7442,7 +7442,7 @@
 //!
 //! ## C-930
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-03
 //! - Statement: Per-motif-class NNSD at dim=128 (8 classes by edge count) and dim=256 (16 classes) all show DegenerateIntegrable statistics (brody_q = 0.0, variance >> 1.0). No topology-dependent variation: the degenerate integrable character is universal across all ZD graph motif classes, independent of edge-count topology.
 //! - Where stated: crates/algebra_analysis/src/quantum_chaos.rs
@@ -7466,7 +7466,7 @@
 //!
 //! ## C-936
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-05
 //! - Statement: The Arleo-Falmagne path-length exponent beta extracted from density scaling (epsilon_bar = K * rho * L^beta) and from azimuthal anisotropy (v2/epsilon = (beta/2) * d(ln R_AA)/d(ln pT)) are statistically consistent (z-score < 2), confirming universality of the path-length dependence across independent observables.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs
@@ -7474,7 +7474,7 @@
 //!
 //! ## C-937
 //!
-//! - Status: `Provisional`
+//! - Status: `Closed/Source-Insufficient`
 //! - Last verified: 2026-03-05
 //! - Statement: The path-length exponent beta extracted from the v2/eccentricity relation is robust under replacement of optical Glauber eccentricity with MC Glauber epsilon_2{2}: |delta_beta| < 0.2 between the two eccentricity models for Pb-Pb 5.02 TeV centralities 0-50%.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs
@@ -7482,7 +7482,7 @@
 //!
 //! ## C-938
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-05
 //! - Statement: The Arleo-Falmagne scaling ansatz (2 parameters: beta, K) achieves a lower BIC than CUJET3.0 (5 parameters) when compared against ALICE Pb-Pb R_AA data at 0-5% centrality with pT > 5 GeV, demonstrating that the simpler model is not disfavored by Occam's razor.
 //! - Where stated: crates/qgp_scaling/src/competing_models.rs
@@ -7570,7 +7570,7 @@
 //!
 //! ## C-950
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-04
 //! - Statement: Sedenion zero-divisor K_{2,2,2} graph topologies constitute an exact parity-check matrix for a non-associative topological stabilizer code, where non-associative zero-products act as localized error syndromes.
 //! - Where stated: crates/quantum_core/
@@ -7602,7 +7602,7 @@
 //!
 //! ## C-960
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-04
 //! - Statement: The cosmological constant \Lambda is a non-perturbative topological invariant derived exactly from the Cayley-Dickson imbalance attractor F_{vac} = 3/8, rendering vacuum energy a strictly algebraic property.
 //! - Where stated: crates/cosmology_core/
@@ -7610,7 +7610,7 @@
 //!
 //! ## C-970
 //!
-//! - Status: `Provisional`
+//! - Status: `Closed/Analogy`
 //! - Last verified: 2026-03-04
 //! - Statement: The sequential breakdown of algebraic properties in the CD tower corresponds to topological phase transitions in nacelle warp bubble geometries. Alternativity loss at d=16 allows stress-energy localization into 16 discrete nacelles.
 //! - Where stated: crates/gr_core/
@@ -7618,7 +7618,7 @@
 //!
 //! ## C-980
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-05
 //! - Statement: Pathion gravity predicts a discrete 15+1 macroscopic splintering of the Kerr photon ring. The non-associative 32D Carter constant diagonalizes into 16 complex planes corresponding to the 15 connected components of the Zero-Divisor graph, creating distinct nested sub-rings.
 //! - Where stated: crates/pathion_ellip/src/pathion_shadow.rs
@@ -7626,7 +7626,7 @@
 //!
 //! ## C-990
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-05
 //! - Statement: The 64D Chingon algebra breaks alternativity, inducing a non-conservative geometry drag. The Alternativity Violation Tensor (AVT) acts as an asymmetric momentum sink during spacecraft hyperbolic gravity assists (The Earth Flyby Anomaly).
 //! - Where stated: crates/gr_core/src/forces/chingon_drag.rs
@@ -7634,7 +7634,7 @@
 //!
 //! ## C-1010
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-05
 //! - Statement: At 128D (Routons) and 256D (Voudons), discrete Cayley-Dickson algebraic violations average out into statistical thermodynamics. The 128D ZD graph exhibits Wigner-Dyson level spacing (Quantum Chaos), and the 256D Global Mean Frustration Density acts as a non-zero algebraic pressure term for cosmological homogeneity.
 //! - Where stated: CURRENT::PATH crates/gororoba_algebra/src/construction/deep_space.rs (LEGACY::PATH crates/algebra_core/src/construction/deep_space.rs)
@@ -7642,7 +7642,7 @@
 //!
 //! ## C-1020
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-05
 //! - Statement: Physical forces emerge as resonant modes within successive Cayley-Dickson layers: 1D (Gravity), 4D (Spacetime), 8D (Magnetism), 16D (Electricity), and 32D/64D (Nuclear Forces). This mapping forms the basis of Dissociative Field Theory (DFT).
 //! - Where stated: docs/research/high_dimensional_algebra_unification_2026.md; Encyclopedia Luminis Genesis (2025)
@@ -7650,7 +7650,7 @@
 //!
 //! ## C-1030
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-05
 //! - Statement: The Riemann Resonance Law: The distribution of Riemann zeros dictates the stable resonance states in 32D Pathion and 64D Chingon algebras, providing a link between number theory and nuclear force stability.
 //! - Where stated: docs/research/high_dimensional_algebra_unification_2026.md; Valov et al. (2025)
@@ -7658,7 +7658,7 @@
 //!
 //! ## C-1040
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-06
 //! - Statement: Non-local correlation in the 512D Eriston vacuum models entanglement as a shared zero-divisor path, predicting Bell-Inequality violations within the algebraic manifold.
 //! - Where stated: crates/algebra_analysis/src/bell_inequality.rs
@@ -7666,7 +7666,7 @@
 //!
 //! ## C-1050
 //!
-//! - Status: `Provisional`
+//! - Status: `Closed/Research-Program`
 //! - Last verified: 2026-03-06
 //! - Statement: The Higgs Vacuum Expectation Value (VEV) is a topological requirement for the stability of the 1024D DekaVoudon algebra coupled to 4D spacetime.
 //! - Where stated: crates/algebra_analysis/src/particle_physics.rs
@@ -7674,7 +7674,7 @@
 //!
 //! ## C-1060
 //!
-//! - Status: `Provisional`
+//! - Status: `Superseded`
 //! - Last verified: 2026-03-06
 //! - Statement: Transitioning from 1D scalar time to 2D Complex Time (tau = t + i*epsilon) enables the engine to model imaginary-time tunneling events in quantum-cosmological bounces.
 //! - Where stated: crates/gr_core/src/nbody_integration.rs
@@ -7682,7 +7682,7 @@
 //!
 //! ## C-1070
 //!
-//! - Status: `Provisional`
+//! - Status: `Closed/Research-Program`
 //! - Last verified: 2026-03-06
 //! - Statement: The Intention Operator (Phi_I0) acts as a 'subjective coherence' filter (Maxwell's Demon) that stabilizes high-dimensional Routon (128D) chaos in LBM fluid grids.
 //! - Where stated: crates/quantum_core/src/intention_operator.rs
@@ -7690,7 +7690,7 @@
 //!
 //! ## C-1080
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-06
 //! - Statement: A scale-invariant fractal spacetime metric with Df ~ 2.7 provides a unified analytic explanation for the signs of both the Pioneer and Flyby anomalies, subject to explicit verification against governed observational benchmark artifacts.
 //! - Where stated: crates/gr_core/src/fractal_metric.rs
@@ -7698,7 +7698,7 @@
 //!
 //! ## C-1090
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-06
 //! - Statement: The CMB Axis of Evil alignment emerges from high-order non-associative torques induced by the 1024D DekaVoudon Global Bias in the cosmic web seeding.
 //! - Where stated: crates/cosmology_core/src/deka_voudon_cmb.rs
@@ -7706,7 +7706,7 @@
 //!
 //! ## C-1100
 //!
-//! - Status: `Provisional`
+//! - Status: `Closed/Research-Program`
 //! - Last verified: 2026-03-06
 //! - Statement: Grand Unification: The Cayley-Dickson tower from 1D to 1024D is the hidden source code of physical constants, unified via the Singularitarian Engine.
 //! - Where stated: crates/gororoba_engine/src/singularitarian.rs
@@ -7714,7 +7714,7 @@
 //!
 //! ## C-1101
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-07
 //! - Statement: Body-specific 64D embedding with Earth(1-21)/Moon(22-42)/Sun(43-63) triad-per-block structure preserves 5/6 flyby anomaly signs with NEAR ratio 1.11.
 //! - Where stated: crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)
@@ -7722,7 +7722,7 @@
 //!
 //! ## C-1102
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-07
 //! - Statement: Three-body non-associative torques arise from cross-block AVT coupling: violations spanning block boundaries (e.g. axis 5 to axis 35) couple Earth and Lunar geometric frames.
 //! - Where stated: crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)
@@ -7738,7 +7738,7 @@
 //!
 //! ## C-1104
 //!
-//! - Status: `Provisional`
+//! - Status: `Superseded`
 //! - Last verified: 2026-03-06
 //! - Statement: Rosetta-I flyby anomaly sign problem is structural in the 64D cross-coupling block geometry (Solar triad projection, axes 43-63). Neither density modulation (tidal S71.1, wake S71.3) nor 3-body embedding (S71.2) can fix it at 64D. Higher-dimensional embedding (256D, 85 axes/body) is required.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/flyby_crucible.rs
@@ -8018,7 +8018,7 @@
 //!
 //! ## C-1139
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-07
 //! - Statement: Braid-aligned CHSH test at dim=16: S = -1.536 +/- 0.040. Does not violate classical bound |S| < 2. Correlators: [-0.917, -0.921, -0.775, -0.765]. 168 ZD pairs, 2072 optimal probes.
 //! - Where stated: crates/algebra_experimental/src/majorana_braiding.rs (chsh_braid_aligned)
@@ -8066,7 +8066,7 @@
 //!
 //! ## C-1145
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-08
 //! - Statement: Ratio of DM gravitational force to Lorentz force in magnetized solar wind at 1 AU is O(10^-12), confirming DM gravity alone cannot produce observable solar wind perturbations.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs
@@ -8082,7 +8082,7 @@
 //!
 //! ## C-1147
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: OMNI2 B-field components (Bx, By, Bz GSE) correlate with raw ACE MAG L2 16-sec hourly averages at Pearson r > 0.95, confirming that OMNI2 faithfully includes ACE MAG measurements.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/cross_validate_solar_wind.rs (OmniVsAceMag)
@@ -8090,7 +8090,7 @@
 //!
 //! ## C-1148
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified:
 //! - Statement: ACE SWEPAM and WIND SWE proton density and bulk speed correlate at Pearson r > 0.90 for overlapping L1 observations, confirming independent spacecraft agreement.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/cross_validate_solar_wind.rs (AceVsWind)
@@ -8106,7 +8106,7 @@
 //!
 //! ## C-1150
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: High-resolution WIND MFI 3-second data in the shock ramp regime (CME front at L1) yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result holds even in the highest-gradient magnetic topology.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)
@@ -8122,7 +8122,7 @@
 //!
 //! ## C-1152
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: The multi-spacecraft DM null result (O(10^-12) across OMNI, WIND, ACE MAG, STEREO-A) is instrument-independent, confirming it reflects a genuine physical suppression rather than measurement artifact.
 //! - Where stated: registry/experiments.toml (E-113)
@@ -8130,7 +8130,7 @@
 //!
 //! ## C-1153
 //!
-//! - Status: `Provisional`
+//! - Status: `Closed/Research-Program`
 //! - Last verified:
 //! - Statement: The CD tower dark sector instability (dark x dark -> Leech, 100% escape rate at dim=32) provides an algebraic vocabulary for DM-baryon decoupling at the gravitational level. The multi-spacecraft null result (O(10^-12)) is consistent with universal dark sector suppression predicted by the CD tower structure.
 //! - Where stated: crates/algebra_experimental/src/leech_pathion.rs (LeechPathionEmbedding), registry/experiments.toml (E-113)
@@ -8138,7 +8138,7 @@
 //!
 //! ## C-1154
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: DM-baryon scattering cross-section detection threshold in magnetized solar wind at 1 AU: sigma_chi_b must exceed approximately 10^-45 cm^2 for the drag force to produce |F_drag|/|F_Lorentz| > O(10^-12). Below this threshold, the drag is dynamically negligible.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-sigma)
@@ -8170,7 +8170,7 @@
 //!
 //! ## C-1158
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Biaxial topological invariance: RTN->GSE coordinate transformation with 7.25 deg solar axial tilt preserves div(B) < 10^-10 at machine precision. The tilt rotation is orthogonal, so it cannot introduce magnetic monopoles.
 //! - Where stated: crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (triangulate_ic)
@@ -8178,7 +8178,7 @@
 //!
 //! ## C-1159
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Anomalous viscosity regime: LBM BGK collision operator is valid for Knudsen number Kn < 100 (corresponding to heliocentric distance r < ~50 AU for quiet solar wind). Beyond 50 AU, kinetic effects dominate and BGK fails.
 //! - Where stated: crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)
@@ -8202,7 +8202,7 @@
 //!
 //! ## C-1162
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Parker spiral scaling verified by multi-spacecraft data: B_r(r) ~ r^-2 (magnetic flux conservation) and B_phi(r) ~ r^-1 (spiral winding). At 1 AU, B_r ~ 3 nT and B_phi ~ 3 nT (Parker spiral angle ~ 45 deg). At 10 AU, B_phi >> B_r.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (parker_spiral_b, interpolate_radial)
@@ -8210,7 +8210,7 @@
 //!
 //! ## C-1163
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Ulysses fast/slow bimodality: v_polar > 1.5 * v_equatorial for |heliographic latitude| > 30 deg. Fast polar wind (~750 km/s, ~3 cm^-3) and slow equatorial wind (~400 km/s, ~7 cm^-3) are separated by a tanh transition over ~10-20 deg latitude bands (McComas et al. 2000).
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)
@@ -8218,7 +8218,7 @@
 //!
 //! ## C-1164
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Voyager termination shock at 84-94 AU is consistent with MHD simulation boundary conditions. V1 crossed at 94 AU (2004), V2 at 84 AU (2007). Density jump factor ~ 2-4x across shock.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs
@@ -8234,7 +8234,7 @@
 //!
 //! ## C-1166
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Outer heliosphere Knudsen boundary: LBM validity boundary at r ~ 30-50 AU for quiet solar wind. Beyond this distance, mean free path exceeds simulation cell size (Kn > 1), and the BGK collision operator underpredicts heat flux and viscous stress.
 //! - Where stated: crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)
@@ -8242,7 +8242,7 @@
 //!
 //! ## C-1167
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Distance-dependent NFW force monotonically increases with heliocentric distance r (enclosed mass M(<r) grows). At solar-system scales (r << r_s ~ 20 kpc), the force grows nearly linearly: F_DM(r) ~ G*M_enc(r)/r^2 with M_enc ~ rho_dm * (4pi/3) * r^3.
 //! - Where stated: crates/lbm_3d/src/dm_force.rs (nfw_enclosed_mass, DmForceField::new)
@@ -8258,7 +8258,7 @@
 //!
 //! ## C-1169
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Multi-spacecraft temporal coherence at overlapping epochs: when two spacecraft (e.g., Voyager 1 and Pioneer 10) measure the same heliocentric distance band in different years, solar cycle phase correction (using OMNI sunspot number as proxy) reduces residual scatter to < 40%.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile)
@@ -8274,7 +8274,7 @@
 //!
 //! ## C-1171
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Gleeson-Axford modulation potential phi(r) computed from real LBM solar wind velocity profile u_sw(r) is monotonically decreasing with heliocentric distance: phi(1 AU) > phi(50 AU). For a radial v_sw ~ 400 km/s and kappa_rr ~ 4.5e-5 * r AU^2/s, phi(1 AU) ~ 0.4-0.8 GV (canonical Bess-Pamela era value).
 //! - Where stated: crates/cr_transport/src/modulation.rs (ForceFieldProxy::modulation_potential), crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs (compute_phi_map)
@@ -8290,7 +8290,7 @@
 //!
 //! ## C-1173
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Adiabatic deceleration shifts the peak rigidity of an initial Gaussian distribution downward by (1/3)*div(u)*N*d_ln_r per step in the PteSolver. For uniform div(u) = 0.1 AU^-1 and d_ln_r = 0.23, after 10 steps the peak shifts by ~0.08 decades in ln(R).
 //! - Where stated: crates/cr_transport/src/solver.rs (decelerate_momentum, test_adiabatic_deceleration_shifts_peak)
@@ -8330,7 +8330,7 @@
 //!
 //! ## C-1178
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified:
 //! - Statement: AMDA HAPI provides Pioneer 10/11 MAG-only hourly data (RTN) without plasma parameters. Coverage: P10 1972-1995 (p10-mag-full), P11 1973-1992 (p11-mag-full). No proton density, speed, or temperature data exists for Pioneer in AMDA.
 //! - Where stated: crates/data_core/src/catalogs/pioneer.rs (fetch_pioneer_amda_mag, AMDA_PIONEER_DATASETS), data/external/SOURCES.toml (SRC-PIONEER10-AMDA-MAG-ONLY, SRC-PIONEER11-AMDA-MAG-ONLY)
@@ -8370,7 +8370,7 @@
 //!
 //! ## C-1183
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: New Horizons SWAP data has no known alternate provider besides SPDF. AMDA catalog (1065 datasets, queried 2026-03-10) contains zero NH entries. NH carries SWAP plasma but no magnetometer. PDS-SBN is a potential but unverified alternative source.
 //! - Where stated: data/external/SOURCES.toml (SRC-NH-SINGLE-SOURCE-FRAGILE)
@@ -8762,7 +8762,7 @@
 //!
 //! ## C-1232
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: The kagome flat band near 2.08 GHz has bandwidth < 0.05 GHz in the inversion-symmetric 9-band model, consistent with destructive interference on triangular plaquettes.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (compute_magnonic_bands), crates/quantum_core/src/tight_binding.rs (detect_flat_bands)
@@ -8786,7 +8786,7 @@
 //!
 //! ## C-1235
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: Inversion symmetry breaking (nonzero delta_eps_s, delta_eps_p) opens a gap at the Dirac point at K, enabling nonzero valley Chern numbers.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band with InversionBreakingParams)
@@ -8802,7 +8802,7 @@
 //!
 //! ## C-1237
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: A point defect (missing kagome site) in the magnonic crystal supports a localized mode with quality factor Q ~ 4100 at Gilbert damping alpha = 1e-4.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (point_defect_modes), Kaman et al. (2026) Fig. 6
@@ -8810,7 +8810,7 @@
 //!
 //! ## C-1238
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: Two adjacent point defects exhibit mode splitting of approximately 0.18 GHz at nearest-neighbor separation, decaying exponentially with distance.
 //! - Where stated: Kaman et al. (2026) Sec. V.B, crates/quantum_core/src/magnonic_crystal.rs (point_defect_modes with modified supercell)
@@ -8826,7 +8826,7 @@
 //!
 //! ## C-1240
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: The Holstein-Primakoff linearization for YIG magnons is valid when magnon occupation n << 2S = 28.4 (S = 14.2 for Fe3+ in YIG with 10 sublattices).
 //! - Where stated: crates/quantum_core/src/magnonic.rs (hp_validity_bound, yig_effective_spin)
@@ -8834,7 +8834,7 @@
 //!
 //! ## C-1241
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: The hexagonal BZ high-symmetry path Gamma-M-K-Gamma correctly uses M = b1/2, K = (2*b1 + b2)/3 in reciprocal coordinates for the hexagonal Bravais lattice.
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (hexagonal_high_symmetry_path)
@@ -8842,7 +8842,7 @@
 //!
 //! ## C-1242
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: The Bloch Hamiltonian H(k) constructed by hamiltonian_at_k() is Hermitian for all k, guaranteed by adding both H[i,j] += t*exp(ik.R) and H[j,i] += conj(t*exp(ik.R)).
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (hamiltonian_at_k, test_hamiltonian_hermitian)
@@ -8850,7 +8850,7 @@
 //!
 //! ## C-1243
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: Band energies are periodic in reciprocal space: E(k + G) = E(k) for any reciprocal lattice vector G = n1*b1 + n2*b2.
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (test_band_periodicity)
@@ -8866,7 +8866,7 @@
 //!
 //! ## C-1245
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: The 9-band orbital basis decomposes into s-type (indices 0,3,6,7,8) and p-type (indices 1,2,4,5) sectors, enabling orbital-resolved band character analysis.
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band orbital placement comments)
@@ -8882,7 +8882,7 @@
 //!
 //! ## C-1247
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: Parameter sweep of d/a (hole diameter to lattice constant ratio) shows the Dirac gap closes at d/a=0 and reopens with increasing d/a, modulating the effective hopping strengths.
 //! - Where stated: crates/gororoba_cli_physics/src/bin/magnonic_band_structure.rs (Sweep subcommand)
@@ -8890,7 +8890,7 @@
 //!
 //! ## C-1248
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: The 9-band magnonic model maps exactly to the generic TightBindingModel framework, demonstrating that the tight-binding engine is model-independent (applicable to magnons, electrons, or photons).
 //! - Where stated: crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band returns TightBindingModel)
@@ -8898,7 +8898,7 @@
 //!
 //! ## C-1249
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: The homogeneous magnon frequency at k=0 is omega_0 = gamma * mu_0 * (B_ext/mu_0 + M_s), giving ~6.3 GHz for standard YIG parameters at B_ext = 50 mT.
 //! - Where stated: crates/quantum_core/src/magnonic.rs (magnon_frequency_homogeneous)
@@ -8906,7 +8906,7 @@
 //!
 //! ## C-1250
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: Valley Chern numbers are approximately +/-0.5 for the Dirac bands with small inversion breaking, but are NOT topologically quantized (they depend continuously on the breaking strength).
 //! - Where stated: crates/quantum_core/src/tight_binding.rs (valley_chern_number), Kaman et al. (2026) Sec. III
@@ -8930,7 +8930,7 @@
 //!
 //! ## C-1253
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: The partner graph spectrum degeneracy pattern {7, 14, 42, 14, 7} factorizes as {1, 2, 6, 2, 1} * 7, where 7 is the number of box-kites and {1,2,6,2,1} encodes the per-box-kite spectral contribution.
 //! - Where stated: crates/algebra_analysis/src/reggiani.rs (partner_graph_degeneracies)
@@ -9042,7 +9042,7 @@
 //!
 //! ## C-1267
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: GPU box-counting CUDA kernel uses warp-level ballot reduction (matching dark_halo_detector pattern) to reduce global atomics 32x compared to naive per-thread atomicAdd.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_box_counting.cu (box_count_at_scale)
@@ -9122,7 +9122,7 @@
 //!
 //! ## C-1277
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: Batch SoA kernel supports 4D indexing for multi-galaxy processing: w = linear/N selects galaxy, idx = linear%N selects cell.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_batch_kernel)
@@ -9146,7 +9146,7 @@
 //!
 //! ## C-1280
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: MRT extends the practical LBM stability limit from Ma ~ 0.3 (BGK) to Ma ~ 1.5, as demonstrated at floor=0.03 where BGK produces 100% NaN while MRT produces D_f=2.826 with zero NaN despite max|u|=0.836 (Ma=1.45).
 //! - Where stated: E-162 floor=0.03 BGK vs MRT comparison
@@ -9210,7 +9210,7 @@
 //!
 //! ## C-1288
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: GPU MRT 128^3 100-galaxy sweep: D_f = 2.732 +/- 0.034, CI_95 [2.725, 2.739]. All 100 galaxies stable (zero outliers). CD D=16 flat band topology prediction 2.7268 sits at the 31st percentile of the CI, confirming quantitative agreement between Cayley-Dickson algebraic topology and cosmological fractal dimension.
 //! - Where stated: E-166 GPU MRT 128^3 100-galaxy sweep
@@ -9234,7 +9234,7 @@
 //!
 //! ## C-1291
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: CD D=64 ZD partner graph flat band fraction = 1/2, extending the invariance from D=16 (proven in Rocq C-1236) and D=32 (empirical) to the next Cayley-Dickson doubling level.
 //! - Where stated: E-168 D=64 flat band fraction verification
@@ -9242,7 +9242,7 @@
 //!
 //! ## C-1292
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: GPU thread coarsening (1 thread = 2 cells) with __launch_bounds__(128, 9) achieves >= 1.15x MRT throughput at 128^3 by doubling the ILP window to 1444 independent FMAs, hiding the 4.54-cycle FFMA pipeline latency on Ada Lovelace SM 8.9.
 //! - Where stated: E-169 thread coarsening benchmark
@@ -9250,7 +9250,7 @@
 //!
 //! ## C-1295
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: GPU-side max-Mach-number reduction via compute_speed_magnitude + reduce_max_f32 kernels costs < 10us total (vs 2ms for sync_to_host readback of full velocity field), enabling per-step stability monitoring without PCIe bottleneck.
 //! - Where stated: E-172 roofline benchmark
@@ -9258,7 +9258,7 @@
 //!
 //! ## C-1296
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-11
 //! - Statement: 128^3 D3Q19 MRT with thread coarsening achieves >= 60% of theoretical RTX 4070 Ti bandwidth (504 GB/s), as measured by total memory traffic (77.2 GB/galaxy) divided by wall-clock time.
 //! - Where stated: E-169/E-172 bandwidth analysis
@@ -9266,7 +9266,7 @@
 //!
 //! ## C-1297
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-11
 //! - Statement: D_f=2.73 is not a pipeline artifact: null hypothesis rejected via 6-condition control experiment. Only the combination of Sersic morphology + ZD algebraic forcing produces D_f~2.73; neither ingredient alone is sufficient.
 //! - Where stated: E-174 null hypothesis control
@@ -9274,7 +9274,7 @@
 //!
 //! ## C-1298
 //!
-//! - Status: `Provisional`
+//! - Status: `Closed/Methodology-Insufficient`
 //! - Last verified: 2026-03-11
 //! - Statement: CPU AoSoA layout with wide::f64x4 SIMD collision achieves >= 4x speedup over AoS scalar at 128^3 MRT f64 on Zen 3. AoSoA chunk (19 dirs * 4 cells * 8 bytes = 608 bytes) fits in 2% of L1D, eliminating the L1 cache thrashing that pure SoA causes on 8-way set-associative x86.
 //! - Where stated: E-175 CPU AoSoA benchmark
@@ -9402,7 +9402,7 @@
 //!
 //! ## C-1314
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-03-12
 //! - Statement: The galaxy pipeline's ZD topological forcing (alpha_zd parameter in GalaxyPipelineConfig) modulates NFW gravitational force with a 7-mode harmonic structure derived from box-kite angular symmetry. At alpha_zd=0, standard NFW is recovered exactly.
 //! - Where stated: crates/cosmology_core/src/harmonic_halos.rs, crates/cosmology_core/src/galaxy_pipeline.rs
@@ -9434,7 +9434,7 @@
 //!
 //! ## C-1318
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-12
 //! - Statement: A-A (Alternating-Address) streaming for D3Q19 LBM eliminates the ping-pong buffer (d_f_tmp), halving VRAM for distribution storage: 76 MB savings at 128^3 (from 152 MB to 76 MB). Uses parity-dependent direction remapping via OPP[19] constant-memory LUT. Incompatible with CUDA graph 2-step capture due to parity-dependent kernel arguments.
 //! - Where stated: crates/lbm_3d_cuda/src/kernels_soa.cu (OPP[19], lbm_step_soa_aa, lbm_step_soa_mrt_aa), crates/lbm_3d_cuda/src/lib.rs (set_aa_streaming, aa_parity toggle)
@@ -9546,7 +9546,7 @@
 //!
 //! ## C-1332
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-12
 //! - Statement: The 7-mode harmonic halo signature is strictly falsifiable today using existing kinematic datasets. By normalizing galactic rotation curves to dimensionless r/r_s coordinates, the topological wavenumbers align at k_n' = 2*pi*n/7 regardless of galaxy mass. Stacking N rotation curves reduces the kinematic noise floor by sqrt(N), allowing the 42/84=0.5 amplitude signature to be resolved down to alpha_zd >= 0.005 using MaNGA DR17 IFU data (~10,000 galaxies). SPARC (175 galaxies) reaches alpha_zd >= 0.015, Gaia DR3/DR4 MW curve reaches alpha_zd >= 0.01 (systematics-limited). No need to wait for SKA 2030.
 //! - Where stated: crates/cosmology_core/src/harmonic_halos.rs, crates/cosmology_core/src/harmonic_stacking.rs (TO BE IMPLEMENTED), docs/research/sedenion_42_structure_audit_2026.md
@@ -11130,7 +11130,7 @@
 //!
 //! ## C-1530
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-23
 //! - Statement: Phase C experimental overlay (evid H): All three PMNS mixing angles from the Sedenion Standard Model scorecard lie within NuFit 6.0 1-sigma contours. Asymmetric pulls: theta_12 = -0.067 (best=33.41, ours~33.37), theta_13 = 0.000 (best=8.54, ours=8.54), theta_23 = -0.009 (best=49.0, ours~49.0). Evidentiary class H (heuristic fit, not derived). Experiment sensitivity: DUNE/HyperK for delta_CP and theta_23; JUNO for mass ordering and precision theta_12/theta_13.
 //! - Where stated: crates/algebra_experimental/src/experimental_predictions.rs::test_mixing_angles_in_1sigma
@@ -11138,7 +11138,7 @@
 //!
 //! ## C-1531
 //!
-//! - Status: `Provisional`
+//! - Status: `Refuted`
 //! - Last verified: 2026-03-23
 //! - Statement: Phase C CP-phase overlay (evid H): CP-A (~165 deg, Gram-derived) lies within NuFit 6.0 1-sigma for delta_CP (pull = -0.526; 1-sigma range [138,258] deg). CP-B (~93 deg, maximal CP violation) lies outside 1-sigma (pull = -1.789) but inside 3-sigma ([0,360] deg). The 2025 NuFit best-fit is 195 deg; CP-B is displaced toward maximal CP. Both values are exploratory (scorecard Bin 3). Falsification target: DUNE/HyperK sensitivity will determine which, if either, is consistent at 5-sigma.
 //! - Where stated: crates/algebra_experimental/src/experimental_predictions.rs::test_cp_a_in_1sigma, test_cp_b_outside_1sigma
@@ -11554,7 +11554,7 @@
 //!
 //! ## C-1629
 //!
-//! - Status: `Provisional`
+//! - Status: `Verified`
 //! - Last verified: 2026-07-18
 //! - Statement: The staple-associator's componentwise ROC-AUC advantage over one-step field rotation generalizes across independently sampled THEMIS-A crossing days: the file-cluster bootstrap on the deduplicated 813-file benchmark (E-239, 2,000 resamples of intact daily files, every sample within each drawn file retained) puts the simultaneous margin M at +0.00206 with 95% CI [0.00081, 0.00328] (p_le_zero = 0.001), and the mean daily AUC delta at +0.00508 [0.00372, 0.00634]. The intact-cluster design supersedes the E-235 moving-block intervals for population inference because blocks straddling file boundaries mix days instead of resampling them. This margin is scoped to the one-step rotation baseline; matched six-sample rotation statistics reverse the sign (C-1633).
 //! - Where stated: data/output/staples_cluster_bootstrap_assoc_vs_rot.json; E-239
@@ -11590,4 +11590,244 @@
 //! - Last verified: 2026-07-18
 //! - Statement: When temporal receptive fields are matched at six samples on the deduplicated THEMIS-A Staples benchmark, direct angular statistics outperform the staple-associator: six-sample cumulative rotation reaches ROC-AUC 0.8352 and maximum stepwise rotation 0.8383 versus the associator's 0.8274, with assoc-minus-control bulk deltas -0.0077 [-0.0086, -0.0069] and -0.0109 [-0.0118, -0.0099] and negative simultaneous margins -0.0104 and -0.0137 (all 2,000 file-cluster resamples nonpositive-favoring-control). The associator therefore does not dominate conventional angular statistics at equal temporal support, and its advantage over one-step rotation (C-1628) partly measures temporal-context asymmetry rather than uniquely non-associative information. The tested channel permutation [1,2,0] through the intact CD tensor is practically AUC-equivalent to the canonical assignment (0.8281 vs 0.8274, delta -0.0006 [-0.0007, -0.0006]); this is predictive equivalence of one permutation, not algebraic invariance. Standalone rotation-family dominance is established; subsumption (zero conditional information from the associator given cumrot6 and maxrot6) is untested.
 //! - Where stated: data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_chperm.json; E-239
+//! - What would verify/refute it:
+//!
+//! ## C-1634
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions.
+//! - Where stated: https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/claim_transition_proposals.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1635
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-04
+//! - Statement: The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid.
+//! - Where stated: data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1636
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side, with the on-shell irreducible and external-leg cancellation and separate tadpole invariance stated explicitly.
+//! - Where stated: https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/claim_transition_proposals.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1637
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-04
+//! - Statement: The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition across the predeclared kinematic grid.
+//! - Where stated: data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1638
+//!
+//! - Status: `Refuted`
+//! - Last verified: 2026-08-04
+//! - Statement: The photon-graviton TCMT implementation evaluates kappa_1 - kappa_2 = gamma_l against the declared relative tolerance.
+//! - Where stated: data/output/audit/2026-08-02/p0_frontier.toml; data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml; data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1639
+//!
+//! - Status: `Refuted`
+//! - Last verified: 2026-08-04
+//! - Statement: The source-faithful Maksimov energy constraint kappa_1 - kappa_2 = gamma_l holds under declared units and parameter correspondence.
+//! - Where stated: https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/p0_frontier.toml; data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1640
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The declared scattering, absorption, and extinction observables satisfy an independently derived balance relation.
+//! - Where stated: https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/claim_transition_proposals.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1641
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The declared lossless, flux-normalized complex scattering matrix is unitary on the stated channel basis.
+//! - Where stated: https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1642
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The declared passive lossy scattering matrix is contractive under the stated flux normalization.
+//! - Where stated: https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1643
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The declared reciprocal scattering model satisfies the appropriate reciprocity relation for its channel basis.
+//! - Where stated: https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/claim_transition_proposals.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1644
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The declared time-reversed scattering construction satisfies its stated time-reversal relation.
+//! - Where stated: https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/claim_transition_proposals.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1645
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-03
+//! - Statement: The R2VB four-DP4 matrix apply is FP24-exact under the operand gate 0 <= B and 4*B^2 <= 2^17: each lane accumulator stays inside the inclusive FP24 exact-integer window (dp4_operand_admit_exact, mvp4_rows_exact), with the tight admission boundary B = 181 (dp4_admit_boundary). The gate and the dp4 lane extract to C through CertiRocq (proofs/extraction/ExtractR2VBDP4.v, hashes in proofs/extraction/golden/r2vb_dp4_extraction.sha256), and the extracted artifacts agree with native references over nine dp4 fixtures and nine gate rows spanning the boundary (make -C proofs test-r2vb-correspondence).
+//! - Where stated: proofs/theories/R2VBTransformDP4.v
+//! - What would verify/refute it:
+//!
+//! ## C-1646
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The declared 16-dimensional Cariow schedule uses 16 diagonal products and 106 sparse correction products and is extensionally equal to the ordinary Cayley-Dickson sedenion product over R16.
+//! - Where stated: proofs/verified/C1636_Cariow2013SedenionSchedule.v; docs/engineering/theorem-identity-disambiguation-2026_08_04.md
+//! - What would verify/refute it:
+//!
+//! ## C-1647
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The octonion downcast product has no nonzero zero divisors, and a sedenion zero product with both hi-halves zero forces one operand to be zero.
+//! - Where stated: proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v; docs/engineering/theorem-identity-disambiguation-2026_08_04.md
+//! - What would verify/refute it:
+//!
+//! ## C-1648
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The R300-facing sedenion witness (e1 + e10) times (e5 + e14) equals zero, both operands are nonzero, and the witness belongs to the declared box-kite and assessor surfaces.
+//! - Where stated: proofs/verified/C1637_R300SedenionZeroDivisor.v; docs/engineering/theorem-identity-disambiguation-2026_08_04.md
+//! - What would verify/refute it:
+//!
+//! ## C-1649
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The Rocq surface C1635_sedenion_driver_semantics_surface packages the declared sedenion downcast, zero-divisor, R300 witness, norm failure, box-kite, and Cariow schedule propositions under their stated assumptions.
+//! - Where stated: proofs/verified/C1635_SedenionDriverSemantics.v; docs/engineering/theorem-identity-disambiguation-2026_08_04.md
+//! - What would verify/refute it:
+//!
+//! ## C-1650
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The optics_core Ruan-Fan channel path preserves complex R_l and S_l and computes scattering, absorption, and extinction independently across the frozen analytical grid with detected old-oracle mutations.
+//! - Where stated: data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml; data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1651
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The Ruan-Fan source channel identities define R_l, S_l, scattering, absorption, and extinction with the stated incoming and outgoing Hankel convention.
+//! - Where stated: https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/ruan-fan-source-equation-figure-ledger.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1652
+//!
+//! - Status: `Closed/Methodology-Insufficient`
+//! - Last verified: 2026-08-04
+//! - Statement: The source-derived Ruan-Fan Figure 4 single-channel TCMT approximation has a measured no-fit complex-channel and normalized-observable error envelope on the frozen lossless and lossy grids.
+//! - Where stated: data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1653
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The Ruan-Fan Figure 4 complex-pole and uniform-metal-background procedure reproduces the published single-channel source-parameter anchors within the declared printed-precision and independent-reference envelope.
+//! - Where stated: https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1654
+//!
+//! - Status: `Closed/Methodology-Insufficient`
+//! - Last verified: 2026-08-04
+//! - Statement: The five-channel Figure 5 Mie and TCMT aggregate scattering, absorption, and extinction observables have a retained source-derived and held-out error envelope after per-channel values are preserved and degeneracy weights are applied.
+//! - Where stated: data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1655
+//!
+//! - Status: `Closed/Methodology-Insufficient`
+//! - Last verified: 2026-08-04
+//! - Statement: The source-derived Figure 5 single-resonance TCMT path has a retained per-channel complex S_l and R_l error envelope for l=0,1,2 and their rotationally symmetric negative partners on the frozen frequency window.
+//! - Where stated: data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1656
+//!
+//! - Status: `Closed/Methodology-Insufficient`
+//! - Last verified: 2026-08-04
+//! - Statement: The Ruan-Fan Figure 5 textual landmark at omega/omega_p=0.2282 has a separately adjudicated relationship to the repository Mie and TCMT totals under the declared geometry, normalization, and polarization convention.
+//! - Where stated: https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml; data/output/audit/2026-08-04/p2b-source-figure-vector-extraction.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1657
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-04
+//! - Statement: The Figure 5 complex-pole, lossless-to-lossy continuation, and uniform-metal-background procedure identifies one retained parameter tuple per unique channel under the declared single-resonance mapping, subject to the unresolved source-landmark discrepancy.
+//! - Where stated: https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1658
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-05
+//! - Statement: Son and Chekhova Eq. 6 and Eq. 8 define separate coherent cascaded and direct SFWM amplitudes with signed wavevector mismatches and rate prefactors 4/9 and 9/16.
+//! - Where stated: https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1659
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-05
+//! - Statement: The optics_core SFWM implementation preserves signed complex cascaded and direct amplitudes, the full Eq. 6 prefactor, source and Sellmeier input paths, and an independent component-level falsifier.
+//! - Where stated: data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml; data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1660
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-05
+//! - Statement: Son and Chekhova report R_cas/R_dir = 0.048 at 10 um for the declared source inputs and coherent amplitudes.
+//! - Where stated: https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1661
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-05
+//! - Statement: The optics_core SFWM path reproduces the Son-Chekhova 10 um cascaded-to-direct rate anchor under the declared source convention, input tuple, and complete amplitude prefactors.
+//! - Where stated: data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml; data/output/audit/2026-08-04/sfwm-adversarial-review.md
+//! - What would verify/refute it:
+//!
+//! ## C-1662
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-05
+//! - Statement: The Son-Chekhova source reports a fused-silica substrate contribution estimated as 25 percent of total coincidence rate, subject to Supplement 1 assumptions.
+//! - Where stated: https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1663
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-08-05
+//! - Statement: A fused-silica chi^(3) phase-matching calculation can produce a nonzero standalone SFWM amplitude under declared dispersion and thickness inputs.
+//! - Where stated: data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml; data/output/audit/2026-08-04/sfwm-legacy-oracle-audit.tsv
 //! - What would verify/refute it:

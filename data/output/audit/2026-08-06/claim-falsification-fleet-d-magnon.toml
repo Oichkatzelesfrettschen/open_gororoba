@@ -1,0 +1,391 @@
+# Fleet return: block D_MAGNON, 17 claims. HTML entities restored to ASCII.
+# Orchestrator spot-checks, all confirmed:
+#   - git status --porcelain EMPTY. Both fleet scratch probes removed.
+#   - magnonic_crystal.rs:62-66 kaman_default = 1.50/1.80/2.08/0.25/0.15,
+#     delta 0.10/0.05 -- exactly as reported, and none matches the paper.
+#   - magnonic_crystal.rs:288-293 comment verbatim: "In the Kaman model, direct
+#     kagome-kagome coupling is zero -- all kagome coupling is THROUGH the
+#     honeycomb sites. No additional hoppings needed." THE MODEL HAS NO KAGOME
+#     TRIANGLES, so C-1232's stated destructive-interference mechanism cannot
+#     exist. The code says so in its own comment.
+
+[block]
+id = "D_MAGNON"
+claim_count = 17
+agent_note = "A 9-band Hermitian tight-binding toy model whose five fitted parameters (1.50/1.80/2.08/0.25/0.15 GHz) match NONE of the seven values in Kaman et al. Table I or II, and whose geometry constants (a=400 nm, t=20 nm, B=50 mT, d/a=0.6) match NONE of the paper's (333 nm, 15 nm, 185-200 mT, 0.8). The structural and mathematical claims about the engine hold EXACTLY; every claim carrying a physical number from the paper is either off, unit-inconsistent, or computed by machinery the repo does not contain."
+
+[[finding]]
+claim_id = "C-1231"
+decidability = "internal"
+falsifier = "False if band_energies at K = (2*b1+b2)/3 shows no degenerate pair with linear splitting, or if the crossing energy is not within ~5 percent of 1.5 GHz. The 'matching MuMax3' conjunct is false if the repo's TB parameters differ from Kaman Table I."
+check_performed = "build_magnonic_9band(kaman_default, none, 400.0); band_energies at K; splitting vs dk for dk = f*|b1|, f in {1e-1..1e-3}; compared MagnonicTBParams::kaman_default against arXiv:2601.03210v2 Table I."
+observed = "E(K) = [1.254472, 1.254472, 1.644873, 1.766783, 1.766783, 1.800000, 2.235127, 2.358745, 2.358745]. Three degenerate pairs (0,1), (3,4), (7,8). dE/dk converges to 0.695, 0.210, 0.485 as dk -> 0 (0.689/0.694/0.695 at f=1e-2/3e-3/1e-3), i.e. ALL THREE ARE GENUINELY LINEAR. Lowest crossing = 1.254472 GHz, NOT 1.5; 1.50 is the bare eps_s, pushed down 0.245 GHz by kagome level repulsion. Repo params 1.50/1.80/2.08/0.25/0.15; PAPER Table I = 1.69/3.15/3.17/-0.38/-0.63."
+verdict = "partially_confirmed"
+verdict_reason = "A genuine linear Dirac crossing at K exists and is reproducible, so the qualitative core holds; but it sits at 1.2545 GHz (16 percent below the stated 1.5 GHz), and the 'matching MuMax3' conjunct is REFUTED because none of the five model parameters is the paper's."
+recommended_status = "Provisional"
+verification_rule = "New test: assert (E1-E0) at K < 1e-9 and that (E1-E0)/dk converges to a nonzero constant for dk = 1e-2..1e-3 times |b1|; assert crossing energy in [1.24, 1.27] GHz."
+source_url = "https://arxiv.org/abs/2601.03210"
+source_sha256 = "79148155cfb54d20b64c06b6826f0f4cc3bc79099d09beaf268db01c7815e56d"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/kaman_2026_emulating_2d_materials_with_magnons_arxiv_2601_03210v2.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1232"
+decidability = "internal"
+falsifier = "False if no band has bandwidth < 0.05 GHz, or if no flat band lies near 2.08 GHz, or if the flatness cannot be attributed to triangular-plaquette destructive interference."
+check_performed = "detect_flat_bands at n_k = 20/60/120; per-band min/max over a 40x40 BZ grid; orbital-resolved eigenvector weights; enumeration of the hopping list for kagome-kagome bonds; repeat with delta_eps_p = 0.05."
+observed = "Bandwidths (n_k=120): [1.42e-1, 2.46e-1, 6.7e-15, 1.22e-1, 3.32e-2, 5.3e-15, 8.4e-15, 1.24e-1, 1.09e-1]. THREE EXACTLY FLAT BANDS, at 1.644873, 1.800000 and 2.235127 GHz. NOTHING SITS AT 2.08 GHz; 2.08 is the bare eps_k, and the code's own comment at magnonic_crystal.rs:565 already records 'kagome flat band at 2.2351 GHz vs eps_k = 2.08 GHz'. Orbital weights: band 5 (1.800000 = eps_p exactly) is 100 percent p, 0 percent kagome. THE HOPPING LIST IS 18 BONDS, ALL honeycomb(0-5) <-> kagome(6-8); kagome-kagome hoppings present = FALSE. Setting delta_eps_p = 0.05 lifts band 5 to bandwidth 1.61e-3 while bands 2 and 6 stay at 6e-15."
+verdict = "refuted"
+verdict_reason = "Bandwidth < 0.05 GHz holds (four bands qualify), but the stated energy 2.08 GHz is wrong by 0.155 GHz, which alone refutes the claim as written. MECHANISM CLAUSE NARROWED 2026-08-06 (orchestrator post-write review); the withdrawn wording was 'THE STATED MECHANISM IS IMPOSSIBLE: the model has no kagome-kagome bonds, so no triangular plaquette exists in the hopping graph'. What the hopping list excludes is the DIRECT triangular-plaquette loop the claim names: there is no kagome-kagome bond, so no three-site kagome loop carries amplitude. It does not exclude interference language generally, since rank deficiency of an indirect coupling block is itself commonly read as cancellation among indirect amplitudes. The claim is refuted because it locates the band at 2.08 GHz and attributes flatness to a direct plaquette loop the graph does not contain. Flatness comes from RANK DEFICIENCY of the 3x4 kagome-to-p-orbital coupling block (nullity >= 1 forces an exactly flat band at E = eps_p), confirmed by band 5 being purely p and by its destruction under delta_eps_p."
+recommended_status = "Refuted"
+verification_rule = "New test: assert detect_flat_bands(model, 60, 0.05).flat_band_indices == [2,4,5,6] and that band 5 energy == eps_p to 1e-12 at every k; assert model.hoppings contains no (from>=6, to>=6) pair."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1249"
+decidability = "internal"
+falsifier = "False if magnon_frequency_homogeneous at k = 0 with kaman_standard parameters does not yield 6.3 GHz when converted to frequency by the module's own converter."
+check_performed = "Evaluated magnon_frequency_homogeneous(YigParams::kaman_standard(), MagnonicCrystalGeometry::kaman_standard(), 0.0) and applied rad_per_s_to_ghz; compared against the Kittel formulae and the paper's Appendix A."
+observed = "mu_0*M_s = 0.175929 T, B_ext = 0.0500 T, sum = 0.225929 T. The function returns 6.326017e9, and ITS OWN DOCSTRING declares that value to be an ANGULAR frequency in rad/s. The module's rad_per_s_to_ghz(6.326017e9) = 1.006817 GHz. The claimed 6.3 GHz is obtained ONLY by reading the rad/s return value as if it were GHz, equivalent to treating gamma = 2.8e10 as Hz/T (the correct physical value, gamma/2pi = 28 GHz/T) while the struct field documents it as rad/(s*T). SEPARATELY THE SIGN IS WRONG for the stated geometry: the module docstring and the paper both describe a PERPENDICULARLY magnetized film, for which the demagnetizing field SUBTRACTS -- f = (gamma/2pi)(B_ext - mu_0 M_s) = -3.53 GHz here, i.e. B_ext = 50 mT does not even saturate the film out of plane, which is why the paper uses 185-200 mT. The paper's Appendix A never writes B_ext/mu_0 + M_s."
+verdict = "refuted"
+verdict_reason = "The 6.3 GHz figure survives only under a unit reading THE CODE ITSELF CONTRADICTS -- the same function labelled rad/s and converted by the repo's own converter gives 1.007 GHz -- and the plus sign is wrong for the perpendicular geometry the module claims to model, at a field below the 176 mT needed to saturate it."
+recommended_status = "Refuted"
+verification_rule = "New test asserting rad_per_s_to_ghz(magnon_frequency_homogeneous(...)) equals the intended FMR frequency after the gamma unit and the demagnetizing sign are fixed. The existing test_magnon_frequency_at_k_zero only asserts 1 < f < 20 GHz and PASSES UNDER EITHER CONVENTION, so it cannot catch this."
+source_url = "https://arxiv.org/abs/2601.03210"
+source_sha256 = "79148155cfb54d20b64c06b6826f0f4cc3bc79099d09beaf268db01c7815e56d"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1240"
+decidability = "external"
+falsifier = "False if S = 14.2 has no derivation in the cited source or in the repo, or if the standard YIG spin bookkeeping gives a different effective spin per the stated decomposition."
+check_performed = "Read magnonic.rs yig_effective_spin / hp_validity_bound docstrings; searched arXiv:2601.03210v2 for 14.2, 28.4, and the HP section; checked YIG crystallography against the code's own decomposition."
+observed = "yig_effective_spin() returns A BARE LITERAL 14.2 with the comment 'Per magnetic site in a simple model: S ~ 14.2 is conventional' and no derivation. The docstring is INTERNALLY INCONSISTENT THREE WAYS: it says '20 Fe3+ ions per formula unit' (Y3Fe5O12 has 5), then '12 octahedral (up) and 8 tetrahedral (down), net = 12*5/2 - 8*5/2 = 10', then 'Per primitive cell with 4 formula units: S_eff = 40' -- three mutually incompatible numbers, none of them 14.2. THE SITE LABELS ARE ALSO SWAPPED: YIG's 24d sites are TETRAHEDRAL (12 per primitive cell of 4 f.u.) and the 16a sites are OCTAHEDRAL (8 per primitive cell), with the tetrahedral majority setting the net moment. Correct bookkeeping: net 5 mu_B per formula unit, S_net = 10 per 20-Fe3+ primitive cell -- so 2S = 20, not 28.4. The paper never states 14.2, 28.4, or a sublattice count; 'with 10 sublattices' appears nowhere in the paper or the code."
+verdict = "refuted"
+verdict_reason = "S = 14.2 is an UNSOURCED LITERAL; the code's own justification contradicts itself three ways and swaps the octahedral and tetrahedral site assignments; the correct net spin for the stated 20-Fe3+ primitive cell is 10, giving 2S = 20. Separately, nothing in the tight-binding path uses spin operators, so the HP bound CONSTRAINS NOTHING the repo computes."
+recommended_status = "Refuted"
+verification_rule = "Replace yig_effective_spin with a derivation from (n_tetrahedral - n_octahedral) * 5/2 per primitive cell and a unit test asserting 2S = 20; or close as Methodology-Insufficient since the HP bound is unused by any computation."
+source_url = "https://arxiv.org/abs/2601.03210"
+source_sha256 = "79148155cfb54d20b64c06b6826f0f4cc3bc79099d09beaf268db01c7815e56d"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1237"
+decidability = "internal"
+falsifier = "False if point_defect_modes contains no reference to Gilbert damping and therefore cannot produce any quality factor, or if the localized mode count is supercell-size dependent (indicating bulk states are being reported)."
+check_performed = "grep for alpha/quality_factor/4100 across crates/quantum_core; point_defect_modes at radius 2/3/4; independent open-boundary supercell rebuild with inverse participation ratio per eigenvector, with and without the kagome vacancy; paper Sec. V.C / Fig. 9 text."
+observed = "alpha appears ONLY as a stored field YigParams::alpha = 1e-4 and IS NEVER READ by any band, defect, or linewidth calculation. All Hamiltonians are Hermitian and all eigenvalues real, so NO LINEWIDTH EXISTS. point_defect_modes returns 15, 25 and 52 'in-gap modes' at radius 2, 3, 4 -- GROWING WITH SUPERCELL SIZE -- and most are bulk flat-band states at exactly 2.18174 and 2.23664 GHz. The genuine defect state is a single level at 1.84023 GHz with IPR = 1.1, present at radius 3 and 4 and absent when no site is removed. Q = 4100 appears in the repo only as a HARDCODED TEST FIXTURE at gororoba_cli_physics/src/nonlocal_report.rs:241. The paper's Q ~ 4100 is a MuMax3 result at B_ext = 200 mT for a defect made by REPLACING one honeycomb site with a disk, in Sec. V.C / Fig. 9, not Fig. 6 as the claim cites."
+verdict = "refuted"
+verdict_reason = "The repo CANNOT COMPUTE Q AT ALL -- there is no damping anywhere in the tight-binding path -- and the defect it constructs (a removed kagome site) is not the defect the paper studies (a substituted honeycomb site). A localized mode does exist, at 1.84023 GHz, so the qualitative existence conjunct survives; the number 4100 is unbacked by any repo computation."
+recommended_status = "Refuted"
+verification_rule = "New test asserting point_defect_modes returns exactly one eigenvalue absent from the no-defect spectrum, at 1.84023 +/- 1e-4 GHz, with IPR < 2, and that this count is INDEPENDENT OF RADIUS. Q requires a non-Hermitian formulation that does not exist; that conjunct should be split out or closed."
+source_url = "https://arxiv.org/abs/2601.03210"
+source_sha256 = "79148155cfb54d20b64c06b6826f0f4cc3bc79099d09beaf268db01c7815e56d"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1238"
+decidability = "internal"
+falsifier = "False if no two-defect construction exists in the repo, or if the computed splitting for adjacent defects differs from 0.18 GHz by more than a factor of two."
+check_performed = "grep for a two-defect entry point; independent open-boundary supercell with kagome orbital 6 removed at cells (c,c) and (c+1,c) [adjacent] and (c,c)/(c+3,c) [far], radius 3 and 4, IPR-filtered eigenvalues; paper Sec. V.C text."
+observed = "NO TWO-DEFECT FUNCTION EXISTS; point_defect_modes hardcodes a single removal at the center cell and the claim's 'modified supercell' is not implemented. Constructed independently: single defect gives 1.84023 (IPR 1.1); two adjacent give 1.84016 and 1.84030, SPLITTING = 1.4e-4 GHz; two separated by three cells give splitting < 1e-5 GHz. Paper Fig. 9(b): single-defect mode at 1.47 GHz splits into 1.38 and 1.56 GHz, 2*Delta ~ 0.18 GHz, from MuMax3 at B_ext = 200 mT; the paper states no distance dependence, and the section is V.C, not V.B as the claim cites."
+verdict = "refuted"
+verdict_reason = "The splitting the repo model actually produces is 1.4e-4 GHz, ABOUT 1300x SMALLER than the claimed 0.18 GHz, because removing a kagome site leaves a near-single-orbital state with almost no inter-defect overlap. Decay with distance is directionally right but the magnitude conjunct and the section citation are both wrong, and NOTHING IN THE REPO COMPUTES IT."
+recommended_status = "Refuted"
+verification_rule = "A new two-defect supercell entry point plus a test asserting the adjacent-pair splitting and its decay ratio; until that exists the claim has no repo referent."
+source_url = "https://arxiv.org/abs/2601.03210"
+source_sha256 = "79148155cfb54d20b64c06b6826f0f4cc3bc79099d09beaf268db01c7815e56d"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1247"
+decidability = "internal"
+falsifier = "False if the Sweep subcommand does not accept a d/a parameter, or if no code path maps hole_ratio onto t_sk, t_pk, or any on-site energy."
+check_performed = "Read the Sweep match arm in magnonic_band_structure.rs:391-400; grepped hole_ratio across all crates; compared band energies for a_nm = 100 vs 400."
+observed = "The Sweep match has EXACTLY ONE ARM, 'delta-eps'; every other value including 'hole-ratio' and 'b-ext' hits the wildcard, prints 'Unknown sweep parameter' and returns -- EVEN THOUGH the binary's own usage docstring advertises them. MagnonicCrystalGeometry::hole_ratio is read only by hole_diameter(), which nothing else calls. MagnonicTBParams has no d/a field and build_magnonic_9band takes no d/a argument. CONFIRMING TOTAL DECOUPLING: E(Gamma) at a_nm = 100 and a_nm = 400 differ by 0.000e0 -- the only geometric input to the model does not affect the spectrum at all. Separately, the paper's own d/a sweep (Fig. 2) reports d/a = 0 as the HOLE-FREE free-magnon spectrum with no Dirac point to close."
+verdict = "refuted"
+verdict_reason = "THERE IS NO d/a SWEEP. The parameter cannot enter the tight-binding model through any path, the CLI rejects it, and the claim's physical statement misdescribes the paper's d/a = 0 case, which is a hole-free film rather than a closed Dirac gap."
+recommended_status = "Refuted"
+verification_rule = "A CLI test asserting `magnonic-band-structure sweep --param hole-ratio` exits nonzero today; the claim needs an implemented d/a -> (t_sk, t_pk) map before it has any referent."
+source_url = "https://arxiv.org/abs/2601.03210"
+source_sha256 = "79148155cfb54d20b64c06b6826f0f4cc3bc79099d09beaf268db01c7815e56d"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1246"
+decidability = "internal"
+falsifier = "False if the fraction of total |Berry curvature| inside discs around K and K' is not much larger than those discs' share of BZ area, or if the result is grid-dependent."
+check_performed = "fhs_berry_curvature on the GAPPED model (delta_eps_s in {0.02, 0.05, 0.10, 0.30}), bands 0 and 1, n_grid 61 and 121; fraction of sum|F| inside two discs of radius 0.10|b1| centered on K and K', normalized against those discs' BZ area fraction of 0.0726."
+observed = "delta_s = 0.02: 0.7108 of sum|F| in 0.0726 of the area = 9.80x enhancement; peak at (s,t) = (0.664, 0.336) = K. delta_s = 0.05: 0.4388, 6.05x. delta_s = 0.10 (THE REPO'S OWN kaman_default): 0.2574, 3.55x. delta_s = 0.30: 0.1331, 1.83x. Grid-converged: 61 and 121 agree to 1e-4, and peak magnitude scales as 1/n^2 as it should for plaquette flux, so no aliasing. CONTROL: on the SYMMETRIC model, where F must vanish identically, single-band FHS instead returns SATURATED |F| = pi values at the band-touching points -- the artifact signature."
+verdict = "partially_confirmed"
+verdict_reason = "Curvature does peak at K and K' and the peak location is correct, but 'negligible elsewhere' is FALSE AT EVERY TESTED MASS: 29 percent of the total weight is outside the discs at delta_s = 0.02 and 74 percent at the repo's own default delta_s = 0.10. The claim is a small-mass statement and the repo's default parameters sit OUTSIDE the regime where it holds. This matches the paper's own caveat (Sec. V.A)."
+recommended_status = "Provisional"
+verification_rule = "New test asserting that at delta_eps_s = 0.02 the fraction of sum|F| within 0.10|b1| of K/K' exceeds 0.65 at n_grid 61 and 121, and FALLS BELOW 0.30 at delta_eps_s = 0.10 -- encoding the mass dependence rather than an unqualified 'negligible elsewhere'."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1250"
+decidability = "internal"
+falsifier = "False if the valley-resolved Berry curvature integral for the gapped Dirac bands is not near +/-0.5 at small breaking, or if it does NOT vary continuously with breaking strength (i.e. if it were in fact quantized)."
+check_performed = "valley_chern_number on bands 0 and 1 for delta_eps_s in {0.005..0.40}, at n_grid 61, 121, 201; band_chern_number over the full BZ for all nine bands as a control; inspected the s > t half-BZ partition against the K/K' fractional coordinates."
+observed = "VCN(K) band 0 / band 1: 0.005 -> -0.5140/+0.5636; 0.01 -> -0.4878/+0.5365; 0.02 -> -0.4366/+0.4835; 0.05 -> -0.3045/+0.3459; 0.10 -> -0.1687/+0.2007; 0.20 -> -0.0649/+0.0657. Grid-converged to 1e-4 across 61/121/201 at every mass. The integration domain is correct: K = (2/3, 1/3) has s > t and K' = (1/3, 2/3) has s < t. CONTROL: full-BZ Chern is 0.000 for all nine bands at delta_s = 0.02, BUT band 5 returns exactly -1.000 at delta_s = 0.05 and band 6 exactly +1.000 at delta_s = 0.10 -- IMPOSSIBLE for this Hamiltonian, whose real hopping amplitudes give H(-k) = conj(H(k)) and therefore force every band Chern number to zero (the withdrawn wording said 'real symmetric Hamiltonian'; H(k) is complex Hermitian, and the vanishing follows from spinless time reversal, not from real symmetry), traceable to single-band FHS applied to the exactly degenerate flat bands."
+verdict = "confirmed"
+verdict_reason = "Both conjuncts hold and THE HEDGE IS THE LOAD-BEARING PART: VCN is -0.51/+0.56 in the small-mass limit, close to the continuum Dirac expectation of +/-0.5, and it decays smoothly by a factor of eight as the mass grows, so it is manifestly NOT quantized. CAVEAT: the repo's own kaman_default breaking of 0.10 already puts VCN at -0.17/+0.20, far from 0.5, so the claim is true only at masses roughly an order of magnitude below the shipped default."
+recommended_status = "Verified"
+verification_rule = "New test asserting |valley_chern_number(model(0.005, 0.0025), 0, 121, Valley::K)| in [0.45, 0.60] and |valley_chern_number(model(0.20, 0.10), 0, 121, Valley::K)| < 0.10, with n_grid 61 and 121 agreeing to 1e-3."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1239"
+decidability = "internal"
+falsifier = "False if no ribbon eigenstate inside the bulk gap has its weight concentrated on the cells adjacent to the sign flip, or if in-gap states are bulk states leaking through."
+check_performed = "build_domain_wall_supercell(kaman_default, kaman_default, 20, 400.0); bulk band edges on a 40x40 grid; ribbon eigenvectors at k = 0.30, 1/3, 0.40, 0.50, 2/3 along b1; per-cell |psi|^2 summed over the wall cells, the periodic seam, and eight interior bulk cells."
+observed = "On-site profile per cell = +0.20 x10 then -0.20 x10, so the ribbon carries TWO WALLS: one at cell 10 and one at the periodic seam. In the p-gap [1.8096, 2.2366]: bands 118/119 (E = 1.831/1.845 at k=0.30) have weight 1.0000 at the seam wall and 0.0000 in the bulk; bands 120/121 (2.2300/2.2344) have 0.985/0.968 at the cell-10 wall. In the s-gap [1.5148, 1.6337]: bands 40/41 (1.6200/1.6285) have 0.954/0.904 at the cell-10 wall. Band 120 disperses UPWARD and band 121 DOWNWARD over k = 0.30 -> 0.40, i.e. a COUNTER-PROPAGATING PAIR. The other 16 states in the gap window are bulk flat-band states pinned at exactly 1.80964."
+verdict = "partially_confirmed"
+verdict_reason = "Wall-localized, dispersing in-gap modes exist in both the s and p gaps with >90 percent of their weight on three cells, and they come in counter-propagating pairs -- the structural signature claimed. The 'VALLEY-POLARIZED' conjunct is NOT DECIDED: establishing it requires projecting each mode onto K versus K' momentum content, which the repo provides no machinery for."
+recommended_status = "Provisional"
+verification_rule = "New test asserting build_domain_wall_supercell(.., 20, ..) has at least two eigenstates in [1.8096, 2.2366] at k = b1/3 with summed |psi|^2 over cells 9-11 exceeding 0.9, and that no such state exists under InversionBreakingParams::none()."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1244"
+decidability = "internal"
+falsifier = "False if E(k) != E(-k) with zero InversionBreakingParams. The claim's conditional structure is false if E(k) = E(-k) ALSO holds with NONZERO breaking."
+check_performed = "500 pseudo-random k, all nine bands, for both InversionBreakingParams::none() and ::kaman_default(); max |Im(t)| over the full hopping list."
+observed = "Symmetric model: max |E(k) - E(-k)| = 0.000e0. INVERSION-BROKEN MODEL: max |E(k) - E(-k)| = 0.000e0 AS WELL. max |Im(amplitude)| over all 18 hoppings = 0.000e0 -- every hopping is REAL. CORRECTED 2026-08-06 (orchestrator post-write review): the withdrawn wording said 'so H(k) is a real symmetric matrix and H(k)* = H(-k) identically'. H(k) is NOT real symmetric. hamiltonian_at_k at crates/quantum_core/src/tight_binding.rs:243-262 accumulates amplitude * exp(i k.R) and adds the conjugate to the transposed entry, so H(k) is COMPLEX HERMITIAN. What real amplitudes give is H(-k) = conj(H(k)), and since H is Hermitian conj(H(k)) = H(k)^T, whose spectrum equals that of H(k). E(k) = E(-k) therefore follows for every parameter set, but through spinless time-reversal acting on a Hermitian matrix, not through real symmetry."
+verdict = "confirmed"
+verdict_reason = "CORRECTED 2026-08-06 (orchestrator post-write review); the withdrawn verdict was partially_confirmed with the reason 'the claim's ATTRIBUTION IS WRONG'. The claim states a conditional: inversion preserved implies E(k) = E(-k). A conditional is not falsified by its consequent also holding when its antecedent fails. E(k) = E(-k) was observed with zero InversionBreakingParams, so the claim SURVIVES ITS STATED FALSIFIER; preserved inversion is sufficient, merely not necessary. The durable finding is weaker and different: the repo test named test_time_reversal_symmetry passes unchanged under maximal inversion breaking, so the TEST is non-discriminating even though the CLAIM is true. A discriminating negative control must introduce a genuinely time-reversal-breaking complex (Haldane-type) hopping, not a different onsite inversion-breaking term."
+recommended_status = "Provisional"
+verification_rule = "Restate as: E(k) = E(-k) holds for ALL InversionBreakingParams because every Hopping.amplitude is real. New test asserting E(k) == E(-k) WITH kaman_default breaking AND asserting model.hoppings.iter().all(|h| h.amplitude.im == 0.0), so the assertion fails loudly if a complex (Haldane-type) hopping is ever introduced."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1235"
+decidability = "internal"
+falsifier = "False if the K-point gap does not grow monotonically from zero as delta_eps_s, delta_eps_p increase, or if valley Chern numbers remain zero after the gap opens."
+check_performed = "band_energies at K for delta_eps_s in {0, 0.005, 0.01, 0.02, 0.05, 0.10, 0.20} with delta_eps_p = delta_eps_s/2; valley_chern_number bands 0 and 1, n_grid 61/121/201."
+observed = "gap(0,1) at K = 0.000000, 0.007230, 0.014459, 0.028913, 0.072203, 0.143829, 0.282649 GHz; gap/delta_s = 1.4459, 1.4459, 1.4456, 1.4441, 1.4383, 1.4132 -- LINEAR TO 0.2 PERCENT below delta_s = 0.05. gap(3,4) and gap(7,8) also open. VCN(K) band 0 goes from numerically meaningless at delta = 0 (bands degenerate, single-band FHS undefined) to a converged -0.5140 at delta_s = 0.005."
+verdict = "confirmed"
+verdict_reason = "All three K-point degeneracies gap linearly in the breaking strength and the valley-resolved Berry-curvature integral becomes well-defined and nonzero, exactly as stated."
+recommended_status = "Verified"
+verification_rule = "New test asserting gap(0,1) at K equals 0 within 1e-12 at delta = 0 and equals 1.446*delta_eps_s within 1 percent for delta_eps_s in [0.005, 0.05]. The existing test_9band_inversion_breaking_opens_gap is satisfied by a min_gap_sym < 0.01 escape clause and does not actually test gap opening."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1241"
+decidability = "internal"
+falsifier = "False if hexagonal_high_symmetry_path uses different reciprocal coefficients, or if the resulting M and K do not satisfy |M| = |b1|/2 and |K| = |b1|/sqrt(3) with K equidistant from three reciprocal lattice points."
+check_performed = "Read hexagonal_high_symmetry_path (tight_binding.rs:315-339); computed |b1|, |b2|, the b1.b2 angle, |M|, |K|, |M|/|K|, and |K - G| for G in {0, b1, b1+b2}."
+observed = "Code uses m = b1.scale(0.5) and k_pt = b1.scale(2/3) + b2.scale(1/3), VERBATIM as claimed. cos(b1,b2) = -0.50000000 exactly (120 deg). |M| = |b1|/2 exactly. |K| = |b1|/sqrt(3) exactly. |M|/|K| = 0.86602540 = sqrt(3)/2. |K - 0| = |K - b1| = |K - (b1+b2)|, so K is the BZ corner equidistant from three reciprocal points."
+verdict = "confirmed"
+verdict_reason = "The code uses exactly the stated coefficients and they produce the correct hexagonal BZ high-symmetry points by three independent geometric checks."
+recommended_status = "Verified"
+verification_rule = "tight_binding.rs test_hexagonal_reciprocal_orthogonality + test_hexagonal_path_endpoints, extended with assertions |M| == |b1|/2 and |K| == |b1|/sqrt(3) to 1e-12."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1242"
+decidability = "internal"
+falsifier = "False if max over i,j of |H[i,j] - conj(H[j,i])| exceeds machine epsilon for any k."
+check_performed = "hamiltonian_at_k at 2000 pseudo-random k in [-1e3, 1e3]^2 (about 55000 |b1| out), for both the symmetric and the inversion-broken model."
+observed = "max |H - H^dag| = 0.000e0 EXACTLY, over 4000 Hamiltonian constructions. The construction is exactly as the claim describes: hamiltonian_at_k adds val = t*exp(ik.R) to H[from,to] and cconj(val) to H[to,from] in the SAME loop iteration (tight_binding.rs:260-268), so Hermiticity is a structural identity independent of floating-point error."
+verdict = "confirmed"
+verdict_reason = "Exact to the bit, and the mechanism the claim names IS the mechanism in the code -- the conjugate is added in the same statement pair, so no cancellation error can accumulate."
+recommended_status = "Verified"
+verification_rule = "tight_binding.rs test_graphene_hermitian and magnonic_crystal.rs test_9band_hermitian; strengthen by sweeping k over a grid rather than the single point (0.5, 0.3)."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1243"
+decidability = "internal"
+falsifier = "False if |E(k+G) - E(k)| exceeds accumulated floating-point roundoff for any k and any G = n1*b1 + n2*b2."
+check_performed = "200 pseudo-random k, each compared against seven G vectors including (3,-2), (7,5) and (100,-100), all nine bands."
+observed = "max |E(k+G) - E(k)| = 9.770e-14 GHz absolute, 7.061e-14 relative, over 12600 band comparisons. The residual is expected roundoff in cos/sin of k.R at |G| up to 100 reciprocal vectors; it is not a model error."
+verdict = "confirmed"
+verdict_reason = "Periodicity holds to floating-point precision, and it is structural: H(k) depends on k only through exp(i k.R) with R a Bravais vector."
+recommended_status = "Verified"
+verification_rule = "tight_binding.rs test_graphene_periodicity and magnonic_crystal.rs test_9band_periodicity; extend to at least one large-|G| case to expose the roundoff scaling."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1245"
+decidability = "internal"
+falsifier = "False if the orbital labels at indices 0,3,6,7,8 are not s-type or those at 1,2,4,5 are not p-type."
+check_performed = "Enumerated model.orbitals labels, positions and on-site energies from build_magnonic_9band."
+observed = "0 s_A, 1 px_A, 2 py_A, 3 s_B, 4 px_B, 5 py_B, 6 s_K1, 7 s_K2, 8 s_K3. The partition is exactly {0,3,6,7,8} s-type and {1,2,4,5} p-type. Orbital-resolved analysis is meaningful: at a generic k the eigenvector weights split cleanly (band 5 is 1.0000 p and 0.0000 kagome)."
+verdict = "confirmed"
+verdict_reason = "True, and TRIVIALLY so -- it restates the constructor's own orbital ordering rather than a derived property. Its only non-vacuous content is that the partition supports orbital-resolved analysis, which the eigenvector weights confirm."
+recommended_status = "Verified"
+verification_rule = "New test asserting model.orbitals[i].label starts with 's_' for i in {0,3,6,7,8} and with 'px_'/'py_' for i in {1,2,4,5}. Flag as REDUNDANT with the docstring table at magnonic_crystal.rs:12-24."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1248"
+decidability = "internal"
+falsifier = "False if eigenvalues from build_magnonic_9band differ from those of an independently constructed TightBindingModel with the documented orbitals and hoppings by more than machine precision."
+check_performed = "Rebuilt the 9-band model BY HAND from the docstring table plus the six documented bonds, without calling build_magnonic_9band; compared band energies at 400 k-points."
+observed = "max |dE| = 8.438e-15 GHz over 3600 band comparisons. n_orbitals = 9, n_hoppings = 18. build_magnonic_9band's RETURN TYPE IS TightBindingModel, so the mapping is exact by construction, not by numerical agreement."
+verdict = "confirmed"
+verdict_reason = "True but TAUTOLOGICAL: the function signature returns a TightBindingModel, so 'maps exactly' cannot fail. The non-vacuous half -- that the engine is model-independent -- is carried instead by the engine reproducing CLOSED-FORM results for unrelated models: test_square_cosine_band matches -2cos(kx)-2cos(ky) to 1e-10 and test_kagome_flat_band_energy matches E = -2t to 1e-10."
+recommended_status = "Verified"
+verification_rule = "tight_binding.rs test_square_cosine_band and test_kagome_flat_band_energy -- analytic cross-checks on NON-MAGNONIC models -- rather than any test of build_magnonic_9band's return type."
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+THE BLOCK'S HEADLINE IS A PROVENANCE FAILURE that decides every 'matches Kaman et al.'
+conjunct at once. The fetched primary source (arXiv:2601.03210v2, sha256 79148155...)
+gives Table I as eps_s/eps_p/eps_k/t_sk/t_pk = 1.69/3.15/3.17/-0.38/-0.63 GHz and
+Table II as 1.93/2.83/3.28/-0.45/-0.49 with delta_eps_s/delta_eps_p = 0.12/0.35. The
+repo's kaman_default is 1.50/1.80/2.08/0.25/0.15 and its InversionBreakingParams is
+0.10/0.05 -- NOT ONE OF THE TWELVE NUMBERS MATCHES, and the signs of both hoppings are
+flipped. The geometry constants diverge the same way: the paper's main subject is
+d/a = 0.8, a = 333 nm, t = 15 nm, B_ext = 185 mT (200 mT for the defect study), against
+the repo's 0.6, 400 nm, 20 nm, 50 mT.
+
+DEFECT CLASS (post-write review): this is TARGET LEAKAGE / CALIBRATION
+CIRCULARITY, the scientific analogue of train-test contamination, and it deserves
+first-class status alongside the other six fleet structures. The evidentiary
+direction is REVERSED: observation -> model parameter -> model output was
+presented as independent model -> prediction -> agreement with observation.
+GOVERNANCE INVARIANT it implies: an observable used to fit, calibrate, initialize
+or select a model MAY NOT subsequently validate a claim predicting that
+observable, unless a disjoint held-out datum is identified. This can occur in
+cosmological fitting, material-property reconstruction, parameter extraction,
+spectral inversion and scattering fits, so it is not specific to this block.
+
+THE ONSITE ENERGIES ARE OUTPUT LANDMARKS. 1.50, 1.80 and 2.08 are the frequencies
+the paper's PROSE mentions (1.5 GHz graphene-like region, the 1-2 vs 2-3.5 GHz s/p
+split, the 2.08 GHz flat band OBSERVED in MuMax3) inserted directly as ON-SITE ENERGIES.
+That inversion is the root cause of the numerical misses in C-1231 and C-1232: eps_k =
+2.08 was set to the OBSERVED flat-band frequency, so after hybridization the flat band
+lands at 2.2351 rather than 2.08; and eps_s = 1.50 was set to the OBSERVED Dirac
+frequency, so the crossing lands at 1.2545. ONE MISTAKE, TWO REFUTATIONS.
+SCOPE CORRECTION 2026-08-06 (orchestrator post-write review). Two earlier sentences
+overreached and are withdrawn: the header "THE REPO'S PARAMETERS ARE NOT A FIT TO
+ANYTHING", which asserts how the numbers came to be chosen, and "Setting a model's
+inputs to its intended outputs guarantees the outputs will be wrong", which asserts a
+theorem. Neither is supported. Commit-history and author-intent evidence was not
+gathered, so provenance of the constants remains an inference from value matching; and
+using target-like values as inputs does not mathematically force wrong outputs, it
+forces LOSS OF INDEPENDENT EVIDENTIARY VALUE, after which hybridization may or may not
+move them. The defensible form: the model uses values matching reported output
+landmarks as onsite parameters, so agreement with those same landmarks is not an
+independent prediction; in this implementation hybridization then shifts them, which is
+the concrete failure observed.
+
+A SECOND FACT DECIDES THREE MORE CLAIMS: max |Im(hopping amplitude)| = 0 over all 18
+hoppings, so H(-k) = conj(H(k)) and, H(k) being complex Hermitian, E(k) = E(-k)
+identically. (An earlier wording said "H(k) is real symmetric"; it is not, per
+tight_binding.rs:243-262, and the corrected route is spinless time reversal.) So (a)
+C-1244 is TRUE and survives its stated falsifier -- preserved inversion is sufficient
+though not necessary -- while the repo test named test_time_reversal_symmetry is
+non-discriminating, since it cannot fail for the reason its name implies; (b) every band Chern number is structurally
+zero, so C-1250's non-quantization hedge is the only thing that COULD be true about
+valley topology here, and it is; (c) a real-hopping tight-binding model cannot represent
+broken time-reversal at all -- a limitation of the paper's own fitting approach carried
+into the repo, not a repo defect.
+
+THIRD, THE SAME NUMERICAL MACHINERY FAILS THE SAME WAY across C-1235, C-1237, C-1246 and
+C-1250, and the failure is BAND DEGENERACY. The model has three EXACTLY flat bands
+(bandwidth 5e-15 to 8e-15 GHz) at 1.644873, 1.800000 and 2.235127 GHz, all p-orbital
+derived. Single-band FHS is UNDEFINED where bands touch, and the consequences are
+visible: spurious saturated |F| = pi plaquettes on the symmetric model where curvature
+must vanish; band Chern numbers of exactly -1.000 and +1.000 on flat bands where
+time-reversal forbids anything but zero; and point_defect_modes reporting 15, 25 and 52
+'in-gap modes' at radius 2, 3, 4 because it is COUNTING BULK FLAT-BAND STATES pinned at
+the gap edge rather than defect states. The one genuine defect state, at 1.84023 GHz with
+IPR 1.1, is a single entry in that list at every radius. A DEGENERACY GUARD on
+fhs_berry_curvature and band_chern_number, and a LOCALIZATION FILTER on
+point_defect_modes, WOULD REPAIR FOUR CLAIMS AT ONCE.
+
+WHAT IS NEW: the exactly flat band at E = eps_p = 1.800000 is PROVABLE, not merely
+observed. The four p orbitals {1,2,4,5} carry a degenerate diagonal block eps_p*I and
+couple to the three kagome sites through a 3x4 matrix, whose nullity is at least 1 for
+every k; that null vector is a zero-kagome-weight eigenstate at eps_p. The probe confirms
+both halves -- band 5 has weight 1.0000 on the p sector and 0.0000 on kagome at generic k
+-- and confirms the falsifier: switching on delta_eps_p = 0.05 splits the p block into
+two 3x2 problems and the bandwidth jumps from 5.3e-15 to 1.61e-3, while bands 2 and 6
+stay at 6e-15. THIS REFUTES C-1232's STATED MECHANISM INDEPENDENTLY OF ITS ENERGY:
+destructive interference on triangular plaquettes cannot be the cause because the model
+has NO KAGOME-KAGOME BONDS AT ALL (magnonic_crystal.rs:288-293 sets them to zero BY
+DESIGN, with a comment saying so, and the hopping list is 18 bonds, every one of them
+honeycomb-to-kagome).
+"""
+new_claims_proposed = """
+1. The 9-band model has EXACTLY THREE dispersionless bands, at 1.644873, 1.800000 and
+   2.235127 GHz, with bandwidths below 1e-14 GHz at any BZ sampling. The one at
+   1.800000 = eps_p is the NULL VECTOR of the 3x4 kagome-to-p coupling block and carries
+   zero kagome weight. FALSIFIER: any band 5 energy differing from eps_p by more than
+   1e-12 at any k, or nonzero weight on orbitals 6-8 in its eigenvector.
+
+2. delta_eps_p != 0 DESTROYS the eps_p flat band (bandwidth 5.3e-15 -> 1.61e-3 GHz at
+   delta_eps_p = 0.05) while delta_eps_s alone leaves it exact. FALSIFIER: bandwidth of
+   band 5 staying below 1e-12 at delta_eps_p = 0.05.
+
+3. band_chern_number returns SPURIOUS NONZERO INTEGERS for the exactly degenerate flat
+   bands -- -1.000 for band 5 at delta_eps_s = 0.05 and +1.000 for band 6 at 0.10 --
+   although all hoppings are real and time-reversal forces C = 0 for every band.
+   FALSIFIER: a degeneracy-aware (multi-band non-Abelian) FHS returning 0 at the same
+   parameters.
+
+4. point_defect_modes DOES NOT ISOLATE DEFECT STATES: its returned count grows 15/25/52
+   with supercell radius 2/3/4 because bulk flat-band states at 2.18174 and 2.23664 GHz
+   fall inside its detected gap. The single genuine localized state is at 1.84023 GHz
+   with IPR 1.1, size-independent. FALSIFIER: a radius-independent returned count.
+
+5. build_domain_wall_supercell produces TWO DOMAIN WALLS, not one: the a2 wrap-around
+   hoppings make cell n_cells-1 adjacent to cell 0 across a second sign flip. The two
+   walls host in-gap modes at DIFFERENT energies (1.831/1.845 GHz at the seam versus
+   2.230/2.234 GHz at cell 10, at k = 0.30 b1). FALSIFIER: an open (non-wrapping) ribbon
+   showing the same doubled set of in-gap modes.
+
+6. The repo's magnonic TB parameters are NOT those of Kaman et al.: twelve of twelve
+   Table I/II values differ, both hopping signs are flipped, and four of four geometry
+   constants differ. FALSIFIER: any version of arXiv:2601.03210 containing eps_s = 1.50,
+   eps_p = 1.80, eps_k = 2.08, t_sk = 0.25, t_pk = 0.15.
+
+7. YigParams::gamma = 2.8e10 is DOCUMENTED as rad/(s*T) but is used, and is physically
+   correct, as Hz/T (gamma/2pi = 28 GHz/T). Every consumer that pipes
+   magnon_frequency_homogeneous through rad_per_s_to_ghz is off by 2pi. FALSIFIER: a
+   consumer whose published number matches the rad/s reading.
+"""
+gaps = """
+NOT DECIDED, and what each would need:
+
+- VALLEY POLARIZATION of the domain-wall boundary modes (C-1239, second conjunct). The
+  modes are confirmed wall-localized (>90 percent weight on three cells) and
+  counter-propagating (band 120 disperses up, 121 down over k = 0.30 -> 0.40 b1), but
+  assigning each to K or K' requires projecting the ribbon eigenvector onto the K and K'
+  momentum components of the folded bulk BZ. No such projection exists in
+  tight_binding.rs. Small addition: Fourier transform the eigenvector along the periodic
+  direction and compare weight near k = 1/3 b1 versus 2/3 b1.
+
+- QUALITY FACTOR Q (C-1237). STRUCTURALLY IMPOSSIBLE in the current code: the
+  tight-binding path is Hermitian end to end and alpha is a stored constant nothing
+  reads. Needs either a non-Hermitian H - i*alpha*omega formulation or the micromagnetic
+  route the paper used (MuMax3 ringdown at B_ext = 200 mT). Neither exists here.
+
+- WHETHER THE MODEL WITH THE PAPER'S PARAMETERS (Table I: 1.69/3.15/3.17/-0.38/-0.63)
+  REPRODUCES THE PAPER'S FIG. 5. This is the check that would actually test C-1231's
+  external conjunct, and it was not run because the paper plots a rectangular-cell
+  supercell projection (18 orbitals) that the repo's primitive-cell hexagonal path does
+  not produce. Needs the rectangular-cell construction plus the Table I values.
+
+- WHETHER 1.2545 GHz WOULD MOVE TO ~1.5 GHz UNDER THE PAPER'S PARAMETERS. Not run for
+  the same reason; it is the obvious next experiment and would decide whether C-1231's
+  energy miss is a PARAMETER error or a MODEL error.
+
+- The paper's SUPPLEMENTAL MATERIAL (Secs. III, V, VIII), which holds the Berry curvature
+  maps, the VCN-versus-mass data, and the two-defect details, is a separate ancillary
+  document not contained in the 14-page arXiv PDF fetched here. C-1246, C-1250 and
+  C-1238 could be compared against the authors' own numbers if it were retrieved.
+
+PROCESS NOTE: this block required running the repo, and the workspace has no example or
+binary that exposes eigenvectors. A temporary analysis harness was added at
+crates/quantum_core/examples/magnon_falsification_probe.rs, built under the standard
+warnings-as-errors lints (one unused_variables error was fixed IN THE PROBE ITSELF; no
+repository source was modified), run three times, and DELETED. git status --porcelain is
+empty apart from the deposited PDF. No registry file was touched. [ORCHESTRATOR
+CONFIRMED: git status --porcelain is completely empty.]
+"""
