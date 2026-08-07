@@ -1,0 +1,299 @@
+# Fleet return: block F_HALO, 8 claims. HTML entities restored to ASCII.
+# Orchestrator spot-checks, both confirmed and one extended:
+#   - md5sum of the CD sweep: seven files D=16..1024 share db4d2f0f3f90ebd37f8d72a0f8c84022.
+#     EXTENSION: the two 2026-03-19 rerun files (d16_rerun, d32_rerun) share a different
+#     single md5 476cf5d6ced0e21585edd37d150fbd74 WITH EACH OTHER, so the reruns are also
+#     D-independent. The no-op holds across both generations of the sweep.
+#   - data/results/e183/injection_recovery.csv row 1 verbatim:
+#     0,0.43028667284648936,0.29557796840564815,NaN
+#     and row 2: 0.001,0.4302041326623785,0.2954874014904106,295.4874014904106
+#     The file's own recovery_ratio column reports 295x at the smallest injection.
+
+[block]
+id = "F_HALO"
+claim_count = 8
+agent_note = "The block's decisive experiment was ALREADY RUN and already came back null (E-180 SPARC, E-183 MaNGA N=6992, E-193 D=16..1024), so the work was adjudication rather than measurement. Status-mapping rule used throughout, since two entries map verdict to status in opposite directions: a claim whose component facts are all true but whose framing overstates them gets verdict=refuted with recommended_status=Provisional (restate and re-verify); a claim whose operative content is wrong and whose deciding experiment is already complete gets recommended_status=Refuted even where a sub-conjunct survives. Hence C-1331 refuted/Provisional and C-1332 partially_confirmed/Refuted."
+
+[[finding]]
+claim_id = "C-1312"
+decidability = "internal"
+falsifier = "False if a git-tracked file computing v_circ rotation curves or a harmonic/Fourier decomposition of a halo profile was ADDED strictly before harmonic_halos.rs."
+check_performed = "git log --diff-filter=A on harmonic_halos.rs, halo.rs, halo_profile.rs, nfw_utils.rs, spectral.rs, galactic_disk.rs, galaxy_pipeline.rs; then git show 185f1254~1:<file> grepped for v_circ|rotation_curve|fft|fourier|harmonic on every predating file."
+observed = "harmonic_halos.rs and harmonic_stacking.rs both added in 185f1254, 2026-03-12. Predating files: spectral.rs 2026-02-05, halo.rs 2026-03-04, halo_profile.rs 2026-03-06, nfw_utils.rs 2026-03-08, galaxy_pipeline.rs 2026-03-12. Grep across all predating files at 185f1254~1 returned exactly one hit: halo.rs:100 '// Top-hat window function in Fourier space', a Press-Schechter mass-function window, not a rotation-curve harmonic decomposition. Zero v_circ / rotation_curve / fft hits. SEPARATE: the cited path docs/research/high_dimensional_algebra_unification_2026.md does not exist, deleted in 20d93a12 'exterminate legacy markdown mirrors'; content survives at registry/research_narratives.toml:415 and :684-688."
+verdict = "partially_confirmed"
+verdict_reason = "The substantive proposition -- proposal-only, no prior rotation-curve or harmonic-decomposition code -- is confirmed by git history. The locative pointer is stale: the claim asserts the proposal 'exists only as a proposal in' a file since deleted."
+recommended_status = "Verified"
+verification_rule = "git log --diff-filter=A -- crates/cosmology_core/src/harmonic_halos.rs returns 185f1254 (2026-03-12), and no cosmology_core file added before that commit contains v_circ or a halo Fourier decomposition. Repoint where_stated to registry/research_narratives.toml:415."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1313"
+decidability = "internal"
+falsifier = "False if harmonic_halo_modulation does not implement amplitude alpha_zd * (42/84) * (1/n) * exp(-r/r_s) at k_n = 2*pi*n/(7*r_s), n = 1..7."
+check_performed = "Read harmonic_halos.rs lines 43-47 (constants), 86-105 (HarmonicHaloConfig::new_cd assessor_fraction match), 120-190 (harmonic_halo_modulation, v_circ_with_halos)."
+observed = "Code: for n in 1..=config.n_modes { k_n = 2.0*PI*n/(n_comp*r_s); a_n = config.assessor_fraction / n; modulation += a_n * (k_n*r + phi_n).cos() * decay } with decay = (-r_kpc/r_s).exp(), N_BOXKITES_D16 = 7, returning 1.0 + alpha_zd*modulation. Functional form matches the claim exactly at D=16. TWO DEVIATIONS: (1) the factor multiplies v_circ SQUARED (docstring: 'v_circ_modulated^2 = v_circ_nfw^2 * F'), so the fractional amplitude in v_circ itself is alpha_zd*a_n/2 to first order, HALF the stated value. (2) '42/84' appears nowhere in the computation. The value comes from a dimension-keyed match at lines 91-96: 16 => 0.5, 32 => 4.0/7.0 // Pathion Anomaly!, 64 => 1854.0/3036.0 // Chingon FBF, _ => ASSESSOR_FRACTION, where const ASSESSOR_FRACTION: f64 = 0.5. At D=16 the coefficient is the literal 0.5; 42 never enters."
+verdict = "partially_confirmed"
+verdict_reason = "The stated functional form -- 7 modes, k_n = 2*pi*n/(7*r_s), 1/n falloff, exp(-r/r_s) envelope -- is implemented exactly. The amplitude applies to v^2 rather than v (factor 2), and '42/84' is a hardcoded 0.5 selected by a dimension match rather than a computed ratio."
+recommended_status = "Provisional"
+verification_rule = "cargo test -p cosmology_core --lib -- harmonic_halos (13 tests incl. test_seven_distinct_wavenumbers, test_modulation_decays_at_large_r); restate the amplitude as applying to v_circ^2 and the coefficient as 0.5."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1314"
+decidability = "internal"
+falsifier = "False if alpha_zd=0 fails to recover standard NFW exactly, or if the mode count is not 7 at D=16."
+check_performed = "CARGO_TARGET_DIR=.cache/gate-target cargo test -p cosmology_core --lib -- harmonic"
+observed = "test result: ok. 35 passed; 0 failed; 0 ignored; 320 filtered out; finished in 0.04s. Includes test_v_circ_matches_nfw_at_alpha_zero, test_modulation_unity_at_alpha_zero, test_modulation_unity_at_alpha_zero_d32, test_seven_distinct_wavenumbers, test_force_modulation_equals_potential_modulation. The code short-circuits with 'if config.alpha_zd == 0.0 { return 1.0 }', so recovery is exact BY CONSTRUCTION rather than by numerical cancellation."
+verdict = "confirmed"
+verdict_reason = "Exact NFW recovery at alpha_zd=0 is guaranteed by an explicit early return and covered by passing tests at both D=16 and D=32; the 7-mode box-kite structure is present as claimed."
+recommended_status = "Verified"
+verification_rule = "cargo test -p cosmology_core --lib -- harmonic (35 tests pass); anchors experiment E-190."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1331"
+decidability = "internal"
+falsifier = "The load-bearing conjunct is 'five INDEPENDENT contexts, all structurally grounded'. False if any two of the five reduce to one underlying fact, or if any cited context is factually wrong. Threshold: if <= 3 genuinely distinct facts remain, 'five independent' is refuted."
+check_performed = "Read C-003, C-016, C-1262, C-1330 in registry/claims.toml; the assessor-fraction derivation in harmonic_stacking.rs:51-77; the exact flat-band computation and tests in crates/algebra_experimental/src/zd_flat_band_fraction.rs:1-250; the dimension match in harmonic_halos.rs:91-96; insight I-166 (insights.toml:1604)."
+observed = "(1) C-003: 42 assessors / 7 box-kites; optics_core/src/multi_resonator.rs:70 'Sedenion box-kites: 7 components, each with 6 assessors' gives 42 = 7 x 6. (2) C-016: 42 m3 scalar outputs corresponding exactly to the 7 Fano-plane lines with parity sign flips, i.e. 42 = 7 x 6 over the SAME 7-element index set; harmonic_stacking.rs:75 gives n_assessors = (dim/2-1)(dim/2-2), which at D=16 is literally 7*6. (4)+(5) CONTEXT (5) IS FACTUALLY REFUTED BY THE REPO'S OWN PASSING TESTS. C-1331 asserts 'a universal CD doubling invariant fbf = 0.5 that persists at D=32 (105/210) and D=64 (465/930), proven via Rocq (C-1262)'. zd_flat_band_fraction.rs test_pathion_flat_band_fraction asserts the OPPOSITE, in a comment reading 'BREAKTHROUGH: The Monograph hypothesized that FBF = 1/2 is a CD doubling invariant. However, exact pure-Rust computation proves FBF JUMPS to 4/7 (0.5714) at D=32! This is the true mathematical manifestation of the Pathion Cubic Anomaly', with assert_eq!(n, 588) and assert!((fbf - 4.0/7.0).abs() < 1e-6). harmonic_halos.rs:93-94 independently hardcodes 32 => 4.0/7.0 and 64 => 1854.0/3036.0 (0.610672). THREE defects follow: the invariant does NOT persist (0.5 -> 4/7 -> 0.6107); the cited counts are wrong (D=32 has 588 primitive ZD 2-blades, not 210; D=64 has 3036, not 930); and the Rocq attribution is misdirected -- C-1262 in the current registry is about box-counting fractal dimension in sersic.rs. Separately, (4) and (5) conflate two quantities that coincide only at D=16: the ASSESSOR FRACTION n_assessors/n_ZDs, which harmonic_stacking.rs:55-77 proves is identically 0.5 for all dim >= 16 by the tautology n_ZDs = 2*n_assessors (I-166 calls it 'a trivial identity'), and the FLAT-BAND FRACTION nullity/N, which is 0.5, 4/7, 0.6107. (3) Catalan C_5 = 42 = |K_6 vertices| is arithmetically true, but C-1330 calls the connection 'structural' while supplying no bijection to the 7 x 6 skeleton."
+verdict = "refuted"
+verdict_reason = "Not five independent contexts. (1) and (2) share one 7 x 6 Fano/box-kite skeleton; (4) and (5) are one context that conflates the tautological assessor fraction with the flat-band fraction; and (5)'s substantive assertion -- universality of fbf = 0.5 -- is contradicted by the repo's own passing test proving fbf jumps to 4/7 at D=32, cites two wrong ZD counts, and attributes a Rocq proof to an unrelated claim. At most TWO structurally distinct 42-contexts survive, and the 'universal invariant' framing is false."
+recommended_status = "Provisional"
+verification_rule = "cargo test -p algebra_experimental --lib -- flat_band (test_pathion_flat_band_fraction asserts fbf == 4/7 at D=32, n == 588). Any restatement must reproduce 0.5 -> 4/7 -> 0.6107 rather than a universal 0.5, correct the D=32/D=64 counts, and repoint the Rocq citation."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1332"
+decidability = "internal"
+falsifier = "Compound. (a) false if no existing dataset+method could decide the signature; (b) false if the three sensitivity numbers are not linked by the claim's own sqrt(N) mechanism; (c) false if injection-recovery shows the pipeline cannot recover a signal injected at or above the quoted 0.005 limit; (d) false if the repo's own later synthesis concludes SKA/Euclid is required."
+check_performed = "(a) registry/experiments.toml E-180 / E-182 / E-183 / E-193. (b) arithmetic on the repo's own detection_threshold, harmonic_stacking.rs:437 '2.0*sigma_v_frac/(0.5*sqrt(N))'. (c) data/results/e183/injection_recovery.csv, inclination_injection.csv, shmr_scatter_injection.csv, rayleigh_full.csv. (d) registry/insights.toml:1702 (I-182) and :1709 (I-183)."
+observed = "(a) The test EXISTS AND WAS RUN: E-180 SPARC + Gaia, E-183 'MaNGA N=6992 harmonic halo stacking null result', E-193 D=16..1024. The signature was decidable with existing data. (b) The repo formula reduces to alpha_zd_min = 4*sigma_v_frac/sqrt(N). SPARC (N=175, 0.015) implies sigma_v_frac = 0.049608; propagating to N=10000 gives 0.001984, not the claimed 0.005. Inverting the MaNGA pair (10000, 0.005) implies sigma_v_frac = 0.125, propagating back to SPARC as 0.037796, not 0.015. The claim's own mechanism demands a threshold ratio sqrt(10000/175) = 7.559; its numbers give 0.015/0.005 = 3.000. Independently, the quoted N are CATALOG sizes, not post-quality-cut samples: E-193 runs 93 SPARC galaxies (chi2<3, c200>=2) and E-183 runs 6992 MaNGA, against the claim's 175 and ~10000. (c) injection_recovery.csv verbatim: injected 0 -> detected_snr 0.43028667, recovered 0.29557797; 0.001 -> 0.43020413, 0.29548740; 0.002 -> 0.43012157, 0.29539691; 0.004 -> 0.42995639, 0.29521614; 0.008 -> 0.42962581, 0.29485547; 0.016 -> 0.42896374, 0.29413766. THE DECISIVE NUMBER IS THE FIRST ROW: with ZERO signal injected the pipeline reports alpha_zd_recovered = 0.29558, about 60x the 0.005 limit the claim proposes to exclude. Every later row sits within 0.5 percent of that same floor, and detected_snr varies by 0.31 percent total across the whole sweep, IN THE WRONG DIRECTION. Response to injection is indistinguishable from zero. inclination_injection.csv reproduces the flat behaviour in low-i/mid-i/high-i bins at N=3139/2681/1175. shmr_scatter_injection.csv mode 1: exact_power 8.06e-4 vs scatter_median_power 8.41e-3, ratio 10.43 -- halo-mass scatter ALONE generates 10.4x more harmonic power than the measurement. ALSO OBSERVED AND PREVIOUSLY UNREPORTED: rayleigh_full.csv gives R = 0.9745, 0.9695, 0.9725, 0.9768, 0.9814, 0.9862, 0.9904 with p ~ 2.5e-7 to 1.5e-7 at modes 1-7. I-183 states the expected baryonic-noise result as 'Rayleigh R < 0.3 with p > 0.3 at all CD-ZD modes'. Observed R exceeds the stated expectation by more than 3x and p by six orders of magnitude, uniformly at all seven modes. Uniformity across every mode is the signature of a smooth deterministic baseline, not modal structure: jackknifing 1 of 16 x-bins barely perturbs the phase, so R -> 1 mechanically. (d) I-182 verbatim: 'The path forward requires SKA neutral hydrogen kinematics (outer halo x > 3) or Euclid weak lensing (mass-not-velocity) ... The MaNGA IFU data cannot distinguish ZD forcing from baryonic systematics in the inner bulge-disk region.'"
+verdict = "partially_confirmed"
+verdict_reason = "Conjunct (a) is confirmed AND WAS ACTED UPON -- the null result exists and was REPRODUCED LIVE at SNR 0.68. Conjuncts (b), (c), (d) are refuted, now with DIRECT EMPIRICAL BACKING rather than arithmetic alone. The stated SPARC threshold 0.015 is contradicted by the binary's OWN PRINTED 0.0207, the difference being catalog size (175) against post-cut sample (93); the three thresholds remain mutually inconsistent under the repo's own formula at the code's fixed sigma_v_frac = 0.05; the pipeline reports alpha_zd = 0.5408 on SPARC and 0.2956 on MaNGA from data where it detects nothing, so it cannot support any exclusion limit ON EITHER DATASET; and the repo's own E-183 synthesis concludes SKA/Euclid IS required, directly contradicting 'No need to wait for SKA 2030'."
+
+# LIVE SPARC REPLAY (closed the block's main gap; the decisive addition):
+# ./.cache/gate-target/release/harmonic-halo-stacking --sparc
+#   data/external/sparc/table2_rotcurves.dat --nfw-fits
+#   data/external/sparc_nfw/table1.dat --cd-dim 16 --min-c200 2.0 --max-chi2 3.0
+#   --x-min 0.5 --x-max 10.0 --csv <out>
+# stdout verbatim: 'Loaded 175 galaxies ... Normalized 93 galaxies (82 skipped) ...
+#   Galaxies stacked: 93 ... RMS residual: 0.146285 ... Detection SNR: 0.68 ...
+#   alpha_zd estimate: 0.540828 ... Detection threshold (5% v_err): alpha_zd >= 0.0207'
+# (1) SNR 0.68 against a pre-registered 3.0 -- SPARC null CONFIRMED on a live run.
+# (2) Output BYTE-IDENTICAL to the archived harmonic_stacking_d16.csv (both md5
+#     db4d2f0f3f90ebd37f8d72a0f8c84022); RMS/SNR reproduce I-170's 0.1463 / 0.67-0.68.
+#     E-180/E-193 deterministic_replay CONFIRMED rather than merely asserted.
+# (3) THE SPARC FLOOR MIRRORS THE MANGA FLOOR: at an unambiguous non-detection the
+#     pipeline still reports alpha_zd = 0.540828, 36x the 0.015 the claim quotes.
+#     The 0.296 MaNGA floor is NOT a MaNGA artifact.
+# (4) The binary's own threshold is 0.0207 = 4*0.05/sqrt(93), not the claim's
+#     0.015 = 4*0.05/sqrt(175). sigma_v_frac is fixed at 0.05 in code, confirming
+#     the value derived independently.
+recommended_status = "Refuted"
+verification_rule = "data/results/e183/injection_recovery.csv must show alpha_zd_recovered -> 0 as alpha_zd_injected -> 0 and detected_snr rising monotonically before any alpha_zd sensitivity limit may be quoted; currently the zero-injection row reads 0.29558. Companion check: a single sigma_v_frac must reproduce all quoted thresholds via 4*sigma_v_frac/sqrt(N). Anchors E-180, E-183, E-192, E-193."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1343"
+decidability = "internal"
+falsifier = "(a) false if CdDimensionParams does not implement n_modes = D/2-1 with k_n = 2*pi*n/n_modes; (b) false if the D sweep yields indistinguishable results across D; (c) false if the assessor fraction is not the same across dimensions."
+check_performed = "Read harmonic_stacking.rs:33-125 (CdDimensionParams::new, predicted_wavenumbers). md5sum and per-file RMS over data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16,32,64,128,256,512,1024}.csv. Cross-read harmonic_halos.rs:91-96 and zd_flat_band_fraction.rs tests."
+observed = "(a) Code: 'n_modes: cd_dim / 2 - 1' (line 101); predicted_wavenumbers returns 2.0*PI*n/self.n_modes for n in 1..=n_modes (lines 123-125); documented table D=16->7, 32->15, 64->31, 128->63, 256->127. Exactly as claimed. (b) ALL SEVEN SWEEP CSVs SHARE ONE md5, db4d2f0f3f90ebd37f8d72a0f8c84022 -- byte-identical. RMS of delta_stack = 0.101026 at every D from 16 to 1024. Consistent with I-170: 'identical RMS (0.1463) and SNR (0.67-0.68) ... More Fourier modes do not extract more signal because the noise floor is set by 1/sqrt(N_galaxies), not by the number of modes analyzed.' (c) 'same assessor fraction (0.5)' holds in harmonic_stacking.rs, which hardcodes assessor_fraction: 0.5 always, but is CONTRADICTED in the same crate by harmonic_halos.rs:93-94 (32 => 4/7, 64 => 1854/3036) and by test_pathion_flat_band_fraction. The detection path and the forward-model path use different dimension-dependent coefficients for the same quantity."
+verdict = "partially_confirmed"
+verdict_reason = "The parameterization half is true by construction (D/2-1 = 7 at D=16). The consequential half -- higher dimensions probing more modes and 'enabling multi-dimensional falsification sweeps' -- is refuted: the seven sweep outputs are byte-identical, so the sweep varied a LABEL and not a measurement. 'Same assessor fraction (0.5)' is true only of the stacking module's hardcoded constant and is contradicted by the forward model and by the repo's exact flat-band computation."
+recommended_status = "Provisional"
+verification_rule = "md5sum data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d*.csv (excluding reruns) yields a single hash -- any claim that the CD-dimension sweep is informative must first break this byte-identity. Anchors E-182, E-193."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1346"
+decidability = "internal"
+falsifier = "False if the extractor does not implement (i) slicing along the KINEMATIC PA, (ii) 2-spaxel slit width, (iii) sin(i) deprojection, (iv) radial binning; or if DAPall scalars were in fact sufficient."
+check_performed = "Read crates/gororoba_cli_physics/src/bin/manga_maps_extractor.rs:50-51, 209-300 (extract_pseudo_slit), 560 (call site); traced pa_deg to crates/data_core/src/catalogs/manga.rs:247; confirmed the on-disk column with head -1 data/external/manga/dapall_selection.csv."
+observed = "(i) REFUTED AT BOTH ENDS OF THE CHAIN. manga.rs:247 populates pa_deg: get_f64(\"nsa_elpetro_phi\"), and the selection CSV header contains literally 'nsa_elpetro_phi' with no kinematic-PA column anywhere among its 21 fields. The extractor passes gal.pa_deg straight into extract_pseudo_slit at line 560. This is the NSA elliptical-Petrosian PHOTOMETRIC position angle; no kinematic-PA fit on the EMLINE_GVEL field exists in the codebase. (ii) IMPRECISE: 'const SLIT_HALF_WIDTH: i32 = 2; // +/- 2 spaxels (1 arcsec half-width)' with w_range = (-SLIT_HALF_WIDTH..=SLIT_HALF_WIDTH) samples 5 spaxels, a 2.5-arcsec FULL width at SPAXEL_SIZE_ARCSEC = 0.5 -- not a '2-spaxel slit width'. (iii) CONFIRMED: let v_circ = v_los.abs() / sin_i; with a sin_i < 0.1 guard. (iv) CONFIRMED: bin_rotation_curve(points, 30). H-alpha EMLINE_GVEL sourcing confirmed at line 164. DAPall-insufficiency CONFIRMED by I-167 (insights.toml:1625): 'DAPall integrated moments cannot resolve the k_n ... Only the 2D velocity maps preserve the spatial frequency content.'"
+verdict = "partially_confirmed"
+verdict_reason = "EMLINE_GVEL H-alpha sourcing, sin(i) deprojection, radial binning, and DAPall-insufficiency all hold. Two specifics are wrong: the slit is laid along the PHOTOMETRIC NSA PA rather than the kinematic PA the claim names, and it is 5 spaxels wide, not 2. Photometric-kinematic misalignment is a known MaNGA systematic and biases exactly the inner-radius residuals that I-182 identifies as the limiting baryonic contamination."
+recommended_status = "Provisional"
+verification_rule = "head -1 data/external/manga/dapall_selection.csv contains nsa_elpetro_phi and no kinematic-PA column; grep SLIT_HALF_WIDTH in manga_maps_extractor.rs returns 2. Claim text must read 'photometric NSA PA' and 'half-width 2 spaxels (5-spaxel, 2.5-arcsec slit)' until a kinematic-PA fit exists. Anchors E-183."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1348"
+decidability = "external"
+falsifier = "False if the constants in estimated_log_m200() do not match Moster et al. 2013's z=0 double-power-law parameters digit-for-digit, or if it is not an iterative inversion."
+check_performed = "Read crates/data_core/src/catalogs/manga.rs:87-126 (moster2013_log_m200). Fetched Moster, Naab & White 2013 from arxiv.org/pdf/1205.5807, since the repo mirror docs/external_sources/MOSTER_2013_SMHM.md is a 9-line auto-generated registry stub carrying no parameter values and cannot decide the claim. pdftotext piped to grep for the four constants."
+observed = "Code: log_m1 = 11.59, n = 0.0351, beta = 1.376, gamma = 0.608, with m_star_pred = 2*n*mh/((mh/m1)^-beta + (mh/m1)^gamma). Moster 2013 parameter table, verbatim: M10 = 11.590 (sigma 0.236), N10 = 0.0351 (sigma 0.0058), beta10 = 1.376 (sigma 0.153), gamma10 = 0.608 (sigma 0.059). ALL FOUR MATCH DIGIT-FOR-DIGIT. Two deviations: (1) the claim says 'iterative inversion' but the code runs a fixed 500-point GRID SCAN, for i in 0..500 { log_mh = 10.0 + i*0.01 }, i.e. 0.01 dex quantization over log_mh in [10.0, 14.99] with silent clipping at both boundaries and no convergence test; (2) only the z=0 (subscript-10) terms are used, discarding Moster's redshift-evolution terms M11 = 1.195, N11 = -0.0247, beta11 = -0.826, gamma11 = 0.329, whereas MaNGA galaxies sit at z ~ 0.03 where z/(1+z) = 0.029 shifts log M1 by about +0.035 dex."
+verdict = "partially_confirmed"
+verdict_reason = "The four z=0 parameters are exactly Moster+2013 and the functional form is the correct double power law, so substituting SMHM for the Li et al. 2020 fits is sound in substance. 'Iterative inversion' is factually wrong -- it is a quantized grid scan -- and the neglected z-evolution is an unstated systematic at MaNGA redshifts."
+recommended_status = "Provisional"
+verification_rule = "cargo test -p data_core --lib -- moster (assert moster2013_log_m200(10.5) within 11.5..13.5) plus a digit-level constant check against arXiv:1205.5807. Restate 'iterative inversion' as '500-point grid scan at 0.01 dex over log M_halo in [10, 15], z=0 terms only'. Anchors E-183, XS-028."
+source_url = "https://arxiv.org/pdf/1205.5807"
+source_sha256 = "ff7633809a9553eccc5a61ab8fb749a5b8450d2d039a3d14a03ea5836a1b8d19"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/moster_2013_smhm_arxiv_1205_5807.pdf"
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+THE BLOCK IS NOT A PREDICTION AWAITING A TEST. It is a prediction that was tested,
+came back null, and whose claims were never updated to say so. E-183 is titled
+'MaNGA N=6992 harmonic halo stacking null result' and carries status ACTIVE, while
+C-1332 still asserts the signature is 'strictly falsifiable today ... No need to
+wait for SKA 2030' at status Provisional. The registry holds the experiment and its
+verdict in two places that never met.
+
+THE NULL IS SAFE; THE SENSITIVITY IS NOT. This is the block's central new finding,
+and it separates two statements C-1332 fuses. With ZERO signal injected the pipeline
+reports alpha_zd_recovered = 0.29558 -- roughly 60x the 0.005 limit the claim
+proposes to exclude. Across a 16x injection sweep (0 to 0.016) the recovered value
+stays within 0.5 percent of that floor and detected_snr moves 0.31 percent, in the
+wrong direction. The response to injected signal is indistinguishable from zero.
+'We looked and saw nothing' is EARNED; 'we exclude alpha_zd >= 0.005' is NOT.
+
+THE FLOOR IS NOT A MANGA ARTIFACT. A live SPARC replay settles this. At detection
+SNR = 0.68 -- nothing found, against a pre-registered threshold of 3.0 -- the pipeline
+still reports alpha_zd estimate = 0.540828, 36x the 0.015 the claim quotes for SPARC.
+The same pathology therefore appears on TWO INDEPENDENT DATASETS with different
+instruments, different selection, and different halo normalizations (Li+2020 fits
+against Moster SMHM). What the pipeline reports as alpha_zd is the amplitude of the
+BARYONIC RESIDUAL, and it would report a comparable number on any smooth rotation
+curve. The same replay also refutes the claim's SPARC threshold directly: the binary
+prints 'Detection threshold (5% v_err): alpha_zd >= 0.0207', because it uses the 93
+galaxies that survive the cuts (4*0.05/sqrt(93) = 0.020739), whereas the claim's 0.015
+is 4*0.05/sqrt(175) = 0.015119 over the full catalog. THE CLAIM QUOTES A SENSITIVITY
+FOR A SAMPLE THAT WAS NEVER ANALYZED.
+
+shmr_scatter_injection.csv independently corroborates: halo-mass scatter alone
+produces 10.4x more harmonic power (8.41e-3) than the exact-SMHM measurement
+(8.06e-4), so the measured power is dominated by mass-normalization systematics.
+
+THE MECHANISM behind that flatness is visible in the passing tests. In
+cargo test -p cosmology_core --lib -- harmonic, both test_fourier_detects_injected_signal
+and test_inject_zd_signal_adds_modulation PASS on synthetic input, while
+injection_recovery.csv recovers nothing on real data. The injection machinery is not
+broken in isolation; it is swamped by the baryonic floor. The unit tests certify the
+arithmetic and are silent on the only question that matters.
+
+A THIRD DIAGNOSTIC IS ALSO NON-DISCRIMINATING, and its stated prediction was missed
+by orders of magnitude. I-183 predicts 'Rayleigh R < 0.3 with p > 0.3 at all CD-ZD
+modes' for baryonic noise; rayleigh_full.csv returns R = 0.974-0.990 with p ~ 2e-7
+uniformly at all seven modes. That UNIFORMITY is the finding: the jackknife drops 1
+of 16 x-bins, which barely perturbs the phase, so R -> 1 mechanically off any smooth
+deterministic baseline. Three independent diagnostics -- Fourier SNR, injection
+recovery, Rayleigh coherence -- all return values set by the baryonic profile rather
+than by modal structure.
+
+A SHARED HIDDEN ASSUMPTION runs through C-1313, C-1331, C-1332 and C-1343: that
+'42/84' carries algebraic content. IT DOES NOT. harmonic_stacking.rs:55-77 proves
+n_ZDs = 2*n_assessors by the +/- sign-variant construction, so that ratio is 0.5 BY
+DEFINITION; harmonic_halos.rs selects the coefficient from a dimension-keyed match
+whose D=16 arm is the literal 0.5. Every 42/84 in this block is 42 divided by twice
+itself. The one testable consequence -- C-1343's claim that varying D probes more
+modes -- is refuted by the block's cleanest observation: the seven CD-sweep outputs
+from D=16 to D=1024 share one md5 and are byte-identical. The sweep changed a label,
+not a measurement.
+
+AN INTERNAL CONTRADICTION SURFACED THAT NO CLAIM COVERS. Two modules of
+cosmology_core disagree about the same coefficient. harmonic_stacking.rs states the
+assessor fraction is 'identically 0.5 for all dim >= 16' and hardcodes it;
+harmonic_halos.rs:93-94 hardcodes 32 => 4/7 and 64 => 1854/3036. The second is right
+about the flat-band fraction and the first is right about the assessor fraction --
+DIFFERENT QUANTITIES that coincide only at D=16 -- but C-1331 conflates them, and
+the detection path and forward-model path therefore run on different normalizations
+above D=16. This is why C-1331's context (5) is not merely redundant but FALSE: the
+repo's own passing test carries the comment 'the Monograph hypothesized that FBF =
+1/2 is a CD doubling invariant. However, exact pure-Rust computation proves FBF JUMPS
+to 4/7 at D=32', asserts n == 588 against the claim's 210, and the claim's Rocq
+attribution points at a box-counting fractal-dimension claim about sersic.rs.
+
+ONE FALSIFIER DECIDES TWO NEIGHBOURS: the injection-response test that refutes
+C-1332's sensitivity also removes the only evidentiary basis C-1343 had for calling
+its sweep a 'falsification sweep'. Both reduce to one fact -- the pipeline's response
+to injected signal is flat.
+"""
+new_claims_proposed = """
+N1. The harmonic-halo stacking pipeline REPORTS A LARGE alpha_zd ON DATA WHERE IT
+    DETECTS NOTHING, ON BOTH OF ITS DATASETS, and has no injection response. On MaNGA,
+    alpha_zd_injected = 0 yields alpha_zd_recovered = 0.29558, and across injected 0 to
+    0.016 the recovered value varies by under 0.5 percent while detected_snr varies by
+    0.31 percent (decreasing). On SPARC, a live replay at detection SNR = 0.68 -- an
+    unambiguous non-detection -- still reports alpha_zd estimate = 0.540828, 36x the
+    sensitivity C-1332 claims for that dataset. The reported alpha_zd is A FLOOR SET BY
+    THE BARYONIC RESIDUAL, not an amplitude measurement. No alpha_zd upper limit derived
+    from this pipeline is valid; E-180 AND E-183 are NON-DETECTIONS, not exclusions.
+    FALSIFIER: a rerun in which alpha_zd_recovered -> 0 as alpha_zd_injected -> 0,
+    detected_snr rises monotonically with injected amplitude, and the reported alpha_zd
+    estimate falls toward 0 as detection SNR falls below 1.
+
+N2. The CD-dimension sweep is a NO-OP on the stacked profile: stacking depends only on
+    the x-grid and the galaxy sample, never on cd_dim, which enters only the Fourier
+    projection applied after stacking. Outputs for D = 16..1024 are byte-identical
+    (single md5 db4d2f0f...). FALSIFIER: any two sweep CSVs at different D with
+    differing md5 under identical --x-min/--x-max/--min-c200/--max-chi2.
+
+N3. The MaNGA pseudo-slit is laid along the PHOTOMETRIC NSA PA (nsa_elpetro_phi); no
+    kinematic-PA fit exists in the codebase or the selection catalog.
+    Photometric-kinematic misalignment propagates directly into the inner-radius
+    residuals I-182 identifies as the limiting systematic. FALSIFIER: implement a
+    kinematic-PA fit on EMLINE_GVEL and show I-181's stacked inner-radius features
+    (+5 percent bulge excess, -15 percent cusp trough, +29 percent projection spike)
+    are unchanged.
+
+N4. C-1332's sensitivity thresholds fail TWO independent consistency checks. First,
+    under the repo's own alpha_zd_min = 4*sigma_v_frac/sqrt(N), the pair (175, 0.015)
+    implies sigma_v_frac = 0.0496 and predicts 0.00198 at N=10000 against the stated
+    0.005; the sqrt(N) mechanism demands a ratio of 7.559 where the stated numbers give
+    3.000. Second, the quoted N are catalog sizes, not post-cut samples: the realized
+    runs used 93 (SPARC) and 6992 (MaNGA). FALSIFIER: a single sigma_v_frac reproducing
+    0.015, 0.005 and 0.01 simultaneously at the post-cut sample sizes.
+
+N5. The jackknife Rayleigh diagnostic CANNOT DISCRIMINATE signal from a smooth
+    baseline. Dropping 1 of 16 x-bins perturbs the phase negligibly, so R -> 1
+    mechanically; rayleigh_full.csv returns R = 0.974-0.990 and p ~ 2e-7 uniformly at
+    all seven modes, against I-183's stated baryonic-noise expectation of R < 0.3 and
+    p > 0.3. FALSIFIER: run the same jackknife on phase-shuffled surrogates; if R stays
+    above 0.9 there, the statistic is measuring bin count rather than coherence.
+
+N6. cosmology_core carries TWO CONTRADICTORY VALUES for the D>16 harmonic coefficient:
+    harmonic_stacking.rs hardcodes 0.5 at all dimensions while harmonic_halos.rs
+    hardcodes 4/7 at D=32 and 1854/3036 at D=64. They are different quantities
+    (assessor fraction, 0.5 by tautology, versus flat-band fraction, which is not) that
+    coincide only at D=16, so the detection path and the forward-model path use
+    different normalizations above D=16. FALSIFIER: show the two modules compute the
+    same quantity, or that the stacking path never uses the coefficient at D > 16.
+"""
+gaps = """
+CLOSED (was the block's main gap): THE SPARC D=16 REPLAY RAN. Under fleet contention the
+build spent 33m26s blocked on the package-cache and build-directory locks, then the
+first invocation died on a wrong flag (--csv-out; the binary takes --csv). Rerun against
+the built binary, it reproduced the archived result EXACTLY: output byte-identical to
+data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d16.csv (both md5
+db4d2f0f3f90ebd37f8d72a0f8c84022), RMS 0.146285 and SNR 0.68 against I-170's recorded
+0.1463 and 0.67-0.68. E-180/E-193 deterministic_replay is CONFIRMED. Relatedly, the
+apparent d16-versus-d16_rerun discrepancy (delta_stack 0.2868 against -0.00726 at x=0.5,
+n_contributing 67 against 89) is NOT a determinism failure -- the files carry different
+x ranges (x_max 10.0 against 8.0) and are different configurations.
+
+PARTLY DECIDED: E-180's recorded run command is stale on TWO counts, both now
+demonstrated. It cites data/external/sparc_nfw/li2020_nfw_fits.csv, which does not exist
+(the directory holds table1.dat and ReadMe), AND it passes --csv-out, which the binary
+rejects with 'error: unexpected argument'. The working invocation is the E-193 form with
+--csv. E-180's run_command_sha256 therefore pins a string that CANNOT have produced the
+recorded output, though the output itself is reproducible via the corrected command.
+
+NOT DECIDED: C-1331 context (3). Catalan C_5 = 42 = |K_6| is arithmetically true, but
+whether it is 'structural' -- as C-1330 asserts without derivation -- needs either an
+explicit bijection between K_6 vertices and primitive assessors or a statement that the
+equality is coincidental. No such bijection exists under proofs/.
+
+NOT DECIDED: which of the two contradictory coefficients (N6) the published E-183/E-193
+numbers were actually produced with at D > 16. Deciding it requires instrumenting the
+stacking binary to log the coefficient in use, or confirming the D>16 path never
+consults it. Given N2 (byte-identical outputs), the likely answer is that the
+coefficient is inert in the stacking path -- but that is an INFERENCE, not an
+observation.
+
+SOURCE GAP: docs/external_sources/MOSTER_2013_SMHM.md is a 9-line auto-generated
+registry stub with no parameter values and cannot verify C-1348; the decision required
+fetching arXiv:1205.5807. ANY OTHER REGISTRY CLAIM citing a docs/external_sources/*.md
+mirror as its falsifier may have the same HOLLOW-MIRROR problem.
+"""

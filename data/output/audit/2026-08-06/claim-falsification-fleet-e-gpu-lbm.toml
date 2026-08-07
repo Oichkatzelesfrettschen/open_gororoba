@@ -1,0 +1,446 @@
+# Fleet return: block E_GPU_LBM, 24 claims. HTML entities restored to ASCII.
+# Orchestrator spot-checks:
+#   - __launch_bounds__(128, 9) appears in NO CUDA kernel. The only two repo hits
+#     are crates/data_core/src/registry_mirrors/{claims,experiments}_registry_mirror.rs,
+#     auto-generated doc-comments echoing the claim's own text back into the tree.
+#     A naive repo-wide grep appears to confirm C-1292 by finding the claim quoting
+#     itself. The real coarsened MRT kernel is __launch_bounds__(128, 6) at
+#     kernels_soa.cu:1212 and :1388. Agent's refutation confirmed.
+#   - d_f_tmp is allocated unconditionally at lbm_3d_cuda/src/lib.rs:779, confirming
+#     the C-1318 refutation.
+# HARDWARE: RTX 4070 Ti (AD104, SM 8.9), CUDA 13.3, Zen 3 Ryzen 5 5600X3D all
+# physically present, so the GPU claims were decided by RUNNING, not by argument.
+
+[block]
+id = "E_GPU_LBM"
+claim_count = 24
+agent_note = "A prebuilt binary at .cache/gate-target/release/euclid-df-sweep (mtime 2026-04-12, contemporaneous with these claims) executed the sweeps directly; a from-source rebuild never completed under fleet contention. Two GPU sweeps ran to useful size: E-163 at 64^3 complete at 100/100, and E-166 at 128^3 to 70 galaxies. All 24 claims have ZERO verification_rule edges; every existing edge is a pointer, never a check. THE HEADLINE: the engineering claims largely survive -- some to within 1% -- while the scientific claim the block exists to support does not."
+
+[[finding]]
+claim_id = "C-1297"
+decidability = "internal"
+falsifier = "False if any of the 6 conditions is not distinct from another under the registered run command, or if a condition varies a parameter the kernel ignores, or if D_f ~ 2.73 arises without ZD forcing."
+check_performed = "Read run_null_hypothesis_gpu and report_null_hypothesis (euclid_df_sweep.rs:722-1183); traced the force field into the CUDA MRT kernel; read alpha_zd defaults. Then EXECUTED E-174's registered command verbatim against the prebuilt binary, and re-ran at --grid 64 and with --alpha-zd 0.1."
+observed = "The forcing DOES reach the kernel -- lbm_step_soa_mrt_fused applies Guo forcing from force[3*N] at kernels_soa.cu:675-691 -- so the controls are not inert in principle. BUT alpha_zd defaults to 0.0 (clap default_value = '0.0' at euclid_df_sweep.rs:87-88, and GalaxyPipelineConfig::default at galaxy_pipeline.rs:74) and E-174's registered command passes no --alpha-zd. Running it verbatim printed, exactly as predicted before the run: 'WARNING: alpha_zd=0 -- C1/C3 degenerate to C0/C2 (no ZD forcing)'. The same run then PANICKED before producing a single trial result: 'thread main panicked at euclid_df_sweep.rs:816:38: LBM step_n: DriverError(CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED, \"operation not permitted when stream is capturing\")', exit 101. Reproduced identically at --grid 64 and at --grid 128 with --alpha-zd 0.1 (which correctly suppressed the degeneracy warning, confirming the branch). The GPU is present and healthy: the ordinary GPU sweep runs to completion on the same binary."
+verdict = "refuted"
+verdict_reason = "The experiment declared to establish this claim CANNOT EXECUTE: its registered command aborts on a CUDA graph-capture conflict before emitting any D_f, so no 6-condition result has ever existed. Worse, when it does reach the setup stage it announces that two of its six conditions are byte-identical duplicates of two others, because the ZD coupling defaults to zero -- and the positive control C5 then carries pure NFW gravity with NO ZD FORCING AT ALL. The claim that only Sersic morphology plus ZD algebraic forcing yields D_f ~ 2.73 rests on a control experiment that is simultaneously degenerate and non-functional."
+recommended_status = "Refuted"
+verification_rule = "E-174 must be re-registered with an explicit nonzero --alpha-zd and extended with Sersic+ZD-only and Sersic+NFW-only conditions; the runner should hard-fail rather than warn when --null-hypothesis is combined with alpha_zd = 0."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1288"
+decidability = "internal"
+falsifier = "False if the stated CI is inconsistent with the stated mean, std and N, or if 2.7268 does not sit at the 31st percentile under any stated reading."
+check_performed = "Recomputed the stated CI from mean 2.732, std 0.034, N=100; then RAN E-166 at --grid 128 --steps 200 --mrt, completing 70 galaxies (CSV sha256 0b94db8b0481d1d0e5e195811ff34e2ac581d1861b5875a099bb96efacc4365e), and evaluated the empirical rank of 2.7268 directly."
+observed = "The stated CI is internally consistent: se = 0.00340, mean +/- 1.96 se = [2.7253, 2.7387], reproducing [2.725, 2.739] exactly. The MEASURED run gives D_f = 2.7384 +/- 0.0374 over 70 galaxies, CI_95 [2.7297, 2.7472], all 70 stable. The standard deviation reproduces well (0.0374 vs 0.034), but the mean sits 0.0064 HIGHER. Consequences for 2.7268: it lies OUTSIDE the measured CI (2.7268 < 2.7297), at z = -2.61 against the sampling distribution of the mean. Its empirical rank among the 70 per-galaxy values is 33/70 = 47.1 percentile, NOT 31st."
+verdict = "refuted"
+verdict_reason = "The '31st percentile' is not reproducible under any reading -- the empirical rank, the only reading that could have produced it, is 47.1%. More seriously, the replicated measurement's 95% CI EXCLUDES 2.7268 at z = -2.61, so the CD D=16 prediction is marginally INCONSISTENT with, not in quantitative agreement with, the measured fractal dimension. Given C-1287's finding that the bulk mean shifts 0.173 between 64^3 and 128^3, agreement at the third decimal is not a meaningful test at either resolution."
+recommended_status = "Refuted"
+verification_rule = "Replay E-166 to data/output/ and assert both the reported percentile against the empirical rank of 2.7268 and whether 2.7268 falls inside CI_95; both currently fail."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1287"
+decidability = "internal"
+falsifier = "False if the 64^3 standard deviation over the 94 non-outlier galaxies is already comparable to 0.034 (showing the 18x is outlier presence, not resolution convergence); or if any of the 6 outliers remains below D_f = 1.0 at 128^3."
+check_performed = "Ran both resolutions and matched on object_id: E-163 at --grid 64 (100/100) and E-166 at --grid 128 (70 completed). Decomposed the 18x into outlier-removal and resolution factors."
+observed = "Every one of the six 64^3 outliers present in the 128^3 set DOES stabilize, dramatically: 0.6205 -> 2.6800, 0.2371 -> 2.6808, 0.4019 -> 2.6895, 0.6912 -> 2.6785, 0.3907 -> 2.6836, 0.5748 -> 2.6858. Zero outliers at 128^3. BUT the standard-deviation decomposition is: 64^3 over all 100 = 0.6241; 64^3 EXCLUDING the seven outliers = 0.0742; 128^3 = 0.0374. So outlier disappearance contributes 8.41x and actual tightening of the bulk distribution contributes only 1.98x. SEPARATELY, the bulk mean SHIFTS between resolutions: 2.9116 at 64^3 (non-outlier) versus 2.7384 at 128^3, a change of 0.173 -- AN ORDER OF MAGNITUDE LARGER than the 128^3 CI half-width."
+verdict = "partially_confirmed"
+verdict_reason = "The outlier-stabilization half is confirmed emphatically. The CONVERGENCE FRAMING IS NOT: 8.41 of the 18x comes from six or seven pathological galaxies leaving the low tail, leaving only 1.98x of genuine tightening, and the bulk mean moves by 0.173 between resolutions. A quantity whose central value shifts by 0.17 when resolution doubles is NOT CONVERGED, which is the opposite of what 'resolution convergence' asserts."
+recommended_status = "Provisional"
+verification_rule = "Replay both grids and assert separately that (a) every object_id with df_final < 1.0 at 64^3 exceeds 2.5 at 128^3, and (b) the outlier-excluded 64^3 std exceeds 5x the 128^3 std -- (b) currently fails at 1.98x, so the 18x must be restated as an outlier effect; add a 256^3 point before any convergence language."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1283"
+decidability = "internal"
+falsifier = "False if a replay does not give D_f = 2.748 +/- 0.607 with 94/100 stable, or if the 6 outliers' stated cause fails -- specifically if galaxies at the Sersic n=5.50 cap or z > 2.3 appear among the 94 stable ones."
+check_performed = "Ran E-163's registered command to completion (100/100 galaxies). Then tested the stated causal attribution against sersic_n and photo_z in the resulting CSV (sha256 58c0fb47229071eecfecdc7f565b23ecdc29771a752a2d1a0dfeffe128b591ec)."
+observed = "Distribution reproduces closely: D_f = 2.7427 +/- 0.6241 (claim: 2.748 +/- 0.607); mean excluding outliers = 2.9116 (claim: robust mean ~2.88). BUT there are SEVEN outliers with D_f < 1.0, not six, so 93/100 stable rather than 94/100. THE ATTRIBUTION FAILS IN BOTH DIRECTIONS. Not sufficient: 23 galaxies satisfy (sersic_n >= 5.50 OR photo_z > 2.3) and 17 of them are perfectly stable. Not necessary: outlier obj=-860502946079758004 has sersic_n = 1.56 and photo_z = 0.460, NEITHER the Sersic cap nor high z."
+verdict = "partially_confirmed"
+verdict_reason = "The distribution statistics replicate well, but the outlier count is 7 not 6, and the stated cause is refuted: galaxies at the Sersic cap or z > 2.3 are overwhelmingly stable (17 of 23), and one outlier has neither property. 'Catalog edge cases, not collision failures' is asserted rather than established."
+recommended_status = "Provisional"
+verification_rule = "Replay E-163 and assert that no galaxy with sersic_n >= 5.50 or photo_z > 2.3 has df_final >= 1.0 (the attribution fails if such galaxies are stable)."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1280"
+decidability = "internal"
+falsifier = "False if BGK is observed stable above Ma ~ 0.3, or if MRT does not survive materially higher density contrast than BGK."
+check_performed = "Read data/output/e167_mrt_bgk_stability_n16_tau07.csv, the retained BGK-vs-MRT stability envelope at n=16, tau=0.7, 200 steps."
+observed = "BGK survives with clean mass conservation WELL PAST Ma 0.3: contrast 12.76 Ma=0.982 mass_err=2.88e-14; contrast 15.68 Ma=1.106 mass_err=2.37e-14; contrast 19.26 Ma=1.662 mass_err=1.88e-14. THE FIRST MODE TO EXPLODE IS MRT, at contrast 23.66 (mass_err 3.03e96) where BGK is still intact. At contrast 29.07 the order REVERSES. From 35.72 up, both explode."
+verdict = "refuted"
+verdict_reason = "The claim's stated BGK ceiling of Ma ~ 0.3 is contradicted by the repo's own retained data, which has BGK stable at Ma = 1.66 -- ABOVE the Ma ~ 1.5 the claim reserves for MRT. There is no consistent ordering: near threshold MRT fails first at one contrast and BGK at the next, so MRT does not extend the envelope 5x or at all. SCOPE NOTE: the claim's stated demonstration is Euclid galaxies at floor=0.03, 64^3, and that specific datum was never replayed (E-162 retained no artifact). What is refuted is the GENERAL assertion of a BGK Ma ~ 0.3 ceiling and of an MRT extension, established on E-167's synthetic Gaussian at n=16. The pre-registered falsifier was 'false if BGK is observed stable above Ma ~ 0.3', and Ma = 1.662 at mass_err = 1.88e-14 meets it regardless of configuration."
+recommended_status = "Refuted"
+verification_rule = "Assertion over data/output/e167_mrt_bgk_stability_n16_tau07.csv: max BGK max_mach among rows with mass_err < 1e-10 must exceed 0.3 (it is 1.662), falsifying the stated BGK ceiling."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1292"
+decidability = "internal"
+falsifier = "False if __launch_bounds__(128, 9) does not appear on the coarsened MRT kernel, or if the registered benchmark command cannot execute."
+check_performed = "Grepped crates/lbm_3d_cuda/src for __launch_bounds__(128, 9) and read the coarsened MRT kernel declaration at kernels_soa.cu:1379-1390; checked for a --coarsened flag on euclid-df-sweep."
+observed = "__launch_bounds__(128, 9) appears NOWHERE in the kernel tree. The coarsened MRT kernel is declared __launch_bounds__(128, 6). No --coarsened argument exists in euclid_df_sweep.rs -- it exists only on mrt-stability-audit and cuda-precision-bench -- so E-169's registered command, which passes --coarsened to euclid-df-sweep, is REJECTED BY CLAP before any work starts. The 1444-FMA and 4.54-cycle figures appear only as a source comment at kernels_soa.cu:1381-1384, not as measurements. [ORCHESTRATOR: confirmed. The only two repo-wide hits for (128, 9) are in data_core/src/registry_mirrors/, auto-generated doc-comments echoing this claim's own text -- the claim quoting itself.]"
+verdict = "refuted"
+verdict_reason = "The stated launch configuration is wrong -- 6 blocks per SM, not 9 -- and the experiment declared to have measured the >= 1.15x speedup cannot run as registered, independently corroborating E-169's status = 'planned'. The coarsening mechanism itself exists."
+recommended_status = "Refuted"
+verification_rule = "cargo run --release --bin cuda-precision-bench -- --variants mrt,mrt_coarsened at 128^3, asserting MLUPS(mrt_coarsened)/MLUPS(mrt) >= 1.15; and correct the launch-bounds figure to (128, 6)."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1295"
+decidability = "internal"
+falsifier = "False if the named kernels do not exist, or if the reduction is not GPU-side, or if its cost is not under 10us."
+check_performed = "Grepped for compute_speed_magnitude and reduce_max_f32; read LbmSolver3DCuda::max_mach_number_device at lbm_3d_cuda/src/lib.rs:1816-1856."
+observed = "NEITHER NAMED KERNEL EXISTS. The implementation uses a single kernel, reduce_max_speed_f32. It is a TWO-PASS HYBRID, not a GPU-side reduction: pass one writes blocks_pass1 per-block maxima to a device buffer, then THE HOST does clone_dtoh of that whole buffer and folds it. The code's own comment states the readback is 'blocks_pass1 floats = 64 KB at 128^3' and that the host fold costs '~5us'. The doc comment four lines above CONTRADICTS this, claiming it 'reads back a single f32 (4 bytes PCIe)'."
+verdict = "refuted"
+verdict_reason = "The claim misnames both kernels and mischaracterizes the mechanism: the second reduction pass runs on the HOST over a 64 KB transfer, so this is not the GPU-side reduction the claim describes, and the source carries two mutually contradictory descriptions of its own transfer size."
+recommended_status = "Refuted"
+verification_rule = "Add a device-side second-pass scalar-max kernel, then time max_mach_number_device with CUDA events at 128^3 asserting < 10us and asserting the per-call host transfer is <= 4 bytes."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1318"
+decidability = "internal"
+falsifier = "False if d_f_tmp is still allocated when A-A streaming is enabled, since the claim is specifically that VRAM is halved and 76 MB saved."
+check_performed = "Read the allocation site at lbm_3d_cuda/src/lib.rs:778-782, set_aa_streaming at 1917-1926, and the A-A kernels at kernels_soa.cu:1555-1680."
+observed = "The kernel mechanism is fully present: __constant__ int OPP[19], lbm_step_soa_aa declared with 'float* __restrict__ f, // single buffer, in-place', parity-dependent read remap, plus lbm_step_soa_mrt_aa. Graph incompatibility is real and enforced via invalidate_graph(). BUT d_f_tmp is allocated UNCONDITIONALLY in the constructor -- 'let d_f_tmp = stream.alloc_zeros::<u8>(19 * n_cells * es)?' at line 779 -- and set_aa_streaming only flips a boolean. Its own doc states: 'The d_f_tmp allocation is NOT freed (would require re-creation to switch back). It simply goes unused when A-A is active.' [ORCHESTRATOR: confirmed at lib.rs:779.]"
+verdict = "refuted"
+verdict_reason = "The claim's quantitative core -- halving distribution VRAM, 76 MB saved at 128^3 -- is FALSE AS IMPLEMENTED: the second buffer is still allocated and still occupies its 76 MB, merely unused. The claim describes a saving the code explicitly declines to take."
+recommended_status = "Refuted"
+verification_rule = "Assert reported free VRAM after constructing an A-A-enabled 128^3 FP32 solver differs from the ping-pong solver by ~76 MB; today it does not, so either free d_f_tmp under A-A or restate the claim as eliminating the ping-pong dependency without the VRAM figure."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1296"
+decidability = "internal"
+falsifier = "False if 77.2 GB/galaxy does not follow from the D3Q19 FP32 traffic model, if 504 GB/s is not this device's theoretical bandwidth, or if measured wall-clock puts the achieved fraction below 60%."
+check_performed = "Recomputed the traffic model; queried the device for memory clock and bus width via nvidia-smi; then MEASURED wall-clock over 70 galaxies at 128^3 MRT on the RTX 4070 Ti the claim names."
+observed = "Traffic: 128^3 cells * 184 B/cell * 200 steps = 77.18 GB, where 184 = 76 read + 76 write for the 19 FP32 distributions + 4 rho + 12 u + 4 tau + 12 force -- reproducing the stated 77.2 GB/galaxy EXACTLY. Device: clocks.max.memory = 10501 MHz, so 10501 * 2 * 192 / 8 = 504 GB/s, confirming the stated theoretical figure on the physically present GPU. Measured 247.4 ms/galaxy gives 77.18 GB / 0.2474 s = 311.9 GB/s = 61.9% of 504 GB/s."
+verdict = "confirmed"
+verdict_reason = "Measured 61.9% clears the >= 60% threshold on the exact hardware named, and both inputs reproduce exactly. CAVEAT: this is NOT INDEPENDENT of C-1286. Given the 77.2 GB model, '>= 60% of 504 GB/s' is algebraically identical to '<= 255 ms/galaxy', so the same timing decides both and neither corroborates the other. Note also the run used the BASELINE kernel, not the thread coarsening the claim mentions, so coarsening is not required to reach 60%."
+recommended_status = "Verified"
+verification_rule = "Single durable check covering C-1286 and C-1296: time euclid-df-sweep at --grid 128 --mrt over N galaxies and assert ms/galaxy <= 255, reporting the derived GB/s as 77.18/t."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1286"
+decidability = "internal"
+falsifier = "False if the 384 ms readback baseline cannot be produced, or if the zero-copy path does not reach 249 ms/galaxy at 128^3."
+check_performed = "Located both box-counting entry points in euclid_df_sweep.rs; then MEASURED the zero-copy path by running the 128^3 MRT sweep on the RTX 4070 Ti and averaging per-galaxy elapsed_ms."
+observed = "run_gpu_sweep (303-531) calls only fractal_dimension_device_auto. The readback entry point box_counting_fractal_dim appears only at 579 and 622 inside run_cpu_sweep and at 962/973 in the CPU null path; NO FLAG SELECTS A READBACK GPU PATH. E-166's own method text concedes it 'uses readback-path box-counting (pre-zero-copy build)'. MEASURED zero-copy over 70 galaxies at 128^3: mean 247.4 ms/galaxy, range 225-300 ms."
+verdict = "partially_confirmed"
+verdict_reason = "The ABSOLUTE figure is confirmed on the exact hardware named: 247.4 ms/galaxy measured against 249 claimed, agreement within 1%. The 1.54x RATIO is not merely unrun but UNREPRODUCIBLE IN PRINCIPLE, because the 384 ms readback-GPU baseline was deleted from the tree rather than retained as a benchmark arm."
+recommended_status = "Provisional"
+verification_rule = "Either restore a --readback-boxcount toggle on run_gpu_sweep and assert the ratio >= 1.5, or retire the ratio and keep only an absolute ms/galaxy budget assertion at 128^3."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1289"
+decidability = "internal"
+falsifier = "False if no significance test is implemented, or if an implemented test finds the disk-elliptical difference significant."
+check_performed = "Searched the whole tree for a two-sample test reachable from the sweep and read analyze_df_sweep and morph_bin_summary (galaxy_pipeline.rs:413-468); then SUPPLIED the missing test, computing a Welch two-sample t on the disk and elliptical df_final vectors from the measured 128^3 run."
+observed = "NO TWO-SAMPLE TEST EXISTS ANYWHERE IN THE TREE. analyze_df_sweep computes only per-bin summaries -- n, mean, std, bootstrap percentile CI -- for each morphology bin separately; the difference is never tested. The measured 128^3 run gives disk n=38 mean 2.7402 sd 0.0390, elliptical n=32 mean 2.7363 sd 0.0358, difference 0.0040, Welch t = 0.442 on 67.5 df, p ~ 0.66. The claim's own figures (disk 2.736, elliptical 2.727, difference 0.009) are not reproduced in magnitude, though the sign agrees."
+verdict = "partially_confirmed"
+verdict_reason = "The substantive conclusion is CORRECT and now has evidence: the difference is not significant (p ~ 0.66). But the claim asserted that negative statistical result WITHOUT ANY IMPLEMENTED TEST, the measured difference is 0.0040 rather than 0.009, and 'at N=100' misdescribes bins holding 38 and 32. A true conclusion reached without a test is not the same as a verified one."
+recommended_status = "Provisional"
+verification_rule = "Add a Welch two-sample test over the morphology bins to analyze_df_sweep and assert p > 0.05, so the non-significance claim rests on a computed statistic rather than on inspection of overlapping per-bin CIs."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1278"
+decidability = "internal"
+falsifier = "False if retained telemetry shows BGK and MRT diverging at materially different steps or contrasts, or if no step-resolved artifact supports the ~25 figure."
+check_performed = "Read the only retained artifacts: data/output/e167_mrt_bgk_stability_n16_tau07.csv (40 rows) and data/output/e167_rca_mrt_c29.csv (400 steps)."
+observed = "The summary CSV is CONTRAST-resolved, not STEP-resolved: final_step is 200 in all 40 rows. Divergence onset differs by mode -- at contrast 23.66 MRT explodes while BGK is intact; at 29.07 the reverse. The per-step artifact shows first positivity violation at step 4 (min_f = -2.449e-2), most negative min_f = -0.629, only 14 of 400 steps flagged unstable, and FULL RECOVERY by step 399 (min_f = +8.33e-2, Ma = 0.00226)."
+verdict = "partially_confirmed"
+verdict_reason = "The claim's conclusion -- MRT alone does not fix the instability -- is supported and STRENGTHENED: near threshold MRT sometimes fails where BGK does not. The specific number ~25 is unsupported: no retained artifact is step-resolved for BGK, and the one MRT per-step trace shows onset at step 4 followed by recovery, not divergence."
+recommended_status = "Provisional"
+verification_rule = "Make target replaying mrt-stability-audit with per-step positivity telemetry for BGK at contrast 23 and MRT at contrast 29, retaining both CSVs."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1319"
+decidability = "internal"
+falsifier = "False if the budget reservation is absent or unchecked, if the reserved size differs from the stated 16 MB, or if the named DarkHaloCudaSolver entry point does not exist."
+check_performed = "Read LbmSolver3DCuda::pin_rho_in_l2 (lib.rs:2195-2245) and set_l2_pinning (2286); observed the runtime log line emitted during the live GPU sweeps."
+observed = "The reservation call is present and its return value IS checked, with an explicit non-success warning branch. The access policy window sets hitProp = CU_ACCESS_PROPERTY_PERSISTING with hitRatio 1.0 over d_rho. DarkHaloCudaSolver::pin_rho_in_l2 exists at dark_halo.rs:206. BUT THE BUDGET IS 32 MB -- 'let budget: usize = 32 * 1024 * 1024' -- not the 16 MB the claim states. The live runs confirm empirically, printing 'L2 residency: pinned 8192 KB rho field (hitRatio=1.0, PERSISTING, budget=32MB)' at 128^3."
+verdict = "partially_confirmed"
+verdict_reason = "The negative result and the described fix are both real and pinning demonstrably executes on this Ada GPU. The stated reservation size is wrong by a factor of two -- 32 MB, not 16 MB, as both source and runtime log show -- which matters because the claim's whole point is that the budget reservation is the load-bearing call."
+recommended_status = "Provisional"
+verification_rule = "Source assertion that pin_rho_in_l2 reserves CU_LIMIT_PERSISTING_L2_CACHE_SIZE and checks the result, with the documented size corrected from 16 MB to 32 MB."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1324"
+decidability = "internal"
+falsifier = "False if D3Q19 as implemented here does contain a write-after-read pattern, since that is the stated exception under which cache-all would help."
+check_performed = "Read the __ldg() read-only path in kernels_fp32_soa_cs.cu and the A-A kernel signature and write-back at kernels_soa.cu:1570-1680."
+observed = "The two supporting legs hold: __ldg() is used throughout read-only paths, and the L2 PERSISTING policy exists. BUT the claim's exclusion rests on 'which D3Q19 LBM does not have (separate f_in/f_out or A-A parity swap)', and the A-A kernel is declared 'float* __restrict__ f, // single buffer, in-place' and writes f[OPP[i]*N+dst] into the very array it read f_local from. A-A STREAMING IS A READ-THEN-WRITE OF ONE BUFFER, i.e. exactly the write-after-read pattern the claim asserts is absent."
+verdict = "partially_confirmed"
+verdict_reason = "The conclusion that ld.global.ca is not needed may survive, but the stated REASON does not: the repository's own A-A kernel, the subject of C-1318, is a write-after-read path. The assessment's premise is contradicted by a neighbouring claim in the same block."
+recommended_status = "Provisional"
+verification_rule = "Re-derive the assessment against the A-A kernel specifically, or scope the claim to the ping-pong kernels where the no-write-after-read premise is actually true."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1273"
+decidability = "internal"
+falsifier = "As a definition, false if no code implements F_zd(r) = -alpha_zd * 0.5 * exp(-r/R_e) * F_target * r_hat, or if the cited location implements a different functional form."
+check_performed = "Read galaxy_pipeline.rs:300-350 (the cited WHERE_STATED) and euclid_df_sweep.rs:687-717 (compute_zd_force_standalone)."
+observed = "compute_zd_force_standalone implements EXACTLY the stated formula. The cited location, prepare_galaxy, does NOT: it applies harmonic_halo_force_modulation, a 7-mode box-kite harmonic MODULATION of the NFW force field -- a different functional form."
+verdict = "partially_confirmed"
+verdict_reason = "The formula is a faithful definition of code that exists, but the WHERE_STATED locator points at the wrong implementation. TWO DIFFERENT ZD FORCINGS COEXIST in the tree and the claim conflates them."
+recommended_status = "Theoretical"
+verification_rule = "Source assertion: the F_zd formula is realized in euclid_df_sweep.rs::compute_zd_force_standalone, not in galaxy_pipeline.rs::prepare_galaxy; the locator must be corrected."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1271"
+decidability = "internal"
+falsifier = "False if the kernel does not use f[dir*N+idx], or if the 19x transaction ratio does not follow from the memory model of the actual target (Ada SM 8.9)."
+check_performed = "Read kernels_soa.cu header and lbm_step_soa_fused; recomputed the transaction ratio under both the 128-byte-line and 32-byte-sector models."
+observed = "Layout f[dir*N+idx] confirmed. AoS warp access spans 32*19*4 = 2432 bytes. Under a 128-byte transaction granule that is 19 lines vs 1 for SoA -- the 19x equals the DIRECTION COUNT by construction because 32 threads * 4 bytes is exactly one 128-byte line. But Ada L1/L2 use 32-BYTE SECTORS: AoS touches 32 distinct sectors (stride 76 > 32), SoA touches 4, giving 8x."
+verdict = "partially_confirmed"
+verdict_reason = "The layout half is confirmed verbatim. The 19x is an artifact of assuming a 128-byte granule; on the SM 8.9 hardware the claim names, the sector model gives 8x, so the headline number OVERSTATES BY ~2.4x."
+recommended_status = "Provisional"
+verification_rule = "ncu --metrics l1tex__t_sectors_pipe_lsu_mem_global_op_ld.sum on lbm_step_soa_fused vs an AoS variant at matched grid; ratio decides 19x vs 8x."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1299"
+decidability = "internal"
+falsifier = "False if the two layouts do not encode the same 19-direction data, or if no unified interface abstracts them."
+check_performed = "Read lbm_dispatch.rs LbmBackend surface and compared CPU aosoa_idx(cell, dir) with GPU f[dir*N+idx]; checked what E-176's declared binary measures."
+observed = "LbmBackend exposes a single f64 interface over both backends. Both layouts index 19 directions over the same cell set and differ only in permutation, so a transpose relates them. HOWEVER mrt-stability-audit computes NO D_f AT ALL: TrialResult holds only contrast, mode, survived, max_mach, mass_err, final_step, and no fractal-dimension symbol appears in the file."
+verdict = "partially_confirmed"
+verdict_reason = "The structural-parity and unified-dispatcher assertions are true as read. The cross-validation E-176's method describes -- 'Compare D_f, max Mach, and mass conservation' -- IS NOT IMPLEMENTABLE by the binary E-176 declares, so the claim's validation half has no instrument."
+recommended_status = "Provisional"
+verification_rule = "Add a D_f column to mrt-stability-audit output, then assert |D_f(cpu) - D_f(gpu)| bounds at matched contrast; this single check also serves C-1282."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1306"
+decidability = "internal"
+falsifier = "False if the 2-stream event-based overlap is absent, or if the ~40% throughput gain cannot be measured because no single-stream comparison arm exists."
+check_performed = "Read run_gpu_sweep (euclid_df_sweep.rs:303-531)."
+observed = "The mechanism is present as described: solver.fork_stream() creates stream B, GpuBoxCounter::new_with_stream binds the box counter to it, stream A records event_lbm and stream B waits on it, and a deferred one-slot lookahead flushes the previous galaxy's D_f. THERE IS NO FLAG selecting a single-stream path, so the comparison arm does not exist. The claim's own wording is 'Expected ~40% throughput gain'."
+verdict = "partially_confirmed"
+verdict_reason = "The pipelining mechanism is confirmed by reading; the performance figure is an explicit EXPECTATION with no baseline in the tree to measure it against, so that half is unfalsifiable as built."
+recommended_status = "Provisional"
+verification_rule = "Add a --single-stream toggle to run_gpu_sweep and assert throughput ratio >= 1.4 for N >= 100 galaxies, or restate as a mechanism claim with the 40% removed."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1285"
+decidability = "internal"
+falsifier = "False if the GPU path still reads back the full density field, or if the stated transfer sizes do not yield the stated 8000x."
+check_performed = "Read box_counting_gpu.rs (histogram allocation, otsu_threshold_device) and the GPU sweep call sites; recomputed the ratio."
+observed = "Mechanism confirmed: d_histogram is 256 u32 = 1024 bytes, otsu_threshold_device documented as 'reading back only 1 KB histogram', and run_gpu_sweep has NO host copy of rho anywhere in lines 303-531. Arithmetic: 128^3 * 4 B = 8.39 MB, confirming the stated 8 MB. The 8000x admits two consistent readings: against one transfer and ~1.03 KB, 8175x; against the two 8 MB transfers per galaxy C-1286 states and ~2 KB, 8192x. Both round to 8000x."
+verdict = "confirmed"
+verdict_reason = "The PCIe elimination is real, the 8 MB figure exact, and the 8000x holds under either reading. The claim is ambiguous about whether one or two readbacks are eliminated, but that ambiguity does not change the headline ratio."
+recommended_status = "Provisional"
+verification_rule = "Source assertion that run_gpu_sweep contains no rho host copy plus a size assertion that GpuBoxCounter's readback per galaxy is <= 1100 bytes."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1267"
+decidability = "internal"
+falsifier = "False if kernels_box_counting.cu box_count_at_scale lacks a warp ballot reduction, or if every thread performs its own global atomicAdd."
+check_performed = "Read crates/lbm_3d_cuda/src/kernels_box_counting.cu lines 55-61."
+observed = "mask = __activemask(); warp_count = __popc(__ballot_sync(mask, occupied)); if ((threadIdx.x & 31) == 0 && warp_count > 0) atomicAdd(count, warp_count). One atomic per warp instead of one per thread."
+verdict = "confirmed"
+verdict_reason = "The mechanism is present exactly as described. The 32x factor is the WARP WIDTH BY CONSTRUCTION, not a measurement, so the claim is true but definitional in its quantitative part."
+recommended_status = "Verified"
+verification_rule = "Source assertion: kernels_box_counting.cu must contain __ballot_sync + __popc + a lane-0-guarded atomicAdd inside box_count_at_scale."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1277"
+decidability = "internal"
+falsifier = "False if lbm_step_soa_batch_kernel does not derive galaxy and cell indices as w = linear/N and idx = linear%N."
+check_performed = "Read kernels_soa.cu:292-303."
+observed = "int linear = blockIdx.x * blockDim.x + threadIdx.x; int N = nx*ny*nz; int w = linear / N; int local_idx = linear % N; int offset = w * N."
+verdict = "confirmed"
+verdict_reason = "Matches the claim verbatim. This is a restatement of two lines of source and carries no measured content."
+recommended_status = "Verified"
+verification_rule = "Source assertion on lbm_step_soa_batch_kernel index derivation."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1279"
+decidability = "internal"
+falsifier = "False if a replay of the floor=0.045 sweep produces any NaN among the 10 galaxies, or if D_f departs from 2.888 +/- 0.085."
+check_performed = "Searched data/ for retained sweep outputs; inspected the NaN criterion. Build of euclid-df-sweep did not complete under 12-agent contention."
+observed = "NO RETAINED ARTIFACT for E-162 exists anywhere under data/ (only e167_*.csv survive). The declared output was stdout, so nothing was captured. Separately, the repo's own positivity sentinel shows a run can hold min_f = -0.629 for a dozen steps and mass_err = 1.3e-14 while reporting no NaN -- so 'zero NaN' is THE WEAKER OF TWO CRITERIA the same experiment family implements."
+verdict = "not_run"
+verdict_reason = "The numbers cannot be checked without a replay and no evidence artifact was retained. The claim's stability language is weakened by the repo's own demonstration that NaN-absence does not imply positivity."
+recommended_status = "Provisional"
+verification_rule = "Replay at --grid 64 --max-galaxies 10 --cpu --mrt --density-floor 0.045 with a POSITIVITY SENTINEL assertion rather than a NaN check."
+confidence = "medium"
+
+[[finding]]
+claim_id = "C-1282"
+decidability = "internal"
+falsifier = "False if any test galaxy shows |D_f(GPU MRT) - D_f(CPU MRT)| > 0.05, or if no CPU/GPU MRT comparison exists."
+check_performed = "Enumerated CPU/GPU equivalence tests under crates/lbm_3d_cuda/tests/ and read test_gpu_cpu_equivalence.rs in full; searched for retained E-163/E-164 outputs."
+observed = "EXACTLY ONE equivalence test exists: equilibrium_cpu_gpu_remain_consistent_fp32 -- 8x8x8 grid, 5 steps, initialize_uniform(1.0, [0,0,0]), BGK (not MRT), thresholds 1e-2. A UNIFORM FIELD AT REST IS THE EQUILIBRIUM, so both solvers are stationary and the errors are ~0 by construction. The test returns early with a printed message when no GPU is present, SO IT ALSO PASSES VACUOUSLY. No MRT, no density contrast, no D_f."
+verdict = "not_run"
+verdict_reason = "The claim has no supporting check anywhere in the tree: the sole equivalence test is trivially satisfied, uses BGK rather than MRT, and never computes D_f."
+recommended_status = "Provisional"
+verification_rule = "Paired invocation of euclid-df-sweep at --grid 64 --max-galaxies 10 --mrt with and without --cpu, asserting per-object_id |df_final_gpu - df_final_cpu| <= 0.05."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1298"
+decidability = "internal"
+falsifier = "False if the AoS scalar baseline does not exist to compare against, or if the measured AoSoA speedup is below 4x on Zen 3."
+check_performed = "Read lbm_3d/src/solver.rs collision path (395-630) and the aosoa submodule; checked mrt-stability-audit for a layout toggle."
+observed = "The AoSoA + wide::f64x4 path is real: 19 f64x4 vectors per 4-cell chunk with a scalar tail. THERE IS NO AoS SCALAR COLLISION PATH in the crate and no runtime or feature toggle selecting one. The Zen 3 CPU the claim names is present."
+verdict = "not_run"
+verdict_reason = "The baseline arm was REPLACED rather than retained, so the >= 4x ratio is unreproducible in the current tree for the same structural reason as C-1286. The cache-residency arithmetic (608-byte chunk) is a design rationale, not a measurement."
+recommended_status = "Closed/Methodology-Insufficient"
+verification_rule = "Either add a feature-gated AoS scalar collision retained solely as a benchmark baseline and assert >= 4x under target-cpu=znver3, or retire the ratio for an absolute MLUPS floor at 128^3."
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+THREE STRUCTURAL PATTERNS, each visible only across claims.
+
+FIRST, THE DECLARING EXPERIMENTS WERE LARGELY NEVER RUN. E-169, E-172, E-174,
+E-175 and E-176 all carry status = 'planned', yet C-1292, C-1295, C-1296, C-1297,
+C-1298 and C-1299 quote precise numbers sourced to them. Status alone could be
+stale bookkeeping, so the independent corroboration matters: E-169's registered
+command passes --coarsened to euclid-df-sweep, which has no such argument, so clap
+rejects it before any work begins; and E-174's registered command, when actually
+executed, prints a degeneracy warning and then CRASHES. Two different experiments
+fail their own registered invocation in two different ways.
+
+SECOND, SEVERAL CLAIMS ARE RATIOS WHOSE DENOMINATOR HAS SINCE BEEN DELETED. C-1286
+needs a readback-GPU box-counting arm that exists only in the CPU sweep; C-1298
+needs an AoS scalar collision the AoSoA rewrite replaced; C-1306 needs a
+single-stream path with no toggle. These are not unrun measurements, they are
+UNMEASURABLE ones, and they share a remedy: a benchmark baseline has to be retained
+as a baseline or the ratio retired for an absolute threshold.
+
+THIRD, MORE REDUNDANCY THAN IT APPEARS. Given the traffic model (77.18 GB) and the
+device bandwidth (504 GB/s), C-1296's '>= 60% of 504 GB/s' is ALGEBRAICALLY
+IDENTICAL to C-1286's '249 ms/galaxy': 60% of 504 is exactly 255 ms/galaxy. They
+are one measurement written twice, so a single timing check decides both and
+neither corroborates the other. Likewise C-1267 and C-1277 restate two and three
+lines of source, with the 32x in C-1267 being the warp width by construction.
+
+THE LOAD-BEARING SCIENTIFIC CLAIM, C-1297, FAILS TWICE OVER, and the second failure
+was only visible by running it. The 6-condition control is a 4-condition control as
+registered, because alpha_zd defaults to 0.0: C1 receives inputs byte-identical to
+C0 and C3 to C2, and the positive control C5 carries pure NFW gravity with no ZD
+forcing whatsoever. Running the registered command printed that degeneracy verbatim
+as a warning -- and then panicked at euclid_df_sweep.rs:816 with
+CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED before emitting a single trial, reproducibly
+at 64^3 and 128^3 and with alpha_zd both zero and 0.1. Even repaired, the condition
+set has no Sersic+ZD-only and no Sersic+NFW-only arm, so it cannot attribute the
+effect between the two components of C5's force field. That design gap is
+independent of any number.
+
+THE MOST INTERESTING RESULT IS ONE NO SINGLE CLAIM STATES: THE ENGINEERING
+REPRODUCES REMARKABLY WELL WHILE THE SCIENCE DOES NOT. Measured 247.4 ms/galaxy
+against a claimed 249; measured 61.9% of theoretical bandwidth against a claimed 60%
+floor; 64^3 distribution 2.7427 +/- 0.6241 against a claimed 2.748 +/- 0.607. These
+are honest, replicable numbers. But the same runs DISSOLVE THE INFERENCE BUILT ON
+TOP OF THEM. C-1287's 18x standard-deviation reduction decomposes into 8.41x from
+six or seven pathological galaxies leaving the low tail and only 1.98x of genuine
+tightening; and the bulk mean moves from 2.9116 at 64^3 to 2.7384 at 128^3, a shift
+of 0.173 that is an order of magnitude wider than the 128^3 confidence interval. A
+quantity still moving by 0.17 per resolution doubling cannot support agreement
+claims at the third decimal, and indeed the measured CI_95 [2.7297, 2.7472] excludes
+the CD D=16 prediction 2.7268 at z = -2.61. What would falsify this reading is a
+256^3 run whose mean returns to 2.732 rather than continuing downward.
+
+A QUIETER FINDING CONCERNS WHAT 'STABLE' MEANS HERE. The retained E-167 pair shows
+the two criteria the repository implements DISAGREEING: the summary CSV reports
+survived = true for all 40 rows including ones with mass_err = 1e113, because that
+field only goes false on a step error or a non-finite Mach number, and 3.5e6 is
+finite. The per-step positivity sentinel, on the same MRT contrast-29 run the summary
+calls healthy, records min_f = -0.629 with 14 of 400 steps flagged unstable before
+recovering. Claims resting on NaN-absence -- C-1279's 'eliminates all NaN
+divergence' and C-1280's 'zero NaN' -- are using the WEAKER of two criteria the same
+experiment family already implements.
+"""
+new_claims_proposed = """
+1. BGK D3Q19 at tau = 0.7 is stable well past Ma = 0.3, reaching Ma = 1.662 with
+   mass conservation error 1.88e-14 at density contrast 19.26. FALSIFIER: a replay
+   in which no BGK row exceeds Ma = 0.3 while holding mass_err below 1e-10.
+
+2. Near the divergence threshold MRT and BGK have NO STABILITY ORDERING: at contrast
+   23.66 MRT diverges while BGK does not, and at 29.07 the reverse. FALSIFIER: a
+   replay in which the MRT crash contrast exceeds the BGK crash contrast at every
+   level, with no interleaving.
+
+3. The MRT positivity violation at contrast 29 is TRANSIENT AND SELF-CORRECTING:
+   min(f_i) reaches -0.629 by step 4 and returns positive, 14 of 400 steps flagged,
+   ending at min_f = +8.33e-2. FALSIFIER: a replay in which min_f stays negative
+   through step 399 or the run terminates on NaN.
+
+4. mrt-stability-audit's survived field CANNOT DETECT NUMERICAL EXPLOSION: it is
+   false only on a step() error or non-finite Mach, so a trial ending with
+   mass_err = 1e113 is reported as survived and printed as OK. FALSIFIER: a run with
+   mass_err above 1e6 that reports survived = false.
+
+5. The repository's only CPU/GPU equivalence test is VACUOUS: it evolves a
+   uniform-at-rest field (the equilibrium) under BGK on an 8^3 grid, and returns early
+   with a pass when no GPU is present. FALSIFIER: exhibiting any test comparing CPU
+   and GPU under MRT at nonzero density contrast.
+
+6. The null-hypothesis control path is NON-FUNCTIONAL: euclid-df-sweep
+   --null-hypothesis panics at euclid_df_sweep.rs:816 with
+   CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED before emitting any trial, reproducibly at
+   64^3 and 128^3 and independently of alpha_zd, on hardware where the ordinary GPU
+   sweep runs to completion. FALSIFIER: any completed 6-condition run emitting a C0 row.
+
+7. Galaxy-scale D_f from this pipeline is NOT CONVERGED at 128^3: the non-outlier bulk
+   mean moves from 2.9116 at 64^3 to 2.7384 at 128^3, a shift of 0.173, roughly 20x
+   the 128^3 CI half-width of 0.0088. FALSIFIER: a 256^3 run whose mean lies within
+   0.01 of the 128^3 mean.
+
+8. The 18x standard-deviation reduction is DOMINATED BY OUTLIER DISAPPEARANCE, not
+   resolution: 8.41x from removing the seven D_f < 1.0 galaxies, only 1.98x from
+   tightening of the remainder. FALSIFIER: an outlier-excluded 64^3 std within a
+   factor of 2 of 0.6241 rather than the measured 0.0742.
+
+9. The stated cause of the 64^3 outliers is WRONG IN BOTH DIRECTIONS: 17 of the 23
+   galaxies with sersic_n >= 5.50 or photo_z > 2.3 are stable, and one outlier has
+   neither property. FALSIFIER: a replay in which the outlier set coincides with the
+   (n >= 5.50 OR z > 2.3) set.
+"""
+gaps = """
+FOUR CLAIMS REMAIN UNDECIDED, each for a stated reason.
+
+C-1282 (GPU MRT within 0.05 of CPU MRT) needs a paired run matched on object_id. The
+GPU arm is cheap and now known to work; the CPU arm was not run. THIS IS THE SINGLE
+MOST VALUABLE OUTSTANDING CHECK IN THE BLOCK, because cross-implementation agreement
+catches real bugs, and the tree's only existing equivalence test is vacuous.
+
+C-1279 needs the CPU MRT sweep at floor=0.045, judged on a positivity sentinel rather
+than NaN absence.
+
+C-1298 and C-1286's 1.54x ratio CANNOT BE DECIDED AT ALL without code changes, because
+both baseline arms were deleted rather than measured. C-1292 needs cuda-precision-bench
+comparing mrt against mrt_coarsened, since euclid-df-sweep does not expose the
+coarsened path.
+
+TWO LIMITATIONS OF WHAT WAS RUN. First, the 128^3 sweep completed 70 of 100 galaxies
+before its wall-clock budget expired, so C-1287/C-1288/C-1289 rest on N=70; the missing
+30 are the tail of the same catalog ordering, not a biased subset, and the standard
+error at N=70 is 0.0045, but the exclusion of 2.7268 at z = -2.61 could soften with a
+fuller sample. Second, everything ran against a prebuilt binary of mtime 2026-04-12,
+not current HEAD -- appropriate for claims last verified 2026-03-11, but any divergence
+is unmeasured, because the from-source rebuild was killed at its 50-minute timeout.
+
+ONE PREDICTION WENT UNTESTED. C0 (uniform density, zero force) was predicted to print
+exactly 3.0000, on the reasoning that a uniform field stays uniform, Otsu on a constant
+field returns vmin, and the degenerate box-count fit falls through to unwrap_or(3.0) --
+which would make C0's '>2.95 PASS' an ERROR PATH rather than a measurement. The E-174
+crash prevented any C0 value from being emitted, so this remains a live and cheap check
+the moment the graph-capture conflict is fixed.
+"""

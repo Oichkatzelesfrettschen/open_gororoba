@@ -8,7 +8,7 @@
 //!
 //! - Updated: 2026-02-10
 //! - Status: `active`
-//! - Item count: `65`
+//! - Item count: `69`
 //!
 //! ## Items
 //!
@@ -670,29 +670,22 @@
 //! - Evidence refs:
 //!   - (none)
 //!
-//! ### T-051: Run gate-audit and archive tranche acceptance evidence
+//! ### T-051: Run repository validation and archive acceptance evidence
 //!
 //! - Area: `qa`
 //! - Priority: `medium`
-//! - Status: `open`
-//! - Description: The PDG mass subset and NANOGrav free-spectrum input boundary is now admitted with retained hashes and source contracts. Registry acceptance passes. The full audit records standard Rust nextest 6105 passed and 48 skipped, heavy nextest 1346 passed and 68 skipped, and workspace-check pass. gate-ci-rust remains open because integrity-rust reports 46 baseline identity-gap claims, two unregistered Cargo binaries (experiment-manifest and rocq-project-audit), and project.toml experiment_count=228 versus 232 experiments.toml rows.
+//! - Status: `done`
+//! - Description: DONE: the legacy release-profile acceptance run remains explicitly partial and historical. The descriptive validate-* workflow produces a retained passing repository report with registry and Rust logs, preserves the interrupted boundary, and keeps identity and project counters synchronized.
 //! - Dependencies: (none)
 //! - Acceptance criteria:
-//!   - Registry acceptance gate exits zero
-//!   - Full gate audit retains registry rust and workspace logs plus latest manifest
-//!   - PDG mass subset CSV has retained source provenance and content hash
-//!   - NANOGrav 15yr free spectrum CSV has retained source provenance and content hash
-//!   - Rust nextest passes without missing-input failures
-//!   - Integrity Rust registry-check baseline drift is resolved
+//!   - Registry validation exits zero
+//!   - Full repository validation retains registry and Rust logs plus latest manifest
+//!   - The interrupted legacy acceptance result is not reported as a pass
+//!   - Identity and project counter drift remain resolved
 //! - Evidence refs:
-//!   - `docs/engineering/local-governance-gate-evidence-2026_08_01.md`
-//!   - `reports/pdg-nanograv-input-admission-2026_08_01.toml`
-//!   - `data/external/PROVENANCE.local.json`
-//!   - `reports/gates/latest.json`
-//!   - `reports/gates/2026-08-01/233501/summary.md`
-//!   - `reports/gates/2026-08-01/233501/gate-ci-registry.log`
-//!   - `reports/gates/2026-08-01/233501/gate-ci-rust.log`
-//!   - `reports/gates/2026-08-01/233501/workspace-check.log`
+//!   - `docs/engineering/validation-workflow-rca-2026_08_02.md`
+//!   - `docs/engineering/evidence_ledger_operating_contract_2026_08_01.md`
+//!   - `registry/canonical/control_plane.sqlite3`
 //!
 //! ### T-052: Implement Bartol V2 legacy parser and Python fetcher
 //!
@@ -891,3 +884,85 @@
 //! - Evidence refs:
 //!   - `proofs/theories/C1542_MorVlambdaArbClose.v`
 //!   - `proofs/theories/Moreno1997.v`
+//!
+//! ### T-066: Consolidate repository validation into a single evidence pipeline
+//!
+//! - Area: `qa`
+//! - Priority: `high`
+//! - Status: `done`
+//! - Description: DONE: validate-local, validate-ci, validate-repository, and validate-registry replace active nested gate wrappers. The validation tools build once per source state, cached binaries execute directly, timing and lane reports remain retained, and compatibility aliases remain inactive.
+//! - Dependencies: `T-051`
+//! - Acceptance criteria:
+//!   - The active pre-push and CI paths use validate-* names
+//!   - One validation tool bundle build serves the registry lane
+//!   - Registry and Rust lanes do not repeat the same verifier
+//!   - The retained RCA records measured costs and falsifiers
+//! - Evidence refs:
+//!   - `docs/engineering/validation-workflow-rca-2026_08_02.md`
+//!   - `Makefile`
+//!   - `xtask/src/main.rs`
+//!   - `.githooks/pre-push`
+//!   - `.github/workflows/ci.yml`
+//!
+//! ### T-067: Falsify photon-graviton Ward and TCMT invariants
+//!
+//! - Area: `scientific`
+//! - Priority: `high`
+//! - Status: `open`
+//! - Description: Rework the Ward identity and TCMT unitarity checks so they contract independent diagram contributions and evaluate a complex S-matrix residual. Retain convergence data, on-shell and off-shell residuals, parameter extraction, and declared tolerances before promoting C-820 C-822 C-864 and C-866.
+//! - Dependencies: `C-820`, `C-822`, `C-864`, `C-866`, `E-073`
+//! - Acceptance criteria:
+//!   - Independent irreducible tadpole and external-leg contractions are retained
+//!   - The on-shell zero factor cannot make the residual pass by itself
+//!   - Complex transmission and reflection satisfy a declared flux tolerance
+//!   - The registry rows record the resulting evidence status
+//! - Evidence refs:
+//!   - `docs/engineering/scientific-frontier-map-2026_08_02.md`
+//!   - `crates/gr_core/src/photon_graviton/`
+//!   - `crates/gr_core/src/photon_graviton_tcmt/`
+//!   - `registry/claims.toml`
+//!   - `registry/experiments.toml`
+//!
+//! ### T-068: Reproduce Mie TCMT and SFWM primary comparisons
+//!
+//! - Area: `numerical`
+//! - Priority: `high`
+//! - Status: `open`
+//! - Description: Run the Ruan-Fan cylindrical Mie and TCMT comparisons and the Son-Chekhova SFWM calibration paths with fixed inputs. Separate paper-calibrated and Sellmeier-derived mismatch values and retain one-point and sweep artifacts before promoting C-832 C-839 C-849 and C-850.
+//! - Dependencies: `C-832`, `C-839`, `C-849`, `C-850`, `E-074`, `E-076`
+//! - Acceptance criteria:
+//!   - Lossless and lossy Mie TCMT cases are retained
+//!   - The multi-channel sweep covers the declared angular channels
+//!   - Paper-calibrated and Sellmeier paths are not mixed
+//!   - Rate dominance fringe and monotonicity tolerances are recorded
+//!   - The registry rows receive reproduced or falsified status
+//! - Evidence refs:
+//!   - `docs/engineering/scientific-frontier-map-2026_08_02.md`
+//!   - `crates/optics_core/src/mie_cylinder.rs`
+//!   - `crates/optics_core/src/sfwm.rs`
+//!   - `crates/optics_core/tests/test_sfwm_son_chekhova.rs`
+//!   - `registry/claims.toml`
+//!   - `registry/experiments.toml`
+//!
+//! ### T-069: Bind formal and numerical rows to replay manifests
+//!
+//! - Area: `evidence`
+//! - Priority: `medium`
+//! - Status: `open`
+//! - Description: Create claim-specific evidence records for Rocq completeness, the Voyager AMDA boundary, LBM precision and stability, flyby sign matrices, and fractal-metric parameter grids. Each record carries source identity, input hashes, toolchain, coefficients, tolerance, falsifier, and output hash.
+//! - Dependencies: `I-137`, `I-140`, `I-141`, `C-1101`, `C-1120`, `C-1121`, `E-128`
+//! - Acceptance criteria:
+//!   - Formal theorem assumptions and proof outputs share one dated record
+//!   - AMDA-specific input bytes and parser identity are retained
+//!   - CPU and GPU LBM runs use identical inputs and metadata
+//!   - Parameter grids include boundary cases
+//!   - Every result has a named falsifier and content hash
+//! - Evidence refs:
+//!   - `docs/engineering/scientific-frontier-map-2026_08_02.md`
+//!   - `docs/engineering/evidence_ledger_operating_contract_2026_08_01.md`
+//!   - `proofs/`
+//!   - `crates/gr_core/`
+//!   - `crates/lbm_3d/`
+//!   - `crates/lbm_3d_cuda/`
+//!   - `registry/claims.toml`
+//!   - `registry/experiments.toml`

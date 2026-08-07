@@ -1,0 +1,128 @@
+# Claim falsification fleet 2026-08-06: contingency matrices over the 148 claims.
+#
+# TWO DISTINCT VOCABULARIES appear below and neither substitutes for the other.
+#
+# fleet_finding_verdict is the classification each block agent recorded in its
+# return: refuted, partially_confirmed, confirmed, not_run. It is a campaign
+# artifact and appears nowhere in the canonical schema.
+#
+# canonical_experiment_verdict is the value stored on the transition event, drawn
+# from the schema's closed set at crates/provenance_store/src/claim_transitions.rs
+# CLAIM_EXPERIMENT_VERDICTS: Falsifies, MethodologyInvalid, Inconclusive,
+# SurvivesChallenge, Replicates.
+#
+# final_status is the claim's status after every event landed, including the six
+# corrective transitions appended in response to the branch review.
+#
+# Verdict and status are separate axes on both matrices. The first emission of
+# this campaign collapsed them into a single headline number; these tables exist
+# so that cannot recur, and labelling the fleet vocabulary as canonical would
+# re-collapse them in a different way.
+
+[matrix_meta]
+generated = "2026-08-06"
+revised = "2026-08-06 (branch review response)"
+total_claims = 148
+fleet_events = 148
+corrective_events = 6
+status_changing_events = 107
+status_preserving_events = 47
+
+# ---------------------------------------------------------------------------
+# Matrix 1: fleet finding verdict x final status
+# ---------------------------------------------------------------------------
+
+[fleet_finding_matrix]
+axis_rows = "fleet_finding_verdict (campaign vocabulary, not canonical)"
+axis_cols = "final_status (canonical)"
+table = """
+fleet_finding_verdict   Cls/Anlg  Cls/MethIns  Cls/ResPrg  Cls/SrcIns  Provisional  Refuted  Superseded  Theoretical  Verified  TOTAL
+refuted                        1            1           3           0            1       54           0            0         0     60
+partially_confirmed            0            3           0           1           35        3           1            1         0     44
+confirmed                      0            1           0           0            2        0           1            2        30     36
+not_run                        0            1           1           0            6        0           0            0         0      8
+TOTAL                          1            6           4           1           44       57           2            3        30    148
+"""
+note = """
+C-1244 moved from partially_confirmed to confirmed in the review response. Its
+fleet finding had scored a valid conditional as weakened because the consequent
+also holds when the antecedent fails, which is not a defect in the claim.
+"""
+
+# ---------------------------------------------------------------------------
+# Matrix 2: canonical experiment verdict x final status
+# ---------------------------------------------------------------------------
+
+[canonical_verdict_matrix]
+axis_rows = "experiment_verdict as stored on the latest transition event for each claim"
+axis_cols = "final_status (canonical)"
+table = """
+experiment_verdict   Cls/Anlg  Cls/MethIns  Cls/ResPrg  Cls/SrcIns  Provisional  Refuted  Superseded  Theoretical  Verified  TOTAL
+Falsifies                   0            0           2           0            1       54           0            0         0     57
+MethodologyInvalid          1            1           1           0            0        0           0            0         0      3
+Inconclusive                0            4           1           1           41        3           1            1         0     52
+SurvivesChallenge           0            1           0           0            2        0           1            2        30     36
+Replicates                  0            0           0           0            0        0           0            0         0      0
+TOTAL                       1            6           4           1           44       57           2            3        30    148
+"""
+note = """
+Replicates is empty because no claim in this frontier asserted reproduction of an
+external published result that the campaign then reproduced. Every external
+comparison either read a source and found the repository value wrong, or found no
+repository computation to compare.
+"""
+
+# ---------------------------------------------------------------------------
+# What the two matrices disagree about, and why that is the point
+# ---------------------------------------------------------------------------
+
+[divergence]
+falsifies_vs_refuted = """
+57 claims carry Falsifies and 57 carry final status Refuted, but they are not the
+same 57. Three claims scored Inconclusive by the fleet were nonetheless set to
+Refuted because a source-attribution defect decided them without an executable
+check, and three claims scored Falsifies sit at Closed/Research-Program or
+Provisional because the proposition outran what the falsifier could decide.
+"""
+methodology_invalid = """
+MethodologyInvalid holds 3 rows, all of them cases where the falsifier tested for
+the EXISTENCE of a repository implementation rather than for the truth of the
+proposition. Two of the three (C-1050, C-970) were corrected from Falsifies after
+the branch review. The review asked for a bounded audit of all six fleet-refuted
+findings whose final status is not Refuted; the other four were upheld, with
+reasons recorded in the review-response artifact.
+"""
+survives_challenge_not_verified = """
+Six claims survive their falsifier without reaching Verified: C-1060 at
+Superseded, C-1244 and C-1285 at Provisional, C-1538 and C-1539 at Theoretical,
+C-1656 at Closed/Methodology-Insufficient. Surviving a challenge is not the same
+as being established, and the reason differs per row. C-1244's falsifier does not
+discriminate, since the test passes unchanged under maximal inversion breaking.
+C-1538 and C-1539 have Rocq theorems that hold but are strictly weaker than the
+propositions they are cited for.
+"""
+inconclusive_and_provisional = """
+41 of 52 Inconclusive rows end at Provisional, which is the campaign's largest
+single cell and its most honest one. These claims were not refuted and were not
+verified; the check that would decide them is named and unwritten.
+"""
+
+# ---------------------------------------------------------------------------
+# Event accounting
+# ---------------------------------------------------------------------------
+
+[events]
+total = 154
+fleet = 148
+fleet_status_changing = 104
+fleet_status_preserving = 44
+corrective = 6
+corrective_status_changing = 3
+corrective_status_preserving = 3
+note = """
+An event is an adjudication, not a status change. 47 of the 154 events record
+that a claim was examined against its falsifier and kept the status it had. The
+three corrective status changes are the demotions of C-1312, C-834 and C-1658
+from Verified back to Provisional pending canonical repairs the mutation surface
+cannot perform.
+"""
