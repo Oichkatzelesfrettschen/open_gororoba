@@ -34,7 +34,7 @@ hardware-specific tables are replaced with the scientific stack.
 ## Read first (in this order)
 
 1. This file (`AGENTS.md`).
-2. `~/.claude/CLAUDE.md` -- global user policies (ASCII,
+2. `~/.claude/CLAUDE.md` -- global user policies (emoji-free text,
    warnings-as-errors, no shortcuts, TodoWrite discipline,
    AskUserQuestion exhaustively).
 3. `~/.claude/projects/-home-eirikr-Github-open-gororoba/memory/MEMORY.md`
@@ -63,9 +63,15 @@ hardware-specific tables are replaced with the scientific stack.
 
 ## Top-line operating rules
 
-- **ASCII only**. No emojis. No smart quotes. No en/em dashes. No
-  box-drawing characters. The `ansi-check` and `terminology-gate`
-  pre-push hooks reject violations.
+- **Emoji-free, and ASCII by convention**. `ansi-check` is an
+  anti-emoji gate, not an ASCII gate: in `--check` mode it fails a file
+  only on an emoji or on a control character other than tab, newline or
+  carriage return. Smart quotes, en/em dashes, arrows, Greek letters,
+  box-drawing and accented characters all pass it. Writing ASCII
+  remains the house convention and `--fix` rewrites the typographic
+  substitutes, but the gate does not enforce it, so a reviewer catches
+  what the hook does not. `terminology-gate` is a separate check over
+  banned legacy terms and has nothing to say about encoding.
 - **Warnings-as-errors** via `[workspace.lints]` in root `Cargo.toml`.
   Do NOT bypass with crate-local `#![allow(warnings)]`. Narrow-scope
   `#[allow(clippy::<lint>)]` with a documented rationale is permitted.
@@ -117,7 +123,7 @@ CARGO_TARGET_DIR=.cache/gate-target cargo nextest run -p <crate> --lib --cargo-p
 | 1 | git-lfs handoff          | Pre-push hook chains to lfs                                                      |
 | 2 | cache-check              | Soft cap (150G) + hard cap (200G) on `.cache/`                                   |
 | 3 | terminology-gate         | 8 banned legacy terms; prefer `sign_imbalance` for the renamed crate vocabulary. |
-| 4 | ansi-check               | Reject non-ASCII bytes                                                           |
+| 4 | ansi-check               | Reject emojis and non-whitespace control characters; non-ASCII text passes       |
 | 5 | rust-regression-scoped   | Scoped clippy + nextest on changed-crate closure                                 |
 | 6 | validate-governance      | Verify registry policy, signatures, cross-references, and checked-in TOMLs      |
 
@@ -236,9 +242,11 @@ repo.
 | Internal-repo paths                      | `// per data/output/audit/2026-04-30/foo.csv`  | rewrite by content, not by path                     |
 | NEW personal-name copyright on new files | `// Copyright (c) 2026 <git config user.name>` | use the project-collective form below, or SPDX-only |
 
-The `ansi-check` + `terminology-gate` hooks catch the encoding and
-banned-term subset of this list automatically; the remaining items
-are reviewer-enforced for now (lint TBD).
+The `terminology-gate` hook catches the banned-term subset of this list
+automatically, and `ansi-check` catches emojis and stray control
+characters. Everything else here is reviewer-enforced (lint TBD),
+including the typographic substitutes, which `ansi-check --fix`
+rewrites but `ansi-check --check` accepts.
 
 ### Source code MUST contain (when domain-specific)
 
@@ -447,8 +455,9 @@ finding-docs, memory entries):
 - MUST use language tags on code fences (`bash`, `rust`, `toml`,
   `wgsl`).
 - SHOULD prefer tables over bullet lists for 3+ comparable items.
-- MUST NOT use emoji, ASCII boxes, banner dividers in rules text
-  (banned by `ansi-check` anyway).
+- MUST NOT use emoji, ASCII boxes, banner dividers in rules text.
+  `ansi-check` blocks the emoji; the boxes and dividers are on the
+  author.
 - MUST name the exact section or path instead of using relative
   position phrases; the file may be slice-loaded.
 - MUST use MUST / MUST NOT / SHOULD imperative voice in rules.
