@@ -1,0 +1,306 @@
+# Fleet return: block A_TOWER, 13 claims. HTML entities restored to ASCII.
+#
+# ORCHESTRATOR CORRECTION (cross-block, the agent could not see this):
+# The agent states that C-1010 is contradicted by claims "already carrying status
+# Verified" and names C-929 and C-930. Both are PROVISIONAL, not Verified. Worse,
+# block J_ZD_SPECTRAL refuted C-929 and C-930: their brody_q = 0.0 is the
+# estimator's domain clamp for any variance >= 1, and the reported variances 59.0
+# and 123.0 are exactly N-2, the closed form forced by a two-level spectrum. So
+# C-929 CANNOT be used as authority against C-1010's Wigner-Dyson half.
+# C-1010's refutation still stands, on the independent and stronger ground the
+# agent also established: compute_routon_spectral_spacing() returns the flattened
+# adjacency matrix and never diagonalizes anything, so no spectrum exists to be
+# Wigner-Dyson or otherwise.
+# The C-1111 (Verified) vs C-1040 and C-1109/C-1110 (Verified) vs C-1104
+# contradictions were spot-checked directly and are exact.
+
+[block]
+id = "A_TOWER"
+claim_count = 13
+agent_note = "Three claims carry real numbers (C-1080, C-1090, C-1101) and all three fail decisive quantitative checks; four more (C-1010, C-1030, C-1040, C-1104) are contradicted by other registry claims; the rest are physics names attached to free-parameter arithmetic. Nothing in the block survives contact with its own numbers."
+
+[[finding]]
+claim_id = "C-1010"
+decidability = "internal"
+falsifier = "False if the 128D ZD-graph level-spacing statistic is anything other than Wigner-Dyson, or if the cited code cannot produce a level-spacing distribution at all."
+check_performed = "Read crates/gororoba_algebra/src/construction/deep_space.rs in full (85 lines); grep of registry/claims.toml for prior NNSD results at dim=128."
+observed = "compute_routon_spectral_spacing() builds a 128x128 0/1 adjacency matrix and returns it flattened as Vec<f64>. IT NEVER FORMS A LAPLACIAN, NEVER DIAGONALIZES, NEVER COMPUTES A SPACING. The function name and doc comment assert eigenvalue spacings; the body returns adj. [ORCHESTRATOR: the agent's secondary argument from C-929/C-930 is withdrawn -- both are Provisional and were themselves refuted by block J as estimator-clamp artifacts.]"
+verdict = "refuted"
+verdict_reason = "The Wigner-Dyson half is refuted because the cited implementation computes no spectrum at all -- there is nothing for a level-spacing distribution to be measured on. The 256D imbalance-density half is a well-defined deterministic number (compute_voudon_imbalance_density over 256^3 triples) but 'acts as a non-zero algebraic pressure term for cosmological homogeneity' attaches no observable to it; the only test asserts 0 < density < 1. Refuted applies to the Wigner-Dyson half; the 256D half is undecidable and should be split out."
+recommended_status = "Refuted"
+verification_rule = "Assert compute_routon_spectral_spacing() output length and content differ from the flattened adjacency matrix, i.e. that a diagonalization occurs. It currently returns adj verbatim."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1020"
+decidability = "unfalsifiable_as_stated"
+falsifier = "False if the repository contains two mutually inconsistent assignments of the same CD layer to different forces, or if the 8D-magnetism / 16D-electricity split contradicts an established covariance requirement."
+check_performed = "where_stated path docs/research/high_dimensional_algebra_unification_2026.md does not exist; resolved to crates/data_core/src/registry_mirrors/high_dimensional_algebra_unification_2026.rs and the live crates/gororoba_algebra/src/physics/dft_mapping.rs. Compared against crates/gororoba_algebra/src/physics/particle_physics.rs layer table (lines 14-26)."
+observed = "dft_mapping.rs: 8D = 'Magnetism / Strong Force (Color)', 16D = 'Electricity / Weak Isospin', 32D = WeakNuclear, 64D = StrongNuclear. particle_physics.rs assigns the SAME layers differently: dim 8 = SU(3)_C color, dim 16 = SU(2)_L + U(1)_Y, dim 32 = weak nuclear, dim 64 = strong nuclear drag. 8D is simultaneously magnetism and colour; strong nuclear appears at BOTH 8D and 64D. The claim's own where_stated file is absent from the tree."
+verdict = "refuted"
+verdict_reason = "ELECTRICITY AND MAGNETISM CANNOT OCCUPY CD LAYERS OF DIFFERENT DIMENSION, because they are not separately defined quantities: E and B are components of the single antisymmetric field tensor F_mu_nu, and a Lorentz boost of velocity beta maps E_perp -> gamma(E + beta x B)_perp and B_perp -> gamma(B - beta x E)_perp, so a boosted observer sees magnetic field where an unboosted one sees only electric field. Any assignment placing E at 16D and B at 8D therefore CHANGES UNDER A CHANGE OF INERTIAL FRAME, which no algebraic layer structure can do. This is decisive and needs no dataset. Corroborated by the repository carrying two incompatible force tables for the same layers."
+recommended_status = "Refuted"
+verification_rule = "Physics: the DFT layer map must be stated in terms of Lorentz-invariant field combinations (F_mu_nu F^mu_nu and F_mu_nu Fdual^mu_nu), not E and B separately. Code: assert DftForceSector::description(dim) and the ForceSectorMapping layer table agree for every dim in {8,16,32,64}; they currently do not."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1030"
+decidability = "unfalsifiable_as_stated"
+falsifier = "False if no Riemann zeta zero enters the computation, or if the CD spectra at 32D/64D are not GUE (GUE being the only known bridge from zeta-zero statistics to a physical spectrum, via Montgomery-Odlyzko)."
+check_performed = "grep -rn 'riemann_zero|zeta_zero|14.134|21.022' over crates/ ; read crates/algebra_analysis/src/riemann_resonance.rs (239 lines)."
+observed = "ZERO occurrences of any Riemann zeta zero anywhere in crates/ (the only hit is an unrelated 'test_minkowski_riemann_zero' in gr_core/src/metric.rs, about the Riemann CURVATURE tensor). riemann_resonance.rs computes NNSD statistics for CD dimensions 2^p with p prime versus p composite and compares mean Brody q. That is a PRIMALITY question about the doubling exponent, not the distribution of zeta zeros. The 32D/64D dimensions named in the claim are below the module's own NNSD feasibility floor (dim >= 128)."
+verdict = "refuted"
+verdict_reason = "The 'Riemann Resonance Law' has NO RIEMANN CONTENT: the implementation contains no zeta zeros. The claim's named dimensions are additionally below the feasibility floor of the statistic it invokes."
+recommended_status = "Refuted"
+verification_rule = "Source locator: grep -c 'zeta' crates/algebra_analysis/src/riemann_resonance.rs == 0. Operationalization if retained: load the first 10^4 nontrivial zeta zero imaginary parts, unfold them, require KS agreement (p > 0.05) with the unfolded ZD-Laplacian NNSD at dim 32 and 64."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1040"
+decidability = "internal"
+falsifier = "False if the CD associator-based CHSH statistic S at 512D satisfies |S| <= 2, i.e. does not violate the classical Bell bound."
+check_performed = "where_stated crates/algebra_analysis/src/bell_inequality.rs does not exist; resolved to crates/algebra_experimental/src/bell_inequality.rs (chsh_violation_test). Cross-referenced registry/claims.toml C-1111."
+observed = "C-1111 (status VERIFIED, where_stated crates/algebra_experimental/src/bell_inequality.rs, E-099): '512D Cayley-Dickson CHSH S-value = -1.528 (does NOT violate classical bound |S|<=2). Associator-based measurement model with sedenion-lifted ZD pairs produces dimension-invariant S ~ -1.5 across 16D through 512D. The correlators are uniformly anti-correlated (~-0.85) with insufficient angular dependence for CHSH violation.' ORCHESTRATOR SPOT-CHECK: both statements read directly from registry/claims.toml and the contradiction is exact."
+verdict = "refuted"
+verdict_reason = "C-1040 predicts Bell-inequality violations in the 512D Eriston vacuum. The repo's own VERIFIED measurement of exactly that construction gives |S| = 1.528 < 2, no violation, dimension-invariant across the whole tower. THE PREDICTION AND ITS REFUTATION COEXIST IN THE REGISTRY."
+recommended_status = "Refuted"
+verification_rule = "cargo nextest run -p algebra_experimental -- chsh: assert chsh_violation_test(512, ..).s_value.abs() <= 2.0 (currently 1.528). This same run decides C-1040 and re-verifies C-1111."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1050"
+decidability = "unfalsifiable_as_stated"
+falsifier = "False if no quantity identifiable as the Higgs VEV (246 GeV) is computed anywhere in the repository."
+check_performed = "grep -rn 'vev|VEV|246\\.|[Hh]iggs' over crates/ (only hits are 'wavevector' substring matches in optics_core/src/sfwm.rs). Read crates/gororoba_algebra/src/physics/particle_physics.rs (509 lines)."
+observed = "NO Higgs VEV, no 246 GeV, no scalar potential, no symmetry-breaking computation anywhere in crates/. particle_physics.rs assigns SM generators to CD basis axes and counts AVT violations between the resulting blocks. The where_stated path crates/algebra_analysis/src/particle_physics.rs is a 2-line re-export shim. Its doc comment asserts the 7 imaginary octonion units 'encode the same multiplication rules as SU(3) color charge', WHICH IS FALSE: Aut(O) = G_2 (14-dimensional), and su(3) is the stabilizer of an imaginary unit inside g_2 -- the octonion multiplication table is not the su(3) structure-constant table."
+verdict = "refuted"
+verdict_reason = "The stated falsifier was met: the grep ran and returned zero. The claim names an outcome for which no computation exists anywhere in the repository, so the assertion has no referent. The adjacent implemented content rests on an incorrect octonion/su(3) identification."
+recommended_status = "Closed/Research-Program"
+verification_rule = "Falsifier as run: grep -rc 'vev\\|Higgs' crates/ excluding 'wavevector' == 0. Operationalization required: state the topological invariant of the 1024D-to-4D coupling whose vanishing forbids v = 0, compute v in GeV, require agreement with v = 246.22 GeV."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1060"
+decidability = "internal"
+falsifier = "False if the complex-time integrator does not exist or does not reproduce a known imaginary-time tunneling result; trivially true if the claim only asserts the code can represent complex tau."
+check_performed = "Read crates/gr_core/src/nbody_integration.rs; cross-referenced C-1116 and C-1117."
+observed = "The integrator is genuinely complex-typed: Body holds Vector3<Complex<f64>> for pos and vel, step takes d_tau: Complex<f64>, RK4 stages carry through. C-1116 (VERIFIED) already states the substantive result: 'Wick rotation dispatcher parameterized by angle theta ... WKB tunneling amplitude via trapezoidal quadrature matches analytical square-barrier result within 1%.' C-1117 (Verified) covers the adaptive theta schedule. NO cosmological bounce exists anywhere in the module -- only two-body and EIH N-body."
+verdict = "confirmed"
+verdict_reason = "True but TRIVIALLY so, and redundant. As written the claim asserts only that using Complex<f64> for the time step 'enables the engine to model' tunneling -- a statement about a type signature, entailed by the code compiling. Every falsifiable part is already carried by C-1116 and C-1117. The 'quantum-cosmological bounces' clause is unimplemented."
+recommended_status = "Superseded"
+verification_rule = "Superseded by C-1116 and C-1117. Their durable check is the substitute: cargo nextest run -p gr_core -- wkb_tunneling, assert |A_num/A_analytic - 1| < 0.01. C-1060 adds no independent testable content."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1070"
+decidability = "unfalsifiable_as_stated"
+falsifier = "False if 'subjective coherence' and 'Maxwell's Demon' name anything beyond a tuned damping coefficient, i.e. if removing the intention framing changes no computed number."
+check_performed = "Read crates/quantum_core/src/intention_operator.rs (365 lines); cross-referenced C-1118."
+observed = "IntentionOperator has exactly TWO fields, strength and target_coherence, both free constructor arguments. apply_to_lbm returns bias_field[x][y] = strength * max(chaos - target_coherence, 0), where chaos is the Shannon entropy of the AVT violation participation distribution over 128 axes. This is a RECTIFIED-LINEAR DAMPING TERM with a gain and a threshold. C-1118 (VERIFIED) already states the operational content without the metaphor."
+verdict = "refuted"
+verdict_reason = "The 'Intention Operator' is a two-parameter entropy-damping filter whose stabilization is achieved by the tuned gain 'strength', not by any observer, subject, or demon. A MAXWELL'S DEMON CLAIM REQUIRES ENTROPY ACCOUNTING FOR THE MEASUREMENT RECORD (Landauer cost); none is present -- entropy is simply removed by an explicit dissipative term, which is thermodynamically unremarkable. The finding is about the naming, not the LBM result, which stands as C-1118."
+recommended_status = "Closed/Research-Program"
+verification_rule = "Assert apply_to_lbm output depends on no state other than (strength, target_coherence, routon_field, avt), establishing no observer-dependence. Operationalization if retained: exhibit the Landauer bookkeeping (bits erased per unit entropy removed) and require it to balance."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1080"
+decidability = "external"
+falsifier = "False on any of three independent grounds: (a) the D_f = 2.7 formula's magnitude misses the Pioneer benchmark 8.74e-10 m/s2; (b) the same single D_f cannot simultaneously produce the Pioneer and flyby scales; (c) the Pioneer anomaly has been resolved by conventional physics, making a CD explanation of its sign an explanation of an artifact."
+check_performed = "Evaluated FractalMetric::anomalous_acceleration (crates/gr_core/src/fractal_metric.rs, a = -(D_f - 4) v^2 / (2 r)) at D_f = 2.7 for Pioneer 11 (r = 30 AU, v = 11.4 km/s) and for NEAR / Rosetta-I perigee from data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv. Fetched and read Turyshev et al. 2012, arXiv:1204.2507 (= PRL 108, 241101) in full."
+observed = "MAGNITUDE: a_fractal(Pioneer 11) = 1.8822e-05 m/s2 against the governed benchmark 8.74e-10 +/- 1.33e-10 m/s2 -- an overshoot of 2.15e+04. The D_f that would reproduce the benchmark is 3.99993964, not 2.7. SCALE: at NEAR perigee (r = 6.910e6 m, v = 12.74 km/s) the same formula gives 1.53e+01 m/s2, LARGER THAN EARTH SURFACE GRAVITY, integrating to ~1.7e+04 m/s of velocity change over perigee against an observed 13.46 mm/s -- an excess of ~1.2e+09. Rosetta-I perigee gives 8.64 m/s2. SIGN: for D_f < 4 the code yields a = +0.65 v^2 / r, i.e. OUTWARD / ANTI-SUNWARD, while the Pioneer anomaly is SUNWARD; the docstring calls the same term both 'outward' and 'retarding', which cannot both hold for an outbound spacecraft. EXTERNAL: Turyshev et al. 2012 conclude verbatim 'once the thermal recoil force is properly accounted for, no anomalous acceleration remains' and 'no statistically significant acceleration anomaly exists'; thermal gives eta_rtg = 0.0104, eta_elec = 0.406, Doppler gives 0.0144 and 0.480, 1-sigma error ellipses overlap. The repo's governed source index docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md cites only Anderson et al. 2002 and explicitly disclaims any thermal-recoil model; TURYSHEV 2012 IS ABSENT FROM THE GOVERNED SOURCES."
+verdict = "refuted"
+verdict_reason = "Refuted THREE TIMES INDEPENDENTLY: the D_f = 2.7 acceleration overshoots Pioneer by 4 orders and the flybys by 9, its sign is anti-sunward where the anomaly is sunward, and the Pioneer anomaly it purports to explain was shown consistent with spacecraft thermal recoil in 2012 -- a paper the repo's governed source index does not carry. A 'unified analytic explanation' of two anomalies where one has evaporated and the other is missed by nine orders is refuted as stated."
+recommended_status = "Refuted"
+verification_rule = "cargo nextest run -p gr_core -- fractal_metric_pioneer_scale: assert anomalous_acceleration(4.4879e12, 11400.0) at D_f = 2.7 is within a factor of 3 of 8.74e-10 -- it is not (1.88e-5). Add Turyshev et al. 2012 (DOI 10.1103/PhysRevLett.108.241101) to registry/external_sources.toml and to docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md."
+source_url = "https://arxiv.org/pdf/1204.2507v1"
+source_sha256 = "98359d64c5bab282f8c37d5d8140ff6d280aad45860b8727a5914d936b0cf4da"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/turyshev_2012_pioneer_thermal_recoil_arxiv_1204_2507.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1090"
+decidability = "internal"
+falsifier = "False if, at the phi the repository itself uses, the projected 1024D bias axis is not close to the Planck quadrupole-octupole direction (l, b) = (240, 63); and vacuous if phi is a free parameter tunable to any direction."
+check_performed = "Read crates/cosmology_core/src/deka_voudon_cmb.rs. Reimplemented project_axis exactly and swept phi over [0, 2] in 10000 steps, computing angular separation from (240, 63)."
+observed = "AT phi = 0.0172, THE VALUE HARD-CODED IN THE REPOSITORY'S OWN FOUR TESTS: predicted axis (l = 0.19, b = -26.33), angular separation from Planck (240, 63) = 126.86 DEGREES. That is FARTHER than the 90-degree expectation for a random axis. Best over the entire 10000-point phi sweep: separation 13.28 degrees at phi = 0.6806. The repo's own test_planck_alignment_direction asserts only that the separation is finite and in [0, 180], with the comment 'this is a diagnostic, not a pass/fail'. The projection uses the literal constants 0.707, 2.718, 3.1415 as angular frequencies with no stated derivation."
+verdict = "refuted"
+verdict_reason = "At the parameter value the repository actually uses, the 1024D bias axis is 127 degrees from the Axis of Evil -- NEARLY ANTI-ALIGNED, AND WORSE THAN CHANCE. The alignment can only be approached (to 13 degrees, never better) by tuning the single free parameter phi post hoc, and the repository's own test declines to impose any threshold. There is no emergence here: the direction is set by three undeclared frequency constants and one fitted phase."
+recommended_status = "Refuted"
+verification_rule = "Strengthen test_planck_alignment_direction to assert angular_separation_degrees(axis_galactic_coords(0.0172), (240.0, 63.0)) < 20.0. It currently returns 126.9 and would fail. Any future version must fix phi from an independent constraint before the separation is quoted."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1100"
+decidability = "unfalsifiable_as_stated"
+falsifier = "False if the Singularitarian Engine computes no physical constant from the CD tower, i.e. if no dimensionless constant is output and compared to its measured value."
+check_performed = "Read crates/gororoba_engine/src/singularitarian.rs imports, struct, UnifiedRunResult, evidence_matrix()."
+observed = "The engine is a WIRING HARNESS: it imports and sequentially invokes ten subsystems and collects their outputs into UnifiedRunResult. It HARD-CODES physical constants (G, c, hbar, k_B, M_sun, Sgr A* mass) AS INPUTS. It derives none. evidence_matrix() is a hand-maintained list of ClaimEvidence rows keyed by claim id -- an assertion table, not a computation. Of the subsystems it unifies, C-1080 is refuted above, C-1090 is refuted above, C-1111 is a Verified null, and C-1101/C-1104 fail as recorded below."
+verdict = "refuted"
+verdict_reason = "'Hidden source code of physical constants' requires at least one constant to COME OUT; none does -- the constants GO IN. The claim is a summary label whose content is exactly the conjunction of its component claims, and those components are individually refuted or null, so the summary inherits their status."
+recommended_status = "Closed/Research-Program"
+verification_rule = "Operationalization required: name one dimensionless constant (alpha_EM, m_p/m_e, sin^2 theta_W) that SingularitarianEngine outputs without it having been an input, and require agreement with CODATA. Status is entailed by C-1080, C-1090, C-1111."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1101"
+decidability = "internal"
+falsifier = "False if NEAR ratio 1.11 is inconsistent with the published NEAR asymptotic velocity increment and its uncertainty, or if the '5/6 signs' score is carried by events whose observed value is consistent with zero and therefore carries no sign information."
+check_performed = "Attempted the E-095 run; build did not complete in 45 minutes under cargo package-lock contention from the concurrent fleet. Substituted: read chingon_bivector_drag.rs and flyby_crucible.rs:654 to fix the ratio convention; read the governed catalog and the registry-recorded per-flyby outputs in the C-942 and C-1103 status_notes; fetched Anderson and Nieto 2009 (arXiv:0907.2469) for published uncertainties."
+observed = "flyby_crucible.rs:654 defines ratio = delta_v_mm_s / cfg.observed_dv_mm_s, so ratio 1.11 means predicted 14.94 mm/s. PUBLISHED UNCERTAINTIES (Anderson and Nieto 2009, verbatim): GLL-I (3.92 +/- 0.03), NEAR (13.46 +/- 0.01), Rosetta-I (1.80 +/- 0.03) mm/s. Predicted 14.94 against 13.46 +/- 0.01 is a 1.48 mm/s discrepancy, i.e. 148 SIGMA. The registry's own C-942 status_note (VERIFIED) gives the full picture: 'Galileo-I +1.92 (obs +3.92, ratio 0.49), NEAR +13.44 (obs +13.46, ratio 0.999), Cassini -0.48 (obs -2.00, ratio 0.24), Rosetta-I -22.43 (obs +1.80, WRONG SIGN), MESSENGER +18.11 (obs +0.02, 900x excess), Juno +0.80 (obs ~0).' In the governed six-event catalog, MESSENGER carries observed 0.02 mm/s and Juno 0.00 mm/s; A POSITIVE PREDICTION OF ANY MAGNITUDE SCORES 'SIGN CORRECT' ON BOTH."
+verdict = "refuted"
+verdict_reason = "The three-body embedding C-1101 advertises as an improvement MADE NEAR WORSE BY TWO ORDERS OF MAGNITUDE IN SIGNIFICANCE: the preceding model's ratio 0.999 (13.44 vs 13.46 +/- 0.01) was a 2-sigma miss, while C-1101's ratio 1.11 (14.94 vs 13.46 +/- 0.01) is a 148-sigma miss. The claim quotes that number as a success. The 5/6 sign score is separately DEGENERATE: two of six events are nulls that cannot be failed by any positive prediction, and the model overshoots them by 900x and by an unbounded factor; on the four sign-bearing events the score is 3/4 with Rosetta-I inverted."
+recommended_status = "Refuted"
+verification_rule = "Change the acceptance test from sign agreement to |predicted - observed| <= 3 sigma using the published uncertainties. Sign-only scoring must exclude events whose |observed| is below 3 sigma. NOTE: the bin now carries required-features = ['gpu'] (gororoba_cli_physics/Cargo.toml:31), so E-095's recorded run command no longer works as written -- a reproducibility defect worth its own edge."
+source_url = "https://arxiv.org/pdf/0907.2469v1"
+source_sha256 = "5f3d8b3cf7725e7eaba5e1a22595a0756f17570d2504e62004c17b0c445b9400"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/anderson_nieto_2009_astrometric_solar_system_anomalies_arxiv_0907_2469.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1102"
+decidability = "internal"
+falsifier = "False if the 64D AVT contains no violation tuple with indices straddling the 1-21 / 22-42 / 43-63 block boundaries."
+check_performed = "Read chingon_bivector_drag.rs block layout (three blocks of 21 axes). Cross-referenced C-1107 (64D AVT = 52080 violations, Verified) and proofs/verified/C955_CrossBlockCoupling.v (cross_block_witness, cross_block_nonzero_generic)."
+observed = "The 64D AVT has 52080 violation tuples over 63 imaginary axes partitioned into three 21-axis blocks. A partition of 63 indices into 3 blocks admits cross-block tuples unless the violation set is block-diagonal, which C-1113's analogous 1024D result shows it is not. The Rocq file supplies a constructive witness."
+verdict = "confirmed"
+verdict_reason = "True and kernel-checked, but TRIVIALLY so: once 63 axes are cut into three arbitrary blocks, cross-block violations are a combinatorial certainty. THE REDUNDANCY IS THE FINDING. The clause 'couple Earth and Lunar geometric frames' restates the embedding choice made in the same function, since it is the CODE that assigns block 1 to Earth and block 2 to the Moon; relabelling the blocks changes the claim's wording and not one computed number, so no physical content is under test."
+recommended_status = "Verified"
+verification_rule = "rocq compile proofs/verified/C955_CrossBlockCoupling.v (cross_block_nonzero_generic) establishes the whole content. The Earth/Moon framing should be struck or moved to a separate claim with its own falsifier: an observable that changes when the Earth and Moon block assignments are swapped. None currently exists."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1104"
+decidability = "internal"
+falsifier = "False if 256D embedding fails to fix the Rosetta-I sign, since the claim asserts 256D is required, i.e. sufficient once reached."
+check_performed = "grep of registry/claims.toml for the 128D and 256D flyby results; read C-1106, C-1109, C-1110, C-1103."
+observed = "C-1109 (VERIFIED): '256D symmetric 85/85/85 3-body flyby produces 4/6 correct signs (DEGRADED from 64D 5/6). Rosetta-I sign still negative (-1.41 predicted vs +1.80 observed). MESSENGER ratio exploded from 959.9x (64D) to 63.2x (256D)...' C-1110 (VERIFIED): 'Rosetta-I flyby anomaly sign problem is NOT fixable by dimensional scaling (64D->128D->256D). All three dimensions produce negative predicted delta-V. The sign is determined by the cross-coupling block projection geometry (Solar triad), which is invariant to block size.' C-1106 (Verified): 128D degrades to 2/6. C-1103 (Refuted): wake modulation cannot flip the sign. ORCHESTRATOR SPOT-CHECK: C-1109 and C-1110 read directly from registry/claims.toml, both Verified, contradiction exact."
+verdict = "partially_confirmed"
+verdict_reason = "The DIAGNOSTIC half is confirmed and then superseded: the Rosetta-I sign is indeed structural in the cross-coupling block projection. The PRESCRIPTIVE half -- 'higher-dimensional embedding (256D, 85 axes/body) is required' -- is REFUTED BY TWO VERIFIED CLAIMS IN THE SAME REGISTRY: 256D was run, it left Rosetta-I negative at -1.41 mm/s against +1.80 observed, and it degraded the overall score from 5/6 to 4/6. C-1110 generalizes this to all dimensional scaling, so the remedy the claim prescribes is known not to work."
+recommended_status = "Superseded"
+verification_rule = "Superseded by C-1110, whose statement is the corrected and more general form. Durable check: flyby-crucible --dim 256, assert Rosetta-I predicted delta-V < 0 (it is -1.41 against +1.80 observed), falsifying the 'required' clause."
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+THE BLOCK CONTAINS ITS OWN REFUTATION. Claims in this block are contradicted by
+claims already carrying status VERIFIED in registry/claims.toml: C-1111 negates
+C-1040 (512D CHSH |S| = 1.528, no Bell violation, against a claim predicting Bell
+violations in exactly that construction); C-1109 and C-1110 negate the prescriptive
+half of C-1104 (256D was run, Rosetta-I stayed negative, score degraded 5/6 to 4/6).
+Both contradictions were spot-checked directly against the registry and are exact.
+The registry is INTERNALLY INCONSISTENT, and the inconsistency is systematic in
+direction: the speculative claim was entered first with status Provisional and never
+retired when the experiment that decided it was registered as Verified. The artifact
+that should carry this is a registry consistency gate that fails when a Provisional
+claim's statement is negated by a Verified one on the same where_stated path.
+
+[ORCHESTRATOR CORRECTION: the agent also cited C-929/C-930 as Verified claims
+negating C-1010. Both are PROVISIONAL, and block J_ZD_SPECTRAL refuted them as
+estimator-clamp artifacts, so they carry no authority here. C-1010's refutation
+rests instead on the stronger independent fact that its cited function never
+diagonalizes anything.]
+
+SECOND, THE BLOCK SHARES ONE HIDDEN METHODOLOGICAL ASSUMPTION: SIGN AGREEMENT IS
+USED AS THE ACCEPTANCE METRIC WHEREVER MAGNITUDE FAILS. C-1101's '5/6 signs' scores
+MESSENGER (predicted +18.11, observed 0.02, a 900x overshoot) and Juno (predicted
++0.80, observed 0.00) as successes, because a null observation cannot fail a sign
+test. C-1080 likewise claims to explain 'the signs of both the Pioneer and Flyby
+anomalies' while its D_f = 2.7 acceleration overshoots Pioneer by 2.15e4 and the
+flybys by ~1.2e9 -- and its sign is anti-sunward where Pioneer's is sunward, so it
+does not deliver even the sign it claims. SIGN-ONLY SCORING IS WHAT ALLOWS THIS
+BLOCK TO REPORT SUCCESSES; every claim in it that quotes a magnitude fails. The
+sharpest instance: C-1101's three-body embedding, presented as an improvement, moved
+NEAR from 2 sigma (ratio 0.999) to 148 sigma (ratio 1.11) while the sign score
+stayed at 5/6. THE METRIC WAS BLIND TO A HUNDREDFOLD DEGRADATION.
+
+THIRD, a number appears in two unrelated places and is a coincidence, not a bridge:
+D_f = 2.7 is used both as the fractal spacetime dimension in gr_core (C-1080) and as
+CosmicWebGenerator::d_f in cosmology_core (C-1090). The Pioneer benchmark constrains
+the first to D_f = 3.99994 to five significant figures if the metric formula is taken
+seriously, which severs the shared value.
+
+FOURTH, THE FREE-PARAMETER PATTERN IS UNIFORM. C-1070's Intention Operator is
+(strength, target_coherence); C-1090's CMB axis is phi plus three undeclared
+frequency constants (0.707, 2.718, 3.1415); C-1080's fractal metric is (D_f, r_0);
+C-1101's drag is alpha_chingon. In each case a physical name is attached to the
+output of a one- or two-parameter fit, and in each case the repository's own default
+parameter produces a result far from the target it names -- most starkly phi = 0.0172,
+which places the 'Axis of Evil' 126.9 degrees away from the Axis of Evil.
+"""
+new_claims_proposed = """
+1. 'The D_f = 2.7 fractal metric cannot describe the Pioneer anomaly: a = -(D_f-4)
+   v^2/(2r) at r = 30 AU, v = 11.4 km/s gives 1.88e-5 m/s2 against the governed
+   benchmark 8.74e-10 +/- 1.33e-10 m/s2, and the D_f reproducing the benchmark is
+   3.99994.' FALSIFIER: a unit test showing anomalous_acceleration(4.4879e12, 11400.0)
+   within a factor of 3 of 8.74e-10 at D_f = 2.7.
+
+2. 'The Pioneer anomaly requires no non-gravitational explanation: Turyshev et al.
+   2012 (PRL 108, 241101) report thermal and Doppler estimates of the recoil force
+   whose 1-sigma error ellipses overlap and conclude no statistically significant
+   acceleration anomaly exists. Any repository claim explaining the Pioneer sign is
+   explaining a RESOLVED ARTIFACT.' FALSIFIER: a post-2012 refereed reanalysis
+   restoring a significant residual.
+
+3. 'Sign-agreement scoring on the governed flyby catalog is DEGENERATE: two of the six
+   events (MESSENGER 0.02 mm/s, Juno 0.00 mm/s) have observed values at or below their
+   measurement floor and cannot fail a sign test, so the maximum informative score is
+   4, not 6.' FALSIFIER: a published flyby increment for MESSENGER or Juno exceeding
+   3 sigma.
+
+4. 'The repository's governed Pioneer source index (registry/external_sources.toml,
+   XS-017) OMITS THE PAPER THAT RESOLVED THE ANOMALY. Turyshev et al. 2012 appears
+   nowhere in the external-source registry.' FALSIFIER:
+   grep -c '10.1103/PhysRevLett.108.241101' registry/external_sources.toml nonzero.
+
+5. 'The governed flyby catalog carries a Juno row (observed 0.00, BIB-0299, Iorio
+   2015) in place of Anderson et al. 2008 Table I's second Galileo event, which removes
+   one sign-bearing negative event from the benchmark set.' FALSIFIER: Anderson et al.
+   2008 Table I containing no second Galileo row, or the catalog provenance documenting
+   the substitution deliberately. NOT YET CHECKED -- the 2008 PRL was not retrieved.
+
+6. 'The DFT layer-to-force mapping is NOT LORENTZ COVARIANT and is not internally
+   consistent: it assigns electricity and magnetism to CD layers of different dimension
+   (16D and 8D) although E and B are components of one tensor F_mu_nu exchanged by a
+   boost, and dft_mapping.rs contradicts particle_physics.rs on the same layers.'
+   FALSIFIER: a statement of the mapping in terms of the Lorentz invariants
+   F_mu_nu F^mu_nu and F_mu_nu Fdual^mu_nu rather than E and B separately.
+
+7. 'The 256D Global Mean Imbalance Density computed by
+   compute_voudon_imbalance_density() is a deterministic exact rational over 256^3
+   basis triples.' This half of C-1010 should be SPLIT into its own claim rather than
+   inheriting Refuted from the Wigner-Dyson half. FALSIFIER: the value differing
+   between two runs, or from an independent enumeration of non-alternative triples at
+   dim 256 (C-1107 gives 3968496).
+"""
+gaps = """
+THE E-095 FLYBY-CRUCIBLE RUN DID NOT EXECUTE. The --features gpu build was still
+running after 45 minutes under cargo package-lock contention from the concurrent fleet
+(79 concurrent cargo/rustc processes observed). Reported as not run for the direct
+reproduction of C-1101's numbers.
+
+This does NOT leave C-1101 undecided. The falsifier is invariant to the run's outcome:
+if the run reproduces NEAR ratio 1.11, that is a 148-sigma miss against 13.46 +/- 0.01
+mm/s and the claim is refuted on magnitude; if it does not reproduce 1.11, the claim
+quotes an unreproducible number against a harness E-095 itself declares
+deterministic = false, and is refuted on reproducibility. To close properly: run on a
+dedicated CARGO_TARGET_DIR with no concurrent fleet, twice, recording whether the six
+delta-V values are bit-identical between runs -- that also decides whether the
+three-digit precision of '1.11' is meaningful at all.
+
+ANDERSON ET AL. 2008 (PRL 100, 091102) WAS NOT RETRIEVED: not on arXiv, ADS abstract
+page returned nothing usable. Uncertainties were taken from Anderson and Nieto 2009
+(arXiv:0907.2469, same first author, hashed and deposited), which quotes only GLL-I,
+NEAR and Rosetta-I. That paper carries no MESSENGER or second-Galileo increment.
+Consequently the MESSENGER and Juno failures are stated as ratios from the repo's own
+C-942 status_note, not as sigma values, and proposed claim 5 is explicitly unchecked.
+
+NOT ATTEMPTED, BY SCOPE: the 128D and 256D GPU sweeps behind C-1106, C-1109, C-1110.
+Their conclusions were taken from the registry as recorded Verified results rather than
+re-run; if independent confirmation of C-1104's supersession is wanted, those are the
+check.
+
+C-1050 HAS NO IMPLEMENTATION TO TEST. Deciding it beyond 'the subject does not exist'
+requires the claim's author to supply the topological invariant and the resulting VEV
+in GeV; until then no run, dataset, or paper can touch it.
+"""

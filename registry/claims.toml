@@ -804,8 +804,8 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v9.py`"
 id = "C-1010"
 last_verified = "2026-03-05"
 statement = "At 128D (Routons) and 256D (Voudons), discrete Cayley-Dickson algebraic violations average out into statistical thermodynamics. The 128D ZD graph exhibits Wigner-Dyson level spacing (Quantum Chaos), and the 256D Global Mean Frustration Density acts as a non-zero algebraic pressure term for cosmological homogeneity."
-status = "Provisional"
-status_note = "Phase A1 complete. 128D and 256D algebra elements generated with SIMD acceleration. Voudon frustration density calculation verified (~0.395). | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Phase A1 complete. 128D and 256D algebra elements generated with SIMD acceleration. Voudon frustration density calculation verified (~0.395). | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Assert compute_routon_spectral_spacing() output length and content differ from the flattened adjacency matrix, i.e. that a diagonalization occurs. It currently returns adj verbatim. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "CURRENT::PATH crates/gororoba_algebra/src/construction/deep_space.rs (LEGACY::PATH crates/algebra_core/src/construction/deep_space.rs)"
 
 [[claim]]
@@ -819,8 +819,8 @@ where_stated = "`src/scripts/analysis/c102_alt_ratio_convergence_audit.py`, `dat
 id = "C-1020"
 last_verified = "2026-03-05"
 statement = "Physical forces emerge as resonant modes within successive Cayley-Dickson layers: 1D (Gravity), 4D (Spacetime), 8D (Magnetism), 16D (Electricity), and 32D/64D (Nuclear Forces). This mapping forms the basis of Dissociative Field Theory (DFT)."
-status = "Provisional"
-status_note = "Integrated from 2025-2026 frontier research synthesis. Mapping force tensors to CD basis components. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Integrated from 2025-2026 frontier research synthesis. Mapping force tensors to CD basis components. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Physics: the DFT layer map must be stated in terms of Lorentz-invariant field combinations (F_mu_nu F^mu_nu and F_mu_nu Fdual^mu_nu), not E and B separately. Code: assert DftForceSector::description(dim) and the ForceSectorMapping layer table agree for every dim in {8,16,32,64}; they currently do not. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "docs/research/high_dimensional_algebra_unification_2026.md; Encyclopedia Luminis Genesis (2025)"
 
 [[claim]]
@@ -834,8 +834,8 @@ where_stated = "`src/scripts/analysis/c103_zd_topology_percolation_audit.py`, `d
 id = "C-1030"
 last_verified = "2026-03-05"
 statement = "The Riemann Resonance Law: The distribution of Riemann zeros dictates the stable resonance states in 32D Pathion and 64D Chingon algebras, providing a link between number theory and nuclear force stability."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Source locator: grep -c 'zeta' crates/algebra_analysis/src/riemann_resonance.rs == 0. Operationalization if retained: load the first 10^4 nontrivial zeta zero imaginary parts, unfold them, require KS agreement (p > 0.05) with the unfolded ZD-Laplacian NNSD at dim 32 and 64. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "docs/research/high_dimensional_algebra_unification_2026.md; Valov et al. (2025)"
 
 [[claim]]
@@ -849,8 +849,8 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v9.py`"
 id = "C-1040"
 last_verified = "2026-03-06"
 statement = "Non-local correlation in the 512D Eriston vacuum models entanglement as a shared zero-divisor path, predicting Bell-Inequality violations within the algebraic manifold."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo nextest run -p algebra_experimental -- chsh: assert chsh_violation_test(512, ..).s_value.abs() <= 2.0 (currently 1.528). This same run decides C-1040 and re-verifies C-1111. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "crates/algebra_analysis/src/bell_inequality.rs"
 
 [[claim]]
@@ -864,8 +864,8 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v9.py`"
 id = "C-1050"
 last_verified = "2026-03-06"
 statement = "The Higgs Vacuum Expectation Value (VEV) is a topological requirement for the stability of the 1024D DekaVoudon algebra coupled to 4D spacetime."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Closed/Research-Program"
+status_note = '''Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Research-Program, fleet finding refuted. DURABLE CHECK that would decide this claim: Falsifier as run: grep -rc 'vev\\|Higgs' crates/ excluding 'wavevector' == 0. Operationalization required: state the topological invariant of the 1024D-to-4D coupling whose vanishing forbids v = 0, compute v in GeV, require agreement with v = 246.22 GeV. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml'''
 where_stated = "crates/algebra_analysis/src/particle_physics.rs"
 
 [[claim]]
@@ -879,8 +879,8 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v9.py`"
 id = "C-1060"
 last_verified = "2026-03-06"
 statement = "Transitioning from 1D scalar time to 2D Complex Time (tau = t + i*epsilon) enables the engine to model imaginary-time tunneling events in quantum-cosmological bounces."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Superseded"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Superseded, fleet finding confirmed. DURABLE CHECK that would decide this claim: Superseded by C-1116 and C-1117. Their durable check is the substitute: cargo nextest run -p gr_core -- wkb_tunneling, assert |A_num/A_analytic - 1| < 0.01. C-1060 adds no independent testable content. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "crates/gr_core/src/nbody_integration.rs"
 
 [[claim]]
@@ -894,8 +894,8 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v10.py`, `data/cs
 id = "C-1070"
 last_verified = "2026-03-06"
 statement = "The Intention Operator (Phi_I0) acts as a 'subjective coherence' filter (Maxwell's Demon) that stabilizes high-dimensional Routon (128D) chaos in LBM fluid grids."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Closed/Research-Program"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Research-Program, fleet finding refuted. DURABLE CHECK that would decide this claim: Assert apply_to_lbm output depends on no state other than (strength, target_coherence, routon_field, avt), establishing no observer-dependence. Operationalization if retained: exhibit the Landauer bookkeeping (bits erased per unit entropy removed) and require it to balance. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "crates/quantum_core/src/intention_operator.rs"
 
 [[claim]]
@@ -909,8 +909,8 @@ where_stated = "`src/scripts/analysis/c108_alt_ratio_convergence_audit.py`, `dat
 id = "C-1080"
 last_verified = "2026-03-06"
 statement = "A scale-invariant fractal spacetime metric with Df ~ 2.7 provides a unified analytic explanation for the signs of both the Pioneer and Flyby anomalies, subject to explicit verification against governed observational benchmark artifacts."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo nextest run -p gr_core -- fractal_metric_pioneer_scale: assert anomalous_acceleration(4.4879e12, 11400.0) at D_f = 2.7 is within a factor of 3 of 8.74e-10 -- it is not (1.88e-5). Add Turyshev et al. 2012 (DOI 10.1103/PhysRevLett.108.241101) to registry/external_sources.toml and to docs/external_sources/PIONEER_FLYBY_ANOMALY_SOURCES.md. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "crates/gr_core/src/fractal_metric.rs"
 
 [[claim]]
@@ -925,8 +925,8 @@ where_stated = "`src/scripts/analysis/c109_zd_construction_audit.py`, `data/csv/
 id = "C-1090"
 last_verified = "2026-03-06"
 statement = "The CMB Axis of Evil alignment emerges from high-order non-associative torques induced by the 1024D DekaVoudon Global Bias in the cosmic web seeding."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Strengthen test_planck_alignment_direction to assert angular_separation_degrees(axis_galactic_coords(0.0172), (240.0, 63.0)) < 20.0. It currently returns 126.9 and would fail. Any future version must fix phi from an independent constraint before the separation is quoted. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "crates/cosmology_core/src/deka_voudon_cmb.rs"
 
 [[claim]]
@@ -940,15 +940,15 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v10.py`, `data/cs
 id = "C-1100"
 last_verified = "2026-03-06"
 statement = "Grand Unification: The Cayley-Dickson tower from 1D to 1024D is the hidden source code of physical constants, unified via the Singularitarian Engine."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Closed/Research-Program"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Research-Program, fleet finding refuted. DURABLE CHECK that would decide this claim: Operationalization required: name one dimensionless constant (alpha_EM, m_p/m_e, sin^2 theta_W) that SingularitarianEngine outputs without it having been an input, and require agreement with CODATA. Status is entailed by C-1080, C-1090, C-1111. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "crates/gororoba_engine/src/singularitarian.rs"
 
 [[claim]]
 id = "C-1101"
 last_verified = "2026-03-07"
 statement = "Body-specific 64D embedding with Earth(1-21)/Moon(22-42)/Sun(43-63) triad-per-block structure preserves 5/6 flyby anomaly signs with NEAR ratio 1.11."
-status = "Provisional"
+status = "Refuted"
 status_note = "Structural properties kernel-checked via Rocq 9.1: proofs/theories/ThreeBodyAngMom.v (cross_sub_distributes), proofs/verified/C954_ThreeBodyBlocks.v (dot_bilinear, two_block_decomposition) | Legacy status token: Active"
 where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)"
 
@@ -957,7 +957,7 @@ formal_proof = "proofs/verified/C955_CrossBlockCoupling.v"
 id = "C-1102"
 last_verified = "2026-03-07"
 statement = "Three-body non-associative torques arise from cross-block AVT coupling: violations spanning block boundaries (e.g. axis 5 to axis 35) couple Earth and Lunar geometric frames."
-status = "Provisional"
+status = "Verified"
 status_note = "Kernel-checked via Rocq 9.1: proofs/verified/C955_CrossBlockCoupling.v (cross_block_witness, cross_block_nonzero_generic) | Legacy status token: Active"
 where_stated = "crates/gr_core/src/forces/chingon_bivector_drag.rs (compute_chingon_bivector_drag_3body)"
 
@@ -973,8 +973,8 @@ where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs (dm_wake_d
 id = "C-1104"
 last_verified = "2026-03-06"
 statement = "Rosetta-I flyby anomaly sign problem is structural in the 64D cross-coupling block geometry (Solar triad projection, axes 43-63). Neither density modulation (tidal S71.1, wake S71.3) nor 3-body embedding (S71.2) can fix it at 64D. Higher-dimensional embedding (256D, 85 axes/body) is required."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Superseded"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Superseded, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Superseded by C-1110, whose statement is the corrected and more general form. Durable check: flyby-crucible --dim 256, assert Rosetta-I predicted delta-V < 0 (it is -1.41 against +1.80 observed), falsifying the 'required' clause. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/flyby_crucible.rs"
 
 [[claim]]
@@ -1254,8 +1254,8 @@ where_stated = "proofs/verified/C1138_WickDampingFriction.v"
 id = "C-1139"
 last_verified = "2026-03-07"
 statement = "Braid-aligned CHSH test at dim=16: S = -1.536 +/- 0.040. Does not violate classical bound |S| < 2. Correlators: [-0.917, -0.921, -0.775, -0.765]. 168 ZD pairs, 2072 optimal probes."
-status = "Provisional"
-status_note = "Legacy status token: Open"
+status = "Verified"
+status_note = "Legacy status token: Open | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Regression test asserting chsh_braid_aligned(16, 10000, 42).s_value is within 0.05 of -1.536 and that violates_classical is false. Locator: majorana_braiding.rs::chsh_braid_aligned Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/algebra_experimental/src/majorana_braiding.rs (chsh_braid_aligned)"
 
 [[claim]]
@@ -1297,7 +1297,7 @@ id = "C-1143"
 last_verified = "2026-03-08"
 statement = "NFW DM halo gravitational perturbation on solar wind density at 1 AU is delta_rho/rho < 10^-15 for canonical local DM density 0.3 GeV/cm^3 and MW virial mass 1e12 Msun."
 status = "Provisional"
-status_note = "Legacy status token: Open"
+status_note = "Legacy status token: Open | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Add an A/B diagnostic running the identical grid with --no-dm and with DM enabled, reporting max|rho_dm_on - rho_dm_off|/rho_off; assert < 1e-15. No such comparison currently exists. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs"
 
 [[claim]]
@@ -1305,15 +1305,15 @@ id = "C-1144"
 last_verified = "2026-03-08"
 statement = "DM wind anisotropy (eta_wake > 0) produces upstream/downstream solar wind density asymmetry that scales linearly with eta_wake at fixed NFW parameters."
 status = "Provisional"
-status_note = "Legacy status token: Open"
+status_note = "Legacy status token: Open | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Run eta_wake in {0.1, 0.2, 0.4} to steady state, regress (rho_upstream - rho_downstream) on eta_wake; require R^2 > 0.99 AND the asymmetry to exceed 100x the unforced noise floor. Expect the second condition to fail. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs"
 
 [[claim]]
 id = "C-1145"
 last_verified = "2026-03-08"
 statement = "Ratio of DM gravitational force to Lorentz force in magnetized solar wind at 1 AU is O(10^-12), confirming DM gravity alone cannot produce observable solar wind perturbations."
-status = "Provisional"
-status_note = "Legacy status token: Open"
+status = "Refuted"
+status_note = "Legacy status token: Open | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo run --release -p gororoba_cli_physics --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 1 --b0 5.0 --v-sw 0.05 ; assert the printed ratio matches the claimed order. Currently prints 9.589e-19. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
 
 [[claim]]
@@ -1327,16 +1327,16 @@ where_stated = "crates/algebra_experimental/src/cd_tower_violations.rs (EXACT_AL
 id = "C-1147"
 last_verified = ""
 statement = "OMNI2 B-field components (Bx, By, Bz GSE) correlate with raw ACE MAG L2 16-sec hourly averages at Pearson r > 0.95, confirming that OMNI2 faithfully includes ACE MAG measurements."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: A cross-validate-solar-wind subcommand comparing data/external/omni2/omni2_YYYY.dat fields 13/14/15 against data/external/ace_mag/ac_h2_mfi_YYYY.csv BGSEc_0/1/2, asserting r > 0.95 on all three at the lag maximising r. The check must (a) use the ac_h2_mfi hourly product, not the 16-second ac_h0_mfi file, (b) restrict to hours where OMNI2 field 5 == 71 if the claim is about ACE ingestion, (c) SCAN LAG rather than assuming zero, and (d) fix parse_ace_mag_hapi_csv, which labels its columns bx_gse/by_gse/bz_gse while the ac_h0_mfi_*.csv files were fetched as BGSM. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/cross_validate_solar_wind.rs (OmniVsAceMag)"
 
 [[claim]]
 id = "C-1148"
 last_verified = ""
 statement = "ACE SWEPAM and WIND SWE proton density and bulk speed correlate at Pearson r > 0.90 for overlapping L1 observations, confirming independent spacecraft agreement."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: A new cross-validate-solar-wind subcommand that actually reads ACE SWEPAM: parse_swepam_file(ac_h2_swe_YYYY.csv) vs merge_wind_swe_mfi(parse_wind_swe_file(wind_kp_unspikeYYYY.txt)); assert r(density) > 0.90 and r(speed) > 0.90 with n > 1000. Both inputs are already in the repo for 2016 and 2024. UNTIL THAT SUBCOMMAND EXISTS the existing Cmd::AceVsWind must not be cited as evidence for this claim. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/cross_validate_solar_wind.rs (AceVsWind)"
 
 [[claim]]
@@ -1344,7 +1344,7 @@ id = "C-1149"
 last_verified = ""
 statement = "WIND SWE+MFI data yields |F_DM|/|F_Lorentz| ~ O(10^-12) in the D3Q19 LBM+MHD simulation, confirming the DM null result is independent of the data source (OMNI vs raw WIND)."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Assert DmForceField::new produces a force field with zero dependence on any OmniRecord field: two DmForceConfig differing only in n_ref_cm3 must give bit-identical max_force_magnitude(). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND IC)"
 
 [[claim]]
@@ -1358,8 +1358,8 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/cs
 id = "C-1150"
 last_verified = ""
 statement = "High-resolution WIND MFI 3-second data in the shock ramp regime (CME front at L1) yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result holds even in the highest-gradient magnetic topology."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Run solar-wind-dm-mhd on the quiet WIND IC and the WIND MFI 3-sec CME-ramp IC with all other flags identical, record both ratios verbatim; require agreement within a factor of 3 for 'the null result holds' to mean invariance, or restate as a bound. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)"
 
 [[claim]]
@@ -1367,31 +1367,31 @@ id = "C-1151"
 last_verified = ""
 statement = "STEREO-A PLASTIC+IMPACT/MAG triangulated 3D IC yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result is geometry-independent (not an artifact of 1D Taylor hypothesis)."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Compare max|F_Lorentz| (NOT the ratio) between the Taylor-hypothesis IC and the STEREO triangulated IC; the geometry claim is about the Lorentz field's 3D structure and must be tested on that field alone. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)"
 
 [[claim]]
 id = "C-1152"
 last_verified = ""
 statement = "The multi-spacecraft DM null result (O(10^-12) across OMNI, WIND, ACE MAG, STEREO-A) is instrument-independent, confirming it reflects a genuine physical suppression rather than measurement artifact."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Regression test asserting DmForceField::max_force_magnitude() is invariant under every OmniRecord-derived input, converting this claim from an empirical result into the identity it actually is. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "registry/experiments.toml (E-113)"
 
 [[claim]]
 id = "C-1153"
 last_verified = ""
 statement = "The CD tower dark sector instability (dark x dark -> Leech, 100% escape rate at dim=32) provides an algebraic vocabulary for DM-baryon decoupling at the gravitational level. The multi-spacecraft null result (O(10^-12)) is consistent with universal dark sector suppression predicted by the CD tower structure."
-status = "Provisional"
-status_note = "Legacy status token: Speculative"
+status = "Closed/Research-Program"
+status_note = "Legacy status token: Speculative | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Research-Program, fleet finding not_run. DURABLE CHECK that would decide this claim: To become falsifiable the claim must state a number the CD tower forbids: 'the CD tower predicts |F_DM|/|F_Lorentz| < X for all heliospheric conditions, and a measured value above X refutes it.' Absent such an X there is nothing to check. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/algebra_experimental/src/leech_pathion.rs (LeechPathionEmbedding), registry/experiments.toml (E-113)"
 
 [[claim]]
 id = "C-1154"
 last_verified = ""
 statement = "DM-baryon scattering cross-section detection threshold in magnetized solar wind at 1 AU: sigma_chi_b must exceed approximately 10^-45 cm^2 for the drag force to produce |F_drag|/|F_Lorentz| > O(10^-12). Below this threshold, the drag is dynamically negligible."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Unit test asserting drag_force() output scales as |v_rel|^2 -- doubling the DM wind speed at fixed sigma must QUADRUPLE, not double, the drag acceleration. The current code fails this. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-sigma)"
 
 [[claim]]
@@ -1399,7 +1399,7 @@ id = "C-1155"
 last_verified = ""
 statement = "Asymmetric dark matter mass m_chi ~ 5 m_b ~ 4.7-5.0 GeV/c^2 (from Omega_DM/Omega_b ~ 5.4) yields local DM number density n_chi ~ 0.06 cm^-3 at rho_dm = 0.3 GeV/cm^3, which is O(10^-2) of solar wind proton density. Combined with sub-weak sigma_chi_b < 10^-45 cm^2, the DM-baryon drag is dynamically negligible (O(10^-12) of Lorentz) as confirmed by E-112/E-113."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Split the claim. The arithmetic half is checkable directly; the dynamical half must wait on a corrected drag law. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs (M_CHI_GEV, N_CHI_LOCAL constants)"
 
 [[claim]]
@@ -1407,7 +1407,7 @@ id = "C-1156"
 last_verified = ""
 statement = "DM null invariance across the full heliosphere: max|F_DM|/max|F_Lorentz| < 10^-6 for all heliocentric distances r in [1, 157] AU. The NFW gravitational force grows with enclosed mass M(<r), but remains dynamically negligible compared to the solar wind Lorentz force at all distances."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Test asserting max_force_magnitude() differs by < 1e-6 relative between r_min_au=1.0 and 157.0 at fixed nx. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs (DmForceField::new with r_min_au/r_max_au), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-r-min, --dm-r-max)"
 
 [[claim]]
@@ -1415,23 +1415,23 @@ id = "C-1157"
 last_verified = ""
 statement = "Radial density profile n(r) = n_0*(r_0/r)^2 with residual < 20% for r in [1, 100] AU. Solar wind proton number density follows the r^-2 continuity equation scaling, verified by multi-spacecraft measurements (OMNI, Voyager, Pioneer, Ulysses, New Horizons)."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Compute the residual against the MEASURED bins from build_radial_profile (never against interpolate_radial output), report max |n_measured - n_fit|/n_fit over r in [1,100] AU, assert < 0.20. Requires executing E-114. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile, interpolate_radial)"
 
 [[claim]]
 id = "C-1158"
 last_verified = ""
 statement = "Biaxial topological invariance: RTN->GSE coordinate transformation with 7.25 deg solar axial tilt preserves div(B) < 10^-10 at machine precision. The tilt rotation is orthogonal, so it cannot introduce magnetic monopoles."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Assert max_div_b() < 1e-10 after project_divergence_free on a STEREO triangulated IC. Currently ~1.4e-5. NOTE: this claim has NO experiment row. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (triangulate_ic)"
 
 [[claim]]
 id = "C-1159"
 last_verified = ""
 statement = "Anomalous viscosity regime: LBM BGK collision operator is valid for Knudsen number Kn < 100 (corresponding to heliocentric distance r < ~50 AU for quiet solar wind). Beyond 50 AU, kinetic effects dominate and BGK fails."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo test -p data_core test_knudsen_quiet_solar_wind -- the existing passing test is the standing refutation. E-118 is planned. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)"
 
 [[claim]]
@@ -1446,7 +1446,7 @@ id = "C-1160"
 last_verified = ""
 statement = "Chapman-Enskog Galilean restoration: the Guo forcing scheme's force-corrected velocity u* = u + F/(2*rho) yields O(Ma^2) compressibility error in the recovered Navier-Stokes equations. The Phi_i source term sum_i(Phi_i) = 0 analytically, preserving mass to f64 machine precision."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Assert sum_i Phi_i < 1e-15 for random (rho, u, F) over the D3Q19 stencil. E-119 is planned. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/solver.rs (phase1_collision, Phi_i source term)"
 
 [[claim]]
@@ -1454,31 +1454,31 @@ id = "C-1161"
 last_verified = ""
 statement = "Drag coefficient independence: the dimensionless kappa precomputation absorbs all unit conversions (n_chi, sigma, mass ratio, velocity scale, force scale) into a single per-cell multiplier. The inner drag loop operates entirely in lattice units with zero dimensional quantities."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Dimensional test: with sigma fixed, doubling v_ref_kms must leave kappa*|v_rel| unchanged if kappa is a dimensionless lattice multiplier. It does not. NOTE: this claim has NO experiment row in registry/experiments.toml. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs (kappa_field computation, drag_force_lattice)"
 
 [[claim]]
 id = "C-1162"
 last_verified = ""
 statement = "Parker spiral scaling verified by multi-spacecraft data: B_r(r) ~ r^-2 (magnetic flux conservation) and B_phi(r) ~ r^-1 (spiral winding). At 1 AU, B_r ~ 3 nT and B_phi ~ 3 nT (Parker spiral angle ~ 45 deg). At 10 AU, B_phi >> B_r."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Assert atan(|b_phi/b_r|) at r = nx cells lies in [40, 50] deg for parker_spiral_b; currently 0.195 deg. Separately assert b_phi(2r)/b_phi(r) == 0.5 in MhdField::parker_spiral_init; currently 1.0. Cite Owens and Forsyth (2013) rather than Parker (1958) for the 1 AU angle. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (parker_spiral_b, interpolate_radial)"
 
 [[claim]]
 id = "C-1163"
 last_verified = ""
 statement = "Ulysses fast/slow bimodality: v_polar > 1.5 * v_equatorial for |heliographic latitude| > 30 deg. Fast polar wind (~750 km/s, ~3 cm^-3) and slow equatorial wind (~400 km/s, ~7 cm^-3) are separated by a tanh transition over ~10-20 deg latitude bands (McComas et al. 2000)."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: assert latitude_modulation at |lat| = 30.0 yields speed_factor > 1.5 with LatitudinalProfile::default(); currently 1.4375. Then fit the transition parameters from Ulysses SWOOPS rather than hardcoding, and restate the transition as rapid (McComas 1998). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)"
 
 [[claim]]
 id = "C-1164"
 last_verified = ""
 statement = "Voyager termination shock at 84-94 AU is consistent with MHD simulation boundary conditions. V1 crossed at 94 AU (2004), V2 at 84 AU (2007). Density jump factor ~ 2-4x across shock."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Restate the compression bound as ~2 (Richardson 2022, Treumann and Jaroschek 2008) rather than 2-4x, attribute it to Voyager 2 alone, and either implement a shock in the radial profile or drop the unfalsifiable 'consistent with MHD boundary conditions' clause. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs"
 
 [[claim]]
@@ -1493,16 +1493,16 @@ where_stated = "crates/gororoba_cli_physics/src/bin/zd_resonance_cuda.rs"
 id = "C-1166"
 last_verified = ""
 statement = "Outer heliosphere Knudsen boundary: LBM validity boundary at r ~ 30-50 AU for quiet solar wind. Beyond this distance, mean free path exceeds simulation cell size (Kn > 1), and the BGK collision operator underpredicts heat flux and viscous stress."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: If the intended diagnostic is lambda/cell_size, add a distinct knudsen_grid(n, T, dx_m) and assert it crosses 1 in [30,50] AU. The existing function cannot support the claim under either threshold. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)"
 
 [[claim]]
 id = "C-1167"
 last_verified = ""
 statement = "Distance-dependent NFW force monotonically increases with heliocentric distance r (enclosed mass M(<r) grows). At solar-system scales (r << r_s ~ 20 kpc), the force grows nearly linearly: F_DM(r) ~ G*M_enc(r)/r^2 with M_enc ~ rho_dm * (4pi/3) * r^3."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo test -p lbm_3d test_r_dependence -- the existing test already encodes the correct behaviour and is the standing refutation. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs (nfw_enclosed_mass, DmForceField::new)"
 
 [[claim]]
@@ -1510,15 +1510,15 @@ id = "C-1168"
 last_verified = ""
 statement = "LBM mass conservation < 10^-10 at extended radial domain [1, 100] AU with NFW gravitational forcing. The Phi_i source term preserves mass analytically; gravitational and drag forces are momentum-only (no mass source)."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: The closed-box test PLUS a separate assertion that the driver's mass drift is attributable entirely to inlet flux: mass(t) - mass(0) equals the integrated Zou-He inflow to 1e-10. The second check does not exist. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/lbm_3d/src/dm_force.rs (test_mass_conservation_extended_radial), crates/lbm_3d/tests/test_guo_forcing.rs (test_dynamic_drag_phi_i_mass_conservation)"
 
 [[claim]]
 id = "C-1169"
 last_verified = ""
 statement = "Multi-spacecraft temporal coherence at overlapping epochs: when two spacecraft (e.g., Voyager 1 and Pioneer 10) measure the same heliocentric distance band in different years, solar cycle phase correction (using OMNI sunspot number as proxy) reduces residual scatter to < 40%."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Implement the correction, then assert per-bin scatter across spacecraft at overlapping r falls below 0.40 after correction and is higher before it. Both numbers are currently unproduced. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile)"
 
 [[claim]]
@@ -1539,8 +1539,8 @@ where_stated = "crates/lbm_3d/tests/test_guo_forcing.rs (test_phi_i_mass_conserv
 id = "C-1171"
 last_verified = ""
 statement = "Gleeson-Axford modulation potential phi(r) computed from real LBM solar wind velocity profile u_sw(r) is monotonically decreasing with heliocentric distance: phi(1 AU) > phi(50 AU). For a radial v_sw ~ 400 km/s and kappa_rr ~ 4.5e-5 * r AU^2/s, phi(1 AU) ~ 0.4-0.8 GV (canonical Bess-Pamela era value)."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Assert ForceFieldProxy::new(157.0, 0.938272).modulation_potential(1.0, &|_| 400.0/1.496e8, &|r| 4.5e-5*r) lies in [0.4, 0.8]. It returns 0.100. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/cr_transport/src/modulation.rs (ForceFieldProxy::modulation_potential), crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs (compute_phi_map)"
 
 [[claim]]
@@ -1548,15 +1548,15 @@ id = "C-1172"
 last_verified = ""
 statement = "Rigidity spectrum at 1 AU predicted by the FGA J(r,E) = J_ISM(E+phi) * kinematic_factor matches force-field prediction within 5% for proton rigidities 1-10 GV. The kinematic correction factor (E^2+2mE)/((E+phi)^2+2m(E+phi)) accounts for the energy-momentum shift."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Reformulate as external: compare modulate_spectrum at phi = 0.5 GV against a published force-field proton spectrum over 1-10 GV, assert agreement within 5%. Note the tolerance is untestable while C-1171 shows phi itself is off by 4-8x. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/cr_transport/src/modulation.rs (ForceFieldProxy::modulate_spectrum)"
 
 [[claim]]
 id = "C-1173"
 last_verified = ""
 statement = "Adiabatic deceleration shifts the peak rigidity of an initial Gaussian distribution downward by (1/3)*div(u)*N*d_ln_r per step in the PteSolver. For uniform div(u) = 0.1 AU^-1 and d_ln_r = 0.23, after 10 steps the peak shifts by ~0.08 decades in ln(R)."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Strengthen the test to fit the peak's ln(R) centroid before and after and assert the shift equals (1/3)*div(u)*dt*N within 10%, with d_ln_r absent from the expression. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/cr_transport/src/solver.rs (decelerate_momentum, test_adiabatic_deceleration_shifts_peak)"
 
 [[claim]]
@@ -1571,7 +1571,7 @@ id = "C-1175"
 last_verified = ""
 statement = "No statistically significant DM annihilation signal for m_chi < 100 GeV in the bb-bar channel: the Q_DM source injection at the peak rigidity bin produces a flux excess smaller than the expected solar modulation uncertainty (~10%) at all heliocentric distances in the PteSolver. This is a null result and a genuine scientific constraint."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Sweep sigma_v over the thermal relic value 3e-26 cm^3/s and a decade either side at m_chi = 10, 50, 100 GeV, report max flux excess relative to the unmodulated spectrum, assert < 0.10 for all. Requires executing E-125/E-126. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
 where_stated = "crates/cr_transport/src/source.rs (DmSource::inject), crates/gororoba_cli_physics/src/bin/cr_modulation_sweep.rs"
 
 [[claim]]
@@ -1592,8 +1592,8 @@ where_stated = "crates/data_core/src/catalogs/voyager.rs (BARTOL_V2_LAYOUT, pars
 id = "C-1178"
 last_verified = ""
 statement = "AMDA HAPI provides Pioneer 10/11 MAG-only hourly data (RTN) without plasma parameters. Coverage: P10 1972-1995 (p10-mag-full), P11 1973-1992 (p11-mag-full). No proton density, speed, or temperature data exists for Pioneer in AMDA."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: GET https://amda.irap.omp.eu/service/hapi/info?id=p10-mag-full and ?id=p11-mag-full; assert the coverage windows, cadence PT1H, and that the parameter name set contains no density/speed/temperature entry. Add last_verified = 2026-08-06. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
 where_stated = "crates/data_core/src/catalogs/pioneer.rs (fetch_pioneer_amda_mag, AMDA_PIONEER_DATASETS), data/external/SOURCES.toml (SRC-PIONEER10-AMDA-MAG-ONLY, SRC-PIONEER11-AMDA-MAG-ONLY)"
 
 [[claim]]
@@ -1629,15 +1629,15 @@ id = "C-1182"
 last_verified = ""
 statement = "Solar Orbiter AMDA lane provides MAG + RPW electron density only (PARTIAL). SWA proton plasma moments (speed, temperature, proton density) are NOT available in AMDA as of 2026-03. RPW electron density used as quasi-neutrality proxy for proton density."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: GET the AMDA catalog; assert no dataset id matching 'solo-pas' and no solo-prefixed info response exposing a proton density/speed/temperature parameter; assert info?id=solo-mag-8s returns solo_b_rtn_8s and info?id=solo-rpw-density10s returns solo_rpw10s_ne. Restate the claim first so the 'only' clause describes the repo lane. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
 where_stated = "crates/data_core/src/catalogs/solo.rs (BLOCKER_NOTE, fetch_solo_amda), data/external/SOURCES.toml (SRC-SOLO-AMDA-MAG, SRC-SOLO-AMDA-RPW-DENSITY)"
 
 [[claim]]
 id = "C-1183"
 last_verified = ""
 statement = "New Horizons SWAP data has no known alternate provider besides SPDF. AMDA catalog (1065 datasets, queried 2026-03-10) contains zero NH entries. NH carries SWAP plasma but no magnetometer. PDS-SBN is a potential but unverified alternative source."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: GET the AMDA catalog; assert zero ids matching 'new_horizons' or 'nh-'. DO NOT EMBED THE DATASET COUNT -- it drifts. Pair with an assertion that the PDS-SBN New Horizons index lists nh-j-swap-3-jupiter and pds4-nh_swap:pluto_cal holdings, which is the standing refutation of the single-source sentence. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
 where_stated = "data/external/SOURCES.toml (SRC-NH-SINGLE-SOURCE-FRAGILE)"
 
 [[claim]]
@@ -2010,15 +2010,15 @@ id = "C-1231"
 last_verified = "2026-03-11"
 statement = "The 9-band magnonic tight-binding model reproduces a Dirac cone at the K point of the hexagonal BZ near 1.5 GHz, matching the graphene-like band crossing in MuMax3 micromagnetic simulations of hole-patterned YIG thin films."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: New test: assert (E1-E0) at K < 1e-9 and that (E1-E0)/dk converges to a nonzero constant for dk = 1e-2..1e-3 times |b1|; assert crossing energy in [1.24, 1.27] GHz. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band, compute_magnonic_bands), Kaman et al. (2026) arXiv:2601.03210v2 Fig. 2"
 
 [[claim]]
 id = "C-1232"
 last_verified = "2026-03-11"
 statement = "The kagome flat band near 2.08 GHz has bandwidth < 0.05 GHz in the inversion-symmetric 9-band model, consistent with destructive interference on triangular plaquettes."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: New test: assert detect_flat_bands(model, 60, 0.05).flat_band_indices == [2,4,5,6] and that band 5 energy == eps_p to 1e-12 at every k; assert model.hoppings contains no (from>=6, to>=6) pair. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic_crystal.rs (compute_magnonic_bands), crates/quantum_core/src/tight_binding.rs (detect_flat_bands)"
 
 [[claim]]
@@ -2043,8 +2043,8 @@ where_stated = "crates/quantum_core/src/tight_binding.rs (valley_chern_number), 
 id = "C-1235"
 last_verified = "2026-03-11"
 statement = "Inversion symmetry breaking (nonzero delta_eps_s, delta_eps_p) opens a gap at the Dirac point at K, enabling nonzero valley Chern numbers."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: New test asserting gap(0,1) at K equals 0 within 1e-12 at delta = 0 and equals 1.446*delta_eps_s within 1 percent for delta_eps_s in [0.005, 0.05]. The existing test_9band_inversion_breaking_opens_gap is satisfied by a min_gap_sym < 0.01 escape clause and does not actually test gap opening. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band with InversionBreakingParams)"
 
 [[claim]]
@@ -2060,16 +2060,16 @@ where_stated = "crates/quantum_core/src/tight_binding.rs (detect_flat_bands), pr
 id = "C-1237"
 last_verified = "2026-03-11"
 statement = "A point defect (missing kagome site) in the magnonic crystal supports a localized mode with quality factor Q ~ 4100 at Gilbert damping alpha = 1e-4."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: New test asserting point_defect_modes returns exactly one eigenvalue absent from the no-defect spectrum, at 1.84023 +/- 1e-4 GHz, with IPR < 2, and that this count is INDEPENDENT OF RADIUS. Q requires a non-Hermitian formulation that does not exist; that conjunct should be split out or closed. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic_crystal.rs (point_defect_modes), Kaman et al. (2026) Fig. 6"
 
 [[claim]]
 id = "C-1238"
 last_verified = "2026-03-11"
 statement = "Two adjacent point defects exhibit mode splitting of approximately 0.18 GHz at nearest-neighbor separation, decaying exponentially with distance."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: A new two-defect supercell entry point plus a test asserting the adjacent-pair splitting and its decay ratio; until that exists the claim has no repo referent. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "Kaman et al. (2026) Sec. V.B, crates/quantum_core/src/magnonic_crystal.rs (point_defect_modes with modified supercell)"
 
 [[claim]]
@@ -2077,7 +2077,7 @@ id = "C-1239"
 last_verified = "2026-03-11"
 statement = "A domain wall between regions with opposite inversion breaking supports valley-polarized boundary modes propagating in the bulk gap."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: New test asserting build_domain_wall_supercell(.., 20, ..) has at least two eigenstates in [1.8096, 2.2366] at k = b1/3 with summed |psi|^2 over cells 9-11 exceeding 0.9, and that no such state exists under InversionBreakingParams::none(). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_domain_wall_supercell), Kaman et al. (2026) Fig. 5"
 
 [[claim]]
@@ -2091,32 +2091,32 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v13.py`, `data/cs
 id = "C-1240"
 last_verified = "2026-03-11"
 statement = "The Holstein-Primakoff linearization for YIG magnons is valid when magnon occupation n << 2S = 28.4 (S = 14.2 for Fe3+ in YIG with 10 sublattices)."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Replace yig_effective_spin with a derivation from (n_tetrahedral - n_octahedral) * 5/2 per primitive cell and a unit test asserting 2S = 20; or close as Methodology-Insufficient since the HP bound is unused by any computation. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic.rs (hp_validity_bound, yig_effective_spin)"
 
 [[claim]]
 id = "C-1241"
 last_verified = "2026-03-11"
 statement = "The hexagonal BZ high-symmetry path Gamma-M-K-Gamma correctly uses M = b1/2, K = (2*b1 + b2)/3 in reciprocal coordinates for the hexagonal Bravais lattice."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: tight_binding.rs test_hexagonal_reciprocal_orthogonality + test_hexagonal_path_endpoints, extended with assertions |M| == |b1|/2 and |K| == |b1|/sqrt(3) to 1e-12. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/tight_binding.rs (hexagonal_high_symmetry_path)"
 
 [[claim]]
 id = "C-1242"
 last_verified = "2026-03-11"
 statement = "The Bloch Hamiltonian H(k) constructed by hamiltonian_at_k() is Hermitian for all k, guaranteed by adding both H[i,j] += t*exp(ik.R) and H[j,i] += conj(t*exp(ik.R))."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: tight_binding.rs test_graphene_hermitian and magnonic_crystal.rs test_9band_hermitian; strengthen by sweeping k over a grid rather than the single point (0.5, 0.3). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/tight_binding.rs (hamiltonian_at_k, test_hamiltonian_hermitian)"
 
 [[claim]]
 id = "C-1243"
 last_verified = "2026-03-11"
 statement = "Band energies are periodic in reciprocal space: E(k + G) = E(k) for any reciprocal lattice vector G = n1*b1 + n2*b2."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: tight_binding.rs test_graphene_periodicity and magnonic_crystal.rs test_9band_periodicity; extend to at least one large-|G| case to expose the roundoff scaling. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/tight_binding.rs (test_band_periodicity)"
 
 [[claim]]
@@ -2124,15 +2124,15 @@ id = "C-1244"
 last_verified = "2026-03-11"
 statement = "Time-reversal symmetry E(k) = E(-k) holds when inversion symmetry is preserved (zero InversionBreakingParams)."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Restate as: E(k) = E(-k) holds for ALL InversionBreakingParams because every Hopping.amplitude is real. New test asserting E(k) == E(-k) WITH kaman_default breaking AND asserting model.hoppings.iter().all(|h| h.amplitude.im == 0.0), so the assertion fails loudly if a complex (Haldane-type) hopping is ever introduced. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/tight_binding.rs (test_time_reversal_symmetry)"
 
 [[claim]]
 id = "C-1245"
 last_verified = "2026-03-11"
 statement = "The 9-band orbital basis decomposes into s-type (indices 0,3,6,7,8) and p-type (indices 1,2,4,5) sectors, enabling orbital-resolved band character analysis."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: New test asserting model.orbitals[i].label starts with 's_' for i in {0,3,6,7,8} and with 'px_'/'py_' for i in {1,2,4,5}. Flag as REDUNDANT with the docstring table at magnonic_crystal.rs:12-24. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band orbital placement comments)"
 
 [[claim]]
@@ -2140,31 +2140,31 @@ id = "C-1246"
 last_verified = "2026-03-11"
 statement = "Berry curvature is sharply peaked at the K and K' valleys for the Dirac bands, with negligible curvature elsewhere in the BZ."
 status = "Provisional"
-status_note = "Legacy status token: Pending"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: New test asserting that at delta_eps_s = 0.02 the fraction of sum|F| within 0.10|b1| of K/K' exceeds 0.65 at n_grid 61 and 121, and FALLS BELOW 0.30 at delta_eps_s = 0.10 -- encoding the mass dependence rather than an unqualified 'negligible elsewhere'. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/tight_binding.rs (fhs_berry_curvature)"
 
 [[claim]]
 id = "C-1247"
 last_verified = "2026-03-11"
 statement = "Parameter sweep of d/a (hole diameter to lattice constant ratio) shows the Dirac gap closes at d/a=0 and reopens with increasing d/a, modulating the effective hopping strengths."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: A CLI test asserting `magnonic-band-structure sweep --param hole-ratio` exits nonzero today; the claim needs an implemented d/a -> (t_sk, t_pk) map before it has any referent. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/magnonic_band_structure.rs (Sweep subcommand)"
 
 [[claim]]
 id = "C-1248"
 last_verified = "2026-03-11"
 statement = "The 9-band magnonic model maps exactly to the generic TightBindingModel framework, demonstrating that the tight-binding engine is model-independent (applicable to magnons, electrons, or photons)."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: tight_binding.rs test_square_cosine_band and test_kagome_flat_band_energy -- analytic cross-checks on NON-MAGNONIC models -- rather than any test of build_magnonic_9band's return type. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic_crystal.rs (build_magnonic_9band returns TightBindingModel)"
 
 [[claim]]
 id = "C-1249"
 last_verified = "2026-03-11"
 statement = "The homogeneous magnon frequency at k=0 is omega_0 = gamma * mu_0 * (B_ext/mu_0 + M_s), giving ~6.3 GHz for standard YIG parameters at B_ext = 50 mT."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Refuted"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: New test asserting rad_per_s_to_ghz(magnon_frequency_homogeneous(...)) equals the intended FMR frequency after the gamma unit and the demagnetizing sign are fixed. The existing test_magnon_frequency_at_k_zero only asserts 1 < f < 20 GHz and PASSES UNDER EITHER CONVENTION, so it cannot catch this. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/magnonic.rs (magnon_frequency_homogeneous)"
 
 [[claim]]
@@ -2179,8 +2179,8 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v13.py`, `data/cs
 id = "C-1250"
 last_verified = "2026-03-11"
 statement = "Valley Chern numbers are approximately +/-0.5 for the Dirac bands with small inversion breaking, but are NOT topologically quantized (they depend continuously on the breaking strength)."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: New test asserting |valley_chern_number(model(0.005, 0.0025), 0, 121, Valley::K)| in [0.45, 0.60] and |valley_chern_number(model(0.20, 0.10), 0, 121, Valley::K)| < 0.10, with n_grid 61 and 121 agreeing to 1e-3. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
 where_stated = "crates/quantum_core/src/tight_binding.rs (valley_chern_number), Kaman et al. (2026) Sec. III"
 
 [[claim]]
@@ -2201,8 +2201,8 @@ where_stated = "crates/algebra_analysis/src/reggiani.rs (partner_graph_spectrum)
 id = "C-1253"
 last_verified = "2026-03-11"
 statement = "The partner graph spectrum degeneracy pattern {7, 14, 42, 14, 7} factorizes as {1, 2, 6, 2, 1} * 7, where 7 is the number of box-kites and {1,2,6,2,1} encodes the per-box-kite spectral contribution."
-status = "Provisional"
-status_note = "Legacy status token: Pending"
+status = "Verified"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Test asserting partner_graph_degeneracies(0.01) yields multiplicity 7 at eigenvalue +4 AND that petgraph connected_components on partner_adjacency_matrix returns 7. Locator: reggiani.rs::partner_graph_degeneracies Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/algebra_analysis/src/reggiani.rs (partner_graph_degeneracies)"
 
 [[claim]]
@@ -2308,8 +2308,8 @@ where_stated = "crates/cosmology_core/src/galaxy_pipeline.rs (test_bootstrap_ci_
 id = "C-1267"
 last_verified = "2026-03-11"
 statement = "GPU box-counting CUDA kernel uses warp-level ballot reduction (matching dark_halo_detector pattern) to reduce global atomics 32x compared to naive per-thread atomicAdd."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Verified"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Source assertion: kernels_box_counting.cu must contain __ballot_sync + __popc + a lane-0-guarded atomicAdd inside box_count_at_scale. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "crates/lbm_3d_cuda/src/kernels_box_counting.cu (box_count_at_scale)"
 
 [[claim]]
@@ -2346,7 +2346,7 @@ id = "C-1271"
 last_verified = "2026-03-11"
 statement = "SoA memory layout for D3Q19 LBM reduces warp cache transactions 19x vs AoS: f[dir*N+idx] enables coalesced 128-byte fetches."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: ncu --metrics l1tex__t_sectors_pipe_lsu_mem_global_op_ld.sum on lbm_step_soa_fused vs an AoS variant at matched grid; ratio decides 19x vs 8x. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_fused)"
 
 [[claim]]
@@ -2361,7 +2361,7 @@ id = "C-1273"
 last_verified = "2026-03-11"
 statement = "ZD algebraic forcing adds topological confinement: F_zd(r) = -alpha_zd * 0.5 * exp(-r/R_e) * F_target * r_hat preserves galaxy core against LBM homogenization."
 status = "Theoretical"
-status_note = "Legacy status token: Conjecture"
+status_note = "Legacy status token: Conjecture | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Theoretical, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Source assertion: the F_zd formula is realized in euclid_df_sweep.rs::compute_zd_force_standalone, not in galaxy_pipeline.rs::prepare_galaxy; the locator must be corrected. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "crates/cosmology_core/src/galaxy_pipeline.rs (prepare_galaxy, ZD forcing block)"
 
 [[claim]]
@@ -2390,8 +2390,8 @@ where_stated = "crates/lbm_3d_cuda/src/lib.rs (set_force_field SoA branch)"
 id = "C-1277"
 last_verified = "2026-03-11"
 statement = "Batch SoA kernel supports 4D indexing for multi-galaxy processing: w = linear/N selects galaxy, idx = linear%N selects cell."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Verified"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Source assertion on lbm_step_soa_batch_kernel index derivation. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (lbm_step_soa_batch_kernel)"
 
 [[claim]]
@@ -2399,7 +2399,7 @@ id = "C-1278"
 last_verified = "2026-03-11"
 statement = "MRT collision operator alone does not fix f64 LBM divergence at high density contrast. BGK and MRT diverge at the same step (~25) because the root cause is compressibility instability (Ma > 0.3 from streaming at density interfaces), not ghost moment oscillation."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Make target replaying mrt-stability-audit with per-step positivity telemetry for BGK at contrast 23 and MRT at contrast 29, retaining both CSVs. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-162 step-by-step telemetry"
 
 [[claim]]
@@ -2407,7 +2407,7 @@ id = "C-1279"
 last_verified = "2026-03-11"
 statement = "Plummer softening (eps=0.5*dx) + density floor >= 0.045 + MRT collision eliminates all NaN divergence for 10/10 Euclid test galaxies at 64^3, producing D_f = 2.888 +/- 0.085 with morphological variation [2.799, 2.977]."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Replay at --grid 64 --max-galaxies 10 --cpu --mrt --density-floor 0.045 with a POSITIVITY SENTINEL assertion rather than a NaN check. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-162 floor=0.045 sweep"
 
 [[claim]]
@@ -2421,8 +2421,8 @@ where_stated = "`src/scripts/analysis/c128_conjugate_inverse_audit.py`, `data/cs
 id = "C-1280"
 last_verified = "2026-03-11"
 statement = "MRT extends the practical LBM stability limit from Ma ~ 0.3 (BGK) to Ma ~ 1.5, as demonstrated at floor=0.03 where BGK produces 100% NaN while MRT produces D_f=2.826 with zero NaN despite max|u|=0.836 (Ma=1.45)."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Refuted"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Assertion over data/output/e167_mrt_bgk_stability_n16_tau07.csv: max BGK max_mach among rows with mass_err < 1e-10 must exceed 0.3 (it is 1.662), falsifying the stated BGK ceiling. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-162 floor=0.03 BGK vs MRT comparison"
 
 [[claim]]
@@ -2437,7 +2437,7 @@ id = "C-1282"
 last_verified = "2026-03-11"
 statement = "GPU MRT collision kernel (d'Humieres D3Q19 SoA) produces D_f within 0.05 of CPU MRT at identical parameters for all test galaxies at 64^3 and 128^3."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Paired invocation of euclid-df-sweep at --grid 64 --max-galaxies 10 --mrt with and without --cpu, asserting per-object_id |df_final_gpu - df_final_cpu| <= 0.05. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-163/E-164 GPU MRT sweeps"
 
 [[claim]]
@@ -2445,7 +2445,7 @@ id = "C-1283"
 last_verified = "2026-03-11"
 statement = "GPU MRT 100-galaxy 64^3 sweep: D_f = 2.748 +/- 0.607 (robust mean ~2.88), 94/100 stable. 6 outliers (D_f < 1.0) are catalog edge cases (extreme Sersic n=5.50 cap, high z > 2.3) not collision failures."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Replay E-163 and assert that no galaxy with sersic_n >= 5.50 or photo_z > 2.3 has df_final >= 1.0 (the attribution fails if such galaxies are stable). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-163 GPU MRT 64^3 100-galaxy sweep"
 
 [[claim]]
@@ -2460,7 +2460,7 @@ id = "C-1285"
 last_verified = "2026-03-11"
 statement = "GPU-resident Otsu threshold + box-counting eliminates 8 MB PCIe density readback per galaxy at 128^3, reducing data transfer to ~2 KB (1 KB histogram + ~28 bytes box-counts). 8000x reduction in PCIe traffic."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding confirmed. DURABLE CHECK that would decide this claim: Source assertion that run_gpu_sweep contains no rho host copy plus a size assertion that GpuBoxCounter's readback per galaxy is <= 1100 bytes. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-165 zero-copy GPU box-counting validation"
 
 [[claim]]
@@ -2468,7 +2468,7 @@ id = "C-1286"
 last_verified = "2026-03-11"
 statement = "Zero-copy GPU box-counting path achieves 249ms/galaxy at 128^3, 1.54x speedup over readback path (384ms/galaxy). Speedup from eliminating two 8 MB PCIe transfers per galaxy."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Either restore a --readback-boxcount toggle on run_gpu_sweep and assert the ratio >= 1.5, or retire the ratio and keep only an absolute ms/galaxy budget assertion at 128^3. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-164/E-165 performance comparison"
 
 [[claim]]
@@ -2476,15 +2476,15 @@ id = "C-1287"
 last_verified = "2026-03-11"
 statement = "Resolution convergence 64^3 -> 128^3: D_f tightens from 2.748 +/- 0.607 to 2.732 +/- 0.034 (18x reduction in std, N=100). All 6 outlier galaxies (D_f < 1.0 at 64^3) stabilize at 128^3 as the softening core resolves correctly. 100/100 galaxies stable."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Replay both grids and assert separately that (a) every object_id with df_final < 1.0 at 64^3 exceeds 2.5 at 128^3, and (b) the outlier-excluded 64^3 std exceeds 5x the 128^3 std -- (b) currently fails at 1.98x, so the 18x must be restated as an outlier effect; add a 256^3 point before any convergence language. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-163/E-166 resolution convergence comparison"
 
 [[claim]]
 id = "C-1288"
 last_verified = "2026-03-11"
 statement = "GPU MRT 128^3 100-galaxy sweep: D_f = 2.732 +/- 0.034, CI_95 [2.725, 2.739]. All 100 galaxies stable (zero outliers). CD D=16 flat band topology prediction 2.7268 sits at the 31st percentile of the CI, confirming quantitative agreement between Cayley-Dickson algebraic topology and cosmological fractal dimension."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Refuted"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Replay E-166 to data/output/ and assert both the reported percentile against the empirical rank of 2.7268 and whether 2.7268 falls inside CI_95; both currently fail. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-166 GPU MRT 128^3 100-galaxy sweep"
 
 [[claim]]
@@ -2492,7 +2492,7 @@ id = "C-1289"
 last_verified = "2026-03-11"
 statement = "Morphological D_f difference at 128^3 is 0.009 (disk 2.736 vs elliptical 2.727), not statistically significant at N=100. Both morphological classes converge to the same D_f attractor, consistent with the universal topology prediction from CD zero-divisor structure."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Add a Welch two-sample test over the morphology bins to analyze_df_sweep and assert p > 0.05, so the non-significance claim rests on a computed statistic rather than on inspection of overlapping per-bin CIs. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-166 disk/elliptical comparison"
 
 [[claim]]
@@ -2514,48 +2514,48 @@ where_stated = "E-167 MRT vs BGK stability envelope"
 id = "C-1291"
 last_verified = "2026-03-11"
 statement = "CD D=64 ZD partner graph flat band fraction = 1/2, extending the invariance from D=16 (proven in Rocq C-1236) and D=32 (empirical) to the next Cayley-Dickson doubling level."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Verified"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Un-ignore and run flat_band_localization.rs::test_d64_flat_band_fraction, tightened to assert exact equality (|fbf - 0.5| < 1e-9) per motif class rather than within 0.05 on the aggregate; evidence artifact data/csv/zd_motif_invariants.csv Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "E-168 D=64 flat band fraction verification"
 
 [[claim]]
 id = "C-1292"
 last_verified = "2026-03-11"
 statement = "GPU thread coarsening (1 thread = 2 cells) with __launch_bounds__(128, 9) achieves >= 1.15x MRT throughput at 128^3 by doubling the ILP window to 1444 independent FMAs, hiding the 4.54-cycle FFMA pipeline latency on Ada Lovelace SM 8.9."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Refuted"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo run --release --bin cuda-precision-bench -- --variants mrt,mrt_coarsened at 128^3, asserting MLUPS(mrt_coarsened)/MLUPS(mrt) >= 1.15; and correct the launch-bounds figure to (128, 6). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-169 thread coarsening benchmark"
 
 [[claim]]
 id = "C-1295"
 last_verified = "2026-03-11"
 statement = "GPU-side max-Mach-number reduction via compute_speed_magnitude + reduce_max_f32 kernels costs < 10us total (vs 2ms for sync_to_host readback of full velocity field), enabling per-step stability monitoring without PCIe bottleneck."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Refuted"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Add a device-side second-pass scalar-max kernel, then time max_mach_number_device with CUDA events at 128^3 asserting < 10us and asserting the per-call host transfer is <= 4 bytes. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-172 roofline benchmark"
 
 [[claim]]
 id = "C-1296"
 last_verified = "2026-03-11"
 statement = "128^3 D3Q19 MRT with thread coarsening achieves >= 60% of theoretical RTX 4070 Ti bandwidth (504 GB/s), as measured by total memory traffic (77.2 GB/galaxy) divided by wall-clock time."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Verified"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Single durable check covering C-1286 and C-1296: time euclid-df-sweep at --grid 128 --mrt over N galaxies and assert ms/galaxy <= 255, reporting the derived GB/s as 77.18/t. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-169/E-172 bandwidth analysis"
 
 [[claim]]
 id = "C-1297"
 last_verified = "2026-03-11"
 statement = "D_f=2.73 is not a pipeline artifact: null hypothesis rejected via 6-condition control experiment. Only the combination of Sersic morphology + ZD algebraic forcing produces D_f~2.73; neither ingredient alone is sufficient."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Refuted"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: E-174 must be re-registered with an explicit nonzero --alpha-zd and extended with Sersic+ZD-only and Sersic+NFW-only conditions; the runner should hard-fail rather than warn when --null-hypothesis is combined with alpha_zd = 0. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-174 null hypothesis control"
 
 [[claim]]
 id = "C-1298"
 last_verified = "2026-03-11"
 statement = "CPU AoSoA layout with wide::f64x4 SIMD collision achieves >= 4x speedup over AoS scalar at 128^3 MRT f64 on Zen 3. AoSoA chunk (19 dirs * 4 cells * 8 bytes = 608 bytes) fits in 2% of L1D, eliminating the L1 cache thrashing that pure SoA causes on 8-way set-associative x86."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Closed/Methodology-Insufficient"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Methodology-Insufficient, fleet finding not_run. DURABLE CHECK that would decide this claim: Either add a feature-gated AoS scalar collision retained solely as a benchmark baseline and assert >= 4x under target-cpu=znver3, or retire the ratio for an absolute MLUPS floor at 128^3. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-175 CPU AoSoA benchmark"
 
 [[claim]]
@@ -2563,7 +2563,7 @@ id = "C-1299"
 last_verified = "2026-03-11"
 statement = "AoSoA (CPU) and SoA (GPU) layouts provide structural memory parity: both store the same D3Q19 physical data with identical 19-direction semantics, enabling cross-validation via simple transpose. The LbmBackend dispatcher abstracts the layout difference behind a unified f64 interface."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Add a D_f column to mrt-stability-audit output, then assert |D_f(cpu) - D_f(gpu)| bounds at matched contrast; this single check also serves C-1282. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "E-176 CPU/GPU cross-validation"
 
 [[claim]]
@@ -2677,7 +2677,7 @@ id = "C-1312"
 last_verified = "2026-03-12"
 statement = "The SKA (2030) 'Harmonic Halos' prediction -- that galactic rotation curves would show signatures tied to sedenion zero-divisor structure -- exists only as a proposal in docs/research/high_dimensional_algebra_unification_2026.md. No rotation curve computation or harmonic decomposition existed in the codebase prior to the harmonic_halos module."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Provisional as of 2026-08-06. The substantive proposition is confirmed by git history: no git-tracked file computed v_circ rotation curves or a harmonic decomposition of a halo profile before crates/cosmology_core/src/harmonic_halos.rs was added at 185f1254 on 2026-03-12. The locative proposition is stale -- docs/research/high_dimensional_algebra_unification_2026.md has been deleted, so the claim asserts the proposal 'exists only' in a file that does not exist and where_stated points at that path. Re-verification requires restating the proposition in historical or current-location language and repointing where_stated to registry/research_narratives.toml:415."
 where_stated = "docs/research/high_dimensional_algebra_unification_2026.md:40, crates/cosmology_core/src/harmonic_halos.rs"
 
 [[claim]]
@@ -2686,15 +2686,15 @@ id = "C-1313"
 last_verified = "2026-03-12"
 statement = "For an NFW halo with ZD topological forcing (alpha_zd > 0), the circular velocity curve v_circ(r) = sqrt(G * M_enc(r) / r) acquires harmonic modulations at wavenumbers k_n = 2*pi*n / (7 * r_s) for n = 1..7, corresponding to the 7 box-kite structures. The modulation amplitude scales as alpha_zd * (42/84) * (1/n) * exp(-r/r_s)."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: cargo test -p cosmology_core --lib -- harmonic_halos (13 tests incl. test_seven_distinct_wavenumbers, test_modulation_decays_at_large_r); restate the amplitude as applying to v_circ^2 and the coefficient as 0.5. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-f-halo.toml"
 where_stated = "crates/cosmology_core/src/harmonic_halos.rs (harmonic_halo_modulation)"
 
 [[claim]]
 id = "C-1314"
 last_verified = "2026-03-12"
 statement = "The galaxy pipeline's ZD topological forcing (alpha_zd parameter in GalaxyPipelineConfig) modulates NFW gravitational force with a 7-mode harmonic structure derived from box-kite angular symmetry. At alpha_zd=0, standard NFW is recovered exactly."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Verified"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: cargo test -p cosmology_core --lib -- harmonic (35 tests pass); anchors experiment E-190. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-f-halo.toml"
 where_stated = "crates/cosmology_core/src/harmonic_halos.rs, crates/cosmology_core/src/galaxy_pipeline.rs"
 
 [[claim]]
@@ -2722,8 +2722,8 @@ where_stated = "crates/algebra_analysis/src/x87_jacobi.rs (flat array layout, in
 id = "C-1318"
 last_verified = "2026-03-12"
 statement = "A-A (Alternating-Address) streaming for D3Q19 LBM eliminates the ping-pong buffer (d_f_tmp), halving VRAM for distribution storage: 76 MB savings at 128^3 (from 152 MB to 76 MB). Uses parity-dependent direction remapping via OPP[19] constant-memory LUT. Incompatible with CUDA graph 2-step capture due to parity-dependent kernel arguments."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Refuted"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Assert reported free VRAM after constructing an A-A-enabled 128^3 FP32 solver differs from the ping-pong solver by ~76 MB; today it does not, so either free d_f_tmp under A-A or restate the claim as eliminating the ping-pong dependency without the VRAM figure. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "crates/lbm_3d_cuda/src/kernels_soa.cu (OPP[19], lbm_step_soa_aa, lbm_step_soa_mrt_aa), crates/lbm_3d_cuda/src/lib.rs (set_aa_streaming, aa_parity toggle)"
 
 [[claim]]
@@ -2731,7 +2731,7 @@ id = "C-1319"
 last_verified = "2026-03-12"
 statement = "L2 cache pinning via cuCtxSetLimit(CU_LIMIT_PERSISTING_L2_CACHE_SIZE, 16MB) + CU_ACCESS_PROPERTY_PERSISTING access policy window was non-functional without the budget reservation call. The fixed implementation reserves 16 MB of L2 set-aside and marks the rho field as PERSISTING. Only effective on SM 8.0+ (Ampere/Ada Lovelace). set_l2_pinning() provides runtime toggle with automatic re-pin on d_rho reallocation."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Source assertion that pin_rho_in_l2 reserves CU_LIMIT_PERSISTING_L2_CACHE_SIZE and checks the result, with the documented size corrected from 16 MB to 32 MB. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "crates/lbm_3d_cuda/src/lib.rs (LbmSolver3DCuda::pin_rho_in_l2, set_l2_pinning, DarkHaloCudaSolver::pin_rho_in_l2)"
 
 [[claim]]
@@ -2774,7 +2774,7 @@ id = "C-1324"
 last_verified = "2026-03-12"
 statement = "YSU-engine ld.global.ca (cache-all) hints 'mentioned as future work, never implemented': ASSESSED for open_gororoba. ld.global.ca is NOT needed because (1) __ldg() already generates cache-through loads for read-only data, and (2) L2 access policy windows provide stronger guarantees (PERSISTING vs cache hints). Cache-all would only help for write-after-read patterns, which D3Q19 LBM does not have (separate f_in/f_out or A-A parity swap)."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Re-derive the assessment against the A-A kernel specifically, or scope the claim to the ping-pong kernels where the no-write-after-read premise is actually true. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
 where_stated = "crates/lbm_3d_cuda/src/kernels_fp32_soa_cs.cu (__ldg() read-only path covers all cache-through needs; L2 PERSISTING policy in crates/lbm_3d_cuda/src/lib.rs)"
 
 [[claim]]
@@ -2842,8 +2842,8 @@ where_stated = "C-003, C-016, C-010, C-1262, C-1309, C-1329, C-1330, proofs/veri
 id = "C-1332"
 last_verified = "2026-03-12"
 statement = "The 7-mode harmonic halo signature is strictly falsifiable today using existing kinematic datasets. By normalizing galactic rotation curves to dimensionless r/r_s coordinates, the topological wavenumbers align at k_n' = 2*pi*n/7 regardless of galaxy mass. Stacking N rotation curves reduces the kinematic noise floor by sqrt(N), allowing the 42/84=0.5 amplitude signature to be resolved down to alpha_zd >= 0.005 using MaNGA DR17 IFU data (~10,000 galaxies). SPARC (175 galaxies) reaches alpha_zd >= 0.015, Gaia DR3/DR4 MW curve reaches alpha_zd >= 0.01 (systematics-limited). No need to wait for SKA 2030."
-status = "Provisional"
-status_note = "Legacy status token: Active"
+status = "Refuted"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: data/results/e183/injection_recovery.csv must show alpha_zd_recovered -> 0 as alpha_zd_injected -> 0 and detected_snr rising monotonically before any alpha_zd sensitivity limit may be quoted; currently the zero-injection row reads 0.29558. Companion check: a single sigma_v_frac must reproduce all quoted thresholds via 4*sigma_v_frac/sqrt(N). Anchors E-180, E-183, E-192, E-193. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-f-halo.toml"
 where_stated = "crates/cosmology_core/src/harmonic_halos.rs, crates/cosmology_core/src/harmonic_stacking.rs (TO BE IMPLEMENTED), docs/research/sedenion_42_structure_audit_2026.md"
 
 [[claim]]
@@ -2936,7 +2936,7 @@ id = "C-1343"
 last_verified = ""
 statement = "Harmonic halo stacking is parameterized by CD dimension via CdDimensionParams. The wavenumber formula k_n = 2*pi*n / n_modes generalizes from 7 modes (D=16) to arbitrary n_modes = D/2 - 1. Higher dimensions probe more modes but same assessor fraction (0.5), enabling multi-dimensional falsification sweeps."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: md5sum data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d*.csv (excluding reruns) yields a single hash -- any claim that the CD-dimension sweep is informative must first break this byte-identity. Anchors E-182, E-193. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-f-halo.toml"
 where_stated = "crates/cosmology_core/src/harmonic_stacking.rs (CdDimensionParams, predicted_wavenumbers)"
 
 [[claim]]
@@ -2958,7 +2958,7 @@ id = "C-1346"
 last_verified = ""
 statement = "MaNGA pseudo-slit rotation curve extraction: 2D H-alpha EMLINE_GVEL maps from MAPS files are sliced along the kinematic PA with 2-spaxel slit width, deprojected by sin(i), and binned radially to produce SPARC-compatible V(r) profiles. DAPall scalars (sigma_star, integrated EW) are insufficient for harmonic Fourier analysis requiring spatially resolved k_n modes."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: head -1 data/external/manga/dapall_selection.csv contains nsa_elpetro_phi and no kinematic-PA column; grep SLIT_HALF_WIDTH in manga_maps_extractor.rs returns 2. Claim text must read 'photometric NSA PA' and 'half-width 2 spaxels (5-spaxel, 2.5-arcsec slit)' until a kinematic-PA fit exists. Anchors E-183. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-f-halo.toml"
 where_stated = "crates/data_core/src/catalogs, crates/data_core/src/catalogs/manga.rs"
 
 [[claim]]
@@ -2973,7 +2973,7 @@ id = "C-1348"
 last_verified = ""
 statement = "Moster et al. (2013) SMHM relation provides NFW halo mass priors from MaNGA stellar masses: log(M_halo) from log(M_star) via iterative inversion of the double-power-law parametrization. This replaces the Li et al. (2020) published NFW fits used for SPARC, enabling self-consistent halo normalization without external fitting tables."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: cargo test -p data_core --lib -- moster (assert moster2013_log_m200(10.5) within 11.5..13.5) plus a digit-level constant check against arXiv:1205.5807. Restate 'iterative inversion' as '500-point grid scan at 0.01 dex over log M_halo in [10, 15], z=0 terms only'. Anchors E-183, XS-028. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-f-halo.toml"
 where_stated = "crates/data_core/src/catalogs/manga.rs::MangaDapallEntry::estimated_log_m200()"
 
 [[claim]]
@@ -3093,7 +3093,7 @@ id = "C-1362"
 last_verified = "2026-03-12"
 statement = "Working design rule for this codebase, pending full hardening: avoid mixing x87-resident temporaries with AVX/XMM work inside the same hot function; keep x87 for entirely non-SIMD precision-critical sections and use Kahan or double-double when a precision scalar must live inside a vectorized path. The numerical crossover argument from Ogita-Rump-Oishi gives `u_f64 / u_x87 = 2^-53 / 2^-64 = 2^11 = 2048`, so the heuristic is: x87 extended intermediates are the better oracle for the repo's sedenion-sized reductions (`N <= 1024`), while Kahan is the safer default for long accumulations such as Berry-phase sums where `N = n_grid^2` can easily exceed 2048. This is currently a source-backed design heuristic rather than a fully closed theorem claim, and it remains tied to the repo's concrete dimension ranges plus the planned AVX/FMA follow-on benchmark."
 status = "Provisional"
-status_note = "Legacy status token: Active"
+status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Restate as 'no x87 accumulator may cross an LLVM-visible boundary; the entire reduction loop lives inside one asm! block' and enforce with a source gate: every core::arch::asm! block in crates/cd_kernel/src/x87_primitives.rs containing an f-prefixed x87 mnemonic must contain its own loop branch, i.e. no x87 asm! block inside a Rust for/while body. Retire the stale path in favour of crates/cd_kernel/src/x87_primitives.rs, correct the crossover to n ~ 2^12 against Kahan, replace 'planned' with the E-189 result. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 where_stated = "Ogita-Rump-Oishi (2005) 'Accurate Sum and Dot Product'; crates/algebra_analysis/src/x87_primitives.rs; crates/cd_kernel/src/avx2_primitives.rs; E-188 benchmark results"
 
 [[claim]]
@@ -4457,15 +4457,17 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/cs
 id = "C-1530"
 last_verified = "2026-03-23"
 statement = "Phase C experimental overlay (evid H): All three PMNS mixing angles from the Sedenion Standard Model scorecard lie within NuFit 6.0 1-sigma contours. Asymmetric pulls: theta_12 = -0.067 (best=33.41, ours~33.37), theta_13 = 0.000 (best=8.54, ours=8.54), theta_23 = -0.009 (best=49.0, ours~49.0). Evidentiary class H (heuristic fit, not derived). Experiment sensitivity: DUNE/HyperK for delta_CP and theta_23; JUNO for mass ordering and precision theta_12/theta_13."
-status = "Provisional"
+status = "Refuted"
 where_stated = "crates/algebra_experimental/src/experimental_predictions.rs::test_mixing_angles_in_1sigma"
+status_note = "Refuted 2026-08-06 by the claim falsification fleet: the NuFit60 struct the claim relies on is not NuFit 6.0. Its fields trace to NuFit 5.2 (theta_12), NuFit 5.0 (theta_23, delta_CP) and PDG 2021/2022 (mass splittings). SCOPE CORRECTION: theta_23 = 48.99 deg lies outside the NuFit 6.0-with-SK 1-sigma interval [42.50, 44.30] as claimed, but REMAINS INSIDE the published 3-sigma interval [41.3, 49.9] at 6.0 and [41.27, 49.86] at 6.1. The pull 5.69 is a local-Gaussian ratio against the upper 1-sigma half-width and is NOT a confidence level; the likelihood is non-Gaussian. Do not cite this claim as a 5.7-sigma exclusion."
 
 [[claim]]
 id = "C-1531"
 last_verified = "2026-03-23"
 statement = "Phase C CP-phase overlay (evid H): CP-A (~165 deg, Gram-derived) lies within NuFit 6.0 1-sigma for delta_CP (pull = -0.526; 1-sigma range [138,258] deg). CP-B (~93 deg, maximal CP violation) lies outside 1-sigma (pull = -1.789) but inside 3-sigma ([0,360] deg). The 2025 NuFit best-fit is 195 deg; CP-B is displaced toward maximal CP. Both values are exploratory (scorecard Bin 3). Falsification target: DUNE/HyperK sensitivity will determine which, if either, is consistent at 5-sigma."
-status = "Provisional"
+status = "Refuted"
 where_stated = "crates/algebra_experimental/src/experimental_predictions.rs::test_cp_a_in_1sigma, test_cp_b_outside_1sigma"
+status_note = "Refuted 2026-08-06 by the claim falsification fleet. The quoted 1-sigma window [138,258] and 3-sigma window [0,360] appear in no NuFit release; both are repository constructions, and the quoted pulls were computed against them. SURVIVING POSITIVE RESULT: CP-B at 93 deg lies outside the published normal-ordering 3-sigma interval in all four NuFit 6.0/6.1 analysis variants tested by this campaign (6.0+SK lower edge 124, 6.0-SK 96, 6.1+SK 125, 6.1-SK 114), so the CP-B comparison does not require DUNE or Hyper-K. SCOPE LIMIT: NuFit releases 1.0 through 5.3 were not replayed, so this is not an archive-wide statement."
 
 [[claim]]
 id = "C-1532"
@@ -4473,6 +4475,7 @@ last_verified = "2026-03-23"
 statement = "Phase C JUNO overlay (evid H): JUNO r_nu observable from the project scorecard is within 3% of NuFit 6.0 baseline. JUNO sensitivity covers mass ordering and precision oscillation inputs (theta_12, Delta_m_21^2); it does NOT directly constrain delta_CP. JUNO began data taking 2025-08-26. r_nu is not a directly measured JUNO quantity; the overlay uses the JUNO-accessible parameter space as context only."
 status = "Provisional"
 where_stated = "crates/algebra_experimental/src/experimental_predictions.rs::test_juno_r_nu_within_3pct"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Rebuild nufit_r_nu from the Delta_m^2_21 and Delta_m^2_3l rows of v61.tbl-parameters.pdf (NO, with SK) with an explicit Delta_m^2_31 vs Delta_m^2_32 convention note, then run test_juno_r_nu_within_three_percent. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml"
 
 [[claim]]
 id = "C-1533"
@@ -4516,6 +4519,7 @@ last_verified = "2026-03-23"
 statement = "Moreno Corollary 1.6 (ZD symmetry): In A_n (n>=4), xy=0 iff yx=0 iff x_bar*y=0 iff x*y_bar=0. If xy=0 and x!=0, then t(y)=0. x^2=0 implies x=0. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Theoretical"
 where_stated = "crates/moreno_1997/src/lib.rs (moreno_decomposition, Cor 1.6 background)"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Theoretical, fleet finding confirmed. DURABLE CHECK that would decide this claim: Source locator: arXiv q-alg/9710013 e-print thezero.tex lines 341-368 (Corollary 1.6), sha256 ad9bf59860da8079a640648b7ac8bc2425042a746e0bb2711025ed46a6d3c928. Formal locator: proofs/theories/C1538_MorZDSymmetry.v theorems zd_symmetry, zd_conj_vanishes, C1538_full -- record as a PARTIAL formalization edge, not a full one. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml"
 
 [[claim]]
 formal_proof = "proofs/theories/C1539_MorSkewSymm.v"
@@ -4524,6 +4528,7 @@ last_verified = "2026-03-23"
 statement = "Moreno Proposition 1.7 (skew-symmetry): For x in circ-A_n (purely imaginary), L_x and R_x are skew-symmetric operators on A_n (with respect to the Euclidean inner product). Ker(L_x) = Ker(R_x). Source: Moreno (1997) arXiv:q-alg/9710013v1."
 status = "Theoretical"
 where_stated = "crates/moreno_1997/src/lib.rs (l_a_squared, moreno_decomposition)"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Theoretical, fleet finding confirmed. DURABLE CHECK that would decide this claim: Source locator: thezero.tex lines 390-407 (Proposition 1.7) and 408-412 (the Remark carrying Ker L_x = Ker R_x), sha256 ad9bf59860da8079a640648b7ac8bc2425042a746e0bb2711025ed46a6d3c928. Formal locator: proofs/theories/C1539_MorSkewSymm.v theorems l_x_skew_symm and r_x_skew_symm (full match); the Ker equality edge belongs to C1538_MorZDSymmetry.v and is hypothesis-narrowed. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml"
 
 [[claim]]
 id = "C-154"
@@ -4945,7 +4950,7 @@ formal_proof = "proofs/verified/C1629_IDCT8DP4ExactBound.v"
 id = "C-1629"
 last_verified = "2026-07-18"
 statement = "The staple-associator's componentwise ROC-AUC advantage over one-step field rotation generalizes across independently sampled THEMIS-A crossing days: the file-cluster bootstrap on the deduplicated 813-file benchmark (E-239, 2,000 resamples of intact daily files, every sample within each drawn file retained) puts the simultaneous margin M at +0.00206 with 95% CI [0.00081, 0.00328] (p_le_zero = 0.001), and the mean daily AUC delta at +0.00508 [0.00372, 0.00634]. The intact-cluster design supersedes the E-235 moving-block intervals for population inference because blocks straddling file boundaries mix days instead of resampling them. This margin is scoped to the one-step rotation baseline; matched six-sample rotation statistics reverse the sign (C-1633)."
-status = "Provisional"
+status = "Verified"
 status_note = "Provisional pending: per-probe THEMIS C/D/E replication (separate probe-level lower bounds, not pooled), year-stratified resampling, and crossing-event-level resampling. Equal-receptive-field baselines landed with E-239 and bound the claim's scope to one-step comparisons. Related to C-1617/C-1618 through the shared associator observable; does not independently validate their mechanism."
 where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_rot.json; E-239"
 
@@ -4993,8 +4998,9 @@ where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json; dat
 id = "C-1634"
 last_verified = "2026-08-04"
 statement = "The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions."
-status = "Theoretical"
+status = "Verified"
 where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Source locator arXiv:2601.23279v1 Eq. (7.1), printed page 17, cross-checked against p1_source_equation_ledger.toml row id 7.1 Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 
 [[claim]]
 id = "C-1635"
@@ -5002,13 +5008,15 @@ last_verified = "2026-08-04"
 statement = "The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid."
 status = "Provisional"
 where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: cargo test --release -p gr_core --lib photon_graviton::tensor_ward::tests::scalar_integrated_gauge_residuals_pass_the_frozen_protocol and ...::spinor_irreducible_residual_retains_the_contact_boundary_gap Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 
 [[claim]]
 id = "C-1636"
 last_verified = "2026-08-04"
 statement = "The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side, with the on-shell irreducible and external-leg cancellation and separate tadpole invariance stated explicitly."
-status = "Theoretical"
+status = "Verified"
 where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Source locator arXiv:2601.23279v1 Eqs. (7.2)-(7.7), printed page 17, cross-checked against p1_source_equation_ledger.toml rows 7.2-7.7 Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 
 [[claim]]
 id = "C-1637"
@@ -5016,20 +5024,23 @@ last_verified = "2026-08-04"
 statement = "The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition across the predeclared kinematic grid."
 status = "Provisional"
 where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: cargo test --release -p gr_core --lib photon_graviton::gravitational_ward::tests::off_shell_comparison_retains_all_lower_point_components, ...::combined_on_shell_ladder_retains_limit_status_without_a_floor, ...::on_shell_omission_and_tadpole_trace_controls_break_the_invariant Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 
 [[claim]]
 id = "C-1638"
 last_verified = "2026-08-04"
 statement = "The photon-graviton TCMT implementation evaluates kappa_1 - kappa_2 = gamma_l against the declared relative tolerance."
-status = "Provisional"
+status = "Refuted"
 where_stated = "data/output/audit/2026-08-02/p0_frontier.toml; data/output/audit/2026-08-03/canonical-claim-status-falsification-review.toml; data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo test --release -p gr_core --lib photon_graviton_tcmt::amplitude_bridge::tests::audit_c865_tolerance_does_not_match_claim Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 
 [[claim]]
 id = "C-1639"
 last_verified = "2026-08-04"
 statement = "The source-faithful Maksimov energy constraint kappa_1 - kappa_2 = gamma_l holds under declared units and parameter correspondence."
-status = "Theoretical"
+status = "Refuted"
 where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/p0_frontier.toml; data/output/audit/2026-08-03/canonical-claim-transition-adjudication-c865.toml"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Source locator arXiv:2505.00396v1 Eqs. (43), (44), (48), (68); cross-check arXiv:0909.3323 Eqs. (17), (18a) Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 
 [[claim]]
 id = "C-164"
@@ -5063,8 +5074,9 @@ where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-02/c
 id = "C-1643"
 last_verified = "2026-08-04"
 statement = "The declared reciprocal scattering model satisfies the appropriate reciprocity relation for its channel basis."
-status = "Provisional"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-02/claim_transition_proposals.toml"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: cargo test --release -p optics_core --lib fano_tcmt::tests::source_constraints_are_separate_predicates and fano_tcmt::tests::source_constraint_mutations_are_detected; source locator arXiv:0909.3323 Eq. (19) Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 
 [[claim]]
 id = "C-1644"
@@ -5128,65 +5140,74 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/cs
 [[claim]]
 id = "C-1650"
 statement = "The optics_core Ruan-Fan channel path preserves complex R_l and S_l and computes scattering, absorption, and extinction independently across the frozen analytical grid with detected old-oracle mutations."
-status = "Provisional"
+status = "Verified"
 where_stated = "data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml; data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml"
 last_verified = "2026-08-04"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: p2a-ruan-fan-channel-oracle-evidence.toml mutation_control rows all detected = true and fano_row component_max_defect <= 1e-12. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1651"
 statement = "The Ruan-Fan source channel identities define R_l, S_l, scattering, absorption, and extinction with the stated incoming and outgoing Hankel convention."
-status = "Theoretical"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/ruan-fan-source-equation-figure-ledger.toml"
 last_verified = "2026-08-04"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: sha256sum of the corpus PDF == a355dc5a..., and the [conventions] and [index_contract] tables against Eqs. (1), (4), (5), (6) on printed page 3. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1652"
 statement = "The source-derived Ruan-Fan Figure 4 single-channel TCMT approximation has a measured no-fit complex-channel and normalized-observable error envelope on the frozen lossless and lossy grids."
-status = "Provisional"
+status = "Closed/Methodology-Insufficient"
 where_stated = "data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
 last_verified = "2026-08-04"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Methodology-Insufficient, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Restate with the numbers, then gate: [figure4_summary] max_c_sct <= 1.7e-2, max_c_ext <= 1.6e-2, max_complex_s <= 1.6e-2, max_complex_r <= 3.2e-2 on the frozen 60-point grid with frequency_hash d41a3d23dccf26d41e5199c31df3a2317934b3e062e0b983880c8e879540b12e. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1653"
 statement = "The Ruan-Fan Figure 4 complex-pole and uniform-metal-background procedure reproduces the published single-channel source-parameter anchors within the declared printed-precision and independent-reference envelope."
-status = "Provisional"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml"
 last_verified = "2026-08-04"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: [[source_parameter_anchor]] all rows within_printed_interval = true, together with [control_results] source_figure4_parameter_fit_executed = false and independent root defect <= 5e-8. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1654"
 statement = "The five-channel Figure 5 Mie and TCMT aggregate scattering, absorption, and extinction observables have a retained source-derived and held-out error envelope after per-channel values are preserved and degeneracy weights are applied."
-status = "Provisional"
+status = "Closed/Methodology-Insufficient"
 where_stated = "data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
 last_verified = "2026-08-04"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Methodology-Insufficient, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: [figure5_heldout_summary] max_c_ext <= 6.3e-2 and [figure5_source_summary] max_c_sct <= 4.4e-2 with aggregate_cancellation reported alongside; a restated claim must carry these numbers and MUST NOT use the word source-derived for Figure 5. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1655"
 statement = "The source-derived Figure 5 single-resonance TCMT path has a retained per-channel complex S_l and R_l error envelope for l=0,1,2 and their rotationally symmetric negative partners on the frozen frequency window."
-status = "Provisional"
+status = "Closed/Methodology-Insufficient"
 where_stated = "data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
 last_verified = "2026-08-04"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Methodology-Insufficient, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: [[figure5_rotational_symmetry]] defect <= 1e-11 for l = 1 and l = 2, and [figure5_source_summary] max_complex_s <= 5.7e-2; a restated claim should report the envelope AS A FUNCTION OF DETUNING IN LINEWIDTHS, not as a single window maximum. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1656"
 statement = "The Ruan-Fan Figure 5 textual landmark at omega/omega_p=0.2282 has a separately adjudicated relationship to the repository Mie and TCMT totals under the declared geometry, normalization, and polarization convention."
-status = "Provisional"
+status = "Closed/Methodology-Insufficient"
 where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-figure5-source-landmark-discrepancy.toml; data/output/audit/2026-08-04/p2b-source-figure-vector-extraction.toml"
 last_verified = "2026-08-04"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Methodology-Insufficient, fleet finding confirmed. DURABLE CHECK that would decide this claim: [production_result] vs [source_anchor] at omega/omega_p = 0.2282, with the scattering and absorption discrepancy factors reported SEPARATELY rather than as a single pass/fail; the claim text must carry 4.72x and 1.244x. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1657"
 statement = "The Figure 5 complex-pole, lossless-to-lossy continuation, and uniform-metal-background procedure identifies one retained parameter tuple per unique channel under the declared single-resonance mapping, subject to the unresolved source-landmark discrepancy."
-status = "Provisional"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-04/p2b-preregistration.toml; data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
 last_verified = "2026-08-04"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: [[figure5_source_channel]] has exactly three rows with lossless_root_count = 1 and lossy_root_count = 1, and [control_results] post_test_refit_executed = false. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1658"
 statement = "Son and Chekhova Eq. 6 and Eq. 8 define separate coherent cascaded and direct SFWM amplitudes with signed wavevector mismatches and rate prefactors 4/9 and 9/16."
-status = "Theoretical"
+status = "Provisional"
 where_stated = "https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
 last_verified = "2026-08-05"
+status_note = "Provisional as of 2026-08-06. Both amplitudes, their complex form and the signed wavevector-mismatch identity are verbatim in arXiv:2601.23137v1. The attribution is wrong: the rate prefactors 4/9 and 9/16 originate in Eq. 5 and Eq. 7, not the Eq. 6 and Eq. 8 this claim names. The amplitudes and the Hamiltonian rate prefactors are separate objects, and the legacy repository path lost exactly this distinction. Re-verification requires amending the statement to read that Eq. 6 and Eq. 8 define the amplitudes while Eq. 5 and Eq. 7 supply the prefactors."
 
 [[claim]]
 id = "C-1659"
@@ -5205,9 +5226,10 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/cs
 [[claim]]
 id = "C-1660"
 statement = "Son and Chekhova report R_cas/R_dir = 0.048 at 10 um for the declared source inputs and coherent amplitudes."
-status = "Theoretical"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
 last_verified = "2026-08-05"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: grep for the ratio sentence in Main.tex, paired with cargo test -p optics_core --test test_sfwm_source_reference corrected_paper_input_reproduces_the_source_ratio_boundary. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1661"
@@ -5219,16 +5241,60 @@ last_verified = "2026-08-05"
 [[claim]]
 id = "C-1662"
 statement = "The Son-Chekhova source reports a fused-silica substrate contribution estimated as 25 percent of total coincidence rate, subject to Supplement 1 assumptions."
-status = "Theoretical"
+status = "Verified"
 where_stated = "https://arxiv.org/abs/2601.23137v1; data/output/audit/2026-08-04/sfwm-source-equation-ledger.toml"
 last_verified = "2026-08-05"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: grep for the substrate paragraph in Main.tex; the claim must retain the phrase 'subject to Supplement 1 assumptions' and MUST NOT be promoted to a repository-verified fraction. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
 
 [[claim]]
 id = "C-1663"
 statement = "A fused-silica chi^(3) phase-matching calculation can produce a nonzero standalone SFWM amplitude under declared dispersion and thickness inputs."
-status = "Provisional"
+status = "Verified"
 where_stated = "data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml; data/output/audit/2026-08-04/sfwm-legacy-oracle-audit.tsv"
 last_verified = "2026-08-05"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: cargo test -p optics_core sfwm::tests::test_substrate_sfwm_fused_silica_500um; a stronger successor should assert the value of F(500) against an independently computed Malitson dk rather than assert nonzero. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
+
+[[claim]]
+id = "C-1664"
+statement = "arXiv:2505.00396 imposes the energy-conservation constraint kappa^2 = 2*gamma and constrains component moduli by |kappa_i| = |kappa_j| under mirror symmetry; it imposes no linear difference relation between coupling components and a decay rate."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1665"
+statement = "The legacy Ward path in crates/gr_core/src/photon_graviton/ward.rs and irreducible.rs returns an identically zero residual for all inputs, so its four checks carry no evidential content."
+status = "Provisional"
+where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs; crates/gr_core/src/photon_graviton/ward.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1666"
+statement = "The source-declared on-shell cancellation Gamma_irr + Gamma_ext = 0 is not reproduced: the virtuality-ladder extrapolation converges, to 9.7e-8 scalar and 2.5e-7 spinor, on a finite nonzero norm of 2.4e-3 and 5.9e-3."
+status = "Provisional"
+where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs; data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1667"
+statement = "Ruan-Fan reciprocity kappa = eta and Ruan-Fan time-reversal symmetry are decided by the same computed residual in the single cylindrical channel basis, so C-1643 and C-1644 are not independent evidence."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1668"
+statement = "The photon-graviton gauge Ward residual is reproduced to better than 1e-16 normalized for the scalar loop across the predeclared kinematic grid, while the spinor loop residual is bounded below by 2.2e-2 normalized on every grid record."
+status = "Provisional"
+where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs; data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1669"
+statement = "The DFT layer-to-force mapping is not Lorentz covariant and is not internally consistent: it assigns electricity and magnetism to Cayley-Dickson layers of different dimension, 16D and 8D, although E and B are components of one tensor F_mu_nu exchanged by a boost, and dft_mapping.rs contradicts particle_physics.rs on the same layers."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
+last_verified = "2026-08-06"
 
 [[claim]]
 id = "C-167"
@@ -5238,11 +5304,151 @@ status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
 
 [[claim]]
+id = "C-1670"
+statement = "The governed Pioneer source index at registry/external_sources.toml entry XS-017 omits the paper that resolved the anomaly; Turyshev et al. 2012 appears nowhere in the external-source registry."
+status = "Provisional"
+where_stated = "registry/external_sources.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1671"
+statement = "Sign-agreement scoring on the governed flyby catalog is degenerate: two of the six events, MESSENGER at 0.02 mm/s and Juno at 0.00 mm/s, have observed values at or below their measurement floor and cannot fail a sign test, so the maximum informative score is 4 rather than 6."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1672"
+statement = "The D_f = 2.7 fractal metric cannot describe the Pioneer anomaly: a = -(D_f-4)*v^2/(2r) at r = 30 AU and v = 11.4 km/s gives 1.88e-5 m/s2 against the governed benchmark 8.74e-10 +/- 1.33e-10 m/s2, and the D_f that reproduces the benchmark is 3.99994."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1673"
+statement = "The Pioneer anomaly requires no non-gravitational explanation: Turyshev et al. 2012 (PRL 108, 241101) report thermal and Doppler recoil-force estimates whose 1-sigma error ellipses overlap and conclude that no statistically significant acceleration anomaly exists, so any repository claim explaining the Pioneer sign is explaining a resolved artifact."
+status = "Provisional"
+where_stated = "https://doi.org/10.1103/PhysRevLett.108.241101; data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1674"
+statement = "The 256D global mean imbalance density computed by compute_voudon_imbalance_density is a deterministic exact rational over 256^3 basis triples. This half of C-1010 is independent of the Wigner-Dyson half and does not inherit its refutation."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1675"
+statement = "The 366 ACE_MAG16_2016 text files under data/external/ace_mag contain no ACE MAG data; all are HTML 404 responses. The sibling ac_h2_mfi_2016.csv is real data."
+status = "Provisional"
+where_stated = "data/external/ace_mag; data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1676"
+statement = "ACE SWEPAM and Wind SWE agree on proton bulk speed at r = 0.996 for 2016 with n = 8685 and r = 0.994 for 2024 with n = 4311, and on proton density at r = 0.9607 for 2016 and r = 0.9606 for 2024, with Wind running 0.77 to 1.16 cm^-3 denser in the mean."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1677"
+statement = "ACE SWEPAM and Wind SWE disagree systematically on proton temperature in a direction that repeats across years: r = 0.948 with bias -10070 K in 2016 and r = 0.921 with bias -12263 K in 2024, roughly 12 percent of a typical solar-wind proton temperature, with Wind consistently hotter."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1678"
+statement = "OMNI2 hourly IMF for 2016 is Wind-sourced rather than ACE-sourced: field 5 of omni2_2016.dat equals 51, meaning Wind, for 8716 of 8784 hours, and 71, meaning ACE, for 67."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1679"
+statement = "OMNI2 hourly rows are propagated to the bow shock nose, so a lag-zero comparison against an upstream L1 spacecraft understates the correlation. Over 2016 the OMNI2 against ACE MAG correlation peaks at a one-hour lag with the ACE sample leading, moving r(Bx) from 0.860 to 0.928, r(By) from 0.868 to 0.954 and r(Bz) from 0.682 to 0.887, and falls monotonically on both sides."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
 id = "C-168"
 last_verified = "2026-02-01"
 statement = "ZD product spectrum at dim=128: among the first 100 diagonal-form (e_i+e_j)/sqrt(2) candidates, ZERO are actual zero divisors. This suggests the ZD structure becomes dramatically sparser at dim=128, or requires different index pairs."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
+
+[[claim]]
+id = "C-1680"
+statement = "The PDS Small Bodies Node is a working second provider for New Horizons SWAP, publishing 11 dataset versions from post-launch checkout through the Pluto encounter."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1681"
+statement = "The dark-matter to baryon drag is linear in the relative speed where momentum-transfer drag is quadratic, so drag_force returns a collision rate in inverse seconds rather than an acceleration in m/s2, and kappa carries units of s/m."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1682"
+statement = "The dark-matter gravitational force field from DmForceField::new is invariant to 7 significant figures under every spacecraft-derived input and under heliocentric distance across 1 to 157 AU, because it is evaluated at galactocentric radius r_sun + r_helio with r_sun = 8.3 kpc. This is a numerical statement about the evaluation point, not a physical statement about halo gravity."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1683"
+statement = "knudsen_number(n, T) is invariant with heliocentric distance under the standard solar-wind scalings, equalling 2.167e8 at all radii, so it cannot locate any BGK validity boundary."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1684"
+statement = "The LBM driver does not conserve mass: total mass rose from 131178.947368 to 239325.927107 over 500 steps, 82 percent, because the Zou-He inlet is an open mass source, so the 1e-10 bound applies only to the closed-box unit test."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1685"
+statement = "The reported ratio of dark-matter to Lorentz force scales exactly as b_scale^-2, so the exponent in the order 1e-12 null result is set by the lattice magnetic normalisation and not by heliospheric physics."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1686"
+statement = "The Parker spiral angle in both parker_spiral_b and parker_spiral_init is 0.195 degrees rather than the physical 44.87 degrees, because omega in rad/s multiplies r in grid cells without the timestep delta_t; restoring delta_t = 148.696 s recovers 45.38 degrees at 1 AU."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1687"
+statement = "MhdField::parker_spiral_init produces B_phi constant in r rather than proportional to r^-1, because b_phi = -b0*(r0/r)*(omega*r)/v_sw cancels the radial dependence; one factor of r0/r is missing."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1688"
+statement = "band_chern_number returns spurious nonzero integers for the exactly degenerate flat bands, -1.000 for band 5 at delta_eps_s = 0.05 and +1.000 for band 6 at 0.10, although all hoppings are real, so H(-k) equals the conjugate of H(k) and spinless time reversal forces the Chern number to zero for every band."
+status = "Provisional"
+where_stated = "crates/quantum_core/src/tight_binding.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1689"
+statement = "A nonzero delta_eps_p destroys the eps_p flat band, taking its bandwidth from 5.3e-15 to 1.61e-3 GHz at delta_eps_p = 0.05, while delta_eps_s alone leaves it exact."
+status = "Provisional"
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs"
+last_verified = "2026-08-06"
 
 [[claim]]
 id = "C-169"
@@ -5252,11 +5458,151 @@ status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
 
 [[claim]]
+id = "C-1690"
+statement = "build_domain_wall_supercell produces two domain walls rather than one: the a2 wrap-around hoppings make the last cell adjacent to cell 0 across a second sign flip. The two walls host in-gap modes at different energies, 1.831 and 1.845 GHz at the seam against 2.230 and 2.234 GHz at cell 10, at k = 0.30 b1."
+status = "Provisional"
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1691"
+statement = "The 9-band model has exactly three dispersionless bands, at 1.644873, 1.800000 and 2.235127 GHz, with bandwidths below 1e-14 GHz at any Brillouin-zone sampling. The band at 1.800000 GHz equals eps_p, is the null vector of the 3x4 kagome-to-p coupling block, and carries zero kagome weight."
+status = "Provisional"
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs; data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1692"
+statement = "The repository magnonic tight-binding parameters are not those of Kaman et al.: twelve of twelve Table I and II values differ, both hopping signs are flipped, and four of four geometry constants differ. The onsite energies 1.50, 1.80 and 2.08 GHz match frequencies the paper reports as observed outputs, so agreement of the model with those same landmarks is not an independent prediction."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/2601.03210; data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1693"
+statement = "point_defect_modes does not isolate defect states: its returned count grows as 15, 25 and 52 with supercell radius 2, 3 and 4 because bulk flat-band states at 2.18174 and 2.23664 GHz fall inside its detected gap. The single genuine localized state is at 1.84023 GHz with inverse participation ratio 1.1 and is size independent."
+status = "Provisional"
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1694"
+statement = "YigParams::gamma of 2.8e10 is documented as rad/(s*T) but is used, and is physically correct, as Hz/T, since gamma over 2 pi is 28 GHz/T. Every consumer that pipes magnon_frequency_homogeneous through rad_per_s_to_ghz is off by a factor of 2 pi."
+status = "Provisional"
+where_stated = "crates/quantum_core/src/magnonic_crystal.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1695"
+statement = "BGK D3Q19 at tau = 0.7 is stable well past Mach 0.3, reaching Mach 1.662 with mass conservation error 1.88e-14 at density contrast 19.26."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1696"
+statement = "The only CPU and GPU equivalence test in the repository is vacuous: it evolves a uniform-at-rest field, which is the equilibrium, under BGK on an 8 cubed grid, and returns early with a pass when no GPU is present."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1697"
+statement = "Galaxy-scale fractal dimension from this pipeline is not converged at 128 cubed: the non-outlier bulk mean moves from 2.9116 at 64 cubed to 2.7384 at 128 cubed, a shift of 0.173, roughly 20 times the 128 cubed confidence-interval half-width of 0.0088."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1698"
+statement = "The MRT positivity violation at density contrast 29 is transient and self-correcting: the minimum distribution value reaches -0.629 by step 4 and returns positive, with 14 of 400 steps flagged and a final minimum of +8.33e-2."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1699"
+statement = "Near the divergence threshold MRT and BGK have no stability ordering: at density contrast 23.66 MRT diverges while BGK does not, and at 29.07 the reverse holds."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
 id = "C-170"
 last_verified = "2026-02-01"
 statement = "Associator norm||A(a,b,c)||for random unit vectors converges to sqrt(2) from below as dim increases. Deviation from sqrt(2): 0.30 (dim=8), 0.098 (dim=16), 0.031 (dim=32), 0.005 (dim=128), 0.010 (dim=1024). Standard deviation decreases from 0.33 to 0.04."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
+
+[[claim]]
+id = "C-1700"
+statement = "The null-hypothesis control path is non-functional: euclid-df-sweep with the null-hypothesis flag panics at euclid_df_sweep.rs line 816 with CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED before emitting any trial, reproducibly at 64 cubed and 128 cubed and independently of alpha_zd, on hardware where the ordinary GPU sweep runs to completion."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1701"
+statement = "The stated cause of the 64 cubed outliers is wrong in both directions: 17 of the 23 galaxies with Sersic index at least 5.50 or photometric redshift above 2.3 are stable, and one outlier has neither property."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1702"
+statement = "The survived field of mrt-stability-audit cannot detect numerical explosion: it is false only on a step error or a non-finite Mach number, so a trial ending with mass error 1e113 is reported as survived and printed as OK."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1703"
+statement = "The 18-fold standard-deviation reduction is dominated by outlier disappearance rather than resolution: 8.41 of it comes from removing the seven galaxies with fractal dimension below 1.0, and only 1.98 from tightening of the remainder."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1704"
+statement = "C-1663 is subsumed by C-838: both reduce to the third-order susceptibility being nonzero and the phase-matching sinc being nonzero, so they are not independent evidence."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1705"
+statement = "On the frozen Figure 5 held-out set the source-parameter constrained temporal coupled-mode theory is worse than an unconstrained single-pole fit, at 5.69e-2 against 3.02e-2 maximum complex-S error."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1706"
+statement = "The Figure 4 complex-S error envelope is 1.594e-2, exceeding the preregistered gate of 1e-2, so the Figure 4 temporal coupled-mode reproduction fails its own predeclared criterion."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1707"
+statement = "The repository layered-Mie total cross-sections at normalized frequency 0.2282 exceed the Ruan-Fan printed landmark by a factor of 4.72 in scattering and 1.244 in absorption; because the two factors differ, no single normalization, unit or channel-count factor reconciles them."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1708"
+statement = "Every sha256 field under data/output/audit is 64 hexadecimal characters and equals the hash of the artifact it names. This is currently false: two Son-Chekhova PDF entries end 112ec8e8 and 112ec8e where the true hash ends 112ec8e6, and one Ruan-Fan tex entry is 61 characters. The proposition is registered so the defect is addressable and so the condition can become a repository gate."
+status = "Provisional"
+where_stated = "data/output/audit; data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1709"
+statement = "Ruan and Fan obtain the Figure 5 parameters by fitting the simulated cross-section curves rather than by complex-pole identification, so the repository pole-derived Figure 5 path is a repository construction. The only Figure 5 method sentence in the paper states that the theory is used to fit these curves."
+status = "Provisional"
+where_stated = "https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
+last_verified = "2026-08-06"
 
 [[claim]]
 id = "C-171"
@@ -5266,11 +5612,144 @@ status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
 
 [[claim]]
+id = "C-1710"
+statement = "The Arleo-Falmagne power-law R_AA ansatz is falsified against ALICE 5.02 TeV data at published precision independently of any competitor, at chi-squared per degree of freedom of order 300 per centrality bin."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1711"
+statement = "On ALICE Pb-Pb 5.02 TeV 0 to 5 percent charged-hadron R_AA restricted to transverse momentum above 5 GeV, the digitized CUJET3.0 2.76 TeV prediction attains a lower chi-squared of 1200 than the best-fit Arleo-Falmagne power-law ansatz at 1917 over the identical six points, so the Arleo-Falmagne ansatz is not the preferred description even before any parameter penalty."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1712"
+statement = "CUJET3.0 carries two free parameters, alpha_c and c_m, not the five asserted in crates/qgp_scaling/src/competing_models.rs, per Xu, Liao and Gyulassy JHEP02(2016)169 Section 6."
+status = "Provisional"
+where_stated = "crates/qgp_scaling/src/competing_models.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1713"
+statement = "The 5.02 TeV eccentricity column in alice_pbpb_5020_mc_glauber is not epsilon_2 measured by the two-particle cumulant."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1714"
+statement = "The reference table alice_pbpb_5020_npart is not sourced to ALICE PLB 772 (2017) 567; that paper tabulates no per-centrality participant number."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1715"
+statement = "Over D = 32 through 256 the zero-divisor motif components split into classes whose minimum degree is fixed at 4 while maximum degree grows as D/2 - 3, so the gap ratio is bounded above by 4/(D/2 - 2) and tends to zero. No constant bounds the family spectral gap ratio from below, and the family fails the definition of an expander family in both the bounded-degree and normalized-gap senses."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1716"
+statement = "At every D = 2^k at least 16 the densest zero-divisor motif class is the cocktail-party graph on m = D/4 - 1 parts, whose Laplacian spectrum has exactly two distinct positive levels, so the gap ratio tends to one and any nearest-neighbour spacing statistic on it is undefined rather than integrable."
+status = "Provisional"
+where_stated = "data/csv/zd_nnsd.csv; data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1717"
+statement = "For any spectrum of N values taking exactly two distinct levels, the mean-normalized nearest-neighbour spacing variance equals N minus 2 identically, so a reported variance of N minus 2 is evidence of two-level degeneracy and not of super-Poisson statistics."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1718"
+statement = "Every connected component of the zero-divisor cross-assessor motif graph has D/2 - 2 vertices and adjacency nullity exactly half that, hence flat-band fraction exactly one half, independent of the component motif class. Verified exactly at D = 64, 128 and 256 across all 28 motif classes; conjectured for every D = 2^k with k at least 4. D = 16 and D = 32 are not covered by the census, and the one-half value quoted at D = 16 elsewhere is measured on the 84-vertex partner graph, a different graph from the 42-node motif graph."
+status = "Provisional"
+where_stated = "data/csv/zd_motif_invariants.csv; data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1719"
+statement = "The delta_CP value of 93 degrees, the framework maximal-CP extraction, lies below the normal-ordering 3-sigma lower edge in all four NuFit 6.0 and 6.1 analysis variants tested by this campaign: 124 degrees at 6.0 with SK, 96 without SK, 125 at 6.1 with SK and 114 without SK. NuFit releases 1.0 through 5.3 were not replayed."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
 id = "C-172"
 last_verified = "2026-02-01"
 statement = "Center Z(A) = full algebra at dim=1,2 (commutative); Z(A) = R*e_0 (dim=1) at dim >= 4. The commutator map z -> [z, e_i] has rank = dim - 1 at dim >= 4, so only real multiples of the identity commute with everything."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`"
+
+[[claim]]
+id = "C-1720"
+statement = "The NuFit60 struct is a four-source composite drawing on NuFit 5.0, NuFit 5.2 and PDG 2021 and 2022, mislabelled as a single NuFit 6.0 with-SK normal-ordering column, and its dm31_sq field holds the PDG value of the 3-2 mass-squared splitting rather than the 3-1 splitting."
+status = "Provisional"
+where_stated = "crates/algebra_experimental/src/experimental_predictions.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1721"
+statement = "The Rocq developments proofs/theories/C1538_MorZDSymmetry.v and C1539_MorSkewSymm.v establish strictly weaker theorems than C-1538 and C-1539 assert: the former requires x purely imaginary and nonzero where Moreno requires neither, and neither closes the kernel equality at Moreno generality."
+status = "Provisional"
+where_stated = "proofs/theories/C1538_MorZDSymmetry.v; proofs/theories/C1539_MorSkewSymm.v"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1722"
+statement = "The scorecard value theta_23 = 48.99 degrees lies outside the 1-sigma interval that the scorecard claims contains it, under NuFit 6.0 and 6.1 both with and without SK, while remaining inside the published 3-sigma interval of each: [41.3, 49.9] at 6.0 with SK and [41.27, 49.86] at 6.1 with SK. No exclusion strength attaches to the octant preference, which is unstable across releases and sensitive to SK inclusion."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1723"
+statement = "The Alcubierre wall energy density for a 1 micrometre bubble exceeds the parallel-plate Casimir density at any gap above 10 nanometres by more than a factor of 1e38, independent of bubble velocity down to 1 m/s."
+status = "Provisional"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1724"
+statement = "The documentation on crates/algebra_analysis/src/avt.rs commits a cross-invariant conflation: the figure 2688 is the box-kite permutation count carried in cd_tower_violations.rs as BOX_KITE_VIOLATION_COUNTS at dimension 16, a different topological invariant, while the alternator count is 336. The stated candidate space is also wrong, since the implemented loops range over 1920 triples rather than 2048."
+status = "Provisional"
+where_stated = "crates/algebra_analysis/src/avt.rs; crates/algebra_experimental/src/cd_tower_violations.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1725"
+statement = "The cached experiment binary staples-roc-cluster-bootstrap no longer accepts the argument list in the registered run command of E-239, so the cache artifact cannot replay its registered experiment. The general form is that no current check would notice such drift for any registered experiment binary."
+status = "Provisional"
+where_stated = "registry/experiments.toml; data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1726"
+statement = "MathComplexity::KerrNewman is a dead enum variant: it is constructed in crates/lbm_vulkan/src/lib.rs and read nowhere, so no relativistic geometry reaches any lbm_vulkan shader."
+status = "Provisional"
+where_stated = "crates/lbm_vulkan/src/lib.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1727"
+statement = "No alternativity violation in any Cayley-Dickson algebra carries k equal to zero, because the associator with the identity vanishes identically, so any contraction gated on that condition is identically zero. Enumerated to dimension 64 with zero hits and guarded by a regression test."
+status = "Provisional"
+where_stated = "crates/gr_core/src/forces/chingon_drag.rs; crates/algebra_analysis/src/avt.rs"
+last_verified = "2026-08-06"
+
+[[claim]]
+id = "C-1728"
+statement = "In the deduplicated THEMIS-A staples benchmark the file cluster is exactly the day cluster: data/output/tha_matched_files.csv has 815 rows and 815 distinct year and day-of-year pairs. This is the precondition the C-1629 population inference rests on and it is currently untested."
+status = "Provisional"
+where_stated = "data/output/tha_matched_files.csv"
+last_verified = "2026-08-06"
 
 [[claim]]
 id = "C-173"
@@ -6915,8 +7394,9 @@ where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `doc
 id = "C-401"
 last_verified = "2026-02-02"
 statement = "A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscale warp bubble."
-status = "Theoretical"
+status = "Refuted"
 where_stated = "`docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/papers/corpus/White_2021_Casimir_Warp.pdf`"
+status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Unit test in crates/casimir_core/src/energy.rs beside casimir_parallel_plates_exact: assert SI |u| = pi^2*hbar*c/(720*d^4) for d in [0.5e-6, 1.5e-6] m stays below 1e-2 J/m^3 while the Alcubierre wall density (c^4/(8*pi*G))*(v/c)^2/(4*w^2) for R = w = 1e-6 m, v = 1 m/s exceeds 1e36 J/m^3, i.e. ratio > 1e38. Misattribution locator, greppable in data/papers/corpus/White_2021_Casimir_Warp.txt: 'a toy model consisting of a 1', 'correlates well with the Alcubierre warp metric requirements', 'This qualitative correlation would suggest', and Sec. 5 'qualitatively very similar to'. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 
 [[claim]]
 id = "C-402"
@@ -9539,8 +10019,8 @@ where_stated = "crates/materials_core/src/tabulated_nk.rs (au_three_region_nk, a
 id = "C-768"
 last_verified = "2026-02-19"
 statement = "Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sedenion Zero-Divisor topology."
-status = "Provisional"
-status_note = "Sprint 52: Deferred -- entropy production S_gen measurement and sedenion-to-viscosity texture mapping not implemented (~500 lines). Vulkan pipeline exists but lacks the coupling layer. Not blocking publication."
+status = "Closed/Methodology-Insufficient"
+status_note = "Sprint 52: Deferred -- entropy production S_gen measurement and sedenion-to-viscosity texture mapping not implemented (~500 lines). Vulkan pipeline exists but lacks the coupling layer. Not blocking publication. | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Methodology-Insufficient, fleet finding refuted. DURABLE CHECK that would decide this claim: Operationalization before reopening: (1) define S_gen as the discrete H-theorem production rate H = sum_i f_i ln(f_i/w_i), S_gen = -(H^{t+1} - H^t) accumulated, replacing the chi-square residual at crates/lbm_vulkan/shaders/lbm.comp.glsl:63; (2) matched pairs, sedenion-ZD-modulated tau versus rank-matched shuffled tau at identical mean and variance, same seed, clamps disabled; (3) declare non-trivial as a spatially inhomogeneous S_gen whose azimuthal power spectrum exceeds the shuffled control at some m > 0 harmonic beyond the run-to-run spread over 10 seeds. Until then the durable check is the grep: MathComplexity appears only in crates/lbm_vulkan/src/lib.rs. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 where_stated = "`crates/lbm_vulkan/src/compute.rs`, `crates/lbm_vulkan/shaders/lbm.comp.glsl`, `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs`"
 
 [[claim]]
@@ -9950,8 +10430,8 @@ where_stated = "crates/gr_core/src/photon_graviton/worldline_greens.rs (sb12, ab
 id = "C-820"
 last_verified = "2026-02-19"
 statement = "Irreducible photon-graviton amplitude satisfies gauge Ward identity (k_alpha * Pi^{mn,alpha} = 0) to machine precision."
-status = "Provisional"
-status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: nonzero Ward pre-factor hidden by the on-shell zero factor. Proposed transition: Provisional implementation claim, with separate source-level gauge Ward identity and tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: tensor contraction components; metric and continuation conventions; independent dense-index reference. Canonical transition event applied: current status is Provisional; the source proposition remains unrefuted."
+status = "Refuted"
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: nonzero Ward pre-factor hidden by the on-shell zero factor. Proposed transition: Provisional implementation claim, with separate source-level gauge Ward identity and tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: tensor contraction components; metric and continuation conventions; independent dense-index reference. Canonical transition event applied: current status is Provisional; the source proposition remains unrefuted. | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo test --release -p gr_core --lib photon_graviton::ward::tests::audit_c822_gravitational_gate_ignores_other_diagrams and photon_graviton::tensor_ward::tests::spinor_irreducible_residual_retains_the_contact_boundary_gap Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs (irreducible_ward_check), crates/gr_core/src/photon_graviton/ward.rs"
 
 [[claim]]
@@ -9966,8 +10446,8 @@ where_stated = "crates/gr_core/src/photon_graviton/tadpole.rs (tadpole_proper_ti
 id = "C-822"
 last_verified = "2026-02-19"
 statement = "Full one-loop photon-graviton amplitude satisfies gravitational Ward identity to 1e-8."
-status = "Provisional"
-status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: independent nonzero tadpole or external-leg gravitational contribution. Proposed transition: Provisional implementation claim, with separate source-level gravitational Ward identity and full tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: lower-point right-hand side; diagram tensor decomposition; off-shell kinematics. Canonical transition event applied: current status is Provisional; the source proposition remains unrefuted."
+status = "Refuted"
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: independent nonzero tadpole or external-leg gravitational contribution. Proposed transition: Provisional implementation claim, with separate source-level gravitational Ward identity and full tensor implementation conformance successors. The source-level proposition is not refuted. Unresolved: lower-point right-hand side; diagram tensor decomposition; off-shell kinematics. Canonical transition event applied: current status is Provisional; the source proposition remains unrefuted. | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo test --release -p gr_core --lib photon_graviton::gravitational_ward::tests::combined_on_shell_ladder_retains_limit_status_without_a_floor Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 where_stated = "crates/gr_core/src/photon_graviton/ward.rs (check_gravitational_ward, full_ward_check)"
 
 [[claim]]
@@ -10063,7 +10543,7 @@ id = "C-834"
 last_verified = "2026-02-19"
 statement = "R_cas/R_dir < 5% at 10 um for paper-calibrated wavevector mismatches."
 status = "Provisional"
-status_note = "Sprint 56: With paper dk values and chi3=2.4e-21, computed R_cas/R_dir ~ 0.088. Paper reports 0.048. Within tolerance for susceptibility value uncertainty."
+status_note = "Provisional as of 2026-08-06. The proposition holds under the corrected signed source path, which yields R_cas/R_dir = 0.04774 against an 80-digit reference fixture. It does NOT hold under the path this claim's where_stated names: crates/optics_core/src/sfwm.rs rate_ratio_with_dk returns 0.088 and its test gate is 0.15. The Sprint 56 note reading 'computed R_cas/R_dir ~ 0.088, paper reports 0.048, within tolerance for susceptibility value uncertainty' is SUPERSEDED -- the gap is not susceptibility uncertainty but three partially cancelling errors in the cited path. Re-verification requires rebinding where_stated to the corrected signed source implementation and its reference test."
 where_stated = "crates/optics_core/src/sfwm.rs (rate_ratio_with_dk), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_paper_dominance_ratio_at_10um)"
 
 [[claim]]
@@ -10094,7 +10574,7 @@ where_stated = "crates/optics_core/src/sfwm.rs (photon_number_spdc, g2_spdc_mode
 id = "C-838"
 last_verified = "2026-02-26"
 statement = "Fused silica substrate (500 um) contributes SFWM photons via chi(3), estimable from Malitson Sellmeier."
-status = "Provisional"
+status = "Verified"
 status_note = "Sprint 57B: Verified via substrate_sfwm_contribution(). Malitson Sellmeier gives dk_SFWM(SiO2)=-0.026 1/um, L_coh=121 um. At L=500 um (intermediate regime), F=15.9 um, rate_proxy=1.58e-41. Nonzero contribution confirmed. Binary sfwm-figure-repro now computes substrate analysis."
 where_stated = "crates/materials_core/src/optical_database.rs (fused_silica_sellmeier, test_fused_silica_at_1030nm), crates/optics_core/src/sfwm.rs (substrate_sfwm_contribution, test_substrate_sfwm_fused_silica_500um), crates/gororoba_cli_physics/src/bin/sfwm_figure_repro.rs"
 
@@ -10110,15 +10590,15 @@ where_stated = "crates/optics_core/src/sfwm.rs (maker_fringe_sweep, test_shg_osc
 id = "C-840"
 last_verified = "2026-02-26"
 statement = "Optical Glauber Npart for Pb-Pb 5.02 TeV matches ALICE published values (PLB 772, 2017) within 5% per centrality bin."
-status = "Provisional"
-status_note = "Sprint 69: PARTIAL FAIL confirmed. Central bins OK: 0-5%=3.6%, 5-10%=5.4%, 10-20%=3.0%, 20-30%=3.0%. Peripheral bins diverge: 30-40%=12.0%, 40-50%=27.1%, 50-60%=44.0%, 60-70%=80.0%, 70-80%=118.9%. Optical Glauber overshoots Npart at peripheral centralities due to hard-sphere density profile limitations. Claim PARTIALLY VERIFIED for 0-5% through 20-30% only. | Legacy status token: Proposed"
+status = "Refuted"
+status_note = "Sprint 69: PARTIAL FAIL confirmed. Central bins OK: 0-5%=3.6%, 5-10%=5.4%, 10-20%=3.0%, 20-30%=3.0%. Peripheral bins diverge: 30-40%=12.0%, 40-50%=27.1%, 50-60%=44.0%, 60-70%=80.0%, 70-80%=118.9%. Optical Glauber overshoots Npart at peripheral centralities due to hard-sphere density profile limitations. Claim PARTIALLY VERIFIED for 0-5% through 20-30% only. | Legacy status token: Proposed | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo run --release -p gororoba_cli_physics --bin arleo-falmagne-scaling -- glauber-only, asserting max |N_part_computed - N_part_ref| / N_part_ref < 0.05 over ALL bins; plus a provenance edge naming the actual source of alice_pbpb_5020_npart() (PLB 772 is not it). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
 where_stated = "crates/qgp_scaling/src/glauber.rs (n_part_at_b, compute_centrality_bins), crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs (validate_npart_pbpb)"
 
 [[claim]]
 id = "C-841"
 last_verified = ""
 statement = "pp spectral index n = 6.0-6.3 at 5.02 TeV from CMS pp reference spectrum power-law fit."
-status = "Provisional"
+status = "Refuted"
 status_note = "Sprint 69: ESTABLISHED. Literature value n=6.1 used as default for Pb-Pb 5.02 TeV. CMS pp spectrum (table7.csv) available but power-law fit not yet implemented. Epsilon extraction with n=6.1 yields eps_bar in [0.60, 2.92] GeV, physically sensible. Direct CMS fit deferred. | Legacy status token: Proposed"
 where_stated = "crates/qgp_scaling/src/epsilon_fit.rs (extract_epsilon), plan Phase 3"
 
@@ -10166,8 +10646,8 @@ where_stated = "crates/qgp_scaling/src/v2_relation.rs (fit_v2_relation, test_v2_
 id = "C-847"
 last_verified = ""
 statement = "ATLAS jet v2/eccentricity vs d(ln R_AA)/d(ln pT) gives beta_jets = 1.03 +/- 0.15, consistent with hadron beta."
-status = "Provisional"
-status_note = "Sprint 69: DEFERRED. ATLAS jet v2 download still failing (HEPData ins1967021 URLs not resolving). ATLAS jet R_AA available (10 tables) but v2 data required for this claim. Blocked on external data availability. | Legacy status token: Proposed"
+status = "Refuted"
+status_note = "Sprint 69: DEFERRED. ATLAS jet v2 download still failing (HEPData ins1967021 URLs not resolving). ATLAS jet R_AA available (10 tables) but v2 data required for this claim. Blocked on external data availability. | Legacy status token: Proposed | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Restate as a source-quotation claim with the correct uncertainty (beta_jets = 1.03 +/- 0.06, arXiv:2411.13258 Sec. 4), OR implement fit_v2_relation against ATLAS jet v2 (HEPData ins1967021) plus ATLAS jet R_AA and assert the fitted value; the consistency target must be the paper's hadron v2/e beta = 0.94 +/- 0.04, not 1.02. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
 where_stated = "crates/qgp_scaling/src/v2_relation.rs (fit_v2_relation)"
 
 [[claim]]
@@ -10310,8 +10790,8 @@ where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (thr
 id = "C-865"
 last_verified = "2026-02-19"
 statement = "Asymmetry parameter q_grav from gravitational coupling satisfies Maksimov constraint: kappa_1 - kappa_2 = gamma_l to machine precision (relative error < 1e-10)."
-status = "Provisional"
-status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: relative discrepancy evaluated against the stated 1e-10 threshold. Proposed transition: Provisional, with separate source-faithful energy constraint and implementation predicate with declared tolerance successors. The current positive test accepts a relative discrepancy of 0.9 with tolerance 1.0. Unresolved: Maksimov parameter correspondence; units; independent source constraint. Canonical transition event applied: current status is Provisional; the source correspondence remains unresolved."
+status = "Refuted"
+status_note = "Evidence verdict: MethodologyInvalid. Prior claim status: Verified. Evidence: p0-oracle-negative-controls. Falsifier: relative discrepancy evaluated against the stated 1e-10 threshold. Proposed transition: Provisional, with separate source-faithful energy constraint and implementation predicate with declared tolerance successors. The current positive test accepts a relative discrepancy of 0.9 with tolerance 1.0. Unresolved: Maksimov parameter correspondence; units; independent source constraint. Canonical transition event applied: current status is Provisional; the source correspondence remains unresolved. | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo test --release -p gr_core --lib photon_graviton_tcmt::amplitude_bridge::tests::audit_c865_tolerance_does_not_match_claim; source locator arXiv:2505.00396v1 Eq. (44), (48), (68) Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
 where_stated = "crates/gr_core/src/photon_graviton_tcmt/amplitude_bridge.rs (validate_energy_conservation), tcmt_equations.rs (energy conservation test)"
 
 [[claim]]
@@ -10836,8 +11316,8 @@ where_stated = "crates/algebra_analysis/src/spectral_dimension.rs"
 id = "C-924"
 last_verified = "2026-03-03"
 statement = "Associator entropy upper bound via ZD count: H(dim) <= H(8) - k * ln(n_ZD_components + 1), where k is fit from the dim=16 data point. Zero divisors reduce entropy by constraining the associator-norm distribution."
-status = "Provisional"
-status_note = "Entropy mechanism module implemented. Decomposes entropy by ZD proximity; correlates ZD component count with entropy reduction. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Entropy mechanism module implemented. Decomposes entropy by ZD proximity; correlates ZD component count with entropy reduction. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Unit test: for arbitrary (h_8, h_dim, n_zd) with n_zd >= 1, assert (entropy_upper_bound(h_8, h_dim, n_zd).1 - h_dim).abs() < 1e-12 -- the function returns an identity, not a bound. Locator: crates/algebra_analysis/src/associator_entropy.rs::entropy_upper_bound Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/algebra_analysis/src/associator_entropy.rs"
 
 [[claim]]
@@ -10852,7 +11332,7 @@ where_stated = "crates/sign_imbalance/src/immirzi_bridge.rs"
 id = "C-926"
 last_verified = "2026-03-03"
 statement = "ZD graph spectral gap (lambda_2) census across CD dims 16-512. All components are expanders: gap_ratio = lambda_2/lambda_max > 1/(2n) at every dimension. Near-complete graph topology forces lambda_2 close to n, producing gap_ratio > 0.6 universally."
-status = "Provisional"
+status = "Refuted"
 status_note = "SpectralGapResult struct, spectral_gap(), spectral_gap_census() implemented. Census output includes lambda_2, lambda_max, gap_ratio per dim. CLI binary writes zd_spectral_gap.csv. | Legacy status token: Pending"
 where_stated = "crates/algebra_analysis/src/spectral_dimension.rs"
 
@@ -10861,31 +11341,31 @@ id = "C-927"
 last_verified = "2026-03-03"
 statement = "Adaptive proximity threshold epsilon(N) = 1.3*sqrt(16/N) prevents near-ZD fraction saturation at high CD dimensions. At dim=32, the fixed 1.3 rad threshold gives near_frac=1.0 (concentration of measure artifact); the adaptive threshold gives near_frac < 1.0."
 status = "Provisional"
-status_note = "adaptive_proximity_threshold(), decompose_entropy_adaptive(), cross_dimensional_analysis_adaptive() implemented. 4 tests verify threshold values, monotonicity, and non-saturation at dim=32. | Legacy status token: Pending"
+status_note = "adaptive_proximity_threshold(), decompose_entropy_adaptive(), cross_dimensional_analysis_adaptive() implemented. 4 tests verify threshold values, monotonicity, and non-saturation at dim=32. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Replace the anchor: define epsilon(N) = pi/2 - c*sqrt(ln N / N) and assert near_frac stays in (0.05, 0.95) across dims 16..256. Locator: associator_entropy.rs::adaptive_proximity_threshold Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/algebra_analysis/src/associator_entropy.rs"
 
 [[claim]]
 id = "C-928"
 last_verified = "2026-03-03"
 statement = "Immirzi bridge absolute ceiling gamma_max = ln(2)/(pi*sqrt(3)) = 0.12738. For all phi in (0,1): gamma(phi) <= gamma_max. Since gamma_BG = 0.2375 > gamma_max, the BG exclusion is structural: no CD imbalance density can ever reach gamma_BG through the entropy bridge."
-status = "Provisional"
-status_note = "GAMMA_MAX constant aliased from BRIDGE_MAX. SelectivityResult includes gamma_max field. 4 new tests: identity with BRIDGE_MAX, entropy at half, ceiling sweep, selectivity ordering. | Legacy status token: Pending"
+status = "Verified"
+status_note = "GAMMA_MAX constant aliased from BRIDGE_MAX. SelectivityResult includes gamma_max field. 4 new tests: identity with BRIDGE_MAX, entropy at half, ceiling sweep, selectivity ordering. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Verified, fleet finding confirmed. DURABLE CHECK that would decide this claim: Existing tests immirzi_bridge.rs::gamma_max_is_ceiling_for_all_phi and gamma_max_equals_entropy_at_half; promote to a verification_rule edge and fix the line-16 comment. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/sign_imbalance/src/immirzi_bridge.rs"
 
 [[claim]]
 id = "C-929"
 last_verified = "2026-03-03"
 statement = "ZD graph Laplacian eigenvalue spectra are DegenerateIntegrable across all CD dimensions where NNSD is feasible (dim >= 128). Brody q = 0.0 with spacing variance >> 1.0 (59.0 at dim=128, 123.0 at dim=256) -- super-Poisson statistics from massive exact degeneracies in the near-complete multipartite Laplacian. These are integrable expanders: the spectral gap (C-926) arises from algebraic regularity (Ramanujan-like), not random-matrix chaos."
-status = "Provisional"
-status_note = "NNSD pipeline: Gaussian KDE unfolding, Brody method-of-moments, KS stats. 11 unit tests pass. Census: dim=128 q=0.0 var=59.0, dim=256 q=0.0 var=123.0. DegenerateIntegrable verdict (super-Poisson, variance > 1.5 threshold) distinguishes exact algebraic symmetry from generic integrability. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "NNSD pipeline: Gaussian KDE unfolding, Brody method-of-moments, KS stats. 11 unit tests pass. Census: dim=128 q=0.0 var=59.0, dim=256 q=0.0 var=123.0. DegenerateIntegrable verdict (super-Poisson, variance > 1.5 threshold) distinguishes exact algebraic symmetry from generic integrability. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Regression test asserting fit_brody_parameter returns exactly 0.0 for any spacing set with normalized variance >= 1.0 (the clamp), plus a test asserting the dim=128 representative Laplacian has exactly 2 distinct positive eigenvalues so nnsd_analysis must decline rather than classify. Locators: quantum_chaos.rs::fit_brody_parameter, data/csv/zd_nnsd.csv Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/algebra_analysis/src/quantum_chaos.rs"
 
 [[claim]]
 id = "C-930"
 last_verified = "2026-03-03"
 statement = "Per-motif-class NNSD at dim=128 (8 classes by edge count) and dim=256 (16 classes) all show DegenerateIntegrable statistics (brody_q = 0.0, variance >> 1.0). No topology-dependent variation: the degenerate integrable character is universal across all ZD graph motif classes, independent of edge-count topology."
-status = "Provisional"
-status_note = "nnsd_by_motif_class groups components by edge count. All 8 classes at dim=128 and all 16 at dim=256 return q=0.0, DegenerateIntegrable. Universality of algebraic rigidity across motif topologies. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "nnsd_by_motif_class groups components by edge count. All 8 classes at dim=128 and all 16 at dim=256 return q=0.0, DegenerateIntegrable. Universality of algebraic rigidity across motif topologies. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Test asserting fit_brody_parameter(s) == 0.0 for two spacing sets with variances 2.0 and 200.0 (demonstrating the estimator cannot distinguish them), plus a per-class spacing-variance column added to zd_nnsd_motif.csv so class dependence becomes observable. Locator: quantum_chaos.rs::nnsd_by_motif_class Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/algebra_analysis/src/quantum_chaos.rs"
 
 [[claim]]
@@ -10910,24 +11390,24 @@ where_stated = "crates/cosmology_core/src/orthoplex_diffusion.rs"
 id = "C-936"
 last_verified = "2026-03-05"
 statement = "The Arleo-Falmagne path-length exponent beta extracted from density scaling (epsilon_bar = K * rho * L^beta) and from azimuthal anisotropy (v2/epsilon = (beta/2) * d(ln R_AA)/d(ln pT)) are statistically consistent (z-score < 2), confirming universality of the path-length dependence across independent observables."
-status = "Provisional"
-status_note = "Phase A1 complete. CrossValidate subcommand implemented. Awaiting execution against real ALICE+CMS data. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Phase A1 complete. CrossValidate subcommand implemented. Awaiting execution against real ALICE+CMS data. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo run --release -p gororoba_cli_physics --bin arleo-falmagne-scaling -- cross-validate --pt-min 5.0, asserting z < 2 AND that the centrality pairing is exact (v2 bin == R_AA bin) AND that CMS systematic uncertainty propagates into beta_azimuthal_err. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs"
 
 [[claim]]
 id = "C-937"
 last_verified = "2026-03-05"
 statement = "The path-length exponent beta extracted from the v2/eccentricity relation is robust under replacement of optical Glauber eccentricity with MC Glauber epsilon_2{2}: |delta_beta| < 0.2 between the two eccentricity models for Pb-Pb 5.02 TeV centralities 0-50%."
-status = "Provisional"
-status_note = "Phase A1 complete. EccCompare subcommand implemented with optical Glauber and MC eps_2{2} from PRC 93 (2016). Awaiting execution against real data. | Legacy status token: Pending"
+status = "Closed/Source-Insufficient"
+status_note = "Phase A1 complete. EccCompare subcommand implemented with optical Glauber and MC eps_2{2} from PRC 93 (2016). Awaiting execution against real data. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Source-Insufficient, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: ecc-compare --pt-min 5.0 asserting |delta_beta| < 0.2, GATED on a provenance edge citing the publication reporting epsilon_2{2} = 0.029 for 0-5% Pb-Pb 5.02 TeV; absent that citation the comparison is not the one the claim describes. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
 where_stated = "crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs"
 
 [[claim]]
 id = "C-938"
 last_verified = "2026-03-05"
 statement = "The Arleo-Falmagne scaling ansatz (2 parameters: beta, K) achieves a lower BIC than CUJET3.0 (5 parameters) when compared against ALICE Pb-Pb R_AA data at 0-5% centrality with pT > 5 GeV, demonstrating that the simpler model is not disfavored by Occam's razor."
-status = "Provisional"
-status_note = "Competing models module implemented with digitized CUJET3.0 (JHEP02(2016)169) and fractional Langevin (arXiv:2401.03757) predictions. BicCompare subcommand added. Awaiting execution. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Competing models module implemented with digitized CUJET3.0 (JHEP02(2016)169) and fractional Langevin (arXiv:2401.03757) predictions. BicCompare subcommand added. Awaiting execution. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: bic-compare --pt-min 5.0 asserting BIC(Arleo-Falmagne) < BIC(CUJET3.0) AND n_points equal across models AND n_excluded == 0 for all; a valid restatement additionally requires a refittable CUJET3.0 at 5.02 TeV, which digitized curves cannot supply. Corollary regression: assert extract_epsilon reaches the global chi2 minimum (Brent returns eps_bar = 2.921 where 3.404 is better). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
 where_stated = "crates/qgp_scaling/src/competing_models.rs"
 
 [[claim]]
@@ -10935,7 +11415,7 @@ id = "C-939"
 last_verified = "2026-03-05"
 statement = "The Arleo-Falmagne scaling ansatz achieves a lower BIC than the fractional Langevin heavy-quark model (3 parameters) when compared against ALICE Pb-Pb R_AA data, noting the caveat that the Langevin model targets D-meson R_AA (heavy quarks) while AF targets light hadron R_AA."
 status = "Provisional"
-status_note = "Langevin model digitized from arXiv:2401.03757 (D-meson R_AA). Flavor mismatch caveat noted: light hadron vs heavy quark comparison is approximate. | Legacy status token: Pending"
+status_note = "Langevin model digitized from arXiv:2401.03757 (D-meson R_AA). Flavor mismatch caveat noted: light hadron vs heavy quark comparison is approximate. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: bic-compare --pt-min 5.0 asserting BIC(Arleo-Falmagne) < BIC(Frac. Langevin) with equal n_points; the claim text must retain the flavour and centrality mismatch as a stated scope limit, and should state that neither model is refit. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
 where_stated = "crates/qgp_scaling/src/competing_models.rs"
 
 [[claim]]
@@ -11014,8 +11494,8 @@ where_stated = "crates/materials_core/src/liquid_crystal.rs"
 id = "C-950"
 last_verified = "2026-03-04"
 statement = "Sedenion zero-divisor K_{2,2,2} graph topologies constitute an exact parity-check matrix for a non-associative topological stabilizer code, where non-associative zero-products act as localized error syndromes."
-status = "Provisional"
-status_note = "Phase A1 complete. Rust implementation and Rocq proofs pending. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Phase A1 complete. Rust implementation and Rocq proofs pending. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: If revived, the durable check is: build the putative generator set, compute all pairwise symplectic products, assert they vanish (abelian) and that -I is excluded; a stabilizer claim without that test is not decidable. Locator: qec_boxkite.rs::BoxKiteStabilizer::check_syndrome Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/quantum_core/"
 
 [[claim]]
@@ -11046,30 +11526,30 @@ where_stated = "crates/gororoba_cli_physics/src/ephemeris_loader.rs"
 id = "C-960"
 last_verified = "2026-03-04"
 statement = 'The cosmological constant \Lambda is a non-perturbative topological invariant derived exactly from the Cayley-Dickson imbalance attractor F_{vac} = 3/8, rendering vacuum energy a strictly algebraic property.'
-status = "Provisional"
-status_note = "Phase B1 complete. Rust implementation and Rocq proofs pending. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Phase B1 complete. Rust implementation and Rocq proofs pending. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Governance check: assert no symbol in crates/cosmology_core/ consumes IMBALANCE_ATTRACTOR or VACUUM_PHI, matching the standing declaration in docs_scope_guardrails.rs section 1. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
 where_stated = "crates/cosmology_core/"
 
 [[claim]]
 id = "C-970"
 last_verified = "2026-03-04"
 statement = "The sequential breakdown of algebraic properties in the CD tower corresponds to topological phase transitions in nacelle warp bubble geometries. Alternativity loss at d=16 allows stress-energy localization into 16 discrete nacelles."
-status = "Provisional"
-status_note = "Phase C1 complete. Rust implementation and Rocq proofs pending. | Legacy status token: Pending"
+status = "Closed/Analogy"
+status_note = "Phase C1 complete. Rust implementation and Rocq proofs pending. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Analogy, fleet finding refuted. DURABLE CHECK that would decide this claim: Durable check: crates/gororoba_cli_warp/src/bin/warp-holography-sweep.rs lines 22-23 and 39-42 -- the cd_ratios array and the 'n_nacelles == 16' literal. Reopening needs a derived map: a nacelle count emerging from minimizing nacelle_energy_density over n at fixed total negative energy, changing discontinuously as the CD alternativity ratio crosses zero, with the discontinuity absent for d <= 8. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 where_stated = "crates/gr_core/"
 
 [[claim]]
 id = "C-980"
 last_verified = "2026-03-05"
 statement = "Pathion gravity predicts a discrete 15+1 macroscopic splintering of the Kerr photon ring. The non-associative 32D Carter constant diagonalizes into 16 complex planes corresponding to the 15 connected components of the Zero-Divisor graph, creating distinct nested sub-rings."
-status = "Provisional"
-status_note = "Phase A1 complete. Rust Carlson integral engine over 32D Pathions implemented. Bounded via Solar System Crucible: alpha_pathion < 1e-24 s^-2 based on 1-year DE440 heliocentric drift residual (LLR constraint). Rocq verification of branch cut boundaries pending. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Phase A1 complete. Rust Carlson integral engine over 32D Pathions implemented. Bounded via Solar System Crucible: alpha_pathion < 1e-24 s^-2 based on 1-year DE440 heliocentric drift residual (LLR constraint). Rocq verification of branch cut boundaries pending. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Test in crates/pathion_ellip converting pathion_deflection output to microarcseconds for M87* (6.5e9 Msun, 16.8 Mpc), asserting the spread across the 16 planes exceeds the EHT ring width 3.8 uas; the claim requires it, the observation excludes it. Source locator: EHT 2019 ApJL 875 L1 Table 1 and Sec. 7. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 where_stated = "crates/pathion_ellip/src/pathion_shadow.rs"
 
 [[claim]]
 id = "C-990"
 last_verified = "2026-03-05"
 statement = "The 64D Chingon algebra breaks alternativity, inducing a non-conservative geometry drag. The Alternativity Violation Tensor (AVT) acts as an asymmetric momentum sink during spacecraft hyperbolic gravity assists (The Earth Flyby Anomaly)."
-status = "Provisional"
-status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending"
+status = "Refuted"
+status_note = "Phase A1 initiated. Generating 64D AVT and preparing hybrid LBM-NBody bridge. | Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Test in crates/gr_core: assert!(AlternativityViolationTensor::new(64).violations.iter().all(|&(_, _, k, _, _)| k != 0)) and assert_eq!(compute_bivector_chingon_drag(pos, vel, v_wind, rho, alpha, &avt), Vector3::zeros()) for arbitrary nonzero arguments. Second test asserting the enumerated counts so the stale 2688 figure cannot persist. The working sibling crates/gr_core/src/forces/chingon_bivector_drag.rs iterates all violations with _k ignored and is what any reopened claim should cite. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 where_stated = "crates/gr_core/src/forces/chingon_drag.rs"

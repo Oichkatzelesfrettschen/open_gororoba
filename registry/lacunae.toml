@@ -5,12 +5,12 @@
 updated = "deterministic"
 authoritative = true
 status = "active"
-lacuna_count = 193
-open_count = 7
-high_priority_count = 72
-medium_priority_count = 115
+lacuna_count = 184
+open_count = 13
+high_priority_count = 68
+medium_priority_count = 110
 low_priority_count = 6
-origin_kind_count = 1
+origin_kind_count = 2
 
 [[lacuna]]
 id = "L-001"
@@ -74,266 +74,146 @@ related_marker_ids = []
 
 [[lacuna]]
 id = "L-033"
-origin = "legacy_manual"
+origin = "claims_status_scan"
 area = "claims"
 title = "Unresolved claim status for C-033"
 description = "C-033 remains unresolved with status token CLOSED_SOURCE_INSUFFICIENT: Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023)."
 priority = "medium"
-status = "resolved"
+status = "open"
 claim_refs = ["C-033"]
-source_refs = []
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
 id = "L-070"
-origin = "legacy_manual"
+origin = "claims_status_scan"
 area = "claims"
 title = "Unresolved claim status for C-070"
-description = "RESOLVED: C-070 status CLOSED_METHODOLOGY_INSUFFICIENT is the correct final disposition. The CD associator power spectrum methodology was too speculative to sustain the NANOGrav GW background claim. No further action needed."
+description = "C-070 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: CD associator power spectrum shape matches NANOGrav GW background."
 priority = "medium"
-status = "resolved"
+status = "open"
 claim_refs = ["C-070"]
-source_refs = []
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
 id = "L-1273"
-origin = "legacy_manual"
+origin = "claims_status_scan"
 area = "claims"
 title = "Unresolved claim status for C-1273"
-description = "RESOLVED: C-1273 status THEORETICAL (legacy token: Conjecture) is the correct final disposition. ZD algebraic forcing adds topological confinement is a speculative physics extrapolation; Theoretical is the appropriate status for a conjecture without experimental validation."
+description = "C-1273 remains unresolved with status token THEORETICAL: ZD algebraic forcing adds topological confinement: F_zd(r) = -alpha_zd * 0.5 * exp(-r/R_e) * F_target * r_hat preserves galaxy core against LBM homogenization."
 priority = "medium"
-status = "resolved"
-claim_refs = []
-source_refs = []
+status = "open"
+claim_refs = ["C-1273"]
+source_refs = ["registry/claims.toml"]
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-1298"
+origin = "claims_status_scan"
+area = "claims"
+title = "Unresolved claim status for C-1298"
+description = "C-1298 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: CPU AoSoA layout with wide::f64x4 SIMD collision achieves >= 4x speedup over AoS scalar at 128^3 MRT f64 on Zen 3. AoSoA chunk (19 dirs * 4 cells * 8 bytes = 608 bytes) fits in 2% of L1D, eliminating the L1 cache thrashing that pure SoA causes on 8-way set-associative x86."
+priority = "medium"
+status = "open"
+claim_refs = ["C-1298"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
 id = "L-1538"
-origin = "legacy_manual"
+origin = "claims_status_scan"
 area = "claims"
 title = "Unresolved claim status for C-1538"
-description = "RESOLVED: C-1538 promoted from Theoretical to Verified. proofs/theories/C1538_MorZDSymmetry.v compiles with exit 0, no Admitted (2026-04-11, Rocq 9.1.1). Moreno Corollary 1.6 ZD symmetry is kernel-checked."
+description = "C-1538 remains unresolved with status token THEORETICAL: Moreno Corollary 1.6 (ZD symmetry): In A_n (n>=4), xy=0 iff yx=0 iff x_bar*y=0 iff x*y_bar=0. If xy=0 and x!=0, then t(y)=0. x^2=0 implies x=0. Source: Moreno (1997) arXiv:q-alg/9710013v1."
 priority = "medium"
-status = "resolved"
-claim_refs = []
-source_refs = []
+status = "open"
+claim_refs = ["C-1538"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
 id = "L-1539"
-origin = "legacy_manual"
+origin = "claims_status_scan"
 area = "claims"
 title = "Unresolved claim status for C-1539"
-description = "RESOLVED: C-1539 promoted from Theoretical to Verified. proofs/theories/C1539_MorSkewSymm.v compiles with exit 0, no Admitted (2026-04-11, Rocq 9.1.1). l_x_skew_symm fully proved. Moreno Proposition 1.7 skew-symmetry is kernel-checked."
-priority = "medium"
-status = "resolved"
-claim_refs = []
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-1542"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-1542"
-description = "CLOSED (2026-04-13): C1542_MorVlambdaArbClose.v proves Moreno Theorem 1.16 for CDOct with arbitrary unit imaginary a. Key insight: CDOct is alternative, so L_a^2 = -I everywhere (proved in C1542_MorHaStabilityArb.v). This collapses T~_a = -I - L_a^2 = 0, making V_lambda(a) = {0} for all lambda != 1. moreno16_vlambda_arb_trivial (component projection + nra) plus hmd_zero close both the eigenspace triviality and the H-module dimension check. moreno16_arb_close_bridge packages the universal bridge. The spectral decomposition argument previously described as required is unnecessary -- CDOct's alternativity resolves the gap without finite-dimensional linear algebra. C-1542 promoted to Verified."
-priority = "medium"
-status = "closed"
-claim_refs = []
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-1546"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-1546"
-description = "CLOSED (2026-04-13): C1546_MorZDAnticomm.v proves the oct_free anti-commutation bridge (Moreno 1997, p.5): orthogonal pure octonions anti-commute. moreno29_orthogonal_iff gives the definitive Theorem 2.9 with inner-product hypotheses only -- no Gram matrices, no linear algebra, no eigenspace structure needed. The full chain: oct_anticomm_of_pure_orthogonal -> moreno29_anticomm_from_orthogonality -> moreno29_orthogonal_iff. Zero Admitted, all kernel-checked by Rocq 9.1.1. Commit 439187bd."
-priority = "medium"
-status = "closed"
-claim_refs = []
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-1634"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-1634"
-description = "C-1634 remains unresolved with status token THEORETICAL: The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions."
+description = "C-1539 remains unresolved with status token THEORETICAL: Moreno Proposition 1.7 (skew-symmetry): For x in circ-A_n (purely imaginary), L_x and R_x are skew-symmetric operators on A_n (with respect to the Euclidean inner product). Ker(L_x) = Ker(R_x). Source: Moreno (1997) arXiv:q-alg/9710013v1."
 priority = "medium"
 status = "open"
-claim_refs = []
-source_refs = []
+claim_refs = ["C-1539"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
-id = "L-1636"
-origin = "legacy_manual"
+id = "L-1652"
+origin = "claims_status_scan"
 area = "claims"
-title = "Unresolved claim status for C-1636"
-description = "C-1636 remains unresolved with status token THEORETICAL: The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side, with the on-shell irreducible and external-leg cancellation and separate tadpole invariance stated explicitly."
+title = "Unresolved claim status for C-1652"
+description = "C-1652 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: The source-derived Ruan-Fan Figure 4 single-channel TCMT approximation has a measured no-fit complex-channel and normalized-observable error envelope on the frozen lossless and lossy grids."
 priority = "medium"
 status = "open"
-claim_refs = []
-source_refs = []
+claim_refs = ["C-1652"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
-id = "L-1639"
-origin = "legacy_manual"
+id = "L-1654"
+origin = "claims_status_scan"
 area = "claims"
-title = "Unresolved claim status for C-1639"
-description = "C-1639 remains unresolved with status token THEORETICAL: The source-faithful Maksimov energy constraint kappa_1 - kappa_2 = gamma_l holds under declared units and parameter correspondence."
+title = "Unresolved claim status for C-1654"
+description = "C-1654 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: The five-channel Figure 5 Mie and TCMT aggregate scattering, absorption, and extinction observables have a retained source-derived and held-out error envelope after per-channel values are preserved and degeneracy weights are applied."
 priority = "medium"
 status = "open"
-claim_refs = []
-source_refs = []
+claim_refs = ["C-1654"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
-id = "L-1651"
-origin = "legacy_manual"
+id = "L-1655"
+origin = "claims_status_scan"
 area = "claims"
-title = "Unresolved claim status for C-1651"
-description = "C-1651 remains unresolved with status token THEORETICAL: The Ruan-Fan source channel identities define R_l, S_l, scattering, absorption, and extinction with the stated incoming and outgoing Hankel convention."
+title = "Unresolved claim status for C-1655"
+description = "C-1655 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: The source-derived Figure 5 single-resonance TCMT path has a retained per-channel complex S_l and R_l error envelope for l=0,1,2 and their rotationally symmetric negative partners on the frozen frequency window."
 priority = "medium"
 status = "open"
-claim_refs = []
-source_refs = []
+claim_refs = ["C-1655"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
-id = "L-1658"
-origin = "legacy_manual"
+id = "L-1656"
+origin = "claims_status_scan"
 area = "claims"
-title = "Unresolved claim status for C-1658"
-description = "C-1658 remains unresolved with status token THEORETICAL: Son and Chekhova Eq. 6 and Eq. 8 define separate coherent cascaded and direct SFWM amplitudes with signed wavevector mismatches and rate prefactors 4/9 and 9/16."
+title = "Unresolved claim status for C-1656"
+description = "C-1656 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: The Ruan-Fan Figure 5 textual landmark at omega/omega_p=0.2282 has a separately adjudicated relationship to the repository Mie and TCMT totals under the declared geometry, normalization, and polarization convention."
 priority = "medium"
 status = "open"
-claim_refs = []
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-1660"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-1660"
-description = "C-1660 remains unresolved with status token THEORETICAL: Son and Chekhova report R_cas/R_dir = 0.048 at 10 um for the declared source inputs and coherent amplitudes."
-priority = "medium"
-status = "open"
-claim_refs = []
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-1662"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-1662"
-description = "C-1662 remains unresolved with status token THEORETICAL: The Son-Chekhova source reports a fused-silica substrate contribution estimated as 25 percent of total coincidence rate, subject to Supplement 1 assumptions."
-priority = "medium"
-status = "open"
-claim_refs = []
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-401"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-401"
-description = "RESOLVED: C-401 status THEORETICAL is the correct final disposition. The Casimir cavity warp bubble claim is a theoretical extrapolation beyond current experimental reach. Casimir Lifshitz calculations (Sprint 45) confirm the physics but cannot validate the warp bubble application."
-priority = "medium"
-status = "resolved"
-claim_refs = ["C-401"]
-source_refs = []
+claim_refs = ["C-1656"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
 id = "L-450"
-origin = "legacy_manual"
+origin = "claims_status_scan"
 area = "claims"
 title = "Unresolved claim status for C-450"
-description = "C-450 remains unresolved with status token INCONCLUSIVE: The external 64D chingon adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node labeling that differs from our cross-assessor-pair representation. The two representations are not directly comparable without a mapping between basis-element adjacency and cross-assessor zero-product adjacency. DISCLOSED: Listed as open problem in paper Future Work section."
-priority = "high"
-status = "disclosed"
+description = "C-450 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: The external 64D chingon adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node labeling that differs from our cross-assessor-pair representation. The two representations are not directly comparable without a mapping between basis-element adjacency and cross-assessor zero-product adjacency."
+priority = "medium"
+status = "open"
 claim_refs = ["C-450"]
-source_refs = []
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
-id = "L-463"
-origin = "legacy_manual"
+id = "L-768"
+origin = "claims_status_scan"
 area = "claims"
-title = "Unresolved claim status for C-463"
-description = "RESOLVED: C-463 status PARTIAL is the correct final disposition. Parity-clique decomposition holds at dim=16 and dim=32 but is refuted at dim>=64 (cross-partition edges, C-451). The claim is correctly scoped as a low-dimensional phenomenon, not universal."
-priority = "high"
-status = "resolved"
-claim_refs = ["C-451", "C-463"]
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-476"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-476"
-description = "C-476 remains unresolved with status token PARTIAL: Algebraic Locality Principle (ALP): In physically realized or numerically stable regimes, generator sequences in algebraic constraint systems concentrate on locally adjacent moves in the constraint graph Gamma, because nonlocal moves are either dynamically suppressed (long collision times, low measure) or annihilated (zero product, absorption). This produces geometric locality in the observed chaos. Evidence across three stacks: (A) E10 billiard r_e8=0.45 vs r_null=0.25; (B) CD zero-divisor graphs where non-adjacent products vanish; (C) ET DMZ adjacency constraining valid transitions. DISCLOSED: Cited as conjecture with partial evidence in paper Limitations section."
-priority = "high"
-status = "disclosed"
-claim_refs = ["C-476"]
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-477"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-477"
-description = "C-477 remains unresolved with status token PARTIAL: Sky-Limit-Set Hypothesis: For appropriate encoding of ET (Emanation Table) rules as reflection-group constraints, the ET empty/filled pattern is a discrete cross-section of a reflection-group limit set. Spectroscopy bands correspond to changes in effective Coxeter data. Specifically: (1) the skybox G x G grid at each CD level N encodes a fractal-like pattern whose invariants (box-kite count scaling, emptiness clustering exponent, DMZ density) should match invariants of a Coxeter limit set with matching rank, and (2) the spectroscopy band transitions (Dense/Sparse/Mixed behaviors across 8-strut blocks) encode discrete jumps in Coxeter diagram connectivity. DISCLOSED: Cited as conjecture with partial evidence in paper Limitations section."
-priority = "high"
-status = "disclosed"
-claim_refs = ["C-477"]
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-669"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-669"
-description = "Sprint 54: C-669 reopened and re-executed at 128^3 CPU FP64 (E-070). Result: REFUTED. 0/5 lambda values resolve from Undetermined. Positive power-law exponent persists (+0.18 to +0.14) across 512x more cells than original 16^3. The viscosity-to-filtration loop genuinely fails to produce a determinable latency law."
+title = "Unresolved claim status for C-768"
+description = "C-768 remains unresolved with status token CLOSED_METHODOLOGY_INSUFFICIENT: Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sedenion Zero-Divisor topology."
 priority = "medium"
-status = "resolved"
-claim_refs = ["C-669"]
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-782"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-782"
-description = "RESOLVED: C-782 FALSIFIED in Sprint 51 (E-058 upgraded to GPU FP64 at 32^3). CHSH S parameter is a structural invariant (S=2.0 exactly) for sinusoidal velocity profiles -- normalized wavelet correlators cancel amplitude scaling. Betti numbers also invariant (laminar band topology). See I-098."
-priority = "medium"
-status = "resolved"
-claim_refs = ["C-782"]
-source_refs = []
-related_marker_ids = []
-
-[[lacuna]]
-id = "L-783"
-origin = "legacy_manual"
-area = "claims"
-title = "Unresolved claim status for C-783"
-description = "RESOLVED: C-783 FALSIFIED in Sprint 51 (E-059 rerun with hardened params: rho=5.0, nu=0.001, steps=1000, dt=1e-3). Per-step wavelet hard-thresholding erases temporal duty-cycle structure, making pulsed and steady protocols indistinguishable. Shannon entropy confirms: <0.05% difference."
-priority = "medium"
-status = "resolved"
-claim_refs = ["C-783"]
-source_refs = []
+status = "open"
+claim_refs = ["C-768"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
@@ -418,6 +298,18 @@ priority = "low"
 status = "resolved"
 claim_refs = ["C-791"]
 source_refs = []
+related_marker_ids = []
+
+[[lacuna]]
+id = "L-937"
+origin = "claims_status_scan"
+area = "claims"
+title = "Unresolved claim status for C-937"
+description = "C-937 remains unresolved with status token CLOSED_SOURCE_INSUFFICIENT: The path-length exponent beta extracted from the v2/eccentricity relation is robust under replacement of optical Glauber eccentricity with MC Glauber epsilon_2{2}: |delta_beta| < 0.2 between the two eccentricity models for Pb-Pb 5.02 TeV centralities 0-50%."
+priority = "medium"
+status = "open"
+claim_refs = ["C-937"]
+source_refs = ["registry/claims.toml"]
 related_marker_ids = []
 
 [[lacuna]]
