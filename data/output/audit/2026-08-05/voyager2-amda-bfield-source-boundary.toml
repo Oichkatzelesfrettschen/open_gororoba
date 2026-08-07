@@ -1,0 +1,193 @@
+title = "Voyager 2 native AMDA magnetic source and Bartol reference boundary"
+evidence_class = "bounded-source-boundary"
+captured_at = "2026-08-05T13:08:49-07:00"
+campaign_status = "source_acquired_comparison_blocked"
+scientific_implementation_changed = true
+final_heliosphere_claim_adjudication = false
+p2c2_status = "not_started"
+e128_status = "blocked_no_finite_bartol_reference"
+native_amda_is_independent_instrument_validation = false
+native_amda_scope = "provider_format_and_source_packet_capture"
+
+[authority]
+baseline_main = "5293fff848a4bf5ecf36d1d56ab5825826c7a689"
+implementation_commit = "9a0874a57e46f5dc99b1697e8624d34003cbee18"
+working_branch = "agent/voyager2-amda-native-bfield-boundary"
+implementation_paths = [
+  "crates/data_core/src/catalogs/voyager.rs",
+  "crates/gororoba_cli_physics/src/bin/voyager2_bartol_amda_crossval.rs",
+]
+voyager_source_sha256 = "878ea04de7626a3a6ad0be07486c6c554c78c6bbc53d9fe874580fcc6094a59a"
+crossval_source_sha256 = "f2c2525c9d517e26806eedab199227c7cada1a063cccc3c3e9515e4b2ccb5671"
+report_schema = "voyager2_bartol_amda_crossval.v2"
+
+[source.catalog]
+url = "https://amda.irap.omp.eu/service/hapi/catalog"
+sha256 = "36beeedc269f86c6966dfe2df8191395f15fcb9d8afe7c26eb5bc6b30da1de4c"
+bytes = 51111
+entry_count = 1067
+access = "public_hapi_metadata"
+
+[source.info]
+url = "https://amda.irap.omp.eu/service/hapi/info?id=vo2-mag-full"
+sha256 = "293f28a07f74a23c2bccc7214a01e4db0327c3f085173fff3c527ca032fa5f9a"
+bytes = 827
+dataset_id = "vo2-mag-full"
+resource_id = "spase://CNES/NumericalData/CDPP-AMDA/Voyager2/MAG/vo2-mag-full"
+coverage = "1977-01-01T00:00:00Z/2020-12-31T11:00:00Z"
+cadence = "PT1H"
+magnetic_frame = "RTN"
+magnetic_components = ["br", "bt", "bn"]
+fill_value = "-1e31"
+access = "public_hapi_metadata"
+
+[source.help]
+url = "https://amda.irap.omp.eu/service/hapi/help"
+sha256 = "900b171455f5489f5b14c73948712a6f96fc3c76f81eed4aa4028a05929756c3"
+bytes = 1862
+access = "public_hapi_documentation"
+
+[source.spase]
+url = "https://spase-metadata.org/CNES/NumericalData/CDPP-AMDA/Voyager2/MAG/vo2-mag-full"
+sha256 = "602637ffaeae9bac1d04431f14052c27d7e083131492965ce162a0706e4acffb"
+bytes = 15269
+provider = "CDAWeb"
+magnetic_frame = "RTN"
+access = "public_spase_metadata"
+
+[source.data]
+url = "https://amda.irap.omp.eu/service/hapi/data?id=vo2-mag-full&time.min=1990-01-01T00:00:00Z&time.max=1996-01-01T00:00:00Z&format=csv"
+path = "/var/tmp/open_gororoba-amda-catalog-c1OKS1/vo2-mag-full-1990-1995.csv"
+sha256 = "64f1f074d5178d0a6b8616ed074b64bed0262280a7a06ab893915d2bd9cd886f"
+bytes = 3341750
+data_rows = 52569
+accepted_rows = 52569
+rejected_rows = 0
+finite_vector_rows = 29466
+finite_source_magnitude_rows = 25641
+header_present = false
+repository_redistribution = "not_committed_raw_capture_metadata_and_hash_only"
+
+[source.probe]
+url = "https://amda.irap.omp.eu/service/hapi/data?id=vo2-mag-full&time.min=1990-01-01T00:00:00Z&time.max=1990-01-03T00:00:00Z&format=csv"
+path = "/var/tmp/open_gororoba-amda-catalog-c1OKS1/vo2-mag-full-1990-01-01-1990-01-03.csv"
+sha256 = "643065fe5ef574099b4b7cdd597718565d7bba82104d6c23d02f64ffe0fa2711"
+purpose = "demonstrate_sparse_fill_coverage_before_full_window_capture"
+
+[parser_contract]
+native_dataset = "vo2-mag-full"
+metadata_hash_pin = "293f28a07f74a23c2bccc7214a01e4db0327c3f085173fff3c527ca032fa5f9a"
+hapi_version = "2.0"
+header_contract = "Time,vo2_b_full(0),vo2_b_full(1),vo2_b_full(2),vo2_bmag_full,vo2_b_full_phi,vo2_b_full_theta"
+headerless_contract = "pinned_metadata_exact_7_columns"
+timestamp_contract = "RFC3339_UTC_on_the_hour"
+fill_mapping = "nonfinite_nan_for_comparison"
+source_magnitude_preserved = true
+rtn_mapping = "vo2_b_full[0,1,2] -> br,bt,bn"
+legacy_merged_parser_unchanged = true
+
+[bartol.1990]
+path = "data/external/voyager2/bartol/vy2_90.dat"
+sha256 = "9556c5d1148c79764bb674bf573cf99f14f3dd0f62111330ae821c1f9d497598"
+rows = 8760
+finite_b_field_rows = 0
+
+[bartol.1991]
+path = "data/external/voyager2/bartol/vy2_91.dat"
+sha256 = "404cd704f49abf1cb93b17e676a6d53a144474d2873ff16f8e5216ab3134ecfc"
+rows = 8760
+finite_b_field_rows = 0
+
+[bartol.1992]
+path = "data/external/voyager2/bartol/vy2_92.dat"
+sha256 = "80dafd57b8a95b1b56b01ff83a9cca058eccb204700780ac86b25d071ddfd572"
+rows = 8784
+finite_b_field_rows = 0
+
+[bartol.1993]
+path = "data/external/voyager2/bartol/vy2_93.dat"
+sha256 = "f7a573cdd900636dbb8eb0ef703dde6bf2b1415b679eb83ca538d7fdfd697b28"
+rows = 8760
+finite_b_field_rows = 0
+
+[bartol.1994]
+path = "data/external/voyager2/bartol/vy2_94.dat"
+sha256 = "ad5aa3a072d2bed1bec6ebbd9617e6a3dee91a112f897d4841826fcd78593611"
+rows = 8760
+finite_b_field_rows = 0
+
+[bartol.1995]
+path = "data/external/voyager2/bartol/vy2_95.dat"
+sha256 = "b20a7567d1388ffd63d218b56f6ccf3aa23a1d34f08ba1a4054ec7722208aabe"
+rows = 8760
+finite_b_field_rows = 0
+
+[replay.1990]
+report = "data/output/audit/2026-08-05/voyager2-amda-crossval-1990.toml"
+sha256 = "d849bb60d83dfbff8930faf2a0c4b069d0b8412be9cb62e18d4ee0b33bf79efe"
+same_timestamp_rows = 8760
+comparison_disposition = "no_finite_common_b_field"
+
+[replay.1991]
+report = "data/output/audit/2026-08-05/voyager2-amda-crossval-1991.toml"
+sha256 = "4c24f43c814395e3dae41e00029d03ef94ebb097bfa527d0877ba5b340929bce"
+same_timestamp_rows = 8760
+comparison_disposition = "no_finite_common_b_field"
+
+[replay.1992]
+report = "data/output/audit/2026-08-05/voyager2-amda-crossval-1992.toml"
+sha256 = "f2f612586d2738e04f2908aac4c22d1f0ed09a46c64e9b20873cb3e16605a35f"
+same_timestamp_rows = 8784
+comparison_disposition = "no_finite_common_b_field"
+
+[replay.1993]
+report = "data/output/audit/2026-08-05/voyager2-amda-crossval-1993.toml"
+sha256 = "df7858f4fad4ec838a3eed1a2a2b7452e3203ae1aa6425ed38dd9c8972241003"
+same_timestamp_rows = 8744
+comparison_disposition = "no_finite_common_b_field"
+
+[replay.1994]
+report = "data/output/audit/2026-08-05/voyager2-amda-crossval-1994.toml"
+sha256 = "0e703cbe07990b0712544ea626f9b35befd9406ac17bfdc56dc9bf5a3c43f086"
+same_timestamp_rows = 8760
+comparison_disposition = "no_finite_common_b_field"
+
+[replay.1995]
+report = "data/output/audit/2026-08-05/voyager2-amda-crossval-1995.toml"
+sha256 = "2d0d2f09abf1f0caf5af21e3b244dad5be26864ef47c13a0f576128f3f987133"
+same_timestamp_rows = 8760
+comparison_disposition = "no_finite_common_b_field"
+
+[finding]
+primary = "The native AMDA packet contains finite RTN-vector rows, but every Bartol 1990-1995 magnetic-field row is fill-only. No finite cross-source residual is admissible."
+interpretation = "The acquisition proves source coverage and parser conformance; it does not prove Bartol-AMDA agreement or independent instrument validation."
+legacy_e128_status = "not_closed"
+claim_status_changes = false
+scientific_lane_changes = "heliosphere comparator boundary only"
+
+[adversarial_review]
+skill = "adversarial-review"
+review_status = "applied"
+resolved_findings = [
+  "zero residuals cannot represent missing finite overlap",
+  "field coverage is retained per component",
+  "native HAPI metadata identity and parameter schema are validated",
+  "native data bytes are hashed in every replay report",
+  "malformed numeric tokens are rejected rather than counted as fills",
+  "rejected native rows and empty inputs fail the CLI",
+  "RTN provenance survives the native parser boundary",
+  "nonfinite residual arithmetic fails explicitly",
+  "residual aggregate overflow fails explicitly",
+  "invalid timestamp keys and duplicate slots fail explicitly",
+  "metadata hash acceptance and rejection are tested",
+  "duplicate timestamp rejection is tested through the indexing helper",
+  "undeclared large sentinels are rejected rather than treated as fills",
+  "requested-year coverage is required on both input sides",
+  "out-of-range timestamp storage boundaries fail explicitly",
+]
+remaining_boundary = "A no-finite-Bartol reference blocks the E-128 comparison and requires a finite Bartol capture or a separately declared SPDF-vs-AMDA experiment."
+
+[gate]
+completion_gate = "Declare the heliosphere source-boundary action complete only after a finite Bartol magnetic reference is acquired and the native AMDA parser is replayed against it under the retained field-level comparison contract."
+next_action = "Acquire or lawfully resolve a finite Bartol magnetic reference, or define a separate SPDF-vs-AMDA experiment without relabeling it as Bartol-AMDA validation."
+stop_condition = "Do not close E-128, do not promote heliosphere claims, and do not begin P2C2 from this source-boundary result."
