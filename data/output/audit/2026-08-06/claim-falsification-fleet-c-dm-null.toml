@@ -1,0 +1,557 @@
+# Fleet return: block C_DM_NULL, 27 claims. HTML entities restored to ASCII.
+# Orchestrator spot-checks, all four confirmed directly:
+#   - crates/lbm_3d/src/dm_force.rs:313 is a literal dm_density[idx] = rho_dm_si.
+#   - data/experiments/ does not exist on disk.
+#   - E-112's declared run string uses --b0 5.0.
+#   - E-114 through E-127 all carry status = "planned" (14 of 14).
+
+[block]
+id = "C_DM_NULL"
+claim_count = 27
+agent_note = "Heliospheric LBM/MHD dark-matter null-result cluster. Its central quantity |F_DM|/|F_Lorentz| ~ O(10^-12) is NOT a measurement: the numerator is a compile-time constant no spacecraft datum touches, and the ratio's order of magnitude is set by a lattice normalisation knob (b_scale, default 0.001). Only 10 of 27 claims have an active experiment (E-112: C-1143/1144/1145; E-113: C-1149-1155); 15 trace to experiments with status=planned and 2 (C-1158, C-1161) have no experiment row at all. The declared output directory data/experiments/ does not exist, so NO run in this block has retained evidence."
+
+# ---- The O(10^-12) cluster ----
+
+[[finding]]
+claim_id = "C-1145"
+decidability = "internal"
+falsifier = "False if the binary's reported |F_DM|/|F_Lorentz| is not O(10^-12), or if the number is not a property of the physics but of an arbitrary non-dimensionalisation constant."
+check_performed = "Built and ran the E-112 binary: solar-wind-dm-mhd --nx 128 --ny 32 --nz 32 --steps 1 --tau 0.6 --v-sw 0.05 --b0 B for B in {0.005, 0.05, 0.5, 5.0, 50.0}, plus a 500-step run at b0=0.005."
+observed = "DM max |F_grav| = 1.306282e-15 lattice units, IDENTICAL at every b0. Ratios: b0=0.005 -> 9.589e-13; 0.05 -> 9.589e-15; 0.5 -> 9.589e-17; 5.0 -> 9.589e-19; 50.0 -> 9.589e-21. EXACT b0^-2 scaling over four decades. E-112's declared run uses --b0 5.0, yielding 9.589e-19, NOT O(10^-12). The O(10^-12) value appears only at B_lattice ~ 0.005, i.e. 5 nT times the solar_wind_ic b_scale default of 0.001. A 500-step run at b0=0.005 gives 9.589e-13 at step 1 but 3.656e-14 at step 500 -- the value DRIFTS by a factor of 26 as the run evolves."
+verdict = "refuted"
+verdict_reason = "The stated exponent is not reproduced by the claim's own declared experiment configuration (E-112 uses b0=5.0 -> 1e-19), and the quantity is a pure function of the lattice B normalisation rather than of physics: multiplying B_lattice by 10 divides the 'null result' by 100. The qualitative conclusion (DM gravity is dynamically negligible) SURVIVES; the number O(10^-12) does not."
+recommended_status = "Refuted"
+verification_rule = "cargo run --release -p gororoba_cli_physics --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 1 --b0 5.0 --v-sw 0.05 ; assert the printed ratio matches the claimed order. Currently prints 9.589e-19."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1152"
+decidability = "internal"
+falsifier = "False if the reported ratio is analytically forced by fixed parameters rather than measured from the four instruments -- in which case 'instrument-independence' is a tautology and cannot evidence 'genuine physical suppression'."
+check_performed = "(1) Symbolic derivation of the ratio. (2) Numerical isolation: identical binary and flags, varying only --dm-r-min/--dm-r-max over 1 AU, 50 AU, 157 AU. (3) Read of E-113's declared run string at registry/experiments.toml:2923-2946."
+observed = "(2) DM max |F_grav| = 1.355402e-15 for r=[0.5,1.5], [1.0,1.0001], [50.0,50.0001] and [157.0,157.0001] -- BIT-IDENTICAL to all 7 printed significant figures, and the printed ratio was 9.949e-19 in all four cases. (3) E-113's run string fixes --nx 128 --ny 32 --nz 32 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 across ALL FOUR spacecraft, with dm_r_min/dm_r_max at defaults. The numerator was therefore identical across the four 'independent' runs to within the (u_scale/v_ref)^2 factor, i.e. <= 1.7x."
+verdict = "refuted"
+verdict_reason = "OPTION (b) IS ESTABLISHED. The DM force contains no spacecraft datum; across OMNI, WIND, ACE MAG and STEREO-A the numerator is the same number by construction, and the order-of-magnitude reporting bin absorbs the <=1.7x residual. Agreement across instruments is FORCED, carries no information about physics, and cannot distinguish 'genuine physical suppression' from 'measurement artifact' -- precisely the distinction the claim asserts it makes. The NUMBER is correct; the INFERENCE is refuted."
+recommended_status = "Refuted"
+verification_rule = "Regression test asserting DmForceField::max_force_magnitude() is invariant under every OmniRecord-derived input, converting this claim from an empirical result into the identity it actually is."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1149"
+decidability = "internal"
+falsifier = "False if the WIND-derived ratio is not a genuinely independent measurement -- if |F_DM| carries no WIND datum, so the 'confirmation' restates the constancy of the numerator."
+check_performed = "Symbolic trace of the numerator through DmForceField::new (dm_force.rs:187-360) and of the IC path in solar_wind_dm_mhd.rs:208-392. Numerical isolation runs."
+observed = "|F_DM| = G*M_NFW(<r_gal)/r_gal^2 * (rho_dm_local/rho_NFW(r_sun)) * force_scale. dm_density[idx] is the literal constant rho_dm_si (line 313). r_gal = 8.3 kpc + r_helio. NO spacecraft field (B, n, v, T) enters the numerator. The ONLY data-dependent term is force_scale = (AU/nx)*(u_scale/(v_ref*1e3))^2, reading a median-speed scalar from the IC header -- spanning ~350-450 km/s across missions, a factor <= 1.7."
+verdict = "partially_confirmed"
+verdict_reason = "The number is reproducible; the inference is not. Substituting WIND for OMNI cannot move the numerator by more than 1.7x, and moves the denominator only through |B|^2 and its gradient. 'Independent of the data source' is a property of the code's construction, not a result obtained from it."
+recommended_status = "Provisional"
+verification_rule = "Assert DmForceField::new produces a force field with zero dependence on any OmniRecord field: two DmForceConfig differing only in n_ref_cm3 must give bit-identical max_force_magnitude()."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1150"
+decidability = "internal"
+falsifier = "False if the shock-ramp (high |B|, high gradient) case does NOT produce a materially different ratio -- a genuinely higher Lorentz force must lower the ratio, so an unchanged O(10^-12) would indicate the input never reached the computation."
+check_performed = "Measured the ratio's response to |B| via --b0 in {0.005, 0.05, 0.5, 5.0, 50.0} at fixed nx/v_sw/steps."
+observed = "OBSERVED: DM max |F_grav| = 1.306282e-15 at every b0; ratios 9.589e-13, 9.589e-15, 9.589e-17, 9.589e-19, 9.589e-21 -- exactly proportional to b0^-2 over four decades with no residual. INFERRED: a CME shock ramp raising |B| from ~5 nT to 20-50 nT (factor 4-10) must LOWER the ratio by 16-100x relative to quiet wind, because |F_DM| is invariant and |F_Lorentz| goes as |B|^2."
+verdict = "refuted"
+verdict_reason = "The claim advertises invariance under the strongest available perturbation of the only data-dependent quantity in the ratio. The code guarantees the opposite. Either the two runs actually differed and were both rounded into 'O(10^-12)', or the high-gradient input did not propagate."
+recommended_status = "Refuted"
+verification_rule = "Run solar-wind-dm-mhd on the quiet WIND IC and the WIND MFI 3-sec CME-ramp IC with all other flags identical, record both ratios verbatim; require agreement within a factor of 3 for 'the null result holds' to mean invariance, or restate as a bound."
+confidence = "medium"
+
+[[finding]]
+claim_id = "C-1151"
+decidability = "internal"
+falsifier = "False if the triangulated 3D geometry cannot change the ratio, i.e. if the numerator is geometry-independent by construction."
+check_performed = "Read of the DM force construction and the STEREO triangulation path (solar_wind_ic.rs:660-720, stereo_plastic::rtn_to_gse)."
+observed = "The DM force at each cell depends only on (r_au, dy_au, dz_au) from the grid index and on config constants; the triangulated IC writes only rho, u, B. Changing from a 1D Taylor-hypothesis IC to a triangulated 3D IC leaves the numerator BIT-IDENTICAL. The denominator changes only through the resulting B stencil."
+verdict = "partially_confirmed"
+verdict_reason = "Same structure as C-1149: the numerator is untouched by geometry, so agreement across geometries tests the constancy of a constant. The claim's stated purpose -- ruling out a 1D Taylor-hypothesis artifact -- cannot be served by a quantity no geometry can affect."
+recommended_status = "Provisional"
+verification_rule = "Compare max|F_Lorentz| (NOT the ratio) between the Taylor-hypothesis IC and the STEREO triangulated IC; the geometry claim is about the Lorentz field's 3D structure and must be tested on that field alone."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1156"
+decidability = "internal"
+falsifier = "False if max|F_DM|/max|F_Lorentz| exceeds 10^-6 anywhere in r = [1, 157] AU, or if the stated mechanism ('the NFW gravitational force grows with enclosed mass M(<r)') does not describe the code."
+check_performed = "Four isolation runs varying only --dm-r-min/--dm-r-max to 1, 50, 157 AU."
+observed = "DM max |F_grav| = 1.355402e-15 at every radius, identical to 7 significant figures; ratio 9.949e-19 at every radius, below 10^-6. THE MECHANISM CLAUSE IS WRONG: the force does not grow. The NFW profile is evaluated at GALACTOCENTRIC radius r_gal = 8.3 kpc + r_helio, so 157 AU changes r_gal by 9.2e-8 relative, and the relevant regime g(x) = f(x)/x^2 near x_sun ~ 0.3 is DECREASING, not increasing."
+verdict = "partially_confirmed"
+verdict_reason = "The threshold holds with 12 orders to spare, but trivially: the numerator is constant to 1 part in 10^7 across the whole domain, so 'invariance across the heliosphere' restates that a constant is constant. The stated causal mechanism is false. INTERNAL INCONSISTENCY: this claim states < 10^-6 while C-1145/1149/1150/1151/1152 state ~10^-12 for the same quantity -- six orders apart, presented as one result."
+recommended_status = "Provisional"
+verification_rule = "Test asserting max_force_magnitude() differs by < 1e-6 relative between r_min_au=1.0 and 157.0 at fixed nx."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1167"
+decidability = "internal"
+falsifier = "False if F_DM does not increase with heliocentric distance r, or if the code does not implement M_enc ~ rho_dm*(4pi/3)*r^3 about the Sun."
+check_performed = "Same four isolation runs, plus read of nfw_enclosed_mass (dm_force.rs:141-154) and the galactocentric radius construction (lines 262-277)."
+observed = "The claim predicts F_DM(r) ~ G*rho*(4pi/3)*r, i.e. LINEAR growth: 157 AU should give 157x the force at 1 AU. MEASURED: 1.355402e-15 at 1 AU and 1.355402e-15 at 157 AU, ratio 1.000000. The code never uses a heliocentric enclosed mass; it evaluates NFW at r_gal ~ 8.3 kpc. The code's own test_r_dependence asserts the OPPOSITE of this claim in the same file ('Therefore F = GM/r^2 ~ r^2/r^2 = const'), and test_force_uniform_across_1au_slab asserts uniformity to 0.1%."
+verdict = "refuted"
+verdict_reason = "The predicted 157x growth is measured as 1.000000x. The claim describes a heliocentric-DM-sphere model the code does not implement, and contradicts two tests sitting in the same source file."
+recommended_status = "Refuted"
+verification_rule = "cargo test -p lbm_3d test_r_dependence -- the existing test already encodes the correct behaviour and is the standing refutation."
+confidence = "high"
+
+# ---- Dimensional defects ----
+
+[[finding]]
+claim_id = "C-1154"
+decidability = "internal"
+falsifier = "False if the drag formula behind the 10^-45 cm^2 threshold is dimensionally inconsistent, since a threshold derived from a wrong force law is not a detection threshold."
+check_performed = "Unit-by-unit dimensional analysis of DmForceField::drag_force (dm_force.rs:430-501) and drag_force_lattice / kappa_base (lines 318-335)."
+observed = "f_mag = n_chi[m^-3] * n_b[m^-3] * sigma[m^2] * m_red[kg] * |v_rel|[m/s] and a_phys = f_mag/(n_b*m_p) = n_chi*sigma*(m_red/m_p)*|v_rel|, whose units are m^-3 * m^2 * (m/s) = s^-1. THAT IS A RATE, NOT AN ACCELERATION (m s^-2). The standard DM-baryon momentum-transfer drag is a = n_chi*sigma*(m_red/m_p)*|v_rel|^2: collision rate n*sigma*v times momentum m_red*v per collision. The code carries only ONE power of v_rel. With v_rel ~ 2.2e5 m/s the drag acceleration is understated by ~2.2e5. The kappa path inherits the identical error, and test_drag_lattice_vs_legacy_equivalence merely certifies that the two wrong paths agree."
+verdict = "refuted"
+verdict_reason = "The drag law is missing one factor of relative velocity, so the computed drag has units of s^-1 rather than m s^-2. The 10^-45 cm^2 threshold is the sigma at which a mis-dimensioned quantity crosses an arbitrary line and corresponds to no physical detection threshold; correcting the power of v moves it by ~5 orders."
+recommended_status = "Refuted"
+verification_rule = "Unit test asserting drag_force() output scales as |v_rel|^2 -- doubling the DM wind speed at fixed sigma must QUADRUPLE, not double, the drag acceleration. The current code fails this."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1161"
+decidability = "internal"
+falsifier = "False if kappa is not dimensionless, or if drag_force_lattice's inner loop touches a dimensional quantity."
+check_performed = "Unit-by-unit walk of kappa_base (dm_force.rs:323-334) and read of the drag_force_lattice inner loop (lines 386-414)."
+observed = "kappa = n_chi[m^-3] * sigma_m2[m^2] * mass_ratio[1] * vel_conversion[m/s] * force_scale[s^2/m]. Collecting: m^(-3+2+1-1) * s^(2-1) = s * m^-1. KAPPA CARRIES UNITS s/m AND IS NOT DIMENSIONLESS. The inner-loop half is correct: drag[idx] = kappa * |v_rel| * v_rel_hat with v_rel drawn from solver.u, all lattice-valued, no per-cell conversion. But because kappa is dimensional, the drag term summed into the force field via combine_forces has units s/m while the gravitational term is a dimensionless lattice acceleration."
+verdict = "partially_confirmed"
+verdict_reason = "The engineering half is confirmed -- the precomputation does hoist every conversion out of the inner loop. The physics half is refuted: kappa has residual units s/m, the same defect as C-1154 (one missing power of velocity) seen from the coefficient side. TWO DIMENSIONALLY INCOMPATIBLE TERMS ARE BEING ADDED."
+recommended_status = "Provisional"
+verification_rule = "Dimensional test: with sigma fixed, doubling v_ref_kms must leave kappa*|v_rel| unchanged if kappa is a dimensionless lattice multiplier. It does not. NOTE: this claim has NO experiment row in registry/experiments.toml."
+confidence = "high"
+
+# ---- Mechanism absent from code ----
+
+[[finding]]
+claim_id = "C-1169"
+decidability = "internal"
+falsifier = "False if build_radial_profile applies no solar cycle phase correction, or if no sunspot-number proxy is used anywhere."
+check_performed = "Read of build_radial_profile (solar_wind_ic.rs:765-795); grep -rn for 'sunspot|solar_cycle|cycle_phase' across the binary and its types module; check of E-117 status."
+observed = "grep returns ZERO matches for sunspot, solar_cycle and cycle_phase. build_radial_profile bins records by r_au rounded to 0.1 AU and takes per-bin medians of density, speed, temperature and B. Epoch, year and solar cycle phase are never read and never used; records from different years at the same distance are pooled without correction. No residual scatter is computed anywhere, so the 40% threshold has no producer. E-117 has status = 'planned'."
+verdict = "refuted"
+verdict_reason = "The mechanism the claim names -- solar cycle phase correction using OMNI sunspot number as proxy -- does not exist in the cited function or anywhere in the binary. A claim that a correction reduces scatter to < 40% cannot hold when the correction is absent and the scatter is never measured."
+recommended_status = "Refuted"
+verification_rule = "Implement the correction, then assert per-bin scatter across spacecraft at overlapping r falls below 0.40 after correction and is higher before it. Both numbers are currently unproduced."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1157"
+decidability = "internal"
+falsifier = "False if no code path computes a residual against n_0*(r_0/r)^2, or if the fitted profile is imposed by the interpolator rather than measured."
+check_performed = "Read of build_radial_profile, sample_radial_profile, interpolate_radial, scale_r2, fit_power_law in solar_wind_ic.rs; grep for 'residual'; check of E-114 status."
+observed = "grep for 'residual' returns NOTHING in the binary. No residual, RMS, or 20% threshold is computed anywhere. fit_power_law is applied to `sampled`, the output of sample_radial_profile -> interpolate_radial -- NOT to measured data. interpolate_radial IMPOSES r^-2 via scale_r2 for the single-point case and for all extrapolation beyond the data span, and returns a hardcoded 5.0/(r*r) fallback when the profile is empty (lines 952-964). The self-test fits synthetic r^-2 input. E-114 has status = 'planned'."
+verdict = "not_run"
+verdict_reason = "The 20% residual threshold has never been computed by any code path, and the fitting target is partly the interpolator's own imposed r^-2 rather than the spacecraft data, making a naive fit CIRCULAR over the extrapolated range."
+recommended_status = "Provisional"
+verification_rule = "Compute the residual against the MEASURED bins from build_radial_profile (never against interpolate_radial output), report max |n_measured - n_fit|/n_fit over r in [1,100] AU, assert < 0.20. Requires executing E-114."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1143"
+decidability = "internal"
+falsifier = "False if no code path computes a solar wind density perturbation delta_rho/rho, or if such a path returns a value >= 10^-15."
+check_performed = "Full read of dm_force.rs (1358 lines) and solar_wind_dm_mhd.rs (507 lines); grep for any density-perturbation diagnostic."
+observed = "NO delta_rho/rho is computed anywhere. dm_force.rs computes a force field only; the binary reports mass, B_energy, max|divB|, and the force ratio. The 10^-15 figure appears solely as an unsourced assertion in the module doc comment (lines 8-11). The nearest artifact is test_force_scale_order_of_magnitude, asserting max|F| < 1e-10 in lattice units -- a force, not a density."
+verdict = "not_run"
+verdict_reason = "The claim's observable does not exist in the cited code. The number 10^-15 is a doc-comment assertion with no derivation and no computation behind it. Inference only: with a_lattice = 1.31e-15 uniform to 1 part in 10^7 across the slab, the driving gradient is ~10^-22, so a hydrostatic response would be far below 10^-15 -- the claim is probably true but for a reason never computed."
+recommended_status = "Provisional"
+verification_rule = "Add an A/B diagnostic running the identical grid with --no-dm and with DM enabled, reporting max|rho_dm_on - rho_dm_off|/rho_off; assert < 1e-15. No such comparison currently exists."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1144"
+decidability = "internal"
+falsifier = "False if the upstream/downstream DENSITY asymmetry does not scale linearly with eta_wake, or is unresolvable. The claim is about density asymmetry, not force."
+check_performed = "Read of DmForceField::new wake_factor (dm_force.rs:287-310) and test_wake_asymmetry (lines 606-640)."
+observed = "wake_factor = 1.0 + eta_wake * cos_angle, applied multiplicatively to a_lattice. The FORCE is linear in eta_wake by construction, exactly and trivially. No test or binary measures a DENSITY asymmetry. test_wake_asymmetry checks only mag_wake > mag_iso, never linearity. The modulated part of the force is eta * 1.31e-15, i.e. <= 1e-15 in lattice units, against an LBM mass-conservation floor of 1e-10."
+verdict = "partially_confirmed"
+verdict_reason = "Linearity holds identically for the force (tautology). Linearity of the DENSITY asymmetry -- what the claim actually says -- is unmeasured and sits 5 orders below the solver's own conservation floor, so it is not resolvable in f64 at this force amplitude."
+recommended_status = "Provisional"
+verification_rule = "Run eta_wake in {0.1, 0.2, 0.4} to steady state, regress (rho_upstream - rho_downstream) on eta_wake; require R^2 > 0.99 AND the asymmetry to exceed 100x the unforced noise floor. Expect the second condition to fail."
+confidence = "high"
+
+# ---- Unit-conversion family ----
+
+[[finding]]
+claim_id = "C-1162"
+decidability = "external"
+falsifier = "False if the cited code does not produce B_r ~ r^-2 and B_phi ~ r^-1, or if the Parker spiral angle at 1 AU is not ~45 deg."
+check_performed = "Read of parker_spiral_b (solar_wind_ic.rs:217-240) and MhdField::parker_spiral_init (mhd.rs:88-126); numerical evaluation from the code's defaults. Primary sources fetched and hashed: Parker (1958) ApJ 128, 664; Owens and Forsyth (2013) LRSP 10, 5; Ebert et al. (2013) ApJ 768, 160."
+observed = "EXTERNAL: Parker (1958) eq. (26) gives B_r ~ r^-2 and B_phi ~ r^-1 exactly as claimed. BUT Parker's own 45-deg surface, his eq. (27), sits at 2.5 AU, not 1 AU: 'the radius of the cylinder on which B_phi becomes equal to B_r is 2.5 a.u. for v_m = 1000 km/sec.' The ~45 deg at 1 AU figure comes from the modern 400 km/s slow wind and is sourced to Owens and Forsyth (2013). B_r ~ 3 nT is supported by Ebert (2013) Table 1 (|B_r|R^2 = 3.17-3.89 nT); B_phi ~ 3 nT is NOT directly sourced and would imply |B| ~ 4.2 nT, the solar-minimum floor of the observed 4-9 nT range. SCALING, cited file: b_r = b0*(r0/r_cyl)^2 and b_phi = -b0*omega*r0^2/(v*r_cyl) -- correct. SCALING, MHD SIMULATION PATH: mhd.rs computes b_phi = -b0*ratio*(omega*r)/v_sw with ratio = r0/r, which collapses to -b0*r0*omega/v_sw, CONSTANT IN r; one factor of ratio is missing, so B_phi ~ r^0 in the path E-112 actually runs. ANGLE: tan(psi) = omega*r0/v_sw = 2.662e-6*64/0.05 = 3.4074e-3, giving psi = 0.1952 deg, not 45 deg. Physical value: tan(psi) = 2.662e-6*1.496e11/4e5 = 0.9956 -> 44.87 deg. ROOT CAUSE: omega is in physical rad/s while r is in grid cells and v is in lattice units; the missing conversion is delta_t = 148.696 s. Restoring it gives 45.38 deg at r = 128 cells, confirming the diagnosis."
+verdict = "partially_confirmed"
+verdict_reason = "The r^-2 / r^-1 scaling is confirmed against Parker eq. (26) and correct in the cited file, but it is IMPOSED analytically rather than 'verified by multi-spacecraft data' (the fit machinery consumes interpolator output, and E-114 is planned). The 45 deg spiral angle is refuted in the implementation by a factor of 230, and the MHD path E-112 runs has B_phi constant in r. Two attribution errors: 45 deg at 1 AU is not Parker's result and belongs to Owens and Forsyth (2013), and the B_phi ~ 3 nT half is unsourced."
+recommended_status = "Refuted"
+verification_rule = "Assert atan(|b_phi/b_r|) at r = nx cells lies in [40, 50] deg for parker_spiral_b; currently 0.195 deg. Separately assert b_phi(2r)/b_phi(r) == 0.5 in MhdField::parker_spiral_init; currently 1.0. Cite Owens and Forsyth (2013) rather than Parker (1958) for the 1 AU angle."
+source_url = "https://doi.org/10.1086/146579 ; https://doi.org/10.12942/lrsp-2013-5 ; https://doi.org/10.1088/0004-637X/768/2/160"
+source_sha256 = "33de05e35c9a3c17090bd4c4c0da58fd09b27eccc650e8702ebdb43b1e0c028d (parker_1958); 88a36178bf72fb4e4fc76c71e4571b09d63a3357e3645bc258ea916da94373ed (owens_forsyth_2013); 4b56199c0ad6de5363bb5b2772fef231dae17517eb4f44c2336f4193dfd45fd4 (ebert_2013)"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1171"
+decidability = "internal"
+falsifier = "False if phi(1 AU) from the stated parameters (v_sw = 400 km/s, kappa_rr = 4.5e-5*r AU^2/s, R_B = 157 AU) is outside 0.4-0.8 GV, or if phi is not monotonically decreasing in r."
+check_performed = "Read of ForceFieldProxy::modulation_potential (cr_transport/src/modulation.rs:42-57) and compute_phi_map (cr_modulation_sweep.rs:480-525); analytic evaluation of the integral."
+observed = "phi(r) = int_r^R_B v/(3 kappa) dr' by 32-point Gauss-Legendre. With kappa = 4.5e-5*r the integral is (v/1.35e-4)*ln(157/r). Monotonic decrease is exact and TRIVIAL (the integrand is positive, so shrinking the interval shrinks the integral). Numerically at r=1: taking v in AU/s (400 km/s = 2.6738e-6 AU/s, the only dimensionally coherent choice) gives phi = 0.1001 GV. Taking v in km/s as the code's own test literally does gives 1.498e7. NEITHER is in 0.4-0.8 GV. Separately, the binary's kappa_rr_of_r ignores rigidity entirely, so phi carries no rigidity dependence, which the force-field approximation requires."
+verdict = "refuted"
+verdict_reason = "The monotonicity half is confirmed but is a property of a definite integral, not a physical finding. The numeric half fails under EVERY unit convention: 0.100 GV, a factor of 4-8 below the claimed range, or 1.5e7 under the literal km/s reading. E-121/E-122/E-127 are all planned, so this was never run."
+recommended_status = "Refuted"
+verification_rule = "Assert ForceFieldProxy::new(157.0, 0.938272).modulation_potential(1.0, &|_| 400.0/1.496e8, &|r| 4.5e-5*r) lies in [0.4, 0.8]. It returns 0.100."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1173"
+decidability = "internal"
+falsifier = "False if the peak shift is not (1/3)*div(u)*N*d_ln_r, or if the cited test does not measure a shift of ~0.08 in ln(R)."
+check_performed = "Read of decelerate_momentum (cr_transport/src/solver.rs:342-371) and test_adiabatic_deceleration_shifts_peak (lines 434-480); dimensional check; RigidityGrid::new(20, 0.1, 100.0) spacing computation."
+observed = "The code advances f by -dt*rate*df/d_ln_p with rate = div_u/3, i.e. the physical shift in ln(p) after N steps is (1/3)*div(u)*dt*N. The claim's formula multiplies by d_ln_r and OMITS dt entirely. d_ln_r is the GRID SPACING: making the formula proportional to it means refining the rigidity grid would change the physical deceleration -- a resolution artefact, not physics. The arithmetic is also internally wrong: for RigidityGrid::new(20, 0.1, 100.0), d_ln_r = ln(1000)/19 = 0.3636, not the 0.23 the claim states. 'Decades in ln(R)' is a unit error -- a decade is log10. The cited test asserts only max_bin <= peak_bin, which a ZERO shift also satisfies."
+verdict = "refuted"
+verdict_reason = "The stated formula is dimensionally inconsistent (a physical momentum shift cannot scale with numerical grid spacing), omits the timestep the code applies, quotes a d_ln_r the cited grid does not have, and mixes decades with natural logarithms. The cited test does not test the claimed quantity."
+recommended_status = "Refuted"
+verification_rule = "Strengthen the test to fit the peak's ln(R) centroid before and after and assert the shift equals (1/3)*div(u)*dt*N within 10%, with d_ln_r absent from the expression."
+confidence = "medium"
+
+# ---- Kn duplicates ----
+
+[[finding]]
+claim_id = "C-1159"
+decidability = "internal"
+falsifier = "False if knudsen_number() does not fall below 100 inside r ~ 50 AU under quiet solar wind conditions."
+check_performed = "Read of knudsen_number and classify_knudsen (data_core/src/catalogs/wind_swe.rs:441-471); evaluation at r = 1, 5, 10, 50, 100, 157 AU using n ~ 5.9*r^-2 cm^-3 and T ~ 1e5*r^-0.5 K."
+observed = "Kn = lambda_mfp/d_i with lambda = 2.4e11*T^2/(n_m3*20) and d_i = 228e3/sqrt(n_cm3). Evaluated: Kn = 2.167e8 at 1, 5, 10, 50, 100 AND 157 AU -- EXACTLY r-independent, because lambda ~ T^2/n ~ r^-1*r^2 = r and d_i ~ n^-1/2 ~ r cancel. Kn exceeds 100 by six orders at 1 AU and never falls below it. The repo's own test_knudsen_quiet_solar_wind asserts classify_knudsen(knudsen_number(5.0, 1.0e5)) == KnudsenRegime::Kinetic, i.e. Kn > 100 at 1 AU."
+verdict = "refuted"
+verdict_reason = "The claimed correspondence 'Kn < 100 <-> r < ~50 AU' does not exist for the implemented Kn: the quantity is r-invariant at 2.17e8 and already Kinetic at 1 AU by the repo's own classification test. If Kn < 100 really were the BGK validity condition, the code would declare BGK invalid everywhere, INCLUDING at 1 AU where E-112 runs it."
+recommended_status = "Refuted"
+verification_rule = "cargo test -p data_core test_knudsen_quiet_solar_wind -- the existing passing test is the standing refutation. E-118 is planned."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1166"
+decidability = "internal"
+falsifier = "False if the implemented Kn is not normalised to the simulation cell size, or if no r ~ 30-50 AU boundary exists in Kn(r)."
+check_performed = "Same evaluation as C-1159, plus comparison of the code's normalising length against the simulation cell size."
+observed = "The claim's stated mechanism is 'mean free path exceeds simulation cell size (Kn > 1)'. The code normalises lambda by the ION INERTIAL LENGTH d_i = 9.4e4 m at 1 AU. The simulation cell is 1 AU/128 = 1.17e9 m -- FOUR ORDERS LARGER. The two definitions differ by ~1.2e4 at 1 AU and are not interchangeable. Kn(r) is flat at 2.167e8, so no boundary exists at 30-50 AU or anywhere."
+verdict = "refuted"
+verdict_reason = "The quantity the claim describes (lambda / cell size) is not the quantity the cited function computes (lambda / ion inertial length), and the computed quantity has no radial structure, so it cannot locate a validity boundary. C-1159 and C-1166 are NEAR-DUPLICATES failing for the same reason at two different stated thresholds -- an internal inconsistency between neighbours."
+recommended_status = "Refuted"
+verification_rule = "If the intended diagnostic is lambda/cell_size, add a distinct knudsen_grid(n, T, dx_m) and assert it crosses 1 in [30,50] AU. The existing function cannot support the claim under either threshold."
+confidence = "high"
+
+# ---- Remaining ----
+
+[[finding]]
+claim_id = "C-1158"
+decidability = "internal"
+falsifier = "False if the pipeline applying the RTN->GSE tilt rotation yields max|div(B)| >= 10^-10, or if a componentwise rotation on a fixed grid does not preserve divergence."
+check_performed = "Read of rtn_to_gse (stereo_plastic.rs:433-453); run of solar-wind-dm-mhd capturing the div(B) diagnostic over 500 steps."
+observed = "rtn_to_gse is Rx(7.25 deg) * Rz(separation), orthogonal with det = 1 -- the claim's premise is correct about the matrix. BUT the transform is applied COMPONENTWISE to B at fixed grid positions: B'(x) = R B(x), not B'(x) = R B(R^-1 x). div(R B) = R_ij d_i B_j is NOT div B, so a componentwise rotation on an unrotated grid does not preserve divergence in general. MEASURED: 'div(B) projection: 1.023937e1 -> 1.403449e-5' and max|divB| = 1.403415e-5 at step 1, 1.386655e-5 at step 500 -- FIVE ORDERS ABOVE the claimed 10^-10, scaling linearly with b0, i.e. a fixed ~0.3% relative divergence."
+verdict = "refuted"
+verdict_reason = "The threshold is violated by five orders of magnitude in the running pipeline, and the stated mechanism is wrong twice over: orthogonality of a componentwise rotation does not imply divergence preservation on a fixed grid, and the residual divergence comes from the Cartesian stencil and the finite Helmholtz projection tolerance, not from monopoles."
+recommended_status = "Refuted"
+verification_rule = "Assert max_div_b() < 1e-10 after project_divergence_free on a STEREO triangulated IC. Currently ~1.4e-5. NOTE: this claim has NO experiment row."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1160"
+decidability = "internal"
+falsifier = "False if u* is not u + F/(2 rho) in the collision, if sum_i Phi_i != 0 analytically, or if the O(Ma^2) error is not attributable to what the claim attributes it to."
+check_performed = "Read of phase1_collision (lbm_3d/src/solver.rs:570-620); analytic summation of Phi_i over the D3Q19 stencil."
+observed = "u_star = u + F/(2*rho) confirmed verbatim. Phi_i = w_i*[3*(e_i - u*).F + 9*(e_i.u*)(e_i.F)] with prefactor (1 - 1/(2 tau)) confirmed -- the standard Guo et al. (2002) form. SUMMATION: sum_i w_i*3*(e_i - u).F = -3 u.F using sum w_i = 1 and sum w_i e_i = 0; sum_i w_i*9*(e_i.u)(e_i.F) = 9*c_s^2*(u.F) = 3 u.F using sum w_i e_ia e_ib = (1/3) delta_ab. TOTAL = 0 EXACTLY, and the uniform prefactor does not disturb it."
+verdict = "partially_confirmed"
+verdict_reason = "The mass-preservation half is confirmed analytically and exactly. The attribution half is wrong: the O(Ma^2) compressibility error is a property of the second-order truncated Maxwell-Boltzmann equilibrium and is present with or without forcing; Guo's contribution is eliminating discrete lattice force artefacts, not setting the Ma^2 order."
+recommended_status = "Provisional"
+verification_rule = "Assert sum_i Phi_i < 1e-15 for random (rho, u, F) over the D3Q19 stencil. E-119 is planned."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1168"
+decidability = "internal"
+falsifier = "False if relative mass drift exceeds 10^-10 over r=[1,100] AU with NFW forcing."
+check_performed = "Read of test_mass_conservation_extended_radial (dm_force.rs:1148-1180) and lbm_3d/tests/test_guo_forcing.rs; 500-step run of the production binary recording total mass."
+observed = "The named unit test uses a CLOSED periodic box, initialize_uniform(1.0, [0,0,0]) (quiescent), 50 steps, with a body force of 1.31e-15 -- FIVE ORDERS BELOW the 1e-10 tolerance it then asserts, so the test cannot distinguish a conserving scheme from a non-conserving one. IN THE PRODUCTION BINARY with the Zou-He inlet, total mass ran 131178.947368 -> 239325.927107 over 500 steps at b0=0.005, AN 82% INCREASE, i.e. 8 orders worse than the claimed 1e-10."
+verdict = "partially_confirmed"
+verdict_reason = "The analytic statement (Phi_i is mass-neutral, gravity and drag are momentum-only) is true and independently confirmed under C-1160. The 10^-10 numeric threshold holds only in a closed quiescent box where the force is too small to test it; the actual simulation the null result comes from does not conserve mass at all, because the Zou-He velocity inlet is an open mass source."
+recommended_status = "Provisional"
+verification_rule = "The closed-box test PLUS a separate assertion that the driver's mass drift is attributable entirely to inlet flux: mass(t) - mass(0) equals the integrated Zou-He inflow to 1e-10. The second check does not exist."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1163"
+decidability = "external"
+falsifier = "False if the code's own defaults do not satisfy v_polar > 1.5*v_equatorial at |lat| > 30 deg, or if the tanh transition parameters are not fitted from Ulysses data as 'ulysses_latitudinal_fit' implies."
+check_performed = "Read of ulysses_latitudinal_fit (solar_wind_ic.rs:1377-1444), LatitudinalProfile::default and latitude_modulation; direct evaluation of speed_factor(lat) with shipped defaults. McComas et al. (2000) JGR 105, 10419 is closed access and could NOT be fetched (Unpaywall is_oa false, Wiley 403; no UA spoofing attempted); substituted the fetched OA replication Ebert et al. (2013) and the Crossref abstract of McComas et al. (1998)."
+observed = "EXTERNAL: Ebert (2013) Table 1, Ulysses orbit 1, |lat| > 36 deg, normalised to 1 AU: V_p = 751.9 +/- 0.3 km/s and N_p R^2 = 2.95 +/- 0.01 cm^-3 (south) -- the claim's 750 km/s and 3 cm^-3 MATCH CLOSELY. Slow wind 400 km/s supported; slow density 7 cm^-3 unverified. TRANSITION LATITUDE: Ebert states 'McComas et al. (2000) examined these variations for latitudes >|36 deg|' -- the claim's >30 deg is LOOSER than the source's own cut. TRANSITION WIDTH: McComas et al. (1998) is titled 'Ulysses' rapid crossing of the polar coronal hole boundary' and describes the crossing 'over a very short interval (several days)' with a tangential discontinuity; NO fetched source states a tanh form or a 10-20 deg width. Bimodality is a solar-minimum structure only (Richardson 2018: on Ulysses' second orbit 'the simple solar wind structure observed during the first orbit was absent'). INTERNAL: ulysses_latitudinal_fit fits ONLY fast_speed, slow_speed, fast_density, slow_density, and HARDCODES transition_lat_deg = 30.0 and transition_width_deg = 10.0 on BOTH the fitted and default paths -- the tanh transition is never fitted. With fewer than 3 records the speeds and densities also fall back to the literal claimed numbers. Evaluating speed_factor = (1-f) + f*(750/400) with f = 0.5*(1+tanh((|lat|-30)/10)): lat=30 -> 1.4375; lat=31 -> 1.4811; lat=32 -> 1.5239. The 1.5 threshold is crossed at |lat| ~ 31.6 deg, so the claim's stated condition FAILS throughout 30.0-31.6 deg."
+verdict = "refuted"
+verdict_reason = "Refuted on three independent grounds. (1) By the code's own shipped defaults v_polar/v_equatorial = 1.4375 at exactly |lat| = 30 deg, contradicting the claim's threshold; crossing is at ~31.6 deg. (2) The tanh parameters are hardcoded, never fitted, and E-115 is planned, so no Ulysses datum has been through this path. (3) The published source describes a RAPID crossing over several days with a tangential discontinuity, not a tanh ramp over 10-20 deg, and McComas (2000) used a >|36 deg| cut. The fast-wind speed and density are the one part that checks out exactly."
+recommended_status = "Refuted"
+verification_rule = "assert latitude_modulation at |lat| = 30.0 yields speed_factor > 1.5 with LatitudinalProfile::default(); currently 1.4375. Then fit the transition parameters from Ulysses SWOOPS rather than hardcoding, and restate the transition as rapid (McComas 1998)."
+source_url = "https://doi.org/10.1088/0004-637X/768/2/160 (fetched); https://doi.org/10.1029/1999JA000383 (NOT fetched, closed)"
+source_sha256 = "4b56199c0ad6de5363bb5b2772fef231dae17517eb4f44c2336f4193dfd45fd4 (ebert_2013)"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1164"
+decidability = "external"
+falsifier = "False if the crossing distances contradict Stone et al., if no shock exists in the simulation for the observation to be 'consistent with', or if the density jump factor is outside 2-4x."
+check_performed = "grep for 'shock|termination|jump|discontinu' across solar_wind_ic.rs and voyager.rs; read of interpolate_radial. Stone 2005 Science 309, Stone 2008 Nature 454, Richardson 2008 Nature 454 all CLOSED ACCESS (PubMed abstracts obtained); fetched instead Richardson et al. (2022) SSRv and Treumann and Jaroschek (2008) arXiv:0807.4170."
+observed = "EXTERNAL: crossing distances CONFIRMED -- Stone 2005 gives V1 at 94.01 AU on 16 Dec 2004; Stone 2008 gives V2 at 83.7 AU, 'approximately 10 au closer to the Sun than found by Voyager 1'. TWO REFINEMENTS THE CLAIM OMITS: Richardson 2008 reports 'several crossings of the termination shock between 30 August and 1 September 2007' for V2, not a single crossing; and Richardson 2022 notes V1 crossed during a tracking gap, so 94.01 AU is INFERRED rather than observed. V1's plasma instrument is confirmed non-functional by two fetched sources, so V1 contributes NO density jump. COMPRESSION RATIO: Richardson 2022 gives V2 shock strength 2-3; Treumann and Jaroschek give compression <= 2 and magnetic compression B2/B1 ~ 1.7; the V1 value r = 2.6 is inferred from a proton spectral index, not measured. NOTHING MEASURED REACHES 4; pickup ions absorb ~65% of the shock energy. INTERNAL: solar_wind_ic.rs contains NO shock, no discontinuity, no compression-ratio handling; the only matches for 'jump' are in a tanh-smoothness test. The radial profile is log-linear interpolation with smooth extrapolation, continuous and monotone straight through 84-94 AU. voyager.rs mentions the crossings only in a module doc comment. E-120 is planned."
+verdict = "refuted"
+verdict_reason = "The crossing distances survive. Everything else fails. The '~2-4x density jump' is falsified at its upper end -- every measured V2 value is ~2, because pickup ions take ~65% of the shock energy, and no fetched source reaches 4; the only value near the top of the band is a particle-inferred V1 number from a spacecraft with no working plasma instrument. The clause 'consistent with MHD simulation boundary conditions' has NO REFERENT, since the radial profile is smooth interpolation with no shock anywhere. The claim also flattens V2's several crossings into one."
+recommended_status = "Refuted"
+verification_rule = "Restate the compression bound as ~2 (Richardson 2022, Treumann and Jaroschek 2008) rather than 2-4x, attribute it to Voyager 2 alone, and either implement a shock in the radial profile or drop the unfalsifiable 'consistent with MHD boundary conditions' clause."
+source_url = "https://doi.org/10.1007/s11214-022-00920-4 ; https://arxiv.org/abs/0807.4170"
+source_sha256 = "9aa1a268ea3834005ed4308fbbac34cbe51e059c7b38272cb5ba3d2bba0c1eae (richardson_2022); 5130e97f4af9d2ce522691a69e96376f110426f76218e8ec22ae050b5efe78e8 (treumann_2008)"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1155"
+decidability = "internal"
+falsifier = "False if any arithmetic link breaks: m_chi ~ 5*m_p, n_chi = rho_dm/m_chi ~ 0.06 cm^-3, n_chi/n_p ~ 10^-2."
+check_performed = "Read of M_CHI_GEV, M_PROTON_GEV, M_REDUCED_GEV (dm_force.rs:37-43); direct arithmetic on rho_dm = 0.3 GeV/cm^3."
+observed = "M_CHI_GEV = 5.0 * 0.938 = 4.69 GeV, inside the claimed 4.7-5.0 window. n_chi = 0.3/4.69 = 0.06397 cm^-3, matching ~0.06. Against the OMNI2 median n_p = 5.9 cm^-3 the ratio is 0.0108, i.e. O(10^-2). The final clause -- 'the drag is dynamically negligible (O(10^-12) of Lorentz) as confirmed by E-112/E-113' -- inherits the C-1154 dimensional error and the C-1152 tautology."
+verdict = "partially_confirmed"
+verdict_reason = "The arithmetic is exactly right and is a definitional consequence of Omega_DM/Omega_b, not a measurement. The concluding dynamical clause is not supported: the O(10^-12) it cites is normalisation-dependent (C-1145) and the drag law it depends on is dimensionally wrong (C-1154)."
+recommended_status = "Provisional"
+verification_rule = "Split the claim. The arithmetic half is checkable directly; the dynamical half must wait on a corrected drag law."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1153"
+decidability = "unfalsifiable_as_stated"
+falsifier = "Sentence 1 ('provides an algebraic vocabulary'): no measurement can address it. Sentence 2: false if the CD tower forbids some numerical value of the ratio the simulation could have produced."
+check_performed = "Read of the claim against the established constancy of |F_DM| and of LeechPathionEmbedding in algebra_experimental/src/leech_pathion.rs."
+observed = "Sentence 1 states a metaphorical correspondence between a 32-dimensional CD escape statistic and DM-baryon decoupling; it names no observable and specifies no way to be wrong. Sentence 2 rests on the multi-spacecraft null result, which C-1152 shows is a fixed constant divided by a normalisation knob. A prediction 'consistent with' a quantity no experiment can move is consistent with every possible outcome and excludes nothing."
+verdict = "not_run"
+verdict_reason = "Sentence 1 is unfalsifiable as written -- 'provides a vocabulary' is a claim about language, not nature. Sentence 2 is falsifiable in form but vacuous in content. Reclassify: this belongs in a research programme, not the verified-claim registry."
+recommended_status = "Closed/Research-Program"
+verification_rule = "To become falsifiable the claim must state a number the CD tower forbids: 'the CD tower predicts |F_DM|/|F_Lorentz| < X for all heliospheric conditions, and a measured value above X refutes it.' Absent such an X there is nothing to check."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1172"
+decidability = "unfalsifiable_as_stated"
+falsifier = "False if modulate_spectrum's output differs by more than 5% from the force-field prediction over 1-10 GV -- but this requires an INDEPENDENT force-field prediction to compare against."
+check_performed = "Read of ForceFieldProxy::modulate_spectrum (modulation.rs:65-78) against the Gleeson-Axford (1968) formula in the module header."
+observed = "modulate_spectrum returns j_ism*(E^2+2mE)/((E+phi)^2+2m(E+phi)) -- it IS the force-field/Gleeson-Axford expression, transcribed exactly, with no approximation and no free parameters. The where_stated locator points at that same function. Comparing the function to 'the force-field prediction' compares it TO ITSELF: the discrepancy is identically 0%, not 5%, and no numerical scheme separates the two."
+verdict = "not_run"
+verdict_reason = "As stated with its own where_stated, the claim is a tautology with a spurious 5% tolerance -- there is no second computation to disagree with. It becomes falsifiable only against an external target: a published FFA proton spectrum (AMS-02, PAMELA) at a stated phi, or an independent numerical PTE solution."
+recommended_status = "Provisional"
+verification_rule = "Reformulate as external: compare modulate_spectrum at phi = 0.5 GV against a published force-field proton spectrum over 1-10 GV, assert agreement within 5%. Note the tolerance is untestable while C-1171 shows phi itself is off by 4-8x."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1175"
+decidability = "internal"
+falsifier = "False if no statistical significance test exists, or if the injected excess can be made larger than 10% by a parameter choice inside the claimed m_chi < 100 GeV window."
+check_performed = "Read of DmSource::inject (cr_transport/src/source.rs:197-228) and its three tests; check of E-125/E-126/E-127 status."
+observed = "inject adds cell_prefactor = 0.5*rho_dm^2/m_chi^2 * sigma_v * spatial_profile * dt times a per-bin yield. The excess is STRICTLY PROPORTIONAL to the free parameter sigma_v_cm3_per_s and to rho_dm^2, both user-supplied; nothing bounds it. No noise model, no variance, no significance statistic, and no comparison against a 10% modulation uncertainty appears anywhere in the crate -- the three tests check spectrum validity, bin spanning, and that inject populates multiple bins. E-125, E-126 and E-127 are all planned."
+verdict = "not_run"
+verdict_reason = "There is no statistical machinery behind the phrase 'no statistically significant signal', and the magnitude of the injected excess is set entirely by a free parameter, so the null can be broken by choosing a larger sigma_v within the same mass window. As written the claim asserts a constraint that no executed computation supports."
+recommended_status = "Provisional"
+verification_rule = "Sweep sigma_v over the thermal relic value 3e-26 cm^3/s and a decade either side at m_chi = 10, 50, 100 GeV, report max flux excess relative to the unmodulated spectrum, assert < 0.10 for all. Requires executing E-125/E-126."
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+THE STRUCTURAL QUESTION IS SETTLED: OPTION (b). The ten claims reporting
+|F_DM|/|F_Lorentz| ~ O(10^-12) are not ten measurements. The numerator contains no
+spacecraft datum at all. In DmForceField::new the DM density is the literal
+assignment dm_density[idx] = rho_dm_si, and the acceleration is
+a_phys = G*M_NFW(<r_gal)/r_gal^2 * density_scale evaluated at r_gal = r_sun + r_helio
+with r_sun = 8.3 kpc = 2.56e20 m. At the outermost claimed radius, 157 AU = 2.35e13 m,
+the heliocentric term perturbs r_gal by 9.2e-8 relative. MEASURED DIRECTLY: running the
+E-112 binary with --dm-r-min/--dm-r-max at 1, 50 and 157 AU returns
+DM max |F_grav| = 1.355402e-15 in all three cases, identical to every printed
+significant figure, ratio 9.949e-19 in all three.
+
+The only path by which any spacecraft number reaches the numerator is
+force_scale = (AU/nx) * (u_scale/(v_ref*1e3))^2, reading a single scalar -- the median
+bulk speed -- from the IC header. Across OMNI, WIND, ACE MAG and STEREO-A that scalar
+spans ~350-450 km/s, a factor of 1.7, ENTIRELY INSIDE the order-of-magnitude bin the
+claims report. E-113's own run string holds --nx 128 --dm-density 0.3 --dm-m200 1e12
+--dm-c200 10 fixed across all four spacecraft, so the numerator was the same number in
+all four runs by construction. C-1152's 'instrument-independence' therefore restates
+that a constant is constant. Its NUMBER is defensible; its INFERENCE -- that agreement
+'reflects a genuine physical suppression rather than measurement artifact' -- is
+REFUTED, because a quantity no instrument can move cannot discriminate between those
+two hypotheses. C-1149, C-1150 and C-1151 inherit the same defect at the level of data
+source, gradient regime and geometry respectively.
+
+WHAT THE DENOMINATOR ACTUALLY SETS. |F_Lorentz| = |curl(B_l) x B_l| goes as the square
+of the lattice magnetic field, and the lattice field is the physical field times
+b_scale, a CLI convention knob defaulting to 0.001 whose entire documentation is
+'Typical: 0.001 maps 5 nT -> 0.005 LBM units'. Running with --b0 in {0.005, 0.05, 0.5,
+5.0, 50.0} returns ratios 9.589e-13, 9.589e-15, 9.589e-17, 9.589e-19, 9.589e-21 -- an
+EXACT b0^-2 law across four decades, with |F_DM| pinned at 1.306282e-15 throughout. The
+'null result' is a pure function of two fixed constants and one bookkeeping convention.
+Two consequences follow.
+
+First, the block's headline number is NOT reproduced by the block's own declared
+experiment: E-112 runs --b0 5.0, printing 9.589e-19, eight orders from the claimed
+O(10^-12). The 10^-12 figure corresponds to B_lattice ~ 0.005, i.e. the IC-file path
+where 5 nT is multiplied by b_scale = 0.001.
+
+Second -- and this is the FAIR version of the critique -- b_scale = 0.001 happens to be
+approximately the correct Alfvenic normalisation. With B = 5 nT and n = 5.9 cm^-3,
+v_A = B/sqrt(mu_0 rho) = 44.9 km/s, so v_A/v_sw = 0.112 and at v_sw_lattice = 0.05 the
+Alfvenic lattice field is 0.0056, against b_scale*5 nT = 0.005. So O(10^-12) lands near
+the physically sensible order BY COINCIDENCE of a default that nothing in the code
+derives, documents as physical, or enforces -- and that the declared experiment then
+overrides by six orders. THE FINDING IS NOT THAT DM GRAVITY MATTERS. IT PLAINLY DOES
+NOT. The finding is that the specific exponent -12 is normalisation-dependent, drifts
+by a factor of 26 over 500 timesteps (9.589e-13 at step 1, 3.656e-14 at step 500), and
+compares a grid maximum of a spatially constant field against a grid maximum taken at
+the single steepest-gradient cell, so it is not a local force ratio anywhere in the
+domain.
+
+A SHARED DIMENSIONAL DEFECT LINKS C-1154 AND C-1161. The drag law
+a = n_chi*sigma*(m_red/m_p)*|v_rel| carries one power of velocity where momentum
+transfer requires two. Its units are s^-1, a rate, not m s^-2. Viewed from the
+coefficient side this is exactly why kappa comes out with units s/m rather than
+dimensionless. ONE MISSING FACTOR OF v_rel EXPLAINS BOTH CLAIMS' FAILURE, and it means
+the drag term is added to a dimensionless lattice acceleration by combine_forces. The
+10^-45 cm^2 threshold is the point where a mis-dimensioned quantity crosses an
+arbitrary line; correcting the velocity power moves it by ~5 orders.
+test_drag_lattice_vs_legacy_equivalence certifies only that the two wrong paths agree.
+
+EXPERIMENT STATUS IS THE BLOCK'S LARGEST SINGLE FINDING. Of 27 claims, only 10 have an
+experiment with status='active' (E-112, E-113). Fifteen point at E-114 through E-127,
+EVERY ONE status='planned'. C-1158 and C-1161 have no experiment row at all. That is
+17 of 27 claims with nothing scheduled to produce their number. And even the active
+pair has retained nothing: E-112 declares --out data/experiments/e112_solar_wind_dm,
+and data/experiments/ DOES NOT EXIST on disk. No claim in this block has a durable
+artifact behind it.
+
+CLAIMS WHOSE NAMED MECHANISM IS SIMPLY ABSENT FROM THE CODE. C-1169 asserts solar cycle
+phase correction using OMNI sunspot number; grep for sunspot, solar_cycle, cycle_phase
+returns NOTHING, and build_radial_profile pools records from different years without
+reading an epoch. C-1157 asserts a residual < 20%; grep for 'residual' returns nothing,
+and the power-law fit consumes interpolate_radial output, which itself IMPOSES r^-2 --
+so a naive fit is partly circular. C-1164 asserts consistency with MHD boundary
+conditions at the termination shock; no shock, discontinuity or compression ratio exists
+anywhere in the radial profile. In each case the claim describes a computation that was
+never written.
+
+A UNIT-CONVERSION FAMILY RUNS THROUGH THE HELIOSPHERIC CLAIMS. C-1162's Parker spiral
+angle is 0.195 deg instead of 44.87 deg because omega is applied in physical rad/s
+against r in grid cells and v in lattice units; the missing factor is exactly
+delta_t = 148.696 s, and restoring it gives 45.38 deg. C-1171's modulation potential is
+0.100 GV rather than 0.4-0.8 GV, and the crate's own test passes v_sw as 400.0 in km/s
+against kappa in AU^2/s. C-1173's peak shift formula multiplies by the grid spacing
+d_ln_r and omits the timestep, making a physical deceleration depend on numerical
+resolution. FOUR INSTANCES OF THE SAME FAILURE MODE -- lattice and physical units mixed
+in one expression -- IN FOUR DIFFERENT CRATES, which suggests a systematic absence of
+dimensional testing rather than four independent slips.
+
+CLAIMS THAT ARE THEIR OWN EVIDENCE. C-1172 compares modulate_spectrum to 'the
+force-field prediction' while modulate_spectrum IS the Gleeson-Axford expression
+transcribed exactly; the discrepancy is identically zero and the 5% tolerance has no
+second computation to bound. C-1153's first sentence claims a 32-dimensional CD escape
+statistic 'provides an algebraic vocabulary' for DM-baryon decoupling -- a statement
+about language, unfalsifiable in principle rather than merely unmeasured.
+
+NEIGHBOURING CLAIMS CONTRADICT EACH OTHER AND THE REPOSITORY'S OWN TESTS. C-1156 states
+< 10^-6 for the same quantity C-1145/1149/1150/1151/1152 state as ~10^-12 -- six orders
+apart, presented as one result. C-1167 predicts the NFW force grows 157x at 157 AU; the
+measurement gives 1.000000x, and test_r_dependence in the same file asserts the opposite
+in its own comment. C-1159 puts the BGK validity boundary at Kn < 100 for r < 50 AU
+while test_knudsen_quiet_solar_wind asserts the regime is already Kinetic at 1 AU;
+evaluating the formula gives Kn = 2.167e8 at every radius, exactly r-invariant, because
+lambda ~ r and d_i ~ r cancel. C-1166 restates the same boundary at a different
+threshold using a length scale (cell size) that is not the one the function divides by
+(ion inertial length), differing by 1.2e4 at 1 AU.
+
+A GREEN SUITE THAT PROVES NOTHING. Both crates' library tests pass in full (112 and 16,
+zero failures), and EVERY test named by a claim in this block is among the passing. Yet
+13 of the 27 claims are refuted. The tests and the claims are not testing the same
+propositions: test_r_dependence asserts the DM force is approximately CONSTANT while
+C-1167 claims it grows linearly with r; test_adiabatic_deceleration_shifts_peak asserts
+max_bin <= peak_bin, which A ZERO SHIFT SATISFIES, while C-1173 claims a specific 0.08
+magnitude; test_phi_decreases_with_radius asserts an integral shrinks as its interval
+shrinks while C-1171 claims phi(1 AU) is 0.4-0.8 GV;
+test_mass_conservation_extended_radial asserts a 1e-10 bound against a forcing of 1e-15,
+FIVE ORDERS TOO SMALL TO TEST IT. The suite therefore CANNOT FAIL WHEN A CLAIM IS WRONG,
+which is why 139 of the 148 claims in this fleet's scope carry no verification_rule edge:
+THE EXISTING TESTS WERE NEVER THE FALSIFIERS.
+
+WHAT WOULD FALSIFY THIS SYNTHESIS. A single run in which |F_DM| differs between two
+spacecraft IC files by more than the (u_scale/v_ref)^2 factor would break the central
+argument. A derivation showing b_scale is computed from the Alfven speed rather than
+hardcoded would restore the -12 exponent as physical. A retained E-112/E-113 artifact
+showing four distinct ratios rather than one repeated order-of-magnitude bin would
+restore the multi-spacecraft claims to genuine replication.
+"""
+new_claims_proposed = """
+1. The DM gravitational force field from DmForceField::new is invariant, to 7
+   significant figures, under every spacecraft-derived input AND under heliocentric
+   distance across [1, 157] AU, because it is evaluated at galactocentric radius
+   r_sun + r_helio with r_sun = 8.3 kpc. FALSIFIER: any pair of DmForceConfig differing
+   only in OmniRecord-derived fields yielding different max_force_magnitude().
+
+2. The reported |F_DM|/|F_Lorentz| scales exactly as b_scale^-2, so the exponent in the
+   O(10^-12) null result is set by the lattice magnetic normalisation and not by
+   heliospheric physics. FALSIFIER: a --b0 sweep departing from an inverse-square law by
+   more than f64 rounding. Measured over four decades it does not.
+
+3. MhdField::parker_spiral_init produces B_phi CONSTANT in r rather than B_phi ~ r^-1,
+   because b_phi = -b0*(r0/r)*(omega*r)/v_sw cancels the radial dependence; one factor
+   of (r0/r) is missing. FALSIFIER: assert b_phi(2r)/b_phi(r) == 0.5; code returns 1.0.
+
+4. The Parker spiral angle in both parker_spiral_b and parker_spiral_init is 0.195 deg
+   rather than the physical 44.87 deg, because omega (rad/s) multiplies r in grid cells
+   without the timestep delta_t; restoring delta_t = 148.696 s recovers 45.38 deg at
+   1 AU. FALSIFIER: atan(|b_phi/b_r|) at 1 AU falling inside [40, 50] deg.
+
+5. The DM-baryon drag is linear in |v_rel| where momentum-transfer drag is quadratic, so
+   drag_force returns a collision rate (s^-1) rather than an acceleration (m s^-2), and
+   kappa carries units s/m. FALSIFIER: doubling the DM wind speed at fixed sigma must
+   quadruple the drag acceleration; the code doubles it.
+
+6. knudsen_number(n, T) is invariant with heliocentric distance under the standard solar
+   wind scalings, equalling 2.167e8 at all r, so it cannot locate any BGK validity
+   boundary. FALSIFIER: evaluating it across [1, 157] AU and finding radial variation.
+
+7. The LBM driver does not conserve mass: total mass rose from 131178.947368 to
+   239325.927107 over 500 steps (82%) because the Zou-He inlet is an open mass source,
+   so the 10^-10 bound applies only to the closed-box unit test. FALSIFIER: mass drift
+   equal to the integrated inlet flux to within 1e-10, showing the growth is bookkeeping.
+"""
+gaps = """
+1. CLOSED. The first attempt was killed on the shared cargo lock; the retry COMPLETED.
+   lbm_3d --lib: 112 passed, 0 failed, exit 0. cr_transport --lib: 16 passed, 0 failed,
+   exit 0. EVERY TEST CITED BY A CLAIM IN THIS BLOCK PASSES --
+   test_mass_conservation_extended_radial, test_dm_mass_conservation, test_r_dependence,
+   test_adiabatic_deceleration_shifts_peak, test_phi_decreases_with_radius. THAT IS
+   ITSELF THE FINDING (see the green-suite entry in cross_claim_findings). What remains
+   unrun is the integration target crates/lbm_3d/tests/test_guo_forcing.rs, which --lib
+   excludes; test_dynamic_drag_phi_i_mass_conservation named by C-1168 lives there and
+   needs `cargo test --release -p lbm_3d --test test_guo_forcing`.
+
+2. C-1143 cannot be decided without a new diagnostic. delta_rho/rho is never computed.
+   The decisive cheap check is an A/B run with and without --no-dm on an identical grid
+   and seed, differencing the density fields. That diagnostic does not exist and adding
+   it is a source change, which this mandate excludes.
+
+3. C-1149/1150/1151 could be closed harder with the actual IC files. The WIND, WIND MFI
+   3-sec, ACE MAG and STEREO triangulated IC CSVs that E-113 consumed could not be
+   located, and data/experiments/ does not exist, so the four ratios could not be
+   compared directly. Regenerating them via solar-wind-ic and rerunning with identical
+   flags would replace the structural argument with four printed numbers. PREDICTED:
+   |F_DM| identical to within the (u_scale/v_ref)^2 factor in all four, ratio varying
+   inversely with each dataset's |B|^2.
+
+4. Three primary sources are CLOSED ACCESS and could not be fetched: McComas et al.
+   (2000) JGR 105 (Unpaywall is_oa false, Wiley 403), Stone et al. (2005) Science 309,
+   Stone et al. (2008) Nature 454. NO USER-AGENT SPOOFING WAS ATTEMPTED. Substituted
+   PubMed/Crossref abstracts plus the fetched OA replication Ebert et al. (2013) and
+   Richardson et al. (2022) + Treumann and Jaroschek (2008). Also unverified: Li, Wang
+   and Richardson (2008) GRL 35 (bronze-OA at Wiley, bot-blocked); and the commonly
+   quoted 1980 failure date of Voyager 1's plasma instrument, which no fetched source
+   states even though two confirm the instrument is non-functional. None of these gaps
+   changes a verdict.
+
+5. C-1153's first sentence is not a gap in evidence but a gap in FORM. No experiment can
+   be designed for it until it names a number the CD tower forbids.
+"""

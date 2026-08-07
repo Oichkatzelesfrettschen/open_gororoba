@@ -1,0 +1,231 @@
+# Fleet return: block L_MISC, 7 claims. HTML entities from the agent's own
+# escaping have been restored to plain ASCII (<, >, &).
+
+[block]
+id = "L_MISC"
+claim_count = 7
+agent_note = "Six of seven fail at the level of their own cited implementation or their own cited source, not at the level of the physics. The seventh (C-1629) is a genuine, correctly designed statistical result reproducing exactly from the committed artifact. C-970 recommends Closed/Analogy, a live value in claims.toml with one existing use but outside the briefing enum; Closed/Research-Program is the fallback."
+
+[[finding]]
+claim_id = "C-401"
+decidability = "external"
+falsifier = "False if the Casimir negative energy density achievable in a 1 um sphere / 4 um cylinder is smaller in magnitude than the Alcubierre |T^00| required for a bubble of that size by more than a factor of a few, or if White et al. (2021) claims only a shape correlation rather than a magnitude match."
+check_performed = "Read in-repo corpus copy data/papers/corpus/White_2021_Casimir_Warp.txt (abstract, Sec. 5). Computed |u_Casimir| = pi^2*hbar*c/(720*d^4) at the sphere-cylinder gap versus |T^00|_Alcubierre = (c^4/(8*pi*G))*(v_s/c)^2*(rho^2/(4*r_s^2))*(df/dr_s)^2 on the bubble wall. Read registry/lacunae.toml:247-251."
+observed = "White's own words: result is 'qualitatively quite similar to a two-dimensional representation of energy density requirements for the Alcubierre warp metric'; the 1 um sphere in 4 um cylinder is 'a toy model' that 'correlates well with'; conclusion is 'This qualitative correlation would suggest'. No magnitude match is claimed anywhere. Numbers: c^4/(8*pi*G) = 4.8155e42 J/m. |u_Casimir| = 8.56e-5 J/m^3 at d = 1.5 um, 6.93e-3 J/m^3 at an aggressive d = 0.5 um. |T^00|_Alcubierre for R = 1 um, wall w = 1 um: 3.01e53 J/m^3 at v_s = c, 3.35e36 J/m^3 at v_s = 1 m/s. Ratios to |u_Casimir(1.5 um)|: 3.5e57 at v_s = c, 3.9e40 at v_s = 1 m/s. Wall thinning to w = 0.1 um raises the requirement 100x. registry/lacunae.toml already records that Sprint 45 Casimir Lifshitz calculations 'confirm the physics but cannot validate the warp bubble application'."
+verdict = "refuted"
+verdict_reason = "Shortfall of at least 40 orders of magnitude in the most charitable nonrelativistic case, 57 orders at v_s = c, driven by the c^4/G = 1.2e44 prefactor and not closable by geometry. Independently, the claim misattributes its own cited source."
+recommended_status = "Refuted"
+verification_rule = "Unit test in crates/casimir_core/src/energy.rs beside casimir_parallel_plates_exact: assert SI |u| = pi^2*hbar*c/(720*d^4) for d in [0.5e-6, 1.5e-6] m stays below 1e-2 J/m^3 while the Alcubierre wall density (c^4/(8*pi*G))*(v/c)^2/(4*w^2) for R = w = 1e-6 m, v = 1 m/s exceeds 1e36 J/m^3, i.e. ratio > 1e38. Misattribution locator, greppable in data/papers/corpus/White_2021_Casimir_Warp.txt: 'a toy model consisting of a 1', 'correlates well with the Alcubierre warp metric requirements', 'This qualitative correlation would suggest', and Sec. 5 'qualitatively very similar to'."
+source_url = "https://doi.org/10.1140/epjc/s10052-021-09484-z"
+source_sha256 = "1580be671a957993b796344cb55cfd9b99ea2dbdb37cb57327c4205f005732b5"
+source_path = "data/papers/corpus/White_2021_Casimir_Warp.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-768"
+decidability = "unfalsifiable_as_stated"
+falsifier = "False if the cited Vulkan pipeline computes no entropy-production quantity, or if no Kerr-Newman metric couples into the LBM, or if 'non-trivial features' has no threshold separating it from a control."
+check_performed = "Read crates/lbm_vulkan/shaders/lbm.comp.glsl in full; grepped lbm_vulkan and gororoba_cli_warp for entropy, dissipation, Kerr; grepped repo for MathComplexity; read status_note at registry/claims.toml:9543."
+observed = "lbm.comp.glsl is a plain isothermal BGK D3Q19 collide-and-stream with periodic wrap, Guo forcing, and three stability hacks (tau floored at 0.55, force scaled 0.01, |u| clamped to 0.1). The one line written to the buffer named EntropyOut is entropy_accum += (f_local[i] - feq)^2/(feq + 1e-9), a chi-square distance from local equilibrium -- not entropy production, which would be the H-theorem rate -sum f ln(f/feq) or viscous dissipation sigma:grad u. Never time-integrated, never thresholded, never compared to a control. MathComplexity::KerrNewman occurs 13 times, all inside crates/lbm_vulkan/src/lib.rs, used nowhere else: no metric coefficient, no charge, no disk geometry reaches the shader. The registry's own status_note reads: 'Sprint 52: Deferred -- entropy production S_gen measurement and sedenion-to-viscosity texture mapping not implemented (~500 lines). Vulkan pipeline exists but lacks the coupling layer.'"
+verdict = "refuted"
+verdict_reason = "The claim asserts an observed exhibit, but its own status_note records that both the entropy measurement and the coupling were never implemented, and the shader confirms it. The factual subject-clause is refuted by reading; the predicate 'non-trivial features' remains unfalsifiable as written, hence a Closed/* rather than plain Refuted."
+recommended_status = "Closed/Methodology-Insufficient"
+verification_rule = "Operationalization before reopening: (1) define S_gen as the discrete H-theorem production rate H = sum_i f_i ln(f_i/w_i), S_gen = -(H^{t+1} - H^t) accumulated, replacing the chi-square residual at crates/lbm_vulkan/shaders/lbm.comp.glsl:63; (2) matched pairs, sedenion-ZD-modulated tau versus rank-matched shuffled tau at identical mean and variance, same seed, clamps disabled; (3) declare non-trivial as a spatially inhomogeneous S_gen whose azimuthal power spectrum exceeds the shuffled control at some m > 0 harmonic beyond the run-to-run spread over 10 seeds. Until then the durable check is the grep: MathComplexity appears only in crates/lbm_vulkan/src/lib.rs."
+source_url = ""
+source_sha256 = ""
+source_path = ""
+confidence = "high"
+
+[[finding]]
+claim_id = "C-970"
+decidability = "unfalsifiable_as_stated"
+falsifier = "False if 'corresponds to' is backed by no computed map from an algebraic breakdown to a geometric observable, i.e. if the 16-nacelle localization is set by assignment rather than derived."
+check_performed = "Read crates/gororoba_cli_warp/src/bin/warp-holography-sweep.rs in full (the only code pairing CD dimension with nacelle count); grepped crates/ for 'nacelle'."
+observed = "Hardcodes 'let dimensions = [1, 2, 4, 8, 16];' and 'let cd_ratios = [0.0, 0.0, 0.0, 0.0, args.cd_ratio_start]; // Alternativity fails at d=16'. Then 'let n_nacelles = *dim;' -- nacelle count is defined equal to CD dimension by assignment. The transition is announced by 'if n_nacelles == 16 && *ratio > 0.1 { println!(\"  => Phase transition detected: Stress-energy localized into 16 discrete nacelles!\") }', a literal conditional on the loop index and a CLI default. nacelle_energy_density is called once per dimension but never enters the conditional. Final line prints 'Exporting scalar fields to HDF5...' and exports nothing."
+verdict = "refuted"
+verdict_reason = "The correspondence is an assignment, not a result. No computed quantity distinguishes d=16 from d=8 in this code, so nothing in the repository could contradict the claim."
+recommended_status = "Closed/Analogy"
+verification_rule = "Durable check: crates/gororoba_cli_warp/src/bin/warp-holography-sweep.rs lines 22-23 and 39-42 -- the cd_ratios array and the 'n_nacelles == 16' literal. Reopening needs a derived map: a nacelle count emerging from minimizing nacelle_energy_density over n at fixed total negative energy, changing discontinuously as the CD alternativity ratio crosses zero, with the discontinuity absent for d <= 8."
+source_url = ""
+source_sha256 = ""
+source_path = ""
+confidence = "high"
+
+[[finding]]
+claim_id = "C-980"
+decidability = "external"
+falsifier = "False if the EHT M87* image shows a single emission ring too radially narrow to contain 16 macroscopically separated nested sub-rings, or if the cited implementation derives no angular scale for the splitting."
+check_performed = "Fetched EHT Collaboration 2019 ApJL 875 L1 (arXiv:1906.11238), extracted with pdftotext, read Sec. 7, Sec. 8, Table 1. Read crates/pathion_ellip/src/pathion_shadow.rs, diagonalizer.rs, angular_size.rs in full."
+observed = "EHT Paper I Sec. 7: 'The best-fit models for the asymmetric emission ring have diameters of 43+/-0.9 uas and fractional widths relative to the diameter of <0.5.' Table 1: ring diameter 42 uas, ring width 3.8+/-0.4 uas, crescent contrast >10:1, axial ratio <4:3. Sec. 8: 'the null hypothesis of the Kerr metric ... has not been violated.' Emission is confined to a single annulus 3.8 uas wide on a 42 uas ring (9 percent of diameter), interior brightness below 10 percent of ring average. Repo side: angular_size.rs computes only standard GR quantities (shadow radius 3*sqrt(3)/2*r_s, sub-rings demagnified by exp(-pi), 1.7 uas for n=1 at M87*) and contains no 16-fold structure. pathion_shadow.rs recomposes 16 per-plane deflections but the splitting magnitude comes entirely from caller-supplied 32-component spin/xi/eta arrays that nothing normalizes and that have no astrophysical determination. PathionDiagonalizer::new is not a diagonalization: it hardcodes index pairs (0,1),(2,17),(3,18),...,(16,31) with a comment that this 'bridges the K_16 cliques', never touching the zero-divisor graph whose 15 components the claim invokes."
+verdict = "refuted"
+verdict_reason = "At the claim's own word 'macroscopic', 16 nested sub-rings separated by an order-unity fraction cannot fit inside the measured 3.8 uas annulus on a 42 uas ring; EHT reports one ring consistent with Kerr. Separately, the cited implementation derives no angular scale at all."
+recommended_status = "Refuted"
+verification_rule = "Test in crates/pathion_ellip converting pathion_deflection output to microarcseconds for M87* (6.5e9 Msun, 16.8 Mpc), asserting the spread across the 16 planes exceeds the EHT ring width 3.8 uas; the claim requires it, the observation excludes it. Source locator: EHT 2019 ApJL 875 L1 Table 1 and Sec. 7."
+source_url = "https://arxiv.org/pdf/1906.11238"
+source_sha256 = "be6604770bb0d0a6c2a81071518e89d5bc2f9b460f91390518804e0a1f454472"
+source_path = "data/papers/intake/2026_08_06_claim_falsification/pdf_success/eht_collaboration_2019_m87_paper1_shadow_arxiv_1906_11238.pdf"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-990"
+decidability = "internal"
+falsifier = "The algebraic half is trivially true if the AVT is nonempty at 16D and 32D as well as 64D, so '64D breaks alternativity' carries no 64D-specific content. The drag half is false if the implementation in where_stated returns a force that is identically zero."
+check_performed = "Read crates/gr_core/src/forces/chingon_drag.rs, crates/algebra_analysis/src/avt.rs (exhaustive_capped, associator_basis), crates/cd_kernel/src/cayley_dickson/signs.rs (cd_basis_mul_sign_iter). Reimplemented cd_basis_mul_sign_iter and associator_basis exactly and enumerated all (i<j, k) alternator violations at dim 8, 16, 32, 64, counting those with k == 0."
+observed = "Violation counts: dim=8 total 0; dim=16 total 336; dim=32 total 5040; dim=64 total 52080. Violations with k == 0: ZERO at every dimension, exactly not statistically -- e_0 is the identity, so [e_i,e_j,e_0] = 0 identically, sum_sign = 0, and exhaustive_capped never pushes a k == 0 tuple. compute_bivector_chingon_drag at crates/gr_core/src/forces/chingon_drag.rs:49-58 accumulates torque only inside 'if k == 0 { ... }'. torque_64d therefore stays all-zero and the function returns the zero vector for every input. Second independent defect: the 3D-to-64D embedding at lines 37-44 is v_64d[i] = v.x*|cos(17i)| + v.y*|sin(31i)| + v.z*|cos(43i)|, arbitrary trigonometric padding with no algebraic derivation, and the back-projection at 62-70 reuses it. Density _rho is unused; alpha is a free scalar. The repo's own AVT doc comment states 'O (8D) is alternative; S (16D) and all higher levels are not', and tests test_alternativity_violation_tensor_16d and _64d already assert both nonempty. Note: avt.rs's doc comment claims '2688 violations out of a possible 16^3/2 = 2048 triples', internally impossible and inconsistent with the enumerated 336. CROSS-VALIDATION: the same reimplementation reproduces the repo's own Verified machine-checked C-1630 census exactly (1848 nonzero associators of 4096 ordered triples, 2248 zeros at dim=16), which licenses the k == 0 enumeration. TAXONOMY CORRECTION (orchestrator, post-write review): 2688 is NOT an ambiguous counting convention of this tensor. It is the BOX-KITE PERMUTATION count, carried in the repository's own crates/algebra_experimental/src/cd_tower_violations.rs as BOX_KITE_VIOLATION_COUNTS[16] = 2688 ('7 box-kites x 384 permutations'), a DIFFERENT topological invariant whose own doc comment says so. The alternator count is EXACT_ALTERNATOR_COUNTS[16] = 336, matching this reimplementation exactly, as do 5040 at D=32 and 52080 at D=64. The candidate space for the implemented loops is C(16,2)*16 = 1920, not the 16^3/2 = 2048 the doc comment states. So avt.rs commits a CROSS-INVARIANT CONFLATION plus a wrong candidate-space cardinality -- a box-kite statistic copied into documentation for a tensor whose search space cannot contain it."
+verdict = "refuted"
+verdict_reason = "The algebraic half is true but carries zero 64D-specific information: alternativity fails identically from 16D up, as the repo's own tests assert. The drag half is refuted at the implementation: the k == 0 gate selects a provably empty set, so chingon_drag.rs produces no force at all."
+recommended_status = "Refuted"
+verification_rule = "Test in crates/gr_core: assert!(AlternativityViolationTensor::new(64).violations.iter().all(|&(_, _, k, _, _)| k != 0)) and assert_eq!(compute_bivector_chingon_drag(pos, vel, v_wind, rho, alpha, &avt), Vector3::zeros()) for arbitrary nonzero arguments. Second test asserting the enumerated counts so the stale 2688 figure cannot persist. The working sibling crates/gr_core/src/forces/chingon_bivector_drag.rs iterates all violations with _k ignored and is what any reopened claim should cite."
+source_url = ""
+source_sha256 = ""
+source_path = ""
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1362"
+decidability = "internal"
+falsifier = "Vacuous if x87 cannot arise in this codebase; misattributed if the real hazard is not SIMD interleaving; the arithmetic sub-claim false if u_f64/u_x87 != 2048 or the N-crossover does not follow; the 'planned' benchmark sub-claim false if that benchmark already ran."
+check_performed = "grep -rn 'x87|asm!|long double|f80' across crates/; read crates/cd_kernel/src/x87_primitives.rs module docs and crates/cd_kernel/src/parallel_primitives.rs; read registry/experiments.toml E-188 and E-189; read data/csv/x87_avx_fma_followup_benchmark_summary.csv; recomputed the Ogita-Rump-Oishi crossover."
+observed = "(1) x87 is reachable: crates/cd_kernel/src/x87_primitives.rs implements x87_sum, x87_dot, x87_norm_sq, x87_norm_sq_16, x87_horner via core::arch::asm! with options(att_syntax). Rust on x86-64 SysV has no long double, so inline asm is the only route and it is taken -- the rule is not vacuous. (2) The where_stated path crates/algebra_analysis/src/x87_primitives.rs DOES NOT EXIST; the real path is crates/cd_kernel/src/x87_primitives.rs. (3) The module docs state the hazard more precisely than the claim: LLVM issue 44218 emits FSTP m64 at any spill site, truncating 80 bits to 64, and 'The ONLY safe pattern is: the entire accumulation loop lives inside a single asm! block.' The trigger is any LLVM-visible boundary crossed by an ST(n) value, not specifically AVX/XMM interleaving; ordinary scalar Rust in the loop body suffices to destroy precision. (4) The repo's only x87/AVX2 co-residence, ParallelReductionStrategy::Avx2PerChunkX87Final in parallel_primitives.rs, keeps them in separate functions on separate pinned threads. No counter-example hot function exists. (5) Arithmetic: 2^-53/2^-64 = 2^11 = 2048, correct -- but that is a unit-roundoff ratio, not a length. Against naive f64 the x87 advantage is 2048x at every n with no crossover in N. Against Kahan the crossover is where (n-1)*2^-64 meets 2*2^-53, i.e. n ~ 2^12 = 4096, not 2048. The stated N <= 1024 sits safely inside the true region; direction right, constant conservative by ~4x, quantity misidentified. (6) The 'planned AVX/FMA follow-on benchmark' ALREADY RAN as E-189, output data/csv/x87_avx_fma_followup_benchmark_summary.csv. At n=512: sum avx2_fma 32.25 ns vs x87 352.69 ns vs naive 313.99 ns vs kahan 1378.40 ns; dot 62.57 vs 388.85; norm_sq 49.40 vs 238.19. AVX2+FMA is 4.8x to 10.9x faster than x87 on every operation."
+verdict = "partially_confirmed"
+verdict_reason = "The operative rule is confirmed and already structurally honoured, but the claim attributes it to the wrong mechanism, cites a nonexistent file path, misidentifies a unit-roundoff ratio as an N-crossover (true Kahan crossover ~4096), and calls 'planned' a benchmark that ran as E-189 showing AVX2+FMA beating x87 by up to 10.9x."
+recommended_status = "Provisional"
+verification_rule = "Restate as 'no x87 accumulator may cross an LLVM-visible boundary; the entire reduction loop lives inside one asm! block' and enforce with a source gate: every core::arch::asm! block in crates/cd_kernel/src/x87_primitives.rs containing an f-prefixed x87 mnemonic must contain its own loop branch, i.e. no x87 asm! block inside a Rust for/while body. Retire the stale path in favour of crates/cd_kernel/src/x87_primitives.rs, correct the crossover to n ~ 2^12 against Kahan, replace 'planned' with the E-189 result."
+source_url = ""
+source_sha256 = ""
+source_path = ""
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1629"
+decidability = "internal"
+falsifier = "False if the committed bootstrap artifact does not carry the quoted numbers, or if the resampling cluster is not the day (so several files share a date and the interval understates day-level variance), or if the interval resamples the same days the advantage was discovered on in a way that cannot support population inference."
+check_performed = "Read data/output/staples_cluster_bootstrap_assoc_vs_rot.json verbatim; read registry/experiments.toml E-239; counted distinct (year, doy) keys and distinct paths in data/output/tha_matched_files.csv; attempted deterministic replay of the E-239 rot lane with the committed binary."
+observed = "JSON carries exactly the claim's numbers: simultaneous_margin_m point 0.002063, ci95 [0.000812, 0.003277], p_le_zero 0.001; mean_daily_auc delta point 0.005075, ci95 [0.003717, 0.006341]; n_files 813, n_two_class_files 813, n_samples 23664374, n_positives 578320, resamples 2000, seed 42, design file_cluster_bootstrap. Cluster identity: data/output/tha_matched_files.csv holds 815 data rows with 815 distinct (year, doy) keys and 815 distinct paths -- exactly one file per day, no day twice. The 813 is those 815 minus 2 parse failures. E-239's input field records the superseded list carried 836 rows with 21 days double-listed under two filename conventions, preserved as tha_matched_files_dup_defect.csv; that deduplication is what makes file == day. Replay: the committed binary .cache/exp-staples-target/release/staples-roc-cluster-bootstrap (dated 2026-07-16) rejects --col-a with 'error: unexpected argument', predating the E-239 run command. REBUILT from current source and reran the rot lane against the 5.1 GB benchmark_scores.csv: printed 'loaded 23664374 samples, 578320 positives, 813 files' and 'pooled: bulk 0.8274/0.8219 low 0.7558/0.7537 high 0.8991/0.8900 M=0.002063' and 'mean daily AUC over 813 two-class files: assoc 0.8219 rot 0.8168'. REPLAY COMPLETED. The replay JSON is BYTE-IDENTICAL to the committed data/output/staples_cluster_bootstrap_assoc_vs_rot.json under a normalized json.tool diff: all 2000 resamples reproduce, including simultaneous_margin_m 0.002063 ci95 [0.000812, 0.003277] p_le_zero 0.001, delta_bulk 0.005572 [0.004643, 0.006479], delta_high_gradient_positive 0.009081 [0.008095, 0.010113], pooled_auc_a 0.827449 [0.820525, 0.834788], pooled_auc_b 0.821877 [0.815186, 0.828717], mean_daily_auc a 0.821914 b 0.816839 delta 0.005075 [0.003717, 0.006341]. E-239's reproducibility_class = deterministic_replay HOLDS against the current source tree."
+verdict = "confirmed"
+verdict_reason = "The resampling unit is verified to be the day, duplicates already removed, so the intact-cluster bootstrap is the correct instrument for the population-inference claim the sentence makes -- the claim asserts generalization across the day population, not out-of-sample prediction. Numbers match the artifact digit for digit; the claim quotes the conservative min-over-strata margin 0.00206 rather than the larger bulk delta 0.00557, and states its own C-1633 sign reversal under matched six-sample rotation."
+recommended_status = "Verified"
+verification_rule = "CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --col-a assoc --col-b rot --out data/output/staples_cluster_bootstrap_assoc_vs_rot.json, then assert simultaneous_margin_m.point == 0.002063 and ci95 == [0.000812, 0.003277]. Add a cluster-identity precondition test: distinct (year, doy) count in data/output/tha_matched_files.csv equals its row count (815)."
+source_url = ""
+source_sha256 = ""
+source_path = "data/output/staples_cluster_bootstrap_assoc_vs_rot.json"
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+Three of seven (C-970, C-980, C-990) share one move: an algebraic dimension or component
+count is read directly as a count of physical objects, with no derivation fixing any
+physical scale from the algebra. C-970 sets n_nacelles = cd_dimension by literal
+assignment; C-980 gets its 16 planes from a hardcoded index pairing that never touches
+the zero-divisor graph it invokes, and derives no angular scale; C-990 embeds 3D vectors
+into 64D with |cos(17i)|, |sin(31i)|, |cos(43i)| padding and a free coupling alpha. All
+three cited implementations produce the asserted structure by construction rather than by
+computation. Falsified if any one supplies a map from the algebra to a length, angle, or
+force -- a nacelle count emerging from an energy minimization, an angular splitting in
+microarcseconds, or an alpha fixed independently of the flyby data.
+
+A sharper pattern is specific to the Provisional claims dated 2026-03-04 and 2026-03-05
+(C-960 nearby, C-970, C-980, C-990): each carries a status_note of the form 'Phase X
+complete/initiated. Rust implementation and Rocq proofs pending.' In every case the code
+that does exist is a stub that announces the conclusion. C-970's sweep prints 'Phase
+transition detected' from an if on the loop index; C-990's drag gates on a condition
+provably never satisfied and returns zero; C-768's own status_note admits the coupling
+layer was never written. The shared hidden assumption is that a compiling binary in
+where_stated constitutes evidence. This is a CLASS DEFECT in how where_stated was
+populated for the 2026-02/03 tranche, not seven independent errors.
+
+C-990's k == 0 defect and C-1362's spill hazard both turn on an exact structural property
+of the code that no amount of running reveals, because in one case the answer is silently
+zero and in the other silently low-precision. Both are caught by reading, not testing --
+which is why neither has a verification_rule edge today.
+
+C-1629 is the counter-example showing the registry can do this well: predeclared strata, a
+conservative min-over-strata statistic quoted in preference to the flattering bulk delta,
+explicit supersession of the earlier moving-block design, a documented deduplication defect
+preserved as an artifact, and a self-limiting final sentence recording the C-1633 sign
+reversal. Worth stating: its effect is +0.002 AUC on 23.7M samples -- statistically nonzero
+and practically negligible.
+"""
+new_claims_proposed = """
+1. "No alternator violation in any Cayley-Dickson algebra has k = 0, because the associator
+   with the identity vanishes identically; therefore any contraction gated on k == 0 is
+   identically zero." Falsifier: exhibit dim and (i, j) with [e_i,e_j,e_0] + [e_j,e_i,e_0]
+   != 0. Enumerated to dim 64 with zero hits.
+
+2. WITHDRAWN 2026-08-06 (orchestrator post-write review). The withdrawn text read:
+   "the ratio 2688/336 is exactly 8, pointing at a counting-convention difference
+   (ordered rather than i<j pairs, or per-output-axis rather than per-triple) rather
+   than an arithmetic error on either side ... Resolution: ... NOT RUN."
+   The convention hypothesis is wrong and the resolution is no longer outstanding.
+   2688 is the BOX-KITE PERMUTATION count, carried in this repository as
+   crates/algebra_experimental/src/cd_tower_violations.rs BOX_KITE_VIOLATION_COUNTS[16]
+   = 2688 with the doc comment "7 box-kites x 384 permutations". The alternator count
+   is EXACT_ALTERNATOR_COUNTS[16] = 336 in the same file, and the reimplementation
+   reproduces it exactly, as it does 5040 at D=32 and 52080 at D=64. The two constants
+   are DIFFERENT topological invariants and the file says so.
+   REPLACEMENT PROPOSITION: the doc comment on crates/algebra_analysis/src/avt.rs
+   commits a cross-invariant conflation -- a box-kite statistic copied into the
+   documentation of an alternator tensor -- and states a candidate-space cardinality
+   that is also wrong, since the implemented loops range over C(16,2)*16 = 1920
+   triples, not 16^3/2 = 2048. Falsifier: an enumeration of the tensor's own loop
+   bounds yielding 2048 candidates or 2688 violations at D=16.
+
+3. "MathComplexity::KerrNewman is a dead enum variant: constructed in
+   crates/lbm_vulkan/src/lib.rs and read nowhere, so no relativistic geometry reaches any
+   lbm_vulkan shader." Falsifier: a grep for MathComplexity outside lib.rs returning a use
+   site.
+
+4. "The Alcubierre wall energy density for a 1 um bubble exceeds the parallel-plate Casimir
+   density at any gap above 10 nm by more than 1e38, independent of bubble velocity down to
+   1 m/s." Falsifier: a geometry and velocity where the ratio drops below 1e38.
+
+5. "In the deduplicated THEMIS-A staples benchmark the file cluster is exactly the day
+   cluster: data/output/tha_matched_files.csv has 815 rows and 815 distinct (year, doy)."
+   Falsifier: any repeated (year, doy). This is the precondition C-1629's population
+   inference rests on and it is currently untested.
+
+6. "The cached experiment binary at
+   .cache/exp-staples-target/release/staples-roc-cluster-bootstrap no longer accepts the
+   argument list in E-239's own registered run command, so the cache artifact cannot
+   replay its registered experiment." Falsifier: the cached binary accepting --col-a.
+   GENERALIZES to a proposed cache-staleness gate over all registered experiment
+   binaries -- if one cached binary has drifted from its registered run command, others
+   likely have too, and no current check would notice.
+"""
+gaps = """
+C-1629 HAS NO REMAINING GAP ON REPRODUCTION: the deterministic replay completed and its
+JSON is byte-identical to the committed artifact under a normalized diff, point estimates
+and all 2,000-resample intervals alike, so E-239's deterministic_replay class holds
+against the current source tree. The superseded note follows for provenance -- the
+claim is about what the committed artifact shows and whether the intact-cluster design
+supports population inference, both verified directly. A replay would test E-239's
+reproducibility_class, not C-1629's content. The obstacle is separately worth recording:
+the committed binary .cache/exp-staples-target/release/staples-roc-cluster-bootstrap
+(2026-07-16) rejects the --col-a argument E-239's own registered run command passes, so
+that cache artifact no longer reproduces its own experiment. To close: rebuild and rerun
+the rot lane against the 5.1 GB data/output/benchmark_scores.csv, diff against the JSON.
+
+Also untested for C-1629, the one remaining route to an optimistically biased interval:
+whether any detector hyperparameter (associator normalization, staple stride, six-sample
+window) was selected using these same 813 files. E-239's method describes a fixed
+architecture and the sign-scramble control at 0.4750 AUC argues against tuning, but neither
+confirms it. Requires tracing the normalization constant's provenance in the
+score-generation binary. Does not change the verdict.
+
+C-1362's rule was confirmed non-vacuous and structurally honoured but NOT measured. No hot
+function in this repository mixes x87 and AVX inside one function, so there is no
+counter-example to disassemble. Deciding it would require deliberately writing a mixed
+function, inspecting for FSTP m64, and measuring precision loss against the x87_norm_sq
+oracle -- i.e. adding code the repo has correctly avoided.
+
+C-990's coupling constant alpha was not traced. Whether it is fixed independently or fit
+per flyby decides whether the model has predictive content;
+crates/gororoba_cli_physics/src/bin/flyby_crucible.rs requires the gpu feature and was not
+run. C-952 (Verified) already records alpha_chingon = 6e-12 is non-universal across flyby
+geometries -- 900x excess for MESSENGER, wrong sign for Rosetta-I -- independent evidence
+against C-990's drag half, not re-derived here.
+
+C-980 was refuted at the 'macroscopic' reading using EHT M87* only. Sgr A* (EHT 2022, ApJL
+930 L12) was not fetched; it would add an independent mass and distance but is unlikely to
+change the conclusion given the M87* ring width of 3.8 uas.
+"""

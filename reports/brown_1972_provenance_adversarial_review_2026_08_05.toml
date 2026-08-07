@@ -1,0 +1,81 @@
+# Adversarial review of the Brown 1972 provenance audit and repair specification.
+
+[review]
+id = "BROWN-1972-PROVENANCE-ADVERSARIAL-REVIEW-2026-08-05"
+artifact = "reports/brown_1972_provenance_audit_repair_2026_08_05.toml"
+last_verified = "2026-08-05"
+fields = ["data provenance", "build reproducibility", "registry governance"]
+visibility = "complete authored artifact read; no sampling"
+provenance = "The target is a new TOML finding and repair specification backed by local PDF bytes, PDF metadata, intake headers, SQLite rows, and a bounded rescue-archive scan."
+
+[phase_0]
+artifact_claim = "The report claims to identify Brown 1972 bytes, describe their current registration, and specify the remaining repair gates."
+actual_field = "Retained scientific-source provenance and SQLite compatibility-registry governance."
+
+[deterministic_tools]
+taplo_check_exit = 0
+tomlq_parse_exit = 0
+ascii_scan = "no non-ASCII bytes found"
+git_diff_check_exit = 0
+sqlite_integrity_check = "ok"
+gororoba_db_stats_exit = 0
+gitleaks = "unavailable"
+semgrep_exit = 0
+global_signature_audit = "exit 1; baseline path and lane invariant failures remain outside the Brown identity result"
+
+[[finding]]
+severity = "SERIOUS"
+title = "The canonical artifact row is not hash-bearing"
+barb = "The report has the hash, but the canonical artifacts table still records only a path and status; a prose report is evidence of byte identity, not a byte-identity field in the registry."
+grounding = "The inspected SQLite artifacts schema has id, key, title, citation, status, minimum_requirement_met, canonical_functional_url, and canonical_download_path, with no SHA-256 column."
+remedy = "Extend the supported provenance schema and gororoba-db mutator before claiming canonical hash registration, then regenerate and verify all compatibility views."
+confidence = "high"
+
+[[finding]]
+severity = "SERIOUS"
+title = "Canonical ownership is ambiguous"
+barb = "Four downloaded artifact rows point at the same Brown PDF, so the word canonical currently means 'the row with the nicest source ref' rather than a database-enforced invariant."
+grounding = "ASOT-2932, ASOT-2934, ASOT-2964, and ASOT-3129 all use data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf, while the artifacts schema has no primary-owner or alias relation."
+remedy = "Preserve every historical row, designate ASOT-2932 as the owner through a supported relation or metadata field, and mark the other rows as aliases without deleting source history."
+confidence = "high"
+
+[[finding]]
+severity = "SLOPPY"
+title = "Transport provenance is incomplete"
+barb = "The local file is convincingly identified, but the fetch ledger disagrees with it; treating the filename and one header capture as a complete transport chain would be provenance theatre."
+grounding = "The retained 3539055-byte raw capture matches the corpus PDF and the HTTP 200 header says 3539055 bytes, while fetch_results_all_normalized.tsv records 1292525 bytes and a different SHA, and the refetch header is HTTP 206 with 2246530 bytes."
+remedy = "Keep the inconsistent attempts as retained history, label transport provenance partial, and obtain a complete deterministic transfer log if source-origin proof is required."
+confidence = "high"
+
+[[finding]]
+severity = "SLOPPY"
+title = "The isolated checkout is not a standalone evidence root"
+barb = "The worktree is isolated for Git edits, but the ignored PDF is absent there, so a registry audit from the worktree alone reports the exact Brown path as missing. Isolation has exposed a storage dependency rather than removed it."
+grounding = "gororoba-db audit-cmd signatures exits 1 with the worktree as repo_root and reports missing Brown and unrelated retained paths; the same audit from the canonical checkout root does not report the Brown PDF, but still fails on unrelated baseline paths."
+remedy = "Keep the payload in its governed evidence root, run path-sensitive checks with that root explicitly named, and retain the distinction between an isolated Git worktree and a complete evidence checkout."
+confidence = "high"
+
+[[finding]]
+severity = "SLOPPY"
+title = "The missing CDCS-001 row blocks full source reconciliation"
+barb = "The registry cites CDCS-001 as if the canonical source file exists, but the referenced file is absent; that is a dangling citation with a very confident status token."
+grounding = "Both the SQLite ASOT-2932 source edge and registry/source_lanes/papers_pdf.toml cite registry/cayley_dickson_canonical_sources.toml::paper/0::CDCS-001, while the file is absent from the current checkout."
+remedy = "Restore the exact source row or replace it through the canonical owner, preserving the historical recovery report and generated lane rather than hand-editing a compatibility view."
+confidence = "high"
+
+[[sound]]
+claim = "The exact local PDF identity conclusion is earned."
+grounding = "The measured SHA-256 and size match the manifest, PDF title/author/pages match the claimed work, the retained intake binary compares byte-for-byte equal, and the rescue archive has zero size-matched or full-SHA matches."
+
+[[sound]]
+claim = "The report does not promote the unrelated Brown text mention to source linkage."
+grounding = "C-1471 and C1471_HigherCDTrilinearity are recorded as unrelated textual matches, while direct Brown artifact evidence, theorem identity evidence, equation atoms, derivation steps, and evidence edges remain zero in the queried surfaces."
+
+[steelman]
+strongest_defensible_reading = "This is a careful bounded audit, not a claim that the Brown tranche is complete. It correctly identifies the exact retained bytes, the path drift, the existing ASOT registration, the archive negative, the absent source row, and the missing claim/equation edges, then refuses a speculative SQLite rewrite."
+
+[verdict]
+core_status = "identity_sound; provenance_repair_incomplete"
+single_most_important_fix = "Make the measured hash and canonical-owner relationship first-class in the supported registry schema, then reconcile the historical path and CDCS-001 row."
+trust_requirement = "A complete gate needs the same PDF hash, a resolved canonical path, an explicit owner or alias relation, a restored source row, and passing generated-view and SQLite integrity checks."
+final_statement = "The bytes are real and correctly identified. The registry is not yet a complete provenance record, and the report is right to leave that gate open."

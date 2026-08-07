@@ -1,0 +1,256 @@
+# Claim falsification fleet 2026-08-06: response to external branch review.
+#
+# The review of branch claims/falsification-fleet-2026-08-06 raised four blocking
+# classes of defect. This artifact records what was verified, what was corrected,
+# and what is deferred with its mechanism. It is the evidence artifact cited by
+# the corrective transitions appended after the review.
+
+[review]
+target_commit = "dd20df14438dd11c429011d90fd59b8e5f2de428"
+base_commit = "5293fff8"
+reviewed = "2026-08-06"
+disposition = "changes requested; corrections applied on the same branch"
+
+# ---------------------------------------------------------------------------
+# 1. Verified-without-repair promotions
+# ---------------------------------------------------------------------------
+
+[[correction]]
+id = "RC-1"
+claim_ids = ["C-1312", "C-834", "C-1658"]
+finding = """
+All three were promoted to Verified by a transition whose own rationale names a
+false or stale part of the canonical record and defers the repair. The canonical
+state that results is self-contradictory in the C-834 case, where the claim
+asserts R_cas/R_dir < 0.05 while its status_note records 0.088 from the path its
+where_stated names; stale in the C-1312 case, where the statement and
+where_stated both point at a deleted file; and misattributed in the C-1658 case,
+where the rate prefactors 4/9 and 9/16 originate in Eq. 5 and Eq. 7 rather than
+the Eq. 6 and Eq. 8 the claim names.
+"""
+mechanism = """
+The canonical mutation surface cannot repair any of the three. gororoba-db claim
+exposes transition, update-status-note and update-formal-proof only; there is no
+path that edits statement or where_stated, and registry/claims.toml is a
+generated read-only compatibility export that must not be hand-edited. Option
+"repair the proposition, then verify" is therefore unavailable on this branch.
+"""
+resolution = """
+Conservative status. Each claim is returned to Provisional by an appended
+corrective transition naming the exact repair required. Verified is not asserted
+against a proposition known to be defective. The substantive findings are
+unaffected and are restated in the corrective rationales: no rotation-curve or
+harmonic-decomposition code preceded harmonic_halos.rs (C-1312); the corrected
+signed source path yields 0.04774 < 0.05 (C-834); both amplitudes, their complex
+form and the signed mismatch identity are verbatim in the source (C-1658).
+"""
+
+# ---------------------------------------------------------------------------
+# 2. Experiment-verdict mapping audit
+# ---------------------------------------------------------------------------
+
+[[correction]]
+id = "RC-2"
+claim_ids = ["C-1050", "C-970", "C-1070", "C-1100", "C-1331", "C-768"]
+finding = """
+Six fleet findings classified refuted carry a final status other than Refuted.
+The review asked whether the canonical experiment_verdict on each is right, on
+the ground that absence of a repository implementation invalidates the evidence
+route without falsifying a proposition about nature. All six were re-read.
+"""
+observed = """
+C-1050 Falsifies -> MethodologyInvalid. The proposition is about nature: the
+Higgs VEV is a topological requirement for stability of the 1024D algebra coupled
+to 4D spacetime. The falsifier that ran was a grep proving no VEV is computed
+anywhere in the repository. That establishes the repository cannot decide the
+proposition; it does not falsify it. Status Closed/Research-Program is unchanged
+and remains correct.
+
+C-970 Falsifies -> MethodologyInvalid. The transition's own rationale ends
+"nothing in the repository could contradict the claim", which is a statement of
+undecidability, not of falsification. The 16-nacelle correspondence is set by
+assignment, so no computed quantity distinguishes d=16 from d=8. Status
+Closed/Analogy is unchanged and remains correct.
+
+C-1070 Falsifies UPHELD. The implementation was examined, not found missing. The
+Intention Operator is a two-parameter entropy-damping filter whose stabilization
+is carried by a tuned gain, and the stated falsifier -- that removing the
+intention framing changes no computed number -- was met on inspection of the
+computation itself.
+
+C-1100 Falsifies UPHELD. The proposition is about the repository artifact: that
+the Singularitarian Engine is the hidden source code of physical constants. A
+claim that an artifact outputs constants is falsified by that artifact outputting
+none. This is not the absence-of-implementation pattern.
+
+C-1331 Falsifies UPHELD. The check was content-level, not existence-level: the
+five asserted contexts were enumerated and at most two survive as structurally
+distinct, against a threshold of three stated before the check ran. Status
+Provisional is conservative relative to the verdict and is left unchanged, since
+raising it to Refuted would be a fresh adjudication the review did not request.
+
+C-768 MethodologyInvalid UPHELD. Already correctly classified.
+"""
+resolution = """
+Two corrective transitions appended, for C-1050 and C-970, carrying
+experiment_verdict = MethodologyInvalid and the unchanged status. The systematic
+error they share is stated once: a falsifier that tests for the EXISTENCE of a
+repository implementation was scored as falsifying a proposition about nature.
+Four of the six rows do not exhibit it.
+"""
+
+# ---------------------------------------------------------------------------
+# 3. C-1244: conditional falsely scored as weakened
+# ---------------------------------------------------------------------------
+
+[[correction]]
+id = "RC-3"
+claim_ids = ["C-1244"]
+finding = """
+The claim states a conditional: time-reversal symmetry E(k) = E(-k) holds when
+inversion symmetry is preserved. The fleet scored it partially_confirmed because
+the equality also holds when inversion is broken. That is not a defect in the
+claim. P implies Q is not false because Q also holds under not-P; preserved
+inversion is sufficient, merely not necessary.
+"""
+observed = """
+A second error accompanied it. The artifact stated that real hopping amplitudes
+make H(k) a real symmetric matrix. They do not. hamiltonian_at_k at
+crates/quantum_core/src/tight_binding.rs:243-262 accumulates amplitude *
+exp(i k.R) and adds the conjugate to the transposed entry, so H(k) is complex
+Hermitian for every parameter set. What real amplitudes give is
+H(-k) = conj(H(k)); Hermiticity then makes conj(H(k)) = transpose(H(k)), whose
+spectrum equals that of H(k). E(k) = E(-k) follows through spinless time
+reversal, not through real symmetry. The same wording error appeared in the
+C-1235 control paragraph and in the block synthesis, and both are corrected.
+"""
+resolution = """
+Fleet verdict reclassified to confirmed and canonical experiment_verdict
+corrected to SurvivesChallenge by an appended transition. Status stays
+Provisional: the claim is true, but the repository test named
+test_time_reversal_symmetry passes unchanged under maximal inversion breaking and
+so does not discriminate. A discriminating negative control requires a genuinely
+time-reversal-breaking complex Haldane-type hopping, not a different onsite
+inversion-breaking term.
+"""
+
+# ---------------------------------------------------------------------------
+# 4. Deferrals whose mechanism is append-only immutability
+# ---------------------------------------------------------------------------
+
+[[deferral]]
+id = "RD-1"
+subject = "experiment_ids empty on fleet transition events"
+finding = """
+The persistence layer carries experiment_ids as first-class transition metadata,
+and the 148 fleet events all leave it empty, including events that adjudicate
+named registered experiments.
+"""
+mechanism = """
+Transitions are append-only events. No mutation path exists for a landed event's
+metadata; gororoba-db claim offers update-status-note and update-formal-proof
+only, both of which act on the claim row rather than on an event. Populating
+experiment_ids retroactively would mean appending one no-op status-preserving
+event per affected claim purely to carry an edge, which inflates the event ledger
+with adjudications that adjudicate nothing.
+"""
+resolution = """
+Deferred to the semantic-edge tranche that already owns the 139 unwritten
+verification_rule edges, where an experiment edge is the natural representation.
+The corrective transitions appended in response to this review DO populate
+experiment_ids where a registered experiment is decisive. The rule going forward:
+experiment_ids is populated whenever a registered experiment was run, replayed,
+found non-executable, or used as the decisive retained result, and is left empty
+only for source reading, static analysis and unregistered probes.
+"""
+
+[[deferral]]
+id = "RD-2"
+subject = "unresolved_assumptions overloaded with proposed verification rules"
+finding = """
+The fleet events populate unresolved_assumptions with entries beginning "Durable
+check proposed by the falsification fleet:". A proposed test is not an
+assumption. A consumer of the field cannot separate an unresolved physical
+assumption, a missing input, a proposed executable falsifier and an
+implementation task.
+"""
+mechanism = """
+Same append-only constraint as RD-1. The strings cannot be removed from landed
+events. The content is not at risk: every proposed rule is also retained verbatim
+in the block artifact registered as that event's evidence, under the field name
+verification_rule.
+"""
+resolution = """
+Documented rather than rewritten. Fleet-era events, event_id 22 through 169, are
+known to overload the field, and the authoritative copy of each proposed rule is
+the verification_rule field of the corresponding block artifact. Going forward
+unresolved_assumptions carries assumptions only, and proposed rules stay in
+artifacts until the semantic-edge tranche writes them as
+edge_role = "verification_rule" edges.
+"""
+
+# ---------------------------------------------------------------------------
+# 5. Generator defect found while responding to the review
+# ---------------------------------------------------------------------------
+
+[[correction]]
+id = "RC-4"
+subject = "registry/lacunae.toml carries resolved claim rows forward indefinitely"
+finding = """
+The review observed that lacunae.toml declares authoritative = true while
+asserting Theoretical status for claims this branch moved to Verified or Refuted
+(C-1636, C-1651, C-1658 now Verified; C-1639 now Refuted). The cause is in the
+generator, not in the data.
+"""
+observed = """
+build_lacunae in crates/gororoba_cli_data/src/bin/registry_integrity.rs reads the
+existing lacunae.toml as an input and re-emits every row it finds with a
+hardcoded origin = "legacy_manual", before deriving fresh rows from live claim
+status. Two consequences follow. A row derived from claim status on one run is
+indistinguishable from a hand-authored row on the next, which is why all 200 rows
+now report legacy_manual and origin_kind_count = 1. And because seen_ids is
+populated by the carry-forward loop first, a claim-derived row can never expire:
+resolving the claim removes it from the derived set but the frozen copy survives.
+The file is deterministically generated and semantically false at the same time.
+"""
+resolution = """
+The generator is corrected so claim-derived rows re-derive from live status on
+every run: rows carried forward preserve their recorded origin instead of being
+relabelled, and rows recognisable as claim-status derivations are dropped from
+the carry-forward set so the live scan is authoritative for them. lacunae.toml is
+then regenerated and its counts recomputed.
+"""
+
+# ---------------------------------------------------------------------------
+# 6. Known integrity boundaries, restated without softening
+# ---------------------------------------------------------------------------
+
+[known_boundaries]
+registry_check = """
+registry-check reports two failures on this branch: a stale roadmap export and
+six unregistered binaries. Both were proved pre-existing by stashing the branch's
+registry changes and observing identical output. Neither was introduced nor fixed
+here.
+"""
+sfwm_evidence_hashes = """
+Block H recorded an inherited evidence-chain defect: retained Son-Chekhova PDF
+hashes are wrong in several historical audit files, including commits whose
+subjects describe hash reconciliation. No verdict in this campaign depends on
+those hashes, because every Son-Chekhova finding rests on the retained source
+text rather than on a hash comparison. The defect remains open and is not
+resolved by this branch.
+"""
+statement_of_validation = """
+Repository gates pass subject to the two registry-check failures above and to the
+historical SFWM evidence-hash defect. No stronger statement is made.
+"""
+
+# ---------------------------------------------------------------------------
+# 7. Scope that remains open by design
+# ---------------------------------------------------------------------------
+
+[open_scope]
+verification_rule_edges = "139 of 148 proposed; 0 written. Graph deficiency unchanged."
+successor_claims = "44 proposed; 0 created."
+frontier_regeneration = "The 148-row partition should be regenerated from post-transition SQLite rather than hand-maintained."
+c990_regression_theorem = "Assert no AVT entry has k == 0 at D = 16, 32, 64, and independently assert the Chingon drag routine returns zero."

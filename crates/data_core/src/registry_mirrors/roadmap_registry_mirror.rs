@@ -29,6 +29,16 @@
 //!   - `registry/monograph.toml`
 //!   - `registry/lacunae.toml`
 //!
+//! ### WS-CLAIM-TRANSITION-001: Canonical Claim Transition Schema
+//!
+//! - Priority: `high`
+//! - Status: `done`
+//! - Description: Add typed canonical claim status transitions, successor claim creation, and transition-event persistence to gororoba-db. Preserve prior status, experiment verdict, evidence, falsifier, rationale, successor links, and unresolved assumptions without using direct SQLite edits.
+//! - Primary outputs:
+//!   - `crates/gororoba_db/src/bin/gororoba_db/types.rs`
+//!   - `crates/provenance_store/src/lib.rs`
+//!   - `db/migrations`
+//!
 //! ### WS-CLAIMS-001: Claims Evidence Governance
 //!
 //! - Priority: `high`
@@ -174,3 +184,15 @@
 //!   - `registry/insights.toml`
 //!   - `registry/next_actions.toml`
 //!   - `registry/todo.toml`
+//!
+//! ### WS-VALIDATION-001: Validation Cost and Evidence Pipeline
+//!
+//! - Priority: `high`
+//! - Status: `in_progress`
+//! - Description: Replace nested gate orchestration with a descriptive validation pipeline that shares compiled tools and records elapsed cost. Couple the pipeline to the scientific frontier queue so registry counts, claim status, experiment manifests, formal proof records, and document ledgers advance together.
+//! - Primary outputs:
+//!   - `Makefile`
+//!   - `xtask/src/main.rs`
+//!   - `docs/engineering/validation-workflow-rca-2026_08_02.md`
+//!   - `docs/engineering/scientific-frontier-map-2026_08_02.md`
+//!   - `registry/canonical/control_plane.sqlite3`

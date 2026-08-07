@@ -1,0 +1,264 @@
+# Fleet return: block J_ZD_SPECTRAL, 11 claims. HTML entities restored to ASCII.
+# Orchestrator spot-checks, both confirmed directly:
+#   - associator_entropy.rs:290-297 entropy_upper_bound: k = (h_8-h_dim)/log_zd
+#     then bound = h_8 - k*log_zd, i.e. bound == h_dim identically. Tautology.
+#   - spectral_dimension.rs:490 carries the comment "All components are
+#     isomorphic at a given dimension, so compute from first".
+# The agent removed its own scratch binary; git status is clean of it.
+
+[block]
+id = "J_ZD_SPECTRAL"
+claim_count = 11
+agent_note = "Almost entirely internal and almost entirely decidable from committed artifacts plus two standard spectral-graph theorems. Six claims (C-924, C-926, C-929, C-930, C-950, C-960) rest on estimators, selections or implementations that return their answer by construction rather than by measurement and are refuted; four (C-928, C-1139, C-1253, C-1291) survive, two of them stronger than stated; C-927 survives only mechanically."
+
+[[finding]]
+claim_id = "C-924"
+decidability = "internal"
+falsifier = "False if entropy_upper_bound() does not implement an inequality with content -- specifically if the returned bound equals the measured H(dim) identically for all inputs, or if the k fitted at dim=16 fails to bound H at 32/64/128."
+check_performed = "Read associator_entropy.rs:288-297 (entropy_upper_bound), 111-123 (bin_norms), 130-220 (decompose_entropy)."
+observed = "entropy_upper_bound(h_8, h_dim, n_zd) computes log_zd = ln(n_zd+1); k = (h_8 - h_dim)/log_zd; bound = h_8 - k*log_zd. Substituting k gives bound = h_8 - (h_8 - h_dim) = h_dim identically, for every (h_8, h_dim, n_zd) with n_zd >= 1. Separately, bin_norms is called with max_val = max_norm computed per dimension from that dimension's own sample (line 186), so H(dim) is a histogram entropy over a per-dimension rescaled support."
+verdict = "refuted"
+verdict_reason = "The 'upper bound' is an algebraic tautology: the fitted k is defined so the bound equals the measurement exactly, at EVERY dimension, not merely at dim=16. The inequality is satisfied with equality by construction and has zero falsifiable content; the one-point fit is the symptom, the identity is the defect. The per-dimension max_norm binning additionally makes H(dim) a shape statistic on a rescaled support, so cross-dimensional comparison is not on a common scale."
+recommended_status = "Refuted"
+verification_rule = "Unit test: for arbitrary (h_8, h_dim, n_zd) with n_zd >= 1, assert (entropy_upper_bound(h_8, h_dim, n_zd).1 - h_dim).abs() < 1e-12 -- the function returns an identity, not a bound. Locator: crates/algebra_analysis/src/associator_entropy.rs::entropy_upper_bound"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-926"
+decidability = "internal"
+falsifier = "False if any ZD motif component at any CD dimension 16-512 has gap_ratio = lambda_2/lambda_max <= 0.6, or if the census that established the claim never examined more than one component per dimension."
+check_performed = "Read spectral_dimension.rs:484-497 (zd_laplacian_eigenvalues) and 582-620 (spectral_gap_census). Read committed census artifacts data/csv/cd_motif_components_{16,32,64,128,256}d.csv. Applied Fiedler (1973) a(G) <= kappa_v(G) <= delta_min for non-complete connected G, and Grone-Merris/Anderson-Morley lambda_max >= Delta_max + 1."
+observed = "zd_laplacian_eigenvalues(dim) computes the Laplacian of components[0] ONLY, justified by the inline comment 'All components are isomorphic at a given dimension' (line 490). That comment is FALSE at every dim >= 32. From cd_motif_components_32d.csv: 8 components have 84 edges (12-regular) and 7 have 36 edges (degree_min 4, degree_max 12). Distinct (node,edge,deg_min,deg_max) signatures: dim=32 (14,36,4,12) and (14,84,12,12); dim=64 (30,84,4,28) (30,228,12,28) (30,276,4,28) (30,420,28,28); dim=128 8 classes, deg_min in {4,12,28,60}, Delta_max = 60; dim=256 16 classes, deg_min in {4,12,28,60,124}, Delta_max = 124. components[0] is ALWAYS the densest (complete-multipartite) class. Analytic upper bound for the delta_min = 4 classes, which exist at every dim >= 32: gap_ratio <= delta_min/(Delta_max+1) = 4/(Delta_max+1): dim=32 <= 4/13 = 0.3077; dim=64 <= 4/29 = 0.1379; dim=128 <= 4/61 = 0.0656; dim=256 <= 4/125 = 0.0320. The repo's own theory doc concedes it: crates/data_core/src/registry_mirrors/docs_theory_cayley_dickson_integrable_expanders.rs:281 'In the strict Alon-Boppana sense, these are NOT Ramanujan (they are complete multipartite, not sparse).'"
+verdict = "refuted"
+verdict_reason = "The conjunct 'gap_ratio > 0.6 universally' is refuted analytically at every dimension >= 32: sparse motif classes with delta_min = 4 and Delta_max = n-2 exist in the committed census and are bounded above by 4/(Delta_max+1), 0.31 at dim=32 falling to 0.032 at dim=256, an order of magnitude below the asserted floor. The stated mechanism ('near-complete graph topology forces lambda_2 close to n') holds only for the densest class, the only class the census ever measured. The weaker conjunct 'all components exceed 1/(2n)' is NOT decided here, but that test cannot certify an expander family in any case: 1/(2n) shrinks with n, and a family whose degree grows with n is dense. gap_ratio for the sparse classes provably decays as O(1/n) -- the opposite of the constant lower bound an expander family requires."
+recommended_status = "Refuted"
+verification_rule = "Extend spectral_gap_census to iterate ALL components (not components[0]) and assert min-over-components gap_ratio; regression test asserting min gap_ratio at dim=32 is below 0.6. Locator: spectral_dimension.rs::spectral_gap_census; evidence data/csv/cd_motif_components_32d.csv"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-927"
+decidability = "internal"
+falsifier = "False if the adaptive threshold epsilon(N) = 1.3*sqrt(16/N) is not tracking the concentration scale of the zd_proximity statistic -- if the statistic concentrates somewhere other than at distance ~sqrt(16/N) from 0 -- since then the non-saturation it produces is an artifact of moving the cut off the support."
+check_performed = "Read associator_entropy.rs:64-89 (zd_proximity) and 302-311 (adaptive_proximity_threshold). Asymptotic analysis. Numeric near_frac comparison at dims 32/64/128 attempted via a scratch binary but the build never completed."
+observed = "zd_proximity(v, dim) returns min over the (dim/2-1)*(dim/2) coordinate 2-planes of acos(sqrt((v_i^2+v_j^2)/|v|^2)) -- an angle from the 2-plane, initialised at pi/2. For a uniform unit vector in R^N the two largest coordinate squares satisfy max_i v_i^2/|v|^2 ~ 2 ln N / N, so the maximum 2-plane projection is O(ln N / N) and the statistic concentrates at pi/2 with deficit pi/2 - zd_proximity ~ c*sqrt(ln N / N). The claim's threshold 1.3*sqrt(16/N) = 5.2/sqrt(N) is measured from 0, NOT from pi/2. At dim=16 it equals 1.300 rad against a support ceiling of pi/2 = 1.571; at dim=128 it equals 0.460 rad while essentially the whole distribution sits within c*sqrt(ln 128/128) = O(0.2) rad of pi/2, i.e. above 1.3 rad."
+verdict = "partially_confirmed"
+verdict_reason = "The mechanical statement (fixed 1.3 rad saturates at dim=32, the adaptive threshold does not) is plausible and asserted by two existing tests, but the threshold is anchored at the WRONG END of the statistic's support. zd_proximity concentrates at pi/2 with deficit ~sqrt(ln N/N); a cut shrinking toward 0 as N^{-1/2} does not track that concentration, it walks off the support, so near_frac is driven to 0 rather than desaturated in a principled way. The functional form sqrt(16/N) also does not match the sqrt(ln N/N) concentration scale. The threshold is reverse-engineered: calibrated to reproduce the dim=16 answer (epsilon(16) = 1.3 exactly by construction) and validated only by the absence of saturation it was designed to produce."
+recommended_status = "Provisional"
+verification_rule = "Replace the anchor: define epsilon(N) = pi/2 - c*sqrt(ln N / N) and assert near_frac stays in (0.05, 0.95) across dims 16..256. Locator: associator_entropy.rs::adaptive_proximity_threshold"
+confidence = "medium"
+
+[[finding]]
+claim_id = "C-928"
+decidability = "internal"
+falsifier = "False if ln(2)/(pi*sqrt(3)) != 0.12738, or if H(phi)/(pi*sqrt(3)) exceeds that value for some phi in (0,1), or if gamma_BG = 0.2375 does not exceed it."
+check_performed = "Direct evaluation of ln(2)/(pi*sqrt(3)); maximisation of binary Shannon entropy H(phi) over (0,1); read crates/sign_imbalance/src/immirzi_bridge.rs lines 16, 175-190, 217, 448."
+observed = "ln(2)/(pi*sqrt(3)) = 0.6931472/5.4413981 = 0.1273842. H(phi) is strictly concave on (0,1) with unique maximum H(1/2) = ln 2, so sup_phi H(phi)/(pi*sqrt(3)) = 0.1273842, attained only at phi = 1/2. gamma_BG = 0.2375 > 0.1273842 by a factor 1.864. DEFECT: immirzi_bridge.rs:16 comments 'gamma_BG = ln(2)/(pi*sqrt(3)) = 0.2375' -- the same formula line 175 correctly evaluates to 0.12738, while line 448 states gamma_BG 'solves a transcendental equation', i.e. is not that formula. Line 16 is wrong on its face."
+verdict = "confirmed"
+verdict_reason = "The arithmetic and concavity argument are exact; gamma_max is a genuine supremum over the bridge's whole domain and gamma_BG lies above it, so the exclusion is structural as stated. This claim's content is a REFUTATION of the project's own Immirzi bridge, and confirming it is not refuting it. The Provisional status understates a settled analytic negative result. The line-16 comment is a documentation defect independent of the claim's truth."
+recommended_status = "Verified"
+verification_rule = "Existing tests immirzi_bridge.rs::gamma_max_is_ceiling_for_all_phi and gamma_max_equals_entropy_at_half; promote to a verification_rule edge and fix the line-16 comment."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-929"
+decidability = "internal"
+falsifier = "False if brody_q = 0.0 is a domain clamp rather than an estimate, or if the reported spacing variances 59.0 and 123.0 are reproduced by a closed form containing no statistics -- in which case there is no measured statistic to classify."
+check_performed = "Read quantum_chaos.rs:301-340 (fit_brody_parameter), 209-226 (unfold_spectrum_kde), 372-445 (nnsd_analysis). Read data/csv/zd_nnsd.csv. Cross-referenced cd_motif_components_{128,256}d.csv and derived the representative component's Laplacian spectrum in closed form."
+observed = "zd_nnsd.csv verbatim: 128,61,0.0083333333,58.9999997677,...,0.0000000000,DegenerateIntegrable and 256,125,0.0040322581,122.9999995110,...,0.0000000000,DegenerateIntegrable. fit_brody_parameter returns 0.0 UNCONDITIONALLY whenever variance >= brody_variance(0) ~ 1.0 (lines 319-321). With variance 59 and 123 the bisection never executes: q = 0.0 is the lower endpoint of the estimator's domain, not a fit. The Brody family has variance in [0.273, 1.0]; 59 and 123 lie outside it entirely, so q is not estimable. CLOSED FORM: components[0] at dim=128 is (62 nodes, 1860 edges, 60-regular, k2_multipartite_part_count = 31) = the cocktail-party graph K_{31x2}, Laplacian spectrum {0, 60^(31), 62^(30)}: 61 positive eigenvalues in exactly 2 distinct levels. At dim=256 it is K_{63x2}: {0, 124^(63), 126^(62)}, 125 positive, 2 levels. For N values in exactly 2 levels there are N-1 spacings, N-2 of them exactly 0 and one equal to the whole range S. Then variance = [(N-2) + (N-2)^2]/(N-1) = N-2. N=61 gives 59; N=125 gives 123 -- matching the reported values to 7 significant digits. mean_spacing is also closed form: unfold_spectrum_kde returns sum*1/(2N) so unfolded values lie in [0,1], NOT with unit mean spacing as the docstring asserts; with sigma = 0.1*range the cross-level erf saturates, giving range exactly 0.5, hence mean_spacing = 0.5/(N-1) = 1/120 at N=61 and 0.0040322581 at N=125. Both match exactly. Unfolding cannot help: exact degeneracies map to identical unfolded values under any monotone map and any bandwidth, so the zero spacings survive by construction. The standard remedies (collapse to distinct levels, or symmetry-sector decomposition before computing spacings) were not applied."
+verdict = "refuted"
+verdict_reason = "Every reported number is reproduced exactly by a closed form containing no statistics: variance = N-2 is forced by a 2-level spectrum, mean_spacing = 0.5/(N-1) is forced by the KDE normalisation and bandwidth, and brody_q = 0.0 is the estimator's domain clamp for any variance >= 1. There is no measured spacing distribution to be super-Poisson. The underlying spectral fact (the representative Laplacian has exactly two distinct positive levels because the graph is complete multipartite) is correct and interesting, but presenting a determined quantity as a measurement is the defect, and NNSD is inapplicable to a 2-level spectrum."
+recommended_status = "Refuted"
+verification_rule = "Regression test asserting fit_brody_parameter returns exactly 0.0 for any spacing set with normalized variance >= 1.0 (the clamp), plus a test asserting the dim=128 representative Laplacian has exactly 2 distinct positive eigenvalues so nnsd_analysis must decline rather than classify. Locators: quantum_chaos.rs::fit_brody_parameter, data/csv/zd_nnsd.csv"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-930"
+decidability = "internal"
+falsifier = "False if brody_q = 0.0 across all motif classes is guaranteed by the estimator rather than observed -- if the reported constancy is the constant output of a saturated estimator and therefore carries no information about topology dependence."
+check_performed = "Read quantum_chaos.rs:464-495 (nnsd_by_motif_class) and 301-340. Read data/csv/zd_nnsd_motif.csv (8 classes at dim=128, 16 at dim=256) and cd_motif_components_{128,256}d.csv for the class topologies."
+observed = "zd_nnsd_motif.csv reports, for all 8 dim=128 classes (edge counts 180, 516, 756, 948, 1092, 1284, 1524, 1860) and all 16 dim=256 classes (372 through 7812): n_eigenvalues 61 and 125 respectively, brody_q = 0.0000000000, verdict DegenerateIntegrable. Every class at a given dimension has the same node count and is connected, so n_eigenvalues = n-1 for all regardless of edge count -- that column carries no topology information either. The class topologies differ enormously: at dim=128 the 180-edge class has mean degree 5.8 and degree_min 4, the 1860-edge class is 60-regular complete multipartite. A mean-degree-5.8 graph on 62 vertices does NOT have a 2-level Laplacian spectrum, so its spacing variance is not N-2 and it is not degenerate in the sense C-929 describes. It nonetheless returns q = 0.0. fit_brody_parameter returns exactly 0.0 for ANY spacing set with normalized variance >= 1.0; its output set is {0} U (0,1) U {1}, with 0 covering the entire half-line variance >= 1."
+verdict = "refuted"
+verdict_reason = "q = 0.0 for all 8 and all 16 classes establishes only that every class has normalized spacing variance >= 1.0 -- the clamp fires. It does not establish that the classes share a spectral character, and 'no topology-dependent variation' is a statement about a saturated estimator's constant output, not about topology. The absence of variation is guaranteed by the estimator, so the claim reports as an observation a quantity that could not have varied. classify_verdict is likewise determined: it returns DegenerateIntegrable whenever q < 0.3 and variance > threshold, both of which the clamp regime supplies."
+recommended_status = "Refuted"
+verification_rule = "Test asserting fit_brody_parameter(s) == 0.0 for two spacing sets with variances 2.0 and 200.0 (demonstrating the estimator cannot distinguish them), plus a per-class spacing-variance column added to zd_nnsd_motif.csv so class dependence becomes observable. Locator: quantum_chaos.rs::nnsd_by_motif_class"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-950"
+decidability = "internal"
+falsifier = "False if the implementation the claim points at builds no parity-check matrix, or if its syndrome function is not a parity (GF(2)) functional, or if the stabilizer group's defining property -- pairwise commuting generators, -I excluded -- is never defined or tested."
+check_performed = "Read crates/quantum_core/src/qec_boxkite.rs:1-70 (BoxKiteStabilizer, check_syndrome, code_distance, num_checks) and crates/quantum_core/src/stabilizer_like.rs:1-42."
+observed = "check_syndrome is self.parity_edges.iter().any(|(u, v)| error_mask.contains(u) || error_mask.contains(v)) -- a monotone OR over vertices incident to any edge. NOT a GF(2) sum: it cannot distinguish even-weight from odd-weight error patterns, which is the defining behaviour of a parity check, and it can never un-fire as errors are added. No parity-check matrix is constructed anywhere; parity_edges is a Vec<(usize,usize)> of edges and num_checks() returns its length. code_distance() returns a hardcoded literal 3 with the comment 'K_{2,2,2} box-kites have distance 3'; no minimum-weight computation exists. No commutation, symplectic-product, or -I-exclusion test appears anywhere in crates/quantum_core/. The trait's own doc comment (stabilizer_like.rs:14-18) states: 'Unlike standard stabilizer codes where [S_i, S_j] = 0 and syndromes are binary, non-associative codes have continuous syndrome strengths' -- the module explicitly positions itself as stabilizer-LIKE, not as a stabilizer code."
+verdict = "refuted"
+verdict_reason = "Both load-bearing technical terms fail against the implementation the claim cites. 'Exact parity-check matrix': no matrix is built and the syndrome functional is a monotone OR, not a parity; a monotone functional cannot be the syndrome map of any linear code. 'Stabilizer code': the abelian-generator condition that defines a stabilizer group is neither defined nor tested, and the trait documentation disclaims it. A category error dressed in exactness -- and 'exact' carries no content in any case, since any 0/1 matrix is the parity-check matrix of some linear code."
+recommended_status = "Refuted"
+verification_rule = "If revived, the durable check is: build the putative generator set, compute all pairwise symplectic products, assert they vanish (abelian) and that -I is excluded; a stabilizer claim without that test is not decidable. Locator: qec_boxkite.rs::BoxKiteStabilizer::check_syndrome"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-960"
+decidability = "internal"
+falsifier = "False if crates/cosmology_core/ contains no derivation of Lambda from the sign-imbalance attractor 3/8, or if no dimensionful scale is supplied to carry a dimensionless 3/8 to a quantity of dimension 1/length^2."
+check_performed = "Repo-wide grep for 3/8, 0.375, F_vac and Lambda derivations; read crates/sign_imbalance/src/apt_sedenion.rs:17 and immirzi_bridge.rs:50-51; read crates/data_core/src/registry_mirrors/docs_scope_guardrails.rs:44-110; read C-960 status_note."
+observed = "The constant 3/8 appears only as IMBALANCE_ATTRACTOR (apt_sedenion.rs:17) and VACUUM_PHI (immirzi_bridge.rs:51). Neither is consumed by anything cosmological. crates/cosmology_core/ contains NO Lambda derivation: Lambda appears there only as the Omega_Lambda parameter of flat LCDM and as the tidal deformability of TOV. The repo's own scope-guardrails document states verbatim: 'Vacuum energy density rho_vac (J/m^3): ABSENT', 'Cosmological constant Lambda (m^-2): ABSENT', 'Stress-energy tensor T_mu_nu from frustration: ABSENT', 'No connection between sign_imbalance and cosmology_core crates', and names 'The repo resolves the cosmological constant problem' as a FALSE claim. Dimensional analysis: 3/8 is a pure number; Lambda has dimension 1/length^2. No scale is supplied anywhere, so no exact derivation is possible without an additional dimensionful input, which would then be the tuned quantity. C-960's status_note reads 'Phase B1 complete. Rust implementation and Rocq proofs pending.'"
+verdict = "refuted"
+verdict_reason = "The claimed derivation does not exist where the claim says it does, the repo's own governance document adjudicates the underlying assertion as false and records that the two crates are not connected, and the dimensional accounting forbids an exact derivation of a 1/length^2 quantity from a dimensionless 3/8 without an unstated scale. Nothing was tuned to the observed Lambda because nothing was computed at all."
+recommended_status = "Refuted"
+verification_rule = "Governance check: assert no symbol in crates/cosmology_core/ consumes IMBALANCE_ATTRACTOR or VACUUM_PHI, matching the standing declaration in docs_scope_guardrails.rs section 1."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1139"
+decidability = "internal"
+falsifier = "False if the four stated correlators do not reproduce S = -1.536 under the CHSH combination the code implements, or if some admissible sign convention pushes |S| above 2."
+check_performed = "Read crates/algebra_experimental/src/majorana_braiding.rs:548-656 (chsh_braid_aligned), the combination at line 630 and s_error at 631. Evaluated all four CHSH sign placements."
+observed = "Line 630: s_value = e_ab - e_ab_prime + e_a_prime_b + e_a_prime_b_prime -- standard CHSH E(a,b) - E(a,b') + E(a',b) + E(a',b'), with angles a=0, a'=pi/2, b=pi/4, b'=-pi/4 (lines 579-582), the CHSH-optimal settings. With [E1,E2,E3,E4] = [-0.917, -0.921, -0.775, -0.765]: E1-E2+E3+E4 = -1.536 (the code's combination, exact); E1+E2-E3+E4 = -1.828; E1+E2+E3-E4 = -1.848; -E1+E2+E3+E4 = -1.544. All four single-minus placements give |S| < 2; largest magnitude 1.848. s_error = 4/sqrt(n_samples); the quoted +/- 0.040 corresponds to n_samples = 10000. |S| = 1.536 sits 11.6 error units below the classical bound 2."
+verdict = "confirmed"
+verdict_reason = "The stated S is reproduced exactly by the combination the code implements at the CHSH-optimal angles, and the null survives EVERY sign convention -- no relabelling of which correlator carries the minus sign can manufacture a violation, so the negative result is convention-independent. s_error = 4/sqrt(N) is a conservative deterministic bound, not a fitted standard error; the true sampling error is smaller, which only strengthens the null. This claim's content is a negative result; confirming it is not refuting it."
+recommended_status = "Verified"
+verification_rule = "Regression test asserting chsh_braid_aligned(16, 10000, 42).s_value is within 0.05 of -1.536 and that violates_classical is false. Locator: majorana_braiding.rs::chsh_braid_aligned"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1253"
+decidability = "internal"
+falsifier = "False if the factorization is arithmetic coincidence -- specifically if the 84-vertex partner graph is connected, in which case the top eigenvalue has multiplicity 1 and the factor 7 cannot be a count of components."
+check_performed = "Read crates/algebra_analysis/src/reggiani.rs:189-203 (partner_adjacency_matrix), 325-357 (partner_graph_spectrum, partner_graph_degeneracies) and proofs/verified/C1262_FlatBandFractionHalf.v. Applied the standard fact that for a d-regular graph the multiplicity of eigenvalue d equals the number of connected components, and of -d the number of bipartite components."
+observed = "The partner graph has 84 vertices (42 assessors x 2 diagonal signs) and is 4-regular (each ZD has a 4-dimensional annihilator; reggiani.rs::test_all_standard_zds_have_nullity_4_4 asserts nullity (4,4) for all 84). The eigenvalue-labelled spectrum at C1262_FlatBandFractionHalf.v:42-44 is { -4 (x7), -2 (x14), 0 (x42), +2 (x14), +4 (x7) }, so the pattern {7,14,42,14,7} corresponds to eigenvalues {-4,-2,0,+2,+4}. mult(+4) = mult(degree) = 7 => exactly 7 connected components. mult(-4) = 7 => all 7 components are bipartite. 84/7 = 12 vertices per component, matching the box-kite structure: 42 assessors / 7 box-kites = 6 per box-kite x 2 signs = 12 zero divisors per box-kite. Consistency of {1,2,6,2,1}: a 4-regular bipartite graph on 12 vertices has 24 edges, so trace A^2 = 48; with spectrum {-4, -b(x2), 0(x6), +b(x2), +4} this gives 32 + 4b^2 = 48, hence b = 2 exactly; trace A^3 = 0 is satisfied identically, consistent with bipartiteness. The nonzero eigenvalues are FORCED to {+/-4, +/-2 (x2)} and the zero degeneracy to 6."
+verdict = "confirmed"
+verdict_reason = "The factorization is meaningful, not coincidence. The multiplicity of the regular degree +4 being 7 is a theorem-level proof that the graph has exactly 7 components, so the factor 7 is LITERALLY the number of box-kites, and {1,2,6,2,1} is the adjacency spectral degeneracy pattern of one box-kite's 12-vertex partner subgraph. mult(-4) = 7 additionally establishes every component is bipartite, which the claim does not state and which is the mechanism behind the 6 zero modes. Component isomorphism is structural (box-kite symmetry acts transitively), not spectral -- the spectrum alone proves 7 components and equal spectra in aggregate, not pairwise isomorphism."
+recommended_status = "Verified"
+verification_rule = "Test asserting partner_graph_degeneracies(0.01) yields multiplicity 7 at eigenvalue +4 AND that petgraph connected_components on partner_adjacency_matrix returns 7. Locator: reggiani.rs::partner_graph_degeneracies"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1291"
+decidability = "internal"
+falsifier = "False if the D=64 ZD graph adjacency nullity is not exactly half the vertex count."
+check_performed = "Read data/csv/zd_motif_invariants.csv (full adjacency spectrum of one representative per motif class at dims 64, 128, 256) and counted eigenvalues with |lambda| < 1e-6 per class. Read flat_band_localization.rs and crystal_bands.rs::dim_spectrum_summary. Read proofs/verified/C1262_FlatBandFractionHalf.v and registry entries C-1236, C-1262, C-1270, C-1274, E-168."
+observed = "Zero-eigenvalue counts across all 28 motif classes: dim=64 (4 classes, edges 84/228/276/420) n=30, zeros=15, fraction 0.500000000; dim=128 (8 classes, edges 180..1860) n=62, zeros=31, fraction 0.500000000; dim=256 (16 classes, edges 372..7812) n=126, zeros=63, fraction 0.500000000. Exactly 1/2 for EVERY motif class at EVERY one of the three dimensions, including sparse classes (mean degree 5.6 at dim=64) and dense complete-multipartite ones. Vertices per component follow n = D/2 - 2. DEFECTS in the evidence chain: (1) C-1291 cites 'proven in Rocq C-1236', but C-1236 is the KAGOME flat-band DOS enhancement claim -- it says nothing about ZD partner graphs; the actual proof-bearing claims are C-1270 (D=16) and C-1274 (D=32). (2) That Rocq file proves only flat_band_fraction 42 84 = 1/2 and 105 210 = 1/2 -- arithmetic on hardcoded naturals, with no graph, no adjacency matrix and no spectral argument; it cannot certify the spectrum it quotes. (3) The proof file is named C1262_*, but registry C-1262 is an unrelated box-counting fractal-dimension claim in cosmology_core/sersic.rs -- the filename-to-claim binding is wrong. (4) E-168, the experiment C-1291 names as where_stated, has status 'planned' (never run) and its method text says the D=64 graph has '16384 vertices'; the motif graph has 31 components x 30 vertices = 930. (5) Graph-identity mismatch: C-1270/C-1274 and the Rocq file use the PARTNER graph (84 vertices at D=16, 210 at D=32), while flat_band_scaling -> dim_spectrum_summary uses the CROSS-ASSESSOR MOTIF graph (42 active nodes at D=16, 210 at D=32). These coincide at D=32 and differ by a factor 2 at D=16."
+verdict = "confirmed"
+verdict_reason = "The D=64 flat band fraction is exactly 1/2, and the result is considerably STRONGER than the claim: it holds for every motif class independently and extends unchanged to D=128 and D=256. What the claim gets wrong is its evidence chain, not its content -- wrong Rocq citation, a proof that is arithmetic on hardcoded constants rather than a spectral argument, a named experiment never run that misstates the vertex count by a factor of 17, and no disambiguation of partner graph from motif graph."
+recommended_status = "Verified"
+verification_rule = "Un-ignore and run flat_band_localization.rs::test_d64_flat_band_fraction, tightened to assert exact equality (|fbf - 0.5| < 1e-9) per motif class rather than within 0.05 on the aggregate; evidence artifact data/csv/zd_motif_invariants.csv"
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+ONE METHODOLOGICAL FAILURE MODE generates four of the six refutations, the same each
+time: a quantity DETERMINED BY CONSTRUCTION is reported as though it were measured.
+
+  - C-924: entropy_upper_bound fits k so that bound == h_dim identically. The "bound"
+    is an identity at every dimension.
+  - C-926: spectral_gap_census reads components[0] only, on the strength of an inline
+    comment ("All components are isomorphic at a given dimension") that the repo's own
+    census data contradicts from dim=32 upward. components[0] is always the densest,
+    complete-multipartite class, so the census measures the one class for which the
+    conclusion is automatic.
+  - C-929: brody_q = 0.0 is fit_brody_parameter's domain clamp for any variance >= 1,
+    and the variances 59.0 and 123.0 are exactly N-2, the closed-form value forced by a
+    two-level spectrum. Nothing statistical was measured.
+  - C-930: the same clamp makes q constant across all 8 and all 16 motif classes, so
+    "no topology-dependent variation" reports the constancy of a saturated estimator.
+
+THE CROSS-CLAIM LINK that only appears when the block is read together: C-930's own
+premise REFUTES C-926's method. C-930 asserts, and zd_nnsd_motif.csv confirms, 8
+distinct motif classes at dim=128 and 16 at dim=256. C-926's evidence rests on the
+assertion that all components at a dimension are isomorphic. Both cannot be true, and
+the census CSVs settle it against C-926: at dim=32 already, 8 components have 84 edges
+and 7 have 36.
+
+THE NUMBER 4 appears in two unrelated places and does the work in both. Every dimension
+>= 32 has motif classes with degree_min exactly 4, which caps their algebraic
+connectivity at 4 and refutes C-926 (Fiedler: a(G) <= delta_min; Grone-Merris:
+lambda_max >= Delta_max + 1; hence gap_ratio <= 4/(Delta_max+1), 0.31 at dim=32 falling
+to 0.032 at dim=256). And every sedenion zero divisor has annihilator nullity exactly 4,
+making the partner graph 4-regular, which is what lets mult(+4) = 7 prove C-1253's
+factor of 7 is a component count rather than a coincidence.
+
+C-1253 AND C-1291 ARE THE SAME FACT seen from two directions and neither claim says so.
+C-1253's middle entry, degeneracy 6 out of 12, IS the flat band: 6/12 = 1/2. The partner
+graph's per-box-kite spectrum {-4, -2^(2), 0^(6), +2^(2), +4} has exactly half its
+eigenvalues at zero, which is C-1291's flat band fraction at D=16. Verifying either one
+verifies the D=16 instance of the other.
+
+TWO CLAIMS ARE NEGATIVE RESULTS ABOUT THE PROJECT'S OWN PROGRAMME (C-928 excludes
+gamma_BG from the Immirzi bridge; C-1139 finds no CHSH violation), both correct, exact,
+and sitting at Provisional. They are the block's most solid content and are UNDER-graded,
+while the four constructed-quantity claims are graded the same. Status is currently
+uncorrelated with evidential strength across this block.
+"""
+new_claims_proposed = """
+1. UNIVERSAL HALF-FILLING OF THE ZD MOTIF ADJACENCY SPECTRUM. Verified exactly at
+   D = 64, 128, 256 and conjectured for every D = 2^k with k >= 4: every connected
+   component of the zero-divisor cross-assessor motif graph has n = D/2 - 2 vertices and
+   adjacency nullity exactly n/2, hence flat band fraction exactly 1/2, INDEPENDENT of
+   the component's motif class (edge count, degree sequence, regularity). EVIDENCE:
+   exact for all 28 motif classes in data/csv/zd_motif_invariants.csv (15/30, 31/62,
+   63/126, all to |lambda| < 1e-6). D = 16 and D = 32 are NOT covered: that CSV holds no
+   rows for them, and the D=16 value of 1/2 quoted elsewhere is on the 84-vertex PARTNER
+   graph, a different graph from the 42-node motif graph. FALSIFIER: a single component
+   at some D = 2^k >= 16 whose adjacency nullity differs from n/2. Decisive check: extend
+   the census to D = 16, 32, 512 and assert per-class nullity == n/2 exactly.
+   This SUBSUMES C-1291, C-1270 and C-1274 and states the invariant they instantiate.
+
+2. TWO-LEVEL LAPLACIAN SPECTRUM OF THE DENSEST MOTIF CLASS. At every D = 2^k >= 16 the
+   densest ZD motif class is the cocktail-party graph K_{m x 2} with m = D/4 - 1, whose
+   Laplacian spectrum is {0, (2m-2)^(m), (2m)^(m-1)}: exactly two distinct positive
+   levels, so gap_ratio = (m-1)/m -> 1 and any nearest-neighbour spacing statistic on it
+   is UNDEFINED rather than integrable. EVIDENCE: k2_multipartite_part_count = 3, 7, 15,
+   31, 63 at D = 16..256; the derived spectrum reproduces the n_eigenvalues, mean_spacing
+   and spacing_variance columns of zd_nnsd.csv to 7 significant digits. FALSIFIER: a
+   densest-class component at some D whose Laplacian has three or more distinct positive
+   eigenvalues.
+
+3. SPACING VARIANCE OF A TWO-LEVEL SPECTRUM IS DETERMINISTIC. For any spectrum of N
+   values taking exactly two distinct levels, the mean-normalized nearest-neighbour
+   spacing variance equals N-2 identically, so a reported variance of N-2 is evidence of
+   two-level degeneracy and NOT of super-Poisson statistics. FALSIFIER: a two-level
+   spectrum whose computed normalized spacing variance differs from N-2. A unit-testable
+   identity, not an empirical claim.
+
+4. THE ZD MOTIF FAMILY IS NOT AN EXPANDER FAMILY. Over D = 32..256 the components split
+   into classes whose minimum degree is fixed at 4 while maximum degree grows as
+   D/2 - 3; consequently gap_ratio <= 4/(D/2 - 2) -> 0, so no constant c > 0 bounds the
+   family's spectral gap ratio from below and the family fails the definition of an
+   expander family in both the bounded-degree and normalized-gap senses. FALSIFIER: a
+   constant c > 0 with a proof that lambda_2/lambda_max >= c for every component at every
+   D; or measured lambda_2 exceeding 4 for a delta_min = 4 component, contradicting
+   Fiedler.
+"""
+gaps = """
+1. MEASURED lambda_2 FOR THE SPARSE MOTIF CLASSES WAS NOT OBTAINED. The refutation of
+   C-926's "gap_ratio > 0.6" rests on the analytic upper bound 4/(Delta_max+1), which is
+   rigorous and sufficient for that conjunct. The separate conjunct "every component
+   exceeds 1/(2n)" is NOT decided: 4/(Delta_max+1) still exceeds 1/(2n) at every
+   dimension, so the weak test is consistent with the data -- an upper bound on lambda_2,
+   not its value. Report that conjunct as not_run. To decide: iterate
+   build_laplacian_from_component over all components at dims 16-512 and record
+   min-over-components gap_ratio.
+
+2. PER-MOTIF-CLASS SPACING VARIANCE at dims 128 and 256 was not obtained.
+   zd_nnsd_motif.csv records brody_q and verdict but no variance column, so the sparse
+   classes' actual spacing statistics are unknown. Does not affect the C-930 verdict,
+   which turns on the clamp rather than the variances, but it would show directly that
+   the classes differ in a quantity the estimator cannot express.
+
+3. C-927's near_frac NUMBERS at dims 32/64/128, fixed versus adaptive threshold, were not
+   obtained. The finding reported is the analytic anchor mismatch. Confirming the numeric
+   behaviour requires running decompose_entropy at both thresholds.
+
+4. REASON ALL THREE GAPS REMAIN: a scratch binary was written at
+   crates/algebra_analysis/src/bin/zd_falsify_scratch.rs to cover exactly these three
+   items, but .cache/gate-target was under continuous cargo-lock contention from
+   concurrent fleet builds and the compile never completed. The scratch file was REMOVED
+   before returning; no source under crates/ was modified. Re-running is a single
+   cargo run --release -p algebra_analysis --bin zd_falsify_scratch once the workspace is
+   quiet.
+
+5. C-1291's GRAPH IDENTITY REMAINS FORMALLY AMBIGUOUS in the registry. C-1270/C-1274 and
+   the Rocq file speak of the "partner graph" (84 vertices at D=16); flat_band_scaling
+   measures the "cross-assessor motif graph" (42 active nodes at D=16). Both give 1/2, so
+   no verdict changes, but the registry should state which graph C-1291 means before the
+   claim is promoted.
+"""

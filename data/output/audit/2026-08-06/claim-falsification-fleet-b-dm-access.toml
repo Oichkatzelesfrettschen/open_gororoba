@@ -1,0 +1,194 @@
+# Fleet return: block B_DM_ACCESS, 5 claims. HTML entities restored to ASCII.
+#
+# ORCHESTRATOR CORRECTION (material, affects the numbers not the verdict):
+# The agent reported that the SRC-ACE-MAG-HOURLY path_glob
+# data/external/ace_mag/ac_h2_mfi_*.csv "matches zero files". IT MATCHES ONE:
+# data/external/ace_mag/ac_h2_mfi_2016.csv, 8784 HOURLY records, columns
+# Time,Magnitude,BGSEc_0,BGSEc_1,BGSEc_2 -- explicitly GSE, already hourly. That
+# is the exact declared product. The agent instead used the 16-second
+# data/external/ace/ac_h0_mfi_2016.csv, hourly-averaged it itself, and flagged an
+# unresolvable GSM/GSE labelling ambiguity that does not exist in the right file.
+#
+# ORCHESTRATOR RE-TEST on the correct input (independent python3, OMNI2 fields
+# 13/14/15 = Bx/By/Bz GSE vs BGSEc_0/1/2, lag scan):
+#   lag -2  n=8029  r(Bx) 0.8564  r(By) 0.8673  r(Bz) 0.6896
+#   lag -1  n=8394  r(Bx) 0.9277  r(By) 0.9543  r(Bz) 0.8872   <-- optimum
+#   lag  0  n=8759  r(Bx) 0.8601  r(By) 0.8680  r(Bz) 0.6817
+#   lag +1  n=8394  r(Bx) 0.7772  r(By) 0.7710  r(Bz) 0.4956
+#   lag +2  n=8029  r(Bx) 0.7229  r(By) 0.7070  r(Bz) 0.3952
+# The one-hour propagation lag reproduces as a clean single peak, independently
+# confirming the agent's finding. On the correct file By CLEARS 0.95 (0.9543,
+# against the agent's 0.9280). Bx 0.9277 and Bz 0.8872 still fail. The claim
+# requires all three, so the REFUTED verdict stands on corrected numbers.
+# Hours with OMNI2 IMF spacecraft ID == 71 (ACE): 67 of 8784. Confirmed.
+
+[block]
+id = "B_DM_ACCESS"
+claim_count = 5
+agent_note = "Three portal-availability claims and two cross-instrument correlation claims. All five decided. The correlation claims split cleanly: C-1148 survives on real bytes in two independent years while its cited implementation is a proxy that never touches ACE, and C-1147 fails on both the correlation threshold and its own premise -- OMNI2 2016 IMF is 99.2 percent Wind-sourced, not ACE."
+
+[[finding]]
+claim_id = "C-1147"
+decidability = "internal"
+falsifier = "False if any of Pearson r(Bx_GSE), r(By_GSE), r(Bz_GSE) between OMNI2 hourly and hourly ACE MAG L2 is <= 0.95 at the lag maximising the correlation (OMNI2 rows are propagated to the bow shock nose, so lag zero is not assumed); independently, the claim's stated conclusion is false if OMNI2's own per-hour IMF spacecraft ID field is not ACE."
+check_performed = "Standalone Rust probe linking data_core by path, on data/external/ace/ac_h0_mfi_2016.csv (16-sec, self-averaged) with a -3..+3 hour lag scan. ORCHESTRATOR RE-TEST on the correct declared product data/external/ace_mag/ac_h2_mfi_2016.csv (already hourly, explicitly GSE). Separately: awk on OMNI2 field 5 decoded against the omni2.text spacecraft identifier table."
+observed = "ORCHESTRATOR NUMBERS (authoritative, correct input): optimum at lag -1, n=8394, r(Bx) 0.9277, r(By) 0.9543, r(Bz) 0.8872; lag 0 gives 0.8601 / 0.8680 / 0.6817; correlation falls monotonically on both sides of lag -1. AGENT NUMBERS (16-sec input, superseded): lag -1 Bx 0.9276, By 0.9280, Bz 0.8074. PROVENANCE (both agree): OMNI2 2016 IMF spacecraft ID is 51 for 8716 hours, 71 for 67 hours, 99 for 1. omni2.text TABLE: SPACECRAFT IDENTIFIERS: 'WIND 51 -mag, plasma_KP; 52-Plasma_definitive' and 'ACE 71'. OMNI2 plasma spacecraft ID is 52 (Wind definitive) for 8716 hours. INFRASTRUCTURE: data/external/ace_mag/ holds 366 files named ACE_MAG16_2016-NNN_V4-0.txt that are ALL HTML 404 error pages from izw1.caltech.edu, not data."
+verdict = "refuted"
+verdict_reason = "The threshold fails on its own terms after the propagation confound is removed. On the correct hourly GSE product By reaches 0.9543 and DOES clear the bar, but Bx (0.9277) and Bz (0.8872) do not, and the claim requires all three components. The claim's stated PURPOSE is refuted more sharply than its threshold: OMNI2 2016 draws its hourly IMF from Wind (ID 51) for 99.2 percent of hours and from ACE (ID 71) for 0.76 percent, so this year of OMNI2 does not substantially include ACE MAG at all. The surviving ~0.93 correlation is Wind and ACE both sampling the same L1 field one hour apart, not OMNI2 ingesting ACE."
+recommended_status = "Refuted"
+verification_rule = "A cross-validate-solar-wind subcommand comparing data/external/omni2/omni2_YYYY.dat fields 13/14/15 against data/external/ace_mag/ac_h2_mfi_YYYY.csv BGSEc_0/1/2, asserting r > 0.95 on all three at the lag maximising r. The check must (a) use the ac_h2_mfi hourly product, not the 16-second ac_h0_mfi file, (b) restrict to hours where OMNI2 field 5 == 71 if the claim is about ACE ingestion, (c) SCAN LAG rather than assuming zero, and (d) fix parse_ace_mag_hapi_csv, which labels its columns bx_gse/by_gse/bz_gse while the ac_h0_mfi_*.csv files were fetched as BGSM."
+source_url = "https://spdf.gsfc.nasa.gov/pub/data/omni/low_res_omni/omni2.text"
+source_sha256 = "be4aca7bdf030a3eb6ed584fb6960913e3be909d5627b2a69fe93a4765962d7f"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1148"
+decidability = "internal"
+falsifier = "False if Pearson r for proton density or bulk speed between ACE SWEPAM hourly and WIND SWE hourly-averaged records is <= 0.90 on time-aligned overlapping L1 hours."
+check_performed = "Standalone probe on BOTH years present in the repository. data_core parse_swepam_file on data/external/ace_swepam/ac_h2_swe_{2016,2024}.csv and parse_wind_swe_file on data/external/wind_swe/wind_kp_unspike{2016,2024}.txt, hourly-binned through the repository's own merge_wind_swe_mfi, then Pearson r on the (year,doy,hour) intersection."
+observed = "2016: proton density n=5591 r=0.9607 rmse=1.5173 bias=-0.7652 cm^-3; bulk speed n=8685 r=0.9961 rmse=9.1014 bias=-0.8589 km/s; proton temperature (not claimed) n=8559 r=0.9483 bias=-10069.8 K. 2024: proton density n=1600 r=0.9606 rmse=2.1011 bias=-1.1597 cm^-3; bulk speed n=4311 r=0.9939 bias=+0.2572 km/s; proton temperature n=4233 r=0.9210 bias=-12263.1 K. SEPARATELY, the cited implementation does not perform this comparison: cross_validate_solar_wind.rs Cmd::AceVsWind calls run_omni_vs_wind with the comment 'Use OMNI as ACE proxy (OMNI2 is dominated by ACE data)'. IT NEVER OPENS AN ACE SWEPAM FILE."
+verdict = "confirmed"
+verdict_reason = "Both claimed variables clear 0.90 with margin on real ACE SWEPAM and real WIND SWE bytes in two independent years at opposite solar-cycle phases: density 0.9607 and 0.9606, speed 0.9961 and 0.9939. THE DENSITY r REPRODUCES TO FOUR SIGNIFICANT FIGURES ACROSS YEARS, a strong stability signal. The claim's numeric content holds; only its where_stated locator is wrong, because the named AceVsWind subcommand substitutes OMNI2 for ACE and its justifying comment is FALSE for 2016 (OMNI2 2016 plasma ID is 52 = Wind definitive for 8716 of 8784 hours)."
+recommended_status = "Verified"
+verification_rule = "A new cross-validate-solar-wind subcommand that actually reads ACE SWEPAM: parse_swepam_file(ac_h2_swe_YYYY.csv) vs merge_wind_swe_mfi(parse_wind_swe_file(wind_kp_unspikeYYYY.txt)); assert r(density) > 0.90 and r(speed) > 0.90 with n > 1000. Both inputs are already in the repo for 2016 and 2024. UNTIL THAT SUBCOMMAND EXISTS the existing Cmd::AceVsWind must not be cited as evidence for this claim."
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1178"
+decidability = "external"
+falsifier = "False if the AMDA HAPI info endpoint for p10-mag-full or p11-mag-full reports coverage outside 1972-1995 / 1973-1992, or exposes any non-magnetic parameter, or if any Pioneer 10/11 dataset in the catalog carries proton density, bulk speed, or temperature."
+check_performed = "curl the AMDA HAPI catalog (2026-08-06), then the info endpoint for all 20 Pioneer datasets (p10/p11 mag-full, mag-juphr, mag-jupsys3, cpi-ele, cpi-ion, crt-ele, crt-ion, gtt-ele, gtt-ion, orb-jup)."
+observed = "p10-mag-full: startDate 1972-03-03T00:00:00Z, stopDate 1995-12-31T23:00:00Z, cadence PT1H, parameters Time, p10_b_full (size [3], 'Hourly averages of RTN components of fine time scale magnetic field vectors', nT), p10_bmag_full, p10_b_full_phi, p10_b_full_theta. p11-mag-full: 1973-04-06 to 1992-08-01, PT1H, same shape. The 10 other Pioneer datasets per spacecraft carry only particle fluxes or orbit ephemeris, all confined to the Nov-Dec 1973 Jupiter encounter window, none at hourly cadence, NONE CARRYING A PLASMA MOMENT."
+verdict = "confirmed"
+verdict_reason = "Both dataset ids, both coverage windows, the RTN frame, the hourly cadence, and the absence of any plasma moment across all 20 Pioneer AMDA datasets reproduce exactly. One refinement: AMDA is not literally MAG-only for Pioneer -- 8 particle and orbit datasets exist per spacecraft -- but none is hourly and none is a plasma moment, so the claim as written is true."
+recommended_status = "Verified"
+verification_rule = "GET https://amda.irap.omp.eu/service/hapi/info?id=p10-mag-full and ?id=p11-mag-full; assert the coverage windows, cadence PT1H, and that the parameter name set contains no density/speed/temperature entry. Add last_verified = 2026-08-06."
+source_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+source_sha256 = "36beeedc269f86c6966dfe2df8191395f15fcb9d8afe7c26eb5bc6b30da1de4c"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1182"
+decidability = "external"
+falsifier = "False if the AMDA HAPI catalog contains a Solar Orbiter SWA dataset exposing proton bulk speed, temperature, or density; also false as a description of the AMDA lane if AMDA carries Solar Orbiter datasets beyond MAG and RPW electron density."
+check_performed = "curl the AMDA HAPI catalog (2026-08-06), filtered for solo-prefixed ids, then the info endpoint for solo-mag-8s, solo-rpw-density10s, solo-eas1-nm3d, solo-eas-nmpad. Grepped the whole catalog for 'pas' and 'swa'."
+observed = "27 Solar Orbiter datasets. NO solo-pas id and no SWA proton-moment dataset anywhere in the 1067-entry catalog ('pas' matches only ros-mip-pass/ros-mip-pasw; 'swa' matches only gtl-cpi-swa and the Swarm mission). solo-mag-8s: 2020-06-03 to 2026-05-12, PT8S. solo-rpw-density10s: 2020-06-15 to 2025-04-24, PT10S, one parameter solo_rpw10s_ne. BEYOND MAG AND RPW, AMDA also carries solo-eas1-nm3d and solo-eas2-nm3d (electron Phase Space Density), solo-eas-nmpad (electron pitch angle PSD), solo-his-comp10min, solo-sisa-slow, solo-sisb-slow."
+verdict = "partially_confirmed"
+verdict_reason = "The LOAD-BEARING half holds: SWA proton plasma moments are absent from AMDA, and the quoted MAG and RPW ids and parameter content match. The FRAMING half is wrong: AMDA is not MAG + RPW electron density 'only'. It carries SWA-EAS electron phase-space-density and pitch-angle datasets plus HIS and SIS. SWA IS in fact represented in AMDA -- through EAS, not PAS -- so the claim should say 'SWA-PAS proton moments are absent', and the 'only' should be scoped to what the repository's solo lane fetches rather than to what the portal holds."
+recommended_status = "Provisional"
+verification_rule = "GET the AMDA catalog; assert no dataset id matching 'solo-pas' and no solo-prefixed info response exposing a proton density/speed/temperature parameter; assert info?id=solo-mag-8s returns solo_b_rtn_8s and info?id=solo-rpw-density10s returns solo_rpw10s_ne. Restate the claim first so the 'only' clause describes the repo lane."
+source_url = "https://amda.irap.omp.eu/service/hapi/catalog"
+source_sha256 = "36beeedc269f86c6966dfe2df8191395f15fcb9d8afe7c26eb5bc6b30da1de4c"
+confidence = "high"
+
+[[finding]]
+claim_id = "C-1183"
+decidability = "external"
+falsifier = "False if the AMDA HAPI catalog contains any New Horizons dataset, or if any archive other than SPDF/CDAWeb publishes New Horizons SWAP data."
+check_performed = "curl the AMDA catalog (2026-08-06) and id-substring scan for new-horizons/nh/swap/horizon. curl the CDAWeb HAPI catalog. curl the PDS Small Bodies Node New Horizons index, extract SWAP dataset hrefs, resolve two of them, and walk into the first one's DOWNLOAD directory to confirm a retrievable product rather than a dead index entry."
+observed = "AMDA now holds 1067 datasets, up from the 1065 recorded on 2026-03-10. ZERO New Horizons entries. CDAWeb HAPI holds 3628 datasets, of which exactly two are New Horizons: NEW_HORIZONS_HELIO1HR_POSITION and NEW_HORIZONS_SWAP_PICKUP-IONS-HISTOGRAM. PDS SMALL BODIES NODE PUBLISHES 11 NEW HORIZONS SWAP HOLDINGS: nh-x-swap-2/3-launch-v2.0, nh-j-swap-2/3-jupiter-v4.0, nh-x-swap-2/3-plutocruise-v3.0, pds4-nh_swap:pluto_raw/cal/data_summary_plots/calibration_files-v1.0, trajectory-v3.0. Both probed holding pages return HTTP 200, and the DOWNLOAD directory returns a listing containing MD5SUM and nhjusw_2001.tgz, so the holdings are LIVE AND RETRIEVABLE. Separately, the repository's New Horizons lane does not fetch SWAP at all: new_horizons_fetch.rs declares only NEW_HORIZONS_HELIO1HR_POSITION."
+verdict = "partially_confirmed"
+verdict_reason = "The AMDA half is confirmed and ROBUST TO THE 1065 -> 1067 CATALOG DRIFT: zero New Horizons entries. The single-source half is REFUTED -- PDS-SBN is not a 'potential but unverified' alternative, it is the primary SWAP archive with 11 published dataset versions spanning launch checkout through the Pluto encounter and a live DOWNLOAD tree, while CDAWeb carries only a pickup-ion histogram. The 'no magnetometer' clause is correct. Refuted rather than the Provisional given to the structurally similar C-1182 because HERE THE FALSE SENTENCE IS THE OPERATIONAL ONE: 'no known alternate provider besides SPDF' is what makes the source SINGLE-SOURCE-FRAGILE, and it is exactly the sentence that fails."
+recommended_status = "Refuted"
+verification_rule = "GET the AMDA catalog; assert zero ids matching 'new_horizons' or 'nh-'. DO NOT EMBED THE DATASET COUNT -- it drifts. Pair with an assertion that the PDS-SBN New Horizons index lists nh-j-swap-3-jupiter and pds4-nh_swap:pluto_cal holdings, which is the standing refutation of the single-source sentence."
+source_url = "https://pds-smallbodies.astro.umd.edu/data_sb/missions/newhorizons/index.shtml"
+source_sha256 = "27173e44fb888bfb2872a5665472725123d6067536ee043d4e7c1200216bbd70"
+confidence = "high"
+
+[synthesis]
+cross_claim_findings = """
+THE BLOCK'S HIDDEN SHARED ASSUMPTION is that a claim about a portal's holdings and a
+claim about the repository's fetch lane are the same claim. THEY ARE NOT, and three of
+the five conflate them. C-1178, C-1182 and C-1183 all begin with a sentence of the form
+'archive X provides only Y', where Y is in fact the subset the repository's own fetcher
+requests. AMDA carries eight non-MAG Pioneer datasets, six non-MAG-non-RPW Solar Orbiter
+datasets including SWA-EAS, and the New Horizons lane fetches trajectory rather than
+SWAP. Splitting each claim into a PORTAL proposition and a LANE proposition makes all
+three decidable by a single HAPI info query and removes the drift sensitivity that
+leaves them un-datable.
+
+THE TWO CORRELATION CLAIMS SHARE ONE NUMBER THAT TURNS OUT TO BE PROVENANCE, NOT
+PHYSICS. C-1147 asserts OMNI2 faithfully includes ACE MAG; C-1148's cited implementation
+justifies substituting OMNI2 for ACE with the comment 'OMNI2 is dominated by ACE data'.
+THE OMNI2 PER-HOUR SPACECRAFT-ID FIELDS DECIDE BOTH AT ONCE: in 2016, IMF ID is 51
+(Wind) for 8716 of 8784 hours and ACE (71) for 67, and plasma ID is 52 (Wind definitive)
+for 8716 hours. The same falsifier that refutes C-1147 also invalidates the proxy
+C-1148's binary relies on. THAT THIS ID FIELD EXISTS AND WAS NEVER CONSULTED IS THE
+FINDING: it is a free, per-hour provenance label sitting in column 5 of every OMNI2 row,
+and any future OMNI-versus-spacecraft claim should filter on it before correlating.
+
+THE LAG SCAN TURNS THAT READING INTO A MEASUREMENT. Correlation peaks sharply at lag -1
+hour, the ACE sample PRECEDING the OMNI2 timestamp, which is the direct signature of
+OMNI2's propagation of L1 measurements to the bow shock nose at the ~430 km/s speeds in
+these rows. The peak is unambiguous and falls away monotonically on both sides. TWO
+CONSEQUENCES. The lag-zero pairing used by the existing cross_validate_solar_wind binary
+SYSTEMATICALLY UNDERSTATES every OMNI-versus-upstream-spacecraft correlation it computes,
+so any r it has ever reported is a FLOOR rather than an estimate. And even with the
+confound removed, on the correct hourly GSE product the three components sit at 0.928,
+0.954, 0.887 -- so r = 0.95 is not attainable for all three vector components between two
+spacecraft ~200 Re apart. Only |B|, insensitive to field rotation, clears it comfortably.
+The threshold in C-1147 was set against the wrong quantity.
+
+ONE INFRASTRUCTURE FACT SPANS THE BLOCK: data/external/ace_mag/ contains 366 files that
+are HTML 404 pages from izw1.caltech.edu, byte-for-byte error documents carrying a data
+filename. THEY PASS A FILE-EXISTS CHECK AND FAIL ON PARSE. E-113 lists 'ACE MAG L2
+16-sec' as an input and is flagged binary_registered = true. [ORCHESTRATOR: the agent
+additionally reported the declared ac_h2_mfi_*.csv glob matches zero files; it matches
+ac_h2_mfi_2016.csv, which is real hourly GSE data. The 404 finding stands for the 366
+ACE_MAG16_* files; the glob finding does not.]
+"""
+new_claims_proposed = """
+1. OMNI2 hourly IMF for 2016 is WIND-SOURCED, NOT ACE-SOURCED: field 5 of
+   omni2_2016.dat equals 51 (Wind) for 8716 of 8784 hours and 71 (ACE) for 67.
+   FALSIFIER: an OMNI2 year in which the modal IMF spacecraft ID is 71.
+
+2. ACE SWEPAM and WIND SWE agree on proton bulk speed at r = 0.996 (2016, n = 8685) and
+   0.994 (2024, n = 4311), and on proton density at r = 0.9607 (2016) and 0.9606 (2024),
+   with WIND running 0.77 to 1.16 cm^-3 denser in the mean. FALSIFIER: a third year, or
+   a different hourly binning of the ~92-second SWE cadence, yielding r <= 0.90.
+
+3. ACE SWEPAM and WIND SWE DISAGREE SYSTEMATICALLY ON PROTON TEMPERATURE in a direction
+   that repeats across years: r = 0.948 with bias -10070 K in 2016 and r = 0.921 with
+   bias -12263 K in 2024, roughly 12 percent of a typical solar wind proton temperature,
+   with WIND consistently hotter. FALSIFIER: a year in which the sign of the bias
+   reverses, or a bias consistent with zero at 1 sigma of the hour-to-hour scatter.
+
+4. The 366 ACE_MAG16_2016-*.txt files in data/external/ace_mag/ contain NO ACE MAG data;
+   all are HTML 404 responses. FALSIFIER: any of those files parsing to a non-empty
+   AceMagRecord vector. (The sibling ac_h2_mfi_2016.csv IS real data.)
+
+5. PDS Small Bodies Node is a WORKING SECOND PROVIDER for New Horizons SWAP, publishing
+   11 dataset versions from post-launch checkout through the Pluto encounter. FALSIFIER:
+   those holding pages returning 404 or containing no retrievable SWAP product.
+
+6. OMNI2's hourly rows are propagated to the bow shock nose, so a LAG-ZERO comparison
+   against an upstream L1 spacecraft UNDERSTATES the correlation. Over 2016 the
+   OMNI2-versus-ACE-MAG correlation peaks at a one-hour lag with the ACE sample leading
+   (r(Bx) 0.860 -> 0.928, r(By) 0.868 -> 0.954, r(Bz) 0.682 -> 0.887) and falls
+   monotonically on both sides. FALSIFIER: a lag scan on another year, or on WIND MFI
+   instead of ACE, whose peak is not at lag -1.
+"""
+gaps = """
+C-1147's remaining uncertainty is now narrow. The orchestrator re-test used the correct
+declared hourly GSE product, so the frame ambiguity the agent flagged is resolved and
+does not rescue the threshold. What remains: the claim would deserve a fresh test on a
+year where OMNI2's IMF ID is actually 71. No such year is in the repository, and
+deciding it needs a multi-year OMNI2 fetch plus a real ACE MAG harvest. That is the one
+check not run.
+
+The correlation numbers for C-1148 came from a standalone probe linking data_core by
+path rather than from a repository binary, because no repository binary reads ACE
+SWEPAM and the one that reads ACE MAG expects a browse format that exists nowhere on
+disk. The probe uses data_core's own parsers throughout, so the parsing semantics are
+the repository's, but the correlation code is NOT YET A DURABLE REPO TARGET.
+
+Building that probe required RUSTFLAGS=--cap-lints=allow because cd_kernel's
+turboquant/simd_codebook.rs line 31 imports the deprecated wide::CmpGt trait, which the
+workspace lint table turns into a hard error when the crate is resolved outside the
+workspace lockfile. No repository source was modified. WORTH CHECKING INDEPENDENTLY: the
+in-workspace build may only be passing on a stale .cache/gate-target artifact.
+
+No PDS-SBN SWAP data product itself was retrieved, only the holdings index and one
+DOWNLOAD listing naming nhjusw_2001.tgz; whether those products parse into the
+repository's OmniRecord contract is undecided.
+"""

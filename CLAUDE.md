@@ -85,11 +85,34 @@ both:
 
 ### Encoding policy (NON-NEGOTIABLE)
 
-- ASCII only in every authored text file under this repository.
-- No emojis, no smart quotes, no en/em dashes, no box-drawing
-  characters.
-- The `ansi-check` and `terminology-gate` pre-push hooks reject
-  violations.
+- No emojis in any authored text file under this repository. This is
+  the part a hook enforces.
+- ASCII is the convention for everything else: straight quotes over
+  curly, `--` over an em dash, `...` over an ellipsis glyph, no
+  box-drawing. Symbols that carry meaning stay -- mathematical
+  operators, Greek letters in equations, arrows in state transitions,
+  and the accented characters in an author's name.
+- `ansi-check` is an anti-emoji gate and its name misleads. In
+  `--check` mode, the mode the pre-push hook runs, a file fails only
+  when it contains an emoji or a control character other than tab,
+  newline or carriage return. Curly quotes, dashes, arrows, Greek and
+  box-drawing all pass. `--fix` is the mode that rewrites those, via
+  the substitution table at `crates/repo_utilities/src/main.rs`
+  `CHARACTER_POLICY_REPLACEMENTS`, followed by NFKD normalization and
+  combining-mark removal.
+- The emoji predicate covers six ranges: Emoticons, Miscellaneous
+  Symbols and Pictographs, Transport and Map, Supplemental Symbols and
+  Pictographs, regional-indicator Flags, and Variation Selectors. It
+  does NOT cover Miscellaneous Symbols (U+2600..U+26FF), Dingbats
+  (U+2700..U+27BF) or Symbols and Pictographs Extended-A
+  (U+1FA70..U+1FAFF), so a warning sign, a check mark or a cross mark
+  passes the gate. Do not read a green `ansi-check` as proof a file is
+  emoji-free.
+- The check skips binary and build-artifact extensions, anything under
+  `data/external/papers`, files over 10 MB, and files that are not
+  valid UTF-8.
+- `terminology-gate` is a separate hook over eight banned legacy terms
+  and enforces nothing about encoding.
 
 ### Build and validation workflow
 

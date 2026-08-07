@@ -1,0 +1,266 @@
+# Brown 1972 provenance audit and repair specification.
+
+[report]
+id = "BROWN-1972-PROVENANCE-AUDIT-2026-08-05"
+kind = "bounded_provenance_audit_and_repair_spec"
+last_verified = "2026-08-05"
+status = "exact_pdf_present_manifest_path_stale_linkage_gap_open"
+scope = "Brown 1972 PDF identity, retained-source provenance, canonical SQLite registration, and Brown claim/equation linkage."
+base_commit = "5293fff848a4bf5ecf36d1d56ab5825826c7a689"
+branch = "audit/brown-1972-pdf-provenance-registration"
+worktree = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+ascii_only = true
+source_captures_modified = false
+archive_worker_paths_modified = false
+data_external_papers_modified = false
+adversarial_review_path = "reports/brown_1972_provenance_adversarial_review_2026_08_05.toml"
+
+[source_recovery_manifest]
+path = "reports/cayley_dickson_source_recovery_2026_02_15.toml"
+section = "brown_1972"
+status_before = "recovered"
+declared_canonical_pdf_path = "data/external/papers/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
+declared_text_extract_path = "data/external/papers/brown_1972_structure_of_zero_divisors_cayley_dickson.txt"
+declared_sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
+declared_size_bytes = 3539055
+declared_pages = 89
+declared_text_sha256 = "0598c448fea2492f4c26dca0450f5ab31eb8fc3555de0ef5bb5ea84f8002dd48"
+manifest_edit_performed = false
+manifest_edit_reason = "The report is a historical multi-source recovery record. This tranche preserves its original declaration and records the path correction as a versioned repair specification."
+
+[observed_pdf]
+path = "data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
+path_owner = "existing retained local corpus capture"
+present_in_canonical_checkout = true
+present_in_isolated_worktree = false
+isolated_worktree_reason = "The PDF is ignored and untracked, so git worktree checkout does not materialize it. It was not copied, moved, or linked into the isolated worktree."
+sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
+size_bytes = 3539055
+file_type = "regular file"
+mode = "0644"
+pdf_title = "Structure of zero divisors, and other algebraic structures, in higher dimensional real Cayley-Dickson algebras"
+pdf_author = "Harmon Caril Brown"
+pages = 89
+text_extract_path = "data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.txt"
+text_extract_sha256 = "0598c448fea2492f4c26dca0450f5ab31eb8fc3555de0ef5bb5ea84f8002dd48"
+identity_result = "byte_hash_and_pdf_metadata_match_the_manifest_claim"
+canonical_path_result = "current_source_lane_and_sqlite_path_exists; historical_recovery_manifest_path_is_absent"
+
+[retained_intake_capture]
+path = "data/papers/intake/2026_02_15_cayley_dickson_sources/core_download_brown_229066012.bin"
+present_in_canonical_checkout = true
+sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
+size_bytes = 3539055
+byte_compare_to_observed_pdf = "equal"
+rights_notice = "The text identifies Scholars' Mine and states that the thesis is protected by US Copyright Law; unauthorized reproduction for redistribution requires permission."
+access_disposition = "retained_local_reference_only; no_redistribution_authorization_inferred"
+lawful_presence_disposition = "No legal conclusion is made. The audit verifies only the existing local retained payload and its recorded Core retrieval metadata."
+
+[access_and_fetch_disposition]
+core_download_url = "https://core.ac.uk/download/229066012.pdf"
+core_work_id = 67198489
+successful_header_content_type = "application/pdf"
+successful_header_content_length = 3539055
+successful_header_status = "HTTP/2 200"
+successful_header_canonical_link = "https://core.ac.uk/reader/229066012"
+initial_normalized_fetch_bytes = 1292525
+initial_normalized_fetch_sha256 = "4150f77c2194a21cbdfd210d178857f7704486c69ce4f75455e7f802efee88f6"
+initial_normalized_fetch_pdf = true
+refetch_status = "HTTP/2 206"
+refetch_content_length = 2246530
+refetch_is_exact_canonical_payload = false
+transport_provenance = "partial; retained local bytes and matching 200 headers are available, but the normalized fetch row records a different size and SHA"
+disposition = "The retained 3539055-byte capture and 200 response headers establish the observed payload identity. The normalized fetch row and later 206 refetch are retained historical attempts, not the canonical byte witness."
+
+[rescue_archive]
+root = "/srv/fast/rescued-tmp-2026-03/"
+searched_without_modification = true
+pdf_files_scanned = 44
+brown_identity_matches = 0
+same_size_pdf_count = 0
+full_sha256_matches = 0
+filename_only_matching_used = false
+identity_test = "pdfinfo and first-two-page pdftotext title/author search across every rescue PDF"
+hash_test = "sha256sum over every rescue PDF with the declared 3539055-byte size"
+bounded_negative_result = "No Brown 1972 identity match and no full-SHA match were found in this archive root. This is a bounded absence, not a claim that no other copy exists."
+
+[canonical_registration]
+primary_artifact_id = "ASOT-2932"
+primary_key = "url:https://core.ac.uk/download/pdf/229066012.pdf"
+title = "Structure of zero divisors, and other algebraic structures, in higher dimensional real Cayley-Dickson algebras"
+status = "downloaded"
+minimum_requirement_met = true
+lane = "papers_pdf"
+canonical_functional_url = "https://core.ac.uk/download/pdf/229066012.pdf"
+canonical_download_path = "data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
+source_refs = [
+  "BROWN_1972",
+  "registry/cayley_dickson_canonical_sources.toml::paper/0::CDCS-001",
+  "reports/cayley_dickson_source_recovery_2026_02_15.toml::brown_1972",
+]
+same_path_alias_artifact_ids = ["ASOT-2934", "ASOT-2964", "ASOT-3129"]
+duplicate_path_registration_note = "Four downloaded artifact rows share the same corpus path. ASOT-2932 is the Brown owner by its BROWN_1972 source ref, but the schema has no primary-owner flag; alias ownership remains an open governance item."
+hash_storage_note = "The current artifacts schema stores path and status but no byte-hash column. This report records the measured PDF and text hashes without hand-editing the generated papers_pdf lane."
+registration_result = "canonical_SQLite_and_generated_source_lane_already_use_the_observed_corpus_path"
+
+[database]
+path = "registry/canonical/control_plane.sqlite3"
+before_sha256 = "afecaf1c5e3fb4f57aa3d07efd08a36a5914d64282bd125c8fc3f5cea32181b5"
+after_sha256 = "afecaf1c5e3fb4f57aa3d07efd08a36a5914d64282bd125c8fc3f5cea32181b5"
+mutation_performed = false
+mutation_command = "not_invoked"
+mutation_decision_exit_code = 0
+mutation_reason = "No canonical row repair was required. ASOT-2932 already has the correct path and source refs; changing it would replace current artifact paths, lane assignments, and source refs through the available RegisterLocal command."
+integrity_check = "ok"
+row_counts = { artifacts = 3259, record_sources = 4367, artifact_paths = 3894, lane_assignments = 3246, equation_atoms = 0, derivation_steps = 0 }
+
+[claim_equation_linkage]
+artifact_evidence_links = 0
+theorem_identity_evidence_links = 0
+evidence_edges_with_brown_text = 0
+equation_atom_rows = 0
+derivation_step_rows = 0
+brown_specific_claim_ids = []
+brown_specific_theorem_identity_ids = []
+unrelated_textual_brown_claim_ids = ["C-1471"]
+unrelated_textual_brown_theorem_ids = ["C1471_HigherCDTrilinearity"]
+query_scope = "Current SQLite claims, theorems, theorem evidence, claim transition evidence, evidence_edges, equation_atoms, derivation_steps, and artifact source edges searched by Brown text or direct Brown artifact ID."
+opaque_identifier_links_unclassified = true
+linkage_disposition = "The canonical registry has Brown artifact registration but no Brown-specific claim, equation atom, derivation step, theorem identity, or artifact-evidence edge. C-1471 is a separate Wilmot claim that mentions Brown and must not be treated as Brown 1972 source linkage."
+repair_linkage_requirement = "Create explicit Brown claim/equation/artifact edges only when a source-grounded claim or extracted equation is reviewed and assigned a stable registry identifier."
+
+[missing_source_row]
+referenced_source = "registry/cayley_dickson_canonical_sources.toml::paper/0::CDCS-001"
+path_present_in_current_checkout = false
+bounded_blocker = "The source-lane and SQLite ASOT-2932 rows retain a reference to CDCS-001, but the referenced canonical source file is absent from the current checkout. The row cannot be independently revalidated from that file in this tranche."
+repair_owner_action = "Restore the exact CDCS-001 source row or replace the reference through the canonical registry owner, preserving the existing report and source-lane history."
+
+[repair_spec]
+execution_status = "audit_complete_specification_only"
+step_1 = "Retain the exact PDF and text capture at their existing local paths; do not copy, move, or delete the payload."
+step_2 = "Create a versioned Brown-specific correction that maps the historical recovery report paths from data/external/papers to data/papers/corpus, or obtain owner approval for a narrow edit to the Brown section only."
+step_3 = "Restore or replace the absent CDCS-001 source row through its canonical owner; do not hand-edit registry/source_lanes/papers_pdf.toml."
+step_4 = "Resolve the four shared-path artifact rows as one Brown owner plus explicit aliases without deleting historical rows or source refs."
+step_5 = "If hash persistence is required in the canonical registry, extend the supported provenance schema and mutator first; do not encode a hash by overwriting unrelated source refs."
+step_6 = "After any approved canonical mutation, run provenance export-control-plane and registry-integrity, then verify the generated lane and SQLite hash chain."
+blocked_items = [
+  "Historical recovery report still declares an absent data/external/papers path.",
+  "Referenced registry/cayley_dickson_canonical_sources.toml::paper/0::CDCS-001 file is absent.",
+  "Canonical SQLite has no Brown-specific claim or equation linkage and no byte-hash column for artifacts.",
+  "ASOT-2932, ASOT-2934, ASOT-2964, and ASOT-3129 share one downloaded path without a canonical-owner field.",
+]
+
+[completion_gate]
+gate = "Declare the Brown 1972 provenance phase complete only after the historical recovery path is reconciled to the existing corpus path, the retained PDF and text hashes remain verified, the CDCS-001 source row is restored or replaced through the canonical owner, Brown claim and equation links are explicit or an approved no-link disposition is recorded, generated compatibility views pass their integrity checks, and the final SQLite hash is recorded."
+
+[[command_outcome]]
+id = "manifest-pdf-path-absent"
+cwd = "/home/eirikr/Github/open_gororoba"
+command = "test -f data/external/papers/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
+exit_code = 1
+result = "expected_bounded_path_miss"
+
+[[command_outcome]]
+id = "manifest-text-path-absent"
+cwd = "/home/eirikr/Github/open_gororoba"
+command = "test -f data/external/papers/brown_1972_structure_of_zero_divisors_cayley_dickson.txt"
+exit_code = 1
+result = "expected_bounded_path_miss"
+
+[[command_outcome]]
+id = "observed-pdf-hash"
+cwd = "/home/eirikr/Github/open_gororoba"
+command = "sha256sum data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.txt"
+exit_code = 0
+result = "PDF_616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68; text_0598c448fea2492f4c26dca0450f5ab31eb8fc3555de0ef5bb5ea84f8002dd48"
+
+[[command_outcome]]
+id = "pdf-metadata"
+cwd = "/home/eirikr/Github/open_gororoba"
+command = "pdfinfo data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
+exit_code = 0
+result = "title_author_pages_match_manifest"
+
+[[command_outcome]]
+id = "intake-byte-compare"
+cwd = "/home/eirikr/Github/open_gororoba"
+command = "cmp -s data/papers/intake/2026_02_15_cayley_dickson_sources/core_download_brown_229066012.bin data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf"
+exit_code = 0
+result = "retained_intake_capture_equals_corpus_pdf"
+
+[[command_outcome]]
+id = "rescue-pdf-identity-scan"
+cwd = "/home/eirikr/Github/open_gororoba"
+command = "find /srv/fast/rescued-tmp-2026-03 -type f -iname '*.pdf' -print0 | xargs -0 -r -n1 sh -c 'pdftotext -f 1 -l 2 \"$1\" - 2>/dev/null | grep -Eqi \"Harmon Caril Brown|Structure of zero divisors, and other algebraic structures, in higher dimensional real Cayley-Dickson algebras\" && printf \"%s\\n\" \"$1\"' sh | wc -l"
+exit_code = 0
+result = "44 PDFs scanned; 0 Brown identity matches"
+
+[[command_outcome]]
+id = "rescue-pdf-full-hash-scan"
+cwd = "/home/eirikr/Github/open_gororoba"
+command = "find /srv/fast/rescued-tmp-2026-03 -type f -iname '*.pdf' -size 3539055c -print0 | xargs -0 -r sha256sum | grep -F '616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68'"
+exit_code = 1
+result = "expected grep no-match; 0 size-matched PDFs and 0 full-SHA matches"
+
+[[command_outcome]]
+id = "sqlite-integrity-and-counts"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = "sqlite3 -readonly registry/canonical/control_plane.sqlite3 \"PRAGMA integrity_check; SELECT 'artifacts',count(*) FROM artifacts UNION ALL SELECT 'record_sources',count(*) FROM record_sources UNION ALL SELECT 'artifact_paths',count(*) FROM artifact_paths UNION ALL SELECT 'lane_assignments',count(*) FROM lane_assignments UNION ALL SELECT 'equation_atoms',count(*) FROM equation_atoms UNION ALL SELECT 'derivation_steps',count(*) FROM derivation_steps;\""
+exit_code = 0
+result = "ok; 3259, 4367, 3894, 3246, 0, 0"
+
+[[command_outcome]]
+id = "canonical-brown-registration-query"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = '''sqlite3 -readonly registry/canonical/control_plane.sqlite3 "SELECT id,key,status,minimum_requirement_met,canonical_functional_url,canonical_download_path FROM artifacts WHERE id IN ('ASOT-2932','ASOT-2934','ASOT-2964','ASOT-3129') ORDER BY id; SELECT artifact_id,path,relation FROM artifact_paths WHERE artifact_id IN ('ASOT-2932','ASOT-2934','ASOT-2964','ASOT-3129') ORDER BY artifact_id; SELECT entity_id,source_ref FROM record_sources WHERE entity_kind='artifact' AND entity_id IN ('ASOT-2932','ASOT-2934','ASOT-2964','ASOT-3129') ORDER BY entity_id,source_ref;"'''
+exit_code = 0
+result = "ASOT-2932 primary Brown source ref plus ASOT-2934, ASOT-2964, and ASOT-3129 same-path registrations"
+
+[[command_outcome]]
+id = "brown-linkage-count-query"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = '''sqlite3 -readonly registry/canonical/control_plane.sqlite3 "SELECT (SELECT count(*) FROM claim_transition_evidence WHERE artifact_id IN ('ASOT-2932','ASOT-2934','ASOT-2964','ASOT-3129')) AS claim_evidence, (SELECT count(*) FROM theorem_identity_evidence WHERE artifact_id IN ('ASOT-2932','ASOT-2934','ASOT-2964','ASOT-3129')) AS theorem_evidence, (SELECT count(*) FROM equation_atoms) AS equation_atoms, (SELECT count(*) FROM derivation_steps) AS derivation_steps;"'''
+exit_code = 0
+result = "claim_evidence=0; theorem_evidence=0; equation_atoms=0; derivation_steps=0"
+
+[[command_outcome]]
+id = "gororoba-db-help"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba-cargo-build/brown-1972-provenance cargo run --locked -p gororoba_db --bin gororoba-db -- --help"
+exit_code = 0
+result = "RegisterLocal is available but was not invoked because it replaces current artifact paths, lane assignments, and source refs."
+
+[[command_outcome]]
+id = "gororoba-db-stats"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba-cargo-build/brown-1972-provenance cargo run --locked -p gororoba_db --bin gororoba-db -- --repo-root /var/tmp/open_gororoba-brown-1972-pdf-provenance-registration --db /var/tmp/open_gororoba-brown-1972-pdf-provenance-registration/registry/canonical/control_plane.sqlite3 stats"
+exit_code = 0
+result = "6455 total rows; stats command completed"
+
+[[command_outcome]]
+id = "gororoba-db-audit-signatures-isolated"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba-cargo-build/brown-1972-provenance cargo run --locked -p gororoba_db --bin gororoba-db -- --repo-root /var/tmp/open_gororoba-brown-1972-pdf-provenance-registration --db /var/tmp/open_gororoba-brown-1972-pdf-provenance-registration/registry/canonical/control_plane.sqlite3 audit-cmd signatures"
+exit_code = 1
+result = "baseline invariant failure because the isolated checkout lacks ignored retained paths; the diagnostic includes Brown's corpus PDF and unrelated paths"
+
+[[command_outcome]]
+id = "gororoba-db-audit-signatures-canonical-root"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba-cargo-build/brown-1972-provenance cargo run --locked -p gororoba_db --bin gororoba-db -- --repo-root /home/eirikr/Github/open_gororoba --db /var/tmp/open_gororoba-brown-1972-pdf-provenance-registration/registry/canonical/control_plane.sqlite3 audit-cmd signatures"
+exit_code = 1
+result = "baseline invariant failure: 13 artifacts lack lane assignments and papers/MANIFEST.toml plus papers/ paths are absent; Brown's observed corpus PDF is not among the canonical-root diagnostics"
+
+[[command_outcome]]
+id = "database-before-hash"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = "sha256sum registry/canonical/control_plane.sqlite3"
+exit_code = 0
+result = "afecaf1c5e3fb4f57aa3d07efd08a36a5914d64282bd125c8fc3f5cea32181b5"
+
+[[command_outcome]]
+id = "database-after-hash"
+cwd = "/var/tmp/open_gororoba-brown-1972-pdf-provenance-registration"
+command = "sha256sum registry/canonical/control_plane.sqlite3"
+exit_code = 0
+result = "afecaf1c5e3fb4f57aa3d07efd08a36a5914d64282bd125c8fc3f5cea32181b5; no DB mutation"

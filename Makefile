@@ -1860,7 +1860,19 @@ registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry
 # Use validation here instead of dev/cg_clif: gororoba_cli_data pulls faer/pulp
 # through several data tools, and cg_clif still ICEs on AVX f32x8 lowering in that
 # lane on nightly 2026-04-05.
-registry-export-markdown: registry-refresh registry-build
+# registry-build is NOT a prerequisite here. It rebuilds the canonical SQLite
+# from the compatibility TOMLs, and REGISTRY_SOURCES lists none of
+# claim_transitions.toml, claim_relations.toml or the claim_revisions lane, so
+# the importer has nowhere to read them from and recreates those tables empty.
+# The append-only triggers do not catch it because nothing issues a DELETE: the
+# tables are dropped and recreated. Since export-control-plane leaves every
+# listed TOML newer than the database, the file rule at
+# registry/canonical/control_plane.sqlite3 fires on the very next run of this
+# target and silently discards the entire adjudication history. The database is
+# the canonical source and the TOMLs are its exports, so the dependency belongs
+# in that direction only. Run `make registry-build` deliberately when importing
+# hand-authored TOML, never as a side effect of exporting.
+registry-export-markdown: registry-refresh
 # registry-emit-all-mirrors owns the mirror (kind, output_path) list as
 # Rust data with proper error propagation. The Makefile delegates to
 # that typed command instead of carrying a shell heredoc.
