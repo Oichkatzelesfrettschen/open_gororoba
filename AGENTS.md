@@ -159,6 +159,18 @@ Never hand-edit a file whose first line is the AUTO-GENERATED
 header. Doing so will desync the canonical store and produce
 content_sha mismatches at the next `validate-governance` run.
 
+`gororoba-db build` is an IMPORT, not a refresh. It calls
+`build_fresh`, which deletes the database file and reloads only the
+lanes named in `registry/source_manifest.toml`. Claim transition
+events, the claim relations they allocate, and the claim revision log
+have no lane there, so a rebuild returns those tables empty and no
+compatibility TOML can restore them. The append-only triggers do not
+catch it, because removing the file issues no DELETE. The command now
+refuses when the database holds transition events and requires
+`--allow-transition-history-loss` to proceed. Use step 2 above to
+refresh exports; reach for `build` only when importing hand-authored
+TOML into an empty or expendable database.
+
 ## GPU backend foundation (Wave B)
 
 The workspace consolidates Vulkan / cubecl-wgpu / CUDA call sites

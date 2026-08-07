@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 175
+event_count = 186
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -3446,3 +3446,526 @@ reason = "External review of claims/falsification-fleet-2026-08-06 at dd20df14 f
 transition_timestamp = "2026-08-06T23:30:00Z"
 transition_spec_sha256 = "9dc5500be528e9c7aea58ec439466a9ccc075c22a05e10cc08e0e811f176b6fa"
 successors = []
+
+[[transition]]
+event_id = 176
+transition_key = "c-820-successors-g-ward-2026-08-06"
+source_claim_id = "C-820"
+expected_prior_status = "Refuted"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "False if the residual reported by the cited on-shell path is not identically zero for every input."
+rationale = "Successor registration for block G_WARD. The refutation of C-820 stands unchanged; this event exists to create the successor claims the block proposed, each carrying a required falsifier, so the propositions that survive the refutation are canonically addressable instead of living only in a retained artifact."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-G_WARD", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "3631af67283d735bfa999e24d9473b2ed87af73fa388cf3ad2cfc0e856d417f2"
+
+[[transition.successors]]
+proposal_key = "g-ward-arxiv-2505-00396-imposes-no-difference-relation"
+canonical_claim_id = "C-1664"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "g-ward-legacy-path-identically-zero"
+canonical_claim_id = "C-1665"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "g-ward-on-shell-cancellation-converges-nonzero"
+canonical_claim_id = "C-1666"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "g-ward-reciprocity-and-time-reversal-not-independent"
+canonical_claim_id = "C-1667"
+relation_kind = "narrows"
+
+[[transition.successors]]
+proposal_key = "g-ward-scalar-spinor-residual-separation"
+canonical_claim_id = "C-1668"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 177
+transition_key = "c-1010-successors-a-tower-2026-08-06"
+source_claim_id = "C-1010"
+expected_prior_status = "Refuted"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "False if the routon spectral spacing routine performs a diagonalization rather than returning the adjacency matrix verbatim."
+rationale = "Successor registration for block A_TOWER. The refutation of C-1010 stands unchanged. This event creates the successor claims the block proposed so that the propositions surviving the refutation are canonically addressable with a required falsifier each, rather than living only in a retained artifact."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-A_TOWER", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "285db6a578644ac457f1eb95b439911d718497415ac962e365337221e9845525"
+
+[[transition.successors]]
+proposal_key = "a-tower-dft-layer-mapping-not-lorentz-covariant"
+canonical_claim_id = "C-1669"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "a-tower-external-source-index-omits-turyshev-2012"
+canonical_claim_id = "C-1670"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "a-tower-flyby-sign-scoring-is-degenerate"
+canonical_claim_id = "C-1671"
+relation_kind = "narrows"
+
+[[transition.successors]]
+proposal_key = "a-tower-fractal-metric-cannot-give-pioneer"
+canonical_claim_id = "C-1672"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "a-tower-pioneer-anomaly-is-a-resolved-artifact"
+canonical_claim_id = "C-1673"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "a-tower-voudon-imbalance-density-is-exact-rational"
+canonical_claim_id = "C-1674"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 178
+transition_key = "c-1147-successors-b-dm-access-2026-08-06"
+source_claim_id = "C-1147"
+expected_prior_status = "Refuted"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "False if the retained external solar-wind holdings support the access proposition the claim asserts."
+rationale = "Successor registration for block B_DM_ACCESS. The refutation of C-1147 stands unchanged. This event creates the successor claims the block proposed, each carrying a required falsifier, so the surviving propositions about instrument agreement and data provenance become canonically addressable."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-B_DM_ACCESS", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "d63dec990312bde1ba3cbfd8b8d4ed92528673a5c634f3172531b7171a52be01"
+
+[[transition.successors]]
+proposal_key = "b-dm-ace-mag-2016-files-are-404-pages"
+canonical_claim_id = "C-1675"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "b-dm-ace-wind-agree-on-speed-and-density"
+canonical_claim_id = "C-1676"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "b-dm-ace-wind-temperature-bias-repeats"
+canonical_claim_id = "C-1677"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "b-dm-omni2-imf-is-wind-sourced"
+canonical_claim_id = "C-1678"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "b-dm-omni2-lag-zero-understates-correlation"
+canonical_claim_id = "C-1679"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "b-dm-pds-is-a-working-second-provider"
+canonical_claim_id = "C-1680"
+relation_kind = "source_split"
+
+[[transition]]
+event_id = 179
+transition_key = "c-1145-successors-c-dm-null-2026-08-06"
+source_claim_id = "C-1145"
+expected_prior_status = "Refuted"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "False if the dark-matter null result rests on heliospheric physics rather than on the lattice normalisation and the fixed galactocentric evaluation radius."
+rationale = "Successor registration for block C_DM_NULL, and the decomposition the branch review asked for. The block's findings are separated here into physical, numerical, empirical and discriminatory statements rather than left as one undifferentiated dark-matter verdict, so that a reader can tell a units defect from a physical conclusion. The refutation of C-1145 stands unchanged."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-C_DM_NULL", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create, and decompose the dark-matter family per the branch review."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "8718d62dbdbca14afe328f72adbab5164b9994d79e3e8952468ccda1be69f9a4"
+
+[[transition.successors]]
+proposal_key = "c-dm-drag-is-linear-not-quadratic"
+canonical_claim_id = "C-1681"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "c-dm-force-field-invariant-under-spacecraft-inputs"
+canonical_claim_id = "C-1682"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "c-dm-knudsen-number-radially-invariant"
+canonical_claim_id = "C-1683"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "c-dm-lbm-driver-does-not-conserve-mass"
+canonical_claim_id = "C-1684"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "c-dm-null-exponent-set-by-lattice-normalisation"
+canonical_claim_id = "C-1685"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "c-dm-parker-spiral-angle-missing-timestep"
+canonical_claim_id = "C-1686"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "c-dm-parker-spiral-b-phi-constant-in-r"
+canonical_claim_id = "C-1687"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 180
+transition_key = "c-1231-successors-d-magnon-2026-08-06"
+source_claim_id = "C-1231"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "False if the Dirac crossing lands at the frequency the claim states rather than at the hybridized value."
+rationale = "Successor registration for block D_MAGNON. The status of C-1231 is unchanged. This event creates the successor claims the block proposed, each with a required falsifier, including the target-leakage finding stated in its defensible form: the model uses values matching reported output landmarks as onsite parameters, so agreement with those landmarks is not an independent prediction."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-D_MAGNON", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "feaf282b1a4fe151f19b132f8477dfa8fc9976e47ea505501d4b379292cf0e8d"
+
+[[transition.successors]]
+proposal_key = "d-magnon-band-chern-number-spurious-on-degenerate-bands"
+canonical_claim_id = "C-1688"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "d-magnon-delta-eps-p-destroys-the-flat-band"
+canonical_claim_id = "C-1689"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "d-magnon-domain-wall-supercell-has-two-walls"
+canonical_claim_id = "C-1690"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "d-magnon-exactly-three-flat-bands"
+canonical_claim_id = "C-1691"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "d-magnon-parameters-are-output-landmarks-not-source-values"
+canonical_claim_id = "C-1692"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "d-magnon-point-defect-modes-counts-bulk-states"
+canonical_claim_id = "C-1693"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "d-magnon-yig-gamma-documented-in-wrong-units"
+canonical_claim_id = "C-1694"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 181
+transition_key = "c-1297-successors-e-gpu-lbm-2026-08-06"
+source_claim_id = "C-1297"
+expected_prior_status = "Refuted"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "False if the GPU lattice-Boltzmann stability and fractal-dimension results support the claim as stated."
+rationale = "Successor registration for block E_GPU_LBM. The refutation of C-1297 stands unchanged. This event creates the successor claims the block proposed, each carrying a required falsifier, covering stability ordering, the survival flag defect, the vacuous equivalence test and the unconverged fractal dimension."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-E_GPU_LBM", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "da6e203c3f5099c15677dbc3864d4b9e06a3da424bd413173ec86386e4043102"
+
+[[transition.successors]]
+proposal_key = "e-lbm-bgk-stable-past-ma-0-3"
+canonical_claim_id = "C-1695"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "e-lbm-cpu-gpu-equivalence-test-is-vacuous"
+canonical_claim_id = "C-1696"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "e-lbm-galaxy-fractal-dimension-not-converged"
+canonical_claim_id = "C-1697"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "e-lbm-mrt-positivity-violation-is-transient"
+canonical_claim_id = "C-1698"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "e-lbm-no-mrt-bgk-stability-ordering"
+canonical_claim_id = "C-1699"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "e-lbm-null-hypothesis-path-non-functional"
+canonical_claim_id = "C-1700"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "e-lbm-stated-outlier-cause-is-wrong"
+canonical_claim_id = "C-1701"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "e-lbm-survived-flag-cannot-detect-explosion"
+canonical_claim_id = "C-1702"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "e-lbm-variance-reduction-dominated-by-outlier-loss"
+canonical_claim_id = "C-1703"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 182
+transition_key = "c-1653-successors-h-optics-2026-08-06"
+source_claim_id = "C-1653"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "False if the source-faithful optics reproduction departs from the paper it cites."
+rationale = "Successor registration for block H_OPTICS. The status of C-1653 is unchanged. This event creates the successor claims the block proposed, including the evidence-hash proposition that names the inherited Son-Chekhova defect this branch does not resolve, so the boundary is canonically recorded rather than only disclosed in prose."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-H_OPTICS", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = ["E-074"]
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "513f8f174278fa3576820dca018029888505a7a298ea2b64250937dddfd06f7b"
+
+[[transition.successors]]
+proposal_key = "h-optics-c1663-subsumed-by-c838"
+canonical_claim_id = "C-1704"
+relation_kind = "narrows"
+
+[[transition.successors]]
+proposal_key = "h-optics-constrained-tcmt-worse-than-unconstrained"
+canonical_claim_id = "C-1705"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "h-optics-figure4-fails-its-predeclared-gate"
+canonical_claim_id = "C-1706"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "h-optics-layered-mie-landmark-mismatch-is-irreconcilable"
+canonical_claim_id = "C-1707"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "h-optics-retained-evidence-hashes-must-match"
+canonical_claim_id = "C-1708"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "h-optics-ruan-fan-figure5-parameters-are-fitted"
+canonical_claim_id = "C-1709"
+relation_kind = "source_split"
+
+[[transition]]
+event_id = 183
+transition_key = "c-840-successors-i-qgp-2026-08-06"
+source_claim_id = "C-840"
+expected_prior_status = "Refuted"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "False if the quark-gluon plasma scaling ansatz is preferred over the competing model on the identical data points."
+rationale = "Successor registration for block I_QGP. The refutation of C-840 stands unchanged. This event creates the successor claims the block proposed, each carrying a required falsifier, covering model comparison, parameter counting and two source-attribution defects in the reference tables."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-I_QGP", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "bedea334c83413a5329e046f2952d00e4f3f61fac145c49ac4486dc56cbd7db5"
+
+[[transition.successors]]
+proposal_key = "i-qgp-arleo-falmagne-falsified-independently"
+canonical_claim_id = "C-1710"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "i-qgp-cujet-beats-arleo-falmagne-on-identical-points"
+canonical_claim_id = "C-1711"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "i-qgp-cujet-has-two-free-parameters"
+canonical_claim_id = "C-1712"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "i-qgp-eccentricity-column-is-not-epsilon-2-2"
+canonical_claim_id = "C-1713"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "i-qgp-npart-table-not-sourced-to-plb-772"
+canonical_claim_id = "C-1714"
+relation_kind = "source_split"
+
+[[transition]]
+event_id = 184
+transition_key = "c-1291-successors-j-zd-spectral-2026-08-06"
+source_claim_id = "C-1291"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "False if a zero-divisor motif component exists whose adjacency nullity departs from half its vertex count."
+rationale = "Successor registration for block J_ZD_SPECTRAL. The status of C-1291 is unchanged. This event creates the successor claims the block proposed, which state the invariant the block's individual verified claims instantiate, together with the deterministic two-level spacing identity that explains the reported super-Poisson variance."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-J_ZD_SPECTRAL", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "77b997590fbc304df74bfca616897c4ae98faea81ac85888b7ef45e7e3b54262"
+
+[[transition.successors]]
+proposal_key = "j-zd-motif-family-is-not-an-expander-family"
+canonical_claim_id = "C-1715"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "j-zd-two-level-laplacian-of-densest-class"
+canonical_claim_id = "C-1716"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "j-zd-two-level-spacing-variance-is-deterministic"
+canonical_claim_id = "C-1717"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "j-zd-universal-half-filling-of-motif-spectrum"
+canonical_claim_id = "C-1718"
+relation_kind = "narrows"
+
+[[transition]]
+event_id = 185
+transition_key = "c-1532-successors-k-pmns-2026-08-06"
+source_claim_id = "C-1532"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "False if the JUNO overlay observable is a directly measured quantity rather than context."
+rationale = "Successor registration for block K_PMNS. The status of C-1532 is unchanged. This event creates the successor claims the block proposed, in their post-review corrected form: the theta_23 successor states an interval-membership fact rather than an exclusion strength, because the pull that appeared in the first emission is a local-Gaussian ratio and not a confidence level."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-K_PMNS", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "2d358ca192098fa4495754d45ae8ba2ec045a9d45a15413b5a25ca5c9106a748"
+
+[[transition.successors]]
+proposal_key = "k-pmns-cp-b-excluded-in-tested-variants"
+canonical_claim_id = "C-1719"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "k-pmns-nufit60-struct-is-a-four-source-composite"
+canonical_claim_id = "C-1720"
+relation_kind = "source_split"
+
+[[transition.successors]]
+proposal_key = "k-pmns-rocq-theorems-weaker-than-claims"
+canonical_claim_id = "C-1721"
+relation_kind = "narrows"
+
+[[transition.successors]]
+proposal_key = "k-pmns-theta-23-outside-one-sigma-inside-three-sigma"
+canonical_claim_id = "C-1722"
+relation_kind = "source_split"
+
+[[transition]]
+event_id = 186
+transition_key = "c-990-successors-l-misc-2026-08-06"
+source_claim_id = "C-990"
+expected_prior_status = "Refuted"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "False if any alternativity violation carries k equal to zero, which is the condition the Chingon drag accumulator gates on."
+rationale = "Successor registration for block L_MISC. The refutation of C-990 stands unchanged and is now guarded by a regression test in crates/gr_core/src/forces/chingon_drag.rs asserting both that no stored violation references the identity axis at dimensions 16, 32 and 64 and that the drag routine returns the zero vector. This event creates the successor claims the block proposed, including the corrected cross-invariant statement about the alternativity violation tensor documentation."
+unresolved_assumptions = []
+evidence_artifact_ids = ["LOCAL-FLEET-L_MISC", "LOCAL-FLEET-REVIEW-RESPONSE"]
+experiment_ids = []
+actor = "claim-falsification-fleet-successors-2026-08-06"
+reason = "Write the proposed successor claims the adjudication tranche recorded but did not create."
+transition_timestamp = "2026-08-06T23:59:00Z"
+transition_spec_sha256 = "cebac4583094b67b779f7292bb12148b6949da8573d176669b16376f8b8833b6"
+
+[[transition.successors]]
+proposal_key = "l-misc-alcubierre-wall-energy-exceeds-casimir"
+canonical_claim_id = "C-1723"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "l-misc-avt-doc-comment-conflates-two-invariants"
+canonical_claim_id = "C-1724"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "l-misc-cached-experiment-binary-has-drifted"
+canonical_claim_id = "C-1725"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "l-misc-kerr-newman-is-a-dead-enum-variant"
+canonical_claim_id = "C-1726"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "l-misc-no-violation-references-the-identity-axis"
+canonical_claim_id = "C-1727"
+relation_kind = "implementation_split"
+
+[[transition.successors]]
+proposal_key = "l-misc-themis-file-cluster-equals-day-cluster"
+canonical_claim_id = "C-1728"
+relation_kind = "implementation_split"
