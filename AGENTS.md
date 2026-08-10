@@ -102,6 +102,9 @@ hardware-specific tables are replaced with the scientific stack.
 - Cache budget: gate-target <= 200G; full `.cache` <= 250G; sweep
   with `make cache-sweep` (cargo-sweep --maxsize 100GB) or
   `make cache-sweep-soft` for the in-flight 150G soft cap.
+- An isolated worktree on a capacity-constrained filesystem MUST set
+  `REPO_CARGO_HOME`, `REPO_CARGO_TARGET_DIR`, and `REPO_CARGO_BUILD_DIR` to
+  distinct paths on a filesystem that satisfies the cache budget.
 
 ### Canonical build
 
@@ -256,9 +259,9 @@ repo.
 
 The `terminology-gate` hook catches the banned-term subset of this list
 automatically, and `ansi-check` catches emojis and stray control
-characters. Everything else here is reviewer-enforced (lint TBD),
-including the typographic substitutes, which `ansi-check --fix`
-rewrites but `ansi-check --check` accepts.
+characters. Everything else here is reviewer-enforced, including the
+typographic substitutes, which `ansi-check --fix` rewrites but
+`ansi-check --check` accepts.
 
 ### Source code MUST contain (when domain-specific)
 

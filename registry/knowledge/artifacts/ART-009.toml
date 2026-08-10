@@ -14,7 +14,7 @@ updated = "deterministic"
 line_count = 42
 section_count = 7
 claim_ref_count = 0
-equation_ref_count = 18
+equation_ref_count = 14
 proof_ref_count = 0
 source_ref_count = 1
 unknown_claim_ref_count = 0
@@ -24,51 +24,7 @@ claim_refs = []
 unknown_claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0131"
-source_line = 1
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0132"
-source_line = 2
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0133"
-source_line = 4
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0134"
-source_line = 5
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0135"
+id = "EQA-0085"
 source_line = 13
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -79,7 +35,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0136"
+id = "EQA-0086"
 source_line = 16
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -90,7 +46,7 @@ numeric_constants = ["16", "3"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0137"
+id = "EQA-0087"
 source_line = 18
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -101,7 +57,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0138"
+id = "EQA-0088"
 source_line = 18
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -112,7 +68,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0139"
+id = "EQA-0089"
 source_line = 18
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -123,7 +79,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0140"
+id = "EQA-0090"
 source_line = 19
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -134,7 +90,7 @@ numeric_constants = ["0.01", "0.05", "0.1", "0.2"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0141"
+id = "EQA-0091"
 source_line = 20
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -145,7 +101,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0142"
+id = "EQA-0092"
 source_line = 25
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -156,7 +112,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0143"
+id = "EQA-0093"
 source_line = 25
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -167,7 +123,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0144"
+id = "EQA-0094"
 source_line = 25
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -178,7 +134,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0145"
+id = "EQA-0095"
 source_line = 32
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -189,7 +145,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0146"
+id = "EQA-0096"
 source_line = 32
 equation_kind = "inequality_or_constraint"
 relation_operator = "implicit"
@@ -200,7 +156,7 @@ numeric_constants = ["1"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0147"
+id = "EQA-0097"
 source_line = 41
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -211,7 +167,7 @@ numeric_constants = ["1"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0148"
+id = "EQA-0098"
 source_line = 41
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -239,7 +195,7 @@ char_count = 196
 fingerprint = "d6be195d4c4d6cc2b436abfcc780e9f932fa4397d28e0e1527d8130672534bf4"
 summary = "<!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/artifact_scrolls.toml --> <!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/data_artifact_narratives.toml -->"
 claim_refs = []
-equation_ref_ids = ["EQA-0131", "EQA-0132", "EQA-0133", "EQA-0134"]
+equation_ref_ids = []
 proof_ref_ids = []
 body_text = "<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/artifact_scrolls.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->"
 
@@ -269,7 +225,7 @@ char_count = 341
 fingerprint = "1b4442c936ef104993980cb0a4fc738743669f57a9fdcc33cc6632aca92b8c10"
 summary = "We executed a production-grade 3D parameter sweep using the unified `thesis-synthesis` engine. The simulation integrates D3Q19 Lattice Boltzmann fluids with Kerr spacetime metrics and Sedenionic algebraic fields. We spec"
 claim_refs = []
-equation_ref_ids = ["EQA-0135"]
+equation_ref_ids = ["EQA-0085"]
 proof_ref_ids = []
 body_text = "We executed a production-grade 3D parameter sweep using the unified `thesis-synthesis` engine. The simulation integrates D3Q19 Lattice Boltzmann fluids with Kerr spacetime metrics and Sedenionic algebraic fields. We specifically measured the topological response of the algebraic field to varying fluid-algebra coupling strengths ($\\alpha$)."
 
@@ -284,7 +240,7 @@ char_count = 395
 fingerprint = "b731febf88af04f32990aed9faede96449109de56a030d1855f8c0054c3e8f85"
 summary = "* **Grid:** $16^3$ spatial resolution. * **Solver:** `LbmBackend3D` (CPU/GPU switchable). * **Coupling:** Semi-Lagrangian advection of Sedenion field $\\Phi$ with viscosity $\\nu$ modulated by associator imbalance $\\mathca"
 claim_refs = []
-equation_ref_ids = ["EQA-0136", "EQA-0137", "EQA-0138", "EQA-0139", "EQA-0140", "EQA-0141"]
+equation_ref_ids = ["EQA-0086", "EQA-0087", "EQA-0088", "EQA-0089", "EQA-0090", "EQA-0091"]
 proof_ref_ids = []
 body_text = "*   **Grid:** $16^3$ spatial resolution.\n*   **Solver:** `LbmBackend3D` (CPU/GPU switchable).\n*   **Coupling:** Semi-Lagrangian advection of Sedenion field $\\Phi$ with viscosity $\\nu$ modulated by associator imbalance $\\mathcal{F}$.\n*   **Sweep:** $\\alpha \\in [0.01, 0.05, 0.1, 0.2]$.\n*   **Metrics:** Betti numbers ($\\beta_0, \\beta_1$) computed via Vietoris-Rips filtration on field level sets."
 
@@ -299,7 +255,7 @@ char_count = 557
 fingerprint = "cc3f77083e00555d262b59130019d76f0dc608229e5e3d11e9b9b25a0071af59"
 summary = "The sweep results demonstrate a clear topological phase transition: | Alpha ($\\alpha$) | Betti-0 ($\\beta_0$) | Betti-1 ($\\beta_1$) | State | | :--- | :---: | :---: | :--- | | 0.01 | 1 | 42 | Laminar / Connected | | 0.05 "
 claim_refs = []
-equation_ref_ids = ["EQA-0142", "EQA-0143", "EQA-0144", "EQA-0145", "EQA-0146"]
+equation_ref_ids = ["EQA-0092", "EQA-0093", "EQA-0094", "EQA-0095", "EQA-0096"]
 proof_ref_ids = []
 body_text = "The sweep results demonstrate a clear topological phase transition:\n\n| Alpha ($\\alpha$) | Betti-0 ($\\beta_0$) | Betti-1 ($\\beta_1$) | State |\n| :--- | :---: | :---: | :--- |\n| 0.01 | 1 | 42 | Laminar / Connected |\n| 0.05 | 1 | 48 | Connected / Strained |\n| 0.10 | 7 | 120 | Fragmented / Turbulent |\n| 0.20 | 24 | 310 | Shredded / Chaotic |\n\n**Observation:** As $\\alpha$ exceeds 0.1, the algebraic field fragments into multiple connected components ($\\beta_0 > 1$). This \"shredding\" of the vacuum corresponds to the emergence of localized associator defects."
 
@@ -329,6 +285,6 @@ char_count = 235
 fingerprint = "f8389200cdbde7da5408c3fba3a2eb8993db6113350fdddaa21a8d6c963ac3ce"
 summary = "Fluid dynamics provides a physical mechanism for breaking algebraic symmetries. The transition from $\\beta_0=1$ to $\\beta_0 \\gg 1$ suggests that high-energy flows can \"topologically distill\" information into discrete alg"
 claim_refs = []
-equation_ref_ids = ["EQA-0147", "EQA-0148"]
+equation_ref_ids = ["EQA-0097", "EQA-0098"]
 proof_ref_ids = []
 body_text = "Fluid dynamics provides a physical mechanism for breaking algebraic symmetries. The transition from $\\beta_0=1$ to $\\beta_0 \\gg 1$ suggests that high-energy flows can \"topologically distill\" information into discrete algebraic packets."

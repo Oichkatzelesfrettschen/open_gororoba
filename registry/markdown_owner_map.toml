@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 135
+document_count = 136
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -788,5 +788,10 @@ removal_status = "active"
 
 [[owner]]
 path = "docs/engineering/theorem-identity-disambiguation-2026_08_04.md"
+owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/repository-architecture-evidence-map-2026_08_10.md"
 owner_group = "project"
 removal_status = "active"
