@@ -14,7 +14,7 @@ updated = "deterministic"
 line_count = 48
 section_count = 6
 claim_ref_count = 0
-equation_ref_count = 16
+equation_ref_count = 10
 proof_ref_count = 0
 source_ref_count = 1
 unknown_claim_ref_count = 0
@@ -24,73 +24,7 @@ claim_refs = []
 unknown_claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0090"
-source_line = 1
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0091"
-source_line = 2
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0092"
-source_line = 4
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0093"
-source_line = 5
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0094"
-source_line = 7
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0095"
-source_line = 8
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0096"
+id = "EQA-0066"
 source_line = 22
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -101,7 +35,7 @@ numeric_constants = ["3", "8"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0097"
+id = "EQA-0067"
 source_line = 22
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -112,7 +46,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0098"
+id = "EQA-0068"
 source_line = 22
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -123,7 +57,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0099"
+id = "EQA-0069"
 source_line = 23
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -134,7 +68,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0100"
+id = "EQA-0070"
 source_line = 24
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -145,7 +79,7 @@ numeric_constants = ["2"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0101"
+id = "EQA-0071"
 source_line = 33
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -156,7 +90,7 @@ numeric_constants = ["256"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0102"
+id = "EQA-0072"
 source_line = 33
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -167,7 +101,7 @@ numeric_constants = ["257"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0103"
+id = "EQA-0073"
 source_line = 33
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -178,7 +112,7 @@ numeric_constants = ["2", "256", "257"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0104"
+id = "EQA-0074"
 source_line = 34
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -189,7 +123,7 @@ numeric_constants = ["256"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0105"
+id = "EQA-0075"
 source_line = 35
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -217,7 +151,7 @@ char_count = 299
 fingerprint = "a7c8a253dd391554aa6bb8b7d254b2a9832d7bf47e1c9774738603521ec6bc02"
 summary = "<!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/artifact_scrolls.toml --> <!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/data_artifact_narratives.toml --> <!-- AUTO-GENERATED: DO "
 claim_refs = []
-equation_ref_ids = ["EQA-0090", "EQA-0091", "EQA-0092", "EQA-0093", "EQA-0094", "EQA-0095"]
+equation_ref_ids = []
 proof_ref_ids = []
 body_text = "<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/artifact_scrolls.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->"
 
@@ -247,7 +181,7 @@ char_count = 927
 fingerprint = "838aae8b33db8549a0fb87ff09fdb7ff41687221d654cda9b39999bb0090b136"
 summary = "**Script:** `src/sedenion_field_sim.py` **Artifacts:** `data/artifacts/sedenion_field_3d_plot.png`, `data/csv/sedenion_field_metrics_3d.csv` **Result:** The simulation successfully evolved a scalar field $\\Phi(x,t)$ valu"
 claim_refs = []
-equation_ref_ids = ["EQA-0096", "EQA-0097", "EQA-0098", "EQA-0099", "EQA-0100"]
+equation_ref_ids = ["EQA-0066", "EQA-0067", "EQA-0068", "EQA-0069", "EQA-0070"]
 proof_ref_ids = []
 body_text = "\n**Script:** `src/sedenion_field_sim.py`\n**Artifacts:** `data/artifacts/sedenion_field_3d_plot.png`, `data/csv/sedenion_field_metrics_3d.csv`\n\n**Result:**\nThe simulation successfully evolved a scalar field $\\Phi(x,t)$ valued in the Sedenions ($\\mathbb{S}$) on an $8^3$ grid.\n*   **Metric:** We measured the \"Mean Associator Norm\" $\\lVert (\\Phi_x \\Phi_y) \\Phi_z - \\Phi_x (\\Phi_y \\Phi_z) \\rVert$.\n*   **Observation:** The system generates non-associativity dynamically. Even starting from a random configuration, the interaction term $\\Phi^2$ pumps energy into the non-associative components (pure Sedenion imaginary units).\n*   **Physical Interpretation:** If Sedenion algebra represents the \"bulk\" geometry, this dynamic non-associativity acts as a *source term* for entropy. The \"loss of associativity\" corresponds to information scrambling that cannot be recovered by standard quantum mechanics (which assumes associativity)."
 
@@ -262,7 +196,7 @@ char_count = 666
 fingerprint = "58b584a1cc22f6d26159fd9ff505291a6aa4d9da18bee75c5dbd54396ecca5dd"
 summary = "**Script:** `src/modular_classical_sim.py` **Artifacts:** `data/artifacts/modular_chaos_plot.png`, `data/csv/modular_chaos_N*.csv` **Result:** We compared entropy growth for $N=256$ (Composite, Power of 2) vs $N=257$ (Pr"
 claim_refs = []
-equation_ref_ids = ["EQA-0101", "EQA-0102", "EQA-0103", "EQA-0104", "EQA-0105"]
+equation_ref_ids = ["EQA-0071", "EQA-0072", "EQA-0073", "EQA-0074", "EQA-0075"]
 proof_ref_ids = []
 body_text = "\n**Script:** `src/modular_classical_sim.py`\n**Artifacts:** `data/artifacts/modular_chaos_plot.png`, `data/csv/modular_chaos_N*.csv`\n\n**Result:**\nWe compared entropy growth for $N=256$ (Composite, Power of 2) vs $N=257$ (Prime).\n*   **Composite ($N=256$):** Entropy saturates but shows structured oscillations (recurrence).\n*   **Prime ($N=257$):** Entropy grows rapidly to maximum (scrambling) and stays pinned.\n*   **Implication:** \"Modular Entropy\" in holography depends critically on the number-theoretic properties of the bulk discretization. A \"Prime\" bulk scrambles faster than a \"Composite\" bulk. This matches the \"Fast Scrambling\" conjecture for Black Holes."
 

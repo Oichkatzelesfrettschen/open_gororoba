@@ -752,7 +752,10 @@ fn build_lacunae(
             format!("L-AUTO-{:04}", rows.len() + 1)
         };
         if !seen_ids.insert(lacuna_id.clone()) {
-            continue;
+            bail!(
+                "claim-status lacuna id {lacuna_id} collides with a retained non-derived lacuna; \
+                 rename the retained record before regenerating the claims-status projection"
+            );
         }
         let statement = collapse(table_str(row, "statement"));
         rows.push(Lacuna {
@@ -1374,5 +1377,48 @@ fn render_list(values: &[String]) -> String {
                 .collect::<Vec<_>>()
                 .join(", ")
         )
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn table_rows(document: &str, key: &str) -> Vec<Value> {
+        toml::from_str::<Value>(document)
+            .expect("test TOML must parse")
+            .get(key)
+            .and_then(Value::as_array)
+            .expect("test TOML must contain the requested array")
+            .clone()
+    }
+
+    #[test]
+    fn claim_status_projection_rejects_retained_id_collision() {
+        let claims = table_rows(
+            r#"
+[[claim]]
+id = "C-001"
+status = "Partial"
+statement = "Collision probe."
+"#,
+            "claim",
+        );
+        let legacy_lacunae = table_rows(
+            r#"
+[[lacuna]]
+id = "L-001"
+origin = "legacy_manual"
+title = "Retained manual record"
+description = "Manual evidence remains distinct."
+priority = "medium"
+status = "open"
+"#,
+            "lacuna",
+        );
+
+        let error = build_lacunae(&claims, &[], &[], &[], &legacy_lacunae)
+            .expect_err("a claim-status projection must not suppress a retained lacuna");
+        assert!(error.to_string().contains("collides"));
     }
 }

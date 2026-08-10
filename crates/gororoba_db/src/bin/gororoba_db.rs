@@ -2160,19 +2160,23 @@ fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
 
     // build_fresh deletes the database file, and the importer below reads only the
     // lanes named in registry/source_manifest.toml. Claim transition events, the
-    // relations they allocate, and the revision log have no compatibility TOML in
-    // that manifest, so a rebuild recreates those tables empty and the history is
-    // gone. The append-only triggers cannot catch it: removing the file issues no
-    // DELETE. Refuse rather than destroy, and make the operator say so explicitly.
+    // relations they allocate, and standalone claim revisions have no compatibility
+    // TOML in that manifest. A rebuild recreates those tables empty. The append-only
+    // triggers cannot catch file removal because it issues no DELETE. Refuse rather
+    // than destroy, and require an explicit acknowledgement of that loss.
     if db_path.exists() {
         let existing = ProvenanceStore::open(db_path)
             .with_context(|| format!("open existing db {}", db_path.display()))?;
         let event_count = existing.list_claim_transition_events()?.len();
-        if event_count != 0 && !args.allow_transition_history_loss {
+        let revision_count = existing.table_row_count("claim_revisions")?;
+        if claim_history_requires_loss_acknowledgement(event_count, revision_count)
+            && !args.allow_transition_history_loss
+        {
             bail!(
-                "refusing to rebuild {}: it holds {event_count} claim transition events that no \
-                 compatibility TOML can restore. Rebuilding recreates the event, relation and \
-                 revision tables empty. Export instead of rebuilding, or pass \
+                "refusing to rebuild {}: it holds {event_count} claim transition events and \
+                 {revision_count} claim revisions that no compatibility TOML can restore. \
+                 Rebuilding recreates the event, relation and revision tables empty. Export \
+                 instead of rebuilding, or pass \
                  --allow-transition-history-loss if discarding the adjudication history is \
                  intended.",
                 db_path.display()
@@ -2314,6 +2318,10 @@ fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
     }
 
     Ok(())
+}
+
+fn claim_history_requires_loss_acknowledgement(event_count: usize, revision_count: i64) -> bool {
+    event_count != 0 || revision_count != 0
 }
 
 // ── Claims (Layer 3) ────────────────────────────────────────────
@@ -2488,5 +2496,12 @@ mod tests {
     fn cli_parses_stats_subcommand() {
         let cli = Cli::try_parse_from(["gororoba-db", "stats"]);
         assert!(cli.is_ok(), "stats subcommand should parse: {cli:?}");
+    }
+
+    #[test]
+    fn revision_only_history_requires_loss_acknowledgement() {
+        assert!(claim_history_requires_loss_acknowledgement(0, 1));
+        assert!(claim_history_requires_loss_acknowledgement(1, 0));
+        assert!(!claim_history_requires_loss_acknowledgement(0, 0));
     }
 }

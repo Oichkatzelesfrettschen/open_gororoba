@@ -1540,8 +1540,12 @@ fn run_validation_report(cfg: ValidationReportConfig) -> Result<()> {
         ]
     };
 
-    let cargo_home = repo_root.join(".cache").join("cargo-home");
-    let cargo_target_dir = repo_root.join(".cache").join("gate-target");
+    let cargo_home =
+        cargo_path_from_environment("CARGO_HOME", &repo_root.join(".cache").join("cargo-home"));
+    let cargo_target_dir = cargo_path_from_environment(
+        "CARGO_TARGET_DIR",
+        &repo_root.join(".cache").join("gate-target"),
+    );
 
     let mut summary_lines = vec![
         format!(
@@ -1752,8 +1756,12 @@ fn run_audit_comprehensive(cfg: ValidationReportConfig) -> Result<()> {
         ),
     ];
 
-    let cargo_home = repo_root.join(".cache").join("cargo-home");
-    let cargo_target_dir = repo_root.join(".cache").join("gate-target");
+    let cargo_home =
+        cargo_path_from_environment("CARGO_HOME", &repo_root.join(".cache").join("cargo-home"));
+    let cargo_target_dir = cargo_path_from_environment(
+        "CARGO_TARGET_DIR",
+        &repo_root.join(".cache").join("gate-target"),
+    );
 
     let mut summary_lines = vec![
         format!(
@@ -1880,8 +1888,12 @@ fn run_audit_comprehensive(cfg: ValidationReportConfig) -> Result<()> {
 /// - Replaced shell: Makefile line 1495 `registry-export-markdown`.
 fn run_registry_emit_all_mirrors() -> Result<()> {
     let repo_root = repo_root()?;
-    let cargo_home = repo_root.join(".cache").join("cargo-home");
-    let cargo_target_dir = repo_root.join(".cache").join("gate-target");
+    let cargo_home =
+        cargo_path_from_environment("CARGO_HOME", &repo_root.join(".cache").join("cargo-home"));
+    let cargo_target_dir = cargo_path_from_environment(
+        "CARGO_TARGET_DIR",
+        &repo_root.join(".cache").join("gate-target"),
+    );
 
     // The 23 mirror kinds. Format: (registry-emit subcommand, output
     // path relative to crates/data_core/src/registry_mirrors/).
@@ -2792,6 +2804,17 @@ fn repo_root() -> Result<PathBuf> {
         .context("resolve repository root from xtask manifest directory")
 }
 
+fn configured_cargo_path(configured: Option<std::ffi::OsString>, fallback: &Path) -> PathBuf {
+    configured
+        .filter(|value| !value.is_empty())
+        .map(PathBuf::from)
+        .unwrap_or_else(|| fallback.to_path_buf())
+}
+
+fn cargo_path_from_environment(variable: &str, fallback: &Path) -> PathBuf {
+    configured_cargo_path(env::var_os(variable), fallback)
+}
+
 // ===========================================================================
 // validate-local xtask driver
 // ===========================================================================
@@ -3512,6 +3535,21 @@ fn run_validation_timing_regression_check(cli: ValidationTimingRegressionCheckCl
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn configured_cargo_path_prefers_a_nonempty_environment_value() {
+        let fallback = Path::new("/fallback");
+
+        assert_eq!(
+            configured_cargo_path(Some(std::ffi::OsString::from("/configured")), fallback),
+            PathBuf::from("/configured")
+        );
+        assert_eq!(
+            configured_cargo_path(Some(std::ffi::OsString::new()), fallback),
+            fallback
+        );
+        assert_eq!(configured_cargo_path(None, fallback), fallback);
+    }
 
     fn write_validation_timing_record(
         audit_root: &Path,
