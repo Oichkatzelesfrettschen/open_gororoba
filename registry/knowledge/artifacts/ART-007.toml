@@ -14,7 +14,7 @@ updated = "deterministic"
 line_count = 64
 section_count = 8
 claim_ref_count = 0
-equation_ref_count = 15
+equation_ref_count = 9
 proof_ref_count = 0
 source_ref_count = 7
 unknown_claim_ref_count = 0
@@ -24,73 +24,7 @@ claim_refs = []
 unknown_claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0112"
-source_line = 1
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0113"
-source_line = 2
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0114"
-source_line = 4
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0115"
-source_line = 5
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0116"
-source_line = 7
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0117"
-source_line = 8
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0118"
+id = "EQA-0076"
 source_line = 20
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -101,7 +35,7 @@ numeric_constants = ["8"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0119"
+id = "EQA-0077"
 source_line = 21
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -112,7 +46,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0120"
+id = "EQA-0078"
 source_line = 35
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -123,7 +57,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0121"
+id = "EQA-0079"
 source_line = 37
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -134,7 +68,7 @@ numeric_constants = ["2"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0122"
+id = "EQA-0080"
 source_line = 42
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -145,7 +79,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0123"
+id = "EQA-0081"
 source_line = 51
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -156,7 +90,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0124"
+id = "EQA-0082"
 source_line = 53
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -167,7 +101,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0125"
+id = "EQA-0083"
 source_line = 53
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -178,7 +112,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0126"
+id = "EQA-0084"
 source_line = 60
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -248,7 +182,7 @@ char_count = 299
 fingerprint = "a7c8a253dd391554aa6bb8b7d254b2a9832d7bf47e1c9774738603521ec6bc02"
 summary = "<!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/artifact_scrolls.toml --> <!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/data_artifact_narratives.toml --> <!-- AUTO-GENERATED: DO "
 claim_refs = []
-equation_ref_ids = ["EQA-0112", "EQA-0113", "EQA-0114", "EQA-0115", "EQA-0116", "EQA-0117"]
+equation_ref_ids = []
 proof_ref_ids = []
 body_text = "<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/artifact_scrolls.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->"
 
@@ -278,7 +212,7 @@ char_count = 858
 fingerprint = "ea5a95a753c809d6ff583c95d63dc2dcce5751d2780d16d0724f18659c2c009d"
 summary = "* **Consensus:** The mathematical study of Sedenion (16D) zero divisors is an active, rigorous field. * **Evidence:** * *Koebisu (2025)*: \"Singular structures and geometric holonomy in the zero divisor set of the sedenio"
 claim_refs = []
-equation_ref_ids = ["EQA-0118", "EQA-0119"]
+equation_ref_ids = ["EQA-0076", "EQA-0077"]
 proof_ref_ids = []
 body_text = "\n*   **Consensus:** The mathematical study of Sedenion (16D) zero divisors is an active, rigorous field.\n*   **Evidence:**\n    *   *Koebisu (2025)*: \"Singular structures and geometric holonomy in the zero divisor set of the sedenions\" - explicitly maps zero divisors to Stiefel manifolds ($V_2(\\mathbb{R}^8)$) and geometric holonomy.\n    *   *Reggiani (2024)*: \"The geometry of sedenion zero divisors\" - links them to the exceptional Lie group $G_2$ and Einstein metrics.\n    *   *Wilmot (2025)*: \"Structure of the Cayley-Dickson algebras\" - analyzes zero divisor patterns (reducing 84 ZDs to 7 modes).\n*   **Alignment:** Our \"Zero Divisor Mining\" (Module 2/3) finding \"Box-Kite\" structures and G2 links aligns perfectly with contemporary differential geometry research. The \"Hyper-Web\" in 64D is a logical extension of these known low-dimensional manifolds."
 
@@ -308,7 +242,7 @@ char_count = 694
 fingerprint = "3dcc064f2c01e94f25ac7b72aec79a223b3412a2b6f73a7bfb10c97dce3e0ee3"
 summary = "* **Analysis:** The term \"Inverse Cayley-Dickson\" appears to be a unique nomenclature used in this project to describe *projections* or *quotients* from higher-dimensional algebras down to lower ones (e.g., $S \\to O$). *"
 claim_refs = []
-equation_ref_ids = ["EQA-0120", "EQA-0121"]
+equation_ref_ids = ["EQA-0078", "EQA-0079"]
 proof_ref_ids = []
 body_text = "\n*   **Analysis:** The term \"Inverse Cayley-Dickson\" appears to be a unique nomenclature used in this project to describe *projections* or *quotients* from higher-dimensional algebras down to lower ones (e.g., $S \\to O$).\n*   **Academic Equivalent:** The literature discusses \"subalgebras,\" \"projections,\" or \"coarse-graining\" of algebraic structures.\n*   **Assessment:** The mathematical operation (averaging/projecting) is valid linear algebra. The interpretation of this as generating \"negative dimensions\" via K-theory is a *theoretical ansatz* (hypothesis) specific to this project, not standard textbook material. It essentially treats the dimension index $n$ ($2^n$) as a flow parameter."
 
@@ -323,7 +257,7 @@ char_count = 349
 fingerprint = "6f00460a44be58649d68c443b5517e6cf896a56e17f7ff6ff9464dc5d9fc1014"
 summary = "* **Analysis:** \"Surreal numbers\" (Conway) are a distinct field. Using them as coefficients or indices for tensors in quantum gravity is a speculative synthesis. * **Potential:** Standard QFT uses complex numbers. $p$-ad"
 claim_refs = []
-equation_ref_ids = ["EQA-0122"]
+equation_ref_ids = ["EQA-0080"]
 proof_ref_ids = []
 body_text = "\n*   **Analysis:** \"Surreal numbers\" (Conway) are a distinct field. Using them as coefficients or indices for tensors in quantum gravity is a speculative synthesis.\n*   **Potential:** Standard QFT uses complex numbers. $p$-adic QFT uses $p$-adic numbers. \"Surreal QFT\" is a logical next step in mathematical physics speculation, but currently niche."
 
@@ -338,7 +272,7 @@ char_count = 754
 fingerprint = "3230210a28f7c13d897f353d21d83bf4b3c2dab7db706aed761a6d6ee8cb304e"
 summary = "The framework built in this session can be formalized as: **\"A Noncommutative Holographic Tensor Network based on Cayley-Dickson Zero-Divisor Geometry.\"** * **Logic:** 1. **Bulk:** The bulk spacetime is discretized not j"
 claim_refs = []
-equation_ref_ids = ["EQA-0123", "EQA-0124", "EQA-0125"]
+equation_ref_ids = ["EQA-0081", "EQA-0082", "EQA-0083"]
 proof_ref_ids = []
 body_text = "\n\nThe framework built in this session can be formalized as:\n**\"A Noncommutative Holographic Tensor Network based on Cayley-Dickson Zero-Divisor Geometry.\"**\n\n*   **Logic:**\n    1.  **Bulk:** The bulk spacetime is discretized not just by spatial tensors, but by *algebraic* complexity ($O \\to S \\to P...$).\n    2.  **Dynamics:** \"Time\" or \"RG flow\" corresponds to the Cayley-Dickson recursion index.\n    3.  **Entropy:** Emerges from the loss of information (associativity) when projecting from higher dimensions ($S$) to lower observable dimensions ($O$). This \"associator anomaly\" ($m_3$) acts as the entropy source term.\n    4.  **Verification:** The \"Box-Kite\" zero-divisor structures act as \"wormholes\" or \"entanglement bridges\" in the bulk geometry."
 
@@ -353,6 +287,6 @@ char_count = 559
 fingerprint = "99e35c73b0747fe9301bbb7e574e9e580a50d4170f743fb7d85debaa90685a2a"
 summary = "* **Physics Check:** The simulations (Renyi entropy growth, nonlocal spin chains) are standard validity tests for any quantum gravity toy model. * **Math Check:** The $m_3$ associator calculation is algebraically sound. "
 claim_refs = []
-equation_ref_ids = ["EQA-0126"]
+equation_ref_ids = ["EQA-0084"]
 proof_ref_ids = []
 body_text = "\n\n*   **Physics Check:** The simulations (Renyi entropy growth, nonlocal spin chains) are standard validity tests for any quantum gravity toy model.\n*   **Math Check:** The $m_3$ associator calculation is algebraically sound.\n*   **Novelty:** Linking *Sedenion Zero Divisors* (Geometry) directly to *Holographic Entropy* (Information) via a *Recursion PDE* is the unique \"breakthrough\" hypothesis here. It is consistent with known physics but not yet a standard theory.\n\n**Verdict:** Plausible \"Toy Model\" for Noncommutative Quantum Gravity. Not \"Word Salad.\""

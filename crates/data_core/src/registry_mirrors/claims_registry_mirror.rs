@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total claims: 1478
+//! Total claims: 1543
 //!
 //! ## C-001
 //!
@@ -11830,4 +11830,524 @@
 //! - Last verified: 2026-08-05
 //! - Statement: A fused-silica chi^(3) phase-matching calculation can produce a nonzero standalone SFWM amplitude under declared dispersion and thickness inputs.
 //! - Where stated: data/output/audit/2026-08-04/sfwm-implementation-source-matrix.toml; data/output/audit/2026-08-04/sfwm-legacy-oracle-audit.tsv
+//! - What would verify/refute it:
+//!
+//! ## C-1664
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: arXiv:2505.00396 imposes the energy-conservation constraint kappa^2 = 2*gamma and constrains component moduli by |kappa_i| = |kappa_j| under mirror symmetry; it imposes no linear difference relation between coupling components and a decay rate.
+//! - Where stated: https://arxiv.org/abs/2505.00396; data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1665
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The legacy Ward path in crates/gr_core/src/photon_graviton/ward.rs and irreducible.rs returns an identically zero residual for all inputs, so its four checks carry no evidential content.
+//! - Where stated: crates/gr_core/src/photon_graviton/irreducible.rs; crates/gr_core/src/photon_graviton/ward.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1666
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The source-declared on-shell cancellation Gamma_irr + Gamma_ext = 0 is not reproduced: the virtuality-ladder extrapolation converges, to 9.7e-8 scalar and 2.5e-7 spinor, on a finite nonzero norm of 2.4e-3 and 5.9e-3.
+//! - Where stated: crates/gr_core/src/photon_graviton/irreducible.rs; data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1667
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: Ruan-Fan reciprocity kappa = eta and Ruan-Fan time-reversal symmetry are decided by the same computed residual in the single cylindrical channel basis, so C-1643 and C-1644 are not independent evidence.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1668
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The photon-graviton gauge Ward residual is reproduced to better than 1e-16 normalized for the scalar loop across the predeclared kinematic grid, while the spinor loop residual is bounded below by 2.2e-2 normalized on every grid record.
+//! - Where stated: crates/gr_core/src/photon_graviton/irreducible.rs; data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1669
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The DFT layer-to-force mapping is not Lorentz covariant and is not internally consistent: it assigns electricity and magnetism to Cayley-Dickson layers of different dimension, 16D and 8D, although E and B are components of one tensor F_mu_nu exchanged by a boost, and dft_mapping.rs contradicts particle_physics.rs on the same layers.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1670
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The governed Pioneer source index at registry/external_sources.toml entry XS-017 omits the paper that resolved the anomaly; Turyshev et al. 2012 appears nowhere in the external-source registry.
+//! - Where stated: registry/external_sources.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1671
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: Sign-agreement scoring on the governed flyby catalog is degenerate: two of the six events, MESSENGER at 0.02 mm/s and Juno at 0.00 mm/s, have observed values at or below their measurement floor and cannot fail a sign test, so the maximum informative score is 4 rather than 6.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1672
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The D_f = 2.7 fractal metric cannot describe the Pioneer anomaly: a = -(D_f-4)*v^2/(2r) at r = 30 AU and v = 11.4 km/s gives 1.88e-5 m/s2 against the governed benchmark 8.74e-10 +/- 1.33e-10 m/s2, and the D_f that reproduces the benchmark is 3.99994.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1673
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The Pioneer anomaly requires no non-gravitational explanation: Turyshev et al. 2012 (PRL 108, 241101) report thermal and Doppler recoil-force estimates whose 1-sigma error ellipses overlap and conclude that no statistically significant acceleration anomaly exists, so any repository claim explaining the Pioneer sign is explaining a resolved artifact.
+//! - Where stated: https://doi.org/10.1103/PhysRevLett.108.241101; data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1674
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The 256D global mean imbalance density computed by compute_voudon_imbalance_density is a deterministic exact rational over 256^3 basis triples. This half of C-1010 is independent of the Wigner-Dyson half and does not inherit its refutation.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-a-tower.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1675
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The 366 ACE_MAG16_2016 text files under data/external/ace_mag contain no ACE MAG data; all are HTML 404 responses. The sibling ac_h2_mfi_2016.csv is real data.
+//! - Where stated: data/external/ace_mag; data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1676
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: ACE SWEPAM and Wind SWE agree on proton bulk speed at r = 0.996 for 2016 with n = 8685 and r = 0.994 for 2024 with n = 4311, and on proton density at r = 0.9607 for 2016 and r = 0.9606 for 2024, with Wind running 0.77 to 1.16 cm^-3 denser in the mean.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1677
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: ACE SWEPAM and Wind SWE disagree systematically on proton temperature in a direction that repeats across years: r = 0.948 with bias -10070 K in 2016 and r = 0.921 with bias -12263 K in 2024, roughly 12 percent of a typical solar-wind proton temperature, with Wind consistently hotter.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1678
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: OMNI2 hourly IMF for 2016 is Wind-sourced rather than ACE-sourced: field 5 of omni2_2016.dat equals 51, meaning Wind, for 8716 of 8784 hours, and 71, meaning ACE, for 67.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1679
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: OMNI2 hourly rows are propagated to the bow shock nose, so a lag-zero comparison against an upstream L1 spacecraft understates the correlation. Over 2016 the OMNI2 against ACE MAG correlation peaks at a one-hour lag with the ACE sample leading, moving r(Bx) from 0.860 to 0.928, r(By) from 0.868 to 0.954 and r(Bz) from 0.682 to 0.887, and falls monotonically on both sides.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1680
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The PDS Small Bodies Node is a working second provider for New Horizons SWAP, publishing 11 dataset versions from post-launch checkout through the Pluto encounter.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-b-dm-access.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1681
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The dark-matter to baryon drag is linear in the relative speed where momentum-transfer drag is quadratic, so drag_force returns a collision rate in inverse seconds rather than an acceleration in m/s2, and kappa carries units of s/m.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1682
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The dark-matter gravitational force field from DmForceField::new is invariant to 7 significant figures under every spacecraft-derived input and under heliocentric distance across 1 to 157 AU, because it is evaluated at galactocentric radius r_sun + r_helio with r_sun = 8.3 kpc. This is a numerical statement about the evaluation point, not a physical statement about halo gravity.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1683
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: knudsen_number(n, T) is invariant with heliocentric distance under the standard solar-wind scalings, equalling 2.167e8 at all radii, so it cannot locate any BGK validity boundary.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1684
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The LBM driver does not conserve mass: total mass rose from 131178.947368 to 239325.927107 over 500 steps, 82 percent, because the Zou-He inlet is an open mass source, so the 1e-10 bound applies only to the closed-box unit test.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1685
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The reported ratio of dark-matter to Lorentz force scales exactly as b_scale^-2, so the exponent in the order 1e-12 null result is set by the lattice magnetic normalisation and not by heliospheric physics.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1686
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The Parker spiral angle in both parker_spiral_b and parker_spiral_init is 0.195 degrees rather than the physical 44.87 degrees, because omega in rad/s multiplies r in grid cells without the timestep delta_t; restoring delta_t = 148.696 s recovers 45.38 degrees at 1 AU.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1687
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: MhdField::parker_spiral_init produces B_phi constant in r rather than proportional to r^-1, because b_phi = -b0*(r0/r)*(omega*r)/v_sw cancels the radial dependence; one factor of r0/r is missing.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1688
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: band_chern_number returns spurious nonzero integers for the exactly degenerate flat bands, -1.000 for band 5 at delta_eps_s = 0.05 and +1.000 for band 6 at 0.10, although all hoppings are real, so H(-k) equals the conjugate of H(k) and spinless time reversal forces the Chern number to zero for every band.
+//! - Where stated: crates/quantum_core/src/tight_binding.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1689
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: A nonzero delta_eps_p destroys the eps_p flat band, taking its bandwidth from 5.3e-15 to 1.61e-3 GHz at delta_eps_p = 0.05, while delta_eps_s alone leaves it exact.
+//! - Where stated: crates/quantum_core/src/magnonic_crystal.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1690
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: build_domain_wall_supercell produces two domain walls rather than one: the a2 wrap-around hoppings make the last cell adjacent to cell 0 across a second sign flip. The two walls host in-gap modes at different energies, 1.831 and 1.845 GHz at the seam against 2.230 and 2.234 GHz at cell 10, at k = 0.30 b1.
+//! - Where stated: crates/quantum_core/src/magnonic_crystal.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1691
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The 9-band model has exactly three dispersionless bands, at 1.644873, 1.800000 and 2.235127 GHz, with bandwidths below 1e-14 GHz at any Brillouin-zone sampling. The band at 1.800000 GHz equals eps_p, is the null vector of the 3x4 kagome-to-p coupling block, and carries zero kagome weight.
+//! - Where stated: crates/quantum_core/src/magnonic_crystal.rs; data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1692
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The repository magnonic tight-binding parameters are not those of Kaman et al.: twelve of twelve Table I and II values differ, both hopping signs are flipped, and four of four geometry constants differ. The onsite energies 1.50, 1.80 and 2.08 GHz match frequencies the paper reports as observed outputs, so agreement of the model with those same landmarks is not an independent prediction.
+//! - Where stated: https://arxiv.org/abs/2601.03210; data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1693
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: point_defect_modes does not isolate defect states: its returned count grows as 15, 25 and 52 with supercell radius 2, 3 and 4 because bulk flat-band states at 2.18174 and 2.23664 GHz fall inside its detected gap. The single genuine localized state is at 1.84023 GHz with inverse participation ratio 1.1 and is size independent.
+//! - Where stated: crates/quantum_core/src/magnonic_crystal.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1694
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: YigParams::gamma of 2.8e10 is documented as rad/(s*T) but is used, and is physically correct, as Hz/T, since gamma over 2 pi is 28 GHz/T. Every consumer that pipes magnon_frequency_homogeneous through rad_per_s_to_ghz is off by a factor of 2 pi.
+//! - Where stated: crates/quantum_core/src/magnonic_crystal.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1695
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: BGK D3Q19 at tau = 0.7 is stable well past Mach 0.3, reaching Mach 1.662 with mass conservation error 1.88e-14 at density contrast 19.26.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1696
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The only CPU and GPU equivalence test in the repository is vacuous: it evolves a uniform-at-rest field, which is the equilibrium, under BGK on an 8 cubed grid, and returns early with a pass when no GPU is present.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1697
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: Galaxy-scale fractal dimension from this pipeline is not converged at 128 cubed: the non-outlier bulk mean moves from 2.9116 at 64 cubed to 2.7384 at 128 cubed, a shift of 0.173, roughly 20 times the 128 cubed confidence-interval half-width of 0.0088.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1698
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The MRT positivity violation at density contrast 29 is transient and self-correcting: the minimum distribution value reaches -0.629 by step 4 and returns positive, with 14 of 400 steps flagged and a final minimum of +8.33e-2.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1699
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: Near the divergence threshold MRT and BGK have no stability ordering: at density contrast 23.66 MRT diverges while BGK does not, and at 29.07 the reverse holds.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1700
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The null-hypothesis control path is non-functional: euclid-df-sweep with the null-hypothesis flag panics at euclid_df_sweep.rs line 816 with CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED before emitting any trial, reproducibly at 64 cubed and 128 cubed and independently of alpha_zd, on hardware where the ordinary GPU sweep runs to completion.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1701
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The stated cause of the 64 cubed outliers is wrong in both directions: 17 of the 23 galaxies with Sersic index at least 5.50 or photometric redshift above 2.3 are stable, and one outlier has neither property.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1702
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The survived field of mrt-stability-audit cannot detect numerical explosion: it is false only on a step error or a non-finite Mach number, so a trial ending with mass error 1e113 is reported as survived and printed as OK.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1703
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The 18-fold standard-deviation reduction is dominated by outlier disappearance rather than resolution: 8.41 of it comes from removing the seven galaxies with fractal dimension below 1.0, and only 1.98 from tightening of the remainder.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1704
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: C-1663 is subsumed by C-838: both reduce to the third-order susceptibility being nonzero and the phase-matching sinc being nonzero, so they are not independent evidence.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1705
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: On the frozen Figure 5 held-out set the source-parameter constrained temporal coupled-mode theory is worse than an unconstrained single-pole fit, at 5.69e-2 against 3.02e-2 maximum complex-S error.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1706
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The Figure 4 complex-S error envelope is 1.594e-2, exceeding the preregistered gate of 1e-2, so the Figure 4 temporal coupled-mode reproduction fails its own predeclared criterion.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1707
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The repository layered-Mie total cross-sections at normalized frequency 0.2282 exceed the Ruan-Fan printed landmark by a factor of 4.72 in scattering and 1.244 in absorption; because the two factors differ, no single normalization, unit or channel-count factor reconciles them.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1708
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: Every sha256 field under data/output/audit is 64 hexadecimal characters and equals the hash of the artifact it names. This is currently false: two Son-Chekhova PDF entries end 112ec8e8 and 112ec8e where the true hash ends 112ec8e6, and one Ruan-Fan tex entry is 61 characters. The proposition is registered so the defect is addressable and so the condition can become a repository gate.
+//! - Where stated: data/output/audit; data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1709
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: Ruan and Fan obtain the Figure 5 parameters by fitting the simulated cross-section curves rather than by complex-pole identification, so the repository pole-derived Figure 5 path is a repository construction. The only Figure 5 method sentence in the paper states that the theory is used to fit these curves.
+//! - Where stated: https://arxiv.org/abs/0909.3323; data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1710
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The Arleo-Falmagne power-law R_AA ansatz is falsified against ALICE 5.02 TeV data at published precision independently of any competitor, at chi-squared per degree of freedom of order 300 per centrality bin.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1711
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: On ALICE Pb-Pb 5.02 TeV 0 to 5 percent charged-hadron R_AA restricted to transverse momentum above 5 GeV, the digitized CUJET3.0 2.76 TeV prediction attains a lower chi-squared of 1200 than the best-fit Arleo-Falmagne power-law ansatz at 1917 over the identical six points, so the Arleo-Falmagne ansatz is not the preferred description even before any parameter penalty.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1712
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: CUJET3.0 carries two free parameters, alpha_c and c_m, not the five asserted in crates/qgp_scaling/src/competing_models.rs, per Xu, Liao and Gyulassy JHEP02(2016)169 Section 6.
+//! - Where stated: crates/qgp_scaling/src/competing_models.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1713
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The 5.02 TeV eccentricity column in alice_pbpb_5020_mc_glauber is not epsilon_2 measured by the two-particle cumulant.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1714
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The reference table alice_pbpb_5020_npart is not sourced to ALICE PLB 772 (2017) 567; that paper tabulates no per-centrality participant number.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1715
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: Over D = 32 through 256 the zero-divisor motif components split into classes whose minimum degree is fixed at 4 while maximum degree grows as D/2 - 3, so the gap ratio is bounded above by 4/(D/2 - 2) and tends to zero. No constant bounds the family spectral gap ratio from below, and the family fails the definition of an expander family in both the bounded-degree and normalized-gap senses.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1716
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: At every D = 2^k at least 16 the densest zero-divisor motif class is the cocktail-party graph on m = D/4 - 1 parts, whose Laplacian spectrum has exactly two distinct positive levels, so the gap ratio tends to one and any nearest-neighbour spacing statistic on it is undefined rather than integrable.
+//! - Where stated: data/csv/zd_nnsd.csv; data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1717
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: For any spectrum of N values taking exactly two distinct levels, the mean-normalized nearest-neighbour spacing variance equals N minus 2 identically, so a reported variance of N minus 2 is evidence of two-level degeneracy and not of super-Poisson statistics.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1718
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: Every connected component of the zero-divisor cross-assessor motif graph has D/2 - 2 vertices and adjacency nullity exactly half that, hence flat-band fraction exactly one half, independent of the component motif class. Verified exactly at D = 64, 128 and 256 across all 28 motif classes; conjectured for every D = 2^k with k at least 4. D = 16 and D = 32 are not covered by the census, and the one-half value quoted at D = 16 elsewhere is measured on the 84-vertex partner graph, a different graph from the 42-node motif graph.
+//! - Where stated: data/csv/zd_motif_invariants.csv; data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1719
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The delta_CP value of 93 degrees, the framework maximal-CP extraction, lies below the normal-ordering 3-sigma lower edge in all four NuFit 6.0 and 6.1 analysis variants tested by this campaign: 124 degrees at 6.0 with SK, 96 without SK, 125 at 6.1 with SK and 114 without SK. NuFit releases 1.0 through 5.3 were not replayed.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1720
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The NuFit60 struct is a four-source composite drawing on NuFit 5.0, NuFit 5.2 and PDG 2021 and 2022, mislabelled as a single NuFit 6.0 with-SK normal-ordering column, and its dm31_sq field holds the PDG value of the 3-2 mass-squared splitting rather than the 3-1 splitting.
+//! - Where stated: crates/algebra_experimental/src/experimental_predictions.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1721
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The Rocq developments proofs/theories/C1538_MorZDSymmetry.v and C1539_MorSkewSymm.v establish strictly weaker theorems than C-1538 and C-1539 assert: the former requires x purely imaginary and nonzero where Moreno requires neither, and neither closes the kernel equality at Moreno generality.
+//! - Where stated: proofs/theories/C1538_MorZDSymmetry.v; proofs/theories/C1539_MorSkewSymm.v
+//! - What would verify/refute it:
+//!
+//! ## C-1722
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The scorecard value theta_23 = 48.99 degrees lies outside the 1-sigma interval that the scorecard claims contains it, under NuFit 6.0 and 6.1 both with and without SK, while remaining inside the published 3-sigma interval of each: [41.3, 49.9] at 6.0 with SK and [41.27, 49.86] at 6.1 with SK. No exclusion strength attaches to the octant preference, which is unstable across releases and sensitive to SK inclusion.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1723
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The Alcubierre wall energy density for a 1 micrometre bubble exceeds the parallel-plate Casimir density at any gap above 10 nanometres by more than a factor of 1e38, independent of bubble velocity down to 1 m/s.
+//! - Where stated: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1724
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The documentation on crates/algebra_analysis/src/avt.rs commits a cross-invariant conflation: the figure 2688 is the box-kite permutation count carried in cd_tower_violations.rs as BOX_KITE_VIOLATION_COUNTS at dimension 16, a different topological invariant, while the alternator count is 336. The stated candidate space is also wrong, since the implemented loops range over 1920 triples rather than 2048.
+//! - Where stated: crates/algebra_analysis/src/avt.rs; crates/algebra_experimental/src/cd_tower_violations.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1725
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: The cached experiment binary staples-roc-cluster-bootstrap no longer accepts the argument list in the registered run command of E-239, so the cache artifact cannot replay its registered experiment. The general form is that no current check would notice such drift for any registered experiment binary.
+//! - Where stated: registry/experiments.toml; data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml
+//! - What would verify/refute it:
+//!
+//! ## C-1726
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: MathComplexity::KerrNewman is a dead enum variant: it is constructed in crates/lbm_vulkan/src/lib.rs and read nowhere, so no relativistic geometry reaches any lbm_vulkan shader.
+//! - Where stated: crates/lbm_vulkan/src/lib.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1727
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: No alternativity violation in any Cayley-Dickson algebra carries k equal to zero, because the associator with the identity vanishes identically, so any contraction gated on that condition is identically zero. Enumerated to dimension 64 with zero hits and guarded by a regression test.
+//! - Where stated: crates/gr_core/src/forces/chingon_drag.rs; crates/algebra_analysis/src/avt.rs
+//! - What would verify/refute it:
+//!
+//! ## C-1728
+//!
+//! - Status: `Provisional`
+//! - Last verified: 2026-08-06
+//! - Statement: In the deduplicated THEMIS-A staples benchmark the file cluster is exactly the day cluster: data/output/tha_matched_files.csv has 815 rows and 815 distinct year and day-of-year pairs. This is the precondition the C-1629 population inference rests on and it is currently untested.
+//! - Where stated: data/output/tha_matched_files.csv
 //! - What would verify/refute it:

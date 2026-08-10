@@ -14,7 +14,7 @@ updated = "deterministic"
 line_count = 9
 section_count = 1
 claim_ref_count = 0
-equation_ref_count = 6
+equation_ref_count = 0
 proof_ref_count = 0
 source_ref_count = 0
 unknown_claim_ref_count = 0
@@ -22,72 +22,6 @@ dedup_fingerprint = "a7c8a253dd391554aa6bb8b7d254b2a9832d7bf47e1c9774738603521ec
 key_terms = ["auto", "edit", "generated", "registry", "source", "toml", "truth", "data_artifact_narratives", "artifact_scrolls"]
 claim_refs = []
 unknown_claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0106"
-source_line = 1
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0107"
-source_line = 2
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0108"
-source_line = 4
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0109"
-source_line = 5
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0110"
-source_line = 7
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0111"
-source_line = 8
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
 
 [[section]]
 id = "ART-006-SEC-001"
@@ -100,6 +34,6 @@ char_count = 299
 fingerprint = "a7c8a253dd391554aa6bb8b7d254b2a9832d7bf47e1c9774738603521ec6bc02"
 summary = "<!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/artifact_scrolls.toml --> <!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/data_artifact_narratives.toml --> <!-- AUTO-GENERATED: DO "
 claim_refs = []
-equation_ref_ids = ["EQA-0106", "EQA-0107", "EQA-0108", "EQA-0109", "EQA-0110", "EQA-0111"]
+equation_ref_ids = []
 proof_ref_ids = []
 body_text = "<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/artifact_scrolls.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->"

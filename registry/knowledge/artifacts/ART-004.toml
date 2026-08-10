@@ -14,7 +14,7 @@ updated = "deterministic"
 line_count = 37
 section_count = 5
 claim_ref_count = 0
-equation_ref_count = 12
+equation_ref_count = 6
 proof_ref_count = 0
 source_ref_count = 1
 unknown_claim_ref_count = 0
@@ -24,73 +24,7 @@ claim_refs = []
 unknown_claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0078"
-source_line = 1
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "quantum"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0079"
-source_line = 2
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "quantum"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0080"
-source_line = 4
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "quantum"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0081"
-source_line = 5
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "quantum"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0082"
-source_line = 7
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "quantum"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0083"
-source_line = 8
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "quantum"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0084"
+id = "EQA-0060"
 source_line = 19
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -101,7 +35,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0085"
+id = "EQA-0061"
 source_line = 21
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -112,7 +46,7 @@ numeric_constants = ["0", "1", "47", "48"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0086"
+id = "EQA-0062"
 source_line = 27
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -123,7 +57,7 @@ numeric_constants = ["0.0"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0087"
+id = "EQA-0063"
 source_line = 30
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -134,7 +68,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0088"
+id = "EQA-0064"
 source_line = 31
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -145,7 +79,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0089"
+id = "EQA-0065"
 source_line = 32
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -173,7 +107,7 @@ char_count = 299
 fingerprint = "a7c8a253dd391554aa6bb8b7d254b2a9832d7bf47e1c9774738603521ec6bc02"
 summary = "<!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/artifact_scrolls.toml --> <!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/data_artifact_narratives.toml --> <!-- AUTO-GENERATED: DO "
 claim_refs = []
-equation_ref_ids = ["EQA-0078", "EQA-0079", "EQA-0080", "EQA-0081", "EQA-0082", "EQA-0083"]
+equation_ref_ids = []
 proof_ref_ids = []
 body_text = "<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/artifact_scrolls.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->"
 
@@ -203,7 +137,7 @@ char_count = 446
 fingerprint = "e508c6b2508c8220bb35b6974948024ef6b22ae2363b4af136d466be2c6e1a4e"
 summary = "* **Data Source:** `sedenion_nilpotent_candidates.csv` (Generated from Sedenion Zero-Divisor search). * **Root System:** 48 unique vectors identified, matching the cardinality of the $F_4$ root system. * **Quantum State:"
 claim_refs = []
-equation_ref_ids = ["EQA-0084", "EQA-0085"]
+equation_ref_ids = ["EQA-0060", "EQA-0061"]
 proof_ref_ids = []
 body_text = "\n*   **Data Source:** `sedenion_nilpotent_candidates.csv` (Generated from Sedenion Zero-Divisor search).\n*   **Root System:** 48 unique vectors identified, matching the cardinality of the $F_4$ root system.\n*   **Quantum State:** $|\\Psi_{F_4}\nangle = \\frac{1}{\\sqrt{48}} \\sum_{i=0}^{47} |i\nangle$. (Uniform superposition of all roots).\n*   **Test:** Hadamard Test for invariance under a partial reflection operator (Controlled-$Z$ on a subspace)."
 
@@ -218,7 +152,7 @@ char_count = 711
 fingerprint = "99cbc897451588c6c6707bcfbcabb2f97b5bc3c3fe177b8681d40211c550a128"
 summary = "* **Expectation Value:** $\\langle Z \\rangle \\approx 0.0$ (Symmetry Broken). * **Interpretation:** The Controlled-$Z$ operator (phase flip on half the basis) is **NOT** a symmetry of the uniform state. This is expected be"
 claim_refs = []
-equation_ref_ids = ["EQA-0086", "EQA-0087", "EQA-0088", "EQA-0089"]
+equation_ref_ids = ["EQA-0062", "EQA-0063", "EQA-0064", "EQA-0065"]
 proof_ref_ids = []
 body_text = "\n*   **Expectation Value:** $\\langle Z \\rangle \\approx 0.0$ (Symmetry Broken).\n*   **Interpretation:** The Controlled-$Z$ operator (phase flip on half the basis) is **NOT** a symmetry of the uniform state. This is expected behavior for a generic operator.\n*   **Significance:** This confirms the simulation pipeline works. The state was correctly loaded and evolved.\n*   **Next Step:** We must replace the generic $CZ$ operator with the **Actual Weyl Group Generators** of $F_4$.\n    *   The $F_4$ Weyl group is generated by reflections in the hyperplanes orthogonal to the roots.\n    *   We need to compile a quantum circuit that implements the permutation $\\sigma: i \\to j$ corresponding to a root reflection."
 

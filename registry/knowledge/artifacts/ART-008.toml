@@ -14,58 +14,14 @@ updated = "deterministic"
 line_count = 33
 section_count = 5
 claim_ref_count = 0
-equation_ref_count = 4
+equation_ref_count = 0
 proof_ref_count = 0
 source_ref_count = 1
 unknown_claim_ref_count = 0
-dedup_fingerprint = "235a0ad172304148a2217c01cded9ad7737600ae755f60e66ba693bf3bd9a1b0"
-key_terms = ["ring", "warp", "active", "flow", "roots", "triads", "algebra", "auto", "edit", "generated", "implemented", "projection", "range", "registry", "source", "structure", "toml", "truth", "visualization", "visualized", "warp_ring_integration", "algebraic", "alignment", "along"]
+dedup_fingerprint = "ef2645f616c12f912e0ed31a2d7184d64fa7b183823642d97710c5ea453adf19"
+key_terms = ["ring", "warp", "active", "flow", "roots", "triads", "algebra", "artifacts", "auto", "edit", "generated", "implemented", "projection", "range", "registry", "source", "structure", "toml", "truth", "visualization", "visualized", "warp_ring_integration", "algebraic", "alignment"]
 claim_refs = []
 unknown_claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0127"
-source_line = 1
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0128"
-source_line = 2
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0129"
-source_line = 4
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0130"
-source_line = 5
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
 
 [[source_ref]]
 id = "SRC-001"
@@ -85,7 +41,7 @@ char_count = 196
 fingerprint = "d6be195d4c4d6cc2b436abfcc780e9f932fa4397d28e0e1527d8130672534bf4"
 summary = "<!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/artifact_scrolls.toml --> <!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/data_artifact_narratives.toml -->"
 claim_refs = []
-equation_ref_ids = ["EQA-0127", "EQA-0128", "EQA-0129", "EQA-0130"]
+equation_ref_ids = []
 proof_ref_ids = []
 body_text = "<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/artifact_scrolls.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->"
 
@@ -111,9 +67,9 @@ level = 2
 line_start = 13
 line_end = 24
 paragraph_count = 3
-char_count = 759
-fingerprint = "f9556731cf854cfe0b947539d52a05911e947beed87ebf127281b4a90a6c6551"
-summary = "**Script:** `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs` **Artifacts:** `data/artifacts/warp_ring_integration.png` **Result:** We successfully implemented the \"Warp Ring\" visualization pipeline, which projects the 126 ro"
+char_count = 774
+fingerprint = "a7a6dec1a26f92e16f6a1364c9fd246ddf8599ad4d4b4bd508668738fa7ba714"
+summary = "**Script:** `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs` **Artifacts:** `data/artifacts/warp_ring_integration.png` **Result:** We successfully implemented the \"Warp Ring\" visualization pipeline, which proj"
 claim_refs = []
 equation_ref_ids = []
 proof_ref_ids = []

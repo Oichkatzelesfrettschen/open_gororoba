@@ -3,6 +3,7 @@ use clap::{Args, Parser, Subcommand};
 use provenance_core::ClaimRecord;
 use provenance_store::ProvenanceStore;
 use regex::Regex;
+use sha2::{Digest, Sha256};
 use std::{
     collections::{BTreeMap, BTreeSet},
     fs,
@@ -64,6 +65,9 @@ struct SourceDoc {
     source_group: String,
     source_registry: String,
     source_path: String,
+    derivation_input: String,
+    origin_path_state: String,
+    canonical_body_sha256: String,
     title: String,
     line_count: usize,
     body: String,
@@ -399,12 +403,8 @@ fn verify(args: &VerifyArgs) -> Result<()> {
     }
 
     for row in source_rows {
-        let source_path = root.join(table_str(row, "source_path"));
-        if !source_path.exists() {
-            failures.push(format!(
-                "structured source path missing: {}",
-                source_path.display()
-            ));
+        if let Err(error) = verify_source_provenance(&root, row) {
+            failures.push(error.to_string());
         }
         if row
             .get("narrative_compaction_recommended")
@@ -461,12 +461,31 @@ fn load_sources(repo_root: &Path, claim_source: SourceDoc) -> Result<Vec<SourceD
             if source_uid.is_empty() || source_path.is_empty() {
                 continue;
             }
-            let body = table_str(row, "body_markdown").to_string();
+            let registered_body = table_str(row, "body_markdown").to_string();
+            let origin_path_state = registry_origin_path_state(repo_root, &source_path);
+            let (body, derivation_input) = if registered_body.trim().is_empty() {
+                if origin_path_state == "origin_path_absent" {
+                    bail!(
+                        "registry source {source_uid} retains neither body_markdown nor origin path {source_path}"
+                    );
+                }
+                let path = repo_root.join(&source_path);
+                (
+                    fs::read_to_string(&path)
+                        .with_context(|| format!("read working-tree source {}", path.display()))?,
+                    "working_tree_markdown".to_string(),
+                )
+            } else {
+                (registered_body, "registry_body_markdown".to_string())
+            };
             sources.push(SourceDoc {
                 source_uid: source_uid.clone(),
                 source_group: source_group.to_string(),
                 source_registry: registry_path.to_string(),
                 source_path,
+                derivation_input,
+                origin_path_state,
+                canonical_body_sha256: sha256_hex(&body),
                 title: {
                     let title = table_str(row, "title");
                     if title.is_empty() {
@@ -475,7 +494,7 @@ fn load_sources(repo_root: &Path, claim_source: SourceDoc) -> Result<Vec<SourceD
                         collapse_ws(title)
                     }
                 },
-                line_count: table_int(row, "line_count").max(0) as usize,
+                line_count: line_count(&body),
                 body,
             });
         }
@@ -501,6 +520,9 @@ fn load_primary_claim_source(repo_root: &Path, canonical_db: &Path) -> Result<So
                 source_group: "doc_claim_matrix".to_string(),
                 source_registry: "registry/canonical/control_plane.sqlite3".to_string(),
                 source_path: "registry/canonical/control_plane.sqlite3".to_string(),
+                derivation_input: "control_plane_claim_rows".to_string(),
+                origin_path_state: "not_applicable".to_string(),
+                canonical_body_sha256: sha256_hex(&body),
                 title: "Claims / Evidence Matrix (SQLite compatibility render)".to_string(),
                 line_count: line_count(&body),
                 body,
@@ -517,6 +539,9 @@ fn load_primary_claim_source(repo_root: &Path, canonical_db: &Path) -> Result<So
             source_group: "doc_claim_matrix".to_string(),
             source_registry: "docs/CLAIMS_EVIDENCE_MATRIX.md".to_string(),
             source_path: "docs/CLAIMS_EVIDENCE_MATRIX.md".to_string(),
+            derivation_input: "working_tree_markdown".to_string(),
+            origin_path_state: "working_tree_path_present".to_string(),
+            canonical_body_sha256: sha256_hex(&body),
             title: title_from_markdown("docs/CLAIMS_EVIDENCE_MATRIX.md", &body),
             line_count: line_count(&body),
             body,
@@ -535,6 +560,12 @@ fn load_primary_claim_source(repo_root: &Path, canonical_db: &Path) -> Result<So
             source_group: "doc_claim_matrix".to_string(),
             source_registry: "registry/knowledge/docs/DOC-0023.toml".to_string(),
             source_path: table_str(payload, "source_path").to_string(),
+            derivation_input: "registry_document_payload".to_string(),
+            origin_path_state: registry_origin_path_state(
+                repo_root,
+                table_str(payload, "source_path"),
+            ),
+            canonical_body_sha256: sha256_hex(&body),
             title: collapse_ws(table_str(payload, "title")),
             line_count: table_int(payload, "source_line_count").max(0) as usize,
             body,
@@ -699,6 +730,9 @@ fn extract_equations_from_source(doc: &SourceDoc) -> Result<Vec<EquationAtom>> {
     for (idx, raw) in lines.iter().enumerate() {
         let line_no = idx + 1;
         let stripped = raw.trim();
+        if stripped.starts_with("<!--") && stripped.ends_with("-->") {
+            continue;
+        }
         if let Some(caps) = heading_re.captures(raw) {
             section_title = collapse_ws(caps.get(2).map(|m| m.as_str()).unwrap_or_default());
             continue;
@@ -1227,6 +1261,18 @@ fn render_structured_corpora(
             esc(&source.source_registry)
         ));
         lines.push(format!("source_path = {}", esc(&source.source_path)));
+        lines.push(format!(
+            "derivation_input = {}",
+            esc(&source.derivation_input)
+        ));
+        lines.push(format!(
+            "origin_path_state = {}",
+            esc(&source.origin_path_state)
+        ));
+        lines.push(format!(
+            "canonical_body_sha256 = {}",
+            esc(&source.canonical_body_sha256)
+        ));
         lines.push(format!("title = {}", esc(&source.title)));
         lines.push(format!("line_count = {}", source.line_count));
         lines.push(format!(
@@ -1272,6 +1318,155 @@ fn table_str<'a>(value: &'a Value, key: &str) -> &'a str {
 
 fn table_int(value: &Value, key: &str) -> i64 {
     value.get(key).and_then(Value::as_integer).unwrap_or(0)
+}
+
+fn verify_source_provenance(repo_root: &Path, row: &Value) -> Result<()> {
+    let source_uid = table_str(row, "source_uid");
+    let source_path = table_str(row, "source_path");
+    let source_registry = table_str(row, "source_registry");
+    let derivation_input = table_str(row, "derivation_input");
+    let origin_path_state = table_str(row, "origin_path_state");
+    let expected_hash = table_str(row, "canonical_body_sha256");
+    if !is_sha256_hex(expected_hash) {
+        bail!("source {source_uid} has invalid canonical_body_sha256");
+    }
+
+    match derivation_input {
+        "working_tree_markdown" => {
+            if origin_path_state != "working_tree_path_present" {
+                bail!(
+                    "source {source_uid} uses working_tree_markdown with origin_path_state={origin_path_state}"
+                );
+            }
+            let path = repo_root.join(source_path);
+            let body = fs::read_to_string(&path)
+                .with_context(|| format!("read working-tree source {}", path.display()))?;
+            if sha256_hex(&body) != expected_hash {
+                bail!(
+                    "source {source_uid} working-tree body hash differs from canonical_body_sha256"
+                );
+            }
+        }
+        "control_plane_claim_rows" => {
+            if origin_path_state != "not_applicable" {
+                bail!(
+                    "source {source_uid} uses control_plane_claim_rows with origin_path_state={origin_path_state}"
+                );
+            }
+            let db_path = repo_root.join(source_registry);
+            let store = ProvenanceStore::open(&db_path)
+                .with_context(|| format!("open control-plane source {}", db_path.display()))?;
+            let claims = store
+                .list_claims()
+                .with_context(|| format!("load control-plane claims from {}", db_path.display()))?;
+            if sha256_hex(&render_claim_matrix_from_control_plane(&claims)) != expected_hash {
+                bail!(
+                    "source {source_uid} control-plane render differs from canonical_body_sha256"
+                );
+            }
+        }
+        "registry_body_markdown" => {
+            verify_registry_origin_path(repo_root, source_uid, source_path, origin_path_state)?;
+            let body = registry_document_body(repo_root, source_registry, source_uid)?;
+            if sha256_hex(&body) != expected_hash {
+                bail!("source {source_uid} registry body differs from canonical_body_sha256");
+            }
+        }
+        "registry_document_payload" => {
+            verify_registry_origin_path(repo_root, source_uid, source_path, origin_path_state)?;
+            let body = registry_document_payload_body(repo_root, source_registry, source_uid)?;
+            if sha256_hex(&body) != expected_hash {
+                bail!(
+                    "source {source_uid} registry document payload differs from canonical_body_sha256"
+                );
+            }
+        }
+        _ => bail!("source {source_uid} has unsupported derivation_input={derivation_input}"),
+    }
+    Ok(())
+}
+
+fn verify_registry_origin_path(
+    repo_root: &Path,
+    source_uid: &str,
+    source_path: &str,
+    origin_path_state: &str,
+) -> Result<()> {
+    let path_exists = repo_root.join(source_path).is_file();
+    if origin_path_state_is_consistent(origin_path_state, path_exists) {
+        return Ok(());
+    }
+    match origin_path_state {
+        "working_tree_path_present" => {
+            bail!(
+                "source {source_uid} records a present working-tree origin path that is absent: {source_path}"
+            )
+        }
+        "origin_path_absent" => {
+            bail!(
+                "source {source_uid} records an absent origin path that is present: {source_path}"
+            )
+        }
+        _ => bail!("source {source_uid} has invalid origin_path_state={origin_path_state}"),
+    }
+}
+
+fn origin_path_state_is_consistent(origin_path_state: &str, path_exists: bool) -> bool {
+    matches!(
+        (origin_path_state, path_exists),
+        ("working_tree_path_present", true) | ("origin_path_absent", false)
+    )
+}
+
+fn registry_document_body(
+    repo_root: &Path,
+    source_registry: &str,
+    source_uid: &str,
+) -> Result<String> {
+    let registry = load_toml(&repo_root.join(source_registry))?;
+    let row = table_array(&registry, "document")
+        .iter()
+        .find(|row| table_str(row, "id") == source_uid)
+        .with_context(|| format!("find source {source_uid} in {source_registry}"))?;
+    Ok(table_str(row, "body_markdown").to_string())
+}
+
+fn registry_document_payload_body(
+    repo_root: &Path,
+    source_registry: &str,
+    source_uid: &str,
+) -> Result<String> {
+    let registry = load_toml(&repo_root.join(source_registry))?;
+    let document = registry
+        .get("document")
+        .context("registry document payload missing [document] table")?;
+    if table_str(document, "id") != source_uid {
+        bail!("registry document payload source id differs from {source_uid}");
+    }
+    Ok(table_str(document, "content_markdown").to_string())
+}
+
+fn is_sha256_hex(value: &str) -> bool {
+    value.len() == 64 && value.bytes().all(|byte| byte.is_ascii_hexdigit())
+}
+
+fn registry_origin_path_state(repo_root: &Path, source_path: &str) -> String {
+    if repo_root.join(source_path).is_file() {
+        "working_tree_path_present".to_string()
+    } else {
+        "origin_path_absent".to_string()
+    }
+}
+
+fn sha256_hex(text: &str) -> String {
+    const HEX: &[u8; 16] = b"0123456789abcdef";
+    let digest = Sha256::digest(text.as_bytes());
+    let mut encoded = String::with_capacity(digest.len() * 2);
+    for byte in digest {
+        encoded.push(HEX[usize::from(byte >> 4)] as char);
+        encoded.push(HEX[usize::from(byte & 0x0f)] as char);
+    }
+    encoded
 }
 
 fn unique_ids(rows: &[Value], key: &str, failures: &mut Vec<String>, label: &str) {
@@ -1512,4 +1707,53 @@ fn render_list(items: &[String]) -> String {
             .collect::<Vec<_>>()
             .join(", ")
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn test_source(body: &str) -> SourceDoc {
+        SourceDoc {
+            source_uid: "TEST".to_string(),
+            source_group: "test".to_string(),
+            source_registry: "registry/test.toml".to_string(),
+            source_path: "docs/test.md".to_string(),
+            derivation_input: "registry_body_markdown".to_string(),
+            origin_path_state: "origin_path_absent".to_string(),
+            canonical_body_sha256: sha256_hex(body),
+            title: "Test".to_string(),
+            line_count: line_count(body),
+            body: body.to_string(),
+        }
+    }
+
+    #[test]
+    fn retained_body_hash_is_valid_sha256() {
+        let hash = sha256_hex("canonical registry body");
+        assert!(is_sha256_hex(&hash));
+        assert!(!is_sha256_hex("not-a-sha256"));
+    }
+
+    #[test]
+    fn origin_path_state_records_presence_without_hiding_absence() {
+        assert!(origin_path_state_is_consistent(
+            "working_tree_path_present",
+            true
+        ));
+        assert!(origin_path_state_is_consistent("origin_path_absent", false));
+        assert!(!origin_path_state_is_consistent(
+            "working_tree_path_present",
+            false
+        ));
+        assert!(!origin_path_state_is_consistent("origin_path_absent", true));
+    }
+
+    #[test]
+    fn generated_html_metadata_does_not_become_an_equation_atom() {
+        let source = test_source("<!-- Source of truth: a -> b -->\n$x = y$");
+        let atoms = extract_equations_from_source(&source).expect("extract equations");
+        assert_eq!(atoms.len(), 1);
+        assert_eq!(atoms[0].expression, "x = y");
+    }
 }

@@ -14,7 +14,7 @@ updated = "deterministic"
 line_count = 66
 section_count = 5
 claim_ref_count = 0
-equation_ref_count = 9
+equation_ref_count = 3
 proof_ref_count = 0
 source_ref_count = 38
 unknown_claim_ref_count = 0
@@ -24,73 +24,7 @@ claim_refs = []
 unknown_claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0050"
-source_line = 1
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "general_relativity"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0051"
-source_line = 2
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "general_relativity"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0052"
-source_line = 4
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "general_relativity"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0053"
-source_line = 5
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "general_relativity"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0054"
-source_line = 7
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "general_relativity"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0055"
-source_line = 8
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "general_relativity"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0056"
+id = "EQA-0044"
 source_line = 22
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -101,7 +35,7 @@ numeric_constants = ["8"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0057"
+id = "EQA-0045"
 source_line = 26
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -112,7 +46,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0058"
+id = "EQA-0046"
 source_line = 26
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -399,7 +333,7 @@ char_count = 299
 fingerprint = "a7c8a253dd391554aa6bb8b7d254b2a9832d7bf47e1c9774738603521ec6bc02"
 summary = "<!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/artifact_scrolls.toml --> <!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/data_artifact_narratives.toml --> <!-- AUTO-GENERATED: DO "
 claim_refs = []
-equation_ref_ids = ["EQA-0050", "EQA-0051", "EQA-0052", "EQA-0053", "EQA-0054", "EQA-0055"]
+equation_ref_ids = []
 proof_ref_ids = []
 body_text = "<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/artifact_scrolls.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->"
 
@@ -429,7 +363,7 @@ char_count = 2080
 fingerprint = "9f26d860057b0aeb49b074eb32404db2198befbc4275152136b4a64628e8de9b"
 summary = "* **Koebisu, Shoot (2025).** *Singular structures and geometric holonomy in the zero divisor set of the sedenions.* arXiv:2512.13002 [math.DG]. * **Significance:** Rigorously maps Sedenion zero divisors to the Stiefel ma"
 claim_refs = []
-equation_ref_ids = ["EQA-0056", "EQA-0057", "EQA-0058"]
+equation_ref_ids = ["EQA-0044", "EQA-0045", "EQA-0046"]
 proof_ref_ids = []
 body_text = "\n\n*   **Koebisu, Shoot (2025).** *Singular structures and geometric holonomy in the zero divisor set of the sedenions.* arXiv:2512.13002 [math.DG].\n    *   **Significance:** Rigorously maps Sedenion zero divisors to the Stiefel manifold $V_2(\\mathbb{R}^8)$ and analyzes geometric holonomy. Defines the \"zero divisor frame bundle.\"\n    *   **Link:** [arXiv:2512.13002](https://arxiv.org/abs/2512.13002)\n\n*   **Reggiani, Silvio (2024).** *The geometry of sedenion zero divisors.* arXiv:2411.18881 [math.DG].\n    *   **Significance:** Proves the zero divisor manifold $\\mathcal{Z}(\\mathbb{S})$ is isometric to the exceptional Lie group $G_2$ with a specific metric. This provides a direct link between 16D algebra and $G_2$ symmetry (crucial for M-theory).\n    *   **Link:** [arXiv:2411.18881](https://arxiv.org/abs/2411.18881)\n\n*   **Wilmot, G. P. (2025).** *Structure of the Cayley-Dickson algebras.* arXiv:2505.11747 [math.RA].\n    *   **Significance:** Classifies non-associativity types and zero divisor patterns, specifically identifying \"3-cycles\" and \"modes\" that reduce the set of 84 zero divisors to 7 fundamental modes.\n    *   **Link:** [arXiv:2505.11747](https://arxiv.org/abs/2505.11747)\n\n*   **de Marrais, Robert P. C. (2000).** *The 42 Assessors and the Box-Kites they fly: Diagonal Axis-Pair Systems of Zero-Divisors in the Sedenions' 16 Dimensions.* arXiv:math/0011260 [math.GM].\n    *   **Significance:** The foundational paper identifying the \"Box-Kite\" lattice structure of zero divisors, establishing the discrete combinatorial geometry underlying the continuous manifolds.\n    *   **Link:** [arXiv:math/0011260](https://arxiv.org/abs/math/0011260)\n\n*   **de Marrais, Robert P. C. (2002).** *Flying Higher Than a Box-Kite: Kite-Chain Middens... in the 2n-ions Beyond the Sedenions.* arXiv:math/0207003.\n    *   **Significance:** Extends the zero-divisor analysis to 32D (Pathions) and 64D (Chingons), predicting \"Kite-Chain Middens\" which aligns with our project's \"Hyper-Web\" findings.\n    *   **Link:** [arXiv:math/0207003](https://arxiv.org/abs/math/0207003)"
 
