@@ -14,7 +14,7 @@ updated = "deterministic"
 line_count = 69
 section_count = 8
 claim_ref_count = 0
-equation_ref_count = 19
+equation_ref_count = 13
 proof_ref_count = 0
 source_ref_count = 1
 unknown_claim_ref_count = 0
@@ -24,73 +24,7 @@ claim_refs = []
 unknown_claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0059"
-source_line = 1
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0060"
-source_line = 2
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0061"
-source_line = 4
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0062"
-source_line = 5
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0063"
-source_line = 7
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0064"
-source_line = 8
-equation_kind = "mapping_relation"
-relation_operator = "->"
-domain_hint = "cross_domain"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-claim_refs = []
-
-[[equation_ref]]
-id = "EQA-0065"
+id = "EQA-0047"
 source_line = 25
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -101,7 +35,7 @@ numeric_constants = ["1.1"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0066"
+id = "EQA-0048"
 source_line = 26
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -112,7 +46,7 @@ numeric_constants = ["7"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0067"
+id = "EQA-0049"
 source_line = 27
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -123,7 +57,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0068"
+id = "EQA-0050"
 source_line = 27
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -134,7 +68,7 @@ numeric_constants = ["219"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0069"
+id = "EQA-0051"
 source_line = 28
 equation_kind = "algebraic_relation"
 relation_operator = "="
@@ -145,7 +79,7 @@ numeric_constants = ["0"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0070"
+id = "EQA-0052"
 source_line = 33
 equation_kind = "mapping_relation"
 relation_operator = "->"
@@ -156,7 +90,7 @@ numeric_constants = ["1"]
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0071"
+id = "EQA-0053"
 source_line = 33
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -167,7 +101,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0072"
+id = "EQA-0054"
 source_line = 56
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -178,7 +112,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0073"
+id = "EQA-0055"
 source_line = 56
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -189,7 +123,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0074"
+id = "EQA-0056"
 source_line = 57
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -200,7 +134,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0075"
+id = "EQA-0057"
 source_line = 58
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -211,7 +145,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0076"
+id = "EQA-0058"
 source_line = 59
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -222,7 +156,7 @@ numeric_constants = []
 claim_refs = []
 
 [[equation_ref]]
-id = "EQA-0077"
+id = "EQA-0059"
 source_line = 66
 equation_kind = "algebraic_relation"
 relation_operator = "implicit"
@@ -250,7 +184,7 @@ char_count = 299
 fingerprint = "a7c8a253dd391554aa6bb8b7d254b2a9832d7bf47e1c9774738603521ec6bc02"
 summary = "<!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/artifact_scrolls.toml --> <!-- AUTO-GENERATED: DO NOT EDIT --> <!-- Source of truth: registry/data_artifact_narratives.toml --> <!-- AUTO-GENERATED: DO "
 claim_refs = []
-equation_ref_ids = ["EQA-0059", "EQA-0060", "EQA-0061", "EQA-0062", "EQA-0063", "EQA-0064"]
+equation_ref_ids = []
 proof_ref_ids = []
 body_text = "<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/artifact_scrolls.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->\n\n<!-- AUTO-GENERATED: DO NOT EDIT -->\n<!-- Source of truth: registry/data_artifact_narratives.toml -->"
 
@@ -295,7 +229,7 @@ char_count = 459
 fingerprint = "acacfbeb5a707f0f5fce8414b29ee69aecd948fe09ed445f8f4fdc116e718c0b"
 summary = "* **Nodes:** 148 (Active zero-divisors in sample) * **Edges:** 360 * **Betti Numbers ($\\epsilon approx 1.1$):** * $\\beta_0 = 7$: Indicates 7 distinct connected components (Clusters). * $\\beta_1 = 219$: A massive number o"
 claim_refs = []
-equation_ref_ids = ["EQA-0065", "EQA-0066", "EQA-0067", "EQA-0068", "EQA-0069"]
+equation_ref_ids = ["EQA-0047", "EQA-0048", "EQA-0049", "EQA-0050", "EQA-0051"]
 proof_ref_ids = []
 body_text = "\n*   **Nodes:** 148 (Active zero-divisors in sample)\n*   **Edges:** 360\n*   **Betti Numbers ($\\epsilon approx 1.1$):**\n    *   $\\beta_0 = 7$: Indicates 7 distinct connected components (Clusters).\n    *   $\\beta_1 = 219$: A massive number of 1-cycles (loops). This confirms the \"Box-Kite\" structure is highly reticulated and hole-ridden, typical of $G_2$ geometry projections.\n    *   $\\beta_2 = 0$: No enclosed voids at this scale (mesh-like, not shell-like)."
 
@@ -310,7 +244,7 @@ char_count = 163
 fingerprint = "26d8a94d9419000442e58c5e0a1ae8a424cf5c2bc43ab8c2abb83851fc9cd45c"
 summary = "* **Nodes:** ~500 (Active) * **Structure:** (Pending final output from re-run). Expected to show higher connectivity ($\\beta_0 -> 1$) and exploding $\\beta_1$."
 claim_refs = []
-equation_ref_ids = ["EQA-0070", "EQA-0071"]
+equation_ref_ids = ["EQA-0052", "EQA-0053"]
 proof_ref_ids = []
 body_text = "\n*   **Nodes:** ~500 (Active)\n*   **Structure:** (Pending final output from re-run). Expected to show higher connectivity ($\\beta_0 -> 1$) and exploding $\\beta_1$."
 
@@ -355,6 +289,6 @@ char_count = 864
 fingerprint = "9dd6b040ca62e2c6000cc544dd5cbad191e800bd3b782d804ea1354a5b2bf88d"
 summary = "| Feature | Sedenion/Surreal Model | Standard Holography (AdS/CFT) | | :--- | :--- | :--- | | **Bulk Geometry** | Zero-Divisor Graph ($G_2$ Manifolds) | Hyperbolic Space ($H^d$) | | **Topology** | High $\\beta_1$ (Loops/W"
 claim_refs = []
-equation_ref_ids = ["EQA-0072", "EQA-0073", "EQA-0074", "EQA-0075", "EQA-0076", "EQA-0077"]
+equation_ref_ids = ["EQA-0054", "EQA-0055", "EQA-0056", "EQA-0057", "EQA-0058", "EQA-0059"]
 proof_ref_ids = []
 body_text = "\n\n| Feature | Sedenion/Surreal Model | Standard Holography (AdS/CFT) |\n| :--- | :--- | :--- |\n| **Bulk Geometry** | Zero-Divisor Graph ($G_2$ Manifolds) | Hyperbolic Space ($H^d$) |\n| **Topology** | High $\\beta_1$ (Loops/Wormholes) | Handlebodies / ER Bridges |\n| **Entropy Source** | Associator Anomaly ($m_3$) | Minimal Surface Area |\n| **Dynamics** | Recursive PDE ($D, \\gamma, \\alpha_3$) | Einstein Equations |\n| **Microstates** | Modular Automorphic Forms | Black Hole Microstates |\n\n**Conclusion:**\nWe have computationally verified that Sedenion-based field theories exhibit:\n1.  **Topological Complexity** (High Betti numbers).\n2.  **Spectral Chaos** (Level repulsion).\n3.  **Holographic Entropy Scaling** (Matches $S ~ A$).\n\nThis establishes the **Surreal-Noncommutative Framework** as a rigorous, computationally falsifiable toy model for Quantum Gravity."

@@ -4,124 +4,10 @@
 [knowledge_equation_atoms]
 updated = "deterministic"
 authoritative = true
-atom_count = 328
+atom_count = 317
 
 [[atom]]
 id = "EQA-0001"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "algebra"
-section_title = "(root)"
-source_uid = "ART-001"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0002"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "algebra"
-section_title = "(root)"
-source_uid = "ART-001"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0003"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "algebra"
-section_title = "(root)"
-source_uid = "ART-001"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0004"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "algebra"
-section_title = "(root)"
-source_uid = "ART-001"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0005"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "algebra"
-section_title = "(root)"
-source_uid = "ART-001"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
-source_line = 7
-claim_refs = []
-
-[[atom]]
-id = "EQA-0006"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "algebra"
-section_title = "(root)"
-source_uid = "ART-001"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
-source_line = 8
-claim_refs = []
-
-[[atom]]
-id = "EQA-0007"
 expression = ") to Octonions ("
 relation_operator = "implicit"
 lhs_expression = ") to Octonions ("
@@ -140,7 +26,7 @@ source_line = 17
 claim_refs = []
 
 [[atom]]
-id = "EQA-0008"
+id = "EQA-0002"
 expression = "). By explicitly computing the third-order homotopy product"
 relation_operator = "implicit"
 lhs_expression = "). By explicitly computing the third-order homotopy product"
@@ -159,7 +45,7 @@ source_line = 17
 claim_refs = []
 
 [[atom]]
-id = "EQA-0009"
+id = "EQA-0003"
 expression = "-structure emerging from the \"Inverse Cayley-Dickson\" contraction of Sedenions ("
 relation_operator = "implicit"
 lhs_expression = "-structure emerging from the \"Inverse Cayley-Dickson\" contraction of Sedenions ("
@@ -178,7 +64,7 @@ source_line = 17
 claim_refs = []
 
 [[atom]]
-id = "EQA-0010"
+id = "EQA-0004"
 expression = "and the automorphism group of the Fano plane,"
 relation_operator = "implicit"
 lhs_expression = "and the automorphism group of the Fano plane,"
@@ -197,7 +83,7 @@ source_line = 17
 claim_refs = []
 
 [[atom]]
-id = "EQA-0011"
+id = "EQA-0005"
 expression = "using the tree-level Homological Perturbation Lemma (HPL) formula, we identify a distinct \"42 vs 168\" splitting in the non-trivial associator triples. This distribution aligns exactly with the structure of the exceptional Lie group"
 relation_operator = "implicit"
 lhs_expression = "using the tree-level Homological Perturbation Lemma (HPL) formula, we identify a distinct \"42 vs 168\" splitting in the non-trivial associator triples. This distribution aligns exactly with the structure of the exceptional Lie group"
@@ -216,7 +102,7 @@ source_line = 17
 claim_refs = []
 
 [[atom]]
-id = "EQA-0012"
+id = "EQA-0006"
 expression = "2^n"
 relation_operator = "implicit"
 lhs_expression = "2^n"
@@ -235,7 +121,7 @@ source_line = 24
 claim_refs = []
 
 [[atom]]
-id = "EQA-0013"
+id = "EQA-0007"
 expression = "\\mathbb{O}, n=3"
 relation_operator = "="
 lhs_expression = "\\mathbb{O}, n"
@@ -254,7 +140,7 @@ source_line = 24
 claim_refs = []
 
 [[atom]]
-id = "EQA-0014"
+id = "EQA-0008"
 expression = "\\mathbb{R}, \\mathbb{C}, \\mathbb{H}"
 relation_operator = "implicit"
 lhs_expression = "\\mathbb{R}, \\mathbb{C}, \\mathbb{H}"
@@ -273,7 +159,7 @@ source_line = 24
 claim_refs = []
 
 [[atom]]
-id = "EQA-0015"
+id = "EQA-0009"
 expression = "\\mathbb{S}, n=4"
 relation_operator = "="
 lhs_expression = "\\mathbb{S}, n"
@@ -292,7 +178,7 @@ source_line = 24
 claim_refs = []
 
 [[atom]]
-id = "EQA-0016"
+id = "EQA-0010"
 expression = "-algebra, where associativity is replaced by a hierarchy of higher operations ("
 relation_operator = "implicit"
 lhs_expression = "-algebra, where associativity is replaced by a hierarchy of higher operations ("
@@ -311,7 +197,7 @@ source_line = 27
 claim_refs = []
 
 [[atom]]
-id = "EQA-0017"
+id = "EQA-0011"
 expression = "(p, i, h)"
 relation_operator = "implicit"
 lhs_expression = "(p, i, h)"
@@ -330,7 +216,7 @@ source_line = 31
 claim_refs = []
 
 [[atom]]
-id = "EQA-0018"
+id = "EQA-0012"
 expression = "p(a,b) = (a+b)/2"
 relation_operator = "="
 lhs_expression = "p(a,b)"
@@ -349,7 +235,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0019"
+id = "EQA-0013"
 expression = "p: S \\to O"
 relation_operator = "implicit"
 lhs_expression = "p: S \\to O"
@@ -368,7 +254,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0020"
+id = "EQA-0014"
 expression = "i(x) = (x,x)"
 relation_operator = "="
 lhs_expression = "i(x)"
@@ -387,7 +273,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0021"
+id = "EQA-0015"
 expression = "i: O \\to S"
 relation_operator = "implicit"
 lhs_expression = "i: O \\to S"
@@ -406,7 +292,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0022"
+id = "EQA-0016"
 expression = "h(a,b) = ((a-b)/2, -(a-b)/2)"
 relation_operator = "="
 lhs_expression = "h(a,b)"
@@ -425,7 +311,7 @@ source_line = 34
 claim_refs = []
 
 [[atom]]
-id = "EQA-0023"
+id = "EQA-0017"
 expression = "h: S \\to \\ker(p)"
 relation_operator = "implicit"
 lhs_expression = "h: S \\to \\ker(p)"
@@ -444,7 +330,7 @@ source_line = 34
 claim_refs = []
 
 [[atom]]
-id = "EQA-0024"
+id = "EQA-0018"
 expression = "\\mu"
 relation_operator = "implicit"
 lhs_expression = "\\mu"
@@ -463,7 +349,7 @@ source_line = 38
 claim_refs = []
 
 [[atom]]
-id = "EQA-0025"
+id = "EQA-0019"
 expression = "m_3"
 relation_operator = "implicit"
 lhs_expression = "m_3"
@@ -482,7 +368,7 @@ source_line = 38
 claim_refs = []
 
 [[atom]]
-id = "EQA-0026"
+id = "EQA-0020"
 expression = "$$m_3(x,y,z) = p \\circ \\mu( h \\circ \\mu( i(x), i(y) ), i(z) ) - p \\circ \\mu( i(x), h \\circ \\mu( i(y), i(z) ) )$$"
 relation_operator = "="
 lhs_expression = "$$m_3(x,y,z)"
@@ -501,7 +387,7 @@ source_line = 39
 claim_refs = []
 
 [[atom]]
-id = "EQA-0027"
+id = "EQA-0021"
 expression = "m_3(x,y,z) = p \\circ \\mu( h \\circ \\mu( i(x), i(y) ), i(z) ) - p \\circ \\mu( i(x), h \\circ \\mu( i(y), i(z) ) )"
 relation_operator = "="
 lhs_expression = "m_3(x,y,z)"
@@ -520,7 +406,7 @@ source_line = 39
 claim_refs = []
 
 [[atom]]
-id = "EQA-0028"
+id = "EQA-0022"
 expression = "(e_i, e_j, e_k)"
 relation_operator = "implicit"
 lhs_expression = "(e_i, e_j, e_k)"
@@ -539,7 +425,7 @@ source_line = 44
 claim_refs = []
 
 [[atom]]
-id = "EQA-0029"
+id = "EQA-0023"
 expression = "7^3 = 343"
 relation_operator = "="
 lhs_expression = "7^3"
@@ -558,7 +444,7 @@ source_line = 44
 claim_refs = []
 
 [[atom]]
-id = "EQA-0030"
+id = "EQA-0024"
 expression = "m_3(e_i, e_j, e_k)"
 relation_operator = "implicit"
 lhs_expression = "m_3(e_i, e_j, e_k)"
@@ -577,7 +463,7 @@ source_line = 44
 claim_refs = []
 
 [[atom]]
-id = "EQA-0031"
+id = "EQA-0025"
 expression = "m_3"
 relation_operator = "implicit"
 lhs_expression = "m_3"
@@ -596,7 +482,7 @@ source_line = 49
 claim_refs = []
 
 [[atom]]
-id = "EQA-0032"
+id = "EQA-0026"
 expression = "\\pm 2"
 relation_operator = "implicit"
 lhs_expression = "\\pm 2"
@@ -615,7 +501,7 @@ source_line = 54
 claim_refs = []
 
 [[atom]]
-id = "EQA-0033"
+id = "EQA-0027"
 expression = "\\pm 2 e_l"
 relation_operator = "implicit"
 lhs_expression = "\\pm 2 e_l"
@@ -634,7 +520,7 @@ source_line = 55
 claim_refs = []
 
 [[atom]]
-id = "EQA-0034"
+id = "EQA-0028"
 expression = "(e_i, e_j, e_k)"
 relation_operator = "implicit"
 lhs_expression = "(e_i, e_j, e_k)"
@@ -653,7 +539,7 @@ source_line = 60
 claim_refs = []
 
 [[atom]]
-id = "EQA-0035"
+id = "EQA-0029"
 expression = "42 = 7 \\times 6"
 relation_operator = "="
 lhs_expression = "42"
@@ -672,7 +558,7 @@ source_line = 61
 claim_refs = []
 
 [[atom]]
-id = "EQA-0036"
+id = "EQA-0030"
 expression = "168 = |PSL(2,7)|"
 relation_operator = "="
 lhs_expression = "168"
@@ -691,7 +577,7 @@ source_line = 66
 claim_refs = []
 
 [[atom]]
-id = "EQA-0037"
+id = "EQA-0031"
 expression = "PSL(2,7)"
 relation_operator = "implicit"
 lhs_expression = "PSL(2,7)"
@@ -710,7 +596,7 @@ source_line = 67
 claim_refs = []
 
 [[atom]]
-id = "EQA-0038"
+id = "EQA-0032"
 expression = "m_3"
 relation_operator = "implicit"
 lhs_expression = "m_3"
@@ -729,7 +615,7 @@ source_line = 68
 claim_refs = []
 
 [[atom]]
-id = "EQA-0039"
+id = "EQA-0033"
 expression = "A_{env}"
 relation_operator = "implicit"
 lhs_expression = "A_{env}"
@@ -748,7 +634,7 @@ source_line = 73
 claim_refs = []
 
 [[atom]]
-id = "EQA-0040"
+id = "EQA-0034"
 expression = "\\alpha_{ijk}"
 relation_operator = "implicit"
 lhs_expression = "\\alpha_{ijk}"
@@ -767,7 +653,7 @@ source_line = 74
 claim_refs = []
 
 [[atom]]
-id = "EQA-0041"
+id = "EQA-0035"
 expression = "e_i"
 relation_operator = "implicit"
 lhs_expression = "e_i"
@@ -786,7 +672,7 @@ source_line = 74
 claim_refs = []
 
 [[atom]]
-id = "EQA-0042"
+id = "EQA-0036"
 expression = "d(\\alpha_{ijk}) = (e_i e_j)e_k - e_i(e_j e_k)"
 relation_operator = "="
 lhs_expression = "d(\\alpha_{ijk})"
@@ -805,7 +691,7 @@ source_line = 75
 claim_refs = []
 
 [[atom]]
-id = "EQA-0043"
+id = "EQA-0037"
 expression = "[\\alpha_{ijk}]"
 relation_operator = "implicit"
 lhs_expression = "[\\alpha_{ijk}]"
@@ -824,7 +710,7 @@ source_line = 76
 claim_refs = []
 
 [[atom]]
-id = "EQA-0044"
+id = "EQA-0038"
 expression = "m_3"
 relation_operator = "implicit"
 lhs_expression = "m_3"
@@ -843,7 +729,7 @@ source_line = 76
 claim_refs = []
 
 [[atom]]
-id = "EQA-0045"
+id = "EQA-0039"
 expression = "G_2"
 relation_operator = "implicit"
 lhs_expression = "G_2"
@@ -862,7 +748,7 @@ source_line = 79
 claim_refs = []
 
 [[atom]]
-id = "EQA-0046"
+id = "EQA-0040"
 expression = "168 = |PSL(2,7)|"
 relation_operator = "="
 lhs_expression = "168"
@@ -881,7 +767,7 @@ source_line = 84
 claim_refs = []
 
 [[atom]]
-id = "EQA-0047"
+id = "EQA-0041"
 expression = "G_2"
 relation_operator = "implicit"
 lhs_expression = "G_2"
@@ -900,7 +786,7 @@ source_line = 84
 claim_refs = []
 
 [[atom]]
-id = "EQA-0048"
+id = "EQA-0042"
 expression = "We have successfully re-derived the structural footprint of the $G_2$ group ($168 = |PSL(2,7)|$) purely through computational homotopy transfer of the Sedenion algebra."
 relation_operator = "="
 lhs_expression = "We have successfully re-derived the structural footprint of the $G_2$ group ($168"
@@ -919,7 +805,7 @@ source_line = 84
 claim_refs = []
 
 [[atom]]
-id = "EQA-0049"
+id = "EQA-0043"
 expression = "is the bulk and"
 relation_operator = "implicit"
 lhs_expression = "is the bulk and"
@@ -938,121 +824,7 @@ source_line = 86
 claim_refs = []
 
 [[atom]]
-id = "EQA-0050"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "general_relativity"
-section_title = "(root)"
-source_uid = "ART-002"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/BIBLIOGRAPHY.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0051"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "general_relativity"
-section_title = "(root)"
-source_uid = "ART-002"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/BIBLIOGRAPHY.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0052"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "general_relativity"
-section_title = "(root)"
-source_uid = "ART-002"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/BIBLIOGRAPHY.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0053"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "general_relativity"
-section_title = "(root)"
-source_uid = "ART-002"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/BIBLIOGRAPHY.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0054"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "general_relativity"
-section_title = "(root)"
-source_uid = "ART-002"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/BIBLIOGRAPHY.md"
-source_line = 7
-claim_refs = []
-
-[[atom]]
-id = "EQA-0055"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "general_relativity"
-section_title = "(root)"
-source_uid = "ART-002"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/BIBLIOGRAPHY.md"
-source_line = 8
-claim_refs = []
-
-[[atom]]
-id = "EQA-0056"
+id = "EQA-0044"
 expression = "V_2(\\mathbb{R}^8)"
 relation_operator = "implicit"
 lhs_expression = "V_2(\\mathbb{R}^8)"
@@ -1071,7 +843,7 @@ source_line = 22
 claim_refs = []
 
 [[atom]]
-id = "EQA-0057"
+id = "EQA-0045"
 expression = "G_2"
 relation_operator = "implicit"
 lhs_expression = "G_2"
@@ -1090,7 +862,7 @@ source_line = 26
 claim_refs = []
 
 [[atom]]
-id = "EQA-0058"
+id = "EQA-0046"
 expression = "\\mathcal{Z}(\\mathbb{S})"
 relation_operator = "implicit"
 lhs_expression = "\\mathcal{Z}(\\mathbb{S})"
@@ -1109,121 +881,7 @@ source_line = 26
 claim_refs = []
 
 [[atom]]
-id = "EQA-0059"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-003"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/FINAL_REPORT.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0060"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-003"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/FINAL_REPORT.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0061"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-003"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/FINAL_REPORT.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0062"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-003"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/FINAL_REPORT.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0063"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-003"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/FINAL_REPORT.md"
-source_line = 7
-claim_refs = []
-
-[[atom]]
-id = "EQA-0064"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-003"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/FINAL_REPORT.md"
-source_line = 8
-claim_refs = []
-
-[[atom]]
-id = "EQA-0065"
+id = "EQA-0047"
 expression = "\\epsilon approx 1.1"
 relation_operator = "implicit"
 lhs_expression = "\\epsilon approx 1.1"
@@ -1242,7 +900,7 @@ source_line = 25
 claim_refs = []
 
 [[atom]]
-id = "EQA-0066"
+id = "EQA-0048"
 expression = "\\beta_0 = 7"
 relation_operator = "="
 lhs_expression = "\\beta_0"
@@ -1261,7 +919,7 @@ source_line = 26
 claim_refs = []
 
 [[atom]]
-id = "EQA-0067"
+id = "EQA-0049"
 expression = "G_2"
 relation_operator = "implicit"
 lhs_expression = "G_2"
@@ -1280,7 +938,7 @@ source_line = 27
 claim_refs = []
 
 [[atom]]
-id = "EQA-0068"
+id = "EQA-0050"
 expression = "\\beta_1 = 219"
 relation_operator = "="
 lhs_expression = "\\beta_1"
@@ -1299,7 +957,7 @@ source_line = 27
 claim_refs = []
 
 [[atom]]
-id = "EQA-0069"
+id = "EQA-0051"
 expression = "\\beta_2 = 0"
 relation_operator = "="
 lhs_expression = "\\beta_2"
@@ -1318,7 +976,7 @@ source_line = 28
 claim_refs = []
 
 [[atom]]
-id = "EQA-0070"
+id = "EQA-0052"
 expression = "\\beta_0 -> 1"
 relation_operator = "->"
 lhs_expression = "\\beta_0"
@@ -1337,7 +995,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0071"
+id = "EQA-0053"
 expression = "\\beta_1"
 relation_operator = "implicit"
 lhs_expression = "\\beta_1"
@@ -1356,7 +1014,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0072"
+id = "EQA-0054"
 expression = "G_2"
 relation_operator = "implicit"
 lhs_expression = "G_2"
@@ -1375,7 +1033,7 @@ source_line = 56
 claim_refs = []
 
 [[atom]]
-id = "EQA-0073"
+id = "EQA-0055"
 expression = "H^d"
 relation_operator = "implicit"
 lhs_expression = "H^d"
@@ -1394,7 +1052,7 @@ source_line = 56
 claim_refs = []
 
 [[atom]]
-id = "EQA-0074"
+id = "EQA-0056"
 expression = "\\beta_1"
 relation_operator = "implicit"
 lhs_expression = "\\beta_1"
@@ -1413,7 +1071,7 @@ source_line = 57
 claim_refs = []
 
 [[atom]]
-id = "EQA-0075"
+id = "EQA-0057"
 expression = "m_3"
 relation_operator = "implicit"
 lhs_expression = "m_3"
@@ -1432,7 +1090,7 @@ source_line = 58
 claim_refs = []
 
 [[atom]]
-id = "EQA-0076"
+id = "EQA-0058"
 expression = "D, \\gamma, \\alpha_3"
 relation_operator = "implicit"
 lhs_expression = "D, \\gamma, \\alpha_3"
@@ -1451,7 +1109,7 @@ source_line = 59
 claim_refs = []
 
 [[atom]]
-id = "EQA-0077"
+id = "EQA-0059"
 expression = "S ~ A"
 relation_operator = "implicit"
 lhs_expression = "S ~ A"
@@ -1470,121 +1128,7 @@ source_line = 66
 claim_refs = []
 
 [[atom]]
-id = "EQA-0078"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "quantum"
-section_title = "(root)"
-source_uid = "ART-004"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/QUANTUM_REPORT.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0079"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "quantum"
-section_title = "(root)"
-source_uid = "ART-004"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/QUANTUM_REPORT.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0080"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "quantum"
-section_title = "(root)"
-source_uid = "ART-004"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/QUANTUM_REPORT.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0081"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "quantum"
-section_title = "(root)"
-source_uid = "ART-004"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/QUANTUM_REPORT.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0082"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "quantum"
-section_title = "(root)"
-source_uid = "ART-004"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/QUANTUM_REPORT.md"
-source_line = 7
-claim_refs = []
-
-[[atom]]
-id = "EQA-0083"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "quantum"
-section_title = "(root)"
-source_uid = "ART-004"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/QUANTUM_REPORT.md"
-source_line = 8
-claim_refs = []
-
-[[atom]]
-id = "EQA-0084"
+id = "EQA-0060"
 expression = "F_4"
 relation_operator = "implicit"
 lhs_expression = "F_4"
@@ -1603,7 +1147,7 @@ source_line = 19
 claim_refs = []
 
 [[atom]]
-id = "EQA-0085"
+id = "EQA-0061"
 expression = "angle = \\frac{1}{\\sqrt{48}} \\sum_{i=0}^{47} |i"
 relation_operator = "="
 lhs_expression = "angle"
@@ -1622,7 +1166,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0086"
+id = "EQA-0062"
 expression = "\\langle Z \\rangle \\approx 0.0"
 relation_operator = "implicit"
 lhs_expression = "\\langle Z \\rangle \\approx 0.0"
@@ -1641,7 +1185,7 @@ source_line = 27
 claim_refs = []
 
 [[atom]]
-id = "EQA-0087"
+id = "EQA-0063"
 expression = "operator with the **Actual Weyl Group Generators** of"
 relation_operator = "implicit"
 lhs_expression = "operator with the **Actual Weyl Group Generators** of"
@@ -1660,7 +1204,7 @@ source_line = 30
 claim_refs = []
 
 [[atom]]
-id = "EQA-0088"
+id = "EQA-0064"
 expression = "F_4"
 relation_operator = "implicit"
 lhs_expression = "F_4"
@@ -1679,7 +1223,7 @@ source_line = 31
 claim_refs = []
 
 [[atom]]
-id = "EQA-0089"
+id = "EQA-0065"
 expression = "\\sigma: i \\to j"
 relation_operator = "implicit"
 lhs_expression = "\\sigma: i \\to j"
@@ -1698,121 +1242,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0090"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-005"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/SIMULATION_REPORT.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0091"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-005"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/SIMULATION_REPORT.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0092"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-005"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/SIMULATION_REPORT.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0093"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-005"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/SIMULATION_REPORT.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0094"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-005"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/SIMULATION_REPORT.md"
-source_line = 7
-claim_refs = []
-
-[[atom]]
-id = "EQA-0095"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-005"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/SIMULATION_REPORT.md"
-source_line = 8
-claim_refs = []
-
-[[atom]]
-id = "EQA-0096"
+id = "EQA-0066"
 expression = "8^3"
 relation_operator = "implicit"
 lhs_expression = "8^3"
@@ -1831,7 +1261,7 @@ source_line = 22
 claim_refs = []
 
 [[atom]]
-id = "EQA-0097"
+id = "EQA-0067"
 expression = "\\Phi(x,t)"
 relation_operator = "implicit"
 lhs_expression = "\\Phi(x,t)"
@@ -1850,7 +1280,7 @@ source_line = 22
 claim_refs = []
 
 [[atom]]
-id = "EQA-0098"
+id = "EQA-0068"
 expression = "\\mathbb{S}"
 relation_operator = "implicit"
 lhs_expression = "\\mathbb{S}"
@@ -1869,7 +1299,7 @@ source_line = 22
 claim_refs = []
 
 [[atom]]
-id = "EQA-0099"
+id = "EQA-0069"
 expression = "\\lVert (\\Phi_x \\Phi_y) \\Phi_z - \\Phi_x (\\Phi_y \\Phi_z) \\rVert"
 relation_operator = "implicit"
 lhs_expression = "\\lVert (\\Phi_x \\Phi_y) \\Phi_z - \\Phi_x (\\Phi_y \\Phi_z) \\rVert"
@@ -1888,7 +1318,7 @@ source_line = 23
 claim_refs = []
 
 [[atom]]
-id = "EQA-0100"
+id = "EQA-0070"
 expression = "\\Phi^2"
 relation_operator = "implicit"
 lhs_expression = "\\Phi^2"
@@ -1907,7 +1337,7 @@ source_line = 24
 claim_refs = []
 
 [[atom]]
-id = "EQA-0101"
+id = "EQA-0071"
 expression = "N=256"
 relation_operator = "="
 lhs_expression = "N"
@@ -1926,7 +1356,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0102"
+id = "EQA-0072"
 expression = "N=257"
 relation_operator = "="
 lhs_expression = "N"
@@ -1945,7 +1375,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0103"
+id = "EQA-0073"
 expression = "We compared entropy growth for $N=256$ (Composite, Power of 2) vs $N=257$ (Prime)."
 relation_operator = "="
 lhs_expression = "We compared entropy growth for $N"
@@ -1964,7 +1394,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0104"
+id = "EQA-0074"
 expression = "N=256"
 relation_operator = "="
 lhs_expression = "N"
@@ -1983,7 +1413,7 @@ source_line = 34
 claim_refs = []
 
 [[atom]]
-id = "EQA-0105"
+id = "EQA-0075"
 expression = "N=257"
 relation_operator = "="
 lhs_expression = "N"
@@ -2002,235 +1432,7 @@ source_line = 35
 claim_refs = []
 
 [[atom]]
-id = "EQA-0106"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-006"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/extracted_equations.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0107"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-006"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/extracted_equations.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0108"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-006"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/extracted_equations.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0109"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-006"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/extracted_equations.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0110"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-006"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/extracted_equations.md"
-source_line = 7
-claim_refs = []
-
-[[atom]]
-id = "EQA-0111"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-006"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/extracted_equations.md"
-source_line = 8
-claim_refs = []
-
-[[atom]]
-id = "EQA-0112"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-007"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/reality_check_and_synthesis.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0113"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-007"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/reality_check_and_synthesis.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0114"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-007"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/reality_check_and_synthesis.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0115"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-007"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/reality_check_and_synthesis.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0116"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-007"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/reality_check_and_synthesis.md"
-source_line = 7
-claim_refs = []
-
-[[atom]]
-id = "EQA-0117"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-007"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/reality_check_and_synthesis.md"
-source_line = 8
-claim_refs = []
-
-[[atom]]
-id = "EQA-0118"
+id = "EQA-0076"
 expression = "V_2(\\mathbb{R}^8)"
 relation_operator = "implicit"
 lhs_expression = "V_2(\\mathbb{R}^8)"
@@ -2249,7 +1451,7 @@ source_line = 20
 claim_refs = []
 
 [[atom]]
-id = "EQA-0119"
+id = "EQA-0077"
 expression = "G_2"
 relation_operator = "implicit"
 lhs_expression = "G_2"
@@ -2268,7 +1470,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0120"
+id = "EQA-0078"
 expression = "S \\to O"
 relation_operator = "implicit"
 lhs_expression = "S \\to O"
@@ -2287,7 +1489,7 @@ source_line = 35
 claim_refs = []
 
 [[atom]]
-id = "EQA-0121"
+id = "EQA-0079"
 expression = "2^n"
 relation_operator = "implicit"
 lhs_expression = "2^n"
@@ -2306,7 +1508,7 @@ source_line = 37
 claim_refs = []
 
 [[atom]]
-id = "EQA-0122"
+id = "EQA-0080"
 expression = "-adic QFT uses"
 relation_operator = "implicit"
 lhs_expression = "-adic QFT uses"
@@ -2325,7 +1527,7 @@ source_line = 42
 claim_refs = []
 
 [[atom]]
-id = "EQA-0123"
+id = "EQA-0081"
 expression = "O \\to S \\to P..."
 relation_operator = "implicit"
 lhs_expression = "O \\to S \\to P..."
@@ -2344,7 +1546,7 @@ source_line = 51
 claim_refs = []
 
 [[atom]]
-id = "EQA-0124"
+id = "EQA-0082"
 expression = ") to lower observable dimensions ("
 relation_operator = "implicit"
 lhs_expression = ") to lower observable dimensions ("
@@ -2363,7 +1565,7 @@ source_line = 53
 claim_refs = []
 
 [[atom]]
-id = "EQA-0125"
+id = "EQA-0083"
 expression = "). This \"associator anomaly\" ("
 relation_operator = "implicit"
 lhs_expression = "). This \"associator anomaly\" ("
@@ -2382,7 +1584,7 @@ source_line = 53
 claim_refs = []
 
 [[atom]]
-id = "EQA-0126"
+id = "EQA-0084"
 expression = "m_3"
 relation_operator = "implicit"
 lhs_expression = "m_3"
@@ -2401,159 +1603,7 @@ source_line = 60
 claim_refs = []
 
 [[atom]]
-id = "EQA-0127"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-008"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/WARP_RING_REPORT.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0128"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-008"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/WARP_RING_REPORT.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0129"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-008"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/WARP_RING_REPORT.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0130"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-008"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/WARP_RING_REPORT.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0131"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-009"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/THESIS_3D_SYNTHESIS.md"
-source_line = 1
-claim_refs = []
-
-[[atom]]
-id = "EQA-0132"
-expression = "<!-- Source of truth: registry/artifact_scrolls.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/artifact_scrolls.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "artifact_scrolls", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-009"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/THESIS_3D_SYNTHESIS.md"
-source_line = 2
-claim_refs = []
-
-[[atom]]
-id = "EQA-0133"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-009"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/THESIS_3D_SYNTHESIS.md"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0134"
-expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/data_artifact_narratives.toml -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "data_artifact_narratives", "of", "registry", "toml", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "(root)"
-source_uid = "ART-009"
-source_group = "data_artifact_narrative"
-source_registry = "registry/data_artifact_narratives.toml"
-source_path = "data/artifacts/THESIS_3D_SYNTHESIS.md"
-source_line = 5
-claim_refs = []
-
-[[atom]]
-id = "EQA-0135"
+id = "EQA-0085"
 expression = "\\alpha"
 relation_operator = "implicit"
 lhs_expression = "\\alpha"
@@ -2572,7 +1622,7 @@ source_line = 13
 claim_refs = []
 
 [[atom]]
-id = "EQA-0136"
+id = "EQA-0086"
 expression = "16^3"
 relation_operator = "implicit"
 lhs_expression = "16^3"
@@ -2591,7 +1641,7 @@ source_line = 16
 claim_refs = []
 
 [[atom]]
-id = "EQA-0137"
+id = "EQA-0087"
 expression = "\\Phi"
 relation_operator = "implicit"
 lhs_expression = "\\Phi"
@@ -2610,7 +1660,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0138"
+id = "EQA-0088"
 expression = "\\mathcal{F}"
 relation_operator = "implicit"
 lhs_expression = "\\mathcal{F}"
@@ -2629,7 +1679,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0139"
+id = "EQA-0089"
 expression = "\\nu"
 relation_operator = "implicit"
 lhs_expression = "\\nu"
@@ -2648,7 +1698,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0140"
+id = "EQA-0090"
 expression = "\\alpha \\in [0.01, 0.05, 0.1, 0.2]"
 relation_operator = "implicit"
 lhs_expression = "\\alpha \\in [0.01, 0.05, 0.1, 0.2]"
@@ -2667,7 +1717,7 @@ source_line = 19
 claim_refs = []
 
 [[atom]]
-id = "EQA-0141"
+id = "EQA-0091"
 expression = "\\beta_0, \\beta_1"
 relation_operator = "implicit"
 lhs_expression = "\\beta_0, \\beta_1"
@@ -2686,7 +1736,7 @@ source_line = 20
 claim_refs = []
 
 [[atom]]
-id = "EQA-0142"
+id = "EQA-0092"
 expression = "\\alpha"
 relation_operator = "implicit"
 lhs_expression = "\\alpha"
@@ -2705,7 +1755,7 @@ source_line = 25
 claim_refs = []
 
 [[atom]]
-id = "EQA-0143"
+id = "EQA-0093"
 expression = "\\beta_0"
 relation_operator = "implicit"
 lhs_expression = "\\beta_0"
@@ -2724,7 +1774,7 @@ source_line = 25
 claim_refs = []
 
 [[atom]]
-id = "EQA-0144"
+id = "EQA-0094"
 expression = "\\beta_1"
 relation_operator = "implicit"
 lhs_expression = "\\beta_1"
@@ -2743,7 +1793,7 @@ source_line = 25
 claim_refs = []
 
 [[atom]]
-id = "EQA-0145"
+id = "EQA-0095"
 expression = "\\alpha"
 relation_operator = "implicit"
 lhs_expression = "\\alpha"
@@ -2762,7 +1812,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0146"
+id = "EQA-0096"
 expression = "\\beta_0 > 1"
 relation_operator = "implicit"
 lhs_expression = "\\beta_0 > 1"
@@ -2781,7 +1831,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0147"
+id = "EQA-0097"
 expression = "\\beta_0 \\gg 1"
 relation_operator = "implicit"
 lhs_expression = "\\beta_0 \\gg 1"
@@ -2800,7 +1850,7 @@ source_line = 41
 claim_refs = []
 
 [[atom]]
-id = "EQA-0148"
+id = "EQA-0098"
 expression = "\\beta_0=1"
 relation_operator = "="
 lhs_expression = "\\beta_0"
@@ -2819,45 +1869,7 @@ source_line = 41
 claim_refs = []
 
 [[atom]]
-id = "EQA-0149"
-expression = "<!-- AUTO-GENERATED: DO NOT EDIT -->"
-relation_operator = "->"
-lhs_expression = "<!-- AUTO-GENERATED: DO NOT EDIT -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["AUTO", "DO", "EDIT", "GENERATED", "NOT"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "Claims / Evidence Matrix (Markdown Mirror)"
-source_uid = "CONTROL_PLANE_CLAIMS"
-source_group = "doc_claim_matrix"
-source_registry = "registry/canonical/control_plane.sqlite3"
-source_path = "registry/canonical/control_plane.sqlite3"
-source_line = 3
-claim_refs = []
-
-[[atom]]
-id = "EQA-0150"
-expression = "<!-- Source of truth: registry/canonical/control_plane.sqlite3 -->"
-relation_operator = "->"
-lhs_expression = "<!-- Source of truth: registry/canonical/control_plane.sqlite3 -"
-rhs_expression = ""
-equation_kind = "mapping_relation"
-extraction_kind = "equation_like_line"
-symbol_names = ["Source", "canonical", "control_plane", "of", "registry", "sqlite3", "truth"]
-numeric_constants = []
-domain_hint = "cross_domain"
-section_title = "Claims / Evidence Matrix (Markdown Mirror)"
-source_uid = "CONTROL_PLANE_CLAIMS"
-source_group = "doc_claim_matrix"
-source_registry = "registry/canonical/control_plane.sqlite3"
-source_path = "registry/canonical/control_plane.sqlite3"
-source_line = 4
-claim_refs = []
-
-[[atom]]
-id = "EQA-0151"
+id = "EQA-0099"
 expression = "D \\sim k^{-3}"
 relation_operator = "implicit"
 lhs_expression = "D \\sim k^{-3}"
@@ -2872,11 +1884,11 @@ source_uid = "CONTROL_PLANE_CLAIMS"
 source_group = "doc_claim_matrix"
 source_registry = "registry/canonical/control_plane.sqlite3"
 source_path = "registry/canonical/control_plane.sqlite3"
-source_line = 701
+source_line = 1019
 claim_refs = []
 
 [[atom]]
-id = "EQA-0152"
+id = "EQA-0100"
 expression = "R \\approx 5"
 relation_operator = "implicit"
 lhs_expression = "R \\approx 5"
@@ -2891,11 +1903,11 @@ source_uid = "CONTROL_PLANE_CLAIMS"
 source_group = "doc_claim_matrix"
 source_registry = "registry/canonical/control_plane.sqlite3"
 source_path = "registry/canonical/control_plane.sqlite3"
-source_line = 703
+source_line = 1021
 claim_refs = []
 
 [[atom]]
-id = "EQA-0153"
+id = "EQA-0101"
 expression = "N \\to \\infty"
 relation_operator = "implicit"
 lhs_expression = "N \\to \\infty"
@@ -2914,7 +1926,7 @@ source_line = 9
 claim_refs = []
 
 [[atom]]
-id = "EQA-0154"
+id = "EQA-0102"
 expression = "\\psi"
 relation_operator = "implicit"
 lhs_expression = "\\psi"
@@ -2933,7 +1945,7 @@ source_line = 9
 claim_refs = []
 
 [[atom]]
-id = "EQA-0155"
+id = "EQA-0103"
 expression = "24/64 = 0.375"
 relation_operator = "="
 lhs_expression = "24/64"
@@ -2952,7 +1964,7 @@ source_line = 10
 claim_refs = []
 
 [[atom]]
-id = "EQA-0156"
+id = "EQA-0104"
 expression = "N \\ge 16"
 relation_operator = "implicit"
 lhs_expression = "N \\ge 16"
@@ -2971,7 +1983,7 @@ source_line = 11
 claim_refs = []
 
 [[atom]]
-id = "EQA-0157"
+id = "EQA-0105"
 expression = "We discovered (C-591) that the Split-Octonion algebra contains a dense 'Null Cloud' of **48 zero-dividing pairs** of the form $v \\cdot w = 0$."
 relation_operator = "="
 lhs_expression = "We discovered (C-591) that the Split-Octonion algebra contains a dense 'Null Cloud' of **48 zero-dividing pairs** of the form $v \\cdot w"
@@ -2990,7 +2002,7 @@ source_line = 14
 claim_refs = ["C-591"]
 
 [[atom]]
-id = "EQA-0158"
+id = "EQA-0106"
 expression = "v \\cdot w = 0"
 relation_operator = "="
 lhs_expression = "v \\cdot w"
@@ -3009,7 +2021,7 @@ source_line = 14
 claim_refs = []
 
 [[atom]]
-id = "EQA-0159"
+id = "EQA-0107"
 expression = "4 \\times C_6"
 relation_operator = "implicit"
 lhs_expression = "4 \\times C_6"
@@ -3028,7 +2040,7 @@ source_line = 16
 claim_refs = []
 
 [[atom]]
-id = "EQA-0160"
+id = "EQA-0108"
 expression = "Cl(8)"
 relation_operator = "implicit"
 lhs_expression = "Cl(8)"
@@ -3047,7 +2059,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0161"
+id = "EQA-0109"
 expression = "\\Phi_{I0}"
 relation_operator = "implicit"
 lhs_expression = "\\Phi_{I0}"
@@ -3066,7 +2078,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0162"
+id = "EQA-0110"
 expression = "`proofs/verified/C1137_MissingEdgeQuantizedGap.v` -- dim=16 gap proofs"
 relation_operator = "="
 lhs_expression = "`proofs/verified/C1137_MissingEdgeQuantizedGap.v` -- dim"
@@ -3085,7 +2097,7 @@ source_line = 55
 claim_refs = []
 
 [[atom]]
-id = "EQA-0163"
+id = "EQA-0111"
 expression = "`proofs/verified/C1140_PathionQuantizedGap.v` -- dim=32 gap proofs (imports C1140a/b/c)"
 relation_operator = "="
 lhs_expression = "`proofs/verified/C1140_PathionQuantizedGap.v` -- dim"
@@ -3104,7 +2116,7 @@ source_line = 56
 claim_refs = []
 
 [[atom]]
-id = "EQA-0164"
+id = "EQA-0112"
 expression = "1. F(theta) = F(0) * exp(-H * sin(theta)) is bounded by F(0) (from `wick_evolution_bounded`)"
 relation_operator = "="
 lhs_expression = "1. F(theta)"
@@ -3123,7 +2135,7 @@ source_line = 66
 claim_refs = []
 
 [[atom]]
-id = "EQA-0165"
+id = "EQA-0113"
 expression = "1. **L_a row-scan (CPU fallback)**: `y[i] = sum_j L_a[i][j] * x[j]` -- Gather direction."
 relation_operator = "="
 lhs_expression = "1. **L_a row-scan (CPU fallback)**: `y[i]"
@@ -3142,7 +2154,7 @@ source_line = 157
 claim_refs = []
 
 [[atom]]
-id = "EQA-0166"
+id = "EQA-0114"
 expression = "2. **Target-index accumulation**: `result[i XOR j] += sign * a[i] * x[j]` -- Scatter direction."
 relation_operator = "="
 lhs_expression = "2. **Target-index accumulation**: `result[i XOR j] +"
@@ -3161,7 +2173,7 @@ source_line = 158
 claim_refs = []
 
 [[atom]]
-id = "EQA-0167"
+id = "EQA-0115"
 expression = "128^3"
 relation_operator = "implicit"
 lhs_expression = "128^3"
@@ -3180,7 +2192,7 @@ source_line = 4
 claim_refs = []
 
 [[atom]]
-id = "EQA-0168"
+id = "EQA-0116"
 expression = "128^3 \\times 19 \\times 8 \\text{ bytes} \\times 2 \\text{ (RW)} \\approx 640 \\text{ MB per step}"
 relation_operator = "implicit"
 lhs_expression = "128^3 \\times 19 \\times 8 \\text{ bytes} \\times 2 \\text{ (RW)} \\approx 640 \\text{ MB per step}"
@@ -3199,7 +2211,7 @@ source_line = 7
 claim_refs = []
 
 [[atom]]
-id = "EQA-0169"
+id = "EQA-0117"
 expression = "640 \\text{ MB} \\times 62.5 \\approx 40 \\text{ GB/s}"
 relation_operator = "implicit"
 lhs_expression = "640 \\text{ MB} \\times 62.5 \\approx 40 \\text{ GB/s}"
@@ -3218,7 +2230,7 @@ source_line = 8
 claim_refs = []
 
 [[atom]]
-id = "EQA-0170"
+id = "EQA-0118"
 expression = "f_i"
 relation_operator = "implicit"
 lhs_expression = "f_i"
@@ -3237,7 +2249,7 @@ source_line = 22
 claim_refs = []
 
 [[atom]]
-id = "EQA-0171"
+id = "EQA-0119"
 expression = "256^3"
 relation_operator = "implicit"
 lhs_expression = "256^3"
@@ -3256,7 +2268,7 @@ source_line = 23
 claim_refs = []
 
 [[atom]]
-id = "EQA-0172"
+id = "EQA-0120"
 expression = "512^3"
 relation_operator = "implicit"
 lhs_expression = "512^3"
@@ -3275,7 +2287,7 @@ source_line = 23
 claim_refs = []
 
 [[atom]]
-id = "EQA-0173"
+id = "EQA-0121"
 expression = "a*b + c"
 relation_operator = "implicit"
 lhs_expression = "a*b + c"
@@ -3294,7 +2306,7 @@ source_line = 40
 claim_refs = []
 
 [[atom]]
-id = "EQA-0174"
+id = "EQA-0122"
 expression = "2^{-3} = 0.125"
 relation_operator = "="
 lhs_expression = "2^{-3}"
@@ -3313,7 +2325,7 @@ source_line = 60
 claim_refs = []
 
 [[atom]]
-id = "EQA-0175"
+id = "EQA-0123"
 expression = "O(10^{-3})"
 relation_operator = "implicit"
 lhs_expression = "O(10^{-3})"
@@ -3332,7 +2344,7 @@ source_line = 60
 claim_refs = []
 
 [[atom]]
-id = "EQA-0176"
+id = "EQA-0124"
 expression = "f^{neq} = f - f_{eq}"
 relation_operator = "="
 lhs_expression = "f^{neq}"
@@ -3351,7 +2363,7 @@ source_line = 60
 claim_refs = []
 
 [[atom]]
-id = "EQA-0177"
+id = "EQA-0125"
 expression = "10^{-15}"
 relation_operator = "implicit"
 lhs_expression = "10^{-15}"
@@ -3370,7 +2382,7 @@ source_line = 63
 claim_refs = []
 
 [[atom]]
-id = "EQA-0178"
+id = "EQA-0126"
 expression = "256^3"
 relation_operator = "implicit"
 lhs_expression = "256^3"
@@ -3389,7 +2401,7 @@ source_line = 64
 claim_refs = []
 
 [[atom]]
-id = "EQA-0179"
+id = "EQA-0127"
 expression = "$$ \\frac{\\partial \\mathbf{u}}{\\partial t} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u} = -\\nabla p + \\nu \\nabla^2 \\mathbf{u} + \\mathbf{F}_{warp}(\\mathbf{k}, t) $$"
 relation_operator = "="
 lhs_expression = "$$ \\frac{\\partial \\mathbf{u}}{\\partial t} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u}"
@@ -3408,7 +2420,7 @@ source_line = 13
 claim_refs = []
 
 [[atom]]
-id = "EQA-0180"
+id = "EQA-0128"
 expression = "\\frac{\\partial \\mathbf{u}}{\\partial t} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u} = -\\nabla p + \\nu \\nabla^2 \\mathbf{u} + \\mathbf{F}_{warp}(\\mathbf{k}, t)"
 relation_operator = "="
 lhs_expression = "\\frac{\\partial \\mathbf{u}}{\\partial t} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u}"
@@ -3427,7 +2439,7 @@ source_line = 13
 claim_refs = []
 
 [[atom]]
-id = "EQA-0181"
+id = "EQA-0129"
 expression = "\\mathbf{F}_{warp}(\\mathbf{k}) = \\lambda \\cdot \\underbrace{\\left( \\sum_{\\mathbf{r} \\in \\Phi_{E7}} e^{-\\frac{||\\mathbf{k} - \\mathbf{r}||^2}{2\\sigma^2}} \\right)}_{\\text{E7 Projector } P_{E7}(\\mathbf{k})} \\cdot \\hat{\\mathbf{u}}(\\mathbf{k})"
 relation_operator = "="
 lhs_expression = "\\mathbf{F}_{warp}(\\mathbf{k})"
@@ -3446,7 +2458,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0182"
+id = "EQA-0130"
 expression = "\\Phi_{E7}"
 relation_operator = "implicit"
 lhs_expression = "\\Phi_{E7}"
@@ -3465,7 +2477,7 @@ source_line = 20
 claim_refs = []
 
 [[atom]]
-id = "EQA-0183"
+id = "EQA-0131"
 expression = "\\lambda"
 relation_operator = "implicit"
 lhs_expression = "\\lambda"
@@ -3484,7 +2496,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0184"
+id = "EQA-0132"
 expression = "\\lambda < 0"
 relation_operator = "implicit"
 lhs_expression = "\\lambda < 0"
@@ -3503,7 +2515,7 @@ source_line = 22
 claim_refs = []
 
 [[atom]]
-id = "EQA-0185"
+id = "EQA-0133"
 expression = "\\lambda > 0"
 relation_operator = "implicit"
 lhs_expression = "\\lambda > 0"
@@ -3522,7 +2534,7 @@ source_line = 23
 claim_refs = []
 
 [[atom]]
-id = "EQA-0186"
+id = "EQA-0134"
 expression = "\\sigma"
 relation_operator = "implicit"
 lhs_expression = "\\sigma"
@@ -3541,7 +2553,7 @@ source_line = 25
 claim_refs = []
 
 [[atom]]
-id = "EQA-0187"
+id = "EQA-0135"
 expression = "| Minimum for Reynolds independence ("
 relation_operator = "implicit"
 lhs_expression = "| Minimum for Reynolds independence ("
@@ -3560,7 +2572,7 @@ source_line = 31
 claim_refs = []
 
 [[atom]]
-id = "EQA-0188"
+id = "EQA-0136"
 expression = "1/Re \\\\approx 10^{-4}"
 relation_operator = "implicit"
 lhs_expression = "1/Re \\\\approx 10^{-4}"
@@ -3579,7 +2591,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0189"
+id = "EQA-0137"
 expression = "\\\\nu"
 relation_operator = "implicit"
 lhs_expression = "\\\\nu"
@@ -3598,7 +2610,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0190"
+id = "EQA-0138"
 expression = "0.1 - 0.5"
 relation_operator = "implicit"
 lhs_expression = "0.1 - 0.5"
@@ -3617,7 +2629,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0191"
+id = "EQA-0139"
 expression = "\\\\lambda"
 relation_operator = "implicit"
 lhs_expression = "\\\\lambda"
@@ -3636,7 +2648,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0192"
+id = "EQA-0140"
 expression = "10^4"
 relation_operator = "implicit"
 lhs_expression = "10^4"
@@ -3655,7 +2667,7 @@ source_line = 34
 claim_refs = []
 
 [[atom]]
-id = "EQA-0193"
+id = "EQA-0141"
 expression = "\\\\Omega_{crit}"
 relation_operator = "implicit"
 lhs_expression = "\\\\Omega_{crit}"
@@ -3674,7 +2686,7 @@ source_line = 34
 claim_refs = []
 
 [[atom]]
-id = "EQA-0194"
+id = "EQA-0142"
 expression = "b_1"
 relation_operator = "implicit"
 lhs_expression = "b_1"
@@ -3693,7 +2705,7 @@ source_line = 39
 claim_refs = []
 
 [[atom]]
-id = "EQA-0195"
+id = "EQA-0143"
 expression = "\\\\Omega(t)"
 relation_operator = "implicit"
 lhs_expression = "\\\\Omega(t)"
@@ -3712,7 +2724,7 @@ source_line = 40
 claim_refs = []
 
 [[atom]]
-id = "EQA-0196"
+id = "EQA-0144"
 expression = "b_1"
 relation_operator = "implicit"
 lhs_expression = "b_1"
@@ -3731,7 +2743,7 @@ source_line = 40
 claim_refs = []
 
 [[atom]]
-id = "EQA-0197"
+id = "EQA-0145"
 expression = "\\\\tau_{b1} \\\\approx \\\\tau_{\\\\Omega}"
 relation_operator = "implicit"
 lhs_expression = "\\\\tau_{b1} \\\\approx \\\\tau_{\\\\Omega}"
@@ -3750,7 +2762,7 @@ source_line = 41
 claim_refs = []
 
 [[atom]]
-id = "EQA-0198"
+id = "EQA-0146"
 expression = "E(k)"
 relation_operator = "implicit"
 lhs_expression = "E(k)"
@@ -3769,7 +2781,7 @@ source_line = 44
 claim_refs = []
 
 [[atom]]
-id = "EQA-0199"
+id = "EQA-0147"
 expression = "k^{-5/3}"
 relation_operator = "implicit"
 lhs_expression = "k^{-5/3}"
@@ -3788,7 +2800,7 @@ source_line = 44
 claim_refs = []
 
 [[atom]]
-id = "EQA-0200"
+id = "EQA-0148"
 expression = "P_{E7}"
 relation_operator = "implicit"
 lhs_expression = "P_{E7}"
@@ -3807,7 +2819,7 @@ source_line = 49
 claim_refs = []
 
 [[atom]]
-id = "EQA-0201"
+id = "EQA-0149"
 expression = "\\alpha \\approx 0.1"
 relation_operator = "implicit"
 lhs_expression = "\\alpha \\approx 0.1"
@@ -3826,7 +2838,7 @@ source_line = 12
 claim_refs = []
 
 [[atom]]
-id = "EQA-0202"
+id = "EQA-0150"
 expression = "\\alpha"
 relation_operator = "implicit"
 lhs_expression = "\\alpha"
@@ -3845,7 +2857,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0203"
+id = "EQA-0151"
 expression = "O(1)"
 relation_operator = "implicit"
 lhs_expression = "O(1)"
@@ -3864,7 +2876,7 @@ source_line = 20
 claim_refs = []
 
 [[atom]]
-id = "EQA-0204"
+id = "EQA-0152"
 expression = "O(N^3)"
 relation_operator = "implicit"
 lhs_expression = "O(N^3)"
@@ -3883,7 +2895,7 @@ source_line = 20
 claim_refs = []
 
 [[atom]]
-id = "EQA-0205"
+id = "EQA-0153"
 expression = "512^3"
 relation_operator = "implicit"
 lhs_expression = "512^3"
@@ -3902,7 +2914,7 @@ source_line = 27
 claim_refs = []
 
 [[atom]]
-id = "EQA-0206"
+id = "EQA-0154"
 expression = "$$ S_{EH} = \\int d^4x \\sqrt{-g} \\frac{R}{16\\pi G} $$"
 relation_operator = "="
 lhs_expression = "$$ S_{EH}"
@@ -3921,7 +2933,7 @@ source_line = 15
 claim_refs = []
 
 [[atom]]
-id = "EQA-0207"
+id = "EQA-0155"
 expression = "S_{EH} = \\int d^4x \\sqrt{-g} \\frac{R}{16\\pi G}"
 relation_operator = "="
 lhs_expression = "S_{EH}"
@@ -3940,7 +2952,7 @@ source_line = 15
 claim_refs = []
 
 [[atom]]
-id = "EQA-0208"
+id = "EQA-0156"
 expression = "S_{Alg}"
 relation_operator = "implicit"
 lhs_expression = "S_{Alg}"
@@ -3959,7 +2971,7 @@ source_line = 17
 claim_refs = []
 
 [[atom]]
-id = "EQA-0209"
+id = "EQA-0157"
 expression = "\\Psi(x)"
 relation_operator = "implicit"
 lhs_expression = "\\Psi(x)"
@@ -3978,7 +2990,7 @@ source_line = 17
 claim_refs = []
 
 [[atom]]
-id = "EQA-0210"
+id = "EQA-0158"
 expression = "$$ S_{Alg} = \\int d^4x \\sqrt{-g} \\left( \\frac{R}{16\\pi G} + \\mathcal{L}_{Kin}(\\Psi) - V_{Assoc}(\\Psi) \\right) $$"
 relation_operator = "="
 lhs_expression = "$$ S_{Alg}"
@@ -3997,7 +3009,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0211"
+id = "EQA-0159"
 expression = "S_{Alg} = \\int d^4x \\sqrt{-g} \\left( \\frac{R}{16\\pi G} + \\mathcal{L}_{Kin}(\\Psi) - V_{Assoc}(\\Psi) \\right)"
 relation_operator = "="
 lhs_expression = "S_{Alg}"
@@ -4016,7 +3028,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0212"
+id = "EQA-0160"
 expression = "V_{Assoc}"
 relation_operator = "implicit"
 lhs_expression = "V_{Assoc}"
@@ -4035,7 +3047,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0213"
+id = "EQA-0161"
 expression = "$$ V_{Assoc}(\\Psi) = \\lambda \\oint_{\\mathcal{M}} \\| A(\\Psi(x), \\Psi(y), \\Psi(z)) \\|^2 \\, d\\mu $$"
 relation_operator = "="
 lhs_expression = "$$ V_{Assoc}(\\Psi)"
@@ -4054,7 +3066,7 @@ source_line = 22
 claim_refs = []
 
 [[atom]]
-id = "EQA-0214"
+id = "EQA-0162"
 expression = "V_{Assoc}(\\Psi) = \\lambda \\oint_{\\mathcal{M}} \\| A(\\Psi(x), \\Psi(y), \\Psi(z)) \\|^2 \\, d\\mu"
 relation_operator = "="
 lhs_expression = "V_{Assoc}(\\Psi)"
@@ -4073,7 +3085,7 @@ source_line = 22
 claim_refs = []
 
 [[atom]]
-id = "EQA-0215"
+id = "EQA-0163"
 expression = "A(a,b,c) = (ab)c - a(bc)"
 relation_operator = "="
 lhs_expression = "A(a,b,c)"
@@ -4092,7 +3104,7 @@ source_line = 23
 claim_refs = []
 
 [[atom]]
-id = "EQA-0216"
+id = "EQA-0164"
 expression = "where $A(a,b,c) = (ab)c - a(bc)$ is the algebraic associator."
 relation_operator = "="
 lhs_expression = "where $A(a,b,c)"
@@ -4111,7 +3123,7 @@ source_line = 23
 claim_refs = []
 
 [[atom]]
-id = "EQA-0217"
+id = "EQA-0165"
 expression = "S_{Alg}"
 relation_operator = "implicit"
 lhs_expression = "S_{Alg}"
@@ -4130,7 +3142,7 @@ source_line = 26
 claim_refs = []
 
 [[atom]]
-id = "EQA-0218"
+id = "EQA-0166"
 expression = "\\Psi_0"
 relation_operator = "implicit"
 lhs_expression = "\\Psi_0"
@@ -4149,7 +3161,7 @@ source_line = 26
 claim_refs = []
 
 [[atom]]
-id = "EQA-0219"
+id = "EQA-0167"
 expression = "A \\neq 0"
 relation_operator = "implicit"
 lhs_expression = "A \\neq 0"
@@ -4168,7 +3180,7 @@ source_line = 27
 claim_refs = []
 
 [[atom]]
-id = "EQA-0220"
+id = "EQA-0168"
 expression = "3. **Topological Locking:** The field cannot relax to $A=0$ everywhere (as it could in mathbb{H}). It gets \"pinned\" to the **Zero-Divisor Manifold** $Z = \\{ (u,v) \\in \\mathbb{S}^2 \\mid uv=0 \\}$."
 relation_operator = "="
 lhs_expression = "3. **Topological Locking:** The field cannot relax to $A"
@@ -4187,7 +3199,7 @@ source_line = 28
 claim_refs = []
 
 [[atom]]
-id = "EQA-0221"
+id = "EQA-0169"
 expression = "A=0"
 relation_operator = "="
 lhs_expression = "A"
@@ -4206,7 +3218,7 @@ source_line = 28
 claim_refs = []
 
 [[atom]]
-id = "EQA-0222"
+id = "EQA-0170"
 expression = "Z = \\{ (u,v) \\in \\mathbb{S}^2 \\mid uv=0 \\}"
 relation_operator = "="
 lhs_expression = "Z"
@@ -4225,7 +3237,7 @@ source_line = 28
 claim_refs = []
 
 [[atom]]
-id = "EQA-0223"
+id = "EQA-0171"
 expression = "g^{\\mu\\nu}"
 relation_operator = "implicit"
 lhs_expression = "g^{\\mu\\nu}"
@@ -4244,7 +3256,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0224"
+id = "EQA-0172"
 expression = "$$ R_{\\mu\\nu} - \\frac{1}{2}R g_{\\mu\\nu} = 8\\pi G (T_{\\mu\\nu}^{Matter} + T_{\\mu\\nu}^{Alg}) $$"
 relation_operator = "="
 lhs_expression = "$$ R_{\\mu\\nu} - \\frac{1}{2}R g_{\\mu\\nu}"
@@ -4263,7 +3275,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0225"
+id = "EQA-0173"
 expression = "R_{\\mu\\nu} - \\frac{1}{2}R g_{\\mu\\nu} = 8\\pi G (T_{\\mu\\nu}^{Matter} + T_{\\mu\\nu}^{Alg})"
 relation_operator = "="
 lhs_expression = "R_{\\mu\\nu} - \\frac{1}{2}R g_{\\mu\\nu}"
@@ -4282,7 +3294,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0226"
+id = "EQA-0174"
 expression = "$$ T_{\\mu\\nu}^{Alg} = \\frac{\\partial V_{Assoc}}{\\partial g^{\\mu\\nu}} $$"
 relation_operator = "="
 lhs_expression = "$$ T_{\\mu\\nu}^{Alg}"
@@ -4301,7 +3313,7 @@ source_line = 36
 claim_refs = []
 
 [[atom]]
-id = "EQA-0227"
+id = "EQA-0175"
 expression = "T_{\\mu\\nu}^{Alg} = \\frac{\\partial V_{Assoc}}{\\partial g^{\\mu\\nu}}"
 relation_operator = "="
 lhs_expression = "T_{\\mu\\nu}^{Alg}"
@@ -4320,7 +3332,7 @@ source_line = 36
 claim_refs = []
 
 [[atom]]
-id = "EQA-0228"
+id = "EQA-0176"
 expression = "V_{Assoc} \\approx \\text{const}"
 relation_operator = "implicit"
 lhs_expression = "V_{Assoc} \\approx \\text{const}"
@@ -4339,7 +3351,7 @@ source_line = 39
 claim_refs = []
 
 [[atom]]
-id = "EQA-0229"
+id = "EQA-0177"
 expression = "$$ p_{Alg} = -\\rho_{Alg} \\implies w = -1 \\quad (\\text{Dark Energy}) $$"
 relation_operator = "="
 lhs_expression = "$$ p_{Alg}"
@@ -4358,7 +3370,7 @@ source_line = 40
 claim_refs = []
 
 [[atom]]
-id = "EQA-0230"
+id = "EQA-0178"
 expression = "p_{Alg} = -\\rho_{Alg} \\implies w = -1 \\quad (\\text{Dark Energy})"
 relation_operator = "="
 lhs_expression = "p_{Alg}"
@@ -4377,7 +3389,7 @@ source_line = 40
 claim_refs = []
 
 [[atom]]
-id = "EQA-0231"
+id = "EQA-0179"
 expression = "\\nabla A"
 relation_operator = "implicit"
 lhs_expression = "\\nabla A"
@@ -4396,7 +3408,7 @@ source_line = 41
 claim_refs = []
 
 [[atom]]
-id = "EQA-0232"
+id = "EQA-0180"
 expression = "$$ p_{Alg} \\approx 0, \\quad \\rho_{Alg} > 0 \\implies w = 0 \\quad (\\text{Dark Matter}) $$"
 relation_operator = "="
 lhs_expression = "$$ p_{Alg} \\approx 0, \\quad \\rho_{Alg} > 0 \\implies w"
@@ -4415,7 +3427,7 @@ source_line = 42
 claim_refs = []
 
 [[atom]]
-id = "EQA-0233"
+id = "EQA-0181"
 expression = "p_{Alg} \\approx 0, \\quad \\rho_{Alg} > 0 \\implies w = 0 \\quad (\\text{Dark Matter})"
 relation_operator = "="
 lhs_expression = "p_{Alg} \\approx 0, \\quad \\rho_{Alg} > 0 \\implies w"
@@ -4434,7 +3446,7 @@ source_line = 42
 claim_refs = []
 
 [[atom]]
-id = "EQA-0234"
+id = "EQA-0182"
 expression = "\\nu \\propto \\text{dist}(\\Psi, Z)^{-1}"
 relation_operator = "implicit"
 lhs_expression = "\\nu \\propto \\text{dist}(\\Psi, Z)^{-1}"
@@ -4453,7 +3465,7 @@ source_line = 47
 claim_refs = []
 
 [[atom]]
-id = "EQA-0235"
+id = "EQA-0183"
 expression = "h \\to 0"
 relation_operator = "implicit"
 lhs_expression = "h \\to 0"
@@ -4472,7 +3484,7 @@ source_line = 48
 claim_refs = []
 
 [[atom]]
-id = "EQA-0236"
+id = "EQA-0184"
 expression = "\\dot{S}_{prod} \\propto \\| A(\\Psi) \\|^2"
 relation_operator = "implicit"
 lhs_expression = "\\dot{S}_{prod} \\propto \\| A(\\Psi) \\|^2"
@@ -4491,7 +3503,7 @@ source_line = 49
 claim_refs = []
 
 [[atom]]
-id = "EQA-0237"
+id = "EQA-0185"
 expression = "\\Phi_{Dark}"
 relation_operator = "implicit"
 lhs_expression = "\\Phi_{Dark}"
@@ -4510,7 +3522,7 @@ source_line = 55
 claim_refs = []
 
 [[atom]]
-id = "EQA-0238"
+id = "EQA-0186"
 expression = "\\Phi_{Total} = \\Phi_{BH} + \\Phi_{Dark}"
 relation_operator = "="
 lhs_expression = "\\Phi_{Total}"
@@ -4529,7 +3541,7 @@ source_line = 56
 claim_refs = []
 
 [[atom]]
-id = "EQA-0239"
+id = "EQA-0187"
 expression = "\\nabla \\cdot \\mathbf{u} = 0"
 relation_operator = "="
 lhs_expression = "\\nabla \\cdot \\mathbf{u}"
@@ -4548,7 +3560,7 @@ source_line = 7
 claim_refs = []
 
 [[atom]]
-id = "EQA-0240"
+id = "EQA-0188"
 expression = "\\rho"
 relation_operator = "implicit"
 lhs_expression = "\\rho"
@@ -4567,7 +3579,7 @@ source_line = 8
 claim_refs = []
 
 [[atom]]
-id = "EQA-0241"
+id = "EQA-0189"
 expression = "\\phi"
 relation_operator = "implicit"
 lhs_expression = "\\phi"
@@ -4586,7 +3598,7 @@ source_line = 13
 claim_refs = []
 
 [[atom]]
-id = "EQA-0242"
+id = "EQA-0190"
 expression = "g_{\\mu\\nu} \\approx \\frac{\\rho}{c_s} \\begin{pmatrix} -(c_s^2 - v^2) & -\\mathbf{v}^T \\\\ -\\mathbf{v} & \\mathbf{I} \\end{pmatrix}"
 relation_operator = "implicit"
 lhs_expression = "g_{\\mu\\nu} \\approx \\frac{\\rho}{c_s} \\begin{pmatrix} -(c_s^2 - v^2) & -\\mathbf{v}^T \\\\ -\\mathbf{v} & \\mathbf{I} \\end{pmatrix}"
@@ -4605,7 +3617,7 @@ source_line = 15
 claim_refs = []
 
 [[atom]]
-id = "EQA-0243"
+id = "EQA-0191"
 expression = "\\\\mathbf{v}"
 relation_operator = "implicit"
 lhs_expression = "\\\\mathbf{v}"
@@ -4624,7 +3636,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0244"
+id = "EQA-0192"
 expression = "c_s"
 relation_operator = "implicit"
 lhs_expression = "c_s"
@@ -4643,7 +3655,7 @@ source_line = 19
 claim_refs = []
 
 [[atom]]
-id = "EQA-0245"
+id = "EQA-0193"
 expression = "The volume element of this spacetime is $\\sqrt{-g} = \\frac{\\rho^2}{c_s} \\sqrt{1 - v^2/c_s^2}$."
 relation_operator = "="
 lhs_expression = "The volume element of this spacetime is $\\sqrt{-g}"
@@ -4662,7 +3674,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0246"
+id = "EQA-0194"
 expression = "\\sqrt{-g} = \\frac{\\rho^2}{c_s} \\sqrt{1 - v^2/c_s^2}"
 relation_operator = "="
 lhs_expression = "\\sqrt{-g}"
@@ -4681,7 +3693,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0247"
+id = "EQA-0195"
 expression = "\\\\mathbf{F}"
 relation_operator = "implicit"
 lhs_expression = "\\\\mathbf{F}"
@@ -4700,7 +3712,7 @@ source_line = 26
 claim_refs = []
 
 [[atom]]
-id = "EQA-0248"
+id = "EQA-0196"
 expression = "$$ \\rho (\\partial_t \\mathbf{u} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u}) = -\\nabla p + \\nu \\nabla^2 \\mathbf{u} + \\mathbf{F} $$"
 relation_operator = "="
 lhs_expression = "$$ \\rho (\\partial_t \\mathbf{u} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u})"
@@ -4719,7 +3731,7 @@ source_line = 27
 claim_refs = []
 
 [[atom]]
-id = "EQA-0249"
+id = "EQA-0197"
 expression = "\\rho (\\partial_t \\mathbf{u} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u}) = -\\nabla p + \\nu \\nabla^2 \\mathbf{u} + \\mathbf{F}"
 relation_operator = "="
 lhs_expression = "\\rho (\\partial_t \\mathbf{u} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u})"
@@ -4738,7 +3750,7 @@ source_line = 27
 claim_refs = []
 
 [[atom]]
-id = "EQA-0250"
+id = "EQA-0198"
 expression = "P_{E7}"
 relation_operator = "implicit"
 lhs_expression = "P_{E7}"
@@ -4757,7 +3769,7 @@ source_line = 30
 claim_refs = []
 
 [[atom]]
-id = "EQA-0251"
+id = "EQA-0199"
 expression = "\\\\mathbf{F}"
 relation_operator = "implicit"
 lhs_expression = "\\\\mathbf{F}"
@@ -4776,7 +3788,7 @@ source_line = 30
 claim_refs = []
 
 [[atom]]
-id = "EQA-0252"
+id = "EQA-0200"
 expression = "$$ \\mathbf{F}(\\mathbf{k}) = \\lambda \\cdot P_{E7}(\\mathbf{k}) \\cdot \\hat{\\mathbf{u}}(\\mathbf{k}) $$"
 relation_operator = "="
 lhs_expression = "$$ \\mathbf{F}(\\mathbf{k})"
@@ -4795,7 +3807,7 @@ source_line = 31
 claim_refs = []
 
 [[atom]]
-id = "EQA-0253"
+id = "EQA-0201"
 expression = "\\mathbf{F}(\\mathbf{k}) = \\lambda \\cdot P_{E7}(\\mathbf{k}) \\cdot \\hat{\\mathbf{u}}(\\mathbf{k})"
 relation_operator = "="
 lhs_expression = "\\mathbf{F}(\\mathbf{k})"
@@ -4814,7 +3826,7 @@ source_line = 31
 claim_refs = []
 
 [[atom]]
-id = "EQA-0254"
+id = "EQA-0202"
 expression = "$$ \\frac{du^\\alpha}{d\\tau} + \\Gamma^\\alpha_{\\beta\\gamma} u^\\beta u^\\gamma = 0 $$"
 relation_operator = "="
 lhs_expression = "$$ \\frac{du^\\alpha}{d\\tau} + \\Gamma^\\alpha_{\\beta\\gamma} u^\\beta u^\\gamma"
@@ -4833,7 +3845,7 @@ source_line = 36
 claim_refs = []
 
 [[atom]]
-id = "EQA-0255"
+id = "EQA-0203"
 expression = "\\frac{du^\\alpha}{d\\tau} + \\Gamma^\\alpha_{\\beta\\gamma} u^\\beta u^\\gamma = 0"
 relation_operator = "="
 lhs_expression = "\\frac{du^\\alpha}{d\\tau} + \\Gamma^\\alpha_{\\beta\\gamma} u^\\beta u^\\gamma"
@@ -4852,7 +3864,7 @@ source_line = 36
 claim_refs = []
 
 [[atom]]
-id = "EQA-0256"
+id = "EQA-0204"
 expression = "\\\\Gamma_{eff}"
 relation_operator = "implicit"
 lhs_expression = "\\\\Gamma_{eff}"
@@ -4871,7 +3883,7 @@ source_line = 37
 claim_refs = []
 
 [[atom]]
-id = "EQA-0257"
+id = "EQA-0205"
 expression = "\\\\mathbf{F}"
 relation_operator = "implicit"
 lhs_expression = "\\\\mathbf{F}"
@@ -4890,7 +3902,7 @@ source_line = 37
 claim_refs = []
 
 [[atom]]
-id = "EQA-0258"
+id = "EQA-0206"
 expression = "\\mathbf{F}^i \\sim -\\rho \\Gamma^i_{00} - 2\\rho \\Gamma^i_{0j} u^j"
 relation_operator = "implicit"
 lhs_expression = "\\mathbf{F}^i \\sim -\\rho \\Gamma^i_{00} - 2\\rho \\Gamma^i_{0j} u^j"
@@ -4909,7 +3921,7 @@ source_line = 38
 claim_refs = []
 
 [[atom]]
-id = "EQA-0259"
+id = "EQA-0207"
 expression = "\\\\Omega^2(\\\\mathbf{x}, t)"
 relation_operator = "implicit"
 lhs_expression = "\\\\Omega^2(\\\\mathbf{x}, t)"
@@ -4928,7 +3940,7 @@ source_line = 41
 claim_refs = []
 
 [[atom]]
-id = "EQA-0260"
+id = "EQA-0208"
 expression = "$$ \\bar{g}_{\\mu\\nu} = \\Omega^2 g_{\\mu\\nu} $$"
 relation_operator = "="
 lhs_expression = "$$ \\bar{g}_{\\mu\\nu}"
@@ -4947,7 +3959,7 @@ source_line = 42
 claim_refs = []
 
 [[atom]]
-id = "EQA-0261"
+id = "EQA-0209"
 expression = "\\bar{g}_{\\mu\\nu} = \\Omega^2 g_{\\mu\\nu}"
 relation_operator = "="
 lhs_expression = "\\bar{g}_{\\mu\\nu}"
@@ -4966,7 +3978,7 @@ source_line = 42
 claim_refs = []
 
 [[atom]]
-id = "EQA-0262"
+id = "EQA-0210"
 expression = "\\\\mathbf{F}"
 relation_operator = "implicit"
 lhs_expression = "\\\\mathbf{F}"
@@ -4985,7 +3997,7 @@ source_line = 43
 claim_refs = []
 
 [[atom]]
-id = "EQA-0263"
+id = "EQA-0211"
 expression = "n(\\\\mathbf{x})"
 relation_operator = "implicit"
 lhs_expression = "n(\\\\mathbf{x})"
@@ -5004,7 +4016,7 @@ source_line = 43
 claim_refs = []
 
 [[atom]]
-id = "EQA-0264"
+id = "EQA-0212"
 expression = "$$ \\frac{d\\mathbf{T}}{ds} = n \\nabla n - (\\mathbf{T} \\cdot \\nabla n) \\mathbf{T} $$"
 relation_operator = "="
 lhs_expression = "$$ \\frac{d\\mathbf{T}}{ds}"
@@ -5023,7 +4035,7 @@ source_line = 44
 claim_refs = []
 
 [[atom]]
-id = "EQA-0265"
+id = "EQA-0213"
 expression = "\\frac{d\\mathbf{T}}{ds} = n \\nabla n - (\\mathbf{T} \\cdot \\nabla n) \\mathbf{T}"
 relation_operator = "="
 lhs_expression = "\\frac{d\\mathbf{T}}{ds}"
@@ -5042,7 +4054,7 @@ source_line = 44
 claim_refs = []
 
 [[atom]]
-id = "EQA-0266"
+id = "EQA-0214"
 expression = "\\\\nabla n"
 relation_operator = "implicit"
 lhs_expression = "\\\\nabla n"
@@ -5061,7 +4073,7 @@ source_line = 45
 claim_refs = []
 
 [[atom]]
-id = "EQA-0267"
+id = "EQA-0215"
 expression = "\\\\sqrt{-g}"
 relation_operator = "implicit"
 lhs_expression = "\\\\sqrt{-g}"
@@ -5080,7 +4092,7 @@ source_line = 45
 claim_refs = []
 
 [[atom]]
-id = "EQA-0268"
+id = "EQA-0216"
 expression = "E(k)"
 relation_operator = "implicit"
 lhs_expression = "E(k)"
@@ -5099,7 +4111,7 @@ source_line = 56
 claim_refs = []
 
 [[atom]]
-id = "EQA-0269"
+id = "EQA-0217"
 expression = "k^{-5/3}"
 relation_operator = "implicit"
 lhs_expression = "k^{-5/3}"
@@ -5118,7 +4130,7 @@ source_line = 56
 claim_refs = []
 
 [[atom]]
-id = "EQA-0270"
+id = "EQA-0218"
 expression = "\\partial_t \\mathbf{u} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u} = -\\nabla p + \\nu \\nabla^2 \\mathbf{u} + \\mathbf{F}_{algebra}"
 relation_operator = "="
 lhs_expression = "\\partial_t \\mathbf{u} + (\\mathbf{u} \\cdot \\nabla) \\mathbf{u}"
@@ -5137,7 +4149,7 @@ source_line = 11
 claim_refs = []
 
 [[atom]]
-id = "EQA-0271"
+id = "EQA-0219"
 expression = "\\mathbf{F}_{algebra}"
 relation_operator = "implicit"
 lhs_expression = "\\mathbf{F}_{algebra}"
@@ -5156,7 +4168,7 @@ source_line = 14
 claim_refs = []
 
 [[atom]]
-id = "EQA-0272"
+id = "EQA-0220"
 expression = "1. **Enstrophy ($\\Omega$):** The integral of vorticity squared, $\\Omega = \\int |\\omega|^2 dV$. In decaying turbulence, this typically follows a power law $\\Omega \\sim t^{-\\alpha}$."
 relation_operator = "="
 lhs_expression = "1. **Enstrophy ($\\Omega$):** The integral of vorticity squared, $\\Omega"
@@ -5175,7 +4187,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0273"
+id = "EQA-0221"
 expression = "\\Omega"
 relation_operator = "implicit"
 lhs_expression = "\\Omega"
@@ -5194,7 +4206,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0274"
+id = "EQA-0222"
 expression = "\\Omega = \\int |\\omega|^2 dV"
 relation_operator = "="
 lhs_expression = "\\Omega"
@@ -5213,7 +4225,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0275"
+id = "EQA-0223"
 expression = "\\Omega \\sim t^{-\\alpha}"
 relation_operator = "implicit"
 lhs_expression = "\\Omega \\sim t^{-\\alpha}"
@@ -5232,7 +4244,7 @@ source_line = 18
 claim_refs = []
 
 [[atom]]
-id = "EQA-0276"
+id = "EQA-0224"
 expression = "b_1"
 relation_operator = "implicit"
 lhs_expression = "b_1"
@@ -5251,7 +4263,7 @@ source_line = 19
 claim_refs = []
 
 [[atom]]
-id = "EQA-0277"
+id = "EQA-0225"
 expression = "b_1"
 relation_operator = "implicit"
 lhs_expression = "b_1"
@@ -5270,7 +4282,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0278"
+id = "EQA-0226"
 expression = "8^3"
 relation_operator = "implicit"
 lhs_expression = "8^3"
@@ -5289,7 +4301,7 @@ source_line = 29
 claim_refs = []
 
 [[atom]]
-id = "EQA-0279"
+id = "EQA-0227"
 expression = "16^3"
 relation_operator = "implicit"
 lhs_expression = "16^3"
@@ -5308,7 +4320,7 @@ source_line = 30
 claim_refs = []
 
 [[atom]]
-id = "EQA-0280"
+id = "EQA-0228"
 expression = "32^3"
 relation_operator = "implicit"
 lhs_expression = "32^3"
@@ -5327,7 +4339,7 @@ source_line = 31
 claim_refs = []
 
 [[atom]]
-id = "EQA-0281"
+id = "EQA-0229"
 expression = "64^3"
 relation_operator = "implicit"
 lhs_expression = "64^3"
@@ -5346,7 +4358,7 @@ source_line = 32
 claim_refs = []
 
 [[atom]]
-id = "EQA-0282"
+id = "EQA-0230"
 expression = "b_1"
 relation_operator = "implicit"
 lhs_expression = "b_1"
@@ -5365,7 +4377,7 @@ source_line = 47
 claim_refs = []
 
 [[atom]]
-id = "EQA-0283"
+id = "EQA-0231"
 expression = "10^{-5} \\to 10^{-11}"
 relation_operator = "implicit"
 lhs_expression = "10^{-5} \\to 10^{-11}"
@@ -5384,7 +4396,7 @@ source_line = 50
 claim_refs = []
 
 [[atom]]
-id = "EQA-0284"
+id = "EQA-0232"
 expression = "8^3, 16^3, 32^3"
 relation_operator = "implicit"
 lhs_expression = "8^3, 16^3, 32^3"
@@ -5403,7 +4415,7 @@ source_line = 51
 claim_refs = []
 
 [[atom]]
-id = "EQA-0285"
+id = "EQA-0233"
 expression = "(DegenerateIntegrable eigenvalue statistics with Brody q = 0). The densest motif"
 relation_operator = "="
 lhs_expression = "(DegenerateIntegrable eigenvalue statistics with Brody q"
@@ -5422,7 +4434,7 @@ source_line = 9
 claim_refs = []
 
 [[atom]]
-id = "EQA-0286"
+id = "EQA-0234"
 expression = "2. The Calcagni spectral dimension flow (2 -> 4) does NOT emerge from individual"
 relation_operator = "->"
 lhs_expression = "2. The Calcagni spectral dimension flow (2"
@@ -5441,7 +4453,7 @@ source_line = 21
 claim_refs = []
 
 [[atom]]
-id = "EQA-0287"
+id = "EQA-0235"
 expression = "dimension from N = 16 to N = 512."
 relation_operator = "="
 lhs_expression = "dimension from N"
@@ -5460,7 +4472,7 @@ source_line = 33
 claim_refs = []
 
 [[atom]]
-id = "EQA-0288"
+id = "EQA-0236"
 expression = "The Calcagni 2 -> 4 spectral dimension flow does NOT emerge from individual"
 relation_operator = "->"
 lhs_expression = "The Calcagni 2"
@@ -5479,7 +4491,7 @@ source_line = 56
 claim_refs = []
 
 [[atom]]
-id = "EQA-0289"
+id = "EQA-0237"
 expression = "H(dim) <= H(8) - k * ln(n_ZD_components + 1)"
 relation_operator = "<="
 lhs_expression = "H(dim)"
@@ -5498,7 +4510,7 @@ source_line = 67
 claim_refs = []
 
 [[atom]]
-id = "EQA-0290"
+id = "EQA-0238"
 expression = "threshold (1.3 rad) to saturate (near_frac = 1.0 at dim=32). The adaptive"
 relation_operator = "="
 lhs_expression = "threshold (1.3 rad) to saturate (near_frac"
@@ -5517,7 +4529,7 @@ source_line = 75
 claim_refs = []
 
 [[atom]]
-id = "EQA-0291"
+id = "EQA-0239"
 expression = "epsilon(N) = 1.3 * sqrt(16/N)"
 relation_operator = "="
 lhs_expression = "epsilon(N)"
@@ -5536,7 +4548,7 @@ source_line = 78
 claim_refs = []
 
 [[atom]]
-id = "EQA-0292"
+id = "EQA-0240"
 expression = "gamma(phi) = -[phi*ln(phi) + (1-phi)*ln(1-phi)] / (pi*sqrt(3))"
 relation_operator = "="
 lhs_expression = "gamma(phi)"
@@ -5555,7 +4567,7 @@ source_line = 97
 claim_refs = []
 
 [[atom]]
-id = "EQA-0293"
+id = "EQA-0241"
 expression = "gamma_max = ln(2) / (pi*sqrt(3)) = 0.12738..."
 relation_operator = "="
 lhs_expression = "gamma_max"
@@ -5574,7 +4586,7 @@ source_line = 101
 claim_refs = []
 
 [[atom]]
-id = "EQA-0294"
+id = "EQA-0242"
 expression = "achieved at phi = 1/2."
 relation_operator = "="
 lhs_expression = "achieved at phi"
@@ -5593,7 +4605,7 @@ source_line = 103
 claim_refs = []
 
 [[atom]]
-id = "EQA-0295"
+id = "EQA-0243"
 expression = "Since gamma_BG = 0.2375 > gamma_max = 0.12738, no CD imbalance density can"
 relation_operator = "="
 lhs_expression = "Since gamma_BG"
@@ -5612,7 +4624,7 @@ source_line = 117
 claim_refs = []
 
 [[atom]]
-id = "EQA-0296"
+id = "EQA-0244"
 expression = "gap_ratio = lambda_2 / lambda_max > 0.6"
 relation_operator = "="
 lhs_expression = "gap_ratio"
@@ -5631,7 +4643,7 @@ source_line = 133
 claim_refs = []
 
 [[atom]]
-id = "EQA-0297"
+id = "EQA-0245"
 expression = "spacing to 1.0. Bandwidth sigma = 0.1 * (lambda_max - lambda_min)."
 relation_operator = "="
 lhs_expression = "spacing to 1.0. Bandwidth sigma"
@@ -5650,7 +4662,7 @@ source_line = 156
 claim_refs = []
 
 [[atom]]
-id = "EQA-0298"
+id = "EQA-0246"
 expression = "q = 0: Poisson P(s) = exp(-s) (integrable, no level repulsion)"
 relation_operator = "="
 lhs_expression = "q"
@@ -5669,7 +4681,7 @@ source_line = 159
 claim_refs = []
 
 [[atom]]
-id = "EQA-0299"
+id = "EQA-0247"
 expression = "q = 1: GOE Wigner P(s) = (pi*s/2)*exp(-pi*s^2/4) (chaotic, level repulsion)"
 relation_operator = "="
 lhs_expression = "q"
@@ -5688,7 +4700,7 @@ source_line = 160
 claim_refs = []
 
 [[atom]]
-id = "EQA-0300"
+id = "EQA-0248"
 expression = "(variance = 1.0)."
 relation_operator = "="
 lhs_expression = "(variance"
@@ -5707,7 +4719,7 @@ source_line = 164
 claim_refs = []
 
 [[atom]]
-id = "EQA-0301"
+id = "EQA-0249"
 expression = "Both dimensions show q = 0.0 (maximally integrable) with variance far"
 relation_operator = "="
 lhs_expression = "Both dimensions show q"
@@ -5726,7 +4738,7 @@ source_line = 173
 claim_refs = []
 
 [[atom]]
-id = "EQA-0302"
+id = "EQA-0250"
 expression = "exceeding the Poisson expectation (variance = 1.0). This is super-Poisson:"
 relation_operator = "="
 lhs_expression = "exceeding the Poisson expectation (variance"
@@ -5745,7 +4757,7 @@ source_line = 174
 claim_refs = []
 
 [[atom]]
-id = "EQA-0303"
+id = "EQA-0251"
 expression = "At dim=128, there are 8 distinct motif classes (by edge count). At dim=256,"
 relation_operator = "="
 lhs_expression = "At dim"
@@ -5764,7 +4776,7 @@ source_line = 180
 claim_refs = []
 
 [[atom]]
-id = "EQA-0304"
+id = "EQA-0252"
 expression = "For dim=128 (n=62): {60.0, 0.0 x15, -0.0 x16, -2.0 x30}"
 relation_operator = "="
 lhs_expression = "For dim"
@@ -5783,7 +4795,7 @@ source_line = 207
 claim_refs = []
 
 [[atom]]
-id = "EQA-0305"
+id = "EQA-0253"
 expression = "For dim=256 (n=126): {124.0, 0.0 x31, -0.0 x32, -2.0 x62}"
 relation_operator = "="
 lhs_expression = "For dim"
@@ -5802,7 +4814,7 @@ source_line = 208
 claim_refs = []
 
 [[atom]]
-id = "EQA-0306"
+id = "EQA-0254"
 expression = "3D orthoplex = octahedron (K_{2,2,2}, 6 vertices, 12 edges)"
 relation_operator = "="
 lhs_expression = "3D orthoplex"
@@ -5821,7 +4833,7 @@ source_line = 219
 claim_refs = []
 
 [[atom]]
-id = "EQA-0307"
+id = "EQA-0255"
 expression = "4D orthoplex = 16-cell (K_{2,2,2,2}, 8 vertices, 24 edges)"
 relation_operator = "="
 lhs_expression = "4D orthoplex"
@@ -5840,7 +4852,7 @@ source_line = 220
 claim_refs = []
 
 [[atom]]
-id = "EQA-0308"
+id = "EQA-0256"
 expression = "k-dimensional orthoplex = K_{2,...,2} with 2k vertices, 2k(k-1) edges"
 relation_operator = "="
 lhs_expression = "k-dimensional orthoplex"
@@ -5859,7 +4871,7 @@ source_line = 221
 claim_refs = []
 
 [[atom]]
-id = "EQA-0309"
+id = "EQA-0257"
 expression = "At CD dim=128, the densest motif is the 31-dimensional orthoplex:"
 relation_operator = "="
 lhs_expression = "At CD dim"
@@ -5878,7 +4890,7 @@ source_line = 223
 claim_refs = []
 
 [[atom]]
-id = "EQA-0310"
+id = "EQA-0258"
 expression = "The remaining motif classes (7 at dim=128, 15 at dim=256) are NOT complete"
 relation_operator = "="
 lhs_expression = "The remaining motif classes (7 at dim"
@@ -5897,7 +4909,7 @@ source_line = 228
 claim_refs = []
 
 [[atom]]
-id = "EQA-0311"
+id = "EQA-0259"
 expression = "multipartite (k2_parts = 0) and NOT regular. However, they ALL share:"
 relation_operator = "="
 lhs_expression = "multipartite (k2_parts"
@@ -5916,7 +4928,7 @@ source_line = 229
 claim_refs = []
 
 [[atom]]
-id = "EQA-0312"
+id = "EQA-0260"
 expression = "1. **Expander property**: gap_ratio = lambda_2/lambda_max > c for some"
 relation_operator = "="
 lhs_expression = "1. **Expander property**: gap_ratio"
@@ -5935,7 +4947,7 @@ source_line = 242
 claim_refs = []
 
 [[atom]]
-id = "EQA-0313"
+id = "EQA-0261"
 expression = "the Laplacian perspective), yielding gap_ratio ~ (n-2)/n -> 1 as n -> inf."
 relation_operator = "->"
 lhs_expression = "the Laplacian perspective), yielding gap_ratio ~ (n-2)/n"
@@ -5954,7 +4966,7 @@ source_line = 275
 claim_refs = []
 
 [[atom]]
-id = "EQA-0314"
+id = "EQA-0262"
 expression = "The Immirzi ceiling (gamma_max = 0.12738) structurally selects the NZJ"
 relation_operator = "="
 lhs_expression = "The Immirzi ceiling (gamma_max"
@@ -5973,7 +4985,7 @@ source_line = 294
 claim_refs = []
 
 [[atom]]
-id = "EQA-0315"
+id = "EQA-0263"
 expression = "Proof: direct computation on the Laplacian matrix L = D - A."
 relation_operator = "="
 lhs_expression = "Proof: direct computation on the Laplacian matrix L"
@@ -5992,7 +5004,7 @@ source_line = 334
 claim_refs = []
 
 [[atom]]
-id = "EQA-0316"
+id = "EQA-0264"
 expression = "2. **Orthoplex diameter theorem**: diam(K_{2,...,2}) = 2 for k >= 2."
 relation_operator = ">="
 lhs_expression = "2. **Orthoplex diameter theorem**: diam(K_{2,...,2}) = 2 for k"
@@ -6011,7 +5023,7 @@ source_line = 336
 claim_refs = []
 
 [[atom]]
-id = "EQA-0317"
+id = "EQA-0265"
 expression = "3. **Expander gap bound**: For K_{2,...,2} with k parts, gap_ratio ="
 relation_operator = "="
 lhs_expression = "3. **Expander gap bound**: For K_{2,...,2} with k parts, gap_ratio"
@@ -6030,7 +5042,7 @@ source_line = 339
 claim_refs = []
 
 [[atom]]
-id = "EQA-0318"
+id = "EQA-0266"
 expression = "(2k-2)/(2k-2) = 1 (trivially maximal for the connected Laplacian)."
 relation_operator = "="
 lhs_expression = "(2k-2)/(2k-2)"
@@ -6049,7 +5061,7 @@ source_line = 340
 claim_refs = []
 
 [[atom]]
-id = "EQA-0319"
+id = "EQA-0267"
 expression = "4. **Immirzi ceiling**: gamma_max = ln(2)/(pi*sqrt(3)). Proof: calculus"
 relation_operator = "="
 lhs_expression = "4. **Immirzi ceiling**: gamma_max"
@@ -6068,7 +5080,7 @@ source_line = 343
 claim_refs = []
 
 [[atom]]
-id = "EQA-0320"
+id = "EQA-0268"
 expression = "maximum of -[p*ln(p)+(1-p)*ln(1-p)]/(pi*sqrt(3)) at p=1/2."
 relation_operator = "="
 lhs_expression = "maximum of -[p*ln(p)+(1-p)*ln(1-p)]/(pi*sqrt(3)) at p"
@@ -6087,7 +5099,7 @@ source_line = 344
 claim_refs = []
 
 [[atom]]
-id = "EQA-0321"
+id = "EQA-0269"
 expression = "The dark energy equation of state w(z) = -1 + beta * d_s(t(z)) has been"
 relation_operator = "="
 lhs_expression = "The dark energy equation of state w(z)"
@@ -6106,7 +5118,7 @@ source_line = 374
 claim_refs = []
 
 [[atom]]
-id = "EQA-0322"
+id = "EQA-0270"
 expression = "With fixed beta = 1.0 (pure spectral dimension contribution), the 4-parameter"
 relation_operator = "="
 lhs_expression = "With fixed beta"
@@ -6125,7 +5137,7 @@ source_line = 392
 claim_refs = []
 
 [[atom]]
-id = "EQA-0323"
+id = "EQA-0271"
 expression = "Orthoplex chi2 = 749.01, LCDM chi2 = 767.39"
 relation_operator = "="
 lhs_expression = "Orthoplex chi2"
@@ -6144,7 +5156,7 @@ source_line = 405
 claim_refs = []
 
 [[atom]]
-id = "EQA-0324"
+id = "EQA-0272"
 expression = "delta-AIC = -14.38 (strong AIC preference for orthoplex)"
 relation_operator = "="
 lhs_expression = "delta-AIC"
@@ -6163,7 +5175,7 @@ source_line = 406
 claim_refs = []
 
 [[atom]]
-id = "EQA-0325"
+id = "EQA-0273"
 expression = "delta-BIC = -3.58 (positive Kass-Raftery evidence for orthoplex)"
 relation_operator = "="
 lhs_expression = "delta-BIC"
@@ -6182,7 +5194,7 @@ source_line = 407
 claim_refs = []
 
 [[atom]]
-id = "EQA-0326"
+id = "EQA-0274"
 expression = "w(0) = -0.663, w(2) = -0.9999 (thawing quintessence-like profile)"
 relation_operator = "="
 lhs_expression = "w(0)"
@@ -6201,7 +5213,7 @@ source_line = 408
 claim_refs = []
 
 [[atom]]
-id = "EQA-0327"
+id = "EQA-0275"
 expression = "5-parameter version (which yields delta-BIC = +3.82, weakly favoring LCDM)."
 relation_operator = "="
 lhs_expression = "5-parameter version (which yields delta-BIC"
@@ -6220,7 +5232,7 @@ source_line = 411
 claim_refs = []
 
 [[atom]]
-id = "EQA-0328"
+id = "EQA-0276"
 expression = "The physical motivation: beta = 1.0 means the spectral dimension d_s(t)"
 relation_operator = "="
 lhs_expression = "The physical motivation: beta"
@@ -6236,4 +5248,783 @@ source_group = "research_narrative"
 source_registry = "registry/research_narratives.toml"
 source_path = "docs/theory/cayley_dickson_integrable_expanders.md"
 source_line = 412
+claim_refs = []
+
+[[atom]]
+id = "EQA-0277"
+expression = "The DM-baryon cross-section `sigma_chi_b = 1e-42 cm^2` in `dm_force.rs` is a"
+relation_operator = "="
+lhs_expression = "The DM-baryon cross-section `sigma_chi_b"
+rhs_expression = "1e-42 cm^2` in `dm_force.rs` is a"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["DM", "The", "a", "baryon", "cm", "cross", "dm_force", "in", "is", "rs", "section", "sigma_chi_b"]
+numeric_constants = ["1e-42", "2"]
+domain_hint = "cross_domain"
+section_title = "sigma_chi_b = 1e-42 (NOT Structural)"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 64
+claim_refs = []
+
+[[atom]]
+id = "EQA-0278"
+expression = "`ChaCha8Rng` with seed=42 produces a ~3-sigma low outlier in spin tomography"
+relation_operator = "="
+lhs_expression = "`ChaCha8Rng` with seed"
+rhs_expression = "42 produces a ~3-sigma low outlier in spin tomography"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["ChaCha8Rng", "a", "in", "low", "outlier", "produces", "seed", "sigma", "spin", "tomography", "with"]
+numeric_constants = ["3", "42"]
+domain_hint = "general_relativity"
+section_title = "seed=42 Outlier (NOT Structural)"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 74
+claim_refs = []
+
+[[atom]]
+id = "EQA-0279"
+expression = "v_circ(r) = v_nfw(r) * sqrt(1 + alpha_zd * SUM_{n=1}^{7} a_n * cos(k_n*r + phi_n) * exp(-r/r_s))"
+relation_operator = "="
+lhs_expression = "v_circ(r)"
+rhs_expression = "v_nfw(r) * sqrt(1 + alpha_zd * SUM_{n=1}^{7} a_n * cos(k_n*r + phi_n) * exp(-r/r_s))"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["SUM_", "a_n", "alpha_zd", "cos", "exp", "k_n", "n", "phi_n", "r", "r_s", "sqrt", "v_circ", "v_nfw"]
+numeric_constants = ["1", "7"]
+domain_hint = "cross_domain"
+section_title = "Implementation"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 110
+claim_refs = []
+
+[[atom]]
+id = "EQA-0280"
+expression = "k_n = 2*pi*n / (7 * r_s) -- box-kite wavenumber"
+relation_operator = "="
+lhs_expression = "k_n"
+rhs_expression = "2*pi*n / (7 * r_s) -- box-kite wavenumber"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["box", "k_n", "kite", "n", "pi", "r_s", "wavenumber"]
+numeric_constants = ["2", "7"]
+domain_hint = "cross_domain"
+section_title = "Implementation"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 113
+claim_refs = []
+
+[[atom]]
+id = "EQA-0281"
+expression = "a_n = (42/84) * (1/n) -- amplitude from assessor fraction with 1/n falloff"
+relation_operator = "="
+lhs_expression = "a_n"
+rhs_expression = "(42/84) * (1/n) -- amplitude from assessor fraction with 1/n falloff"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["a_n", "amplitude", "assessor", "falloff", "fraction", "from", "n", "with"]
+numeric_constants = ["1", "42", "84"]
+domain_hint = "cross_domain"
+section_title = "Implementation"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 114
+claim_refs = []
+
+[[atom]]
+id = "EQA-0282"
+expression = "phi_n = 2*pi*n / 7 -- strut-derived phase offset"
+relation_operator = "="
+lhs_expression = "phi_n"
+rhs_expression = "2*pi*n / 7 -- strut-derived phase offset"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["derived", "n", "offset", "phase", "phi_n", "pi", "strut"]
+numeric_constants = ["2", "7"]
+domain_hint = "cross_domain"
+section_title = "Implementation"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 115
+claim_refs = []
+
+[[atom]]
+id = "EQA-0283"
+expression = "alpha_zd -- forcing strength (0 = standard NFW, typical 0.001-0.1)"
+relation_operator = "="
+lhs_expression = "alpha_zd -- forcing strength (0"
+rhs_expression = "standard NFW, typical 0.001-0.1)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["NFW", "alpha_zd", "forcing", "standard", "strength", "typical"]
+numeric_constants = ["0", "0.001", "0.1"]
+domain_hint = "cross_domain"
+section_title = "Implementation"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 116
+claim_refs = []
+
+[[atom]]
+id = "EQA-0284"
+expression = "At alpha_zd = 0, standard NFW is recovered **exactly**."
+relation_operator = "="
+lhs_expression = "At alpha_zd"
+rhs_expression = "0, standard NFW is recovered **exactly**."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["At", "NFW", "alpha_zd", "exactly", "is", "recovered", "standard"]
+numeric_constants = ["0"]
+domain_hint = "cross_domain"
+section_title = "Implementation"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 118
+claim_refs = []
+
+[[atom]]
+id = "EQA-0285"
+expression = "gains a `halo_n_modes` field (default 7). At alpha_zd=0, the force field is"
+relation_operator = "="
+lhs_expression = "gains a `halo_n_modes` field (default 7). At alpha_zd"
+rhs_expression = "0, the force field is"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["At", "a", "alpha_zd", "default", "field", "force", "gains", "halo_n_modes", "is", "the"]
+numeric_constants = ["0", "7"]
+domain_hint = "general_relativity"
+section_title = "Galaxy Pipeline Integration"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 126
+claim_refs = []
+
+[[atom]]
+id = "EQA-0286"
+expression = "unchanged (modulation factor = 1.0 everywhere)."
+relation_operator = "="
+lhs_expression = "unchanged (modulation factor"
+rhs_expression = "1.0 everywhere)."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["everywhere", "factor", "modulation", "unchanged"]
+numeric_constants = ["1.0"]
+domain_hint = "general_relativity"
+section_title = "Galaxy Pipeline Integration"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 127
+claim_refs = []
+
+[[atom]]
+id = "EQA-0287"
+expression = "wavenumbers k_n = 2*pi*n / (7 * r_s), it provides evidence for D=16 zero-divisor"
+relation_operator = "="
+lhs_expression = "wavenumbers k_n"
+rhs_expression = "2*pi*n / (7 * r_s), it provides evidence for D=16 zero-divisor"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["D", "divisor", "evidence", "for", "it", "k_n", "n", "pi", "provides", "r_s", "wavenumbers", "zero"]
+numeric_constants = ["16", "2", "7"]
+domain_hint = "cross_domain"
+section_title = "Falsifiability"
+source_uid = "RN-038"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/research/sedenion_42_structure_audit_2026.md"
+source_line = 135
+claim_refs = []
+
+[[atom]]
+id = "EQA-0288"
+expression = "The doubling construction R -> C -> H -> O -> S -> P -> ... generates a tower of increasingly pathological algebras. Each level loses an algebraic property:"
+relation_operator = "->"
+lhs_expression = "The doubling construction R"
+rhs_expression = "C -> H -> O -> S -> P -> ... generates a tower of increasingly pathological algebras. Each level loses an algebraic property:"
+equation_kind = "mapping_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["C", "Each", "H", "O", "P", "R", "S", "The", "a", "algebraic", "algebras", "an", "construction", "doubling", "generates", "increasingly", "level", "loses", "of", "pathological", "property", "tower"]
+numeric_constants = []
+domain_hint = "general_relativity"
+section_title = "1.1 The Cayley-Dickson Tower as a Force Landscape"
+source_uid = "RN-040"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS.md"
+source_line = 22
+claim_refs = []
+
+[[atom]]
+id = "EQA-0289"
+expression = "The zero-divisor graph has exactly dim/2 - 1 _missing_ edges; edge count = (dim^2 - 6*dim + 8)/2; defect density -> 1 - 2/dim (C-1141)."
+relation_operator = "->"
+lhs_expression = "The zero-divisor graph has exactly dim/2 - 1 _missing_ edges; edge count = (dim^2 - 6*dim + 8)/2; defect density"
+rhs_expression = "1 - 2/dim (C-1141)."
+equation_kind = "mapping_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["C", "The", "_missing_", "count", "defect", "density", "dim", "divisor", "edge", "edges", "exactly", "graph", "has", "zero"]
+numeric_constants = ["1", "1141", "2", "6", "8"]
+domain_hint = "general_relativity"
+section_title = "1.2 Sedenion Zero-Divisor Geometry: the Algebraic Phase Transition"
+source_uid = "RN-040"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS.md"
+source_line = 46
+claim_refs = []
+
+[[atom]]
+id = "EQA-0290"
+expression = "Quantised gap theorem: for every involution pair (i, i \\oplus half), ||[e_i, e_k, e_{i\\oplushalf}]||^2 = 4 exactly (C-1137 dim=16, C-1140 dim=32)."
+relation_operator = "="
+lhs_expression = "Quantised gap theorem: for every involution pair (i, i \\oplus half), ||[e_i, e_k, e_{i\\oplushalf}]||^2"
+rhs_expression = "4 exactly (C-1137 dim=16, C-1140 dim=32)."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["C", "Quantised", "dim", "e_", "e_i", "e_k", "every", "exactly", "for", "gap", "half", "i", "involution", "oplus", "oplushalf", "pair", "theorem"]
+numeric_constants = ["1137", "1140", "16", "2", "32", "4"]
+domain_hint = "general_relativity"
+section_title = "1.2 Sedenion Zero-Divisor Geometry: the Algebraic Phase Transition"
+source_uid = "RN-040"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS.md"
+source_line = 47
+claim_refs = []
+
+[[atom]]
+id = "EQA-0291"
+expression = "F(\\theta) = F(0) * exp(-H * sin \\theta)"
+relation_operator = "="
+lhs_expression = "F(\\theta)"
+rhs_expression = "F(0) * exp(-H * sin \\theta)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["F", "H", "exp", "sin", "theta"]
+numeric_constants = ["0"]
+domain_hint = "quantum"
+section_title = "1.3 Wick Rotation Bridge: from Algebraic Defects to Quantum Cosmology"
+source_uid = "RN-040"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS.md"
+source_line = 55
+claim_refs = []
+
+[[atom]]
+id = "EQA-0292"
+expression = "holds for Wick angle \\theta <U+2208> [0, \\pi/2] and friction H > 0. Rotating from Lorentzian (\\theta=0) to Euclidean (\\theta=\\pi/2) time suppresses non-associativity-induced friction monotonically."
+relation_operator = "="
+lhs_expression = "holds for Wick angle \\theta <U+2208> [0, \\pi/2] and friction H > 0. Rotating from Lorentzian (\\theta"
+rhs_expression = "0) to Euclidean (\\theta=\\pi/2) time suppresses non-associativity-induced friction monotonically."
+equation_kind = "inequality_or_constraint"
+extraction_kind = "equation_like_line"
+symbol_names = ["Euclidean", "H", "Lorentzian", "Rotating", "U", "Wick", "and", "angle", "associativity", "for", "friction", "from", "holds", "induced", "monotonically", "non", "pi", "suppresses", "theta", "time", "to"]
+numeric_constants = ["0", "2", "2208"]
+domain_hint = "quantum"
+section_title = "1.3 Wick Rotation Bridge: from Algebraic Defects to Quantum Cosmology"
+source_uid = "RN-040"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS.md"
+source_line = 57
+claim_refs = []
+
+[[atom]]
+id = "EQA-0293"
+expression = "a = (4 - D_f) * v^2 / (2r)"
+relation_operator = "="
+lhs_expression = "a"
+rhs_expression = "(4 - D_f) * v^2 / (2r)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["D_f", "a", "v"]
+numeric_constants = ["2", "4"]
+domain_hint = "general_relativity"
+section_title = "5.2 Fractal Spacetime Metric (D_f ~ 2.7)"
+source_uid = "RN-040"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS.md"
+source_line = 143
+claim_refs = []
+
+[[atom]]
+id = "EQA-0294"
+expression = "1. The sedenion algebra undergoes a sharp algebraic phase transition at dim=16 with quantised gap ||[e_i,e_k,e_{i\\oplushalf}]||^2 = 4."
+relation_operator = "="
+lhs_expression = "1. The sedenion algebra undergoes a sharp algebraic phase transition at dim"
+rhs_expression = "16 with quantised gap ||[e_i,e_k,e_{i\\oplushalf}]||^2 = 4."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["The", "a", "algebra", "algebraic", "at", "dim", "e_", "e_i", "e_k", "gap", "i", "oplushalf", "phase", "quantised", "sedenion", "sharp", "transition", "undergoes", "with"]
+numeric_constants = ["1", "16", "2", "4"]
+domain_hint = "general_relativity"
+section_title = "Verified conclusions (Rocq 9.1 kernel-checked)"
+source_uid = "RN-040"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS.md"
+source_line = 199
+claim_refs = []
+
+[[atom]]
+id = "EQA-0295"
+expression = "1. **Gap universality:** ||[e_i,e_k,e_{i\\oplushalf}]||^2 = 4 holds at all CD dimensions <U+2265> 16. Testable by extending Rocq proofs or `phase_transition_crucible` benchmarks to dims 64/128/256."
+relation_operator = "="
+lhs_expression = "1. **Gap universality:** ||[e_i,e_k,e_{i\\oplushalf}]||^2"
+rhs_expression = "4 holds at all CD dimensions <U+2265> 16. Testable by extending Rocq proofs or `phase_transition_crucible` benchmarks to dims 64/128/256."
+equation_kind = "inequality_or_constraint"
+extraction_kind = "equation_like_line"
+symbol_names = ["CD", "Gap", "Rocq", "Testable", "U", "all", "at", "benchmarks", "by", "dimensions", "dims", "e_", "e_i", "e_k", "extending", "holds", "i", "oplushalf", "or", "phase_transition_crucible", "proofs", "to", "universality"]
+numeric_constants = ["1", "128", "16", "2", "2265", "256", "4", "64"]
+domain_hint = "general_relativity"
+section_title = "Novel conjectures (untested predictions)"
+source_uid = "RN-040"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS.md"
+source_line = 208
+claim_refs = []
+
+[[atom]]
+id = "EQA-0296"
+expression = "The default crate is `gororoba_algebra`. Override with `CRATE=<name>`, e.g."
+relation_operator = "="
+lhs_expression = "The default crate is `gororoba_algebra`. Override with `CRATE"
+rhs_expression = "<name>`, e.g."
+equation_kind = "inequality_or_constraint"
+extraction_kind = "equation_like_line"
+symbol_names = ["CRATE", "Override", "The", "crate", "default", "e", "g", "gororoba_algebra", "is", "name", "with"]
+numeric_constants = []
+domain_hint = "algebra"
+section_title = "Discovering Modules"
+source_uid = "RN-041"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/NAVIGATOR.md"
+source_line = 172
+claim_refs = []
+
+[[atom]]
+id = "EQA-0297"
+expression = "`make modules-tree CRATE=cd_kernel`."
+relation_operator = "="
+lhs_expression = "`make modules-tree CRATE"
+rhs_expression = "cd_kernel`."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["CRATE", "cd_kernel", "make", "modules", "tree"]
+numeric_constants = []
+domain_hint = "cross_domain"
+section_title = "Discovering Modules"
+source_uid = "RN-041"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/NAVIGATOR.md"
+source_line = 173
+claim_refs = []
+
+[[atom]]
+id = "EQA-0298"
+expression = "\\epsilon = C_2(26) / |\\Delta+(F4)| = 6/24 = 1/4 exactly."
+relation_operator = "="
+lhs_expression = "\\epsilon"
+rhs_expression = "C_2(26) / |\\Delta+(F4)| = 6/24 = 1/4 exactly."
+equation_kind = "differential_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["C_2", "Delta", "F4", "epsilon", "exactly"]
+numeric_constants = ["1", "24", "26", "4", "6"]
+domain_hint = "cosmology"
+section_title = "F4 and the Casimir Ratio"
+source_uid = "RN-042"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+source_line = 39
+claim_refs = []
+
+[[atom]]
+id = "EQA-0299"
+expression = "This is a pure algebraic identity. It was proposed as structurally related to the Barbero-Immirzi parameter \\gamma ~= 0.2375 (loop quantum gravity) and the Gauss-Bonnet coupling constant 4\\lambda_GB."
+relation_operator = "="
+lhs_expression = "This is a pure algebraic identity. It was proposed as structurally related to the Barbero-Immirzi parameter \\gamma ~"
+rhs_expression = "0.2375 (loop quantum gravity) and the Gauss-Bonnet coupling constant 4\\lambda_GB."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["Barbero", "Bonnet", "Gauss", "Immirzi", "It", "This", "a", "algebraic", "and", "as", "constant", "coupling", "gamma", "gravity", "identity", "is", "lambda_GB", "loop", "parameter", "proposed", "pure", "quantum", "related", "structurally", "the", "to", "was"]
+numeric_constants = ["0.2375", "4"]
+domain_hint = "quantum"
+section_title = "F4 and the Casimir Ratio"
+source_uid = "RN-042"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+source_line = 41
+claim_refs = []
+
+[[atom]]
+id = "EQA-0300"
+expression = "The three quantities are numerically close (\\gamma ~= 0.2375, \\epsilon = 0.25, 4\\lambda_GB ~= 0.22-0.27) but the equality is not universal. A dedicated numerical coincidence audit established that:"
+relation_operator = "="
+lhs_expression = "The three quantities are numerically close (\\gamma ~"
+rhs_expression = "0.2375, \\epsilon = 0.25, 4\\lambda_GB ~= 0.22-0.27) but the equality is not universal. A dedicated numerical coincidence audit established that:"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["A", "The", "are", "audit", "but", "close", "coincidence", "dedicated", "epsilon", "equality", "established", "gamma", "is", "lambda_GB", "not", "numerical", "numerically", "quantities", "that", "the", "three", "universal"]
+numeric_constants = ["0.22", "0.2375", "0.25", "0.27", "4"]
+domain_hint = "cosmology"
+section_title = "C-037: Numerical Coincidence \\gamma ~ \\epsilon ~ 4\\lambda_GB (Refuted)"
+source_uid = "RN-042"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+source_line = 73
+claim_refs = []
+
+[[atom]]
+id = "EQA-0301"
+expression = "The qualitative D_s -> 2 short-scale limit is reproduced by the discrete model. This is not a prediction -- it confirms that the toy model is qualitatively consistent with the literature. The spectral dimension runs as:"
+relation_operator = "->"
+lhs_expression = "The qualitative D_s"
+rhs_expression = "2 short-scale limit is reproduced by the discrete model. This is not a prediction -- it confirms that the toy model is qualitatively consistent with the literature. The spectral dimension runs as:"
+equation_kind = "mapping_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["D_s", "The", "This", "a", "as", "by", "confirms", "consistent", "dimension", "discrete", "is", "it", "limit", "literature", "model", "not", "prediction", "qualitative", "qualitatively", "reproduced", "runs", "scale", "short", "spectral", "that", "the", "toy", "with"]
+numeric_constants = ["2"]
+domain_hint = "cosmology"
+section_title = "C-039: Spectral Dimension Running (Verified, Toy)"
+source_uid = "RN-042"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+source_line = 105
+claim_refs = []
+
+[[atom]]
+id = "EQA-0302"
+expression = "D_s(t) ~= 4 / (1 + a*t^\\beta)"
+relation_operator = "="
+lhs_expression = "D_s(t) ~"
+rhs_expression = "4 / (1 + a*t^\\beta)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["D_s", "a", "beta", "t"]
+numeric_constants = ["1", "4"]
+domain_hint = "cosmology"
+section_title = "C-039: Spectral Dimension Running (Verified, Toy)"
+source_uid = "RN-042"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+source_line = 107
+claim_refs = []
+
+[[atom]]
+id = "EQA-0303"
+expression = "2. **Dynamical mechanism for w_0:** The equation of state w_0 = -5/6 requires a Lagrangian whose stress-energy tensor gives this value. No such Lagrangian based on F4 twist sectors has been constructed."
+relation_operator = "="
+lhs_expression = "2. **Dynamical mechanism for w_0:** The equation of state w_0"
+rhs_expression = "-5/6 requires a Lagrangian whose stress-energy tensor gives this value. No such Lagrangian based on F4 twist sectors has been constructed."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["Dynamical", "F4", "Lagrangian", "No", "The", "a", "based", "been", "constructed", "energy", "equation", "for", "gives", "has", "mechanism", "of", "on", "requires", "sectors", "state", "stress", "such", "tensor", "this", "twist", "value", "w_0", "whose"]
+numeric_constants = ["2", "5", "6"]
+domain_hint = "quantum"
+section_title = "Forward Targets"
+source_uid = "RN-042"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+source_line = 156
+claim_refs = []
+
+[[atom]]
+id = "EQA-0304"
+expression = "3. **Barbero-Immirzi from first principles:** The LQG value \\gamma ~= 0.2375 should be derived from a computation in the exceptional framework, not inferred from proximity to 1/4."
+relation_operator = "="
+lhs_expression = "3. **Barbero-Immirzi from first principles:** The LQG value \\gamma ~"
+rhs_expression = "0.2375 should be derived from a computation in the exceptional framework, not inferred from proximity to 1/4."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["Barbero", "Immirzi", "LQG", "The", "a", "be", "computation", "derived", "exceptional", "first", "framework", "from", "gamma", "in", "inferred", "not", "principles", "proximity", "should", "the", "to", "value"]
+numeric_constants = ["0.2375", "1", "3", "4"]
+domain_hint = "cosmology"
+section_title = "Forward Targets"
+source_uid = "RN-042"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/EXCEPTIONAL_COSMOLOGY.md"
+source_line = 157
+claim_refs = []
+
+[[atom]]
+id = "EQA-0305"
+expression = "dP/dr = -(\\rho + P)(M + 4\\pir^3P) / (r(r - 2M))"
+relation_operator = "="
+lhs_expression = "dP/dr"
+rhs_expression = "-(\\rho + P)(M + 4\\pir^3P) / (r(r - 2M))"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["M", "P", "dP", "dr", "pir", "r", "rho"]
+numeric_constants = ["4"]
+domain_hint = "general_relativity"
+section_title = "The Gravastar Model"
+source_uid = "RN-043"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+source_line = 23
+claim_refs = []
+
+[[atom]]
+id = "EQA-0306"
+expression = "[a, b, c] = (a*b)*c - a*(b*c)"
+relation_operator = "="
+lhs_expression = "[a, b, c]"
+rhs_expression = "(a*b)*c - a*(b*c)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["a", "b", "c"]
+numeric_constants = []
+domain_hint = "general_relativity"
+section_title = "The Sedenion Coherence-Failure Term"
+source_uid = "RN-043"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+source_line = 35
+claim_refs = []
+
+[[atom]]
+id = "EQA-0307"
+expression = "\\Delta_coherence = ||[<U+03A6>, \\partial_r <U+03A6>, <U+03A6>]||^2"
+relation_operator = "="
+lhs_expression = "\\Delta_coherence"
+rhs_expression = "||[<U+03A6>, \\partial_r <U+03A6>, <U+03A6>]||^2"
+equation_kind = "differential_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["Delta_coherence", "U", "partial_r"]
+numeric_constants = ["2"]
+domain_hint = "general_relativity"
+section_title = "The Sedenion Coherence-Failure Term"
+source_uid = "RN-043"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+source_line = 39
+claim_refs = []
+
+[[atom]]
+id = "EQA-0308"
+expression = "Gravastar compactness C = 2M/R <U+2208> [0.1, 0.9]"
+relation_operator = "="
+lhs_expression = "Gravastar compactness C"
+rhs_expression = "2M/R <U+2208> [0.1, 0.9]"
+equation_kind = "inequality_or_constraint"
+extraction_kind = "equation_like_line"
+symbol_names = ["C", "Gravastar", "R", "U", "compactness"]
+numeric_constants = ["0.1", "0.9", "2208"]
+domain_hint = "general_relativity"
+section_title = "The Match at D_eff = -1.5"
+source_uid = "RN-043"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+source_line = 49
+claim_refs = []
+
+[[atom]]
+id = "EQA-0309"
+expression = "Sedenion algebra is not representable as operators on a Hilbert space. The norm composition property fails at dim=16 (Hurwitz theorem, C-031):"
+relation_operator = "="
+lhs_expression = "Sedenion algebra is not representable as operators on a Hilbert space. The norm composition property fails at dim"
+rhs_expression = "16 (Hurwitz theorem, C-031):"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["C", "Hilbert", "Hurwitz", "Sedenion", "The", "a", "algebra", "as", "at", "composition", "dim", "fails", "is", "norm", "not", "on", "operators", "property", "representable", "space", "theorem"]
+numeric_constants = ["031", "16"]
+domain_hint = "general_relativity"
+section_title = "Obstruction 1: Non-Hilbert-space Structure"
+source_uid = "RN-043"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+source_line = 65
+claim_refs = ["C-031"]
+
+[[atom]]
+id = "EQA-0310"
+expression = "The gravastar-sedenion match occurs precisely at D_eff = -1.5, the same value that appears in the negative dimension dark energy model (C-012, Refuted). The coincidence is structural:"
+relation_operator = "="
+lhs_expression = "The gravastar-sedenion match occurs precisely at D_eff"
+rhs_expression = "-1.5, the same value that appears in the negative dimension dark energy model (C-012, Refuted). The coincidence is structural:"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["C", "D_eff", "Refuted", "The", "appears", "at", "coincidence", "dark", "dimension", "energy", "gravastar", "in", "is", "match", "model", "negative", "occurs", "precisely", "same", "sedenion", "structural", "that", "the", "value"]
+numeric_constants = ["012", "1.5"]
+domain_hint = "general_relativity"
+section_title = "Connection to Negative Dimension (C-012)"
+source_uid = "RN-043"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+source_line = 97
+claim_refs = ["C-012"]
+
+[[atom]]
+id = "EQA-0311"
+expression = "The negative dimension model D_eff = -1.5 was refuted by cosmological data (it gives incorrect w_0, n_s, H_0 values)."
+relation_operator = "="
+lhs_expression = "The negative dimension model D_eff"
+rhs_expression = "-1.5 was refuted by cosmological data (it gives incorrect w_0, n_s, H_0 values)."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["D_eff", "H_0", "The", "by", "cosmological", "data", "dimension", "gives", "incorrect", "it", "model", "n_s", "negative", "refuted", "values", "w_0", "was"]
+numeric_constants = ["1.5"]
+domain_hint = "general_relativity"
+section_title = "Connection to Negative Dimension (C-012)"
+source_uid = "RN-043"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+source_line = 99
+claim_refs = []
+
+[[atom]]
+id = "EQA-0312"
+expression = "The sedenion coherence-failure term at D_eff = -1.5 matches gravastar core pressures."
+relation_operator = "="
+lhs_expression = "The sedenion coherence-failure term at D_eff"
+rhs_expression = "-1.5 matches gravastar core pressures."
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["D_eff", "The", "at", "coherence", "core", "failure", "gravastar", "matches", "pressures", "sedenion", "term"]
+numeric_constants = ["1.5"]
+domain_hint = "general_relativity"
+section_title = "Connection to Negative Dimension (C-012)"
+source_uid = "RN-043"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+source_line = 100
+claim_refs = []
+
+[[atom]]
+id = "EQA-0313"
+expression = "[x] Quantised gap theorem at dim=16 and dim=32 (C-1137, C-1140)"
+relation_operator = "="
+lhs_expression = "[x] Quantised gap theorem at dim"
+rhs_expression = "16 and dim=32 (C-1137, C-1140)"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["C", "Quantised", "and", "at", "dim", "gap", "theorem", "x"]
+numeric_constants = ["1137", "1140", "16", "32"]
+domain_hint = "general_relativity"
+section_title = "Phase 0 -- Algebraic Foundation (Done)"
+source_uid = "RN-044"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS_PLAN.md"
+source_line = 25
+claim_refs = []
+
+[[atom]]
+id = "EQA-0314"
+expression = "C-952 established \\alpha_chingon = universal; need PSL(2,7) spin-decomposition"
+relation_operator = "="
+lhs_expression = "C-952 established \\alpha_chingon"
+rhs_expression = "universal; need PSL(2,7) spin-decomposition"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["C", "PSL", "alpha_chingon", "decomposition", "established", "need", "spin", "universal"]
+numeric_constants = ["2", "7", "952"]
+domain_hint = "general_relativity"
+section_title = "Phase 3 -- Anomaly Characterisation"
+source_uid = "RN-044"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS_PLAN.md"
+source_line = 58
+claim_refs = ["C-952"]
+
+[[atom]]
+id = "EQA-0315"
+expression = "Key deliverable: phonon spectrum entropy comparison between dim=8 and dim=16 lattice"
+relation_operator = "="
+lhs_expression = "Key deliverable: phonon spectrum entropy comparison between dim"
+rhs_expression = "8 and dim=16 lattice"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["Key", "and", "between", "comparison", "deliverable", "dim", "entropy", "lattice", "phonon", "spectrum"]
+numeric_constants = ["16", "8"]
+domain_hint = "general_relativity"
+section_title = "Phase 4 -- Materials Bridge"
+source_uid = "RN-044"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS_PLAN.md"
+source_line = 71
+claim_refs = []
+
+[[atom]]
+id = "EQA-0316"
+expression = "E-166 recovered D_f = 2.732 <U+00B1> 0.034 from LBM galaxy simulations"
+relation_operator = "="
+lhs_expression = "E-166 recovered D_f"
+rhs_expression = "2.732 <U+00B1> 0.034 from LBM galaxy simulations"
+equation_kind = "inequality_or_constraint"
+extraction_kind = "equation_like_line"
+symbol_names = ["D_f", "E", "LBM", "U", "from", "galaxy", "recovered", "simulations"]
+numeric_constants = ["0.034", "166", "2.732"]
+domain_hint = "general_relativity"
+section_title = "Phase 5 -- Cosmological Extension"
+source_uid = "RN-044"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS_PLAN.md"
+source_line = 77
+claim_refs = []
+
+[[atom]]
+id = "EQA-0317"
+expression = "Rocq spot-checks planned for dim=64, dim=128, dim=256"
+relation_operator = "="
+lhs_expression = "Rocq spot-checks planned for dim"
+rhs_expression = "64, dim=128, dim=256"
+equation_kind = "algebraic_relation"
+extraction_kind = "equation_like_line"
+symbol_names = ["Rocq", "checks", "dim", "for", "planned", "spot"]
+numeric_constants = ["128", "256", "64"]
+domain_hint = "general_relativity"
+section_title = "Phase 5 -- Cosmological Extension"
+source_uid = "RN-044"
+source_group = "research_narrative"
+source_registry = "registry/research_narratives.toml"
+source_path = "docs/GRAND_SYNTHESIS_PLAN.md"
+source_line = 82
 claim_refs = []

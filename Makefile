@@ -1485,19 +1485,26 @@ registry-markdown-inventory:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory
 
 registry-markdown-corpus: registry-markdown-inventory
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-corpus
+# The CLI validates the retained corpus; it has no writable corpus
+# projection because the registered TOML lanes remain the durable source.
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-corpus
 
 registry-toml-inventory: registry-markdown-corpus
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-toml-inventory
 
 registry-markdown-origin-audit: registry-markdown-inventory
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-origin-audit
+# The owner map is registered state. `markdown-registry register` is the
+# only mutation path, so a legacy "build" label verifies inventory coverage
+# instead of reconstructing provenance from Markdown text.
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
 
 registry-markdown-owner-map: registry-markdown-origin-audit
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-owner-map
+# Preserve the legacy target name while validating the registered owner map.
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
 
 registry-embedded-markdown:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-embedded
+# Embedded Markdown has no writable projection in the current CLI.
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-embedded
 
 registry-verify-embedded-markdown:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-embedded
@@ -1505,8 +1512,9 @@ registry-verify-embedded-markdown:
 registry-verify-markdown-inventory:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-inventory-toml-first
 
-registry-verify-markdown-origin:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-origin-audit
+# The retired origin audit is represented by the registered inventory and
+# owner-map checks. Keep the legacy target as an inventory verification alias.
+registry-verify-markdown-origin: registry-verify-markdown-inventory
 
 registry-verify-markdown-owner:
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- verify-owner-map
@@ -1529,7 +1537,6 @@ registry-wave4: registry-control-plane-gate
 
 registry-strict-toml-batch1-build: registry-markdown-owner-map
 	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin semantic-atoms -- --repo-root .
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_data --bin markdown-registry -- build-payloads
 
 registry-verify-strict-toml-batch1: registry-validation-tools
 	$(VALIDATION_TOOLS_DIR)/semantic-atoms --verify --repo-root .
@@ -1872,7 +1879,18 @@ registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry
 # the canonical source and the TOMLs are its exports, so the dependency belongs
 # in that direction only. Run `make registry-build` deliberately when importing
 # hand-authored TOML, never as a side effect of exporting.
-registry-export-markdown: registry-refresh
+registry-export-markdown:
+# Export the SQLite control plane before any compatibility-TOML consumer runs.
+# registry-refresh derives the Markdown and TOML lanes from those exports.
+# Artifact scrolls derive structured corpora from the refreshed narrative
+# registry. Evidence provenance then derives proof skeletons and derivation
+# records from that complete registry surface. registry-integrity signs the
+# complete derived surface before the mirror emitter derives Rust mirrors.
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_provenance --bin provenance -- export-control-plane
+	$(MAKE) registry-refresh
+	$(MAKE) registry-artifact-scrolls
+	$(MAKE) registry-build-evidence-provenance
+	$(MAKE) registry-integrity
 # registry-emit-all-mirrors owns the mirror (kind, output_path) list as
 # Rust data with proper error propagation. The Makefile delegates to
 # that typed command instead of carrying a shell heredoc.

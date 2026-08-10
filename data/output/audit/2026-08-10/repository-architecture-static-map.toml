@@ -1,0 +1,156 @@
+schema_version = 1
+artifact_id = "B-repository_architecture_static_map_20260810"
+capture_date = "2026-08-10"
+capture_base_commit = "3ad0b92214ac01ad319fbc85815095df9d2678af"
+capture_class = "instrumented_static_architecture_map"
+scope = "open_gororoba workspace, canonical registry, CPU LBM, CUDA LBM, Vulkan LBM, Rocq proofs, and merged pull-request review metadata"
+raw_capture_root = "/var/tmp/open_gororoba-architecture-map-20260809.o6IROT"
+raw_capture_retention = "ephemeral; reproduce from the recorded commands and verify the recorded input hashes"
+
+[workspace]
+packages = 76
+targets = 752
+binaries = 502
+workspace_declared_dependency_edges = 261
+tracked_source_and_configuration_files = 2854
+handwritten_analyzer_inputs = 2498
+
+[registry]
+claims = 1543
+insights = 183
+experiments = 232
+binaries = 502
+theorems = 162
+claim_transition_events = 186
+claim_relations = 90
+claim_revisions = 431
+
+[review_census]
+merged_pull_requests = 133
+review_threads = 324
+unresolved_threads = 82
+current_unresolved_threads = 81
+outdated_unresolved_threads = 1
+chatgpt_codex_connector_threads = 52
+coderabbit_threads = 30
+open_pull_requests = 0
+review_census_root = "/var/tmp/open_gororoba-merged-review-census-20260809"
+
+[[capture]]
+surface = "ctags"
+command = "ctags --languages=Rust,C,C++,Cuda,Make,TOML --recurse --fields=+KSn --extras=+q -f tags-handwritten -L analyzer-inputs-handwritten.txt"
+result = "56575 symbols"
+input_sha256 = "bca7106a8e8c98f989e735d51263a28e22b6d34cecfcded0e824541868a81f70"
+output_sha256 = "a4f195f4d55c67a7417b270ebb315857430764a9cc0bf35c94c44f3e98d87177"
+interpretation = "symbol inventory only; not a semantic Rust call graph"
+
+[[capture]]
+surface = "cscope"
+command = "cscope -b -q -k -i analyzer-inputs-handwritten.txt"
+result = "2498 handwritten inputs; zero diagnostics"
+input_sha256 = "bca7106a8e8c98f989e735d51263a28e22b6d34cecfcded0e824541868a81f70"
+output_sha256 = "61c995d05fc2eeb60b66ccc94a98865de568dfa0115b9e543a05eb309720740d"
+interpretation = "lexical definition and text-reference map; Rust callee queries return no semantic edges"
+
+[[capture]]
+surface = "cflow"
+command = "cflow --no-preprocess --depth=3 <cuda translation unit>"
+result = "8 CUDA translation units; kernels.cu reports 17 entry declarations; kernels_soa.cu reports 22 entry declarations and 910 parser diagnostics"
+input_sha256 = "7a9240dbde4356b5c2f7b7c4148bf191f291b03f93e77fdf135d9cc19e2a3ffb"
+output_sha256 = "879770d84adc909da9a23e387b14dd998209cb9f27487c4d8f8985f1d83b1db8"
+interpretation = "C-like lexical call surface only; CUDA launch, device dispatch, and Rust ownership require source-level confirmation"
+
+[[capture]]
+surface = "rust_analyzer"
+command = "rust-analyzer analysis-stats <selected workspace crate>"
+result = "752 crates, 2899 modules, 36174 declarations, 31555 bodies before bounded 55-second timeout"
+interpretation = "analysis infrastructure exceeds the bounded capture window and reaches about 3.7 GiB item-tree memory; no semantic graph claim follows"
+
+[[path]]
+name = "canonical_claim_transition"
+entry = "crates/gororoba_db/src/bin/gororoba_db.rs"
+semantic_nodes = ["ClaimTransitionAction::Plan", "ProvenanceStore::plan_claim_transition", "ClaimTransitionAction::Apply", "ProvenanceStore::apply_claim_transition", "provenance export-control-plane"]
+static_witness = "cscope definition and text-reference map"
+runtime_status = "not executed in this capture"
+
+[[path]]
+name = "d3q19_cpu"
+entry = "crates/lbm_3d/src/lattice.rs"
+semantic_nodes = ["D3Q19Lattice::new", "D3Q19Lattice::weights", "D3Q19Lattice::equilibrium", "BgkCollision"]
+static_witness = "Ctags and source inspection"
+runtime_status = "targeted lattice tests required for executable confirmation"
+
+[[path]]
+name = "cuda_lbm"
+entry = "crates/lbm_3d_cuda/src/lib.rs"
+semantic_nodes = ["ModuleRegistry", "kernel selection", "LaunchConfig", "lbm_step_fused_kernel", "lbm_step_soa_fused"]
+static_witness = "Cscope CUDA symbol map plus Cflow CUDA declaration maps"
+runtime_status = "host CUDA capability only; no kernel dispatch or parity result"
+
+[[path]]
+name = "vulkan_lbm"
+entry = "crates/lbm_vulkan/src/lbm_d3q19_vulkan.rs"
+semantic_nodes = ["InstanceBuilder", "Adapter::pick", "DeviceBuilder", "ShaderModule::from_wgsl", "DispatchScope"]
+static_witness = "Ctags and source inspection"
+runtime_status = "host Vulkan capability only; no shader dispatch result"
+
+[[path]]
+name = "formal_proof"
+entry = "proofs/Makefile"
+semantic_nodes = ["vos", "vok", "Rocq source", "extraction source"]
+static_witness = "Ctags, cscope, and Cflow extraction map"
+runtime_status = "no Rocq proof execution in this capture"
+
+[[repair]]
+mechanism = "canonical export ordering"
+surface = "Makefile registry-export-markdown"
+precondition = "SQLite control-plane mutations exist"
+postcondition = "export-control-plane runs before registry refresh and Rust mirror emission"
+
+[[repair]]
+mechanism = "derived registry dependency closure"
+surface = "Makefile registry-export-markdown"
+precondition = "registry refresh changes proof skeleton or evidence-provenance inputs"
+postcondition = "semantic atoms, evidence provenance, and registry integrity regenerate before Rust mirror emission"
+
+[[repair]]
+mechanism = "markdown registry CLI target compatibility"
+surface = "Makefile markdown registry targets"
+precondition = "legacy target reaches a removed markdown-registry subcommand"
+postcondition = "every Makefile markdown-registry invocation matches a current CLI command"
+
+[[repair]]
+mechanism = "nested Cargo path propagation"
+surface = "xtask validation and registry mirror commands"
+precondition = "CARGO_HOME or CARGO_TARGET_DIR selects an external cache path"
+postcondition = "nested Cargo commands retain nonempty configured paths and otherwise use repository-local defaults"
+
+[[repair]]
+mechanism = "revision-only rebuild protection"
+surface = "gororoba-db build"
+precondition = "claim_transition_events is empty and claim_revisions is nonempty"
+postcondition = "build refuses without --allow-transition-history-loss"
+
+[[repair]]
+mechanism = "lacuna identifier collision detection"
+surface = "registry-integrity build_lacunae"
+precondition = "a retained non-derived lacuna occupies a generated claim-status identifier"
+postcondition = "generation returns an error instead of suppressing the claim-status row"
+
+[[repair]]
+mechanism = "canonical narrative body provenance"
+surface = "knowledge-atoms structured corpora verification"
+precondition = "a historical source_markdown location is absent while the retained registry body_markdown remains available"
+postcondition = "the generated source row records derivation input, origin-path state, and canonical-body SHA-256; verification rechecks the retained body and path state"
+
+[[repair]]
+mechanism = "generated metadata exclusion from equation atoms"
+surface = "knowledge-atoms equation extraction"
+precondition = "a complete HTML provenance comment contains a relation token such as ->"
+postcondition = "equation extraction skips the metadata comment and retains mathematical expressions on source lines"
+
+[[repair]]
+mechanism = "artifact scroll producer ordering"
+surface = "Makefile registry-export-markdown"
+precondition = "registry-artifact-scrolls.toml is absent or stale after a control-plane export"
+postcondition = "the export pipeline builds structured corpora and artifact scrolls before evidence provenance, integrity signing, and mirror emission"

@@ -124,10 +124,10 @@ pub(crate) struct BuildArgs {
     #[arg(long)]
     pub(crate) verify: bool,
 
-    /// Rebuild even when the existing database holds claim transition events.
-    /// The rebuild reads only the manifest lanes, so the event, relation and
-    /// revision tables come back empty and no compatibility TOML can restore
-    /// them. Required to discard adjudication history on purpose.
+    /// Rebuild even when the existing database holds claim transition events or
+    /// claim revisions. The rebuild reads only the manifest lanes, so the event,
+    /// relation and revision tables come back empty and no compatibility TOML can
+    /// restore them. Required to discard adjudication history on purpose.
     #[arg(long)]
     pub(crate) allow_transition_history_loss: bool,
 }

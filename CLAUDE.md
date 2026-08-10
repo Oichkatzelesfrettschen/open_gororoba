@@ -96,10 +96,9 @@ both:
   `--check` mode, the mode the pre-push hook runs, a file fails only
   when it contains an emoji or a control character other than tab,
   newline or carriage return. Curly quotes, dashes, arrows, Greek and
-  box-drawing all pass. `--fix` is the mode that rewrites those, via
-  the substitution table at `crates/repo_utilities/src/main.rs`
-  `CHARACTER_POLICY_REPLACEMENTS`, followed by NFKD normalization and
-  combining-mark removal.
+  box-drawing all pass. `--fix` is the mode that rewrites those via
+  the ANSI-check implementation's `CHARACTER_POLICY_REPLACEMENTS`
+  table, followed by NFKD normalization and combining-mark removal.
 - The emoji predicate covers six ranges: Emoticons, Miscellaneous
   Symbols and Pictographs, Transport and Map, Supplemental Symbols and
   Pictographs, regional-indicator Flags, and Variation Selectors. It
