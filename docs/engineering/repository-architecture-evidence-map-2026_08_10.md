@@ -1,6 +1,6 @@
 ---
 description: Instrumented architecture map, coefficient derivation, review triage, and falsifiable work queue
-last_verified: 2026-08-10
+last_verified: 2026-08-11
 evidence_class: instrumented-static-capture
 status: active
 ---
@@ -191,6 +191,134 @@ collision by themselves because separate CUDA modules can own independent
 namespaces. The required next observation is the loaded module key paired with
 the source hash and selected function name for every dispatch path.
 
+### Expanded CUDA and control-plane capture
+
+The expanded capture runs at commit `dd5fcb8b709479393bb87011e58646616df327bb`
+with Universal Ctags 6.2.1, Cscope 15.9, and GNU Cflow 1.8. It covers all 34
+CUDA translation units under `crates/lbm_3d_cuda/src` and six registry/control-
+plane Rust and Make inputs.
+
+| Surface | Established result | Explicit limit |
+| --- | --- | --- |
+| CUDA Ctags | 206 function definitions, 198 unique names | CUDA declarations are lexical symbols, not compiled module ownership. |
+| CUDA Cscope | 42 Rust-requested kernel names; 42 have at least one CUDA definition; two names have two definitions | Cross-language lookup does not prove which source string reaches NVRTC. |
+| Per-translation-unit Cflow | 319 function-shaped records and 98 `__global__` records | 1,408 parser diagnostics remain: `kernels_soa.cu` 910, `kernels_sparse_lbm.cu` 468, and `kernels_sparse_map.cu` 30. CUDA launch syntax and device execution remain outside the C parser. |
+| Registry Cscope | Six bounded inputs, zero index diagnostics | Rust queries remain lexical and do not establish typed caller edges. |
+
+The normalized input and output hashes are retained in the companion TOML
+artifact. The source list hash is
+`a6ba175e4f54a06506358e842f9bf3475bce02e27cca097b39c80cc6dbd828fe`.
+
+The expanded control-plane call map is:
+
+```text
+gororoba-db claim transition plan
+  -> cmd_claim_transition_read_only
+  -> ProvenanceStore::plan_claim_transition
+  -> validation-only allocation, status, and evidence checks
+
+gororoba-db claim transition apply
+  -> ProvenanceStore::apply_claim_transition
+  -> SQLite immediate transaction and append-only history
+  -> maybe_regen_toml when --regen-toml is set
+  -> cargo run -p gororoba_cli_provenance --bin provenance -- export-control-plane
+  -> run_export_control_plane
+  -> ProvenanceStore::export_control_plane_compat_paths
+  -> compatibility TOMLs, theorem markdown, transition exports, and run record
+
+xtask registry-emit-all-mirrors
+  -> run_registry_emit_all_mirrors
+  -> one validation build of registry-emit and markdown-registry
+  -> 23 typed mirror entries
+  -> Rust registry mirror outputs
+```
+
+### CUDA finding resolution
+
+The selector-to-runner path now has one typed contract. `KernelDispatchSpec`
+owns the source label, step symbol, init symbol, storage width, launch mode,
+and cells-per-thread value. `select_optimal_kernel` returns that contract in
+`KernelSelection`, and `SoaBenchRunner::new_selected` consumes it. The A-A
+tiers use a single distribution buffer plus a parity argument; pull tiers keep
+the ping-pong launch shape. The selector unit tests compare every returned
+field with its dispatch contract.
+
+`kernels.cu` is the sole owner of
+`update_tau_from_voudon_frustration_kernel`. The orphan
+`kernels_voudon.cu` source is removed from the checkout. The handwritten
+`crates/lbm_3d_cuda/cuda_source_ownership.toml` manifest records the only
+non-runtime CUDA fixture, and `cargo run -p xtask -- cuda-source-ownership`
+fails when a production `.cu` file loses its Rust `include_str!` or
+`include_bytes!` edge.
+
+`ModuleRegistry` now records `ModuleProvenance` for every load. NVRTC paths
+retain the source SHA-256, compile-options SHA-256, source label, sorted
+kernel list, and derived module ID. Opaque PTX/CUBIN paths retain the supplied
+artifact label and a deterministic symbol-set identity; callers can provide an
+artifact digest through `load_with_identity`. `get_with_provenance` binds a
+resolved kernel name to that module record.
+
+The bounded evidence is `cargo check` for `gororoba_gpu_cuda`, `lbm_3d_cuda`,
+and `xtask`; `cargo test` for the selector and CUDA provenance units; clippy
+with `-D warnings`; the ownership verifier; and a source search proving one
+Voudon definition. The selector bridge also preserves the FP8 SM 8.9 admission
+rule and labels AoS modules with their owning source constant. These checks do
+not claim a CUDA-device launch or numerical parity run.
+
+The post-resolution lexical refresh covers 33 CUDA translation units. Universal
+Ctags reports 205 function records and 198 unique function names. Cscope finds
+one Voudon definition in `kernels.cu`; the intentional `lbm_step_soa_fused`
+module-name duplication remains in `kernels_soa.cu` and `kernels_dark_halo.cu`.
+GNU Cflow reports the same 1,408 parser diagnostics as the baseline, so the
+diagnostics remain parser-coverage limits rather than evidence of a new source
+defect.
+
+The Makefile remains the ordering boundary between the export command, registry
+refresh, integrity generation, and mirror emission. The static graph confirms
+the order and ownership; it does not execute the mutation or validate the
+generated bytes.
+
+The expanded CUDA host-to-device map is:
+
+```text
+LbmSolver3DCuda::new or BenchKernelRunner::build
+  -> include_str! CUDA source constant
+  -> ModuleRegistry::compile_and_load
+  -> ModuleRegistry::get named function
+  -> LaunchConfig and stream.launch_builder
+  -> CUDA function declaration in the selected translation unit
+
+UnifiedInt8Runner::new
+  -> kernels_int8_soa.cu source
+  -> ModuleRegistry::compile_and_load
+  -> ephemeral INT8 step and init functions
+  -> Unified Memory launch path
+```
+
+Two integration findings emerge from the ownership census:
+
+1. `kernel_selector::select_optimal_kernel` is public and its selection table
+   is covered only by module-local tests. No production caller consumes its
+   `KernelSelection`, `kernel_name`, or `source_label`. The 42-name census shows
+   that the selected names exist, but the policy remains advisory and can drift
+   from the constructors in `bench_kernels.rs`. This is a P1 integration gap,
+   not a proven runtime failure. The required repair is a typed selector-to-
+   runner bridge with a source/name/launch manifest and one test per tier.
+2. `kernels_voudon.cu` defines
+   `update_tau_from_voudon_frustration_kernel`, while `kernels.cu` defines the
+   same symbol and is the only source included by `LbmSolver3DCuda`. No Rust
+   inclusion or build edge reaches `kernels_voudon.cu`; `test_bf16.cu` is also
+   unreferenced by the Rust source graph. The current graph therefore has no
+   duplicate loaded module, but it does have a dead duplicate source owner that
+   can drift silently. This is a P1 ownership and evidence gap. The required
+   repair is to designate one owner or classify the file as a fixture, then
+   enforce the decision in a source-to-module manifest.
+
+`ModuleRegistry` stores a loaded module and pre-resolved names, but it does not
+retain a source hash or module identity. That confirms the existing
+`cuda-module-symbol-namespace` queue row: a runtime dispatch manifest is still
+needed before source ownership, launch shape, and parity can be claimed.
+
 ### Vulkan LBM
 
 ```text
@@ -252,6 +380,9 @@ actionable work items only when their evidence path is replayed.
 | --- | --- | --- | --- | --- | --- |
 | P0 | `review-evidence-disposition` | Does each current review observation still match `main` and its cited evidence? | A canonical review-disposition record keyed by PR, thread, path, current commit, and outcome. | Every current thread is classified as fixed, rejected with evidence, or converted to a canonical task. | A thread lacks a current-code comparison. |
 | P1 | `d3q19-moment-invariant` | Do the listed D3Q19 coefficients satisfy all zeroth, first, and second moment identities in code? | A CPU test that evaluates the full tensor against `cs_sq delta_ab`. | Exact rational identities pass before floating tolerance projection. | Any off-diagonal term or diagonal coefficient differs. |
+| P1 | `cuda-selector-dispatch-bridge` | Does every `KernelSelection` resolve to the source, constructor, and launch shape that execute it? | `KernelDispatchSpec` plus `SoaBenchRunner::new_selected` and selector contract tests. | Resolved in the bounded Rust test and clippy lanes; GPU launch remains unexecuted. | A selector result has no production caller or resolves to a different source/name pair. |
+| P1 | `cuda-voudon-source-owner` | Which translation unit owns `update_tau_from_voudon_frustration_kernel`? | Production `kernels.cu` ownership plus `cuda_source_ownership.toml` and the xtask gate. | Resolved: one CUDA definition remains and every non-fixture source has a Rust include edge. | Two source files define the symbol without a declared ownership rule. |
+| P1 | `cuda-module-provenance` | Which source and module identity produced a dispatched CUDA symbol? | `ModuleProvenance`, `KernelProvenance`, source SHA-256, option SHA-256, and module-ID unit tests. | Resolved for NVRTC source paths; opaque AOT paths require a caller-supplied artifact digest for content-level proof. | A dispatch record lacks a module ID or claims a source hash it cannot observe. |
 | P1 | `cuda-module-symbol-namespace` | Which module owns every dispatched CUDA symbol? | A dispatch manifest containing module key, source or cubin hash, symbol, launch shape, precision, and feature set. | Every production dispatch resolves to one declared module-symbol pair. | One module contains duplicate exported names or a selected symbol lacks an owner. |
 | P1 | `d3q19-backend-parity` | Do CPU, CUDA, and Vulkan implementations preserve the same declared observable under identical inputs? | A finite parity matrix with initial-state hash, grid, precision, steps, mass, momentum, NaN count, and field norm. | Each backend passes the declared tolerance or records a bounded divergence cause. | A conservation or field-norm discrepancy exceeds the stated tolerance. |
 | P1 | `formal-evidence-binding` | Does each claim using a theorem bind the theorem identity, assumptions, proof output, and source hash? | Typed theorem-evidence records and dated `vos` plus `vok` logs. | Every linked formal claim has one replayable proof evidence record. | A claim links a theorem without assumptions or kernel output. |

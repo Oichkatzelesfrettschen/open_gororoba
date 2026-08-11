@@ -4,7 +4,7 @@ use chrono::{Local, NaiveDate, SecondsFormat};
 use clap::Parser;
 use provenance_store::ProvenanceStore;
 use rusqlite::Connection;
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::{
     collections::BTreeMap,
     env, fs,
@@ -111,6 +111,10 @@ struct HostProfile {
 const INLINE_TEST_MARKERS: &[&str] = &["#[test]", "#[cfg(test)]", "mod tests"];
 const VALIDATION_TAIL_LINE_COUNT: usize = 20;
 const XTASK_COMMANDS: &[(&str, &str)] = &[
+    (
+        "cuda-source-ownership",
+        "Verify CUDA sources have explicit Rust ownership edges.",
+    ),
     ("db-docs", "Generate or check database documentation."),
     ("host-profile", "Print host worker-budget settings."),
     (
@@ -568,6 +572,7 @@ fn main() -> Result<()> {
             // Makefile -> xtask migration policy.
             run_registry_emit_all_mirrors()
         }
+        "cuda-source-ownership" => run_cuda_source_ownership(),
         "sparse-profile" => run_sparse_profile(SparseProfileCli::try_parse_from(
             std::iter::once("sparse-profile".to_string()).chain(args),
         )?),
@@ -2802,6 +2807,126 @@ fn repo_root() -> Result<PathBuf> {
         .parent()
         .map(Path::to_path_buf)
         .context("resolve repository root from xtask manifest directory")
+}
+
+#[derive(Debug, Deserialize)]
+struct CudaSourceOwnershipManifest {
+    version: u32,
+    root: String,
+    #[serde(default)]
+    fixture: Vec<CudaSourceFixture>,
+}
+
+#[derive(Debug, Deserialize)]
+struct CudaSourceFixture {
+    path: String,
+    owner: String,
+    reason: String,
+}
+
+/// Verify that every CUDA translation unit has a Rust include edge or an
+/// explicit fixture record. This keeps source ownership visible to the build
+/// graph and prevents orphan duplicate kernels from returning unnoticed.
+fn run_cuda_source_ownership() -> Result<()> {
+    let root = repo_root()?;
+    let manifest_path = root.join("crates/lbm_3d_cuda/cuda_source_ownership.toml");
+    let manifest_text = fs::read_to_string(&manifest_path)
+        .with_context(|| format!("read {}", manifest_path.display()))?;
+    let manifest: CudaSourceOwnershipManifest = toml::from_str(&manifest_text)
+        .with_context(|| format!("parse {}", manifest_path.display()))?;
+    if manifest.version != 1 {
+        bail!(
+            "unsupported CUDA source ownership manifest version {} in {}",
+            manifest.version,
+            manifest_path.display()
+        );
+    }
+
+    let source_root = root.join("crates/lbm_3d_cuda").join(&manifest.root);
+    if !source_root.is_dir() {
+        bail!("CUDA source root does not exist: {}", source_root.display());
+    }
+
+    let mut rust_text = String::new();
+    for entry in WalkDir::new(&source_root) {
+        let entry = entry.with_context(|| format!("walk {}", source_root.display()))?;
+        let path = entry.path();
+        if path.extension().and_then(|value| value.to_str()) == Some("rs") {
+            rust_text.push_str(
+                &fs::read_to_string(path).with_context(|| format!("read {}", path.display()))?,
+            );
+        }
+    }
+
+    let mut fixtures = BTreeMap::new();
+    for fixture in &manifest.fixture {
+        if !fixture.path.ends_with(".cu") {
+            bail!("CUDA fixture path is not a .cu file: {}", fixture.path);
+        }
+        let fixture_path = source_root.join(&fixture.path);
+        if !fixture_path.is_file() {
+            bail!(
+                "CUDA fixture {} declared by {} is missing",
+                fixture.path,
+                fixture.owner
+            );
+        }
+        if fixtures.insert(fixture.path.clone(), fixture).is_some() {
+            bail!("CUDA fixture is declared more than once: {}", fixture.path);
+        }
+    }
+
+    let mut source_names = Vec::new();
+    for entry in fs::read_dir(&source_root)
+        .with_context(|| format!("read directory {}", source_root.display()))?
+    {
+        let path = entry
+            .with_context(|| format!("read directory entry in {}", source_root.display()))?
+            .path();
+        if path.extension().and_then(|value| value.to_str()) != Some("cu") {
+            continue;
+        }
+        let name = path
+            .file_name()
+            .and_then(|value| value.to_str())
+            .map(str::to_owned)
+            .with_context(|| format!("name CUDA source {}", path.display()))?;
+        source_names.push(name);
+    }
+    source_names.sort();
+
+    let mut owned_count = 0usize;
+    for name in &source_names {
+        if let Some(fixture) = fixtures.get(name) {
+            println!(
+                "CUDA fixture: {name} owner={} reason={}",
+                fixture.owner, fixture.reason
+            );
+            continue;
+        }
+
+        let include_edge = format!("include_str!(\"{name}\")");
+        let bytes_edge = format!("include_bytes!(\"{name}\")");
+        if !rust_text.contains(&include_edge) && !rust_text.contains(&bytes_edge) {
+            bail!(
+                "CUDA source {name} has no Rust include edge under {}",
+                source_root.display()
+            );
+        }
+        owned_count += 1;
+    }
+
+    for fixture_name in fixtures.keys() {
+        if source_names.binary_search(fixture_name).is_err() {
+            bail!("CUDA fixture {fixture_name} is not present in the source root");
+        }
+    }
+
+    println!(
+        "OK: CUDA source ownership verified ({owned_count} Rust-owned sources, {} fixtures)",
+        fixtures.len()
+    );
+    Ok(())
 }
 
 fn configured_cargo_path(configured: Option<std::ffi::OsString>, fallback: &Path) -> PathBuf {

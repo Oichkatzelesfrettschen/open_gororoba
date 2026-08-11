@@ -13,16 +13,23 @@ gororoba_optix = { workspace = true }
 cudarc = { workspace = true, optional = true }
 log = { workspace = true, optional = true }
 nvml-wrapper = { workspace = true, optional = true }
+sha2 = { workspace = true, optional = true }
 thiserror = { workspace = true, optional = true }
 
 [features]
 default = []
 # Enables the CUDA helpers. When off, the crate exposes only the
 # re-exported gororoba_gpu_bridge and gororoba_optix types.
-cudarc = ["dep:cudarc", "dep:nvml-wrapper", "dep:thiserror", "dep:log"]
+cudarc = [
+    "dep:cudarc",
+    "dep:nvml-wrapper",
+    "dep:sha2",
+    "dep:thiserror",
+    "dep:log",
+]
 
 [lints]
 workspace = true
 
 [package.metadata.cargo-machete]
-ignored = ["cudarc", "nvml-wrapper", "thiserror", "log"]
+ignored = ["cudarc", "nvml-wrapper", "sha2", "thiserror", "log"]
