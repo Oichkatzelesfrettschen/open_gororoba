@@ -276,7 +276,7 @@ use cudarc::cufft::result as cufft;
 const KERNEL_SRC: &str = include_str!("kernels.cu");
 const KERNEL_BF16_SRC: &str = include_str!("kernels_bf16.cu");
 const KERNEL_FP64_SRC: &str = include_str!("kernels_fp64.cu");
-const KERNEL_SOA_SRC: &str = include_str!("kernels_soa.cu");
+pub(crate) const KERNEL_SOA_SRC: &str = include_str!("kernels_soa.cu");
 
 /// VRAM footprint for D3Q19 AoS ping-pong buffers (two buffers: ping + pong).
 /// elem_bytes: 1 (fp8/int8), 2 (fp16/bf16), 4 (fp32), 8 (fp64), 16 (dd).
@@ -555,6 +555,11 @@ impl LbmSolver3DCuda {
             Precision::BF16 => KERNEL_BF16_SRC,
             Precision::FP64 => KERNEL_FP64_SRC,
         };
+        let source_label = match precision {
+            Precision::FP32 => "KERNEL_SRC",
+            Precision::BF16 => "KERNEL_BF16_SRC",
+            Precision::FP64 => "KERNEL_FP64_SRC",
+        };
 
         let arch_str = cuda_props
             .map(CudaDeviceProps::compile_arch)
@@ -632,8 +637,13 @@ impl LbmSolver3DCuda {
         if precision == Precision::FP32 {
             core_kernel_names.push("update_tau_from_voudon_frustration_kernel");
         }
-        let module_registry =
-            ModuleRegistry::compile_and_load(&ctx, src, &opts, &core_kernel_names)?;
+        let module_registry = ModuleRegistry::compile_and_load_named(
+            &ctx,
+            source_label,
+            src,
+            &opts,
+            &core_kernel_names,
+        )?;
 
         let lbm_step_fused_kernel = module_registry.get(lbm_step_name)?;
         let lbm_step_fused_4d_kernel = if precision == Precision::BF16 {
@@ -705,8 +715,9 @@ impl LbmSolver3DCuda {
                 "lbm_step_soa_aa",
                 "lbm_step_soa_mrt_aa",
             ];
-            let soa_module_registry = ModuleRegistry::compile_and_load(
+            let soa_module_registry = ModuleRegistry::compile_and_load_named(
                 &ctx,
+                "KERNEL_SOA_SRC",
                 KERNEL_SOA_SRC,
                 &soa_opts,
                 &soa_kernel_names,

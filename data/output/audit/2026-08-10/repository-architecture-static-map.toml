@@ -154,3 +154,87 @@ mechanism = "artifact scroll producer ordering"
 surface = "Makefile registry-export-markdown"
 precondition = "registry-artifact-scrolls.toml is absent or stale after a control-plane export"
 postcondition = "the export pipeline builds structured corpora and artifact scrolls before evidence provenance, integrity signing, and mirror emission"
+
+[[capture]]
+surface = "cuda_static_expansion"
+base_commit = "dd5fcb8b709479393bb87011e58646616df327bb"
+command = "find crates/lbm_3d_cuda/src -maxdepth 1 -name '*.cu' -o -path 'crates/lbm_3d_cuda/src/sparse/*.cu' | sort; ctags --languages=CUDA --fields=+n --kinds-CUDA=+fpv; cscope -b -q -k; cflow per translation unit"
+result = "34 CUDA inputs; 206 ctags function definitions; 198 unique function names; 98 cflow global entries; 319 cflow function-shaped records; 1408 cflow diagnostics"
+input_sha256 = "a6ba175e4f54a06506358e842f9bf3475bce02e27cca097b39c80cc6dbd828fe"
+output_sha256 = "4f6f6a159eb504bbedc766eb96a4efae494a5f7de91c202aae0729bbab18c9d0"
+diagnostic_breakdown = "kernels_soa.cu=910; kernels_sparse_lbm.cu=468; kernels_sparse_map.cu=30; all other translation units=0"
+interpretation = "per-translation-unit lexical CUDA capture; cflow diagnostics are parser coverage loss, not source defects; no runtime launch or parity claim follows"
+
+[[capture]]
+surface = "cuda_host_kernel_ownership_queries"
+base_commit = "dd5fcb8b709479393bb87011e58646616df327bb"
+command = "cscope -d -L -0 over Rust-requested kernel names against the CUDA index"
+result = "42 requested names; 42 have at least one definition; two names have two definitions: lbm_step_soa_fused and update_tau_from_voudon_frustration_kernel"
+input_sha256 = "33f7a32540237ff505f75179b9666854668d8c92e0cc97f00aed35fd18838dbf"
+output_sha256 = "606b27409701365db84d478d414baa522ba0e68170f7a2ce389fd6704659f680"
+interpretation = "lexical cross-language ownership census; source-string selection and loaded-module identity require a dispatch manifest"
+
+[[capture]]
+surface = "registry_control_plane_static_expansion"
+base_commit = "dd5fcb8b709479393bb87011e58646616df327bb"
+command = "cscope -b -q -k over gororoba_db, provenance, registry_integrity, xtask, and Makefile inputs; rg source inspection for typed Rust calls"
+result = "six bounded inputs; zero cscope build diagnostics; plan, apply, export, mirror, and lacuna paths mapped"
+input_sha256 = "fda2e8643880d17a245c3f0f4907ce027048fa4ac3cd6f07ed571570a5f9c7e9"
+output_sha256 = "b7b9a5ec368ea553e65d889afd09c2e9d76efa0608d5b935267e77980106237b"
+interpretation = "typed Rust path names are source-confirmed; cscope contributes lexical references only"
+
+[[capture]]
+surface = "cuda_dispatch_provenance_resolution"
+base_commit = "dd5fcb8b709479393bb87011e58646616df327bb"
+capture_state = "uncommitted working tree layered on base_commit; rerun after commit for a commit-level capture"
+command = "cargo check -p gororoba_gpu_cuda -p lbm_3d_cuda -p xtask --all-targets; cargo test -p gororoba_gpu_cuda --features cudarc --lib; cargo test -p lbm_3d_cuda --lib kernel_selector::tests; cargo clippy -p gororoba_gpu_cuda --features cudarc --all-targets -- -D warnings; cargo clippy -p lbm_3d_cuda --all-targets -- -D warnings; cargo clippy -p xtask --all-targets -- -D warnings; cargo run -p xtask -- cuda-source-ownership"
+result = "Typed selector dispatch, FP8 capability admission, source ownership, and module provenance compile and pass focused tests and warnings-as-errors clippy; the ownership gate reports 30 Rust-owned CUDA sources and one declared fixture"
+source_owner_result = "kernels.cu is the sole definition owner for update_tau_from_voudon_frustration_kernel; kernels_voudon.cu is absent"
+module_provenance_result = "NVRTC registries retain source_sha256, compile_options_sha256, source_label, sorted kernel names, module_id, and per-kernel provenance"
+interpretation = "bounded Rust and lexical ownership evidence; no CUDA-device launch, PTX execution, or numerical parity claim follows"
+
+[[capture]]
+surface = "cuda_static_post_resolution"
+base_commit = "dd5fcb8b709479393bb87011e58646616df327bb"
+capture_state = "working tree after the bounded CUDA dispatch and ownership resolution"
+command = "find crates/lbm_3d_cuda/src -name '*.cu' -type f | sort; ctags --languages=CUDA --fields=+n --kinds-CUDA=+fpv; cscope -b -q -k; cflow --no-preprocess --depth=3 per translation unit"
+result = "33 CUDA translation units; 205 Ctags function records; 198 unique function names; one Voudon definition in kernels.cu; intentional lbm_step_soa_fused duplicate remains in kernels_soa.cu and kernels_dark_halo.cu; 1408 Cflow diagnostics"
+input_sha256 = "9b435f0856a284140069a833275503845e91a1360322a576b1fa3605d5ff9b15"
+ctags_output_sha256 = "eb893175a6b70cdb4f70543c8caaddfc6250816a307eb0e477ad21c701ce90fc"
+cscope_output_sha256 = "0df6ac3a2242244477c8cb25a9be4839435b80227d7a411bec97fabbe3cf9b40"
+cflow_output_sha256 = "ab3e795507833c57e4e98984435efaa4facbec5274eeb558f24d59c2d225f10b"
+interpretation = "post-resolution lexical CUDA capture; Cflow diagnostics remain parser coverage loss; module execution and numerical parity require separate device evidence"
+
+[[path]]
+name = "registry_export_and_mirror_expansion"
+entry = "xtask/src/main.rs and crates/gororoba_cli_data/src/bin/provenance.rs"
+semantic_nodes = ["xtask command dispatch", "run_registry_emit_all_mirrors", "run_export_control_plane", "ProvenanceStore::export_control_plane_compat_paths", "23 mirror entries"]
+static_witness = "bounded Cscope index plus Rust source-reference inspection"
+runtime_status = "not executed in this capture"
+
+[[finding]]
+id = "cuda-selector-dispatch-bridge"
+severity = "P1"
+surface = "crates/lbm_3d_cuda/src/kernel_selector.rs"
+observation = "select_optimal_kernel is public and module-tested, but no production caller consumes KernelSelection, kernel_name, or source_label"
+impact = "selector recommendations can drift from the explicit BenchKernelRunner constructors without changing compilation"
+required_evidence = "KernelDispatchSpec, SoaBenchRunner::new_selected, and selector contract tests"
+status = "resolved_bounded_rust_dispatch_contract"
+
+[[finding]]
+id = "cuda-voudon-source-owner"
+severity = "P1"
+surface = "crates/lbm_3d_cuda/src/kernels_voudon.cu and crates/lbm_3d_cuda/src/kernels.cu"
+observation = "both files define update_tau_from_voudon_frustration_kernel, but only kernels.cu has a Rust include_str edge"
+impact = "kernels_voudon.cu is a dead duplicate source owner that can drift silently; no duplicate loaded module is proven"
+required_evidence = "kernels.cu production ownership, cuda_source_ownership.toml, and the xtask source-to-module gate"
+status = "resolved_single_production_owner"
+
+[[finding]]
+id = "cuda-module-provenance"
+severity = "P1"
+surface = "crates/gororoba_gpu_cuda/src/module.rs"
+observation = "ModuleRegistry retained kernel names and handles without source, compile-option, or module identity metadata"
+impact = "runtime dispatch records could not prove which source and compilation contract produced a resolved kernel"
+required_evidence = "ModuleProvenance and KernelProvenance with source and option digests plus identity unit tests"
+status = "resolved_nvrtc_provenance_with_bounded_aot_boundary"

@@ -67,7 +67,7 @@ pub use launch::LaunchConfig;
 #[cfg(feature = "cudarc")]
 pub use managed::ManagedBuffer;
 #[cfg(feature = "cudarc")]
-pub use module::{KernelHandle, ModuleRegistry};
+pub use module::{KernelHandle, KernelProvenance, ModuleProvenance, ModuleRegistry};
 #[cfg(feature = "cudarc")]
 pub use nvrtc::CompileOptions;
 #[cfg(feature = "cudarc")]
