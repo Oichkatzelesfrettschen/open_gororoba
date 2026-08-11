@@ -11,6 +11,7 @@
 //! This builder exposes them all explicitly so callers see the choice.
 
 use cudarc::nvrtc::{CompileOptions as NvrtcOptions, Ptx, compile_ptx_with_opts};
+use sha2::{Digest, Sha256};
 
 use crate::{error::Result, probe::DeviceProbe};
 
@@ -185,10 +186,84 @@ impl CompileOptions {
         let nvrtc_opts = opts.clone().build();
         Ok(compile_ptx_with_opts(source, nvrtc_opts)?)
     }
+
+    /// Return a deterministic digest of every option that affects NVRTC output.
+    ///
+    /// The digest is part of [`crate::ModuleProvenance`]. Include paths and
+    /// extra options are length-delimited so adjacent values cannot collide in
+    /// the identity input.
+    pub fn fingerprint(&self) -> String {
+        let mut identity = String::new();
+        append_identity_field(&mut identity, self.arch.unwrap_or("<none>"));
+        append_identity_field(&mut identity, &self.lineinfo.to_string());
+        append_identity_field(&mut identity, &self.fast_math.to_string());
+        append_identity_field(
+            &mut identity,
+            &self
+                .prec_div
+                .map(|value| value.to_string())
+                .unwrap_or_else(|| "<none>".to_string()),
+        );
+        append_identity_field(
+            &mut identity,
+            &self
+                .prec_sqrt
+                .map(|value| value.to_string())
+                .unwrap_or_else(|| "<none>".to_string()),
+        );
+        append_identity_field(
+            &mut identity,
+            &self
+                .ftz
+                .map(|value| value.to_string())
+                .unwrap_or_else(|| "<none>".to_string()),
+        );
+        append_identity_field(
+            &mut identity,
+            &self
+                .fmad
+                .map(|value| value.to_string())
+                .unwrap_or_else(|| "<none>".to_string()),
+        );
+        for path in &self.include_paths {
+            append_identity_field(&mut identity, path);
+        }
+        for option in &self.extra_options {
+            append_identity_field(&mut identity, option);
+        }
+
+        let digest = Sha256::digest(identity.as_bytes());
+        digest.iter().map(|byte| format!("{byte:02x}")).collect()
+    }
+}
+
+fn append_identity_field(identity: &mut String, value: &str) {
+    identity.push_str(&value.len().to_string());
+    identity.push(':');
+    identity.push_str(value);
+    identity.push('|');
 }
 
 impl Default for CompileOptions {
     fn default() -> Self {
         Self::empty()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::CompileOptions;
+
+    #[test]
+    fn fingerprint_changes_when_codegen_options_change() {
+        let baseline = CompileOptions::with_arch("sm_89").fingerprint();
+        let fast_math = CompileOptions::with_arch("sm_89")
+            .fast_math(true)
+            .fingerprint();
+        let other_arch = CompileOptions::with_arch("sm_90").fingerprint();
+
+        assert_ne!(baseline, fast_math);
+        assert_ne!(baseline, other_arch);
+        assert_eq!(baseline.len(), 64);
     }
 }

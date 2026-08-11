@@ -1,0 +1,7 @@
+version = 1
+root = "src"
+
+[[fixture]]
+path = "test_bf16.cu"
+owner = "lbm_3d_cuda::test_bf16"
+reason = "Compilation fixture retained for BF16 source experiments; it is not a runtime module."
