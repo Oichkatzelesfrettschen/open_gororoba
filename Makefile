@@ -1,7 +1,7 @@
 # ---- Phony targets ----
 .PHONY: help bootstrap-dev bootstrap-user-local-xdg fmt fmt-check
 .PHONY: test lint check smoke integrity integrity-rust math-verify governance-gate governance-gate-readonly wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status synthesis-execution-contract
-.PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance
+.PHONY: verify verify-grand verify-c010-c011-theses ansi-check ansi-check-strict terminology-gate doctor doctor-blas provenance cuda-source-ownership
 .PHONY: provenance-registry-index provenance-registry-export provenance-registry-verify provenance-registry-doctor provenance-registry-link-audit provenance-registry-recover
 .PHONY: rocq-proofs rocq-proofs-check rocq-project-check rocq-makefile-check lva-paper
 .PHONY: heavy test-inventory verify-no-reports-writes
@@ -184,6 +184,9 @@ bootstrap-dev:
 
 lint: rust-clippy
 
+cuda-source-ownership: $(XTASK_CACHE)
+	$(XTASK_CACHE) cuda-source-ownership
+
 # ---- Formatting (dprint) ----
 # Unified formatting for Rust (.rs via rustfmt), TOML, JSON, and Markdown.
 # Install: cargo install dprint
@@ -316,6 +319,7 @@ REPO_UTILITIES_BIN := $(REPO_CARGO_TARGET_DIR)/validation-tools/repo-utilities
 check: $(REPO_UTILITIES_BIN)
 	@$(REPO_UTILITIES_BIN) ansi-check --check
 	@$(REPO_UTILITIES_BIN) terminology-gate
+	$(MAKE) cuda-source-ownership
 	$(MAKE) verify-no-reports-writes
 	@echo "OK: fast shared check suite complete."
 
@@ -391,7 +395,8 @@ $(REPO_UTILITIES_BIN): $(REPO_UTILITIES_SOURCE_DEPS)
 # cannot outlive a changed transitive dependency. Cargo's incremental cache
 # still limits recompilation to the actual dependency closure.
 CORE_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs' -o -name 'Cargo.toml' \) -print) \
-                               Cargo.toml Cargo.lock rust-toolchain.toml Makefile
+                               Cargo.toml Cargo.lock rust-toolchain.toml Makefile \
+                               crates/lbm_3d_cuda/cuda_source_ownership.toml
 
 # The routing proxy and xtask share one slim Cargo session. The local
 # validation path needs both, while the broad registry bundle below remains a

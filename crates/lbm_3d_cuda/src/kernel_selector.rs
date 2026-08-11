@@ -64,6 +64,160 @@ impl PrecisionRequirement {
     }
 }
 
+/// CUDA source owner used by the selected-runner dispatch table.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum KernelSource {
+    Int8Soa,
+    Fp8Soa,
+    Fp16Soa,
+    Fp32Soa,
+    Fp64Soa,
+}
+
+impl KernelSource {
+    /// Rust constant that owns the corresponding CUDA source edge.
+    pub const fn source_label(self) -> &'static str {
+        match self {
+            Self::Int8Soa => "KERNEL_INT8_SOA_SRC",
+            Self::Fp8Soa => "KERNEL_FP8_SOA_SRC",
+            Self::Fp16Soa => "KERNEL_FP16_SOA_SRC",
+            Self::Fp32Soa => "KERNEL_SOA_SRC",
+            Self::Fp64Soa => "KERNEL_FP64_SOA_SRC",
+        }
+    }
+}
+
+/// Complete launch contract shared by the selector and SoA runner.
+///
+/// The contract includes the init symbol because A-A kernels have a different
+/// step signature from ping-pong kernels even when their storage precision
+/// matches. Keeping both symbols here prevents a selector recommendation from
+/// silently drifting away from the constructor that launches it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct KernelDispatchSpec {
+    pub source: KernelSource,
+    pub step_kernel_name: &'static str,
+    pub init_kernel_name: &'static str,
+    pub elem_bytes: usize,
+    pub is_aa: bool,
+    pub cells_per_thread: usize,
+    pub precision_label: &'static str,
+    pub cuda_include: bool,
+    pub init_takes_tau: bool,
+    pub tau_is_inverse: bool,
+}
+
+impl KernelDispatchSpec {
+    pub const fn int8_soa_mrt_aa() -> Self {
+        Self {
+            source: KernelSource::Int8Soa,
+            step_kernel_name: "lbm_step_int8_soa_mrt_aa_kernel",
+            init_kernel_name: "initialize_uniform_int8_soa_kernel",
+            elem_bytes: 1,
+            is_aa: true,
+            cells_per_thread: 1,
+            precision_label: "INT8_SoA",
+            cuda_include: false,
+            init_takes_tau: true,
+            tau_is_inverse: false,
+        }
+    }
+
+    pub const fn fp8_soa_mrt_aa() -> Self {
+        Self {
+            source: KernelSource::Fp8Soa,
+            step_kernel_name: "lbm_step_fp8_soa_mrt_aa_kernel",
+            init_kernel_name: "initialize_uniform_fp8_soa_kernel",
+            elem_bytes: 1,
+            is_aa: true,
+            cells_per_thread: 1,
+            precision_label: "FP8_SoA",
+            cuda_include: true,
+            init_takes_tau: true,
+            tau_is_inverse: false,
+        }
+    }
+
+    pub const fn fp8_soa_mrt() -> Self {
+        Self {
+            source: KernelSource::Fp8Soa,
+            step_kernel_name: "lbm_step_fp8_soa_mrt_kernel",
+            init_kernel_name: "initialize_uniform_fp8_soa_kernel",
+            elem_bytes: 1,
+            is_aa: false,
+            cells_per_thread: 1,
+            precision_label: "FP8_SoA",
+            cuda_include: true,
+            init_takes_tau: true,
+            tau_is_inverse: false,
+        }
+    }
+
+    pub const fn fp16_soa_mrt() -> Self {
+        Self {
+            source: KernelSource::Fp16Soa,
+            step_kernel_name: "lbm_step_fp16_soa_mrt_kernel",
+            init_kernel_name: "initialize_uniform_fp16_soa_kernel",
+            elem_bytes: 2,
+            is_aa: false,
+            cells_per_thread: 1,
+            precision_label: "FP16_SoA",
+            cuda_include: true,
+            init_takes_tau: true,
+            tau_is_inverse: false,
+        }
+    }
+
+    pub const fn fp32_soa_mrt_aa() -> Self {
+        Self {
+            source: KernelSource::Fp32Soa,
+            step_kernel_name: "lbm_step_soa_mrt_aa",
+            init_kernel_name: "initialize_uniform_soa_kernel",
+            elem_bytes: 4,
+            is_aa: true,
+            cells_per_thread: 1,
+            precision_label: "FP32",
+            cuda_include: false,
+            init_takes_tau: false,
+            tau_is_inverse: true,
+        }
+    }
+
+    pub const fn int8_soa_mrt() -> Self {
+        Self {
+            source: KernelSource::Int8Soa,
+            step_kernel_name: "lbm_step_int8_soa_mrt_kernel",
+            init_kernel_name: "initialize_uniform_int8_soa_kernel",
+            elem_bytes: 1,
+            is_aa: false,
+            cells_per_thread: 1,
+            precision_label: "INT8_SoA",
+            cuda_include: false,
+            init_takes_tau: true,
+            tau_is_inverse: false,
+        }
+    }
+
+    pub const fn fp64_soa_mrt() -> Self {
+        Self {
+            source: KernelSource::Fp64Soa,
+            step_kernel_name: "lbm_step_fp64_soa_mrt_kernel",
+            init_kernel_name: "initialize_uniform_fp64_soa_kernel",
+            elem_bytes: 8,
+            is_aa: false,
+            cells_per_thread: 1,
+            precision_label: "FP64_SoA",
+            cuda_include: false,
+            init_takes_tau: true,
+            tau_is_inverse: false,
+        }
+    }
+
+    pub const fn source_label(self) -> &'static str {
+        self.source.source_label()
+    }
+}
+
 /// Selected kernel configuration.
 #[derive(Debug, Clone)]
 pub struct KernelSelection {
@@ -87,6 +241,8 @@ pub struct KernelSelection {
     pub is_aa: bool,
     /// Cells per thread (2 for coarsened/half2 variants).
     pub cells_per_thread: usize,
+    /// Complete source and launch contract consumed by `SoaBenchRunner`.
+    pub dispatch: KernelDispatchSpec,
 }
 
 /// Select the optimal kernel for the given grid size and precision requirement.
@@ -103,80 +259,85 @@ pub fn select_optimal_kernel(
             // INT8 SoA MRT A-A: Pareto-optimal (5142 MLUPS, 76 MB at 128^3)
             let vram = n_cells * 19 / (1024 * 1024); // 1 byte/dist, single buffer
             KernelSelection {
-                kernel_name: "lbm_step_int8_soa_mrt_aa_kernel",
-                source_label: "KERNEL_INT8_SOA_SRC",
+                kernel_name: KernelDispatchSpec::int8_soa_mrt_aa().step_kernel_name,
+                source_label: KernelDispatchSpec::int8_soa_mrt_aa().source_label(),
                 collision: "MRT",
                 streaming: "A-A",
                 precision: "INT8_SoA",
                 elem_bytes: 1,
                 vram_dist_mb: vram,
                 estimated_mlups_128: 5142.0,
-                is_aa: true,
-                cells_per_thread: 1,
+                is_aa: KernelDispatchSpec::int8_soa_mrt_aa().is_aa,
+                cells_per_thread: KernelDispatchSpec::int8_soa_mrt_aa().cells_per_thread,
+                dispatch: KernelDispatchSpec::int8_soa_mrt_aa(),
             }
         }
         PrecisionRequirement::MaxFloatThroughput => {
             // FP8 e4m3 SoA MRT A-A: highest float throughput (5210 MLUPS)
             let vram = n_cells * 19 / (1024 * 1024);
             KernelSelection {
-                kernel_name: "lbm_step_fp8_soa_mrt_aa_kernel",
-                source_label: "KERNEL_FP8_SOA_SRC",
+                kernel_name: KernelDispatchSpec::fp8_soa_mrt_aa().step_kernel_name,
+                source_label: KernelDispatchSpec::fp8_soa_mrt_aa().source_label(),
                 collision: "MRT",
                 streaming: "A-A",
                 precision: "FP8_e4m3_SoA",
                 elem_bytes: 1,
                 vram_dist_mb: vram,
                 estimated_mlups_128: 5210.0,
-                is_aa: true,
-                cells_per_thread: 1,
+                is_aa: KernelDispatchSpec::fp8_soa_mrt_aa().is_aa,
+                cells_per_thread: KernelDispatchSpec::fp8_soa_mrt_aa().cells_per_thread,
+                dispatch: KernelDispatchSpec::fp8_soa_mrt_aa(),
             }
         }
         PrecisionRequirement::Balanced => {
             // FP16 SoA MRT: good accuracy (10-bit mantissa) with MRT stability
             let vram = n_cells * 19 * 2 / (1024 * 1024);
             KernelSelection {
-                kernel_name: "lbm_step_fp16_soa_mrt_kernel",
-                source_label: "KERNEL_FP16_SOA_SRC",
+                kernel_name: KernelDispatchSpec::fp16_soa_mrt().step_kernel_name,
+                source_label: KernelDispatchSpec::fp16_soa_mrt().source_label(),
                 collision: "MRT",
                 streaming: "pull",
                 precision: "FP16_SoA",
                 elem_bytes: 2,
                 vram_dist_mb: vram,
                 estimated_mlups_128: 3486.0,
-                is_aa: false,
-                cells_per_thread: 1,
+                is_aa: KernelDispatchSpec::fp16_soa_mrt().is_aa,
+                cells_per_thread: KernelDispatchSpec::fp16_soa_mrt().cells_per_thread,
+                dispatch: KernelDispatchSpec::fp16_soa_mrt(),
             }
         }
         PrecisionRequirement::HighAccuracy => {
             // FP32 MRT A-A: full precision with VRAM halving
             let vram = n_cells * 19 * 4 / (1024 * 1024);
             KernelSelection {
-                kernel_name: "lbm_step_soa_mrt_aa",
-                source_label: "KERNEL_SOA_SRC",
+                kernel_name: KernelDispatchSpec::fp32_soa_mrt_aa().step_kernel_name,
+                source_label: KernelDispatchSpec::fp32_soa_mrt_aa().source_label(),
                 collision: "MRT",
                 streaming: "A-A",
                 precision: "FP32",
                 elem_bytes: 4,
                 vram_dist_mb: vram,
                 estimated_mlups_128: 1979.0,
-                is_aa: true,
-                cells_per_thread: 1,
+                is_aa: KernelDispatchSpec::fp32_soa_mrt_aa().is_aa,
+                cells_per_thread: KernelDispatchSpec::fp32_soa_mrt_aa().cells_per_thread,
+                dispatch: KernelDispatchSpec::fp32_soa_mrt_aa(),
             }
         }
         PrecisionRequirement::Validation => {
             // FP64 SoA MRT: reference precision
             let vram = n_cells * 19 * 8 / (1024 * 1024);
             KernelSelection {
-                kernel_name: "lbm_step_fp64_soa_mrt_kernel",
-                source_label: "KERNEL_FP64_SOA_SRC",
+                kernel_name: KernelDispatchSpec::fp64_soa_mrt().step_kernel_name,
+                source_label: KernelDispatchSpec::fp64_soa_mrt().source_label(),
                 collision: "MRT",
                 streaming: "pull",
                 precision: "FP64_SoA",
                 elem_bytes: 8,
                 vram_dist_mb: vram,
                 estimated_mlups_128: 398.0,
-                is_aa: false,
-                cells_per_thread: 1,
+                is_aa: KernelDispatchSpec::fp64_soa_mrt().is_aa,
+                cells_per_thread: KernelDispatchSpec::fp64_soa_mrt().cells_per_thread,
+                dispatch: KernelDispatchSpec::fp64_soa_mrt(),
             }
         }
     }
@@ -222,6 +383,30 @@ mod tests {
         assert_eq!(sel.kernel_name, "lbm_step_soa_mrt_aa");
         assert_eq!(sel.precision, "FP32");
         assert!(sel.is_aa);
+    }
+
+    #[test]
+    fn selected_metadata_matches_runner_dispatch_contract() {
+        let requirements = [
+            PrecisionRequirement::MaxThroughput,
+            PrecisionRequirement::MaxFloatThroughput,
+            PrecisionRequirement::Balanced,
+            PrecisionRequirement::HighAccuracy,
+            PrecisionRequirement::Validation,
+        ];
+        for requirement in requirements {
+            let selection = select_optimal_kernel((128, 128, 128), requirement);
+            let dispatch = selection.dispatch;
+            assert_eq!(selection.kernel_name, dispatch.step_kernel_name);
+            assert_eq!(selection.source_label, dispatch.source_label());
+            assert_eq!(selection.elem_bytes, dispatch.elem_bytes);
+            assert_eq!(selection.is_aa, dispatch.is_aa);
+            assert_eq!(selection.cells_per_thread, dispatch.cells_per_thread);
+        }
+
+        let high_accuracy = select_optimal_kernel((128, 128, 128), PrecisionRequirement::HighAccuracy);
+        assert!(!high_accuracy.dispatch.init_takes_tau);
+        assert!(high_accuracy.dispatch.tau_is_inverse);
     }
 
     #[test]
