@@ -69,9 +69,21 @@ hardware-specific tables are replaced with the scientific stack.
   carriage return. Smart quotes, en/em dashes, arrows, Greek letters,
   box-drawing and accented characters all pass it. Writing ASCII
   remains the house convention and `--fix` rewrites the typographic
-  substitutes, but the gate does not enforce it, so a reviewer catches
-  what the hook does not. `terminology-gate` is a separate check over
-  banned legacy terms and has nothing to say about encoding.
+  substitutes through `CHARACTER_POLICY_REPLACEMENTS`, NFKD
+  normalization and combining-mark removal, but the gate does not
+  enforce it, so a reviewer catches what the hook does not.
+  The emoji predicate covers six ranges -- Emoticons, Miscellaneous
+  Symbols and Pictographs, Transport and Map, Supplemental Symbols and
+  Pictographs, regional-indicator Flags, Variation Selectors -- and
+  omits Miscellaneous Symbols (U+2600..U+26FF), Dingbats
+  (U+2700..U+27BF) and Symbols and Pictographs Extended-A
+  (U+1FA70..U+1FAFF), so a warning sign, check mark or cross mark
+  passes. A green `ansi-check` is not proof that a file is emoji-free.
+  The check skips binary and build-artifact extensions, everything
+  under `data/external/papers`, files over 10 MB, and files that are
+  not valid UTF-8. `terminology-gate` is a separate check over the
+  eight banned legacy terms in `registry/terminology_standards.toml`
+  and has nothing to say about encoding.
 - **Warnings-as-errors** via `[workspace.lints]` in root `Cargo.toml`.
   Do NOT bypass with crate-local `#![allow(warnings)]`. Narrow-scope
   `#[allow(clippy::<lint>)]` with a documented rationale is permitted.
@@ -173,6 +185,159 @@ refuses when the database holds transition events and requires
 `--allow-transition-history-loss` to proceed. Use step 2 above to
 refresh exports; reach for `build` only when importing hand-authored
 TOML into an empty or expendable database.
+
+## Research epistemics
+
+Scope: every claim, insight, and experiment that enters the registry.
+The "Registry: SQLite-canonical" section above governs how a write
+happens; this section governs what earns an ID.
+
+Each rule below cites the repository's own record as its authority. A
+rule with no claim ID behind it is a convention; a rule with one is a
+finding, and the finding outranks the preference.
+
+### Evidence layers
+
+`docs/engineering/claim-theorem-identity-frontier-2026_08_04.md` fixes
+three layers and one invariant: evidence at one layer never promotes a
+claim at another.
+
+| Layer                      | Records                                                          | Decisive evidence                                       |
+| -------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------- |
+| Source proposition         | What a paper, theorem, or cited equation asserts                 | The primary source, cited by name and section           |
+| Implementation conformance | Whether code implements that proposition                         | A passing test, a Rocq `Qed.`, a reproducible run       |
+| Phenomenological mapping   | Whether parameters or observables support the physical reading   | A preregistered comparison against matched controls     |
+
+Implementation correctness is decisive for its own layer and carries
+no weight at the layer above. The `hypothesis_class` distribution
+makes the asymmetry measurable: 1221 `verified_claim` against 3
+`falsifiable_thesis`. Reading the first count as a scoreboard for the
+second is the error the invariant forbids.
+
+Belief, coherence, analogy, and cross-domain recurrence generate
+hypotheses. Recurrence becomes evidence only when the recurring
+domains share no analysis pipeline, no normalization, and no lift;
+recurrence through a shared pipeline measures the pipeline.
+
+### Interpretive depth
+
+Lifts, wavenumber selections, embeddings, normalizations, and
+parameter fits stand between an algebraic structure and an observable.
+Their count is itself a measurement, and the record shows it dominates
+the result.
+
+| Depth | Protocol                                     | Outcome in this repository                                                                                                                              |
+| ----- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0     | Associator applied directly to a signal      | Structure-specific: scrambling the CD sign table at identical 1848-term support collapses ROC-AUC 0.8274 to 0.4750 (C-1632)                             |
+| 1     | Algebraically-selected wavenumbers, stacked  | Degenerate null: CD-ZD, G2 Aut(O) and Albert J3(O) each return SNR 0.29 and sl(2) returns 0.23 (C-1372); D=16 through 262144 return identical RMS (C-1366) |
+| 2     | 42 assessors -> Herm_3 -> mixing angles      | Fitted agreement at four free parameters through a lift proved non-S_3-equivariant, hence underivable from the algebra (C-1502, C-1489, C-1492)         |
+
+Rules:
+
+- A scientific claim MUST enumerate its intervening maps and declare
+  the count.
+- A signal MUST NOT be attributed to an algebraic structure until it
+  is shown specific to that structure: it survives substitution of a
+  different algebra, randomization of the structure at fixed support,
+  and removal of each map in turn.
+- A result identical across algebras or across dimensions measures the
+  pipeline, not the algebra. C-1366 names the mechanism in its own
+  case (the `assessor_fraction=0.5` identity).
+- A lift that cannot be derived from the structure it expresses MUST
+  be recorded as a construction with its free-parameter count, and
+  MUST NOT be cited as evidence for that structure. C-1476 is the
+  obstruction (rank-2 Jacobian lock on the 42D->3D family), C-1478 the
+  construction that breaks it, C-1489 the concession that it is
+  project-specific.
+
+Interpretive depth has no schema field yet. `parameter_count` is
+declared per observable in `registry/scorecard.toml`; no `lift_depth`
+exists anywhere in the registry, so the axis is presently unmeasured
+and the table above is prose. Adding `lift_depth` through the
+`gororoba-db` mutation path is the open action that discharges this,
+and until it lands the "Instruments over essays" rule below indicts
+this subsection too.
+
+### Matched controls
+
+A control MUST preserve support, dimensionality, free-parameter count,
+temporal receptive field, and measurement procedure, and destroy only
+the proposed causal structure.
+
+- Temporal receptive field is a confound in its own right. I-212
+  records the case: an advantage over a one-step baseline partly
+  measured temporal asymmetry, and at matched six-sample support the
+  ranking reversed, with maximum stepwise rotation at 0.8383 over the
+  associator at 0.8274 (C-1633).
+- A single control draw is an anecdote. C-1632 states its own limit --
+  one ChaCha8 scramble at seed 42 -- and leaves the ensemble open. A
+  dominance claim SHOULD report a null distribution, not one
+  comparison.
+
+### Falsifiers
+
+`what_would_verify_refute` is declared in the claim schema
+(`crates/gororoba_cli_data/src/bin/registry_check.rs` and nine peer
+binaries) and appears zero times in `registry/claims.toml`. Populating
+it is the cheapest available increase in the program's exposure to
+refutation.
+
+- A `falsifiable_thesis` or `research_claim` MUST state what would
+  refute it, which experiment adjudicates, and which outcome forces
+  abandonment. C-1498 is the worked example: a predicted delta_CP near
+  93 deg against a measured 195 +/- 25 deg, "Testable by DUNE and
+  Hyper-Kamiokande".
+- A `verified_claim` at the implementation layer needs no separate
+  falsifier, because the test is the falsifier.
+- Identify the cheapest DECISIVE falsifier and run it before extending
+  a theory. When no cheap test is decisive, record the theory as
+  untested; a cheap indecisive proxy manufactures confidence and is
+  worse than silence.
+
+### Refuted structures as controls
+
+Refutations are retained permanently and their closure reason is typed
+(`Closed/Negative-Result`, `Closed/Obstructed`,
+`Closed/Methodology-Insufficient`, `Closed/Analogy`, and the rest of
+the vocabulary).
+
+- C-020 is the standing specimen: a 16D zero-divisor adjacency matrix
+  that "does NOT represent valid algebra. Found to be
+  noise/hallucination when verified against commutator/parity
+  matrices." Generated structure that survives visual inspection is
+  the characteristic failure mode of LLM-assisted work here, and the
+  defense is a mechanical cross-check, not a closer reading.
+- A claim reusing a refuted claim's pipeline, lift, or normalization
+  inherits that refutation as a prior and MUST state what differs
+  before registration.
+- Structural analogy raises the evidentiary burden and never lowers
+  it. C-036, C-037, C-038, C-040 and C-041 are five refutations of one
+  shape: algebraically motivated, numerically near, empirically false.
+  An attractive analogy is registered as a conjecture carrying a
+  discriminating prediction, and is promoted only when that prediction
+  survives.
+
+### Instruments over essays
+
+An interpretive argument left in prose is unfalsifiable by
+construction. Convert it into a schema field, a provenance record, an
+executable query, or a preregistered comparison.
+
+`registry/scorecard.toml` is the model: `parameter_count` is declared
+per observable and the bins are defined by it, with nine bin-1 entries
+at `parameter_count = 0` against a bin-2 PMNS fit at four. The
+quantity such a scorecard measures is the derivative of agreement with
+respect to parameter count, not agreement.
+
+Tracked axes: free-parameter count, interpretive depth, symmetry
+obligations discharged or waived, null-model performance, and the
+falsification criterion.
+
+Mathematics determines the invariants and the admissible
+transformations. Experiment determines whether an invariant reaches an
+observable. State each claim at the layer its evidence supports and no
+higher; when the decisive experiment has not run, say so plainly and
+run it next.
 
 ## GPU backend foundation (Wave B)
 
@@ -399,7 +564,7 @@ tools used.
 Adopted from steinmarder/AGENTS.md "Commenting voice"; adapted to
 Rust:
 
-- A short paragraph opens with the load-bearing claim
+- A short paragraph opens with the claim the rest of the block rests on
   ("PUSH-scheme writes are race-free because dst = src + c_i is a
   bijection on cells for each fixed i.").
 - Then the primary-source citation, by name -- the function
@@ -414,7 +579,7 @@ Rust:
 
 The distillate -- subtle shifts on top of the existing voice:
 
-- Default short. One-line trailing comments on the load-bearing line
+- Default short. One-line trailing comments on the decisive line
   beat a function-header paragraph, unless the function as a whole
   encodes a non-obvious invariant.
 - One thought per comment; stack them when steps are distinct,
@@ -458,6 +623,40 @@ Example shape:
 This composes with the comment-hygiene rules above (no task #, no
 PR #, no Phase X.Y, no deictic refs). Together: short, active,
 sequenced, primary-source-grounded, time-invariant.
+
+### Markdown tracking policy
+
+`.gitignore` denies `*.md` workspace-wide and re-admits named files.
+The rationale is in the file itself: markdown is generated or
+ephemeral by default, and the allowlist "keeps opportunistic LLM-spam
+markdown out of the repo while permitting real report artifacts that
+have ownership and removal policy."
+
+- `AGENTS.md`, `CLAUDE.md` and `README.md` are allowlisted
+  case-insensitively at every depth.
+- The `docs/` tree admits specific paths only (`docs/THEOREMS.md`,
+  `docs/REQUIREMENTS.md`, `docs/requirements/`, the generated theorem
+  mirror). Markdown under `docs/book/` is mdBook-managed.
+- Curated `docs/reports/` markdown MUST be governed by
+  `registry/markdown_owner_map.toml` and the markdown inventory gate.
+- A new tracked `.md` file MUST be allowlisted before it is written,
+  not after `git add` fails.
+
+### Validation and audit lanes
+
+| Target                     | What it checks                                             |
+| -------------------------- | ---------------------------------------------------------- |
+| `make rust-clippy`         | Workspace clippy with deny warnings                        |
+| `make rust-semver-check`   | semver-checks for crate API stability                       |
+| `make cargo-deny-check`    | License, advisory, and source policy                        |
+| `make dep-audit`           | cargo-audit advisory scan                                   |
+| `make cpd-audit CPD_TOP=20`| PMD-driven duplication audit                                |
+| `make docs-freshness`      | Generated docs match source registries                      |
+| `make integrity`           | Verify lane (mirror + license + overflow)                   |
+| `make registry-integrity`  | Regenerates `registry/schema_signatures.toml`               |
+
+Any registry TOML edit drifts `schema_signatures.toml`; run
+`make integrity-resolution` rather than patching signatures by hand.
 
 ### LLM-readable markdown style
 
