@@ -1989,44 +1989,9 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
-name = "voyager-arrow-probe"
+name = "voyager"
 crate = "gororoba_cli_physics"
-description = "Consumer-side Arrow loader probe for Voyager encounter artifacts. Memory-maps Arrow IPC files, asserts the required schema, verifies monotonic time ordering, and reports O(log n) timestamp bounds plus validity flags for a requested telemetry column."
-
-[[binary]]
-name = "voyager-cdf-ingest"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "voyager-crs-compare"
-crate = "gororoba_cli_physics"
-description = "Voyager CRS comparison lane with legacy shape mode, promoted Arrow encounter-window shape mode, and calibrated absolute-flux mode. Aligns staged or promoted spectra with modeled heliosphere outputs and emits reproducible comparison tables plus one-parameter upper-limit summaries when a DM template is supplied."
-
-[[binary]]
-name = "voyager-encounter-track"
-crate = "gororoba_cli_physics"
-description = "Fused Voyager encounter tracker that joins promoted Arrow telemetry to merged Voyager spatial coordinates, interpolates r/lat/lon in time, and maps the resulting heliocentric position into lattice indices for solver-side validation loops."
-
-[[binary]]
-name = "voyager-hapi-ingest"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "voyager-ism-multichannel"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "voyager-mag-pls-cd"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "voyager-pws-ingest"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "voyager2-bartol-amda-crossval"

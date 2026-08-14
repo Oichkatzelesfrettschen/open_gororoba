@@ -318,24 +318,8 @@ path = "src/bin/selfsim_logsigma_bootstrap.rs"
 name = "sedenion-associator-coefficient-census"
 path = "src/bin/sedenion_associator_coefficient_census.rs"
 [[bin]]
-name = "voyager-cdf-ingest"
-path = "src/bin/voyager_cdf_ingest.rs"
-
-[[bin]]
-name = "voyager-pws-ingest"
-path = "src/bin/voyager_pws_ingest.rs"
-
-[[bin]]
-name = "voyager-ism-multichannel"
-path = "src/bin/voyager_ism_multichannel.rs"
-
-[[bin]]
 name = "sharp-flare-cd"
 path = "src/bin/sharp_flare_cd.rs"
-
-[[bin]]
-name = "voyager-hapi-ingest"
-path = "src/bin/voyager_hapi_ingest.rs"
 
 [[bin]]
 name = "hapi-fetch"
@@ -361,18 +345,6 @@ path = "src/bin/he4_superfluid.rs"
 [[bin]]
 name = "cr-modulation-sweep"
 path = "src/bin/cr_modulation_sweep.rs"
-
-[[bin]]
-name = "voyager-crs-compare"
-path = "src/bin/voyager_crs_compare.rs"
-
-[[bin]]
-name = "voyager-arrow-probe"
-path = "src/bin/voyager_arrow_probe.rs"
-
-[[bin]]
-name = "voyager-encounter-track"
-path = "src/bin/voyager_encounter_track.rs"
 
 [[bin]]
 name = "entropy-pde"
@@ -796,6 +768,10 @@ name = "turboquant"
 path = "src/bin/turboquant/main.rs"
 
 [[bin]]
+name = "voyager"
+path = "src/bin/voyager/main.rs"
+
+[[bin]]
 name = "unified-action-sweep"
 path = "src/bin/unified_action_sweep.rs"
 
@@ -882,10 +858,6 @@ path = "src/bin/ism_multichannel_null.rs"
 [[bin]]
 name = "solar-cycle-crosscorr"
 path = "src/bin/solar_cycle_crosscorr.rs"
-
-[[bin]]
-name = "voyager-mag-pls-cd"
-path = "src/bin/voyager_mag_pls_cd.rs"
 
 [[bin]]
 name = "cd-domain-survey"

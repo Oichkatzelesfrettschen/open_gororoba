@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use chrono::{DateTime, Datelike, Duration, Utc};
-use clap::Parser;
+use clap::Args;
 use data_core::catalogs::voyager::VoyagerSpacecraft;
 use gororoba_cli_physics::{
     heliosphere_boundary::{ChronologyGate, DatasetBounds},
@@ -12,12 +12,8 @@ use gororoba_cli_physics::{
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
-#[derive(Parser, Debug)]
-#[command(name = "voyager-encounter-track")]
-#[command(
-    about = "Fuse promoted encounter Arrow telemetry with merged Voyager spatial coordinates and map them into lattice indices."
-)]
-struct Cli {
+#[derive(Args, Debug)]
+pub struct Cli {
     /// Repository root used for promoted Arrow discovery. Defaults to current dir.
     #[arg(long)]
     repo_root: Option<PathBuf>,
@@ -141,8 +137,7 @@ fn discover_voyager_merged_file(
     )
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     let repo_root = cli.repo_root.unwrap_or(default_repo_root()?);
     let mission_phase = parse_mission_phase(&cli.mission_phase);
     let window_start = DateTime::parse_from_rfc3339(&cli.window_start)

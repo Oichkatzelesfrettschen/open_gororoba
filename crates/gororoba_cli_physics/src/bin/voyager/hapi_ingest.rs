@@ -5,13 +5,12 @@
 //! Handles both 48-sec MAG and hourly COHO merged datasets.
 
 use anyhow::{Context, Result};
-use clap::Parser;
+use clap::Args;
 use csv::ReaderBuilder;
 use std::path::PathBuf;
 
-#[derive(Parser)]
-#[command(name = "voyager-hapi-ingest")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Spacecraft name for mission column
     #[arg(long)]
     spacecraft: String,
@@ -45,8 +44,7 @@ struct Cli {
     col_dist: i32,
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== Voyager HAPI Ingest: {} ===", cli.spacecraft);
 
     let mut reader = ReaderBuilder::new()

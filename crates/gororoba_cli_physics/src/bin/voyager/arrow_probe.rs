@@ -1,16 +1,12 @@
 use anyhow::{Context, Result};
 use chrono::{DateTime, Utc};
-use clap::Parser;
+use clap::Args;
 use gororoba_cli_physics::voyager_arrow::{MissionPhase, TrajectoryFeeder, default_repo_root};
 use serde::Serialize;
 use std::path::PathBuf;
 
-#[derive(Parser, Debug)]
-#[command(name = "voyager-arrow-probe")]
-#[command(
-    about = "Memory-map a Voyager Arrow artifact, assert schema, and locate telemetry bounds for a target timestamp."
-)]
-struct Cli {
+#[derive(Args, Debug)]
+pub struct Cli {
     /// Arrow IPC file emitted by ingest-pds-crs --export-format arrow.
     #[arg(long)]
     input: Option<PathBuf>,
@@ -65,8 +61,7 @@ struct ProbeReport {
     window_row_count: Option<usize>,
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     let target_ms = DateTime::parse_from_rfc3339(&cli.target_time)
         .with_context(|| format!("failed to parse target time {}", cli.target_time))?
         .with_timezone(&Utc)

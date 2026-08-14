@@ -10,19 +10,18 @@
 //! phase coupling invisible to single-instrument analysis.
 
 use anyhow::{Context, Result};
-use clap::Parser;
+use clap::Args;
 use csv::ReaderBuilder;
 use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
-#[derive(Parser)]
-#[command(name = "voyager-ism-multichannel")]
-struct Cli {
-    /// MAG CSV (from voyager-cdf-ingest)
+#[derive(Args)]
+pub struct Cli {
+    /// MAG CSV (from voyager cdf-ingest)
     #[arg(long)]
     mag_csv: PathBuf,
 
-    /// PWS CSV (from voyager-pws-ingest --hourly)
+    /// PWS CSV (from voyager pws-ingest --hourly)
     #[arg(long)]
     pws_csv: PathBuf,
 
@@ -75,8 +74,7 @@ struct MultiChannelResult {
     year_range: String,
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== Voyager ISM Multi-Channel CD ===");
     println!("  MAG: {}", cli.mag_csv.display());
     println!("  PWS: {}", cli.pws_csv.display());
