@@ -2980,7 +2980,7 @@
 //!
 //! ## E-178: Harmonic Halo Rotation Curve: 7-mode box-kite modulation sweep
 //!
-//! - Binary: `harmonic-halo-rotation-curve`
+//! - Binary: `harmonic-halo rotation-curve`
 //! - Input: NFW parameters (M_200, c_200, z)
 //! - Output: CSV rotation curves, stdout summary statistics
 //! - Deterministic: `true`
@@ -2992,7 +2992,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin harmonic-halo-rotation-curve -- --m200 1e12 --alpha-zd 0.05 --csv harmonic_halo_mw.csv
+//! cargo run --release --bin harmonic-halo -- rotation-curve --m200 1e12 --alpha-zd 0.05 --csv harmonic_halo_mw.csv
 //! ```
 //!
 //! ## E-179: Falsification of slope_ratio = 42^2/10000 claim (C-1329)
@@ -3014,7 +3014,7 @@
 //!
 //! ## E-180: Harmonic Halo Stacking: SPARC + Gaia MW rotation curve falsification test
 //!
-//! - Binary: `harmonic-halo-stacking`
+//! - Binary: `harmonic-halo stacking`
 //! - Input: SPARC rotation curves (data/external/sparc/), Li et al. 2020 NFW fits (data/external/sparc_nfw/), Gaia DR3 MW rotation curve (data/external/gaia_mw/)
 //! - Output: CSV stacked residuals in r/r_s, Fourier power at 7 wavenumbers, null hypothesis p-values, alpha_zd limit
 //! - Deterministic: `true`
@@ -3026,7 +3026,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin harmonic-halo-stacking -- --sparc-dir data/external/sparc --nfw-fits data/external/sparc_nfw/li2020_nfw_fits.csv --csv-out harmonic_stacking_results.csv
+//! cargo run --release --bin harmonic-halo -- stacking --sparc-dir data/external/sparc --nfw-fits data/external/sparc_nfw/li2020_nfw_fits.csv --csv-out harmonic_stacking_results.csv
 //! ```
 //!
 //! ## E-181: x87 FP-80 vs DD vs nalgebra eigenvalue solver benchmark
@@ -3048,7 +3048,7 @@
 //!
 //! ## E-182: Harmonic Halo stacking: multi-CD-dimension sweep (D=16,32,64,128,256)
 //!
-//! - Binary: `harmonic-halo-stacking`
+//! - Binary: `harmonic-halo stacking`
 //! - Input: SPARC rotation curves + Li et al. 2020 NFW fits + algebra_analysis ZD census
 //! - Output: CSV stacked residuals per dimension, Cross-dimension SNR comparison table
 //! - Deterministic: `true`
@@ -3060,12 +3060,12 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin harmonic-halo-stacking -- --cd-dim 32 --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat
+//! cargo run --release --bin harmonic-halo -- stacking --cd-dim 32 --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat
 //! ```
 //!
 //! ## E-183: MaNGA N=6992 harmonic halo stacking null result with pseudo-slit rotation curves (D=16,64,256,1024)
 //!
-//! - Binary: `harmonic-halo-stacking-manga`
+//! - Binary: `harmonic-halo stacking-manga`
 //! - Input: data/external/manga/dapall_selection.csv, data/external/manga/rotcurves/manga_rotcurves_all.csv
 //! - Output: manga_harmonic_stacking.csv
 //! - Deterministic: `true`
@@ -3077,7 +3077,7 @@
 //!
 //! Run command:
 //! ```bash
-//! harmonic-halo-stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv
+//! harmonic-halo stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv
 //! ```
 //!
 //! ## E-184: Braid fidelity audit: confirm fidelity < 1.0 at all dim >= 16 (C-1350, C-1351)
@@ -3099,7 +3099,7 @@
 //!
 //! ## E-185: Harmonic halo falsification replication: alpha_zd=0 NFW recovery + DM cross-section independence (C-1353, C-1354)
 //!
-//! - Binary: `harmonic-halo-rotation-curve`
+//! - Binary: `harmonic-halo rotation-curve`
 //! - Input: unit tests
 //! - Output: harmonic_falsification_replication.csv
 //! - Deterministic: `true`
@@ -3201,7 +3201,7 @@
 //!
 //! ## E-191: CD dimension sweep: harmonic halo stacking at D=16,32,64,128,256,512,1024
 //!
-//! - Binary: `harmonic-halo-stacking`
+//! - Binary: `harmonic-halo stacking`
 //! - Input: data/external/sparc/table2_rotcurves.dat, data/external/sparc_nfw/table1.dat
 //! - Output: data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16,32,64,128,256,512,1024}.csv
 //! - Deterministic: `true`
@@ -3209,16 +3209,16 @@
 //! - Claims: C-1344, C-1345
 //!
 //! Method:
-//! Run harmonic-halo-stacking on 93 SPARC galaxies (chi2<3, c200>=2) with --cd-dim={16,32,64,128,256,512,1024}. At each CD dimension D, the number of Fourier modes is D/2-1 and the assessor fraction is exactly 0.5 (combinatorial identity). Detection SNR and alpha_zd estimates compared across all 7 dimensions.
+//! Run harmonic-halo stacking on 93 SPARC galaxies (chi2<3, c200>=2) with --cd-dim={16,32,64,128,256,512,1024}. At each CD dimension D, the number of Fourier modes is D/2-1 and the assessor fraction is exactly 0.5 (combinatorial identity). Detection SNR and alpha_zd estimates compared across all 7 dimensions.
 //!
 //! Run command:
 //! ```bash
-//! harmonic-halo-stacking --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat --cd-dim {16..1024} --min-c200 2.0 --max-chi2 3.0 --x-min 0.5 --x-max 10.0
+//! harmonic-halo stacking --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat --cd-dim {16..1024} --min-c200 2.0 --max-chi2 3.0 --x-min 0.5 --x-max 10.0
 //! ```
 //!
 //! ## E-192: Non-static MaNGA signal analysis: STFT spectrogram + derivative + Rayleigh phase coherence
 //!
-//! - Binary: `harmonic-halo-signal-analysis`
+//! - Binary: `harmonic-halo signal-analysis`
 //! - Input: data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jordan_lowi.csv
 //! - Output: data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv, data/results/e183/stft_lowi.csv, data/results/e183/deriv_lowi.csv, data/results/e183/rayleigh_lowi.csv, experiments/manga_zd_null/results.json
 //! - Deterministic: `true`
@@ -3230,7 +3230,7 @@
 //!
 //! Run command:
 //! ```bash
-//! harmonic-halo-signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv
+//! harmonic-halo signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv
 //! ```
 //!
 //! ## E-193: THINGS HI 21cm Rotation Curve Extraction
@@ -3252,7 +3252,7 @@
 //!
 //! ## E-194: Galaxy-Ensemble Rayleigh Phase Coherence
 //!
-//! - Binary: `harmonic-halo-galaxy-phase`
+//! - Binary: `harmonic-halo galaxy-phase`
 //! - Input: data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv
 //! - Output: data/external/manga/galaxy_phase_coherence.csv
 //! - Deterministic: `true`
@@ -3264,12 +3264,12 @@
 //!
 //! Run command:
 //! ```bash
-//! harmonic-halo-galaxy-phase --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --output data/external/manga/galaxy_phase_coherence.csv
+//! harmonic-halo galaxy-phase --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --output data/external/manga/galaxy_phase_coherence.csv
 //! ```
 //!
 //! ## E-195: Multi-Panel Null Result Visualization
 //!
-//! - Binary: `harmonic-halo-visualize`
+//! - Binary: `harmonic-halo visualize`
 //! - Input: data/results/e183/manga_stack_D16.csv, data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv
 //! - Output: docs/latex/figs/stft_spectrogram.tex, docs/latex/figs/derivative_dft.tex, docs/latex/figs/spatial_residuals.tex
 //! - Deterministic: `true`
@@ -3281,12 +3281,12 @@
 //!
 //! Run command:
 //! ```bash
-//! harmonic-halo-visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs
+//! harmonic-halo visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs
 //! ```
 //!
 //! ## E-196: MaNGA Stacking with PSF Beam-Smearing Correction
 //!
-//! - Binary: `harmonic-halo-stacking-manga`
+//! - Binary: `harmonic-halo stacking-manga`
 //! - Input: data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv
 //! - Output: data/external/manga/manga_stack_psf_corrected.csv
 //! - Deterministic: `true`
@@ -3298,12 +3298,12 @@
 //!
 //! Run command:
 //! ```bash
-//! harmonic-halo-stacking-manga --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --exclude-inner-psf --output data/external/manga/manga_stack_psf_corrected.csv
+//! harmonic-halo stacking-manga --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --exclude-inner-psf --output data/external/manga/manga_stack_psf_corrected.csv
 //! ```
 //!
 //! ## E-197: Signal Injection-Recovery Validation
 //!
-//! - Binary: `harmonic-halo-injection`
+//! - Binary: `harmonic-halo injection`
 //! - Input: data/external/manga/manga_rotcurves_all.csv, data/external/manga/dapall_selection.csv
 //! - Output: data/external/manga/injection_recovery.csv
 //! - Deterministic: `true`
@@ -3315,7 +3315,7 @@
 //!
 //! Run command:
 //! ```bash
-//! harmonic-halo-injection --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --alphas 0,0.001,0.002,0.004,0.008,0.016 --output data/external/manga/injection_recovery.csv
+//! harmonic-halo injection --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --alphas 0,0.001,0.002,0.004,0.008,0.016 --output data/external/manga/injection_recovery.csv
 //! ```
 //!
 //! ## E-198: LoTSS DR2/DR3 MaNGA overlap audit and radio-quiet split

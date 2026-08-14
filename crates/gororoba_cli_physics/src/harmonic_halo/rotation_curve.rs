@@ -6,21 +6,19 @@
 //!
 //! # Usage
 //! ```text
-//! cargo run --bin harmonic-halo-rotation-curve -- \
+//! cargo run --bin harmonic-halo -- rotation-curve \
 //!   --m200 1e12 --alpha-zd 0.05 --csv rotation_curve.csv
 //! ```
 
-use clap::Parser;
+use clap::Args;
 use cosmology_core::{
     harmonic_halos::{HarmonicHaloConfig, v_circ_nfw, v_circ_with_halos},
     nfw_utils::nfw_params_from_mass,
 };
 use std::io::Write;
 
-#[derive(Parser)]
-#[command(name = "harmonic-halo-rotation-curve")]
-#[command(about = "Compute NFW rotation curve with harmonic halo modulation")]
-struct Args {
+#[derive(Args)]
+pub struct Cli {
     /// Halo virial mass M_200 in solar masses.
     #[arg(long, default_value = "1e12")]
     m200: f64,
@@ -62,41 +60,40 @@ struct Args {
     csv: String,
 }
 
-fn main() -> anyhow::Result<()> {
-    let args = Args::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
-    let nfw = nfw_params_from_mass(args.m200, args.z);
-    let c200 = if args.c200 > 0.0 { args.c200 } else { nfw.c200 };
+    let nfw = nfw_params_from_mass(cli.m200, cli.z);
+    let c200 = if cli.c200 > 0.0 { cli.c200 } else { nfw.c200 };
     let r_s = nfw.r200_kpc / c200;
 
     eprintln!("=== Harmonic Halo Rotation Curve ===");
     eprintln!(
         "M_200 = {:.3e} Msun, c_200 = {:.2}, r_s = {:.2} kpc",
-        args.m200, c200, r_s
+        cli.m200, c200, r_s
     );
-    eprintln!("r_200 = {:.2} kpc, z = {:.4}", nfw.r200_kpc, args.z);
+    eprintln!("r_200 = {:.2} kpc, z = {:.4}", nfw.r200_kpc, cli.z);
     eprintln!(
         "alpha_zd = {}, n_modes = {}, cd_dim = {}",
-        args.alpha_zd, args.n_modes, args.cd_dim
+        cli.alpha_zd, cli.n_modes, cli.cd_dim
     );
 
-    let config = HarmonicHaloConfig::new_cd(args.alpha_zd, args.n_modes, r_s, args.cd_dim);
+    let config = HarmonicHaloConfig::new_cd(cli.alpha_zd, cli.n_modes, r_s, cli.cd_dim);
 
-    let mut file = std::fs::File::create(&args.csv)?;
+    let mut file = std::fs::File::create(&cli.csv)?;
     writeln!(
         file,
         "r_kpc,v_circ_nfw_km_s,v_circ_halo_km_s,modulation_factor,delta_v_percent"
     )?;
 
-    let log_r_min = args.r_min.ln();
-    let log_r_max = args.r_max.ln();
+    let log_r_min = cli.r_min.ln();
+    let log_r_max = cli.r_max.ln();
 
-    for i in 0..args.n_points {
-        let frac = i as f64 / (args.n_points - 1).max(1) as f64;
+    for i in 0..cli.n_points {
+        let frac = i as f64 / (cli.n_points - 1).max(1) as f64;
         let r = (log_r_min + frac * (log_r_max - log_r_min)).exp();
 
-        let v_nfw = v_circ_nfw(r, args.m200, args.z);
-        let v_halo = v_circ_with_halos(r, args.m200, c200, args.z, &config);
+        let v_nfw = v_circ_nfw(r, cli.m200, cli.z);
+        let v_halo = v_circ_with_halos(r, cli.m200, c200, cli.z, &config);
         let modulation = cosmology_core::harmonic_halos::harmonic_halo_modulation(r, &config);
         let delta_v_pct = if v_nfw > 0.0 {
             (v_halo - v_nfw) / v_nfw * 100.0
@@ -111,26 +108,26 @@ fn main() -> anyhow::Result<()> {
         )?;
     }
 
-    eprintln!("Wrote {} points to {}", args.n_points, args.csv);
+    eprintln!("Wrote {} points to {}", cli.n_points, cli.csv);
 
     // Print summary statistics
-    let v_peak_nfw = (0..args.n_points)
+    let v_peak_nfw = (0..cli.n_points)
         .map(|i| {
-            let frac = i as f64 / (args.n_points - 1).max(1) as f64;
+            let frac = i as f64 / (cli.n_points - 1).max(1) as f64;
             let r = (log_r_min + frac * (log_r_max - log_r_min)).exp();
-            v_circ_nfw(r, args.m200, args.z)
+            v_circ_nfw(r, cli.m200, cli.z)
         })
         .fold(0.0_f64, f64::max);
 
     eprintln!("v_peak(NFW) = {:.2} km/s", v_peak_nfw);
 
-    if args.alpha_zd > 0.0 {
-        let max_delta: f64 = (0..args.n_points)
+    if cli.alpha_zd > 0.0 {
+        let max_delta: f64 = (0..cli.n_points)
             .map(|i| {
-                let frac = i as f64 / (args.n_points - 1).max(1) as f64;
+                let frac = i as f64 / (cli.n_points - 1).max(1) as f64;
                 let r = (log_r_min + frac * (log_r_max - log_r_min)).exp();
-                let v_nfw = v_circ_nfw(r, args.m200, args.z);
-                let v_halo = v_circ_with_halos(r, args.m200, c200, args.z, &config);
+                let v_nfw = v_circ_nfw(r, cli.m200, cli.z);
+                let v_halo = v_circ_with_halos(r, cli.m200, c200, cli.z, &config);
                 if v_nfw > 0.0 {
                     ((v_halo - v_nfw) / v_nfw * 100.0).abs()
                 } else {

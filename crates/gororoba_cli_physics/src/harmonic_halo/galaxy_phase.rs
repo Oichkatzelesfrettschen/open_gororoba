@@ -12,7 +12,7 @@
 //!
 //! Reference: C-1406, E-194
 
-use clap::Parser;
+use clap::Args;
 use cosmology_core::{
     harmonic_stacking::{
         CdDimensionParams, NormalizedPoint, NormalizedResiduals, galaxy_ensemble_phase_coherence,
@@ -25,10 +25,8 @@ use std::path::PathBuf;
 
 const G_KPC_KMS2: f64 = 4.302e-6;
 
-#[derive(Parser)]
-#[command(name = "harmonic-halo-galaxy-phase")]
-#[command(about = "Galaxy-ensemble Rayleigh phase coherence test at CD-ZD wavenumbers")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Path to MaNGA rotation curves CSV.
     #[arg(long, default_value = "data/external/manga/manga_rotcurves_all.csv")]
     rotcurves: PathBuf,
@@ -50,8 +48,7 @@ struct Cli {
     rayleigh_csv: PathBuf,
 }
 
-fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     eprintln!("Loading MaNGA rotation curves from {:?}...", cli.rotcurves);
     let rotcurves = parse_manga_rotcurves(&cli.rotcurves).map_err(|e| anyhow::anyhow!(e))?;

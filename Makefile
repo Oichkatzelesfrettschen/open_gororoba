@@ -2219,19 +2219,19 @@ run: rust-smoke
 
 run-e183:
 	@mkdir -p data/results/e183
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo -- stacking-manga \
 		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
 		--dapall data/external/manga/dapall_selection.csv \
 		--cd-dim 16 --csv data/results/e183/manga_stack_D16.csv
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo -- stacking-manga \
 		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
 		--dapall data/external/manga/dapall_selection.csv \
 		--cd-dim 64 --csv data/results/e183/manga_stack_D64.csv
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo -- stacking-manga \
 		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
 		--dapall data/external/manga/dapall_selection.csv \
 		--cd-dim 256 --csv data/results/e183/manga_stack_D256.csv
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo -- stacking-manga \
 		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
 		--dapall data/external/manga/dapall_selection.csv \
 		--cd-dim 1024 --csv data/results/e183/manga_stack_D1024.csv

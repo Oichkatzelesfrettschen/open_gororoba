@@ -9884,8 +9884,8 @@
 //!
 //! - Status: `Verified`
 //! - Last verified:
-//! - Statement: The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo-signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result.
-//! - Where stated: data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo-signal-analysis, E-192, 2026-03-12)
+//! - Statement: The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result.
+//! - Where stated: data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo signal-analysis, E-192, 2026-03-12)
 //! - What would verify/refute it:
 //!
 //! ## C-1375

@@ -11,7 +11,7 @@
 //!
 //! Reference: C-1332 (stacking falsification thesis), E-180
 
-use clap::Parser;
+use clap::Args;
 use cosmology_core::{
     harmonic_stacking::{
         CdDimensionParams, NormalizedPoint, NormalizedResiduals, StackingConfig,
@@ -27,10 +27,8 @@ use std::path::PathBuf;
 /// Gravitational constant in kpc^3 Msun^{-1} (km/s)^2 units.
 const G_KPC_KMS2: f64 = 4.302e-6;
 
-#[derive(Parser)]
-#[command(name = "harmonic-halo-stacking")]
-#[command(about = "Stack rotation curve residuals to detect N-mode harmonic halo signature")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Path to SPARC rotation curves (directory of .dat files OR single VizieR table2.dat).
     #[arg(long, default_value = "data/external/sparc/Rotmod_LTG")]
     sparc: PathBuf,
@@ -72,9 +70,7 @@ struct Cli {
     cd_dim: usize,
 }
 
-fn main() -> anyhow::Result<()> {
-    env_logger::init();
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     // Load SPARC rotation curves: auto-detect directory vs single VizieR table2 file
     eprintln!(
