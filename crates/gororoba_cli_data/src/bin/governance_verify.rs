@@ -117,14 +117,6 @@ const GPU_REQUIRED_BINS: &[(&str, &str)] = &[
     ),
     (
         "crates/gororoba_cli_physics/Cargo.toml",
-        "name = \"heliosphere-sparse-preservation\"\npath = \"src/bin/heliosphere_sparse_preservation.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli_physics/Cargo.toml",
-        "name = \"heliosphere-lbm-cube-run\"\npath = \"src/bin/heliosphere_lbm_cube_run.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli_physics/Cargo.toml",
         "name = \"chsh-betti-sweep\"\npath = \"src/bin/chsh_betti_sweep.rs\"\nrequired-features = [\"gpu\"]",
     ),
     (
@@ -147,9 +139,37 @@ const GPU_REQUIRED_BINS: &[(&str, &str)] = &[
         "crates/gororoba_cli_physics/Cargo.toml",
         "name = \"particle-trace\"\npath = \"src/bin/particle_trace.rs\"\nrequired-features = [\"gpu\"]",
     ),
+];
+
+// The heliosphere lanes share one binary, so a GPU-only lane states its gate as
+// `#[cfg(feature = "gpu")]` on the module and again on the dispatcher variant
+// that names it, rather than as `required-features` on a `[[bin]]` of its own.
+// Both sites are checked: a gated module behind an ungated variant breaks the
+// default build on an unresolved path, which is the failure this catches early.
+const GPU_REQUIRED_CFG_ITEMS: &[(&str, &str)] = &[
     (
-        "crates/gororoba_cli_physics/Cargo.toml",
-        "name = \"heliosphere-boxkite-alignment\"\npath = \"src/bin/heliosphere_boxkite_alignment.rs\"\nrequired-features = [\"gpu\"]",
+        "crates/gororoba_cli_physics/src/heliosphere/mod.rs",
+        "#[cfg(feature = \"gpu\")]\npub mod boxkite_alignment;",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/heliosphere/mod.rs",
+        "#[cfg(feature = \"gpu\")]\npub mod lbm_cube_run;",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/heliosphere/mod.rs",
+        "#[cfg(feature = \"gpu\")]\npub mod sparse_preservation;",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/heliosphere.rs",
+        "#[cfg(feature = \"gpu\")]\n    BoxkiteAlignment(heliosphere::boxkite_alignment::Cli),",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/heliosphere.rs",
+        "#[cfg(feature = \"gpu\")]\n    LbmCubeRun(heliosphere::lbm_cube_run::Cli),",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/heliosphere.rs",
+        "#[cfg(feature = \"gpu\")]\n    SparsePreservation(heliosphere::sparse_preservation::Cli),",
     ),
 ];
 
@@ -783,6 +803,16 @@ fn verify_heavy_feature_policy(args: &CommonArgs) -> Result<()> {
         if !text.contains(snippet) {
             failures.push(format!(
                 "{rel}: missing `required-features = [\"gpu\"]` for a GPU-only binary"
+            ));
+        }
+    }
+
+    for (rel, snippet) in GPU_REQUIRED_CFG_ITEMS {
+        let text = read_ascii_text(&root.join(rel))
+            .with_context(|| format!("read GPU cfg-gated source {}", rel))?;
+        if !text.contains(snippet) {
+            failures.push(format!(
+                "{rel}: missing `#[cfg(feature = \"gpu\")]` on a GPU-only heliosphere lane"
             ));
         }
     }

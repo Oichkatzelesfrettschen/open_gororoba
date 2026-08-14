@@ -99,6 +99,9 @@ pub(crate) enum Commands {
     /// modulo the target table (experiments_cp). Requires migration 0016 applied.
     Experiment(ExperimentMutationArgs),
 
+    /// Reconcile the binary inventory against the workspace `[[bin]]` targets.
+    Binaries(BinariesMutationArgs),
+
     /// Register retained local evidence paths in canonical SQLite.
     Artifact(ArtifactArgs),
 
@@ -536,6 +539,49 @@ pub(crate) enum ExperimentMutationAction {
     ShowStatusNote {
         #[arg(long)]
         id: String,
+    },
+    /// Rewrite every reference to a renamed execution target: the `--bin`
+    /// invocations in reproduction commands, the experiment `binary` field, and
+    /// the `Binary:` citations in claim status notes. Give `--to` as
+    /// `<binary> <subcommand>` when a dispatcher now owns the lane.
+    RetargetExecutionTarget {
+        #[arg(long)]
+        from: String,
+        #[arg(long)]
+        to: String,
+        #[arg(long)]
+        actor: Option<String>,
+        #[arg(long)]
+        reason: Option<String>,
+        /// Report the rows that would change without writing them.
+        #[arg(long)]
+        dry_run: bool,
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
+    },
+}
+
+#[derive(Parser, Debug)]
+pub(crate) struct BinariesMutationArgs {
+    #[command(subcommand)]
+    pub(crate) action: BinariesMutationAction,
+}
+
+#[derive(Subcommand, Debug)]
+pub(crate) enum BinariesMutationAction {
+    /// Reconcile binaries_cp against the `[[bin]]` targets cargo declares.
+    /// Rows already present keep their curated descriptions; only absent names
+    /// are inserted and stale names deleted.
+    Sync {
+        #[arg(long)]
+        actor: Option<String>,
+        #[arg(long)]
+        reason: Option<String>,
+        /// Report the difference without writing it.
+        #[arg(long)]
+        dry_run: bool,
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
     },
 }
 

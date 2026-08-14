@@ -2,7 +2,7 @@ use anyhow::{Context, Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use chrono::Utc;
 use provenance_core::{
-    ArtifactQueryResult, ArtifactRecord, ArtifactStatus, BinaryRecord, ClaimRecord,
+    ArtifactQueryResult, ArtifactRecord, ArtifactStatus, ClaimRecord,
     ControlPlaneCounts, DoctorReport, DocumentQueryResult, DocumentRecord, DownloadAttemptRecord,
     DownloadCampaignQueryResult, DownloadCampaignRecord, DownloadJobRecord,
     DownloadLedgerProjectionRow, DownloadQueryResult, ExperimentRecord,
@@ -147,10 +147,14 @@ pub(crate) struct ProofInventory {
 // NotebookSessionRow, ManifestRow, NotebookSessionSummary,
 // CompatExportPaths, EntityFieldTarget, StatusNoteRevision) live in
 // the `types` submodule.
+// `list_binaries` and `binaries_sync` both traffic in BinaryRecord, so callers
+// outside this crate need the type to build a sync request.
+pub use provenance_core::BinaryRecord;
 pub mod types;
 pub use types::{
-    ActionCompatRow, ActionItem, ActionItemWithEvidence, CompatExportPaths, ControlPlaneCompatKind,
-    EntityFieldTarget, ManifestRow, NotebookSessionRow, NotebookSessionSummary,
+    ActionCompatRow, ActionItem, ActionItemWithEvidence, BinariesSyncSummary, CompatExportPaths,
+    ControlPlaneCompatKind, EntityFieldTarget, ExecutionTargetRetarget,
+    ExecutionTargetRetargetSummary, ManifestRow, NotebookSessionRow, NotebookSessionSummary,
     PlanningCompatTable, RequirementCoverageGapCompatRow, RequirementCoverageGapItem,
     RequirementModuleCompatRow, RequirementModuleItem, RequirementsMeta, RequirementsMetaCompatRow,
     ResearchNarrativeRow, RoadmapCompatRow, RoadmapItem, RoadmapItemWithLinks, StatusNoteRevision,
@@ -168,6 +172,86 @@ fn sha256_hex(s: &str) -> String {
         out.push_str(&format!("{:02x}", b));
     }
     out
+}
+
+/// Columns an execution-target rename reaches. Reproduction commands live in
+/// the experiment compat blob; a claim cites its producing lane in both its
+/// status note and its own compat blob.
+const RETARGET_FIELDS: &[EntityFieldTarget<'static>] = &[
+    EntityFieldTarget {
+        table: "experiments_cp",
+        revisions_table: "experiment_revisions",
+        fk_col: "experiment_id",
+        field: "compat_toml_text",
+    },
+    EntityFieldTarget {
+        table: "claims",
+        revisions_table: "claim_revisions",
+        fk_col: "claim_id",
+        field: "status_note",
+    },
+    EntityFieldTarget {
+        table: "claims",
+        revisions_table: "claim_revisions",
+        fk_col: "claim_id",
+        field: "compat_toml_text",
+    },
+];
+
+/// True when `text[at..at + len]` is a whole execution-target token rather than
+/// a piece of a longer name. Target names share prefixes -- `heliosphere-r16-
+/// ablation` sits beside `heliosphere-r16-ablation-sparse` -- so a plain
+/// substring replace would corrupt the longer name while rewriting the shorter.
+fn is_token_boundary(text: &str, at: usize, len: usize) -> bool {
+    let tail = |c: char| c.is_alphanumeric() || c == '-' || c == '_';
+    let before = text[..at].chars().next_back().is_none_or(|c| !tail(c));
+    let after = text[at + len..].chars().next().is_none_or(|c| !tail(c));
+    before && after
+}
+
+/// Replace whole-token occurrences of `from` with `to`.
+///
+/// A rejected match advances the cursor by one character rather than past the
+/// whole candidate, so an overlapping match starting inside it is still found.
+fn replace_token(text: &str, from: &str, to: &str) -> String {
+    if from.is_empty() {
+        return text.to_string();
+    }
+    let mut out = String::with_capacity(text.len());
+    let mut cursor = 0usize;
+    while let Some(offset) = text[cursor..].find(from) {
+        let at = cursor + offset;
+        if is_token_boundary(text, at, from.len()) {
+            out.push_str(&text[cursor..at]);
+            out.push_str(to);
+            cursor = at + from.len();
+        } else {
+            let step = text[at..].chars().next().map_or(1, char::len_utf8);
+            out.push_str(&text[cursor..at + step]);
+            cursor = at + step;
+        }
+    }
+    out.push_str(&text[cursor..]);
+    out
+}
+
+/// Rewrite one execution target inside a reproduction command or citation.
+///
+/// `cargo run --bin <target> -- <args>` already carries the `--` that separates
+/// cargo's arguments from the program's, so a target that gains a subcommand
+/// consumes that separator instead of emitting a second one: `--bin a-b -- --x`
+/// becomes `--bin a -- b --x`, never `--bin a -- b -- --x`. Outside a `--bin`
+/// argument the target is a plain name and is substituted verbatim.
+fn rewrite_execution_target(text: &str, from: &str, to: &str) -> String {
+    let (to_bin, to_sub) = to.split_once(' ').unwrap_or((to, ""));
+    let invocation = if to_sub.is_empty() {
+        format!("--bin {to_bin}")
+    } else {
+        format!("--bin {to_bin} -- {to_sub}")
+    };
+    let out = replace_token(text, &format!("--bin {from} --"), &invocation);
+    let out = replace_token(&out, &format!("--bin {from}"), &invocation);
+    replace_token(&out, from, to)
 }
 
 /// Sentinel inserted into *_revisions.application_id so future triggers
@@ -3438,6 +3522,147 @@ impl ProvenanceStore {
         )
     }
 
+    /// Rewrite every reference to a renamed execution target across the
+    /// canonical control plane.
+    ///
+    /// A reproduction command reaches the registry in two syntactic positions:
+    /// as the argument of `cargo run --bin <target>`, and as a bare name in an
+    /// experiment `binary` field or a claim's `Binary:` citation. Both move
+    /// together here, because a rename that reaches one and not the other
+    /// leaves a claim citing evidence no command reproduces.
+    ///
+    /// Each touched column goes through `entity_update_field`, so the rename
+    /// appends a revision row per record naming the actor and the prev/new
+    /// content hashes.
+    pub fn retarget_execution_target(
+        &mut self,
+        request: ExecutionTargetRetarget<'_>,
+    ) -> Result<ExecutionTargetRetargetSummary> {
+        let mut summary = ExecutionTargetRetargetSummary::default();
+        for target in RETARGET_FIELDS {
+            let select = format!(
+                "SELECT id, {field} FROM {table} WHERE {field} LIKE ?1",
+                field = target.field,
+                table = target.table,
+            );
+            let pending: Vec<(String, String)> = {
+                let mut stmt = self.conn.prepare(&select)?;
+                let rows = stmt.query_map(params![format!("%{}%", request.from)], |row| {
+                    Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
+                })?;
+                collect_rows(rows)?
+            };
+            for (id, text) in pending {
+                let rewritten = rewrite_execution_target(&text, request.from, request.to);
+                if rewritten == text {
+                    continue;
+                }
+                let revision = self.entity_update_field(
+                    &id,
+                    &rewritten,
+                    request.actor,
+                    request.reason,
+                    *target,
+                )?;
+                summary.revisions.push(revision);
+            }
+        }
+        Ok(summary)
+    }
+
+    /// Rows a retarget would rewrite, as (table, field, id). Reads only, so an
+    /// operator can size a rename before committing to it.
+    pub fn preview_execution_target_retarget(
+        &self,
+        from: &str,
+        to: &str,
+    ) -> Result<Vec<(String, String, String)>> {
+        let mut pending = Vec::new();
+        for target in RETARGET_FIELDS {
+            let select = format!(
+                "SELECT id, {field} FROM {table} WHERE {field} LIKE ?1",
+                field = target.field,
+                table = target.table,
+            );
+            let mut stmt = self.conn.prepare(&select)?;
+            let rows = stmt.query_map(params![format!("%{}%", from)], |row| {
+                Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
+            })?;
+            for (id, text) in collect_rows(rows)? {
+                if rewrite_execution_target(&text, from, to) != text {
+                    pending.push((target.table.to_string(), target.field.to_string(), id));
+                }
+            }
+        }
+        Ok(pending)
+    }
+
+    /// Names `binaries_sync` would add and remove, without writing.
+    pub fn preview_binaries_sync(
+        &self,
+        declared: &[BinaryRecord],
+    ) -> Result<(Vec<String>, Vec<String>)> {
+        let existing: BTreeSet<String> = self
+            .list_binaries()?
+            .into_iter()
+            .map(|record| record.name)
+            .collect();
+        let declared_names: BTreeSet<String> =
+            declared.iter().map(|record| record.name.clone()).collect();
+        Ok((
+            declared_names.difference(&existing).cloned().collect(),
+            existing.difference(&declared_names).cloned().collect(),
+        ))
+    }
+
+    /// Reconcile `binaries_cp` against the binary targets cargo declares.
+    ///
+    /// Rows carry curated descriptions, so a name already present keeps its
+    /// row untouched; only absent names are inserted and stale names deleted.
+    /// This is the discovery half of the registry, and it drifts whenever a
+    /// `[[bin]]` is added, removed, or folded into a subcommand tree.
+    pub fn binaries_sync(&mut self, declared: &[BinaryRecord]) -> Result<BinariesSyncSummary> {
+        let existing: BTreeSet<String> = self
+            .list_binaries()?
+            .into_iter()
+            .map(|record| record.name)
+            .collect();
+        let declared_names: BTreeSet<String> =
+            declared.iter().map(|record| record.name.clone()).collect();
+
+        let mut summary = BinariesSyncSummary {
+            retained: existing.intersection(&declared_names).count(),
+            ..Default::default()
+        };
+
+        let tx = self
+            .conn
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        for name in existing.difference(&declared_names) {
+            tx.execute("DELETE FROM binaries_cp WHERE name = ?1", params![name])?;
+            summary.removed.push(name.clone());
+        }
+        for record in declared {
+            if existing.contains(&record.name) {
+                continue;
+            }
+            tx.execute(
+                "INSERT INTO binaries_cp(name, crate_name, description, experiment_id, source)
+                 VALUES(?1, ?2, ?3, ?4, ?5)",
+                params![
+                    record.name,
+                    record.crate_name,
+                    record.description,
+                    record.experiment,
+                    record.source
+                ],
+            )?;
+            summary.added.push(record.name.clone());
+        }
+        tx.commit()?;
+        Ok(summary)
+    }
+
     /// Insert or replace a next-action item.
     pub fn upsert_next_action(&self, item: &ActionItem<'_>) -> Result<()> {
         self.upsert_action_item_in_table("next_action_items", item, "[]")
@@ -4534,6 +4759,61 @@ mod tests {
     use super::*;
     use rusqlite::{Connection, params};
     use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn retarget_consumes_the_existing_argument_separator() {
+        let text = "cargo run --release --bin heliosphere-fa-attribution -- --mission cluster";
+        assert_eq!(
+            rewrite_execution_target(
+                text,
+                "heliosphere-fa-attribution",
+                "heliosphere fa-attribution"
+            ),
+            "cargo run --release --bin heliosphere -- fa-attribution --mission cluster"
+        );
+    }
+
+    #[test]
+    fn retarget_supplies_a_separator_when_the_command_has_no_arguments() {
+        let text = "cargo run --bin heliosphere-zd-audit";
+        assert_eq!(
+            rewrite_execution_target(text, "heliosphere-zd-audit", "heliosphere zd-audit"),
+            "cargo run --bin heliosphere -- zd-audit"
+        );
+    }
+
+    #[test]
+    fn retarget_rewrites_bare_citations_and_binary_fields() {
+        let text = "binary = \"heliosphere-mms-multiday\"\nBinary: heliosphere-mms-multiday.";
+        assert_eq!(
+            rewrite_execution_target(text, "heliosphere-mms-multiday", "heliosphere mms-multiday"),
+            "binary = \"heliosphere mms-multiday\"\nBinary: heliosphere mms-multiday."
+        );
+    }
+
+    // A shorter target name is a prefix of a longer one, so a plain substring
+    // replace would rewrite the longer name's head and leave a corrupt tail.
+    #[test]
+    fn retarget_leaves_a_longer_target_sharing_the_prefix_intact() {
+        let text = "run heliosphere-r16-ablation then heliosphere-r16-ablation-sparse";
+        assert_eq!(
+            rewrite_execution_target(
+                text,
+                "heliosphere-r16-ablation",
+                "heliosphere r16-ablation"
+            ),
+            "run heliosphere r16-ablation then heliosphere-r16-ablation-sparse"
+        );
+    }
+
+    #[test]
+    fn retarget_is_a_no_op_when_the_target_is_absent() {
+        let text = "cargo run --bin themis-staples-score-export";
+        assert_eq!(
+            rewrite_execution_target(text, "heliosphere-norm-dump", "heliosphere norm-dump"),
+            text
+        );
+    }
 
     #[test]
     fn search_narratives_fts_works_with_in_memory_db() {

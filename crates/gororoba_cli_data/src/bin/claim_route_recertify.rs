@@ -676,7 +676,7 @@ fn classify_claim(
         && acc
             .binaries
             .iter()
-            .any(|binary| binary == "heliosphere-predictive-eval")
+            .any(|binary| binary == "heliosphere predictive-eval")
     {
         notes.push("normalized heliosphere invariants beat the scalar baseline".to_string());
         return (RecertificationStatus::PredictivelyReexecuted, notes);
@@ -685,7 +685,7 @@ fn classify_claim(
         && acc
             .binaries
             .iter()
-            .any(|binary| binary == "heliosphere-sparse-preservation")
+            .any(|binary| binary == "heliosphere sparse-preservation")
     {
         notes.push(
             "budgeted sparse policy preserved recall under the 12 GiB constraint".to_string(),
@@ -696,7 +696,7 @@ fn classify_claim(
         && acc
             .binaries
             .iter()
-            .any(|binary| binary == "heliosphere-cross-mission-invariance")
+            .any(|binary| binary == "heliosphere cross-mission-invariance")
     {
         notes.push(
             "cross-mission normalization improved leave-one-mission-out similarity".to_string(),
