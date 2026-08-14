@@ -467,7 +467,35 @@ codegen-units = 4
 opt-level = 3
 debug = false # no debug info in production binaries
 strip = "symbols" # remove symbol table for smaller binary
-lto = "fat" # full cross-crate LTO (slowest compile, best runtime)
+# Thin, not fat. Fat LTO cannot link any binary that reaches
+# private_gemm_x86::F64_SIMD512x4, the AVX-512 path faer 0.24 takes for f64
+# matmul and SVD (faer pulls private-gemm-x86 0.1.20 in through its `std`
+# feature). The link fails on symbols such as
+# gemm_v0_gemm_microkernel_f64_simd512_m48_n4 with "relocation refers to a
+# symbol in a discarded section", where the symbol is both defined and
+# referenced in the same object.
+#
+# That crate's build script generates an asm.s of AVX-512 microkernels which
+# src/lib.rs admits with `core::arch::global_asm!{ include_str!(...) }`. The
+# generated assembly declares the microkernels with plain `.globl` and carries
+# no COMDAT directives of its own, so the section grouping and the discard are
+# introduced downstream by fat-LTO codegen rather than by the crate.
+#
+# Isolated by elimination, each measured against spectral-flow: mold 2.42
+# segfaults, lld 22.1 reports the same defect cleanly and fails,
+# -Wl,--no-gc-sections does not help, -C codegen-units=16 does not help, and
+# thin LTO links in 6 s. So the trigger is the LTO mode alone, not the linker,
+# section GC, or the codegen-unit count.
+#
+# Cost is only partly measured. zd-search, which does not reach the gemm path,
+# grows 784432 -> 846248 bytes (+7.9%); profile-wide size and runtime impact
+# are not measured. A gemm-reaching binary cannot be compared at all, since no
+# fat-LTO baseline exists for one.
+#
+# `[profile.bench]` and `[profile.parity]` follow this setting. Restoring
+# `lto = "fat"` once private-gemm-x86 or rustc stops producing the discarded
+# section means restoring it in all three.
+lto = "thin" # cross-crate LTO, per-module (see the note above)
 codegen-units = 1 # single codegen unit = maximum LLVM optimization
 overflow-checks = true # keep arithmetic behavior aligned with dev/test lanes
 panic = "unwind" # required: quantum_core/src/gpu/peps.rs:204 uses catch_unwind
@@ -494,46 +522,28 @@ overflow-checks = true
 [profile.validation.package.gororoba_cli]
 codegen-units = 1
 
-# NOTE (2026-05-12, task #132 -- exhausted, deferred to upstream fix):
-# `cargo build -p gororoba_cli_physics --release` fails at link time
-# on the nonlocal-algebraic-metamaterial binary with hundreds of
-# COMDAT/ODR errors against libpulp_v0_22_2_{ld,st}_b32s_* (and
-# gemm_v0_gemm_microkernel_c64_simd256_*) symbols, followed by a
-# clang/lld/gold/mold segfault depending on which linker is in use.
-# Tried 2026-05-12:
-#   * Switching linker to lld -- same COMDAT-discard errors, just
-#     emitted by lld instead of mold.
-#   * Switching linker to gold + --allow-multiple-definition -- same
-#     errors at gold's pre-link stage; the discarded relocations are
-#     emitted by LLVM during fat-LTO object generation, not by the
-#     linker.
-#   * Stage B per-package cgu=1 trick -- inapplicable here. In
-#     `release` cgu=1 is already the workspace default, and the
-#     duplicates are not coming from cgu splitting in this crate but
-#     from upstream copies in pulp / gemm / private-gemm-x86 monomorphized
-#     during fat-LTO import.
-#   * Per-package `lto = "..."` override in Cargo.toml -- rejected by
-#     cargo with "lto may not be specified in a package profile."
-#   * `pulp = "0.22.3"` or newer -- not yet published; 0.22.2 is the
-#     latest as of 2026-05-12.
-# Working alternative: build with the `validation` profile, which
-# inherits release but uses lto="thin" + cgu=6 and does NOT trigger
-# the COMDAT folding. CI validation uses this profile, so the binary
-# is exercised by CI.
-# Production workaround:
-#   cargo build --profile validation -p gororoba_cli_physics \
-#     --bin nonlocal-algebraic-metamaterial
-# Durable fixes require either upstream pulp/gemm cleanup (smaller
-# COMDAT groups or different visibility for monomorphized SIMD
-# trampolines), or splitting nonlocal-algebraic-metamaterial into its
-# own crate so it can opt out of fat LTO via its own
-# `[profile.release-package-only] lto = "off"` profile.
+# The discarded-section link failure that commit 5fad8ff1 recorded against
+# nonlocal-algebraic-metamaterial, and left deferred to an upstream fix behind
+# a `--profile validation` workaround, is the same defect described at
+# `[profile.release]` above. Moving release off fat LTO resolves it: that
+# binary and the other 260 in gororoba_cli_physics link and run under the
+# release profile, so the workaround is retired.
+#
+# Two approaches from that investigation stay closed and are worth not
+# re-attempting. A per-package `lto` override is rejected outright by cargo
+# ("lto may not be specified in a package profile"), so no single crate can opt
+# out of the workspace LTO mode. Changing the linker does not help either,
+# because the discarded relocations are produced during LTO object generation
+# rather than at link time; gold, lld and mold each fail on the same input.
 
-# Bench: release-level optimization with fat LTO for baseline parity.
+# Bench: release-level optimization for baseline parity.
 [profile.bench]
 opt-level = 3
 debug = "line-tables-only" # minimal debug info for flamegraph profiling
-lto = "fat" # benchmark against production-optimized code paths
+# Tracks `[profile.release]`. A benchmark measures production code paths, so it
+# has to use the LTO mode production uses; fat here would both measure code
+# that never ships and fail to link any gemm-reaching binary.
+lto = "thin"
 codegen-units = 1 # single codegen for consistent benchmark results
 
 # Parity: bit-exact numerical match with release for validation.
@@ -542,6 +552,9 @@ codegen-units = 1 # single codegen for consistent benchmark results
 [profile.parity]
 inherits = "dev"
 opt-level = 3 # opt-level 3 for release parity
-lto = "fat" # full cross-crate LTO for exact release parity
+# Tracks `[profile.release]`, because this profile exists to reproduce what
+# release builds and fat cannot link the gemm path at all. Whether fat and thin
+# would have differed numerically here is untested.
+lto = "thin"
 codegen-units = 1 # single codegen unit for deterministic output
 incremental = false # do not pollute cache with LTO artifacts
