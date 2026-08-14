@@ -565,6 +565,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
 
 [[binary]]
+name = "ephemeris"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "et-billiard"
 crate = "gororoba_cli"
 description = "ET discrete billiard sweep and spectroscopy-band phase comparison"

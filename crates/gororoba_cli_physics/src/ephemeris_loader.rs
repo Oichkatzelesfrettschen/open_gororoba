@@ -162,3 +162,215 @@ pub mod flyby_epochs {
     /// Juno: 2013-10-09 ~19:21 UTC
     pub const JUNO: f64 = 2_456_574.306;
 }
+
+/// Solar-system bodies reachable from a JPL DE-series kernel.
+///
+/// The planets are named by their system barycentre rather than their body
+/// centre, because that is what a DE kernel stores directly: DE440 carries
+/// segments for targets 1 through 9 relative to the solar-system barycentre and
+/// resolves a body centre only where it also ships a satellite ephemeris. For
+/// Mercury and Venus the barycentre and the body centre differ by less than the
+/// plotting resolution of any whole-system view; for Jupiter the offset is
+/// under 0.005 AU.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SolarSystemBody {
+    Mercury,
+    Venus,
+    EarthMoonBarycenter,
+    Mars,
+    Jupiter,
+    Saturn,
+    Uranus,
+    Neptune,
+    Pluto,
+}
+
+impl SolarSystemBody {
+    /// Every body, in increasing semi-major axis.
+    pub const ALL: [Self; 9] = [
+        Self::Mercury,
+        Self::Venus,
+        Self::EarthMoonBarycenter,
+        Self::Mars,
+        Self::Jupiter,
+        Self::Saturn,
+        Self::Uranus,
+        Self::Neptune,
+        Self::Pluto,
+    ];
+
+    /// NAIF integer ID of the barycentre.
+    #[must_use]
+    pub fn naif_id(self) -> i32 {
+        match self {
+            Self::Mercury => 1,
+            Self::Venus => 2,
+            Self::EarthMoonBarycenter => 3,
+            Self::Mars => 4,
+            Self::Jupiter => 5,
+            Self::Saturn => 6,
+            Self::Uranus => 7,
+            Self::Neptune => 8,
+            Self::Pluto => 9,
+        }
+    }
+
+    /// Lowercase hyphenated name, matching the CLI spelling.
+    #[must_use]
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::Mercury => "mercury",
+            Self::Venus => "venus",
+            Self::EarthMoonBarycenter => "earth-moon-barycenter",
+            Self::Mars => "mars",
+            Self::Jupiter => "jupiter",
+            Self::Saturn => "saturn",
+            Self::Uranus => "uranus",
+            Self::Neptune => "neptune",
+            Self::Pluto => "pluto",
+        }
+    }
+}
+
+/// Kilometres per astronomical unit, IAU 2012 definition (exact).
+pub const KM_PER_AU: f64 = 149_597_870.7;
+
+/// Obliquity of the ecliptic at J2000.0, in degrees (IAU 2006).
+pub const OBLIQUITY_J2000_DEG: f64 = 23.439_279_444_444_445;
+
+/// Heliocentric position in spherical ecliptic coordinates.
+///
+/// The triple matches the `r_au` / `lat_deg` / `lon_deg` spelling used by
+/// `data_core::heliosphere_feature_cube::HeliosphereFeatureRow`, so a body and
+/// an observation can be placed on one chart. That row's frame is undeclared
+/// and mixed across missions, which the field documentation there records; this
+/// type is unambiguously heliocentric ecliptic of J2000.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct EclipticPosition {
+    pub r_au: f64,
+    pub lat_deg: f64,
+    pub lon_deg: f64,
+}
+
+/// Rotate a J2000 equatorial vector into the J2000 ecliptic frame and express
+/// it in spherical coordinates.
+///
+/// The rotation is about the vernal-equinox axis by the obliquity, so x is
+/// unchanged and the y/z pair turns by `-eps`. Longitude runs eastward from the
+/// equinox over `[0, 360)`; latitude is positive toward ecliptic north.
+#[must_use]
+pub fn equatorial_km_to_ecliptic(v_km: [f64; 3]) -> EclipticPosition {
+    let eps = OBLIQUITY_J2000_DEG.to_radians();
+    let (x, y, z) = (v_km[0], v_km[1], v_km[2]);
+    let y_ecl = y * eps.cos() + z * eps.sin();
+    let z_ecl = -y * eps.sin() + z * eps.cos();
+    let r_km = (x * x + y_ecl * y_ecl + z_ecl * z_ecl).sqrt();
+    let lon = y_ecl.atan2(x).to_degrees();
+    EclipticPosition {
+        r_au: r_km / KM_PER_AU,
+        lat_deg: if r_km > 0.0 {
+            (z_ecl / r_km).asin().to_degrees()
+        } else {
+            0.0
+        },
+        lon_deg: if lon < 0.0 { lon + 360.0 } else { lon },
+    }
+}
+
+/// Heliocentric ephemeris over a JPL DE-series kernel.
+///
+/// Separate from `EphemerisLoader`, which is frozen on the geocentric J2000
+/// frame the flyby integrator needs. This one translates from the Sun so that
+/// planet positions are directly comparable with spacecraft heliocentric
+/// distance.
+pub struct HeliocentricEphemeris {
+    almanac: Almanac,
+}
+
+impl HeliocentricEphemeris {
+    /// Load a DE-series kernel. DE440 covers 1550 through 2650.
+    pub fn load(bsp_path: &Path) -> anyhow::Result<Self> {
+        anyhow::ensure!(
+            bsp_path.exists(),
+            "JPL .bsp file not found: {}. Fetch DE440 from \
+             https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440.bsp",
+            bsp_path.display()
+        );
+        let path_str = bsp_path
+            .to_str()
+            .ok_or_else(|| anyhow::anyhow!("Non-UTF8 path: {}", bsp_path.display()))?;
+        let almanac = Almanac::new(path_str)
+            .map_err(|e| anyhow::anyhow!("Failed to load {}: {}", bsp_path.display(), e))?;
+        Ok(Self { almanac })
+    }
+
+    /// Heliocentric J2000 equatorial position in km.
+    ///
+    /// Fails rather than returning zeros: a caller plotting a body wants to
+    /// know the epoch fell outside the kernel's coverage, where the flyby
+    /// integrator preferred to keep stepping.
+    pub fn body_equatorial_km(
+        &self,
+        body: SolarSystemBody,
+        jed: f64,
+    ) -> anyhow::Result<[f64; 3]> {
+        let epoch = Epoch::from_jde_tdb(jed);
+        let frame = Frame::from_ephem_j2000(body.naif_id());
+        let state = self
+            .almanac
+            .translate_geometric(frame, Frame::from_ephem_j2000(NAIF_SUN), epoch)
+            .map_err(|e| {
+                anyhow::anyhow!(
+                    "heliocentric query for {} (NAIF {}) at JED {} failed: {}",
+                    body.name(),
+                    body.naif_id(),
+                    jed,
+                    e
+                )
+            })?;
+        let r = state.radius_km;
+        Ok([r[0], r[1], r[2]])
+    }
+
+    /// Heliocentric ecliptic position of a body at a Julian Ephemeris Date.
+    pub fn body_ecliptic(
+        &self,
+        body: SolarSystemBody,
+        jed: f64,
+    ) -> anyhow::Result<EclipticPosition> {
+        Ok(equatorial_km_to_ecliptic(
+            self.body_equatorial_km(body, jed)?,
+        ))
+    }
+}
+
+#[cfg(test)]
+mod ecliptic_tests {
+    use super::{OBLIQUITY_J2000_DEG, equatorial_km_to_ecliptic};
+
+    #[test]
+    fn vernal_equinox_axis_is_unrotated() {
+        // The rotation is about x, so a vector along x keeps zero latitude and
+        // zero longitude in both frames.
+        let p = equatorial_km_to_ecliptic([1.0, 0.0, 0.0]);
+        assert!(p.lat_deg.abs() < 1e-12);
+        assert!(p.lon_deg.abs() < 1e-12);
+    }
+
+    #[test]
+    fn equatorial_pole_lands_at_ninety_less_obliquity() {
+        // The celestial pole sits at ecliptic latitude 90 - eps by definition.
+        let p = equatorial_km_to_ecliptic([0.0, 0.0, 1.0]);
+        assert!((p.lat_deg - (90.0 - OBLIQUITY_J2000_DEG)).abs() < 1e-9);
+    }
+
+    #[test]
+    fn summer_solstice_direction_has_zero_ecliptic_latitude() {
+        // The J2000 equatorial direction (0, cos eps, sin eps) is the ecliptic
+        // +y axis, so it must come back at latitude 0 and longitude 90.
+        let eps = OBLIQUITY_J2000_DEG.to_radians();
+        let p = equatorial_km_to_ecliptic([0.0, eps.cos(), eps.sin()]);
+        assert!(p.lat_deg.abs() < 1e-9);
+        assert!((p.lon_deg - 90.0).abs() < 1e-9);
+    }
+}

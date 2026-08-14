@@ -768,6 +768,10 @@ name = "turboquant"
 path = "src/bin/turboquant/main.rs"
 
 [[bin]]
+name = "ephemeris"
+path = "src/bin/ephemeris/main.rs"
+
+[[bin]]
 name = "voyager"
 path = "src/bin/voyager/main.rs"
 
