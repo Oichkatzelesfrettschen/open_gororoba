@@ -3,13 +3,12 @@
 //! holds the entire codebook -- enabling single-instruction distance computation.
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{fs, path::PathBuf, time::Instant};
 
-#[derive(Parser)]
-#[command(name = "turboquant-simd-bench")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Number of vectors to quantize.
     #[arg(long, default_value_t = 100_000)]
     n_vectors: usize,
@@ -144,8 +143,7 @@ struct BenchOutput {
     speedup_batched_vs_scalar: f64,
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant SIMD Codebook Benchmark ===");
 
     let n_levels = 1u32 << cli.bits;

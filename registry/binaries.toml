@@ -1932,59 +1932,9 @@ crate = "gororoba_cli_physics"
 description = "D4 contrarian: trimmed mean and median DFT robustness test. Quantifies outlier domination of stacked DFT coefficients across 6 trimming levels and 4 algebraic frameworks."
 
 [[binary]]
-name = "turboquant-bench"
+name = "turboquant"
 crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-cd-fidelity"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-comparison"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-onnx-eval"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-production"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-profile"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-real-kv"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-sedenion-rotation"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-simd-bench"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-sweep"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "turboquant-validate"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "ultrametric-core-extract"

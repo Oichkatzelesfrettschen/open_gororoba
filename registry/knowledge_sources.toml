@@ -22,14 +22,14 @@ generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "agents.toml"
-sha256 = "5408a26fc359b929d3b0a30fe49cbde57556e52f7eafa043a23fcf3de658d474"
-size_bytes = 28939
-line_count = 502
-claim_ref_count = 1
-insight_ref_count = 1
+sha256 = "00d9e3cfcafb00d75477f12896d384412e45e449bd106671fae842b926afed3c"
+size_bytes = 39938
+line_count = 701
+claim_ref_count = 17
+insight_ref_count = 2
 experiment_ref_count = 1
-link_count = 227
-link_sample = [".cache", ".cache/", ".cache/exp-<name>-target/", ".git/hooks/pre-push", ".githooks", ".githooks/pre-push", ".py", ".sh"]
+link_count = 280
+link_sample = ["*.md", ".cache", ".cache/", ".cache/exp-<name>-target/", ".git/hooks/pre-push", ".githooks", ".githooks/pre-push", ".gitignore"]
 
 [[document]]
 id = "DOC-0002"
@@ -41,14 +41,14 @@ generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "150aeed0cc35fbdcd6268685305c6832231802c2740599b1f504ed8abd092081"
-size_bytes = 8658
-line_count = 198
+sha256 = "1bc5154c6b44357d2fdf5911a2d20330d4611fb77409ce8f72b6f6429a0b7345"
+size_bytes = 4102
+line_count = 83
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 95
-link_sample = ["*.md", "...", "./AGENTS.md", ".githooks", ".githooks/pre-push", ".gitignore", ".md", ".py"]
+link_count = 23
+link_sample = ["./AGENTS.md", "AGENTS.md", "MEMORY.md", "data/output/debt_baseline_2026_04_30.toml", "docs/REQUIREMENTS.md", "plans/repo_debt_taxonomy_roadmap_2026_06_04.toml", "~/.claude/CLAUDE.md", "~/.claude/projects/-home-eirikr-Github-open-gororoba/memory/MEMORY.md"]
 
 [[document]]
 id = "DOC-0003"
@@ -944,14 +944,14 @@ generated = false
 status = "active"
 migration_priority = "high"
 toml_backing = "registry/research_narratives.toml"
-sha256 = "c7db3430fc5ff58c4fbf3bcaf49fb7c974e7056ebae1829d533a129cbe271446"
-size_bytes = 18509
-line_count = 299
+sha256 = "63600fb2d2cadf44fe4f5065d04ed23fcd5ede8007d9eb742a4679491342a9a0"
+size_bytes = 26409
+line_count = 430
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 58
-link_sample = ["crates/lbm_3d/src/lattice.rs", "crates/lbm_3d/src/solver/bgk.rs", "cs_sq = 1/3", "data/output/audit/2026-08-10/repository-architecture-static-map.toml", "kernels.cu", "kernels_dark_halo.cu", "kernels_soa.cu", "nu = cs_sq * (tau - 1/2)"]
+link_count = 115
+link_sample = [".cu", "bench_kernels.rs", "crates/lbm_3d/src/lattice.rs", "crates/lbm_3d/src/solver/bgk.rs", "crates/lbm_3d_cuda/cuda_source_ownership.toml", "crates/lbm_3d_cuda/src", "cs_sq = 1/3", "cuda_source_ownership.toml"]
 
 [[document]]
 id = "DOC-0051"

@@ -13,10 +13,10 @@
 //!   - Synthesized: auto-selects best method per (bits, dim)
 //!
 //! Usage:
-//!   turboquant-sweep --dims 64,128 --bits 2,3,4 --n-vectors 2000
+//!   turboquant sweep --dims 64,128 --bits 2,3,4 --n-vectors 2000
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{fs, path::PathBuf, time::Instant};
 
@@ -29,10 +29,8 @@ use cd_kernel::turboquant::{
     synthesized::SynthesizedQuantizer,
 };
 
-#[derive(Parser)]
-#[command(name = "turboquant-sweep")]
-#[command(about = "Definitive all-methods comparison sweep")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     #[arg(long, value_delimiter = ',', default_values_t = vec![64, 128])]
     dims: Vec<usize>,
 
@@ -88,8 +86,7 @@ fn random_matrix(n: usize, d: usize, seed: u64) -> Vec<f64> {
     (0..n * d).map(|_| normal.sample(&mut rng)).collect()
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant Definitive Sweep ===");
 
     let mut all_results = Vec::new();

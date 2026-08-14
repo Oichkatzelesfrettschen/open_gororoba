@@ -169,10 +169,10 @@ status = "active"
 
 [[tool]]
 id = "turboquant-onnx-eval"
-name = "turboquant-onnx-eval"
+name = "turboquant onnx-eval"
 make_target = ""
 install = "Vendored option: enable `ort` crate `download-binaries` feature (auto-fetches ONNX Runtime; +50 MB CI cache). System-pkg fallback: paru -S onnxruntime-opt-cuda on Arch; Microsoft GitHub release: https://github.com/microsoft/onnxruntime/releases."
-description = "TurboQuant real-model evaluation lane. Uses ort 2.0.0-rc.12 with load-dynamic + api-18; loads libonnxruntime.so via ORT_DYLIB_PATH. End-to-end verified on distilgpt2.onnx (12 layers, 24 KV tensors). Run --features onnx-eval."
+description = "TurboQuant real-model evaluation lane. Uses ort 2.0.0-rc.12 with load-dynamic + api-18; loads libonnxruntime.so via ORT_DYLIB_PATH. End-to-end verified on distilgpt2.onnx (12 layers, 24 KV tensors). Run `cargo run -p gororoba_cli_physics --bin turboquant --features onnx-eval -- onnx-eval`."
 audit_comprehensive = false
 status = "active"
 

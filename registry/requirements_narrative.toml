@@ -98,7 +98,7 @@ TOMLs from canonical SQLite. Walk-through:
 | `repo-audit` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin repo-audit` | Anchored debt counter; supports `--sqlite` for revisions audit |
 | `registry-integrity` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin registry-integrity` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
 
-## ONNX runtime (turboquant-onnx-eval)
+## ONNX runtime (turboquant onnx-eval)
 
 The TurboQuant real-model evaluation lane uses the ort 2.0.0-rc.12 crate
 configured with `load-dynamic` + `api-18`. This loads
@@ -108,8 +108,8 @@ configured with `load-dynamic` + `api-18`. This loads
 ```
 paru -S onnxruntime-opt-cuda     # Arch; provides /usr/lib64/libonnxruntime.so
 ORT_DYLIB_PATH=/usr/lib64/libonnxruntime.so \
-  cargo run --release -p gororoba_cli_physics --bin turboquant-onnx-eval \
-    --features onnx-eval -- --model <path-to.onnx> --bits 2,3,4
+  cargo run --release -p gororoba_cli_physics --bin turboquant \
+    --features onnx-eval -- onnx-eval --model <path-to.onnx> --bits 2,3,4
 ```
 
 Verified: end-to-end on data/external/onnx_test/distilgpt2.onnx (12-layer

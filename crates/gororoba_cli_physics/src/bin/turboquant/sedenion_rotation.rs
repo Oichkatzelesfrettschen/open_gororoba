@@ -11,14 +11,13 @@
 //! comparable decorrelation quality for Lloyd-Max quantization?
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use rand::RngExt;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
-#[derive(Parser)]
-#[command(name = "turboquant-sedenion-rotation")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Number of test vectors.
     #[arg(long, default_value_t = 10000)]
     n_vectors: usize,
@@ -122,8 +121,7 @@ fn quantize_mse(values: &[f64], centroids: &[f64]) -> f64 {
         / values.len() as f64
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant Sedenion vs Haar Rotation ===");
     println!("  dim={}, n_vectors={}", cli.dim, cli.n_vectors);
 

@@ -11,7 +11,7 @@
 //!    seed + a model spec (n_layers, n_heads, seq_len, head_dim).
 //!    This is NOT a substitute for running a real forward pass --
 //!    it is a REPRODUCIBLE fixture for regression-testing the
-//!    downstream TurboQuant consumer (turboquant-real-kv) without
+//!    downstream TurboQuant consumer (turboquant real-kv) without
 //!    network access or a multi-GB model checkout.
 //!
 //! 2. `--mode huggingface-hook`
@@ -24,7 +24,7 @@
 //!    session; this mode documents the contract so downstream work
 //!    can plan around it.
 //!
-//! Output format (matches what turboquant-real-kv reads):
+//! Output format (matches what turboquant real-kv reads):
 //!   `<out-dir>/metadata.json`         JSON with n_layers, n_heads,
 //!                                     seq_len, head_dim, model, n_params
 //!   `<out-dir>/keys_layer{NN}.f64`    float64, row-major, one file

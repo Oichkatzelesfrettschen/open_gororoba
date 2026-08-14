@@ -3876,8 +3876,8 @@ experiment_id = "E-220"
 binary = ""
 deterministic = false
 gpu = false
-run_command = "cargo run --release -p gororoba_cli_physics --bin turboquant-bench -- --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json"
-run_command_sha256 = "0f24d1b489ace280737a82d16ccdb3a2bf5811f5d4359816dad2eae8104f0f1c"
+run_command = "cargo run --release -p gororoba_cli_physics --bin turboquant -- bench --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json"
+run_command_sha256 = "9187e01c3b7c80818da8e32d4bfab5aaab671f1b3dce16e789816c6735330f4a"
 claim_refs = []
 input_path_refs = []
 output_path_refs = []
@@ -3885,7 +3885,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin turboquant-bench -- --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin turboquant -- bench --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -3912,8 +3912,8 @@ experiment_id = "E-222"
 binary = ""
 deterministic = false
 gpu = false
-run_command = "cargo run --release -p gororoba_cli_physics --bin turboquant-validate -- --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json"
-run_command_sha256 = "fa936f44480e79204e09706a58321eddd5e2cf441a776d6ca69577aab6d35f99"
+run_command = "cargo run --release -p gororoba_cli_physics --bin turboquant -- validate --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json"
+run_command_sha256 = "d8aa061cb33b4bbeb3760cb2db52e013a398144f1eb8e998789fe9cc339ad1ec"
 claim_refs = []
 input_path_refs = []
 output_path_refs = []
@@ -3921,7 +3921,7 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin turboquant-validate -- --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin turboquant -- validate --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]

@@ -777,7 +777,7 @@ zip = { workspace = true }
 [features]
 default = []
 gpu = ["lbm_3d_cuda", "sign_imbalance/gpu", "gororoba_algebra/gpu"]
-# ONNX real-model evaluation in turboquant-onnx-eval. Pulls the ort dep
+# ONNX real-model evaluation in the turboquant onnx-eval lane. Pulls the ort dep
 # (ONNX Runtime via ort 2.0.0-rc.12). When disabled, the binary still
 # builds but only the synthetic evaluation path is reachable.
 onnx-eval = ["dep:ort"]
@@ -790,6 +790,10 @@ euclid-catalog = ["cosmology_core/euclid-catalog"]
 
 [lints]
 workspace = true
+
+[[bin]]
+name = "turboquant"
+path = "src/bin/turboquant/main.rs"
 
 [[bin]]
 name = "unified-action-sweep"
@@ -818,16 +822,8 @@ path = "src/bin/bout_grid_cd.rs"
 required-features = ["netcdf-read"]
 
 [[bin]]
-name = "turboquant-cd-fidelity"
-path = "src/bin/turboquant_cd_fidelity.rs"
-
-[[bin]]
 name = "magnetar-qpo-cd"
 path = "src/bin/magnetar_qpo_cd.rs"
-
-[[bin]]
-name = "turboquant-simd-bench"
-path = "src/bin/turboquant_simd_bench.rs"
 
 [[bin]]
 name = "jet-polarization-cd"
@@ -840,42 +836,6 @@ path = "src/bin/ism_rotation_measure_cd.rs"
 [[bin]]
 name = "dynamo-cd"
 path = "src/bin/dynamo_cd.rs"
-
-[[bin]]
-name = "turboquant-sedenion-rotation"
-path = "src/bin/turboquant_sedenion_rotation.rs"
-
-[[bin]]
-name = "turboquant-sweep"
-path = "src/bin/turboquant_sweep.rs"
-
-[[bin]]
-name = "turboquant-comparison"
-path = "src/bin/turboquant_comparison.rs"
-
-[[bin]]
-name = "turboquant-bench"
-path = "src/bin/turboquant_bench.rs"
-
-[[bin]]
-name = "turboquant-validate"
-path = "src/bin/turboquant_validate.rs"
-
-[[bin]]
-name = "turboquant-onnx-eval"
-path = "src/bin/turboquant_onnx_eval.rs"
-
-[[bin]]
-name = "turboquant-production"
-path = "src/bin/turboquant_production.rs"
-
-[[bin]]
-name = "turboquant-profile"
-path = "src/bin/turboquant_profile.rs"
-
-[[bin]]
-name = "turboquant-real-kv"
-path = "src/bin/turboquant_real_kv.rs"
 
 [[bin]]
 name = "mast-cd-vs-spectrogram"

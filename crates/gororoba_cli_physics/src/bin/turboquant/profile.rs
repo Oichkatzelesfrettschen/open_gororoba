@@ -1,25 +1,29 @@
-//! TurboQuant profiling binary for perf/flamegraph analysis.
+//! TurboQuant profiling lane for perf/flamegraph analysis.
 //!
 //! Runs the full quantization pipeline in a tight loop to generate
 //! profiling data.  Use with:
-//!   cargo build --release -p gororoba_cli_physics --bin turboquant-profile
-//!   perf record -g ./target/release/turboquant-profile --iterations 100
+//!   cargo build --release -p gororoba_cli_physics --bin turboquant
+//!   perf record -g ./target/release/turboquant profile --iterations 100
 //!   perf script | inferno-collapse-perf | inferno-flamegraph > flame.svg
 //!
 //! Or with cargo-flamegraph:
-//!   cargo flamegraph --bin turboquant-profile -- --iterations 100
+//!   cargo flamegraph --bin turboquant -- profile --iterations 100
 
 use std::{hint::black_box, time::Instant};
 
+use clap::Args;
+
 use cd_kernel::turboquant::synthesized::SynthesizedQuantizer;
 
-fn main() {
-    let args: Vec<String> = std::env::args().collect();
-    let iterations: usize = args
-        .get(1)
-        .and_then(|s| s.strip_prefix("--iterations=").or(Some(s)))
-        .and_then(|s| s.parse().ok())
-        .unwrap_or(50);
+#[derive(Args)]
+pub struct Cli {
+    /// Passes over the 1000-vector quantization loop.
+    #[arg(long, default_value_t = 50)]
+    iterations: usize,
+}
+
+pub fn run(cli: Cli) {
+    let iterations = cli.iterations;
 
     let d = 128;
     let bits = 3;

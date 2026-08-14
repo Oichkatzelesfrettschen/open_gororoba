@@ -3672,7 +3672,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release -p gororoba_cli_physics --bin turboquant-bench -- --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json
+//! cargo run --release -p gororoba_cli_physics --bin turboquant -- bench --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json
 //! ```
 //!
 //! ## E-221: TurboQuant adaptive bit allocation via CD associator (d=32, 3-bit)
@@ -3706,7 +3706,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release -p gororoba_cli_physics --bin turboquant-validate -- --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json
+//! cargo run --release -p gororoba_cli_physics --bin turboquant -- validate --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json
 //! ```
 //!
 //! ## E-223: TurboQuant E8 lattice root system and rotation roundtrip validation
