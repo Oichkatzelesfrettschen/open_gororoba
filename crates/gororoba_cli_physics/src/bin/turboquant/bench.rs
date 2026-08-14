@@ -6,11 +6,11 @@
 //! and quality metrics.
 //!
 //! Usage:
-//!   turboquant-bench --dims 64,128,256 --bits 2,3,4 --n-vectors 10000
-//!   turboquant-bench --rotation wht --bits 3 --dim 128
+//!   turboquant bench --dims 64,128,256 --bits 2,3,4 --n-vectors 10000
+//!   turboquant bench --rotation wht --bits 3 --dim 128
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{fs, path::PathBuf, time::Instant};
 
@@ -22,10 +22,8 @@ use cd_kernel::turboquant::{
     simsimd_bridge::cosine_similarity_f64,
 };
 
-#[derive(Parser)]
-#[command(name = "turboquant-bench")]
-#[command(about = "TurboQuant pipeline benchmark: rotation + quantization + QJL")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Comma-separated dimensions to benchmark.
     #[arg(long, value_delimiter = ',', default_values_t = vec![64, 128, 256])]
     dims: Vec<usize>,
@@ -230,9 +228,7 @@ fn bench_mse_pipeline(
     }
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
-
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant Pipeline Benchmark ===");
     println!(
         "  Configs: {} dims x {} bits x rotation={}",

@@ -7,20 +7,18 @@
 //! attention score quality (cosine, top-k), and compression ratio.
 //!
 //! Usage:
-//!   turboquant-production --n-layers 36 --n-heads 32 --head-dim 128 \
+//!   turboquant production --n-layers 36 --n-heads 32 --head-dim 128 \
 //!     --seq-len 8192 --bits 3 --method synthesized
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{fs, path::PathBuf, time::Instant};
 
 use cd_kernel::turboquant::synthesized::SynthesizedQuantizer;
 
-#[derive(Parser)]
-#[command(name = "turboquant-production")]
-#[command(about = "Production LLM benchmark with TurboQuant KV cache")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     #[arg(long, default_value_t = 36)]
     n_layers: usize,
 
@@ -59,9 +57,7 @@ struct ProductionResult {
     tokens_per_sec_estimate: f64,
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
-
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant Production LLM Benchmark ===");
     println!(
         "  {} layers, {} heads, d={}, seq={}, {}-bit",

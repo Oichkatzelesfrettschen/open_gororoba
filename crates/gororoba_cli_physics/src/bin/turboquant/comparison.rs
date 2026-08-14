@@ -5,10 +5,10 @@
 //! single JSON file for direct comparison.
 //!
 //! Usage:
-//!   turboquant-comparison --dims 64,128 --bits 2,3,4 --n-vectors 5000
+//!   turboquant comparison --dims 64,128 --bits 2,3,4 --n-vectors 5000
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{fs, path::PathBuf, time::Instant};
 
@@ -20,10 +20,8 @@ use cd_kernel::turboquant::{
     simsimd_bridge::cosine_similarity_f64,
 };
 
-#[derive(Parser)]
-#[command(name = "turboquant-comparison")]
-#[command(about = "Head-to-head comparison: TurboQuant vs KIVI vs NSNQuant")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     #[arg(long, value_delimiter = ',', default_values_t = vec![64, 128])]
     dims: Vec<usize>,
 
@@ -269,9 +267,7 @@ fn bench_group_quant(data: &[f64], n: usize, d: usize, bits: u32) -> MethodResul
     }
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
-
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant Head-to-Head Comparison ===");
     println!("  Methods: TurboQuant(recommended), KIVI, NSNQuant, GroupQuant");
     println!("  Vectors: {}", cli.n_vectors);

@@ -16,7 +16,7 @@
 //! With f32x8, we broadcast x into all 8 lanes, compare against boundaries
 //! packed in a single register, and popcount the comparison mask.
 //!
-//! # Measured results (from turboquant-simd-bench at d=128, 100K vectors)
+//! # Measured results (from turboquant simd-bench at d=128, 100K vectors)
 //!
 //! | Method          | Throughput (Mval/s) | Speedup vs scalar |
 //! |-----------------|---------------------|-------------------|

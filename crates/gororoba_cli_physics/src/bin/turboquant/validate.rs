@@ -5,20 +5,18 @@
 //! compression ratio.  Matches the metrics from turboquant-pytorch/validate.py.
 //!
 //! Usage:
-//!   turboquant-validate --dim 128 --bits 3 --seq-lens 512,2048
-//!   turboquant-validate --bits 2,3,4 --rotation wht
+//!   turboquant validate --dim 128 --bits 3 --seq-lens 512,2048
+//!   turboquant validate --bits 2,3,4 --rotation wht
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
 use cd_kernel::turboquant::{compressor::KeyCompressor, simsimd_bridge::cosine_similarity_f64};
 
-#[derive(Parser)]
-#[command(name = "turboquant-validate")]
-#[command(about = "TurboQuant quality validation: cosine, top-k, compression ratio")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Head dimension.
     #[arg(long, default_value_t = 128)]
     dim: usize,
@@ -198,9 +196,7 @@ fn validate_config(
     }
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
-
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant Quality Validation ===");
     println!(
         "  dim={}, heads={}, rotation={}",

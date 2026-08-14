@@ -11,8 +11,8 @@
 //! This closes the "ONNX real-model evaluation" gap vs the turboquant crate.
 //!
 //! Usage:
-//!   turboquant-onnx-eval --model distilgpt2.onnx --bits 3 --seq-len 512
-//!   turboquant-onnx-eval --synthetic --bits 2,3,4  # no model needed
+//!   turboquant onnx-eval --model distilgpt2.onnx --bits 3 --seq-len 512
+//!   turboquant onnx-eval --synthetic --bits 2,3,4  # no model needed
 //!
 //! Note: ONNX integration is feature-gated. Build with --features onnx-eval
 //! to compile the ort 2.0.0-rc.12 dep into the binary; the v1 integration
@@ -21,14 +21,12 @@
 //! is tracked under DEFER-ORT-ONNX-EVAL Phase B in the TaskList.
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
-#[derive(Parser)]
-#[command(name = "turboquant-onnx-eval")]
-#[command(about = "TurboQuant real-model evaluation via ONNX Runtime")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Path to ONNX model file (e.g., distilgpt2.onnx).
     /// If --synthetic is used, this is ignored.
     #[arg(long)]
@@ -534,18 +532,21 @@ fn scan_kv_candidates(
     out
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
-
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant ONNX Evaluation ===");
 
-    let (mode, results) = if cli.synthetic || cli.model.is_none() {
-        println!("  Mode: synthetic (no ONNX model)");
-        ("synthetic".to_string(), synthetic_eval(&cli))
+    // `--synthetic` suppresses the model path outright, so binding the option
+    // here decides the branch and yields the path in one step. Testing
+    // `is_none` and unwrapping afterwards trips `clippy::unnecessary_unwrap`.
+    let requested_model = if cli.synthetic {
+        None
     } else {
+        cli.model.as_ref()
+    };
+
+    let (mode, results) = if let Some(model_path) = requested_model {
         #[cfg(feature = "onnx-eval")]
         {
-            let model_path = cli.model.as_ref().expect("model is Some");
             println!("  Mode: ONNX (model = {})", model_path.display());
             match onnx_eval(&cli, model_path) {
                 Ok(r) => ("onnx".to_string(), r),
@@ -557,10 +558,11 @@ fn main() -> Result<()> {
         }
         #[cfg(not(feature = "onnx-eval"))]
         {
-            // The onnx-eval feature is OFF for this build. The binary
+            // The onnx-eval feature is OFF for this build. The lane
             // therefore cannot exercise the real-model path; fall back
             // to synthetic. Build with --features onnx-eval to enable
             // ONNX inference.
+            let _ = model_path;
             println!(
                 "  ONNX inference not compiled in (build with --features onnx-eval). \
                  Running synthetic evaluation."
@@ -570,6 +572,9 @@ fn main() -> Result<()> {
                 synthetic_eval(&cli),
             )
         }
+    } else {
+        println!("  Mode: synthetic (no ONNX model)");
+        ("synthetic".to_string(), synthetic_eval(&cli))
     };
 
     for r in &results {

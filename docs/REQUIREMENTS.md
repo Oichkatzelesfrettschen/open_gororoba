@@ -87,7 +87,7 @@ TOMLs from canonical SQLite. Walk-through:
 | `repo-audit` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin repo-audit` | Anchored debt counter; supports `--sqlite` for revisions audit |
 | `registry-integrity` | `crates/gororoba_cli_data` | `cargo run --release -p gororoba_cli_data --bin registry-integrity` | Recompute `registry/schema_signatures.toml` after legitimate Layer-2 changes |
 
-## ONNX runtime (turboquant-onnx-eval)
+## ONNX runtime (turboquant onnx-eval)
 
 The TurboQuant real-model evaluation lane uses the ort 2.0.0-rc.12 crate
 configured with `load-dynamic` + `api-18`. This loads
@@ -97,8 +97,8 @@ configured with `load-dynamic` + `api-18`. This loads
 ```
 paru -S onnxruntime-opt-cuda     # Arch; provides /usr/lib64/libonnxruntime.so
 ORT_DYLIB_PATH=/usr/lib64/libonnxruntime.so \
-  cargo run --release -p gororoba_cli_physics --bin turboquant-onnx-eval \
-    --features onnx-eval -- --model <path-to.onnx> --bits 2,3,4
+  cargo run --release -p gororoba_cli_physics --bin turboquant \
+    --features onnx-eval -- onnx-eval --model <path-to.onnx> --bits 2,3,4
 ```
 
 Verified: end-to-end on data/external/onnx_test/distilgpt2.onnx (12-layer
@@ -153,5 +153,5 @@ Each tool listed below is available via a dedicated `make` target. Tools marked 
 | gororoba-db | -- | (built-in) | no | active |
 | provenance export-control-plane | -- | (built-in) | no | active |
 | registry-integrity | `make registry-integrity` | (built-in) | no | active |
-| turboquant-onnx-eval | -- | `Vendored option: enable `ort` crate `download-binaries` feature (auto-fetches ONNX Runtime; +50 MB CI cache). System-pkg fallback: paru -S onnxruntime-opt-cuda on Arch; Microsoft GitHub release: https://github.com/microsoft/onnxruntime/releases.` | no | active |
+| turboquant onnx-eval | -- | `Vendored option: enable `ort` crate `download-binaries` feature (auto-fetches ONNX Runtime; +50 MB CI cache). System-pkg fallback: paru -S onnxruntime-opt-cuda on Arch; Microsoft GitHub release: https://github.com/microsoft/onnxruntime/releases.` | no | active |
 | Vulkan SPIR-V build | -- | `GitHub release: https://github.com/google/shaderc/releases (prebuilt glslc tarball). System-pkg fallback: paru -S shaderc on Arch.` | no | active |

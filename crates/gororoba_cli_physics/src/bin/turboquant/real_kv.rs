@@ -6,10 +6,10 @@
 //!
 //! Usage:
 //!   python scripts/extract_real_kv_cache.py --model SmolLM2-135M
-//!   cargo run --release -p gororoba_cli_physics --bin turboquant-real-kv
+//!   cargo run --release -p gororoba_cli_physics --bin turboquant -- real-kv
 
 use anyhow::{Context, Result};
-use clap::Parser;
+use clap::Args;
 use serde::{Deserialize, Serialize};
 use std::{fs, path::PathBuf, time::Instant};
 
@@ -21,10 +21,8 @@ use cd_kernel::{
     },
 };
 
-#[derive(Parser)]
-#[command(name = "turboquant-real-kv")]
-#[command(about = "Evaluate TurboQuant on real LLM KV cache tensors")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Directory with extracted KV cache tensors.
     #[arg(long, default_value = "data/external/real_kv_cache")]
     data_dir: PathBuf,
@@ -108,9 +106,7 @@ fn read_f64_vectors(path: &std::path::Path, d: usize) -> Result<Vec<Vec<f64>>> {
         .collect())
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
-
+pub fn run(cli: Cli) -> Result<()> {
     // Load metadata
     let meta_path = cli.data_dir.join("metadata.json");
     let meta_str = fs::read_to_string(&meta_path)

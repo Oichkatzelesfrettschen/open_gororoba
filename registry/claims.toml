@@ -4671,7 +4671,7 @@ id = "C-1597"
 last_verified = "2026-04-13"
 statement = "WHT rotation 3.2x faster than Haar at d=128: FastJL (D1*WHT*D2) achieves 77 kvec/s vs Haar 25 kvec/s = 3.08x speedup, with 0.5% lower MSE (1.444 vs 1.451 at 3-bit)."
 status = "Established"
-status_note = "Verified by turboquant-bench."
+status_note = "Verified by turboquant bench."
 where_stated = "TurboQuant CD bridge (2026-03-28)"
 
 [[claim]]
@@ -4687,7 +4687,7 @@ id = "C-1599"
 last_verified = "2026-04-13"
 statement = "SIMD codebook 2.4x faster than scalar at d=128."
 status = "Established"
-status_note = "Verified by turboquant-bench."
+status_note = "Verified by turboquant bench."
 where_stated = "TurboQuant CD bridge (2026-03-28)"
 
 [[claim]]
@@ -4718,7 +4718,7 @@ id = "C-1602"
 last_verified = "2026-04-13"
 statement = "TurboQuant dominates KIVI 4x at 2-bit."
 status = "Established"
-status_note = "Verified by turboquant-comparison."
+status_note = "Verified by turboquant comparison."
 where_stated = "TurboQuant CD bridge (2026-03-28)"
 
 [[claim]]
@@ -4726,7 +4726,7 @@ id = "C-1603"
 last_verified = "2026-04-13"
 statement = "QJL correction helps at 2-bit, hurts at 4-bit."
 status = "Established"
-status_note = "Verified by turboquant-validate."
+status_note = "Verified by turboquant validate."
 where_stated = "TurboQuant CD bridge (2026-03-28)"
 
 [[claim]]
@@ -4766,7 +4766,7 @@ id = "C-1608"
 last_verified = "2026-04-13"
 statement = "E8+WHT = E8 = WHT quality."
 status = "Established"
-status_note = "Verified by turboquant-sweep."
+status_note = "Verified by turboquant sweep."
 where_stated = "TurboQuant CD bridge (2026-03-29)"
 
 [[claim]]

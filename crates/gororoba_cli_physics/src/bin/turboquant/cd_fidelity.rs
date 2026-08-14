@@ -6,13 +6,12 @@
 //! on each, and reports the fidelity ratio A_post/A_pre.
 
 use anyhow::{Result, bail};
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
-#[derive(Parser)]
-#[command(name = "turboquant-cd-fidelity")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Pre-quantization keys binary (f64, n_vectors * d elements).
     #[arg(long)]
     pre: PathBuf,
@@ -81,8 +80,7 @@ fn read_f64_binary(path: &PathBuf, expected_count: usize) -> Result<Vec<f64>> {
     Ok(vals)
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== TurboQuant CD Fidelity Analyzer ===");
 
     let total = cli.n_vectors * cli.dim;
