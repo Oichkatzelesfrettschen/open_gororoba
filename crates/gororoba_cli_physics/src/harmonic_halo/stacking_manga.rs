@@ -14,7 +14,7 @@
 //!
 //! Reference: E-183 (MaNGA harmonic stacking)
 
-use clap::Parser;
+use clap::Args;
 use cosmology_core::{
     harmonic_stacking::{
         CdDimensionParams, NormalizedPoint, NormalizedResiduals, StackingConfig,
@@ -28,10 +28,8 @@ use std::path::PathBuf;
 /// Gravitational constant in kpc^3 Msun^{-1} (km/s)^2 units.
 const G_KPC_KMS2: f64 = 4.302e-6;
 
-#[derive(Parser)]
-#[command(name = "harmonic-halo-stacking-manga")]
-#[command(about = "Stack MaNGA rotation curve residuals for harmonic halo detection")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Path to MaNGA rotation curves CSV (from manga_maps_to_rotcurves.py).
     #[arg(
         long,
@@ -89,9 +87,7 @@ struct Cli {
     exclude_psf_flagged: bool,
 }
 
-fn main() -> anyhow::Result<()> {
-    env_logger::init();
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     // Load rotation curves
     eprintln!(

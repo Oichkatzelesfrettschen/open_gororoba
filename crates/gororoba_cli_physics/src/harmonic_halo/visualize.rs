@@ -11,17 +11,15 @@
 //! Reference: C-1377, E-195
 
 use anyhow::Context;
-use clap::Parser;
+use clap::Args;
 use std::{
     fs,
     io::Write,
     path::{Path, PathBuf},
 };
 
-#[derive(Parser)]
-#[command(name = "harmonic-halo-visualize")]
-#[command(about = "Generate PGFPlots panels for E-183/E-192 null result manuscript")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Stacked profile CSV (x, delta_stack, delta_stack_err, n_contributing).
     #[arg(long)]
     stacked_csv: PathBuf,
@@ -297,8 +295,7 @@ fn write_stft_spectrogram(rows: &[StftRow], out: &Path) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     fs::create_dir_all(&cli.out_dir)?;
 

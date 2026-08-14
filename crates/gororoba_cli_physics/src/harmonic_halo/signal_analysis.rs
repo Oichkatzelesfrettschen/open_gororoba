@@ -35,16 +35,14 @@
 //!
 //! Reference: E-192, C-1373, C-1369..C-1372
 
-use clap::Parser;
+use clap::Args;
 use cosmology_core::harmonic_stacking::{
     derivative_stack, jackknife_phase_coherence, predicted_wavenumbers, stft_spectrogram,
 };
 use std::path::PathBuf;
 
-#[derive(Parser)]
-#[command(name = "harmonic-halo-signal-analysis")]
-#[command(about = "Non-static STFT + derivative + Rayleigh phase coherence analysis")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Input stacked CSV (columns: x, delta_stack, delta_stack_err, n_contributing).
     #[arg(long)]
     stacked_csv: PathBuf,
@@ -108,8 +106,7 @@ fn load_stacked_csv(path: &std::path::Path) -> anyhow::Result<(Vec<f64>, Vec<f64
     Ok((x_grid, delta, n_contrib))
 }
 
-fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     eprintln!(
         "Loading stacked profile from {}...",

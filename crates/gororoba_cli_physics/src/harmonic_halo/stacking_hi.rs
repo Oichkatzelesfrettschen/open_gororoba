@@ -10,7 +10,7 @@
 //!
 //! Reference: E-195 (HI eigenmode stacking)
 
-use clap::Parser;
+use clap::Args;
 use cosmology_core::{
     CdDimensionParams, EigenmodeStackResult, NormalizedPoint, NormalizedResiduals, StackingConfig,
     detection_threshold, eigenmode_stack,
@@ -29,12 +29,8 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 /// Fiducial stellar mass when no measurement is available.
 const FIDUCIAL_M_STAR_MSUN: f64 = 1.0e11;
 
-#[derive(Parser)]
-#[command(name = "harmonic-halo-stacking-hi")]
-#[command(
-    about = "Stack HI rotation curve residuals for harmonic halo detection with PCA eigenmode analysis"
-)]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// HI rotation curves CSV (from hi-cube-rotcurve-extractor).
     #[arg(long, default_value = "data/external/things/things_rotcurves.csv")]
     rotcurves: PathBuf,
@@ -130,9 +126,7 @@ fn try_load_stellar_masses(meta_path: &std::path::Path) -> HashMap<String, f64> 
     map
 }
 
-fn main() -> anyhow::Result<()> {
-    env_logger::init();
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     eprintln!(
         "Loading HI rotation curves from {}...",

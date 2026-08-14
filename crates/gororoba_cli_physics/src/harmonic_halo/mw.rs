@@ -10,7 +10,7 @@
 //!
 //! Reference: C-1332, C-1313, E-180
 
-use clap::Parser;
+use clap::Args;
 use cosmology_core::{
     harmonic_halos::{HarmonicHaloConfig, v_circ_nfw, v_circ_with_halos},
     harmonic_stacking::{
@@ -21,10 +21,8 @@ use cosmology_core::{
 use data_core::catalogs::gaia_mw_rotation::parse_mw_rotation_curve;
 use std::path::PathBuf;
 
-#[derive(Parser)]
-#[command(name = "harmonic-halo-mw")]
-#[command(about = "Analyze Milky Way rotation curve for harmonic halo modulation")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Path to Gaia MW rotation curve table.
     #[arg(
         long,
@@ -53,9 +51,7 @@ struct Cli {
     csv: PathBuf,
 }
 
-fn main() -> anyhow::Result<()> {
-    env_logger::init();
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     // Load MW rotation curve
     eprintln!(

@@ -859,51 +859,7 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
-name = "harmonic-halo-galaxy-phase"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
-
-[[binary]]
-name = "harmonic-halo-injection"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
-
-[[binary]]
-name = "harmonic-halo-mw"
-crate = "gororoba_cli_physics"
-description = "Analyze Gaia DR3 Milky Way rotation curve for harmonic halo modulation. Computes NFW residuals, tests multiple alpha_zd values, Fourier-analyzes single-galaxy residual at 7 predicted wavenumbers."
-experiment = "E-180"
-
-[[binary]]
-name = "harmonic-halo-rotation-curve"
-crate = "gororoba_cli_physics"
-description = "NFW rotation curve with harmonic halo modulation from sedenion box-kite topology. Computes v_circ(r) with and without 7-mode ZD forcing, outputs CSV for validation and SKA prediction falsification."
-experiment = "E-178"
-
-[[binary]]
-name = "harmonic-halo-signal-analysis"
-crate = "gororoba_cli_physics"
-description = "Non-static signal analysis of stacked rotation curve profiles. Three complementary diagnostics: (1) STFT spectrogram with Gaussian window revealing x-localized harmonic power; (2) derivative stacking d(delta)/dx killing the DC baryonic baseline; (3) jackknife Rayleigh phase coherence test at CD-ZD wavenumbers."
-experiment = "E-192"
-
-[[binary]]
-name = "harmonic-halo-stacking"
-crate = "gororoba_cli_physics"
-description = "Stack SPARC rotation curve residuals in normalized r/r_s coordinates to detect 7-mode harmonic halo signature. Fourier analysis at predicted box-kite wavenumbers k_n' = 2*pi*n/7. Reports detection SNR and alpha_zd estimate/upper limit."
-experiment = "E-180"
-
-[[binary]]
-name = "harmonic-halo-stacking-hi"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
-
-[[binary]]
-name = "harmonic-halo-stacking-manga"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
-
-[[binary]]
-name = "harmonic-halo-visualize"
+name = "harmonic-halo"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 

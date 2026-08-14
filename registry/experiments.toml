@@ -4531,7 +4531,7 @@ title = "YSU-Inspired CUDA Optimization Suite: MRT ILP + CUDA Graph + Tiled Pull
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-rotation-curve"
+binary = "harmonic-halo rotation-curve"
 binary_experiment_declared = "E-178"
 binary_registered = true
 claim_refs = ["C-1313", "C-1314"]
@@ -4549,7 +4549,7 @@ method = "Compute NFW rotation curves with harmonic halo modulation at alpha_zd 
 output = ["CSV rotation curves", "stdout summary statistics"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin harmonic-halo-rotation-curve -- --m200 1e12 --alpha-zd 0.05 --csv harmonic_halo_mw.csv"
+run = "cargo run --release --bin harmonic-halo -- rotation-curve --m200 1e12 --alpha-zd 0.05 --csv harmonic_halo_mw.csv"
 run_command_sha256 = "3d571ce564090dd30d34d3a9665e3218220d4798303f787dd6de7c147451cc42"
 status = "planned"
 status_token = "PLANNED"
@@ -4583,7 +4583,7 @@ title = "Falsification of slope_ratio = 42^2/10000 claim (C-1329)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking"
+binary = "harmonic-halo stacking"
 binary_experiment_declared = "E-180"
 binary_registered = true
 claim_refs = ["C-1313", "C-1332"]
@@ -4601,7 +4601,7 @@ method = "Download SPARC (175 galaxies) and Gaia DR3 MW rotation curve. For each
 output = ["CSV stacked residuals in r/r_s", "Fourier power at 7 wavenumbers", "null hypothesis p-values", "alpha_zd limit"]
 output_path_refs = ["/tmp/harmonic_stacking_final.csv"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin harmonic-halo-stacking -- --sparc-dir data/external/sparc --nfw-fits data/external/sparc_nfw/li2020_nfw_fits.csv --csv-out harmonic_stacking_results.csv"
+run = "cargo run --release --bin harmonic-halo -- stacking --sparc-dir data/external/sparc --nfw-fits data/external/sparc_nfw/li2020_nfw_fits.csv --csv-out harmonic_stacking_results.csv"
 run_command_sha256 = "3bd512835ee1d369dd7bd80a183e920101cd69e3d573f8b1cf0a17e194996c81"
 status = "active"
 status_token = "ACTIVE"
@@ -4635,7 +4635,7 @@ title = "x87 FP-80 vs DD vs nalgebra eigenvalue solver benchmark"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking"
+binary = "harmonic-halo stacking"
 binary_experiment_declared = "E-180"
 binary_registered = true
 claim_refs = ["C-1338"]
@@ -4653,7 +4653,7 @@ method = "Extend E-180 stacking to higher Cayley-Dickson dimensions. For each D 
 output = ["CSV stacked residuals per dimension", "Cross-dimension SNR comparison table"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin harmonic-halo-stacking -- --cd-dim 32 --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat"
+run = "cargo run --release --bin harmonic-halo -- stacking --cd-dim 32 --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat"
 run_command_sha256 = "6a91b8ddcdf577415ca9c5f875f66d77d8d7917149e8f0b1cf8afa41197f844b"
 status = "planned"
 status_token = "PLANNED"
@@ -4661,7 +4661,7 @@ title = "Harmonic Halo stacking: multi-CD-dimension sweep (D=16,32,64,128,256)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking-manga"
+binary = "harmonic-halo stacking-manga"
 binary_experiment_declared = "E-183"
 binary_registered = true
 claim_refs = ["C-1346", "C-1347", "C-1348", "C-1365", "C-1366", "C-1367", "C-1368"]
@@ -4679,7 +4679,7 @@ method = "Two-stage pipeline: (1) DAPall Guillotine -- morphological + quality c
 output = ["manga_harmonic_stacking.csv"]
 output_path_refs = ["manga_harmonic_stacking.csv"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv"
+run = "harmonic-halo stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv"
 run_command_sha256 = "ecd714db2846646bd0695ad9ebbc1762d6123c6eacf0adf623d4569800c8c1d4"
 status = "active"
 status_token = "ACTIVE"
@@ -4713,7 +4713,7 @@ title = "Braid fidelity audit: confirm fidelity < 1.0 at all dim >= 16 (C-1350, 
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-rotation-curve"
+binary = "harmonic-halo rotation-curve"
 binary_experiment_declared = "E-178"
 binary_registered = true
 claim_refs = ["C-1353", "C-1354"]
@@ -4869,7 +4869,7 @@ title = "Evidence-first thesis 42 support bundle"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking"
+binary = "harmonic-halo stacking"
 binary_experiment_declared = "E-180"
 binary_registered = true
 claim_refs = ["C-1344", "C-1345"]
@@ -4883,11 +4883,11 @@ id = "E-191"
 input = "data/external/sparc/table2_rotcurves.dat, data/external/sparc_nfw/table1.dat"
 input_path_refs = ["data/external/sparc/table2_rotcurves.dat", "data/external/sparc_nfw/table1.dat"]
 lineage_id = "XL-109"
-method = "Run harmonic-halo-stacking on 93 SPARC galaxies (chi2<3, c200>=2) with --cd-dim={16,32,64,128,256,512,1024}. At each CD dimension D, the number of Fourier modes is D/2-1 and the assessor fraction is exactly 0.5 (combinatorial identity). Detection SNR and alpha_zd estimates compared across all 7 dimensions."
+method = "Run harmonic-halo stacking on 93 SPARC galaxies (chi2<3, c200>=2) with --cd-dim={16,32,64,128,256,512,1024}. At each CD dimension D, the number of Fourier modes is D/2-1 and the assessor fraction is exactly 0.5 (combinatorial identity). Detection SNR and alpha_zd estimates compared across all 7 dimensions."
 output = ["data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16,32,64,128,256,512,1024}.csv"]
 output_path_refs = ["data/results/harmonic_stacking_cd_sweep/", "data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-stacking --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat --cd-dim {16..1024} --min-c200 2.0 --max-chi2 3.0 --x-min 0.5 --x-max 10.0"
+run = "harmonic-halo stacking --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat --cd-dim {16..1024} --min-c200 2.0 --max-chi2 3.0 --x-min 0.5 --x-max 10.0"
 run_command_sha256 = "90ce986ada276700d5a6104633fceef301c72f3685279b8f28b7f9731c1eaecc"
 status = "active"
 status_token = "ACTIVE"
@@ -4895,7 +4895,7 @@ title = "CD dimension sweep: harmonic halo stacking at D=16,32,64,128,256,512,10
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-signal-analysis"
+binary = "harmonic-halo signal-analysis"
 binary_experiment_declared = "E-192"
 binary_registered = true
 claim_refs = ["C-1372", "C-1373", "C-1411", "C-1412", "C-1413", "C-1414", "C-1415", "C-1416", "C-1417", "C-1418"]
@@ -4913,7 +4913,7 @@ method = "Apply non-static signal analysis (STFT spectrogram, derivative stackin
 output = ["data/results/e183/stft_full.csv", "data/results/e183/deriv_full.csv", "data/results/e183/rayleigh_full.csv", "data/results/e183/stft_lowi.csv", "data/results/e183/deriv_lowi.csv", "data/results/e183/rayleigh_lowi.csv", "experiments/manga_zd_null/results.json"]
 output_path_refs = ["data/results/e183/", "data/results/e183/deriv_full.csv", "data/results/e183/deriv_lowi.csv", "data/results/e183/rayleigh_full.csv", "data/results/e183/rayleigh_lowi.csv", "data/results/e183/stft_full.csv", "data/results/e183/stft_lowi.csv", "experiments/manga_zd_null/results.json"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv"
+run = "harmonic-halo signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv"
 run_command_sha256 = "8d476d35ebb377437380543a96562a935dc79728bed77b885856e4c4eb8307a8"
 status = "active"
 status_token = "ACTIVE"
@@ -4947,7 +4947,7 @@ title = "THINGS HI 21cm Rotation Curve Extraction"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-galaxy-phase"
+binary = "harmonic-halo galaxy-phase"
 binary_experiment_declared = "E-194"
 binary_registered = true
 claim_refs = []
@@ -4965,7 +4965,7 @@ method = "Run the galaxy-ensemble Rayleigh phase-coherence test on all 6992 MaNG
 output = ["data/external/manga/galaxy_phase_coherence.csv"]
 output_path_refs = ["data/external/manga/galaxy_phase_coherence.csv"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-galaxy-phase --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --output data/external/manga/galaxy_phase_coherence.csv"
+run = "harmonic-halo galaxy-phase --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --output data/external/manga/galaxy_phase_coherence.csv"
 run_command_sha256 = "b1496949ef957c906dd8a9d23f660f033a2fcee0d75c7a56160820a522e4a6e4"
 status = "planned"
 status_token = "PLANNED"
@@ -4973,7 +4973,7 @@ title = "Galaxy-Ensemble Rayleigh Phase Coherence"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-visualize"
+binary = "harmonic-halo visualize"
 binary_experiment_declared = "E-195"
 binary_registered = true
 claim_refs = []
@@ -4991,7 +4991,7 @@ method = "Generate the publication-ready PGFPlots panels for the E-183/E-192 nul
 output = ["docs/latex/figs/stft_spectrogram.tex", "docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex"]
 output_path_refs = ["docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex", "docs/latex/figs/stft_spectrogram.tex"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs"
+run = "harmonic-halo visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs"
 run_command_sha256 = "86e3c76410d3ec0ee99d50bb20ffe0853c4ebf807d519131698ba9cfffb47493"
 status = "planned"
 status_token = "PLANNED"
@@ -4999,7 +4999,7 @@ title = "Multi-Panel Null Result Visualization"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking-manga"
+binary = "harmonic-halo stacking-manga"
 binary_experiment_declared = "E-196"
 binary_registered = true
 claim_refs = []
@@ -5017,7 +5017,7 @@ method = "Re-run the MaNGA stacking lane from E-183 with PSF-flagged inner bins 
 output = ["data/external/manga/manga_stack_psf_corrected.csv"]
 output_path_refs = ["data/external/manga/manga_stack_psf_corrected.csv"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-stacking-manga --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --exclude-inner-psf --output data/external/manga/manga_stack_psf_corrected.csv"
+run = "harmonic-halo stacking-manga --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --exclude-inner-psf --output data/external/manga/manga_stack_psf_corrected.csv"
 run_command_sha256 = "96618130008a4a2533f98a9e8049a8af07569c2b0baf6718c2bf96777c8b76a1"
 status = "planned"
 status_token = "PLANNED"
@@ -5025,7 +5025,7 @@ title = "MaNGA Stacking with PSF Beam-Smearing Correction"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-injection"
+binary = "harmonic-halo injection"
 binary_experiment_declared = "E-197"
 binary_registered = true
 claim_refs = []
@@ -5043,7 +5043,7 @@ method = "Inject synthetic ZD harmonic signals with alpha_zd in {0, 0.001, 0.002
 output = ["data/external/manga/injection_recovery.csv"]
 output_path_refs = ["data/external/manga/injection_recovery.csv"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-injection --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --alphas 0,0.001,0.002,0.004,0.008,0.016 --output data/external/manga/injection_recovery.csv"
+run = "harmonic-halo injection --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --alphas 0,0.001,0.002,0.004,0.008,0.016 --output data/external/manga/injection_recovery.csv"
 run_command_sha256 = "7bdb454c8c7e9f96d3ca3fbc5131a7e1d5ceb88ea0a04cfb29a35c39bd91f8b1"
 status = "planned"
 status_token = "PLANNED"

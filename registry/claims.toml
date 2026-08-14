@@ -3188,9 +3188,9 @@ where_stated = "data/results/e183/lie_jordan_full.csv, data/results/e183/lie_jor
 [[claim]]
 id = "C-1374"
 last_verified = ""
-statement = "The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo-signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result."
+statement = "The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result."
 status = "Verified"
-where_stated = "data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo-signal-analysis, E-192, 2026-03-12)"
+where_stated = "data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo signal-analysis, E-192, 2026-03-12)"
 
 [[claim]]
 id = "C-1375"
@@ -3448,7 +3448,7 @@ id = "C-1406"
 last_verified = "2026-03-17"
 statement = "Galaxy-ensemble Rayleigh phase coherence test (E-194) on 7024 MaNGA galaxies yields modest but nonzero coherence at the 7 CD-ZD modes: R = 0.0329, 0.0497, 0.0721, 0.0960, 0.1171, 0.1327, 0.1409 for modes 1..7, compared with the incoherent null expectation 1/sqrt(N) = 0.0119. The coherence rises monotonically with wavenumber rather than peaking at the fundamental mode, so this lane is better interpreted as broad structured baryonic/systematic phase alignment than as evidence for a selective ZD harmonic signal."
 status = "Verified"
-status_note = "harmonic-halo-galaxy-phase binary rerun on MaNGA rotcurves_all + dapall_selection (7024 galaxies)."
+status_note = "harmonic-halo galaxy-phase binary rerun on MaNGA rotcurves_all + dapall_selection (7024 galaxies)."
 where_stated = "crates/gororoba_cli_physics/src/bin/harmonic_halo_galaxy_phase.rs, data/results/e183/galaxy_phase_coherence.csv"
 
 [[claim]]
@@ -3472,7 +3472,7 @@ id = "C-1409"
 last_verified = "2026-03-17"
 statement = "Signal injection-recovery sweep (E-197) is currently miscalibrated and cannot be used as a sensitivity validation. Across injected alpha_zd values 0, 0.001, 0.002, 0.004, 0.008, and 0.016, the detected SNR remains nearly constant at 0.429-0.430 and the recovered alpha_zd remains nearly constant at 0.294-0.296. The recovery ratio therefore scales as 1/alpha_zd instead of staying near unity. This is a pipeline calibration blocker, not evidence that the present MaNGA lane can recover alpha_zd = 0.004."
 status = "Verified"
-status_note = "harmonic-halo-injection binary rerun on MaNGA rotcurves_all + dapall_selection (7024 galaxies)."
+status_note = "harmonic-halo injection binary rerun on MaNGA rotcurves_all + dapall_selection (7024 galaxies)."
 where_stated = "crates/gororoba_cli_physics/src/bin/harmonic_halo_injection.rs, data/results/e183/injection_recovery.csv"
 
 [[claim]]
