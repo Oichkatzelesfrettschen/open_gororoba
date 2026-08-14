@@ -8,7 +8,9 @@
 
 use anyhow::{Context, Result, bail};
 use clap::Parser;
-use provenance_store::{PlanningCompatTable, ProvenanceStore, parse_theorem_identity_spec};
+use provenance_store::{
+    ExecutionTargetRetarget, PlanningCompatTable, ProvenanceStore, parse_theorem_identity_spec,
+};
 use serde::Deserialize;
 use std::{
     fs,
@@ -88,6 +90,7 @@ fn main() -> Result<()> {
         Commands::Claim(args) => cmd_claim_mutation(&mut store, &cli.repo_root, &args),
         Commands::Insight(args) => cmd_insight_mutation(&mut store, &args),
         Commands::Experiment(args) => cmd_experiment_mutation(&mut store, &args),
+        Commands::Binaries(args) => cmd_binaries_mutation(&mut store, &cli.repo_root, &args),
         Commands::Artifact(args) => cmd_artifact_mutation(&mut store, &cli.repo_root, &args),
         Commands::Theorem(args) => cmd_theorem_mutation(&mut store, &cli.repo_root, &args),
         Commands::Requirements(args) => {
@@ -1508,6 +1511,142 @@ fn cmd_experiment_mutation(
                 Some(text) => println!("{}: {}", id, text),
                 None => println!("{}: (status_note is NULL)", id),
             }
+        }
+        ExperimentMutationAction::RetargetExecutionTarget {
+            from,
+            to,
+            actor,
+            reason,
+            dry_run,
+            regen_toml,
+        } => {
+            if *dry_run {
+                let preview = store.preview_execution_target_retarget(from, to)?;
+                for (table, field, id) in &preview {
+                    println!("would update {table}.{field} for {id}");
+                }
+                println!("{} row(s) would change", preview.len());
+                return Ok(());
+            }
+            let actor = resolve_actor(actor.clone());
+            let summary = store.retarget_execution_target(ExecutionTargetRetarget {
+                from,
+                to,
+                actor: &actor,
+                reason: reason.as_deref(),
+            })?;
+            for revision in &summary.revisions {
+                print_revision_summary("execution-target", revision);
+            }
+            println!(
+                "Retargeted {from} -> {to} across {} row(s).",
+                summary.revisions.len()
+            );
+            maybe_regen_toml(*regen_toml)?;
+        }
+    }
+    Ok(())
+}
+
+/// Actor recorded on a revision row: the explicit `--actor`, otherwise the
+/// invoking account, otherwise a marker that says the account was unreadable
+/// rather than leaving the audit row blank.
+fn resolve_actor(actor: Option<String>) -> String {
+    actor
+        .or_else(|| std::env::var("USER").ok())
+        .unwrap_or_else(|| "unknown".to_string())
+}
+
+/// Binary targets cargo declares for the workspace, read from `cargo metadata`
+/// so the inventory follows the manifests rather than a second hand-kept list.
+fn declared_binary_targets(repo_root: &Path) -> Result<Vec<provenance_store::BinaryRecord>> {
+    let output = std::process::Command::new(std::env::var("CARGO").as_deref().unwrap_or("cargo"))
+        .args(["metadata", "--no-deps", "--format-version", "1"])
+        .current_dir(repo_root)
+        .output()
+        .context("run cargo metadata")?;
+    if !output.status.success() {
+        anyhow::bail!(
+            "cargo metadata failed: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+    }
+    let metadata: serde_json::Value =
+        serde_json::from_slice(&output.stdout).context("parse cargo metadata")?;
+    let packages = metadata["packages"]
+        .as_array()
+        .context("cargo metadata has no packages array")?;
+    let mut records = Vec::new();
+    for package in packages {
+        let crate_name = package["name"].as_str().unwrap_or_default().to_string();
+        let Some(targets) = package["targets"].as_array() else {
+            continue;
+        };
+        for target in targets {
+            let is_bin = target["kind"]
+                .as_array()
+                .is_some_and(|kinds| kinds.iter().any(|kind| kind == "bin"));
+            if !is_bin {
+                continue;
+            }
+            let name = target["name"].as_str().unwrap_or_default().to_string();
+            records.push(provenance_store::BinaryRecord {
+                description: format!(
+                    "Workspace binary discovered from cargo metadata in crate {crate_name}; registry metadata pending."
+                ),
+                name,
+                crate_name: crate_name.clone(),
+                experiment: None,
+                source: "cargo-metadata".to_string(),
+            });
+        }
+    }
+    Ok(records)
+}
+
+fn cmd_binaries_mutation(
+    store: &mut ProvenanceStore,
+    repo_root: &Path,
+    args: &BinariesMutationArgs,
+) -> Result<()> {
+    match &args.action {
+        BinariesMutationAction::Sync {
+            actor,
+            reason,
+            dry_run,
+            regen_toml,
+        } => {
+            let declared = declared_binary_targets(repo_root)?;
+            if *dry_run {
+                let (added, removed) = store.preview_binaries_sync(&declared)?;
+                for name in &removed {
+                    println!("would remove {name}");
+                }
+                for name in &added {
+                    println!("would add {name}");
+                }
+                println!("{} add(s), {} removal(s)", added.len(), removed.len());
+                return Ok(());
+            }
+            let actor = resolve_actor(actor.clone());
+            let summary = store.binaries_sync(&declared)?;
+            for name in &summary.removed {
+                println!("removed {name}");
+            }
+            for name in &summary.added {
+                println!("added {name}");
+            }
+            println!(
+                "Synced binaries_cp by {actor}{}: {} retained, {} added, {} removed.",
+                reason
+                    .as_deref()
+                    .map(|r| format!(" ({r})"))
+                    .unwrap_or_default(),
+                summary.retained,
+                summary.added.len(),
+                summary.removed.len()
+            );
+            maybe_regen_toml(*regen_toml)?;
         }
     }
     Ok(())

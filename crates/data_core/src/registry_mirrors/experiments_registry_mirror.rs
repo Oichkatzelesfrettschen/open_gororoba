@@ -3808,7 +3808,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin heliosphere-fa-attribution -- --mission cluster --start-date 2002-01-01 --end-date 2002-01-07 --out-json data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_cluster_pr_curve.json
+//! cargo run --release --bin heliosphere -- fa-attribution --mission cluster --start-date 2002-01-01 --end-date 2002-01-07 --out-json data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_cluster_pr_curve.json
 //! ```
 //!
 //! ## E-229: Rosetta 67P normalization ablation: direction vs raw/clipped/current in weak-field cavity (C-1621)
@@ -3825,13 +3825,13 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin heliosphere-rosetta-ablation-summary -- --input-dir data/output/heliosphere/ablations
+//! cargo run --release --bin heliosphere -- rosetta-ablation-summary --input-dir data/output/heliosphere/ablations
 //! ```
 //!
 //! ## E-230: PSP multi-encounter stability: switchback/quiet CD associator ratio vs perihelion depth (C-1622)
 //!
 //! - Binary: ``
-//! - Input: Four pre-computed PSP switchback omega JSON files: E1/E4/E6/E10 (heliosphere-switchback-omega outputs)
+//! - Input: Four pre-computed PSP switchback omega JSON files: E1/E4/E6/E10 (heliosphere switchback-omega outputs)
 //! - Output: data/output/heliosphere/ablations/psp_multiencounter_stability.json
 //! - Deterministic: `false`
 //! - GPU: `false`
@@ -3842,7 +3842,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin heliosphere-psp-encounter-summary -- --input-dir data/output/heliosphere/ablations
+//! cargo run --release --bin heliosphere -- psp-encounter-summary --input-dir data/output/heliosphere/ablations
 //! ```
 //!
 //! ## E-231: THEMIS FA false-negative classification: low-rotation crossings missed by CD associator (C-1623)
@@ -3859,7 +3859,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin heliosphere-fa-attribution -- --mission themis --out-json data/output/heliosphere/ablations/fa_attribution_themis.json
+//! cargo run --release --bin heliosphere -- fa-attribution --mission themis --out-json data/output/heliosphere/ablations/fa_attribution_themis.json
 //! ```
 //!
 //! ## E-232: MMS rotation-threshold label hardening: gradient-only vs rotation>=30 deg comparison (C-1624)
@@ -3872,11 +3872,11 @@
 //! - Claims: (none)
 //!
 //! Method:
-//! Two runs of heliosphere-mms-multiday: (1) baseline gradient-only (5 nT threshold), (2) rotation-hardened (5 nT + rotation>=30 deg). Compare n_crossings_detected, detection_rate, false_alarm_rate, mean_offset_minutes.
+//! Two runs of heliosphere mms-multiday: (1) baseline gradient-only (5 nT threshold), (2) rotation-hardened (5 nT + rotation>=30 deg). Compare n_crossings_detected, detection_rate, false_alarm_rate, mean_offset_minutes.
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin heliosphere-mms-multiday -- --start-date 2024-01-01 --n-days 7 --rotation-threshold-deg 30 --out-json data/output/heliosphere/ablations/mms_multiday_rot30.json
+//! cargo run --release --bin heliosphere -- mms-multiday --start-date 2024-01-01 --n-days 7 --rotation-threshold-deg 30 --out-json data/output/heliosphere/ablations/mms_multiday_rot30.json
 //! ```
 //!
 //! ## E-233: MAVEN bow shock FA attribution with regime-filter crossing list (C-1625)
@@ -3889,11 +3889,11 @@
 //! - Claims: (none)
 //!
 //! Method:
-//! Load MAVEN MAG minute-averaged FGM (SS frame); 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; compare CD transitions against regime-filter-derived crossing list (heliosphere-maven-crossing-gen SW<4.5nT -> sheath>8nT, 30-min gap); per-transition type classification; PR curve sweep.
+//! Load MAVEN MAG minute-averaged FGM (SS frame); 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; compare CD transitions against regime-filter-derived crossing list (heliosphere maven-crossing-gen SW<4.5nT -> sheath>8nT, 30-min gap); per-transition type classification; PR curve sweep.
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin heliosphere-fa-attribution -- --mission maven --start-date 2015-03-01 --end-date 2015-03-13 --crossing-list data/external/crossing_lists/maven_bs_2015_regime.txt --out-json data/output/heliosphere/ablations/fa_attribution_maven_2015.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json
+//! cargo run --release --bin heliosphere -- fa-attribution --mission maven --start-date 2015-03-01 --end-date 2015-03-13 --crossing-list data/external/crossing_lists/maven_bs_2015_regime.txt --out-json data/output/heliosphere/ablations/fa_attribution_maven_2015.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json
 //! ```
 //!
 //! ## E-234: PMD-equivalent static analysis gap audit: machete + cpd + cognitive-complexity + miri (C-1626)
@@ -3933,7 +3933,7 @@
 //! ## E-236: File-level bootstrap CIs for the cross-mission staple-associator log-sigma survey
 //!
 //! - Binary: `selfsim-logsigma-bootstrap`
-//! - Input: data/output/agg_selfsim_rust.json: per-file staple-associator log-moment records for 8 heliospheric missions (PSP 0.15 AU through Voyager 1 100 AU) produced by heliosphere-selfsim-logstats
+//! - Input: data/output/agg_selfsim_rust.json: per-file staple-associator log-moment records for 8 heliospheric missions (PSP 0.15 AU through Voyager 1 100 AU) produced by heliosphere selfsim-logstats
 //! - Output: data/output/selfsim_logsigma_bootstrap.json
 //! - Deterministic: `true`
 //! - GPU: `false`

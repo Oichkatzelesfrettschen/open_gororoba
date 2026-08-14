@@ -142,10 +142,10 @@ provider_surface = "Mission product federation"
 ingress_binary = "fetch-datasets"
 parser_ref = "heliosphere mission parsers via data_core::catalogs::*"
 analysis_binaries = [
-    "heliosphere-feature-cube",
-    "heliosphere-feature-transform",
-    "heliosphere-algebra-decompose",
-    "heliosphere-lbm-cube-run",
+    "heliosphere feature-cube",
+    "heliosphere feature-transform",
+    "heliosphere algebra-decompose",
+    "heliosphere lbm-cube-run",
 ]
 report_patterns = [
     "reports/heliosphere_feature_cube_*.toml",
