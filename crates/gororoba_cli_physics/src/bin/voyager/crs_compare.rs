@@ -1,5 +1,5 @@
 use chrono::{DateTime, Duration, Utc};
-use clap::Parser;
+use clap::Args;
 use csv::Reader;
 use data_core::catalogs::voyager_crs::{VoyagerCrsRecord, parse_voyager_crs};
 use gororoba_cli_physics::voyager_arrow::{MissionPhase, TrajectoryFeeder, default_repo_root};
@@ -9,10 +9,8 @@ use std::{
     path::{Path, PathBuf},
 };
 
-#[derive(Parser, Debug)]
-#[command(name = "voyager-crs-compare")]
-#[command(about = "Voyager CRS comparison in shape or calibrated absolute-flux mode.")]
-struct Cli {
+#[derive(Args, Debug)]
+pub struct Cli {
     /// Comparison mode: shape, shape-arrow, or absolute.
     #[arg(long, default_value = "shape")]
     mode: String,
@@ -500,8 +498,7 @@ fn fit_upper_limit(rows: &[AbsoluteCompareRow], sigma_v_reference: f64) -> Absol
     }
 }
 
-fn main() {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) {
     let mode = cli.mode.to_lowercase();
 
     if let Some(parent) = cli.out.parent() {

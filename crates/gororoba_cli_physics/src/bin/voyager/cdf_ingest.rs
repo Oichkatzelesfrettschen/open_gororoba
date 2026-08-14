@@ -5,17 +5,16 @@
 //! the standard feature cube CSV for downstream CD analysis.
 //!
 //! Usage:
-//!   voyager-cdf-ingest --spacecraft v1 --cdf-dir data/external/voyager_mag48_cdf/v1/ \
+//!   voyager cdf-ingest --spacecraft v1 --cdf-dir data/external/voyager_mag48_cdf/v1/ \
 //!                       --out-csv data/output/heliosphere/ablations/v1_mag48_2019_2025.csv
 
 use anyhow::{Context, Result};
-use clap::Parser;
+use clap::Args;
 use data_core::cdf_support::{cdf_type_to_f64, cdf_type_to_ydh, cdf_variable_rows, read_cdf_file};
 use std::path::PathBuf;
 
-#[derive(Parser)]
-#[command(name = "voyager-cdf-ingest")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Spacecraft: "v1" or "v2"
     #[arg(long)]
     spacecraft: String,
@@ -41,8 +40,7 @@ struct Cli {
     list_vars: bool,
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     let mission = match cli.spacecraft.as_str() {
         "v1" => "Voyager 1",
         "v2" => "Voyager 2",

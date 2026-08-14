@@ -6,19 +6,18 @@
 //! plasma channels add phase structure beyond the B-field.
 //!
 //! Usage:
-//!   voyager-mag-pls-cd \
+//!   voyager mag-pls-cd \
 //!     --pls-dir data/external/voyager2/pls/ \
 //!     --mag-csv data/output/heliosphere/ablations/v2_mag_hourly.csv \
 //!     --mission v2
 
 use anyhow::{Context, Result};
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
-#[derive(Parser)]
-#[command(name = "voyager-mag-pls-cd")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Directory with PLS yearly CSVs from hapi-fetch
     #[arg(long)]
     pls_dir: PathBuf,
@@ -210,8 +209,7 @@ fn build_embeddings_7ch(records: &[(u16, u16, u8, [f64; TOTAL_CH])], dim: usize)
     (combined, mag_only, pls_only)
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== Voyager MAG+PLS 7-Channel CD ===");
     println!(
         "  Mission: {}, dim: {}D, channels: {}",
