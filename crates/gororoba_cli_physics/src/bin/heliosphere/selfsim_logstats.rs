@@ -20,7 +20,7 @@
 
 use anyhow::{Context, Result};
 use clap::Args;
-use crate::staple_associator::{
+use gororoba_cli_physics::staple_associator::{
     LogMomentStats, joint_associator_norms, log_moment_stats, staple_embedding,
 };
 use rayon::prelude::*;

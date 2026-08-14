@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use chrono::Utc;
 use clap::Args;
-use crate::heliosphere_eval::{
+use gororoba_cli_physics::heliosphere_eval::{
     SeededSparsePolicySummary, SparseMaskSummary, SparsePolicyDatasetContext,
     SparsePolicyTransferSpec, build_sparse_policy_dataset_context, load_heliosphere_rows,
     summarize_seeded_sparse_policy_rows, summarize_sparse_policies,
@@ -446,7 +446,7 @@ fn transferred_seed_row(
         normalization_strategy,
         descriptor_profile,
     };
-    crate::heliosphere_eval::summarize_transferred_seeded_sparse_policy_from_contexts(
+    gororoba_cli_physics::heliosphere_eval::summarize_transferred_seeded_sparse_policy_from_contexts(
         training_context,
         target_context,
         &spec,

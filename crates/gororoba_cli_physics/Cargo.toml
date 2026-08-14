@@ -293,11 +293,11 @@ path = "src/bin/tokamak_cd_proof.rs"
 
 [[bin]]
 name = "harmonic-halo"
-path = "src/bin/harmonic_halo.rs"
+path = "src/bin/harmonic_halo/main.rs"
 
 [[bin]]
 name = "heliosphere"
-path = "src/bin/heliosphere.rs"
+path = "src/bin/heliosphere/main.rs"
 
 [[bin]]
 name = "themis-staples-score-export"

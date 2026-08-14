@@ -6,8 +6,6 @@
 pub mod anomaly_residual;
 pub mod ephemeris_loader;
 pub mod flyby;
-pub mod harmonic_halo;
-pub mod heliosphere;
 pub mod heliosphere_boundary;
 pub mod heliosphere_eval;
 pub mod lbm_dispatch;
