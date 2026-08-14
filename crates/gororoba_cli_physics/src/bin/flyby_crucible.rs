@@ -196,12 +196,8 @@ fn run_flyby(
 
                     #[cfg(feature = "gpu")]
                     let gpu_force = gpu_pipeline.and_then(|mtx| {
-                        let params = ThreeBodyOrbitalParams::compute(
-                            nalgebra::Vector3::from(p_in),
-                            nalgebra::Vector3::from(_v_in),
-                            nalgebra::Vector3::from(*v_wind),
-                            nalgebra::Vector3::from(r_moon),
-                            nalgebra::Vector3::from(r_sun),
+                        let params = ThreeBodyOrbitalParams::compute_from_arrays(
+                            p_in, _v_in, *v_wind, r_moon, r_sun,
                         )?;
                         let mut pipe = mtx.lock().ok()?;
                         let f = pipe.compute_force_3body(&params, alpha_eff).ok()?;

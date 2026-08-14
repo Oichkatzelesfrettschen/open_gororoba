@@ -227,6 +227,29 @@ pub struct ThreeBodyOrbitalParams {
 }
 
 impl ThreeBodyOrbitalParams {
+    /// Compute orbital parameters from plain `[f64; 3]` state vectors.
+    ///
+    /// Integrator call sites carry position and velocity as arrays, so this
+    /// wrapper lets them reach the 3-body embedding without taking a direct
+    /// `nalgebra` dependency for the conversion alone. Same degeneracy contract
+    /// as `compute`.
+    #[must_use]
+    pub fn compute_from_arrays(
+        r: [f64; 3],
+        v: [f64; 3],
+        v_wind: [f64; 3],
+        r_moon: [f64; 3],
+        r_sun: [f64; 3],
+    ) -> Option<Self> {
+        Self::compute(
+            Vector3::from(r),
+            Vector3::from(v),
+            Vector3::from(v_wind),
+            Vector3::from(r_moon),
+            Vector3::from(r_sun),
+        )
+    }
+
     /// Compute orbital parameters for the 3-body embedding.
     ///
     /// Returns `None` if the geometry is degenerate (zero velocity or

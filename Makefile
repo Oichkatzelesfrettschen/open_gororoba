@@ -335,6 +335,11 @@ registry-verify-markdown-governance:
 validate-governance: registry-validation-tools
 	$(MARKDOWN_REGISTRY_CACHE) verify-all
 	$(GOVERNANCE_VERIFY_CACHE) validate-all
+# execution-planning cross-checks every experiment and lineage row against the
+# declared execution targets and against the sha256 of its own run command. It
+# stayed outside this chain while three binary-collapse commits regressed it,
+# so it runs here rather than only under registry-verify-execution-planning.
+	$(EXECUTION_PLANNING_CACHE) --verify --repo-root .
 	@echo ""
 	@echo "=========================================="
 	@echo "REGISTRY GOVERNANCE VALIDATION: PASSED"
@@ -436,6 +441,7 @@ REGISTRY_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/registry-validation.stamp
 REGISTRY_VALIDATION_CACHE_FILES := $(addprefix $(VALIDATION_TOOLS_DIR)/,$(REGISTRY_VALIDATION_BINS))
 MARKDOWN_REGISTRY_CACHE := $(VALIDATION_TOOLS_DIR)/markdown-registry
 GOVERNANCE_VERIFY_CACHE := $(VALIDATION_TOOLS_DIR)/governance-verify
+EXECUTION_PLANNING_CACHE := $(VALIDATION_TOOLS_DIR)/execution-planning
 REGISTRY_INTEGRITY_CACHE := $(VALIDATION_TOOLS_DIR)/registry-integrity
 PROJECT_COUNTER_CACHE := $(VALIDATION_TOOLS_DIR)/project-counter-sync
 PROVENANCE_CACHE := $(VALIDATION_TOOLS_DIR)/provenance
