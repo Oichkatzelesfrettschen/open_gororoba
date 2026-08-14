@@ -305,9 +305,23 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
             binary_experiment.insert(name, string_field(row, "experiment"));
         }
     }
+    // Experiments sharing one execution target, keyed by its head token. A
+    // dispatcher answers to `turboquant bench` and `turboquant validate` alike,
+    // so the head is what the binaries registry knows and the peer set is what
+    // an experiment's declared attribution is checked against.
+    let mut experiments_by_execution_target: BTreeMap<String, BTreeSet<String>> = BTreeMap::new();
 
     let experiments_meta = table_value(&experiments_raw, "experiments");
     let experiments = table_array(&experiments_raw, "experiment")?;
+    for row in &experiments {
+        let binary = string_field(row, "binary");
+        if !binary.is_empty() {
+            experiments_by_execution_target
+                .entry(execution_target_head(&binary).to_string())
+                .or_default()
+                .insert(string_field(row, "id"));
+        }
+    }
     let lineages_meta = table_value(&lineage_raw, "experiment_lineage");
     let lineages = table_array(&lineage_raw, "lineage")?;
     let edges = table_array(&lineage_raw, "edge")?;
@@ -390,27 +404,42 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
 
         let binary = string_field(row, "binary");
         let binary_registered = bool_field(row, "binary_registered");
-        if binary_registered && !execution_target_names.contains(&binary) {
+        if binary_registered && !execution_target_registered(&binary, &execution_target_names) {
             failures.push(format!(
                 "experiment[{eid}] binary marked registered but missing: {binary}"
             ));
         }
-        if !binary_registered && execution_target_names.contains(&binary) {
+        if !binary_registered && execution_target_registered(&binary, &execution_target_names) {
             failures.push(format!(
                 "experiment[{eid}] binary marked unregistered but exists: {binary}"
             ));
         }
         let declared = string_field(row, "binary_experiment_declared");
-        let registered_experiment = binary_experiment.get(&binary).cloned().unwrap_or_default();
+        let registered_experiment = binary_experiment
+            .get(&binary)
+            .or_else(|| binary_experiment.get(execution_target_head(&binary)))
+            .cloned()
+            .unwrap_or_default();
         if !declared.is_empty() {
-            let expected_declared = if !registered_experiment.is_empty() {
-                registered_experiment
-            } else {
-                eid.clone()
-            };
-            if declared != expected_declared {
+            if !registered_experiment.is_empty() {
+                if declared != registered_experiment {
+                    failures.push(format!(
+                        "experiment[{eid}] binary_experiment_declared mismatch: {declared}"
+                    ));
+                }
+            } else if declared != eid
+                && !experiments_by_execution_target
+                    .get(execution_target_head(&binary))
+                    .is_some_and(|peers| peers.contains(&declared))
+            {
+                // The binaries registry attributes no experiment to this target,
+                // so the declaration stands if the experiment credits itself or
+                // credits another experiment running the same target. A
+                // dispatcher serves many lanes, and demanding self-declaration
+                // there would reject every lane that credits the experiment
+                // which first registered the target.
                 failures.push(format!(
-                    "experiment[{eid}] binary_experiment_declared mismatch: {declared}"
+                    "experiment[{eid}] binary_experiment_declared names no experiment on {binary}: {declared}"
                 ));
             }
         }
@@ -500,7 +529,9 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
                 }
             ));
         }
-        if !lineage_binary.is_empty() && !execution_target_names.contains(&lineage_binary) {
+        if !lineage_binary.is_empty()
+            && !execution_target_registered(&lineage_binary, &execution_target_names)
+        {
             failures.push(format!("lineage[{lid}] unknown binary"));
         }
         if string_field(row, "run_command_sha256")
@@ -618,7 +649,7 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
                         failures.push(format!("lineage edge[{edge_id}] empty binary ref"));
                     }
                 } else {
-                    if !execution_target_names.contains(&to_ref) {
+                    if !execution_target_registered(&to_ref, &execution_target_names) {
                         failures.push(format!(
                             "lineage edge[{edge_id}] unknown binary ref: {to_ref}"
                         ));
@@ -1121,8 +1152,12 @@ fn build_experiment_rows(
         } else {
             "non_deterministic".to_string()
         };
-        let binary_row = binaries.get(&binary);
-        let binary_registered = binary_row.is_some() || bench_targets.contains(&binary);
+        let binary_row = binaries
+            .get(&binary)
+            .or_else(|| binaries.get(execution_target_head(&binary)));
+        let binary_registered = binary_row.is_some()
+            || bench_targets.contains(&binary)
+            || bench_targets.contains(execution_target_head(&binary));
         let binary_experiment_declared = {
             let registered = binary_row
                 .map(|row| string_field(row, "experiment"))
@@ -3233,6 +3268,25 @@ fn table_value(root: &Table, key: &str) -> Table {
         .and_then(Value::as_table)
         .cloned()
         .unwrap_or_default()
+}
+
+/// The registered target inside an execution-target citation.
+///
+/// A cargo bin or bench target is one word. A dispatcher that collapsed a
+/// cluster of lanes into subcommands is cited with the lane appended, as in
+/// `turboquant bench` or `heliosphere predictive-eval`, and only the first word
+/// names a target cargo can build. Splitting on whitespace therefore recovers
+/// the buildable name while `registry/experiments.toml` keeps the lane in its
+/// `binary` field, which is what distinguishes one lane's evidence from
+/// another's.
+fn execution_target_head(target: &str) -> &str {
+    target.split_whitespace().next().unwrap_or(target)
+}
+
+/// Whether an execution-target citation names a registered target, accepting
+/// both the bare target and the dispatcher-plus-lane form.
+fn execution_target_registered(target: &str, registered: &BTreeSet<String>) -> bool {
+    registered.contains(target) || registered.contains(execution_target_head(target))
 }
 
 fn string_field(table: &Table, key: &str) -> String {
