@@ -1,4 +1,4 @@
-use crate::heliosphere_eval::{
+use gororoba_cli_physics::heliosphere_eval::{
     HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES, build_labeled_samples, load_heliosphere_rows,
     summarize_cross_mission_invariance,
 };
@@ -32,7 +32,7 @@ struct Report {
     horizon_hours: i64,
     invariant_channel_names: Vec<String>,
     descriptor_channel_names: Vec<String>,
-    missions: Vec<crate::heliosphere_eval::MissionInvarianceSummary>,
+    missions: Vec<gororoba_cli_physics::heliosphere_eval::MissionInvarianceSummary>,
     notes: Vec<String>,
 }
 

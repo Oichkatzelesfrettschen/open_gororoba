@@ -148,28 +148,28 @@ const GPU_REQUIRED_BINS: &[(&str, &str)] = &[
 // default build on an unresolved path, which is the failure this catches early.
 const GPU_REQUIRED_CFG_ITEMS: &[(&str, &str)] = &[
     (
-        "crates/gororoba_cli_physics/src/heliosphere/mod.rs",
-        "#[cfg(feature = \"gpu\")]\npub mod boxkite_alignment;",
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod boxkite_alignment;",
     ),
     (
-        "crates/gororoba_cli_physics/src/heliosphere/mod.rs",
-        "#[cfg(feature = \"gpu\")]\npub mod lbm_cube_run;",
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod lbm_cube_run;",
     ),
     (
-        "crates/gororoba_cli_physics/src/heliosphere/mod.rs",
-        "#[cfg(feature = \"gpu\")]\npub mod sparse_preservation;",
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod sparse_preservation;",
     ),
     (
-        "crates/gororoba_cli_physics/src/bin/heliosphere.rs",
-        "#[cfg(feature = \"gpu\")]\n    BoxkiteAlignment(heliosphere::boxkite_alignment::Cli),",
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    BoxkiteAlignment(boxkite_alignment::Cli),",
     ),
     (
-        "crates/gororoba_cli_physics/src/bin/heliosphere.rs",
-        "#[cfg(feature = \"gpu\")]\n    LbmCubeRun(heliosphere::lbm_cube_run::Cli),",
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    LbmCubeRun(lbm_cube_run::Cli),",
     ),
     (
-        "crates/gororoba_cli_physics/src/bin/heliosphere.rs",
-        "#[cfg(feature = \"gpu\")]\n    SparsePreservation(heliosphere::sparse_preservation::Cli),",
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    SparsePreservation(sparse_preservation::Cli),",
     ),
 ];
 

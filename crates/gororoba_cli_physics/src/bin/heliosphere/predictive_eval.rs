@@ -1,7 +1,7 @@
 use anyhow::Result;
 use chrono::Utc;
 use clap::Args;
-use crate::heliosphere_eval::{
+use gororoba_cli_physics::heliosphere_eval::{
     BinaryMetrics, HELIOSPHERE_DESCRIPTOR_CHANNEL_NAMES, LabelCoverageRow, MissionSplitSummary,
     build_labeled_samples, evaluate_predictive_models, load_heliosphere_rows,
     summarize_label_coverage,

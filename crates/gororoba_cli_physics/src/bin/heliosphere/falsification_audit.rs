@@ -1,7 +1,7 @@
 use anyhow::Result;
 use chrono::Utc;
 use clap::Args;
-use crate::heliosphere_eval::{
+use gororoba_cli_physics::heliosphere_eval::{
     BinaryMetrics, CounterfactualPredictiveSummary, CounterfactualSparseSummary,
     build_labeled_samples, evaluate_predictive_counterfactuals, evaluate_predictive_models,
     load_heliosphere_rows, summarize_sparse_policies, summarize_sparse_policy_counterfactuals,
@@ -46,7 +46,7 @@ struct Report {
     positive_sample_count: usize,
     baseline_models: Vec<BinaryMetrics>,
     predictive_counterfactuals: Vec<CounterfactualPredictiveSummary>,
-    baseline_sparse_policies: Vec<crate::heliosphere_eval::SparseMaskSummary>,
+    baseline_sparse_policies: Vec<gororoba_cli_physics::heliosphere_eval::SparseMaskSummary>,
     sparse_counterfactuals: Vec<CounterfactualSparseSummary>,
     verdicts: Vec<VerdictRow>,
     notes: Vec<String>,
