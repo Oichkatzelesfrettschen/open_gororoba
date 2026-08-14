@@ -72,8 +72,33 @@ pub struct HeliosphereFeatureRow {
     pub year: u16,
     pub doy: u16,
     pub hour: u8,
+    /// Radial distance, in a frame the schema does not declare and the ingest
+    /// paths do not agree on.
+    ///
+    /// Measured over `data/output/heliosphere/densified_feature_cube_v3.csv`,
+    /// the column carries three incompatible quantities. Heliocentric AU for
+    /// Voyager 1 (1.0 to 165.66), Voyager 2 (to 125.83), New Horizons, Cassini,
+    /// Juno, Parker Solar Probe (0.09 to 0.87), Helios 1 and 2, Solar Orbiter,
+    /// BepiColombo and Ulysses. Geocentric AU for IMP 8 (0.00126 to 0.002) and
+    /// IBEX, both in Earth orbit, and for SOHO (0.0083 to 0.011) about its L1
+    /// halo. And the constant 1.0 for ACE, OMNI, STEREO-A and WIND across every
+    /// row, which is a fill value rather than a measurement -- Voyager 1 and 2
+    /// carry it too for their pre-cruise epochs.
+    ///
+    /// This matters because `signal_channels` puts this and the two angles at
+    /// indices 0 through 2 of the vector the Cayley-Dickson embedding consumes.
+    /// `transform_feature_rows` normalizes per `(window, mission, product)`, so
+    /// `Normalized`, `DifferencedNormalized` and both robust modes absorb the
+    /// frame difference into each mission's own mean and standard deviation,
+    /// and `normalize_channel` sends a zero-variance channel to 0.0, which
+    /// neutralizes the constant fill. `Raw` mode passes all three through
+    /// unchanged, so a cross-mission comparison in `Raw` partly measures which
+    /// ingest convention a mission's loader happened to use.
     pub r_au: f64,
+    /// Latitude in the same undeclared frame as `r_au`; NaN where the ingest
+    /// path found no ephemeris variable, which `normalize_channel` maps to 0.0.
     pub lat_deg: f64,
+    /// Longitude in the same undeclared frame as `r_au`.
     pub lon_deg: f64,
     pub density_cm3: f64,
     pub speed_kms: f64,
