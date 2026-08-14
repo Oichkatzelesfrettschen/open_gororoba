@@ -107,9 +107,15 @@ hardware-specific tables are replaced with the scientific stack.
 
 - Toolchain: `rust-toolchain.toml` pins stable `1.97.0`,
   edition 2024.
-- Default target dir for repository validation: `CARGO_TARGET_DIR=.cache/gate-target`.
-  The physical path is retained for cache compatibility; the logical workflow
-  uses `validate-*` targets.
+- Default target dir for repository validation:
+  `CARGO_TARGET_DIR="$(pwd)/.cache/gate-target"`. The physical path is retained
+  for cache compatibility; the logical workflow uses `validate-*` targets.
+  Pass it absolute. Cargo resolves a relative `CARGO_TARGET_DIR` against the
+  shell's working directory, so a build launched from inside the tree writes a
+  nested `.cache/gate-target/debug/.cache/gate-target`, exits 0, and leaves
+  every later `stat` on the original path reading a stale artifact. The
+  `Makefile` is already safe: `REPO_CARGO_TARGET_DIR` is
+  `$(CURDIR)/.cache/gate-target`.
 - Per-worktree experimental dirs: `.cache/exp-<name>-target/`.
 - Cache budget: gate-target <= 200G; full `.cache` <= 250G; sweep
   with `make cache-sweep` (cargo-sweep --maxsize 100GB) or
@@ -121,14 +127,14 @@ hardware-specific tables are replaced with the scientific stack.
 ### Canonical build
 
 ```bash
-CARGO_TARGET_DIR=.cache/gate-target cargo build --workspace --profile validation
+CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo build --workspace --profile validation
 ```
 
 Per-crate, with validation semantics:
 
 ```bash
-CARGO_TARGET_DIR=.cache/gate-target cargo clippy -p <crate> --all-targets --profile validation -- -D warnings
-CARGO_TARGET_DIR=.cache/gate-target cargo nextest run -p <crate> --lib --cargo-profile validation
+CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo clippy -p <crate> --all-targets --profile validation -- -D warnings
+CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo nextest run -p <crate> --lib --cargo-profile validation
 ```
 
 ### Pre-push validation chain

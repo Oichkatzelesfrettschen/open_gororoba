@@ -37,9 +37,17 @@ pub enum ColorMap {
     Turbo, // Neon/Cyberpunk
 }
 
-/// Rasterize a complex fractal potential into an ARGB framebuffer using domain coloring.
+/// Rasterize the magnitude of a seven-term complex potential into an ARGB
+/// framebuffer.
 ///
-/// Implements the logic from src/vis_hyper_fractal.py.
+/// The potential is `V(z) = sum_{n=1..7} exp(i*n*pi/4) / (z^n + 0.1)`, so each
+/// term contributes a pole ring of order n rotated by n*pi/4, and the 0.1 offset
+/// keeps the denominator away from zero where the ring would diverge. Only
+/// `|V|` reaches the color: `(ln|V| + 5) / 10` compresses six decades into the
+/// unit interval before the Turbo lookup, which is what makes the outer field
+/// and the near-pole spikes legible in one frame. The argument is discarded,
+/// so this is a magnitude map and not domain coloring -- phase order around a
+/// pole is not recoverable from the image.
 pub fn render_hyper_fractal_to_argb(
     framebuffer: &mut [u32],
     width: usize,
