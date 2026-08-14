@@ -335,17 +335,21 @@ unicode-normalization = "0.1" # Unicode normalization for ANSI-safe UTF-8 sanita
 unpdf = "0.7" # Scientific PDF extraction with math support
 
 # HDF5 data export (requires system libhdf5)
-# Using hdf5-metno fork which supports HDF5 2.0 (Arch/CachyOS ships 2.0.0-3.1)
-# The upstream hdf5 0.8.1 panics on HDF5 2.0 with "Invalid H5_VERSION"
+# Using the hdf5-metno fork; upstream `hdf5` 0.8.1 last released
+# 2021-11-21 and panics on any HDF5 2.x with "Invalid H5_VERSION".
 #
-# TRACKING (T-041, verified 2026-05-10):
-#   upstream `hdf5`  : 0.8.1 last released 2021-11-21 (DORMANT; no HDF5 2.0)
-#   `hdf5-metno`     : 0.12.4 released 2026-03-23 (ACTIVE; HDF5 2.0 supported)
-# Conclusion: continue with the fork. Re-evaluate when upstream resumes
-# releases. See https://github.com/aldanor/hdf5-rust for upstream activity
-# and https://github.com/metno/hdf5-rust for the fork. The version pin
-# `"0.12"` floats to 0.12.4 already; no action needed.
-hdf5 = { package = "hdf5-metno", version = "0.12" }
+# The pin tracks the system library, because hdf5-metno-sys parses
+# H5_VERSION out of H5pubconf.h and panics on a value its Version::parse
+# does not recognize. Arch and CachyOS ship HDF5 2.2.0, which the sys
+# crate behind hdf5-metno 0.12.4 (hdf5-metno-sys 0.11.3) rejects, so the
+# floor is 0.14. Raising the system HDF5 past what the pinned sys crate
+# parses breaks every build that touches the hdf5-export feature,
+# including the registry-validation tools the pre-push governance gate
+# builds.
+#
+# See https://github.com/aldanor/hdf5-rust for upstream activity and
+# https://github.com/metno/hdf5-rust for the fork.
+hdf5 = { package = "hdf5-metno", version = "0.14" }
 
 # NetCDF support (pure Rust, no C dependencies)
 # netcdf3: read/write NetCDF-3 classic format (BOUT++ grid files, legacy datasets)
