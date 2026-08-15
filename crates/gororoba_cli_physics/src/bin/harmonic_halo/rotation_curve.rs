@@ -61,7 +61,6 @@ pub struct Cli {
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     let nfw = nfw_params_from_mass(cli.m200, cli.z);
     let c200 = if cli.c200 > 0.0 { cli.c200 } else { nfw.c200 };
     let r_s = nfw.r200_kpc / c200;

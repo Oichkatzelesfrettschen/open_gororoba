@@ -86,7 +86,6 @@ struct HourlyDetail {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     println!(
         "=== PSP Switchback + Omega_mv Analysis ===\n\
          Window: {} to {}\n\

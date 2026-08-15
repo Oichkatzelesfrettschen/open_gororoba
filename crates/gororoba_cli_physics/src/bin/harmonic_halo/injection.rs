@@ -63,7 +63,6 @@ pub struct Cli {
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     eprintln!("Loading MaNGA rotation curves from {:?}...", cli.rotcurves);
     let rotcurves = parse_manga_rotcurves(&cli.rotcurves).map_err(|e| anyhow::anyhow!(e))?;
     eprintln!("Loaded {} galaxy rotation curves", rotcurves.len());

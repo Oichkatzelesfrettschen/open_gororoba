@@ -256,7 +256,6 @@ fn sample_files(dir: &Path, extension: &str, count: usize) -> Vec<PathBuf> {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     let mut aggregate: BTreeMap<&'static str, MissionAggregate> = BTreeMap::new();
     for spec in MISSIONS {
         let files = sample_files(

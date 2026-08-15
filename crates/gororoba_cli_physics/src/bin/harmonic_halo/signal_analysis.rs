@@ -107,7 +107,6 @@ fn load_stacked_csv(path: &std::path::Path) -> anyhow::Result<(Vec<f64>, Vec<f64
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     eprintln!(
         "Loading stacked profile from {}...",
         cli.stacked_csv.display()

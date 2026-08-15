@@ -110,7 +110,6 @@ struct SweepSummary {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     fs::create_dir_all(&cli.out_dir)?;
 
     // Load curated crossing list once

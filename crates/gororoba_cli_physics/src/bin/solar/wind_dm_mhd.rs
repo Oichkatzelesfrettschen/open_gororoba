@@ -278,7 +278,6 @@ fn load_ic_file(
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     let dm_label = if cli.no_dm { "OFF" } else { "ON" };
     let ic_label = if cli.ic_file.is_some() {
         "real-data"

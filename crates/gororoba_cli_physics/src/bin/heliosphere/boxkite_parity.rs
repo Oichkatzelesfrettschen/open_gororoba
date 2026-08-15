@@ -126,7 +126,6 @@ fn compare(a: &[AlignmentRow], b: &[AlignmentRow], abs_tol: f64, rel_tol: f64) -
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     println!(
         "[1/3] Loading CPU results from {}...",
         cli.cpu_csv.display()
