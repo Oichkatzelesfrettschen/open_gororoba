@@ -208,7 +208,6 @@ fn load_mission_json(path: &PathBuf, label: &str) -> Result<MissionRaw> {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     // File list: (path, label).
     let files: &[(&str, &str)] = &[
         ("fa_attribution_themis_2008w44.json", "THEMIS 2008w44"),

@@ -320,7 +320,6 @@ fn build_ascii_table(results: &TauSweepResults) -> String {
 // ============================================================================
 
 pub fn run(cli: Cli) -> Result<()> {
-
     let start = NaiveDate::parse_from_str(&cli.start_date, "%Y-%m-%d")
         .with_context(|| format!("bad start_date: {}", cli.start_date))?;
     let probe_char = cli

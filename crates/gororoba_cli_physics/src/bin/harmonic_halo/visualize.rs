@@ -296,7 +296,6 @@ fn write_stft_spectrogram(rows: &[StftRow], out: &Path) -> anyhow::Result<()> {
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     fs::create_dir_all(&cli.out_dir)?;
 
     // Load stacked profile (required)

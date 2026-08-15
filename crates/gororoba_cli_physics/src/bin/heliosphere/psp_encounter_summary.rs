@@ -119,7 +119,6 @@ fn spearman_rho(ranks_x: &[f64], values_y: &[f64]) -> f64 {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     // (label, filename) pairs in encounter order.
     let files = [
         ("E1 (2018, ~35 Rs)", "psp_switchback_omega_e1.json"),

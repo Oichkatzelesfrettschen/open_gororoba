@@ -156,7 +156,6 @@ fn load_ic_file(
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     let ic_label = if cli.ic_file.is_some() {
         "real-data"
     } else {

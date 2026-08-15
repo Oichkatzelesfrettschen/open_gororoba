@@ -52,7 +52,6 @@ pub struct Cli {
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     // Load MW rotation curve
     eprintln!(
         "Loading Gaia MW rotation curve from {}...",

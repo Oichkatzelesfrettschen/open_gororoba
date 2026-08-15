@@ -71,7 +71,6 @@ pub struct Cli {
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     // Load SPARC rotation curves: auto-detect directory vs single VizieR table2 file
     eprintln!(
         "Loading SPARC rotation curves from {}...",
