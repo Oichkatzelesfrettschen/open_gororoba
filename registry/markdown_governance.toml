@@ -6,7 +6,7 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 136
+document_count = 134
 generated_artifact_count = 38
 manual_narrative_count = 38
 toml_generated_mirror_count = 15
@@ -1179,20 +1179,3 @@ mode = "manual_narrative"
 header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
-[[document]]
-path = "reports/browser_profiles/ams_1906_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
-id = "MDG-0135"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-source_toml_refs = ["registry/reports_narratives.toml"]
-notes = "Generated or retained artifact without a TOML mirror contract."
-
-[[document]]
-path = "reports/browser_profiles/ams_1912_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
-id = "MDG-0136"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-source_toml_refs = ["registry/reports_narratives.toml"]
-notes = "Generated or retained artifact without a TOML mirror contract."
