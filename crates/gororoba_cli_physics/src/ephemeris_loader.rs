@@ -199,6 +199,29 @@ impl SolarSystemBody {
         Self::Pluto,
     ];
 
+    /// Sidereal orbital period in days, from the NASA planetary fact sheets.
+    ///
+    /// Used to decide how far to sample the kernel when tracing a body's path:
+    /// one period returns the closed orbit and nothing more. It is not used to
+    /// compute a position -- every position on a chart comes from the kernel,
+    /// so an approximate period costs a slightly over- or under-closed loop and
+    /// never a wrong point. DE440 spans 1550 through 2650, which is 4.4 Pluto
+    /// periods, so every body here closes inside the kernel.
+    #[must_use]
+    pub fn sidereal_period_days(self) -> f64 {
+        match self {
+            Self::Mercury => 87.969,
+            Self::Venus => 224.701,
+            Self::EarthMoonBarycenter => 365.256,
+            Self::Mars => 686.980,
+            Self::Jupiter => 4_332.589,
+            Self::Saturn => 10_759.22,
+            Self::Uranus => 30_685.4,
+            Self::Neptune => 60_189.0,
+            Self::Pluto => 90_560.0,
+        }
+    }
+
     /// NAIF integer ID of the barycentre.
     #[must_use]
     pub fn naif_id(self) -> i32 {
@@ -309,11 +332,7 @@ impl HeliocentricEphemeris {
     /// Fails rather than returning zeros: a caller plotting a body wants to
     /// know the epoch fell outside the kernel's coverage, where the flyby
     /// integrator preferred to keep stepping.
-    pub fn body_equatorial_km(
-        &self,
-        body: SolarSystemBody,
-        jed: f64,
-    ) -> anyhow::Result<[f64; 3]> {
+    pub fn body_equatorial_km(&self, body: SolarSystemBody, jed: f64) -> anyhow::Result<[f64; 3]> {
         let epoch = Epoch::from_jde_tdb(jed);
         let frame = Frame::from_ephem_j2000(body.naif_id());
         let state = self
