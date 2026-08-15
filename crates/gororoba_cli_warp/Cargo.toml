@@ -7,62 +7,9 @@ license = "MIT"
 description = "Warp domain CLI binaries and shared modules for gororoba"
 
 [[bin]]
-name = "warp-ring-integration"
-path = "src/bin/warp_ring_integration.rs"
-
-[[bin]]
-name = "warp-ring-3d"
-path = "src/bin/warp_ring_3d.rs"
-
-[[bin]]
-name = "warp-gpu-experiment"
-path = "src/bin/warp_gpu_experiment.rs"
+name = "warp"
+path = "src/bin/warp/main.rs"
 required-features = ["gpu"]
-
-[[bin]]
-name = "warp-gpu-smoke"
-path = "src/bin/warp_gpu_smoke.rs"
-required-features = ["gpu"]
-
-[[bin]]
-name = "warp-bench-precision"
-path = "src/bin/warp_bench_precision.rs"
-
-[[bin]]
-name = "warp-precision-matrix"
-path = "src/bin/warp_precision_matrix.rs"
-
-[[bin]]
-name = "warp-precision-suite"
-path = "src/bin/warp_precision_suite.rs"
-
-[[bin]]
-name = "warp-basemark-suite"
-path = "src/bin/warp_basemark_suite.rs"
-
-[[bin]]
-name = "warp-fastpath-suite"
-path = "src/bin/warp_fastpath_suite.rs"
-
-[[bin]]
-name = "warp-fastpath-analyze"
-path = "src/bin/warp_fastpath_analyze.rs"
-
-[[bin]]
-name = "warp-production-suite"
-path = "src/bin/warp_production_suite.rs"
-
-[[bin]]
-name = "warp-acceptance-gate"
-path = "src/bin/warp_acceptance_gate.rs"
-
-[[bin]]
-name = "warp-enstrophy-test"
-path = "src/bin/warp_enstrophy_test.rs"
-
-[[bin]]
-name = "warp-lbm-step-test"
-path = "src/bin/warp_lbm_step_test.rs"
 
 [dependencies]
 chrono = { workspace = true }

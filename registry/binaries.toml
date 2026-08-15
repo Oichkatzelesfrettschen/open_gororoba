@@ -1289,52 +1289,7 @@ crate = "gororoba_cli_physics"
 description = "Sweep nacelle count (n=1..16) and compute warp bubble energy budgets, York time, and interior-flat residuals. Paper mode matches White 2025."
 
 [[binary]]
-name = "nanograv-avt-filter"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-entropy-audit"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-gauge-resonance"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-propagation-audit"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-synthetic-gen"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-timing-inventory"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-timing-phase1-independent"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-timing-phase1-refit"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-timing-refit-preflight"
-crate = "gororoba_cli_data"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
-
-[[binary]]
-name = "nanograv-vacuum-symmetry"
+name = "nanograv"
 crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."
 
@@ -1834,45 +1789,9 @@ crate = "gororoba_cli_physics"
 description = "Exports per-sample CD staple-associator, |B|-gradient, and rotation-angle scores for THEMIS-A daily FGM files with +/-2 min Staples-catalog crossing labels, one flat CSV for ROC/PR method comparison. Rust port of the numpy benchmark worker; reproduces it to 0.1% on 834 files."
 
 [[binary]]
-name = "thesis-42-support"
+name = "thesis"
 crate = "gororoba_cli"
-description = "Evidence-first thesis support bundle for the 42-lane synthesis. Aggregates C-010 non-local metamaterial design-stage evidence, algebraic Majorana friction sweeps, and harmonic-halo/NFW observable checks into one TOML summary plus CSV sidecars."
-experiment = "E-190"
-
-[[binary]]
-name = "thesis-cross-tx1"
-crate = "gororoba_cli"
-description = "TX-1: Imbalance-modulated collision dynamics (T1 x T4), sweeps alpha to measure delta-gamma vs uniform reference"
-
-[[binary]]
-name = "thesis-cross-tx2"
-crate = "gororoba_cli"
-description = "TX-2: Viscosity-to-filtration loop (T2 x T4), checks whether imbalance-derived LBM flow produces coherent latency law"
-
-[[binary]]
-name = "thesis-cross-tx3"
-crate = "gororoba_cli"
-description = "TX-3: VR persistent homology on imbalance and viscosity fields with sigmoid paradox diagnostics (overlap, CV, NLI, dynamic range)"
-
-[[binary]]
-name = "thesis-lab"
-crate = "gororoba_cli"
-description = "Multi-model comparison: 5 viscosity coupling models through LBM -> VR topology pipeline with Wasserstein distance analysis"
-
-[[binary]]
-name = "thesis-program-sweep"
-crate = "gororoba_cli"
-description = "Generate deterministic STPT-006..009 thesis evidence artifacts across core validation lanes"
-
-[[binary]]
-name = "thesis-synthesis"
-crate = "gororoba_cli"
-description = "Run integrated 3D thesis synthesis simulation with topology trace distillation outputs"
-
-[[binary]]
-name = "thesis-synthesis-engine"
-crate = "gororoba_cli"
-description = "Orchestrate all four thesis pipelines (T1-T4), apply falsification gates, produce TOML evidence artifacts"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
 
 [[binary]]
 name = "thesis2-3d-thickening"
@@ -1979,74 +1898,9 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
-name = "warp-acceptance-gate"
-crate = "gororoba_cli"
-description = "Fail-closed HDF5 artifact acceptance gate chaining strict simulation trace checks with recursive numeric dataset NaN/Inf checks and TOML policy-driven canonical_300s_measured thresholds"
-
-[[binary]]
-name = "warp-basemark-suite"
-crate = "gororoba_cli"
-description = "Basemark lane for warp ring emitting HDF5 + timing TOML per case plus a consolidated basemark summary report"
-
-[[binary]]
-name = "warp-bench-precision"
-crate = "gororoba_cli"
-description = "Single-case warp ring runner emitting HDF5 artifact plus timing TOML report"
-
-[[binary]]
-name = "warp-enstrophy-test"
-crate = "gororoba_cli"
-description = "GPU enstrophy smoke test for warp ring kernels (guards NaN/Inf and reduction correctness)"
-
-[[binary]]
-name = "warp-fastpath-analyze"
-crate = "gororoba_cli"
-description = "Analyze existing BF16 fastpath artifacts (timing regime, periodic tails, measured-vs-model fidelity, spectral richness) and emit TOML report"
-
-[[binary]]
-name = "warp-fastpath-suite"
-crate = "gororoba_cli"
-description = "Automated BF16 block-dim sweep plus tuned 300s production rerun and fastpath comparison report generation with canonical_300s_measured production gating"
-
-[[binary]]
-name = "warp-gpu-experiment"
-crate = "gororoba_cli"
-description = "Warp turbulence experiment suite (GPU lane): E7 viscosity filter, p-adic spectral tuning, and topology precursor diagnostics"
-
-[[binary]]
-name = "warp-gpu-smoke"
-crate = "gororoba_cli"
-description = "Short GPU smoke lane for warp ring (8^3 and 16^3, FP32/BF16) with acceptance gating"
-
-[[binary]]
-name = "warp-lbm-step-test"
-crate = "gororoba_cli"
-description = "GPU LBM step smoke test for warp ring kernels across FP32/BF16"
-
-[[binary]]
-name = "warp-precision-matrix"
-crate = "gororoba_cli"
-description = "Warp ring matrix runner: sweep N^3 sizes and FP32/BF16 precision with acceptance gating"
-
-[[binary]]
-name = "warp-precision-suite"
-crate = "gororoba_cli"
-description = "Unified precision suite with bench and matrix modes, shared gating, and consolidated timing/summary outputs"
-
-[[binary]]
-name = "warp-production-suite"
-crate = "gororoba_cli"
-description = "Production lane for warp ring (128^3 and 256^3) with timing report, telemetry sampling, and canonical_300s_measured acceptance gating"
-
-[[binary]]
-name = "warp-ring-3d"
-crate = "gororoba_cli"
-description = "3D warp ring runner (N^3) with fail-closed rho quality gates and optional HDF5 export"
-
-[[binary]]
-name = "warp-ring-integration"
-crate = "gororoba_cli"
-description = "8-step pipeline: D2Q9 LBM -> spectral triads -> p-adic/neg-dim warp -> metamaterial TMM filter -> E7 algebra -> hypergraph topology -> GRIN lensing -> visualization"
+name = "warp"
+crate = "gororoba_cli_warp"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_warp; registry metadata pending."
 
 [[binary]]
 name = "wavelet-acf-calibration"
@@ -2124,45 +1978,16 @@ crate = "xtask"
 description = "Workspace binary discovered from cargo metadata in crate xtask; registry metadata pending."
 
 [[binary]]
-name = "zd-crystal-bands"
+name = "zd-algebra"
 crate = "gororoba_cli_algebra"
-description = "ZD motif graph adjacency spectra via block-diagonal component eigendecomposition. Computes eigenvalues, flat band fraction, and Reggiani degeneracy verification for Cayley-Dickson dimensions 16 and 32."
-experiment = "E-147"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_algebra; registry metadata pending."
 
 [[binary]]
-name = "zd-quantum-chaos"
+name = "zd-resonance"
+crate = "gororoba_cli"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli; registry metadata pending."
+
+[[binary]]
+name = "zd-spectral"
 crate = "gororoba_cli_data"
-description = "NNSD analysis of ZD graph Laplacian eigenvalue spectra. Brody parameter census, KS statistics, per-motif-class analysis. Diagnoses quantum chaos vs integrability."
-
-[[binary]]
-name = "zd-resonance-4d"
-crate = "gororoba_cli"
-description = "4D ZD Resonance via D3Q19 batch kernel: sweep w-axis Sedenion field configurations at 32^3 x nw and 64^3 x nw grids"
-
-[[binary]]
-name = "zd-resonance-bf16"
-crate = "gororoba_cli"
-description = "BF16 ZD Resonance sweep: temporal KE spectral analysis at varying tau with ghost frequency detection"
-
-[[binary]]
-name = "zd-resonance-cuda"
-crate = "gororoba_cli"
-description = "CUDA BF16 ZD Resonance experiments: tau sweep, control, coupling sweep, Reynolds sweep, and verdict analysis at 128^3/256^3 resolution"
-
-[[binary]]
-name = "zd-resonance-sweep"
-crate = "gororoba_cli"
-description = "ZD resonance falsification: GPU LBM tau sweep with/without sedenion zero-divisor viscosity modulation, spectral analysis, ghost frequency detection"
-experiment = "E-051"
-
-[[binary]]
-name = "zd-search"
-crate = "gororoba_cli"
-description = "Zero-divisor graph search and invariant computation"
-experiment = "E-005"
-
-[[binary]]
-name = "zd-spectral-dimension"
-crate = "gororoba_cli_data"
-description = "Spectral-dimension census for Cayley-Dickson zero-divisor graphs via Laplacian heat-kernel plateaus and gaps."
-experiment = "E-084"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; registry metadata pending."

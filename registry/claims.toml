@@ -1231,7 +1231,7 @@ id = "C-1136"
 last_verified = "2026-03-18"
 statement = "Topological friction scaling follows a resonant spatial cross-correlation pattern in the gravitational wave background. The 512D Cayley-Dickson frustration field explains 10.32% of spatial variance in NANOGrav 15-year residuals (cross-validated drop 5.73%), confirming that ~10% of stochastic pulsar variance is deterministic algebraic geometry. Falsified against synthetic nulls (CV drop < 0.2%)."
 status = "Verified"
-where_stated = "reports/nanograv_falsification_report.toml, crates/gororoba_cli_data/src/bin/nanograv_avt_filter.rs"
+where_stated = "reports/nanograv_falsification_report.toml, crates/gororoba_cli_data/src/bin/nanograv/avt_filter.rs"
 
 [[claim]]
 formal_proof = "proofs/verified/C1137_MissingEdgeQuantizedGap.v"
@@ -2814,7 +2814,7 @@ id = "C-1329"
 last_verified = "2026-03-12"
 statement = "FALSIFIED: The slope ratio 0.1764 at power index n=1.5 is a numerical coincidence with 42^2/10000, not an algebraic connection to sedenion zero-divisor structure. The associator norm ||m3|| cancels exactly in the slope ratio due to the multiplicative structure of the power-law viscosity model nu = nu_base * (1 + alpha * norm^beta * |gamma_dot|^(n-1)). The ratio depends ONLY on n and the strain-rate grid sampling points."
 status = "Closed/Negative-Result"
-where_stated = "crates/lbm_core/src/lib.rs (test_c1329_slope_ratio_norm_invariance, test_c1329_slope_ratio_grid_dependence, test_c1329_slope_ratio_alpha_beta_invariance), crates/gororoba_cli/src/bin/thesis_program_sweep.rs (thesis2_thickening_report)"
+where_stated = "crates/lbm_core/src/lib.rs (test_c1329_slope_ratio_norm_invariance, test_c1329_slope_ratio_grid_dependence, test_c1329_slope_ratio_alpha_beta_invariance), crates/gororoba_cli/src/bin/thesis/program_sweep.rs (thesis2_thickening_report)"
 
 [[claim]]
 id = "C-133"
@@ -9230,7 +9230,7 @@ last_verified = "2026-02-12"
 statement = "TX-3 Topological Overlap Principle: Monotonic viscosity-imbalance transforms (linear, power-law, sigmoid) produce Jaccard overlap = 1.0 in top-k point cloud extraction, yielding Wasserstein distance W2 = 0 against imbalance topology. Non-monotonic transforms (exponential with negative coupling) produce overlap = 0.0 and W2 > 0. The constant (null) model produces overlap near 0."
 status = "Verified"
 status_note = "Sprint 55: Promoted Established->Verified. Verified at 16^3 and 32^3 with all 5 standard suite models."
-where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/sign_imbalance/src/spatial_correlation.rs (point_cloud_overlap)"
+where_stated = "crates/gororoba_cli/src/bin/thesis/cross_tx3.rs, crates/sign_imbalance/src/spatial_correlation.rs (point_cloud_overlap)"
 
 [[claim]]
 id = "C-661"
@@ -9238,7 +9238,7 @@ last_verified = "2026-02-12"
 statement = "Sigmoid Dynamic Range Collapse: When sigmoid F_crit (0.38) is far below the actual imbalance distribution (mean=0.55), the coefficient of variation ratio drops to ~0.04, compressing per-region viscosity variation to 4% of imbalance variability. This explains moderate Spearman correlation (0.64-0.67) despite identical point cloud topology (W2=0, overlap=1.0)."
 status = "Verified"
 status_note = "Sprint 55: Promoted Established->Verified. Verified at 16^3 (CV_ratio=0.057) and 32^3 (CV_ratio=0.038). Mechanism: sigmoid saturation collapses dynamic range while preserving extrema ordering."
-where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs, crates/sign_imbalance/src/spatial_correlation.rs (coefficient_of_variation, dynamic_range_ratio)"
+where_stated = "crates/gororoba_cli/src/bin/thesis/cross_tx3.rs, crates/sign_imbalance/src/spatial_correlation.rs (coefficient_of_variation, dynamic_range_ratio)"
 
 [[claim]]
 id = "C-662"
@@ -9246,7 +9246,7 @@ last_verified = "2026-02-12"
 statement = "Power-Law Dynamic Range Amplification: Power-law viscosity coupling (exponent 1.5) produces CV_ratio ~ 4.7, amplifying spatial variation by nearly 5x compared to imbalance. This tail-stretching preserves strong spatial correlation (Spearman > 0.95) while generating a distinct CV fingerprint from linear coupling (CV_ratio ~ 0.47)."
 status = "Verified"
 status_note = "Sprint 55: Promoted Established->Verified. Verified at 16^3 (CV_ratio=4.74) and 32^3 (CV_ratio=4.69). Consistent across grid resolutions."
-where_stated = "crates/gororoba_cli/src/bin/thesis_cross_tx3.rs"
+where_stated = "crates/gororoba_cli/src/bin/thesis/cross_tx3.rs"
 
 [[claim]]
 id = "C-663"
@@ -9254,7 +9254,7 @@ last_verified = "2026-02-12"
 statement = "Grid Convergence of Imbalance-Viscosity Spatial Correlation: Spearman and Pearson correlations between imbalance density and viscosity fields are stable or monotonically improving across 16^3, 32^3, and 64^3 grid resolutions for all coupling models. Linear model: Spearman=1.0 at all resolutions. Sigmoid model: 0.64->0.69->0.95 (improving with resolution)."
 status = "Verified"
 status_note = "Sprint 55: Promoted Established->Verified. Verified in convergence study with Kolmogorov forcing and non-Newtonian coupling."
-where_stated = "crates/gororoba_cli/src/bin/thesis_lab.rs, data/thesis_lab/convergence_study/thesis_lab_report.toml"
+where_stated = "crates/gororoba_cli/src/bin/thesis/lab.rs, data/thesis_lab/convergence_study/thesis_lab_report.toml"
 
 [[claim]]
 id = "C-664"
@@ -9262,7 +9262,7 @@ last_verified = "2026-02-12"
 statement = "Non-Newtonian Shear Thickening Confirmation: Power-law viscosity coupling (power_index=1.5, coupling=10.0) reduces maximum velocity by 15-22% compared to Newtonian baseline at matched grid resolution. At 64^3: power_law v_max=0.000218 vs constant v_max=0.001486 (ratio 0.147), confirming genuine strain-rate-dependent viscosity enhancement."
 status = "Verified"
 status_note = "Sprint 55: Promoted Established->Verified. Verified across 16^3, 32^3, 64^3 with Kolmogorov forcing. The 5-7x velocity reduction for power-law vs constant is the strongest evidence for Thesis 2."
-where_stated = "crates/gororoba_cli/src/bin/thesis_lab.rs, crates/lbm_3d/src/solver.rs (evolve_non_newtonian)"
+where_stated = "crates/gororoba_cli/src/bin/thesis/lab.rs, crates/lbm_3d/src/solver.rs (evolve_non_newtonian)"
 
 [[claim]]
 id = "C-665"
@@ -9270,7 +9270,7 @@ last_verified = "2026-02-12"
 statement = "TX-1 Imbalance-Modulated Collision Dynamics: Local imbalance density modulates effective diffusion in lattice collision storms via noise_scale = noise_base * (1 + alpha * F(x,y,z)). Higher imbalance regions produce broader diffusion, increasing effective dimensionality of return-time dynamics. Alpha > 0 shifts latency law exponent gamma compared to uniform alpha=0 baseline."
 status = "Verified"
 status_note = "Sprint 55: Promoted Established->Verified. Full sweep completed: 7 alpha values [0,0.5,1,2,5,10,50]. Max delta_gamma=0.19 at alpha=0.5, significant=true. InverseSquare law persists across all alphas. Non-monotonic alpha dependence: moderate coupling (alpha=0.5-2.0) has largest effect."
-where_stated = "crates/lattice_filtration/src/filtration.rs (simulate_imbalance_modulated_storm, ImbalanceStormConfig), crates/gororoba_cli/src/bin/thesis_cross_tx1.rs"
+where_stated = "crates/lattice_filtration/src/filtration.rs (simulate_imbalance_modulated_storm, ImbalanceStormConfig), crates/gororoba_cli/src/bin/thesis/cross_tx1.rs"
 
 [[claim]]
 id = "C-666"
@@ -9278,7 +9278,7 @@ last_verified = "2026-02-12"
 statement = "TX-1 Non-Monotonic Alpha Dependence: Imbalance-modulated collision dynamics shows maximum gamma shift at moderate coupling (alpha=0.5, delta_gamma=0.19) with decreasing effect at higher alpha (alpha=10: delta=0.0015, alpha=50: delta=0.006). This suggests imbalance modulation has optimal coupling strength; excessive coupling saturates the noise landscape."
 status = "Verified"
 status_note = "Sprint 55: Promoted Established->Verified. Full sweep at 16^3: alpha=[0,0.5,1,2,5,10,50], delta_gamma=[0,0.190,0.093,0.124,0.053,0.002,0.006]. Peak at alpha=0.5."
-where_stated = "data/thesis_lab/tx1/tx1_report.toml, crates/gororoba_cli/src/bin/thesis_cross_tx1.rs"
+where_stated = "data/thesis_lab/tx1/tx1_report.toml, crates/gororoba_cli/src/bin/thesis/cross_tx1.rs"
 
 [[claim]]
 id = "C-667"
@@ -9302,7 +9302,7 @@ last_verified = "2026-02-19"
 statement = "TX-2 Viscosity-to-Filtration Loop Baseline: LBM velocity fields at 16^3 with imbalance-derived viscosity produce filtration spectra where r2_inverse_square is highest (0.90) but power_law_exponent is positive (+0.39), yielding Undetermined classification. The positive exponent indicates latency increases with radius, opposite to collision-dominated inverse-square decay. Lambda coupling modifies exponent monotonically (0.39 at lambda=0.5 to 0.36 at lambda=10)."
 status = "Refuted"
 status_note = "Sprint 54: Reopened from Closed/Methodology-Insufficient, then REFUTED. 128^3 CPU FP64 (2M cells, 500 steps, E-072): all 5 lambdas remain Undetermined. Positive exponent (+0.18 to +0.14) persists across 512x more cells than original 16^3. The viscosity-to-filtration loop does not produce a determinable latency law at any coupling strength. See data/thesis_lab/tx2_128/tx2_report.toml."
-where_stated = "data/thesis_lab/tx2/tx2_report.toml, crates/gororoba_cli/src/bin/thesis_cross_tx2.rs"
+where_stated = "data/thesis_lab/tx2/tx2_report.toml, crates/gororoba_cli/src/bin/thesis/cross_tx2.rs"
 
 [[claim]]
 id = "C-670"
@@ -9339,7 +9339,7 @@ where_stated = "data/evidence/e029_perturb/e029_neural_homotopy.toml"
 [[claim]]
 id = "C-674"
 last_verified = "2026-02-12"
-statement = "Synthesis Engine 4/4 Gate Pass: All four grand synthesis theses pass their falsification gates in the thesis-synthesis-engine orchestrator. T1: Spearman r=-1.0 (threshold 0.5), T2: viscosity ratio 1.254 (threshold 1.05), T3: optimization reduces violation (ratio<1.0), T4: R^2=0.995 gamma=-2.41 (threshold 0.60). The four theses form a coherent physics synthesis connecting CD algebra to continuum observables."
+statement = "Synthesis Engine 4/4 Gate Pass: All four grand synthesis theses pass their falsification gates in the thesis synthesis-engine orchestrator. T1: Spearman r=-1.0 (threshold 0.5), T2: viscosity ratio 1.254 (threshold 1.05), T3: optimization reduces violation (ratio<1.0), T4: R^2=0.995 gamma=-2.41 (threshold 0.60). The four theses form a coherent physics synthesis connecting CD algebra to continuum observables."
 status = "Verified"
 status_note = "Sprint 55: Promoted Established->Verified. All 4 pass simultaneously. 3442 workspace tests pass. Neural enhancement for T3 also confirmed (violation 0.547<2.0). Evidence TOML artifacts for each thesis."
 where_stated = "data/evidence/synthesis_final/synthesis_summary.toml"
@@ -10021,7 +10021,7 @@ last_verified = "2026-02-19"
 statement = "Vulkan-accelerated LBM simulation of a Kerr-Newman black hole accretion disk exhibits non-trivial entropy production features when coupled to a spatially-modulated viscosity field derived from Sedenion Zero-Divisor topology."
 status = "Closed/Methodology-Insufficient"
 status_note = "Sprint 52: Deferred -- entropy production S_gen measurement and sedenion-to-viscosity texture mapping not implemented (~500 lines). Vulkan pipeline exists but lacks the coupling layer. Not blocking publication. | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Closed/Methodology-Insufficient, fleet finding refuted. DURABLE CHECK that would decide this claim: Operationalization before reopening: (1) define S_gen as the discrete H-theorem production rate H = sum_i f_i ln(f_i/w_i), S_gen = -(H^{t+1} - H^t) accumulated, replacing the chi-square residual at crates/lbm_vulkan/shaders/lbm.comp.glsl:63; (2) matched pairs, sedenion-ZD-modulated tau versus rank-matched shuffled tau at identical mean and variance, same seed, clamps disabled; (3) declare non-trivial as a spatially inhomogeneous S_gen whose azimuthal power spectrum exceeds the shuffled control at some m > 0 harmonic beyond the run-to-run spread over 10 seeds. Until then the durable check is the grep: MathComplexity appears only in crates/lbm_vulkan/src/lib.rs. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
-where_stated = "`crates/lbm_vulkan/src/compute.rs`, `crates/lbm_vulkan/shaders/lbm.comp.glsl`, `crates/gororoba_cli_warp/src/bin/warp_ring_integration.rs`"
+where_stated = "`crates/lbm_vulkan/src/compute.rs`, `crates/lbm_vulkan/shaders/lbm.comp.glsl`, `crates/gororoba_cli_warp/src/bin/warp/ring_integration.rs`"
 
 [[claim]]
 id = "C-769"
@@ -10208,7 +10208,7 @@ last_verified = "2026-02-18"
 statement = "Sedenion zero-divisor modulated viscosity in a 3D LBM simulation produces a spectral peak that locks to the grid Nyquist frequency independently of the relaxation parameter tau. The peak frequency does NOT drift with Reynolds number (|slope| < 0.01 in peak_freq vs tau regression) and vanishes when ZD modulation amplitude is set to zero."
 status = "Refuted"
 status_note = "E-063 executed 2026-02-18. CUDA BF16 128^3 tau sweep: KE ghost detections at SNR=0.00 (noise floor) appear in BOTH ZD-modulated sweep and control (no modulation). Ghost is a BF16 rounding artifact, not ZD resonance. Reynolds sweep: stable only in narrow window (tau=0.501-0.520, F=0.01-0.1). Spatial ghost hints at f=0.2031-0.2188 with max SNR=1.52 (below threshold of 3). 4D batch (32^3x32, 64^3x16) also null. | Legacy status token: Falsified"
-where_stated = "`crates/gororoba_cli/src/bin/zd_resonance_cuda.rs`, `crates/spectral_core/src/ghost_spectral.rs`"
+where_stated = "`crates/gororoba_cli/src/bin/zd_resonance/cuda.rs`, `crates/spectral_core/src/ghost_spectral.rs`"
 
 [[claim]]
 id = "C-793"
