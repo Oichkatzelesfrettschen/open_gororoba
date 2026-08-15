@@ -5,25 +5,22 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
+/// The `thesis-42-support` target is now the `42-support` lane of the `thesis`
+/// dispatcher, so the test resolves the dispatcher and passes the lane name as
+/// the first argument.
 fn binary_path() -> PathBuf {
-    if let Some(path) = option_env!("CARGO_BIN_EXE_thesis-42-support") {
-        return PathBuf::from(path);
-    }
-    if let Some(path) = option_env!("CARGO_BIN_EXE_thesis_42_support") {
+    if let Some(path) = option_env!("CARGO_BIN_EXE_thesis") {
         return PathBuf::from(path);
     }
 
-    let keys = [
-        "CARGO_BIN_EXE_thesis-42-support",
-        "CARGO_BIN_EXE_thesis_42_support",
-    ];
+    let keys = ["CARGO_BIN_EXE_thesis"];
     for key in keys {
         if let Ok(path) = std::env::var(key) {
             return PathBuf::from(path);
         }
     }
 
-    panic!("thesis-42-support binary not available for integration test");
+    panic!("thesis dispatcher binary not available for integration test");
 }
 
 fn unique_temp_dir(label: &str) -> PathBuf {
@@ -53,9 +50,9 @@ fn repo_root() -> PathBuf {
 fn run_binary(output_dir: &str) -> Output {
     Command::new(binary_path())
         .current_dir(repo_root())
-        .args(["--output-dir", output_dir, "--theta-steps", "8"])
+        .args(["42-support", "--output-dir", output_dir, "--theta-steps", "8"])
         .output()
-        .expect("failed to run thesis-42-support")
+        .expect("failed to run thesis 42-support")
 }
 
 fn assert_success(output: &Output) {

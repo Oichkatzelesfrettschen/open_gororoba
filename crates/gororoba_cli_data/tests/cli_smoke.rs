@@ -17,23 +17,41 @@
 
 use std::process::Command;
 
-/// Run `<binary> --help` and assert it exits successfully with non-empty stdout.
-fn assert_help_succeeds(bin_env: &str) {
+/// Run `<binary> <lane...> --help` and assert it exits successfully with
+/// non-empty stdout.
+fn assert_help_succeeds_for(bin_env: &str, lane: &[&str]) {
     let bin_path = std::env::var(bin_env).unwrap_or_else(|_| {
         panic!("env var {bin_env} not set -- is the binary declared in Cargo.toml?")
     });
     let output = Command::new(&bin_path)
+        .args(lane)
         .arg("--help")
         .output()
         .unwrap_or_else(|err| panic!("failed to run {bin_path}: {err}"));
+    let invocation = if lane.is_empty() {
+        bin_env.to_string()
+    } else {
+        format!("{bin_env} {}", lane.join(" "))
+    };
     assert!(
         output.status.success(),
-        "{bin_env} --help exited with {}: {}",
+        "{invocation} --help exited with {}: {}",
         output.status,
         String::from_utf8_lossy(&output.stderr),
     );
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(!stdout.is_empty(), "{bin_env} --help produced no stdout");
+    assert!(!stdout.is_empty(), "{invocation} --help produced no stdout");
+}
+
+fn assert_help_succeeds(bin_env: &str) {
+    assert_help_succeeds_for(bin_env, &[]);
+}
+
+/// A lane inside a collapsed dispatcher. Reaching the lane's own clap parser
+/// takes the subcommand name first, so this proves the same link-time and
+/// derive-expansion invariant the flat-binary form used to prove.
+fn assert_lane_help_succeeds(bin_env: &str, lane: &str) {
+    assert_help_succeeds_for(bin_env, &[lane]);
 }
 
 // =============================================================================
@@ -158,12 +176,12 @@ fn smoke_extract_papers_help() {
 
 #[test]
 fn smoke_zd_spectral_dimension_help() {
-    assert_help_succeeds("CARGO_BIN_EXE_zd-spectral-dimension");
+    assert_lane_help_succeeds("CARGO_BIN_EXE_zd-spectral", "dimension");
 }
 
 #[test]
 fn smoke_zd_quantum_chaos_help() {
-    assert_help_succeeds("CARGO_BIN_EXE_zd-quantum-chaos");
+    assert_lane_help_succeeds("CARGO_BIN_EXE_zd-spectral", "quantum-chaos");
 }
 
 // =============================================================================
@@ -193,17 +211,17 @@ fn smoke_falsification_audit_help() {
 
 #[test]
 fn smoke_nanograv_propagation_audit_help() {
-    assert_help_succeeds("CARGO_BIN_EXE_nanograv-propagation-audit");
+    assert_lane_help_succeeds("CARGO_BIN_EXE_nanograv", "propagation-audit");
 }
 
 #[test]
 fn smoke_nanograv_timing_inventory_help() {
-    assert_help_succeeds("CARGO_BIN_EXE_nanograv-timing-inventory");
+    assert_lane_help_succeeds("CARGO_BIN_EXE_nanograv", "timing-inventory");
 }
 
 #[test]
 fn smoke_nanograv_timing_refit_preflight_help() {
-    assert_help_succeeds("CARGO_BIN_EXE_nanograv-timing-refit-preflight");
+    assert_lane_help_succeeds("CARGO_BIN_EXE_nanograv", "timing-refit-preflight");
 }
 
 // =============================================================================

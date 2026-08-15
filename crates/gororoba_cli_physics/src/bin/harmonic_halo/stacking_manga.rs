@@ -88,7 +88,6 @@ pub struct Cli {
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     // Load rotation curves
     eprintln!(
         "Loading MaNGA rotation curves from {}...",

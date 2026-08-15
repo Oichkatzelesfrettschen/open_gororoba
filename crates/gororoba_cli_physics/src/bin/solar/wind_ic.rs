@@ -1480,7 +1480,6 @@ fn latitude_modulation(
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     // Radial mode: multi-distance heliospheric profile
     if cli.radial_mode {
         return run_radial_mode(&cli);

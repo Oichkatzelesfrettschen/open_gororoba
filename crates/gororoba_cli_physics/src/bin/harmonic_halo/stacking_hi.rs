@@ -127,7 +127,6 @@ fn try_load_stellar_masses(meta_path: &std::path::Path) -> HashMap<String, f64> 
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
-
     eprintln!(
         "Loading HI rotation curves from {}...",
         cli.rotcurves.display()

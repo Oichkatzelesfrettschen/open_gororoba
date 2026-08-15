@@ -99,7 +99,6 @@ struct BootstrapCiResult {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     let raw = fs::read_to_string(&cli.eval_json)
         .with_context(|| format!("reading {}", cli.eval_json.display()))?;
     let eval: EvalJson = serde_json::from_str(&raw)

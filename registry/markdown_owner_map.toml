@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 136
+document_count = 134
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -257,18 +257,6 @@ removal_reason = ""
 
 [[owner]]
 path = "docs/reports/brown_1972_dissertation_roadmap_2026-03-27.md"
-owner_group = "project"
-removal_status = "active"
-removal_reason = ""
-
-[[owner]]
-path = "reports/browser_profiles/ams_1906_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
-owner_group = "project"
-removal_status = "active"
-removal_reason = ""
-
-[[owner]]
-path = "reports/browser_profiles/ams_1912_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""

@@ -188,7 +188,6 @@ fn pca_leading_variance_ratio(window: &[Vec<f64>], dim: usize, n_iter: usize) ->
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     let start = NaiveDate::parse_from_str(&cli.start_date, "%Y-%m-%d")
         .with_context(|| format!("invalid start_date: {}", cli.start_date))?;
     let end = start + chrono::Duration::days(cli.n_days as i64 - 1);

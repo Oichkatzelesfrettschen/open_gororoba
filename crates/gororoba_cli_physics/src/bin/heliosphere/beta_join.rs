@@ -28,7 +28,6 @@ pub struct Cli {
 }
 
 pub fn run(cli: Cli) {
-
     // Load norms
     let mut norms: BTreeMap<(u16, u8, u8), f64> = BTreeMap::new();
     let content = fs::read_to_string(&cli.norms_csv).expect("read norms");

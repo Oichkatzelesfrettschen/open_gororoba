@@ -106,7 +106,6 @@ struct HourlySummary {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     println!(
         "=== Rosetta 67P Draping Analysis ===\n\
          Window: {}-{:02} to {}-{:02}\n\

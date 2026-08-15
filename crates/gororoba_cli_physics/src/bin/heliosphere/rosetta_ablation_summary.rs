@@ -96,7 +96,6 @@ fn interpret(norm: &str, det: f64, fa: f64, ratio: f64) -> String {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     let names = ["raw", "clipped", "direction", "current"];
     let mut summaries: Vec<VariantSummary> = Vec::new();
 

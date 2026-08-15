@@ -5,18 +5,15 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
+/// The `thesis-program-sweep` target is now the `program-sweep` lane of the `thesis`
+/// dispatcher, so the test resolves the dispatcher and passes the lane name as
+/// the first argument.
 fn binary_path() -> PathBuf {
-    if let Some(path) = option_env!("CARGO_BIN_EXE_thesis-program-sweep") {
-        return PathBuf::from(path);
-    }
-    if let Some(path) = option_env!("CARGO_BIN_EXE_thesis_program_sweep") {
+    if let Some(path) = option_env!("CARGO_BIN_EXE_thesis") {
         return PathBuf::from(path);
     }
 
-    let keys = [
-        "CARGO_BIN_EXE_thesis-program-sweep",
-        "CARGO_BIN_EXE_thesis_program_sweep",
-    ];
+    let keys = ["CARGO_BIN_EXE_thesis"];
     for key in keys {
         if let Ok(path) = std::env::var(key) {
             return PathBuf::from(path);
@@ -25,13 +22,13 @@ fn binary_path() -> PathBuf {
 
     for (key, value) in std::env::vars() {
         if key.starts_with("CARGO_BIN_EXE_")
-            && (key.ends_with("thesis-program-sweep") || key.ends_with("thesis_program_sweep"))
+            && (key.ends_with("thesis") || key.ends_with("_thesis"))
         {
             return PathBuf::from(value);
         }
     }
 
-    panic!("thesis-program-sweep binary not available for integration test");
+    panic!("thesis dispatcher binary not available for integration test");
 }
 
 fn unique_temp_dir(label: &str) -> PathBuf {
@@ -51,9 +48,9 @@ fn unique_temp_dir(label: &str) -> PathBuf {
 
 fn run_sweep(output_dir: &str) -> Output {
     Command::new(binary_path())
-        .args(["--output-dir", output_dir])
+        .args(["program-sweep", "--output-dir", output_dir])
         .output()
-        .expect("failed to run thesis-program-sweep")
+        .expect("failed to run thesis program-sweep")
 }
 
 fn assert_success(output: &Output) {
