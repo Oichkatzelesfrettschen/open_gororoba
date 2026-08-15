@@ -13,33 +13,12 @@ name = "gororoba"
 path = "src/main.rs"
 
 [[bin]]
-name = "thesis-synthesis"
-path = "src/bin/thesis_synthesis.rs"
-required-features = ["gpu"]
+name = "zd-resonance"
+path = "src/bin/zd_resonance/main.rs"
 
 [[bin]]
-name = "thesis-synthesis-engine"
-path = "src/bin/thesis_synthesis_engine.rs"
-
-[[bin]]
-name = "thesis-program-sweep"
-path = "src/bin/thesis_program_sweep.rs"
-
-[[bin]]
-name = "thesis-lab"
-path = "src/bin/thesis_lab.rs"
-
-[[bin]]
-name = "thesis-cross-tx1"
-path = "src/bin/thesis_cross_tx1.rs"
-
-[[bin]]
-name = "thesis-cross-tx2"
-path = "src/bin/thesis_cross_tx2.rs"
-
-[[bin]]
-name = "thesis-cross-tx3"
-path = "src/bin/thesis_cross_tx3.rs"
+name = "thesis"
+path = "src/bin/thesis/main.rs"
 
 [[bin]]
 name = "thesis2-kolmogorov-2d"
@@ -48,25 +27,6 @@ path = "src/bin/thesis2_kolmogorov_2d.rs"
 [[bin]]
 name = "thesis2-3d-thickening"
 path = "src/bin/thesis2_3d_thickening.rs"
-
-[[bin]]
-name = "zd-resonance-sweep"
-path = "src/bin/zd_resonance_sweep.rs"
-
-[[bin]]
-name = "zd-resonance-bf16"
-path = "src/bin/zd_resonance_bf16.rs"
-required-features = ["gpu"]
-
-[[bin]]
-name = "zd-resonance-cuda"
-path = "src/bin/zd_resonance_cuda.rs"
-required-features = ["gpu"]
-
-[[bin]]
-name = "zd-resonance-4d"
-path = "src/bin/zd_resonance_4d.rs"
-required-features = ["gpu"]
 
 [[bin]]
 name = "gororoba-gate"
@@ -93,10 +53,6 @@ required-features = ["gpu"]
 name = "test-tda-api"
 path = "src/bin/test_tda_api.rs"
 required-features = ["tda-validation"]
-
-[[bin]]
-name = "thesis-42-support"
-path = "src/bin/thesis_42_support.rs"
 
 [[bin]]
 name = "vis-hyper-artifacts"

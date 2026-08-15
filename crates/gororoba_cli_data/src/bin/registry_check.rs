@@ -1484,8 +1484,13 @@ fn main() {
             .chain(workspace_bench_names.iter().cloned())
             .collect::<HashSet<_>>();
 
-        // Check experiment->binary cross-references
+        // Check experiment->binary cross-references. A binary that dispatches
+        // subcommands is named `<bin> <subcommand>` here, so the leading token is
+        // the registered execution target and the remainder identifies the lane
+        // that produced the evidence. Only the leading token carries a
+        // binaries.toml entry.
         for (experiment_id, exp_binary) in &binary_names_from_experiments {
+            let exp_binary = exp_binary.split_whitespace().next().unwrap_or(exp_binary);
             if !known_execution_targets.contains(exp_binary) {
                 eprintln!(
                     "ERROR: experiment {} references required execution target \"{}\" not in binaries.toml or workspace benches",

@@ -118,7 +118,7 @@ title = "Kerr Shadow Boundaries"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-search"
+binary = "zd-algebra search"
 binary_experiment_declared = "E-005"
 binary_registered = true
 claim_refs = ["C-050", "C-051", "C-052", "C-053", "C-054", "C-055", "C-056", "C-057", "C-058", "C-059", "C-060"]
@@ -136,8 +136,8 @@ method = "Build sedenion ZD interaction graph, compute graph-theoretic invariant
 output = ["stdout"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000"
-run_command_sha256 = "cc836cab950db27c227d6bd4407dfb5e5b4fccc93ecc7b5f96c6c38599781254"
+run = "cargo run --release --bin zd-algebra -- search --dim 16 --max-pairs 5000"
+run_command_sha256 = "dbaf4b906cc55ed3cb30ed7351d93d871bb46bd17ba7f0cb646047fd4a9f2089"
 status = "active"
 status_token = "ACTIVE"
 title = "Zero-Divisor Graph Invariants"
@@ -724,7 +724,7 @@ title = "A-infinity Correction Tensor via Neural Homotopy Search (Thesis 3 Valid
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-cross-tx1"
+binary = "thesis cross-tx1"
 binary_experiment_declared = "E-030"
 binary_registered = true
 claim_refs = []
@@ -742,8 +742,8 @@ method = "3D toroidal random walk with CD product noise, imbalance density modul
 output = ["data/thesis_lab/tx1/tx1_report.toml"]
 output_path_refs = ["data/thesis_lab/tx1/tx1_report.toml"]
 reproducibility_class = "seeded_stochastic_replay"
-run = "cargo run --release --bin thesis-cross-tx1 -- --grid_size 16 --n_steps 50000"
-run_command_sha256 = "b5529ae3b013f777288e16e48424813a29da31b25b32d6bd9da8c89f49e32a17"
+run = "cargo run --release --bin thesis -- cross-tx1 --grid_size 16 --n_steps 50000"
+run_command_sha256 = "d4eccd09041c7dba5d1eb3f3d7de511a7cb1b520ea4d4e3275bb27fdd4a80237"
 seed = 42
 status = "active"
 status_token = "ACTIVE"
@@ -751,7 +751,7 @@ title = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-cross-tx2"
+binary = "thesis cross-tx2"
 binary_experiment_declared = "E-031"
 binary_registered = true
 claim_refs = []
@@ -769,8 +769,8 @@ method = "Imbalance -> viscosity -> LBM evolution -> velocity field -> lattice f
 output = ["data/thesis_lab/tx2/tx2_report.toml"]
 output_path_refs = ["data/thesis_lab/tx2/tx2_report.toml"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin thesis-cross-tx2 -- --grid_size 16 --lbm_steps 500"
-run_command_sha256 = "ea010021362fb95a9ead8e729c0f5db422816dbdbd22bf907ed1ab9fe92519bd"
+run = "cargo run --release --bin thesis -- cross-tx2 --grid_size 16 --lbm_steps 500"
+run_command_sha256 = "f3e4f5ca983c28b72b1310c86e6e17d61e1a48376b9926226f576e5cebfd4880"
 seed = 42
 status = "active"
 status_token = "ACTIVE"
@@ -805,7 +805,7 @@ title = "Thesis 2: 3D Associator-Coupled Shear Thickening"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-synthesis-engine"
+binary = "thesis synthesis-engine"
 binary_experiment_declared = "E-033"
 binary_registered = true
 claim_refs = ["C-674"]
@@ -823,8 +823,8 @@ method = "Orchestrated execution of T1 (spatial correlation), T2 (power-law visc
 output = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
 output_path_refs = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
 reproducibility_class = "seeded_stochastic_replay"
-run = "cargo run --release --bin thesis-synthesis-engine -- --thesis all --output-dir data/evidence/synthesis_final"
-run_command_sha256 = "102c01628dcb5cd474f3ad40ca66f829cac3eb01c1fce1df3e12eeeb8f7dca99"
+run = "cargo run --release --bin thesis -- synthesis-engine --thesis all --output-dir data/evidence/synthesis_final"
+run_command_sha256 = "8c253398f84a546919d1826e4b6d66cd8eca1c81fb42c71dc77365c7a2c3c1bc"
 seed = 42
 status = "active"
 status_token = "ACTIVE"
@@ -859,7 +859,7 @@ title = "Kubo Linear-Response Imbalance-Viscosity Coupling Derivation"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "warp-gpu-experiment"
+binary = "warp gpu-experiment"
 binary_experiment_declared = "E-035"
 binary_registered = true
 claim_refs = ["C-682"]
@@ -1290,7 +1290,7 @@ title = "Rust-Native BL 6EQUJ5 Doppler Drift Search and ABACAD Pipeline"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-sweep"
+binary = "zd-resonance sweep"
 binary_experiment_declared = "E-051"
 binary_registered = true
 claim_refs = ["C-792"]
@@ -1308,8 +1308,8 @@ method = "GPU LBM tau sweep at 10 values [0.55..1.00] with ZD modulation amplitu
 output = ["data/csv/zd_resonance_sweep.csv", "data/csv/zd_resonance_control.csv"]
 output_path_refs = ["data/csv/zd_resonance_control.csv", "data/csv/zd_resonance_sweep.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-sweep -- sweep && cargo run --release --bin zd-resonance-sweep -- control && cargo run --release --bin zd-resonance-sweep -- analyze"
-run_command_sha256 = "44ce935dbbee27305d68d352efc1362f9e3b8862e3afd8b759ffd8f9b4e7331c"
+run = "cargo run --release --bin zd-resonance -- sweep sweep && cargo run --release --bin zd-resonance -- sweep control && cargo run --release --bin zd-resonance -- sweep analyze"
+run_command_sha256 = "819dac3dbb434deda2ff01a0101e9febd9dea63b4d0e962cbe10bc3da5f9aa2c"
 status = "active"
 status_token = "ACTIVE"
 title = "ZD Resonance Tau Sweep with Control"
@@ -1405,7 +1405,7 @@ deterministic = true
 external_source_refs = []
 gpu = false
 id = "E-055"
-input = "Synthetically generated time series (optional: rho trace CSV from zd-resonance-sweep)"
+input = "Synthetically generated time series (optional: rho trace CSV from zd-resonance sweep)"
 input_path_refs = []
 lineage_id = "XL-053"
 method = "End-to-end pipeline: synthetic signal generation (4096 samples with ghost frequency injection), FFT spectral analysis, Leech Lattice projection with deep hole classification, ultrametric fraction test on peak frequencies. Consolidated report with all metrics."
@@ -1602,7 +1602,7 @@ title = "Multiscale CWT Ricker Wavelet Ghost Analysis"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-cuda"
+binary = "zd-resonance cuda"
 binary_experiment_declared = "E-063"
 binary_registered = true
 claim_refs = ["C-792", "C-793"]
@@ -1620,15 +1620,15 @@ method = "D3Q19 LBM at 128^3 with BF16 precision and per-cell Sedenion imbalance
 output = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
 output_path_refs = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128"
-run_command_sha256 = "5022eb2ad2eb65f1d5fc7a84c6554f01f1733ff29f03554f84623cef2781dc93"
+run = "cargo run --release --bin zd-resonance -- cuda sweep --res 128 && cargo run --release --bin zd-resonance -- cuda control --res 128"
+run_command_sha256 = "75cbfe5e28a5e878f2ec3a804f2c34f12e4f06e8984b4ae62c595464b2765e1f"
 status = "active"
 status_token = "ACTIVE"
 title = "CUDA BF16 ZD Resonance 128^3 Tau Sweep"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-cuda"
+binary = "zd-resonance cuda"
 binary_experiment_declared = "E-064"
 binary_registered = true
 claim_refs = ["C-789", "C-792", "C-793"]
@@ -1646,15 +1646,15 @@ method = "D3Q19 LBM at 256^3 with BF16 precision. Same tau sweep protocol as E-0
 output = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
 output_path_refs = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500"
-run_command_sha256 = "cca99064934b590880d1f685565bc5291697378bbfab4b09c538a79127a34a03"
+run = "cargo run --release --bin zd-resonance -- cuda sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance -- cuda control --res 256 --steps 500"
+run_command_sha256 = "4356980bbda880d5670b7e06c9527d693a6f7d495e79ec624617f21fcbf41ada"
 status = "active"
 status_token = "ACTIVE"
 title = "CUDA BF16 ZD Resonance 256^3 Tau Sweep"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-cuda"
+binary = "zd-resonance cuda"
 binary_experiment_declared = "E-065"
 binary_registered = true
 claim_refs = ["C-792"]
@@ -1672,15 +1672,15 @@ method = "Fix Sedenion coupling, sweep Reynolds number from laminar to turbulent
 output = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
 output_path_refs = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-cuda -- reynolds-sweep --res 128"
-run_command_sha256 = "87c7331df738fe89b8c537960d94fbbfb7ae87f025d2d0c0f3be9c5c195ad704"
+run = "cargo run --release --bin zd-resonance -- cuda reynolds-sweep --res 128"
+run_command_sha256 = "241afccfa9479a2ae89167a6aec8f98c4381d9d1286965b143b6f7ea2e2dd818"
 status = "active"
 status_token = "ACTIVE"
 title = "CUDA BF16 Reynolds Number Threshold Sweep 128^3"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-4d"
+binary = "zd-resonance 4d"
 binary_experiment_declared = "E-066"
 binary_registered = true
 claim_refs = ["C-792", "C-793"]
@@ -1698,15 +1698,15 @@ method = "D3Q19 batch LBM at 32^3 x 32 (1.05M cells) with BF16 precision. 4th di
 output = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
 output_path_refs = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-4d -- sweep-32 && cargo run --release --bin zd-resonance-4d -- control --res 32"
-run_command_sha256 = "e5a0d6004cb90e9c83f66278b2fa1970a9059ddd3c362f2b0752a78f80559e0c"
+run = "cargo run --release --bin zd-resonance -- 4d sweep-32 && cargo run --release --bin zd-resonance -- 4d control --res 32"
+run_command_sha256 = "91d32bb1104407ef5552f3f20eed968e5c6bf5f9298e7f5947973c5ddc6c95e6"
 status = "active"
 status_token = "ACTIVE"
 title = "4D ZD Resonance 32^3 x 32 Batch Sweep"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-4d"
+binary = "zd-resonance 4d"
 binary_experiment_declared = "E-067"
 binary_registered = true
 claim_refs = ["C-792", "C-793"]
@@ -1724,8 +1724,8 @@ method = "D3Q19 batch LBM at 64^3 x 16 (4.2M cells, ~1.4 GB GPU) with BF16 preci
 output = ["data/csv/zd_resonance_4d_64x16.csv"]
 output_path_refs = ["data/csv/zd_resonance_4d_64x16.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-4d -- sweep-64"
-run_command_sha256 = "3f9078965171dde4575c1c5b75955c80321b8737a86ad4403a3b237c4c0cc733"
+run = "cargo run --release --bin zd-resonance -- 4d sweep-64"
+run_command_sha256 = "b1db593e7172770e96e4b4129de6d65ccc427f21ae572f5447ff5bb321cc8b23"
 status = "active"
 status_token = "ACTIVE"
 title = "4D ZD Resonance 64^3 x 16 Batch Sweep"
@@ -1836,7 +1836,7 @@ title = "Real-Data Ghost Frequency Re-Verification (Phase 5)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-cross-tx2"
+binary = "thesis cross-tx2"
 binary_experiment_declared = "E-072"
 binary_registered = true
 claim_refs = ["C-669"]
@@ -1854,8 +1854,8 @@ method = "TX-2 cross-experiment at 128^3 (2M cells) CPU FP64, 500 LBM steps, lam
 output = ["data/thesis_lab/tx2_128/tx2_report.toml"]
 output_path_refs = ["data/thesis_lab/tx2_128/tx2_report.toml"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin thesis-cross-tx2 -- --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128"
-run_command_sha256 = "44879a5916e76e9365b3298669a12910a5b0aabd2a383f44db68ad8032988760"
+run = "cargo run --release --bin thesis -- cross-tx2 --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128"
+run_command_sha256 = "5288faaf60912f94c877159bc8031aad401f614c17d517e664cb9cc611c6b209"
 status = "active"
 status_token = "ACTIVE"
 title = "TX-2 Viscosity-to-Filtration Loop at 128^3 CPU FP64 (C-669 Refutation)"
@@ -2153,7 +2153,7 @@ title = "Sedenion foliation imbalance-York time correlation analysis"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-spectral-dimension"
+binary = "zd-spectral dimension"
 binary_experiment_declared = "E-084"
 binary_registered = true
 claim_refs = ["C-922", "C-923", "C-926"]
@@ -2171,8 +2171,8 @@ method = "For each CD dim: build cross-assessor ZD graph, compute Laplacian, eig
 output = ["data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_gap.csv"]
 output_path_refs = ["data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_spectral_gap.csv"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-spectral-dimension -- --min-dim 16 --max-dim 512 --t-points 300"
-run_command_sha256 = "e24ea86c6c91df00e671751cf437fffe25879316c29c7fb212dcb5fd13ca6c1a"
+run = "cargo run --release --bin zd-spectral -- dimension --min-dim 16 --max-dim 512 --t-points 300"
+run_command_sha256 = "4424e6274de6420d675fb62c9137304cce9e15482301d8d1e565e2cb4d3b5a33"
 seed = 0
 status = "active"
 status_token = "ACTIVE"
@@ -2207,7 +2207,7 @@ title = "Associator entropy mechanism decomposition"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-quantum-chaos"
+binary = "zd-spectral quantum-chaos"
 binary_experiment_declared = "E-086"
 binary_registered = true
 claim_refs = ["C-929", "C-930"]
@@ -2225,8 +2225,8 @@ method = "Compute Laplacian eigenvalues per ZD graph component, Gaussian KDE unf
 output = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
 output_path_refs = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-quantum-chaos -- --min-dim 64 --max-dim 256 --by-motif"
-run_command_sha256 = "f9b5b0f38d5acc1e9b778bce12b2c8f4741a3fa45c9eef2474d23b70fcdb63a3"
+run = "cargo run --release --bin zd-spectral -- quantum-chaos --min-dim 64 --max-dim 256 --by-motif"
+run_command_sha256 = "afa66743a498d978614fd17d7c73402b5fb30774f7aacc5f7c79048e29d0af95"
 seed = 0
 status = "active"
 status_token = "ACTIVE"
@@ -2867,7 +2867,7 @@ title = "ADM decomposition verification against exact solutions"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-mhd-sim"
+binary = "solar wind-mhd-sim"
 binary_experiment_declared = "E-111"
 binary_registered = true
 claim_refs = []
@@ -2885,15 +2885,15 @@ method = "lbm_mhd: D3Q19 LBM coupled with induction equation B-field evolution. 
 output = ["csv_snapshots"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-mhd-sim -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --snap-interval 500 --out data/experiments/e111_solar_wind"
-run_command_sha256 = "da7b6835d0a29c21f89a39d0fbaf154e353d232c58d7a9d71b6e7c0c789fd8d4"
+run = "cargo run --release --bin solar -- wind-mhd-sim --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --snap-interval 500 --out data/experiments/e111_solar_wind"
+run_command_sha256 = "d69adf567de4fd0f148d125f1444aa0a577c528d825071abf06b47c5342bccc8"
 status = "active"
 status_token = "ACTIVE"
 title = "Solar wind MHD simulation with Parker spiral B-field"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-112"
 binary_registered = true
 claim_refs = ["C-1143", "C-1144", "C-1145"]
@@ -2911,15 +2911,15 @@ method = "lbm_dm_mhd: D3Q19 LBM + MHD (E-111 base) coupled with static NFW DM ha
 output = ["csv_snapshots"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500 --out data/experiments/e112_solar_wind_dm"
-run_command_sha256 = "fc07055a76232b8cd2d66b0d1ea43a177c992fd86a0888825c0d2b88304addbe"
+run = "cargo run --release --bin solar -- wind-dm-mhd --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500 --out data/experiments/e112_solar_wind_dm"
+run_command_sha256 = "43102a354f8f14542d2806b2de842a55f5d826d76dd4928ceee32e3a4502b896"
 status = "active"
 status_token = "ACTIVE"
 title = "Solar wind MHD + dark matter halo gravitational coupling"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-113"
 binary_registered = true
 claim_refs = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155"]
@@ -2937,15 +2937,15 @@ method = "Multi-spacecraft replication of E-112 DM null test using independent d
 output = ["csv_snapshots", "cross_validation_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file <wind_ic.csv> --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --eta 0.01 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500"
-run_command_sha256 = "4c0e87b259e5d70cbf4ad782d95b67d0078b8ed6a61164bb7956e06cb04f047f"
+run = "cargo run --release --bin solar -- wind-dm-mhd --ic-file <wind_ic.csv> --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --eta 0.01 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500"
+run_command_sha256 = "2d60799b99a0406d64baaa0fc835ab630cfdda5f59f7ec0aa9bb8a4ff7e5a973"
 status = "active"
 status_token = "ACTIVE"
 title = "Multi-spacecraft solar wind MHD + DM null test replication"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-ic"
+binary = "solar wind-ic"
 binary_experiment_declared = "E-114"
 binary_registered = true
 claim_refs = ["C-1157", "C-1162", "C-1165"]
@@ -2963,15 +2963,15 @@ method = "Multi-spacecraft radial profile reconstruction using Voyager 1/2, Pion
 output = ["radial_ic_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --voyager1-file <staged_voyager_merged_file> --radial-mode --nx 128 --ny 32 --nz 32"
-run_command_sha256 = "f2c4f7f4a72464c0ee0361fdff1ffe4e5f0bb97a538388114340d219724ec5f9"
+run = "cargo run --release --bin solar -- wind-ic --omni-file <staged_omni_hourly_file> --voyager1-file <staged_voyager_merged_file> --radial-mode --nx 128 --ny 32 --nz 32"
+run_command_sha256 = "a6dfe957a8b5527c53e9091a9dcdf24d17179a975a059d3b1c1f928e5e971bd2"
 status = "planned"
 status_token = "PLANNED"
 title = "Voyager radial profile reconstruction (1-157 AU)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-ic"
+binary = "solar wind-ic"
 binary_experiment_declared = "E-115"
 binary_registered = true
 claim_refs = ["C-1163"]
@@ -2989,15 +2989,15 @@ method = "Ulysses SWOOPS + VHM/FGM data from the 1994-1995 fast latitude scan (1
 output = ["latitudinal_ic_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --ulysses-swoops-file data/external/ulysses/swoops_hourly.asc --latitudinal --lat-max-deg 80 --nx 128 --ny 32 --nz 64"
-run_command_sha256 = "03a1b5dc623acc4c03a10fe833373d5dfed76bd17813eedd715dcfe614b4e251"
+run = "cargo run --release --bin solar -- wind-ic --omni-file <staged_omni_hourly_file> --ulysses-swoops-file data/external/ulysses/swoops_hourly.asc --latitudinal --lat-max-deg 80 --nx 128 --ny 32 --nz 64"
+run_command_sha256 = "d6d986f0461dfd64026a1b54d8ceb186a1ebd41bed6cf57889ec4c4364ceb257"
 status = "planned"
 status_token = "PLANNED"
 title = "Ulysses latitudinal gradient characterization"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-116"
 binary_registered = true
 claim_refs = ["C-1156", "C-1167", "C-1168"]
@@ -3011,19 +3011,19 @@ id = "E-116"
 input = "Radial IC from E-114, nx=128, ny=32, nz=32, steps=5000, tau=0.7"
 input_path_refs = []
 lineage_id = "XL-115"
-method = "Radial IC generated by E-114 passed to solar-wind-dm-mhd with per-cell kappa(R) spatial drag coefficient. For each distance bin [r-dr, r+dr], extract the force ratio |F_DM|/|F_Lorentz| and report max. kappa_field varies with NFW enclosed mass M(<r) and local DM number density n_chi(r). Validates C-1156 (DM null invariance across full heliosphere)."
+method = "Radial IC generated by E-114 passed to solar wind-dm-mhd with per-cell kappa(R) spatial drag coefficient. For each distance bin [r-dr, r+dr], extract the force ratio |F_DM|/|F_Lorentz| and report max. kappa_field varies with NFW enclosed mass M(<r) and local DM number density n_chi(r). Validates C-1156 (DM null invariance across full heliosphere)."
 output = ["force_ratio_csv", "csv_snapshots"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/radial_ic.csv --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --dm-r-min 1 --dm-r-max 100 --snap-interval 500"
-run_command_sha256 = "f43b93b7e5f939492f159a38ca57e9c8c276459a65c7c31e4a0a1d70b7069081"
+run = "cargo run --release --bin solar -- wind-dm-mhd --ic-file data/output/radial_ic.csv --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --dm-r-min 1 --dm-r-max 100 --snap-interval 500"
+run_command_sha256 = "dd9e7c49992902914a2363634269ea6069185e175e9931122edb1de1834ebc8e"
 status = "planned"
 status_token = "PLANNED"
 title = "Multi-distance DM null sweep: r = {1, 5, 10, 50, 100} AU"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-ic"
+binary = "solar wind-ic"
 binary_experiment_declared = "E-117"
 binary_registered = true
 claim_refs = ["C-1165", "C-1169"]
@@ -3041,15 +3041,15 @@ method = "Cross-validate proton density, speed, and B-field between Pioneer 10/1
 output = ["cross_validation_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-ic -- --voyager1-file <v1> --voyager2-file <v2> --pioneer10-file <p10> --pioneer11-file <p11> --radial-mode --nx 128"
-run_command_sha256 = "f2816dcb4923ea9a8c20f7f0f0a7e52a2d6371cfe9e0748ae541ea0db0afc6e4"
+run = "cargo run --release --bin solar -- wind-ic --voyager1-file <v1> --voyager2-file <v2> --pioneer10-file <p10> --pioneer11-file <p11> --radial-mode --nx 128"
+run_command_sha256 = "a0d339bba70742882241bb739336f5504d4617d3fd779597efa803b642805e56"
 status = "planned"
 status_token = "PLANNED"
 title = "Pioneer-Voyager radial cross-validation"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-ic"
+binary = "solar wind-ic"
 binary_experiment_declared = "E-118"
 binary_registered = true
 claim_refs = ["C-1159", "C-1166"]
@@ -3067,15 +3067,15 @@ method = "Compute Knudsen number Kn = lambda_mfp / L_cell at each radial distanc
 output = ["kn_profile_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-ic -- --radial-mode --voyager1-file <v1> --nx 256 --ny 32 --nz 32"
-run_command_sha256 = "1a897d9d02fa32937e128c03a73358c066bd00cd029ff23a0867f038b1bf65f8"
+run = "cargo run --release --bin solar -- wind-ic --radial-mode --voyager1-file <v1> --nx 256 --ny 32 --nz 32"
+run_command_sha256 = "237826cb3417834891c2786bcb3c9c539983dfaa82fe27a2f1e43dd6096ef127"
 status = "planned"
 status_token = "PLANNED"
 title = "Outer heliosphere LBM validity assessment (Kn regime mapping)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-119"
 binary_registered = true
 claim_refs = ["C-1156", "C-1157", "C-1160", "C-1168"]
@@ -3093,15 +3093,15 @@ method = "End-to-end pipeline: multi-spacecraft data -> radial IC (E-114) -> MHD
 output = ["csv_snapshots", "force_ratio_csv", "mass_conservation_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/radial_ic.csv --nx 256 --ny 32 --nz 32 --steps 10000 --tau 0.7 --eta 0.01 --dm-r-min 1 --dm-r-max 100"
-run_command_sha256 = "3d3cee5192f64b515fb90a94c877720a4ce4ebf83b2839be7665135fbfd4b3b3"
+run = "cargo run --release --bin solar -- wind-dm-mhd --ic-file data/output/radial_ic.csv --nx 256 --ny 32 --nz 32 --steps 10000 --tau 0.7 --eta 0.01 --dm-r-min 1 --dm-r-max 100"
+run_command_sha256 = "3bfde7a3c840325f0346fe88bf86e4d41eea5a40013448ad302d7e30a38c392e"
 status = "planned"
 status_token = "PLANNED"
 title = "Full heliosphere radial IC -> MHD+DM end-to-end pipeline"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-120"
 binary_registered = true
 claim_refs = ["C-1164"]
@@ -3119,8 +3119,8 @@ method = "MHD simulation of the solar wind at the termination shock region (80-1
 output = ["csv_snapshots", "shock_profile_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/ts_ic.csv --nx 256 --ny 64 --nz 64 --steps 20000 --tau 0.7 --eta 0.01 --dm-r-min 80 --dm-r-max 100"
-run_command_sha256 = "0935fdb424ff07597dd2b737a7f1a26bf562969e6380c95cff589674b6b22bb6"
+run = "cargo run --release --bin solar -- wind-dm-mhd --ic-file data/output/ts_ic.csv --nx 256 --ny 64 --nz 64 --steps 20000 --tau 0.7 --eta 0.01 --dm-r-min 80 --dm-r-max 100"
+run_command_sha256 = "8714849e00d6829371eb95141351488d1a1fbb2bf246fb13ffd0ce992c6b4930"
 status = "planned"
 status_token = "PLANNED"
 title = "Termination shock MHD simulation with Voyager IC"
@@ -3803,7 +3803,7 @@ title = "Domain wall boundary modes and point defect localized modes"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-crystal-bands"
+binary = "zd-algebra crystal-bands"
 binary_experiment_declared = "E-147"
 binary_registered = true
 claim_refs = ["C-1255", "C-1256"]
@@ -3821,15 +3821,15 @@ method = "Compute ZD motif graph adjacency spectra at D=16,32,64 via block-diago
 output = ["stdout"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64 --details"
-run_command_sha256 = "571935a7855f72aa5e796cd064100cdc776df743e08b81bbb0f2eb5f38f34984"
+run = "cargo run --release --bin zd-algebra -- crystal-bands --dims 16,32,64 --details"
+run_command_sha256 = "3b2b000e376f44579bfc039780b322d9ba164df6f549a0f19c2d73ed7fde5850"
 status = "active"
 status_token = "ACTIVE"
 title = "ZD crystal band spectra D=16,32,64"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-crystal-bands"
+binary = "zd-algebra crystal-bands"
 binary_experiment_declared = "E-147"
 binary_registered = true
 claim_refs = ["C-1257"]
@@ -3847,15 +3847,15 @@ method = "Compute flat band fraction across D=16,32,64,128,256 to test dimension
 output = ["stdout"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64,128,256"
-run_command_sha256 = "2b2681f140df543a53a2dc1b760e0a232971c23d95a2bebc8d35a77576901400"
+run = "cargo run --release --bin zd-algebra -- crystal-bands --dims 16,32,64,128,256"
+run_command_sha256 = "c774d80d5633126940471a4aff7decc6eb4933ea6665f57e0f700d7562a5017f"
 status = "active"
 status_token = "ACTIVE"
 title = "Flat band fraction scaling D=16..256"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-crystal-bands"
+binary = "zd-algebra crystal-bands"
 binary_experiment_declared = "E-147"
 binary_registered = true
 claim_refs = ["C-1258"]
@@ -3873,8 +3873,8 @@ method = "Verify that the D=16 partner graph degeneracy pattern {7,14,42,14,7} f
 output = ["stdout"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-crystal-bands -- --dims 16 --reggiani"
-run_command_sha256 = "d5da73bfc63335eb04d8cdcfe787a46e539c1b7ca63fc54b482e79b33888cadf"
+run = "cargo run --release --bin zd-algebra -- crystal-bands --dims 16 --reggiani"
+run_command_sha256 = "34b60c400c2594e9589192ef2dd6e07fe2b1bc6395ab50348143020b8c17fca2"
 status = "active"
 status_token = "ACTIVE"
 title = "Reggiani factorization verification"
@@ -4349,7 +4349,7 @@ title = "MRT vs BGK stability envelope: density contrast sweep at tau=0.7"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-crystal-bands"
+binary = "zd-algebra crystal-bands"
 binary_experiment_declared = "E-147"
 binary_registered = true
 claim_refs = ["C-1291"]
@@ -4531,7 +4531,7 @@ title = "YSU-Inspired CUDA Optimization Suite: MRT ILP + CUDA Graph + Tiled Pull
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-rotation-curve"
+binary = "harmonic-halo rotation-curve"
 binary_experiment_declared = "E-178"
 binary_registered = true
 claim_refs = ["C-1313", "C-1314"]
@@ -4549,8 +4549,8 @@ method = "Compute NFW rotation curves with harmonic halo modulation at alpha_zd 
 output = ["CSV rotation curves", "stdout summary statistics"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin harmonic-halo-rotation-curve -- --m200 1e12 --alpha-zd 0.05 --csv harmonic_halo_mw.csv"
-run_command_sha256 = "3d571ce564090dd30d34d3a9665e3218220d4798303f787dd6de7c147451cc42"
+run = "cargo run --release --bin harmonic-halo -- rotation-curve --m200 1e12 --alpha-zd 0.05 --csv harmonic_halo_mw.csv"
+run_command_sha256 = "ac1653249a47ae0ce98ed9721efce91c8007a779a2c1a302af87373232f42ce9"
 status = "planned"
 status_token = "PLANNED"
 title = "Harmonic Halo Rotation Curve: 7-mode box-kite modulation sweep"
@@ -4583,7 +4583,7 @@ title = "Falsification of slope_ratio = 42^2/10000 claim (C-1329)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking"
+binary = "harmonic-halo stacking"
 binary_experiment_declared = "E-180"
 binary_registered = true
 claim_refs = ["C-1313", "C-1332"]
@@ -4601,8 +4601,8 @@ method = "Download SPARC (175 galaxies) and Gaia DR3 MW rotation curve. For each
 output = ["CSV stacked residuals in r/r_s", "Fourier power at 7 wavenumbers", "null hypothesis p-values", "alpha_zd limit"]
 output_path_refs = ["/tmp/harmonic_stacking_final.csv"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin harmonic-halo-stacking -- --sparc-dir data/external/sparc --nfw-fits data/external/sparc_nfw/li2020_nfw_fits.csv --csv-out harmonic_stacking_results.csv"
-run_command_sha256 = "3bd512835ee1d369dd7bd80a183e920101cd69e3d573f8b1cf0a17e194996c81"
+run = "cargo run --release --bin harmonic-halo -- stacking --sparc-dir data/external/sparc --nfw-fits data/external/sparc_nfw/li2020_nfw_fits.csv --csv-out harmonic_stacking_results.csv"
+run_command_sha256 = "8fa1311f3a24d591b77ec2be76dd98dc7d11273318104b5148bd91e750417199"
 status = "active"
 status_token = "ACTIVE"
 title = "Harmonic Halo Stacking: SPARC + Gaia MW rotation curve falsification test"
@@ -4635,7 +4635,7 @@ title = "x87 FP-80 vs DD vs nalgebra eigenvalue solver benchmark"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking"
+binary = "harmonic-halo stacking"
 binary_experiment_declared = "E-180"
 binary_registered = true
 claim_refs = ["C-1338"]
@@ -4653,15 +4653,15 @@ method = "Extend E-180 stacking to higher Cayley-Dickson dimensions. For each D 
 output = ["CSV stacked residuals per dimension", "Cross-dimension SNR comparison table"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin harmonic-halo-stacking -- --cd-dim 32 --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat"
-run_command_sha256 = "6a91b8ddcdf577415ca9c5f875f66d77d8d7917149e8f0b1cf8afa41197f844b"
+run = "cargo run --release --bin harmonic-halo -- stacking --cd-dim 32 --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat"
+run_command_sha256 = "7cf17a7e7893ca4b0f23b08bb88e3656f1dedf99f4fd2056f6024ab34d0930ea"
 status = "planned"
 status_token = "PLANNED"
 title = "Harmonic Halo stacking: multi-CD-dimension sweep (D=16,32,64,128,256)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking-manga"
+binary = "harmonic-halo stacking-manga"
 binary_experiment_declared = "E-183"
 binary_registered = true
 claim_refs = ["C-1346", "C-1347", "C-1348", "C-1365", "C-1366", "C-1367", "C-1368"]
@@ -4679,8 +4679,8 @@ method = "Two-stage pipeline: (1) DAPall Guillotine -- morphological + quality c
 output = ["manga_harmonic_stacking.csv"]
 output_path_refs = ["manga_harmonic_stacking.csv"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv"
-run_command_sha256 = "ecd714db2846646bd0695ad9ebbc1762d6123c6eacf0adf623d4569800c8c1d4"
+run = "harmonic-halo stacking-manga --rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv"
+run_command_sha256 = "1762f2ecf94bfc513d946e599c90e110463e9b4b204284471e761690f5841ac8"
 status = "active"
 status_token = "ACTIVE"
 title = "MaNGA N=6992 harmonic halo stacking null result with pseudo-slit rotation curves (D=16,64,256,1024)"
@@ -4713,7 +4713,7 @@ title = "Braid fidelity audit: confirm fidelity < 1.0 at all dim >= 16 (C-1350, 
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-rotation-curve"
+binary = "harmonic-halo rotation-curve"
 binary_experiment_declared = "E-178"
 binary_registered = true
 claim_refs = ["C-1353", "C-1354"]
@@ -4843,7 +4843,7 @@ title = "AVX/FMA follow-on slice for x87 accumulation benchmarks at n=512"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-42-support"
+binary = "thesis 42-support"
 binary_experiment_declared = "E-190"
 binary_registered = true
 claim_refs = []
@@ -4861,15 +4861,15 @@ method = "Build one repo-consistent support bundle from three existing lanes: (1
 output = ["data/evidence/thesis_42_support/summary.toml", "data/evidence/thesis_42_support/nonlocal_topologies.csv", "data/evidence/thesis_42_support/majorana_friction_sweep.csv", "data/evidence/thesis_42_support/harmonic_halo_reference.csv"]
 output_path_refs = ["data/evidence/thesis_42_support/harmonic_halo_reference.csv", "data/evidence/thesis_42_support/majorana_friction_sweep.csv", "data/evidence/thesis_42_support/nonlocal_topologies.csv", "data/evidence/thesis_42_support/summary.toml"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin thesis-42-support -- --output-dir data/evidence/thesis_42_support"
-run_command_sha256 = "bb58732b71e8cea36ec8626b4f0dc08adaa772b122e14e258d6ac97119bb37cf"
+run = "cargo run --release --bin thesis -- 42-support --output-dir data/evidence/thesis_42_support"
+run_command_sha256 = "16da7309bec91421d5e24833477699c14620a5b02e8a2feefbd8fdc47f798133"
 status = "active"
 status_token = "ACTIVE"
 title = "Evidence-first thesis 42 support bundle"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking"
+binary = "harmonic-halo stacking"
 binary_experiment_declared = "E-180"
 binary_registered = true
 claim_refs = ["C-1344", "C-1345"]
@@ -4883,19 +4883,19 @@ id = "E-191"
 input = "data/external/sparc/table2_rotcurves.dat, data/external/sparc_nfw/table1.dat"
 input_path_refs = ["data/external/sparc/table2_rotcurves.dat", "data/external/sparc_nfw/table1.dat"]
 lineage_id = "XL-109"
-method = "Run harmonic-halo-stacking on 93 SPARC galaxies (chi2<3, c200>=2) with --cd-dim={16,32,64,128,256,512,1024}. At each CD dimension D, the number of Fourier modes is D/2-1 and the assessor fraction is exactly 0.5 (combinatorial identity). Detection SNR and alpha_zd estimates compared across all 7 dimensions."
+method = "Run harmonic-halo stacking on 93 SPARC galaxies (chi2<3, c200>=2) with --cd-dim={16,32,64,128,256,512,1024}. At each CD dimension D, the number of Fourier modes is D/2-1 and the assessor fraction is exactly 0.5 (combinatorial identity). Detection SNR and alpha_zd estimates compared across all 7 dimensions."
 output = ["data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16,32,64,128,256,512,1024}.csv"]
 output_path_refs = ["data/results/harmonic_stacking_cd_sweep/", "data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-stacking --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat --cd-dim {16..1024} --min-c200 2.0 --max-chi2 3.0 --x-min 0.5 --x-max 10.0"
-run_command_sha256 = "90ce986ada276700d5a6104633fceef301c72f3685279b8f28b7f9731c1eaecc"
+run = "harmonic-halo stacking --sparc data/external/sparc/table2_rotcurves.dat --nfw-fits data/external/sparc_nfw/table1.dat --cd-dim {16..1024} --min-c200 2.0 --max-chi2 3.0 --x-min 0.5 --x-max 10.0"
+run_command_sha256 = "56c7bde21203943f132d7e52445e7e84fdadf8f42d6cc0e2d7c69ef25d7a6410"
 status = "active"
 status_token = "ACTIVE"
 title = "CD dimension sweep: harmonic halo stacking at D=16,32,64,128,256,512,1024"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-signal-analysis"
+binary = "harmonic-halo signal-analysis"
 binary_experiment_declared = "E-192"
 binary_registered = true
 claim_refs = ["C-1372", "C-1373", "C-1411", "C-1412", "C-1413", "C-1414", "C-1415", "C-1416", "C-1417", "C-1418"]
@@ -4913,8 +4913,8 @@ method = "Apply non-static signal analysis (STFT spectrogram, derivative stackin
 output = ["data/results/e183/stft_full.csv", "data/results/e183/deriv_full.csv", "data/results/e183/rayleigh_full.csv", "data/results/e183/stft_lowi.csv", "data/results/e183/deriv_lowi.csv", "data/results/e183/rayleigh_lowi.csv", "experiments/manga_zd_null/results.json"]
 output_path_refs = ["data/results/e183/", "data/results/e183/deriv_full.csv", "data/results/e183/deriv_lowi.csv", "data/results/e183/rayleigh_full.csv", "data/results/e183/rayleigh_lowi.csv", "data/results/e183/stft_full.csv", "data/results/e183/stft_lowi.csv", "experiments/manga_zd_null/results.json"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv"
-run_command_sha256 = "8d476d35ebb377437380543a96562a935dc79728bed77b885856e4c4eb8307a8"
+run = "harmonic-halo signal-analysis --stacked-csv data/results/e183/lie_jordan_full.csv --min-per-bin 10 --sigma-x 1.5 --n-windows 32 --stft-csv data/results/e183/stft_full.csv --deriv-csv data/results/e183/deriv_full.csv --rayleigh-csv data/results/e183/rayleigh_full.csv"
+run_command_sha256 = "e39e5d9e4cd32c8228865121f74b5c08e0d1aa33beceac7dd50e9c48cd4e472c"
 status = "active"
 status_token = "ACTIVE"
 title = "Non-static MaNGA signal analysis: STFT spectrogram + derivative + Rayleigh phase coherence"
@@ -4947,7 +4947,7 @@ title = "THINGS HI 21cm Rotation Curve Extraction"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-galaxy-phase"
+binary = "harmonic-halo galaxy-phase"
 binary_experiment_declared = "E-194"
 binary_registered = true
 claim_refs = []
@@ -4965,15 +4965,15 @@ method = "Run the galaxy-ensemble Rayleigh phase-coherence test on all 6992 MaNG
 output = ["data/external/manga/galaxy_phase_coherence.csv"]
 output_path_refs = ["data/external/manga/galaxy_phase_coherence.csv"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-galaxy-phase --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --output data/external/manga/galaxy_phase_coherence.csv"
-run_command_sha256 = "b1496949ef957c906dd8a9d23f660f033a2fcee0d75c7a56160820a522e4a6e4"
+run = "harmonic-halo galaxy-phase --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --output data/external/manga/galaxy_phase_coherence.csv"
+run_command_sha256 = "a8ef0bc7632f659a642c6bafd2b042d51849b9e6f8a33fd61a962c4719a621a2"
 status = "planned"
 status_token = "PLANNED"
 title = "Galaxy-Ensemble Rayleigh Phase Coherence"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-visualize"
+binary = "harmonic-halo visualize"
 binary_experiment_declared = "E-195"
 binary_registered = true
 claim_refs = []
@@ -4991,15 +4991,15 @@ method = "Generate the publication-ready PGFPlots panels for the E-183/E-192 nul
 output = ["docs/latex/figs/stft_spectrogram.tex", "docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex"]
 output_path_refs = ["docs/latex/figs/derivative_dft.tex", "docs/latex/figs/spatial_residuals.tex", "docs/latex/figs/stft_spectrogram.tex"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs"
-run_command_sha256 = "86e3c76410d3ec0ee99d50bb20ffe0853c4ebf807d519131698ba9cfffb47493"
+run = "harmonic-halo visualize --stack data/results/e183/manga_stack_D16.csv --stft data/results/e183/stft_full.csv --deriv data/results/e183/deriv_full.csv --out-dir docs/latex/figs"
+run_command_sha256 = "9dff7aca6ab1389c4a594722e2c77beea4e45f155b4b41154d5abc166d31f59f"
 status = "planned"
 status_token = "PLANNED"
 title = "Multi-Panel Null Result Visualization"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-stacking-manga"
+binary = "harmonic-halo stacking-manga"
 binary_experiment_declared = "E-196"
 binary_registered = true
 claim_refs = []
@@ -5017,15 +5017,15 @@ method = "Re-run the MaNGA stacking lane from E-183 with PSF-flagged inner bins 
 output = ["data/external/manga/manga_stack_psf_corrected.csv"]
 output_path_refs = ["data/external/manga/manga_stack_psf_corrected.csv"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-stacking-manga --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --exclude-inner-psf --output data/external/manga/manga_stack_psf_corrected.csv"
-run_command_sha256 = "96618130008a4a2533f98a9e8049a8af07569c2b0baf6718c2bf96777c8b76a1"
+run = "harmonic-halo stacking-manga --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --exclude-inner-psf --output data/external/manga/manga_stack_psf_corrected.csv"
+run_command_sha256 = "a8df07bf001004725417a6f8028f7a01e0a7720131e3875a55d086e6908fd0f1"
 status = "planned"
 status_token = "PLANNED"
 title = "MaNGA Stacking with PSF Beam-Smearing Correction"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "harmonic-halo-injection"
+binary = "harmonic-halo injection"
 binary_experiment_declared = "E-197"
 binary_registered = true
 claim_refs = []
@@ -5043,8 +5043,8 @@ method = "Inject synthetic ZD harmonic signals with alpha_zd in {0, 0.001, 0.002
 output = ["data/external/manga/injection_recovery.csv"]
 output_path_refs = ["data/external/manga/injection_recovery.csv"]
 reproducibility_class = "deterministic_replay"
-run = "harmonic-halo-injection --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --alphas 0,0.001,0.002,0.004,0.008,0.016 --output data/external/manga/injection_recovery.csv"
-run_command_sha256 = "7bdb454c8c7e9f96d3ca3fbc5131a7e1d5ceb88ea0a04cfb29a35c39bd91f8b1"
+run = "harmonic-halo injection --rotcurves data/external/manga/manga_rotcurves_all.csv --dapall data/external/manga/dapall_selection.csv --alphas 0,0.001,0.002,0.004,0.008,0.016 --output data/external/manga/injection_recovery.csv"
+run_command_sha256 = "b556ba62d224afa2a5e29b20ef88ecb6d22e67c71f0c299b93dd74d85d985234"
 status = "planned"
 status_token = "PLANNED"
 title = "Signal Injection-Recovery Validation"
@@ -5589,8 +5589,8 @@ method = ""
 output = []
 output_path_refs = []
 reproducibility_class = "non_deterministic"
-run = "cargo run --release -p gororoba_cli_physics --bin turboquant-bench -- --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json"
-run_command_sha256 = "0f24d1b489ace280737a82d16ccdb3a2bf5811f5d4359816dad2eae8104f0f1c"
+run = "cargo run --release -p gororoba_cli_physics --bin turboquant -- bench --dims 128 --bits 3 --n-vectors 5000 --rotation both --out-json reports/e220_turboquant_bench.json"
+run_command_sha256 = "9187e01c3b7c80818da8e32d4bfab5aaab671f1b3dce16e789816c6735330f4a"
 status = "active"
 status_token = "ACTIVE"
 title = "TurboQuant WHT/E8 rotation benchmark and KIVI comparison (d=128, 3-bit)"
@@ -5641,8 +5641,8 @@ method = ""
 output = []
 output_path_refs = []
 reproducibility_class = "non_deterministic"
-run = "cargo run --release -p gororoba_cli_physics --bin turboquant-validate -- --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json"
-run_command_sha256 = "fa936f44480e79204e09706a58321eddd5e2cf441a776d6ca69577aab6d35f99"
+run = "cargo run --release -p gororoba_cli_physics --bin turboquant -- validate --dim 128 --bits 2,3,4 --seq-lens 512 --n-heads 4 --out-json reports/e222_turboquant_qjl.json"
+run_command_sha256 = "d8aa061cb33b4bbeb3760cb2db52e013a398144f1eb8e998789fe9cc339ad1ec"
 status = "active"
 status_token = "ACTIVE"
 title = "TurboQuant QJL correction crossover analysis (2-4 bit)"
@@ -5797,8 +5797,8 @@ method = "Load per-day Cluster C1 FGM CSV (HAPI spin-res); minute-level averagin
 output = ["data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json"]
 output_path_refs = ["data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin heliosphere-fa-attribution -- --mission cluster --start-date 2002-01-01 --end-date 2002-01-07 --out-json data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_cluster_pr_curve.json"
-run_command_sha256 = "3872b78ccce98a07c407d30ca9c9450a5d0bcd7c6aa6ba77948945a3ad139d3d"
+run = "cargo run --release --bin heliosphere -- fa-attribution --mission cluster --start-date 2002-01-01 --end-date 2002-01-07 --out-json data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_cluster_pr_curve.json"
+run_command_sha256 = "aacb92146bd37e0c7f73524d29f48f45691101844b3a5b78d7761efe40fb98c1"
 status = "active"
 status_token = "ACTIVE"
 title = "Cluster FA attribution: bow shock crossing detection P/R/F1 and per-type analysis (C-1620)"
@@ -5823,8 +5823,8 @@ method = "Four normalization variants (raw/direction/clipped/current) of 32D Tak
 output = ["data/output/heliosphere/ablations/rosetta_normalization_ablation.json"]
 output_path_refs = ["data/output/heliosphere/ablations/rosetta_normalization_ablation.json"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin heliosphere-rosetta-ablation-summary -- --input-dir data/output/heliosphere/ablations"
-run_command_sha256 = "737df2363f64886abff5c7bc61c1eb920150d12d52cdb4f544f64673c0416e75"
+run = "cargo run --release --bin heliosphere -- rosetta-ablation-summary --input-dir data/output/heliosphere/ablations"
+run_command_sha256 = "1349be878c407b044a91a4ea9c13da4f306723c601a8680bbdd88f63d93d20fe"
 status = "active"
 status_token = "ACTIVE"
 title = "Rosetta 67P normalization ablation: direction vs raw/clipped/current in weak-field cavity (C-1621)"
@@ -5842,15 +5842,15 @@ deterministic = false
 external_source_refs = []
 gpu = false
 id = "E-230"
-input = "Four pre-computed PSP switchback omega JSON files: E1/E4/E6/E10 (heliosphere-switchback-omega outputs)"
+input = "Four pre-computed PSP switchback omega JSON files: E1/E4/E6/E10 (heliosphere switchback-omega outputs)"
 input_path_refs = ["data/output/heliosphere/ablations/psp_switchback_omega.json", "data/output/heliosphere/ablations/psp_switchback_omega_e1.json", "data/output/heliosphere/ablations/psp_switchback_omega_e10.json", "data/output/heliosphere/ablations/psp_switchback_omega_e6.json"]
 lineage_id = "XL-230"
 method = "Read per-encounter JSON; extract ratio_switchback_to_quiet; Spearman rho vs encounter number (perihelion depth proxy); monotonicity check; mean/std across 4 encounters."
 output = ["data/output/heliosphere/ablations/psp_multiencounter_stability.json"]
 output_path_refs = ["data/output/heliosphere/ablations/psp_multiencounter_stability.json"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin heliosphere-psp-encounter-summary -- --input-dir data/output/heliosphere/ablations"
-run_command_sha256 = "665835ef12cec5be68b7f2ffeb34e1fde506a62c5cccc026055e0824589d9c18"
+run = "cargo run --release --bin heliosphere -- psp-encounter-summary --input-dir data/output/heliosphere/ablations"
+run_command_sha256 = "58f275fc26061cb78fad82d5bec1f6690604cf843d1e09bc815fba1153c54809"
 status = "active"
 status_token = "ACTIVE"
 title = "PSP multi-encounter stability: switchback/quiet CD associator ratio vs perihelion depth (C-1622)"
@@ -5875,8 +5875,8 @@ method = "Extract false-negative candidates from FA attribution output; classify
 output = ["data/output/heliosphere/ablations/fa_attribution_themis.json"]
 output_path_refs = ["data/output/heliosphere/ablations/fa_attribution_themis.json"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin heliosphere-fa-attribution -- --mission themis --out-json data/output/heliosphere/ablations/fa_attribution_themis.json"
-run_command_sha256 = "bb77fc6fadfa5c891319272a1f55cbd3012457bb2b6092a924a339fac1a70315"
+run = "cargo run --release --bin heliosphere -- fa-attribution --mission themis --out-json data/output/heliosphere/ablations/fa_attribution_themis.json"
+run_command_sha256 = "ddec1b54239c95587c9d9c1de0e2e000811841721d5e66b9e4ec3e6475255952"
 status = "active"
 status_token = "ACTIVE"
 title = "THEMIS FA false-negative classification: low-rotation crossings missed by CD associator (C-1623)"
@@ -5897,12 +5897,12 @@ id = "E-232"
 input = "MMS1 FGM Survey L2 data (2024-01-01 to 2024-01-07, 9460 minutes after inner-magnetosphere filter); cached daily CSVs in data/external/mms/"
 input_path_refs = ["data/external/mms/"]
 lineage_id = "XL-232"
-method = "Two runs of heliosphere-mms-multiday: (1) baseline gradient-only (5 nT threshold), (2) rotation-hardened (5 nT + rotation>=30 deg). Compare n_crossings_detected, detection_rate, false_alarm_rate, mean_offset_minutes."
+method = "Two runs of heliosphere mms-multiday: (1) baseline gradient-only (5 nT threshold), (2) rotation-hardened (5 nT + rotation>=30 deg). Compare n_crossings_detected, detection_rate, false_alarm_rate, mean_offset_minutes."
 output = ["data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json", "data/output/heliosphere/ablations/mms_multiday_rot30.json"]
 output_path_refs = ["data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json", "data/output/heliosphere/ablations/mms_multiday_rot30.json"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin heliosphere-mms-multiday -- --start-date 2024-01-01 --n-days 7 --rotation-threshold-deg 30 --out-json data/output/heliosphere/ablations/mms_multiday_rot30.json"
-run_command_sha256 = "385c3b29020c33f2ea6ca5589520d4340b27e745b461c2b86e88677c005f93ed"
+run = "cargo run --release --bin heliosphere -- mms-multiday --start-date 2024-01-01 --n-days 7 --rotation-threshold-deg 30 --out-json data/output/heliosphere/ablations/mms_multiday_rot30.json"
+run_command_sha256 = "013fe67df5fb952a70d1c2e28a5269e299132f3497eb90ac5158f43aa53c20ba"
 status = "active"
 status_token = "ACTIVE"
 title = "MMS rotation-threshold label hardening: gradient-only vs rotation>=30 deg comparison (C-1624)"
@@ -5923,12 +5923,12 @@ id = "E-233"
 input = "MAVEN MAG HAPI CSV (2015-03-01 to 2015-03-13, 16851 minutes, DOY 060-073 except 069); regime-filter crossing list maven_bs_2015_regime.txt (136 crossings)"
 input_path_refs = ["data/external/crossing_lists/maven_bs_2015_regime.txt", "data/external/maven/"]
 lineage_id = "XL-233"
-method = "Load MAVEN MAG minute-averaged FGM (SS frame); 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; compare CD transitions against regime-filter-derived crossing list (heliosphere-maven-crossing-gen SW<4.5nT -> sheath>8nT, 30-min gap); per-transition type classification; PR curve sweep."
+method = "Load MAVEN MAG minute-averaged FGM (SS frame); 32D Takens (8-step x 4-ch, unit-norm); batch_sliding_associator_norms_parallel; compare CD transitions against regime-filter-derived crossing list (heliosphere maven-crossing-gen SW<4.5nT -> sheath>8nT, 30-min gap); per-transition type classification; PR curve sweep."
 output = ["data/output/heliosphere/ablations/fa_attribution_maven_2015.json", "data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"]
 output_path_refs = ["data/output/heliosphere/ablations/fa_attribution_maven_2015.json", "data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin heliosphere-fa-attribution -- --mission maven --start-date 2015-03-01 --end-date 2015-03-13 --crossing-list data/external/crossing_lists/maven_bs_2015_regime.txt --out-json data/output/heliosphere/ablations/fa_attribution_maven_2015.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"
-run_command_sha256 = "2987591a7dcdb0ef18b11ff9bc5f51cd95ddbf98a8ec8fb0eb413dcc398591cf"
+run = "cargo run --release --bin heliosphere -- fa-attribution --mission maven --start-date 2015-03-01 --end-date 2015-03-13 --crossing-list data/external/crossing_lists/maven_bs_2015_regime.txt --out-json data/output/heliosphere/ablations/fa_attribution_maven_2015.json --out-pr-curve data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"
+run_command_sha256 = "8b81eb8abb2a59bf0b769b9480179aa92396a4f86482596bbf0e344d0da8bcba"
 status = "active"
 status_token = "ACTIVE"
 title = "MAVEN bow shock FA attribution with regime-filter crossing list (C-1625)"
@@ -5998,7 +5998,7 @@ deterministic = true
 external_source_refs = []
 gpu = false
 id = "E-236"
-input = "data/output/agg_selfsim_rust.json: per-file staple-associator log-moment records for 8 heliospheric missions (PSP 0.15 AU through Voyager 1 100 AU) produced by heliosphere-selfsim-logstats"
+input = "data/output/agg_selfsim_rust.json: per-file staple-associator log-moment records for 8 heliospheric missions (PSP 0.15 AU through Voyager 1 100 AU) produced by heliosphere selfsim-logstats"
 input_path_refs = ["data/output/agg_selfsim_rust.json"]
 lineage_id = "XL-236"
 method = "Ordinary bootstrap over daily files (independent sampling units; within-file autocorrelation is absorbed into the per-file log_std statistic): 10,000 resamples of the per-mission mean log-sigma, percentile 95% CIs, ChaCha8 stream keyed on (seed 42, mission index) for bit-reproducible intervals. Decides which cross-mission log-sigma orderings survive the modest per-mission file counts."

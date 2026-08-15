@@ -298,6 +298,59 @@ pub struct EntityFieldTarget<'a> {
     pub field: &'a str,
 }
 
+/// One execution target renamed by a binary refactor. `from` and `to` are
+/// registry execution targets: either a bare binary name, or a binary name and
+/// a subcommand path separated by a space when a dispatcher owns the lane.
+/// Collapsing 55 binaries into one subcommand tree renames every lane at once,
+/// and each rename must reach the reproduction commands and the `Binary:`
+/// citations together or a claim cites a command that no longer runs.
+#[derive(Debug, Clone, Copy)]
+pub struct ExecutionTargetRetarget<'a> {
+    pub from: &'a str,
+    pub to: &'a str,
+    pub actor: &'a str,
+    pub reason: Option<&'a str>,
+}
+
+/// A source-file move to apply across the canonical control plane.
+///
+/// Distinct from `ExecutionTargetRetarget`: a path carries no `--bin` syntax
+/// and is matched literally, so a lane moving from
+/// `src/bin/solar_wind_ic.rs` to `src/bin/solar/wind_ic.rs` rewrites the
+/// citation without touching a command line around it.
+#[derive(Debug, Clone, Copy)]
+pub struct SourcePathRetarget<'a> {
+    pub from: &'a str,
+    pub to: &'a str,
+    pub actor: &'a str,
+    pub reason: Option<&'a str>,
+}
+
+/// Rows touched by one source-path move. Dossier contract values carry no
+/// revision table of their own, so they are counted rather than logged.
+#[derive(Debug, Clone, Default)]
+pub struct SourcePathRetargetSummary {
+    pub revisions: Vec<StatusNoteRevision>,
+    pub contract_paths_updated: usize,
+}
+
+/// Rows touched by one execution-target rename, one revision per updated
+/// column so the audit trail names every record the rename reached.
+#[derive(Debug, Clone, Default)]
+pub struct ExecutionTargetRetargetSummary {
+    pub revisions: Vec<StatusNoteRevision>,
+}
+
+/// Difference between the binary targets cargo declares and the rows
+/// `binaries_cp` holds. A collapse removes many names and adds one, so the
+/// reconcile reports both directions rather than a single count.
+#[derive(Debug, Clone, Default)]
+pub struct BinariesSyncSummary {
+    pub added: Vec<String>,
+    pub removed: Vec<String>,
+    pub retained: usize,
+}
+
 /// Append-only audit record returned by claim/insight/experiment
 /// status_note mutators. Useful for callers that want to print a
 /// confirmation including the prev/new content hashes.

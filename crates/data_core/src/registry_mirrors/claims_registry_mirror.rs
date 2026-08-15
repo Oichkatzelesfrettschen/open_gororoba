@@ -8069,7 +8069,7 @@
 //! - Status: `Refuted`
 //! - Last verified: 2026-03-08
 //! - Statement: Ratio of DM gravitational force to Lorentz force in magnetized solar wind at 1 AU is O(10^-12), confirming DM gravity alone cannot produce observable solar wind perturbations.
-//! - Where stated: crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs
+//! - Where stated: crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs
 //! - What would verify/refute it:
 //!
 //! ## C-1146
@@ -8101,7 +8101,7 @@
 //! - Status: `Provisional`
 //! - Last verified:
 //! - Statement: WIND SWE+MFI data yields |F_DM|/|F_Lorentz| ~ O(10^-12) in the D3Q19 LBM+MHD simulation, confirming the DM null result is independent of the data source (OMNI vs raw WIND).
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND IC)
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with WIND IC)
 //! - What would verify/refute it:
 //!
 //! ## C-1150
@@ -8109,7 +8109,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: High-resolution WIND MFI 3-second data in the shock ramp regime (CME front at L1) yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result holds even in the highest-gradient magnetic topology.
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)
 //! - What would verify/refute it:
 //!
 //! ## C-1151
@@ -8117,7 +8117,7 @@
 //! - Status: `Provisional`
 //! - Last verified:
 //! - Statement: STEREO-A PLASTIC+IMPACT/MAG triangulated 3D IC yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result is geometry-independent (not an artifact of 1D Taylor hypothesis).
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)
 //! - What would verify/refute it:
 //!
 //! ## C-1152
@@ -8141,7 +8141,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: DM-baryon scattering cross-section detection threshold in magnetized solar wind at 1 AU: sigma_chi_b must exceed approximately 10^-45 cm^2 for the drag force to produce |F_drag|/|F_Lorentz| > O(10^-12). Below this threshold, the drag is dynamically negligible.
-//! - Where stated: crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-sigma)
+//! - Where stated: crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--dm-sigma)
 //! - What would verify/refute it:
 //!
 //! ## C-1155
@@ -8157,7 +8157,7 @@
 //! - Status: `Provisional`
 //! - Last verified:
 //! - Statement: DM null invariance across the full heliosphere: max|F_DM|/max|F_Lorentz| < 10^-6 for all heliocentric distances r in [1, 157] AU. The NFW gravitational force grows with enclosed mass M(<r), but remains dynamically negligible compared to the solar wind Lorentz force at all distances.
-//! - Where stated: crates/lbm_3d/src/dm_force.rs (DmForceField::new with r_min_au/r_max_au), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-r-min, --dm-r-max)
+//! - Where stated: crates/lbm_3d/src/dm_force.rs (DmForceField::new with r_min_au/r_max_au), crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--dm-r-min, --dm-r-max)
 //! - What would verify/refute it:
 //!
 //! ## C-1157
@@ -8165,7 +8165,7 @@
 //! - Status: `Provisional`
 //! - Last verified:
 //! - Statement: Radial density profile n(r) = n_0*(r_0/r)^2 with residual < 20% for r in [1, 100] AU. Solar wind proton number density follows the r^-2 continuity equation scaling, verified by multi-spacecraft measurements (OMNI, Voyager, Pioneer, Ulysses, New Horizons).
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile, interpolate_radial)
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (build_radial_profile, interpolate_radial)
 //! - What would verify/refute it:
 //!
 //! ## C-1158
@@ -8173,7 +8173,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Biaxial topological invariance: RTN->GSE coordinate transformation with 7.25 deg solar axial tilt preserves div(B) < 10^-10 at machine precision. The tilt rotation is orthogonal, so it cannot introduce magnetic monopoles.
-//! - Where stated: crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (triangulate_ic)
+//! - Where stated: crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (triangulate_ic)
 //! - What would verify/refute it:
 //!
 //! ## C-1159
@@ -8181,7 +8181,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Anomalous viscosity regime: LBM BGK collision operator is valid for Knudsen number Kn < 100 (corresponding to heliocentric distance r < ~50 AU for quiet solar wind). Beyond 50 AU, kinetic effects dominate and BGK fails.
-//! - Where stated: crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)
+//! - Where stated: crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (Kn diagnostic)
 //! - What would verify/refute it:
 //!
 //! ## C-1160
@@ -8205,7 +8205,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Parker spiral scaling verified by multi-spacecraft data: B_r(r) ~ r^-2 (magnetic flux conservation) and B_phi(r) ~ r^-1 (spiral winding). At 1 AU, B_r ~ 3 nT and B_phi ~ 3 nT (Parker spiral angle ~ 45 deg). At 10 AU, B_phi >> B_r.
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (parker_spiral_b, interpolate_radial)
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (parker_spiral_b, interpolate_radial)
 //! - What would verify/refute it:
 //!
 //! ## C-1163
@@ -8213,7 +8213,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Ulysses fast/slow bimodality: v_polar > 1.5 * v_equatorial for |heliographic latitude| > 30 deg. Fast polar wind (~750 km/s, ~3 cm^-3) and slow equatorial wind (~400 km/s, ~7 cm^-3) are separated by a tanh transition over ~10-20 deg latitude bands (McComas et al. 2000).
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)
 //! - What would verify/refute it:
 //!
 //! ## C-1164
@@ -8221,7 +8221,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Voyager termination shock at 84-94 AU is consistent with MHD simulation boundary conditions. V1 crossed at 94 AU (2004), V2 at 84 AU (2007). Density jump factor ~ 2-4x across shock.
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs
 //! - What would verify/refute it:
 //!
 //! ## C-1165
@@ -8237,7 +8237,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Outer heliosphere Knudsen boundary: LBM validity boundary at r ~ 30-50 AU for quiet solar wind. Beyond this distance, mean free path exceeds simulation cell size (Kn > 1), and the BGK collision operator underpredicts heat flux and viscous stress.
-//! - Where stated: crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)
+//! - Where stated: crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (Kn diagnostic)
 //! - What would verify/refute it:
 //!
 //! ## C-1167
@@ -8261,7 +8261,7 @@
 //! - Status: `Refuted`
 //! - Last verified:
 //! - Statement: Multi-spacecraft temporal coherence at overlapping epochs: when two spacecraft (e.g., Voyager 1 and Pioneer 10) measure the same heliocentric distance band in different years, solar cycle phase correction (using OMNI sunspot number as proxy) reduces residual scatter to < 40%.
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile)
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (build_radial_profile)
 //! - What would verify/refute it:
 //!
 //! ## C-1170
@@ -8613,7 +8613,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-03-10
 //! - Statement: Solar wind IC generation accepts magnetometer-only records (valid B, NaN plasma) for near-Earth supplements (ACE MAG, WIND MFI, STEREO MAG) without discarding valid magnetic field data.
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs
 //! - What would verify/refute it:
 //!
 //! ## C-1214
@@ -8621,7 +8621,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-03-10
 //! - Statement: IC x-column mapping distributes OMNI hours proportionally across grid cells using hour_idx = (x * n_hours / nx), eliminating tail bias from integer division truncation.
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs
 //! - What would verify/refute it:
 //!
 //! ## C-1215
@@ -8717,7 +8717,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-03-10
 //! - Statement: LBM force_scale is computed from actual CLI nx and v_sw (not DmForceConfig::default()), with force_scale ~ 1/nx confirmed: nx=64 gives 2x the force_scale of nx=128.
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/lbm_3d/src/dm_force.rs
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs, crates/lbm_3d/src/dm_force.rs
 //! - What would verify/refute it:
 //!
 //! ## C-1227
@@ -8749,7 +8749,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-03-10
 //! - Statement: MHD simulation IC loading extracts u_sw from the x=0 inflow face (median of cells where x==0) instead of the global median, preserving the physically meaningful inflow boundary condition.
-//! - Where stated: crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/gororoba_cli_physics/src/bin/solar_wind_mhd_sim.rs
+//! - Where stated: crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs, crates/gororoba_cli_physics/src/bin/solar/wind_mhd_sim.rs
 //! - What would verify/refute it:
 //!
 //! ## C-1231
@@ -9884,8 +9884,8 @@
 //!
 //! - Status: `Verified`
 //! - Last verified:
-//! - Statement: The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo-signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result.
-//! - Where stated: data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo-signal-analysis, E-192, 2026-03-12)
+//! - Statement: The STFT spectrogram of the MaNGA E-183 stacked profile (harmonic-halo signal-analysis, sigma_x=1.5 r/r_s, 32 window centers) shows baryonic_frac=1.000 for all 7 CD-ZD modes: 100% of harmonic power is concentrated in the innermost x-bin (x_peak=0.5 r/r_s for all modes). The derivative stacking DFT shows monotonically increasing power from mode 1 (k=0.90) to mode 7 (k=6.28), opposite to the ZD forcing prediction which would peak at the fundamental mode k_1. The jackknife Rayleigh R=0.97-0.99 at all modes is an artifact of N=19 smooth bins (smooth baryonic profile causes stable jackknife phases); discriminatory power requires N >> 1/SNR^2 ~ 1700 bins. All three non-static diagnostics confirm baryonic-dominated, noise-dominated null result.
+//! - Where stated: data/results/e183/stft_full.csv, data/results/e183/deriv_full.csv, data/results/e183/rayleigh_full.csv (harmonic-halo signal-analysis, E-192, 2026-03-12)
 //! - What would verify/refute it:
 //!
 //! ## C-1375

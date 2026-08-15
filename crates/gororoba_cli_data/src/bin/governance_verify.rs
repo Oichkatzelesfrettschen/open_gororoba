@@ -77,31 +77,13 @@ const CLI_GPU_DEFAULT_EMPTY_MANIFESTS: &[&str] = &[
 const GPU_REQUIRED_BINS: &[(&str, &str)] = &[
     (
         "crates/gororoba_cli/Cargo.toml",
-        "name = \"thesis-synthesis\"\npath = \"src/bin/thesis_synthesis.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli/Cargo.toml",
-        "name = \"zd-resonance-bf16\"\npath = \"src/bin/zd_resonance_bf16.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli/Cargo.toml",
-        "name = \"zd-resonance-cuda\"\npath = \"src/bin/zd_resonance_cuda.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli/Cargo.toml",
-        "name = \"zd-resonance-4d\"\npath = \"src/bin/zd_resonance_4d.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli/Cargo.toml",
         "name = \"percolation-experiment\"\npath = \"src/bin/percolation_experiment.rs\"\nrequired-features = [\"gpu\"]",
     ),
+    // Every warp lane links CUDA through the crate library, so the requirement
+    // sits on the one dispatcher target rather than on individual lanes.
     (
         "crates/gororoba_cli_warp/Cargo.toml",
-        "name = \"warp-gpu-experiment\"\npath = \"src/bin/warp_gpu_experiment.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli_warp/Cargo.toml",
-        "name = \"warp-gpu-smoke\"\npath = \"src/bin/warp_gpu_smoke.rs\"\nrequired-features = [\"gpu\"]",
+        "name = \"warp\"\npath = \"src/bin/warp/main.rs\"\nrequired-features = [\"gpu\"]",
     ),
     (
         "crates/gororoba_cli_physics/Cargo.toml",
@@ -114,14 +96,6 @@ const GPU_REQUIRED_BINS: &[(&str, &str)] = &[
     (
         "crates/gororoba_cli_physics/Cargo.toml",
         "name = \"lbm-precision-sampler\"\npath = \"src/bin/lbm_precision_sampler.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli_physics/Cargo.toml",
-        "name = \"heliosphere-sparse-preservation\"\npath = \"src/bin/heliosphere_sparse_preservation.rs\"\nrequired-features = [\"gpu\"]",
-    ),
-    (
-        "crates/gororoba_cli_physics/Cargo.toml",
-        "name = \"heliosphere-lbm-cube-run\"\npath = \"src/bin/heliosphere_lbm_cube_run.rs\"\nrequired-features = [\"gpu\"]",
     ),
     (
         "crates/gororoba_cli_physics/Cargo.toml",
@@ -147,9 +121,69 @@ const GPU_REQUIRED_BINS: &[(&str, &str)] = &[
         "crates/gororoba_cli_physics/Cargo.toml",
         "name = \"particle-trace\"\npath = \"src/bin/particle_trace.rs\"\nrequired-features = [\"gpu\"]",
     ),
+];
+
+// The heliosphere lanes share one binary, so a GPU-only lane states its gate as
+// `#[cfg(feature = "gpu")]` on the module and again on the dispatcher variant
+// that names it, rather than as `required-features` on a `[[bin]]` of its own.
+// Both sites are checked: a gated module behind an ungated variant breaks the
+// default build on an unresolved path, which is the failure this catches early.
+const GPU_REQUIRED_CFG_ITEMS: &[(&str, &str)] = &[
     (
-        "crates/gororoba_cli_physics/Cargo.toml",
-        "name = \"heliosphere-boxkite-alignment\"\npath = \"src/bin/heliosphere_boxkite_alignment.rs\"\nrequired-features = [\"gpu\"]",
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod boxkite_alignment;",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod lbm_cube_run;",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod sparse_preservation;",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    BoxkiteAlignment(boxkite_alignment::Cli),",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    LbmCubeRun(lbm_cube_run::Cli),",
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    SparsePreservation(sparse_preservation::Cli),",
+    ),
+    (
+        "crates/gororoba_cli/src/bin/thesis/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod synthesis;",
+    ),
+    (
+        "crates/gororoba_cli/src/bin/thesis/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    Synthesis(synthesis::Cli),",
+    ),
+    (
+        "crates/gororoba_cli/src/bin/zd_resonance/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod bf16;",
+    ),
+    (
+        "crates/gororoba_cli/src/bin/zd_resonance/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod cuda;",
+    ),
+    (
+        "crates/gororoba_cli/src/bin/zd_resonance/main.rs",
+        "#[cfg(feature = \"gpu\")]\nmod four_d;",
+    ),
+    (
+        "crates/gororoba_cli/src/bin/zd_resonance/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    #[command(name = \"4d\")]\n    FourD(four_d::Cli),",
+    ),
+    (
+        "crates/gororoba_cli/src/bin/zd_resonance/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    Bf16(bf16::Args),",
+    ),
+    (
+        "crates/gororoba_cli/src/bin/zd_resonance/main.rs",
+        "#[cfg(feature = \"gpu\")]\n    Cuda(cuda::Cli),",
     ),
 ];
 
@@ -783,6 +817,16 @@ fn verify_heavy_feature_policy(args: &CommonArgs) -> Result<()> {
         if !text.contains(snippet) {
             failures.push(format!(
                 "{rel}: missing `required-features = [\"gpu\"]` for a GPU-only binary"
+            ));
+        }
+    }
+
+    for (rel, snippet) in GPU_REQUIRED_CFG_ITEMS {
+        let text = read_ascii_text(&root.join(rel))
+            .with_context(|| format!("read GPU cfg-gated source {}", rel))?;
+        if !text.contains(snippet) {
+            failures.push(format!(
+                "{rel}: missing `#[cfg(feature = \"gpu\")]` on a GPU-only dispatcher lane"
             ));
         }
     }

@@ -7,8 +7,8 @@ license = "MIT"
 description = "Algebra domain CLI binaries for gororoba"
 
 [[bin]]
-name = "zd-search"
-path = "src/bin/zd_search.rs"
+name = "zd-algebra"
+path = "src/bin/zd_algebra/main.rs"
 
 [[bin]]
 name = "spectral-flow"
@@ -149,10 +149,6 @@ path = "src/bin/tensor_avt_profile_suite.rs"
 [[bin]]
 name = "dm-cd-4096-analysis"
 path = "src/bin/dm_cd_4096_analysis.rs"
-
-[[bin]]
-name = "zd-crystal-bands"
-path = "src/bin/zd_crystal_bands.rs"
 
 [[bin]]
 name = "x87-strategy-bench"

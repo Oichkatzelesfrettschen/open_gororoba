@@ -256,40 +256,8 @@ name = "lbm-rca-probe"
 path = "src/bin/lbm_rca_probe.rs"
 
 [[bin]]
-name = "solar-wind-mhd-sim"
-path = "src/bin/solar_wind_mhd_sim.rs"
-
-[[bin]]
-name = "solar-wind-dm-mhd"
-path = "src/bin/solar_wind_dm_mhd.rs"
-
-[[bin]]
-name = "solar-wind-ic"
-path = "src/bin/solar_wind_ic.rs"
-
-[[bin]]
 name = "cross-validate-solar-wind"
 path = "src/bin/cross_validate_solar_wind.rs"
-
-[[bin]]
-name = "heliosphere-associator-null-audit"
-path = "src/bin/heliosphere_associator_null_audit.rs"
-
-[[bin]]
-name = "heliosphere-temporal-overlay"
-path = "src/bin/heliosphere_temporal_overlay.rs"
-
-[[bin]]
-name = "heliosphere-magnetic-takens"
-path = "src/bin/heliosphere_magnetic_takens.rs"
-
-[[bin]]
-name = "solar-flare-cd"
-path = "src/bin/solar_flare_cd.rs"
-
-[[bin]]
-name = "solar-aia-cd"
-path = "src/bin/solar_aia_cd.rs"
 
 [[bin]]
 name = "grmhd-torus-cd"
@@ -304,92 +272,13 @@ name = "tokamak-cd-proof"
 path = "src/bin/tokamak_cd_proof.rs"
 
 [[bin]]
-name = "heliosphere-beta-join"
-path = "src/bin/heliosphere_beta_join.rs"
+name = "harmonic-halo"
+path = "src/bin/harmonic_halo/main.rs"
 
 [[bin]]
-name = "heliosphere-hybrid-detector"
-path = "src/bin/heliosphere_hybrid_detector.rs"
+name = "heliosphere"
+path = "src/bin/heliosphere/main.rs"
 
-[[bin]]
-name = "heliosphere-fa-attribution"
-path = "src/bin/heliosphere_fa_attribution.rs"
-
-[[bin]]
-name = "heliosphere-embed-pca"
-path = "src/bin/heliosphere_embed_pca.rs"
-
-[[bin]]
-name = "heliosphere-synthetic-mhd"
-path = "src/bin/heliosphere_synthetic_mhd.rs"
-
-[[bin]]
-name = "heliosphere-norm-dump"
-path = "src/bin/heliosphere_norm_dump.rs"
-
-[[bin]]
-name = "heliosphere-zd-audit"
-path = "src/bin/heliosphere_zd_audit.rs"
-
-[[bin]]
-name = "heliosphere-full-sweep"
-path = "src/bin/heliosphere_full_sweep.rs"
-
-[[bin]]
-name = "heliosphere-baseline-comparison"
-path = "src/bin/heliosphere_baseline_comparison.rs"
-
-[[bin]]
-name = "heliosphere-q2-transverse"
-path = "src/bin/heliosphere_q2_transverse.rs"
-
-[[bin]]
-name = "heliosphere-decomposition-audit"
-path = "src/bin/heliosphere_decomposition_audit.rs"
-
-[[bin]]
-name = "heliosphere-boundary-survey"
-path = "src/bin/heliosphere_boundary_survey.rs"
-
-[[bin]]
-name = "heliosphere-rosetta-draping"
-path = "src/bin/heliosphere_rosetta_draping.rs"
-
-[[bin]]
-name = "heliosphere-rosetta-ablation-summary"
-path = "src/bin/heliosphere_rosetta_ablation_summary.rs"
-
-[[bin]]
-name = "heliosphere-psp-encounter-summary"
-path = "src/bin/heliosphere_psp_encounter_summary.rs"
-
-[[bin]]
-name = "heliosphere-psp-alfven-control"
-path = "src/bin/heliosphere_psp_alfven_control.rs"
-
-[[bin]]
-name = "heliosphere-psp-switchback-correlation"
-path = "src/bin/heliosphere_psp_switchback_correlation.rs"
-
-[[bin]]
-name = "heliosphere-fa-cross-mission-table"
-path = "src/bin/heliosphere_fa_cross_mission_table.rs"
-
-[[bin]]
-name = "heliosphere-maven-crossing-gen"
-path = "src/bin/heliosphere_maven_crossing_gen.rs"
-
-[[bin]]
-name = "heliosphere-mms-multiday"
-path = "src/bin/heliosphere_mms_multiday.rs"
-
-[[bin]]
-name = "heliosphere-mms-sitl-labeled"
-path = "src/bin/heliosphere_mms_sitl_labeled.rs"
-
-[[bin]]
-name = "heliosphere-themis-staples-labeled"
-path = "src/bin/heliosphere_themis_staples_labeled.rs"
 [[bin]]
 name = "themis-staples-score-export"
 path = "src/bin/themis_staples_score_export.rs"
@@ -409,146 +298,16 @@ path = "src/bin/selfsim_logsigma_bootstrap.rs"
 name = "sedenion-associator-coefficient-census"
 path = "src/bin/sedenion_associator_coefficient_census.rs"
 [[bin]]
-name = "heliosphere-selfsim-logstats"
-path = "src/bin/heliosphere_selfsim_logstats.rs"
-
-[[bin]]
-name = "heliosphere-bootstrap-f1"
-path = "src/bin/heliosphere_bootstrap_f1.rs"
-
-[[bin]]
-name = "heliosphere-themis-general-benchmark"
-path = "src/bin/heliosphere_themis_general_benchmark.rs"
-
-[[bin]]
-name = "heliosphere-l2-delay-baseline"
-path = "src/bin/heliosphere_l2_delay_baseline.rs"
-
-[[bin]]
-name = "heliosphere-random-trilinear"
-path = "src/bin/heliosphere_random_trilinear.rs"
-
-[[bin]]
-name = "heliosphere-r16-ablation"
-path = "src/bin/heliosphere_r16_ablation.rs"
-
-[[bin]]
-name = "heliosphere-r64-ablation"
-path = "src/bin/heliosphere_r64_ablation.rs"
-
-[[bin]]
-name = "heliosphere-lag-depth-sweep"
-path = "src/bin/heliosphere_lag_depth_sweep.rs"
-
-[[bin]]
-name = "heliosphere-random-trilinear-sparse"
-path = "src/bin/heliosphere_random_trilinear_sparse.rs"
-
-[[bin]]
-name = "heliosphere-commutator-baseline"
-path = "src/bin/heliosphere_commutator_baseline.rs"
-
-[[bin]]
-name = "heliosphere-pca-variance-baseline"
-path = "src/bin/heliosphere_pca_variance_baseline.rs"
-
-[[bin]]
-name = "heliosphere-window-sensitivity"
-path = "src/bin/heliosphere_window_sensitivity.rs"
-
-[[bin]]
-name = "heliosphere-voyager-heliopause"
-path = "src/bin/heliosphere_voyager_heliopause.rs"
-
-[[bin]]
-name = "heliosphere-fte-case-study"
-path = "src/bin/heliosphere_fte_case_study.rs"
-
-[[bin]]
-name = "heliosphere-switchback-omega"
-path = "src/bin/heliosphere_switchback_omega.rs"
-
-[[bin]]
-name = "heliosphere-takens-tau-sweep"
-path = "src/bin/heliosphere_takens_tau_sweep.rs"
-
-[[bin]]
-name = "heliosphere-quench-scan"
-path = "src/bin/heliosphere_quench_scan.rs"
-
-[[bin]]
-name = "voyager-cdf-ingest"
-path = "src/bin/voyager_cdf_ingest.rs"
-
-[[bin]]
-name = "voyager-pws-ingest"
-path = "src/bin/voyager_pws_ingest.rs"
-
-[[bin]]
-name = "voyager-ism-multichannel"
-path = "src/bin/voyager_ism_multichannel.rs"
-
-[[bin]]
 name = "sharp-flare-cd"
 path = "src/bin/sharp_flare_cd.rs"
-
-[[bin]]
-name = "voyager-hapi-ingest"
-path = "src/bin/voyager_hapi_ingest.rs"
 
 [[bin]]
 name = "hapi-fetch"
 path = "src/bin/hapi_fetch.rs"
 
 [[bin]]
-name = "heliosphere-order-surplus"
-path = "src/bin/heliosphere_order_surplus.rs"
-
-[[bin]]
-name = "heliosphere-effective-rank"
-path = "src/bin/heliosphere_effective_rank.rs"
-
-[[bin]]
-name = "heliosphere-feature-cube"
-path = "src/bin/heliosphere_feature_cube.rs"
-
-[[bin]]
-name = "heliosphere-feature-transform"
-path = "src/bin/heliosphere_feature_transform.rs"
-
-[[bin]]
-name = "heliosphere-algebra-decompose"
-path = "src/bin/heliosphere_algebra_decompose.rs"
-
-[[bin]]
 name = "catalog-feature-algebra"
 path = "src/bin/catalog_feature_algebra.rs"
-
-[[bin]]
-name = "heliosphere-predictive-eval"
-path = "src/bin/heliosphere_predictive_eval.rs"
-
-[[bin]]
-name = "heliosphere-falsification-audit"
-path = "src/bin/heliosphere_falsification_audit.rs"
-
-[[bin]]
-name = "heliosphere-cross-mission-invariance"
-path = "src/bin/heliosphere_cross_mission_invariance.rs"
-
-[[bin]]
-name = "heliosphere-sparse-preservation"
-path = "src/bin/heliosphere_sparse_preservation.rs"
-required-features = ["gpu"]
-
-[[bin]]
-name = "heliosphere-sparse-policy-mainline"
-path = "src/bin/heliosphere_sparse_policy_mainline.rs"
-
-[[bin]]
-name = "heliosphere-lbm-cube-run"
-path = "src/bin/heliosphere_lbm_cube_run.rs"
-required-features = ["gpu"]
 
 [[bin]]
 name = "chrono-flyby-probe"
@@ -566,18 +325,6 @@ path = "src/bin/he4_superfluid.rs"
 [[bin]]
 name = "cr-modulation-sweep"
 path = "src/bin/cr_modulation_sweep.rs"
-
-[[bin]]
-name = "voyager-crs-compare"
-path = "src/bin/voyager_crs_compare.rs"
-
-[[bin]]
-name = "voyager-arrow-probe"
-path = "src/bin/voyager_arrow_probe.rs"
-
-[[bin]]
-name = "voyager-encounter-track"
-path = "src/bin/voyager_encounter_track.rs"
 
 [[bin]]
 name = "entropy-pde"
@@ -679,40 +426,8 @@ name = "dark-halo-nfw-fit"
 path = "src/bin/dark_halo_nfw_fit.rs"
 
 [[bin]]
-name = "harmonic-halo-rotation-curve"
-path = "src/bin/harmonic_halo_rotation_curve.rs"
-
-[[bin]]
-name = "harmonic-halo-stacking"
-path = "src/bin/harmonic_halo_stacking.rs"
-
-[[bin]]
-name = "harmonic-halo-mw"
-path = "src/bin/harmonic_halo_mw.rs"
-
-[[bin]]
-name = "harmonic-halo-stacking-manga"
-path = "src/bin/harmonic_halo_stacking_manga.rs"
-
-[[bin]]
 name = "lie-jordan-halo-analysis"
 path = "src/bin/lie_jordan_halo_analysis.rs"
-
-[[bin]]
-name = "harmonic-halo-signal-analysis"
-path = "src/bin/harmonic_halo_signal_analysis.rs"
-
-[[bin]]
-name = "harmonic-halo-galaxy-phase"
-path = "src/bin/harmonic_halo_galaxy_phase.rs"
-
-[[bin]]
-name = "harmonic-halo-injection"
-path = "src/bin/harmonic_halo_injection.rs"
-
-[[bin]]
-name = "harmonic-halo-visualize"
-path = "src/bin/harmonic_halo_visualize.rs"
 
 [[bin]]
 name = "persistence-residual-topology"
@@ -757,10 +472,6 @@ path = "src/bin/hi_cube_rotcurve_extractor.rs"
 [[bin]]
 name = "slit-deproject"
 path = "src/bin/slit_deproject.rs"
-
-[[bin]]
-name = "harmonic-halo-stacking-hi"
-path = "src/bin/harmonic_halo_stacking_hi.rs"
 
 [[bin]]
 name = "mass-binned-phase"
@@ -1018,7 +729,7 @@ zip = { workspace = true }
 [features]
 default = []
 gpu = ["lbm_3d_cuda", "sign_imbalance/gpu", "gororoba_algebra/gpu"]
-# ONNX real-model evaluation in turboquant-onnx-eval. Pulls the ort dep
+# ONNX real-model evaluation in the turboquant onnx-eval lane. Pulls the ort dep
 # (ONNX Runtime via ort 2.0.0-rc.12). When disabled, the binary still
 # builds but only the synthetic evaluation path is reachable.
 onnx-eval = ["dep:ort"]
@@ -1033,17 +744,24 @@ euclid-catalog = ["cosmology_core/euclid-catalog"]
 workspace = true
 
 [[bin]]
+name = "turboquant"
+path = "src/bin/turboquant/main.rs"
+
+[[bin]]
+name = "solar"
+path = "src/bin/solar/main.rs"
+
+[[bin]]
+name = "ephemeris"
+path = "src/bin/ephemeris/main.rs"
+
+[[bin]]
+name = "voyager"
+path = "src/bin/voyager/main.rs"
+
+[[bin]]
 name = "unified-action-sweep"
 path = "src/bin/unified_action_sweep.rs"
-
-[[bin]]
-name = "heliosphere-boxkite-alignment"
-path = "src/bin/heliosphere_boxkite_alignment.rs"
-required-features = ["gpu"]
-
-[[bin]]
-name = "heliosphere-boxkite-parity"
-path = "src/bin/heliosphere_boxkite_parity.rs"
 
 # ---- GRMHD / Accretion (2) ----
 
@@ -1068,16 +786,8 @@ path = "src/bin/bout_grid_cd.rs"
 required-features = ["netcdf-read"]
 
 [[bin]]
-name = "turboquant-cd-fidelity"
-path = "src/bin/turboquant_cd_fidelity.rs"
-
-[[bin]]
 name = "magnetar-qpo-cd"
 path = "src/bin/magnetar_qpo_cd.rs"
-
-[[bin]]
-name = "turboquant-simd-bench"
-path = "src/bin/turboquant_simd_bench.rs"
 
 [[bin]]
 name = "jet-polarization-cd"
@@ -1090,42 +800,6 @@ path = "src/bin/ism_rotation_measure_cd.rs"
 [[bin]]
 name = "dynamo-cd"
 path = "src/bin/dynamo_cd.rs"
-
-[[bin]]
-name = "turboquant-sedenion-rotation"
-path = "src/bin/turboquant_sedenion_rotation.rs"
-
-[[bin]]
-name = "turboquant-sweep"
-path = "src/bin/turboquant_sweep.rs"
-
-[[bin]]
-name = "turboquant-comparison"
-path = "src/bin/turboquant_comparison.rs"
-
-[[bin]]
-name = "turboquant-bench"
-path = "src/bin/turboquant_bench.rs"
-
-[[bin]]
-name = "turboquant-validate"
-path = "src/bin/turboquant_validate.rs"
-
-[[bin]]
-name = "turboquant-onnx-eval"
-path = "src/bin/turboquant_onnx_eval.rs"
-
-[[bin]]
-name = "turboquant-production"
-path = "src/bin/turboquant_production.rs"
-
-[[bin]]
-name = "turboquant-profile"
-path = "src/bin/turboquant_profile.rs"
-
-[[bin]]
-name = "turboquant-real-kv"
-path = "src/bin/turboquant_real_kv.rs"
 
 [[bin]]
 name = "mast-cd-vs-spectrogram"
@@ -1154,10 +828,6 @@ required-features = ["zarr-read"]
 # ---- Cross-Domain (3) ----
 
 [[bin]]
-name = "solar-storm-propagation"
-path = "src/bin/solar_storm_propagation.rs"
-
-[[bin]]
 name = "cd-anomaly-scan"
 path = "src/bin/cd_anomaly_scan.rs"
 
@@ -1168,14 +838,6 @@ path = "src/bin/sdo_fits_parse.rs"
 [[bin]]
 name = "ism-multichannel-null"
 path = "src/bin/ism_multichannel_null.rs"
-
-[[bin]]
-name = "solar-cycle-crosscorr"
-path = "src/bin/solar_cycle_crosscorr.rs"
-
-[[bin]]
-name = "voyager-mag-pls-cd"
-path = "src/bin/voyager_mag_pls_cd.rs"
 
 [[bin]]
 name = "cd-domain-survey"

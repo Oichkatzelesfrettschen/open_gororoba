@@ -342,7 +342,7 @@
 //! - Truth surfaces: environment_context, lineage_transition
 //! - Artifact contract paths (2):
 //!   - `crates/data_core/src/catalogs/omni.rs`
-//!   - `crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs`
+//!   - `crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs`
 //! - Has full transcript: `false`
 //! - Line count: 91
 //! - Notes: Documents the staged OMNI mixed-lineage lane and year-by-year local coverage.
