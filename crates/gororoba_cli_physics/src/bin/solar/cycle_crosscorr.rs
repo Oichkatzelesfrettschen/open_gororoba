@@ -9,19 +9,18 @@
 //! accounting for propagation delay (~1 year per AU at ~400 km/s)?
 //!
 //! Usage:
-//!   solar-cycle-crosscorr \
+//!   solar cycle-crosscorr \
 //!     --ace-dir data/external/ace/ \
 //!     --v2-lifetime data/output/heliosphere/ablations/v2_lifetime_2au_32d.csv \
 //!     --v1-lifetime data/output/heliosphere/ablations/v1_lifetime_2au_32d.csv
 
 use anyhow::{Context, Result};
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::{collections::BTreeMap, path::PathBuf};
 
-#[derive(Parser)]
-#[command(name = "solar-cycle-crosscorr")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Directory with ACE yearly CSVs (from hapi-fetch --yearly)
     #[arg(long)]
     ace_dir: PathBuf,
@@ -179,8 +178,7 @@ fn pearson_correlation(x: &[f64], y: &[f64]) -> f64 {
     if denom < 1e-30 { 0.0 } else { cov / denom }
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== Solar Cycle Cross-Correlation ===");
     println!("  ACE dir: {}", cli.ace_dir.display());
     println!("  dim: {}D", cli.dim);

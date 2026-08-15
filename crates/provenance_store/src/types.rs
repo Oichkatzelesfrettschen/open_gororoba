@@ -312,6 +312,28 @@ pub struct ExecutionTargetRetarget<'a> {
     pub reason: Option<&'a str>,
 }
 
+/// A source-file move to apply across the canonical control plane.
+///
+/// Distinct from `ExecutionTargetRetarget`: a path carries no `--bin` syntax
+/// and is matched literally, so a lane moving from
+/// `src/bin/solar_wind_ic.rs` to `src/bin/solar/wind_ic.rs` rewrites the
+/// citation without touching a command line around it.
+#[derive(Debug, Clone, Copy)]
+pub struct SourcePathRetarget<'a> {
+    pub from: &'a str,
+    pub to: &'a str,
+    pub actor: &'a str,
+    pub reason: Option<&'a str>,
+}
+
+/// Rows touched by one source-path move. Dossier contract values carry no
+/// revision table of their own, so they are counted rather than logged.
+#[derive(Debug, Clone, Default)]
+pub struct SourcePathRetargetSummary {
+    pub revisions: Vec<StatusNoteRevision>,
+    pub contract_paths_updated: usize,
+}
+
 /// Rows touched by one execution-target rename, one revision per updated
 /// column so the audit trail names every record the rename reached.
 #[derive(Debug, Clone, Default)]

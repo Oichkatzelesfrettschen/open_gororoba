@@ -5,14 +5,13 @@
 //! detects pre-flare buildup (coherent flux rope = low A) and eruption onset (spike).
 
 use anyhow::Result;
-use clap::Parser;
+use clap::Args;
 use csv::ReaderBuilder;
 use serde::Serialize;
 use std::{fs, path::PathBuf};
 
-#[derive(Parser)]
-#[command(name = "solar-flare-cd")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Directory containing SWAN-SF CSV files.
     #[arg(long, default_value = "data/external/sdo_hmi/partition1/FL")]
     data_dir: PathBuf,
@@ -54,8 +53,7 @@ struct SolarOutput {
     interpretation: String,
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== Solar Flare CD Analysis ===");
 
     let entries: Vec<_> = fs::read_dir(&cli.data_dir)?

@@ -9,7 +9,7 @@
 //! max|F_DM| / max|F_Lorentz| ~ O(10^-12), confirming that DM gravity
 //! alone cannot produce observable solar wind perturbations at 1 AU.
 
-use clap::Parser;
+use clap::Args;
 use cosmology_core::concentration_mass_relation;
 use lbm_3d::{
     boundary::ZouHeBoundary,
@@ -28,9 +28,8 @@ use std::{
 /// Couples the magnetized solar wind simulation (Parker spiral B-field,
 /// Zou-He inlet, Guo forcing) with a static NFW DM halo gravitational
 /// force field. Quantifies the DM/Lorentz force ratio as a null test.
-#[derive(Parser)]
-#[command(name = "solar-wind-dm-mhd")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Grid size in x (radial direction)
     #[arg(long, default_value_t = 128)]
     nx: usize,
@@ -130,7 +129,7 @@ struct Cli {
     #[arg(long, default_value_t = false)]
     no_dm: bool,
 
-    /// Path to initial condition CSV from solar-wind-ic.
+    /// Path to initial condition CSV from solar wind-ic.
     /// Format: x,y,z,rho,ux,uy,uz,bx,by,bz (header row skipped).
     /// When provided, uses real spacecraft data instead of uniform+Parker init.
     #[arg(long)]
@@ -192,7 +191,7 @@ fn max_force_mag(f: &[[f64; 3]]) -> f64 {
         .fold(0.0_f64, f64::max)
 }
 
-/// Load initial conditions from a CSV file produced by solar-wind-ic.
+/// Load initial conditions from a CSV file produced by solar wind-ic.
 ///
 /// Format: x,y,z,rho,ux,uy,uz,bx,by,bz (header row skipped).
 /// Populates solver (rho, u, f) and mhd (bx, by, bz) fields directly
@@ -278,8 +277,7 @@ fn load_ic_file(
     Ok((loaded, meta))
 }
 
-fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     let dm_label = if cli.no_dm { "OFF" } else { "ON" };
     let ic_label = if cli.ic_file.is_some() {
@@ -288,7 +286,7 @@ fn main() -> anyhow::Result<()> {
         "synthetic"
     };
     eprintln!(
-        "solar-wind-dm-mhd: {}x{}x{}, {} steps, tau={}, B0={} nT, v_sw={}, DM={}, IC={}",
+        "solar wind-dm-mhd: {}x{}x{}, {} steps, tau={}, B0={} nT, v_sw={}, DM={}, IC={}",
         cli.nx, cli.ny, cli.nz, cli.steps, cli.tau, cli.b0, cli.v_sw, dm_label, ic_label,
     );
 

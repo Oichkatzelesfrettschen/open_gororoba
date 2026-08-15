@@ -1313,8 +1313,8 @@ id = "C-1145"
 last_verified = "2026-03-08"
 statement = "Ratio of DM gravitational force to Lorentz force in magnetized solar wind at 1 AU is O(10^-12), confirming DM gravity alone cannot produce observable solar wind perturbations."
 status = "Refuted"
-status_note = "Legacy status token: Open | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo run --release -p gororoba_cli_physics --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 1 --b0 5.0 --v-sw 0.05 ; assert the printed ratio matches the claimed order. Currently prints 9.589e-19. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+status_note = "Legacy status token: Open | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo run --release -p gororoba_cli_physics --bin solar -- wind-dm-mhd --nx 128 --ny 32 --nz 32 --steps 1 --b0 5.0 --v-sw 0.05 ; assert the printed ratio matches the claimed order. Currently prints 9.589e-19. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+where_stated = "crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 
 [[claim]]
 id = "C-1146"
@@ -1345,7 +1345,7 @@ last_verified = ""
 statement = "WIND SWE+MFI data yields |F_DM|/|F_Lorentz| ~ O(10^-12) in the D3Q19 LBM+MHD simulation, confirming the DM null result is independent of the data source (OMNI vs raw WIND)."
 status = "Provisional"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Assert DmForceField::new produces a force field with zero dependence on any OmniRecord field: two DmForceConfig differing only in n_ref_cm3 must give bit-identical max_force_magnitude(). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND IC)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with WIND IC)"
 
 [[claim]]
 id = "C-115"
@@ -1359,8 +1359,8 @@ id = "C-1150"
 last_verified = ""
 statement = "High-resolution WIND MFI 3-second data in the shock ramp regime (CME front at L1) yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result holds even in the highest-gradient magnetic topology."
 status = "Refuted"
-status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Run solar-wind-dm-mhd on the quiet WIND IC and the WIND MFI 3-sec CME-ramp IC with all other flags identical, record both ratios verbatim; require agreement within a factor of 3 for 'the null result holds' to mean invariance, or restate as a bound. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)"
+status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Run solar wind-dm-mhd on the quiet WIND IC and the WIND MFI 3-sec CME-ramp IC with all other flags identical, record both ratios verbatim; require agreement within a factor of 3 for 'the null result holds' to mean invariance, or restate as a bound. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)"
 
 [[claim]]
 id = "C-1151"
@@ -1368,7 +1368,7 @@ last_verified = ""
 statement = "STEREO-A PLASTIC+IMPACT/MAG triangulated 3D IC yields |F_DM|/|F_Lorentz| ~ O(10^-12), confirming the null result is geometry-independent (not an artifact of 1D Taylor hypothesis)."
 status = "Provisional"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Compare max|F_Lorentz| (NOT the ratio) between the Taylor-hypothesis IC and the STEREO triangulated IC; the geometry claim is about the Lorentz field's 3D structure and must be tested on that field alone. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)"
 
 [[claim]]
 id = "C-1152"
@@ -1392,7 +1392,7 @@ last_verified = ""
 statement = "DM-baryon scattering cross-section detection threshold in magnetized solar wind at 1 AU: sigma_chi_b must exceed approximately 10^-45 cm^2 for the drag force to produce |F_drag|/|F_Lorentz| > O(10^-12). Below this threshold, the drag is dynamically negligible."
 status = "Refuted"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Unit test asserting drag_force() output scales as |v_rel|^2 -- doubling the DM wind speed at fixed sigma must QUADRUPLE, not double, the drag acceleration. The current code fails this. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-sigma)"
+where_stated = "crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--dm-sigma)"
 
 [[claim]]
 id = "C-1155"
@@ -1408,7 +1408,7 @@ last_verified = ""
 statement = "DM null invariance across the full heliosphere: max|F_DM|/max|F_Lorentz| < 10^-6 for all heliocentric distances r in [1, 157] AU. The NFW gravitational force grows with enclosed mass M(<r), but remains dynamically negligible compared to the solar wind Lorentz force at all distances."
 status = "Provisional"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Test asserting max_force_magnitude() differs by < 1e-6 relative between r_min_au=1.0 and 157.0 at fixed nx. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/lbm_3d/src/dm_force.rs (DmForceField::new with r_min_au/r_max_au), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-r-min, --dm-r-max)"
+where_stated = "crates/lbm_3d/src/dm_force.rs (DmForceField::new with r_min_au/r_max_au), crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--dm-r-min, --dm-r-max)"
 
 [[claim]]
 id = "C-1157"
@@ -1416,7 +1416,7 @@ last_verified = ""
 statement = "Radial density profile n(r) = n_0*(r_0/r)^2 with residual < 20% for r in [1, 100] AU. Solar wind proton number density follows the r^-2 continuity equation scaling, verified by multi-spacecraft measurements (OMNI, Voyager, Pioneer, Ulysses, New Horizons)."
 status = "Provisional"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Compute the residual against the MEASURED bins from build_radial_profile (never against interpolate_radial output), report max |n_measured - n_fit|/n_fit over r in [1,100] AU, assert < 0.20. Requires executing E-114. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile, interpolate_radial)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (build_radial_profile, interpolate_radial)"
 
 [[claim]]
 id = "C-1158"
@@ -1424,7 +1424,7 @@ last_verified = ""
 statement = "Biaxial topological invariance: RTN->GSE coordinate transformation with 7.25 deg solar axial tilt preserves div(B) < 10^-10 at machine precision. The tilt rotation is orthogonal, so it cannot introduce magnetic monopoles."
 status = "Refuted"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Assert max_div_b() < 1e-10 after project_divergence_free on a STEREO triangulated IC. Currently ~1.4e-5. NOTE: this claim has NO experiment row. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (triangulate_ic)"
+where_stated = "crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (triangulate_ic)"
 
 [[claim]]
 id = "C-1159"
@@ -1432,7 +1432,7 @@ last_verified = ""
 statement = "Anomalous viscosity regime: LBM BGK collision operator is valid for Knudsen number Kn < 100 (corresponding to heliocentric distance r < ~50 AU for quiet solar wind). Beyond 50 AU, kinetic effects dominate and BGK fails."
 status = "Refuted"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo test -p data_core test_knudsen_quiet_solar_wind -- the existing passing test is the standing refutation. E-118 is planned. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)"
+where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (Kn diagnostic)"
 
 [[claim]]
 id = "C-116"
@@ -1463,7 +1463,7 @@ last_verified = ""
 statement = "Parker spiral scaling verified by multi-spacecraft data: B_r(r) ~ r^-2 (magnetic flux conservation) and B_phi(r) ~ r^-1 (spiral winding). At 1 AU, B_r ~ 3 nT and B_phi ~ 3 nT (Parker spiral angle ~ 45 deg). At 10 AU, B_phi >> B_r."
 status = "Refuted"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Assert atan(|b_phi/b_r|) at r = nx cells lies in [40, 50] deg for parker_spiral_b; currently 0.195 deg. Separately assert b_phi(2r)/b_phi(r) == 0.5 in MhdField::parker_spiral_init; currently 1.0. Cite Owens and Forsyth (2013) rather than Parker (1958) for the 1 AU angle. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (parker_spiral_b, interpolate_radial)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (parker_spiral_b, interpolate_radial)"
 
 [[claim]]
 id = "C-1163"
@@ -1471,7 +1471,7 @@ last_verified = ""
 statement = "Ulysses fast/slow bimodality: v_polar > 1.5 * v_equatorial for |heliographic latitude| > 30 deg. Fast polar wind (~750 km/s, ~3 cm^-3) and slow equatorial wind (~400 km/s, ~7 cm^-3) are separated by a tanh transition over ~10-20 deg latitude bands (McComas et al. 2000)."
 status = "Refuted"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: assert latitude_modulation at |lat| = 30.0 yields speed_factor > 1.5 with LatitudinalProfile::default(); currently 1.4375. Then fit the transition parameters from Ulysses SWOOPS rather than hardcoding, and restate the transition as rapid (McComas 1998). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)"
 
 [[claim]]
 id = "C-1164"
@@ -1479,7 +1479,7 @@ last_verified = ""
 statement = "Voyager termination shock at 84-94 AU is consistent with MHD simulation boundary conditions. V1 crossed at 94 AU (2004), V2 at 84 AU (2007). Density jump factor ~ 2-4x across shock."
 status = "Refuted"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Restate the compression bound as ~2 (Richardson 2022, Treumann and Jaroschek 2008) rather than 2-4x, attribute it to Voyager 2 alone, and either implement a shock in the radial profile or drop the unfalsifiable 'consistent with MHD boundary conditions' clause. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs"
 
 [[claim]]
 id = "C-1165"
@@ -1495,7 +1495,7 @@ last_verified = ""
 statement = "Outer heliosphere Knudsen boundary: LBM validity boundary at r ~ 30-50 AU for quiet solar wind. Beyond this distance, mean free path exceeds simulation cell size (Kn > 1), and the BGK collision operator underpredicts heat flux and viscous stress."
 status = "Refuted"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: If the intended diagnostic is lambda/cell_size, add a distinct knudsen_grid(n, T, dx_m) and assert it crosses 1 in [30,50] AU. The existing function cannot support the claim under either threshold. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)"
+where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (Kn diagnostic)"
 
 [[claim]]
 id = "C-1167"
@@ -1519,7 +1519,7 @@ last_verified = ""
 statement = "Multi-spacecraft temporal coherence at overlapping epochs: when two spacecraft (e.g., Voyager 1 and Pioneer 10) measure the same heliocentric distance band in different years, solar cycle phase correction (using OMNI sunspot number as proxy) reduces residual scatter to < 40%."
 status = "Refuted"
 status_note = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Implement the correction, then assert per-bin scatter across spacecraft at overlapping r falls below 0.40 after correction and is higher before it. Both numbers are currently unproduced. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (build_radial_profile)"
 
 [[claim]]
 id = "C-117"
@@ -1870,14 +1870,14 @@ id = "C-1213"
 last_verified = "2026-03-10"
 statement = "Solar wind IC generation accepts magnetometer-only records (valid B, NaN plasma) for near-Earth supplements (ACE MAG, WIND MFI, STEREO MAG) without discarding valid magnetic field data."
 status = "Verified"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 
 [[claim]]
 id = "C-1214"
 last_verified = "2026-03-10"
 statement = "IC x-column mapping distributes OMNI hours proportionally across grid cells using hour_idx = (x * n_hours / nx), eliminating tail bias from integer division truncation."
 status = "Verified"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 
 [[claim]]
 id = "C-1215"
@@ -1968,7 +1968,7 @@ id = "C-1226"
 last_verified = "2026-03-10"
 statement = "LBM force_scale is computed from actual CLI nx and v_sw (not DmForceConfig::default()), with force_scale ~ 1/nx confirmed: nx=64 gives 2x the force_scale of nx=128."
 status = "Verified"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/lbm_3d/src/dm_force.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs, crates/lbm_3d/src/dm_force.rs"
 
 [[claim]]
 id = "C-1227"
@@ -2003,7 +2003,7 @@ id = "C-1230"
 last_verified = "2026-03-10"
 statement = "MHD simulation IC loading extracts u_sw from the x=0 inflow face (median of cells where x==0) instead of the global median, preserving the physically meaningful inflow boundary condition."
 status = "Verified"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/gororoba_cli_physics/src/bin/solar_wind_mhd_sim.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs, crates/gororoba_cli_physics/src/bin/solar/wind_mhd_sim.rs"
 
 [[claim]]
 id = "C-1231"

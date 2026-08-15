@@ -256,28 +256,8 @@ name = "lbm-rca-probe"
 path = "src/bin/lbm_rca_probe.rs"
 
 [[bin]]
-name = "solar-wind-mhd-sim"
-path = "src/bin/solar_wind_mhd_sim.rs"
-
-[[bin]]
-name = "solar-wind-dm-mhd"
-path = "src/bin/solar_wind_dm_mhd.rs"
-
-[[bin]]
-name = "solar-wind-ic"
-path = "src/bin/solar_wind_ic.rs"
-
-[[bin]]
 name = "cross-validate-solar-wind"
 path = "src/bin/cross_validate_solar_wind.rs"
-
-[[bin]]
-name = "solar-flare-cd"
-path = "src/bin/solar_flare_cd.rs"
-
-[[bin]]
-name = "solar-aia-cd"
-path = "src/bin/solar_aia_cd.rs"
 
 [[bin]]
 name = "grmhd-torus-cd"
@@ -768,6 +748,10 @@ name = "turboquant"
 path = "src/bin/turboquant/main.rs"
 
 [[bin]]
+name = "solar"
+path = "src/bin/solar/main.rs"
+
+[[bin]]
 name = "ephemeris"
 path = "src/bin/ephemeris/main.rs"
 
@@ -844,10 +828,6 @@ required-features = ["zarr-read"]
 # ---- Cross-Domain (3) ----
 
 [[bin]]
-name = "solar-storm-propagation"
-path = "src/bin/solar_storm_propagation.rs"
-
-[[bin]]
 name = "cd-anomaly-scan"
 path = "src/bin/cd_anomaly_scan.rs"
 
@@ -858,10 +838,6 @@ path = "src/bin/sdo_fits_parse.rs"
 [[bin]]
 name = "ism-multichannel-null"
 path = "src/bin/ism_multichannel_null.rs"
-
-[[bin]]
-name = "solar-cycle-crosscorr"
-path = "src/bin/solar_cycle_crosscorr.rs"
 
 [[bin]]
 name = "cd-domain-survey"

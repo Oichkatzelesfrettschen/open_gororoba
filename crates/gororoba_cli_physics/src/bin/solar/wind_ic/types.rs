@@ -3,7 +3,7 @@
 //! the bin root can read them. Uses `#[path]` indirection because
 //! this binary has explicit Cargo.toml path.
 
-use clap::Parser;
+use clap::Args;
 use std::path::PathBuf;
 
 /// Generate solar wind initial conditions from real spacecraft data.
@@ -11,9 +11,8 @@ use std::path::PathBuf;
 /// Maps hourly measurements to a 3D LBM grid via Taylor's frozen-in
 /// hypothesis. Transverse (y,z) planes are uniform (single spacecraft
 /// has no spatial resolution perpendicular to the flow).
-#[derive(Parser)]
-#[command(name = "solar-wind-ic")]
-pub(crate) struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Path to NASA OMNI2 hourly data file (preferred: includes B-field).
     /// If not provided, uses built-in OMNI sample.
     #[arg(long)]
