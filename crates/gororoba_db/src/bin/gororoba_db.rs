@@ -9,7 +9,7 @@
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 use provenance_store::{
-    ExecutionTargetRetarget, PlanningCompatTable, ProvenanceStore, parse_theorem_identity_spec,
+    ExecutionTargetRetarget, SourcePathRetarget, PlanningCompatTable, ProvenanceStore, parse_theorem_identity_spec,
 };
 use serde::Deserialize;
 use std::{
@@ -1541,6 +1541,30 @@ fn cmd_experiment_mutation(
             println!(
                 "Retargeted {from} -> {to} across {} row(s).",
                 summary.revisions.len()
+            );
+            maybe_regen_toml(*regen_toml)?;
+        }
+        ExperimentMutationAction::RetargetSourcePath {
+            from,
+            to,
+            actor,
+            reason,
+            regen_toml,
+        } => {
+            let actor = resolve_actor(actor.clone());
+            let summary = store.retarget_source_path(SourcePathRetarget {
+                from,
+                to,
+                actor: &actor,
+                reason: reason.as_deref(),
+            })?;
+            for revision in &summary.revisions {
+                print_revision_summary("source-path", revision);
+            }
+            println!(
+                "Moved {from} -> {to} across {} entity row(s) and {} contract path(s).",
+                summary.revisions.len(),
+                summary.contract_paths_updated
             );
             maybe_regen_toml(*regen_toml)?;
         }

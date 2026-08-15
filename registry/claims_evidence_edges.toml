@@ -8032,7 +8032,7 @@ target_kind = "toml_registry_path"
 id = "CED-01147"
 claim_id = "C-1145"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8053,7 +8053,7 @@ target_kind = "rust_source_path"
 id = "CED-01150"
 claim_id = "C-1145"
 edge_role = "where_stated"
-target_ref = "solar_wind_dm_mhd.rs"
+target_ref = "wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8200,14 +8200,14 @@ target_kind = "toml_registry_path"
 id = "CED-01171"
 claim_id = "C-1149"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01172"
 claim_id = "C-1149"
 edge_role = "where_stated"
-target_ref = "solar_wind_dm_mhd.rs"
+target_ref = "wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8256,14 +8256,14 @@ target_kind = "toml_registry_path"
 id = "CED-01179"
 claim_id = "C-1150"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01180"
 claim_id = "C-1150"
 edge_role = "where_stated"
-target_ref = "solar_wind_dm_mhd.rs"
+target_ref = "wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8284,14 +8284,14 @@ target_kind = "toml_registry_path"
 id = "CED-01183"
 claim_id = "C-1151"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01184"
 claim_id = "C-1151"
 edge_role = "where_stated"
-target_ref = "solar_wind_dm_mhd.rs"
+target_ref = "wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8403,7 +8403,7 @@ target_kind = "toml_registry_path"
 id = "CED-01200"
 claim_id = "C-1154"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8424,7 +8424,7 @@ target_kind = "rust_source_path"
 id = "CED-01203"
 claim_id = "C-1154"
 edge_role = "where_stated"
-target_ref = "solar_wind_dm_mhd.rs"
+target_ref = "wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8473,7 +8473,7 @@ target_kind = "toml_registry_path"
 id = "CED-01210"
 claim_id = "C-1156"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8501,7 +8501,7 @@ target_kind = "generic_reference"
 id = "CED-01214"
 claim_id = "C-1156"
 edge_role = "where_stated"
-target_ref = "solar_wind_dm_mhd.rs"
+target_ref = "wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8529,14 +8529,14 @@ target_kind = "toml_registry_path"
 id = "CED-01218"
 claim_id = "C-1157"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01219"
 claim_id = "C-1157"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8564,21 +8564,21 @@ target_kind = "rust_source_path"
 id = "CED-01223"
 claim_id = "C-1158"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01224"
 claim_id = "C-1158"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "stereo_plastic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01225"
 claim_id = "C-1158"
 edge_role = "where_stated"
-target_ref = "stereo_plastic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8613,14 +8613,14 @@ target_kind = "rust_source_path"
 id = "CED-01230"
 claim_id = "C-1159"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01231"
 claim_id = "C-1159"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8760,14 +8760,14 @@ target_kind = "toml_registry_path"
 id = "CED-01251"
 claim_id = "C-1162"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01252"
 claim_id = "C-1162"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8788,14 +8788,14 @@ target_kind = "toml_registry_path"
 id = "CED-01255"
 claim_id = "C-1163"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01256"
 claim_id = "C-1163"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8823,21 +8823,21 @@ target_kind = "rust_source_path"
 id = "CED-01260"
 claim_id = "C-1164"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01261"
 claim_id = "C-1164"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "voyager.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01262"
 claim_id = "C-1164"
 edge_role = "where_stated"
-target_ref = "voyager.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8886,14 +8886,14 @@ target_kind = "rust_source_path"
 id = "CED-01269"
 claim_id = "C-1166"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01270"
 claim_id = "C-1166"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -8991,14 +8991,14 @@ target_kind = "toml_registry_path"
 id = "CED-01284"
 claim_id = "C-1169"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01285"
 claim_id = "C-1169"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -10167,28 +10167,28 @@ target_kind = "rust_source_path"
 id = "CED-01452"
 claim_id = "C-1213"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01453"
 claim_id = "C-1213"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01454"
 claim_id = "C-1214"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01455"
 claim_id = "C-1214"
 edge_role = "where_stated"
-target_ref = "solar_wind_ic.rs"
+target_ref = "wind_ic.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -10377,7 +10377,7 @@ target_kind = "rust_source_path"
 id = "CED-01482"
 claim_id = "C-1226"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -10398,7 +10398,7 @@ target_kind = "rust_source_path"
 id = "CED-01485"
 claim_id = "C-1226"
 edge_role = "where_stated"
-target_ref = "solar_wind_dm_mhd.rs"
+target_ref = "wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
@@ -10531,28 +10531,28 @@ target_kind = "python_source_path"
 id = "CED-01504"
 claim_id = "C-1230"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01505"
 claim_id = "C-1230"
 edge_role = "where_stated"
-target_ref = "crates/gororoba_cli_physics/src/bin/solar_wind_mhd_sim.rs"
+target_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_mhd_sim.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01506"
 claim_id = "C-1230"
 edge_role = "where_stated"
-target_ref = "solar_wind_dm_mhd.rs"
+target_ref = "wind_dm_mhd.rs"
 target_kind = "rust_source_path"
 
 [[edge]]
 id = "CED-01507"
 claim_id = "C-1230"
 edge_role = "where_stated"
-target_ref = "solar_wind_mhd_sim.rs"
+target_ref = "wind_mhd_sim.rs"
 target_kind = "rust_source_path"
 
 [[edge]]

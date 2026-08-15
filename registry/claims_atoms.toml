@@ -2367,9 +2367,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = "2026-03-08"
-where_stated = "crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs"
-verification_rule = "Legacy status token: Open | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo run --release -p gororoba_cli_physics --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 1 --b0 5.0 --v-sw 0.05 ; assert the printed ratio matches the claimed order. Currently prints 9.589e-19. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs", "crates/lbm_3d/src/dm_force.rs", "dm_force.rs", "solar_wind_dm_mhd.rs"]
+where_stated = "crates/lbm_3d/src/dm_force.rs, crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
+verification_rule = "Legacy status token: Open | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo run --release -p gororoba_cli_physics --bin solar -- wind-dm-mhd --nx 128 --ny 32 --nz 32 --steps 1 --b0 5.0 --v-sw 0.05 ; assert the printed ratio matches the claimed order. Currently prints 9.589e-19. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "crates/lbm_3d/src/dm_force.rs", "dm_force.rs", "wind_dm_mhd.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2423,9 +2423,9 @@ status_token = "PROVISIONAL"
 status_detail = "Provisional"
 hypothesis_class = "research_claim"
 last_verified = ""
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND IC)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with WIND IC)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Assert DmForceField::new produces a force field with zero dependence on any OmniRecord field: two DmForceConfig differing only in n_ref_cm3 must give bit-identical max_force_magnitude(). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs", "solar_wind_dm_mhd.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "wind_dm_mhd.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2451,9 +2451,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)"
-verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Run solar-wind-dm-mhd on the quiet WIND IC and the WIND MFI 3-sec CME-ramp IC with all other flags identical, record both ratios verbatim; require agreement within a factor of 3 for 'the null result holds' to mean invariance, or restate as a bound. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs", "solar_wind_dm_mhd.rs"]
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with WIND MFI 3-sec IC)"
+verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Run solar wind-dm-mhd on the quiet WIND IC and the WIND MFI 3-sec CME-ramp IC with all other flags identical, record both ratios verbatim; require agreement within a factor of 3 for 'the null result holds' to mean invariance, or restate as a bound. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "wind_dm_mhd.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2465,9 +2465,9 @@ status_token = "PROVISIONAL"
 status_detail = "Provisional"
 hypothesis_class = "research_claim"
 last_verified = ""
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--ic-file with STEREO triangulated IC)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Compare max|F_Lorentz| (NOT the ratio) between the Taylor-hypothesis IC and the STEREO triangulated IC; the geometry claim is about the Lorentz field's 3D structure and must be tested on that field alone. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs", "solar_wind_dm_mhd.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "wind_dm_mhd.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2507,9 +2507,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-sigma)"
+where_stated = "crates/lbm_3d/src/dm_force.rs (drag_force), crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--dm-sigma)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Unit test asserting drag_force() output scales as |v_rel|^2 -- doubling the DM wind speed at fixed sigma must QUADRUPLE, not double, the drag acceleration. The current code fails this. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs", "crates/lbm_3d/src/dm_force.rs", "dm_force.rs", "solar_wind_dm_mhd.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "crates/lbm_3d/src/dm_force.rs", "dm_force.rs", "wind_dm_mhd.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2535,9 +2535,9 @@ status_token = "PROVISIONAL"
 status_detail = "Provisional"
 hypothesis_class = "closed_claim"
 last_verified = ""
-where_stated = "crates/lbm_3d/src/dm_force.rs (DmForceField::new with r_min_au/r_max_au), crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs (--dm-r-min, --dm-r-max)"
+where_stated = "crates/lbm_3d/src/dm_force.rs (DmForceField::new with r_min_au/r_max_au), crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs (--dm-r-min, --dm-r-max)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Test asserting max_force_magnitude() differs by < 1e-6 relative between r_min_au=1.0 and 157.0 at fixed nx. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs", "crates/lbm_3d/src/dm_force.rs", "dm_force.rs", "r_min_au/r_max_au", "solar_wind_dm_mhd.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "crates/lbm_3d/src/dm_force.rs", "dm_force.rs", "r_min_au/r_max_au", "wind_dm_mhd.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2549,9 +2549,9 @@ status_token = "PROVISIONAL"
 status_detail = "Provisional"
 hypothesis_class = "verified_claim"
 last_verified = ""
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile, interpolate_radial)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (build_radial_profile, interpolate_radial)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Compute the residual against the MEASURED bins from build_radial_profile (never against interpolate_radial output), report max |n_measured - n_fit|/n_fit over r in [1,100] AU, assert < 0.20. Requires executing E-114. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "wind_ic.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = ["E-114"]
 
@@ -2563,9 +2563,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (triangulate_ic)"
+where_stated = "crates/data_core/src/catalogs/stereo_plastic.rs (rtn_to_gse), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (triangulate_ic)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Assert max_div_b() < 1e-10 after project_divergence_free on a STEREO triangulated IC. Currently ~1.4e-5. NOTE: this claim has NO experiment row. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/data_core/src/catalogs/stereo_plastic.rs", "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs", "stereo_plastic.rs"]
+where_stated_refs = ["crates/data_core/src/catalogs/stereo_plastic.rs", "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "stereo_plastic.rs", "wind_ic.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2577,9 +2577,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)"
+where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number, classify_knudsen), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (Kn diagnostic)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: cargo test -p data_core test_knudsen_quiet_solar_wind -- the existing passing test is the standing refutation. E-118 is planned. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/data_core/src/catalogs/wind_swe.rs", "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs", "wind_swe.rs"]
+where_stated_refs = ["crates/data_core/src/catalogs/wind_swe.rs", "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "wind_ic.rs", "wind_swe.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = ["E-118"]
 
@@ -2633,9 +2633,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (parker_spiral_b, interpolate_radial)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (parker_spiral_b, interpolate_radial)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Assert atan(|b_phi/b_r|) at r = nx cells lies in [40, 50] deg for parker_spiral_b; currently 0.195 deg. Separately assert b_phi(2r)/b_phi(r) == 0.5 in MhdField::parker_spiral_init; currently 1.0. Cite Owens and Forsyth (2013) rather than Parker (1958) for the 1 AU angle. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "wind_ic.rs"]
 verification_refs = ["b_phi/b_r", "claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2647,9 +2647,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (LatitudinalProfile, ulysses_latitudinal_fit, latitude_modulation)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: assert latitude_modulation at |lat| = 30.0 yields speed_factor > 1.5 with LatitudinalProfile::default(); currently 1.4375. Then fit the transition parameters from Ulysses SWOOPS rather than hardcoding, and restate the transition as rapid (McComas 1998). Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "wind_ic.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2661,9 +2661,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (radial profile), crates/data_core/src/catalogs/voyager.rs"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Restate the compression bound as ~2 (Richardson 2022, Treumann and Jaroschek 2008) rather than 2-4x, attribute it to Voyager 2 alone, and either implement a shock in the radial profile or drop the unfalsifiable 'consistent with MHD boundary conditions' clause. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/data_core/src/catalogs/voyager.rs", "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs", "voyager.rs"]
+where_stated_refs = ["crates/data_core/src/catalogs/voyager.rs", "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "voyager.rs", "wind_ic.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -2689,9 +2689,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (Kn diagnostic)"
+where_stated = "crates/data_core/src/catalogs/wind_swe.rs (knudsen_number), crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (Kn diagnostic)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: If the intended diagnostic is lambda/cell_size, add a distinct knudsen_grid(n, T, dx_m) and assert it crosses 1 in [30,50] AU. The existing function cannot support the claim under either threshold. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/data_core/src/catalogs/wind_swe.rs", "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs", "wind_swe.rs"]
+where_stated_refs = ["crates/data_core/src/catalogs/wind_swe.rs", "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "wind_ic.rs", "wind_swe.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml", "lambda/cell_size"]
 cross_refs = []
 
@@ -2731,9 +2731,9 @@ status_token = "REFUTED"
 status_detail = "Refuted"
 hypothesis_class = "refuted_claim"
 last_verified = ""
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs (build_radial_profile)"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs (build_radial_profile)"
 verification_rule = "Legacy status token: Pending | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Refuted, fleet finding refuted. DURABLE CHECK that would decide this claim: Implement the correction, then assert per-bin scatter across spacecraft at overlapping r falls below 0.40 after correction and is higher before it. Both numbers are currently unproduced. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "wind_ic.rs"]
 verification_refs = ["claim-falsification-fleet-c-dm-null.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
 cross_refs = []
 
@@ -3417,9 +3417,9 @@ status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-03-10"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 verification_rule = ""
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "wind_ic.rs"]
 verification_refs = []
 cross_refs = []
 
@@ -3431,9 +3431,9 @@ status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-03-10"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs"
 verification_rule = ""
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs", "solar_wind_ic.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "wind_ic.rs"]
 verification_refs = []
 cross_refs = []
 
@@ -3613,9 +3613,9 @@ status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-03-10"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/lbm_3d/src/dm_force.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs, crates/lbm_3d/src/dm_force.rs"
 verification_rule = ""
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs", "crates/lbm_3d/src/dm_force.rs", "dm_force.rs", "solar_wind_dm_mhd.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "crates/lbm_3d/src/dm_force.rs", "dm_force.rs", "wind_dm_mhd.rs"]
 verification_refs = []
 cross_refs = []
 
@@ -3683,9 +3683,9 @@ status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-03-10"
-where_stated = "crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs, crates/gororoba_cli_physics/src/bin/solar_wind_mhd_sim.rs"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs, crates/gororoba_cli_physics/src/bin/solar/wind_mhd_sim.rs"
 verification_rule = ""
-where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar_wind_dm_mhd.rs", "crates/gororoba_cli_physics/src/bin/solar_wind_mhd_sim.rs", "solar_wind_dm_mhd.rs", "solar_wind_mhd_sim.rs"]
+where_stated_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "crates/gororoba_cli_physics/src/bin/solar/wind_mhd_sim.rs", "wind_dm_mhd.rs", "wind_mhd_sim.rs"]
 verification_refs = []
 cross_refs = []
 

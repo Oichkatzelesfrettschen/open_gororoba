@@ -2867,7 +2867,7 @@ title = "ADM decomposition verification against exact solutions"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-mhd-sim"
+binary = "solar wind-mhd-sim"
 binary_experiment_declared = "E-111"
 binary_registered = true
 claim_refs = []
@@ -2885,15 +2885,15 @@ method = "lbm_mhd: D3Q19 LBM coupled with induction equation B-field evolution. 
 output = ["csv_snapshots"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-mhd-sim -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --snap-interval 500 --out data/experiments/e111_solar_wind"
-run_command_sha256 = "da7b6835d0a29c21f89a39d0fbaf154e353d232c58d7a9d71b6e7c0c789fd8d4"
+run = "cargo run --release --bin solar -- wind-mhd-sim --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --snap-interval 500 --out data/experiments/e111_solar_wind"
+run_command_sha256 = "d69adf567de4fd0f148d125f1444aa0a577c528d825071abf06b47c5342bccc8"
 status = "active"
 status_token = "ACTIVE"
 title = "Solar wind MHD simulation with Parker spiral B-field"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-112"
 binary_registered = true
 claim_refs = ["C-1143", "C-1144", "C-1145"]
@@ -2911,15 +2911,15 @@ method = "lbm_dm_mhd: D3Q19 LBM + MHD (E-111 base) coupled with static NFW DM ha
 output = ["csv_snapshots"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500 --out data/experiments/e112_solar_wind_dm"
-run_command_sha256 = "fc07055a76232b8cd2d66b0d1ea43a177c992fd86a0888825c0d2b88304addbe"
+run = "cargo run --release --bin solar -- wind-dm-mhd --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.6 --b0 5.0 --v-sw 0.05 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500 --out data/experiments/e112_solar_wind_dm"
+run_command_sha256 = "43102a354f8f14542d2806b2de842a55f5d826d76dd4928ceee32e3a4502b896"
 status = "active"
 status_token = "ACTIVE"
 title = "Solar wind MHD + dark matter halo gravitational coupling"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-113"
 binary_registered = true
 claim_refs = ["C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155"]
@@ -2937,15 +2937,15 @@ method = "Multi-spacecraft replication of E-112 DM null test using independent d
 output = ["csv_snapshots", "cross_validation_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file <wind_ic.csv> --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --eta 0.01 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500"
-run_command_sha256 = "4c0e87b259e5d70cbf4ad782d95b67d0078b8ed6a61164bb7956e06cb04f047f"
+run = "cargo run --release --bin solar -- wind-dm-mhd --ic-file <wind_ic.csv> --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --eta 0.01 --dm-density 0.3 --dm-m200 1e12 --dm-c200 10 --snap-interval 500"
+run_command_sha256 = "2d60799b99a0406d64baaa0fc835ab630cfdda5f59f7ec0aa9bb8a4ff7e5a973"
 status = "active"
 status_token = "ACTIVE"
 title = "Multi-spacecraft solar wind MHD + DM null test replication"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-ic"
+binary = "solar wind-ic"
 binary_experiment_declared = "E-114"
 binary_registered = true
 claim_refs = ["C-1157", "C-1162", "C-1165"]
@@ -2963,15 +2963,15 @@ method = "Multi-spacecraft radial profile reconstruction using Voyager 1/2, Pion
 output = ["radial_ic_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --voyager1-file <staged_voyager_merged_file> --radial-mode --nx 128 --ny 32 --nz 32"
-run_command_sha256 = "f2c4f7f4a72464c0ee0361fdff1ffe4e5f0bb97a538388114340d219724ec5f9"
+run = "cargo run --release --bin solar -- wind-ic --omni-file <staged_omni_hourly_file> --voyager1-file <staged_voyager_merged_file> --radial-mode --nx 128 --ny 32 --nz 32"
+run_command_sha256 = "a6dfe957a8b5527c53e9091a9dcdf24d17179a975a059d3b1c1f928e5e971bd2"
 status = "planned"
 status_token = "PLANNED"
 title = "Voyager radial profile reconstruction (1-157 AU)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-ic"
+binary = "solar wind-ic"
 binary_experiment_declared = "E-115"
 binary_registered = true
 claim_refs = ["C-1163"]
@@ -2989,15 +2989,15 @@ method = "Ulysses SWOOPS + VHM/FGM data from the 1994-1995 fast latitude scan (1
 output = ["latitudinal_ic_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-ic -- --omni-file <staged_omni_hourly_file> --ulysses-swoops-file data/external/ulysses/swoops_hourly.asc --latitudinal --lat-max-deg 80 --nx 128 --ny 32 --nz 64"
-run_command_sha256 = "03a1b5dc623acc4c03a10fe833373d5dfed76bd17813eedd715dcfe614b4e251"
+run = "cargo run --release --bin solar -- wind-ic --omni-file <staged_omni_hourly_file> --ulysses-swoops-file data/external/ulysses/swoops_hourly.asc --latitudinal --lat-max-deg 80 --nx 128 --ny 32 --nz 64"
+run_command_sha256 = "d6d986f0461dfd64026a1b54d8ceb186a1ebd41bed6cf57889ec4c4364ceb257"
 status = "planned"
 status_token = "PLANNED"
 title = "Ulysses latitudinal gradient characterization"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-116"
 binary_registered = true
 claim_refs = ["C-1156", "C-1167", "C-1168"]
@@ -3011,19 +3011,19 @@ id = "E-116"
 input = "Radial IC from E-114, nx=128, ny=32, nz=32, steps=5000, tau=0.7"
 input_path_refs = []
 lineage_id = "XL-115"
-method = "Radial IC generated by E-114 passed to solar-wind-dm-mhd with per-cell kappa(R) spatial drag coefficient. For each distance bin [r-dr, r+dr], extract the force ratio |F_DM|/|F_Lorentz| and report max. kappa_field varies with NFW enclosed mass M(<r) and local DM number density n_chi(r). Validates C-1156 (DM null invariance across full heliosphere)."
+method = "Radial IC generated by E-114 passed to solar wind-dm-mhd with per-cell kappa(R) spatial drag coefficient. For each distance bin [r-dr, r+dr], extract the force ratio |F_DM|/|F_Lorentz| and report max. kappa_field varies with NFW enclosed mass M(<r) and local DM number density n_chi(r). Validates C-1156 (DM null invariance across full heliosphere)."
 output = ["force_ratio_csv", "csv_snapshots"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/radial_ic.csv --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --dm-r-min 1 --dm-r-max 100 --snap-interval 500"
-run_command_sha256 = "f43b93b7e5f939492f159a38ca57e9c8c276459a65c7c31e4a0a1d70b7069081"
+run = "cargo run --release --bin solar -- wind-dm-mhd --ic-file data/output/radial_ic.csv --nx 128 --ny 32 --nz 32 --steps 5000 --tau 0.7 --dm-r-min 1 --dm-r-max 100 --snap-interval 500"
+run_command_sha256 = "dd9e7c49992902914a2363634269ea6069185e175e9931122edb1de1834ebc8e"
 status = "planned"
 status_token = "PLANNED"
 title = "Multi-distance DM null sweep: r = {1, 5, 10, 50, 100} AU"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-ic"
+binary = "solar wind-ic"
 binary_experiment_declared = "E-117"
 binary_registered = true
 claim_refs = ["C-1165", "C-1169"]
@@ -3041,15 +3041,15 @@ method = "Cross-validate proton density, speed, and B-field between Pioneer 10/1
 output = ["cross_validation_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-ic -- --voyager1-file <v1> --voyager2-file <v2> --pioneer10-file <p10> --pioneer11-file <p11> --radial-mode --nx 128"
-run_command_sha256 = "f2816dcb4923ea9a8c20f7f0f0a7e52a2d6371cfe9e0748ae541ea0db0afc6e4"
+run = "cargo run --release --bin solar -- wind-ic --voyager1-file <v1> --voyager2-file <v2> --pioneer10-file <p10> --pioneer11-file <p11> --radial-mode --nx 128"
+run_command_sha256 = "a0d339bba70742882241bb739336f5504d4617d3fd779597efa803b642805e56"
 status = "planned"
 status_token = "PLANNED"
 title = "Pioneer-Voyager radial cross-validation"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-ic"
+binary = "solar wind-ic"
 binary_experiment_declared = "E-118"
 binary_registered = true
 claim_refs = ["C-1159", "C-1166"]
@@ -3067,15 +3067,15 @@ method = "Compute Knudsen number Kn = lambda_mfp / L_cell at each radial distanc
 output = ["kn_profile_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-ic -- --radial-mode --voyager1-file <v1> --nx 256 --ny 32 --nz 32"
-run_command_sha256 = "1a897d9d02fa32937e128c03a73358c066bd00cd029ff23a0867f038b1bf65f8"
+run = "cargo run --release --bin solar -- wind-ic --radial-mode --voyager1-file <v1> --nx 256 --ny 32 --nz 32"
+run_command_sha256 = "237826cb3417834891c2786bcb3c9c539983dfaa82fe27a2f1e43dd6096ef127"
 status = "planned"
 status_token = "PLANNED"
 title = "Outer heliosphere LBM validity assessment (Kn regime mapping)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-119"
 binary_registered = true
 claim_refs = ["C-1156", "C-1157", "C-1160", "C-1168"]
@@ -3093,15 +3093,15 @@ method = "End-to-end pipeline: multi-spacecraft data -> radial IC (E-114) -> MHD
 output = ["csv_snapshots", "force_ratio_csv", "mass_conservation_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/radial_ic.csv --nx 256 --ny 32 --nz 32 --steps 10000 --tau 0.7 --eta 0.01 --dm-r-min 1 --dm-r-max 100"
-run_command_sha256 = "3d3cee5192f64b515fb90a94c877720a4ce4ebf83b2839be7665135fbfd4b3b3"
+run = "cargo run --release --bin solar -- wind-dm-mhd --ic-file data/output/radial_ic.csv --nx 256 --ny 32 --nz 32 --steps 10000 --tau 0.7 --eta 0.01 --dm-r-min 1 --dm-r-max 100"
+run_command_sha256 = "3bfde7a3c840325f0346fe88bf86e4d41eea5a40013448ad302d7e30a38c392e"
 status = "planned"
 status_token = "PLANNED"
 title = "Full heliosphere radial IC -> MHD+DM end-to-end pipeline"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "solar-wind-dm-mhd"
+binary = "solar wind-dm-mhd"
 binary_experiment_declared = "E-120"
 binary_registered = true
 claim_refs = ["C-1164"]
@@ -3119,8 +3119,8 @@ method = "MHD simulation of the solar wind at the termination shock region (80-1
 output = ["csv_snapshots", "shock_profile_csv"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin solar-wind-dm-mhd -- --ic-file data/output/ts_ic.csv --nx 256 --ny 64 --nz 64 --steps 20000 --tau 0.7 --eta 0.01 --dm-r-min 80 --dm-r-max 100"
-run_command_sha256 = "0935fdb424ff07597dd2b737a7f1a26bf562969e6380c95cff589674b6b22bb6"
+run = "cargo run --release --bin solar -- wind-dm-mhd --ic-file data/output/ts_ic.csv --nx 256 --ny 64 --nz 64 --steps 20000 --tau 0.7 --eta 0.01 --dm-r-min 80 --dm-r-max 100"
+run_command_sha256 = "8714849e00d6829371eb95141351488d1a1fbb2bf246fb13ffd0ce992c6b4930"
 status = "planned"
 status_token = "PLANNED"
 title = "Termination shock MHD simulation with Voyager IC"

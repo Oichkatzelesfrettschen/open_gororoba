@@ -1710,39 +1710,9 @@ crate = "gororoba_cli_data"
 description = "Stage the SOHO CELIAS Proton Monitor mission-long bundle into both native cadence and hourly median-normalized CSV artifacts, then emit a JSON summary with row counts, byte sizes, and coverage so inner-boundary runs can preserve hypergranularity without losing cross-source alignment."
 
 [[binary]]
-name = "solar-aia-cd"
+name = "solar"
 crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "solar-cycle-crosscorr"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "solar-flare-cd"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "solar-storm-propagation"
-crate = "gororoba_cli_physics"
-description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
-
-[[binary]]
-name = "solar-wind-dm-mhd"
-crate = "gororoba_cli_physics"
-description = "D3Q19 LBM + MHD + NFW dark matter gravitational coupling. Extends E-111 solar wind sim with static DM halo force field. Quantifies DM/Lorentz force ratio as null test (O(10^-12))."
-
-[[binary]]
-name = "solar-wind-ic"
-crate = "gororoba_cli_physics"
-description = "Generate solar wind initial conditions from real spacecraft data. Supports OMNI2, ACE MAG L2, ACE SWEPAM, SOHO CELIAS Proton Monitor, WIND SWE+MFI, and STEREO-A PLASTIC+IMPACT/MAG via adapter pattern. All datasets flow through OmniRecord interchange format, with SOHO available both at native 5-minute cadence and hourly median-normalized boundary form."
-
-[[binary]]
-name = "solar-wind-mhd-sim"
-crate = "gororoba_cli_physics"
-description = "D3Q19 LBM + MHD simulation of magnetized solar wind. Parker spiral B-field initialization, Zou-He velocity inlet, Lorentz force coupling via Guo scheme."
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "source-truth-infrastructure"

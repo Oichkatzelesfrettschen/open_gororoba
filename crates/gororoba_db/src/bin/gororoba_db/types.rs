@@ -559,6 +559,22 @@ pub(crate) enum ExperimentMutationAction {
         #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
         regen_toml: bool,
     },
+    /// Rewrite every reference to a moved source file: claim evidence
+    /// citations, experiment compatibility text, and the
+    /// `artifact_contract_paths` an external-source dossier declares, which
+    /// `governance-verify` fails closed on when the file is gone.
+    RetargetSourcePath {
+        #[arg(long)]
+        from: String,
+        #[arg(long)]
+        to: String,
+        #[arg(long)]
+        actor: Option<String>,
+        #[arg(long)]
+        reason: Option<String>,
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
+    },
 }
 
 #[derive(Parser, Debug)]

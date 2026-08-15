@@ -157,7 +157,8 @@ pub use types::{
     ExecutionTargetRetargetSummary, ManifestRow, NotebookSessionRow, NotebookSessionSummary,
     PlanningCompatTable, RequirementCoverageGapCompatRow, RequirementCoverageGapItem,
     RequirementModuleCompatRow, RequirementModuleItem, RequirementsMeta, RequirementsMetaCompatRow,
-    ResearchNarrativeRow, RoadmapCompatRow, RoadmapItem, RoadmapItemWithLinks, StatusNoteRevision,
+    ResearchNarrativeRow, RoadmapCompatRow, RoadmapItem, RoadmapItemWithLinks,
+    SourcePathRetarget, SourcePathRetargetSummary, StatusNoteRevision,
 };
 
 /// Hex-encoded SHA-256 of `s`. Used by the status_note mutators to
@@ -189,6 +190,12 @@ const RETARGET_FIELDS: &[EntityFieldTarget<'static>] = &[
         revisions_table: "claim_revisions",
         fk_col: "claim_id",
         field: "status_note",
+    },
+    EntityFieldTarget {
+        table: "claims",
+        revisions_table: "claim_revisions",
+        fk_col: "claim_id",
+        field: "where_stated",
     },
     EntityFieldTarget {
         table: "claims",
@@ -3520,6 +3527,87 @@ impl ProvenanceStore {
                 field: "formal_proof",
             },
         )
+    }
+
+    /// Rewrite every reference to a moved source file across the canonical
+    /// control plane.
+    ///
+    /// A claim's evidence citation and an external-source artifact contract
+    /// both name a repository path, and `governance-verify
+    /// external-source-operational-contracts` fails closed when a declared
+    /// `artifact_contract_path` no longer exists. Collapsing a binary cluster
+    /// moves those files, so the two move together here.
+    ///
+    /// Matching is token-bounded on the same rule as the execution-target
+    /// rename, which protects a prefix: rewriting `src/bin/solar_wind_ic.rs`
+    /// leaves `src/bin/solar_wind_ic_helpers.rs` alone.
+    pub fn retarget_source_path(
+        &mut self,
+        request: SourcePathRetarget<'_>,
+    ) -> Result<SourcePathRetargetSummary> {
+        let mut summary = SourcePathRetargetSummary::default();
+        for target in RETARGET_FIELDS {
+            let select = format!(
+                "SELECT id, {field} FROM {table} WHERE {field} LIKE ?1",
+                field = target.field,
+                table = target.table,
+            );
+            let pending: Vec<(String, String)> = {
+                let mut stmt = self.conn.prepare(&select)?;
+                let rows = stmt.query_map(params![format!("%{}%", request.from)], |row| {
+                    Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
+                })?;
+                collect_rows(rows)?
+            };
+            for (id, text) in pending {
+                let rewritten = replace_token(&text, request.from, request.to);
+                if rewritten == text {
+                    continue;
+                }
+                let revision = self.entity_update_field(
+                    &id,
+                    &rewritten,
+                    request.actor,
+                    request.reason,
+                    *target,
+                )?;
+                summary.revisions.push(revision);
+            }
+        }
+
+        let tx = self.conn.transaction()?;
+        {
+            let pending: Vec<(String, String, i64, String)> = {
+                let mut stmt = tx.prepare(
+                    "SELECT dossier_id, relation, ord, value \
+                     FROM external_source_dossier_values WHERE value LIKE ?1",
+                )?;
+                let rows = stmt.query_map(params![format!("%{}%", request.from)], |row| {
+                    Ok((
+                        row.get::<_, String>(0)?,
+                        row.get::<_, String>(1)?,
+                        row.get::<_, i64>(2)?,
+                        row.get::<_, String>(3)?,
+                    ))
+                })?;
+                collect_rows(rows)?
+            };
+            for (dossier_id, relation, ord, value) in pending {
+                let rewritten = replace_token(&value, request.from, request.to);
+                if rewritten == value {
+                    continue;
+                }
+                tx.execute(
+                    "UPDATE external_source_dossier_values SET value = ?1 \
+                     WHERE dossier_id = ?2 AND relation = ?3 AND ord = ?4",
+                    params![rewritten, dossier_id, relation, ord],
+                )?;
+                summary.contract_paths_updated += 1;
+            }
+        }
+        tx.commit()?;
+
+        Ok(summary)
     }
 
     /// Rewrite every reference to a renamed execution target across the

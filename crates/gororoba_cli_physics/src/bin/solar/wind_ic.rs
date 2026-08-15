@@ -20,9 +20,8 @@
 //!   Z -> ecliptic north (our LBM z-axis)
 //!
 //! Output: CSV files with columns x,y,z,rho,ux,uy,uz,bx,by,bz matching the
-//! snapshot format used by solar-wind-mhd-sim and solar-wind-dm-mhd.
+//! snapshot format used by solar wind-mhd-sim and solar wind-dm-mhd.
 
-use clap::Parser;
 use data_core::catalogs::{
     ace_mag::{ace_mag_to_omni, average_to_hourly, parse_ace_mag_file},
     cassini::{cassini_to_omni, parse_cassini_cruise_file},
@@ -45,12 +44,9 @@ use data_core::catalogs::{
 };
 use std::{fs, io::Write, path::PathBuf};
 
-// Cli struct (documented in the submodule) lives in `types`
-// (~190 lines of clap Parser fields). #[path] indirection because
-// this binary has explicit Cargo.toml path.
-#[path = "solar_wind_ic/types.rs"]
+// The Cli struct is ~190 lines of clap fields and lives in `types`.
 mod types;
-use types::*;
+pub use types::Cli;
 
 /// Built-in OMNI2 sample: real data from 2024 DOY 1, hours 0-23.
 /// Includes actual measured Bx/By/Bz (GSE) alongside plasma parameters.
@@ -313,7 +309,7 @@ fn write_volume(
     }
     let mut file = fs::File::create(path)?;
     // Metadata header: unit conversion parameters for downstream consumers.
-    // Lines starting with '#' are skipped by load_ic_file() in solar-wind-dm-mhd.
+    // Lines starting with '#' are skipped by load_ic_file() in solar wind-dm-mhd.
     writeln!(file, "# n_ref_cm3={:.6}", units.n_ref)?;
     writeln!(file, "# v_ref_kms={:.6}", units.v_ref)?;
     writeln!(file, "# u_scale={:.6}", units.u_scale)?;
@@ -1483,8 +1479,7 @@ fn latitude_modulation(
     (density_factor, speed_factor)
 }
 
-fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     // Radial mode: multi-distance heliospheric profile
     if cli.radial_mode {
@@ -1870,6 +1865,19 @@ fn output_diagnostics_and_write(
 mod tests {
     use super::*;
 
+    /// `Cli` derives `Args` so the dispatcher can flatten it into a subcommand,
+    /// and `Args` carries no `parse_from`. This wrapper gives the tests back an
+    /// argv entry point without changing what the lane exposes.
+    #[derive(clap::Parser)]
+    struct CliHarness {
+        #[command(flatten)]
+        inner: Cli,
+    }
+
+    fn parse_cli<const N: usize>(argv: [&str; N]) -> Cli {
+        <CliHarness as clap::Parser>::parse_from(argv).inner
+    }
+
     /// Helper: create an OmniRecord with given time and plasma values.
     fn make_record(year: u16, doy: u16, hour: u8, density: f64, speed: f64) -> OmniRecord {
         OmniRecord {
@@ -2194,8 +2202,8 @@ mod tests {
             b_mag_nt: 5.83,
         }];
 
-        let cli = Cli::parse_from([
-            "solar-wind-ic",
+        let cli = parse_cli([
+            "solar wind-ic",
             "--radial-mode",
             "--nx",
             "16",
@@ -2229,8 +2237,8 @@ mod tests {
             b_mag_nt: 5.83,
         }];
 
-        let cli = Cli::parse_from([
-            "solar-wind-ic",
+        let cli = parse_cli([
+            "solar wind-ic",
             "--radial-mode",
             "--nx",
             "32",
@@ -2404,8 +2412,8 @@ mod tests {
             b_mag_nt: 5.83,
         }];
 
-        let cli = Cli::parse_from([
-            "solar-wind-ic",
+        let cli = parse_cli([
+            "solar wind-ic",
             "--radial-mode",
             "--latitudinal",
             "--lat-max-deg",

@@ -4,10 +4,10 @@
 //! Parker spiral solar wind flow. Uses Zou-He velocity inlet at x=0 and
 //! periodic boundaries in y/z.
 //!
-//! Supports loading initial conditions from solar-wind-ic CSV files
+//! Supports loading initial conditions from solar wind-ic CSV files
 //! containing real spacecraft data (NASA OMNI2 or ACE SWEPAM).
 
-use clap::Parser;
+use clap::Args;
 use lbm_3d::{
     boundary::ZouHeBoundary,
     mhd::{MhdConfig, MhdField},
@@ -21,9 +21,8 @@ use std::{
 
 /// D3Q19 LBM + MHD simulation of magnetized solar wind with Parker
 /// spiral B-field and Zou-He velocity inlet.
-#[derive(Parser)]
-#[command(name = "solar-wind-mhd-sim")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// Grid size in x (radial direction)
     #[arg(long, default_value_t = 128)]
     nx: usize,
@@ -64,7 +63,7 @@ struct Cli {
     #[arg(long)]
     out: Option<PathBuf>,
 
-    /// Path to initial condition CSV from solar-wind-ic.
+    /// Path to initial condition CSV from solar wind-ic.
     /// Format: x,y,z,rho,ux,uy,uz,bx,by,bz (header row skipped).
     /// When provided, uses real spacecraft data instead of uniform+Parker init.
     #[arg(long)]
@@ -100,7 +99,7 @@ fn write_snapshot(
     Ok(())
 }
 
-/// Load initial conditions from a CSV file produced by solar-wind-ic.
+/// Load initial conditions from a CSV file produced by solar wind-ic.
 fn load_ic_file(
     path: &std::path::Path,
     solver: &mut LbmSolver3D,
@@ -156,8 +155,7 @@ fn load_ic_file(
     Ok(loaded)
 }
 
-fn main() -> anyhow::Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     let ic_label = if cli.ic_file.is_some() {
         "real-data"
@@ -165,7 +163,7 @@ fn main() -> anyhow::Result<()> {
         "synthetic"
     };
     eprintln!(
-        "solar-wind-mhd-sim: {}x{}x{}, {} steps, tau={}, B0={} nT, v_sw={}, IC={}",
+        "solar wind-mhd-sim: {}x{}x{}, {} steps, tau={}, B0={} nT, v_sw={}, IC={}",
         cli.nx, cli.ny, cli.nz, cli.steps, cli.tau, cli.b0, cli.v_sw, ic_label,
     );
 

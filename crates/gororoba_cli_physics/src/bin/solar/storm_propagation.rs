@@ -10,20 +10,19 @@
 //! 8 orders of magnitude in heliocentric distance.
 //!
 //! Usage:
-//!   solar-storm-propagation \
+//!   solar storm-propagation \
 //!     --ace-csv data/external/ace/ace_mag_sep2017.csv \
 //!     --sharp-json data/external/sdo_aia/hmi_sharp_7115_x93.json \
 //!     --v2-pws-csv data/external/voyager2/pws/v2_pws_hourly_2012_2026.csv \
 //!     --harpnum 7115 --event-name "X9.3 Sep 2017"
 
 use anyhow::{Context, Result};
-use clap::Parser;
+use clap::Args;
 use serde::Serialize;
 use std::path::PathBuf;
 
-#[derive(Parser)]
-#[command(name = "solar-storm-propagation")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// ACE MAG CSV from HAPI (timestamp, Magnitude, BGSM_x, BGSM_y, BGSM_z)
     #[arg(long)]
     ace_csv: PathBuf,
@@ -178,8 +177,7 @@ fn percentile(sorted: &[f64], p: f64) -> f64 {
     sorted[idx.min(sorted.len() - 1)]
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     println!("=== Solar Storm Propagation: {} ===", cli.event_name);
     println!("  Embedding dim: {}D", cli.dim);
 

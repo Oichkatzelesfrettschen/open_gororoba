@@ -5,15 +5,14 @@
 //! 12 channels: 6 AIA bands x (mean + rms) = temperature-diverse coronal response.
 
 use anyhow::{Context, Result};
-use clap::Parser;
+use clap::Args;
 use csv::ReaderBuilder;
 use serde::{Deserialize, Serialize};
 use stats_core::helpers::singular_values;
 use std::{fs, path::PathBuf};
 
-#[derive(Parser)]
-#[command(name = "solar-aia-cd")]
-struct Cli {
+#[derive(Args)]
+pub struct Cli {
     /// AIA 6-band CSV (from JSOC DATAMEAN/DATARMS export).
     #[arg(long, default_value = "data/external/sdo_aia/aia_6band_x93.csv")]
     aia_csv: PathBuf,
@@ -90,8 +89,7 @@ fn effective_rank(embedded: &[Vec<f64>], dim: usize) -> usize {
     svals.iter().filter(|&&s| s > threshold).count()
 }
 
-fn main() -> Result<()> {
-    let cli = Cli::parse();
+pub fn run(cli: Cli) -> Result<()> {
     let dim = cli.embedding_dim;
     println!("=== SDO AIA Multi-Channel CD through X9.3 Flare ===");
     println!("  dim={}, precision={}", dim, cli.precision);
