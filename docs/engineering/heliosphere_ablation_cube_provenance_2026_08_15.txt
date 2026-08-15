@@ -1,0 +1,124 @@
+heliosphere ablation cube provenance
+====================================
+
+last_verified: 2026-08-15
+scope: data/output/heliosphere/ablations
+evidence_class: measured
+
+what is in the directory
+------------------------
+
+379 files, 3.43 GiB, git-lfs tracked. Two schema families, and the split is
+exact -- every file belongs to one or the other, and the two differ by three
+orders of magnitude in size.
+
+Feature cubes carry the `HeliosphereFeatureRow` header
+`window_name,mission,product,year,doy,hour,r_au,lat_deg,lon_deg,density_cm3,...`
+declared in `crates/data_core/src/heliosphere_feature_cube.rs`. There are 37 of
+them and they hold 3.39 GiB, so they are effectively the whole directory. They
+are inputs: one row per (mission, product, year, doy, hour), whose twelve
+dynamic channels `dynamic_signal_channels` hands to the Cayley-Dickson
+embedding.
+
+Analysis results carry headers like
+`r_center_au,lat_center_deg,mean_associator,median_associator,max_associator`
+or `mission,block_size_K,base_mean,block_null_mean,...`. They run 4 to 8 KB
+each. These are the outputs, and the pairing with their cube is visible in the
+names: `messenger_mercury_2011w12.csv` at 533 MB against
+`messenger_mercury_cd_32d.csv` at 4 KB, `cassini_2000_2004.csv` at 220 MB
+against `cassini_saturn_cd_32d.csv`, `ace_mag_2018.csv` at 228 MB against
+`ace_2018_cd_32d.csv`.
+
+The scientific evidence is therefore in the kilobyte files. The gigabytes are
+the substrate they were computed from.
+
+how a cube works into the multidimensional analysis
+---------------------------------------------------
+
+`HeliosphereFeatureRow::dynamic_signal_channels` returns twelve channels --
+density_cm3, speed_kms, temperature_k, bx, by, bz, b_mag, crs_flux,
+spectral_mean, spectral_peak, map_flux_mean, map_flux_std -- and deliberately
+omits r_au, lat_deg and lon_deg, which arrive in three incompatible frames
+across missions. Those twelve are embedded into a Cayley-Dickson algebra, at
+D=32 for every result file here, and the associator is evaluated over triples.
+The result files then bin by `r_center_au` and `lat_center_deg` and report the
+mean, median and maximum associator per bin.
+
+The MAG-only cubes -- Voyager, MESSENGER, Cassini, ACE -- populate only four of
+those twelve channels, leaving density, speed, temperature, crs_flux and the
+four spectral and map channels at NaN. A cube of that shape exercises the
+magnetic sector of the embedding and nothing else.
+
+reproducibility, measured
+-------------------------
+
+`voyager hapi-ingest` converts a CDAWeb HAPI CSV into this schema. It is
+deterministic. Regenerating `ace_mag_2018.csv` from the source already on disk
+reproduces the stored file byte for byte:
+
+  voyager hapi-ingest --spacecraft ACE \
+    --input data/external/hapi_downloads/ac_h0_mfi_2018.csv \
+    --out-csv <path> --col-dist=-1
+
+  1961558 records, 239013307 bytes, sha256 e62c58bbbaa2c72e...
+  identical to the stored ace_mag_2018.csv by cmp and by sha256.
+
+Two properties fall out of that measurement. The conversion needs no network,
+because `data/external/` already holds the sources. And the cube is 2.35 times
+larger than the source it derives from -- 228 MB from 97 MB -- because it
+expands five numeric columns into twenty-one, seventeen of which are the
+literal string NaN or a constant zero.
+
+For every other cube the generation command is not recorded anywhere in the
+repository. The sources exist -- data/external/hapi_downloads (891 MB),
+voyager_mag48_cdf (488 MB), voyager_coho_hapi (8.7 MB), messenger (1.3 GB),
+cassini (3.5 MB), ulysses (31 MB), mms (831 MB), pioneer (23 MB) -- but the
+mapping from source to cube does not, and two cases show it is not a matter of
+guessing the flags. The Cassini source carries only a timestamp, |B| and a
+distance, while its cube carries bx, by and bz, so at least two inputs were
+merged. The MESSENGER source reports distance as 4.9269345e+07 against a cube
+value of 0.324, a kilometres-to-AU conversion `hapi-ingest` does not perform.
+
+That is the finding: 3.25 GiB of derived intermediates whose derivation is
+unrecorded. They are not reproducible artifacts in the sense the registry
+means, and they are not raw data either. Recording the command per cube is the
+work that turns them back into either one.
+
+The registry agrees, by omission. `artifact_paths` in
+`registry/canonical/control_plane.sqlite3` holds 3915 rows and **zero** of them
+name anything under `data/output/heliosphere/ablations`, and
+`registry/datasets.toml` declares no dataset there either. So the directory is
+outside every provenance lane the repository operates: not a declared dataset,
+not a registered artifact, not cited by 278 of its 379 files. It is the largest
+unaccounted-for object in `data/output` after `benchmark_scores.csv`.
+
+containment
+-----------
+
+Filenames claiming completeness do not always deliver it, so containment was
+measured on the full key set (product, year, doy, hour) rather than assumed.
+
+  v1_mag48_full_2009_2025.csv    41031 keys, 0 absent from v1_complete_lifetime
+  v1_full_lifetime_1979_2025.csv 131674 keys, 1759 absent from v1_complete_lifetime
+  v1_complete_lifetime_1977_2025.csv                                143111 keys
+
+So `v1_complete_lifetime` subsumes `v1_mag48_full` exactly and does not subsume
+`v1_full_lifetime`, despite the names. The Voyager 2 family does not nest at
+all: `v2_inner_1_60au.csv` covers 1977 through 1988, which
+`v2_complete_lifetime.csv` does not carry.
+
+removed
+-------
+
+Two files, 563 MB, each on a measurement rather than an inference.
+
+  ace_mag_2018.csv          228 MB  regenerated byte-identical, command above
+  v1_mag48_full_2009_2025.csv 335 MB  every key present in v1_complete_lifetime
+
+retained
+--------
+
+Everything else, including all 35 remaining feature cubes. Each is either cited
+by name in the registry, or has no recorded generation command and no verified
+superset, which makes deletion irreversible in practice regardless of the
+sources sitting in data/external.
