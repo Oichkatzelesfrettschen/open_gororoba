@@ -8,6 +8,7 @@
 
 use clap::{Parser, Subcommand};
 
+mod chart;
 mod positions;
 
 #[derive(Parser)]
@@ -24,10 +25,13 @@ struct Cli {
 enum Command {
     /// Heliocentric ecliptic positions of the planet barycentres at an epoch
     Positions(positions::Cli),
+    /// Static ecliptic-plane chart of the solar system at an epoch, as SVG
+    Chart(chart::Cli),
 }
 
 fn main() -> anyhow::Result<()> {
     match Cli::parse().command {
         Command::Positions(cli) => positions::run(cli),
+        Command::Chart(cli) => chart::run(cli),
     }
 }
