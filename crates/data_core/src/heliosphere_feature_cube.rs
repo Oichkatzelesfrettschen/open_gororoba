@@ -85,15 +85,17 @@ pub struct HeliosphereFeatureRow {
     /// row, which is a fill value rather than a measurement -- Voyager 1 and 2
     /// carry it too for their pre-cruise epochs.
     ///
-    /// This matters because `signal_channels` puts this and the two angles at
-    /// indices 0 through 2 of the vector the Cayley-Dickson embedding consumes.
-    /// `transform_feature_rows` normalizes per `(window, mission, product)`, so
-    /// `Normalized`, `DifferencedNormalized` and both robust modes absorb the
-    /// frame difference into each mission's own mean and standard deviation,
-    /// and `normalize_channel` sends a zero-variance channel to 0.0, which
-    /// neutralizes the constant fill. `Raw` mode passes all three through
-    /// unchanged, so a cross-mission comparison in `Raw` partly measures which
-    /// ingest convention a mission's loader happened to use.
+    /// The mixture stays confined to two places. `transform_feature_rows`
+    /// groups by `(window, mission, product)` before it touches a channel, and
+    /// a mission uses one convention throughout, so every group is internally
+    /// consistent and the normalizing modes fold the frame into that mission's
+    /// own mean and standard deviation; `normalize_channel` sends the constant
+    /// fill to 0.0 for want of variance. And `signal_channels` places this
+    /// column and the two angles at indices 0 through 2 of the full feature
+    /// vector, so any consumer that compares that vector across missions in
+    /// `Raw` mode is partly measuring which ingest convention a loader used.
+    /// No such consumer exists: both Cayley-Dickson call sites read
+    /// `dynamic_signal_channels`, which begins at `density_cm3`.
     pub r_au: f64,
     /// Latitude in the same undeclared frame as `r_au`; NaN where the ingest
     /// path found no ephemeris variable, which `normalize_channel` maps to 0.0.
@@ -192,6 +194,15 @@ pub struct HeliosphereTransformResult {
 }
 
 impl HeliosphereFeatureRow {
+    /// The full signal vector, spatial channels first.
+    ///
+    /// Indices 0 through 2 are `r_au`, `lat_deg` and `lon_deg`, which the
+    /// ingest paths populate in three mutually incompatible frames -- see the
+    /// `r_au` field. The per-group transforms call this and are safe, because
+    /// they group by `(window, mission, product)` first and a mission holds one
+    /// frame throughout. A cross-mission consumer is not safe, and should read
+    /// `dynamic_signal_channels` instead, which drops the three spatial
+    /// channels and begins at `density_cm3`.
     pub fn signal_channels(&self) -> [f64; HELIOSPHERE_SIGNAL_DIM] {
         [
             self.r_au,
@@ -1983,5 +1994,32 @@ mod tests {
             (1..=3).map(|h| b_row(h, h as f64, 0.0, 0.0)).collect();
         let (vecs, _) = magnetic_takens_embed(&rows, 16, 1);
         assert!(vecs.is_empty()); // 3 rows < 4-step window
+    }
+
+    /// `r_au`, `lat_deg` and `lon_deg` arrive in three incompatible frames
+    /// across missions, so a vector meant for cross-mission comparison must not
+    /// contain them. `dynamic_signal_channels` is that vector, and the two
+    /// Cayley-Dickson call sites read it. Pinning the exclusion here keeps a
+    /// later edit to `HELIOSPHERE_DYNAMIC_CHANNEL_NAMES` from reintroducing a
+    /// frame-dependent channel without anything failing.
+    #[test]
+    fn dynamic_channels_exclude_the_frame_dependent_spatial_columns() {
+        for spatial in ["r_au", "lat_deg", "lon_deg"] {
+            assert!(
+                HELIOSPHERE_CHANNEL_NAMES.contains(&spatial),
+                "`{spatial}` left the full channel list; this test no longer guards anything"
+            );
+            assert!(
+                !HELIOSPHERE_DYNAMIC_CHANNEL_NAMES.contains(&spatial),
+                "`{spatial}` is frame-dependent across missions and must stay out of the \
+                 cross-mission vector"
+            );
+        }
+        assert_eq!(
+            HELIOSPHERE_DYNAMIC_CHANNEL_NAMES.len(),
+            HELIOSPHERE_SIGNAL_DIM - HELIOSPHERE_SUPPORT_DIM,
+            "the dynamic vector must drop exactly the three support channels"
+        );
+        assert_eq!(HELIOSPHERE_DYNAMIC_CHANNEL_NAMES[0], "density_cm3");
     }
 }

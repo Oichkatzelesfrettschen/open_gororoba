@@ -264,8 +264,18 @@ cubecl = { version = "0.10.0", default-features = false }
 cubecl-core = { version = "0.10.0", default-features = false }
 cubecl-wgpu = { version = "0.10.0", default-features = false }
 
-# GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime)
-cudarc = { version = "0.19.8", default-features = false, features = ["std", "driver", "runtime", "nvrtc", "dynamic-loading", "cuda-version-from-build-system", "cublas", "cufft", "curand", "cusolver"] }
+# GPU compute (CUDA via dynamic loading -- binary works without GPU at runtime).
+#
+# `fallback-latest` decides whether the workspace builds on a machine with no
+# CUDA toolkit. `cuda-version-from-build-system` shells to `nvcc --version` and,
+# without the fallback, panics at cudarc's build.rs:168 when that command fails;
+# `lbm_3d_cuda` takes `cudarc` as a hard dependency and is a workspace member,
+# so that panic reaches every `cargo build --workspace`. With the fallback the
+# probe still wins wherever nvcc exists, and elsewhere cudarc selects the newest
+# version it supports and prints a warning. The selection only picks which API
+# surface compiles: `dynamic-loading` resolves the driver at run time, so a
+# machine with no toolkit was never going to dispatch a kernel either way.
+cudarc = { version = "0.19.8", default-features = false, features = ["std", "driver", "runtime", "nvrtc", "dynamic-loading", "cuda-version-from-build-system", "fallback-latest", "cublas", "cufft", "curand", "cusolver"] }
 
 # Dynamic library loading (OptiX FFI)
 libloading = "0.9"

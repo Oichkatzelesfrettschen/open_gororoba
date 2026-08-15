@@ -13,11 +13,11 @@
 //! lane name verbatim. `warp-gpu-smoke 5.0 5 out` becomes
 //! `warp gpu-smoke 5.0 5 out`, ordinal for ordinal.
 //!
-//! `gororoba_cli_warp` builds only with its `gpu` feature, which its own
-//! library forces: `warp_precision_suite_ops` and `warp_runner` import
-//! `lbm_3d_cuda` with no `cfg`, so `--no-default-features` fails at the library
-//! before any binary is reached. The manifest therefore declares `gpu` on the
-//! dispatcher, which restates what the crate already requires.
+//! Every lane reaches CUDA, either directly or through
+//! `gororoba_cli_warp::warp_runner`, so the manifest declares
+//! `required-features = ["gpu"]` on this one target rather than on individual
+//! lanes. Dropping the feature leaves the crate with a library and no binaries,
+//! which is the honest shape: there is no useful warp lane without a GPU.
 
 use clap::{Parser, Subcommand};
 use std::error::Error;

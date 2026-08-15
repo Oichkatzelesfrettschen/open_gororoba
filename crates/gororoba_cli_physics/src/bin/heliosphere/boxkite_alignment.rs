@@ -50,7 +50,6 @@ struct AlignmentResultRow {
 }
 
 pub fn run(cli: Cli) -> Result<()> {
-
     println!(
         "[1/4] Loading 16D Takens descriptors from {}...",
         cli.input_csv.display()
