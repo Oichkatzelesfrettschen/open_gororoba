@@ -86,6 +86,13 @@ reports/*.json
 # baselines belong in governed docs/engineering records.
 reports/validation/
 
+# Chromium and Edge profile state left behind by the acquisition sessions:
+# LevelDB index shards, LOCK and LOG files, adblock blocklists, and vendored
+# extension payloads. It carries no research content -- the only two files the
+# markdown inventory ever picked up were vendor `Edge Wallet` READMEs -- and it
+# is byte-churn that a browser rewrites on every launch.
+reports/browser_profiles/
+
 # LaTeX build outputs
 docs/latex/out/
 
