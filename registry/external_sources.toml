@@ -6337,7 +6337,7 @@ truth_surfaces = [
 ]
 artifact_contract_paths = [
   "crates/data_core/src/catalogs/omni.rs",
-  "crates/gororoba_cli_physics/src/bin/solar_wind_ic.rs",
+  "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs",
 ]
 has_full_transcript = false
 claim_refs = []
@@ -7794,4 +7794,3 @@ those artifacts are not present inside this repository. The governed source lane
 for this claim cluster is therefore the official vendor / doc URLs above plus
 the Ogita-Rump-Oishi paper and the repo-scoped verifier / benchmark artifacts.
 '''
-

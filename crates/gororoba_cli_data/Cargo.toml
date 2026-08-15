@@ -9,6 +9,10 @@ description = "Data, registry, and governance CLI binaries for gororoba"
 # ---- Audit (anchored debt-baseline counter) ----
 
 [[bin]]
+name = "zd-spectral"
+path = "src/bin/zd_spectral/main.rs"
+
+[[bin]]
 name = "repo-audit"
 path = "src/bin/repo_audit.rs"
 
@@ -314,15 +318,7 @@ path = "src/bin/paper_build.rs"
 
 # ---- Spectral Dimension (1) ----
 
-[[bin]]
-name = "zd-spectral-dimension"
-path = "src/bin/zd_spectral_dimension.rs"
-
 # ---- Quantum Chaos (1) ----
-
-[[bin]]
-name = "zd-quantum-chaos"
-path = "src/bin/zd_quantum_chaos.rs"
 
 # ---- Gates/Analysis (10) ----
 
@@ -351,24 +347,8 @@ name = "pdg-nanograv-surface-audit"
 path = "src/bin/pdg_nanograv_surface_audit.rs"
 
 [[bin]]
-name = "nanograv-timing-inventory"
-path = "src/bin/nanograv_timing_inventory.rs"
-
-[[bin]]
-name = "nanograv-propagation-audit"
-path = "src/bin/nanograv_propagation_audit.rs"
-
-[[bin]]
-name = "nanograv-timing-refit-preflight"
-path = "src/bin/nanograv_timing_refit_preflight.rs"
-
-[[bin]]
-name = "nanograv-timing-phase1-refit"
-path = "src/bin/nanograv_timing_phase1_refit.rs"
-
-[[bin]]
-name = "nanograv-timing-phase1-independent"
-path = "src/bin/nanograv_timing_phase1_independent.rs"
+name = "nanograv"
+path = "src/bin/nanograv/main.rs"
 
 [[bin]]
 name = "particle-numerology-audit"
@@ -492,26 +472,6 @@ path = "src/bin/cosmology_map_audit.rs"
 [[bin]]
 name = "cosmology-dimension-ladder"
 path = "src/bin/cosmology_dimension_ladder.rs"
-
-[[bin]]
-name = "nanograv-avt-filter"
-path = "src/bin/nanograv_avt_filter.rs"
-
-[[bin]]
-name = "nanograv-synthetic-gen"
-path = "src/bin/nanograv_synthetic_gen.rs"
-
-[[bin]]
-name = "nanograv-gauge-resonance"
-path = "src/bin/nanograv_gauge_resonance.rs"
-
-[[bin]]
-name = "nanograv-entropy-audit"
-path = "src/bin/nanograv_entropy_audit.rs"
-
-[[bin]]
-name = "nanograv-vacuum-symmetry"
-path = "src/bin/nanograv_vacuum_symmetry.rs"
 
 [[bin]]
 name = "generate-synthetic-ghost"

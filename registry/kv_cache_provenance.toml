@@ -9,7 +9,7 @@
 #   - prompt / seed used at extraction time
 #   - resulting tensor shape (n_layers, n_heads, seq_len, head_dim)
 #
-# Consumer: crates/gororoba_cli_physics/src/bin/turboquant_real_kv.rs
+# Consumer: crates/gororoba_cli_physics/src/bin/turboquant/real_kv.rs
 # reads these tensors to evaluate TurboQuant quantization quality on
 # real data (as opposed to synthetic Gaussian vectors).
 #
@@ -25,7 +25,7 @@
 #       with two modes.
 #         * --mode synthetic: DETERMINISTIC SplitMix64 + Box-Muller
 #           Gaussian generator producing the exact binary format
-#           the turboquant-real-kv consumer expects. No external
+#           the turboquant real-kv consumer expects. No external
 #           deps; reproducible across machines via `--seed`.
 #         * --mode huggingface-hook: prints the PyO3 integration
 #           contract + Python reference snippet. Full production
@@ -59,7 +59,7 @@ first_layer_bytes = 47616
 extractor = "scripts/extract_real_kv_cache.py (MISSING; restore per A1)"
 prompt_sha256 = "unknown-archeology-required"
 status = "active"
-notes = "Default target used by turboquant-real-kv binary."
+notes = "Default target used by the turboquant real-kv lane."
 
 [[extract]]
 id = "real_kv_cache_long"

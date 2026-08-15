@@ -4377,7 +4377,7 @@ body_markdown = '''
 # Thesis 42 Support
 
 This document records the evidence-first support posture for the "42 / 1764"
-thesis lane implemented by `thesis-42-support`.
+thesis lane implemented by `thesis 42-support`.
 
 ## Current disposition
 
@@ -4407,7 +4407,7 @@ thesis lane implemented by `thesis-42-support`.
 
 Running
 
-`cargo run --release --bin thesis-42-support -- --output-dir data/evidence/thesis_42_support`
+`cargo run --release --bin thesis -- 42-support --output-dir data/evidence/thesis_42_support`
 
 writes:
 

@@ -59,6 +59,18 @@ const GOVERNANCE_PREFIXES: &[&str] = &[
     "tests/",
 ];
 
+/// Whether a path is a Cargo manifest, which makes it governance-relevant.
+///
+/// `registry/binaries.toml` must match the `[[bin]]` set `cargo metadata`
+/// reports exactly, and `execution-planning --verify` resolves every experiment
+/// and lineage row against that set. A manifest edit can add, remove or rename
+/// a target without touching anything under `registry/`, so keying the
+/// governance lane on the registry tree alone lets a binary-set change reach
+/// the branch unchecked.
+fn is_cargo_manifest(file: &str) -> bool {
+    file == "Cargo.toml" || file.ends_with("/Cargo.toml")
+}
+
 #[derive(Parser, Debug)]
 #[command(
     name = "workspace-routing",
@@ -429,6 +441,7 @@ fn classify_changes(
             .iter()
             .any(|prefix| file.starts_with(prefix))
             || (!file.contains('/') && file.ends_with(".md"))
+            || is_cargo_manifest(file)
         {
             classification.has_governance_changes = true;
         }
@@ -692,5 +705,28 @@ fn main() -> ExitCode {
                 ExitCode::SUCCESS
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::is_cargo_manifest;
+
+    #[test]
+    fn manifests_at_any_depth_are_governance_relevant() {
+        assert!(is_cargo_manifest("Cargo.toml"));
+        assert!(is_cargo_manifest("crates/gororoba_cli_physics/Cargo.toml"));
+        assert!(is_cargo_manifest("xtask/Cargo.toml"));
+    }
+
+    #[test]
+    fn near_misses_stay_out_of_the_governance_lane() {
+        // A lockfile records resolution, not the `[[bin]]` set, so it cannot
+        // desynchronize `registry/binaries.toml`.
+        assert!(!is_cargo_manifest("Cargo.lock"));
+        assert!(!is_cargo_manifest("crates/cd_kernel/Cargo.lock"));
+        // Suffix matching must not fire on a name that merely ends the same way.
+        assert!(!is_cargo_manifest("docs/NotCargo.toml"));
+        assert!(!is_cargo_manifest("registry/claims.toml"));
     }
 }

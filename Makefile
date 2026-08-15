@@ -335,6 +335,11 @@ registry-verify-markdown-governance:
 validate-governance: registry-validation-tools
 	$(MARKDOWN_REGISTRY_CACHE) verify-all
 	$(GOVERNANCE_VERIFY_CACHE) validate-all
+# execution-planning cross-checks every experiment and lineage row against the
+# declared execution targets and against the sha256 of its own run command. It
+# stayed outside this chain while three binary-collapse commits regressed it,
+# so it runs here rather than only under registry-verify-execution-planning.
+	$(EXECUTION_PLANNING_CACHE) --verify --repo-root .
 	@echo ""
 	@echo "=========================================="
 	@echo "REGISTRY GOVERNANCE VALIDATION: PASSED"
@@ -436,6 +441,7 @@ REGISTRY_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/registry-validation.stamp
 REGISTRY_VALIDATION_CACHE_FILES := $(addprefix $(VALIDATION_TOOLS_DIR)/,$(REGISTRY_VALIDATION_BINS))
 MARKDOWN_REGISTRY_CACHE := $(VALIDATION_TOOLS_DIR)/markdown-registry
 GOVERNANCE_VERIFY_CACHE := $(VALIDATION_TOOLS_DIR)/governance-verify
+EXECUTION_PLANNING_CACHE := $(VALIDATION_TOOLS_DIR)/execution-planning
 REGISTRY_INTEGRITY_CACHE := $(VALIDATION_TOOLS_DIR)/registry-integrity
 PROJECT_COUNTER_CACHE := $(VALIDATION_TOOLS_DIR)/project-counter-sync
 PROVENANCE_CACHE := $(VALIDATION_TOOLS_DIR)/provenance
@@ -1623,41 +1629,41 @@ ref-audit-strict:
 # data/output/heliosphere/ablations/.  Run ablation-all for the full campaign.
 
 ablation-baseline-l2:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-l2-delay-baseline -- --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- l2-delay-baseline --start-date 2016-08-29 --n-days 7
 
 ablation-baseline-random:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-random-trilinear -- --start-date 2016-08-29 --n-days 7 --n-draws 100 --base-seed 1000
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- random-trilinear --start-date 2016-08-29 --n-days 7 --n-draws 100 --base-seed 1000
 
 ablation-baseline-sparse:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-random-trilinear-sparse -- --start-date 2016-08-29 --n-days 7 --n-draws 100 --base-seed 2000
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- random-trilinear-sparse --start-date 2016-08-29 --n-days 7 --n-draws 100 --base-seed 2000
 
 ablation-baseline-commutator:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-commutator-baseline -- --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- commutator-baseline --start-date 2016-08-29 --n-days 7
 
 ablation-baseline-pca:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-pca-variance-baseline -- --start-date 2016-08-29 --n-days 7 --pca-window 15
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- pca-variance-baseline --start-date 2016-08-29 --n-days 7 --pca-window 15
 
 ablation-axis-a:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-r16-ablation -- --start-date 2016-08-29 --n-days 7
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-r64-ablation -- --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- r16-ablation --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- r64-ablation --start-date 2016-08-29 --n-days 7
 
 ablation-axis-b:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-lag-depth-sweep -- --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- lag-depth-sweep --start-date 2016-08-29 --n-days 7
 
 ablation-window-sensitivity:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-window-sensitivity -- --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- window-sensitivity --start-date 2016-08-29 --n-days 7
 
 ablation-mad-decorrelation:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-themis-staples-labeled -- --start-date 2016-08-29 --n-days 7
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-themis-staples-labeled -- --start-date 2016-08-29 --n-days 7 --decorrelated-mad --out-json data/output/heliosphere/ablations/themis_staples_labeled_decorrelated_mad_eval.json
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-staples-labeled --start-date 2016-08-29 --n-days 7
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-staples-labeled --start-date 2016-08-29 --n-days 7 --decorrelated-mad --out-json data/output/heliosphere/ablations/themis_staples_labeled_decorrelated_mad_eval.json
 
 ablation-baselines: ablation-baseline-l2 ablation-baseline-random ablation-baseline-sparse ablation-baseline-commutator ablation-baseline-pca
 
 voyager-heliopause-v1:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-voyager-heliopause -- --spacecraft v1 --window-days 20
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- voyager-heliopause --spacecraft v1 --window-days 20
 
 voyager-heliopause-v2:
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-voyager-heliopause -- --spacecraft v2 --window-days 20
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- voyager-heliopause --spacecraft v2 --window-days 20
 
 ablation-all: ablation-baselines ablation-axis-a ablation-axis-b ablation-window-sensitivity ablation-mad-decorrelation
 
@@ -2219,19 +2225,19 @@ run: rust-smoke
 
 run-e183:
 	@mkdir -p data/results/e183
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo -- stacking-manga \
 		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
 		--dapall data/external/manga/dapall_selection.csv \
 		--cd-dim 16 --csv data/results/e183/manga_stack_D16.csv
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo -- stacking-manga \
 		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
 		--dapall data/external/manga/dapall_selection.csv \
 		--cd-dim 64 --csv data/results/e183/manga_stack_D64.csv
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo -- stacking-manga \
 		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
 		--dapall data/external/manga/dapall_selection.csv \
 		--cd-dim 256 --csv data/results/e183/manga_stack_D256.csv
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo-stacking-manga -- \
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin harmonic-halo -- stacking-manga \
 		--rotcurves data/external/manga/rotcurves/manga_rotcurves_all.csv \
 		--dapall data/external/manga/dapall_selection.csv \
 		--cd-dim 1024 --csv data/results/e183/manga_stack_D1024.csv
@@ -2507,9 +2513,9 @@ cpd-audit-generated:
 
 quench-map:
 	@echo "Building full heliosphere feature cube..."
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-feature-cube -- --window full-heliosphere --out-csv data/output/heliosphere/full_feature_cube.csv
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- feature-cube --window full-heliosphere --out-csv data/output/heliosphere/full_feature_cube.csv
 	@echo "Generating quench scan from full cube (including MMS)..."
-	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere-quench-scan -- --cube-csv data/output/heliosphere/full_feature_cube.csv --out-csv data/output/heliosphere/takens_quench_scan.csv
+	$(CARGO_ENV) cargo run --release -p gororoba_cli_physics --bin heliosphere -- quench-scan --cube-csv data/output/heliosphere/full_feature_cube.csv --out-csv data/output/heliosphere/takens_quench_scan.csv
 
 
 # ---- Help ----
