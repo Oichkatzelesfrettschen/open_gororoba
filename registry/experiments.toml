@@ -118,7 +118,7 @@ title = "Kerr Shadow Boundaries"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-search"
+binary = "zd-algebra search"
 binary_experiment_declared = "E-005"
 binary_registered = true
 claim_refs = ["C-050", "C-051", "C-052", "C-053", "C-054", "C-055", "C-056", "C-057", "C-058", "C-059", "C-060"]
@@ -136,8 +136,8 @@ method = "Build sedenion ZD interaction graph, compute graph-theoretic invariant
 output = ["stdout"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000"
-run_command_sha256 = "cc836cab950db27c227d6bd4407dfb5e5b4fccc93ecc7b5f96c6c38599781254"
+run = "cargo run --release --bin zd-algebra -- search --dim 16 --max-pairs 5000"
+run_command_sha256 = "dbaf4b906cc55ed3cb30ed7351d93d871bb46bd17ba7f0cb646047fd4a9f2089"
 status = "active"
 status_token = "ACTIVE"
 title = "Zero-Divisor Graph Invariants"
@@ -724,7 +724,7 @@ title = "A-infinity Correction Tensor via Neural Homotopy Search (Thesis 3 Valid
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-cross-tx1"
+binary = "thesis cross-tx1"
 binary_experiment_declared = "E-030"
 binary_registered = true
 claim_refs = []
@@ -742,8 +742,8 @@ method = "3D toroidal random walk with CD product noise, imbalance density modul
 output = ["data/thesis_lab/tx1/tx1_report.toml"]
 output_path_refs = ["data/thesis_lab/tx1/tx1_report.toml"]
 reproducibility_class = "seeded_stochastic_replay"
-run = "cargo run --release --bin thesis-cross-tx1 -- --grid_size 16 --n_steps 50000"
-run_command_sha256 = "b5529ae3b013f777288e16e48424813a29da31b25b32d6bd9da8c89f49e32a17"
+run = "cargo run --release --bin thesis -- cross-tx1 --grid_size 16 --n_steps 50000"
+run_command_sha256 = "d4eccd09041c7dba5d1eb3f3d7de511a7cb1b520ea4d4e3275bb27fdd4a80237"
 seed = 42
 status = "active"
 status_token = "ACTIVE"
@@ -751,7 +751,7 @@ title = "TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-cross-tx2"
+binary = "thesis cross-tx2"
 binary_experiment_declared = "E-031"
 binary_registered = true
 claim_refs = []
@@ -769,8 +769,8 @@ method = "Imbalance -> viscosity -> LBM evolution -> velocity field -> lattice f
 output = ["data/thesis_lab/tx2/tx2_report.toml"]
 output_path_refs = ["data/thesis_lab/tx2/tx2_report.toml"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin thesis-cross-tx2 -- --grid_size 16 --lbm_steps 500"
-run_command_sha256 = "ea010021362fb95a9ead8e729c0f5db422816dbdbd22bf907ed1ab9fe92519bd"
+run = "cargo run --release --bin thesis -- cross-tx2 --grid_size 16 --lbm_steps 500"
+run_command_sha256 = "f3e4f5ca983c28b72b1310c86e6e17d61e1a48376b9926226f576e5cebfd4880"
 seed = 42
 status = "active"
 status_token = "ACTIVE"
@@ -805,7 +805,7 @@ title = "Thesis 2: 3D Associator-Coupled Shear Thickening"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-synthesis-engine"
+binary = "thesis synthesis-engine"
 binary_experiment_declared = "E-033"
 binary_registered = true
 claim_refs = ["C-674"]
@@ -823,8 +823,8 @@ method = "Orchestrated execution of T1 (spatial correlation), T2 (power-law visc
 output = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
 output_path_refs = ["data/evidence/synthesis_final/synthesis_summary.toml", "data/evidence/synthesis_final/thesis1_evidence.toml", "data/evidence/synthesis_final/thesis2_evidence.toml", "data/evidence/synthesis_final/thesis3_evidence.toml", "data/evidence/synthesis_final/thesis4_evidence.toml"]
 reproducibility_class = "seeded_stochastic_replay"
-run = "cargo run --release --bin thesis-synthesis-engine -- --thesis all --output-dir data/evidence/synthesis_final"
-run_command_sha256 = "102c01628dcb5cd474f3ad40ca66f829cac3eb01c1fce1df3e12eeeb8f7dca99"
+run = "cargo run --release --bin thesis -- synthesis-engine --thesis all --output-dir data/evidence/synthesis_final"
+run_command_sha256 = "8c253398f84a546919d1826e4b6d66cd8eca1c81fb42c71dc77365c7a2c3c1bc"
 seed = 42
 status = "active"
 status_token = "ACTIVE"
@@ -859,7 +859,7 @@ title = "Kubo Linear-Response Imbalance-Viscosity Coupling Derivation"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "warp-gpu-experiment"
+binary = "warp gpu-experiment"
 binary_experiment_declared = "E-035"
 binary_registered = true
 claim_refs = ["C-682"]
@@ -1290,7 +1290,7 @@ title = "Rust-Native BL 6EQUJ5 Doppler Drift Search and ABACAD Pipeline"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-sweep"
+binary = "zd-resonance sweep"
 binary_experiment_declared = "E-051"
 binary_registered = true
 claim_refs = ["C-792"]
@@ -1308,8 +1308,8 @@ method = "GPU LBM tau sweep at 10 values [0.55..1.00] with ZD modulation amplitu
 output = ["data/csv/zd_resonance_sweep.csv", "data/csv/zd_resonance_control.csv"]
 output_path_refs = ["data/csv/zd_resonance_control.csv", "data/csv/zd_resonance_sweep.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-sweep -- sweep && cargo run --release --bin zd-resonance-sweep -- control && cargo run --release --bin zd-resonance-sweep -- analyze"
-run_command_sha256 = "44ce935dbbee27305d68d352efc1362f9e3b8862e3afd8b759ffd8f9b4e7331c"
+run = "cargo run --release --bin zd-resonance -- sweep sweep && cargo run --release --bin zd-resonance -- sweep control && cargo run --release --bin zd-resonance -- sweep analyze"
+run_command_sha256 = "819dac3dbb434deda2ff01a0101e9febd9dea63b4d0e962cbe10bc3da5f9aa2c"
 status = "active"
 status_token = "ACTIVE"
 title = "ZD Resonance Tau Sweep with Control"
@@ -1405,7 +1405,7 @@ deterministic = true
 external_source_refs = []
 gpu = false
 id = "E-055"
-input = "Synthetically generated time series (optional: rho trace CSV from zd-resonance-sweep)"
+input = "Synthetically generated time series (optional: rho trace CSV from zd-resonance sweep)"
 input_path_refs = []
 lineage_id = "XL-053"
 method = "End-to-end pipeline: synthetic signal generation (4096 samples with ghost frequency injection), FFT spectral analysis, Leech Lattice projection with deep hole classification, ultrametric fraction test on peak frequencies. Consolidated report with all metrics."
@@ -1602,7 +1602,7 @@ title = "Multiscale CWT Ricker Wavelet Ghost Analysis"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-cuda"
+binary = "zd-resonance cuda"
 binary_experiment_declared = "E-063"
 binary_registered = true
 claim_refs = ["C-792", "C-793"]
@@ -1620,15 +1620,15 @@ method = "D3Q19 LBM at 128^3 with BF16 precision and per-cell Sedenion imbalance
 output = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
 output_path_refs = ["data/csv/zd_resonance_cuda_128_bf16.csv", "data/csv/zd_resonance_cuda_control_128.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128"
-run_command_sha256 = "5022eb2ad2eb65f1d5fc7a84c6554f01f1733ff29f03554f84623cef2781dc93"
+run = "cargo run --release --bin zd-resonance -- cuda sweep --res 128 && cargo run --release --bin zd-resonance -- cuda control --res 128"
+run_command_sha256 = "75cbfe5e28a5e878f2ec3a804f2c34f12e4f06e8984b4ae62c595464b2765e1f"
 status = "active"
 status_token = "ACTIVE"
 title = "CUDA BF16 ZD Resonance 128^3 Tau Sweep"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-cuda"
+binary = "zd-resonance cuda"
 binary_experiment_declared = "E-064"
 binary_registered = true
 claim_refs = ["C-789", "C-792", "C-793"]
@@ -1646,15 +1646,15 @@ method = "D3Q19 LBM at 256^3 with BF16 precision. Same tau sweep protocol as E-0
 output = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
 output_path_refs = ["data/csv/zd_resonance_cuda_256_bf16.csv", "data/csv/zd_resonance_cuda_control_256.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500"
-run_command_sha256 = "cca99064934b590880d1f685565bc5291697378bbfab4b09c538a79127a34a03"
+run = "cargo run --release --bin zd-resonance -- cuda sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance -- cuda control --res 256 --steps 500"
+run_command_sha256 = "4356980bbda880d5670b7e06c9527d693a6f7d495e79ec624617f21fcbf41ada"
 status = "active"
 status_token = "ACTIVE"
 title = "CUDA BF16 ZD Resonance 256^3 Tau Sweep"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-cuda"
+binary = "zd-resonance cuda"
 binary_experiment_declared = "E-065"
 binary_registered = true
 claim_refs = ["C-792"]
@@ -1672,15 +1672,15 @@ method = "Fix Sedenion coupling, sweep Reynolds number from laminar to turbulent
 output = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
 output_path_refs = ["data/csv/zd_resonance_cuda_reynolds_128.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-cuda -- reynolds-sweep --res 128"
-run_command_sha256 = "87c7331df738fe89b8c537960d94fbbfb7ae87f025d2d0c0f3be9c5c195ad704"
+run = "cargo run --release --bin zd-resonance -- cuda reynolds-sweep --res 128"
+run_command_sha256 = "241afccfa9479a2ae89167a6aec8f98c4381d9d1286965b143b6f7ea2e2dd818"
 status = "active"
 status_token = "ACTIVE"
 title = "CUDA BF16 Reynolds Number Threshold Sweep 128^3"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-4d"
+binary = "zd-resonance 4d"
 binary_experiment_declared = "E-066"
 binary_registered = true
 claim_refs = ["C-792", "C-793"]
@@ -1698,15 +1698,15 @@ method = "D3Q19 batch LBM at 32^3 x 32 (1.05M cells) with BF16 precision. 4th di
 output = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
 output_path_refs = ["data/csv/zd_resonance_4d_32x32.csv", "data/csv/zd_resonance_4d_control_32x32.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-4d -- sweep-32 && cargo run --release --bin zd-resonance-4d -- control --res 32"
-run_command_sha256 = "e5a0d6004cb90e9c83f66278b2fa1970a9059ddd3c362f2b0752a78f80559e0c"
+run = "cargo run --release --bin zd-resonance -- 4d sweep-32 && cargo run --release --bin zd-resonance -- 4d control --res 32"
+run_command_sha256 = "91d32bb1104407ef5552f3f20eed968e5c6bf5f9298e7f5947973c5ddc6c95e6"
 status = "active"
 status_token = "ACTIVE"
 title = "4D ZD Resonance 32^3 x 32 Batch Sweep"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-resonance-4d"
+binary = "zd-resonance 4d"
 binary_experiment_declared = "E-067"
 binary_registered = true
 claim_refs = ["C-792", "C-793"]
@@ -1724,8 +1724,8 @@ method = "D3Q19 batch LBM at 64^3 x 16 (4.2M cells, ~1.4 GB GPU) with BF16 preci
 output = ["data/csv/zd_resonance_4d_64x16.csv"]
 output_path_refs = ["data/csv/zd_resonance_4d_64x16.csv"]
 reproducibility_class = "non_deterministic"
-run = "cargo run --release --bin zd-resonance-4d -- sweep-64"
-run_command_sha256 = "3f9078965171dde4575c1c5b75955c80321b8737a86ad4403a3b237c4c0cc733"
+run = "cargo run --release --bin zd-resonance -- 4d sweep-64"
+run_command_sha256 = "b1db593e7172770e96e4b4129de6d65ccc427f21ae572f5447ff5bb321cc8b23"
 status = "active"
 status_token = "ACTIVE"
 title = "4D ZD Resonance 64^3 x 16 Batch Sweep"
@@ -1836,7 +1836,7 @@ title = "Real-Data Ghost Frequency Re-Verification (Phase 5)"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-cross-tx2"
+binary = "thesis cross-tx2"
 binary_experiment_declared = "E-072"
 binary_registered = true
 claim_refs = ["C-669"]
@@ -1854,8 +1854,8 @@ method = "TX-2 cross-experiment at 128^3 (2M cells) CPU FP64, 500 LBM steps, lam
 output = ["data/thesis_lab/tx2_128/tx2_report.toml"]
 output_path_refs = ["data/thesis_lab/tx2_128/tx2_report.toml"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin thesis-cross-tx2 -- --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128"
-run_command_sha256 = "44879a5916e76e9365b3298669a12910a5b0aabd2a383f44db68ad8032988760"
+run = "cargo run --release --bin thesis -- cross-tx2 --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128"
+run_command_sha256 = "5288faaf60912f94c877159bc8031aad401f614c17d517e664cb9cc611c6b209"
 status = "active"
 status_token = "ACTIVE"
 title = "TX-2 Viscosity-to-Filtration Loop at 128^3 CPU FP64 (C-669 Refutation)"
@@ -2153,7 +2153,7 @@ title = "Sedenion foliation imbalance-York time correlation analysis"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-spectral-dimension"
+binary = "zd-spectral dimension"
 binary_experiment_declared = "E-084"
 binary_registered = true
 claim_refs = ["C-922", "C-923", "C-926"]
@@ -2171,8 +2171,8 @@ method = "For each CD dim: build cross-assessor ZD graph, compute Laplacian, eig
 output = ["data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_gap.csv"]
 output_path_refs = ["data/csv/zd_laplacian_eigenvalues.csv", "data/csv/zd_spectral_dimension_curves.csv", "data/csv/zd_spectral_dimension_plateaus.csv", "data/csv/zd_spectral_gap.csv"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-spectral-dimension -- --min-dim 16 --max-dim 512 --t-points 300"
-run_command_sha256 = "e24ea86c6c91df00e671751cf437fffe25879316c29c7fb212dcb5fd13ca6c1a"
+run = "cargo run --release --bin zd-spectral -- dimension --min-dim 16 --max-dim 512 --t-points 300"
+run_command_sha256 = "4424e6274de6420d675fb62c9137304cce9e15482301d8d1e565e2cb4d3b5a33"
 seed = 0
 status = "active"
 status_token = "ACTIVE"
@@ -2207,7 +2207,7 @@ title = "Associator entropy mechanism decomposition"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-quantum-chaos"
+binary = "zd-spectral quantum-chaos"
 binary_experiment_declared = "E-086"
 binary_registered = true
 claim_refs = ["C-929", "C-930"]
@@ -2225,8 +2225,8 @@ method = "Compute Laplacian eigenvalues per ZD graph component, Gaussian KDE unf
 output = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
 output_path_refs = ["data/csv/zd_nnsd.csv", "data/csv/zd_nnsd_histogram.csv", "data/csv/zd_nnsd_motif.csv"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-quantum-chaos -- --min-dim 64 --max-dim 256 --by-motif"
-run_command_sha256 = "f9b5b0f38d5acc1e9b778bce12b2c8f4741a3fa45c9eef2474d23b70fcdb63a3"
+run = "cargo run --release --bin zd-spectral -- quantum-chaos --min-dim 64 --max-dim 256 --by-motif"
+run_command_sha256 = "afa66743a498d978614fd17d7c73402b5fb30774f7aacc5f7c79048e29d0af95"
 seed = 0
 status = "active"
 status_token = "ACTIVE"
@@ -3803,7 +3803,7 @@ title = "Domain wall boundary modes and point defect localized modes"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-crystal-bands"
+binary = "zd-algebra crystal-bands"
 binary_experiment_declared = "E-147"
 binary_registered = true
 claim_refs = ["C-1255", "C-1256"]
@@ -3821,15 +3821,15 @@ method = "Compute ZD motif graph adjacency spectra at D=16,32,64 via block-diago
 output = ["stdout"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64 --details"
-run_command_sha256 = "571935a7855f72aa5e796cd064100cdc776df743e08b81bbb0f2eb5f38f34984"
+run = "cargo run --release --bin zd-algebra -- crystal-bands --dims 16,32,64 --details"
+run_command_sha256 = "3b2b000e376f44579bfc039780b322d9ba164df6f549a0f19c2d73ed7fde5850"
 status = "active"
 status_token = "ACTIVE"
 title = "ZD crystal band spectra D=16,32,64"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-crystal-bands"
+binary = "zd-algebra crystal-bands"
 binary_experiment_declared = "E-147"
 binary_registered = true
 claim_refs = ["C-1257"]
@@ -3847,15 +3847,15 @@ method = "Compute flat band fraction across D=16,32,64,128,256 to test dimension
 output = ["stdout"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-crystal-bands -- --dims 16,32,64,128,256"
-run_command_sha256 = "2b2681f140df543a53a2dc1b760e0a232971c23d95a2bebc8d35a77576901400"
+run = "cargo run --release --bin zd-algebra -- crystal-bands --dims 16,32,64,128,256"
+run_command_sha256 = "c774d80d5633126940471a4aff7decc6eb4933ea6665f57e0f700d7562a5017f"
 status = "active"
 status_token = "ACTIVE"
 title = "Flat band fraction scaling D=16..256"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-crystal-bands"
+binary = "zd-algebra crystal-bands"
 binary_experiment_declared = "E-147"
 binary_registered = true
 claim_refs = ["C-1258"]
@@ -3873,8 +3873,8 @@ method = "Verify that the D=16 partner graph degeneracy pattern {7,14,42,14,7} f
 output = ["stdout"]
 output_path_refs = []
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin zd-crystal-bands -- --dims 16 --reggiani"
-run_command_sha256 = "d5da73bfc63335eb04d8cdcfe787a46e539c1b7ca63fc54b482e79b33888cadf"
+run = "cargo run --release --bin zd-algebra -- crystal-bands --dims 16 --reggiani"
+run_command_sha256 = "34b60c400c2594e9589192ef2dd6e07fe2b1bc6395ab50348143020b8c17fca2"
 status = "active"
 status_token = "ACTIVE"
 title = "Reggiani factorization verification"
@@ -4349,7 +4349,7 @@ title = "MRT vs BGK stability envelope: density contrast sweep at tau=0.7"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "zd-crystal-bands"
+binary = "zd-algebra crystal-bands"
 binary_experiment_declared = "E-147"
 binary_registered = true
 claim_refs = ["C-1291"]
@@ -4843,7 +4843,7 @@ title = "AVX/FMA follow-on slice for x87 accumulation benchmarks at n=512"
 truth_surface_consumption = []
 
 [[experiment]]
-binary = "thesis-42-support"
+binary = "thesis 42-support"
 binary_experiment_declared = "E-190"
 binary_registered = true
 claim_refs = []
@@ -4861,8 +4861,8 @@ method = "Build one repo-consistent support bundle from three existing lanes: (1
 output = ["data/evidence/thesis_42_support/summary.toml", "data/evidence/thesis_42_support/nonlocal_topologies.csv", "data/evidence/thesis_42_support/majorana_friction_sweep.csv", "data/evidence/thesis_42_support/harmonic_halo_reference.csv"]
 output_path_refs = ["data/evidence/thesis_42_support/harmonic_halo_reference.csv", "data/evidence/thesis_42_support/majorana_friction_sweep.csv", "data/evidence/thesis_42_support/nonlocal_topologies.csv", "data/evidence/thesis_42_support/summary.toml"]
 reproducibility_class = "deterministic_replay"
-run = "cargo run --release --bin thesis-42-support -- --output-dir data/evidence/thesis_42_support"
-run_command_sha256 = "bb58732b71e8cea36ec8626b4f0dc08adaa772b122e14e258d6ac97119bb37cf"
+run = "cargo run --release --bin thesis -- 42-support --output-dir data/evidence/thesis_42_support"
+run_command_sha256 = "16da7309bec91421d5e24833477699c14620a5b02e8a2feefbd8fdc47f798133"
 status = "active"
 status_token = "ACTIVE"
 title = "Evidence-first thesis 42 support bundle"

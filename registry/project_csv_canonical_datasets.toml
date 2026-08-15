@@ -24,7 +24,7 @@ status = "active"
 
 [[dataset]]
 id = "PC-0006"
-description = "Harmonic halo reference CSV for thesis-42-support. Output used in E-190 evidence chain for the 42-dimensional resonance claim."
+description = "Harmonic halo reference CSV for thesis 42-support. Output used in E-190 evidence chain for the 42-dimensional resonance claim."
 source = "data/evidence/thesis_42_support/harmonic_halo_reference.csv"
 status = "active"
 
@@ -186,61 +186,61 @@ status = "active"
 
 [[dataset]]
 id = "PC-0127"
-description = "ZD Laplacian eigenvalue spectrum CSV (primary). Output of zd-spectral-dimension binary: Laplacian eigenvalue spectrum of the sign-imbalance (ZD) graph."
+description = "ZD Laplacian eigenvalue spectrum CSV (primary). Output of the `zd-spectral dimension` lane: Laplacian eigenvalue spectrum of the sign-imbalance (ZD) graph."
 source = "data/csv/zd_laplacian_eigenvalues.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0129"
-description = "ZD quantum chaos nearest-neighbor spacing CSV (primary). Output of zd-quantum-chaos binary: nearest-neighbor spacing distribution for ZD energy level statistics."
+description = "ZD quantum chaos nearest-neighbor spacing CSV (primary). Output of the `zd-spectral quantum-chaos` lane: nearest-neighbor spacing distribution for ZD energy level statistics."
 source = "data/csv/zd_nnsd.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0130"
-description = "ZD quantum chaos nearest-neighbor spacing CSV (secondary). Second dataset reference for zd-quantum-chaos experiment."
+description = "ZD quantum chaos nearest-neighbor spacing CSV (secondary). Second dataset reference for the `zd-spectral quantum-chaos` experiment."
 source = "data/csv/zd_nnsd.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0131"
-description = "ZD quantum chaos nearest-neighbor spacing CSV (tertiary). Third dataset reference for zd-quantum-chaos experiment."
+description = "ZD quantum chaos nearest-neighbor spacing CSV (tertiary). Third dataset reference for the `zd-spectral quantum-chaos` experiment."
 source = "data/csv/zd_nnsd.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0132"
-description = "ZD resonance 4D 32x32 grid CSV (primary). Output of zd-resonance-4d binary: resonance mode spectrum on a 32x32 spatial grid."
+description = "ZD resonance 4D 32x32 grid CSV (primary). Output of the `zd-resonance 4d` lane: resonance mode spectrum on a 32x32 spatial grid."
 source = "data/csv/zd_resonance_4d_32x32.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0133"
-description = "ZD resonance 4D 64x16 grid CSV. Output of zd-resonance-4d binary: resonance mode spectrum on a 64x16 spatial grid."
+description = "ZD resonance 4D 64x16 grid CSV. Output of the `zd-resonance 4d` lane: resonance mode spectrum on a 64x16 spatial grid."
 source = "data/csv/zd_resonance_4d_64x16.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0134"
-description = "ZD resonance 4D 32x32 grid CSV (secondary reference). Second reference for zd-resonance-4d experiment."
+description = "ZD resonance 4D 32x32 grid CSV (secondary reference). Second reference for the `zd-resonance 4d` experiment."
 source = "data/csv/zd_resonance_4d_32x32.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0135"
-description = "ZD resonance CUDA 128 BF16 CSV (primary). Output of zd-resonance-cuda binary: GPU BF16 resonance mode spectrum at 128^3 resolution."
+description = "ZD resonance CUDA 128 BF16 CSV (primary). Output of the `zd-resonance cuda` lane: GPU BF16 resonance mode spectrum at 128^3 resolution."
 source = "data/csv/zd_resonance_cuda_128_bf16.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0136"
-description = "ZD resonance CUDA 128 BF16 CSV (secondary). Second dataset reference for zd-resonance-cuda experiment."
+description = "ZD resonance CUDA 128 BF16 CSV (secondary). Second dataset reference for the `zd-resonance cuda` experiment."
 source = "data/csv/zd_resonance_cuda_128_bf16.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0138"
-description = "ZD resonance CUDA Reynolds 128 CSV. Output of zd-resonance-cuda binary: resonance spectrum at varying Reynolds numbers at 128^3 resolution."
+description = "ZD resonance CUDA Reynolds 128 CSV. Output of the `zd-resonance cuda` lane: resonance spectrum at varying Reynolds numbers at 128^3 resolution."
 source = "data/csv/zd_resonance_cuda_reynolds_128.csv"
 status = "active"
 
@@ -252,12 +252,12 @@ status = "active"
 
 [[dataset]]
 id = "PC-0140"
-description = "ZD Laplacian eigenvalue spectrum CSV (secondary). Second dataset reference for zd-spectral-dimension experiment."
+description = "ZD Laplacian eigenvalue spectrum CSV (secondary). Second dataset reference for the `zd-spectral dimension` experiment."
 source = "data/csv/zd_laplacian_eigenvalues.csv"
 status = "active"
 
 [[dataset]]
 id = "PC-0141"
-description = "ZD Laplacian eigenvalue spectrum CSV (tertiary). Third dataset reference for zd-spectral-dimension experiment."
+description = "ZD Laplacian eigenvalue spectrum CSV (tertiary). Third dataset reference for the `zd-spectral dimension` experiment."
 source = "data/csv/zd_laplacian_eigenvalues.csv"
 status = "active"

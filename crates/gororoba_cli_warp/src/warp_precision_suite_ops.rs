@@ -205,8 +205,8 @@ fn write_summary(
     out.push('\n');
     out.push_str("[compatibility]\n");
     out.push_str("canonical_schema = \"open_gororoba.warp_precision_case.v2\"\n");
-    out.push_str("legacy_entrypoints = [\"warp-bench-precision\", \"warp-precision-matrix\"]\n");
-    out.push_str("canonical_entrypoint = \"warp-precision-suite\"\n");
+    out.push_str("legacy_entrypoints = [\"warp bench-precision\", \"warp precision-matrix\"]\n");
+    out.push_str("canonical_entrypoint = \"warp precision-suite\"\n");
     out.push('\n');
 
     for (h5_path, timing_path, report) in cases {
@@ -433,7 +433,7 @@ pub fn run_bench_compat_args(args: &[String]) -> Result<(), Box<dyn Error>> {
     if args.len() < 3 {
         return Err(std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
-            "Usage: warp-bench-precision <res> <FP32|BF16> [duration_s=20] [trace_stride=10] [h5_out]",
+            "Usage: warp bench-precision <res> <FP32|BF16> [duration_s=20] [trace_stride=10] [h5_out]",
         )
         .into());
     }

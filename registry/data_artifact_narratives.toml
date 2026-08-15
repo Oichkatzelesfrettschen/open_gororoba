@@ -41,7 +41,7 @@ body_markdown = '''
 **Status:** Executed & Distilled
 
 ## 1. Executive Summary
-We executed a production-grade 3D parameter sweep using the unified `thesis-synthesis` engine. The simulation integrates D3Q19 Lattice Boltzmann fluids with Kerr spacetime metrics and Sedenionic algebraic fields. We specifically measured the topological response of the algebraic field to varying fluid-algebra coupling strengths ($\alpha$).
+We executed a production-grade 3D parameter sweep using the unified `thesis synthesis` engine. The simulation integrates D3Q19 Lattice Boltzmann fluids with Kerr spacetime metrics and Sedenionic algebraic fields. We specifically measured the topological response of the algebraic field to varying fluid-algebra coupling strengths ($\alpha$).
 
 ## 2. Methodology
 *   **Grid:** $16^3$ spatial resolution.

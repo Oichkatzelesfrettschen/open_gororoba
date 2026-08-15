@@ -490,10 +490,10 @@ strip = "symbols" # remove symbol table for smaller binary
 # thin LTO links in 6 s. So the trigger is the LTO mode alone, not the linker,
 # section GC, or the codegen-unit count.
 #
-# Cost is only partly measured. zd-search, which does not reach the gemm path,
-# grows 784432 -> 846248 bytes (+7.9%); profile-wide size and runtime impact
-# are not measured. A gemm-reaching binary cannot be compared at all, since no
-# fat-LTO baseline exists for one.
+# Cost is only partly measured. The `zd-algebra search` lane, which does not
+# reach the gemm path, grows 784432 -> 846248 bytes (+7.9%); profile-wide size
+# and runtime impact are not measured. A gemm-reaching binary cannot be compared
+# at all, since no fat-LTO baseline exists for one.
 #
 # `[profile.bench]` and `[profile.parity]` follow this setting. Restoring
 # `lto = "fat"` once private-gemm-x86 or rustc stops producing the discarded
@@ -518,7 +518,7 @@ overflow-checks = true
 # Per-package codegen-units=1 override for gororoba_cli in validation.
 # Why: thin-LTO + codegen-units=6 creates dangling references to gemm/pulp
 # SIMD trampolines (gemm_microkernel_c64_simd256_*, libpulp_v0_22_2_st_b32s_*)
-# in the thesis-42-support binary. The bug reproduces with both rust-lld
+# in the `thesis 42-support` lane. The bug reproduces with both rust-lld
 # and gnu gold; root cause is multi-cgu LTO discarding "duplicate" symbols
 # while still keeping references in the survivor cgu. cgu=1 forces a single
 # cgu so LTO has nothing to discard. Other workspace crates remain at cgu=6.
