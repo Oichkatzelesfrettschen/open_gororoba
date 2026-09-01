@@ -7,7 +7,7 @@
 //! Authoritative source: `registry/markdown_governance.toml`.
 //!
 //! - Generated at: deterministic
-//! - Document count: 136
+//! - Document count: 134
 //! - TOML generated mirrors: 15
 //! - TOML manual sources: 45
 //! - Generated artifacts: 38
@@ -1121,21 +1121,3 @@
 //! - Mode: `manual_narrative`
 //! - Header required: `false`
 //! - Notes: Manual narrative source retained until a canonical registry lane is assigned.
-//!
-//! ### MDG-0135: `reports/browser_profiles/ams_1906_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md`
-//!
-//! - Kind: `artifact_report`
-//! - Mode: `generated_artifact`
-//! - Header required: `false`
-//! - Source TOML refs:
-//!   - `registry/reports_narratives.toml`
-//! - Notes: Generated or retained artifact without a TOML mirror contract.
-//!
-//! ### MDG-0136: `reports/browser_profiles/ams_1912_edge/Edge Wallet/128.18367.18366.1/json/wallet/README.md`
-//!
-//! - Kind: `artifact_report`
-//! - Mode: `generated_artifact`
-//! - Header required: `false`
-//! - Source TOML refs:
-//!   - `registry/reports_narratives.toml`
-//! - Notes: Generated or retained artifact without a TOML mirror contract.
