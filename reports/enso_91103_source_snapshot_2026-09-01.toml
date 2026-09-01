@@ -7,9 +7,8 @@ postal_code = "91103"
 label = "Pasadena, California ZIP Code 91103 centroid approximation"
 latitude_deg = 34.16738
 longitude_deg = -118.16446
-elevation_ft = 862.0
-climate_division_id = 93
-climate_division_name = "Southern California Coast"
+climate_division_id = 6
+climate_division_name = "South Coast Drainage"
 normals_station_id = "USC00046719"
 normals_period = "1991-2020"
 annual_normal_precip_inches = 20.1
@@ -105,7 +104,7 @@ next_enso_update = "2026-09-10"
 next_seasonal_update = "2026-09-17"
 very_strong_probability_relation = "greater_than"
 very_strong_probability_pct = 90.0
-historic_ond_probability_pct = 69.0
+ond_roni_ge_2_5_probability_pct = 69.0
 
 [[issue.lead]]
 season = "SON"
