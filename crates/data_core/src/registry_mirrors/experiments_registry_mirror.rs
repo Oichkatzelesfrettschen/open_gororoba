@@ -79,7 +79,7 @@
 //!
 //! ## E-005: Zero-Divisor Graph Invariants
 //!
-//! - Binary: `zd-search`
+//! - Binary: `zd-algebra search`
 //! - Input: None (purely algebraic)
 //! - Output: stdout
 //! - Deterministic: `true`
@@ -91,7 +91,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000
+//! cargo run --release --bin zd-algebra -- search --dim 16 --max-pairs 5000
 //! ```
 //!
 //! ## E-006: Gravastar TOV Parameter Sweep
@@ -478,7 +478,7 @@
 //!
 //! ## E-030: TX-1: Imbalance-Modulated Collision Dynamics (T1 x T4)
 //!
-//! - Binary: `thesis-cross-tx1`
+//! - Binary: `thesis cross-tx1`
 //! - Input: SedenionField spatial variation (dim=16), deterministic xorshift seed
 //! - Output: data/thesis_lab/tx1/tx1_report.toml
 //! - Deterministic: `false`
@@ -491,12 +491,12 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin thesis-cross-tx1 -- --grid_size 16 --n_steps 50000
+//! cargo run --release --bin thesis -- cross-tx1 --grid_size 16 --n_steps 50000
 //! ```
 //!
 //! ## E-031: TX-2: Viscosity-to-Filtration Loop (T2 x T4)
 //!
-//! - Binary: `thesis-cross-tx2`
+//! - Binary: `thesis cross-tx2`
 //! - Input: SedenionField spatial variation (dim=16), Kolmogorov shear forcing
 //! - Output: data/thesis_lab/tx2/tx2_report.toml
 //! - Deterministic: `true`
@@ -509,7 +509,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin thesis-cross-tx2 -- --grid_size 16 --lbm_steps 500
+//! cargo run --release --bin thesis -- cross-tx2 --grid_size 16 --lbm_steps 500
 //! ```
 //!
 //! ## E-032: Thesis 2: 3D Associator-Coupled Shear Thickening
@@ -532,7 +532,7 @@
 //!
 //! ## E-033: Grand Synthesis: All Four Theses Pass Gate Simultaneously
 //!
-//! - Binary: `thesis-synthesis-engine`
+//! - Binary: `thesis synthesis-engine`
 //! - Input: Sedenion algebra (CD basis), LBM viscosity model, neural homotopy model, shell return-time storm
 //! - Output: data/evidence/synthesis_final/synthesis_summary.toml, data/evidence/synthesis_final/thesis1_evidence.toml, data/evidence/synthesis_final/thesis2_evidence.toml, data/evidence/synthesis_final/thesis3_evidence.toml, data/evidence/synthesis_final/thesis4_evidence.toml
 //! - Deterministic: `false`
@@ -545,7 +545,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin thesis-synthesis-engine -- --thesis all --output-dir data/evidence/synthesis_final
+//! cargo run --release --bin thesis -- synthesis-engine --thesis all --output-dir data/evidence/synthesis_final
 //! ```
 //!
 //! ## E-034: Kubo Linear-Response Imbalance-Viscosity Coupling Derivation
@@ -568,7 +568,7 @@
 //!
 //! ## E-035: Reynolds Independence: Decaying Turbulence Scaling (Experiment C)
 //!
-//! - Binary: `warp-gpu-experiment`
+//! - Binary: `warp gpu-experiment`
 //! - Input: Randomly perturbed 3D shear velocity field.
 //! - Output: data/csv/warp_experiment_c_topology_{N}.csv, reports/reynolds_scaling_analysis.md
 //! - Deterministic: `false`
@@ -855,7 +855,7 @@
 //!
 //! ## E-051: ZD Resonance Tau Sweep with Control
 //!
-//! - Binary: `zd-resonance-sweep`
+//! - Binary: `zd-resonance sweep`
 //! - Input: GPU-generated LBM density field (no external data)
 //! - Output: data/csv/zd_resonance_sweep.csv, data/csv/zd_resonance_control.csv
 //! - Deterministic: `false`
@@ -867,7 +867,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-resonance-sweep -- sweep && cargo run --release --bin zd-resonance-sweep -- control && cargo run --release --bin zd-resonance-sweep -- analyze
+//! cargo run --release --bin zd-resonance -- sweep sweep && cargo run --release --bin zd-resonance -- sweep control && cargo run --release --bin zd-resonance -- sweep analyze
 //! ```
 //!
 //! ## E-052: Pathion Sink Stability Comparison and Coupling Sweep
@@ -924,7 +924,7 @@
 //! ## E-055: Integrated Wow! + Sedenion Synthesis Pipeline
 //!
 //! - Binary: `wow-sedenion-synthesis`
-//! - Input: Synthetically generated time series (optional: rho trace CSV from zd-resonance-sweep)
+//! - Input: Synthetically generated time series (optional: rho trace CSV from zd-resonance sweep)
 //! - Output: data/csv/wow_sedenion_report.csv
 //! - Deterministic: `true`
 //! - GPU: `false`
@@ -1059,7 +1059,7 @@
 //!
 //! ## E-063: CUDA BF16 ZD Resonance 128^3 Tau Sweep
 //!
-//! - Binary: `zd-resonance-cuda`
+//! - Binary: `zd-resonance cuda`
 //! - Input: None (synthetic Sedenion field initialization)
 //! - Output: data/csv/zd_resonance_cuda_128_bf16.csv, data/csv/zd_resonance_cuda_control_128.csv
 //! - Deterministic: `false`
@@ -1071,12 +1071,12 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-resonance-cuda -- sweep --res 128 && cargo run --release --bin zd-resonance-cuda -- control --res 128
+//! cargo run --release --bin zd-resonance -- cuda sweep --res 128 && cargo run --release --bin zd-resonance -- cuda control --res 128
 //! ```
 //!
 //! ## E-064: CUDA BF16 ZD Resonance 256^3 Tau Sweep
 //!
-//! - Binary: `zd-resonance-cuda`
+//! - Binary: `zd-resonance cuda`
 //! - Input: None (synthetic Sedenion field initialization)
 //! - Output: data/csv/zd_resonance_cuda_256_bf16.csv, data/csv/zd_resonance_cuda_control_256.csv
 //! - Deterministic: `false`
@@ -1088,12 +1088,12 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-resonance-cuda -- sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance-cuda -- control --res 256 --steps 500
+//! cargo run --release --bin zd-resonance -- cuda sweep --res 256 --steps 500 && cargo run --release --bin zd-resonance -- cuda control --res 256 --steps 500
 //! ```
 //!
 //! ## E-065: CUDA BF16 Reynolds Number Threshold Sweep 128^3
 //!
-//! - Binary: `zd-resonance-cuda`
+//! - Binary: `zd-resonance cuda`
 //! - Input: None (synthetic forcing + Sedenion field)
 //! - Output: data/csv/zd_resonance_cuda_reynolds_128.csv
 //! - Deterministic: `false`
@@ -1105,12 +1105,12 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-resonance-cuda -- reynolds-sweep --res 128
+//! cargo run --release --bin zd-resonance -- cuda reynolds-sweep --res 128
 //! ```
 //!
 //! ## E-066: 4D ZD Resonance 32^3 x 32 Batch Sweep
 //!
-//! - Binary: `zd-resonance-4d`
+//! - Binary: `zd-resonance 4d`
 //! - Input: None (synthetic 4D Sedenion field)
 //! - Output: data/csv/zd_resonance_4d_32x32.csv, data/csv/zd_resonance_4d_control_32x32.csv
 //! - Deterministic: `false`
@@ -1122,12 +1122,12 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-resonance-4d -- sweep-32 && cargo run --release --bin zd-resonance-4d -- control --res 32
+//! cargo run --release --bin zd-resonance -- 4d sweep-32 && cargo run --release --bin zd-resonance -- 4d control --res 32
 //! ```
 //!
 //! ## E-067: 4D ZD Resonance 64^3 x 16 Batch Sweep
 //!
-//! - Binary: `zd-resonance-4d`
+//! - Binary: `zd-resonance 4d`
 //! - Input: None (synthetic 4D Sedenion field)
 //! - Output: data/csv/zd_resonance_4d_64x16.csv
 //! - Deterministic: `false`
@@ -1139,7 +1139,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-resonance-4d -- sweep-64
+//! cargo run --release --bin zd-resonance -- 4d sweep-64
 //! ```
 //!
 //! ## E-068: Ghost Frequency Multidimensional Statistical Hardening
@@ -1212,7 +1212,7 @@
 //!
 //! ## E-072: TX-2 Viscosity-to-Filtration Loop at 128^3 CPU FP64 (C-669 Refutation)
 //!
-//! - Binary: `thesis-cross-tx2`
+//! - Binary: `thesis cross-tx2`
 //! - Input: None (synthetic SedenionField initialization)
 //! - Output: data/thesis_lab/tx2_128/tx2_report.toml
 //! - Deterministic: `true`
@@ -1224,7 +1224,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin thesis-cross-tx2 -- --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128
+//! cargo run --release --bin thesis -- cross-tx2 --grid-size 128 --lbm-steps 500 --output-dir data/thesis_lab/tx2_128
 //! ```
 //!
 //! ## E-073: Numerical Photon-Graviton Mixing Amplitude: Convergence and Ward Identity Verification
@@ -1421,7 +1421,7 @@
 //!
 //! ## E-084: ZD graph spectral dimension census
 //!
-//! - Binary: `zd-spectral-dimension`
+//! - Binary: `zd-spectral dimension`
 //! - Input: None (computational)
 //! - Output: data/csv/zd_spectral_dimension_curves.csv, data/csv/zd_spectral_dimension_plateaus.csv, data/csv/zd_laplacian_eigenvalues.csv, data/csv/zd_spectral_gap.csv
 //! - Deterministic: `true`
@@ -1434,7 +1434,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-spectral-dimension -- --min-dim 16 --max-dim 512 --t-points 300
+//! cargo run --release --bin zd-spectral -- dimension --min-dim 16 --max-dim 512 --t-points 300
 //! ```
 //!
 //! ## E-085: Associator entropy mechanism decomposition
@@ -1457,7 +1457,7 @@
 //!
 //! ## E-086: ZD Quantum Chaos NNSD Census
 //!
-//! - Binary: `zd-quantum-chaos`
+//! - Binary: `zd-spectral quantum-chaos`
 //! - Input: None (computational)
 //! - Output: data/csv/zd_nnsd.csv, data/csv/zd_nnsd_histogram.csv, data/csv/zd_nnsd_motif.csv
 //! - Deterministic: `true`
@@ -1470,7 +1470,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-quantum-chaos -- --min-dim 64 --max-dim 256 --by-motif
+//! cargo run --release --bin zd-spectral -- quantum-chaos --min-dim 64 --max-dim 256 --by-motif
 //! ```
 //!
 //! ## E-087: Orthoplex Diffusion Dark Energy Fit
@@ -2504,7 +2504,7 @@
 //!
 //! ## E-147: ZD crystal band spectra D=16,32,64
 //!
-//! - Binary: `zd-crystal-bands`
+//! - Binary: `zd-algebra crystal-bands`
 //! - Input: None (purely algebraic)
 //! - Output: stdout
 //! - Deterministic: `true`
@@ -2516,12 +2516,12 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-crystal-bands -- --dims 16,32,64 --details
+//! cargo run --release --bin zd-algebra -- crystal-bands --dims 16,32,64 --details
 //! ```
 //!
 //! ## E-148: Flat band fraction scaling D=16..256
 //!
-//! - Binary: `zd-crystal-bands`
+//! - Binary: `zd-algebra crystal-bands`
 //! - Input: None (purely algebraic)
 //! - Output: stdout
 //! - Deterministic: `true`
@@ -2533,12 +2533,12 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-crystal-bands -- --dims 16,32,64,128,256
+//! cargo run --release --bin zd-algebra -- crystal-bands --dims 16,32,64,128,256
 //! ```
 //!
 //! ## E-149: Reggiani factorization verification
 //!
-//! - Binary: `zd-crystal-bands`
+//! - Binary: `zd-algebra crystal-bands`
 //! - Input: None (purely algebraic)
 //! - Output: stdout
 //! - Deterministic: `true`
@@ -2550,7 +2550,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin zd-crystal-bands -- --dims 16 --reggiani
+//! cargo run --release --bin zd-algebra -- crystal-bands --dims 16 --reggiani
 //! ```
 //!
 //! ## E-150: Euclid Sersic to LBM density, n=4 test galaxy
@@ -2861,7 +2861,7 @@
 //!
 //! ## E-168: D=64 flat band fraction verification via block-diagonal eigensolver
 //!
-//! - Binary: `zd-crystal-bands`
+//! - Binary: `zd-algebra crystal-bands`
 //! - Input: synthetic (CD D=64 ZD partner graph)
 //! - Output: test output
 //! - Deterministic: `true`
@@ -3184,7 +3184,7 @@
 //!
 //! ## E-190: Evidence-first thesis 42 support bundle
 //!
-//! - Binary: `thesis-42-support`
+//! - Binary: `thesis 42-support`
 //! - Input: data/csv/c010_nonlocal_material_calibrations.csv plus in-repo algebraic and cosmology models
 //! - Output: data/evidence/thesis_42_support/summary.toml, data/evidence/thesis_42_support/nonlocal_topologies.csv, data/evidence/thesis_42_support/majorana_friction_sweep.csv, data/evidence/thesis_42_support/harmonic_halo_reference.csv
 //! - Deterministic: `true`
@@ -3196,7 +3196,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin thesis-42-support -- --output-dir data/evidence/thesis_42_support
+//! cargo run --release --bin thesis -- 42-support --output-dir data/evidence/thesis_42_support
 //! ```
 //!
 //! ## E-191: CD dimension sweep: harmonic halo stacking at D=16,32,64,128,256,512,1024
