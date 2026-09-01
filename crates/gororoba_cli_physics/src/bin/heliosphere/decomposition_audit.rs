@@ -4,6 +4,11 @@
 //! (a) shared-phase-randomized (preserves cross-channel coherence)
 //! (b) independent-phase-randomized (destroys all phase coupling)
 //!
+//! Surrogates act on the three physical field components and the Takens embedding is
+//! rebuilt from each surrogate afterward. Randomizing the 32 delay coordinates directly
+//! breaks the lag-copy identity between neighboring vectors, so the surrogate would then
+//! measure destroyed delay structure rather than destroyed cross-channel phase.
+//!
 //! If real >> shared >> indep: signal is cross-channel phase organization
 //! If real ~ shared >> indep: signal is spectral-only
 //! If shared ~ indep: no cross-channel structure at all
@@ -84,34 +89,7 @@ pub fn run(cli: Cli) -> Result<()> {
         anyhow::bail!("Too few records ({})", n);
     }
 
-    // Build Takens embedding
-    let channels = 4usize;
-    let steps = cli.embedding_dim / channels;
-
-    let mut embedded: Vec<Vec<f64>> = Vec::new();
-    for w in 0..=n.saturating_sub(steps) {
-        let sum_b: f64 = (0..steps)
-            .map(|s| {
-                let i = w + s;
-                (bx_series[i].powi(2) + by_series[i].powi(2) + bz_series[i].powi(2)).sqrt()
-            })
-            .sum();
-        let mean_b = sum_b / steps as f64;
-        if mean_b <= 0.01 || !mean_b.is_finite() {
-            continue;
-        }
-
-        let mut v = vec![0.0; cli.embedding_dim];
-        for s in 0..steps {
-            let i = w + s;
-            let bmag = (bx_series[i].powi(2) + by_series[i].powi(2) + bz_series[i].powi(2)).sqrt();
-            v[s * channels] = bx_series[i] / mean_b;
-            v[s * channels + 1] = by_series[i] / mean_b;
-            v[s * channels + 2] = bz_series[i] / mean_b;
-            v[s * channels + 3] = (bmag - mean_b) / mean_b;
-        }
-        embedded.push(v);
-    }
+    let embedded = embed_takens(&bx_series, &by_series, &bz_series, cli.embedding_dim);
 
     println!(
         "  Embedded {} vectors ({}D)",
@@ -132,11 +110,9 @@ pub fn run(cli: Cli) -> Result<()> {
 
     println!("  Real: mean={:.4}, std={:.4}", real_mean, real_std);
 
-    // Surrogates: extract channel time series from embedded vectors
+    // Surrogates act on the physical Bx, By, Bz series; each surrogate is re-embedded.
     let dim = cli.embedding_dim;
-    let ch_series: Vec<Vec<f64>> = (0..dim)
-        .map(|d| embedded.iter().map(|v| v[d]).collect())
-        .collect();
+    let ch_series: Vec<Vec<f64>> = vec![bx_series.clone(), by_series.clone(), bz_series.clone()];
 
     let mut rng = ChaCha8Rng::seed_from_u64(42);
 
@@ -146,18 +122,14 @@ pub fn run(cli: Cli) -> Result<()> {
     for i in 0..cli.n_surrogates {
         // Shared-phase: preserves cross-channel coherence
         let surr_shared = phase_randomize_mv_shared(&ch_series, &mut rng);
-        let emb_shared: Vec<Vec<f64>> = (0..embedded.len())
-            .map(|t| surr_shared.iter().map(|ch| ch[t]).collect())
-            .collect();
+        let emb_shared = embed_takens(&surr_shared[0], &surr_shared[1], &surr_shared[2], dim);
         let norms_s = cd_kernel::batch_sliding_associator_norms_parallel(&emb_shared, dim);
         let mean_s = norms_s.iter().sum::<f64>() / norms_s.len() as f64;
         shared_means.push(mean_s);
 
         // Independent-phase: destroys all cross-channel coupling
         let surr_indep = phase_randomize_mv_independent(&ch_series, &mut rng);
-        let emb_indep: Vec<Vec<f64>> = (0..embedded.len())
-            .map(|t| surr_indep.iter().map(|ch| ch[t]).collect())
-            .collect();
+        let emb_indep = embed_takens(&surr_indep[0], &surr_indep[1], &surr_indep[2], dim);
         let norms_i = cd_kernel::batch_sliding_associator_norms_parallel(&emb_indep, dim);
         let mean_i = norms_i.iter().sum::<f64>() / norms_i.len() as f64;
         indep_means.push(mean_i);
@@ -221,6 +193,38 @@ pub fn run(cli: Cli) -> Result<()> {
     println!("\nWrote {}", cli.out_json.display());
 
     Ok(())
+}
+
+/// Takens delay embedding of a Bx, By, Bz minute series into `embedding_dim / 4` steps of
+/// four channels (Bx, By, Bz, |B| contrast), each window normalized by its mean |B|.
+/// Windows whose mean |B| is at or below 0.01 nT or non-finite are dropped.
+fn embed_takens(bx: &[f64], by: &[f64], bz: &[f64], embedding_dim: usize) -> Vec<Vec<f64>> {
+    let channels = 4usize;
+    let steps = embedding_dim / channels;
+    let n = bx.len().min(by.len()).min(bz.len());
+    if steps == 0 || n < steps {
+        return Vec::new();
+    }
+    let bmag = |i: usize| (bx[i].powi(2) + by[i].powi(2) + bz[i].powi(2)).sqrt();
+
+    let mut embedded: Vec<Vec<f64>> = Vec::new();
+    for w in 0..=n - steps {
+        let mean_b = (0..steps).map(|s| bmag(w + s)).sum::<f64>() / steps as f64;
+        if mean_b <= 0.01 || !mean_b.is_finite() {
+            continue;
+        }
+
+        let mut v = vec![0.0; embedding_dim];
+        for s in 0..steps {
+            let i = w + s;
+            v[s * channels] = bx[i] / mean_b;
+            v[s * channels + 1] = by[i] / mean_b;
+            v[s * channels + 2] = bz[i] / mean_b;
+            v[s * channels + 3] = (bmag(i) - mean_b) / mean_b;
+        }
+        embedded.push(v);
+    }
+    embedded
 }
 
 fn load_components(
@@ -292,4 +296,67 @@ fn load_components(
     }
 
     Ok((bx, by, bz))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::embed_takens;
+    use rand::SeedableRng;
+    use rand_chacha::ChaCha8Rng;
+    use spectral_core::phase_randomize_mv_independent;
+
+    /// A rotating field of constant magnitude keeps every window mean equal, so the
+    /// delay coordinates of consecutive vectors must be exact shifted copies.
+    fn rotating_field(n: usize) -> (Vec<f64>, Vec<f64>, Vec<f64>) {
+        let bx: Vec<f64> = (0..n).map(|i| 5.0 * (0.1 * i as f64).cos()).collect();
+        let by: Vec<f64> = (0..n).map(|i| 5.0 * (0.1 * i as f64).sin()).collect();
+        let bz = vec![0.0; n];
+        (bx, by, bz)
+    }
+
+    #[test]
+    fn embedding_preserves_lag_copy_identity() {
+        let (bx, by, bz) = rotating_field(64);
+        let emb = embed_takens(&bx, &by, &bz, 32);
+        assert_eq!(emb.len(), 64 - 8 + 1);
+        for w in 0..emb.len() - 1 {
+            for s in 1..8 {
+                for c in 0..4 {
+                    let later = emb[w + 1][(s - 1) * 4 + c];
+                    let earlier = emb[w][s * 4 + c];
+                    assert!(
+                        (later - earlier).abs() < 1e-9,
+                        "lag copy broken at w={w} s={s} c={c}: {later} vs {earlier}"
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn surrogate_then_embed_keeps_lag_copy_identity() {
+        // Randomizing the physical channels first leaves the re-embedded vectors with the
+        // same shifted-copy relation as the real embedding; randomizing the 32 delay
+        // coordinates after embedding would break it.
+        let (bx, by, bz) = rotating_field(128);
+        let mut rng = ChaCha8Rng::seed_from_u64(7);
+        let surr = phase_randomize_mv_independent(&[bx, by, bz], &mut rng);
+        let emb = embed_takens(&surr[0], &surr[1], &surr[2], 32);
+        assert!(emb.len() > 2);
+        for w in 0..emb.len() - 1 {
+            let scale = emb[w][0] / surr[0][w];
+            let scale_next = emb[w + 1][0] / surr[0][w + 1];
+            for s in 1..8 {
+                for c in 0..3 {
+                    // Divide out each window's own mean |B| before comparing raw copies.
+                    let earlier = emb[w][s * 4 + c] / scale;
+                    let later = emb[w + 1][(s - 1) * 4 + c] / scale_next;
+                    assert!(
+                        (later - earlier).abs() < 1e-9,
+                        "lag copy broken at w={w} s={s} c={c}"
+                    );
+                }
+            }
+        }
+    }
 }
