@@ -83,8 +83,8 @@ This file is generated from the canonical SQLite control plane and currently ind
 | `THM-LEGACY-C1470_PathionTrilinearity` | `C1470_PathionTrilinearity` | `proofs/verified/C1470_PathionTrilinearity.v` | kernel_checked | explicit_link | C-1470 |
 | `THM-LEGACY-C1471_HigherCDTrilinearity` | `C1471_HigherCDTrilinearity` | `proofs/verified/C1471_HigherCDTrilinearity.v` | kernel_checked | explicit_link | C-1471 |
 | `THM-LEGACY-C1474_FuelAdequacy` | `C1474_FuelAdequacy` | `proofs/verified/C1474_FuelAdequacy.v` | kernel_checked | explicit_link | C-1474 |
-| `THM-LEGACY-C1628_IDCT8ButterflyCompaction` | `C1628_IDCT8ButterflyCompaction` | `proofs/verified/C1628_IDCT8ButterflyCompaction.v` | kernel_checked | explicit_link | C-1628 |
-| `THM-LEGACY-C1629_IDCT8DP4ExactBound` | `C1629_IDCT8DP4ExactBound` | `proofs/verified/C1629_IDCT8DP4ExactBound.v` | kernel_checked | explicit_link | C-1629 |
+| `THM-LEGACY-C1628_IDCT8ButterflyCompaction` | `C1628_IDCT8ButterflyCompaction` | `proofs/verified/C1628_IDCT8ButterflyCompaction.v` | kernel_checked | unresolved | - |
+| `THM-LEGACY-C1629_IDCT8DP4ExactBound` | `C1629_IDCT8DP4ExactBound` | `proofs/verified/C1629_IDCT8DP4ExactBound.v` | kernel_checked | unresolved | - |
 | `THM-LEGACY-C1630_SedenionOctonionDowncast` | `C1630_SedenionOctonionDowncast` | `proofs/verified/C1630_SedenionOctonionDowncast.v` | kernel_checked | explicit_link | C-1630 |
 | `THM-LEGACY-C868_PainleveGullstrand` | `C868_PainleveGullstrand` | `proofs/verified/C868_PainleveGullstrand.v` | kernel_checked | explicit_link | C-868 |
 | `THM-LEGACY-C869_InteriorFlat` | `C869_InteriorFlat` | `proofs/verified/C869_InteriorFlat.v` | kernel_checked | explicit_link | C-869 |
