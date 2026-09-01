@@ -1,5 +1,5 @@
 report_schema_version = 1
-source_snapshot_sha256 = "a926cb567521e8cd63c0efdcbfd15b7245655b20de2bf7c74146a857fd02a037"
+source_snapshot_sha256 = "9e19755c305d3d710db8a3af10f8fe77e4e71cf5027eb7f2b789a80c9141ef25"
 
 [snapshot]
 schema_version = 1
@@ -11,9 +11,8 @@ postal_code = "91103"
 label = "Pasadena, California ZIP Code 91103 centroid approximation"
 latitude_deg = 34.16738
 longitude_deg = -118.16446
-elevation_ft = 862.0
-climate_division_id = 93
-climate_division_name = "Southern California Coast"
+climate_division_id = 6
+climate_division_name = "South Coast Drainage"
 normals_station_id = "USC00046719"
 normals_period = "1991-2020"
 annual_normal_precip_inches = 20.1
@@ -109,7 +108,7 @@ next_enso_update = "2026-09-10"
 next_seasonal_update = "2026-09-17"
 very_strong_probability_relation = "greater_than"
 very_strong_probability_pct = 90.0
-historic_ond_probability_pct = 69.0
+ond_roni_ge_2_5_probability_pct = 69.0
 
 [[snapshot.issue.lead]]
 season = "SON"
@@ -177,10 +176,9 @@ caveat = [
 [derived.official_enso]
 enso_issue = "2026-08-13"
 seasonal_issue = "2026-08-20"
-median_strength_bucket = "very_strong_el_nino"
 very_strong_probability_relation = "greater_than"
 very_strong_probability_pct = 90.0
-historic_ond_probability_pct = 69.0
+ond_roni_ge_2_5_probability_pct = 69.0
 peak_roni_season = "OND"
 peak_roni_median_c = 2.66
 peak_roni_p05_c = 1.95
@@ -199,7 +197,7 @@ local_precip_category = "above"
 local_precip_probability_floor_pct = 33.0
 local_precip_probability_ceiling_pct = 40.0
 local_wet_signal = "slight_above_normal"
-probability_basis = "Conservative regional extraction from the official SON map and discussion; not a digitized point probability."
+probability_basis = "Conservative regional extraction from the official SON map and discussion; not a digitized ZIP point probability."
 local_interpretation = "A wet tilt exists, but SON is normally very dry in Pasadena; above normal can still mean a small absolute total."
 
 [[derived.seasonal_outlook]]
