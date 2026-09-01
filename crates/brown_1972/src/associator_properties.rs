@@ -2,8 +2,9 @@
 //!
 //! The remarkable results:
 //! - Associator decomposition: (x,y,z) can be decomposed in terms of CD base elements (Thm 4.3)
-//! - Alternative property: x(xy) = (xx)y for elements in associative/alternative algebras (consequence of Thm 4.3)
-//! - Alternative iff base associative: element a is alternative iff both its halves are in commuting algebras (Cor 4.4)
+//! - Flexibility: (xy)x = x(yx) holds at every Cayley-Dickson dimension (Brown Theorem 4.2)
+//! - Alternativity: x(xy) = (xx)y and (xy)y = x(yy) hold exactly when the generating algebra is
+//!   associative, so quaternions and octonions are alternative and sedenions are not (Brown 4.4)
 //! - Moufang identities: hold for certain triples in alternative algebras
 //!
 //! Chapter IV covers the algebraic properties that emerge from the CD doubling construction,
@@ -33,21 +34,38 @@ pub fn verify_alternativity_left(x: &[f64], y: &[f64]) -> f64 {
         .fold(0.0, f64::max)
 }
 
-/// Verify the right-alternating property: (yx)y = y(xy) for all x, y.
-/// The right-alternating property is the dual of left-alternativity and holds in CD algebras.
-/// Mirrors: Brown (1972) Theorem 4.3 (consequence).
-pub fn verify_alternativity_right(x: &[f64], y: &[f64]) -> f64 {
-    // Compute (yx)y
+/// Verify flexibility: (yx)y = y(xy) for all x, y.
+/// Flexibility is the identity (a,b,a) = 0 on the associator. Every Cayley-Dickson algebra is
+/// flexible, so the returned deviation is zero at 4D, 8D, 16D and beyond.
+/// Mirrors: Brown (1972) Theorem 4.2.
+pub fn verify_flexibility(x: &[f64], y: &[f64]) -> f64 {
     let yx = cd_multiply(y, x);
     let yx_y = cd_multiply(&yx, y);
 
-    // Compute y(xy)
     let xy = cd_multiply(x, y);
     let y_xy = cd_multiply(y, &xy);
 
-    // Compare: (yx)y should equal y(xy)
     yx_y.iter()
         .zip(y_xy.iter())
+        .map(|(a, b)| (a - b).abs())
+        .fold(0.0, f64::max)
+}
+
+/// Verify right alternativity: (xy)y = x(yy) for all x, y.
+/// Right alternativity is the identity (a,b,b) = 0 on the associator, the mirror of the
+/// left form checked by `verify_alternativity_left`. Brown Corollary 4.4 ties both forms to
+/// associativity of the generating algebra, so the deviation is zero for quaternions and
+/// octonions and nonzero for generic sedenion pairs.
+/// Mirrors: Brown (1972) Corollary 4.4.
+pub fn verify_alternativity_right(x: &[f64], y: &[f64]) -> f64 {
+    let xy = cd_multiply(x, y);
+    let xy_y = cd_multiply(&xy, y);
+
+    let yy = cd_multiply(y, y);
+    let x_yy = cd_multiply(x, &yy);
+
+    xy_y.iter()
+        .zip(x_yy.iter())
         .map(|(a, b)| (a - b).abs())
         .fold(0.0, f64::max)
 }
@@ -158,7 +176,7 @@ mod tests {
     }
 
     #[test]
-    fn test_alternativity_right_quaternion() {
+    fn test_flexibility_quaternion() {
         // (yx)y = y(xy) for quaternions (4D)
         let mut x = vec![0.0; 4];
         let mut y = vec![0.0; 4];
@@ -166,6 +184,8 @@ mod tests {
         x[3] = 0.4;
         y[1] = 0.9;
         y[2] = -0.6;
+        let err = verify_flexibility(&x, &y);
+        assert!(err < 1e-10, "Flexibility failed for quaternions: err={err}");
         let err = verify_alternativity_right(&x, &y);
         assert!(
             err < 1e-10,
@@ -174,7 +194,7 @@ mod tests {
     }
 
     #[test]
-    fn test_alternativity_right_octonion() {
+    fn test_flexibility_octonion() {
         // (yx)y = y(xy) for octonions (8D)
         let mut x = vec![0.0; 8];
         let mut y = vec![0.0; 8];
@@ -182,6 +202,8 @@ mod tests {
         x[5] = 0.3;
         y[0] = 0.7;
         y[3] = -0.4;
+        let err = verify_flexibility(&x, &y);
+        assert!(err < 1e-10, "Flexibility failed for octonions: err={err}");
         let err = verify_alternativity_right(&x, &y);
         assert!(
             err < 1e-10,
@@ -190,14 +212,24 @@ mod tests {
     }
 
     #[test]
-    fn test_alternativity_right_sedenion() {
-        // (yx)y = y(xy) for sedenions (16D)
+    fn test_flexibility_sedenion() {
+        // Flexibility survives the sedenion doubling (Brown Theorem 4.2).
+        let x = random_sedenion(302);
+        let y = random_sedenion(303);
+        let err = verify_flexibility(&x, &y);
+        assert!(err < 1e-6, "Flexibility failed for sedenions: err={err}");
+    }
+
+    #[test]
+    fn test_alternativity_right_fails_sedenion() {
+        // The octonions are not associative, so by Brown Corollary 4.4 the sedenions are
+        // not right alternative. The deviation must sit away from zero, not merely be finite.
         let x = random_sedenion(302);
         let y = random_sedenion(303);
         let err = verify_alternativity_right(&x, &y);
         assert!(
-            err < 1e-6,
-            "Right-alternativity failed for sedenions: err={err}"
+            err > 1e-2,
+            "Sedenion right-alternativity deviation unexpectedly small: err={err}"
         );
     }
 
@@ -209,11 +241,11 @@ mod tests {
         let x = random_sedenion(304);
         let y = random_sedenion(305);
         let err = verify_alternativity_left(&x, &y);
-        // For random sedenions, we expect non-zero deviation from alternativity
-        // (Some special elements may still satisfy it by coincidence)
+        // A generic sedenion pair sits away from the alternative locus, so the deviation
+        // must clear a fixed floor; `err >= 0.0` would pass for any finite value.
         assert!(
-            err >= 0.0,
-            "Computation of alternativity deviation succeeded: err={err}"
+            err > 1e-2,
+            "Sedenion left-alternativity deviation unexpectedly small: err={err}"
         );
     }
 
