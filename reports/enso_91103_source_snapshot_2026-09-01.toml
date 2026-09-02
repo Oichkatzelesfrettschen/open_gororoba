@@ -1,4 +1,4 @@
-schema_version = 1
+schema_version = 2
 instrument_id = "ENSO-LOCAL-91103-v1"
 as_of = "2026-09-01T15:57:00-07:00"
 
@@ -105,6 +105,8 @@ next_seasonal_update = "2026-09-17"
 very_strong_probability_relation = "greater_than"
 very_strong_probability_pct = 90.0
 ond_roni_ge_2_5_probability_pct = 69.0
+enso_source_id = "NOAA-CPC-ENSO-DISC-2026-08-13"
+seasonal_source_id = "NOAA-CPC-SEASONAL-2026-08-20"
 
 [[issue.lead]]
 season = "SON"
@@ -118,6 +120,10 @@ local_precip_probability_ceiling_pct = 40.0
 probability_basis = "Conservative regional extraction from the official SON map and discussion; not a digitized ZIP point probability."
 normal_precip_inches = 2.1
 local_interpretation = "A wet tilt exists, but SON is normally very dry in Pasadena; above normal can still mean a small absolute total."
+el_nino_source_id = "NOAA-CPC-ENSO-PROB-2026-08"
+roni_source_id = "NOAA-CPC-RONI-2026-08"
+local_precip_source_id = "NOAA-CPC-SEASONAL-2026-08-20"
+normals_source_id = "PASADENA-USC00046719-NORMALS"
 
 [[issue.lead]]
 season = "OND"
@@ -131,6 +137,10 @@ local_precip_probability_ceiling_pct = 50.0
 probability_basis = "Official discussion gives generally 33-50 percent above-normal precipitation chances across the southern tier during OND."
 normal_precip_inches = 5.2
 local_interpretation = "The wet signal increases, but CPC analog guidance favors a delayed onset rather than a uniformly wet autumn."
+el_nino_source_id = "NOAA-CPC-ENSO-PROB-2026-08"
+roni_source_id = "NOAA-CPC-RONI-2026-08"
+local_precip_source_id = "NOAA-CPC-SEASONAL-2026-08-20"
+normals_source_id = "PASADENA-USC00046719-NORMALS"
 
 [[issue.lead]]
 season = "DJF"
@@ -143,6 +153,10 @@ local_precip_probability_floor_pct = 50.0
 probability_basis = "Official discussion places much of coastal California above 50 percent from DJF through FMA."
 normal_precip_inches = 13.0
 local_interpretation = "This is the first core wet-season window with a materially elevated seasonal signal for 91103."
+el_nino_source_id = "NOAA-CPC-ENSO-PROB-2026-08"
+roni_source_id = "NOAA-CPC-RONI-2026-08"
+local_precip_source_id = "NOAA-CPC-SEASONAL-2026-08-20"
+normals_source_id = "PASADENA-USC00046719-NORMALS"
 
 [[issue.lead]]
 season = "JFM"
@@ -155,3 +169,7 @@ local_precip_probability_floor_pct = 50.0
 probability_basis = "Official discussion says coastal California above-normal precipitation coverage peaks during JFM."
 normal_precip_inches = 12.7
 local_interpretation = "JFM is the strongest official spatial signal for coastal Southern California despite a declining median RONI."
+el_nino_source_id = "NOAA-CPC-ENSO-PROB-2026-08"
+roni_source_id = "NOAA-CPC-RONI-2026-08"
+local_precip_source_id = "NOAA-CPC-SEASONAL-2026-08-20"
+normals_source_id = "PASADENA-USC00046719-NORMALS"
