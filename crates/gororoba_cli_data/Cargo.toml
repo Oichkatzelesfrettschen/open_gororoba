@@ -570,3 +570,8 @@ gpu = ["gororoba_algebra/gpu", "stats_core/gpu"]
 
 [lints]
 workspace = true
+
+[[example]]
+name = "enso_local_outlook"
+path = "examples/enso_local_outlook.rs"
+test = true
