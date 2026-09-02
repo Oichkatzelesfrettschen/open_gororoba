@@ -446,3 +446,148 @@ fn sweep_plan_names_only_the_shared_cache_and_never_a_sibling() {
     }
     assert!(Path::new(&debug).join("artifact.o").exists(), "the plan removed a file");
 }
+
+/// Two worktrees of one owner hold identical tool sources, so the source hash
+/// alone cannot separate them. The composite identity folds in the resolved
+/// checkout path, so each worktree names its own stamp file.
+#[test]
+fn validation_identity_differs_across_worktrees_sharing_one_owner() {
+    if !tools_available() {
+        return;
+    }
+    let tmp = tempfile::tempdir().unwrap();
+    let primary = tmp.path().join("primary");
+    init_checkout(&primary);
+    let wt_a = tmp.path().join("wt-a");
+    let wt_b = tmp.path().join("wt-b");
+    git(&primary, &["worktree", "add", "-q", wt_a.to_str().unwrap(), "-b", "wt-a"]);
+    git(&primary, &["worktree", "add", "-q", wt_b.to_str().unwrap(), "-b", "wt-b"]);
+    let a = roots(&wt_a, SHARED);
+    let b = roots(&wt_b, SHARED);
+    assert_eq!(
+        a["VALIDATION_SOURCE_IDENTITY"], b["VALIDATION_SOURCE_IDENTITY"],
+        "identical tool sources hash the same, which is why the source hash cannot separate the worktrees"
+    );
+    assert_eq!(a["REPO_CACHE_OWNER"], b["REPO_CACHE_OWNER"]);
+    assert_eq!(a["VALIDATION_CURDIR_REAL"], canonical(&wt_a));
+    assert_ne!(
+        a["VALIDATION_TOOL_IDENTITY"], b["VALIDATION_TOOL_IDENTITY"],
+        "the composite identity must separate two worktrees of one owner"
+    );
+    assert!(a["VALIDATION_TOOL_IDENTITY_FILE"].ends_with(&a["VALIDATION_TOOL_IDENTITY"]));
+    assert!(b["VALIDATION_TOOL_IDENTITY_FILE"].ends_with(&b["VALIDATION_TOOL_IDENTITY"]));
+}
+
+/// The incident: a tool compiled while one worktree existed is staged, that
+/// worktree is removed, and the tool later resolves a path that is gone. The
+/// stamp identity forces the rebuild decision; the byte scan proves the copy
+/// is the wrong one.
+#[test]
+fn stale_worktree_tool_copy_is_rejected_and_rebuilt() {
+    if !tools_available() {
+        return;
+    }
+    let tmp = tempfile::tempdir().unwrap();
+    let worktrees_root = tmp.path().join("worktrees");
+    std::fs::create_dir_all(&worktrees_root).unwrap();
+    let primary = tmp.path().join("primary");
+    init_checkout(&primary);
+    let wt_a = worktrees_root.join("gone");
+    let wt_b = worktrees_root.join("live");
+    git(&primary, &["worktree", "add", "-q", wt_a.to_str().unwrap(), "-b", "gone"]);
+    git(&primary, &["worktree", "add", "-q", wt_b.to_str().unwrap(), "-b", "live"]);
+    let a = roots(&wt_a, SHARED);
+    let b = roots(&wt_b, SHARED);
+    let gone_path = canonical(&wt_a);
+
+    // Compile in wt-a: an identity stamp plus a binary whose bytes embed the
+    // compiling checkout, the way debuginfo and panic locations do.
+    let a_tools = PathBuf::from(&a["VALIDATION_TOOLS_DIR"]);
+    std::fs::create_dir_all(&a_tools).unwrap();
+    let fake = |dir: &Path, embedded: &str| {
+        let mut bytes = b"\x7fELF\x00".to_vec();
+        bytes.extend_from_slice(format!("{embedded}/registry/claims.toml").as_bytes());
+        bytes.push(0);
+        std::fs::write(dir.join("provenance"), &bytes).unwrap();
+    };
+    fake(&a_tools, &gone_path);
+    std::fs::write(&a["VALIDATION_TOOL_IDENTITY_FILE"], "staged\n").unwrap();
+
+    // The shared build-dir hands the same artifact to wt-b.
+    let b_tools = PathBuf::from(&b["VALIDATION_TOOLS_DIR"]);
+    std::fs::create_dir_all(&b_tools).unwrap();
+    std::fs::copy(a_tools.join("provenance"), b_tools.join("provenance")).unwrap();
+    std::fs::copy(
+        &a["VALIDATION_TOOL_IDENTITY_FILE"],
+        b_tools.join(Path::new(&a["VALIDATION_TOOL_IDENTITY_FILE"]).file_name().unwrap()),
+    )
+    .unwrap();
+
+    git(&primary, &["worktree", "remove", "--force", wt_a.to_str().unwrap()]);
+    assert!(!Path::new(&gone_path).exists());
+
+    // Resolution from wt-b: the stamp written for wt-a does not satisfy it,
+    // and the rule that creates wt-b's stamp discards wt-a's.
+    let run = run_make(&wt_b, &b["VALIDATION_TOOL_IDENTITY_FILE"], SHARED);
+    assert_eq!(run.status, 0, "{}", run.stderr);
+    assert!(Path::new(&b["VALIDATION_TOOL_IDENTITY_FILE"]).exists());
+    assert!(
+        !b_tools
+            .join(Path::new(&a["VALIDATION_TOOL_IDENTITY_FILE"]).file_name().unwrap())
+            .exists(),
+        "the foreign identity file survived"
+    );
+    let stamp = std::fs::read_to_string(&b["VALIDATION_TOOL_IDENTITY_FILE"]).unwrap();
+    for key in ["tool_identity=", "source_identity=", "curdir_real=", "owner="] {
+        assert!(stamp.contains(key), "stamp missing {key}: {stamp}");
+    }
+    assert!(stamp.contains(&format!("curdir_real={}", canonical(&wt_b))));
+
+    // The staged copy still holds the vanished path, and the scan rejects it.
+    let hits = repo_utilities::validation_tool_paths::scan_tools_dir(
+        &b_tools,
+        &worktrees_root,
+        Path::new(&canonical(&wt_b)),
+    )
+    .unwrap();
+    assert_eq!(hits.len(), 1, "{hits:?}");
+    assert_eq!(hits[0].embedded, format!("{gone_path}/registry/claims.toml"));
+    assert_eq!(hits[0].vanished_root, gone_path, "the removed checkout is named exactly");
+}
+
+/// Negative control: a binary that embeds only the running checkout's own path
+/// is legitimate and must pass.
+#[test]
+fn path_scan_keeps_a_tool_that_names_only_the_live_worktree() {
+    let tmp = tempfile::tempdir().unwrap();
+    let worktrees_root = tmp.path().join("worktrees");
+    let live = worktrees_root.join("live");
+    let tools = live.join(".cache/gate-target/validation-tools");
+    std::fs::create_dir_all(&tools).unwrap();
+    let mut bytes = b"\x7fELF\x00".to_vec();
+    bytes.extend_from_slice(format!("{}/crates/xtask/src/main.rs", live.display()).as_bytes());
+    bytes.push(0);
+    std::fs::write(tools.join("xtask"), &bytes).unwrap();
+    let hits =
+        repo_utilities::validation_tool_paths::scan_tools_dir(&tools, &worktrees_root, &live)
+            .unwrap();
+    assert!(hits.is_empty(), "{hits:?}");
+}
+
+/// Positive control for the detector itself. A validation-profile binary is
+/// built with `-C debuginfo=line-tables-only` and thin LTO, and it still
+/// carries the compiling checkout's absolute path. If a toolchain change ever
+/// stops embedding it, `validation-tools-check-paths` goes silently inert, and
+/// this assertion fails instead.
+#[test]
+fn a_compiled_binary_embeds_its_own_checkout_path() {
+    let manifest = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let checkout = manifest.parent().expect("xtask sits one level below the repo root");
+    let root = format!("{}/", checkout.canonicalize().unwrap().display());
+    let bytes = std::fs::read(env!("CARGO_BIN_EXE_xtask")).unwrap();
+    let found = repo_utilities::validation_tool_paths::embedded_paths_under(&bytes, &root);
+    assert!(
+        !found.is_empty(),
+        "the compiled xtask binary embeds no path under {root}; the path scan would be inert"
+    );
+}
