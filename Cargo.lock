@@ -9444,6 +9444,8 @@ dependencies = [
  "regex",
  "repo_root",
  "rusqlite",
+ "sha2 0.11.0",
+ "tempfile",
  "toml 1.1.2+spec-1.1.0",
  "ureq",
  "url",

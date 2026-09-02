@@ -14,16 +14,20 @@ csv = { workspace = true }
 regex = { workspace = true }
 rusqlite = { workspace = true }
 toml = { workspace = true }
+sha2 = { workspace = true }
 ureq.workspace = true
 url = { workspace = true }
 walkdir = { workspace = true }
 zip.workspace = true
 
 [package.metadata.cargo-machete]
-# These 7 deps are used by source_provenance.rs, which is included via
+# These 8 deps are used by source_provenance.rs, which is included via
 # #[path = "../../gororoba_cli_data/src/source_provenance.rs"] in lib.rs.
 # machete cannot follow cross-crate #[path] redirections.
-ignored = ["chrono", "csv", "regex", "rusqlite", "toml", "url", "walkdir"]
+ignored = ["chrono", "csv", "regex", "rusqlite", "sha2", "toml", "url", "walkdir"]
 
 [lints]
 workspace = true
+
+[dev-dependencies]
+tempfile = { workspace = true }
