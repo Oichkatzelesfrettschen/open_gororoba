@@ -341,11 +341,20 @@ fn sync_control_plane_after_claim_write(
     };
     if let Err(err) = store.reindex_control_plane_from_registries(
         paths.repo_root,
-        paths.default_path,
-        paths.insights,
-        paths.experiments,
-        paths.binaries,
-        paths.proofs_project,
+        provenance_store::RegistryImportPaths {
+            claims: paths.default_path,
+            insights: paths.insights,
+            experiments: paths.experiments,
+            binaries: paths.binaries,
+            rocq_project: paths.proofs_project,
+        },
+        // The consolidator rewrites claims.toml and then re-imports it, which is
+        // the mirror-to-canonical direction the SQLite-canonical doctrine
+        // reverses. Until the sync is rewritten to export instead of import,
+        // every run records a backup under registry/canonical/backups/ and a
+        // semantic diff naming the rows the re-import would overwrite. The
+        // backups accumulate one file per run and are gitignored.
+        provenance_store::ReimportOptions::destructive(canonical_db),
     ) {
         eprintln!("ERROR: reindex canonical control plane after claims write: {err}");
         std::process::exit(1);

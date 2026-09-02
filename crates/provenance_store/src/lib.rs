@@ -158,7 +158,7 @@ pub use types::{
     PlanningCompatTable, RequirementCoverageGapCompatRow, RequirementCoverageGapItem,
     RequirementModuleCompatRow, RequirementModuleItem, RequirementsMeta, RequirementsMetaCompatRow,
     ResearchNarrativeRow, RoadmapCompatRow, RoadmapItem, RoadmapItemWithLinks,
-    SourcePathRetarget, SourcePathRetargetSummary, StatusNoteRevision,
+    RegistryImportPaths, SourcePathRetarget, SourcePathRetargetSummary, StatusNoteRevision,
 };
 
 /// Hex-encoded SHA-256 of `s`. Used by the status_note mutators to
@@ -518,15 +518,30 @@ impl ProvenanceStore {
         })
     }
 
+    /// Import the compatibility mirrors into the canonical store.
+    ///
+    /// This is a bootstrap path, not a refresh path. `registry/*.toml` omit
+    /// columns the canonical store owns -- `insights` carries no `status_note`
+    /// key -- and `clear_control_plane_tables` deletes the insight rows outright,
+    /// so importing over a populated database resets those columns to NULL.
+    /// `options` decides: `ReimportOptions::bootstrap` refuses on a populated
+    /// database, `ReimportOptions::destructive` backs it up and writes a semantic
+    /// diff first. Either way the canonical-only values captured before the
+    /// tables are cleared are reapplied wherever the mirror row leaves the column
+    /// empty.
     pub fn reindex_control_plane_from_registries(
         &mut self,
         repo_root: &Path,
-        claims_path: &Path,
-        insights_path: &Path,
-        experiments_path: &Path,
-        binaries_path: &Path,
-        proofs_project_path: &Path,
+        paths: RegistryImportPaths<'_>,
+        options: ReimportOptions<'_>,
     ) -> Result<IndexStats> {
+        let RegistryImportPaths {
+            claims: claims_path,
+            insights: insights_path,
+            experiments: experiments_path,
+            binaries: binaries_path,
+            rocq_project: proofs_project_path,
+        } = paths;
         let indexed_at = Utc::now().to_rfc3339();
         let claims_text = load_toml_text(claims_path)?;
         let insights_text = load_toml_text(insights_path)?;
@@ -542,6 +557,70 @@ impl ProvenanceStore {
         let registry_binaries = load_binaries_from_registry(&binaries_text)?;
         let binaries = merge_workspace_binaries(repo_root, &registry_binaries)?;
         let theorems = load_theorems_from_inventory(repo_root, &proof_inventory, &claims)?;
+
+        // Every column the importer touches has to be either written from the
+        // mirror or carried across from SQLite. A schema column in neither set
+        // would be nulled silently, so the run stops before the first DELETE.
+        assert_column_mapping_total(&self.conn)?;
+        let population = measure_population(&self.conn)?;
+        if population.is_populated() && !options.allow_destructive_reimport {
+            bail!("{}", refusal_message(options.db_path, &population));
+        }
+        if population.is_populated() {
+            let db_path = options.db_path.context(
+                "destructive re-import needs ReimportOptions::db_path to write the backup",
+            )?;
+            let backup = backup_database(&self.conn, db_path)?;
+            let backup_display = backup.display().to_string();
+            let lanes = vec![
+                DiffLane {
+                    table: "claims",
+                    select_sql: "SELECT id, status_note FROM claims",
+                    incoming: claims
+                        .iter()
+                        .map(|row| (row.id.clone(), row.status_note.clone()))
+                        .collect(),
+                },
+                DiffLane {
+                    table: "insights",
+                    select_sql: "SELECT id, status_note FROM insights",
+                    incoming: insights
+                        .iter()
+                        .map(|row| (row.id.clone(), row.status_note.clone()))
+                        .collect(),
+                },
+                DiffLane {
+                    table: "experiments_cp",
+                    select_sql: "SELECT id, status_note FROM experiments_cp",
+                    incoming: experiments
+                        .iter()
+                        .map(|row| (row.id.clone(), row.status_note.clone()))
+                        .collect(),
+                },
+                DiffLane {
+                    table: "binaries_cp",
+                    select_sql: "SELECT name, description FROM binaries_cp",
+                    incoming: binaries
+                        .iter()
+                        .map(|row| {
+                            (
+                                row.name.clone(),
+                                Some(row.description.clone()).filter(|d| !d.is_empty()),
+                            )
+                        })
+                        .collect(),
+                },
+            ];
+            let diff = build_diff(&self.conn, &backup_display, lanes)?;
+            let diff_path = diff_path_for_backup(&backup);
+            fs::write(&diff_path, diff.to_toml())
+                .with_context(|| format!("write {}", diff_path.display()))?;
+            print!("{}", diff.to_summary());
+            println!("  diff written to {}", diff_path.display());
+        }
+        // The insight rows are deleted outright below, so a COALESCE upsert
+        // cannot see their prior values. Read them out first, reapply after.
+        let preserved = capture_preserved_values(&self.conn)?;
 
         let tx = self.conn.transaction()?;
         tx.execute(
@@ -761,6 +840,7 @@ impl ProvenanceStore {
                 .to_string()
             ],
         )?;
+        restore_preserved_values(&tx, &preserved)?;
         tx.execute("DELETE FROM claim_status_write_context WHERE id = 1", [])?;
         tx.commit()?;
 
@@ -931,6 +1011,12 @@ impl ProvenanceStore {
             );
         }
 
+        // The execution-planning build reaches this path with rendered registry
+        // text, which is the same mirror-to-canonical direction the
+        // index-control-plane guard covers. Capture the canonical-only column
+        // values first so the delete-and-reinsert below cannot null them.
+        let preserved = capture_preserved_values(&tx)?;
+
         // Rebuild the derived claim-to-experiment join before replacing the
         // experiment rows. Transition evidence and revision history retain
         // their direct foreign keys and require their referenced experiments
@@ -985,6 +1071,7 @@ impl ProvenanceStore {
              VALUES(?1, ?2)",
             params!["experiments", experiments_meta_toml],
         )?;
+        restore_preserved_values(&tx, &preserved)?;
         tx.commit()?;
         self.record_control_plane_run(
             "replace_control_plane_experiments_from_registry_text",
@@ -5058,11 +5145,14 @@ mod tests {
         let mut store = ProvenanceStore::open(&fixture.db)?;
         store.reindex_control_plane_from_registries(
             &fixture.root,
-            &fixture.claims,
-            &fixture.insights,
-            &fixture.experiments,
-            &fixture.binaries,
-            &fixture.rocq_project,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
         )?;
 
         let claims = store.control_plane_compat_text(ControlPlaneCompatKind::Claims)?;
@@ -5091,11 +5181,14 @@ mod tests {
 
         store.reindex_control_plane_from_registries(
             &fixture.root,
-            &fixture.claims,
-            &fixture.insights,
-            &fixture.experiments,
-            &fixture.binaries,
-            &fixture.rocq_project,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
         )?;
 
         assert_eq!(
@@ -5121,11 +5214,14 @@ mod tests {
         let mut store = ProvenanceStore::open(&fixture.db)?;
         store.reindex_control_plane_from_registries(
             &fixture.root,
-            &fixture.claims,
-            &fixture.insights,
-            &fixture.experiments,
-            &fixture.binaries,
-            &fixture.rocq_project,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
         )?;
         let disposition = "na_empirical:ROC-AUC on THEMIS-A minutes, no theorem to prove";
         store.claim_update_formal_proof("C-001", disposition, "test", Some("review"))?;
@@ -5140,11 +5236,14 @@ mod tests {
 
         store.reindex_control_plane_from_registries(
             &fixture.root,
-            &fixture.claims,
-            &fixture.insights,
-            &fixture.experiments,
-            &fixture.binaries,
-            &fixture.rocq_project,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
         )?;
         assert_eq!(
             store.claim_formal_proof("C-001")?.as_deref(),
@@ -5162,11 +5261,14 @@ mod tests {
         )?;
         store.reindex_control_plane_from_registries(
             &fixture.root,
-            &fixture.claims,
-            &fixture.insights,
-            &fixture.experiments,
-            &fixture.binaries,
-            &fixture.rocq_project,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
         )?;
         assert_eq!(
             store.claim_formal_proof("C-001")?.as_deref(),
@@ -5205,11 +5307,14 @@ mod tests {
         let mut store = ProvenanceStore::open(&fixture.db)?;
         store.reindex_control_plane_from_registries(
             &fixture.root,
-            &fixture.claims,
-            &fixture.insights,
-            &fixture.experiments,
-            &fixture.binaries,
-            &fixture.rocq_project,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
         )?;
         store.build_crossrefs()?;
 
@@ -5246,11 +5351,14 @@ claim_refs = ["C-001"]
         let mut store = ProvenanceStore::open(&fixture.db)?;
         store.reindex_control_plane_from_registries(
             &fixture.root,
-            &fixture.claims,
-            &fixture.insights,
-            &fixture.experiments,
-            &fixture.binaries,
-            &fixture.rocq_project,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
         )?;
         store.build_crossrefs()?;
         store.conn.execute(
@@ -5423,4 +5531,304 @@ experiment = "E-001"
             db,
         })
     }
+
+    /// Fixture with the canonical-only values the compatibility mirrors omit:
+    /// an insight status_note (I-212 has no compatibility key at all), a claim
+    /// formal_proof, and one claim transition event.
+    fn seed_canonical_only_values(fixture: &TestWorkspace) -> Result<ProvenanceStore> {
+        write_text(
+            &fixture.insights,
+            r#"[[insight]]
+id = "I-212"
+title = "Matched receptive field reverses the associator ranking"
+status = "verified"
+claims = ["C-001"]
+"#,
+        )?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::bootstrap(),
+        )?;
+        store.insight_update_status_note("I-212", SEEDED_NOTE, "test", Some("seed"))?;
+        store.claim_update_formal_proof("C-001", SEEDED_PROOF, "test", Some("seed"))?;
+        store.conn.execute(
+            "INSERT INTO claim_transition_events (
+                 transition_key, source_claim_id, expected_prior_status,
+                 experiment_verdict, proposed_claim_status, exercised_falsifier,
+                 rationale, actor, reason, transition_ts_utc,
+                 transition_spec_sha256, expected_source_state_sha256,
+                 expected_claim_id_max
+             ) VALUES (
+                 'canonical-authority-test', 'C-001', 'Verified', 'Inconclusive',
+                 'Provisional', 'test falsifier', 'test rationale', 'test actor',
+                 'test reason', '2026-09-01T00:00:00Z', 'spec-hash',
+                 'source-hash', 1
+             )",
+            [],
+        )?;
+        Ok(store)
+    }
+
+    const SEEDED_NOTE: &str = "seeded canonical note that no compatibility TOML carries";
+    const SEEDED_PROOF: &str = "na_empirical:canonical-only disposition";
+    const PERMUTED_NOTE: &str = "note written during the permutation";
+
+    fn export_to(store: &mut ProvenanceStore, fixture: &TestWorkspace) -> Result<()> {
+        let theorems = fixture.root.join("docs/THEOREMS.md");
+        let mirror = fixture.root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
+        store.export_control_plane_compat_paths(
+            &fixture.root,
+            CompatExportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                theorems: &theorems,
+                theorems_mirror: &mirror,
+            },
+        )
+    }
+
+    /// Run the three canonical-authority operations in one ordering and report
+    /// the state that must not depend on the ordering.
+    fn run_ordering(order: [char; 3]) -> Result<(String, i64, i64, String)> {
+        let label = format!("order_{}{}{}", order[0], order[1], order[2]);
+        let fixture = make_test_workspace(&label)?;
+        let mut store = seed_canonical_only_values(&fixture)?;
+        for op in order {
+            match op {
+                'i' => {
+                    store.reindex_control_plane_from_registries(
+                        &fixture.root,
+                        RegistryImportPaths {
+                            claims: &fixture.claims,
+                            insights: &fixture.insights,
+                            experiments: &fixture.experiments,
+                            binaries: &fixture.binaries,
+                            rocq_project: &fixture.rocq_project,
+                        },
+                        ReimportOptions::destructive(&fixture.db),
+                    )?;
+                }
+                'e' => export_to(&mut store, &fixture)?,
+                'n' => {
+                    store.insight_update_status_note(
+                        "I-212",
+                        PERMUTED_NOTE,
+                        "test",
+                        Some("permutation"),
+                    )?;
+                }
+                other => panic!("unknown operation {other}"),
+            }
+        }
+        let note = store
+            .insight_status_note("I-212")?
+            .expect("I-212 keeps its status note");
+        let revisions: i64 = store.conn.query_row(
+            "SELECT COUNT(*) FROM insight_revisions WHERE insight_id = 'I-212'",
+            [],
+            |row| row.get(0),
+        )?;
+        let events = store.list_claim_transition_events()?.len() as i64;
+        // Export once more so the compared mirror text is produced from the same
+        // final state in every ordering.
+        export_to(&mut store, &fixture)?;
+        // Compare the mirror by parsed content, not by bytes: splicing a live
+        // column into a cached compat row appends the key while a mirror-sourced
+        // row carries it in sorted position, so key order tracks provenance.
+        let mirror = {
+            let parsed: Value = toml::from_str(&fs::read_to_string(&fixture.insights)?)?;
+            let mut normalized = parsed;
+            if let Some(rows) = normalized.get_mut("insight").and_then(Value::as_array_mut) {
+                for row in rows.iter_mut() {
+                    if let Some(table) = row.as_table_mut() {
+                        let sorted: toml::map::Map<String, Value> =
+                            table.clone().into_iter().collect();
+                        *table = sorted;
+                    }
+                }
+            }
+            toml::to_string(&normalized)?
+        };
+        // claims.toml carries formal_proof, so the mirror is authoritative for it
+        // and an import that precedes any export legitimately restores the
+        // inventory disposition. What must hold in every ordering is that the
+        // column is never nulled; where an export ran first, the seeded value
+        // round-trips exactly.
+        let proof = store.claim_formal_proof("C-001")?;
+        assert!(
+            proof.as_deref().is_some_and(|value| !value.is_empty()),
+            "{label}: claim formal_proof was nulled"
+        );
+        if order.iter().position(|op| *op == 'e') < order.iter().position(|op| *op == 'i') {
+            assert_eq!(
+                proof.as_deref(),
+                Some(SEEDED_PROOF),
+                "{label}: exported disposition failed to round-trip"
+            );
+        }
+        Ok((note, revisions, events, mirror))
+    }
+
+    #[test]
+    fn canonical_values_survive_every_operation_ordering() -> Result<()> {
+        use std::collections::BTreeMap;
+        let orderings = [
+            ['i', 'e', 'n'],
+            ['i', 'n', 'e'],
+            ['e', 'i', 'n'],
+            ['e', 'n', 'i'],
+            ['n', 'i', 'e'],
+            ['n', 'e', 'i'],
+        ];
+        // The mirror wins only when it carries its own value. An export before the
+        // note edit puts the seeded note into insights.toml, so a re-import that
+        // runs last restores it; that overwrite is recorded in the diff. Every
+        // other ordering leaves the mirror silent on status_note, and the
+        // canonical value survives.
+        let mut mirrors: BTreeMap<String, String> = BTreeMap::new();
+        let mut baseline_revisions: Option<i64> = None;
+        for order in orderings {
+            let observed = run_ordering(order)?;
+            let expected_note = if order == ['e', 'n', 'i'] {
+                SEEDED_NOTE
+            } else {
+                PERMUTED_NOTE
+            };
+            assert_eq!(
+                observed.0, expected_note,
+                "ordering {order:?} lost the insight status note"
+            );
+            assert_eq!(
+                observed.2, 1,
+                "ordering {order:?} changed the transition event count"
+            );
+            assert!(
+                observed.1 >= 2,
+                "ordering {order:?} lost insight_revisions history: {}",
+                observed.1
+            );
+            match mirrors.get(&observed.0) {
+                None => {
+                    mirrors.insert(observed.0.clone(), observed.3.clone());
+                }
+                Some(first) => assert_eq!(
+                    &observed.3, first,
+                    "ordering {order:?} changed the exported mirror at an identical final state"
+                ),
+            }
+            match baseline_revisions {
+                None => baseline_revisions = Some(observed.1),
+                Some(first) => {
+                    assert_eq!(observed.1, first, "ordering {order:?} changed revisions");
+                }
+            }
+        }
+        Ok(())
+    }
+
+    #[test]
+    fn index_control_plane_refuses_a_populated_database() -> Result<()> {
+        let fixture = make_test_workspace("refuse_populated")?;
+        let mut store = seed_canonical_only_values(&fixture)?;
+        let err = store
+            .reindex_control_plane_from_registries(
+                &fixture.root,
+                RegistryImportPaths {
+                    claims: &fixture.claims,
+                    insights: &fixture.insights,
+                    experiments: &fixture.experiments,
+                    binaries: &fixture.binaries,
+                    rocq_project: &fixture.rocq_project,
+                },
+                ReimportOptions::bootstrap(),
+            )
+            .expect_err("bootstrap import must refuse a populated database");
+        let text = err.to_string();
+        assert!(text.contains("refusing to re-import"), "{text}");
+        assert!(text.contains("--allow-destructive-reimport"), "{text}");
+        assert!(text.contains("claim transition events"), "{text}");
+        Ok(())
+    }
+
+    #[test]
+    fn destructive_reimport_writes_a_backup_and_a_diff() -> Result<()> {
+        let fixture = make_test_workspace("destructive_backup")?;
+        let mut store = seed_canonical_only_values(&fixture)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
+        )?;
+        let backups = fixture
+            .db
+            .parent()
+            .expect("db has a parent")
+            .join("backups");
+        let mut sqlite_backups = Vec::new();
+        let mut diffs = Vec::new();
+        for entry in fs::read_dir(&backups)? {
+            let path = entry?.path();
+            let name = path.file_name().and_then(|n| n.to_str()).unwrap_or_default();
+            if name.ends_with(".diff.toml") {
+                diffs.push(path);
+            } else if name.ends_with(".sqlite3") {
+                sqlite_backups.push(path);
+            }
+        }
+        assert_eq!(sqlite_backups.len(), 1, "one backup database");
+        assert_eq!(diffs.len(), 1, "one diff beside it");
+        let backup_store = ProvenanceStore::open(&sqlite_backups[0])?;
+        assert_eq!(
+            backup_store.insight_status_note("I-212")?.as_deref(),
+            Some(SEEDED_NOTE),
+            "the backup holds the pre-import note"
+        );
+        let diff_text = fs::read_to_string(&diffs[0])?;
+        let diff_value: Value = toml::from_str(&diff_text)?;
+        assert!(diff_value.get("meta").is_some(), "{diff_text}");
+        let tables = diff_value
+            .get("table")
+            .and_then(Value::as_array)
+            .expect("diff lists tables");
+        assert_eq!(tables.len(), 4, "{diff_text}");
+        let insights_table = tables
+            .iter()
+            .find(|t| t.get("name").and_then(Value::as_str) == Some("insights"))
+            .expect("insights lane present");
+        let nulled = insights_table
+            .get("nulled_field_ids")
+            .and_then(Value::as_array)
+            .expect("nulled_field_ids array");
+        assert!(
+            nulled.iter().any(|v| v.as_str() == Some("I-212")),
+            "the diff names the insight whose status_note the mirror omits: {diff_text}"
+        );
+        Ok(())
+    }
 }
+
+mod reimport_guard;
+pub use reimport_guard::{
+    ControlPlanePopulation, ReimportDiff, ReimportOptions, TableDiff, diff_path_for_backup,
+    refusal_message,
+};
+use reimport_guard::{
+    DiffLane, assert_column_mapping_total, backup_database, build_diff, capture_preserved_values,
+    measure_population, restore_preserved_values,
+};

@@ -12,7 +12,9 @@ use provenance_core::{
     TheoremRecord,
 };
 use provenance_ops::source_provenance;
-use provenance_store::{ExternalSourceContractPatch, ProvenanceStore};
+use provenance_store::{
+    ExternalSourceContractPatch, ProvenanceStore, RegistryImportPaths, ReimportOptions,
+};
 use regex::Regex;
 use serde_json::json;
 use std::{
@@ -145,6 +147,10 @@ struct IndexControlPlaneArgs {
 
     #[arg(long, default_value = "proofs/_RocqProject")]
     rocq_project: PathBuf,
+
+    /// Acknowledge that this run overwrites canonical values with mirror values.
+    #[arg(long)]
+    allow_destructive_reimport: bool,
 }
 
 #[derive(Parser, Debug)]
@@ -541,11 +547,19 @@ fn run_index_control_plane(
     let mut store = ProvenanceStore::open(db_path)?;
     let stats = store.reindex_control_plane_from_registries(
         repo_root,
-        &repo_path(repo_root, &args.claims),
-        &repo_path(repo_root, &args.insights),
-        &repo_path(repo_root, &args.experiments),
-        &repo_path(repo_root, &args.binaries),
-        &repo_path(repo_root, &args.rocq_project),
+        RegistryImportPaths {
+            claims: &repo_path(repo_root, &args.claims),
+            insights: &repo_path(repo_root, &args.insights),
+            experiments: &repo_path(repo_root, &args.experiments),
+            binaries: &repo_path(repo_root, &args.binaries),
+            rocq_project: &repo_path(repo_root, &args.rocq_project),
+        },
+        // db_path is named in both modes so the refusal text identifies the
+        // database it protected.
+        ReimportOptions {
+            allow_destructive_reimport: args.allow_destructive_reimport,
+            db_path: Some(db_path),
+        },
     )?;
     println!(
         "Indexed canonical control plane: claims={} insights={} experiments={} binaries={} theorems={} indexed_at={}",
