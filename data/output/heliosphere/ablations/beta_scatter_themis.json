@@ -1,75 +1,186 @@
 {
-  "invalidation": {
-    "status": "invalidated",
-    "invalidated_on": "2026-09-01",
-    "correcting_commit": "f61485b7",
-    "stale_sha256": "a2df62d29c14ac6abb45569926f2e3c02620de3ffa9e22f4826fa723f93dbf85",
-    "reason": "off-by-one-day ESA join in a leap year; see invalidations.toml",
-    "record": "data/output/heliosphere/ablations/invalidations.toml"
-  },
   "n_matched": 2821,
-  "power_law_exponent": 0.7749921471180499,
-  "power_law_r_squared": 0.7837684502151782,
-  "spearman_r": 0.6511610007246746,
+  "power_law_exponent": 1.24531424197569,
+  "power_law_r_squared": 0.49268805263888976,
+  "power_law_exponent_binned": 0.5736003671943737,
+  "power_law_r_squared_binned": 0.8486752771800571,
+  "spearman_r": 0.6511588521069863,
   "spearman_p": 0.0,
-  "beta_crit_approx": 11.28837891684689,
+  "beta_crit_approx": 13.928020049886129,
   "binned_beta": [
-    0.012742749857031338,
-    0.020691380811147898,
-    0.03359818286283782,
-    0.05455594781168519,
-    0.08858667904100825,
-    0.14384498882876626,
-    0.23357214690901218,
-    0.37926901907322486,
-    0.6158482110660263,
-    0.9999999999999997,
-    1.6237767391887217,
-    2.636650898730358,
-    4.281332398719391,
-    6.951927961775602,
-    11.28837891684689,
-    18.329807108324356,
-    29.76351441631316
+    0.0023623292250126975,
+    0.004392030511617751,
+    0.008165640847489237,
+    0.015181518041327285,
+    0.02822540133025971,
+    0.05247652297257194,
+    0.09756408530987336,
+    0.1813906524890652,
+    0.3372405809566803,
+    0.6269959773746078,
+    1.1657077405356435,
+    2.16727791784992,
+    4.029392110788911,
+    7.491425372245321,
+    13.928020049886129,
+    25.89490422326498,
+    48.14367457329664
   ],
   "binned_mean_A": [
-    0.4993560289855073,
-    0.22575299999999998,
-    0.011495788546255508,
-    0.53502199543379,
-    2.457509206422018,
-    2.0816014302788846,
-    0.9985124759152216,
-    0.8999308222698073,
-    2.5002282807017546,
-    6.354286985294117,
-    7.717597805194804,
-    10.381361720430107,
-    14.980911335877863,
-    15.13965719047619,
-    20.53362983783784,
-    38.58360757142857,
-    54.587654166666674
+    0.18131,
+    0.8964720999999998,
+    0.6344241176470589,
+    0.29150914925373145,
+    0.10258005514705885,
+    0.4200832526690391,
+    2.5858678537549404,
+    1.7188779751552783,
+    0.7074308494934874,
+    3.0970735985401454,
+    5.226061264367816,
+    10.169132383177569,
+    14.053110243902434,
+    15.56263540677966,
+    23.519579777777775,
+    50.076446999999995,
+    45.322958
   ],
   "binned_counts": [
-    69,
-    162,
-    227,
-    219,
-    218,
-    251,
-    519,
-    467,
-    114,
-    68,
-    77,
-    93,
-    131,
-    105,
-    37,
+    3,
+    20,
+    34,
+    134,
+    272,
+    281,
+    253,
+    483,
+    691,
+    137,
+    87,
+    107,
+    164,
+    118,
+    27,
     7,
-    6
+    3
   ],
-  "shape": "Weak power law: alpha=0.77, R^2=0.784. Moderate fit -- may have a transition region.",
-  "interpretation": "The A(beta) relationship is Weak power law: alpha=0.77, R^2=0.784. Moderate fit -- may have a transition region.. Spearman r=0.651 confirms monotonic positive correlation: higher beta -> higher associator. The steepest transition occurs near beta ~ 11.3."
+  "shape": "No clean power law: alpha=1.25, R^2=0.493. The relation is not scale-free.",
+  "interpretation": "The A(beta) relationship is No clean power law: alpha=1.25, R^2=0.493. The relation is not scale-free.. Spearman r=0.651 confirms monotonic positive correlation: higher beta -> higher associator. The steepest transition occurs near beta ~ 13.9.",
+  "provenance": {
+    "normalization": "current",
+    "normalization_source": "norms CSV comment",
+    "join_policy": "exact-minute",
+    "tolerance_minutes": null,
+    "rank_method": "ordinal (sort order, no tie midranks)",
+    "fit_definition": "power_law_exponent is the least-squares slope of log10(A) on log10(beta) over all matched pairs; power_law_exponent_binned is the same slope over the populated (binned_beta, binned_mean_A) points and is the definition the 2026-03-27 artifact's 0.775 came from",
+    "bin_construction": "n_bins geometric bins spanning [min(beta), max(beta)]; binned_beta reports the geometric center of each bin. The 2026-03-27 artifact's bin construction is not in the tree, so this specification is newly declared and the binned_* fields are not a reproduction of that artifact's bins.",
+    "beta_crit_rule": "binned_beta at the index of the largest increase in binned_mean_A between adjacent populated bins",
+    "esa_quality_note": "The cached THA_L2_ESA daily files hold the unflagged moments tha_peif_density and tha_peif_avgtemp and carry no quality column, so beta-join cannot filter on tha_peif_data_quality. The quality-filtered parameters return NaN on 935 of the 3931 cached rows over 2008 DOY 301..307, so about a quarter of the joined plasma samples are flagged suspect by the instrument team and are retained here.",
+    "inputs": [
+      {
+        "path": ".cache/heliosphere_norms_current.csv",
+        "sha256": "165b56fabe20bc97cc284309fffa9f4c4f986b422ddfc6872b1430a1a4f21145",
+        "size_bytes": 153077,
+        "rows_read": 8216
+      },
+      {
+        "path": "data/external/themis/tha_fgm_2008_301.csv",
+        "sha256": "3791682cdf56a270a210da64ff5049a40f2c3f03238f432d680e2e10b3c78ba8",
+        "size_bytes": 1896585,
+        "rows_read": 28542
+      },
+      {
+        "path": "data/external/themis/tha_fgm_2008_302.csv",
+        "sha256": "e51e36ec673d92778b815a166583c3ae1db9d42f66a51a1185e75d3e1e8a3a1f",
+        "size_bytes": 1905874,
+        "rows_read": 28542
+      },
+      {
+        "path": "data/external/themis/tha_fgm_2008_303.csv",
+        "sha256": "f803661ebcc09ac235de10bb7cb9c71170c60f9ef57c4019be306329b529a8a3",
+        "size_bytes": 1895606,
+        "rows_read": 28542
+      },
+      {
+        "path": "data/external/themis/tha_fgm_2008_304.csv",
+        "sha256": "4f71c0934b7db012675198640207c5761eeb74417de0fd110098a46c8b444f09",
+        "size_bytes": 1898461,
+        "rows_read": 28541
+      },
+      {
+        "path": "data/external/themis/tha_fgm_2008_305.csv",
+        "sha256": "1d37d028b3b3b159b0647dee7097b997965ee8ad4abd3a4f4275b6b446c26fbc",
+        "size_bytes": 1866247,
+        "rows_read": 28038
+      },
+      {
+        "path": "data/external/themis/tha_fgm_2008_306.csv",
+        "sha256": "793d76a836778b9a952ade6f907a3bb08371b7d1192297ecc3ead43f3dc7814d",
+        "size_bytes": 1899431,
+        "rows_read": 28528
+      },
+      {
+        "path": "data/external/themis/tha_fgm_2008_307.csv",
+        "sha256": "c35015ae68e51f66d1e994ab71bd5c672dd40e7ae1961c7dc85fca7ea7a3fbd2",
+        "size_bytes": 1899074,
+        "rows_read": 28525
+      },
+      {
+        "path": "data/external/themis_esa/tha_esa_2008_301.csv",
+        "sha256": "aa1aee97c00b5dbc91a3892a2321b1d58fbb10ab9e0a9c0999e7314c69b8580b",
+        "size_bytes": 29276,
+        "rows_read": 563
+      },
+      {
+        "path": "data/external/themis_esa/tha_esa_2008_302.csv",
+        "sha256": "a9141d418178a9cccc251d2661ec685795d70c1fe4918c664532fb391670c1f6",
+        "size_bytes": 29224,
+        "rows_read": 562
+      },
+      {
+        "path": "data/external/themis_esa/tha_esa_2008_303.csv",
+        "sha256": "13db63b500157f56b48c35832f647bc5174aea2d7ce6f37fd215719f1a4d90a8",
+        "size_bytes": 29328,
+        "rows_read": 564
+      },
+      {
+        "path": "data/external/themis_esa/tha_esa_2008_304.csv",
+        "sha256": "cc73ca8d70a60020f964e882faf1edb7a34134939420fd95a345c3088e491b84",
+        "size_bytes": 29744,
+        "rows_read": 572
+      },
+      {
+        "path": "data/external/themis_esa/tha_esa_2008_305.csv",
+        "sha256": "37159d97153ce5417910bedd41463ce1e57d00a64d11c69e8f7ef0050eadc3c7",
+        "size_bytes": 29692,
+        "rows_read": 571
+      },
+      {
+        "path": "data/external/themis_esa/tha_esa_2008_306.csv",
+        "sha256": "6db38a446f906d0f8c99faaee57ac4a167e65de0023eda9905502879fb4ba58c",
+        "size_bytes": 26845,
+        "rows_read": 560
+      },
+      {
+        "path": "data/external/themis_esa/tha_esa_2008_307.csv",
+        "sha256": "7f817ce9d4168e55ea47ce62b6b88613002263a478719e5a5f6bf4747cb78839",
+        "size_bytes": 28028,
+        "rows_read": 539
+      }
+    ],
+    "missing_inputs": [],
+    "n_norm_minutes": 8216,
+    "n_fgm_minutes": 8234,
+    "n_esa_rows_read": 3931,
+    "n_esa_rows_rejected": 325,
+    "esa_rejection_reasons": {
+      "malformed_row": 0,
+      "nonfinite_or_nonpositive_moment": 325,
+      "year_or_date_mismatch": 0,
+      "duplicate_minute_overwritten": 0
+    },
+    "n_esa_minutes_accepted": 3606,
+    "n_pairs_rejected_by_beta_range": 0,
+    "seed": null
+  }
 }
