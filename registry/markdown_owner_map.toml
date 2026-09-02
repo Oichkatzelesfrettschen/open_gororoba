@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 134
+document_count = 135
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -783,3 +783,9 @@ removal_status = "active"
 path = "docs/engineering/repository-architecture-evidence-map-2026_08_10.md"
 owner_group = "project"
 removal_status = "active"
+
+[[owner]]
+path = "docs/reports/enso_91103_outlook_2026_09_01.md"
+owner_group = "project"
+removal_status = "active"
+removal_reason = ""
