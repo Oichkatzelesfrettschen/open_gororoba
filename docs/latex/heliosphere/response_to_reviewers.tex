@@ -3,7 +3,7 @@
 %% Manuscript: Cayley-Dickson Associator as a Magnetopause Boundary Detector
 %%
 %% This letter addresses all comments from the initial review round.
-%% Supporting experiments: E-237..E-241  |  Claims: C-1629..C-1634
+%% Supporting experiments: E-267..E-271  |  Claims: registration pending
 %% All claimed numerical results are archived in registry/experiments.toml
 %% and reproducible via the open_gororoba Rust workspace binaries listed
 %% at the end of each response.
@@ -80,9 +80,9 @@ The table below summarizes every revision.
 \toprule
 Comment & Nature & Action & New experiment/section \\
 \midrule
-MC1 & Major & Added tau sweep ablation & E-240, \S3, Fig.~1, Table~1 \\
-MC2 & Major & Added Alfvenic control + micro-switchback & E-239, E-241, \S4--5, Fig.~2--4, Table~2--3 \\
-MC3 & Major & Gap detection, spin tone note, $\varepsilon$ documentation & E-237 binary update, \S2 \\
+MC1 & Major & Added tau sweep ablation & E-270, \S3, Fig.~1, Table~1 \\
+MC2 & Major & Added Alfvenic control + micro-switchback & E-269, E-271, \S4--5, Fig.~2--4, Table~2--3 \\
+MC3 & Major & Gap detection, spin tone note, $\varepsilon$ documentation & E-267 binary update, \S2 \\
 P4 & Minor & Clarified embedding normalization & \S2.3 \\
 P5 & Minor & Data availability statement expanded & \S9 \\
 \bottomrule
@@ -107,7 +107,7 @@ explain why the result degrades with increasing lag.''
 \end{reviewcomment}
 
 \begin{authorresponse}
-We have added a full tau sensitivity sweep (new Section~3, Experiment~E-240)
+We have added a full tau sensitivity sweep (new Section~3, Experiment~E-270)
 covering $\tau \in \{1, 2, 5, 10\}$~min on the same THEMIS-A 7-day interval
 used for the main evaluation.  Results are presented in Table~1 and Figure~1.
 
@@ -140,7 +140,7 @@ plasma simultaneously, destroying the topological transition signature.''
 \end{newtext}
 
 \smallskip\noindent\textit{Reproducing this result:}
-\texttt{heliosphere-takens-tau-sweep} binary (E-240); output at\\
+\texttt{heliosphere-takens-tau-sweep} binary (E-270); output at\\
 \texttt{data/output/heliosphere/ablations/takens\_tau\_sweep.json}.
 
 %% --- MC2 ---
@@ -154,9 +154,9 @@ not a boundary detector but an Alfvenic activity monitor.''
 \end{reviewcomment}
 
 \begin{authorresponse}
-This comment is addressed by two new experiments (E-239 and E-241).
+This comment is addressed by two new experiments (E-269 and E-271).
 
-\textbf{Alfvenic control (E-239, new Section~4).}
+\textbf{Alfvenic control (E-269, new Section~4).}
 We classify each PSP Encounter~3 minute ($n = 31{,}673$, 2020-01-20 to
 2020-02-10) into Alfvenic ($B_r$ sign reversal within $\pm 5$~min),
 CompressiveBoundary ($\delta B/|B| > 0.30$), or Quiet (neither) using a
@@ -187,7 +187,7 @@ gradient achieves a similar ratio ($2.91\times$) but fires $24\%$ more
 often in compressive intervals ($3.36$ vs $2.71$~hr$^{-1}$), indicating
 higher false-alarm pressure.
 
-\textbf{Micro-switchback correlation (E-241, new Section~5).}
+\textbf{Micro-switchback correlation (E-271, new Section~5).}
 The reviewer's concern is sharpest for the \textit{quiet} class: if quiet CD
 fires are explained by sub-threshold Alfvenic activity, they should correlate
 with kinetic-scale field rotation.  We compute inter-minute B-vector rotation
@@ -230,8 +230,8 @@ monitor'' interpretation the reviewer was concerned about.
 \end{authorresponse}
 
 \smallskip\noindent\textit{Reproducing these results:}
-\texttt{heliosphere-psp-alfven-control} (E-239),
-\texttt{heliosphere-psp-switchback-correlation} (E-241);
+\texttt{heliosphere-psp-alfven-control} (E-269),
+\texttt{heliosphere-psp-switchback-correlation} (E-271);
 outputs at \texttt{data/output/heliosphere/ablations/}.
 
 %% --- MC3 ---
@@ -402,9 +402,9 @@ refer to the revised submission.
 \bigskip
 
 \noindent We believe the manuscript is substantially strengthened by these
-additions.  In particular, Experiments~E-241 directly addresses the core
+additions.  In particular, Experiments~E-271 directly addresses the core
 concern of MC2 with a falsifiable quantitative result ($1.72\times$
-enrichment, $32.5\%$ rotation-free), and Experiment~E-240 establishes
+enrichment, $32.5\%$ rotation-free), and Experiment~E-270 establishes
 $\tau=1$~min as empirically optimal with a clear physical explanation for
 the degradation.
 

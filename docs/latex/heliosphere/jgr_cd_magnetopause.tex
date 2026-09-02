@@ -5,7 +5,7 @@
 %% Manuscript type: Research Article
 %%
 %% Claims underpinning this paper:
-%%   C-1629..C-1634 (experiments E-237..E-241)
+%%   experiments E-267..E-271; claim registration pending
 %%   Registry: registry/claims.toml, registry/experiments.toml
 %%
 %% Compile with XeLaTeX (required by agujournal2025.cls for fontspec):
@@ -805,7 +805,7 @@ Parker Solar Probe FIELDS 1-min data were obtained from SPDF
 (\url{https://spdf.gsfc.nasa.gov/}) as product
 \path{PSP_FLD_L2_MAG_RTN_1MIN}.
 All analysis code is available in the open\_gororoba repository
-under the experiments E-237, E-239, E-240, and E-241;
+under the experiments E-267, E-269, E-270, and E-271;
 see \path{registry/experiments.toml} for detailed provenance.
 
 %% ===================================================================
@@ -841,9 +841,9 @@ independent hypothesis tests.}
 Test & Statistic & Obs.\ value & $p$-value & Survives? \\
 \midrule
 \multicolumn{5}{l}{\textit{Primary signal tests}} \\
-THEMIS SC F1 null (E-244)       & F1 = 0.601 vs shuffle & 0.601 & $< 10^{-4}$ & YES \\
-THEMIS general F1 null (E-247)  & F1 = 0.415 vs shuffle & 0.415 & $< 10^{-4}$ & YES \\
-PSP ratio permutation (E-243)   & 2.83x count ratio     & 0.941 & $< 10^{-4}$ & YES \\
+THEMIS SC F1 null (E-274)       & F1 = 0.601 vs shuffle & 0.601 & $< 10^{-4}$ & YES \\
+THEMIS general F1 null (E-275)  & F1 = 0.415 vs shuffle & 0.415 & $< 10^{-4}$ & YES \\
+PSP ratio permutation (E-273)   & 2.83x count ratio     & 0.941 & $< 10^{-4}$ & YES \\
 \midrule
 \multicolumn{5}{l}{\textit{Ablation comparisons (pre-registered; not Bonferroni-adjusted)}} \\
 P1: CD R32 vs L2-delay          & $\Delta$F1 = -0.014   & --    & -- & FALSIFIED \\
@@ -854,21 +854,21 @@ P4: R16 < R32                   & $\Delta$F1 = -0.394   & --    & -- & CONFIRMED
 P5: R64 within 0.05 of R32      & $\Delta$F1 = -0.182   & --    & -- & FALSIFIED \\
 \midrule
 \multicolumn{5}{l}{\textit{Descriptive statistics (no correction applied)}} \\
-Tau sweep monotonicity (E-240)  & F1 vs tau             & --    & -- & DESC. \\
-MMS topology-positive (E-238)   & 75/86 = 87.2\%        & --    & -- & DESC. \\
-PSP micro-rot enrichment (E-241)& 1.72$\times$          & --    & -- & DESC. \\
-SC-window bootstrap CI (E-242)  & CI = [0.456, 0.667]   & --    & -- & DESC. \\
-General-window CI (E-247)       & CI = [0.320, 0.457]   & --    & -- & DESC. \\
-Held-out threshold F1 (E-259)   & F1 = 0.332            & --    & -- & DESC. \\
-V1 heliopause enrichment (E-265)& 1.44$\times$          & --    & -- & DESC. \\
+Tau sweep monotonicity (E-270)  & F1 vs tau             & --    & -- & DESC. \\
+MMS topology-positive (E-268)   & 75/86 = 87.2\%        & --    & -- & DESC. \\
+PSP micro-rot enrichment (E-271)& 1.72$\times$          & --    & -- & DESC. \\
+SC-window bootstrap CI (E-272)  & CI = [0.456, 0.667]   & --    & -- & DESC. \\
+General-window CI (E-275)       & CI = [0.320, 0.457]   & --    & -- & DESC. \\
+Held-out threshold F1 (E-276)   & F1 = 0.332            & --    & -- & DESC. \\
+V1 heliopause enrichment (E-277)& 1.44$\times$          & --    & -- & DESC. \\
 PCA linear baseline F1          & F1 = 0.127            & --    & -- & DESC. \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 Three hypothesis tests survive Bonferroni correction at $\alpha^* = 0.0029$,
-all with $p < 10^{-4}$: the THEMIS SC-window F1 (E-244), the general-interval
-F1 (E-247), and the PSP compressive/Alfvenic discrimination ratio (E-243).
+all with $p < 10^{-4}$: the THEMIS SC-window F1 (E-274), the general-interval
+F1 (E-275), and the PSP compressive/Alfvenic discrimination ratio (E-273).
 The five ablation predictions are pre-registered and reported as prediction
 verdicts, not as independent hypothesis tests subject to this correction.
 Only P4 (R16 $<$ R32) was confirmed.

@@ -1,0 +1,26 @@
+[transition]
+transition_key = "c-1731-scope-narrowing-2026-09-02"
+source_claim_id = "C-1731"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901"]
+experiment_ids = ["E-242"]
+exercised_falsifier = "False if the 95 percent paired file-bootstrap interval of the out-of-fold ROC-AUC difference between the logistic model with ln(assoc) and the same model without it contains zero."
+proposed_claim_status = "Verified"
+rationale = "The numbers in C-1731 stand; two phrasings overreach. 'Unique information' suggests an information-theoretic quantity, while E-242 measured incremental predictive discrimination under one fixed linear-in-log-features logistic model with a fixed 1e-6 ridge and one fixed fold assignment. The delta ROC-AUC of 0.0020 is 0.20 AUC percentage points, which is about 0.24 percent of the baseline AUC 0.8428, so '0.2 percent of AUC' misstates the ratio. The successor reports the delta in AUC percentage points and scopes the conclusion to the fitted model class and fold assignment."
+unresolved_assumptions = ["A nonlinear learner could absorb or enlarge the increment; the bootstrap resamples files while the fold assignment stays fixed."]
+actor = "closure-review-2026-09-02"
+reason = "Narrow the C-1731 wording to incremental discrimination under the fixed model and report the delta in AUC percentage points."
+transition_timestamp = "2026-09-02T06:02:00Z"
+expected_source_state_sha256 = "afc0ab92e528d512732ce64e1f239a088fcf3ed8f8ae8b374f140b5a84917ba1"
+expected_claim_id_max = 1733
+
+[[successor]]
+proposal_key = "staples-associator-incremental-discrimination-under-fixed-logistic-model"
+statement = "Under a fixed linear-in-log-features logistic model (ridge 1e-6, Newton-Raphson, standardization fitted inside each training fold) with a fixed 5-fold assignment grouped by daily file (one ChaCha8 seed-42 shuffle), adding ln(assoc) to the six matched six-sample baselines ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) raises out-of-fold ROC-AUC on the deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files) from 0.8428 to 0.8448, an incremental predictive discrimination of +0.20 AUC percentage points with paired file-bootstrap 95 percent interval [+0.17, +0.23] over 1000 resamples and zero adverse resamples; PR-AUC rises by +0.05 percentage points [+0.01, +0.08] and log loss falls by 0.00012 [0.00007, 0.00018]. Every interval excludes zero in the associator's favor, and the increment is about 0.24 percent of the baseline AUC, an order of magnitude below the standalone margins C-1631 reports. The statement is about incremental discrimination under this model class and fold assignment, not about information-theoretic uniqueness."
+initial_status = "Verified"
+source_or_implementation_boundary = "Phenomenological mapping on one benchmark at interpretive depth 0 under one fixed logistic model and one fixed grouped fold assignment; no claim about nonlinear learners, other fold draws, or other spacecraft."
+required_falsifier = "A re-run of staples-incremental-information with a different seed, fold count, or a nonlinear baseline learner in which the delta ROC-AUC interval contains zero or turns negative."
+where_stated = ["data/output/staples_incremental_information.json", "E-242"]
+evidence_artifact_ids = ["LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901"]
+predecessor_relation_kind = "narrows"

@@ -65,7 +65,7 @@ const MAPS_URL: &str = concat!(
 #[command(
     author,
     version,
-    about = "Rust-native MaNGA pseudo-slit rotation curve extractor (E-183)"
+    about = "Rust-native MaNGA pseudo-slit rotation curve extractor; produces the E-183 inputs"
 )]
 struct Args {
     /// DAPall selection CSV from Stage 1 (manga_dapall_to_csv.py)

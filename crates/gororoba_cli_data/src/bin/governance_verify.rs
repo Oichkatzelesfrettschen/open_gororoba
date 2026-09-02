@@ -222,6 +222,7 @@ enum Command {
     Crossrefs(CommonArgs),
     DatasetLabelAliases(CommonArgs),
     ExternalSourceOperationalContracts(CommonArgs),
+    ExperimentReferenceIdentity(CommonArgs),
     /// Run all registry policy checks in a single process invocation.
     /// Equivalent to: schema-signatures + crossrefs + dataset-label-aliases
     /// + external-source-operational-contracts + markdown-removal-policy.
@@ -262,6 +263,7 @@ fn main() -> Result<()> {
         Command::ExternalSourceOperationalContracts(args) => {
             verify_external_source_operational_contracts(&args)
         }
+        Command::ExperimentReferenceIdentity(args) => verify_experiment_reference_identity(&args),
         Command::ValidateAll(args) => run_validate_all(&args),
     }
 }
@@ -306,6 +308,10 @@ fn run_validate_all(args: &CommonArgs) -> Result<()> {
         verify_external_source_operational_contracts
     );
     run_check!("markdown-removal-policy", verify_markdown_removal_policy);
+    run_check!(
+        "experiment-reference-identity",
+        verify_experiment_reference_identity
+    );
 
     if failed.is_empty() {
         Ok(())
@@ -3485,6 +3491,262 @@ fn looks_like_anomaly_surface_experiment(row: &Value, markers: &[&str]) -> bool 
         }
     }
     false
+}
+
+/// Every experiment identifier on an active surface resolves to exactly one
+/// canonical experiment row, and a binary's self-label (a single identifier
+/// in parentheses) names an experiment that binary owns. Active surfaces are crate sources, LaTeX under
+/// docs/latex, tracked markdown under docs, and plans; retained audit
+/// artifacts under data/output and the registry itself carry chronology and
+/// are exempt. Legacy identifiers are declared in
+/// registry/experiment_id_aliases.toml and are rejected on active surfaces,
+/// which is what makes the alias table a migration record rather than a
+/// second namespace.
+fn verify_experiment_reference_identity(args: &CommonArgs) -> Result<()> {
+    let root = resolve_root(args)?;
+    let experiments = load_control_plane_registry(
+        &root,
+        &args.db,
+        ControlPlaneCompatKind::Experiments,
+        "registry/experiments.toml",
+    )?;
+    let mut binary_by_experiment = BTreeMap::<String, String>::new();
+    for row in table_array(&experiments, "experiment") {
+        let id = table_str(row, "id").trim().to_string();
+        if !id.is_empty() {
+            binary_by_experiment.insert(id, table_str(row, "binary").trim().to_string());
+        }
+    }
+    let alias_path = root.join("registry/experiment_id_aliases.toml");
+    let mut legacy_alias = BTreeMap::<String, String>::new();
+    let mut non_experiment_tokens = BTreeSet::<(String, String)>::new();
+    if alias_path.exists() {
+        read_ascii_text(&alias_path)?;
+        let raw = load_toml(&alias_path)?;
+        let rows = table_array(&raw, "alias");
+        let declared = raw
+            .get("experiment_id_aliases")
+            .and_then(Value::as_table)
+            .and_then(|meta| meta.get("alias_count"))
+            .and_then(Value::as_integer)
+            .unwrap_or(-1);
+        if declared != rows.len() as i64 {
+            bail!("experiment_id_aliases alias_count metadata mismatch");
+        }
+        for row in rows {
+            let alias_id = table_str(row, "id").trim().to_string();
+            let legacy = table_str(row, "legacy_id").trim().to_string();
+            let canonical = table_str(row, "canonical_experiment_id").trim().to_string();
+            let scheme = table_str(row, "legacy_scheme").trim().to_string();
+            if alias_id.is_empty() || legacy.is_empty() || scheme.is_empty() {
+                bail!("experiment_id_aliases[{alias_id}] missing id, legacy_id, or legacy_scheme");
+            }
+            if !canonical.is_empty() && !binary_by_experiment.contains_key(&canonical) {
+                bail!("experiment_id_aliases[{alias_id}] unknown canonical_experiment_id: {canonical}");
+            }
+            if let Some(previous) = legacy_alias.insert(format!("{scheme}:{legacy}"), alias_id.clone()) {
+                bail!("experiment_id_aliases duplicate legacy id {legacy} in scheme {scheme} ({previous}, {alias_id})");
+            }
+        }
+        // A token shaped like an experiment id that names something else (a
+        // CPU model, a paper's own numbering) is exempted per file, with the
+        // reason recorded beside it.
+        for row in table_array(&raw, "non_experiment_token") {
+            let file = table_str(row, "file").trim().to_string();
+            let token = table_str(row, "token").trim().to_string();
+            if file.is_empty() || token.is_empty() || table_str(row, "reason").trim().is_empty() {
+                bail!("experiment_id_aliases non_experiment_token rows need file, token, and reason");
+            }
+            if !root.join(&file).exists() {
+                bail!("experiment_id_aliases non_experiment_token names a missing file: {file}");
+            }
+            non_experiment_tokens.insert((file, token));
+        }
+    }
+    let bin_targets = collect_bin_targets(&root)?;
+    let id_re = Regex::new(r"\bE-\d{3}\b")?;
+    // A single identifier in parentheses is how a binary labels its own
+    // experiment ("Takens tau sweep (E-nnn)"); a list or a bare mention is a
+    // citation of another experiment's inputs and only has to resolve.
+    let self_label_re = Regex::new(r"\(E-\d{3}\)")?;
+    let mut failures = Vec::new();
+    let mut references = 0usize;
+    for rel_path in experiment_reference_surfaces(&root)? {
+        let path = root.join(&rel_path);
+        let text = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+        let owner = bin_targets.iter().find(|target| target.owns(&rel_path));
+        for (line_index, line) in text.lines().enumerate() {
+            for found in id_re.find_iter(line) {
+                references += 1;
+                let id = found.as_str();
+                if non_experiment_tokens.contains(&(rel_path.clone(), id.to_string())) {
+                    continue;
+                }
+                let Some(binary) = binary_by_experiment.get(id) else {
+                    failures.push(format!(
+                        "{rel_path}:{}: {id} is not a canonical experiment; declare it in registry/experiment_id_aliases.toml and cite its canonical successor",
+                        line_index + 1
+                    ));
+                    continue;
+                };
+                let Some(owner) = owner else { continue };
+                let is_self_label = is_self_label_line(line)
+                    && self_label_re
+                        .find_iter(line)
+                        .any(|label| label.as_str() == format!("({id})"));
+                if is_self_label && !owner.serves(binary) {
+                    failures.push(format!(
+                        "{rel_path}:{}: {id} belongs to binary '{binary}', which does not own this source file (owner: {})",
+                        line_index + 1,
+                        owner.describe()
+                    ));
+                }
+            }
+        }
+    }
+    if !failures.is_empty() {
+        bail!(failures.join("\n"));
+    }
+    println!(
+        "OK: experiment reference identity verified. references={references} experiments={} legacy_aliases={} bin_targets={}",
+        binary_by_experiment.len(),
+        legacy_alias.len(),
+        bin_targets.len()
+    );
+    Ok(())
+}
+
+/// A `[[bin]]` target as Cargo declares it: the source file it names and, for
+/// a dispatcher whose subcommands live beside `main.rs`, the directory those
+/// modules share.
+struct BinTarget {
+    name: String,
+    source: String,
+    module_dir: Option<String>,
+}
+
+impl BinTarget {
+    fn owns(&self, rel_path: &str) -> bool {
+        rel_path == self.source
+            || self
+                .module_dir
+                .as_deref()
+                .is_some_and(|dir| rel_path.starts_with(&format!("{dir}/")))
+    }
+
+    /// `binary` is the experiment field: a bare bin name or `<bin> <subcommand>`.
+    fn serves(&self, binary: &str) -> bool {
+        let mut parts = binary.split_whitespace();
+        let Some(bin) = parts.next() else { return false };
+        bin == self.name
+    }
+
+    fn describe(&self) -> String {
+        match &self.module_dir {
+            Some(dir) => format!("{} ({dir}/)", self.name),
+            None => self.name.clone(),
+        }
+    }
+}
+
+fn collect_bin_targets(root: &Path) -> Result<Vec<BinTarget>> {
+    let mut out = Vec::new();
+    let crates_dir = root.join("crates");
+    for entry in fs::read_dir(&crates_dir).with_context(|| format!("read {}", crates_dir.display()))? {
+        let entry = entry?;
+        let manifest = entry.path().join("Cargo.toml");
+        if !manifest.exists() {
+            continue;
+        }
+        let raw = load_toml(&manifest)?;
+        let crate_rel = format!("crates/{}", entry.file_name().to_string_lossy());
+        for bin in table_array(&raw, "bin") {
+            let name = table_str(bin, "name").trim().to_string();
+            let path = table_str(bin, "path").trim().to_string();
+            if name.is_empty() || path.is_empty() {
+                continue;
+            }
+            let source = format!("{crate_rel}/{path}");
+            let module_dir = source
+                .strip_suffix("/main.rs")
+                .map(str::to_string);
+            out.push(BinTarget { name, source, module_dir });
+        }
+        let auto_bin_dir = entry.path().join("src/bin");
+        if auto_bin_dir.exists() {
+            for bin_entry in fs::read_dir(&auto_bin_dir)?.flatten() {
+                let bin_path = bin_entry.path();
+                let Some(stem) = bin_path.file_stem().and_then(|s| s.to_str()) else { continue };
+                let name = stem.replace('_', "-");
+                if out.iter().any(|target| target.name == name) {
+                    continue;
+                }
+                if bin_path.extension().and_then(|e| e.to_str()) == Some("rs") {
+                    out.push(BinTarget {
+                        name,
+                        source: format!("{crate_rel}/src/bin/{stem}.rs"),
+                        module_dir: None,
+                    });
+                } else if bin_path.join("main.rs").exists() {
+                    out.push(BinTarget {
+                        name,
+                        source: format!("{crate_rel}/src/bin/{stem}/main.rs"),
+                        module_dir: Some(format!("{crate_rel}/src/bin/{stem}")),
+                    });
+                }
+            }
+        }
+    }
+    out.sort_by(|a, b| a.source.cmp(&b.source));
+    Ok(out)
+}
+
+fn experiment_reference_surfaces(root: &Path) -> Result<Vec<String>> {
+    let mut files = Vec::new();
+    for (search_root, extensions) in [
+        ("crates", &["rs"][..]),
+        ("docs/latex", &["tex"][..]),
+        ("docs", &["md"][..]),
+        ("plans", &["toml"][..]),
+    ] {
+        let path = root.join(search_root);
+        if !path.exists() {
+            continue;
+        }
+        for entry in WalkDir::new(&path).into_iter().flatten() {
+            let file = entry.path();
+            if !entry.file_type().is_file() {
+                continue;
+            }
+            let Some(ext) = file.extension().and_then(|e| e.to_str()) else { continue };
+            if !extensions.contains(&ext) {
+                continue;
+            }
+            let rel = file
+                .strip_prefix(root)
+                .context("strip experiment reference path prefix")?
+                .to_string_lossy()
+                .replace('\\', "/");
+            if rel.contains("/.cache/") || rel.starts_with(".cache/") || rel.starts_with("docs/book/") {
+                continue;
+            }
+            files.push(rel);
+        }
+    }
+    files.sort();
+    files.dedup();
+    Ok(files)
+}
+
+/// A line where a parenthesized experiment id is the file's own label rather
+/// than prose: a module or item doc comment, a clap `about` string, or a
+/// banner the binary prints.
+fn is_self_label_line(line: &str) -> bool {
+    let trimmed = line.trim_start();
+    trimmed.starts_with("//!")
+        || trimmed.starts_with("///")
+        || trimmed.contains("about = ")
+        || trimmed.contains("===")
 }
 
 #[cfg(test)]

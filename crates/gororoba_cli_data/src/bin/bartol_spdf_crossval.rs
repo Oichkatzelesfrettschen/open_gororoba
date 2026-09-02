@@ -1,4 +1,4 @@
-//! Bartol vs SPDF Voyager 2 B-field and plasma cross-validation (E-128).
+//! Bartol vs SPDF Voyager 2 B-field and plasma cross-validation, the execution target of E-128.
 //!
 //! Compares hourly Voyager 2 data from two independent providers:
 //!   - SPDF NASA hourly merged files (vy2_YYYY.asc, SE coordinates)

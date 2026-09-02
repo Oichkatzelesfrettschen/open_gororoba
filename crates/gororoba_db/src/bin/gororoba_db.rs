@@ -1279,9 +1279,10 @@ fn cmd_planning_mutation(
 /// Pretty-print a status_note revision audit row to stdout.
 fn print_revision_summary(entity_kind: &str, revision: &provenance_store::StatusNoteRevision) {
     println!(
-        "{} {} status_note: revision {} actor={} prev_sha256={} new_sha256={}",
+        "{} {} {}: revision {} actor={} prev_sha256={} new_sha256={}",
         entity_kind,
         revision.entity_id,
+        revision.field_name,
         revision.revision_id,
         revision.actor,
         revision.prev_value_sha256.as_deref().unwrap_or("(none)"),
@@ -1480,6 +1481,25 @@ fn cmd_insight_mutation(store: &mut ProvenanceStore, args: &InsightMutationArgs)
                 None => println!("{}: (status_note is NULL)", id),
             }
         }
+        InsightMutationAction::UpdateSummary {
+            id,
+            summary,
+            actor,
+            reason,
+            regen_toml,
+        } => {
+            let actor = actor
+                .clone()
+                .or_else(|| std::env::var("USER").ok())
+                .unwrap_or_else(|| "unknown".to_string());
+            let revision = store.insight_update_summary(id, summary, &actor, reason.as_deref())?;
+            print_revision_summary("insight", &revision);
+            maybe_regen_toml(*regen_toml)?;
+        }
+        InsightMutationAction::ShowSummary { id } => match store.insight_summary(id)? {
+            Some(text) => println!("{}: {}", id, text),
+            None => println!("{}: (summary is absent)", id),
+        },
     }
     Ok(())
 }

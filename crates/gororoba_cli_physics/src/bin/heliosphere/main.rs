@@ -152,7 +152,7 @@ enum Command {
     PspAlfvenControl(psp_alfven_control::Cli),
     /// Consolidate PSP switchback omega results across multiple perihelion encounters.
     PspEncounterSummary(psp_encounter_summary::Cli),
-    /// PSP E3 micro-switchback enrichment: quiet-interval CD fires vs consecutive B-rotation events (E-241)
+    /// PSP E3 micro-switchback enrichment: quiet-interval CD fires vs consecutive B-rotation events (E-271)
     PspSwitchbackCorrelation(psp_switchback_correlation::Cli),
     /// Q2: Transverse/compressive mode correlation with CD associator
     Q2Transverse(q2_transverse::Cli),
@@ -181,7 +181,7 @@ enum Command {
     SwitchbackOmega(switchback_omega::Cli),
     /// Synthetic Plasma Stress Test: 1D MHD wave generator + CD associator.
     SyntheticMhd(synthetic_mhd::Cli),
-    /// Sweep Takens tau {1,2,5,10} min on THEMIS E-237 data (E-240)
+    /// Sweep Takens tau {1,2,5,10} min on THEMIS E-267 data (E-270)
     TakensTauSweep(takens_tau_sweep::Cli),
     /// Time-aligned OMNI / spacecraft overlay and fleet coverage report
     TemporalOverlay(temporal_overlay::Cli),
