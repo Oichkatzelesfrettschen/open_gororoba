@@ -84,12 +84,26 @@ VALIDATION_TOOLS_DIR := $(REPO_CARGO_TARGET_DIR)/validation-tools
 CACHE_CHECK_SENTINEL := $(VALIDATION_TOOLS_DIR)/cache-check.last
 VALIDATION_LOCK := $(VALIDATION_TOOLS_DIR)/validation.lock
 VALIDATION_SOURCE_IDENTITY := $(shell find crates xtask -type f \( -name '*.rs' -o -name 'Cargo.toml' \) -print0 2>/dev/null | sort -z | xargs -0 sha256sum 2>/dev/null | sha256sum | cut -c1-16)
-VALIDATION_SOURCE_IDENTITY_FILE := $(VALIDATION_TOOLS_DIR)/source-identity.$(VALIDATION_SOURCE_IDENTITY)
+
+# A copied validation binary belongs to the worktree that compiled it. Cargo
+# keys a workspace crate on content, so the shared build-dir hands a
+# byte-identical crate compiled in one worktree to every other worktree, and a
+# binary that resolved a path at compile time carries the compiling worktree's
+# path in its bytes. The tool identity therefore folds the resolved real path
+# of this checkout and the git common-dir owner into the source hash: a stamp
+# written for one worktree never satisfies another, and a removed worktree's
+# stamp never survives into the checkout that replaces it. The identity gates
+# the rebuild; `make validation-tools-check-paths` gates the bytes.
+VALIDATION_CURDIR_REAL := $(shell realpath -m -- '$(CURDIR)')
+VALIDATION_TOOL_IDENTITY := $(shell printf 'source=%s\ncurdir=%s\nowner=%s\n' '$(VALIDATION_SOURCE_IDENTITY)' '$(VALIDATION_CURDIR_REAL)' '$(REPO_CACHE_OWNER)' | sha256sum | cut -c1-16)
+VALIDATION_SOURCE_IDENTITY_FILE := $(VALIDATION_TOOLS_DIR)/tool-identity.$(VALIDATION_TOOL_IDENTITY)
 
 $(VALIDATION_SOURCE_IDENTITY_FILE):
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
-	@rm -f $(VALIDATION_TOOLS_DIR)/source-identity.*
-	@touch $@
+	@rm -f $(VALIDATION_TOOLS_DIR)/source-identity.* $(VALIDATION_TOOLS_DIR)/tool-identity.*
+	@printf 'tool_identity=%s\nsource_identity=%s\ncurdir_real=%s\nowner=%s\n' \
+	    '$(VALIDATION_TOOL_IDENTITY)' '$(VALIDATION_SOURCE_IDENTITY)' \
+	    '$(VALIDATION_CURDIR_REAL)' '$(REPO_CACHE_OWNER)' > $@
 
 # Cache accounting covers every directory a gate lane on this checkout
 # can grow: the local target-dir, the owner's target-dir when it differs,
@@ -134,6 +148,9 @@ print-cache-roots:
 	@printf 'REPO_CARGO_BUILD_DIR=%s\n' '$(REPO_CARGO_BUILD_DIR)'
 	@printf 'VALIDATION_TOOLS_DIR=%s\n' '$(VALIDATION_TOOLS_DIR)'
 	@printf 'VALIDATION_SOURCE_IDENTITY=%s\n' '$(VALIDATION_SOURCE_IDENTITY)'
+	@printf 'VALIDATION_CURDIR_REAL=%s\n' '$(VALIDATION_CURDIR_REAL)'
+	@printf 'VALIDATION_TOOL_IDENTITY=%s\n' '$(VALIDATION_TOOL_IDENTITY)'
+	@printf 'VALIDATION_TOOL_IDENTITY_FILE=%s\n' '$(VALIDATION_SOURCE_IDENTITY_FILE)'
 	@printf 'CACHE_CHECK_SENTINEL=%s\n' '$(CACHE_CHECK_SENTINEL)'
 	@printf 'VALIDATION_LOCK=%s\n' '$(VALIDATION_LOCK)'
 	@printf 'CACHE_ACCOUNT_DIRS=%s\n' '$(CACHE_ACCOUNT_DIRS)'
