@@ -7,7 +7,7 @@
 .PHONY: heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-lock-status data-core-pure-check
+.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-lock-status data-core-pure-check
 .PHONY: gate-local gate-local-xtask gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
@@ -476,6 +476,39 @@ validate-local-xtask: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACH
 gate-local-xtask: validate-local-xtask
 	@echo "DEPRECATED: make gate-local-xtask is a compatibility alias for make validate-local-xtask."
 
+# Every file under $(VALIDATION_TOOLS_DIR) that a gate lane executes or
+# compares against. The lock and the cache-check sentinel stay out, so a
+# rebuild launched beside an in-flight validate-local leaves its lock intact.
+VALIDATION_TOOL_ARTIFACTS := $(REPO_UTILITIES_BIN) $(WORKSPACE_ROUTING_CACHE) \
+                             $(HOST_PROFILE_CACHE) $(XTASK_CACHE) \
+                             $(CORE_VALIDATION_STAMP) $(REGISTRY_VALIDATION_STAMP) \
+                             $(REGISTRY_VALIDATION_CACHE_FILES)
+
+# validation-tools-rebuild discards every staged binary, stamp and identity
+# file, then rebuilds through the ordinary tool lane. Reach for it when a
+# staged binary resolves a path from a checkout that no longer exists: the
+# identity stamp decides whether Make re-runs the build, while the bytes come
+# from the shared Cargo build-dir, so only a forced discard replaces them.
+validation-tools-rebuild:
+	@for f in $(VALIDATION_TOOL_ARTIFACTS) $(wildcard $(VALIDATION_TOOLS_DIR)/tool-identity.*) $(wildcard $(VALIDATION_TOOLS_DIR)/source-identity.*); do \
+	    ( $(call guarded_rm,$$f) ) || exit 1; \
+	done
+	@echo "[validation-tools] discarded every staged tool and identity file under $(VALIDATION_TOOLS_DIR)"
+	$(MAKE) validation-tools
+	$(MAKE) validation-tools-check-paths
+
+# validation-tools-check-paths reads each staged file and fails on an absolute
+# path under $(REPO_WORKTREES_ROOT) that names neither this checkout nor an
+# existing directory. Debuginfo and panic-location strings carry the compiling
+# checkout's path, so a binary handed over from a removed worktree aborts on
+# its first path resolution; the scan catches it before a lane executes it.
+REPO_WORKTREES_ROOT ?= $(HOME)/worktrees
+validation-tools-check-paths: $(REPO_UTILITIES_BIN)
+	@$(REPO_UTILITIES_BIN) validation-tool-paths \
+	    --tools-dir $(VALIDATION_TOOLS_DIR) \
+	    --worktrees-root $(REPO_WORKTREES_ROOT) \
+	    --current-root $(CURDIR)
+
 validation-tools-clean:
 	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
 	@echo "OK: validation-tools cache cleared."
@@ -502,7 +535,7 @@ validation-lock-status:
         echo 'no validate-local in flight'; \
 	fi
 
-validate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
+validate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) validation-tools-check-paths
 	@mkdir -p $(dir $(VALIDATION_LOCK))
 	@if [ -f "$(VALIDATION_LOCK)" ]; then \
 	    prev_pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \
