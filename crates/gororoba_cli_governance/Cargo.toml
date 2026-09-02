@@ -11,6 +11,7 @@ name = "workspace-routing-proxy"
 path = "../gororoba_cli_data/src/bin/workspace_routing.rs"
 
 [dependencies]
+repo_root = { workspace = true }
 anyhow = { workspace = true }
 chrono = { workspace = true }
 clap = { workspace = true }
