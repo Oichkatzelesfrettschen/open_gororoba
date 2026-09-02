@@ -393,7 +393,7 @@ $(REPO_UTILITIES_BIN): $(REPO_UTILITIES_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTIT
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building repo-utilities in the validation profile"
 	@$(CARGO_ENV) cargo build --profile validation -p repo_utilities --bin repo-utilities
-	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/repo-utilities $@
+	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/repo-utilities,$@)
 	@touch $@
 
 # The core bundle depends on workspace crates through provenance and verified
@@ -414,8 +414,8 @@ $(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDE
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building routing and xtask tools in one Cargo session"
 	@$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy -p xtask --bin xtask
-	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/workspace-routing-proxy $(WORKSPACE_ROUTING_CACHE)
-	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/xtask $(XTASK_CACHE)
+	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/workspace-routing-proxy,$(WORKSPACE_ROUTING_CACHE))
+	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/xtask,$(XTASK_CACHE))
 	@touch $(CORE_VALIDATION_STAMP) $(WORKSPACE_ROUTING_CACHE) $(XTASK_CACHE)
 
 $(WORKSPACE_ROUTING_CACHE) $(XTASK_CACHE): $(CORE_VALIDATION_STAMP)
@@ -447,6 +447,18 @@ REGISTRY_INTEGRITY_CACHE := $(VALIDATION_TOOLS_DIR)/registry-integrity
 PROJECT_COUNTER_CACHE := $(VALIDATION_TOOLS_DIR)/project-counter-sync
 PROVENANCE_CACHE := $(VALIDATION_TOOLS_DIR)/provenance
 
+# stage_tool copies a compiled tool into the worktree-local tools dir and drops
+# its debug sections. The shared build-dir hands every worktree the rlibs another
+# checkout compiled, and DWARF comp_dir strings in those rlibs name that
+# checkout; workspace sources are compiled by relative path, so after the strip
+# the only absolute checkout paths left in a tool are compile-time bake-ins
+# such as env!("CARGO_MANIFEST_DIR"), which is what validation-tools-check-paths
+# exists to catch. A missing strip leaves the copy unstripped and the scan
+# reports the debug residue instead.
+define stage_tool
+cp -f $(1) $(2) && { command -v strip >/dev/null 2>&1 && strip --strip-debug $(2) || true; }
+endef
+
 # One rule produces the complete validation tool set. The stamp is the only
 # Make dependency; the copied binaries are stable execution paths.
 $(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
@@ -456,7 +468,7 @@ $(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SO
 		-p gororoba_cli_data $(foreach binary,$(filter-out provenance,$(REGISTRY_VALIDATION_BINS)),--bin $(binary)) \
 		-p gororoba_cli_provenance --bin provenance
 	@for binary in $(REGISTRY_VALIDATION_BINS); do \
-		cp -f "$(REPO_CARGO_TARGET_DIR)/validation/$$binary" "$(VALIDATION_TOOLS_DIR)/$$binary"; \
+		$(call stage_tool,"$(REPO_CARGO_TARGET_DIR)/validation/$$binary","$(VALIDATION_TOOLS_DIR)/$$binary"); \
 	done
 	@touch $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_VALIDATION_CACHE_FILES)
 
