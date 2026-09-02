@@ -42,8 +42,16 @@ struct Cli {
 enum Commands {
     /// Load compatibility registries into the normalized SQLite provenance store.
     Index(IndexArgs),
-    /// Rebuild compatibility registry/report exports using the Rust seam.
+    /// Deprecated alias of export-artifact-scan. Prints the new name and exits nonzero.
+    #[command(hide = true)]
     Export(ExportArgs),
+    /// Rebuild the artifact registry and lane projections by scanning host
+    /// filesystem state. Reads this checkout's working tree, including
+    /// gitignored intake directories, so its output depends on which files the
+    /// running host holds.
+    ExportArtifactScan(ExportArtifactScanArgs),
+    /// Report which artifact paths this host materializes, into a gitignored manifest.
+    MaterializeStatus(MaterializeStatusArgs),
     /// Verify SQLite invariants and optionally compatibility export invariants.
     Verify(VerifyArgs),
     /// Legacy/bootstrap import from compatibility TOML/proof manifests into the canonical SQLite control plane.
@@ -114,9 +122,44 @@ struct ExportArgs {
     )]
     out_infrastructure_report: PathBuf,
 
-    /// Reindex the SQLite store after exporting compatibility files.
-    #[arg(long, default_value_t = true)]
+    /// Reindex the SQLite store after exporting compatibility files. Defaults
+    /// off: the reindex writes an export run into the canonical control plane,
+    /// which is not implied by regenerating a filesystem projection.
+    #[arg(long, default_value_t = false)]
     reindex_after: bool,
+}
+
+#[derive(Parser, Debug)]
+struct ExportArtifactScanArgs {
+    #[command(flatten)]
+    export: ExportArgs,
+
+    /// Fraction of rows an output may lose before the write is refused.
+    #[arg(long, default_value_t = source_provenance::DEFAULT_SHRINK_THRESHOLD)]
+    shrink_threshold: f64,
+
+    /// Accept a row loss beyond the shrink threshold.
+    #[arg(long, default_value_t = false)]
+    allow_shrink: bool,
+
+    /// Gitignored per-host materialization manifest written alongside the export.
+    #[arg(
+        long,
+        default_value = "data/output/external_manifests/host_materialization.toml"
+    )]
+    manifest_out: PathBuf,
+}
+
+#[derive(Parser, Debug)]
+struct MaterializeStatusArgs {
+    #[arg(long, default_value = "registry/artifact_source_of_truth.toml")]
+    artifact_registry: PathBuf,
+
+    #[arg(
+        long,
+        default_value = "data/output/external_manifests/host_materialization.toml"
+    )]
+    out_manifest: PathBuf,
 }
 
 #[derive(Parser, Debug)]
@@ -438,7 +481,15 @@ fn main() -> Result<()> {
     let db_path = repo_path(&repo_root, &cli.db);
     match cli.command {
         Commands::Index(args) => run_index(&repo_root, &db_path, args),
-        Commands::Export(args) => run_export(&repo_root, &db_path, args),
+        Commands::Export(_) => {
+            eprintln!(
+                "provenance export is renamed to provenance export-artifact-scan; \
+                 it scans host filesystem state rather than reading repository truth."
+            );
+            std::process::exit(2);
+        }
+        Commands::ExportArtifactScan(args) => run_export_artifact_scan(&repo_root, &db_path, args),
+        Commands::MaterializeStatus(args) => run_materialize_status(&repo_root, args),
         Commands::Verify(args) => run_verify(&repo_root, &db_path, args),
         Commands::IndexControlPlane(args) => run_index_control_plane(&repo_root, &db_path, args),
         Commands::ExportControlPlane(args) => run_export_control_plane(&repo_root, &db_path, args),
@@ -504,38 +555,209 @@ fn run_index(repo_root: &Path, db_path: &Path, args: IndexArgs) -> Result<()> {
     Ok(())
 }
 
-fn run_export(repo_root: &Path, db_path: &Path, args: ExportArgs) -> Result<()> {
-    rebuild_compatibility_exports(repo_root, &args)?;
-    if args.reindex_after {
+fn run_export_artifact_scan(
+    repo_root: &Path,
+    db_path: &Path,
+    args: ExportArtifactScanArgs,
+) -> Result<()> {
+    let ExportArtifactScanArgs {
+        export,
+        shrink_threshold,
+        allow_shrink,
+        manifest_out,
+    } = args;
+    // The reindex reads the lane files back through
+    // provenance_store::loaders::load_lane_assignments, which requires an
+    // artifact_ref array in each lane. Prove that before any rename, so a
+    // reindex that cannot succeed never leaves a rewritten registry behind.
+    if export.reindex_after {
+        ensure_reindex_preconditions(repo_root, &export)?;
+    }
+    let policy = source_provenance::ShrinkPolicy {
+        max_shrink_fraction: shrink_threshold,
+        allow_shrink,
+    };
+    let summary = rebuild_compatibility_exports_with_policy(repo_root, &export, &policy)?;
+    for report in &summary.row_counts {
+        println!(
+            "rows {}: before={} after={}",
+            to_repo_display_path(repo_root, &report.path),
+            report
+                .before
+                .map(|value| value.to_string())
+                .unwrap_or_else(|| "none".to_string()),
+            report.after
+        );
+    }
+    let generated_at = chrono::Utc::now().format("%Y-%m-%d").to_string();
+    let manifest_path = repo_path(repo_root, &manifest_out);
+    source_provenance::write_host_materialization(
+        &manifest_path,
+        &source_provenance::render_host_materialization(
+            &summary.host_materialization,
+            &generated_at,
+        ),
+    )?;
+    println!(
+        "Host materialization manifest: rows={} path={}",
+        summary.host_materialization.len(),
+        to_repo_display_path(repo_root, &manifest_path)
+    );
+    println!(
+        "Scanned host filesystem state: artifacts={} downloaded={} remotely_materializable={} materializable_without_url={}",
+        summary.artifact_count,
+        summary.downloaded_count,
+        summary.remotely_materializable_count,
+        summary.materializable_without_url_count
+    );
+    if export.reindex_after {
         let mut store = ProvenanceStore::open(db_path)?;
         let stats = store.reindex_from_registries(
             repo_root,
-            &repo_path(repo_root, &args.out_registry),
+            &repo_path(repo_root, &export.out_registry),
             &repo_path(repo_root, &PathBuf::from("registry/knowledge_sources.toml")),
-            &repo_path(repo_root, &args.lane_dir),
+            &repo_path(repo_root, &export.lane_dir),
         )?;
         store.record_export_run(
-            "export",
+            "export-artifact-scan",
             stats.artifact_count,
             stats.document_count,
             &json!({
-                "artifact_registry": args.out_registry,
-                "infrastructure": args.out_infrastructure,
-                "lane_dir": args.lane_dir,
+                "artifact_registry": export.out_registry,
+                "infrastructure": export.out_infrastructure,
+                "lane_dir": export.lane_dir,
             })
             .to_string(),
         )?;
         println!(
-            "Re-exported compatibility outputs and refreshed sqlite: artifacts={} documents={}",
+            "Refreshed sqlite: artifacts={} documents={}",
             stats.artifact_count, stats.document_count
         );
-    } else {
-        println!(
-            "Re-exported compatibility outputs: registry={} infrastructure={}",
-            args.out_registry.display(),
-            args.out_infrastructure.display()
-        );
     }
+    Ok(())
+}
+
+/// Fails before any write when a lane file the reindex will read carries no
+/// artifact_ref array.
+fn ensure_reindex_preconditions(repo_root: &Path, args: &ExportArgs) -> Result<()> {
+    let lane_dir = repo_path(repo_root, &args.lane_dir);
+    for lane in [
+        "datasets",
+        "slides_artifacts",
+        "papers_pdf",
+        "web_references",
+    ] {
+        let path = lane_dir.join(format!("{lane}.toml"));
+        if !path.exists() {
+            continue;
+        }
+        let text = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
+        let value: toml::Value =
+            toml::from_str(&text).with_context(|| format!("parse {}", path.display()))?;
+        if value.get("artifact_ref").and_then(toml::Value::as_array).is_none() {
+            bail!(
+                "artifact_ref table missing in {}; reindex would fail after the export wrote, \
+                 so the export is refused",
+                path.display()
+            );
+        }
+    }
+    Ok(())
+}
+
+/// Re-checks per-host presence without rewriting any registry. The paths come
+/// from the existing manifest, which is where host state lives, plus the
+/// downloaded rows the registry itself carries.
+fn run_materialize_status(repo_root: &Path, args: MaterializeStatusArgs) -> Result<()> {
+    let retention = source_provenance::RetentionSet::from_git_index(repo_root);
+    let mut seen: Vec<(String, String, String, String)> = Vec::new();
+
+    let manifest_path = repo_path(repo_root, &args.out_manifest);
+    if manifest_path.exists() {
+        let text = fs::read_to_string(&manifest_path)
+            .with_context(|| format!("read {}", manifest_path.display()))?;
+        let value: toml::Value = toml::from_str(&text)
+            .with_context(|| format!("parse {}", manifest_path.display()))?;
+        for row in value
+            .get("materialized")
+            .and_then(toml::Value::as_array)
+            .map(Vec::as_slice)
+            .unwrap_or_default()
+        {
+            let Some(table) = row.as_table() else { continue };
+            let field = |name: &str| {
+                table
+                    .get(name)
+                    .and_then(toml::Value::as_str)
+                    .unwrap_or_default()
+                    .to_string()
+            };
+            seen.push((
+                field("artifact_id"),
+                field("key"),
+                field("status"),
+                field("path"),
+            ));
+        }
+    }
+
+    let registry_path = repo_path(repo_root, &args.artifact_registry);
+    let text = fs::read_to_string(&registry_path)
+        .with_context(|| format!("read {}", registry_path.display()))?;
+    let value: toml::Value = toml::from_str(&text)
+        .with_context(|| format!("parse {}", registry_path.display()))?;
+    for artifact in value
+        .get("artifact")
+        .and_then(toml::Value::as_array)
+        .map(Vec::as_slice)
+        .unwrap_or_default()
+    {
+        let Some(table) = artifact.as_table() else {
+            continue;
+        };
+        let field = |name: &str| {
+            table
+                .get(name)
+                .and_then(toml::Value::as_str)
+                .unwrap_or_default()
+                .to_string()
+        };
+        if field("status") != "downloaded" {
+            continue;
+        }
+        if let Some(items) = table.get("downloaded_paths").and_then(toml::Value::as_array) {
+            for path in items.iter().filter_map(toml::Value::as_str) {
+                seen.push((
+                    field("id"),
+                    field("key"),
+                    "downloaded".to_string(),
+                    path.to_string(),
+                ));
+            }
+        }
+    }
+
+    seen.sort();
+    seen.dedup();
+    let rows = seen
+        .iter()
+        .map(|(id, key, status, path)| {
+            source_provenance::observe_host_materialization(
+                repo_root, &retention, id, key, status, path,
+            )
+        })
+        .collect::<Vec<_>>();
+    let generated_at = chrono::Utc::now().format("%Y-%m-%d").to_string();
+    let manifest = source_provenance::render_host_materialization(&rows, &generated_at);
+    source_provenance::write_host_materialization(&manifest_path, &manifest)?;
+    let present = rows.iter().filter(|row| row.present).count();
+    println!(
+        "Host materialization: rows={} present={} absent={} manifest={}",
+        rows.len(),
+        present,
+        rows.len() - present,
+        to_repo_display_path(repo_root, &manifest_path)
+    );
     Ok(())
 }
 
@@ -1085,25 +1307,48 @@ fn run_pantheon_seed(db_path: &Path, repo_root: &Path, args: PantheonSeedArgs) -
 }
 
 fn rebuild_compatibility_exports(repo_root: &Path, args: &ExportArgs) -> Result<()> {
+    rebuild_compatibility_exports_with_policy(
+        repo_root,
+        args,
+        &source_provenance::ShrinkPolicy::permissive(),
+    )?;
+    Ok(())
+}
+
+/// Stages the master registry, its report, the four lane files and the
+/// infrastructure manifest, then renames the whole set in one pass. A shrink
+/// beyond the policy threshold aborts before any rename.
+fn rebuild_compatibility_exports_with_policy(
+    repo_root: &Path,
+    args: &ExportArgs,
+    policy: &source_provenance::ShrinkPolicy,
+) -> Result<source_provenance::BuildSummary> {
     let out_registry = repo_path(repo_root, &args.out_registry);
     let out_artifact_report = repo_path(repo_root, &args.out_artifact_report);
     let out_infrastructure = repo_path(repo_root, &args.out_infrastructure);
     let lane_dir = repo_path(repo_root, &args.lane_dir);
     let out_infrastructure_report = repo_path(repo_root, &args.out_infrastructure_report);
 
-    source_provenance::build_artifact_source_of_truth(
+    let retention = source_provenance::RetentionSet::from_git_index(repo_root);
+    let mut set = source_provenance::StagedWriteSet::new();
+    let (mut summary, master_text) = source_provenance::stage_artifact_source_of_truth(
         repo_root,
         &out_registry,
         &out_artifact_report,
+        &retention,
+        &mut set,
     )?;
-    source_provenance::build_source_truth_infrastructure(
+    source_provenance::stage_source_truth_infrastructure(
         repo_root,
+        &master_text,
         &out_registry,
         &out_infrastructure,
         &lane_dir,
         &out_infrastructure_report,
+        &mut set,
     )?;
-    Ok(())
+    summary.row_counts = set.commit(policy)?;
+    Ok(summary)
 }
 
 fn resolve_repo_root(path: &Path) -> PathBuf {
