@@ -6,7 +6,7 @@ updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
 lineage_count = 235
-edge_count = 1131
+edge_count = 1133
 
 [[lineage]]
 id = "XL-001"
@@ -4274,7 +4274,7 @@ deterministic = true
 gpu = false
 run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-incremental-information -- --scores data/output/benchmark_scores.csv --out data/output/staples_incremental_information.json --seed 42 --n-boot 1000"
 run_command_sha256 = "d2d5088f81d445e69ff27e103934bfba95eda7b44a6e63155dd37b5f15713c5f"
-claim_refs = []
+claim_refs = ["C-1631", "C-1731"]
 input_path_refs = ["data/output/benchmark_scores.csv"]
 output_path_refs = ["data/output/staples_incremental_information.json"]
 dataset_refs = []
@@ -14440,13 +14440,31 @@ verified = true
 id = "XLE-01129"
 lineage_id = "XL-217"
 from_id = "E-242"
+to_ref = "C-1631"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01130"
+lineage_id = "XL-217"
+from_id = "E-242"
+to_ref = "C-1731"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01131"
+lineage_id = "XL-217"
+from_id = "E-242"
 to_ref = "data/output/benchmark_scores.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01130"
+id = "XLE-01132"
 lineage_id = "XL-217"
 from_id = "E-242"
 to_ref = "data/output/staples_incremental_information.json"
@@ -14455,7 +14473,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01131"
+id = "XLE-01133"
 lineage_id = "XL-217"
 from_id = "E-242"
 to_ref = "SRC-THEMIS-THA-FGM-DAILY"

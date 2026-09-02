@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 188
+event_count = 189
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4014,4 +4014,27 @@ transition_spec_sha256 = "04cdc5c9f2e45022e7b3506062293334b73244323d3b97438d8b33
 [[transition.successors]]
 proposal_key = "staples-canonical-layout-is-not-a-fitted-parameter"
 canonical_claim_id = "C-1730"
+relation_kind = "refines"
+
+[[transition]]
+event_id = 189
+transition_key = "c-1631-incremental-information-2026-09-01"
+source_claim_id = "C-1631"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "False if the 95 percent paired file-bootstrap interval of the out-of-fold ROC-AUC difference between the logistic model on the six matched six-sample baselines plus ln(assoc) and the same model without it contains zero, under 5-fold cross-validation grouped by daily file."
+rationale = "E-242 ran the conditional-information test C-1633 named as the designated follow-up. Over all 23,664,374 rows (578,320 positives, 813 files) with five file-grouped folds and standardization fitted inside each training fold, the baseline logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) reaches out-of-fold ROC-AUC 0.8428, PR-AUC 0.1028, log loss 0.09562, ECE 0.0057; adding ln(assoc) gives 0.8448, 0.1033, 0.09550, 0.0052. The paired bootstrap over 1000 file resamples gives delta ROC-AUC +0.00199 [0.00168, 0.00230] with zero adverse resamples, delta PR-AUC +0.00045 [0.00009, 0.00081] with 5 adverse, delta log loss -0.000124 [-0.000182, -0.000069]. The interval excludes zero and is positive, so by the preregistered rule the associator carries information beyond the six-sample geometric baselines; the magnitude is 0.2 percent of AUC against the 0.8274 standalone value, so C-1631's marginal-discrimination statement survives and its successor records that the unique information is small. I-212 is not closed: the joint baseline model at 0.8428 already exceeds the standalone associator, which is the receptive-field confound the insight names."
+unresolved_assumptions = ["The models are linear in log features with a fixed 1e-6 ridge; a nonlinear learner could absorb the associator's 0.002 AUC into the baselines or enlarge it, and the bootstrap resamples files but keeps the fold assignment fixed."]
+evidence_artifact_ids = ["LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901"]
+experiment_ids = ["E-242"]
+actor = "prereg-controls-2026-09-01"
+reason = "Register the E-242 verdict and the incremental-information successor of C-1631."
+transition_timestamp = "2026-09-02T04:40:00Z"
+transition_spec_sha256 = "0e4216ef28c6196b8f030ce988d2960e6c8819e170d79829958edafe1b4e9b40"
+
+[[transition.successors]]
+proposal_key = "staples-associator-adds-small-nonzero-information-at-matched-receptive-field"
+canonical_claim_id = "C-1731"
 relation_kind = "refines"
