@@ -33,6 +33,7 @@ rand_distr = { workspace = true }
 rayon = { workspace = true }
 regex = { workspace = true }
 reqwest = { workspace = true, optional = true }
+rustls = { workspace = true, optional = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
 sha2 = { workspace = true }
@@ -52,7 +53,7 @@ zip = { workspace = true }
 # opt in to the features they need.  Leaving fetch in default would silently
 # re-introduce the network plane for any future consumer added carelessly.
 default = []
-fetch = ["dep:reqwest", "dep:ureq", "dep:backon", "dep:url"]
+fetch = ["dep:reqwest", "dep:rustls", "dep:ureq", "dep:backon", "dep:url"]
 hdf5-export = ["dep:hdf5"]
 netcdf = ["dep:netcdf3", "dep:netcdf-reader"]
 dataframe = ["dep:polars"]
