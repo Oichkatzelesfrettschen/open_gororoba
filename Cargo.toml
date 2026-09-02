@@ -316,6 +316,7 @@ md5 = { package = "md-5", version = "0.11.0" } # Zenodo checksum verification (c
 pulldown-cmark = "0.13" # Markdown parser for provenance extraction
 quick-xml = "0.41" # SAX-style XML parser for VOTable and VO Cone Search responses
 regex = "1.12" # Claims matrix parsing, pattern matching
+rustls = { version = "0.23", default-features = false } # CryptoProvider::get_default() lets the download stack skip reqwest when no provider is installed
 reqwest = { version = "0.13", default-features = false, features = ["blocking", "rustls-no-provider", "gzip", "brotli", "deflate", "form"] } # Standardized blocking HTTP transfer stack for universal recovery routing without pinning unrelated test binaries to the aws-lc provider lane
 rusqlite = { version = "0.39", features = ["bundled"] } # SQLite-backed normalized provenance store after removing Burn train/sqlite coupling
 rusqlite_migration = "2.5" # SQLite schema migrations for provenance_store
