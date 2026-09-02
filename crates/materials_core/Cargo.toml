@@ -6,6 +6,7 @@ license = "MIT"
 description = "Materials science: metamaterial absorbers, Tang mass predictions, refractive index"
 
 [dependencies]
+repo_root = { workspace = true }
 algebra_analysis = { workspace = true }
 cd_kernel = { workspace = true }
 csv = { workspace = true }

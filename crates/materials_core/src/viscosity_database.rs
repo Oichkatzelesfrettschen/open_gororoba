@@ -70,16 +70,13 @@ struct ViscosityDatabase {
 /// # Panics
 /// If registry file is missing or malformed.
 pub fn load_viscosity_database() -> HashMap<String, MaterialViscosity> {
-    let toml_path = concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/../../registry/materials_viscosity.toml"
-    );
+    let toml_path = repo_root::path!("registry/materials_viscosity.toml");
 
-    let toml_content = std::fs::read_to_string(toml_path)
-        .unwrap_or_else(|e| panic!("Failed to read {}: {}", toml_path, e));
+    let toml_content = std::fs::read_to_string(&toml_path)
+        .unwrap_or_else(|e| panic!("Failed to read {}: {}", toml_path.display(), e));
 
     let db: ViscosityDatabase = toml::from_str(&toml_content)
-        .unwrap_or_else(|e| panic!("Failed to parse {}: {}", toml_path, e));
+        .unwrap_or_else(|e| panic!("Failed to parse {}: {}", toml_path.display(), e));
 
     db.materials
         .into_iter()
@@ -175,16 +172,13 @@ pub fn reynolds_number(velocity_m_s: f64, length_m: f64, nu_m2_s: f64) -> f64 {
 /// # Panics
 /// If registry file is missing or malformed.
 pub fn load_lambda_results() -> HashMap<String, LambdaResult> {
-    let toml_path = concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/../../registry/materials_viscosity.toml"
-    );
+    let toml_path = repo_root::path!("registry/materials_viscosity.toml");
 
-    let toml_content = std::fs::read_to_string(toml_path)
-        .unwrap_or_else(|e| panic!("Failed to read {}: {}", toml_path, e));
+    let toml_content = std::fs::read_to_string(&toml_path)
+        .unwrap_or_else(|e| panic!("Failed to read {}: {}", toml_path.display(), e));
 
     let db: ViscosityDatabase = toml::from_str(&toml_content)
-        .unwrap_or_else(|e| panic!("Failed to parse {}: {}", toml_path, e));
+        .unwrap_or_else(|e| panic!("Failed to parse {}: {}", toml_path.display(), e));
 
     db.lambda_results
         .into_iter()

@@ -39,12 +39,7 @@ fn unique_temp_dir(label: &str) -> PathBuf {
 }
 
 fn repo_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .expect("crate parent")
-        .parent()
-        .expect("workspace root")
-        .to_path_buf()
+    repo_root::resolve!()
 }
 
 fn run_binary(output_dir: &str) -> Output {

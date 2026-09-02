@@ -131,8 +131,16 @@ hardware-specific tables are replaced with the scientific stack.
   validate-local lock stay under the worktree's own `.cache/`. The
   build-dir carries the dependency artifacts and is the path the
   sccache hash covers, so sharing it alone turns a cold ~70 min chain
-  into ~10 min; keeping the target-dir local means one worktree never
-  executes another worktree's `xtask` or governance binaries. The
+  into ~10 min; keeping the target-dir local means a worktree with
+  divergent tool sources never executes another worktree's `xtask` or
+  governance binaries. Cargo keys a workspace crate on its content, so
+  a byte-identical crate compiled in one worktree is handed to every
+  other worktree through the shared build-dir; a tool therefore MUST
+  NOT locate the repository through `env!("CARGO_MANIFEST_DIR")`,
+  which bakes in the compiling checkout. `repo_root::resolve!()` and
+  `repo_root::path!()` read `GOROROBA_REPO_ROOT` (exported by the
+  Makefile as `$(CURDIR)`), then walk up from the working directory,
+  and fall back to the compile-time path only when both fail. The
   owner is verified as a standard `<checkout>/.git` directory holding a
   `Cargo.toml`; bare, separate-git-dir and submodule layouts are
   rejected and need an explicit absolute `REPO_CACHE_OWNER`. Cleanup

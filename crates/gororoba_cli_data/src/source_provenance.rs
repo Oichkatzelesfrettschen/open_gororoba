@@ -204,11 +204,7 @@ pub struct SourceInfrastructureSummary {
 }
 
 pub fn default_repo_root() -> PathBuf {
-    Path::new(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .and_then(Path::parent)
-        .expect("crate must be nested under repo/crates")
-        .to_path_buf()
+    repo_root::resolve!()
 }
 
 // Cached Regex factories (url_re, url_inline_re, doi_re, bib_entry_re)

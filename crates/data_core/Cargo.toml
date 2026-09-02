@@ -68,6 +68,7 @@ nanograv-engine = ["dep:faer", "dep:anise"]
 registry-mirrors = []
 
 [dev-dependencies]
+repo_root = { workspace = true }
 approx = { workspace = true }
 tempfile = { workspace = true }
 
