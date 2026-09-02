@@ -309,3 +309,6 @@ proofs/extraction/r2vb_dp4_glue.c
 proofs/extraction/r2vb_dp4_glue.h
 proofs/extraction/test_r2vb_dp4
 proofs/extraction/test_r2vb_dp4_admit
+
+# Per-host artifact materialization manifests: host state, never repository truth.
+data/output/external_manifests/
