@@ -209,8 +209,8 @@ fn main() -> Result<()> {
     Ok(())
 }
 
-/// Resolve both paths through the filesystem so a symlink or a relative spelling
-/// cannot smuggle the curated snapshot in as the report target.
+/// Resolve both paths through the filesystem so a relative spelling cannot
+/// smuggle the curated snapshot in as the report target.
 /// Writing the report over the input destroys the source artifact and leaves the
 /// next run unable to deserialize it as `Snapshot`, so the aliasing is rejected
 /// before the read and again before the write.
