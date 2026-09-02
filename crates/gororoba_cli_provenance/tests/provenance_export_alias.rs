@@ -2,12 +2,28 @@
 //
 // The deprecated `export` alias names its replacement and refuses to run.
 
-use std::process::Command;
+use std::{path::PathBuf, process::Command};
+
+/// Cargo defines CARGO_BIN_EXE_provenance when it builds the test through
+/// `cargo test`; `clippy --all-targets` compiles the test without building the
+/// binaries, so the path is resolved from the test executable's own directory
+/// as a fallback.
+fn provenance_bin() -> PathBuf {
+    if let Some(path) = option_env!("CARGO_BIN_EXE_provenance") {
+        return PathBuf::from(path);
+    }
+    let mut dir = std::env::current_exe().expect("current exe");
+    dir.pop();
+    if dir.ends_with("deps") {
+        dir.pop();
+    }
+    dir.join("provenance")
+}
 
 #[test]
 fn deprecated_export_alias_names_the_scan_subcommand_and_exits_nonzero() {
-    let output = Command::new(env!("CARGO_BIN_EXE_provenance"))
-        .args(["export", "--help"])
+    let output = Command::new(provenance_bin())
+        .args(["export"])
         .output()
         .expect("run provenance");
     assert!(!output.status.success(), "the alias must exit nonzero");
@@ -20,7 +36,7 @@ fn deprecated_export_alias_names_the_scan_subcommand_and_exits_nonzero() {
 
 #[test]
 fn export_artifact_scan_help_states_that_it_reads_host_filesystem_state() {
-    let output = Command::new(env!("CARGO_BIN_EXE_provenance"))
+    let output = Command::new(provenance_bin())
         .args(["export-artifact-scan", "--help"])
         .output()
         .expect("run provenance");
