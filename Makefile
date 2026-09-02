@@ -479,6 +479,9 @@ gate-local-xtask: validate-local-xtask
 # Every file under $(VALIDATION_TOOLS_DIR) that a gate lane executes or
 # compares against. The lock and the cache-check sentinel stay out, so a
 # rebuild launched beside an in-flight validate-local leaves its lock intact.
+VALIDATION_TOOL_PACKAGES := repo_root repo_utilities gororoba_cli_governance xtask \
+                            gororoba_cli_data gororoba_cli_provenance
+
 VALIDATION_TOOL_ARTIFACTS := $(REPO_UTILITIES_BIN) $(WORKSPACE_ROUTING_CACHE) \
                              $(HOST_PROFILE_CACHE) $(XTASK_CACHE) \
                              $(CORE_VALIDATION_STAMP) $(REGISTRY_VALIDATION_STAMP) \
@@ -494,12 +497,18 @@ validation-tools-rebuild:
 	    ( $(call guarded_rm,$$f) ) || exit 1; \
 	done
 	@echo "[validation-tools] discarded every staged tool and identity file under $(VALIDATION_TOOLS_DIR)"
+# Discarding the copy is not enough. Cargo keys a workspace crate on content,
+# so the shared build-dir answers the next build with the artifact another
+# worktree compiled, path bake-in and all. Cleaning the tool packages and the
+# repo_root crate that carries the compile-time fallback forces Cargo to
+# recompile them under this checkout.
+	@$(CARGO_ENV) cargo clean --profile validation $(foreach pkg,$(VALIDATION_TOOL_PACKAGES),-p $(pkg)) || true
 	$(MAKE) validation-tools
 	$(MAKE) validation-tools-check-paths
 
 # validation-tools-check-paths reads each staged file and fails on an absolute
-# path under $(REPO_WORKTREES_ROOT) that names neither this checkout nor an
-# existing directory. Debuginfo and panic-location strings carry the compiling
+# path under $(REPO_WORKTREES_ROOT) that names neither this checkout nor a
+# directory any live entry accounts for. Debuginfo and panic-location strings carry the compiling
 # checkout's path, so a binary handed over from a removed worktree aborts on
 # its first path resolution; the scan catches it before a lane executes it.
 REPO_WORKTREES_ROOT ?= $(HOME)/worktrees
