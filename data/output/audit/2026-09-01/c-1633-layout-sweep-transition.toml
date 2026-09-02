@@ -1,0 +1,26 @@
+[transition]
+transition_key = "c-1633-embedding-layout-sweep-2026-09-01"
+source_claim_id = "C-1633"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-STAPLES-LAYOUT-SWEEP-20260901"]
+experiment_ids = ["E-241"]
+exercised_falsifier = "False if the canonical layout (time-ordered lags in basis slots 0..3, Bx By Bz in channel slots 0..2, magnitude fixed in slot 3) ranks in the top 5 percent of the 4! x 3! = 144 structured layouts scored by the canonical CD tensor on the identical subsample, with no other layout within the predeclared 0.005 AUC margin above it."
+proposed_claim_status = "Verified"
+rationale = "E-241 ran the formal equivalence test C-1633 named as not yet run, over every structured layout instead of the single [1,2,0] permutation. The canonical layout ranks 117 of 144 (percentile 0.194, rank probability under exchangeability 0.8125). The 144 AUCs have mean 0.8286, standard deviation 0.0015, minimum 0.8257, maximum 0.8307; the best layout (lag_perm [2,0,1,3], comp_perm [2,1,0]) exceeds the canonical 0.8274 by 0.0033, inside the margin, and 143 of the 143 other layouts lie within 0.005 of it. The lag-to-basis assignment is therefore not a fitted parameter and the reported AUC is a typical member of the layout family. C-1633 survives unchanged; the successor states the layout-insensitivity result."
+unresolved_assumptions = ["The sweep permutes the four lag slots and the three component channels with the magnitude channel fixed in slot 3; layouts that move the magnitude into a component slot, and layouts over a different 16-element basis order, are outside the tested family."]
+actor = "prereg-controls-2026-09-01"
+reason = "Register the E-241 verdict and the layout-insensitivity successor of C-1633."
+transition_timestamp = "2026-09-02T03:08:00Z"
+expected_source_state_sha256 = "eb9192fe9d35f300b2fc68844efb74f756264fd334ce96ef8640992cf5b23377"
+expected_claim_id_max = 1729
+
+[[successor]]
+proposal_key = "staples-canonical-layout-is-not-a-fitted-parameter"
+statement = "The staple-associator detector's lag-to-basis and component-to-channel assignment is not a fitted parameter: over all 4! x 3! = 144 structured layouts of four time-ordered samples and three field components (magnitude fixed in the fourth channel slot), scored by the canonical Cayley-Dickson tensor on the deduplicated THEMIS-A Staples benchmark subsample (1,733,470 samples, 578,320 positives, ChaCha8 seed 42), the canonical layout's ROC-AUC 0.8274 ranks 117 of 144 (percentile 0.194), the layout AUCs span 0.8257 to 0.8307 with standard deviation 0.0015, the best layout exceeds the canonical by 0.0033, and 143 of 143 other layouts lie within the predeclared 0.005 equivalence margin. The declared free-parameter count of the detector is unchanged by the assignment, and the reported AUC is a lower bound reachable without tuning it."
+initial_status = "Verified"
+source_or_implementation_boundary = "Phenomenological mapping on one benchmark at interpretive depth 0; predictive equivalence across the structured layout family, not algebraic invariance of the tensor under basis relabeling."
+required_falsifier = "A re-run of staples-layout-sweep on a different benchmark, seed, or negative fraction in which the canonical layout ranks in the top 5 percent with no other layout within 0.005 AUC above it; or a layout family that moves the magnitude channel in which the AUC spread exceeds the margin."
+where_stated = ["data/output/staples_layout_sweep.json", "E-241"]
+evidence_artifact_ids = ["LOCAL-STAPLES-LAYOUT-SWEEP-20260901"]
+predecessor_relation_kind = "refines"

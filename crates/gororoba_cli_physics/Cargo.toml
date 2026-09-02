@@ -283,6 +283,15 @@ path = "src/bin/heliosphere/main.rs"
 name = "themis-staples-score-export"
 path = "src/bin/themis_staples_score_export.rs"
 [[bin]]
+name = "staples-incremental-information"
+path = "src/bin/staples_incremental_information.rs"
+[[bin]]
+name = "staples-twist-ladder"
+path = "src/bin/staples_twist_ladder.rs"
+[[bin]]
+name = "staples-layout-sweep"
+path = "src/bin/staples_layout_sweep.rs"
+[[bin]]
 name = "themis-probe-crossing-day-catalog"
 path = "src/bin/themis_probe_crossing_day_catalog.rs"
 [[bin]]

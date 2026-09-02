@@ -1686,6 +1686,16 @@ description = "Thesis 5 pipeline: spin decoherence rate prediction from imbalanc
 experiment = "E-036"
 
 [[binary]]
+name = "staples-incremental-information"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "staples-layout-sweep"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
 name = "staples-roc-block-bootstrap"
 crate = "gororoba_cli_physics"
 description = "Block-bootstrap ROC-AUC comparison for the Staples THEMIS benchmark: average-rank Mann-Whitney AUC for the normalized CD staple-associator vs field-rotation and |B|-gradient baselines, with moving-block (Kunsch 1989) percentile 95% CIs on each AUC, the paired bulk delta, per-subtype (compressive/rotational) paired deltas, the worst-case-AUC delta, and a half/double block-length sensitivity sweep; fixed ChaCha8 seed makes every interval bit-reproducible."
@@ -1694,6 +1704,11 @@ description = "Block-bootstrap ROC-AUC comparison for the Staples THEMIS benchma
 name = "staples-roc-cluster-bootstrap"
 crate = "gororoba_cli_physics"
 description = "File-cluster bootstrap for the Staples THEMIS benchmark: resamples intact daily files (2,000 draws), computes bulk plus high/low-gradient-positive stratum AUCs via O(n) multiplicity-weighted rank walks, reports pooled, mean-daily, and cluster-resampled estimands with the simultaneous dominance margin M = min of the three paired deltas; tail proportions report as < 1/(B+1), never exact zero."
+
+[[binary]]
+name = "staples-twist-ladder"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
 name = "sterile-neutrino-audit"

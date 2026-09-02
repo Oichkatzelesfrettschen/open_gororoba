@@ -523,8 +523,9 @@ mod tests {
                 own_mask.accepted, real_mask.accepted,
                 "the surrogate's own support must differ, or the fix has nothing to fix"
             );
-            let on_support = embed_takens_on_support(&shared[0], &shared[1], &shared[2], 32, &real_mask)
-                .expect("phase randomization keeps the surrogate above the floor");
+            let on_support =
+                embed_takens_on_support(&shared[0], &shared[1], &shared[2], 32, &real_mask)
+                    .expect("phase randomization keeps the surrogate above the floor");
             assert_eq!(on_support.len(), real_mask.accepted.len());
 
             let indep = phase_randomize_mv_independent(&channels, &mut rng);
