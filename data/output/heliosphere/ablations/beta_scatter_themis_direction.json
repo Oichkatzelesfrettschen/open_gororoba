@@ -1,10 +1,10 @@
 {
   "n_matched": 2821,
-  "power_law_exponent": 1.24531424197569,
-  "power_law_r_squared": 0.49268805263888976,
-  "power_law_exponent_binned": 0.5736003671943737,
-  "power_law_r_squared_binned": 0.8486752771800571,
-  "spearman_r": 0.6511588521069863,
+  "power_law_exponent": 1.5548472275232206,
+  "power_law_r_squared": 0.5404170185095372,
+  "power_law_exponent_binned": 0.5477886720319369,
+  "power_law_r_squared_binned": 0.8024609158118463,
+  "spearman_r": 0.7111484751702046,
   "spearman_p": 0.0,
   "beta_crit_approx": 13.928020049886129,
   "binned_beta": [
@@ -27,23 +27,23 @@
     48.14367457329664
   ],
   "binned_mean_A": [
-    0.18131,
-    0.8964720999999998,
-    0.6344241176470589,
-    0.29150914925373145,
-    0.10258005514705885,
-    0.4200832526690391,
-    2.5858678537549404,
-    1.7188779751552783,
-    0.7074308494934874,
-    3.0970735985401454,
-    5.226061264367816,
-    10.169132383177569,
-    14.053110243902434,
-    15.56263540677966,
-    23.519579777777775,
-    50.076446999999995,
-    45.322958
+    0.06383133333333334,
+    0.8203100999999998,
+    0.5853310294117645,
+    0.26259670149253733,
+    0.09019504411764702,
+    0.14279006049822068,
+    1.413315774703558,
+    0.7291970062111809,
+    0.3747688437047758,
+    2.2323813065693425,
+    3.7048662413793108,
+    6.788269084112151,
+    8.76929148170732,
+    8.898966305084745,
+    10.594110777777777,
+    26.01900442857143,
+    21.275729
   ],
   "binned_counts": [
     3,
@@ -64,10 +64,10 @@
     7,
     3
   ],
-  "shape": "No clean power law: alpha=1.25, R^2=0.493. The relation is not scale-free.",
-  "interpretation": "The A(beta) relationship is No clean power law: alpha=1.25, R^2=0.493. The relation is not scale-free.. Spearman r=0.651 confirms monotonic positive correlation: higher beta -> higher associator. The steepest transition occurs near beta ~ 13.9.",
+  "shape": "No clean power law: alpha=1.55, R^2=0.540. The relation is not scale-free.",
+  "interpretation": "The A(beta) relationship is No clean power law: alpha=1.55, R^2=0.540. The relation is not scale-free.. Spearman r=0.711 confirms monotonic positive correlation: higher beta -> higher associator. The steepest transition occurs near beta ~ 13.9.",
   "provenance": {
-    "normalization": "current",
+    "normalization": "direction",
     "normalization_source": "norms CSV comment",
     "join_policy": "exact-minute",
     "tolerance_minutes": null,
@@ -78,9 +78,9 @@
     "esa_quality_note": "The cached THA_L2_ESA daily files hold the unflagged moments tha_peif_density and tha_peif_avgtemp and carry no quality column, so beta-join cannot filter on tha_peif_data_quality. The quality-filtered parameters return NaN on 935 of the 3931 cached rows over 2008 DOY 301..307, so about a quarter of the joined plasma samples are flagged suspect by the instrument team and are retained here.",
     "inputs": [
       {
-        "path": ".cache/heliosphere_norms_current.csv",
-        "sha256": "165b56fabe20bc97cc284309fffa9f4c4f986b422ddfc6872b1430a1a4f21145",
-        "size_bytes": 153077,
+        "path": ".cache/heliosphere_norms_direction.csv",
+        "sha256": "57cc13311c7a4257a2bcb92df6fef9d2b4b7ea5383fc35a047943a2eccf3fffd",
+        "size_bytes": 152924,
         "rows_read": 8216
       },
       {

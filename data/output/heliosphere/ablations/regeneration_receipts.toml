@@ -1,0 +1,269 @@
+# Regeneration receipts for the heliosphere artifacts listed in
+# data/output/heliosphere/ablations/invalidations.toml.
+#
+# One [[regenerated]] entry per output file. Each entry names the command that
+# produced the file, the commit and working-tree state it ran from, every input
+# with its sha256, the counts the run reported, the validation commands that
+# gate the code path, and the delta against the number the invalidated artifact
+# published. Paths are repository-relative and every run used the primary
+# checkout as its working directory.
+
+[meta]
+regenerated_on = "2026-09-01"
+commit = "81f2e819a4174a3ee8eb94ad1c42a3cbffb0d951"
+working_tree = "dirty: crates/gororoba_cli_physics/src/bin/heliosphere/beta_join.rs and norm_dump.rs carry the rewrite this branch commits"
+binary_profile = "validation"
+cargo_target_dir = ".cache/gate-target (worktree-local)"
+rebase_base = "7c6fc17e"
+rebase_note = "the runs recorded here executed from 81f2e819; the branch was later rebased onto 7c6fc17e. Between the two, main changed one file on the audited code path, a rustfmt reflow inside a decomposition_audit test body, so no recorded number moves."
+
+[validation]
+clippy_command = "cargo clippy -p gororoba_cli_physics --bin heliosphere --all-targets --profile validation -- -D warnings"
+clippy_result = "exit 0, no diagnostics"
+test_command = "cargo nextest run -p gororoba_cli_physics --bin heliosphere --cargo-profile validation -E 'test(beta_join)'"
+test_result = "8 tests run, 8 passed, 7 skipped"
+tolerance_boundary_note = "minute keys are integers, so the 3.25 default admits a 3-minute gap and rejects a 4-minute one; nearest_join_honors_the_tolerance_and_breaks_ties_early asserts both edges, so the plus-or-minus-3 effective window is measured rather than asserted"
+test_names = [
+  "beta_join::tests::leap_year_post_february_doy_counts_february_29",
+  "beta_join::tests::rejects_other_years_and_invalid_dates",
+  "beta_join::tests::exact_power_law_recovers_its_exponent",
+  "beta_join::tests::spearman_saturates_on_a_monotone_series",
+  "beta_join::tests::geometric_bins_partition_the_beta_range",
+  "beta_join::tests::nearest_join_honors_the_tolerance_and_breaks_ties_early",
+  "beta_join::tests::archived_exponent_is_a_fit_over_bin_means",
+  "beta_join::tests::norms_csv_carries_its_normalization_label",
+]
+
+[finding]
+title = "the published 0.775 exponent is a fit over bin means, and the leap-year join defect did not move this join"
+detail = "Fitting the invalidated artifact's own binned_beta against its own binned_mean_A recovers exponent 0.7749951 and R^2 0.7837638 against the published 0.7749921 and 0.7837685, so the 2026-03-27 exponent is a least-squares slope over 17 bin means and not over the 2821 pairs. The regenerated leap-aware exact-minute join returns the same n_matched of 2821 and Spearman 0.6511588521069863 against the published 0.6511610007246746, a difference of 2.1e-6, so the pair set the leap-year defect was said to have shifted is reproduced almost exactly. The invalidation record's claim that n_matched=2821 is a product of the shifted join is therefore not supported by this rerun; the exponent difference is a fit-definition difference. The regression test beta_join::tests::archived_exponent_is_a_fit_over_bin_means pins the first half of this."
+
+[[regenerated]]
+artifact = "data/output/heliosphere/ablations/beta_scatter_themis.json"
+binary = "heliosphere beta-join"
+supersedes_sha256 = "a2df62d29c14ac6abb45569926f2e3c02620de3ffa9e22f4826fa723f93dbf85"
+output_sha256 = "6e49643a6d0465eca50a0850d42927919eb7233d61e190c911b273543ade77a6"
+command_norm_dump = ".cache/gate-target/validation/heliosphere norm-dump --start-date 2008-10-27 --end-date 2008-11-02 --normalization current > .cache/heliosphere_norms_current.csv"
+command = ".cache/gate-target/validation/heliosphere beta-join --norms-csv .cache/heliosphere_norms_current.csv --join-policy exact-minute --out-json data/output/heliosphere/ablations/beta_scatter_themis.json"
+seed = "none; beta-join draws no random numbers and norm-dump is deterministic"
+configuration = "normalization=current (read from the norms CSV comment), join_policy=exact-minute, tolerance_minutes=not applicable, n_bins=17, year=2008, doy 301..307, embedding_dim=32, max_bmag=200 nT"
+rank_method = "ordinal (sort order, no tie midranks)"
+bin_construction_is_redefined = true
+bin_construction_note = "n_bins geometric bins spanning [min(beta), max(beta)]; binned_beta reports the geometric center of each bin. The 2026-03-27 artifact's bin construction is not in the tree, so this specification is newly declared and the binned_* fields are not a reproduction of that artifact's bins."
+esa_quality_note = "The cached THA_L2_ESA daily files hold the unflagged moments tha_peif_density and tha_peif_avgtemp and carry no quality column, so beta-join cannot filter on tha_peif_data_quality. The quality-filtered parameters return NaN on 935 of the 3931 cached rows over 2008 DOY 301..307, so about a quarter of the joined plasma samples are flagged suspect by the instrument team and are retained here."
+n_matched = 2821
+n_norm_minutes = 8216
+n_fgm_minutes = 8234
+n_esa_rows_read = 3931
+n_esa_rows_rejected = 325
+n_esa_rows_rejected_nonfinite_or_nonpositive = 325
+n_esa_minutes_accepted = 3606
+n_pairs_rejected_by_beta_range = 0
+power_law_exponent = 1.24531424197569
+power_law_r_squared = 0.49268805263888976
+power_law_exponent_binned = 0.5736003671943737
+power_law_r_squared_binned = 0.8486752771800571
+spearman_r = 0.6511588521069863
+spearman_p = 0.0
+beta_crit_approx = 13.928020049886129
+interpretation_delta = "successor of the invalidated beta_scatter_themis.json. Raw-pair exponent 1.24531424197569 (R^2 0.4927) against the invalidated 0.7749921471180499 (R^2 0.7838); the comparable bin-mean exponent is 0.5736003671943737 (R^2 0.8487). n_matched 2821 in both. Spearman 0.6511588521069863 against 0.6511610007246746. beta_crit_approx 13.928 against 11.288 under a newly declared bin construction, so the two beta_crit values are not comparable."
+[regenerated.inputs]
+".cache/heliosphere_norms_current.csv" = "165b56fabe20bc97cc284309fffa9f4c4f986b422ddfc6872b1430a1a4f21145"
+"data/external/themis/tha_fgm_2008_301.csv" = "3791682cdf56a270a210da64ff5049a40f2c3f03238f432d680e2e10b3c78ba8"
+"data/external/themis/tha_fgm_2008_302.csv" = "e51e36ec673d92778b815a166583c3ae1db9d42f66a51a1185e75d3e1e8a3a1f"
+"data/external/themis/tha_fgm_2008_303.csv" = "f803661ebcc09ac235de10bb7cb9c71170c60f9ef57c4019be306329b529a8a3"
+"data/external/themis/tha_fgm_2008_304.csv" = "4f71c0934b7db012675198640207c5761eeb74417de0fd110098a46c8b444f09"
+"data/external/themis/tha_fgm_2008_305.csv" = "1d37d028b3b3b159b0647dee7097b997965ee8ad4abd3a4f4275b6b446c26fbc"
+"data/external/themis/tha_fgm_2008_306.csv" = "793d76a836778b9a952ade6f907a3bb08371b7d1192297ecc3ead43f3dc7814d"
+"data/external/themis/tha_fgm_2008_307.csv" = "c35015ae68e51f66d1e994ab71bd5c672dd40e7ae1961c7dc85fca7ea7a3fbd2"
+"data/external/themis_esa/tha_esa_2008_301.csv" = "aa1aee97c00b5dbc91a3892a2321b1d58fbb10ab9e0a9c0999e7314c69b8580b"
+"data/external/themis_esa/tha_esa_2008_302.csv" = "a9141d418178a9cccc251d2661ec685795d70c1fe4918c664532fb391670c1f6"
+"data/external/themis_esa/tha_esa_2008_303.csv" = "13db63b500157f56b48c35832f647bc5174aea2d7ce6f37fd215719f1a4d90a8"
+"data/external/themis_esa/tha_esa_2008_304.csv" = "cc73ca8d70a60020f964e882faf1edb7a34134939420fd95a345c3088e491b84"
+"data/external/themis_esa/tha_esa_2008_305.csv" = "37159d97153ce5417910bedd41463ce1e57d00a64d11c69e8f7ef0050eadc3c7"
+"data/external/themis_esa/tha_esa_2008_306.csv" = "6db38a446f906d0f8c99faaee57ac4a167e65de0023eda9905502879fb4ba58c"
+"data/external/themis_esa/tha_esa_2008_307.csv" = "7f817ce9d4168e55ea47ce62b6b88613002263a478719e5a5f6bf4747cb78839"
+
+[[regenerated]]
+artifact = "data/output/heliosphere/ablations/beta_scatter_themis_nearest.json"
+tracked = true
+tracked_note = "tracked by force-add: .gitignore denies data/output/**/*.json workspace-wide and the 351 JSON artifacts already under data/output are force-added the same way."
+binary = "heliosphere beta-join"
+supersedes_sha256 = "none; this artifact has no predecessor"
+output_sha256 = "67053d284987c492b86560f68d85417db64aed91bdbbea2c3d8887a9673cbe0d"
+command_norm_dump = ".cache/gate-target/validation/heliosphere norm-dump --start-date 2008-10-27 --end-date 2008-11-02 --normalization current > .cache/heliosphere_norms_current.csv"
+command = ".cache/gate-target/validation/heliosphere beta-join --norms-csv .cache/heliosphere_norms_current.csv --join-policy nearest --out-json data/output/heliosphere/ablations/beta_scatter_themis_nearest.json"
+seed = "none; beta-join draws no random numbers and norm-dump is deterministic"
+configuration = "normalization=current (read from the norms CSV comment), join_policy=nearest, tolerance_minutes=3.25, n_bins=17, year=2008, doy 301..307, embedding_dim=32, max_bmag=200 nT"
+rank_method = "ordinal (sort order, no tie midranks)"
+bin_construction_is_redefined = true
+bin_construction_note = "n_bins geometric bins spanning [min(beta), max(beta)]; binned_beta reports the geometric center of each bin. The 2026-03-27 artifact's bin construction is not in the tree, so this specification is newly declared and the binned_* fields are not a reproduction of that artifact's bins."
+esa_quality_note = "The cached THA_L2_ESA daily files hold the unflagged moments tha_peif_density and tha_peif_avgtemp and carry no quality column, so beta-join cannot filter on tha_peif_data_quality. The quality-filtered parameters return NaN on 935 of the 3931 cached rows over 2008 DOY 301..307, so about a quarter of the joined plasma samples are flagged suspect by the instrument team and are retained here."
+n_matched = 7504
+n_norm_minutes = 8216
+n_fgm_minutes = 8234
+n_esa_rows_read = 3931
+n_esa_rows_rejected = 325
+n_esa_rows_rejected_nonfinite_or_nonpositive = 325
+n_esa_minutes_accepted = 3606
+n_pairs_rejected_by_beta_range = 0
+power_law_exponent = 1.2839675104382962
+power_law_r_squared = 0.42812798146833175
+power_law_exponent_binned = 0.5871860469403529
+power_law_r_squared_binned = 0.8504971800778688
+spearman_r = 0.5691677106383433
+spearman_p = 0.0
+beta_crit_approx = 13.928020049886129
+interpretation_delta = "no predecessor. Relaxing the join to the nearest ESA sample within 3.25 minutes lifts the pair count from 2821 to 7504 and lowers Spearman from 0.6512 to 0.5692, so the extra pairs carry weaker rank agreement; the raw-pair exponent moves only from 1.2453 to 1.2840."
+[regenerated.inputs]
+".cache/heliosphere_norms_current.csv" = "165b56fabe20bc97cc284309fffa9f4c4f986b422ddfc6872b1430a1a4f21145"
+"data/external/themis/tha_fgm_2008_301.csv" = "3791682cdf56a270a210da64ff5049a40f2c3f03238f432d680e2e10b3c78ba8"
+"data/external/themis/tha_fgm_2008_302.csv" = "e51e36ec673d92778b815a166583c3ae1db9d42f66a51a1185e75d3e1e8a3a1f"
+"data/external/themis/tha_fgm_2008_303.csv" = "f803661ebcc09ac235de10bb7cb9c71170c60f9ef57c4019be306329b529a8a3"
+"data/external/themis/tha_fgm_2008_304.csv" = "4f71c0934b7db012675198640207c5761eeb74417de0fd110098a46c8b444f09"
+"data/external/themis/tha_fgm_2008_305.csv" = "1d37d028b3b3b159b0647dee7097b997965ee8ad4abd3a4f4275b6b446c26fbc"
+"data/external/themis/tha_fgm_2008_306.csv" = "793d76a836778b9a952ade6f907a3bb08371b7d1192297ecc3ead43f3dc7814d"
+"data/external/themis/tha_fgm_2008_307.csv" = "c35015ae68e51f66d1e994ab71bd5c672dd40e7ae1961c7dc85fca7ea7a3fbd2"
+"data/external/themis_esa/tha_esa_2008_301.csv" = "aa1aee97c00b5dbc91a3892a2321b1d58fbb10ab9e0a9c0999e7314c69b8580b"
+"data/external/themis_esa/tha_esa_2008_302.csv" = "a9141d418178a9cccc251d2661ec685795d70c1fe4918c664532fb391670c1f6"
+"data/external/themis_esa/tha_esa_2008_303.csv" = "13db63b500157f56b48c35832f647bc5174aea2d7ce6f37fd215719f1a4d90a8"
+"data/external/themis_esa/tha_esa_2008_304.csv" = "cc73ca8d70a60020f964e882faf1edb7a34134939420fd95a345c3088e491b84"
+"data/external/themis_esa/tha_esa_2008_305.csv" = "37159d97153ce5417910bedd41463ce1e57d00a64d11c69e8f7ef0050eadc3c7"
+"data/external/themis_esa/tha_esa_2008_306.csv" = "6db38a446f906d0f8c99faaee57ac4a167e65de0023eda9905502879fb4ba58c"
+"data/external/themis_esa/tha_esa_2008_307.csv" = "7f817ce9d4168e55ea47ce62b6b88613002263a478719e5a5f6bf4747cb78839"
+
+[[regenerated]]
+artifact = "data/output/heliosphere/ablations/beta_scatter_themis_direction.json"
+tracked = true
+tracked_note = "tracked by force-add: .gitignore denies data/output/**/*.json workspace-wide and the 351 JSON artifacts already under data/output are force-added the same way."
+binary = "heliosphere beta-join"
+supersedes_sha256 = "none; this artifact has no predecessor"
+output_sha256 = "d5edda07f4c7d7acd8fd222febc7a1d915ed8059b9c78c8345f1c4addb15ce89"
+command_norm_dump = ".cache/gate-target/validation/heliosphere norm-dump --start-date 2008-10-27 --end-date 2008-11-02 --normalization direction > .cache/heliosphere_norms_direction.csv"
+command = ".cache/gate-target/validation/heliosphere beta-join --norms-csv .cache/heliosphere_norms_direction.csv --join-policy exact-minute --out-json data/output/heliosphere/ablations/beta_scatter_themis_direction.json"
+seed = "none; beta-join draws no random numbers and norm-dump is deterministic"
+configuration = "normalization=direction (read from the norms CSV comment), join_policy=exact-minute, tolerance_minutes=not applicable, n_bins=17, year=2008, doy 301..307, embedding_dim=32, max_bmag=200 nT"
+rank_method = "ordinal (sort order, no tie midranks)"
+bin_construction_is_redefined = true
+bin_construction_note = "n_bins geometric bins spanning [min(beta), max(beta)]; binned_beta reports the geometric center of each bin. The 2026-03-27 artifact's bin construction is not in the tree, so this specification is newly declared and the binned_* fields are not a reproduction of that artifact's bins."
+esa_quality_note = "The cached THA_L2_ESA daily files hold the unflagged moments tha_peif_density and tha_peif_avgtemp and carry no quality column, so beta-join cannot filter on tha_peif_data_quality. The quality-filtered parameters return NaN on 935 of the 3931 cached rows over 2008 DOY 301..307, so about a quarter of the joined plasma samples are flagged suspect by the instrument team and are retained here."
+n_matched = 2821
+n_norm_minutes = 8216
+n_fgm_minutes = 8234
+n_esa_rows_read = 3931
+n_esa_rows_rejected = 325
+n_esa_rows_rejected_nonfinite_or_nonpositive = 325
+n_esa_minutes_accepted = 3606
+n_pairs_rejected_by_beta_range = 0
+power_law_exponent = 1.5548472275232206
+power_law_r_squared = 0.5404170185095372
+power_law_exponent_binned = 0.5477886720319369
+power_law_r_squared_binned = 0.8024609158118463
+spearman_r = 0.7111484751702046
+spearman_p = 0.0
+beta_crit_approx = 13.928020049886129
+interpretation_delta = "no predecessor. Direction-only embedding raises Spearman from 0.6512 to 0.7111 and the raw-pair exponent from 1.2453 to 1.5548 on the identical 2821 pairs, so the A(beta) correlation survives removal of the magnitude channel and is not a normalization artifact."
+[regenerated.inputs]
+".cache/heliosphere_norms_direction.csv" = "57cc13311c7a4257a2bcb92df6fef9d2b4b7ea5383fc35a047943a2eccf3fffd"
+"data/external/themis/tha_fgm_2008_301.csv" = "3791682cdf56a270a210da64ff5049a40f2c3f03238f432d680e2e10b3c78ba8"
+"data/external/themis/tha_fgm_2008_302.csv" = "e51e36ec673d92778b815a166583c3ae1db9d42f66a51a1185e75d3e1e8a3a1f"
+"data/external/themis/tha_fgm_2008_303.csv" = "f803661ebcc09ac235de10bb7cb9c71170c60f9ef57c4019be306329b529a8a3"
+"data/external/themis/tha_fgm_2008_304.csv" = "4f71c0934b7db012675198640207c5761eeb74417de0fd110098a46c8b444f09"
+"data/external/themis/tha_fgm_2008_305.csv" = "1d37d028b3b3b159b0647dee7097b997965ee8ad4abd3a4f4275b6b446c26fbc"
+"data/external/themis/tha_fgm_2008_306.csv" = "793d76a836778b9a952ade6f907a3bb08371b7d1192297ecc3ead43f3dc7814d"
+"data/external/themis/tha_fgm_2008_307.csv" = "c35015ae68e51f66d1e994ab71bd5c672dd40e7ae1961c7dc85fca7ea7a3fbd2"
+"data/external/themis_esa/tha_esa_2008_301.csv" = "aa1aee97c00b5dbc91a3892a2321b1d58fbb10ab9e0a9c0999e7314c69b8580b"
+"data/external/themis_esa/tha_esa_2008_302.csv" = "a9141d418178a9cccc251d2661ec685795d70c1fe4918c664532fb391670c1f6"
+"data/external/themis_esa/tha_esa_2008_303.csv" = "13db63b500157f56b48c35832f647bc5174aea2d7ce6f37fd215719f1a4d90a8"
+"data/external/themis_esa/tha_esa_2008_304.csv" = "cc73ca8d70a60020f964e882faf1edb7a34134939420fd95a345c3088e491b84"
+"data/external/themis_esa/tha_esa_2008_305.csv" = "37159d97153ce5417910bedd41463ce1e57d00a64d11c69e8f7ef0050eadc3c7"
+"data/external/themis_esa/tha_esa_2008_306.csv" = "6db38a446f906d0f8c99faaee57ac4a167e65de0023eda9905502879fb4ba58c"
+"data/external/themis_esa/tha_esa_2008_307.csv" = "7f817ce9d4168e55ea47ce62b6b88613002263a478719e5a5f6bf4747cb78839"
+
+[[regenerated]]
+artifact = "data/output/heliosphere/ablations/decomposition_q1_themis_a.json"
+binary = "heliosphere decomposition-audit"
+supersedes_sha256 = "50d7bd7bb3ebed0566fdc39f4d257606fcad54a0ee15e805be3ce460904b4c73"
+output_sha256 = "5bab12eb173325bdd6d56d301f4c99a30419276ac28ecdd1f61ae695fb048511"
+command = ".cache/gate-target/validation/heliosphere decomposition-audit --mission themis-a --start-date 2008-10-27 --end-date 2008-11-02 --out-json data/output/heliosphere/ablations/decomposition_q1_themis_a.json"
+seed = 42
+configuration = "mission=themis-a, window 2008-10-27..2008-11-02, embedding_dim=32, max_bmag=100 nT, n_surrogates=20, normalization_floor_nt=0.01; surrogates are embedded on the real support, whose sha256 is recorded in the artifact"
+n_minutes = 7248
+n_vectors = 7241
+n_associator_norms = 7239
+windows_dropped = 0
+support_sha256 = "12d6bc0e5284375e0c8c6832297feb1aeb425e8881c017befbb764caca8de5db"
+real_mean = 2.851557594514374
+ratio_real_to_shared = 0.8904153128977955
+ratio_real_to_indep = 1.3266399851925355
+interpretation = "Spectral-only (phase coupling irrelevant, but spectrum matters)"
+interpretation_delta = "the invalidated artifact read No signal above surrogates with real/indep 0.245 and real/shared 0.967; the regeneration reads Spectral-only (phase coupling irrelevant, but spectrum matters) with real/indep 1.327 and real/shared 0.890. Evaluating every surrogate on the real support and randomizing the physical components before embedding is what moves the ratio."
+window_note = "the original window was unrecorded; this run declares its own window and pins the support hash"
+[regenerated.inputs]
+"data/external/themis/tha_fgm_2008_301.csv" = "3791682cdf56a270a210da64ff5049a40f2c3f03238f432d680e2e10b3c78ba8"
+"data/external/themis/tha_fgm_2008_302.csv" = "e51e36ec673d92778b815a166583c3ae1db9d42f66a51a1185e75d3e1e8a3a1f"
+"data/external/themis/tha_fgm_2008_303.csv" = "f803661ebcc09ac235de10bb7cb9c71170c60f9ef57c4019be306329b529a8a3"
+"data/external/themis/tha_fgm_2008_304.csv" = "4f71c0934b7db012675198640207c5761eeb74417de0fd110098a46c8b444f09"
+"data/external/themis/tha_fgm_2008_305.csv" = "1d37d028b3b3b159b0647dee7097b997965ee8ad4abd3a4f4275b6b446c26fbc"
+"data/external/themis/tha_fgm_2008_306.csv" = "793d76a836778b9a952ade6f907a3bb08371b7d1192297ecc3ead43f3dc7814d"
+"data/external/themis/tha_fgm_2008_307.csv" = "c35015ae68e51f66d1e994ab71bd5c672dd40e7ae1961c7dc85fca7ea7a3fbd2"
+
+[[regenerated]]
+artifact = "data/output/heliosphere/ablations/decomposition_q1_maven.json"
+binary = "heliosphere decomposition-audit"
+supersedes_sha256 = "2c12873cffc1c938bd6f5d39c0fc72835747f9cb23b069d5dfdaea9cb701585b"
+output_sha256 = "cb7db747fc2554e9bbb150f40acc8d8b26cc434847b895e71c55865e5034405f"
+command = ".cache/gate-target/validation/heliosphere decomposition-audit --mission maven --start-date 2015-03-01 --end-date 2015-03-14 --out-json data/output/heliosphere/ablations/decomposition_q1_maven.json"
+seed = 42
+configuration = "mission=maven, window 2015-03-01..2015-03-14, embedding_dim=32, max_bmag=100 nT, n_surrogates=20, normalization_floor_nt=0.01; surrogates are embedded on the real support, whose sha256 is recorded in the artifact"
+n_minutes = 19714
+n_vectors = 19707
+n_associator_norms = 19705
+windows_dropped = 0
+support_sha256 = "33895782ce60c4509d3a797e5b9ce5f991c39f20374da2d565ab8eab09c871ca"
+real_mean = 7.620438886813817
+ratio_real_to_shared = 0.4008996097732054
+ratio_real_to_indep = 0.40378532713917265
+interpretation = "No signal above surrogates (associator is noise)"
+interpretation_delta = "the invalidated artifact read No signal above surrogates with real/indep 0.671 and real/shared 0.949; the regeneration reads No signal above surrogates (associator is noise) with real/indep 0.404 and real/shared 0.401. Evaluating every surrogate on the real support and randomizing the physical components before embedding is what moves the ratio."
+window_note = "the original window was unrecorded; this run declares its own window and pins the support hash"
+[regenerated.inputs]
+"data/external/maven/maven_mag_2015_060.csv" = "429d43de3fc3a1f331f558ba1d48a1cb53e8f85bb5178ab4d62185dae5056695"
+"data/external/maven/maven_mag_2015_061.csv" = "ab949e222a364a94022e0e2a2e5aadc4b1e20eaa12b51869d5e42bd3ffaa32a4"
+"data/external/maven/maven_mag_2015_062.csv" = "7f9711d4968b29440146b87d4b45c2e82e3b65b786bc7bfc1262936b2acccff5"
+"data/external/maven/maven_mag_2015_063.csv" = "ec491de348217624622faa1a2070079ba0627642a372f5265e27cc4bd43a2104"
+"data/external/maven/maven_mag_2015_064.csv" = "d037f6eab67d118d1c0238d56eed8796aa7925d1c1a7bf8f7a5ac0a275ce581e"
+"data/external/maven/maven_mag_2015_065.csv" = "f25c252d8970e7e408e30a7cfecf5a41cf4137c860f27edb6a652dd609c9a958"
+"data/external/maven/maven_mag_2015_066.csv" = "6763215a02cb5a9c31752123167af92db3b865200933d8ffcaaeb3856a5ea27a"
+"data/external/maven/maven_mag_2015_067.csv" = "29ee108a7c48d66890ef75aa7e875d48d7287ceec7fd0a95bc3e0f9bb05fec95"
+"data/external/maven/maven_mag_2015_068.csv" = "60c580b6b891dbc675323e131caded24ed409a4534ea51a198f064ea5c1c1494"
+"data/external/maven/maven_mag_2015_070.csv" = "9a2ab4386be9af0b9c8b32d0550d9ec3f473a6f1f5da969a3dd3ea30e67351fb"
+
+[[regenerated]]
+artifact = "data/output/heliosphere/ablations/decomposition_q1_mms.json"
+binary = "heliosphere decomposition-audit"
+supersedes_sha256 = "b7842fa41e12663db5b3c0f62c010e7667695f081b695bc0782366bc6a2fa5c5"
+output_sha256 = "d9668453a53bbd3db5438cbcb1cbcddf87253ef5e6ab32412cfcfe3616f0f16c"
+command = ".cache/gate-target/validation/heliosphere decomposition-audit --mission mms --start-date 2024-01-01 --end-date 2024-01-07 --out-json data/output/heliosphere/ablations/decomposition_q1_mms.json"
+seed = 42
+configuration = "mission=mms, window 2024-01-01..2024-01-07, embedding_dim=32, max_bmag=100 nT, n_surrogates=20, normalization_floor_nt=0.01; surrogates are embedded on the real support, whose sha256 is recorded in the artifact"
+n_minutes = 9460
+n_vectors = 9453
+n_associator_norms = 9451
+windows_dropped = 0
+support_sha256 = "3c0a48bbde99b419265a64bef1a9e48edd672049bcb804790308d92fe21f2414"
+real_mean = 3.7806389770849655
+ratio_real_to_shared = 0.7727039210589434
+ratio_real_to_indep = 0.8363072612174668
+interpretation = "No signal above surrogates (associator is noise)"
+interpretation_delta = "the invalidated artifact read No signal above surrogates with real/indep 0.397 and real/shared 1.015; the regeneration reads No signal above surrogates (associator is noise) with real/indep 0.836 and real/shared 0.773. Evaluating every surrogate on the real support and randomizing the physical components before embedding is what moves the ratio."
+window_note = "the original window was unrecorded; this run declares its own window and pins the support hash"
+[regenerated.inputs]
+"data/external/mms/mms1_fgm_srvy_l2_2024_1_1.csv" = "47eb16fc196596472add434bf8b3698b2230eb4371e00c5bde614bec9079e684"
+"data/external/mms/mms1_fgm_srvy_l2_2024_2_2.csv" = "a4248d0a121ef7377db6cfe32011512103398a17acc5c8ab4cc63696dc17fde7"
+"data/external/mms/mms1_fgm_srvy_l2_2024_3_3.csv" = "39ca0a779e34a1d90174cf79b3281e6218e0abe85c84cb62d5c2099f35fc7c55"
+"data/external/mms/mms1_fgm_srvy_l2_2024_4_4.csv" = "7b7eb539d1e7914ffc7f984a42dd7f47972453d13ba9047aa46bc5202137c3ce"
+"data/external/mms/mms1_fgm_srvy_l2_2024_5_5.csv" = "4354d9aa8d5c846cab1f5ef786b7e6d97b3969b4d79a99534a9bb4121f6d1f36"
+"data/external/mms/mms1_fgm_srvy_l2_2024_6_6.csv" = "e7bebd5019f45ea319f21a23686cc97d192ee6287de954c163c703a1911df6da"
+"data/external/mms/mms1_fgm_srvy_l2_2024_7_7.csv" = "e8aab68bb927491727c4d8407b775f9745885c9a7214d27c3d98e361627503f6"
+
