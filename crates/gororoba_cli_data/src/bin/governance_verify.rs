@@ -3493,205 +3493,6 @@ fn looks_like_anomaly_surface_experiment(row: &Value, markers: &[&str]) -> bool 
     false
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn temp_policy_root(name: &str) -> PathBuf {
-        let stamp = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .expect("system time")
-            .as_nanos();
-        let root = std::env::temp_dir().join(format!(
-            "gororoba_governance_verify_{}_{}_{}",
-            std::process::id(),
-            name,
-            stamp
-        ));
-        let _ = fs::remove_dir_all(&root);
-        root
-    }
-
-    fn common_args(root: &Path) -> CommonArgs {
-        CommonArgs {
-            repo_root: root.to_path_buf(),
-            db: PathBuf::from("registry/canonical/control_plane.sqlite3"),
-        }
-    }
-
-    #[test]
-    fn claim_ticket_mirrors_ignore_untracked_ignored_paths() {
-        let root = temp_policy_root("ticket_boundary");
-        fs::create_dir_all(root.join("docs/tickets")).expect("create ticket dir");
-        fs::create_dir_all(root.join("registry")).expect("create registry dir");
-        fs::write(
-            root.join(".gitignore"),
-            "*.md\n!docs/tickets/tracked.md\n!docs/tickets/INDEX.md\n",
-        )
-        .expect("write ignore policy");
-        fs::write(
-            root.join("docs/tickets/tracked.md"),
-            "<!-- AUTO-GENERATED: test mirror -->\n",
-        )
-        .expect("write tracked ticket");
-        fs::write(
-            root.join("docs/tickets/ignored.md"),
-            "local acquisition note\n",
-        )
-        .expect("write ignored ticket");
-        fs::write(
-            root.join("docs/tickets/INDEX.md"),
-            "<!-- AUTO-GENERATED: test index -->\n",
-        )
-        .expect("write ticket index");
-        fs::write(
-            root.join("registry/claim_tickets.toml"),
-            concat!(
-                "[claim_tickets]\n",
-                "ticket_count = 2\n\n",
-                "[[ticket]]\n",
-                "id = \"tracked\"\n",
-                "source_markdown = \"docs/tickets/tracked.md\"\n\n",
-                "[[ticket]]\n",
-                "id = \"ignored\"\n",
-                "source_markdown = \"docs/tickets/ignored.md\"\n"
-            ),
-        )
-        .expect("write ticket registry");
-        let init = process::Command::new("git")
-            .args(["init", "--quiet"])
-            .current_dir(&root)
-            .status()
-            .expect("initialize test repository");
-        assert!(init.success());
-
-        verify_claim_ticket_mirrors(&common_args(&root))
-            .expect("ignored local ticket mirrors stay outside the gate");
-        let _ = fs::remove_dir_all(root);
-    }
-
-    #[test]
-    fn source_comment_chronology_rejects_rust_and_toml_comments() {
-        let root = temp_policy_root("rejects");
-        fs::create_dir_all(root.join("crates/demo/src")).expect("create crate dir");
-        fs::create_dir_all(root.join("crates/demo/shaders")).expect("create shader dir");
-        fs::create_dir_all(root.join("registry")).expect("create registry dir");
-        fs::write(
-            root.join("crates/demo/src/lib.rs"),
-            concat!(
-                "pub fn ok() {}\n",
-                "/*\n",
-                "  PR ",
-                "#19 review chronology belongs elsewhere\n",
-                "*/\n",
-                "// pr ",
-                "#20 review chronology belongs elsewhere\n",
-                "/* outer /* inner */ PR ",
-                "#25 nested Rust chronology belongs elsewhere */\n"
-            ),
-        )
-        .expect("write rust fixture");
-        fs::write(
-            root.join("crates/demo/shaders/kernel.comp"),
-            concat!("// PR ", "#23 shader chronology belongs elsewhere\n"),
-        )
-        .expect("write shader fixture");
-        fs::write(
-            root.join("registry/example.toml"),
-            concat!(
-                "# PR ",
-                "#21 review chronology belongs elsewhere\n",
-                "value = 1 # PR ",
-                "#22 inline chronology belongs elsewhere\n"
-            ),
-        )
-        .expect("write toml fixture");
-        fs::write(
-            root.join("registry/example.yaml"),
-            concat!(
-                "value: 1 # PR ",
-                "#24 inline chronology belongs elsewhere\n"
-            ),
-        )
-        .expect("write yaml fixture");
-
-        let err = verify_source_comment_chronology(&common_args(&root)).expect_err("must fail");
-        let message = err.to_string();
-        assert!(message.contains("crates/demo/src/lib.rs:3"));
-        assert!(message.contains("crates/demo/src/lib.rs:5"));
-        assert!(message.contains("crates/demo/src/lib.rs:6"));
-        assert!(message.contains("crates/demo/shaders/kernel.comp:1"));
-        assert!(message.contains("registry/example.toml:1"));
-        assert!(message.contains("registry/example.toml:2"));
-        assert!(message.contains("registry/example.yaml:1"));
-        let _ = fs::remove_dir_all(root);
-    }
-
-    #[test]
-    fn source_comment_chronology_allows_strings_docs_and_generated_mirrors() {
-        let root = temp_policy_root("allows");
-        fs::create_dir_all(root.join("crates/demo/src")).expect("create crate dir");
-        fs::create_dir_all(root.join("crates/data_core/src/registry_mirrors"))
-            .expect("create mirror dir");
-        fs::create_dir_all(root.join("registry/markdown_export")).expect("create markdown dir");
-        fs::create_dir_all(root.join("docs")).expect("create docs dir");
-        fs::write(
-            root.join("crates/demo/src/lib.rs"),
-            concat!(
-                "pub const BODY: &str = \"// PR ",
-                "#19 is ordinary data here\";\n",
-                "pub const RAW: &str = r#\"// PR ",
-                "#20 is ordinary raw-string data here\"#;\n",
-                "// PR#3 is a de Marrais production-rule name, not a pull request.\n"
-            ),
-        )
-        .expect("write rust fixture");
-        fs::write(
-            root.join("registry/narrative.toml"),
-            concat!(
-                "body = \"\"\"\n",
-                "# PR ",
-                "#21 audit context is narrative data\n",
-                "\"\"\"\n"
-            ),
-        )
-        .expect("write toml narrative fixture");
-        fs::write(
-            root.join("registry/narrative.yaml"),
-            concat!(
-                "body: |\n",
-                "  # PR ",
-                "#21 audit context is narrative data\n"
-            ),
-        )
-        .expect("write yaml narrative fixture");
-        fs::write(
-            root.join("crates/data_core/src/registry_mirrors/generated.rs"),
-            concat!("//! PR ", "#19 generated mirror chronology is excluded\n"),
-        )
-        .expect("write crate mirror fixture");
-        fs::write(
-            root.join("registry/markdown_export/generated.rs"),
-            concat!(
-                "//! PR ",
-                "#21 generated markdown mirror chronology is excluded\n"
-            ),
-        )
-        .expect("write registry mirror fixture");
-        fs::write(
-            root.join("docs/audit.md"),
-            concat!(
-                "PR ",
-                "#21 markdown chronology can be triangulated in narrative docs.\n"
-            ),
-        )
-        .expect("write docs fixture");
-
-        verify_source_comment_chronology(&common_args(&root)).expect("policy passes");
-        let _ = fs::remove_dir_all(root);
-    }
-}
-
 /// Every experiment identifier on an active surface resolves to exactly one
 /// canonical experiment row, and a binary's self-label (a single identifier
 /// in parentheses) names an experiment that binary owns. Active surfaces are crate sources, LaTeX under
@@ -3946,4 +3747,203 @@ fn is_self_label_line(line: &str) -> bool {
         || trimmed.starts_with("///")
         || trimmed.contains("about = ")
         || trimmed.contains("===")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn temp_policy_root(name: &str) -> PathBuf {
+        let stamp = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .expect("system time")
+            .as_nanos();
+        let root = std::env::temp_dir().join(format!(
+            "gororoba_governance_verify_{}_{}_{}",
+            std::process::id(),
+            name,
+            stamp
+        ));
+        let _ = fs::remove_dir_all(&root);
+        root
+    }
+
+    fn common_args(root: &Path) -> CommonArgs {
+        CommonArgs {
+            repo_root: root.to_path_buf(),
+            db: PathBuf::from("registry/canonical/control_plane.sqlite3"),
+        }
+    }
+
+    #[test]
+    fn claim_ticket_mirrors_ignore_untracked_ignored_paths() {
+        let root = temp_policy_root("ticket_boundary");
+        fs::create_dir_all(root.join("docs/tickets")).expect("create ticket dir");
+        fs::create_dir_all(root.join("registry")).expect("create registry dir");
+        fs::write(
+            root.join(".gitignore"),
+            "*.md\n!docs/tickets/tracked.md\n!docs/tickets/INDEX.md\n",
+        )
+        .expect("write ignore policy");
+        fs::write(
+            root.join("docs/tickets/tracked.md"),
+            "<!-- AUTO-GENERATED: test mirror -->\n",
+        )
+        .expect("write tracked ticket");
+        fs::write(
+            root.join("docs/tickets/ignored.md"),
+            "local acquisition note\n",
+        )
+        .expect("write ignored ticket");
+        fs::write(
+            root.join("docs/tickets/INDEX.md"),
+            "<!-- AUTO-GENERATED: test index -->\n",
+        )
+        .expect("write ticket index");
+        fs::write(
+            root.join("registry/claim_tickets.toml"),
+            concat!(
+                "[claim_tickets]\n",
+                "ticket_count = 2\n\n",
+                "[[ticket]]\n",
+                "id = \"tracked\"\n",
+                "source_markdown = \"docs/tickets/tracked.md\"\n\n",
+                "[[ticket]]\n",
+                "id = \"ignored\"\n",
+                "source_markdown = \"docs/tickets/ignored.md\"\n"
+            ),
+        )
+        .expect("write ticket registry");
+        let init = process::Command::new("git")
+            .args(["init", "--quiet"])
+            .current_dir(&root)
+            .status()
+            .expect("initialize test repository");
+        assert!(init.success());
+
+        verify_claim_ticket_mirrors(&common_args(&root))
+            .expect("ignored local ticket mirrors stay outside the gate");
+        let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn source_comment_chronology_rejects_rust_and_toml_comments() {
+        let root = temp_policy_root("rejects");
+        fs::create_dir_all(root.join("crates/demo/src")).expect("create crate dir");
+        fs::create_dir_all(root.join("crates/demo/shaders")).expect("create shader dir");
+        fs::create_dir_all(root.join("registry")).expect("create registry dir");
+        fs::write(
+            root.join("crates/demo/src/lib.rs"),
+            concat!(
+                "pub fn ok() {}\n",
+                "/*\n",
+                "  PR ",
+                "#19 review chronology belongs elsewhere\n",
+                "*/\n",
+                "// pr ",
+                "#20 review chronology belongs elsewhere\n",
+                "/* outer /* inner */ PR ",
+                "#25 nested Rust chronology belongs elsewhere */\n"
+            ),
+        )
+        .expect("write rust fixture");
+        fs::write(
+            root.join("crates/demo/shaders/kernel.comp"),
+            concat!("// PR ", "#23 shader chronology belongs elsewhere\n"),
+        )
+        .expect("write shader fixture");
+        fs::write(
+            root.join("registry/example.toml"),
+            concat!(
+                "# PR ",
+                "#21 review chronology belongs elsewhere\n",
+                "value = 1 # PR ",
+                "#22 inline chronology belongs elsewhere\n"
+            ),
+        )
+        .expect("write toml fixture");
+        fs::write(
+            root.join("registry/example.yaml"),
+            concat!(
+                "value: 1 # PR ",
+                "#24 inline chronology belongs elsewhere\n"
+            ),
+        )
+        .expect("write yaml fixture");
+
+        let err = verify_source_comment_chronology(&common_args(&root)).expect_err("must fail");
+        let message = err.to_string();
+        assert!(message.contains("crates/demo/src/lib.rs:3"));
+        assert!(message.contains("crates/demo/src/lib.rs:5"));
+        assert!(message.contains("crates/demo/src/lib.rs:6"));
+        assert!(message.contains("crates/demo/shaders/kernel.comp:1"));
+        assert!(message.contains("registry/example.toml:1"));
+        assert!(message.contains("registry/example.toml:2"));
+        assert!(message.contains("registry/example.yaml:1"));
+        let _ = fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn source_comment_chronology_allows_strings_docs_and_generated_mirrors() {
+        let root = temp_policy_root("allows");
+        fs::create_dir_all(root.join("crates/demo/src")).expect("create crate dir");
+        fs::create_dir_all(root.join("crates/data_core/src/registry_mirrors"))
+            .expect("create mirror dir");
+        fs::create_dir_all(root.join("registry/markdown_export")).expect("create markdown dir");
+        fs::create_dir_all(root.join("docs")).expect("create docs dir");
+        fs::write(
+            root.join("crates/demo/src/lib.rs"),
+            concat!(
+                "pub const BODY: &str = \"// PR ",
+                "#19 is ordinary data here\";\n",
+                "pub const RAW: &str = r#\"// PR ",
+                "#20 is ordinary raw-string data here\"#;\n",
+                "// PR#3 is a de Marrais production-rule name, not a pull request.\n"
+            ),
+        )
+        .expect("write rust fixture");
+        fs::write(
+            root.join("registry/narrative.toml"),
+            concat!(
+                "body = \"\"\"\n",
+                "# PR ",
+                "#21 audit context is narrative data\n",
+                "\"\"\"\n"
+            ),
+        )
+        .expect("write toml narrative fixture");
+        fs::write(
+            root.join("registry/narrative.yaml"),
+            concat!(
+                "body: |\n",
+                "  # PR ",
+                "#21 audit context is narrative data\n"
+            ),
+        )
+        .expect("write yaml narrative fixture");
+        fs::write(
+            root.join("crates/data_core/src/registry_mirrors/generated.rs"),
+            concat!("//! PR ", "#19 generated mirror chronology is excluded\n"),
+        )
+        .expect("write crate mirror fixture");
+        fs::write(
+            root.join("registry/markdown_export/generated.rs"),
+            concat!(
+                "//! PR ",
+                "#21 generated markdown mirror chronology is excluded\n"
+            ),
+        )
+        .expect("write registry mirror fixture");
+        fs::write(
+            root.join("docs/audit.md"),
+            concat!(
+                "PR ",
+                "#21 markdown chronology can be triangulated in narrative docs.\n"
+            ),
+        )
+        .expect("write docs fixture");
+
+        verify_source_comment_chronology(&common_args(&root)).expect("policy passes");
+        let _ = fs::remove_dir_all(root);
+    }
 }

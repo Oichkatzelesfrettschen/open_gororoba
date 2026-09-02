@@ -3364,6 +3364,89 @@ impl ProvenanceStore {
         )
     }
 
+    /// Read-only accessor for an insight's summary, which lives inside the
+    /// cached compat TOML body because the insights table has no summary
+    /// column.
+    pub fn insight_summary(&self, id: &str) -> Result<Option<String>> {
+        let compat: String = self
+            .conn
+            .query_row(
+                "SELECT compat_toml_text FROM insights WHERE id = ?1",
+                params![id],
+                |row| row.get(0),
+            )
+            .map_err(|e| anyhow::anyhow!("insight {} not found in canonical DB: {}", id, e))?;
+        let doc: toml_edit::DocumentMut = compat
+            .parse()
+            .with_context(|| format!("parse compat TOML body of insight {id}"))?;
+        Ok(doc.get("summary").and_then(|v| v.as_str()).map(str::to_string))
+    }
+
+    /// Rewrite the summary inside an insight's cached compat TOML body in one
+    /// BEGIN IMMEDIATE transaction and append an insight_revisions row with
+    /// field_name 'summary'. toml_edit keeps every other key and its
+    /// formatting, so the export projects only the summary change.
+    pub fn insight_update_summary(
+        &mut self,
+        id: &str,
+        new_summary: &str,
+        actor: &str,
+        reason: Option<&str>,
+    ) -> Result<StatusNoteRevision> {
+        let tx = self
+            .conn
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let compat: String = tx
+            .query_row(
+                "SELECT compat_toml_text FROM insights WHERE id = ?1",
+                params![id],
+                |row| row.get(0),
+            )
+            .map_err(|e| anyhow::anyhow!("insight {} not found in canonical DB: {}", id, e))?;
+        let mut doc: toml_edit::DocumentMut = compat
+            .parse()
+            .with_context(|| format!("parse compat TOML body of insight {id}"))?;
+        let prev = doc.get("summary").and_then(|v| v.as_str()).map(str::to_string);
+        let prev_value_sha256 = prev.as_deref().map(sha256_hex);
+        let new_value_sha256 = sha256_hex(new_summary);
+        let operation = if prev.as_deref() == Some(new_summary) {
+            "touch"
+        } else {
+            doc["summary"] = toml_edit::value(new_summary);
+            tx.execute(
+                "UPDATE insights SET compat_toml_text = ?2 WHERE id = ?1",
+                params![id, doc.to_string()],
+            )?;
+            "update"
+        };
+        tx.execute(
+            "INSERT INTO insight_revisions
+             (insight_id, field_name, prev_value_sha256, new_value_sha256,
+              actor, reason, operation, application_id)
+             VALUES (?1, 'summary', ?2, ?3, ?4, ?5, ?6, ?7)",
+            params![
+                id,
+                prev_value_sha256,
+                new_value_sha256,
+                actor,
+                reason,
+                operation,
+                CLI_APPLICATION_ID
+            ],
+        )?;
+        let revision_id = tx.last_insert_rowid();
+        tx.commit()?;
+        Ok(StatusNoteRevision {
+            entity_id: id.to_string(),
+            field_name: "summary".to_string(),
+            prev_value_sha256,
+            new_value_sha256,
+            actor: actor.to_string(),
+            reason: reason.map(str::to_string),
+            revision_id,
+        })
+    }
+
     /// Read-only accessor for an experiment's status_note column.
     pub fn experiment_status_note(&self, id: &str) -> Result<Option<String>> {
         let row: Option<String> = self

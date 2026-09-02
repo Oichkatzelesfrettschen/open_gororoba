@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 189
+event_count = 192
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4038,3 +4038,72 @@ transition_spec_sha256 = "0e4216ef28c6196b8f030ce988d2960e6c8819e170d79829958eda
 proposal_key = "staples-associator-adds-small-nonzero-information-at-matched-receptive-field"
 canonical_claim_id = "C-1731"
 relation_kind = "refines"
+
+[[transition]]
+event_id = 190
+transition_key = "c-1729-scope-narrowing-2026-09-02"
+source_claim_id = "C-1729"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "False if any of the 999 random unital twists or the 999 exact-support sign scrambles reaches ROC-AUC 0.8274 on the E-240 subsample."
+rationale = "The numbers in C-1729 stand; its wording overreaches them. The random-twist family does not match the CD support: the CD tensor has 1848 terms and the 999 twists span 1564 to 1784 terms, so only the sign-scramble family is a support-matched control and the two results must be stated separately. A 999-member sample from one sampling measure over unital sign functions establishes that the CD tensor is extreme under that measure; it does not establish uniqueness across all XOR-graded twists, and 'extreme tail among matched tensors' claimed both. The successor states the two control results separately and scopes the conclusion to the declared sampling measure."
+unresolved_assumptions = ["Cocycle-restricted twists make the multiplication associative and the associator identically zero, so that family is a negative control rather than a matched null; an invariant-matched nonassociative twist ensemble and the algebra-isomorphic relabeling orbit remain the untested matched families."]
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-LADDER-20260901"]
+experiment_ids = ["E-240"]
+actor = "closure-review-2026-09-02"
+reason = "Narrow the C-1729 wording to what the two control families support."
+transition_timestamp = "2026-09-02T06:00:00Z"
+transition_spec_sha256 = "b725c74a3df2871056794ae56317509b9dec808726bbfe4f04d306936efbc7c5"
+
+[[transition.successors]]
+proposal_key = "staples-cd-tensor-extreme-under-random-unital-twist-measure"
+canonical_claim_id = "C-1732"
+relation_kind = "narrows"
+
+[[transition]]
+event_id = 191
+transition_key = "c-1730-scope-narrowing-2026-09-02"
+source_claim_id = "C-1730"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "False if the canonical layout ranks in the top 5 percent of the 144 structured layouts with no other layout within 0.005 AUC above it."
+rationale = "The numbers in C-1730 stand; the phrase 'not a fitted parameter' asserts a fact about the historical selection of the layout that a performance sweep cannot observe. The sweep constrains the value of tuning the assignment: 143 of 143 alternatives lie within 0.005 AUC, so tuning could have gained at most 0.0033. The successor states performance-insensitivity across the tested family and nothing about how the canonical layout was chosen."
+unresolved_assumptions = ["Layouts that move the magnitude channel and layouts over a different 16-element basis order are outside the tested family."]
+evidence_artifact_ids = ["LOCAL-STAPLES-LAYOUT-SWEEP-20260901"]
+experiment_ids = ["E-241"]
+actor = "closure-review-2026-09-02"
+reason = "Narrow the C-1730 wording from a selection-process claim to a performance-insensitivity claim."
+transition_timestamp = "2026-09-02T06:01:00Z"
+transition_spec_sha256 = "3c8d42bdd2523fd6033b0d6b3e0efa03cf6b00245705a3ccc3f030b2a1e23ffb"
+
+[[transition.successors]]
+proposal_key = "staples-detector-performance-insensitive-across-144-layout-family"
+canonical_claim_id = "C-1733"
+relation_kind = "narrows"
+
+[[transition]]
+event_id = 192
+transition_key = "c-1731-scope-narrowing-2026-09-02"
+source_claim_id = "C-1731"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "False if the 95 percent paired file-bootstrap interval of the out-of-fold ROC-AUC difference between the logistic model with ln(assoc) and the same model without it contains zero."
+rationale = "The numbers in C-1731 stand; two phrasings overreach. 'Unique information' suggests an information-theoretic quantity, while E-242 measured incremental predictive discrimination under one fixed linear-in-log-features logistic model with a fixed 1e-6 ridge and one fixed fold assignment. The delta ROC-AUC of 0.0020 is 0.20 AUC percentage points, which is about 0.24 percent of the baseline AUC 0.8428, so '0.2 percent of AUC' misstates the ratio. The successor reports the delta in AUC percentage points and scopes the conclusion to the fitted model class and fold assignment."
+unresolved_assumptions = ["A nonlinear learner could absorb or enlarge the increment; the bootstrap resamples files while the fold assignment stays fixed."]
+evidence_artifact_ids = ["LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901"]
+experiment_ids = ["E-242"]
+actor = "closure-review-2026-09-02"
+reason = "Narrow the C-1731 wording to incremental discrimination under the fixed model and report the delta in AUC percentage points."
+transition_timestamp = "2026-09-02T06:02:00Z"
+transition_spec_sha256 = "c2691459ab7454420af4423e7d97ec24231ef5138c4f089d89c45bb3083e05a7"
+
+[[transition.successors]]
+proposal_key = "staples-associator-incremental-discrimination-under-fixed-logistic-model"
+canonical_claim_id = "C-1734"
+relation_kind = "narrows"
