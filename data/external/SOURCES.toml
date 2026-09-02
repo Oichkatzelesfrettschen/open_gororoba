@@ -4,7 +4,7 @@
 # Compatibility export lane: source_contracts
 
 [external_sources]
-updated = "2026-08-01T23:53:37.245249816+00:00"
+updated = "2026-09-02T01:48:58.447461960+00:00"
 authoritative = true
 policy_version = "v1"
 
@@ -103,6 +103,26 @@ evidence_refs = [
 manual_manifest_refs = []
 scientific_validator_refs = [
   "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-CLUSTER-C1-FGM-SPIN-DAILY"
+path_glob = "data/external/cluster/c1_fgm_spin_*.csv"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=C1_CP_FGM_SPIN"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Cluster C1 FGM SPIN (2002 DOY 001-007)' --output-dir data/external --skip-existing; cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Cluster C1 FGM SPIN (2003 DOY 015-021)' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "Cluster C1 FGM spin-resolution cache (CDAWeb HAPI dataset C1_CP_FGM_SPIN) consumed by heliosphere boundary-survey --mission c1. Cache on 2026-09-01: 14 daily files (2002 DOY 001..007, 2003 DOY 015..021), HAPI info endpoint HTTP 200. Verify: external-cache-manifest verify --root data/external/cluster --manifest data/output/external_manifests/cluster_c1_fgm_spin_cache_manifest.txt --prefix c1_fgm_spin_."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/cluster_c1_fgm_spin_cache_manifest.txt",
+]
+scientific_validator_refs = [
+  "replay_contract_hash",
 ]
 blocked_action_plan = []
 
@@ -748,7 +768,7 @@ mirror_urls = [
 ]
 access_class = "public"
 status = "migrated"
-retrieval_method = "cargo run -p gororoba_cli --bin fetch-datasets -- --dataset 'Swarm L1B Magnetic Sample' --output-dir data/external --skip-existing"
+retrieval_method = "none: archived placeholders retained for provenance only; the live Swarm sample lane is SRC-SWARM-L1B-MAGNETIC-SAMPLE, fetched by SwarmMagProvider in crates/data_core/src/catalogs/swarm_mag_fetch.rs"
 attempt_deadline_utc = "2026-02-27"
 resolution_deadline_utc = "2026-03-07"
 blocker_note = "Retired legacy Swarm derivative placeholders from data/external; archived for provenance-only retention."
@@ -1509,6 +1529,26 @@ scientific_validator_refs = []
 blocked_action_plan = []
 
 [[source]]
+id = "SRC-MAVEN-MAG-L2-SUNSTATE-1SEC-DAILY"
+path_glob = "data/external/maven/maven_mag_*.csv"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=MVN_MAG_L2-SUNSTATE-1SEC"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'MAVEN MAG L2 SunState 1-sec (2015 DOY 060-073)' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "MAVEN MAG L2 SunState 1-second cache (CDAWeb HAPI dataset MVN_MAG_L2-SUNSTATE-1SEC, parameters Time,OB_B) consumed by heliosphere decomposition-audit --mission maven and boundary-survey. Cache on 2026-09-01: 14 daily files for 2015 DOY 060..073; the cache had lacked DOY 069, which the live retrieval of the same date returned in full (86398 samples) and which now sits in the manifest. Live validation 2026-09-01: fetch-datasets into an empty output dir reproduced every previously cached day byte for byte. Verify: external-cache-manifest verify --root data/external/maven --manifest data/output/external_manifests/maven_mag_cache_manifest.txt --prefix maven_mag_."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/maven_mag_cache_manifest.txt",
+]
+scientific_validator_refs = [
+  "replay_contract_hash",
+]
+blocked_action_plan = []
+
+[[source]]
 id = "SRC-MIXED-PRECISION-SURVEY-KASHI"
 path_glob = "data/external/arxiv_2412.19322_mixed_precision_scientific.pdf"
 canonical_url = "https://arxiv.org/abs/2412.19322"
@@ -1529,6 +1569,49 @@ scientific_validator_refs = [
   "mixed_precision_hpc",
 ]
 blocked_action_plan = []
+
+[[source]]
+id = "SRC-MMS-MMS1-FGM-SRVY-L2-DAILY"
+path_glob = "data/external/mms/mms1_fgm_srvy_l2_*.csv"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=MMS1_FGM_SRVY_L2"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'MMS1 FGM Survey L2' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "MMS1 FGM survey L2 minute cache from CDAWeb HAPI dataset MMS1_FGM_SRVY_L2@0, consumed by heliosphere decomposition-audit --mission mms and the MMS magnetopause lanes. Cache on 2026-09-01: 8 daily files (2015 DOY 289; 2024 DOY 001..007), HAPI info endpoint HTTP 200. The manifest pins the cached bytes; a refetch that drifts fails external-cache-manifest verify --root data/external/mms --manifest data/output/external_manifests/mms_mms1_fgm_srvy_cache_manifest.txt --prefix mms1_fgm_srvy_l2_."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/mms_mms1_fgm_srvy_cache_manifest.txt",
+]
+scientific_validator_refs = [
+  "replay_contract_hash",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-MMS-SITL-GLS-SELECTIONS"
+path_glob = "data/external/mms/mms_sitl_*.csv"
+canonical_url = "https://lasp.colorado.edu/mms/sdc/public/files/api/v1/sitl/gls/csv"
+mirror_urls = []
+access_class = "public_api"
+status = "blocked"
+retrieval_method = "none: MmsSitlProvider (crates/data_core/src/catalogs/mms_fetch.rs) targets an endpoint the SDC no longer serves"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "Probed 2026-09-01 with a browser user agent: sitl/gls/csv, sitl_selections, sitl_selections_list, gls_selections, gls_selections_list and their /csv forms all return HTTP 404 from lasp.colorado.edu/mms/sdc/public/files/api/v1, while file_info/science and download/science on the same API answer 200. The single cached file mms_sitl_20240101_20240107.csv is 166 bytes and holds the SDC error text 'This route does not exist', so no SITL or GLS selection catalog was ever retrieved; heliosphere mms-sitl-labeled has no expert labels to consume and MMS boundary labels are derived by detect_magnetopause_crossings_filtered until a served selections endpoint is found."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/mms_sitl_cache_manifest.txt",
+]
+scientific_validator_refs = [
+  "blocked_manifest_only",
+]
+blocked_action_plan = [
+  "locate the current SDC selections endpoint (public API v1 index at lasp.colorado.edu/mms/sdc/public/about/how-to/, or the authenticated SITL API) and repoint MmsSitlProvider with a schema check on the returned CSV header",
+  "until then, register any MMS boundary label set as derived from FGM, never as SITL",
+]
 
 [[source]]
 id = "SRC-NAIF-PIONEER10-SPICE-BSP"
@@ -2295,6 +2378,26 @@ scientific_validator_refs = [
 blocked_action_plan = []
 
 [[source]]
+id = "SRC-ROSETTA-RPCMAG-AMDA-MONTHLY"
+path_glob = "data/external/rosetta/rosetta_rpcmag_*.csv"
+canonical_url = "https://amda.irap.omp.eu/service/hapi/info?id=ros-magob-rsmp"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Rosetta RPC-MAG (AMDA) 2015-07..09' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "Rosetta RPC-MAG resampled magnetic field from the AMDA HAPI dataset ros-magob-rsmp, consumed by heliosphere rosetta-draping and the Rosetta ablation lanes. Cache on 2026-09-01: 3 monthly files (2015-07, 2015-08, 2015-09), AMDA HAPI HTTP 200. Verify: external-cache-manifest verify --root data/external/rosetta --manifest data/output/external_manifests/rosetta_rpcmag_cache_manifest.txt --prefix rosetta_rpcmag_."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/rosetta_rpcmag_cache_manifest.txt",
+]
+scientific_validator_refs = [
+  "replay_contract_hash",
+]
+blocked_action_plan = []
+
+[[source]]
 id = "SRC-SDSS-DR18-QUASARS"
 path_glob = "archive/external_nonreproducible_snapshots/sdss_dr18_quasars.csv"
 canonical_url = "https://skyserver.sdss.org/dr18/SkyServerWS/SearchTools/SqlSearch?cmd=SELECT%20TOP%2050000%20%20s.specObjID%20as%20objid%2C%20s.ra%2C%20s.dec%2C%20s.z%2C%20s.zErr%20as%20zerr%2C%20%20p.psfMag_u%20as%20u%2C%20p.psfMag_g%20as%20g%2C%20p.psfMag_r%20as%20r%2C%20%20p.psfMag_i%20as%20i%20FROM%20SpecObj%20s%20JOIN%20PhotoObj%20p%20ON%20s.bestObjID%20%3D%20p.objID%20WHERE%20s.class%20%3D%20%27QSO%27%20AND%20s.zWarning%20%3D%200%20AND%20s.z%20%3E%200.1%20ORDER%20BY%20s.z&format=csv"
@@ -2743,6 +2846,26 @@ scientific_validator_refs = [
 blocked_action_plan = []
 
 [[source]]
+id = "SRC-THEMIS-THA-ESA-DAILY"
+path_glob = "data/external/themis_esa/tha_esa_*.csv"
+canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=THA_L2_ESA"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin themis-fgm-cache-restore -- --probe a --instrument esa --manifest data/output/external_manifests/themis_tha_esa_cache_manifest.txt --data-dir data/external"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "THA-scoped ESA ion-moment contract consumed by heliosphere beta-join. Each daily file is the exact CDAWeb HAPI response for dataset THA_L2_ESA@0 with parameters tha_peif_density,tha_peif_avgtemp (unflagged full-mode moments, cm^-3 and eV, native few-minute cadence). A 2026-09-01 refetch of 2008 DOY 301 reproduced the cached file byte for byte; the quality-filtered parameters tha_peif_densityQ,tha_peif_avgtempQ return NaN where tha_peif_data_quality is nonzero, which over the seven cached days (2008 DOY 301..307) is 935 of 3931 rows, so beta-join consumes moments the instrument team flags as suspect on about a quarter of the samples and any regenerated beta result declares this. Restore validation 2026-09-01: themis-fgm-cache-restore --instrument esa into an empty data dir fetched 7 of 7 days with 0 drift in 9 s. Standalone verify: external-cache-manifest verify --root data/external/themis_esa --manifest data/output/external_manifests/themis_tha_esa_cache_manifest.txt --prefix tha_esa_."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/themis_tha_esa_cache_manifest.txt",
+]
+scientific_validator_refs = [
+  "replay_contract_hash",
+]
+blocked_action_plan = []
+
+[[source]]
 id = "SRC-THEMIS-THA-FGM-DAILY"
 path_glob = "data/external/themis/tha_fgm_*.csv"
 canonical_url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=THA_L2_FGM"
@@ -2862,6 +2985,26 @@ scientific_validator_refs = [
 blocked_action_plan = []
 
 [[source]]
+id = "SRC-VOYAGER-SPDF-MAG-48S"
+path_glob = "data/external/voyager*_mag48_spdf/*_voyager*_mag_ip_48s.asc"
+canonical_url = "https://spdf.gsfc.nasa.gov/pub/data/voyager/voyager1/magnetic_fields/ip_48s_ascii/"
+mirror_urls = [
+  "https://spdf.gsfc.nasa.gov/pub/data/voyager/voyager2/magnetic_fields/ip_48s_ascii/",
+]
+access_class = "public"
+status = "active"
+retrieval_method = "cargo run -p gororoba_cli_data --bin fetch-datasets -- --dataset 'Voyager 1 MAG 48-sec' --output-dir data/external --skip-existing"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "VoyagerMag48Provider (crates/data_core/src/catalogs/voyager_fetch.rs) fetches the monthly files data/YYYYMM_voyager<n>_mag_ip_48s.asc into voyager<n>_mag48_spdf/. Directory listing on 2026-09-01: coverage runs 1977-09 through 1989-12 (V1) and 1977-08 through 1989-08 (V2); the previous provider wrote vy<n>_<year>.asc names that the server never carried (HTTP 404) into the PDS cache directory the heliopause lane reads."
+evidence_refs = []
+manual_manifest_refs = []
+scientific_validator_refs = [
+  "replay_contract_hash",
+]
+blocked_action_plan = []
+
+[[source]]
 id = "SRC-VOYAGER-UMD-LECP"
 path_glob = "data/external/voyager/lecp/**"
 canonical_url = "https://voyager-mac.umd.edu/"
@@ -2948,6 +3091,26 @@ evidence_refs = [
 manual_manifest_refs = []
 scientific_validator_refs = [
   "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-VOYAGER1-PDS-PPI-MAG-48S"
+path_glob = "data/external/voyager1_mag48/V1_MAG-48s_*"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/search/?sc=Voyager+1&i=MAG"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "manual: PDS-PPI Voyager 1 MAG 48-second FLT1 tables downloaded by hand; the cache is pinned by data/output/external_manifests/voyager1_mag48_pds_cache_manifest.txt and verified with external-cache-manifest verify --root data/external/voyager1_mag48 --manifest data/output/external_manifests/voyager1_mag48_pds_cache_manifest.txt --prefix V1_MAG-48s_"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "This is the directory heliosphere voyager-heliopause reads (parse_mag48_flt1 over *.dat and *.txt); the SPDF 48-second ASCII lane SRC-VOYAGER-SPDF-MAG-48S ends in 1989 and cannot supply the 2012 (V1) and 2017..2019 (V2) heliopause windows, so the PDS cache is the only retrievable source for that lane and its files carry no fetcher."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/voyager1_mag48_pds_cache_manifest.txt",
+]
+scientific_validator_refs = [
+  "replay_contract_hash",
 ]
 blocked_action_plan = []
 
@@ -3074,6 +3237,26 @@ evidence_refs = [
 manual_manifest_refs = []
 scientific_validator_refs = [
   "static_archive_https",
+]
+blocked_action_plan = []
+
+[[source]]
+id = "SRC-VOYAGER2-PDS-PPI-MAG-48S"
+path_glob = "data/external/voyager2_mag48/V2_MAG-48s_*"
+canonical_url = "https://pds-ppi.igpp.ucla.edu/search/?sc=Voyager+2&i=MAG"
+mirror_urls = []
+access_class = "public"
+status = "active"
+retrieval_method = "manual: PDS-PPI Voyager 2 MAG 48-second FLT1 tables downloaded by hand; the cache is pinned by data/output/external_manifests/voyager2_mag48_pds_cache_manifest.txt and verified with external-cache-manifest verify --root data/external/voyager2_mag48 --manifest data/output/external_manifests/voyager2_mag48_pds_cache_manifest.txt --prefix V2_MAG-48s_"
+attempt_deadline_utc = "2026-09-01"
+resolution_deadline_utc = "2026-09-01"
+blocker_note = "This is the directory heliosphere voyager-heliopause reads (parse_mag48_flt1 over *.dat and *.txt); the SPDF 48-second ASCII lane SRC-VOYAGER-SPDF-MAG-48S ends in 1989 and cannot supply the 2012 (V1) and 2017..2019 (V2) heliopause windows, so the PDS cache is the only retrievable source for that lane and its files carry no fetcher."
+evidence_refs = []
+manual_manifest_refs = [
+  "data/output/external_manifests/voyager2_mag48_pds_cache_manifest.txt",
+]
+scientific_validator_refs = [
+  "replay_contract_hash",
 ]
 blocked_action_plan = []
 
