@@ -68,10 +68,10 @@ const RESAMPLE_KEY_ODD: u64 = 0x9E37_79B9_7F4A_7C15;
 )]
 struct Args {
     /// Benchmark score CSV emitted by themis-staples-score-export.
-    #[arg(long, default_value = "data/output/benchmark_scores.csv")]
+    #[arg(long = "scores", default_value = "data/output/benchmark_scores.csv")]
     input: PathBuf,
     /// Destination JSON report.
-    #[arg(long, default_value = "data/output/staples_incremental_information.json")]
+    #[arg(long = "out", default_value = "data/output/staples_incremental_information.json")]
     output: PathBuf,
     /// Master seed for the fold shuffle and the bootstrap stream keys.
     #[arg(long, default_value_t = 42)]
