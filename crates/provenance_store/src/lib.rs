@@ -1215,8 +1215,12 @@ impl ProvenanceStore {
             if claim.status.trim().is_empty() {
                 failures.push(format!("{} has empty status", claim.id));
             }
+            // A disposition such as `na_empirical:<rationale>` is a formal_proof
+            // value that names no file; is_formal_proof_disposition is the same
+            // predicate the backfill and the canonical proof resolver use.
             if let Some(proof_path) = claim.formal_proof.as_deref()
                 && !proof_path.trim().is_empty()
+                && !crate::claim_proofs::is_formal_proof_disposition(proof_path)
                 && !repo_root.join(proof_path).exists()
             {
                 failures.push(format!(

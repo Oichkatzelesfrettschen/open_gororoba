@@ -5802,6 +5802,24 @@ status = "Verified"
 where_stated = "data/output/staples_incremental_information.json; E-242"
 
 [[claim]]
+formal_proof = "proofs/verified/C1628_IDCT8ButterflyCompaction.v"
+id = "C-1735"
+last_verified = "2026-09-02"
+statement = "For every 8x8 real coefficient matrix and every 8-vector of inputs, the 32-multiply even-odd butterfly factorization of the 8-point inverse DCT (even half E0..E3, odd half O0..O3, x_k = E_k + O_k, x_{7-k} = E_k - O_k) produces the same eight outputs as the 64-multiply dense matrix-vector form; the Rocq theorem C1628_idct8_butterfly_eq_dense states the eight equalities and IDCT8EvenOdd proves them by ring normalization over the reals."
+status = "Verified"
+status_note = "Kernel-checked formal proposition for THM-R300-IDCT8-BUTTERFLY-001. Scope is limited to the stated assumptions and does not establish a physical or implementation claim."
+where_stated = "proofs/verified/C1628_IDCT8ButterflyCompaction.v; proofs/theories/IDCT8EvenOdd.v"
+
+[[claim]]
+formal_proof = "proofs/verified/C1629_IDCT8DP4ExactBound.v"
+id = "C-1736"
+last_verified = "2026-09-02"
+statement = "An 8-term integer dot product with operand magnitudes at most B has magnitude at most 8*B^2 (dp8_abs_bound); for 7-bit-magnitude operands (|.| <= 127) the accumulator stays strictly below the FP24 exact-integer window 2^17 since 8*127^2 = 129032 < 131072 (dp8_int7_within_2pow17); and the accumulator is exact up to B <= 128 because 8*128^2 = 2^17 is representable (dp8_exact_threshold), while the r300 admission gate keeps the strict B <= 127 fail-closed choice (fp24_admit_strict_spec)."
+status = "Verified"
+status_note = "Kernel-checked formal proposition for THM-R300-IDCT8-DP4-EXACT-001. Scope is limited to the stated assumptions and does not establish a physical or implementation claim."
+where_stated = "proofs/verified/C1629_IDCT8DP4ExactBound.v; proofs/theories/IDCT8DP4ExactBound.v"
+
+[[claim]]
 id = "C-174"
 last_verified = "2026-02-01"
 statement = "Left-right operator commutant [L_a, R_b] = 0 exactly at associative dimensions (dim <= 4). At non-associative dims (>= 8),||[L_a,R_b]||_rel is nonzero (0.40 at dim=8, 0.18 at dim=64) and decreasing with dimension. [L,R]=0 is equivalent to associativity."
