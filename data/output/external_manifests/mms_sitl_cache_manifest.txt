@@ -1,0 +1,4 @@
+# external-cache-manifest v1
+# root: data/external/mms
+# columns: sha256  size_bytes  relative_path (two-space separated)
+42ae004a62416fb602fc5dd952e0f30d5d2817e3ccfa21bc15e04a81972d76fa  166  mms_sitl_20240101_20240107.csv

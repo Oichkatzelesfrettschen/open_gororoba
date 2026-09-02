@@ -1,0 +1,6 @@
+# external-cache-manifest v1
+# root: data/external/rosetta
+# columns: sha256  size_bytes  relative_path (two-space separated)
+611dc2c0439bff9bcbdf85a12365a969afc3f435a020939783c0d875c760a2dd  2175364  rosetta_rpcmag_2015_07.csv
+fd96ae9da640e6216319cd637f223fe0c93b9d84679eaab44ac7d22a79029833  2264226  rosetta_rpcmag_2015_08.csv
+2e213358ed0e0e61fef1db7ea08f62755092360df9468edf5b79ad1fec4618f5  1997555  rosetta_rpcmag_2015_09.csv
