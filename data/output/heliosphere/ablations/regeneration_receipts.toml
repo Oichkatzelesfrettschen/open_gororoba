@@ -20,6 +20,7 @@ clippy_command = "cargo clippy -p gororoba_cli_physics --bin heliosphere --all-t
 clippy_result = "exit 0, no diagnostics"
 test_command = "cargo nextest run -p gororoba_cli_physics --bin heliosphere --cargo-profile validation -E 'test(beta_join)'"
 test_result = "8 tests run, 8 passed, 7 skipped"
+tolerance_boundary_note = "minute keys are integers, so the 3.25 default admits a 3-minute gap and rejects a 4-minute one; nearest_join_honors_the_tolerance_and_breaks_ties_early asserts both edges, so the plus-or-minus-3 effective window is measured rather than asserted"
 test_names = [
   "beta_join::tests::leap_year_post_february_doy_counts_february_29",
   "beta_join::tests::rejects_other_years_and_invalid_dates",

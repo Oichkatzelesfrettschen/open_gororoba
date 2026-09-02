@@ -756,6 +756,13 @@ mod tests {
         // Equidistant candidates resolve to the earlier one.
         let even: Vec<(i64, u32)> = vec![(0, 1), (6, 2)];
         assert_eq!(nearest_within(&even, 3, 3.25), Some(0));
+        // Minute keys are integers, so the 3.25 default admits a 3-minute gap
+        // and rejects a 4-minute one: the effective window is plus or minus 3.
+        let lone: Vec<(i64, u32)> = vec![(10, 1)];
+        assert_eq!(nearest_within(&lone, 13, 3.25), Some(0));
+        assert_eq!(nearest_within(&lone, 7, 3.25), Some(0));
+        assert_eq!(nearest_within(&lone, 14, 3.25), None);
+        assert_eq!(nearest_within(&lone, 6, 3.25), None);
     }
 
     /// The 2026-03-27 artifact published exponent 0.7749921471180499 with
