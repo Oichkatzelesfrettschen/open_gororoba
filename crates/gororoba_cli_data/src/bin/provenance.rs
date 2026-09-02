@@ -141,6 +141,13 @@ struct ExportArtifactScanArgs {
     /// Accept a row loss beyond the shrink threshold.
     #[arg(long, default_value_t = false)]
     allow_shrink: bool,
+
+    /// Gitignored per-host materialization manifest written alongside the export.
+    #[arg(
+        long,
+        default_value = "data/output/external_manifests/host_materialization.toml"
+    )]
+    manifest_out: PathBuf,
 }
 
 #[derive(Parser, Debug)]
@@ -557,6 +564,7 @@ fn run_export_artifact_scan(
         export,
         shrink_threshold,
         allow_shrink,
+        manifest_out,
     } = args;
     // The reindex reads the lane files back through
     // provenance_store::loaders::load_lane_assignments, which requires an
@@ -581,6 +589,20 @@ fn run_export_artifact_scan(
             report.after
         );
     }
+    let generated_at = chrono::Utc::now().format("%Y-%m-%d").to_string();
+    let manifest_path = repo_path(repo_root, &manifest_out);
+    source_provenance::write_host_materialization(
+        &manifest_path,
+        &source_provenance::render_host_materialization(
+            &summary.host_materialization,
+            &generated_at,
+        ),
+    )?;
+    println!(
+        "Host materialization manifest: rows={} path={}",
+        summary.host_materialization.len(),
+        to_repo_display_path(repo_root, &manifest_path)
+    );
     println!(
         "Scanned host filesystem state: artifacts={} downloaded={} remotely_materializable={} materializable_without_url={}",
         summary.artifact_count,
@@ -643,14 +665,47 @@ fn ensure_reindex_preconditions(repo_root: &Path, args: &ExportArgs) -> Result<(
     Ok(())
 }
 
+/// Re-checks per-host presence without rewriting any registry. The paths come
+/// from the existing manifest, which is where host state lives, plus the
+/// downloaded rows the registry itself carries.
 fn run_materialize_status(repo_root: &Path, args: MaterializeStatusArgs) -> Result<()> {
+    let retention = source_provenance::RetentionSet::from_git_index(repo_root);
+    let mut seen: Vec<(String, String, String, String)> = Vec::new();
+
+    let manifest_path = repo_path(repo_root, &args.out_manifest);
+    if manifest_path.exists() {
+        let text = fs::read_to_string(&manifest_path)
+            .with_context(|| format!("read {}", manifest_path.display()))?;
+        let value: toml::Value = toml::from_str(&text)
+            .with_context(|| format!("parse {}", manifest_path.display()))?;
+        for row in value
+            .get("materialized")
+            .and_then(toml::Value::as_array)
+            .map(Vec::as_slice)
+            .unwrap_or_default()
+        {
+            let Some(table) = row.as_table() else { continue };
+            let field = |name: &str| {
+                table
+                    .get(name)
+                    .and_then(toml::Value::as_str)
+                    .unwrap_or_default()
+                    .to_string()
+            };
+            seen.push((
+                field("artifact_id"),
+                field("key"),
+                field("status"),
+                field("path"),
+            ));
+        }
+    }
+
     let registry_path = repo_path(repo_root, &args.artifact_registry);
     let text = fs::read_to_string(&registry_path)
         .with_context(|| format!("read {}", registry_path.display()))?;
     let value: toml::Value = toml::from_str(&text)
         .with_context(|| format!("parse {}", registry_path.display()))?;
-    let retention = source_provenance::RetentionSet::from_git_index(repo_root);
-    let mut rows = Vec::new();
     for artifact in value
         .get("artifact")
         .and_then(toml::Value::as_array)
@@ -667,47 +722,41 @@ fn run_materialize_status(repo_root: &Path, args: MaterializeStatusArgs) -> Resu
                 .unwrap_or_default()
                 .to_string()
         };
-        let status = field("status");
-        if status != "downloaded" && status != "remotely_materializable" {
+        if field("status") != "downloaded" {
             continue;
         }
-        let mut paths = Vec::new();
-        for name in ["downloaded_paths", "host_only_paths"] {
-            if let Some(items) = table.get(name).and_then(toml::Value::as_array) {
-                paths.extend(
-                    items
-                        .iter()
-                        .filter_map(toml::Value::as_str)
-                        .map(str::to_string),
-                );
+        if let Some(items) = table.get("downloaded_paths").and_then(toml::Value::as_array) {
+            for path in items.iter().filter_map(toml::Value::as_str) {
+                seen.push((
+                    field("id"),
+                    field("key"),
+                    "downloaded".to_string(),
+                    path.to_string(),
+                ));
             }
         }
-        let canonical = field("canonical_download_path");
-        if paths.is_empty() && !canonical.is_empty() {
-            paths.push(canonical);
-        }
-        for path in paths {
-            rows.push(source_provenance::observe_host_materialization(
-                repo_root,
-                &retention,
-                &field("id"),
-                &field("key"),
-                &status,
-                &path,
-            ));
-        }
     }
+
+    seen.sort();
+    seen.dedup();
+    let rows = seen
+        .iter()
+        .map(|(id, key, status, path)| {
+            source_provenance::observe_host_materialization(
+                repo_root, &retention, id, key, status, path,
+            )
+        })
+        .collect::<Vec<_>>();
     let generated_at = chrono::Utc::now().format("%Y-%m-%d").to_string();
     let manifest = source_provenance::render_host_materialization(&rows, &generated_at);
-    let out_path = repo_path(repo_root, &args.out_manifest);
-    source_provenance::write_host_materialization(&out_path, &manifest)?;
+    source_provenance::write_host_materialization(&manifest_path, &manifest)?;
     let present = rows.iter().filter(|row| row.present).count();
     println!(
         "Host materialization: rows={} present={} absent={} manifest={}",
         rows.len(),
         present,
         rows.len() - present,
-        to_repo_display_path(repo_root, &out_path)
+        to_repo_display_path(repo_root, &manifest_path)
     );
     Ok(())
 }

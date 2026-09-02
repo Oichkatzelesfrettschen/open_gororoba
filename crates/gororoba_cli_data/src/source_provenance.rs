@@ -181,6 +181,7 @@ struct UnifiedArtifact {
     unverified_mirrors: Vec<String>,
     downloaded_paths: Vec<String>,
     host_only_paths: Vec<String>,
+    lane: String,
     sha256: String,
     byte_length: u64,
     retrieval_command: String,
@@ -200,6 +201,9 @@ pub struct BuildSummary {
     pub remotely_materializable_count: usize,
     pub materializable_without_url_count: usize,
     pub row_counts: Vec<RowCountReport>,
+    /// Per-host presence for every observed path. Host state, so it never
+    /// reaches a committed registry; the caller writes the gitignored manifest.
+    pub host_materialization: Vec<HostMaterializationRow>,
 }
 
 #[derive(Clone, Debug, Default)]
@@ -962,6 +966,19 @@ fn classify_artifacts(
             "unverified".to_string()
         };
 
+        // The lane is a property of the artifact, so it is decided while the
+        // host-only paths are still in memory and then written into the row.
+        // Deciding it later from the exported row would move every artifact
+        // known only by a local .pdf into web_references.
+        artifact.lane = classify_media_lane(
+            artifact
+                .links
+                .iter()
+                .chain(artifact.downloaded_paths.iter())
+                .chain(artifact.host_only_paths.iter())
+                .chain(std::iter::once(&artifact.canonical_functional_url)),
+        );
+
         // Content identity comes from whichever copy this host holds. When no
         // copy is present the previously exported values carry forward, so a
         // checkout missing the PDFs never erases a hash another host measured.
@@ -981,8 +998,12 @@ fn classify_artifacts(
                 artifact.byte_length = carried.map(|facts| facts.byte_length).unwrap_or_default();
             }
         }
+        // A carried URL is adopted only when it is still one of the artifact's
+        // links, because the verifier requires canonical_functional_url to
+        // appear in all_links.
         if artifact.canonical_functional_url.is_empty()
             && let Some(url) = carried.map(|facts| facts.canonical_url.clone())
+            && artifact.links.contains(&url)
         {
             artifact.canonical_functional_url = url;
         }
@@ -991,7 +1012,10 @@ fn classify_artifacts(
             .filter(|value| !value.is_empty())
             .unwrap_or_else(|| "unreviewed".to_string());
         artifact.retrieval_command = if artifact.status == "remotely_materializable" {
-            let target = artifact.host_only_paths.first().cloned().unwrap_or_default();
+            // The retrieval target is derived from the artifact key, never from
+            // the session-dated intake path this host happens to hold, so the
+            // committed command reads the same on every checkout.
+            let target = materialization_target(&artifact.key, &artifact.lane);
             let command = retrieval_command(&artifact.canonical_functional_url, &target);
             if command.is_empty() {
                 carried
@@ -1020,6 +1044,43 @@ fn classify_artifacts(
         } else {
             String::new()
         };
+    }
+}
+
+/// Assigns the lane from every extension the artifact is known by.
+fn classify_media_lane<'a, I: Iterator<Item = &'a String>>(values: I) -> String {
+    let values = values
+        .map(|value| value.trim())
+        .filter(|value| !value.is_empty())
+        .collect::<Vec<_>>();
+    if values
+        .iter()
+        .any(|value| value_endswith_any(value, DATASET_EXTENSIONS))
+    {
+        "datasets".to_string()
+    } else if values
+        .iter()
+        .any(|value| value_endswith_any(value, SLIDE_ARTIFACT_EXTENSIONS))
+    {
+        "slides_artifacts".to_string()
+    } else if values
+        .iter()
+        .any(|value| value_endswith_any(value, PDF_EXTENSIONS))
+    {
+        "papers_pdf".to_string()
+    } else {
+        "web_references".to_string()
+    }
+}
+
+/// Host-invariant destination for a re-fetched artifact.
+fn materialization_target(key: &str, lane: &str) -> String {
+    let stem = slug(key);
+    match lane {
+        "papers_pdf" => format!("papers/pdf/{stem}.pdf"),
+        "datasets" => format!("data/external/datasets/{stem}"),
+        "slides_artifacts" => format!("data/external/artifacts/{stem}"),
+        _ => String::new(),
     }
 }
 
@@ -1184,6 +1245,7 @@ fn render_artifact_registry(
             escape_toml(&artifact.canonical_download_path)
         ));
         lines.push(format!("status = {}", escape_toml(&artifact.status)));
+        lines.push(format!("lane = {}", escape_toml(&artifact.lane)));
         lines.push(format!("sha256 = {}", escape_toml(&artifact.sha256)));
         lines.push(format!("byte_length = {}", artifact.byte_length));
         lines.push(format!(
@@ -1376,6 +1438,30 @@ pub fn stage_artifact_source_of_truth(
             .filter(|artifact| artifact.canonical_functional_url.is_empty())
             .count(),
         row_counts: Vec::new(),
+        host_materialization: artifacts
+            .iter()
+            .enumerate()
+            .filter(|(_, artifact)| {
+                artifact.status == "downloaded" || artifact.status == "remotely_materializable"
+            })
+            .flat_map(|(index, artifact)| {
+                artifact
+                    .downloaded_paths
+                    .iter()
+                    .chain(artifact.host_only_paths.iter())
+                    .map(|path| {
+                        observe_host_materialization(
+                            repo_root,
+                            retention,
+                            &format!("ASOT-{:04}", index + 1),
+                            &artifact.key,
+                            &artifact.status,
+                            path,
+                        )
+                    })
+                    .collect::<Vec<_>>()
+            })
+            .collect(),
     };
     set.stage(out_registry, registry_text.clone(), "[[artifact]]");
     set.stage(out_report, report_text, "[[artifact]]");
@@ -1414,6 +1500,16 @@ fn value_endswith_any(value: &str, extensions: &[&str]) -> bool {
 }
 
 fn classify_lane(artifact: &toml::map::Map<String, Value>) -> (String, Vec<String>) {
+    // A row carrying the durable lane field decides its own lane; the
+    // extension scan below stays for rows exported before the field existed.
+    if let Some(lane) = artifact
+        .get("lane")
+        .and_then(Value::as_str)
+        .map(str::trim)
+        .filter(|lane| LANE_ORDER.contains(lane))
+    {
+        return (lane.to_string(), vec![lane.to_string()]);
+    }
     let mut values = Vec::new();
     if let Some(items) = artifact.get("all_links").and_then(Value::as_array) {
         for value in items.iter().filter_map(Value::as_str) {
