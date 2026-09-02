@@ -764,12 +764,7 @@ mod tests {
     }
 
     fn repo_root() -> std::path::PathBuf {
-        std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-            .parent()
-            .expect("crate parent")
-            .parent()
-            .expect("workspace root")
-            .to_path_buf()
+        repo_root::resolve!()
     }
 
     fn benchmark_cavity() -> KerrCavity {

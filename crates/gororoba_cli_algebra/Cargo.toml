@@ -179,6 +179,7 @@ name = "structured-spectrum-bench"
 path = "src/bin/structured_spectrum_bench.rs"
 
 [dependencies]
+repo_root = { workspace = true }
 algebra_analysis = { workspace = true }
 algebra_experimental = { workspace = true }
 anyhow.workspace = true

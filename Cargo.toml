@@ -74,6 +74,7 @@ members = [
     "crates/provenance_store",
     "crates/qgp_scaling",
     "crates/quantum_core",
+    "crates/repo_root",
     "crates/repo_utilities",
     "crates/schafer_1945",
     "crates/scrolls_core",
@@ -118,6 +119,7 @@ ignored = ["wide"]
 
 # Shared dependencies across workspace
 [workspace.dependencies]
+repo_root = { path = "crates/repo_root" }
 # Workspace-internal crates (extracted from gororoba_algebra)
 algebra_analysis = { path = "crates/algebra_analysis" }
 algebra_experimental = { path = "crates/algebra_experimental" }

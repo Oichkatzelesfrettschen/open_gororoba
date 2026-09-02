@@ -45,13 +45,7 @@ fn locate_studio_pipeline_catalog() -> PathBuf {
     if let Ok(path) = std::env::var("GOROROBA_STUDIO_PIPELINE_CATALOG") {
         return PathBuf::from(path);
     }
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../registry/studio_pipeline_catalog.toml")
-        .canonicalize()
-        .unwrap_or_else(|_| {
-            PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-                .join("../../registry/studio_pipeline_catalog.toml")
-        })
+    repo_root::path!("registry/studio_pipeline_catalog.toml")
 }
 
 #[derive(Debug, Clone)]
@@ -65,10 +59,7 @@ struct OrchestrationFeedPaths {
 }
 
 fn workspace_root_dir() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../..")
-        .canonicalize()
-        .unwrap_or_else(|_| PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../.."))
+    repo_root::resolve!()
 }
 
 fn resolve_orchestration_path(env_key: &str, default_relative_path: &str) -> PathBuf {

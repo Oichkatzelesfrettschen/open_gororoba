@@ -58,9 +58,7 @@ struct LatticeDifferenceSummary {
 }
 
 fn repo_data_path(relative: &str) -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .join("../../")
-        .join(relative)
+    repo_root::resolve!().join(relative)
 }
 
 fn parse_csv_line(line: &str) -> Vec<String> {

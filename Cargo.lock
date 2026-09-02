@@ -133,6 +133,7 @@ dependencies = [
  "rand_chacha 0.10.0",
  "rand_distr 0.6.0",
  "rayon",
+ "repo_root",
  "serde",
  "serde_json",
  "wide 1.2.0",
@@ -3240,6 +3241,7 @@ dependencies = [
  "rand_distr 0.6.0",
  "rayon",
  "regex",
+ "repo_root",
  "reqwest 0.13.2",
  "serde",
  "serde_json",
@@ -4874,6 +4876,7 @@ dependencies = [
  "quantum_core",
  "rand 0.10.1",
  "regex",
+ "repo_root",
  "serde",
  "serde_json",
  "sha2 0.11.0",
@@ -4907,6 +4910,7 @@ dependencies = [
  "hdf5-metno",
  "rand 0.10.1",
  "rand_chacha 0.10.0",
+ "repo_root",
  "serde",
  "serde_json",
  "spectral_core",
@@ -4959,6 +4963,7 @@ dependencies = [
  "rand_distr 0.6.0",
  "rayon",
  "regex",
+ "repo_root",
  "reqwest 0.13.2",
  "rusqlite",
  "scrolls_core",
@@ -5051,6 +5056,7 @@ dependencies = [
  "rand_chacha 0.10.0",
  "rand_distr 0.6.0",
  "rayon",
+ "repo_root",
  "rusqlite",
  "rustfft",
  "serde",
@@ -6819,6 +6825,7 @@ dependencies = [
  "rand_chacha 0.10.0",
  "rayon",
  "regex",
+ "repo_root",
  "rustfft",
  "serde",
  "toml 1.1.2+spec-1.1.0",
@@ -9433,6 +9440,7 @@ dependencies = [
  "chrono",
  "csv",
  "regex",
+ "repo_root",
  "rusqlite",
  "toml 1.1.2+spec-1.1.0",
  "ureq",
@@ -10028,6 +10036,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19b30a45b0cd0bcca8037f3d0dc3421eaf95327a17cad11964fb8179b4fc4832"
 
 [[package]]
+name = "repo_root"
+version = "0.1.0"
+dependencies = [
+ "tempfile",
+]
+
+[[package]]
 name = "repo_utilities"
 version = "0.1.0"
 dependencies = [
@@ -10035,6 +10050,7 @@ dependencies = [
  "anyhow",
  "clap",
  "regex",
+ "repo_root",
  "serde_json",
  "toml 1.1.2+spec-1.1.0",
  "unicode-normalization",
@@ -10941,6 +10957,7 @@ dependencies = [
  "criterion",
  "hdf5-metno",
  "proptest",
+ "repo_root",
  "serde",
  "tempfile",
  "thiserror 2.0.18",
@@ -13939,6 +13956,7 @@ dependencies = [
  "csv",
  "provenance_store",
  "regex",
+ "repo_root",
  "rusqlite",
  "serde",
  "serde_json",

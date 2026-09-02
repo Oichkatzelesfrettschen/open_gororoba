@@ -858,3 +858,6 @@ path = "src/bin/su5_gut.rs"
 [[bin]]
 name = "voyager2-bartol-amda-crossval"
 path = "src/bin/voyager2_bartol_amda_crossval.rs"
+
+[dev-dependencies]
+repo_root = { workspace = true }
