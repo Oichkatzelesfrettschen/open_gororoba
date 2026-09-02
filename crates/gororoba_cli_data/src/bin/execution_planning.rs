@@ -3076,11 +3076,14 @@ experiment = "E-001"
         let mut store = ProvenanceStore::open(&db)?;
         store.reindex_control_plane_from_registries(
             &root,
-            &root.join("registry/claims.toml"),
-            &root.join("registry/insights.toml"),
-            &root.join("registry/experiments.toml"),
-            &root.join("registry/binaries.toml"),
-            &root.join("proofs/_RocqProject"),
+            provenance_store::RegistryImportPaths {
+                claims: &root.join("registry/claims.toml"),
+                insights: &root.join("registry/insights.toml"),
+                experiments: &root.join("registry/experiments.toml"),
+                binaries: &root.join("registry/binaries.toml"),
+                rocq_project: &root.join("proofs/_RocqProject"),
+            },
+            provenance_store::ReimportOptions::bootstrap(),
         )?;
         let claims = root.join("registry/claims.toml");
         let insights = root.join("registry/insights.toml");
