@@ -23,7 +23,26 @@ use std::path::{Path, PathBuf};
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct VanishedPathHit {
     pub binary: PathBuf,
+    /// The shallowest ancestor under the worktrees root that does not exist.
+    /// A string table packs entries without separators, so an extracted run
+    /// can carry a few bytes of the next entry; the ancestor is immune to
+    /// that and names the removed checkout exactly.
+    pub vanished_root: String,
     pub embedded: String,
+}
+
+/// Walk down from `worktrees_root` and return the first component path that
+/// does not exist.
+fn shallowest_missing(path: &str, worktrees_root: &Path) -> Option<String> {
+    let rest = Path::new(path).strip_prefix(worktrees_root).ok()?;
+    let mut probe = worktrees_root.to_path_buf();
+    for component in rest.components() {
+        probe.push(component);
+        if !probe.exists() {
+            return Some(probe.to_string_lossy().into_owned());
+        }
+    }
+    None
 }
 
 /// A byte is part of a path run while it is printable ASCII and not a
@@ -80,11 +99,12 @@ pub fn scan_binary(
         if path == current || path.starts_with(&format!("{current}/")) {
             continue;
         }
-        if Path::new(&path).exists() {
+        let Some(vanished_root) = shallowest_missing(&path, worktrees_root) else {
             continue;
-        }
+        };
         hits.push(VanishedPathHit {
             binary: binary.to_path_buf(),
+            vanished_root,
             embedded: path,
         });
     }

@@ -552,6 +552,7 @@ fn stale_worktree_tool_copy_is_rejected_and_rebuilt() {
     .unwrap();
     assert_eq!(hits.len(), 1, "{hits:?}");
     assert_eq!(hits[0].embedded, format!("{gone_path}/registry/claims.toml"));
+    assert_eq!(hits[0].vanished_root, gone_path, "the removed checkout is named exactly");
 }
 
 /// Negative control: a binary that embeds only the running checkout's own path
@@ -571,4 +572,22 @@ fn path_scan_keeps_a_tool_that_names_only_the_live_worktree() {
         repo_utilities::validation_tool_paths::scan_tools_dir(&tools, &worktrees_root, &live)
             .unwrap();
     assert!(hits.is_empty(), "{hits:?}");
+}
+
+/// Positive control for the detector itself. A validation-profile binary is
+/// built with `-C debuginfo=line-tables-only` and thin LTO, and it still
+/// carries the compiling checkout's absolute path. If a toolchain change ever
+/// stops embedding it, `validation-tools-check-paths` goes silently inert, and
+/// this assertion fails instead.
+#[test]
+fn a_compiled_binary_embeds_its_own_checkout_path() {
+    let manifest = Path::new(env!("CARGO_MANIFEST_DIR"));
+    let checkout = manifest.parent().expect("xtask sits one level below the repo root");
+    let root = format!("{}/", checkout.canonicalize().unwrap().display());
+    let bytes = std::fs::read(env!("CARGO_BIN_EXE_xtask")).unwrap();
+    let found = repo_utilities::validation_tool_paths::embedded_paths_under(&bytes, &root);
+    assert!(
+        !found.is_empty(),
+        "the compiled xtask binary embeds no path under {root}; the path scan would be inert"
+    );
 }
