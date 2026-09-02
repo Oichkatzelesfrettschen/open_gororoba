@@ -4,10 +4,10 @@
 id = "SLANE-PAPERS_PDF-2026-02-15"
 name = "papers_pdf"
 description = "Paper-oriented references with PDF documents or PDF mirrors."
-generated_at = "2026-03-19"
+generated_at = "2026-09-01"
 artifact_count = 327
-downloaded_count = 62
-downloadable_count = 163
+downloaded_count = 73
+downloadable_count = 152
 blocked_count = 0
 citation_only_no_link_count = 11
 unverified_count = 91
@@ -37,110 +37,110 @@ source_refs = ["registry/manual_mirror_overrides_2026_02_15.toml::mirror_overrid
 id = "ASOT-0006"
 key = "arxiv:1306.1646"
 title = "Hitzer (2013) Crystal planes and reciprocal space in Clifford GA (arXiv)"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/1306.1646.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_1306.1646.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/41::HITZER_2013_CRYSTAL_PLANES_ARXIV"]
 
 [[artifact_ref]]
 id = "ASOT-0007"
 key = "arxiv:1310.5455"
 title = "Elduque (2013) Okubo algebras: automorphisms, derivations and idempotents"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/1310.5455.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_1310.5455.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/20::ELDUQUE_2013_OKUBO_AUT_DER_IDEMP"]
 
 [[artifact_ref]]
 id = "ASOT-0008"
 key = "arxiv:1603.07291"
 title = "Niezgoda et al. (2016) Symmetrized Bingham distribution for texture"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/1603.07291.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_1603.07291.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/54::NIEZGODA_2016_SYMMETRIZED_BINGHAM"]
 
 [[artifact_ref]]
 id = "ASOT-0009"
 key = "arxiv:1712.06436"
 title = "Baez (2017) From the Icosahedron to E8"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/1712.06436.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_1712.06436.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/0::BAEZ_2017_FROM_ICOSAHEDRON_TO_E8"]
 
 [[artifact_ref]]
 id = "ASOT-0010"
 key = "arxiv:1905.12631"
 title = "Blaszczyk (2019) Generalization of the octonion Fourier transform to 3-D"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/1905.12631.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_1905.12631.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/37::BLASZCZYK_2019_OCTONION_FOURIER_3D"]
 
 [[artifact_ref]]
 id = "ASOT-0011"
 key = "arxiv:2303.12219"
 title = "Corradetti et al. (2023) Jordan algebras over icosahedral cut-and-project quasicrystals"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/2303.12219.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_2303.12219.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/61::CORRADETTI_2023_JORDAN_ALG_ICOSAHEDRAL_CNP"]
 
 [[artifact_ref]]
 id = "ASOT-0012"
 key = "arxiv:2309.15774"
 title = "Baez (2023) The Icosidodecahedron"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/2309.15774.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_2309.15774.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/1::BAEZ_2023_ICOSIDODECAHEDRON"]
 
 [[artifact_ref]]
 id = "ASOT-0013"
 key = "arxiv:hep-th/9501007"
 title = "Dixon (1995) Octonions: E8 lattice to Lambda16"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/hep-th/9501007.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_hep-th_9501007.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/62::DIXON_1995_OCTONIONS_E8_LAMBDA16"]
 
 [[artifact_ref]]
 id = "ASOT-0014"
 key = "arxiv:math/0507282"
 title = "Elduque (2005) Symmetric composition algebras / magic square references"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/math/0507282.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_math_0507282.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/16::ELDUQUE_2005_SYMMETRIC_COMP_ARXIV"]
 
 [[artifact_ref]]
 id = "ASOT-0015"
 key = "arxiv:math/0603578"
 title = "Said et al. (2006) Fast complexified quaternion Fourier transform"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/math/0603578.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_math_0603578.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/36::SAID_2006_FAST_COMPLEXIFIED_QFFT"]
 
 [[artifact_ref]]
 id = "ASOT-0016"
 key = "arxiv:math/0701701"
 title = "Vojtechovsky (2007) Generators for finite simple Moufang loops"
-status = "downloadable"
+status = "downloaded"
 minimum_requirement_met = true
 canonical_functional_url = "https://arxiv.org/pdf/math/0701701.pdf"
-canonical_download_path = ""
+canonical_download_path = "data/papers/intake/2026_09_01_arxiv_downloadable_fetch/pdf_success/arxiv_math_0701701.pdf"
 source_refs = ["registry/manual_mirror_overrides_lacunae_2026_02_15.toml::mirror_override/33::VOJTECHOVSKY_2007_GENERATORS_MOUFANG"]
 
 [[artifact_ref]]
