@@ -5729,6 +5729,7 @@ last_verified = "2026-08-06"
 statement = "The cached experiment binary staples-roc-cluster-bootstrap no longer accepts the argument list in the registered run command of E-239, so the cache artifact cannot replay its registered experiment. The general form is that no current check would notice such drift for any registered experiment binary."
 status = "Provisional"
 where_stated = "registry/experiments.toml; data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
+status_note = "Retested 2026-09-01 at source revision 81f2e819. Built gororoba_cli_physics --bin staples-roc-cluster-bootstrap under the validation profile; its clap surface declares --scores, --out, --resamples, --seed, --col-a and --col-b, covering every flag the E-239 run command passes (--scores, --col-a, --col-b, --out). Invoking the binary with that flag set reaches file I/O and fails on the missing input path, so the argument list parses. The refutation reaches the source-conformance layer only: the cache artifact this claim names was unavailable for retest, so drift between a cached build and its registered command remains untested, and the general form -- that no current check would notice such drift for any registered experiment binary -- stands unrefuted. Status held at Provisional."
 
 [[claim]]
 id = "C-1726"
