@@ -39,18 +39,19 @@ description = "Cross-domain research insights"
 [[source]]
 path = "registry/experiments.toml"
 role = "core"
-table = "experiments"
+table = "experiments_cp"
 description = "Reproducible experiment definitions"
 
 [[source]]
 path = "registry/binaries.toml"
 role = "core"
-table = "binaries"
+table = "binaries_cp"
 description = "Binary entrypoint to experiment mapping"
 
 [[source]]
 path = "registry/project.toml"
 role = "core"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "project_metadata"
 description = "Project metadata and sprint history"
 
@@ -71,18 +72,24 @@ description = "434 reference entries"
 [[source]]
 path = "registry/claims_evidence_edges.toml"
 role = "evidence"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name. The empty
+# evidence_edges table is a candidate target, but its source_id/target_id/edge_type
+# columns do not match this file's claim_id/edge_role/target_ref shape, so the
+# correspondence is unproven.
 table = "claims_evidence_edges"
 description = "Evidence chain edges linking claims"
 
 [[source]]
 path = "registry/experiment_lineage.toml"
 role = "evidence"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "experiment_lineage"
 description = "Experiment dependency DAG"
 
 [[source]]
 path = "registry/experiment_lineage_edges.toml"
 role = "evidence"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "experiment_lineage_edges"
 description = "Edge type definitions for experiment DAG"
 
@@ -95,6 +102,7 @@ description = "Open questions and gaps"
 [[source]]
 path = "registry/claim_tickets.toml"
 role = "evidence"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "claim_tickets"
 description = "Claim verification tickets"
 
@@ -109,36 +117,42 @@ description = "Master artifact catalog (3236 entries)"
 [[source]]
 path = "registry/source_infrastructure.toml"
 role = "governance"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "source_infrastructure"
 description = "Lane definitions"
 
 [[source]]
 path = "registry/dataset_label_aliases.toml"
 role = "governance"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "dataset_label_aliases"
 description = "Canonical dataset name mapping"
 
 [[source]]
 path = "registry/data_governance.toml"
 role = "governance"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "data_governance"
 description = "Governance policies"
 
 [[source]]
 path = "registry/data_semantic_validators.toml"
 role = "governance"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "data_semantic_validators"
 description = "Validation rules"
 
 [[source]]
 path = "registry/download_host_policies.toml"
 role = "governance"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "download_host_policies"
 description = "Host access policies"
 
 [[source]]
 path = "registry/materials_viscosity.toml"
 role = "governance"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "materials_viscosity"
 description = "Domain reference data"
 
@@ -153,30 +167,35 @@ description = "Full research documents"
 [[source]]
 path = "registry/docs_root_narratives.toml"
 role = "narrative"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "docs_root_narratives"
 description = "Published docs content"
 
 [[source]]
 path = "registry/reports_narratives.toml"
 role = "narrative"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "reports_narratives"
 description = "Report content"
 
 [[source]]
 path = "registry/book_docs.toml"
 role = "narrative"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "book_docs"
 description = "Book and chapter structure"
 
 [[source]]
 path = "registry/docs_convos.toml"
 role = "narrative"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "docs_convos"
 description = "Documentation conversations"
 
 [[source]]
 path = "registry/data_artifact_narratives.toml"
 role = "narrative"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "data_artifact_narratives"
 description = "Artifact descriptions"
 
@@ -203,24 +222,27 @@ description = "Near-term priorities"
 [[source]]
 path = "registry/requirements.toml"
 role = "config"
-table = "requirements"
+table = "requirements_modules"
 description = "Module requirements"
 
 [[source]]
 path = "registry/terminology_standards.toml"
 role = "config"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "terminology_standards"
 description = "Banned terms, canonical names"
 
 [[source]]
 path = "registry/engineering_standards.toml"
 role = "config"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "engineering_standards"
 description = "Engineering standards"
 
 [[source]]
 path = "registry/test_taxonomy.toml"
 role = "config"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "test_taxonomy"
 description = "Test taxonomy"
 
@@ -229,12 +251,14 @@ description = "Test taxonomy"
 [[source]]
 path = "registry/agents_contract.toml"
 role = "config"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "agents_contract"
 description = "Agent role definitions"
 
 [[source]]
 path = "registry/mcp_server_matrix.toml"
 role = "config"
+# TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
 table = "mcp_server_matrix"
 description = "MCP server configuration"
 

@@ -3749,7 +3749,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
 //! - Statement: Emanation table (dim=16): The 15x15 signed product table has 84 zero-divisor-marked cells (42 primitive assessor pairs x 2 symmetric entries). All diagonal cells have sign -1 (e_i * e_i = -1). Product indices match XOR (product_index = row XOR col).
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (emanation_table, test_emanation_table_dim16_*)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (emanation_table, test_emanation_table_dim16_*)
 //! - What would verify/refute it:
 //!
 //! ## C-469
@@ -3757,7 +3757,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
 //! - Statement: Strutted emanation table (dim=16): For each strut constant S in {1..7}, the 6x6 strutted ET correctly partitions assessor-pair cells into DMZ (sign-concordant) and non-DMZ (sign-discordant) regions. The DMZ count is uniform across all 7 BKs by Fano plane symmetry.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (create_strutted_et, test_strutted_et_*)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (create_strutted_et, test_strutted_et_*)
 //! - What would verify/refute it:
 //!
 //! ## C-470
@@ -3765,7 +3765,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
 //! - Statement: Oriented Trip Sync: Every sedenion box-kite admits at least one PSL(2,7) orientation where the de Marrais shorthand pattern (a,b,c),(a,d,e),(d,b,f),(e,f,c) is satisfiable. Each BK has exactly 4 available O-trips and all 4 are tested as zigzag candidates.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (oriented_trip_sync, test_oriented_trip_sync_*)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (oriented_trip_sync, test_oriented_trip_sync_*)
 //! - What would verify/refute it:
 //!
 //! ## C-471
@@ -3773,7 +3773,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
 //! - Statement: Signed adjacency graph: The strutted ET encodes a signed graph where DMZ cells have sign +1 (same-slope coupling) or -1 (cross-slope coupling). All 7 BKs have the same DMZ edge count (structural invariant). Edge signs are strictly +1 or -1.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (extract_signed_graph, test_signed_graph_*)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (extract_signed_graph, test_signed_graph_*)
 //! - What would verify/refute it:
 //!
 //! ## C-472
@@ -3781,7 +3781,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
 //! - Statement: Lanyard state-machine traversal: Face-level lanyards are extracted as state-machine traversals of the signed graph. Negative edges flip diagonal state (/\), positive edges preserve it. Each BK produces 8 face lanyards (8 triangular faces), each of cycle length 3.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (traverse_lanyard, extract_lanyards_from_et, test_lanyard_*, test_extract_lanyards_*)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (traverse_lanyard, extract_lanyards_from_et, test_lanyard_*, test_extract_lanyards_*)
 //! - What would verify/refute it:
 //!
 //! ## C-473
@@ -3789,7 +3789,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
 //! - Statement: Delta transition function: Each S0 in {1..7} has exactly 3 strut pairs {u,v} with u XOR v = S0, u < v, u,v in {1..7}\{S0}. The 6 endpoints of the 3 pairs cover exactly {1..7}\{S0}. Delta reachability matches twist navigation reachability.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (strut_pairs_for, delta_transition, verify_delta_reachability, test_strut_pairs_*, test_delta_*)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (strut_pairs_for, delta_transition, verify_delta_reachability, test_strut_pairs_*, test_delta_*)
 //! - What would verify/refute it:
 //!
 //! ## C-474
@@ -3797,7 +3797,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
 //! - Statement: Brocade normalization: Each BK has exactly 4 brocade relabelings (one per O-trip in its L-set). Each central trip is a valid O-trip, and the outer indices are the exact complement of the central trip within the L-set. CPO preservation count is uniform across BKs.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (brocade_relabelings, verify_brocade_consistency, test_brocade_*)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (brocade_relabelings, verify_brocade_consistency, test_brocade_*)
 //! - What would verify/refute it:
 //!
 //! ## C-475
@@ -3805,7 +3805,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-08
 //! - Statement: Sail-loop partition (automorpheme duality): The 28 O-trip sails across all 7 BKs partition into exactly 7 loops of 4 sails each. Each loop corresponds to one automorpheme (Cawagas loop). Each BK appears in exactly 4 loops (one per O-trip face). This is the BK-automorpheme duality.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (sail_loop_partition, test_sail_loop_*)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (sail_loop_partition, test_sail_loop_*)
 //! - What would verify/refute it:
 //!
 //! ## C-476
@@ -3829,7 +3829,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-09
 //! - Statement: Fano Line Pairing Theorem: For any sedenion box-kite with strut constant S and any tray-rack perpendicular to edge pair {p0, p1} (where p0 XOR p1 = S), the 4 vent assessor L-indices admit exactly 3 complementary 2+2 pairings. The common XOR value of each pairing's sub-pairs equals one element of the Fano line {S, p0, p1}. All three Fano line elements are realized. The S-pairing (with common XOR = S) gives the delta-consistent twist targets, making h_star XOR v_star = S universally across all 21 transitions.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (twist_delta_correspondence, vent_pairing_analysis, twist_transition_table)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (twist_delta_correspondence, vent_pairing_analysis, twist_transition_table)
 //! - What would verify/refute it:
 //!
 //! ## C-479
@@ -3837,7 +3837,7 @@
 //! - Status: `Verified`
 //! - Last verified: 2026-02-09
 //! - Statement: Sedenion Lanyard Sign Census: Across all 7 box-kites in 16D Cayley-Dickson, the 56 triangular faces (8 per BK) admit exactly 2 of 4 possible edge-sign patterns when classified by signed-graph edge labels: (1) TwoSameOneOpp: 42 faces (6 per BK), where exactly 2 edges share one sign and the third is opposite; (2) AllOpposite: 14 faces (2 per BK), where all 3 edges have the same sign (all negative). The patterns AllSame (0 faces) and OneSameTwoOpp (0 faces) are never realized. The distribution is perfectly uniform across all 7 box-kites. The TwoSameOneOpp pattern corresponds to de Marrais trefoil lanyards; AllOpposite corresponds to triple-zigzag lanyards.
-//! - Where stated: `crates/algebra_experimental/src/emanation.rs` (cross_bk_lanyard_census, FaceSignPattern, FaceClassification)
+//! - Where stated: `crates/algebra_experimental/src/emanation/` (cross_bk_lanyard_census, FaceSignPattern, FaceClassification)
 //! - What would verify/refute it:
 //!
 //! ## C-480
