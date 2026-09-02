@@ -172,8 +172,19 @@ hardware-specific tables are replaced with the scientific stack.
   identity file through `guarded_rm`, rebuilds through the `validation-tools`
   lane, and reruns the path scan. The validation lock and the cache-check
   sentinel stay in place, so a rebuild beside an in-flight `validate-local`
-  leaves that run's lock intact. Use it when a staged tool fails on a path
-  from a checkout that no longer exists.
+  leaves that run's lock intact. It also runs `cargo clean` over the tool
+  packages and `repo_root`, because discarding the copy alone leaves Cargo
+  free to answer the next build from the shared build-dir with the artifact
+  another worktree compiled. Use it when a staged tool fails on a path from a
+  checkout that no longer exists.
+- A removed worktree contaminates the shared build-dir beyond the tool
+  packages: on a host where two worktrees were removed mid-session, dozens of
+  workspace rlibs under `<owner>/.cache/gate-cbuild/<hash>/validation/deps/`
+  carried the removed paths. `validation-tools-rebuild` clears the tool
+  packages, and the scan reports whatever a transitive dependency still
+  supplies. The remedy for the residue is to rebuild the shared build-dir from
+  the owning checkout, which costs the cold chain; `guarded_rm` refuses that
+  removal from a worktree without `REPO_ALLOW_SHARED_CLEAN=1`.
 - sccache is host configuration, not a repository guarantee.
   `.cargo/config.toml` names it as the rustc wrapper; its cache size
   and location live in `~/.config/sccache/config`. A cache at its size
