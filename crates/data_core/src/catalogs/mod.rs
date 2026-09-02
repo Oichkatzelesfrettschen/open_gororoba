@@ -161,6 +161,7 @@ pub mod swarm_mag;
 pub mod swarm_mag_fetch;
 pub mod themis;
 #[cfg(feature = "fetch")]
+pub mod themis_esa_fetch;
 pub mod themis_fetch;
 pub mod things;
 #[cfg(feature = "fetch")]
