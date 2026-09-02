@@ -1,0 +1,26 @@
+[transition]
+transition_key = "c-1632-random-twist-ladder-2026-09-01"
+source_claim_id = "C-1632"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-LADDER-20260901"]
+experiment_ids = ["E-240"]
+exercised_falsifier = "False if the canonical CD AUC lies at or below the 97.5th percentile of the AUC ensemble of 999 random unital XOR-graded twists on the same 16-element basis, scored by the identical normalized contraction on the identical stratified subsample (tail probability at or above 0.025)."
+proposed_claim_status = "Verified"
+rationale = "E-240 ran the preregistered ensemble C-1632 left open. On the identical subsample (1,733,470 samples, 578,320 positives, 813 files) the canonical CD tensor scores ROC-AUC 0.8274 on both the full sample and the subsample. The 999 random unital twists score mean 0.5148, standard deviation 0.0407, 97.5th percentile 0.5922, maximum 0.6287, zero draws at or above the canonical value (tail probability 0.001). The 999 exact-support sign scrambles score mean 0.4951, 97.5th percentile 0.5672, maximum 0.6213, zero draws at or above the canonical value; the seed-42 scramble reproduces the 0.4750 that C-1632 reported. The single-draw scope statement in C-1632 is therefore discharged and the claim survives unchanged; the successor states the ensemble result."
+unresolved_assumptions = ["Random unital twists are sampled uniformly over sign functions on the 15 x 15 non-identity pairs and are not constrained to be 2-cocycles, so the control family contains non-associative twisted group algebras of every kind; a cocycle-restricted ensemble and algebra-isomorphic relabelings of the sedenion basis remain untested."]
+actor = "prereg-controls-2026-09-01"
+reason = "Register the E-240 verdict and the ensemble-level successor of C-1632."
+transition_timestamp = "2026-09-02T03:05:00Z"
+expected_source_state_sha256 = "0dd4535a330632c9560b435e8e4db97f4385c0bea733d11e32afa247239a4d36"
+expected_claim_id_max = 1728
+
+[[successor]]
+proposal_key = "staples-cd-signs-are-an-extreme-tail-among-unital-twists"
+statement = "Among matched sparse cubic tensors the sedenion associator's sign arrangement is an extreme tail: on the deduplicated THEMIS-A Staples benchmark subsample (1,733,470 samples, 578,320 positives, every positive plus 5 percent of negatives per daily file, ChaCha8 seed 42) the canonical Cayley-Dickson tensor reaches ROC-AUC 0.8274 while 999 random unital XOR-graded twists on the same 16-element basis, each turned into its associator tensor and scored by the identical normalized contraction, reach mean 0.5148, 97.5th percentile 0.5922 and maximum 0.6287 (tail probability 0.001, zero draws at or above the canonical value), and 999 exact-support sign scrambles of the CD tensor reach mean 0.4951, 97.5th percentile 0.5672 and maximum 0.6213 (tail probability 0.001). The discrimination is specific to the Cayley-Dickson twist and is not a property of XOR-graded sign structure in general."
+initial_status = "Verified"
+source_or_implementation_boundary = "Phenomenological mapping on one benchmark at interpretive depth 0; the ensemble is uniform over unital sign functions, not over 2-cocycles, so cocycle-restricted and isomorphism-restricted nulls remain separate predicates."
+required_falsifier = "A re-run of staples-twist-ladder with a different seed, or with n_draws raised to 9999, in which any random unital twist reaches AUC 0.8274 or higher; or a cocycle-restricted ensemble whose 97.5th percentile exceeds 0.8274."
+where_stated = ["data/output/staples_twist_ladder.json", "E-240"]
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-LADDER-20260901"]
+predecessor_relation_kind = "refines"
