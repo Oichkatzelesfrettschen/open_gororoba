@@ -22,5 +22,8 @@ toml.workspace = true
 verified_core = { path = "../crates/verified_core" }
 walkdir.workspace = true
 
+[dev-dependencies]
+repo_utilities = { path = "../crates/repo_utilities" }
+
 [lints]
 workspace = true

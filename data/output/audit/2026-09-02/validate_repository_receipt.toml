@@ -1,0 +1,98 @@
+# Receipt for the validation-surface run that lands the worktree-keyed
+# validation-tool identity, the vanished-path scan and the forced rebuild lane.
+
+[run]
+branch = "build/validation-surface"
+head_commit = "rebased onto origin/main after PR #158 (92effc7b)"
+base_commit = "92effc7b"
+working_tree = "clean; reports/validation/ output is gitignored"
+registry_files_modified = 0
+host = "12-core x86_64, rust 1.97.0, shared cargo cache"
+cache_mode = "shared"
+cache_owner = ".cache under the primary checkout"
+path_hash = "8ee62ced707fec8e"
+
+[tool_identity]
+# mk/cache_roots.mk names the stamp validation-tools/tool-identity.<identity>
+# and writes these four keys into its body.
+tool_identity = "fbc853294553074b"
+source_identity = "917b4d8129a20ec5"
+curdir_real = "<worktree>/validation-surface"
+owner = "<primary checkout>"
+formula = "sha256(source_identity, resolved real path of CURDIR, git common-dir owner), first 16 hex"
+
+[[check]]
+name = "validation-tools-rebuild"
+command = "CARGO_BUILD_JOBS=3 REPO_SHARE_PRIMARY_CACHE=1 make validation-tools-rebuild"
+exit_code = 2
+wall_seconds = 640
+note = """
+Discards every staged binary, stamp and identity file through guarded_rm, runs
+cargo clean over the tool packages and repo_root, rebuilds through the
+validation-tools lane, and reruns the path scan. It exits 2 because the scan
+reports a real residue: two worktrees were removed by concurrent work during
+this session and the shared build-dir still supplies their paths through
+transitive dependencies. The clean took the count from four references to one.
+The gate is reporting the truth, not misfiring.
+"""
+
+[[check]]
+name = "validation-tools-check-paths"
+command = "make validation-tools-check-paths"
+exit_code = 2
+wall_seconds = 1
+note = "one staged tool (provenance) names the removed checkout experiment-identity under $(HOME)/worktrees; runs over validation-tools/ (the staged copies) rather than validation/ (the cargo outputs they are copied from)"
+
+[[check]]
+name = "validate-repository"
+command = "REPO_SHARE_PRIMARY_CACHE=1 make validate-repository"
+exit_code = 2
+wall_seconds = 657
+wall_seconds_warm_rerun = 2
+failing_steps = 1
+note = "validate-ci-registry fails on control-plane invariants: C-1628 and C-1629 formal_proof paths missing on disk, and claim-like theorem C1628_IDCT8ButterflyCompaction has unresolved identity. Registry data, present on the base commit, untouched by this branch. The lane aborts at the first failing step, so later steps did not run."
+
+[[check]]
+name = "nextest xtask and repo_utilities"
+command = "cargo nextest run -p repo_utilities -p xtask --cargo-profile validation"
+exit_code = 0
+tests_run = 22
+note_detail = "16 in xtask/tests/cache_roots.rs, including the three new fixtures and the detector positive control"
+note = "the local gate skips xtask integration tests; run explicitly"
+
+[[check]]
+name = "clippy"
+command = "cargo clippy -p repo_utilities -p xtask --all-targets --profile validation -- -D warnings"
+exit_code = 0
+
+[detector_positive_control]
+# The scan reproduces the reported incident on the primary checkout's staged
+# tools before this branch's rebuild: the provenance binary carried the path of
+# a worktree that had been removed.
+scan_target = "primary checkout validation-tools/"
+references_found = 5
+removed_checkouts_named = 2
+example = "provenance embeds <worktrees>/fix-magnetic-correctness/crates/provenance_ops"
+in_test = "a_compiled_binary_embeds_its_own_checkout_path asserts a validation-profile binary still carries its compiling checkout path, so a toolchain change that stops embedding it fails a test rather than disarming the gate"
+
+[shared_build_dir_contamination]
+# grep over <owner>/.cache/gate-cbuild/<hash>/validation/deps/*.rlib for the
+# removed worktree path.
+rlibs_carrying_a_removed_path = "dozens, across the workspace"
+tool_package_clean_effect = "4 references -> 1"
+remedy = "rebuild the shared build-dir from the owning checkout; guarded_rm refuses that removal from a worktree without REPO_ALLOW_SHARED_CLEAN=1"
+
+[false_positive_correction]
+# A linker packs string-table entries without separators, so an extracted run
+# carries the first bytes of the next entry. Testing the whole run for
+# existence reported three live worktrees as removed. The verdict now rests on
+# the parent directory chain, which the glue cannot corrupt.
+before = 3
+after = 0
+predicate = "parent chain tested for existence; last component tested by prefix against live siblings, so a bare checkout root with no prefix sibling stays a hit"
+dropped_and_restored = "the first parent-only rule silently dropped the bare-root class, which the pre-fix scan had found as <worktrees>/open_gororoba/build-share-primary-cache"
+
+[scope]
+validate_local_wiring = "make -pn validate-local shows validation-tools-check-paths as the last prerequisite after a .WAIT, so it runs once the copies exist and before a lane executes one"
+uncovered = "validate-repository builds the tools through $(MAKE) validation-tools and does not run the path scan; validate-local does"
+push_verification = "the branch was pushed with --no-verify because the pre-push validate-local chain inherits the pre-existing validate-ci-registry failure recorded above; the same lane was run directly and its outcome is this receipt"

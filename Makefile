@@ -7,7 +7,7 @@
 .PHONY: heavy test-inventory verify-no-reports-writes
 .PHONY: rust-test rust-clippy rust-semver-check rust-smoke rust-regression rust-regression-scoped miri-cd-kernel dep-audit cargo-deny-check mcp-smoke e027-validate studio-run studio-check profile-tensor-avt x87-strategy-bench x87-strategy-perf x87-strategy-hyperfine x87-strategy-flamegraph x87-givens-microbench x87-givens-microbench-perf jacobi-backend-sweep jacobi-backend-perf jacobi-backend-flamegraph jacobi-backend-samply jacobi-backend-samply-compare gpu-bench gpu-bench-ncu gpu-bench-nsys
 .PHONY: cpu-bench cpu-bench-perf cpu-bench-cachegrind cpu-bench-flamegraph parity-bench parity-report
-.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-lock-status data-core-pure-check
+.PHONY: pre-push-gate-scoped submodule-sync validate-local validate-local-xtask validate-ci validate-ci-registry validate-ci-rust validate-repository validate-repository-fast validate-governance validation-tools registry-validation-tools validation-tools-clean validation-tools-rebuild validation-tools-check-paths validation-lock-status data-core-pure-check
 .PHONY: gate-local gate-local-xtask gate-ci-registry gate-ci-rust gate-audit gate-audit-fast
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force
 .PHONY: v6-branch-transport-artifacts pathion-control-artifacts pathion-resonance-artifacts
@@ -393,7 +393,7 @@ $(REPO_UTILITIES_BIN): $(REPO_UTILITIES_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTIT
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building repo-utilities in the validation profile"
 	@$(CARGO_ENV) cargo build --profile validation -p repo_utilities --bin repo-utilities
-	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/repo-utilities $@
+	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/repo-utilities,$@)
 	@touch $@
 
 # The core bundle depends on workspace crates through provenance and verified
@@ -414,8 +414,8 @@ $(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDE
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building routing and xtask tools in one Cargo session"
 	@$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy -p xtask --bin xtask
-	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/workspace-routing-proxy $(WORKSPACE_ROUTING_CACHE)
-	@cp -f $(REPO_CARGO_TARGET_DIR)/validation/xtask $(XTASK_CACHE)
+	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/workspace-routing-proxy,$(WORKSPACE_ROUTING_CACHE))
+	@$(call stage_tool,$(REPO_CARGO_TARGET_DIR)/validation/xtask,$(XTASK_CACHE))
 	@touch $(CORE_VALIDATION_STAMP) $(WORKSPACE_ROUTING_CACHE) $(XTASK_CACHE)
 
 $(WORKSPACE_ROUTING_CACHE) $(XTASK_CACHE): $(CORE_VALIDATION_STAMP)
@@ -447,6 +447,18 @@ REGISTRY_INTEGRITY_CACHE := $(VALIDATION_TOOLS_DIR)/registry-integrity
 PROJECT_COUNTER_CACHE := $(VALIDATION_TOOLS_DIR)/project-counter-sync
 PROVENANCE_CACHE := $(VALIDATION_TOOLS_DIR)/provenance
 
+# stage_tool copies a compiled tool into the worktree-local tools dir and drops
+# its debug sections. The shared build-dir hands every worktree the rlibs another
+# checkout compiled, and DWARF comp_dir strings in those rlibs name that
+# checkout; workspace sources are compiled by relative path, so after the strip
+# the only absolute checkout paths left in a tool are compile-time bake-ins
+# such as env!("CARGO_MANIFEST_DIR"), which is what validation-tools-check-paths
+# exists to catch. A missing strip leaves the copy unstripped and the scan
+# reports the debug residue instead.
+define stage_tool
+cp -f $(1) $(2) && { command -v strip >/dev/null 2>&1 && strip --strip-debug $(2) || true; }
+endef
+
 # One rule produces the complete validation tool set. The stamp is the only
 # Make dependency; the copied binaries are stable execution paths.
 $(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
@@ -456,7 +468,7 @@ $(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SO
 		-p gororoba_cli_data $(foreach binary,$(filter-out provenance,$(REGISTRY_VALIDATION_BINS)),--bin $(binary)) \
 		-p gororoba_cli_provenance --bin provenance
 	@for binary in $(REGISTRY_VALIDATION_BINS); do \
-		cp -f "$(REPO_CARGO_TARGET_DIR)/validation/$$binary" "$(VALIDATION_TOOLS_DIR)/$$binary"; \
+		$(call stage_tool,"$(REPO_CARGO_TARGET_DIR)/validation/$$binary","$(VALIDATION_TOOLS_DIR)/$$binary"); \
 	done
 	@touch $(REGISTRY_VALIDATION_STAMP) $(REGISTRY_VALIDATION_CACHE_FILES)
 
@@ -475,6 +487,48 @@ validate-local-xtask: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACH
 
 gate-local-xtask: validate-local-xtask
 	@echo "DEPRECATED: make gate-local-xtask is a compatibility alias for make validate-local-xtask."
+
+# Every file under $(VALIDATION_TOOLS_DIR) that a gate lane executes or
+# compares against. The lock and the cache-check sentinel stay out, so a
+# rebuild launched beside an in-flight validate-local leaves its lock intact.
+VALIDATION_TOOL_PACKAGES := repo_root repo_utilities gororoba_cli_governance xtask \
+                            gororoba_cli_data gororoba_cli_provenance
+
+VALIDATION_TOOL_ARTIFACTS := $(REPO_UTILITIES_BIN) $(WORKSPACE_ROUTING_CACHE) \
+                             $(HOST_PROFILE_CACHE) $(XTASK_CACHE) \
+                             $(CORE_VALIDATION_STAMP) $(REGISTRY_VALIDATION_STAMP) \
+                             $(REGISTRY_VALIDATION_CACHE_FILES)
+
+# validation-tools-rebuild discards every staged binary, stamp and identity
+# file, then rebuilds through the ordinary tool lane. Reach for it when a
+# staged binary resolves a path from a checkout that no longer exists: the
+# identity stamp decides whether Make re-runs the build, while the bytes come
+# from the shared Cargo build-dir, so only a forced discard replaces them.
+validation-tools-rebuild:
+	@for f in $(VALIDATION_TOOL_ARTIFACTS) $(wildcard $(VALIDATION_TOOLS_DIR)/tool-identity.*) $(wildcard $(VALIDATION_TOOLS_DIR)/source-identity.*); do \
+	    ( $(call guarded_rm,$$f) ) || exit 1; \
+	done
+	@echo "[validation-tools] discarded every staged tool and identity file under $(VALIDATION_TOOLS_DIR)"
+# Discarding the copy is not enough. Cargo keys a workspace crate on content,
+# so the shared build-dir answers the next build with the artifact another
+# worktree compiled, path bake-in and all. Cleaning the tool packages and the
+# repo_root crate that carries the compile-time fallback forces Cargo to
+# recompile them under this checkout.
+	@$(CARGO_ENV) cargo clean --profile validation $(foreach pkg,$(VALIDATION_TOOL_PACKAGES),-p $(pkg)) || true
+	$(MAKE) validation-tools
+	$(MAKE) validation-tools-check-paths
+
+# validation-tools-check-paths reads each staged file and fails on an absolute
+# path under $(REPO_WORKTREES_ROOT) that names neither this checkout nor a
+# directory any live entry accounts for. Debuginfo and panic-location strings carry the compiling
+# checkout's path, so a binary handed over from a removed worktree aborts on
+# its first path resolution; the scan catches it before a lane executes it.
+REPO_WORKTREES_ROOT ?= $(HOME)/worktrees
+validation-tools-check-paths: $(REPO_UTILITIES_BIN)
+	@$(REPO_UTILITIES_BIN) validation-tool-paths \
+	    --tools-dir $(VALIDATION_TOOLS_DIR) \
+	    --worktrees-root $(REPO_WORKTREES_ROOT) \
+	    --current-root $(CURDIR)
 
 validation-tools-clean:
 	rm -f $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
@@ -502,7 +556,7 @@ validation-lock-status:
         echo 'no validate-local in flight'; \
 	fi
 
-validate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE)
+validate-local: cache-check $(WORKSPACE_ROUTING_CACHE) $(HOST_PROFILE_CACHE) validation-tools-check-paths
 	@mkdir -p $(dir $(VALIDATION_LOCK))
 	@if [ -f "$(VALIDATION_LOCK)" ]; then \
 	    prev_pid=$$(awk '/^pid=/ {sub("pid=",""); print}' "$(VALIDATION_LOCK)" 2>/dev/null || echo ""); \

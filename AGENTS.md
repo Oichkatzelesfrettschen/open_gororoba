@@ -148,6 +148,45 @@ hardware-specific tables are replaced with the scientific stack.
   owner's tree from a worktree unless `REPO_ALLOW_SHARED_CLEAN=1`.
   `make print-cache-roots` shows the resolved paths and
   `xtask/tests/cache_roots.rs` pins the layouts.
+- The validation-tool cache identity is a sha256 over three inputs: the
+  content hash of every `.rs` and `Cargo.toml` under `crates/` and `xtask/`,
+  the resolved real path of the running checkout, and the git common-dir
+  owner. `mk/cache_roots.mk` names the stamp
+  `<validation-tools>/tool-identity.<identity>` and writes
+  `tool_identity=`, `source_identity=`, `curdir_real=` and `owner=` into it.
+  Two worktrees of one owner carry identical tool sources, so the source hash
+  alone rates them equal; the checkout path is the term that separates them,
+  and a stamp written for one worktree therefore never satisfies another.
+- The identity gates the rebuild decision, not the bytes. Cargo keys a
+  workspace crate on content and the shared build-dir hands one worktree's
+  compiled crate to every other, so a fresh stamp can still stage a binary
+  whose DWARF comp_dir strings name the compiling checkout. The staging step
+  (`stage_tool` in the Makefile) strips debug sections from every copy, and
+  because workspace sources are compiled by relative path the absolute
+  checkout paths that survive are compile-time bake-ins such as
+  `env!("CARGO_MANIFEST_DIR")`. `make validation-tools-check-paths` reads each
+  staged file and fails on an absolute path under `$(REPO_WORKTREES_ROOT)`
+  (default `$(HOME)/worktrees`) that names neither the running checkout nor a
+  directory any live entry accounts for.
+  `validate-local` runs it after the tools are staged and before a lane
+  executes one. `validate-repository` builds the tools through
+  `$(MAKE) validation-tools` and does not run the scan.
+- `make validation-tools-rebuild` discards every staged binary, stamp and
+  identity file through `guarded_rm`, rebuilds through the `validation-tools`
+  lane, and reruns the path scan. The validation lock and the cache-check
+  sentinel stay in place, so a rebuild beside an in-flight `validate-local`
+  leaves that run's lock intact. It also runs `cargo clean` over the tool
+  packages and `repo_root`, because discarding the copy alone leaves Cargo
+  free to answer the next build from the shared build-dir with the artifact
+  another worktree compiled. Use it when a staged tool fails on a path from a
+  checkout that no longer exists.
+- A removed worktree leaves its path in the shared build-dir's rlibs: on a
+  host where two worktrees were removed mid-session, dozens of workspace
+  rlibs under `<owner>/.cache/gate-cbuild/<hash>/validation/deps/` carried
+  the removed paths in their debug sections, and an unstripped tool copy
+  embedded eight references to one of them. Stripping the copy removed all
+  eight, which is the measurement behind `stage_tool`; a reference that
+  survives the strip is a runtime bake-in and the scan fails on it.
 - sccache is host configuration, not a repository guarantee.
   `.cargo/config.toml` names it as the rustc wrapper; its cache size
   and location live in `~/.config/sccache/config`. A cache at its size
