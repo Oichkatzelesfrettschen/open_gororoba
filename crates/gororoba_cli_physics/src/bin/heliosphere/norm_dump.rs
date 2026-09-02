@@ -104,6 +104,9 @@ pub fn run(cli: Cli) {
     let norms = cd_kernel::batch_sliding_associator_norms_parallel(&embedded, cli.embedding_dim);
 
     eprintln!("Dumping {} norms", norms.len());
+    // beta-join reads this comment to label the result, so a direction-normalized
+    // dump cannot be published under the magnitude-normalized label.
+    println!("# normalization={}", cli.normalization);
     println!("doy,hour,minute,associator_norm");
     for (k, &norm) in norms.iter().enumerate() {
         let (doy, h, m) = embed_keys[k + 2];
