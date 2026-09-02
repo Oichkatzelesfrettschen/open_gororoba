@@ -160,11 +160,14 @@ hardware-specific tables are replaced with the scientific stack.
 - The identity gates the rebuild decision, not the bytes. Cargo keys a
   workspace crate on content and the shared build-dir hands one worktree's
   compiled crate to every other, so a fresh stamp can still stage a binary
-  whose debuginfo and panic-location strings name the compiling checkout.
-  `make validation-tools-check-paths` reads each staged file and fails on an
-  absolute path under `$(REPO_WORKTREES_ROOT)` (default `$(HOME)/worktrees`)
-  that names neither the running checkout nor a directory any live entry
-  accounts for.
+  whose DWARF comp_dir strings name the compiling checkout. The staging step
+  (`stage_tool` in the Makefile) strips debug sections from every copy, and
+  because workspace sources are compiled by relative path the absolute
+  checkout paths that survive are compile-time bake-ins such as
+  `env!("CARGO_MANIFEST_DIR")`. `make validation-tools-check-paths` reads each
+  staged file and fails on an absolute path under `$(REPO_WORKTREES_ROOT)`
+  (default `$(HOME)/worktrees`) that names neither the running checkout nor a
+  directory any live entry accounts for.
   `validate-local` runs it after the tools are staged and before a lane
   executes one. `validate-repository` builds the tools through
   `$(MAKE) validation-tools` and does not run the scan.
@@ -177,14 +180,13 @@ hardware-specific tables are replaced with the scientific stack.
   free to answer the next build from the shared build-dir with the artifact
   another worktree compiled. Use it when a staged tool fails on a path from a
   checkout that no longer exists.
-- A removed worktree contaminates the shared build-dir beyond the tool
-  packages: on a host where two worktrees were removed mid-session, dozens of
-  workspace rlibs under `<owner>/.cache/gate-cbuild/<hash>/validation/deps/`
-  carried the removed paths. `validation-tools-rebuild` clears the tool
-  packages, and the scan reports whatever a transitive dependency still
-  supplies. The remedy for the residue is to rebuild the shared build-dir from
-  the owning checkout, which costs the cold chain; `guarded_rm` refuses that
-  removal from a worktree without `REPO_ALLOW_SHARED_CLEAN=1`.
+- A removed worktree leaves its path in the shared build-dir's rlibs: on a
+  host where two worktrees were removed mid-session, dozens of workspace
+  rlibs under `<owner>/.cache/gate-cbuild/<hash>/validation/deps/` carried
+  the removed paths in their debug sections, and an unstripped tool copy
+  embedded eight references to one of them. Stripping the copy removed all
+  eight, which is the measurement behind `stage_tool`; a reference that
+  survives the strip is a runtime bake-in and the scan fails on it.
 - sccache is host configuration, not a repository guarantee.
   `.cargo/config.toml` names it as the rustc wrapper; its cache size
   and location live in `~/.config/sccache/config`. A cache at its size
