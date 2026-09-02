@@ -4815,6 +4815,7 @@ mod status_normalize;
 // link_claims_for_proof, normalized_claim_id_from_theorem_stem) live
 // in the `claim_proofs` submodule. Items are pub(crate).
 mod claim_proofs;
+pub use claim_proofs::is_formal_proof_disposition;
 use claim_proofs::render_normalized_claim_compat_toml;
 
 // Rocq proof inventory and theorem-table rendering (load_proof_inventory,
@@ -4990,6 +4991,129 @@ mod tests {
         assert!(experiments.contains("id = \"E-001\""));
         assert!(binaries.contains("name = \"mini-bin\""));
         Ok(())
+    }
+
+    /// A control-plane reindex rewrites five snapshot kinds and leaves the
+    /// others alone. The roadmap snapshot feeds `render_roadmap_compat_toml`;
+    /// deleting it turned every `supersedes` and `companion_docs` array into
+    /// an empty export on the next planning run.
+    #[test]
+    fn control_plane_reindex_preserves_unrelated_registry_snapshots() -> Result<()> {
+        let fixture = make_test_workspace("snapshot_preserve")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        let roadmap_path = fixture.root.join("registry/roadmap.toml");
+        let roadmap_text = "[roadmap]\nsupersedes = [\"plans/old.toml\"]\n";
+        write_text(&roadmap_path, roadmap_text)?;
+        store.record_registry_snapshot(&fixture.root, "roadmap", &roadmap_path, roadmap_text)?;
+
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            &fixture.claims,
+            &fixture.insights,
+            &fixture.experiments,
+            &fixture.binaries,
+            &fixture.rocq_project,
+        )?;
+
+        assert_eq!(
+            store.registry_snapshot("roadmap")?.as_deref(),
+            Some(roadmap_text),
+            "the roadmap snapshot must survive a control-plane reindex"
+        );
+        for kind in table_ops::CONTROL_PLANE_SNAPSHOT_KINDS {
+            assert!(
+                store.registry_snapshot(kind)?.is_some(),
+                "{kind} snapshot is rewritten by the reindex"
+            );
+        }
+        Ok(())
+    }
+
+    /// `na_empirical:<rationale>` is a reviewer decision, not a path. It
+    /// must come back byte-identical through update, export, reindex and a
+    /// second export, or the next backfill relinks a proof by numeric prefix.
+    #[test]
+    fn formal_proof_disposition_round_trips_through_export_and_reindex() -> Result<()> {
+        let fixture = make_test_workspace("disposition_round_trip")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            &fixture.claims,
+            &fixture.insights,
+            &fixture.experiments,
+            &fixture.binaries,
+            &fixture.rocq_project,
+        )?;
+        let disposition = "na_empirical:ROC-AUC on THEMIS-A minutes, no theorem to prove";
+        store.claim_update_formal_proof("C-001", disposition, "test", Some("review"))?;
+        assert_eq!(store.claim_formal_proof("C-001")?.as_deref(), Some(disposition));
+
+        let first_export = store.control_plane_compat_text(ControlPlaneCompatKind::Claims)?;
+        assert!(
+            first_export.contains(&format!("formal_proof = \"{disposition}\"")),
+            "export must carry the disposition:\n{first_export}"
+        );
+        write_text(&fixture.claims, &first_export)?;
+
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            &fixture.claims,
+            &fixture.insights,
+            &fixture.experiments,
+            &fixture.binaries,
+            &fixture.rocq_project,
+        )?;
+        assert_eq!(
+            store.claim_formal_proof("C-001")?.as_deref(),
+            Some(disposition),
+            "reindex must keep the disposition rather than resolving it to NULL"
+        );
+        let second_export = store.control_plane_compat_text(ControlPlaneCompatKind::Claims)?;
+        assert_eq!(first_export, second_export);
+
+        // A proof path that exists still resolves; one that does not is dropped as before.
+        store.claim_update_formal_proof("C-001", "proofs/verified/C001_Test.v", "test", None)?;
+        write_text(
+            &fixture.claims,
+            &store.control_plane_compat_text(ControlPlaneCompatKind::Claims)?,
+        )?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            &fixture.claims,
+            &fixture.insights,
+            &fixture.experiments,
+            &fixture.binaries,
+            &fixture.rocq_project,
+        )?;
+        assert_eq!(
+            store.claim_formal_proof("C-001")?.as_deref(),
+            Some("proofs/verified/C001_Test.v")
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn formal_proof_disposition_tokens_are_recognized() {
+        for value in [
+            "na_empirical",
+            "na_empirical:rationale with spaces",
+            "na_observational:ACE MAG",
+            "na_methodology:simulation",
+            "pending",
+            "pending:reviewed_pending",
+            "external:arXiv:1234.5678",
+        ] {
+            assert!(is_formal_proof_disposition(value), "{value}");
+        }
+        for value in [
+            "",
+            "proofs/verified/C001_Test.v",
+            "na_empirically",
+            "pendingx",
+            "externalarXiv",
+        ] {
+            assert!(!is_formal_proof_disposition(value), "{value}");
+        }
     }
 
     #[test]

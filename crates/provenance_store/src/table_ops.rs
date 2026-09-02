@@ -65,10 +65,26 @@ pub(crate) fn clear_tables(conn: &Connection) -> Result<()> {
     Ok(())
 }
 
+/// A control-plane reindex rewrites exactly these snapshot kinds. Every
+/// other kind (roadmap, todo, next_actions, requirements, the external
+/// source lanes) is recorded by its own command and survives the reindex,
+/// so `render_roadmap_compat_toml` keeps its `supersedes` and
+/// `companion_docs` arrays across `provenance index-control-plane`.
+pub(crate) const CONTROL_PLANE_SNAPSHOT_KINDS: [&str; 5] =
+    ["claims", "insights", "experiments", "binaries", "rocq_project"];
+
 pub(crate) fn clear_control_plane_tables(conn: &Connection) -> Result<()> {
+    let kinds = CONTROL_PLANE_SNAPSHOT_KINDS
+        .iter()
+        .map(|kind| format!("'{kind}'"))
+        .collect::<Vec<_>>()
+        .join(", ");
+    conn.execute(
+        &format!("DELETE FROM registry_snapshots WHERE registry_kind IN ({kinds})"),
+        [],
+    )?;
     conn.execute_batch(
         "
-        DELETE FROM registry_snapshots;
         DELETE FROM insights;
         DELETE FROM experiments_cp
          WHERE id NOT IN (

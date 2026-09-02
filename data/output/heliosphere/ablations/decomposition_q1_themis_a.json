@@ -1,4 +1,12 @@
 {
+  "invalidation": {
+    "status": "invalidated",
+    "invalidated_on": "2026-09-01",
+    "correcting_commit": "ff070f6f",
+    "stale_sha256": "50d7bd7bb3ebed0566fdc39f4d257606fcad54a0ee15e805be3ce460904b4c73",
+    "reason": "surrogates built after embedding and evaluated on divergent support; see invalidations.toml",
+    "record": "data/output/heliosphere/ablations/invalidations.toml"
+  },
   "mission": "themis-a",
   "n_vectors": 5614,
   "n_associator_norms": 5612,

@@ -1,6 +1,7 @@
 //! Join associator norms with ESA plasma beta for A(beta) scatter.
 //! Reads norms from CSV (stdin or file), ESA density+temp from cached files.
 
+use chrono::{Datelike, NaiveDate};
 use clap::Args;
 use std::{collections::BTreeMap, fs};
 
@@ -25,6 +26,26 @@ pub struct Cli {
     /// DOY range end.
     #[arg(long, default_value_t = 307)]
     doy_end: u16,
+}
+
+/// Day of year for an ESA `YYYY-MM-DD...` timestamp, keyed to the requested year.
+///
+/// The calendar comes from `chrono::NaiveDate`, so February 29 is counted in leap years.
+/// A fixed non-leap month table shifted every post-February 2008 sample one day early and
+/// joined each magnetometer minute to plasma from the following day. A timestamp from
+/// another year returns `None`, so a stray file cannot join across years.
+fn esa_timestamp_doy(ts: &str, year: u16) -> Option<u16> {
+    if ts.len() < 10 {
+        return None;
+    }
+    let ts_year: i32 = ts[0..4].parse().ok()?;
+    if ts_year != i32::from(year) {
+        return None;
+    }
+    let month: u32 = ts[5..7].parse().ok()?;
+    let day: u32 = ts[8..10].parse().ok()?;
+    let date = NaiveDate::from_ymd_opt(ts_year, month, day)?;
+    u16::try_from(date.ordinal()).ok()
 }
 
 pub fn run(cli: Cli) {
@@ -115,15 +136,8 @@ pub fn run(cli: Cli) {
             if !den.is_finite() || den <= 0.0 || !temp.is_finite() || temp <= 0.0 {
                 continue;
             }
-            // Extract DOY from timestamp
-            let ts_doy = if ts.len() >= 10 {
-                let month: u32 = ts[5..7].parse().unwrap_or(1);
-                let day: u32 = ts[8..10].parse().unwrap_or(1);
-                // Approximate DOY
-                let days_before = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
-                (days_before[month.saturating_sub(1) as usize] + day) as u16
-            } else {
-                0
+            let Some(ts_doy) = esa_timestamp_doy(ts, cli.year) else {
+                continue;
             };
             esa_map.insert((ts_doy, hour, minute), (den, temp));
         }
@@ -224,4 +238,26 @@ pub fn run(cli: Cli) {
         }
     );
     println!("}}");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::esa_timestamp_doy;
+
+    #[test]
+    fn leap_year_post_february_doy_counts_february_29() {
+        // 2008-10-27 is day 301 of the leap year 2008; a non-leap table returns 300.
+        assert_eq!(esa_timestamp_doy("2008-10-27T00:00:00Z", 2008), Some(301));
+        assert_eq!(esa_timestamp_doy("2007-10-27T00:00:00Z", 2007), Some(300));
+        assert_eq!(esa_timestamp_doy("2008-02-29T12:00:00Z", 2008), Some(60));
+        assert_eq!(esa_timestamp_doy("2008-01-31T12:00:00Z", 2008), Some(31));
+    }
+
+    #[test]
+    fn rejects_other_years_and_invalid_dates() {
+        assert_eq!(esa_timestamp_doy("2009-10-27T00:00:00Z", 2008), None);
+        assert_eq!(esa_timestamp_doy("2007-02-29T00:00:00Z", 2007), None);
+        assert_eq!(esa_timestamp_doy("2008-13-01", 2008), None);
+        assert_eq!(esa_timestamp_doy("2008-1", 2008), None);
+    }
 }
