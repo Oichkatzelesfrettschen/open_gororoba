@@ -1,0 +1,34 @@
+binding_key = "idct-theorem-identity-binding-2026-09-02"
+actor = "closure-review-2026-09-02"
+reason = "Resolve the two r300 IDCT theorems whose legacy C#### filenames collide with the staples claims C-1628 and C-1629."
+applied_at = "2026-09-02T08:00:00Z"
+
+[[binding]]
+proposal_key = "r300-idct8-butterfly-equals-dense"
+stable_id = "THM-R300-IDCT8-BUTTERFLY-001"
+legacy_name = "C1628_IDCT8ButterflyCompaction"
+proof_path = "proofs/verified/C1628_IDCT8ButterflyCompaction.v"
+title = "8-point even-odd butterfly IDCT equals the dense IDCT"
+statement = "For every 8x8 real coefficient matrix and every 8-vector of inputs, the 32-multiply even-odd butterfly factorization of the 8-point inverse DCT (even half E0..E3, odd half O0..O3, x_k = E_k + O_k, x_{7-k} = E_k - O_k) produces the same eight outputs as the 64-multiply dense matrix-vector form; the Rocq theorem C1628_idct8_butterfly_eq_dense states the eight equalities and IDCT8EvenOdd proves them by ring normalization over the reals."
+initial_status = "Verified"
+where_stated = ["proofs/verified/C1628_IDCT8ButterflyCompaction.v", "proofs/theories/IDCT8EvenOdd.v"]
+assumptions = "Real-number arithmetic as axiomatized in the Rocq Stdlib Reals; the butterfly and dense forms are the definitions in IDCT8EvenOdd."
+kernel_result = "C1628_idct8_butterfly_eq_dense is kernel-checked from IDCT8EvenOdd's ring identities."
+replay_command = "make -C proofs vok"
+falsifier = "Alter one recombination sign in the butterfly definition and require the Rocq kernel to reject the equality."
+evidence_artifact_ids = ["LOCAL-IDCT-THEOREM-IDENTITY-20260902"]
+
+[[binding]]
+proposal_key = "r300-idct8-dp4-accumulator-exact-in-fp24"
+stable_id = "THM-R300-IDCT8-DP4-EXACT-001"
+legacy_name = "C1629_IDCT8DP4ExactBound"
+proof_path = "proofs/verified/C1629_IDCT8DP4ExactBound.v"
+title = "r300 IDCT DP4 accumulator stays inside the FP24 exact-integer range"
+statement = "An 8-term integer dot product with operand magnitudes at most B has magnitude at most 8*B^2 (dp8_abs_bound); for 7-bit-magnitude operands (|.| <= 127) the accumulator stays strictly below the FP24 exact-integer window 2^17 since 8*127^2 = 129032 < 131072 (dp8_int7_within_2pow17); and the accumulator is exact up to B <= 128 because 8*128^2 = 2^17 is representable (dp8_exact_threshold), while the r300 admission gate keeps the strict B <= 127 fail-closed choice (fp24_admit_strict_spec)."
+initial_status = "Verified"
+where_stated = ["proofs/verified/C1629_IDCT8DP4ExactBound.v", "proofs/theories/IDCT8DP4ExactBound.v"]
+assumptions = "Integer and real arithmetic as axiomatized in the Rocq Stdlib; FP24 exactness is modeled as the integer window below 2^17."
+kernel_result = "dp8_abs_bound, dp8_int7_within_2pow17 and dp8_exact_threshold are kernel-checked in IDCT8DP4ExactBound."
+replay_command = "make -C proofs vok"
+falsifier = "Raise the admitted operand magnitude to 129 and require the kernel to reject the exactness bound."
+evidence_artifact_ids = ["LOCAL-IDCT-THEOREM-IDENTITY-20260902"]
