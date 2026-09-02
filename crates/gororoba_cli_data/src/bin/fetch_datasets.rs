@@ -677,6 +677,62 @@ fn build_registry() -> Vec<DatasetEntry> {
             pillar: "geophysical",
             size_hint: "~5 MB",
         },
+        // Mission caches consumed by the heliosphere lanes; each name is the
+        // retrieval_method cited by its SOURCES row and its manifest pins the bytes.
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "MAVEN MAG L2 SunState 1-sec (2015 DOY 060-073)",
+                maven_mag_fetch::MavenMagProvider {
+                    year: 2015,
+                    doy_start: 60,
+                    doy_end: 73,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~55 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Cluster C1 FGM SPIN (2002 DOY 001-007)",
+                cluster_fetch::ClusterFgmProvider {
+                    probe_id: 1,
+                    year: 2002,
+                    doy_start: 1,
+                    doy_end: 7,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~15 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Cluster C1 FGM SPIN (2003 DOY 015-021)",
+                cluster_fetch::ClusterFgmProvider {
+                    probe_id: 1,
+                    year: 2003,
+                    doy_start: 15,
+                    doy_end: 21,
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~15 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(NamedDatasetProvider::new(
+                "Rosetta RPC-MAG (AMDA) 2015-07..09",
+                rosetta_fetch::RosettaMagProvider {
+                    year_start: 2015,
+                    year_end: 2015,
+                    month_range: Some((7, 9)),
+                },
+            )),
+            category: "geophysical",
+            pillar: "geophysical",
+            size_hint: "~6.5 MB",
+        },
         DatasetEntry {
             provider: Box::new(solar_orbiter_mag_fetch::SolarOrbiterMagProvider::default()),
             category: "geophysical",
