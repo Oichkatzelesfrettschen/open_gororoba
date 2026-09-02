@@ -23,22 +23,29 @@ use std::path::{Path, PathBuf};
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct VanishedPathHit {
     pub binary: PathBuf,
-    /// The shallowest ancestor under the worktrees root that does not exist.
-    /// A string table packs entries without separators, so an extracted run
-    /// can carry a few bytes of the next entry; the ancestor is immune to
-    /// that and names the removed checkout exactly.
+    /// The shallowest directory under the worktrees root that does not exist.
+    /// This is the removed checkout, or a removed directory inside a live one.
     pub vanished_root: String,
     pub embedded: String,
 }
 
-/// Walk down from `worktrees_root` and return the first component path that
-/// does not exist.
-fn shallowest_missing(path: &str, worktrees_root: &Path) -> Option<String> {
-    let rest = Path::new(path).strip_prefix(worktrees_root).ok()?;
+/// Walk the directory components below `worktrees_root` and return the first
+/// one that does not exist.
+///
+/// The verdict rests on the parent directory, never on the last component. A
+/// linker packs string-table entries without separators, so a run extracted
+/// from a binary regularly carries the first bytes of the next entry:
+/// `.../enso-outlook/xtask` came back as `.../enso-outlook/xtasktotal_elapsed_seccalled`.
+/// The glue can only corrupt the tail, so testing the parent chain turns three
+/// false positives against live worktrees into silence while a removed
+/// checkout still fails on its own missing directory.
+fn shallowest_missing_directory(path: &str, worktrees_root: &Path) -> Option<String> {
+    let parent = Path::new(path).parent()?;
+    let rest = parent.strip_prefix(worktrees_root).ok()?;
     let mut probe = worktrees_root.to_path_buf();
     for component in rest.components() {
         probe.push(component);
-        if !probe.exists() {
+        if !probe.is_dir() {
             return Some(probe.to_string_lossy().into_owned());
         }
     }
@@ -85,7 +92,7 @@ pub fn embedded_paths_under(bytes: &[u8], root: &str) -> BTreeSet<String> {
 }
 
 /// Report the paths under `worktrees_root` that a binary embeds, that do not
-/// sit under `current_root`, and that no longer exist.
+/// sit under `current_root`, and whose parent directory no longer exists.
 pub fn scan_binary(
     binary: &Path,
     worktrees_root: &Path,
@@ -99,7 +106,7 @@ pub fn scan_binary(
         if path == current || path.starts_with(&format!("{current}/")) {
             continue;
         }
-        let Some(vanished_root) = shallowest_missing(&path, worktrees_root) else {
+        let Some(vanished_root) = shallowest_missing_directory(&path, worktrees_root) else {
             continue;
         };
         hits.push(VanishedPathHit {
@@ -142,6 +149,21 @@ pub fn scan_tools_dir(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_glued_tail_under_a_live_directory_is_not_a_hit() {
+        let tmp = std::env::temp_dir().join("repo_utilities_glue_probe");
+        let live = tmp.join("live/xtask");
+        std::fs::create_dir_all(&live).unwrap();
+        let glued = format!("{}/xtasktotal_elapsed_sec", tmp.join("live").display());
+        assert_eq!(shallowest_missing_directory(&glued, &tmp), None);
+        let gone = format!("{}/removed/crates/thing", tmp.display());
+        assert_eq!(
+            shallowest_missing_directory(&gone, &tmp),
+            Some(tmp.join("removed").to_string_lossy().into_owned())
+        );
+        std::fs::remove_dir_all(&tmp).ok();
+    }
 
     #[test]
     fn extraction_takes_the_longest_run_and_drops_the_bare_root() {
