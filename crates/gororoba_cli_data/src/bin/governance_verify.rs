@@ -3701,7 +3701,35 @@ fn collect_bin_targets(root: &Path) -> Result<Vec<BinTarget>> {
     Ok(out)
 }
 
+/// Active surfaces are checked-in text, so the walk is intersected with the
+/// git index: an ignored or untracked file in one checkout carries no
+/// repository claim and must not fail governance there.
+fn git_tracked_paths(root: &Path) -> Result<BTreeSet<String>> {
+    let output = process::Command::new("git")
+        .args(["ls-files", "--cached", "-z"])
+        .current_dir(root)
+        .output()
+        .context("run git ls-files for experiment reference surfaces")?;
+    if !output.status.success() {
+        bail!(
+            "git ls-files failed for experiment reference surfaces: {}",
+            String::from_utf8_lossy(&output.stderr).trim()
+        );
+    }
+    output
+        .stdout
+        .split(|byte| *byte == 0)
+        .filter(|path| !path.is_empty())
+        .map(|path| {
+            Ok(str::from_utf8(path)
+                .context("Git returned a non-UTF-8 tracked path")?
+                .replace('\\', "/"))
+        })
+        .collect()
+}
+
 fn experiment_reference_surfaces(root: &Path) -> Result<Vec<String>> {
+    let tracked = git_tracked_paths(root)?;
     let mut files = Vec::new();
     for (search_root, extensions) in [
         ("crates", &["rs"][..]),
@@ -3728,6 +3756,9 @@ fn experiment_reference_surfaces(root: &Path) -> Result<Vec<String>> {
                 .to_string_lossy()
                 .replace('\\', "/");
             if rel.contains("/.cache/") || rel.starts_with(".cache/") || rel.starts_with("docs/book/") {
+                continue;
+            }
+            if !tracked.contains(&rel) {
                 continue;
             }
             files.push(rel);
