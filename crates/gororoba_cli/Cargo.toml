@@ -91,6 +91,7 @@ name = "makew"
 path = "src/bin/makew.rs"
 
 [dependencies]
+repo_root = { workspace = true }
 # Workspace domain crates (used by dispatcher + thesis + orchestration bins)
 algebra_analysis = { workspace = true }
 algebra_experimental = { path = "../algebra_experimental" }

@@ -52,8 +52,7 @@ struct FixtureExpected {
 
 #[test]
 fn pantheon_baseline_window_compatibility() {
-    let fixture_path = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
-        .join("tests/fixtures/pantheon_baseline_windows.toml");
+    let fixture_path = repo_root::path!("crates/snia_core/tests/fixtures/pantheon_baseline_windows.toml");
     let fixture_text = std::fs::read_to_string(&fixture_path).expect("fixture read");
     let fixture: Fixture = toml::from_str(&fixture_text).expect("fixture parse");
 

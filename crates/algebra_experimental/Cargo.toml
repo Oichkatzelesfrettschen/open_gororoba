@@ -6,6 +6,7 @@ license = "GPL-2.0-or-later"
 description = "Experimental algebraic structures: emanation tables, E10-octonion bridge, billiard statistics, moonshine, Golay/Leech, algebraic dynamics"
 
 [dependencies]
+repo_root = { workspace = true }
 algebra_analysis = { workspace = true }
 argmin = { workspace = true }
 argmin-math = { workspace = true }

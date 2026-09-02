@@ -7,6 +7,7 @@ repository = { workspace = true }
 description = "Shared provenance operation helpers for lightweight CLI entrypoints"
 
 [dependencies]
+repo_root = { workspace = true }
 anyhow = { workspace = true }
 chrono = { workspace = true }
 csv = { workspace = true }

@@ -17,6 +17,7 @@ default = []
 hdf5-export = ["hdf5"]
 
 [dev-dependencies]
+repo_root = { workspace = true }
 approx = { workspace = true }
 criterion = { workspace = true }
 proptest = { workspace = true }

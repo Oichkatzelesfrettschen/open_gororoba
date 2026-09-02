@@ -10,12 +10,7 @@ const CANONICAL_TOML: &str =
     "registry/data/project_csv/canonical/PC-0007_c053_pathion_tmm_summary.toml";
 
 fn repo_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .expect("crate parent")
-        .parent()
-        .expect("workspace root")
-        .to_path_buf()
+    repo_root::resolve!()
 }
 
 fn c053_binary_path() -> PathBuf {
