@@ -200,6 +200,11 @@ archive/external_nonreproducible_snapshots/**
 *.sqlite3
 !registry/canonical/
 !registry/canonical/*.sqlite3
+# Pre-import snapshots and semantic diffs written by
+# provenance index-control-plane --allow-destructive-reimport. They record what
+# a destructive re-import would overwrite; the canonical database carries the
+# durable state.
+registry/canonical/backups/
 # SQLite WAL-mode companion files. Created when a connection is open;
 # normally cleaned up at last-disconnect, but a crash or hung process can
 # leave them behind. They are machine-local; the owning database file carries
