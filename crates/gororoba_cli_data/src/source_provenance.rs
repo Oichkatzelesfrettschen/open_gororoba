@@ -200,6 +200,9 @@ pub struct BuildSummary {
     pub downloaded_count: usize,
     pub remotely_materializable_count: usize,
     pub materializable_without_url_count: usize,
+    /// Rows the checked-in catalog carried whose keys this host's scan did not
+    /// observe; they are re-seeded from their durable fields.
+    pub retained_prior_row_count: usize,
     pub row_counts: Vec<RowCountReport>,
     /// Per-host presence for every observed path. Host state, so it never
     /// reaches a committed registry; the caller writes the gitignored manifest.
@@ -970,7 +973,11 @@ fn classify_artifacts(
         // host-only paths are still in memory and then written into the row.
         // Deciding it later from the exported row would move every artifact
         // known only by a local .pdf into web_references.
-        artifact.lane = classify_media_lane(
+        // A lane the catalog already recorded is repository truth; the scan
+        // replaces it only when this host's evidence names a more specific
+        // medium, so a missing local copy never moves a dataset or a paper
+        // into web_references.
+        let scanned_lane = classify_media_lane(
             artifact
                 .links
                 .iter()
@@ -978,6 +985,9 @@ fn classify_artifacts(
                 .chain(artifact.host_only_paths.iter())
                 .chain(std::iter::once(&artifact.canonical_functional_url)),
         );
+        if artifact.lane.is_empty() || scanned_lane != "web_references" {
+            artifact.lane = scanned_lane;
+        }
 
         // Content identity comes from whichever copy this host holds. When no
         // copy is present the previously exported values carry forward, so a
@@ -1137,8 +1147,144 @@ fn load_durable_facts(path: &Path) -> HashMap<String, DurableFacts> {
     facts
 }
 
+/// The durable identity of a row in the checked-in catalog: its id and the
+/// fields that describe the artifact independently of any host. A row whose
+/// key the current scan does not observe is re-seeded from these, so the
+/// catalog never shrinks because a checkout lacks an untracked directory.
+#[derive(Clone, Debug, Default)]
+struct PriorRow {
+    id: String,
+    title: String,
+    citation: String,
+    source_kinds: Vec<String>,
+    source_refs: Vec<String>,
+    doi_list: Vec<String>,
+    links: Vec<String>,
+    lane: String,
+}
+
+fn load_prior_rows(path: &Path) -> BTreeMap<String, PriorRow> {
+    let mut rows_by_key = BTreeMap::new();
+    let Ok(value) = load_toml_value(path) else {
+        return rows_by_key;
+    };
+    let Some(rows) = value.get("artifact").and_then(Value::as_array) else {
+        return rows_by_key;
+    };
+    for row in rows {
+        let Some(table) = row.as_table() else { continue };
+        let text = |field: &str| {
+            table
+                .get(field)
+                .and_then(Value::as_str)
+                .unwrap_or_default()
+                .to_string()
+        };
+        let list = |field: &str| {
+            table
+                .get(field)
+                .and_then(Value::as_array)
+                .map(|items| {
+                    items
+                        .iter()
+                        .filter_map(Value::as_str)
+                        .map(str::to_string)
+                        .collect::<Vec<_>>()
+                })
+                .unwrap_or_default()
+        };
+        let key = text("key");
+        if key.is_empty() || text("id").is_empty() {
+            continue;
+        }
+        rows_by_key.insert(
+            key,
+            PriorRow {
+                id: text("id"),
+                title: text("title"),
+                citation: text("citation"),
+                source_kinds: list("source_kinds"),
+                source_refs: list("source_refs"),
+                doi_list: list("doi_list"),
+                links: list("all_links"),
+                // A row exported before the lane field existed still names
+                // its medium through the paths and links it recorded, which
+                // is what classify_lane reads.
+                lane: classify_lane(table).0,
+            },
+        );
+    }
+    rows_by_key
+}
+
+/// Carry the catalog's lane onto every observed row, re-seed every prior row
+/// whose key the scan did not observe, then restore key order. Returns the
+/// number of rows re-seeded.
+fn seed_missing_prior_rows(
+    artifacts: &mut Vec<UnifiedArtifact>,
+    prior: &BTreeMap<String, PriorRow>,
+) -> usize {
+    let observed = artifacts
+        .iter()
+        .map(|artifact| artifact.key.clone())
+        .collect::<HashSet<_>>();
+    for artifact in artifacts.iter_mut() {
+        if artifact.lane.is_empty()
+            && let Some(row) = prior.get(&artifact.key)
+        {
+            artifact.lane = row.lane.clone();
+        }
+    }
+    let mut seeded = 0;
+    for (key, row) in prior {
+        if observed.contains(key) {
+            continue;
+        }
+        artifacts.push(UnifiedArtifact {
+            key: key.clone(),
+            title: row.title.clone(),
+            citation: row.citation.clone(),
+            source_kinds: row.source_kinds.clone(),
+            source_refs: row.source_refs.clone(),
+            doi_list: row.doi_list.clone(),
+            links: row.links.clone(),
+            lane: row.lane.clone(),
+            ..UnifiedArtifact::default()
+        });
+        seeded += 1;
+    }
+    artifacts.sort_by(|a, b| a.key.cmp(&b.key));
+    seeded
+}
+
+/// An artifact keeps the id the catalog already gave its key; a new key takes
+/// the next number after the largest prior id, in key order. Ids therefore
+/// never move when a row is added or when a scan observes fewer candidates.
+fn assign_stable_ids(
+    artifacts: &[UnifiedArtifact],
+    prior: &BTreeMap<String, PriorRow>,
+) -> Vec<String> {
+    let mut next = prior
+        .values()
+        .filter_map(|row| row.id.strip_prefix("ASOT-")?.parse::<u64>().ok())
+        .max()
+        .unwrap_or(0);
+    artifacts
+        .iter()
+        .map(|artifact| {
+            if let Some(row) = prior.get(&artifact.key) {
+                row.id.clone()
+            } else {
+                next += 1;
+                format!("ASOT-{next:04}")
+            }
+        })
+        .collect()
+}
+
 fn render_artifact_registry(
     artifacts: &[UnifiedArtifact],
+    ids: &[String],
     source_tables: &[String],
     source_files: &[String],
     now: &str,
@@ -1220,10 +1366,7 @@ fn render_artifact_registry(
 
     for (index, artifact) in artifacts.iter().enumerate() {
         lines.push("[[artifact]]".to_string());
-        lines.push(format!(
-            "id = {}",
-            escape_toml(&format!("ASOT-{:04}", index + 1))
-        ));
+        lines.push(format!("id = {}", escape_toml(&ids[index])));
         lines.push(format!("key = {}", escape_toml(&artifact.key)));
         lines.push(format!("title = {}", escape_toml(&artifact.title)));
         lines.push(format!("citation = {}", escape_toml(&artifact.citation)));
@@ -1405,6 +1548,9 @@ pub fn stage_artifact_source_of_truth(
     let mut download_map = collect_download_map(repo_root)?;
     let (candidates, source_files) = build_candidates(repo_root)?;
     let mut artifacts = unify_candidates(candidates);
+    let prior_rows = load_prior_rows(out_registry);
+    let retained_prior_row_count = seed_missing_prior_rows(&mut artifacts, &prior_rows);
+    let ids = assign_stable_ids(&artifacts, &prior_rows);
     extend_download_map_from_local_artifacts(&mut download_map, &artifacts);
     let carry_forward = load_durable_facts(out_registry);
     classify_artifacts(
@@ -1415,7 +1561,8 @@ pub fn stage_artifact_source_of_truth(
         retention,
         &carry_forward,
     );
-    let registry_text = render_artifact_registry(&artifacts, &source_tables, &source_files, &now);
+    let registry_text =
+        render_artifact_registry(&artifacts, &ids, &source_tables, &source_files, &now);
     let report_text = render_reconciliation_report(&artifacts, &now);
     assert_ascii(&registry_text, &out_registry.display().to_string())?;
     assert_ascii(&report_text, &out_report.display().to_string())?;
@@ -1438,6 +1585,7 @@ pub fn stage_artifact_source_of_truth(
             .filter(|artifact| artifact.canonical_functional_url.is_empty())
             .count(),
         row_counts: Vec::new(),
+        retained_prior_row_count,
         host_materialization: artifacts
             .iter()
             .enumerate()
@@ -1453,7 +1601,7 @@ pub fn stage_artifact_source_of_truth(
                         observe_host_materialization(
                             repo_root,
                             retention,
-                            &format!("ASOT-{:04}", index + 1),
+                            &ids[index],
                             &artifact.key,
                             &artifact.status,
                             path,
@@ -2503,6 +2651,68 @@ pub fn verify_source_infrastructure(
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn stable_ids_keep_prior_numbers_and_allocate_after_the_maximum() {
+        let mut prior = super::BTreeMap::new();
+        prior.insert(
+            "url:b".to_string(),
+            super::PriorRow {
+                id: "ASOT-0007".to_string(),
+                ..Default::default()
+            },
+        );
+        prior.insert(
+            "url:d".to_string(),
+            super::PriorRow {
+                id: "ASOT-0003".to_string(),
+                ..Default::default()
+            },
+        );
+        let artifacts = ["url:a", "url:b", "url:c", "url:d"]
+            .iter()
+            .map(|key| super::UnifiedArtifact {
+                key: key.to_string(),
+                ..Default::default()
+            })
+            .collect::<Vec<_>>();
+        let ids = super::assign_stable_ids(&artifacts, &prior);
+        assert_eq!(ids, ["ASOT-0008", "ASOT-0007", "ASOT-0009", "ASOT-0003"]);
+    }
+
+    #[test]
+    fn prior_rows_the_scan_did_not_observe_are_reseeded_in_key_order() {
+        let mut prior = super::BTreeMap::new();
+        prior.insert(
+            "url:z".to_string(),
+            super::PriorRow {
+                id: "ASOT-0002".to_string(),
+                title: "kept".to_string(),
+                links: vec!["https://example.org/z".to_string()],
+                ..Default::default()
+            },
+        );
+        prior.insert(
+            "url:m".to_string(),
+            super::PriorRow {
+                id: "ASOT-0001".to_string(),
+                ..Default::default()
+            },
+        );
+        let mut artifacts = vec![super::UnifiedArtifact {
+            key: "url:m".to_string(),
+            title: "observed".to_string(),
+            ..Default::default()
+        }];
+        let seeded = super::seed_missing_prior_rows(&mut artifacts, &prior);
+        assert_eq!(seeded, 1);
+        assert_eq!(artifacts.len(), 2);
+        assert_eq!(artifacts[0].key, "url:m");
+        assert_eq!(artifacts[0].title, "observed");
+        assert_eq!(artifacts[1].key, "url:z");
+        assert_eq!(artifacts[1].title, "kept");
+        assert!(artifacts[1].local_paths.is_empty());
+    }
+
     use super::*;
 
     #[test]
