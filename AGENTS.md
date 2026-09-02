@@ -123,6 +123,29 @@ hardware-specific tables are replaced with the scientific stack.
 - An isolated worktree on a capacity-constrained filesystem MUST set
   `REPO_CARGO_HOME`, `REPO_CARGO_TARGET_DIR`, and `REPO_CARGO_BUILD_DIR` to
   distinct paths on a filesystem that satisfies the cache budget.
+- A linked worktree on the same filesystem as the primary checkout
+  SHOULD run the gate with `REPO_SHARE_PRIMARY_CACHE=1`. The roots are
+  resolved in `mk/cache_roots.mk`: the cargo-home and the Cargo
+  build-dir are shared with the primary checkout, while the target-dir,
+  the validation-tools copies, the cache-check sentinel and the
+  validate-local lock stay under the worktree's own `.cache/`. The
+  build-dir carries the dependency artifacts and is the path the
+  sccache hash covers, so sharing it alone turns a cold ~70 min chain
+  into ~10 min; keeping the target-dir local means one worktree never
+  executes another worktree's `xtask` or governance binaries. The
+  owner is verified as a standard `<checkout>/.git` directory holding a
+  `Cargo.toml`; bare, separate-git-dir and submodule layouts are
+  rejected and need an explicit absolute `REPO_CACHE_OWNER`. Cleanup
+  targets pass every path through `guarded_rm`, which refuses the
+  owner's tree from a worktree unless `REPO_ALLOW_SHARED_CLEAN=1`.
+  `make print-cache-roots` shows the resolved paths and
+  `xtask/tests/cache_roots.rs` pins the layouts.
+- sccache is host configuration, not a repository guarantee.
+  `.cargo/config.toml` names it as the rustc wrapper; its cache size
+  and location live in `~/.config/sccache/config`. A cache at its size
+  ceiling evicts entries between sessions, so a gate tree of tens of
+  GiB needs a ceiling above the tree size (48 GiB on the reference
+  host).
 
 ### Canonical build
 

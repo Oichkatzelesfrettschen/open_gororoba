@@ -1,0 +1,57 @@
+# Timing receipt for REPO_SHARE_PRIMARY_CACHE=1 (mk/cache_roots.mk).
+# Host: the reference workstation, sccache 0.15.0 as rustc wrapper,
+# clang + mold linker, stable 1.97.0. Times are wall-clock seconds.
+
+[measurement]
+date = "2026-09-01"
+worktree = "~/worktrees/open_gororoba/build-share-primary-cache"
+primary = "~/Github/open_gororoba"
+tool_cap_note = "the agent shell caps a foreground command at 600 s, so cold runs were killed at the cap and their durations are lower bounds"
+
+[[run]]
+label = "sccache hit test, fresh build-dir path"
+command = "cargo build --profile validation -p repo_utilities --bin repo-utilities"
+condition = "new gate-cbuild path, primary had just compiled the same crates"
+sccache_requests = 85
+sccache_hits_rust = 0
+sccache_misses_rust = 82
+
+[[run]]
+label = "sccache hit test, same build-dir path after cargo clean -p"
+command = "cargo build --profile validation -p repo_utilities --bin repo-utilities"
+condition = "existing gate-cbuild path"
+sccache_hits_rust = 19
+sccache_misses_rust = 0
+
+[[run]]
+label = "validate-local from worktree, default mode"
+command = "make validate-local"
+condition = "cold: every root keyed on the worktree path"
+wall_seconds_lower_bound = 4200
+note = "killed repeatedly at the tool cap; whole-chain estimate from per-lane partial logs"
+
+[[run]]
+label = "validate-local from worktree, shared build-dir"
+command = "REPO_SHARE_PRIMARY_CACHE=1 make validate-local"
+condition = "cargo-home and build-dir shared with the primary, target-dir local"
+wall_seconds = 582
+dev_clippy_seconds = 109
+test_build_seconds = 192
+validation_tools_seconds = 248
+governance = "PASSED"
+sccache_hit_rate_percent = 76
+
+[[run]]
+label = "fresh local target-dir over the shared build-dir"
+command = "cargo build --profile validation -p repo_utilities --bin repo-utilities"
+condition = "CARGO_TARGET_DIR new, CARGO_BUILD_BUILD_DIR shared"
+wall_seconds = 1.16
+crates_compiled = 0
+note = "dependency artifacts live in the build-dir, so a local target-dir costs nothing"
+
+[[run]]
+label = "git push of the branch under the knob"
+command = "REPO_SHARE_PRIMARY_CACHE=1 git push -u origin build/share-primary-cache"
+wall_seconds = 303
+tests_run = 5547
+tests_passed = 5547
