@@ -5558,6 +5558,7 @@ claims = ["C-001"]
             ReimportOptions::bootstrap(),
         )?;
         store.insight_update_status_note("I-212", SEEDED_NOTE, "test", Some("seed"))?;
+        store.experiment_update_status_note("E-001", SEEDED_EXPERIMENT_NOTE, "test", Some("seed"))?;
         store.claim_update_formal_proof("C-001", SEEDED_PROOF, "test", Some("seed"))?;
         store.conn.execute(
             "INSERT INTO claim_transition_events (
@@ -5578,6 +5579,8 @@ claims = ["C-001"]
     }
 
     const SEEDED_NOTE: &str = "seeded canonical note that no compatibility TOML carries";
+    const SEEDED_EXPERIMENT_NOTE: &str =
+        "seeded experiment note that the compatibility TOML omits";
     const SEEDED_PROOF: &str = "na_empirical:canonical-only disposition";
     const PERMUTED_NOTE: &str = "note written during the permutation";
 
@@ -5676,6 +5679,14 @@ claims = ["C-001"]
                 "{label}: exported disposition failed to round-trip"
             );
         }
+        // experiments.toml in the fixture omits status_note, so the seeded
+        // experiment note has no mirror value to lose to and survives every
+        // ordering unchanged.
+        assert_eq!(
+            store.experiment_status_note("E-001")?.as_deref(),
+            Some(SEEDED_EXPERIMENT_NOTE),
+            "{label}: experiment status_note was nulled or overwritten"
+        );
         Ok((note, revisions, events, mirror))
     }
 
