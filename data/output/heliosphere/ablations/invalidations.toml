@@ -7,6 +7,13 @@
 # treats a listed artifact as unusable until a regeneration entry
 # supersedes it. `stale_sha256` is the content the record applies to;
 # a regenerated file has a different hash and no `invalidation` key.
+#
+# `regeneration_status = "regenerated"` names the successor content in
+# `successor_sha256`. `successor_confidence` is "final" when the successor
+# rests on inputs whose provenance is complete, and "provisional" when a
+# named input defect survives the regeneration. The command, counts and
+# validation for every successor live in
+# data/output/heliosphere/ablations/regeneration_receipts.toml.
 
 [[invalidated]]
 artifact = "data/output/heliosphere/ablations/beta_scatter_themis.json"
@@ -17,8 +24,11 @@ invalidated_on = "2026-09-01"
 correcting_commit = "f61485b7"
 reason = "beta-join derived the ESA day of year from a non-leap month table while the default year 2008 is a leap year, so every minute after February joined plasma from the following day; n_matched=2821, exponent 0.775 and beta_crit 11.3 are products of the shifted join"
 binary = "heliosphere beta-join"
-regeneration_status = "provisional_until_esa_refetch"
-regeneration_note = "the ESA inputs are cache-only (no fetcher, no provenance row); a cache-only rerun is labeled provisional until THA_L2_ESA can be independently refetched"
+regeneration_status = "regenerated"
+successor_sha256 = "6e49643a6d0465eca50a0850d42927919eb7233d61e190c911b273543ade77a6"
+successor_confidence = "provisional"
+regeneration_note = "regenerated 2026-09-01 by the rewritten beta-join; receipt in data/output/heliosphere/ablations/regeneration_receipts.toml. The refetch blocker named here is discharged: SRC-THEMIS-THA-ESA-DAILY carries a validated retrieval_method and a 2026-09-01 refetch of 2008 DOY 301 reproduced the cached file byte for byte. The successor stays provisional for a different reason: the quality-filtered parameters tha_peif_densityQ and tha_peif_avgtempQ return NaN on 935 of the 3931 cached rows, the cached CSVs carry no quality column, and the successor therefore joins moments the instrument team flags as suspect on about a quarter of the samples. Removing the provisional label needs a refetch that carries tha_peif_data_quality and a rerun that filters on it."
+regeneration_caveat = "the rerun does not confirm this entry's stated reason. The leap-aware join returns the same n_matched of 2821 and Spearman 0.6511588521069863 against the published 0.6511610007246746; the published exponent 0.775 is recovered by fitting the artifact's own bin means, so it is a bin-mean fit rather than a product of the shifted join. See the [finding] table in regeneration_receipts.toml."
 [invalidated.inputs]
 "data/external/themis_esa/tha_esa_2008_301.csv" = "aa1aee97c00b5dbc91a3892a2321b1d58fbb10ab9e0a9c0999e7314c69b8580b"
 "data/external/themis_esa/tha_esa_2008_302.csv" = "a9141d418178a9cccc251d2661ec685795d70c1fe4918c664532fb391670c1f6"
@@ -44,7 +54,9 @@ invalidated_on = "2026-09-01"
 correcting_commit = "ff070f6f"
 reason = "decomposition-audit phase-randomized the 32 delay coordinates after embedding, breaking the lag-copy identity of Takens vectors, and evaluated each surrogate on its own window support; the shared, independent and real means were ratios over three different samples"
 binary = "heliosphere decomposition-audit --mission themis-a"
-regeneration_status = "pending"
+regeneration_status = "regenerated"
+successor_sha256 = "5bab12eb173325bdd6d56d301f4c99a30419276ac28ecdd1f61ae695fb048511"
+successor_confidence = "final"
 regeneration_note = "inputs are the cached THA_L2_FGM minutes; the original date window is unrecorded, so the regeneration declares its own window and support hash"
 [invalidated.inputs]
 "data/external/themis/tha_fgm_2008_301.csv" = "3791682cdf56a270a210da64ff5049a40f2c3f03238f432d680e2e10b3c78ba8"
@@ -64,7 +76,9 @@ invalidated_on = "2026-09-01"
 correcting_commit = "ff070f6f"
 reason = "same surrogate construction defect as decomposition_q1_themis_a.json"
 binary = "heliosphere decomposition-audit --mission maven"
-regeneration_status = "pending"
+regeneration_status = "regenerated"
+successor_sha256 = "cb7db747fc2554e9bbb150f40acc8d8b26cc434847b895e71c55865e5034405f"
+successor_confidence = "final"
 regeneration_note = "candidate inputs are the cached MAVEN MAG minutes for 2015 DOY 060..073; the original window is unrecorded"
 [invalidated.inputs]
 "data/external/maven/maven_mag_2015_060.csv" = "429d43de3fc3a1f331f558ba1d48a1cb53e8f85bb5178ab4d62185dae5056695"
@@ -87,7 +101,9 @@ invalidated_on = "2026-09-01"
 correcting_commit = "ff070f6f"
 reason = "same surrogate construction defect as decomposition_q1_themis_a.json"
 binary = "heliosphere decomposition-audit --mission mms"
-regeneration_status = "pending"
+regeneration_status = "regenerated"
+successor_sha256 = "d9668453a53bbd3db5438cbcb1cbcddf87253ef5e6ab32412cfcfe3616f0f16c"
+successor_confidence = "final"
 regeneration_note = "candidate inputs are the cached MMS1 FGM survey minutes for 2024 DOY 001..007; the original window is unrecorded"
 [invalidated.inputs]
 "data/external/mms/mms1_fgm_srvy_l2_2024_1_1.csv" = "47eb16fc196596472add434bf8b3698b2230eb4371e00c5bde614bec9079e684"
