@@ -14,6 +14,8 @@ commit = "81f2e819a4174a3ee8eb94ad1c42a3cbffb0d951"
 working_tree = "dirty: crates/gororoba_cli_physics/src/bin/heliosphere/beta_join.rs and norm_dump.rs carry the rewrite this branch commits"
 binary_profile = "validation"
 cargo_target_dir = ".cache/gate-target (worktree-local)"
+rebase_base = "7c6fc17e"
+rebase_note = "the runs recorded here executed from 81f2e819; the branch was later rebased onto 7c6fc17e. Between the two, main changed one file on the audited code path, a rustfmt reflow inside a decomposition_audit test body, so no recorded number moves."
 
 [validation]
 clippy_command = "cargo clippy -p gororoba_cli_physics --bin heliosphere --all-targets --profile validation -- -D warnings"
@@ -84,8 +86,8 @@ interpretation_delta = "successor of the invalidated beta_scatter_themis.json. R
 
 [[regenerated]]
 artifact = "data/output/heliosphere/ablations/beta_scatter_themis_nearest.json"
-tracked = false
-tracked_note = ".gitignore denies data/output/**/*.json and re-admits named files, so this companion lives in the working tree only; its numbers and hash are recorded here."
+tracked = true
+tracked_note = "tracked by force-add: .gitignore denies data/output/**/*.json workspace-wide and the 351 JSON artifacts already under data/output are force-added the same way."
 binary = "heliosphere beta-join"
 supersedes_sha256 = "none; this artifact has no predecessor"
 output_sha256 = "67053d284987c492b86560f68d85417db64aed91bdbbea2c3d8887a9673cbe0d"
@@ -132,8 +134,8 @@ interpretation_delta = "no predecessor. Relaxing the join to the nearest ESA sam
 
 [[regenerated]]
 artifact = "data/output/heliosphere/ablations/beta_scatter_themis_direction.json"
-tracked = false
-tracked_note = ".gitignore denies data/output/**/*.json and re-admits named files, so this companion lives in the working tree only; its numbers and hash are recorded here."
+tracked = true
+tracked_note = "tracked by force-add: .gitignore denies data/output/**/*.json workspace-wide and the 351 JSON artifacts already under data/output are force-added the same way."
 binary = "heliosphere beta-join"
 supersedes_sha256 = "none; this artifact has no predecessor"
 output_sha256 = "d5edda07f4c7d7acd8fd222febc7a1d915ed8059b9c78c8345f1c4addb15ce89"
