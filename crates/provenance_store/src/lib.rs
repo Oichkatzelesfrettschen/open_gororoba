@@ -1215,8 +1215,12 @@ impl ProvenanceStore {
             if claim.status.trim().is_empty() {
                 failures.push(format!("{} has empty status", claim.id));
             }
+            // A disposition such as `na_empirical:<rationale>` is a formal_proof
+            // value that names no file; is_formal_proof_disposition is the same
+            // predicate the backfill and the canonical proof resolver use.
             if let Some(proof_path) = claim.formal_proof.as_deref()
                 && !proof_path.trim().is_empty()
+                && !crate::claim_proofs::is_formal_proof_disposition(proof_path)
                 && !repo_root.join(proof_path).exists()
             {
                 failures.push(format!(
@@ -5558,6 +5562,7 @@ claims = ["C-001"]
             ReimportOptions::bootstrap(),
         )?;
         store.insight_update_status_note("I-212", SEEDED_NOTE, "test", Some("seed"))?;
+        store.experiment_update_status_note("E-001", SEEDED_EXPERIMENT_NOTE, "test", Some("seed"))?;
         store.claim_update_formal_proof("C-001", SEEDED_PROOF, "test", Some("seed"))?;
         store.conn.execute(
             "INSERT INTO claim_transition_events (
@@ -5578,6 +5583,8 @@ claims = ["C-001"]
     }
 
     const SEEDED_NOTE: &str = "seeded canonical note that no compatibility TOML carries";
+    const SEEDED_EXPERIMENT_NOTE: &str =
+        "seeded experiment note that the compatibility TOML omits";
     const SEEDED_PROOF: &str = "na_empirical:canonical-only disposition";
     const PERMUTED_NOTE: &str = "note written during the permutation";
 
@@ -5676,6 +5683,14 @@ claims = ["C-001"]
                 "{label}: exported disposition failed to round-trip"
             );
         }
+        // experiments.toml in the fixture omits status_note, so the seeded
+        // experiment note has no mirror value to lose to and survives every
+        // ordering unchanged.
+        assert_eq!(
+            store.experiment_status_note("E-001")?.as_deref(),
+            Some(SEEDED_EXPERIMENT_NOTE),
+            "{label}: experiment status_note was nulled or overwritten"
+        );
         Ok((note, revisions, events, mirror))
     }
 
