@@ -364,3 +364,17 @@ pub struct StatusNoteRevision {
     pub reason: Option<String>,
     pub revision_id: i64,
 }
+
+/// The five compatibility sources the legacy control-plane importer reads.
+///
+/// Bundled for the same reason as `CompatExportPaths`: the importer also takes
+/// a repository root and a `ReimportOptions`, and five loose `&Path` arguments
+/// on top of those exceed `clippy::too_many_arguments`.
+#[derive(Clone, Copy)]
+pub struct RegistryImportPaths<'a> {
+    pub claims: &'a Path,
+    pub insights: &'a Path,
+    pub experiments: &'a Path,
+    pub binaries: &'a Path,
+    pub rocq_project: &'a Path,
+}

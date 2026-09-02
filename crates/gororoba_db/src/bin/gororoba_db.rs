@@ -2367,11 +2367,16 @@ fn cmd_build(repo_root: &Path, db_path: &Path, args: &BuildArgs) -> Result<()> {
     {
         let stats = store.reindex_control_plane_from_registries(
             repo_root,
-            &claims_path,
-            &insights_path,
-            &experiments_path,
-            &binaries_path,
-            &proofs_project_path,
+            provenance_store::RegistryImportPaths {
+                claims: &claims_path,
+                insights: &insights_path,
+                experiments: &experiments_path,
+                binaries: &binaries_path,
+                rocq_project: &proofs_project_path,
+            },
+            // build_fresh deleted the file, so the tables are empty and the
+            // bootstrap importer is the correct mode here.
+            provenance_store::ReimportOptions::bootstrap(),
         )?;
         println!(
             "  Control plane: {} claims, {} insights, {} experiments, {} binaries, {} theorems",
