@@ -5,6 +5,10 @@ edition = { workspace = true }
 license = "MIT"
 description = "Repo hygiene CLI: ansi-check, terminology-gate, verify-artifacts. Depends only on the leaf repo_root crate so gate-time rebuilds stay isolated from the main workspace reverse closure."
 
+[lib]
+name = "repo_utilities"
+path = "src/lib.rs"
+
 [[bin]]
 name = "repo-utilities"
 path = "src/main.rs"
