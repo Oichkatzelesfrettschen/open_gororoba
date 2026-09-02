@@ -13959,6 +13959,7 @@ dependencies = [
  "provenance_store",
  "regex",
  "repo_root",
+ "repo_utilities",
  "rusqlite",
  "serde",
  "serde_json",

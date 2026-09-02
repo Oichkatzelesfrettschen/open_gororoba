@@ -234,6 +234,21 @@ enum Commands {
     DocsRedirectCheck(DocsRedirectArgs),
     #[command(name = "rocq-prepare-confine", visible_alias = "coq-prepare-confine")]
     RocqPrepareConfine(CoqArgs),
+    #[command(name = "validation-tool-paths")]
+    ValidationToolPaths(ValidationToolPathsArgs),
+}
+
+/// The scan needs three roots and takes none of them from a compiled-in
+/// constant: the staged tools directory, the parent of every worktree, and the
+/// checkout that is running the gate.
+#[derive(Args, Debug)]
+struct ValidationToolPathsArgs {
+    #[arg(long = "tools-dir")]
+    tools_dir: PathBuf,
+    #[arg(long = "worktrees-root")]
+    worktrees_root: PathBuf,
+    #[arg(long = "current-root")]
+    current_root: PathBuf,
 }
 
 #[derive(Args, Debug)]
@@ -1020,6 +1035,41 @@ fn run_docs_redirect_check(args: DocsRedirectArgs) -> Result<()> {
     Ok(())
 }
 
+/// Fail when a staged validation binary names a worktree that is gone. The
+/// binary would abort at runtime on the first path it resolves through that
+/// name, and the stamp cannot see it: the stamp gates the rebuild decision,
+/// while the bytes come from the shared Cargo build-dir.
+fn run_validation_tool_paths(args: ValidationToolPathsArgs) -> Result<()> {
+    let current = args
+        .current_root
+        .canonicalize()
+        .unwrap_or_else(|_| args.current_root.clone());
+    let hits = repo_utilities::validation_tool_paths::scan_tools_dir(
+        &args.tools_dir,
+        &args.worktrees_root,
+        &current,
+    )
+    .with_context(|| format!("scanning {}", args.tools_dir.display()))?;
+    if hits.is_empty() {
+        println!(
+            "OK: no staged validation tool names a vanished worktree under {}.",
+            args.worktrees_root.display()
+        );
+        return Ok(());
+    }
+    for hit in &hits {
+        eprintln!(
+            "[validation-tool-paths] {} embeds vanished path {}",
+            hit.binary.display(),
+            hit.embedded
+        );
+    }
+    bail!(
+        "{} staged validation tool path reference(s) point at a removed worktree; run `make validation-tools-rebuild`",
+        hits.len()
+    );
+}
+
 fn main() -> ExitCode {
     let cli = Cli::parse();
     let result = match cli.command {
@@ -1029,6 +1079,7 @@ fn main() -> ExitCode {
         Commands::McpSmoke => run_mcp_smoke(),
         Commands::DocsRedirectCheck(args) => run_docs_redirect_check(args),
         Commands::RocqPrepareConfine(args) => run_rocq_prepare_confine(args),
+        Commands::ValidationToolPaths(args) => run_validation_tool_paths(args),
     };
     match result {
         Ok(()) => ExitCode::SUCCESS,
