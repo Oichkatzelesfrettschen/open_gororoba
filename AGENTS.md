@@ -163,7 +163,8 @@ hardware-specific tables are replaced with the scientific stack.
   whose debuginfo and panic-location strings name the compiling checkout.
   `make validation-tools-check-paths` reads each staged file and fails on an
   absolute path under `$(REPO_WORKTREES_ROOT)` (default `$(HOME)/worktrees`)
-  that names neither the running checkout nor an existing directory.
+  that names neither the running checkout nor a directory any live entry
+  accounts for.
   `validate-local` runs it after the tools are staged and before a lane
   executes one. `validate-repository` builds the tools through
   `$(MAKE) validation-tools` and does not run the scan.
