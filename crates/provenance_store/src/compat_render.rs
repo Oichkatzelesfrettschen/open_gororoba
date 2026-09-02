@@ -267,6 +267,13 @@ pub(crate) fn splice_compat_toml_overrides(
             }
         }
     }
+    // toml_edit appends a key the cached body never had, so a value that arrived
+    // from a `gororoba-db update-*` mutation lands after the mirror-sorted keys
+    // while the same value re-imported from the mirror lands in sorted position.
+    // The emitted rows therefore differ in key order, not in content. Sorting
+    // here would fix that and rewrite two checked-in registry rows (C-1731
+    // last_verified, I-212 status_note), so the reconciliation belongs in a
+    // commit that carries the regenerated exports.
     doc.to_string().trim().to_string()
 }
 
