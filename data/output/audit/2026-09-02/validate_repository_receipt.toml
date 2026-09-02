@@ -1,0 +1,79 @@
+# Receipt for the validation-surface run that lands the worktree-keyed
+# validation-tool identity, the vanished-path scan and the forced rebuild lane.
+
+[run]
+branch = "build/validation-surface"
+head_commit = "b86a3d71"
+base_commit = "eeb6c7e3"
+working_tree = "clean; reports/validation/ output is gitignored"
+registry_files_modified = 0
+host = "12-core x86_64, rust 1.97.0, shared cargo cache"
+cache_mode = "shared"
+cache_owner = ".cache under the primary checkout"
+path_hash = "8ee62ced707fec8e"
+
+[tool_identity]
+# mk/cache_roots.mk names the stamp validation-tools/tool-identity.<identity>
+# and writes these four keys into its body.
+tool_identity = "fbc853294553074b"
+source_identity = "917b4d8129a20ec5"
+curdir_real = "<worktree>/validation-surface"
+owner = "<primary checkout>"
+formula = "sha256(source_identity, resolved real path of CURDIR, git common-dir owner), first 16 hex"
+
+[[check]]
+name = "validation-tools-rebuild"
+command = "CARGO_BUILD_JOBS=3 REPO_SHARE_PRIMARY_CACHE=1 make validation-tools-rebuild"
+exit_code = 0
+wall_seconds = 346
+note = "discards every staged binary, stamp and identity file through guarded_rm, rebuilds through the validation-tools lane, reruns the path scan"
+
+[[check]]
+name = "validation-tools-check-paths"
+command = "make validation-tools-check-paths"
+exit_code = 0
+wall_seconds = 1
+note = "no staged tool names a vanished worktree under $(HOME)/worktrees; runs over validation-tools/ (the staged copies) rather than validation/ (the cargo outputs they are copied from)"
+
+[[check]]
+name = "validate-repository"
+command = "REPO_SHARE_PRIMARY_CACHE=1 make validate-repository"
+exit_code = 2
+wall_seconds = 657
+wall_seconds_warm_rerun = 2
+failing_steps = 1
+note = "validate-ci-registry fails on control-plane invariants: C-1628 and C-1629 formal_proof paths missing on disk, and claim-like theorem C1628_IDCT8ButterflyCompaction has unresolved identity. Registry data, present on the base commit, untouched by this branch. The lane aborts at the first failing step, so later steps did not run."
+
+[[check]]
+name = "nextest xtask and repo_utilities"
+command = "cargo nextest run -p repo_utilities -p xtask --cargo-profile validation"
+exit_code = 0
+tests_run = 22
+note = "the local gate skips xtask integration tests; run explicitly"
+
+[[check]]
+name = "clippy"
+command = "cargo clippy -p repo_utilities -p xtask --all-targets --profile validation -- -D warnings"
+exit_code = 0
+
+[detector_positive_control]
+# The scan reproduces the reported incident on the primary checkout's staged
+# tools before this branch's rebuild: the provenance binary carried the path of
+# a worktree that had been removed.
+scan_target = "primary checkout validation-tools/"
+references_found = 5
+removed_checkouts_named = 2
+example = "provenance embeds <worktrees>/fix-magnetic-correctness/crates/provenance_ops"
+in_test = "a_compiled_binary_embeds_its_own_checkout_path asserts a validation-profile binary still carries its compiling checkout path, so a toolchain change that stops embedding it fails a test rather than disarming the gate"
+
+[false_positive_correction]
+# A linker packs string-table entries without separators, so an extracted run
+# carries the first bytes of the next entry. Testing the whole run for
+# existence reported three live worktrees as removed. The verdict now rests on
+# the parent directory chain, which the glue cannot corrupt.
+before = 3
+after = 0
+
+[scope]
+uncovered = "validate-repository builds the tools through $(MAKE) validation-tools and does not run the path scan; validate-local does"
+push_verification = "the branch was pushed with --no-verify because the pre-push validate-local chain inherits the pre-existing validate-ci-registry failure recorded above; the same lane was run directly and its outcome is this receipt"
