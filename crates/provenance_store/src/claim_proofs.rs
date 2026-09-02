@@ -28,6 +28,27 @@ use super::{
     ProofInventory, status_normalize::normalize_insight_status, toml_helpers::render_toml_table,
 };
 
+/// An explicit non-path disposition of the `formal_proof` field. The field
+/// schema admits `na_empirical[:rationale]`, `na_observational[:source]`,
+/// `na_methodology[:tool]`, `pending[:reason]` and `external:<citation>`
+/// beside proof paths. A reindex keeps these verbatim instead of resolving
+/// them against the proof tree, so a reviewer's decision that a claim has
+/// no proof survives `provenance index-control-plane`, and the
+/// numeric-prefix backfill sees a populated field and never relinks an
+/// unrelated proof file.
+pub fn is_formal_proof_disposition(value: &str) -> bool {
+    let value = value.trim();
+    ["na_empirical", "na_observational", "na_methodology", "pending"]
+        .iter()
+        .any(|prefix| {
+            value == *prefix
+                || value
+                    .strip_prefix(prefix)
+                    .is_some_and(|rest| rest.starts_with(':'))
+        })
+        || value.starts_with("external:")
+}
+
 pub(crate) fn canonical_formal_proof_for_claim(
     repo_root: &Path,
     claim: &ClaimRecord,
@@ -35,7 +56,7 @@ pub(crate) fn canonical_formal_proof_for_claim(
 ) -> Option<String> {
     if let Some(formal_proof) = claim.formal_proof.as_deref()
         && !formal_proof.trim().is_empty()
-        && repo_root.join(formal_proof).exists()
+        && (is_formal_proof_disposition(formal_proof) || repo_root.join(formal_proof).exists())
     {
         return Some(formal_proof.trim().to_string());
     }

@@ -92,12 +92,12 @@ fn main() -> Result<()> {
     let claims = store.list_claims()?;
     let mut proposals: Vec<Proposal> = Vec::new();
     for claim in &claims {
-        let is_empty = claim
-            .formal_proof
-            .as_deref()
-            .map(str::is_empty)
-            .unwrap_or(true);
-        if !is_empty {
+        // A populated field is never reclassified, and an explicit
+        // disposition (na_empirical:<rationale>, pending:<reason>,
+        // external:<citation>) is a reviewer decision the numeric-prefix
+        // rules below must not overturn.
+        let current = claim.formal_proof.as_deref().unwrap_or("").trim();
+        if !current.is_empty() || provenance_store::is_formal_proof_disposition(current) {
             continue;
         }
         let (proposed, rule) = classify(ClassifyInput {

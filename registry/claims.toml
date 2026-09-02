@@ -4937,6 +4937,7 @@ status_note = "Kernel-checked under Rocq 9.1.1 in the full proof-tree build (296
 where_stated = "proofs/theories/AlternatorTraceExclusion.v (alternator_no_codim4, dim_eig1_neq_codim4)"
 
 [[claim]]
+formal_proof = "na_empirical:THEMIS-A staple-associator ROC-AUC is a measurement on minute magnetometer data; the C1628_/C1629_ IDCT proofs matched by numeric prefix are unrelated r300 codec theorems"
 id = "C-1628"
 last_verified = "2026-07-18"
 statement = "On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files parsing from 815 unique days; the prior matched list carried 836 rows, 834 parsing successfully, and double-listed 21 days under two filename conventions; it is superseded), the normalized 16D Cayley-Dickson staple-associator strictly dominates the one-step field-rotation-angle baseline on ROC-AUC across the three selected coordinates simultaneously: bulk delta +0.005572, high-gradient-positive stratum delta +0.009081, low-gradient-positive stratum delta +0.002063, hence simultaneous margin M = min(deltas) = +0.002063 > 0. These are exact pooled point estimates from deterministic computation (E-239 rerun of the E-237 design); the strata are per-time-point sample regimes (median |dB/dt| split among positives), not crossing-event classes. Scope: AUC dominance over the one-step baselines only; when temporal receptive fields are matched at six samples, cumulative and maximum rotation exceed the associator (C-1633), so the advantage over one-step rotation partly measures temporal-context asymmetry. The negative class consists of non-crossing samples on known crossing days, not arbitrary operational days."
@@ -4945,6 +4946,7 @@ status_note = "Deterministic computational claim on the fixed deduplicated bench
 where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_rot.json; E-239"
 
 [[claim]]
+formal_proof = "na_empirical:THEMIS-A staple-associator ROC-AUC is a measurement on minute magnetometer data; the C1628_/C1629_ IDCT proofs matched by numeric prefix are unrelated r300 codec theorems"
 id = "C-1629"
 last_verified = "2026-07-18"
 statement = "The staple-associator's componentwise ROC-AUC advantage over one-step field rotation generalizes across independently sampled THEMIS-A crossing days: the file-cluster bootstrap on the deduplicated 813-file benchmark (E-239, 2,000 resamples of intact daily files, every sample within each drawn file retained) puts the simultaneous margin M at +0.00206 with 95% CI [0.00081, 0.00328] (p_le_zero = 0.001), and the mean daily AUC delta at +0.00508 [0.00372, 0.00634]. The intact-cluster design supersedes the E-235 moving-block intervals for population inference because blocks straddling file boundaries mix days instead of resampling them. This margin is scoped to the one-step rotation baseline; matched six-sample rotation statistics reverse the sign (C-1633)."
