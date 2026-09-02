@@ -2,7 +2,7 @@
 //! peer-reviewed magnetopause crossing catalog.
 //!
 //! WHY: A second independent hardened-label evaluation strengthens the methods
-//! paper.  Unlike the MMS FPI evaluation (E-236), the ground truth here is an
+//! paper.  Unlike the MMS SITL-labeled evaluation, E-266, the ground truth here is an
 //! externally published, peer-reviewed catalog (JGR 2020,
 //! doi:10.1029/2019JA027190) that was assembled from plasma-moment and
 //! magnetic-field criteria by independent researchers -- not derived from the

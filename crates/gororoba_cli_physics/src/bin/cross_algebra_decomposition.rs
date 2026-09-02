@@ -38,7 +38,7 @@ const G_KPC_KMS2: f64 = 4.302e-6;
 
 #[derive(Parser)]
 #[command(name = "cross-algebra-decomposition")]
-#[command(about = "F3: Three-component cross-algebra excess decomposition (E-203)")]
+#[command(about = "F3: Three-component cross-algebra excess decomposition; companion of E-203")]
 struct Cli {
     /// Path to cross_algebra_correlation.csv (precomputed).
     #[arg(

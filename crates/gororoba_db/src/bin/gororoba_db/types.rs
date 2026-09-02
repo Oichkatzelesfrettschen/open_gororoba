@@ -440,6 +440,24 @@ pub(crate) enum InsightMutationAction {
         #[arg(long)]
         id: String,
     },
+    /// Replace the summary carried in the insight's compat TOML body.
+    /// Appends to insight_revisions with field_name='summary'
+    UpdateSummary {
+        #[arg(long)]
+        id: String,
+        #[arg(long)]
+        summary: String,
+        #[arg(long)]
+        actor: Option<String>,
+        #[arg(long)]
+        reason: Option<String>,
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
+    },
+    ShowSummary {
+        #[arg(long)]
+        id: String,
+    },
 }
 
 #[derive(Parser, Debug)]

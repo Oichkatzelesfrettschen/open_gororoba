@@ -1,4 +1,4 @@
-//! lbm-rca-probe: Root Cause Analysis for LBM divergence (E-167).
+//! lbm-rca-probe: Root Cause Analysis for LBM divergence; companion of the E-167 stability envelope.
 //!
 //! Instruments the LBM solver at the per-step level to identify the exact
 //! mechanism driving instability at high density contrast.

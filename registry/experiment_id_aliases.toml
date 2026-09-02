@@ -1,0 +1,184 @@
+# Experiment identifier alias registry (governance support).
+#
+# A legacy identifier is one that an active surface (crate source, LaTeX,
+# tracked markdown, plan) used for an analysis before the canonical registry
+# assigned that identifier to a different experiment. Each alias row binds the
+# legacy identifier and its scheme to the canonical experiment that now
+# carries the analysis. governance-verify experiment-reference-identity
+# rejects legacy identifiers on active surfaces, so this file is a migration
+# record, never a second namespace. Retired identifiers are numbers a legacy
+# scheme consumed; the canonical registry never allocates them.
+
+[experiment_id_aliases]
+updated = "2026-09-02"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+alias_count = 17
+retired_ids = ["E-243", "E-244", "E-245", "E-246", "E-247", "E-248", "E-249", "E-250", "E-251", "E-252", "E-253", "E-254", "E-255", "E-256", "E-257", "E-258", "E-259", "E-260", "E-261", "E-262", "E-263", "E-264", "E-265"]
+
+[experiment_id_aliases.schema]
+required_alias_fields = ["id", "legacy_id", "legacy_scheme", "canonical_experiment_id", "status", "status_token", "notes"]
+
+[[alias]]
+id = "EIA-001"
+legacy_id = "E-236"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-266"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-236 for: MMS magnetopause CD associator evaluation against SITL-curated selections. The canonical registry assigned E-236 to a different experiment, so the analysis is registered as E-266."
+
+[[alias]]
+id = "EIA-002"
+legacy_id = "E-237"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-267"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-237 for: THEMIS-A CD associator P/R/F1 against the Staples et al. (2020) catalog over the 2016-08-29..2016-09-04 sudden-commencement window. The canonical registry assigned E-237 to a different experiment, so the analysis is registered as E-267."
+
+[[alias]]
+id = "EIA-003"
+legacy_id = "E-238"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-268"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-238 for: Multi-day MMS1 FGM crossing analysis: topology-positive rate of |B|-gradient crossings under the 32D CD associator. The canonical registry assigned E-238 to a different experiment, so the analysis is registered as E-268."
+
+[[alias]]
+id = "EIA-004"
+legacy_id = "E-239"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-269"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-239 for: PSP Alfvenic noise control: CD associator fire rates in quiet Alfvenic versus compressive intervals. The canonical registry assigned E-239 to a different experiment, so the analysis is registered as E-269."
+
+[[alias]]
+id = "EIA-005"
+legacy_id = "E-240"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-270"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-240 for: Takens tau sensitivity sweep over {1,2,5,10} minutes on the THEMIS-A Staples window. The canonical registry assigned E-240 to a different experiment, so the analysis is registered as E-270."
+
+[[alias]]
+id = "EIA-006"
+legacy_id = "E-241"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-271"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-241 for: PSP E3 micro-switchback enrichment of quiet-interval CD associator fires. The canonical registry assigned E-241 to a different experiment, so the analysis is registered as E-271."
+
+[[alias]]
+id = "EIA-007"
+legacy_id = "E-242"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-272"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-242 for: Block-bootstrap 95 percent F1 confidence interval on the THEMIS-A sudden-commencement window. The canonical registry assigned E-242 to a different experiment, so the analysis is registered as E-272."
+
+[[alias]]
+id = "EIA-008"
+legacy_id = "E-243"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-273"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-243 for: PSP compressive-versus-Alfvenic CD fire count-ratio permutation test. The canonical registry assigned E-243 to a different experiment, so the analysis is registered as E-273."
+
+[[alias]]
+id = "EIA-009"
+legacy_id = "E-244"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-274"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-244 for: THEMIS-A sudden-commencement window F1 against shuffled event times. The canonical registry assigned E-244 to a different experiment, so the analysis is registered as E-274."
+
+[[alias]]
+id = "EIA-010"
+legacy_id = "E-247"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-275"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-247 for: THEMIS-A general-interval F1, shuffled-event null and bootstrap interval outside the sudden-commencement window. The canonical registry assigned E-247 to a different experiment, so the analysis is registered as E-275."
+
+[[alias]]
+id = "EIA-011"
+legacy_id = "E-259"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-276"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-259 for: THEMIS held-out threshold F1 evaluation cited in the JGR draft. The canonical registry assigned E-259 to a different experiment, so the analysis is registered as E-276."
+
+[[alias]]
+id = "EIA-012"
+legacy_id = "E-265"
+legacy_scheme = "heliosphere-paper-2026-08"
+canonical_experiment_id = "E-277"
+status = "active"
+status_token = "ACTIVE"
+notes = "The JGR draft docs/latex/heliosphere/jgr_cd_magnetopause.tex and the heliosphere dispatcher sources used E-265 for: Voyager 1 heliopause crossing CD associator enrichment from MAG48 data with relative normalization. The canonical registry assigned E-265 to a different experiment, so the analysis is registered as E-277."
+
+[[alias]]
+id = "EIA-013"
+legacy_id = "E-240"
+legacy_scheme = "optics-proposal-2026-08-04"
+canonical_experiment_id = ""
+status = "never_registered"
+status_token = "NEVER_REGISTERED"
+notes = "data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml proposed E-240 for an optics experiment that never entered the canonical registry; the audit records are retained chronology and cite this alias."
+
+[[alias]]
+id = "EIA-014"
+legacy_id = "E-241"
+legacy_scheme = "optics-proposal-2026-08-04"
+canonical_experiment_id = ""
+status = "never_registered"
+status_token = "NEVER_REGISTERED"
+notes = "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-experiment-manifest.toml proposed E-241 for an optics experiment that never entered the canonical registry; the audit records are retained chronology and cite this alias."
+
+[[alias]]
+id = "EIA-015"
+legacy_id = "E-242"
+legacy_scheme = "optics-proposal-2026-08-04"
+canonical_experiment_id = ""
+status = "never_registered"
+status_token = "NEVER_REGISTERED"
+notes = "data/output/audit/2026-08-04/sfwm-source-intake-experiment-manifest.toml proposed E-242 for an optics experiment that never entered the canonical registry; the audit records are retained chronology and cite this alias."
+
+[[alias]]
+id = "EIA-016"
+legacy_id = "E-243"
+legacy_scheme = "optics-proposal-2026-08-04"
+canonical_experiment_id = ""
+status = "never_registered"
+status_token = "NEVER_REGISTERED"
+notes = "data/output/audit/2026-08-04/sfwm-source-reproduction-experiment-manifest.toml proposed E-243 for an optics experiment that never entered the canonical registry; the audit records are retained chronology and cite this alias."
+
+[[alias]]
+id = "EIA-017"
+legacy_id = "E-199"
+legacy_scheme = "lotss-analysis-source-literal"
+canonical_experiment_id = "E-278"
+status = "active"
+status_token = "ACTIVE"
+notes = "crates/gororoba_cli_data/src/bin/lotss_analysis.rs wrote E-199 into its ultrametric report while no E-199 row existed; the analysis is registered as E-278."
+
+[[non_experiment_token]]
+file = "docs/benchmark_cross_platform.md"
+token = "E-300"
+reason = "AMD E-300 is a CPU model name in the cross-platform benchmark table."
+
+[[non_experiment_token]]
+file = "docs/latex/llm_scaffold_paper.tex"
+token = "E-020"
+reason = "Range endpoint of the early experiment numbering (E-001 through E-020) in the scaffold paper; E-020 was never registered and the sentence describes the range, not an experiment."

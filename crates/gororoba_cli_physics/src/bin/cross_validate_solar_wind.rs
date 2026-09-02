@@ -1,4 +1,4 @@
-//! Multi-spacecraft solar wind cross-validation (E-113).
+//! Multi-spacecraft solar wind cross-validation; companion of the E-113 replication.
 //!
 //! Computes Pearson correlation, RMSE, and bias between overlapping
 //! hourly measurements from different spacecraft at L1. Proves

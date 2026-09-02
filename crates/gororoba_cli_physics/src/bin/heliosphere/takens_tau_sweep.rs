@@ -1,4 +1,4 @@
-//! Takens tau (lag) sensitivity sweep on THEMIS E-237 data (E-240).
+//! Takens tau (lag) sensitivity sweep on THEMIS E-267 data (E-270).
 //!
 //! WHY: Takens' theorem requires the embedding lag tau to be chosen relative
 //! to the characteristic timescale of the underlying dynamical system.  A
@@ -7,7 +7,7 @@
 //! tests whether F1 degrades gracefully as tau varies over an order of
 //! magnitude, establishing the temporal robustness of the 32D embedding.
 //!
-//! WHAT: Runs the identical CD associator evaluation pipeline from E-237
+//! WHAT: Runs the identical CD associator evaluation pipeline from E-267
 //! (THEMIS-A FGM, Staples+2020 catalog, 224 events) for tau in {1, 2, 5, 10}
 //! minutes.  The |B|-gradient+rotation baseline is tau-independent and serves
 //! as a constant reference line.  Reports P/R/F1 at each tau value (C-1633).
@@ -333,7 +333,7 @@ pub fn run(cli: Cli) -> Result<()> {
     let spacecraft = format!("TH{probe_upper}");
 
     println!(
-        "=== Takens tau Sensitivity Sweep (E-240) ===\n\
+        "=== Takens tau Sensitivity Sweep (E-270) ===\n\
          Window: {} + {} days, Spacecraft: {}\n\
          Embedding: {}D, tau sweep: {{1, 2, 5, 10}} min\n",
         start, cli.n_days, spacecraft, cli.embedding_dim

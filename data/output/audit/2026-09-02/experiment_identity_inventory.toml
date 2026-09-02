@@ -1,0 +1,788 @@
+# Experiment/claim identity collision inventory for the heliosphere lane.
+# Read-only survey. Produced by grep -rn over the paths listed below, cross-checked
+# against registry/experiments.toml and registry/claims.toml (both AUTO-GENERATED
+# read-only compat exports; consulted, not edited).
+#
+# family values:
+#   staples-registry           = matches the actual SQLite-canonical registry entry
+#   heliosphere-paper-legacy   = local numbering used only in the heliosphere JGR
+#                                 paper prose/doc-comments, colliding with the
+#                                 registry range
+#   optics-proposal-2026-08-04 = local numbering proposed in the 2026-08-04 optics
+#                                 audit manifests, never formally registered
+#   other                      = neither heliosphere nor optics; unrelated token
+#                                 collision found by the broad grep
+
+[meta]
+generated = "2026-09-02"
+scope_note = "IDs found in scope E-2[0-9][0-9] / C-1[0-9][0-9][0-9] narrowed by inspection to the actual collision set: E-236..E-247, E-259, E-265, C-1617/1618/1628..1634/1635..1639/1729/1730."
+
+# ---------------------------------------------------------------------------
+# crates/gororoba_cli_physics/src/bin/heliosphere/*.rs
+# ---------------------------------------------------------------------------
+
+[[reference]]
+id = "E-237"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/bootstrap_f1.rs"
+lines = [1]
+local_meaning = "Doc comment 'Block-bootstrap 95% CI for the CD associator F1 on THEMIS E-237 data' -- names E-237 as the dataset/pipeline that this binary's block-bootstrap F1 confidence interval consumes."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark' (intact-daily-file resampling of the 834-file THEMIS-A benchmark)."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "bootstrap-f1"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/themis_bootstrap_f1_ci.json"]
+
+[[reference]]
+id = "E-241"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs"
+lines = [155]
+local_meaning = "Subcommand doc comment: 'PSP E3 micro-switchback enrichment: quiet-interval CD fires vs consecutive B-rotation events (E-241)' -- names the psp-switchback-correlation subcommand as E-241."
+registry_meaning = "id=E-241, binary=staples-layout-sweep, title='Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts', claim_refs=[C-1633, C-1730]."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-switchback-correlation"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+
+[[reference]]
+id = "E-237"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs"
+lines = [184]
+local_meaning = "Subcommand doc comment: 'Sweep Takens tau {1,2,5,10} min on THEMIS E-237 data (E-240)' -- names E-237 as the source THEMIS dataset for the takens-tau-sweep subcommand."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "takens-tau-sweep"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/takens_tau_sweep.json"]
+
+[[reference]]
+id = "E-240"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/main.rs"
+lines = [184]
+local_meaning = "Same doc comment: '(E-240)' at the end tags the takens-tau-sweep subcommand itself as E-240."
+registry_meaning = "id=E-240, binary=staples-twist-ladder, title='Random unital twist ladder against the sedenion associator on the staples benchmark', claim_refs=[C-1632, C-1729]."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "takens-tau-sweep"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/takens_tau_sweep.json"]
+
+[[reference]]
+id = "E-241"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/psp_switchback_correlation.rs"
+lines = [1, 279, 337]
+local_meaning = "'PSP micro-switchback correlation experiment (E-241)' / 'PSP E3 micro-switchback enrichment analysis (E-241)' -- this binary IS E-241 in local numbering: consecutive-B-rotation micro-switchback enrichment in quiet PSP E3 solar wind."
+registry_meaning = "id=E-241, binary=staples-layout-sweep, title='Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts', claim_refs=[C-1633, C-1730]."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-switchback-correlation"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+
+[[reference]]
+id = "E-239"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/psp_switchback_correlation.rs"
+lines = [3, 13, 121, 250, 357]
+local_meaning = "'WHY: E-239 found a 0.311/hr CD associator fire rate in quiet PSP E3 solar wind' -- refers to psp_alfven_control.rs's PSP Alfvenic control run as the local E-239, whose window-classification code and chunk formula this binary reuses (duplicated, not shared)."
+registry_meaning = "id=E-239, binary=staples-roc-cluster-bootstrap, title='Equal-receptive-field control battery on the deduplicated staples benchmark', claim_refs=[C-1628, C-1629, C-1631, C-1632, C-1633]."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-alfven-control"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_alfven_control.json"]
+
+[[reference]]
+id = "C-1617"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/selfsim_logstats.rs"
+lines = [8]
+local_meaning = "'feeds the regime-boundary analysis (C-1617/18)' -- ties the cross-mission log-associator self-similarity statistics computed here to a solar-wind heliocentric-distance regime boundary."
+registry_meaning = "id=C-1617, statement='The CD spatial associator norm ... grows monotonically ... a detectable non-zero value at least 2 steps before the first f_i < 0 positivity violation in BGK D3Q19'; where_stated='E-225 LBM CD spatial associator probe'. LBM precursor claim, not solar-wind self-similarity."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "selfsim-logstats"
+retained_outputs = ["MISSING: data/output/agg_selfsim.json"]
+
+[[reference]]
+id = "C-1618"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/selfsim_logstats.rs"
+lines = [8]
+local_meaning = "Same 'regime-boundary analysis (C-1617/18)' reference, second half of the pair."
+registry_meaning = "id=C-1618 (registry/claims.toml line 4852 onward, same LBM-precursor claim family as C-1617; not the solar-wind self-similarity regime this file computes)."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "selfsim-logstats"
+retained_outputs = ["MISSING: data/output/agg_selfsim.json"]
+
+[[reference]]
+id = "E-239"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/psp_alfven_control.rs"
+lines = [1, 340, 533]
+local_meaning = "'PSP Alfvenic noise control experiment (E-239)' -- this binary IS the local E-239: per-class CD associator fire rates distinguishing quiet Alfvenic PSP solar wind from compressive/rotational events."
+registry_meaning = "id=E-239, binary=staples-roc-cluster-bootstrap, title='Equal-receptive-field control battery on the deduplicated staples benchmark', claim_refs=[C-1628, C-1629, C-1631, C-1632, C-1633]. Registered E-239 is a THEMIS-A control battery, not a PSP Alfvenic-noise experiment."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-alfven-control"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_alfven_control.json"]
+
+[[reference]]
+id = "E-237"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/psp_alfven_control.rs"
+lines = [533]
+local_meaning = "'Gap detection: same tolerance as E-237/E-238' -- reuses the local E-237/E-238 THEMIS gap-detection tolerance convention."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-alfven-control"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_alfven_control.json"]
+
+[[reference]]
+id = "E-238"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/psp_alfven_control.rs"
+lines = [533]
+local_meaning = "Same comment, second local id: 'same tolerance as E-237/E-238' names E-238 as the second THEMIS gap-detection precedent."
+registry_meaning = "id=E-238, binary=sedenion-associator-coefficient-census, title='Exact coefficient census of the sedenion basis associator tensor' -- an exact combinatorial enumeration over the 16-basis multiplication table, no THEMIS data or gap detection involved."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-alfven-control"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_alfven_control.json"]
+
+[[reference]]
+id = "C-1634"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/psp_switchback_correlation.rs"
+lines = [321]
+local_meaning = "'(micro-switchbacks) in quiet PSP E3 solar wind (C-1634)' -- cites C-1634 as the claim recording the PSP E3 micro-switchback enrichment result computed by this binary."
+registry_meaning = "id=C-1634, statement='The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions.' Optics/photon-graviton TCMT domain, unrelated to PSP solar-wind switchbacks."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-switchback-correlation"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+
+[[reference]]
+id = "E-236"
+file = "crates/gororoba_cli_physics/src/bin/heliosphere/themis_staples_labeled.rs"
+lines = [5]
+local_meaning = "'Unlike the MMS FPI evaluation (E-236), the ground truth here is an [external Staples+2020 catalog]' -- names an MMS FPI-based evaluation binary as the local E-236, contrasted against this THEMIS Staples-labeled evaluation."
+registry_meaning = "id=E-236, binary=selfsim-logsigma-bootstrap, title='File-level bootstrap CIs for the cross-mission staple-associator log-sigma survey'. Not an MMS FPI evaluation."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+# ---------------------------------------------------------------------------
+# docs/latex/heliosphere/**/*.tex
+# ---------------------------------------------------------------------------
+
+[[reference]]
+id = "E-237"
+file = "docs/latex/heliosphere/figures/fig_fte_scatter.tex"
+lines = [3]
+local_meaning = "'Experiment: E-237 (SITL labeled eval) | Claims: C-1629..C-1631' -- names E-237 as the SITL-labeled FTE evaluation figure source."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "C-1629"
+file = "docs/latex/heliosphere/figures/fig_fte_scatter.tex"
+lines = [3]
+local_meaning = "Same figure-header line, listed as one of the claims this SITL-labeled FTE figure supports."
+registry_meaning = "id=C-1629, statement='The staple-associator's componentwise ROC-AUC advantage over one-step field rotation generalizes across independently sampled THEMIS-A crossing days...'; where_stated cites E-239, not a SITL/FTE evaluation."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1631"
+file = "docs/latex/heliosphere/figures/fig_fte_scatter.tex"
+lines = [3]
+local_meaning = "Same figure-header line, second claim listed."
+registry_meaning = "id=C-1631, statement='...pooled ROC-AUC 0.8274 with file-cluster-bootstrap 95% CI...outperforms matched six-sample PVI and Gram-determinant controls'; where_stated cites E-239 control-battery data, not the SITL/FTE figure."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-240"
+file = "docs/latex/heliosphere/figures/fig_tau_sweep.tex"
+lines = [3]
+local_meaning = "'Experiment: E-240 | Claim: C-1633' -- names E-240 as the tau-sweep figure's source experiment (takens-tau-sweep subcommand)."
+registry_meaning = "id=E-240, binary=staples-twist-ladder, title='Random unital twist ladder against the sedenion associator on the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "takens-tau-sweep"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/takens_tau_sweep.json"]
+
+[[reference]]
+id = "C-1633"
+file = "docs/latex/heliosphere/figures/fig_tau_sweep.tex"
+lines = [3]
+local_meaning = "Same figure-header line: claims the tau-sweep result as C-1633."
+registry_meaning = "id=C-1633, statement='When temporal receptive fields are matched at six samples...direct angular statistics outperform the staple-associator...'. Registered C-1633 supports E-239's control battery, not a tau sweep."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-239"
+file = "docs/latex/heliosphere/figures/fig_alfven_control.tex"
+lines = [3]
+local_meaning = "'Experiment: E-239 | Claim: C-1631/C-1632' -- names E-239 as the PSP Alfvenic control figure source (psp-alfven-control subcommand)."
+registry_meaning = "id=E-239, binary=staples-roc-cluster-bootstrap, title='Equal-receptive-field control battery on the deduplicated staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-alfven-control"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_alfven_control.json"]
+
+[[reference]]
+id = "C-1631"
+file = "docs/latex/heliosphere/figures/fig_alfven_control.tex"
+lines = [3]
+local_meaning = "Same figure-header line, first of two claims listed for the Alfvenic-control figure."
+registry_meaning = "id=C-1631, statement='...pooled ROC-AUC 0.8274...outperforms matched six-sample PVI and Gram-determinant controls'; supports E-239's real (registered) control battery, coincidentally the correct claim by accident of the shared 'E-239' token, but the figure it labels is not that battery."
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1632"
+file = "docs/latex/heliosphere/figures/fig_alfven_control.tex"
+lines = [3]
+local_meaning = "Same figure-header line, second claim listed for the Alfvenic-control figure."
+registry_meaning = "id=C-1632, statement='Replacing the Cayley-Dickson multiplication-sign structure...with a sign-scrambled tensor collapses ROC-AUC from 0.8274 to 0.4750...'. Registered C-1632's evidence is the sign-scramble control, not a PSP Alfvenic-noise control."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-241"
+file = "docs/latex/heliosphere/figures/fig_enrichment.tex"
+lines = [3]
+local_meaning = "'Experiment: E-241 | Claim: C-1634' -- names E-241 as the PSP micro-switchback enrichment figure source."
+registry_meaning = "id=E-241, binary=staples-layout-sweep, title='Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-switchback-correlation"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+
+[[reference]]
+id = "C-1634"
+file = "docs/latex/heliosphere/figures/fig_enrichment.tex"
+lines = [3]
+local_meaning = "Same figure-header line: claims the enrichment result as C-1634."
+registry_meaning = "id=C-1634, statement='The source-level electromagnetic gauge Ward identity holds separately for the irreducible, tadpole, and external-leg contributions under declared conventions.' Optics domain, unrelated to PSP micro-switchbacks."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-237"
+file = "docs/latex/heliosphere/cover_letter.tex"
+lines = [73]
+local_meaning = "'four experiments (E-237 through E-241) are available in the [supplementary materials]' -- treats E-237..E-241 as one contiguous locally-numbered experiment block for the paper."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-241"
+file = "docs/latex/heliosphere/cover_letter.tex"
+lines = [73]
+local_meaning = "Same 'four experiments (E-237 through E-241)' range statement, upper bound."
+registry_meaning = "id=E-241, binary=staples-layout-sweep, title='Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-switchback-correlation"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+
+[[reference]]
+id = "C-1629"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [8]
+local_meaning = "Manuscript-header comment: 'C-1629..C-1634 (experiments E-237..E-241)' -- declares the entire local claim/experiment range for the paper in one line."
+registry_meaning = "id=C-1629, statement (see above, generalization of the ROC-AUC advantage across THEMIS-A crossing days); where_stated cites E-239."
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1634"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [8]
+local_meaning = "Same manuscript-header comment, upper bound of the local claim range."
+registry_meaning = "id=C-1634, statement='The source-level electromagnetic gauge Ward identity holds separately...'. Optics domain, unrelated to the paper's PSP/THEMIS claim range."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-237"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [8, 808]
+local_meaning = "Header comment and body text ('under the experiments E-237, E-239, E-240, and E-241') naming E-237 as one of the paper's four supporting experiments."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-239"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [808]
+local_meaning = "'under the experiments E-237, E-239, E-240, and E-241' -- E-239 named as the PSP Alfvenic-control supporting experiment."
+registry_meaning = "id=E-239, binary=staples-roc-cluster-bootstrap, title='Equal-receptive-field control battery on the deduplicated staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-alfven-control"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_alfven_control.json"]
+
+[[reference]]
+id = "E-240"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [808, 857]
+local_meaning = "Body text and results-table row 'Tau sweep monotonicity (E-240) | F1 vs tau' -- E-240 is the local id for the Takens tau sweep."
+registry_meaning = "id=E-240, binary=staples-twist-ladder, title='Random unital twist ladder against the sedenion associator on the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "takens-tau-sweep"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/takens_tau_sweep.json"]
+
+[[reference]]
+id = "E-241"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [808, 859]
+local_meaning = "Body text and results-table row 'PSP micro-rot enrichment (E-241) | 1.72x' -- E-241 is the local id for the PSP micro-switchback enrichment result."
+registry_meaning = "id=E-241, binary=staples-layout-sweep, title='Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-switchback-correlation"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+
+[[reference]]
+id = "E-244"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [844, 870]
+local_meaning = "Results-table row 'THEMIS SC F1 null (E-244) | F1 = 0.601 vs shuffle | 0.601 | < 1e-4 | YES' -- local id for a THEMIS sudden-commencement-window F1-vs-permutation-null test."
+registry_meaning = "unregistered"
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-247"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [845, 861, 870, 871]
+local_meaning = "Results-table row 'THEMIS general F1 null (E-247) | F1 = 0.415 vs shuffle' plus 'General-window CI (E-247) | CI = [0.320, 0.457]' -- local id for the general-interval (non-SC-selected) THEMIS F1 null and CI test."
+registry_meaning = "unregistered"
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "themis-general-benchmark"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/themis_general_benchmark.json"]
+
+[[reference]]
+id = "E-243"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [846, 871]
+local_meaning = "Results-table row 'PSP ratio permutation (E-243) | 2.83x count ratio | 0.941 | < 1e-4 | YES' -- local id for a PSP compressive/Alfvenic count-ratio permutation test."
+registry_meaning = "unregistered"
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-238"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [858]
+local_meaning = "Results-table row 'MMS topology-positive (E-238) | 75/86 = 87.2% | -- | -- | DESC.' -- local id for an MMS topology-positive descriptive rate."
+registry_meaning = "id=E-238, binary=sedenion-associator-coefficient-census, title='Exact coefficient census of the sedenion basis associator tensor'. Registered E-238 is a combinatorial census, not an MMS topology rate."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-242"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [860]
+local_meaning = "Results-table row 'SC-window bootstrap CI (E-242) | CI = [0.456, 0.667] | -- | -- | DESC.' -- local id for the THEMIS sudden-commencement-window F1 bootstrap CI."
+registry_meaning = "id=E-242, binary=staples-incremental-information, title='Incremental information of the staple associator over the six-sample geometric baselines under file-grouped cross-validation', claim_refs=[C-1631, C-1731]. Registered E-242 is a logistic-regression incremental-information test, not a bootstrap CI on the SC window."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-259"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [862]
+local_meaning = "Results-table row 'Held-out threshold F1 (E-259) | F1 = 0.332 | -- | -- | DESC.' -- local id for a held-out-threshold F1 descriptive result."
+registry_meaning = "unregistered"
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-265"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [863]
+local_meaning = "Results-table row 'V1 heliopause enrichment (E-265) | 1.44x | -- | -- | DESC.' -- local id for a Voyager 1 heliopause micro-rotation enrichment ratio."
+registry_meaning = "unregistered"
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "voyager-heliopause"
+retained_outputs = []
+
+[[reference]]
+id = "E-243"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [871]
+local_meaning = "Body text: 'the PSP compressive/Alfvenic discrimination ratio (E-243)' -- restates the same local id from line 846."
+registry_meaning = "unregistered"
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-244"
+file = "docs/latex/heliosphere/jgr_cd_magnetopause.tex"
+lines = [870]
+local_meaning = "Body text: 'the THEMIS SC-window F1 (E-244)' -- restates the same local id from line 844."
+registry_meaning = "unregistered"
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-237"
+file = "docs/latex/heliosphere/response_to_reviewers.tex"
+lines = [6]
+local_meaning = "Manuscript-header comment: 'Supporting experiments: E-237..E-241 | Claims: C-1629..C-1634'."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "E-241"
+file = "docs/latex/heliosphere/response_to_reviewers.tex"
+lines = [6, 190, 234, 405]
+local_meaning = "Header comment upper bound, plus body sections 'Micro-switchback correlation (E-241, new Section 5)' and binary name 'heliosphere-psp-switchback-correlation (E-241)'."
+registry_meaning = "id=E-241, binary=staples-layout-sweep, title='Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-switchback-correlation"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+
+[[reference]]
+id = "C-1629"
+file = "docs/latex/heliosphere/response_to_reviewers.tex"
+lines = [6]
+local_meaning = "Header comment: 'Claims: C-1629..C-1634' lower bound."
+registry_meaning = "id=C-1629, statement (ROC-AUC generalization across THEMIS-A crossing days); where_stated cites E-239."
+collision = false
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1634"
+file = "docs/latex/heliosphere/response_to_reviewers.tex"
+lines = [6]
+local_meaning = "Header comment: 'Claims: C-1629..C-1634' upper bound."
+registry_meaning = "id=C-1634, statement='The source-level electromagnetic gauge Ward identity holds separately...'. Optics domain, unrelated to the response-to-reviewers claim range."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-240"
+file = "docs/latex/heliosphere/response_to_reviewers.tex"
+lines = [83, 110, 143]
+local_meaning = "Revision-summary table row 'MC1 | Major | Added tau sweep ablation | E-240', plus prose 'full tau sensitivity sweep (new Section 3, Experiment E-240)' and 'heliosphere-takens-tau-sweep binary (E-240)'."
+registry_meaning = "id=E-240, binary=staples-twist-ladder, title='Random unital twist ladder against the sedenion associator on the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "takens-tau-sweep"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/takens_tau_sweep.json"]
+
+[[reference]]
+id = "E-239"
+file = "docs/latex/heliosphere/response_to_reviewers.tex"
+lines = [84, 157, 159, 233]
+local_meaning = "Revision table 'MC2 | Major | Added Alfvenic control + micro-switchback | E-239, E-241', plus prose 'Alfvenic control (E-239, new Section 4)' and binary name 'heliosphere-psp-alfven-control (E-239)'."
+registry_meaning = "id=E-239, binary=staples-roc-cluster-bootstrap, title='Equal-receptive-field control battery on the deduplicated staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "psp-alfven-control"
+retained_outputs = ["MISSING: data/output/heliosphere/ablations/psp_alfven_control.json"]
+
+[[reference]]
+id = "E-237"
+file = "docs/latex/heliosphere/response_to_reviewers.tex"
+lines = [85]
+local_meaning = "Revision table 'MC3 | Major | Gap detection, spin tone note, epsilon documentation | E-237 binary update, Section 2'."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark'."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+# ---------------------------------------------------------------------------
+# docs/*.md
+# ---------------------------------------------------------------------------
+
+[[reference]]
+id = "E-237"
+file = "docs/ablation_preregistration.md"
+lines = [41]
+local_meaning = "Preregistration table: 'Dataset | THEMIS-A Staples+2020, 2016-08-29 to 2016-09-04 (E-237)', paired with a 1800s moving-block bootstrap (N=10000, seed 42). This predates the intact-daily-file-cluster bootstrap that now carries the E-237 id (C-1629 explicitly says the file-cluster design 'supersedes the E-235 moving-block intervals')."
+registry_meaning = "id=E-237, binary=staples-roc-cluster-bootstrap, title='File-cluster bootstrap with simultaneous dominance margin for the staples benchmark' (intact-daily-file resampling, not the moving-block design this preregistration describes)."
+collision = true
+family = "heliosphere-paper-legacy"
+producing_subcommand = "unknown"
+retained_outputs = []
+
+[[reference]]
+id = "C-1628"
+file = "docs/lions_commentary_cd_kernel.md"
+lines = [115]
+local_meaning = "'This is the algebraic mechanism behind conjecture C-1628' -- cites C-1628 as the zero-divisor-density-access mechanism explaining the 16D non-associativity crossover in the CD tower."
+registry_meaning = "id=C-1628, statement='On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark...the normalized 16D Cayley-Dickson staple-associator strictly dominates the one-step field-rotation-angle baseline on ROC-AUC...'. An empirical THEMIS magnetometer ROC-AUC claim, not an algebraic conjecture about zero-divisor density."
+collision = true
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1635"
+file = "docs/engineering/claim-theorem-identity-frontier-2026_08_04.md"
+lines = [26]
+local_meaning = "Table row: '`C-1635` | tensor electromagnetic Ward conformance' -- lists C-1635 among four theorem-identity rows the frontier doc says are 'not yet represented as claim rows' (per scientific-frontier-map-2026_08_02.md line 60)."
+registry_meaning = "id=C-1635, statement='The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid.' Matches; this is a documented-collision-in-progress row (theorem-identity-disambiguation-2026_08_04.md explains a Rocq proof filename C1635_SedenionDriverSemantics.v does not imply claim C-1635), not a fresh mismatch."
+collision = false
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1636"
+file = "docs/engineering/claim-theorem-identity-frontier-2026_08_04.md"
+lines = [27]
+local_meaning = "Table row: '`C-1636` | source gravitational Ward identity'."
+registry_meaning = "id=C-1636, statement='The source-level off-shell gravitational Ward identity matches its declared lower-point right-hand side...'. Matches."
+collision = false
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1637"
+file = "docs/engineering/claim-theorem-identity-frontier-2026_08_04.md"
+lines = [28]
+local_meaning = "Table row: '`C-1637` | tensor gravitational Ward conformance'."
+registry_meaning = "id=C-1637, statement='The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition...'. Matches."
+collision = false
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1638"
+file = "docs/engineering/claim-theorem-identity-frontier-2026_08_04.md"
+lines = [29, 63]
+local_meaning = "Table row 'C-1638 | energy constraint with declared tolerance' and later 'block C-864, C-867, C-1638, and C-1639' in a P2A source-faithful-channel scope note."
+registry_meaning = "id=C-1638, statement='The photon-graviton TCMT implementation evaluates kappa_1 - kappa_2 = gamma_l against the declared relative tolerance.' Matches."
+collision = false
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1640"
+file = "docs/engineering/claim-theorem-identity-frontier-2026_08_04.md"
+lines = [63]
+local_meaning = "'C-848, C-849, C-850, C-1640 through C-1644' -- scope note for P2A source-faithful channel semantics predicates."
+registry_meaning = "id=C-1640 (registry/claims.toml line 5053), part of the P2A absorption-balance/unitarity/reciprocity/time-reversal predicate family; C-1640..C-1644 status-transition manifests exist under data/output/audit/2026-08-04/. Matches; family is optics-proposal-2026-08-04, correctly used."
+collision = false
+family = "optics-proposal-2026-08-04"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1638"
+file = "docs/engineering/scientific-frontier-map-2026_08_02.md"
+lines = [60]
+local_meaning = "'C-1635 through C-1638 | proofs/verified/C1635_SedenionDriverSemantics.v through C1638_OctonionDowncastNoZeroDivisors.v | The proof project contains four load-bearing structural theorem surfaces that are not yet represented as claim rows.' -- flags C-1635..C-1638 as Rocq proof-filename aliases without claim-row backing at the time this doc was written."
+registry_meaning = "id=C-1638 is now a registered claim (statement present, see above); the doc's 'not yet represented' framing is stale relative to the current registry but is itself the documented resolution path, not a fresh naming collision."
+collision = false
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1635"
+file = "docs/engineering/theorem-identity-disambiguation-2026_08_04.md"
+lines = [9, 13]
+local_meaning = "'A proof filename such as C1635_SedenionDriverSemantics.v retains its legacy name and path, but it does not imply claim C-1635.' -- explicitly documents that the Rocq filename token and the registry claim id are namespaced separately."
+registry_meaning = "id=C-1635, statement='The repository tensor implementation reproduces the declared gauge Ward contraction...'. This doc is the disambiguation record for exactly this class of token collision; consistent by design."
+collision = false
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1630"
+file = "docs/THEOREMS.md"
+lines = [88]
+local_meaning = "Mirror table row: 'THM-LEGACY-C1630_SedenionOctonionDowncast | C1630_SedenionOctonionDowncast | proofs/verified/C1630_SedenionOctonionDowncast.v | kernel_checked | explicit_link | C-1630' -- explicit link from the legacy Rocq theorem name to claim C-1630."
+registry_meaning = "id=C-1630, statement='The 16D Cayley-Dickson basis-associator coefficient tensor...has every coefficient in {-2, 0, +2}...'; status_note credits E-238 (sedenion-associator-coefficient-census). Matches; explicit_link row, not a collision."
+collision = false
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "C-1630"
+file = "docs/generated/THEOREMS_REGISTRY_MIRROR.md"
+lines = [88]
+local_meaning = "Generated mirror of the same THEOREMS.md row: explicit_link from THM-LEGACY-C1630_SedenionOctonionDowncast to claim C-1630."
+registry_meaning = "id=C-1630, statement (see above). Matches; generated artifact of the same explicit_link row."
+collision = false
+family = "other"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+# ---------------------------------------------------------------------------
+# data/output/audit/2026-08-04/*experiment-manifest.toml
+# ---------------------------------------------------------------------------
+
+[[reference]]
+id = "E-240"
+file = "data/output/audit/2026-08-04/ruan-fan-channel-oracle-experiment-manifest.toml"
+lines = [4]
+local_meaning = "'id = \"E-240\"', title = 'Ruan-Fan source-faithful channel and cylindrical-Mie oracle repair', claim_refs = [C-848, C-1640, C-1641, C-1642, C-1643, C-1644'] -- optics P2A channel-oracle repair experiment, never entered into registry/experiments.toml."
+registry_meaning = "id=E-240, binary=staples-twist-ladder, title='Random unital twist ladder against the sedenion associator on the staples benchmark'."
+collision = true
+family = "optics-proposal-2026-08-04"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-241"
+file = "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-experiment-manifest.toml"
+lines = [4]
+local_meaning = "'id = \"E-241\"', title = 'Ruan-Fan source-parameter and held-out Mie-TCMT reproduction', claim_refs = [C-849, C-850] -- optics P2B Mie-TCMT reproduction experiment, never entered into registry/experiments.toml."
+registry_meaning = "id=E-241, binary=staples-layout-sweep, title='Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts'."
+collision = true
+family = "optics-proposal-2026-08-04"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-242"
+file = "data/output/audit/2026-08-04/sfwm-source-intake-experiment-manifest.toml"
+lines = [4]
+local_meaning = "'id = \"E-242\"', title = 'Son-Chekhova SFWM source intake and legacy oracle quarantine', claim_refs = [C-832, C-833, C-834, C-838, C-839] -- optics SFWM source-intake experiment, never entered into registry/experiments.toml."
+registry_meaning = "id=E-242, binary=staples-incremental-information, title='Incremental information of the staple associator over the six-sample geometric baselines under file-grouped cross-validation', claim_refs=[C-1631, C-1731]."
+collision = true
+family = "optics-proposal-2026-08-04"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[[reference]]
+id = "E-243"
+file = "data/output/audit/2026-08-04/sfwm-source-reproduction-experiment-manifest.toml"
+lines = [4]
+local_meaning = "'id = \"E-243\"', title = 'Son-Chekhova SFWM signed source reproduction and rate-anchor reconstruction', claim_refs = [C-832, C-833, C-834, C-838, C-839, C-1659, C-1661] -- optics SFWM source-reproduction experiment, never entered into registry/experiments.toml."
+registry_meaning = "unregistered"
+collision = false
+family = "optics-proposal-2026-08-04"
+producing_subcommand = "n/a"
+retained_outputs = []
+
+[summary]
+staples-registry = 0
+heliosphere-paper-legacy = 48
+optics-proposal-2026-08-04 = 5
+other = 9
+
+legacy_ids_needing_new_canonical_ids = [
+  "E-236", "E-237", "E-238", "E-239", "E-240", "E-241",
+  "E-242", "E-243", "E-244", "E-247", "E-259", "E-265",
+  "C-1617", "C-1618", "C-1628", "C-1629", "C-1631", "C-1632", "C-1633", "C-1634",
+]
+
+[summary.legacy_to_analysis.E-236]
+analysis = "MMS FPI-labeled magnetopause-crossing evaluation, contrasted in prose against the THEMIS Staples-labeled evaluation; no source file in crates/gororoba_cli_physics/src/bin/heliosphere/ is confirmed to compute it (mms_sitl_labeled.rs evaluates SITL burst catalogs, not FPI, so the match is unconfirmed)."
+subcommand = "unknown"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-237]
+analysis = "THEMIS-A Staples+2020 crossing-day CD-associator evaluation over the 2016-08-29..2016-09-04 SC window; the base dataset every other local id in the E-237..E-241 block builds on."
+subcommand = "unknown"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-238]
+analysis = "MMS topology-positive descriptive rate, 75/86 = 87.2 percent, reported in the JGR results table; no source file matched by grep for the exact phrase."
+subcommand = "unknown"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-239]
+analysis = "PSP Alfvenic-noise control: per-class CD associator fire rates distinguishing quiet Alfvenic solar wind from compressive/rotational PSP E3 events."
+subcommand = "psp-alfven-control"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-240]
+analysis = "Takens tau (lag) sensitivity sweep over {1,2,5,10} minutes on the THEMIS E-237 dataset, reporting P/R/F1 at each tau against the canonical associator as a reference line."
+subcommand = "takens-tau-sweep"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-241]
+analysis = "PSP E3 micro-switchback enrichment: quiet-interval CD associator fires against consecutive B-rotation (micro-switchback) events, reporting a 1.72x enrichment ratio."
+subcommand = "psp-switchback-correlation"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-242]
+analysis = "SC-window (sudden-commencement) THEMIS F1 bootstrap confidence interval, CI = [0.456, 0.667], reported in the JGR results table; no source file matched by grep for 'SC-window' or the CI figure."
+subcommand = "unknown"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-243]
+analysis = "PSP compressive/Alfvenic discrimination count-ratio permutation test, 2.83x ratio, p < 1e-4, reported in the JGR results table; no source file matched by grep."
+subcommand = "unknown"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-244]
+analysis = "THEMIS SC-window F1 permutation null test, F1 = 0.601 vs shuffle, p < 1e-4, reported in the JGR results table; no source file matched by grep."
+subcommand = "unknown"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-247]
+analysis = "THEMIS general-interval (non-SC-selected) F1 permutation null and bootstrap CI, F1 = 0.415 vs shuffle, CI = [0.320, 0.457]; themis_general_benchmark.rs's doc comment explicitly targets this survivor-bias critique (all Staples+2020 crossings in an unselected 30-day window, not just the SC window), though it is not literally tagged E-247 in source."
+subcommand = "themis-general-benchmark"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-259]
+analysis = "Held-out threshold F1 = 0.332, reported as a descriptive JGR results-table row; no source file matched by grep."
+subcommand = "unknown"
+retained_output_exists = false
+
+[summary.legacy_to_analysis.E-265]
+analysis = "Voyager 1 heliopause micro-rotation enrichment, 1.44x, reported as a descriptive JGR results-table row; voyager_heliopause.rs is the only heliopause-named binary in the lane and is the plausible producer, though no exact string match confirms it."
+subcommand = "voyager-heliopause"
+retained_output_exists = false

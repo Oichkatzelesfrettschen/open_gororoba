@@ -1,0 +1,26 @@
+[transition]
+transition_key = "c-1729-scope-narrowing-2026-09-02"
+source_claim_id = "C-1729"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-LADDER-20260901"]
+experiment_ids = ["E-240"]
+exercised_falsifier = "False if any of the 999 random unital twists or the 999 exact-support sign scrambles reaches ROC-AUC 0.8274 on the E-240 subsample."
+proposed_claim_status = "Verified"
+rationale = "The numbers in C-1729 stand; its wording overreaches them. The random-twist family does not match the CD support: the CD tensor has 1848 terms and the 999 twists span 1564 to 1784 terms, so only the sign-scramble family is a support-matched control and the two results must be stated separately. A 999-member sample from one sampling measure over unital sign functions establishes that the CD tensor is extreme under that measure; it does not establish uniqueness across all XOR-graded twists, and 'extreme tail among matched tensors' claimed both. The successor states the two control results separately and scopes the conclusion to the declared sampling measure."
+unresolved_assumptions = ["Cocycle-restricted twists make the multiplication associative and the associator identically zero, so that family is a negative control rather than a matched null; an invariant-matched nonassociative twist ensemble and the algebra-isomorphic relabeling orbit remain the untested matched families."]
+actor = "closure-review-2026-09-02"
+reason = "Narrow the C-1729 wording to what the two control families support."
+transition_timestamp = "2026-09-02T06:00:00Z"
+expected_source_state_sha256 = "880a16092181295cd6fc671fd09ffde6dd307f550131b668db58da7cdb91e929"
+expected_claim_id_max = 1731
+
+[[successor]]
+proposal_key = "staples-cd-tensor-extreme-under-random-unital-twist-measure"
+statement = "On the E-240 subsample of the deduplicated THEMIS-A Staples benchmark (1,733,470 samples, 578,320 positives, 813 daily files, ChaCha8 seed 42) the canonical Cayley-Dickson associator tensor (1848 terms, 924 positive and 924 negative) reaches ROC-AUC 0.8274. Two control results, stated separately: (1) under the exact-support sign-scramble family, 999 scrambles of the CD tensor's signs at identical 1848-term support reach mean 0.4951, 97.5th percentile 0.5672 and maximum 0.6213, zero draws at or above the canonical value; (2) under the declared random-unital-twist sampling measure (uniform over sign functions on the 15 x 15 non-identity basis pairs with sigma(0,.) = sigma(.,0) = +1), 999 draws with 1564 to 1784 terms each reach mean 0.5148, 97.5th percentile 0.5922 and maximum 0.6287, zero draws at or above the canonical value. The CD tensor is therefore extreme under both the support-matched scramble family and the declared random-unital-twist measure; the twist family is not support-matched, and the result does not establish uniqueness across all XOR-graded twists."
+initial_status = "Verified"
+source_or_implementation_boundary = "Phenomenological mapping on one benchmark at interpretive depth 0; two control families with different support, each reported against its own null; no statement about twist families outside the declared sampling measure."
+required_falsifier = "Any draw at or above ROC-AUC 0.8274 from a re-run of staples-twist-ladder with a different seed or n_draws 9999, from either family; or an invariant-matched nonassociative twist ensemble whose 97.5th percentile exceeds 0.8274."
+where_stated = ["data/output/staples_twist_ladder.json", "E-240"]
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-LADDER-20260901"]
+predecessor_relation_kind = "narrows"
