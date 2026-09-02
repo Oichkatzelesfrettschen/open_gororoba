@@ -3243,6 +3243,7 @@ dependencies = [
  "regex",
  "repo_root",
  "reqwest 0.13.2",
+ "rustls",
  "serde",
  "serde_json",
  "sha2 0.11.0",

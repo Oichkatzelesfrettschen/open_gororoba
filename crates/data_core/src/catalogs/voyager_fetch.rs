@@ -127,8 +127,8 @@ impl DatasetProvider for VoyagerMag48Provider {
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let subdir = match self.spacecraft {
-            VoyagerSpacecraft::V1 => "voyager1_mag48",
-            VoyagerSpacecraft::V2 => "voyager2_mag48",
+            VoyagerSpacecraft::V1 => "voyager1_mag48_spdf",
+            VoyagerSpacecraft::V2 => "voyager2_mag48_spdf",
         };
         let dir = config.output_dir.join(subdir);
         std::fs::create_dir_all(&dir)?;
@@ -138,24 +138,26 @@ impl DatasetProvider for VoyagerMag48Provider {
             VoyagerSpacecraft::V2 => VOYAGER2_MAG48_BASE,
         };
         let prefix = match self.spacecraft {
-            VoyagerSpacecraft::V1 => "vy1",
-            VoyagerSpacecraft::V2 => "vy2",
+            VoyagerSpacecraft::V1 => "voyager1",
+            VoyagerSpacecraft::V2 => "voyager2",
         };
 
         for year in self.year_start..=self.year_end {
-            let fname = format!("{prefix}_{year}.asc");
-            let output = dir.join(&fname);
-            if config.skip_existing && output.exists() {
-                continue;
-            }
-            let url = format!("{base}{fname}");
-            match download_to_string(&url) {
-                Ok(data) => {
-                    std::fs::write(&output, data)?;
-                    log::info!("saved {}", fname);
+            for month in 1..=12u8 {
+                let fname = format!("{year:04}{month:02}_{prefix}_mag_ip_48s.asc");
+                let output = dir.join(&fname);
+                if config.skip_existing && output.exists() {
+                    continue;
                 }
-                Err(e) => {
-                    log::warn!("SPDF 48-sec MAG failed for {prefix} {year}: {e}");
+                let url = format!("{base}data/{fname}");
+                match download_to_string(&url) {
+                    Ok(data) => {
+                        std::fs::write(&output, data)?;
+                        log::info!("saved {}", fname);
+                    }
+                    Err(e) => {
+                        log::warn!("SPDF 48-sec MAG failed for {prefix} {year}-{month:02}: {e}");
+                    }
                 }
             }
         }
@@ -164,8 +166,8 @@ impl DatasetProvider for VoyagerMag48Provider {
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         let subdir = match self.spacecraft {
-            VoyagerSpacecraft::V1 => "voyager1_mag48",
-            VoyagerSpacecraft::V2 => "voyager2_mag48",
+            VoyagerSpacecraft::V1 => "voyager1_mag48_spdf",
+            VoyagerSpacecraft::V2 => "voyager2_mag48_spdf",
         };
         config.output_dir.join(subdir).exists()
     }

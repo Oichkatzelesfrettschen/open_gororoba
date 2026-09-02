@@ -695,10 +695,20 @@ impl DownloadStack {
         self.execute_with_trace(request, TransferKind::Download)
     }
 
+    /// Fetch a full response body as text. reqwest serves the request when
+    /// a CryptoProvider is installed; otherwise the download route runs
+    /// (curl, wget, aria2) into an ephemeral file that is read back, so a
+    /// gate tool without a provider still retrieves HAPI CSV.
     pub fn fetch_text(&self, request: &TransferRequest) -> Result<String, TransferError> {
         self.gate_request(&request.url);
         let headers = self.build_headers(request, None)?;
-        let client = self.client()?;
+        let client = match self.client() {
+            Ok(client) => client,
+            Err(TransferError::BackendFailure { .. }) => {
+                return self.fetch_text_via_download_route(request);
+            }
+            Err(err) => return Err(err),
+        };
         let response = self.send_reqwest_with_retry(&client, request, headers)?;
         let final_url = response.url().to_string();
         let status = response.status().as_u16();
@@ -713,6 +723,23 @@ impl DownloadStack {
             url: request.url.clone(),
             source,
         })
+    }
+
+    fn fetch_text_via_download_route(
+        &self,
+        request: &TransferRequest,
+    ) -> Result<String, TransferError> {
+        let destination = ephemeral_download_path("fetch_text", None);
+        let mut download = TransferRequest::download(request.url.clone(), &destination);
+        download.note = request.note.clone();
+        download.headers = request.headers.clone();
+        let recovered = self.recover(&download);
+        let text = match recovered {
+            Ok(_) => fs::read_to_string(&destination).map_err(TransferError::Io),
+            Err(err) => Err(err),
+        };
+        fs::remove_file(&destination).ok();
+        text
     }
 
     fn execute_with_trace(&self, request: &TransferRequest, kind: TransferKind) -> TransferTrace {
@@ -1575,7 +1602,19 @@ impl DownloadStack {
         Ok(headers)
     }
 
+    // reqwest is built with rustls-no-provider, so a process that never
+    // installed a CryptoProvider panics inside reqwest's runtime thread on
+    // the first TLS handshake instead of returning an error. Reporting the
+    // missing provider as a backend failure lets the route fall through to
+    // curl, which every gate host carries.
     fn client(&self) -> Result<Client, TransferError> {
+        if rustls::crypto::CryptoProvider::get_default().is_none() {
+            return Err(TransferError::BackendFailure {
+                backend: DownloadBackend::Reqwest,
+                url: "reqwest-client".to_string(),
+                message: "no rustls CryptoProvider is installed in this process; falling through to the next backend".to_string(),
+            });
+        }
         Client::builder()
             .timeout(self.timeout)
             .redirect(reqwest::redirect::Policy::limited(10))
@@ -2025,6 +2064,23 @@ fn ephemeral_download_path(prefix: &str, extension: Option<&str>) -> PathBuf {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The test binary installs no CryptoProvider, so the reqwest backend must
+    /// report itself unavailable instead of panicking on first use.
+    #[test]
+    fn reqwest_client_reports_missing_crypto_provider_as_backend_failure() {
+        let stack = DownloadStack::new();
+        match stack.client() {
+            Err(TransferError::BackendFailure {
+                backend, message, ..
+            }) => {
+                assert_eq!(backend, DownloadBackend::Reqwest);
+                assert!(message.contains("CryptoProvider"), "{message}");
+            }
+            Err(other) => panic!("unexpected error variant: {other}"),
+            Ok(_) => panic!("client built without an installed CryptoProvider"),
+        }
+    }
 
     #[test]
     fn test_route_prefers_reqwest_for_default_http_probe() {
