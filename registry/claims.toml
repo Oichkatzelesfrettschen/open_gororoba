@@ -5774,6 +5774,13 @@ status = "Verified"
 where_stated = "data/output/staples_layout_sweep.json; E-241"
 
 [[claim]]
+id = "C-1731"
+statement = "At matched six-sample receptive field the staple associator carries nonzero but small information beyond the geometric baselines: on the deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files), a logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) reaches out-of-fold ROC-AUC 0.8428 under 5-fold file-grouped cross-validation, adding ln(assoc) raises it to 0.8448, and the paired bootstrap over 1000 file resamples (ChaCha8 seed 42) gives delta ROC-AUC +0.0020 [0.0017, 0.0023], delta PR-AUC +0.0005 [0.0001, 0.0008] and delta log loss -0.00012 [-0.00018, -0.00007], every interval excluding zero in the associator's favor. The unique contribution is 0.2 percent of AUC, an order of magnitude below the standalone margins C-1631 reports, so the associator's standalone discrimination is mostly redundant with six-sample angular and magnitude statistics and not entirely so."
+status = "Verified"
+where_stated = "data/output/staples_incremental_information.json; E-242"
+last_verified = "2026-09-02"
+
+[[claim]]
 id = "C-174"
 last_verified = "2026-02-01"
 statement = "Left-right operator commutant [L_a, R_b] = 0 exactly at associative dimensions (dim <= 4). At non-associative dims (>= 8),||[L_a,R_b]||_rel is nonzero (0.40 at dim=8, 0.18 at dim=64) and decreasing with dimension. [L,R]=0 is equivalent to associativity."
