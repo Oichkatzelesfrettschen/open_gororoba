@@ -1,4 +1,12 @@
 {
+  "invalidation": {
+    "status": "invalidated",
+    "invalidated_on": "2026-09-01",
+    "correcting_commit": "ff070f6f",
+    "stale_sha256": "2c12873cffc1c938bd6f5d39c0fc72835747f9cb23b069d5dfdaea9cb701585b",
+    "reason": "surrogates built after embedding and evaluated on divergent support; see invalidations.toml",
+    "record": "data/output/heliosphere/ablations/invalidations.toml"
+  },
   "mission": "maven",
   "n_vectors": 4005,
   "n_associator_norms": 4003,
