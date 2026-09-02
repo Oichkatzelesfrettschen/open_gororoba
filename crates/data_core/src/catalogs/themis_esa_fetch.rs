@@ -1,14 +1,14 @@
 //! Fetch/provider support for THEMIS ESA ion moments (density and average
-//! temperature) from the CDAWeb HAPI dataset `TH<P>_L2_ESA@0`.
+//! temperature) from the CDAWeb HAPI dataset `TH{PROBE}_L2_ESA@0`.
 //!
 //! The cached daily files under `data/external/themis_esa/` hold the
-//! unflagged full-mode ion moments `th<p>_peif_density` (cm^-3) and
-//! `th<p>_peif_avgtemp` (eV) at the native few-minute cadence. A 2026-09-01
+//! unflagged full-mode ion moments `th{probe}_peif_density` (cm^-3) and
+//! `th{probe}_peif_avgtemp` (eV) at the native few-minute cadence. A 2026-09-01
 //! refetch of THA 2008 DOY 301 with exactly these parameters reproduced the
 //! cached file byte for byte, while the quality-filtered `...Q` parameters
 //! returned NaN on 282 of its 563 rows; the manifest therefore pins the
 //! unflagged series, and a consumer that wants the quality mask fetches
-//! `th<p>_peif_data_quality` beside it.
+//! `th{probe}_peif_data_quality` beside it.
 
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_hapi_csv_raw};
 use chrono::NaiveDate;
@@ -85,7 +85,7 @@ impl ThemisEsaProvider {
     }
 }
 
-/// `th<p>_esa_<year>_<doy>.csv`, the name beta-join reads.
+/// `th{probe}_esa_{year}_{doy}.csv`, the name beta-join reads.
 pub fn day_filename(probe: &str, year: u16, doy: u16) -> String {
     format!("{}_esa_{:04}_{:03}.csv", probe.to_lowercase(), year, doy)
 }
