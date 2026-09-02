@@ -131,8 +131,15 @@ const BEST_PRACTICE_SOURCES: &[&str] = &[
     "https://openlineage.io/docs/",
 ];
 
+/// `downloaded` asserts the repository itself carries the bytes, so it holds
+/// only when git tracks the path (a Git LFS pointer counts). A file present in
+/// one checkout and gitignored everywhere else is
+/// `remotely_materializable`: the row records canonical_url, sha256,
+/// byte_length, retrieval_command and license_disposition, and per-host
+/// presence moves to the gitignored materialization manifest.
 const VALID_STATUSES: &[&str] = &[
     "downloaded",
+    "remotely_materializable",
     "downloadable",
     "blocked",
     "citation_only_no_link",
@@ -173,6 +180,11 @@ struct UnifiedArtifact {
     nonworking_mirrors: Vec<String>,
     unverified_mirrors: Vec<String>,
     downloaded_paths: Vec<String>,
+    host_only_paths: Vec<String>,
+    sha256: String,
+    byte_length: u64,
+    retrieval_command: String,
+    license_disposition: String,
     canonical_functional_url: String,
     canonical_download_path: String,
     status: String,
@@ -184,12 +196,17 @@ struct UnifiedArtifact {
 #[derive(Clone, Debug, Default)]
 pub struct BuildSummary {
     pub artifact_count: usize,
+    pub downloaded_count: usize,
+    pub remotely_materializable_count: usize,
+    pub materializable_without_url_count: usize,
+    pub row_counts: Vec<RowCountReport>,
 }
 
 #[derive(Clone, Debug, Default)]
 pub struct VerifySummary {
     pub artifact_count: usize,
     pub downloaded_count: usize,
+    pub remotely_materializable_count: usize,
     pub downloadable_count: usize,
     pub blocked_count: usize,
     pub citation_only_count: usize,
@@ -281,6 +298,19 @@ use reference_predicates::{
 #[path = "source_provenance/candidate_extract.rs"]
 mod candidate_extract;
 use candidate_extract::extract_candidates_from_source_file;
+
+// Two-phase output writer and the retention predicate that separates
+// repository truth from per-host materialization. Same #[path] indirection.
+#[path = "source_provenance/staged_write.rs"]
+pub mod staged_write;
+pub use staged_write::{DEFAULT_SHRINK_THRESHOLD, RowCountReport, ShrinkPolicy, StagedWriteSet};
+
+#[path = "source_provenance/artifact_retention.rs"]
+pub mod artifact_retention;
+pub use artifact_retention::{
+    HostMaterializationRow, RetentionSet, observe_host_materialization,
+    render_host_materialization, retrieval_command, write_host_materialization,
+};
 
 fn normalize_identity_hint(hint: &str) -> String {
     let trimmed = hint.trim();
@@ -834,6 +864,9 @@ fn classify_artifacts(
     artifacts: &mut [UnifiedArtifact],
     observations: &HashMap<String, Vec<LinkObservation>>,
     download_map: &HashMap<String, Vec<String>>,
+    repo_root: &Path,
+    retention: &RetentionSet,
+    carry_forward: &HashMap<String, DurableFacts>,
 ) {
     for artifact in artifacts {
         let mut working = Vec::new();
@@ -877,34 +910,24 @@ fn classify_artifacts(
         artifact.working_pdf_mirrors = dedupe(working_pdf);
         artifact.nonworking_mirrors = dedupe(nonworking);
         artifact.unverified_mirrors = dedupe(unverified);
-        artifact.downloaded_paths = dedupe(downloaded);
+
+        // Split the observed paths by the retention predicate. A path git
+        // tracks is repository truth and keeps the `downloaded` status; a path
+        // that exists only in this checkout is host state, so it leaves the
+        // registry row and moves to the materialization manifest.
+        let observed_paths = dedupe(downloaded);
+        let (retained, host_only): (Vec<String>, Vec<String>) = observed_paths
+            .into_iter()
+            .partition(|path| retention.contains(path));
+        artifact.downloaded_paths = retained;
+        artifact.host_only_paths = host_only;
+
         let citation_locator_identity = key_is_citation_locator(&artifact.key);
         let citation_locator_only_links = !artifact.links.is_empty()
             && artifact
                 .links
                 .iter()
                 .all(|url| is_citation_locator_url(url));
-        artifact.minimum_requirement_met =
-            !(artifact.working_mirrors.is_empty() && artifact.downloaded_paths.is_empty());
-        artifact.manual_intervention_required = !artifact.links.is_empty()
-            && !artifact.minimum_requirement_met
-            && !citation_locator_identity
-            && !citation_locator_only_links;
-
-        artifact.status = if !artifact.downloaded_paths.is_empty() {
-            "downloaded".to_string()
-        } else if !artifact.working_mirrors.is_empty() {
-            "downloadable".to_string()
-        } else if citation_locator_identity
-            || citation_locator_only_links
-            || artifact.links.is_empty()
-        {
-            "citation_only_no_link".to_string()
-        } else if !artifact.nonworking_mirrors.is_empty() && artifact.working_mirrors.is_empty() {
-            "blocked".to_string()
-        } else {
-            "unverified".to_string()
-        };
 
         artifact.canonical_functional_url = if let Some(url) = artifact.working_pdf_mirrors.first()
         {
@@ -921,12 +944,136 @@ fn classify_artifacts(
             .first()
             .cloned()
             .unwrap_or_default();
+
+        artifact.status = if !artifact.downloaded_paths.is_empty() {
+            "downloaded".to_string()
+        } else if !artifact.host_only_paths.is_empty() {
+            "remotely_materializable".to_string()
+        } else if !artifact.working_mirrors.is_empty() {
+            "downloadable".to_string()
+        } else if citation_locator_identity
+            || citation_locator_only_links
+            || artifact.links.is_empty()
+        {
+            "citation_only_no_link".to_string()
+        } else if !artifact.nonworking_mirrors.is_empty() && artifact.working_mirrors.is_empty() {
+            "blocked".to_string()
+        } else {
+            "unverified".to_string()
+        };
+
+        // Content identity comes from whichever copy this host holds. When no
+        // copy is present the previously exported values carry forward, so a
+        // checkout missing the PDFs never erases a hash another host measured.
+        let carried = carry_forward.get(&artifact.key);
+        let measured = artifact
+            .downloaded_paths
+            .iter()
+            .chain(artifact.host_only_paths.iter())
+            .find_map(|path| artifact_retention::file_identity(&repo_root.join(path)));
+        match measured {
+            Some(identity) => {
+                artifact.sha256 = identity.sha256;
+                artifact.byte_length = identity.byte_length;
+            }
+            None => {
+                artifact.sha256 = carried.map(|facts| facts.sha256.clone()).unwrap_or_default();
+                artifact.byte_length = carried.map(|facts| facts.byte_length).unwrap_or_default();
+            }
+        }
+        if artifact.canonical_functional_url.is_empty()
+            && let Some(url) = carried.map(|facts| facts.canonical_url.clone())
+        {
+            artifact.canonical_functional_url = url;
+        }
+        artifact.license_disposition = carried
+            .map(|facts| facts.license_disposition.clone())
+            .filter(|value| !value.is_empty())
+            .unwrap_or_else(|| "unreviewed".to_string());
+        artifact.retrieval_command = if artifact.status == "remotely_materializable" {
+            let target = artifact.host_only_paths.first().cloned().unwrap_or_default();
+            let command = retrieval_command(&artifact.canonical_functional_url, &target);
+            if command.is_empty() {
+                carried
+                    .map(|facts| facts.retrieval_command.clone())
+                    .unwrap_or_default()
+            } else {
+                command
+            }
+        } else {
+            String::new()
+        };
+
+        // A row with a URL and a hash is satisfiable from any host, so it meets
+        // the minimum even though no local copy backs it.
+        artifact.minimum_requirement_met = !artifact.working_mirrors.is_empty()
+            || !artifact.downloaded_paths.is_empty()
+            || (artifact.status == "remotely_materializable"
+                && !artifact.canonical_functional_url.is_empty()
+                && !artifact.sha256.is_empty());
+        artifact.manual_intervention_required = !artifact.links.is_empty()
+            && !artifact.minimum_requirement_met
+            && !citation_locator_identity
+            && !citation_locator_only_links;
         artifact.manual_intervention_reason = if artifact.manual_intervention_required {
             "No working mirror observed from current fetch/retry ledgers; manual link intervention required.".to_string()
         } else {
             String::new()
         };
     }
+}
+
+/// Facts a prior export measured that a host without the file cannot recompute.
+#[derive(Clone, Debug, Default)]
+struct DurableFacts {
+    sha256: String,
+    byte_length: u64,
+    retrieval_command: String,
+    license_disposition: String,
+    canonical_url: String,
+}
+
+fn load_durable_facts(path: &Path) -> HashMap<String, DurableFacts> {
+    let mut facts = HashMap::new();
+    let Ok(value) = load_toml_value(path) else {
+        return facts;
+    };
+    let Some(rows) = value.get("artifact").and_then(Value::as_array) else {
+        return facts;
+    };
+    for row in rows {
+        let Some(table) = row.as_table() else { continue };
+        let key = table
+            .get("key")
+            .and_then(Value::as_str)
+            .unwrap_or_default()
+            .to_string();
+        if key.is_empty() {
+            continue;
+        }
+        let text = |field: &str| {
+            table
+                .get(field)
+                .and_then(Value::as_str)
+                .unwrap_or_default()
+                .to_string()
+        };
+        facts.insert(
+            key,
+            DurableFacts {
+                sha256: text("sha256"),
+                byte_length: table
+                    .get("byte_length")
+                    .and_then(Value::as_integer)
+                    .unwrap_or_default()
+                    .max(0) as u64,
+                retrieval_command: text("retrieval_command"),
+                license_disposition: text("license_disposition"),
+                canonical_url: text("canonical_functional_url"),
+            },
+        );
+    }
+    facts
 }
 
 fn render_artifact_registry(
@@ -936,6 +1083,10 @@ fn render_artifact_registry(
     now: &str,
 ) -> String {
     let total = artifacts.len();
+    let remotely_materializable = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "remotely_materializable")
+        .count();
     let downloaded = artifacts
         .iter()
         .filter(|artifact| artifact.status == "downloaded")
@@ -980,6 +1131,7 @@ fn render_artifact_registry(
         format!("source_files = {}", render_list(source_files)),
         format!("artifact_count = {total}"),
         format!("downloaded_count = {downloaded}"),
+        format!("remotely_materializable_count = {remotely_materializable}"),
         format!("downloadable_count = {downloadable}"),
         format!("blocked_count = {blocked}"),
         format!("citation_only_no_link_count = {citation_only}"),
@@ -1032,6 +1184,20 @@ fn render_artifact_registry(
             escape_toml(&artifact.canonical_download_path)
         ));
         lines.push(format!("status = {}", escape_toml(&artifact.status)));
+        lines.push(format!("sha256 = {}", escape_toml(&artifact.sha256)));
+        lines.push(format!("byte_length = {}", artifact.byte_length));
+        lines.push(format!(
+            "retrieval_command = {}",
+            escape_toml(&artifact.retrieval_command)
+        ));
+        lines.push(format!(
+            "license_disposition = {}",
+            escape_toml(&artifact.license_disposition)
+        ));
+        lines.push(format!(
+            "host_only_path_count = {}",
+            artifact.host_only_paths.len()
+        ));
         lines.push(format!(
             "minimum_requirement_met = {}",
             artifact.minimum_requirement_met
@@ -1093,6 +1259,10 @@ fn render_artifact_registry(
 
 fn render_reconciliation_report(artifacts: &[UnifiedArtifact], now: &str) -> String {
     let total = artifacts.len();
+    let remotely_materializable = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "remotely_materializable")
+        .count();
     let downloaded = artifacts
         .iter()
         .filter(|artifact| artifact.status == "downloaded")
@@ -1127,6 +1297,7 @@ fn render_reconciliation_report(artifacts: &[UnifiedArtifact], now: &str) -> Str
         "authoritative = true".to_string(),
         format!("artifact_count = {total}"),
         format!("downloaded_count = {downloaded}"),
+        format!("remotely_materializable_count = {remotely_materializable}"),
         format!("downloadable_count = {downloadable}"),
         format!("blocked_count = {blocked}"),
         format!("citation_only_no_link_count = {citation_only}"),
@@ -1157,35 +1328,71 @@ fn render_reconciliation_report(artifacts: &[UnifiedArtifact], now: &str) -> Str
     lines.join("\n")
 }
 
-pub fn build_artifact_source_of_truth(
+/// Renders the master registry and its reconciliation report into `set`
+/// without touching either file. The caller commits the whole export in one
+/// rename pass, so a refused shrink leaves every previous output intact.
+pub fn stage_artifact_source_of_truth(
     repo_root: &Path,
     out_registry: &Path,
     out_report: &Path,
-) -> Result<BuildSummary> {
+    retention: &RetentionSet,
+    set: &mut StagedWriteSet,
+) -> Result<(BuildSummary, String)> {
     let now = Utc::now().format("%Y-%m-%d").to_string();
     let (observations, source_tables) = collect_link_observations(repo_root)?;
     let mut download_map = collect_download_map(repo_root)?;
     let (candidates, source_files) = build_candidates(repo_root)?;
     let mut artifacts = unify_candidates(candidates);
     extend_download_map_from_local_artifacts(&mut download_map, &artifacts);
-    classify_artifacts(&mut artifacts, &observations, &download_map);
+    let carry_forward = load_durable_facts(out_registry);
+    classify_artifacts(
+        &mut artifacts,
+        &observations,
+        &download_map,
+        repo_root,
+        retention,
+        &carry_forward,
+    );
     let registry_text = render_artifact_registry(&artifacts, &source_tables, &source_files, &now);
     let report_text = render_reconciliation_report(&artifacts, &now);
     assert_ascii(&registry_text, &out_registry.display().to_string())?;
     assert_ascii(&report_text, &out_report.display().to_string())?;
-    if let Some(parent) = out_registry.parent() {
-        fs::create_dir_all(parent)?;
-    }
-    if let Some(parent) = out_report.parent() {
-        fs::create_dir_all(parent)?;
-    }
-    fs::write(out_registry, registry_text)
-        .with_context(|| format!("write {}", out_registry.display()))?;
-    fs::write(out_report, report_text)
-        .with_context(|| format!("write {}", out_report.display()))?;
-    Ok(BuildSummary {
+    let downloaded_count = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "downloaded")
+        .count();
+    let materializable = artifacts
+        .iter()
+        .filter(|artifact| artifact.status == "remotely_materializable")
+        .collect::<Vec<_>>();
+    let summary = BuildSummary {
         artifact_count: artifacts.len(),
-    })
+        downloaded_count,
+        remotely_materializable_count: materializable.len(),
+        // A materializable row with no URL names bytes no other host can
+        // obtain. It is reported, not dressed up with a retrieval command.
+        materializable_without_url_count: materializable
+            .iter()
+            .filter(|artifact| artifact.canonical_functional_url.is_empty())
+            .count(),
+        row_counts: Vec::new(),
+    };
+    set.stage(out_registry, registry_text.clone(), "[[artifact]]");
+    set.stage(out_report, report_text, "[[artifact]]");
+    Ok((summary, registry_text))
+}
+
+pub fn build_artifact_source_of_truth(
+    repo_root: &Path,
+    out_registry: &Path,
+    out_report: &Path,
+) -> Result<BuildSummary> {
+    let retention = RetentionSet::from_git_index(repo_root);
+    let mut set = StagedWriteSet::new();
+    let (mut summary, _) =
+        stage_artifact_source_of_truth(repo_root, out_registry, out_report, &retention, &mut set)?;
+    summary.row_counts = set.commit(&ShrinkPolicy::permissive())?;
+    Ok(summary)
 }
 
 fn lane_description(name: &str) -> &'static str {
@@ -1316,6 +1523,13 @@ fn render_lane(
             counts.get("downloaded").copied().unwrap_or_default()
         ),
         format!(
+            "remotely_materializable_count = {}",
+            counts
+                .get("remotely_materializable")
+                .copied()
+                .unwrap_or_default()
+        ),
+        format!(
             "downloadable_count = {}",
             counts.get("downloadable").copied().unwrap_or_default()
         ),
@@ -1390,6 +1604,19 @@ fn render_lane(
                     .unwrap_or("")
                     .trim()
             )
+        ));
+        for field in ["sha256", "retrieval_command", "license_disposition"] {
+            lines.push(format!(
+                "{field} = {}",
+                escape_toml(artifact.get(field).and_then(Value::as_str).unwrap_or("").trim())
+            ));
+        }
+        lines.push(format!(
+            "byte_length = {}",
+            artifact
+                .get("byte_length")
+                .and_then(Value::as_integer)
+                .unwrap_or_default()
         ));
         lines.push(format!(
             "minimum_requirement_met = {}",
@@ -1501,14 +1728,20 @@ fn render_source_infrastructure_report(
     lines.join("\n")
 }
 
-pub fn build_source_truth_infrastructure(
+/// Projects the staged master text into the four lane files, the
+/// infrastructure manifest and its report. Taking the master as text rather
+/// than a path lets the whole export stage before anything is renamed.
+pub fn stage_source_truth_infrastructure(
     repo_root: &Path,
-    source_path: &Path,
+    master_text: &str,
+    master_path: &Path,
     out_infrastructure: &Path,
     lane_dir: &Path,
     out_report: &Path,
+    set: &mut StagedWriteSet,
 ) -> Result<SourceInfrastructureSummary> {
-    let value = load_toml_value(source_path)?;
+    let value: Value =
+        toml::from_str(master_text).context("parse staged artifact source of truth")?;
     let artifacts = value
         .get("artifact")
         .and_then(Value::as_array)
@@ -1528,7 +1761,6 @@ pub fn build_source_truth_infrastructure(
         lane_map.entry(primary).or_default().push(table);
     }
 
-    fs::create_dir_all(lane_dir).with_context(|| format!("create {}", lane_dir.display()))?;
     let mut lane_files = BTreeMap::new();
     let mut lane_counts = BTreeMap::new();
     for lane in LANE_ORDER {
@@ -1542,8 +1774,7 @@ pub fn build_source_truth_infrastructure(
         let lane_text = render_lane(lane, &lane_artifacts, &generated_at);
         let lane_path = lane_dir.join(format!("{lane}.toml"));
         assert_ascii(&lane_text, &lane_path.display().to_string())?;
-        fs::write(&lane_path, lane_text)
-            .with_context(|| format!("write {}", lane_path.display()))?;
+        set.stage(&lane_path, lane_text, "[[artifact_ref]]");
         let rel = lane_path
             .strip_prefix(repo_root)
             .unwrap_or(lane_path.as_path())
@@ -1554,9 +1785,9 @@ pub fn build_source_truth_infrastructure(
     }
 
     let infrastructure_text = render_infrastructure(
-        &source_path
+        &master_path
             .strip_prefix(repo_root)
-            .unwrap_or(source_path)
+            .unwrap_or(master_path)
             .to_string_lossy()
             .replace('\\', "/"),
         &lane_files,
@@ -1574,25 +1805,41 @@ pub fn build_source_truth_infrastructure(
         &out_infrastructure.display().to_string(),
     )?;
     assert_ascii(&report_text, &out_report.display().to_string())?;
-    if let Some(parent) = out_infrastructure.parent() {
-        fs::create_dir_all(parent)?;
-    }
-    if let Some(parent) = out_report.parent() {
-        fs::create_dir_all(parent)?;
-    }
-    fs::write(out_infrastructure, infrastructure_text)
-        .with_context(|| format!("write {}", out_infrastructure.display()))?;
-    fs::write(out_report, report_text)
-        .with_context(|| format!("write {}", out_report.display()))?;
+    set.stage(out_infrastructure, infrastructure_text, "[[lane]]");
+    set.stage(out_report, report_text, "[[lane]]");
     Ok(SourceInfrastructureSummary {
         total_artifact_count: lane_counts.values().copied().sum(),
         lane_counts,
     })
 }
 
+pub fn build_source_truth_infrastructure(
+    repo_root: &Path,
+    source_path: &Path,
+    out_infrastructure: &Path,
+    lane_dir: &Path,
+    out_report: &Path,
+) -> Result<SourceInfrastructureSummary> {
+    let master_text = fs::read_to_string(source_path)
+        .with_context(|| format!("read {}", source_path.display()))?;
+    let mut set = StagedWriteSet::new();
+    let summary = stage_source_truth_infrastructure(
+        repo_root,
+        &master_text,
+        source_path,
+        out_infrastructure,
+        lane_dir,
+        out_report,
+        &mut set,
+    )?;
+    set.commit(&ShrinkPolicy::permissive())?;
+    Ok(summary)
+}
+
 #[derive(Default)]
 struct ArtifactCounts {
     downloaded: usize,
+    remotely_materializable: usize,
     downloadable: usize,
     blocked: usize,
     citation_only: usize,
@@ -1768,6 +2015,15 @@ fn validate_artifact_entry(
                 ));
             }
         }
+        "remotely_materializable" => {
+            state.counts.remotely_materializable += 1;
+            if !downloaded_paths.is_empty() {
+                state.failures.push(format!(
+                    "{art_id}: remotely_materializable rows carry no downloaded_paths; \
+                     per-host presence belongs in the materialization manifest"
+                ));
+            }
+        }
         "downloadable" => state.counts.downloadable += 1,
         "blocked" => {
             state.counts.blocked += 1;
@@ -1791,7 +2047,15 @@ fn validate_artifact_entry(
         "unverified" => state.counts.unverified += 1,
         _ => {}
     }
-    if minimum_met != (!working.is_empty() || !downloaded_paths.is_empty()) {
+    let sha256 = table
+        .get("sha256")
+        .and_then(Value::as_str)
+        .unwrap_or_default()
+        .trim();
+    let materializable_minimum =
+        status == "remotely_materializable" && !canonical_url.is_empty() && !sha256.is_empty();
+    if minimum_met != (!working.is_empty() || !downloaded_paths.is_empty() || materializable_minimum)
+    {
         state.failures.push(format!(
             "{art_id}: minimum_requirement_met mismatch with working/downloaded mirrors"
         ));
@@ -1846,6 +2110,7 @@ fn verify_header_counts(
     let expected_counts = [
         ("artifact_count", artifact_count),
         ("downloaded_count", counts.downloaded),
+        ("remotely_materializable_count", counts.remotely_materializable),
         ("downloadable_count", counts.downloadable),
         ("blocked_count", counts.blocked),
         ("citation_only_no_link_count", counts.citation_only),
@@ -1963,6 +2228,7 @@ pub fn verify_artifact_source_of_truth(
     Ok(VerifySummary {
         artifact_count: artifacts.len(),
         downloaded_count: state.counts.downloaded,
+        remotely_materializable_count: state.counts.remotely_materializable,
         downloadable_count: state.counts.downloadable,
         blocked_count: state.counts.blocked,
         citation_only_count: state.counts.citation_only,
