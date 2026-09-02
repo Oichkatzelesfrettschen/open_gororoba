@@ -5782,24 +5782,24 @@ where_stated = "data/output/staples_incremental_information.json; E-242"
 
 [[claim]]
 id = "C-1732"
+last_verified = "2026-09-02"
 statement = "On the E-240 subsample of the deduplicated THEMIS-A Staples benchmark (1,733,470 samples, 578,320 positives, 813 daily files, ChaCha8 seed 42) the canonical Cayley-Dickson associator tensor (1848 terms, 924 positive and 924 negative) reaches ROC-AUC 0.8274. Two control results, stated separately: (1) under the exact-support sign-scramble family, 999 scrambles of the CD tensor's signs at identical 1848-term support reach mean 0.4951, 97.5th percentile 0.5672 and maximum 0.6213, zero draws at or above the canonical value; (2) under the declared random-unital-twist sampling measure (uniform over sign functions on the 15 x 15 non-identity basis pairs with sigma(0,.) = sigma(.,0) = +1), 999 draws with 1564 to 1784 terms each reach mean 0.5148, 97.5th percentile 0.5922 and maximum 0.6287, zero draws at or above the canonical value. The CD tensor is therefore extreme under both the support-matched scramble family and the declared random-unital-twist measure; the twist family is not support-matched, and the result does not establish uniqueness across all XOR-graded twists."
 status = "Verified"
 where_stated = "data/output/staples_twist_ladder.json; E-240"
-last_verified = "2026-09-02"
 
 [[claim]]
 id = "C-1733"
+last_verified = "2026-09-02"
 statement = "The staple-associator detector is performance-insensitive across the tested family of 4! x 3! = 144 structured layouts of four time-ordered samples and three field components with the magnitude fixed in the fourth channel slot: scored by the canonical Cayley-Dickson tensor on the E-241 subsample of the deduplicated THEMIS-A Staples benchmark (1,733,470 samples, 578,320 positives, ChaCha8 seed 42), the canonical layout's ROC-AUC 0.8274 ranks 117 of 144 (percentile 0.194), the layout AUCs span 0.8257 to 0.8307 with standard deviation 0.0015, the best layout exceeds the canonical by 0.0033, and 143 of 143 other layouts lie within the predeclared 0.005 equivalence margin. Tuning the lag-to-basis and component-to-channel assignment within this family could change the reported AUC by at most 0.0033; the sweep says nothing about how the canonical assignment was selected."
 status = "Verified"
 where_stated = "data/output/staples_layout_sweep.json; E-241"
-last_verified = "2026-09-02"
 
 [[claim]]
 id = "C-1734"
+last_verified = "2026-09-02"
 statement = "Under a fixed linear-in-log-features logistic model (ridge 1e-6, Newton-Raphson, standardization fitted inside each training fold) with a fixed 5-fold assignment grouped by daily file (one ChaCha8 seed-42 shuffle), adding ln(assoc) to the six matched six-sample baselines ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) raises out-of-fold ROC-AUC on the deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files) from 0.8428 to 0.8448, an incremental predictive discrimination of +0.20 AUC percentage points with paired file-bootstrap 95 percent interval [+0.17, +0.23] over 1000 resamples and zero adverse resamples; PR-AUC rises by +0.05 percentage points [+0.01, +0.08] and log loss falls by 0.00012 [0.00007, 0.00018]. Every interval excludes zero in the associator's favor, and the increment is about 0.24 percent of the baseline AUC, an order of magnitude below the standalone margins C-1631 reports. The statement is about incremental discrimination under this model class and fold assignment, not about information-theoretic uniqueness."
 status = "Verified"
 where_stated = "data/output/staples_incremental_information.json; E-242"
-last_verified = "2026-09-02"
 
 [[claim]]
 id = "C-174"
