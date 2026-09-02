@@ -1,4 +1,12 @@
 {
+  "invalidation": {
+    "status": "invalidated",
+    "invalidated_on": "2026-09-01",
+    "correcting_commit": "f61485b7",
+    "stale_sha256": "a2df62d29c14ac6abb45569926f2e3c02620de3ffa9e22f4826fa723f93dbf85",
+    "reason": "off-by-one-day ESA join in a leap year; see invalidations.toml",
+    "record": "data/output/heliosphere/ablations/invalidations.toml"
+  },
   "n_matched": 2821,
   "power_law_exponent": 0.7749921471180499,
   "power_law_r_squared": 0.7837684502151782,
