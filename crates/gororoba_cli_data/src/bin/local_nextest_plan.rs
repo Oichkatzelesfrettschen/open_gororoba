@@ -119,8 +119,15 @@ fn repo_root() -> PathBuf {
         .to_path_buf()
 }
 
+/// Workspace members live under `crates/<package>` except `xtask`, which
+/// sits at the repo root; a package with no `crates/` directory resolves
+/// to `<root>/<package>` so its integration tests enter the plan.
 fn package_root(root: &Path, package: &str) -> PathBuf {
-    root.join("crates").join(package)
+    let nested = root.join("crates").join(package);
+    if nested.is_dir() {
+        return nested;
+    }
+    root.join(package)
 }
 
 fn has_library(root: &Path, package: &str) -> bool {
