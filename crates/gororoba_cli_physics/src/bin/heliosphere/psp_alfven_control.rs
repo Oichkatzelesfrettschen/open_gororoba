@@ -1,4 +1,4 @@
-//! PSP Alfvenic noise control experiment (E-239).
+//! PSP Alfvenic noise control experiment (E-269).
 //!
 //! WHY: JGR Major Comment 2 asks whether the CD associator fires spuriously on
 //! high-amplitude Alfven waves.  A pure Alfven wave is a rotational fluctuation
@@ -337,7 +337,7 @@ pub fn run(cli: Cli) -> Result<()> {
         .with_context(|| format!("bad end_date: {}", cli.end_date))?;
 
     println!(
-        "=== PSP Alfvenic Control Experiment (E-239) ===\n\
+        "=== PSP Alfvenic Control Experiment (E-269) ===\n\
          Window: {} to {}\n\
          Embedding: {}D, lag={}min\n\
          Alfvenic: rot>={:.0}deg AND delta_B/|B|<{:.2}\n\
@@ -530,7 +530,7 @@ pub fn run(cli: Cli) -> Result<()> {
         );
     }
 
-    // Gap detection: same tolerance as E-237/E-238.
+    // Gap detection: same tolerance as E-267/E-268.
     let expected_span_hours = (steps - 1) as f64 * cli.takens_lag as f64 / 60.0;
     let gap_tolerance_hours = 2.0 * cli.takens_lag as f64 / 60.0;
     let max_window_span_hours = expected_span_hours + gap_tolerance_hours;

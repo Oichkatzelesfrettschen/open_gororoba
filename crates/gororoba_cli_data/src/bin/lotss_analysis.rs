@@ -762,7 +762,7 @@ fn cmd_ultrametric(
     sorted_null.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
     let report = UltrametricReport {
         generated_at_utc: chrono::Utc::now().to_rfc3339(),
-        experiment_id: "E-199".to_string(),
+        experiment_id: "E-278".to_string(),
         sample: UltrametricSampleReport {
             n_sample: coords.len(),
             n_triples_per_estimate: n_triples,

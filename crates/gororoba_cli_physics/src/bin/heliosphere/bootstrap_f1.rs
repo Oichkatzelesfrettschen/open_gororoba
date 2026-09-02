@@ -1,4 +1,4 @@
-//! Block-bootstrap 95% CI for the CD associator F1 on THEMIS E-237 data.
+//! Block-bootstrap 95% CI for the CD associator F1 on THEMIS E-267 data.
 //!
 //! WHY: The paper reports F1 = 0.601 as a scalar.  A confidence interval
 //! (CI) is mandatory for a credible statistical claim.  Block bootstrap

@@ -1,6 +1,6 @@
-//! PSP micro-switchback correlation experiment (E-241).
+//! PSP micro-switchback correlation experiment (E-271).
 //!
-//! WHY: E-239 found a 0.311/hr CD associator fire rate in quiet PSP E3 solar
+//! WHY: E-269 found a 0.311/hr CD associator fire rate in quiet PSP E3 solar
 //! wind -- intervals with no Br sign reversal or rotation >= 20 deg in a
 //! +-5 min sliding window.  The Discussion in the JGR manuscript hypothesizes
 //! that these "quiet" fires detect sub-minute kinetic-scale magnetic topology
@@ -276,7 +276,7 @@ struct SwitchbackCorrelationResults {
 
 fn build_ascii_summary(results: &SwitchbackCorrelationResults) -> String {
     let mut s = String::new();
-    s.push_str("PSP E3 micro-switchback enrichment analysis (E-241)\n");
+    s.push_str("PSP E3 micro-switchback enrichment analysis (E-271)\n");
     s.push_str("=====================================================\n");
     s.push_str(&format!(
         "  Window: {} to {}  ({} minutes, {} gap-skipped)\n",
@@ -334,7 +334,7 @@ fn build_ascii_summary(results: &SwitchbackCorrelationResults) -> String {
 // ============================================================================
 
 pub fn run(cli: Cli) -> Result<()> {
-    println!("=== PSP E3 Micro-Switchback Correlation (E-241) ===");
+    println!("=== PSP E3 Micro-Switchback Correlation (E-271) ===");
     println!(
         "Window: {} to {}  |  Micro-rot threshold: {:.0} deg  |  Neighborhood: +- {} min",
         cli.start_date, cli.end_date, cli.micro_rot_threshold_deg, cli.correlation_half_window,
