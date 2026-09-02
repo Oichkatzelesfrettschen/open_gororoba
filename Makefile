@@ -87,23 +87,21 @@ RUST_SCOPED_CLIPPY_TARGETS ?= --all-targets
 LOCAL_NEXTEST_TIMING_JSON ?=
 RUST_LOCAL_SKIP_FILTERSET ?= not ((package(stats_core) and test(/ultrametric::baire_codebook::tests::(test_euclidean_ultrametricity_across_filtration_levels|test_intermediate_filtration_gradient|test_random_removal_control|test_lambda512_to_256_intermediate_gradient|test_lambda512_to_256_random_removal_control|test_sbase_to_lambda2048_gradient|test_l0_subpopulation_ultrametricity|test_lambda2048_to_1024_intermediate_gradient|test_l1_filter_on_l0_neg1_subset|test_recursive_simpsons_paradox_l2|test_cross_stratum_triple_decomposition|test_l0_zero_simpsons_paradox|test_dimensional_universality_simpsons_paradox|test_lambda1024_stratum_paradox_and_summary)/)) or (package(algebra_experimental) and test(test_thesis_e_xor_involution_invariants_128d)) or (package(algebra_experimental) and test(/test_v6_(2d_constrained_scan|joint_4d_optimization)/)) or (package(algebra_experimental) and test(/test_(enumerate_tower|fast_enumerate|benchmark_fast_vs_scalar|compressed_memory|enumerate_8192d|fast_enumerate_16384d)/)) or (package(algebra_experimental) and test(test_pathion_vk_spectrum)) or (package(algebra_analysis) and test(/test_(d64_flat_band|d16_d32_d64_scaling)/)) or (package(materials_core) and test(test_separating_degree_formula_universality)) or (package(gororoba_algebra) and test(test_split_octonion_attractor_regression_dim_128_256_guarded)) or (package(gororoba_cli) and test(test_zero_divisor_scaling)) or (package(sign_imbalance) and test(test_kubo_j1j2_alpha_sweep)) or test(/gpu/))
 REPO_TMPDIR ?= $(or $(TMPDIR),/tmp)
-REPO_PATH_HASH ?= $(shell printf "%s" "$(CURDIR)" | sha256sum | cut -c1-16)
-REPO_TMP_CARGO_ROOT ?= $(REPO_TMPDIR)/open_gororoba-cargo-build/gate/$(REPO_PATH_HASH)
-REPO_CARGO_HOME ?= $(CURDIR)/.cache/cargo-home
-CARGO_CACHE_REPO_BUDGET_GIB ?= 150
-CARGO_CACHE_TMP_BUDGET_GIB ?= 16
+# Cache roots, the worktree-sharing knob, the validation-tools state
+# paths and the guarded removal helper live in mk/cache_roots.mk so the
+# xtask layout tests can load them without the rest of this file.
 # Gate builds use a separate target dir from ambient (LSP/editor) builds to
 # avoid file-lock contention during concurrent cargo check / nextest runs.
-# Both dirs are bounded by `make cache-sweep` (cargo-sweep --maxsize).
 # Experimental target dirs MUST follow the naming convention .cache/exp-<name>-target/
 # Use `make cache-purge-exp` to remove all of them. Never create ad-hoc names.
-REPO_CARGO_TARGET_DIR ?= $(CURDIR)/.cache/gate-target
 # Build intermediates (.o/.d) go to .cache/gate-cbuild/ on disk, keeping
 # target-dir lean and avoiding /tmp (16 GB tmpfs) overflow. The 46-crate
 # debug test compilation generates ~13 GB of split-debuginfo artifacts --
 # more than the tmpfs budget. REPO_TMP_CARGO_ROOT still routes to /tmp for
 # doc builds and parity tests where the artifact footprint is smaller.
-REPO_CARGO_BUILD_DIR ?= $(CURDIR)/.cache/gate-cbuild/$(REPO_PATH_HASH)
+include mk/cache_roots.mk
+CARGO_CACHE_REPO_BUDGET_GIB ?= 150
+CARGO_CACHE_TMP_BUDGET_GIB ?= 16
 CARGO_ENV = CARGO_HOME=$(REPO_CARGO_HOME) CARGO_TARGET_DIR=$(REPO_CARGO_TARGET_DIR) CARGO_BUILD_BUILD_DIR=$(REPO_CARGO_BUILD_DIR) MAKEFLAGS= MFLAGS= CARGO_MAKEFLAGS= CARGO_BUILD_JOBS=$(CARGO_JOBS) RAYON_NUM_THREADS=$(RAYON_THREADS) RUST_TEST_THREADS=$(RUST_TEST_THREADS)
 # A user-local Cargo config may enforce CARGO_INCREMENTAL=0 globally.
 # Kept here as belt-and-suspenders for CI environments where that config is absent.
@@ -382,13 +380,12 @@ wave6-gate: governance-gate
 # overhead even when nothing changed. Stable paths and one Cargo build per
 # dependency tier eliminate repeated package selection, linking, and process
 # startup without forcing a local source edit to build the broad registry CLI.
-VALIDATION_TOOLS_DIR := $(REPO_CARGO_TARGET_DIR)/validation-tools
 WORKSPACE_ROUTING_CACHE := $(VALIDATION_TOOLS_DIR)/workspace-routing
 HOST_PROFILE_CACHE := $(VALIDATION_TOOLS_DIR)/host-profile.sh
 REPO_UTILITIES_SOURCE_DEPS := $(shell find crates/repo_utilities -type f \( -name '*.rs' -o -name 'Cargo.toml' \) -print) \
                               Cargo.toml Cargo.lock rust-toolchain.toml
 
-$(REPO_UTILITIES_BIN): $(REPO_UTILITIES_SOURCE_DEPS)
+$(REPO_UTILITIES_BIN): $(REPO_UTILITIES_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building repo-utilities in the validation profile"
 	@$(CARGO_ENV) cargo build --profile validation -p repo_utilities --bin repo-utilities
@@ -409,7 +406,7 @@ CORE_VALIDATION_SOURCE_DEPS := $(shell find crates xtask -type f \( -name '*.rs'
 XTASK_CACHE := $(VALIDATION_TOOLS_DIR)/xtask
 CORE_VALIDATION_STAMP := $(VALIDATION_TOOLS_DIR)/core-validation.stamp
 
-$(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS)
+$(CORE_VALIDATION_STAMP): $(CORE_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building routing and xtask tools in one Cargo session"
 	@$(CARGO_ENV) cargo build --profile validation -p gororoba_cli_governance --bin workspace-routing-proxy -p xtask --bin xtask
@@ -448,7 +445,7 @@ PROVENANCE_CACHE := $(VALIDATION_TOOLS_DIR)/provenance
 
 # One rule produces the complete validation tool set. The stamp is the only
 # Make dependency; the copied binaries are stable execution paths.
-$(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS)
+$(REGISTRY_VALIDATION_STAMP): $(REGISTRY_VALIDATION_SOURCE_DEPS) $(VALIDATION_SOURCE_IDENTITY_FILE)
 	@mkdir -p $(VALIDATION_TOOLS_DIR)
 	@echo "[validation-tools] building registry validation tools in one Cargo session"
 	@$(CARGO_ENV) cargo build --profile validation \
@@ -483,8 +480,7 @@ validation-tools-clean:
 # `make validation-lock-status` target lets editors check whether validation is in
 # flight. The lock is removed in a shell trap on EXIT so crashed gates
 # clean up. The lock surfaces edit-during-read hazards before a gate
-# consumes inconsistent source.
-VALIDATION_LOCK := $(REPO_CARGO_TARGET_DIR)/validation-tools/validation.lock
+# consumes inconsistent source. The path is set in mk/cache_roots.mk.
 
 .PHONY: validation-lock-status
 validation-lock-status:
@@ -649,20 +645,21 @@ data-core-pure-check:
 .PHONY: cache-status cache-sweep cache-sweep-soft cache-purge-exp cache-check cache-check-force cache-sweep-dry-run
 
 cache-status:
-	@# CLI cargo and gate cargo both write to .cache/gate-target (via .cargo/config.toml
-	@# build.target-dir or CARGO_TARGET_DIR env override).
-	@printf '=== Cargo target dir (canonical) ===\n'
-	@du -sh .cache/gate-target 2>/dev/null || printf '(missing)\n'
-	@printf '=== CARGO_HOME ===\n'
-	@du -sh .cache/cargo-home 2>/dev/null || true
-	@printf '=== Build-dir intermediates ===\n'
-	@du -sh .cache/gate-cbuild 2>/dev/null || printf '(empty)\n'
-	@printf '=== Validation tools cache ===\n'
-	@du -sh .cache/gate-target/validation-tools 2>/dev/null || printf '(empty)\n'
-	@printf '=== Experimental dirs (.cache/exp-*-target) ===\n'
-	@du -sh .cache/exp-*-target 2>/dev/null || printf '(none)\n'
+	@# CLI cargo and gate cargo both write to the resolved target dir (via
+	@# .cargo/config.toml build.target-dir or the CARGO_TARGET_DIR override).
+	@printf '=== Cache mode: %s (owner %s) ===\n' '$(REPO_CACHE_MODE)' '$(REPO_CACHE_OWNER)'
+	@printf '=== Cargo target dir %s ===\n' '$(REPO_CARGO_TARGET_DIR)'
+	@du -sh $(REPO_CARGO_TARGET_DIR) 2>/dev/null || printf '(missing)\n'
+	@printf '=== CARGO_HOME %s ===\n' '$(REPO_CARGO_HOME)'
+	@du -sh $(REPO_CARGO_HOME) 2>/dev/null || true
+	@printf '=== Build-dir intermediates %s ===\n' '$(CACHE_SWEEP_CBUILD_ROOT)'
+	@du -sh $(CACHE_SWEEP_CBUILD_ROOT) 2>/dev/null || printf '(empty)\n'
+	@printf '=== Validation tools cache %s ===\n' '$(VALIDATION_TOOLS_DIR)'
+	@du -sh $(VALIDATION_TOOLS_DIR) 2>/dev/null || printf '(empty)\n'
+	@printf '=== Experimental dirs (%s/exp-*-target) ===\n' '$(REPO_LOCAL_CACHE_ROOT)'
+	@du -sh $(REPO_LOCAL_CACHE_ROOT)/exp-*-target 2>/dev/null || printf '(none)\n'
 	@printf '=== Residual target/ (cargo doc + mdbook, NOT cargo build) ===\n'
-	@du -sh target 2>/dev/null || printf '(missing)\n'
+	@du -sh $(CURDIR)/target 2>/dev/null || printf '(missing)\n'
 
 # cache-sweep uses age-based preservation instead of an unconditional
 # gate-cbuild wipe. `cargo sweep --time N` keeps artifacts accessed
@@ -682,18 +679,20 @@ CACHE_SWEEP_DEBUG_KEEP_DAYS ?= 14
 CACHE_SWEEP_PRESSURE_TARGET_MB ?= $(CACHE_CHECK_SOFT_MB)
 
 cache-sweep:
-	@# cache-sweep operates on .cache/gate-target and gate-cbuild only.
-	@# Legacy cargo-default-target / .cache/cargo / .cache/sparse-cargo-home /
-	@# orphan target dirs are outside this lane. Residual target/ holds only
-	@# cargo doc and mdbook output.
-	@echo "Pre-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
-	@echo "Sweeping .cache/gate-target (keep artifacts accessed in last $(CACHE_SWEEP_KEEP_DAYS) days)..."
-	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: target absent or not a cargo project)"
+	@# cache-sweep operates on the resolved target dir and the owner's
+	@# gate-cbuild tree only. Legacy cargo-default-target / .cache/cargo /
+	@# .cache/sparse-cargo-home / orphan target dirs are outside this lane.
+	@# Residual target/ holds only cargo doc and mdbook output.
+	@echo "Pre-sweep size: $$(du -sh $(REPO_CACHE_ROOT) 2>/dev/null | cut -f1)"
+	@echo "Sweeping $(CACHE_SWEEP_TARGET_DIR) (keep artifacts accessed in last $(CACHE_SWEEP_KEEP_DAYS) days)..."
+	@CARGO_TARGET_DIR=$(CACHE_SWEEP_TARGET_DIR) cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) . || echo "(skip: target absent or not a cargo project)"
 # Conditional gate-cbuild debug wipe: only remove directories where the
 # most recent file was modified more than CACHE_SWEEP_DEBUG_KEEP_DAYS
-# days ago. Skips wipe entirely if CACHE_SWEEP_DEBUG_KEEP_DAYS=0.
+# days ago. Skips wipe entirely if CACHE_SWEEP_DEBUG_KEEP_DAYS=0. Each
+# removal passes through guarded_rm, which refuses the owner's tree from
+# a worktree unless REPO_ALLOW_SHARED_CLEAN=1.
 	@if [ "$(CACHE_SWEEP_DEBUG_KEEP_DAYS)" -gt 0 ]; then \
-	    for d in .cache/gate-cbuild/*/debug; do \
+	    for d in $(CACHE_SWEEP_CBUILD_ROOT)/*/debug; do \
 	        if [ -d "$$d" ]; then \
 	            most_recent=$$(find "$$d" -type f -printf '%T@\n' 2>/dev/null | sort -nr | head -1 | cut -d. -f1); \
 	            if [ -z "$$most_recent" ]; then continue; fi; \
@@ -701,27 +700,27 @@ cache-sweep:
 	            if [ "$$age_days" -gt "$(CACHE_SWEEP_DEBUG_KEEP_DAYS)" ]; then \
 	                SIZE=$$(du -sh "$$d" 2>/dev/null | cut -f1); \
 	                echo "Removing stale gate-cbuild debug ($$SIZE, $${age_days}d old) at $$d ..."; \
-	                rm -rf "$$d"; \
+	                ( $(call guarded_rm,$$d) ) || echo "[cache-sweep] skipped $$d"; \
 	            else \
 	                echo "Keeping gate-cbuild debug at $$d (last touched $${age_days}d ago)"; \
 	            fi; \
 	        fi; \
 	    done; \
 	fi
-	@echo "Post-sweep size: $$(du -sh .cache 2>/dev/null | cut -f1)"
+	@echo "Post-sweep size: $$(du -sh $(REPO_CACHE_ROOT) 2>/dev/null | cut -f1)"
 
 cache-sweep-soft:
 	@$(MAKE) -s cache-sweep
-	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
-	CBUILD_MB=$$(du -sm .cache/gate-cbuild 2>/dev/null | cut -f1 || printf '0'); \
-	TARGET_MB=$$(du -sm target 2>/dev/null | cut -f1 || printf '0'); \
-	TOTAL=$$((GATE_MB + CBUILD_MB + TARGET_MB)); \
+	@TOTAL=0; for d in $(CACHE_ACCOUNT_DIRS); do \
+	    MB=$$(du -sm "$$d" 2>/dev/null | cut -f1 || printf '0'); TOTAL=$$((TOTAL + $${MB:-0})); \
+	done; \
+	CBUILD_MB=$$(du -sm $(CACHE_SWEEP_CBUILD_ROOT) 2>/dev/null | cut -f1 || printf '0'); \
 	LIMIT=$${CACHE_SWEEP_PRESSURE_TARGET_MB:-$${CACHE_CHECK_SOFT_MB:-153600}}; \
-	if [ "$$TOTAL" -gt "$$LIMIT" ] && [ "$$CBUILD_MB" -gt 0 ] && [ -d .cache/gate-cbuild ]; then \
+	if [ "$$TOTAL" -gt "$$LIMIT" ] && [ "$${CBUILD_MB:-0}" -gt 0 ] && [ -d $(CACHE_SWEEP_CBUILD_ROOT) ]; then \
 	    printf '[cache-sweep-soft] size pressure: %dMB > %dMB; removing regenerable gate-cbuild intermediates (%dMB)\n' "$$TOTAL" "$$LIMIT" "$$CBUILD_MB"; \
-	    rm -rf .cache/gate-cbuild; \
+	    $(call guarded_rm,$(CACHE_SWEEP_CBUILD_ROOT)); \
 	else \
-	    printf '[cache-sweep-soft] no size-pressure purge needed (total=%dMB limit=%dMB gate-cbuild=%dMB)\n' "$$TOTAL" "$$LIMIT" "$$CBUILD_MB"; \
+	    printf '[cache-sweep-soft] no size-pressure purge needed (total=%dMB limit=%dMB gate-cbuild=%dMB)\n' "$$TOTAL" "$$LIMIT" "$${CBUILD_MB:-0}"; \
 	fi
 	@rm -f "$(CACHE_CHECK_SENTINEL)"
 	@$(MAKE) -s cache-check-force
@@ -730,10 +729,10 @@ cache-sweep-soft:
 .PHONY: cache-sweep-dry-run
 cache-sweep-dry-run:
 	@echo "DRY RUN: would sweep with --time $(CACHE_SWEEP_KEEP_DAYS) days"
-	@echo "=== cargo-sweep dry-run on .cache/gate-target ==="
-	@CARGO_TARGET_DIR=.cache/gate-target cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) --dry-run . || true
-	@echo "=== gate-cbuild debug dirs older than $(CACHE_SWEEP_DEBUG_KEEP_DAYS) days ==="
-	@for d in .cache/gate-cbuild/*/debug; do \
+	@echo "=== cargo-sweep dry-run on $(CACHE_SWEEP_TARGET_DIR) ==="
+	@CARGO_TARGET_DIR=$(CACHE_SWEEP_TARGET_DIR) cargo sweep --time $(CACHE_SWEEP_KEEP_DAYS) --dry-run . || true
+	@echo "=== gate-cbuild debug dirs under $(CACHE_SWEEP_CBUILD_ROOT) older than $(CACHE_SWEEP_DEBUG_KEEP_DAYS) days ==="
+	@for d in $(CACHE_SWEEP_CBUILD_ROOT)/*/debug; do \
 	    if [ -d "$$d" ]; then \
 	        most_recent=$$(find "$$d" -type f -printf '%T@\n' 2>/dev/null | sort -nr | head -1 | cut -d. -f1); \
 	        if [ -z "$$most_recent" ]; then continue; fi; \
@@ -749,7 +748,10 @@ cache-sweep-dry-run:
 	@echo "OK: cache-sweep complete."
 
 cache-purge-exp:
-	rm -rf .cache/exp-*-target
+	@for d in $(REPO_LOCAL_CACHE_ROOT)/exp-*-target; do \
+	    [ -e "$$d" ] || continue; \
+	    $(call guarded_rm,$$d); \
+	done
 	@echo "OK: experimental target dirs purged."
 
 # Cache size check: fails at configurable thresholds. Hard cap blocks
@@ -765,7 +767,8 @@ cache-purge-exp:
 # grows slowly during a session; checking once every 30 minutes (or on
 # explicit `make cache-check-force`) gives the same safety guarantee
 # with near-zero overhead for in-session pushes.
-CACHE_CHECK_SENTINEL := $(REPO_CARGO_TARGET_DIR)/validation-tools/cache-check.last
+# The sentinel path is set in mk/cache_roots.mk under the worktree-local
+# target-dir, so one checkout's memoized result never answers for another.
 CACHE_CHECK_TTL_SECS ?= 1800
 
 cache-check:
@@ -781,12 +784,12 @@ cache-check:
 	$(MAKE) -s cache-check-force | tee "$(CACHE_CHECK_SENTINEL)"
 
 cache-check-force:
-	@# Cache accounting sums gate-target, gate-cbuild, and residual target/.
-	@# Residual target/ is reserved for cargo doc and mdbook output.
-	@GATE_MB=$$(du -sm .cache/gate-target 2>/dev/null | cut -f1 || printf '0'); \
-	CBUILD_MB=$$(du -sm .cache/gate-cbuild 2>/dev/null | cut -f1 || printf '0'); \
-	TARGET_MB=$$(du -sm target 2>/dev/null | cut -f1 || printf '0'); \
-	TOTAL=$$((GATE_MB + CBUILD_MB + TARGET_MB)); \
+	@# Cache accounting sums CACHE_ACCOUNT_DIRS from mk/cache_roots.mk: the
+	@# resolved target dir, the owner's gate-target and gate-cbuild trees,
+	@# and residual target/ (reserved for cargo doc and mdbook output).
+	@TOTAL=0; for d in $(CACHE_ACCOUNT_DIRS); do \
+	    MB=$$(du -sm "$$d" 2>/dev/null | cut -f1 || printf '0'); TOTAL=$$((TOTAL + $${MB:-0})); \
+	done; \
 	SOFT=$${CACHE_CHECK_SOFT_MB:-153600}; \
 	HARD=$${CACHE_CHECK_HARD_MB:-256000}; \
 	if [ "$$TOTAL" -gt "$$HARD" ]; then \
@@ -2344,17 +2347,22 @@ clean-artifacts:
 	@echo "Done. Regenerate and verify with cargo-native data governance commands."
 
 clean:
-	rm -rf $(REPO_CARGO_TARGET_DIR)
+	@$(call guarded_rm,$(REPO_CARGO_TARGET_DIR))
 
+# clean-builds removes this checkout's own build state. In shared mode the
+# owner's gate-cbuild tree stays unless REPO_ALLOW_SHARED_CLEAN=1, because a
+# sibling worktree may be compiling into it.
 clean-builds:
-	rm -rf target/
-	rm -rf .cache/cargo-default-target/
-	rm -rf .cache/gate-target/
-	rm -rf .cache/gate-cbuild/
-	rm -rf $(REPO_TMP_CARGO_ROOT)
-	rm -rf $(REPO_TMPDIR)/open_gororoba-cargo-build 2>/dev/null || true
-	rm -rf $(REPO_TMPDIR)/open_gororoba_*_target 2>/dev/null || true
-	rm -rf $(REPO_TMPDIR)/open_gororoba-cargo-build-* 2>/dev/null || true
+	@$(call guarded_rm,$(CURDIR)/target)
+	@$(call guarded_rm,$(REPO_LOCAL_CACHE_ROOT)/cargo-default-target)
+	@$(call guarded_rm,$(REPO_CARGO_TARGET_DIR))
+	@$(call guarded_rm,$(REPO_CARGO_BUILD_DIR))
+	@$(call guarded_rm,$(REPO_TMP_CARGO_ROOT))
+	@$(call guarded_rm,$(REPO_TMPDIR)/open_gororoba-cargo-build)
+	@for d in $(REPO_TMPDIR)/open_gororoba_*_target $(REPO_TMPDIR)/open_gororoba-cargo-build-*; do \
+	    [ -e "$$d" ] || continue; \
+	    $(call guarded_rm,$$d); \
+	done
 	@echo "Removed all Rust build artifacts. Run 'cargo build' to rebuild."
 
 
@@ -2379,7 +2387,7 @@ pathion-resonance-artifacts:
 	$(CARGO_ENV) cargo run -p pathion_ellip --example pathion_resonance_probe
 
 clean-all: clean clean-builds clean-artifacts
-	@rm -rf $(REPO_CARGO_HOME)
+	@$(call guarded_rm,$(REPO_CARGO_HOME))
 	@command -v cargo-sweep >/dev/null 2>&1 && cargo sweep --time 14 || true
 	@echo "Full cleanup complete. Run 'make install && make artifacts' to rebuild."
 
