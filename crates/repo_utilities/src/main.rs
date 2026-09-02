@@ -1059,9 +1059,10 @@ fn run_validation_tool_paths(args: ValidationToolPathsArgs) -> Result<()> {
     }
     for hit in &hits {
         eprintln!(
-            "[validation-tool-paths] {} embeds vanished path {}",
+            "[validation-tool-paths] {} embeds {}, under the removed checkout {}",
             hit.binary.display(),
-            hit.embedded
+            hit.embedded,
+            hit.vanished_root
         );
     }
     bail!(
