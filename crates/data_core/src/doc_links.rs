@@ -99,22 +99,19 @@ mod tests {
 
     #[test]
     fn test_check_paths_exist_with_real_crate() {
-        // CARGO_MANIFEST_DIR points to the crate dir; go up twice for workspace root
-        let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
-        let workspace_root = manifest_dir.parent().unwrap().parent().unwrap();
+        let workspace_root = repo_root::resolve!();
         let paths = vec![
             "crates/data_core/src/lib.rs".to_string(),
             "nonexistent/file.rs".to_string(),
         ];
-        let (existing, missing) = check_paths_exist(&paths, workspace_root);
+        let (existing, missing) = check_paths_exist(&paths, &workspace_root);
         assert_eq!(existing, vec!["crates/data_core/src/lib.rs"]);
         assert_eq!(missing, vec!["nonexistent/file.rs"]);
     }
 
     #[test]
     fn test_claims_matrix_link_resolution_if_available() {
-        let manifest_dir = Path::new(env!("CARGO_MANIFEST_DIR"));
-        let workspace_root = manifest_dir.parent().unwrap().parent().unwrap();
+        let workspace_root = repo_root::resolve!();
         let matrix_path = workspace_root.join("docs/CLAIMS_EVIDENCE_MATRIX.md");
         if !matrix_path.exists() {
             eprintln!("Skipping: claims matrix not available");
@@ -141,7 +138,7 @@ mod tests {
                 .filter(|p| p.starts_with("crates/"))
                 .collect();
             rust_paths += crate_paths.len();
-            let (_, missing) = check_paths_exist(&crate_paths, root);
+            let (_, missing) = check_paths_exist(&crate_paths, &root);
             rust_missing += missing.len();
             for m in &missing {
                 if rust_missing_examples.len() < 10 {

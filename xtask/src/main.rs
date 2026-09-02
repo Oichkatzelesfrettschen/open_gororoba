@@ -2810,10 +2810,7 @@ fn run_worker_budget() -> Result<()> {
 }
 
 fn repo_root() -> Result<PathBuf> {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .map(Path::to_path_buf)
-        .context("resolve repository root from xtask manifest directory")
+    Ok(repo_root::resolve!())
 }
 
 #[derive(Debug, Deserialize)]

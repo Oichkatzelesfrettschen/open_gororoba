@@ -64,7 +64,7 @@ struct ZipExtractStatus {
 }
 
 fn repo_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../")
+    repo_root::resolve!()
 }
 
 fn repo_path(relative: &str) -> PathBuf {

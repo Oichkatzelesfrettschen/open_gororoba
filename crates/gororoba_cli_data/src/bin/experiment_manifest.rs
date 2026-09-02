@@ -505,7 +505,7 @@ mod tests {
         checked_out_commit, resolve_repo_file, sha256_bytes, sha256_file, validate_lowercase_hex,
         verify_manifest,
     };
-    use std::{fs, io::Write, path::Path};
+    use std::{fs, io::Write};
     use tempfile::tempdir;
 
     #[test]
@@ -535,10 +535,7 @@ mod tests {
 
     #[test]
     fn verifies_complete_manifest_contract_and_rejects_missing_hardware() {
-        let repo_root = Path::new(env!("CARGO_MANIFEST_DIR"))
-            .join("../..")
-            .canonicalize()
-            .expect("repository root");
+        let repo_root = repo_root::resolve!();
         let retained_path = "data/csv/apt_dimensional_census_summary.csv";
         let retained_hash = sha256_file(&repo_root.join(retained_path)).expect("retained hash");
         let commit = checked_out_commit(&repo_root).expect("checked out commit");

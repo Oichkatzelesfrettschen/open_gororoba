@@ -8,12 +8,7 @@ use std::{
 const CALIBRATION_ID: &str = "yig_magnonic_kaman_2026";
 
 fn repo_root() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR"))
-        .parent()
-        .expect("crate parent")
-        .parent()
-        .expect("workspace root")
-        .to_path_buf()
+    repo_root::resolve!()
 }
 
 fn nonlocal_binary_path() -> PathBuf {
