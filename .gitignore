@@ -262,6 +262,7 @@ credentials.*
 !docs/reports/*_roadmap_*.md
 !docs/monograph/MERGED_MONOGRAPH.md
 !docs/reports/root_promoted/*.md
+!docs/reports/enso_91103_outlook_*.md
 # Stage B documentation lanes (glossary, cache policy, experiment manifest, upgrade history).
 !docs/engineering/
 !docs/engineering/*.md
