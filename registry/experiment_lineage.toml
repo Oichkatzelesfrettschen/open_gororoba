@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 232
-edge_count = 1113
+lineage_count = 235
+edge_count = 1131
 
 [[lineage]]
 id = "XL-001"
@@ -4228,6 +4228,60 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "for control in rot dbdt bmag cumrot6 maxrot6 pvi6 gram6 scram chperm; do CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --col-a assoc --col-b \"$control\" --out \"data/output/staples_cluster_bootstrap_assoc_vs_${control}.json\"; done", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-215"
+experiment_id = "E-240"
+binary = "staples-twist-ladder"
+deterministic = true
+gpu = false
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-ladder -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_ladder.json --n-draws 999 --n-scrambles 999 --seed 42 --neg-fraction 0.05"
+run_command_sha256 = "df5bad6d3d3838fcf56382ee78cc8104ab8880c0d22eae1c184067c295f33a77"
+claim_refs = ["C-1632", "C-1729"]
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+output_path_refs = ["data/output/staples_twist_ladder.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-ladder -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_ladder.json --n-draws 999 --n-scrambles 999 --seed 42 --neg-fraction 0.05", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-216"
+experiment_id = "E-241"
+binary = "staples-layout-sweep"
+deterministic = true
+gpu = false
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-layout-sweep -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_layout_sweep.json --seed 42 --neg-fraction 0.05 --equivalence-margin 0.005"
+run_command_sha256 = "bfccc1f9100cfe83c4e473abcc2df5de835bf03e33c0ae22aece77fc4886a33a"
+claim_refs = ["C-1633", "C-1730"]
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+output_path_refs = ["data/output/staples_layout_sweep.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-layout-sweep -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_layout_sweep.json --seed 42 --neg-fraction 0.05 --equivalence-margin 0.005", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-217"
+experiment_id = "E-242"
+binary = "staples-incremental-information"
+deterministic = true
+gpu = false
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-incremental-information -- --scores data/output/benchmark_scores.csv --out data/output/staples_incremental_information.json --seed 42 --n-boot 1000"
+run_command_sha256 = "d2d5088f81d445e69ff27e103934bfba95eda7b44a6e63155dd37b5f15713c5f"
+claim_refs = []
+input_path_refs = ["data/output/benchmark_scores.csv"]
+output_path_refs = ["data/output/staples_incremental_information.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-incremental-information -- --scores data/output/benchmark_scores.csv --out data/output/staples_incremental_information.json --seed 42 --n-boot 1000", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -14245,5 +14299,167 @@ from_id = "E-239"
 to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_scram.json"
 to_kind = "path"
 edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01114"
+lineage_id = "XL-215"
+from_id = "E-240"
+to_ref = "staples-twist-ladder"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01115"
+lineage_id = "XL-215"
+from_id = "E-240"
+to_ref = "C-1632"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01116"
+lineage_id = "XL-215"
+from_id = "E-240"
+to_ref = "C-1729"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01117"
+lineage_id = "XL-215"
+from_id = "E-240"
+to_ref = "data/output/cat_themis_a.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01118"
+lineage_id = "XL-215"
+from_id = "E-240"
+to_ref = "data/output/tha_matched_files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01119"
+lineage_id = "XL-215"
+from_id = "E-240"
+to_ref = "data/output/staples_twist_ladder.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01120"
+lineage_id = "XL-215"
+from_id = "E-240"
+to_ref = "SRC-THEMIS-THA-FGM-DAILY"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-01121"
+lineage_id = "XL-216"
+from_id = "E-241"
+to_ref = "staples-layout-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01122"
+lineage_id = "XL-216"
+from_id = "E-241"
+to_ref = "C-1633"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01123"
+lineage_id = "XL-216"
+from_id = "E-241"
+to_ref = "C-1730"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01124"
+lineage_id = "XL-216"
+from_id = "E-241"
+to_ref = "data/output/cat_themis_a.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01125"
+lineage_id = "XL-216"
+from_id = "E-241"
+to_ref = "data/output/tha_matched_files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01126"
+lineage_id = "XL-216"
+from_id = "E-241"
+to_ref = "data/output/staples_layout_sweep.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01127"
+lineage_id = "XL-216"
+from_id = "E-241"
+to_ref = "SRC-THEMIS-THA-FGM-DAILY"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-01128"
+lineage_id = "XL-217"
+from_id = "E-242"
+to_ref = "staples-incremental-information"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01129"
+lineage_id = "XL-217"
+from_id = "E-242"
+to_ref = "data/output/benchmark_scores.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01130"
+lineage_id = "XL-217"
+from_id = "E-242"
+to_ref = "data/output/staples_incremental_information.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01131"
+lineage_id = "XL-217"
+from_id = "E-242"
+to_ref = "SRC-THEMIS-THA-FGM-DAILY"
+to_kind = "source"
+edge_kind = "consumes_source"
 verified = true
 

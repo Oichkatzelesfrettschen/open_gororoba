@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 186
+event_count = 188
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -3969,3 +3969,49 @@ relation_kind = "implementation_split"
 proposal_key = "l-misc-themis-file-cluster-equals-day-cluster"
 canonical_claim_id = "C-1728"
 relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 187
+transition_key = "c-1632-random-twist-ladder-2026-09-01"
+source_claim_id = "C-1632"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "False if the canonical CD AUC lies at or below the 97.5th percentile of the AUC ensemble of 999 random unital XOR-graded twists on the same 16-element basis, scored by the identical normalized contraction on the identical stratified subsample (tail probability at or above 0.025)."
+rationale = "E-240 ran the preregistered ensemble C-1632 left open. On the identical subsample (1,733,470 samples, 578,320 positives, 813 files) the canonical CD tensor scores ROC-AUC 0.8274 on both the full sample and the subsample. The 999 random unital twists score mean 0.5148, standard deviation 0.0407, 97.5th percentile 0.5922, maximum 0.6287, zero draws at or above the canonical value (tail probability 0.001). The 999 exact-support sign scrambles score mean 0.4951, 97.5th percentile 0.5672, maximum 0.6213, zero draws at or above the canonical value; the seed-42 scramble reproduces the 0.4750 that C-1632 reported. The single-draw scope statement in C-1632 is therefore discharged and the claim survives unchanged; the successor states the ensemble result."
+unresolved_assumptions = ["Random unital twists are sampled uniformly over sign functions on the 15 x 15 non-identity pairs and are not constrained to be 2-cocycles, so the control family contains non-associative twisted group algebras of every kind; a cocycle-restricted ensemble and algebra-isomorphic relabelings of the sedenion basis remain untested."]
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-LADDER-20260901"]
+experiment_ids = ["E-240"]
+actor = "prereg-controls-2026-09-01"
+reason = "Register the E-240 verdict and the ensemble-level successor of C-1632."
+transition_timestamp = "2026-09-02T03:05:00Z"
+transition_spec_sha256 = "84aa6d50fedd04233d6913e48344c8d23a98e5fc67f103e440768cd52eae4b19"
+
+[[transition.successors]]
+proposal_key = "staples-cd-signs-are-an-extreme-tail-among-unital-twists"
+canonical_claim_id = "C-1729"
+relation_kind = "refines"
+
+[[transition]]
+event_id = 188
+transition_key = "c-1633-embedding-layout-sweep-2026-09-01"
+source_claim_id = "C-1633"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "False if the canonical layout (time-ordered lags in basis slots 0..3, Bx By Bz in channel slots 0..2, magnitude fixed in slot 3) ranks in the top 5 percent of the 4! x 3! = 144 structured layouts scored by the canonical CD tensor on the identical subsample, with no other layout within the predeclared 0.005 AUC margin above it."
+rationale = "E-241 ran the formal equivalence test C-1633 named as not yet run, over every structured layout instead of the single [1,2,0] permutation. The canonical layout ranks 117 of 144 (percentile 0.194, rank probability under exchangeability 0.8125). The 144 AUCs have mean 0.8286, standard deviation 0.0015, minimum 0.8257, maximum 0.8307; the best layout (lag_perm [2,0,1,3], comp_perm [2,1,0]) exceeds the canonical 0.8274 by 0.0033, inside the margin, and 143 of the 143 other layouts lie within 0.005 of it. The lag-to-basis assignment is therefore not a fitted parameter and the reported AUC is a typical member of the layout family. C-1633 survives unchanged; the successor states the layout-insensitivity result."
+unresolved_assumptions = ["The sweep permutes the four lag slots and the three component channels with the magnitude channel fixed in slot 3; layouts that move the magnitude into a component slot, and layouts over a different 16-element basis order, are outside the tested family."]
+evidence_artifact_ids = ["LOCAL-STAPLES-LAYOUT-SWEEP-20260901"]
+experiment_ids = ["E-241"]
+actor = "prereg-controls-2026-09-01"
+reason = "Register the E-241 verdict and the layout-insensitivity successor of C-1633."
+transition_timestamp = "2026-09-02T03:08:00Z"
+transition_spec_sha256 = "04cdc5c9f2e45022e7b3506062293334b73244323d3b97438d8b339beb25fb72"
+
+[[transition.successors]]
+proposal_key = "staples-canonical-layout-is-not-a-fitted-parameter"
+canonical_claim_id = "C-1730"
+relation_kind = "refines"

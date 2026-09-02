@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 163
-experiment_count = 232
+deterministic_count = 166
+experiment_count = 235
 gpu_count = 29
 seeded_count = 46
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6088,4 +6088,82 @@ run_command_sha256 = "6c40141dd3ca48dd1de7fe57ee478e4ea2a5b8eac990bd111d7d6ff082
 status = "active"
 status_token = "ACTIVE"
 title = "Equal-receptive-field control battery on the deduplicated staples benchmark"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-twist-ladder"
+binary_experiment_declared = "E-240"
+binary_registered = true
+claim_refs = ["C-1632", "C-1729"]
+claims = ["C-1632", "C-1729"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+gpu = false
+id = "E-240"
+input = "The E-239 sample: THEMIS-A daily FGM files from data/output/tha_matched_files.csv labeled by the Staples et al. (2020) catalog data/output/cat_themis_a.csv (positive within 2 minutes of a catalogued crossing on that UTC day, files under 500 rows skipped). Subsample: every positive plus each negative with probability 0.05 from ChaCha8 keyed on (seed 42, file_id), stratified by daily file; the canonical tensor is also scored on the full sample."
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+lineage_id = "XL-215"
+method = "Preregistered before execution. Hypothesis: the sedenion associator tensor discriminates crossings better than the associator of a random unital XOR-graded twist on the same 16-element basis. Control family: 999 uniformly random unital twists sigma with sigma(0,.) = sigma(.,0) = +1, each turned into its associator tensor by SparseCubicTensor::from_twist (coefficient sigma(i,j) sigma(i^j,k) - sigma(j,k) sigma(i,j^k), the formula that reproduces from_associator on the CD twist) and scored by the identical normalized contraction on the identical subsample; plus 999 exact-support sign scrambles of the CD tensor (seeds 42..1040, so seed 42 reproduces C-1632) as the lower rung. Statistic: pooled average-rank Mann-Whitney AUC. Falsifier: canonical AUC at or below the 97.5th percentile of the random-twist ensemble, tail probability (1 + #draws >= CD) / 1000 at or above 0.025; that outcome narrows C-1632 from sedenion-specific to XOR-graded-algebra-specific. Seed policy: twist d uses ChaCha8 seed 42 + (d+1) * 0x9E3779B97F4A7C15 wrapping; every draw records its term count, sign counts and twist sha256."
+output = ["data/output/staples_twist_ladder.json"]
+output_path_refs = ["data/output/staples_twist_ladder.json"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-ladder -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_ladder.json --n-draws 999 --n-scrambles 999 --seed 42 --neg-fraction 0.05"
+run_command_sha256 = "df5bad6d3d3838fcf56382ee78cc8104ab8880c0d22eae1c184067c295f33a77"
+status = "active"
+status_token = "ACTIVE"
+title = "Random unital twist ladder against the sedenion associator on the staples benchmark"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-layout-sweep"
+binary_experiment_declared = "E-241"
+binary_registered = true
+claim_refs = ["C-1633", "C-1730"]
+claims = ["C-1633", "C-1730"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+gpu = false
+id = "E-241"
+input = "The E-239 sample and the E-240 stratified subsample (seed 42, negative fraction 0.05), so the canonical layout's AUC is comparable across E-240 and E-241."
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+lineage_id = "XL-216"
+method = "Preregistered before execution. Hypothesis: the canonical staple layout (time-ordered lags in slots 0..3, components Bx By Bz in channel slots 0..2, magnitude fixed in slot 3) is one arbitrary member of the 4! x 3! = 144 structured layouts and its AUC is typical of them. Every layout is scored by the canonical CD tensor on the identical subsample. Declared in advance: the canonical layout is the identity permutation pair; the equivalence margin is 0.005 AUC; under exchangeability the canonical rank r among 144 has selection probability r/144. Falsifier of the hypothesis: the canonical layout ranks in the top 5 percent with no other layout within the margin above it, which makes the lag-to-basis assignment a fitted parameter and raises the detector's declared parameter count by one; the converse finding, layouts exceeding the canonical by more than the margin, makes the reported AUC a lower bound reached without tuning the assignment."
+output = ["data/output/staples_layout_sweep.json"]
+output_path_refs = ["data/output/staples_layout_sweep.json"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-layout-sweep -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_layout_sweep.json --seed 42 --neg-fraction 0.05 --equivalence-margin 0.005"
+run_command_sha256 = "bfccc1f9100cfe83c4e473abcc2df5de835bf03e33c0ae22aece77fc4886a33a"
+status = "active"
+status_token = "ACTIVE"
+title = "Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-incremental-information"
+binary_experiment_declared = "E-242"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+gpu = false
+id = "E-242"
+input = "data/output/benchmark_scores.csv from E-239 (23,664,374 rows, 578,320 positives, 813 daily files): columns dbdt, rot, cumrot6, maxrot6, pvi6, gram6 as the baseline feature set and assoc as the candidate, label as the target, file_id as the cluster."
+input_path_refs = ["data/output/benchmark_scores.csv"]
+lineage_id = "XL-217"
+method = "Preregistered before execution. Features enter as ln(x + 1e-12). Model B: logistic regression on the six baselines; model B+A adds assoc. Fit by Newton-Raphson with a fixed ridge 1e-6 on standardized coefficients, at most 25 iterations, deviance tolerance 1e-8, no tuning. Outer validation: 5 folds grouped by file_id, fold assignment by one ChaCha8(seed 42) shuffle of the sorted file ids dealt round-robin; standardization fitted on training folds only; both models fitted on identical rows and predicted on identical held-out rows. Metrics on out-of-fold predictions: average-rank ROC-AUC, average-precision PR-AUC, log loss, Brier score, ten equal-count calibration bins with expected calibration error. Paired bootstrap: 1000 resamples of the 813 files with replacement (ChaCha8 keyed on seed and resample), samples reweighted by file draw count, weighted AUC, PR-AUC and log loss from one pass over a global sort per model, paired deltas B+A minus B with 95 percent percentile intervals. Decision rule: a delta ROC-AUC interval that excludes zero and is positive means the associator carries information beyond the six-sample geometric baselines; an interval containing zero means it is redundant with them at matched receptive field, in which case C-1631 narrows to marginal univariate discrimination and I-212 (receptive-field confounding) strengthens; I-212 is not closed on a zero-containing interval."
+output = ["data/output/staples_incremental_information.json"]
+output_path_refs = ["data/output/staples_incremental_information.json"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-incremental-information -- --scores data/output/benchmark_scores.csv --out data/output/staples_incremental_information.json --seed 42 --n-boot 1000"
+run_command_sha256 = "d2d5088f81d445e69ff27e103934bfba95eda7b44a6e63155dd37b5f15713c5f"
+status = "active"
+status_token = "ACTIVE"
+title = "Incremental information of the staple associator over the six-sample geometric baselines under file-grouped cross-validation"
 truth_surface_consumption = []

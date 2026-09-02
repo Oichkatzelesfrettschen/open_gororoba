@@ -5728,8 +5728,8 @@ id = "C-1725"
 last_verified = "2026-08-06"
 statement = "The cached experiment binary staples-roc-cluster-bootstrap no longer accepts the argument list in the registered run command of E-239, so the cache artifact cannot replay its registered experiment. The general form is that no current check would notice such drift for any registered experiment binary."
 status = "Provisional"
-where_stated = "registry/experiments.toml; data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 status_note = "Retested 2026-09-01 at source revision 81f2e819. Built gororoba_cli_physics --bin staples-roc-cluster-bootstrap under the validation profile; its clap surface declares --scores, --out, --resamples, --seed, --col-a and --col-b, covering every flag the E-239 run command passes (--scores, --col-a, --col-b, --out). Invoking the binary with that flag set reaches file I/O and fails on the missing input path, so the argument list parses. The refutation reaches the source-conformance layer only: the cache artifact this claim names was unavailable for retest, so drift between a cached build and its registered command remains untested, and the general form -- that no current check would notice such drift for any registered experiment binary -- stands unrefuted. Status held at Provisional."
+where_stated = "registry/experiments.toml; data/output/audit/2026-08-06/claim-falsification-fleet-l-misc.toml"
 
 [[claim]]
 id = "C-1726"
@@ -5753,11 +5753,25 @@ status = "Provisional"
 where_stated = "data/output/tha_matched_files.csv"
 
 [[claim]]
+id = "C-1729"
+last_verified = "2026-09-02"
+statement = "Among matched sparse cubic tensors the sedenion associator's sign arrangement is an extreme tail: on the deduplicated THEMIS-A Staples benchmark subsample (1,733,470 samples, 578,320 positives, every positive plus 5 percent of negatives per daily file, ChaCha8 seed 42) the canonical Cayley-Dickson tensor reaches ROC-AUC 0.8274 while 999 random unital XOR-graded twists on the same 16-element basis, each turned into its associator tensor and scored by the identical normalized contraction, reach mean 0.5148, 97.5th percentile 0.5922 and maximum 0.6287 (tail probability 0.001, zero draws at or above the canonical value), and 999 exact-support sign scrambles of the CD tensor reach mean 0.4951, 97.5th percentile 0.5672 and maximum 0.6213 (tail probability 0.001). The discrimination is specific to the Cayley-Dickson twist and is not a property of XOR-graded sign structure in general."
+status = "Verified"
+where_stated = "data/output/staples_twist_ladder.json; E-240"
+
+[[claim]]
 id = "C-173"
 last_verified = "2026-02-01"
 statement = "Power norm ratio||x^n||/||x||^n = 1.0 EXACTLY at ALL CD dimensions through 128, for all n from 2 to 10. This is a direct consequence of power-associativity (C-142): x^m * x^n = x^{m+n} preserves the norm identity. Std < 1e-4 everywhere."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`"
+
+[[claim]]
+id = "C-1730"
+last_verified = "2026-09-02"
+statement = "The staple-associator detector's lag-to-basis and component-to-channel assignment is not a fitted parameter: over all 4! x 3! = 144 structured layouts of four time-ordered samples and three field components (magnitude fixed in the fourth channel slot), scored by the canonical Cayley-Dickson tensor on the deduplicated THEMIS-A Staples benchmark subsample (1,733,470 samples, 578,320 positives, ChaCha8 seed 42), the canonical layout's ROC-AUC 0.8274 ranks 117 of 144 (percentile 0.194), the layout AUCs span 0.8257 to 0.8307 with standard deviation 0.0015, the best layout exceeds the canonical by 0.0033, and 143 of 143 other layouts lie within the predeclared 0.005 equivalence margin. The declared free-parameter count of the detector is unchanged by the assignment, and the reported AUC is a lower bound reachable without tuning it."
+status = "Verified"
+where_stated = "data/output/staples_layout_sweep.json; E-241"
 
 [[claim]]
 id = "C-174"
