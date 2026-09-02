@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 235
-edge_count = 1133
+lineage_count = 248
+edge_count = 1158
 
 [[lineage]]
 id = "XL-001"
@@ -2307,11 +2307,11 @@ acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Exe
 [[lineage]]
 id = "XL-127"
 experiment_id = "E-128"
-binary = ""
+binary = "bartol-spdf-crossval"
 deterministic = true
 gpu = false
-run_command = "cargo run --release --bin scripts/crates/data_core/src/catalogs/voyager.rs --start 1990 --end 1995"
-run_command_sha256 = "62b3e3a53b3a6306aee19de4152becfd242d2eef26cc8b6cd09e2e94fb0cdf1d"
+run_command = "cargo run --release -p gororoba_cli_data --bin bartol-spdf-crossval -- --start 1990 --end 1995"
+run_command_sha256 = "f774afd620d8df9caf8bbd831da915665e88f347993c0742f018771cb9662e85"
 claim_refs = ["C-1177", "C-1181"]
 input_path_refs = ["data/external/voyager/voyager2/bartol/vy2_90.dat", "data/external/voyager/voyager2/vy2_"]
 output_path_refs = ["data/output/bartol_vs_amda_v2_bfield_correlation.csv"]
@@ -2319,8 +2319,8 @@ dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin scripts/crates/data_core/src/catalogs/voyager.rs --start 1990 --end 1995", "Verify expected outputs or stdout artifacts are produced."]
-acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin bartol-spdf-crossval -- --start 1990 --end 1995", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
 id = "XL-128"
@@ -4282,6 +4282,240 @@ dataset_label_refs = []
 external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-incremental-information -- --scores data/output/benchmark_scores.csv --out data/output/staples_incremental_information.json --seed 42 --n-boot 1000", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-220"
+experiment_id = "E-266"
+binary = "heliosphere mms-sitl-labeled"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- mms-sitl-labeled"
+run_command_sha256 = "6b08307c29a9d65454abfbaefeca5207c2c0c0e9d965a158d3cdbea920fad9f9"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/mms_sitl_labeled_eval.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- mms-sitl-labeled", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-221"
+experiment_id = "E-267"
+binary = "heliosphere themis-staples-labeled"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-staples-labeled"
+run_command_sha256 = "c3ed2c0f59fc37638e19aa09c036ff9ed4f81442c2639107cd6d08235afe9be1"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/themis_staples_labeled_eval.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-staples-labeled", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-222"
+experiment_id = "E-268"
+binary = "heliosphere mms-multiday"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- mms-multiday"
+run_command_sha256 = "41a4999a6bef6db826a830ad28196f55a5e4662fb0560aa733501365168a4be0"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- mms-multiday", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-223"
+experiment_id = "E-269"
+binary = "heliosphere psp-alfven-control"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-alfven-control"
+run_command_sha256 = "8c4feb5a2dcc1ea699c78226ed763b41d0fe5b73316ff8a2e2267bd2651b1e80"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/psp_alfven_control.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-alfven-control", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-240"
+experiment_id = "E-270"
+binary = "heliosphere takens-tau-sweep"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- takens-tau-sweep"
+run_command_sha256 = "c54efa7b1bcc1732e82c95ff0765258c2c82a095eef7a055e33ccec018cca66b"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/takens_tau_sweep.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- takens-tau-sweep", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-241"
+experiment_id = "E-271"
+binary = "heliosphere psp-switchback-correlation"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-switchback-correlation"
+run_command_sha256 = "5c787d8eb4dab05234c372a45e03e337a45a037056370bfabe1b14aefa6aa2ba"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/psp_switchback_correlation.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-switchback-correlation", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-242"
+experiment_id = "E-272"
+binary = "heliosphere bootstrap-f1"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- bootstrap-f1"
+run_command_sha256 = "35204ece108f5b61166561144bbd139e0fc5979f6799ae0ca98be98acf154e0a"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/themis_bootstrap_f1_ci.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- bootstrap-f1", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-243"
+experiment_id = "E-273"
+binary = "heliosphere psp-alfven-control"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-alfven-control"
+run_command_sha256 = "8c4feb5a2dcc1ea699c78226ed763b41d0fe5b73316ff8a2e2267bd2651b1e80"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/psp_alfven_control.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-alfven-control", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-244"
+experiment_id = "E-274"
+binary = "heliosphere themis-staples-labeled"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-staples-labeled"
+run_command_sha256 = "c3ed2c0f59fc37638e19aa09c036ff9ed4f81442c2639107cd6d08235afe9be1"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/themis_staples_labeled_eval.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-staples-labeled", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-245"
+experiment_id = "E-275"
+binary = "heliosphere themis-general-benchmark"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-general-benchmark"
+run_command_sha256 = "315eba1d144a0cc057b58ee55f5fe4916f6d523617e625538cb3521f895ddc01"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/themis_general_benchmark.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-general-benchmark", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-246"
+experiment_id = "E-276"
+binary = ""
+deterministic = true
+gpu = false
+run_command = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claim_refs = []
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution command is explicitly declared.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-247"
+experiment_id = "E-277"
+binary = "heliosphere voyager-heliopause"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_physics --bin heliosphere -- voyager-heliopause"
+run_command_sha256 = "789858a547085ba1fa418db175543bebf840cf3d2b94f3804cdde490887f914e"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/heliosphere/ablations/voyager_heliopause_eval.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_physics --bin heliosphere -- voyager-heliopause", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-248"
+experiment_id = "E-278"
+binary = "lotss-analysis"
+deterministic = true
+gpu = false
+run_command = "cargo run --release -p gororoba_cli_data --bin lotss-analysis"
+run_command_sha256 = "ca932d1c229551ad9b641d6ca426bed9e8be83c99ee06a8abee45217a46ef434"
+claim_refs = []
+input_path_refs = []
+output_path_refs = ["data/output/lotss_ultrametric_report.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin lotss-analysis", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -9751,16 +9985,16 @@ verified = true
 id = "XLE-00608"
 lineage_id = "XL-127"
 from_id = "E-128"
-to_ref = "C-1177"
-to_kind = "claim"
-edge_kind = "supports_claim"
+to_ref = "bartol-spdf-crossval"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
 id = "XLE-00609"
 lineage_id = "XL-127"
 from_id = "E-128"
-to_ref = "C-1181"
+to_ref = "C-1177"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -9769,16 +10003,16 @@ verified = true
 id = "XLE-00610"
 lineage_id = "XL-127"
 from_id = "E-128"
-to_ref = "data/external/voyager/voyager2/bartol/vy2_90.dat"
-to_kind = "path"
-edge_kind = "consumes_path"
+to_ref = "C-1181"
+to_kind = "claim"
+edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
 id = "XLE-00611"
 lineage_id = "XL-127"
 from_id = "E-128"
-to_ref = "data/external/voyager/voyager2/vy2_"
+to_ref = "data/external/voyager/voyager2/bartol/vy2_90.dat"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -9787,13 +10021,22 @@ verified = true
 id = "XLE-00612"
 lineage_id = "XL-127"
 from_id = "E-128"
+to_ref = "data/external/voyager/voyager2/vy2_"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00613"
+lineage_id = "XL-127"
+from_id = "E-128"
 to_ref = "data/output/bartol_vs_amda_v2_bfield_correlation.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00613"
+id = "XLE-00614"
 lineage_id = "XL-128"
 from_id = "E-129"
 to_ref = "C-1178"
@@ -9802,7 +10045,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00614"
+id = "XLE-00615"
 lineage_id = "XL-128"
 from_id = "E-129"
 to_ref = "data/external/pioneer/pioneer10/p10_"
@@ -9811,7 +10054,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00615"
+id = "XLE-00616"
 lineage_id = "XL-128"
 from_id = "E-129"
 to_ref = "data/output/pioneer_amda_mag_radial_profile.csv"
@@ -9820,7 +10063,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00616"
+id = "XLE-00617"
 lineage_id = "XL-129"
 from_id = "E-130"
 to_ref = "C-1179"
@@ -9829,7 +10072,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00617"
+id = "XLE-00618"
 lineage_id = "XL-129"
 from_id = "E-130"
 to_ref = "data/external/psp/psp_2022_amda_merged.asc"
@@ -9838,7 +10081,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00618"
+id = "XLE-00619"
 lineage_id = "XL-129"
 from_id = "E-130"
 to_ref = "data/output/psp_perihelion_scaling.csv"
@@ -9847,7 +10090,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00619"
+id = "XLE-00620"
 lineage_id = "XL-130"
 from_id = "E-131"
 to_ref = "C-1180"
@@ -9856,7 +10099,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00620"
+id = "XLE-00621"
 lineage_id = "XL-130"
 from_id = "E-131"
 to_ref = "data/external/helios/helios1/helios1_"
@@ -9865,7 +10108,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00621"
+id = "XLE-00622"
 lineage_id = "XL-130"
 from_id = "E-131"
 to_ref = "data/external/voyager/voyager2/vy2_"
@@ -9874,7 +10117,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00622"
+id = "XLE-00623"
 lineage_id = "XL-130"
 from_id = "E-131"
 to_ref = "data/output/helios_voyager_radial_comparison.csv"
@@ -9883,7 +10126,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00623"
+id = "XLE-00624"
 lineage_id = "XL-131"
 from_id = "E-132"
 to_ref = "C-1184"
@@ -9892,7 +10135,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00624"
+id = "XLE-00625"
 lineage_id = "XL-131"
 from_id = "E-132"
 to_ref = "data/external/ulysses/uly_1994_amda_merged_hourly.asc"
@@ -9901,7 +10144,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00625"
+id = "XLE-00626"
 lineage_id = "XL-131"
 from_id = "E-132"
 to_ref = "data/external/ulysses/uly_1994_merged_hourly.asc"
@@ -9910,7 +10153,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00626"
+id = "XLE-00627"
 lineage_id = "XL-131"
 from_id = "E-132"
 to_ref = "data/output/ulysses_amda_spdf_crossval.csv"
@@ -9919,7 +10162,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00627"
+id = "XLE-00628"
 lineage_id = "XL-132"
 from_id = "E-133"
 to_ref = "C-1185"
@@ -9928,7 +10171,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00628"
+id = "XLE-00629"
 lineage_id = "XL-132"
 from_id = "E-133"
 to_ref = "data/external/juno/juno_2013_amda_merged_hourly.asc"
@@ -9937,7 +10180,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00629"
+id = "XLE-00630"
 lineage_id = "XL-132"
 from_id = "E-133"
 to_ref = "data/output/juno_cruise_bfield_validation.csv"
@@ -9946,7 +10189,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00630"
+id = "XLE-00631"
 lineage_id = "XL-133"
 from_id = "E-134"
 to_ref = "C-1186"
@@ -9955,7 +10198,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00631"
+id = "XLE-00632"
 lineage_id = "XL-133"
 from_id = "E-134"
 to_ref = "data/external/omni2/omni2_2024.dat"
@@ -9964,7 +10207,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00632"
+id = "XLE-00633"
 lineage_id = "XL-133"
 from_id = "E-134"
 to_ref = "data/external/wind/wind_2024_amda_merged_hourly.asc"
@@ -9973,7 +10216,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00633"
+id = "XLE-00634"
 lineage_id = "XL-133"
 from_id = "E-134"
 to_ref = "data/output/wind_amda_omni2_crosscheck.csv"
@@ -9982,7 +10225,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00634"
+id = "XLE-00635"
 lineage_id = "XL-134"
 from_id = "E-135"
 to_ref = "C-1204"
@@ -9991,19 +10234,10 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00635"
-lineage_id = "XL-134"
-from_id = "E-135"
-to_ref = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00636"
 lineage_id = "XL-134"
 from_id = "E-135"
-to_ref = "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
+to_ref = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -10012,16 +10246,16 @@ verified = true
 id = "XLE-00637"
 lineage_id = "XL-134"
 from_id = "E-135"
-to_ref = "XS-015"
-to_kind = "source"
-edge_kind = "consumes_source"
+to_ref = "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
 id = "XLE-00638"
 lineage_id = "XL-134"
 from_id = "E-135"
-to_ref = "XS-017"
+to_ref = "XS-015"
 to_kind = "source"
 edge_kind = "consumes_source"
 verified = true
@@ -10030,13 +10264,22 @@ verified = true
 id = "XLE-00639"
 lineage_id = "XL-134"
 from_id = "E-135"
+to_ref = "XS-017"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-00640"
+lineage_id = "XL-134"
+from_id = "E-135"
 to_ref = "observation_benchmark"
 to_kind = "truth_surface"
 edge_kind = "consumes_truth_surface"
 verified = true
 
 [[edge]]
-id = "XLE-00640"
+id = "XLE-00641"
 lineage_id = "XL-135"
 from_id = "E-136"
 to_ref = "pioneer-residual-audit"
@@ -10045,7 +10288,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00641"
+id = "XLE-00642"
 lineage_id = "XL-135"
 from_id = "E-136"
 to_ref = "C-1205"
@@ -10054,7 +10297,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00642"
+id = "XLE-00643"
 lineage_id = "XL-135"
 from_id = "E-136"
 to_ref = "C-1206"
@@ -10063,7 +10306,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00643"
+id = "XLE-00644"
 lineage_id = "XL-135"
 from_id = "E-136"
 to_ref = "data/external/flyby_anomaly/anderson_2008_flyby_catalog.csv"
@@ -10072,7 +10315,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00644"
+id = "XLE-00645"
 lineage_id = "XL-135"
 from_id = "E-136"
 to_ref = "data/external/pioneer/pioneer10/pds_ppi_merged/p10_"
@@ -10081,7 +10324,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00645"
+id = "XLE-00646"
 lineage_id = "XL-135"
 from_id = "E-136"
 to_ref = "data/external/pioneer/pioneer11/pds_ppi_merged/p11_"
@@ -10090,7 +10333,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00646"
+id = "XLE-00647"
 lineage_id = "XL-135"
 from_id = "E-136"
 to_ref = "data/external/pioneer_anomaly/pioneer_anomaly_benchmark.csv"
@@ -10099,19 +10342,10 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00647"
-lineage_id = "XL-135"
-from_id = "E-136"
-to_ref = "data/output/anomaly/flyby/flyby_observed_vs_modeled.csv"
-to_kind = "path"
-edge_kind = "produces_path"
-verified = true
-
-[[edge]]
 id = "XLE-00648"
 lineage_id = "XL-135"
 from_id = "E-136"
-to_ref = "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"
+to_ref = "data/output/anomaly/flyby/flyby_observed_vs_modeled.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -10120,16 +10354,16 @@ verified = true
 id = "XLE-00649"
 lineage_id = "XL-135"
 from_id = "E-136"
-to_ref = "XS-015"
-to_kind = "source"
-edge_kind = "consumes_source"
+to_ref = "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"
+to_kind = "path"
+edge_kind = "produces_path"
 verified = true
 
 [[edge]]
 id = "XLE-00650"
 lineage_id = "XL-135"
 from_id = "E-136"
-to_ref = "XS-017"
+to_ref = "XS-015"
 to_kind = "source"
 edge_kind = "consumes_source"
 verified = true
@@ -10138,13 +10372,22 @@ verified = true
 id = "XLE-00651"
 lineage_id = "XL-135"
 from_id = "E-136"
+to_ref = "XS-017"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-00652"
+lineage_id = "XL-135"
+from_id = "E-136"
 to_ref = "observation_benchmark"
 to_kind = "truth_surface"
 edge_kind = "consumes_truth_surface"
 verified = true
 
 [[edge]]
-id = "XLE-00652"
+id = "XLE-00653"
 lineage_id = "XL-135"
 from_id = "E-136"
 to_ref = "environment_context"
@@ -10153,7 +10396,7 @@ edge_kind = "consumes_truth_surface"
 verified = true
 
 [[edge]]
-id = "XLE-00653"
+id = "XLE-00654"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "fractal-metric-fit"
@@ -10162,7 +10405,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00654"
+id = "XLE-00655"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "C-1207"
@@ -10171,7 +10414,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00655"
+id = "XLE-00656"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "data/output/anomaly/flyby/flyby_observed_vs_modeled.csv"
@@ -10180,7 +10423,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00656"
+id = "XLE-00657"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "data/output/anomaly/pioneer/pioneer_benchmark_vs_environment.csv"
@@ -10189,7 +10432,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00657"
+id = "XLE-00658"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "data/output/anomaly/fractal_metric/best_fit.json"
@@ -10198,7 +10441,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00658"
+id = "XLE-00659"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "data/output/anomaly/fractal_metric/fit_grid.csv"
@@ -10207,7 +10450,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00659"
+id = "XLE-00660"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "XS-015"
@@ -10216,7 +10459,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00660"
+id = "XLE-00661"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "XS-017"
@@ -10225,7 +10468,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00661"
+id = "XLE-00662"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "observation_benchmark"
@@ -10234,7 +10477,7 @@ edge_kind = "consumes_truth_surface"
 verified = true
 
 [[edge]]
-id = "XLE-00662"
+id = "XLE-00663"
 lineage_id = "XL-136"
 from_id = "E-137"
 to_ref = "environment_context"
@@ -10243,7 +10486,7 @@ edge_kind = "consumes_truth_surface"
 verified = true
 
 [[edge]]
-id = "XLE-00663"
+id = "XLE-00664"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "cr-modulation-sweep"
@@ -10252,7 +10495,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00664"
+id = "XLE-00665"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1208"
@@ -10261,7 +10504,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00665"
+id = "XLE-00666"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1209"
@@ -10270,7 +10513,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00666"
+id = "XLE-00667"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1210"
@@ -10279,7 +10522,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00667"
+id = "XLE-00668"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1211"
@@ -10288,7 +10531,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00668"
+id = "XLE-00669"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1212"
@@ -10297,7 +10540,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00669"
+id = "XLE-00670"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1213"
@@ -10306,7 +10549,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00670"
+id = "XLE-00671"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1214"
@@ -10315,7 +10558,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00671"
+id = "XLE-00672"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1215"
@@ -10324,7 +10567,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00672"
+id = "XLE-00673"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1216"
@@ -10333,7 +10576,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00673"
+id = "XLE-00674"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1217"
@@ -10342,7 +10585,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00674"
+id = "XLE-00675"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1218"
@@ -10351,7 +10594,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00675"
+id = "XLE-00676"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1219"
@@ -10360,7 +10603,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00676"
+id = "XLE-00677"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1220"
@@ -10369,7 +10612,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00677"
+id = "XLE-00678"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1221"
@@ -10378,7 +10621,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00678"
+id = "XLE-00679"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1222"
@@ -10387,7 +10630,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00679"
+id = "XLE-00680"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1223"
@@ -10396,7 +10639,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00680"
+id = "XLE-00681"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1224"
@@ -10405,7 +10648,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00681"
+id = "XLE-00682"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1225"
@@ -10414,7 +10657,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00682"
+id = "XLE-00683"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1226"
@@ -10423,7 +10666,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00683"
+id = "XLE-00684"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1227"
@@ -10432,7 +10675,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00684"
+id = "XLE-00685"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1228"
@@ -10441,7 +10684,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00685"
+id = "XLE-00686"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1229"
@@ -10450,7 +10693,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00686"
+id = "XLE-00687"
 lineage_id = "XL-137"
 from_id = "E-138"
 to_ref = "C-1230"
@@ -10459,7 +10702,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00687"
+id = "XLE-00688"
 lineage_id = "XL-138"
 from_id = "E-139"
 to_ref = "dm-cd-4096-analysis"
@@ -10468,7 +10711,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00688"
+id = "XLE-00689"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "data/external/euclid/zenodo/euclid_zenodo_discovery.json"
@@ -10477,7 +10720,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00689"
+id = "XLE-00690"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "data/external/euclid/zenodo/euclid_zenodo_manifest.json"
@@ -10486,7 +10729,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00690"
+id = "XLE-00691"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY"
@@ -10495,7 +10738,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00691"
+id = "XLE-00692"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "SRC-EUCLID-Q1-ZENODO-STRONG-LENSING"
@@ -10504,7 +10747,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00692"
+id = "XLE-00693"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "SRC-EUCLID-Q1-ZENODO-MERGERS"
@@ -10513,7 +10756,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00693"
+id = "XLE-00694"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "SRC-EUCLID-Q1-ZENODO-MORPHOLOGY-SUPP"
@@ -10522,7 +10765,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00694"
+id = "XLE-00695"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "SRC-EUCLID-Q1-ZENODO-PHOTOZ"
@@ -10531,7 +10774,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00695"
+id = "XLE-00696"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "SRC-EUCLID-Q1-ZENODO-CLUSTERING"
@@ -10540,7 +10783,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00696"
+id = "XLE-00697"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "SRC-EUCLID-Q1-ZENODO-COMPACT-GROUPS"
@@ -10549,7 +10792,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00697"
+id = "XLE-00698"
 lineage_id = "XL-139"
 from_id = "E-140"
 to_ref = "SRC-EUCLID-Q1-ZENODO-GC"
@@ -10558,7 +10801,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00698"
+id = "XLE-00699"
 lineage_id = "XL-141"
 from_id = "E-142"
 to_ref = "magnonic-band-structure"
@@ -10567,7 +10810,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00699"
+id = "XLE-00700"
 lineage_id = "XL-141"
 from_id = "E-142"
 to_ref = "C-1231"
@@ -10576,7 +10819,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00700"
+id = "XLE-00701"
 lineage_id = "XL-141"
 from_id = "E-142"
 to_ref = "C-1232"
@@ -10585,7 +10828,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00701"
+id = "XLE-00702"
 lineage_id = "XL-141"
 from_id = "E-142"
 to_ref = "C-1241"
@@ -10594,7 +10837,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00702"
+id = "XLE-00703"
 lineage_id = "XL-142"
 from_id = "E-143"
 to_ref = "magnonic-band-structure"
@@ -10603,7 +10846,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00703"
+id = "XLE-00704"
 lineage_id = "XL-142"
 from_id = "E-143"
 to_ref = "C-1233"
@@ -10612,7 +10855,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00704"
+id = "XLE-00705"
 lineage_id = "XL-142"
 from_id = "E-143"
 to_ref = "C-1234"
@@ -10621,7 +10864,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00705"
+id = "XLE-00706"
 lineage_id = "XL-142"
 from_id = "E-143"
 to_ref = "C-1246"
@@ -10630,7 +10873,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00706"
+id = "XLE-00707"
 lineage_id = "XL-142"
 from_id = "E-143"
 to_ref = "C-1250"
@@ -10639,7 +10882,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00707"
+id = "XLE-00708"
 lineage_id = "XL-143"
 from_id = "E-144"
 to_ref = "magnonic-band-structure"
@@ -10648,7 +10891,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00708"
+id = "XLE-00709"
 lineage_id = "XL-143"
 from_id = "E-144"
 to_ref = "C-1235"
@@ -10657,7 +10900,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00709"
+id = "XLE-00710"
 lineage_id = "XL-143"
 from_id = "E-144"
 to_ref = "C-1247"
@@ -10666,7 +10909,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00710"
+id = "XLE-00711"
 lineage_id = "XL-143"
 from_id = "E-144"
 to_ref = "C-1250"
@@ -10675,7 +10918,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00711"
+id = "XLE-00712"
 lineage_id = "XL-144"
 from_id = "E-145"
 to_ref = "magnonic-band-structure"
@@ -10684,7 +10927,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00712"
+id = "XLE-00713"
 lineage_id = "XL-144"
 from_id = "E-145"
 to_ref = "C-1232"
@@ -10693,7 +10936,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00713"
+id = "XLE-00714"
 lineage_id = "XL-144"
 from_id = "E-145"
 to_ref = "C-1236"
@@ -10702,7 +10945,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00714"
+id = "XLE-00715"
 lineage_id = "XL-145"
 from_id = "E-146"
 to_ref = "magnonic-band-structure"
@@ -10711,7 +10954,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00715"
+id = "XLE-00716"
 lineage_id = "XL-145"
 from_id = "E-146"
 to_ref = "C-1237"
@@ -10720,7 +10963,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00716"
+id = "XLE-00717"
 lineage_id = "XL-145"
 from_id = "E-146"
 to_ref = "C-1238"
@@ -10729,7 +10972,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00717"
+id = "XLE-00718"
 lineage_id = "XL-145"
 from_id = "E-146"
 to_ref = "C-1239"
@@ -10738,7 +10981,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00718"
+id = "XLE-00719"
 lineage_id = "XL-146"
 from_id = "E-147"
 to_ref = "zd-algebra crystal-bands"
@@ -10747,7 +10990,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00719"
+id = "XLE-00720"
 lineage_id = "XL-146"
 from_id = "E-147"
 to_ref = "C-1255"
@@ -10756,7 +10999,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00720"
+id = "XLE-00721"
 lineage_id = "XL-146"
 from_id = "E-147"
 to_ref = "C-1256"
@@ -10765,7 +11008,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00721"
+id = "XLE-00722"
 lineage_id = "XL-147"
 from_id = "E-148"
 to_ref = "zd-algebra crystal-bands"
@@ -10774,7 +11017,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00722"
+id = "XLE-00723"
 lineage_id = "XL-147"
 from_id = "E-148"
 to_ref = "C-1257"
@@ -10783,7 +11026,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00723"
+id = "XLE-00724"
 lineage_id = "XL-148"
 from_id = "E-149"
 to_ref = "zd-algebra crystal-bands"
@@ -10792,7 +11035,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00724"
+id = "XLE-00725"
 lineage_id = "XL-148"
 from_id = "E-149"
 to_ref = "C-1258"
@@ -10801,7 +11044,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00725"
+id = "XLE-00726"
 lineage_id = "XL-149"
 from_id = "E-150"
 to_ref = "euclid-dm-coupling"
@@ -10810,7 +11053,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00726"
+id = "XLE-00727"
 lineage_id = "XL-149"
 from_id = "E-150"
 to_ref = "C-1260"
@@ -10819,7 +11062,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00727"
+id = "XLE-00728"
 lineage_id = "XL-149"
 from_id = "E-150"
 to_ref = "C-1261"
@@ -10828,7 +11071,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00728"
+id = "XLE-00729"
 lineage_id = "XL-150"
 from_id = "E-151"
 to_ref = "euclid-dm-coupling"
@@ -10837,7 +11080,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00729"
+id = "XLE-00730"
 lineage_id = "XL-152"
 from_id = "E-152"
 to_ref = "euclid-df-sweep"
@@ -10846,19 +11089,10 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00730"
-lineage_id = "XL-152"
-from_id = "E-152"
-to_ref = "C-1262"
-to_kind = "claim"
-edge_kind = "supports_claim"
-verified = true
-
-[[edge]]
 id = "XLE-00731"
 lineage_id = "XL-152"
 from_id = "E-152"
-to_ref = "C-1264"
+to_ref = "C-1262"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -10867,7 +11101,7 @@ verified = true
 id = "XLE-00732"
 lineage_id = "XL-152"
 from_id = "E-152"
-to_ref = "C-1265"
+to_ref = "C-1264"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -10876,7 +11110,7 @@ verified = true
 id = "XLE-00733"
 lineage_id = "XL-152"
 from_id = "E-152"
-to_ref = "C-1266"
+to_ref = "C-1265"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -10885,7 +11119,7 @@ verified = true
 id = "XLE-00734"
 lineage_id = "XL-152"
 from_id = "E-152"
-to_ref = "C-1268"
+to_ref = "C-1266"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -10894,13 +11128,22 @@ verified = true
 id = "XLE-00735"
 lineage_id = "XL-152"
 from_id = "E-152"
+to_ref = "C-1268"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00736"
+lineage_id = "XL-152"
+from_id = "E-152"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00736"
+id = "XLE-00737"
 lineage_id = "XL-153"
 from_id = "E-153"
 to_ref = "euclid-df-sweep"
@@ -10909,19 +11152,10 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00737"
-lineage_id = "XL-153"
-from_id = "E-153"
-to_ref = "C-1262"
-to_kind = "claim"
-edge_kind = "supports_claim"
-verified = true
-
-[[edge]]
 id = "XLE-00738"
 lineage_id = "XL-153"
 from_id = "E-153"
-to_ref = "C-1266"
+to_ref = "C-1262"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -10930,13 +11164,22 @@ verified = true
 id = "XLE-00739"
 lineage_id = "XL-153"
 from_id = "E-153"
+to_ref = "C-1266"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00740"
+lineage_id = "XL-153"
+from_id = "E-153"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00740"
+id = "XLE-00741"
 lineage_id = "XL-154"
 from_id = "E-154"
 to_ref = "euclid-df-sweep"
@@ -10945,7 +11188,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00741"
+id = "XLE-00742"
 lineage_id = "XL-154"
 from_id = "E-154"
 to_ref = "C-1263"
@@ -10954,7 +11197,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00742"
+id = "XLE-00743"
 lineage_id = "XL-154"
 from_id = "E-154"
 to_ref = "C-1267"
@@ -10963,7 +11206,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00743"
+id = "XLE-00744"
 lineage_id = "XL-154"
 from_id = "E-154"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -10972,7 +11215,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00744"
+id = "XLE-00745"
 lineage_id = "XL-154"
 from_id = "E-154"
 to_ref = "/tmp/cpu.csv"
@@ -10981,7 +11224,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00745"
+id = "XLE-00746"
 lineage_id = "XL-154"
 from_id = "E-154"
 to_ref = "/tmp/gpu.csv"
@@ -10990,7 +11233,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00746"
+id = "XLE-00747"
 lineage_id = "XL-155"
 from_id = "E-155"
 to_ref = "euclid-df-sweep"
@@ -10999,7 +11242,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00747"
+id = "XLE-00748"
 lineage_id = "XL-155"
 from_id = "E-155"
 to_ref = "C-1264"
@@ -11008,7 +11251,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00748"
+id = "XLE-00749"
 lineage_id = "XL-155"
 from_id = "E-155"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11017,7 +11260,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00749"
+id = "XLE-00750"
 lineage_id = "XL-156"
 from_id = "E-156"
 to_ref = "euclid-df-sweep"
@@ -11026,7 +11269,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00750"
+id = "XLE-00751"
 lineage_id = "XL-156"
 from_id = "E-156"
 to_ref = "C-1262"
@@ -11035,7 +11278,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00751"
+id = "XLE-00752"
 lineage_id = "XL-156"
 from_id = "E-156"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11044,7 +11287,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00752"
+id = "XLE-00753"
 lineage_id = "XL-157"
 from_id = "E-157"
 to_ref = "euclid-df-sweep"
@@ -11053,7 +11296,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00753"
+id = "XLE-00754"
 lineage_id = "XL-157"
 from_id = "E-157"
 to_ref = "C-1269"
@@ -11062,7 +11305,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00754"
+id = "XLE-00755"
 lineage_id = "XL-157"
 from_id = "E-157"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11071,52 +11314,52 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00755"
+id = "XLE-00756"
 lineage_id = "XL-158"
 from_id = "E-158"
 to_ref = "euclid-df-sweep"
 to_kind = "binary"
 edge_kind = "implemented_by_binary"
-verified = true
-
-[[edge]]
-id = "XLE-00756"
-lineage_id = "XL-158"
-from_id = "E-158"
-to_ref = "C-1272"
-to_kind = "claim"
-edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
 id = "XLE-00757"
 lineage_id = "XL-158"
 from_id = "E-158"
-to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
-to_kind = "path"
-edge_kind = "consumes_path"
+to_ref = "C-1272"
+to_kind = "claim"
+edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
 id = "XLE-00758"
-lineage_id = "XL-159"
-from_id = "E-159"
-to_ref = "euclid-df-sweep"
-to_kind = "binary"
-edge_kind = "implemented_by_binary"
+lineage_id = "XL-158"
+from_id = "E-158"
+to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
+to_kind = "path"
+edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
 id = "XLE-00759"
 lineage_id = "XL-159"
 from_id = "E-159"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00760"
+lineage_id = "XL-159"
+from_id = "E-159"
 to_ref = "C-1271"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00760"
+id = "XLE-00761"
 lineage_id = "XL-159"
 from_id = "E-159"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11125,7 +11368,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00761"
+id = "XLE-00762"
 lineage_id = "XL-160"
 from_id = "E-160"
 to_ref = "euclid-df-sweep"
@@ -11134,19 +11377,10 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00762"
-lineage_id = "XL-160"
-from_id = "E-160"
-to_ref = "C-1271"
-to_kind = "claim"
-edge_kind = "supports_claim"
-verified = true
-
-[[edge]]
 id = "XLE-00763"
 lineage_id = "XL-160"
 from_id = "E-160"
-to_ref = "C-1272"
+to_ref = "C-1271"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -11155,13 +11389,22 @@ verified = true
 id = "XLE-00764"
 lineage_id = "XL-160"
 from_id = "E-160"
+to_ref = "C-1272"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00765"
+lineage_id = "XL-160"
+from_id = "E-160"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00765"
+id = "XLE-00766"
 lineage_id = "XL-161"
 from_id = "E-161"
 to_ref = "euclid-df-sweep"
@@ -11170,7 +11413,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00766"
+id = "XLE-00767"
 lineage_id = "XL-161"
 from_id = "E-161"
 to_ref = "C-1273"
@@ -11179,7 +11422,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00767"
+id = "XLE-00768"
 lineage_id = "XL-161"
 from_id = "E-161"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11188,7 +11431,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00768"
+id = "XLE-00769"
 lineage_id = "XL-162"
 from_id = "E-162"
 to_ref = "euclid-df-sweep"
@@ -11197,7 +11440,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00769"
+id = "XLE-00770"
 lineage_id = "XL-162"
 from_id = "E-162"
 to_ref = "C-1274"
@@ -11206,7 +11449,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00770"
+id = "XLE-00771"
 lineage_id = "XL-162"
 from_id = "E-162"
 to_ref = "C-1275"
@@ -11215,7 +11458,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00771"
+id = "XLE-00772"
 lineage_id = "XL-162"
 from_id = "E-162"
 to_ref = "C-1276"
@@ -11224,7 +11467,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00772"
+id = "XLE-00773"
 lineage_id = "XL-162"
 from_id = "E-162"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11233,7 +11476,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00773"
+id = "XLE-00774"
 lineage_id = "XL-163"
 from_id = "E-163"
 to_ref = "euclid-df-sweep"
@@ -11242,7 +11485,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00774"
+id = "XLE-00775"
 lineage_id = "XL-163"
 from_id = "E-163"
 to_ref = "C-1282"
@@ -11251,7 +11494,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00775"
+id = "XLE-00776"
 lineage_id = "XL-163"
 from_id = "E-163"
 to_ref = "C-1283"
@@ -11260,7 +11503,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00776"
+id = "XLE-00777"
 lineage_id = "XL-163"
 from_id = "E-163"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11269,7 +11512,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00777"
+id = "XLE-00778"
 lineage_id = "XL-164"
 from_id = "E-164"
 to_ref = "euclid-df-sweep"
@@ -11278,7 +11521,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00778"
+id = "XLE-00779"
 lineage_id = "XL-164"
 from_id = "E-164"
 to_ref = "C-1284"
@@ -11287,19 +11530,10 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00779"
-lineage_id = "XL-164"
-from_id = "E-164"
-to_ref = "C-1286"
-to_kind = "claim"
-edge_kind = "supports_claim"
-verified = true
-
-[[edge]]
 id = "XLE-00780"
 lineage_id = "XL-164"
 from_id = "E-164"
-to_ref = "C-1287"
+to_ref = "C-1286"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -11308,13 +11542,22 @@ verified = true
 id = "XLE-00781"
 lineage_id = "XL-164"
 from_id = "E-164"
+to_ref = "C-1287"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00782"
+lineage_id = "XL-164"
+from_id = "E-164"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00782"
+id = "XLE-00783"
 lineage_id = "XL-165"
 from_id = "E-165"
 to_ref = "euclid-df-sweep"
@@ -11323,7 +11566,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00783"
+id = "XLE-00784"
 lineage_id = "XL-165"
 from_id = "E-165"
 to_ref = "C-1285"
@@ -11332,7 +11575,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00784"
+id = "XLE-00785"
 lineage_id = "XL-165"
 from_id = "E-165"
 to_ref = "C-1286"
@@ -11341,7 +11584,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00785"
+id = "XLE-00786"
 lineage_id = "XL-165"
 from_id = "E-165"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11350,7 +11593,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00786"
+id = "XLE-00787"
 lineage_id = "XL-166"
 from_id = "E-166"
 to_ref = "euclid-df-sweep"
@@ -11359,7 +11602,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00787"
+id = "XLE-00788"
 lineage_id = "XL-166"
 from_id = "E-166"
 to_ref = "C-1287"
@@ -11368,7 +11611,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00788"
+id = "XLE-00789"
 lineage_id = "XL-166"
 from_id = "E-166"
 to_ref = "C-1288"
@@ -11377,7 +11620,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00789"
+id = "XLE-00790"
 lineage_id = "XL-166"
 from_id = "E-166"
 to_ref = "C-1289"
@@ -11386,7 +11629,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00790"
+id = "XLE-00791"
 lineage_id = "XL-166"
 from_id = "E-166"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11395,7 +11638,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00791"
+id = "XLE-00792"
 lineage_id = "XL-166"
 from_id = "E-166"
 to_ref = "/tmp/euclid_df_gpu_mrt_128_100.csv"
@@ -11404,7 +11647,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00792"
+id = "XLE-00793"
 lineage_id = "XL-167"
 from_id = "E-167"
 to_ref = "mrt-stability-audit"
@@ -11413,7 +11656,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00793"
+id = "XLE-00794"
 lineage_id = "XL-167"
 from_id = "E-167"
 to_ref = "C-1290"
@@ -11422,7 +11665,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00794"
+id = "XLE-00795"
 lineage_id = "XL-168"
 from_id = "E-168"
 to_ref = "zd-algebra crystal-bands"
@@ -11431,7 +11674,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00795"
+id = "XLE-00796"
 lineage_id = "XL-168"
 from_id = "E-168"
 to_ref = "C-1291"
@@ -11440,7 +11683,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00796"
+id = "XLE-00797"
 lineage_id = "XL-169"
 from_id = "E-169"
 to_ref = "euclid-df-sweep"
@@ -11449,7 +11692,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00797"
+id = "XLE-00798"
 lineage_id = "XL-169"
 from_id = "E-169"
 to_ref = "C-1292"
@@ -11458,7 +11701,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00798"
+id = "XLE-00799"
 lineage_id = "XL-169"
 from_id = "E-169"
 to_ref = "C-1296"
@@ -11467,7 +11710,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00799"
+id = "XLE-00800"
 lineage_id = "XL-169"
 from_id = "E-169"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11476,7 +11719,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00800"
+id = "XLE-00801"
 lineage_id = "XL-172"
 from_id = "E-172"
 to_ref = "euclid-df-sweep"
@@ -11485,7 +11728,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00801"
+id = "XLE-00802"
 lineage_id = "XL-172"
 from_id = "E-172"
 to_ref = "C-1295"
@@ -11494,7 +11737,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00802"
+id = "XLE-00803"
 lineage_id = "XL-172"
 from_id = "E-172"
 to_ref = "C-1296"
@@ -11503,7 +11746,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00803"
+id = "XLE-00804"
 lineage_id = "XL-172"
 from_id = "E-172"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11512,7 +11755,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00804"
+id = "XLE-00805"
 lineage_id = "XL-174"
 from_id = "E-174"
 to_ref = "euclid-df-sweep"
@@ -11521,7 +11764,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00805"
+id = "XLE-00806"
 lineage_id = "XL-174"
 from_id = "E-174"
 to_ref = "C-1297"
@@ -11530,7 +11773,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00806"
+id = "XLE-00807"
 lineage_id = "XL-174"
 from_id = "E-174"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11539,7 +11782,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00807"
+id = "XLE-00808"
 lineage_id = "XL-175"
 from_id = "E-175"
 to_ref = "mrt-stability-audit"
@@ -11548,7 +11791,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00808"
+id = "XLE-00809"
 lineage_id = "XL-175"
 from_id = "E-175"
 to_ref = "C-1298"
@@ -11557,7 +11800,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00809"
+id = "XLE-00810"
 lineage_id = "XL-176"
 from_id = "E-176"
 to_ref = "mrt-stability-audit"
@@ -11566,7 +11809,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00810"
+id = "XLE-00811"
 lineage_id = "XL-176"
 from_id = "E-176"
 to_ref = "C-1299"
@@ -11575,7 +11818,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00811"
+id = "XLE-00812"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "euclid-df-sweep"
@@ -11584,7 +11827,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00812"
+id = "XLE-00813"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "C-1300"
@@ -11593,7 +11836,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00813"
+id = "XLE-00814"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "C-1301"
@@ -11602,7 +11845,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00814"
+id = "XLE-00815"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "C-1302"
@@ -11611,7 +11854,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00815"
+id = "XLE-00816"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "C-1303"
@@ -11620,7 +11863,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00816"
+id = "XLE-00817"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "C-1304"
@@ -11629,7 +11872,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00817"
+id = "XLE-00818"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "C-1305"
@@ -11638,7 +11881,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00818"
+id = "XLE-00819"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "C-1306"
@@ -11647,7 +11890,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00819"
+id = "XLE-00820"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "C-1307"
@@ -11656,7 +11899,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00820"
+id = "XLE-00821"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "data/external/euclid/zenodo/15106473/useful_physical_measurements.parquet"
@@ -11665,7 +11908,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00821"
+id = "XLE-00822"
 lineage_id = "XL-177"
 from_id = "E-177"
 to_ref = "data/output/e177_ysu_tiled.csv"
@@ -11674,7 +11917,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00822"
+id = "XLE-00823"
 lineage_id = "XL-178"
 from_id = "E-178"
 to_ref = "harmonic-halo rotation-curve"
@@ -11683,7 +11926,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00823"
+id = "XLE-00824"
 lineage_id = "XL-178"
 from_id = "E-178"
 to_ref = "C-1313"
@@ -11692,7 +11935,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00824"
+id = "XLE-00825"
 lineage_id = "XL-178"
 from_id = "E-178"
 to_ref = "C-1314"
@@ -11701,7 +11944,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00825"
+id = "XLE-00826"
 lineage_id = "XL-179"
 from_id = "E-179"
 to_ref = "C-1329"
@@ -11710,7 +11953,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00826"
+id = "XLE-00827"
 lineage_id = "XL-180"
 from_id = "E-180"
 to_ref = "harmonic-halo stacking"
@@ -11719,7 +11962,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00827"
+id = "XLE-00828"
 lineage_id = "XL-180"
 from_id = "E-180"
 to_ref = "C-1313"
@@ -11728,7 +11971,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00828"
+id = "XLE-00829"
 lineage_id = "XL-180"
 from_id = "E-180"
 to_ref = "C-1332"
@@ -11737,7 +11980,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00829"
+id = "XLE-00830"
 lineage_id = "XL-180"
 from_id = "E-180"
 to_ref = "data/external/gaia_mw/"
@@ -11746,7 +11989,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00830"
+id = "XLE-00831"
 lineage_id = "XL-180"
 from_id = "E-180"
 to_ref = "data/external/sparc/"
@@ -11755,19 +11998,10 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00831"
-lineage_id = "XL-180"
-from_id = "E-180"
-to_ref = "data/external/sparc/table2_rotcurves.dat"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00832"
 lineage_id = "XL-180"
 from_id = "E-180"
-to_ref = "data/external/sparc_nfw/"
+to_ref = "data/external/sparc/table2_rotcurves.dat"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -11776,7 +12010,7 @@ verified = true
 id = "XLE-00833"
 lineage_id = "XL-180"
 from_id = "E-180"
-to_ref = "data/external/sparc_nfw/table1.dat"
+to_ref = "data/external/sparc_nfw/"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -11785,13 +12019,22 @@ verified = true
 id = "XLE-00834"
 lineage_id = "XL-180"
 from_id = "E-180"
+to_ref = "data/external/sparc_nfw/table1.dat"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00835"
+lineage_id = "XL-180"
+from_id = "E-180"
 to_ref = "/tmp/harmonic_stacking_final.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00835"
+id = "XLE-00836"
 lineage_id = "XL-180"
 from_id = "E-180"
 to_ref = "EX-0005"
@@ -11800,7 +12043,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00836"
+id = "XLE-00837"
 lineage_id = "XL-180"
 from_id = "E-180"
 to_ref = "EX-0001"
@@ -11809,7 +12052,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00837"
+id = "XLE-00838"
 lineage_id = "XL-180"
 from_id = "E-180"
 to_ref = "EX-0002"
@@ -11818,7 +12061,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00838"
+id = "XLE-00839"
 lineage_id = "XL-181"
 from_id = "E-181"
 to_ref = "C-1333"
@@ -11827,7 +12070,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00839"
+id = "XLE-00840"
 lineage_id = "XL-181"
 from_id = "E-181"
 to_ref = "C-1337"
@@ -11836,7 +12079,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00840"
+id = "XLE-00841"
 lineage_id = "XL-181"
 from_id = "E-181"
 to_ref = "target/criterion/"
@@ -11845,7 +12088,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00841"
+id = "XLE-00842"
 lineage_id = "XL-182"
 from_id = "E-182"
 to_ref = "harmonic-halo stacking"
@@ -11854,7 +12097,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00842"
+id = "XLE-00843"
 lineage_id = "XL-182"
 from_id = "E-182"
 to_ref = "C-1338"
@@ -11863,19 +12106,10 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00843"
-lineage_id = "XL-182"
-from_id = "E-182"
-to_ref = "data/external/sparc/table2_rotcurves.dat"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00844"
 lineage_id = "XL-182"
 from_id = "E-182"
-to_ref = "data/external/sparc_nfw/table1.dat"
+to_ref = "data/external/sparc/table2_rotcurves.dat"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -11884,13 +12118,22 @@ verified = true
 id = "XLE-00845"
 lineage_id = "XL-182"
 from_id = "E-182"
+to_ref = "data/external/sparc_nfw/table1.dat"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00846"
+lineage_id = "XL-182"
+from_id = "E-182"
 to_ref = "EX-0001"
 to_kind = "dataset"
 edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00846"
+id = "XLE-00847"
 lineage_id = "XL-182"
 from_id = "E-182"
 to_ref = "EX-0002"
@@ -11899,7 +12142,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00847"
+id = "XLE-00848"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "harmonic-halo stacking-manga"
@@ -11908,7 +12151,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00848"
+id = "XLE-00849"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "C-1346"
@@ -11917,7 +12160,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00849"
+id = "XLE-00850"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "C-1347"
@@ -11926,7 +12169,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00850"
+id = "XLE-00851"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "C-1348"
@@ -11935,7 +12178,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00851"
+id = "XLE-00852"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "C-1365"
@@ -11944,7 +12187,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00852"
+id = "XLE-00853"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "C-1366"
@@ -11953,7 +12196,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00853"
+id = "XLE-00854"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "C-1367"
@@ -11962,7 +12205,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00854"
+id = "XLE-00855"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "C-1368"
@@ -11971,7 +12214,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00855"
+id = "XLE-00856"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "data/external/manga/"
@@ -11980,19 +12223,10 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00856"
-lineage_id = "XL-183"
-from_id = "E-183"
-to_ref = "data/external/manga/dapall_selection.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00857"
 lineage_id = "XL-183"
 from_id = "E-183"
-to_ref = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+to_ref = "data/external/manga/dapall_selection.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -12001,13 +12235,22 @@ verified = true
 id = "XLE-00858"
 lineage_id = "XL-183"
 from_id = "E-183"
+to_ref = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00859"
+lineage_id = "XL-183"
+from_id = "E-183"
 to_ref = "manga_harmonic_stacking.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00859"
+id = "XLE-00860"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "EX-0003"
@@ -12016,7 +12259,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00860"
+id = "XLE-00861"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "XS-026"
@@ -12025,7 +12268,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00861"
+id = "XLE-00862"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "XS-027"
@@ -12034,7 +12277,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00862"
+id = "XLE-00863"
 lineage_id = "XL-183"
 from_id = "E-183"
 to_ref = "XS-028"
@@ -12043,7 +12286,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00863"
+id = "XLE-00864"
 lineage_id = "XL-184"
 from_id = "E-184"
 to_ref = "majorana-braid-crucible"
@@ -12052,7 +12295,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00864"
+id = "XLE-00865"
 lineage_id = "XL-184"
 from_id = "E-184"
 to_ref = "C-1350"
@@ -12061,7 +12304,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00865"
+id = "XLE-00866"
 lineage_id = "XL-184"
 from_id = "E-184"
 to_ref = "C-1351"
@@ -12070,7 +12313,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00866"
+id = "XLE-00867"
 lineage_id = "XL-184"
 from_id = "E-184"
 to_ref = "C-1352"
@@ -12079,7 +12322,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00867"
+id = "XLE-00868"
 lineage_id = "XL-184"
 from_id = "E-184"
 to_ref = "braid_fidelity_audit.csv"
@@ -12088,7 +12331,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00868"
+id = "XLE-00869"
 lineage_id = "XL-185"
 from_id = "E-185"
 to_ref = "harmonic-halo rotation-curve"
@@ -12097,7 +12340,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00869"
+id = "XLE-00870"
 lineage_id = "XL-185"
 from_id = "E-185"
 to_ref = "C-1353"
@@ -12106,7 +12349,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00870"
+id = "XLE-00871"
 lineage_id = "XL-185"
 from_id = "E-185"
 to_ref = "C-1354"
@@ -12115,7 +12358,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00871"
+id = "XLE-00872"
 lineage_id = "XL-185"
 from_id = "E-185"
 to_ref = "harmonic_falsification_replication.csv"
@@ -12124,7 +12367,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00872"
+id = "XLE-00873"
 lineage_id = "XL-186"
 from_id = "E-186"
 to_ref = "gravastar-sweep"
@@ -12133,7 +12376,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00873"
+id = "XLE-00874"
 lineage_id = "XL-186"
 from_id = "E-186"
 to_ref = "C-1357"
@@ -12142,7 +12385,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00874"
+id = "XLE-00875"
 lineage_id = "XL-186"
 from_id = "E-186"
 to_ref = "obstruction_norm_sensitivity.csv"
@@ -12151,7 +12394,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00875"
+id = "XLE-00876"
 lineage_id = "XL-187"
 from_id = "E-187"
 to_ref = "gravastar-sweep"
@@ -12160,7 +12403,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00876"
+id = "XLE-00877"
 lineage_id = "XL-187"
 from_id = "E-187"
 to_ref = "C-1357"
@@ -12169,7 +12412,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00877"
+id = "XLE-00878"
 lineage_id = "XL-187"
 from_id = "E-187"
 to_ref = "chain_termination_audit.csv"
@@ -12178,7 +12421,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00878"
+id = "XLE-00879"
 lineage_id = "XL-188"
 from_id = "E-188"
 to_ref = "x87_bench"
@@ -12187,7 +12430,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00879"
+id = "XLE-00880"
 lineage_id = "XL-188"
 from_id = "E-188"
 to_ref = "C-1349"
@@ -12196,7 +12439,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00880"
+id = "XLE-00881"
 lineage_id = "XL-188"
 from_id = "E-188"
 to_ref = "C-1359"
@@ -12205,19 +12448,10 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00881"
-lineage_id = "XL-188"
-from_id = "E-188"
-to_ref = "C-1360"
-to_kind = "claim"
-edge_kind = "supports_claim"
-verified = true
-
-[[edge]]
 id = "XLE-00882"
 lineage_id = "XL-188"
 from_id = "E-188"
-to_ref = "C-1361"
+to_ref = "C-1360"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -12226,7 +12460,7 @@ verified = true
 id = "XLE-00883"
 lineage_id = "XL-188"
 from_id = "E-188"
-to_ref = "C-1362"
+to_ref = "C-1361"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -12235,13 +12469,22 @@ verified = true
 id = "XLE-00884"
 lineage_id = "XL-188"
 from_id = "E-188"
+to_ref = "C-1362"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00885"
+lineage_id = "XL-188"
+from_id = "E-188"
 to_ref = "x87_accumulation_benchmark_results.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00885"
+id = "XLE-00886"
 lineage_id = "XL-189"
 from_id = "E-189"
 to_ref = "x87_bench"
@@ -12250,7 +12493,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00886"
+id = "XLE-00887"
 lineage_id = "XL-189"
 from_id = "E-189"
 to_ref = "C-1360"
@@ -12259,7 +12502,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00887"
+id = "XLE-00888"
 lineage_id = "XL-189"
 from_id = "E-189"
 to_ref = "C-1361"
@@ -12268,7 +12511,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00888"
+id = "XLE-00889"
 lineage_id = "XL-189"
 from_id = "E-189"
 to_ref = "C-1362"
@@ -12277,7 +12520,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00889"
+id = "XLE-00890"
 lineage_id = "XL-189"
 from_id = "E-189"
 to_ref = "data/csv/x87_avx_fma_followup_benchmark_summary.csv"
@@ -12286,7 +12529,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00890"
+id = "XLE-00891"
 lineage_id = "XL-189"
 from_id = "E-189"
 to_ref = "PC-0122"
@@ -12295,7 +12538,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00891"
+id = "XLE-00892"
 lineage_id = "XL-189"
 from_id = "E-189"
 to_ref = "XS-029"
@@ -12304,7 +12547,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00892"
+id = "XLE-00893"
 lineage_id = "XL-190"
 from_id = "E-190"
 to_ref = "thesis 42-support"
@@ -12313,7 +12556,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00893"
+id = "XLE-00894"
 lineage_id = "XL-190"
 from_id = "E-190"
 to_ref = "data/csv/c010_nonlocal_material_calibrations.csv"
@@ -12322,7 +12565,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00894"
+id = "XLE-00895"
 lineage_id = "XL-190"
 from_id = "E-190"
 to_ref = "data/evidence/thesis_42_support/harmonic_halo_reference.csv"
@@ -12331,7 +12574,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00895"
+id = "XLE-00896"
 lineage_id = "XL-190"
 from_id = "E-190"
 to_ref = "data/evidence/thesis_42_support/majorana_friction_sweep.csv"
@@ -12340,7 +12583,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00896"
+id = "XLE-00897"
 lineage_id = "XL-190"
 from_id = "E-190"
 to_ref = "data/evidence/thesis_42_support/nonlocal_topologies.csv"
@@ -12349,7 +12592,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00897"
+id = "XLE-00898"
 lineage_id = "XL-190"
 from_id = "E-190"
 to_ref = "data/evidence/thesis_42_support/summary.toml"
@@ -12358,7 +12601,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00898"
+id = "XLE-00899"
 lineage_id = "XL-190"
 from_id = "E-190"
 to_ref = "PC-0006"
@@ -12367,7 +12610,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00899"
+id = "XLE-00900"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "harmonic-halo stacking"
@@ -12376,7 +12619,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00900"
+id = "XLE-00901"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "C-1344"
@@ -12385,7 +12628,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00901"
+id = "XLE-00902"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "C-1345"
@@ -12394,7 +12637,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00902"
+id = "XLE-00903"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "data/external/sparc/table2_rotcurves.dat"
@@ -12403,7 +12646,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00903"
+id = "XLE-00904"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "data/external/sparc_nfw/table1.dat"
@@ -12412,7 +12655,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00904"
+id = "XLE-00905"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "data/results/harmonic_stacking_cd_sweep/"
@@ -12421,7 +12664,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00905"
+id = "XLE-00906"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "data/results/harmonic_stacking_cd_sweep/harmonic_stacking_d{16"
@@ -12430,7 +12673,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00906"
+id = "XLE-00907"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "EX-0001"
@@ -12439,7 +12682,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00907"
+id = "XLE-00908"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "EX-0002"
@@ -12448,7 +12691,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00908"
+id = "XLE-00909"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "XS-024"
@@ -12457,7 +12700,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00909"
+id = "XLE-00910"
 lineage_id = "XL-109"
 from_id = "E-191"
 to_ref = "XS-025"
@@ -12466,7 +12709,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00910"
+id = "XLE-00911"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "harmonic-halo signal-analysis"
@@ -12475,7 +12718,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00911"
+id = "XLE-00912"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1372"
@@ -12484,7 +12727,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00912"
+id = "XLE-00913"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1373"
@@ -12493,7 +12736,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00913"
+id = "XLE-00914"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1411"
@@ -12502,7 +12745,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00914"
+id = "XLE-00915"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1412"
@@ -12511,7 +12754,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00915"
+id = "XLE-00916"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1413"
@@ -12520,7 +12763,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00916"
+id = "XLE-00917"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1414"
@@ -12529,7 +12772,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00917"
+id = "XLE-00918"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1415"
@@ -12538,7 +12781,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00918"
+id = "XLE-00919"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1416"
@@ -12547,7 +12790,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00919"
+id = "XLE-00920"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1417"
@@ -12556,7 +12799,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00920"
+id = "XLE-00921"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "C-1418"
@@ -12565,7 +12808,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00921"
+id = "XLE-00922"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "data/results/e183/lie_jordan_full.csv"
@@ -12574,7 +12817,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00922"
+id = "XLE-00923"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "data/results/e183/lie_jordan_lowi.csv"
@@ -12583,7 +12826,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00923"
+id = "XLE-00924"
 lineage_id = "XL-192"
 from_id = "E-192"
 to_ref = "data/results/e183/"
@@ -12592,19 +12835,10 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00924"
-lineage_id = "XL-192"
-from_id = "E-192"
-to_ref = "data/results/e183/deriv_full.csv"
-to_kind = "path"
-edge_kind = "produces_path"
-verified = true
-
-[[edge]]
 id = "XLE-00925"
 lineage_id = "XL-192"
 from_id = "E-192"
-to_ref = "data/results/e183/deriv_lowi.csv"
+to_ref = "data/results/e183/deriv_full.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12613,7 +12847,7 @@ verified = true
 id = "XLE-00926"
 lineage_id = "XL-192"
 from_id = "E-192"
-to_ref = "data/results/e183/rayleigh_full.csv"
+to_ref = "data/results/e183/deriv_lowi.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12622,7 +12856,7 @@ verified = true
 id = "XLE-00927"
 lineage_id = "XL-192"
 from_id = "E-192"
-to_ref = "data/results/e183/rayleigh_lowi.csv"
+to_ref = "data/results/e183/rayleigh_full.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12631,7 +12865,7 @@ verified = true
 id = "XLE-00928"
 lineage_id = "XL-192"
 from_id = "E-192"
-to_ref = "data/results/e183/stft_full.csv"
+to_ref = "data/results/e183/rayleigh_lowi.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12640,7 +12874,7 @@ verified = true
 id = "XLE-00929"
 lineage_id = "XL-192"
 from_id = "E-192"
-to_ref = "data/results/e183/stft_lowi.csv"
+to_ref = "data/results/e183/stft_full.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12649,13 +12883,22 @@ verified = true
 id = "XLE-00930"
 lineage_id = "XL-192"
 from_id = "E-192"
-to_ref = "experiments/manga_zd_null/results.json"
+to_ref = "data/results/e183/stft_lowi.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
 id = "XLE-00931"
+lineage_id = "XL-192"
+from_id = "E-192"
+to_ref = "experiments/manga_zd_null/results.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00932"
 lineage_id = "XL-193"
 from_id = "E-193"
 to_ref = "hi-cube-rotcurve-extractor"
@@ -12664,7 +12907,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00932"
+id = "XLE-00933"
 lineage_id = "XL-193"
 from_id = "E-193"
 to_ref = "data/external/things/"
@@ -12673,7 +12916,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00933"
+id = "XLE-00934"
 lineage_id = "XL-193"
 from_id = "E-193"
 to_ref = "data/external/things/*.fits"
@@ -12682,7 +12925,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00934"
+id = "XLE-00935"
 lineage_id = "XL-193"
 from_id = "E-193"
 to_ref = "data/external/things/hi_rotcurves.csv"
@@ -12691,7 +12934,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00935"
+id = "XLE-00936"
 lineage_id = "XL-194"
 from_id = "E-194"
 to_ref = "harmonic-halo galaxy-phase"
@@ -12700,19 +12943,10 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00936"
-lineage_id = "XL-194"
-from_id = "E-194"
-to_ref = "data/external/manga/dapall_selection.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00937"
 lineage_id = "XL-194"
 from_id = "E-194"
-to_ref = "data/external/manga/manga_rotcurves_all.csv"
+to_ref = "data/external/manga/dapall_selection.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -12721,13 +12955,22 @@ verified = true
 id = "XLE-00938"
 lineage_id = "XL-194"
 from_id = "E-194"
+to_ref = "data/external/manga/manga_rotcurves_all.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00939"
+lineage_id = "XL-194"
+from_id = "E-194"
 to_ref = "data/external/manga/galaxy_phase_coherence.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00939"
+id = "XLE-00940"
 lineage_id = "XL-194"
 from_id = "E-194"
 to_ref = "EX-0003"
@@ -12736,7 +12979,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00940"
+id = "XLE-00941"
 lineage_id = "XL-195"
 from_id = "E-195"
 to_ref = "harmonic-halo visualize"
@@ -12745,7 +12988,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00941"
+id = "XLE-00942"
 lineage_id = "XL-195"
 from_id = "E-195"
 to_ref = "data/results/e183/deriv_full.csv"
@@ -12754,7 +12997,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00942"
+id = "XLE-00943"
 lineage_id = "XL-195"
 from_id = "E-195"
 to_ref = "data/results/e183/manga_stack_D16.csv"
@@ -12763,7 +13006,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00943"
+id = "XLE-00944"
 lineage_id = "XL-195"
 from_id = "E-195"
 to_ref = "data/results/e183/stft_full.csv"
@@ -12772,7 +13015,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00944"
+id = "XLE-00945"
 lineage_id = "XL-195"
 from_id = "E-195"
 to_ref = "docs/latex/figs/derivative_dft.tex"
@@ -12781,7 +13024,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00945"
+id = "XLE-00946"
 lineage_id = "XL-195"
 from_id = "E-195"
 to_ref = "docs/latex/figs/spatial_residuals.tex"
@@ -12790,7 +13033,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00946"
+id = "XLE-00947"
 lineage_id = "XL-195"
 from_id = "E-195"
 to_ref = "docs/latex/figs/stft_spectrogram.tex"
@@ -12799,7 +13042,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00947"
+id = "XLE-00948"
 lineage_id = "XL-196"
 from_id = "E-196"
 to_ref = "harmonic-halo stacking-manga"
@@ -12808,19 +13051,10 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00948"
-lineage_id = "XL-196"
-from_id = "E-196"
-to_ref = "data/external/manga/dapall_selection.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00949"
 lineage_id = "XL-196"
 from_id = "E-196"
-to_ref = "data/external/manga/manga_rotcurves_all.csv"
+to_ref = "data/external/manga/dapall_selection.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -12829,13 +13063,22 @@ verified = true
 id = "XLE-00950"
 lineage_id = "XL-196"
 from_id = "E-196"
+to_ref = "data/external/manga/manga_rotcurves_all.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00951"
+lineage_id = "XL-196"
+from_id = "E-196"
 to_ref = "data/external/manga/manga_stack_psf_corrected.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00951"
+id = "XLE-00952"
 lineage_id = "XL-196"
 from_id = "E-196"
 to_ref = "EX-0003"
@@ -12844,7 +13087,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00952"
+id = "XLE-00953"
 lineage_id = "XL-197"
 from_id = "E-197"
 to_ref = "harmonic-halo injection"
@@ -12853,19 +13096,10 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00953"
-lineage_id = "XL-197"
-from_id = "E-197"
-to_ref = "data/external/manga/dapall_selection.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00954"
 lineage_id = "XL-197"
 from_id = "E-197"
-to_ref = "data/external/manga/manga_rotcurves_all.csv"
+to_ref = "data/external/manga/dapall_selection.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -12874,13 +13108,22 @@ verified = true
 id = "XLE-00955"
 lineage_id = "XL-197"
 from_id = "E-197"
+to_ref = "data/external/manga/manga_rotcurves_all.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-00956"
+lineage_id = "XL-197"
+from_id = "E-197"
 to_ref = "data/external/manga/injection_recovery.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00956"
+id = "XLE-00957"
 lineage_id = "XL-197"
 from_id = "E-197"
 to_ref = "EX-0003"
@@ -12889,7 +13132,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00957"
+id = "XLE-00958"
 lineage_id = "XL-198"
 from_id = "E-198"
 to_ref = "lotss-fetch"
@@ -12898,19 +13141,10 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00958"
-lineage_id = "XL-198"
-from_id = "E-198"
-to_ref = "data/external/manga/dapall_selection.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00959"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "data/external/manga/drpall-v3_1_1.fits"
+to_ref = "data/external/manga/dapall_selection.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -12919,7 +13153,7 @@ verified = true
 id = "XLE-00960"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "data/external/radio_surveys/lotss_dr2.fits"
+to_ref = "data/external/manga/drpall-v3_1_1.fits"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -12928,7 +13162,7 @@ verified = true
 id = "XLE-00961"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "data/external/radio_surveys/lotss_dr3.fits"
+to_ref = "data/external/radio_surveys/lotss_dr2.fits"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -12937,16 +13171,16 @@ verified = true
 id = "XLE-00962"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "data/external/manga/manga_lotss_xmatch_dr2.csv"
+to_ref = "data/external/radio_surveys/lotss_dr3.fits"
 to_kind = "path"
-edge_kind = "produces_path"
+edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
 id = "XLE-00963"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "data/external/manga/manga_lotss_xmatch_dr3.csv"
+to_ref = "data/external/manga/manga_lotss_xmatch_dr2.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12955,7 +13189,7 @@ verified = true
 id = "XLE-00964"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "reports/lotss_lotss_dr3_summary.toml"
+to_ref = "data/external/manga/manga_lotss_xmatch_dr3.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12964,7 +13198,7 @@ verified = true
 id = "XLE-00965"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "reports/lotss_manga_preflight_2026-03-13.toml"
+to_ref = "reports/lotss_lotss_dr3_summary.toml"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12973,7 +13207,7 @@ verified = true
 id = "XLE-00966"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "reports/manga_lotss_xmatch_dr2.toml"
+to_ref = "reports/lotss_manga_preflight_2026-03-13.toml"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12982,7 +13216,7 @@ verified = true
 id = "XLE-00967"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "reports/manga_lotss_xmatch_dr3.toml"
+to_ref = "reports/manga_lotss_xmatch_dr2.toml"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -12991,25 +13225,25 @@ verified = true
 id = "XLE-00968"
 lineage_id = "XL-198"
 from_id = "E-198"
+to_ref = "reports/manga_lotss_xmatch_dr3.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00969"
+lineage_id = "XL-198"
+from_id = "E-198"
 to_ref = "EX-0003"
 to_kind = "dataset"
 edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00969"
-lineage_id = "XL-198"
-from_id = "E-198"
-to_ref = "SRC-MANGA-DR17-CATALOGS"
-to_kind = "source"
-edge_kind = "consumes_source"
-verified = true
-
-[[edge]]
 id = "XLE-00970"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "SRC-LOTSS-DR2-FITS"
+to_ref = "SRC-MANGA-DR17-CATALOGS"
 to_kind = "source"
 edge_kind = "consumes_source"
 verified = true
@@ -13018,13 +13252,22 @@ verified = true
 id = "XLE-00971"
 lineage_id = "XL-198"
 from_id = "E-198"
-to_ref = "SRC-LOTSS-DR3-FITS"
+to_ref = "SRC-LOTSS-DR2-FITS"
 to_kind = "source"
 edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
 id = "XLE-00972"
+lineage_id = "XL-198"
+from_id = "E-198"
+to_ref = "SRC-LOTSS-DR3-FITS"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-00973"
 lineage_id = "XL-201"
 from_id = "E-201"
 to_ref = "face-on-red-noise-rayleigh"
@@ -13033,7 +13276,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00973"
+id = "XLE-00974"
 lineage_id = "XL-201"
 from_id = "E-201"
 to_ref = "C-1430"
@@ -13042,7 +13285,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00974"
+id = "XLE-00975"
 lineage_id = "XL-201"
 from_id = "E-201"
 to_ref = "C-1431"
@@ -13051,7 +13294,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00975"
+id = "XLE-00976"
 lineage_id = "XL-201"
 from_id = "E-201"
 to_ref = "C-1433"
@@ -13060,7 +13303,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00976"
+id = "XLE-00977"
 lineage_id = "XL-201"
 from_id = "E-201"
 to_ref = "C-1434"
@@ -13069,19 +13312,10 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00977"
-lineage_id = "XL-201"
-from_id = "E-201"
-to_ref = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-00978"
 lineage_id = "XL-201"
 from_id = "E-201"
-to_ref = "data/external/manga/subsamples/dapall_lowi.csv"
+to_ref = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -13090,16 +13324,16 @@ verified = true
 id = "XLE-00979"
 lineage_id = "XL-201"
 from_id = "E-201"
-to_ref = "data/results/e201/face_on_red_noise_rayleigh.csv"
+to_ref = "data/external/manga/subsamples/dapall_lowi.csv"
 to_kind = "path"
-edge_kind = "produces_path"
+edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
 id = "XLE-00980"
 lineage_id = "XL-201"
 from_id = "E-201"
-to_ref = "data/results/e201/face_on_stack_D16.csv"
+to_ref = "data/results/e201/face_on_red_noise_rayleigh.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -13108,13 +13342,22 @@ verified = true
 id = "XLE-00981"
 lineage_id = "XL-201"
 from_id = "E-201"
+to_ref = "data/results/e201/face_on_stack_D16.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-00982"
+lineage_id = "XL-201"
+from_id = "E-201"
 to_ref = "SRC-MANGA-DR17-CATALOGS"
 to_kind = "source"
 edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00982"
+id = "XLE-00983"
 lineage_id = "XL-202"
 from_id = "E-202"
 to_ref = "q3-injection-recovery"
@@ -13123,7 +13366,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00983"
+id = "XLE-00984"
 lineage_id = "XL-202"
 from_id = "E-202"
 to_ref = "C-1432"
@@ -13132,7 +13375,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00984"
+id = "XLE-00985"
 lineage_id = "XL-202"
 from_id = "E-202"
 to_ref = "data/external/manga/dapall_selection.csv"
@@ -13141,7 +13384,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00985"
+id = "XLE-00986"
 lineage_id = "XL-202"
 from_id = "E-202"
 to_ref = "data/external/manga/rotcurves/manga_rotcurves_all.csv"
@@ -13150,7 +13393,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00986"
+id = "XLE-00987"
 lineage_id = "XL-202"
 from_id = "E-202"
 to_ref = "data/results/e202/q3_injection_recovery.csv"
@@ -13159,7 +13402,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00987"
+id = "XLE-00988"
 lineage_id = "XL-202"
 from_id = "E-202"
 to_ref = "EX-0003"
@@ -13168,7 +13411,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-00988"
+id = "XLE-00989"
 lineage_id = "XL-202"
 from_id = "E-202"
 to_ref = "SRC-MANGA-DR17-CATALOGS"
@@ -13177,7 +13420,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-00989"
+id = "XLE-00990"
 lineage_id = "XL-203"
 from_id = "E-203"
 to_ref = "legacy-crossval-audit"
@@ -13186,7 +13429,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00990"
+id = "XLE-00991"
 lineage_id = "XL-203"
 from_id = "E-203"
 to_ref = "C-020"
@@ -13195,7 +13438,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00991"
+id = "XLE-00992"
 lineage_id = "XL-203"
 from_id = "E-203"
 to_ref = "C-021"
@@ -13204,7 +13447,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00992"
+id = "XLE-00993"
 lineage_id = "XL-203"
 from_id = "E-203"
 to_ref = "C-543"
@@ -13213,7 +13456,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00993"
+id = "XLE-00994"
 lineage_id = "XL-203"
 from_id = "E-203"
 to_ref = "data/csv/legacy/"
@@ -13222,7 +13465,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-00994"
+id = "XLE-00995"
 lineage_id = "XL-203"
 from_id = "E-203"
 to_ref = "data/output/claims_falsification/legacy_crossval_audit.toml"
@@ -13231,7 +13474,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-00995"
+id = "XLE-00996"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "cd-external-audit"
@@ -13240,7 +13483,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-00996"
+id = "XLE-00997"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "C-450"
@@ -13249,7 +13492,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00997"
+id = "XLE-00998"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "C-455"
@@ -13258,7 +13501,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00998"
+id = "XLE-00999"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "C-456"
@@ -13267,7 +13510,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-00999"
+id = "XLE-01000"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "C-463"
@@ -13276,7 +13519,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01000"
+id = "XLE-01001"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "data/csv/cayley_dickson/"
@@ -13285,7 +13528,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01001"
+id = "XLE-01002"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "data/csv/cayley_dickson/256d_basis_properties.csv"
@@ -13294,7 +13537,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01002"
+id = "XLE-01003"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "data/csv/cayley_dickson/256d_lattice_mapping.csv"
@@ -13303,7 +13546,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01003"
+id = "XLE-01004"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "data/csv/cayley_dickson/64d_chingon_adjacency.csv"
@@ -13312,7 +13555,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01004"
+id = "XLE-01005"
 lineage_id = "XL-204"
 from_id = "E-204"
 to_ref = "data/output/claims_falsification/cd_external_audit.toml"
@@ -13321,7 +13564,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01005"
+id = "XLE-01006"
 lineage_id = "XL-205"
 from_id = "E-205"
 to_ref = "algebra-refutation-audit"
@@ -13330,7 +13573,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01006"
+id = "XLE-01007"
 lineage_id = "XL-205"
 from_id = "E-205"
 to_ref = "C-445"
@@ -13339,7 +13582,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01007"
+id = "XLE-01008"
 lineage_id = "XL-205"
 from_id = "E-205"
 to_ref = "C-466"
@@ -13348,7 +13591,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01008"
+id = "XLE-01009"
 lineage_id = "XL-205"
 from_id = "E-205"
 to_ref = "C-518"
@@ -13357,7 +13600,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01009"
+id = "XLE-01010"
 lineage_id = "XL-205"
 from_id = "E-205"
 to_ref = "C-585"
@@ -13366,7 +13609,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01010"
+id = "XLE-01011"
 lineage_id = "XL-205"
 from_id = "E-205"
 to_ref = "data/output/claims_falsification/algebra_refutation_audit.toml"
@@ -13375,7 +13618,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01011"
+id = "XLE-01012"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "particle-numerology-audit"
@@ -13384,7 +13627,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01012"
+id = "XLE-01013"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "C-069"
@@ -13393,7 +13636,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01013"
+id = "XLE-01014"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "C-077"
@@ -13402,7 +13645,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01014"
+id = "XLE-01015"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "C-081"
@@ -13411,7 +13654,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01015"
+id = "XLE-01016"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "C-084"
@@ -13420,7 +13663,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01016"
+id = "XLE-01017"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "C-1355"
@@ -13429,7 +13672,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01017"
+id = "XLE-01018"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "C-587"
@@ -13438,7 +13681,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01018"
+id = "XLE-01019"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "crates/algebra_analysis/src/grassmannian.rs"
@@ -13447,7 +13690,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01019"
+id = "XLE-01020"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "crates/algebra_analysis/src/subalgebra.rs"
@@ -13456,7 +13699,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01020"
+id = "XLE-01021"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "crates/gr_core/src/constants.rs"
@@ -13465,7 +13708,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01021"
+id = "XLE-01022"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "crates/materials_core/src/tang_mass.rs"
@@ -13474,7 +13717,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01022"
+id = "XLE-01023"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "crates/quantum_core/src/he3_superfluid.rs"
@@ -13483,7 +13726,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01023"
+id = "XLE-01024"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "crates/stats_core/src/lib.rs"
@@ -13492,7 +13735,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01024"
+id = "XLE-01025"
 lineage_id = "XL-206"
 from_id = "E-206"
 to_ref = "data/output/claims_falsification/particle_numerology_audit.toml"
@@ -13501,7 +13744,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01025"
+id = "XLE-01026"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "cd-pattern-baseline-audit"
@@ -13510,7 +13753,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01026"
+id = "XLE-01027"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "C-068"
@@ -13519,7 +13762,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01027"
+id = "XLE-01028"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "C-070"
@@ -13528,7 +13771,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01028"
+id = "XLE-01029"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "C-092"
@@ -13537,7 +13780,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01029"
+id = "XLE-01030"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "crates/algebra_analysis/src/reggiani.rs"
@@ -13546,7 +13789,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01030"
+id = "XLE-01031"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "crates/algebra_experimental/src/so7_drift.rs"
@@ -13555,7 +13798,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01031"
+id = "XLE-01032"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "crates/data_core/src/catalogs/nanograv.rs"
@@ -13564,7 +13807,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01032"
+id = "XLE-01033"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "crates/stats_core/src/lib.rs"
@@ -13573,7 +13816,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01033"
+id = "XLE-01034"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "data/external/nanograv_15yr_freespectrum.csv"
@@ -13582,7 +13825,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01034"
+id = "XLE-01035"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "data/output/claims_falsification/cd_pattern_baseline_audit.toml"
@@ -13591,7 +13834,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01035"
+id = "XLE-01036"
 lineage_id = "XL-207"
 from_id = "E-207"
 to_ref = "EX-0027"
@@ -13600,7 +13843,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-01036"
+id = "XLE-01037"
 lineage_id = "XL-218"
 from_id = "E-218"
 to_ref = "lbm-rca-probe"
@@ -13609,7 +13852,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01037"
+id = "XLE-01038"
 lineage_id = "XL-218"
 from_id = "E-218"
 to_ref = "C-1549"
@@ -13618,7 +13861,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01038"
+id = "XLE-01039"
 lineage_id = "XL-218"
 from_id = "E-218"
 to_ref = "data/output/e167_rca_bgk_c23.csv"
@@ -13627,7 +13870,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01039"
+id = "XLE-01040"
 lineage_id = "XL-218"
 from_id = "E-218"
 to_ref = "data/output/e167_rca_bgk_c29.csv"
@@ -13636,7 +13879,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01040"
+id = "XLE-01041"
 lineage_id = "XL-218"
 from_id = "E-218"
 to_ref = "data/output/e167_rca_mrt_c29.csv"
@@ -13645,7 +13888,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01041"
+id = "XLE-01042"
 lineage_id = "XL-219"
 from_id = "E-219"
 to_ref = "cuda-precision-bench"
@@ -13654,7 +13897,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01042"
+id = "XLE-01043"
 lineage_id = "XL-219"
 from_id = "E-219"
 to_ref = "C-1550"
@@ -13663,7 +13906,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01043"
+id = "XLE-01044"
 lineage_id = "XL-219"
 from_id = "E-219"
 to_ref = "data/output/e219_inv_tau_bench.csv"
@@ -13672,7 +13915,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01044"
+id = "XLE-01045"
 lineage_id = "XL-224"
 from_id = "E-224"
 to_ref = "lbm-rca-probe"
@@ -13681,34 +13924,34 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01045"
+id = "XLE-01046"
 lineage_id = "XL-224"
 from_id = "E-224"
 to_ref = "C-1617"
 to_kind = "claim"
 edge_kind = "supports_claim"
-verified = true
-
-[[edge]]
-id = "XLE-01046"
-lineage_id = "XL-225"
-from_id = "E-225"
-to_ref = "lbm-rca-probe"
-to_kind = "binary"
-edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
 id = "XLE-01047"
 lineage_id = "XL-225"
 from_id = "E-225"
+to_ref = "lbm-rca-probe"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01048"
+lineage_id = "XL-225"
+from_id = "E-225"
 to_ref = "C-1617"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01048"
+id = "XLE-01049"
 lineage_id = "XL-226"
 from_id = "E-226"
 to_ref = "cd-domain-survey"
@@ -13717,7 +13960,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01049"
+id = "XLE-01050"
 lineage_id = "XL-226"
 from_id = "E-226"
 to_ref = "C-1617"
@@ -13726,7 +13969,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01050"
+id = "XLE-01051"
 lineage_id = "XL-226"
 from_id = "E-226"
 to_ref = "C-1618"
@@ -13735,7 +13978,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01051"
+id = "XLE-01052"
 lineage_id = "XL-226"
 from_id = "E-226"
 to_ref = "data/output/heliosphere/ablations/ace_dec2004_jan2005.csv"
@@ -13744,7 +13987,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01052"
+id = "XLE-01053"
 lineage_id = "XL-226"
 from_id = "E-226"
 to_ref = "data/output/heliosphere/ablations/cd_domain_survey.json"
@@ -13753,7 +13996,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01053"
+id = "XLE-01054"
 lineage_id = "XL-226"
 from_id = "E-226"
 to_ref = "EX-0032"
@@ -13762,7 +14005,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-01054"
+id = "XLE-01055"
 lineage_id = "XL-227"
 from_id = "E-227"
 to_ref = "themis-cd-crossing-survey"
@@ -13771,7 +14014,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01055"
+id = "XLE-01056"
 lineage_id = "XL-227"
 from_id = "E-227"
 to_ref = "C-1619"
@@ -13780,7 +14023,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01056"
+id = "XLE-01057"
 lineage_id = "XL-227"
 from_id = "E-227"
 to_ref = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
@@ -13789,7 +14032,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01057"
+id = "XLE-01058"
 lineage_id = "XL-227"
 from_id = "E-227"
 to_ref = "data/external/themis/"
@@ -13798,7 +14041,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01058"
+id = "XLE-01059"
 lineage_id = "XL-227"
 from_id = "E-227"
 to_ref = "data/output/heliosphere/ablations/themis_cd_crossing_survey.json"
@@ -13807,7 +14050,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01059"
+id = "XLE-01060"
 lineage_id = "XL-227"
 from_id = "E-227"
 to_ref = "EX-0028"
@@ -13816,7 +14059,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-01060"
+id = "XLE-01061"
 lineage_id = "XL-227"
 from_id = "E-227"
 to_ref = "EX-0033"
@@ -13825,7 +14068,7 @@ edge_kind = "touches_dataset"
 verified = false
 
 [[edge]]
-id = "XLE-01061"
+id = "XLE-01062"
 lineage_id = "XL-227"
 from_id = "E-227"
 to_ref = "observation_benchmark"
@@ -13834,7 +14077,7 @@ edge_kind = "consumes_truth_surface"
 verified = true
 
 [[edge]]
-id = "XLE-01062"
+id = "XLE-01063"
 lineage_id = "XL-228"
 from_id = "E-228"
 to_ref = "data/external/cluster/"
@@ -13843,7 +14086,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01063"
+id = "XLE-01064"
 lineage_id = "XL-228"
 from_id = "E-228"
 to_ref = "data/external/crossing_lists/omni_bowshock_cluster_2002.txt"
@@ -13852,7 +14095,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01064"
+id = "XLE-01065"
 lineage_id = "XL-228"
 from_id = "E-228"
 to_ref = "data/output/heliosphere/ablations/fa_attribution_cluster_2002w01.json"
@@ -13861,7 +14104,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01065"
+id = "XLE-01066"
 lineage_id = "XL-229"
 from_id = "E-229"
 to_ref = "data/external/crossing_lists/rosetta_cavity_boundaries.txt"
@@ -13870,7 +14113,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01066"
+id = "XLE-01067"
 lineage_id = "XL-229"
 from_id = "E-229"
 to_ref = "data/external/rosetta/"
@@ -13879,7 +14122,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01067"
+id = "XLE-01068"
 lineage_id = "XL-229"
 from_id = "E-229"
 to_ref = "data/output/heliosphere/ablations/rosetta_normalization_ablation.json"
@@ -13888,7 +14131,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01068"
+id = "XLE-01069"
 lineage_id = "XL-230"
 from_id = "E-230"
 to_ref = "data/output/heliosphere/ablations/psp_switchback_omega.json"
@@ -13897,7 +14140,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01069"
+id = "XLE-01070"
 lineage_id = "XL-230"
 from_id = "E-230"
 to_ref = "data/output/heliosphere/ablations/psp_switchback_omega_e1.json"
@@ -13906,7 +14149,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01070"
+id = "XLE-01071"
 lineage_id = "XL-230"
 from_id = "E-230"
 to_ref = "data/output/heliosphere/ablations/psp_switchback_omega_e10.json"
@@ -13915,7 +14158,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01071"
+id = "XLE-01072"
 lineage_id = "XL-230"
 from_id = "E-230"
 to_ref = "data/output/heliosphere/ablations/psp_switchback_omega_e6.json"
@@ -13924,7 +14167,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01072"
+id = "XLE-01073"
 lineage_id = "XL-230"
 from_id = "E-230"
 to_ref = "data/output/heliosphere/ablations/psp_multiencounter_stability.json"
@@ -13933,7 +14176,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01073"
+id = "XLE-01074"
 lineage_id = "XL-231"
 from_id = "E-231"
 to_ref = "data/output/heliosphere/ablations/fa_attribution_themis.json"
@@ -13942,7 +14185,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01074"
+id = "XLE-01075"
 lineage_id = "XL-231"
 from_id = "E-231"
 to_ref = "data/output/heliosphere/ablations/fa_attribution_themis.json"
@@ -13951,7 +14194,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01075"
+id = "XLE-01076"
 lineage_id = "XL-232"
 from_id = "E-232"
 to_ref = "data/external/mms/"
@@ -13960,7 +14203,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01076"
+id = "XLE-01077"
 lineage_id = "XL-232"
 from_id = "E-232"
 to_ref = "data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json"
@@ -13969,7 +14212,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01077"
+id = "XLE-01078"
 lineage_id = "XL-232"
 from_id = "E-232"
 to_ref = "data/output/heliosphere/ablations/mms_multiday_rot30.json"
@@ -13978,7 +14221,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01078"
+id = "XLE-01079"
 lineage_id = "XL-233"
 from_id = "E-233"
 to_ref = "data/external/crossing_lists/maven_bs_2015_regime.txt"
@@ -13987,7 +14230,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01079"
+id = "XLE-01080"
 lineage_id = "XL-233"
 from_id = "E-233"
 to_ref = "data/external/maven/"
@@ -13996,7 +14239,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01080"
+id = "XLE-01081"
 lineage_id = "XL-233"
 from_id = "E-233"
 to_ref = "data/output/heliosphere/ablations/fa_attribution_maven_2015.json"
@@ -14005,7 +14248,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01081"
+id = "XLE-01082"
 lineage_id = "XL-233"
 from_id = "E-233"
 to_ref = "data/output/heliosphere/ablations/fa_attribution_maven_pr_curve.json"
@@ -14014,7 +14257,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01082"
+id = "XLE-01083"
 lineage_id = "XL-234"
 from_id = "E-234"
 to_ref = "crates/"
@@ -14023,7 +14266,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01083"
+id = "XLE-01084"
 lineage_id = "XL-234"
 from_id = "E-234"
 to_ref = "data/output/static_analysis/pmd_gap_audit_2026_04_15.txt"
@@ -14032,7 +14275,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01084"
+id = "XLE-01085"
 lineage_id = "XL-235"
 from_id = "E-235"
 to_ref = "staples-roc-block-bootstrap"
@@ -14041,7 +14284,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01085"
+id = "XLE-01086"
 lineage_id = "XL-235"
 from_id = "E-235"
 to_ref = "data/output/benchmark_scores.csv"
@@ -14050,7 +14293,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01086"
+id = "XLE-01087"
 lineage_id = "XL-235"
 from_id = "E-235"
 to_ref = "data/output/staples_roc_block_bootstrap.json"
@@ -14059,7 +14302,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01087"
+id = "XLE-01088"
 lineage_id = "XL-236"
 from_id = "E-236"
 to_ref = "selfsim-logsigma-bootstrap"
@@ -14068,7 +14311,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01088"
+id = "XLE-01089"
 lineage_id = "XL-236"
 from_id = "E-236"
 to_ref = "data/output/agg_selfsim_rust.json"
@@ -14077,7 +14320,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01089"
+id = "XLE-01090"
 lineage_id = "XL-236"
 from_id = "E-236"
 to_ref = "data/output/selfsim_logsigma_bootstrap.json"
@@ -14086,7 +14329,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01090"
+id = "XLE-01091"
 lineage_id = "XL-237"
 from_id = "E-237"
 to_ref = "staples-roc-cluster-bootstrap"
@@ -14095,7 +14338,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01091"
+id = "XLE-01092"
 lineage_id = "XL-237"
 from_id = "E-237"
 to_ref = "data/output/benchmark_scores.csv"
@@ -14104,7 +14347,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01092"
+id = "XLE-01093"
 lineage_id = "XL-237"
 from_id = "E-237"
 to_ref = "data/output/staples_roc_cluster_bootstrap.json"
@@ -14113,7 +14356,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01093"
+id = "XLE-01094"
 lineage_id = "XL-238"
 from_id = "E-238"
 to_ref = "sedenion-associator-coefficient-census"
@@ -14122,7 +14365,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01094"
+id = "XLE-01095"
 lineage_id = "XL-238"
 from_id = "E-238"
 to_ref = "crates/cd_kernel/src/mult_table.rs"
@@ -14131,7 +14374,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01095"
+id = "XLE-01096"
 lineage_id = "XL-238"
 from_id = "E-238"
 to_ref = "data/output/audit/2026-07-16/21-associator-coefficient-census.txt"
@@ -14140,7 +14383,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01096"
+id = "XLE-01097"
 lineage_id = "XL-239"
 from_id = "E-239"
 to_ref = "staples-roc-cluster-bootstrap"
@@ -14149,7 +14392,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01097"
+id = "XLE-01098"
 lineage_id = "XL-239"
 from_id = "E-239"
 to_ref = "C-1628"
@@ -14158,7 +14401,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01098"
+id = "XLE-01099"
 lineage_id = "XL-239"
 from_id = "E-239"
 to_ref = "C-1629"
@@ -14167,19 +14410,10 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01099"
-lineage_id = "XL-239"
-from_id = "E-239"
-to_ref = "C-1631"
-to_kind = "claim"
-edge_kind = "supports_claim"
-verified = true
-
-[[edge]]
 id = "XLE-01100"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "C-1632"
+to_ref = "C-1631"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -14188,7 +14422,7 @@ verified = true
 id = "XLE-01101"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "C-1633"
+to_ref = "C-1632"
 to_kind = "claim"
 edge_kind = "supports_claim"
 verified = true
@@ -14197,16 +14431,16 @@ verified = true
 id = "XLE-01102"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/benchmark_scores.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
+to_ref = "C-1633"
+to_kind = "claim"
+edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
 id = "XLE-01103"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/tha_matched_files.csv"
+to_ref = "data/output/benchmark_scores.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -14215,7 +14449,7 @@ verified = true
 id = "XLE-01104"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/tha_matched_files_dup_defect.csv"
+to_ref = "data/output/tha_matched_files.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -14224,16 +14458,16 @@ verified = true
 id = "XLE-01105"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_bmag.json"
+to_ref = "data/output/tha_matched_files_dup_defect.csv"
 to_kind = "path"
-edge_kind = "produces_path"
+edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
 id = "XLE-01106"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_chperm.json"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_bmag.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -14242,7 +14476,7 @@ verified = true
 id = "XLE-01107"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_chperm.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -14251,7 +14485,7 @@ verified = true
 id = "XLE-01108"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_dbdt.json"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -14260,7 +14494,7 @@ verified = true
 id = "XLE-01109"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_gram6.json"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_dbdt.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -14269,7 +14503,7 @@ verified = true
 id = "XLE-01110"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_gram6.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -14278,7 +14512,7 @@ verified = true
 id = "XLE-01111"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -14287,7 +14521,7 @@ verified = true
 id = "XLE-01112"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_rot.json"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
@@ -14296,13 +14530,22 @@ verified = true
 id = "XLE-01113"
 lineage_id = "XL-239"
 from_id = "E-239"
-to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_scram.json"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_rot.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
 id = "XLE-01114"
+lineage_id = "XL-239"
+from_id = "E-239"
+to_ref = "data/output/staples_cluster_bootstrap_assoc_vs_scram.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01115"
 lineage_id = "XL-215"
 from_id = "E-240"
 to_ref = "staples-twist-ladder"
@@ -14311,7 +14554,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01115"
+id = "XLE-01116"
 lineage_id = "XL-215"
 from_id = "E-240"
 to_ref = "C-1632"
@@ -14320,7 +14563,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01116"
+id = "XLE-01117"
 lineage_id = "XL-215"
 from_id = "E-240"
 to_ref = "C-1729"
@@ -14329,19 +14572,10 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01117"
-lineage_id = "XL-215"
-from_id = "E-240"
-to_ref = "data/output/cat_themis_a.csv"
-to_kind = "path"
-edge_kind = "consumes_path"
-verified = true
-
-[[edge]]
 id = "XLE-01118"
 lineage_id = "XL-215"
 from_id = "E-240"
-to_ref = "data/output/tha_matched_files.csv"
+to_ref = "data/output/cat_themis_a.csv"
 to_kind = "path"
 edge_kind = "consumes_path"
 verified = true
@@ -14350,13 +14584,22 @@ verified = true
 id = "XLE-01119"
 lineage_id = "XL-215"
 from_id = "E-240"
+to_ref = "data/output/tha_matched_files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01120"
+lineage_id = "XL-215"
+from_id = "E-240"
 to_ref = "data/output/staples_twist_ladder.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01120"
+id = "XLE-01121"
 lineage_id = "XL-215"
 from_id = "E-240"
 to_ref = "SRC-THEMIS-THA-FGM-DAILY"
@@ -14365,7 +14608,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-01121"
+id = "XLE-01122"
 lineage_id = "XL-216"
 from_id = "E-241"
 to_ref = "staples-layout-sweep"
@@ -14374,7 +14617,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01122"
+id = "XLE-01123"
 lineage_id = "XL-216"
 from_id = "E-241"
 to_ref = "C-1633"
@@ -14383,7 +14626,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01123"
+id = "XLE-01124"
 lineage_id = "XL-216"
 from_id = "E-241"
 to_ref = "C-1730"
@@ -14392,7 +14635,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01124"
+id = "XLE-01125"
 lineage_id = "XL-216"
 from_id = "E-241"
 to_ref = "data/output/cat_themis_a.csv"
@@ -14401,7 +14644,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01125"
+id = "XLE-01126"
 lineage_id = "XL-216"
 from_id = "E-241"
 to_ref = "data/output/tha_matched_files.csv"
@@ -14410,7 +14653,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01126"
+id = "XLE-01127"
 lineage_id = "XL-216"
 from_id = "E-241"
 to_ref = "data/output/staples_layout_sweep.json"
@@ -14419,7 +14662,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01127"
+id = "XLE-01128"
 lineage_id = "XL-216"
 from_id = "E-241"
 to_ref = "SRC-THEMIS-THA-FGM-DAILY"
@@ -14428,7 +14671,7 @@ edge_kind = "consumes_source"
 verified = true
 
 [[edge]]
-id = "XLE-01128"
+id = "XLE-01129"
 lineage_id = "XL-217"
 from_id = "E-242"
 to_ref = "staples-incremental-information"
@@ -14437,7 +14680,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01129"
+id = "XLE-01130"
 lineage_id = "XL-217"
 from_id = "E-242"
 to_ref = "C-1631"
@@ -14446,7 +14689,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01130"
+id = "XLE-01131"
 lineage_id = "XL-217"
 from_id = "E-242"
 to_ref = "C-1731"
@@ -14455,7 +14698,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01131"
+id = "XLE-01132"
 lineage_id = "XL-217"
 from_id = "E-242"
 to_ref = "data/output/benchmark_scores.csv"
@@ -14464,7 +14707,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01132"
+id = "XLE-01133"
 lineage_id = "XL-217"
 from_id = "E-242"
 to_ref = "data/output/staples_incremental_information.json"
@@ -14473,11 +14716,227 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01133"
+id = "XLE-01134"
 lineage_id = "XL-217"
 from_id = "E-242"
 to_ref = "SRC-THEMIS-THA-FGM-DAILY"
 to_kind = "source"
 edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-01135"
+lineage_id = "XL-220"
+from_id = "E-266"
+to_ref = "heliosphere mms-sitl-labeled"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01136"
+lineage_id = "XL-220"
+from_id = "E-266"
+to_ref = "data/output/heliosphere/ablations/mms_sitl_labeled_eval.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01137"
+lineage_id = "XL-221"
+from_id = "E-267"
+to_ref = "heliosphere themis-staples-labeled"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01138"
+lineage_id = "XL-221"
+from_id = "E-267"
+to_ref = "data/output/heliosphere/ablations/themis_staples_labeled_eval.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01139"
+lineage_id = "XL-222"
+from_id = "E-268"
+to_ref = "heliosphere mms-multiday"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01140"
+lineage_id = "XL-222"
+from_id = "E-268"
+to_ref = "data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01141"
+lineage_id = "XL-223"
+from_id = "E-269"
+to_ref = "heliosphere psp-alfven-control"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01142"
+lineage_id = "XL-223"
+from_id = "E-269"
+to_ref = "data/output/heliosphere/ablations/psp_alfven_control.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01143"
+lineage_id = "XL-240"
+from_id = "E-270"
+to_ref = "heliosphere takens-tau-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01144"
+lineage_id = "XL-240"
+from_id = "E-270"
+to_ref = "data/output/heliosphere/ablations/takens_tau_sweep.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01145"
+lineage_id = "XL-241"
+from_id = "E-271"
+to_ref = "heliosphere psp-switchback-correlation"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01146"
+lineage_id = "XL-241"
+from_id = "E-271"
+to_ref = "data/output/heliosphere/ablations/psp_switchback_correlation.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01147"
+lineage_id = "XL-242"
+from_id = "E-272"
+to_ref = "heliosphere bootstrap-f1"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01148"
+lineage_id = "XL-242"
+from_id = "E-272"
+to_ref = "data/output/heliosphere/ablations/themis_bootstrap_f1_ci.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01149"
+lineage_id = "XL-243"
+from_id = "E-273"
+to_ref = "heliosphere psp-alfven-control"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01150"
+lineage_id = "XL-243"
+from_id = "E-273"
+to_ref = "data/output/heliosphere/ablations/psp_alfven_control.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01151"
+lineage_id = "XL-244"
+from_id = "E-274"
+to_ref = "heliosphere themis-staples-labeled"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01152"
+lineage_id = "XL-244"
+from_id = "E-274"
+to_ref = "data/output/heliosphere/ablations/themis_staples_labeled_eval.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01153"
+lineage_id = "XL-245"
+from_id = "E-275"
+to_ref = "heliosphere themis-general-benchmark"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01154"
+lineage_id = "XL-245"
+from_id = "E-275"
+to_ref = "data/output/heliosphere/ablations/themis_general_benchmark.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01155"
+lineage_id = "XL-247"
+from_id = "E-277"
+to_ref = "heliosphere voyager-heliopause"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01156"
+lineage_id = "XL-247"
+from_id = "E-277"
+to_ref = "data/output/heliosphere/ablations/voyager_heliopause_eval.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01157"
+lineage_id = "XL-248"
+from_id = "E-278"
+to_ref = "lotss-analysis"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01158"
+lineage_id = "XL-248"
+from_id = "E-278"
+to_ref = "data/output/lotss_ultrametric_report.json"
+to_kind = "path"
+edge_kind = "produces_path"
 verified = true
 

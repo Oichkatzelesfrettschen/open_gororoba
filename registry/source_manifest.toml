@@ -129,6 +129,12 @@ table = "dataset_label_aliases"
 description = "Canonical dataset name mapping"
 
 [[source]]
+path = "registry/experiment_id_aliases.toml"
+role = "governance"
+table = "experiment_id_aliases"
+description = "Legacy experiment identifier aliases and retired numbers (TODO: no SQLite table; the governance check reads the TOML)"
+
+[[source]]
 path = "registry/data_governance.toml"
 role = "governance"
 # TODO: registry/canonical/control_plane.sqlite3 holds no table of this name; the lane is unmigrated.
