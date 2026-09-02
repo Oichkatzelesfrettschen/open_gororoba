@@ -39,6 +39,58 @@ use rand_chacha::ChaCha8Rng;
 
 use crate::staple_associator::STAPLE_DIM;
 
+/// A sign function sigma(i,j) in {+1,-1} on the 16-element basis: the twist
+/// of a unital XOR-graded algebra, e_i e_j = sigma(i,j) e_{i XOR j}.
+pub type Twist = [[i8; STAPLE_DIM]; STAPLE_DIM];
+
+/// The Cayley-Dickson twist read off the SHA-verified multiplication
+/// table, so a random-twist ladder has the true sedenion twist at rung
+/// zero in the same representation.
+pub fn cd_twist(table: &CdMultTable) -> Twist {
+    let mut sigma = [[0i8; STAPLE_DIM]; STAPLE_DIM];
+    for (i, row) in sigma.iter_mut().enumerate() {
+        for (j, entry) in row.iter_mut().enumerate() {
+            let (sign, index) = table.multiply_basis(i, j);
+            assert_eq!(
+                index,
+                i ^ j,
+                "the CD product of e_{i} and e_{j} is XOR-graded"
+            );
+            *entry = sign;
+        }
+    }
+    sigma
+}
+
+/// A uniformly random unital twist: sigma(0,j) = sigma(i,0) = +1 and every
+/// other sign is an independent fair draw from the seeded stream.
+pub fn random_unital_twist(rng: &mut ChaCha8Rng) -> Twist {
+    let mut sigma = [[1i8; STAPLE_DIM]; STAPLE_DIM];
+    for row in sigma.iter_mut().skip(1) {
+        for entry in row.iter_mut().skip(1) {
+            *entry = if rng.random_range(0..2) == 0 { 1 } else { -1 };
+        }
+    }
+    sigma
+}
+
+/// Row-major sha256 of the twist as bytes 0x01 / 0xff, so a draw can be
+/// named and reproduced from its hash alone.
+pub fn twist_sha256(sigma: &Twist) -> String {
+    use sha2::{Digest, Sha256};
+    let mut hasher = Sha256::new();
+    for row in sigma {
+        for &entry in row {
+            hasher.update([entry as u8]);
+        }
+    }
+    hasher
+        .finalize()
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
+}
+
 /// Sparse rank-3 tensor over the 16-component staple space: terms are
 /// (i, j, k, coefficient), output component is i XOR j XOR k.
 pub struct SparseCubicTensor {
@@ -67,6 +119,39 @@ impl SparseCubicTensor {
             }
         }
         Self { terms }
+    }
+
+    /// The associator tensor of the unital XOR-graded algebra with
+    /// multiplication e_i e_j = sigma(i,j) e_{i XOR j}: the coefficient of
+    /// [e_i, e_j, e_k] is sigma(i,j) sigma(i^j,k) - sigma(j,k) sigma(i,j^k),
+    /// the same formula `from_associator` evaluates on the Cayley-Dickson
+    /// sign table. `from_twist(&cd_twist(table))` therefore reproduces
+    /// `from_associator(table)` term for term, and a random twist yields a
+    /// genuine (in general non-alternative) algebra with its own zero
+    /// pattern, one rung above the sign scramble that keeps the CD support
+    /// but is no algebra at all.
+    pub fn from_twist(sigma: &Twist) -> Self {
+        let mut terms = Vec::with_capacity(2048);
+        for i in 0..STAPLE_DIM {
+            for j in 0..STAPLE_DIM {
+                for k in 0..STAPLE_DIM {
+                    let ij = i ^ j;
+                    let jk = j ^ k;
+                    let c = i32::from(sigma[i][j]) * i32::from(sigma[ij][k])
+                        - i32::from(sigma[j][k]) * i32::from(sigma[i][jk]);
+                    if c != 0 {
+                        terms.push((i as u8, j as u8, k as u8, c as i8));
+                    }
+                }
+            }
+        }
+        Self { terms }
+    }
+
+    /// Positive and negative coefficient counts over the support.
+    pub fn sign_counts(&self) -> (usize, usize) {
+        let positive = self.terms.iter().filter(|t| t.3 > 0).count();
+        (positive, self.terms.len() - positive)
     }
 
     /// Same support and |coefficient| = 2, every sign redrawn from a
@@ -254,6 +339,36 @@ mod tests {
                 "tensor {t} vs mult-table {m}"
             );
         }
+    }
+
+    #[test]
+    fn from_twist_of_the_cd_twist_reproduces_from_associator() {
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = SparseCubicTensor::from_associator(&table);
+        let sigma = cd_twist(&table);
+        let twisted = SparseCubicTensor::from_twist(&sigma);
+        assert_eq!(twisted.terms, cd.terms);
+        assert_eq!(cd.term_count(), 1848);
+        assert_eq!(sigma[0][5], 1);
+        assert_eq!(sigma[5][0], 1);
+    }
+
+    #[test]
+    fn random_twist_is_unital_and_yields_a_different_algebra() {
+        let mut rng = ChaCha8Rng::seed_from_u64(7);
+        let sigma = random_unital_twist(&mut rng);
+        assert!(sigma[0].iter().all(|&s| s == 1));
+        assert!(sigma.iter().all(|row| row[0] == 1));
+        let t = SparseCubicTensor::from_twist(&sigma);
+        assert!(t.term_count() > 0);
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = SparseCubicTensor::from_associator(&table);
+        assert_ne!(t.terms, cd.terms);
+        let (pos, neg) = t.sign_counts();
+        assert_eq!(pos + neg, t.term_count());
+        let again = random_unital_twist(&mut ChaCha8Rng::seed_from_u64(7));
+        assert_eq!(twist_sha256(&again), twist_sha256(&sigma));
+        assert_ne!(twist_sha256(&sigma), twist_sha256(&cd_twist(&table)));
     }
 
     #[test]
