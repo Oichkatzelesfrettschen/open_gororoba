@@ -148,6 +148,31 @@ hardware-specific tables are replaced with the scientific stack.
   owner's tree from a worktree unless `REPO_ALLOW_SHARED_CLEAN=1`.
   `make print-cache-roots` shows the resolved paths and
   `xtask/tests/cache_roots.rs` pins the layouts.
+- The validation-tool cache identity is a sha256 over three inputs: the
+  content hash of every `.rs` and `Cargo.toml` under `crates/` and `xtask/`,
+  the resolved real path of the running checkout, and the git common-dir
+  owner. `mk/cache_roots.mk` names the stamp
+  `<validation-tools>/tool-identity.<identity>` and writes
+  `tool_identity=`, `source_identity=`, `curdir_real=` and `owner=` into it.
+  Two worktrees of one owner carry identical tool sources, so the source hash
+  alone rates them equal; the checkout path is the term that separates them,
+  and a stamp written for one worktree therefore never satisfies another.
+- The identity gates the rebuild decision, not the bytes. Cargo keys a
+  workspace crate on content and the shared build-dir hands one worktree's
+  compiled crate to every other, so a fresh stamp can still stage a binary
+  whose debuginfo and panic-location strings name the compiling checkout.
+  `make validation-tools-check-paths` reads each staged file and fails on an
+  absolute path under `$(REPO_WORKTREES_ROOT)` (default `$(HOME)/worktrees`)
+  that names neither the running checkout nor an existing directory.
+  `validate-local` runs it after the tools are staged and before a lane
+  executes one. `validate-repository` builds the tools through
+  `$(MAKE) validation-tools` and does not run the scan.
+- `make validation-tools-rebuild` discards every staged binary, stamp and
+  identity file through `guarded_rm`, rebuilds through the `validation-tools`
+  lane, and reruns the path scan. The validation lock and the cache-check
+  sentinel stay in place, so a rebuild beside an in-flight `validate-local`
+  leaves that run's lock intact. Use it when a staged tool fails on a path
+  from a checkout that no longer exists.
 - sccache is host configuration, not a repository guarantee.
   `.cargo/config.toml` names it as the rustc wrapper; its cache size
   and location live in `~/.config/sccache/config`. A cache at its size
