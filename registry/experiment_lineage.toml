@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 248
-edge_count = 1158
+lineage_count = 249
+edge_count = 1164
 
 [[lineage]]
 id = "XL-001"
@@ -4516,6 +4516,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin lotss-analysis", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-249"
+experiment_id = "E-279"
+binary = "staples-twist-orbit"
+deterministic = true
+gpu = false
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_orbit.json --n-cocycles 50 --n-invariant-twists 250 --n-isomorphic-orbits 250 --seed 42 --neg-fraction 0.05"
+run_command_sha256 = "6f0aaff93183308430358aa758a8491fa944c12c81ef33950a977ddee1b39c7d"
+claim_refs = ["C-1732"]
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+output_path_refs = ["data/output/staples_twist_orbit.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_orbit.json --n-cocycles 50 --n-invariant-twists 250 --n-isomorphic-orbits 250 --seed 42 --neg-fraction 0.05", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -14938,5 +14956,59 @@ from_id = "E-278"
 to_ref = "data/output/lotss_ultrametric_report.json"
 to_kind = "path"
 edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01159"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "staples-twist-orbit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01160"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "C-1732"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01161"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "data/output/cat_themis_a.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01162"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "data/output/tha_matched_files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01163"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "data/output/staples_twist_orbit.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01164"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "SRC-THEMIS-THA-FGM-DAILY"
+to_kind = "source"
+edge_kind = "consumes_source"
 verified = true
 

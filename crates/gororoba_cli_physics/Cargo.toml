@@ -289,6 +289,9 @@ path = "src/bin/staples_incremental_information.rs"
 name = "staples-twist-ladder"
 path = "src/bin/staples_twist_ladder.rs"
 [[bin]]
+name = "staples-twist-orbit"
+path = "src/bin/staples_twist_orbit.rs"
+[[bin]]
 name = "staples-layout-sweep"
 path = "src/bin/staples_layout_sweep.rs"
 [[bin]]

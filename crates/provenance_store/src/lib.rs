@@ -1084,6 +1084,67 @@ impl ProvenanceStore {
         Ok(experiments.len())
     }
 
+    /// Insert or update the `[[experiment]]` rows in `raw` without deleting
+    /// any other canonical experiment.
+    pub fn upsert_experiments_from_registry_text(
+        &mut self,
+        repo_root: &Path,
+        source_path: &Path,
+        raw: &str,
+    ) -> Result<Vec<String>> {
+        let experiments = load_experiments_from_registry(raw)?;
+        if experiments.is_empty() {
+            bail!("experiment spec contains no [[experiment]] rows");
+        }
+        let tx = self.conn.transaction()?;
+        let mut ids = Vec::new();
+        for experiment in &experiments {
+            tx.execute(
+                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
+                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)
+                 ON CONFLICT(id) DO UPDATE SET
+                    title = excluded.title,
+                    status = excluded.status,
+                    binary_name = excluded.binary_name,
+                    claim_refs_json = excluded.claim_refs_json,
+                    status_note = excluded.status_note,
+                    compat_toml_text = excluded.compat_toml_text",
+                params![
+                    experiment.id,
+                    experiment.title,
+                    experiment.status,
+                    experiment.binary,
+                    serde_json::to_string(&experiment.claim_refs)?,
+                    experiment.status_note,
+                    experiment.compat_toml_text
+                ],
+            )?;
+            tx.execute(
+                "DELETE FROM claim_experiment_refs WHERE experiment_id = ?1",
+                params![experiment.id],
+            )?;
+            for claim_id in &experiment.claim_refs {
+                tx.execute(
+                    "INSERT INTO claim_experiment_refs (claim_id, experiment_id)
+                     VALUES (?1, ?2)
+                     ON CONFLICT(claim_id, experiment_id) DO NOTHING",
+                    params![claim_id, experiment.id],
+                )?;
+            }
+            ids.push(experiment.id.clone());
+        }
+        tx.commit()?;
+        self.record_control_plane_run(
+            "upsert_experiments_from_registry_text",
+            &serde_json::json!({
+                "source_path": to_repo_rel(repo_root, source_path),
+                "experiment_ids": ids,
+            })
+            .to_string(),
+        )?;
+        Ok(ids)
+    }
+
     pub fn control_plane_compat_text(&mut self, kind: ControlPlaneCompatKind) -> Result<String> {
         self.backfill_control_plane_compat_from_snapshots()?;
         let outputs = self.render_control_plane_compat_outputs()?;
@@ -5346,6 +5407,44 @@ claim_refs = ["C-001"]
         assert!(rendered.contains("id = \"E-002\""));
         assert!(!rendered.contains("id = \"E-001\""));
         assert!(rendered.contains("experiment_count = 1"));
+        Ok(())
+    }
+
+    #[test]
+    fn upsert_experiments_from_registry_text_keeps_existing_rows() -> Result<()> {
+        let fixture = make_test_workspace("upsert_experiments")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
+        )?;
+        store.build_crossrefs()?;
+
+        let fragment = r#"
+[[experiment]]
+id = "E-002"
+title = "Added experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+"#;
+        let ids = store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            fragment,
+        )?;
+        assert_eq!(ids, vec!["E-002".to_string()]);
+
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        assert!(rendered.contains("id = \"E-001\""));
+        assert!(rendered.contains("id = \"E-002\""));
         Ok(())
     }
 
