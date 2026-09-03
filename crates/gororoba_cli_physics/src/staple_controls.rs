@@ -801,6 +801,57 @@ mod tests {
     }
 
     #[test]
+    fn cd_1848_term_orientation_is_isolated_at_hamming_one() {
+        let lines = pg32_lines();
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd_signs = extract_line_orientations(&cd_twist(&table), &lines);
+        let cd_terms =
+            SparseCubicTensor::from_twist(&twist_from_line_orientations(&lines, &cd_signs))
+                .term_count();
+        assert_eq!(cd_terms, 1848);
+
+        let mut hamming1_max = 0usize;
+        let mut hamming1_at_1848 = 0usize;
+        for k in 0..PG32_LINE_COUNT {
+            let mut signs = cd_signs;
+            signs[k] = -signs[k];
+            let n = SparseCubicTensor::from_twist(&twist_from_line_orientations(&lines, &signs))
+                .term_count();
+            hamming1_max = hamming1_max.max(n);
+            if n == 1848 {
+                hamming1_at_1848 += 1;
+            }
+        }
+        assert_eq!(
+            hamming1_at_1848, 0,
+            "a Hamming-1 neighbor of the CD orientation has 1848 terms"
+        );
+        assert!(
+            hamming1_max < 1848,
+            "Hamming-1 neighbor term-count max is {hamming1_max}"
+        );
+
+        let mut hamming2_at_1848 = 0usize;
+        for a in 0..PG32_LINE_COUNT {
+            for b in (a + 1)..PG32_LINE_COUNT {
+                let mut signs = cd_signs;
+                signs[a] = -signs[a];
+                signs[b] = -signs[b];
+                let n =
+                    SparseCubicTensor::from_twist(&twist_from_line_orientations(&lines, &signs))
+                        .term_count();
+                if n == 1848 {
+                    hamming2_at_1848 += 1;
+                }
+            }
+        }
+        assert_eq!(
+            hamming2_at_1848, 0,
+            "a Hamming-2 neighbor of the CD orientation has 1848 terms"
+        );
+    }
+
+    #[test]
     fn ensemble_interval_position_splits_on_the_fences() {
         assert_eq!(
             ensemble_interval_position(0.8274, 0.8280, 0.8373),
