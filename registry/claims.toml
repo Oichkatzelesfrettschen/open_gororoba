@@ -5820,6 +5820,13 @@ status_note = "Kernel-checked formal proposition for THM-R300-IDCT8-DP4-EXACT-00
 where_stated = "proofs/verified/C1629_IDCT8DP4ExactBound.v; proofs/theories/IDCT8DP4ExactBound.v"
 
 [[claim]]
+id = "C-1737"
+last_verified = "2026-09-03"
+statement = "On the E-240 subsample of the deduplicated THEMIS-A Staples benchmark (1,733,470 samples, 578,320 positives, 813 daily files, ChaCha8 seed 42) the canonical Cayley-Dickson associator tensor (1848 terms, 924 positive and 924 negative) reaches ROC-AUC 0.8274. Three control results, stated separately: (1) 50 normalized 2-cocycles on (Z_2)^4 have vanishing associator (0 terms) and chance-level AUC 0.5000; (2) 250 uniform 35-line basis-alternative twists (unital, anticommutative, imaginary squares -1, quaternion triads on the 35 lines of PG(3, 2), term counts 1080 to 1656) reach mean 0.8327, 2.5th percentile 0.8280, 97.5th percentile 0.8373 and maximum 0.8393, 246 of 250 draws at or above the canonical value (tail probability 0.9841), so the canonical AUC sits below that ensemble's 2.5th percentile; (3) 250 algebra-isomorphic relabeling-orbit draws under GL(4, Z_2) x (Z_2)^15 at identical 1848-term 924/924 support reach mean 0.8311, 2.5th percentile 0.8147, 97.5th percentile 0.8407 and maximum 0.8424, 217 of 250 draws at or above the canonical value (tail probability 0.8685), so the canonical tensor is a typical member of its isomorphism class. Discrimination that is extreme among unstructured unital twists (C-1732) is typical among basis-alternative twists and among algebra-isomorphic copies of the sedenion twist."
+status = "Verified"
+where_stated = "data/output/staples_twist_orbit.json; E-279"
+
+[[claim]]
 id = "C-174"
 last_verified = "2026-02-01"
 statement = "Left-right operator commutant [L_a, R_b] = 0 exactly at associative dimensions (dim <= 4). At non-associative dims (>= 8),||[L_a,R_b]||_rel is nonzero (0.40 at dim=8, 0.18 at dim=64) and decreasing with dimension. [L,R]=0 is equivalent to associativity."

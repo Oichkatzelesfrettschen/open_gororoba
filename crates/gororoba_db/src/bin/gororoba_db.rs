@@ -89,7 +89,7 @@ fn main() -> Result<()> {
         Commands::Planning(args) => cmd_planning_mutation(&mut store, &cli.repo_root, &args),
         Commands::Claim(args) => cmd_claim_mutation(&mut store, &cli.repo_root, &args),
         Commands::Insight(args) => cmd_insight_mutation(&mut store, &args),
-        Commands::Experiment(args) => cmd_experiment_mutation(&mut store, &args),
+        Commands::Experiment(args) => cmd_experiment_mutation(&mut store, &cli.repo_root, &args),
         Commands::Binaries(args) => cmd_binaries_mutation(&mut store, &cli.repo_root, &args),
         Commands::Artifact(args) => cmd_artifact_mutation(&mut store, &cli.repo_root, &args),
         Commands::Theorem(args) => cmd_theorem_mutation(&mut store, &cli.repo_root, &args),
@@ -1506,6 +1506,7 @@ fn cmd_insight_mutation(store: &mut ProvenanceStore, args: &InsightMutationArgs)
 
 fn cmd_experiment_mutation(
     store: &mut ProvenanceStore,
+    repo_root: &Path,
     args: &ExperimentMutationArgs,
 ) -> Result<()> {
     match &args.action {
@@ -1531,6 +1532,14 @@ fn cmd_experiment_mutation(
                 Some(text) => println!("{}: {}", id, text),
                 None => println!("{}: (status_note is NULL)", id),
             }
+        }
+        ExperimentMutationAction::UpsertFromToml { spec, regen_toml } => {
+            let spec_path = resolve_cli_path(repo_root, spec);
+            let raw = fs::read_to_string(&spec_path)
+                .with_context(|| format!("read experiment spec {}", spec_path.display()))?;
+            let ids = store.upsert_experiments_from_registry_text(repo_root, &spec_path, &raw)?;
+            println!("upserted experiments: {}", ids.join(", "));
+            maybe_regen_toml(*regen_toml)?;
         }
         ExperimentMutationAction::RetargetExecutionTarget {
             from,
