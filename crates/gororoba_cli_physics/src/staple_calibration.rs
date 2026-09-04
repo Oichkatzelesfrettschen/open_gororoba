@@ -1,4 +1,4 @@
-//! Provenance-checked calibration data on a common historical-context mask.
+//! Provenance-checked calibration data on a common preceding-sample mask.
 
 use std::{collections::HashSet, fs::File, io::Read, path::Path};
 
@@ -35,6 +35,9 @@ pub struct FileEvidence {
     pub min_cadence_milliseconds: i64,
     pub max_cadence_milliseconds: i64,
     pub nonpositive_cadence_count: usize,
+    pub equal_timestamp_pair_count: usize,
+    pub backward_timestamp_pair_count: usize,
+    pub positive_submillisecond_pair_count: usize,
     pub kept_index_label_sha256: String,
 }
 
@@ -50,6 +53,21 @@ pub struct PreparedDataset {
     pub dbdt: Vec<f64>,
     pub files: Vec<FileEvidence>,
     pub evidence: serde_json::Value,
+}
+
+/// Preserve equal-time input order while rejecting exact backward timestamps.
+/// Sample-count windows establish preceding parsed rows; equal timestamps alone
+/// establish neither strict temporal precedence nor streaming availability.
+pub fn validate_sample_order(files: &[FileEvidence]) -> Result<()> {
+    for file in files {
+        ensure!(
+            file.backward_timestamp_pair_count == 0,
+            "pre-window sample-order admission rejects {} backward timestamp pairs in file {}",
+            file.backward_timestamp_pair_count,
+            file.id
+        );
+    }
+    Ok(())
 }
 
 fn hash_file(path: &Path) -> Result<String> {
@@ -101,7 +119,8 @@ fn validate_map(entries: &[(u16, String)]) -> Result<()> {
     Ok(())
 }
 
-/// Numerator consumes five increments; calibration ends before the first.
+/// Numerator consumes five increments; calibration precedes the first scored
+/// increment in parsed row order, including distinct vectors at equal times.
 fn rolling_score(increments: &[f64], index: usize, window: usize) -> Result<Option<(f64, f64)>> {
     ensure!(window > 0, "rolling context must contain increments");
     if index < window {
@@ -115,7 +134,7 @@ fn rolling_score(increments: &[f64], index: usize, window: usize) -> Result<Opti
         / window as f64;
     ensure!(
         square_mean.is_finite() && square_mean > 0.0,
-        "invalid historical RMS at score {index}"
+        "invalid preceding-sample RMS at score {index}"
     );
     let numerator = increments[index..index + 5]
         .iter()
@@ -264,6 +283,15 @@ fn reconstruct(
             min_cadence_milliseconds: *cadence.iter().min().context("empty cadence")?,
             max_cadence_milliseconds: *cadence.iter().max().context("empty cadence")?,
             nonpositive_cadence_count: cadence.iter().filter(|&&value| value <= 0).count(),
+            equal_timestamp_pair_count: times.windows(2).filter(|pair| pair[1] == pair[0]).count(),
+            backward_timestamp_pair_count: times
+                .windows(2)
+                .filter(|pair| pair[1] < pair[0])
+                .count(),
+            positive_submillisecond_pair_count: times
+                .windows(2)
+                .filter(|pair| pair[1] > pair[0] && pair[1] - pair[0] < Duration::milliseconds(1))
+                .count(),
             kept_index_label_sha256: mapping
                 .finalize()
                 .iter()
@@ -444,7 +472,8 @@ pub fn prepare(
         "rolling_context": "increments j in [k-W,k); increment j joins samples j,j+1",
         "numerator": "maximum norm of increments j in [k,k+5)",
         "label_alignment": "sample k+4; inclusive 2 minute pad; crossings restricted to UTC day of first finite sample",
-        "cadence_boundary": "finite-row sample index; discarded rows can bridge cadence gaps; per-file extrema record milliseconds",
+        "cadence_boundary": "preceding parsed finite rows; discarded rows can bridge cadence gaps; per-file extrema and historical nonpositive counts use truncated milliseconds; separate equality, backward and positive-submillisecond counts use exact timestamps",
+        "equal_time_boundary": "Equal-time vectors remain distinct samples in input row order. Equal-time rows establish within-timestamp order only; strict temporal precedence and streaming availability remain unproven.",
         "mapping_hash_encoding": "per retained row: little-endian u16 file ID, u64 score index, i64 aligned Unix milliseconds, u8 label"
     });
     Ok(output)
@@ -463,6 +492,10 @@ mod tests {
     }
 
     fn admission_fixture() -> AdmissionFixture {
+        admission_fixture_with_timestamp_delta(Duration::seconds(1))
+    }
+
+    fn admission_fixture_with_timestamp_delta(delta: Duration) -> AdmissionFixture {
         let nonce = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap()
@@ -480,8 +513,13 @@ mod tests {
             .unwrap();
         for index in 0..520 {
             let coordinate = f64::from(index);
+            let sample_time = if index == 300 {
+                start + Duration::seconds(299) + delta
+            } else {
+                start + Duration::seconds(i64::from(index))
+            };
             raw.write_record([
-                (start + Duration::seconds(i64::from(index))).to_rfc3339(),
+                sample_time.to_rfc3339(),
                 (2.0 + (coordinate * 0.03).sin()).to_string(),
                 (1.0 + (coordinate * 0.07).cos()).to_string(),
                 (0.5 + coordinate * 0.002).to_string(),
@@ -582,6 +620,62 @@ mod tests {
                 .to_string()
                 .contains("trailing rows")
         );
+    }
+
+    #[test]
+    fn equal_time_distinct_vectors_remain_admitted_samples() {
+        let ordinary = admit_fixture(&admission_fixture()).unwrap();
+        let fixture = admission_fixture_with_timestamp_delta(Duration::zero());
+        let data = admit_fixture(&fixture).unwrap();
+        validate_sample_order(&data.files).unwrap();
+        let mut raw = csv::ReaderBuilder::new()
+            .has_headers(false)
+            .from_path(fixture.0.join("raw.csv"))
+            .unwrap();
+        let pair: Vec<csv::StringRecord> = raw
+            .records()
+            .skip(299)
+            .take(2)
+            .map(Result::unwrap)
+            .collect();
+        assert_eq!(pair[0][0], pair[1][0]);
+        assert_ne!(&pair[0][1], &pair[1][1]);
+        assert_eq!(data.features, ordinary.features);
+        assert_eq!(data.labels, ordinary.labels);
+        assert_eq!(data.files[0].finite_samples, 520);
+        assert_eq!(data.files[0].increment_count, 519);
+        assert_eq!(data.files[0].equal_timestamp_pair_count, 1);
+        assert_eq!(data.files[0].backward_timestamp_pair_count, 0);
+        assert_eq!(data.files[0].positive_submillisecond_pair_count, 0);
+    }
+
+    #[test]
+    fn exact_cadence_gate_distinguishes_backward_and_submillisecond_pairs() {
+        let backward = admit_fixture(&admission_fixture_with_timestamp_delta(
+            Duration::nanoseconds(-1),
+        ))
+        .unwrap();
+        assert_eq!(backward.files[0].backward_timestamp_pair_count, 1);
+        assert_eq!(backward.files[0].equal_timestamp_pair_count, 0);
+        assert_eq!(backward.files[0].min_cadence_milliseconds, 0);
+        assert!(
+            validate_sample_order(&backward.files)
+                .unwrap_err()
+                .to_string()
+                .contains("backward timestamp")
+        );
+        let submillisecond = admit_fixture(&admission_fixture_with_timestamp_delta(
+            Duration::microseconds(500),
+        ))
+        .unwrap();
+        assert_eq!(
+            submillisecond.files[0].positive_submillisecond_pair_count,
+            1
+        );
+        assert_eq!(submillisecond.files[0].backward_timestamp_pair_count, 0);
+        assert_eq!(submillisecond.files[0].equal_timestamp_pair_count, 0);
+        assert_eq!(submillisecond.files[0].nonpositive_cadence_count, 1);
+        validate_sample_order(&submillisecond.files).unwrap();
     }
 
     #[test]
