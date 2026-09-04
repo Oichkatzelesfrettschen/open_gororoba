@@ -37,7 +37,32 @@
       "name": "cd_octonion_two_lag",
       "auc": 0.8264093284392897,
       "what_it_measures": "CD associator on lags 0-1 (octonion prefix e0..e7)"
+    },
+    {
+      "name": "cd_lags_1_2",
+      "auc": 0.8337857087544471,
+      "what_it_measures": "CD associator keeping only lags 1 and 2"
+    },
+    {
+      "name": "cd_lags_2_3",
+      "auc": 0.827169643692147,
+      "what_it_measures": "CD associator keeping only lags 2 and 3"
+    },
+    {
+      "name": "mva_lm_rotation",
+      "auc": 0.8340243992008172,
+      "what_it_measures": "max LM-plane rotation from Sonnerup-Cahill MVA on the six samples"
+    },
+    {
+      "name": "mva_delta_bl",
+      "auc": 0.7795003731073461,
+      "what_it_measures": "max minus min B along the MVA maximum-variance axis"
+    },
+    {
+      "name": "rank_rotation_plus_mag_jump",
+      "auc": 0.8220000551047096,
+      "what_it_measures": "sum of ranks of max_rotation and mag_jump; no fitted weights"
     }
   ],
-  "reading": "lag-0 quaternion AUC 0.5000 is chance, so CD ranking is lag-mixing. two-lag octonion prefix 0.8264 vs full CD 0.8274. e8-zeroed 0.8270 matches CD, so lag-2 Bx is not the carrier. |B|-zeroed 0.8297 is at least CD, so the magnitude channel is not helping. max_rotation 0.8383 beats CD. mag_jump 0.7377 is a weaker compression channel."
+  "reading": "lag-0 quaternion 0.5000 is chance (lag-mixing). adjacent lag pairs 0-1 0.8264, 1-2 0.8338, 2-3 0.8272 vs full CD 0.8274. e8-zeroed 0.8270; |B|-zeroed 0.8297. MVA LM-rotation 0.8340, MVA Delta B_L 0.7795. max_rotation 0.8383 and rotation+|B| ranks 0.8220 vs CD. mag_jump 0.7377."
 }
