@@ -4,7 +4,7 @@
 use anyhow::{Context, Result, ensure};
 use clap::{Parser, ValueEnum};
 use gororoba_cli_physics::{
-    staple_calibration::{PreparedDataset, prepare},
+    staple_calibration::{PreparedDataset, prepare, validate_sample_order},
     staple_logistic::{
         DEVIANCE_REL_TOL, fit_irls, logit_loss, weighted_auc, weighted_average_precision,
     },
@@ -1175,12 +1175,7 @@ fn admit_protocol(args: &Args, data: &PreparedDataset) -> Result<Value> {
         data.files.iter().all(|file| file.retained_rows > 0),
         "common population loses an entire planned file"
     );
-    ensure!(
-        data.files
-            .iter()
-            .all(|file| file.nonpositive_cadence_count == 0),
-        "chronological pre-window admission requires strictly increasing retained timestamps"
-    );
+    validate_sample_order(&data.files)?;
     ensure!(
         data.labels.len() <= u32::MAX as usize,
         "row indices exceed u32 representation"
@@ -1374,6 +1369,9 @@ mod tests {
                 min_cadence_milliseconds: 1000,
                 max_cadence_milliseconds: 1000,
                 nonpositive_cadence_count: 0,
+                equal_timestamp_pair_count: 0,
+                backward_timestamp_pair_count: 0,
+                positive_submillisecond_pair_count: 0,
                 kept_index_label_sha256: String::new(),
             })
             .collect();
