@@ -1716,6 +1716,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
+name = "staples-twist-orbit-view"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "sterile-neutrino-audit"
 crate = "gororoba_cli"
 description = "Seven-stream sterile-neutrino null-result audit (experiment E-079, claims C-703..C-709). Emits null_confirmed only when all seven sensor streams carry a verified null result."
