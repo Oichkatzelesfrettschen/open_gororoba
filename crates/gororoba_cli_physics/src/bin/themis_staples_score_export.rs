@@ -27,9 +27,9 @@
 use anyhow::{Context, Result};
 use chrono::{DateTime, Duration, DurationRound, Utc};
 use clap::Parser;
-use gororoba_cli_physics::staple_associator::{joint_associator_norms, staple_embedding};
-use gororoba_cli_physics::staple_controls::{
-    SparseCubicTensor, permute_channels, six_sample_baselines,
+use gororoba_cli_physics::{
+    staple_associator::{joint_associator_norms, staple_embedding},
+    staple_controls::{SparseCubicTensor, permute_channels, six_sample_baselines},
 };
 use rayon::prelude::*;
 use std::{fs, io::Write, path::PathBuf};
@@ -180,9 +180,9 @@ fn score_file(
         .collect();
     let bmag_aligned: Vec<f64> = bmag[4..4 + n].to_vec();
 
-    // Equal-receptive-field controls on the identical alignment: the
-    // six-sample window k spans rows k..k+5, exactly the associator's
-    // footprint, so every control column indexes 1:1 with assoc.
+    // Window k spans rows k..k+5 and indexes 1:1 with assoc. Rotation
+    // and Gram volume use that local window; PVI additionally uses the
+    // daily file's RMS increment to normalize its window numerator.
     let base = six_sample_baselines(&rows);
     let scram = scrambled.scores(&staples);
     let permuted_staples = staple_embedding(&permute_channels(&rows, [1, 2, 0]));

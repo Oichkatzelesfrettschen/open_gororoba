@@ -4974,7 +4974,7 @@ where_stated = "crates/gororoba_cli_physics/src/bin/sedenion_associator_coeffici
 id = "C-1631"
 last_verified = "2026-07-18"
 statement = "On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.8274 with file-cluster-bootstrap 95% CI [0.8205, 0.8348], and it strictly outperforms the matched six-sample PVI and Gram-determinant controls across bulk and both predeclared gradient strata: assoc-minus-PVI6 simultaneous margin +0.0436 [0.0365, 0.0506], assoc-minus-Gram6 simultaneous margin +0.0216 [0.0184, 0.0249] (2,000 intact-daily-file resamples, ChaCha8 seed 42, all tail proportions < 1/2001). The associator therefore exceeds equal-receptive-field increment-magnitude and volume statistics, not merely one-step baselines."
-status = "Verified"
+status = "Superseded"
 status_note = "Deterministic file-cluster bootstrap on the fixed benchmark (E-239). Controls consume exactly the six raw samples B_t..B_t+5 that the three overlapping staples consume. Related to C-1617/C-1618 through the shared observable; does not support their precursor mechanism."
 where_stated = "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json; data/output/staples_cluster_bootstrap_assoc_vs_gram6.json; E-239"
 
@@ -5777,7 +5777,7 @@ where_stated = "data/output/staples_layout_sweep.json; E-241"
 id = "C-1731"
 last_verified = "2026-09-02"
 statement = "At matched six-sample receptive field the staple associator carries nonzero but small information beyond the geometric baselines: on the deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files), a logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) reaches out-of-fold ROC-AUC 0.8428 under 5-fold file-grouped cross-validation, adding ln(assoc) raises it to 0.8448, and the paired bootstrap over 1000 file resamples (ChaCha8 seed 42) gives delta ROC-AUC +0.0020 [0.0017, 0.0023], delta PR-AUC +0.0005 [0.0001, 0.0008] and delta log loss -0.00012 [-0.00018, -0.00007], every interval excluding zero in the associator's favor. The unique contribution is 0.2 percent of AUC, an order of magnitude below the standalone margins C-1631 reports, so the associator's standalone discrimination is mostly redundant with six-sample angular and magnitude statistics and not entirely so."
-status = "Verified"
+status = "Superseded"
 where_stated = "data/output/staples_incremental_information.json; E-242"
 
 [[claim]]
@@ -5798,7 +5798,7 @@ where_stated = "data/output/staples_layout_sweep.json; E-241"
 id = "C-1734"
 last_verified = "2026-09-02"
 statement = "Under a fixed linear-in-log-features logistic model (ridge 1e-6, Newton-Raphson, standardization fitted inside each training fold) with a fixed 5-fold assignment grouped by daily file (one ChaCha8 seed-42 shuffle), adding ln(assoc) to the six matched six-sample baselines ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) raises out-of-fold ROC-AUC on the deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files) from 0.8428 to 0.8448, an incremental predictive discrimination of +0.20 AUC percentage points with paired file-bootstrap 95 percent interval [+0.17, +0.23] over 1000 resamples and zero adverse resamples; PR-AUC rises by +0.05 percentage points [+0.01, +0.08] and log loss falls by 0.00012 [0.00007, 0.00018]. Every interval excludes zero in the associator's favor, and the increment is about 0.24 percent of the baseline AUC, an order of magnitude below the standalone margins C-1631 reports. The statement is about incremental discrimination under this model class and fold assignment, not about information-theoretic uniqueness."
-status = "Verified"
+status = "Superseded"
 where_stated = "data/output/staples_incremental_information.json; E-242"
 
 [[claim]]
@@ -5818,6 +5818,20 @@ statement = "An 8-term integer dot product with operand magnitudes at most B has
 status = "Verified"
 status_note = "Kernel-checked formal proposition for THM-R300-IDCT8-DP4-EXACT-001. Scope is limited to the stated assumptions and does not establish a physical or implementation claim."
 where_stated = "proofs/verified/C1629_IDCT8DP4ExactBound.v; proofs/theories/IDCT8DP4ExactBound.v"
+
+[[claim]]
+id = "C-1738"
+last_verified = "2026-09-04"
+statement = "On the retained deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.827449 with file-cluster-bootstrap 95 percent interval [0.820525, 0.834788]. It exceeds the implemented PVI and Gram-volume controls across the bulk and both predeclared gradient strata: simultaneous assoc-minus-PVI margin 0.043572 [0.036509, 0.050594] and assoc-minus-Gram margin 0.021609 [0.018430, 0.024935], from 2,000 intact-file resamples at seed 42. The associator and Gram statistic consume six local samples. PVI takes the maximum increment from those six samples and divides by the RMS increment of the complete daily file, including later samples. The comparison establishes superiority over these offline implementations; the PVI comparison includes unequal calibration context."
+status = "Verified"
+where_stated = "data/output/audit/claims-pvi-calibration-boundary/findings.toml; data/output/audit/claims-pvi-calibration-boundary/assoc_vs_pvi6.json; data/output/audit/claims-pvi-calibration-boundary/assoc_vs_gram6.json; E-239"
+
+[[claim]]
+id = "C-1739"
+last_verified = "2026-09-04"
+statement = "On the retained deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files), adding ln(assoc) to a fixed logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), and ln(gram6) raises out-of-fold ROC-AUC from 0.8428282833 to 0.8448147157. The model uses ridge 1e-6, Newton-Raphson fitting, training-fold standardization, and one five-fold daily-file-grouped seed-42 assignment. The dbdt and rot features use two samples; cumrot6 and maxrot6 and gram6 use six; pvi6 uses a six-sample increment numerator with complete daily-file RMS calibration. A paired bootstrap of 1,000 file resamples of the frozen out-of-fold predictions gives a delta ROC-AUC interval [0.0016817229, 0.0023033193], with zero adverse ROC-AUC resamples. Delta PR-AUC has interval [0.0000948498, 0.0008139584], with five adverse resamples; delta log loss has interval [-0.0001824100, -0.0000688957]. The result measures incremental predictive discrimination for this offline feature set, model, and fold assignment; its uncertainty excludes variation from repeated model fitting."
+status = "Verified"
+where_stated = "data/output/staples_incremental_information.json; data/output/audit/claims-pvi-calibration-boundary/findings.toml; E-242"
 
 [[claim]]
 id = "C-174"

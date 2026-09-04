@@ -1,4 +1,4 @@
-//! Equal-receptive-field controls for the staple-associator detector.
+//! Temporal-window controls for the staple-associator detector.
 //!
 //! The staple associator at position k consumes rows k..k+5 (three
 //! overlapping 4-lag staples) and is, by the coefficient census
@@ -21,12 +21,14 @@
 //! |c| = 2 but redraws every sign from a seeded stream, destroying the
 //! CD sign coherence while preserving everything else.
 //!
-//! Classical six-sample baselines -- cumulative rotation, maximum
+//! Classical window baselines -- cumulative rotation, maximum
 //! rotation, maximum PVI (partial variance of increments, normalized
 //! per file by the RMS lag-1 increment), and the maximum Gram
 //! determinant volume |det(dB_i, dB_{i+1}, dB_{i+2})| over the three
 //! consecutive increment triples, which is cubic in the increments and
-//! is the natural "generic cubic geometry" statistic.
+//! is the natural "generic cubic geometry" statistic. PVI's full-file
+//! normalization extends its dependency beyond the six-sample window;
+//! score alignment alone therefore establishes only numerator support.
 //!
 //! Channel-axis probes permute (Bx, By, Bz) BEFORE embedding via
 //! `permute_channels`; Cayley-Dickson multiplication is not SO(3)
@@ -231,9 +233,10 @@ fn pair_angle(a: &[f64; 3], b: &[f64; 3]) -> f64 {
     cosv.acos()
 }
 
-/// Classical six-sample window statistics aligned with the associator:
-/// entry k consumes rows k..k+5, matching the associator's receptive
-/// field exactly. Output length is rows.len() - 5.
+/// Window statistics aligned with the associator. Entry k uses rows
+/// k..k+5 for rotation, Gram volume, and the PVI numerator. PVI also
+/// uses the RMS increment across all input rows as calibration context.
+/// Output length is rows.len().saturating_sub(5).
 pub struct SixSampleBaselines {
     pub cum_rotation: Vec<f64>,
     pub max_rotation: Vec<f64>,
@@ -243,8 +246,9 @@ pub struct SixSampleBaselines {
 
 /// Compute all four classical baselines in one pass. PVI normalizes
 /// each lag-1 increment by the file-level RMS increment (Greco &
-/// Matthaeus convention applied per daily file, matching the
-/// associator's per-file locality).
+/// Matthaeus convention applied per daily file). PVI therefore depends
+/// on samples outside its six-sample numerator window, including later
+/// samples; its score describes an offline daily-file measurement.
 pub fn six_sample_baselines(rows: &[[f64; 3]]) -> SixSampleBaselines {
     let n = rows.len();
     if n < 6 {
@@ -391,6 +395,40 @@ mod tests {
         assert_eq!(rows, same[..]);
         let swapped = permute_channels(&rows, [1, 0, 2]);
         assert!(rows.iter().zip(&swapped).any(|(a, b)| a != b));
+    }
+
+    #[test]
+    fn pvi_calibration_uses_increments_outside_the_scored_window() {
+        let original_rows: Vec<[f64; 3]> =
+            (1..=7).map(|value| [f64::from(value), 0.0, 0.0]).collect();
+        let mut changed_rows = original_rows.clone();
+        changed_rows[6] = [106.0, 0.0, 0.0];
+        assert_eq!(original_rows[..6], changed_rows[..6]);
+
+        let original = six_sample_baselines(&original_rows);
+        let changed = six_sample_baselines(&changed_rows);
+        assert_eq!(original.max_pvi[0], 1.0);
+        let expected_pvi = (6.0_f64 / 10005.0).sqrt();
+        assert!((changed.max_pvi[0] - expected_pvi).abs() < 1e-14);
+        assert!(changed.max_pvi[0] < original.max_pvi[0]);
+    }
+
+    #[test]
+    fn local_window_statistics_ignore_suffix_changes() {
+        let original_rows = synthetic_rows(12);
+        let mut changed_rows = original_rows.clone();
+        for row in &mut changed_rows[6..] {
+            *row = [106.0, -42.0, 17.0];
+        }
+        let original = six_sample_baselines(&original_rows);
+        let changed = six_sample_baselines(&changed_rows);
+        assert_eq!(original.cum_rotation[0], changed.cum_rotation[0]);
+        assert_eq!(original.max_rotation[0], changed.max_rotation[0]);
+        assert_eq!(original.max_gram_volume[0], changed.max_gram_volume[0]);
+        let original_associator = joint_associator_norms(&staple_embedding(&original_rows), true);
+        let changed_associator = joint_associator_norms(&staple_embedding(&changed_rows), true);
+        assert_eq!(original_associator[0], changed_associator[0]);
+        assert_ne!(original.max_pvi[0], changed.max_pvi[0]);
     }
 
     #[test]
