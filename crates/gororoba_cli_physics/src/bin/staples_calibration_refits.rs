@@ -1190,6 +1190,44 @@ fn admit_protocol(args: &Args, data: &PreparedDataset) -> Result<Value> {
     )
 }
 
+fn retain_admission_result(
+    directory: &Path,
+    sources: &Value,
+    data: &PreparedDataset,
+    result: Result<Value>,
+) -> Result<Value> {
+    match result {
+        Ok(configuration) => Ok(configuration),
+        Err(error) => {
+            let evidence = json!({
+                "status": "admission_rejected_before_inference",
+                "protocol_sha256": PROTOCOL_HASH,
+                "sources": sources,
+                "data": data.evidence,
+                "files": data.files,
+                "error": format!("{error:#}"),
+            });
+            let identity = digest(&serde_json::to_vec(&evidence)?);
+            let destination = directory.join(format!("failure-admission-{identity}.json"));
+            if destination.exists() {
+                let existing: Value = serde_json::from_reader(File::open(&destination)?)?;
+                ensure!(
+                    existing == evidence,
+                    "retained admission evidence checksum collision"
+                );
+            } else {
+                atomic_json(&destination, &evidence)?;
+            }
+            Err(error).with_context(|| {
+                format!(
+                    "admission diagnostics retained at {}",
+                    destination.display()
+                )
+            })
+        }
+    }
+}
+
 fn main() -> Result<()> {
     let args = Args::parse();
     ensure!(
@@ -1221,7 +1259,8 @@ fn main() -> Result<()> {
         &args.catalog,
         256,
     )?;
-    let configuration = admit_protocol(&args, &data)?;
+    let configuration =
+        retain_admission_result(&args.out_dir, &sources, &data, admit_protocol(&args, &data))?;
     let mut positive_gradients: Vec<f64> = data
         .dbdt
         .iter()
@@ -1538,6 +1577,48 @@ mod tests {
         let error = summarize(&directory, "identity").unwrap_err().to_string();
         assert!(error.contains("bootstrap-100.json"));
         fs::remove_file(directory.join("bootstrap-100.json")).unwrap();
+        fs::remove_dir(directory).unwrap();
+    }
+
+    #[test]
+    fn rejected_admission_retains_cadence_evidence_and_distinct_failures() {
+        let directory = std::env::temp_dir().join(format!(
+            "staples-admission-failure-test-{}",
+            std::process::id()
+        ));
+        fs::create_dir(&directory).unwrap();
+        let mut data = fixture();
+        data.files[1].nonpositive_cadence_count = 3;
+        data.evidence = json!({"exported_files":2,"rows_before_warmup":12});
+        let sources = json!({"scientific_source_sha256":"source-digest"});
+        for message in [
+            "chronological gate rejected",
+            "chronological gate rejected",
+            "different rejection",
+        ] {
+            let result =
+                retain_admission_result(&directory, &sources, &data, Err(anyhow::anyhow!(message)));
+            assert!(result.is_err());
+        }
+        let retained: Vec<PathBuf> = fs::read_dir(&directory)
+            .unwrap()
+            .map(|entry| entry.unwrap().path())
+            .collect();
+        assert_eq!(retained.len(), 2);
+        for path in retained {
+            let record: Value = serde_json::from_reader(File::open(&path).unwrap()).unwrap();
+            assert_eq!(record["status"], "admission_rejected_before_inference");
+            assert_eq!(record["files"][1]["nonpositive_cadence_count"], 3);
+            assert_eq!(record["data"], data.evidence);
+            assert_eq!(record["sources"], sources);
+            assert!(
+                path.file_name()
+                    .unwrap()
+                    .to_string_lossy()
+                    .starts_with("failure-admission-")
+            );
+            fs::remove_file(path).unwrap();
+        }
         fs::remove_dir(directory).unwrap();
     }
 
