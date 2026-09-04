@@ -10,6 +10,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [workspace]
 resolver = "3"
+exclude = ["vendor/proc-macro-error2"]
 members = [
     "crates/algebra_analysis",
     "crates/algebra_experimental",
@@ -574,3 +575,7 @@ opt-level = 3 # opt-level 3 for release parity
 lto = "thin"
 codegen-units = 1 # single codegen unit for deterministic output
 incremental = false # do not pollute cache with LTO artifacts
+
+[patch.crates-io]
+# Preserve the public macro API through a public extern-crate binding.
+proc-macro-error2 = { path = "vendor/proc-macro-error2" }

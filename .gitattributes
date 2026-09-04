@@ -13,3 +13,6 @@ registry/canonical/*.sqlite3 -filter -diff -merge -text
 *.sqlite    -text
 *.h5    -text
 *.cdf    -text
+# Preserve the vendored release archive's original text bytes and licenses.
+vendor/proc-macro-error2/** -text
+vendor/proc-macro-error2/LICENSE-APACHE whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
