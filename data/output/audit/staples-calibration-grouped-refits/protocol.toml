@@ -1,0 +1,83 @@
+schema_version = 1
+protocol = "staples-calibration-grouped-refits"
+source_commit = "6fbf4947c59cf699ad5462dbe966851ffcc6a354"
+predecessor_claims = ["C-1738", "C-1739"]
+status = "preregistered before production inference"
+purpose = "Hold the six-sample PVI numerator fixed while changing calibration context; separately measure sensitivity to grouped splits and conditional uncertainty from refitting and test-file sampling."
+
+[inputs]
+scores = "data/output/benchmark_scores.csv"
+scores_expected_sha256 = "9a62e24484d7ae7a3b371d1a772b0030486c0b7f5277f1393b05347cc8c52e6a"
+file_map = "data/output/benchmark_scores.files.csv"
+file_map_expected_sha256 = "38cd4a98088af0946db07f9779da867914cd2df247a38d1fe20007dff56cb108"
+catalog = "data/output/cat_themis_a.csv"
+catalog_expected_sha256 = "2b6bd8833089868693bf7873a5240677c379c0821a66eb326d2a9f0c6ccd2a01"
+matched_manifest = "data/output/tha_matched_files.csv"
+matched_manifest_sha256 = "5bd2ff07fb6233e5e25decf0af8a4678cf68e721c98115ac09f6504044bca09b"
+expected_legacy_files = 813
+expected_legacy_rows = 23664374
+expected_legacy_positives = 578320
+admission = "Reconstruct raw scoring rows in exported sidecar order and validate eight used numeric columns, binary labels, file IDs, and the finite-score mask against the retained CSV before inference. Reject any discrepancy beyond 1e-12 absolute plus 1e-10 relative tolerance. Hash every raw input and kept-index/label mapping."
+
+[population]
+raw_minimum_samples = 500
+label_pad_minutes = 2
+rolling_increment_count = 256
+common_mask = "Retain only scored indices k >= 256 after the legacy finite assoc/dbdt/rot mask, identically in every arm."
+signal_window = "Rows k through k+5; the numerator is the maximum of five lag-1 increment magnitudes."
+label_alignment = "Timestamp k+4 remains the label time; the complete feature becomes available at k+5. The original one-sample lookahead remains."
+time_boundary = "Windows count parsed finite rows. Cadence extrema and nonpositive intervals are reported; 256 increments is a sample-count window rather than a fixed elapsed duration."
+gradient_strata = "Compute the median original dbdt among positive rows of the common retained population once. Hold the threshold fixed across all arms, splits, and bootstrap draws; the strata are descriptive benchmark definitions."
+
+[[arm]]
+name = "daily_file"
+calibration = "The original RMS over all increments in each daily file, including later samples."
+
+[[arm]]
+name = "frozen_training"
+calibration = "One RMS for the entire training set: square root of pooled training-file increment-square sum divided by pooled increment count. Include each complete raw training file, including warmup increments; apply bootstrap multiplicities. Apply the same constant to every training and test numerator."
+oracle = "A positive constant divisor preserves within-fold standalone AUC. A constant shift of logged features cancels under training-fold standardization up to the declared additive epsilon and finite precision; retain the oracle measurements separately."
+
+[[arm]]
+name = "prewindow_rolling"
+calibration = "At score k, RMS over increment indices [k-256,k), ending at raw row k. The numerator occupies disjoint increment indices [k,k+5). Reject zero or nonfinite RMS."
+
+[model]
+baseline_features = ["ln_dbdt", "ln_rot", "ln_cumrot6", "ln_maxrot6", "ln_pvi_arm", "ln_gram6"]
+augmented_feature = "ln_assoc"
+log_epsilon = 1e-12
+feature_storage = "f32 after natural log; numerical fitting and standardization use f64"
+ridge = 1e-6
+optimizer = "Shared legacy Newton-Raphson IRLS; at most 25 iterations and relative deviance tolerance 1e-8."
+standardization = "Fit feature means and population standard deviations on training rows only, with training-file bootstrap multiplicities."
+failure_rule = "A nonconverged or nonfinite fit invalidates its replicate. Completion requires every planned fit and replicate; retain failures rather than silently retrying or dropping them."
+
+[split_sensitivity]
+fold_count = 5
+seeds = [42, 43, 44, 45, 46]
+assignment = "Sorted unique file IDs, seeded ChaCha8 Fisher-Yates shuffle, round-robin fold assignment; identical assignments across arms and models."
+estimator = "Pooled out-of-fold ROC-AUC, average precision, and log loss on the complete common population for each seed and arm."
+uncertainty_boundary = "Report observed ranges and signs across the five split assignments. The five values are correlated sensitivity measurements rather than independent population observations."
+
+[refit_bootstrap]
+replicates = 100
+seed_start = 10000
+partition = "Seed-42 CV fold 0 is held out; the other four folds train both models."
+sampling = "Independently draw whole training files with replacement within the fixed training partition and whole test files with replacement within the fixed test partition. Original file identities remain in their assigned partition. Pair the same multiplicities across every arm and B/B+A."
+refitting = "Recompute training RMS, training standardization, and both logistic fits in every replicate. Score unique test rows using their sampled file multiplicities."
+interval = "Empirical 2.5th and 97.5th percentiles with linear interpolation, conditional on the fixed partition; 100 draws provide limited tail precision and approximate intervals rather than demonstrated 95-percent coverage."
+tail_reporting = "Report raw adverse counts and denominator 100. Zero adverse draws establish a finite-ensemble observation; Monte Carlo resolution is 1/101, not an exact zero tail probability."
+
+[decisions]
+increment_primary = "Paired augmented-minus-baseline ROC-AUC. A positive lower percentile supports a positive increment under the declared conditional procedure; an interval crossing zero is inconclusive; a negative upper percentile supports reversal."
+calibration_primary = "Associator-minus-PVI ROC-AUC for bulk, low-gradient positives, and high-gradient positives; take the minimum of the three deltas within each replicate."
+global_increment = "Take the minimum incremental ROC-AUC over all three arms within each paired bootstrap draw, then summarize its percentile interval."
+global_calibration = "Take the minimum standalone associator-minus-PVI margin over all three arms and all three strata within each paired bootstrap draw, then summarize its percentile interval."
+separate_estimands = "The global increment and global standalone margin answer separate questions. Per-arm intervals are descriptive components of the global analyses."
+secondary = "Average precision and log loss describe tradeoffs; their intervals do not create additional primary significance claims."
+generalization = "Results concern the common warmup-filtered THEMIS-A corpus, one rolling width, five declared splits, and the fixed-partition refit procedure. Changes to calibration or split procedure do not retroactively falsify retained computations C-1738/C-1739."
+
+[execution]
+rayon_threads = 6
+resume = "Reuse a completed record only when protocol, source identity, input hashes, and exact configuration match. Aggregate only the exact planned seed/replicate/arm set."
+output = "Retain data admission, per-file provenance, every fold fit, all seed records, every bootstrap record, aggregate decisions, and replay commands."
