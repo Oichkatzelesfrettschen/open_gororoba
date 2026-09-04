@@ -1,0 +1,19 @@
+{
+  "design": "file_cluster_bootstrap",
+  "detector_a": "assoc",
+  "detector_b": "gram6",
+  "n_samples": 23664374,
+  "n_positives": 578320,
+  "n_files": 813,
+  "n_two_class_files": 813,
+  "stratum_split_dbdt": 1.192734e0,
+  "resamples": 2000,
+  "seed": 42,
+  "pooled_auc_a": {"point": 0.827449, "ci95": [0.820525, 0.834788], "p_le_zero": "< 0.000500"},
+  "pooled_auc_b": {"point": 0.784741, "ci95": [0.778262, 0.791530], "p_le_zero": "< 0.000500"},
+  "delta_bulk": {"point": 0.042708, "ci95": [0.039206, 0.046207], "p_le_zero": "< 0.000500"},
+  "delta_low_gradient_positive": {"point": 0.063807, "ci95": [0.059889, 0.067477], "p_le_zero": "< 0.000500"},
+  "delta_high_gradient_positive": {"point": 0.021609, "ci95": [0.018430, 0.024935], "p_le_zero": "< 0.000500"},
+  "simultaneous_margin_m": {"point": 0.021609, "ci95": [0.018430, 0.024935], "p_le_zero": "< 0.000500"},
+  "mean_daily_auc": {"a": 0.821914, "b": 0.789398, "delta": {"point": 0.032515, "ci95": [0.028621, 0.036339], "p_le_zero": "< 0.000500"}}
+}

@@ -1,0 +1,17 @@
+[transition]
+transition_key = "staples-logistic-ancestor-calibration-boundary"
+source_claim_id = "C-1731"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+evidence_artifact_ids = ["LOCAL-STAPLES-PVI-CALIBRATION-BOUNDARY", "LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901"]
+experiment_ids = ["E-242"]
+exercised_falsifier = "The PVI suffix-mutation test changes a score with its six-sample numerator window held fixed. The exporter also computes dbdt and rot from two samples. C-1731's matched-six-sample interpretation therefore fails the same dependency check as C-1734."
+proposed_claim_status = "Superseded"
+rationale = "The existing narrows relation connects C-1731 to C-1734, and the calibrated-feature successor C-1739 narrows C-1734. Mark the overbroad ancestor Superseded so the older positive status cannot endorse the falsified support interpretation. Preserve both relations and the original numerical statement as historical records."
+unresolved_assumptions = ["The retained predictive increment remains conditional on the original offline feature set, model class, and fold assignment."]
+actor = "codex"
+reason = "Propagate the demonstrated feature-boundary correction through the existing claim ancestry."
+transition_timestamp = "2026-09-04T22:00:02Z"
+expected_source_state_sha256 = "afc0ab92e528d512732ce64e1f239a088fcf3ed8f8ae8b374f140b5a84917ba1"
+expected_claim_id_max = 1739
+reserved_claim_ids = ["C-1737"]

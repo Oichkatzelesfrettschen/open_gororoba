@@ -1,0 +1,19 @@
+{
+  "design": "file_cluster_bootstrap",
+  "detector_a": "assoc",
+  "detector_b": "pvi6",
+  "n_samples": 23664374,
+  "n_positives": 578320,
+  "n_files": 813,
+  "n_two_class_files": 813,
+  "stratum_split_dbdt": 1.192734e0,
+  "resamples": 2000,
+  "seed": 42,
+  "pooled_auc_a": {"point": 0.827449, "ci95": [0.820525, 0.834788], "p_le_zero": "< 0.000500"},
+  "pooled_auc_b": {"point": 0.771349, "ci95": [0.762276, 0.780609], "p_le_zero": "< 0.000500"},
+  "delta_bulk": {"point": 0.056099, "ci95": [0.048388, 0.063829], "p_le_zero": "< 0.000500"},
+  "delta_low_gradient_positive": {"point": 0.068627, "ci95": [0.059142, 0.078260], "p_le_zero": "< 0.000500"},
+  "delta_high_gradient_positive": {"point": 0.043572, "ci95": [0.036509, 0.050594], "p_le_zero": "< 0.000500"},
+  "simultaneous_margin_m": {"point": 0.043572, "ci95": [0.036509, 0.050594], "p_le_zero": "< 0.000500"},
+  "mean_daily_auc": {"a": 0.821914, "b": 0.786457, "delta": {"point": 0.035456, "ci95": [0.031395, 0.039513], "p_le_zero": "< 0.000500"}}
+}

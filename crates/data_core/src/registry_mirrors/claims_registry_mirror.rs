@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total claims: 1543
+//! Total claims: 1553
 //!
 //! ## C-001
 //!
@@ -11570,7 +11570,7 @@
 //!
 //! ## C-1631
 //!
-//! - Status: `Verified`
+//! - Status: `Superseded`
 //! - Last verified: 2026-07-18
 //! - Statement: On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.8274 with file-cluster-bootstrap 95% CI [0.8205, 0.8348], and it strictly outperforms the matched six-sample PVI and Gram-determinant controls across bulk and both predeclared gradient strata: assoc-minus-PVI6 simultaneous margin +0.0436 [0.0365, 0.0506], assoc-minus-Gram6 simultaneous margin +0.0216 [0.0184, 0.0249] (2,000 intact-daily-file resamples, ChaCha8 seed 42, all tail proportions < 1/2001). The associator therefore exceeds equal-receptive-field increment-magnitude and volume statistics, not merely one-step baselines.
 //! - Where stated: data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json; data/output/staples_cluster_bootstrap_assoc_vs_gram6.json; E-239
@@ -12350,4 +12350,84 @@
 //! - Last verified: 2026-08-06
 //! - Statement: In the deduplicated THEMIS-A staples benchmark the file cluster is exactly the day cluster: data/output/tha_matched_files.csv has 815 rows and 815 distinct year and day-of-year pairs. This is the precondition the C-1629 population inference rests on and it is currently untested.
 //! - Where stated: data/output/tha_matched_files.csv
+//! - What would verify/refute it:
+//!
+//! ## C-1729
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-02
+//! - Statement: Among matched sparse cubic tensors the sedenion associator's sign arrangement is an extreme tail: on the deduplicated THEMIS-A Staples benchmark subsample (1,733,470 samples, 578,320 positives, every positive plus 5 percent of negatives per daily file, ChaCha8 seed 42) the canonical Cayley-Dickson tensor reaches ROC-AUC 0.8274 while 999 random unital XOR-graded twists on the same 16-element basis, each turned into its associator tensor and scored by the identical normalized contraction, reach mean 0.5148, 97.5th percentile 0.5922 and maximum 0.6287 (tail probability 0.001, zero draws at or above the canonical value), and 999 exact-support sign scrambles of the CD tensor reach mean 0.4951, 97.5th percentile 0.5672 and maximum 0.6213 (tail probability 0.001). The discrimination is specific to the Cayley-Dickson twist and is not a property of XOR-graded sign structure in general.
+//! - Where stated: data/output/staples_twist_ladder.json; E-240
+//! - What would verify/refute it:
+//!
+//! ## C-1730
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-02
+//! - Statement: The staple-associator detector's lag-to-basis and component-to-channel assignment is not a fitted parameter: over all 4! x 3! = 144 structured layouts of four time-ordered samples and three field components (magnitude fixed in the fourth channel slot), scored by the canonical Cayley-Dickson tensor on the deduplicated THEMIS-A Staples benchmark subsample (1,733,470 samples, 578,320 positives, ChaCha8 seed 42), the canonical layout's ROC-AUC 0.8274 ranks 117 of 144 (percentile 0.194), the layout AUCs span 0.8257 to 0.8307 with standard deviation 0.0015, the best layout exceeds the canonical by 0.0033, and 143 of 143 other layouts lie within the predeclared 0.005 equivalence margin. The declared free-parameter count of the detector is unchanged by the assignment, and the reported AUC is a lower bound reachable without tuning it.
+//! - Where stated: data/output/staples_layout_sweep.json; E-241
+//! - What would verify/refute it:
+//!
+//! ## C-1731
+//!
+//! - Status: `Superseded`
+//! - Last verified: 2026-09-02
+//! - Statement: At matched six-sample receptive field the staple associator carries nonzero but small information beyond the geometric baselines: on the deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files), a logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) reaches out-of-fold ROC-AUC 0.8428 under 5-fold file-grouped cross-validation, adding ln(assoc) raises it to 0.8448, and the paired bootstrap over 1000 file resamples (ChaCha8 seed 42) gives delta ROC-AUC +0.0020 [0.0017, 0.0023], delta PR-AUC +0.0005 [0.0001, 0.0008] and delta log loss -0.00012 [-0.00018, -0.00007], every interval excluding zero in the associator's favor. The unique contribution is 0.2 percent of AUC, an order of magnitude below the standalone margins C-1631 reports, so the associator's standalone discrimination is mostly redundant with six-sample angular and magnitude statistics and not entirely so.
+//! - Where stated: data/output/staples_incremental_information.json; E-242
+//! - What would verify/refute it:
+//!
+//! ## C-1732
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-02
+//! - Statement: On the E-240 subsample of the deduplicated THEMIS-A Staples benchmark (1,733,470 samples, 578,320 positives, 813 daily files, ChaCha8 seed 42) the canonical Cayley-Dickson associator tensor (1848 terms, 924 positive and 924 negative) reaches ROC-AUC 0.8274. Two control results, stated separately: (1) under the exact-support sign-scramble family, 999 scrambles of the CD tensor's signs at identical 1848-term support reach mean 0.4951, 97.5th percentile 0.5672 and maximum 0.6213, zero draws at or above the canonical value; (2) under the declared random-unital-twist sampling measure (uniform over sign functions on the 15 x 15 non-identity basis pairs with sigma(0,.) = sigma(.,0) = +1), 999 draws with 1564 to 1784 terms each reach mean 0.5148, 97.5th percentile 0.5922 and maximum 0.6287, zero draws at or above the canonical value. The CD tensor is therefore extreme under both the support-matched scramble family and the declared random-unital-twist measure; the twist family is not support-matched, and the result does not establish uniqueness across all XOR-graded twists.
+//! - Where stated: data/output/staples_twist_ladder.json; E-240
+//! - What would verify/refute it:
+//!
+//! ## C-1733
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-02
+//! - Statement: The staple-associator detector is performance-insensitive across the tested family of 4! x 3! = 144 structured layouts of four time-ordered samples and three field components with the magnitude fixed in the fourth channel slot: scored by the canonical Cayley-Dickson tensor on the E-241 subsample of the deduplicated THEMIS-A Staples benchmark (1,733,470 samples, 578,320 positives, ChaCha8 seed 42), the canonical layout's ROC-AUC 0.8274 ranks 117 of 144 (percentile 0.194), the layout AUCs span 0.8257 to 0.8307 with standard deviation 0.0015, the best layout exceeds the canonical by 0.0033, and 143 of 143 other layouts lie within the predeclared 0.005 equivalence margin. Tuning the lag-to-basis and component-to-channel assignment within this family could change the reported AUC by at most 0.0033; the sweep says nothing about how the canonical assignment was selected.
+//! - Where stated: data/output/staples_layout_sweep.json; E-241
+//! - What would verify/refute it:
+//!
+//! ## C-1734
+//!
+//! - Status: `Superseded`
+//! - Last verified: 2026-09-02
+//! - Statement: Under a fixed linear-in-log-features logistic model (ridge 1e-6, Newton-Raphson, standardization fitted inside each training fold) with a fixed 5-fold assignment grouped by daily file (one ChaCha8 seed-42 shuffle), adding ln(assoc) to the six matched six-sample baselines ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) raises out-of-fold ROC-AUC on the deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files) from 0.8428 to 0.8448, an incremental predictive discrimination of +0.20 AUC percentage points with paired file-bootstrap 95 percent interval [+0.17, +0.23] over 1000 resamples and zero adverse resamples; PR-AUC rises by +0.05 percentage points [+0.01, +0.08] and log loss falls by 0.00012 [0.00007, 0.00018]. Every interval excludes zero in the associator's favor, and the increment is about 0.24 percent of the baseline AUC, an order of magnitude below the standalone margins C-1631 reports. The statement is about incremental discrimination under this model class and fold assignment, not about information-theoretic uniqueness.
+//! - Where stated: data/output/staples_incremental_information.json; E-242
+//! - What would verify/refute it:
+//!
+//! ## C-1735
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-02
+//! - Statement: For every 8x8 real coefficient matrix and every 8-vector of inputs, the 32-multiply even-odd butterfly factorization of the 8-point inverse DCT (even half E0..E3, odd half O0..O3, x_k = E_k + O_k, x_{7-k} = E_k - O_k) produces the same eight outputs as the 64-multiply dense matrix-vector form; the Rocq theorem C1628_idct8_butterfly_eq_dense states the eight equalities and IDCT8EvenOdd proves them by ring normalization over the reals.
+//! - Where stated: proofs/verified/C1628_IDCT8ButterflyCompaction.v; proofs/theories/IDCT8EvenOdd.v
+//! - What would verify/refute it:
+//!
+//! ## C-1736
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-02
+//! - Statement: An 8-term integer dot product with operand magnitudes at most B has magnitude at most 8*B^2 (dp8_abs_bound); for 7-bit-magnitude operands (|.| <= 127) the accumulator stays strictly below the FP24 exact-integer window 2^17 since 8*127^2 = 129032 < 131072 (dp8_int7_within_2pow17); and the accumulator is exact up to B <= 128 because 8*128^2 = 2^17 is representable (dp8_exact_threshold), while the r300 admission gate keeps the strict B <= 127 fail-closed choice (fp24_admit_strict_spec).
+//! - Where stated: proofs/verified/C1629_IDCT8DP4ExactBound.v; proofs/theories/IDCT8DP4ExactBound.v
+//! - What would verify/refute it:
+//!
+//! ## C-1738
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-04
+//! - Statement: On the retained deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.827449 with file-cluster-bootstrap 95 percent interval [0.820525, 0.834788]. It exceeds the implemented PVI and Gram-volume controls across the bulk and both predeclared gradient strata: simultaneous assoc-minus-PVI margin 0.043572 [0.036509, 0.050594] and assoc-minus-Gram margin 0.021609 [0.018430, 0.024935], from 2,000 intact-file resamples at seed 42. The associator and Gram statistic consume six local samples. PVI takes the maximum increment from those six samples and divides by the RMS increment of the complete daily file, including later samples. The comparison establishes superiority over these offline implementations; the PVI comparison includes unequal calibration context.
+//! - Where stated: data/output/audit/claims-pvi-calibration-boundary/findings.toml; data/output/audit/claims-pvi-calibration-boundary/assoc_vs_pvi6.json; data/output/audit/claims-pvi-calibration-boundary/assoc_vs_gram6.json; E-239
+//! - What would verify/refute it:
+//!
+//! ## C-1739
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-04
+//! - Statement: On the retained deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files), adding ln(assoc) to a fixed logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), and ln(gram6) raises out-of-fold ROC-AUC from 0.8428282833 to 0.8448147157. The model uses ridge 1e-6, Newton-Raphson fitting, training-fold standardization, and one five-fold daily-file-grouped seed-42 assignment. The dbdt and rot features use two samples; cumrot6 and maxrot6 and gram6 use six; pvi6 uses a six-sample increment numerator with complete daily-file RMS calibration. A paired bootstrap of 1,000 file resamples of the frozen out-of-fold predictions gives a delta ROC-AUC interval [0.0016817229, 0.0023033193], with zero adverse ROC-AUC resamples. Delta PR-AUC has interval [0.0000948498, 0.0008139584], with five adverse resamples; delta log loss has interval [-0.0001824100, -0.0000688957]. The result measures incremental predictive discrimination for this offline feature set, model, and fold assignment; its uncertainty excludes variation from repeated model fitting.
+//! - Where stated: data/output/staples_incremental_information.json; data/output/audit/claims-pvi-calibration-boundary/findings.toml; E-242
 //! - What would verify/refute it:
