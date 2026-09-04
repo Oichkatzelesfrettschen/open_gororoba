@@ -1084,6 +1084,67 @@ impl ProvenanceStore {
         Ok(experiments.len())
     }
 
+    /// Insert or update the `[[experiment]]` rows in `raw` without deleting
+    /// any other canonical experiment.
+    pub fn upsert_experiments_from_registry_text(
+        &mut self,
+        repo_root: &Path,
+        source_path: &Path,
+        raw: &str,
+    ) -> Result<Vec<String>> {
+        let experiments = load_experiments_from_registry(raw)?;
+        if experiments.is_empty() {
+            bail!("experiment spec contains no [[experiment]] rows");
+        }
+        let tx = self.conn.transaction()?;
+        let mut ids = Vec::new();
+        for experiment in &experiments {
+            tx.execute(
+                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
+                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)
+                 ON CONFLICT(id) DO UPDATE SET
+                    title = excluded.title,
+                    status = excluded.status,
+                    binary_name = excluded.binary_name,
+                    claim_refs_json = excluded.claim_refs_json,
+                    status_note = excluded.status_note,
+                    compat_toml_text = excluded.compat_toml_text",
+                params![
+                    experiment.id,
+                    experiment.title,
+                    experiment.status,
+                    experiment.binary,
+                    serde_json::to_string(&experiment.claim_refs)?,
+                    experiment.status_note,
+                    experiment.compat_toml_text
+                ],
+            )?;
+            tx.execute(
+                "DELETE FROM claim_experiment_refs WHERE experiment_id = ?1",
+                params![experiment.id],
+            )?;
+            for claim_id in &experiment.claim_refs {
+                tx.execute(
+                    "INSERT INTO claim_experiment_refs (claim_id, experiment_id)
+                     VALUES (?1, ?2)
+                     ON CONFLICT(claim_id, experiment_id) DO NOTHING",
+                    params![claim_id, experiment.id],
+                )?;
+            }
+            ids.push(experiment.id.clone());
+        }
+        tx.commit()?;
+        self.record_control_plane_run(
+            "upsert_experiments_from_registry_text",
+            &serde_json::json!({
+                "source_path": to_repo_rel(repo_root, source_path),
+                "experiment_ids": ids,
+            })
+            .to_string(),
+        )?;
+        Ok(ids)
+    }
+
     pub fn control_plane_compat_text(&mut self, kind: ControlPlaneCompatKind) -> Result<String> {
         self.backfill_control_plane_compat_from_snapshots()?;
         let outputs = self.render_control_plane_compat_outputs()?;
@@ -2375,6 +2436,68 @@ impl ProvenanceStore {
             ],
         )?;
         Ok(())
+    }
+
+    /// Add lane membership atomically while retaining artifact metadata and evidence.
+    pub fn assign_artifact_lane(
+        &mut self,
+        ids: &[String],
+        lane_name: &str,
+        actor: Option<&str>,
+        reason: Option<&str>,
+    ) -> Result<usize> {
+        if !matches!(
+            lane_name,
+            "datasets" | "papers_pdf" | "slides_artifacts" | "web_references"
+        ) {
+            bail!("unsupported artifact lane {lane_name}");
+        }
+        if ids.is_empty() {
+            bail!("artifact lane assignment requires at least one ID");
+        }
+        for (field, value) in ids
+            .iter()
+            .map(|id| ("id", id.as_str()))
+            .chain(actor.map(|value| ("actor", value)))
+            .chain(reason.map(|value| ("reason", value)))
+        {
+            if value.trim().is_empty() || !value.is_ascii() {
+                bail!("artifact {field} must be a non-empty ASCII string");
+            }
+        }
+        let distinct_ids: BTreeSet<&str> = ids.iter().map(String::as_str).collect();
+        let tx = self.conn.transaction()?;
+        for id in &distinct_ids {
+            let exists: bool = tx.query_row(
+                "SELECT EXISTS(SELECT 1 FROM artifacts WHERE id = ?1)",
+                params![id],
+                |row| row.get(0),
+            )?;
+            if !exists {
+                bail!("unknown artifact ID {id}");
+            }
+        }
+        let mut added_ids = Vec::new();
+        for id in distinct_ids {
+            if tx.execute(
+                "INSERT INTO lane_assignments (artifact_id, lane_name) VALUES (?1, ?2)
+                 ON CONFLICT(artifact_id, lane_name) DO NOTHING",
+                params![id, lane_name],
+            )? != 0
+            {
+                added_ids.push(id);
+            }
+        }
+        if !added_ids.is_empty() {
+            let details = serde_json::json!({"artifact_ids":added_ids,"lane":lane_name,"actor":actor,"reason":reason});
+            tx.execute(
+                "INSERT INTO export_runs (action, created_at, artifact_count, document_count, details_json)
+                 VALUES ('assign-artifact-lane', ?1, ?2, 0, ?3)",
+                params![Utc::now().to_rfc3339(), added_ids.len() as i64, details.to_string()],
+            )?;
+        }
+        tx.commit()?;
+        Ok(added_ids.len())
     }
 
     pub fn register_local_artifact(
@@ -5346,6 +5469,155 @@ claim_refs = ["C-001"]
         assert!(rendered.contains("id = \"E-002\""));
         assert!(!rendered.contains("id = \"E-001\""));
         assert!(rendered.contains("experiment_count = 1"));
+        Ok(())
+    }
+
+    #[test]
+    fn upsert_experiments_from_registry_text_keeps_existing_rows() -> Result<()> {
+        let fixture = make_test_workspace("upsert_experiments")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
+        )?;
+        store.build_crossrefs()?;
+
+        let fragment = r#"
+[[experiment]]
+id = "E-002"
+title = "Added experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+"#;
+        let ids = store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            fragment,
+        )?;
+        assert_eq!(ids, vec!["E-002".to_string()]);
+
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        assert!(rendered.contains("id = \"E-001\""));
+        assert!(rendered.contains("id = \"E-002\""));
+        Ok(())
+    }
+
+    fn artifact_lane_fixture(label: &str) -> Result<(TestWorkspace, ProvenanceStore)> {
+        let fixture = make_test_workspace(label)?;
+        let store = ProvenanceStore::open(&fixture.db)?;
+        store.conn.execute_batch(
+            "INSERT INTO artifacts VALUES ('A-1', 'artifact-one', 'Title', 'Citation', 'partial', 0, 'https://example.org/source', 'data/source.pdf');
+             INSERT INTO artifacts VALUES ('A-2', 'artifact-two', 'Other title', 'Other citation', 'downloaded', 1, NULL, 'data/other.pdf');
+             INSERT INTO artifact_paths VALUES ('A-1', 'data/source.pdf', 'downloaded');
+             INSERT INTO record_sources VALUES ('artifact', 'A-1', 'source-record');
+             INSERT INTO lane_assignments VALUES ('A-1', 'web_references');
+             INSERT INTO export_runs VALUES (1, 'prior-run', '2026-01-01', 2, 0, '{}');
+             INSERT INTO download_jobs (id, requested_url, transfer_kind, requested_backend, route_scheme, route_backends_json, status, created_at)
+             VALUES (1, 'https://example.org/source', 'https', 'curl', 'https', '[]', 'complete', '2026-01-01');
+             INSERT INTO download_attempts (job_id, backend, bytes, is_pdf, note, recorded_at)
+             VALUES (1, 'curl', 123, 1, 'retained history', '2026-01-01');"
+        )?;
+        Ok((fixture, store))
+    }
+
+    fn lane_test_rows(
+        store: &ProvenanceStore,
+        table: &str,
+    ) -> Result<Vec<Vec<rusqlite::types::Value>>> {
+        let mut statement = store
+            .conn
+            .prepare(&format!("SELECT * FROM {table} ORDER BY 1"))?;
+        let count = statement.column_count();
+        let rows =
+            statement.query_map([], |row| (0..count).map(|column| row.get(column)).collect())?;
+        Ok(rows.collect::<rusqlite::Result<_>>()?)
+    }
+
+    #[test]
+    fn assign_artifact_lane_preserves_evidence_and_is_idempotent() -> Result<()> {
+        let (_fixture, mut store) = artifact_lane_fixture("artifact_lane_preservation")?;
+        let tables = [
+            "artifacts",
+            "artifact_paths",
+            "record_sources",
+            "download_jobs",
+            "download_attempts",
+        ];
+        let before = tables
+            .iter()
+            .map(|table| lane_test_rows(&store, table))
+            .collect::<Result<Vec<_>>>()?;
+        let history = lane_test_rows(&store, "export_runs")?;
+        let ids = vec!["A-1".to_string(), "A-2".to_string(), "A-1".to_string()];
+        assert_eq!(
+            store.assign_artifact_lane(
+                &ids,
+                "papers_pdf",
+                Some("test"),
+                Some("restore export membership")
+            )?,
+            2
+        );
+        let after = tables
+            .iter()
+            .map(|table| lane_test_rows(&store, table))
+            .collect::<Result<Vec<_>>>()?;
+        assert_eq!(before, after);
+        assert_eq!(lane_test_rows(&store, "lane_assignments")?.len(), 3);
+        let updated_history = lane_test_rows(&store, "export_runs")?;
+        assert_eq!(updated_history.len(), history.len() + 1);
+        assert_eq!(updated_history[0], history[0]);
+        assert_eq!(
+            store.assign_artifact_lane(&ids, "papers_pdf", Some("test"), None)?,
+            0
+        );
+        assert_eq!(lane_test_rows(&store, "export_runs")?, updated_history);
+        Ok(())
+    }
+
+    #[test]
+    fn assign_artifact_lane_rejects_invalid_batches_and_rolls_back_audit_failure() -> Result<()> {
+        let (_fixture, mut store) = artifact_lane_fixture("artifact_lane_rollback")?;
+        let before = lane_test_rows(&store, "lane_assignments")?;
+        let history = lane_test_rows(&store, "export_runs")?;
+        assert!(
+            store
+                .assign_artifact_lane(&[], "papers_pdf", None, None)
+                .is_err()
+        );
+        assert!(
+            store
+                .assign_artifact_lane(&["A-1".into()], "unknown_lane", None, None)
+                .is_err()
+        );
+        assert!(
+            store
+                .assign_artifact_lane(&["A-1".into(), "missing".into()], "papers_pdf", None, None)
+                .is_err()
+        );
+        assert!(
+            store
+                .assign_artifact_lane(&["A-1".into()], "papers_pdf", Some(" "), None)
+                .is_err()
+        );
+        assert_eq!(lane_test_rows(&store, "lane_assignments")?, before);
+        assert_eq!(lane_test_rows(&store, "export_runs")?, history);
+        store.conn.execute_batch("CREATE TEMP TRIGGER reject_lane_audit BEFORE INSERT ON export_runs WHEN NEW.action = 'assign-artifact-lane' BEGIN SELECT RAISE(ABORT, 'test audit failure'); END;")?;
+        assert!(
+            store
+                .assign_artifact_lane(&["A-1".into(), "A-2".into()], "papers_pdf", None, None)
+                .is_err()
+        );
+        assert_eq!(lane_test_rows(&store, "lane_assignments")?, before);
+        assert_eq!(lane_test_rows(&store, "export_runs")?, history);
         Ok(())
     }
 
