@@ -112,6 +112,64 @@ pub fn pg32_lines() -> [(usize, usize, usize); PG32_LINE_COUNT] {
     lines
 }
 
+/// The 15 Fano planes of PG(3, 2): kernels of the 15 nonzero linear forms
+/// on (Z_2)^4, each with 7 nonzero points.
+pub fn pg32_planes() -> [[usize; 7]; 15] {
+    let mut planes = [[0usize; 7]; 15];
+    for (slot, func) in (1u32..16).enumerate() {
+        let mut n = 0;
+        for x in 1..16u32 {
+            if (func & x).count_ones() % 2 == 0 {
+                planes[slot][n] = x as usize;
+                n += 1;
+            }
+        }
+        assert_eq!(n, 7);
+    }
+    planes
+}
+
+/// Associator support of `sigma` restricted to one Fano plane.
+/// Cayley-Dickson sedenions put this at 168 on exactly eight of the fifteen
+/// planes (those planes are octonion subalgebras).
+pub fn plane_associator_terms(sigma: &Twist, plane: &[usize; 7]) -> usize {
+    let mut terms = 0;
+    for &i in plane {
+        for &j in plane {
+            for &k in plane {
+                let c = i32::from(sigma[i][j]) * i32::from(sigma[i ^ j][k])
+                    - i32::from(sigma[j][k]) * i32::from(sigma[i][j ^ k]);
+                if c != 0 {
+                    terms += 1;
+                }
+            }
+        }
+    }
+    terms
+}
+
+/// How many of the 15 planes are octonion (168 associator terms) for `sigma`.
+pub fn octonion_plane_count(sigma: &Twist) -> usize {
+    pg32_planes()
+        .iter()
+        .filter(|plane| plane_associator_terms(sigma, plane) == 168)
+        .count()
+}
+
+/// Number of the 15 planes that contain the line and are octonion for `sigma`.
+pub fn line_octonion_incidence(sigma: &Twist, line: (usize, usize, usize)) -> usize {
+    let (a, b, c) = line;
+    pg32_planes()
+        .iter()
+        .filter(|plane| {
+            plane.contains(&a)
+                && plane.contains(&b)
+                && plane.contains(&c)
+                && plane_associator_terms(sigma, plane) == 168
+        })
+        .count()
+}
+
 /// Build a basis-alternative, anticommutative unital twist from orientation
 /// signs on the 35 lines of PG(3, 2).
 ///
@@ -740,39 +798,80 @@ mod tests {
     fn pg32_hyperplane_octonion_count_is_eight() {
         let table = CdMultTable::generate(STAPLE_DIM);
         let cd = cd_twist(&table);
-        let mut planes = Vec::new();
-        for func in 1..16u32 {
-            let mut pts = Vec::new();
-            for x in 1..16u32 {
-                if (func & x).count_ones() % 2 == 0 {
-                    pts.push(x as usize);
-                }
-            }
-            assert_eq!(pts.len(), 7);
-            planes.push(pts);
-        }
-        assert_eq!(planes.len(), 15);
+        assert_eq!(octonion_plane_count(&cd), 8);
+    }
 
-        let mut alt_planes = 0;
-        for p in &planes {
-            let mut terms = 0;
-            for &i in p {
-                for &j in p {
-                    for &k in p {
-                        let c = i32::from(cd[i][j]) * i32::from(cd[i ^ j][k])
-                            - i32::from(cd[j][k]) * i32::from(cd[i][j ^ k]);
-                        if c != 0 {
-                            terms += 1;
-                        }
-                    }
-                }
-            }
-            if terms == 168 {
-                alt_planes += 1;
+    #[test]
+    fn alternative_twist_term_counts_are_1080_plus_96k() {
+        let lines = pg32_lines();
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = cd_twist(&table);
+        let cd_n = SparseCubicTensor::from_twist(&cd).term_count();
+        assert_eq!(cd_n, 1848);
+        assert_eq!((cd_n - 1080) % 96, 0);
+        assert_eq!((cd_n - 1080) / 96, 8);
+
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        for _ in 0..128 {
+            let sigma = random_alternative_twist(&lines, &mut rng);
+            let n = SparseCubicTensor::from_twist(&sigma).term_count();
+            assert_eq!(n % 24, 0);
+            assert!((1080..=1656).contains(&n) || n == 1848);
+            assert_eq!((n - 1080) % 96, 0, "term count {n} is not 1080 + 96 k");
+        }
+    }
+
+    #[test]
+    fn hamming1_term_drop_tracks_octonion_incidence() {
+        let lines = pg32_lines();
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = cd_twist(&table);
+        let cd_signs = extract_line_orientations(&cd, &lines);
+        let mut drop_by_inc = [Vec::<usize>::new(), Vec::new(), Vec::new(), Vec::new()];
+        let mut inc3_points = std::collections::BTreeSet::new();
+        let mut inc3_lines = 0usize;
+        for (k, &line) in lines.iter().enumerate() {
+            let inc = line_octonion_incidence(&cd, line);
+            let mut signs = cd_signs;
+            signs[k] = -signs[k];
+            let n = SparseCubicTensor::from_twist(&twist_from_line_orientations(&lines, &signs))
+                .term_count();
+            let drop = 1848 - n;
+            drop_by_inc[inc].push(drop);
+            if inc == 3 {
+                inc3_lines += 1;
+                inc3_points.insert(line.0);
+                inc3_points.insert(line.1);
+                inc3_points.insert(line.2);
             }
         }
-        // In Cayley-Dickson sedenions, exactly 8 of the 15 hyperplanes are octonionic (168 terms)
-        assert_eq!(alt_planes, 8);
+        assert_eq!(inc3_lines, 7);
+        assert_eq!(inc3_points.len(), 15);
+        let inc3: Vec<(usize, usize, usize)> = lines
+            .iter()
+            .copied()
+            .filter(|line| line_octonion_incidence(&cd, *line) == 3)
+            .collect();
+        let mut common: Vec<usize> = vec![inc3[0].0, inc3[0].1, inc3[0].2];
+        for &(a, b, c) in &inc3 {
+            common.retain(|p| *p == a || *p == b || *p == c);
+        }
+        assert_eq!(common, vec![8], "288-drop lines are the pencil through e_8");
+        for (inc, drops) in drop_by_inc.iter().enumerate() {
+            if drops.is_empty() {
+                continue;
+            }
+            let lo = *drops.iter().min().unwrap();
+            let hi = *drops.iter().max().unwrap();
+            assert_eq!(
+                lo, hi,
+                "Hamming-1 drop is not constant on octonion-incidence {inc}: {drops:?}"
+            );
+        }
+        assert!(
+            !drop_by_inc[0].is_empty() || !drop_by_inc[1].is_empty(),
+            "expected some lines off the octonion planes"
+        );
     }
 
     #[test]

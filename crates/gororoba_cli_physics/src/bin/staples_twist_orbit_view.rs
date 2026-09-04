@@ -1,10 +1,10 @@
-//! Interactive E-279 viewer: three AUC families, term-count scatter, and the
-//! (Z_2)^4 hypercube with PG(3, 2) lines.
+//! E-279 viewer: PG(3, 2) as a tetrahedron, AUC on the 96-term ladder, and
+//! Hamming-1 line flips of the Cayley-Dickson orientation.
 //!
-//! Opens a minifb window by default. `--png` writes the 3160x2820 dark plate
-//! without a display. Arrow keys cycle the 35 projective lines; dragging the
-//! cube rotates the 4-space projection; F flips the selected line sign on the
-//! Cayley-Dickson orientation and shows the associator term drop.
+//! Associator support of every 35-line twist measured here is 1080 + 96 k.
+//! CD sits at k = 8 (1848 terms). Flipping a line that lies in three octonion
+//! planes drops 288 terms; the other 28 lines drop 96. Those seven expensive
+//! lines span all 15 imaginary units.
 //!
 //! ```bash
 //! cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit-view
@@ -16,8 +16,8 @@ use cd_kernel::mult_table::CdMultTable;
 use clap::Parser;
 use gororoba_cli_physics::staple_associator::STAPLE_DIM;
 use gororoba_cli_physics::staple_controls::{
-    PG32_LINE_COUNT, SparseCubicTensor, cd_twist, extract_line_orientations, pg32_lines,
-    twist_from_line_orientations,
+    PG32_LINE_COUNT, SparseCubicTensor, cd_twist, extract_line_orientations,
+    line_octonion_incidence, octonion_plane_count, pg32_lines, twist_from_line_orientations,
 };
 use minifb::{Key, MouseButton, MouseMode, Window, WindowOptions};
 use plotters::prelude::*;
@@ -26,25 +26,24 @@ use std::{fs, path::PathBuf};
 
 const PLATE_W: u32 = 3160;
 const PLATE_H: u32 = 2820;
-const VIEW_W: usize = 1600;
-const VIEW_H: usize = 1000;
-const BACKGROUND: RGBColor = RGBColor(11, 15, 21);
-const PANEL: RGBColor = RGBColor(21, 28, 37);
-const GRID: RGBColor = RGBColor(55, 65, 81);
-const TEXT: RGBColor = RGBColor(241, 245, 249);
-const MUTED: RGBColor = RGBColor(148, 163, 184);
-const CYAN: RGBColor = RGBColor(56, 189, 248);
-const AMBER: RGBColor = RGBColor(251, 191, 36);
+const VIEW_W: usize = 1680;
+const VIEW_H: usize = 1050;
+const BACKGROUND: RGBColor = RGBColor(8, 10, 16);
+const PANEL: RGBColor = RGBColor(16, 20, 28);
+const GRID: RGBColor = RGBColor(48, 58, 74);
+const TEXT: RGBColor = RGBColor(236, 241, 247);
+const MUTED: RGBColor = RGBColor(140, 154, 172);
+const CYAN: RGBColor = RGBColor(94, 210, 255);
+const AMBER: RGBColor = RGBColor(255, 186, 73);
 const EMERALD: RGBColor = RGBColor(52, 211, 153);
-const MAGENTA: RGBColor = RGBColor(244, 114, 182);
-const ROSE: RGBColor = RGBColor(251, 113, 133);
+const ROSE: RGBColor = RGBColor(255, 92, 122);
+const GOLD: RGBColor = RGBColor(250, 204, 21);
 
 #[derive(Parser, Debug)]
-#[command(about = "Interactive E-279 twist-orbit viewer and 3160x2820 plate")]
+#[command(about = "Interactive E-279 PG(3,2) / twist-orbit viewer")]
 struct Args {
     #[arg(long, default_value = "data/output/staples_twist_orbit.json")]
     input: PathBuf,
-    /// Write the grand-visualization plate and exit (no window).
     #[arg(long)]
     png: Option<PathBuf>,
     #[arg(long, default_value_t = VIEW_W)]
@@ -58,7 +57,6 @@ struct OrbitFile {
     canonical: Canonical,
     invariant_matched_twists: Ensemble,
     isomorphic_orbit: Ensemble,
-    cocycle_draws: Vec<Draw>,
     invariant_twist_draws: Vec<Draw>,
     isomorphic_orbit_draws: Vec<Draw>,
 }
@@ -94,7 +92,9 @@ struct Scene {
     cd_signs: [i8; PG32_LINE_COUNT],
     live_signs: [i8; PG32_LINE_COUNT],
     live_terms: usize,
-    hamming1_terms: [usize; PG32_LINE_COUNT],
+    octonion_planes: usize,
+    line_drop: [usize; PG32_LINE_COUNT],
+    line_inc: [usize; PG32_LINE_COUNT],
     selected_line: usize,
     yaw: f64,
     pitch: f64,
@@ -112,23 +112,6 @@ fn rgb_to_argb(buf: &[u8], pixels: &mut [u32]) {
     }
 }
 
-fn project_vertex(i: usize, yaw: f64, pitch: f64) -> (f64, f64) {
-    let mut x = if i & 1 == 0 { -1.0 } else { 1.0 };
-    let mut y = if i & 2 == 0 { -1.0 } else { 1.0 };
-    let z = if i & 4 == 0 { -1.0 } else { 1.0 };
-    let mut w = if i & 8 == 0 { -1.0 } else { 1.0 };
-    let (cy, sy) = (yaw.cos(), yaw.sin());
-    let nx = x * cy - w * sy;
-    w = x * sy + w * cy;
-    x = nx;
-    let (cp, sp) = (pitch.cos(), pitch.sin());
-    let ny = y * cp - w * sp;
-    w = y * sp + w * cp;
-    y = ny;
-    let depth = 3.2 + z * 0.35 + w * 0.2;
-    (x / depth, y / depth)
-}
-
 fn term_count_of(
     lines: &[(usize, usize, usize); PG32_LINE_COUNT],
     signs: &[i8; PG32_LINE_COUNT],
@@ -136,32 +119,79 @@ fn term_count_of(
     SparseCubicTensor::from_twist(&twist_from_line_orientations(lines, signs)).term_count()
 }
 
+fn k_level(terms: usize) -> i32 {
+    ((terms as i32) - 1080) / 96
+}
+
+/// Barycentric embedding of (Z_2)^4 \ {0} on a tetrahedron: bits 1,2,4,8 are
+/// the four vertices, Hamming-weight 2 the edge midpoints, weight 3 the face
+/// centroids, weight 4 the body centroid.
+fn tetra_vertex(i: usize, yaw: f64, pitch: f64) -> (f64, f64) {
+    let basis = [
+        rotate3(1.0, 1.0, 1.0, yaw, pitch),
+        rotate3(1.0, -1.0, -1.0, yaw, pitch),
+        rotate3(-1.0, 1.0, -1.0, yaw, pitch),
+        rotate3(-1.0, -1.0, 1.0, yaw, pitch),
+    ];
+    let mut acc = (0.0, 0.0, 0.0);
+    let mut w = 0.0;
+    for (bit, &(x, y, z)) in [1usize, 2, 4, 8].iter().zip(basis.iter()) {
+        if i & bit != 0 {
+            acc.0 += x;
+            acc.1 += y;
+            acc.2 += z;
+            w += 1.0;
+        }
+    }
+    if w == 0.0 {
+        return (0.0, 0.0);
+    }
+    let (x, y, z) = (acc.0 / w, acc.1 / w, acc.2 / w);
+    let depth = 3.4 + z * 0.45;
+    (x / depth, y / depth)
+}
+
+fn rotate3(x: f64, y: f64, z: f64, yaw: f64, pitch: f64) -> (f64, f64, f64) {
+    let (cy, sy) = (yaw.cos(), yaw.sin());
+    let x1 = x * cy - z * sy;
+    let z1 = x * sy + z * cy;
+    let (cp, sp) = (pitch.cos(), pitch.sin());
+    let y2 = y * cp - z1 * sp;
+    let z2 = y * sp + z1 * cp;
+    (x1, y2, z2)
+}
+
 fn build_scene(data: OrbitFile) -> Scene {
     let lines = pg32_lines();
     let table = CdMultTable::generate(STAPLE_DIM);
-    let cd_signs = extract_line_orientations(&cd_twist(&table), &lines);
-    let mut hamming1_terms = [0usize; PG32_LINE_COUNT];
-    for (k, slot) in hamming1_terms.iter_mut().enumerate() {
+    let cd = cd_twist(&table);
+    let cd_signs = extract_line_orientations(&cd, &lines);
+    let mut line_drop = [0usize; PG32_LINE_COUNT];
+    let mut line_inc = [0usize; PG32_LINE_COUNT];
+    for (k, &line) in lines.iter().enumerate() {
+        line_inc[k] = line_octonion_incidence(&cd, line);
         let mut signs = cd_signs;
         signs[k] = -signs[k];
-        *slot = term_count_of(&lines, &signs);
+        line_drop[k] = 1848 - term_count_of(&lines, &signs);
     }
     Scene {
         live_terms: term_count_of(&lines, &cd_signs),
         live_signs: cd_signs,
+        octonion_planes: octonion_plane_count(&cd),
         cd_signs,
         lines,
-        hamming1_terms,
+        line_drop,
+        line_inc,
         selected_line: 0,
-        yaw: 0.55,
-        pitch: 0.35,
+        yaw: 0.62,
+        pitch: 0.38,
         drag: None,
-        hover: "hover a point or bar".to_string(),
+        hover: "arrows cycle a line  |  F flips it  |  drag rotates the tetrahedron".to_string(),
         data,
     }
 }
 
-fn draw_panel_frame<DB: DrawingBackend>(
+fn draw_panel<DB: DrawingBackend>(
     area: &DrawingArea<DB, plotters::coord::Shift>,
     accent: RGBColor,
 ) -> Result<()>
@@ -171,195 +201,168 @@ where
     let (w, h) = area.dim_in_pixel();
     area.fill(&PANEL).map_err(plot_err)?;
     area.draw(&Rectangle::new(
-        [(1, 1), (w as i32 - 2, h as i32 - 2)],
-        ShapeStyle::from(&GRID.mix(0.35)).stroke_width(1),
+        [(0, 0), (w as i32 - 1, h as i32 - 1)],
+        ShapeStyle::from(&GRID.mix(0.4)).stroke_width(1),
     ))
     .map_err(plot_err)?;
     area.draw(&PathElement::new(
         vec![(0, 0), (w as i32 - 1, 0)],
-        ShapeStyle::from(&accent).stroke_width(3),
+        ShapeStyle::from(&accent).stroke_width(4),
     ))
     .map_err(plot_err)?;
     Ok(())
 }
 
-fn draw_beeswarm<DB: DrawingBackend>(
+fn draw_tetrahedron<DB: DrawingBackend>(
     area: &DrawingArea<DB, plotters::coord::Shift>,
     scene: &Scene,
 ) -> Result<()>
 where
     DB::ErrorType: 'static,
 {
-    draw_panel_frame(area, CYAN)?;
-    let canon = scene.data.canonical.subsample_auc;
-    let mut chart = ChartBuilder::on(area)
-        .margin(18)
-        .caption(
-            "ROC-AUC by family  |  red = canonical 0.8274  |  cocycles sit at 0.5000, off this scale",
-            ("sans-serif", 20).into_font().color(&TEXT),
-        )
-        .x_label_area_size(36)
-        .y_label_area_size(56)
-        .build_cartesian_2d(-0.6f64..2.6f64, 0.800f64..0.850f64)
-        .map_err(plot_err)?;
-    chart
-        .configure_mesh()
-        .disable_x_mesh()
-        .x_labels(3)
-        .x_label_formatter(&|x| {
-            if *x < 0.4 {
-                "cocycle".to_string()
-            } else if *x < 1.4 {
-                "35-line".to_string()
-            } else {
-                "isomorphic".to_string()
-            }
-        })
-        .y_desc("ROC-AUC")
-        .label_style(("sans-serif", 16).into_font().color(&MUTED))
-        .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
-        .light_line_style(ShapeStyle::from(&GRID.mix(0.25)))
-        .draw()
-        .map_err(plot_err)?;
-    let families: [(&str, &[Draw], RGBColor, f64); 3] = [
-        ("cocycle", &scene.data.cocycle_draws, MAGENTA, 0.0),
-        ("35-line", &scene.data.invariant_twist_draws, AMBER, 1.0),
-        (
-            "isomorphic",
-            &scene.data.isomorphic_orbit_draws,
-            EMERALD,
-            2.0,
-        ),
-    ];
-    for (_, draws, color, x0) in families {
-        chart
-            .draw_series(draws.iter().map(|d| {
-                let jitter = ((d.index % 17) as f64 - 8.0) * 0.012;
-                Circle::new((x0 + jitter, d.auc), 3, color.mix(0.85).filled())
-            }))
-            .map_err(plot_err)?;
-    }
-    chart
-        .draw_series(std::iter::once(PathElement::new(
-            vec![(-0.5, canon), (2.5, canon)],
-            ShapeStyle::from(&ROSE).stroke_width(2),
-        )))
-        .map_err(plot_err)?;
-    Ok(())
-}
-
-fn draw_scatter<DB: DrawingBackend>(
-    area: &DrawingArea<DB, plotters::coord::Shift>,
-    scene: &Scene,
-) -> Result<()>
-where
-    DB::ErrorType: 'static,
-{
-    draw_panel_frame(area, AMBER)?;
-    let canon = scene.data.canonical.subsample_auc;
-    let mut chart = ChartBuilder::on(area)
-        .margin(18)
-        .caption(
-            "Associator support vs AUC  |  CD (open red) is 1848 terms, below most 35-line draws",
-            ("sans-serif", 20).into_font().color(&TEXT),
-        )
-        .x_label_area_size(40)
-        .y_label_area_size(56)
-        .build_cartesian_2d(1000.0f64..1900.0f64, 0.800f64..0.850f64)
-        .map_err(plot_err)?;
-    chart
-        .configure_mesh()
-        .x_desc("nonzero associator terms")
-        .y_desc("ROC-AUC")
-        .label_style(("sans-serif", 16).into_font().color(&MUTED))
-        .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
-        .light_line_style(ShapeStyle::from(&GRID.mix(0.25)))
-        .draw()
-        .map_err(plot_err)?;
-    let series = [
-        (&scene.data.cocycle_draws, MAGENTA),
-        (&scene.data.invariant_twist_draws, AMBER),
-        (&scene.data.isomorphic_orbit_draws, EMERALD),
-    ];
-    for (draws, color) in series {
-        chart
-            .draw_series(
-                draws
-                    .iter()
-                    .map(|d| Circle::new((d.term_count as f64, d.auc), 3, color.mix(0.8).filled())),
-            )
-            .map_err(plot_err)?;
-    }
-    chart
-        .draw_series(std::iter::once(Circle::new(
-            (scene.data.canonical.term_count as f64, canon),
-            8,
-            ROSE.stroke_width(2),
-        )))
-        .map_err(plot_err)?;
-    Ok(())
-}
-
-fn draw_hypercube<DB: DrawingBackend>(
-    area: &DrawingArea<DB, plotters::coord::Shift>,
-    scene: &Scene,
-) -> Result<()>
-where
-    DB::ErrorType: 'static,
-{
-    draw_panel_frame(area, EMERALD)?;
+    draw_panel(area, CYAN)?;
     let (a, b, c) = scene.lines[scene.selected_line];
+    let drop = scene.line_drop[scene.selected_line];
+    let inc = scene.line_inc[scene.selected_line];
+    let pts: Vec<(f64, f64)> = (0..STAPLE_DIM)
+        .map(|i| tetra_vertex(i, scene.yaw, scene.pitch))
+        .collect();
+    let (mut xmin, mut xmax, mut ymin, mut ymax) = (f64::INFINITY, f64::NEG_INFINITY, f64::INFINITY, f64::NEG_INFINITY);
+    for &(x, y) in pts.iter().skip(1) {
+        xmin = xmin.min(x);
+        xmax = xmax.max(x);
+        ymin = ymin.min(y);
+        ymax = ymax.max(y);
+    }
+    let pad = 0.08 * (xmax - xmin).max(ymax - ymin).max(0.2);
     let mut chart = ChartBuilder::on(area)
-        .margin(18)
+        .margin(14)
         .caption(
             format!(
-                "(Z_2)^4 cube  |  line {} = {{{a},{b},{c}}}  |  live terms {}",
-                scene.selected_line, scene.live_terms
+                "PG(3,2)  |  rose = pencil through e8 (CD doubling unit), drop 288  |  line {sel}={{e_{a},e_{b},e_{c}}} inc={inc} drop {drop}  |  {octo}/15 octonion  |  live {live}",
+                sel = scene.selected_line,
+                octo = scene.octonion_planes,
+                live = scene.live_terms
             ),
-            ("sans-serif", 20).into_font().color(&TEXT),
+            ("sans-serif", 18).into_font().color(&TEXT),
         )
-        .build_cartesian_2d(-0.72f64..0.72f64, -0.72f64..0.72f64)
+        .build_cartesian_2d((xmin - pad)..(xmax + pad), (ymin - pad)..(ymax + pad))
         .map_err(plot_err)?;
-    chart
-        .configure_mesh()
-        .disable_mesh()
-        .draw()
-        .map_err(plot_err)?;
-    let pts: Vec<(f64, f64)> = (0..STAPLE_DIM)
-        .map(|i| project_vertex(i, scene.yaw, scene.pitch))
-        .collect();
-    for i in 0..STAPLE_DIM {
-        for bit in 0..4 {
-            let j = i ^ (1 << bit);
-            if j > i {
-                chart
-                    .draw_series(std::iter::once(PathElement::new(
-                        vec![pts[i], pts[j]],
-                        ShapeStyle::from(&GRID.mix(0.7)).stroke_width(1),
-                    )))
-                    .map_err(plot_err)?;
-            }
-        }
+    let tetra_edges = [
+        (1, 2, 3),
+        (1, 4, 5),
+        (2, 4, 6),
+        (1, 8, 9),
+        (2, 8, 10),
+        (4, 8, 12),
+    ];
+    for &(u, v, w) in &tetra_edges {
+        chart
+            .draw_series(std::iter::once(PathElement::new(
+                vec![pts[u], pts[v], pts[w], pts[u]],
+                ShapeStyle::from(&GRID.mix(0.9)).stroke_width(1),
+            )))
+            .map_err(plot_err)?;
     }
-    let tri = [pts[a], pts[b], pts[c], pts[a]];
+    for (k, &(u, v, w)) in scene.lines.iter().enumerate() {
+        let expensive = scene.line_drop[k] == 288;
+        let selected = k == scene.selected_line;
+        if !expensive && !selected {
+            continue;
+        }
+        let (color, width) = if selected { (CYAN, 4) } else { (ROSE, 2) };
+        chart
+            .draw_series(std::iter::once(PathElement::new(
+                vec![pts[u], pts[v], pts[w], pts[u]],
+                ShapeStyle::from(&color).stroke_width(width),
+            )))
+            .map_err(plot_err)?;
+    }
     chart
-        .draw_series(std::iter::once(PathElement::new(
-            tri,
-            ShapeStyle::from(&CYAN).stroke_width(3),
-        )))
-        .map_err(plot_err)?;
-    chart
-        .draw_series((0..STAPLE_DIM).map(|i| {
-            let on_line = i == a || i == b || i == c;
-            let color = if i == 0 {
-                ROSE
-            } else if on_line {
+        .draw_series((1..STAPLE_DIM).map(|i| {
+            let wt = i.count_ones();
+            let on_sel = i == a || i == b || i == c;
+            let r = match wt {
+                1 => 8,
+                2 => 6,
+                3 => 5,
+                _ => 7,
+            };
+            let color = if on_sel {
                 CYAN
+            } else if wt == 1 {
+                GOLD
+            } else if wt == 4 {
+                ROSE
             } else {
                 MUTED
             };
-            Circle::new(pts[i], if on_line { 7 } else { 4 }, color.filled())
+            Circle::new(pts[i], r, color.filled())
         }))
+        .map_err(plot_err)?;
+    chart
+        .draw_series(std::iter::once(Text::new(
+            "e8 doubling",
+            (pts[8].0 + 0.03, pts[8].1 + 0.04),
+            ("sans-serif", 16).into_font().color(&GOLD),
+        )))
+        .map_err(plot_err)?;
+    Ok(())
+}
+
+fn draw_ladder<DB: DrawingBackend>(
+    area: &DrawingArea<DB, plotters::coord::Shift>,
+    scene: &Scene,
+) -> Result<()>
+where
+    DB::ErrorType: 'static,
+{
+    draw_panel(area, AMBER)?;
+    let canon = scene.data.canonical.subsample_auc;
+    let mut chart = ChartBuilder::on(area)
+        .margin(16)
+        .caption(
+            "AUC on the 1080 + 96 k ladder  |  35-line family lives at k=0..6  |  CD is k=8, below the cloud",
+            ("sans-serif", 18).into_font().color(&TEXT),
+        )
+        .x_label_area_size(42)
+        .y_label_area_size(52)
+        .build_cartesian_2d(-0.6f64..8.8f64, 0.802f64..0.848f64)
+        .map_err(plot_err)?;
+    chart
+        .configure_mesh()
+        .x_desc("k  where terms = 1080 + 96 k")
+        .y_desc("ROC-AUC")
+        .label_style(("sans-serif", 15).into_font().color(&MUTED))
+        .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
+        .light_line_style(ShapeStyle::from(&GRID.mix(0.28)))
+        .draw()
+        .map_err(plot_err)?;
+    chart
+        .draw_series(std::iter::once(PathElement::new(
+            vec![(-0.5, canon), (8.6, canon)],
+            ShapeStyle::from(&ROSE).stroke_width(2),
+        )))
+        .map_err(plot_err)?;
+    chart
+        .draw_series(scene.data.invariant_twist_draws.iter().map(|d| {
+            let k = f64::from(k_level(d.term_count));
+            let j = ((d.index % 13) as f64 - 6.0) * 0.018;
+            Circle::new((k + j, d.auc), 3, AMBER.mix(0.88).filled())
+        }))
+        .map_err(plot_err)?;
+    chart
+        .draw_series(scene.data.isomorphic_orbit_draws.iter().map(|d| {
+            let j = ((d.index % 17) as f64 - 8.0) * 0.016;
+            Circle::new((8.0 + j, d.auc), 3, EMERALD.mix(0.75).filled())
+        }))
+        .map_err(plot_err)?;
+    chart
+        .draw_series(std::iter::once(Circle::new(
+            (8.0, canon),
+            9,
+            ROSE.stroke_width(3),
+        )))
         .map_err(plot_err)?;
     Ok(())
 }
@@ -371,53 +374,147 @@ fn draw_hamming<DB: DrawingBackend>(
 where
     DB::ErrorType: 'static,
 {
-    draw_panel_frame(area, ROSE)?;
-    let max_bar = scene
-        .hamming1_terms
-        .iter()
-        .copied()
-        .max()
-        .unwrap_or(1)
-        .max(1848) as f64;
+    draw_panel(area, ROSE)?;
     let mut chart = ChartBuilder::on(area)
-        .margin(18)
+        .margin(16)
         .caption(
-            "Hamming-1 line flips of the CD orientation  |  none keep 1848 terms",
-            ("sans-serif", 20).into_font().color(&TEXT),
+            "Hamming-1 CD line flips  |  28 lines drop 96  |  7 lines through 3 octonion planes drop 288 and span all 15 points",
+            ("sans-serif", 17).into_font().color(&TEXT),
         )
         .x_label_area_size(36)
-        .y_label_area_size(50)
-        .build_cartesian_2d(0.0f64..35.0f64, 900.0f64..(max_bar + 40.0))
+        .y_label_area_size(48)
+        .build_cartesian_2d(-0.5f64..35.5f64, 0.0f64..320.0f64)
         .map_err(plot_err)?;
     chart
         .configure_mesh()
-        .x_desc("flipped PG(3,2) line")
-        .y_desc("associator terms")
-        .label_style(("sans-serif", 16).into_font().color(&MUTED))
+        .x_desc("PG(3,2) line index")
+        .y_desc("term drop from 1848")
+        .label_style(("sans-serif", 15).into_font().color(&MUTED))
         .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
-        .light_line_style(ShapeStyle::from(&GRID.mix(0.25)))
+        .light_line_style(ShapeStyle::from(&GRID.mix(0.28)))
         .draw()
         .map_err(plot_err)?;
     chart
-        .draw_series(scene.hamming1_terms.iter().enumerate().map(|(k, &n)| {
-            let color = if k == scene.selected_line {
-                CYAN
-            } else {
-                AMBER
-            };
+        .draw_series(scene.line_drop.iter().enumerate().map(|(k, &drop)| {
+            let selected = k == scene.selected_line;
+            let color = if drop == 288 { ROSE } else { AMBER };
             Rectangle::new(
-                [(k as f64 + 0.12, 900.0), (k as f64 + 0.88, n as f64)],
-                color.mix(0.9).filled(),
+                [(k as f64 + 0.12, 0.0), (k as f64 + 0.88, drop as f64)],
+                color.mix(if selected { 1.0 } else { 0.82 }).filled(),
             )
         }))
         .map_err(plot_err)?;
+    Ok(())
+}
+
+fn draw_densities<DB: DrawingBackend>(
+    area: &DrawingArea<DB, plotters::coord::Shift>,
+    scene: &Scene,
+) -> Result<()>
+where
+    DB::ErrorType: 'static,
+{
+    draw_panel(area, EMERALD)?;
+    let canon = scene.data.canonical.subsample_auc;
+    let alt = &scene.data.invariant_matched_twists;
+    let iso = &scene.data.isomorphic_orbit;
+    let mut chart = ChartBuilder::on(area)
+        .margin(16)
+        .caption(
+            format!(
+                "Family densities on 0.80-0.85  |  35-line p2.5={:.4} p97.5={:.4}  |  isomorphic p2.5={:.4} p97.5={:.4}  |  CD={:.4}",
+                alt.p2_5, alt.p97_5, iso.p2_5, iso.p97_5, canon
+            ),
+            ("sans-serif", 16).into_font().color(&TEXT),
+        )
+        .x_label_area_size(40)
+        .y_label_area_size(44)
+        .build_cartesian_2d(0.800f64..0.848f64, 0.0f64..0.42f64)
+        .map_err(plot_err)?;
+    chart
+        .configure_mesh()
+        .x_desc("ROC-AUC")
+        .y_desc("bin mass")
+        .label_style(("sans-serif", 15).into_font().color(&MUTED))
+        .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
+        .light_line_style(ShapeStyle::from(&GRID.mix(0.28)))
+        .draw()
+        .map_err(plot_err)?;
+    let bins = histogram(
+        &scene
+            .data
+            .invariant_twist_draws
+            .iter()
+            .map(|d| d.auc)
+            .collect::<Vec<_>>(),
+        0.800,
+        0.848,
+        24,
+    );
+    let iso_bins = histogram(
+        &scene
+            .data
+            .isomorphic_orbit_draws
+            .iter()
+            .map(|d| d.auc)
+            .collect::<Vec<_>>(),
+        0.800,
+        0.848,
+        24,
+    );
+    chart
+        .draw_series(
+            bins.iter()
+                .map(|&(x0, x1, h)| Rectangle::new([(x0, 0.0), (x1, h)], AMBER.mix(0.45).filled())),
+        )
+        .map_err(plot_err)?;
+    chart
+        .draw_series(
+            iso_bins.iter().map(|&(x0, x1, h)| {
+                Rectangle::new([(x0, 0.0), (x1, h)], EMERALD.mix(0.40).filled())
+            }),
+        )
+        .map_err(plot_err)?;
     chart
         .draw_series(std::iter::once(PathElement::new(
-            vec![(0.0, 1848.0), (35.0, 1848.0)],
-            ShapeStyle::from(&ROSE).stroke_width(2),
+            vec![(canon, 0.0), (canon, 0.40)],
+            ShapeStyle::from(&ROSE).stroke_width(3),
+        )))
+        .map_err(plot_err)?;
+    chart
+        .draw_series(std::iter::once(PathElement::new(
+            vec![(alt.p2_5, 0.015), (alt.p97_5, 0.015)],
+            ShapeStyle::from(&AMBER).stroke_width(4),
+        )))
+        .map_err(plot_err)?;
+    chart
+        .draw_series(std::iter::once(PathElement::new(
+            vec![(iso.p2_5, 0.028), (iso.p97_5, 0.028)],
+            ShapeStyle::from(&EMERALD).stroke_width(4),
         )))
         .map_err(plot_err)?;
     Ok(())
+}
+
+fn histogram(values: &[f64], lo: f64, hi: f64, n: usize) -> Vec<(f64, f64, f64)> {
+    let mut counts = vec![0.0; n];
+    let width = (hi - lo) / n as f64;
+    for &v in values {
+        if v < lo || v >= hi {
+            continue;
+        }
+        let idx = ((v - lo) / width).floor() as usize;
+        counts[idx.min(n - 1)] += 1.0;
+    }
+    let total = values.len().max(1) as f64;
+    counts
+        .iter()
+        .enumerate()
+        .map(|(i, c)| {
+            let x0 = lo + i as f64 * width;
+            (x0, x0 + width, c / total)
+        })
+        .collect()
 }
 
 fn render_layout<DB: DrawingBackend>(
@@ -429,25 +526,20 @@ where
     DB::ErrorType: 'static,
 {
     root.fill(&BACKGROUND).map_err(plot_err)?;
-    let (w, h) = root.dim_in_pixel();
-    root.draw_text(
-        "E-279  |  Cayley-Dickson associator vs matched twist families",
-        &("sans-serif", 32).into_font().color(&TEXT),
-        (28, 18),
-    )
-    .map_err(plot_err)?;
     let alt = &scene.data.invariant_matched_twists;
     let iso = &scene.data.isomorphic_orbit;
+    root.draw_text(
+        "E-279  The Cayley-Dickson associator is a low-k-8 point, not an extreme tail",
+        &("sans-serif", 30).into_font().color(&TEXT),
+        (28, 16),
+    )
+    .map_err(plot_err)?;
     let summary = format!(
-        "canonical AUC {:.4} (1848 terms)  |  35-line n={} mean {:.4} p2.5 {:.4} p97.5 {:.4} max {:.4} ({}/{} >= CD) terms {}..{}  |  isomorphic n={} mean {:.4} p2.5 {:.4} p97.5 {:.4} max {:.4} ({}/{} >= CD)  |  {}",
+        "canonical AUC {:.4} at {} terms (k=8)  |  35-line n={} mean {:.4} sits in k=0..6 (terms {}..{})  |  isomorphic n={} mean {:.4} p2.5 {:.4} p97.5 {:.4} max {:.4}  |  {}/{} 35-line draws >= CD  |  {}/{} isomorphic >= CD  |  {}",
         scene.data.canonical.subsample_auc,
+        scene.data.canonical.term_count,
         alt.n,
         alt.mean,
-        alt.p2_5,
-        alt.p97_5,
-        alt.max,
-        alt.draws_at_or_above_canonical,
-        alt.n,
         alt.term_count_min,
         alt.term_count_max,
         iso.n,
@@ -455,24 +547,26 @@ where
         iso.p2_5,
         iso.p97_5,
         iso.max,
+        alt.draws_at_or_above_canonical,
+        alt.n,
         iso.draws_at_or_above_canonical,
         iso.n,
         footer
     );
     root.draw_text(
         &summary,
-        &("sans-serif", 18).into_font().color(&MUTED),
-        (28, 58),
+        &("sans-serif", 16).into_font().color(&MUTED),
+        (28, 54),
     )
     .map_err(plot_err)?;
-    let body = root.margin(16, 96, 16, 28);
-    let chunks = body.split_evenly((2, 2));
-    draw_beeswarm(&chunks[0], scene)?;
-    draw_scatter(&chunks[1], scene)?;
-    draw_hypercube(&chunks[2], scene)?;
-    draw_hamming(&chunks[3], scene)?;
-    let _ = w;
-    let _ = h;
+    let body = root.margin(14, 88, 14, 22);
+    let rows = body.split_evenly((2, 1));
+    let top = rows[0].split_evenly((1, 2));
+    let bot = rows[1].split_evenly((1, 2));
+    draw_tetrahedron(&top[0], scene)?;
+    draw_ladder(&top[1], scene)?;
+    draw_hamming(&bot[0], scene)?;
+    draw_densities(&bot[1], scene)?;
     Ok(())
 }
 
@@ -484,7 +578,7 @@ fn write_png(path: &std::path::Path, scene: &Scene) -> Result<()> {
     render_layout(
         &root,
         scene,
-        "C-1737  |  arrows cycle line, F flips sign, drag rotates cube",
+        "C-1737  |  gold vertices = weight 1  |  rose lines drop 288",
     )?;
     root.present().map_err(plot_err)?;
     eprintln!("wrote {}", path.display());
@@ -496,44 +590,16 @@ fn render_to_argb(scene: &Scene, width: usize, height: usize, pixels: &mut [u32]
     {
         let root =
             BitMapBackend::with_buffer(&mut rgb, (width as u32, height as u32)).into_drawing_area();
-        render_layout(
-            &root,
-            scene,
-            &format!(
-                "{}  |  arrows=line  F=flip selected  R=reset CD  Esc=quit",
-                scene.hover
-            ),
-        )?;
+        render_layout(&root, scene, &scene.hover)?;
         root.present().map_err(plot_err)?;
     }
     rgb_to_argb(&rgb, pixels);
     Ok(())
 }
 
-fn hover_from_mouse(scene: &Scene, width: usize, height: usize, mx: f32, my: f32) -> String {
-    let x = mx / width as f32;
-    let y = my / height as f32;
-    if (0.50..1.00).contains(&x) && (0.52..1.00).contains(&y) {
-        let k = ((x - 0.50) / 0.50 * 35.0).floor() as isize;
-        if (0..35).contains(&k) {
-            let k = k as usize;
-            return format!(
-                "flip line {k} -> {} terms (CD 1848)",
-                scene.hamming1_terms[k]
-            );
-        }
-    }
-    if (0.50..1.00).contains(&x) && y < 0.50 {
-        let t = 1000.0 + (x - 0.50) / 0.50 * 900.0;
-        let auc = 0.850 - (y / 0.50) * 0.050;
-        return format!("scatter ~{t:.0} terms, AUC ~{auc:.4}");
-    }
-    scene.hover.clone()
-}
-
 fn run_window(mut scene: Scene, width: usize, height: usize) -> Result<()> {
     let mut window = Window::new(
-        "E-279 twist orbit  |  arrows cycle PG(3,2) line  |  F flip  |  drag cube  |  Esc quit",
+        "E-279  PG(3,2) tetrahedron  |  arrows cycle line  |  F flip  |  drag rotate  |  Esc quit",
         width,
         height,
         WindowOptions {
@@ -558,21 +624,19 @@ fn run_window(mut scene: Scene, width: usize, height: usize) -> Result<()> {
             let k = scene.selected_line;
             scene.live_signs[k] = -scene.live_signs[k];
             scene.live_terms = term_count_of(&scene.lines, &scene.live_signs);
-            scene.hover = format!("flipped line {k}: live terms {}", scene.live_terms);
+            scene.hover = format!(
+                "flipped line {k} (inc {}, drop {}): live terms {}",
+                scene.line_inc[k], scene.line_drop[k], scene.live_terms
+            );
             dirty = true;
         }
         if window.is_key_pressed(Key::R, minifb::KeyRepeat::No) {
             scene.live_signs = scene.cd_signs;
             scene.live_terms = term_count_of(&scene.lines, &scene.live_signs);
-            scene.hover = "reset to Cayley-Dickson orientation (1848 terms)".to_string();
+            scene.hover = "reset to Cayley-Dickson orientation (1848 terms, k=8)".to_string();
             dirty = true;
         }
         if let Some((mx, my)) = window.get_mouse_pos(MouseMode::Clamp) {
-            let next = hover_from_mouse(&scene, width, height, mx, my);
-            if next != scene.hover {
-                scene.hover = next;
-                dirty = true;
-            }
             let down = window.get_mouse_down(MouseButton::Left);
             if down {
                 if let Some((px, py)) = scene.drag {
