@@ -1,9 +1,9 @@
 //! Physical decomposition of the six-sample staple window.
 //!
-//! The CD associator on THEMIS-A is a cubic mismatch on six FGM samples.
-//! This module splits that window into magnetosphere-facing channels so a
-//! ranking can be attributed to rotation, |B| jump, lag-mixing, or a single
-//! fiber slot rather than to "sedenion structure" as a whole.
+//! The CD associator on THEMIS-A is a cubic mismatch on six FGM samples
+//! of B in R^3. This module splits that window into 3D B-space channels
+//! (hodogram path length, gram volume) and derived frames (MVA LM). The
+//! measurement is not a light cone and the LM plane is not the data.
 //!
 //! Packing: staple index = 4 * lag + channel, channel 0=Bx, 1=By, 2=Bz, 3=|B|.
 //! Indices 0..3 are lag 0 and also the quaternion subalgebra. Indices 0..7
@@ -230,6 +230,33 @@ pub fn average_ranks(scores: &[f64]) -> Vec<f64> {
     ranks
 }
 
+/// Hodogram arc length in B-space: sum of |ΔB| over the six samples.
+/// This is a 3D path length, not a plane angle and not a cone.
+pub fn b_path_length(rows: &[[f64; 3]], k: usize) -> f64 {
+    if k + 5 >= rows.len() {
+        return 0.0;
+    }
+    let mut len = 0.0_f64;
+    for t in k..k + 5 {
+        let d0 = rows[t + 1][0] - rows[t][0];
+        let d1 = rows[t + 1][1] - rows[t][1];
+        let d2 = rows[t + 1][2] - rows[t][2];
+        len += (d0 * d0 + d1 * d1 + d2 * d2).sqrt();
+    }
+    len
+}
+
+/// Helical B: planar rotation plus a z ramp, so three consecutive dB
+/// span a parallelepiped of nonzero volume.
+pub fn helical_field(n: usize, omega: f64, mag: f64, z_step: f64) -> Vec<[f64; 3]> {
+    (0..n)
+        .map(|i| {
+            let t = i as f64 * omega;
+            [mag * t.cos(), mag * t.sin(), i as f64 * z_step]
+        })
+        .collect()
+}
+
 /// max |B| - min |B| on the six samples that feed associator index k.
 pub fn mag_jump(rows: &[[f64; 3]], k: usize) -> f64 {
     if k + 5 >= rows.len() {
@@ -394,5 +421,18 @@ mod tests {
                 assert_eq!(slot, 0.0);
             }
         }
+    }
+
+    #[test]
+    fn planar_rotation_has_zero_gram_volume_helix_does_not() {
+        let planar = rotating_field(12, 0.4, 5.0);
+        let helix = helical_field(12, 0.4, 5.0, 0.8);
+        let p = six_sample_baselines(&planar);
+        let h = six_sample_baselines(&helix);
+        let pmax = p.max_gram_volume.iter().copied().fold(0.0, f64::max);
+        let hmax = h.max_gram_volume.iter().copied().fold(0.0, f64::max);
+        assert!(pmax < 1e-6, "planar hodogram gram volume {pmax}");
+        assert!(hmax > 1e-3, "helix gram volume {hmax}");
+        assert!(b_path_length(&helix, 0) > b_path_length(&planar, 0));
     }
 }

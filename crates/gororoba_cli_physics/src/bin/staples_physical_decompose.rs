@@ -16,7 +16,7 @@ use gororoba_cli_physics::staple_associator::{STAPLE_DIM, staple_embedding};
 use gororoba_cli_physics::staple_benchmark::{load_labeled_files, rank_auc, stratified_keep};
 use gororoba_cli_physics::staple_controls::{SparseCubicTensor, six_sample_baselines};
 use gororoba_cli_physics::staple_physical::{
-    average_ranks, keep_two_lags, mag_jump, masked_normalized_score, mva_six_sample,
+    average_ranks, b_path_length, keep_two_lags, mag_jump, masked_normalized_score, mva_six_sample,
     octonion_two_lag_only, quaternion_lag0_only, zero_doubling_slot, zero_magnitude_channels,
 };
 use serde::Serialize;
@@ -86,6 +86,8 @@ fn main() -> Result<()> {
     let mut lag23_scores = Vec::new();
     let mut lm_rot_scores = Vec::new();
     let mut delta_bl_scores = Vec::new();
+    let mut gram_scores = Vec::new();
+    let mut path_scores = Vec::new();
 
     for f in &files {
         let staples = staple_embedding(&f.rows);
@@ -141,6 +143,8 @@ fn main() -> Result<()> {
             let mva = mva_six_sample(&f.rows, k).expect("six-sample window");
             lm_rot_scores.push(mva.lm_rotation);
             delta_bl_scores.push(mva.delta_bl);
+            gram_scores.push(base.max_gram_volume[k]);
+            path_scores.push(b_path_length(&f.rows, k));
         }
     }
 
@@ -201,6 +205,16 @@ fn main() -> Result<()> {
             what_it_measures: "max minus min B along the MVA maximum-variance axis",
         },
         ChannelAuc {
+            name: "b_path_length",
+            auc: auc_of(&path_scores, &labels),
+            what_it_measures: "hodogram arc length in R^3: sum |dB| over the six samples",
+        },
+        ChannelAuc {
+            name: "gram_volume",
+            auc: auc_of(&gram_scores, &labels),
+            what_it_measures: "max |det(dB_i, dB_{i+1}, dB_{i+2})|: 3D parallelepiped volume, zero for planar B",
+        },
+        ChannelAuc {
             name: "rank_rotation_plus_mag_jump",
             auc: auc_of(
                 &average_ranks(&rot_scores)
@@ -222,18 +236,16 @@ fn main() -> Result<()> {
             .unwrap_or(f64::NAN)
     };
     let reading = format!(
-        "lag-0 quaternion {q:.4} is chance (lag-mixing). adjacent lag pairs 0-1 {oct:.4}, 1-2 {l12:.4}, 2-3 {l23:.4} vs full CD {cd:.4}. e8-zeroed {e8:.4}; |B|-zeroed {mag0:.4}. MVA LM-rotation {lm:.4}, MVA Delta B_L {bl:.4}. max_rotation {rot:.4} and rotation+|B| ranks {comb:.4} vs CD. mag_jump {magj:.4}.",
+        "lag-0 quaternion {q:.4} is chance (lag-mixing). adjacent lag pairs 0-1 {oct:.4}, 1-2 {l12:.4}, 2-3 {l23:.4} vs full CD {cd:.4}. MVA LM-rotation {lm:.4} is a plane reduction. 3D hodogram path {path:.4}, 3D gram volume {gram:.4}. max_rotation {rot:.4} still leads. mag_jump {magj:.4}.",
         q = named("cd_quaternion_lag0"),
         oct = named("cd_octonion_two_lag"),
         l12 = named("cd_lags_1_2"),
         l23 = named("cd_lags_2_3"),
         cd = named("cd_associator"),
-        e8 = named("cd_e8_zeroed"),
-        mag0 = named("cd_magnitude_zeroed"),
         lm = named("mva_lm_rotation"),
-        bl = named("mva_delta_bl"),
+        path = named("b_path_length"),
+        gram = named("gram_volume"),
         rot = named("max_rotation"),
-        comb = named("rank_rotation_plus_mag_jump"),
         magj = named("mag_jump"),
     );
 
