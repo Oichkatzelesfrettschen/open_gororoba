@@ -132,6 +132,63 @@ fn cell_xy(index: usize) -> (f64, f64) {
     (channel_of(index) as f64 + 0.5, 3.5 - lag_of(index) as f64)
 }
 
+fn closed_rect(x0: f64, y0: f64, x1: f64, y1: f64) -> Vec<(f64, f64)> {
+    vec![(x0, y0), (x1, y0), (x1, y1), (x0, y1), (x0, y0)]
+}
+
+fn cell_frame(index: usize) -> Vec<(f64, f64)> {
+    let (x, y) = cell_xy(index);
+    closed_rect(x - 0.42, y - 0.42, x + 0.42, y + 0.42)
+}
+
+fn near_half(value: f64) -> Option<i32> {
+    let shifted = value - 0.5;
+    let rounded = shifted.round();
+    if (shifted - rounded).abs() < 0.08 {
+        Some(rounded as i32)
+    } else {
+        None
+    }
+}
+
+fn channel_tick(x: f64) -> String {
+    match near_half(x) {
+        Some(0) => "Bx".to_string(),
+        Some(1) => "By".to_string(),
+        Some(2) => "Bz".to_string(),
+        Some(3) => "|B|".to_string(),
+        _ => String::new(),
+    }
+}
+
+fn lag_tick(y: f64) -> String {
+    match near_half(y) {
+        Some(cell) => {
+            let lag = 3 - cell;
+            if (0..4).contains(&lag) {
+                format!("t+{lag}")
+            } else {
+                String::new()
+            }
+        }
+        None => String::new(),
+    }
+}
+
+fn cone_channel_tick(y: f64) -> String {
+    let rounded = y.round();
+    if (y - rounded).abs() > 0.08 {
+        return String::new();
+    }
+    match rounded as i32 {
+        0 => "|B|".to_string(),
+        1 => "Bz".to_string(),
+        2 => "By".to_string(),
+        3 => "Bx".to_string(),
+        _ => String::new(),
+    }
+}
+
 fn build_scene(data: OrbitFile) -> Scene {
     let lines = pg32_lines();
     let table = CdMultTable::generate(STAPLE_DIM);
@@ -206,14 +263,8 @@ where
     chart
         .configure_mesh()
         .x_desc("sample in the causal window")
-        .y_label_formatter(&|y| match *y as i32 {
-            0 => "|B|".to_string(),
-            1 => "Bz".to_string(),
-            2 => "By".to_string(),
-            3 => "Bx".to_string(),
-            _ => String::new(),
-        })
-        .y_labels(5)
+        .y_label_formatter(&|y| cone_channel_tick(*y))
+        .y_labels(8)
         .label_style(("sans-serif", 15).into_font().color(&MUTED))
         .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
         .disable_y_mesh()
@@ -225,17 +276,21 @@ where
         (1.0, AMBER, "V_k+1"),
         (2.0, EMERALD, "V_k+2"),
     ];
+    let y_lo = -0.42;
+    let y_hi = 3.42;
     for (start, color, _name) in windows {
+        let x0 = start;
+        let x1 = start + 3.95;
         chart
             .draw_series(std::iter::once(Rectangle::new(
-                [(start, -0.15), (start + 3.95, 3.15)],
+                [(x0, y_lo), (x1, y_hi)],
                 color.mix(0.12).filled(),
             )))
             .map_err(plot_err)?;
         chart
-            .draw_series(std::iter::once(Rectangle::new(
-                [(start, -0.15), (start + 3.95, 3.15)],
-                color.mix(0.85).stroke_width(2),
+            .draw_series(std::iter::once(PathElement::new(
+                closed_rect(x0, y_lo, x1, y_hi),
+                ShapeStyle::from(&color).stroke_width(3),
             )))
             .map_err(plot_err)?;
     }
@@ -285,22 +340,9 @@ where
     chart
         .configure_mesh()
         .x_desc("channel")
-        .x_label_formatter(&|x| match *x as i32 {
-            0 => "Bx".to_string(),
-            1 => "By".to_string(),
-            2 => "Bz".to_string(),
-            3 => "|B|".to_string(),
-            _ => String::new(),
-        })
+        .x_label_formatter(&|x| channel_tick(*x))
         .y_desc("lag")
-        .y_label_formatter(&|y| {
-            let lag = 3 - (*y as i32);
-            if (0..4).contains(&lag) {
-                format!("t+{lag}")
-            } else {
-                String::new()
-            }
-        })
+        .y_label_formatter(&|y| lag_tick(*y))
         .label_style(("sans-serif", 15).into_font().color(&MUTED))
         .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
         .disable_mesh()
@@ -323,6 +365,14 @@ where
             .draw_series(std::iter::once(PathElement::new(
                 vec![cell_xy(u), cell_xy(v), cell_xy(w), cell_xy(u)],
                 ShapeStyle::from(&ROSE.mix(0.7)).stroke_width(2),
+            )))
+            .map_err(plot_err)?;
+    }
+    for index in [a, b, c] {
+        chart
+            .draw_series(std::iter::once(PathElement::new(
+                cell_frame(index),
+                ShapeStyle::from(&CYAN).stroke_width(3),
             )))
             .map_err(plot_err)?;
     }
