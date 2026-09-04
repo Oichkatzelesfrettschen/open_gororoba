@@ -1,10 +1,10 @@
-//! E-279 viewer: PG(3, 2) as a tetrahedron, AUC on the 96-term ladder, and
-//! Hamming-1 line flips of the Cayley-Dickson orientation.
+//! E-279 viewer: the staple as a 6-sample causal window, the 16D fiber as
+//! lag x channel, and the 96-term twist ladder.
 //!
-//! Associator support of every 35-line twist measured here is 1080 + 96 k.
-//! CD sits at k = 8 (1848 terms). Flipping a line that lies in three octonion
-//! planes drops 288 terms; the other 28 lines drop 96. Those seven expensive
-//! lines span all 15 imaginary units.
+//! Basis index is 4*lag + channel, so the Cayley-Dickson doubling unit e_8
+//! is lag-2 Bx, not a spacetime axis. The seven Hamming-1 lines that drop
+//! 288 terms are the pencil through that cell. Drawing them as a projective
+//! fan collapses the measurement; this viewer keeps time and field separate.
 //!
 //! ```bash
 //! cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit-view
@@ -96,9 +96,6 @@ struct Scene {
     line_drop: [usize; PG32_LINE_COUNT],
     line_inc: [usize; PG32_LINE_COUNT],
     selected_line: usize,
-    yaw: f64,
-    pitch: f64,
-    drag: Option<(f32, f32)>,
     hover: String,
 }
 
@@ -123,42 +120,16 @@ fn k_level(terms: usize) -> i32 {
     ((terms as i32) - 1080) / 96
 }
 
-/// Barycentric embedding of (Z_2)^4 \ {0} on a tetrahedron: bits 1,2,4,8 are
-/// the four vertices, Hamming-weight 2 the edge midpoints, weight 3 the face
-/// centroids, weight 4 the body centroid.
-fn tetra_vertex(i: usize, yaw: f64, pitch: f64) -> (f64, f64) {
-    let basis = [
-        rotate3(1.0, 1.0, 1.0, yaw, pitch),
-        rotate3(1.0, -1.0, -1.0, yaw, pitch),
-        rotate3(-1.0, 1.0, -1.0, yaw, pitch),
-        rotate3(-1.0, -1.0, 1.0, yaw, pitch),
-    ];
-    let mut acc = (0.0, 0.0, 0.0);
-    let mut w = 0.0;
-    for (bit, &(x, y, z)) in [1usize, 2, 4, 8].iter().zip(basis.iter()) {
-        if i & bit != 0 {
-            acc.0 += x;
-            acc.1 += y;
-            acc.2 += z;
-            w += 1.0;
-        }
-    }
-    if w == 0.0 {
-        return (0.0, 0.0);
-    }
-    let (x, y, z) = (acc.0 / w, acc.1 / w, acc.2 / w);
-    let depth = 3.4 + z * 0.45;
-    (x / depth, y / depth)
+fn lag_of(index: usize) -> usize {
+    index / 4
 }
 
-fn rotate3(x: f64, y: f64, z: f64, yaw: f64, pitch: f64) -> (f64, f64, f64) {
-    let (cy, sy) = (yaw.cos(), yaw.sin());
-    let x1 = x * cy - z * sy;
-    let z1 = x * sy + z * cy;
-    let (cp, sp) = (pitch.cos(), pitch.sin());
-    let y2 = y * cp - z1 * sp;
-    let z2 = y * sp + z1 * cp;
-    (x1, y2, z2)
+fn channel_of(index: usize) -> usize {
+    index % 4
+}
+
+fn cell_xy(index: usize) -> (f64, f64) {
+    (channel_of(index) as f64 + 0.5, 3.5 - lag_of(index) as f64)
 }
 
 fn build_scene(data: OrbitFile) -> Scene {
@@ -183,10 +154,8 @@ fn build_scene(data: OrbitFile) -> Scene {
         line_drop,
         line_inc,
         selected_line: 0,
-        yaw: 0.62,
-        pitch: 0.38,
-        drag: None,
-        hover: "arrows cycle a line  |  F flips it  |  drag rotates the tetrahedron".to_string(),
+        hover: "arrows cycle a PG(3,2) line  |  F flips it on the CD orientation  |  Esc quit"
+            .to_string(),
         data,
     }
 }
@@ -213,7 +182,7 @@ where
     Ok(())
 }
 
-fn draw_tetrahedron<DB: DrawingBackend>(
+fn draw_causal_cone<DB: DrawingBackend>(
     area: &DrawingArea<DB, plotters::coord::Shift>,
     scene: &Scene,
 ) -> Result<()>
@@ -221,90 +190,167 @@ where
     DB::ErrorType: 'static,
 {
     draw_panel(area, CYAN)?;
-    let (a, b, c) = scene.lines[scene.selected_line];
-    let drop = scene.line_drop[scene.selected_line];
-    let inc = scene.line_inc[scene.selected_line];
-    let pts: Vec<(f64, f64)> = (0..STAPLE_DIM)
-        .map(|i| tetra_vertex(i, scene.yaw, scene.pitch))
-        .collect();
-    let (mut xmin, mut xmax, mut ymin, mut ymax) = (f64::INFINITY, f64::NEG_INFINITY, f64::INFINITY, f64::NEG_INFINITY);
-    for &(x, y) in pts.iter().skip(1) {
-        xmin = xmin.min(x);
-        xmax = xmax.max(x);
-        ymin = ymin.min(y);
-        ymax = ymax.max(y);
-    }
-    let pad = 0.08 * (xmax - xmin).max(ymax - ymin).max(0.2);
     let mut chart = ChartBuilder::on(area)
-        .margin(14)
+        .margin(16)
         .caption(
             format!(
-                "PG(3,2)  |  rose = pencil through e8 (CD doubling unit), drop 288  |  line {sel}={{e_{a},e_{b},e_{c}}} inc={inc} drop {drop}  |  {octo}/15 octonion  |  live {live}",
-                sel = scene.selected_line,
-                octo = scene.octonion_planes,
-                live = scene.live_terms
+                "Measurement: three overlapping 4-lag staples on (Bx,By,Bz,|B|)  |  six-sample causal window  |  live CD terms {}",
+                scene.live_terms
             ),
-            ("sans-serif", 18).into_font().color(&TEXT),
+            ("sans-serif", 17).into_font().color(&TEXT),
         )
-        .build_cartesian_2d((xmin - pad)..(xmax + pad), (ymin - pad)..(ymax + pad))
+        .x_label_area_size(36)
+        .y_label_area_size(72)
+        .build_cartesian_2d(-0.2f64..6.2f64, -0.4f64..4.6f64)
         .map_err(plot_err)?;
-    let tetra_edges = [
-        (1, 2, 3),
-        (1, 4, 5),
-        (2, 4, 6),
-        (1, 8, 9),
-        (2, 8, 10),
-        (4, 8, 12),
+    chart
+        .configure_mesh()
+        .x_desc("sample in the causal window")
+        .y_label_formatter(&|y| match *y as i32 {
+            0 => "|B|".to_string(),
+            1 => "Bz".to_string(),
+            2 => "By".to_string(),
+            3 => "Bx".to_string(),
+            _ => String::new(),
+        })
+        .y_labels(5)
+        .label_style(("sans-serif", 15).into_font().color(&MUTED))
+        .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
+        .disable_y_mesh()
+        .light_line_style(ShapeStyle::from(&GRID.mix(0.25)))
+        .draw()
+        .map_err(plot_err)?;
+    let windows = [
+        (0.0, CYAN, "V_k"),
+        (1.0, AMBER, "V_k+1"),
+        (2.0, EMERALD, "V_k+2"),
     ];
-    for &(u, v, w) in &tetra_edges {
+    for (start, color, _name) in windows {
         chart
-            .draw_series(std::iter::once(PathElement::new(
-                vec![pts[u], pts[v], pts[w], pts[u]],
-                ShapeStyle::from(&GRID.mix(0.9)).stroke_width(1),
+            .draw_series(std::iter::once(Rectangle::new(
+                [(start, -0.15), (start + 3.95, 3.15)],
+                color.mix(0.12).filled(),
+            )))
+            .map_err(plot_err)?;
+        chart
+            .draw_series(std::iter::once(Rectangle::new(
+                [(start, -0.15), (start + 3.95, 3.15)],
+                color.mix(0.85).stroke_width(2),
+            )))
+            .map_err(plot_err)?;
+    }
+    for lag in 0..6 {
+        for ch in 0..4 {
+            chart
+                .draw_series(std::iter::once(Circle::new(
+                    (lag as f64 + 0.5, 3.0 - ch as f64),
+                    6,
+                    MUTED.filled(),
+                )))
+                .map_err(plot_err)?;
+        }
+    }
+    chart
+        .draw_series(std::iter::once(Text::new(
+            "|(Vk Vk+1)Vk+2 - Vk(Vk+1 Vk+2)|",
+            (1.15, 4.15),
+            ("sans-serif", 16).into_font().color(&ROSE),
+        )))
+        .map_err(plot_err)?;
+    Ok(())
+}
+
+fn draw_basis_grid<DB: DrawingBackend>(
+    area: &DrawingArea<DB, plotters::coord::Shift>,
+    scene: &Scene,
+) -> Result<()>
+where
+    DB::ErrorType: 'static,
+{
+    draw_panel(area, GOLD)?;
+    let (a, b, c) = scene.lines[scene.selected_line];
+    let drop = scene.line_drop[scene.selected_line];
+    let mut chart = ChartBuilder::on(area)
+        .margin(16)
+        .caption(
+            format!(
+                "16D fiber: index = 4*lag + channel  |  e8 = lag2 Bx  |  selected line {{e_{a},e_{b},e_{c}}} drop {drop}  |  rose = pencil through e8"
+            ),
+            ("sans-serif", 16).into_font().color(&TEXT),
+        )
+        .x_label_area_size(36)
+        .y_label_area_size(52)
+        .build_cartesian_2d(-0.2f64..4.2f64, -0.2f64..4.2f64)
+        .map_err(plot_err)?;
+    chart
+        .configure_mesh()
+        .x_desc("channel")
+        .x_label_formatter(&|x| match *x as i32 {
+            0 => "Bx".to_string(),
+            1 => "By".to_string(),
+            2 => "Bz".to_string(),
+            3 => "|B|".to_string(),
+            _ => String::new(),
+        })
+        .y_desc("lag")
+        .y_label_formatter(&|y| {
+            let lag = 3 - (*y as i32);
+            if (0..4).contains(&lag) {
+                format!("t+{lag}")
+            } else {
+                String::new()
+            }
+        })
+        .label_style(("sans-serif", 15).into_font().color(&MUTED))
+        .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
+        .disable_mesh()
+        .draw()
+        .map_err(plot_err)?;
+    for i in 0..STAPLE_DIM {
+        let (x, y) = cell_xy(i);
+        chart
+            .draw_series(std::iter::once(Rectangle::new(
+                [(x - 0.42, y - 0.42), (x + 0.42, y + 0.42)],
+                GRID.mix(0.35).filled(),
             )))
             .map_err(plot_err)?;
     }
     for (k, &(u, v, w)) in scene.lines.iter().enumerate() {
-        let expensive = scene.line_drop[k] == 288;
-        let selected = k == scene.selected_line;
-        if !expensive && !selected {
+        if scene.line_drop[k] != 288 {
             continue;
         }
-        let (color, width) = if selected { (CYAN, 4) } else { (ROSE, 2) };
         chart
             .draw_series(std::iter::once(PathElement::new(
-                vec![pts[u], pts[v], pts[w], pts[u]],
-                ShapeStyle::from(&color).stroke_width(width),
+                vec![cell_xy(u), cell_xy(v), cell_xy(w), cell_xy(u)],
+                ShapeStyle::from(&ROSE.mix(0.7)).stroke_width(2),
             )))
             .map_err(plot_err)?;
     }
     chart
-        .draw_series((1..STAPLE_DIM).map(|i| {
-            let wt = i.count_ones();
-            let on_sel = i == a || i == b || i == c;
-            let r = match wt {
-                1 => 8,
-                2 => 6,
-                3 => 5,
-                _ => 7,
-            };
-            let color = if on_sel {
-                CYAN
-            } else if wt == 1 {
-                GOLD
-            } else if wt == 4 {
-                ROSE
-            } else {
-                MUTED
-            };
-            Circle::new(pts[i], r, color.filled())
-        }))
+        .draw_series(std::iter::once(PathElement::new(
+            vec![cell_xy(a), cell_xy(b), cell_xy(c), cell_xy(a)],
+            ShapeStyle::from(&CYAN).stroke_width(3),
+        )))
+        .map_err(plot_err)?;
+    let e8 = cell_xy(8);
+    chart
+        .draw_series(std::iter::once(Rectangle::new(
+            [(e8.0 - 0.42, e8.1 - 0.42), (e8.0 + 0.42, e8.1 + 0.42)],
+            GOLD.mix(0.35).filled(),
+        )))
         .map_err(plot_err)?;
     chart
         .draw_series(std::iter::once(Text::new(
-            "e8 doubling",
-            (pts[8].0 + 0.03, pts[8].1 + 0.04),
+            "e8",
+            (e8.0 - 0.18, e8.1 - 0.08),
             ("sans-serif", 16).into_font().color(&GOLD),
+        )))
+        .map_err(plot_err)?;
+    chart
+        .draw_series(std::iter::once(Text::new(
+            "unit e0 = Bx t",
+            (cell_xy(0).0 - 0.35, cell_xy(0).1 - 0.08),
+            ("sans-serif", 13).into_font().color(&MUTED),
         )))
         .map_err(plot_err)?;
     Ok(())
@@ -363,46 +409,6 @@ where
             9,
             ROSE.stroke_width(3),
         )))
-        .map_err(plot_err)?;
-    Ok(())
-}
-
-fn draw_hamming<DB: DrawingBackend>(
-    area: &DrawingArea<DB, plotters::coord::Shift>,
-    scene: &Scene,
-) -> Result<()>
-where
-    DB::ErrorType: 'static,
-{
-    draw_panel(area, ROSE)?;
-    let mut chart = ChartBuilder::on(area)
-        .margin(16)
-        .caption(
-            "Hamming-1 CD line flips  |  28 lines drop 96  |  7 lines through 3 octonion planes drop 288 and span all 15 points",
-            ("sans-serif", 17).into_font().color(&TEXT),
-        )
-        .x_label_area_size(36)
-        .y_label_area_size(48)
-        .build_cartesian_2d(-0.5f64..35.5f64, 0.0f64..320.0f64)
-        .map_err(plot_err)?;
-    chart
-        .configure_mesh()
-        .x_desc("PG(3,2) line index")
-        .y_desc("term drop from 1848")
-        .label_style(("sans-serif", 15).into_font().color(&MUTED))
-        .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
-        .light_line_style(ShapeStyle::from(&GRID.mix(0.28)))
-        .draw()
-        .map_err(plot_err)?;
-    chart
-        .draw_series(scene.line_drop.iter().enumerate().map(|(k, &drop)| {
-            let selected = k == scene.selected_line;
-            let color = if drop == 288 { ROSE } else { AMBER };
-            Rectangle::new(
-                [(k as f64 + 0.12, 0.0), (k as f64 + 0.88, drop as f64)],
-                color.mix(if selected { 1.0 } else { 0.82 }).filled(),
-            )
-        }))
         .map_err(plot_err)?;
     Ok(())
 }
@@ -529,15 +535,16 @@ where
     let alt = &scene.data.invariant_matched_twists;
     let iso = &scene.data.isomorphic_orbit;
     root.draw_text(
-        "E-279  The Cayley-Dickson associator is a low-k-8 point, not an extreme tail",
+        "E-279  Staple = 6-sample causal window x 4-channel fiber; CD doubling unit e8 occupies lag-2 Bx",
         &("sans-serif", 30).into_font().color(&TEXT),
         (28, 16),
     )
     .map_err(plot_err)?;
     let summary = format!(
-        "canonical AUC {:.4} at {} terms (k=8)  |  35-line n={} mean {:.4} sits in k=0..6 (terms {}..{})  |  isomorphic n={} mean {:.4} p2.5 {:.4} p97.5 {:.4} max {:.4}  |  {}/{} 35-line draws >= CD  |  {}/{} isomorphic >= CD  |  {}",
+        "canonical AUC {:.4} at {} terms (k=8)  |  {}/15 hyperplanes octonion  |  35-line n={} mean {:.4} sits in k=0..6 (terms {}..{})  |  isomorphic n={} mean {:.4} p2.5 {:.4} p97.5 {:.4} max {:.4}  |  {}/{} 35-line draws >= CD  |  {}/{} isomorphic >= CD  |  {}",
         scene.data.canonical.subsample_auc,
         scene.data.canonical.term_count,
+        scene.octonion_planes,
         alt.n,
         alt.mean,
         alt.term_count_min,
@@ -563,9 +570,9 @@ where
     let rows = body.split_evenly((2, 1));
     let top = rows[0].split_evenly((1, 2));
     let bot = rows[1].split_evenly((1, 2));
-    draw_tetrahedron(&top[0], scene)?;
+    draw_causal_cone(&top[0], scene)?;
     draw_ladder(&top[1], scene)?;
-    draw_hamming(&bot[0], scene)?;
+    draw_basis_grid(&bot[0], scene)?;
     draw_densities(&bot[1], scene)?;
     Ok(())
 }
@@ -599,7 +606,7 @@ fn render_to_argb(scene: &Scene, width: usize, height: usize, pixels: &mut [u32]
 
 fn run_window(mut scene: Scene, width: usize, height: usize) -> Result<()> {
     let mut window = Window::new(
-        "E-279  PG(3,2) tetrahedron  |  arrows cycle line  |  F flip  |  drag rotate  |  Esc quit",
+        "E-279  staple causal window  |  arrows cycle line  |  F flip  |  Esc quit",
         width,
         height,
         WindowOptions {
@@ -636,19 +643,8 @@ fn run_window(mut scene: Scene, width: usize, height: usize) -> Result<()> {
             scene.hover = "reset to Cayley-Dickson orientation (1848 terms, k=8)".to_string();
             dirty = true;
         }
-        if let Some((mx, my)) = window.get_mouse_pos(MouseMode::Clamp) {
-            let down = window.get_mouse_down(MouseButton::Left);
-            if down {
-                if let Some((px, py)) = scene.drag {
-                    scene.yaw += f64::from(mx - px) * 0.01;
-                    scene.pitch += f64::from(my - py) * 0.01;
-                    dirty = true;
-                }
-                scene.drag = Some((mx, my));
-            } else {
-                scene.drag = None;
-            }
-        }
+        let _ = window.get_mouse_pos(MouseMode::Clamp);
+        let _ = window.get_mouse_down(MouseButton::Left);
         if dirty {
             render_to_argb(&scene, width, height, &mut pixels)?;
             dirty = false;

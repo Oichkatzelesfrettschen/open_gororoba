@@ -857,6 +857,8 @@ mod tests {
             common.retain(|p| *p == a || *p == b || *p == c);
         }
         assert_eq!(common, vec![8], "288-drop lines are the pencil through e_8");
+        assert_eq!(8 / 4, 2, "e_8 is lag 2 in the staple packing");
+        assert_eq!(8 % 4, 0, "e_8 is channel 0 (Bx) in the staple packing");
         for (inc, drops) in drop_by_inc.iter().enumerate() {
             if drops.is_empty() {
                 continue;
