@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 192
+event_count = 195
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4023,7 +4023,7 @@ source_claim_id = "C-1631"
 expected_prior_status = "Verified"
 experiment_verdict = "SurvivesChallenge"
 proposed_claim_status = "Verified"
-current_status = "Verified"
+current_status = "Superseded"
 exercised_falsifier = "False if the 95 percent paired file-bootstrap interval of the out-of-fold ROC-AUC difference between the logistic model on the six matched six-sample baselines plus ln(assoc) and the same model without it contains zero, under 5-fold cross-validation grouped by daily file."
 rationale = "E-242 ran the conditional-information test C-1633 named as the designated follow-up. Over all 23,664,374 rows (578,320 positives, 813 files) with five file-grouped folds and standardization fitted inside each training fold, the baseline logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), ln(gram6) reaches out-of-fold ROC-AUC 0.8428, PR-AUC 0.1028, log loss 0.09562, ECE 0.0057; adding ln(assoc) gives 0.8448, 0.1033, 0.09550, 0.0052. The paired bootstrap over 1000 file resamples gives delta ROC-AUC +0.00199 [0.00168, 0.00230] with zero adverse resamples, delta PR-AUC +0.00045 [0.00009, 0.00081] with 5 adverse, delta log loss -0.000124 [-0.000182, -0.000069]. The interval excludes zero and is positive, so by the preregistered rule the associator carries information beyond the six-sample geometric baselines; the magnitude is 0.2 percent of AUC against the 0.8274 standalone value, so C-1631's marginal-discrimination statement survives and its successor records that the unique information is small. I-212 is not closed: the joint baseline model at 0.8428 already exceeds the standalone associator, which is the receptive-field confound the insight names."
 unresolved_assumptions = ["The models are linear in log features with a fixed 1e-6 ridge; a nonlinear learner could absorb the associator's 0.002 AUC into the baselines or enlarge it, and the bootstrap resamples files but keeps the fold assignment fixed."]
@@ -4092,7 +4092,7 @@ source_claim_id = "C-1731"
 expected_prior_status = "Verified"
 experiment_verdict = "SurvivesChallenge"
 proposed_claim_status = "Verified"
-current_status = "Verified"
+current_status = "Superseded"
 exercised_falsifier = "False if the 95 percent paired file-bootstrap interval of the out-of-fold ROC-AUC difference between the logistic model with ln(assoc) and the same model without it contains zero."
 rationale = "The numbers in C-1731 stand; two phrasings overreach. 'Unique information' suggests an information-theoretic quantity, while E-242 measured incremental predictive discrimination under one fixed linear-in-log-features logistic model with a fixed 1e-6 ridge and one fixed fold assignment. The delta ROC-AUC of 0.0020 is 0.20 AUC percentage points, which is about 0.24 percent of the baseline AUC 0.8428, so '0.2 percent of AUC' misstates the ratio. The successor reports the delta in AUC percentage points and scopes the conclusion to the fitted model class and fold assignment."
 unresolved_assumptions = ["A nonlinear learner could absorb or enlarge the increment; the bootstrap resamples files while the fold assignment stays fixed."]
@@ -4107,3 +4107,68 @@ transition_spec_sha256 = "c2691459ab7454420af4423e7d97ec24231ef5138c4f089d89c45b
 proposal_key = "staples-associator-incremental-discrimination-under-fixed-logistic-model"
 canonical_claim_id = "C-1734"
 relation_kind = "narrows"
+
+[[transition]]
+event_id = 193
+transition_key = "staples-pvi-control-calibration-boundary"
+source_claim_id = "C-1631"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Superseded"
+current_status = "Superseded"
+exercised_falsifier = "Hold window 0 rows 0 through 5 fixed and change only row 6 from [7,0,0] to [106,0,0]. The real six_sample_baselines function changes PVI from 1 to sqrt(6/10005), falsifying the claimed exact-six-sample dependency. A separate noncollinear fixture preserves the local associator, rotation statistics, and Gram volume under suffix mutation."
+rationale = "C-1631 combines retained numerical superiority with a false calibration boundary. PVI's numerator uses six samples, while its denominator uses every increment in the daily file. The successor retains the measured offline margins and states that extra context explicitly."
+unresolved_assumptions = ["The retained summaries were inspected and hash-retained; the full benchmark bootstrap was not rerun.", "PVI performance with frozen training-file or past-only calibration remains unmeasured."]
+evidence_artifact_ids = ["LOCAL-STAPLES-PVI-CALIBRATION-BOUNDARY"]
+experiment_ids = ["E-239"]
+actor = "codex"
+reason = "Replace the falsified PVI support interpretation with the measured offline calibration boundary."
+transition_timestamp = "2026-09-04T22:00:00Z"
+transition_spec_sha256 = "e4414599d7efa252a7dfbc833fc01ecab276013f13efd7e1759d680451ddd1e8"
+
+[[transition.successors]]
+proposal_key = "staples-associator-vs-daily-calibrated-pvi-and-local-gram"
+canonical_claim_id = "C-1738"
+relation_kind = "narrows"
+
+[[transition]]
+event_id = 194
+transition_key = "staples-logistic-feature-calibration-boundary"
+source_claim_id = "C-1734"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Superseded"
+current_status = "Superseded"
+exercised_falsifier = "The score exporter computes dbdt and rot from rows k+3 and k+4; the PVI suffix-mutation test changes window 0 PVI while its six local samples stay identical. The six input features therefore have mixed signal support and calibration context, falsifying 'six matched six-sample baselines'."
+rationale = "The retained logistic-model increment remains supported. The successor identifies the two-sample features and daily-file PVI calibration, and states that the paired bootstrap resamples frozen out-of-fold predictions rather than retraining models."
+unresolved_assumptions = ["The retained fit and bootstrap were inspected, not recomputed.", "Other fold assignments, repeated model fits, nonlinear learners, and causal calibration require separate experiments."]
+evidence_artifact_ids = ["LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901", "LOCAL-STAPLES-PVI-CALIBRATION-BOUNDARY"]
+experiment_ids = ["E-242"]
+actor = "codex"
+reason = "Separate measured predictive discrimination from the falsified equal-support interpretation."
+transition_timestamp = "2026-09-04T22:00:01Z"
+transition_spec_sha256 = "e7035d40684d65da1eff6759564cf94dfdffa2877cb6c443b80bcc92f372f3e4"
+
+[[transition.successors]]
+proposal_key = "staples-associator-increment-with-explicit-feature-context"
+canonical_claim_id = "C-1739"
+relation_kind = "narrows"
+
+[[transition]]
+event_id = 195
+transition_key = "staples-logistic-ancestor-calibration-boundary"
+source_claim_id = "C-1731"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Superseded"
+current_status = "Superseded"
+exercised_falsifier = "The PVI suffix-mutation test changes a score with its six-sample numerator window held fixed. The exporter also computes dbdt and rot from two samples. C-1731's matched-six-sample interpretation therefore fails the same dependency check as C-1734."
+rationale = "The existing narrows relation connects C-1731 to C-1734, and the calibrated-feature successor C-1739 narrows C-1734. Mark the overbroad ancestor Superseded so the older positive status cannot endorse the falsified support interpretation. Preserve both relations and the original numerical statement as historical records."
+unresolved_assumptions = ["The retained predictive increment remains conditional on the original offline feature set, model class, and fold assignment."]
+evidence_artifact_ids = ["LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901", "LOCAL-STAPLES-PVI-CALIBRATION-BOUNDARY"]
+experiment_ids = ["E-242"]
+actor = "codex"
+reason = "Propagate the demonstrated feature-boundary correction through the existing claim ancestry."
+transition_timestamp = "2026-09-04T22:00:02Z"
+transition_spec_sha256 = "7e6c48d690a641ede3cb7fcd7de9f4b7022ed73b42c726919a4f3fca4a04531c"
+successors = []

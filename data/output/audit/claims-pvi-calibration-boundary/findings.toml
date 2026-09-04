@@ -1,0 +1,83 @@
+schema_version = 1
+audit = "staples-pvi-calibration-boundary"
+source_commit = "020512c5ed53c634f49085469abc9d449cdb0e9b"
+claim_ids = ["C-1631", "C-1731", "C-1734"]
+evidence_layer = "implementation conformance and interpretation of retained benchmark measurements"
+scope = "Two claim boundaries and their existing logistic ancestor, the shared control implementation, and three retained result summaries. The benchmark scoring and bootstrap computations are retained evidence, not rerun in this audit."
+verdict = "The exact-six-sample PVI dependency claim is falsified. The retained offline discrimination measurements remain supported under the implemented daily-file calibration."
+
+[fixture]
+test = "staple_controls::tests::pvi_calibration_uses_increments_outside_the_scored_window"
+replay = "cargo test --profile validation -p gororoba_cli_physics --lib staple_controls::tests -- --nocapture"
+original_rows = "[[1,0,0],[2,0,0],[3,0,0],[4,0,0],[5,0,0],[6,0,0],[7,0,0]]"
+mutation = "Replace only row 6 with [106,0,0]; window 0 retains identical rows 0 through 5."
+prediction_under_claim = "Window 0 PVI remains identical if its complete dependency is exactly six samples."
+observed_original_pvi = 1.0
+observed_changed_pvi_expression = "sqrt(6/10005)"
+absolute_tolerance = 1e-14
+outcome = "passed: the real implementation agrees with the full-input RMS formula and violates the exact-six-sample dependency prediction"
+locality_control_test = "staple_controls::tests::local_window_statistics_ignore_suffix_changes"
+locality_control_outcome = "passed: a noncollinear fixture preserves window 0 associator, cumulative rotation, maximum rotation, and Gram volume when rows 6 onward change; PVI changes"
+
+[[feature]]
+name = "dbdt, rot"
+signal_support = "rows k+3 and k+4"
+calibration_context = "same two rows"
+
+[[feature]]
+name = "assoc, cumrot6, maxrot6, gram6"
+signal_support = "rows k through k+5"
+calibration_context = "same six rows"
+
+[[feature]]
+name = "pvi6"
+signal_support = "maximum lag-1 increment in rows k through k+5"
+calibration_context = "RMS of all lag-1 increments in the input daily file, including later samples"
+
+[[retained_artifact]]
+path = "data/output/audit/claims-pvi-calibration-boundary/assoc_vs_pvi6.json"
+original_local_path = "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json"
+sha256 = "5842a2b60a4f252394c81f4b79041f9235c76011380da558317d154c696cd609"
+observation = "Simultaneous margin 0.043572 with interval [0.036509, 0.050594]; 813 files, 23664374 samples, 578320 positives. Byte-identical retention of the local summary."
+
+[[retained_artifact]]
+path = "data/output/audit/claims-pvi-calibration-boundary/assoc_vs_gram6.json"
+original_local_path = "data/output/staples_cluster_bootstrap_assoc_vs_gram6.json"
+sha256 = "3458b5e2a22ab4d80582077ade5ceba34f8e2d349533749674293b183b9b9049"
+observation = "Simultaneous margin 0.021609 with interval [0.018430, 0.024935]. Byte-identical retention of the local summary."
+
+[[retained_artifact]]
+path = "data/output/staples_incremental_information.json"
+sha256 = "5323d0239daee40c1c7903d1905d6012eb63f1a7a7ae086c0df80db34c6a747b"
+observation = "ROC-AUC 0.8428282832626345 to 0.84481471574976; paired delta interval [0.0016817229223402563, 0.0023033192797642377]. Bootstrap reweights fixed out-of-fold predictions."
+
+[synthesis]
+supported = "The associator outperforms the implemented offline PVI and Gram controls and adds a small predictive increment to the fixed logistic model; C-1633 separately records stronger standalone angular controls."
+inference_limit = "The PVI comparison measures six-sample numerator support plus daily-file calibration. Offline preprocessing and a fixed-fold bootstrap establish neither streaming performance nor variation across model refits."
+successor_rule = "Retain the original statements and their transition history; supersede the false support wording with narrower claims carrying explicit calibration context and falsifiers."
+reserved_claim_id = "C-1737 belongs to the separate physics/staples-twist-orbit-e279 branch."
+
+[[follow_up]]
+target = "streaming or fixed-calibration generalization"
+design = "Preregister a frozen training-file RMS and a past-only rolling RMS as separate PVI controls; keep evaluation files, labels, score alignment, and model complexity fixed, then refit and evaluate each arm."
+decision = "Abandon any extension of the retained PVI dominance claim to an arm whose simultaneous margin is nonpositive; retain the offline result with its original calibration boundary."
+status = "not run; requires a separately specified benchmark experiment"
+
+[[follow_up]]
+target = "increment robustness across training and fold assignments"
+design = "Repeat file-grouped splits and refit both models inside each replicate, including preprocessing; preregister seeds, learner class, and uncertainty procedure."
+decision = "A delta interval containing zero defeats a positive-increment generalization under that procedure; a negative interval supports reversal."
+status = "not run; the retained bootstrap holds predictions and the fold assignment fixed"
+
+[validation]
+focused_tests = "8 passed, 0 failed"
+publication_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1: passed; 585 tests passed, 0 skipped; scoped Clippy, terminology, encoding, canonical declarations, and governance passed."
+scoped_clippy = "cargo clippy -p gororoba_cli_physics --lib --bin themis-staples-score-export --profile validation -- -D warnings: exit 0"
+canonical_exports = "provenance verify-control-plane: passed after export"
+original_claim_preservation = "All 1548 original claims outside C-1631, C-1731, and C-1734 compare equal in every SQLite column against the source database."
+transition_preservation = "All 192 original transition rows compare equal in every SQLite column; three transitions append to the history."
+resulting_claims = "1553 rows: three original claims become Superseded and two narrower successors become Verified."
+mirror_refresh = "The claims documentation mirror counted 1543 rows before regeneration; regeneration includes the 1553 canonical claims."
+wide_provenance_check = "provenance verify --verify-exports fails: 13 artifacts have missing lane assignments in both source and repair databases, and the isolated checkout omits local-only data paths. The failure bounds corpus-wide availability; the claim/export check passes separately."
+format_scope = "Nightly rustfmt checks the two touched source files. A package-wide format check also reports pre-existing formatting differences in other binaries."
+dependency_warning = "Rust 1.97.0 reports future-incompatibility E0365 in proc-macro-error2 2.0.1: a private extern crate proc_macro is publicly re-exported. The external dependency warning is outside the scientific correction."

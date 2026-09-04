@@ -1,0 +1,27 @@
+[transition]
+transition_key = "staples-logistic-feature-calibration-boundary"
+source_claim_id = "C-1734"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+evidence_artifact_ids = ["LOCAL-STAPLES-PVI-CALIBRATION-BOUNDARY", "LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901"]
+experiment_ids = ["E-242"]
+exercised_falsifier = "The score exporter computes dbdt and rot from rows k+3 and k+4; the PVI suffix-mutation test changes window 0 PVI while its six local samples stay identical. The six input features therefore have mixed signal support and calibration context, falsifying 'six matched six-sample baselines'."
+proposed_claim_status = "Superseded"
+rationale = "The retained logistic-model increment remains supported. The successor identifies the two-sample features and daily-file PVI calibration, and states that the paired bootstrap resamples frozen out-of-fold predictions rather than retraining models."
+unresolved_assumptions = ["The retained fit and bootstrap were inspected, not recomputed.", "Other fold assignments, repeated model fits, nonlinear learners, and causal calibration require separate experiments."]
+actor = "codex"
+reason = "Separate measured predictive discrimination from the falsified equal-support interpretation."
+transition_timestamp = "2026-09-04T22:00:01Z"
+expected_source_state_sha256 = "ea2b2ebe27f2708b981c5969503ae999012491389cfc31b3106377f82874eb9e"
+expected_claim_id_max = 1738
+reserved_claim_ids = ["C-1737"]
+
+[[successor]]
+proposal_key = "staples-associator-increment-with-explicit-feature-context"
+statement = "On the retained deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files), adding ln(assoc) to a fixed logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), and ln(gram6) raises out-of-fold ROC-AUC from 0.8428282833 to 0.8448147157. The model uses ridge 1e-6, Newton-Raphson fitting, training-fold standardization, and one five-fold daily-file-grouped seed-42 assignment. The dbdt and rot features use two samples; cumrot6 and maxrot6 and gram6 use six; pvi6 uses a six-sample increment numerator with complete daily-file RMS calibration. A paired bootstrap of 1,000 file resamples of the frozen out-of-fold predictions gives a delta ROC-AUC interval [0.0016817229, 0.0023033193], with zero adverse ROC-AUC resamples. Delta PR-AUC has interval [0.0000948498, 0.0008139584], with five adverse resamples; delta log loss has interval [-0.0001824100, -0.0000688957]. The result measures incremental predictive discrimination for this offline feature set, model, and fold assignment; its uncertainty excludes variation from repeated model fitting."
+initial_status = "Verified"
+source_or_implementation_boundary = "Retained fixed-model, fixed-fold offline comparison with mixed feature support and daily-file PVI calibration. The evidence establishes incremental discrimination within that boundary rather than information-theoretic uniqueness, causal online detection, or robustness across refits."
+required_falsifier = "A faithful replay of the retained model, fold assignment, and preprocessing that fails to reproduce a positive delta ROC-AUC interval refutes the retained increment. An interval containing zero under repeated grouped refits defeats extension to that uncertainty procedure, while preserving the fixed-prediction observation."
+where_stated = ["data/output/staples_incremental_information.json", "data/output/audit/claims-pvi-calibration-boundary/findings.toml", "E-242"]
+evidence_artifact_ids = ["LOCAL-STAPLES-PVI-CALIBRATION-BOUNDARY", "LOCAL-STAPLES-INCREMENTAL-INFORMATION-20260901"]
+predecessor_relation_kind = "narrows"

@@ -1,0 +1,27 @@
+[transition]
+transition_key = "staples-pvi-control-calibration-boundary"
+source_claim_id = "C-1631"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+evidence_artifact_ids = ["LOCAL-STAPLES-PVI-CALIBRATION-BOUNDARY"]
+experiment_ids = ["E-239"]
+exercised_falsifier = "Hold window 0 rows 0 through 5 fixed and change only row 6 from [7,0,0] to [106,0,0]. The real six_sample_baselines function changes PVI from 1 to sqrt(6/10005), falsifying the claimed exact-six-sample dependency. A separate noncollinear fixture preserves the local associator, rotation statistics, and Gram volume under suffix mutation."
+proposed_claim_status = "Superseded"
+rationale = "C-1631 combines retained numerical superiority with a false calibration boundary. PVI's numerator uses six samples, while its denominator uses every increment in the daily file. The successor retains the measured offline margins and states that extra context explicitly."
+unresolved_assumptions = ["The retained summaries were inspected and hash-retained; the full benchmark bootstrap was not rerun.", "PVI performance with frozen training-file or past-only calibration remains unmeasured."]
+actor = "codex"
+reason = "Replace the falsified PVI support interpretation with the measured offline calibration boundary."
+transition_timestamp = "2026-09-04T22:00:00Z"
+expected_source_state_sha256 = "7c48a9b8d4e0d8e44c9750e04eac012d6bf36a12e2919103e7bfef8273e28e30"
+expected_claim_id_max = 1736
+reserved_claim_ids = ["C-1737"]
+
+[[successor]]
+proposal_key = "staples-associator-vs-daily-calibrated-pvi-and-local-gram"
+statement = "On the retained deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.827449 with file-cluster-bootstrap 95 percent interval [0.820525, 0.834788]. It exceeds the implemented PVI and Gram-volume controls across the bulk and both predeclared gradient strata: simultaneous assoc-minus-PVI margin 0.043572 [0.036509, 0.050594] and assoc-minus-Gram margin 0.021609 [0.018430, 0.024935], from 2,000 intact-file resamples at seed 42. The associator and Gram statistic consume six local samples. PVI takes the maximum increment from those six samples and divides by the RMS increment of the complete daily file, including later samples. The comparison establishes superiority over these offline implementations; the PVI comparison includes unequal calibration context."
+initial_status = "Verified"
+source_or_implementation_boundary = "Retained offline benchmark measurements under the implemented preprocessing. The six-sample signal window and full-day PVI calibration are separate dependencies. The evidence establishes neither streaming performance nor a precursor mechanism."
+required_falsifier = "A faithful replay with the same files, labels, preprocessing, and resampling that yields a nonpositive simultaneous margin refutes the corresponding retained dominance result. A positive result with altered calibration requires a separate claim."
+where_stated = ["data/output/audit/claims-pvi-calibration-boundary/findings.toml", "data/output/audit/claims-pvi-calibration-boundary/assoc_vs_pvi6.json", "data/output/audit/claims-pvi-calibration-boundary/assoc_vs_gram6.json", "E-239"]
+evidence_artifact_ids = ["LOCAL-STAPLES-PVI-CALIBRATION-BOUNDARY"]
+predecessor_relation_kind = "narrows"
