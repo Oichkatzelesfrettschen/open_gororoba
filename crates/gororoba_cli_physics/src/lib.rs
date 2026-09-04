@@ -13,6 +13,7 @@ pub mod nonlocal_report;
 pub mod staple_associator;
 pub mod staple_benchmark;
 pub mod staple_controls;
+pub mod staple_physical;
 pub mod voyager_arrow;
 pub mod voyager_encounter;
 

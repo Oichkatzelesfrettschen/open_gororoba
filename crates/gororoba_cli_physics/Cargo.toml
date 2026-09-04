@@ -295,6 +295,9 @@ path = "src/bin/staples_twist_orbit.rs"
 name = "staples-twist-orbit-view"
 path = "src/bin/staples_twist_orbit_view.rs"
 [[bin]]
+name = "staples-physical-decompose"
+path = "src/bin/staples_physical_decompose.rs"
+[[bin]]
 name = "staples-layout-sweep"
 path = "src/bin/staples_layout_sweep.rs"
 [[bin]]

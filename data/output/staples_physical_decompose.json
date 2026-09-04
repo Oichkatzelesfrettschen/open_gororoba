@@ -1,0 +1,43 @@
+{
+  "files": 813,
+  "subsample_size": 1733470,
+  "subsample_positives": 578320,
+  "channels": [
+    {
+      "name": "cd_associator",
+      "auc": 0.8274468073358886,
+      "what_it_measures": "full 16D CD cubic mismatch on six samples"
+    },
+    {
+      "name": "max_rotation",
+      "auc": 0.8383099421523968,
+      "what_it_measures": "max stepwise angle of B in the same six samples"
+    },
+    {
+      "name": "mag_jump",
+      "auc": 0.7377189337602665,
+      "what_it_measures": "max |B| minus min |B| in the same six samples"
+    },
+    {
+      "name": "cd_magnitude_zeroed",
+      "auc": 0.8297470784497126,
+      "what_it_measures": "CD associator after clearing every |B| channel"
+    },
+    {
+      "name": "cd_e8_zeroed",
+      "auc": 0.826970261178645,
+      "what_it_measures": "CD associator after clearing lag-2 Bx (doubling slot)"
+    },
+    {
+      "name": "cd_quaternion_lag0",
+      "auc": 0.5,
+      "what_it_measures": "CD associator on lag-0 only; algebraically associative, expect chance"
+    },
+    {
+      "name": "cd_octonion_two_lag",
+      "auc": 0.8264093284392897,
+      "what_it_measures": "CD associator on lags 0-1 (octonion prefix e0..e7)"
+    }
+  ],
+  "reading": "lag-0 quaternion AUC 0.5000 is chance, so CD ranking is lag-mixing. two-lag octonion prefix 0.8264 vs full CD 0.8274. e8-zeroed 0.8270 matches CD, so lag-2 Bx is not the carrier. |B|-zeroed 0.8297 is at least CD, so the magnitude channel is not helping. max_rotation 0.8383 beats CD. mag_jump 0.7377 is a weaker compression channel."
+}
