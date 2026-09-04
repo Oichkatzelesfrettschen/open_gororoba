@@ -1,10 +1,8 @@
-//! E-279 viewer: the staple as a 6-sample causal window, the 16D fiber as
-//! lag x channel, and the 96-term twist ladder.
+//! E-279 viewer: six samples of B in R^3 (hodogram), the 16D lag-channel
+//! fiber, and the 96-term twist ladder.
 //!
-//! Basis index is 4*lag + channel, so the Cayley-Dickson doubling unit e_8
-//! is lag-2 Bx, not a spacetime axis. The seven Hamming-1 lines that drop
-//! 288 terms are the pencil through that cell. Drawing them as a projective
-//! fan collapses the measurement; this viewer keeps time and field separate.
+//! THEMIS FGM is (t, Bx, By, Bz). There is no light cone and the LM plane
+//! is a derived frame, not the measurement. The hodogram is B-space.
 //!
 //! ```bash
 //! cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit-view
@@ -19,6 +17,7 @@ use gororoba_cli_physics::staple_controls::{
     PG32_LINE_COUNT, SparseCubicTensor, cd_twist, extract_line_orientations,
     line_octonion_incidence, octonion_plane_count, pg32_lines, twist_from_line_orientations,
 };
+use gororoba_cli_physics::staple_physical::helical_field;
 use minifb::{Key, MouseButton, MouseMode, Window, WindowOptions};
 use plotters::prelude::*;
 use serde::Deserialize;
@@ -96,6 +95,10 @@ struct Scene {
     line_drop: [usize; PG32_LINE_COUNT],
     line_inc: [usize; PG32_LINE_COUNT],
     selected_line: usize,
+    hodogram: Vec<[f64; 3]>,
+    yaw: f64,
+    pitch: f64,
+    drag: Option<(f32, f32)>,
     hover: String,
 }
 
@@ -175,18 +178,15 @@ fn lag_tick(y: f64) -> String {
     }
 }
 
-fn cone_channel_tick(y: f64) -> String {
-    let rounded = y.round();
-    if (y - rounded).abs() > 0.08 {
-        return String::new();
-    }
-    match rounded as i32 {
-        0 => "|B|".to_string(),
-        1 => "Bz".to_string(),
-        2 => "By".to_string(),
-        3 => "Bx".to_string(),
-        _ => String::new(),
-    }
+fn project_b(b: [f64; 3], yaw: f64, pitch: f64) -> (f64, f64) {
+    let (cy, sy) = (yaw.cos(), yaw.sin());
+    let x1 = b[0] * cy - b[2] * sy;
+    let z1 = b[0] * sy + b[2] * cy;
+    let (cp, sp) = (pitch.cos(), pitch.sin());
+    let y2 = b[1] * cp - z1 * sp;
+    let z2 = b[1] * sp + z1 * cp;
+    let depth = 3.4 + z2 * 0.4;
+    (x1 / depth, y2 / depth)
 }
 
 fn build_scene(data: OrbitFile) -> Scene {
@@ -211,8 +211,11 @@ fn build_scene(data: OrbitFile) -> Scene {
         line_drop,
         line_inc,
         selected_line: 0,
-        hover: "arrows cycle a PG(3,2) line  |  F flips it on the CD orientation  |  Esc quit"
-            .to_string(),
+        hodogram: helical_field(6, 0.7, 1.0, 0.45),
+        yaw: 0.7,
+        pitch: 0.35,
+        drag: None,
+        hover: "drag rotates B-space  |  arrows cycle a PG(3,2) line  |  Esc quit".to_string(),
         data,
     }
 }
@@ -239,7 +242,7 @@ where
     Ok(())
 }
 
-fn draw_causal_cone<DB: DrawingBackend>(
+fn draw_b_hodogram<DB: DrawingBackend>(
     area: &DrawingArea<DB, plotters::coord::Shift>,
     scene: &Scene,
 ) -> Result<()>
@@ -247,71 +250,84 @@ where
     DB::ErrorType: 'static,
 {
     draw_panel(area, CYAN)?;
+    let pts: Vec<(f64, f64)> = scene
+        .hodogram
+        .iter()
+        .map(|&b| project_b(b, scene.yaw, scene.pitch))
+        .collect();
+    let origin = project_b([0.0, 0.0, 0.0], scene.yaw, scene.pitch);
+    let axis_x = project_b([1.4, 0.0, 0.0], scene.yaw, scene.pitch);
+    let axis_y = project_b([0.0, 1.4, 0.0], scene.yaw, scene.pitch);
+    let axis_z = project_b([0.0, 0.0, 1.4], scene.yaw, scene.pitch);
+    let mut xs: Vec<f64> = pts.iter().map(|p| p.0).collect();
+    let mut ys: Vec<f64> = pts.iter().map(|p| p.1).collect();
+    for p in [origin, axis_x, axis_y, axis_z] {
+        xs.push(p.0);
+        ys.push(p.1);
+    }
+    let xmin = xs.iter().copied().fold(f64::INFINITY, f64::min);
+    let xmax = xs.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    let ymin = ys.iter().copied().fold(f64::INFINITY, f64::min);
+    let ymax = ys.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    let pad = 0.12 * (xmax - xmin).max(ymax - ymin).max(0.4);
     let mut chart = ChartBuilder::on(area)
         .margin(16)
         .caption(
-            format!(
-                "Measurement: three overlapping 4-lag staples on (Bx,By,Bz,|B|)  |  six-sample causal window  |  live CD terms {}",
-                scene.live_terms
-            ),
-            ("sans-serif", 17).into_font().color(&TEXT),
+            "B-space hodogram of six samples  |  not a light cone  |  not the LM plane  |  drag to rotate R^3",
+            ("sans-serif", 16).into_font().color(&TEXT),
         )
-        .x_label_area_size(36)
-        .y_label_area_size(72)
-        .build_cartesian_2d(-0.2f64..6.2f64, -0.4f64..4.6f64)
+        .build_cartesian_2d((xmin - pad)..(xmax + pad), (ymin - pad)..(ymax + pad))
         .map_err(plot_err)?;
     chart
         .configure_mesh()
-        .x_desc("sample in the causal window")
-        .y_label_formatter(&|y| cone_channel_tick(*y))
-        .y_labels(8)
-        .label_style(("sans-serif", 15).into_font().color(&MUTED))
-        .axis_style(ShapeStyle::from(&TEXT).stroke_width(1))
-        .disable_y_mesh()
-        .light_line_style(ShapeStyle::from(&GRID.mix(0.25)))
+        .disable_mesh()
         .draw()
         .map_err(plot_err)?;
-    let windows = [
-        (0.0, CYAN, "V_k"),
-        (1.0, AMBER, "V_k+1"),
-        (2.0, EMERALD, "V_k+2"),
-    ];
-    let y_lo = -0.42;
-    let y_hi = 3.42;
-    for (start, color, _name) in windows {
-        let x0 = start;
-        let x1 = start + 3.95;
+    for (end, label, color) in [
+        (axis_x, "Bx", ROSE),
+        (axis_y, "By", EMERALD),
+        (axis_z, "Bz", AMBER),
+    ] {
         chart
-            .draw_series(std::iter::once(Rectangle::new(
-                [(x0, y_lo), (x1, y_hi)],
-                color.mix(0.12).filled(),
+            .draw_series(std::iter::once(PathElement::new(
+                vec![origin, end],
+                ShapeStyle::from(&color).stroke_width(2),
             )))
+            .map_err(plot_err)?;
+        chart
+            .draw_series(std::iter::once(Text::new(
+                label,
+                (end.0, end.1),
+                ("sans-serif", 14).into_font().color(&color),
+            )))
+            .map_err(plot_err)?;
+    }
+    if pts.len() >= 2 {
+        chart
+            .draw_series(std::iter::once(PathElement::new(
+                pts.clone(),
+                ShapeStyle::from(&CYAN).stroke_width(3),
+            )))
+            .map_err(plot_err)?;
+    }
+    for (i, &p) in pts.iter().enumerate() {
+        let color = if i == 0 {
+            GOLD
+        } else if i + 1 == pts.len() {
+            ROSE
+        } else {
+            CYAN
+        };
+        chart
+            .draw_series(std::iter::once(Circle::new(p, 6, color.filled())))
             .map_err(plot_err)?;
         chart
             .draw_series(std::iter::once(PathElement::new(
-                closed_rect(x0, y_lo, x1, y_hi),
-                ShapeStyle::from(&color).stroke_width(3),
+                vec![origin, p],
+                ShapeStyle::from(&MUTED.mix(0.45)).stroke_width(1),
             )))
             .map_err(plot_err)?;
     }
-    for lag in 0..6 {
-        for ch in 0..4 {
-            chart
-                .draw_series(std::iter::once(Circle::new(
-                    (lag as f64 + 0.5, 3.0 - ch as f64),
-                    6,
-                    MUTED.filled(),
-                )))
-                .map_err(plot_err)?;
-        }
-    }
-    chart
-        .draw_series(std::iter::once(Text::new(
-            "|(Vk Vk+1)Vk+2 - Vk(Vk+1 Vk+2)|",
-            (1.15, 4.15),
-            ("sans-serif", 16).into_font().color(&ROSE),
-        )))
-        .map_err(plot_err)?;
     Ok(())
 }
 
@@ -585,7 +601,7 @@ where
     let alt = &scene.data.invariant_matched_twists;
     let iso = &scene.data.isomorphic_orbit;
     root.draw_text(
-        "E-279  Staple = 6-sample causal window x 4-channel fiber; CD doubling unit e8 occupies lag-2 Bx",
+        "E-279  Six samples of B in R^3  |  fiber is lag x channel packing, not space  |  e8 is lag-2 Bx",
         &("sans-serif", 30).into_font().color(&TEXT),
         (28, 16),
     )
@@ -620,7 +636,7 @@ where
     let rows = body.split_evenly((2, 1));
     let top = rows[0].split_evenly((1, 2));
     let bot = rows[1].split_evenly((1, 2));
-    draw_causal_cone(&top[0], scene)?;
+    draw_b_hodogram(&top[0], scene)?;
     draw_ladder(&top[1], scene)?;
     draw_basis_grid(&bot[0], scene)?;
     draw_densities(&bot[1], scene)?;
@@ -656,7 +672,7 @@ fn render_to_argb(scene: &Scene, width: usize, height: usize, pixels: &mut [u32]
 
 fn run_window(mut scene: Scene, width: usize, height: usize) -> Result<()> {
     let mut window = Window::new(
-        "E-279  staple causal window  |  arrows cycle line  |  F flip  |  Esc quit",
+        "E-279  B-space hodogram  |  drag rotate R^3  |  arrows cycle line  |  Esc quit",
         width,
         height,
         WindowOptions {
@@ -693,8 +709,18 @@ fn run_window(mut scene: Scene, width: usize, height: usize) -> Result<()> {
             scene.hover = "reset to Cayley-Dickson orientation (1848 terms, k=8)".to_string();
             dirty = true;
         }
-        let _ = window.get_mouse_pos(MouseMode::Clamp);
-        let _ = window.get_mouse_down(MouseButton::Left);
+        if let Some((mx, my)) = window.get_mouse_pos(MouseMode::Clamp) {
+            if window.get_mouse_down(MouseButton::Left) {
+                if let Some((px, py)) = scene.drag {
+                    scene.yaw += f64::from(mx - px) * 0.01;
+                    scene.pitch += f64::from(my - py) * 0.01;
+                    dirty = true;
+                }
+                scene.drag = Some((mx, my));
+            } else {
+                scene.drag = None;
+            }
+        }
         if dirty {
             render_to_argb(&scene, width, height, &mut pixels)?;
             dirty = false;

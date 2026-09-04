@@ -59,10 +59,20 @@
       "what_it_measures": "max minus min B along the MVA maximum-variance axis"
     },
     {
+      "name": "b_path_length",
+      "auc": 0.7763740522715948,
+      "what_it_measures": "hodogram arc length in R^3: sum |dB| over the six samples"
+    },
+    {
+      "name": "gram_volume",
+      "auc": 0.7846353112755883,
+      "what_it_measures": "max |det(dB_i, dB_{i+1}, dB_{i+2})|: 3D parallelepiped volume, zero for planar B"
+    },
+    {
       "name": "rank_rotation_plus_mag_jump",
       "auc": 0.8220000551047096,
       "what_it_measures": "sum of ranks of max_rotation and mag_jump; no fitted weights"
     }
   ],
-  "reading": "lag-0 quaternion 0.5000 is chance (lag-mixing). adjacent lag pairs 0-1 0.8264, 1-2 0.8338, 2-3 0.8272 vs full CD 0.8274. e8-zeroed 0.8270; |B|-zeroed 0.8297. MVA LM-rotation 0.8340, MVA Delta B_L 0.7795. max_rotation 0.8383 and rotation+|B| ranks 0.8220 vs CD. mag_jump 0.7377."
+  "reading": "lag-0 quaternion 0.5000 is chance (lag-mixing). adjacent lag pairs 0-1 0.8264, 1-2 0.8338, 2-3 0.8272 vs full CD 0.8274. MVA LM-rotation 0.8340 is a plane reduction. 3D hodogram path 0.7764, 3D gram volume 0.7846. max_rotation 0.8383 still leads. mag_jump 0.7377."
 }
