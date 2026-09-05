@@ -69,3 +69,5 @@ data/output/audit/qgp-cujet-source-curves/*.stream -text whitespace=-blank-at-eo
 data/output/audit/qgp-cujet-source-curves/*.log -text whitespace=-blank-at-eof,-blank-at-eol
 data/output/audit/qgp-participant-reference-intake/*.log -text whitespace=-blank-at-eof,-blank-at-eol
 data/output/audit/qgp-directional-path-identity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-quenching-weight-identity/*.headers -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/qgp-quenching-weight-identity/*.log -text whitespace=-blank-at-eof,-blank-at-eol

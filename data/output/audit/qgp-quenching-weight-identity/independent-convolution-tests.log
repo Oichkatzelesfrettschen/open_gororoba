@@ -1,0 +1,27 @@
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 3.12s
+     Running tests/bdmps_quenching_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/bdmps_quenching_identity-30eb47b6b8ddd634)
+
+running 3 tests
+convolution u=0.5 n=3 estimate=ConvolutionEstimate { value: 0.3287843249659752, tail_bound: 4.9999999999999995e-11, inner_quadrature_change: 1.6432016349533076e-15, outer_quadrature_change: 3.507737433849911e-10 }
+mean coarse=3.33333333333265258e-1 fine=3.33333333333267035e-1
+laplace s=0.2 reference=6.38393140844663032e-2 delta=9.71445146547011973e-17 actual=LaplaceEstimate { value: 0.938155735880035, exponent: 0.06383931403446967, tail_bound: 4.999999999999997e-11, quadrature_change: 8.874155577043297e-11 }
+convolution u=2 n=3 estimate=ConvolutionEstimate { value: 0.6807309916179283, tail_bound: 5e-11, inner_quadrature_change: 2.8903634806740297e-16, outer_quadrature_change: 2.08429939974053e-11 }
+laplace s=1 reference=2.89442976519405148e-1 delta=2.22044604925031308e-15 actual=LaplaceEstimate { value: 0.7486804840981677, exponent: 0.28944297646940725, tail_bound: 4.999999999999997e-11, quadrature_change: 1.340271560401618e-9 }
+convolution u=10 n=3 estimate=ConvolutionEstimate { value: 0.9122094855336441, tail_bound: 4.999999999999999e-11, inner_quadrature_change: 6.415041599408272e-17, outer_quadrature_change: 8.230083281546285e-13 }
+laplace s=5 reference=1.13104236559891036e0 delta=3.33066907387546962e-15 actual=LaplaceEstimate { value: 0.32269671311565146, exponent: 1.1310423655489128, tail_bound: 4.999999999999997e-11, quadrature_change: 8.65633786872877e-10 }
+test independent_compactified_mean_and_laplace ... ok
+convolution u=0.5 n=6.1 estimate=ConvolutionEstimate { value: 0.13932333684533205, tail_bound: 4.9999999999999995e-11, inner_quadrature_change: 3.213057974605855e-15, outer_quadrature_change: 2.2157276013956562e-13 }
+convolution u=2 n=6.1 estimate=ConvolutionEstimate { value: 0.4882295483341545, tail_bound: 4.9999999999999995e-11, inner_quadrature_change: 6.126715571721488e-16, outer_quadrature_change: 1.4099832412739488e-14 }
+convolution u=10 n=6.1 estimate=ConvolutionEstimate { value: 0.8351852221824108, tail_bound: 5.000000000000001e-11, inner_quadrature_change: 1.0383711554054452e-16, outer_quadrature_change: 1.3322676295501878e-15 }
+convolution u=0.5 n=10 estimate=ConvolutionEstimate { value: 0.05789695846665019, tail_bound: 4.999999999999998e-11, inner_quadrature_change: 4.7490681228127696e-15, outer_quadrature_change: 3.608224830031759e-16 }
+convolution u=2 n=10 estimate=ConvolutionEstimate { value: 0.33963085803676885, tail_bound: 4.9999999999999995e-11, inner_quadrature_change: 8.182233373078234e-16, outer_quadrature_change: 3.3306690738754696e-16 }
+convolution u=10 n=10 estimate=ConvolutionEstimate { value: 0.7527053324553182, tail_bound: 4.999999999999999e-11, inner_quadrature_change: 1.7635089789562953e-16, outer_quadrature_change: 2.220446049250313e-16 }
+test convolution_grid_obeys_convexity_and_coordinate_identity ... ok
+independent outer u=0.5 coarse=3.28784328992382247e-1 fine=3.28784325212966133e-1 production=3.28784324965975205e-1 delta=2.16000000252609597e-1 analytic_delta=2.16000000000000053e-1
+independent outer u=2 coarse=6.80730994412987234e-1 fine=6.80730991761390847e-1 production=6.80730991617928272e-1 delta=6.29737609506279439e-1 analytic_delta=6.29737609329445891e-1
+independent outer u=10 coarse=9.12209487993797752e-1 fine=9.12209485644681739e-1 production=9.12209485533644115e-1 delta=9.06313987602493154e-1 analytic_delta=9.06313987445872771e-1
+test independent_outer_convolution_and_delta_omission_control ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+

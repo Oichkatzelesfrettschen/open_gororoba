@@ -22,6 +22,7 @@
 //! - [`hydro_wake`]: Hydrodynamic medium response and wake formation
 //! - [`nuclear_modification`]: Nuclear modification factor (R_AA) computations
 
+pub mod bdmps_quenching;
 pub mod competing_models;
 pub mod critical_point;
 pub mod data_tables;

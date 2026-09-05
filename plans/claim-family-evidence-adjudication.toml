@@ -330,3 +330,37 @@ status = "completed"
 depends_on = ["qgp-directional-path-canonical-adjudication"]
 action = "Validate the integrated estimator repair and publish retained evidence"
 acceptance = "Focused tests, warnings-as-errors, canonical history, exports and publication gates agree."
+
+[[task]]
+id = "qgp-quenching-weight-source-intake"
+status = "completed"
+action = "Admit cited quenching-weight sources and exact distribution conventions"
+acceptance = "Retain provider bytes and identify support, normalization, scale, parton type and finite-energy limits."
+
+[[task]]
+id = "qgp-quenching-weight-model-contract"
+status = "completed"
+depends_on = ["qgp-quenching-weight-source-intake"]
+action = "Define source-faithful convolution and independent numerical falsifiers"
+acceptance = "Separate source numerical distributions, analytic approximations and mean-loss conversions before implementation."
+
+[[task]]
+id = "qgp-quenching-weight-implementation"
+status = "completed"
+depends_on = ["qgp-quenching-weight-model-contract"]
+action = "Implement the admitted distribution and convolution with explicit uncertainty controls"
+acceptance = "Normalization, moments, independent transform checks and numerical sensitivity gates discriminate incorrect source mappings."
+
+[[task]]
+id = "qgp-quenching-weight-canonical-adjudication"
+status = "completed"
+depends_on = ["qgp-quenching-weight-implementation"]
+action = "Bind source-model results to C-1710 while preserving historical failed fits"
+acceptance = "Typed contracts and canonical statements distinguish numerical conformance from unadmitted physical comparisons."
+
+[[task]]
+id = "qgp-quenching-weight-publication"
+status = "in_progress"
+depends_on = ["qgp-quenching-weight-canonical-adjudication"]
+action = "Validate and publish quenching-weight source and implementation evidence"
+acceptance = "Canonical history, source hashes, focused tests and required publication gates agree."

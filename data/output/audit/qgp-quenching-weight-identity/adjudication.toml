@@ -1,0 +1,17 @@
+schema_version = 1
+claim = "C-1710"
+experiment = "E-310"
+outcome = "bounded_implementation_conformance"
+implementation = "crates/qgp_scaling/src/bdmps_quenching.rs"
+independent_tests = "crates/qgp_scaling/tests/bdmps_quenching_identity.rs"
+source_identity = "source-retrieval-identity.toml"
+protocol = "numerical-protocol.toml"
+source_mean = 0.3333333333333333
+independent_mean = 0.33333333333326703
+initial_failure = "At u0.5 n3, orders128/256 give inner exponent sensitivity1.3554406401326145e-8, exceeding unchanged1e-8 gate; retained in initial-independent-tests.log."
+refinement = "Convolution uses inner256/512, outer64/128 and cutoff target1e-10. All nine declared u/n cases pass the original numerical gates. Standalone Laplace128/256 agrees with independent compactified Simpson at s0.2,1,5."
+independent_outer = "At n3 and u0.5,2,10, independent nested Simpson agrees with production to2.47e-10 or better; paired outer-grid change remains below3.78e-9. Analytic delta-loss controls agree within2.53e-10 and differ from source convolution by more than1e-4."
+uncertainty_scope = "Analytic tails cover omitted spectrum in the discrete normalized Laguerre sums. Order differences and independent-oracle residuals are numerical sensitivity, not a certified total continuous-mixture error bound."
+source_scope = "Full asymptotic outgoing independent-emission spectrum; positive-shift power-law convolution via exact Gamma identity. Incoming spectrum, lognormal substitution, finite-energy clipping and large-n exponential approximation are separate models."
+parameter_scope = "Fixed alpha_s0.5, C_R4/3 and declared u/n grid; zero parameters fitted to physical data. The exact mean/omega_c ratio is1/3. The outgoing empirical lognormal Table1 mean differs."
+physical_boundary = "Source pp-spectrum calibration, fragmentation and parton mixture, covariance, angular averaging and centrality pooling remain unadmitted. The new API does not replace the historical physical fitting driver. Historical failed fixed-loss fits retain their actual ansatz and thresholds."

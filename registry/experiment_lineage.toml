@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 277
-edge_count = 1517
+lineage_count = 278
+edge_count = 1525
 
 [[lineage]]
 id = "XL-001"
@@ -5041,6 +5041,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --test directional_path_identity --profile validation -- --nocapture; cargo test -p qgp_scaling --lib --profile validation directional_path::tests", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-278"
+experiment_id = "E-310"
+binary = "cargo-test:qgp_scaling:bdmps_quenching_identity"
+deterministic = true
+gpu = false
+run_command = "cargo test -p qgp_scaling --profile validation --test bdmps_quenching_identity -- --nocapture"
+run_command_sha256 = "7d5ae3a6c06a792c31eb2089ba4390c970f994332b42a3e762dc27ffeab0311d"
+claim_refs = ["C-1710"]
+input_path_refs = ["data/output/audit/qgp-quenching-weight-identity/numerical-protocol.toml", "data/output/audit/qgp-quenching-weight-identity/source-retrieval-identity.toml"]
+output_path_refs = ["data/output/audit/qgp-quenching-weight-identity/adjudication.toml", "data/output/audit/qgp-quenching-weight-identity/independent-convolution-tests.log", "data/output/audit/qgp-quenching-weight-identity/initial-independent-tests.log", "data/output/audit/qgp-quenching-weight-identity/refined-independent-tests.log"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --profile validation --test bdmps_quenching_identity -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -18692,6 +18710,78 @@ id = "XLE-01517"
 lineage_id = "XL-277"
 from_id = "E-309"
 to_ref = "data/output/audit/qgp-directional-path-identity/test.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01518"
+lineage_id = "XL-278"
+from_id = "E-310"
+to_ref = "cargo-test:qgp_scaling:bdmps_quenching_identity"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01519"
+lineage_id = "XL-278"
+from_id = "E-310"
+to_ref = "C-1710"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01520"
+lineage_id = "XL-278"
+from_id = "E-310"
+to_ref = "data/output/audit/qgp-quenching-weight-identity/numerical-protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01521"
+lineage_id = "XL-278"
+from_id = "E-310"
+to_ref = "data/output/audit/qgp-quenching-weight-identity/source-retrieval-identity.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01522"
+lineage_id = "XL-278"
+from_id = "E-310"
+to_ref = "data/output/audit/qgp-quenching-weight-identity/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01523"
+lineage_id = "XL-278"
+from_id = "E-310"
+to_ref = "data/output/audit/qgp-quenching-weight-identity/independent-convolution-tests.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01524"
+lineage_id = "XL-278"
+from_id = "E-310"
+to_ref = "data/output/audit/qgp-quenching-weight-identity/initial-independent-tests.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01525"
+lineage_id = "XL-278"
+from_id = "E-310"
+to_ref = "data/output/audit/qgp-quenching-weight-identity/refined-independent-tests.log"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

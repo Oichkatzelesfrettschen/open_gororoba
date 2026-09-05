@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 203
-experiment_count = 277
+deterministic_count = 204
+experiment_count = 278
 gpu_count = 33
 seeded_count = 49
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -7290,4 +7290,31 @@ status = "active"
 status_note = "Six integration tests and three module tests pass; all six optical grid rows remain retained. b8 fm finest-grid eccentricity sensitivity0.000967782 passes the declared0.001 gate with a small margin. Source centrality pooling, angular averaging and physical-fit admission remain unresolved; historical moment and radial-distance inputs remain preserved."
 status_token = "ACTIVE"
 title = "Directional path estimator identity and fixed-field numerical conformance"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "cargo-test:qgp_scaling:bdmps_quenching_identity"
+binary_experiment_declared = "E-310"
+binary_registered = true
+claim_refs = ["C-1710"]
+claims = ["C-1710"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-310"
+input = "Arleo hep-ph/0210104v3 Eq2.7 and BDMS hep-ph/0106347v1 Eq18b; fixed alpha_s0.5, C_R4/3, u0.5/2/10, n3/6.1/10."
+input_path_refs = ["data/output/audit/qgp-quenching-weight-identity/numerical-protocol.toml", "data/output/audit/qgp-quenching-weight-identity/source-retrieval-identity.toml"]
+lineage_id = "XL-278"
+method = "Full asymptotic outgoing spectrum Laplace functional and exact Gamma-mixture convolution; independent compactified Simpson mean/transform and nested Simpson outer convolution, delta-loss omission control, paired numerical orders and coordinate identity."
+output = ["data/output/audit/qgp-quenching-weight-identity/adjudication.toml"]
+output_path_refs = ["data/output/audit/qgp-quenching-weight-identity/adjudication.toml", "data/output/audit/qgp-quenching-weight-identity/independent-convolution-tests.log", "data/output/audit/qgp-quenching-weight-identity/initial-independent-tests.log", "data/output/audit/qgp-quenching-weight-identity/refined-independent-tests.log"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p qgp_scaling --profile validation --test bdmps_quenching_identity -- --nocapture"
+run_command_sha256 = "7d5ae3a6c06a792c31eb2089ba4390c970f994332b42a3e762dc27ffeab0311d"
+status = "active"
+status_note = "Retained initial1e-8 gate failure; refined inner256/512 passes all nine declared convolution cases with unchanged threshold. Three independent integration tests and three module tests pass. Physical calibration, fragmentation, covariance and geometry pooling remain admission prerequisites."
+status_token = "ACTIVE"
+title = "Outgoing BDMPS source convolution and independent numerical identity"
 truth_surface_consumption = []

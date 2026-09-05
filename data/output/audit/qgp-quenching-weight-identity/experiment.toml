@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-310"
+title = "Outgoing BDMPS source convolution and independent numerical identity"
+status = "active"
+binary = "cargo-test:qgp_scaling:bdmps_quenching_identity"
+claims = ["C-1710"]
+claim_refs = ["C-1710"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Arleo hep-ph/0210104v3 Eq2.7 and BDMS hep-ph/0106347v1 Eq18b; fixed alpha_s0.5, C_R4/3, u0.5/2/10, n3/6.1/10."
+input_path_refs = ["data/output/audit/qgp-quenching-weight-identity/source-retrieval-identity.toml", "data/output/audit/qgp-quenching-weight-identity/numerical-protocol.toml"]
+method = "Full asymptotic outgoing spectrum Laplace functional and exact Gamma-mixture convolution; independent compactified Simpson mean/transform and nested Simpson outer convolution, delta-loss omission control, paired numerical orders and coordinate identity."
+run = "cargo test -p qgp_scaling --profile validation --test bdmps_quenching_identity -- --nocapture"
+output = ["data/output/audit/qgp-quenching-weight-identity/adjudication.toml"]
+output_path_refs = ["data/output/audit/qgp-quenching-weight-identity/initial-independent-tests.log", "data/output/audit/qgp-quenching-weight-identity/refined-independent-tests.log", "data/output/audit/qgp-quenching-weight-identity/independent-convolution-tests.log", "data/output/audit/qgp-quenching-weight-identity/adjudication.toml"]
+status_note = "Retained initial1e-8 gate failure; refined inner256/512 passes all nine declared convolution cases with unchanged threshold. Three independent integration tests and three module tests pass. Physical calibration, fragmentation, covariance and geometry pooling remain admission prerequisites."

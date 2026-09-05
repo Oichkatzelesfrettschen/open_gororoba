@@ -6672,17 +6672,18 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/cs
 [[claim]]
 id = "C-1710"
 last_verified = "2026-08-06"
-statement = "The retained ALICE fixture matches all 38 freshly retrieved HEPData89396v1 Table1 rows for charged particles in Pb-Pb at 5.02 TeV, 0-5 percent centrality, including the supplied error columns. Historical diagonal stat-plus-systematic residuals omit the separately tabulated normalization uncertainty. Independent E-296 replay establishes shared fit/scoring objective conformance; physical rejection still requires admitted covariance, source ansatz and declared calibration freedom. Primary-source admission identifies arXiv2212.01324v1 Eq2 and arXiv1703.10852v1 Eq5 as positive-shift quenching-weight convolutions. The retained r_aa_model instead evaluates a negative-shift fixed-loss power with a hard cutoff. E-296 therefore validates an objective for a different ansatz; its failed fit cannot reject the identified source convolution. The source fragmentation map, pp-spectrum fit, quenching distribution and likelihood remain admission prerequisites. Source Eq9 also differs from the retained collision-weighted radial distance returned by avg_path_length. E-309 verifies fixed-field directional joint moments; angular and centrality pooling require separate admission before source scaling fits."
+statement = "The retained ALICE fixture matches all 38 freshly retrieved HEPData89396v1 Table1 rows for charged particles in Pb-Pb at 5.02 TeV, 0-5 percent centrality, including the supplied error columns. Historical diagonal stat-plus-systematic residuals omit the separately tabulated normalization uncertainty. Independent E-296 replay establishes shared fit/scoring objective conformance; physical rejection still requires admitted covariance, source ansatz and declared calibration freedom. Primary-source admission identifies arXiv2212.01324v1 Eq2 and arXiv1703.10852v1 Eq5 as positive-shift quenching-weight convolutions. The retained r_aa_model instead evaluates a negative-shift fixed-loss power with a hard cutoff. E-296 therefore validates an objective for a different ansatz; its failed fit cannot reject the identified source convolution. The source fragmentation map, pp-spectrum fit, quenching distribution and likelihood remain admission prerequisites. Source Eq9 also differs from the retained collision-weighted radial distance returned by avg_path_length. E-309 verifies fixed-field directional joint moments; angular and centrality pooling require separate admission before source scaling fits. E-310 verifies the full asymptotic outgoing BDMPS positive-shift convolution through its exact Gamma/Laplace identity on the declared finite grid. Independent mean, transform, convolution and delta-loss controls pass after a retained initial quadrature-gate failure and refinement at unchanged tolerance. Numerical sensitivity is not a certified total error bound. Source fragmentation, pp calibration, parton mixture, covariance and geometry pooling remain prerequisites for physical fits."
 status = "Provisional"
-where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history; data/output/audit/qgp-source-quenching-identity/adjudication.toml; data/output/audit/qgp-directional-path-identity/adjudication.toml; crates/qgp_scaling/src/directional_path.rs"
+status_note = "E-310 establishes finite-grid outgoing BDMPS convolution conformance after a retained quadrature failure and refinement at the unchanged gate. Independent outer reproduction covers n=3; n=6.1 and 10 have invariant and order checks. Physical calibration, fragmentation, covariance and geometry pooling remain unadmitted. Historical failed fixed-loss fits remain preserved."
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history; data/output/audit/qgp-source-quenching-identity/adjudication.toml; data/output/audit/qgp-directional-path-identity/adjudication.toml; crates/qgp_scaling/src/directional_path.rs; data/output/audit/qgp-quenching-weight-identity/adjudication.toml; crates/qgp_scaling/src/bdmps_quenching.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The bounded predicate checks exact retained table columns and the independent numerical objective. Physical rejection remains a separate unadmitted claim."
 fixed_hyperparameters = ["Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay", "Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds", "Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication", "Source identity receipt data/output/audit/qgp-source-quenching-identity/adjudication.toml; sha256 db39a83311cca946588803f420299fe037c75a9aa09599f759f5adbe438c3f18. Source convolution and retained fixed-loss ansatz are different models."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
-intervening_map_count = 3
-computational_stage_count = 3
+intervening_map_count = 4
+computational_stage_count = 4
 
 [[claim.intervening_maps]]
 name = "retained_objective_identity"
@@ -6702,6 +6703,12 @@ branch = "geometry_identity"
 description = "Compare the Eq9 joint forward-ray moments with the retained radial-distance statistic; E-309 tests a declared fixed-field implementation. Angular and centrality pooling remain separate source-model admission obligations."
 kind = "computational"
 
+[[claim.intervening_maps]]
+name = "outgoing_spectrum_gamma_convolution"
+branch = "quenching_identity"
+description = "Full outgoing spectrum to independent-emission Laplace functional to exact positive-shift Gamma convolution; source mean converts omega_c and mean-loss coordinates."
+kind = "computational"
+
 [[claim.fitted_parameters]]
 branch = "geometry_identity"
 count = 0
@@ -6714,17 +6721,23 @@ count = 1
 names = ["epsilon_bar"]
 training_boundary = "One epsilon is fitted to the same six retained points with n fixed; broader model calibration and published nuisance parameters are separate obligations."
 
+[[claim.fitted_parameters]]
+branch = "quenching_identity"
+count = 0
+names = []
+training_boundary = "Fixed source coupling, Casimir and declared u/n grid; no physical observations fitted."
+
 [claim.decisive_experiment]
-experiment_ids = ["E-075", "E-296", "E-309"]
-protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
-protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
+experiment_ids = ["E-075", "E-296", "E-309", "E-310"]
+protocol_artifact = "data/output/audit/qgp-quenching-weight-identity/numerical-protocol.toml"
+protocol_sha256 = "89c0adff868c96b05192b10f802a58d69fa6c11306df8fcfb823ff45a26274e5"
 description = "E-296 owns the independent numerical objective test; E-075 owns the physical driver. Numerical agreement between fit and score precedes separately preregistered covariance/population admission. Before source-model rejection, implement and independently verify the admitted positive-shift quenching-weight convolution, fragmentation scale and pp-spectrum parameter map. E-296 remains a shared-objective check for the retained negative-shift ansatz."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["All 38 retained HEPData table rows match edges, RAA and stated error columns exactly; the diagonal historical scoring omits separately tabulated normalization uncertainty.", "E-296 independently reproduces the shared corrected numerical objective at identical parameters and weights."]
+verification_outcomes = ["E-310 independent mean, transform and convolution residuals and refined paired orders pass the unchanged1e-8 gate on the declared finite grid; the original failing order pair remains retained.", "All 38 retained HEPData table rows match edges, RAA and stated error columns exactly; the diagonal historical scoring omits separately tabulated normalization uncertainty.", "E-296 independently reproduces the shared corrected numerical objective at identical parameters and weights."]
 revision_outcomes = ["A new provider release or corrected model definition receives a separate source identity and canonical revision; preserve original columns and objective results.", "An admitted physical model comparison requires its own covariance, calibration freedom, interpretive maps and rejection rule.", "A source-implementation mismatch narrows the failed fit to its actual ansatz; preserve the result and require independently verified source convolution before physical rejection."]
-abandonment_outcomes = ["An identical-source row or uncertainty column differs, or independent same-input objective evaluation disagrees; abandon the affected implementation identity clause."]
-inconclusive_outcomes = ["Using retained radial distances or moment eccentricity leaves source geometry-to-observable mapping unadmitted even when a numerical fit passes. Fixed-field directional conformance does not establish centrality pooling.", "A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted.", "Authenticated source equations differ from the implemented law: source-model fit agreement or rejection remains unadjudicated."]
+abandonment_outcomes = ["Independent source mean, Laplace or convolution residual exceeds1e-8 on the admitted grid: abandon the affected numerical conformance predicate. A paired-order failure withholds output admission until the instrument is refined at unchanged gates.", "An identical-source row or uncertainty column differs, or independent same-input objective evaluation disagrees; abandon the affected implementation identity clause."]
+inconclusive_outcomes = ["Finite-grid quenching conformance leaves physical pp calibration, fragmentation, parton mixture, covariance and geometry pooling unadmitted; empirical order changes do not certify a continuous-mixture error bound.", "Using retained radial distances or moment eccentricity leaves source geometry-to-observable mapping unadmitted even when a numerical fit passes. Fixed-field directional conformance does not establish centrality pooling.", "A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted.", "Authenticated source equations differ from the implemented law: source-model fit agreement or rejection remains unadjudicated."]
 
 [[claim]]
 id = "C-1711"

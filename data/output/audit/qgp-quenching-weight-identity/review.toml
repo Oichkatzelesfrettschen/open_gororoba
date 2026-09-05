@@ -1,0 +1,6 @@
+schema_version = 1
+review_surface = ["crates/qgp_scaling/src/bdmps_quenching.rs", "crates/qgp_scaling/tests/bdmps_quenching_identity.rs", "numerical-protocol.toml"]
+reviewer = "Codex canonical_claim_content agent; root independent tests and integration"
+source_checks = "Outgoing spectrum coefficient, stable real formula, cosine product, exact mean, compactification Jacobian and endpoints, Gamma(n3) normalization and omitted probability above80 agree."
+resolved_findings = ["Zero-coupling convolution returns before constructing n-1; tiny positive n regression passes.", "Convolution tail field explicitly states discrete normalized-Laguerre scope.", "Positive-coupling Laplace0 normalization has explicit value1 and exponent0 assertions."]
+retained_limits = ["Independent outer reproduction covers n3; n6.1 and10 have paired-order and invariant checks.", "Outer oracle uses fixed4096 inner Simpson sampling; numerical order differences and residuals do not certify total error.", "Initial failing quadrature-order pair remains retained at unchanged1e-8 threshold."]

@@ -1,0 +1,28 @@
+schema_version = 1
+experiment = "E-310"
+executable = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/bdmps_quenching_identity-30eb47b6b8ddd634"
+executable_sha256 = "f9466711f60158b6b4e76a311b184fc718e583c1b497dea2559a41aae7a2efad"
+command = "cargo test -p qgp_scaling --profile validation --test bdmps_quenching_identity -- --nocapture"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+test_result = "3 passed; 0 failed"
+test_log_sha256 = "6e75af04c092ba904881da61bf7caa545fa0434113ed3367c5ab19a4b0ae24f3"
+
+[[source]]
+path = "crates/qgp_scaling/src/bdmps_quenching.rs"
+sha256 = "8cabdadc297ec8cbf036ef3150eb1b34d087819800eace25fe2e0b9fc0343846"
+
+[[source]]
+path = "crates/qgp_scaling/src/lib.rs"
+sha256 = "5a7749cd28715fd99886679aee2c110253cd1e8ab320346d6178b8ba66e17c6f"
+
+[[source]]
+path = "crates/qgp_scaling/tests/bdmps_quenching_identity.rs"
+sha256 = "c3b2f6d60e444d5457ec3d0f6efcef32966532c0506dad02fce0b5e2b196cac6"
+
+[[source]]
+path = "Cargo.lock"
+sha256 = "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e"
+
+[[source]]
+path = "rust-toolchain.toml"
+sha256 = "c0864e4045ce7847ebe68e13423671c7007fbbe77d8b10ad5f5bacb8a1601ab3"

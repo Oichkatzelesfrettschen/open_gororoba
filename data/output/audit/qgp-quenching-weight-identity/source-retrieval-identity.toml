@@ -1,0 +1,73 @@
+schema_version = 1
+claim_id = "C-1710"
+operation = "Bind retained quenching-source bytes and retrieval records to their actual releases and equation scopes"
+network_requests_by_receipt_author = 0
+retrieval_time_evidence = "Both retained HTTP Date headers state Sat, 05 Sep 2026 22:39:07 GMT; this is server response metadata rather than an independently sampled local clock."
+request_identity_scope = "The unversioned request endpoints below agree with effective_url in each retained log and the canonical Link in each response header. The logs retain status and final URL, rather than a complete command invocation or redirect trace."
+
+[[sources]]
+key = "arleo"
+request_url = "https://arxiv.org/pdf/hep-ph/0210104"
+effective_url = "https://arxiv.org/pdf/hep-ph/0210104"
+http_status = 200
+content_type = "application/pdf"
+content_disposition_filename = "0210104v3.pdf"
+content_length_bytes = 380103
+actual_release = "arXiv:hep-ph/0210104v3, 14 January 2005"
+title = "Tomography of cold and hot QCD matter: tools and diagnosis"
+authors = ["Francois Arleo"]
+publication = "JHEP 11 (2002) 044"
+pdf_path = "data/output/audit/qgp-quenching-weight-identity/arleo-source.pdf"
+pdf_sha256 = "1985a339ccacb17d265cafe02bc3261bfd29a24a54c76548724c28cf51869865"
+headers_path = "data/output/audit/qgp-quenching-weight-identity/arleo-retrieval.headers"
+headers_sha256 = "00a649648073756852f7cc6bf0ee519a439f30bb613d2321b3357ac888d868e1"
+log_path = "data/output/audit/qgp-quenching-weight-identity/arleo-retrieval.log"
+log_sha256 = "ca53fab5d77a6323425e9047f594dae9a21878275d3394b964f2ef42166c6b92"
+text_path = "data/output/audit/qgp-quenching-weight-identity/arleo-source-text.json"
+text_sha256 = "71d8128f43a2d6db7071126120e83ffd1bf0a85ca5d26097bfa91f6a3a3f4ff0"
+release_evidence = "Content-Disposition v3 filename, PDF Title metadata and visually inspected front-page margin agree."
+source_scope = "Independent soft primary emissions, outgoing/incoming BDMPS spectra, numerical probability inversion, and separately identified empirical lognormal and finite-energy prescriptions."
+detailed_contract = "data/output/audit/qgp-quenching-weight-identity/arleo-identity.toml"
+
+[[sources]]
+key = "bdms"
+request_url = "https://arxiv.org/pdf/hep-ph/0106347"
+effective_url = "https://arxiv.org/pdf/hep-ph/0106347"
+http_status = 200
+content_type = "application/pdf"
+content_disposition_filename = "0106347v1.pdf"
+content_length_bytes = 217169
+actual_release = "arXiv:hep-ph/0106347v1, 29 June 2001"
+title = "Quenching of hadron spectra in media"
+authors = ["R. Baier", "Yu. L. Dokshitzer", "A. H. Mueller", "D. Schiff"]
+pdf_path = "data/output/audit/qgp-quenching-weight-identity/bdms-source.pdf"
+pdf_sha256 = "8d695cb46a71e926adf8a328644ef59c4abf210c48fe1b22a9d262adbabaff09"
+headers_path = "data/output/audit/qgp-quenching-weight-identity/bdms-retrieval.headers"
+headers_sha256 = "89fa735ff8b96584b692c606e183272141626df3c3b98d45bb3e5b35f9ecff95"
+log_path = "data/output/audit/qgp-quenching-weight-identity/bdms-retrieval.log"
+log_sha256 = "d9aaff854f3ec8eb56c01cd71503669a2fed603eaca5ed674782d24321732f2b"
+text_path = "data/output/audit/qgp-quenching-weight-identity/bdms-source-text.json"
+text_sha256 = "f69643f80646a16680c2e722a0cbad4a081a47357658a8872919de0f3b699a2f"
+release_evidence = "Content-Disposition v1 filename agrees with the retained extracted front-page arXiv margin."
+source_scope = "Eq16 assumes independent soft primary gluons; Eqs18b/19 define their resummed transform. Eqs26/27 introduce an additional exponential approximation to the vacuum-spectrum ratio."
+
+[bdms_equation_identity]
+visual_locators = ["data/output/audit/qgp-quenching-weight-identity/bdms-laplace-page6.png", "data/output/audit/qgp-quenching-weight-identity/bdms-laplace-page7.png"]
+eq18b = "D_tilde(nu)=exp[-integral_0^infinity domega (dI/domega)*(1-exp(-nu*omega))]"
+eq18b_scope = "Exact transform of the declared independent-emission source model when the integral exists; exact does not remove the physical soft-emission assumptions."
+eq19a = "D_tilde(nu)=exp[-nu*integral_0^infinity domega exp(-nu*omega)*N(omega)], N(omega)=integral_omega^infinity domega_prime*dI/domega_prime"
+eq25 = "Q(pT)=integral depsilon D(epsilon)*[vacuum_spectrum(pT+epsilon)/vacuum_spectrum(pT)]"
+source_spectrum_measure = "BDMS writes d sigma/d pT^2. A calibrated spectral index for another differential measure requires its own slope definition."
+power_law_kernel = "With an exact declared power-law vacuum spectrum, the ratio is(1+epsilon/pT)^(-n). That kernel does not equal exp(-n*epsilon/pT) for finite positive loss and finite n."
+eq26 = "The source approximates that ratio by exp(-n*epsilon/pT), with a printed correction of order ln(R)^2/(2*n), using a numerically large effective exponent."
+eq27 = "Q(pT) approximately D_tilde(n/pT)=exp[-integral_0^infinity dz exp(-z)*N(pT*z/n)]"
+distinction = "Eq18b can compute the transform exactly within the chosen emission model. Identifying one transform value with the power-law convolution adds Eq26's approximation. Using the full spectrum inside Eq18b does not remove that separate kernel approximation."
+additional_approximations = "BDMS Eqs20/21 additionally approximate the soft spectrum or its integrated multiplicity. Those approximations remain distinct from both Eq18b and the Eq26 kernel replacement."
+exact_power_law_transform_route = "For n>0 and X>=0, (1+X/u)^(-n)=integral_0^infinity dt t^(n-1)*exp(-t)*exp(-t*X/u)/Gamma(n). Nonnegative integrands permit exchanging expectations and integration, giving the gamma-weighted transform integral rather than a single value at n/u."
+route_attribution = "The gamma identity is an independently derived computational identity, not a quotation of BDMS Eq27."
+
+[admission_boundary]
+release_scope = "The receipt authenticates the two retained releases. An unversioned endpoint supplies the recorded bytes; parity with publisher editions or future responses remains unassessed."
+physical_scope = "Source equations alone do not admit pp-spectrum calibration, fragmentation, parton population, finite-energy loss conservation, experimental covariance or geometry/centrality pooling."
+representation_scope = "A numerical BDMPS transform, the source empirical lognormal approximation, and a finite-energy or infrared-cutoff distribution carry separate model identities."
+validation = "TOML syntax checked with taplo; all eight listed PDF/header/log/text SHA256 values checked against retained bytes."
