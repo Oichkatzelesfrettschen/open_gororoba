@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 197
+event_count = 198
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4218,3 +4218,26 @@ transition_spec_sha256 = "d6152313a7bf113855a304e33cdd2cfde9f837ec1f03363c4619b0
 proposal_key = "staples-associator-increment-across-calibration-and-grouped-refits"
 canonical_claim_id = "C-1741"
 relation_kind = "refines"
+
+[[transition]]
+event_id = 198
+transition_key = "staples-alternative-orbit-family-adjudication"
+source_claim_id = "C-1732"
+expected_prior_status = "Verified"
+experiment_verdict = "Falsifies"
+proposed_claim_status = "Refuted"
+current_status = "Refuted"
+exercised_falsifier = "The canonical C-1732 successor record explicitly requires refutation when an invariant-matched nonassociative twist ensemble has a 97.5th percentile above ROC-AUC 0.8274. E-279's basis-alternative 35-line family has 97.5th percentile 0.8372935340."
+rationale = "Honor the stored falsifier even though C-1732's displayed statement limits its measurements to two earlier controls. The broader 35-line ensemble meets the explicitly named algebraic-invariant condition and exceeds its threshold. Preserve the original E-240 numerical observations as separate bounded evidence; reject extrapolation to all invariant-matched twists. Neither E-279 family preserves exact canonical tensor support: the alternative family changes cardinality, and GL relabelings preserve cardinality and sign balance while moving support indices. The canonical AUC lies below the alternative-family 2.5th percentile and inside the isomorphic-orbit interval. The unmerged branch's SurvivesChallenge event contradicted the fired falsifier and is retained only as historical Git/spec evidence."
+unresolved_assumptions = ["One benchmark, one seed, 250 draws per nonassociative family; support-stabilizing GL and exact-support alternative ensembles remain unmeasured.", "The retained ensemble AUCs are reused after deterministic tensor-identity reconstruction; replay does not rerun FGM scoring.", "Five declared maps separate observations from the ensemble comparison: catalog-time labels on admitted six-sample windows; four-lag B and magnitude packing into 16D; normalized cubic contraction of three overlapping staples; seeded per-file positive/negative subsampling; pooled average-rank AUC and ensemble quantiles."]
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-ORBIT-20260903"]
+experiment_ids = ["E-279"]
+actor = "codex"
+reason = "Reconcile unique E-279 evidence with current canonical history and adjudicate the explicitly fired falsifier."
+transition_timestamp = "2026-09-05T02:45:51Z"
+transition_spec_sha256 = "116dea93933ece717e961a700051133a8ad4684cbce108e046cc9fe01c49c507"
+
+[[transition.successors]]
+proposal_key = "staples-alternative-and-isomorphic-family-comparison"
+canonical_claim_id = "C-1742"
+relation_kind = "narrows"

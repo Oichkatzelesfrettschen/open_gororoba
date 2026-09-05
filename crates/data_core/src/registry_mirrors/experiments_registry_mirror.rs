@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 250
+//! Total experiments: 251
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -4294,6 +4294,23 @@
 //! Run command:
 //! ```bash
 //! cargo run --release -p gororoba_cli_data --bin lotss-analysis
+//! ```
+//!
+//! ## E-279: 35-line alternative-twist ensemble and algebra-isomorphic relabeling orbit against the sedenion associator
+//!
+//! - Binary: `staples-twist-orbit`
+//! - Input: Deduplicated THEMIS-A daily FGM files and Staples crossing catalog: 813 admitted files, 1,733,470 sampled windows and 578,320 positives, seed 42.
+//! - Output: data/output/staples_twist_orbit.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1732, C-1742
+//!
+//! Method:
+//! Five declared maps: catalog-time labels on six-sample windows; four-lag B/magnitude packing into 16D; normalized cubic contraction of overlapping staples; seeded per-file negative subsampling; pooled average-rank AUC and ensemble quantiles. Fifty normalized cocycles give zero associators; 250 basis-alternative twists change support and cardinality; 250 GL/sign relabelings preserve 1848-term cardinality and 924/924 balance while moving support indices. Seed additions and multiplications wrap modulo 2^64. Retained-score replay reconstructs tensor identities and regenerates summaries without repeating FGM scoring.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_orbit.json --n-cocycles 50 --n-invariant-twists 250 --n-isomorphic-orbits 250 --seed 42 --neg-fraction 0.05
 //! ```
 //!
 //! ## E-280: THEMIS-A six-sample PVI calibration-context comparison

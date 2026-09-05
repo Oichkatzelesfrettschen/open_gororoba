@@ -1,0 +1,47 @@
+schema_version = 1
+base_commit = "ada81f68f34d3890db39d1c7c3b7d721a6508904"
+imported_head = "1282b5a41f8d3541255d4aa8fbbcd958333ecb95"
+imported_unique_commits = 9
+original_pr = 162
+historical_successor_id = "C-1737"
+canonical_successor_id = "C-1742"
+claim_id_reconciliation = "The unmerged branch allocated C-1737 while its maximum was 1736. Main already advanced to 1741 and retains the C-1737 gap. The canonical allocator creates C-1742; original C-1737 state remains reproducible from the imported Git commit and historical transition specification."
+canonical_boundary = "The integration starts from main's SQLite and replays unique artifacts, E-279, four binaries and a corrected claim transition through canonical CLIs. The branch database never replaces main's calibration, claim-transition or artifact-path histories."
+
+[retained_unique_items]
+uncommitted_patch = "e8-uncommitted-before.patch"
+uncommitted_patch_sha256 = "ebabdef1ec8def345b6918251127f80750fbf6fa55be20e09f4397f5927ea00a"
+untracked_source = "e8-root-decompose-before.txt"
+untracked_source_sha256 = "5c3b13100720783fa994fd100c04763661aa5f73e84d19af7737efda7b44ea97"
+historical_plate = "historical-unlabeled-synthetic-plate.png"
+historical_plate_sha256 = "8245a47aac1e5ada8aac06104f41b7233def4115347359a3e12e4ab18ac720e3"
+plate_boundary = "The original ignored plate is superseded synthetic visualization evidence. The corrected viewer labels the helix synthetic and separates the packing e8 index from Lie E8."
+
+[scientific_reconciliation]
+verdict = "C-1732's stored invariant-family falsifier fires; the corrected transition records Falsifies and Refuted. The successor preserves valid separate measurements with five declared maps and explicit family/support boundaries."
+alternative_family = "Canonical AUC 0.8274468073 lies below [0.8280412950, 0.8372935340]; the 35-line family changes tensor cardinality and support."
+isomorphic_family = "Canonical AUC lies inside [0.8146826435, 0.8406922873]; GL/sign relabelings preserve 1848-term cardinality and 924/924 sign balance while moving support indices."
+replay = ".cache/gate-target/validation/staples-twist-orbit --replay-retained data/output/audit/staples-orbit-worktree-reconciliation/twist-orbit-before.json --out data/output/staples_twist_orbit.json"
+replay_boundary = "All 550 tensor hashes/counts/sign counts reconstruct; numeric sample, canonical, per-draw and summary fields compare exactly. The replay explicitly reuses historical AUCs instead of claiming a new FGM score run."
+replay_source_sha256 = "966672f77489ea1a72fc803ed4127aa79977eb72f0d040ca0cecde97977be80b"
+physical_rerun = "staples-physical-decompose --out OUTPUT_CHECKOUT/data/output/staples_physical_decompose.json, with current working directory set to the primary materialized checkout"
+physical_population = "813 files, 1733470 samples, 578320 positives; same population as the retained original."
+physical_boundary = "Masks retain the original triple denominator; e8 masking is a basis-coordinate ablation because overlapping staples duplicate physical samples. Tied observations receive mean ranks. Narratives derive numeric deltas from computed scores."
+physical_baselines = "Canonical CD 0.8274468073 and maximum rotation 0.8383099422 remain equal to the retained original. physical-decomposition-comparison.json records every channel delta."
+
+[e8_reconciliation]
+cause = "The simple-root table's final half-integer root had odd sign parity, whereas the combinatorial root generator uses even parity."
+repair = "Reflect the final coordinate of alpha7. Every simple-root inner product and the Cartan matrix remain equal; the Weyl orbit now equals the combinatorial 240-root set exactly."
+admission = "New checked helpers reject nonlattice vectors, odd spinor parity, nonfinite values and inconsistent cached norms. The CLI describes an eight-dimensional Euclidean root span and establishes no octonionic identification from dimension."
+verification = "33 E8 tests and targeted Clippy pass; the root decomposition CLI verifies exact root-set equality."
+
+[focused_verification]
+physics = "55 staple library tests and four runner tests pass; scoped Clippy passes with warnings denied."
+viewer = "Three tests pass for data-derived bounds, live reversible flip deltas and rendered header separation; Clippy passes with warnings denied."
+experiment_upsert = "Three focused tests pass, including malformed/duplicate fragments, per-field revisions, complete before/after evidence, omitted-note preservation and injected revision/audit rollback; Clippy passes with warnings denied."
+
+[derived_indexes]
+semantic_refresh = "The pre-integration semantic atoms covered 1543 claims while main contained 1555. Regeneration covers all 1556 integrated claims, including the 12 prior omissions and C-1742; positional generated IDs account for the larger derived-file diff."
+lineage_refresh = "The canonical E-279 row retains XL-249; lineage regeneration covers 251 experiments with 1290 edges and links C-1742."
+preservation = "All 29 assertions in verify-preservation.sql pass. Deleting the successor/experiment relation from a scratch copy makes its required-relation assertion fail."
+repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0; Clippy, 1117 selected tests and governance pass. The local-test policy excludes 27 tests."

@@ -1,0 +1,80 @@
+{
+  "normalization_policy": "All CD basis masks retain the unmasked triple norm product plus 1e-30 in the denominator.",
+  "coordinate_ablation_boundary": "Masks remove staple coordinates. Each physical sample can occur in multiple overlapping staples, so an e8-slot mask does not remove lag-2 Bx from every representation.",
+  "files": 813,
+  "subsample_size": 1733470,
+  "subsample_positives": 578320,
+  "channels": [
+    {
+      "name": "cd_associator",
+      "auc": 0.8274468073358886,
+      "what_it_measures": "full 16D CD cubic mismatch on six samples"
+    },
+    {
+      "name": "max_rotation",
+      "auc": 0.8383099421523968,
+      "what_it_measures": "max stepwise angle of B in the same six samples"
+    },
+    {
+      "name": "mag_jump",
+      "auc": 0.7377189337602665,
+      "what_it_measures": "max |B| minus min |B| in the same six samples"
+    },
+    {
+      "name": "cd_magnitude_zeroed",
+      "auc": 0.8297470784497126,
+      "what_it_measures": "CD associator after clearing every |B| channel"
+    },
+    {
+      "name": "cd_e8_zeroed",
+      "auc": 0.8270202885010008,
+      "what_it_measures": "CD basis-coordinate ablation clearing e8 in each overlapping staple; repeated Bx samples survive in other coordinates"
+    },
+    {
+      "name": "cd_quaternion_lag0",
+      "auc": 0.5,
+      "what_it_measures": "CD associator on lag-0 only; algebraically associative, expect chance"
+    },
+    {
+      "name": "cd_octonion_two_lag",
+      "auc": 0.8264454819308436,
+      "what_it_measures": "CD associator on lags 0-1 (octonion prefix e0..e7)"
+    },
+    {
+      "name": "cd_lags_1_2",
+      "auc": 0.8339461972090595,
+      "what_it_measures": "CD associator keeping only lags 1 and 2"
+    },
+    {
+      "name": "cd_lags_2_3",
+      "auc": 0.8272865095940918,
+      "what_it_measures": "CD associator keeping only lags 2 and 3"
+    },
+    {
+      "name": "mva_lm_rotation",
+      "auc": 0.8340243992008172,
+      "what_it_measures": "max LM-plane rotation from Sonnerup-Cahill MVA on the six samples"
+    },
+    {
+      "name": "mva_delta_bl",
+      "auc": 0.7795003731073461,
+      "what_it_measures": "max minus min B along the MVA maximum-variance axis"
+    },
+    {
+      "name": "b_path_length",
+      "auc": 0.7763740522715948,
+      "what_it_measures": "hodogram arc length in R^3: sum |dB| over the six samples"
+    },
+    {
+      "name": "gram_volume",
+      "auc": 0.7846353112755883,
+      "what_it_measures": "max |det(dB_i, dB_{i+1}, dB_{i+2})|: 3D parallelepiped volume, zero for planar B"
+    },
+    {
+      "name": "rank_rotation_plus_mag_jump",
+      "auc": 0.8220000557685857,
+      "what_it_measures": "sum of ranks of max_rotation and mag_jump; no fitted weights"
+    }
+  ],
+  "reading": "cd_associator ROC-AUC 0.8274, delta from full CD +0.0000; max_rotation ROC-AUC 0.8383, delta from full CD +0.0109; mag_jump ROC-AUC 0.7377, delta from full CD -0.0897; cd_magnitude_zeroed ROC-AUC 0.8297, delta from full CD +0.0023; cd_e8_zeroed ROC-AUC 0.8270, delta from full CD -0.0004; cd_quaternion_lag0 ROC-AUC 0.5000, delta from full CD -0.3274; cd_octonion_two_lag ROC-AUC 0.8264, delta from full CD -0.0010; cd_lags_1_2 ROC-AUC 0.8339, delta from full CD +0.0065; cd_lags_2_3 ROC-AUC 0.8273, delta from full CD -0.0002; mva_lm_rotation ROC-AUC 0.8340, delta from full CD +0.0066; mva_delta_bl ROC-AUC 0.7795, delta from full CD -0.0479; b_path_length ROC-AUC 0.7764, delta from full CD -0.0511; gram_volume ROC-AUC 0.7846, delta from full CD -0.0428; rank_rotation_plus_mag_jump ROC-AUC 0.8220, delta from full CD -0.0054"
+}

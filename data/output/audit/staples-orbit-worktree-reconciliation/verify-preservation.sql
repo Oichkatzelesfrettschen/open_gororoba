@@ -1,0 +1,34 @@
+.bail on
+.mode json
+ATTACH '.cache/integration/main-before.sqlite3' AS baseline;
+CREATE TEMP TABLE assertions(name TEXT PRIMARY KEY, ok INTEGER NOT NULL CHECK(ok=1));
+INSERT INTO assertions VALUES ('prior_transition_events_preserved', NOT EXISTS(SELECT * FROM baseline.claim_transition_events EXCEPT SELECT * FROM main.claim_transition_events));
+INSERT INTO assertions VALUES ('prior_transition_assumptions_preserved', NOT EXISTS(SELECT * FROM baseline.claim_transition_assumptions EXCEPT SELECT * FROM main.claim_transition_assumptions));
+INSERT INTO assertions VALUES ('prior_transition_evidence_preserved', NOT EXISTS(SELECT * FROM baseline.claim_transition_evidence EXCEPT SELECT * FROM main.claim_transition_evidence));
+INSERT INTO assertions VALUES ('prior_transition_experiments_preserved', NOT EXISTS(SELECT * FROM baseline.claim_transition_experiments EXCEPT SELECT * FROM main.claim_transition_experiments));
+INSERT INTO assertions VALUES ('prior_transition_successors_preserved', NOT EXISTS(SELECT * FROM baseline.claim_transition_successors EXCEPT SELECT * FROM main.claim_transition_successors));
+INSERT INTO assertions VALUES ('prior_transition_successor_evidence_preserved', NOT EXISTS(SELECT * FROM baseline.claim_transition_successor_evidence EXCEPT SELECT * FROM main.claim_transition_successor_evidence));
+INSERT INTO assertions VALUES ('prior_transition_successor_where_stated_preserved', NOT EXISTS(SELECT * FROM baseline.claim_transition_successor_where_stated EXCEPT SELECT * FROM main.claim_transition_successor_where_stated));
+INSERT INTO assertions VALUES ('prior_claim_revisions_preserved', NOT EXISTS(SELECT * FROM baseline.claim_revisions EXCEPT SELECT * FROM main.claim_revisions));
+INSERT INTO assertions VALUES ('prior_experiment_revisions_preserved', NOT EXISTS(SELECT * FROM baseline.experiment_revisions EXCEPT SELECT * FROM main.experiment_revisions));
+INSERT INTO assertions VALUES ('prior_claim_relations_preserved', NOT EXISTS(SELECT * FROM baseline.claim_relations EXCEPT SELECT * FROM main.claim_relations));
+INSERT INTO assertions VALUES ('prior_claim_experiment_refs_preserved', NOT EXISTS(SELECT * FROM baseline.claim_experiment_refs EXCEPT SELECT * FROM main.claim_experiment_refs));
+INSERT INTO assertions VALUES ('prior_control_plane_runs_preserved', NOT EXISTS(SELECT * FROM baseline.control_plane_runs EXCEPT SELECT * FROM main.control_plane_runs));
+INSERT INTO assertions VALUES ('prior_artifacts_preserved', NOT EXISTS(SELECT * FROM baseline.artifacts EXCEPT SELECT * FROM main.artifacts));
+INSERT INTO assertions VALUES ('prior_artifact_paths_preserved', NOT EXISTS(SELECT * FROM baseline.artifact_paths EXCEPT SELECT * FROM main.artifact_paths));
+INSERT INTO assertions VALUES ('prior_source_references_preserved', NOT EXISTS(SELECT * FROM baseline.record_sources EXCEPT SELECT * FROM main.record_sources));
+INSERT INTO assertions VALUES ('prior_lane_assignments_preserved', NOT EXISTS(SELECT * FROM baseline.lane_assignments EXCEPT SELECT * FROM main.lane_assignments));
+INSERT INTO assertions VALUES ('other_claim_rows_preserved', NOT EXISTS(SELECT * FROM baseline.claims WHERE id != 'C-1732' EXCEPT SELECT * FROM main.claims));
+INSERT INTO assertions VALUES ('exact_successor_claim', (SELECT count(*)=1 FROM (SELECT id FROM main.claims EXCEPT SELECT id FROM baseline.claims)) AND EXISTS(SELECT 1 FROM main.claims WHERE id='C-1742' AND status='Verified'));
+INSERT INTO assertions VALUES ('source_falsifier_recorded', EXISTS(SELECT 1 FROM main.claims WHERE id='C-1732' AND status='Refuted') AND EXISTS(SELECT 1 FROM main.claim_transition_events WHERE transition_key='staples-alternative-orbit-family-adjudication' AND experiment_verdict='Falsifies' AND proposed_claim_status='Refuted'));
+INSERT INTO assertions VALUES ('experiment_linked_to_successor', EXISTS(SELECT 1 FROM main.claim_experiment_refs WHERE claim_id='C-1742' AND experiment_id='E-279'));
+INSERT INTO assertions VALUES ('prior_experiment_rows_preserved', NOT EXISTS(SELECT * FROM baseline.experiments_cp EXCEPT SELECT * FROM main.experiments_cp));
+INSERT INTO assertions VALUES ('prior_binary_rows_preserved', NOT EXISTS(SELECT * FROM baseline.binaries_cp EXCEPT SELECT * FROM main.binaries_cp));
+INSERT INTO assertions VALUES ('prior_export_runs_preserved', NOT EXISTS(SELECT * FROM baseline.export_runs EXCEPT SELECT * FROM main.export_runs));
+INSERT INTO assertions VALUES ('prior_path_repair_event_preserved', NOT EXISTS(SELECT * FROM baseline.export_runs WHERE action='repair-artifact-paths' EXCEPT SELECT * FROM main.export_runs));
+INSERT INTO assertions VALUES ('four_added_binaries', (SELECT count(*)=4 FROM (SELECT name FROM main.binaries_cp EXCEPT SELECT name FROM baseline.binaries_cp)));
+INSERT INTO assertions VALUES ('exact_binary_additions', NOT EXISTS(SELECT name FROM main.binaries_cp WHERE name NOT IN ('staples-twist-orbit','staples-twist-orbit-view','staples-physical-decompose','e8-root-decompose') EXCEPT SELECT name FROM baseline.binaries_cp) AND NOT EXISTS(SELECT name FROM baseline.binaries_cp EXCEPT SELECT name FROM main.binaries_cp));
+INSERT INTO assertions VALUES ('exact_experiment_addition', (SELECT count(*)=1 FROM (SELECT id FROM main.experiments_cp EXCEPT SELECT id FROM baseline.experiments_cp)) AND EXISTS(SELECT 1 FROM main.experiments_cp WHERE id='E-279'));
+INSERT INTO assertions VALUES ('exact_artifact_additions', (SELECT count(*)=2 FROM (SELECT id FROM main.artifacts EXCEPT SELECT id FROM baseline.artifacts)) AND EXISTS(SELECT 1 FROM main.artifacts WHERE id='LOCAL-STAPLES-TWIST-ORBIT-20260903') AND EXISTS(SELECT 1 FROM main.artifacts WHERE id='LOCAL-STAPLES-WORKTREE-RECONCILIATION') AND NOT EXISTS(SELECT 1 FROM baseline.artifacts WHERE id IN ('LOCAL-STAPLES-TWIST-ORBIT-20260903','LOCAL-STAPLES-WORKTREE-RECONCILIATION')));
+INSERT INTO assertions VALUES ('source_fields_except_status_preserved', EXISTS(SELECT 1 FROM baseline.claims WHERE id='C-1732') AND NOT EXISTS(SELECT id,statement,where_stated,last_verified,formal_proof,status_note,compat_toml_text FROM baseline.claims WHERE id='C-1732' EXCEPT SELECT id,statement,where_stated,last_verified,formal_proof,status_note,compat_toml_text FROM main.claims WHERE id='C-1732'));
+SELECT * FROM assertions ORDER BY name;
