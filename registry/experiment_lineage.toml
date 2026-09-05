@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 253
-edge_count = 1312
+lineage_count = 256
+edge_count = 1321
 
 [[lineage]]
 id = "XL-001"
@@ -4609,6 +4609,60 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv --models-dir data/output/audit/staples-causal-validation/results", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-254"
+experiment_id = "E-284"
+binary = "crossing-utility-frontier"
+deterministic = false
+gpu = false
+run_command = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claim_refs = ["C-1743"]
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-255"
+experiment_id = "E-285"
+binary = "crossing-utility-frontier"
+deterministic = false
+gpu = false
+run_command = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claim_refs = ["C-1743"]
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-256"
+experiment_id = "E-286"
+binary = "crossing-utility-frontier"
+deterministic = true
+gpu = false
+run_command = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claim_refs = ["C-1743"]
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -16417,5 +16471,86 @@ from_id = "E-283"
 to_ref = "data/output/audit/staples-causal-validation/external-results/blocked-external-intake.json"
 to_kind = "path"
 edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01313"
+lineage_id = "XL-254"
+from_id = "E-284"
+to_ref = "crossing-utility-frontier"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01314"
+lineage_id = "XL-254"
+from_id = "E-284"
+to_ref = "C-1743"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01315"
+lineage_id = "XL-254"
+from_id = "E-284"
+to_ref = "plans/crossing-detector-operational-utility.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01316"
+lineage_id = "XL-255"
+from_id = "E-285"
+to_ref = "crossing-utility-frontier"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01317"
+lineage_id = "XL-255"
+from_id = "E-285"
+to_ref = "C-1743"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01318"
+lineage_id = "XL-255"
+from_id = "E-285"
+to_ref = "plans/crossing-detector-operational-utility.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01319"
+lineage_id = "XL-256"
+from_id = "E-286"
+to_ref = "crossing-utility-frontier"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01320"
+lineage_id = "XL-256"
+from_id = "E-286"
+to_ref = "C-1743"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01321"
+lineage_id = "XL-256"
+from_id = "E-286"
+to_ref = "plans/crossing-detector-operational-utility.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
 verified = true
 

@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 138
+document_count = 139
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -805,4 +805,9 @@ removal_reason = "Preserve upstream documentation with the checksum-verified ven
 [[owner]]
 path = "docs/engineering/staples-retained-result-audit.md"
 owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/research/crossing-detector-statistical-benefit.md"
+owner_group = "research"
 removal_status = "active"

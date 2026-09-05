@@ -404,6 +404,11 @@ crate = "gororoba_cli_physics"
 description = "Multi-spacecraft cross-validation: computes Pearson correlation, RMSE, and bias between overlapping hourly measurements from OMNI2, ACE MAG, WIND SWE+MFI. Proves instrument independence of DM null result."
 
 [[binary]]
+name = "crossing-utility-frontier"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "crystal-config-integral"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."

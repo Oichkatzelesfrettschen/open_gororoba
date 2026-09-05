@@ -24,11 +24,11 @@ id = "SIG-0002"
 path = "registry/binaries.toml"
 top_level_keys = ["binary"]
 schema_version = "v1"
-schema_sha256 = "22fcb735bbacf54e72d0ff838d5a9c76849a4c94f7b37fc678bf50aac9b8964a"
-content_sha256 = "084e023c23ed3a0c44dcd20082e2eb3d0caafc5ade7f33822344f1e60a2e681e"
+schema_sha256 = "e6f73551c7418cd4bbf30c4c3a8ccaa72c9533812fc6923c69ec46de64e4b301"
+content_sha256 = "3e711cac00806ea733525678b5e1993873c671b3833dfff9c80e54636066766a"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":393,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
+shape_json = "{\"path\":\"registry/binaries.toml\",\"shapes\":{\"binary\":{\"entry_kind\":\"table\",\"required_keys\":[\"crate\",\"description\",\"name\"],\"row_count\":394,\"type\":\"array\",\"union_keys\":[\"crate\",\"description\",\"experiment\",\"name\"]}},\"top_level_keys\":[\"binary\"]}"
 
 [[signature]]
 id = "SIG-0003"
@@ -68,11 +68,11 @@ id = "SIG-0006"
 path = "registry/experiments.toml"
 top_level_keys = ["experiment", "experiments"]
 schema_version = "v1"
-schema_sha256 = "fe77992464d46f795c20d400dbd9931538ae290796cb656b8b3782353064a131"
-content_sha256 = "b215498dc911ea42c4da5c7be40da9e3741025a085b46223898ef4806921fa37"
+schema_sha256 = "b1913e95f60485f7b9e441219d6b75d687744f6e52158063adf04567666eb396"
+content_sha256 = "866b96d381b881ac55c891656a82974e15e7ad359af153a258baca4f6a8a38f8"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"status\",\"status_token\",\"title\",\"truth_surface_consumption\"],\"row_count\":253,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_note\",\"status_token\",\"title\",\"truth_surface_consumption\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
+shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"status\",\"status_token\",\"title\",\"truth_surface_consumption\"],\"row_count\":256,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_note\",\"status_token\",\"title\",\"truth_surface_consumption\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
 
 [[signature]]
 id = "SIG-0007"

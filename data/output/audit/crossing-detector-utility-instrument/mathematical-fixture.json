@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "mathematical_fixture",
+  "reference": "mathematical_fixture",
+  "measurement_boundary": "MATHEMATICAL FIXTURE ONLY: two-hour synthetic exposure, not spacecraft measurements",
+  "sources": [],
+  "utility": {
+    "accounting": {"kind": "event", "exposure_hours": 2.0, "true_events": 10, "baseline": {"true_positives": 3, "false_positives": 2}, "augmented": {"true_positives": 7, "false_positives": 4}},
+    "benefit_per_true_detection": 1.0,
+    "additional_overhead": 0.0,
+    "paired_draws": [
+      {"accounting": {"kind": "event", "exposure_hours": 2.0, "true_events": 10, "baseline": {"true_positives": 3, "false_positives": 2}, "augmented": {"true_positives": 7, "false_positives": 4}}, "additional_overhead": -1.0},
+      {"accounting": {"kind": "event", "exposure_hours": 2.0, "true_events": 10, "baseline": {"true_positives": 3, "false_positives": 2}, "augmented": {"true_positives": 7, "false_positives": 4}}, "additional_overhead": 1.0}
+    ]
+  }
+}
