@@ -70,6 +70,11 @@ use theorem_identity::{
     default_stable_theorem_id, is_declared_legacy_alias, validate_theorem_identities,
 };
 
+mod artifact_paths;
+pub use artifact_paths::{
+    ArtifactPathRepair, ArtifactPathRepairSpec, HistoricalPathRelation, RelatedArtifactPath,
+    TransformedPathRelation,
+};
 mod claim_transitions;
 pub use claim_transitions::{
     AllocatedSuccessor, ClaimRelationView, ClaimTransitionApplyResult, ClaimTransitionCompatPaths,

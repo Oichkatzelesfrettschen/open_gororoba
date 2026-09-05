@@ -1,0 +1,51 @@
+schema_version = 1
+status = "repaired_and_verified"
+base_commit = "5663248a8b042c742a64b6277f545fe68418042c"
+artifact_ids = ["ASOT-1099", "ASOT-1105", "ASOT-1118", "ASOT-1119", "ASOT-1479"]
+missing_canonical_path_rows_before = 5
+reclassified_path_relations = 7
+new_path_relations = 13
+repair_report = "data/output/audit/artifact-document-path-provenance/repair-report.json"
+preservation = "data/output/audit/artifact-document-path-provenance/preservation.json"
+
+[document_identity]
+cause = "The TOML candidate extractor treated document path_refs and context-chunk paths as copies of their containing document. Six document-reference relations included two surviving directories, so replacing only the five missing canonical paths would retain false copy identities."
+mechanism = "Document rows with source_markdown/body_markdown and context chunks with paths/purpose identify their owning source TOML. The scanner retains embedded paths, URL and DOI references as reference notes. Generic artifact download-path parsing retains its existing behavior."
+book_owners = ["ASOT-1099: registry/book_docs.toml, BOOK-014", "ASOT-1105: registry/book_docs.toml, BOOK-015", "ASOT-1118: registry/book_docs.toml, BOOK-007"]
+context_owner = "ASOT-1119: reports/repo_quick_context_chunks_2026_02_14.toml, CTX-08"
+selector_boundary = "Existing record_sources selectors preserve the imported document/chunk identities. The three book artifacts share one tracked TOML container; generated ignored Markdown mirrors are presentation outputs. The CTX report retains its historical content."
+modernization = "BOOK-007 describes data/papers/corpus, documents_extracted and transport; BOOK-014 references data/papers/corpus/MANIFEST.toml. BOOK-015 directs readers to the manifest and local availability instead of an unqualified 318-file snapshot. registry/book_docs.toml is an authoritative TOML lane pending SQLite promotion; the book mirrors were regenerated from it."
+
+[moreno_extraction]
+artifact_id = "ASOT-1479"
+historical_source_commit = "b41a4a6f2f052513a28901a1ce31290f331e00a9"
+historical_source_path = "papers/extracted/moreno-2005-math0512516/table_1.csv"
+original_path = "data/output/audit/artifact-document-path-provenance/moreno-table-original.csv"
+original_sha256 = "02c1ed06b04730be3d425a5cab33ea11aee7cb73dfc931e115180362f696393c"
+original_bytes = 147
+transformed_intake_path = "data/papers/documents_extracted/moreno-2005-math0512516-companion/table_1.csv"
+transformed_retained_path = "data/output/audit/artifact-document-path-provenance/moreno-table-minus-normalized.csv"
+transformed_sha256 = "fae8fefb401a0c100c6c38bb38117b8d3e2c12cda076e2cc0ff5dc8247da3c4e"
+transformed_bytes = 151
+transformation = "Two ASCII hyphens in the final line became U+2212 minus signs. Replacing those minus signs by hyphens yields the exact historical bytes."
+quality = "Both files preserve garbled mathematical extraction evidence. The historical CSV inventory classified the original as manual_triage. Path recovery establishes byte provenance, not scientific table accuracy or source-paper attribution."
+
+[canonical_migration]
+mechanism = "artifact repair-paths validates a typed finite specification, exact prior path sets, regular repository-contained target files and SHA256. One transaction changes canonical paths and path relations and records full before/after rows, specification hash, actor and reason in export_runs. Original keys, titles, citations, statuses, source references and lanes remain preserved."
+replay_behavior = "An identical repair key/specification returns the retained report after checking target bytes and post-state. Changed specifications, target bytes or artifact/path post-state fail. Canonical repair specifications describe a fixed revision; later intentional edits to owning documents require a newly evidenced specification."
+command = 'CARGO_TARGET_DIR="$PWD/.cache/gate-target" cargo run --locked --profile validation -p gororoba_db --bin gororoba-db -- --repo-root "$PWD" artifact repair-paths --spec data/output/audit/artifact-document-path-provenance/repair.toml'
+exports = ["provenance export-control-plane", "registry-integrity", "provenance verify-control-plane"]
+
+[verification]
+api = "Five artifact path repair tests pass, including full-row metadata preservation, exact replay, invalid admissions, symlink components and late-trigger transaction rollback."
+scanner = "All 25 provenance_ops library tests pass, including document, context-chunk and generic artifact regressions. provenance_ops all-target Clippy passes with warnings denied."
+idempotence = "Two canonical CLI applications emit byte-identical reports and retain one repair event."
+finite_delta = "All 14 SQL assertions pass: exactly five canonical-path changes, seven removed downloaded relations and thirteen added typed relations; original artifact metadata, source references, citations, lanes, claims, transitions and prior export history remain preserved."
+falsifier = "Deleting the transformed-copy relation in a scratch database makes verify-preservation.sql fail at exact_added_paths."
+recovery = "git show b41a4a6f2f052513a28901a1ce31290f331e00a9:papers/extracted/moreno-2005-math0512516/table_1.csv reproduces the retained original bytes."
+comparison_baseline = "mkdir -p .cache/artifact-provenance; git show 5663248a8b042c742a64b6277f545fe68418042c:registry/canonical/control_plane.sqlite3 > .cache/artifact-provenance/before.sqlite3"
+comparison = "sqlite3 registry/canonical/control_plane.sqlite3 < data/output/audit/artifact-document-path-provenance/verify-preservation.sql"
+availability = "provenance --repo-root MATERIALIZED_CHECKOUT --db MATERIALIZED_CHECKOUT/registry/canonical/control_plane.sqlite3 verify"
+availability_boundary = "Repository-wide availability depends on the materialized checkout. The five repaired canonical paths are tracked files; other pre-existing downloaded artifacts can be host-local."
+repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0; scoped Clippy, library tests and governance pass. The scanner source is compiled by provenance_ops through a path import, so its separate 25-test suite and all-target Clippy supply coverage beyond direct-path gate routing."
+preintegration_availability = "All 1658 canonical path rows resolve in the union of the worktree tracked files and primary local materialization. Final single-root availability is checked after integration."
