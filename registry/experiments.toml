@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 181
-experiment_count = 253
+deterministic_count = 182
+experiment_count = 256
 gpu_count = 29
 seeded_count = 49
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6642,4 +6642,85 @@ status = "active"
 status_note = "Blocked input admission: 165 of 166 dates admitted; 2016-09-02 contains a backward timestamp independently confirmed in native official CDF. External scientific inference remains unperformed. Sorting, dropping, or silently replacing the date would violate the sealed protocol."
 status_token = "ACTIVE"
 title = "THEMIS-D external validation admission and native-source ordering audit"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "crossing-utility-frontier"
+binary_experiment_declared = "E-284"
+binary_registered = true
+claim_refs = ["C-1743"]
+claims = ["C-1743"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-284"
+input = "Prospective independently adjudicated continuous blocks, randomized analyst assignment, active review logs and paired detector event counts. Collection and activation remain pending."
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+lineage_id = "XL-254"
+method = "Measure review time per validated crossing and exposure hour, crossing-time errors with reference uncertainty, missed events and duplicate burden. Compare strict-catalog and blinded adjudicated labels separately. Apply event utility and cost-ratio frontiers after measurements are admitted."
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "planned"
+status_note = "Measurement design registered before new final analysis. Await independent reference review, continuous population manifest, analyst observations, frozen event policy and sealed activation manifest. The registered binary evaluates paired counts; it does not collect human observations. No empirical utility or timing improvement has been measured."
+status_token = "PLANNED"
+title = "Continuous crossing catalog curation utility and timing accuracy"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "crossing-utility-frontier"
+binary_experiment_declared = "E-285"
+binary_registered = true
+claim_refs = ["C-1743"]
+claims = ["C-1743"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-285"
+input = "Prospective genuine stream receipt, processing and alert timestamps, independent crossing references, paired event counts and mission-owner consequence valuations. Collection and activation remain pending."
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+lineage_id = "XL-255"
+method = "Measure false alert episodes per exposure hour, event recall, first-alert latency, compute latency, outages and interruption costs on continuous streams including quiet intervals. Apply frozen development-only thresholds and exact-support controls."
+output = []
+output_path_refs = []
+reproducibility_class = "non_deterministic"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "planned"
+status_note = "Measurement design registered before new final analysis. Await live shadow-stream access, clocks and product provenance, independent labels, owner costs and sealed activation manifest. Archival event-time replay cannot establish historical receipt-to-alert latency. The registered binary evaluates paired counts; the live observation collector remains an activation requirement."
+status_token = "PLANNED"
+title = "Continuous spacecraft shadow alerts utility and arrival latency"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "crossing-utility-frontier"
+binary_experiment_declared = "E-286"
+binary_registered = true
+claim_refs = ["C-1743"]
+claims = ["C-1743"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-286"
+input = "Admitted paired sample or event counts, common exposure, resource overhead and paired uncertainty draws from the activated curation or alerting track."
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+lineage_id = "XL-256"
+method = "Compute a-r*b-k in distinct per-decision or per-exposure-hour units. Render signed breakeven contours and pointwise uncertainty with missing or inadequate uncertainty assigned Manual Review. Keep cost-ratio results conditional until owner valuations exist."
+output = []
+output_path_refs = []
+reproducibility_class = "deterministic_replay"
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+status = "planned"
+status_note = "Instrument implemented and validated on explicitly mathematical fixtures; empirical sensitivity remains pending paired observations and sealed activation. Positive, negative and zero false-alarm increments have separate decision rules. Original E-282 threshold 0.005 and its failed-target verdict remain unchanged. Empty run/output fields represent an unactivated experiment, not a runnable scientific result."
+status_token = "PLANNED"
+title = "Crossing detector dual-unit cost-ratio sensitivity frontier"
 truth_surface_consumption = []

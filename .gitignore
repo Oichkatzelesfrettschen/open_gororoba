@@ -315,3 +315,4 @@ proofs/extraction/test_r2vb_dp4_admit
 
 # Per-host artifact materialization manifests: host state, never repository truth.
 data/output/external_manifests/
+!docs/research/crossing-detector-statistical-benefit.md

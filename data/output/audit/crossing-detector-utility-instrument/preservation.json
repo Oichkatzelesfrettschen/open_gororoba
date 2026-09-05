@@ -1,0 +1,6 @@
+[{"check_name":"original_claim_rows_changed_or_missing","violations":0},
+{"check_name":"original_contracts_changed_or_missing","violations":0},
+{"check_name":"original_transition_events_changed_or_missing","violations":0},
+{"check_name":"original_artifacts_changed_or_missing","violations":0},
+{"check_name":"original_experiment_statements_changed_or_missing","violations":0},
+{"check_name":"original_binary_metadata_changed_or_missing","violations":0}]

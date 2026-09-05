@@ -5,8 +5,8 @@
 
 [knowledge_sources]
 generated_at = "deterministic"
-tracked_markdown_count = 138
-manual_source_count = 87
+tracked_markdown_count = 139
+manual_source_count = 88
 markdown_mirror_count = 0
 generated_markdown_count = 51
 artifact_report_count = 0
@@ -2420,6 +2420,25 @@ link_sample = [".v", "FP24Representable.v", "Flocq.Core", "coq-flocq.4.2.2", "pr
 
 [[document]]
 id = "DOC-0130"
+path = "docs/research/crossing-detector-statistical-benefit.md"
+title = "Crossing-detector statistical benefit and operational utility"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "high"
+toml_backing = "registry/research_narratives.toml"
+sha256 = "fce40dc363326d7663b1ed4c7b12fe67750052f6ff5bda65dbc4a90393a76ee7"
+size_bytes = 9596
+line_count = 178
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 5
+link_count = 26
+link_sample = ["data/output/audit/staples-causal-validation/findings.toml", "data/output/audit/staples-causal-validation/protocol.toml", "data/output/audit/staples-causal-validation/research/adopted-calibration-findings.toml", "frontier.csv", "frontier.svg", "mathematical-fixture.json", "plans/crossing-detector-operational-utility.toml", "report.json"]
+
+[[document]]
+id = "DOC-0131"
 path = "docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md"
 title = "NANOGrav 15-Year Cayley-Dickson Synthesis"
 kind = "manual_source"
@@ -2438,7 +2457,7 @@ link_count = 143
 link_sample = [".out", ".par", ".res", ".tim", "2.1.0", "J0709+0458_PINT_20230131.wb", "J1312+0051_PINT_20230131.wb", "J1713+0747_PINT_20230131.wb"]
 
 [[document]]
-id = "DOC-0131"
+id = "DOC-0132"
 path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
 title = "Ticket: Pioneer/Flyby Fractal Bridge"
 kind = "generated_markdown"
@@ -2456,7 +2475,7 @@ link_count = 7
 link_sample = ["best_fit.json", "crates/gr_core/src/fractal_metric.rs", "fit_grid.csv", "nbody_integration.rs"]
 
 [[document]]
-id = "DOC-0132"
+id = "DOC-0133"
 path = "docs/toolchain/heasarc-catalog-walker.md"
 title = "HEASARC Catalog-of-Catalogs Walker (plan P6A.S5.T1)"
 kind = "manual_source"
@@ -2474,7 +2493,7 @@ link_count = 24
 link_sample = ["/tables", "crates/data_core/src/catalogs/heasarc_enumerate.rs", "crates/data_core/src/formats/votable.rs", "data_servers.toml#heasarc_w3browse", "download_stack.rs", "registry/data_servers.toml", "registry/datasets.toml", "registry/heasarc_catalogs.toml"]
 
 [[document]]
-id = "DOC-0133"
+id = "DOC-0134"
 path = "docs/toolchain/mast-enumeration-policy.md"
 title = "MAST (STScI) Catalog Enumeration Policy (plan P6A.S5.T2)"
 kind = "manual_source"
@@ -2492,7 +2511,7 @@ link_count = 10
 link_sample = ["data_servers.toml#mast_s3_zarr", "hst_fetch.rs", "jwst_fetch.rs", "registry/data_servers.toml#mast_api", "registry/datasets.toml", "registry/mast_catalogs.toml"]
 
 [[document]]
-id = "DOC-0134"
+id = "DOC-0135"
 path = "docs/toolchain/nightly-2026-04-05-ice.md"
 title = "Nightly 2026-04-05 ICE Captures"
 kind = "manual_source"
@@ -2510,7 +2529,7 @@ link_count = 20
 link_sample = [".gitignore:52", "Cargo.toml:2", "Cargo.toml:441-721", "rust-toolchain.toml", "rust-toolchain.toml:2"]
 
 [[document]]
-id = "DOC-0135"
+id = "DOC-0136"
 path = "docs/toolchain/shell-retirement.md"
 title = "Shell Script Retirement Decision Log"
 kind = "manual_source"
@@ -2528,7 +2547,7 @@ link_count = 39
 link_sample = ["bin/", "bin/build_fix.sh", "bin/check_gemini.sh", "bin/do_commit.sh", "bin/micromamba", "bin/run_quantum_container.sh", "bin/temp_commit.sh", "crates/xtask/src/bin/bootstrap_xdg.rs"]
 
 [[document]]
-id = "DOC-0136"
+id = "DOC-0137"
 path = "plans/README.md"
 title = "plans/"
 kind = "manual_source"
@@ -2546,7 +2565,7 @@ link_count = 18
 link_sample = ["../README_GPU_STEPS.md", "<topic>.md", "<topic>_<YYYY_MM_DD>.toml", "plans/", "plans/*.md", "plans/*.toml", "plans/archive/", "post_gate_optimization_2026_05_12.toml"]
 
 [[document]]
-id = "DOC-0137"
+id = "DOC-0138"
 path = "vendor/proc-macro-error2/CHANGELOG.md"
 title = "v2.0.1 (2024-09-06)"
 kind = "manual_source"
@@ -2564,7 +2583,7 @@ link_count = 69
 link_sample = ["1.61", "AsRef/AsMut<String> for MacroError", "From<&str/String>", "From<MacroError> for proc_macro/proc_macro2::TokenStream", "Result<T, &str/String>::abort_or_exit()", "build.rs", "v1.*"]
 
 [[document]]
-id = "DOC-0138"
+id = "DOC-0139"
 path = "vendor/proc-macro-error2/README.md"
 title = "Makes error reporting in procedural macros nice and easy"
 kind = "manual_source"

@@ -6,11 +6,11 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 138
+document_count = 139
 generated_artifact_count = 36
 manual_narrative_count = 41
 toml_generated_mirror_count = 15
-toml_manual_source_count = 46
+toml_manual_source_count = 47
 
 [policy]
 safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]
@@ -1140,7 +1140,7 @@ header_required = true
 notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
-path = "docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md"
+path = "docs/research/crossing-detector-statistical-benefit.md"
 id = "MDG-0130"
 kind = "manual_source"
 mode = "toml_manual_source"
@@ -1149,8 +1149,17 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
 
 [[document]]
-path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
+path = "docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md"
 id = "MDG-0131"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/research_narratives.toml"]
+notes = "Manual Markdown source with a declared TOML destination; mirror promotion remains open."
+
+[[document]]
+path = "docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md"
+id = "MDG-0132"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
 header_required = true
@@ -1158,14 +1167,6 @@ notes = "Generated Markdown mirror with an explicit immutable header."
 
 [[document]]
 path = "docs/toolchain/heasarc-catalog-walker.md"
-id = "MDG-0132"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source retained until a canonical registry lane is assigned."
-
-[[document]]
-path = "docs/toolchain/mast-enumeration-policy.md"
 id = "MDG-0133"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1173,7 +1174,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/toolchain/nightly-2026-04-05-ice.md"
+path = "docs/toolchain/mast-enumeration-policy.md"
 id = "MDG-0134"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1181,7 +1182,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "docs/toolchain/shell-retirement.md"
+path = "docs/toolchain/nightly-2026-04-05-ice.md"
 id = "MDG-0135"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1189,7 +1190,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "plans/README.md"
+path = "docs/toolchain/shell-retirement.md"
 id = "MDG-0136"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1197,7 +1198,7 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "vendor/proc-macro-error2/CHANGELOG.md"
+path = "plans/README.md"
 id = "MDG-0137"
 kind = "manual_source"
 mode = "manual_narrative"
@@ -1205,8 +1206,16 @@ header_required = false
 notes = "Manual narrative source retained until a canonical registry lane is assigned."
 
 [[document]]
-path = "vendor/proc-macro-error2/README.md"
+path = "vendor/proc-macro-error2/CHANGELOG.md"
 id = "MDG-0138"
+kind = "manual_source"
+mode = "manual_narrative"
+header_required = false
+notes = "Manual narrative source retained until a canonical registry lane is assigned."
+
+[[document]]
+path = "vendor/proc-macro-error2/README.md"
+id = "MDG-0139"
 kind = "manual_source"
 mode = "manual_narrative"
 header_required = false

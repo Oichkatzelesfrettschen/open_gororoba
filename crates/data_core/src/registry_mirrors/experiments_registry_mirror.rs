@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 253
+//! Total experiments: 256
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -4382,4 +4382,55 @@
 //! Run command:
 //! ```bash
 //! cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv --models-dir data/output/audit/staples-causal-validation/results
+//! ```
+//!
+//! ## E-284: Continuous crossing catalog curation utility and timing accuracy
+//!
+//! - Binary: `crossing-utility-frontier`
+//! - Input: Prospective independently adjudicated continuous blocks, randomized analyst assignment, active review logs and paired detector event counts. Collection and activation remain pending.
+//! - Output: (none)
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: C-1743
+//!
+//! Method:
+//! Measure review time per validated crossing and exposure hour, crossing-time errors with reference uncertainty, missed events and duplicate burden. Compare strict-catalog and blinded adjudicated labels separately. Apply event utility and cost-ratio frontiers after measurements are admitted.
+//!
+//! Run command:
+//! ```bash
+//!
+//! ```
+//!
+//! ## E-285: Continuous spacecraft shadow alerts utility and arrival latency
+//!
+//! - Binary: `crossing-utility-frontier`
+//! - Input: Prospective genuine stream receipt, processing and alert timestamps, independent crossing references, paired event counts and mission-owner consequence valuations. Collection and activation remain pending.
+//! - Output: (none)
+//! - Deterministic: `false`
+//! - GPU: `false`
+//! - Claims: C-1743
+//!
+//! Method:
+//! Measure false alert episodes per exposure hour, event recall, first-alert latency, compute latency, outages and interruption costs on continuous streams including quiet intervals. Apply frozen development-only thresholds and exact-support controls.
+//!
+//! Run command:
+//! ```bash
+//!
+//! ```
+//!
+//! ## E-286: Crossing detector dual-unit cost-ratio sensitivity frontier
+//!
+//! - Binary: `crossing-utility-frontier`
+//! - Input: Admitted paired sample or event counts, common exposure, resource overhead and paired uncertainty draws from the activated curation or alerting track.
+//! - Output: (none)
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1743
+//!
+//! Method:
+//! Compute a-r*b-k in distinct per-decision or per-exposure-hour units. Render signed breakeven contours and pointwise uncertainty with missing or inadequate uncertainty assigned Manual Review. Keep cost-ratio results conditional until owner valuations exist.
+//!
+//! Run command:
+//! ```bash
+//!
 //! ```

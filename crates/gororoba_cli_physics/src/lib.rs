@@ -4,6 +4,8 @@
 //! quantum mechanics, spectral analysis, fluids, HEP/QGP, and vacuum physics.
 
 pub mod anomaly_residual;
+pub mod detection_utility;
+pub mod detection_utility_output;
 pub mod ephemeris_loader;
 pub mod flyby;
 pub mod heliosphere_boundary;

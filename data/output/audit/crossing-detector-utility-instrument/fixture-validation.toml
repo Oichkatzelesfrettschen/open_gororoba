@@ -1,0 +1,21 @@
+evidence_kind = "mathematical_fixture"
+empirical_spacecraft_measurements = false
+cli_exit_status = 0
+svg_render_exit_status = 0
+visual_inspection = "960x700 PNG inspected; axes, legend, fixture warning and diagonal contour are readable without clipping"
+grid_size = 5
+cells = 25
+regions = ["manual_review"]
+unit = "per_exposure_hour"
+coefficient_a = 2.0
+coefficient_b = 1.0
+coefficient_k = 0.0
+contour = "normalized_overhead_shift = 2 - cost_ratio"
+ratio_frontier = "positive_below exclusive_ratio=2"
+origin_point_utility = 2.0
+origin_interval = [1.525, 2.475]
+breakeven_cost_ratio = 2.0
+breakeven_point_utility = 0.0
+breakeven_interval = [-0.475, 0.475]
+paired_draw_count = 2
+missing_or_insufficient_uncertainty_claim = "Two supplied mathematical draws produce empirical percentiles while every classification stays Manual Review"

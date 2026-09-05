@@ -1,0 +1,19 @@
+focused_library_tests_passed = 98
+focused_cli_tests_passed = 4
+focused_library_clippy = "passed with warnings denied"
+frontier_clippy = "passed with warnings denied; full gate rechecks final source"
+fixture_cells_checked = 25
+fixture_arithmetic = "Every cell equals 2-cost_ratio-overhead_shift; paired percentiles and signed breakeven match analytic values."
+fixture_scope = "Mathematical only; every region is Manual Review."
+svg_render = "rsvg-convert exit 0; final 960x700 image visually inspected"
+missing_source_receipt = "Empirical request rejected before output creation"
+output_overwrite = "Existing output directory refused; retained report SHA256 unchanged"
+original_protocol = "SHA256 remains ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586c5e520c14dd70aa3aea6"
+empirical_completion = "Awaiting independent references, analyst observations, actual receipt/alert logs and sealed activation policies."
+full_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+full_gate_exit = 0
+scoped_tests_passed = 634
+scoped_tests_skipped = 0
+full_gate_clippy = "passed with warnings denied"
+full_gate_governance = "passed canonical declarations, signatures, execution lineage and markdown ownership"
+renderer = "Plotters SVGBackend; final CLI tests and analytic fixture pass"
