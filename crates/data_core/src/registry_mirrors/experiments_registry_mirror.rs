@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 232
+//! Total experiments: 250
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -2181,7 +2181,7 @@
 //!
 //! ## E-128: Bartol vs AMDA cross-validation for Voyager 2 B-field (1990-1995)
 //!
-//! - Binary: ``
+//! - Binary: `bartol-spdf-crossval`
 //! - Input: data/external/voyager/voyager2/bartol/vy2_90.dat through vy2_95.dat, data/external/voyager/voyager2/vy2_*_amda_merged_hourly.asc for 1990-1995
 //! - Output: data/output/bartol_vs_amda_v2_bfield_correlation.csv
 //! - Deterministic: `true`
@@ -2193,7 +2193,7 @@
 //!
 //! Run command:
 //! ```bash
-//! cargo run --release --bin scripts/crates/data_core/src/catalogs/voyager.rs --start 1990 --end 1995
+//! cargo run --release -p gororoba_cli_data --bin bartol-spdf-crossval -- --start 1990 --end 1995
 //! ```
 //!
 //! ## E-129: Pioneer AMDA MAG-only radial B-field profile (5-80 AU)
@@ -3996,4 +3996,338 @@
 //! Run command:
 //! ```bash
 //! for control in rot dbdt bmag cumrot6 maxrot6 pvi6 gram6 scram chperm; do CARGO_TARGET_DIR=.cache/exp-staples-target cargo run --release -p gororoba_cli_physics --bin staples-roc-cluster-bootstrap -- --scores data/output/benchmark_scores.csv --col-a assoc --col-b "$control" --out "data/output/staples_cluster_bootstrap_assoc_vs_${control}.json"; done
+//! ```
+//!
+//! ## E-240: Random unital twist ladder against the sedenion associator on the staples benchmark
+//!
+//! - Binary: `staples-twist-ladder`
+//! - Input: The E-239 sample: THEMIS-A daily FGM files from data/output/tha_matched_files.csv labeled by the Staples et al. (2020) catalog data/output/cat_themis_a.csv (positive within 2 minutes of a catalogued crossing on that UTC day, files under 500 rows skipped). Subsample: every positive plus each negative with probability 0.05 from ChaCha8 keyed on (seed 42, file_id), stratified by daily file; the canonical tensor is also scored on the full sample.
+//! - Output: data/output/staples_twist_ladder.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1632, C-1729
+//!
+//! Method:
+//! Preregistered before execution. Hypothesis: the sedenion associator tensor discriminates crossings better than the associator of a random unital XOR-graded twist on the same 16-element basis. Control family: 999 uniformly random unital twists sigma with sigma(0,.) = sigma(.,0) = +1, each turned into its associator tensor by SparseCubicTensor::from_twist (coefficient sigma(i,j) sigma(i^j,k) - sigma(j,k) sigma(i,j^k), the formula that reproduces from_associator on the CD twist) and scored by the identical normalized contraction on the identical subsample; plus 999 exact-support sign scrambles of the CD tensor (seeds 42..1040, so seed 42 reproduces C-1632) as the lower rung. Statistic: pooled average-rank Mann-Whitney AUC. Falsifier: canonical AUC at or below the 97.5th percentile of the random-twist ensemble, tail probability (1 + #draws >= CD) / 1000 at or above 0.025; that outcome narrows C-1632 from sedenion-specific to XOR-graded-algebra-specific. Seed policy: twist d uses ChaCha8 seed 42 + (d+1) * 0x9E3779B97F4A7C15 wrapping; every draw records its term count, sign counts and twist sha256.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-ladder -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_ladder.json --n-draws 999 --n-scrambles 999 --seed 42 --neg-fraction 0.05
+//! ```
+//!
+//! ## E-241: Embedding-layout sweep of the canonical CD tensor over all 144 structured staple layouts
+//!
+//! - Binary: `staples-layout-sweep`
+//! - Input: The E-239 sample and the E-240 stratified subsample (seed 42, negative fraction 0.05), so the canonical layout's AUC is comparable across E-240 and E-241.
+//! - Output: data/output/staples_layout_sweep.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1633, C-1730
+//!
+//! Method:
+//! Preregistered before execution. Hypothesis: the canonical staple layout (time-ordered lags in slots 0..3, components Bx By Bz in channel slots 0..2, magnitude fixed in slot 3) is one arbitrary member of the 4! x 3! = 144 structured layouts and its AUC is typical of them. Every layout is scored by the canonical CD tensor on the identical subsample. Declared in advance: the canonical layout is the identity permutation pair; the equivalence margin is 0.005 AUC; under exchangeability the canonical rank r among 144 has selection probability r/144. Falsifier of the hypothesis: the canonical layout ranks in the top 5 percent with no other layout within the margin above it, which makes the lag-to-basis assignment a fitted parameter and raises the detector's declared parameter count by one; the converse finding, layouts exceeding the canonical by more than the margin, makes the reported AUC a lower bound reached without tuning the assignment.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --profile validation -p gororoba_cli_physics --bin staples-layout-sweep -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_layout_sweep.json --seed 42 --neg-fraction 0.05 --equivalence-margin 0.005
+//! ```
+//!
+//! ## E-242: Incremental information of the staple associator over the six-sample geometric baselines under file-grouped cross-validation
+//!
+//! - Binary: `staples-incremental-information`
+//! - Input: data/output/benchmark_scores.csv from E-239 (23,664,374 rows, 578,320 positives, 813 daily files): columns dbdt, rot, cumrot6, maxrot6, pvi6, gram6 as the baseline feature set and assoc as the candidate, label as the target, file_id as the cluster.
+//! - Output: data/output/staples_incremental_information.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1631, C-1731
+//!
+//! Method:
+//! Preregistered before execution. Features enter as ln(x + 1e-12). Model B: logistic regression on the six baselines; model B+A adds assoc. Fit by Newton-Raphson with a fixed ridge 1e-6 on standardized coefficients, at most 25 iterations, deviance tolerance 1e-8, no tuning. Outer validation: 5 folds grouped by file_id, fold assignment by one ChaCha8(seed 42) shuffle of the sorted file ids dealt round-robin; standardization fitted on training folds only; both models fitted on identical rows and predicted on identical held-out rows. Metrics on out-of-fold predictions: average-rank ROC-AUC, average-precision PR-AUC, log loss, Brier score, ten equal-count calibration bins with expected calibration error. Paired bootstrap: 1000 resamples of the 813 files with replacement (ChaCha8 keyed on seed and resample), samples reweighted by file draw count, weighted AUC, PR-AUC and log loss from one pass over a global sort per model, paired deltas B+A minus B with 95 percent percentile intervals. Decision rule: a delta ROC-AUC interval that excludes zero and is positive means the associator carries information beyond the six-sample geometric baselines; an interval containing zero means it is redundant with them at matched receptive field, in which case C-1631 narrows to marginal univariate discrimination and I-212 (receptive-field confounding) strengthens; I-212 is not closed on a zero-containing interval.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --profile validation -p gororoba_cli_physics --bin staples-incremental-information -- --scores data/output/benchmark_scores.csv --out data/output/staples_incremental_information.json --seed 42 --n-boot 1000
+//! ```
+//!
+//! ## E-266: MMS magnetopause CD associator evaluation against SITL-curated selections
+//!
+//! Historical identifier: `EIA-001` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere mms-sitl-labeled`
+//! - Input: MMS1 FGM survey L2 minute data and the SITL burst-selection list for the evaluation window
+//! - Output: data/output/heliosphere/ablations/mms_sitl_labeled_eval.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! 32D Cayley-Dickson associator on Takens-embedded minute-level MMS1 FGM data scored as precision, recall and F1 against SITL-curated magnetopause selections. The cached SITL file in data/external is a 166-byte SDC error page (SRC-MMS-SITL-GLS-SELECTIONS is blocked), so the ground truth this row names was never retrieved. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- mms-sitl-labeled
+//! ```
+//!
+//! ## E-267: THEMIS-A CD associator P/R/F1 against the Staples et al. (2020) catalog over the sudden-commencement window
+//!
+//! Historical identifier: `EIA-002` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere themis-staples-labeled`
+//! - Input: THEMIS-A L2 FGM spin-resolution data for 2016-08-29..2016-09-04 and the Staples et al. (2020) crossing catalog
+//! - Output: data/output/heliosphere/ablations/themis_staples_labeled_eval.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! 32D CD associator on Takens-embedded THEMIS-A FGM data, detections matched to catalog crossings within a fixed tolerance, reported as precision, recall and F1 with a |B|-gradient plus rotation baseline; the JGR draft reports F1 = 0.601. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-staples-labeled
+//! ```
+//!
+//! ## E-268: Multi-day MMS1 crossing analysis: topology-positive rate under the 32D CD associator
+//!
+//! Historical identifier: `EIA-003` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere mms-multiday`
+//! - Input: Multi-day MMS1 FGM survey L2 data via CDAWeb HAPI
+//! - Output: data/output/heliosphere/ablations/mms_multiday_crossing_analysis.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! |B|-gradient plus rotation crossing detection cross-compared with the 32D CD associator on Takens-embedded minute data; the JGR draft reports 75 of 86 crossings topology-positive (87.2 percent). Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- mms-multiday
+//! ```
+//!
+//! ## E-269: PSP Alfvenic noise control: CD associator fire rates in quiet Alfvenic versus compressive intervals
+//!
+//! Historical identifier: `EIA-004` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere psp-alfven-control`
+//! - Input: PSP FIELDS MAG 1-minute data for encounter E4 (perihelion 2020-01-29) and E3 via CDAWeb HAPI
+//! - Output: data/output/heliosphere/ablations/psp_alfven_control.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Intervals classified as Alfvenic (rotation with constant |B|), compressive, or quiet in a +-5 minute window; CD associator fire rate per class; the JGR draft reports 0.311 fires per hour in quiet solar wind. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-alfven-control
+//! ```
+//!
+//! ## E-270: Takens tau sensitivity sweep over {1,2,5,10} minutes on the THEMIS-A Staples window
+//!
+//! Historical identifier: `EIA-005` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere takens-tau-sweep`
+//! - Input: The E-267 THEMIS-A FGM window and Staples et al. (2020) catalog
+//! - Output: data/output/heliosphere/ablations/takens_tau_sweep.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! The E-267 evaluation pipeline repeated at embedding lag tau in {1,2,5,10} minutes with the tau-independent |B|-gradient plus rotation baseline as reference; reports P/R/F1 per tau. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- takens-tau-sweep
+//! ```
+//!
+//! ## E-271: PSP E3 micro-switchback enrichment of quiet-interval CD associator fires
+//!
+//! Historical identifier: `EIA-006` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere psp-switchback-correlation`
+//! - Input: PSP FIELDS MAG 1-minute data for encounter E3 and the E-269 quiet-interval fire list
+//! - Output: data/output/heliosphere/ablations/psp_switchback_correlation.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Enrichment of quiet-interval CD fires within +-k minutes of consecutive-minute B-vector rotations below the Alfvenic classifier threshold; the JGR draft reports 1.72x enrichment. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-switchback-correlation
+//! ```
+//!
+//! ## E-272: Block-bootstrap 95 percent F1 confidence interval on the THEMIS-A sudden-commencement window
+//!
+//! Historical identifier: `EIA-007` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere bootstrap-f1`
+//! - Input: The E-267 evaluation JSON (detection and event timestamps)
+//! - Output: data/output/heliosphere/ablations/themis_bootstrap_f1_ci.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Block bootstrap with 1800 s blocks, 10000 resamples, seed 42, through boundary_metrics::bootstrap_f1_ci_seeded; the JGR draft reports CI [0.456, 0.667]. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- bootstrap-f1
+//! ```
+//!
+//! ## E-273: PSP compressive-versus-Alfvenic CD fire count-ratio permutation test
+//!
+//! Historical identifier: `EIA-008` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere psp-alfven-control`
+//! - Input: The E-269 per-class CD fire counts
+//! - Output: data/output/heliosphere/ablations/psp_alfven_control.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Permutation of interval class labels against the observed compressive-to-Alfvenic fire count ratio; the JGR draft reports a 2.83x ratio at p < 1e-4. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- psp-alfven-control
+//! ```
+//!
+//! ## E-274: THEMIS-A sudden-commencement window F1 against shuffled event times
+//!
+//! Historical identifier: `EIA-009` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere themis-staples-labeled`
+//! - Input: The E-267 detections and catalog events
+//! - Output: data/output/heliosphere/ablations/themis_staples_labeled_eval.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! F1 of the observed detections against catalog event times shuffled within the window; the JGR draft reports F1 = 0.601 at p < 1e-4. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-staples-labeled
+//! ```
+//!
+//! ## E-275: THEMIS-A general-interval F1, shuffled-event null and bootstrap interval outside the sudden-commencement window
+//!
+//! Historical identifier: `EIA-010` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere themis-general-benchmark`
+//! - Input: THEMIS-A FGM for a 30-day September 2016 window and the Staples et al. (2020) catalog
+//! - Output: data/output/heliosphere/ablations/themis_general_benchmark.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! The E-267 pipeline on an unselected interval to remove sudden-commencement survivor bias, with a shuffled-event null and bootstrap interval; the JGR draft reports F1 = 0.415 and CI [0.320, 0.457]. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- themis-general-benchmark
+//! ```
+//!
+//! ## E-276: THEMIS held-out threshold F1 evaluation cited in the JGR draft
+//!
+//! Historical identifier: `EIA-011` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: ``
+//! - Input: Unidentified: the JGR draft table reports F1 = 0.332 for a held-out threshold evaluation and no heliosphere subcommand labels itself as its producer
+//! - Output: (none)
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Producer unidentified at registration; the row exists so the citation resolves and the analysis is bound to a subcommand when it is re-run. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//!
+//! ```
+//!
+//! ## E-277: Voyager 1 heliopause crossing CD associator enrichment from MAG48 data
+//!
+//! Historical identifier: `EIA-012` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `heliosphere voyager-heliopause`
+//! - Input: Voyager 1 MAG48 48-second data in a window around the 2012-08-25 heliopause crossing
+//! - Output: data/output/heliosphere/ablations/voyager_heliopause_eval.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! 4-channel Takens embedding at 48 s lag with relative normalization (local-window median |B|, clamped at 1 percent), CD associator fire enrichment across the crossing; the JGR draft reports 1.44x. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_physics --bin heliosphere -- voyager-heliopause
+//! ```
+//!
+//! ## E-278: LoTSS DR2 MaNGA-overlap ultrametric fraction test with column-shuffled null
+//!
+//! Historical identifier: `EIA-017` in `registry/experiment_id_aliases.toml`.
+//!
+//! - Binary: `lotss-analysis`
+//! - Input: LoTSS DR2 radio measurements joined to the MaNGA overlap sample
+//! - Output: data/output/lotss_ultrametric_report.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: (none)
+//!
+//! Method:
+//! Ultrametric fraction over sampled triples of the joined feature coordinates against a shuffled null; the report carries the experiment id in its experiment_id field. Retained output: none in the tree; the number the JGR draft reports for this analysis is unreproduced until the run is repeated and its output registered. Identity: legacy heliosphere-paper-2026-08 identifier recorded in registry/experiment_id_aliases.toml.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --release -p gororoba_cli_data --bin lotss-analysis
+//! ```
+//!
+//! ## E-280: THEMIS-A six-sample PVI calibration-context comparison
+//!
+//! - Binary: `staples-calibration-refits`
+//! - Input: THEMIS-A raw daily files, retained score CSV and dense file map, and Staples crossing catalog; SHA-256 admission and common 256-increment warmup mask.
+//! - Output: data/output/audit/staples-calibration-grouped-refits/results/dataset.json, data/output/audit/staples-calibration-grouped-refits/results/cv-seed-42.json, data/output/audit/staples-calibration-grouped-refits/results/cv-seed-43.json, data/output/audit/staples-calibration-grouped-refits/results/cv-seed-44.json, data/output/audit/staples-calibration-grouped-refits/results/cv-seed-45.json, data/output/audit/staples-calibration-grouped-refits/results/cv-seed-46.json
+//! - Deterministic: `false`
+//! - Seed: `42`
+//! - GPU: `false`
+//! - Claims: C-1738, C-1739, C-1740, C-1741
+//!
+//! Method:
+//! Hold five numerator increments over six samples fixed. Compare daily-file RMS, one pooled training-file RMS, and past-only 256-increment RMS. Refit baseline and augmented logistic models under five file-grouped five-fold splits. The protocol retains label time k+4 and feature availability k+5.
+//!
+//! Run command:
+//! ```bash
+//! RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results --mode cv
+//! ```
+//!
+//! ## E-281: THEMIS-A paired train-file and test-file bootstrap with logistic refitting
+//!
+//! - Binary: `staples-calibration-refits`
+//! - Input: The E-280 common population; seed-42 fold 0 is the fixed test partition.
+//! - Output: data/output/audit/staples-calibration-grouped-refits/results/bootstrap-000.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-001.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-002.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-003.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-004.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-005.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-006.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-007.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-008.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-009.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-010.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-011.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-012.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-013.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-014.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-015.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-016.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-017.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-018.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-019.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-020.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-021.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-022.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-023.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-024.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-025.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-026.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-027.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-028.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-029.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-030.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-031.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-032.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-033.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-034.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-035.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-036.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-037.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-038.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-039.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-040.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-041.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-042.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-043.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-044.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-045.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-046.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-047.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-048.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-049.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-050.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-051.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-052.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-053.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-054.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-055.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-056.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-057.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-058.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-059.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-060.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-061.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-062.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-063.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-064.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-065.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-066.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-067.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-068.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-069.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-070.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-071.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-072.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-073.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-074.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-075.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-076.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-077.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-078.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-079.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-080.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-081.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-082.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-083.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-084.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-085.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-086.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-087.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-088.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-089.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-090.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-091.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-092.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-093.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-094.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-095.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-096.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-097.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-098.json, data/output/audit/staples-calibration-grouped-refits/results/bootstrap-099.json, data/output/audit/staples-calibration-grouped-refits/results/summary.json
+//! - Deterministic: `false`
+//! - Seed: `10000`
+//! - GPU: `false`
+//! - Claims: C-1738, C-1739, C-1740, C-1741
+//!
+//! Method:
+//! Independently resample whole train files and test files with replacement in 100 paired draws. Refit RMS, standardization and both logistic models per draw and calibration arm. Report conditional linear-percentile intervals for separate global minimum incremental AUC and global minimum standalone associator-minus-PVI AUC across arms and gradient strata. Five repeated grouped splits measure sensitivity rather than independent replication.
+//!
+//! Run command:
+//! ```bash
+//! RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results --mode all
 //! ```

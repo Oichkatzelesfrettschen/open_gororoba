@@ -1,0 +1,36 @@
+schema_version = 1
+working_directory = "The source checkout containing Cargo.toml and the sealed protocol."
+input_boundary = "The input root contains data/output/benchmark_scores.csv, its exported dense file map, the crossing catalog, the matched-file manifest, and the 813 raw daily files named by that map. The protocol pins input hashes."
+build = 'CARGO_TARGET_DIR="$(pwd)/.cache/gate-target" cargo build --profile validation -p gororoba_cli_physics --bin staples-calibration-refits'
+admission = "RAYON_NUM_THREADS=6 .cache/gate-target/validation/staples-calibration-refits --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --prepare-only"
+production = "RAYON_NUM_THREADS=6 .cache/gate-target/validation/staples-calibration-refits --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode all"
+split_execution = "Replace --mode all with --mode cv or --mode bootstrap to run each queue separately. --cv-seed selects one declared seed; --bootstrap-index selects one declared replicate index. Run --mode summarize after both queues complete."
+worktree_inputs = "When local inputs reside in another checkout, set --input-root to that checkout and pass absolute --scores, --file-map and --catalog paths there. Keep the protocol and output directory in the active source checkout."
+resume = "Repeat the identical command with the same output directory and executable. The runner validates source/configuration/input identity, record checksums, seeded assignments and component metrics before reusing records."
+fresh_replay = "Use a new output directory after rebuilding an executable with a different digest. Existing outputs bind their original executable; replay compares numerical outcomes under the retained source and protocol."
+failure_recovery = "Inspect the retained failure record before any rerun. A failure file blocks retry and final aggregation. Inspect the process recorded in .runner.lock before explicitly removing an orphaned lock. Preserve failed evidence when correcting an implementation."
+completion = "summary.json requires exactly five CV seed records and 100 valid bootstrap records, containing all 750 converged model fits. Per-arm metrics and the two global endpoints remain separate estimands."
+scientific_boundary = "Sample-count context, one rolling width, one-sample feature lookahead, the admitted THEMIS-A corpus, five correlated split assignments, and approximate conditional intervals from 100 refits."
+
+[independent_cadence_crosscheck]
+working_directory = "Source checkout root"
+command = '''jq -e -n --slurpfile admitted data/output/audit/staples-calibration-grouped-refits/results/dataset.json --slurpfile cadence data/output/audit/staples-calibration-grouped-refits/cadence_report.json '($admitted[0].provenance.files | sort_by(.id) | map([.id,.path,.sha256,.finite_samples,.discarded_raw_rows,.equal_timestamp_pair_count,.backward_timestamp_pair_count,.positive_submillisecond_pair_count])) == ($cadence[0].files | sort_by(.id) | map([.id,.path,.input_sha256,.finite_rows,.discarded_raw_rows,.zero_intervals,.negative_intervals,.positive_submillisecond_intervals]))' '''
+expected = "true; exit 0; both arrays contain 813 records"
+
+[independent_result_audit]
+instructions = "docs/engineering/staples-retained-result-audit.md"
+command = 'CARGO_TARGET_DIR="$PWD/.cache/retained-result-audit-target" cargo run --locked --release --manifest-path data/output/audit/staples-calibration-grouped-refits/retained-result-audit/Cargo.toml -- "$PWD" --complete'
+expected = "Exit 0; complete=true; 5 CV records, 100 bootstrap records, 750 converged fits, exact planned set, and independently recomputed summary percentiles."
+
+[dependency_documentation]
+registration = "markdown-registry register --path vendor/proc-macro-error2/README.md --path vendor/proc-macro-error2/CHANGELOG.md --owner-group third_party --removal-status locked --removal-reason 'Preserve upstream documentation with the checksum-verified vendored dependency.'"
+derived_views = ["markdown-registry build-knowledge-sources", "markdown-registry build-governance", "registry-integrity"]
+verification = "make validate-governance REPO_SHARE_PRIMARY_CACHE=1"
+
+[canonical_registration]
+mutation_specs = ["data/output/audit/staples-calibration-grouped-refits/pvi-calibration-survival-transition.toml", "data/output/audit/staples-calibration-grouped-refits/logistic-grouped-refit-survival-transition.toml"]
+claim_ids = ["C-1740", "C-1741"]
+experiments = "gororoba-db experiment upsert-from-toml --spec data/output/audit/staples-calibration-grouped-refits/experiments.toml --regen-toml false"
+exports = ["provenance export-control-plane", "execution-planning --repo-root .", "registry-emit experiments-mirror", "registry-emit claims-mirror", "registry-integrity", "provenance verify-control-plane"]
+preservation_baseline = "git show 6fbf4947c59cf699ad5462dbe966851ffcc6a354:registry/canonical/control_plane.sqlite3 > .cache/calibration-run/base-control-plane.sqlite3"
+preservation_method = "ATTACH the baseline SQLite, then compare SELECT * FROM baseline.TABLE EXCEPT SELECT * FROM main.TABLE for each table named by canonical-preservation.json. Every original row remains equal in all measured columns."

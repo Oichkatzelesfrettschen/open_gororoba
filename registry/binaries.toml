@@ -1686,6 +1686,11 @@ description = "Thesis 5 pipeline: spin decoherence rate prediction from imbalanc
 experiment = "E-036"
 
 [[binary]]
+name = "staples-calibration-refits"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "staples-incremental-information"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."

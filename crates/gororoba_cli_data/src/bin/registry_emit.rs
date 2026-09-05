@@ -1671,24 +1671,72 @@ fn emit_bibliography_legacy(args: BibliographyLegacyArgs) -> Result<(), String> 
     Ok(())
 }
 
+fn experiment_heading(
+    experiment_id: &str,
+    title: &str,
+    aliases: &Value,
+) -> Result<Vec<String>, String> {
+    let suffix = Regex::new(r"^(.*) \((?:legacy|source literal) (E-\d{3})\)$")
+        .map_err(|error| error.to_string())?;
+    let Some(captures) = suffix.captures(title) else {
+        return Ok(vec![format!("## {experiment_id}: {title}"), String::new()]);
+    };
+    let legacy_id = &captures[2];
+    let matches: Vec<_> = rows(aliases, "alias")
+        .into_iter()
+        .filter(|row| {
+            str_field(row, "legacy_id") == legacy_id
+                && str_field(row, "canonical_experiment_id") == experiment_id
+        })
+        .collect();
+    if matches.len() != 1 || str_field(matches[0], "id").is_empty() {
+        return Err(format!(
+            "experiment {experiment_id} title requires one named alias for {legacy_id}"
+        ));
+    }
+    // Active mirrors cite canonical experiments; historical tokens remain in
+    // the alias registry under their original identifier scheme.
+    Ok(vec![
+        format!("## {experiment_id}: {}", &captures[1]),
+        String::new(),
+        format!(
+            "Historical identifier: `{}` in `registry/experiment_id_aliases.toml`.",
+            str_field(matches[0], "id")
+        ),
+        String::new(),
+    ])
+}
+
+fn experiment_aliases(input: &Path) -> Result<Value, String> {
+    let path = input
+        .parent()
+        .unwrap_or_else(|| Path::new("."))
+        .join("experiment_id_aliases.toml");
+    if path.exists() {
+        read_toml_value(&path)
+    } else {
+        Ok(Value::Table(toml::map::Map::new()))
+    }
+}
+
 fn emit_experiments_mirror(args: ExperimentsMirrorArgs) -> Result<(), String> {
     let (data, source_label) = read_control_plane_compat_value(
         &args.input,
         &args.canonical_db,
         ControlPlaneCompatKind::Experiments,
     )?;
+    let aliases = experiment_aliases(&args.input)?;
     let mut experiments = rows(&data, "experiment");
     experiments.sort_by_key(|row| str_field(row, "id"));
     let mut lines = control_plane_markdown_header("Experiments Registry Mirror", &source_label);
     lines.push(format!("Total experiments: {}", experiments.len()));
     lines.push(String::new());
     for row in experiments {
-        lines.push(format!(
-            "## {}: {}",
-            str_field(row, "id"),
-            str_field(row, "title")
-        ));
-        lines.push(String::new());
+        lines.extend(experiment_heading(
+            &str_field(row, "id"),
+            &str_field(row, "title"),
+            &aliases,
+        )?);
         lines.push(format!("- Binary: `{}`", str_field(row, "binary")));
         lines.push(label_value_line("- Input:", &str_field(row, "input")));
         let outputs = array_of_strings(row, "output");
@@ -1743,6 +1791,7 @@ fn emit_experiments_legacy(args: ExperimentsLegacyArgs) -> Result<(), String> {
         ControlPlaneCompatKind::Experiments,
     )?;
     let (preamble, body_by_id) = narrative_overlay_map(&args.narrative, "experiments_narrative")?;
+    let aliases = experiment_aliases(&args.input)?;
     let mut experiments = rows(&data, "experiment");
     experiments.sort_by_key(|row| str_field(row, "id"));
     let mut lines = generated_doc_header(
@@ -1768,8 +1817,11 @@ fn emit_experiments_legacy(args: ExperimentsLegacyArgs) -> Result<(), String> {
     lines.push(String::new());
     for row in experiments {
         let experiment_id = str_field(row, "id");
-        lines.push(format!("## {}: {}", experiment_id, str_field(row, "title")));
-        lines.push(String::new());
+        lines.extend(experiment_heading(
+            &experiment_id,
+            &str_field(row, "title"),
+            &aliases,
+        )?);
         if let Some(body) = body_by_id.get(&experiment_id)
             && !body.is_empty()
         {
@@ -3777,5 +3829,60 @@ fn main() {
     if let Err(err) = run(cli) {
         eprintln!("ERROR: {}", err);
         std::process::exit(1);
+    }
+}
+
+#[cfg(test)]
+mod experiment_heading_tests {
+    use super::*;
+
+    fn alias_registry(legacy_id: &str, canonical_id: &str) -> Value {
+        toml::from_str(&format!(
+            "[[alias]]\nid = 'EIA-008'\nlegacy_id = '{legacy_id}'\ncanonical_experiment_id = '{canonical_id}'\n"
+        ))
+        .expect("valid alias fixture")
+    }
+
+    #[test]
+    fn historical_title_suffixes_emit_alias_identity_instead_of_retired_tokens() {
+        let legacy_id = format!("E-{}", 243);
+        let aliases = alias_registry(&legacy_id, "E-273");
+        for label in ["legacy", "source literal"] {
+            let title = format!("Detector comparison ({label} {legacy_id})");
+            let rendered = experiment_heading("E-273", &title, &aliases)
+                .expect("registered historical identity")
+                .join("\n");
+            assert!(rendered.starts_with("## E-273: Detector comparison\n"));
+            assert!(rendered.contains("`EIA-008`"));
+            assert!(rendered.contains("registry/experiment_id_aliases.toml"));
+            assert!(!rendered.contains(&legacy_id));
+        }
+    }
+
+    #[test]
+    fn historical_suffix_requires_one_matching_named_alias() {
+        let legacy_id = format!("E-{}", 243);
+        let title = format!("Detector comparison (legacy {legacy_id})");
+        let empty = Value::Table(toml::map::Map::new());
+        assert!(experiment_heading("E-273", &title, &empty).is_err());
+        let wrong_target = alias_registry(&legacy_id, "E-274");
+        assert!(experiment_heading("E-273", &title, &wrong_target).is_err());
+        let mut duplicate = alias_registry(&legacy_id, "E-273");
+        let aliases = duplicate["alias"].as_array_mut().unwrap();
+        aliases.push(aliases[0].clone());
+        assert!(experiment_heading("E-273", &title, &duplicate).is_err());
+        let mut unnamed = alias_registry(&legacy_id, "E-273");
+        unnamed["alias"][0]["id"] = Value::String(String::new());
+        assert!(experiment_heading("E-273", &title, &unnamed).is_err());
+    }
+
+    #[test]
+    fn scientific_parentheses_remain_in_experiment_titles() {
+        let title = "Detector comparison (six samples)";
+        let empty = Value::Table(toml::map::Map::new());
+        assert_eq!(
+            experiment_heading("E-273", title, &empty).unwrap(),
+            vec![format!("## E-273: {title}"), String::new()]
+        );
     }
 }

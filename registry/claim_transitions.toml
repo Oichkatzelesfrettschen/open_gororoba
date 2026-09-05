@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 195
+event_count = 197
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4172,3 +4172,49 @@ reason = "Propagate the demonstrated feature-boundary correction through the exi
 transition_timestamp = "2026-09-04T22:00:02Z"
 transition_spec_sha256 = "7e6c48d690a641ede3cb7fcd7de9f4b7022ed73b42c726919a4f3fca4a04531c"
 successors = []
+
+[[transition]]
+event_id = 196
+transition_key = "staples-pvi-calibration-context-survival"
+source_claim_id = "C-1738"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "The preregistered global minimum standalone margin interval remains wholly positive after replacing full-day RMS with training-file and preceding-window RMS. A zero-containing interval would leave the extension inconclusive; a negative upper percentile would support reversal. The exact 105 planned records and 750 converged fits pass independent retained-record validation."
+rationale = "The altered-calibration experiment supports a separate refinement on the common population. C-1738 retains its original offline computation, population, and bootstrap boundary."
+unresolved_assumptions = ["Offline predictive discrimination on the common warmup-filtered THEMIS-A sample-localization benchmark. The three arms share labels, population, model complexity, and six-sample PVI numerator; their RMS calibration context differs. Windows count parsed samples, include equal-time observations, can cross multi-hour gaps, and retain label k+4 versus complete feature k+5. One rolling width and five correlated CV assignments bound the result. The 100-draw linear-percentile procedure is conditional on the fixed seed-42 fold-0 partition and has limited tail precision.", "File-resampling exchangeability and transfer to other epochs or spacecraft remain untested.", "C-1633 retains the stronger standalone angular-control comparison; PVI dominance establishes a comparator-specific result."]
+evidence_artifact_ids = ["LOCAL-STAPLES-CALIBRATION-GROUPED-REFITS"]
+experiment_ids = ["E-280", "E-281"]
+actor = "codex"
+reason = "Register the completed calibration and grouped-refit experiment at its measured predictive boundary."
+transition_timestamp = "2026-09-05T00:09:00Z"
+transition_spec_sha256 = "c7efc642cb5e87f335f855e839bfd6426b862cc7dada739c026deca356366f2c"
+
+[[transition.successors]]
+proposal_key = "staples-associator-dominance-across-declared-calibration-contexts"
+canonical_claim_id = "C-1740"
+relation_kind = "refines"
+
+[[transition]]
+event_id = 197
+transition_key = "staples-logistic-grouped-refit-survival"
+source_claim_id = "C-1739"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "The extension from fixed out-of-fold predictions to paired training-file refitting and test-file sampling retains a positive global lower percentile. All declared split/arm increments are positive. The independent audit verifies all 750 converged fits, seeded partitions and multiplicities, global minima, and linear percentiles."
+rationale = "The grouped-refit experiment addresses training variation absent from the predecessor bootstrap. C-1739 retains its original computation. Warmup filtering and f64 prediction logits also differ from the predecessor, so old-versus-new changes cannot be attributed solely to calibration."
+unresolved_assumptions = ["Offline predictive discrimination on the common warmup-filtered THEMIS-A sample-localization benchmark. The three arms share labels, population, model complexity, and six-sample PVI numerator; their RMS calibration context differs. Windows count parsed samples, include equal-time observations, can cross multi-hour gaps, and retain label k+4 versus complete feature k+5. One rolling width and five correlated CV assignments bound the result. The 100-draw linear-percentile procedure is conditional on the fixed seed-42 fold-0 partition and has limited tail precision.", "File-resampling exchangeability and transfer to other epochs or spacecraft remain untested.", "C-1633 retains the stronger standalone angular-control comparison; PVI dominance establishes a comparator-specific result."]
+evidence_artifact_ids = ["LOCAL-STAPLES-CALIBRATION-GROUPED-REFITS"]
+experiment_ids = ["E-280", "E-281"]
+actor = "codex"
+reason = "Register the completed calibration and grouped-refit experiment at its measured predictive boundary."
+transition_timestamp = "2026-09-05T00:09:01Z"
+transition_spec_sha256 = "d6152313a7bf113855a304e33cdd2cfde9f837ec1f03363c4619b098b2bf7a14"
+
+[[transition.successors]]
+proposal_key = "staples-associator-increment-across-calibration-and-grouped-refits"
+canonical_claim_id = "C-1741"
+relation_kind = "refines"
