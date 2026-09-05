@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-2890"
+artifact_key = "url:https://arxiv.org/pdf/math/0403113.pdf"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 206494
+expected_canonical_url = "https://arxiv.org/pdf/math/0403113.pdf"
+expected_sha256 = "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872"
+observation_key = "exact-response-ASOT-2890-bfee3271cb4a93b910489c21ecd96ac94aa86e8cdb59e4226ae9ba895c85a409"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-21.json"
+sha256 = "bfee3271cb4a93b910489c21ecd96ac94aa86e8cdb59e4226ae9ba895c85a409"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-21.bin"
+sha256 = "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872"

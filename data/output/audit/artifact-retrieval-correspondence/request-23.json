@@ -1,0 +1,11 @@
+{
+  "body_bytes": 393173,
+  "body_sha256": "b3876255599bcd50f7e51ed50044e4f2b74cd2e7945b4416b6fb196bc6eae010",
+  "completed": true,
+  "final_url": "https://bibliotekanauki.pl/articles/729117.pdf",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:32Z",
+  "requested_url": "https://bibliotekanauki.pl/articles/729117.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

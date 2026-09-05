@@ -12,6 +12,7 @@ use anyhow::{Result, bail};
 use rusqlite::{Connection, params};
 
 pub(crate) fn refuse_artifact_path_history_loss(conn: &Connection) -> Result<()> {
+    crate::artifact_retrieval::refuse_retrieval_history_loss(conn)?;
     let table_exists = |table: &str| -> Result<bool> {
         Ok(conn.query_row(
             "SELECT EXISTS(SELECT 1 FROM sqlite_master WHERE type='table' AND name=?1)",
@@ -105,10 +106,16 @@ pub(crate) fn clear_tables(conn: &Connection) -> Result<()> {
 /// source lanes) is recorded by its own command and survives the reindex,
 /// so `render_roadmap_compat_toml` keeps its `supersedes` and
 /// `companion_docs` arrays across `provenance index-control-plane`.
-pub(crate) const CONTROL_PLANE_SNAPSHOT_KINDS: [&str; 5] =
-    ["claims", "insights", "experiments", "binaries", "rocq_project"];
+pub(crate) const CONTROL_PLANE_SNAPSHOT_KINDS: [&str; 5] = [
+    "claims",
+    "insights",
+    "experiments",
+    "binaries",
+    "rocq_project",
+];
 
 pub(crate) fn clear_control_plane_tables(conn: &Connection) -> Result<()> {
+    crate::claim_evidence::refuse_claim_evidence_history_loss(conn)?;
     let kinds = CONTROL_PLANE_SNAPSHOT_KINDS
         .iter()
         .map(|kind| format!("'{kind}'"))

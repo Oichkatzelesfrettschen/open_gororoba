@@ -1,0 +1,11 @@
+{
+  "body_bytes": 44167,
+  "body_sha256": "86fd5b0a8de4f1758dd464fa557979452c41b22d43d788a45d21b16562503c03",
+  "completed": true,
+  "final_url": "https://arxiv.org/abs/2509.08099",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:28Z",
+  "requested_url": "https://arxiv.org/abs/2509.08099",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

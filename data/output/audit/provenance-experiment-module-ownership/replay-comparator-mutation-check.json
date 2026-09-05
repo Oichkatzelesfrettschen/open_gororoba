@@ -1,0 +1,7 @@
+{
+  "shape_mutation_detected": true,
+  "text_mutation_detected": true,
+  "integer_mutation_detected": true,
+  "numeric_changes_retained": true,
+  "new_leaf_type_change_detected": true
+}

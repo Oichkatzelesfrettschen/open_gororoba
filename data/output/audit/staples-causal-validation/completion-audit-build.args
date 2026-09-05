@@ -1,0 +1,17 @@
+--edition=2024
+-D
+warnings
+-O
+--crate-name
+staples_completion_audit
+data/output/audit/staples-causal-validation/completion-audit.rs
+-L
+dependency=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps
+--extern
+anyhow=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/libanyhow-398a27bf114a2926.rlib
+--extern
+serde_json=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/libserde_json-90218bbdccdf166d.rlib
+--extern
+sha2=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/libsha2-f2edc2d7c4edec65.rlib
+-o
+.cache/staples-external-intake-build/completion-audit

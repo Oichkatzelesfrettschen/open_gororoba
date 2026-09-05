@@ -4,10 +4,25 @@
 // compatibility-TOML importer.
 
 use anyhow::{Context, Result, bail};
-use rusqlite::{Connection, params};
-use std::collections::BTreeMap;
-use std::fs;
-use std::path::{Path, PathBuf};
+use rusqlite::{Connection, OpenFlags, params};
+use std::{
+    collections::BTreeMap,
+    fs,
+    path::{Path, PathBuf},
+};
+
+impl crate::ProvenanceStore {
+    /// Refuse immutable claim-evidence history loss before compatibility writes.
+    /// The read-only connection leaves schema migration and backup creation to
+    /// an admitted importer.
+    pub fn ensure_control_plane_reimport_safe(db_path: &Path) -> Result<()> {
+        if db_path.exists() {
+            let existing = Connection::open_with_flags(db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
+            crate::claim_evidence::refuse_claim_evidence_history_loss(&existing)?;
+        }
+        Ok(())
+    }
+}
 
 /// Import policy handed to `ProvenanceStore::reindex_control_plane_from_registries`.
 ///
@@ -63,9 +78,11 @@ impl ControlPlanePopulation {
 
 pub(crate) fn measure_population(conn: &Connection) -> Result<ControlPlanePopulation> {
     let count = |table: &str| -> Result<i64> {
-        Ok(conn.query_row(&format!("SELECT COUNT(*) FROM {table}"), [], |row| {
-            row.get(0)
-        })?)
+        Ok(
+            conn.query_row(&format!("SELECT COUNT(*) FROM {table}"), [], |row| {
+                row.get(0)
+            })?,
+        )
     };
     Ok(ControlPlanePopulation {
         claims: count("claims")?,
@@ -91,7 +108,10 @@ pub fn refusal_message(db_path: Option<&Path>, population: &ControlPlanePopulati
          canonical values with mirror values. Export instead of importing \
          (provenance export-control-plane), or pass --allow-destructive-reimport to back the \
          database up, record a semantic diff, and proceed.",
-        population.claims, population.insights, population.experiments, population.transition_events
+        population.claims,
+        population.insights,
+        population.experiments,
+        population.transition_events
     )
 }
 
@@ -281,7 +301,10 @@ pub(crate) fn assert_column_mapping_total(conn: &Connection) -> Result<()> {
         let live: Vec<String> = stmt
             .query_map([], |row| row.get::<_, String>(1))?
             .collect::<std::result::Result<_, _>>()?;
-        let unmapped: Vec<&String> = live.iter().filter(|c| !mapped.contains(&c.as_str())).collect();
+        let unmapped: Vec<&String> = live
+            .iter()
+            .filter(|c| !mapped.contains(&c.as_str()))
+            .collect();
         if !unmapped.is_empty() {
             bail!(
                 "refusing to import: table {table} has columns the compatibility importer neither \
@@ -355,7 +378,10 @@ impl ReimportDiff {
     /// Human-readable summary printed to stdout before the import proceeds.
     #[must_use]
     pub fn to_summary(&self) -> String {
-        let mut out = format!("Destructive re-import diff (backup {}):\n", self.backup_path);
+        let mut out = format!(
+            "Destructive re-import diff (backup {}):\n",
+            self.backup_path
+        );
         for table in &self.tables {
             out.push_str(&format!(
                 "  {}: sqlite_only={} toml_only={} fields_nulled={} fields_overwritten={}\n",

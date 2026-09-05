@@ -1,0 +1,1900 @@
+{
+  "hapi_absent_timestamp_count": 119,
+  "hapi_absent_timestamps": [
+    {
+      "hapi_csv_row": 1,
+      "hapi_gse": [
+        -8.23181,
+        17.9132,
+        -34.04189
+      ],
+      "timestamp": "2016-09-02T00:00:00.197Z"
+    },
+    {
+      "hapi_csv_row": 2,
+      "hapi_gse": [
+        -9.322034,
+        20.03646,
+        -33.36124
+      ],
+      "timestamp": "2016-09-02T00:00:03.353Z"
+    },
+    {
+      "hapi_csv_row": 3,
+      "hapi_gse": [
+        -7.623195,
+        21.20351,
+        -36.13602
+      ],
+      "timestamp": "2016-09-02T00:00:06.509Z"
+    },
+    {
+      "hapi_csv_row": 4,
+      "hapi_gse": [
+        -3.066168,
+        15.50807,
+        -25.87899
+      ],
+      "timestamp": "2016-09-02T00:00:09.665Z"
+    },
+    {
+      "hapi_csv_row": 5,
+      "hapi_gse": [
+        -10.73894,
+        20.67089,
+        -36.59815
+      ],
+      "timestamp": "2016-09-02T00:00:12.821Z"
+    },
+    {
+      "hapi_csv_row": 6,
+      "hapi_gse": [
+        -8.612864,
+        13.41088,
+        -36.35099
+      ],
+      "timestamp": "2016-09-02T00:00:15.977Z"
+    },
+    {
+      "hapi_csv_row": 7,
+      "hapi_gse": [
+        -7.033452,
+        14.70524,
+        -31.05626
+      ],
+      "timestamp": "2016-09-02T00:00:19.133Z"
+    },
+    {
+      "hapi_csv_row": 8,
+      "hapi_gse": [
+        -5.400444,
+        18.91851,
+        -31.91209
+      ],
+      "timestamp": "2016-09-02T00:00:22.289Z"
+    },
+    {
+      "hapi_csv_row": 9,
+      "hapi_gse": [
+        -7.434472,
+        11.42634,
+        -27.98374
+      ],
+      "timestamp": "2016-09-02T00:00:25.446Z"
+    },
+    {
+      "hapi_csv_row": 10,
+      "hapi_gse": [
+        -10.45277,
+        14.0157,
+        -31.57066
+      ],
+      "timestamp": "2016-09-02T00:00:28.602Z"
+    },
+    {
+      "hapi_csv_row": 11,
+      "hapi_gse": [
+        -9.743064,
+        13.97101,
+        -37.91185
+      ],
+      "timestamp": "2016-09-02T00:00:31.758Z"
+    },
+    {
+      "hapi_csv_row": 12,
+      "hapi_gse": [
+        -15.93289,
+        8.660048,
+        -37.41652
+      ],
+      "timestamp": "2016-09-02T00:00:34.914Z"
+    },
+    {
+      "hapi_csv_row": 13,
+      "hapi_gse": [
+        6.689713,
+        27.02313,
+        -17.46516
+      ],
+      "timestamp": "2016-09-02T00:00:38.070Z"
+    },
+    {
+      "hapi_csv_row": 14,
+      "hapi_gse": [
+        6.439497,
+        26.13055,
+        -14.43391
+      ],
+      "timestamp": "2016-09-02T00:00:41.226Z"
+    },
+    {
+      "hapi_csv_row": 15,
+      "hapi_gse": [
+        5.653129,
+        27.23794,
+        -14.57513
+      ],
+      "timestamp": "2016-09-02T00:00:44.382Z"
+    },
+    {
+      "hapi_csv_row": 16,
+      "hapi_gse": [
+        6.052143,
+        31.51316,
+        -20.00144
+      ],
+      "timestamp": "2016-09-02T00:00:47.538Z"
+    },
+    {
+      "hapi_csv_row": 17,
+      "hapi_gse": [
+        7.715064,
+        30.62738,
+        -16.78359
+      ],
+      "timestamp": "2016-09-02T00:00:50.694Z"
+    },
+    {
+      "hapi_csv_row": 18,
+      "hapi_gse": [
+        13.33521,
+        30.68752,
+        -7.079609
+      ],
+      "timestamp": "2016-09-02T00:00:53.851Z"
+    },
+    {
+      "hapi_csv_row": 19,
+      "hapi_gse": [
+        5.566142,
+        33.2184,
+        -14.86586
+      ],
+      "timestamp": "2016-09-02T00:00:57.007Z"
+    },
+    {
+      "hapi_csv_row": 20,
+      "hapi_gse": [
+        8.92261,
+        33.95832,
+        -13.66476
+      ],
+      "timestamp": "2016-09-02T00:01:00.163Z"
+    },
+    {
+      "hapi_csv_row": 21,
+      "hapi_gse": [
+        7.316959,
+        33.28869,
+        -16.0911
+      ],
+      "timestamp": "2016-09-02T00:01:03.319Z"
+    },
+    {
+      "hapi_csv_row": 22,
+      "hapi_gse": [
+        8.148,
+        31.98969,
+        -13.37517
+      ],
+      "timestamp": "2016-09-02T00:01:06.475Z"
+    },
+    {
+      "hapi_csv_row": 23,
+      "hapi_gse": [
+        9.076844,
+        31.51156,
+        -10.78253
+      ],
+      "timestamp": "2016-09-02T00:01:09.631Z"
+    },
+    {
+      "hapi_csv_row": 24,
+      "hapi_gse": [
+        13.10988,
+        30.35664,
+        -8.048184
+      ],
+      "timestamp": "2016-09-02T00:01:12.787Z"
+    },
+    {
+      "hapi_csv_row": 25,
+      "hapi_gse": [
+        12.9097,
+        38.22168,
+        -5.438879
+      ],
+      "timestamp": "2016-09-02T00:01:15.943Z"
+    },
+    {
+      "hapi_csv_row": 26,
+      "hapi_gse": [
+        17.47882,
+        31.76773,
+        0.4219357
+      ],
+      "timestamp": "2016-09-02T00:01:19.099Z"
+    },
+    {
+      "hapi_csv_row": 27,
+      "hapi_gse": [
+        11.85385,
+        33.70451,
+        -8.552817
+      ],
+      "timestamp": "2016-09-02T00:01:22.256Z"
+    },
+    {
+      "hapi_csv_row": 28,
+      "hapi_gse": [
+        11.93313,
+        31.4546,
+        -8.824581
+      ],
+      "timestamp": "2016-09-02T00:01:25.412Z"
+    },
+    {
+      "hapi_csv_row": 29,
+      "hapi_gse": [
+        12.43423,
+        28.11954,
+        -7.369759
+      ],
+      "timestamp": "2016-09-02T00:01:28.568Z"
+    },
+    {
+      "hapi_csv_row": 30,
+      "hapi_gse": [
+        1.949658,
+        27.9966,
+        -16.71015
+      ],
+      "timestamp": "2016-09-02T00:01:31.724Z"
+    },
+    {
+      "hapi_csv_row": 31,
+      "hapi_gse": [
+        8.621425,
+        31.63868,
+        -17.18296
+      ],
+      "timestamp": "2016-09-02T00:01:34.880Z"
+    },
+    {
+      "hapi_csv_row": 32,
+      "hapi_gse": [
+        6.532963,
+        33.83503,
+        -21.96424
+      ],
+      "timestamp": "2016-09-02T00:01:38.036Z"
+    },
+    {
+      "hapi_csv_row": 33,
+      "hapi_gse": [
+        5.005135,
+        27.91671,
+        -20.90165
+      ],
+      "timestamp": "2016-09-02T00:01:41.192Z"
+    },
+    {
+      "hapi_csv_row": 34,
+      "hapi_gse": [
+        6.439021,
+        26.92548,
+        -18.4892
+      ],
+      "timestamp": "2016-09-02T00:01:44.348Z"
+    },
+    {
+      "hapi_csv_row": 35,
+      "hapi_gse": [
+        5.797976,
+        26.73402,
+        -13.67274
+      ],
+      "timestamp": "2016-09-02T00:01:47.504Z"
+    },
+    {
+      "hapi_csv_row": 36,
+      "hapi_gse": [
+        5.392223,
+        27.86341,
+        -12.84454
+      ],
+      "timestamp": "2016-09-02T00:01:50.661Z"
+    },
+    {
+      "hapi_csv_row": 37,
+      "hapi_gse": [
+        8.406932,
+        30.2345,
+        -16.60747
+      ],
+      "timestamp": "2016-09-02T00:01:53.817Z"
+    },
+    {
+      "hapi_csv_row": 38,
+      "hapi_gse": [
+        5.750613,
+        30.28346,
+        -13.46942
+      ],
+      "timestamp": "2016-09-02T00:01:56.973Z"
+    },
+    {
+      "hapi_csv_row": 39,
+      "hapi_gse": [
+        3.289568,
+        23.87132,
+        -19.53757
+      ],
+      "timestamp": "2016-09-02T00:02:00.129Z"
+    },
+    {
+      "hapi_csv_row": 40,
+      "hapi_gse": [
+        6.193263,
+        27.54835,
+        -16.46894
+      ],
+      "timestamp": "2016-09-02T00:02:03.285Z"
+    },
+    {
+      "hapi_csv_row": 41,
+      "hapi_gse": [
+        7.027288,
+        23.25351,
+        -14.98524
+      ],
+      "timestamp": "2016-09-02T00:02:06.441Z"
+    },
+    {
+      "hapi_csv_row": 42,
+      "hapi_gse": [
+        4.790869,
+        24.27191,
+        -17.06504
+      ],
+      "timestamp": "2016-09-02T00:02:09.597Z"
+    },
+    {
+      "hapi_csv_row": 43,
+      "hapi_gse": [
+        -0.3298797,
+        20.6158,
+        -22.06649
+      ],
+      "timestamp": "2016-09-02T00:02:12.753Z"
+    },
+    {
+      "hapi_csv_row": 44,
+      "hapi_gse": [
+        2.624199,
+        24.5385,
+        -21.63987
+      ],
+      "timestamp": "2016-09-02T00:02:15.909Z"
+    },
+    {
+      "hapi_csv_row": 45,
+      "hapi_gse": [
+        0.8591993,
+        24.01565,
+        -21.41496
+      ],
+      "timestamp": "2016-09-02T00:02:19.066Z"
+    },
+    {
+      "hapi_csv_row": 46,
+      "hapi_gse": [
+        0.1546182,
+        28.95971,
+        -19.84977
+      ],
+      "timestamp": "2016-09-02T00:02:22.222Z"
+    },
+    {
+      "hapi_csv_row": 47,
+      "hapi_gse": [
+        6.114001,
+        30.36082,
+        -20.8355
+      ],
+      "timestamp": "2016-09-02T00:02:25.378Z"
+    },
+    {
+      "hapi_csv_row": 48,
+      "hapi_gse": [
+        3.039268,
+        25.17164,
+        -22.04443
+      ],
+      "timestamp": "2016-09-02T00:02:28.534Z"
+    },
+    {
+      "hapi_csv_row": 49,
+      "hapi_gse": [
+        1.810803,
+        25.07637,
+        -18.213
+      ],
+      "timestamp": "2016-09-02T00:02:31.690Z"
+    },
+    {
+      "hapi_csv_row": 50,
+      "hapi_gse": [
+        2.491212,
+        23.94272,
+        -16.9753
+      ],
+      "timestamp": "2016-09-02T00:02:34.846Z"
+    },
+    {
+      "hapi_csv_row": 51,
+      "hapi_gse": [
+        6.652049,
+        29.50965,
+        -15.25059
+      ],
+      "timestamp": "2016-09-02T00:02:38.002Z"
+    },
+    {
+      "hapi_csv_row": 52,
+      "hapi_gse": [
+        11.86064,
+        27.29583,
+        -9.906426
+      ],
+      "timestamp": "2016-09-02T00:02:41.158Z"
+    },
+    {
+      "hapi_csv_row": 53,
+      "hapi_gse": [
+        8.243767,
+        30.14285,
+        -14.94734
+      ],
+      "timestamp": "2016-09-02T00:02:44.315Z"
+    },
+    {
+      "hapi_csv_row": 54,
+      "hapi_gse": [
+        5.995802,
+        24.21119,
+        -18.48668
+      ],
+      "timestamp": "2016-09-02T00:02:47.471Z"
+    },
+    {
+      "hapi_csv_row": 55,
+      "hapi_gse": [
+        9.147264,
+        31.45507,
+        -11.55218
+      ],
+      "timestamp": "2016-09-02T00:02:50.627Z"
+    },
+    {
+      "hapi_csv_row": 56,
+      "hapi_gse": [
+        12.03024,
+        25.83947,
+        -11.8125
+      ],
+      "timestamp": "2016-09-02T00:02:53.783Z"
+    },
+    {
+      "hapi_csv_row": 57,
+      "hapi_gse": [
+        7.014818,
+        26.17125,
+        -17.74507
+      ],
+      "timestamp": "2016-09-02T00:02:56.939Z"
+    },
+    {
+      "hapi_csv_row": 58,
+      "hapi_gse": [
+        7.436176,
+        26.37351,
+        -17.55331
+      ],
+      "timestamp": "2016-09-02T00:03:00.095Z"
+    },
+    {
+      "hapi_csv_row": 59,
+      "hapi_gse": [
+        6.336583,
+        25.20899,
+        -19.26087
+      ],
+      "timestamp": "2016-09-02T00:03:03.251Z"
+    },
+    {
+      "hapi_csv_row": 60,
+      "hapi_gse": [
+        3.216804,
+        30.85735,
+        -23.92172
+      ],
+      "timestamp": "2016-09-02T00:03:06.407Z"
+    },
+    {
+      "hapi_csv_row": 61,
+      "hapi_gse": [
+        6.044548,
+        34.70346,
+        -25.36145
+      ],
+      "timestamp": "2016-09-02T00:03:09.563Z"
+    },
+    {
+      "hapi_csv_row": 62,
+      "hapi_gse": [
+        0.6827683,
+        27.74168,
+        -21.5605
+      ],
+      "timestamp": "2016-09-02T00:03:12.720Z"
+    },
+    {
+      "hapi_csv_row": 63,
+      "hapi_gse": [
+        5.183805,
+        28.86658,
+        -23.15154
+      ],
+      "timestamp": "2016-09-02T00:03:15.876Z"
+    },
+    {
+      "hapi_csv_row": 64,
+      "hapi_gse": [
+        4.831976,
+        25.35761,
+        -21.84603
+      ],
+      "timestamp": "2016-09-02T00:03:19.032Z"
+    },
+    {
+      "hapi_csv_row": 65,
+      "hapi_gse": [
+        10.43586,
+        32.88783,
+        -23.37403
+      ],
+      "timestamp": "2016-09-02T00:03:22.188Z"
+    },
+    {
+      "hapi_csv_row": 66,
+      "hapi_gse": [
+        7.497217,
+        25.63819,
+        -19.49823
+      ],
+      "timestamp": "2016-09-02T00:03:25.344Z"
+    },
+    {
+      "hapi_csv_row": 67,
+      "hapi_gse": [
+        5.075644,
+        22.54358,
+        -18.30451
+      ],
+      "timestamp": "2016-09-02T00:03:28.500Z"
+    },
+    {
+      "hapi_csv_row": 68,
+      "hapi_gse": [
+        4.993358,
+        36.72857,
+        -20.42112
+      ],
+      "timestamp": "2016-09-02T00:03:31.656Z"
+    },
+    {
+      "hapi_csv_row": 69,
+      "hapi_gse": [
+        1.811732,
+        32.53086,
+        -24.46119
+      ],
+      "timestamp": "2016-09-02T00:03:34.812Z"
+    },
+    {
+      "hapi_csv_row": 70,
+      "hapi_gse": [
+        5.912163,
+        23.35036,
+        -19.88351
+      ],
+      "timestamp": "2016-09-02T00:03:37.968Z"
+    },
+    {
+      "hapi_csv_row": 71,
+      "hapi_gse": [
+        6.526537,
+        22.25062,
+        -18.83439
+      ],
+      "timestamp": "2016-09-02T00:03:41.125Z"
+    },
+    {
+      "hapi_csv_row": 72,
+      "hapi_gse": [
+        3.482895,
+        31.85141,
+        -21.66582
+      ],
+      "timestamp": "2016-09-02T00:03:44.281Z"
+    },
+    {
+      "hapi_csv_row": 73,
+      "hapi_gse": [
+        6.920248,
+        29.60617,
+        -24.30719
+      ],
+      "timestamp": "2016-09-02T00:03:47.437Z"
+    },
+    {
+      "hapi_csv_row": 74,
+      "hapi_gse": [
+        5.814973,
+        21.19433,
+        -20.50238
+      ],
+      "timestamp": "2016-09-02T00:03:50.593Z"
+    },
+    {
+      "hapi_csv_row": 75,
+      "hapi_gse": [
+        5.602903,
+        33.27799,
+        -21.51647
+      ],
+      "timestamp": "2016-09-02T00:03:53.749Z"
+    },
+    {
+      "hapi_csv_row": 76,
+      "hapi_gse": [
+        5.838033,
+        33.08947,
+        -24.0857
+      ],
+      "timestamp": "2016-09-02T00:03:56.905Z"
+    },
+    {
+      "hapi_csv_row": 77,
+      "hapi_gse": [
+        1.714728,
+        18.26413,
+        -25.90779
+      ],
+      "timestamp": "2016-09-02T00:04:00.061Z"
+    },
+    {
+      "hapi_csv_row": 78,
+      "hapi_gse": [
+        -2.081113,
+        29.74898,
+        -32.85917
+      ],
+      "timestamp": "2016-09-02T00:04:03.217Z"
+    },
+    {
+      "hapi_csv_row": 79,
+      "hapi_gse": [
+        -0.2797071,
+        25.70464,
+        -29.68495
+      ],
+      "timestamp": "2016-09-02T00:04:06.373Z"
+    },
+    {
+      "hapi_csv_row": 80,
+      "hapi_gse": [
+        1.451957,
+        16.13916,
+        -24.3236
+      ],
+      "timestamp": "2016-09-02T00:04:09.530Z"
+    },
+    {
+      "hapi_csv_row": 81,
+      "hapi_gse": [
+        3.945937,
+        17.6407,
+        -20.85679
+      ],
+      "timestamp": "2016-09-02T00:04:12.686Z"
+    },
+    {
+      "hapi_csv_row": 82,
+      "hapi_gse": [
+        6.782706,
+        30.25997,
+        -28.35265
+      ],
+      "timestamp": "2016-09-02T00:04:15.842Z"
+    },
+    {
+      "hapi_csv_row": 83,
+      "hapi_gse": [
+        3.959659,
+        25.72371,
+        -28.24215
+      ],
+      "timestamp": "2016-09-02T00:04:18.998Z"
+    },
+    {
+      "hapi_csv_row": 84,
+      "hapi_gse": [
+        3.479368,
+        20.4586,
+        -19.80997
+      ],
+      "timestamp": "2016-09-02T00:04:22.154Z"
+    },
+    {
+      "hapi_csv_row": 85,
+      "hapi_gse": [
+        3.355978,
+        23.66868,
+        -22.14528
+      ],
+      "timestamp": "2016-09-02T00:04:25.310Z"
+    },
+    {
+      "hapi_csv_row": 86,
+      "hapi_gse": [
+        3.762937,
+        28.84328,
+        -31.65776
+      ],
+      "timestamp": "2016-09-02T00:04:28.466Z"
+    },
+    {
+      "hapi_csv_row": 87,
+      "hapi_gse": [
+        7.568809,
+        23.00058,
+        -28.0001
+      ],
+      "timestamp": "2016-09-02T00:04:31.622Z"
+    },
+    {
+      "hapi_csv_row": 88,
+      "hapi_gse": [
+        3.287066,
+        23.54605,
+        -24.63914
+      ],
+      "timestamp": "2016-09-02T00:04:34.778Z"
+    },
+    {
+      "hapi_csv_row": 89,
+      "hapi_gse": [
+        5.422216,
+        23.41293,
+        -25.05811
+      ],
+      "timestamp": "2016-09-02T00:04:37.935Z"
+    },
+    {
+      "hapi_csv_row": 90,
+      "hapi_gse": [
+        5.514633,
+        23.19904,
+        -27.4945
+      ],
+      "timestamp": "2016-09-02T00:04:41.091Z"
+    },
+    {
+      "hapi_csv_row": 91,
+      "hapi_gse": [
+        6.827169,
+        19.15112,
+        -22.12026
+      ],
+      "timestamp": "2016-09-02T00:04:44.247Z"
+    },
+    {
+      "hapi_csv_row": 92,
+      "hapi_gse": [
+        8.72104,
+        27.45953,
+        -25.02914
+      ],
+      "timestamp": "2016-09-02T00:04:47.403Z"
+    },
+    {
+      "hapi_csv_row": 93,
+      "hapi_gse": [
+        14.25185,
+        28.96753,
+        -22.13708
+      ],
+      "timestamp": "2016-09-02T00:04:50.559Z"
+    },
+    {
+      "hapi_csv_row": 94,
+      "hapi_gse": [
+        12.9699,
+        25.92476,
+        -13.52124
+      ],
+      "timestamp": "2016-09-02T00:04:53.715Z"
+    },
+    {
+      "hapi_csv_row": 95,
+      "hapi_gse": [
+        7.497748,
+        24.3221,
+        -19.32964
+      ],
+      "timestamp": "2016-09-02T00:04:56.871Z"
+    },
+    {
+      "hapi_csv_row": 96,
+      "hapi_gse": [
+        5.154634,
+        22.54381,
+        -21.38203
+      ],
+      "timestamp": "2016-09-02T00:05:00.027Z"
+    },
+    {
+      "hapi_csv_row": 97,
+      "hapi_gse": [
+        1.700835,
+        21.28772,
+        -23.6464
+      ],
+      "timestamp": "2016-09-02T00:05:03.184Z"
+    },
+    {
+      "hapi_csv_row": 98,
+      "hapi_gse": [
+        8.304034,
+        22.00084,
+        -24.11465
+      ],
+      "timestamp": "2016-09-02T00:05:06.340Z"
+    },
+    {
+      "hapi_csv_row": 99,
+      "hapi_gse": [
+        6.046798,
+        17.86394,
+        -20.94499
+      ],
+      "timestamp": "2016-09-02T00:05:09.496Z"
+    },
+    {
+      "hapi_csv_row": 100,
+      "hapi_gse": [
+        6.152818,
+        19.99554,
+        -26.5049
+      ],
+      "timestamp": "2016-09-02T00:05:12.652Z"
+    },
+    {
+      "hapi_csv_row": 101,
+      "hapi_gse": [
+        2.980431,
+        14.36017,
+        -20.18834
+      ],
+      "timestamp": "2016-09-02T00:05:15.808Z"
+    },
+    {
+      "hapi_csv_row": 102,
+      "hapi_gse": [
+        5.494964,
+        23.15727,
+        -14.26632
+      ],
+      "timestamp": "2016-09-02T00:05:18.964Z"
+    },
+    {
+      "hapi_csv_row": 103,
+      "hapi_gse": [
+        5.812618,
+        26.95416,
+        -13.25558
+      ],
+      "timestamp": "2016-09-02T00:05:22.120Z"
+    },
+    {
+      "hapi_csv_row": 104,
+      "hapi_gse": [
+        6.417621,
+        28.32479,
+        -15.24522
+      ],
+      "timestamp": "2016-09-02T00:05:25.276Z"
+    },
+    {
+      "hapi_csv_row": 105,
+      "hapi_gse": [
+        3.316587,
+        24.3866,
+        -20.4372
+      ],
+      "timestamp": "2016-09-02T00:05:28.432Z"
+    },
+    {
+      "hapi_csv_row": 106,
+      "hapi_gse": [
+        -0.0811566,
+        10.66991,
+        -22.95836
+      ],
+      "timestamp": "2016-09-02T00:05:31.589Z"
+    },
+    {
+      "hapi_csv_row": 107,
+      "hapi_gse": [
+        -9.512959,
+        9.182803,
+        -25.30876
+      ],
+      "timestamp": "2016-09-02T00:05:34.745Z"
+    },
+    {
+      "hapi_csv_row": 108,
+      "hapi_gse": [
+        -12.13546,
+        3.626882,
+        -24.43292
+      ],
+      "timestamp": "2016-09-02T00:05:37.901Z"
+    },
+    {
+      "hapi_csv_row": 109,
+      "hapi_gse": [
+        -14.91149,
+        3.286527,
+        -24.13389
+      ],
+      "timestamp": "2016-09-02T00:05:41.057Z"
+    },
+    {
+      "hapi_csv_row": 110,
+      "hapi_gse": [
+        -15.52966,
+        2.511124,
+        -20.32872
+      ],
+      "timestamp": "2016-09-02T00:05:44.213Z"
+    },
+    {
+      "hapi_csv_row": 111,
+      "hapi_gse": [
+        -16.29394,
+        7.687773,
+        -18.14993
+      ],
+      "timestamp": "2016-09-02T00:05:47.369Z"
+    },
+    {
+      "hapi_csv_row": 112,
+      "hapi_gse": [
+        -12.10294,
+        9.360586,
+        -26.67508
+      ],
+      "timestamp": "2016-09-02T00:05:50.525Z"
+    },
+    {
+      "hapi_csv_row": 113,
+      "hapi_gse": [
+        -11.39947,
+        7.832749,
+        -28.53905
+      ],
+      "timestamp": "2016-09-02T00:05:53.681Z"
+    },
+    {
+      "hapi_csv_row": 114,
+      "hapi_gse": [
+        -9.926617,
+        8.140992,
+        -26.66248
+      ],
+      "timestamp": "2016-09-02T00:05:56.837Z"
+    },
+    {
+      "hapi_csv_row": 115,
+      "hapi_gse": [
+        -7.766795,
+        6.003527,
+        -26.30798
+      ],
+      "timestamp": "2016-09-02T00:05:59.994Z"
+    },
+    {
+      "hapi_csv_row": 116,
+      "hapi_gse": [
+        -12.02083,
+        -1.829907,
+        -27.91088
+      ],
+      "timestamp": "2016-09-02T00:06:03.150Z"
+    },
+    {
+      "hapi_csv_row": 117,
+      "hapi_gse": [
+        -15.16975,
+        -4.668519,
+        -23.89786
+      ],
+      "timestamp": "2016-09-02T00:06:06.306Z"
+    },
+    {
+      "hapi_csv_row": 118,
+      "hapi_gse": [
+        -16.07619,
+        -6.153228,
+        -25.10814
+      ],
+      "timestamp": "2016-09-02T00:06:09.462Z"
+    },
+    {
+      "hapi_csv_row": 119,
+      "hapi_gse": [
+        -19.25068,
+        -6.562562,
+        -21.28771
+      ],
+      "timestamp": "2016-09-02T00:06:12.618Z"
+    }
+  ],
+  "hapi_backward_steps": [
+    {
+      "delta_milliseconds": -3156,
+      "hapi_csv_row": 13728,
+      "previous_timestamp": "2016-09-02T23:00:41.711Z",
+      "timestamp": "2016-09-02T23:00:38.555Z"
+    }
+  ],
+  "hapi_path": ".cache/staples-external-intake/2016-09-02/attempt-1.body",
+  "hapi_rows": 14856,
+  "hapi_sha256": "4835df62b595951d24e0bc93f0ae7d4cb001b4b958600f86453571d8320bb75c",
+  "hapi_vector_mismatch_count": 0,
+  "hapi_vector_mismatches": [],
+  "intake_condition": "A provider-corrected monotonic source with independently retained identity and provenance, followed by a separately declared intake/protocol decision. Sorting, deduplication, and silent day omission remain prohibited by the sealed campaign.",
+  "join_rule": "Match timestamps within 1.001 milliseconds to admit source-to-CDF_EPOCH floating-point conversion and millisecond text serialization; compare all 3 source f32 components at relative tolerance 5.1e-7 for HAPI text rounding. Source and HAPI sequence order remain unchanged; timestamp lookup is diagnostic only.",
+  "matched_hapi_timestamp_vector_rows": 14737,
+  "matched_native_record_count": 14737,
+  "metadata": [
+    {
+      "fgs_entries": [],
+      "global_values": [
+        "[String(1)]"
+      ],
+      "name": "Data_version"
+    },
+    {
+      "fgs_entries": [],
+      "global_values": [
+        "[String(Sensor and electronics design provided by TUBS (Glassmeier, Auster) and IWF (Baumjohann, Magnes))]"
+      ],
+      "name": "TEXT"
+    },
+    {
+      "fgs_entries": [],
+      "global_values": [
+        "[String(thd_l2_fgm_20160902_v01)]"
+      ],
+      "name": "Logical_file_id"
+    },
+    {
+      "fgs_entries": [],
+      "global_values": [
+        "[String(Tue Aug 22 15:57:41 2023)]"
+      ],
+      "name": "Generation_date"
+    },
+    {
+      "fgs_entries": [],
+      "global_values": [
+        "[String(Rev- 2006-09-18)]"
+      ],
+      "name": "MODS"
+    },
+    {
+      "fgs_entries": [
+        {
+          "value_debug": "[String(thd_fgs_time)]",
+          "variable_id": 0
+        },
+        {
+          "value_debug": "[String(thd_fgs_time)]",
+          "variable_id": 7
+        }
+      ],
+      "global_values": [],
+      "name": "DEPEND_TIME"
+    },
+    {
+      "fgs_entries": [
+        {
+          "value_debug": "[String(thd_fgs_epoch0)]",
+          "variable_id": 0
+        },
+        {
+          "value_debug": "[String(thd_fgs_epoch0)]",
+          "variable_id": 7
+        }
+      ],
+      "global_values": [],
+      "name": "DEPEND_EPOCH0"
+    },
+    {
+      "fgs_entries": [
+        {
+          "value_debug": "[String(thd_fgs_epoch)]",
+          "variable_id": 0
+        },
+        {
+          "value_debug": "[String(thd_fgs_epoch)]",
+          "variable_id": 7
+        }
+      ],
+      "global_values": [],
+      "name": "DEPEND_0"
+    },
+    {
+      "fgs_entries": [
+        {
+          "value_debug": "[String(nT GSE)]",
+          "variable_id": 7
+        },
+        {
+          "value_debug": "[String(sec)]",
+          "variable_id": 13
+        },
+        {
+          "value_debug": "[String(msec)]",
+          "variable_id": 14
+        }
+      ],
+      "global_values": [],
+      "name": "UNITS"
+    },
+    {
+      "fgs_entries": [
+        {
+          "value_debug": "[String(TRUE)]",
+          "variable_id": 15
+        }
+      ],
+      "global_values": [],
+      "name": "VIRTUAL"
+    },
+    {
+      "fgs_entries": [
+        {
+          "value_debug": "[String(comp_themis_epoch)]",
+          "variable_id": 15
+        }
+      ],
+      "global_values": [],
+      "name": "FUNCT"
+    },
+    {
+      "fgs_entries": [
+        {
+          "value_debug": "[String(thd_fgs_epoch0)]",
+          "variable_id": 15
+        }
+      ],
+      "global_values": [],
+      "name": "COMPONENT_0"
+    },
+    {
+      "fgs_entries": [
+        {
+          "value_debug": "[String(thd_fgs_time)]",
+          "variable_id": 15
+        }
+      ],
+      "global_values": [],
+      "name": "COMPONENT_1"
+    }
+  ],
+  "native_backward_steps": [
+    {
+      "delta_seconds": -3.1561174392700195,
+      "previous_unix_seconds": 1472857241.7117057,
+      "source_record_index": 13608,
+      "unix_seconds": 1472857238.5555882
+    }
+  ],
+  "native_encoding": "Network(big-endian)",
+  "native_epoch0_cdf_milliseconds": 62167219200000.0,
+  "native_first_timestamp": "2016-09-02T00:06:15.774+00:00",
+  "native_last_timestamp": "2016-09-03T00:02:26.994+00:00",
+  "native_path": ".cache/staples-external-intake/2016-09-02/thd_l2_fgm_20160902_v01.cdf",
+  "native_rows": 14784,
+  "native_sha256": "eacb293d186d9549b1916af7432755658f87c3ee06ddf95b36ddb6c2d63d6646",
+  "native_time_variable": "thd_fgs_time",
+  "native_unmatched_records": [
+    {
+      "native_gse": [
+        9.458731651306152,
+        26.0517520904541,
+        -8.250332832336426
+      ],
+      "native_unix_seconds": 1472860801.8131604,
+      "source_record_index": 14737,
+      "timestamp": "2016-09-03T00:00:01.813+00:00"
+    },
+    {
+      "native_gse": [
+        7.209461212158203,
+        29.467506408691406,
+        -11.385832786560059
+      ],
+      "native_unix_seconds": 1472860804.9692793,
+      "source_record_index": 14738,
+      "timestamp": "2016-09-03T00:00:04.969+00:00"
+    },
+    {
+      "native_gse": [
+        10.424118041992188,
+        25.96864891052246,
+        -6.932694435119629
+      ],
+      "native_unix_seconds": 1472860808.125398,
+      "source_record_index": 14739,
+      "timestamp": "2016-09-03T00:00:08.125+00:00"
+    },
+    {
+      "native_gse": [
+        9.517352104187012,
+        24.67181396484375,
+        -9.413959503173828
+      ],
+      "native_unix_seconds": 1472860811.2815168,
+      "source_record_index": 14740,
+      "timestamp": "2016-09-03T00:00:11.281+00:00"
+    },
+    {
+      "native_gse": [
+        8.992793083190918,
+        25.419095993041992,
+        -9.12120246887207
+      ],
+      "native_unix_seconds": 1472860814.4376354,
+      "source_record_index": 14741,
+      "timestamp": "2016-09-03T00:00:14.437+00:00"
+    },
+    {
+      "native_gse": [
+        9.160799980163574,
+        25.947988510131836,
+        -10.609980583190918
+      ],
+      "native_unix_seconds": 1472860817.5937543,
+      "source_record_index": 14742,
+      "timestamp": "2016-09-03T00:00:17.593+00:00"
+    },
+    {
+      "native_gse": [
+        8.731846809387207,
+        27.018733978271484,
+        -12.973410606384277
+      ],
+      "native_unix_seconds": 1472860820.749873,
+      "source_record_index": 14743,
+      "timestamp": "2016-09-03T00:00:20.749+00:00"
+    },
+    {
+      "native_gse": [
+        11.684889793395996,
+        29.9409236907959,
+        -13.093779563903809
+      ],
+      "native_unix_seconds": 1472860823.9059916,
+      "source_record_index": 14744,
+      "timestamp": "2016-09-03T00:00:23.905+00:00"
+    },
+    {
+      "native_gse": [
+        10.134057998657227,
+        27.33761978149414,
+        -11.970526695251465
+      ],
+      "native_unix_seconds": 1472860827.0621104,
+      "source_record_index": 14745,
+      "timestamp": "2016-09-03T00:00:27.062+00:00"
+    },
+    {
+      "native_gse": [
+        10.744447708129883,
+        26.46730613708496,
+        -5.956928730010986
+      ],
+      "native_unix_seconds": 1472860830.218229,
+      "source_record_index": 14746,
+      "timestamp": "2016-09-03T00:00:30.218+00:00"
+    },
+    {
+      "native_gse": [
+        9.724394798278809,
+        25.556705474853516,
+        -4.0603718757629395
+      ],
+      "native_unix_seconds": 1472860833.3743477,
+      "source_record_index": 14747,
+      "timestamp": "2016-09-03T00:00:33.374+00:00"
+    },
+    {
+      "native_gse": [
+        8.778911590576172,
+        23.809057235717773,
+        -7.975684642791748
+      ],
+      "native_unix_seconds": 1472860836.5304666,
+      "source_record_index": 14748,
+      "timestamp": "2016-09-03T00:00:36.530+00:00"
+    },
+    {
+      "native_gse": [
+        9.297080039978027,
+        22.860336303710938,
+        -7.629794120788574
+      ],
+      "native_unix_seconds": 1472860839.6865852,
+      "source_record_index": 14749,
+      "timestamp": "2016-09-03T00:00:39.686+00:00"
+    },
+    {
+      "native_gse": [
+        8.766342163085938,
+        22.403526306152344,
+        -7.259400367736816
+      ],
+      "native_unix_seconds": 1472860842.842704,
+      "source_record_index": 14750,
+      "timestamp": "2016-09-03T00:00:42.842+00:00"
+    },
+    {
+      "native_gse": [
+        11.458294868469238,
+        22.149517059326172,
+        -3.8166725635528564
+      ],
+      "native_unix_seconds": 1472860845.9988227,
+      "source_record_index": 14751,
+      "timestamp": "2016-09-03T00:00:45.998+00:00"
+    },
+    {
+      "native_gse": [
+        13.2417573928833,
+        24.27384376525879,
+        -0.8741633892059326
+      ],
+      "native_unix_seconds": 1472860849.1549416,
+      "source_record_index": 14752,
+      "timestamp": "2016-09-03T00:00:49.154+00:00"
+    },
+    {
+      "native_gse": [
+        15.808349609375,
+        24.8240966796875,
+        0.9606603384017944
+      ],
+      "native_unix_seconds": 1472860852.3110602,
+      "source_record_index": 14753,
+      "timestamp": "2016-09-03T00:00:52.311+00:00"
+    },
+    {
+      "native_gse": [
+        14.197482109069824,
+        23.714479446411133,
+        -1.3701348304748535
+      ],
+      "native_unix_seconds": 1472860855.4671788,
+      "source_record_index": 14754,
+      "timestamp": "2016-09-03T00:00:55.467+00:00"
+    },
+    {
+      "native_gse": [
+        14.42293930053711,
+        24.211729049682617,
+        -2.8033478260040283
+      ],
+      "native_unix_seconds": 1472860858.6232977,
+      "source_record_index": 14755,
+      "timestamp": "2016-09-03T00:00:58.623+00:00"
+    },
+    {
+      "native_gse": [
+        12.336983680725098,
+        23.67105484008789,
+        -1.8228917121887207
+      ],
+      "native_unix_seconds": 1472860861.7794163,
+      "source_record_index": 14756,
+      "timestamp": "2016-09-03T00:01:01.779+00:00"
+    },
+    {
+      "native_gse": [
+        12.3862943649292,
+        24.020912170410156,
+        -4.485235214233398
+      ],
+      "native_unix_seconds": 1472860864.935535,
+      "source_record_index": 14757,
+      "timestamp": "2016-09-03T00:01:04.935+00:00"
+    },
+    {
+      "native_gse": [
+        11.439215660095215,
+        25.626853942871094,
+        -6.059330463409424
+      ],
+      "native_unix_seconds": 1472860868.0916538,
+      "source_record_index": 14758,
+      "timestamp": "2016-09-03T00:01:08.091+00:00"
+    },
+    {
+      "native_gse": [
+        11.063992500305176,
+        23.423625946044922,
+        -6.036185264587402
+      ],
+      "native_unix_seconds": 1472860871.2477725,
+      "source_record_index": 14759,
+      "timestamp": "2016-09-03T00:01:11.247+00:00"
+    },
+    {
+      "native_gse": [
+        10.158194541931152,
+        22.24085807800293,
+        -3.56880521774292
+      ],
+      "native_unix_seconds": 1472860874.4038913,
+      "source_record_index": 14760,
+      "timestamp": "2016-09-03T00:01:14.403+00:00"
+    },
+    {
+      "native_gse": [
+        12.141435623168945,
+        21.7489013671875,
+        -4.205121994018555
+      ],
+      "native_unix_seconds": 1472860877.56001,
+      "source_record_index": 14761,
+      "timestamp": "2016-09-03T00:01:17.560+00:00"
+    },
+    {
+      "native_gse": [
+        10.407784461975098,
+        23.405094146728516,
+        -4.089593410491943
+      ],
+      "native_unix_seconds": 1472860880.7161288,
+      "source_record_index": 14762,
+      "timestamp": "2016-09-03T00:01:20.716+00:00"
+    },
+    {
+      "native_gse": [
+        9.932207107543945,
+        26.03653335571289,
+        -6.682163715362549
+      ],
+      "native_unix_seconds": 1472860883.8722475,
+      "source_record_index": 14763,
+      "timestamp": "2016-09-03T00:01:23.872+00:00"
+    },
+    {
+      "native_gse": [
+        15.992927551269531,
+        20.23417854309082,
+        -2.759777784347534
+      ],
+      "native_unix_seconds": 1472860887.028366,
+      "source_record_index": 14764,
+      "timestamp": "2016-09-03T00:01:27.028+00:00"
+    },
+    {
+      "native_gse": [
+        12.011451721191406,
+        25.07078742980957,
+        -6.410135269165039
+      ],
+      "native_unix_seconds": 1472860890.184485,
+      "source_record_index": 14765,
+      "timestamp": "2016-09-03T00:01:30.184+00:00"
+    },
+    {
+      "native_gse": [
+        8.022648811340332,
+        25.146066665649414,
+        -6.9438700675964355
+      ],
+      "native_unix_seconds": 1472860893.3406036,
+      "source_record_index": 14766,
+      "timestamp": "2016-09-03T00:01:33.340+00:00"
+    },
+    {
+      "native_gse": [
+        12.029413223266602,
+        29.253828048706055,
+        -5.749650955200195
+      ],
+      "native_unix_seconds": 1472860896.4967222,
+      "source_record_index": 14767,
+      "timestamp": "2016-09-03T00:01:36.496+00:00"
+    },
+    {
+      "native_gse": [
+        10.840694427490234,
+        25.204097747802734,
+        -10.642719268798828
+      ],
+      "native_unix_seconds": 1472860899.652841,
+      "source_record_index": 14768,
+      "timestamp": "2016-09-03T00:01:39.652+00:00"
+    },
+    {
+      "native_gse": [
+        9.33742904663086,
+        23.135099411010742,
+        -4.262017726898193
+      ],
+      "native_unix_seconds": 1472860902.80896,
+      "source_record_index": 14769,
+      "timestamp": "2016-09-03T00:01:42.808+00:00"
+    },
+    {
+      "native_gse": [
+        12.518614768981934,
+        24.18329429626465,
+        -3.6933047771453857
+      ],
+      "native_unix_seconds": 1472860905.9650786,
+      "source_record_index": 14770,
+      "timestamp": "2016-09-03T00:01:45.965+00:00"
+    },
+    {
+      "native_gse": [
+        10.743809700012207,
+        26.99186897277832,
+        -11.805620193481445
+      ],
+      "native_unix_seconds": 1472860909.1211972,
+      "source_record_index": 14771,
+      "timestamp": "2016-09-03T00:01:49.121+00:00"
+    },
+    {
+      "native_gse": [
+        11.066635131835938,
+        23.617481231689453,
+        -7.094723224639893
+      ],
+      "native_unix_seconds": 1472860912.277316,
+      "source_record_index": 14772,
+      "timestamp": "2016-09-03T00:01:52.277+00:00"
+    },
+    {
+      "native_gse": [
+        9.73043441772461,
+        26.059703826904297,
+        -10.675012588500977
+      ],
+      "native_unix_seconds": 1472860915.4334347,
+      "source_record_index": 14773,
+      "timestamp": "2016-09-03T00:01:55.433+00:00"
+    },
+    {
+      "native_gse": [
+        10.083260536193848,
+        27.597171783447266,
+        -11.514505386352539
+      ],
+      "native_unix_seconds": 1472860918.5895534,
+      "source_record_index": 14774,
+      "timestamp": "2016-09-03T00:01:58.589+00:00"
+    },
+    {
+      "native_gse": [
+        16.160911560058594,
+        30.367372512817383,
+        -7.320560455322266
+      ],
+      "native_unix_seconds": 1472860921.7456722,
+      "source_record_index": 14775,
+      "timestamp": "2016-09-03T00:02:01.745+00:00"
+    },
+    {
+      "native_gse": [
+        16.858774185180664,
+        26.547142028808594,
+        -3.0825328826904297
+      ],
+      "native_unix_seconds": 1472860924.9017909,
+      "source_record_index": 14776,
+      "timestamp": "2016-09-03T00:02:04.901+00:00"
+    },
+    {
+      "native_gse": [
+        11.882625579833984,
+        23.80632781982422,
+        -7.227265357971191
+      ],
+      "native_unix_seconds": 1472860928.0579097,
+      "source_record_index": 14777,
+      "timestamp": "2016-09-03T00:02:08.057+00:00"
+    },
+    {
+      "native_gse": [
+        17.74856185913086,
+        29.331987380981445,
+        -3.2348389625549316
+      ],
+      "native_unix_seconds": 1472860931.2140284,
+      "source_record_index": 14778,
+      "timestamp": "2016-09-03T00:02:11.214+00:00"
+    },
+    {
+      "native_gse": [
+        15.687638282775879,
+        27.645322799682617,
+        -3.6426022052764893
+      ],
+      "native_unix_seconds": 1472860934.3701472,
+      "source_record_index": 14779,
+      "timestamp": "2016-09-03T00:02:14.370+00:00"
+    },
+    {
+      "native_gse": [
+        14.44168472290039,
+        31.83357048034668,
+        -5.557145118713379
+      ],
+      "native_unix_seconds": 1472860937.5262659,
+      "source_record_index": 14780,
+      "timestamp": "2016-09-03T00:02:17.526+00:00"
+    },
+    {
+      "native_gse": [
+        15.786510467529297,
+        29.476049423217773,
+        -7.599670886993408
+      ],
+      "native_unix_seconds": 1472860940.6823845,
+      "source_record_index": 14781,
+      "timestamp": "2016-09-03T00:02:20.682+00:00"
+    },
+    {
+      "native_gse": [
+        12.023776054382324,
+        28.918169021606445,
+        -10.88619327545166
+      ],
+      "native_unix_seconds": 1472860943.8385034,
+      "source_record_index": 14782,
+      "timestamp": "2016-09-03T00:02:23.838+00:00"
+    },
+    {
+      "native_gse": [
+        16.56573486328125,
+        27.283397674560547,
+        -7.029011249542236
+      ],
+      "native_unix_seconds": 1472860946.994622,
+      "source_record_index": 14783,
+      "timestamp": "2016-09-03T00:02:26.994+00:00"
+    }
+  ],
+  "native_vector_variable": "thd_fgs_gse",
+  "native_version": "CdfVersion { major: 3, minor: 8, patch: 0 }",
+  "non_claim": "A different source row count or unmatched values prevents certifying HAPI/native identity. The observations do not identify an upstream instrument acquisition cause or every processing/calibration version.",
+  "schema_version": 1,
+  "witnesses": [
+    {
+      "hapi_csv_row": 13725,
+      "hapi_gse_text": [
+        "1.086494e+01",
+        "-1.339952e+01",
+        "5.612914e+01"
+      ],
+      "hapi_timestamp": "2016-09-02T23:00:35.399Z",
+      "native_candidates": [
+        {
+          "native_gse": [
+            10.864938735961914,
+            -13.399515151977539,
+            56.12914276123047
+          ],
+          "native_unix_seconds": 1472857235.3994706,
+          "source_record_index": 13605
+        }
+      ]
+    },
+    {
+      "hapi_csv_row": 13726,
+      "hapi_gse_text": [
+        "4.553529e+00",
+        "-1.796443e+01",
+        "5.410035e+01"
+      ],
+      "hapi_timestamp": "2016-09-02T23:00:38.555Z",
+      "native_candidates": [
+        {
+          "native_gse": [
+            4.553528785705566,
+            -17.964427947998047,
+            54.1003532409668
+          ],
+          "native_unix_seconds": 1472857238.5555882,
+          "source_record_index": 13606
+        },
+        {
+          "native_gse": [
+            5.592495441436768,
+            -21.041723251342773,
+            51.37583923339844
+          ],
+          "native_unix_seconds": 1472857238.5555882,
+          "source_record_index": 13608
+        }
+      ]
+    },
+    {
+      "hapi_csv_row": 13727,
+      "hapi_gse_text": [
+        "-2.541728e+00",
+        "-1.928176e+01",
+        "4.945319e+01"
+      ],
+      "hapi_timestamp": "2016-09-02T23:00:41.711Z",
+      "native_candidates": [
+        {
+          "native_gse": [
+            -2.5417277812957764,
+            -19.28175926208496,
+            49.45319366455078
+          ],
+          "native_unix_seconds": 1472857241.7117057,
+          "source_record_index": 13607
+        },
+        {
+          "native_gse": [
+            8.516229629516602,
+            -33.29034423828125,
+            45.847171783447266
+          ],
+          "native_unix_seconds": 1472857241.7117057,
+          "source_record_index": 13609
+        }
+      ]
+    },
+    {
+      "hapi_csv_row": 13728,
+      "hapi_gse_text": [
+        "5.592495e+00",
+        "-2.104172e+01",
+        "5.137584e+01"
+      ],
+      "hapi_timestamp": "2016-09-02T23:00:38.555Z",
+      "native_candidates": [
+        {
+          "native_gse": [
+            4.553528785705566,
+            -17.964427947998047,
+            54.1003532409668
+          ],
+          "native_unix_seconds": 1472857238.5555882,
+          "source_record_index": 13606
+        },
+        {
+          "native_gse": [
+            5.592495441436768,
+            -21.041723251342773,
+            51.37583923339844
+          ],
+          "native_unix_seconds": 1472857238.5555882,
+          "source_record_index": 13608
+        }
+      ]
+    },
+    {
+      "hapi_csv_row": 13729,
+      "hapi_gse_text": [
+        "8.516230e+00",
+        "-3.329034e+01",
+        "4.584717e+01"
+      ],
+      "hapi_timestamp": "2016-09-02T23:00:41.711Z",
+      "native_candidates": [
+        {
+          "native_gse": [
+            -2.5417277812957764,
+            -19.28175926208496,
+            49.45319366455078
+          ],
+          "native_unix_seconds": 1472857241.7117057,
+          "source_record_index": 13607
+        },
+        {
+          "native_gse": [
+            8.516229629516602,
+            -33.29034423828125,
+            45.847171783447266
+          ],
+          "native_unix_seconds": 1472857241.7117057,
+          "source_record_index": 13609
+        }
+      ]
+    },
+    {
+      "hapi_csv_row": 13730,
+      "hapi_gse_text": [
+        "-1.879228e+00",
+        "-3.066523e+01",
+        "5.383379e+01"
+      ],
+      "hapi_timestamp": "2016-09-02T23:00:44.867Z",
+      "native_candidates": [
+        {
+          "native_gse": [
+            -1.8792279958724976,
+            -30.665225982666016,
+            53.83379364013672
+          ],
+          "native_unix_seconds": 1472857244.867823,
+          "source_record_index": 13610
+        }
+      ]
+    },
+    {
+      "hapi_csv_row": 13731,
+      "hapi_gse_text": [
+        "2.648480e+00",
+        "-2.554134e+01",
+        "5.006640e+01"
+      ],
+      "hapi_timestamp": "2016-09-02T23:00:48.023Z",
+      "native_candidates": [
+        {
+          "native_gse": [
+            2.648480176925659,
+            -25.541343688964844,
+            50.066402435302734
+          ],
+          "native_unix_seconds": 1472857248.0239403,
+          "source_record_index": 13611
+        }
+      ]
+    }
+  ]
+}

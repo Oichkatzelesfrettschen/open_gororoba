@@ -1,0 +1,28 @@
+title = "Sealed protocol identity and portable retrieval exports"
+sealed_claim_ids = ["C-1740", "C-1741", "C-1743"]
+new_evidence_revisions = [5, 6, 7]
+preceding_evidence_revisions_preserved = 4
+protocol_digests = "sealed-protocols.json"
+preservation_audit = "protocol-sealing-preservation.sql"
+preservation_results = "protocol-sealing-preservation.json"
+contract_change_boundary = "Only the protocol digest changes in each active declaration. Every preceding claim row, transition event, declaration revision and revision-experiment association remains identical."
+
+[external_experiment]
+id = "E-283"
+corrected_receipt = "data/output/audit/staples-causal-validation/external-results/blocked-external-intake.json"
+mutation = "gororoba-db experiment upsert-from-toml --spec data/output/audit/staples-causal-validation/experiments.toml --regen-toml false"
+derived_refresh = "execution-planning --repo-root .; execution-planning --verify --repo-root ."
+result = "Both output and output_path_refs resolve to the retained blocked-intake receipt. The correction changes the reference, not the experiment outcome. All 252 unrelated experiment rows compare equal."
+frozen_models = "data/output/audit/staples-causal-validation/results"
+retained_model_files = 63
+model_input_boundary = "The replay command supplies --models-dir and input_path_refs declares the directory. External execution validates the retained training dataset identity, protocol, source implementation and model-record identities before inference. The retained external manifest still fails admission before numerical inference."
+
+[retrieval_exports]
+tests_passed = 43
+test_command = "cargo test -p provenance_ops --lib --profile validation"
+clippy = "All-target provenance_ops Clippy passes with warnings denied."
+receipt_boundary = "Export requires consistent canonical completed-success receipts with matching expected and observed SHA256 and size."
+payload_boundary = "A materialized response must match its retained identity. A missing payload is allowed. A canonical three-field LFS v1 pointer must name the expected object digest and size, and remains unavailable host payload."
+tested_cases = ["materialized payload", "absent payload", "matching LF pointer", "matching CRLF pointer", "wrong object digest", "wrong object size", "malformed pointer", "extra pointer fields", "corrupted payload", "inconsistent canonical receipt"]
+host_observation = "Pointers yield present=false and first_local_identity=None; repository retention remains independent of payload availability on the host."
+format = "Focused nightly formatter and diff checks pass."

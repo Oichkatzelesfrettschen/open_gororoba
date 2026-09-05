@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-3028"
+artifact_key = "url:https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 1613071
+expected_canonical_url = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+expected_sha256 = "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1"
+observation_key = "exact-response-ASOT-3028-425dd4fdd7e3dcb4f7ca0f48dc5c6be95eb92ce5882874096f7ded44711b7853"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-01.json"
+sha256 = "425dd4fdd7e3dcb4f7ca0f48dc5c6be95eb92ce5882874096f7ded44711b7853"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-01.bin"
+sha256 = "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1"

@@ -1,0 +1,48 @@
+{
+  "original_identity": "a3b736df29c6ce09e84d3580c9094c0c20a1d22d47c7e26a729b9114623bff49",
+  "replay_identity": "4f3f8d0ceb2a45ba75f8cbed8d8ae9552809bf43901244ed6eda3a641074e1d9",
+  "original_executable": "bfffc2d695f3edd262bd602adb6bdc390b034a1b57efa84fb429eae04162bbe8",
+  "replay_executable": "ffbb375bc64aa947ec6766647815c111ab3b113de964fd3b5ab7f62e0114f8c2",
+  "source_changes": [
+    {
+      "path": "Cargo.lock",
+      "original_sha256": "bdf2a431de374b531811c299d34d70ce2b3b6b1f7f85e51d259431f6f9570209",
+      "replay_sha256": "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e"
+    },
+    {
+      "path": "crates/gororoba_cli_physics/Cargo.toml",
+      "original_sha256": "5f6d4f39e312004551826b54705a3b6d4364f5349879021cf80a4f95849f6178",
+      "replay_sha256": "ad463ce5e684b984244f537e1b236f8f4943a7efe8c4ddbcca48b0ca494be645"
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/staples_calibration_refits.rs",
+      "original_sha256": "ff87b237b4993aed1a7669332d5f133ac4061a333a5590bf78b7e5eb60d2f738",
+      "replay_sha256": "f6382e0722152971d1e8fdd9ee86f794d954f2869196b343c3812be881762154"
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/staples_calibration_refits/evidence.rs",
+      "original_sha256": null,
+      "replay_sha256": "ebb861edb663d56060ec64ea14a3a8e9cd2fdf85aa0ebfd042cd5e5ceb75d8d8"
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/staples_calibration_refits/fitting.rs",
+      "original_sha256": null,
+      "replay_sha256": "717bfe6f82d2c246cb5ea6b080b36cd71fe51556787fde5ab8ba650687f47bba"
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/staples_calibration_refits/metrics.rs",
+      "original_sha256": null,
+      "replay_sha256": "40d6d613106704fb035d2d3949de1612cb447869e8b52a435dc7d006133cbb2e"
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/staples_calibration_refits/splitting.rs",
+      "original_sha256": null,
+      "replay_sha256": "861c5be73394e220d7623aab920dab9cb25d17f3c8af62afa5410064865d1d78"
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/staple_controls.rs",
+      "original_sha256": "230a60c4b9a57a2e16a6259a36919f94636730682cc2028892bf41deb8ac999a",
+      "replay_sha256": "b0be06c59247c48ed68c594b6f179b0c6806b92d7c44d1644cab560ed3ee5194"
+    }
+  ]
+}

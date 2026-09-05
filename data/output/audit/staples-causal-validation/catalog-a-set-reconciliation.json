@@ -1,0 +1,21 @@
+{
+  "added_count": 0,
+  "added_rows": [],
+  "catalog_sha256": "807b79b73b1266981d24c20627d8f85bca585475d07260d4162277a22ce660b5",
+  "column_semantics": {
+    "R": "Euclidean norm of raw GSE coordinates, Earth radii",
+    "TIMESTAMP": "UTC crossing timestamp",
+    "doy": "UTC ordinal day",
+    "year": "UTC calendar year"
+  },
+  "derived_a_count": 9490,
+  "derived_path": "/home/eirikr/Github/open_gororoba/data/output/cat_themis_a.csv",
+  "derived_sha256": "2b6bd8833089868693bf7873a5240677c379c0821a66eb326d2a9f0c6ccd2a01",
+  "omissions_by_date": {},
+  "omitted_count": 0,
+  "omitted_rows": [],
+  "radius_mismatches": [],
+  "raw_a_count": 9490,
+  "schema_version": 1,
+  "selection_rule": "Set difference is measured; historical filtering rationale requires generator/provenance evidence and is not inferred from omission alone"
+}

@@ -1,0 +1,11 @@
+{
+  "body_bytes": 1395398,
+  "body_sha256": "9cee71a56cee9675c561db43d8010b04abeb5163a8af3a38371c12ae0287f0d5",
+  "completed": true,
+  "final_url": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:41Z",
+  "requested_url": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

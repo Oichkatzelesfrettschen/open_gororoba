@@ -1,0 +1,26 @@
+[transition]
+transition_key = "staples-causal-epoch-bounded-increment"
+source_claim_id = "C-1741"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-STAPLES-CAUSAL-EPOCH-CONTROLS"]
+experiment_ids = ["E-282", "E-283"]
+exercised_falsifier = "Does the positive increment extend to timestamp-causal features, training-only learned transforms, and entire subsequent epochs? The global-minimum interval remains positive. Separately, its upper endpoint is below 0.005 and rejects the proposed useful discrimination increment. External transfer remains blocked and algebra-specific superiority remains inconclusive."
+proposed_claim_status = "Verified"
+rationale = "Retain the historical grouped-refit claim and register the separately bounded causal result. Positive predictive information and a practically sufficient increment are distinct predicates; the campaign supports the former within the archive and rejects the latter under the investigator threshold."
+unresolved_assumptions = ["Daily cluster exchangeability and nominal bootstrap coverage remain unproven; estimates condition on frozen training fits and fixed final epochs.", "Selected crossing days do not establish ordinary-day false alarms, online arrival latency or operational cost-benefit.", "The external probe-D intake has one native-source backward-time date; external numerical inference remains unperformed.", "Exact-support control point ranks fail canonical dominance, but canonical-minus-control uncertainty intervals remain unrun."]
+actor = "codex"
+reason = "Register the completed causal campaign while preserving every historical claim and refutation"
+transition_timestamp = "2026-09-05T05:20:49Z"
+expected_source_state_sha256 = "705fd63e9799f0e881fc0a2e07857185019b385ce969e201fed882e53436afe6"
+expected_claim_id_max = 1742
+
+[[successor]]
+proposal_key = "staples-causal-increment-below-declared-useful-threshold"
+statement = "On the timestamp-causal THEMIS-A crossing-day archive (22,263,526 admitted decisions, 543,911 positives, 813 daily files), training-only preprocessing and ridge-logistic fits on 2007-2012 produce a small positive canonical-associator increment over six matched geometric predictors in held-out 2015 and 2016. Across 2,000 paired whole-daily-file bootstrap draws, the global minimum ROC-AUC increment over calibration widths 64, 256 and 1024 and both final years has approximate 95 percent interval [0.0010149049086891153, 0.0029188809429172872]. The upper endpoint lies below the preregistered investigator-defined 0.005 minimum and rejects the declared useful discrimination increment within the admitted archive. Fourteen to sixteen of nineteen exact-support sign controls equal or exceed canonical point ROC-AUC in every final panel; mechanism-comparison intervals remain unrun. External probe-D inference remains blocked by a backward timestamp independently confirmed in the native source product."
+initial_status = "Verified"
+source_or_implementation_boundary = "Archived calibrated-product concurrent localization at decision timestamp t using only six strictly earlier unique timestamp batches and strictly preceding calibration increments. All widths and tensors share exact admitted raw supports and training budget. The bootstrap conditions on frozen training fits and the observed final years; operational utility and external replication remain unestablished."
+required_falsifier = "A faithful replay on identical admitted bytes and protocol that produces an upper endpoint at or above 0.005 defeats the below-threshold conclusion after implementation provenance is resolved. A zero-containing interval defeats the positive-increment conclusion. Provider-corrected external data and a separately declared intake can adjudicate transfer; point ranks alone cannot establish uncertainty-adjusted algebraic specificity."
+where_stated = ["data/output/audit/staples-causal-validation/findings.toml", "data/output/audit/staples-causal-validation/results/summary.json", "data/output/audit/staples-causal-validation/results/bootstrap.json", "E-282", "E-283"]
+evidence_artifact_ids = ["LOCAL-STAPLES-CAUSAL-EPOCH-CONTROLS"]
+predecessor_relation_kind = "refines"

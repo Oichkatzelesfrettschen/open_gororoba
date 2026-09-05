@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-2619"
+artifact_key = "url:https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 189748
+expected_canonical_url = "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
+expected_sha256 = "e9fe7bdb8f8a570c0fe04e176b9c534332a7907a7e004f0ef888d6105f6373e8"
+observation_key = "exact-response-ASOT-2619-383aa61aad0b8f4ca84fd4141fa9a0afda535c9feb6bca81e01a9c2cdf60860c"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-12.json"
+sha256 = "383aa61aad0b8f4ca84fd4141fa9a0afda535c9feb6bca81e01a9c2cdf60860c"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-12.bin"
+sha256 = "e9fe7bdb8f8a570c0fe04e176b9c534332a7907a7e004f0ef888d6105f6373e8"

@@ -1,0 +1,9 @@
+[{"surface":"claims","expected_rows":1557,"missing_or_changed_rows":0},
+{"surface":"claim_transition_events","expected_rows":199,"missing_or_changed_rows":0},
+{"surface":"claim_evidence_revisions","expected_rows":4,"missing_or_changed_rows":0},
+{"surface":"claim_evidence_revision_experiments","expected_rows":8,"missing_or_changed_rows":0},
+{"surface":"unrelated_experiments","expected_rows":252,"missing_or_changed_rows":0},
+{"surface":"contracts_except_protocol_digest","expected_rows":3,"missing_or_changed_rows":0},
+{"surface":"artifacts","expected_rows":3285,"missing_or_changed_rows":0},
+{"surface":"artifact_paths","expected_rows":4098,"missing_or_changed_rows":0},
+{"surface":"artifact_retrieval_observations","expected_rows":37,"missing_or_changed_rows":0}]

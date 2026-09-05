@@ -1,0 +1,101 @@
+{
+  "after": {
+    "canonical_url": "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+    "key": "MCCRIMMON_1985",
+    "links": [
+      [
+        "https://doi.org/10.2140/pjm.1985.117.163",
+        "all_links"
+      ],
+      [
+        "https://msp.org/pjm/1985/117-1/p10.xhtml",
+        "all_links"
+      ],
+      [
+        "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+        "all_links"
+      ],
+      [
+        "https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/mccrimmon_1985_euclid_mirror_msp_org_pjm_1985_117_1_pjm_v117_n1_p10_s_pdf.pdf",
+      "citation": "McCrimmon (1985) PJM - Project Euclid PDF mirror",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "McCrimmon (1985) PJM - Project Euclid PDF mirror"
+    }
+  },
+  "before": {
+    "canonical_url": "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+    "key": "MCCRIMMON_1985",
+    "links": [
+      [
+        "https://doi.org/10.2140/pjm.1985.117.163",
+        "all_links"
+      ],
+      [
+        "https://msp.org/pjm/1985/117-1/p10.xhtml",
+        "all_links"
+      ],
+      [
+        "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+        "all_links"
+      ],
+      [
+        "https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/mccrimmon_1985_euclid_mirror_msp_org_pjm_1985_117_1_pjm_v117_n1_p10_s_pdf.pdf",
+      "citation": "McCrimmon (1985) PJM - Project Euclid PDF mirror",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "McCrimmon (1985) PJM - Project Euclid PDF mirror"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 1613071,
+    "body_sha256": "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1",
+    "completed": true,
+    "final_url": "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:41Z",
+    "requested_url": "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-0005",
+    "artifact_key": "MCCRIMMON_1985",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 1613071,
+    "expected_canonical_url": "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+    "expected_sha256": "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1",
+    "observation_key": "exact-response-ASOT-0005-425dd4fdd7e3dcb4f7ca0f48dc5c6be95eb92ce5882874096f7ded44711b7853",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-01.json",
+      "sha256": "425dd4fdd7e3dcb4f7ca0f48dc5c6be95eb92ce5882874096f7ded44711b7853"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-01.bin",
+      "sha256": "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "b27362e5fb23b9822c59d5aae638ef4d27659b7cbaab32318fbd4385f7d6328a"
+}

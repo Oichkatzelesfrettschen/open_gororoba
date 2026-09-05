@@ -1,0 +1,19 @@
+actor = "codex"
+artifact_id = "ASOT-2945"
+artifact_key = "url:https://docs.amd.com/api/khub/documents/w13cmcpl4f9mct4wpn6edg/content"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 956
+expected_canonical_url = "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
+expected_sha256 = "c057d08495f0fb9c29020f798c1a971b6298049e1f4caf9c8de8195550df2e6c"
+observation_key = "exact-response-ASOT-2945-d654ccff4d52f09abb623e637a9f364b04ae8a94d069a8f2fb2280145252be9b"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-25.json"
+sha256 = "d654ccff4d52f09abb623e637a9f364b04ae8a94d069a8f2fb2280145252be9b"

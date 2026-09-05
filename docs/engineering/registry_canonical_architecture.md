@@ -96,7 +96,7 @@ in `docs/engineering/evidence_ledger_operating_contract_2026_08_01.md`.
   or downstream consumer that knew the TOML format keeps working. They
   are regenerated from Layer 1 by `provenance export-control-plane`
   (binary in `gororoba_cli_provenance`, source in
-  `gororoba_cli_data/src/bin/provenance.rs`). Each Layer-2 TOML starts
+  `gororoba_cli_provenance/src/bin/provenance.rs`). Each Layer-2 TOML starts
   with a header line that begins
   `# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.` -- if you see
   that header, do not edit by hand.
@@ -143,6 +143,84 @@ If you pass `--regen-toml false` (useful for batch updates), Layer 1
 mutates but Layer 2 does not refresh. You then call
 `make registry-export-markdown` (or `provenance export-control-plane`
 directly) once after the batch completes.
+
+`gororoba-db binaries sync --dry-run` previews additions, removals, and crate
+owner changes against Cargo targets. Applying the sync updates `crate_name`
+for moved binaries while preserving their curated description, experiment
+link, and source. The summary reports old/new owners separately from retained
+name counts; a retained binary name can still have an owner change.
+
+## Typed empirical evidence contracts
+
+Use `gororoba-db claim set-evidence --spec <contract.toml> --actor <actor>
+--reason <reason>` for empirical declarations. `ClaimEvidenceSpec` in
+`provenance_store::claim_evidence` requires an evidence layer, intervening maps
+by branch and kind, fitted parameters with training boundaries, fixed
+hyperparameters, decisive experiment IDs and a protocol artifact, and a
+`what_would_verify_refute` table. The outcome table separates verification,
+revision, abandonment, and inconclusive results. C-1740, C-1741, and C-1743 provide
+registered examples; the contracts themselves establish experimental criteria.
+
+`depth_status = "declared"` requires `lift_depth` to equal the largest number
+of interpretive maps on any branch. Computational maps remain enumerated but
+do not contribute to that count. `depth_status = "not_assessed"` requires an
+omitted `lift_depth` and a `depth_rationale`. The C-1740, C-1741, and C-1743 contracts
+enumerate computational preprocessing while leaving physical interpretive
+depth unassessed. An omitted depth therefore differs from declared depth zero.
+
+The mutation validates the claim and experiment references, then updates
+`claim_evidence` and appends full previous/new JSON, actor, and reason to
+`claim_evidence_revisions` in one transaction. Historical experiment references
+remain in `claim_evidence_revision_experiments`, including references replaced
+by later contract revisions. Append-only triggers reject history rewrites;
+transaction failure rolls back the live contract and revision together.
+Compatibility export overlays the typed fields on the rendered claim row.
+Re-export and run `make registry-integrity` after a batch, then commit the
+database and generated outputs together. Destructive imports refuse retained
+evidence history because compatibility exports cannot reconstruct its revisions.
+
+Typed export clears formatting positions on transplanted nested tables and
+compares the entire serialized/reparsed document with the expected semantic
+mapping before writing compatibility files. The guard preserves claim IDs,
+unmodified rows, and every declared nested field. Multi-claim regression tests
+cover early, middle, and late parents because a single parent cannot expose
+cross-claim table-position drift.
+
+## Retrieval observations and document identity
+
+Use `gororoba-db artifact record-retrieval --spec <receipt.toml>` to retain a
+retrieval association. `ArtifactRetrievalSpec` in
+`provenance_store::artifact_retrieval` requires a unique observation key,
+actor and reason, artifact ID and key, historical expected SHA256 and byte
+length, a hash-verified expectation source, and hash-verified GET request
+evidence. Request evidence records requested/final URLs, tool, timestamp,
+completion, HTTP status, and observed body digest and size. A completed GET
+also requires retained response bytes whose digest and size match the request
+record. Failed and mismatched attempts remain observations with explicit outcomes.
+
+`expected_canonical_url` pins the live artifact URL before mutation.
+`historical_expectation_url`, when supplied, independently pins the URL in the
+retained historical inventory; when omitted, the historical check uses
+`expected_canonical_url`. The expectation-source row must match artifact ID,
+key, historical URL, expected digest, and expected size. A changed live URL
+therefore cannot silently reinterpret the original inventory expectation.
+
+`correct_canonical_url = true` requires a completed GET matching the historical
+digest and size. The transaction changes the canonical URL to the requested
+URL, retains the prior URL as `historical_canonical_url`, and records both URLs,
+expectations, observations, and before/after snapshots in append-only
+`artifact_retrieval_observations`. Historical hashes remain intact. Reusing an
+observation key requires the same specification and matching post-state.
+
+Retrieval method, metadata completeness, URL-to-bytes correspondence, and
+document identity are separate observations. Mozilla wget identifies the
+retrieval tool. `document_identity = "verified"` additionally requires a
+completed response and retained, hash-verified attribution evidence;
+`"unresolved"` preserves the remaining attribution uncertainty. Matching an
+expected digest establishes byte correspondence, rather than scientific support
+for the consuming claim. Re-export compatibility lanes and refresh signatures
+after mutation; preserve the canonical database because destructive imports
+refuse retained retrieval history.
 
 ## The render-row splice mechanism
 

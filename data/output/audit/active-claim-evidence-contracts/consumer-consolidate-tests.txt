@@ -1,0 +1,35 @@
+
+running 31 tests
+test test_analysis_report_display ... ok
+test test_conflict_resolution_populates_jaccard ... ok
+test test_conflict_resolution_refuted_claim ... ok
+test test_claims_toml_round_trip ... ok
+test test_conflict_resolution_with_status_note ... ok
+test structured_falsifiers_preserve_dependencies_from_every_outcome_category ... ok
+test test_extract_claim_refs_deduplication ... ok
+test test_enrich_description_from_long_statement ... ok
+test test_crossref_no_self_refs ... ok
+test test_enrich_confidence_refuted ... ok
+test test_enrich_phase_from_where_stated ... ok
+test test_enrich_confidence_verified_without_test ... ok
+test test_crossref_via_shared_insight ... ok
+test test_enrich_confidence_verified_with_test ... ok
+test test_crossref_bidirectional ... ok
+test test_crossref_via_shared_experiment ... ok
+test test_extract_claim_refs_from_text ... ok
+test test_enrich_insight_reverse_lookup ... ok
+test test_merge_idempotent ... ok
+test test_merge_preserves_primary ... ok
+test test_merge_secondary_status_note ... ok
+test test_normalize_case_insensitive ... ok
+test test_normalize_closed_variants_preserved ... ok
+test test_normalize_idempotent ... ok
+test test_normalize_parenthetical_variant ... ok
+test test_similarity_ignores_short_statements ... ok
+test test_similarity_finds_near_duplicates ... ok
+test test_similarity_skips_linked_pairs ... ok
+test test_extract_claim_refs_four_digit ... ok
+test test_full_pipeline_runs ... ok
+test test_full_pipeline_idempotent ... ok
+
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s

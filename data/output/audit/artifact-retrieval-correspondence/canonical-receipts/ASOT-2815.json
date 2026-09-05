@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/pdf/0910.2569.pdf",
+    "key": "url:https://arxiv.org/pdf/0910.2569.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/0910.2569.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_0024_stinga_torrea_arxiv_arxiv_org_pdf_0910_2569_pdf.pdf",
+      "citation": "link: <>; rel='canonical'",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "link: <>; rel='canonical'"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/pdf/0910.2569.pdf",
+    "key": "url:https://arxiv.org/pdf/0910.2569.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/0910.2569.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_0024_stinga_torrea_arxiv_arxiv_org_pdf_0910_2569_pdf.pdf",
+      "citation": "link: <>; rel='canonical'",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "link: <>; rel='canonical'"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 362590,
+    "body_sha256": "8790df99f4cc825c004341ccdeedbc3872b280c77f8dcc14b7da0c47c0ddd029",
+    "completed": true,
+    "final_url": "https://arxiv.org/pdf/0910.2569",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:28Z",
+    "requested_url": "https://arxiv.org/pdf/0910.2569.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2815",
+    "artifact_key": "url:https://arxiv.org/pdf/0910.2569.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 362590,
+    "expected_canonical_url": "https://arxiv.org/pdf/0910.2569.pdf",
+    "expected_sha256": "8790df99f4cc825c004341ccdeedbc3872b280c77f8dcc14b7da0c47c0ddd029",
+    "observation_key": "exact-response-ASOT-2815-eb88b5119985c8bc2797068ab0e76bf015f93df3a399f44156df47e0890c1b39",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-15.json",
+      "sha256": "eb88b5119985c8bc2797068ab0e76bf015f93df3a399f44156df47e0890c1b39"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-15.bin",
+      "sha256": "8790df99f4cc825c004341ccdeedbc3872b280c77f8dcc14b7da0c47c0ddd029"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "94becb3f5e2191d45bdacd87a46bc13ed647a5d9e52c1d37661cbf5ab8bca9cb"
+}

@@ -1,0 +1,11 @@
+{
+  "body_bytes": 177030,
+  "body_sha256": "fd8dd77e70aafb40e353178a5faab080c87a6cd0b450b1d102bb5d24e8dc9b86",
+  "completed": true,
+  "final_url": "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:42Z",
+  "requested_url": "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

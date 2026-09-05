@@ -1,0 +1,15 @@
+schema_version = 1
+source = "data/output/audit/staples-causal-validation/external-intake.rs"
+source_sha256 = "8f2c100117eccbe3818a81913596cd82a5bb49a27827e0091c344615cb9dd260"
+executable = ".cache/staples-external-intake-build/external-intake"
+executable_sha256 = "06fb5e69d3c05fb61d09ccdddaf68b22db4b640d7c95ad61ae18eeb1168c2579"
+rustc_version = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+workspace_lock_sha256 = "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e"
+build_method = "Standalone evidence executable linked to the workspace validation dependency artifacts. Resolve equivalent artifacts from the pinned workspace lock when rebuilding a fresh cache; retain their resulting identities."
+dependency_directory = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps"
+rustc_flags = ["--edition=2024", "-D", "warnings", "-O", "--crate-name", "staples_external_intake"]
+externs = ["anyhow=libanyhow-398a27bf114a2926.rlib", "chrono=libchrono-c3b2ba75027f609b.rlib", "serde_json=libserde_json-0072334a10d2c8c8.rlib", "sha2=libsha2-f2edc2d7c4edec65.rlib", "csv=libcsv-1ef3cdd4a09c1cd9.rlib"]
+validation = "Two rustc --test tests pass; direct clippy-driver --emit metadata -D warnings passes; rustfmt +nightly formats the standalone source."
+tmux_session = "staples_external_intake"
+plan_command = ".cache/staples-external-intake-build/external-intake /home/eirikr/worktrees/open_gororoba/empirical-claim-evidence-contracts /home/eirikr/Github/open_gororoba/data/external/crossing_lists/themis_mp_crossings_v2.txt /home/eirikr/Github/open_gororoba/data/output/cat_themis_a.csv plan"
+fetch_command = ".cache/staples-external-intake-build/external-intake /home/eirikr/worktrees/open_gororoba/empirical-claim-evidence-contracts /home/eirikr/Github/open_gororoba/data/external/crossing_lists/themis_mp_crossings_v2.txt /home/eirikr/Github/open_gororoba/data/output/cat_themis_a.csv fetch"

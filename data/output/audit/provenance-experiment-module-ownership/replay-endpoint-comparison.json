@@ -1,0 +1,37 @@
+{
+  "completed_fits": 750,
+  "completed_cv_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "completed_bootstrap_replicates": 100,
+  "global_increment_exact": true,
+  "global_standalone_margin_exact": true,
+  "global_increment": {
+    "adverse_nonpositive_count": 0,
+    "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+    "decision": "positive_under_conditional_procedure",
+    "denominator": 100,
+    "median": 0.0017528829999793327,
+    "monte_carlo_resolution": 0.009900990099009901,
+    "percentile_2_5": 0.0010345135981383064,
+    "percentile_97_5": 0.002696001071597234,
+    "replicates": 100
+  },
+  "global_standalone_margin": {
+    "adverse_nonpositive_count": 0,
+    "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+    "decision": "positive_under_conditional_procedure",
+    "denominator": 100,
+    "median": 0.0275574649038679,
+    "monte_carlo_resolution": 0.009900990099009901,
+    "percentile_2_5": 0.02049497475492511,
+    "percentile_97_5": 0.03547971075569095,
+    "replicates": 100
+  },
+  "arm_intervals_exact": true,
+  "cv_auc_increments_exact": true
+}

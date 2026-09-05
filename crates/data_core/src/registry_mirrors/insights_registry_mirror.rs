@@ -1657,4 +1657,4 @@
 //! - Sprint: 0
 //! - Claims: C-1628, C-1631, C-1633
 //!
-//! Matching only input variables and labels is insufficient when detectors consume different temporal windows: the staple-associator reads six raw samples while one-step rotation reads two, and equal-receptive-field controls (cumrot6, maxrot6) reverse the apparent associator-versus-rotation ranking on the same benchmark. Temporal support is a load-bearing confound; every baseline battery must state and match the receptive field per detector before a dominance claim is registered.
+//! Matching only input variables and labels is insufficient when detectors consume different temporal windows: the staple-associator reads six raw samples while one-step rotation reads two, and equal-receptive-field controls (cumrot6, maxrot6) reverse the apparent associator-versus-rotation ranking on the same benchmark. Temporal support is a confound that decides the ranking; every baseline battery must state and match the receptive field per detector before a dominance claim is registered.

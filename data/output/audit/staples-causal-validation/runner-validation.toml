@@ -1,0 +1,34 @@
+schema_version = 1
+runner = "staples-causal-validation"
+protocol_sha256 = "ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586c5e520c14dd70aa3aea6"
+executable_sha256 = "bc864550c1af78820e365d95738ebcdd146b85345ac38dd79ee023ae4fa626d8"
+test_command = "cargo test --offline --locked --profile validation -p gororoba_cli_physics --bin staples-causal-validation"
+tests_passed = 12
+tests_failed = 0
+clippy_command = "cargo clippy --offline --locked --profile validation -p gororoba_cli_physics --bin staples-causal-validation --tests -- -D warnings"
+clippy_exit = 0
+format_command = "rustfmt +nightly --edition 2024 --check crates/gororoba_cli_physics/src/bin/staples_causal_validation.rs"
+format_exit = 0
+diff_check_exit = 0
+build_command = "cargo build --offline --locked --profile validation -p gororoba_cli_physics --bin staples-causal-validation"
+build_exit = 0
+build_reported_seconds = 33.14
+build_timing_boundary = "Warm shared dependency cache, two Cargo build jobs; elapsed output includes cache contention and is not a clean rebuild benchmark."
+entrypoint_lines = 526
+module_lines = [527, 311, 241, 237, 352, 61]
+module_order = ["admission", "evidence", "features", "fitting", "metrics", "splits"]
+source_lines_total = 2255
+test_boundaries = ["Current decision excludes current and future vectors", "Duplicate timestamp batches reset future history", "Gap, fill, invalid and backward timestamp handling", "All calibration widths and controls share exact admitted support", "Calibration increments end strictly before the six-vector feature window", "Training-only transforms and coefficients resist holdout mutation", "Epoch splits reject overlap and future training", "Daily-pair AUC kernel matches weighted rank oracle including ties", "Threshold decisions distinguish small positive effects from useful increments", "Resume rejects identity drift, payload corruption and overwrite", "External admission preserves failed dates and validates complete accounting and field units"]
+external_receipt = "external-results/blocked-external-intake.json"
+external_receipt_sha256 = "2289ba72ef7e69f518acfbb8d5caa2fc776123f575a26e1367ded14657299a66"
+external_exit = 0
+external_numerical_rows_consumed = 0
+external_status = "blocked_external_intake"
+external_failed_date = "2016-09-02"
+external_reason = "Three successful HTTP retrievals returned identical bytes containing a backward timestamp. The sealed protocol requires every planned date to pass admission."
+
+[build_environment]
+CARGO_HOME = "/home/eirikr/Github/open_gororoba/.cache/cargo-home"
+CARGO_TARGET_DIR = "/home/eirikr/worktrees/open_gororoba/empirical-claim-evidence-contracts/.cache/gate-target"
+CARGO_BUILD_BUILD_DIR = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e"
+CARGO_BUILD_JOBS = "2"

@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-0215"
+artifact_key = "doi:10.1038/s41586-025-09917-9"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 469659
+expected_canonical_url = "https://doi.org/10.1038/s41586-025-09917-9"
+expected_sha256 = "2ea06a2f49bfc7485875b7c560344286b7a64030af64fe7a341878bfe4076857"
+observation_key = "exact-response-ASOT-0215-77689db5b5d645c7afbcbaadf7f49e5968d2d7009ebac235a9da4c3e1c5d4b30"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-06.json"
+sha256 = "77689db5b5d645c7afbcbaadf7f49e5968d2d7009ebac235a9da4c3e1c5d4b30"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-06.bin"
+sha256 = "057c50133213bb7c2a15d3675a057517b5a44c84012b058bdf05118e45343896"

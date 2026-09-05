@@ -289,6 +289,9 @@ path = "src/bin/staples_incremental_information.rs"
 name = "staples-calibration-refits"
 path = "src/bin/staples_calibration_refits.rs"
 [[bin]]
+name = "staples-causal-validation"
+path = "src/bin/staples_causal_validation.rs"
+[[bin]]
 name = "staples-twist-ladder"
 path = "src/bin/staples_twist_ladder.rs"
 [[bin]]

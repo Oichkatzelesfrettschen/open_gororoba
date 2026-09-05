@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-2906"
+artifact_key = "url:https://bibliotekanauki.pl/articles/729117.pdf"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 393173
+expected_canonical_url = "https://bibliotekanauki.pl/articles/729117.pdf"
+expected_sha256 = "b3876255599bcd50f7e51ed50044e4f2b74cd2e7945b4416b6fb196bc6eae010"
+observation_key = "exact-response-ASOT-2906-fb8c9846eff1ba3d685da30b7e887b84ffc6f83469c0498bf03c266a19abcd93"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-23.json"
+sha256 = "fb8c9846eff1ba3d685da30b7e887b84ffc6f83469c0498bf03c266a19abcd93"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-23.bin"
+sha256 = "b3876255599bcd50f7e51ed50044e4f2b74cd2e7945b4416b6fb196bc6eae010"

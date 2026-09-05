@@ -100,7 +100,7 @@ claim_ref_count = 0
 equation_ref_count = 14
 proof_ref_count = 0
 source_ref_count = 1
-dedup_fingerprint = "485edac9bca0d5e098df805ea79cfe8cc23ddd6b2d7fc50e632997d6e185df10"
+dedup_fingerprint = "75f6ce8e0ad047e172b1c17c82240348b5e55e437220781876c94d6ba8ae3ad5"
 
 [[scroll]]
 id = "ART-008"

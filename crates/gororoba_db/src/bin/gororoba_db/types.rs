@@ -354,6 +354,15 @@ pub(crate) enum ClaimTransitionAction {
 
 #[derive(Subcommand, Debug)]
 pub(crate) enum ClaimMutationAction {
+    /// Declare typed evidence and append a complete canonical revision.
+    SetEvidence {
+        #[arg(long)]
+        spec: PathBuf,
+        #[arg(long)]
+        actor: String,
+        #[arg(long)]
+        reason: String,
+    },
     /// Plan, apply, or show a typed claim transition.
     Transition(ClaimTransitionArgs),
     /// Replace the status_note on one claim row inside a single
@@ -505,6 +514,11 @@ pub(crate) enum TheoremIdentityAction {
 
 #[derive(Subcommand, Debug)]
 pub(crate) enum ArtifactAction {
+    /// Record exact retrieval evidence and apply a digest-matched URL correction.
+    RecordRetrieval {
+        #[arg(long)]
+        spec: PathBuf,
+    },
     /// Reconcile artifact paths using a hash-verified, transactional specification.
     RepairPaths {
         #[arg(long)]
@@ -629,8 +643,8 @@ pub(crate) struct BinariesMutationArgs {
 #[derive(Subcommand, Debug)]
 pub(crate) enum BinariesMutationAction {
     /// Reconcile binaries_cp against the `[[bin]]` targets cargo declares.
-    /// Rows already present keep their curated descriptions; only absent names
-    /// are inserted and stale names deleted.
+    /// Existing names keep curated descriptions, experiment links, and sources;
+    /// crate owners follow Cargo. Absent names are inserted and stale names deleted.
     Sync {
         #[arg(long)]
         actor: Option<String>,

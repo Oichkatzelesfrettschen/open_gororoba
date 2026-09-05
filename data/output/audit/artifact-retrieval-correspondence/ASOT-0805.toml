@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-0805"
+artifact_key = "doi:10.35834/mjms/1474295358"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 177030
+expected_canonical_url = "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf"
+expected_sha256 = "fd8dd77e70aafb40e353178a5faab080c87a6cd0b450b1d102bb5d24e8dc9b86"
+observation_key = "exact-response-ASOT-0805-00dbcf57307898b087933a0df9fc72faed69f866795a62e38f5482b96cd99eda"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-10.json"
+sha256 = "00dbcf57307898b087933a0df9fc72faed69f866795a62e38f5482b96cd99eda"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-10.bin"
+sha256 = "fd8dd77e70aafb40e353178a5faab080c87a6cd0b450b1d102bb5d24e8dc9b86"

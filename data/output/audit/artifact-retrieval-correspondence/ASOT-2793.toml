@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-2793"
+artifact_key = "url:https://arxiv.org/abs/math/0403113"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 206494
+expected_canonical_url = "https://arxiv.org/abs/math/0403113"
+expected_sha256 = "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872"
+observation_key = "exact-response-ASOT-2793-60efe96c7bb5ebf26ccdc3d53d09df05d6c13e95f874d3de0ae26f5223974f69"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-14.json"
+sha256 = "60efe96c7bb5ebf26ccdc3d53d09df05d6c13e95f874d3de0ae26f5223974f69"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-14.bin"
+sha256 = "16f3ac08ce1d8fa75cd46456627c2d74a79666d34cd2eddf9ffe5765c98a05fd"

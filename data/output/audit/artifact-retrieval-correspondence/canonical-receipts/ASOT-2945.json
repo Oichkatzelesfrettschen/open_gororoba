@@ -1,0 +1,106 @@
+{
+  "after": {
+    "canonical_url": "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+    "key": "url:https://docs.amd.com/api/khub/documents/w13cmcpl4f9mct4wpn6edg/content",
+    "links": [
+      [
+        "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_extractf128_pd.html",
+        "all_links"
+      ],
+      [
+        "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_hadd_pd.html",
+        "all_links"
+      ],
+      [
+        "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+        "all_links"
+      ],
+      [
+        "https://epubs.siam.org/doi/10.1137/030601818",
+        "all_links"
+      ],
+      [
+        "https://www.intel.com/content/www/us/en/docs/cpp-compiler/developer-guide-reference/2021-8/mm-fmadd-pd-mm256-fmadd-pd.html",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/csv/x87_avx_fma_followup_benchmark_summary.csv",
+      "citation": "x87 / AVX Accumulation Sources",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "x87 / AVX Accumulation Sources"
+    }
+  },
+  "before": {
+    "canonical_url": "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+    "key": "url:https://docs.amd.com/api/khub/documents/w13cmcpl4f9mct4wpn6edg/content",
+    "links": [
+      [
+        "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_extractf128_pd.html",
+        "all_links"
+      ],
+      [
+        "https://doc.rust-lang.org/nightly/core/arch/x86_64/fn._mm256_hadd_pd.html",
+        "all_links"
+      ],
+      [
+        "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+        "all_links"
+      ],
+      [
+        "https://epubs.siam.org/doi/10.1137/030601818",
+        "all_links"
+      ],
+      [
+        "https://www.intel.com/content/www/us/en/docs/cpp-compiler/developer-guide-reference/2021-8/mm-fmadd-pd-mm256-fmadd-pd.html",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/csv/x87_avx_fma_followup_benchmark_summary.csv",
+      "citation": "x87 / AVX Accumulation Sources",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "x87 / AVX Accumulation Sources"
+    }
+  },
+  "digest_matches": false,
+  "outcome": "retrieval_failed",
+  "request": {
+    "body_bytes": 0,
+    "body_sha256": null,
+    "completed": false,
+    "final_url": "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+    "http_status": 404,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:33Z",
+    "requested_url": "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2945",
+    "artifact_key": "url:https://docs.amd.com/api/khub/documents/w13cmcpl4f9mct4wpn6edg/content",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 956,
+    "expected_canonical_url": "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+    "expected_sha256": "c057d08495f0fb9c29020f798c1a971b6298049e1f4caf9c8de8195550df2e6c",
+    "observation_key": "exact-response-ASOT-2945-d654ccff4d52f09abb623e637a9f364b04ae8a94d069a8f2fb2280145252be9b",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-25.json",
+      "sha256": "d654ccff4d52f09abb623e637a9f364b04ae8a94d069a8f2fb2280145252be9b"
+    },
+    "response": null,
+    "schema_version": 1
+  },
+  "spec_sha256": "ce631fa0d2841daf1cff5199287b0e1887fc44899f8d3d0e43d872ab48008e02"
+}

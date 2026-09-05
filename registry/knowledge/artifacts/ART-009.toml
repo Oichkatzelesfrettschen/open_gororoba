@@ -18,7 +18,7 @@ equation_ref_count = 14
 proof_ref_count = 0
 source_ref_count = 1
 unknown_claim_ref_count = 0
-dedup_fingerprint = "485edac9bca0d5e098df805ea79cfe8cc23ddd6b2d7fc50e632997d6e185df10"
+dedup_fingerprint = "75f6ce8e0ad047e172b1c17c82240348b5e55e437220781876c94d6ba8ae3ad5"
 key_terms = ["algebraic", "alpha", "beta_0", "field", "betti", "connected", "sweep", "thesis", "topological", "transition", "associator", "auto", "beta_1", "coupling", "edit", "executed", "fluid", "fluids", "generated", "imbalance", "metrics", "native", "pgfplots", "phase"]
 claim_refs = []
 unknown_claim_refs = []
@@ -222,12 +222,12 @@ line_start = 12
 line_end = 14
 paragraph_count = 1
 char_count = 341
-fingerprint = "1b4442c936ef104993980cb0a4fc738743669f57a9fdcc33cc6632aca92b8c10"
-summary = "We executed a production-grade 3D parameter sweep using the unified `thesis-synthesis` engine. The simulation integrates D3Q19 Lattice Boltzmann fluids with Kerr spacetime metrics and Sedenionic algebraic fields. We spec"
+fingerprint = "9f75274bf6667ac5031b769170d42ae3fcd7e1edee90391778e098934d68ac9b"
+summary = "We executed a production-grade 3D parameter sweep using the unified `thesis synthesis` engine. The simulation integrates D3Q19 Lattice Boltzmann fluids with Kerr spacetime metrics and Sedenionic algebraic fields. We spec"
 claim_refs = []
 equation_ref_ids = ["EQA-0085"]
 proof_ref_ids = []
-body_text = "We executed a production-grade 3D parameter sweep using the unified `thesis-synthesis` engine. The simulation integrates D3Q19 Lattice Boltzmann fluids with Kerr spacetime metrics and Sedenionic algebraic fields. We specifically measured the topological response of the algebraic field to varying fluid-algebra coupling strengths ($\\alpha$)."
+body_text = "We executed a production-grade 3D parameter sweep using the unified `thesis synthesis` engine. The simulation integrates D3Q19 Lattice Boltzmann fluids with Kerr spacetime metrics and Sedenionic algebraic fields. We specifically measured the topological response of the algebraic field to varying fluid-algebra coupling strengths ($\\alpha$)."
 
 [[section]]
 id = "ART-009-SEC-004"

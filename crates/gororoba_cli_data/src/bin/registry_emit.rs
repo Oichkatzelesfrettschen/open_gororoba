@@ -1502,7 +1502,11 @@ fn emit_claims_mirror(args: ClaimsMirrorArgs) -> Result<(), String> {
         ));
         lines.push(label_value_line(
             "- What would verify/refute it:",
-            &str_field(row, "what_would_verify_refute"),
+            &provenance_core::falsifier_text::project_optional(
+                row.get("what_would_verify_refute").cloned(),
+            )
+            .map_err(|error| format!("invalid claim falsifier: {error}"))?
+            .unwrap_or_default(),
         ));
         lines.push(String::new());
     }
@@ -1541,7 +1545,14 @@ fn emit_claims_matrix_legacy(args: ClaimsMatrixLegacyArgs) -> Result<(), String>
             pipe_escape(&str_field(row, "where_stated")),
             pipe_escape(&str_field(row, "status")),
             pipe_escape(&str_field(row, "last_verified")),
-            pipe_escape(&str_field(row, "what_would_verify_refute"))
+            pipe_escape(
+                provenance_core::falsifier_text::project_optional(
+                    row.get("what_would_verify_refute").cloned()
+                )
+                .map_err(|error| format!("invalid claim falsifier: {error}"))?
+                .unwrap_or_default()
+                .trim()
+            )
         ));
     }
     lines.push(String::new());

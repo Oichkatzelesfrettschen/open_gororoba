@@ -4872,6 +4872,7 @@ dependencies = [
  "optics_core",
  "pgfplots",
  "plotters",
+ "provenance_core",
  "provenance_ops",
  "provenance_store",
  "quantum_core",
@@ -9430,6 +9431,7 @@ version = "0.1.0"
 dependencies = [
  "camino",
  "serde",
+ "toml 1.1.2+spec-1.1.0",
 ]
 
 [[package]]

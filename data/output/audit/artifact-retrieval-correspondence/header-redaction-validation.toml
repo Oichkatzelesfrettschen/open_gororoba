@@ -1,0 +1,19 @@
+schema_version = 1
+header_files_inspected = 31
+header_files_redacted = 11
+sensitive_header_lines_redacted = 41
+redacted_value = "[REDACTED]"
+header_names = ["set-cookie", "set-cookie2", "cookie", "authorization", "proxy-authorization", "authentication-info", "proxy-authentication-info"]
+matching_rule = "Case-insensitive field names; redact folded continuation lines for each sensitive field. Preserve other header bytes and line endings."
+raw_archive = ".cache/artifact-retrieval-private-headers"
+raw_inventory = "Each changed header has a private JSON inventory with original and sanitized SHA256 values and relative paths. The runner verifies the archived original digest before replacing retained headers."
+raw_archive_directory_mode = "0700"
+raw_archive_file_mode = "0600"
+runner = "retrieve_frontier.rs"
+sanitization_command = ".cache/retrieve-identity-frontier-sanitized --sanitize-headers"
+format_check = "rustfmt +nightly --edition 2024 --check data/output/audit/artifact-retrieval-correspondence/retrieve_frontier.rs"
+standalone_compiler = "rustc --edition=2024 -D warnings"
+standalone_linter = "clippy-driver --edition=2024 -D warnings -D clippy::all"
+compile_and_lint_dependency_source = "Existing validation-profile serde_json and toml rlibs in the shared Cargo build directory."
+sanitizer_tests_passed = 1
+repeated_sanitization_preserves_all_31_header_sha256_values = true

@@ -1,0 +1,6 @@
+initial_gate_failure = "E-282 and E-283 lacked derived status tokens, command hashes, binary registration flags and lineage rows after canonical upsert."
+repair = "Run the owning execution-planning generator against canonical SQLite, then verify its output. Authored experiment contents still enter through gororoba-db; the generator derives execution projections and preserves canonical history."
+command = ".cache/gate-target/validation-tools/execution-planning --repo-root ."
+verification_command = ".cache/gate-target/validation-tools/execution-planning --verify --repo-root ."
+verification_exit = 0
+preservation = "All original claim, transition, curated binary, artifact metadata and artifact-link rows still pass preservation-audit.sql."

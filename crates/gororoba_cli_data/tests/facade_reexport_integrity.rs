@@ -1,24 +1,14 @@
-//! Re-export integrity tests for the source_provenance module (PH-3 B3, Layer 1).
+//! Public facade compatibility for provenance_ops::source_provenance.
 //!
-//! WHY: `source_provenance` lives in gororoba_cli_data/src/source_provenance.rs but is
-//! accessed through two hops: the file is included into provenance_ops via a `#[path]`
-//! annotation, then re-exported back into gororoba_cli_data as
-//! `pub use provenance_ops::source_provenance`. If either hop breaks (rename, removal,
-//! visibility change), this file fails to compile -- catching the regression at the facade.
-//!
-//! These tests verify the public API surface as seen by a downstream consumer of
-//! gororoba_cli_data, not by code internal to the crate.
+//! Downstream users retain the gororoba_cli_data re-export while the
+//! implementation and its tests belong to provenance_ops.
 
 #[allow(unused_imports)]
 use gororoba_cli_data::source_provenance::{
     BuildSummary, SourceInfrastructureSummary, VerifySummary, default_repo_root,
 };
 
-/// Verify that default_repo_root() returns a path that looks like the workspace root.
-///
-/// WHY: The function derives the root from the crate's CARGO_MANIFEST_DIR at compile time.
-/// If the crate is moved or the constant is changed, the path would point to a
-/// nonexistent directory -- this test catches that immediately.
+/// The public facade resolves the workspace through repo_root.
 #[test]
 fn source_provenance_default_repo_root_is_workspace() {
     let root = default_repo_root();
