@@ -1,0 +1,94 @@
+title = "Empirical claim evidence contracts and causal validation"
+base_commit = "33c21a6fa5309cc18a4870925509b9392a56c7cb"
+completion_rule = "Each task requires retained acceptance evidence; an unresolved experiment remains open."
+
+[[task]]
+id = "audit-active-frontier"
+action = "Audit active claim declarations, historical controls, and consumed inputs"
+active_form = "Auditing active claim declarations, historical controls, and consumed inputs"
+status = "completed"
+acceptance = "Enumerate claim IDs, experiment references, provenance uncertainties, and causal dependencies."
+
+[[task]]
+id = "calibration-research"
+action = "Review primary calibration and validation research and apply justified protocol changes"
+active_form = "Reviewing primary calibration and validation research and applying justified protocol changes"
+status = "in_progress"
+acceptance = "Retain verified primary sources and map each adopted finding to an admission, calibration or inference rule."
+
+[[task]]
+id = "provenance-source-ownership"
+action = "Move provenance implementation and entrypoints to owning crates"
+active_form = "Moving provenance implementation and entrypoints to owning crates"
+status = "pending"
+acceptance = "Owner routing tests and focused tests pass; record dependency closure and build timing."
+
+[[task]]
+id = "store-module-boundaries"
+action = "Extract store operations behind unchanged methods"
+active_form = "Extracting store operations behind unchanged methods"
+status = "pending"
+acceptance = "Transaction, revision-history, rollback and export tests pass."
+
+[[task]]
+id = "runner-module-boundaries"
+action = "Extract historical runner splitting, fitting, metrics and evidence modules"
+active_form = "Extracting historical runner splitting, fitting, metrics and evidence modules"
+status = "pending"
+acceptance = "Existing runner tests pass and retained numerical evidence replays through unchanged interfaces."
+
+[[task]]
+id = "typed-claim-declarations"
+action = "Implement canonical typed evidence declarations and revision history"
+active_form = "Implementing canonical typed evidence declarations and revision history"
+status = "pending"
+acceptance = "CLI mutation, invalid-input rejection, rollback, history and compatibility roundtrip tests pass."
+
+[[task]]
+id = "causal-protocol"
+action = "Seal causal admission, epoch partitions, widths and decision thresholds"
+active_form = "Sealing causal admission, epoch partitions, widths and decision thresholds"
+status = "pending"
+acceptance = "Hash protocol before evaluating final holdouts; separate discrimination from operational utility."
+
+[[task]]
+id = "causal-runner"
+action = "Implement causal features and training-only fitted transformations"
+active_form = "Implementing causal features and training-only fitted transformations"
+status = "pending"
+acceptance = "Suffix perturbation, equal-time, gap, common-support and holdout-isolation tests pass."
+
+[[task]]
+id = "matched-control-ensembles"
+action = "Run exact-support ensembles against matched geometric models"
+active_form = "Running exact-support ensembles against matched geometric models"
+status = "pending"
+acceptance = "Retain every prespecified seed, support digest, fitted budget and paired outcome."
+
+[[task]]
+id = "external-validation"
+action = "Evaluate held-out epochs and admit suitable spacecraft evidence"
+active_form = "Evaluating held-out epochs and admitting suitable spacecraft evidence"
+status = "pending"
+acceptance = "Report threshold-relative intervals and explicit data-admission blockers."
+
+[[task]]
+id = "retrieval-correspondence"
+action = "Verify active-claim retrieval associations and retain historical identities"
+active_form = "Verifying active-claim retrieval associations and retaining historical identities"
+status = "pending"
+acceptance = "A correction records exact URL, successful full retrieval, expected digest, observed digest and historical association."
+
+[[task]]
+id = "canonical-frontier-refresh"
+action = "Apply active declarations and evidence-supported claim transitions"
+active_form = "Applying active declarations and evidence-supported claim transitions"
+status = "pending"
+acceptance = "Canonical CLI updates, compatibility exports, generated documentation and signatures agree."
+
+[[task]]
+id = "validation-integration"
+action = "Validate separated changes and integrate through reviewed pull requests"
+active_form = "Validating separated changes and integrating through reviewed pull requests"
+status = "pending"
+acceptance = "Required local gates pass; remote merge and canonical checkout parity are measured."
