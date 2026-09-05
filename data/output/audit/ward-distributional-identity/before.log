@@ -1,0 +1,20 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 4.27s
+     Running tests/ward_distributional_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_distributional_identity-97e1da603122ece3)
+
+running 1 test
+fixed_time time=0.07 loop=Scalar raw_tilde_error=2.17971198257352835e-13 contact_norm=0.00000000000000000e0 regular_gauge=3.46339125536455825e-14 complete_gauge=3.46339125536455825e-14 production_regular_difference=2.35661229422541158e-5
+
+thread 'unreduced_source_contact_and_production_are_separate' (211000) panicked at crates/gr_core/tests/ward_distributional_identity.rs:147:13:
+production must retain source exponent and distribution
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test unreduced_source_contact_and_production_are_separate ... FAILED
+
+failures:
+
+failures:
+    unreduced_source_contact_and_production_are_separate
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p gr_core --test ward_distributional_identity`

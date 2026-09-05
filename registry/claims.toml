@@ -5081,48 +5081,48 @@ where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/c
 [[claim]]
 id = "C-1635"
 last_verified = "2026-08-04"
-statement = "The retained scalar electromagnetic gauge contraction passes its declared fixture, while the spinor contraction fails. E-301 source-measure correction preserves that split: scalar normalized residual6.60e-17 and spinor8.95e-2 on the independently contracted retained grid. Gauge transversality alone cannot establish amplitude completeness: omission controls can change tensor components while preserving a small gauge residual. Regular-node quadrature leaves distributional contact and ultraviolet cancellation unresolved."
+statement = "E-301 retains the scalar gauge pass and spinor gauge failure under its historical regular-node producer. E-304 independently transcribes the unreduced source tensor, includes the periodic contact distribution and repairs the worldline constant, small-field series and scalar convention. The resulting retained scalar and spinor gauge contractions pass with absolute residuals 2.3957786861e-20 and 2.3290585945e-20. At three fixed proper times, complete spinor contractions are at most 3.4651295048e-14, while regular-only contractions remain approximately 0.0074. Gauge transversality alone cannot certify source completeness: omitting the B.36 contact changes the tensor while preserving a small gauge residual. The independent full-tensor oracle rejects both B.4 and B.36 omissions. C-1750 records finite source conformance; universal validity and certified numerical remainder bounds remain unassessed."
 status = "Provisional"
-status_note = "E-290 and E-301 retain independent component contractions and separate tensor-change omission controls. Scalar gauge residual passes the declared fixture; spinor gauge residual fails. Passing regression tests can preserve that failure and therefore do not establish a passing spinor Ward identity. Source-measure conformance, contact terms and ultraviolet cancellation remain separate predicates."
-where_stated = "data/output/audit/ward-residual-scope/vector-residuals-after.toml; data/output/audit/ward-residual-scope/adjudication.toml; E-290 retained original residual receipts"
+status_note = "E-290 and E-301 preserve the historical scalar gauge pass and spinor failure. E-304 adds independently derived periodic contacts and source-convention repairs; both retained gauge fixtures pass. B.36 omission preserves gauge transversality while changing the source tensor, so C-1750 requires the independent tensor oracle. Finite checks leave universal and certified numerical-error claims unassessed."
+where_stated = "data/output/audit/ward-residual-scope/adjudication.toml; data/output/audit/ward-distributional-identity/adjudication.toml; data/output/audit/ward-distributional-identity/final-integrated.toml; crates/gr_core/tests/ward_distributional_identity.rs; crates/gr_core/tests/ward_source_scope.rs; crates/gr_core/tests/ward_independent_residuals.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
-depth_rationale = "Gauge contraction of scalar and spinor tensors by individual diagram. The declaration separates a fixed source or implementation predicate from physical model fitting. Preserved historical failures remain evidence; a repaired producer needs a separately identified result."
-fixed_hyperparameters = ["D=4 Euclidean pure magnetic positive-z convention; k0=-k; retained source Eq.7.1 through7.7", "Field ratios0.01,0.10; omega/m0.05,0.20; theta pi/6,pi/3; scalar/spinor", "Final-grid absolute1e-12 and normalized1e-6; gauge unit fixtures separately use normalized1e-8; mutation1e-10; virtuality ladder0.4,0.2,0.1,0.05 times omega squared"]
+depth_rationale = "Separate source tensor completeness from finite electromagnetic gauge contraction, preserving each producer's historical outcome."
+fixed_hyperparameters = ["D=4 pure magnetic constant background and zero fitted parameters", "Fixed-time source comparison at T=.07,.3,1.2 with 96 insertion nodes: full-tensor absolute gate 1e-10 and complete gauge gate 1e-11", "Integrated absolute 1e-12 and normalized 1e-6 gates retain their declared fixture and normalization"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
 
 [[claim.intervening_maps]]
-name = "source_tensor_contraction"
-branch = "ward"
-description = "Gauge contraction of scalar and spinor tensors by individual diagram; independently recompute complex residual components before norms."
+name = "independent_source_tensor"
+branch = "ward_source_scope"
+description = "Transcribe unreduced orbital Eq. 4.3 and all seven fermion Eq. 4.4 groups using independent Appendix B matrices, signed endpoint limits and periodic delta products; compare with production Eq. 4.11."
 kind = "computational"
 
 [[claim.intervening_maps]]
-name = "refinement_and_omission"
-branch = "ward"
-description = "Apply frozen quadrature/cutoff/virtuality ladders and omit each required diagram/contact contribution separately."
+name = "gauge_and_tensor_omissions"
+branch = "ward_source_scope"
+description = "Contract tensor components independently. Omit B.4 and B.36 separately; use full-tensor differences because B.36 omission preserves gauge transversality."
 kind = "computational"
 
 [[claim.fitted_parameters]]
-branch = "ward"
+branch = "ward_source_scope"
 count = 0
 names = []
-training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
+training_boundary = "Source-derived contact and convention coefficients are fixed; the numerical comparison fits zero parameters."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-073", "E-290", "E-301"]
-protocol_artifact = "data/output/audit/ward-residual-scope/adjudication.toml"
-protocol_sha256 = "97e80f639feffa4bdf2ac97ca1ff1917e7c1904327b25d55859a67b840338977"
-description = "E-073 owns cargo test -p gr_core -- photon_graviton. Amend its legacy spinor method to explicitly bind the scalar/spinor tensor producer and the retained E-P1-PHOTON-GRAVITON-TENSOR-WARD manifest before calling that manifest an E-073 replay. Actual tests: scalar_integrated_gauge_residuals_pass_the_frozen_protocol; spinor_irreducible_residual_retains_the_contact_boundary_gap. Locate tensor_ward.rs and gravitational_ward.rs under crates/gr_core/src/photon_graviton/."
+experiment_ids = ["E-073", "E-290", "E-301", "E-304"]
+protocol_artifact = "data/output/audit/ward-distributional-identity/adjudication.toml"
+protocol_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+description = "The retained adjudication enumerates exact finite fixtures, source conventions, gates, omission controls and before/after producer boundaries. E-301 failures remain historical; E-304 adds source-conforming contacts, worldline constants/series and the scalar xi_bar=0 mapping. The measured corpus does not establish a universal identity."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Independent contraction reproduces the declared scalar pass and spinor failure at unchanged gates; tensor-changing omissions remain classified separately from gauge residuals."]
-revision_outcomes = ["A scalar subset passes while spinor contact-boundary residual remains unresolved: retain separate loop/diagram predicates rather than promote the combined statement."]
-abandonment_outcomes = ["An independently corroborated same-producer, same-input calculation reverses the declared passing/failing predicate; abandon the affected bounded result."]
-inconclusive_outcomes = ["Unresolved spinor contact prescription, undefined separate on-shell external amplitude, failed refinement or missing exact producer identity prevents the corresponding identity adjudication.", "A passing test that deliberately preserves a known residual gap establishes the regression predicate, not a passing Ward identity."]
+verification_outcomes = ["The E-304 finite corrected tensor agrees within 1e-10 and complete fixed-time gauge contractions stay within 1e-11; integrated scalar/spinor fixtures meet their original gates.", "Both source-contact omissions change the independent tensor comparison even when a gauge contraction remains small."]
+revision_outcomes = ["A different field, kinematics, endpoint convention or precision requires a separately declared source comparison.", "E-301 historical spinor failure remains attached to its original producer; corrected results receive their own evidence boundary."]
+abandonment_outcomes = ["A hash-bound corrected replay violates the declared tensor or gauge predicate, or the purported full-tensor control fails to distinguish a required source omission."]
+inconclusive_outcomes = ["Gauge transversality without full-tensor agreement cannot certify amplitude completeness.", "Finite Taylor and quadrature evaluations leave universal validity and certified numerical remainders unassessed."]
 
 [[claim]]
 id = "C-1636"
@@ -5135,48 +5135,48 @@ where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/c
 [[claim]]
 id = "C-1637"
 last_verified = "2026-08-04"
-statement = "The independently contracted scalar off-shell gravitational lower-point identity passes its declared fixture; the spinor comparison fails. After the E-301 counterterm-measure correction, scalar absolute/normalized residuals are1.04e-15/6.20e-11 and spinor3.80e-5/0.567. The tested one-photon RHS vanishes, so its omission is nondiscriminating; omission of the scalar two-photon RHS produces1.68e-5. The source polarization-contracted unrenormalized on-shell identity and the retained renormalized full-vector predicate are separate checks. Tadpole physical contraction remains a separate passing predicate."
+statement = "E-301 retains the scalar off-shell gravitational pass and spinor failure under its historical producer. After the E-304 source contact, worldline and scalar convention repairs, the independently assembled scalar and spinor lower-point comparisons pass their retained fixture with absolute residuals 2.4353688986e-17 and 4.8654749946e-17. The constant-background one-photon RHS is zero, so its omission remains nondiscriminating; the two-photon omission gives approximately 1.67797e-5 and 6.70663e-5. Source transverse on-shell cancellation and the original normalized full-vector requirement remain separate predicates. The full-vector gate remains failed, while the finite transverse source pair passes. C-1750 records the bounded source-conformance result; general kinematics and certified quadrature/extrapolation errors remain unassessed."
 status = "Provisional"
-status_note = "E-301 retains the scalar off-shell pass, spinor off-shell failure and nondiscriminating zero one-photon omission. The source transverse unrenormalized amplitude, renormalized transverse comparison and full-vector norm each have separate receipts and unchanged gates. Passing failure-characterization tests do not promote the corresponding physical identity."
-where_stated = "data/output/audit/ward-residual-scope/vector-residuals-after.toml; data/output/audit/ward-residual-scope/adjudication.toml; E-290 retained original residual receipts"
+status_note = "E-301 preserves the historical spinor off-shell failure. E-304 source-conforming contact and convention repairs pass both retained off-shell fixtures. The zero one-photon omission remains nondiscriminating. Transverse amplitudes, gravitational lower-point identities and the failed original normalized full-vector gate retain separate predicates."
+where_stated = "data/output/audit/ward-residual-scope/adjudication.toml; data/output/audit/ward-distributional-identity/adjudication.toml; data/output/audit/ward-distributional-identity/final-integrated.toml; crates/gr_core/tests/ward_distributional_identity.rs; crates/gr_core/tests/ward_source_scope.rs; crates/gr_core/tests/ward_independent_residuals.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
-depth_rationale = "Gravitational off-shell identity and on-shell diagram decomposition. The declaration separates a fixed source or implementation predicate from physical model fitting. Preserved historical failures remain evidence; a repaired producer needs a separately identified result."
-fixed_hyperparameters = ["D=4 Euclidean pure magnetic positive-z convention; k0=-k; retained source Eq.7.1 through7.7", "Field ratios0.01,0.10; omega/m0.05,0.20; theta pi/6,pi/3; scalar/spinor", "Absolute1e-12, normalized1e-6; mutation1e-10; preserve virtuality ladder0.4,0.2,0.1,0.05 times omega squared"]
+depth_rationale = "Separate finite off-shell lower-point agreement from transverse on-shell amplitudes and the original full-vector normalization."
+fixed_hyperparameters = ["D=4 pure magnetic background, k0=-k, zero fitted parameters", "Retain integrated absolute 1e-12 and normalized 1e-6 lower-point gates", "The constant-background one-photon RHS is zero; two-photon omission remains the discriminating lower-point control"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
 
 [[claim.intervening_maps]]
-name = "source_tensor_contraction"
-branch = "ward"
-description = "Gravitational off-shell identity and on-shell diagram decomposition; independently recompute complex residual components before norms."
+name = "independent_lower_point_assembly"
+branch = "ward_source_scope"
+description = "Recompute gravitational contraction and lower-point RHS independently using the source-corrected tensor producer."
 kind = "computational"
 
 [[claim.intervening_maps]]
-name = "refinement_and_omission"
-branch = "ward"
-description = "Apply frozen quadrature/cutoff/virtuality ladders and omit each required diagram/contact contribution separately."
+name = "source_scope_and_omission"
+branch = "ward_source_scope"
+description = "Keep off-shell, transverse on-shell, tadpole and full-vector predicates separate. Classify the one-photon omission as nondiscriminating and retain the two-photon residual."
 kind = "computational"
 
 [[claim.fitted_parameters]]
-branch = "ward"
+branch = "ward_source_scope"
 count = 0
 names = []
-training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
+training_boundary = "Source-derived contact and convention coefficients are fixed; the numerical comparison fits zero parameters."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-073", "E-290", "E-301"]
-protocol_artifact = "data/output/audit/ward-residual-scope/adjudication.toml"
-protocol_sha256 = "97e80f639feffa4bdf2ac97ca1ff1917e7c1904327b25d55859a67b840338977"
-description = "E-073 owns cargo test -p gr_core -- photon_graviton. Amend its legacy spinor method to explicitly bind the scalar/spinor tensor producer and the retained E-P1-PHOTON-GRAVITON-TENSOR-WARD manifest before calling that manifest an E-073 replay. Actual tests: off_shell_comparison_retains_all_lower_point_components; combined_on_shell_ladder_retains_limit_status_without_a_floor; on_shell_omission_and_tadpole_trace_controls_break_the_invariant. Locate tensor_ward.rs and gravitational_ward.rs under crates/gr_core/src/photon_graviton/."
+experiment_ids = ["E-073", "E-290", "E-301", "E-304"]
+protocol_artifact = "data/output/audit/ward-distributional-identity/adjudication.toml"
+protocol_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+description = "The retained adjudication enumerates exact finite fixtures, source conventions, gates, omission controls and before/after producer boundaries. E-301 failures remain historical; E-304 adds source-conforming contacts, worldline constants/series and the scalar xi_bar=0 mapping. The measured corpus does not establish a universal identity."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Independent lower-point assembly reproduces the declared scalar off-shell pass and spinor failure at unchanged gates; the zero one-photon term is explicitly nondiscriminating while scalar two-photon omission breaks the predicate."]
-revision_outcomes = ["Off-shell identity passes while the on-shell combined limit remains nonzero: retain the narrower off-shell implementation result and preserve on-shell failure."]
-abandonment_outcomes = ["An independently corroborated same-producer, same-input calculation reverses the declared passing/failing predicate; abandon the affected bounded result."]
-inconclusive_outcomes = ["Unresolved spinor contact prescription, undefined separate on-shell external amplitude, failed refinement or missing exact producer identity prevents the corresponding identity adjudication.", "A passing test that deliberately preserves a known residual gap establishes the regression predicate, not a passing Ward identity."]
+verification_outcomes = ["Both corrected finite scalar/spinor off-shell fixtures meet the unchanged declared gates and the independent two-photon omission breaks their lower-point comparison."]
+revision_outcomes = ["A broader momentum family, nonzero one-photon channel or alternate source convention requires a newly bounded experiment.", "Record the E-304 finite pass beside the E-301 historical spinor failure rather than replacing its producer evidence."]
+abandonment_outcomes = ["An independent identical-producer replay reverses the declared off-shell passing predicate or required two-photon omission distinction."]
+inconclusive_outcomes = ["The zero one-photon channel supplies no test of the omitted one-photon contribution away from constant-background kinematics.", "The original normalized full-vector gate remains failed; finite off-shell agreement cannot adjudicate it.", "Certified quadrature and extrapolation remainders remain unresolved."]
 
 [[claim]]
 id = "C-1638"
@@ -5423,47 +5423,47 @@ where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs; crates/gr_cor
 [[claim]]
 id = "C-1666"
 last_verified = "2026-08-06"
-statement = "The retained historical renormalized full-vector on-shell extrapolations have scalar and spinor norms approximately 0.00236262 and 0.00586824. Those vectors test a stronger predicate than source Eq. 7.6, which concerns polarization-contracted unrenormalized amplitudes with on-shell transverse conditions. E-301 corrects an extra T-squared counterterm factor in the rescaled proper-time measure; the resulting full-vector scalar and spinor norms are approximately 0.00529674 and 6.32320e-9, still outside the unchanged numerical gates. A separate transverse decisive pair passes the scalar amplitude gates and fails the spinor gates on the declared finite ladder. C-1749 records only counterterm-measure conformance. Spinor contact/UV completion, scalar source coefficient/convention reconciliation and certified quadrature/extrapolation errors remain unresolved; these finite residuals establish neither a universal Ward identity nor a certified nonzero on-shell limit."
+statement = "Historical E-290 and E-301 renormalized full-vector failures remain retained under their original producer identities. E-304 adds source-derived periodic contacts, repairs worldline constants and small-field terms, and reconciles the scalar xi_bar=0 momentum and subtraction convention. Scalar and spinor full-vector absolute extrapolated norms become 1.9265822218e-15 and 3.8841181194e-15, but the original combined absolute 1e-12 and normalized 1e-6 gate remains failed: its normalization uses already-cancelled samples and is ill-conditioned at roundoff. The separate source Eq.7.6 transverse amplitude predicate uses uncancelled diagram scales and passes the declared generic pair for both loops with discriminating omissions. The original scalar 1e-6 diagram-omission threshold remains unsatisfied. C-1750 records finite source-conformance evidence rather than a universal Ward theorem; certified quadrature and interpolation remainders remain unresolved."
 status = "Provisional"
-where_stated = "crates/gr_core/src/photon_graviton/irreducible_tensor.rs; crates/gr_core/tests/ward_source_scope.rs; crates/gr_core/tests/ward_independent_residuals.rs; data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml; data/output/audit/ward-residual-scope/adjudication.toml"
+where_stated = "data/output/audit/ward-residual-scope/adjudication.toml; data/output/audit/ward-distributional-identity/adjudication.toml; data/output/audit/ward-distributional-identity/final-integrated.toml; crates/gr_core/tests/ward_distributional_identity.rs; crates/gr_core/tests/ward_source_scope.rs; crates/gr_core/tests/ward_independent_residuals.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
-depth_rationale = "Separate the source transverse amplitude predicate from stronger full-vector diagnostics and counterterm-measure conformance; physical interpretation remains unassessed."
-fixed_hyperparameters = ["Preserve historical renormalized full-vector residuals and their original source identity", "Declare unrenormalized versus renormalized branches, physical transverse polarization/gauge vectors and each virtuality ladder separately", "Retain absolute 1e-12 and normalized 1e-6 amplitude gates; certify quadrature and interpolation remainders before a mathematical zero/nonzero conclusion"]
+depth_rationale = "Preserve the original failed normalized full-vector gate and separately adjudicate the source's physical transverse amplitude on finite fixtures."
+fixed_hyperparameters = ["Preserve E-290 and E-301 source hashes and original residual receipts", "Full-vector absolute 1e-12 AND normalized 1e-6 gate stays unchanged; normalization uses cancelled sample norms", "Transverse source pair uses uncancelled diagram scales, absolute 1e-12 AND normalized 1e-6, and omission admission 1e-8", "Retain original full-vector diagram-omission threshold 1e-6, including the scalar failure"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
 
 [[claim.intervening_maps]]
-name = "source_contraction_identity"
-branch = "ward_scope"
-description = "Source Eq. 7.6 contracts the photon polarization under on-shell transverse conditions in the unrenormalized Ward discussion. Record full-vector and renormalized predicates separately."
+name = "transverse_source_projection"
+branch = "ward_source_scope"
+description = "Contract Eq. 7.6 with transverse photon polarization and gauge vector in the source unrenormalized setting; report renormalized diagnostics separately."
 kind = "computational"
 
 [[claim.intervening_maps]]
-name = "independent_contraction_and_refinement"
-branch = "ward_scope"
-description = "Recompute tensor components and zero-virtuality intercepts independently, retain diagram omissions and require discriminating amplitudes before interpreting cancellation. Assess quadrature and interpolation errors separately."
+name = "intercept_and_normalization"
+branch = "ward_source_scope"
+description = "Independently compute zero-virtuality intercepts, raw components, full-vector and transverse normalized values; keep each denominator and omission threshold explicit."
 kind = "computational"
 
 [[claim.fitted_parameters]]
-branch = "ward_scope"
+branch = "ward_source_scope"
 count = 0
 names = []
-training_boundary = "The fixed finite source comparison fits zero coefficients. Scalar and spinor subtraction/contact prescriptions require source derivation rather than fitted cancellation."
+training_boundary = "Source-derived contact and convention coefficients are fixed; the numerical comparison fits zero parameters."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-073", "E-290", "E-301"]
-protocol_artifact = "data/output/audit/ward-residual-scope/counterterm-measure-protocol.toml"
-protocol_sha256 = "a45b23a4aac00e09b8fab228b30ee3313dac13a11d2cc17ac055a9b3f479392b"
-description = "E-290 retains original independent full-vector residuals. E-301 separates the source projection, repairs the proper-time measure and preserves failed full-vector and spinor projected gates. Its fixed transverse ladder supports a finite scalar pair only; a certified identity still requires source contact/UV and scalar coefficient reconciliation plus numerical remainder bounds."
+experiment_ids = ["E-073", "E-290", "E-301", "E-304"]
+protocol_artifact = "data/output/audit/ward-distributional-identity/adjudication.toml"
+protocol_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+description = "The retained adjudication enumerates exact finite fixtures, source conventions, gates, omission controls and before/after producer boundaries. E-301 failures remain historical; E-304 adds source-conforming contacts, worldline constants/series and the scalar xi_bar=0 mapping. The measured corpus does not establish a universal identity."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["A source-identified projected amplitude satisfies both fixed gates with diagram-discriminating omissions and certified quadrature/extrapolation error; promote only that declared branch and fixture."]
-revision_outcomes = ["A corrected producer changes residuals: retain the original result and register the supported mechanism separately, as C-1749 does for the spinor counterterm measure.", "A source contraction differs from the historical vector predicate: correct the attribution while preserving the historical vector measurement."]
-abandonment_outcomes = ["An independent replay contradicts a retained finite residual under the identical producer and inputs.", "A certified projected comparison violates the claimed amplitude bound for that declared branch."]
-inconclusive_outcomes = ["Spinor contact/distributional completion, scalar source coefficient/convention or numerical remainder bounds remain unresolved.", "Nondiscriminating diagram omissions or a passing regression that preserves a known failed identity cannot verify a Ward identity.", "Finite full-vector residuals alone establish neither source Eq. 7.6 failure nor a certified nonzero physical on-shell limit."]
+verification_outcomes = ["The finite E-304 transverse scalar/spinor pair meets both declared source gates with discriminating diagram omissions; promotion remains limited to that finite source-conformance successor."]
+revision_outcomes = ["Derive and preregister any alternative full-vector normalization as a new instrument while preserving the unchanged failed original gate.", "A different virtuality ladder, momentum, field, source convention or certified error enclosure requires new evidence."]
+abandonment_outcomes = ["An independent same-producer replay contradicts the retained finite transverse pass or any historical residual under its original inputs."]
+inconclusive_outcomes = ["The original normalized full-vector gate remains failed even though absolute norms are at roundoff; its denominator is ill-conditioned.", "The original scalar diagram-omission norm remains below 1e-6 and retains that failed predicate.", "Finite source identity and sampled UV cancellation establish neither a universal Ward theorem nor a certified zero/nonzero continuum limit."]
 
 [[claim]]
 id = "C-1667"
@@ -6528,41 +6528,60 @@ inconclusive_outcomes = ["Root ambiguity, cutoff sensitivity or unresolved sourc
 [[claim]]
 id = "C-1707"
 last_verified = "2026-08-06"
-statement = "The repository layered-Mie total cross-sections at normalized frequency 0.2282 exceed the Ruan-Fan printed landmark by a factor of 4.72 in scattering and 1.244 in absorption; because the two factors differ, no single normalization, unit or channel-count factor reconciles them."
+statement = "At omega/omega_p=0.2282, the retained repository layered-Mie totals are scattering 0.141739879641 and absorption 0.398104096788 in units 2lambda/pi, versus printed Ruan-Fan values 0.03 and 0.32. The unequal ratios exclude one common multiplicative rescaling of both totals; they do not adjudicate channel-dependent reweighting or other transformations. The source Figure 5 drawn absorption fit evaluates near 0.296810, while its bracketing Lorentz-Mie markers are about 0.279952 and 0.255174 at distinct neighboring frequencies. Marker interpolation is descriptive and supplies neither an exact simulation value at 0.2282 nor an error bound between samples. The source scattering markers near 0.2282 support a value near 0.03. Repository scans at 201 and 2001 points over [0.22815,0.22825] contain zero joint matches to the printed anchors within 0.005; continuous-interval exclusion remains unproved. Printed prose, fitted curves and sampled markers remain separate evidence, and the original reproduction thresholds remain failed."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml"
+status_note = "E-289 preserves the original optics thresholds and failed comparison. E-302 records fixed-geometry finite frequency grids; E-303 separates source prose, drawn fits and sampled markers. Unequal ratios exclude one common multiplicative rescaling only. The sampled absence leaves continuous exclusion and the unsampled source simulation value unresolved."
+where_stated = "data/output/audit/optics-landmark-identity/frequency-adjudication.toml; data/output/audit/optics-landmark-identity/source-adjudication.toml; data/output/audit/claim-family-evidence-adjudication/optics-adjudication.toml; original comparisons preserved in canonical content history"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
-depth_rationale = "Separate source-landmark scattering and absorption comparison. The declaration separates a fixed source or implementation predicate from physical model fitting. Preserved historical failures remain evidence; a repaired producer needs a separately identified result."
-fixed_hyperparameters = ["rho/lambda_p=(0.36,0.73,1.0), epsilon_d12.96, damping0.001*omega_p; preserve each observable"]
+depth_rationale = "The contract checks finite numerical totals, source-vector extraction and bounded sampled comparisons. Source fitting, unsampled simulation values, continuous interval exclusion and physical model interpretation remain separate obligations."
+fixed_hyperparameters = ["Ruan-Fan arXiv0909.3323v2; hash-bound archive, PDF, TeX and Figure5 EPS members in source-adjudication.toml", "rho/lambda_p=(0.36,0.73,1.0), epsilon_d=12.96, damping=0.001*omega_p", "Historical positive-channel weights1,2,2 at omega/omega_p=.2282; signed-order sum is a separate recurrence-roundoff diagnostic", "Preserve printed anchors .03/.32 and .005 half-width, original complex-S gate .01, original failed outputs and unchanged physical parameters", "Frequency interval [.22815,.22825] at201 and2001 points; count only enumerated samples", "Source-circle interpolation remains descriptive; fitted absorption polyline uses explicit EPS affine coordinates with a separate .002 local drawing-coordinate budget"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
-intervening_map_count = 1
-computational_stage_count = 1
+intervening_map_count = 3
+computational_stage_count = 3
 
 [[claim.intervening_maps]]
-name = "declared_source_and_producer"
-branch = "comparison"
-description = "Separate source-landmark scattering and absorption comparison with separate source/artifact/implementation identities."
+name = "layered_cylinder_channel_sum"
+branch = "numerical_comparison"
+description = "Evaluate the fixed historical geometry and sum the declared angular-channel contributions with the retained positive-order weights. Compare signed-order summation separately without altering historical aggregation."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "printed_anchor_and_finite_grid_predicates"
+branch = "numerical_comparison"
+description = "Compare each total with its own printed decimal anchor and unchanged half-width; enumerate both fixed frequency grids. Unequal exact-anchor ratios exclude a common multiplicative rescaling, without extending that conclusion to channel-dependent transformations."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "eps_coordinates_and_curve_identity"
+branch = "source_extraction"
+description = "Read Figure5 total blue-circle centers and the green fitted curve separately. Convert integer drawing coordinates through the declared affine axes; retain raw neighbors and separate fitted-polyline evaluation from descriptive marker interpolation."
 kind = "computational"
 
 [[claim.fitted_parameters]]
-branch = "comparison"
+branch = "numerical_comparison"
 count = 0
 names = []
-training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
+training_boundary = "Both finite grids and source-anchor comparisons adjust zero physical parameters. A hypothetical common rescaling is an algebraic possibility check, not an accepted calibration."
+
+[[claim.fitted_parameters]]
+branch = "source_extraction"
+count = 0
+names = []
+training_boundary = "Axis mapping and vector extraction refit zero source curves. The source-authored solid curves are fitted theory; their upstream fitting budget and original simulation arrays remain outside this extraction contract."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-289"]
-protocol_artifact = "data/output/audit/2026-08-04/p2b-preregistration.toml"
-protocol_sha256 = "d0e98c1de502e70fb0412ad2d50b8c8b9f9b4aba97230cb5b6ba24ff96f865d6"
-description = "E-289 binds the actual p2b-ruan-fan-reproduction producer and retained independent fixture. E-076 and the historical E-241 manifest collision remain preserved. The replay preserves every numerical field, threshold and fitting budget; separate archive, extracted TeX and PDF receipts establish the admitted source subset."
+experiment_ids = ["E-289", "E-302", "E-303"]
+protocol_artifact = "data/output/audit/optics-landmark-identity/frequency-rounding-protocol.toml"
+protocol_sha256 = "76b3b426da3b8d6cd779eb54d529f707ddbe8d7ed5cab3fc93484ea8ee8fd7ca"
+description = "E-289 retains the original reproduction and independent fixture. E-302 owns the sampled frequency-envelope test under its fixed protocol. E-303 owns source extraction through the hash-bound standalone Rust extractor and EPS/PDF receipts in source-adjudication.toml; source extraction reports a retrospective documentary comparison, not a preregistered physical replication."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Independent layered-cylinder evaluation at omega/omega_p=0.2282 reproduces scattering and absorption discrepancy factors about4.72 and1.244 against the respective printed0.03 and0.32 anchors."]
-revision_outcomes = ["Corrected geometry, convention or source identity changes a factor: retain each original discrepancy and bind the corrected comparison separately."]
-abandonment_outcomes = ["An independent replay on the same identified source and numerical producer contradicts the alleged discrepancy: abandon that defect attribution."]
-inconclusive_outcomes = ["Missing original source numerical data or independent cylinder oracle and unresolved graphical reading intervals prevent a quantitative source-reproduction adjudication.", "Preserve the original failed reproduction thresholds and historical source receipts."]
+verification_outcomes = ["The unchanged E-302 producer returns scattering .14173987964073814 and absorption .39810409678758385 at .2282, and retains zero joint anchor matches on each declared grid.", "Independent source-vector replay reproduces raw neighboring marker coordinates and the drawn absorption fit near .296810, retaining its explicit curve role and drawing-coordinate limits.", "The two fixed total-to-printed-central-value ratios differ, excluding exactly one common multiplicative rescaling of both totals."]
+revision_outcomes = ["Authenticated original numerical arrays or an author clarification identify a corrected source landmark: retain original prose, vectors and failed comparisons, then register the newly identified comparison separately.", "A corrected geometry, channel convention, source fitting procedure or numerical producer requires its own identity and result; retain the original anchor and complex-S gate failures.", "A continuous-interval proof or admitted interpolation bound extends the finite-grid evidence through a separate declared predicate."]
+abandonment_outcomes = ["Independent identical-input replay contradicts a numerical total or finds a joint anchor match in either exact declared sample set; abandon the affected finite-result clause.", "Identical EPS bytes and independently checked axis/curve identities contradict the retained vector extraction; abandon the affected source-extraction clause.", "One common multiplicative scalar simultaneously maps both retained exact totals to their respective printed central values; abandon that restricted arithmetic exclusion."]
+inconclusive_outcomes = ["Zero sampled matches leaves the continuous interval unadjudicated.", "Sparse source markers provide neither an exact Lorentz-Mie value at .2282 nor a physical interpolation error bound.", "Source fitting and plotting discrepancies remain distinct from repository implementation correctness; agreement between numerical implementations alone cannot identify the source-side mechanism."]
 
 [[claim]]
 id = "C-1708"
@@ -8138,6 +8157,63 @@ last_verified = "2026-02-01"
 statement = "Associator subspace Assoc(A) = span{A(a,b,c)} has rank = dim - 1 (= pure imaginary part) at all tested dims (8-64). It is NOT a two-sided ideal: x*w for x in A and w in Assoc(A) has 10-29% residual outside Assoc(A). Left and right residuals are equal. Residual decreases with dimension."
 status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`"
+
+[[claim]]
+id = "C-1750"
+last_verified = "2026-09-05"
+statement = "The corrected pure magnetic D=4 photon-graviton implementation matches independently transcribed unreduced orbital and fermion source tensors at three proper times for both loops, with maximum reported tensor error 2.1797503490e-13 inside the fixed 1e-10 gate. Source periodic contact and endpoint products, worldline constants and small-field terms, and the scalar xi_bar=0 momentum/counterterm convention are explicit. Both B.4 and B.36 omissions change the full tensor; B.36 omission alone preserves gauge transversality, so the tensor oracle is essential. The declared integrated scalar/spinor gauge, off-shell and transverse source fixtures pass their fixed gates. Historical E-301 failures remain retained. The original normalized full-vector gate and original scalar omission threshold remain failed; the finite tests establish source implementation conformance rather than a universal Ward theorem or certified continuum-limit error bound."
+status = "Verified"
+where_stated = "data/output/audit/ward-distributional-identity/adjudication.toml; data/output/audit/ward-distributional-identity/final-integrated.toml; crates/gr_core/tests/ward_distributional_identity.rs; crates/gr_core/tests/ward_source_scope.rs"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Independent finite source tensor and contraction checks involve computational maps only; universal mathematical and physical conclusions remain unassessed."
+fixed_hyperparameters = ["Pure magnetic D=4, F01=.1, photon momentum [.15,-.11,.2,.07], T=.07/.3/1.2 and 96 insertion nodes", "Tensor absolute gate 1e-10; complete fixed-time gauge absolute gate 1e-11", "Periodic delta weight 1 per insertion period, half at each endpoint; source midpoint coincidence products; delta(tau)=delta(u)/T", "Scalar source xi_bar=0 with k_old=-k_new and mapped counterterm -2*i*e*C/3; spinor +4*i*e*C/3", "Source UV times .01001,.00999,1e-4,1e-6,1e-8 span the |eBT|=1e-3 series switch", "Integrated/transverse absolute 1e-12 and normalized 1e-6 predicates retain separate normalizations; original full-vector gate and scalar omission threshold remain failed"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 3
+computational_stage_count = 3
+
+[[claim.intervening_maps]]
+name = "independent_unreduced_transcription"
+branch = "source_tensor"
+description = "Use independent Appendix B matrices and all orbital/fermion source groups, symmetrize and integrate the regular insertion interval. The oracle and production share the Gauss-Legendre library."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "distributional_completion_and_convention"
+branch = "source_tensor"
+description = "Insert B.4/B.36 delta coefficients and the signed Eq.4.5 endpoint jump independently; map scalar source momentum and its odd tree counterterm before comparing with production Eq.4.11."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "independent_contractions_and_intercepts"
+branch = "finite_ward_predicates"
+description = "Evaluate gauge, gravitational lower-point and transverse source projections independently. Retain full-vector gates and original omission thresholds as separate predicates."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "source_tensor"
+count = 0
+names = []
+training_boundary = "Contact weights, endpoint products and scalar/spinor coefficients follow the source; the comparison fits zero cancellation coefficients."
+
+[[claim.fitted_parameters]]
+branch = "finite_ward_predicates"
+count = 0
+names = []
+training_boundary = "The retained finite fixtures and error gates are fixed; passing source predicates do not alter failed historical thresholds."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-304"]
+protocol_artifact = "data/output/audit/ward-distributional-identity/adjudication.toml"
+protocol_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+description = "Replay the six fixed-time source comparisons, contact/endpoint omissions, scalar convention mapping and sampled UV checks, then independently evaluate the retained integrated and transverse fixtures. The adjudication records all numerical domains, thresholds and residual limitations."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["All six raw-versus-projected source comparisons stay within 1e-10 and complete fixed-time gauge contractions within 1e-11; the full-tensor oracle rejects both required contact omissions.", "The mapped scalar source and sampled UV checks reproduce the retained finite outcomes without fitted coefficients.", "The declared scalar/spinor integrated gauge, off-shell and transverse fixtures meet their fixed gates while original full-vector failures remain explicitly reported."]
+revision_outcomes = ["General fields, new kinematics, xi_bar different from zero or a different endpoint prescription require separate source derivation and finite admission.", "An alternative full-vector normalization requires a newly declared instrument and retention of the original failed gate."]
+abandonment_outcomes = ["A same-source corrected replay violates a declared tensor or Ward fixture gate, or omitting B.4/B.36 ceases to change the independently assembled tensor.", "The scalar convention mapping or fixed source coefficients disagree with the cited source under the declared momentum convention."]
+inconclusive_outcomes = ["Missing source/producer identity or failed numerical admission prevents replay.", "Finite sampled transversality leaves universal Ward identities and certified quadrature/Taylor/interpolation remainders unassessed.", "The original normalized full-vector gate and scalar 1e-6 omission predicate remain failed and cannot be promoted by the separate source-conformance pass."]
 
 [[claim]]
 id = "C-176"

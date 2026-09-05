@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 269
-edge_count = 1438
+lineage_count = 272
+edge_count = 1467
 
 [[lineage]]
 id = "XL-001"
@@ -4897,6 +4897,60 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo test -p gr_core --profile validation --offline --test ward_source_scope --test ward_independent_residuals -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-270"
+experiment_id = "E-302"
+binary = "cargo-test:optics_core:ruan_fan_landmark_precision"
+deterministic = true
+gpu = false
+run_command = "cargo test -p optics_core --test ruan_fan_landmark_precision --profile validation --offline -- --nocapture"
+run_command_sha256 = "d02b04a92a988a9233538fabc6daf38c1df69828ae45baf5f396643f4d11266b"
+claim_refs = ["C-1707"]
+input_path_refs = ["data/output/audit/optics-landmark-identity/frequency-rounding-protocol.toml"]
+output_path_refs = ["data/output/audit/optics-landmark-identity/frequency-adjudication.toml", "data/output/audit/optics-landmark-identity/frequency-envelope-final.csv", "data/output/audit/optics-landmark-identity/frequency-envelope-final.log"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p optics_core --test ruan_fan_landmark_precision --profile validation --offline -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-271"
+experiment_id = "E-303"
+binary = "external:optics-figure5-vector-extractor:e9ae82daed8e9085"
+deterministic = true
+gpu = false
+run_command = "/tmp/optics-figure5-vector-extractor data/output/audit/optics-landmark-identity"
+run_command_sha256 = "dde0fd8296f526dd8d8f072df9cb092e0fca1801f2c01f6b6fa05191c434c67e"
+claim_refs = ["C-1707"]
+input_path_refs = ["data/output/audit/optics-landmark-identity/FanoCloak-lossy-abs.eps", "data/output/audit/optics-landmark-identity/FanoCloak-lossy-sct.eps", "data/output/audit/optics-landmark-identity/extract_figure5_vectors.rs", "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml"]
+output_path_refs = ["data/output/audit/optics-landmark-identity/source-adjudication.toml", "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml", "data/output/audit/optics-landmark-identity/source-vector-coordinates.csv", "data/output/audit/optics-landmark-identity/vector-extraction-replay.txt"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "/tmp/optics-figure5-vector-extractor data/output/audit/optics-landmark-identity", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-272"
+experiment_id = "E-304"
+binary = "cargo-test:gr_core:ward_distributional_identity"
+deterministic = true
+gpu = false
+run_command = "cargo test -p gr_core --test ward_distributional_identity --test ward_source_scope --test ward_independent_residuals --profile validation --offline -- --nocapture"
+run_command_sha256 = "19f6ee2bf6794c940f6bf8732cccbcd5941d556818abd310202669d807c10217"
+claim_refs = ["C-1635", "C-1637", "C-1666"]
+input_path_refs = ["data/output/audit/ward-distributional-identity/adjudication.toml", "data/output/audit/ward-distributional-identity/source.tex", "data/output/audit/ward-residual-scope/scalar-source.pdf", "data/output/audit/ward-residual-scope/source.pdf"]
+output_path_refs = ["data/output/audit/ward-distributional-identity/adjudication.toml", "data/output/audit/ward-distributional-identity/final-integrated.toml", "data/output/audit/ward-distributional-identity/final-tests.log", "data/output/audit/ward-distributional-identity/full-before.log", "data/output/audit/ward-distributional-identity/scalar-source-before.log"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p gr_core --test ward_distributional_identity --test ward_source_scope --test ward_independent_residuals --profile validation --offline -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -17837,6 +17891,267 @@ id = "XLE-01438"
 lineage_id = "XL-269"
 from_id = "E-301"
 to_ref = "data/output/audit/ward-residual-scope/vector-residuals-after.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01439"
+lineage_id = "XL-270"
+from_id = "E-302"
+to_ref = "cargo-test:optics_core:ruan_fan_landmark_precision"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01440"
+lineage_id = "XL-270"
+from_id = "E-302"
+to_ref = "C-1707"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01441"
+lineage_id = "XL-270"
+from_id = "E-302"
+to_ref = "data/output/audit/optics-landmark-identity/frequency-rounding-protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01442"
+lineage_id = "XL-270"
+from_id = "E-302"
+to_ref = "data/output/audit/optics-landmark-identity/frequency-adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01443"
+lineage_id = "XL-270"
+from_id = "E-302"
+to_ref = "data/output/audit/optics-landmark-identity/frequency-envelope-final.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01444"
+lineage_id = "XL-270"
+from_id = "E-302"
+to_ref = "data/output/audit/optics-landmark-identity/frequency-envelope-final.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01445"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "external:optics-figure5-vector-extractor:e9ae82daed8e9085"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01446"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "C-1707"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01447"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "data/output/audit/optics-landmark-identity/FanoCloak-lossy-abs.eps"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01448"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "data/output/audit/optics-landmark-identity/FanoCloak-lossy-sct.eps"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01449"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "data/output/audit/optics-landmark-identity/extract_figure5_vectors.rs"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01450"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01451"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "data/output/audit/optics-landmark-identity/source-adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01452"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01453"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "data/output/audit/optics-landmark-identity/source-vector-coordinates.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01454"
+lineage_id = "XL-271"
+from_id = "E-303"
+to_ref = "data/output/audit/optics-landmark-identity/vector-extraction-replay.txt"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01455"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "cargo-test:gr_core:ward_distributional_identity"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01456"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "C-1635"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01457"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "C-1637"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01458"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "C-1666"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01459"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-distributional-identity/adjudication.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01460"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-distributional-identity/source.tex"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01461"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-residual-scope/scalar-source.pdf"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01462"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-residual-scope/source.pdf"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01463"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-distributional-identity/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01464"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-distributional-identity/final-integrated.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01465"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-distributional-identity/final-tests.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01466"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-distributional-identity/full-before.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01467"
+lineage_id = "XL-272"
+from_id = "E-304"
+to_ref = "data/output/audit/ward-distributional-identity/scalar-source-before.log"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

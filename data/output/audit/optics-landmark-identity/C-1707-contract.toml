@@ -1,0 +1,41 @@
+claim_id = "C-1707"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract checks finite numerical totals, source-vector extraction and bounded sampled comparisons. Source fitting, unsampled simulation values, continuous interval exclusion and physical model interpretation remain separate obligations."
+fixed_hyperparameters = ["Ruan-Fan arXiv0909.3323v2; hash-bound archive, PDF, TeX and Figure5 EPS members in source-adjudication.toml", "rho/lambda_p=(0.36,0.73,1.0), epsilon_d=12.96, damping=0.001*omega_p", "Historical positive-channel weights1,2,2 at omega/omega_p=.2282; signed-order sum is a separate recurrence-roundoff diagnostic", "Preserve printed anchors .03/.32 and .005 half-width, original complex-S gate .01, original failed outputs and unchanged physical parameters", "Frequency interval [.22815,.22825] at201 and2001 points; count only enumerated samples", "Source-circle interpolation remains descriptive; fitted absorption polyline uses explicit EPS affine coordinates with a separate .002 local drawing-coordinate budget"]
+[[intervening_maps]]
+branch = "numerical_comparison"
+name = "layered_cylinder_channel_sum"
+kind = "computational"
+description = "Evaluate the fixed historical geometry and sum the declared angular-channel contributions with the retained positive-order weights. Compare signed-order summation separately without altering historical aggregation."
+[[intervening_maps]]
+branch = "numerical_comparison"
+name = "printed_anchor_and_finite_grid_predicates"
+kind = "computational"
+description = "Compare each total with its own printed decimal anchor and unchanged half-width; enumerate both fixed frequency grids. Unequal exact-anchor ratios exclude a common multiplicative rescaling, without extending that conclusion to channel-dependent transformations."
+[[intervening_maps]]
+branch = "source_extraction"
+name = "eps_coordinates_and_curve_identity"
+kind = "computational"
+description = "Read Figure5 total blue-circle centers and the green fitted curve separately. Convert integer drawing coordinates through the declared affine axes; retain raw neighbors and separate fitted-polyline evaluation from descriptive marker interpolation."
+[[fitted_parameters]]
+branch = "numerical_comparison"
+count = 0
+names = []
+training_boundary = "Both finite grids and source-anchor comparisons adjust zero physical parameters. A hypothetical common rescaling is an algebraic possibility check, not an accepted calibration."
+[[fitted_parameters]]
+branch = "source_extraction"
+count = 0
+names = []
+training_boundary = "Axis mapping and vector extraction refit zero source curves. The source-authored solid curves are fitted theory; their upstream fitting budget and original simulation arrays remain outside this extraction contract."
+[decisive_experiment]
+experiment_ids = ["E-289", "E-302", "E-303"]
+protocol_artifact = "data/output/audit/optics-landmark-identity/frequency-rounding-protocol.toml"
+protocol_sha256 = "76b3b426da3b8d6cd779eb54d529f707ddbe8d7ed5cab3fc93484ea8ee8fd7ca"
+description = "E-289 retains the original reproduction and independent fixture. E-302 owns the sampled frequency-envelope test under its fixed protocol. E-303 owns source extraction through the hash-bound standalone Rust extractor and EPS/PDF receipts in source-adjudication.toml; source extraction reports a retrospective documentary comparison, not a preregistered physical replication."
+[what_would_verify_refute]
+verification_outcomes = ["The unchanged E-302 producer returns scattering .14173987964073814 and absorption .39810409678758385 at .2282, and retains zero joint anchor matches on each declared grid.", "Independent source-vector replay reproduces raw neighboring marker coordinates and the drawn absorption fit near .296810, retaining its explicit curve role and drawing-coordinate limits.", "The two fixed total-to-printed-central-value ratios differ, excluding exactly one common multiplicative rescaling of both totals."]
+revision_outcomes = ["Authenticated original numerical arrays or an author clarification identify a corrected source landmark: retain original prose, vectors and failed comparisons, then register the newly identified comparison separately.", "A corrected geometry, channel convention, source fitting procedure or numerical producer requires its own identity and result; retain the original anchor and complex-S gate failures.", "A continuous-interval proof or admitted interpolation bound extends the finite-grid evidence through a separate declared predicate."]
+abandonment_outcomes = ["Independent identical-input replay contradicts a numerical total or finds a joint anchor match in either exact declared sample set; abandon the affected finite-result clause.", "Identical EPS bytes and independently checked axis/curve identities contradict the retained vector extraction; abandon the affected source-extraction clause.", "One common multiplicative scalar simultaneously maps both retained exact totals to their respective printed central values; abandon that restricted arithmetic exclusion."]
+inconclusive_outcomes = ["Zero sampled matches leaves the continuous interval unadjudicated.", "Sparse source markers provide neither an exact Lorentz-Mie value at .2282 nor a physical interpolation error bound.", "Source fitting and plotting discrepancies remain distinct from repository implementation correctness; agreement between numerical implementations alone cannot identify the source-side mechanism."]

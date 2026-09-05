@@ -1,0 +1,15 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 3.24s
+     Running tests/ward_distributional_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_distributional_identity-97e1da603122ece3)
+
+running 1 test
+scalar_mapping time=0.07 u=0.17 orbital_error=0.00000000000000000e0 omit_momentum_reversal=4.51247890425716562e1
+scalar_mapping time=0.07 u=0.39 orbital_error=0.00000000000000000e0 omit_momentum_reversal=1.50391775344139074e1
+scalar_mapping time=0.3 u=0.17 orbital_error=0.00000000000000000e0 omit_momentum_reversal=1.05368433135280508e1
+scalar_mapping time=0.3 u=0.39 orbital_error=0.00000000000000000e0 omit_momentum_reversal=3.51078780103929189e0
+scalar_mapping time=1.2 u=0.17 orbital_error=0.00000000000000000e0 omit_momentum_reversal=2.64394633043360816e0
+scalar_mapping time=1.2 u=0.39 orbital_error=0.00000000000000000e0 omit_momentum_reversal=8.83424921013800546e-1
+test scalar_source_momentum_mapping_preserves_orbital_terms_and_counterterm ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+

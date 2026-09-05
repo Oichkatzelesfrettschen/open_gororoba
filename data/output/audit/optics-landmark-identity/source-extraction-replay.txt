@@ -1,0 +1,11 @@
+Worktree: /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication
+Extract both named EPS members with bsdtar -xOf from the hash-bound retained archive.
+Compile: rustc -D warnings --edition 2024 data/output/audit/optics-landmark-identity/extract_figure5_vectors.rs -o /tmp/optics-figure5-vector-extractor
+Execute: /tmp/optics-figure5-vector-extractor data/output/audit/optics-landmark-identity
+Replay in a fresh temporary directory containing exact EPS copies.
+Checks: cmp original/replay stdout and coordinate CSV both exit 0.
+Render EPS: gs -q -dSAFER -dBATCH -dNOPAUSE -dEPSCrop -sDEVICE=png16m -r144 -sOutputFile=OUTPUT.png INPUT.eps
+Render PDF: pdftoppm -f 12 -l 12 -r 120 -png -singlefile INPUT.pdf OUTPUT_PREFIX
+Render landmark prose: pdftoppm -f 13 -l 13 -r 100 -png -singlefile INPUT.pdf OUTPUT_PREFIX
+Text extraction: pdftotext -layout -nopgbrk INPUT.pdf source-pdf.txt
+Original archive, TeX and PDF hashes match the previous receipts after these operations.

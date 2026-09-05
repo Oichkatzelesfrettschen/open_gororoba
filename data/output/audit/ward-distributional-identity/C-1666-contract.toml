@@ -1,0 +1,31 @@
+claim_id = "C-1666"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Preserve the original failed normalized full-vector gate and separately adjudicate the source's physical transverse amplitude on finite fixtures."
+fixed_hyperparameters = ["Preserve E-290 and E-301 source hashes and original residual receipts","Full-vector absolute 1e-12 AND normalized 1e-6 gate stays unchanged; normalization uses cancelled sample norms","Transverse source pair uses uncancelled diagram scales, absolute 1e-12 AND normalized 1e-6, and omission admission 1e-8","Retain original full-vector diagram-omission threshold 1e-6, including the scalar failure"]
+[[intervening_maps]]
+branch = "ward_source_scope"
+name = "transverse_source_projection"
+kind = "computational"
+description = "Contract Eq. 7.6 with transverse photon polarization and gauge vector in the source unrenormalized setting; report renormalized diagnostics separately."
+[[intervening_maps]]
+branch = "ward_source_scope"
+name = "intercept_and_normalization"
+kind = "computational"
+description = "Independently compute zero-virtuality intercepts, raw components, full-vector and transverse normalized values; keep each denominator and omission threshold explicit."
+[[fitted_parameters]]
+branch = "ward_source_scope"
+count = 0
+names = []
+training_boundary = "Source-derived contact and convention coefficients are fixed; the numerical comparison fits zero parameters."
+[decisive_experiment]
+experiment_ids = ["E-073", "E-290", "E-301", "E-304"]
+protocol_artifact = "data/output/audit/ward-distributional-identity/adjudication.toml"
+protocol_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+description = "The retained adjudication enumerates exact finite fixtures, source conventions, gates, omission controls and before/after producer boundaries. E-301 failures remain historical; E-304 adds source-conforming contacts, worldline constants/series and the scalar xi_bar=0 mapping. The measured corpus does not establish a universal identity."
+[what_would_verify_refute]
+verification_outcomes = ["The finite E-304 transverse scalar/spinor pair meets both declared source gates with discriminating diagram omissions; promotion remains limited to that finite source-conformance successor."]
+revision_outcomes = ["Derive and preregister any alternative full-vector normalization as a new instrument while preserving the unchanged failed original gate.","A different virtuality ladder, momentum, field, source convention or certified error enclosure requires new evidence."]
+abandonment_outcomes = ["An independent same-producer replay contradicts the retained finite transverse pass or any historical residual under its original inputs."]
+inconclusive_outcomes = ["The original normalized full-vector gate remains failed even though absolute norms are at roundoff; its denominator is ill-conditioned.","The original scalar diagram-omission norm remains below 1e-6 and retains that failed predicate.","Finite source identity and sampled UV cancellation establish neither a universal Ward theorem nor a certified zero/nonzero continuum limit."]

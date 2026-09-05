@@ -9,7 +9,7 @@ use num_complex::Complex64;
 
 use super::tensor_types::{ComplexLorentzMatrix, LORENTZ_DIMENSION};
 
-const SMALL_FIELD_THRESHOLD: f64 = 1.0e-6;
+const SMALL_FIELD_THRESHOLD: f64 = 1.0e-3;
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct PureMagneticWorldline {
@@ -66,7 +66,7 @@ pub fn scalar_determinant_factor(z: f64) -> f64 {
         return f64::NAN;
     }
     if z.abs() < SMALL_FIELD_THRESHOLD {
-        1.0 - z * z / 6.0 + z.powi(4) / 120.0
+        1.0 - z * z / 6.0 + 7.0 * z.powi(4) / 360.0
     } else {
         z / z.sinh()
     }
@@ -99,7 +99,9 @@ pub fn pure_magnetic_worldline(
 ) -> Result<PureMagneticWorldline, WorldlineInputError> {
     validate_inputs(z, u, proper_time)?;
     let v = 1.0 - 2.0 * u;
-    let g_b_free = proper_time * u * (1.0 - u);
+    // Appendix B.2 and B.6 share the -T/6 additive constant. Subtracting
+    // the coincidence value then gives the free T*u*(1-u) exponent.
+    let g_b_free = proper_time * (u * (1.0 - u) - 1.0 / 6.0);
     let dot_g_b_free = v;
     let ddot_g_b_free = -2.0 / proper_time;
     let gf_sign = sign_of_worldline_difference(u);
@@ -108,10 +110,34 @@ pub fn pure_magnetic_worldline(
     let field_plane_rotation = imaginary_matrix(&r_plus());
 
     let (g_b, dot_g_b, ddot_g_b) = if z.abs() < SMALL_FIELD_THRESHOLD {
+        let velocity_squared = v * v;
+        let field_squared = z * z;
+        let symmetric_correction = -proper_time
+            * field_squared
+            * (velocity_squared * velocity_squared / 48.0 - velocity_squared / 24.0 + 7.0 / 720.0);
+        let antisymmetric = proper_time * v * (velocity_squared - 1.0) * z / 12.0
+            + proper_time
+                * v
+                * (3.0 * velocity_squared * velocity_squared - 10.0 * velocity_squared + 7.0)
+                * z.powi(3)
+                / 720.0;
+        let symmetric_derivative = bosonic_s(z, u);
+        let antisymmetric_derivative = bosonic_a(z, u);
         (
-            scale(&identity(), g_b_free),
-            scale(&identity(), dot_g_b_free),
-            scale(&identity(), ddot_g_b_free),
+            scale(&identity(), g_b_free)
+                + scale(&projectors, symmetric_correction)
+                + scale(&field_plane_rotation, antisymmetric),
+            scale(&complement, dot_g_b_free) + scale(&projectors, symmetric_derivative)
+                - scale(&field_plane_rotation, antisymmetric_derivative),
+            scale(&identity(), ddot_g_b_free)
+                - scale(
+                    &projectors,
+                    2.0 * z * antisymmetric_derivative / proper_time,
+                )
+                + scale(
+                    &field_plane_rotation,
+                    2.0 * z * symmetric_derivative / proper_time,
+                ),
         )
     } else {
         let s_b = bosonic_s(z, u);
@@ -140,9 +166,7 @@ pub fn pure_magnetic_worldline(
         (g_b, dot_g_b, ddot_g_b)
     };
 
-    let (g_f, dot_g_f) = if z.abs() < SMALL_FIELD_THRESHOLD {
-        (scale(&identity(), gf_sign), ComplexLorentzMatrix::zeros())
-    } else {
+    let (g_f, dot_g_f) = {
         let s_f = fermionic_s(z, u, gf_sign);
         let a_f = fermionic_a(z, u, gf_sign);
         let g_f = add(
@@ -183,12 +207,18 @@ pub fn pure_magnetic_coincidence(
     let contact_coefficient = scale(&identity(), 2.0);
     let (g_b, dot_g_b, ddot_g_b_regular, g_f, dot_g_f_regular) = if z.abs() < SMALL_FIELD_THRESHOLD
     {
+        let coincidence_odd = bosonic_a_at_coincidence(z);
         (
-            scale(&identity(), -proper_time / 6.0),
-            ComplexLorentzMatrix::zeros(),
-            scale(&identity(), -2.0 / proper_time),
-            ComplexLorentzMatrix::zeros(),
-            ComplexLorentzMatrix::zeros(),
+            scale(&identity(), -proper_time / 6.0)
+                + scale(
+                    &projectors,
+                    proper_time * (z * z / 90.0 - z.powi(4) / 945.0),
+                ),
+            -scale(&field_plane_rotation, coincidence_odd),
+            scale(&identity(), -2.0 / proper_time)
+                - scale(&projectors, 2.0 * z * coincidence_odd / proper_time),
+            -scale(&field_plane_rotation, z.tanh()),
+            -scale(&projectors, 2.0 * z * z.tanh() / proper_time),
         )
     } else {
         let a_b = bosonic_a_at_coincidence(z);
@@ -229,7 +259,7 @@ fn bosonic_s(z: f64, u: f64) -> f64 {
     if z.abs() < SMALL_FIELD_THRESHOLD {
         let z2 = z * z;
         let v2 = v * v;
-        v * (1.0 + (v2 - 1.0) * z2 / 6.0)
+        v * (1.0 + (v2 - 1.0) * z2 / 6.0 + (3.0 * v2 * v2 - 10.0 * v2 + 7.0) * z2 * z2 / 360.0)
     } else {
         (z * v).sinh() / z.sinh()
     }
@@ -238,7 +268,7 @@ fn bosonic_s(z: f64, u: f64) -> f64 {
 fn bosonic_a(z: f64, u: f64) -> f64 {
     let v = 1.0 - 2.0 * u;
     if z.abs() < SMALL_FIELD_THRESHOLD {
-        z * (v * v - 1.0 / 3.0) / 2.0
+        z * (v * v - 1.0 / 3.0) / 2.0 + z.powi(3) * (v.powi(4) / 24.0 - v * v / 12.0 + 7.0 / 360.0)
     } else {
         (z * v).cosh() / z.sinh() - 1.0 / z
     }
@@ -246,7 +276,7 @@ fn bosonic_a(z: f64, u: f64) -> f64 {
 
 fn bosonic_a_at_coincidence(z: f64) -> f64 {
     if z.abs() < SMALL_FIELD_THRESHOLD {
-        z / 3.0 - z.powi(3) / 45.0
+        z / 3.0 - z.powi(3) / 45.0 + 2.0 * z.powi(5) / 945.0
     } else {
         1.0 / z.tanh() - 1.0 / z
     }
@@ -383,7 +413,7 @@ mod tests {
     #[test]
     fn zero_field_limit_is_the_free_worldline() {
         let matrices = pure_magnetic_worldline(0.0, 0.23, 1.4).expect("valid source node");
-        let expected_g = scale(&identity(), 1.4 * 0.23 * 0.77);
+        let expected_g = scale(&identity(), 1.4 * (0.23 * 0.77 - 1.0 / 6.0));
         let expected_dot = scale(&identity(), 1.0 - 2.0 * 0.23);
         let expected_ddot = scale(&identity(), -2.0 / 1.4);
         assert_matrix_close(&matrices.g_b, &expected_g, 1e-15);

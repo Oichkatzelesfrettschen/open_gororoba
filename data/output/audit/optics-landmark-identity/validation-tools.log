@@ -1,0 +1,20 @@
+[validation-tools] building routing and xtask tools in one Cargo session
+    Finished `validation` profile [optimized + debuginfo] target(s) in 0.50s
+[validation-tools] refreshing host-profile snapshot (xtask source changed)
+[validation-tools] building registry validation tools in one Cargo session
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+   Compiling spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+   Compiling cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+   Compiling lattice_filtration v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lattice_filtration)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+   Compiling gororoba_engine v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_engine)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli)
+   Compiling gororoba_cli_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_data)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 1m 37s
+OK: registry validation tools cached at /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/.
+OK: validation-tools cached at /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/.

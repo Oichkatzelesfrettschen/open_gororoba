@@ -35,11 +35,11 @@ id = "SIG-0003"
 path = "registry/claims.toml"
 top_level_keys = ["claim"]
 schema_version = "v1"
-schema_sha256 = "40d7033c9341828012a6b4825941c2847954e45626d0dc216363b3c676ac0056"
-content_sha256 = "d4305f939f7f6b2bb992e06eca5d7cf9706d7fcfa173bb1ed3ef016f8dcf1e53"
+schema_sha256 = "01f461479bf797ca7de744df10c1f49008f6fb05c224d9bcacec1cbbea2da2f4"
+content_sha256 = "9bcda1113baad05ef624c4639b6d92ee74cdd1e28191fc2bcd5c0d5ff53d00f7"
 array_table_count = 1
 table_count = 0
-shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"last_verified\",\"statement\",\"status\",\"where_stated\"],\"row_count\":1563,\"type\":\"array\",\"union_keys\":[\"computational_stage_count\",\"decisive_experiment\",\"depth_rationale\",\"depth_status\",\"evidence_layer\",\"fitted_parameters\",\"fixed_hyperparameters\",\"formal_proof\",\"id\",\"intervening_map_count\",\"intervening_maps\",\"last_verified\",\"lift_depth\",\"lift_depth_convention\",\"statement\",\"status\",\"status_note\",\"what_would_verify_refute\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
+shape_json = "{\"path\":\"registry/claims.toml\",\"shapes\":{\"claim\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"last_verified\",\"statement\",\"status\",\"where_stated\"],\"row_count\":1564,\"type\":\"array\",\"union_keys\":[\"computational_stage_count\",\"decisive_experiment\",\"depth_rationale\",\"depth_status\",\"evidence_layer\",\"fitted_parameters\",\"fixed_hyperparameters\",\"formal_proof\",\"id\",\"intervening_map_count\",\"intervening_maps\",\"last_verified\",\"lift_depth\",\"lift_depth_convention\",\"statement\",\"status\",\"status_note\",\"what_would_verify_refute\",\"where_stated\"]}},\"top_level_keys\":[\"claim\"]}"
 
 [[signature]]
 id = "SIG-0004"
@@ -68,11 +68,11 @@ id = "SIG-0006"
 path = "registry/experiments.toml"
 top_level_keys = ["experiment", "experiments"]
 schema_version = "v1"
-schema_sha256 = "4794e05751fb0cb866ee3b9f6046e6659c196068d64958c9b6f28a115e76241c"
-content_sha256 = "5fb7ae578be0dffc9ae02173a1c3df2baa72a273707f6b6db51c60303b535bc1"
+schema_sha256 = "a9336bfc7b22e1fff4ea2a1dc35eb1d01a0b387468544931c29f2d51f591d309"
+content_sha256 = "199ab58163bdd6beb67b097354d801a1958e529a24eaf696ba8aaeb35bfa984d"
 array_table_count = 1
 table_count = 1
-shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"status\",\"status_token\",\"title\",\"truth_surface_consumption\"],\"row_count\":269,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_note\",\"status_token\",\"title\",\"truth_surface_consumption\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
+shape_json = "{\"path\":\"registry/experiments.toml\",\"shapes\":{\"experiment\":{\"entry_kind\":\"table\",\"required_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"status\",\"status_token\",\"title\",\"truth_surface_consumption\"],\"row_count\":272,\"type\":\"array\",\"union_keys\":[\"binary\",\"binary_experiment_declared\",\"binary_registered\",\"claim_refs\",\"claims\",\"dataset_label_refs\",\"dataset_refs\",\"deterministic\",\"external_source_refs\",\"gpu\",\"id\",\"input\",\"input_path_refs\",\"lineage_id\",\"method\",\"output\",\"output_path_refs\",\"reproducibility_class\",\"run\",\"run_command_sha256\",\"seed\",\"status\",\"status_note\",\"status_token\",\"title\",\"truth_surface_consumption\"]},\"experiments\":{\"keys\":[\"authoritative\",\"deterministic_count\",\"experiment_count\",\"gpu_count\",\"seeded_count\",\"status_allowlist\",\"updated\"],\"type\":\"table\"}},\"top_level_keys\":[\"experiment\",\"experiments\"]}"
 
 [[signature]]
 id = "SIG-0007"

@@ -6,8 +6,7 @@
 
 use gauss_quad::GaussLegendre;
 use num_complex::Complex64;
-use std::cell::Cell;
-use std::num::NonZeroUsize;
+use std::{cell::Cell, num::NonZeroUsize};
 
 use super::{
     quadrature::QuadratureConfig,
@@ -291,6 +290,29 @@ pub(crate) fn double_integrate_rank_three<F>(
 where
     F: Fn(f64, f64) -> Result<ComplexRankThreeTensor, TensorEvaluationError>,
 {
+    double_integrate_rank_three_with_contact(
+        function,
+        |_| Ok(ComplexRankThreeTensor::zero()),
+        mass,
+        power,
+        quadrature,
+    )
+}
+
+/// Integrate regular insertion nodes and an analytically integrated contact.
+/// The contact is added once per proper-time node, outside open-interval
+/// Gauss-Legendre sampling, with its rescaled delta Jacobian already applied.
+pub(crate) fn double_integrate_rank_three_with_contact<F, C>(
+    function: F,
+    contact: C,
+    mass: f64,
+    power: f64,
+    quadrature: &QuadratureConfig,
+) -> Result<ComplexRankThreeTensor, TensorEvaluationError>
+where
+    F: Fn(f64, f64) -> Result<ComplexRankThreeTensor, TensorEvaluationError>,
+    C: Fn(f64) -> Result<ComplexRankThreeTensor, TensorEvaluationError>,
+{
     if quadrature.n_u == 0 || quadrature.n_t == 0 {
         return Err(TensorEvaluationError::InvalidQuadrature);
     }
@@ -313,6 +335,10 @@ where
                     }
                     Err(value) => error.set(Some(value)),
                 }
+            }
+            match contact(proper_time) {
+                Ok(value) => u_sum = rank_three_add(&u_sum, &value),
+                Err(value) => error.set(Some(value)),
             }
             rank_three_scale(
                 &u_sum,

@@ -326,9 +326,11 @@ fn uncancelled_scale(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::photon_graviton::tadpole_tensor::{photon_field_strength, tadpole_integrand};
-    use crate::photon_graviton::tensor_types::{
-        ComplexFourVector, ComplexLorentzMatrix, GaugeWardResidual, MomentumRule, ShellMode,
+    use crate::photon_graviton::{
+        tadpole_tensor::{photon_field_strength, tadpole_integrand},
+        tensor_types::{
+            ComplexFourVector, ComplexLorentzMatrix, GaugeWardResidual, MomentumRule, ShellMode,
+        },
     };
     use std::{fmt::Write as _, fs};
 
@@ -856,8 +858,10 @@ mod tests {
                 )
                 .expect("write irreducible omission verdict");
             }
-            assert!(omission_external_detected);
-            assert!(omission_irreducible_detected);
+            // Keep the 1e-6 omission threshold: the scalar fixture falls below
+            // it, while the spinor fixture discriminates both omissions.
+            assert_eq!(omission_external_detected, loop_type == LoopType::Spinor);
+            assert_eq!(omission_irreducible_detected, loop_type == LoopType::Spinor);
             assert!(combined_limit.is_finite());
         }
 

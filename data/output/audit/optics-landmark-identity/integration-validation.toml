@@ -1,0 +1,21 @@
+schema_version = 1
+experiments = ["E-302", "E-303", "E-304"]
+successor = "C-1750"
+claim_count = 1564
+typed_contract_count = 52
+experiment_lineages = 272
+command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+exit_status = 0
+log = "data/output/audit/optics-landmark-identity/ward-optics-validation-final.log"
+library_tests_passed = 1990
+library_tests_skipped = 19
+focused_ward_integration_tests_passed = 8
+focused_ward_library_tests_passed = 204
+focused_optics_tests_passed = 1
+warnings_as_errors = true
+protected_history_tables = 12
+history_receipt = "data/output/audit/optics-landmark-identity/history-preservation.json"
+sealed_crossing_source_build_hashes = 22
+ward_source_identity = "data/output/audit/ward-distributional-identity/producer-identities.toml"
+preserved_gate_failure = "The first full gate passed 1990 tests and rejected the unregistered external extractor. The hash-bound external target declaration repairs identity admission; the final complete gate passes."
+scope = "Finite Ward source conformance and sampled optics/source-vector identity. Original full-vector normalization, scalar omission and optical reproduction thresholds remain failed. External chronology, operational observations, physical convergence and universal extensions remain separate pending obligations."

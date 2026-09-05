@@ -1,0 +1,26 @@
+[transition]
+transition_timestamp = "2026-09-05T20:21:10Z"
+transition_key = "distributional-photon-graviton-source-conformance"
+source_claim_id = "C-1666"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+evidence_artifact_ids = ["ward-distributional-identity"]
+experiment_ids = ["E-304"]
+exercised_falsifier = "Independent unreduced source tensors, explicit periodic contacts and signed endpoint products reject missing B.4/B.36 terms, incorrect worldline constants and the unmapped scalar momentum/counterterm convention. Preserve each original normalized full-vector gate separately."
+proposed_claim_status = "Provisional"
+rationale = "Finite source-conformance and transverse evidence justify a narrow successor while the original normalized full-vector predicate and certified continuum limit remain unresolved."
+unresolved_assumptions = ["The original absolute 1e-12 AND normalized 1e-6 full-vector gate remains failed because its cancelled-sample normalization is ill-conditioned at roundoff.", "The original scalar diagram-omission norm remains below 1e-6.", "Finite pure magnetic D=4 and xi_bar=0 checks leave general fields, nonminimal coupling and certified quadrature/Taylor/interpolation errors unassessed."]
+actor = "claim-evidence-adjudication"
+reason = "Preserve historical Ward failures and register finite source-conforming distributional completion"
+expected_source_state_sha256 = "7136b7ea7f8073fa16a4f29eb446dcd812902a7174745216de9ab3973fa0f6ae"
+expected_claim_id_max = 1749
+
+[[successor]]
+proposal_key = "finite-distributional-photon-graviton-source-conformance"
+statement = "The corrected pure magnetic D=4 photon-graviton implementation matches independently transcribed unreduced orbital and fermion source tensors at three proper times for both loops, with maximum reported tensor error 2.1797503490e-13 inside the fixed 1e-10 gate. Source periodic contact and endpoint products, worldline constants and small-field terms, and the scalar xi_bar=0 momentum/counterterm convention are explicit. Both B.4 and B.36 omissions change the full tensor; B.36 omission alone preserves gauge transversality, so the tensor oracle is essential. The declared integrated scalar/spinor gauge, off-shell and transverse source fixtures pass their fixed gates. Historical E-301 failures remain retained. The original normalized full-vector gate and original scalar omission threshold remain failed; the finite tests establish source implementation conformance rather than a universal Ward theorem or certified continuum-limit error bound."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-304; ward-distributional-identity/adjudication.toml and final-integrated.toml; gr_core tests ward_distributional_identity, ward_source_scope and ward_independent_residuals; source Eq.4.3-4.11/Appendix B and mapped scalar Eq.3.3-3.11 at xi_bar=0."
+required_falsifier = "An identical source-bound replay exceeds the declared tensor/gauge/transverse gate or a required B.4/B.36 tensor omission loses discrimination; gauge transversality alone cannot rescue a failed tensor comparison."
+where_stated = ["data/output/audit/ward-distributional-identity/adjudication.toml", "data/output/audit/ward-distributional-identity/final-integrated.toml", "crates/gr_core/tests/ward_distributional_identity.rs", "crates/gr_core/tests/ward_source_scope.rs"]
+evidence_artifact_ids = ["ward-distributional-identity"]
+predecessor_relation_kind = "implementation_split"

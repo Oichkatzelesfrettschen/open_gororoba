@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-302"
+title = "Ruan-Fan printed-frequency envelope at fixed source geometry"
+status = "active"
+binary = "cargo-test:optics_core:ruan_fan_landmark_precision"
+claims = ["C-1707"]
+claim_refs = ["C-1707"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Frozen hypothetical printed-frequency rounding envelope [0.22815,0.22825], fixed source geometry and material parameters; historical positive-order weighted cross-section sum."
+input_path_refs = ["data/output/audit/optics-landmark-identity/frequency-rounding-protocol.toml"]
+method = "Evaluate uniform grids of 200 and 2000 intervals with unchanged source-anchor gates. Separate signed-order recurrence roundoff from the historical weighted expression. Report sampled joint matches without claiming continuous exclusion or author-declared uncertainty."
+run = "cargo test -p optics_core --test ruan_fan_landmark_precision --profile validation --offline -- --nocapture"
+output = ["data/output/audit/optics-landmark-identity/frequency-adjudication.toml"]
+output_path_refs = ["data/output/audit/optics-landmark-identity/frequency-adjudication.toml", "data/output/audit/optics-landmark-identity/frequency-envelope-final.csv", "data/output/audit/optics-landmark-identity/frequency-envelope-final.log"]
+status_note = "Both finite grids contain zero joint matches. The tested envelope retains scattering 0.11589599..0.17206114 and absorption 0.37852940..0.41891642. Hypothetical rounding alone fails to reconcile the sampled source landmarks; continuum exclusion and physical parameter fitting remain outside the instrument."

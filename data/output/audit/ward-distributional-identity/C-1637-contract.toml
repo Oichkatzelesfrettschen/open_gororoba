@@ -1,0 +1,31 @@
+claim_id = "C-1637"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Separate finite off-shell lower-point agreement from transverse on-shell amplitudes and the original full-vector normalization."
+fixed_hyperparameters = ["D=4 pure magnetic background, k0=-k, zero fitted parameters","Retain integrated absolute 1e-12 and normalized 1e-6 lower-point gates","The constant-background one-photon RHS is zero; two-photon omission remains the discriminating lower-point control"]
+[[intervening_maps]]
+branch = "ward_source_scope"
+name = "independent_lower_point_assembly"
+kind = "computational"
+description = "Recompute gravitational contraction and lower-point RHS independently using the source-corrected tensor producer."
+[[intervening_maps]]
+branch = "ward_source_scope"
+name = "source_scope_and_omission"
+kind = "computational"
+description = "Keep off-shell, transverse on-shell, tadpole and full-vector predicates separate. Classify the one-photon omission as nondiscriminating and retain the two-photon residual."
+[[fitted_parameters]]
+branch = "ward_source_scope"
+count = 0
+names = []
+training_boundary = "Source-derived contact and convention coefficients are fixed; the numerical comparison fits zero parameters."
+[decisive_experiment]
+experiment_ids = ["E-073", "E-290", "E-301", "E-304"]
+protocol_artifact = "data/output/audit/ward-distributional-identity/adjudication.toml"
+protocol_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+description = "The retained adjudication enumerates exact finite fixtures, source conventions, gates, omission controls and before/after producer boundaries. E-301 failures remain historical; E-304 adds source-conforming contacts, worldline constants/series and the scalar xi_bar=0 mapping. The measured corpus does not establish a universal identity."
+[what_would_verify_refute]
+verification_outcomes = ["Both corrected finite scalar/spinor off-shell fixtures meet the unchanged declared gates and the independent two-photon omission breaks their lower-point comparison."]
+revision_outcomes = ["A broader momentum family, nonzero one-photon channel or alternate source convention requires a newly bounded experiment.","Record the E-304 finite pass beside the E-301 historical spinor failure rather than replacing its producer evidence."]
+abandonment_outcomes = ["An independent identical-producer replay reverses the declared off-shell passing predicate or required two-photon omission distinction."]
+inconclusive_outcomes = ["The zero one-photon channel supplies no test of the omitted one-photon contribution away from constant-background kinematics.","The original normalized full-vector gate remains failed; finite off-shell agreement cannot adjudicate it.","Certified quadrature and extrapolation remainders remain unresolved."]

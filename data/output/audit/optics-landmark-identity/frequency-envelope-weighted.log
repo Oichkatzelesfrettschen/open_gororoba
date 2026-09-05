@@ -1,0 +1,13 @@
+   Compiling optics_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/optics_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 3.00s
+     Running tests/ruan_fan_landmark_precision.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ruan_fan_landmark_precision-c3f4666b593ce525)
+
+running 1 test
+signed-minus-weighted scattering=3.22958326748334912e-12 absorption=3.32672778213805032e-12
+exact scattering=1.41739879640738142e-1 absorption=3.98104096787583850e-1
+intervals=200 scattering=[0.11589599250181234, 0.17206113217514188] absorption=[0.3785294029280943, 0.4189164182628346] joint_count=0
+intervals=2000 scattering=[0.11589599250181234, 0.17206113217514188] absorption=[0.3785294029280943, 0.4189164182628346] joint_count=0
+test printed_frequency_envelope_retains_exact_anchor_failure ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+

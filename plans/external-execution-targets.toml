@@ -12,3 +12,10 @@ version = "8e3c3bbe66002936"
 executable = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/claim-family-evidence-adjudication/null-pilot-producer-before-mrt-correction.bin"
 receipt = "data/output/audit/claim-family-evidence-adjudication/null-pilot-execution-identity.toml"
 receipt_sha256 = "54345052fe6c3c98e0b4f9d4b4b33b5b0a33ff44d25ae82a3435c975ee0e3a12"
+
+[[external_target]]
+name = "optics-figure5-vector-extractor"
+version = "e9ae82daed8e9085"
+executable = "/tmp/optics-figure5-vector-extractor"
+receipt = "data/output/audit/optics-landmark-identity/external-execution-identity.toml"
+receipt_sha256 = "329bd7d84b93437029cb5d67b23a564a2f1b5fe095b21ab99ae1415a6c286c47"

@@ -12,8 +12,9 @@ use super::{
     quadrature::QuadratureConfig,
     tensor_integrands::{
         SourceWorldlineNode, TensorEvaluationError, TensorLoopConfig, bilinear,
-        double_integrate_rank_three, even, left_contract, rank_three_add, rank_three_scale,
-        right_contract, scalar_determinant, source_worldline_node, validate_tensor_inputs,
+        double_integrate_rank_three_with_contact, even, left_contract, rank_three_add,
+        rank_three_scale, right_contract, scalar_determinant, source_worldline_node,
+        validate_tensor_inputs,
     },
     tensor_types::{
         ComplexFourVector, ComplexLorentzMatrix, ComplexRankThreeTensor, WardKinematics,
@@ -117,7 +118,7 @@ pub fn irreducible_tensor_unrenormalized_with_mutation(
     let (loop_config, magnetic_field) =
         validate_tensor_inputs(kinematics, loop_config, quadrature)?;
     let kinematics = *kinematics;
-    let tensor = double_integrate_rank_three(
+    let tensor = double_integrate_rank_three_with_contact(
         |proper_time, u| {
             let node = mutate_worldline_node(
                 source_worldline_node(magnetic_field, loop_config.charge, proper_time, u)?,
@@ -135,6 +136,25 @@ pub fn irreducible_tensor_unrenormalized_with_mutation(
                 0.0,
             ) * exponent;
             Ok(rank_three_scale(&total, factor))
+        },
+        |proper_time| {
+            let contact = irreducible_contact_integrand(
+                &kinematics,
+                loop_type,
+                proper_time,
+                loop_config,
+                mutation,
+            )?;
+            Ok(rank_three_scale(
+                &contact,
+                Complex64::new(
+                    scalar_determinant(
+                        loop_type,
+                        loop_config.charge * magnetic_field * proper_time,
+                    ),
+                    0.0,
+                ),
+            ))
         },
         loop_config.mass,
         1.0,
@@ -158,7 +178,7 @@ pub fn irreducible_tensor_renormalized(
     let (loop_config, magnetic_field) =
         validate_tensor_inputs(kinematics, loop_config, quadrature)?;
     let kinematics = *kinematics;
-    let tensor = double_integrate_rank_three(
+    let tensor = double_integrate_rank_three_with_contact(
         |proper_time, u| {
             let node = source_worldline_node(magnetic_field, loop_config.charge, proper_time, u)?;
             let (j1, j2, j3) = match loop_type {
@@ -170,13 +190,40 @@ pub fn irreducible_tensor_renormalized(
             let determinant =
                 scalar_determinant(loop_type, loop_config.charge * magnetic_field * proper_time);
             let source_term = rank_three_scale(&total, Complex64::new(determinant, 0.0) * exponent);
+            // gr-qc/0412095 Eq. 3.11 defines k as the graviton momentum.
+            // Reversing it to the photon convention changes C's sign, so
+            // the scalar +2/3 coefficient becomes -2/3. The spinor Eq. 4.10
+            // coefficient in arXiv:2601.23279v1 is already photon-oriented.
+            let subtraction_coefficient = match loop_type {
+                LoopType::Scalar => -2.0 / 3.0,
+                LoopType::Spinor => 4.0 / 3.0,
+            };
             let counterterm = rank_three_scale(
                 &tree_tensor(&kinematics.field_strength, &kinematics.k),
                 // Eq. 4.10 uses dT/T after both insertion times are rescaled;
                 // the T^2 factor in Eq. 4.9 has already entered the measure.
-                Complex64::new(0.0, 4.0 / 3.0 * loop_config.charge),
+                Complex64::new(0.0, subtraction_coefficient * loop_config.charge),
             );
             Ok(rank_three_add(&source_term, &counterterm))
+        },
+        |proper_time| {
+            let contact = irreducible_contact_integrand(
+                &kinematics,
+                loop_type,
+                proper_time,
+                loop_config,
+                IrreducibleMutation::None,
+            )?;
+            Ok(rank_three_scale(
+                &contact,
+                Complex64::new(
+                    scalar_determinant(
+                        loop_type,
+                        loop_config.charge * magnetic_field * proper_time,
+                    ),
+                    0.0,
+                ),
+            ))
         },
         loop_config.mass,
         1.0,
@@ -186,6 +233,43 @@ pub fn irreducible_tensor_renormalized(
         &tensor,
         irreducible_prefactor(loop_type, loop_config),
     ))
+}
+
+/// Analytically integrate the J2 delta12 terms with periodic midpoint products.
+/// B.4 and B.36 each supply 2*delta12*I. At coincidence bar-dot-G_B=0 and
+/// G_F12=G_F11, leaving symmetrized G_F11*k with the delta(tau)=delta(u)/T
+/// Jacobian. The determinant and proper-time measure remain outside this API.
+pub fn irreducible_contact_integrand(
+    kinematics: &WardKinematics,
+    loop_type: LoopType,
+    proper_time: f64,
+    loop_config: TensorLoopConfig,
+    mutation: IrreducibleMutation,
+) -> Result<ComplexRankThreeTensor, TensorEvaluationError> {
+    let (_, magnetic_field) = validate_tensor_inputs(
+        kinematics,
+        loop_config,
+        &QuadratureConfig {
+            n_u: 1,
+            n_t: 1,
+            t_min: proper_time,
+            t_max: proper_time + 1.0,
+        },
+    )?;
+    if loop_type == LoopType::Scalar || mutation == IrreducibleMutation::OmitJ2 {
+        return Ok(ComplexRankThreeTensor::zero());
+    }
+    let node = source_worldline_node(magnetic_field, loop_config.charge, proper_time, 0.0)?;
+    let sign = if mutation == IrreducibleMutation::FlipJ2Sign {
+        -1.0
+    } else {
+        1.0
+    };
+    Ok(ComplexRankThreeTensor::from_fn(|row, column, photon| {
+        (node.coincidence.g_f[(row, photon)] * kinematics.k[column]
+            + node.coincidence.g_f[(column, photon)] * kinematics.k[row])
+            * (sign / proper_time)
+    }))
 }
 
 fn irreducible_prefactor(loop_type: LoopType, loop_config: TensorLoopConfig) -> Complex64 {

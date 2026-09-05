@@ -1,0 +1,30 @@
+    Checking optics_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/optics_core)
+error: float has excessive precision
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:46:28
+   |
+46 |     assert!((exact.c_sct - 0.141739879640738142).abs() < 1e-12);
+   |                            ^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#excessive_precision
+   = note: `-D clippy::excessive-precision` implied by `-D warnings`
+   = help: to override `-D warnings` add `#[allow(clippy::excessive_precision)]`
+help: consider changing the type or truncating it to
+   |
+46 -     assert!((exact.c_sct - 0.141739879640738142).abs() < 1e-12);
+46 +     assert!((exact.c_sct - 0.141_739_879_640_738_14).abs() < 1e-12);
+   |
+
+error: float has excessive precision
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:47:28
+   |
+47 |     assert!((exact.c_abs - 0.398104096787583850).abs() < 1e-12);
+   |                            ^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.97.0/index.html#excessive_precision
+help: consider changing the type or truncating it to
+   |
+47 -     assert!((exact.c_abs - 0.398104096787583850).abs() < 1e-12);
+47 +     assert!((exact.c_abs - 0.398_104_096_787_583_85).abs() < 1e-12);
+   |
+
+error: could not compile `optics_core` (test "ruan_fan_landmark_precision") due to 2 previous errors

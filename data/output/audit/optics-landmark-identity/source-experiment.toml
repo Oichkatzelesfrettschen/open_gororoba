@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-303"
+title = "Ruan-Fan Figure 5 source-vector and curve identity extraction"
+status = "active"
+binary = "external:optics-figure5-vector-extractor:e9ae82daed8e9085"
+claims = ["C-1707"]
+claim_refs = ["C-1707"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Exact Figure 5 EPS members from the retained arXiv0909.3323v2 source archive; separate circle, fitted-stroke and printed-prose identities."
+input_path_refs = ["data/output/audit/optics-landmark-identity/FanoCloak-lossy-sct.eps", "data/output/audit/optics-landmark-identity/FanoCloak-lossy-abs.eps", "data/output/audit/optics-landmark-identity/extract_figure5_vectors.rs", "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml"]
+method = "Compile the retained standalone Rust extractor with rustc 1.97.0 and warnings as errors. Extract affine drawing coordinates and curve roles, retain neighboring markers, and evaluate drawn fitted geometry. Replay in a fresh directory and compare exact stdout and CSV bytes."
+run = "/tmp/optics-figure5-vector-extractor data/output/audit/optics-landmark-identity"
+output = ["data/output/audit/optics-landmark-identity/source-adjudication.toml"]
+output_path_refs = ["data/output/audit/optics-landmark-identity/source-adjudication.toml", "data/output/audit/optics-landmark-identity/source-vector-coordinates.csv", "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml", "data/output/audit/optics-landmark-identity/vector-extraction-replay.txt"]
+status_note = "The source prose absorption 0.32 and drawn fitted value near 0.296810 are separate evidence. Neighboring Mie markers supply descriptive interpolation only; the source has no exact sample at printed frequency 0.2282. Preserve the sparse-sampling limit and separate drawing-coordinate budget. Reproduction requires a fresh output directory because the extractor rejects overwrites."

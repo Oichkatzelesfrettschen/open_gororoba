@@ -1,0 +1,44 @@
+schema_version = 1
+experiment = "E-302"
+claim = "C-1707"
+layer = "implementation_conformance"
+protocol = "data/output/audit/optics-landmark-identity/frequency-rounding-protocol.toml"
+protocol_sha256 = "76b3b426da3b8d6cd779eb54d529f707ddbe8d7ed5cab3fc93484ea8ee8fd7ca"
+producer = "crates/optics_core/tests/ruan_fan_landmark_precision.rs"
+producer_sha256 = "c4cc191978bdea50188f6e74776e22dc732b8ebe8f5ba4c2d4c8c9e0710abd09"
+original_measurement_producer_sha256 = "9663568061f85169aca831529ea0eacc8af26f405bb3fd596ced25173ef660c9"
+assertion_replay = "data/output/audit/optics-landmark-identity/frequency-envelope-assertion.log"
+assertion_replay_sha256 = "4b7049ff5f4faec9442b1f9e560eaff06d5e7922f67016cf907f1f9385fa1946"
+assertion_change = "The final producer additionally asserts zero joint matches on each grid; arithmetic and sampling remain identical."
+scattering_exact = 0.14173987964073814
+absorption_exact = 0.39810409678758385
+signed_minus_weighted_scattering = 3.229583267483349e-12
+signed_minus_weighted_absorption = 3.3267277821380503e-12
+original_anchor_gate = "Both reported observables within0.005 at exactomega0.2282; remains failed."
+original_complex_s_gate = 0.01
+original_gate_change = false
+aggregation = "Use historical positive-channel weights1,2,2. The signed-order solver sum differs by about3.3e-12 from recurrence roundoff; its initial1e-12 equality assertion failure remains retained."
+csv = "data/output/audit/optics-landmark-identity/frequency-envelope-final.csv"
+csv_sha256 = "d92cb1fed0defbd2bbee9d6569b1a7b75c7cee2191bfa73943e27d901bda7fcd"
+log = "data/output/audit/optics-landmark-identity/frequency-envelope-final.log"
+log_sha256 = "f54ddff326aa46a7616023e1b6e8e04ba1b35766d898cb0365dd0448add868ef"
+validation = "Final test and Clippy-Dwarnings pass. CSV output is byte-identical before and after representable literal formatting. create_new rejects overwrite."
+interpretation = "The sampled hypothetical frequency-rounding envelope yields zero joint anchor matches. Finite sampled absence establishes only sampled points and leaves continuous interval exclusion unproved."
+
+[[grid]]
+intervals = 200
+points = 201
+scattering_min = 0.11589599250181234
+scattering_max = 0.17206113217514188
+absorption_min = 0.3785294029280943
+absorption_max = 0.4189164182628346
+joint_matches = 0
+
+[[grid]]
+intervals = 2000
+points = 2001
+scattering_min = 0.11589599250181234
+scattering_max = 0.17206113217514188
+absorption_min = 0.3785294029280943
+absorption_max = 0.4189164182628346
+joint_matches = 0

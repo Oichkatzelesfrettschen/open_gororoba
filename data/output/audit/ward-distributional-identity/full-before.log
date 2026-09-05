@@ -1,0 +1,25 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 3.20s
+     Running tests/ward_distributional_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_distributional_identity-97e1da603122ece3)
+
+running 1 test
+fixed_time time=0.07 loop=Scalar raw_tilde_error=2.17971198257352835e-13 contact_norm=0.00000000000000000e0 regular_gauge=3.46339125536455825e-14 complete_gauge=3.46339125536455825e-14 production_regular_difference=2.35661229422541158e-5
+fixed_time time=0.07 loop=Spinor raw_tilde_error=2.17975034900561533e-13 contact_norm=6.22243804161893774e-2 regular_gauge=7.41702116259708184e-3 complete_gauge=3.46512950477381983e-14 production_regular_difference=6.22196926009203413e-2
+fixed_time time=0.3 loop=Scalar raw_tilde_error=1.38090003183348039e-15 contact_norm=0.00000000000000000e0 regular_gauge=2.21826577705160310e-16 complete_gauge=2.21826577705160310e-16 production_regular_difference=1.00617262633217463e-4
+fixed_time time=0.3 loop=Spinor raw_tilde_error=1.41182098476514245e-15 contact_norm=6.22067358432884798e-2 regular_gauge=7.41491796491350504e-3 complete_gauge=2.28353036342112920e-16 production_regular_difference=6.21863723852439723e-2
+fixed_time time=1.2 loop=Scalar raw_tilde_error=1.09359608656384632e-16 contact_norm=0.00000000000000000e0 regular_gauge=1.85398285114848007e-17 complete_gauge=1.85398285114848007e-17 production_regular_difference=3.96035531146070254e-4
+fixed_time time=1.2 loop=Spinor raw_tilde_error=1.16241167244069663e-16 contact_norm=6.19284252784666270e-2 regular_gauge=7.38174390459733938e-3 complete_gauge=2.09232639860890843e-17 production_regular_difference=6.18419828780936917e-2
+
+thread 'unreduced_source_contact_and_production_are_separate' (218651) panicked at crates/gr_core/tests/ward_distributional_identity.rs:151:5:
+production must retain source exponent and distribution
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test unreduced_source_contact_and_production_are_separate ... FAILED
+
+failures:
+
+failures:
+    unreduced_source_contact_and_production_are_separate
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p gr_core --test ward_distributional_identity`

@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 207
+event_count = 208
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4439,4 +4439,27 @@ transition_spec_sha256 = "61f82f7adfb147eac8f2ee413d9eb9289e5eb036af68f031de049e
 [[transition.successors]]
 proposal_key = "spinor-counterterm-proper-time-measure"
 canonical_claim_id = "C-1749"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 208
+transition_key = "distributional-photon-graviton-source-conformance"
+source_claim_id = "C-1666"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Independent unreduced source tensors, explicit periodic contacts and signed endpoint products reject missing B.4/B.36 terms, incorrect worldline constants and the unmapped scalar momentum/counterterm convention. Preserve each original normalized full-vector gate separately."
+rationale = "Finite source-conformance and transverse evidence justify a narrow successor while the original normalized full-vector predicate and certified continuum limit remain unresolved."
+unresolved_assumptions = ["The original absolute 1e-12 AND normalized 1e-6 full-vector gate remains failed because its cancelled-sample normalization is ill-conditioned at roundoff.", "The original scalar diagram-omission norm remains below 1e-6.", "Finite pure magnetic D=4 and xi_bar=0 checks leave general fields, nonminimal coupling and certified quadrature/Taylor/interpolation errors unassessed."]
+evidence_artifact_ids = ["ward-distributional-identity"]
+experiment_ids = ["E-304"]
+actor = "claim-evidence-adjudication"
+reason = "Preserve historical Ward failures and register finite source-conforming distributional completion"
+transition_timestamp = "2026-09-05T20:21:10Z"
+transition_spec_sha256 = "621e50b6c4ea171e1da87c0a4e001646baff89b9bc05e16c8d9f64a8abf25499"
+
+[[transition.successors]]
+proposal_key = "finite-distributional-photon-graviton-source-conformance"
+canonical_claim_id = "C-1750"
 relation_kind = "implementation_split"

@@ -1,0 +1,106 @@
+schema_version = 1
+claim = "C-1707"
+evidence_layer = "source_proposition"
+result = "Printed landmarks, drawn fit and sampled Lorentz-Mie markers are distinct retained evidence surfaces."
+physical_simulations_executed = 0
+
+[source_identity]
+archive = "data/output/audit/claim-family-evidence-adjudication/optics-replay/arxiv-source.download"
+archive_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+source_url = "https://arxiv.org/src/0909.3323v2"
+tex = "data/output/audit/claim-family-evidence-adjudication/optics-replay/Fano_Scattering.tex"
+tex_sha256 = "625f2dc473e5d50abba49daa3d1382ee9bd70b17746cd9452bfaf9b81c70bc28"
+pdf = "data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf"
+pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+scattering_archive_member = "FanoCloak-lossy-sct.eps"
+scattering_member_sha256 = "348ee1c05971c9abdfade0a05a20652c95f86a6ab5539cf7383e312e571fd384"
+absorption_archive_member = "FanoCloak-lossy-abs.eps"
+absorption_member_sha256 = "3ec6d19edad5f78632b7b015f3aac49b907f8213997aa9361f44b69c3df734d0"
+extraction = "bsdtar -xOf ARCHIVE MEMBER; retain the exact member bytes."
+preservation = "The archive, TeX and PDF SHA256 values match their pre-existing source receipts after extraction and rendering."
+
+[figure_identity]
+figure = "Figure 5 on PDF page 12; printed landmark prose on page 13"
+tex_caption_lines = "574-584"
+tex_landmark_lines = "617-620"
+geometry = "rho1=.36 lambda_p, rho2=.73 lambda_p, rho3=lambda_p; metal damping gamma_d=.001 omega_p"
+horizontal_axis = "omega / omega_p"
+vertical_scattering_axis = "C_sct / (2 lambda / pi)"
+vertical_absorption_axis = "C_abs / (2 lambda / pi)"
+normalization = "The parenthetical 2lambda/pi on both y-axis labels denotes cross-section units. TeX equations for C_sct and C_abs explicitly factor 2lambda/pi from the channel sums. lambda is the incident vacuum wavelength; lambda_p fixes the geometry."
+marker_roles = "Caption: circles are Lorentz-Mie numerical calculations; solid curves are fitted Eq22 theory. Blue circles and dark-green solid curves represent totals. Red/cyan represent l=0; magenta/olive represent l=+/-1; gray/blue represent l=+/-2."
+channel_sum_scope = "TeX states that all five channels l=0,+/-1,+/-2 dominate. The legend labels equal positive/negative angular channels together; the total is the sum over signed channels."
+printed_omega = 0.2282
+printed_scattering = 0.03
+printed_absorption = 0.32
+printed_value_rounding_half_width = 0.005
+rounding_scope = "A decimal-rounding interpretation is an analysis convention, separate from an author-declared numerical error."
+
+[vector_extraction]
+extractor = "extract_figure5_vectors.rs"
+extractor_sha256 = "aeb5af8ae21560ebaafe9efa6f4fc617b0ff78fddfd87d87878c6c22cbbf852f"
+coordinates = "source-vector-coordinates.csv"
+coordinates_sha256 = "84a33d384b40a9ac4c99e63cdd1dac859e1d9a65852509ab5d752576c57b6097"
+result = "vector-extraction.txt"
+result_sha256 = "9e40ae67b888a4c158ed1078e695c2c5ad30c25f2a7afec3d240a05e92958c78"
+scattering_method = "Recover blue circle centers from closed 16-segment polygons; intersect the dark-green filled stroke-outline polygon with a vertical frequency line. The PowerPoint export encodes the fitted stroke as a filled outline, not a centerline."
+absorption_method = "Read explicit FO ellipse centers and reconstruct the dark-green MATLAB MP relative polyline in PostScript stack order. MakeOval translates to the listed center before scaling."
+scattering_markers = 87
+scattering_segments_per_marker = 16
+absorption_markers = 87
+absorption_polyline_vertices = 119
+scattering_axis = "omega=.22+(x-2246)*.013/2674; C=(3246-y)*2.5/2040"
+absorption_axis = "omega=.22+(x-720)*.013/3850; C=(3350-y)*.7/2938"
+calibration = "Axes and labeled .22/.225/.23 ticks define affine coordinates. Integer tick placement agrees with these endpoint maps within one raw vector-coordinate unit. The right endpoint .233 follows the uniformly spaced frequency scale."
+scattering_frequency_per_coordinate = 0.00000486163051608
+scattering_value_per_coordinate = 0.00122549019607843
+absorption_frequency_per_coordinate = 0.00000337662337662
+absorption_value_per_coordinate = 0.00023825731790334
+coordinate_rounding_scope = "The EPS integers are quantized drawing coordinates. One unit measures drawing granularity, not statistical uncertainty or physical solver error. Circle center extraction can produce half units."
+local_absorption_line_budget = "Allowing two x units (one tick-calibration and one coordinate-rounding unit) plus one y unit gives at most (2*100/33+1)*.7/2938 < .001683 in the local fitted ordinate. A conservative .002 bound covers that stated drawing-coordinate model only."
+interpolation_scope = "Polyline evaluation describes the drawn fitted curve. Linear interpolation between sparse circle centers is descriptive and cannot establish the unsampled exact Lorentz-Mie value or bound its interpolation error."
+
+[scattering_at_printed_frequency]
+left_mie_vector_center = [3921.0, 3222.5]
+left_mie_frequency = 0.228143231114
+left_mie_value = 0.028799019608
+right_mie_vector_center = [3951.0, 3215.0]
+right_mie_frequency = 0.228289080030
+right_mie_value = 0.037990196078
+descriptive_marker_interpolation = 0.032376508296
+fitted_stroke_lower = 0.027106695521018097
+fitted_stroke_upper = 0.04803113553113542
+conclusion = "The sampled total scattering markers near .2282 and the drawn fitted stroke support a small scattering cross section near the printed .03. The vector data supply neither an exact simulation sample at .2282 nor an exact fitted centerline ordinate."
+
+[absorption_at_printed_frequency]
+left_mie_vector_center = [3131.0, 2175.0]
+left_mie_frequency = 0.228141038961
+left_mie_value = 0.279952348536
+right_mie_vector_center = [3175.0, 2279.0]
+right_mie_frequency = 0.228289610390
+right_mie_value = 0.255173587474
+descriptive_marker_interpolation = 0.270118819234
+left_fitted_vector_vertex = [3120.0, 2018.0]
+left_fitted_frequency = 0.228103896104
+left_fitted_value = 0.317358747447
+right_fitted_vector_vertex = [3153.0, 2118.0]
+right_fitted_frequency = 0.228215324675
+right_fitted_value = 0.293533015657
+drawn_fitted_polyline_value = 0.296809748001
+nearby_mie_frequency = 0.227992467532
+nearby_mie_value = 0.313308373043
+conclusion = "At the printed .2282 coordinate, the drawn absorption fit gives about .297, while neighboring Mie markers lie near .280 and .255. The printed .32 therefore differs from the drawn fit by more than the stated coordinate-rounding model and its assumed .005 decimal half-width. Nearby marker/fit values approach .32 at different frequencies; those observations do not authorize replacing the printed frequency."
+
+[adjudication]
+source_internal_discrepancy = "Preserve the prose absorption anchor separately from the drawn fit and sampled markers. The source plot cannot be treated as an exact pair (.03,.32) of Lorentz-Mie values at .2282."
+repository_comparison = "Root-owned independent Mie/frequency-rounding results remain separate from source-geometry extraction. Agreement of repository implementations does not determine which source prose, plotting, fitting, geometry or normalization choice produced the discrepancy."
+required_next_evidence = "Original numerical source arrays or an author clarification can identify the exact landmark. A broader drawn-curve comparison must preserve marker roles, coordinate quantization, fitting procedure and original failed error thresholds."
+
+[validation]
+rustc = "1.97.0 (2d8144b78 2026-07-07)"
+ghostscript = "10.07.1"
+poppler = "26.08.0"
+compile = "rustc -D warnings --edition 2024 extract_figure5_vectors.rs -o EXTRACTOR"
+replay = "Run EXTRACTOR on a fresh directory holding both exact EPS members; create_new protects an existing source-vector-coordinates.csv."
+repeat = "A fresh-directory repeat produces byte-identical stdout and coordinate CSV by cmp; the formatted extractor compiles with warnings denied."
+render = "Ghostscript -dEPSCrop -sDEVICE=png16m -r144 renders both members; pdftoppm renders PDF pages12/13. Figure5 PDF and separate EPS renders show matching axes, curve colors and caption roles."

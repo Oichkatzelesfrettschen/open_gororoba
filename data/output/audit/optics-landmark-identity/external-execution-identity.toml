@@ -1,0 +1,7 @@
+name = "optics-figure5-vector-extractor"
+version = "e9ae82daed8e9085"
+executable = "/tmp/optics-figure5-vector-extractor"
+executable_sha256 = "e9ae82daed8e9085aa637a44b8d35e62fc6ed0f15e234aa2aa19224e6d643eff"
+source_receipt = "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml"
+source_receipt_sha256 = "3207545cdb47fe621f2f074de0b1540ae6fbba39c7f3780a09bed3bd66d1fd4f"
+scope = "The compilation receipt binds retained Rust source, compiler and measured executable bytes. Rebuild and use a fresh output directory for replay; the temporary executable path supplies historical execution identity."

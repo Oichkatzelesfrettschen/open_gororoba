@@ -1,0 +1,170 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 6.87s
+     Running tests/ward_distributional_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_distributional_identity-97e1da603122ece3)
+
+running 2 tests
+endpoint time=0.07 signed_jump=3.79062450551953483e-13 omit_lower=6.36876946433110369e0 omit_upper=6.36876946433110369e0
+endpoint time=0.3 signed_jump=0.00000000000000000e0 omit_lower=1.48604620834391743e0 omit_upper=1.48604620834391743e0
+endpoint time=1.2 signed_jump=0.00000000000000000e0 omit_lower=3.71511552085979357e-1 omit_upper=3.71511552085979357e-1
+test signed_total_derivative_endpoints_cancel_without_dropping_each_endpoint ... ok
+fixed_time time=0.07 loop=Scalar raw_tilde_error=2.17971198257352835e-13 contact_norm=0.00000000000000000e0 regular_gauge=3.46339125536455825e-14 complete_gauge=3.46339125536455825e-14 production_regular_difference=2.17971198257352835e-13
+fixed_time time=0.07 loop=Spinor raw_tilde_error=2.17975034900561533e-13 contact_norm=6.22243804161893774e-2 regular_gauge=7.41702116259708184e-3 complete_gauge=3.46512950477381983e-14 production_regular_difference=6.22243804160181324e-2
+fixed_time time=0.3 loop=Scalar raw_tilde_error=1.38090003183348039e-15 contact_norm=0.00000000000000000e0 regular_gauge=2.21826577705160310e-16 complete_gauge=2.21826577705160310e-16 production_regular_difference=1.38090003183348039e-15
+fixed_time time=0.3 loop=Spinor raw_tilde_error=1.41182098476514245e-15 contact_norm=6.22067358432884798e-2 regular_gauge=7.41491796491350504e-3 complete_gauge=2.28353036342112920e-16 production_regular_difference=6.22067358432873974e-2
+fixed_time time=1.2 loop=Scalar raw_tilde_error=1.09359608656384632e-16 contact_norm=0.00000000000000000e0 regular_gauge=1.85398285114848007e-17 complete_gauge=1.85398285114848007e-17 production_regular_difference=1.09359608656384632e-16
+fixed_time time=1.2 loop=Spinor raw_tilde_error=1.16241167244069663e-16 contact_norm=6.19284252784666270e-2 regular_gauge=7.38174390459733938e-3 complete_gauge=2.09232639860890843e-17 production_regular_difference=6.19284252784666894e-2
+test unreduced_source_contact_and_production_are_separate ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ward_independent_residuals.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_independent_residuals-b2137b8378eeaf6c)
+
+running 1 test
+schema_version = 1
+evidence_layer = "implementation_conformance"
+independence = "Independent component contraction, RHS assembly and Lagrange intercept; shared physics tensors and quadrature"
+error_budget_status = "heuristic refinement sensitivity; certified quadrature and extrapolation remainder unresolved"
+
+[[gauge]]
+loop_type = "Scalar"
+absolute = 1.43747447801451117e-20
+normalized = 3.95728570352218761e-17
+passes = true
+
+[[gauge_omission]]
+loop_type = "Scalar"
+mutation = "OmitJ1"
+absolute = 1.43747447801451117e-20
+tensor_delta_norm = 1.86853739317510839e-4
+
+[[gauge_omission]]
+loop_type = "Scalar"
+mutation = "OmitJ2"
+absolute = 4.71565503275706887e-24
+tensor_delta_norm = 4.08511574355829518e-4
+
+[[gauge_omission]]
+loop_type = "Scalar"
+mutation = "OmitJ3"
+absolute = 2.39577767727335119e-20
+tensor_delta_norm = 1.89271962019468970e-7
+
+[[off_shell_gravitational]]
+loop_type = "Scalar"
+absolute = 1.03920649221027843e-15
+normalized = 6.19324672173849088e-11
+one_photon_norm = 0.00000000000000000e0
+two_photon_norm = 1.67796720993308877e-5
+omit_one_photon_absolute = 1.03920649221027843e-15
+omit_two_photon_absolute = 1.67796720982963216e-5
+one_photon_omission_discriminates = false
+
+[[on_shell_limit]]
+loop_type = "Scalar"
+virtualities = [0.1, 0.05, 0.01, 0.005]
+linear_norm = 5.29674078749415439e-3
+quadratic_norm = 5.29672367888906013e-3
+quadratic_spread = 2.41951842497832581e-8
+quadrature_spread = 1.23344059957450911e-3
+ladder_spread = 2.17756658225931599e-7
+omit_external_norm = 5.29607678637566970e-3
+omit_irreducible_norm = 6.64001221368366369e-7
+passes_original_gate = false
+certified_zero_exclusion = false
+linear_components_real = [0.0, 0.0, 0.0, 0.003745373121649791]
+linear_components_imaginary = [-0.00374534953636206, 0.0, 0.0, 0.0]
+refined_linear_norm = 6.53018138706866393e-3
+
+[[gauge]]
+loop_type = "Spinor"
+absolute = 2.35213482229235742e-19
+normalized = 1.61984368848304837e-16
+passes = true
+
+[[gauge_omission]]
+loop_type = "Spinor"
+mutation = "OmitJ1"
+absolute = 2.35213482229235742e-19
+tensor_delta_norm = 7.47325762607318621e-4
+
+[[gauge_omission]]
+loop_type = "Spinor"
+mutation = "OmitJ2"
+absolute = 1.73670225528512787e-7
+tensor_delta_norm = 1.63469626011713892e-3
+
+[[gauge_omission]]
+loop_type = "Spinor"
+mutation = "OmitJ3"
+absolute = 1.73670225528265983e-7
+tensor_delta_norm = 2.26439108157416384e-6
+
+[[off_shell_gravitational]]
+loop_type = "Spinor"
+absolute = 2.07830533754039608e-15
+normalized = 3.09888040113763398e-11
+one_photon_norm = 0.00000000000000000e0
+two_photon_norm = 6.70663293979757990e-5
+omit_one_photon_absolute = 2.07830533754039608e-15
+omit_two_photon_absolute = 6.70663294000448226e-5
+one_photon_omission_discriminates = false
+
+[[on_shell_limit]]
+loop_type = "Spinor"
+virtualities = [0.1, 0.05, 0.01, 0.005]
+linear_norm = 1.65798157697079080e-13
+quadratic_norm = 1.65796369025784015e-13
+quadratic_spread = 2.18498915498746498e-18
+quadrature_spread = 1.60004599633603937e-12
+ladder_spread = 1.96649023942703876e-17
+omit_external_norm = 1.25584392914294286e-6
+omit_irreducible_norm = 1.25584409494061651e-6
+passes_original_gate = false
+certified_zero_exclusion = false
+linear_components_real = [0.0, 0.0, 0.0, 1.1724398688844483e-13]
+linear_components_imaginary = [-1.1723001592701282e-13, 0.0, 0.0, 0.0]
+refined_linear_norm = 1.76584415379051724e-12
+
+test independent_ward_residuals_preserve_failures_and_omission_scope ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+
+     Running tests/ward_source_scope.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_source_scope-60858c86059d693d)
+
+running 3 tests
+uv_coefficient loop=Scalar time=1.00000000000000006e-1 real=6.66308786859813207e-1 imaginary=-1.35265576912569912e-24
+uv_coefficient loop=Scalar time=2.99999999999999989e-2 real=6.66569073204926088e-1 imaginary=4.16046006151382732e-26
+uv_coefficient loop=Scalar time=1.00000000000000002e-2 real=6.66635067259398917e-1 imaginary=3.24196583388897155e-28
+uv_coefficient loop=Scalar time=3.00000000000000006e-3 real=6.66657284715816534e-1 imaginary=-3.86795751811946299e-27
+uv_coefficient loop=Scalar time=1.00000000000000002e-3 real=6.66663548671993178e-1 imaginary=-6.74554934432877625e-29
+uv_coefficient loop=Spinor time=1.00000000000000006e-1 real=6.69459193156358934e-1 imaginary=-1.35838805630351340e-24
+uv_coefficient loop=Spinor time=2.99999999999999989e-2 real=6.67493821091568185e-1 imaginary=4.16551406266597977e-26
+uv_coefficient loop=Spinor time=1.00000000000000002e-2 real=6.66941372935339061e-1 imaginary=3.24018628706257245e-28
+uv_coefficient loop=Spinor time=3.00000000000000006e-3 real=6.66748972237855564e-1 imaginary=-3.86847605840176898e-27
+uv_coefficient loop=Spinor time=1.00000000000000002e-3 real=6.66694091730383853e-1 imaginary=-6.74577922163363926e-29
+test orbital_and_spinor_uv_coefficients_are_separate ... ok
+counterterm loop=Spinor mass=0.8 source_relative_error=2.21865383216254413e-13 wrong_measure_relative_error=1.20666022709121121e-1 omitted_norm=5.71532993224750413e-4
+counterterm loop=Scalar mass=0.8 source_relative_error=2.22027740846278384e-13 wrong_measure_relative_error=1.20666022709120940e-1 omitted_norm=2.85766496612375207e-4
+counterterm loop=Spinor mass=1.3 source_relative_error=3.61052723255739196e-13 wrong_measure_relative_error=7.11205462874669458e-1 omitted_norm=3.35958844016323544e-4
+counterterm loop=Scalar mass=1.3 source_relative_error=3.60479479214427155e-13 wrong_measure_relative_error=7.11205462874669903e-1 omitted_norm=1.67979422008161772e-4
+test rescaled_counterterm_matches_source_measure ... ok
+transverse loop=Scalar renormalized=false polarization=0 zeta=0 combined=9.70360944374526468e-18 normalized=1.02091254752851701e0 omit_external=1.98770398289009210e-19 omit_irreducible=9.50483904545625605e-18 vector_norm_last=8.77355282507683907e-13 omission_discriminates=false
+transverse loop=Scalar renormalized=false polarization=0 zeta=1 combined=1.37558150634098375e-18 normalized=3.83359929721444802e-12 omit_external=3.58822453703104140e-7 omit_irreducible=3.58822453701728559e-7 vector_norm_last=2.78493576330233605e-15 omission_discriminates=true
+transverse loop=Scalar renormalized=false polarization=1 zeta=0 combined=5.52836381816253220e-16 normalized=5.60133225807499745e-4 omit_external=9.86420184222831439e-13 omit_irreducible=9.86973020604647693e-13 vector_norm_last=8.77355282507683907e-13 omission_discriminates=false
+transverse loop=Scalar renormalized=false polarization=1 zeta=1 combined=2.40133840546594185e-18 normalized=9.60474308300395263e-1 omit_external=9.88205105130017223e-20 omit_irreducible=2.50015891597894342e-18 vector_norm_last=2.78493576330233605e-15 omission_discriminates=false
+transverse loop=Scalar renormalized=true polarization=0 zeta=0 combined=8.48153501257438712e-19 normalized=2.79386974516368958e-1 omit_external=3.03576608295941280e-18 omit_irreducible=2.18761258170197409e-18 vector_norm_last=4.40914952020628713e-3 omission_discriminates=false
+transverse loop=Scalar renormalized=true polarization=0 zeta=1 combined=8.75493254282044830e-18 normalized=2.43990654772766648e-11 omit_external=3.58822453711355935e-7 omit_irreducible=3.58822453702601003e-7 vector_norm_last=1.39953784320852822e-5 omission_discriminates=true
+transverse loop=Scalar renormalized=true polarization=1 zeta=0 combined=4.96991205127479129e-18 normalized=5.03834149914122621e-6 omit_external=9.86413289374640789e-13 omit_irreducible=9.86418259286692064e-13 vector_norm_last=4.40914952020628713e-3 omission_discriminates=false
+transverse loop=Scalar renormalized=true polarization=1 zeta=1 combined=1.39294127012976355e-18 normalized=1.00111290077110393e0 omit_external=1.39139278802306428e-18 omit_irreducible=1.54848210669926706e-21 vector_norm_last=1.39953784320852822e-5 omission_discriminates=false
+transverse loop=Spinor renormalized=false polarization=0 zeta=0 combined=7.48822300463321811e-17 normalized=9.40108892921960093e-1 omit_external=4.77048955893621951e-18 omit_irreducible=7.96527196052684006e-17 vector_norm_last=1.75534660642845800e-12 omission_discriminates=false
+transverse loop=Spinor renormalized=false polarization=0 zeta=1 combined=3.21194893598830689e-18 normalized=3.90967748560054140e-12 omit_external=8.21538080268260158e-7 omit_irreducible=8.21538080265048209e-7 vector_norm_last=5.55768716484180214e-15 omission_discriminates=true
+transverse loop=Spinor renormalized=false polarization=1 zeta=0 combined=8.36211254320179398e-16 normalized=7.01438098902591143e-5 omit_external=1.19213834496364329e-11 omit_irreducible=1.19205472383821127e-11 vector_norm_last=1.75534660642845800e-12 omission_discriminates=false
+transverse loop=Spinor renormalized=false polarization=1 zeta=1 combined=1.05111141867943664e-17 normalized=1.11367715687447633e0 omit_external=1.07290839985544735e-18 omit_irreducible=9.43820578693891981e-18 vector_norm_last=5.55768716484180214e-15 omission_discriminates=false
+transverse loop=Spinor renormalized=true polarization=0 zeta=0 combined=1.10000286625574429e-17 normalized=1.10990944151445969e0 omit_external=1.08928437016903024e-18 omit_irreducible=9.91074429238841261e-18 vector_norm_last=1.75493572257776530e-12 omission_discriminates=false
+transverse loop=Spinor renormalized=true polarization=0 zeta=1 combined=1.56044644707923480e-18 normalized=1.89942071409686612e-12 omit_external=8.21538080265819221e-7 omit_irreducible=8.21538080267379668e-7 vector_norm_last=5.56590002298578880e-15 omission_discriminates=true
+transverse loop=Spinor renormalized=true polarization=1 zeta=0 combined=8.48359744956835395e-18 normalized=7.11628342526805889e-7 omit_external=1.19213793288178358e-11 omit_irreducible=1.19213878124152854e-11 vector_norm_last=1.75493572257776530e-12 omission_discriminates=false
+transverse loop=Spinor renormalized=true polarization=1 zeta=1 combined=4.05234679182244870e-19 normalized=9.40569322138029906e-1 omit_external=4.30839779316953007e-19 omit_irreducible=2.56051001347081277e-20 vector_norm_last=5.56590002298578880e-15 omission_discriminates=false
+test transverse_source_identity_retains_diagram_omissions_and_vector_defects ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+

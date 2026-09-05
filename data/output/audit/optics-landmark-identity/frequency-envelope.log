@@ -1,0 +1,99 @@
+   Compiling optics_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/optics_core)
+error[E0609]: no field `scattering` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:16:20
+   |
+16 |     assert!((exact.scattering - 0.141739879640738142).abs() < 1e-12);
+   |                    ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `absorption` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:17:20
+   |
+17 |     assert!((exact.absorption - 0.398104096787583850).abs() < 1e-12);
+   |                    ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `scattering` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:26:28
+   |
+26 |             assert!(values.scattering.is_finite() && values.absorption.is_finite());
+   |                            ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `absorption` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:26:61
+   |
+26 |             assert!(values.scattering.is_finite() && values.absorption.is_finite());
+   |                                                             ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `scattering` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:27:66
+   |
+27 |             scattering_range[0] = scattering_range[0].min(values.scattering);
+   |                                                                  ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `scattering` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:28:66
+   |
+28 |             scattering_range[1] = scattering_range[1].max(values.scattering);
+   |                                                                  ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `absorption` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:29:66
+   |
+29 |             absorption_range[0] = absorption_range[0].min(values.absorption);
+   |                                                                  ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `absorption` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:30:66
+   |
+30 |             absorption_range[1] = absorption_range[1].max(values.absorption);
+   |                                                                  ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `scattering` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:31:58
+   |
+31 |             let joint = (0.025..=0.035).contains(&values.scattering)
+   |                                                          ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `absorption` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:32:53
+   |
+32 |                 && (0.315..=0.325).contains(&values.absorption);
+   |                                                     ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `scattering` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:36:24
+   |
+36 |                 values.scattering, values.absorption
+   |                        ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+error[E0609]: no field `absorption` on type `CrossSections`
+  --> crates/optics_core/tests/ruan_fan_landmark_precision.rs:36:43
+   |
+36 |                 values.scattering, values.absorption
+   |                                           ^^^^^^^^^^ unknown field
+   |
+   = note: available fields are: `c_sct`, `c_abs`, `c_ext`
+
+For more information about this error, try `rustc --explain E0609`.
+error: could not compile `optics_core` (test "ruan_fan_landmark_precision") due to 12 previous errors

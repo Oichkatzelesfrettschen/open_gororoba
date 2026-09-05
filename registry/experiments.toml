@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 195
-experiment_count = 269
+deterministic_count = 198
+experiment_count = 272
 gpu_count = 32
 seeded_count = 49
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -7074,4 +7074,85 @@ status = "active"
 status_note = "The proper-time measure correction passes its 1e-9 relative gate with independently discriminating wrong-measure and omission controls. The sampled transverse scalar decisive pair passes the fixed amplitude gates; spinor fails. Original full-vector thresholds remain failed. Spinor contact/UV completion, scalar source subtraction coefficient and certified quadrature/interpolation remainders remain unresolved. Four focused tests and three unit tests pass as scoped regression predicates, not as a universal Ward identity."
 status_token = "ACTIVE"
 title = "Photon-graviton counterterm proper-time measure and Ward contraction scope"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "cargo-test:optics_core:ruan_fan_landmark_precision"
+binary_experiment_declared = "E-302"
+binary_registered = true
+claim_refs = ["C-1707"]
+claims = ["C-1707"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-302"
+input = "Frozen hypothetical printed-frequency rounding envelope [0.22815,0.22825], fixed source geometry and material parameters; historical positive-order weighted cross-section sum."
+input_path_refs = ["data/output/audit/optics-landmark-identity/frequency-rounding-protocol.toml"]
+lineage_id = "XL-270"
+method = "Evaluate uniform grids of 200 and 2000 intervals with unchanged source-anchor gates. Separate signed-order recurrence roundoff from the historical weighted expression. Report sampled joint matches without claiming continuous exclusion or author-declared uncertainty."
+output = ["data/output/audit/optics-landmark-identity/frequency-adjudication.toml"]
+output_path_refs = ["data/output/audit/optics-landmark-identity/frequency-adjudication.toml", "data/output/audit/optics-landmark-identity/frequency-envelope-final.csv", "data/output/audit/optics-landmark-identity/frequency-envelope-final.log"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p optics_core --test ruan_fan_landmark_precision --profile validation --offline -- --nocapture"
+run_command_sha256 = "d02b04a92a988a9233538fabc6daf38c1df69828ae45baf5f396643f4d11266b"
+status = "active"
+status_note = "Both finite grids contain zero joint matches. The tested envelope retains scattering 0.11589599..0.17206114 and absorption 0.37852940..0.41891642. Hypothetical rounding alone fails to reconcile the sampled source landmarks; continuum exclusion and physical parameter fitting remain outside the instrument."
+status_token = "ACTIVE"
+title = "Ruan-Fan printed-frequency envelope at fixed source geometry"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "external:optics-figure5-vector-extractor:e9ae82daed8e9085"
+binary_experiment_declared = "E-303"
+binary_registered = true
+claim_refs = ["C-1707"]
+claims = ["C-1707"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-303"
+input = "Exact Figure 5 EPS members from the retained arXiv0909.3323v2 source archive; separate circle, fitted-stroke and printed-prose identities."
+input_path_refs = ["data/output/audit/optics-landmark-identity/FanoCloak-lossy-abs.eps", "data/output/audit/optics-landmark-identity/FanoCloak-lossy-sct.eps", "data/output/audit/optics-landmark-identity/extract_figure5_vectors.rs", "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml"]
+lineage_id = "XL-271"
+method = "Compile the retained standalone Rust extractor with rustc 1.97.0 and warnings as errors. Extract affine drawing coordinates and curve roles, retain neighboring markers, and evaluate drawn fitted geometry. Replay in a fresh directory and compare exact stdout and CSV bytes."
+output = ["data/output/audit/optics-landmark-identity/source-adjudication.toml"]
+output_path_refs = ["data/output/audit/optics-landmark-identity/source-adjudication.toml", "data/output/audit/optics-landmark-identity/source-extractor-compilation.toml", "data/output/audit/optics-landmark-identity/source-vector-coordinates.csv", "data/output/audit/optics-landmark-identity/vector-extraction-replay.txt"]
+reproducibility_class = "deterministic_replay"
+run = "/tmp/optics-figure5-vector-extractor data/output/audit/optics-landmark-identity"
+run_command_sha256 = "dde0fd8296f526dd8d8f072df9cb092e0fca1801f2c01f6b6fa05191c434c67e"
+status = "active"
+status_note = "The source prose absorption 0.32 and drawn fitted value near 0.296810 are separate evidence. Neighboring Mie markers supply descriptive interpolation only; the source has no exact sample at printed frequency 0.2282. Preserve the sparse-sampling limit and separate drawing-coordinate budget. Reproduction requires a fresh output directory because the extractor rejects overwrites."
+status_token = "ACTIVE"
+title = "Ruan-Fan Figure 5 source-vector and curve identity extraction"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "cargo-test:gr_core:ward_distributional_identity"
+binary_experiment_declared = "E-304"
+binary_registered = true
+claim_refs = ["C-1635", "C-1637", "C-1666"]
+claims = ["C-1635", "C-1637", "C-1666"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-304"
+input = "Source arXiv:2601.23279v1 Eqs.4.3-4.11 and Appendix B, retained TeX archive, and scalar gr-qc/0412095v2 Eqs.3.3-3.11 at xi_bar=0. Three fixed proper times, independently transcribed tensor components, periodic delta and signed endpoint controls; retained integrated/transverse/UV fixtures."
+input_path_refs = ["data/output/audit/ward-distributional-identity/adjudication.toml", "data/output/audit/ward-distributional-identity/source.tex", "data/output/audit/ward-residual-scope/scalar-source.pdf", "data/output/audit/ward-residual-scope/source.pdf"]
+lineage_id = "XL-272"
+method = "Independently compare unreduced orbital/fermion source tensors and analytic contact distributions with production Eq.4.11; omit B.4/B.36 and endpoint contributions separately. Derive the scalar momentum/counterterm mapping, test the small-field branch and source UV coefficients, and retain each original integrated gate."
+output = ["data/output/audit/ward-distributional-identity/adjudication.toml"]
+output_path_refs = ["data/output/audit/ward-distributional-identity/adjudication.toml", "data/output/audit/ward-distributional-identity/final-integrated.toml", "data/output/audit/ward-distributional-identity/final-tests.log", "data/output/audit/ward-distributional-identity/full-before.log", "data/output/audit/ward-distributional-identity/scalar-source-before.log"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p gr_core --test ward_distributional_identity --test ward_source_scope --test ward_independent_residuals --profile validation --offline -- --nocapture"
+run_command_sha256 = "19f6ee2bf6794c940f6bf8732cccbcd5941d556818abd310202669d807c10217"
+status = "active"
+status_note = "Six fixed-time corrected source comparisons meet the 1e-10 tensor gate; complete spinor gauge contraction is at most 3.46513e-14. Both source-contact omissions fail the independent tensor comparison, although B.36 omission preserves gauge transversality. Corrected integrated scalar/spinor gauge, off-shell and declared transverse predicates pass. The original normalized full-vector gate and scalar 1e-6 omission criterion remain failed. Eight integration and 204 unit tests pass as scoped predicates; universal identities and certified quadrature/Taylor/interpolation remainders remain unassessed. E-301 source and failure receipts remain retained."
+status_token = "ACTIVE"
+title = "Distributional photon-graviton source identity and finite Ward predicates"
 truth_surface_consumption = []

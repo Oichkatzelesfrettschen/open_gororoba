@@ -1,0 +1,41 @@
+claim_id = "C-1750"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Independent finite source tensor and contraction checks involve computational maps only; universal mathematical and physical conclusions remain unassessed."
+fixed_hyperparameters = ["Pure magnetic D=4, F01=.1, photon momentum [.15,-.11,.2,.07], T=.07/.3/1.2 and 96 insertion nodes", "Tensor absolute gate 1e-10; complete fixed-time gauge absolute gate 1e-11", "Periodic delta weight 1 per insertion period, half at each endpoint; source midpoint coincidence products; delta(tau)=delta(u)/T", "Scalar source xi_bar=0 with k_old=-k_new and mapped counterterm -2*i*e*C/3; spinor +4*i*e*C/3", "Source UV times .01001,.00999,1e-4,1e-6,1e-8 span the |eBT|=1e-3 series switch", "Integrated/transverse absolute 1e-12 and normalized 1e-6 predicates retain separate normalizations; original full-vector gate and scalar omission threshold remain failed"]
+[[intervening_maps]]
+branch = "source_tensor"
+name = "independent_unreduced_transcription"
+kind = "computational"
+description = "Use independent Appendix B matrices and all orbital/fermion source groups, symmetrize and integrate the regular insertion interval. The oracle and production share the Gauss-Legendre library."
+[[intervening_maps]]
+branch = "source_tensor"
+name = "distributional_completion_and_convention"
+kind = "computational"
+description = "Insert B.4/B.36 delta coefficients and the signed Eq.4.5 endpoint jump independently; map scalar source momentum and its odd tree counterterm before comparing with production Eq.4.11."
+[[intervening_maps]]
+branch = "finite_ward_predicates"
+name = "independent_contractions_and_intercepts"
+kind = "computational"
+description = "Evaluate gauge, gravitational lower-point and transverse source projections independently. Retain full-vector gates and original omission thresholds as separate predicates."
+[[fitted_parameters]]
+branch = "source_tensor"
+count = 0
+names = []
+training_boundary = "Contact weights, endpoint products and scalar/spinor coefficients follow the source; the comparison fits zero cancellation coefficients."
+[[fitted_parameters]]
+branch = "finite_ward_predicates"
+count = 0
+names = []
+training_boundary = "The retained finite fixtures and error gates are fixed; passing source predicates do not alter failed historical thresholds."
+[decisive_experiment]
+experiment_ids = ["E-304"]
+protocol_artifact = "data/output/audit/ward-distributional-identity/adjudication.toml"
+protocol_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+description = "Replay the six fixed-time source comparisons, contact/endpoint omissions, scalar convention mapping and sampled UV checks, then independently evaluate the retained integrated and transverse fixtures. The adjudication records all numerical domains, thresholds and residual limitations."
+[what_would_verify_refute]
+verification_outcomes = ["All six raw-versus-projected source comparisons stay within 1e-10 and complete fixed-time gauge contractions within 1e-11; the full-tensor oracle rejects both required contact omissions.", "The mapped scalar source and sampled UV checks reproduce the retained finite outcomes without fitted coefficients.", "The declared scalar/spinor integrated gauge, off-shell and transverse fixtures meet their fixed gates while original full-vector failures remain explicitly reported."]
+revision_outcomes = ["General fields, new kinematics, xi_bar different from zero or a different endpoint prescription require separate source derivation and finite admission.", "An alternative full-vector normalization requires a newly declared instrument and retention of the original failed gate."]
+abandonment_outcomes = ["A same-source corrected replay violates a declared tensor or Ward fixture gate, or omitting B.4/B.36 ceases to change the independently assembled tensor.", "The scalar convention mapping or fixed source coefficients disagree with the cited source under the declared momentum convention."]
+inconclusive_outcomes = ["Missing source/producer identity or failed numerical admission prevents replay.", "Finite sampled transversality leaves universal Ward identities and certified quadrature/Taylor/interpolation remainders unassessed.", "The original normalized full-vector gate and scalar 1e-6 omission predicate remain failed and cannot be promoted by the separate source-conformance pass."]

@@ -1,0 +1,31 @@
+claim_id = "C-1635"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Separate source tensor completeness from finite electromagnetic gauge contraction, preserving each producer's historical outcome."
+fixed_hyperparameters = ["D=4 pure magnetic constant background and zero fitted parameters","Fixed-time source comparison at T=.07,.3,1.2 with 96 insertion nodes: full-tensor absolute gate 1e-10 and complete gauge gate 1e-11","Integrated absolute 1e-12 and normalized 1e-6 gates retain their declared fixture and normalization"]
+[[intervening_maps]]
+branch = "ward_source_scope"
+name = "independent_source_tensor"
+kind = "computational"
+description = "Transcribe unreduced orbital Eq. 4.3 and all seven fermion Eq. 4.4 groups using independent Appendix B matrices, signed endpoint limits and periodic delta products; compare with production Eq. 4.11."
+[[intervening_maps]]
+branch = "ward_source_scope"
+name = "gauge_and_tensor_omissions"
+kind = "computational"
+description = "Contract tensor components independently. Omit B.4 and B.36 separately; use full-tensor differences because B.36 omission preserves gauge transversality."
+[[fitted_parameters]]
+branch = "ward_source_scope"
+count = 0
+names = []
+training_boundary = "Source-derived contact and convention coefficients are fixed; the numerical comparison fits zero parameters."
+[decisive_experiment]
+experiment_ids = ["E-073", "E-290", "E-301", "E-304"]
+protocol_artifact = "data/output/audit/ward-distributional-identity/adjudication.toml"
+protocol_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+description = "The retained adjudication enumerates exact finite fixtures, source conventions, gates, omission controls and before/after producer boundaries. E-301 failures remain historical; E-304 adds source-conforming contacts, worldline constants/series and the scalar xi_bar=0 mapping. The measured corpus does not establish a universal identity."
+[what_would_verify_refute]
+verification_outcomes = ["The E-304 finite corrected tensor agrees within 1e-10 and complete fixed-time gauge contractions stay within 1e-11; integrated scalar/spinor fixtures meet their original gates.","Both source-contact omissions change the independent tensor comparison even when a gauge contraction remains small."]
+revision_outcomes = ["A different field, kinematics, endpoint convention or precision requires a separately declared source comparison.","E-301 historical spinor failure remains attached to its original producer; corrected results receive their own evidence boundary."]
+abandonment_outcomes = ["A hash-bound corrected replay violates the declared tensor or gauge predicate, or the purported full-tensor control fails to distinguish a required source omission."]
+inconclusive_outcomes = ["Gauge transversality without full-tensor agreement cannot certify amplitude completeness.","Finite Taylor and quadrature evaluations leave universal validity and certified numerical remainders unassessed."]
