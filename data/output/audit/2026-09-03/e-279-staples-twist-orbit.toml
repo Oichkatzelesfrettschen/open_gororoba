@@ -1,0 +1,25 @@
+[[experiment]]
+binary = "staples-twist-orbit"
+binary_experiment_declared = "E-279"
+binary_registered = true
+claim_refs = ["C-1732"]
+claims = ["C-1732"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+gpu = false
+id = "E-279"
+input = "The E-239 sample: THEMIS-A daily FGM files from data/output/tha_matched_files.csv labeled by the Staples et al. (2020) catalog data/output/cat_themis_a.csv (positive within 2 minutes of a catalogued crossing on that UTC day, files under 500 rows skipped). Subsample: every positive plus each negative with probability 0.05 from ChaCha8 keyed on (seed 42, file_id), identical to E-240."
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+lineage_id = "XL-249"
+method = "Preregistered before execution. Three arms on the E-240 subsample. (1) Negative control: 50 normalized 2-cocycles on (Z_2)^4; the associator vanishes. (2) Uniform 35-line basis-alternative twists: 250 draws of orientation signs on the 35 lines of PG(3, 2), unital, anticommutative, imaginary squares -1, basis alternative; support is not matched to the canonical 1848-term tensor. (3) Algebra-isomorphic relabeling orbit: 250 draws sigma'(i,j) = s_i s_j s_{i xor j} sigma0(pi(i), pi(j)) for pi in GL(4, Z_2) and s in {+1,-1}^16 with s_0 = +1, exact 1848-term support and 924/924 balance. Statistic: pooled average-rank Mann-Whitney AUC. Specificity falsifier: canonical AUC at or below the 97.5th percentile of arm 2 or arm 3. Seed policy: cocycle d uses ChaCha8 seed 42 + (d+1)*0x517CC1B727220A95; alternative twist d uses 42 + (d+1)*0x9E3779B97F4A7C15; isomorphic draw d uses 42 + (d+10001)*0x9E3779B97F4A7C15."
+output = ["data/output/staples_twist_orbit.json"]
+output_path_refs = ["data/output/staples_twist_orbit.json"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_orbit.json --n-cocycles 50 --n-invariant-twists 250 --n-isomorphic-orbits 250 --seed 42 --neg-fraction 0.05"
+run_command_sha256 = "6f0aaff93183308430358aa758a8491fa944c12c81ef33950a977ddee1b39c7d"
+status = "active"
+status_token = "ACTIVE"
+title = "35-line alternative-twist ensemble and algebra-isomorphic relabeling orbit against the sedenion associator"
+truth_surface_consumption = []

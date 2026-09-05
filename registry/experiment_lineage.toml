@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 250
-edge_count = 1283
+lineage_count = 251
+edge_count = 1290
 
 [[lineage]]
 id = "XL-001"
@@ -4516,6 +4516,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin lotss-analysis", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-249"
+experiment_id = "E-279"
+binary = "staples-twist-orbit"
+deterministic = true
+gpu = false
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_orbit.json --n-cocycles 50 --n-invariant-twists 250 --n-isomorphic-orbits 250 --seed 42 --neg-fraction 0.05"
+run_command_sha256 = "6f0aaff93183308430358aa758a8491fa944c12c81ef33950a977ddee1b39c7d"
+claim_refs = ["C-1732", "C-1742"]
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+output_path_refs = ["data/output/staples_twist_orbit.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_orbit.json --n-cocycles 50 --n-invariant-twists 250 --n-isomorphic-orbits 250 --seed 42 --neg-fraction 0.05", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[lineage]]
@@ -14980,6 +14998,69 @@ verified = true
 
 [[edge]]
 id = "XLE-01159"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "staples-twist-orbit"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01160"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "C-1732"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01161"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "C-1742"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01162"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "data/output/cat_themis_a.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01163"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "data/output/tha_matched_files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01164"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "data/output/staples_twist_orbit.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01165"
+lineage_id = "XL-249"
+from_id = "E-279"
+to_ref = "SRC-THEMIS-THA-FGM-DAILY"
+to_kind = "source"
+edge_kind = "consumes_source"
+verified = true
+
+[[edge]]
+id = "XLE-01166"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "staples-calibration-refits"
@@ -14988,7 +15069,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01160"
+id = "XLE-01167"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "C-1738"
@@ -14997,7 +15078,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01161"
+id = "XLE-01168"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "C-1739"
@@ -15006,7 +15087,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01162"
+id = "XLE-01169"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "C-1740"
@@ -15015,7 +15096,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01163"
+id = "XLE-01170"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "C-1741"
@@ -15024,7 +15105,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01164"
+id = "XLE-01171"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/benchmark_scores.csv"
@@ -15033,7 +15114,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01165"
+id = "XLE-01172"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/benchmark_scores.files.csv"
@@ -15042,7 +15123,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01166"
+id = "XLE-01173"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/cat_themis_a.csv"
@@ -15051,7 +15132,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01167"
+id = "XLE-01174"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/tha_matched_files.csv"
@@ -15060,7 +15141,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01168"
+id = "XLE-01175"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-42.json"
@@ -15069,7 +15150,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01169"
+id = "XLE-01176"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-43.json"
@@ -15078,7 +15159,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01170"
+id = "XLE-01177"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-44.json"
@@ -15087,7 +15168,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01171"
+id = "XLE-01178"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-45.json"
@@ -15096,7 +15177,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01172"
+id = "XLE-01179"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-46.json"
@@ -15105,7 +15186,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01173"
+id = "XLE-01180"
 lineage_id = "XL-250"
 from_id = "E-280"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/dataset.json"
@@ -15114,7 +15195,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01174"
+id = "XLE-01181"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "staples-calibration-refits"
@@ -15123,7 +15204,7 @@ edge_kind = "implemented_by_binary"
 verified = true
 
 [[edge]]
-id = "XLE-01175"
+id = "XLE-01182"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "C-1738"
@@ -15132,7 +15213,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01176"
+id = "XLE-01183"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "C-1739"
@@ -15141,7 +15222,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01177"
+id = "XLE-01184"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "C-1740"
@@ -15150,7 +15231,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01178"
+id = "XLE-01185"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "C-1741"
@@ -15159,7 +15240,7 @@ edge_kind = "supports_claim"
 verified = true
 
 [[edge]]
-id = "XLE-01179"
+id = "XLE-01186"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/benchmark_scores.csv"
@@ -15168,7 +15249,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01180"
+id = "XLE-01187"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/benchmark_scores.files.csv"
@@ -15177,7 +15258,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01181"
+id = "XLE-01188"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/cat_themis_a.csv"
@@ -15186,7 +15267,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01182"
+id = "XLE-01189"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/tha_matched_files.csv"
@@ -15195,7 +15276,7 @@ edge_kind = "consumes_path"
 verified = true
 
 [[edge]]
-id = "XLE-01183"
+id = "XLE-01190"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-000.json"
@@ -15204,7 +15285,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01184"
+id = "XLE-01191"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-001.json"
@@ -15213,7 +15294,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01185"
+id = "XLE-01192"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-002.json"
@@ -15222,7 +15303,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01186"
+id = "XLE-01193"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-003.json"
@@ -15231,7 +15312,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01187"
+id = "XLE-01194"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-004.json"
@@ -15240,7 +15321,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01188"
+id = "XLE-01195"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-005.json"
@@ -15249,7 +15330,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01189"
+id = "XLE-01196"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-006.json"
@@ -15258,7 +15339,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01190"
+id = "XLE-01197"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-007.json"
@@ -15267,7 +15348,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01191"
+id = "XLE-01198"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-008.json"
@@ -15276,7 +15357,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01192"
+id = "XLE-01199"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-009.json"
@@ -15285,7 +15366,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01193"
+id = "XLE-01200"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-010.json"
@@ -15294,7 +15375,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01194"
+id = "XLE-01201"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-011.json"
@@ -15303,7 +15384,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01195"
+id = "XLE-01202"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-012.json"
@@ -15312,7 +15393,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01196"
+id = "XLE-01203"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-013.json"
@@ -15321,7 +15402,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01197"
+id = "XLE-01204"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-014.json"
@@ -15330,7 +15411,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01198"
+id = "XLE-01205"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-015.json"
@@ -15339,7 +15420,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01199"
+id = "XLE-01206"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-016.json"
@@ -15348,7 +15429,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01200"
+id = "XLE-01207"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-017.json"
@@ -15357,7 +15438,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01201"
+id = "XLE-01208"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-018.json"
@@ -15366,7 +15447,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01202"
+id = "XLE-01209"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-019.json"
@@ -15375,7 +15456,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01203"
+id = "XLE-01210"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-020.json"
@@ -15384,7 +15465,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01204"
+id = "XLE-01211"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-021.json"
@@ -15393,7 +15474,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01205"
+id = "XLE-01212"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-022.json"
@@ -15402,7 +15483,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01206"
+id = "XLE-01213"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-023.json"
@@ -15411,7 +15492,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01207"
+id = "XLE-01214"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-024.json"
@@ -15420,7 +15501,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01208"
+id = "XLE-01215"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-025.json"
@@ -15429,7 +15510,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01209"
+id = "XLE-01216"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-026.json"
@@ -15438,7 +15519,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01210"
+id = "XLE-01217"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-027.json"
@@ -15447,7 +15528,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01211"
+id = "XLE-01218"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-028.json"
@@ -15456,7 +15537,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01212"
+id = "XLE-01219"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-029.json"
@@ -15465,7 +15546,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01213"
+id = "XLE-01220"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-030.json"
@@ -15474,7 +15555,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01214"
+id = "XLE-01221"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-031.json"
@@ -15483,7 +15564,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01215"
+id = "XLE-01222"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-032.json"
@@ -15492,7 +15573,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01216"
+id = "XLE-01223"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-033.json"
@@ -15501,7 +15582,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01217"
+id = "XLE-01224"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-034.json"
@@ -15510,7 +15591,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01218"
+id = "XLE-01225"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-035.json"
@@ -15519,7 +15600,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01219"
+id = "XLE-01226"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-036.json"
@@ -15528,7 +15609,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01220"
+id = "XLE-01227"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-037.json"
@@ -15537,7 +15618,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01221"
+id = "XLE-01228"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-038.json"
@@ -15546,7 +15627,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01222"
+id = "XLE-01229"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-039.json"
@@ -15555,7 +15636,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01223"
+id = "XLE-01230"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-040.json"
@@ -15564,7 +15645,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01224"
+id = "XLE-01231"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-041.json"
@@ -15573,7 +15654,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01225"
+id = "XLE-01232"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-042.json"
@@ -15582,7 +15663,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01226"
+id = "XLE-01233"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-043.json"
@@ -15591,7 +15672,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01227"
+id = "XLE-01234"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-044.json"
@@ -15600,7 +15681,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01228"
+id = "XLE-01235"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-045.json"
@@ -15609,7 +15690,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01229"
+id = "XLE-01236"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-046.json"
@@ -15618,7 +15699,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01230"
+id = "XLE-01237"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-047.json"
@@ -15627,7 +15708,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01231"
+id = "XLE-01238"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-048.json"
@@ -15636,7 +15717,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01232"
+id = "XLE-01239"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-049.json"
@@ -15645,7 +15726,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01233"
+id = "XLE-01240"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-050.json"
@@ -15654,7 +15735,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01234"
+id = "XLE-01241"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-051.json"
@@ -15663,7 +15744,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01235"
+id = "XLE-01242"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-052.json"
@@ -15672,7 +15753,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01236"
+id = "XLE-01243"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-053.json"
@@ -15681,7 +15762,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01237"
+id = "XLE-01244"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-054.json"
@@ -15690,7 +15771,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01238"
+id = "XLE-01245"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-055.json"
@@ -15699,7 +15780,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01239"
+id = "XLE-01246"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-056.json"
@@ -15708,7 +15789,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01240"
+id = "XLE-01247"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-057.json"
@@ -15717,7 +15798,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01241"
+id = "XLE-01248"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-058.json"
@@ -15726,7 +15807,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01242"
+id = "XLE-01249"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-059.json"
@@ -15735,7 +15816,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01243"
+id = "XLE-01250"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-060.json"
@@ -15744,7 +15825,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01244"
+id = "XLE-01251"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-061.json"
@@ -15753,7 +15834,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01245"
+id = "XLE-01252"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-062.json"
@@ -15762,7 +15843,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01246"
+id = "XLE-01253"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-063.json"
@@ -15771,7 +15852,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01247"
+id = "XLE-01254"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-064.json"
@@ -15780,7 +15861,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01248"
+id = "XLE-01255"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-065.json"
@@ -15789,7 +15870,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01249"
+id = "XLE-01256"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-066.json"
@@ -15798,7 +15879,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01250"
+id = "XLE-01257"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-067.json"
@@ -15807,7 +15888,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01251"
+id = "XLE-01258"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-068.json"
@@ -15816,7 +15897,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01252"
+id = "XLE-01259"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-069.json"
@@ -15825,7 +15906,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01253"
+id = "XLE-01260"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-070.json"
@@ -15834,7 +15915,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01254"
+id = "XLE-01261"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-071.json"
@@ -15843,7 +15924,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01255"
+id = "XLE-01262"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-072.json"
@@ -15852,7 +15933,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01256"
+id = "XLE-01263"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-073.json"
@@ -15861,7 +15942,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01257"
+id = "XLE-01264"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-074.json"
@@ -15870,7 +15951,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01258"
+id = "XLE-01265"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-075.json"
@@ -15879,7 +15960,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01259"
+id = "XLE-01266"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-076.json"
@@ -15888,7 +15969,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01260"
+id = "XLE-01267"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-077.json"
@@ -15897,7 +15978,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01261"
+id = "XLE-01268"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-078.json"
@@ -15906,7 +15987,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01262"
+id = "XLE-01269"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-079.json"
@@ -15915,7 +15996,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01263"
+id = "XLE-01270"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-080.json"
@@ -15924,7 +16005,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01264"
+id = "XLE-01271"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-081.json"
@@ -15933,7 +16014,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01265"
+id = "XLE-01272"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-082.json"
@@ -15942,7 +16023,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01266"
+id = "XLE-01273"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-083.json"
@@ -15951,7 +16032,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01267"
+id = "XLE-01274"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-084.json"
@@ -15960,7 +16041,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01268"
+id = "XLE-01275"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-085.json"
@@ -15969,7 +16050,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01269"
+id = "XLE-01276"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-086.json"
@@ -15978,7 +16059,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01270"
+id = "XLE-01277"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-087.json"
@@ -15987,7 +16068,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01271"
+id = "XLE-01278"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-088.json"
@@ -15996,7 +16077,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01272"
+id = "XLE-01279"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-089.json"
@@ -16005,7 +16086,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01273"
+id = "XLE-01280"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-090.json"
@@ -16014,7 +16095,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01274"
+id = "XLE-01281"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-091.json"
@@ -16023,7 +16104,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01275"
+id = "XLE-01282"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-092.json"
@@ -16032,7 +16113,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01276"
+id = "XLE-01283"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-093.json"
@@ -16041,7 +16122,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01277"
+id = "XLE-01284"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-094.json"
@@ -16050,7 +16131,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01278"
+id = "XLE-01285"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-095.json"
@@ -16059,7 +16140,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01279"
+id = "XLE-01286"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-096.json"
@@ -16068,7 +16149,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01280"
+id = "XLE-01287"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-097.json"
@@ -16077,7 +16158,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01281"
+id = "XLE-01288"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-098.json"
@@ -16086,7 +16167,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01282"
+id = "XLE-01289"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-099.json"
@@ -16095,7 +16176,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01283"
+id = "XLE-01290"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/summary.json"

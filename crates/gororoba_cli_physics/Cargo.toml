@@ -292,6 +292,18 @@ path = "src/bin/staples_calibration_refits.rs"
 name = "staples-twist-ladder"
 path = "src/bin/staples_twist_ladder.rs"
 [[bin]]
+name = "staples-twist-orbit"
+path = "src/bin/staples_twist_orbit.rs"
+[[bin]]
+name = "staples-twist-orbit-view"
+path = "src/bin/staples_twist_orbit_view.rs"
+[[bin]]
+name = "staples-physical-decompose"
+path = "src/bin/staples_physical_decompose.rs"
+[[bin]]
+name = "e8-root-decompose"
+path = "src/bin/e8_root_decompose.rs"
+[[bin]]
 name = "staples-layout-sweep"
 path = "src/bin/staples_layout_sweep.rs"
 [[bin]]
