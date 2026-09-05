@@ -1,6 +1,6 @@
 command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
 exit_status = 0
-scoped_library_tests_passed = 819
+scoped_library_tests_passed = 824
 scoped_library_tests_skipped = 0
 clippy = "passed with warnings denied"
 governance = "passed canonical integrity, signatures, references and execution lineage"
@@ -11,3 +11,4 @@ numerical_boundary = "Historical replay preserves all 6045 ROC-AUC/AP values, in
 scientific_boundary = "Internal inference rejects the declared 0.005 useful increment; external inference remains blocked by backward timestamps; mechanism comparison uncertainty remains uncomputed"
 retrieval_boundary = "Historical hashes and retrieval receipts remain retained; document identity and unresolved retrieval rows remain explicit"
 consumer_boundary_validation = "claim-consumer-boundary-validation.toml records structured output, pre-write refusal, retained protocol admission and focused integration checks"
+protocol_retention_validation = "protocol-retention-portability.toml records three sealed active contracts, the corrected E-283 receipt, pointer-only export tests and exact historical preservation"

@@ -4371,7 +4371,7 @@
 //!
 //! - Binary: `staples-causal-validation`
 //! - Input: All 166 official V2 probe-D crossing dates in 2015-2016, retained HAPI GET responses, and independent native CDF for the rejected date.
-//! - Output: data/output/audit/staples-causal-validation/external-intake-summary.json, data/output/audit/staples-causal-validation/external-native-source-rca.toml, data/output/audit/staples-causal-validation/external-cdf-order-findings.json
+//! - Output: data/output/audit/staples-causal-validation/external-results/blocked-external-intake.json, data/output/audit/staples-causal-validation/external-native-source-rca.toml, data/output/audit/staples-causal-validation/external-cdf-order-findings.json
 //! - Deterministic: `true`
 //! - GPU: `false`
 //! - Claims: C-1740, C-1741, C-1743

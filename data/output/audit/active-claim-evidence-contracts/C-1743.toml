@@ -115,6 +115,7 @@ training_boundary = "Per fixed width and canonical/control tensor: eight logisti
 [decisive_experiment]
 experiment_ids = ["E-282", "E-283"]
 protocol_artifact = "data/output/audit/staples-causal-validation/protocol.toml"
+protocol_sha256 = "ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586c5e520c14dd70aa3aea6"
 description = "E-282 executes the sealed timestamp-causal epoch and exact-support-control comparison. Its retained approximate 95 percent global-minimum interval [0.0010149049086891153, 0.0029188809429172872] supports a small positive conditional increment and rejects the investigator-defined 0.005 useful increment. E-283 remains blocked at external input admission after the native source independently confirms the backward timestamp; external numerical inference has not run."
 
 [what_would_verify_refute]

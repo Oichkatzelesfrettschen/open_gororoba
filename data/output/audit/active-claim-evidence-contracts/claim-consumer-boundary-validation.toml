@@ -20,4 +20,5 @@ command = "cargo test -p gororoba_cli_data --bin claims-consolidate --profile va
 mechanism = "Evidence mutation admits a nonempty Git-tracked regular protocol file against an explicit repository root, seals SHA256 and rechecks before transaction commit. Control-plane invariants repeat admission and verify sealed digests."
 verification = "Missing, directory, absolute, traversal, untracked, empty, symlink and wrong-digest inputs fail before mutation; later removal and content drift fail invariant verification."
 legacy_boundary = "Existing digest-free contracts retain their history and pass file-retention checks. verify_claim_evidence_artifacts returns their IDs as unsealed; file existence does not establish historical content identity. Future evidence revisions seal the admitted digest."
+active_contracts = "C-1740, C-1741 and C-1743 are sealed through canonical evidence revisions 5, 6 and 7. sealed-protocols.json records their digests; protocol-sealing-preservation.sql verifies preservation of the four preceding revisions and unrelated rows."
 command = "cargo test -p provenance_store -p gororoba_db --profile validation"

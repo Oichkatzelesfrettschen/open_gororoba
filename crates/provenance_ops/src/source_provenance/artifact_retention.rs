@@ -2,7 +2,7 @@
 //
 // Separates repository truth from per-host materialization for cited artifacts.
 
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, ensure};
 use sha2::{Digest, Sha256};
 use std::{
     collections::BTreeSet,
@@ -79,19 +79,64 @@ pub struct FileIdentity {
     pub byte_length: u64,
 }
 
+/// Decode the three-field Git LFS v1 representation without treating it as payload bytes.
+pub(super) fn lfs_pointer_identity(bytes: &[u8]) -> Result<Option<FileIdentity>> {
+    if !bytes.starts_with(b"version https://git-lfs.github.com/spec/") {
+        return Ok(None);
+    }
+    let text = std::str::from_utf8(bytes).context("LFS pointer is not UTF-8")?;
+    let mut lines = text.lines();
+    ensure!(
+        lines.next() == Some("version https://git-lfs.github.com/spec/v1"),
+        "unsupported LFS pointer version"
+    );
+    let sha256 = lines
+        .next()
+        .and_then(|line| line.strip_prefix("oid sha256:"))
+        .context("LFS pointer requires SHA256 object identity")?;
+    ensure!(
+        sha256.len() == 64
+            && sha256
+                .bytes()
+                .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)),
+        "invalid LFS pointer SHA256"
+    );
+    let size = lines
+        .next()
+        .and_then(|line| line.strip_prefix("size "))
+        .context("LFS pointer requires object size")?;
+    ensure!(
+        !size.is_empty() && size.bytes().all(|byte| byte.is_ascii_digit()),
+        "invalid LFS pointer size"
+    );
+    let byte_length = size.parse().context("LFS pointer size exceeds u64")?;
+    ensure!(lines.next().is_none(), "unexpected LFS pointer fields");
+    Ok(Some(FileIdentity {
+        sha256: sha256.to_owned(),
+        byte_length,
+    }))
+}
+
 pub fn file_identity(path: &Path) -> Option<FileIdentity> {
     let bytes = fs::read(path).ok()?;
+    if lfs_pointer_identity(&bytes).ok()?.is_some() {
+        return None;
+    }
+    Some(identity_from_bytes(&bytes))
+}
+
+pub(super) fn identity_from_bytes(bytes: &[u8]) -> FileIdentity {
     let mut hasher = Sha256::new();
-    hasher.update(&bytes);
+    hasher.update(bytes);
     let digest = hasher.finalize();
     let mut sha256 = String::with_capacity(digest.len() * 2);
     for byte in digest {
         sha256.push_str(&format!("{byte:02x}"));
     }
-    Some(FileIdentity {
+    FileIdentity {
         sha256,
         byte_length: bytes.len() as u64,
-    })
+    }
 }
 
 /// The command that re-fetches the artifact on a host that lacks it. An empty
