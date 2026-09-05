@@ -1707,11 +1707,20 @@ fn experiment_heading(
     ])
 }
 
-fn experiment_aliases(input: &Path) -> Result<Value, String> {
-    let path = input
-        .parent()
-        .unwrap_or_else(|| Path::new("."))
-        .join("experiment_id_aliases.toml");
+fn experiment_aliases(input: &Path, canonical_db: &Path) -> Result<Value, String> {
+    let uses_database = canonical_db.exists();
+    let source = if uses_database { canonical_db } else { input };
+    let directory = source.parent().unwrap_or_else(|| Path::new("."));
+    let directory = if uses_database
+        && directory
+            .file_name()
+            .is_some_and(|name| name == "canonical")
+    {
+        directory.parent().unwrap_or(directory)
+    } else {
+        directory
+    };
+    let path = directory.join("experiment_id_aliases.toml");
     if path.exists() {
         read_toml_value(&path)
     } else {
@@ -1725,7 +1734,7 @@ fn emit_experiments_mirror(args: ExperimentsMirrorArgs) -> Result<(), String> {
         &args.canonical_db,
         ControlPlaneCompatKind::Experiments,
     )?;
-    let aliases = experiment_aliases(&args.input)?;
+    let aliases = experiment_aliases(&args.input, &args.canonical_db)?;
     let mut experiments = rows(&data, "experiment");
     experiments.sort_by_key(|row| str_field(row, "id"));
     let mut lines = control_plane_markdown_header("Experiments Registry Mirror", &source_label);
@@ -1791,7 +1800,7 @@ fn emit_experiments_legacy(args: ExperimentsLegacyArgs) -> Result<(), String> {
         ControlPlaneCompatKind::Experiments,
     )?;
     let (preamble, body_by_id) = narrative_overlay_map(&args.narrative, "experiments_narrative")?;
-    let aliases = experiment_aliases(&args.input)?;
+    let aliases = experiment_aliases(&args.input, &args.canonical_db)?;
     let mut experiments = rows(&data, "experiment");
     experiments.sort_by_key(|row| str_field(row, "id"));
     let mut lines = generated_doc_header(
@@ -3883,6 +3892,54 @@ mod experiment_heading_tests {
         assert_eq!(
             experiment_heading("E-273", title, &empty).unwrap(),
             vec![format!("## E-273: {title}"), String::new()]
+        );
+    }
+
+    #[test]
+    fn aliases_follow_the_selected_database_and_compatibility_input() {
+        let fixture = tempfile::tempdir().unwrap();
+        let input_directory = fixture.path().join("input");
+        let database_directory = fixture.path().join("other/registry/canonical");
+        fs::create_dir_all(&input_directory).unwrap();
+        fs::create_dir_all(&database_directory).unwrap();
+        let input = input_directory.join("experiments.toml");
+        let database = database_directory.join("control_plane.sqlite3");
+        fs::write(&database, []).unwrap();
+        let legacy_id = format!("E-{}", 243);
+        let expected = alias_registry(&legacy_id, "E-273");
+        let unrelated = alias_registry(&legacy_id, "E-274");
+        fs::write(
+            input_directory.join("experiment_id_aliases.toml"),
+            toml::to_string(&unrelated).unwrap(),
+        )
+        .unwrap();
+        let title = format!("Detector comparison (legacy {legacy_id})");
+        let missing = experiment_aliases(&input, &database).unwrap();
+        assert!(experiment_heading("E-273", &title, &missing).is_err());
+        fs::write(
+            database_directory
+                .parent()
+                .unwrap()
+                .join("experiment_id_aliases.toml"),
+            toml::to_string(&expected).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(experiment_aliases(&input, &database).unwrap(), expected);
+        assert_eq!(
+            experiment_aliases(&input, &fixture.path().join("missing.sqlite3")).unwrap(),
+            unrelated
+        );
+
+        let standalone_database = fixture.path().join("standalone.sqlite3");
+        fs::write(&standalone_database, []).unwrap();
+        fs::write(
+            fixture.path().join("experiment_id_aliases.toml"),
+            toml::to_string(&expected).unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            experiment_aliases(&input, &standalone_database).unwrap(),
+            expected
         );
     }
 }

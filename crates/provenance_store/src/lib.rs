@@ -1086,6 +1086,7 @@ impl ProvenanceStore {
 
     /// Insert or update the `[[experiment]]` rows in `raw` without deleting
     /// any other canonical experiment.
+    /// An omitted status note preserves the existing canonical note.
     pub fn upsert_experiments_from_registry_text(
         &mut self,
         repo_root: &Path,
@@ -1107,7 +1108,7 @@ impl ProvenanceStore {
                     status = excluded.status,
                     binary_name = excluded.binary_name,
                     claim_refs_json = excluded.claim_refs_json,
-                    status_note = excluded.status_note,
+                    status_note = COALESCE(excluded.status_note, experiments_cp.status_note),
                     compat_toml_text = excluded.compat_toml_text",
                 params![
                     experiment.id,
@@ -5507,6 +5508,56 @@ claim_refs = ["C-001"]
         let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
         assert!(rendered.contains("id = \"E-001\""));
         assert!(rendered.contains("id = \"E-002\""));
+        Ok(())
+    }
+
+    #[test]
+    fn upsert_experiments_preserves_omitted_status_note() -> Result<()> {
+        let fixture = make_test_workspace("upsert_experiment_note")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
+        )?;
+        store.experiment_update_status_note("E-001", "Retained evidence", "test", None)?;
+        let fragment = r#"
+[[experiment]]
+id = "E-001"
+title = "Updated experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+"#;
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            fragment,
+        )?;
+        assert_eq!(
+            store.experiment_status_note("E-001")?.as_deref(),
+            Some("Retained evidence")
+        );
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        assert!(rendered.contains("status_note = \"Retained evidence\""));
+        assert!(rendered.contains("title = \"Updated experiment\""));
+
+        let explicit_note = format!("{fragment}status_note = \"Updated evidence\"\n");
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            &explicit_note,
+        )?;
+        assert_eq!(
+            store.experiment_status_note("E-001")?.as_deref(),
+            Some("Updated evidence")
+        );
         Ok(())
     }
 
