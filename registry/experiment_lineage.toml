@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 278
-edge_count = 1525
+lineage_count = 279
+edge_count = 1534
 
 [[lineage]]
 id = "XL-001"
@@ -5059,6 +5059,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --profile validation --test bdmps_quenching_identity -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-279"
+experiment_id = "E-311"
+binary = "cargo-test:data_core:hepdata_pp_identity"
+deterministic = true
+gpu = false
+run_command = "cargo test -p data_core --profile validation --test hepdata_pp_identity -- --nocapture; cargo test -p data_core --lib --profile validation catalogs::hepdata_table::tests"
+run_command_sha256 = "d4d549c952004fe3d7cd7772af006ef0d47ee10f30d484daa33d08c672c07baa"
+claim_refs = ["C-1710"]
+input_path_refs = ["data/output/audit/qgp-pp-spectrum-calibration/admission-protocol.toml", "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.json", "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml", "data/output/audit/qgp-pp-spectrum-calibration/source-identity.toml"]
+output_path_refs = ["data/output/audit/qgp-pp-spectrum-calibration/adjudication.toml", "data/output/audit/qgp-pp-spectrum-calibration/final-table-admission-tests.log", "data/output/audit/qgp-pp-spectrum-calibration/provider-representation-comparison.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p data_core --profile validation --test hepdata_pp_identity -- --nocapture; cargo test -p data_core --lib --profile validation catalogs::hepdata_table::tests", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -18782,6 +18800,87 @@ id = "XLE-01525"
 lineage_id = "XL-278"
 from_id = "E-310"
 to_ref = "data/output/audit/qgp-quenching-weight-identity/refined-independent-tests.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01526"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "cargo-test:data_core:hepdata_pp_identity"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01527"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "C-1710"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01528"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "data/output/audit/qgp-pp-spectrum-calibration/admission-protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01529"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.json"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01530"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01531"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "data/output/audit/qgp-pp-spectrum-calibration/source-identity.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01532"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "data/output/audit/qgp-pp-spectrum-calibration/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01533"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "data/output/audit/qgp-pp-spectrum-calibration/final-table-admission-tests.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01534"
+lineage_id = "XL-279"
+from_id = "E-311"
+to_ref = "data/output/audit/qgp-pp-spectrum-calibration/provider-representation-comparison.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

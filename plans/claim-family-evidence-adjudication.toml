@@ -367,14 +367,14 @@ acceptance = "Canonical history, source hashes, focused tests and required publi
 
 [[task]]
 id = "qgp-pp-spectrum-reference-intake"
-status = "pending"
+status = "completed"
 depends_on = ["qgp-quenching-weight-publication"]
 action = "Identify matching charged-hadron pp spectrum and exact differential measure"
 acceptance = "Provider population, energy, acceptance, bin edges and uncertainty columns have precise retained identities; preserve frozen n6.1 as the historical E-296 input."
 
 [[task]]
 id = "qgp-pp-spectrum-fit-contract"
-status = "pending"
+status = "completed"
 depends_on = ["qgp-pp-spectrum-reference-intake"]
 action = "Declare pp fit interval, covariance, normalization and slope freedom"
 acceptance = "A typed protocol distinguishes d-sigma/d-pT from d-sigma/d-pT-squared and specifies decisive residual and sensitivity outcomes before fitting."
@@ -385,3 +385,24 @@ status = "pending"
 depends_on = ["qgp-pp-spectrum-fit-contract"]
 action = "Bind fragmentation functions and parton mixture to the admitted population"
 acceptance = "Source2017 Eqs2/3 and its fragmentation moments distinguish dominant-channel assumptions from mixed channels; alpha_s0.3 Cg3 z0.5 remains a source example until calibrated."
+
+[[task]]
+id = "qgp-pp-table-admission-verification"
+status = "completed"
+depends_on = ["qgp-pp-spectrum-fit-contract"]
+action = "Verify exact table identity and malformed-population rejection"
+acceptance = "Both provider representations match all39 bins in each energy group; unit, measure, group, uncertainty and near-resolution overlap mutations reject."
+
+[[task]]
+id = "qgp-pp-reference-canonical-adjudication"
+status = "completed"
+depends_on = ["qgp-pp-table-admission-verification"]
+action = "Bind C-1710 to the admitted pp reference and withheld calibration"
+acceptance = "Canonical statement, typed evidence and retained inputs agree while original n6.1 and failed fits remain preserved."
+
+[[task]]
+id = "qgp-pp-reference-publication"
+status = "in_progress"
+depends_on = ["qgp-pp-reference-canonical-adjudication"]
+action = "Validate and publish pp reference identity and calibration prerequisites"
+acceptance = "Warnings-as-errors, source hashes, canonical histories and publication gates pass."

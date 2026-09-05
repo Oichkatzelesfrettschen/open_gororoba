@@ -1,0 +1,28 @@
+HTTP/2 200 
+date: Sat, 05 Sep 2026 23:11:18 GMT
+content-type: application/yaml
+content-length: 12470
+server: cloudflare
+content-disposition: attachment; filename=HEPData-ins1657384-v1-Table_4.yaml
+last-modified: Sat, 09 May 2020 13:45:33 GMT
+cache-control: no-cache
+etag: "1589031933.6591942-12470-3056670755"
+accept-ranges: bytes
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 59
+x-ratelimit-reset: 1788649939
+retry-after: 60
+permissions-policy: interest-cohort=()
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+referrer-policy: strict-origin-when-cross-origin
+access-control-allow-origin: *
+set-cookie: session=1257da65c54ed142_6a9ca196.LuZxlNEYrTbJOo57F2Hr0nMK_C4; Expires=Sun, 06 Sep 2026 11:11:18 GMT; HttpOnly; Path=/; SameSite=Lax
+x-proxy-backend: hepdata-prod_hepdata-web_http
+alt-svc: h3=":443"; ma=86400
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: BYPASS
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=bETC5WoRgNzsvEEOOARRCVSi%2Bcw1Yc2CzV2nrmYzqetG3cZsH%2BAX1z5GIPs9%2BlQnj5iI1laUnHhemPWhZhHHBir3bobqq3D2AQ7EU4YE9iAnaVV9b4y4k0pkpT8rLv7SIbs%3D"}]}
+cf-ray: a368e98ce8aecb8a-LAX
+

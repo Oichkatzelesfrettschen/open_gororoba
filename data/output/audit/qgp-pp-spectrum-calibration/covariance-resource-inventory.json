@@ -1,0 +1,57 @@
+{
+  "record_additional_resources": false,
+  "record_resources": [],
+  "resources_with_doi": [],
+  "tables": [
+    {
+      "name": "Table 1",
+      "doi": "10.17182/hepdata.86210.v1/t1",
+      "resources": []
+    },
+    {
+      "name": "Table 2",
+      "doi": "10.17182/hepdata.86210.v1/t2",
+      "resources": []
+    },
+    {
+      "name": "Table 3",
+      "doi": "10.17182/hepdata.86210.v1/t3",
+      "resources": []
+    },
+    {
+      "name": "Table 4",
+      "doi": "10.17182/hepdata.86210.v1/t4",
+      "resources": []
+    },
+    {
+      "name": "Table 5",
+      "doi": "10.17182/hepdata.86210.v1/t5",
+      "resources": []
+    },
+    {
+      "name": "Table 6",
+      "doi": "10.17182/hepdata.86210.v1/t6",
+      "resources": []
+    },
+    {
+      "name": "Table 7",
+      "doi": "10.17182/hepdata.86210.v1/t7",
+      "resources": []
+    },
+    {
+      "name": "Table 8",
+      "doi": "10.17182/hepdata.86210.v1/t8",
+      "resources": []
+    },
+    {
+      "name": "Table 9",
+      "doi": "10.17182/hepdata.86210.v1/t9",
+      "resources": []
+    }
+  ],
+  "selected_table": {
+    "resources": [],
+    "associated_files": []
+  },
+  "scope": "These inspected advertised resource arrays contain no covariance resource; this is bounded provider-surface evidence, not global absence."
+}

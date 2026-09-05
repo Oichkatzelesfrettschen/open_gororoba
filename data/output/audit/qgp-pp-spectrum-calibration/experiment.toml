@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-311"
+title = "ALICE pp spectrum population, measure and exact table admission"
+status = "active"
+binary = "cargo-test:data_core:hepdata_pp_identity"
+claims = ["C-1710"]
+claim_refs = ["C-1710"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "ALICE arXiv1802.09145v2 Eq2, Sec3.1 and Fig3; HEPData86210v1 Table4 JSON and YAML,39 bins and two energy groups."
+input_path_refs = ["data/output/audit/qgp-pp-spectrum-calibration/source-identity.toml", "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.json", "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml", "data/output/audit/qgp-pp-spectrum-calibration/admission-protocol.toml"]
+method = "Preserve lexical numerical fields and select explicit group/qualifier spans. Compare all rows to independent provider YAML decoding; reject identity, units, group, uncertainty and decimal-order ambiguity. Declare physical fit freedom and covariance prerequisites before calibration."
+run = "cargo test -p data_core --profile validation --test hepdata_pp_identity -- --nocapture; cargo test -p data_core --lib --profile validation catalogs::hepdata_table::tests"
+output = ["data/output/audit/qgp-pp-spectrum-calibration/adjudication.toml"]
+output_path_refs = ["data/output/audit/qgp-pp-spectrum-calibration/provider-representation-comparison.json", "data/output/audit/qgp-pp-spectrum-calibration/final-table-admission-tests.log", "data/output/audit/qgp-pp-spectrum-calibration/adjudication.toml"]
+status_note = "Source reference identity is separately reproducible. PP slope calibration remains withheld pending cross-bin covariance admission; the original n6.1 input and failed physical fits retain their historical scope."

@@ -41,6 +41,7 @@ pub mod gwtc;
 pub mod helios;
 #[cfg(feature = "fetch")]
 pub mod helios_fetch;
+pub mod hepdata_table;
 pub mod hi_cube;
 pub mod hic_raa;
 #[cfg(feature = "fetch")]

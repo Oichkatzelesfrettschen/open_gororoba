@@ -1,0 +1,69 @@
+schema_version = 1
+claim_id = "C-1710"
+evidence_layer = "source proposition and reference-population identity"
+source_title = "Transverse momentum spectra and nuclear modification factors of charged particles in pp, p-Pb and Pb-Pb collisions at the LHC"
+source_author = "ALICE Collaboration"
+source_release = "arXiv:1802.09145v2 [nucl-ex], 18 January 2019"
+source_path = "data/output/audit/qgp-pp-spectrum-calibration/alice-source.pdf"
+source_sha256 = "3d0cc130f9e5decd8fed662a04119308916cd1a571c85ea44fcd1f1e15553d80"
+source_text_path = "data/output/audit/qgp-pp-spectrum-calibration/alice-source-text.json"
+source_text_sha256 = "e0eb01323e36139cdf0c229766bd1a427840f9c0a5db3403298a3b2c2c90616f"
+source_release_locator = "PDF front-page arXiv margin; CERN report date16 February2018 is separate from the retained v2 release date"
+network_requests_by_auditor = 0
+fit_performed_by_auditor = false
+
+[provider]
+record = "HEPData86210v1 / ins1657384"
+record_path = "data/output/audit/qgp-pp-spectrum-calibration/hepdata-record.json"
+record_sha256 = "c5b2d5b36fdd6337ab53a76254c527c21a2b281d72a616247100ad5b6a6f7a84"
+table = "Table4"
+table_doi = "10.17182/hepdata.86210.v1/t4"
+table_id = 358372
+table_location = "Data from Figure3"
+table_path = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.json"
+table_sha256 = "05aa5a52bc5bb6f2392be12d85719766cb032fb3cb64dc4121937e058414b59b"
+table_description = "Transverse momentum spectra of charged particles in pp collisions"
+momentum_intervals = 39
+population_groups = 2
+selected_group = 0
+selected_energy_gev = 5020.0
+other_group = "group1:2760GeV; retain separately"
+reaction = "P P --> CHARGED X"
+pseudorapidity = "-0.8 to0.8"
+source_event_class = "INEL pp"
+source_particle_population = "primary charged particles"
+full_table_momentum_range_gev = [0.15, 50.0]
+
+[measure]
+source_locator = "PDF page5, Section2.3, Eq2; PDF page11, Section3.1; PDF page12, Figure3 caption"
+eq2 = "d2sigma/(deta dpT)=sigma_MB_pp * N_rec(Delta_eta,Delta_pT)*C(Delta_eta,Delta_pT)*epsilon_VZ/[Nevt_rec*Delta_eta*Delta_pT]"
+figure_normalization = "Section3.1 divides the pp differential cross sections by the corresponding inelastic nucleon-nucleon cross section:67.6mb at5.02TeV and61.8mb at2.76TeV. Figure3 caption repeats the normalization."
+table_header = "(1/(Nevt))*D2(N)/DETARAP/DPT [C/GEV]"
+identity = "Table4 carries the Figure3 per-event pseudorapidity/momentum yield. Multiplication by67.6mb restores the5.02TeV differential cross-section normalization used in the source."
+measure_limit = "The displayed measure is differential in pT and pseudorapidity. It contains neither an invariant1/(2*pi*pT) factor nor a dpT-squared measure. Rapidity and pseudorapidity require a separate population/Jacobian map when exact correspondence is needed."
+slope_implication = "Multiplication by a momentum-independent cross section changes a fitted amplitude and preserves a power-law exponent when that amplitude is free. A momentum-dependent Jacobian changes the slope. A dpT-squared power index differs by one from the corresponding dpT index."
+normalization_uncertainty_limit = "The cross-section value does not supply its own covariance or an uncertainty-free physical normalization. Any normalization nuisance must retain its source uncertainty and relation to the likelihood."
+
+[systematics]
+source_locator = "PDF page11, final paragraph before Section3; PDF page12 Figure3 caption"
+source_statement = "For the evaluation of the total systematic uncertainty all contributions are considered to be uncorrelated and they are summed in quadrature."
+interpretation = "The statement describes combining systematic contributions into each total uncertainty. It does not state that different pT bins are mutually uncorrelated."
+figure_scope = "Figure3's lower panels exclude the normalization uncertainty; Section3.1 and the caption distinguish that uncertainty from the plotted relative systematic uncertainty."
+provider_fields = "Each retained Table4 point supplies stat and sys scalar error labels. The inspected table has zero associated_files; its record entry has zero resources."
+cross_bin_covariance_status = "unadmitted"
+statistical_cross_bin_covariance_status = "unadmitted"
+normalization_covariance_status = "unadmitted"
+likelihood_limit = "A diagonal stat-plus-sys likelihood would be an explicitly declared working covariance model. The source's contribution-wise quadrature sentence does not authenticate that likelihood."
+finite_search_scope = "Retained PDF text, Table4 JSON, and Table4 entry in the retained HEPData record; the audit does not claim global absence of covariance data."
+
+[bin_representation]
+source_locator = "PDF page5 Eq2 and its following paragraph; Table4 x fields; source discussion warning about unbinned predictions compared with wide binned data"
+source_definition = "Eq2 uses corrected reconstructed counts in Delta_eta and Delta_pT intervals divided by both interval widths. The adjacent paragraph explicitly describes those intervals."
+provider_representation = "All39 x entries contain low and high edges only; the inspected x objects contain zero center or shifted-effective-momentum fields."
+source_center_shift_search = "The inspected PDF text supplies no bin-center shift prescription; matches for shift concern detector effects, rapidity or centrality."
+model_comparison = "A source-compatible declared binned prediction integrates the model over each retained pT interval and divides by its width, with the eta acceptance also specified. Evaluating only at an arithmetic midpoint adds an approximation for a curved spectrum."
+limit = "The count-per-bin definition supports an interval-averaged density interpretation. The audit does not infer a hidden Lafferty-Wyatt correction, an effective center, or exact detector response from bin edges."
+
+[remaining_admission]
+items = ["Preregister exact fit intervals within the admitted table and the source high-pT domain", "Declare fit amplitude and exponent, treatment of normalization and all fitted nuisance parameters", "Admit or explicitly qualify cross-bin covariance", "Declare bin-integrated versus point-evaluated model and its effect on n", "Match charged-particle species and eta acceptance to the intended RAA comparison", "Retain fragmentation and parton mixture separately from the pp slope fit"]
+fixed_6_1 = "The retained source/table admission does not establish that n=6.1 was fitted. A fitted slope requires a separate replayable calibration result."

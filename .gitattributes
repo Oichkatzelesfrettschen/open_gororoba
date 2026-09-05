@@ -71,3 +71,6 @@ data/output/audit/qgp-participant-reference-intake/*.log -text whitespace=-blank
 data/output/audit/qgp-directional-path-identity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
 data/output/audit/qgp-quenching-weight-identity/*.headers -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
 data/output/audit/qgp-quenching-weight-identity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-pp-spectrum-calibration/*.headers -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/qgp-pp-spectrum-calibration/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml -text whitespace=-blank-at-eof,-blank-at-eol
