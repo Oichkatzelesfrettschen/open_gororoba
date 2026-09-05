@@ -69,6 +69,7 @@ training_boundary = "One local RMS per score from 256 preceding parsed-row incre
 [decisive_experiment]
 experiment_ids = ["E-280", "E-281"]
 protocol_artifact = "data/output/audit/staples-calibration-grouped-refits/protocol.toml"
+protocol_sha256 = "20bdf30fe878db6e92977df82088bea79104cf81fd3353f4c736effdc362b4d3"
 description = "Replay the sealed common-population calibration comparison and paired train-file/test-file resampling to adjudicate the historical result. The separate timestamp-causal protocol tests extension beyond that result and does not retroactively redefine it."
 
 [what_would_verify_refute]
