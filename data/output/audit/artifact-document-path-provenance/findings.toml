@@ -71,3 +71,8 @@ control_plane = "provenance verify-control-plane --verify-compat-exports exits 0
 preservation = "All 14 verify-preservation.sql assertions pass on primary after integration."
 wide_verifier = "provenance verify --verify-exports passes canonical store invariants, then exits 1 with 533 artifact compatibility inventory findings: neither nonworking nor unverified mirrors recorded despite missing minimum."
 residual_boundary = "registry/artifact_source_of_truth.toml and registry/source_infrastructure.toml compare unchanged against the base commit. The 533 mirror-status evidence gaps remain a separate compatibility inventory frontier; path existence establishes local availability and does not establish mirror health or source-document accuracy."
+
+[linkless_inventory_resolution]
+status = "resolved_linkless_status_frontier"
+findings = "data/output/audit/artifact-remote-materializability/findings.toml"
+result = "A sealed offline correction changes the exact 533 linkless remote-status assertions into citation-only records. The classifier requires an HTTP(S) URL and a SHA256 identity before assigning remote materialization metadata. Host manifest membership follows observed paths. The original path-repair observations above remain historical evidence."

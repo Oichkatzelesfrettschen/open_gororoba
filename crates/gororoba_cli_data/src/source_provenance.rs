@@ -308,6 +308,11 @@ use candidate_extract::extract_candidates_from_source_file;
 
 // Two-phase output writer and the retention predicate that separates
 // repository truth from per-host materialization. Same #[path] indirection.
+#[path = "source_provenance/inventory_repair.rs"]
+pub mod inventory_repair;
+#[cfg(test)]
+#[path = "source_provenance/materializability_tests.rs"]
+mod materializability_tests;
 #[path = "source_provenance/staged_write.rs"]
 pub mod staged_write;
 pub use staged_write::{DEFAULT_SHRINK_THRESHOLD, RowCountReport, ShrinkPolicy, StagedWriteSet};
@@ -952,23 +957,6 @@ fn classify_artifacts(
             .cloned()
             .unwrap_or_default();
 
-        artifact.status = if !artifact.downloaded_paths.is_empty() {
-            "downloaded".to_string()
-        } else if !artifact.host_only_paths.is_empty() {
-            "remotely_materializable".to_string()
-        } else if !artifact.working_mirrors.is_empty() {
-            "downloadable".to_string()
-        } else if citation_locator_identity
-            || citation_locator_only_links
-            || artifact.links.is_empty()
-        {
-            "citation_only_no_link".to_string()
-        } else if !artifact.nonworking_mirrors.is_empty() && artifact.working_mirrors.is_empty() {
-            "blocked".to_string()
-        } else {
-            "unverified".to_string()
-        };
-
         // The lane is a property of the artifact, so it is decided while the
         // host-only paths are still in memory and then written into the row.
         // Deciding it later from the exported row would move every artifact
@@ -1004,7 +992,9 @@ fn classify_artifacts(
                 artifact.byte_length = identity.byte_length;
             }
             None => {
-                artifact.sha256 = carried.map(|facts| facts.sha256.clone()).unwrap_or_default();
+                artifact.sha256 = carried
+                    .map(|facts| facts.sha256.clone())
+                    .unwrap_or_default();
                 artifact.byte_length = carried.map(|facts| facts.byte_length).unwrap_or_default();
             }
         }
@@ -1021,6 +1011,26 @@ fn classify_artifacts(
             .map(|facts| facts.license_disposition.clone())
             .filter(|value| !value.is_empty())
             .unwrap_or_else(|| "unreviewed".to_string());
+        // Host presence alone cannot establish retrieval on another machine.
+        // Measured and carried identities use the same admission predicate.
+        artifact.status = if !artifact.downloaded_paths.is_empty() {
+            "downloaded"
+        } else if remote_identity_is_usable(&artifact.canonical_functional_url, &artifact.sha256)
+        {
+            "remotely_materializable"
+        } else if !artifact.working_mirrors.is_empty() {
+            "downloadable"
+        } else if citation_locator_identity
+            || citation_locator_only_links
+            || artifact.links.is_empty()
+        {
+            "citation_only_no_link"
+        } else if !artifact.nonworking_mirrors.is_empty() {
+            "blocked"
+        } else {
+            "unverified"
+        }
+        .to_string();
         artifact.retrieval_command = if artifact.status == "remotely_materializable" {
             // The retrieval target is derived from the artifact key, never from
             // the session-dated intake path this host happens to hold, so the
@@ -1038,13 +1048,12 @@ fn classify_artifacts(
             String::new()
         };
 
-        // A row with a URL and a hash is satisfiable from any host, so it meets
-        // the minimum even though no local copy backs it.
+        // A retrieval URL and content identity satisfy the inventory's
+        // metadata minimum; observed mirror health remains a separate field.
         artifact.minimum_requirement_met = !artifact.working_mirrors.is_empty()
             || !artifact.downloaded_paths.is_empty()
             || (artifact.status == "remotely_materializable"
-                && !artifact.canonical_functional_url.is_empty()
-                && !artifact.sha256.is_empty());
+                && remote_identity_is_usable(&artifact.canonical_functional_url, &artifact.sha256));
         artifact.manual_intervention_required = !artifact.links.is_empty()
             && !artifact.minimum_requirement_met
             && !citation_locator_identity
@@ -1055,6 +1064,13 @@ fn classify_artifacts(
             String::new()
         };
     }
+}
+
+fn remote_identity_is_usable(canonical_url: &str, sha256: &str) -> bool {
+    url::Url::parse(canonical_url)
+        .is_ok_and(|url| matches!(url.scheme(), "https" | "http") && url.host_str().is_some())
+        && sha256.len() == 64
+        && sha256.bytes().all(|byte| byte.is_ascii_hexdigit())
 }
 
 /// Assigns the lane from every extension the artifact is known by.
@@ -1113,7 +1129,9 @@ fn load_durable_facts(path: &Path) -> HashMap<String, DurableFacts> {
         return facts;
     };
     for row in rows {
-        let Some(table) = row.as_table() else { continue };
+        let Some(table) = row.as_table() else {
+            continue;
+        };
         let key = table
             .get("key")
             .and_then(Value::as_str)
@@ -1172,7 +1190,9 @@ fn load_prior_rows(path: &Path) -> BTreeMap<String, PriorRow> {
         return rows_by_key;
     };
     for row in rows {
-        let Some(table) = row.as_table() else { continue };
+        let Some(table) = row.as_table() else {
+            continue;
+        };
         let text = |field: &str| {
             table
                 .get(field)
@@ -1590,7 +1610,7 @@ pub fn stage_artifact_source_of_truth(
             .iter()
             .enumerate()
             .filter(|(_, artifact)| {
-                artifact.status == "downloaded" || artifact.status == "remotely_materializable"
+                !artifact.downloaded_paths.is_empty() || !artifact.host_only_paths.is_empty()
             })
             .flat_map(|(index, artifact)| {
                 artifact
@@ -1852,7 +1872,13 @@ fn render_lane(
         for field in ["sha256", "retrieval_command", "license_disposition"] {
             lines.push(format!(
                 "{field} = {}",
-                escape_toml(artifact.get(field).and_then(Value::as_str).unwrap_or("").trim())
+                escape_toml(
+                    artifact
+                        .get(field)
+                        .and_then(Value::as_str)
+                        .unwrap_or("")
+                        .trim()
+                )
             ));
         }
         lines.push(format!(
@@ -2297,8 +2323,14 @@ fn validate_artifact_entry(
         .unwrap_or_default()
         .trim();
     let materializable_minimum =
-        status == "remotely_materializable" && !canonical_url.is_empty() && !sha256.is_empty();
-    if minimum_met != (!working.is_empty() || !downloaded_paths.is_empty() || materializable_minimum)
+        status == "remotely_materializable" && remote_identity_is_usable(&canonical_url, sha256);
+    if status == "remotely_materializable" && !materializable_minimum {
+        state.failures.push(format!(
+            "{art_id}: remotely_materializable requires an HTTP(S) URL and a SHA256 content identity"
+        ));
+    }
+    if minimum_met
+        != (!working.is_empty() || !downloaded_paths.is_empty() || materializable_minimum)
     {
         state.failures.push(format!(
             "{art_id}: minimum_requirement_met mismatch with working/downloaded mirrors"
@@ -2354,7 +2386,10 @@ fn verify_header_counts(
     let expected_counts = [
         ("artifact_count", artifact_count),
         ("downloaded_count", counts.downloaded),
-        ("remotely_materializable_count", counts.remotely_materializable),
+        (
+            "remotely_materializable_count",
+            counts.remotely_materializable,
+        ),
         ("downloadable_count", counts.downloadable),
         ("blocked_count", counts.blocked),
         ("citation_only_no_link_count", counts.citation_only),
