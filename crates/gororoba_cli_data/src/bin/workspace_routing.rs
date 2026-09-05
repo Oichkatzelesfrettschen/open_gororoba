@@ -709,6 +709,52 @@ mod tests {
     use super::is_cargo_manifest;
 
     #[test]
+    fn provenance_sources_route_to_compiling_owners() -> anyhow::Result<()> {
+        let root = super::repo_root();
+        let graph = super::build_dependency_graph(&root)?;
+        let reverse = super::invert_graph(&graph.deps);
+        for path in [
+            "crates/provenance_ops/src/source_provenance.rs",
+            "crates/provenance_ops/src/source_provenance/host_observations.rs",
+            "crates/provenance_ops/src/source_provenance/metadata_completeness.rs",
+        ] {
+            assert!(root.join(path).is_file());
+            let classification =
+                super::classify_changes(&[path.to_string()], &graph.all_crates, true);
+            assert_eq!(
+                classification.affected_crates,
+                ["provenance_ops".to_string()].into()
+            );
+            assert!(!classification.force_workspace);
+            let closure = super::transitive_closure(&classification.affected_crates, &reverse);
+            for owner in [
+                "provenance_ops",
+                "gororoba_cli_provenance",
+                "gororoba_cli_data",
+            ] {
+                assert!(closure.contains(owner), "{path}: missing {owner}");
+            }
+            eprintln!("{path}: dependency closure = {closure:?}");
+        }
+        let manifest: toml::Value = toml::from_str(&std::fs::read_to_string(
+            root.join("crates/gororoba_cli_provenance/Cargo.toml"),
+        )?)?;
+        for target in manifest["bin"].as_array().expect("binary targets") {
+            let relative = target["path"].as_str().expect("binary path");
+            assert!(relative.starts_with("src/bin/"));
+            let path = format!("crates/gororoba_cli_provenance/{relative}");
+            assert!(root.join(&path).is_file());
+            let classification = super::classify_changes(&[path], &graph.all_crates, true);
+            assert_eq!(
+                classification.affected_crates,
+                ["gororoba_cli_provenance".to_string()].into()
+            );
+            assert!(!classification.force_workspace);
+        }
+        Ok(())
+    }
+
+    #[test]
     fn manifests_at_any_depth_are_governance_relevant() {
         assert!(is_cargo_manifest("Cargo.toml"));
         assert!(is_cargo_manifest("crates/gororoba_cli_physics/Cargo.toml"));

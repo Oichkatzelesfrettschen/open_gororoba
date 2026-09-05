@@ -1,0 +1,19 @@
+actor = "codex"
+artifact_id = "ASOT-2988"
+artifact_key = "url:https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 9170
+expected_canonical_url = "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n"
+expected_sha256 = "15893f701c03e048fe0892e10e93ef1866652459f65889ca159bdc0eb40f4578"
+observation_key = "exact-response-ASOT-2988-d192f8c3c804e1bef57428d10e5ec56f12802c2c2b093c4f1ef6acb339884d92"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-27.json"
+sha256 = "d192f8c3c804e1bef57428d10e5ec56f12802c2c2b093c4f1ef6acb339884d92"

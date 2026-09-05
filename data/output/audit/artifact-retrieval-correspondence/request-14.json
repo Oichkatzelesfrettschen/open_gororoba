@@ -1,0 +1,11 @@
+{
+  "body_bytes": 42105,
+  "body_sha256": "16f3ac08ce1d8fa75cd46456627c2d74a79666d34cd2eddf9ffe5765c98a05fd",
+  "completed": true,
+  "final_url": "https://arxiv.org/abs/math/0403113",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:28Z",
+  "requested_url": "https://arxiv.org/abs/math/0403113",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

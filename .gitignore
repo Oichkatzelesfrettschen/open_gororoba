@@ -244,6 +244,8 @@ credentials.*
 ![Rr][Ee][Aa][Dd][Mm][Ee].md
 !README_GPU_STEPS.md
 !**/[Rr][Ee][Aa][Dd][Mm][Ee].md
+!data/output/audit/staples-causal-validation/completion-audit.md
+!data/output/audit/staples-causal-validation/source-archives/license-evidence.md
 !proofs/EPISTEMIC_BOUNDARIES.md
 !docs/toolchain/
 !docs/toolchain/*.md

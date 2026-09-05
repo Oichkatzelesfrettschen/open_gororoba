@@ -1,0 +1,7 @@
+observed_defective_export_sha256 = "25932083b6a82ae027b488dae5732e49566d3773d68c18a5e5efc728521ecbaa"
+observation = "Cloned toml_edit child tables retained source-document positions. Serialization placed active-claim nested declarations beneath unrelated early claim headers. A one-claim test did not exercise association across multiple parent tables."
+affected_surface = "Compatibility claim export and derived artifacts produced from that export"
+canonical_surface = "Preservation audit confirms identical original claim rows and historical transition rows; typed claim_evidence JSON remains bound to the correct claim IDs."
+repair_requirement = "Bind every nested declaration to its intended claim during serialization, exercise early/middle/late parents, and fail production export if parsed semantic associations differ. Regenerate all derived lanes only after the corrected exporter passes."
+repair = "Recursively clear transplanted table positions and compare the entire serialized/reparsed semantic document with original rows plus precisely declared overlays before any export write."
+verification = "Seven evidence-contract tests pass, including early/middle/late multi-claim ownership, preservation of existing nested tables, forced-position corruption, and unrelated-row corruption. All 62 store tests and all-target Clippy pass."

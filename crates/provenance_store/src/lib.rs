@@ -2,8 +2,8 @@ use anyhow::{Context, Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use chrono::Utc;
 use provenance_core::{
-    ArtifactQueryResult, ArtifactRecord, ArtifactStatus, ClaimRecord,
-    ControlPlaneCounts, DoctorReport, DocumentQueryResult, DocumentRecord, DownloadAttemptRecord,
+    ArtifactQueryResult, ArtifactRecord, ArtifactStatus, ClaimRecord, ControlPlaneCounts,
+    DoctorReport, DocumentQueryResult, DocumentRecord, DownloadAttemptRecord,
     DownloadCampaignQueryResult, DownloadCampaignRecord, DownloadJobRecord,
     DownloadLedgerProjectionRow, DownloadQueryResult, ExperimentRecord,
     ExternalSourceContractRecord, ExternalSourceContractsMeta, ExternalSourceDossierRecord,
@@ -24,7 +24,22 @@ use toml::Value;
 // control-plane TOML/SQLite paths, and the rusqlite migration registry
 // live in the `migrations` submodule. Items are pub(crate) and brought
 // back into lib.rs scope via plain use statements.
+mod artifact_operations;
+mod artifact_retrieval;
+pub use artifact_retrieval::{
+    ArtifactRetrievalSpec, DocumentIdentityStatus, RetrievalEvidenceFile, RetrievalRequestEvidence,
+};
+mod entity_revisions;
+mod experiment_operations;
+mod exports;
+mod queries;
+
+mod claim_evidence;
 mod migrations;
+pub use claim_evidence::{
+    ClaimEvidenceSpec, DecisiveExperiment, DepthStatus, EvidenceLayer, FalsifierOutcomes,
+    FittedParameterBranch, InterveningMap, MapKind,
+};
 use migrations::migrations;
 
 // Compatibility-TOML renderers for the three planning lanes
@@ -157,13 +172,14 @@ pub(crate) struct ProofInventory {
 pub use provenance_core::BinaryRecord;
 pub mod types;
 pub use types::{
-    ActionCompatRow, ActionItem, ActionItemWithEvidence, BinariesSyncSummary, CompatExportPaths,
-    ControlPlaneCompatKind, EntityFieldTarget, ExecutionTargetRetarget,
+    ActionCompatRow, ActionItem, ActionItemWithEvidence, BinariesSyncSummary, BinaryOwnerChange,
+    CompatExportPaths, ControlPlaneCompatKind, EntityFieldTarget, ExecutionTargetRetarget,
     ExecutionTargetRetargetSummary, ManifestRow, NotebookSessionRow, NotebookSessionSummary,
-    PlanningCompatTable, RequirementCoverageGapCompatRow, RequirementCoverageGapItem,
-    RequirementModuleCompatRow, RequirementModuleItem, RequirementsMeta, RequirementsMetaCompatRow,
-    ResearchNarrativeRow, RoadmapCompatRow, RoadmapItem, RoadmapItemWithLinks,
-    RegistryImportPaths, SourcePathRetarget, SourcePathRetargetSummary, StatusNoteRevision,
+    PlanningCompatTable, RegistryImportPaths, RequirementCoverageGapCompatRow,
+    RequirementCoverageGapItem, RequirementModuleCompatRow, RequirementModuleItem,
+    RequirementsMeta, RequirementsMetaCompatRow, ResearchNarrativeRow, RoadmapCompatRow,
+    RoadmapItem, RoadmapItemWithLinks, SourcePathRetarget, SourcePathRetargetSummary,
+    StatusNoteRevision,
 };
 
 /// Hex-encoded SHA-256 of `s`. Used by the status_note mutators to
@@ -915,471 +931,11 @@ impl ProvenanceStore {
         })
     }
 
-    pub fn export_control_plane_compat_paths(
-        &mut self,
-        repo_root: &Path,
-        paths: CompatExportPaths<'_>,
-    ) -> Result<()> {
-        self.backfill_control_plane_compat_from_snapshots()?;
-        let outputs = self.render_control_plane_compat_outputs()?;
-        write_text(paths.claims, &outputs.claims)?;
-        write_text(paths.insights, &outputs.insights)?;
-        write_text(paths.experiments, &outputs.experiments)?;
-        write_text(paths.binaries, &outputs.binaries)?;
-        write_text(paths.theorems, &outputs.theorems)?;
-        write_text(paths.theorems_mirror, &outputs.theorems_mirror)?;
-        let transition_events = repo_root.join("registry/claim_transitions.toml");
-        let transition_relations = repo_root.join("registry/claim_relations.toml");
-        self.export_claim_transition_compat_paths(
-            repo_root,
-            ClaimTransitionCompatPaths {
-                events: &transition_events,
-                relations: &transition_relations,
-            },
-        )?;
-
-        self.record_control_plane_run(
-            "export_control_plane",
-            &serde_json::json!({
-                "claims": to_repo_rel(repo_root, paths.claims),
-                "insights": to_repo_rel(repo_root, paths.insights),
-                "experiments": to_repo_rel(repo_root, paths.experiments),
-                "binaries": to_repo_rel(repo_root, paths.binaries),
-                "theorems": to_repo_rel(repo_root, paths.theorems),
-                "theorems_mirror": to_repo_rel(repo_root, paths.theorems_mirror),
-            })
-            .to_string(),
-        )?;
-        Ok(())
-    }
-
-    // Separate path arguments mirror the CLI/export surface; CompatExportPaths
-    // keeps the implementation typed after the public wrapper boundary.
-    #[allow(clippy::too_many_arguments)]
-    pub fn export_control_plane_compat(
-        &mut self,
-        repo_root: &Path,
-        claims_path: &Path,
-        insights_path: &Path,
-        experiments_path: &Path,
-        binaries_path: &Path,
-        theorems_path: &Path,
-        theorems_mirror_path: &Path,
-    ) -> Result<()> {
-        self.export_control_plane_compat_paths(
-            repo_root,
-            CompatExportPaths {
-                claims: claims_path,
-                insights: insights_path,
-                experiments: experiments_path,
-                binaries: binaries_path,
-                theorems: theorems_path,
-                theorems_mirror: theorems_mirror_path,
-            },
-        )
-    }
-
-    pub fn replace_control_plane_experiments_from_registry_text(
-        &mut self,
-        repo_root: &Path,
-        source_path: &Path,
-        raw: &str,
-    ) -> Result<usize> {
-        let indexed_at = Utc::now().to_rfc3339();
-        let experiments = load_experiments_from_registry(raw)?;
-        let experiments_meta_toml =
-            load_registry_table_toml(raw, "experiments")?.unwrap_or_default();
-        let tx = self.conn.transaction()?;
-        let incoming_experiment_ids = experiments
-            .iter()
-            .map(|experiment| experiment.id.as_str())
-            .collect::<BTreeSet<_>>();
-        let protected_experiment_ids = {
-            let mut statement = tx.prepare(
-                "SELECT experiment_id FROM claim_transition_experiments
-                 UNION
-                 SELECT experiment_id FROM experiment_revisions",
-            )?;
-            statement
-                .query_map([], |row| row.get::<_, String>(0))?
-                .collect::<std::result::Result<BTreeSet<_>, _>>()?
-        };
-        let missing_protected_ids = protected_experiment_ids
-            .iter()
-            .filter(|id| !incoming_experiment_ids.contains(id.as_str()))
-            .cloned()
-            .collect::<Vec<_>>();
-        if !missing_protected_ids.is_empty() {
-            bail!(
-                "experiment registry omits protected canonical experiments: {}",
-                missing_protected_ids.join(", ")
-            );
-        }
-
-        // The execution-planning build reaches this path with rendered registry
-        // text, which is the same mirror-to-canonical direction the
-        // index-control-plane guard covers. Capture the canonical-only column
-        // values first so the delete-and-reinsert below cannot null them.
-        let preserved = capture_preserved_values(&tx)?;
-
-        // Rebuild the derived claim-to-experiment join before replacing the
-        // experiment rows. Transition evidence and revision history retain
-        // their direct foreign keys and require their referenced experiments
-        // to remain present in the incoming registry.
-        tx.execute("DELETE FROM claim_experiment_refs", [])?;
-        tx.execute(
-            "DELETE FROM experiments_cp
-             WHERE id NOT IN (
-                 SELECT experiment_id FROM claim_transition_experiments
-                 UNION
-                 SELECT experiment_id FROM experiment_revisions
-             )",
-            [],
-        )?;
-        tx.execute(
-            "DELETE FROM control_plane_meta WHERE kind = 'experiments'",
-            [],
-        )?;
-        write_registry_snapshot(&tx, repo_root, "experiments", source_path, raw, &indexed_at)?;
-        for experiment in &experiments {
-            tx.execute(
-                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
-                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)
-                 ON CONFLICT(id) DO UPDATE SET
-                    title = excluded.title,
-                    status = excluded.status,
-                    binary_name = excluded.binary_name,
-                    claim_refs_json = excluded.claim_refs_json,
-                    status_note = excluded.status_note,
-                    compat_toml_text = excluded.compat_toml_text",
-                params![
-                    experiment.id,
-                    experiment.title,
-                    experiment.status,
-                    experiment.binary,
-                    serde_json::to_string(&experiment.claim_refs)?,
-                    experiment.status_note,
-                    experiment.compat_toml_text
-                ],
-            )?;
-            for claim_id in &experiment.claim_refs {
-                tx.execute(
-                    "INSERT INTO claim_experiment_refs (claim_id, experiment_id)
-                     VALUES (?1, ?2)
-                     ON CONFLICT(claim_id, experiment_id) DO NOTHING",
-                    params![claim_id, experiment.id],
-                )?;
-            }
-        }
-        tx.execute(
-            "INSERT INTO control_plane_meta(kind, compat_toml_text)
-             VALUES(?1, ?2)",
-            params!["experiments", experiments_meta_toml],
-        )?;
-        restore_preserved_values(&tx, &preserved)?;
-        tx.commit()?;
-        self.record_control_plane_run(
-            "replace_control_plane_experiments_from_registry_text",
-            &serde_json::json!({
-                "source_path": to_repo_rel(repo_root, source_path),
-                "experiment_count": experiments.len(),
-            })
-            .to_string(),
-        )?;
-        Ok(experiments.len())
-    }
-
-    /// Insert or update the `[[experiment]]` rows in `raw` without deleting
-    /// any other canonical experiment.
-    /// An omitted status note preserves the existing canonical note.
-    /// Changed fields and explicit notes append revisions atomically with a
-    /// complete before/after audit record.
-    pub fn upsert_experiments_from_registry_text(
-        &mut self,
-        repo_root: &Path,
-        source_path: &Path,
-        raw: &str,
-    ) -> Result<Vec<String>> {
-        let value: Value = toml::from_str(raw).context("parse experiment mutation")?;
-        let rows = value
-            .get("experiment")
-            .and_then(Value::as_array)
-            .context("experiment array missing")?;
-        let mut seen_ids = BTreeSet::new();
-        for row in rows {
-            for field in ["id", "title", "status", "binary"] {
-                let text = row
-                    .get(field)
-                    .and_then(Value::as_str)
-                    .filter(|text| !text.trim().is_empty())
-                    .with_context(|| format!("experiment requires nonempty string {field}"))?;
-                if field == "id" {
-                    if !text.strip_prefix("E-").is_some_and(|suffix| {
-                        !suffix.is_empty() && suffix.bytes().all(|byte| byte.is_ascii_digit())
-                    }) {
-                        bail!("invalid experiment ID {text:?}: expected E- followed by digits");
-                    }
-                    if !seen_ids.insert(text.to_owned()) {
-                        bail!("duplicate experiment ID {text}");
-                    }
-                }
-            }
-        }
-        let experiments = load_experiments_from_registry(raw)?;
-        if experiments.is_empty() {
-            bail!("experiment spec contains no [[experiment]] rows");
-        }
-        let note_reason = format!(
-            "Apply explicit status_note from experiment fragment {}",
-            to_repo_rel(repo_root, source_path)
-        );
-        let tx = self
-            .conn
-            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        let mut ids = Vec::new();
-        let mut changes = Vec::new();
-        let read_row = |tx: &rusqlite::Transaction<'_>,
-                        id: &str|
-         -> Result<Option<serde_json::Value>> {
-            let mut record = tx.query_row(
-                    "SELECT title, status, binary_name, claim_refs_json, status_note, compat_toml_text
-                     FROM experiments_cp WHERE id = ?1",
-                    params![id],
-                    |row| {
-                        Ok(serde_json::json!({
-                            "id": id,
-                            "title": row.get::<_, String>(0)?,
-                            "status": row.get::<_, String>(1)?,
-                            "binary_name": row.get::<_, Option<String>>(2)?,
-                            "claim_refs_json": row.get::<_, String>(3)?,
-                            "status_note": row.get::<_, Option<String>>(4)?,
-                            "compat_toml_text": row.get::<_, String>(5)?,
-                        }))
-                    },
-                ).optional()?;
-            if let Some(record) = &mut record {
-                let mut statement = tx.prepare(
-                        "SELECT claim_id FROM claim_experiment_refs WHERE experiment_id = ?1 ORDER BY claim_id",
-                    )?;
-                let references = statement
-                    .query_map(params![id], |row| row.get::<_, String>(0))?
-                    .collect::<rusqlite::Result<Vec<_>>>()?;
-                record["claim_experiment_refs"] = serde_json::json!(references);
-            }
-            Ok(record)
-        };
-        for experiment in &experiments {
-            let before = read_row(&tx, &experiment.id)?;
-            let claim_refs_json = serde_json::to_string(&experiment.claim_refs)?;
-            tx.execute(
-                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
-                 VALUES(?1, ?2, ?3, ?4, ?5, NULL, ?6)
-                 ON CONFLICT(id) DO NOTHING",
-                params![
-                    experiment.id,
-                    experiment.title,
-                    experiment.status,
-                    experiment.binary,
-                    claim_refs_json,
-                    experiment.compat_toml_text
-                ],
-            )?;
-            if let Some(previous) = &before {
-                for (field, new_value) in [
-                    ("title", experiment.title.as_str()),
-                    ("status", experiment.status.as_str()),
-                    (
-                        "binary_name",
-                        experiment.binary.as_deref().expect("validated binary"),
-                    ),
-                    ("claim_refs_json", claim_refs_json.as_str()),
-                    ("compat_toml_text", experiment.compat_toml_text.as_str()),
-                ] {
-                    if previous[field].as_str() != Some(new_value) {
-                        Self::entity_update_field_in_transaction(
-                            &tx,
-                            &experiment.id,
-                            new_value,
-                            "experiment-registry-upsert",
-                            Some("Apply validated experiment fragment"),
-                            EntityFieldTarget {
-                                table: "experiments_cp",
-                                revisions_table: "experiment_revisions",
-                                fk_col: "experiment_id",
-                                field,
-                            },
-                        )?;
-                    }
-                }
-            }
-            if let Some(note) = &experiment.status_note {
-                Self::entity_update_field_in_transaction(
-                    &tx,
-                    &experiment.id,
-                    note,
-                    "experiment-registry-upsert",
-                    Some(&note_reason),
-                    EntityFieldTarget {
-                        table: "experiments_cp",
-                        revisions_table: "experiment_revisions",
-                        fk_col: "experiment_id",
-                        field: "status_note",
-                    },
-                )?;
-            }
-            tx.execute(
-                "DELETE FROM claim_experiment_refs WHERE experiment_id = ?1",
-                params![experiment.id],
-            )?;
-            for claim_id in &experiment.claim_refs {
-                tx.execute(
-                    "INSERT INTO claim_experiment_refs (claim_id, experiment_id)
-                     VALUES (?1, ?2)
-                     ON CONFLICT(claim_id, experiment_id) DO NOTHING",
-                    params![claim_id, experiment.id],
-                )?;
-            }
-            ids.push(experiment.id.clone());
-            changes.push(serde_json::json!({
-                "before": before, "after": read_row(&tx, &experiment.id)?,
-            }));
-        }
-        tx.execute(
-            "INSERT INTO control_plane_runs(action, created_at, details_json) VALUES (?1, ?2, ?3)",
-            params![
-                "upsert_experiments_from_registry_text",
-                Utc::now().to_rfc3339(),
-                serde_json::json!({
-                    "source_path": to_repo_rel(repo_root, source_path),
-                    "actor": "experiment-registry-upsert",
-                    "reason": "Apply validated experiment fragment",
-                    "spec_sha256": sha256_hex(raw),
-                    "experiment_ids": ids,
-                    "changes": changes,
-                })
-                .to_string()
-            ],
-        )?;
-        tx.commit()?;
-        Ok(ids)
-    }
-
-    pub fn control_plane_compat_text(&mut self, kind: ControlPlaneCompatKind) -> Result<String> {
-        self.backfill_control_plane_compat_from_snapshots()?;
-        let outputs = self.render_control_plane_compat_outputs()?;
-        let text = match kind {
-            ControlPlaneCompatKind::Claims => outputs.claims,
-            ControlPlaneCompatKind::Insights => outputs.insights,
-            ControlPlaneCompatKind::Experiments => outputs.experiments,
-            ControlPlaneCompatKind::Binaries => outputs.binaries,
-            ControlPlaneCompatKind::Theorems => outputs.theorems,
-            ControlPlaneCompatKind::TheoremsMirror => outputs.theorems_mirror,
-        };
-        Ok(text)
-    }
-
-    pub fn verify_control_plane_compat_exports_paths(
-        &mut self,
-        repo_root: &Path,
-        paths: CompatExportPaths<'_>,
-    ) -> Result<()> {
-        self.backfill_control_plane_compat_from_snapshots()?;
-        let outputs = self.render_control_plane_compat_outputs()?;
-        let checks = [
-            (paths.claims, outputs.claims.as_str()),
-            (paths.insights, outputs.insights.as_str()),
-            (paths.experiments, outputs.experiments.as_str()),
-            (paths.binaries, outputs.binaries.as_str()),
-            (paths.theorems, outputs.theorems.as_str()),
-            (paths.theorems_mirror, outputs.theorems_mirror.as_str()),
-        ];
-        let transition_events_path = repo_root.join("registry/claim_transitions.toml");
-        let transition_relations_path = repo_root.join("registry/claim_relations.toml");
-        let transition_checks =
-            if scalar_count(&self.conn, "SELECT COUNT(*) FROM claim_transition_events")? != 0
-                || transition_events_path.exists()
-                || transition_relations_path.exists()
-            {
-                let (transition_events, transition_relations) =
-                    self.claim_transition_compat_texts()?;
-                Some((transition_events, transition_relations))
-            } else {
-                None
-            };
-        let mut failures = Vec::new();
-        for (path, expected) in checks {
-            if !path.exists() {
-                failures.push(format!("missing compatibility export {}", path.display()));
-                continue;
-            }
-            let actual = load_text(path)?;
-            if actual != compat_render::normalized_export_text(expected) {
-                failures.push(format!(
-                    "stale compatibility export {} relative to {}",
-                    path.display(),
-                    repo_root.display()
-                ));
-            }
-        }
-        if let Some((transition_events, transition_relations)) = transition_checks {
-            for (path, expected) in [
-                (transition_events_path.as_path(), transition_events.as_str()),
-                (
-                    transition_relations_path.as_path(),
-                    transition_relations.as_str(),
-                ),
-            ] {
-                if !path.exists() {
-                    failures.push(format!("missing compatibility export {}", path.display()));
-                    continue;
-                }
-                let actual = load_text(path)?;
-                if actual != compat_render::normalized_export_text(expected) {
-                    failures.push(format!(
-                        "stale compatibility export {} relative to {}",
-                        path.display(),
-                        repo_root.display()
-                    ));
-                }
-            }
-        }
-        if !failures.is_empty() {
-            bail!(
-                "control-plane compatibility exports failed:\n- {}",
-                failures.join("\n- ")
-            );
-        }
-        Ok(())
-    }
-
-    // Separate path arguments mirror the CLI/verify surface; CompatExportPaths
-    // keeps the implementation typed after the public wrapper boundary.
-    #[allow(clippy::too_many_arguments)]
-    pub fn verify_control_plane_compat_exports(
-        &mut self,
-        repo_root: &Path,
-        claims_path: &Path,
-        insights_path: &Path,
-        experiments_path: &Path,
-        binaries_path: &Path,
-        theorems_path: &Path,
-        theorems_mirror_path: &Path,
-    ) -> Result<()> {
-        self.verify_control_plane_compat_exports_paths(
-            repo_root,
-            CompatExportPaths {
-                claims: claims_path,
-                insights: insights_path,
-                experiments: experiments_path,
-                binaries: binaries_path,
-                theorems: theorems_path,
-                theorems_mirror: theorems_mirror_path,
-            },
-        )
-    }
-
     pub fn verify_control_plane_invariants(&self, repo_root: &Path) -> Result<()> {
         let mut failures = Vec::new();
+        if let Err(error) = self.verify_claim_evidence_artifacts(repo_root) {
+            failures.push(format!("{error:#}"));
+        }
         if let Err(error) = self.verify_claim_transition_invariants() {
             failures.push(error.to_string());
         }
@@ -1640,71 +1196,6 @@ impl ProvenanceStore {
             .to_string(),
         )?;
         Ok((contracts.len(), dossiers.len()))
-    }
-
-    pub fn export_external_sources_compat(
-        &mut self,
-        repo_root: &Path,
-        source_contracts_path: &Path,
-        dossiers_registry_path: &Path,
-    ) -> Result<()> {
-        let outputs = self.render_external_sources_compat_outputs()?;
-        write_text(source_contracts_path, &outputs.source_contracts)?;
-        write_text(dossiers_registry_path, &outputs.dossiers_registry)?;
-        for (path, body) in &outputs.docs {
-            write_text(&repo_root.join(path.as_str()), body)?;
-        }
-        self.record_control_plane_run(
-            "export_external_sources",
-            &serde_json::json!({
-                "source_contracts": to_repo_rel(repo_root, source_contracts_path),
-                "dossiers_registry": to_repo_rel(repo_root, dossiers_registry_path),
-                "doc_count": outputs.docs.len(),
-            })
-            .to_string(),
-        )?;
-        Ok(())
-    }
-
-    pub fn verify_external_sources_compat_exports(
-        &mut self,
-        repo_root: &Path,
-        source_contracts_path: &Path,
-        dossiers_registry_path: &Path,
-    ) -> Result<()> {
-        let outputs = self.render_external_sources_compat_outputs()?;
-        let mut failures = Vec::new();
-        for (path, expected) in [
-            (source_contracts_path, outputs.source_contracts.as_str()),
-            (dossiers_registry_path, outputs.dossiers_registry.as_str()),
-        ] {
-            if !path.exists() {
-                failures.push(format!("missing compatibility export {}", path.display()));
-                continue;
-            }
-            let actual = load_text(path)?;
-            if actual != compat_render::normalized_export_text(expected) {
-                failures.push(format!("stale compatibility export {}", path.display()));
-            }
-        }
-        for (path, expected) in outputs.docs {
-            let full = repo_root.join(path.as_str());
-            if !full.exists() {
-                failures.push(format!("missing generated dossier {}", full.display()));
-                continue;
-            }
-            let actual = load_text(&full)?;
-            if actual != compat_render::normalized_export_text(&expected) {
-                failures.push(format!("stale dossier export {}", full.display()));
-            }
-        }
-        if !failures.is_empty() {
-            bail!(
-                "external-source compatibility exports failed:\n- {}",
-                failures.join("\n- ")
-            );
-        }
-        Ok(())
     }
 
     pub fn verify_external_source_invariants(&self, repo_root: &Path) -> Result<()> {
@@ -1986,380 +1477,6 @@ impl ProvenanceStore {
         Ok(true)
     }
 
-    fn render_control_plane_compat_outputs(&self) -> Result<ControlPlaneCompatOutputs> {
-        let theorem_rows = self.list_theorems()?;
-        let experiments_meta = self
-            .control_plane_meta_toml("experiments")?
-            .unwrap_or_default();
-        Ok(ControlPlaneCompatOutputs {
-            claims: render_claims_registry(&self.list_claims()?),
-            insights: render_insights_registry(&self.list_insights_for_compat()?),
-            experiments: render_experiments_registry(
-                &experiments_meta,
-                &self.list_experiments_for_compat()?,
-            ),
-            binaries: render_binaries_registry(&self.list_binaries()?),
-            theorems: render_theorem_markdown(
-                "SQLite canonical database (compatibility export)",
-                &theorem_rows,
-            ),
-            theorems_mirror: render_theorem_markdown(
-                "registry/canonical/control_plane.sqlite3",
-                &theorem_rows,
-            ),
-        })
-    }
-
-    fn render_external_sources_compat_outputs(&self) -> Result<ExternalSourcesCompatOutputs> {
-        let contracts_meta = self.external_source_contracts_meta()?;
-        let contracts = self.list_external_source_contracts()?;
-        let dossiers_meta = self.external_source_dossiers_meta()?;
-        let dossiers = self.list_external_source_dossiers()?;
-        let docs = dossiers
-            .iter()
-            .map(|dossier| {
-                (
-                    Utf8PathBuf::from(dossier.source_markdown.clone()),
-                    render_external_source_dossier_markdown(dossier),
-                )
-            })
-            .collect();
-        Ok(ExternalSourcesCompatOutputs {
-            source_contracts: render_external_source_contracts_registry(
-                &contracts_meta,
-                &contracts,
-            ),
-            dossiers_registry: render_external_source_dossiers_registry(&dossiers_meta, &dossiers),
-            docs,
-        })
-    }
-
-    pub fn list_claims(&self) -> Result<Vec<ClaimRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, statement, status, where_stated, last_verified, formal_proof, status_note, compat_toml_text
-             FROM claims ORDER BY id",
-        )?;
-        let rows = stmt.query_map([], |row| {
-            Ok(ClaimRecord {
-                id: row.get(0)?,
-                statement: row.get(1)?,
-                status: row.get(2)?,
-                where_stated: row.get(3)?,
-                last_verified: row.get(4)?,
-                formal_proof: row.get(5)?,
-                status_note: row.get(6)?,
-                compat_toml_text: row.get(7)?,
-            })
-        })?;
-        collect_rows(rows)
-    }
-
-    pub fn list_insights(&self) -> Result<Vec<InsightRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, title, status, claim_refs_json, compat_toml_text
-             FROM insights ORDER BY id",
-        )?;
-        let rows = stmt.query_map([], |row| {
-            let claim_refs_json: String = row.get(3)?;
-            Ok(InsightRecord {
-                id: row.get(0)?,
-                title: row.get(1)?,
-                status: row.get(2)?,
-                claim_refs: serde_json::from_str(&claim_refs_json).unwrap_or_default(),
-                compat_toml_text: row.get(4)?,
-            })
-        })?;
-        collect_rows(rows)
-    }
-
-    fn list_insights_for_compat(&self) -> Result<Vec<types::InsightCompatRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, title, status, claim_refs_json, status_note, compat_toml_text
-             FROM insights ORDER BY id",
-        )?;
-        let rows = stmt.query_map([], |row| {
-            let claim_refs_json: String = row.get(3)?;
-            Ok(types::InsightCompatRecord {
-                id: row.get(0)?,
-                title: row.get(1)?,
-                status: row.get(2)?,
-                claim_refs: serde_json::from_str(&claim_refs_json).unwrap_or_default(),
-                status_note: row.get(4)?,
-                compat_toml_text: row.get(5)?,
-            })
-        })?;
-        collect_rows(rows)
-    }
-
-    pub fn list_experiments(&self) -> Result<Vec<ExperimentRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, title, status, binary_name, claim_refs_json, compat_toml_text
-             FROM experiments_cp ORDER BY id",
-        )?;
-        let rows = stmt.query_map([], |row| {
-            let claim_refs_json: String = row.get(4)?;
-            Ok(ExperimentRecord {
-                id: row.get(0)?,
-                title: row.get(1)?,
-                status: row.get(2)?,
-                binary: row.get(3)?,
-                claim_refs: serde_json::from_str(&claim_refs_json).unwrap_or_default(),
-                compat_toml_text: row.get(5)?,
-            })
-        })?;
-        collect_rows(rows)
-    }
-
-    fn list_experiments_for_compat(&self) -> Result<Vec<types::ExperimentCompatRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text
-             FROM experiments_cp ORDER BY id",
-        )?;
-        let rows = stmt.query_map([], |row| {
-            let claim_refs_json: String = row.get(4)?;
-            Ok(types::ExperimentCompatRecord {
-                id: row.get(0)?,
-                title: row.get(1)?,
-                status: row.get(2)?,
-                binary: row.get(3)?,
-                claim_refs: serde_json::from_str(&claim_refs_json).unwrap_or_default(),
-                status_note: row.get(5)?,
-                compat_toml_text: row.get(6)?,
-            })
-        })?;
-        collect_rows(rows)
-    }
-
-    pub fn list_theorems(&self) -> Result<Vec<TheoremRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT COALESCE(theorem_identities.stable_id, 'THM-LEGACY-' || theorems.id),
-                    theorems.id, theorems.title, theorems.proof_path, theorems.status,
-                    COALESCE(theorem_identities.identity_kind, 'unresolved'),
-                    theorems.linked_claim_ids_json, theorems.source
-             FROM theorems
-             LEFT JOIN theorem_identities
-               ON theorem_identities.legacy_name = theorems.id
-             ORDER BY theorem_identities.stable_id, theorems.id",
-        )?;
-        let rows = stmt.query_map([], |row| {
-            let links: String = row.get(6)?;
-            Ok(TheoremRecord {
-                id: row.get(0)?,
-                legacy_name: row.get(1)?,
-                title: row.get(2)?,
-                proof_path: Utf8PathBuf::from(row.get::<_, String>(3)?),
-                status: row.get(4)?,
-                identity_kind: row.get(5)?,
-                linked_claim_ids: serde_json::from_str(&links).unwrap_or_default(),
-                source: row.get(7)?,
-            })
-        })?;
-        collect_rows(rows)
-    }
-
-    pub fn list_binaries(&self) -> Result<Vec<BinaryRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT name, crate_name, description, experiment_id, source
-             FROM binaries_cp ORDER BY name",
-        )?;
-        let rows = stmt.query_map([], |row| {
-            Ok(BinaryRecord {
-                name: row.get(0)?,
-                crate_name: row.get(1)?,
-                description: row.get(2)?,
-                experiment: row.get(3)?,
-                source: row.get(4)?,
-            })
-        })?;
-        collect_rows(rows)
-    }
-
-    pub fn list_external_source_contracts(&self) -> Result<Vec<ExternalSourceContractRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, path_glob, canonical_url, access_class, status, retrieval_method,
-                    attempt_deadline_utc, resolution_deadline_utc, blocker_note
-             FROM external_source_contracts
-             ORDER BY id",
-        )?;
-        let base_rows = stmt
-            .query_map([], |row| {
-                Ok((
-                    row.get::<_, String>(0)?,
-                    row.get::<_, String>(1)?,
-                    row.get::<_, String>(2)?,
-                    row.get::<_, String>(3)?,
-                    row.get::<_, String>(4)?,
-                    row.get::<_, String>(5)?,
-                    row.get::<_, String>(6)?,
-                    row.get::<_, String>(7)?,
-                    row.get::<_, String>(8)?,
-                ))
-            })?
-            .collect::<std::result::Result<Vec<_>, _>>()?;
-        let mut out = Vec::with_capacity(base_rows.len());
-        for (
-            id,
-            path_glob,
-            canonical_url,
-            access_class,
-            status,
-            retrieval_method,
-            attempt_deadline_utc,
-            resolution_deadline_utc,
-            blocker_note,
-        ) in base_rows
-        {
-            out.push(ExternalSourceContractRecord {
-                id: id.clone(),
-                path_glob,
-                canonical_url,
-                mirror_urls: load_ranked_values(
-                    &self.conn,
-                    "external_source_contract_values",
-                    "contract_id",
-                    &id,
-                    "mirror_url",
-                )?,
-                access_class,
-                status,
-                retrieval_method,
-                attempt_deadline_utc,
-                resolution_deadline_utc,
-                blocker_note,
-                evidence_refs: load_ranked_values(
-                    &self.conn,
-                    "external_source_contract_values",
-                    "contract_id",
-                    &id,
-                    "evidence_ref",
-                )?,
-                manual_manifest_refs: load_ranked_values(
-                    &self.conn,
-                    "external_source_contract_values",
-                    "contract_id",
-                    &id,
-                    "manual_manifest_ref",
-                )?,
-                blocked_action_plan: load_ranked_values(
-                    &self.conn,
-                    "external_source_contract_values",
-                    "contract_id",
-                    &id,
-                    "blocked_action_plan",
-                )?,
-                scientific_validator_refs: load_ranked_values(
-                    &self.conn,
-                    "external_source_contract_values",
-                    "contract_id",
-                    &id,
-                    "scientific_validator_ref",
-                )?,
-            });
-        }
-        Ok(out)
-    }
-
-    pub fn list_external_source_dossiers(&self) -> Result<Vec<ExternalSourceDossierRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, source_markdown, slug, title, status_token, content_kind,
-                    authority_level, verification_level, operational_role,
-                    source_lineage_summary, has_full_transcript, line_count, notes, body_markdown
-             FROM external_source_dossiers
-             ORDER BY id",
-        )?;
-        let base_rows = stmt
-            .query_map([], |row| {
-                Ok((
-                    row.get::<_, String>(0)?,
-                    row.get::<_, String>(1)?,
-                    row.get::<_, String>(2)?,
-                    row.get::<_, String>(3)?,
-                    row.get::<_, String>(4)?,
-                    row.get::<_, String>(5)?,
-                    row.get::<_, String>(6)?,
-                    row.get::<_, String>(7)?,
-                    row.get::<_, String>(8)?,
-                    row.get::<_, String>(9)?,
-                    row.get::<_, i64>(10)?,
-                    row.get::<_, i64>(11)?,
-                    row.get::<_, String>(12)?,
-                    row.get::<_, String>(13)?,
-                ))
-            })?
-            .collect::<std::result::Result<Vec<_>, _>>()?;
-        let mut out = Vec::with_capacity(base_rows.len());
-        for (
-            id,
-            source_markdown,
-            slug,
-            title,
-            status_token,
-            content_kind,
-            authority_level,
-            verification_level,
-            operational_role,
-            source_lineage_summary,
-            has_full_transcript,
-            line_count,
-            notes,
-            body_markdown,
-        ) in base_rows
-        {
-            out.push(ExternalSourceDossierRecord {
-                id: id.clone(),
-                source_markdown,
-                slug,
-                title,
-                status_token,
-                content_kind,
-                authority_level,
-                verification_level,
-                operational_role,
-                source_lineage_summary,
-                truth_surfaces: load_ranked_values(
-                    &self.conn,
-                    "external_source_dossier_values",
-                    "dossier_id",
-                    &id,
-                    "truth_surface",
-                )?,
-                artifact_contract_paths: load_ranked_values(
-                    &self.conn,
-                    "external_source_dossier_values",
-                    "dossier_id",
-                    &id,
-                    "artifact_contract_path",
-                )?,
-                has_full_transcript: has_full_transcript != 0,
-                claim_refs: load_ranked_values(
-                    &self.conn,
-                    "external_source_dossier_values",
-                    "dossier_id",
-                    &id,
-                    "claim_ref",
-                )?,
-                url_refs: load_ranked_values(
-                    &self.conn,
-                    "external_source_dossier_values",
-                    "dossier_id",
-                    &id,
-                    "url_ref",
-                )?,
-                path_refs: load_ranked_values(
-                    &self.conn,
-                    "external_source_dossier_values",
-                    "dossier_id",
-                    &id,
-                    "path_ref",
-                )?,
-                line_count: line_count as usize,
-                notes,
-                body_markdown,
-            });
-        }
-        Ok(out)
-    }
-
     pub fn registry_snapshot(&self, kind: &str) -> Result<Option<String>> {
         self.conn
             .query_row(
@@ -2557,525 +1674,6 @@ impl ProvenanceStore {
         Ok(())
     }
 
-    /// Add lane membership atomically while retaining artifact metadata and evidence.
-    pub fn assign_artifact_lane(
-        &mut self,
-        ids: &[String],
-        lane_name: &str,
-        actor: Option<&str>,
-        reason: Option<&str>,
-    ) -> Result<usize> {
-        if !matches!(
-            lane_name,
-            "datasets" | "papers_pdf" | "slides_artifacts" | "web_references"
-        ) {
-            bail!("unsupported artifact lane {lane_name}");
-        }
-        if ids.is_empty() {
-            bail!("artifact lane assignment requires at least one ID");
-        }
-        for (field, value) in ids
-            .iter()
-            .map(|id| ("id", id.as_str()))
-            .chain(actor.map(|value| ("actor", value)))
-            .chain(reason.map(|value| ("reason", value)))
-        {
-            if value.trim().is_empty() || !value.is_ascii() {
-                bail!("artifact {field} must be a non-empty ASCII string");
-            }
-        }
-        let distinct_ids: BTreeSet<&str> = ids.iter().map(String::as_str).collect();
-        let tx = self.conn.transaction()?;
-        for id in &distinct_ids {
-            let exists: bool = tx.query_row(
-                "SELECT EXISTS(SELECT 1 FROM artifacts WHERE id = ?1)",
-                params![id],
-                |row| row.get(0),
-            )?;
-            if !exists {
-                bail!("unknown artifact ID {id}");
-            }
-        }
-        let mut added_ids = Vec::new();
-        for id in distinct_ids {
-            if tx.execute(
-                "INSERT INTO lane_assignments (artifact_id, lane_name) VALUES (?1, ?2)
-                 ON CONFLICT(artifact_id, lane_name) DO NOTHING",
-                params![id, lane_name],
-            )? != 0
-            {
-                added_ids.push(id);
-            }
-        }
-        if !added_ids.is_empty() {
-            let details = serde_json::json!({"artifact_ids":added_ids,"lane":lane_name,"actor":actor,"reason":reason});
-            tx.execute(
-                "INSERT INTO export_runs (action, created_at, artifact_count, document_count, details_json)
-                 VALUES ('assign-artifact-lane', ?1, ?2, 0, ?3)",
-                params![Utc::now().to_rfc3339(), added_ids.len() as i64, details.to_string()],
-            )?;
-        }
-        tx.commit()?;
-        Ok(added_ids.len())
-    }
-
-    pub fn register_local_artifact(
-        &mut self,
-        repo_root: &Path,
-        registration: &LocalArtifactRegistration<'_>,
-    ) -> Result<usize> {
-        let LocalArtifactRegistration {
-            id,
-            key,
-            title,
-            citation,
-            paths,
-            lane_name,
-            source_refs,
-            actor,
-            reason,
-        } = *registration;
-        for (field_name, value) in [
-            ("id", id),
-            ("key", key),
-            ("title", title),
-            ("citation", citation),
-            ("lane", lane_name),
-        ] {
-            if value.trim().is_empty() {
-                bail!("local artifact {field_name} must not be empty");
-            }
-            if !value.is_ascii() {
-                bail!("local artifact {field_name} must contain ASCII only");
-            }
-        }
-        if !matches!(
-            lane_name,
-            "datasets" | "papers_pdf" | "slides_artifacts" | "web_references"
-        ) {
-            bail!("unsupported artifact lane {lane_name}");
-        }
-        if paths.is_empty() {
-            bail!("local artifact registration requires at least one path");
-        }
-
-        let mut relative_paths = BTreeSet::new();
-        for raw_path in paths {
-            if raw_path.trim().is_empty() || !raw_path.is_ascii() {
-                bail!("artifact paths must be non-empty ASCII strings");
-            }
-            let relative_path = Path::new(raw_path);
-            if relative_path.is_absolute()
-                || relative_path.components().any(|component| {
-                    matches!(
-                        component,
-                        Component::ParentDir | Component::RootDir | Component::Prefix(_)
-                    )
-                })
-            {
-                bail!("artifact path must be repository-relative: {raw_path}");
-            }
-            let full_path = repo_root.join(relative_path);
-            let metadata = fs::symlink_metadata(&full_path)
-                .with_context(|| format!("inspect artifact path {}", full_path.display()))?;
-            if metadata.file_type().is_symlink() || !metadata.file_type().is_file() {
-                bail!("artifact path is not a regular file: {raw_path}");
-            }
-            relative_paths.insert(raw_path.clone());
-        }
-        if relative_paths.is_empty() {
-            bail!("local artifact registration requires distinct paths");
-        }
-        for source_ref in source_refs {
-            if source_ref.trim().is_empty() || !source_ref.is_ascii() {
-                bail!("artifact source references must be non-empty ASCII strings");
-            }
-        }
-        if let Some(actor) = actor
-            && (actor.trim().is_empty() || !actor.is_ascii())
-        {
-            bail!("artifact actor must be a non-empty ASCII string");
-        }
-        if let Some(reason) = reason
-            && (reason.trim().is_empty() || !reason.is_ascii())
-        {
-            bail!("artifact reason must be a non-empty ASCII string");
-        }
-
-        let relative_paths = relative_paths.into_iter().collect::<Vec<_>>();
-        let canonical_path = relative_paths
-            .first()
-            .expect("non-empty artifact paths after validation");
-        let tx = self.conn.transaction()?;
-        let conflicting_id = tx
-            .query_row(
-                "SELECT id FROM artifacts WHERE key = ?1 AND id <> ?2",
-                params![key, id],
-                |row| row.get::<_, String>(0),
-            )
-            .optional()?;
-        if let Some(conflicting_id) = conflicting_id {
-            bail!("artifact key {key} already belongs to {conflicting_id}");
-        }
-
-        tx.execute(
-            "INSERT INTO artifacts (
-                id, key, title, citation, status,
-                minimum_requirement_met, canonical_functional_url, canonical_download_path
-            ) VALUES (?1, ?2, ?3, ?4, 'downloaded', 1, NULL, ?5)
-            ON CONFLICT(id) DO UPDATE SET
-                key = excluded.key,
-                title = excluded.title,
-                citation = excluded.citation,
-                status = excluded.status,
-                minimum_requirement_met = excluded.minimum_requirement_met,
-                canonical_functional_url = excluded.canonical_functional_url,
-                canonical_download_path = excluded.canonical_download_path",
-            params![id, key, title, citation, canonical_path],
-        )?;
-        tx.execute(
-            "DELETE FROM artifact_paths WHERE artifact_id = ?1 AND relation = 'downloaded'",
-            params![id],
-        )?;
-        tx.execute(
-            "DELETE FROM lane_assignments WHERE artifact_id = ?1",
-            params![id],
-        )?;
-        tx.execute(
-            "DELETE FROM record_sources WHERE entity_kind = 'artifact' AND entity_id = ?1",
-            params![id],
-        )?;
-        for path in &relative_paths {
-            tx.execute(
-                "INSERT INTO artifact_paths (artifact_id, path, relation) VALUES (?1, ?2, 'downloaded')",
-                params![id, path],
-            )?;
-        }
-        tx.execute(
-            "INSERT INTO lane_assignments (artifact_id, lane_name) VALUES (?1, ?2)",
-            params![id, lane_name],
-        )?;
-        for source_ref in source_refs {
-            tx.execute(
-                "INSERT INTO record_sources (entity_kind, entity_id, source_ref) VALUES ('artifact', ?1, ?2)",
-                params![id, source_ref],
-            )?;
-        }
-        let details = serde_json::json!({
-            "artifact_id": id,
-            "key": key,
-            "paths": &relative_paths,
-            "lane": lane_name,
-            "source_refs": source_refs,
-            "actor": actor,
-            "reason": reason,
-        });
-        tx.execute(
-            "INSERT INTO export_runs (
-                action, created_at, artifact_count, document_count, details_json
-            ) VALUES ('register-local-artifact', ?1, 1, 0, ?2)",
-            params![Utc::now().to_rfc3339(), details.to_string()],
-        )?;
-        tx.commit()?;
-        Ok(relative_paths.len())
-    }
-
-    pub fn artifact_by_needle(&self, needle: &str) -> Result<Option<ArtifactQueryResult>> {
-        let row = self
-            .conn
-            .query_row(
-                "SELECT id, key, title, citation, status, minimum_requirement_met,
-                        canonical_functional_url, canonical_download_path
-                 FROM artifacts
-                 WHERE id = ?1 OR key = ?1
-                    OR lower(title) LIKE '%' || lower(?1) || '%'
-                 ORDER BY CASE WHEN id = ?1 OR key = ?1 THEN 0 ELSE 1 END, id
-                 LIMIT 1",
-                params![needle],
-                |row| {
-                    Ok((
-                        row.get::<_, String>(0)?,
-                        row.get::<_, String>(1)?,
-                        row.get::<_, String>(2)?,
-                        row.get::<_, String>(3)?,
-                        row.get::<_, String>(4)?,
-                        row.get::<_, i64>(5)?,
-                        row.get::<_, Option<String>>(6)?,
-                        row.get::<_, Option<String>>(7)?,
-                    ))
-                },
-            )
-            .optional()?;
-
-        let Some((
-            id,
-            key,
-            title,
-            citation,
-            status_raw,
-            minimum_requirement_met,
-            canonical_functional_url,
-            canonical_download_path,
-        )) = row
-        else {
-            return Ok(None);
-        };
-        let artifact = ArtifactRecord {
-            id: id.clone(),
-            key,
-            title,
-            citation,
-            status: ArtifactStatus::parse(&status_raw)
-                .with_context(|| format!("invalid artifact status {status_raw}"))?,
-            minimum_requirement_met: minimum_requirement_met != 0,
-            canonical_functional_url,
-            canonical_download_path: canonical_download_path.map(Utf8PathBuf::from),
-            source_refs: load_record_sources(&self.conn, "artifact", &id)?,
-            all_links: load_string_vec(
-                &self.conn,
-                "SELECT url FROM artifact_links WHERE artifact_id = ?1 ORDER BY url",
-                &id,
-            )?,
-            downloaded_paths: load_string_vec(
-                &self.conn,
-                "SELECT path FROM artifact_paths WHERE artifact_id = ?1 AND relation = 'downloaded' ORDER BY path",
-                &id,
-            )?
-            .into_iter()
-            .map(Utf8PathBuf::from)
-            .collect(),
-            doi_list: load_string_vec(
-                &self.conn,
-                "SELECT doi FROM citations WHERE artifact_id = ?1 AND doi IS NOT NULL ORDER BY doi",
-                &id,
-            )?,
-            notes: Vec::new(),
-        };
-
-        let lanes = load_string_vec(
-            &self.conn,
-            "SELECT lane_name FROM lane_assignments WHERE artifact_id = ?1 ORDER BY lane_name",
-            &artifact.id,
-        )?;
-        let mirror_observations = self.load_mirrors(&artifact.id)?;
-        Ok(Some(ArtifactQueryResult {
-            artifact,
-            lanes,
-            mirror_observations,
-        }))
-    }
-
-    pub fn document_by_needle(&self, needle: &str) -> Result<Option<DocumentQueryResult>> {
-        let document = self
-            .conn
-            .query_row(
-                "SELECT id, path, title, kind, authoring_mode, generated, status,
-                        toml_backing, sha256, size_bytes, line_count
-                 FROM documents
-                 WHERE id = ?1 OR path = ?1
-                    OR lower(title) LIKE '%' || lower(?1) || '%'
-                 ORDER BY CASE WHEN id = ?1 OR path = ?1 THEN 0 ELSE 1 END, id
-                 LIMIT 1",
-                params![needle],
-                |row| {
-                    Ok(DocumentRecord {
-                        id: row.get(0)?,
-                        path: Utf8PathBuf::from(row.get::<_, String>(1)?),
-                        title: row.get(2)?,
-                        kind: row.get(3)?,
-                        authoring_mode: row.get(4)?,
-                        generated: row.get::<_, i64>(5)? != 0,
-                        status: row.get(6)?,
-                        toml_backing: row.get::<_, Option<String>>(7)?.map(Utf8PathBuf::from),
-                        sha256: row.get(8)?,
-                        size_bytes: row.get(9)?,
-                        line_count: row.get(10)?,
-                    })
-                },
-            )
-            .optional()?;
-
-        let Some(document) = document else {
-            return Ok(None);
-        };
-        let source_refs = load_record_sources(&self.conn, "document", &document.id)?;
-        Ok(Some(DocumentQueryResult {
-            document,
-            source_refs,
-        }))
-    }
-
-    pub fn recent_download_jobs(&self, limit: usize) -> Result<Vec<DownloadQueryResult>> {
-        self.query_download_jobs(limit, None, None, None, None)
-    }
-
-    pub fn query_download_jobs(
-        &self,
-        limit: usize,
-        needle: Option<&str>,
-        host: Option<&str>,
-        status: Option<&str>,
-        backend: Option<&str>,
-    ) -> Result<Vec<DownloadQueryResult>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, requested_url, transfer_kind, requested_backend, route_scheme, route_host,
-                    route_backends_json, note, status, final_url, output_path, created_at
-             FROM download_jobs
-             WHERE (?1 IS NULL OR requested_url LIKE '%' || ?1 || '%')
-               AND (?2 IS NULL OR route_host = ?2)
-               AND (?3 IS NULL OR status = ?3)
-               AND (?4 IS NULL OR requested_backend = ?4
-                    OR EXISTS (
-                        SELECT 1 FROM download_attempts a
-                        WHERE a.job_id = download_jobs.id AND a.backend = ?4
-                    ))
-             ORDER BY id DESC
-             LIMIT ?5",
-        )?;
-        let mut rows = stmt.query(params![needle, host, status, backend, limit as i64,])?;
-        let mut results = Vec::new();
-        while let Some(row) = rows.next()? {
-            let job_id = row.get::<_, i64>(0)?;
-            let route_backends_json = row.get::<_, String>(6)?;
-            let attempts = self.download_attempts_for_job(job_id)?;
-            results.push(DownloadQueryResult {
-                job: DownloadJobRecord {
-                    id: Some(job_id),
-                    requested_url: row.get(1)?,
-                    transfer_kind: row.get(2)?,
-                    requested_backend: row.get(3)?,
-                    route_scheme: row.get(4)?,
-                    route_host: row.get(5)?,
-                    route_backends: serde_json::from_str(&route_backends_json).unwrap_or_default(),
-                    note: row.get(7)?,
-                    status: row.get(8)?,
-                    final_url: row.get(9)?,
-                    output_path: row.get(10)?,
-                    created_at: row.get(11)?,
-                },
-                attempts,
-            });
-        }
-        Ok(results)
-    }
-
-    pub fn download_attempts_for_job(&self, job_id: i64) -> Result<Vec<DownloadAttemptRecord>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT id, backend, succeeded, failure_class, http_code, content_type, bytes, sha256,
-                    is_pdf, final_url, note, error_message, recorded_at
-             FROM download_attempts
-             WHERE job_id = ?1
-             ORDER BY id ASC",
-        )?;
-        let rows = stmt.query_map(params![job_id], |row| {
-            Ok(DownloadAttemptRecord {
-                id: Some(row.get(0)?),
-                job_id: Some(job_id),
-                backend: row.get(1)?,
-                succeeded: row.get::<_, i64>(2)? != 0,
-                failure_class: row.get(3)?,
-                http_code: row.get(4)?,
-                content_type: row.get(5)?,
-                bytes: row.get(6)?,
-                sha256: row.get(7)?,
-                is_pdf: row.get::<_, i64>(8)? != 0,
-                final_url: row.get(9)?,
-                note: row.get(10)?,
-                error_message: row.get(11)?,
-                recorded_at: row.get(12)?,
-            })
-        })?;
-        rows.collect::<std::result::Result<Vec<_>, _>>()
-            .map_err(Into::into)
-    }
-
-    pub fn recent_download_campaigns(
-        &self,
-        limit: usize,
-    ) -> Result<Vec<DownloadCampaignQueryResult>> {
-        let mut stmt = self.conn.prepare(
-            "SELECT c.id, c.name, c.command_kind, c.input_path, c.out_ledger_path, c.dest_dir, c.note, c.created_at,
-                    COUNT(j.id) AS job_count,
-                    SUM(CASE WHEN j.status = 'succeeded' THEN 1 ELSE 0 END) AS success_count,
-                    SUM(CASE WHEN j.status = 'failed' THEN 1 ELSE 0 END) AS failure_count
-             FROM download_campaigns c
-             LEFT JOIN download_campaign_jobs cj ON cj.campaign_id = c.id
-             LEFT JOIN download_jobs j ON j.id = cj.job_id
-             GROUP BY c.id, c.name, c.command_kind, c.input_path, c.out_ledger_path, c.dest_dir, c.note, c.created_at
-             ORDER BY c.id DESC
-             LIMIT ?1",
-        )?;
-        let rows = stmt.query_map(params![limit as i64], |row| {
-            Ok(DownloadCampaignQueryResult {
-                campaign: DownloadCampaignRecord {
-                    id: Some(row.get(0)?),
-                    name: row.get(1)?,
-                    command_kind: row.get(2)?,
-                    input_path: row.get(3)?,
-                    out_ledger_path: row.get(4)?,
-                    dest_dir: row.get(5)?,
-                    note: row.get(6)?,
-                    created_at: row.get(7)?,
-                },
-                job_count: row.get::<_, i64>(8)?.max(0) as usize,
-                success_count: row.get::<_, Option<i64>>(9)?.unwrap_or(0).max(0) as usize,
-                failure_count: row.get::<_, Option<i64>>(10)?.unwrap_or(0).max(0) as usize,
-            })
-        })?;
-        rows.collect::<std::result::Result<Vec<_>, _>>()
-            .map_err(Into::into)
-    }
-
-    pub fn project_download_history_rows(
-        &self,
-        limit: usize,
-        needle: Option<&str>,
-        host: Option<&str>,
-        status: Option<&str>,
-        backend: Option<&str>,
-    ) -> Result<Vec<DownloadLedgerProjectionRow>> {
-        let jobs = self.query_download_jobs(limit, needle, host, status, backend)?;
-        let mut rows = Vec::new();
-        for result in jobs {
-            let job_id = result.job.id.unwrap_or_default();
-            for attempt in result.attempts {
-                let attempt_id = attempt.id.unwrap_or_default();
-                let id = format!("job_{job_id:06}_attempt_{attempt_id:06}");
-                let note = match attempt.error_message.as_deref() {
-                    Some(error) if !error.is_empty() => {
-                        format!("{}; error={error}", attempt.note)
-                    }
-                    _ => attempt.note.clone(),
-                };
-                let note = match attempt.failure_class.as_deref() {
-                    Some(failure_class) if !failure_class.is_empty() => {
-                        format!("{note}; failure_class={failure_class}")
-                    }
-                    _ => note,
-                };
-                rows.push(DownloadLedgerProjectionRow {
-                    id,
-                    url: attempt
-                        .final_url
-                        .clone()
-                        .or_else(|| result.job.final_url.clone())
-                        .unwrap_or_else(|| result.job.requested_url.clone()),
-                    http_code: attempt
-                        .http_code
-                        .map(|value| value.to_string())
-                        .unwrap_or_default(),
-                    content_type: attempt.content_type.clone().unwrap_or_default(),
-                    bytes: attempt.bytes.max(0) as u64,
-                    sha256: attempt.sha256.clone().unwrap_or_default(),
-                    is_pdf: if attempt.is_pdf { "yes" } else { "no" }.to_string(),
-                    note,
-                    status: result.job.status.clone(),
-                });
-            }
-        }
-        Ok(rows)
-    }
-
     pub fn doctor_report(&self) -> Result<DoctorReport> {
         let artifact_count = scalar_count(&self.conn, "SELECT COUNT(*) FROM artifacts")?;
         let document_count = scalar_count(&self.conn, "SELECT COUNT(*) FROM documents")?;
@@ -3162,93 +1760,6 @@ impl ProvenanceStore {
             last_indexed_at,
             last_exported_at,
         })
-    }
-
-    pub fn record_download_result(
-        &mut self,
-        job: &DownloadJobRecord,
-        attempt: &DownloadAttemptRecord,
-    ) -> Result<i64> {
-        self.record_download_trace(job, std::slice::from_ref(attempt))
-    }
-
-    pub fn record_download_trace(
-        &mut self,
-        job: &DownloadJobRecord,
-        attempts: &[DownloadAttemptRecord],
-    ) -> Result<i64> {
-        let tx = self.conn.transaction()?;
-        tx.execute(
-            "INSERT INTO download_jobs (
-                requested_url, transfer_kind, requested_backend, route_scheme, route_host,
-                route_backends_json, note, status, final_url, output_path, created_at
-            ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
-            params![
-                job.requested_url,
-                job.transfer_kind,
-                job.requested_backend,
-                job.route_scheme,
-                job.route_host,
-                serde_json::to_string(&job.route_backends)?,
-                job.note,
-                job.status,
-                job.final_url,
-                job.output_path,
-                job.created_at,
-            ],
-        )?;
-        let job_id = tx.last_insert_rowid();
-        for attempt in attempts {
-            tx.execute(
-                "INSERT INTO download_attempts (
-                    job_id, backend, succeeded, http_code, content_type, bytes, sha256, is_pdf,
-                    final_url, note, error_message, recorded_at, failure_class
-                ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13)",
-                params![
-                    job_id,
-                    attempt.backend,
-                    if attempt.succeeded { 1_i64 } else { 0_i64 },
-                    attempt.http_code,
-                    attempt.content_type,
-                    attempt.bytes,
-                    attempt.sha256,
-                    if attempt.is_pdf { 1_i64 } else { 0_i64 },
-                    attempt.final_url,
-                    attempt.note,
-                    attempt.error_message,
-                    attempt.recorded_at,
-                    attempt.failure_class,
-                ],
-            )?;
-        }
-        tx.commit()?;
-        Ok(job_id)
-    }
-
-    pub fn create_download_campaign(&mut self, campaign: &DownloadCampaignRecord) -> Result<i64> {
-        self.conn.execute(
-            "INSERT INTO download_campaigns (
-                name, command_kind, input_path, out_ledger_path, dest_dir, note, created_at
-            ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)",
-            params![
-                campaign.name,
-                campaign.command_kind,
-                campaign.input_path,
-                campaign.out_ledger_path,
-                campaign.dest_dir,
-                campaign.note,
-                campaign.created_at,
-            ],
-        )?;
-        Ok(self.conn.last_insert_rowid())
-    }
-
-    pub fn link_download_job_to_campaign(&mut self, campaign_id: i64, job_id: i64) -> Result<()> {
-        self.conn.execute(
-            "INSERT OR IGNORE INTO download_campaign_jobs (campaign_id, job_id) VALUES (?1, ?2)",
-            params![campaign_id, job_id],
-        )?;
-        Ok(())
     }
 
     pub fn verify_invariants(&self, repo_root: &Path) -> Result<()> {
@@ -3575,389 +2086,6 @@ impl ProvenanceStore {
         Ok(())
     }
 
-    /// Read-only accessor for the current status_note on a claim row.
-    /// Returns Ok(None) if the row exists but the column is NULL,
-    /// Err if the row does not exist.
-    pub fn claim_status_note(&self, id: &str) -> Result<Option<String>> {
-        let row: Option<String> = self
-            .conn
-            .query_row(
-                "SELECT status_note FROM claims WHERE id = ?1",
-                params![id],
-                |row| row.get(0),
-            )
-            .map_err(|e| anyhow::anyhow!("claim {} not found in canonical DB: {}", id, e))?;
-        Ok(row)
-    }
-
-    /// Update the status_note on a claim row inside a BEGIN IMMEDIATE
-    /// transaction, append a row to claim_revisions, and return the
-    /// audit record. The compat-export TOML must be regenerated
-    /// afterwards via `make registry-export-markdown`.
-    ///
-    /// Idempotent: if the new note equals the current note, the
-    /// function still records a `touch` revision so the actor + reason
-    /// are preserved, but does not change the underlying row.
-    pub fn claim_update_status_note(
-        &mut self,
-        id: &str,
-        new_note: &str,
-        actor: &str,
-        reason: Option<&str>,
-    ) -> Result<StatusNoteRevision> {
-        let tx = self
-            .conn
-            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        let prev_note: Option<String> = tx
-            .query_row(
-                "SELECT status_note FROM claims WHERE id = ?1",
-                params![id],
-                |row| row.get(0),
-            )
-            .map_err(|e| {
-                anyhow::anyhow!(
-                    "claim {} not found in canonical DB (or read failed): {}",
-                    id,
-                    e
-                )
-            })?;
-        let prev_value_sha256 = prev_note.as_deref().map(sha256_hex);
-        let new_value_sha256 = sha256_hex(new_note);
-        let operation = if prev_note.as_deref() == Some(new_note) {
-            "touch"
-        } else {
-            tx.execute(
-                "UPDATE claims SET status_note = ?2 WHERE id = ?1",
-                params![id, new_note],
-            )?;
-            "update"
-        };
-        tx.execute(
-            "INSERT INTO claim_revisions
-             (claim_id, field_name, prev_value_sha256, new_value_sha256,
-              actor, reason, operation, application_id)
-             VALUES (?1, 'status_note', ?2, ?3, ?4, ?5, ?6, ?7)",
-            params![
-                id,
-                prev_value_sha256,
-                new_value_sha256,
-                actor,
-                reason,
-                operation,
-                CLI_APPLICATION_ID
-            ],
-        )?;
-        let revision_id = tx.last_insert_rowid();
-        tx.commit()?;
-        Ok(StatusNoteRevision {
-            entity_id: id.to_string(),
-            field_name: "status_note".to_string(),
-            prev_value_sha256,
-            new_value_sha256,
-            actor: actor.to_string(),
-            reason: reason.map(str::to_string),
-            revision_id,
-        })
-    }
-
-    /// Read-only accessor for an insight's status_note column (added in
-    /// migration 0016).
-    pub fn insight_status_note(&self, id: &str) -> Result<Option<String>> {
-        let row: Option<String> = self
-            .conn
-            .query_row(
-                "SELECT status_note FROM insights WHERE id = ?1",
-                params![id],
-                |row| row.get(0),
-            )
-            .map_err(|e| anyhow::anyhow!("insight {} not found in canonical DB: {}", id, e))?;
-        Ok(row)
-    }
-
-    /// Update the status_note on an insight row. Mirrors
-    /// claim_update_status_note end-to-end.
-    pub fn insight_update_status_note(
-        &mut self,
-        id: &str,
-        new_note: &str,
-        actor: &str,
-        reason: Option<&str>,
-    ) -> Result<StatusNoteRevision> {
-        self.entity_update_status_note(
-            id,
-            new_note,
-            actor,
-            reason,
-            EntityFieldTarget {
-                table: "insights",
-                revisions_table: "insight_revisions",
-                fk_col: "insight_id",
-                field: "status_note",
-            },
-        )
-    }
-
-    /// Read-only accessor for an insight's summary, which lives inside the
-    /// cached compat TOML body because the insights table has no summary
-    /// column.
-    pub fn insight_summary(&self, id: &str) -> Result<Option<String>> {
-        let compat: String = self
-            .conn
-            .query_row(
-                "SELECT compat_toml_text FROM insights WHERE id = ?1",
-                params![id],
-                |row| row.get(0),
-            )
-            .map_err(|e| anyhow::anyhow!("insight {} not found in canonical DB: {}", id, e))?;
-        let doc: toml_edit::DocumentMut = compat
-            .parse()
-            .with_context(|| format!("parse compat TOML body of insight {id}"))?;
-        Ok(doc.get("summary").and_then(|v| v.as_str()).map(str::to_string))
-    }
-
-    /// Rewrite the summary inside an insight's cached compat TOML body in one
-    /// BEGIN IMMEDIATE transaction and append an insight_revisions row with
-    /// field_name 'summary'. toml_edit keeps every other key and its
-    /// formatting, so the export projects only the summary change.
-    pub fn insight_update_summary(
-        &mut self,
-        id: &str,
-        new_summary: &str,
-        actor: &str,
-        reason: Option<&str>,
-    ) -> Result<StatusNoteRevision> {
-        let tx = self
-            .conn
-            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        let compat: String = tx
-            .query_row(
-                "SELECT compat_toml_text FROM insights WHERE id = ?1",
-                params![id],
-                |row| row.get(0),
-            )
-            .map_err(|e| anyhow::anyhow!("insight {} not found in canonical DB: {}", id, e))?;
-        let mut doc: toml_edit::DocumentMut = compat
-            .parse()
-            .with_context(|| format!("parse compat TOML body of insight {id}"))?;
-        let prev = doc.get("summary").and_then(|v| v.as_str()).map(str::to_string);
-        let prev_value_sha256 = prev.as_deref().map(sha256_hex);
-        let new_value_sha256 = sha256_hex(new_summary);
-        let operation = if prev.as_deref() == Some(new_summary) {
-            "touch"
-        } else {
-            doc["summary"] = toml_edit::value(new_summary);
-            tx.execute(
-                "UPDATE insights SET compat_toml_text = ?2 WHERE id = ?1",
-                params![id, doc.to_string()],
-            )?;
-            "update"
-        };
-        tx.execute(
-            "INSERT INTO insight_revisions
-             (insight_id, field_name, prev_value_sha256, new_value_sha256,
-              actor, reason, operation, application_id)
-             VALUES (?1, 'summary', ?2, ?3, ?4, ?5, ?6, ?7)",
-            params![
-                id,
-                prev_value_sha256,
-                new_value_sha256,
-                actor,
-                reason,
-                operation,
-                CLI_APPLICATION_ID
-            ],
-        )?;
-        let revision_id = tx.last_insert_rowid();
-        tx.commit()?;
-        Ok(StatusNoteRevision {
-            entity_id: id.to_string(),
-            field_name: "summary".to_string(),
-            prev_value_sha256,
-            new_value_sha256,
-            actor: actor.to_string(),
-            reason: reason.map(str::to_string),
-            revision_id,
-        })
-    }
-
-    /// Read-only accessor for an experiment's status_note column.
-    pub fn experiment_status_note(&self, id: &str) -> Result<Option<String>> {
-        let row: Option<String> = self
-            .conn
-            .query_row(
-                "SELECT status_note FROM experiments_cp WHERE id = ?1",
-                params![id],
-                |row| row.get(0),
-            )
-            .map_err(|e| anyhow::anyhow!("experiment {} not found in canonical DB: {}", id, e))?;
-        Ok(row)
-    }
-
-    /// Update the status_note on an experiment row. Mirrors
-    /// claim_update_status_note end-to-end.
-    pub fn experiment_update_status_note(
-        &mut self,
-        id: &str,
-        new_note: &str,
-        actor: &str,
-        reason: Option<&str>,
-    ) -> Result<StatusNoteRevision> {
-        self.entity_update_status_note(
-            id,
-            new_note,
-            actor,
-            reason,
-            EntityFieldTarget {
-                table: "experiments_cp",
-                revisions_table: "experiment_revisions",
-                fk_col: "experiment_id",
-                field: "status_note",
-            },
-        )
-    }
-
-    /// Generic helper for status_note updates across claims, insights,
-    /// experiments_cp. Caller passes the table, the revisions table, and
-    /// the fk column name. All three call sites use this; it is the only
-    /// place SQL is constructed for the entity-level update.
-    fn entity_update_status_note(
-        &mut self,
-        id: &str,
-        new_note: &str,
-        actor: &str,
-        reason: Option<&str>,
-        target: EntityFieldTarget<'_>,
-    ) -> Result<StatusNoteRevision> {
-        self.entity_update_field(
-            id,
-            new_note,
-            actor,
-            reason,
-            EntityFieldTarget {
-                table: target.table,
-                revisions_table: target.revisions_table,
-                fk_col: target.fk_col,
-                field: "status_note",
-            },
-        )
-    }
-
-    /// Generic per-column updater used by status_note and formal_proof
-    /// mutators. Wraps a single BEGIN IMMEDIATE transaction that reads
-    /// the prior value, hashes prev/new, conditionally writes, and
-    /// appends a revisions audit row. `target.field` must be a trusted
-    /// identifier from the call site (never user input).
-    pub fn entity_update_field(
-        &mut self,
-        id: &str,
-        new_value: &str,
-        actor: &str,
-        reason: Option<&str>,
-        target: EntityFieldTarget<'_>,
-    ) -> Result<StatusNoteRevision> {
-        let tx = self
-            .conn
-            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        let revision =
-            Self::entity_update_field_in_transaction(&tx, id, new_value, actor, reason, target)?;
-        tx.commit()?;
-        Ok(revision)
-    }
-
-    fn entity_update_field_in_transaction(
-        tx: &rusqlite::Transaction<'_>,
-        id: &str,
-        new_value: &str,
-        actor: &str,
-        reason: Option<&str>,
-        target: EntityFieldTarget<'_>,
-    ) -> Result<StatusNoteRevision> {
-        let EntityFieldTarget {
-            table,
-            revisions_table,
-            fk_col,
-            field,
-        } = target;
-        let select_sql = format!("SELECT {field} FROM {table} WHERE id = ?1");
-        let update_sql = format!("UPDATE {table} SET {field} = ?2 WHERE id = ?1");
-        let insert_sql = format!(
-            "INSERT INTO {revisions_table}
-             ({fk_col}, field_name, prev_value_sha256, new_value_sha256,
-              actor, reason, operation, application_id)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)"
-        );
-        let prev: Option<String> = tx
-            .query_row(&select_sql, params![id], |row| row.get(0))
-            .map_err(|e| anyhow::anyhow!("{} {} not found in canonical DB: {}", table, id, e))?;
-        let prev_value_sha256 = prev.as_deref().map(sha256_hex);
-        let new_value_sha256 = sha256_hex(new_value);
-        let operation = if prev.as_deref() == Some(new_value) {
-            "touch"
-        } else {
-            tx.execute(&update_sql, params![id, new_value])?;
-            "update"
-        };
-        tx.execute(
-            &insert_sql,
-            params![
-                id,
-                field,
-                prev_value_sha256,
-                new_value_sha256,
-                actor,
-                reason,
-                operation,
-                CLI_APPLICATION_ID
-            ],
-        )?;
-        let revision_id = tx.last_insert_rowid();
-        Ok(StatusNoteRevision {
-            entity_id: id.to_string(),
-            field_name: field.to_string(),
-            prev_value_sha256,
-            new_value_sha256,
-            actor: actor.to_string(),
-            reason: reason.map(str::to_string),
-            revision_id,
-        })
-    }
-
-    /// Read-only accessor for the current formal_proof on a claim row.
-    pub fn claim_formal_proof(&self, id: &str) -> Result<Option<String>> {
-        let row: Option<String> = self
-            .conn
-            .query_row(
-                "SELECT formal_proof FROM claims WHERE id = ?1",
-                params![id],
-                |row| row.get(0),
-            )
-            .map_err(|e| anyhow::anyhow!("claim {} not found in canonical DB: {}", id, e))?;
-        Ok(row)
-    }
-
-    /// Update the formal_proof on a claim row. Mirrors
-    /// claim_update_status_note end-to-end via entity_update_field.
-    pub fn claim_update_formal_proof(
-        &mut self,
-        id: &str,
-        new_value: &str,
-        actor: &str,
-        reason: Option<&str>,
-    ) -> Result<StatusNoteRevision> {
-        self.entity_update_field(
-            id,
-            new_value,
-            actor,
-            reason,
-            EntityFieldTarget {
-                table: "claims",
-                revisions_table: "claim_revisions",
-                fk_col: "claim_id",
-                field: "formal_proof",
-            },
-        )
-    }
-
     /// Rewrite every reference to a moved source file across the canonical
     /// control plane.
     ///
@@ -4114,53 +2242,64 @@ impl ProvenanceStore {
         Ok(pending)
     }
 
-    /// Names `binaries_sync` would add and remove, without writing.
-    pub fn preview_binaries_sync(
-        &self,
-        declared: &[BinaryRecord],
-    ) -> Result<(Vec<String>, Vec<String>)> {
-        let existing: BTreeSet<String> = self
-            .list_binaries()?
-            .into_iter()
-            .map(|record| record.name)
+    /// Names and crate owners `binaries_sync` would reconcile, without writing.
+    pub fn preview_binaries_sync(&self, declared: &[BinaryRecord]) -> Result<BinariesSyncSummary> {
+        let existing_records = self.list_binaries()?;
+        let existing: BTreeSet<String> = existing_records
+            .iter()
+            .map(|record| record.name.clone())
             .collect();
         let declared_names: BTreeSet<String> =
             declared.iter().map(|record| record.name.clone()).collect();
-        Ok((
-            declared_names.difference(&existing).cloned().collect(),
-            existing.difference(&declared_names).cloned().collect(),
-        ))
+        let owner_changes = existing_records
+            .iter()
+            .filter_map(|record| {
+                declared
+                    .iter()
+                    .find(|candidate| candidate.name == record.name)
+                    .filter(|candidate| candidate.crate_name != record.crate_name)
+                    .map(|candidate| BinaryOwnerChange {
+                        name: record.name.clone(),
+                        previous_crate: record.crate_name.clone(),
+                        declared_crate: candidate.crate_name.clone(),
+                    })
+            })
+            .collect();
+        Ok(BinariesSyncSummary {
+            added: declared_names.difference(&existing).cloned().collect(),
+            removed: existing.difference(&declared_names).cloned().collect(),
+            owner_changes,
+            retained: existing.intersection(&declared_names).count(),
+        })
     }
 
     /// Reconcile `binaries_cp` against the binary targets cargo declares.
     ///
-    /// Rows carry curated descriptions, so a name already present keeps its
-    /// row untouched; only absent names are inserted and stale names deleted.
-    /// This is the discovery half of the registry, and it drifts whenever a
-    /// `[[bin]]` is added, removed, or folded into a subcommand tree.
+    /// Existing names retain curated descriptions, experiment links, and sources.
+    /// Cargo owns crate membership, so crate moves update only `crate_name`.
+    /// Absent names are inserted and stale names deleted in the same transaction.
     pub fn binaries_sync(&mut self, declared: &[BinaryRecord]) -> Result<BinariesSyncSummary> {
-        let existing: BTreeSet<String> = self
-            .list_binaries()?
-            .into_iter()
-            .map(|record| record.name)
-            .collect();
-        let declared_names: BTreeSet<String> =
-            declared.iter().map(|record| record.name.clone()).collect();
-
-        let mut summary = BinariesSyncSummary {
-            retained: existing.intersection(&declared_names).count(),
-            ..Default::default()
-        };
+        let summary = self.preview_binaries_sync(declared)?;
 
         let tx = self
             .conn
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        for name in existing.difference(&declared_names) {
+        for name in &summary.removed {
             tx.execute("DELETE FROM binaries_cp WHERE name = ?1", params![name])?;
-            summary.removed.push(name.clone());
+        }
+        for change in &summary.owner_changes {
+            let changed = tx.execute(
+                "UPDATE binaries_cp SET crate_name = ?2 WHERE name = ?1 AND crate_name = ?3",
+                params![change.name, change.declared_crate, change.previous_crate],
+            )?;
+            anyhow::ensure!(
+                changed == 1,
+                "binary owner changed after preview: {}",
+                change.name
+            );
         }
         for record in declared {
-            if existing.contains(&record.name) {
+            if !summary.added.contains(&record.name) {
                 continue;
             }
             tx.execute(
@@ -4174,7 +2313,6 @@ impl ProvenanceStore {
                     record.source
                 ],
             )?;
-            summary.added.push(record.name.clone());
         }
         tx.commit()?;
         Ok(summary)
@@ -4675,6 +2813,7 @@ impl ProvenanceStore {
     pub fn ensure_artifact_reimport_safe(db_path: &Path) -> Result<()> {
         if db_path.exists() {
             let existing = Connection::open_with_flags(db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
+            claim_evidence::refuse_claim_evidence_history_loss(&existing)?;
             table_ops::refuse_artifact_path_history_loss(&existing)?;
         }
         Ok(())
@@ -5290,6 +3429,66 @@ mod tests {
     use std::time::{SystemTime, UNIX_EPOCH};
 
     #[test]
+    fn binaries_sync_reconciles_owner_and_preserves_curated_fields() -> Result<()> {
+        let mut connection = Connection::open_in_memory()?;
+        migrations().to_latest(&mut connection)?;
+        let mut store = ProvenanceStore { conn: connection };
+        let original = BinaryRecord {
+            name: "download-recovery".into(),
+            crate_name: "gororoba_cli_data".into(),
+            description: "Curated retrieval description".into(),
+            experiment: Some("E-curated".into()),
+            source: "curated-source".into(),
+        };
+        store.binaries_sync(std::slice::from_ref(&original))?;
+        let declared = BinaryRecord {
+            crate_name: "gororoba_cli_provenance".into(),
+            description: "Cargo discovery description".into(),
+            experiment: None,
+            source: "cargo-metadata".into(),
+            ..original.clone()
+        };
+        let preview = store.preview_binaries_sync(std::slice::from_ref(&declared))?;
+        assert!(preview.added.is_empty() && preview.removed.is_empty());
+        assert_eq!(preview.retained, 1);
+        assert_eq!(
+            preview.owner_changes,
+            vec![BinaryOwnerChange {
+                name: original.name.clone(),
+                previous_crate: original.crate_name.clone(),
+                declared_crate: declared.crate_name.clone(),
+            }]
+        );
+        assert_eq!(store.list_binaries()?, vec![original.clone()]);
+        let summary = store.binaries_sync(std::slice::from_ref(&declared))?;
+        assert_eq!(summary.owner_changes, preview.owner_changes);
+        let expected = BinaryRecord {
+            crate_name: declared.crate_name.clone(),
+            ..original
+        };
+        assert_eq!(store.list_binaries()?, vec![expected.clone()]);
+        assert!(
+            store
+                .binaries_sync(std::slice::from_ref(&declared))?
+                .owner_changes
+                .is_empty()
+        );
+
+        store.conn.execute_batch("CREATE TRIGGER reject_binary_insert BEFORE INSERT ON binaries_cp BEGIN SELECT RAISE(ABORT, 'injected binary insert failure'); END;")?;
+        let moved_again = BinaryRecord {
+            crate_name: "another_owner".into(),
+            ..declared.clone()
+        };
+        let added = BinaryRecord {
+            name: "new-binary".into(),
+            ..declared
+        };
+        assert!(store.binaries_sync(&[moved_again, added]).is_err());
+        assert_eq!(store.list_binaries()?, vec![expected]);
+        Ok(())
+    }
+
+    #[test]
     fn retarget_consumes_the_existing_argument_separator() {
         let text = "cargo run --release --bin heliosphere-fa-attribution -- --mission cluster";
         assert_eq!(
@@ -5326,11 +3525,7 @@ mod tests {
     fn retarget_leaves_a_longer_target_sharing_the_prefix_intact() {
         let text = "run heliosphere-r16-ablation then heliosphere-r16-ablation-sparse";
         assert_eq!(
-            rewrite_execution_target(
-                text,
-                "heliosphere-r16-ablation",
-                "heliosphere r16-ablation"
-            ),
+            rewrite_execution_target(text, "heliosphere-r16-ablation", "heliosphere r16-ablation"),
             "run heliosphere r16-ablation then heliosphere-r16-ablation-sparse"
         );
     }
@@ -5495,7 +3690,10 @@ mod tests {
         )?;
         let disposition = "na_empirical:ROC-AUC on THEMIS-A minutes, no theorem to prove";
         store.claim_update_formal_proof("C-001", disposition, "test", Some("review"))?;
-        assert_eq!(store.claim_formal_proof("C-001")?.as_deref(), Some(disposition));
+        assert_eq!(
+            store.claim_formal_proof("C-001")?.as_deref(),
+            Some(disposition)
+        );
 
         let first_export = store.control_plane_compat_text(ControlPlaneCompatKind::Claims)?;
         assert!(
@@ -6260,7 +4458,12 @@ claims = ["C-001"]
             ReimportOptions::bootstrap(),
         )?;
         store.insight_update_status_note("I-212", SEEDED_NOTE, "test", Some("seed"))?;
-        store.experiment_update_status_note("E-001", SEEDED_EXPERIMENT_NOTE, "test", Some("seed"))?;
+        store.experiment_update_status_note(
+            "E-001",
+            SEEDED_EXPERIMENT_NOTE,
+            "test",
+            Some("seed"),
+        )?;
         store.claim_update_formal_proof("C-001", SEEDED_PROOF, "test", Some("seed"))?;
         store.conn.execute(
             "INSERT INTO claim_transition_events (
@@ -6281,14 +4484,15 @@ claims = ["C-001"]
     }
 
     const SEEDED_NOTE: &str = "seeded canonical note that no compatibility TOML carries";
-    const SEEDED_EXPERIMENT_NOTE: &str =
-        "seeded experiment note that the compatibility TOML omits";
+    const SEEDED_EXPERIMENT_NOTE: &str = "seeded experiment note that the compatibility TOML omits";
     const SEEDED_PROOF: &str = "na_empirical:canonical-only disposition";
     const PERMUTED_NOTE: &str = "note written during the permutation";
 
     fn export_to(store: &mut ProvenanceStore, fixture: &TestWorkspace) -> Result<()> {
         let theorems = fixture.root.join("docs/THEOREMS.md");
-        let mirror = fixture.root.join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
+        let mirror = fixture
+            .root
+            .join("docs/generated/THEOREMS_REGISTRY_MIRROR.md");
         store.export_control_plane_compat_paths(
             &fixture.root,
             CompatExportPaths {
@@ -6497,7 +4701,10 @@ claims = ["C-001"]
         let mut diffs = Vec::new();
         for entry in fs::read_dir(&backups)? {
             let path = entry?.path();
-            let name = path.file_name().and_then(|n| n.to_str()).unwrap_or_default();
+            let name = path
+                .file_name()
+                .and_then(|n| n.to_str())
+                .unwrap_or_default();
             if name.ends_with(".diff.toml") {
                 diffs.push(path);
             } else if name.ends_with(".sqlite3") {

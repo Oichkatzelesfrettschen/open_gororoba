@@ -1,0 +1,11 @@
+{
+  "body_bytes": 0,
+  "body_sha256": null,
+  "completed": false,
+  "final_url": "https://www.science.org/doi/10.1126/science.adl2348",
+  "http_status": 403,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:41Z",
+  "requested_url": "https://doi.org/10.1126/science.adl2348",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

@@ -159,7 +159,10 @@ struct ClaimEntry {
     where_stated: String,
     #[serde(default)]
     last_verified: String,
-    #[serde(default)]
+    #[serde(
+        default,
+        deserialize_with = "provenance_core::falsifier_text::deserialize_text"
+    )]
     what_would_verify_refute: String,
     // New optional fields added by consolidation pipeline
     #[serde(default)]

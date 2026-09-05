@@ -74,6 +74,10 @@ fn sha256(bytes: impl AsRef<[u8]>) -> String {
 }
 
 fn verify_file(root: &Path, relative: &str, expected: &str) -> Result<()> {
+    verified_file_bytes(root, relative, expected).map(|_| ())
+}
+
+pub(crate) fn verified_file_bytes(root: &Path, relative: &str, expected: &str) -> Result<Vec<u8>> {
     let path = Path::new(relative);
     if relative.is_empty()
         || !path
@@ -103,12 +107,13 @@ fn verify_file(root: &Path, relative: &str, expected: &str) -> Result<()> {
     if !fs::metadata(&full)?.is_file() {
         bail!("artifact path is not a regular file: {relative}");
     }
-    let digest = sha256(fs::read(&full)?);
+    let bytes = fs::read(&full)?;
+    let digest = sha256(&bytes);
     if digest != expected {
         bail!("SHA256 mismatch for {relative}: expected {expected}, observed {digest}");
     }
     verify_tracked_file(root, relative)?;
-    Ok(())
+    Ok(bytes)
 }
 
 fn repository_git(root: &Path) -> Command {
@@ -445,10 +450,7 @@ mod tests {
     }
 
     fn git(root: &Path, arguments: &[&str]) {
-        let output = repository_git(root)
-            .args(arguments)
-            .output()
-            .unwrap();
+        let output = repository_git(root).args(arguments).output().unwrap();
         assert!(
             output.status.success(),
             "{}",

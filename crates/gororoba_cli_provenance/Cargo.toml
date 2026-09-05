@@ -8,11 +8,11 @@ description = "Slim provenance and download recovery operator binaries for goror
 
 [[bin]]
 name = "provenance"
-path = "../gororoba_cli_data/src/bin/provenance.rs"
+path = "src/bin/provenance.rs"
 
 [[bin]]
 name = "download-recovery"
-path = "../gororoba_cli_data/src/bin/download_recovery.rs"
+path = "src/bin/download_recovery.rs"
 
 [dependencies]
 anyhow = { workspace = true }

@@ -1884,7 +1884,7 @@ source_uid = "CONTROL_PLANE_CLAIMS"
 source_group = "doc_claim_matrix"
 source_registry = "registry/canonical/control_plane.sqlite3"
 source_path = "registry/canonical/control_plane.sqlite3"
-source_line = 1019
+source_line = 1033
 claim_refs = []
 
 [[atom]]
@@ -1903,7 +1903,7 @@ source_uid = "CONTROL_PLANE_CLAIMS"
 source_group = "doc_claim_matrix"
 source_registry = "registry/canonical/control_plane.sqlite3"
 source_path = "registry/canonical/control_plane.sqlite3"
-source_line = 1021
+source_line = 1035
 claim_refs = []
 
 [[atom]]

@@ -1,0 +1,11 @@
+{
+  "body_bytes": 374167,
+  "body_sha256": "3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5",
+  "completed": true,
+  "final_url": "https://arxiv.org/pdf/math/0511691",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:30Z",
+  "requested_url": "https://arxiv.org/pdf/math/0511691.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

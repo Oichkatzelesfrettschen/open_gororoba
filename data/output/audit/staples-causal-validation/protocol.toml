@@ -1,0 +1,71 @@
+schema_version = 1
+name = "staples-timestamp-causal-epoch-control-validation"
+status = "preregistered-reanalysis"
+parent_claims = ["C-1740", "C-1741"]
+primary_metric = "paired_roc_auc_increment"
+minimum_increment = 0.005
+threshold_basis = "Investigator-defined minimum discrimination increment, 0.5 ROC-AUC percentage points; operational alert-cost utility remains unmeasured."
+training_years = [2007, 2008, 2009, 2010, 2011, 2012]
+validation_years = [2013, 2014]
+final_years = [2015, 2016]
+widths = [64, 256, 1024]
+control_seeds = [1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1016,1017,1018]
+bootstrap_draws = 2000
+bootstrap_seed = 20260904
+ridge = 0.000001
+log_epsilon = 0.000000000001
+label_radius_seconds = 120
+maximum_gap_seconds = 30
+maximum_feature_span_seconds = 30
+fill_value = -1.0e30
+threads = 6
+file_map = "data/output/benchmark_scores.files.csv"
+file_map_sha256 = "38cd4a98088af0946db07f9779da867914cd2df247a38d1fe20007dff56cb108"
+catalog = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
+catalog_sha256 = "807b79b73b1266981d24c20627d8f85bca585475d07260d4162277a22ce660b5"
+
+[admission]
+decision = "At the first observation of a new timestamp t, score the six most recent admitted strictly earlier timestamps. The current vector is excluded. All feature dependencies precede t. Record t and latest feature timestamp separately."
+equal_times = "Collect rows sharing a timestamp as a batch. Admit a batch into future feature history only when exactly one finite valid vector is present. Duplicate batches end the segment. Batch closure occurs at the next strictly later timestamp; final unclosed batches produce no new decision. A decision at t uses only already closed earlier batches."
+malformed = "A malformed row, nonfinite component, exact HAPI fill value, or backward timestamp terminates admission: malformed/fill rows reset the segment; backward timestamps reject the file. Header is recognized explicitly; errors never bridge surviving rows."
+gaps = "Reset history after a positive interval greater than 30 seconds; require the six-vector feature span <=30 seconds and restart maximum-width calibration warmup in each segment. Thirty seconds allows at most ten nominal FGS spins; it is an investigator admission bound, not an instrument accuracy estimate."
+common_population = "Every width and tensor uses the identical admitted raw-row supports. Require 1024 preceding increments before the six-vector window. Retain all admitted decisions; apply neither label-dependent nor outcome-dependent subsampling."
+labels = "Use every verified V2 crossing for the same probe, including adjacent UTC dates, within +/-120 seconds of decision t. The pad is a localization tolerance, not measured catalog timing uncertainty."
+quality_scope = "FGS is a calibrated Level-2 spin-resolution product in GSE nT. CSV inputs retain timestamp and vector only; calibration version, maneuver flags, FIT spin-fit variance and arrival-time latency remain unmeasured. Timestamp causality supports archived-data concurrent localization, not historical real-time or precursor performance."
+raw_evidence = "Retain per-file SHA256, raw/valid/rejected/admitted counts, cadence observations, epoch, probe, timestamp/support digest, label digest and source/executable identities."
+
+[calibration]
+fixed_local_transform = "For each width, the max of five six-vector increment norms is divided by the RMS of exactly W admitted increments preceding the six-vector window. This causal local normalization has fixed coefficients and is part of the input feature, with its full raw support shared across compared models. It is not a fitted population calibration."
+fitted_transform = "Estimate each feature's log-score mean and population standard deviation exclusively from training epochs. Freeze these statistics and logistic coefficients for validation/final/external predictions. Any pooled calibration or probability recalibration must be fitted exclusively on training epochs."
+width_selection = "Run all three fixed widths. Use the global minimum increment across widths and both final years for the primary outcome. Final results never select a winning width. Validation years remain descriptive development checks; all protocol constants stay frozen."
+
+[models]
+baseline = ["last_pair_magnitude_change_per_second", "last_pair_rotation", "six_sample_cumulative_rotation", "six_sample_maximum_rotation", "causal_maximum_increment_pvi", "six_sample_maximum_increment_gram_volume"]
+augmented = "The same six baseline features plus one canonical or exact-support scrambled normalized cubic score. Each augmentation has seven predictors and one intercept; each uses the identical ridge, optimizer, iteration/convergence gate, training rows, log transform and standardization."
+canonical = "Evaluate the canonical 1848-term 16D associator tensor and every scramble through the identical sparse contraction and shared norm-product denominator. Record tensor coefficient and ordered support digests."
+controls = "Independent coefficient-sign scrambles preserve exact ordered (i,j,k) support, coefficient magnitudes, output XOR rule, dimension, raw windows, denominator and fitting budget. Such tensors are generic cubic controls and need not define algebras."
+orbit = "GL/sign isomorphic orbits can move coordinate support and remain a separate historical estimand; they do not substitute for the exact-support ensemble."
+
+[inference]
+unit = "Whole UTC daily files within each final year; paired multiplicities shared across all widths/models in each bootstrap draw. Raw rows within a day remain intact."
+interval = "Linear 2.5 and 97.5 percentiles of 2000 paired whole-file bootstrap global-minimum increments; approximate training-conditional intervals for frozen detectors and fixed observed epochs. Report file/positive-file counts and observed Monte Carlo resolution."
+precision = "If any final year has fewer than 30 admitted files or 10 files containing positives, emit inconclusive_insufficient_support. Empty classes, nonconverged fits and nonfinite metrics reject the numerical run and retain failure evidence."
+supports_increment = "Primary interval lower endpoint strictly exceeds 0.005."
+rejects_increment = "Primary interval upper endpoint strictly below 0.005 rejects the declared useful discrimination increment for the observed epochs/protocol."
+inconclusive = "The interval touches or crosses 0.005, or support/precision requirements fail. A positive interval below 0.005 can support a small positive effect while rejecting the declared useful increment."
+secondary = "Report ROC-AUC, average precision and log loss by width/year/model; secondary outcomes never override the primary verdict."
+structure_specificity = "Report all 19 control increments and canonical rank, with finite-ensemble tail rank (1 + controls >= canonical)/20. Claim structure-specific superiority only if canonical exceeds every control in both final years and every width; minimum tail resolution is 0.05. Preserve inconclusive mechanism status when comparison uncertainty is insufficient. Control reproduction supports revising algebra-specific explanation independently of useful prediction."
+limits = "Daily clusters do not prove interday independence; intervals condition on frozen training estimates and the two observed final years. Additional epochs/independent missions remain separate replication targets. This is preregistered reanalysis of historically observed data, not a claim that historical holdouts were previously unseen."
+
+[external]
+probe = "d"
+years = [2015, 2016]
+selection = "Every unique UTC date with a probe-D crossing in verified V2 during the declared years. Intake fixes the date manifest before retrieving vectors. Retain every failed date and require complete planned-date accounting."
+source = "CDAWeb HAPI THD_L2_FGM@0, Time and thd_fgs_gse, with official metadata and exact retrieval/body hashes; preserve raw response bytes."
+model = "Apply THEMIS-A training-fitted preprocessing and coefficients unchanged; use the same fixed local feature rules. Never fit on external labels or observations."
+completion = "Run only after input identity, units, fill value, coverage and classes pass; unresolved retrieval or inadequate class/file support gives explicit blocked/inconclusive evidence."
+claim_scope = "Another THEMIS spacecraft shares instrument design and catalog labeling methodology. Crossing-day sampling measures localization conditional on crossing days; operational false-alarm rates on ordinary days and independent-mission transfer remain untested."
+
+[research]
+references = ["10.5281/zenodo.10655312", "10.1029/2019JA027289", "10.1007/s10994-020-05910-7", "10.1016/j.csda.2017.11.003", "10.1177/1948550617697177", "https://themis.ssl.berkeley.edu/fgm_desc.shtml", "https://themis.ssl.berkeley.edu/fgm_proc_history.shtml", "https://cdaweb.gsfc.nasa.gov/hapi/info?id=THA_L2_FGM%400"]
+adoption = "Use version-verified labels, exact fill rejection, calibrated-product scope, chronological epochs, training-only learned transforms, threshold-relative decisions and explicit dependence limits. Sources do not determine the chosen widths, gap bound or minimum increment."

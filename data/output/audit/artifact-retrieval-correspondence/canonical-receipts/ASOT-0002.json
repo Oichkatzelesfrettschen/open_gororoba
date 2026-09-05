@@ -1,0 +1,117 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/pdf/1602.02317v1.pdf",
+    "key": "BALES_2016_ALT_CD",
+    "links": [
+      [
+        "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf",
+        "all_links"
+      ],
+      [
+        "https://arxiv.org/abs/1602.02317",
+        "all_links"
+      ],
+      [
+        "https://arxiv.org/pdf/1602.02317v1.pdf",
+        "all_links"
+      ],
+      [
+        "https://arxiv.org/pdf/1602.02317v2.pdf",
+        "all_links"
+      ],
+      [
+        "https://doi.org/10.35834/mjms/1474295358",
+        "all_links"
+      ],
+      [
+        "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/bales_2016_arxiv_withdrawn_versions_arxiv_org_pdf_1602_02317v1_pdf.pdf",
+      "citation": "Bales (2016) arXiv 1602.02317 - explicit versions and alternates",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "Bales (2016) arXiv 1602.02317 - explicit versions and alternates"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/pdf/1602.02317v1.pdf",
+    "key": "BALES_2016_ALT_CD",
+    "links": [
+      [
+        "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf",
+        "all_links"
+      ],
+      [
+        "https://arxiv.org/abs/1602.02317",
+        "all_links"
+      ],
+      [
+        "https://arxiv.org/pdf/1602.02317v1.pdf",
+        "all_links"
+      ],
+      [
+        "https://arxiv.org/pdf/1602.02317v2.pdf",
+        "all_links"
+      ],
+      [
+        "https://doi.org/10.35834/mjms/1474295358",
+        "all_links"
+      ],
+      [
+        "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/bales_2016_arxiv_withdrawn_versions_arxiv_org_pdf_1602_02317v1_pdf.pdf",
+      "citation": "Bales (2016) arXiv 1602.02317 - explicit versions and alternates",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "Bales (2016) arXiv 1602.02317 - explicit versions and alternates"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 191938,
+    "body_sha256": "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1",
+    "completed": true,
+    "final_url": "https://arxiv.org/pdf/1602.02317v1",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:28Z",
+    "requested_url": "https://arxiv.org/pdf/1602.02317v1.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-0002",
+    "artifact_key": "BALES_2016_ALT_CD",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 191938,
+    "expected_canonical_url": "https://arxiv.org/pdf/1602.02317v1.pdf",
+    "expected_sha256": "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1",
+    "observation_key": "exact-response-ASOT-0002-537ed108df4fc9d2fd191d8f6c6221a1baeb418702ff10bafff5f0055ece3712",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-00.json",
+      "sha256": "537ed108df4fc9d2fd191d8f6c6221a1baeb418702ff10bafff5f0055ece3712"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-00.bin",
+      "sha256": "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "32893c086836f85c33bf4fa39150178306b4d08aeec401e5b91390f87a09b89a"
+}

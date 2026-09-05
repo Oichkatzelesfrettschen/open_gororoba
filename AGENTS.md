@@ -236,7 +236,7 @@ stub kept for transparency.
 1. Edit via `gororoba-db` CLI (in `crates/gororoba_db/`) against the
    SQLite.
 2. Re-export compatibility lanes:
-   `cargo run -p gororoba_cli_data --bin provenance -- export-control-plane`.
+   `cargo run -p gororoba_cli_provenance --bin provenance -- export-control-plane`.
 3. Refresh registry signatures:
    `make registry-integrity`.
 4. Commit the SQLite delta + regenerated TOMLs + regenerated
@@ -257,6 +257,14 @@ refuses when the database holds transition events and requires
 `--allow-transition-history-loss` to proceed. Use step 2 above to
 refresh exports; reach for `build` only when importing hand-authored
 TOML into an empty or expendable database.
+
+Typed empirical contracts use `gororoba-db claim set-evidence --spec
+<contract.toml> --actor <actor> --reason <reason>`. Retrieval receipts use
+`gororoba-db artifact record-retrieval --spec <receipt.toml>`. Both commands
+retain append-only canonical history; destructive imports refuse databases
+holding either history. Follow the export and signature steps above. See
+`docs/engineering/registry_canonical_architecture.md` for specification fields
+and the distinction between historical retrieval expectations and live prestate.
 
 ## Research epistemics
 
@@ -322,13 +330,13 @@ Rules:
   construction that breaks it, C-1489 the concession that it is
   project-specific.
 
-Interpretive depth has no schema field yet. `parameter_count` is
-declared per observable in `registry/scorecard.toml`; no `lift_depth`
-exists anywhere in the registry, so the axis is presently unmeasured
-and the table above is prose. Adding `lift_depth` through the
-`gororoba-db` mutation path is the open action that discharges this,
-and until it lands the "Instruments over essays" rule below indicts
-this subsection too.
+`ClaimEvidenceSpec` in `provenance_store::claim_evidence` records maps by
+branch and kind, fitted parameter counts, and interpretive depth. A declared
+`lift_depth` equals the maximum number of interpretive maps along any branch;
+computational maps remain separately enumerated. `depth_status = "not_assessed"`
+requires an omitted `lift_depth` and an explicit rationale. An enumerated
+computational pipeline therefore does not establish physical interpretive depth.
+C-1740, C-1741, and C-1743 carry typed contracts; their physical depth remains unassessed.
 
 ### Matched controls
 
@@ -348,11 +356,12 @@ the proposed causal structure.
 
 ### Falsifiers
 
-`what_would_verify_refute` is declared in the claim schema
-(`crates/gororoba_cli_data/src/bin/registry_check.rs` and nine peer
-binaries) and appears zero times in `registry/claims.toml`. Populating
-it is the cheapest available increase in the program's exposure to
-refutation.
+`what_would_verify_refute` is a typed outcome table in the C-1740, C-1741, and C-1743
+contracts, with separate verification, revision, abandonment, and inconclusive
+outcomes. Each contract names decisive experiments and a protocol artifact.
+`gororoba-db claim set-evidence` validates the declaration and appends its full
+previous and new values before compatibility export. A registered falsifier
+defines an adjudication rule; experiment evidence determines the claim outcome.
 
 - A `falsifiable_thesis` or `research_claim` MUST state what would
   refute it, which experiment adjudicates, and which outcome forces

@@ -1,0 +1,28 @@
+title = "Claim consumer output and retained protocol validation"
+consolidation_integration_tests_passed = 32
+consolidation_preflight_tests_passed = 5
+store_tests_passed = 65
+database_cli_tests_passed = 2
+focused_clippy = "passed with warnings denied for the consolidation binary and integration tests, provenance_store and gororoba_db"
+required_gate = "final-validation.toml"
+
+[serialization]
+mechanism = "FullClaimEntry retains ClaimFalsifier as a structured enum and preserves additional evidence fields through a flattened map. Analysis alone projects category-labelled text."
+verification = "Exact TOML semantic equality after file output covers categorized, legacy-text and absent falsifiers, maps, parameters and decisive-experiment fields."
+command = "cargo test -p gororoba_cli --profile validation --test test_consolidate"
+
+[reimport]
+mechanism = "A read-only preflight refuses immutable claim-evidence history loss before consolidation reads or writes compatibility files."
+verification = "All five mutating commands and relative, absolute, symlink and hardlink canonical output aliases preserve export/database bytes and revision rows on refusal. Separate output and read-only modes remain available."
+command = "cargo test -p gororoba_cli_data --bin claims-consolidate --profile validation"
+
+[protocol]
+mechanism = "Evidence mutation admits a nonempty Git-tracked regular protocol file against an explicit repository root, seals SHA256 and rechecks before transaction commit. Control-plane invariants repeat admission and verify sealed digests."
+verification = "Missing, directory, absolute, traversal, untracked, empty, symlink and wrong-digest inputs fail before mutation; later removal and content drift fail invariant verification."
+legacy_boundary = "Existing digest-free contracts retain their history and pass file-retention checks. verify_claim_evidence_artifacts returns their IDs as unsealed; file existence does not establish historical content identity. Future evidence revisions seal the admitted digest."
+active_contracts = "C-1740, C-1741 and C-1743 are sealed through canonical evidence revisions 5, 6 and 7. sealed-protocols.json records their digests; protocol-sealing-preservation.sql verifies preservation of the four preceding revisions and unrelated rows."
+command = "cargo test -p provenance_store -p gororoba_db --profile validation"
+
+[interpretive_depth]
+mechanism = "Depth accumulation and duplicate-map checks both trim surrounding branch whitespace before comparing branch identity."
+verification = "Two distinct interpretive maps under whitespace variants of one branch reject lift_depth=1 and accept lift_depth=2. Moving the second map to an independent branch restores maximum per-branch depth 1."

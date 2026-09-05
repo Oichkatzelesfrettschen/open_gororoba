@@ -1,0 +1,80 @@
+research_surface = "Primary catalog identity, label schema, temporal spacecraft coverage, and raw-data intake routing"
+claim_boundary = "Catalog/schema observations and directory listing only; scientific holdout performance remains unevaluated"
+
+[catalog]
+record_url = "https://zenodo.org/records/10655312"
+api_url = "https://zenodo.org/api/records/10655312"
+version_doi = "10.5281/zenodo.10655312"
+concept_doi = "10.5281/zenodo.3700503"
+publication_date = "2024-02-13"
+title = "THEMIS Magnetopause Crossing Database V2"
+license = "cc-by-4.0"
+file_url = "https://zenodo.org/api/records/10655312/files/THEMIS_MPcrossings_2007-2016_V2.txt/content"
+bytes = 2159172
+expected_md5 = "5e20140d243b04244c2dfe99bb25e878"
+observed_md5 = "5e20140d243b04244c2dfe99bb25e878"
+observed_sha256 = "807b79b73b1266981d24c20627d8f85bca585475d07260d4162277a22ce660b5"
+retained_local_sha256 = "807b79b73b1266981d24c20627d8f85bca585475d07260d4162277a22ce660b5"
+version_change = "Record states V2 removes duplicate crossing records from V1"
+columns = ["TIMESTAMP", "X_GSE", "Y_GSE", "Z_GSE", "X_GSM", "Y_GSM", "Z_GSM", "PROBE"]
+absent_columns = ["timing_uncertainty", "interval_start", "interval_end", "quality_flag", "label_confidence", "reviewer_agreement"]
+raw_rows = 29141
+exact_probe_timestamp_duplicate_rows = 0
+
+[paper]
+doi = "10.1029/2019JA027289"
+title = "Do Statistical Models Capture the Dynamics of the Magnetopause During Sudden Magnetospheric Compressions?"
+metadata_url = "https://api.crossref.org/works/10.1029/2019JA027289"
+metadata_result = "Publisher-registered DOI/title and abstract retrieved"
+classification_method_pointer = "Catalog header and official metadata refer to manuscript section 3.1"
+full_text_result = "Wiley and UCL return challenge HTML; two Lancaster author-repository PDF URLs time out at 45 and 30 seconds"
+classification_criteria_verified = false
+paper_abstract_scope = "Approximately 20000 dayside crossings; statistical magnetopause-model location accuracy during dynamic compressions"
+repository_comment_discrepancy = "crates/data_core/src/catalogs/themis.rs cites DOI 10.1029/2019JA027190 instead of verified paper DOI"
+repository_bibliography_discrepancy = "refs_heliosphere.bib uses shortened/different title ending Sudden Commencements"
+
+[[probe]]
+id = "a"
+count = 9490
+first = "2007-04-20T12:01:25Z"
+last = "2016-11-12T12:11:59Z"
+[[probe]]
+id = "b"
+count = 840
+first = "2007-04-18T20:43:30Z"
+last = "2009-09-07T09:16:29Z"
+[[probe]]
+id = "c"
+count = 1372
+first = "2007-04-18T22:56:35Z"
+last = "2009-11-03T11:23:12Z"
+[[probe]]
+id = "d"
+count = 8754
+first = "2007-04-08T21:46:41Z"
+last = "2016-10-25T20:05:20Z"
+[[probe]]
+id = "e"
+count = 8685
+first = "2007-04-21T20:55:02Z"
+last = "2016-10-27T17:20:24Z"
+
+[external_spacecraft_intake]
+unsuitable_retained_candidate = "THEMIS-B February 10-16 2012"
+matching_catalog_rows = 0
+candidate = "THEMIS-D on catalog-admitted dates within 2007-2016"
+verified_directory_url = "https://themis.ssl.berkeley.edu/data/themis/thd/l2/fgm/2007/"
+example_listed_file = "thd_l2_fgm_20070408_v01.cdf"
+example_matching_catalog_rows = 2
+admission_status = "Raw file existence observed in official index; CDF bytes, instrument quality, sampling cadence, and calibration metadata await admission"
+independence_limit = "A distinct THEMIS spacecraft shares mission instrumentation and catalog labeling methodology; spacecraft holdout is weaker than an independent mission and independent labeling pipeline"
+
+[protocol_implications]
+label_width = "Treat timestamp padding as an analyst-selected localization tolerance; the catalog supplies neither crossing duration nor timing uncertainty"
+quality = "Do not interpret parser-assigned fom=100.0 as source-supplied confidence"
+selection = "Crossing-day non-crossing samples measure discrimination conditional on known crossing days; operational false-alarm claims need admitted non-crossing days"
+version_pin = "Pin version DOI10655312 plus digest; concept DOI3700503 can resolve changing versions"
+epoch_partition = "Block spacecraft-correlated events and shared epochs across train/test; distinct probes can observe the same physical disturbance"
+coverage_reconciliation = "Live raw A and primary derived A each contain9490 rows with identical timestamp sets: omitted0, added0, duplicate0. Derived R matches the raw GSE Euclidean norm, and year/doy match the UTC timestamp. catalog-a-set-reconciliation.json retains both source hashes and exact differences."
+superseded_note = "The initial research comparison reused a historical narrative count9455 as if it described the live derived catalog. Direct byte-bound set reconciliation supersedes that unverified35-row discrepancy."
+uncertainty = "Classification-method/timing-uncertainty claims await primary manuscript section3.1; catalog schema alone cannot establish zero label uncertainty"

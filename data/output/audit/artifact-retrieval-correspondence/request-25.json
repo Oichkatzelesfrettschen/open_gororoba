@@ -1,0 +1,11 @@
+{
+  "body_bytes": 0,
+  "body_sha256": null,
+  "completed": false,
+  "final_url": "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+  "http_status": 404,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:33Z",
+  "requested_url": "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

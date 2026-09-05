@@ -416,12 +416,17 @@ fn parse_claim_rows_from_toml(raw: &str) -> Result<Vec<ClaimRow>, String> {
             None
         };
         let status = table_str(table, "status").to_string();
-        let evidence_notes = table
-            .get("what_would_verify_refute")
-            .and_then(Value::as_str)
-            .or_else(|| table.get("status_note").and_then(Value::as_str))
-            .unwrap_or("")
-            .to_string();
+        let evidence_notes = provenance_core::falsifier_text::project_optional(
+            table.get("what_would_verify_refute").cloned(),
+        )
+        .map_err(|error| format!("invalid falsifier for {claim_id}: {error}"))?
+        .or_else(|| {
+            table
+                .get("status_note")
+                .and_then(Value::as_str)
+                .map(str::to_string)
+        })
+        .unwrap_or_default();
         out.push(ClaimRow {
             claim_id,
             claim_num,
@@ -1182,6 +1187,20 @@ fn write_output(path: &std::path::Path, contents: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn categorized_falsifiers_replace_only_absent_status_note_fallbacks() {
+        let source = "[[claim]]\nid='C-100'\nstatus='Provisional'\nstatus_note='older status note'\n[claim.what_would_verify_refute]\nverification_outcomes=['verify C-101']\nrevision_outcomes=['revise C-102']\nabandonment_outcomes=['abandon C-103']\ninconclusive_outcomes=['inconclusive C-104']\n";
+        let rows = parse_claim_rows_from_toml(source).unwrap();
+        for reference in ["C-101", "C-102", "C-103", "C-104"] {
+            assert!(rows[0].evidence_notes.contains(reference));
+        }
+        assert!(!rows[0].evidence_notes.contains("older status note"));
+        assert!(
+            parse_claim_rows_from_toml(&source.replace("revision_outcomes", "unknown_category"))
+                .is_err()
+        );
+    }
 
     fn sample_claims() -> Vec<ClaimTomlRow> {
         vec![

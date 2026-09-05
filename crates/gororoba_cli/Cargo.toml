@@ -126,6 +126,7 @@ optics_core = { path = "../optics_core" }
 pgfplots = { workspace = true }
 plotters = { workspace = true }
 provenance_ops = { path = "../provenance_ops" }
+provenance_core = { path = "../provenance_core" }
 provenance_store = { path = "../provenance_store" }
 quantum_core = { path = "../quantum_core" }
 rand = { workspace = true }

@@ -1,0 +1,158 @@
+{
+  "all_models_converged": true,
+  "annual_support": {
+    "2007": [
+      2118357,
+      53020,
+      78,
+      77
+    ],
+    "2008": [
+      1375380,
+      30398,
+      50,
+      50
+    ],
+    "2009": [
+      2102439,
+      44207,
+      78,
+      74
+    ],
+    "2010": [
+      2470253,
+      70642,
+      92,
+      89
+    ],
+    "2011": [
+      1984839,
+      41232,
+      73,
+      71
+    ],
+    "2012": [
+      1808618,
+      42970,
+      67,
+      63
+    ],
+    "2013": [
+      1595907,
+      29466,
+      58,
+      58
+    ],
+    "2014": [
+      2249836,
+      45706,
+      82,
+      81
+    ],
+    "2015": [
+      3464220,
+      76664,
+      124,
+      124
+    ],
+    "2016": [
+      3093677,
+      109606,
+      111,
+      111
+    ]
+  },
+  "bootstrap_draws_replayed": 2000,
+  "bootstrap_panel_increments_replayed": 12000,
+  "boundary": "Replays retained support, fit membership counts, model records and paired bootstrap arithmetic. Does not refit raw features or establish external transfer; seeded RNG draws are retained inputs, not independently regenerated.",
+  "control_point_ranks": [
+    {
+      "controls_at_least_canonical": 15,
+      "width": 64,
+      "year": 2013
+    },
+    {
+      "controls_at_least_canonical": 5,
+      "width": 64,
+      "year": 2014
+    },
+    {
+      "controls_at_least_canonical": 14,
+      "width": 64,
+      "year": 2015
+    },
+    {
+      "controls_at_least_canonical": 16,
+      "width": 64,
+      "year": 2016
+    },
+    {
+      "controls_at_least_canonical": 15,
+      "width": 256,
+      "year": 2013
+    },
+    {
+      "controls_at_least_canonical": 9,
+      "width": 256,
+      "year": 2014
+    },
+    {
+      "controls_at_least_canonical": 14,
+      "width": 256,
+      "year": 2015
+    },
+    {
+      "controls_at_least_canonical": 16,
+      "width": 256,
+      "year": 2016
+    },
+    {
+      "controls_at_least_canonical": 15,
+      "width": 1024,
+      "year": 2013
+    },
+    {
+      "controls_at_least_canonical": 10,
+      "width": 1024,
+      "year": 2014
+    },
+    {
+      "controls_at_least_canonical": 15,
+      "width": 1024,
+      "year": 2015
+    },
+    {
+      "controls_at_least_canonical": 16,
+      "width": 1024,
+      "year": 2016
+    }
+  ],
+  "dataset_identity": "f13a679883d27c29b05ec6bdd2457e88c96394012269d9fc96b071f52b26d9ba",
+  "exact_root_records": 129,
+  "iterations_max": 7,
+  "iterations_min": 7,
+  "mechanism_decision": "inconclusive_comparison_uncertainty",
+  "model_count": 63,
+  "mutation_probes": [
+    "missing model rejected",
+    "extra record rejected",
+    "training_rows",
+    "converged",
+    "width",
+    "payload corruption rejected",
+    "threshold touching remains inconclusive"
+  ],
+  "point_count": 63,
+  "point_epoch_panels": 252,
+  "primary_interval": [
+    0.0010149049086891153,
+    0.0029188809429172872
+  ],
+  "status": "passed",
+  "support_files": 813,
+  "support_rows": 22263526,
+  "tensor_support_sha256": "24813bf040599e6cd64ed55e3170578179cd52daebdc3bbe02dae03dce6ad9c3",
+  "training_positives": 282469,
+  "training_rows": 11859886,
+  "verdict": "rejects_declared_useful_increment"
+}

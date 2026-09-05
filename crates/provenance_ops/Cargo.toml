@@ -20,12 +20,6 @@ url = { workspace = true }
 walkdir = { workspace = true }
 zip.workspace = true
 
-[package.metadata.cargo-machete]
-# These 8 deps are used by source_provenance.rs, which is included via
-# #[path = "../../gororoba_cli_data/src/source_provenance.rs"] in lib.rs.
-# machete cannot follow cross-crate #[path] redirections.
-ignored = ["chrono", "csv", "regex", "rusqlite", "sha2", "toml", "url", "walkdir"]
-
 [lints]
 workspace = true
 

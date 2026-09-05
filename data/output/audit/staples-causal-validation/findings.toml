@@ -1,0 +1,60 @@
+schema_version = 1
+protocol_commit = "1ad0e782"
+runner_commit = "1aa3a7b0"
+protocol_sha256 = "ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586c5e520c14dd70aa3aea6"
+internal_experiment = "E-282"
+external_experiment = "E-283"
+internal_exit = 0
+admitted_files = 813
+admitted_decisions = 22263526
+positive_decisions = 543911
+training_decisions = 11859886
+training_positive_decisions = 282469
+completed_models = 63
+completed_bootstrap_draws = 2000
+primary_interval = [0.0010149049086891153, 0.0029188809429172872]
+minimum_increment = 0.005
+primary_verdict = "rejects_declared_useful_increment"
+positive_effect_verdict = "The approximate training-conditional interval supports a small positive increment within the admitted archive. Its upper endpoint lies below the investigator-defined minimum discrimination increment."
+mechanism_verdict = "inconclusive_comparison_uncertainty"
+mechanism_observation = "Fourteen to sixteen of nineteen exact-support sign controls equal or exceed canonical ROC-AUC in each final width/year panel. Point ranks fail canonical dominance and motivate revising an algebra-specific explanation; confidence intervals for canonical-minus-control comparisons remain unrun."
+control_boundary = "Identical 1848-term ordered support, coefficient magnitudes, dimension, six-vector temporal support, norm denominator, preprocessing and fitting budget. The GL/sign orbit moves support and answers a separate historical question."
+external_verdict = "blocked_input_admission_backward_timestamp"
+external_admitted_dates = 165
+external_planned_dates = 166
+external_numerical_rows_consumed = 0
+external_evidence = "external-native-source-rca.toml and external-results/blocked-external-intake.json"
+historical_preservation = "C-1740 and C-1741 retain their original bounded numerical results. The experiment rejects a proposed useful causal increment rather than retroactively refuting a different historical population and procedure. All refuted historical parents remain retained."
+research_application = "Official FGM/HAPI metadata supplies variable, unit, fill and calibration-history boundaries. Verified V2 bytes supply labels. Temporal-validation and equivalence-testing research motivate epoch isolation, training-only learned transforms and threshold-relative decisions."
+limits = ["The threshold measures a declared discrimination requirement; operational cost-benefit remains unmeasured.", "Daily bootstrap intervals condition on frozen training estimates and fixed final epochs; interday independence remains unproven.", "The archive contains crossing days; ordinary-day false alarms, historical arrival latency and precursor utility remain unmeasured.", "External spacecraft inference remains blocked; another THEMIS probe would still share instrumentation and catalog methodology.", "All three fixed widths contribute to the primary global minimum; final outcomes never select a winning width or seed."]
+
+[[final_panel]]
+width = 64
+year = 2015
+canonical_increment = 0.0035539188183125736
+controls_at_or_above_canonical = 14
+[[final_panel]]
+width = 64
+year = 2016
+canonical_increment = 0.0027711437653165083
+controls_at_or_above_canonical = 16
+[[final_panel]]
+width = 256
+year = 2015
+canonical_increment = 0.0037223179130798645
+controls_at_or_above_canonical = 14
+[[final_panel]]
+width = 256
+year = 2016
+canonical_increment = 0.0032106144848953466
+controls_at_or_above_canonical = 16
+[[final_panel]]
+width = 1024
+year = 2015
+canonical_increment = 0.002867736798975784
+controls_at_or_above_canonical = 15
+[[final_panel]]
+width = 1024
+year = 2016
+canonical_increment = 0.0020299680937835296
+controls_at_or_above_canonical = 16

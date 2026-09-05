@@ -72,7 +72,10 @@ struct ClaimEntry {
     phase: Option<String>,
     #[serde(default)]
     last_verified: Option<String>,
-    #[serde(default)]
+    #[serde(
+        default,
+        deserialize_with = "provenance_core::falsifier_text::deserialize_optional_text"
+    )]
     what_would_verify_refute: Option<String>,
     #[serde(default)]
     supporting_evidence: Option<Vec<String>>,

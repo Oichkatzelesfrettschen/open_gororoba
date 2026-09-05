@@ -1,0 +1,85 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/abs/2509.08099",
+    "key": "url:https://arxiv.org/abs/2509.08099",
+    "links": [
+      [
+        "https://arxiv.org/abs/2509.08099",
+        "all_links"
+      ],
+      [
+        "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/sensational_primary/2026_02_14/ri-034-primary-8.html",
+      "citation": "https://arxiv.org/abs/2509.08099",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "https://arxiv.org/abs/2509.08099"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/abs/2509.08099",
+    "key": "url:https://arxiv.org/abs/2509.08099",
+    "links": [
+      [
+        "https://arxiv.org/abs/2509.08099",
+        "all_links"
+      ],
+      [
+        "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/sensational_primary/2026_02_14/ri-034-primary-8.html",
+      "citation": "https://arxiv.org/abs/2509.08099",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "https://arxiv.org/abs/2509.08099"
+    }
+  },
+  "digest_matches": false,
+  "outcome": "expected_bytes_mismatched",
+  "request": {
+    "body_bytes": 44167,
+    "body_sha256": "86fd5b0a8de4f1758dd464fa557979452c41b22d43d788a45d21b16562503c03",
+    "completed": true,
+    "final_url": "https://arxiv.org/abs/2509.08099",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:28Z",
+    "requested_url": "https://arxiv.org/abs/2509.08099",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2708",
+    "artifact_key": "url:https://arxiv.org/abs/2509.08099",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 48548,
+    "expected_canonical_url": "https://arxiv.org/abs/2509.08099",
+    "expected_sha256": "1b716cd5c195a33e9a3b5a2adbde306be99c2102baa181343f0363b839046689",
+    "observation_key": "exact-response-ASOT-2708-50a38e9230adc8b27f0aed8e6ad4677f23f29ac95a628069c7a1b59eb3ff7caa",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-13.json",
+      "sha256": "50a38e9230adc8b27f0aed8e6ad4677f23f29ac95a628069c7a1b59eb3ff7caa"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-13.bin",
+      "sha256": "86fd5b0a8de4f1758dd464fa557979452c41b22d43d788a45d21b16562503c03"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "98fdeb1d0db75701724755159b96c11aa45aa96d89c5c725de4ba5e1769cc951"
+}

@@ -1,0 +1,14 @@
+HTTP/2 203 
+date: Sat, 05 Sep 2026 04:50:43 GMT
+server: Microsoft-IIS/10.0
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+vary: X-NCBI-CAPTCHA,X-GCP-Client-IP,User-Agent,Cookie,Accept-Encoding
+caf: 2.0.1
+cache-control: no-store, no-cache, must-revalidate
+x-ua-compatible: IE=Edge
+x-xss-protection: 1; mode=block
+content-length: 5565
+content-type: text/html; charset=utf-8
+via: 1.1 google
+alt-svc: clear
+

@@ -1,0 +1,11 @@
+{
+  "body_bytes": 1569347,
+  "body_sha256": "8514216587c4a21797b6ebe69643712395daf280a3646542cbe8b8824892f809",
+  "completed": true,
+  "final_url": "https://arxiv.org/pdf/2509.08099",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:30Z",
+  "requested_url": "https://arxiv.org/pdf/2509.08099.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

@@ -1,0 +1,106 @@
+{
+  "after": {
+    "canonical_url": "https://core.ac.uk/download/pdf/229066012.pdf",
+    "key": "url:https://files01.core.ac.uk/download/pdf/229066012.pdf",
+    "links": [
+      [
+        "https://core.ac.uk/display/229066012",
+        "all_links"
+      ],
+      [
+        "https://core.ac.uk/download/pdf/229066012.pdf",
+        "all_links"
+      ],
+      [
+        "https://core.ac.uk/reader/229066012",
+        "all_links"
+      ],
+      [
+        "https://core.ac.uk/works/229066012",
+        "all_links"
+      ],
+      [
+        "https://files01.core.ac.uk/download/pdf/229066012.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf",
+      "citation": "location:",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "location:"
+    }
+  },
+  "before": {
+    "canonical_url": "https://core.ac.uk/download/pdf/229066012.pdf",
+    "key": "url:https://files01.core.ac.uk/download/pdf/229066012.pdf",
+    "links": [
+      [
+        "https://core.ac.uk/display/229066012",
+        "all_links"
+      ],
+      [
+        "https://core.ac.uk/download/pdf/229066012.pdf",
+        "all_links"
+      ],
+      [
+        "https://core.ac.uk/reader/229066012",
+        "all_links"
+      ],
+      [
+        "https://core.ac.uk/works/229066012",
+        "all_links"
+      ],
+      [
+        "https://files01.core.ac.uk/download/pdf/229066012.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/brown_1972_structure_of_zero_divisors_cayley_dickson.pdf",
+      "citation": "location:",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "location:"
+    }
+  },
+  "digest_matches": false,
+  "outcome": "retrieval_failed",
+  "request": {
+    "body_bytes": 0,
+    "body_sha256": null,
+    "completed": false,
+    "final_url": "https://core.ac.uk/download/pdf/229066012.pdf",
+    "http_status": 403,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:32Z",
+    "requested_url": "https://core.ac.uk/download/pdf/229066012.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2964",
+    "artifact_key": "url:https://files01.core.ac.uk/download/pdf/229066012.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 3539055,
+    "expected_canonical_url": "https://core.ac.uk/download/pdf/229066012.pdf",
+    "expected_sha256": "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68",
+    "observation_key": "exact-response-ASOT-2964-4904b70a9444e13af89936eb8e4c3231ff715c5c91cf2ffa18d83fe5cae3d227",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-24.json",
+      "sha256": "4904b70a9444e13af89936eb8e4c3231ff715c5c91cf2ffa18d83fe5cae3d227"
+    },
+    "response": null,
+    "schema_version": 1
+  },
+  "spec_sha256": "56700a5fa4efbb4ddde6d8a5f3a8bb38bf5aa1db3b3ff854813a49d959cac171"
+}

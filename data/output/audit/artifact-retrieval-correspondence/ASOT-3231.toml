@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-3231"
+artifact_key = "url:https://zenodo.org/record/1431095/files/article.pdf"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 702621
+expected_canonical_url = "https://zenodo.org/record/1431095/files/article.pdf"
+expected_sha256 = "3696e8ee35c29c74c02e31a95734a1946026acf72cc777d5b02b94eff75322e1"
+observation_key = "exact-response-ASOT-3231-386eabe5608add373c0552569e1f973644643effbc44841ba42f8692080ae161"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-30.json"
+sha256 = "386eabe5608add373c0552569e1f973644643effbc44841ba42f8692080ae161"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-30.bin"
+sha256 = "3696e8ee35c29c74c02e31a95734a1946026acf72cc777d5b02b94eff75322e1"

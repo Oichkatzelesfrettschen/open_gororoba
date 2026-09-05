@@ -1,0 +1,112 @@
+HTTP/2 302 
+date: Sat, 05 Sep 2026 04:50:33 GMT
+content-type: text/html;charset=utf-8
+location: https://www.nature.com/articles/s41467-020-15940-3
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sat, 05 Sep 2026 05:14:27 GMT
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=IxITrkpQ4DTRrXDcPi1zRFYLXt%2BkyzsaJ4yS16CsuALhqqGeAQVohLgPXrHsuUipXlL0PFogVeaWFQLr59Sle%2BDNi7eI4sITBeCDEhe2ZI12EidHYfPVTpU%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a3629d202ae22b29-SJC
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 303 
+location: https://idp.nature.com/authorize?response_type=cookie&client_id=grover&redirect_uri=https%3A%2F%2Fwww.nature.com%2Farticles%2Fs41467-020-15940-3
+strict-transport-security: max-age=31536000;preload
+x-vcap-request-id: 71301ff4-f26e-49ac-6568-dfea13ec60d0
+server: Oscar Platform 0.2407.0
+via: 1.1 google, 1.1 varnish
+content-type: text/html
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 04:50:33 GMT
+x-served-by: cache-hhr-khhr2060046-HHR, cache-hhr-khhr2060044-HHR
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788583834.739179,VS0,VE217
+vary: x-forwarded-host, upgrade-insecure-requests
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 150
+
+HTTP/2 302 
+server-timing: traceparent;desc="00-a9d54eaa91ed43fa7aae60bc96f6a271-65e8e5b8c073e4cb-01"
+x-vcap-request-id: a9d54eaa-91ed-43fa-7aae-60bc96f6a271
+pragma: no-cache
+set-cookie: [REDACTED]
+set-cookie: [REDACTED]
+set-cookie: [REDACTED]
+x-frame-options: DENY
+content-security-policy: frame-ancestors 'none';
+access-control-expose-headers: Server-Timing
+location: https://idp.nature.com/transit?redirect_uri=https%3A%2F%2Fwww.nature.com%2Farticles%2Fs41467-020-15940-3&code=fe681ab5-69ca-436f-bb44-9d96b5007b03
+x-xss-protection: 1; mode=block
+traceparent: 00-a9d54eaa91ed43fa7aae60bc96f6a271-65e8e5b8c073e4cb-01
+expires: 0
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+strict-transport-security: max-age=31536000 ; includeSubDomains
+via: 1.1 google, 1.1 varnish
+x-content-type-options: nosniff
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 04:50:34 GMT
+x-served-by: cache-hhr-khhr2060026-HHR, cache-hhr-khhr2060028-HHR
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788583834.023464,VS0,VE279
+vary: x-forwarded-proto
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 302 
+x-vcap-request-id: 2054b1de-4daa-4c42-7101-6e12fde0a45f
+content-language: en-US
+server-timing: traceparent;desc="00-2054b1de4daa4c4271016e12fde0a45f-1ccdb96764473b28-01"
+access-control-expose-headers: Server-Timing
+expires: 0
+x-frame-options: DENY
+via: 1.1 google, 1.1 varnish
+pragma: no-cache
+location: https://www.nature.com/articles/s41467-020-15940-3?error=cookies_not_supported&code=fe681ab5-69ca-436f-bb44-9d96b5007b03
+strict-transport-security: max-age=31536000 ; includeSubDomains
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+x-content-type-options: nosniff
+content-security-policy: frame-ancestors 'none';
+traceparent: 00-2054b1de4daa4c4271016e12fde0a45f-1ccdb96764473b28-01
+x-xss-protection: 1; mode=block
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 04:50:34 GMT
+x-served-by: cache-hhr-khhr2060054-HHR, cache-hhr-khhr2060028-HHR
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788583834.313648,VS0,VE197
+vary: x-forwarded-proto
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 200 
+accept-ranges: bytes
+server: Oscar Platform 0.2407.0
+cache-control: private, must-revalidate
+set-cookie: [REDACTED]
+set-cookie: [REDACTED]
+set-cookie: [REDACTED]
+x-robots-tag: nocache
+x-vcap-request-id: d6e2781a-992f-4591-7773-49eaddfcf271
+content-type: text/html; charset=utf-8
+traceparent: 00-d6e2781a992f4591777349eaddfcf271-da49373fcd8b205c-01
+age: 0
+tracestate: gorouter=9049ccaac506ae4b
+x-frame-options: DENY
+via: 1.1 google, 1.1 varnish
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000;preload
+date: Sat, 05 Sep 2026 04:50:34 GMT
+x-served-by: cache-bfd8fc3d-internal, cache-hhr-khhr2060039-HHR, cache-hhr-khhr2060044-HHR
+x-cache: MISS, MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788583835.524115,VS0,VE385
+vary: X-Oscar-Cache-Mode,x-frame-options, Accept-Encoding
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+

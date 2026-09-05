@@ -2161,7 +2161,10 @@ fn verify_crossrefs(args: &CommonArgs) -> Result<()> {
         let corpus = format!(
             "{} {}",
             table_str(row, "where_stated"),
-            table_str(row, "what_would_verify_refute")
+            provenance_core::falsifier_text::project_optional(
+                row.get("what_would_verify_refute").cloned()
+            )?
+            .unwrap_or_default()
         );
         let refs = extract_crossrefs(
             &corpus,
@@ -3542,10 +3545,16 @@ fn verify_experiment_reference_identity(args: &CommonArgs) -> Result<()> {
                 bail!("experiment_id_aliases[{alias_id}] missing id, legacy_id, or legacy_scheme");
             }
             if !canonical.is_empty() && !binary_by_experiment.contains_key(&canonical) {
-                bail!("experiment_id_aliases[{alias_id}] unknown canonical_experiment_id: {canonical}");
+                bail!(
+                    "experiment_id_aliases[{alias_id}] unknown canonical_experiment_id: {canonical}"
+                );
             }
-            if let Some(previous) = legacy_alias.insert(format!("{scheme}:{legacy}"), alias_id.clone()) {
-                bail!("experiment_id_aliases duplicate legacy id {legacy} in scheme {scheme} ({previous}, {alias_id})");
+            if let Some(previous) =
+                legacy_alias.insert(format!("{scheme}:{legacy}"), alias_id.clone())
+            {
+                bail!(
+                    "experiment_id_aliases duplicate legacy id {legacy} in scheme {scheme} ({previous}, {alias_id})"
+                );
             }
         }
         // A token shaped like an experiment id that names something else (a
@@ -3555,7 +3564,9 @@ fn verify_experiment_reference_identity(args: &CommonArgs) -> Result<()> {
             let file = table_str(row, "file").trim().to_string();
             let token = table_str(row, "token").trim().to_string();
             if file.is_empty() || token.is_empty() || table_str(row, "reason").trim().is_empty() {
-                bail!("experiment_id_aliases non_experiment_token rows need file, token, and reason");
+                bail!(
+                    "experiment_id_aliases non_experiment_token rows need file, token, and reason"
+                );
             }
             if !root.join(&file).exists() {
                 bail!("experiment_id_aliases non_experiment_token names a missing file: {file}");
@@ -3637,7 +3648,9 @@ impl BinTarget {
     /// `binary` is the experiment field: a bare bin name or `<bin> <subcommand>`.
     fn serves(&self, binary: &str) -> bool {
         let mut parts = binary.split_whitespace();
-        let Some(bin) = parts.next() else { return false };
+        let Some(bin) = parts.next() else {
+            return false;
+        };
         bin == self.name
     }
 
@@ -3652,7 +3665,9 @@ impl BinTarget {
 fn collect_bin_targets(root: &Path) -> Result<Vec<BinTarget>> {
     let mut out = Vec::new();
     let crates_dir = root.join("crates");
-    for entry in fs::read_dir(&crates_dir).with_context(|| format!("read {}", crates_dir.display()))? {
+    for entry in
+        fs::read_dir(&crates_dir).with_context(|| format!("read {}", crates_dir.display()))?
+    {
         let entry = entry?;
         let manifest = entry.path().join("Cargo.toml");
         if !manifest.exists() {
@@ -3667,16 +3682,20 @@ fn collect_bin_targets(root: &Path) -> Result<Vec<BinTarget>> {
                 continue;
             }
             let source = format!("{crate_rel}/{path}");
-            let module_dir = source
-                .strip_suffix("/main.rs")
-                .map(str::to_string);
-            out.push(BinTarget { name, source, module_dir });
+            let module_dir = source.strip_suffix("/main.rs").map(str::to_string);
+            out.push(BinTarget {
+                name,
+                source,
+                module_dir,
+            });
         }
         let auto_bin_dir = entry.path().join("src/bin");
         if auto_bin_dir.exists() {
             for bin_entry in fs::read_dir(&auto_bin_dir)?.flatten() {
                 let bin_path = bin_entry.path();
-                let Some(stem) = bin_path.file_stem().and_then(|s| s.to_str()) else { continue };
+                let Some(stem) = bin_path.file_stem().and_then(|s| s.to_str()) else {
+                    continue;
+                };
                 let name = stem.replace('_', "-");
                 if out.iter().any(|target| target.name == name) {
                     continue;
@@ -3746,7 +3765,9 @@ fn experiment_reference_surfaces(root: &Path) -> Result<Vec<String>> {
             if !entry.file_type().is_file() {
                 continue;
             }
-            let Some(ext) = file.extension().and_then(|e| e.to_str()) else { continue };
+            let Some(ext) = file.extension().and_then(|e| e.to_str()) else {
+                continue;
+            };
             if !extensions.contains(&ext) {
                 continue;
             }
@@ -3755,7 +3776,10 @@ fn experiment_reference_surfaces(root: &Path) -> Result<Vec<String>> {
                 .context("strip experiment reference path prefix")?
                 .to_string_lossy()
                 .replace('\\', "/");
-            if rel.contains("/.cache/") || rel.starts_with(".cache/") || rel.starts_with("docs/book/") {
+            if rel.contains("/.cache/")
+                || rel.starts_with(".cache/")
+                || rel.starts_with("docs/book/")
+            {
                 continue;
             }
             if !tracked.contains(&rel) {

@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/abs/2411.18881",
+    "key": "url:https://arxiv.org/abs/2411.18881",
+    "links": [
+      [
+        "https://arxiv.org/abs/2411.18881",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/reggiani_2024_2411.18881.pdf",
+      "citation": "Reggiani 2024 manifold identifications (C-005)",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "Reggiani 2024 manifold identifications (C-005)"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/abs/2411.18881",
+    "key": "url:https://arxiv.org/abs/2411.18881",
+    "links": [
+      [
+        "https://arxiv.org/abs/2411.18881",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/reggiani_2024_2411.18881.pdf",
+      "citation": "Reggiani 2024 manifold identifications (C-005)",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "Reggiani 2024 manifold identifications (C-005)"
+    }
+  },
+  "digest_matches": false,
+  "outcome": "expected_bytes_mismatched",
+  "request": {
+    "body_bytes": 40974,
+    "body_sha256": "eb1789a5f9a0a8a5a8d32b7cf748b6a5196b632cacfe2673300fa5822fda6036",
+    "completed": true,
+    "final_url": "https://arxiv.org/abs/2411.18881",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:27Z",
+    "requested_url": "https://arxiv.org/abs/2411.18881",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2687",
+    "artifact_key": "url:https://arxiv.org/abs/2411.18881",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 226232,
+    "expected_canonical_url": "https://arxiv.org/abs/2411.18881",
+    "expected_sha256": "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18",
+    "observation_key": "exact-response-ASOT-2687-ad564cb166732c725bfc517e5d6cf46050cf0aa5297fc171d727f024af6c183e",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-11.json",
+      "sha256": "ad564cb166732c725bfc517e5d6cf46050cf0aa5297fc171d727f024af6c183e"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-11.bin",
+      "sha256": "eb1789a5f9a0a8a5a8d32b7cf748b6a5196b632cacfe2673300fa5822fda6036"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "75d4d8794597ca07b8e37454de4515713e2460565dfaa19f92a011651b1a7d36"
+}

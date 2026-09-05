@@ -1,0 +1,9 @@
+
+running 5 tests
+test tests::categorized_falsifiers_replace_only_absent_status_note_fallbacks ... ok
+test tests::test_build_falsification_campaign_manifest_filters_and_counts ... ok
+test tests::test_classify_campaign_family_examples ... ok
+test tests::test_wave_and_ticket_assignment ... ok
+test tests::test_overall_claim_lane_classification ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s

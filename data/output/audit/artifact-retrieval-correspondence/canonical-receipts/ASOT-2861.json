@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/pdf/2311.18594.pdf",
+    "key": "url:https://arxiv.org/pdf/2311.18594.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/2311.18594.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_8374_cambridge_to_arxiv_arxiv_org_pdf_2311_18594_pdf.pdf",
+      "citation": "link: <>; rel='canonical'",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "link: <>; rel='canonical'"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/pdf/2311.18594.pdf",
+    "key": "url:https://arxiv.org/pdf/2311.18594.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/2311.18594.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_8374_cambridge_to_arxiv_arxiv_org_pdf_2311_18594_pdf.pdf",
+      "citation": "link: <>; rel='canonical'",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "link: <>; rel='canonical'"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 532709,
+    "body_sha256": "678558adb12b2183f53fe06bcddd3f83f7a1e50f5a6b7765f697c21d454313fb",
+    "completed": true,
+    "final_url": "https://arxiv.org/pdf/2311.18594",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:29Z",
+    "requested_url": "https://arxiv.org/pdf/2311.18594.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2861",
+    "artifact_key": "url:https://arxiv.org/pdf/2311.18594.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 532709,
+    "expected_canonical_url": "https://arxiv.org/pdf/2311.18594.pdf",
+    "expected_sha256": "678558adb12b2183f53fe06bcddd3f83f7a1e50f5a6b7765f697c21d454313fb",
+    "observation_key": "exact-response-ASOT-2861-f2400ff01d3cdf1ebf12366614bc679351da1be91ad84362e6a8da1295cba63d",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-18.json",
+      "sha256": "f2400ff01d3cdf1ebf12366614bc679351da1be91ad84362e6a8da1295cba63d"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-18.bin",
+      "sha256": "678558adb12b2183f53fe06bcddd3f83f7a1e50f5a6b7765f697c21d454313fb"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "4a0bf873b387b1dc1cb199959a8a96dd9ad32c1be1d1438529b8e4342b6a7e7c"
+}

@@ -1,0 +1,52 @@
+schema_version = 1
+outcome = "blocked_input_admission_backward_timestamp"
+boundary = "Official native Level-2 FGM source product and retained HAPI rendering"
+scientific_predictions_evaluated = false
+failed_date = "2016-09-02"
+
+[native_source]
+url = "https://themis.ssl.berkeley.edu/data/themis/thd/l2/fgm/2016/thd_l2_fgm_20160902_v01.cdf"
+index_url = "https://themis.ssl.berkeley.edu/data/themis/thd/l2/fgm/2016/"
+path = ".cache/staples-external-intake/2016-09-02/thd_l2_fgm_20160902_v01.cdf"
+sha256 = "eacb293d186d9549b1916af7432755658f87c3ee06ddf95b36ddb6c2d63d6646"
+checksum_status = "Observed SHA256 retained; the official index supplies filename/date/size rather than an independent expected checksum"
+logical_file_id = "thd_l2_fgm_20160902_v01"
+data_version = "1"
+cdf_library_version = "3.8.0"
+encoding = "Network (big-endian)"
+metadata_result = "Time uses f64 seconds; GSE vectors use three f32 components. Gzip CVVR payload lengths and contiguous native record-index coverage pass strict typed decoding."
+virtual_epoch = "thd_fgs_epoch declares comp_themis_epoch(thd_fgs_epoch0,thd_fgs_time); epoch0 is the CDF_EPOCH representation of the Unix origin."
+
+[comparison]
+findings = "data/output/audit/staples-causal-validation/external-cdf-order-findings.json"
+native_rows = 14784
+hapi_rows = 14856
+matching_timestamp_vector_rows = 14737
+vector_mismatches_within_matching_timestamps = 0
+native_first_timestamp = "2016-09-02T00:06:15.774Z"
+native_last_timestamp = "2016-09-03T00:02:26.994Z"
+hapi_rows_before_native_start = 119
+native_rows_after_requested_utc_day = 47
+coverage_equation = "14856 - 119 = 14784 - 47 = 14737"
+time_tolerance_milliseconds = 1.001
+vector_relative_text_tolerance = 0.00000051
+comparison_scope = "All overlapping source records match timestamp precision and all three vector components. The timestamp lookup is diagnostic; source and HAPI sequence order remain unchanged."
+
+[backward_step]
+native_source_record_index_zero_based = 13608
+hapi_csv_row_one_based = 13728
+previous_utc = "2016-09-02T23:00:41.711Z"
+next_utc = "2016-09-02T23:00:38.555Z"
+native_delta_seconds = -3.1561174392700195
+hapi_delta_seconds = -3.156
+conclusion = "The native Level-2 source contains the same backward step and conflicting vectors at repeated timestamps. A HAPI-only conversion explanation fails that independent source observation."
+limits = "The comparison identifies source-product ordering. Upstream acquisition, packet assembly, and calibration-processing causes remain unmeasured. The native filename date also spans a different interval from the HAPI UTC-day query."
+intake_condition = "Retain a provider-corrected monotonic source and its provenance, then make a separately declared intake/protocol decision. The sealed campaign forbids sorting, deduplication, and silent date omission."
+
+[replay]
+source = "data/output/audit/staples-causal-validation/external-cdf-order-audit.rs"
+source_sha256 = "56968fa7ac9146b1fd92deca0a7aa7d5b0f3a67b997d1336d441841e48eda251"
+executable_sha256 = "11aaf29f9a29dd02ddc2175dd743e3ad204a1f05174e0d1dc22672c4f53e77f5"
+build = "rustc @data/output/audit/staples-causal-validation/external-cdf-order-build.args -o .cache/staples-external-intake-build/external-cdf-order-audit"
+command = ".cache/staples-external-intake-build/external-cdf-order-audit .cache/staples-external-intake/2016-09-02/thd_l2_fgm_20160902_v01.cdf .cache/staples-external-intake/2016-09-02/attempt-1.body data/output/audit/staples-causal-validation/external-cdf-order-findings.json"
+validation = "rustc and direct clippy-driver pass with -D warnings. Native index ranges, dense coverage, numeric type/dimension, compression magic and decompressed lengths pass. Matching HAPI observations independently validate 14737 timestamp/vector records."
