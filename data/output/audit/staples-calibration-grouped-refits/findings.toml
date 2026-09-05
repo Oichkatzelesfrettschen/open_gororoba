@@ -239,3 +239,12 @@ auditor_source_selection = "Live-source hashing remains the default. The explici
 production_source = "291ce5023d4ae8ca30c5ee4535bd9152520233ef"
 auditor_validation = "The strict argument test passes. Complete audit against the production commit exits 0 and emits byte-identical completion-audit.json. Live modified source, absent commit and wrong baseline commit each fail. The production summary and all numerical record bytes remain unchanged."
 repository_validation = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0 after the preparation/source-boundary and canonical-record repairs; scoped Clippy, 661 library tests and governance pass. Independent read-only review finds the map declarations consistent with the implementation."
+
+[registered_replay_directory]
+mechanism = "Canonical E-280/E-281 run commands target results-replay. Retained output references continue to identify the sealed production evidence under results; rebuilding the repaired runner establishes a new source/executable identity. Replays require a fresh directory or an identity-matching resumable run."
+verification = "The canonical upsert regenerates experiment compatibility records, lineage command hashes and the experiment mirror. Both canonical run commands use results-replay; production evidence paths retain results."
+
+[experiment_note_revision_history]
+mechanism = "Bulk experiment upserts preserve omitted notes and route explicit notes through the shared transaction-aware field updater. Revision rows retain prior/new hashes, actor experiment-registry-upsert, fragment-path reason, operation and application ID. Repeated identical notes append touch revisions; new notes record a NULL prior hash."
+regression = "The expanded upsert test checks revision contents, omitted-note history preservation, identical-note touches, new-note history and whole-batch rollback after an injected later revision failure. The rollback compares experiment values, claim references, revision history and export runs."
+verification = "All 35 provenance-store library tests pass; strengthened focused upsert tests and all-target Clippy pass. The repeated make validate-local REPO_SHARE_PRIMARY_CACHE=1 gate exits 0 with 661 library tests and governance. The independent production audit remains byte-identical."
