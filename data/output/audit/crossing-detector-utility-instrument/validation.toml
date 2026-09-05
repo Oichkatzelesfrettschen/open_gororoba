@@ -1,5 +1,5 @@
-focused_library_tests_passed = 94
-focused_cli_tests_passed = 3
+focused_library_tests_passed = 98
+focused_cli_tests_passed = 4
 focused_library_clippy = "passed with warnings denied"
 frontier_clippy = "passed with warnings denied; full gate rechecks final source"
 fixture_cells_checked = 25
@@ -12,7 +12,7 @@ original_protocol = "SHA256 remains ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586
 empirical_completion = "Awaiting independent references, analyst observations, actual receipt/alert logs and sealed activation policies."
 full_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
 full_gate_exit = 0
-scoped_tests_passed = 630
+scoped_tests_passed = 634
 scoped_tests_skipped = 0
 full_gate_clippy = "passed with warnings denied"
 full_gate_governance = "passed canonical declarations, signatures, execution lineage and markdown ownership"

@@ -2428,13 +2428,13 @@ generated = false
 status = "active"
 migration_priority = "high"
 toml_backing = "registry/research_narratives.toml"
-sha256 = "a94b5922a7f3b8f207a4c34f5487e62211bab9c22a8e4201d112b288f65b3050"
-size_bytes = 8547
-line_count = 159
+sha256 = "fce40dc363326d7663b1ed4c7b12fe67750052f6ff5bda65dbc4a90393a76ee7"
+size_bytes = 9596
+line_count = 178
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 5
-link_count = 25
+link_count = 26
 link_sample = ["data/output/audit/staples-causal-validation/findings.toml", "data/output/audit/staples-causal-validation/protocol.toml", "data/output/audit/staples-causal-validation/research/adopted-calibration-findings.toml", "frontier.csv", "frontier.svg", "mathematical-fixture.json", "plans/crossing-detector-operational-utility.toml", "report.json"]
 
 [[document]]
