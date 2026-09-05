@@ -1,6 +1,6 @@
 command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
 exit_status = 0
-scoped_library_tests_passed = 824
+scoped_library_tests_passed = 825
 scoped_library_tests_skipped = 0
 clippy = "passed with warnings denied"
 governance = "passed canonical integrity, signatures, references and execution lineage"

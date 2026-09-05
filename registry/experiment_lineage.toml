@@ -6,7 +6,7 @@ updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
 lineage_count = 253
-edge_count = 1311
+edge_count = 1312
 
 [[lineage]]
 id = "XL-001"
@@ -4599,16 +4599,16 @@ experiment_id = "E-283"
 binary = "staples-causal-validation"
 deterministic = true
 gpu = false
-run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv"
-run_command_sha256 = "a592d7616b2323764db392b5b87172cdd7d5cd506bfcb3e1ff6a167311833d8f"
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv --models-dir data/output/audit/staples-causal-validation/results"
+run_command_sha256 = "6c126e6ffabb429b9c4db7e65df28f66c16ff8ef14348f5418af5826e1cdb72e"
 claim_refs = ["C-1740", "C-1741", "C-1743"]
-input_path_refs = ["data/output/audit/staples-causal-validation/external-intake-manifest.json", "data/output/audit/staples-causal-validation/protocol.toml"]
+input_path_refs = ["data/output/audit/staples-causal-validation/external-intake-manifest.json", "data/output/audit/staples-causal-validation/protocol.toml", "data/output/audit/staples-causal-validation/results"]
 output_path_refs = ["data/output/audit/staples-causal-validation/external-cdf-order-findings.json", "data/output/audit/staples-causal-validation/external-native-source-rca.toml", "data/output/audit/staples-causal-validation/external-results/blocked-external-intake.json"]
 dataset_refs = []
 dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
-replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv", "Verify expected outputs or stdout artifacts are produced."]
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv --models-dir data/output/audit/staples-causal-validation/results", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -16387,13 +16387,22 @@ verified = true
 id = "XLE-01309"
 lineage_id = "XL-253"
 from_id = "E-283"
+to_ref = "data/output/audit/staples-causal-validation/results"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01310"
+lineage_id = "XL-253"
+from_id = "E-283"
 to_ref = "data/output/audit/staples-causal-validation/external-cdf-order-findings.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01310"
+id = "XLE-01311"
 lineage_id = "XL-253"
 from_id = "E-283"
 to_ref = "data/output/audit/staples-causal-validation/external-native-source-rca.toml"
@@ -16402,7 +16411,7 @@ edge_kind = "produces_path"
 verified = true
 
 [[edge]]
-id = "XLE-01311"
+id = "XLE-01312"
 lineage_id = "XL-253"
 from_id = "E-283"
 to_ref = "data/output/audit/staples-causal-validation/external-results/blocked-external-intake.json"

@@ -1,7 +1,7 @@
 title = "Claim consumer output and retained protocol validation"
 consolidation_integration_tests_passed = 32
 consolidation_preflight_tests_passed = 5
-store_tests_passed = 64
+store_tests_passed = 65
 database_cli_tests_passed = 2
 focused_clippy = "passed with warnings denied for the consolidation binary and integration tests, provenance_store and gororoba_db"
 required_gate = "final-validation.toml"
@@ -22,3 +22,7 @@ verification = "Missing, directory, absolute, traversal, untracked, empty, symli
 legacy_boundary = "Existing digest-free contracts retain their history and pass file-retention checks. verify_claim_evidence_artifacts returns their IDs as unsealed; file existence does not establish historical content identity. Future evidence revisions seal the admitted digest."
 active_contracts = "C-1740, C-1741 and C-1743 are sealed through canonical evidence revisions 5, 6 and 7. sealed-protocols.json records their digests; protocol-sealing-preservation.sql verifies preservation of the four preceding revisions and unrelated rows."
 command = "cargo test -p provenance_store -p gororoba_db --profile validation"
+
+[interpretive_depth]
+mechanism = "Depth accumulation and duplicate-map checks both trim surrounding branch whitespace before comparing branch identity."
+verification = "Two distinct interpretive maps under whitespace variants of one branch reject lift_depth=1 and accept lift_depth=2. Moving the second map to an independent branch restores maximum per-branch depth 1."

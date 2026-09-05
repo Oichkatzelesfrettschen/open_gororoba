@@ -120,7 +120,7 @@ impl ClaimEvidenceSpec {
                 "duplicate map in branch"
             );
             if mapping.kind == MapKind::Interpretive {
-                *depths.entry(&mapping.branch).or_default() += 1;
+                *depths.entry(mapping.branch.trim()).or_default() += 1;
             }
         }
         match self.depth_status {
@@ -861,6 +861,34 @@ mod tests {
                 .execute("UPDATE claim_evidence_revisions SET reason='rewrite'", [])
                 .is_err()
         );
+        Ok(())
+    }
+
+    #[test]
+    fn interpretive_depth_uses_normalized_branch_identity() -> Result<()> {
+        let mut declaration = spec();
+        declaration.depth_status = DepthStatus::Declared;
+        declaration.lift_depth = Some(1);
+        declaration.intervening_maps = vec![
+            InterveningMap {
+                name: "embedding".into(),
+                branch: "detector".into(),
+                description: "Embed the observable".into(),
+                kind: MapKind::Interpretive,
+            },
+            InterveningMap {
+                name: "physical reading".into(),
+                branch: " detector \t".into(),
+                description: "Assign a physical interpretation".into(),
+                kind: MapKind::Interpretive,
+            },
+        ];
+        assert!(declaration.validate().is_err());
+        declaration.lift_depth = Some(2);
+        declaration.validate()?;
+        declaration.intervening_maps[1].branch = "independent branch".into();
+        declaration.lift_depth = Some(1);
+        declaration.validate()?;
         Ok(())
     }
 
