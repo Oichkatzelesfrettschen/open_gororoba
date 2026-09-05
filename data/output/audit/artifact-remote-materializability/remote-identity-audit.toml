@@ -1,0 +1,839 @@
+[audit]
+observed_at_utc = "2026-09-05T03:17:35Z"
+inventory_sha256 = "d84cc80fb1735ed42b7d145f5a6de4656efa5b24840cf3b09f6acba36bcbaeee"
+inventory_rows_with_url_and_hash = 40
+unique_canonical_urls = 32
+head_successes = 25
+head_failures = 7
+get_attempts = 11
+get_successes = 4
+get_failures = 7
+get_total_body_bytes = 278053
+tool = "GNU Wget 1.25.0"
+user_agent = "Mozilla/5.0 (X11; Linux x86_64) Gecko/20100101 Firefox/128.0"
+head_command = "timeout 25s wget --spider --server-response --timeout=10 --tries=1 --max-redirect=5 --user-agent=<user_agent> <canonical_url>"
+get_command = "timeout 25s wget --server-response --timeout=10 --tries=1 --max-redirect=5 --user-agent=<user_agent> -O <body_path> <canonical_url>"
+failed_head_get_command = "timeout 30s wget --server-response --timeout=10 --tries=1 --max-redirect=5 --limit-rate=512k --user-agent=<user_agent> -O <body_path> <canonical_url>"
+download_limits = "Four initial GETs used a 2 MiB file-size limit. Seven failed-HEAD GETs used a 15 MiB file-size limit and 512 KiB/s rate limit. All eleven commands terminated before timeout; failed GETs left zero-byte files."
+boundary = "The forty inventory rows pass syntactic HTTP(S), 64-hex SHA256 and nonempty retrieval-command checks. Those prerequisites do not establish that a canonical URL returns the expected bytes. Twenty-one unique URLs received HEAD probes only. Expected inventory hashes and statuses remain unchanged by this audit."
+retention = "Per-request logs and downloaded bodies remain in the worktree cache. The durable report retains URLs, expected and observed hashes, sizes, content types, exit statuses and replay commands. Raw headers can contain transient server cookies and are excluded from this report."
+
+[[finding]]
+id = "url-hash-association-cross-product"
+mechanism = "extend_download_map_from_local_artifacts associates every local artifact path with every artifact link. classify_artifacts then hashes the first readable downloaded or host-only path independently of canonical URL selection. The resulting hash can identify a source-pack CSV rather than bytes available at the URL."
+affected_ids = ["ASOT-0029","ASOT-3272","ASOT-3279","ASOT-3280","ASOT-3283","ASOT-2657","ASOT-3067"]
+local_hash_owner = "data/csv/c010_nonlocal_material_calibrations.csv"
+local_hash_owner_sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+evidence = "sha256sum on the primary checkout CSV reproduces all seven rows expected hash. ASOT-0029/ASOT-2657 canonical arXiv abstract GET and ASOT-3067 PubMed GET return different HTML hashes. The other four source-pack DOI mappings remain unadjudicated at the expected-byte level."
+
+[[finding]]
+id = "arxiv-abstract-pdf-byte-mismatch"
+affected_ids = ["ASOT-2652"]
+evidence = "The canonical abstract URL returns 39113-byte HTML with SHA256 2f910ac8c86050b830f9dab51b359f32967fb0c01489d1fbc81755466be6b180. The expected SHA256 d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1 identifies the 191938-byte PDF, independently retrieved from the versioned PDF URL."
+proposed_canonical_url = "https://arxiv.org/pdf/1602.02317v1.pdf"
+disposition = "Proposed URL repair requires a separate bounded mutation and all_links reconciliation. The sealed 533-row repair remains unchanged."
+
+[[finding]]
+id = "canonical-url-status-remains-host-observation"
+affected_ids = ["ASOT-3272","ASOT-0500","ASOT-0702","ASOT-2828","ASOT-2932","ASOT-2934","ASOT-2964","ASOT-2945","ASOT-2988"]
+evidence = "Mozilla wget HEAD and subsequent bounded GET both fail with HTTP 403 at five unique URLs and HTTP 404 at two. The seven failed GETs leave zero-byte files. Statuses describe the observed host and time; other access paths or later attempts can differ."
+
+[[finding]]
+id = "citation-policy-classifier-verifier-asymmetry"
+status = "addressed"
+evidence = "The classifier and verifier use the same HTTP(S) URL and 64-hex SHA256 metadata predicate after removal of the classifier's citation-key exclusions. The doi_key_with_measured_direct_content_admits_remote_metadata regression test covers a DOI identity with a direct PDF URL. Eleven of the forty retained rows have DOI keys, including ASOT-0805 and ASOT-0878 whose canonical URLs directly address PDFs. Metadata admission permits those identities; the separate URL-to-expected-bytes residual remains subject to retrieval and digest verification."
+
+[[finding]]
+id = "historical-retrieval-targets"
+affected_ids = ["ASOT-0002","ASOT-0005","ASOT-0805","ASOT-0878","ASOT-0879","ASOT-2619","ASOT-2652","ASOT-2687","ASOT-2708","ASOT-2793","ASOT-2815","ASOT-2828","ASOT-2829","ASOT-2830","ASOT-2861","ASOT-2868","ASOT-2875","ASOT-2890","ASOT-2898","ASOT-2906","ASOT-2932","ASOT-2934","ASOT-2964","ASOT-2985","ASOT-3028","ASOT-3065","ASOT-3066","ASOT-3231"]
+evidence = "Twenty-eight retained commands write under papers/pdf/. Their commands omit directory creation and content-hash verification. All forty commands are nonempty, but none thereby establishes durable materialization on a fresh checkout."
+
+[recommendation]
+bounded_mutation = "Keep the exact 533 invalid-prerequisite status repairs separate from these forty carried historical identities; record the latter as an independent URL-to-byte validation frontier."
+future_admission = "Carry canonical URL and content hash as one evidence-bound tuple. For new promotion, use an exact retrieval-ledger URL/path association before local-path cross-product extension and before arXiv alias expansion, then measure the linked bytes. Preserve inferred aliases as references rather than retrieval proof."
+carried_facts = "The current carried URL adoption branch only runs when canonical selection is empty while also requiring the URL among links; nonempty links already choose a canonical URL. Preserve a proven carried URL/hash pair together rather than selecting a new first link while retaining the old hash."
+host_manifest = "The revised host-materialization filter includes any retained or host-only paths regardless of classification, correctly preserving observations for demoted rows."
+claim_boundary = "A metadata admission minimum is a syntax-level contract. End-to-end remotely retrievable expected bytes require a successful exact-URL download and matching digest. Neither a locator, arbitrary carried hash, HEAD success, nor a Mozilla user agent establishes that guarantee."
+
+[[inventory_row]]
+id = "ASOT-0002"
+key = "BALES_2016_ALT_CD"
+url = "https://arxiv.org/pdf/1602.02317v1.pdf"
+sha256 = "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+byte_length = 191938
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/bales_2016_alt_cd.pdf' 'https://arxiv.org/pdf/1602.02317v1.pdf'"
+
+[[inventory_row]]
+id = "ASOT-0005"
+key = "MCCRIMMON_1985"
+url = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+sha256 = "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1"
+byte_length = 1613071
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/mccrimmon_1985.pdf' 'https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf'"
+
+[[inventory_row]]
+id = "ASOT-0029"
+key = "doi:10.1002/adma.202209988"
+url = "https://arxiv.org/abs/1710.01373"
+sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+byte_length = 2627
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'data/external/datasets/doi_10_1002_adma_202209988' 'https://arxiv.org/abs/1710.01373'"
+
+[[inventory_row]]
+id = "ASOT-3272"
+key = "doi:10.1021/acsphotonics.5c01385"
+url = "https://doi.org/10.1021/acsphotonics.5c01385"
+sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+byte_length = 2627
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'data/external/datasets/doi_10_1021_acsphotonics_5c01385' 'https://doi.org/10.1021/acsphotonics.5c01385'"
+
+[[inventory_row]]
+id = "ASOT-3279"
+key = "doi:10.1038/s41467-020-15940-3"
+url = "https://doi.org/10.1038/s41467-020-15940-3"
+sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+byte_length = 2627
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'data/external/datasets/doi_10_1038_s41467_020_15940_3' 'https://doi.org/10.1038/s41467-020-15940-3'"
+
+[[inventory_row]]
+id = "ASOT-3280"
+key = "doi:10.1038/s41467-022-31140-7"
+url = "https://doi.org/10.1038/s41467-022-31140-7"
+sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+byte_length = 2627
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'data/external/datasets/doi_10_1038_s41467_022_31140_7' 'https://doi.org/10.1038/s41467-022-31140-7'"
+
+[[inventory_row]]
+id = "ASOT-0215"
+key = "doi:10.1038/s41586-025-09917-9"
+url = "https://doi.org/10.1038/s41586-025-09917-9"
+sha256 = "2ea06a2f49bfc7485875b7c560344286b7a64030af64fe7a341878bfe4076857"
+byte_length = 469659
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' 'https://doi.org/10.1038/s41586-025-09917-9'"
+
+[[inventory_row]]
+id = "ASOT-3283"
+key = "doi:10.1038/s42005-021-00719-9"
+url = "https://doi.org/10.1038/s42005-021-00719-9"
+sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+byte_length = 2627
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'data/external/datasets/doi_10_1038_s42005_021_00719_9' 'https://doi.org/10.1038/s42005-021-00719-9'"
+
+[[inventory_row]]
+id = "ASOT-0500"
+key = "doi:10.1103/physrevd.110.116016"
+url = "https://doi.org/10.1103/PhysRevD.110.116016"
+sha256 = "69faa23a5921f20e387ad40f06ad74ace9bea3ba7d61b96b2750f0b0d79e0d13"
+byte_length = 9187
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' 'https://doi.org/10.1103/PhysRevD.110.116016'"
+
+[[inventory_row]]
+id = "ASOT-0702"
+key = "doi:10.1126/science.adl2348"
+url = "https://doi.org/10.1126/science.adl2348"
+sha256 = "21aa27b531553969f1726786204fe9ffe8484dc7ce9bd0cdd45506a5b8acdc8c"
+byte_length = 9222
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' 'https://doi.org/10.1126/science.adl2348'"
+
+[[inventory_row]]
+id = "ASOT-0805"
+key = "doi:10.35834/mjms/1474295358"
+url = "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf"
+sha256 = "fd8dd77e70aafb40e353178a5faab080c87a6cd0b450b1d102bb5d24e8dc9b86"
+byte_length = 177030
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/doi_10_35834_mjms_1474295358.pdf' 'https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf'"
+
+[[inventory_row]]
+id = "ASOT-0878"
+key = "doi:10.48550/arxiv.1602.02317"
+url = "https://arxiv.org/pdf/1602.02317v1.pdf"
+sha256 = "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+byte_length = 191938
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/doi_10_48550_arxiv_1602_02317.pdf' 'https://arxiv.org/pdf/1602.02317v1.pdf'"
+
+[[inventory_row]]
+id = "ASOT-0879"
+key = "doi:10.48550/arxiv.2411.18881"
+url = "https://arxiv.org/abs/2411.18881"
+sha256 = "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18"
+byte_length = 226232
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/doi_10_48550_arxiv_2411_18881.pdf' 'https://arxiv.org/abs/2411.18881'"
+
+[[inventory_row]]
+id = "ASOT-2619"
+key = "url:https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
+url = "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
+sha256 = "e9fe7bdb8f8a570c0fe04e176b9c534332a7907a7e004f0ef888d6105f6373e8"
+byte_length = 189748
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_archive_org_download_arxiv_1602_02317_1602_02317_pdf.pdf' 'https://archive.org/download/arxiv-1602.02317/1602.02317.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2652"
+key = "url:https://arxiv.org/abs/1602.02317"
+url = "https://arxiv.org/abs/1602.02317"
+sha256 = "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+byte_length = 191938
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_abs_1602_02317.pdf' 'https://arxiv.org/abs/1602.02317'"
+
+[[inventory_row]]
+id = "ASOT-2657"
+key = "url:https://arxiv.org/abs/1710.01373"
+url = "https://arxiv.org/abs/1710.01373"
+sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+byte_length = 2627
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'data/external/datasets/url_https_arxiv_org_abs_1710_01373' 'https://arxiv.org/abs/1710.01373'"
+
+[[inventory_row]]
+id = "ASOT-2687"
+key = "url:https://arxiv.org/abs/2411.18881"
+url = "https://arxiv.org/abs/2411.18881"
+sha256 = "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18"
+byte_length = 226232
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_abs_2411_18881.pdf' 'https://arxiv.org/abs/2411.18881'"
+
+[[inventory_row]]
+id = "ASOT-2708"
+key = "url:https://arxiv.org/abs/2509.08099"
+url = "https://arxiv.org/abs/2509.08099"
+sha256 = "1b716cd5c195a33e9a3b5a2adbde306be99c2102baa181343f0363b839046689"
+byte_length = 48548
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_abs_2509_08099.pdf' 'https://arxiv.org/abs/2509.08099'"
+
+[[inventory_row]]
+id = "ASOT-2793"
+key = "url:https://arxiv.org/abs/math/0403113"
+url = "https://arxiv.org/abs/math/0403113"
+sha256 = "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872"
+byte_length = 206494
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_abs_math_0403113.pdf' 'https://arxiv.org/abs/math/0403113'"
+
+[[inventory_row]]
+id = "ASOT-2815"
+key = "url:https://arxiv.org/pdf/0910.2569.pdf"
+url = "https://arxiv.org/pdf/0910.2569.pdf"
+sha256 = "8790df99f4cc825c004341ccdeedbc3872b280c77f8dcc14b7da0c47c0ddd029"
+byte_length = 362590
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_0910_2569_pdf.pdf' 'https://arxiv.org/pdf/0910.2569.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2828"
+key = "url:https://arxiv.org/pdf/1602.02317.pdf"
+url = "https://arxiv.org/pdf/1602.02317.pdf"
+sha256 = "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+byte_length = 191938
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_1602_02317_pdf.pdf' 'https://arxiv.org/pdf/1602.02317.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2829"
+key = "url:https://arxiv.org/pdf/1602.02317v1.pdf"
+url = "https://arxiv.org/pdf/1602.02317v1.pdf"
+sha256 = "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+byte_length = 191938
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_1602_02317v1_pdf.pdf' 'https://arxiv.org/pdf/1602.02317v1.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2830"
+key = "url:https://arxiv.org/pdf/1602.02317v2.pdf"
+url = "https://arxiv.org/pdf/1602.02317v2.pdf"
+sha256 = "ae9f792ff949b552e3988ee3138fe07846bfcf4002ef5c3e6c001933af7b6766"
+byte_length = 192196
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_1602_02317v2_pdf.pdf' 'https://arxiv.org/pdf/1602.02317v2.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2861"
+key = "url:https://arxiv.org/pdf/2311.18594.pdf"
+url = "https://arxiv.org/pdf/2311.18594.pdf"
+sha256 = "678558adb12b2183f53fe06bcddd3f83f7a1e50f5a6b7765f697c21d454313fb"
+byte_length = 532709
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_2311_18594_pdf.pdf' 'https://arxiv.org/pdf/2311.18594.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2868"
+key = "url:https://arxiv.org/pdf/2411.18881.pdf"
+url = "https://arxiv.org/pdf/2411.18881.pdf"
+sha256 = "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18"
+byte_length = 226232
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_2411_18881_pdf.pdf' 'https://arxiv.org/pdf/2411.18881.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2875"
+key = "url:https://arxiv.org/pdf/2509.08099.pdf"
+url = "https://arxiv.org/pdf/2509.08099.pdf"
+sha256 = "8514216587c4a21797b6ebe69643712395daf280a3646542cbe8b8824892f809"
+byte_length = 1569347
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_2509_08099_pdf.pdf' 'https://arxiv.org/pdf/2509.08099.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2890"
+key = "url:https://arxiv.org/pdf/math/0403113.pdf"
+url = "https://arxiv.org/pdf/math/0403113.pdf"
+sha256 = "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872"
+byte_length = 206494
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_math_0403113_pdf.pdf' 'https://arxiv.org/pdf/math/0403113.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2898"
+key = "url:https://arxiv.org/pdf/math/0511691.pdf"
+url = "https://arxiv.org/pdf/math/0511691.pdf"
+sha256 = "3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5"
+byte_length = 374167
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_arxiv_org_pdf_math_0511691_pdf.pdf' 'https://arxiv.org/pdf/math/0511691.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2906"
+key = "url:https://bibliotekanauki.pl/articles/729117.pdf"
+url = "https://bibliotekanauki.pl/articles/729117.pdf"
+sha256 = "b3876255599bcd50f7e51ed50044e4f2b74cd2e7945b4416b6fb196bc6eae010"
+byte_length = 393173
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_bibliotekanauki_pl_articles_729117_pdf.pdf' 'https://bibliotekanauki.pl/articles/729117.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2932"
+key = "url:https://core.ac.uk/download/pdf/229066012.pdf"
+url = "https://core.ac.uk/download/pdf/229066012.pdf"
+sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
+byte_length = 3539055
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_core_ac_uk_download_pdf_229066012_pdf.pdf' 'https://core.ac.uk/download/pdf/229066012.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2934"
+key = "url:https://core.ac.uk/reader/229066012"
+url = "https://core.ac.uk/download/pdf/229066012.pdf"
+sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
+byte_length = 3539055
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_core_ac_uk_reader_229066012.pdf' 'https://core.ac.uk/download/pdf/229066012.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2945"
+key = "url:https://docs.amd.com/api/khub/documents/w13cmcpl4f9mct4wpn6edg/content"
+url = "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
+sha256 = "c057d08495f0fb9c29020f798c1a971b6298049e1f4caf9c8de8195550df2e6c"
+byte_length = 956
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'data/external/datasets/url_https_docs_amd_com_api_khub_documents_w13cmcpl4f9mct4wpn6edg_content' 'https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content'"
+
+[[inventory_row]]
+id = "ASOT-2964"
+key = "url:https://files01.core.ac.uk/download/pdf/229066012.pdf"
+url = "https://core.ac.uk/download/pdf/229066012.pdf"
+sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
+byte_length = 3539055
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_files01_core_ac_uk_download_pdf_229066012_pdf.pdf' 'https://core.ac.uk/download/pdf/229066012.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2985"
+key = "url:https://isidore.co/misc/physics%20papers%20and%20books/modern%20papers/good%20overview%20of%20aharanov-bohm%20effect%3a%20proc.%20r.%20soc.%20lond.%20a-1984-berry-45-57.pdf"
+url = "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf"
+sha256 = "9cee71a56cee9675c561db43d8010b04abeb5163a8af3a38371c12ae0287f0d5"
+byte_length = 1395398
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_isidore_co_misc_physics_20papers_20and_20books_modern_20papers_good_20overview_20of_20aharanov_bohm_20effect_3a_20proc_20r_20soc_20lond_20a_1984_berry_45_57_pdf.pdf' 'https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf'"
+
+[[inventory_row]]
+id = "ASOT-2988"
+key = "url:https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n"
+url = "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n"
+sha256 = "15893f701c03e048fe0892e10e93ef1866652459f65889ca159bdc0eb40f4578"
+byte_length = 9170
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' 'https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n'"
+
+[[inventory_row]]
+id = "ASOT-3028"
+key = "url:https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+url = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+sha256 = "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1"
+byte_length = 1613071
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_msp_org_pjm_1985_117_1_pjm_v117_n1_p10_s_pdf.pdf' 'https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf'"
+
+[[inventory_row]]
+id = "ASOT-3065"
+key = "url:https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/an-alternate-cayley-dickson-product/10.35834/mjms/1474295358.pdf"
+url = "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf"
+sha256 = "fd8dd77e70aafb40e353178a5faab080c87a6cd0b450b1d102bb5d24e8dc9b86"
+byte_length = 177030
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_projecteuclid_org_journals_missouri_journal_of_mathematical_sciences_volume_28_issue_1_an_alternate_cayley_dickson_product_10_35834_mjms_1474295358_pdf.pdf' 'https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf'"
+
+[[inventory_row]]
+id = "ASOT-3066"
+key = "url:https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/derivations-and-cayley-derivations-of-generalized-cayley-dickson-algebras/pjm/1102706933.pdf"
+url = "https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf"
+sha256 = "9e7d22d52be250734329e7d42f4a9467d12697eb49fa4d085f15c9d76fa1f554"
+byte_length = 1450466
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_projecteuclid_org_journals_pacific_journal_of_mathematics_volume_117_issue_1_derivations_and_cayley_derivations_of_generalized_cayley_dickson_algebras_pjm_1102706933_pdf.pdf' 'https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf'"
+
+[[inventory_row]]
+id = "ASOT-3067"
+key = "url:https://pubmed.ncbi.nlm.nih.gov/36655553/"
+url = "https://pubmed.ncbi.nlm.nih.gov/36655553/"
+sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+byte_length = 2627
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'data/external/datasets/url_https_pubmed_ncbi_nlm_nih_gov_36655553' 'https://pubmed.ncbi.nlm.nih.gov/36655553/'"
+
+[[inventory_row]]
+id = "ASOT-3231"
+key = "url:https://zenodo.org/record/1431095/files/article.pdf"
+url = "https://zenodo.org/record/1431095/files/article.pdf"
+sha256 = "3696e8ee35c29c74c02e31a95734a1946026acf72cc777d5b02b94eff75322e1"
+byte_length = 702621
+retrieval_command = "curl -fSL -A 'gororoba-provenance-fetch/0.1 (research)' -o 'papers/pdf/url_https_zenodo_org_record_1431095_files_article_pdf.pdf' 'https://zenodo.org/record/1431095/files/article.pdf'"
+
+[[head_probe]]
+index = 0
+url = "https://arxiv.org/pdf/1602.02317v1.pdf"
+ids = ["ASOT-0002","ASOT-0878","ASOT-2829"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 191938
+log = ".cache/remote-identity-audit/head-0.log"
+
+[[head_probe]]
+index = 1
+url = "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+ids = ["ASOT-0005","ASOT-3028"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 1613071
+log = ".cache/remote-identity-audit/head-1.log"
+
+[[head_probe]]
+index = 2
+url = "https://arxiv.org/abs/1710.01373"
+ids = ["ASOT-0029","ASOT-2657"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 41437
+log = ".cache/remote-identity-audit/head-2.log"
+
+[[head_probe]]
+index = 3
+url = "https://doi.org/10.1021/acsphotonics.5c01385"
+ids = ["ASOT-3272"]
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+content_length = 5605
+log = ".cache/remote-identity-audit/head-3.log"
+
+[[head_probe]]
+index = 4
+url = "https://doi.org/10.1038/s41467-020-15940-3"
+ids = ["ASOT-3279"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 0
+log = ".cache/remote-identity-audit/head-4.log"
+
+[[head_probe]]
+index = 5
+url = "https://doi.org/10.1038/s41467-022-31140-7"
+ids = ["ASOT-3280"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 0
+log = ".cache/remote-identity-audit/head-5.log"
+
+[[head_probe]]
+index = 6
+url = "https://doi.org/10.1038/s41586-025-09917-9"
+ids = ["ASOT-0215"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 0
+log = ".cache/remote-identity-audit/head-6.log"
+
+[[head_probe]]
+index = 7
+url = "https://doi.org/10.1038/s42005-021-00719-9"
+ids = ["ASOT-3283"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 0
+log = ".cache/remote-identity-audit/head-7.log"
+
+[[head_probe]]
+index = 8
+url = "https://doi.org/10.1103/PhysRevD.110.116016"
+ids = ["ASOT-0500"]
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+content_length = 5645
+log = ".cache/remote-identity-audit/head-8.log"
+
+[[head_probe]]
+index = 9
+url = "https://doi.org/10.1126/science.adl2348"
+ids = ["ASOT-0702"]
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+content_length = 5636
+log = ".cache/remote-identity-audit/head-9.log"
+
+[[head_probe]]
+index = 10
+url = "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf"
+ids = ["ASOT-0805","ASOT-3065"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 177030
+log = ".cache/remote-identity-audit/head-10.log"
+
+[[head_probe]]
+index = 11
+url = "https://arxiv.org/abs/2411.18881"
+ids = ["ASOT-0879","ASOT-2687"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 40974
+log = ".cache/remote-identity-audit/head-11.log"
+
+[[head_probe]]
+index = 12
+url = "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
+ids = ["ASOT-2619"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 189748
+log = ".cache/remote-identity-audit/head-12.log"
+
+[[head_probe]]
+index = 13
+url = "https://arxiv.org/abs/1602.02317"
+ids = ["ASOT-2652"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 39113
+log = ".cache/remote-identity-audit/head-13.log"
+
+[[head_probe]]
+index = 14
+url = "https://arxiv.org/abs/2509.08099"
+ids = ["ASOT-2708"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 44167
+log = ".cache/remote-identity-audit/head-14.log"
+
+[[head_probe]]
+index = 15
+url = "https://arxiv.org/abs/math/0403113"
+ids = ["ASOT-2793"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+content_length = 42105
+log = ".cache/remote-identity-audit/head-15.log"
+
+[[head_probe]]
+index = 16
+url = "https://arxiv.org/pdf/0910.2569.pdf"
+ids = ["ASOT-2815"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 362590
+log = ".cache/remote-identity-audit/head-16.log"
+
+[[head_probe]]
+index = 17
+url = "https://arxiv.org/pdf/1602.02317.pdf"
+ids = ["ASOT-2828"]
+exit_code = 8
+http_status = "404 Not Found"
+content_type = "text/html; charset=utf-8"
+content_length = 7705
+log = ".cache/remote-identity-audit/head-17.log"
+
+[[head_probe]]
+index = 18
+url = "https://arxiv.org/pdf/1602.02317v2.pdf"
+ids = ["ASOT-2830"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 192196
+log = ".cache/remote-identity-audit/head-18.log"
+
+[[head_probe]]
+index = 19
+url = "https://arxiv.org/pdf/2311.18594.pdf"
+ids = ["ASOT-2861"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 532709
+log = ".cache/remote-identity-audit/head-19.log"
+
+[[head_probe]]
+index = 20
+url = "https://arxiv.org/pdf/2411.18881.pdf"
+ids = ["ASOT-2868"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 226232
+log = ".cache/remote-identity-audit/head-20.log"
+
+[[head_probe]]
+index = 21
+url = "https://arxiv.org/pdf/2509.08099.pdf"
+ids = ["ASOT-2875"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 1569347
+log = ".cache/remote-identity-audit/head-21.log"
+
+[[head_probe]]
+index = 22
+url = "https://arxiv.org/pdf/math/0403113.pdf"
+ids = ["ASOT-2890"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 206494
+log = ".cache/remote-identity-audit/head-22.log"
+
+[[head_probe]]
+index = 23
+url = "https://arxiv.org/pdf/math/0511691.pdf"
+ids = ["ASOT-2898"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 374167
+log = ".cache/remote-identity-audit/head-23.log"
+
+[[head_probe]]
+index = 24
+url = "https://bibliotekanauki.pl/articles/729117.pdf"
+ids = ["ASOT-2906"]
+exit_code = 0
+http_status = "200"
+content_type = "application/pdf"
+content_length = 393173
+log = ".cache/remote-identity-audit/head-24.log"
+
+[[head_probe]]
+index = 25
+url = "https://core.ac.uk/download/pdf/229066012.pdf"
+ids = ["ASOT-2932","ASOT-2934","ASOT-2964"]
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+content_length = 5568
+log = ".cache/remote-identity-audit/head-25.log"
+
+[[head_probe]]
+index = 26
+url = "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
+ids = ["ASOT-2945"]
+exit_code = 8
+http_status = "404"
+content_type = "application/json"
+content_length = 0
+log = ".cache/remote-identity-audit/head-26.log"
+
+[[head_probe]]
+index = 27
+url = "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf"
+ids = ["ASOT-2985"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 1395398
+log = ".cache/remote-identity-audit/head-27.log"
+
+[[head_probe]]
+index = 28
+url = "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n"
+ids = ["ASOT-2988"]
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+content_length = 5646
+log = ".cache/remote-identity-audit/head-28.log"
+
+[[head_probe]]
+index = 29
+url = "https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf"
+ids = ["ASOT-3066"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+content_length = 1450466
+log = ".cache/remote-identity-audit/head-29.log"
+
+[[head_probe]]
+index = 30
+url = "https://pubmed.ncbi.nlm.nih.gov/36655553/"
+ids = ["ASOT-3067"]
+exit_code = 0
+http_status = "203 Non-Authoritative Information"
+content_type = "text/html; charset=utf-8"
+content_length = 5565
+log = ".cache/remote-identity-audit/head-30.log"
+
+[[head_probe]]
+index = 31
+url = "https://zenodo.org/record/1431095/files/article.pdf"
+ids = ["ASOT-3231"]
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/octet-stream"
+content_length = 702621
+log = ".cache/remote-identity-audit/head-31.log"
+
+[[get_probe]]
+index = 0
+artifact_ids = ["ASOT-0002","ASOT-0878","ASOT-2829"]
+url = "https://arxiv.org/pdf/1602.02317v1.pdf"
+exit_code = 0
+http_status = "200 OK"
+content_type = "application/pdf"
+bytes = 191938
+sha256 = "d24cc87832baee75e29a088c23294a9b38afd373cd54ca6bbe4aee3a64ca87c1"
+complete_response = true
+body_path = ".cache/remote-identity-audit/body-0.bin"
+log_path = ".cache/remote-identity-audit/get-0.log"
+
+[[get_probe]]
+index = 2
+artifact_ids = ["ASOT-0029","ASOT-2657"]
+url = "https://arxiv.org/abs/1710.01373"
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+bytes = 41437
+sha256 = "6717d20733428edfa41b365941839979be6a2019890ca850806867a9802fc199"
+complete_response = true
+body_path = ".cache/remote-identity-audit/body-2.bin"
+log_path = ".cache/remote-identity-audit/get-2.log"
+
+[[get_probe]]
+index = 13
+artifact_ids = ["ASOT-2652"]
+url = "https://arxiv.org/abs/1602.02317"
+exit_code = 0
+http_status = "200 OK"
+content_type = "text/html; charset=utf-8"
+bytes = 39113
+sha256 = "2f910ac8c86050b830f9dab51b359f32967fb0c01489d1fbc81755466be6b180"
+complete_response = true
+body_path = ".cache/remote-identity-audit/body-13.bin"
+log_path = ".cache/remote-identity-audit/get-13.log"
+
+[[get_probe]]
+index = 30
+artifact_ids = ["ASOT-3067"]
+url = "https://pubmed.ncbi.nlm.nih.gov/36655553/"
+exit_code = 0
+http_status = "203 Non-Authoritative Information"
+content_type = "text/html; charset=utf-8"
+bytes = 5565
+sha256 = "2eedc116961a70b0c1edfc6e0c85792f04fe0f92fd80a84c8bc2ac5ce235f23c"
+complete_response = true
+body_path = ".cache/remote-identity-audit/body-30.bin"
+log_path = ".cache/remote-identity-audit/get-30.log"
+
+[[get_probe]]
+index = 3
+artifact_ids = ["ASOT-3272"]
+url = "https://doi.org/10.1021/acsphotonics.5c01385"
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+bytes = 0
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+complete_response = false
+body_path = ".cache/remote-identity-audit/body-3.bin"
+log_path = ".cache/remote-identity-audit/get-3.log"
+
+[[get_probe]]
+index = 8
+artifact_ids = ["ASOT-0500"]
+url = "https://doi.org/10.1103/PhysRevD.110.116016"
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+bytes = 0
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+complete_response = false
+body_path = ".cache/remote-identity-audit/body-8.bin"
+log_path = ".cache/remote-identity-audit/get-8.log"
+
+[[get_probe]]
+index = 9
+artifact_ids = ["ASOT-0702"]
+url = "https://doi.org/10.1126/science.adl2348"
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+bytes = 0
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+complete_response = false
+body_path = ".cache/remote-identity-audit/body-9.bin"
+log_path = ".cache/remote-identity-audit/get-9.log"
+
+[[get_probe]]
+index = 17
+artifact_ids = ["ASOT-2828"]
+url = "https://arxiv.org/pdf/1602.02317.pdf"
+exit_code = 8
+http_status = "404 Not Found"
+content_type = "text/html; charset=utf-8"
+bytes = 0
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+complete_response = false
+body_path = ".cache/remote-identity-audit/body-17.bin"
+log_path = ".cache/remote-identity-audit/get-17.log"
+
+[[get_probe]]
+index = 25
+artifact_ids = ["ASOT-2932","ASOT-2934","ASOT-2964"]
+url = "https://core.ac.uk/download/pdf/229066012.pdf"
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+bytes = 0
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+complete_response = false
+body_path = ".cache/remote-identity-audit/body-25.bin"
+log_path = ".cache/remote-identity-audit/get-25.log"
+
+[[get_probe]]
+index = 26
+artifact_ids = ["ASOT-2945"]
+url = "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
+exit_code = 8
+http_status = "404"
+content_type = "application/json"
+bytes = 0
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+complete_response = false
+body_path = ".cache/remote-identity-audit/body-26.bin"
+log_path = ".cache/remote-identity-audit/get-26.log"
+
+[[get_probe]]
+index = 28
+artifact_ids = ["ASOT-2988"]
+url = "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n"
+exit_code = 8
+http_status = "403 Forbidden"
+content_type = "text/html; charset=UTF-8"
+bytes = 0
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+complete_response = false
+body_path = ".cache/remote-identity-audit/body-28.bin"
+log_path = ".cache/remote-identity-audit/get-28.log"

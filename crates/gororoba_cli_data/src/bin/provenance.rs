@@ -52,6 +52,20 @@ enum Commands {
     ExportArtifactScan(ExportArtifactScanArgs),
     /// Report which artifact paths this host materializes, into a gitignored manifest.
     MaterializeStatus(MaterializeStatusArgs),
+    /// Seal the exact linkless inventory correction frontier for offline replay.
+    PlanLinklessMaterializability {
+        #[arg(long)]
+        spec: PathBuf,
+        #[arg(long)]
+        repaired_at: String,
+    },
+    /// Correct sealed linkless inventory statuses and regenerate their projections.
+    RepairLinklessMaterializability {
+        #[arg(long)]
+        spec: PathBuf,
+        #[arg(long)]
+        audit: PathBuf,
+    },
     /// Verify SQLite invariants and optionally compatibility export invariants.
     Verify(VerifyArgs),
     /// Legacy/bootstrap import from compatibility TOML/proof manifests into the canonical SQLite control plane.
@@ -490,6 +504,25 @@ fn main() -> Result<()> {
         }
         Commands::ExportArtifactScan(args) => run_export_artifact_scan(&repo_root, &db_path, args),
         Commands::MaterializeStatus(args) => run_materialize_status(&repo_root, args),
+        Commands::PlanLinklessMaterializability { spec, repaired_at } => {
+            let count = source_provenance::inventory_repair::write_linkless_materializability_spec(
+                &repo_root,
+                &spec,
+                &repaired_at,
+            )?;
+            println!("Sealed {count} linkless inventory witnesses");
+            Ok(())
+        }
+        Commands::RepairLinklessMaterializability { spec, audit } => {
+            let summary = source_provenance::inventory_repair::repair_linkless_materializability(
+                &repo_root, &spec, &audit,
+            )?;
+            println!(
+                "Inventory correction: {} witnesses, {} total artifacts, already_applied={}",
+                summary.repaired_count, summary.artifact_count, summary.already_applied
+            );
+            Ok(())
+        }
         Commands::Verify(args) => run_verify(&repo_root, &db_path, args),
         Commands::IndexControlPlane(args) => run_index_control_plane(&repo_root, &db_path, args),
         Commands::ExportControlPlane(args) => run_export_control_plane(&repo_root, &db_path, args),
@@ -656,7 +689,11 @@ fn ensure_reindex_preconditions(repo_root: &Path, args: &ExportArgs) -> Result<(
         let text = fs::read_to_string(&path).with_context(|| format!("read {}", path.display()))?;
         let value: toml::Value =
             toml::from_str(&text).with_context(|| format!("parse {}", path.display()))?;
-        if value.get("artifact_ref").and_then(toml::Value::as_array).is_none() {
+        if value
+            .get("artifact_ref")
+            .and_then(toml::Value::as_array)
+            .is_none()
+        {
             bail!(
                 "artifact_ref table missing in {}; reindex would fail after the export wrote, \
                  so the export is refused",
@@ -678,15 +715,17 @@ fn run_materialize_status(repo_root: &Path, args: MaterializeStatusArgs) -> Resu
     if manifest_path.exists() {
         let text = fs::read_to_string(&manifest_path)
             .with_context(|| format!("read {}", manifest_path.display()))?;
-        let value: toml::Value = toml::from_str(&text)
-            .with_context(|| format!("parse {}", manifest_path.display()))?;
+        let value: toml::Value =
+            toml::from_str(&text).with_context(|| format!("parse {}", manifest_path.display()))?;
         for row in value
             .get("materialized")
             .and_then(toml::Value::as_array)
             .map(Vec::as_slice)
             .unwrap_or_default()
         {
-            let Some(table) = row.as_table() else { continue };
+            let Some(table) = row.as_table() else {
+                continue;
+            };
             let field = |name: &str| {
                 table
                     .get(name)
@@ -706,8 +745,8 @@ fn run_materialize_status(repo_root: &Path, args: MaterializeStatusArgs) -> Resu
     let registry_path = repo_path(repo_root, &args.artifact_registry);
     let text = fs::read_to_string(&registry_path)
         .with_context(|| format!("read {}", registry_path.display()))?;
-    let value: toml::Value = toml::from_str(&text)
-        .with_context(|| format!("parse {}", registry_path.display()))?;
+    let value: toml::Value =
+        toml::from_str(&text).with_context(|| format!("parse {}", registry_path.display()))?;
     for artifact in value
         .get("artifact")
         .and_then(toml::Value::as_array)
@@ -727,7 +766,10 @@ fn run_materialize_status(repo_root: &Path, args: MaterializeStatusArgs) -> Resu
         if field("status") != "downloaded" {
             continue;
         }
-        if let Some(items) = table.get("downloaded_paths").and_then(toml::Value::as_array) {
+        if let Some(items) = table
+            .get("downloaded_paths")
+            .and_then(toml::Value::as_array)
+        {
             for path in items.iter().filter_map(toml::Value::as_str) {
                 seen.push((
                     field("id"),
