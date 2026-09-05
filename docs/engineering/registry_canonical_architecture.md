@@ -252,3 +252,27 @@ report.
 - Audit trail integration:
   `crates/gororoba_cli_data/src/bin/repo_audit.rs` (search
   `read_revisions_summary`)
+
+## Artifact path history and import boundaries
+
+`gororoba-db artifact repair-paths --spec <repo-relative-file>` changes an
+explicit artifact set through the canonical SQLite store. The specification
+pins prior paths, replacement hashes, and retained path relations. Replacement
+and transformed-copy targets must be regular Git-tracked files. The command
+resolves relative specifications under `--repo-root` and records complete
+before/after rows in an `export_runs` repair event.
+
+The host-neutral artifact inventory at `registry/artifact_source_of_truth.toml`
+cannot restore canonical `referenced`, `historical_download`, and
+`transformed_copy` relations or their repair history. `gororoba-db build` and
+provenance reindex therefore refuse to replace a database holding those
+relations or repair events. The claim-history loss acknowledgement applies to
+claim history only. Preserve the canonical SQLite file and its retained repair
+report; use a separate empty database for a compatibility import. The
+control-plane exporter updates its declared compatibility lanes and leaves
+canonical artifact history in SQLite.
+
+`provenance index --refresh-compat-exports` and
+`provenance export-artifact-scan --reindex-after` check the import boundary
+before writing compatibility exports. A host scan without reindexing remains
+available for materialization reporting.

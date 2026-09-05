@@ -136,9 +136,36 @@ pub(super) fn extract_candidates_from_toml_node(
             let mut dois = Vec::new();
             let mut local_paths = Vec::new();
             let mut notes = Vec::new();
+            // Book pages and context chunks own their source record. External
+            // source dossiers retain the publication identities assigned by
+            // source_provenance::candidates_from_external_sources.
+            let collection = breadcrumbs.iter().rev().nth(1).map(String::as_str);
+            let owns_source_record = (source_rel == "registry/book_docs.toml"
+                && collection == Some("document")
+                && (table.contains_key("body_markdown") || table.contains_key("source_markdown")))
+                || (collection == Some("chunk")
+                    && table.contains_key("paths")
+                    && table.contains_key("purpose"));
+            if owns_source_record {
+                local_paths.push(source_rel.to_string());
+            }
             for (key, value) in table {
                 let lower = key.to_ascii_lowercase();
-                match classify_toml_field_key(&lower) {
+                let field_kind = classify_toml_field_key(&lower);
+                if owns_source_record
+                    && (matches!(
+                        field_kind,
+                        TomlFieldKind::Url | TomlFieldKind::Doi | TomlFieldKind::Path
+                    ) || lower == "source_markdown")
+                {
+                    notes.extend(
+                        extract_strings(value)
+                            .into_iter()
+                            .map(|reference| format!("Document reference ({key}): {reference}")),
+                    );
+                    continue;
+                }
+                match field_kind {
                     TomlFieldKind::Url => urls.extend(extract_urls(value)),
                     TomlFieldKind::Doi => dois.extend(extract_dois(value)),
                     TomlFieldKind::Path => {
@@ -365,5 +392,204 @@ pub(super) fn extract_candidates_from_source_file(
         }
         "md" | "txt" | "rst" => extract_candidates_from_text_file(repo_root, path),
         _ => Ok(Vec::new()),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{
+        super::{build_candidates, identity_key, unify_candidates},
+        *,
+    };
+
+    #[test]
+    fn combined_candidate_scan_preserves_external_publication_and_book_identities() {
+        let directory = tempfile::tempdir().expect("temporary repository");
+        std::fs::create_dir(directory.path().join("registry")).expect("registry directory");
+        std::fs::create_dir_all(directory.path().join("data/papers")).expect("paper directory");
+        std::fs::write(directory.path().join("data/papers/fixture.pdf"), b"fixture")
+            .expect("local publication copy");
+        std::fs::write(
+            directory.path().join("registry/external_sources.toml"),
+            r#"
+[external_sources]
+authoritative = true
+document_count = 2
+[[document]]
+id = "XS-DOI"
+title = "DOI source dossier"
+source_markdown = "docs/external_sources/doi.md"
+body_markdown = "A source dossier with publication references."
+url_refs = ["https://doi.org/10.1002/adma.202209988"]
+path_refs = ["data/papers/fixture.pdf"]
+[[document]]
+id = "XS-URL"
+title = "URL source dossier"
+source_markdown = "docs/external_sources/url.md"
+body_markdown = "A source dossier with an arXiv reference."
+url_refs = ["https://arxiv.org/abs/1710.01373"]
+path_refs = ["data/papers/fixture.pdf"]
+"#,
+        )
+        .expect("external-source registry");
+        std::fs::write(
+            directory.path().join("registry/book_docs.toml"),
+            r#"
+[[document]]
+id = "BOOK-014"
+title = "Book introduction"
+source_markdown = "docs/book/src/introduction.md"
+body_markdown = "A book page cites the same publication."
+url_refs = ["https://doi.org/10.1002/adma.202209988"]
+path_refs = ["data/papers/fixture.pdf"]
+"#,
+        )
+        .expect("book registry");
+        let (candidates, source_files) =
+            build_candidates(directory.path()).expect("candidate scan");
+        assert_eq!(source_files.len(), 2);
+        assert_eq!(candidates.len(), 5);
+        for (id, title) in [
+            ("XS-DOI", "DOI source dossier"),
+            ("XS-URL", "URL source dossier"),
+        ] {
+            let dossier: Vec<_> = candidates
+                .iter()
+                .filter(|candidate| candidate.title == title)
+                .collect();
+            assert_eq!(dossier.len(), 2);
+            assert!(dossier.iter().any(|candidate| candidate.source_ref == id));
+            assert!(dossier.iter().any(|candidate| {
+                candidate
+                    .source_ref
+                    .starts_with("registry/external_sources.toml::document/")
+            }));
+            assert_eq!(identity_key(dossier[0]), identity_key(dossier[1]));
+            assert!(!identity_key(dossier[0]).starts_with("title:"));
+            for candidate in dossier {
+                assert_eq!(candidate.local_paths, ["data/papers/fixture.pdf"]);
+            }
+        }
+        let artifacts = unify_candidates(candidates);
+        assert_eq!(artifacts.len(), 3);
+        assert!(
+            artifacts
+                .iter()
+                .any(|artifact| artifact.key == "doi:10.1002/adma.202209988")
+        );
+        let book = artifacts
+            .iter()
+            .find(|artifact| artifact.title == "Book introduction")
+            .expect("separate book artifact");
+        assert_eq!(book.local_paths, ["registry/book_docs.toml"]);
+        assert_eq!(
+            book.source_refs,
+            ["registry/book_docs.toml::document/0::BOOK-014"]
+        );
+        assert!(
+            book.notes
+                .iter()
+                .any(|note| note == "Document reference (path_refs): data/papers/fixture.pdf")
+        );
+    }
+
+    fn extract_registry(source_rel: &str, text: &str) -> Vec<CandidateRecord> {
+        let value = toml::from_str::<Value>(text).expect("valid registry fixture");
+        let mut candidates = Vec::new();
+        extract_candidates_from_toml_node(Path::new("."), source_rel, &value, &[], &mut candidates);
+        candidates
+    }
+
+    #[test]
+    fn book_document_owns_registry_record_and_retains_reference_identifiers() {
+        let candidates = extract_registry(
+            "registry/book_docs.toml",
+            r#"
+[[document]]
+id = "BOOK-014"
+title = "open_gororoba"
+source_markdown = "docs/book/src/introduction.md"
+body_markdown = "The introduction cites the paper corpus."
+path_refs = ["papers/MANIFEST.toml", "registry/*.toml"]
+url_refs = ["https://arxiv.org/abs/math/0512516"]
+doi_refs = ["10.1000/example"]
+"#,
+        );
+        assert_eq!(candidates.len(), 1);
+        let candidate = &candidates[0];
+        assert_eq!(candidate.local_paths, ["registry/book_docs.toml"]);
+        assert_eq!(
+            candidate.source_ref,
+            "registry/book_docs.toml::document/0::BOOK-014"
+        );
+        assert!(candidate.links.is_empty());
+        assert!(candidate.dois.is_empty());
+        for reference in [
+            "Document reference (source_markdown): docs/book/src/introduction.md",
+            "Document reference (path_refs): papers/MANIFEST.toml",
+            "Document reference (path_refs): registry/*.toml",
+            "Document reference (url_refs): https://arxiv.org/abs/math/0512516",
+            "Document reference (doi_refs): 10.1000/example",
+        ] {
+            assert!(candidate.notes.iter().any(|note| note == reference));
+        }
+    }
+
+    #[test]
+    fn context_chunk_owns_report_and_retains_referenced_paths() {
+        let candidates = extract_registry(
+            "reports/repo_quick_context_chunks_2026_02_14.toml",
+            r#"
+[[chunk]]
+id = "CTX-08"
+name = "Publication Pipeline"
+paths = ["registry/publication_evidence.toml", "papers/MANIFEST.toml"]
+purpose = "Paper scaffolding and publication evidence chain."
+"#,
+        );
+        assert_eq!(candidates.len(), 1);
+        let candidate = &candidates[0];
+        assert_eq!(
+            candidate.local_paths,
+            ["reports/repo_quick_context_chunks_2026_02_14.toml"]
+        );
+        assert_eq!(
+            candidate.source_ref,
+            "reports/repo_quick_context_chunks_2026_02_14.toml::chunk/0::CTX-08"
+        );
+        assert!(
+            candidate
+                .notes
+                .iter()
+                .any(|note| note == "Document reference (paths): papers/MANIFEST.toml")
+        );
+    }
+
+    #[test]
+    fn artifact_download_paths_keep_materialized_copy_semantics() {
+        let directory = tempfile::tempdir().expect("temporary repository");
+        std::fs::create_dir(directory.path().join("data")).expect("artifact directory");
+        std::fs::write(directory.path().join("data/fixture.csv"), "value\n1\n")
+            .expect("materialized artifact");
+        let value = toml::from_str::<Value>(
+            r#"
+[[artifact]]
+id = "LOCAL-FIXTURE"
+title = "Materialized fixture"
+downloaded_paths = ["data/fixture.csv"]
+"#,
+        )
+        .expect("valid artifact registry");
+        let mut candidates = Vec::new();
+        extract_candidates_from_toml_node(
+            directory.path(),
+            "registry/artifact_source_of_truth.toml",
+            &value,
+            &[],
+            &mut candidates,
+        );
+        assert_eq!(candidates.len(), 1);
+        assert_eq!(candidates[0].local_paths, ["data/fixture.csv"]);
+        assert!(candidates[0].notes.is_empty());
     }
 }

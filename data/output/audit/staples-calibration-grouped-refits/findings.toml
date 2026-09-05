@@ -112,6 +112,7 @@ warmup_rows_removed = 208128
 warmup_positives_removed = 3604
 
 [remaining_wide_provenance]
+observation_boundary = "Historical measurement at commit 5663248a8b042c742a64b6277f545fe68418042c; historical_provenance_resolution records the completed repair."
 check = "provenance --repo-root INPUT_CHECKOUT --db AUDIT_CHECKOUT/registry/canonical/control_plane.sqlite3 verify"
 exit_status = 1
 missing_path_rows = 5
@@ -248,3 +249,8 @@ verification = "The canonical upsert regenerates experiment compatibility record
 mechanism = "Bulk experiment upserts preserve omitted notes and route explicit notes through the shared transaction-aware field updater. Revision rows retain prior/new hashes, actor experiment-registry-upsert, fragment-path reason, operation and application ID. Repeated identical notes append touch revisions; new notes record a NULL prior hash."
 regression = "The expanded upsert test checks revision contents, omitted-note history preservation, identical-note touches, new-note history and whole-batch rollback after an injected later revision failure. The rollback compares experiment values, claim references, revision history and export runs."
 verification = "All 35 provenance-store library tests pass; strengthened focused upsert tests and all-target Clippy pass. The repeated make validate-local REPO_SHARE_PRIMARY_CACHE=1 gate exits 0 with 661 library tests and governance. The independent production audit remains byte-identical."
+
+[historical_provenance_resolution]
+status = "resolved"
+findings = "data/output/audit/artifact-document-path-provenance/findings.toml"
+mechanism = "The five formerly missing canonical paths resolve to owning tracked TOML documents or recovered original extraction bytes. Seven old path strings survive as referenced or historical_download relations. The minus-normalized Moreno extraction is retained as transformed_copy."

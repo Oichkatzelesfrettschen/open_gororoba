@@ -9,7 +9,8 @@
 use anyhow::{Context, Result, bail};
 use clap::Parser;
 use provenance_store::{
-    ExecutionTargetRetarget, SourcePathRetarget, PlanningCompatTable, ProvenanceStore, parse_theorem_identity_spec,
+    ExecutionTargetRetarget, PlanningCompatTable, ProvenanceStore, SourcePathRetarget,
+    parse_theorem_identity_spec,
 };
 use serde::Deserialize;
 use std::{
@@ -1711,6 +1712,13 @@ fn cmd_artifact_mutation(
     args: &ArtifactArgs,
 ) -> Result<()> {
     match &args.action {
+        ArtifactAction::RepairPaths { spec } => {
+            let spec = repo_root.join(spec);
+            let specification: provenance_store::ArtifactPathRepairSpec =
+                toml::from_str(&fs::read_to_string(&spec)?)?;
+            let report = store.repair_artifact_paths(repo_root, &specification)?;
+            println!("{}", serde_json::to_string_pretty(&report)?);
+        }
         ArtifactAction::AssignLane {
             ids,
             lane,
