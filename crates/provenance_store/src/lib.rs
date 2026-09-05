@@ -4578,9 +4578,20 @@ impl ProvenanceStore {
 
     // ── Three-layer registry: build methods ─────────────────────────
 
+    /// Refuse artifact history loss before import-related filesystem writes.
+    pub fn ensure_artifact_reimport_safe(db_path: &Path) -> Result<()> {
+        if db_path.exists() {
+            let existing = Connection::open_with_flags(db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
+            table_ops::refuse_artifact_path_history_loss(&existing)?;
+        }
+        Ok(())
+    }
+
     /// Create a fresh derived database at the given path.
-    /// Deletes any existing file, runs all migrations, and sets WAL mode.
+    /// Refuses canonical artifact path history before replacing an existing file.
+    /// Runs all migrations on the fresh file and sets WAL mode.
     pub fn build_fresh(db_path: &Path) -> Result<Self> {
+        Self::ensure_artifact_reimport_safe(db_path)?;
         if db_path.exists() {
             fs::remove_file(db_path)
                 .with_context(|| format!("remove stale DB {}", db_path.display()))?;
@@ -5726,6 +5737,46 @@ claim_refs = ["C-001"]
         let rows =
             statement.query_map([], |row| (0..count).map(|column| row.get(column)).collect())?;
         Ok(rows.collect::<rusqlite::Result<_>>()?)
+    }
+
+    #[test]
+    fn artifact_path_history_blocks_file_rebuild_and_table_reimport() -> Result<()> {
+        let (fixture, mut store) = artifact_lane_fixture("artifact_history_guard")?;
+        store.conn.execute(
+            "INSERT INTO export_runs (action,created_at,artifact_count,document_count,details_json) VALUES ('repair-artifact-paths','2026-01-01',1,0,'{}')",
+            [],
+        )?;
+        let before = lane_test_rows(&store, "artifacts")?;
+        let history = lane_test_rows(&store, "export_runs")?;
+        {
+            let transaction = store.conn.transaction()?;
+            let error = clear_tables(&transaction).unwrap_err();
+            assert!(error.to_string().contains("artifact path repair history"));
+        }
+        assert_eq!(lane_test_rows(&store, "artifacts")?, before);
+        assert_eq!(lane_test_rows(&store, "export_runs")?, history);
+        drop(store);
+        let bytes = fs::read(&fixture.db)?;
+        let error = ProvenanceStore::build_fresh(&fixture.db).err().unwrap();
+        assert!(error.to_string().contains("artifact path repair history"));
+        assert_eq!(fs::read(&fixture.db)?, bytes);
+        Ok(())
+    }
+
+    #[test]
+    fn canonical_path_relations_block_import_without_a_repair_event() -> Result<()> {
+        let (_fixture, mut store) = artifact_lane_fixture("artifact_relation_guard")?;
+        store.conn.execute(
+            "INSERT INTO artifact_paths VALUES ('A-1','historical.pdf','historical_download')",
+            [],
+        )?;
+        let before = lane_test_rows(&store, "artifact_paths")?;
+        {
+            let transaction = store.conn.transaction()?;
+            assert!(clear_tables(&transaction).is_err());
+        }
+        assert_eq!(lane_test_rows(&store, "artifact_paths")?, before);
+        Ok(())
     }
 
     #[test]

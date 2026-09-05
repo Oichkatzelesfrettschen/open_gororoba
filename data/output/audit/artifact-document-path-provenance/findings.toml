@@ -10,7 +10,7 @@ preservation = "data/output/audit/artifact-document-path-provenance/preservation
 
 [document_identity]
 cause = "The TOML candidate extractor treated document path_refs and context-chunk paths as copies of their containing document. Six document-reference relations included two surviving directories, so replacing only the five missing canonical paths would retain false copy identities."
-mechanism = "Document rows with source_markdown/body_markdown and context chunks with paths/purpose identify their owning source TOML. The scanner retains embedded paths, URL and DOI references as reference notes. Generic artifact download-path parsing retains its existing behavior."
+mechanism = "Book-registry document rows with source_markdown/body_markdown and context chunks with paths/purpose identify their owning source TOML. The scanner retains embedded paths, URL and DOI references as reference notes. Generic artifact download-path parsing retains its existing behavior."
 book_owners = ["ASOT-1099: registry/book_docs.toml, BOOK-014", "ASOT-1105: registry/book_docs.toml, BOOK-015", "ASOT-1118: registry/book_docs.toml, BOOK-007"]
 context_owner = "ASOT-1119: reports/repo_quick_context_chunks_2026_02_14.toml, CTX-08"
 selector_boundary = "Existing record_sources selectors preserve the imported document/chunk identities. The three book artifacts share one tracked TOML container; generated ignored Markdown mirrors are presentation outputs. The CTX report retains its historical content."
@@ -31,14 +31,14 @@ transformation = "Two ASCII hyphens in the final line became U+2212 minus signs.
 quality = "Both files preserve garbled mathematical extraction evidence. The historical CSV inventory classified the original as manual_triage. Path recovery establishes byte provenance, not scientific table accuracy or source-paper attribution."
 
 [canonical_migration]
-mechanism = "artifact repair-paths validates a typed finite specification, exact prior path sets, regular repository-contained target files and SHA256. One transaction changes canonical paths and path relations and records full before/after rows, specification hash, actor and reason in export_runs. Original keys, titles, citations, statuses, source references and lanes remain preserved."
+mechanism = "artifact repair-paths validates a typed finite specification, exact prior path sets, regular Git-tracked repository-contained target files and SHA256. One transaction changes canonical paths and path relations and records full before/after rows, specification hash, actor and reason in export_runs. Original keys, titles, citations, statuses, source references and lanes remain preserved."
 replay_behavior = "An identical repair key/specification returns the retained report after checking target bytes and post-state. Changed specifications, target bytes or artifact/path post-state fail. Canonical repair specifications describe a fixed revision; later intentional edits to owning documents require a newly evidenced specification."
 command = 'CARGO_TARGET_DIR="$PWD/.cache/gate-target" cargo run --locked --profile validation -p gororoba_db --bin gororoba-db -- --repo-root "$PWD" artifact repair-paths --spec data/output/audit/artifact-document-path-provenance/repair.toml'
 exports = ["provenance export-control-plane", "registry-integrity", "provenance verify-control-plane"]
 
 [verification]
-api = "Five artifact path repair tests pass, including full-row metadata preservation, exact replay, invalid admissions, symlink components and late-trigger transaction rollback."
-scanner = "All 25 provenance_ops library tests pass, including document, context-chunk and generic artifact regressions. provenance_ops all-target Clippy passes with warnings denied."
+api = "Seven artifact path repair tests pass, including full-row metadata preservation, exact replay, invalid admissions, symlink components and late-trigger transaction rollback."
+scanner = "All 26 provenance_ops library tests pass, including document, context-chunk and generic artifact regressions. provenance_ops all-target Clippy passes with warnings denied."
 idempotence = "Two canonical CLI applications emit byte-identical reports and retain one repair event."
 finite_delta = "All 14 SQL assertions pass: exactly five canonical-path changes, seven removed downloaded relations and thirteen added typed relations; original artifact metadata, source references, citations, lanes, claims, transitions and prior export history remain preserved."
 falsifier = "Deleting the transformed-copy relation in a scratch database makes verify-preservation.sql fail at exact_added_paths."
@@ -47,5 +47,14 @@ comparison_baseline = "mkdir -p .cache/artifact-provenance; git show 5663248a8b0
 comparison = "sqlite3 registry/canonical/control_plane.sqlite3 < data/output/audit/artifact-document-path-provenance/verify-preservation.sql"
 availability = "provenance --repo-root MATERIALIZED_CHECKOUT --db MATERIALIZED_CHECKOUT/registry/canonical/control_plane.sqlite3 verify"
 availability_boundary = "Repository-wide availability depends on the materialized checkout. The five repaired canonical paths are tracked files; other pre-existing downloaded artifacts can be host-local."
-repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0; scoped Clippy, library tests and governance pass. The scanner source is compiled by provenance_ops through a path import, so its separate 25-test suite and all-target Clippy supply coverage beyond direct-path gate routing."
+repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0; scoped Clippy, library tests and governance pass. The scanner source is compiled by provenance_ops through a path import, so its separate 26-test suite and all-target Clippy supply coverage beyond direct-path gate routing."
 preintegration_availability = "All 1658 canonical path rows resolve in the union of the worktree tracked files and primary local materialization. Final single-root availability is checked after integration."
+
+[review_hardening]
+rebuild_boundary = "The host-neutral artifact inventory cannot reproduce canonical historical relations. build_fresh checks the existing database read-only before deletion; provenance reindex checks before clearing tables. Either retained repair events or canonical-only path relations cause refusal, including when claim-history loss was separately acknowledged."
+rebuild_test = "A CLI rebuild of a scratch copy using --allow-transition-history-loss fails on one repair event and eight canonical-only relations. Database bytes compare identical before and after. Unit tests also preserve rows on reindex refusal and protect relations without a repair event."
+tracked_targets = "Admission checks the exact Git worktree root and one regular stage-0 index entry for each replacement and related path. Untracked, ignored, unresolved and nonrepository paths fail. Materialized SHA256 remains authoritative because Git LFS index entries store pointer bytes."
+specialized_identity = "Book ownership conversion is restricted to registry/book_docs.toml. End-to-end candidate extraction combines specialized external-source and generic passes: DOI and arXiv dossiers plus a citing book yield five candidates and exactly three intended artifacts."
+relative_spec = "A real CLI invocation from /tmp using an absolute --repo-root and repository-relative --spec emits a byte-identical retained repair report."
+focused_validation = "All 44 provenance_store library tests and all 26 provenance_ops library tests pass."
+early_preflight = "Both provenance index --refresh-compat-exports and provenance export-artifact-scan --reindex-after reject a scratch database holding repair history before export writes. The database and sentinel export remain byte-identical; the four-file scratch inventory remains unchanged."

@@ -224,3 +224,18 @@ SQLite-first governance checks are operational.
 ==========================================
 make[1]: Leaving directory '<checkout>'
 [validate-local] OK: scoped validation passed.
+
+Review-hardening verification:
+make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2
+Result: exit 0; scoped Clippy, 63 library tests (0 skipped), and governance pass.
+cargo nextest run --offline --locked -j 2 --cargo-profile validation -p provenance_store -p provenance_ops --lib
+Result: 70 tests pass, 0 skipped (44 store and 26 scanner tests).
+cargo clippy --offline --locked -j 2 --profile validation -p provenance_ops -p gororoba_cli_provenance --all-targets -- -D warnings
+Result: exit 0.
+SQLite preservation proof: all 14 assertions pass after review fixes.
+CLI replay from /tmp with repository-relative --spec: retained report compares byte-identical.
+Scratch rebuild with --allow-transition-history-loss: refuses artifact history loss; database bytes preserved.
+Scratch index --refresh-compat-exports and export-artifact-scan --reindex-after:
+both exit nonzero with the artifact-history refusal (1 repair event, 8 canonical-only relations).
+Database and sentinel export compare byte-identical after each command.
+Scratch inventory retains exactly four files: database, database baseline, sentinel export, export baseline.

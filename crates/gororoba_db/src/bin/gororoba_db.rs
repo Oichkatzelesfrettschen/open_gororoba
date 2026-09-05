@@ -1713,8 +1713,9 @@ fn cmd_artifact_mutation(
 ) -> Result<()> {
     match &args.action {
         ArtifactAction::RepairPaths { spec } => {
+            let spec = repo_root.join(spec);
             let specification: provenance_store::ArtifactPathRepairSpec =
-                toml::from_str(&fs::read_to_string(spec)?)?;
+                toml::from_str(&fs::read_to_string(&spec)?)?;
             let report = store.repair_artifact_paths(repo_root, &specification)?;
             println!("{}", serde_json::to_string_pretty(&report)?);
         }
