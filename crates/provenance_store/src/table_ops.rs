@@ -8,10 +8,45 @@
 //! shared (owner_id, relation, ord, value) projection used by the
 //! claim/insight/experiment relation tables.
 
-use anyhow::Result;
+use anyhow::{Result, bail};
 use rusqlite::{Connection, params};
 
+pub(crate) fn refuse_artifact_path_history_loss(conn: &Connection) -> Result<()> {
+    let table_exists = |table: &str| -> Result<bool> {
+        Ok(conn.query_row(
+            "SELECT EXISTS(SELECT 1 FROM sqlite_master WHERE type='table' AND name=?1)",
+            [table],
+            |row| row.get(0),
+        )?)
+    };
+    let events: i64 = if table_exists("export_runs")? {
+        conn.query_row(
+            "SELECT count(*) FROM export_runs WHERE action='repair-artifact-paths'",
+            [],
+            |row| row.get(0),
+        )?
+    } else {
+        0
+    };
+    let relations: i64 = if table_exists("artifact_paths")? {
+        conn.query_row(
+            "SELECT count(*) FROM artifact_paths WHERE relation IN ('referenced','historical_download','transformed_copy')",
+            [],
+            |row| row.get(0),
+        )?
+    } else {
+        0
+    };
+    if events > 0 || relations > 0 {
+        bail!(
+            "refusing to discard artifact path repair history: {events} repair events and {relations} canonical-only path relations cannot be restored from the artifact compatibility inventory. Preserve the canonical database; bootstrap a separate empty database for an import."
+        );
+    }
+    Ok(())
+}
+
 pub(crate) fn clear_tables(conn: &Connection) -> Result<()> {
+    refuse_artifact_path_history_loss(conn)?;
     conn.execute_batch(
         "
         INSERT INTO document_search(document_search) VALUES('delete-all');

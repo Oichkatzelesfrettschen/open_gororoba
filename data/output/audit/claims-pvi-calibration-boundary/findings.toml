@@ -94,9 +94,14 @@ scope = "The follow-up retains 23,456,246 rows and 574,716 positives from 813 fi
 temporal_boundary = "Sample-count windows preserve 503 equal-time pairs and can cross gaps up to 27506.728 seconds. The label remains at k+4 and complete feature availability at k+5. Streaming validity remains untested."
 artifact_lane_resolution = "All 13 missing canonical PDF lane assignments are repaired while original artifact metadata, paths, and source references remain equal to the base database."
 dependency_resolution = "A checksum-verified proc-macro-error2 2.0.1 vendor patch makes the proc_macro binding public. The owning workspace library and bench check reports zero dependencies with future-incompatible warnings."
-remaining_provenance = "Five historical path rows remain unresolved: ASOT-1099, ASOT-1105, ASOT-1118, ASOT-1119, and ASOT-1479. The detailed findings retain path identities, migration evidence, and the Moreno table's transformed-copy distinction."
+remaining_provenance = "The calibration audit observed five unresolved historical path rows; the provenance_path_resolution section records their subsequent repair. The detailed findings retain path identities, migration evidence, and the Moreno table's transformed-copy distinction."
 
 [calibration_review_corrections]
 findings = "data/output/audit/staples-calibration-grouped-refits/findings.toml"
 claim_scope = "Canonical C-1740/C-1741 status notes enumerate computational map counts and separate them from physical interpretation. E-242 treats a zero-containing incremental AUC interval as inconclusive; E-280 describes rolling calibration by preceding input-row order."
 replay_boundary = "The retained 750-fit campaign audits against production commit 291ce5023d4ae8ca30c5ee4535bd9152520233ef using the independent auditor's explicit --source-ref option. The repaired runner retains preparation failures and generates its own source identity for new runs."
+
+[provenance_path_resolution]
+status = "resolved"
+findings = "data/output/audit/artifact-document-path-provenance/findings.toml"
+repaired_artifacts = ["ASOT-1099", "ASOT-1105", "ASOT-1118", "ASOT-1119", "ASOT-1479"]

@@ -782,7 +782,7 @@ path_refs = [
     "[workspace.dependencies]",
     "crates/",
     "docs/*.md",
-    "papers/",
+    "data/papers/",
     "registry/canonical/",
     "registry/canonical/control_plane.sqlite3",
 ]
@@ -807,7 +807,7 @@ body_markdown = '''
 
 open\_gororoba is organized as a large Rust workspace rooted in `crates/`, with
 canonical control-plane state under `registry/`, long-form docs under `docs/`,
-generated artifacts under `data/`, and a research corpus under `papers/`.
+generated artifacts under `data/`, and a research corpus under `data/papers/`.
 
 ![Repo operator matrix](../assets/repo_operator_matrix_3160x2820.png)
 
@@ -842,11 +842,11 @@ registry/
   binaries.toml       SQLite-exported CLI inventory compatibility view
   project.toml        Version, synchronized counts, sprint history
 
-papers/
-  pdf/                Research PDFs
-  bib/                Bibliography database
-  extracted/          Structured TOML extractions per paper
-  MANIFEST.toml       Paper metadata registry
+data/papers/
+  corpus/             Cached research PDFs and text companions
+  documents_extracted/  Paper extraction evidence
+  transport/          Paper transport inputs
+  corpus/MANIFEST.toml  Corpus inventory; local availability varies by host
 
 docs/
   book/               Canonical web-viewable architecture docs
@@ -1598,7 +1598,7 @@ claim_refs = []
 path_refs = [
     "crates/",
     "docs/latex/",
-    "papers/MANIFEST.toml",
+    "data/papers/corpus/MANIFEST.toml",
     "registry/*.toml",
     "registry/binaries.toml",
     "registry/canonical/control_plane.sqlite3",
@@ -1774,8 +1774,8 @@ body_markdown = '''
 
 The repo now has two paper layers that should be kept distinct:
 
-- `data/papers/corpus/` is the repo-owned executable corpus. It currently holds
-  318 cached files, including PDFs, sidecar text, and a local `MANIFEST.toml`.
+- `data/papers/corpus/` contains cached PDFs, sidecar text and `MANIFEST.toml`.
+  Read the manifest for its declared inventory and verify local availability.
 - `~/Documents/Projects/CayleyDickson/CHRONOLOGICAL_REFERENCE_MATRIX.md` is the
   broader off-repo chronology and audit surface. As of 2026-03-25 it tracks
   119 rows across precursor, quaternion, octonion, sedenion, and later CD work.

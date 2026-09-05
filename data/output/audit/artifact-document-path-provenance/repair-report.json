@@ -1,0 +1,356 @@
+{
+  "actor": "codex",
+  "reason": "Separate owning documents from referenced paths and retain byte-identified historical extraction with its transformed copy.",
+  "repair_key": "artifact-document-ownership-and-moreno-extraction",
+  "repairs": [
+    {
+      "after": {
+        "artifact": [
+          {
+            "canonical_download_path": "registry/book_docs.toml",
+            "canonical_functional_url": null,
+            "citation": "open_gororoba",
+            "id": "ASOT-1099",
+            "key": "title:open_gororoba",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "open_gororoba"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1099",
+            "path": "papers/MANIFEST.toml",
+            "relation": "referenced"
+          },
+          {
+            "artifact_id": "ASOT-1099",
+            "path": "registry/book_docs.toml",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "before": {
+        "artifact": [
+          {
+            "canonical_download_path": "papers/MANIFEST.toml",
+            "canonical_functional_url": null,
+            "citation": "open_gororoba",
+            "id": "ASOT-1099",
+            "key": "title:open_gororoba",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "open_gororoba"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1099",
+            "path": "papers/MANIFEST.toml",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "id": "ASOT-1099"
+    },
+    {
+      "after": {
+        "artifact": [
+          {
+            "canonical_download_path": "registry/book_docs.toml",
+            "canonical_functional_url": null,
+            "citation": "Paper Collection",
+            "id": "ASOT-1105",
+            "key": "title:paper_collection",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "Paper Collection"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1105",
+            "path": "papers/extracted/",
+            "relation": "referenced"
+          },
+          {
+            "artifact_id": "ASOT-1105",
+            "path": "papers/pdf/",
+            "relation": "referenced"
+          },
+          {
+            "artifact_id": "ASOT-1105",
+            "path": "registry/book_docs.toml",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "before": {
+        "artifact": [
+          {
+            "canonical_download_path": "papers/extracted/",
+            "canonical_functional_url": null,
+            "citation": "Paper Collection",
+            "id": "ASOT-1105",
+            "key": "title:paper_collection",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "Paper Collection"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1105",
+            "path": "papers/extracted/",
+            "relation": "downloaded"
+          },
+          {
+            "artifact_id": "ASOT-1105",
+            "path": "papers/pdf/",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "id": "ASOT-1105"
+    },
+    {
+      "after": {
+        "artifact": [
+          {
+            "canonical_download_path": "registry/book_docs.toml",
+            "canonical_functional_url": null,
+            "citation": "Project Layout",
+            "id": "ASOT-1118",
+            "key": "title:project_layout",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "Project Layout"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1118",
+            "path": "papers/",
+            "relation": "referenced"
+          },
+          {
+            "artifact_id": "ASOT-1118",
+            "path": "registry/book_docs.toml",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "before": {
+        "artifact": [
+          {
+            "canonical_download_path": "papers/",
+            "canonical_functional_url": null,
+            "citation": "Project Layout",
+            "id": "ASOT-1118",
+            "key": "title:project_layout",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "Project Layout"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1118",
+            "path": "papers/",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "id": "ASOT-1118"
+    },
+    {
+      "after": {
+        "artifact": [
+          {
+            "canonical_download_path": "reports/repo_quick_context_chunks_2026_02_14.toml",
+            "canonical_functional_url": null,
+            "citation": "Publication Pipeline",
+            "id": "ASOT-1119",
+            "key": "title:publication_pipeline",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "Publication Pipeline"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1119",
+            "path": "data/papers/transport/",
+            "relation": "referenced"
+          },
+          {
+            "artifact_id": "ASOT-1119",
+            "path": "papers/MANIFEST.toml",
+            "relation": "referenced"
+          },
+          {
+            "artifact_id": "ASOT-1119",
+            "path": "reports/repo_quick_context_chunks_2026_02_14.toml",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "before": {
+        "artifact": [
+          {
+            "canonical_download_path": "papers/MANIFEST.toml",
+            "canonical_functional_url": null,
+            "citation": "Publication Pipeline",
+            "id": "ASOT-1119",
+            "key": "title:publication_pipeline",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "Publication Pipeline"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1119",
+            "path": "data/papers/transport/",
+            "relation": "downloaded"
+          },
+          {
+            "artifact_id": "ASOT-1119",
+            "path": "papers/MANIFEST.toml",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "id": "ASOT-1119"
+    },
+    {
+      "after": {
+        "artifact": [
+          {
+            "canonical_download_path": "data/output/audit/artifact-document-path-provenance/moreno-table-original.csv",
+            "canonical_functional_url": null,
+            "citation": "registry/csv_inventory.toml::document/1326",
+            "id": "ASOT-1479",
+            "key": "title:registry_csv_inventory_toml_document_1326",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "registry/csv_inventory.toml::document/1326"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1479",
+            "path": "data/output/audit/artifact-document-path-provenance/moreno-table-minus-normalized.csv",
+            "relation": "transformed_copy"
+          },
+          {
+            "artifact_id": "ASOT-1479",
+            "path": "data/output/audit/artifact-document-path-provenance/moreno-table-original.csv",
+            "relation": "downloaded"
+          },
+          {
+            "artifact_id": "ASOT-1479",
+            "path": "papers/extracted/moreno-2005-math0512516/table_1.csv",
+            "relation": "historical_download"
+          }
+        ]
+      },
+      "before": {
+        "artifact": [
+          {
+            "canonical_download_path": "papers/extracted/moreno-2005-math0512516/table_1.csv",
+            "canonical_functional_url": null,
+            "citation": "registry/csv_inventory.toml::document/1326",
+            "id": "ASOT-1479",
+            "key": "title:registry_csv_inventory_toml_document_1326",
+            "minimum_requirement_met": 1,
+            "status": "downloaded",
+            "title": "registry/csv_inventory.toml::document/1326"
+          }
+        ],
+        "artifact_paths": [
+          {
+            "artifact_id": "ASOT-1479",
+            "path": "papers/extracted/moreno-2005-math0512516/table_1.csv",
+            "relation": "downloaded"
+          }
+        ]
+      },
+      "id": "ASOT-1479"
+    }
+  ],
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "reason": "Separate owning documents from referenced paths and retain byte-identified historical extraction with its transformed copy.",
+    "repair": [
+      {
+        "expected_canonical_path": "papers/MANIFEST.toml",
+        "expected_downloaded_paths": [
+          "papers/MANIFEST.toml"
+        ],
+        "id": "ASOT-1099",
+        "old_path_relation": "referenced",
+        "related_path": [],
+        "replacement_path": "registry/book_docs.toml",
+        "replacement_sha256": "7f429501b2ff6efd031e2e81c467ed1e24fb690fc9acef42b14441c9defd0993"
+      },
+      {
+        "expected_canonical_path": "papers/extracted/",
+        "expected_downloaded_paths": [
+          "papers/extracted/",
+          "papers/pdf/"
+        ],
+        "id": "ASOT-1105",
+        "old_path_relation": "referenced",
+        "related_path": [],
+        "replacement_path": "registry/book_docs.toml",
+        "replacement_sha256": "7f429501b2ff6efd031e2e81c467ed1e24fb690fc9acef42b14441c9defd0993"
+      },
+      {
+        "expected_canonical_path": "papers/",
+        "expected_downloaded_paths": [
+          "papers/"
+        ],
+        "id": "ASOT-1118",
+        "old_path_relation": "referenced",
+        "related_path": [],
+        "replacement_path": "registry/book_docs.toml",
+        "replacement_sha256": "7f429501b2ff6efd031e2e81c467ed1e24fb690fc9acef42b14441c9defd0993"
+      },
+      {
+        "expected_canonical_path": "papers/MANIFEST.toml",
+        "expected_downloaded_paths": [
+          "data/papers/transport/",
+          "papers/MANIFEST.toml"
+        ],
+        "id": "ASOT-1119",
+        "old_path_relation": "referenced",
+        "related_path": [],
+        "replacement_path": "reports/repo_quick_context_chunks_2026_02_14.toml",
+        "replacement_sha256": "1551f264c623cf88b3eda855e3befaaea548d587e54bb835ed17a6dd8dabc571"
+      },
+      {
+        "expected_canonical_path": "papers/extracted/moreno-2005-math0512516/table_1.csv",
+        "expected_downloaded_paths": [
+          "papers/extracted/moreno-2005-math0512516/table_1.csv"
+        ],
+        "id": "ASOT-1479",
+        "old_path_relation": "historical_download",
+        "related_path": [
+          {
+            "path": "data/output/audit/artifact-document-path-provenance/moreno-table-minus-normalized.csv",
+            "relation": "transformed_copy",
+            "sha256": "fae8fefb401a0c100c6c38bb38117b8d3e2c12cda076e2cc0ff5dc8247da3c4e"
+          }
+        ],
+        "replacement_path": "data/output/audit/artifact-document-path-provenance/moreno-table-original.csv",
+        "replacement_sha256": "02c1ed06b04730be3d425a5cab33ea11aee7cb73dfc931e115180362f696393c"
+      }
+    ],
+    "repair_key": "artifact-document-ownership-and-moreno-extraction",
+    "schema_version": 1
+  },
+  "spec_hash_encoding": "serde_json serialization of typed specification",
+  "spec_sha256": "eb72023291bdbfbbc5a252d7a0cce94a941f911cae429b181051eea3f3b25382"
+}
