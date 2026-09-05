@@ -1,0 +1,2202 @@
+                                            EUROPEAN ORGANIZATION FOR NUCLEAR RESEARCH
+
+
+
+
+                                                                                                                                     CERN-EP-2018-066
+                                                                                                                                          6 April 2018
+
+
+                                             Measurement of D0 , D+ , D∗+ and D+
+                                                                               s production in Pb–Pb collisions at
+                                                                       √
+                                                                        sNN = 5.02 TeV
+
+
+
+
+arXiv:1804.09083v2 [nucl-ex] 17 Jan 2019
+                                                                                          ALICE Collaboration∗
+
+
+                                                                                                  Abstract
+
+                                                 We report measurements of the production of prompt D0 , D+ , D∗+ and D+      s mesons in Pb–Pb col-
+                                                                                                                  √
+                                                 lisions at the centre-of-mass energy per nucleon–nucleon pair sNN = 5.02 TeV, in the centrality
+                                                 classes 0–10%, 30–50% and 60–80%. The D-meson production yields are measured at mid-rapidity
+                                                 (|y| < 0.5) as a function of transverse momentum (pT ). The pT intervals covered in central colli-
+                                                 sions are: 1 < pT < 50 GeV/c for D0 , 2 < pT < 50 GeV/c for D+ , 3 < pT < 50 GeV/c for D∗+ ,
+                                                 and 4 < pT < 16 GeV/c for D+     s mesons. The nuclear modification factors (RAA ) for non-strange D
+                                                 mesons (D0 , D+ , D∗+ ) show minimum values of about 0.2 for pT = 6–10 GeV/c in the most central
+                                                                                                                               √
+                                                 collisions and are compatible within uncertainties with those measured at sNN = 2.76 TeV. For
+                                                 D+s mesons, the values of RAA are larger than those of non-strange D mesons, but compatible within
+                                                 uncertainties. In central collisions the average RAA of non-strange D mesons is compatible with that
+                                                 of charged particles for pT > 8 GeV/c, while it is larger at lower pT . The nuclear modification fac-
+                                                 tors for strange and non-strange D mesons are also compared to theoretical models with different
+                                                 implementations of in-medium energy loss.
+
+
+
+
+                                           c 2018 CERN for the benefit of the ALICE Collaboration.
+                                           Reproduction of this article or parts of it is allowed as specified in the CC-BY-4.0 license.
+                                             ∗ See Appendix A for the list of collaboration members
+                                              √
+D-meson production in Pb–Pb collisions at         sNN = 5.02 TeV                       ALICE Collaboration
+
+
+1 Introduction
+Ultra-relativistic collisions of heavy nuclei produce a state of strongly-interacting matter characterised
+by high energy density and temperature. According to Quantum Chromodynamics (QCD) on the lattice,
+in these extreme conditions matter undergoes a phase transition to a Quark-Gluon Plasma (QGP) state in
+which quarks and gluons are deconfined and chiral symmetry is partially restored [1–4].
+Heavy quarks (such as charm and beauty) are predominantly produced in the early stage of the collision
+in hard scattering processes between partons of the incoming nuclei. Because of their large masses, their
+production time (∼ 0.1 and 0.02 fm/c for charm and beauty, respectively [5]) is shorter than the formation
+time of the QGP, which is about 0.3-1.5 fm/c at Large Hadron Collider (LHC) energies [6]. In contrast,
+the thermal production and annihilation rates are negligible [7]. Heavy quarks therefore experience the
+full evolution of the hot and dense QCD medium.
+During their propagation through the medium, heavy quarks are exposed to interactions with the medium
+constituents and lose part of their energy via inelastic (gluon radiation) [8, 9] or elastic scatterings (col-
+lisional processes) [10–12]. The colour-charge dependence of the strong interaction and parton-mass-
+dependent effects are predicted to influence the amount of energy loss (see [5, 13] for recent reviews).
+Low-momentum heavy quarks can participate in the collective expansion of the system as a consequence
+of multiple interactions with the medium [14, 15]. It was also suggested that low-momentum heavy
+quarks could hadronise not only via fragmentation in the vacuum, but also via the mechanism of recom-
+bination with other quarks in the medium [15, 16]. In this scenario, the large abundance of strange quarks
+in nucleus–nucleus collisions with respect to proton–proton collisions is expected to lead to an increased
+production of D+s mesons relative to non-strange D mesons [17].
+
+The effects of energy loss and the dynamics of heavy-quark hadronisation can be studied using the
+nuclear modification factor RAA , which compares the transverse-momentum (pT ) differential produc-
+tion yields in nucleus–nucleus collisions (dNAA /dpT ) with the cross section in proton–proton collisions
+(dσpp /dpT ) scaled by the average nuclear overlap function hTAA i:
+
+                                                      1     dNAA /dpT
+                                      RAA (pT ) =         ·           .                                   (1)
+                                                    hTAA i dσpp /dpT
+
+The average nuclear overlap function hTAA i is defined as the average number of nucleon-nucleon colli-
+sions hNcoll i, which can be estimated via Glauber model calculations [18–21], divided by the inelastic
+nucleon-nucleon cross section.
+                                                                                               √
+Measurements of prompt D-meson production by the ALICE Collaboration in Pb–Pb collisions at sNN =
+2.76 TeV [22–25] showed a strong suppression of the D-meson yields by a factor of 5–6 for 8 < pT <
+12 GeV/c in the 10% most central collisions. Recent results from the CMS Collaboration on D0 pro-
+duction in the pT range 2–100 GeV/c show a similar suppression for 6 < pT < 10 GeV/c in the 10%
+                                    √
+most central Pb–Pb collisions at sNN = 5.02 TeV, decreasing with increasing pT [26]. In contrast,
+                                                                 √
+the D-meson nuclear modification factor in p–Pb collisions at sNN = 5.02 TeV, where an extended
+QGP phase is not expected to be formed, was found to be consistent with unity within uncertainties
+for 0 < pT < 24 GeV/c [27]. These results indicate that the strong suppression is due to substantial
+final-state interactions of charm quarks with the QGP formed in Pb–Pb collisions.
+In this article, we present the measurement of pT -differential yields and the nuclear modification factor
+                                                                                                   √
+for prompt D0 , D+ , D∗+ and D+   s mesons (including their antiparticles), in Pb–Pb collisions at   sNN =
+5.02 TeV collected with the ALICE detector during the LHC Run 2 in 2015. Prompt D mesons are
+defined as those produced by the hadronisation of charm quarks or from the decay of excited open charm
+and charmonium states, hence excluding the decays of beauty hadrons. The experimental apparatus is
+briefly presented in Section 2, together with the data sample used for the analysis. The reconstruction of
+
+
+                                                       2
+                                                 √
+D-meson production in Pb–Pb collisions at            sNN = 5.02 TeV                         ALICE Collaboration
+
+
+                                Centrality class      hTAA i (mb−1 )      Nevents
+                                    0–10%              23.07 ± 0.44     10.4 × 106
+                                   30–50%               3.90 ± 0.11     20.8 × 106
+                                   60–80%             0.417 ± 0.014     20.8 × 106
+Table 1: Average nuclear overlap function and number of events for the three centrality classes used in the analysis.
+
+D-meson hadronic decays and all corrections applied to the raw yields are presented in Section 3. The
+                                                                       √
+procedure used to obtain the proton–proton reference cross section at s = 5.02 TeV and the estimation
+of the systematic uncertainties are described in Section 4 and Section 5, respectively. The results for the
+central (0–10%), semi-central (30–50%) and peripheral (60–80%) collisions are presented in Section 6.
+A comparison with charged-pion and charged-particle RAA is reported in the same Section, along with
+detailed comparisons with model calculations, including a simultaneous comparison of the RAA and
+elliptic flow v2 . Conclusions are drawn in Section 7.
+
+
+2 Experimental apparatus and data sample
+A description of the ALICE experimental apparatus and its performance in pp, p–Pb and Pb–Pb collisions
+can be found in [28, 29]. The main detectors used in the present analysis are the V0 detector, the
+Inner Tracking System (ITS) [30], the Time Projection Chamber (TPC) [31] and the Time Of Flight
+(TOF) detector [32], located inside a large solenoidal magnet providing a uniform magnetic field of
+0.5 T parallel to the LHC beam direction (z axis in the ALICE reference system), and the Zero Degree
+Calorimeters (ZDC) [33], located at z = ±112.5 m from the nominal interaction point. The analysed
+sample consists of Pb–Pb collision data recorded with a minimum-bias interaction trigger that required
+coincident signals in both scintillator arrays of the V0 detector [34]. The V0 detector consists of two
+scintillator arrays, which cover the full azimuth in the pseudorapidity intervals −3.7 < η < −1.7 and
+2.8 < η < 5.1. Events produced by the interaction of the beams with residual gas in the vacuum pipe
+were rejected offline using the V0 and the ZDC timing information. Only events with a reconstructed
+interaction point (primary vertex) within ±10 cm from the centre of the ITS detector along the beam
+line were used in the analysis. For the data sample considered in this paper, the probability of in-bunch
+collision pileup (i.e. collisions with two or more simultaneous interactions per bunch crossing) was
+negligible, while the request of at least a hit in one of the two innermost layers of the ITS rejected tracks
+produced in out-of-bunch pileup collisions.
+Collisions were divided into centrality classes, determined from the sum of the V0 signal amplitudes and
+defined in terms of percentiles of the hadronic Pb–Pb cross section. In order to relate the centrality classes
+to the collision geometry, the distribution of the V0 summed amplitudes was fitted with a function based
+on the Glauber model [18–21] combined with a two-component model for particle production [35], which
+decomposes particle production in nucleus-nucleus collisions into the contributions due to soft and hard
+interactions. The centrality classes used in the present analysis, together with the corresponding average
+nuclear overlap function hTAA i [36] and the number of events (Nevents ) in each class, are summarised in
+Table 1. The corresponding integrated luminosity is about Lint ≈ 13 µ b−1 [37].
+
+
+3 Data analysis
+The D mesons and their charge conjugates were reconstructed in the decay channels D0 → K− π + (with
+branching ratio, BR, of (3.93 ± 0.04)%), D+ → K− π + π + (BR of (9.46 ± 0.24)%), D∗+ → D0 π + (BR of
+(67.7 ± 0.5)%) and D+            +       + − +                                     0   +        +
+                        s → φ π → K K π (BR of (2.27 ± 0.08)%) [38]. D , D and Ds candidates
+were defined using pairs and triplets of tracks with proper charge-sign combination having |η | < 0.8,
+pT > 0.4 GeV/c, a minimum number of 70 (out of 159) associated space points in the TPC and at least
+two hits (out of six) in the ITS, with at least one in the two innermost layers. D∗+ candidates were formed
+
+
+                                                          3
+                                             √
+D-meson production in Pb–Pb collisions at        sNN = 5.02 TeV                       ALICE Collaboration
+
+
+by combining D0 candidates with tracks having |η | < 0.8, pT > 0.1 GeV/c and at least three associated
+hits in the ITS. For D+
+                      s candidate selection, one of the two pairs of opposite-sign tracks was required to
+have an invariant mass compatible with the φ mass (mφ = 1019.461 ± 0.019 MeV/c2 [38]). In particular,
+the difference between the reconstructed K+ K− invariant mass and φ mass was required to be less than
+5–10 MeV/c2 depending on the D+                                                            +
+                                  s pT interval. This selection preserves 70–85% of the Ds signal.
+
+The selection of tracks with |η | < 0.8 limits the D-meson acceptance in rapidity, which, depending on
+pT , varies from |y| < 0.6 for pT = 1 GeV/c to |y| < 0.8 for pT > 5 GeV/c. A pT -dependent fiducial
+acceptance cut, |yD | < yfid (pT ), was therefore applied to the D-meson rapidity. The value of yfid (pT )
+increases from 0.6 to 0.8 in the range 1 < pT < 5 GeV/c, and the variation can be described according to
+a second-order polynomial function. For pT > 5 GeV/c one has yfid = 0.8.
+The selection strategy is similar to the one used in previous analyses [25, 39] and is mainly based on
+the separation between primary and secondary vertex, the displacement of the tracks from the primary
+vertex and the pointing of the reconstructed D-meson momentum to the primary vertex. In comparison
+to previous analyses, additional selection criteria were exploited. In particular, the normalised difference
+between the measured and expected transverse-plane impact parameters of each of the decay particles
+(already introduced in [40]) and the transverse-plane impact parameter to the primary vertex (d0xy ) of the
+D-meson candidates were used. Besides the rejection of the combinatorial background, a selection based
+on the latter two variables has the advantage to suppress significantly the fraction of D mesons coming
+from beauty-hadron decays (feed-down) and hence reduce the associated systematic uncertainty. The cut
+values on the selection variables were optimised in each centrality class independently, in order to obtain
+a large statistical significance of the D-meson signals, while keeping the selection efficiency of promptly
+produced D mesons as large as possible. Further background reduction was obtained by applying particle
+identification for charged pions and kaons with the TPC and TOF detectors. A ±3 σ window around the
+expected mean values of specific ionisation energy loss dE/dx in the TPC gas and time-of-flight from
+the interaction point to the TOF detector was used for the identification, where σ is the resolution on
+these two quantities. In central collisions, a 2 σ selection was used for D∗+ and D+ (for pT < 3 GeV/c)
+candidates. For D+   s candidates, tracks without a TOF signal (mostly at low momentum) were identified
+using only the TPC information and requiring a 2 σ compatibility with the expected dE/dx. The stricter
+PID selection strategy was needed due to the large background of track triplets and, in case of D+        s ,
+because of its short lifetime, which limits the effectiveness of the geometrical selections on the displaced
+decay-vertex topology.
+The D0 , D+ and D+  s raw yields were obtained from binned maximum-likelihood fits to the candidate
+invariant-mass (M) distributions, while for the D∗+ the mass difference ∆M = M(Kππ ) − M(Kπ ) dis-
+tributions were used. Examples for these distributions are shown in Fig. 1 for the centrality class 0–
+10%. The D0 , D+ and D+    s candidate invariant-mass distributions were fitted with a function composed
+of a Gaussian term for the signal and an exponential function to describe the background shape, with
+the exception of the D0 pT intervals 1–2 GeV/c and 2–3 GeV/c, where the background was found
+to be better described by a second-order polynomial function (a fourth-order polynomial was used in
+1–2 GeV/c for the 0–10% centrality class). The ∆M distribution of D∗+ candidates was fitted with a
+Gaussian function
+           √        for the signal and a threshold function multiplied by an exponential for the back-
+ground (a ∆M − mπ · eb(∆M−mπ ) , where mπ is the pion mass and a and b are free parameters). The
+contribution of signal candidates that are present in the invariant-mass distribution of the D0 meson with
+the wrong decay-particle mass assignment (reflection), was parametrised by fitting the simulated reflec-
+tion invariant-mass distributions with a double Gaussian function, and it was included in the total D0
+fit function. The ratio between the reflected signal and the yields of the D0 was taken from simulations
+(typically 2-5% of the raw yield, depending on pT ) [39]. The Monte Carlo simulation used for this study
+is the same one used to determine the reconstruction efficiency, as described in the following dedicated
+paragraph. In addition, given the critical signal extraction induced by the small signal-to-background
+
+
+                                                      4
+                                                                                                       √
+D-meson production in Pb–Pb collisions at                                                                      sNN = 5.02 TeV                                                                                    ALICE Collaboration
+
+
+                                        6                                                                                                                          3
+                                      ×10                                                                                                                        ×10
+                                0.8
+
+
+
+
+       Counts / (8 MeV/c 2)
+
+
+                                                                                                                          Counts - bkg fct. / (8 MeV/c 2)
+                                                                                                                                                             6         0      -
+                                        ALICE                                                                                                                      D → K π+                              µ = 1868 ± 2 MeV/ c 2
+                                0.7     0-10% Pb−Pb, s NN = 5.02 TeV                                                                                         5     and charge conj.                      σ = 12 MeV/ c 2
+                                                                                                                                                             4     1 < p T < 2 GeV/c                     S = 14044 ± 1939
+                                0.6                                            µ = 1868 ± 2 MeV/ c 2                                                         3
+                                                                               σ = 12 MeV/ c 2
+                                0.5                                                                                                                          2
+                                                                               S = 14044 ± 1939
+                                            0    - +                                                                                                         1
+                                0.4     D →Kπ
+                                        and charge conj.                                                                                                     0
+                                0.3     1 < p T < 2 GeV/c                                                                                                   −1
+
+                                       1.75          1.8         1.85            1.9          1.95             2                                            −2 1.75               1.8         1.85         1.9         1.95         2
+                                                                                           M (K π) (GeV/ c 2)                                                                                                     M (K π) (GeV/ c 2)
+                                        3
+                                      ×10
+
+
+
+
+       Counts / (14 MeV/ c 2)                                                                                             Counts / (0.8 MeV/ c 2)
+                                            +    -                                                                                                          70         *+         0           -
+                                1.4     D → K π+π+                             µ = 1871 ± 1 MeV/ c 2                                                               D → D π+ → K π+π+ µ = 145.6 ± 0.2 MeV/ c 2
+                                        and charge conj.                       σ = 17 ± 1 MeV/ c 2                                                          60     and charge conj.     σ = 0.9 ± 0.2 MeV/ c 2
+                                1.2     8 < p T < 10 GeV/ c                    S = 1158 ± 89                                                                50
+                                                                                                                                                                   24 < p T < 36 GeV/ c S = 73 ± 17
+
+                                  1                                                                                                                         40
+
+                                0.8                                                                                                                         30
+                                                                                                                                                            20
+                                0.6
+                                                                                                                                                            10
+                                0.4                                                                                                                          0
+                                        1.75         1.8         1.85           1.9          1.95          2                                                 0.14 0.142 0.144 0.146 0.148 0.15 0.152 0.154
+                                                                                          M (K ππ) (GeV/ c 2)                                                                                      M (K ππ) - M (K π) (GeV/ c 2)
+
+                                350                                                                                                                         30
+
+
+
+
+       Counts / (10 MeV/ c 2)                                                                                             Counts / (14 MeV/ c 2)
+                                            +               -       +                                                                                                  +                  -   +
+                                        Ds → φπ+ → K K π+                      µ = 1968 ± 3 MeV/ c 2                                                               Ds → φπ+ → K K π+                     µ = 1969 ± 3 MeV/ c 2
+                                300     and charge conj.                       σ = 11 ± 2 MeV/ c 2                                                          25     and charge conj.                      σ = 17 ± 3 MeV/ c 2
+                                        4 < p T < 6 GeV/c                      S = 161 ± 34                                                                 20     12 < p T < 16 GeV/ c                  S = 44 ± 9
+                                250                             +                     +
+                                                            D                     Ds                                                                        15                                                    +
+                                                                                                                                                                                          +                      Ds
+                                200                                                                                                                                                     D
+                                                                                                                                                            10
+                                150                                                                                                                          5
+
+                                100                                                                                                                          0
+                                        1.8     1.85       1.9          1.95      2        2.05      2.1       2.15                                               1.8       1.85        1.9       1.95      2         2.05    2.1       2.15
+                                                                                          M (KK π) (GeV/ c 2)                                                                                                    M (KK π) (GeV/ c 2)
+
+Figure 1: Invariant-mass distributions for the four D-meson species in selected pT intervals for the centrality class
+0–10%. Fitted values for the meson mass µ , width σ and raw yield S are also given. Top row: D0 mesons with
+1 < pT < 2 GeV/c, before (left) and after (right) subtraction of the background fit function. For this pT interval, the
+width of the Gaussian used to describe the signal is fixed to the value obtained in the simulations. Middle row: D+
+mesons with 8 < pT < 10 GeV/c and D∗+ mesons (difference of M(Kππ ) and M(Kπ )) with 24 < pT < 36 GeV/c.
+Bottom row: D+                                                                        +     + − +
+                 s mesons with 4 < pT < 6 GeV/c and 12 < pT < 16 GeV/c; the D → K K π signal is visible
+                    +
+on the left of the Ds signal.
+
+
+ratio of the D0 meson in 1 < pT < 2 GeV/c, the width of the Gaussian used to describe the signal was
+fixed to the value obtained in the simulations. The Gaussian widths obtained from the simulations were
+found to be consistent with those extracted from the data in the full pT range, for all measured centrality
+classes, with deviations of at most 10–15%. In the fit to the D+
+                                                               s -candidate invariant-mass distribution, an
+                                                 +       +   − +                             +
+                           √ to describe the D → K K π signal on the left of the Ds signal. The
+additional Gaussian was used
+statistical significance S/ S + B of the observed signals, estimated within 3 standard deviations, varies
+from 5 to 33 depending on the D-meson species, the pT interval, and the centrality class.
+The D-meson raw yields were corrected in order to obtain the pT -differential yields of prompt D mesons
+
+
+                                                                         fprompt (pT ) · 12 Nraw
+                                                                                             D+D (p )
+                                                                                                   T
+                                                      dN D                                            |y|<yfid (pT )
+                                                                 =                                                       .                                                                                                                     (2)
+                                                      dpT |y|<0.5 ∆pT · αy (pT ) · (Acc × ε )prompt (pT ) · BR · Nevents
+
+
+                                                                                                                      5
+                                              √
+D-meson production in Pb–Pb collisions at         sNN = 5.02 TeV                      ALICE Collaboration
+
+
+The raw yields Nraw  D+D were divided by a factor of two to obtain the charge-averaged (particle and an-
+
+tiparticle) yields. To correct for the contribution of feed-down from beauty-hadron decays, the raw
+yields were multiplied by the fraction of promptly produced D mesons, fprompt (see Eq. 3). Furthermore,
+they were divided by the product of prompt D-meson acceptance and efficiency (Acc × ε )prompt , by the
+branching ratio BR of the decay channel, by the transverse momentum interval width ∆pT and by the
+number of events Nevents . The (Acc × ε )prompt correction includes the tracking efficiency, the acceptance
+of pions and kaons, and the kinematical and topological selection efficiency of D mesons. The factor
+αy (pT ) = yfid (pT )/0.5 normalises the corrected yields measured in |y| < yfid (pT ) to one unit of rapid-
+ity |y| < 0.5, assuming a flat rapidity distribution for D mesons in |y| < yfid (pT ). This assumption was
+validated to the 1% level with simulations for pp collisions [41, 42] and it is justified also for Pb–Pb
+collisions. For example, measurements of the prompt and non-prompt J/ψ RAA in Pb–Pb collisions at
+√
+   sNN = 2.76 TeV do not exhibit a significant rapidity dependence [43].
+The correction for acceptance and efficiency (Acc × ε )prompt was determined using Monte Carlo sim-
+ulations with a detailed description of the detector and its response, based on the GEANT3 transport
+                                                     √
+package [44]. The underlying Pb–Pb events at sNN = 5.02 TeV were simulated using the HIJING
+v1.383 generator [45] and D-meson signals were added using the PYTHIA v6.421 generator [46] with
+Perugia-2011 tune. Each simulated PYTHIA pp event contained a cc or bb pair, and D mesons were
+forced to decay into the hadronic channels of interest for the analysis. In the most central event class, the
+pT distribution of D mesons in the MC simulation for pT > 2 GeV/c was weighted in order to match the
+shape measured in data for D0 mesons in finer pT intervals with respect to those used in the analysis. In
+the centrality classes and pT ranges where an analysis in finer pT intervals was not possible, the simulated
+D-meson pT distribution was weighted to match the shape given by model calculations. In particular,
+fixed-order plus next-to-leading-log perturbative QCD calculations (FONLL) [47, 48] multiplied by the
+RAA (pT ) of D mesons computed using the BAMPS model (which implements both elastic and radiative
+processes) for the 30–50% centrality class [49–51] were used for the corresponding centrality class. For
+the pT intervals 1–2 GeV/c and 16–50 GeV/c in the 0–10% centrality class and for the 60–80% cen-
+trality class, where the RAA is nearly flat in the measured pT interval, only the FONLL calculations were
+used.
+Figure 2 shows the acceptance-times-efficiency (Acc × ε ) for prompt and feed-down D mesons with
+rapidity |y| < yfid (pT ) in the centrality class 0–10%, after the aforementioned pT -distribution weighting
+procedure. The difference between the (Acc × ε ) factor for prompt and feed-down D-mesons arises
+from the geometrical selections applied, given the different decay topology of D mesons coming from B
+decays. In particular, the feed-down D mesons are on average more displaced from the primary vertex
+due to the large B-meson lifetime (cτ ≈ 500 µ m [38]) and therefore are more efficiently selected by the
+majority of the analysis cuts (e.g. for D0 and D∗+ in most of the pT intervals). On the contrary, the
+selections on the difference between measured and expected decay-track impact parameters and on the
+D-meson impact parameter reject more feed-down D mesons, thus reducing the feed-down efficiencies
+as compared to the previous analyses (e.g. for D+ and D+     s ). The (Acc × ε ) is higher for more peripheral
+collisions, by up to a factor larger than two at low pT , since less stringent selections can be applied
+because of the lower combinatorial background.
+The fprompt factor was obtained, following the procedure introduced in [22], by subtracting the contribu-
+tion of D mesons from beauty-hadron decays from the measured raw yield in each pT interval. It was
+estimated using perturbative QCD calculations, efficiencies from MC simulations, and an hypothesis on
+
+
+
+
+                                                       6
+                                                                                                    √
+D-meson production in Pb–Pb collisions at                                                                sNN = 5.02 TeV                                                                              ALICE Collaboration
+
+
+                                                 1                                                                                                  1
+
+
+
+
+                  Acceptance × Efficiency                                                                              Acceptance × Efficiency
+                                                     ALICE                                                                                               ALICE
+                                                     0-10% Pb-Pb                                                                                         0-10% Pb-Pb
+                                                      sNN = 5.02 TeV                                                                                      sNN = 5.02 TeV
+                                                                                                                                                 10−1
+                                              −1
+                                            10
+
+
+
+                                                                                                                                            10−2
+                                                                                     Prompt D                                                                                        Prompt D
+                                       10−2                                          Feed-down D                                                                                     Feed-down D
+                                                                                                                                                   −3
+                                                                                                                                            10
+
+                                                                               -                                                                                            -
+                                                                   D0 → K π+                                                                                      D+ → K π+π+
+                                              −3
+                                       10
+                                                         5    10    15    20   25    30   35        40   45   50
+                                                                                                                                            10−4         5   10   15   20   25       30   35    40   45    50
+                                                                                                   p T (GeV/ c )                                                                               p T (GeV/ c )
+
+                                                 1                                                                                                  1
+
+
+
+
+                  Acceptance × Efficiency                                                                              Acceptance × Efficiency
+                                                     ALICE                                                                                               ALICE
+                                                     0-10% Pb-Pb                                                                                         0-10% Pb-Pb
+                                                      sNN = 5.02 TeV                                                                                      sNN = 5.02 TeV
+
+
+                                            10−1                                                                                                 10−1
+
+
+
+
+                                                                                     Prompt D                                                                                        Prompt D
+                                       10−2                                          Feed-down D                                            10−2                                     Feed-down D
+
+
+
+                                                                                               -                                                                                          -
+                                                                   D*+ → D0π+ → K π+π+                                                                            D+s → φπ+ → K K+π+
+                                       10−3                                                                                                 10−3
+                                                     5       10    15    20    25    30   35       40    45   50                                         5                      10                    15
+                                                                                                   p T (GeV/ c )                                                                               p T (GeV/ c )
+
+
+Figure 2: Product of acceptance and efficiency as a function of pT for prompt (red circles) and feed-down (blue
+squares) D mesons in Pb–Pb collisions for the 0–10% centrality class obtained from MC simulations.
+
+
+the RAA of feed-down D mesons. The expression for fprompt reads:
+                   D+Dfeed-down
+                  Nraw
+  fprompt = 1 −
+                                              D+D
+                                             Nraw
+                                                                                         FONLL, EvtGen                                                                                                               (3)
+                                                                                    dσ                                                                  ∆pT · αy · (Acc × ε )feed-down · BR · Nevents
+         = 1 − Rfeed-down
+                AA        · hTAA i ·                                                                                                               ·                                                               .
+                                                                                    dpT                                                                                               1 D+D
+                                                                                               feed-down,|y|<0.5                                                                      2 Nraw
+
+                       D+D is the measured raw yield and N D+Dfeed-down is the estimated raw yield of D
+In this expression, Nraw                                    raw
+mesons from beauty-hadron decays. In detail, the beauty-hadron production cross section in pp collisions
+   √
+at s = 5.02 TeV, estimated with FONLL calculations [52], was folded with the beauty-hadron→ D + X
+decay kinematics using the EvtGen package [53] and multiplied by hTAA i of the corresponding cen-
+trality class, by the (Acc × ε ) for feed-down D mesons, and by the other factors introduced in Eq. (2).
+In addition, the nuclear modification factor of D mesons from beauty-hadron decays was accounted
+                                                           prompt   √
+for. The comparison of the RAA of prompt D mesons (RAA ) at sNN = 2.76 TeV [24] with that of
+J/ψ from B-meson decays [43] at the same energy measured by the CMS Collaboration indicates that
+prompt charmed hadrons are more suppressed than non-prompt charmed hadrons. The RAA values differ
+by a factor of about two in central collisions at a transverse momentum of about 10 GeV/c [24] and
+this difference is described by model calculations with parton-mass-dependent energy loss. Therefore,
+for the centrality classes 0–10% and 30–50%, the value Rfeed-down
+                                                              AA     = 2 · Rprompt
+                                                                            AA     was used to compute
+the correction for non-strange D mesons with 3 < pT < 24 GeV/c. This hypothesis was varied in the
+
+                                                                                                                   7
+                                              √
+D-meson production in Pb–Pb collisions at         sNN = 5.02 TeV                       ALICE Collaboration
+
+
+range 1 < Rfeed-down
+              AA       /Rprompt
+                          AA    < 3 considering the data uncertainties and model variations to estimate a
+systematic uncertainty. For 1 < pT < 3 GeV/c and 24 < pT < 50 GeV/c, where model calculations
+predict a reduced difference between the RAA values of prompt and non-prompt charm hadrons [54, 55],
+                                       prompt                                               prompt
+the hypothesis Rfeed-down
+                  AA        = 1.5 · RAA was used, with a variation in 1 < Rfeed-down
+                                                                                  AA      /RAA < 2 for the
+systematic uncertainty. In the case of strange D mesons, effects induced by the in-medium hadronisa-
+tion and increased abundance of strange quarks could influence the ratio of the RAA values of prompt
+and feed-down D+    s . Therefore, more conservative central values and variation ranges for the hypoth-
+esis were used for D+                          feed-down = Rprompt and 1 < Rfeed-down /Rprompt < 3. For the
+                         s mesons, namely RAA               AA          3     AA          AA
+peripheral class 60–80%, in which the medium effects are milder, also the difference between charm
+                                                                                   prompt
+and beauty mesons is assumed to be reduced: the value Rfeed-down AA       = 1.5 · RAA , varied in the range
+                  prompt
+1 < Rfeed-down
+       AA      /RAA < 2, was used for all D-meson species. The resulting fprompt values, for the central
+hypotheses on Rfeed-down
+                 AA        /Rprompt
+                             AA     , range from about 0.80 to 0.95, depending on the D-meson species, cen-
+trality class and pT interval. The systematic uncertainties obtained from the variation of the hypotheses
+are discussed in Section 5.
+
+
+4 Proton–proton reference for RAA
+                                                                                         √
+The pT -differential cross sections of prompt D mesons with |y| < 0.5 in pp collisions at s = 5.02 TeV,
+used as reference for the nuclear modification factor, were obtained by scaling the measurements at
+√                     √
+  s = 7 TeV [40] to s = 5.02 TeV with FONLL calculations [52]. These measurements reach up to
+pT = 36 GeV/c for D0 , 24 GeV/c for D+ and D∗+ , and 12 GeV/c for D+       s mesons. The uncertainties
+                                           √            √
+on the pT -dependent scaling factor from s = 7 TeV to s = 5.02 TeV were determined by varying the
+FONLL parameters (charm-quark mass, factorisation and renormalisation scales) as described in [56].
+The uncertainties range from +17
+                               − 4 % for 1 < pT < 2 GeV/c to about ±3% for pT > 10 GeV/c.
+
+At high D-meson pT (36 < pT < 50 GeV/c for D0 , 24 < pT < 50 GeV/c for D+ and D∗+ , and 12 < pT <
+                                             √
+16 GeV/c for D+ s ), the FONLL calculation at s = 5.02 TeV [52] was used as a reference by scaling the
+values for each meson species to match the central value of the scaled data at lower pT . This procedure
+is described in Ref. [23]. As an example, the total systematic uncertainties on the pp reference for D0
+mesons with 36 < pT < 50 GeV/c is +38−28 %.
+
+
+5 Systematic uncertainties
+Systematic uncertainties on the D-meson yield in Pb–Pb collisions were estimated considering the fol-
+lowing sources: (i) extraction of the raw yield from the invariant-mass distributions; (ii) track reconstruc-
+tion efficiency; (iii) D-meson selection efficiency; (iv) PID efficiency; (v) generated D-meson pT shape
+in the simulation; (vi) subtraction of the feed-down from beauty-hadron decays. In addition, the uncer-
+tainties on the branching ratios [38] were considered. A procedure similar to that described in [22–25]
+and outlined in what follows was used to estimate the uncertainties as a function of pT and centrality.
+The systematic uncertainties on the raw yield extraction were evaluated for each D-meson species and in
+each pT interval by varying the lower and upper limits of the fit range, and the background fit function.
+In addition, the same approach was used with a bin-counting method, in which the signal yield was ob-
+tained by integrating the invariant-mass distribution after subtracting the background estimated from a fit
+to the side-bands. It ranges between 2% and 15% depending on the D-meson species and pT interval. In
+the case of D0 , an additional contribution due to signal reflections in the invariant-mass distribution was
+estimated by varying the ratio of the integral of the reflections over the integral of the signal and the shape
+of the templates used in the invariant-mass fits. For the D0 meson in the interval 1 < pT < 2 GeV/c, the
+signal line shape was varied by using Gaussian functions with the widths fixed to ±15% with respect to
+the value expected from Monte Carlo simulations, based on the deviations between the Gaussian width
+values observed in data and simulations. For the four D mesons, further checks on the stability of the
+
+
+                                                       8
+                                              √
+D-meson production in Pb–Pb collisions at         sNN = 5.02 TeV                       ALICE Collaboration
+
+
+results were performed by repeating the fits varying the invariant-mass bin width.
+The systematic uncertainty on the track reconstruction efficiency was estimated by varying the track-
+quality selection criteria and by comparing the probability to match the TPC tracks to the ITS hits in
+data and simulation. The comparison of the matching efficiency in data and simulations was made after
+weighting the relative abundances of primary and secondary particles in the simulation to match those
+observed in data, which were estimated via fits to the inclusive track impact parameter distributions. The
+estimated uncertainty depends on the D-meson pT and ranges from 3% to 8% for the two-body decay of
+D0 mesons and from 6% to 12% for the three-body decays of D+ , D∗+ and D+      s mesons.
+
+To estimate the uncertainty on the PID selection efficiency, for the three non-strange D-meson species the
+analysis was repeated without PID selection. The resulting cross sections were found to be compatible
+with those obtained with the PID selection and therefore no systematic uncertainty was assigned. For the
+D+s meson, the lower signal yield and the larger combinatorial background prevented a signal estimation
+without particle identification. In this case, a 3% uncertainty was estimated by repeating the analysis
+with a 3 σ PID selection, similar to that used for non-strange D-mesons for which no systematic effects
+were observed. This value was also verified by comparing the pion and kaon PID selection efficiencies
+in the data and in the simulation and combining the observed differences using the D+   s decay kinematics
+(for this test, pure pion samples were selected using strange hadron decays, while kaon samples in the
+TPC were obtained using a tight PID selection in the TOF).
+The uncertainty on the D-meson selection efficiency (see Cut efficiency in Table 2) originates from im-
+perfections in the description of the D-meson kinematic properties and of the detector resolutions and
+alignments in the simulation. It was estimated by comparing the corrected yields obtained by repeating
+the analysis with different sets of selection criteria resulting in a significant modification of the efficien-
+cies, raw yield and background values. The assigned uncertainty for non-strange D mesons is 5% in
+most of the pT intervals and it increases to 10–15% in the lowest pT intervals, where the efficiencies are
+low and vary steeply with pT , because of the tighter selections. A larger uncertainty of 10% in all pT
+intervals was estimated for D+ s mesons, for which more stringent selection criteria were utilized in the
+analysis as compared to non-strange D mesons.
+The systematic effect on the efficiency due to a possible difference between the real and simulated
+D-meson transverse momentum distributions was estimated by using alternative D-meson pT distribu-
+tions. In particular, the pT distributions from FONLL calculations with and without hot-medium effects
+parametrised based on the RAA in central collisions from the BAMPS [57], LBT [58] and TAMU [55]
+models were used in this study. The uncertainty, which also includes the effect of the pT dependence
+of the nuclear modification factor, was estimated to be, for non-strange D mesons in central collisions,
+about 10% in the lowest pT intervals and decreasing to zero for pT > 5 GeV/c. For D+     s mesons the
+uncertainty was estimated as 7% in 4–6 GeV/c, 2% in 6–8 GeV/c and 1% at higher pT .
+The systematic uncertainty on the subtraction of feed-down from beauty-hadron decays (i.e. the calcu-
+lation of the fprompt fraction) was estimated by varying i) the pT -differential feed-down D-meson cross
+section from the FONLL calculation within the theoretical uncertainties, ii) the ratio of the feed-down
+and prompt D-meson RAA in the ranges described at the end of Section 3. The resulting uncertainty
+ranges between 2% and 15%, depending on D-meson species, centrality classes and pT intervals.
+The systematic uncertainties on the pT -differential spectra and RAA in the two extreme centrality classes
+are listed for all D-meson species in Table 2 for the lowest pT interval accessible as well as for the
+intermediate range 7 < pT < 8 GeV/c (6 < pT < 8 GeV/c for the D+      s meson).
+
+The systematic uncertainties on the RAA measurement include those on the D-meson corrected yields
+described above, those on the proton–proton reference cross section, and the uncertainties on the average
+nuclear overlap function.
+
+
+                                                       9
+                                                     √
+D-meson production in Pb–Pb collisions at                sNN = 5.02 TeV                                 ALICE Collaboration
+
+
+            Particle                      D0                         D+                     D∗+                     D+
+                                                                                                                     s
+                                                0–10% centrality class
+     pT interval (GeV/c)          1–2           7–8          2–3           7–8      3–4           7–8       4–6           6–8
+                                 +21           +16                        +16                              +23           +19
+  Syst. on dN/dpT in Pb–Pb       −22 %         −17 %        22%           −17 %     21%           20%      −25 %         −23 %
+
+    Yield extraction              15%           5%          12%            7%       11%           7%        6%            6%
+    Tracking efficiency            6%           7%          8.5%          11%       10%           10%       11%          12%
+    PID efficiency                  0            0            0             0           0          0        3%            3%
+    Cut efficiency                10%           6%          12%            8%       13%           10%       13%          10%
+    MC pT shape                    8%            0          10%             0       4%             0        7%            2%
+    Branching ratio               1.0%         1.0%         2.5%          2.5%      1.3%          1.3%      3.5%         3.5%
+                                 +6.8      +12.4            +2.7      +6.0          +6.1      +11.5        +4.0      +6.7
+    Feed-down subtraction        −7.3 %    −12.8 %          −3.0 %    −6.3 %        −6.5 %    −11.8 %      −9.5 %    −14.7 %
+
+    Centrality limit                                                            <0.1%
+  Syst. on dN/dpT in pp and      +8.8          +8.4                       +8.8                +8.1          +13          +13
+  √                              −9.0 %        −9.4 %       13%           −9.1 %    8.3%      −8.4 %        −14 %        −14 %
+    s-scaling of the pp ref.
+                                 +22           +17          +26                                            +27           +23
+         Syst. on RAA            −27 %         −16 %        −27 %         19%       23%           21%      −28 %         −26 %
+
+
+                                               60–80% centrality class
+     pT interval (GeV/c)          1–2           7–8          2–3           7–8      1–2           7–8       2–4           6–8
+                                               +12
+  Syst. on dN/dpT in Pb–Pb        22%          −13 %        12%           13%       23%           14%       23%          20%
+
+    Yield extraction              10%          4.5%          4%            3%       13%           2%        10%           6%
+    Tracking efficiency            6%           7%          8.5%          11%       9%            9%        8.5%         12%
+    PID efficiency                  0            0            0             0           0          0        3%            3%
+    Cut efficiency                10%           5%           6%            5%       15%           8%        14%          12%
+    MC pT shape                   12%            0           4%             0       5%             0        6%            2%
+    Branching ratio               1.0%         1.0%         2.5%          2.5%      1.3%          1.3%      3.5%         3.5%
+                                 +9.0          +6.1         +3.0          +3.8     +4.4       +6.4         +7.2      +9.2
+    Feed-down subtraction        −9.7 %        −7.2 %       −3.3 %        −4.4 %   −4.8 %     −7.4 %       −7.9 %    −10.6 %
+
+    Centrality limit                                                             3.0%
+  Syst. on dN/dpT in pp and      +8.8          +8.4                       +8.8                +8.1                       +13
+  √                              −9.0 %        −9.4 %       13%           −9.1 %    12%       −8.4 %        13%          −14 %
+    s-scaling of the pp ref.
+                                 +23                        +18                     +26
+         Syst. on RAA            −28 %         14%          −20 %         16%       −31 %         16%       26%          23%
+
+Table 2: Relative systematic uncertainties on the dN/dpT in Pb–Pb collisions, on the extrapolated dN/dpT in pp
+collisions and on the RAA of D0 , D∗+ , D+ , and D+s in two centrality classes considered in the analysis for the
+lowest accessible pT intervals and for the intermediate range 7 < pT < 8 GeV/c (6 < pT < 8 GeV/c for the D+     s
+meson).
+
+
+
+
+                                                             10
+                                             √
+D-meson production in Pb–Pb collisions at        sNN = 5.02 TeV                      ALICE Collaboration
+
+
+The systematic uncertainty on the pp reference used for the calculation of RAA has two contributions.
+The first one is the systematic uncertainty on the measured pT -differential D-meson cross section at
+√                                                      √
+  s = 7 TeV. The second contribution is the scaling to s = 5.02 TeV, which has been discussed in
+Section 4.
+In the calculation of the nuclear modification factor, the systematic uncertainty on the feed-down sub-
+traction deriving from the variation of the parameters of the FONLL calculation was considered to be
+correlated in the Pb–Pb and pp measurements, while all the other sources of systematic uncertainties
+were treated as uncorrelated.
+The uncertainties on the RAA normalisation are the quadratic sum of (i) the pp normalisation uncertainty
+(3.5%), (ii) the uncertainty on hTAA i, which ranges from 1.9% to 3.4% depending on the centrality, and
+(iii) the variation of raw yield (< 0.1%, 2% and 3% for the 0–10%, 30–50% and 60–80% centrality
+classes, respectively) obtained when the centrality intervals are varied to account for the uncertainty on
+the fraction of the hadronic cross section used in the Glauber fit to determine the centrality [23], and the
+branching ratio uncertainty cancels out in the ratio.
+
+
+6 Results
+The transverse-momentum distributions dN/dpT of prompt D0 , D+ , D∗+ and D+     s mesons are shown in
+Fig. 3 for the 0–10%, 30–50% and 60–80% centrality classes. The vertical bars represent the statistical
+uncertainties and the empty boxes the systematic uncertainties. The uncertainty on the branching ratios
+is quoted separately.
+Figure 4 shows the pT -dependent ratios of meson yields, D+ /D0 , D∗+ /D0 , D+       0      +    +
+                                                                                s /D and Ds /D , com-
+                                                    √
+pared to the values measured in pp collisions at s = 7 TeV [40]. The systematic uncertainties were
+propagated to the ratios, considering the contribution from the tracking efficiency as a fully correlated
+uncertainty among the four D-meson species. The beauty-hadron feed-down subtraction was consid-
+ered as fully correlated among the three non-strange D-meson species, while uncorrelated between D+     s
+and non-strange D mesons. The D+ /D0 and D∗+ /D0 ratios are compatible in Pb–Pb and pp collisions,
+indicating no significant modification of their relative abundances as a function of pT and in centrality
+                              +    +                       √
+classes. The D+       0
+                 s /D and Ds /D ratios are measured at       sNN = 5.02 TeV with a precision better by a
+factor about two with respect to 2.76 TeV [23]. The values of these ratios are larger in Pb–Pb than in pp
+collisions, in all three centrality classes, however the measurements in the two systems are compatible
+within about one standard deviation of the combined uncertainties.
+The RAA of prompt D0 , D+ and D∗+ mesons is shown in the left-hand panels of Fig. 5, from central (top)
+to peripheral (bottom) collisions. The nuclear modification factors of the three D-meson species are
+compatible within statistical uncertainties, which are obtained by propagating those on the Pb–Pb yields
+and those of the pp reference. Their average was computed using the inverse of the quadratic sum of the
+relative statistical and uncorrelated systematic uncertainties as weights, in the pT intervals where more
+than one D-meson species is available, (Fig. 5, right-hand panels). The systematic uncertainties were
+propagated through the averaging procedure, considering the contributions from the tracking efficiency,
+                                                                   √
+the beauty-hadron feed-down subtraction and the FONLL-based s-scaling of the pp cross section from
+√                 √
+  s = 7 TeV to s = 5.02 TeV as fully correlated uncertainties among the three D-meson species. The
+average nuclear modification factors in the 0–10% and 30–50% centrality classes (top and middle right-
+hand panels of Fig. 5) show a suppression that is maximal at pT = 6–10 GeV/c, where a reduction of
+the yields by a factor of about 5 and 2.5 with respect to the binary-scaled pp reference is observed in the
+two centrality classes, respectively. The suppression gets smaller with decreasing pT for pT < 6 GeV/c,
+and RAA is compatible with unity in the interval 1 < pT < 3 GeV/c. The average RAA in the 60–80%
+centrality class shows a suppression by about 20–30%, without a pronounced dependence on pT .
+
+
+
+                                                     11
+                                                                                   √
+D-meson production in Pb–Pb collisions at                                              sNN = 5.02 TeV                                                        ALICE Collaboration
+
+
+
+
+  (GeV-1c )                                                                                  (GeV-1c )
+                       10              ALICE                          D0 meson                                      10              ALICE                          D+ meson
+                                       Pb-Pb, s NN = 5.02 TeV           |y |<0.5                                                    Pb-Pb, s NN = 5.02 TeV           |y |<0.5
+                        1                                                                                            1
+
+
+         T |y |<0.5                                                                                   T |y |<0.5
+                      10−1                                              0-10%                                      10−1                                              0-10%
+
+                  10−2                                                                                         10−2
+                                                                        30-50%                                                                                       30-50%
+
+
+   dN /dp |                                                                                     dN /dp |
+                                                                        60-80%                                                                                       60-80%
+                  10−3                                                                                         10−3
+
+                  10−4                                                                                         10−4
+
+                  10−5                                                                                         10−5
+
+                  10−6                                                                                         10−6
+
+                  10−7                                                                                         10−7
+                                 ± 1.0% BR systematic uncertainty not shown                                                   ± 2.5% BR systematic uncertainty not shown
+
+                  10−8                                                                                         10−8
+                             0     5     10 15 20 25 30 35 40 45 50                                                       0     5     10 15 20 25 30 35 40 45 50
+                                                                        p (GeV/c )                                                                                   p (GeV/c )
+                                                                              T                                                                                            T
+
+                                                     (a)                                                                                          (b)
+
+                                                                                                                    10
+
+
+  (GeV-1c )                                                                                  (GeV-1c )
+                       10              ALICE                          D*+ meson                                                     ALICE                          D+s meson
+                                       Pb-Pb, s NN = 5.02 TeV           |y |<0.5                                     1              Pb-Pb, s NN = 5.02 TeV           |y |<0.5
+                        1
+
+
+         T |y |<0.5                                                                                   T |y |<0.5
+                      10−1                                              0-10%                                      10−1                                              0-10%
+                        −2                                              30-50%                                                                                       30-50%
+
+
+   dN /dp |                                                                                     dN /dp |
+                  10
+                                                                        60-80%                                       −2                                              60-80%
+                                                                                                               10
+                  10−3
+
+                  10−4                                                                                         10−3
+
+                  10−5
+                                                                                                               10−4
+                  10−6
+                                                                                                               10−5
+                  10−7
+                                 ± 1.3% BR systematic uncertainty not shown                                                   ± 3.5% BR systematic uncertainty not shown
+
+                  10−8                                                                                         10−6
+                             0     5     10 15 20 25 30 35 40 45 50                                                       0     2      4     6     8    10 12 14 16 18
+                                                                        p (GeV/c )                                                                                   p (GeV/c )
+                                                                              T                                                                                            T
+
+                                                     (c)                                                                                          (d)
+
+
+Figure 3: Transverse momentum distributions dN/dpT of prompt D0 (a), D+ (b), D∗+ (c) and D+     s (d) mesons in the
+                                                                        √
+0–10%, 30–50% and 60–80% centrality classes in Pb–Pb collisions at sNN = 5.02 TeV. Statistical uncertainties
+(bars) and systematic uncertainties (boxes) are shown. The uncertainty on the branching ratios is quoted separately.
+Horizontal bars represent bin widths, symbols are placed at the centre of the bin.
+
+The RAA of prompt D+    s mesons is shown in the right-hand panels of Fig. 5, where it is compared with the
+average RAA of non-strange D mesons: the values are larger for D+     s mesons, but the two measurements
+are compatible within one standard deviation of the combined uncertainties, as is the case for the ratios
+shown in Fig. 4. The average RAA of prompt D0 , D+ and D∗+ in the 10% most central collisions is com-
+pared with a measurement of prompt D0 mesons by the CMS Collaboration [26] in the rapidity interval
+|y| < 1 in Fig. 6 (left panel): the measurements are compatible in the common pT interval 2–50 GeV/c.
+                                                                            √
+In the right panel of Fig. 6, the nuclear modification factor of D mesons at sNN = 5.02 TeV in the 0–10%
+
+
+
+                                                                                           12
+                                                            √
+D-meson production in Pb–Pb collisions at                       sNN = 5.02 TeV                                ALICE Collaboration
+
+
+          2                                                                    2
+ D+/D0                                                                D*+/D0
+               ALICE                                  |y |<0.5                      ALICE                                  |y |<0.5
+      1.8              0-10% Pb-Pb, s NN = 5.02 TeV                        1.8              0-10% Pb-Pb, s NN = 5.02 TeV
+                       30-50% Pb-Pb, s NN = 5.02 TeV                                        30-50% Pb-Pb, s NN = 5.02 TeV
+      1.6                                                                  1.6
+                       60-80% Pb-Pb, s NN = 5.02 TeV                                        60-80% Pb-Pb, s NN = 5.02 TeV
+      1.4              pp, s = 7 TeV                                       1.4              pp, s = 7 TeV
+                       Eur. Phys. J. C77 (2017) no.8, 550                                   Eur. Phys. J. C77 (2017) no.8, 550
+      1.2                                                                  1.2
+          1                                                                    1
+      0.8                                                                  0.8
+      0.6                                                                  0.6
+      0.4                                                                  0.4
+      0.2                                                                  0.2
+               ± 2.7% BR uncertainty not shown                                      ± 0.7% BR uncertainty not shown
+          0                                                                    0
+           1                             10                                     1                             10
+                                                 p (GeV/ c )                                                          p (GeV/ c )
+                                                  T                                                                    T
+      1.4                                                                  2.4
+ D+s/D0                                                               D+s/D+
+               ALICE                                  |y |<0.5
+                       0-10% Pb-Pb, s NN = 5.02 TeV
+                                                                           2.2 ALICE 0-10% Pb-Pb, s = 5.02 TeV |y |<0.5
+      1.2              30-50% Pb-Pb, s NN = 5.02 TeV                         2
+                                                                                                       NN
+                                                                                      30-50% Pb-Pb, s NN = 5.02 TeV
+                       60-80% Pb-Pb, s NN = 5.02 TeV                       1.8        60-80% Pb-Pb, s NN = 5.02 TeV
+          1            pp, s = 7 TeV                                                  pp, s = 7 TeV
+                       Eur. Phys. J. C77 (2017) no.8, 550                  1.6        Eur. Phys. J. C77 (2017) no.8, 550
+      0.8                                                                  1.4
+                                                                           1.2
+      0.6                                                                    1
+                                                                           0.8
+      0.4
+                                                                           0.6
+      0.2                                                                  0.4
+               ± 3.7% BR uncertainty not shown                             0.2 ± 4.3% BR uncertainty not shown
+          0                                                                  0
+           0    2      4   6    8 10 12 14 16 18 20                           0 2 4 6 8 10 12 14 16 18 20
+                                                 p (GeV/ c )                                                          p (GeV/ c )
+                                                  T                                                                    T
+
+
+Figure 4: Ratio of prompt D-meson yields as a function of pT . Statistical (bars) and systematic (boxes) uncertain-
+ties are shown.
+                                                          √
+centrality class is compared with the same measurement at sNN = 2.76 TeV [23]1 . The measurement
+   √
+at sNN = 5.02 TeV have total uncertainties reduced by a factor of about two and extended pT coverage
+from 36 to 50 GeV/c. The suppression is compatible within uncertainties at the two energies, as also
+observed for charged particles [59].
+The close similarity of the RAA measurements at the two energies was predicted by the Djordjevic
+model [54] (Fig. 6, right panel), and it results from the combination of a higher medium temperature
+at 5.02 TeV (estimated to be about 7% higher than at 2.76 TeV), which would decrease the RAA by about
+10%, with a harder pT distribution of charm quarks at 5.02 TeV, which would increase the RAA by about
+5% if the medium temperature were the same as at 2.76 TeV.
+As explained in Section 1, the measurement of the RAA of open-charm mesons is essential to understand
+in-medium parton energy loss, in particular its colour-charge and quark-mass dependence. In Fig. 7, the
+   1 The T                                     √
+          AA used to compute the D-meson RAA at sNN = 2.76 TeV in the 0–10% centrality class and its uncertainty were
+updated with respect to [23] according to the values reported in Ref. [36]
+
+
+                                                                    13
+                                                                  √
+D-meson production in Pb–Pb collisions at                             sNN = 5.02 TeV                                                 ALICE Collaboration
+
+
+          2.2                                                                          2.2
+       R AA                     ALICE                                               R AA                     ALICE
+              2       0-10% Pb-Pb, sNN = 5.02 TeV                                          2       0-10% Pb-Pb, sNN = 5.02 TeV
+          1.8                   |y |<0.5                                               1.8                   |y |<0.5
+
+          1.6                                                   D0                     1.6                               Average D0, D+, D*+
+                                                                D+                                                       D+s
+          1.4                                                                          1.4
+                                                                D*+
+          1.2                                                                          1.2
+              1                     Filled markers: pp rescaled reference                  1                     Filled markers: pp rescaled reference
+                                  Open markers: pp p -extrapolated reference                                   Open markers: pp p -extrapolated reference
+          0.8                                        T
+                                                                                       0.8                                           T
+
+
+
+
+          0.6                                                                          0.6
+          0.4                                                                          0.4
+          0.2                                                                          0.2
+              0                                                                            0
+                  5   10 15 20 25 30 35 40 45 50                                               5   10 15 20 25 30 35 40 45 50
+                                                         p (GeV/c )                                                                      p (GeV/c )
+                                                          T                                                                               T
+          2.2                                                                          2.2
+       R AA                      ALICE                                              R AA                     ALICE
+              2       30-50% Pb-Pb, sNN = 5.02 TeV                                         2       30-50% Pb-Pb, sNN = 5.02 TeV
+          1.8                   |y |<0.5                                               1.8                   |y |<0.5
+
+          1.6                                                                          1.6                               Average D0, D+, D*+
+                                                              D0                                                         D+s
+          1.4                                                 D+                       1.4
+                                                                 +
+          1.2                                                 D*                       1.2
+              1                                                                            1
+          0.8                                                                          0.8
+          0.6                                                                          0.6
+          0.4                                                                          0.4
+          0.2                  Filled markers: pp rescaled reference
+                             Open markers: pp p -extrapolated reference
+                                                                                       0.2                  Filled markers: pp rescaled reference
+                                                                                                          Open markers: pp p -extrapolated reference
+                                                T                                                                            T
+
+              0                                                                            0
+                  5     10      15       20         25     30        35        40              5     10      15       20         25       30     35         40
+                                                         p (GeV/c )                                                                      p (GeV/c )
+                                                          T                                                                               T
+          2.2                                                                          2.2
+       R AA                      ALICE                                              R AA                     ALICE
+              2       60-80% Pb-Pb, sNN = 5.02 TeV                                         2       60-80% Pb-Pb, sNN = 5.02 TeV
+          1.8                   |y |<0.5                                               1.8                   |y |<0.5
+                                                                     D0
+          1.6                                                         +                1.6                               Average D0, D+, D*+
+                                                                     D
+                                                                        +                                                D+s
+          1.4                                                        D*                1.4
+          1.2                                                                          1.2
+              1                                                                            1
+          0.8                                                                          0.8
+          0.6                                                                          0.6
+          0.4                                                                          0.4
+                                                                                                         Filled markers: pp rescaled reference
+          0.2                                                                          0.2             Open markers: pp p -extrapolated reference
+                                                                                                                                 T
+
+
+              0                                                                            0
+                  5     10      15       20         25     30        35        40              5     10      15       20         25       30     35         40
+                                                         p (GeV/c )                                                                      p (GeV/c )
+                                                          T                                                                               T
+
+
+
+Figure 5: RAA of prompt D0 , D+ and D∗+ mesons (left-hand panels) and of prompt D+ s mesons compared with the
+average RAA of the non-strange D-meson states available in each pT interval (right-hand panels) for the 0–10%,
+30–50% and 60–80% centrality classes. Statistical (bars), systematic (empty boxes), and normalisation (shaded
+box around unity) uncertainties are shown. Filled markers are obtained with the pp rescaled reference, empty
+markers with the pT -rescaled reference.
+
+
+
+
+                                                                                14
+                                                        √
+D-meson production in Pb–Pb collisions at                   sNN = 5.02 TeV                                 ALICE Collaboration
+
+
+    2.2                                                                2.2
+ R AA        ALICE                                                  R AA       ALICE Pb-Pb 0-10%
+        2    0-10% Pb-Pb, sNN = 5.02 TeV
+                                                                           2
+    1.8                                                                1.8          sNN = 5.02 TeV
+                                                                                    sNN = 2.76 TeV, JHEP 03 (2016) 081
+    1.6                                                                1.6         Djordjevic
+                Average D0, D+, D*+, |y |<0.5
+    1.4           0                                                    1.4          s NN=5.02 TeV
+                D CMS, |y |<1, PLB 782 (2018) 474-496                               s NN=2.76 TeV
+    1.2                                                                1.2
+        1                                                                  1         Filled markers: pp rescaled reference
+                                                                                   Open markers: pp p -extrapolated reference
+    0.8                                                                0.8                            T
+
+
+
+    0.6                                                                0.6
+    0.4                                                                0.4
+    0.2                                                                0.2
+        0                                                                  0
+         1                          10                        102              5    10 15 20 25 30 35 40 45 50
+                                                p (GeV/c )                                                         p (GeV/c )
+                                                 T                                                                   T
+
+
+Figure 6: Left panel: average RAA of prompt D0 , D+ and D∗+ mesons by ALICE compared to RAA of prompt D0
+                                                           √
+mesons by CMS [26] in the 0–10% centrality class and at sNN = 5.02 TeV. Statistical (bars), systematic (empty
+boxes), and normalisation (shaded box around unity) uncertainties are shown. Right panel: average RAA of D0 , D+
+and D∗+ mesons compared with the Djordjevic model [54] in the 0-10% centrality class at two collision energies.
+Statistical (bars), systematic (empty boxes), and normalisation (shaded box) uncertainties are shown.
+
+RAA of prompt D mesons is compared with that of charged particles in the same pT intervals, at the same
+energy and in the same centrality classes [59]. The ratio of their nuclear modification factors is displayed
+in the bottom panels, for the three centrality classes. The RAA of D mesons and charged particles differ
+by more than 2 σ of the combined statistical and systematic uncertainties in all the pT intervals within
+3 < pT < 8 GeV/c in central collisions. The difference is less than 2 σ in this range for semi-central
+collisions, while the two RAA are the same within 1 σ for pT > 10 GeV/c in both central and semi-
+central collisions. In the 60–80% class the measurements are compatible in the common pT interval.
+The interpretation of the difference observed for pT < 8 GeV/c in central and semi-central collisions is
+not straightforward, because several factors can play a role in defining the shape of the RAA .
+In presence of a colour-charge and quark-mass dependent energy loss, the harder pT distribution and
+the harder fragmentation function of charm quarks compared to those of light quarks and gluons should
+lead to similar values of D-meson and pion RAA , as discussed in [60]. Since the pions are the dominant
+contribution in the inclusive charged-particle yields, this statement is expected to be still valid for the
+comparison of the D-meson and the charged particle RAA . In addition, it should be considered that the
+yield of light-flavour hadrons could have a substantial contribution up to transverse momenta of about 2–
+3 GeV/c from soft production processes, such as the break-down of participant nucleons into quarks and
+gluons that subsequently hadronise. This component scales with the number of participants rather than
+the number of binary collisions. Finally, the effects of radial flow and hadronisation via recombination,
+as well as initial-state effects, could affect D-meson and light-hadron yields differently at a given pT .
+The average RAA of the three non-strange D-meson species in the three centrality classes are compared
+with theoretical models in Fig. 8. Models based on heavy-quark transport and models based on perturba-
+tive QCD calculations of high-pT parton energy loss are shown in the left and in the right panels, respec-
+tively. Transport models in the left panels include: BAMPS el. [57], POWLANG [61] and TAMU [55],
+in which the interactions are only described by collisional (i.e. elastic) processes; BAMPS el.+rad. [57],
+LBT [58], MC@sHQ+EPOS2 [62] and PHSD [63], in which also energy loss from medium-induced
+gluon radiation is considered, in addition to collisional process. In the right panels, the CUJET3.0 [64]
+
+                                                                15
+                                                                    √
+D-meson production in Pb–Pb collisions at                               sNN = 5.02 TeV                                          ALICE Collaboration
+
+
+         1.8                                           1.8                                                    1.8
+R AA              ALICE                      R AA                Average D0, D+, D*+, |y | < 0.51.6 R AA
+         1.6                                           1.6
+                  Pb-Pb, sNN = 5.02 TeV                          Charged particles, |η | < 0.8
+         1.4                                           1.4      arXiv:1802.09145                1.4
+         1.2                                           1.2                                                    1.2
+                               0−10%                                            30−50%                                               60−80%
+              1                                             1                                                      1
+         0.8                                           0.8                                                    0.8
+         0.6                                           0.6                                                    0.6
+         0.4                                           0.4                                                    0.4
+         0.2                                           0.2                                                    0.2
+              0                                      0                                                     0
+              3     10    20     30    40         50 3          5   10     15    20   25       30       35 3           5   10   15    20   25       30   35
+          2.5                          p (GeV/c
+                                             2.5)                                          p (GeV/2.5
+                                                                                                   c)                                           p (GeV/c )
+ch
+  D                                                    ch                                                     ch
+                                        T
+                                                D                                                      D
+                                                                                            T                                                    T
+
+R AA / R AA                                   R AA / R AA                                            R AA / R AA
+              2                                             2                                                      2
+          1.5                                          1.5                                                     1.5
+              1                                             1                                                      1
+          0.5                                          0.5                                                     0.5
+              0                                             0                                                      0
+                    10    20     30     40        50            5   10     15    20   25       30        35            5   10   15    20   25       30   35
+                                       p (GeV/c )                                        p (GeV/c )                                         p (GeV/c )
+                                        T                                                  T                                                    T
+
+
+
+Figure 7: Average RAA of prompt D0 , D+ and D∗+ mesons in the 0–10% (left), 30–50% (middle) and 60–80%
+                             √
+(right) centrality classes at sNN = 5.02 TeV compared to the RAA of charged particles in the same centrality
+classes [59]. The ratios of the RAA are shown in the bottom panels. Statistical (bars), systematic (empty boxes),
+and normalisation (shaded box around unity) uncertainties are shown.
+
+and Djordjevic [54] models include both radiative and collisional energy loss processes, while the
+SCET [65] model implements medium-induced gluon radiation via modified splitting functions with
+finite quark masses2 . All models, with the exception of BAMPS and CUJET3.0, include a nuclear mod-
+ification of the parton distribution functions. The LBT, MC@sHQ, PHSD, POWLANG and TAMU
+models include a contribution of hadronisation via quark recombination, in addition to independent frag-
+mentation. Most of the models provide a fair description of the data in the region pT < 10 GeV/c in
+central collisions (except for BAMPS el., where the radiative term is missing), but many of them (LBT,
+PHSD, POWLANG and SCET) provide a worse description of non-central collisions. In the high-pT re-
+gion above 10 GeV/c only the BAMPS el.+rad., CUJET3.0, Djordjevic, MC@sHQ+EPOS2 and SCET
+models can describe the data in central collisions. The CUJET3.0 and Djordjevic models provide a fair
+description of the RAA in all three centrality classes for pT > 10 GeV/c, where radiative energy loss is
+expected to be the dominant interaction mechanism, suggesting that the dependence of radiative energy
+loss on the path length in the hot and dense medium is well understood.
+In Fig. 9, the non-strange and strange D-meson RAA are compared with the models that provide both
+observables. An increase of the D+s RAA is expected in the two models, PHSD and TAMU, in particular
+for pT < 5 GeV/c, with respect to non-strange D mesons. This increase is induced by hadronisation
+via quark recombination in the QGP, as well as by different interaction cross sections for non-strange D
+and for D+s in the hadronic phase of the system evolution. In the transverse momentum interval covered
+         +
+by the Ds measurement (pT > 4 GeV/c), the PHSD model predicts the effect to be very small, while
+the TAMU model predicts a sizeable difference of about 30% up to about 8 GeV/c, similar to the trend
+shown by the data.
+
+
+
+  2 The SCET curves reported here differ from those of Ref. [65] because the latter used an extrapolation of the charged-particle
+               √
+multiplicity at sNN = 5.02 TeV, while now the measured values are used.
+
+
+                                                                            16
+                                                                     √
+D-meson production in Pb–Pb collisions at                                sNN = 5.02 TeV                                        ALICE Collaboration
+
+
+          2.2                                                                         2.2
+       R AA                         ALICE                                         R AA                     ALICE
+              2           0-10% Pb-Pb, sNN = 5.02 TeV                                    2       0-10% Pb-Pb, sNN = 5.02 TeV
+          1.8                       |y |<0.5                                          1.8                  |y |<0.5
+                                                           BAMPS el.+rad.                                                      Djordjevic
+                                                           BAMPS el.
+          1.6                   0    +     +               POWLANG HTL                1.6               0   +     +            CUJET3.0
+                      Average D , D , D*                   PHSD                              Average D , D , D*
+                                                                                                                               SCET M,G g=1.9-2.0
+          1.4                                              LBT
+                                                           TAMU
+                                                                                      1.4
+                                                           MC@sHQ+EPOS2
+          1.2                                                                         1.2
+              1                       Filled markers: pp rescaled reference
+                                                                                         1                    Filled markers: pp rescaled reference
+                                    Open markers: pp p -extrapolated reference                              Open markers: pp p -extrapolated reference
+          0.8                                          T
+                                                                                      0.8                                      T
+
+
+
+
+          0.6                                                                         0.6
+          0.4                                                                         0.4
+          0.2                                                                         0.2
+              0                                                                          0
+                  1                              10                                          5   10 15 20 25 30 35 40 45 50
+                                                            p (GeV/c )                                                             p (GeV/c )
+                                                              T                                                                     T
+          2.2                                                                         2.2
+       R AA                        ALICE                                          R AA                     ALICE
+              2          30-50% Pb-Pb, sNN = 5.02 TeV                                    2       30-50% Pb-Pb, sNN = 5.02 TeV
+          1.8                      |y |<0.5                                           1.8                  |y |<0.5
+                                                                                                                               Djordjevic
+                                                     BAMPS el.+rad.
+          1.6                                        BAMPS el.                        1.6                                      CUJET3.0
+                      Average D0, D+, D*+            POWLANG HTL                             Average D0, D+, D*+
+                                                     PHSD                                                                      SCET M,G g=1.9-2.0
+          1.4                                        LBT                              1.4
+                                                     TAMU
+                                                     MC@sHQ+EPOS2
+          1.2                                                                         1.2
+              1                                                                          1
+          0.8                                                                         0.8
+          0.6                                                                         0.6
+          0.4                                                                         0.4
+          0.2                                                                         0.2
+              0                                                                          0
+                  1                                   10                                     5     10       15     20       25       30      35          40
+                                                            p (GeV/c )                                                             p (GeV/c )
+                                                              T                                                                     T
+          2.2                                                                         2.2
+       R AA                        ALICE                                          R AA                     ALICE
+              2          60-80% Pb-Pb, sNN = 5.02 TeV                                    2       60-80% Pb-Pb, sNN = 5.02 TeV
+          1.8                      |y |<0.5                                           1.8                  |y |<0.5
+                                                                                                                               Djordjevic
+          1.6                                        POWLANG HTL                      1.6                                      CUJET3.0
+                      Average D0, D+, D*+            PHSD                                    Average D0, D+, D*+
+                                                     LBT                                                                       SCET M,G g=1.9-2.0
+          1.4                                        TAMU                             1.4
+          1.2                                                                         1.2
+              1                                                                          1
+          0.8                                                                         0.8
+          0.6                                                                         0.6
+          0.4                                                                         0.4
+          0.2                                                                         0.2
+              0                                                                          0
+                  1                                   10                                     5     10       15     20       25       30      35          40
+                                                            p (GeV/c )                                                             p (GeV/c )
+                                                              T                                                                     T
+
+
+
+Figure 8: Average RAA of D0 , D+ and D∗+ mesons compared with model calculations. The three rows re-
+fer to the 0–10%, 30–50% and 60–80% centrality classes. The left panels show models based on heavy-quark
+transport, while the right panels show models based on pQCD energy loss. Model nomenclature and references:
+BAMPS [57], CUJET3.0 [64], Djordjevic [54], LBT [58], MC@sHQ+EPOS2 [62], PHSD [63] POWLANG [61],
+SCET [65], TAMU [55]. Some of the models are presented with two lines with the same style and colour, which
+encompass the model uncertainty band.
+
+
+
+                                                                                 17
+                                                                           √
+D-meson production in Pb–Pb collisions at                                      sNN = 5.02 TeV                                                                ALICE Collaboration
+
+
+                                             2.2
+                                       R AA                                     ALICE
+                                                2                     0-10% Pb-Pb, sNN = 5.02 TeV
+                                             1.8                                |y |<0.5
+                                                                                                                0       +       +
+                                                                           PHSD, Average D , D , D*
+                                             1.6                                  +
+                                                                           PHSD, Ds
+                                                                                          0   +    +
+                                                                           TAMU, Average D , D , D*
+                                             1.4                                  +
+                                                                           TAMU, Ds
+                                             1.2                                 Filled markers: pp rescaled reference
+                                                                               Open markers: pp p -extrapolated reference
+                                                                                                                    T
+                                                1
+                                             0.8                           Average D0, D+, D*+
+                                                                           D+s
+                                             0.6
+                                             0.4
+                                             0.2
+                                                0
+                                                         5        10 15 20 25 30 35 40 45 50
+                                                                                                                                p (GeV/c )
+                                                                                                                                    T
+
+
+Figure 9: Average RAA of D0 , D+ and D∗+ mesons and RAA of D+
+                                                            s mesons in the 0–10% centrality class compared
+with the PHSD [63] and TAMU [55] model calculations.
+                                                                            √
+The simultaneous comparison of RAA and elliptic flow v2 measurements at sNN = 5.02 TeV [66] with
+models can provide more stringent constraints to the implementation of the interaction and hadronisation
+processes for heavy quarks in the QGP. The comparison with models that compute both observables is
+shown in Fig. 10 for the RAA and v2 , in the 0–10% and 30–50% centrality classes, respectively. The
+TAMU model overestimates RAA and underestimates v2 at high pT , probably because it does not include
+radiative energy loss. The BAMPS el. model overestimates the maximum flow while underestimating the
+RAA value at high pT . The radiative energy loss contribution in BAMPS el.+rad. improves the description
+of RAA but gives v2 values lower than the data. The LBT, PHSD, POWLANG and MC@sHQ models
+provide instead a fair description of v2 . Nevertheless, energy loss is overestimated at high pT in the
+0–10% centrality classes (but also in semi-central events) by PHSD, POWLANG and LBT, while at low
+pT the measured RAA is slightly higher than what predicted within LBT, PHSD and MC@sHQ.
+
+        2.2
+
+
+
+                                                                                         v 2{EP, |∆ η|>0.9}
+ R AA                                                                                                         0.3
+         2
+                                   ALICE                                                                                30−50% Pb−Pb, s NN = 5.02 TeV
+                         0-10% Pb-Pb, sNN = 5.02 TeV
+                                                                                                                        |y |<0.8                                            ALICE
+        1.8                        |y |<0.5                                                                                                                        0    +    +
+                                                                                                                                                                  D , D , D* average
+                  TAMU                           LBT
+        1.6                                      BAMPS el.+rad.                                               0.2                                                 Syst. from data
+                  PHSD
+        1.4       POWLANG HTL
+                                                 BAMPS el.                                                                                                        Syst. from B feed-down
+                                                             0    +    +
+                  MC@sHQ+EPOS2                  Average D , D , D*
+        1.2
+          1                     Filled markers: pp rescaled reference
+                                                                                                              0.1
+                              Open markers: pp p -extrapolated reference
+        0.8                                      T
+
+
+        0.6
+                                                                                                               0                        TAMU
+        0.4                                                                                                                             PHSD                      LBT
+                                                                                                                                        POWLANG HTL               BAMPS el.+rad.
+        0.2                                                                                                                             MC@sHQ+EPOS2              BAMPS el.
+
+         0
+              5   10     15     20      25     30      35         40     45     50                              0           2       4     6    8   10   12   14    16       18     20 22 24
+                                                                    p T (GeV/ c )                                                                                                    p (GeV/c )
+                                                                                                                                                                                      T
+
+
+
+
+Figure 10: Average RAA of D0 , D+ and D∗+ mesons in the 0–10% centrality class (left) and their average elliptic
+flow v2 in the 30–50% centrality class (right) [66], compared with models that have predictions for both observables
+at low pT .
+
+
+
+
+                                                                                       18
+                                             √
+D-meson production in Pb–Pb collisions at        sNN = 5.02 TeV                       ALICE Collaboration
+
+
+7 Summary
+We have presented measurements of the pT -differential production yields of prompt D0 , D+ , D∗+ and
+D+
+ s mesons at central rapidity in Pb–Pb collisions in the three centrality classes 0–10%, 30–50% and
+                                                   √
+60–80% at a centre-of-mass energy per nucleon pair sNN = 5.02 TeV.
+The average RAA of the three non-strange D-meson species shows minimum values of 0.2 and 0.4 in
+the centrality classes 0–10% and 30–50%, respectively, at pT of 6–10 GeV/c. RAA increases for pT <
+6 GeV/c, and it is compatible with unity at 1 < pT < 3 GeV/c. The average RAA values are compatible
+                        √
+with those measured at sNN = 2.76 TeV and they have smaller uncertainties by a factor of about two, as
+well as extended pT coverage up to 50 GeV/c in central collisions. The similarity of the RAA values at
+the two energies was predicted by the Djordjevic model, and it results from the combination of a higher
+medium temperature at 5.02 TeV (estimated to be about 7% higher than at 2.76 TeV) with a harder pT
+distribution of charm quarks at 5.02 TeV.
+In central and semi-central collisions the average RAA of non-strange D mesons is compatible with that of
+charged particles for pT > 6 GeV/c, while it is larger at lower pT . The RAA of D+
+                                                                                 s mesons have generally
+larger central values than those of the average of non-strange D mesons, but the two measurements are
+compatible within about one standard deviation of the combined uncertainties.
+The RAA of non-strange D mesons at high pT (above 10 GeV/c) is fairly described in the three centrality
+classes by model calculations that include both radiative and collisional energy loss. This indicates that
+the centrality dependence of radiative energy loss, which is the dominant contribution at high pT , is under
+good theoretical control. The RAA in the transverse momentum region below 10 GeV/c is described by
+several transport model calculations in central collisions, but most models fail in describing the centrality
+dependence of RAA and in describing simultaneously RAA and the elliptic flow coefficient v2 . Therefore,
+the measurements provide significant constraints for the understanding of the interaction of charm quarks
+with the high-density QCD medium, especially at low and intermediate pT , where the RAA is the result
+of a more complex interplay among several effects.
+
+
+Acknowledgements
+The ALICE Collaboration would like to thank all its engineers and technicians for their invaluable con-
+tributions to the construction of the experiment and the CERN accelerator teams for the outstanding
+performance of the LHC complex. The ALICE Collaboration gratefully acknowledges the resources and
+support provided by all Grid centres and the Worldwide LHC Computing Grid (WLCG) collaboration.
+The ALICE Collaboration acknowledges the following funding agencies for their support in building and
+running the ALICE detector: A. I. Alikhanyan National Science Laboratory (Yerevan Physics Institute)
+Foundation (ANSL), State Committee of Science and World Federation of Scientists (WFS), Arme-
+nia; Austrian Academy of Sciences and Nationalstiftung für Forschung, Technologie und Entwicklung,
+Austria; Ministry of Communications and High Technologies, National Nuclear Research Center, Azer-
+baijan; Conselho Nacional de Desenvolvimento Cientı́fico e Tecnológico (CNPq), Universidade Federal
+do Rio Grande do Sul (UFRGS), Financiadora de Estudos e Projetos (Finep) and Fundação de Am-
+paro à Pesquisa do Estado de São Paulo (FAPESP), Brazil; Ministry of Science & Technology of China
+(MSTC), National Natural Science Foundation of China (NSFC) and Ministry of Education of China
+(MOEC) , China; Ministry of Science and Education, Croatia; Ministry of Education, Youth and Sports
+of the Czech Republic, Czech Republic; The Danish Council for Independent Research — Natural Sci-
+ences, the Carlsberg Foundation and Danish National Research Foundation (DNRF), Denmark; Helsinki
+Institute of Physics (HIP), Finland; Commissariat à l’Energie Atomique (CEA) and Institut National de
+Physique Nucléaire et de Physique des Particules (IN2P3) and Centre National de la Recherche Sci-
+entifique (CNRS), France; Bundesministerium für Bildung, Wissenschaft, Forschung und Technologie
+(BMBF) and GSI Helmholtzzentrum für Schwerionenforschung GmbH, Germany; General Secretariat
+
+
+                                                     19
+                                            √
+D-meson production in Pb–Pb collisions at       sNN = 5.02 TeV                     ALICE Collaboration
+
+
+for Research and Technology, Ministry of Education, Research and Religions, Greece; National Re-
+search, Development and Innovation Office, Hungary; Department of Atomic Energy Government of
+India (DAE), Department of Science and Technology, Government of India (DST), University Grants
+Commission, Government of India (UGC) and Council of Scientific and Industrial Research (CSIR), In-
+dia; Indonesian Institute of Science, Indonesia; Centro Fermi - Museo Storico della Fisica e Centro Studi
+e Ricerche Enrico Fermi and Istituto Nazionale di Fisica Nucleare (INFN), Italy; Institute for Innovative
+Science and Technology , Nagasaki Institute of Applied Science (IIST), Japan Society for the Promo-
+tion of Science (JSPS) KAKENHI and Japanese Ministry of Education, Culture, Sports, Science and
+Technology (MEXT), Japan; Consejo Nacional de Ciencia (CONACYT) y Tecnologı́a, through Fondo
+de Cooperación Internacional en Ciencia y Tecnologı́a (FONCICYT) and Dirección General de Asuntos
+del Personal Academico (DGAPA), Mexico; Nederlandse Organisatie voor Wetenschappelijk Onderzoek
+(NWO), Netherlands; The Research Council of Norway, Norway; Commission on Science and Technol-
+ogy for Sustainable Development in the South (COMSATS), Pakistan; Pontificia Universidad Católica
+del Perú, Peru; Ministry of Science and Higher Education and National Science Centre, Poland; Korea
+Institute of Science and Technology Information and National Research Foundation of Korea (NRF),
+Republic of Korea; Ministry of Education and Scientific Research, Institute of Atomic Physics and Ro-
+manian National Agency for Science, Technology and Innovation, Romania; Joint Institute for Nuclear
+Research (JINR), Ministry of Education and Science of the Russian Federation and National Research
+Centre Kurchatov Institute, Russia; Ministry of Education, Science, Research and Sport of the Slovak Re-
+public, Slovakia; National Research Foundation of South Africa, South Africa; Centro de Aplicaciones
+Tecnológicas y Desarrollo Nuclear (CEADEN), Cubaenergı́a, Cuba and Centro de Investigaciones En-
+ergéticas, Medioambientales y Tecnológicas (CIEMAT), Spain; Swedish Research Council (VR) and
+Knut & Alice Wallenberg Foundation (KAW), Sweden; European Organization for Nuclear Research,
+Switzerland; National Science and Technology Development Agency (NSDTA), Suranaree University
+of Technology (SUT) and Office of the Higher Education Commission under NRU project of Thailand,
+Thailand; Turkish Atomic Energy Agency (TAEK), Turkey; National Academy of Sciences of Ukraine,
+Ukraine; Science and Technology Facilities Council (STFC), United Kingdom; National Science Foun-
+dation of the United States of America (NSF) and United States Department of Energy, Office of Nuclear
+Physics (DOE NP), United States of America.
+
+
+References
+ [1] F. Karsch, “Lattice simulations of the thermodynamics of strongly interacting elementary particles
+     and the exploration of new phases of matter in relativistic heavy ion collisions,”
+     J.Phys.Conf.Ser. 46 (2006) 122–131, arXiv:hep-lat/0608003 [hep-lat].
+
+ [2] Wuppertal-Budapest Collaboration, S. Borsanyi et al., “Is there still any Tc mystery in lattice
+     QCD? Results with physical masses in the continuum limit III,” JHEP 1009 (2010) 073,
+     arXiv:1005.3508 [hep-lat].
+
+ [3] S. Borsanyi, Z. Fodor, C. Hoelbling, S. D. Katz, S. Krieg, et al., “Full result for the QCD equation
+     of state with 2+1 flavors,” Phys.Lett. B730 (2014) 99–104, arXiv:1309.5258 [hep-lat].
+
+ [4] A. Bazavov, T. Bhattacharya, M. Cheng, C. DeTar, H. Ding, et al., “The chiral and deconfinement
+     aspects of the QCD transition,” Phys.Rev. D85 (2012) 054503, arXiv:1111.1710 [hep-lat].
+
+ [5] A. Andronic et al., “Heavy-flavour and quarkonium production in the LHC era: from protonproton
+     to heavy-ion collisions,” Eur. Phys. J. C76 no. 3, (2016) 107, arXiv:1506.03981 [nucl-ex].
+
+ [6] F.-M. Liu and S.-X. Liu, “Quark-gluon plasma formation time and direct photons from heavy ion
+     collisions,” Phys. Rev. C89 no. 3, (2014) 034906, arXiv:1212.6587 [nucl-th].
+
+
+
+                                                    20
+                                            √
+D-meson production in Pb–Pb collisions at       sNN = 5.02 TeV                    ALICE Collaboration
+
+
+ [7] P. Braun-Munzinger, “Quarkonium production in ultra-relativistic nuclear collisions: Suppression
+     versus enhancement,” J. Phys. G34 (2007) S471–478, arXiv:nucl-th/0701093 [NUCL-TH].
+
+ [8] M. Gyulassy and M. Plumer, “Jet Quenching in Dense Matter,” Phys.Lett. B243 (1990) 432–438.
+
+ [9] R. Baier, Y. L. Dokshitzer, A. H. Mueller, S. Peigne, and D. Schiff, “Radiative energy loss and
+     p(T) broadening of high-energy partons in nuclei,” Nucl.Phys. B484 (1997) 265–282,
+     arXiv:hep-ph/9608322 [hep-ph].
+
+[10] M. H. Thoma and M. Gyulassy, “Quark Damping and Energy Loss in the High Temperature
+     QCD,” Nucl.Phys. B351 (1991) 491–506.
+
+[11] E. Braaten and M. H. Thoma, “Energy loss of a heavy fermion in a hot plasma,”
+     Phys.Rev. D44 (1991) 1298–1310.
+
+[12] E. Braaten and M. H. Thoma, “Energy loss of a heavy quark in the quark - gluon plasma,”
+     Phys.Rev. D44 (1991) 2625–2630.
+
+[13] F. Prino and R. Rapp, “Open Heavy Flavor in QCD Matter and in Nuclear Collisions,”
+     J. Phys. G43 no. 9, (2016) 093002, arXiv:1603.00529 [nucl-ex].
+
+[14] S. Batsouli, S. Kelly, M. Gyulassy, and J. L. Nagle, “Does the charm flow at RHIC?,”
+     Phys. Lett. B557 (2003) 26–32, arXiv:nucl-th/0212068 [nucl-th].
+
+[15] V. Greco, C. M. Ko, and R. Rapp, “Quark coalescence for charmed mesons in ultrarelativistic
+     heavy ion collisions,” Phys. Lett. B595 (2004) 202–208, arXiv:nucl-th/0312100 [nucl-th].
+
+[16] A. Andronic, P. Braun-Munzinger, K. Redlich, and J. Stachel, “Statistical hadronization of charm
+     in heavy ion collisions at SPS, RHIC and LHC,” Phys. Lett. B571 (2003) 36–44,
+     arXiv:nucl-th/0303036 [nucl-th].
+
+[17] I. Kuznetsova and J. Rafelski, “Charmed hadrons from strangeness-rich QGP,”
+     J. Phys. G32 (2006) S499–S504, arXiv:hep-ph/0605307 [hep-ph].
+
+[18] R. Glauber and G. Matthiae, “High-energy scattering of protons by nuclei,” Nucl.Phys. B21
+     (1970) 135–157.
+
+[19] M. L. Miller, K. Reygers, S. J. Sanders, and P. Steinberg, “Glauber modeling in high energy
+     nuclear collisions,” Ann.Rev.Nucl.Part.Sci. 57 (2007) 205–243,
+     arXiv:nucl-ex/0701025 [nucl-ex].
+
+[20] B. Alver, M. Baker, C. Loizides, and P. Steinberg, “The PHOBOS Glauber Monte Carlo,”
+     arXiv:0805.4411 [nucl-ex].
+
+[21] C. Loizides, J. Nagle, and P. Steinberg, “Improved version of the PHOBOS Glauber Monte Carlo,”
+     SoftwareX 1-2 (2015) 13–18, arXiv:1408.2549 [nucl-ex].
+
+[22] ALICE Collaboration, B. Abelev et al., “Suppression of high transverse momentum D mesons in
+                                √
+     central Pb-Pb collisions at sNN = 2.76 TeV,” JHEP 1209 (2012) 112,
+     arXiv:1203.2160 [nucl-ex].
+
+[23] ALICE Collaboration, J. Adam et al., “Transverse momentum dependence of D-meson
+                                      √
+     production in Pb-Pb collisions at sNN = 2.76 TeV,” JHEP 03 (2016) 081,
+     arXiv:1509.06888 [nucl-ex].
+
+[24] ALICE Collaboration, J. Adam et al., “Centrality dependence of high-pT D meson suppression in
+                        √
+     Pb-Pb collisions at sNN = 2.76 TeV,” JHEP 11 (2015) 205, arXiv:1506.06604 [nucl-ex].
+
+                                                    21
+                                            √
+D-meson production in Pb–Pb collisions at       sNN = 5.02 TeV                   ALICE Collaboration
+
+
+[25] ALICE Collaboration, J. Adam et al., “Measurement of D+s production and nuclear modification
+                                  √
+     factor in Pb-Pb collisions at sNN = 2.76 TeV,” JHEP 03 (2016) 082,
+     arXiv:1509.07287 [nucl-ex].
+
+[26] CMS Collaboration, A. M. Sirunyan et al., “Nuclear modification factor of D0 mesons in PbPb
+                  √
+     collisions at sNN = 5.02 TeV,” Phys. Lett. B782 (2018) 474–496,
+     arXiv:1708.04962 [nucl-ex].
+                                                                                    √
+[27] ALICE Collaboration, J. Adam et al., “D-meson production in p-Pb collisions at sNN =5.02
+                                √
+     TeV and in pp collisions at s =7 TeV,” Phys. Rev. C94 no. 5, (2016) 054908,
+     arXiv:1605.07569 [nucl-ex].
+
+[28] ALICE Collaboration, K. Aamodt et al., “The ALICE experiment at the CERN LHC,”
+     JINST 3 (2008) S08002.
+
+[29] ALICE Collaboration, B. Abelev et al., “Performance of the ALICE Experiment at the CERN
+     LHC,” Int.J.Mod.Phys. A29 (2014) 1430044, arXiv:1402.4476 [nucl-ex].
+
+[30] ALICE Collaboration, K. Aamodt et al., “Alignment of the ALICE Inner Tracking System with
+     cosmic-ray tracks,” JINST 5 (2010) P03003, arXiv:1001.0502 [physics.ins-det].
+
+[31] J. Alme et al., “The ALICE TPC, a large 3-dimensional tracking device with fast readout for
+     ultra-high multiplicity events,” Nucl. Instrum. Meth. A622 (2010) 316–367,
+     arXiv:1001.1950 [physics.ins-det].
+
+[32] A. Akindinov et al., “Performance of the ALICE Time-Of-Flight detector at the LHC,”
+     Eur. Phys. J. Plus 128 (2013) 44.
+
+[33] G. Puddu et al., “The zero degree calorimeters for the alice experiment,”
+     Nucl. Instrum. Methods A 581 no. 1, (2007) 397 – 401.
+     http://www.sciencedirect.com/science/article/pii/S0168900207016804. VCI 2007.
+
+[34] ALICE Collaboration, E. Abbas et al., “Performance of the ALICE VZERO system,”
+     JINST 8 (2013) P10016, arXiv:1306.3130 [nucl-ex].
+                                                                                            √
+[35] ALICE Collaboration, B. Abelev et al., “Centrality determination of Pb-Pb collisions at sNN =
+     2.76 TeV with ALICE,” Phys.Rev. C88 no. 4, (2013) 044909, arXiv:1301.4361 [nucl-ex].
+
+[36] ALICE Collaboration, “Centrality determination in heavy ion collisions,”
+     ALICE-PUBLIC-2018-011 (2018) .
+
+[37] ALICE Collaboration, J. Adam et al., “Centrality dependence of the charged-particle multiplicity
+                                                  √
+     density at midrapidity in Pb-Pb collisions at sNN = 5.02 TeV,”
+     Phys. Rev. Lett. 116 no. 22, (2016) 222302, arXiv:1512.06104 [nucl-ex].
+
+[38] Particle Data Group Collaboration, C. Patrignani et al., “Review of Particle Physics,”
+     Chin. Phys. C40 no. 10, (2016) 100001.
+
+[39] ALICE Collaboration, B. Abelev et al., “Azimuthal anisotropy of D meson production in Pb-Pb
+                  √
+     collisions at sNN = 2.76 TeV,” Phys.Rev. C90 no. 3, (2014) 034904,
+     arXiv:1405.2001 [nucl-ex].
+
+[40] ALICE Collaboration, S. Acharya et al., “Measurement of D-meson production at mid-rapidity in
+                     √
+     pp collisions at s = 7 TeV,” arXiv:1702.00766 [hep-ex].
+
+
+
+                                                    22
+                                            √
+D-meson production in Pb–Pb collisions at       sNN = 5.02 TeV                   ALICE Collaboration
+
+
+[41] ALICE Collaboration, B. Abelev et al., “Measurement of charm production at central rapidity in
+                                √
+     proton-proton collisions at s = 7 TeV,” JHEP 1201 (2012) 128, arXiv:1111.1553 [hep-ex].
+
+[42] P. Z. Skands, “The Perugia Tunes,” FERMILAB-CONF-09-113-T (2009) 284–297,
+     arXiv:0905.3418 [hep-ph].
+
+[43] CMS Collaboration, V. Khachatryan et al., “Suppression and azimuthal anisotropy of prompt and
+                                                    √
+     nonprompt J/ψ production in PbPb collisions at sNN = 2.76 TeV,”
+     Eur. Phys. J. C 77 (2017) 252, arXiv:1610.00613 [nucl-ex].
+
+[44] R. Brun, F. Carminati, and S. Giani, “CERN Program Library Long Write-up, W5013 GEANT
+     Detector Description and Simulation Tool,” Tech. Rep. CERN-W-5013, 1994.
+
+[45] X.-N. Wang and M. Gyulassy, “HIJING: A Monte Carlo model for multiple jet production in p p,
+     p A and A A collisions,” Phys.Rev. D44 (1991) 3501–3516.
+
+[46] T. Sjostrand, S. Mrenna, and P. Z. Skands, “PYTHIA 6.4 Physics and Manual,”
+     JHEP 0605 (2006) 026, arXiv:hep-ph/0603175 [hep-ph].
+
+[47] M. Cacciari, M. Greco, and P. Nason, “The P(T) spectrum in heavy flavor hadroproduction,”
+     JHEP 9805 (1998) 007, arXiv:hep-ph/9803400 [hep-ph].
+
+[48] M. Cacciari, S. Frixione, and P. Nason, “The p(T) spectrum in heavy flavor photoproduction,”
+     JHEP 0103 (2001) 006, arXiv:hep-ph/0102134 [hep-ph].
+
+[49] J. Uphoff, O. Fochler, Z. Xu, and C. Greiner, “Elliptic Flow and Energy Loss of Heavy Quarks in
+     Ultra-Relativistic heavy Ion Collisions,” Phys.Rev. C84 (2011) 024908,
+     arXiv:1104.2295 [hep-ph].
+
+[50] O. Fochler, J. Uphoff, Z. Xu, and C. Greiner, “Jet quenching and elliptic flow at RHIC and LHC
+     within a pQCD-based partonic transport model,” J.Phys. G38 (2011) 124152,
+     arXiv:1107.0130 [hep-ph].
+
+[51] J. Uphoff, O. Fochler, Z. Xu, and C. Greiner, “Open Heavy Flavor in Pb+Pb Collisions at
+     √
+        s = 2.76 TeV within a Transport Model,” Phys.Lett. B717 (2012) 430–435,
+     arXiv:1205.4945 [hep-ph].
+
+[52] M. Cacciari, S. Frixione, N. Houdeau, M. L. Mangano, P. Nason, et al., “Theoretical predictions
+     for charm and bottom production at the LHC,” JHEP 1210 (2012) 137,
+     arXiv:1205.6344 [hep-ph].
+
+[53] D. J. Lange, “The EvtGen particle decay simulation package,”
+     Nucl. Instr. Meth. A 462 no. 1 - 2, (2001) 152 – 155. BEAUTY2000, Proceedings of the 7th Int.
+     Conf. on B-Physics at Hadron Machines.
+
+[54] M. Djordjevic and M. Djordjevic, “Predictions of heavy-flavor suppression at 5.1 TeV Pb+Pb
+     collisions at the CERN Large Hadron Collider,” Phys. Rev. C92 no. 2, (2015) 024918,
+     arXiv:1505.04316 [nucl-th].
+
+[55] M. He, R. J. Fries, and R. Rapp, “Heavy Flavor at the Large Hadron Collider in a Strong Coupling
+     Approach,” Phys.Lett. B735 (2014) 445–450, arXiv:1401.3817 [nucl-th].
+
+[56] R. Averbeck, N. Bastid, Z. C. del Valle, P. Crochet, A. Dainese, and X. Zhang, “Reference Heavy
+                                                 √                                    √
+     Flavour Cross Sections in pp Collisions at s = 2.76 TeV, using a pQCD-Driven s-Scaling of
+                              √
+     ALICE Measurements at s = 7 TeV,” arXiv:1107.3243 [hep-ph].
+
+
+                                                    23
+                                            √
+D-meson production in Pb–Pb collisions at       sNN = 5.02 TeV                     ALICE Collaboration
+
+
+[57] J. Uphoff, O. Fochler, Z. Xu, and C. Greiner, “Elastic and radiative heavy quark interactions in
+     ultra-relativistic heavy-ion collisions,” J. Phys. G42 no. 11, (2015) 115106,
+     arXiv:1408.2964 [hep-ph].
+
+[58] S. Cao, T. Luo, G.-Y. Qin, and X.-N. Wang, “Heavy and light flavor jet quenching at RHIC and
+     LHC energies,” Phys. Lett. B777 (2018) 255–259, arXiv:1703.00822 [nucl-th].
+
+[59] ALICE Collaboration, S. Acharya et al., “Transverse momentum spectra and nuclear modification
+     factors of charged particles in pp, p-Pb and Pb-Pb collisions at the LHC,”
+     arXiv:1802.09145 [nucl-ex].
+
+[60] M. Djordjevic, “Heavy flavor puzzle at LHC: a serendipitous interplay of jet suppression and
+     fragmentation,” Phys. Rev. Lett. 112 no. 4, (2014) 042302, arXiv:1307.4702 [nucl-th].
+
+[61] A. Beraudo, A. De Pace, M. Monteno, M. Nardi, and F. Prino, “Heavy flavors in heavy-ion
+     collisions: quenching, flow and correlations,” Eur. Phys. J. C75 no. 3, (2015) 121,
+     arXiv:1410.6082 [hep-ph].
+
+[62] M. Nahrgang, J. Aichelin, P. B. Gossiaux, and K. Werner, “Influence of hadronic bound states
+     above Tc on heavy-quark observables in Pb + Pb collisions at at the CERN Large Hadron
+     Collider,” Phys.Rev. C89 no. 1, (2014) 014905, arXiv:1305.6544 [hep-ph].
+
+[63] T. Song, H. Berrehrah, D. Cabrera, W. Cassing, and E. Bratkovskaya, “Charm production in Pb +
+     Pb collisions at energies available at the CERN Large Hadron Collider,”
+     Phys. Rev. C93 no. 3, (2016) 034906, arXiv:1512.00891 [nucl-th].
+
+[64] J. Xu, J. Liao, and M. Gyulassy, “Bridging Soft-Hard Transport Properties of Quark-Gluon
+     Plasmas with CUJET3.0,” JHEP 02 (2016) 169, arXiv:1508.00552 [hep-ph].
+
+[65] Z.-B. Kang, F. Ringer, and I. Vitev, “Effective field theory approach to open heavy flavor
+     production in heavy-ion collisions,” JHEP 03 (2017) 146, arXiv:1610.02043 [hep-ph].
+
+[66] ALICE Collaboration, S. Acharya et al., “D-meson azimuthal anisotropy in mid-central Pb-Pb
+                  √
+     collisions at sNN = 5.02 TeV,” Phys. Rev. Lett. 120 no. 10, (2018) 102301,
+     arXiv:1707.01005 [nucl-ex].
+
+
+
+
+                                                    24
+                                                  √
+D-meson production in Pb–Pb collisions at             sNN = 5.02 TeV                          ALICE Collaboration
+
+
+A    The ALICE Collaboration
+S. Acharya138 , F.T.-. Acosta22 , D. Adamová93 , J. Adolfsson80 , M.M. Aggarwal97 , G. Aglieri Rinella36 ,
+M. Agnello33 , N. Agrawal48 , Z. Ahammed138 , S.U. Ahn76 , S. Aiola143 , A. Akindinov64 , M. Al-Turany103 ,
+S.N. Alam138 , D.S.D. Albuquerque119 , D. Aleksandrov87 , B. Alessandro58 , R. Alfaro Molina72 , Y. Ali16 ,
+A. Alici11 ,53 ,29 , A. Alkin3 , J. Alme24 , T. Alt69 , L. Altenkamper24 , I. Altsybeev137 , C. Andrei47 ,
+D. Andreou36 , H.A. Andrews107 , A. Andronic103 , M. Angeletti36 , V. Anguelov101 , C. Anson17 , T. Antičić104 ,
+F. Antinori56 , P. Antonioli53 , R. Anwar123 , N. Apadula79 , L. Aphecetche111 , H. Appelshäuser69 , S. Arcelli29 ,
+R. Arnaldi58 , O.W. Arnold102 ,114 , I.C. Arsene23 , M. Arslandok101 , B. Audurier111 , A. Augustinus36 ,
+R. Averbeck103 , M.D. Azmi18 , A. Badalà55 , Y.W. Baek60 ,41 , S. Bagnasco58 , R. Bailhache69 , R. Bala98 ,
+A. Baldisseri134 , M. Ball43 , R.C. Baral85 , A.M. Barbano28 , R. Barbera30 , F. Barile52 , L. Barioglio28 ,
+G.G. Barnaföldi142 , L.S. Barnby92 , V. Barret131 , P. Bartalini7 , K. Barth36 , E. Bartsch69 , N. Bastid131 ,
+S. Basu140 , G. Batigne111 , B. Batyunya75 , P.C. Batzing23 , J.L. Bazo Alba108 , I.G. Bearden88 , H. Beck101 ,
+C. Bedda63 , N.K. Behera60 , I. Belikov133 , F. Bellini29 ,36 , H. Bello Martinez2 , R. Bellwied123 ,
+L.G.E. Beltran117 , V. Belyaev91 , G. Bencedi142 , S. Beole28 , A. Bercuci47 , Y. Berdnikov95 , D. Berenyi142 ,
+R.A. Bertens127 , D. Berzano36 ,58 , L. Betev36 , P.P. Bhaduri138 , A. Bhasin98 , I.R. Bhat98 , H. Bhatt48 ,
+B. Bhattacharjee42 , J. Bhom115 , A. Bianchi28 , L. Bianchi123 , N. Bianchi51 , J. Bielčı́k38 , J. Bielčı́ková93 ,
+A. Bilandzic102 ,114 , G. Biro142 , R. Biswas4 , S. Biswas4 , J.T. Blair116 , D. Blau87 , C. Blume69 , G. Boca135 ,
+F. Bock36 , A. Bogdanov91 , L. Boldizsár142 , M. Bombara39 , G. Bonomi136 , M. Bonora36 , H. Borel134 ,
+A. Borissov141 ,20 , M. Borri125 , E. Botta28 , C. Bourjau88 , L. Bratrud69 , P. Braun-Munzinger103 , M. Bregant118 ,
+T.A. Broker69 , M. Broz38 , E.J. Brucken44 , E. Bruna58 , G.E. Bruno36 ,35 , D. Budnikov105 , H. Buesching69 ,
+S. Bufalino33 , P. Buhler110 , P. Buncic36 , O. Busch130 , Z. Buthelezi73 , J.B. Butt16 , J.T. Buxton19 , J. Cabala113 ,
+D. Caffarri89 , H. Caines143 , A. Caliva103 , E. Calvo Villar108 , R.S. Camacho2 , P. Camerini27 , A.A. Capon110 ,
+F. Carena36 , W. Carena36 , F. Carnesecchi29 ,11 , J. Castillo Castellanos134 , A.J. Castro127 , E.A.R. Casula54 ,
+C. Ceballos Sanchez9 , S. Chandra138 , B. Chang124 , W. Chang7 , S. Chapeland36 , M. Chartier125 ,
+S. Chattopadhyay138 , S. Chattopadhyay106 , A. Chauvin114 ,102 , C. Cheshkov132 , B. Cheynis132 , V. Chibante
+Barroso36 , D.D. Chinellato119 , S. Cho60 , P. Chochula36 , T. Chowdhury131 , P. Christakoglou89 ,
+C.H. Christensen88 , P. Christiansen80 , T. Chujo130 , S.U. Chung20 , C. Cicalo54 , L. Cifarelli11 ,29 , F. Cindolo53 ,
+J. Cleymans122 , F. Colamaria52 , D. Colella65 ,52 ,36 , A. Collu79 , M. Colocci29 , M. Concas58 ,i , G. Conesa
+Balbastre78 , Z. Conesa del Valle61 , J.G. Contreras38 , T.M. Cormier94 , Y. Corrales Morales58 , P. Cortese34 ,
+M.R. Cosentino120 , F. Costa36 , S. Costanza135 , J. Crkovská61 , P. Crochet131 , E. Cuautle70 , L. Cunqueiro94 ,141 ,
+T. Dahms102 ,114 , A. Dainese56 , M.C. Danisch101 , A. Danu68 , D. Das106 , I. Das106 , S. Das4 , A. Dash85 ,
+S. Dash48 , S. De49 , A. De Caro32 , G. de Cataldo52 , C. de Conti118 , J. de Cuveland40 , A. De Falco26 , D. De
+Gruttola11 ,32 , N. De Marco58 , S. De Pasquale32 , R.D. De Souza119 , H.F. Degenhardt118 , A. Deisting103 ,101 ,
+A. Deloff84 , S. Delsanto28 , C. Deplano89 , P. Dhankher48 , D. Di Bari35 , A. Di Mauro36 , B. Di Ruzza56 ,
+R.A. Diaz9 , T. Dietel122 , P. Dillenseger69 , Y. Ding7 , R. Divià36 , Ø. Djuvsland24 , A. Dobrin36 , D. Domenicis
+Gimenez118 , B. Dönigus69 , O. Dordic23 , L.V.R. Doremalen63 , A.K. Dubey138 , A. Dubla103 , L. Ducroux132 ,
+S. Dudi97 , A.K. Duggal97 , M. Dukhishyam85 , P. Dupieux131 , R.J. Ehlers143 , D. Elia52 , E. Endress108 ,
+H. Engel74 , E. Epple143 , B. Erazmus111 , F. Erhardt96 , M.R. Ersdal24 , B. Espagnon61 , G. Eulisse36 , J. Eum20 ,
+D. Evans107 , S. Evdokimov90 , L. Fabbietti102 ,114 , M. Faggin31 , J. Faivre78 , A. Fantoni51 , M. Fasel94 ,
+L. Feldkamp141 , A. Feliciello58 , G. Feofilov137 , A. Fernández Téllez2 , A. Ferretti28 , A. Festanti31 ,36 ,
+V.J.G. Feuillard134 ,131 , J. Figiel115 , M.A.S. Figueredo118 , S. Filchagin105 , D. Finogeev62 , F.M. Fionda24 ,
+G. Fiorenza52 , M. Floris36 , S. Foertsch73 , P. Foka103 , S. Fokin87 , E. Fragiacomo59 , A. Francescon36 ,
+A. Francisco111 , U. Frankenfeld103 , G.G. Fronze28 , U. Fuchs36 , C. Furget78 , A. Furs62 , M. Fusco Girard32 ,
+J.J. Gaardhøje88 , M. Gagliardi28 , A.M. Gago108 , K. Gajdosova88 , M. Gallio28 , C.D. Galvan117 , P. Ganoti83 ,
+C. Garabatos103 , E. Garcia-Solis12 , K. Garg30 , C. Gargiulo36 , P. Gasik102 ,114 , E.F. Gauger116 , M.B. Gay
+Ducati71 , M. Germain111 , J. Ghosh106 , P. Ghosh138 , S.K. Ghosh4 , P. Gianotti51 , P. Giubellino58 ,103 ,
+P. Giubilato31 , P. Glässel101 , D.M. Goméz Coral72 , A. Gomez Ramirez74 , V. Gonzalez103 ,
+P. González-Zamora2 , S. Gorbunov40 , L. Görlich115 , S. Gotovac126 , V. Grabski72 , L.K. Graczykowski139 ,
+K.L. Graham107 , L. Greiner79 , A. Grelli63 , C. Grigoras36 , V. Grigoriev91 , A. Grigoryan1 , S. Grigoryan75 ,
+J.M. Gronefeld103 , F. Grosa33 , J.F. Grosse-Oetringhaus36 , R. Grosso103 , R. Guernane78 , B. Guerzoni29 ,
+M. Guittiere111 , K. Gulbrandsen88 , T. Gunji129 , A. Gupta98 , R. Gupta98 , I.B. Guzman2 , R. Haake36 ,
+M.K. Habib103 , C. Hadjidakis61 , H. Hamagaki81 , G. Hamar142 , J.C. Hamon133 , M.R. Haque63 , J.W. Harris143 ,
+A. Harton12 , H. Hassan78 , D. Hatzifotiadou53 ,11 , S. Hayashi129 , S.T. Heckel69 , E. Hellbär69 , H. Helstrup37 ,
+A. Herghelegiu47 , E.G. Hernandez2 , G. Herrera Corral10 , F. Herrmann141 , K.F. Hetland37 , T.E. Hilden44 ,
+H. Hillemanns36 , C. Hills125 , B. Hippolyte133 , B. Hohlweger102 , D. Horak38 , S. Hornung103 ,
+R. Hosokawa130 ,78 , P. Hristov36 , C. Hughes127 , P. Huhn69 , T.J. Humanic19 , H. Hushnud106 , N. Hussain42 ,
+
+
+                                                          25
+                                                  √
+D-meson production in Pb–Pb collisions at             sNN = 5.02 TeV                           ALICE Collaboration
+
+
+T. Hussain18 , D. Hutter40 , D.S. Hwang21 , J.P. Iddon125 , S.A. Iga Buitron70 , R. Ilkaev105 , M. Inaba130 ,
+M. Ippolitov87 , M.S. Islam106 , M. Ivanov103 , V. Ivanov95 , V. Izucheev90 , B. Jacak79 , N. Jacazio29 ,
+P.M. Jacobs79 , M.B. Jadhav48 , S. Jadlovska113 , J. Jadlovsky113 , S. Jaelani63 , C. Jahnke118 ,114 ,
+M.J. Jakubowska139 , M.A. Janik139 , C. Jena85 , M. Jercic96 , R.T. Jimenez Bustamante103 , M. Jin123 ,
+P.G. Jones107 , A. Jusko107 , P. Kalinak65 , A. Kalweit36 , J.H. Kang144 , V. Kaplin91 , S. Kar7 , A. Karasu Uysal77 ,
+O. Karavichev62 , T. Karavicheva62 , P. Karczmarczyk36 , E. Karpechev62 , U. Kebschull74 , R. Keidel46 ,
+D.L.D. Keijdener63 , M. Keil36 , B. Ketzer43 , Z. Khabanova89 , S. Khan18 , S.A. Khan138 , A. Khanzadeev95 ,
+Y. Kharlov90 , A. Khatun18 , A. Khuntia49 , M.M. Kielbowicz115 , B. Kileng37 , B. Kim130 , D. Kim144 ,
+D.J. Kim124 , E.J. Kim14 , H. Kim144 , J.S. Kim41 , J. Kim101 , M. Kim101 ,60 , S. Kim21 , T. Kim144 , T. Kim144 ,
+S. Kirsch40 , I. Kisel40 , S. Kiselev64 , A. Kisiel139 , J.L. Klay6 , C. Klein69 , J. Klein36 ,58 , C. Klein-Bösing141 ,
+S. Klewin101 , A. Kluge36 , M.L. Knichel101 ,36 , A.G. Knospe123 , C. Kobdaj112 , M. Kofarago142 ,
+M.K. Köhler101 , T. Kollegger103 , N. Kondratyeva91 , E. Kondratyuk90 , A. Konevskikh62 , M. Konyushikhin140 ,
+O. Kovalenko84 , V. Kovalenko137 , M. Kowalski115 , I. Králik65 , A. Kravčáková39 , L. Kreis103 ,
+M. Krivda65 ,107 , F. Krizek93 , M. Krüger69 , E. Kryshen95 , M. Krzewicki40 , A.M. Kubera19 , V. Kučera60 ,93 ,
+C. Kuhn133 , P.G. Kuijer89 , J. Kumar48 , L. Kumar97 , S. Kumar48 , S. Kundu85 , P. Kurashvili84 , A. Kurepin62 ,
+A.B. Kurepin62 , A. Kuryakin105 , S. Kushpil93 , M.J. Kweon60 , Y. Kwon144 , S.L. La Pointe40 , P. La Rocca30 ,
+Y.S. Lai79 , I. Lakomov36 , R. Langoy121 , K. Lapidus143 , C. Lara74 , A. Lardeux23 , P. Larionov51 , A. Lattuca28 ,
+E. Laudi36 , R. Lavicka38 , R. Lea27 , L. Leardini101 , S. Lee144 , F. Lehas89 , S. Lehner110 , J. Lehrbach40 ,
+R.C. Lemmon92 , E. Leogrande63 , I. León Monzón117 , P. Lévai142 , X. Li13 , X.L. Li7 , J. Lien121 , R. Lietava107 ,
+B. Lim20 , S. Lindal23 , V. Lindenstruth40 , S.W. Lindsay125 , C. Lippmann103 , M.A. Lisa19 , V. Litichevskyi44 ,
+A. Liu79 , H.M. Ljunggren80 , W.J. Llope140 , D.F. Lodato63 , V. Loginov91 , C. Loizides79 ,94 , P. Loncar126 ,
+X. Lopez131 , E. López Torres9 , A. Lowe142 , P. Luettig69 , J.R. Luhder141 , M. Lunardon31 , G. Luparello59 ,
+M. Lupi36 , A. Maevskaya62 , M. Mager36 , S.M. Mahmood23 , A. Maire133 , R.D. Majka143 , M. Malaev95 ,
+L. Malinina75 ,ii , D. Mal’Kevich64 , P. Malzacher103 , A. Mamonov105 , V. Manko87 , F. Manso131 , V. Manzari52 ,
+Y. Mao7 , M. Marchisone132 ,128 ,73 , J. Mareš67 , G.V. Margagliotti27 , A. Margotti53 , J. Margutti63 , A. Marı́n103 ,
+C. Markert116 , M. Marquard69 , N.A. Martin103 , P. Martinengo36 , M.I. Martı́nez2 , G. Martı́nez Garcı́a111 ,
+M. Martinez Pedreira36 , S. Masciocchi103 , M. Masera28 , A. Masoni54 , L. Massacrier61 , E. Masson111 ,
+A. Mastroserio52 , A.M. Mathis102 ,114 , P.F.T. Matuoka118 , A. Matyja115 ,127 , C. Mayer115 , M. Mazzilli35 ,
+M.A. Mazzoni57 , F. Meddi25 , Y. Melikyan91 , A. Menchaca-Rocha72 , E. Meninno32 , J. Mercado Pérez101 ,
+M. Meres15 , C.S. Meza108 , S. Mhlanga122 , Y. Miake130 , L. Micheletti28 , M.M. Mieskolainen44 ,
+D.L. Mihaylov102 , K. Mikhaylov64 ,75 , A. Mischke63 , A.N. Mishra70 , D. Miśkowiec103 , J. Mitra138 ,
+C.M. Mitu68 , N. Mohammadi36 ,63 , A.P. Mohanty63 , B. Mohanty85 , M. Mohisin Khan18 ,iii , D.A. Moreira De
+Godoy141 , L.A.P. Moreno2 , S. Moretto31 , A. Morreale111 , A. Morsch36 , V. Muccifora51 , E. Mudnic126 ,
+D. Mühlheim141 , S. Muhuri138 , M. Mukherjee4 , J.D. Mulligan143 , M.G. Munhoz118 , K. Münning43 ,
+M.I.A. Munoz79 , R.H. Munzer69 , H. Murakami129 , S. Murray73 , L. Musa36 , J. Musinsky65 , C.J. Myers123 ,
+J.W. Myrcha139 , B. Naik48 , R. Nair84 , B.K. Nandi48 , R. Nania53 ,11 , E. Nappi52 , A. Narayan48 , M.U. Naru16 ,
+H. Natal da Luz118 , C. Nattrass127 , S.R. Navarro2 , K. Nayak85 , R. Nayak48 , T.K. Nayak138 , S. Nazarenko105 ,
+R.A. Negrao De Oliveira69 ,36 , L. Nellen70 , S.V. Nesbo37 , G. Neskovic40 , F. Ng123 , M. Nicassio103 ,
+J. Niedziela139 ,36 , B.S. Nielsen88 , S. Nikolaev87 , S. Nikulin87 , V. Nikulin95 , F. Noferini11 ,53 ,
+P. Nomokonov75 , G. Nooren63 , J.C.C. Noris2 , J. Norman78 ,125 , A. Nyanin87 , J. Nystrand24 , H. Oh144 ,
+A. Ohlson101 , J. Oleniacz139 , A.C. Oliveira Da Silva118 , M.H. Oliver143 , J. Onderwaater103 , C. Oppedisano58 ,
+R. Orava44 , M. Oravec113 , A. Ortiz Velasquez70 , A. Oskarsson80 , J. Otwinowski115 , K. Oyama81 ,
+Y. Pachmayer101 , V. Pacik88 , D. Pagano136 , G. Paić70 , P. Palni7 , J. Pan140 , A.K. Pandey48 , S. Panebianco134 ,
+V. Papikyan1 , P. Pareek49 , J. Park60 , J.E. Parkkila124 , S. Parmar97 , A. Passfeld141 , S.P. Pathak123 ,
+R.N. Patra138 , B. Paul58 , H. Pei7 , T. Peitzmann63 , X. Peng7 , L.G. Pereira71 , H. Pereira Da Costa134 ,
+D. Peresunko87 , E. Perez Lezama69 , V. Peskov69 , Y. Pestov5 , V. Petráček38 , M. Petrovici47 , C. Petta30 ,
+R.P. Pezzi71 , S. Piano59 , M. Pikna15 , P. Pillot111 , L.O.D.L. Pimentel88 , O. Pinazza53 ,36 , L. Pinsky123 ,
+S. Pisano51 , D.B. Piyarathna123 , M. Płoskoń79 , M. Planinic96 , F. Pliquett69 , J. Pluta139 , S. Pochybova142 ,
+P.L.M. Podesta-Lerma117 , M.G. Poghosyan94 , B. Polichtchouk90 , N. Poljak96 , W. Poonsawat112 , A. Pop47 ,
+H. Poppenborg141 , S. Porteboeuf-Houssais131 , V. Pozdniakov75 , S.K. Prasad4 , R. Preghenella53 , F. Prino58 ,
+C.A. Pruneau140 , I. Pshenichnov62 , M. Puccio28 , V. Punin105 , J. Putschke140 , S. Raha4 , S. Rajput98 , J. Rak124 ,
+A. Rakotozafindrabe134 , L. Ramello34 , F. Rami133 , R. Raniwala99 , S. Raniwala99 , S.S. Räsänen44 ,
+B.T. Rascanu69 , V. Ratza43 , I. Ravasenga33 , K.F. Read127 ,94 , K. Redlich84 ,iv , A. Rehman24 , P. Reichelt69 ,
+F. Reidt36 , X. Ren7 , R. Renfordt69 , A. Reshetin62 , J.-P. Revol11 , K. Reygers101 , V. Riabov95 , T. Richert63 ,80 ,
+M. Richter23 , P. Riedler36 , W. Riegler36 , F. Riggi30 , C. Ristea68 , M. Rodrı́guez Cahuantzi2 , K. Røed23 ,
+R. Rogalev90 , E. Rogochaya75 , D. Rohr36 , D. Röhrich24 , P.S. Rokita139 , F. Ronchetti51 , E.D. Rosas70 ,
+
+
+
+                                                           26
+                                                  √
+D-meson production in Pb–Pb collisions at             sNN = 5.02 TeV                          ALICE Collaboration
+
+
+K. Roslon139 , P. Rosnet131 , A. Rossi31 ,56 , A. Rotondi135 , F. Roukoutakis83 , C. Roy133 , P. Roy106 ,
+O.V. Rueda70 , R. Rui27 , B. Rumyantsev75 , A. Rustamov86 , E. Ryabinkin87 , Y. Ryabov95 , A. Rybicki115 ,
+S. Saarinen44 , S. Sadhu138 , S. Sadovsky90 , K. Šafařı́k36 , S.K. Saha138 , B. Sahoo48 , P. Sahoo49 , R. Sahoo49 ,
+S. Sahoo66 , P.K. Sahu66 , J. Saini138 , S. Sakai130 , M.A. Saleh140 , S. Sambyal98 , V. Samsonov95 ,91 ,
+A. Sandoval72 , A. Sarkar73 , D. Sarkar138 , N. Sarkar138 , P. Sarma42 , M.H.P. Sas63 , E. Scapparone53 ,
+F. Scarlassara31 , B. Schaefer94 , H.S. Scheid69 , C. Schiaua47 , R. Schicker101 , C. Schmidt103 , H.R. Schmidt100 ,
+M.O. Schmidt101 , M. Schmidt100 , N.V. Schmidt94 ,69 , J. Schukraft36 , Y. Schutz36 ,133 , K. Schwarz103 ,
+K. Schweda103 , G. Scioli29 , E. Scomparin58 , M. Šefčı́k39 , J.E. Seger17 , Y. Sekiguchi129 , D. Sekihata45 ,
+I. Selyuzhenkov91 ,103 , K. Senosi73 , S. Senyukov133 , E. Serradilla72 , P. Sett48 , A. Sevcenco68 , A. Shabanov62 ,
+A. Shabetai111 , R. Shahoyan36 , W. Shaikh106 , A. Shangaraev90 , A. Sharma97 , A. Sharma98 , N. Sharma97 ,
+A.I. Sheikh138 , K. Shigaki45 , M. Shimomura82 , S. Shirinkin64 , Q. Shou7 ,109 , K. Shtejer28 , Y. Sibiriak87 ,
+S. Siddhanta54 , K.M. Sielewicz36 , T. Siemiarczuk84 , D. Silvermyr80 , G. Simatovic89 , G. Simonetti102 ,36 ,
+R. Singaraju138 , R. Singh85 , V. Singhal138 , T. Sinha106 , B. Sitar15 , M. Sitta34 , T.B. Skaali23 , M. Slupecki124 ,
+N. Smirnov143 , R.J.M. Snellings63 , T.W. Snellman124 , J. Song20 , F. Soramel31 , S. Sorensen127 , F. Sozzi103 ,
+I. Sputowska115 , J. Stachel101 , I. Stan68 , P. Stankus94 , E. Stenlund80 , D. Stocco111 , M.M. Storetvedt37 ,
+P. Strmen15 , A.A.P. Suaide118 , T. Sugitate45 , C. Suire61 , M. Suleymanov16 , M. Suljic36 ,27 , R. Sultanov64 ,
+M. Šumbera93 , S. Sumowidagdo50 , K. Suzuki110 , S. Swain66 , A. Szabo15 , I. Szarka15 , U. Tabassam16 ,
+J. Takahashi119 , G.J. Tambave24 , N. Tanaka130 , M. Tarhini61 ,111 , M. Tariq18 , M.G. Tarzila47 , A. Tauro36 ,
+G. Tejeda Muñoz2 , A. Telesca36 , C. Terrevoli31 , B. Teyssier132 , D. Thakur49 , S. Thakur138 , D. Thomas116 ,
+F. Thoresen88 , R. Tieulent132 , A. Tikhonov62 , A.R. Timmins123 , A. Toia69 , N. Topilskaya62 , M. Toppi51 ,
+S.R. Torres117 , S. Tripathy49 , S. Trogolo28 , G. Trombetta35 , L. Tropp39 , V. Trubnikov3 , W.H. Trzaska124 ,
+T.P. Trzcinski139 , B.A. Trzeciak63 , T. Tsuji129 , A. Tumkin105 , R. Turrisi56 , T.S. Tveter23 , K. Ullaland24 ,
+E.N. Umaka123 , A. Uras132 , G.L. Usai26 , A. Utrobicic96 , M. Vala113 , J.W. Van Hoorne36 , M. van Leeuwen63 ,
+P. Vande Vyvre36 , D. Varga142 , A. Vargas2 , M. Vargyas124 , R. Varma48 , M. Vasileiou83 , A. Vasiliev87 ,
+A. Vauthier78 , O. Vázquez Doce102 ,114 , V. Vechernin137 , A.M. Veen63 , A. Velure24 , E. Vercellin28 , S. Vergara
+Limón2 , L. Vermunt63 , R. Vernet8 , R. Vértesi142 , L. Vickovic126 , J. Viinikainen124 , Z. Vilakazi128 ,
+O. Villalobos Baillie107 , A. Villatoro Tello2 , A. Vinogradov87 , T. Virgili32 , V. Vislavicius80 , A. Vodopyanov75 ,
+M.A. Völkl100 , K. Voloshin64 , S.A. Voloshin140 , G. Volpe35 , B. von Haller36 , I. Vorobyev114 ,102 ,
+D. Voscek113 , D. Vranic103 ,36 , J. Vrláková39 , B. Wagner24 , H. Wang63 , M. Wang7 , Y. Watanabe130 ,129 ,
+M. Weber110 , S.G. Weber103 , A. Wegrzynek36 , D.F. Weiser101 , S.C. Wenzel36 , J.P. Wessels141 ,
+U. Westerhoff141 , A.M. Whitehead122 , J. Wiechula69 , J. Wikne23 , G. Wilk84 , J. Wilkinson53 ,
+G.A. Willems141 ,36 , M.C.S. Williams53 , E. Willsher107 , B. Windelband101 , W.E. Witt127 , R. Xu7 , S. Yalcin77 ,
+K. Yamakawa45 , S. Yano45 , Z. Yin7 , H. Yokoyama130 ,78 , I.-K. Yoo20 , J.H. Yoon60 , V. Yurchenko3 ,
+V. Zaccolo58 , A. Zaman16 , C. Zampolli36 , H.J.C. Zanoli118 , N. Zardoshti107 , A. Zarochentsev137 , P. Závada67 ,
+N. Zaviyalov105 , H. Zbroszczyk139 , M. Zhalov95 , X. Zhang7 , Y. Zhang7 , Z. Zhang131 ,7 , C. Zhao23 ,
+V. Zherebchevskii137 , N. Zhigareva64 , D. Zhou7 , Y. Zhou88 , Z. Zhou24 , H. Zhu7 , J. Zhu7 , Y. Zhu7 ,
+A. Zichichi29 ,11 , M.B. Zimmermann36 , G. Zinovjev3 , J. Zmeskal110 , S. Zou7 ,
+
+
+Affiliation notes
+     i Dipartimento DET del Politecnico di Torino, Turin, Italy
+     ii M.V. Lomonosov Moscow State University, D.V. Skobeltsyn Institute of Nuclear, Physics, Moscow, Russia
+    iii Department of Applied Physics, Aligarh Muslim University, Aligarh, India
+    iv Institute of Theoretical Physics, University of Wroclaw, Poland
+
+
+
+
+Collaboration Institutes
+    1 A.I. Alikhanyan National Science Laboratory (Yerevan Physics Institute) Foundation, Yerevan, Armenia
+    2 Benemérita Universidad Autónoma de Puebla, Puebla, Mexico
+    3 Bogolyubov Institute for Theoretical Physics, National Academy of Sciences of Ukraine, Kiev, Ukraine
+    4 Bose Institute, Department of Physics and Centre for Astroparticle Physics and Space Science (CAPSS),
+
+       Kolkata, India
+    5 Budker Institute for Nuclear Physics, Novosibirsk, Russia
+    6 California Polytechnic State University, San Luis Obispo, California, United States
+    7 Central China Normal University, Wuhan, China
+    8 Centre de Calcul de l’IN2P3, Villeurbanne, Lyon, France
+    9 Centro de Aplicaciones Tecnológicas y Desarrollo Nuclear (CEADEN), Havana, Cuba
+
+
+
+                                                          27
+                                                 √
+D-meson production in Pb–Pb collisions at            sNN = 5.02 TeV                      ALICE Collaboration
+
+
+   10 Centro de Investigación y de Estudios Avanzados (CINVESTAV), Mexico City and Mérida, Mexico
+   11 Centro Fermi - Museo Storico della Fisica e Centro Studi e Ricerche “Enrico Fermi’, Rome, Italy
+   12
+        Chicago State University, Chicago, Illinois, United States
+   13 China Institute of Atomic Energy, Beijing, China
+   14 Chonbuk National University, Jeonju, Republic of Korea
+   15 Comenius University Bratislava, Faculty of Mathematics, Physics and Informatics, Bratislava, Slovakia
+   16 COMSATS Institute of Information Technology (CIIT), Islamabad, Pakistan
+   17 Creighton University, Omaha, Nebraska, United States
+   18 Department of Physics, Aligarh Muslim University, Aligarh, India
+   19 Department of Physics, Ohio State University, Columbus, Ohio, United States
+   20
+        Department of Physics, Pusan National University, Pusan, Republic of Korea
+   21 Department of Physics, Sejong University, Seoul, Republic of Korea
+   22 Department of Physics, University of California, Berkeley, California, United States
+   23 Department of Physics, University of Oslo, Oslo, Norway
+   24 Department of Physics and Technology, University of Bergen, Bergen, Norway
+   25 Dipartimento di Fisica dell’Università ’La Sapienza’ and Sezione INFN, Rome, Italy
+   26 Dipartimento di Fisica dell’Università and Sezione INFN, Cagliari, Italy
+   27 Dipartimento di Fisica dell’Università and Sezione INFN, Trieste, Italy
+   28
+        Dipartimento di Fisica dell’Università and Sezione INFN, Turin, Italy
+   29 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Bologna, Italy
+   30 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Catania, Italy
+   31 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Padova, Italy
+   32 Dipartimento di Fisica ‘E.R. Caianiello’ dell’Università and Gruppo Collegato INFN, Salerno, Italy
+   33 Dipartimento DISAT del Politecnico and Sezione INFN, Turin, Italy
+   34 Dipartimento di Scienze e Innovazione Tecnologica dell’Università del Piemonte Orientale and INFN
+
+      Sezione di Torino, Alessandria, Italy
+   35
+      Dipartimento Interateneo di Fisica ‘M. Merlin’ and Sezione INFN, Bari, Italy
+   36 European Organization for Nuclear Research (CERN), Geneva, Switzerland
+   37 Faculty of Engineering and Science, Western Norway University of Applied Sciences, Bergen, Norway
+   38 Faculty of Nuclear Sciences and Physical Engineering, Czech Technical University in Prague, Prague,
+
+      Czech Republic
+   39 Faculty of Science, P.J. Šafárik University, Košice, Slovakia
+   40 Frankfurt Institute for Advanced Studies, Johann Wolfgang Goethe-Universität Frankfurt, Frankfurt,
+
+      Germany
+   41
+      Gangneung-Wonju National University, Gangneung, Republic of Korea
+   42 Gauhati University, Department of Physics, Guwahati, India
+   43 Helmholtz-Institut für Strahlen- und Kernphysik, Rheinische Friedrich-Wilhelms-Universität Bonn, Bonn,
+
+      Germany
+   44 Helsinki Institute of Physics (HIP), Helsinki, Finland
+   45 Hiroshima University, Hiroshima, Japan
+   46 Hochschule Worms, Zentrum für Technologietransfer und Telekommunikation (ZTT), Worms, Germany
+   47 Horia Hulubei National Institute of Physics and Nuclear Engineering, Bucharest, Romania
+   48 Indian Institute of Technology Bombay (IIT), Mumbai, India
+   49 Indian Institute of Technology Indore, Indore, India
+   50 Indonesian Institute of Sciences, Jakarta, Indonesia
+   51
+      INFN, Laboratori Nazionali di Frascati, Frascati, Italy
+   52 INFN, Sezione di Bari, Bari, Italy
+   53 INFN, Sezione di Bologna, Bologna, Italy
+   54 INFN, Sezione di Cagliari, Cagliari, Italy
+   55 INFN, Sezione di Catania, Catania, Italy
+   56 INFN, Sezione di Padova, Padova, Italy
+   57 INFN, Sezione di Roma, Rome, Italy
+   58 INFN, Sezione di Torino, Turin, Italy
+   59
+      INFN, Sezione di Trieste, Trieste, Italy
+   60 Inha University, Incheon, Republic of Korea
+   61 Institut de Physique Nucléaire d’Orsay (IPNO), Institut National de Physique Nucléaire et de Physique des
+
+
+
+
+                                                         28
+                                                 √
+D-meson production in Pb–Pb collisions at            sNN = 5.02 TeV                        ALICE Collaboration
+
+
+        Particules (IN2P3/CNRS), Université de Paris-Sud, Université Paris-Saclay, Orsay, France
+   62 Institute for Nuclear Research, Academy of Sciences, Moscow, Russia
+   63
+        Institute for Subatomic Physics, Utrecht University/Nikhef, Utrecht, Netherlands
+   64 Institute for Theoretical and Experimental Physics, Moscow, Russia
+   65 Institute of Experimental Physics, Slovak Academy of Sciences, Košice, Slovakia
+   66 Institute of Physics, Bhubaneswar, India
+   67 Institute of Physics of the Czech Academy of Sciences, Prague, Czech Republic
+   68 Institute of Space Science (ISS), Bucharest, Romania
+   69 Institut für Kernphysik, Johann Wolfgang Goethe-Universität Frankfurt, Frankfurt, Germany
+   70 Instituto de Ciencias Nucleares, Universidad Nacional Autónoma de México, Mexico City, Mexico
+   71
+        Instituto de Fı́sica, Universidade Federal do Rio Grande do Sul (UFRGS), Porto Alegre, Brazil
+   72 Instituto de Fı́sica, Universidad Nacional Autónoma de México, Mexico City, Mexico
+   73 iThemba LABS, National Research Foundation, Somerset West, South Africa
+   74 Johann-Wolfgang-Goethe Universität Frankfurt Institut für Informatik, Fachbereich Informatik und
+
+        Mathematik, Frankfurt, Germany
+   75 Joint Institute for Nuclear Research (JINR), Dubna, Russia
+   76 Korea Institute of Science and Technology Information, Daejeon, Republic of Korea
+   77 KTO Karatay University, Konya, Turkey
+   78
+      Laboratoire de Physique Subatomique et de Cosmologie, Université Grenoble-Alpes, CNRS-IN2P3,
+      Grenoble, France
+   79 Lawrence Berkeley National Laboratory, Berkeley, California, United States
+   80 Lund University Department of Physics, Division of Particle Physics, Lund, Sweden
+   81 Nagasaki Institute of Applied Science, Nagasaki, Japan
+   82 Nara Women’s University (NWU), Nara, Japan
+   83 National and Kapodistrian University of Athens, School of Science, Department of Physics , Athens,
+
+      Greece
+   84
+      National Centre for Nuclear Research, Warsaw, Poland
+   85 National Institute of Science Education and Research, HBNI, Jatni, India
+   86 National Nuclear Research Center, Baku, Azerbaijan
+   87 National Research Centre Kurchatov Institute, Moscow, Russia
+   88 Niels Bohr Institute, University of Copenhagen, Copenhagen, Denmark
+   89 Nikhef, National institute for subatomic physics, Amsterdam, Netherlands
+   90 NRC Kurchatov Institute IHEP , Protvino, Russia
+   91 NRNU Moscow Engineering Physics Institute, Moscow, Russia
+   92
+      Nuclear Physics Group, STFC Daresbury Laboratory, Daresbury, United Kingdom
+   93 Nuclear Physics Institute of the Czech Academy of Sciences, Řež u Prahy, Czech Republic
+   94 Oak Ridge National Laboratory, Oak Ridge, Tennessee, United States
+   95
+      Petersburg Nuclear Physics Institute, Gatchina, Russia
+   96 Physics department, Faculty of science, University of Zagreb, Zagreb, Croatia
+   97 Physics Department, Panjab University, Chandigarh, India
+   98 Physics Department, University of Jammu, Jammu, India
+   99 Physics Department, University of Rajasthan, Jaipur, India
+  100 Physikalisches Institut, Eberhard-Karls-Universität Tübingen, Tübingen, Germany
+  101 Physikalisches Institut, Ruprecht-Karls-Universität Heidelberg, Heidelberg, Germany
+  102 Physik Department, Technische Universität München, Munich, Germany
+  103
+      Research Division and ExtreMe Matter Institute EMMI, GSI Helmholtzzentrum für
+      Schwerionenforschung GmbH, Darmstadt, Germany
+  104 Rudjer Bošković Institute, Zagreb, Croatia
+  105 Russian Federal Nuclear Center (VNIIEF), Sarov, Russia
+  106 Saha Institute of Nuclear Physics, Kolkata, India
+  107 School of Physics and Astronomy, University of Birmingham, Birmingham, United Kingdom
+  108 Sección Fı́sica, Departamento de Ciencias, Pontificia Universidad Católica del Perú, Lima, Peru
+  109 Shanghai Institute of Applied Physics, Shanghai, China
+  110
+      Stefan Meyer Institut für Subatomare Physik (SMI), Vienna, Austria
+  111 SUBATECH, IMT Atlantique, Université de Nantes, CNRS-IN2P3, Nantes, France
+  112 Suranaree University of Technology, Nakhon Ratchasima, Thailand
+
+
+
+
+                                                         29
+                                                  √
+D-meson production in Pb–Pb collisions at              sNN = 5.02 TeV                        ALICE Collaboration
+
+
+  113 Technical University of Košice, Košice, Slovakia
+  114 Technische Universität München, Excellence Cluster ’Universe’, Munich, Germany
+  115
+        The Henryk Niewodniczanski Institute of Nuclear Physics, Polish Academy of Sciences, Cracow, Poland
+  116 The University of Texas at Austin, Austin, Texas, United States
+  117 Universidad Autónoma de Sinaloa, Culiacán, Mexico
+  118 Universidade de São Paulo (USP), São Paulo, Brazil
+  119 Universidade Estadual de Campinas (UNICAMP), Campinas, Brazil
+  120 Universidade Federal do ABC, Santo Andre, Brazil
+  121 University College of Southeast Norway, Tonsberg, Norway
+  122 University of Cape Town, Cape Town, South Africa
+  123
+        University of Houston, Houston, Texas, United States
+  124 University of Jyväskylä, Jyväskylä, Finland
+  125 University of Liverpool, Department of Physics Oliver Lodge Laboratory , Liverpool, United Kingdom
+  126 University of Split, Faculty of Electrical Engineering, Mechanical Engineering and Naval Architecture,
+
+        Split, Croatia
+  127 University of Tennessee, Knoxville, Tennessee, United States
+  128 University of the Witwatersrand, Johannesburg, South Africa
+  129 University of Tokyo, Tokyo, Japan
+  130
+        University of Tsukuba, Tsukuba, Japan
+  131 Université Clermont Auvergne, CNRS/IN2P3, LPC, Clermont-Ferrand, France
+  132 Université de Lyon, Université Lyon 1, CNRS/IN2P3, IPN-Lyon, Villeurbanne, Lyon, France
+  133 Université de Strasbourg, CNRS, IPHC UMR 7178, F-67000 Strasbourg, France, Strasbourg, France
+  134 Université Paris-Saclay Centre dÉtudes de Saclay (CEA), IRFU, Department de Physique Nucléaire
+
+        (DPhN), Saclay, France
+  135 Università degli Studi di Pavia, Pavia, Italy
+  136 Università di Brescia, Brescia, Italy
+  137
+        V. Fock Institute for Physics, St. Petersburg State University, St. Petersburg, Russia
+  138 Variable Energy Cyclotron Centre, Kolkata, India
+  139 Warsaw University of Technology, Warsaw, Poland
+  140 Wayne State University, Detroit, Michigan, United States
+  141 Westfälische Wilhelms-Universität Münster, Institut für Kernphysik, Münster, Germany
+  142 Wigner Research Centre for Physics, Hungarian Academy of Sciences, Budapest, Hungary
+  143 Yale University, New Haven, Connecticut, United States
+  144 Yonsei University, Seoul, Republic of Korea
+
+
+
+
+                                                           30
+        2
+R AA                   ALICE
+       1.8   0-10% Pb-Pb, sNN = 5.02 TeV
+                       |y |<0.5
+       1.6
+                                      0    +    +
+                PHSD, Average D , D , D*
+       1.4             +
+                PHSD, Ds
+                               0   +     +
+                TAMU, Average D , D , D*
+       1.2             +
+                TAMU, Ds
+         1      Filled markers: pp rescaled reference
+              Open markers: pp p -extrapolated reference
+       0.8                       T
+                                       0   +     +
+                          Average D , D , D*
+                           +
+       0.6                Ds
+
+       0.4
+       0.2
+        0
+         1                10
+                                     p (GeV/ c )
+                                      T
+        2
+R AA                       ALICE
+       1.8       30-50% Pb-Pb, sNN = 5.02 TeV
+                           |y |<0.5
+       1.6
+                                              0    +    +
+                   PHSD, Average D , D , D*
+       1.4                +
+                   PHSD, Ds
+                   TAMU, Average D0, D+, D*+
+       1.2                +
+                   TAMU, Ds
+         1                                              0    +    +
+                                        Average D , D , D*
+                                         +
+       0.8                              Ds
+
+       0.6
+       0.4
+       0.2               Filled markers: pp rescaled reference
+                       Open markers: pp p -extrapolated reference
+                                          T
+
+        0
+         0   5    10      15       20             25    30       35   40
+                                                       p (GeV/c )
+                                                        T
+        2
+R AA                                  ALICE
+       1.8                  30-50% Pb-Pb, sNN = 5.02 TeV
+                                      |y |<0.5
+       1.6
+                                                   0   +   +
+                                PHSD, Average D , D , D*
+       1.4                             +
+                                PHSD, Ds
+                                               0   +     +
+                                TAMU, Average D , D , D*
+       1.2                             +
+                                TAMU, Ds
+         1
+       0.8
+       0.6
+       0.4
+                       0   +    +
+             Average D , Filled
+                         D , D*markers: pp rescaled reference
+       0.2    +
+             Ds      Open markers: pp p -extrapolated reference
+                                        T
+        0
+         1                                  10
+                                                 p (GeV/ c )
+                                                  T
+R AA   2.5                  ALICE
+                  60-80% Pb-Pb, sNN = 5.02 TeV
+                            |y |<0.5
+
+        2        Average D0, D+, D*+
+                  +
+                 Ds                            0   +    +
+                                PHSD, Average D , D , D*
+                                       +
+                                PHSD, Ds
+                                               0   +     +
+       1.5                      TAMU, Average D , D , D*
+                                       +
+                                TAMU, Ds
+
+
+         1
+
+
+       0.5
+                               Filled markers: pp rescaled reference
+                             Open markers: pp p -extrapolated reference
+                                                T
+
+        0
+         0   5      10    15     20       25         30     35       40
+                                                    p (GeV/c )
+                                                     T
+R AA   2.5                             ALICE
+                             60-80% Pb-Pb, sNN = 5.02 TeV
+                                       |y |<0.5
+                                                          0   +   +
+        2                             PHSD, Average D , D , D*
+                                             +
+                                      PHSD, Ds
+                                                     0   +     +
+                                      TAMU, Average D , D , D*
+                                             +
+                                      TAMU, Ds
+       1.5
+
+
+         1
+
+
+       0.5              0    +    +
+             Average D , D , D*
+              +                 Filled markers: pp rescaled reference
+             Ds               Open markers: pp p -extrapolated reference
+                                                 T
+
+        0
+         1                                    10
+                                                    p (GeV/ c )
+                                                      T

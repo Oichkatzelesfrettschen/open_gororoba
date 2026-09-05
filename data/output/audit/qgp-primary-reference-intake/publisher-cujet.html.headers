@@ -1,0 +1,100 @@
+HTTP/2 303 
+age: 0
+via: 1.1 google, 1.1 varnish
+cache-control: no-cache
+x-b3-sampled: 1
+location: https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https%3A%2F%2Flink.springer.com%2Farticle%2F10.1007%2FJHEP02%282016%29169
+x-dump-request-bodies: 0
+x-frame-options: DENY
+traceparent: 00-8492485c65f9410c65fc9716e38aa508-468ef116fb06dc5c-01
+server: Oscar Platform 0.1772.0
+x-b3-spanid: bf7e90143b3a4306
+tracestate: gorouter=37b244f8172876d8
+x-vcap-request-id: 8492485c-65f9-410c-65fc-9716e38aa508
+x-b3-traceid: 4733ee935db5d84f
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 20:39:38 GMT
+x-served-by: cache-83dcdfda-internal, cache-hhr-khhr2060026-HHR, cache-hhr-khhr2060033-HHR
+x-cache: MISS, MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788640778.821917,VS0,VE277
+vary: x-frame-options,X-Oscar-Cache-Mode
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 302 
+location: https://idp.springer.com/transit?redirect_uri=https%3A%2F%2Flink.springer.com%2Farticle%2F10.1007%2FJHEP02%282016%29169&code=8d5a6f42-7d55-47eb-ba0b-e785cb5c3ccd
+x-xss-protection: 1; mode=block
+traceparent: 00-a42bf791e08749417fa4652e9b2d3bdf-fa4d66a3254228fe-01
+content-security-policy: frame-ancestors 'none';
+x-vcap-request-id: a42bf791-e087-4941-7fa4-652e9b2d3bdf
+server-timing: traceparent;desc="00-a42bf791e08749417fa4652e9b2d3bdf-fa4d66a3254228fe-01"
+via: 1.1 google, 1.1 varnish
+x-frame-options: DENY
+strict-transport-security: max-age=31536000 ; includeSubDomains
+access-control-expose-headers: Server-Timing
+pragma: no-cache
+x-content-type-options: nosniff
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 20:39:38 GMT
+x-served-by: cache-hhr-khhr2060052-HHR, cache-hhr-khhr2060029-HHR
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788640778.166576,VS0,VE214
+vary: x-forwarded-proto
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 302 
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+strict-transport-security: max-age=31536000 ; includeSubDomains
+content-language: en-US
+access-control-expose-headers: Server-Timing
+pragma: no-cache
+expires: 0
+via: 1.1 google, 1.1 varnish
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-vcap-request-id: d826a5b4-943f-455d-4957-e78dcdbbcc81
+location: https://link.springer.com/article/10.1007/JHEP02(2016)169?error=cookies_not_supported&code=8d5a6f42-7d55-47eb-ba0b-e785cb5c3ccd
+server-timing: traceparent;desc="00-d826a5b4943f455d4957e78dcdbbcc81-21016e7c67670210-01"
+x-xss-protection: 1; mode=block
+traceparent: 00-d826a5b4943f455d4957e78dcdbbcc81-21016e7c67670210-01
+content-security-policy: frame-ancestors 'none';
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 20:39:38 GMT
+x-served-by: cache-hhr-khhr2060056-HHR, cache-hhr-khhr2060029-HHR
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788640778.395085,VS0,VE193
+vary: x-forwarded-proto
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 200 
+x-vcap-request-id: 137e7877-2565-48de-5649-0d2b1243582c
+content-type: text/html; charset=utf-8
+age: 0
+x-robots-tag: nocache
+x-dump-request-bodies: 0
+tracestate: gorouter=185c1f8c1119590f
+via: 1.1 google, 1.1 varnish
+x-b3-spanid: 8f0310897452af6c
+x-b3-sampled: 1
+x-content-type-options: nosniff
+traceparent: 00-137e7877256548de56490d2b1243582c-464e9584d58e1ea4-01
+accept-ranges: bytes
+server: Oscar Platform 0.1772.0
+x-b3-traceid: 1af0afb938444e6c
+x-frame-options: DENY
+etag: W/"64856f642309b4166f251da0406c50a9"
+date: Sat, 05 Sep 2026 20:39:38 GMT
+x-served-by: cache-637b0acd-internal, cache-hhr-khhr2060036-HHR, cache-hhr-khhr2060033-HHR
+x-cache: MISS, MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788640779.599767,VS0,VE363
+vary: x-frame-options,X-Oscar-Cache-Mode, Accept-Encoding
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+

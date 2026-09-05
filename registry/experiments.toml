@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 198
-experiment_count = 272
+deterministic_count = 199
+experiment_count = 273
 gpu_count = 32
 seeded_count = 49
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -7155,4 +7155,31 @@ status = "active"
 status_note = "Six fixed-time corrected source comparisons meet the 1e-10 tensor gate; complete spinor gauge contraction is at most 3.46513e-14. Both source-contact omissions fail the independent tensor comparison, although B.36 omission preserves gauge transversality. Corrected integrated scalar/spinor gauge, off-shell and declared transverse predicates pass. The original normalized full-vector gate and scalar 1e-6 omission criterion remain failed. Eight integration and 204 unit tests pass as scoped predicates; universal identities and certified quadrature/Taylor/interpolation remainders remain unassessed. E-301 source and failure receipts remain retained."
 status_token = "ACTIVE"
 title = "Distributional photon-graviton source identity and finite Ward predicates"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "cargo-test:quantum_core:magnonic_global_gap_certificate"
+binary_experiment_declared = "E-305"
+binary_registered = true
+claim_refs = ["C-1688", "C-1747", "C-1751"]
+claims = ["C-1688", "C-1747", "C-1751"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-305"
+input = "Exact stored dyadic on-site and hopping coefficients for source Table I/II; boundaries [2,6] and [1,2,4,6,7], maximum dyadic depth 10, external gap gate 1e-10 GHz."
+input_path_refs = ["data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-i-coefficient-bits.csv", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-ii-coefficient-bits.csv", "data/output/audit/magnonic-global-gap-certificate/protocol.toml", "docs/engineering/magnonic-isolated-bundle-time-reversal.md"]
+lineage_id = "XL-273"
+method = "Construct directed enclosures with explicit pi and trigonometric remainders. Bound full-square eigensolver orthogonality and spectral residuals, then subtract the cellwise Hamiltonian variation. Verify prefix-free exact-area torus cover. Invoke the analytic zero-Chern argument only for exactly real hoppings and admitted separated bundles."
+output = ["data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/results.toml"]
+output_path_refs = ["data/output/audit/magnonic-global-gap-certificate/controls.log", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay.log", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/results.toml", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-i-terminal-cells.csv.zst", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-ii-terminal-cells.csv.zst"]
+reproducibility_class = "deterministic_replay"
+run = "MAGNONIC_GAP_OUTPUT=data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay cargo test -p quantum_core --test magnonic_global_gap_certificate --profile validation --offline retain_table_i_then_table_ii_global_certificate -- --ignored --nocapture"
+run_command_sha256 = "72a82034617cb64d1246ef27a748076059daa28fca920e03fadae3557107cd9b"
+status = "active"
+status_note = "Both stored-coefficient models pass complete global external-gap admission: Table I has 1648 terminal cells and Table II 65536. Exact area is 1048576 for each cover. Maximum eigenvalue-error bounds are below 2.604e-12 GHz; gap lower bounds exceed 3.2409e-4 and 2.0155e-2 GHz. Preserve historical C-1688 model and rank-one degeneracy failures. Source parameter uncertainty and physical/device prediction remain outside the certificate."
+status_token = "ACTIVE"
+title = "Source-fitted magnonic exact-coefficient global spectral gap certificate"
 truth_surface_consumption = []

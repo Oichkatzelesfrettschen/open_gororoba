@@ -1,0 +1,16 @@
+schema_version = 1
+observed_utc = "2026-09-05T20:34:24Z"
+doi = "10.13012/B2IDB-8460963_V1"
+metadata_url = "https://api.datacite.org/dois/10.13012/B2IDB-8460963_V1"
+metadata_path = "data/output/audit/magnonic-author-code-intake/datacite-metadata.json"
+metadata_sha256 = "35c9cfc749498a6423155e67e00bad93cf83d535be6f045f4abec1e3d160d512"
+metadata_relation = "IsSupplementTo 10.48550/arxiv.2601.03210"
+metadata_version = "1"
+metadata_content_url = "null"
+provider_url = "https://databank.illinois.edu/datasets/IDB-8460963"
+provider_http_status = 403
+provider_body_bytes = 118
+provider_body_sha256 = "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4"
+identical_retained_body = "data/output/audit/magnonic-source-projection/databank-response.html"
+result = "The live provider returns the same hashed failed response as E-299. DataCite identifies the source dataset and supplement relation but supplies a null contentUrl."
+intake_condition = "A provider-served versioned code archive with retained hashes permits author-code matrix and projection comparison. The metadata receipt and failed HTTP response establish source identity and a retrieval blocker; they supply zero author-code execution evidence."

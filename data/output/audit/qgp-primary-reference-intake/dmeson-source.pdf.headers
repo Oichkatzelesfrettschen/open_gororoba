@@ -1,0 +1,18 @@
+HTTP/2 200 
+server: Google Frontend
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-disposition: inline; filename="1804.09083v2.pdf"
+x-cloud-trace-context: 30cb4a2e77927c97e250a115446d7606
+last-modified: Sun, 22 Jan 2023 21:12:36 GMT
+etag: CKmFre+L3PwCEAE=
+link: <https://arxiv.org/pdf/1804.09083>; rel='canonical'
+access-control-allow-origin: *
+content-type: application/pdf
+accept-ranges: bytes
+age: 890873
+date: Sat, 05 Sep 2026 20:42:21 GMT
+x-served-by: cache-lga21949-LGA, cache-lga21949-LGA, cache-lga21921-LGA, cache-hhr-khhr2060020-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1788640941.175544,VS0,VE1
+content-length: 774804
+

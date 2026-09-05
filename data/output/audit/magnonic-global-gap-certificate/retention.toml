@@ -1,0 +1,22 @@
+schema_version = 1
+compression = "zstd 1.5.7 -19 -T1 --keep"
+verification = "cmp compared each raw CSV with zstd -dc output; every comparison exited 0 before raw relocation"
+replay_equality = "cmp compared initial and exclusive-create replay results and both terminal CSVs; every comparison exited 0"
+raw_preservation = "Raw initial and replay CSVs moved into .cache/magnonic-gap-originals/initial and .cache/magnonic-gap-originals/exclusive-create-replay"
+results_sha256 = "bca220250f008155efa59278213a029be2ce2ceb832e903688040b6c09a12821"
+
+[[table]]
+name = "table-i"
+archive = "table-i-terminal-cells.csv.zst"
+replay_archive = "exclusive-create-replay/table-i-terminal-cells.csv.zst"
+raw_sha256 = "444ae6889ee354b3475de1409af82bd56f7cc60a087d4ef8db4ce78dd7ef9f4b"
+archive_sha256 = "feb42b04ec44fdf18090997d35d4321f267ff7e010e75ded368d4ab7d418025f"
+coefficient_bits_sha256 = "5ee0b01ca7b49b8083904ea0968e1183285aa42e04a5e858ec45b45aa5308c6b"
+
+[[table]]
+name = "table-ii"
+archive = "table-ii-terminal-cells.csv.zst"
+replay_archive = "exclusive-create-replay/table-ii-terminal-cells.csv.zst"
+raw_sha256 = "df68b0972c608d2d03c42faf0897a3cb13610b2296662c1bad14c07a074ad737"
+archive_sha256 = "dade8697bc7611f2455a118222217621f0be3ba179c2b91b425589b8e678e63f"
+coefficient_bits_sha256 = "7e1dd8f4a897c605c2a6d5e272e615cf81427a29facff96a266ac5e8baf0611f"

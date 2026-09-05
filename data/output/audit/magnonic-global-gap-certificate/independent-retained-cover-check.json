@@ -1,0 +1,14 @@
+{
+  "table-i": {
+    "terminal_cells": 1648,
+    "integer_area": 1048576,
+    "minimum_retained_gap": 0.00032409241440772835,
+    "raw_sha256": "444ae6889ee354b3475de1409af82bd56f7cc60a087d4ef8db4ce78dd7ef9f4b"
+  },
+  "table-ii": {
+    "terminal_cells": 65536,
+    "integer_area": 1048576,
+    "minimum_retained_gap": 0.020155300677774695,
+    "raw_sha256": "df68b0972c608d2d03c42faf0897a3cb13610b2296662c1bad14c07a074ad737"
+  }
+}

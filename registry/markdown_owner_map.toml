@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 140
+document_count = 141
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -815,4 +815,9 @@ removal_status = "active"
 [[owner]]
 path = "docs/engineering/claim-family-evidence-adjudication.md"
 owner_group = "project"
+removal_status = "active"
+
+[[owner]]
+path = "docs/engineering/magnonic-isolated-bundle-time-reversal.md"
+owner_group = "research"
 removal_status = "active"

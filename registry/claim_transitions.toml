@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 208
+event_count = 209
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4462,4 +4462,27 @@ transition_spec_sha256 = "621e50b6c4ea171e1da87c0a4e001646baff89b9bc05e16c8d9f64
 [[transition.successors]]
 proposal_key = "finite-distributional-photon-graviton-source-conformance"
 canonical_claim_id = "C-1750"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 209
+transition_key = "magnonic-exact-dyadic-global-bundle-isolation"
+source_claim_id = "C-1747"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Require directed lower bounds above the unchanged 1e-10 GHz gate for every requested adjacent boundary in a complete dyadic torus cover; reject arithmetic failures, degenerate spectra and missing or overlapping cells before invoking exact-real-hopping time reversal."
+rationale = "A complete numerical isolation certificate and reviewed analytic projector argument support a narrower exact-coefficient model successor. E-299 source reproduction and finite sampled topology retain their historical scope."
+unresolved_assumptions = ["Exact stored dyadic coefficients exclude uncertainty in source decimal parameters and rounded geometric projections.", "The reviewed analytic argument establishes isolated bundle topology; individual internal degeneracies retain rank-one admission obligations.", "Upstream source fits use five/seven parameters; replay fits zero. Device prediction, physical calibration and historical C-1688 models require separate evidence."]
+evidence_artifact_ids = ["magnonic-global-gap-certificate"]
+experiment_ids = ["E-305"]
+actor = "claim-evidence-adjudication"
+reason = "Register exact-coefficient global isolation and zero bundle Chern successor with complete retained cover"
+transition_timestamp = "2026-09-05T20:45:06Z"
+transition_spec_sha256 = "0f8f808012f438e4d424ee03c10d8c34b91889f777d16cc6a93c1580d52b4f64"
+
+[[transition.successors]]
+proposal_key = "magnonic-exact-dyadic-global-bundle-isolation"
+canonical_claim_id = "C-1751"
 relation_kind = "implementation_split"

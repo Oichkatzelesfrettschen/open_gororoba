@@ -1,0 +1,9 @@
+    Finished `validation` profile [optimized + debuginfo] target(s) in 0.21s
+     Running tests/magnonic_global_gap_certificate.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/magnonic_global_gap_certificate-259bd873c3add1dd)
+
+running 2 tests
+test retain_table_i_then_table_ii_global_certificate ... ignored, Explicit retained numerical campaign
+test exact_gap_degeneracy_and_cover_mutations ... ok
+
+test result: ok. 1 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -138,7 +138,7 @@ acceptance = "Correctness, stability, paired resolution and outlier accounting h
 [[task]]
 id = "magnonic-source-invariants"
 status = "pending"
-progress = "Angular/exchange slopes, source Tables I/II, sampled topology admission and local-frame invariance pass focused checks. Paired patches distinguish edge states, reciprocal participation and both walls. E-299/C-1747 passes source-fitted band support and geometry/folding checks. Global topology convergence and independent device prediction remain open."
+progress = "Angular/exchange slopes, source Tables I/II, sampled topology admission and local-frame invariance pass focused checks. Paired patches distinguish edge states, reciprocal participation and both walls. E-299/C-1747 passes source-fitted band support and geometry/folding checks. E-305/C-1751 certifies full-torus bundle gaps and zero bundle Chern number for exact stored Table I/II models. Source uncertainty, independent device prediction and historical alternate parameter sets retain separate obligations."
 depends_on = ["family-contracts"]
 action = "Resolve magnonic parameter and frequency provenance, topology and localization"
 acceptance = "Gap-admitted band or subspace invariants, defect localization and both domain walls pass separate checks."
@@ -154,7 +154,7 @@ acceptance = "Retain failed thresholds and distinguish identity class, contact t
 [[task]]
 id = "reference-population-identity"
 status = "pending"
-progress = "QGP CLI rejects mismatched populations before ranking; independent minimization identifies and repairs the fit/score formula mismatch. NuFit release and SK variants have explicit source intervals and retained composite comparisons. Source-bound QGP curves and covariance remain required."
+progress = "QGP CLI rejects mismatched populations before ranking; independent minimization identifies and repairs the fit/score formula mismatch. NuFit release and SK variants have explicit source intervals and retained composite comparisons. The official intake retains seven experimental RAA tables with 323 rows and exposes the eccentricity citation mismatch; theory-curve identity, covariance and nine-row geometry lineage remain required."
 depends_on = ["family-contracts"]
 action = "Correct QGP populations and NuFit release identities before agreement comparisons"
 acceptance = "Every comparison declares source population, uncertainty or covariance and fitting freedom; original comparisons remain retained."
@@ -232,7 +232,13 @@ acceptance = "Preserve historical failures; validate canonical exports, retained
 
 [[task]]
 id = "magnonic-global-gap-certificate"
-status = "pending"
+status = "completed"
 depends_on = ["ward-optics-canonical-integration"]
 action = "Bound cellwise Hamiltonian variation and numerical eigenvalue error before global topology admission"
 acceptance = "Every Brillouin-torus cell has an outward-bounded positive external gap for each admitted bundle; apply the real-hopping time-reversal argument only after global isolation and retain individual-band degeneracies."
+
+[[task]]
+id = "magnonic-qgp-canonical-validation"
+status = "completed"
+action = "Verify global-gap and reference-intake canonical exports, retained bytes and publication gates"
+acceptance = "Typed contracts, source identities and directed cell certificates agree; full validation passes and the atomic package is ready for draft-PR publication."

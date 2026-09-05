@@ -1,0 +1,424 @@
+[
+  {
+    "doi": "10.17182/hepdata.59944.v1/t16",
+    "name": "Table 16",
+    "description": "Nuclear Modification Factor RAA in the centrality interval 0-5%.",
+    "qualifiers": {
+      "CENTRALITY": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "CENTRALITY",
+          "value": "0.0-5.0 pct"
+        }
+      ],
+      "ETARAP": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "ETARAP",
+          "value": "-0.8-0.8"
+        }
+      ],
+      "RE": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> CHARGED X"
+        }
+      ],
+      "SQRT(S)/NUCLEON": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "SQRT(S)/NUCLEON",
+          "value": "2760.0 GeV"
+        }
+      ]
+    },
+    "rows": 65,
+    "headers": [
+      {
+        "colspan": 1,
+        "name": "PT [GEV]"
+      },
+      {
+        "colspan": 1,
+        "name": "RAA"
+      }
+    ],
+    "errors": [
+      "stat",
+      "sys",
+      "sys,normaliztion uncertainty"
+    ],
+    "resources": [],
+    "associated_files": []
+  },
+  {
+    "doi": "10.17182/hepdata.59944.v1/t18",
+    "name": "Table 18",
+    "description": "Nuclear Modification Factor RAA in the centrality interval 10-20%.",
+    "qualifiers": {
+      "CENTRALITY": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "CENTRALITY",
+          "value": "10.0-20.0 pct"
+        }
+      ],
+      "ETARAP": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "ETARAP",
+          "value": "-0.8-0.8"
+        }
+      ],
+      "RE": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> CHARGED X"
+        }
+      ],
+      "SQRT(S)/NUCLEON": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "SQRT(S)/NUCLEON",
+          "value": "2760.0 GeV"
+        }
+      ]
+    },
+    "rows": 65,
+    "headers": [
+      {
+        "colspan": 1,
+        "name": "PT [GEV]"
+      },
+      {
+        "colspan": 1,
+        "name": "RAA"
+      }
+    ],
+    "errors": [
+      "stat",
+      "sys",
+      "sys,normaliztion uncertainty"
+    ],
+    "resources": [],
+    "associated_files": []
+  },
+  {
+    "doi": "10.17182/hepdata.59944.v1/t19",
+    "name": "Table 19",
+    "description": "Nuclear Modification Factor RAA in the centrality interval 20-30%.",
+    "qualifiers": {
+      "CENTRALITY": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "CENTRALITY",
+          "value": "20.0-30.0 pct"
+        }
+      ],
+      "ETARAP": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "ETARAP",
+          "value": "-0.8-0.8"
+        }
+      ],
+      "RE": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> CHARGED X"
+        }
+      ],
+      "SQRT(S)/NUCLEON": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "SQRT(S)/NUCLEON",
+          "value": "2760.0 GeV"
+        }
+      ]
+    },
+    "rows": 65,
+    "headers": [
+      {
+        "colspan": 1,
+        "name": "PT [GEV]"
+      },
+      {
+        "colspan": 1,
+        "name": "RAA"
+      }
+    ],
+    "errors": [
+      "stat",
+      "sys",
+      "sys,normaliztion uncertainty"
+    ],
+    "resources": [],
+    "associated_files": []
+  },
+  {
+    "doi": "10.17182/hepdata.59944.v1/t20",
+    "name": "Table 20",
+    "description": "Nuclear Modification Factor RAA in the centrality interval 30-40%.",
+    "qualifiers": {
+      "CENTRALITY": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "CENTRALITY",
+          "value": "30.0-40.0 pct"
+        }
+      ],
+      "ETARAP": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "ETARAP",
+          "value": "-0.8-0.8"
+        }
+      ],
+      "RE": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> CHARGED X"
+        }
+      ],
+      "SQRT(S)/NUCLEON": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "SQRT(S)/NUCLEON",
+          "value": "2760.0 GeV"
+        }
+      ]
+    },
+    "rows": 65,
+    "headers": [
+      {
+        "colspan": 1,
+        "name": "PT [GEV]"
+      },
+      {
+        "colspan": 1,
+        "name": "RAA"
+      }
+    ],
+    "errors": [
+      "stat",
+      "sys",
+      "sys,normaliztion uncertainty"
+    ],
+    "resources": [],
+    "associated_files": []
+  },
+  {
+    "doi": "10.17182/hepdata.89396.v1/t1",
+    "name": "Table 1",
+    "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 0-5% central Pb-Pb collisions at 5.02 TeV",
+    "qualifiers": {},
+    "rows": 38,
+    "headers": [
+      {
+        "colspan": 1,
+        "name": "p_{T} (GeV/c)"
+      },
+      {
+        "colspan": 1,
+        "name": "R_{AA}"
+      }
+    ],
+    "errors": [
+      "norm",
+      "stat",
+      "syst"
+    ],
+    "resources": [],
+    "associated_files": []
+  },
+  {
+    "doi": "10.17182/hepdata.88168.v1/t29",
+    "name": "Table 29",
+    "description": "pT-differential nuclear modification factor of average prompt D0, D+, D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in the rapidity interval |y|&lt;0.5.",
+    "qualifiers": {
+      "CENTRALITY": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "CENTRALITY",
+          "value": "0.0-10.0 pct"
+        }
+      ],
+      "RE": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> D*+ X"
+        }
+      ],
+      "RE-1": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> D+ X"
+        }
+      ],
+      "RE-2": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> D0 X"
+        }
+      ],
+      "SQRT(S)/NUCLEON": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "SQRT(S)/NUCLEON",
+          "value": "5020.0 GeV"
+        }
+      ],
+      "YRAP": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "YRAP",
+          "value": "-0.5-0.5"
+        }
+      ]
+    },
+    "rows": 13,
+    "headers": [
+      {
+        "colspan": 1,
+        "name": "PT [GEV]"
+      },
+      {
+        "colspan": 1,
+        "name": "RAA"
+      }
+    ],
+    "errors": [
+      "stat",
+      "sys",
+      "sys,sys,global normalization uncertainty"
+    ],
+    "resources": [],
+    "associated_files": []
+  },
+  {
+    "doi": "10.17182/hepdata.88168.v1/t34",
+    "name": "Table 34",
+    "description": "pT-differential nuclear modification factor of average prompt D0, D+, D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in the rapidity interval |y|&lt;0.5.",
+    "qualifiers": {
+      "CENTRALITY": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "CENTRALITY",
+          "value": "30.0-50.0 pct"
+        }
+      ],
+      "RE": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> D*+ X"
+        }
+      ],
+      "RE-1": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> D+ X"
+        }
+      ],
+      "RE-2": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "RE",
+          "value": "PB PB --> D0 X"
+        }
+      ],
+      "SQRT(S)/NUCLEON": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "SQRT(S)/NUCLEON",
+          "value": "5020.0 GeV"
+        }
+      ],
+      "YRAP": [
+        {
+          "colspan": 1,
+          "group": 0,
+          "type": "YRAP",
+          "value": "-0.5-0.5"
+        }
+      ]
+    },
+    "rows": 12,
+    "headers": [
+      {
+        "colspan": 1,
+        "name": "PT [GEV]"
+      },
+      {
+        "colspan": 1,
+        "name": "RAA"
+      }
+    ],
+    "errors": [
+      "stat",
+      "sys",
+      "sys,sys,global normalization uncertainty"
+    ],
+    "resources": [],
+    "associated_files": []
+  },
+  {
+    "doi": "10.17182/hepdata.78365.v1/t3",
+    "name": "MULT",
+    "description": "Total number of charged particles as a function of the mean number of participating nucleons [PRC88.044909]. The total charged-particle multiplicity is given as the integral over $\\mathrm{d}N_{\\mathrm{ch}}/\\mathrm{d}\\eta$ over the measured region ($-3.5&lt;\\eta&lt;5$) and extrapolations from fitted functions in the unmeasured regions. The contribution from unmeasured $\\eta$ regions amounts to $\\approx30\\%$ of the total number of charged particles. The uncertainty on the extrapolation to the unmeasured pseudorapidity region is smaller than the size of the markers.  The contribution to the systematic uncertainties from the centrality determination and electromagnetic processes are vanishing compared to the contribution from the largest differences between the fitted functions.  A function inspired by factorisation [PRC83.024913] is fitted to the data, and the best fit yields $a=51.5\\pm7.3$, $b=0.16\\pm0.05$.",
+    "qualifiers": {},
+    "rows": 10,
+    "headers": [
+      {
+        "colspan": 1,
+        "name": "$\\langle N_{\\mathrm{part}}\\rangle$"
+      },
+      {
+        "colspan": 1,
+        "name": "$\\mathrm{Total}\\ \\mathit{N}_{\\mathrm{ch}}$"
+      }
+    ],
+    "errors": [
+      "stat",
+      "sys_1",
+      "sys_2"
+    ],
+    "resources": [],
+    "associated_files": []
+  }
+]

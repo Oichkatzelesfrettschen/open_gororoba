@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 272
-edge_count = 1467
+lineage_count = 273
+edge_count = 1480
 
 [[lineage]]
 id = "XL-001"
@@ -4951,6 +4951,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo test -p gr_core --test ward_distributional_identity --test ward_source_scope --test ward_independent_residuals --profile validation --offline -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-273"
+experiment_id = "E-305"
+binary = "cargo-test:quantum_core:magnonic_global_gap_certificate"
+deterministic = true
+gpu = false
+run_command = "MAGNONIC_GAP_OUTPUT=data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay cargo test -p quantum_core --test magnonic_global_gap_certificate --profile validation --offline retain_table_i_then_table_ii_global_certificate -- --ignored --nocapture"
+run_command_sha256 = "72a82034617cb64d1246ef27a748076059daa28fca920e03fadae3557107cd9b"
+claim_refs = ["C-1688", "C-1747", "C-1751"]
+input_path_refs = ["data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-i-coefficient-bits.csv", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-ii-coefficient-bits.csv", "data/output/audit/magnonic-global-gap-certificate/protocol.toml", "docs/engineering/magnonic-isolated-bundle-time-reversal.md"]
+output_path_refs = ["data/output/audit/magnonic-global-gap-certificate/controls.log", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay.log", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/results.toml", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-i-terminal-cells.csv.zst", "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-ii-terminal-cells.csv.zst"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "MAGNONIC_GAP_OUTPUT=data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay cargo test -p quantum_core --test magnonic_global_gap_certificate --profile validation --offline retain_table_i_then_table_ii_global_certificate -- --ignored --nocapture", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -18152,6 +18170,123 @@ id = "XLE-01467"
 lineage_id = "XL-272"
 from_id = "E-304"
 to_ref = "data/output/audit/ward-distributional-identity/scalar-source-before.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01468"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "cargo-test:quantum_core:magnonic_global_gap_certificate"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01469"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "C-1688"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01470"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "C-1747"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01471"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "C-1751"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01472"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-i-coefficient-bits.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01473"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-ii-coefficient-bits.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01474"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "data/output/audit/magnonic-global-gap-certificate/protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01475"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "docs/engineering/magnonic-isolated-bundle-time-reversal.md"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01476"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "data/output/audit/magnonic-global-gap-certificate/controls.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01477"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01478"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/results.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01479"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-i-terminal-cells.csv.zst"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01480"
+lineage_id = "XL-273"
+from_id = "E-305"
+to_ref = "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-ii-terminal-cells.csv.zst"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

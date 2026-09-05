@@ -1,0 +1,9 @@
+[validation-tools] building registry validation tools in one Cargo session
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli)
+   Compiling gororoba_cli_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_data)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 48.57s
+OK: registry validation tools cached at /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/.
+/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/registry-integrity --repo-root .
+Wrote registry-integrity registry lane artifacts (canonical registry-integrity tool): conflict_markers=122 lacunae=184 schema_signatures=13

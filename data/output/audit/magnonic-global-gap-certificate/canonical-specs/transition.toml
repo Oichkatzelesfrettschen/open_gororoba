@@ -1,0 +1,26 @@
+[transition]
+transition_timestamp = "2026-09-05T20:45:06Z"
+transition_key = "magnonic-exact-dyadic-global-bundle-isolation"
+source_claim_id = "C-1747"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["magnonic-global-gap-certificate"]
+experiment_ids = ["E-305"]
+exercised_falsifier = "Require directed lower bounds above the unchanged 1e-10 GHz gate for every requested adjacent boundary in a complete dyadic torus cover; reject arithmetic failures, degenerate spectra and missing or overlapping cells before invoking exact-real-hopping time reversal."
+proposed_claim_status = "Verified"
+rationale = "A complete numerical isolation certificate and reviewed analytic projector argument support a narrower exact-coefficient model successor. E-299 source reproduction and finite sampled topology retain their historical scope."
+unresolved_assumptions = ["Exact stored dyadic coefficients exclude uncertainty in source decimal parameters and rounded geometric projections.", "The reviewed analytic argument establishes isolated bundle topology; individual internal degeneracies retain rank-one admission obligations.", "Upstream source fits use five/seven parameters; replay fits zero. Device prediction, physical calibration and historical C-1688 models require separate evidence."]
+actor = "claim-evidence-adjudication"
+reason = "Register exact-coefficient global isolation and zero bundle Chern successor with complete retained cover"
+expected_source_state_sha256 = "20298025909bfe627421068d2224e6cf08a1ac207b95a743235353fdecf5e537"
+expected_claim_id_max = 1750
+
+[[successor]]
+proposal_key = "magnonic-exact-dyadic-global-bundle-isolation"
+statement = "For the exact stored-dyadic nine-orbital source Table I and Table II coefficients retained by E-305, directed eigenvalue and variation enclosures certify the requested external bundle gaps over the complete reciprocal torus. Table I admits 1648 terminal cells with minimum gap lower bound 3.24092414407728348e-4 GHz; Table II admits 65536 with 2.01553006777746950e-2 GHz, both above the unchanged 1e-10 GHz gate. Exact real hoppings and the reviewed spinless-time-reversal projector argument imply zero first Chern number for each globally isolated contiguous bundle, allowing internal degeneracies. The result covers the represented coefficients under the stated finite IEEE arithmetic admission, with five/seven upstream source-fitted parameters and zero replay fitting. Source-coefficient uncertainty, physical device prediction, and the historical C-1688 parameter sets remain separate."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-305; quantum_core::spectral_gap_certificate::certify_global_gaps; crates/quantum_core/tests/magnonic_global_gap_certificate.rs; final exclusive-create-replay coefficient-bit and terminal-cell tables; docs/engineering/magnonic-isolated-bundle-time-reversal.md."
+required_falsifier = "An independent check invalidates any retained directed lower bound, complete cover or exact-real premise, or the implementation accepts the declared degenerate-spectrum or malformed-cover controls."
+where_stated = ["data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/results.toml", "data/output/audit/magnonic-global-gap-certificate/protocol.toml", "docs/engineering/magnonic-isolated-bundle-time-reversal.md", "crates/quantum_core/src/spectral_gap_certificate.rs", "crates/quantum_core/tests/magnonic_global_gap_certificate.rs"]
+evidence_artifact_ids = ["magnonic-global-gap-certificate"]
+predecessor_relation_kind = "implementation_split"

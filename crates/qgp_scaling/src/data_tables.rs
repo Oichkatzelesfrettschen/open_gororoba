@@ -1,9 +1,10 @@
-//! Published Glauber Monte Carlo tables from ALICE.
+//! Retained Glauber reference vectors and derived collision geometry.
 //!
-//! These reference values provide both Npart validation data and full
-//! MC Glauber centrality geometry (Npart, Ncoll, TAA, b, derived A_perp, L_avg).
+//! The vectors preserve centrality geometry inputs for reproducible comparisons.
+//! The Pb-Pb 5.02 TeV Npart rows and eccentricity estimator require row-level
+//! source admission before physical use; lookup availability is a separate property.
 //!
-//! Sources:
+//! Historical source attributions:
 //! - ALICE Pb-Pb 5.36 TeV: arXiv:2504.02505 (2025), Table 2 + CERN Glauber MC
 //! - ALICE Pb-Pb 5.02 TeV: PLB 772 (2017) 567, Table 1 (arXiv:1612.08966)
 //! - ALICE Pb-Pb 2.76 TeV: PRC 88 (2013) 044909 (arXiv:1301.4361)
@@ -12,9 +13,10 @@
 //! Derived quantities:
 //! - A_perp = sigma_NN * Npart^2 / (4 * Ncoll) [effective participant overlap area]
 //! - L_avg = (4/pi) * sqrt(A_perp / pi) [mean chord through equivalent disc]
-//! - eccentricity from epsilon_2{2} published in PRC 93 (2016) 034913
+//!
+//! Eccentricity values retain an unresolved estimator and source-table identity.
 
-/// Published Npart value for a centrality bin.
+/// Retained Npart value for a centrality bin.
 #[derive(Debug, Clone)]
 pub struct NpartReference {
     /// Centrality bin lower edge (fraction).
@@ -27,7 +29,7 @@ pub struct NpartReference {
     pub n_part_err: f64,
 }
 
-/// ALICE Pb-Pb 5.02 TeV Glauber Npart from PLB 772 (2017) 567, Table 1.
+/// Retained Pb-Pb 5.02 TeV Npart rows with unresolved per-row source admission.
 #[must_use]
 pub fn alice_pbpb_5020_npart() -> Vec<NpartReference> {
     vec![
@@ -143,12 +145,10 @@ pub fn phenix_auau_200_npart() -> Vec<NpartReference> {
     ]
 }
 
-/// Published MC Glauber centrality geometry for ALICE Pb-Pb 5.02 TeV.
+/// Retained Pb-Pb 5.02 TeV centrality geometry with unresolved source admission.
 #[must_use]
-// Published physics constant: ALICE collaboration's mean impact parameter
-// (b_mean = 2.43 fm at 0-5% centrality) coincidentally matches std::f64::
-// consts::E to a few digits; precision in the published table is what
-// matters for QGP fits, not symbolic identification with E.
+// Keep recorded impact-parameter decimals at their retained precision;
+// an incidental resemblance to a mathematical constant does not justify substitution.
 #[allow(clippy::approx_constant)]
 pub fn alice_pbpb_5020_mc_glauber() -> Vec<crate::glauber::CentralityBinGeometry> {
     let sigma_nn_fm2 = 67.6 * 0.1;
@@ -418,11 +418,11 @@ pub fn star_bes2_cumulants() -> Vec<CumulantReference> {
     ]
 }
 
-/// Look up published MC Glauber epsilon_2{2} for a given centrality bin and system.
+/// Look up retained eccentricity inputs for a centrality bin and system.
 ///
 /// Returns `Some(epsilon_2)` if the bin matches (within 1%), `None` otherwise.
-/// This provides event-by-event eccentricity values as an alternative to
-/// optical Glauber computation.
+/// The Pb-Pb estimator and source table require independent admission before
+/// interpreting the retained values as event-by-event cumulants.
 ///
 /// Supported systems: "pbpb" (Pb-Pb 5.02 TeV), "xexe" (Xe-Xe 5.44 TeV), "oo" (O-O 5.36 TeV).
 #[must_use]

@@ -1,0 +1,18 @@
+HTTP/2 200 
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+etag: "sha256:acf672ad11aaf7c87fde49d179cbe5f35195e68b90e42c49b2f2db4f2660b666"
+x-cloud-trace-context: ec1d61ce63c853cbc28d7d020d897999
+link: <https://arxiv.org/pdf/1506.07287>; rel='canonical'
+last-modified: Fri, 20 Jan 2023 20:44:48 GMT
+content-disposition: inline; filename="1506.07287v3.pdf"
+content-type: application/pdf
+access-control-allow-origin: *
+server: Google Frontend
+accept-ranges: bytes
+age: 9059
+date: Sat, 05 Sep 2026 20:41:45 GMT
+x-served-by: cache-lga21923-LGA, cache-lga21923-LGA, cache-lga21941-LGA, cache-hhr-khhr2060056-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1788640905.179063,VS0,VE83
+content-length: 5950251
+

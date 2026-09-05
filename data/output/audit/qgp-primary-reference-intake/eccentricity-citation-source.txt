@@ -1,0 +1,2886 @@
+                                           EUROPEAN ORGANIZATION FOR NUCLEAR RESEARCH
+
+
+
+
+                                                                                                                                  CERN-PH-EP-2015-152
+                                                                                                                                          18 June 2015
+
+
+                                              Centrality dependence of the nuclear modification factor of charged
+                                                                                               √
+                                               pions, kaons, and protons in Pb-Pb collisions at sNN = 2.76 TeV
+
+
+
+
+arXiv:1506.07287v3 [nucl-ex] 9 Apr 2016
+                                                                                         ALICE Collaboration∗
+
+
+                                                                                                 Abstract
+
+                                                Transverse momentum (pT ) spectra of pions, kaons, and protons up to pT = 20 GeV/c have been
+                                                                                    √
+                                                measured in Pb–Pb collisions at sNN = 2.76 TeV using the ALICE detector for six different cen-
+                                                trality classes covering 0-80%. The proton-to-pion and the kaon-to-pion ratios both show a distinct
+                                                peak at pT ≈ 3 GeV/c in central Pb–Pb collisions that decreases for more peripheral collisions. For
+                                                pT > 10 GeV/c, the nuclear modification factor is found to be the same for all three particle species
+                                                in each centrality interval within systematic uncertainties of 10–20%. This suggests there is no direct
+                                                interplay between the energy loss in the medium and the particle species composition in the hard core
+                                                of the quenched jet. For pT < 10 GeV/c, the data provide important constraints for models aimed at
+                                                describing the transition from soft to hard physics.
+
+
+
+
+                                          c 2015 CERN for the benefit of the ALICE Collaboration.
+                                          Reproduction of this article or parts of it is allowed as specified in the CC-BY-4.0 license.
+                                            ∗ See Appendix A for the list of collaboration members
+Nuclear modification factor of charged pions, kaons, and protons                     ALICE Collaboration
+
+
+1 Introduction
+In ultra-relativistic heavy-ion collisions, a strongly-interacting deconfined medium of quarks and gluons
+is created. Experimental evidence for this state of matter has been found both at the Relativistic Heavy-
+Ion Collider (RHIC) [1–4] as well as at the LHC [5–9]. Transverse momentum (pT ) spectra probe many
+different properties of this medium. At low pT (. 2 GeV/c) the spectra provide information on bulk
+production, while at high pT (& 10 GeV/c) transport properties of the medium can be studied via jet
+quenching [10–12]. The microscopic QCD processes are different at low and high pT , and it is an open
+question if additional physics processes occur in the intermediate pT region (2 . pT . 10 GeV/c). In
+this paper, the centrality evolution of the transverse momentum spectra of pions, kaons, and protons as
+                                             √
+a function of pT for Pb–Pb collisions at sNN = 2.76 TeV is presented. The focus is on intermediate
+and high pT , where these measurements allow comparison between baryons and mesons, strange and
+non-strange particles, and the search for particle mass-dependent effects.
+For inclusive charged particle pT spectra, jet quenching leads to a suppression of high-pT particle pro-
+duction at the RHIC [13–15] and over an extended pT range, up to 100 GeV/c, at the LHC [6, 16–18].
+The microscopic mechanism of jet quenching is not completely understood, and one of the main goals
+of the experimental programs at the RHIC and the LHC is to identify additional signatures associated
+with the jet quenching to constrain theoretical modeling. Particle identification (PID) is of fundamental
+interest since, due to the color Casimir factor, gluons interact two times stronger with the medium than
+quarks [19, 20] and it is known from e+ e− studies of 3-jet events that gluons are more likely to frag-
+ment to leading baryons than quarks are [21]. In addition, some models for jet quenching predict large
+particle-species-dependent effects [22–24]. Measurements at the RHIC, in particular for baryons, have
+so far been inconclusive due to the limited pT -range and the large systematic and statistical uncertain-
+ties [25–27].
+In the intermediate transverse momentum regime, the baryon-to-meson ratios, e.g. the proton yield di-
+vided by the pion yield, measured by experiments at the RHIC revealed a, so far, not well understood
+enhancement [28–30]. This so-called “baryon anomaly” could indicate the presence of new hadroniza-
+tion mechanisms such as parton recombination [31–33] that could be significantly enhanced and/or ex-
+tended out to higher pT at the LHC due to larger mini-jet production [34]. In recombination models, the
+enhancement at intermediate pT is an effect of the coalescence of lower pT quark-like particles that leads
+to a larger production of baryons than mesons. In a model without new intermediate pT physics, the rise
+of the baryon-to-meson ratio is due to hydrodynamics and the decrease is solely a consequence of the
+growing importance of fragmentation.
+In a recent letter [35] ALICE reported the charged pions, kaons, and proton pT spectra for pp and the
+most central and most peripheral Pb–Pb collisions. The main observation was that, within statistical
+and systematic uncertainties, the nuclear modification factor is the same for pT > 10 GeV/c for all three
+particle species. This suggests that there are no significant particle-species-dependent effects related to
+the energy loss. In this paper, the analysis used to obtain the measurements at high pT is presented in full
+detail, and the results for all centrality classes are included. Recent measurements at low and interme-
+diate pT of identified particle production and correlations in p–Pb collisions have revealed phenomena
+typically associated with fluid-like behavior in heavy-ion collisions [36–38]. This raises questions if
+hydrodynamics and/or recombination can also be applied to describe these small systems [39–41]. The
+centrality evolution studies for Pb–Pb collisions can therefore also be seen as a possible experimental
+interconnection between the smallest and the largest QCD bulk systems.
+The outline of this paper is as follows. In Sec. 2, the data analysis is described. The method using
+the energy loss in the TPC for particle identification is laid out first and then the procedure using the
+Cherenkov angle measured by the HMPID is presented. In Sec. 3, the final spectra are presented, and the
+particle ratios and nuclear modification factors are discussed and compared with theoretical calculations
+
+
+                                                     2
+Nuclear modification factor of charged pions, kaons, and protons                      ALICE Collaboration
+
+
+and results from previous experiments at lower center-of-mass energies.
+
+2     Data analysis
+The results reported in this paper have been obtained with the central barrel of the ALICE detector, which
+has full azimuthal coverage around midrapidity, |η | < 0.8 [42]. Different Particle IDentification (PID)
+devices are used for the identification of π ± , K± , and p(p̄) (see Table 4 for exact pT ranges). Ordering
+by pT , from lowest to highest, the results are obtained using the specific energy loss, dE/dx, in the
+silicon Inner Tracking System (ITS), the dE/dx in the Time Projection Chamber (TPC), the time-of-flight
+measured by the Time-Of-Flight (TOF) detector, the Cherenkov angle measured by the High Momentum
+Particle Identification Detector (HMPID), and the TPC dE/dx in the relativistic rise region. The general
+performance of these devices is reported in [43]. Detailed description of the lower pT analyses and the
+resulting π ± , K± , and p(p̄) pT spectra in Pb–Pb collisions are already published [44]. In this section, the
+method used to extract these pT spectra in the HMPID and the TPC dE/dx relativistic rise analysis is
+described in detail.
+Due to the limited acceptance of the HMPID, the analysis has been performed with the larger 2011 dataset
+where a centrality trigger was used, restricting the HMPID results to 0-50% central Pb–Pb collisions.
+
+2.1     TPC dE/dx relativistic rise analysis
+The relativistic rise of the dE/dx in the TPC, where the average energy loss increases as log β γ (3 ≪
+β γ ≪ 1000), allows ALICE to extend the PID of π ± , K± , and p(p̄) up to pT = 20 GeV/c. This section
+will focus on details of this analysis.
+
+2.1.1    Event and track selection
+The event and track selection follows closely that of the inclusive charged particle analysis [16]. The
+same spectrum normalization is adopted so that the systematic uncertainties related to event and track
+selection are common, allowing a precise comparison between the nuclear modification factors for in-
+clusive and identified charged particles. The analysis with PID described here has additional systematic
+uncertainties related to the particle identification that we will describe in Sec. 2.1.9.
+A total of 11 × 106 Pb–Pb collision events recorded in 2010 are used in this analysis. The online (offline)
+trigger for minimum bias interactions in Pb–Pb collisions requires signals in two (three) out of the three
+following detector elements: the Silicon Pixel Detector (SPD) layers of the ITS and the two forward
+scintillators (V0) located on opposite sides of the interaction point. The centrality is determined from the
+measured amplitude in the V0 detector [45].
+Primary tracks are reconstructed in the ALICE TPC [46] from clusters in up to 159 pad rows, where
+each cluster consists of a group of cells covering a few neighboring pads and time bins. The tracks
+used in the analysis are restricted to |η | < 0.8 in order to be fully contained in the TPC active volume.
+Furthermore, tracks are required to have at least one hit in one of the two innermost SPD layers of the
+ITS, and the distance of closest approach to the primary vertex is required to be less than 2 cm along
+the beam axis and less than 7 standard deviations in the transverse plane (≈350 µ m for tracks with
+pT = 2 GeV/c, decreasing slightly with pT ). The resulting relative pT resolution for these tracks is better
+than 5% at pT = 20 GeV/c [16]. The pT spectra have been corrected for this resolution using an unfolding
+procedure for pT > 10 GeV/c [16, 47]. This correction is smaller than 2% at pT = 20 GeV/c.
+
+2.1.2    Particle identification at large transverse momentum
+Figure 1 shows the dE/dx as a function of momentum p in 0-5% central Pb–Pb collisions. It is evident
+that particle identification in the relativistic rise region requires precise knowledge of the hdE/dxi re-
+sponse and resolution σ . To quantify this, and to motivate the detailed studies in the following, the final
+
+                                                      3
+Nuclear modification factor of charged pions, kaons, and protons                                                                                                                                            ALICE Collaboration
+
+
+
+
+                           ALICE 0-5% Pb-Pb sNN = 2.76 TeV, |η|<0.2                                                                                           ALICE 60-80% Pb-Pb sNN = 2.76 TeV, |η|<0.2
+                      90                                                                            0.1                                                  90                                                                          0.1
+
+
+
+
+                                                                                                           Counts (arb. unit)                                                                                                               Counts (arb. unit)
+                      85                                                                            0.09                                                 85                                                                          0.09
+
+                      80                         e+ + e-                                            0.08                                                 80                              e+ + e-                                     0.08
+
+
+
+
+ dE /dx (arb. unit)                                                                                                                 dE /dx (arb. unit)
+                      75                                                                            0.07                                                 75                                             -                            0.07
+                                                                                                                                                                                         π+ + π
+                                                                -
+                      70                         π+ + π                                             0.06                                                 70                                                                          0.06
+
+                      65                                                                            0.05                                                 65                                             -                            0.05
+                                                                -
+                                                                                                                                                                                         K +K
+                                                                                                                                                                                          +
+                                                 K +K
+                                                      +
+                      60                                                                            0.04                                                 60                                                                          0.04
+
+                      55
+                                                 p+p                                                                                                     55
+                                                                                                                                                                                         p+p
+                                                                                                    0.03                                                                                                                             0.03
+
+                      50                                                                            0.02                                                 50                                                                          0.02
+
+                      45                                                                            0.01                                                 45                                                                          0.01
+
+                      40                                                                                                                                 40
+                           2   4    6    8       10        12       14    16         18    20                                                                 2    4        6   8        10        12        14   16      18    20
+                                                                               p (GeV/ c )                                                                                                                             p (GeV/ c )
+
+Fig. 1: (Color online) The dE/dx as a function of the momentum p at mid-rapidity |η | < 0.2 for 0-5% (left panel)
+and 60-80% (right panel) Pb–Pb collisions. In each momentum bin, the dE/dx spectra have been normalized to
+have unit integrals and only bins with more than 0.1% of the counts are shown (making electrons not visible in this
+plot except at very low momentum). The curves show the final hdE/dxi responses for pions, kaons, and protons.
+
+
+
+
+                                         5
+                                             π-p
+                                         4
+
+                                         3
+
+                                         2                                                                                                                                                         |η|<0.2
+                                                                                                    ALICE sNN = 2.76 TeV                                                                           0.6≤|η|<0.8
+                                         1
+
+                                         5   5            10         15         20        25    5                       10                               15   20       25   5       10        15            20    25
+                                             π-K
+                                         4
+
+                                         3
+                                    Sσ
+                                         2
+
+                                         1
+                                                          0-5% Pb-Pb                                               40-60% Pb-Pb                                                           pp
+                                         5   5            10         15         20        25    5                       10                               15   20       25   5       10        15            20    25
+                                             K-p
+                                         4
+
+                                         3
+
+                                         2
+
+                                         1
+
+                                             5            10         15         20        25    5                      10                                15   20       25   5   10            15            20    25
+
+                                                                                                          p (GeV/c )
+
+Fig. 2: Separation in number of standard deviations (Sσ ) as a function of momentum between: pions and protons
+(upper panels), pions and kaons (middle panels), and kaons and protons (lower panels). Results are shown for
+0-5% (left panels) and 40-60% (middle panels) Pb–Pb; and pp (right panels) collisions. Because the TPC response
+is track-length dependent, the separation is better for tracks at forward pseudorapidities (solid lines) than for
+those at smaller η (dashed lines). The degradation in separation power in more central collisions is expected
+from occupancy effects – in the most peripheral collisions an average of 149 clusters are assigned to tracks with
+pT > 2 GeV/c, while in the most central collisions only 127 clusters are assigned.
+
+
+
+
+                                                                                                                                4
+Nuclear modification factor of charged pions, kaons, and protons                      ALICE Collaboration
+
+
+response functions are used to estimate the separation power, where, for example, the charged pion-to-
+kaon separation in number of standard deviations, Sσ , is
+                                             dE            dE
+                                             dx π + +π − − dx K+ +K−
+                                     Sσ =                                ,                               (1)
+                                            0.5 (σπ + +π − + σK+ +K− )
+
+that is, the absolute hdE/dxi difference normalized to the arithmetic average of the resolutions. Fig. 2
+shows that the separation power between particle species is only a few standard deviations, making PID
+very challenging, requiring optimization of the dE/dx signal itself and the use of external PID constraints
+to calibrate the response. In the following, these analysis aspects will be covered in detail.
+
+2.1.3   The dE/dx calibration
+The dE/dx is obtained as a truncated mean, where the average is performed considering only the 60%
+lowest cluster charge values to remove the tail of the Landau like cluster charge distribution. It is cus-
+tomary to use the notation dE/dx and talk about the Bethe–Bloch curve, even if the dE/dx used in
+the analysis is only the truncated mean and does not contain energy losses deposited as sub-ionization-
+threshold excitations or the full ionization from delta-electrons, discussed in detail in [48]. While the
+Bethe–Bloch specific energy loss depends only on β γ = p/m, the one obtained from the detected trun-
+cated mean also depends on other parameters such as the actual cluster sample length, i.e., the pad length
+and/or track inclination over the pad. In the following, we shall refer to the relationship between the two
+types of specific energy losses as the transfer function and it is this relationship that is optimized in the
+dE/dx calibration, and used also as input for the analysis strategy discussed later.
+Each of the up to 159 clusters used to reconstruct a track contains information on the ionization energy
+loss in the TPC. To equalize the gain, each individual readout channel has been calibrated using ionization
+clusters produced by the decay of radioactive krypton, 8636 Kr, released into the TPC gas [46].
+
+In pp collisions the cluster integrated charge is used for calculating the dE/dx. The integrated charge is
+corrected for the tails of the charge distribution that are below the readout threshold. Due to the large
+probability for overlapping clusters in Pb–Pb collisions, the maximum charge in the cluster is used to
+calculate the dE/dx in this case. The maximum charge is the largest charge in a cluster cell (pad and time
+bin). The maximum charge has to be corrected for the drift-length dependent reduction due to diffusion
+and the dependence on the relative pad position of the induced signal (the measured maximum charge is
+largest if the cluster center is also the pad center, and smallest if it is between two pads).
+The performance and stability of the dE/dx transfer function, with respect to gain variations, is improved
+in the following two ways. Reconstructed space points where the charge is deposited on a single pad,
+that are not used for track fitting, are included in the dE/dx calculation. An attempt is made, to identify
+clusters below the readout threshold. If a row has no cluster assigned to the track but clusters were
+assigned in both neighboring rows, it is assumed that the cluster charge was below the readout threshold
+and a virtual cluster is assigned with charge corresponding to the lowest reconstructed charge cluster on
+the track. This virtual cluster is then included in the calculation of the truncated mean. This is similar to
+the strategy adopted by ALEPH, but without changing the truncation range [49].
+The η dependence of the dE/dx is sensitive to corrections for the track-length and the diffusion. There
+is also a small correction for the direct drift-length dependent signal attenuation, due to absorption,
+of ionization electrons by Oxygen [46]. At η = 0 the ionization electrons drift the full 250 cm to the
+readout chambers and, as a result, the signal is spread out, due to diffusion, making threshold effects more
+prominent than for tracks with η = 0.8. At the same time, the sampled track length is longer for track
+with η = 0.8 than with η = 0. The dE/dx calibration is validated using pions in the Minimum Ionizing
+Particle (MIP) regime and electrons in the Fermi Plateau region. A clean sample of MIP pions is selected
+via tracks with momenta 0.4 < p < 0.6 GeV/c and energy loss 0.8 < (dE/dx)/hdE/dxiMIP < 1.2. A
+
+
+                                                     5
+Nuclear modification factor of charged pions, kaons, and protons                                                                   ALICE Collaboration
+
+
+                                                                   1.9
+                                                                           e++e- (Plateau)
+                                                                   1.8
+
+
+
+
+                            dE /dx / 〈 dE /dx MIP 〉 (arb. unit)
+                                                                   1.7
+
+                                                                   1.6
+
+                                                                   1.5
+
+                                                                   1.4
+                                                                           0.4 < p < 0.6 GeV/ c , |β              -1|<0.1
+                                                                                                                TOF
+                                                                    -0.8    -0.6    -0.4   -0.2       0   0.2    0.4   0.6   0.8
+                                                                   1.3
+                                                                           π++π- (MIP)
+                                                                   1.2
+
+                                                                   1.1
+
+                                                                     1
+
+                                                                   0.9
+
+                                                                    -0.8    -0.6    -0.4   -0.2       0   0.2    0.4   0.6   0.8
+                                                                  1.64             ALICE pp s = 2.76 TeV
+
+
+
+                                  Plateau/MIP
+                                                                  1.62
+
+                                                                   1.6
+
+                                                                  1.58
+
+                                                                  1.56
+                                                                    -0.8    -0.6    -0.4   -0.2       0   0.2    0.4   0.6   0.8
+                                                                                                  η
+
+Fig. 3: The dE/dx as a function of η for electrons on the Fermi Plateau (upper panel) and MIP pions (middle
+panel); the selection criteria are described in the text. The solid round markers indicate the average, hdE/dxi, and
+the height of the boxes is given by the standard deviation, σ . The lower panel shows the ratio between the Plateau
+and MIP hdE/dxi. The statistical uncertainty is smaller than the marker sizes. These results were obtained for pp
+             √
+collisions at s =2.76 TeV.
+
+
+clean electron sample is obtained in the same momentum range via centrality dependent dE/dx cuts (as
+Sσ depends on centrality) and by rejecting kaons using Time-Of-Flight (TOF) information: 0.9 < βTOF <
+1.1. For both samples it is found that the η -dependence of the hdE/dxi is negligible. We note that one
+expects these two classes of tracks to have different sensitivity to threshold corrections. The result of the
+validation test for pp collisions is shown in Fig. 3, which displays the hdE/dxi response as a function of
+η for electrons (upper panel) and pions (middle panel).
+
+2.1.4   Division into homogenous samples
+From studies of the transfer function, one expects a significant track-length dependence. For the “stiff”
+high-pT tracks used in this analysis, the track-length in the transverse bending plane is rather similar,
+but there is a significant η dependence and the effect of this on the dE/dx resolution is visible in Fig. 3
+for the pion MIPs. This motivates performing the analysis in |η | intervals: |η | < 0.2, 0.2 ≤ |η | < 0.4,
+0.4 ≤ |η | < 0.6 and 0.6 ≤ |η | < 0.8 and then combining the results.
+Furthermore, tracks close to and/or crossing the TPC sector boundaries have significantly fewer clusters
+assigned. Because the analyzed tracks are “stiff”, those tracks close to the sector boundaries can be
+easily rejected using a geometric cut in the azimuthal track angle ϕ , which excludes approximately 10%
+of the tracks for pT > 6 GeV/c. Figure 4 shows the effect of the geometric cut on the distribution of
+the number of clusters per track. The cases before and after the ϕ cut are shown for pp (upper panel)
+and central Pb–Pb (lower panel) collisions. The large difference between the distributions for pp and
+
+
+                                                                                                  6
+Nuclear modification factor of charged pions, kaons, and protons                                        ALICE Collaboration
+
+
+
+                                                             10-1   p > 2 GeV/ c
+                                                                     T
+                                                               -2
+                                                             10
+                                                             10-3
+                                                             10-4
+
+
+
+
+                                 Fraction of entries / 2.0
+                                                             10-5
+                                                                                   pp s = 2.76 TeV
+                                                             10-6                     without cut
+                                                                                      with cut
+                                                             10-7
+                                                             10-170 80 90 100 110 120 130 140 150 160
+                                                             10-2
+                                                             10-3
+                                                             10-4
+                                                             10-5
+                                                             10-6
+                                                                              ALICE 0-5% Pb-Pb
+                                                             10-7
+                                                                70 80 90 100 110 120 130 140 150 160
+                                                                               N cl
+
+Fig. 4: Number of clusters used in the dE/dx calculation for pT > 2 GeV/c without (squares) and with (circles) the
+                                                                                                         √
+geometric cut. Results are presented for pp (upper panel) and central Pb–Pb (lower panel) collisions at sNN =
+2.76 TeV. The minimum number of clusters on a track is 70.
+
+
+central Pb–Pb is an occupancy effect and essentially independent of pT . The cut significantly improves
+the dE/dx performance by rejecting tracks with less information (fewer clusters) in regions where the
+calibration is more sensitive to complex edge behaviors that can have larger effects on “stiff” tracks.
+This also simplifies the analysis because in each |η | interval, a single resolution parameter is sufficient
+to describe individual particles species (e.g., all pions) in a given momentum bin.
+
+2.1.5    Obtaining the high-pT yields
+Since, as already mentioned, the event and track selection scheme is identical to the one used for the
+inclusive charged particle spectra [16], and each charged track has an associated TPC dE/dx measure-
+ment, the charged pion, kaon, and (anti)proton yields measured in this analysis are normalized to the
+inclusive charged particle spectra 1 . This highlights the unique direct correspondence between the two
+analyses and guarantees that the results are fully consistent even at the level of statistical uncertainties.
+The analysis of the dE/dx spectra is therefore aimed at extracting the relative yields of π ± , K± , and p(p̄),
+referred to as the particle fractions in the following.
+In a narrow momentum and |η | interval, the dE/dx distribution can be described by a sum of four
+Gaussians (π , K, p, and e), see e.g. Fig. 5, and the requirements for the analysis to be able to extract
+the yields with high precision is that the means and widths of the Gaussians are constrained. Additional
+external track samples such as protons from Λ decays are used to obtain the constraints. The method
+presented in the following has been benchmarked using Monte Carlo (MC) simulations and the closure
+    1 The ϕ cut described in Sec. 2.1.4 was not applied in the inclusive charged particle analysis, but as this cut is a geometric
+
+cut it is independent of particle species type and therefore does not affect this normalization.
+
+
+                                                                                   7
+Nuclear modification factor of charged pions, kaons, and protons                                                              ALICE Collaboration
+
+
+
+
+                                       ALICE Pb-Pb sNN = 2.76 TeV                 3.4 < p < 3.6 GeV/c , |η|<0.2
+                                0.6                               0-5%                              5-10%                              10-20%
+
+
+
+
+   Fraction of entries / 0.02
+                                                                  π++π--
+                                                                   +
+                                                                  K +K
+                                0.4                               p+p
+                                                                  Total
+                                0.2
+
+
+                                 0
+                                      0.8      1     1.2    1.4     1.6     0.8       1       1.2   1.4     1.6   0.8     1      1.2   1.4   1.6
+                                                           20-40%                                   40-60%                             60-80%
+                                0.6
+
+
+                                0.4
+
+                                0.2
+
+                                 0
+                                      0.8      1     1.2    1.4     1.6     0.8       1       1.2   1.4     1.6   0.8     1      1.2   1.4   1.6
+
+                                                                           (dE /dx ) / 〈dE /dx MIP〉
+                                       ALICE Pb-Pb sNN = 2.76 TeV                 8.0 < p < 9.0 GeV/c , |η|<0.2
+                                0.6         0-5%                                  5-10%                                 10-20%
+
+
+
+
+   Fraction of entries / 0.02
+                                            π++π--
+                                             +
+                                            K +K
+                                0.4         p+p
+                                            Total
+                                0.2
+
+
+                                 0
+                                      0.8      1     1.2    1.4     1.6     0.8       1       1.2   1.4     1.6   0.8     1      1.2   1.4   1.6
+                                        20-40%                                    40-60%                                60-80%
+                                0.6
+
+
+                                0.4
+
+                                0.2
+
+                                 0
+                                      0.8      1     1.2    1.4     1.6     0.8       1       1.2   1.4     1.6   0.8     1      1.2   1.4   1.6
+
+                                                                           (dE /dx ) / 〈dE /dx MIP〉
+Fig. 5: (Color online) Four-Gaussian fits (line) to the dE/dx spectra (markers) for tracks having momentum in the
+range 3.4–3.6 GeV/c (upper figure) and 8.0–9.0 GeV/c (lower figure) with |η | < 0.2. In each panel, the signals
+of pions (rightmost Gaussian), kaons, and protons (leftmost Gaussian) are shown as red, green, and blue dashed
+areas, respectively. The contribution of electrons is small (< 1%) and therefore not visible in the figure. Results for
+all six Pb–Pb centrality classes are presented. The dE/dx spectra have all been normalized to have unit integrals.
+
+
+
+
+                                                                                          8
+Nuclear modification factor of charged pions, kaons, and protons                                     ALICE Collaboration
+
+
+tests, comparing reconstructed output with generated input, for all yields show less than 2% systematic
+deviations. From studies comparing test beam data results with the ALICE specific MC implementation
+of the energy-loss in the TPC, the MC is known to be precise and to take into account all important
+detector effects [50], with the limit that the test beam data was recorded under controlled conditions
+(fixed track topology and large gas gain) and that ion tail effects are not included in the MC simulations.
+
+2.1.6   Measurement of the TPC response: parameterization of the Bethe–Bloch and resolution curves
+The first step of the analysis is to extract the response parameterizations used to constrain the fits. The
+Bethe–Bloch curve is parameterized as follows:
+                                                      e
+                                          1 + (β γ )2                 (1 + β γ )c
+                                                                                   
+                             dE                            b
+                                    =a                   +   log                         ,               (2)
+                             dx             (β γ )2        c       1 + d ′ (1 + β γ )c
+where a, b, c, d, and e are free parameters (the variable d ′ is used to simplify the expression and is defined
+as d ′ = exp[c(a − d)/b] where d is the hdE/dxi in the Fermi Plateau regime, β γ & 1000).
+For d ′ ≪ 1, as is the case here, the parameterization has a simple behavior in different regions of β γ .
+For small β γ , β γ ≪ 3–4, dEdx ≈ (β γ )2e , while on the logarithmic rise: dx ≈ a + b log (1 + β γ ). The
+                                      a                                     dE
+
+parameterization has been motivated by demanding this behavior in the discussed β γ limits, while at the
+same time requiring that each parameter has a clear meaning. It uses 1+ β γ to ensure that the logarithmic
+term is always positive.
+The relative resolution, σ /hdE/dxi, as a function of hdE/dxi is parameterized with a second-degree
+polynomial, which was found to describe the data well:
+
+                                   σ /hdE/dxi = a0 + a1 hdE/dxi + a2 hdE/dxi2 .                                      (3)
+
+The TPC response (Bethe–Bloch and resolution curves) is determined for each η region. Due to the
+deterioration of the TPC dE/dx performance with increasing multiplicity, the curves differ significantly
+and have to be extracted separately for pp and each Pb–Pb centrality class.
+The parameters a, b, d, and e are well determined using external PID information. Secondary pion (pro-
+ton) tracks identified via the reconstruction of the weak decay topology of K0S (Λ) and data samples
+with TOF enhanced (βTOF > 1) primary pions are used. The V 0 selection used in this analysis is similar
+to the one used in the dedicated analysis [51]. To verify that the dE/dx response is Gaussian, narrow
+invariant-mass cuts were applied to pp data where the V 0 reconstruction is cleanest. Figure 6 shows
+single Gaussian fits to the pion and proton peaks for such data and we note that the reduced χ 2 value is
+in the expected range for a valid fit model. In the following, 10 MeV/c2 wide invariant-mass cuts around
+the peaks was used to select signal and reject background as a compromise between statistics and purity.
+Using this information, the Bethe–Bloch function is constrained in the β γ interval of 3–60. Figure 7
+shows examples of the TPC dE/dx spectra for these samples in the momentum (η ) range: 5–7 GeV/c
+(0.6 ≤ |η | < 0.8) for the most central and most peripheral Pb–Pb collisions analyzed. In this case, the
+proton candidate samples from the Λ decay are not pure samples, and have some contamination of pions
+since the invariant mass peak region still contains considerable combinatorial background. This contam-
+ination is seen in the asymmetry towards the higher value of dE/dx in the proton sample. In the case
+of the pion samples from the KS0 decay, proton contamination creates the asymmetry towards the lower
+value of dE/dx in the spectra. Hence, in these cases, to obtain the mean dE/dx and resolution for each
+particle species, the asymmetric tail of the Gaussians were not considered.
+The Fermi Plateau is fixed using electron-positron pairs from photon conversions (a photon conversion is
+reconstructed similar to a V0 decay and identified from the low invariant mass). The same information is
+used to measure the dE/dx resolution as a function of hdE/dxi. The relative resolution around the MIP2
+  2 The resolution depends on centrality and track length and is worse in central events and for smaller |η |.
+
+
+
+                                                               9
+Nuclear modification factor of charged pions, kaons, and protons                                          ALICE Collaboration
+
+
+
+                                                           0.2
+                                                                 ALICE pp s = 2.76 TeV
+                                                                 3.0 < p < 3.5 GeV/ c
+                                                                 0.6 < |η| < 0.8
+
+                                                           0.1    χ2/n.d.f = 1.24
+
+
+
+
+                              Fraction of entries / 0.02
+                                                             0
+                                                           0.2 0.8 0.9      1    1.1 1.2 1.3 1.4 1.5
+                                                                                                     0
+                                                                                       π++π- (from K S)
+                                                                                       p+p (from Λ +Λ )
+
+
+
+                                                           0.1                         χ2/n.d.f = 0.93
+
+
+
+
+                                                            0
+                                                                 0.8 0.9    1    1.1 1.2 1.3 1.4 1.5
+                                                                      (dE /dx ) / 〈dE /dx MIP〉
+Fig. 6: (Color online) dE/dx spectra for secondary pions (top panel) and protons (bottom panel) identified via
+the reconstruction of the weak decay topology of K0S and Λ, respectively. A narrow invariant-mass cut reducing
+statistics was applied to select clean samples (but the pion sample still contains a small visible proton background).
+The curves are single Gaussian fits to the data and the reduced χ 2 is calculated in the range indicated by the fit
+curves only.
+
+
+is ≈5.5–7.5% and improves with increasing hdE/dxi (primary ionization) in the relativistic rise region
+to ≈4.5–5.5%. These data samples are henceforth referred to as the external PID data.
+In the relativistic rise region, the analysis is very stable because in this region hdE/dxi ≈ a + b log β γ ,
+so the dE/dx separation between particle species, e.g., protons and pions, is constant: hdE/dxip −
+hdE/dxiπ ≈ a + b log(p/mp ) − (a + b log(p/mπ )) ≈ b log(mπ /mp ). So as long as all particle species
+are in this β γ regime a simple extrapolation can be applied. For β γ & 100 the pions (p & 14 GeV/c)
+start to approach the Fermi Plateau region and the hdE/dxi dependence on β γ is more complex. To
+address this, a two dimensional fit to the dE/dx vs p distribution is performed. All the parameters of the
+resolution function and the parameters a, b, d, and e of Eq. 2 are fixed. The parameter c and the yields
+of π + + π − , K+ + K− and p + p̄ in different momentum intervals are free parameters. This fit method
+works fine if the corrections to the logarithmic rise, due to the transition to the Plateau, are small, which
+restricts the current analysis to pT < 20 GeV/c. With higher statistics and the use of cosmic muons as
+additional constraints, we expect to be able to extend the method up to 50 GeV/c.
+There is a final subtle point that should be mentioned here. The systematic uncertainty on the yields
+from the dE/dx method alone is rather large for particles with ionization energy loss close to 1 MIP,
+but additional information from other analyses can be used to constrain the results. One would like to
+
+
+                                                                                10
+Nuclear modification factor of charged pions, kaons, and protons                                             ALICE Collaboration
+
+
+
+                                                            1.8
+                                                            1.6
+                                                                  ALICE 60-80% Pb-Pb sNN = 2.76 TeV
+                                                            1.4
+                                                            1.2
+                                                                                          5<p <7 GeV/ c
+                                                              1
+
+
+
+
+                               Fraction of entries / 0.02
+                                                            0.8
+                                                            0.6
+                                                            0.4
+                                                            0.2
+                                                              0
+                                                            1.8 0.8 0.9     1 1.1 1.2 1.3 1.4 1.5 1.6 1.7
+                                                            1.6                0-5% Pb-Pb
+                                                            1.4                        π++π- (primary/TOF)
+                                                                                                     0
+                                                            1.2                        π++π- (from K S)
+                                                              1                        p+p (from Λ +Λ )
+                                                            0.8
+                                                            0.6
+                                                            0.4
+                                                            0.2
+                                                             0
+                                                                  0.8 0.9   1 1.1 1.2 1.3 1.4 1.5 1.6 1.7
+                                                                        (dE /dx ) / 〈dE /dx MIP〉
+Fig. 7: (Color online) dE/dx spectra for secondary pions (open triangles) and protons (full circles) identified via
+the reconstruction of the weak decay topology of K0S and Λ, respectively. The spectra have been normalized to
+have the same integrals. The spectrum for primary pions (full triangles) is obtained by requiring βTOF > 1. Results
+for peripheral (upper panel) and central (lower panel) Pb–Pb collisions are shown. The tracks were chosen in the
+momentum (pseudorapidity) interval 5 < p < 7 GeV/c (0.6 ≤ |η | < 0.8). Note that most spectra also contain a
+well-understood background.
+
+
+avoid using the actual lower pT π ± , K± , and p(p̄) measurements, as this will introduce a direct bias in
+the final combined spectra (Sec. 3). Instead, the neutral kaon yields are used to constrain the charged
+kaons in Pb–Pb collisions3 . The two dimensional fit is applied again, but the parameter e, which mainly
+affects the proton hdE/dxi, is now allowed to vary while the other parameters, a–d, are constrained and
+the charged kaon yield in the fit is also restricted to be consistent with the neutral kaon yield (the pion
+and proton yields are free). The effect of this refit is largest in central collisions at low pT (< 4 GeV/c)
+and decreases with centrality; at 3 GeV/c the effect on the extracted kaon yield is 10% (< 1%) for 0-5%
+(60-80%) collision centrality.
+Figure 8 shows the final parameterizations of the Bethe–Bloch and resolution curves for pp and the most
+central Pb–Pb collisions. The values obtained for the external PID data are also shown. Table 1 shows the
+values of the parameters of Eq. 2 for different centrality classes and pp collisions. All parameters except
+c are close for the four |η | intervals and similar across systems. As previously mentioned, the parameter
+c is related to the transition in the logarithmic rise to the Plateau and the large difference mainly reflects
+   3 The assumption is that the invariant p spectra are the same. The charged kaon fraction ( f +
+                                           T                                                   K +K− ) is obtained working
+backwards through Eq. 5 and Eq.4.
+
+
+
+                                                                                 11
+Nuclear modification factor of charged pions, kaons, and protons                                              ALICE Collaboration
+
+
+                                         80                                     80
+
+
+
+
+                 〈dE /dx 〉 (arb. unit)
+                                                                ALICE pp             0-5% Pb-Pb sNN = 2.76 TeV
+                                         75                                     75
+                                         70                                     70
+                                         65                                     65
+                                         60                                     60
+                                                  |η|<0.2 0.6≤|η|<0.8
+                                         55                 Syst. uncertainty 55
+                                                            p+p
+                                         50                 π++π-             50
+                                         45                          45
+                                                20 40 60 80 100 120 140               20 40 60 80 100 120 140
+                                                                                βγ
+                                         0.1      |η|<0.2 0.6≤|η|<0.8
+                                                            Syst. uncertainty
+                                                            p+p
+
+
+
+
+                 σ / 〈dE /dx 〉
+                                     0.08                   π +π-
+                                                            e++e-
+                                     0.06
+
+                                     0.04
+
+                                     0.02                       ALICE pp             0-5% Pb-Pb sNN = 2.76 TeV
+                                               50 55 60 65 70 75 80 85 50 55 60 65 70 75 80 85
+                                                               〈dE /dx 〉 (arb. unit)
+Fig. 8: (Color online) Final Bethe–Bloch (upper figure) and resolution (lower figure) curves obtained as described
+in the text. Results are shown for pp (left panels) and 0-5% Pb–Pb (right panels) collisions. The Bethe–Bloch
+curve is shown in the region relevant for pions, kaons, and protons in this analysis. The external PID data samples
+of pions, protons and electrons are used to obtain the parameterizations, these data are plotted as markers. The
+shaded areas represent the systematic uncertainty of the parameterizations.
+
+                                              Parameter    Pb–Pb 0-5%           Pb–Pb 60-80%          pp
+                                                  a         33.9–35.4             32.9–33.1       32.5–33.3
+                                                  b         7.66–7.89             8.58–9.01       8.52–8.77
+                                                  c         2.18–7.18             1.25–2.38       1.65–43.0
+                                                  d         78.0–78.5             80.0–80.6       80.6–80.7
+                                                  e         1.22–1.30             1.37–1.39       1.43–1.55
+Table 1: Parameters obtained for the Bethe–Bloch function (Eq. 2) for central and peripheral Pb–Pb collisions and
+pp collisions. Results are given as the range found for the four |η | intervals.
+
+
+that the parameter is statistically not well constrained for some of the datasets. For the pp dataset, where
+the largest variation is observed, we obtain similar results within statistical uncertainties if c = 2 is used
+for all |η |-slices .
+The separation power, Sσ , obtained with the final parameterizations for pp, 0-5% Pb–Pb, and 40-60% Pb–
+Pb collisions are shown in Fig. 2. As expected, the performance is the best for low multiplicity events and
+decreases as the multiplicity increases and the separation is better for the longest tracks (0.6 ≤ |η | < 0.8).
+For p > 6.0 GeV/c the Sσ separation is nearly constant as expected because of the logarithmic relativistic
+rise (as σ ∝ hdE/dxi a small decrease of the separation is observed). The separation power plays an
+important role in the determination of the systematic uncertainties described in Sec. 2.1.9.
+
+
+
+
+                                                                           12
+Nuclear modification factor of charged pions, kaons, and protons                             ALICE Collaboration
+
+
+2.1.7   Extraction of the particle fractions
+All the following results are for the sum of positive and negative pions, kaons, and protons. Positive and
+negative yields were found to be comparable at the 5% level or better for all six centrality classes and pp
+collisions.
+Having determined the Bethe–Bloch and resolution curves as described in the previous section, it is
+now straightforward to fit the dE/dx spectra using the sum of four Gaussian distributions for pions,
+kaons, protons, and electrons. For each momentum interval, the hdE/dxi position and width of each
+Gaussian are fixed. Figure 5 shows examples of these fits for the momentum intervals 3.4–3.6 GeV/c
+and 8–9 GeV/c. The electrons are hardly visible in any of the fits as the yield is below 1% of the total.
+For pT > 10 GeV/c, it is no longer possible to separate electrons from pions, and the relative fraction of
+electrons is assumed to remain constant above this pT . There is a small contamination of primary muons
+in the pions due to the similar mass (and therefor similar hdE/dxi). High-pT muons are predominantly
+the result of semi-leptonic decays of hadrons containing heavy quarks and for those decays one expects
+muon and electron branching ratios to be similar, so the electron yield (fraction) is subtracted from the
+pions to correct for the muon contamination. This correction changes the pion yield by less than 1%
+in the full pT range in agreement with MC simulations based on the PYTHIA generator [52]. Since
+this dE/dx analysis is not optimized for electrons and the contamination is extrapolated to high pT , half
+of the correction is assigned as a systematic uncertainty. The contamination of (anti)deuterons in the
+(anti)proton sample is negligible (< 1%).
+The particle fractions, i.e., the contribution of charged pions ( fπ′ + +π − ), kaons ( fK′ + +K− ), and (anti)protons
+   ′ ) to the yield of inclusive charged particles, obtained as a function of momentum, are plotted in
+( fp+p̄
+Fig. 9 (upper figure) as a function of centrality for the two extreme |η | intervals. One observes a signifi-
+cant η dependence of pion and proton fractions for p < 10 GeV/c.
+The extracted fractions as a function of transverse momentum are obtained bin-by-bin using a weighting
+procedure
+                                 fid (hpT ii ) = ∑ fid′ (hpi j )R(hpii , hpT i j ),                (4)
+                                                    j
+
+where fid ( fid′ ) is given in bins of pT (p) and R is a response matrix reflecting the relation between p
+and pT bins. This averaging introduces some smoothing of the fractions as neighboring pT fractions
+have contributions from the same p fractions, but the analysis is done in narrow |η | intervals so only a
+few momentum bins contribute and the fractions depend only weakly on p; therefore, we consider the
+systematic effect of this procedure negligible. The fractions fid are shown in the lower panel of Fig. 9.
+The transformation has little effect for |η | < 0.2, as expected, but we now observe that for 0.6 ≤ |η | < 0.8
+the results are consistent with particle ratios being constant at midrapidity. We find that all four pseudo-
+rapidity intervals are consistent and the final fractions used to obtain the spectra in the next section are
+computed as the weighted average of the four pseudorapidity intervals.
+
+2.1.8   Spectra
+The invariant yields are obtained from the particle fractions using the relation
+
+                                          d2 Nid       εch       d2 Nch
+                                                 = Jid     fid ×        .                                         (5)
+                                          dpT dy       εid       dpT dη
+The first expression on the right hand side is the input from the PID analysis, where (εch ) εid is the effi-
+ciency for (inclusive) identified charged particles and Jid is the Jacobian correction (from pseudorapidity
+η to rapidity y) and fid is the fractional yield. The second expression is the fully corrected transverse
+momentum spectrum of inclusive charged particles that has already been published by ALICE [16].
+
+
+
+                                                         13
+Nuclear modification factor of charged pions, kaons, and protons                                                        ALICE Collaboration
+
+
+
+
+                                             ALICE Pb-Pb sNN = 2.76 TeV
+                                                                              |η|<0.2-                         0.6≤|η|<0.8
+
+
+
+
+  Uncorrected particle fractions
+                                     1
+                                                           0-5%                 π+++π -      5-10%              π+++π--      10-20%
+                                   0.8                                          K +K                            K +K
+                                                                                p+p                             p+p
+                                   0.6
+
+                                   0.4
+
+                                   0.2
+
+                                    0
+                                         4     6   8   10 12 14 16 18     4     6    8    10 12 14 16 18   4    6   8    10 12 14 16 18
+                                     1                   20-40%                              40-60%                          60-80%
+                                   0.8
+                                   0.6
+                                   0.4
+
+                                   0.2
+                                    0
+                                         4     6   8   10 12 14 16 18     4     6    8    10 12 14 16 18   4    6   8    10 12 14 16 18
+
+                                                                                    p (GeV/c )
+                                             ALICE Pb-Pb sNN = 2.76 TeV
+                                                                              |η|<0.2-                         0.6≤|η|<0.8
+
+
+
+
+  Uncorrected particle fractions
+                                     1
+                                                           0-5%                 π+++π -      5-10%              π+++π--      10-20%
+                                   0.8                                          K +K                            K +K
+                                                                                p+p                             p+p
+                                   0.6
+
+                                   0.4
+
+                                   0.2
+
+                                    0
+                                         4     6   8   10 12 14 16 18     4     6    8    10 12 14 16 18   4    6   8    10 12 14 16 18
+                                     1                   20-40%                              40-60%                          60-80%
+                                   0.8
+                                   0.6
+                                   0.4
+
+                                   0.2
+                                    0
+                                         4     6   8   10 12 14 16 18     4     6    8    10 12 14 16 18   4    6   8    10 12 14 16 18
+                                                                                 p (GeV/c )
+                                                                                    T
+Fig. 9: (Color online) Uncorrected particle fractions as a function of momentum (upper figure) and as a function
+of pT (lower figure) for |η | < 0.2 (full markers) and 0.6 ≤ |η | < 0.8 (empty markers). Charged pions, kaons, and
+(anti)protons are plotted with circles, squares, and triangles, respectively. The error bars indicate the statistical
+uncertainty. Results for six centrality classes are presented.
+
+
+
+
+                                                                                        14
+Nuclear modification factor of charged pions, kaons, and protons                                             ALICE Collaboration
+
+
+The relative efficiency correction, εch /εid , was found to be consistent within ±3% for all centrality classes
+and pp collisions, and for event generators: PYTHIA [52], PHOJET [53], and HIJING [54]. Thus, an
+average correction was used and a systematic uncertainty of 3% was assigned. At high pT the correction
+is nearly constant and on the order of 0.95. It is below 1 because the inclusive charged particle spectra
+contain weakly decaying baryons such as Σ+ that are not reconstructed with the charged particle selection
+for primary particles. The proton and pion spectra have been corrected for feed-down from weak decays
+using MC simulations for the relative fraction of secondaries scaled to those extracted from Distance-of-
+Closest-Approach MC template fits to data [44]. For pT ≈ 2 (3) GeV/c, the correction is approximately
+0.3% (4%) for the pion (proton) yield and decreasing with increasing pT . Scaling between data and MC
+has a limited precision and could be different at higher pT . To be conservative, half of the correction
+is therefore assigned as a systematic uncertainty. This contribution to the systematic uncertainty is still
+small, as shown in Table 2.
+                      1.05
+
+
+
+
+ Correction factors
+                             ALICE 60-80% Pb-Pb s=2.76 TeV
+                         1
+
+
+                      0.95
+
+                                 εch / εid             π++π-                                 -
+                       0.9       Feed-down
+                                                                                     K++K                              p+p
+                                 Jacobian correction
+
+                             4   6   8 10 12 14 16 18          4   6   8    10 12 14 16 18       4   6   8   10 12 14 16 18
+                                                                       p (GeV/c )
+                                                                        T
+                      1.05
+
+
+
+
+ Correction factors
+                              ALICE 0-5% Pb-Pb s=2.76 TeV
+                         1
+
+
+                      0.95
+
+                                 εch / εid             π++π-                                 -
+                       0.9       Feed-down
+                                                                                     K++K                              p+p
+                                 Jacobian correction
+
+                             4   6   8 10 12 14 16 18          4   6   8    10 12 14 16 18       4   6   8   10 12 14 16 18
+                                                                       p (GeV/c )
+                                                                        T
+Fig. 10: (Color online) Correction factors as a function of pT . These are applied to the fractions of pions (left
+panels), kaons (middle panels), and protons (right panels). Results are presented for peripheral (upper figure) and
+central (lower figure) Pb–Pb collisions. The correction to the pion fraction due to the muon contamination is not
+drawn, but is ≤ 1%. Only pions and protons are corrected for feed-down.
+
+The efficiency and feed-down corrections are plotted in Fig. 10 as a function of pT for central and
+peripheral Pb–Pb collisions. The Jacobian correction from η to y, which has to be included for the lower
+pT bins, is also shown and the largest effect is observed for protons, as expected. At pT ≈ 3 GeV/c, the
+correction is ≈5%, ≈1%, and ≪1% for protons, kaons, and pions, respectively.
+
+2.1.9                   Systematic uncertainties
+The systematic uncertainty on the invariant yields has three main components: event and track selection,
+efficiency correction of the fractions, and the fraction extraction. Contributions from the event and track
+selection are taken directly from the inclusive charged particle result [16]. The systematic uncertainties
+for the corrections have been covered in the previous sections and are summarized in Table 2.
+
+                                                                            15
+Nuclear modification factor of charged pions, kaons, and protons                                                                                                 ALICE Collaboration
+
+
+
+
+ Fraction of entries / 0.01
+                                               dE /dx < 1.1                                                                 dE /dx < 1.5                           dE /dx > 1.5
+                                           p+p,
+                                             〈dE /dx MIP〉                                                π++π-, 1.1 <                                   e++e-,
+                                                                                                                          〈dE /dx MIP〉                           〈dE /dx MIP〉
+                              0.2 ALICE pp, Pb-Pb s =2.76 TeV
+                                                            0.2                                                                        0.2
+                                                      NN
+
+
+
+
+                              0.1                                                              0.1                                       0.1
+
+
+
+
+                                    −0.4   −0.2                             0       0.2      0.4       −0.4   −0.2        0    0.2    0.4        −0.4   −0.2       0     0.2      0.4
+                                                                                                   Relative variation of σ
+
+
+
+
+                                            Fraction of entries / 0.001
+                                                                                               dE /dx < 1.1                             dE /dx < 1.5
+                                                                                      p+p,
+                                                                                             〈dE /dx MIP〉                     π++π-, 1.1 <
+                                                                                                                                      〈dE /dx MIP〉
+                                                                          0.2                                        0.2 ALICE pp, Pb-Pb s =2.76 TeV
+                                                                                                                                            NN
+
+
+
+
+                                                                          0.1                                         0.1
+
+
+
+
+                                                                                −0.04 −0.02        0     0.02   0.04 −0.04 −0.02             0      0.02    0.04
+                                                                                          Relative variation of 〈dE /dx 〉
+Fig. 11: (Color online) Upper figure: Relative variation of the width parameterizations with respect to the measured
+values in different dE/dx/hdE/dxMIPi intervals. Lower figure: Relative variation of the Bethe–Bloch hdE/dxi
+parameterization with respect to the measured values in different dE/dx/hdE/dxMIPi intervals. The distributions
+were constructed using all the available data, six centrality classes and pp collisions with four sub-samples (|η |
+intervals) each.
+
+
+
+
+                                                                                                                     16
+Nuclear modification factor of charged pions, kaons, and protons                                                                                                             ALICE Collaboration
+
+
+The systematic uncertainty on the fractions is mainly due to the uncertainties in the parameterization
+of the Bethe–Bloch and resolution curves used to constrain the fits. This systematic uncertainty can
+be due to calibration effects such that, for example, the hdE/dxi does not depend on β γ alone, it can
+be related to the parameterizations not being able to describe the data properly, or it can be due to the
+statistical precision of the external PID data sets. To evaluate the uncertainty due to these effects, the
+deviation of the fitted curves from the actual measured means and widths of the dE/dx spectra obtained
+from the analysis of the external pion, proton, and electron samples are used. Figure 11 shows the
+relative variations; all the available data were used for constructing the distributions, i.e., each of the
+six centrality classes and pp collisions have four sub-samples of tracks at different |η |. It was found
+that the precision of all these data sets is similar, so the final variation in systematic uncertainties for the
+same observable for different centrality classes and pp collisions is caused by the different separation
+power shown in Fig. 2. The results for the width (Fig. 11 upper panel) are shown for p + p̄, π + + π − ,
+and e+ + e− , corresponding to the different samples and covering different hdE/dxi/hdE/dxMIP i ranges.
+In a given hdE/dxi/hdE/dxMIP i interval, the standard deviation of the distribution was taken as the
+systematic uncertainty associated with the extraction of the widths. An analogous analysis was done for
+the Bethe–Bloch curve, an example of which is shown in the lower panel of Fig. 11.
+In peripheral collisions, an additional contribution originating from the statistical uncertainty in the fits
+to the external PID data has to be taken into account for the Bethe–Bloch curve. The total systematic
+uncertainty is assigned as the quadratic sum of both contributions and is the band shown around the
+parameterizations in Fig. 8.
+
+
+
+
+ Fraction of entries / 0.01
+                                                                                                                           +      -
+                              0.3       Fraction of π++π-                                           0.3     Fraction of K +K                            0.3     Fraction of p+p
+                                                                                                            3.4 < p < 3.6 GeV/c
+                                  ALICE sNN = 2.76 TeV
+                                    0-5% Pb-Pb
+                              0.2   pp                                                              0.2                                                 0.2
+
+
+
+                              0.1                                                                   0.1                                                 0.1
+
+
+
+                               0                                                                     0                                                   0
+                                    0        0.2                            0.4         0.6         0.8 0       0.2        0.4          0.6             0.8 0       0.2       0.4   0.6   0.8
+                                                                                                            Particle fractions
+
+
+
+
+                                              Fraction of entries / 0.01
+                                                                                                                                              -
+                                                                                   p+p                                                K++K
+                                                                                  π++π-                                               π++π-
+                                                                                              ALICE sNN = 2.76 TeV                    3.4 < p < 3.6 GeV/c
+                                                                           0.1                   0-5% Pb-Pb       0.1
+                                                                                                 pp
+
+
+
+
+                                                                            0                                              0
+                                                                                  0.2         0.4         0.6     0.8            0.2              0.4         0.6      0.8
+                                                                                                             Particle ratios
+Fig. 12: (Color online). An example of the systematic uncertainty estimation in 0-5% Pb–Pb and pp collisions for
+3.4 < p ≤ 3.6 GeV/c. Upper figure: From left to right: the variation of extracted fractional yields for pions (left
+panel), kaons (middle panel), and protons (right panel) when the fixed values for the hdE/dxi and the resolution
+are randomly varied. Lower figure: the corresponding variation of the particle ratios.
+
+The propagation of the uncertainties to the particle fractions is done by refitting the dE/dx spectra, while
+randomly varying the constrained parameters, hdE/dxi and σ , within the uncertainty for the parameteri-
+
+                                                                                                                      17
+Nuclear modification factor of charged pions, kaons, and protons                                                                  ALICE Collaboration
+
+
+zations assuming a Gaussian variation centered at the nominal value. For each pT bin, all the hdE/dxi and
+σ values are randomly varied and refitted 1000 times resulting in fraction distributions like those shown
+in Fig. 12. The systematic uncertainties assigned to the particle fractions are the standard deviation of
+the associated distributions. By using the same method for the particle ratios (Fig. 12 lower panel), the
+correlation in the fit between the extracted yields for the two different particle species are directly taken
+into account. At high pT , the variation becomes dominated by statistical fluctuations due to the limited
+amount of data. But, as the fractions are nearly constant there (see Fig. 9) and the separation is also
+nearly constant (see Fig. 2), a constant absolute systematic uncertainty is assigned for pT > 8 GeV/c.
+A summary of the different contributions to the systematic uncertainty is shown in Table 2 for all cen-
+trality classes and for two representative pT regions. For pions, the dominant contribution comes from
+the event and track selection, which amounts to 7–8% over the whole pT range while the PID systematic
+uncertainty stays between 1–2%. For kaons and protons, the PID systematic uncertainty is the largest.
+The systematic uncertainty decreases with increasing separation and is smaller where the fractions are
+larger, see Fig. 9. For protons at pT = 3 GeV/c, the two effects largely compensate (the fractional yields
+increase for more central collisions) to keep the systematic uncertainty nearly constant. For kaons, at the
+same pT , there is a strong centrality dependence because the fractional yields also are lower for more
+central collisions. For the lower multiplicity intervals (pp and 60-80% centrality) this trend is broken
+because of the significant statistical uncertainty in the parameterized curves.
+At high pT (≈10 GeV/c) the PID systematic uncertainty for kaons stays between 7–8% for Pb–Pb col-
+lisions and is around 5% for pp collisions. For protons, the contribution is 16–20% (except for 60-80%
+Pb–Pb collisions where it is 29% due to a much larger statistical uncertainty in the fits to the external
+PID data).
+
+2.2   HMPID analysis of Pb-Pb data
+                                                            0.8
+
+
+
+
+                              HMPID Cherenkov angle (rad)
+                                                            0.7
+
+                                                            0.6       π
+                                                            0.5
+                                                                                K
+                                                                                         p
+                                                            0.4
+
+                                                            0.3
+
+                                                            0.2
+
+                                                            0.1                         ALICE 0-10% Pb-Pb sNN = 2.76 TeV
+                                                             0
+                                                                  0       0.5       1    1.5   2    2.5   3   3.5   4   4.5   5
+                                                                                                                    p (GeV/ c )
+
+Fig. 13: Cherenkov angle measured in the HMPID as a function of the momentum p in 0-10% central Pb–Pb
+collisions. The solid lines represent the theoretical curves for each particle species. The z-axis indicated by the
+color scale is logarithmic.
+
+The HMPID is used in order to constrain the uncertainty of the charged pion, kaon, and (anti)proton
+measurements in the transition region between the TOF and TPC relativistic rise methods (in the region
+around pT = 3 GeV/c). Thus, it both improves the precision of the measurement and validates the other
+methods in the region where they have the worst PID separation.
+The HMPID [55] detector consists of seven identical proximity focusing RICH (Ring Imaging Cherenkov)
+counters. Photon and charged particle detection is provided by a Multi-Wire Proportional Chamber
+(MWPC) coupled to a CsI photocathode segmented into pads of size 0.8×0.84 cm2 (the probability to
+obtain an amplified signals for an incident photon, the quantum efficiency, is ≈ 25% for λph = 175 nm).
+
+
+                                                                                               18
+Nuclear modification factor of charged pions, kaons, and protons                                          ALICE Collaboration
+
+
+                              π+ + π−         K+ + K−                 p + p̄              K/π                  p/π
+              pT (GeV/c)     2.0    10       3.0    10          3.0            10   3.0         10       3.0         10
+                                               Pb–Pb collisions (0-5%)
+             (a)            8.4% 8.1%       8.2% 8.1% 8.2% 8.1%                                      -
+             (b)               < 0.1%            -         2.1% 1.5%                   < 0.1%            2.1%    1.5%
+             (c)            0.1% 1.7%                    -                          0.6% 1.7%            0.6%    1.7%
+             (d)            1.5% 2.2%       18% 8.4% 9.8% 17%                       22%     10%          11%     16%
+                                               Pb–Pb collisions (5-10%)
+             (a)            8.4% 8.2%       8.2% 8.2% 8.2% 8.2%                                      -
+             (b)               < 0.1%            -          2.1% 1.5%                  < 0.1%            2.1%    1.5%
+             (c)            0.2% 1.5%                     -                         0.6% 1.5%            0.6%    1.5%
+             (d)            1.4% 2.2%       16% 8.0% 9.5% 16%                       18%     10%          9.8%    15%
+                                              Pb–Pb collisions (10-20%)
+             (a)            8.3% 8.1%       8.2% 8.1% 8.2% 8.1%                                      -
+             (b)               < 0.1%            -          2.2% 1.8%                  < 0.1%            2.2%    1.8%
+             (c)            0.3% 1.3%                    -                          0.6% 1.3%            0.6%    1.3%
+             (d)            1.5% 2.3%       16% 8.9% 10%            20%             16%     11%          9.2%    18%
+                                              Pb–Pb collisions (20-40%)
+             (a)            8.4% 8.2%       8.2% 8.2% 8.2% 8.2%                                      -
+             (b)               < 0.1%            -          2.1% 1.6%                  < 0.1%            2.1%    1.6%
+             (c)            0.2% 1.3%                    -                          0.5% 1.3%            0.5%    1.3%
+             (d)            1.5% 2.2%       15% 8.4% 10%            17%             16%     11%          10%     17%
+                                              Pb–Pb collisions (40-60%)
+             (a)            8.7% 8.5%       8.6% 8.5% 8.6% 8.5%                                      -
+             (b)               < 0.1%            -          1.9% 1.6%                  < 0.1%            1.9%    1.6%
+             (c)            0.3% 1.1%                    -                          0.5% 1.1%            0.5%    1.1%
+             (d)            1.4% 2.1%       14% 8.0% 11%            17%             15%     10%          11%     17%
+                                              Pb–Pb collisions (60-80%)
+             (a)            10% 9.7%        9.8% 9.7% 9.8% 9.7%                                      -
+             (b)               ≤ 0.1%            -          2.0% 1.8%                  ≤ 0.1%            2.0%    1.8%
+             (c)            0.3% 0.8%                    -                          0.4% 0.8%            0.4%    0.8%
+             (d)            1.4% 2.4%       16% 7.1% 20%            29%             16% 8.9%             18%     22%
+                                                    pp collisions
+             (a)            7.4% 7.6%       7.4%   7.6% 7.4%              7.6%                  -
+             (b)               ≤ 0.1%            -         2.0%           1.8%         ≤ 0.1%     2.0%           1.8%
+             (c)            0.4% 0.6%                   -                           0.5% 0.6% 0.5%               0.6%
+             (d)            1.1% 1.7%       16% 5.7% 24%                   17%      16% 6.8% 25%                 13%
+             (e)                               3.0%                                           4.2%
+
+Table 2: Summary of the systematic uncertainties for the charged pion, kaon, and (anti)proton spectra and for the
+particle ratios. The different contributions are (a) event and track selection, (b) feed-down correction, (c) correction
+for muons, (d) parameterization of Bethe–Bloch and resolution curves, and (e) efficiency correction (same for all
+systems). Note that K/π = (K+ + K− )/(π + + π −) and p/π = (p + p̄)/(π + + π −).
+
+The amplification gas is CH4 at atmospheric pressure with an anode-cathode gap of 2 mm; the opera-
+tional voltage is 2050 V corresponding to a gain of ≈4×104 . It is located at about 5 m from the beam
+axis, covering a limited acceptance of |η | < 0.5 and 1.2◦ < ϕ < 58.5◦ .
+The HMPID analysis uses the 2011 Pb–Pb data with around 7.8 × 106 central triggered events (0-10%
+centrality) and 5 × 106 semi-central triggered events (10-50% centrality4 ). The event and track selection
+is similar to the one described in Sec. 2.1.1, but in addition it is required that the tracks are propagated
+and matched to a primary ionization cluster in the MWPC gap of the HMPID detector (denoted matched
+cluster in the following). The matching efficiency, including spurious matches, is ≈95% (see εmatch
+below). The matching criteria are tightened to reject the fake cluster-track matches, which account for
+   4 To match centrality classes with the high-p analysis only spectra for 0-40% will be shown in this paper.             Results for
+                                                T
+20-30%, 30-40%, and 40-50% are available on HepData.
+
+
+
+                                                           19
+Nuclear modification factor of charged pions, kaons, and protons                                                ALICE Collaboration
+
+
+≈30–40% (see Cdistance later), so that only tracks matched with their corresponding primary ionization
+cluster are identified. The PID in the HMPID is done by measuring the Cherenkov angle, θCh [55], given
+by                                                          p           !
+                                         1                     p2 + m2
+                              cos θCh =    ⇒ θCh = arccos                 ,                         (6)
+                                        nβ                       np
+where n is the refractive index of the radiator used (liquid C6 F14 with n = 1.29 at temperature T = 20 ◦ C
+for photons with energy 6.68 eV). Figure 13 shows the Cherenkov angle as a function of the momentum
+for central Pb–Pb collisions.
+The measurement of the single photon θCh angle in the HMPID requires knowledge of the track impact
+position and angle. These are estimated from the track extrapolation from the central tracking devices
+up to the radiator volume, where the Cherenkov photons are emitted. Only one matched cluster is
+associated to each extrapolated track, selected as the closest cluster to the extrapolated track point on the
+cathode plane, with a charge above ≈120 ADC. The cut on the charge excludes clusters from electronic
+noise (σ pedestal ≈ 1 ADC) and photons. The matching efficiency is defined for tracks extrapolated to the
+HMPID acceptance as
+                                      N(Extrapolated with matched cluster)
+                            εmatch =                                            .                         (7)
+                                                 N(Extrapolated)
+This efficiency is ≈95% and independent of momentum, particle species, and event multiplicity.
+
+                                           1
+
+
+
+
+                   Scaled entries / mm
+                                                  ALICE 0-50% Pb-Pb 6000
+                                         0.8 X coordinate                           Y coordinate
+                                                                            5000
+
+
+                                         0.6     Positive                   4000      Positive
+                                                 Negative                   3000      Negative
+                                         0.4
+                                                                            2000
+
+                                         0.2
+                                                                            1000
+
+
+                                          0                                     0
+                                               −8 −6 −4 −2 0   2   4   6   8        −8 −6 −4 −2 0   2   4   6   8
+                                                                   Residuals (cm)
+Fig. 14: (Color online) Distribution of the X (left panel) and Y (right panel) residuals between the matched cluster
+position and the closest extrapolated track point at the HMPID chamber plane (HMPID module 2), for positive and
+negative tracks with pT > 1.5 GeV/c in Pb–Pb collisions (0-50% centrality). The histograms have been scaled to
+have a similar maximum value. The small shift between positive and negative tracks in the Y residuals is due to a
+radial residual misalignment and an imperfect estimate of the energy loss in the material traversed by the track and
+is not corrected for in the calculation of the residual distance.
+
+In Fig. 14, the residuals distribution between the track extrapolation and the matched cluster position in
+local chamber coordinates, X and Y , for tracks with pT > 1.5 GeV/c is shown. The distributions have a
+resolution of σres ≈ 2 cm. To reject fake cluster-match associations in the detector, mainly the situation
+when there is no correct signal to match as for example the particle was absorbed   √ or deflected in the
+material between the TPC and the HMPID detector, a selection on the distance, X 2 +Y 2 , computed
+on the cathode plane between the track extrapolation and the matched cluster is applied. This distance
+has to be less than 5 cm. This represents the best compromise between the loss of statistics and the
+probability of an incorrect association, where the latter becomes negligible (<0.1%) even in the most
+central collisions, as estimated from MC simulations. The distance cut leads to a correction factor
+                                                  N(Extrapolated with matched cluster distance < 5 cm)
+                         Cdistance =                                                                   ,                        (8)
+                                                         N(Extrapolated with matched cluster)
+
+                                                                           20
+Nuclear modification factor of charged pions, kaons, and protons                                                                                             ALICE Collaboration
+
+
+                                                                      0.85
+
+                                                         C distance    0.8                 ALICE 0-50% Pb-Pb at sNN = 2.76 TeV
+                                                                      0.75
+                                                                                   Positive
+                                                                       0.7
+                                                                                   Negative
+                                                                      0.65
+                                                                       0.6
+                                                                      0.55
+                                                                       0.5
+                                                                      0.45
+                                                                       0.4
+                                                                             1   1.5       2   2.5   3    3.5    4        4.5     5       5.5     6
+                                                                                                                                p (GeV/c )
+                                                                                                                                  T
+
+Fig. 15: (Color online) The distance cut correction, Cdistance , as a function of pT for positive (red) and negative
+(blue) tracks, respectively, in Pb–Pb collisions (0-50% centrality).
+
+for each momentum bin and does not depend on event multiplicity. Fig. 15 shows this correction factor
+as a function of pT for positive and negative tracks integrated over the centrality classes (0-50%).
+                                               1
+                                             0.9      Monte Carlo 0-5% Pb-Pb sNN = 2.76 TeV
+                                             0.8      2.5 GeV/ c < p < 2.6 GeV/c                                3.8 GeV/ c < p < 4.0 GeV/c
+                                                                         T                                                        T
+                                             0.7
+                                             0.6          ✁                                                           ✁
+
+
+
+
+                  Scaled entries / mrad!
+                                             0.5
+                                                          Background                                                  Background
+                                             0.4
+
+
+
+
+                  Counts/mrad  (arb. unit)
+                                             0.3
+                                             0.2
+                                             0.1
+
+
+                                             0.9                       2.5 GeV/ c < p < 2.6 GeV/c                                     3.8 GeV/ c < p < 4.0 GeV/c
+                                                                                       T                                                           T
+                                             0.8
+                                             0.7                                 p                                                              p
+                                             0.6                                 Background                                                     Background
+                                             0.5
+                                             0.4
+                                             0.3
+                                             0.2
+                                             0.1
+                                              0
+                                                   0.56 0.58 0.6 0.62 0.64 0.66 0.68 0.7 0.72 0.74              0.62       0.64        0.66     0.68   0.7    0.72
+                                                                                       Cherenkov angle,              Ch
+                                                                                                                          (rad)
+
+Fig. 16: (Color online) Fit to the θCh -distributions of pions (upper panel) and protons (lower panel) obtained in
+MC simulations for two different momentum bins. The histograms have been scaled to have a similar maximum
+value.
+
+Starting from the photon cluster coordinates on the photocathode, a back-tracking algorithm calculates
+the corresponding emission angle. The Cherenkov photons are selected by the Hough Transform Method
+(HTM) [56], which for each track transforms the coordinates of photon hits into emission angles. The
+angle interval with the most hit candidates is selected and θCh is computed as the weighted mean of
+the single photon angles. In central Pb–Pb collisions, where the total number of signals in the HMPID
+chambers is large, it is possible that the angle is constructed based on hits not corresponding to the
+Cherenkov photons associated with the track. This results in a significant reduction of the PID efficiency
+in the most central collisions. Figure 16 gives an example of the same effect in MC simulations. The
+response function consists of a Gaussian distribution for correctly assigned rings (signal) plus a distri-
+bution strongly increasing with the Cherenkov angle for incorrectly assigned rings (background). The
+signals from other tracks and photons in the same event are uniformly distributed on the chamber plane,
+and so the background rises with θCh since the probability of finding background clusters increases. The
+
+                                                                                                     21
+Nuclear modification factor of charged pions, kaons, and protons                            ALICE Collaboration
+
+
+background contribution decreases with increasing track momentum because higher momentum tracks
+give rise to a larger number of Cherenkov photons and have a smaller inclination angle, producing rings
+that are more likely to be fully contained inside the acceptance. As a result of this, the probability of
+incorrectly associating an angle computed from background clusters to the track decreases. The shoulder
+in the distribution starting at 0.7 rad is a boundary effect due to the finite geometrical acceptance of the
+chamber.
+
+
+
+
+Fig. 17: (Color online) Distributions of the Cherenkov angle measured in the HMPID for positive tracks having pT
+in the range 2.6–2.7 GeV/c (upper figure) and in the range 3.8–4.0 GeV/c (lower figure), for six different centrality
+classes, 0-5%, 5-10%, 10-20%, 20-30%, 30-40%, and 40-50%. The histograms have been scaled to have a similar
+maximum value. The shoulder in the distributions starting at 0.7 rad is a boundary effect due to the finite chamber
+geometrical acceptance.
+
+Figure 17 gives examples of the reconstructed Cherenkov angle distributions in two narrow pT intervals
+for different centrality classes; the reconstructed angle distribution is fitted with a sum of three Gaussian
+distributions, corresponding to the signals from pions, kaons, and protons, plus a distribution associated
+
+                                                         22
+Nuclear modification factor of charged pions, kaons, and protons                                                       ALICE Collaboration
+
+
+with the misidentified tracks that is modeled with a 6th-degree polynomial function that minimizes the
+reduced χ 2 of the fit.
+                                                      0.75
+
+
+
+
+                              Cherenkov angle (rad)
+                                                       0.7
+                                                      0.65
+                                                       0.6
+                                                      0.55
+                                                                           0-5% Pb-Pb           40-50% Pb-Pb
+                                                       0.5                   p                    p
+                                                      0.45                   K                    K
+                                                                             π                    π
+                                                       0.4
+                                                      0.35                                             ALICE
+                                                       0.3
+                                                             1   1.5   2   2.5   3    3.5   4    4.5    5    5.5   6
+                                                                                                       p (GeV/c )
+                                                                                                        T
+                                                       40
+
+
+                             σ (mrad)
+                                                       35
+                                                                           0-5% Pb-Pb           40-50% Pb-Pb
+                                                       30                     p                    p
+                                                       25
+                                                                              K                    K
+                                                                              π                    π
+                                                       20
+
+                                                       15
+                                                                                                       ALICE
+                                                       10
+
+                                                         5
+
+                                                         0
+                                                             1   1.5   2   2.5   3    3.5   4    4.5     5   5.5   6
+                                                                                                       p (GeV/c )
+                                                                                                        T
+
+Fig. 18: (Color online) Mean Cherenkov angle (upper panel) and standard deviation (lower panel) values for
+pions, kaons, and protons obtained by the three-Gaussian fitting procedure as a function of pT for 0-5% and 40-
+50% centrality Pb–Pb collisions. The data points from the two different centrality classes overlap such that the
+difference is smaller than the size of the symbols used.
+
+The fitting is performed in 2 steps. In the first step, the initial parameters are based on the expected
+values. For the signal, the means hθCh ii are obtained from Eq. 6, tuning the refractive index to match
+the observed Cherenkov angles, and the sigma values σi are taken from the MC distribution in the given
+transverse momentum bin. The initial shape of the 6th-degree polynomial background is taken from MC
+simulations. Furthermore, the signal parameters are constrained to the ranges: [hθCh ii - σi ,hθCh ii + σi ]
+for the means, and [σi - 0.1·σi , σi + 0.1·σi ] for the widths. After this first step, the pT dependence of
+each parameter is fitted with a continuous function. In the second step, the fitting is repeated with only
+the yields as free parameters and constraining the mean and sigma values to the continuous functions.
+The means and widths constrained in this way are all found to be independent of centrality as shown in
+Fig. 18 for 0-5% and 40-50% centrality classes. In Fig. 19, a comparison is shown between the mean
+values of the Cherenkov angle obtained from the fitting procedure with those obtained using a clean
+sample of protons and pions identified from Λ and K0S decays.
+To correct for the incorrectly assigned Cherenkov rings, a PID efficiency is used. This efficiency has to
+be derived from a dataset containing identified particles of a single species, so one can use MC or V 0
+daughters. For such a clean set of particles that passes the distance cut, e.g. MC pions as in Fig. 16, the
+PID efficiency is
+                                                    N(signal)
+                                    εPID =                             ,                                (9)
+                                           N(signal and background)
+where the signal is the integral of the Gaussian fit function. The PID efficiency has been evaluated from
+
+                                                                                 23
+Nuclear modification factor of charged pions, kaons, and protons                                                                                    ALICE Collaboration
+
+
+
+
+                   Cherenkov angle (rad)
+                                                                                                            ALICE 0-5% Pb-Pb at sNN = 2.76 TeV
+                                           0.7                                                       0.7
+
+
+                                           0.6                                                       0.6
+
+
+                                           0.5           Primary π+                                  0.5                 Primary p
+                                                         π+ from KS decays                                               p from Λ decays
+                                                                               0
+
+
+                                           0.4                                                     0.4
+                                              1       1.5                2     2.5         3     3.5                2         3         4       5     6
+                                                                                               p (GeV/c)
+                                                                                                 T
+
+Fig. 19: (Color online) Comparison of the mean Cherenkov angle values obtained by the three-Gaussian fitting
+procedure and those evaluated from the V0 s study for pions (left panel) and protons (right panel) in the most central
+Pb–Pb collisions.
+
+                                                                   1.2
+
+
+
+
+                                                  PID efficiency
+                                                                              ALICE              0-5% MC                 40-50% MC
+                                                                     1
+                                                                                                 0-5% Data               40-50% Data
+                                                                                   π+
+                                                                   0.8
+
+                                                                   0.6
+
+                                                                   0.4
+
+                                                                   0.2
+
+                                                                    0
+                                                                     1       1.5       2   2.5   3        3.5   4       4.5       5   5.5   6
+                                                                                                                              p (GeV/c)
+                                                                                                                               T
+                                                                   1.2
+
+
+
+
+                                                  PID efficiency
+                                                                              ALICE              0-5% MC                 40-50% MC
+                                                                     1
+                                                                                                 0-5% Data               40-50% Data
+                                                                                   p
+                                                                   0.8
+
+                                                                   0.6
+
+                                                                   0.4
+
+                                                                   0.2
+
+                                                                    0
+                                                                     1       1.5       2   2.5   3        3.5   4       4.5       5   5.5   6
+                                                                                                                              p (GeV/c)
+                                                                                                                               T
+
+Fig. 20: (Color online) Identification efficiency for pions (upper panel) and protons (lower panel) selected ex-
+ploiting V0 decay properties, compared with the MC results for primary tracks for 0-5% and 40-50% centrality
+classes.
+
+MC simulations that reproduce the background observed in the data well. A data-driven cross check of
+the efficiency has been performed using a clean sample of V 0 daughter tracks. The comparison between
+data and MC is shown in Fig. 20 for 0-5% and 40-50% centrality classes, and shows good agreement.
+We also observe that, as expected, the efficiency decreases for more central collisions due to the occu-
+pancy effects mentioned above. The maximum value of the PID efficiency is ≈80% at pT ∼ 6 GeV/c
+in the 40-50% centrality class. As an additional check of the PID efficiency, the ratio between the raw
+yields extracted from the fit (signal) corrected by the PID efficiency and the total entries in the original
+
+
+                                                                                                     24
+Nuclear modification factor of charged pions, kaons, and protons                         ALICE Collaboration
+
+
+histogram (signal and background) has been evaluated for each pT bin for all centralities. The ratio is
+consistent with unity when the systematic uncertainties listed in Table 3 are taken into account.
+
+
+The systematic uncertainty for the HMPID analysis has contributions from tracking and PID. These un-
+certainties have been estimated by individually changing the track selection cuts and the parameters of
+the fit function used to extract the raw yields. The means of the Gaussian functions have been changed
+by ±σ . Similarly, the widths of the Gaussian functions have been varied by ±10%, accounting for the
+maximum expected variation of the resolution as a result of the different running conditions of the de-
+tector during data acquisition that can have an impact on the performance. When the means are changed,
+the widths are fixed to the default value, and vice versa. The parameter variation is performed for all
+three particles species. In addition, the uncertainty on the association of the track to the matched cluster
+is obtained by varying the value of the distance cut required for the match by ±1 cm. These contributions
+do not vary with the collision centrality. To estimate the uncertainty due to the incomplete knowledge of
+the shape of the background distribution, an alternative background function, depending on tan(θ ) and
+derived from geometrical considerations in case of orthogonal tracks [55], has been used:
+
+                             f (θ ) = a + b × tan θ + c × [tan θ (1 + tan2 θ )]d ,                      (10)
+
+where a, b, c, and d are free parameters. The corresponding systematic uncertainty reaches a maximum
+value at low momenta for the most central collisions (≈ 15% for pions and ≈ 8% for kaons and pro-
+tons). The systematic uncertainty decreases with pT because, as previously explained, the background
+contribution decreases with increasing track momentum. A summary of the different contributions to the
+systematic uncertainty for the HMPID Pb–Pb analysis is given in Table 3.
+
+                 Effect                                   π±              K±          p and p
+                 pT range (GeV/c)                   2.5     4       2.5  4           2.5    4
+                 PID                                6%    12%       6%  12%          4% 5%
+                 Tracking efficiency                    6%            6%                7%
+                 Distance cut correction             6%    2%       6% 2%            4% 2%
+                 Background (Pb-Pb 0-5%)            10% 4%          5% 3%            5% 3%
+                 Background (Pb-Pb 5-10%)            7%    4%       3% 2%            3% 2%
+                 Background (Pb-Pb 10-20%)           6%    4%       3% 2%            3% 2%
+                 Background (Pb-Pb 20-30%)           5%    3%       3% 2%            2% 2%
+                 Background (Pb-Pb 30-40%)           3%    1%       2% 1%            2% 1%
+                 Background (Pb-Pb 40-50%)           2%    1%       2% 1%            2% 1%
+              Table 3: Main sources of systematic uncertainties for the HMPID Pb–Pb analysis.
+
+
+3 Results and discussion
+The measurement of charged pion, kaon, and (anti)proton transverse momentum spectra has been per-
+formed via several independent analyses, each one focusing on a sub-range of the total pT distribution,
+using individual detectors and specific techniques to optimize the signal extraction (see Table 4). The re-
+sults were combined in the overlapping ranges using a weighted average with the independent systematic
+uncertainties as weights (a 3% common systematic uncertainty due to the TPC tracking is added directly
+to the combined spectrum). The statistical uncertainties are much smaller and therefore neglected in the
+combination weights. For pT > 4 GeV/c only the TPC dE/dx relativistic rise analysis is used for all
+species. Figure 21 shows the ratio of individual spectra to the combined spectrum for the 0-5%, 20-40%,
+and 60-80% central Pb–Pb data, illustrating the compatibility between the different analyses. In the cen-
+trality intervals where the HMPID measurements are available, they improve the systematic uncertainty
+of the kaon and proton yields by approximately a factor of two in the pT region where it is later observed
+
+                                                     25
+Nuclear modification factor of charged pions, kaons, and protons                                         ALICE Collaboration
+
+
+that the peaks of the kaon-to-pion and the proton-to-pion ratios are located (see Fig. 25 and Fig. 26). We
+note that the final charged pion spectra are consistent with the neutral pion spectra scaled by a factor of
+two within statistical and systematic uncertainties [57].
+
+                                     π+ + π-                          ALICE sNN = 2.76 TeV
+                               1.2
+
+
+                                 1
+
+
+
+
+ Ratio to combined spectrum
+                                                    ITS+TPC+TOF
+                               0.8                  HMPID
+                                                    rdE /dx
+                                       2      - 3   4   5    6    2          3    4       5     6   2    3    4     5    6
+                                     K+ + K
+                               1.2
+
+
+                                 1
+
+
+                               0.8
+                                           0-5% Pb-Pb                    20-40% Pb-Pb                   60-80% Pb-Pb
+                                       2        3   4   5    6    2          3    4       5     6   2    3    4     5    6
+                                     p+p
+                               1.2
+
+
+                                 1
+
+
+                               0.8
+
+
+                                       2       3    4   5    6    2          3    4       5     6   2    3    4    5     6
+
+                                                                       p (GeV/c )
+                                                                         T
+Fig. 21: (Color online). The ratio of individual spectra to the combined spectrum as a function of pT for pions
+(upper panels), kaons (middle panels), and protons (lower panels). From left-to-right the columns show 0-5%, 20-
+40%, and 60-80% (where there are no HMPID results). Only the pT range where the analyses overlap is shown.
+For pT > 4 GeV/c, no combination is done and the TPC dE/dx relativistic rise results are used directly, which
+gives rise to a small discontinuity for protons at this pT . The ITS+TPC+TOF spectra are the results published
+in [44]. The statistical and independent systematic uncertainties are shown as vertical error bars and as a band,
+respectively, and only include those on the individual spectra.
+
+The final combined transverse momentum distributions for the three particle species are shown in Fig. 22.
+For pT < 3 GeV/c, a hardening of the spectra is observed going from peripheral to central events. This
+effect is mass dependent and is characteristic of hydrodynamic flow as discussed in [44]. For high
+pT (> 10 GeV/c) the spectra follow a power-law shape as expected from perturbative QCD (pQCD)
+calculations. In the following, the high-pT results are first discussed before going on to the intermediate
+pT region.
+
+3.1                           The high-pT results
+To study jet quenching at high pT , the nuclear modification factor, RAA , is constructed. The RAA is
+                                                                        d2 NidAA /dydpT
+                                                             RAA =                          ,                           (11)
+                                                                      hTAA id2 σidpp /dydpT
+where NidAA and σidpp are the charged particle yield in nucleus-nucleus (A–A) collisions and the cross
+section in pp collisions, respectively, and hTAA i is the nuclear overlap function. The latter is obtained
+
+                                                                             26
+  Nuclear modification factor of charged pions, kaons, and protons                                                         ALICE Collaboration
+
+
+                                                              ITS+TPC+TOF        HMPID               TPC dE/dx rel. rise
+                                                       π±        0.1 – 3.0       1.5 – 4.0               2.0 – 20.0
+                                                      K±         0.2 – 3.0       1.5 – 4.0               3.0 – 20.0
+                                                      p(p̄)      0.3 – 4.6       1.5 – 6.0               3.0 – 20.0
+                                                      K/π        0.2 – 3.0       1.5 – 4.0               3.0 – 20.0
+                                                      p/π        0.3 – 3.0       1.5 – 4.0               3.0 – 20.0
+  Table 4: The pT ranges (GeV/c) used in the combination of the most central results. In pp and peripheral Pb–Pb
+  collisions the separation power is different and in some cases the pT ranges therefore change a little.
+
+
+
+
+                                   105
+
+
+
+
+(1/2πp ) d2N/dp dy [(GeV/ c )-2]
+                                                 ALICE sNN=2.76 TeV                       20-40% Pb-Pb (× 4)
+
+                                                     0-5% Pb-Pb (× 32)                    40-60% Pb-Pb (× 2)
+
+                                    10               5-10% Pb-Pb (× 16)                   60-80% Pb-Pb (× 1)
+
+                                                     10-20% Pb-Pb (× 8)                   pp (× 1)
+
+
+
+                                   10−3
+                         T
+
+
+
+
+                         T         10−7
+                                           π+ + π-                        +      -
+                                                                          K +K                                  p+p
+
+                                          0 2 4 6 8 10 12 14 16 18 0 2 4 6 8 10 12 14 16 18 0 2 4 6 8 10 12 14 16 18
+
+                                                                              p (GeV/c )
+                                                                               T
+
+  Fig. 22: (Color online). Transverse momentum spectra of charged pions (left panel), kaons (middle panel), and
+                                                                       √
+  (anti)protons (right panel) measured in Pb–Pb and pp collisions at sNN = 2.76 TeV. The systematic and statistical
+  error are plotted as color boxes and vertical error bars (hard to see), respectively. The spectra have been scaled by
+  the factors listed in the legend for clarity.
+
+
+  from a Glauber model [58] and is related to the average number of binary nucleon-nucleon collisions
+  (Ncoll ) and the inelastic nucleon-nucleon cross section as hTAA i = hNcoll i/σinel
+                                                                                  NN .
+
+
+  Figure 23 shows the RAA for all centrality classes. The results show that for all centrality classes any
+  particle species dependence of the nuclear modification for pT > 10 GeV/c is small, compared with the
+  large suppression (RAA ≪ 1). This suggests that jet quenching does not produce signatures that affect
+  the particle species composition for the leading particles. The results presented in this paper are all done
+  at the particle level, while for some models that motivated these studies the predictions are done for jets,
+  e.g. the Sapeta–Wiedemann model [22]. It is not obvious how to compare the results presented here
+  with such calculations. In the following we therefore discuss how inclusive pT spectra compare with
+  inclusive jet pT spectra. In particular, it is examined if the results are likely to be affected by a quenched
+  jet fragmentation bias (if quenched jets emit less high-pT particles than unquenched ones) or a surface
+  bias (if unquenched jets from the surface dominate).
+
+
+
+                                                                                     27
+Nuclear modification factor of charged pions, kaons, and protons                                        ALICE Collaboration
+
+
+
+                       ALICE Pb-Pb sNN = 2.76 TeV
+           1                          0-5%                                     5-10%                           10-20%
+         0.8                            π++π-
+                                         +    -
+                                        K +K
+         0.6                            p+p
+                                         +  -
+                                        h +h
+       0.4
+
+         0.2
+  R AA         0   2     4   6   8 10 12 14 16 18      0 2     4   6        8 10 12 14 16 18 0   2   4 6    8 10 12 14 16 18
+           1                 20-40%                                    40-60%                           60-80%
+         0.8
+
+         0.6
+
+       0.4
+         0.2
+
+               0   2     4   6   8 10 12 14 16 18      0 2     4   6        8 10 12 14 16 18 0   2   4 6    8 10 12 14 16 18
+                                                              p (GeV/c )
+                                                                   T
+Fig. 23: (Color online). The nuclear modification factor RAA as a function of pT for different particle species.
+Results for different collision centralities are shown. Statistical and PID systematic uncertainties are plotted as
+vertical error bars and boxes around the points, respectively. The total normalization uncertainty (pp and Pb–Pb)
+is indicated in each panel by the vertical scale of the box centered at pT = 1 GeV/c and RAA = 1 [16].
+
+
+At the LHC, by studying dijets in Pb–Pb collisions and selecting on the dijet asymmetry, one can study
+samples with large asymmetries where one knows, based on comparisons with pp results, that at least the
+subleading jet has suffered a large energy loss [8, 9]. The study of the Fragmentation Functions (FFs)
+for these quenched jets has shown that for charged tracks with pT > 4 GeV/c they are similar to those
+observed in pp collisions for subleading jets with pT,jet > 50 GeV/c [59], in agreement with what one
+also finds for inclusive jets [60]. This rules out a large fragmentation bias (for lower jet pT see below)
+and suggests that any surface bias is the same as for inclusive jets. To understand the jet pT covered by
+the results presented here, one can now, thanks to the similarity of the FFs in pp and Pb–Pb collisions,
+rely on NLO pQCD calculations for pp collisions. The FFs found to best describe the inclusive charged
+particle spectra [61] are the Kretzer distributions [62]. NLO pQCD calculations using the Kretzer FFs
+suggest that more than half of the particles with pT between 10 and 20 GeV/c are from gluon jets and that
+the typical jet pT is roughly a factor of 2-3 larger than the hadron pT (hzi = pT,hadron /pT,jet ≈ 0.4) [61]5 .
+The conclusions for jets with pT,jet > 50 GeV/c is therefore expected to be directly applicable also for the
+highest-pT particles studied here. ALICE has studied charged jets in Pb–Pb collisions where it was found
+that requiring minimum one track with pT > 10 GeV/c in a jet gives the same fragmentation bias of the
+jet reconstruction efficiency in Pb–Pb collisions as in PYTHIA for 20 < pT,ch. jet < 110 GeV/c [63], so
+there is no evidence even for lower pT jets that there is a different fragmentation bias in Pb–Pb collisions
+than in pp collisions. The results in Fig. 23 therefore indicate that for jets with final pT of order 25 to
+50 GeV/c, jet quenching does not produce large particle-species-dependent effects in the hard core of the
+jet where leading particle production mainly occurs.
+To be able to set stronger constraints, one needs theoretical modeling. As the RAA for charged pions,
+kaons, and protons reported here for pT > 10 GeV/c are all compatible to the RAA for inclusive charged
+   5 The publication contains only calculations for √s = 900 GeV and √s = 7 TeV that have been averaged as an approximate
+                                 √
+estimate for the energy of        s = 2.76 TeV shown here since the energy dependence is not that strong.
+
+
+
+                                                                       28
+Nuclear modification factor of charged pions, kaons, and protons                                ALICE Collaboration
+
+
+particles [16] and neutral pions [57] we refer to these papers for comparisons with models without large
+particle-species-dependent effects. When compared with models which include large particle-species-
+dependent effects, the results indicate that the jet quenching mechanism does not involve direct exchange
+of quantum numbers with the medium, and there are also no indications of a modified color structure
+of the fragmentation [22] or that the probe is excited to other color states [23]. Models in which the
+hadronization of jet fragments occurs in the medium also appear to be ruled out [24]. It seems that the
+medium quenches the jet as a whole rather than directly interacting with its fragments. Such a picture
+has recently been proposed [64], arguing that the medium typically cannot resolve the structure inside
+the hard core of the jet such that all fragments lose energy coherently.
+
+
+           1       π±, ALICE 0-5% Pb-Pb                               5-10%                            10-20%
+                        sNN = 2.76 TeV
+         0.8
+                   π0, PHENIX 0-5% Au-Au
+         0.6            sNN = 200 GeV
+       0.4
+
+         0.2
+  R AA         6    8   10   12   14 16   18     6    8       10 12    14 16   18     6    8   10 12 14       16 18
+           1                  20-40%                                  40-60%
+         0.8
+
+         0.6
+
+       0.4
+         0.2                                                                                          60-80%
+
+               6    8   10   12   14 16   18     6    8       10 12    14 16   18     6    8   10 12 14       16 18
+                                                      p (GeV/c )
+                                                          T
+Fig. 24: (Color online). The nuclear modification factor RAA as a function of pT for charged pions, compared with
+PHENIX results for neutral pions [65]. Results for different collision centralities are shown. Statistical and PID
+systematic uncertainties are plotted as vertical error bars and boxes around the points, respectively.
+
+
+In Fig. 24, the RAA for charged pions, the most precise measurement in this work and the one least sensi-
+tive to radial flow, is compared with the RAA for neutral pions measured by PHENIX [65] at the RHIC6 .
+The ALICE results are systematically below the PHENIX values for pT < 10 GeV/c but consistent within
+systematic uncertainties for larger pT . We note that the relative centrality evolution is similar at the two
+center-of-mass energies. In [66], a simple study of the RAA at pT = 10 GeV/c foundpthat the energy loss
+is ≈40% larger at the LHC than at the RHIC in all centrality classes (it scales as dN/dη for a fixed
+initial geometry).
+The proton-to-pion and the kaon-to-pion ratios as a function of pT are shown in Fig. 25 and Fig. 26.
+The similarity at high pT for the RAA implies that the particle ratios there are also the same in pp and
+Pb–Pb collisions. Since the particle ratios are independent of pT in this region, we use the integrated
+particle ratios for pT > 10 GeV/c to elucidate the precision with which the suppression of pions, kaons,
+and protons is similar, see Fig. 27. The advantage of using particle ratios is that the results for heavy-
+ion collisions can be shown separately from the pp results. Furthermore, in the ratios the systematic
+uncertainty associated with the inclusive charged particle pT spectra normalization cancels. All the steps
+   6 The results have been obtained from the tables at the PHENIX website and the 5-10% data set has been constructed from
+
+the 0-5% and 0-10%.
+
+
+                                                              29
+Nuclear modification factor of charged pions, kaons, and protons                                                                  ALICE Collaboration
+
+
+
+
+                                       ALICE sNN = 2.76 TeV
+                           1
+                                           0-5% Pb-Pb                                                5-10%                                 10-20%
+                         0.8               pp
+
+
+
+
+ ( K + K )/( π+ + π- )
+                         0.6
+
+                         0.4
+
+                         0.2
+
+ -                             0   2       4    6   8 10 12 14 16 18 0      2       4 6       8 10 12 14 16 18 0 2        4   6 8 10 12 14 16 18
+                           1                            20-40%                                       40-60%                                60-80%
+
+ +                       0.8
+
+                         0.6
+
+                         0.4
+                         0.2
+
+                               0   2       4    6   8 10 12 14 16 18 0      2       4 6       8 10 12 14 16 18 0 2        4   6 8 10 12 14 16 18
+                                                                                    p (GeV/c )
+                                                                                     T
+
+                                       Pb-Pb sNN = 2.76 TeV
+                           1
+                                               0-5% ALICE                                            5-10%                                 10-20%
+                         0.8                   0-5% EPOS 2.17 v3
+
+
+
+
+ ( K + K )/( π+ + π- )
+                         0.6
+
+                         0.4
+
+                         0.2
+
+ -                             0       1       2    3   4   5   6   7   0       1    2    3      4    5   6   7   0   1       2    3   4    5   6   7
+                           1                            20-40%                                       40-60%                                60-80%
+
+ +                       0.8
+
+                         0.6
+
+                         0.4
+                         0.2
+
+                               0       1       2    3   4   5   6   7   0       1    2    3      4    5   6   7   0   1       2    3   4    5   6   7
+                                                                                    p (GeV/c )
+                                                                                     T
+Fig. 25: (Color online). Charged kaon to charged pion ratio as a function of transverse momentum (solid markers).
+The upper figure shows the full pT -range with the pp results (open markers) overlaid in the most central and
+the most peripheral centrality class. In the lower figure the Pb–Pb results for pT < 8 GeV/c are compared with
+EPOS model 2.17-3 (line). The systematic and statistical error are plotted as color boxes and vertical error bars,
+respectively.
+
+
+
+
+                                                                                         30
+Nuclear modification factor of charged pions, kaons, and protons                                                                 ALICE Collaboration
+
+
+
+
+                                       ALICE sNN = 2.76 TeV
+                           1
+                                           0-5% Pb-Pb                                               5-10%                                 10-20%
+                         0.8               pp
+
+
+
+
+ ( p + p )/( π+ + π- )
+                         0.6
+
+                         0.4
+
+                         0.2
+
+                               0   2       4   6   8 10 12 14 16 18 0      2       4 6       8 10 12 14 16 18 0 2        4   6 8 10 12 14 16 18
+                           1                           20-40%                                       40-60%                                60-80%
+                         0.8
+
+                         0.6
+
+                         0.4
+                         0.2
+
+                               0   2       4   6   8 10 12 14 16 18 0      2       4 6       8 10 12 14 16 18 0 2        4   6 8 10 12 14 16 18
+                                                                                   p (GeV/c )
+                                                                                    T
+
+
+                           1
+                                                           0-5%                                     5-10%                                 10-20%
+                         0.8
+
+
+
+
+ ( p + p )/( π+ + π- )
+                         0.6
+
+                         0.4
+
+                         0.2
+
+                               0       1       2   3   4   5   6   7   0       1    2    3      4    5   6   7   0   1       2    3   4    5   6   7
+                                                       20-40%                                       40-60%       Pb-Pb sNN = 2.76 TeV
+                           1
+                                                                                                                   60-80% ALICE
+                         0.8                                                                                       60-80% EPOS 2.17 v3
+                         0.6
+
+                         0.4
+                         0.2
+
+                               0       1       2   3   4   5   6   7   0       1    2    3      4    5   6   7   0   1       2    3   4    5   6   7
+                                                                                   p (GeV/c )
+                                                                                    T
+Fig. 26: (Color online). (Anti)proton to charged pion ratio as a function of transverse momentum (solid markers).
+The upper figure shows the full pT -range with the pp results (open markers) overlaid in the most central and
+the most peripheral centrality class. In the lower figure the Pb–Pb results for pT < 8 GeV/c are compared with
+EPOS model 2.17-3 (line). The systematic and statistical error are plotted as color boxes and vertical error bars,
+respectively.
+
+
+
+
+                                                                                        31
+Nuclear modification factor of charged pions, kaons, and protons                                                ALICE Collaboration
+
+
+
+                                                           -
+                                              ( K + K )/( π+ + π- )
+                                                 +
+                                                                                    3×( p + p )/( π+ + π- )
+
+
+
+
+                   Particle ratio
+                                    0.6                                     0.6
+                                                                                                10<p <20 GeV/ c
+                                                                                                      T
+
+                                    0.4                                     0.4
+
+
+                                    0.2 ALICE sNN=2.76 TeV                  0.2
+                                               Pb-Pb
+                                               pp
+                                     0                                        0
+                                          0          100       200   300    400 0       100     200       300   400
+                                                                           〈N part〉
+Fig. 27: (Color online). The integrated particle ratios for pT > 10 GeV/c in pp and Pb–Pb collisions as a function
+of the number of participants. Left panel: the kaon-to-pion ratio. Right panel: the proton-to-pion ratio scaled by
+a factor of 3 for clarity. Statistical and PID systematic uncertainties are plotted as vertical error bars and boxes
+around the points, respectively. Note that this kaon-to-pion (proton-to-pion) “high-pT” ratio is ≈4 (≈2) times
+larger than the bulk ratio [44].
+
+
+in the high-pT dE/dx analysis discussed in Sec. 2.1 are done independently for each centrality class
+(using disjunct datasets) so one does not expect any direct correlations of the results. We conclude
+that all kaon-to-pion (proton-to-pion) ratios as a function of Npart are consistent within the systematic
+uncertainty of ≈10 % (≈20%). Measurements with improved precision using Run 2 and Run 3 LHC
+data could reveal possible subtle particle-species differences.
+
+3.2   The intermediate pT results
+In the following, the intermediate pT regions in Fig. 25 and Fig. 26, where the proton-to-pion and the
+kaon-to-pion ratios are enhanced, are discussed.
+The observation of the large proton-to-pion ratio at intermediate pT at the RHIC generated numerous
+speculations that the degrees of freedom in the medium are constituent quark-like and that they recom-
+bine when hadronizing to give rise to distinct meson and baryon properties. As the φ meson has a similar
+mass to a proton, it is crucial in testing these ideas and results at the RHIC indeed seemed to confirm
+this picture [67], while at LHC the picture appears to be more complicated [68, 69]. Some of the mod-
+els developed to describe results at the RHIC have been extended to the LHC energies. One can, in
+general, separate recombination models into two classes. In soft models, recombination only occurs for
+soft thermal radially-flowing partons. In [68] ALICE showed calculations for such a model [31] and the
+prediction is that at the LHC energies the particle ratios in central collisions are similar to those mea-
+sured at the highest RHIC energy. In hard recombination models, jet fragments can recombine with both
+partons from the medium and other jets. At LHC energies, the mini-jet activity is much larger than at
+RHIC energies, which motivated predictions for central collisions of particle ratios an order of magnitude
+larger (p/π ∼ 10–20) than the peak values reported here and persisting out to much higher pT [34]. The
+failure of hard recombination is in qualitative agreement with the picture where the jet interacts with the
+medium as a whole so that the hard fragments of the jet cannot recombine with partons in the medium
+or in another jet.
+EPOS [70] is a full MC generator which contains both soft and hard physics. It incorporates a hydrody-
+namical phase and additional hadronization processes at intermediate pT where the interaction between
+bulk matter and quenched jets is considered [71]. This interaction introduces a baryon-meson effect,
+where fully quenched jets are allowed to hadronize with flowing medium quarks. When we study the
+full set of ratios at all centralities (Fig. 25 and Fig. 26) EPOS generally reproduces the centrality depen-
+
+
+                                                                           32
+Nuclear modification factor of charged pions, kaons, and protons                                              ALICE Collaboration
+
+
+dence well, even for very peripheral events, where it is known that pure hydrodynamical calculations
+fail to describe the data [44]. However, EPOS overpredicts the magnitude of both the proton-to-pion and
+the kaon-to-pion peak; it is therefore critical to understand how important the additional hadronization
+processes are, relative to the hydrodynamic flow, when all parameters have been tuned.
+
+                                                                                            -
+                                                                                    ( K + K )/( π+ + π- )
+                                                                                       +
+                                              ( p + p )/( π+ + π- )
+                                        1                                       1
+
+
+
+
+                     Particle ratio
+                                                     sNN=2.76 TeV                          sNN=0.2 TeV
+                                      0.8                              0.8                     STAR 0-12% Au-Au
+                                                        ALICE 0-10% Pb-Pb                      PHENIX 0-10% Au-Au
+                                      0.6                                  0.6
+
+                                      0.4                                  0.4
+
+                                      0.2                                  0.2
+
+                                            0 2 4 6 8 10 12 14 16 18 0 2 4 6 8 10 12 14 16 18
+                                                                      p (GeV/c )
+                                                                       T
+                                                    √
+Fig. 28: (Color online) ALICE (circles) results from sNN = 2.76 TeV Pb–Pb collisions compared with STAR
+                        √
+and PHENIX results for sNN = 200 GeV Au–Au collisions. Left panel: the proton-to-pion ratio. Right panel:
+the kaon-to-pion ratio.
+
+
+Figure 28 shows a comparison of particle ratios with results from STAR [25] and PHENIX [27] at the
+                                          √
+RHIC measured in Au–Au collision at sNN = 200 GeV. In both cases, the results have been averaged
+for both charge signs for pions and protons. We use the STAR feeddown-corrected data for this com-
+parison 7 . The proton-to-pion peak at the LHC is approximately 20% larger than at the RHIC, which
+is consistent with an increased average radial flow velocity. At high pT , the systematic uncertainties of
+the STAR data are very large and it was noted in a later publication that they might even be underesti-
+mated [26]. Interestingly, there is no evidence for a peak in the kaon-to-pion ratio measured by PHENIX,
+which is similar to the ALICE data points for pT ≤ 3 GeV/c, but continues to rise in the few data points
+above this pT .
+Careful modeling of pT spectra and azimuthal flow is needed to answer the question of whether there
+are additional hadronization processes such as soft recombination at the LHC8 . Since the multiplicity
+evolution of particle ratios in p–Pb collisions is similar to what is observed for Pb–Pb collisions [37] it
+would be interesting to include those results in the modeling, in particular, since there is no indication of
+jet quenching [73] which conceptually simplifies the problem.
+
+
+4 Conclusion
+We have reported the centrality dependent measurement of charged pions, kaons and (anti)protons at
+large transverse momenta in Pb–Pb collisions at the LHC. When combined with previously published
+data at lower pT , the new results provide a comprehensive dataset of pion, kaon, and (anti)proton pT
+spectra with unprecedented systematic precision and pT reach. The spectra are sensitive to physics
+mechanisms that differentiate between baryons and mesons, strange and non-strange, or heavy and light
+hadrons.
+   7 Values taken from https://drupal.star.bnl.gov/STAR/files/starpublications/65/data.html for protons and a similar feed-down
+
+correction has been assumed for anti-protons.
+   8 We note that in a recent preprint it is shown that soft recombination together with pQCD+quenching can give a good
+
+description of pion, kaon, and (anti)proton spectra in central heavy-ion collisions both at the RHIC and the LHC for 1.5 < pT <
+10 GeV/c [72].
+
+
+
+
+                                                                           33
+Nuclear modification factor of charged pions, kaons, and protons                   ALICE Collaboration
+
+
+At high pT (pT > 10 GeV/c), particle ratios and nuclear modification factors allow the study of effects
+related to jet quenching. The measurements in this pT range do not show any difference in the nuclear
+modification factor for pions, kaons, and protons. A comparison of the present results with jet mea-
+surements and theoretical calculations establishes that jet quenching does not introduce large species-
+dependent modifications for leading particles. Instead, at high pT , for all 6 centrality classes and the
+pp data analyzed here, the same kaon-to-pion and proton-to-pion ratios are obtained within a systematic
+precision of ≈10–20%.
+At intermediate pT , calculations are needed to determine whether models containing only hydrodynamics
+and jet quenching can provide a good description across many observables of the available experimental
+results or if additional processes such as recombination are needed. Since the initial geometry of the
+collision directly affects both the flow and the energy loss, the centrality dependence presented in this
+paper is important for constraining both the low-pT hydrodynamics and the high-pT jet quenching in the
+calculations.
+The results in this paper, taken together with the wealth of other high pT and jet results from the LHC,
+point toward a need for further development of a microscopic QCD-based picture that explains in detail
+the relation between the jet, the medium, and the energy loss.
+
+
+Acknowledgements
+The ALICE Collaboration would like to thank all its engineers and technicians for their invaluable con-
+tributions to the construction of the experiment and the CERN accelerator teams for the outstanding
+performance of the LHC complex. The ALICE Collaboration gratefully acknowledges the resources and
+support provided by all Grid centres and the Worldwide LHC Computing Grid (WLCG) collaboration.
+The ALICE Collaboration acknowledges the following funding agencies for their support in building
+and running the ALICE detector: State Committee of Science, World Federation of Scientists (WFS)
+and Swiss Fonds Kidagan, Armenia, Conselho Nacional de Desenvolvimento Cientı́fico e Tecnológico
+(CNPq), Financiadora de Estudos e Projetos (FINEP), Fundação de Amparo à Pesquisa do Estado de São
+Paulo (FAPESP); National Natural Science Foundation of China (NSFC), the Chinese Ministry of Edu-
+cation (CMOE) and the Ministry of Science and Technology of China (MSTC); Ministry of Education
+and Youth of the Czech Republic; Danish Natural Science Research Council, the Carlsberg Foundation
+and the Danish National Research Foundation; The European Research Council under the European
+Community’s Seventh Framework Programme; Helsinki Institute of Physics and the Academy of Fin-
+land; French CNRS-IN2P3, the ‘Region Pays de Loire’, ‘Region Alsace’, ‘Region Auvergne’ and CEA,
+France; German Bundesministerium fur Bildung, Wissenschaft, Forschung und Technologie (BMBF)
+and the Helmholtz Association; General Secretariat for Research and Technology, Ministry of Develop-
+ment, Greece; Hungarian Orszagos Tudomanyos Kutatasi Alappgrammok (OTKA) and National Office
+for Research and Technology (NKTH); Department of Atomic Energy and Department of Science and
+Technology of the Government of India; Istituto Nazionale di Fisica Nucleare (INFN) and Centro Fermi
+- Museo Storico della Fisica e Centro Studi e Ricerche ”Enrico Fermi”, Italy; MEXT Grant-in-Aid
+for Specially Promoted Research, Japan; Joint Institute for Nuclear Research, Dubna; National Research
+Foundation of Korea (NRF); Consejo Nacional de Cienca y Tecnologia (CONACYT), Direccion General
+de Asuntos del Personal Academico(DGAPA), México, Amerique Latine Formation academique - Euro-
+pean Commission (ALFA-EC) and the EPLANET Program (European Particle Physics Latin American
+Network); Stichting voor Fundamenteel Onderzoek der Materie (FOM) and the Nederlandse Organisatie
+voor Wetenschappelijk Onderzoek (NWO), Netherlands; Research Council of Norway (NFR); National
+Science Centre, Poland; Ministry of National Education/Institute for Atomic Physics and National Coun-
+cil of Scientific Research in Higher Education (CNCSI-UEFISCDI), Romania; Ministry of Education
+and Science of Russian Federation, Russian Academy of Sciences, Russian Federal Agency of Atomic
+Energy, Russian Federal Agency for Science and Innovations and The Russian Foundation for Basic Re-
+
+
+                                                   34
+Nuclear modification factor of charged pions, kaons, and protons                 ALICE Collaboration
+
+
+search; Ministry of Education of Slovakia; Department of Science and Technology, South Africa; Centro
+de Investigaciones Energeticas, Medioambientales y Tecnologicas (CIEMAT), E-Infrastructure shared
+between Europe and Latin America (EELA), Ministerio de Economı́a y Competitividad (MINECO) of
+Spain, Xunta de Galicia (Consellerı́a de Educación), Centro de Aplicaciones Tecnolgicas y Desarrollo
+Nuclear (CEADEN), Cubaenergı́a, Cuba, and IAEA (International Atomic Energy Agency); Swedish
+Research Council (VR) and Knut & Alice Wallenberg Foundation (KAW); Ukraine Ministry of Edu-
+cation and Science; United Kingdom Science and Technology Facilities Council (STFC); The United
+States Department of Energy, the United States National Science Foundation, the State of Texas, and the
+State of Ohio; Ministry of Science, Education and Sports of Croatia and Unity through Knowledge Fund,
+Croatia. Council of Scientific and Industrial Research (CSIR), New Delhi, India
+
+
+References
+ [1] BRAHMS Collaboration, I. Arsene et al., “Quark gluon plasma and color glass condensate at
+     RHIC? The Perspective from the BRAHMS experiment,” Nucl. Phys. A 757 (2005) 1–27.
+
+ [2] PHENIX Collaboration, K. Adcox et al., “Formation of dense partonic matter in relativistic
+     nucleus-nucleus collisions at RHIC: Experimental evaluation by the PHENIX collaboration,”
+     Nucl. Phys. A 757 (2005) 184–283.
+
+ [3] B. Back, M. Baker, M. Ballintijn, D. Barton, B. Becker, et al., “The PHOBOS perspective on
+     discoveries at RHIC,” Nucl. Phys. A 757 (2005) 28–101.
+
+ [4] STAR Collaboration, J. Adams et al., “Experimental and theoretical challenges in the search for
+     the quark gluon plasma: The STAR Collaboration’s critical assessment of the evidence from RHIC
+     collisions,” Nucl. Phys. A 757 (2005) 102–183.
+
+ [5] ALICE Collaboration, K. Aamodt et al., “Elliptic flow of charged particles in Pb-Pb collisions at
+     2.76 TeV,” Phys. Rev. Lett. 105 (2010) 252302.
+
+ [6] ALICE Collaboration, K. Aamodt et al., “Suppression of Charged Particle Production at Large
+                                                        √
+     Transverse Momentum in Central Pb–Pb Collisions at sNN = 2.76 TeV,”
+     Phys. Lett. B 696 (2011) 30–39.
+
+ [7] ALICE Collaboration, B. Abelev et al., “J/ψ suppression at forward rapidity in Pb-Pb collisions
+       √
+     at sNN = 2.76 TeV,” Phys. Rev. Lett. 109 (2012) 072301.
+
+ [8] ATLAS Collaboration, G. Aad et al., “Observation of a Centrality-Dependent Dijet Asymmetry in
+                              √
+     Lead-Lead Collisions at sNN = 2.77 TeV with the ATLAS Detector at the LHC,”
+     Phys. Rev. Lett. 105 (2010) 252303.
+
+ [9] CMS Collaboration, S. Chatrchyan et al., “Observation and studies of jet quenching in PbPb
+     collisions at nucleon-nucleon center-of-mass energy = 2.76 TeV,” Phys. Rev. C 84 (2011) 024906.
+
+[10] M. Gyulassy and M. Plumer, “Jet Quenching in Dense Matter,” Phys. Lett. B 243 (1990) 432–438.
+
+[11] M. Gyulassy and X.-n. Wang, “Multiple collisions and induced gluon Bremsstrahlung in QCD,”
+     Nucl. Phys. B 420 (1994) 583–614.
+
+[12] E. Wang and X.-N. Wang, “Jet tomography of dense and nuclear matter,”
+     Phys. Rev. Lett. 89 (2002) 162301.
+
+[13] PHENIX Collaboration, K. Adcox et al., “Suppression of hadrons with large transverse
+                                             √
+     momentum in central Au+Au collisions at sNN = 130-GeV,” Phys. Rev. Lett. 88 (2002) 022301.
+
+
+                                                  35
+Nuclear modification factor of charged pions, kaons, and protons                  ALICE Collaboration
+
+
+[14] STAR Collaboration, C. Adler et al., “Centrality dependence of high pT hadron suppression in
+                        √
+     Au+Au collisions at sNN = 130-GeV,” Phys. Rev. Lett. 89 (2002) 202301.
+
+[15] STAR Collaboration, J. Adams et al., “Transverse momentum and collision energy dependence of
+     high p(T) hadron suppression in Au+Au collisions at ultrarelativistic energies,”
+     Phys. Rev. Lett. 91 (2003) 172302.
+
+[16] ALICE Collaboration, B. Abelev et al., “Centrality Dependence of Charged Particle Production at
+                                                         √
+     Large Transverse Momentum in Pb–Pb Collisions at sNN = 2.76 TeV,”
+     Phys. Lett. B 720 (2013) 52–62.
+
+[17] CMS Collaboration, S. Chatrchyan et al., “Study of high-pT charged particle suppression in PbPb
+                                 √
+     compared to pp collisions at sNN = 2.76 TeV,” Eur. Phys. J. C 72 (2012) 1945.
+
+[18] ATLAS Collaboration, G. Aad et al., “Measurement of charged-particle spectra in Pb+Pb
+                  √
+     collisions at sNN = 2.76 TeV with the ATLAS detector at the LHC,”.
+
+[19] X.-N. Wang, “Effect of jet quenching on high pT hadron spectra in high-energy nuclear
+     collisions,” Phys. Rev. C 58 (1998) 2321.
+
+[20] T. Renk and K. J. Eskola, “Proton-antiproton suppression in 200A GeV Au-Au collisions,”
+     Phys. Rev. C 76 (2007) 027901.
+
+[21] DELPHI Collaboration, P. Abreu et al., “Identified charged particles in quark and gluon jets,”
+     Eur. Phys. J. C 17 (2000) 207–222.
+
+[22] S. Sapeta and U. A. Wiedemann, “Jet hadrochemistry as a characteristics of jet quenching,”
+     Eur. Phys. J. C 55 (2008) 293–302.
+
+[23] P. Aurenche and B. Zakharov, “Jet color chemistry and anomalous baryon production in
+     AA-collisions,” Eur. Phys. J. C 71 (2011) 1829.
+
+[24] R. Bellwied and C. Markert, “In-medium hadronization in the deconfined matter at RHIC and
+     LHC,” Phys. Lett. B 691 (2010) 208–213.
+
+[25] STAR Collaboration, B. Abelev et al., “Identified baryon and meson distributions at large
+                                                   √
+     transverse momenta from Au+Au collisions at sNN = 200,” Phys. Rev. Lett. 97 (2006) 152301.
+
+[26] STAR Collaboration, G. Agakishiev et al., “Identified hadron compositions in p+p and Au+Au
+                                             √
+     collisions at high transverse momenta at sNN = 200 GeV,” Phys. Rev. Lett. 108 (2012) 072302.
+
+[27] PHENIX Collaboration, A. Adare et al., “Spectra and ratios of identified particles in Au+Au and
+                       √
+     d+Au collisions at sNN = 200 GeV,” Phys. Rev. C 88 (2013) 024906.
+
+[28] PHENIX Collaboration, K. Adcox et al., “Centrality dependence of π + / π − , K+ / K− , p and
+                             √
+     anti-p production from sNN = 130 GeV Au+Au collisions at RHIC,”
+     Phys. Rev. Lett. 88 (2002) 242301.
+
+[29] PHENIX Collaboration, S. Adler et al., “Scaling properties of proton and anti-proton production
+       √
+     in sNN = 200 GeV Au+Au collisions,” Phys. Rev. Lett. 91 (2003) 172301.
+
+[30] STAR Collaboration, J. Adams et al., “Particle type dependence of azimuthal anisotropy and
+                                                                         √
+     nuclear modification of particle production in Au + Au collisions at sNN = 200 GeV,”
+     Phys. Rev. Lett. 92 (2004) 052302.
+
+[31] R. J. Fries, B. Müller, C. Nonaka, and S. A. Bass, “Hadron production in heavy ion collisions:
+     Fragmentation and recombination from a dense parton phase,” Phys. Rev. C 68 (2003) 044902.
+
+                                                  36
+Nuclear modification factor of charged pions, kaons, and protons                   ALICE Collaboration
+
+
+[32] V. Topor Pop, M. Gyulassy, J. Barrette, C. Gale, X. Wang, et al., “Baryon junction loops in
+     HIJING / B anti-B v2.0 and the baryon /meson anomaly at RHIC,” Phys. Rev. C 70 (2004) 064906.
+
+[33] S. J. Brodsky and A. Sickles, “The Baryon Anomaly: Evidence for Color Transparency and Direct
+     Hadron Production at RHIC,” Phys. Lett. B 668 (2008) 111–115.
+
+[34] R. C. Hwa and C. Yang, “Proton enhancement at large pT at LHC without structure in
+     associated-particle distribution,” Phys. Rev. Lett. 97 (2006) 042301.
+
+[35] ALICE Collaboration, B. Abelev et al., “Production of charged pions, kaons and protons at large
+                                                     √
+     transverse momenta in pp and Pb-Pb collisions at sNN = 2.76 TeV,”
+     Phys. Lett. B 736 (2014) 196–207.
+
+[36] ALICE Collaboration, B. Abelev et al., “Long-range angular correlations of π , K and p in p-Pb
+                  √
+     collisions at sNN = 5.02 TeV,” Phys. Lett. B 726 (2013) 164–177.
+
+[37] ALICE Collaboration, B. Abelev et al., “Multiplicity Dependence of Pion, Kaon, Proton and
+                                             √
+     Lambda Production in p-Pb Collisions at sNN = 5.02 TeV,” Phys. Lett. B 728 (2014) 25–38.
+
+[38] CMS Collaboration, V. Khachatryan et al., “Long-range two-particle correlations of strange
+     hadrons with charged particles in pPb and PbPb collisions at LHC energies,”
+     Phys. Lett. B 742 (2015) 200–224.
+
+[39] E. Shuryak and I. Zahed, “High-multiplicity pp and pA collisions: Hydrodynamics at its edge,”
+     Phys. Rev. C 88 (2013) 044915.
+
+[40] K. Werner, M. Bleicher, B. Guiot, I. Karpenko, and T. Pierog, “Evidence for Flow from
+     Hydrodynamic Simulations of p-Pb Collisions at 5.02 TeV from ν2 Mass Splitting,”
+     Phys. Rev. Lett. 112 (2014) 232301.
+
+[41] P. Bozek, W. Broniowski, and G. Torrieri, “Mass hierarchy in identified particle distributions in
+     proton-lead collisions,” Phys. Rev. Lett. 111 (2013) 172303.
+
+[42] ALICE Collaboration, K. Aamodt et al., “The ALICE experiment at the CERN LHC,”
+     JINST 3 (2008) S08002.
+
+[43] ALICE Collaboration, B. Abelev et al., “Performance of the ALICE Experiment at the CERN
+     LHC,” Int. J. Mod. Phys. A 29 (2014) 1430044.
+
+[44] ALICE Collaboration, B. Abelev et al., “Centrality dependence of π , K, p production in Pb-Pb
+                  √
+     collisions at sNN = 2.76 TeV,” Phys. Rev. C 88 (2013) 044910.
+
+[45] ALICE Collaboration, E. Abbas et al., “Performance of the ALICE VZERO system,”
+     JINST 8 (2013) P10016.
+
+[46] J. Alme, Y. Andres, H. Appelshauser, S. Bablok, N. Bialas, et al., “The ALICE TPC, a large
+     3-dimensional tracking device with fast readout for ultra-high multiplicity events,”
+     Nucl. Instrum. Meth. A 622 (2010) 316–367.
+
+[47] ALICE Collaboration, B. Abelev et al., “Energy Dependence of the Transverse Momentum
+     Distributions of Charged Particles in pp Collisions Measured by ALICE,”
+     Eur. Phys. J. C 73 (2013) 2662.
+
+[48] H. Bichsel, “A method to improve tracking and particle identification in TPCs and silicon
+     detectors,” Nucl. Instrum. Meth. A 562 (2006) 154–197.
+
+
+                                                   37
+Nuclear modification factor of charged pions, kaons, and protons                  ALICE Collaboration
+
+
+[49] ALEPH Collaboration, D. Buskulic et al., “Performance of the ALEPH detector at LEP,”
+     Nucl. Instrum. Meth. A 360 (1995) 481–506.
+
+[50] P. Christiansen et al., “The influence of detector effects on TPC performance,”
+     Nucl. Instrum. Meth. A 609 (2009) 149–155.
+                                                                                           √
+[51] ALICE Collaboration, B. Abelev et al., “KS0 and Λ production in Pb-Pb collisions at       sNN = 2.76
+     TeV,” Phys. Rev. Lett. 111 (2013) 222301.
+
+[52] T. Sjostrand, S. Mrenna, and P. Z. Skands, “PYTHIA 6.4 Physics and Manual,”
+     JHEP 0605 (2006) 026.
+
+[53] F. W. Bopp, R. Engel, and J. Ranft, “Rapidity gaps and the PHOJET Monte Carlo,”
+     arXiv:hep-ph/9803437 [hep-ph].
+
+[54] X.-N. Wang and M. Gyulassy, “Hijing: A monte carlo model for multiple jet production in pp, pa,
+     and aa collisions,” Phys. Rev. D 44 (1991) 3501–3516.
+
+[55] ALICE Collaboration, ALICE collaboration, “ALICE Technical Design Report of the High
+     Momentum Particle Identification Detector,” CERN/LHCC 98-19, ALICE TDR 1 (1998) .
+
+[56] D. Cozza, D. Di Bari, D. Elia, E. Nappi, A. Di Mauro, et al., “Recognition of Cherenkov patterns
+     in high multiplicity environments,” Nucl. Instrum. Meth. A 482 (2002) 226–237.
+
+[57] ALICE Collaboration, B. Abelev et al., “Neutral pion production at midrapidity in pp and Pb-Pb
+                  √
+     collisions at sNN = 2.76 TeV,” Eur. Phys. J. C 74 (2014) 3108.
+                                                                                            √
+[58] ALICE Collaboration, B. Abelev et al., “Centrality determination of Pb-Pb collisions at sNN =
+     2.76 TeV with ALICE,” Phys. Rev. C 88 (2013) 044909.
+
+[59] CMS Collaboration, S. Chatrchyan et al., “Measurement of jet fragmentation into charged
+                                           √
+     particles in pp and PbPb collisions at sNN = 2.76 TeV,” JHEP 1210 (2012) 087.
+
+[60] CMS Collaboration, S. Chatrchyan et al., “Measurement of jet fragmentation in PbPb and pp
+     collisions at sqrt(s[NN]) = 2.76 TeV,” Phys. Rev. C 90 (2014) 024908.
+
+[61] D. d’Enterria, K. J. Eskola, I. Helenius, and H. Paukkunen, “Confronting current NLO parton
+     fragmentation functions with inclusive charged-particle spectra at hadron colliders,”
+     Nucl. Phys. B 883 (2014) 615–628.
+
+[62] S. Kretzer, “Fragmentation functions from flavor inclusive and flavor tagged e+ e- annihilations,”
+     Phys. Rev. D 62 (2000) 054001.
+
+[63] ALICE Collaboration, B. Abelev et al., “Measurement of charged jet suppression in Pb-Pb
+                  √
+     collisions at sNN = 2.76 TeV,” JHEP 1403 (2014) 013.
+
+[64] J. Casalderrey-Solana, Y. Mehtar-Tani, C. A. Salgado, and K. Tywoniuk, “New picture of jet
+     quenching dictated by color coherence,” Phys. Lett. B 725 (2013) 357–360.
+
+[65] PHENIX Collaboration, A. Adare et al., “Neutral pion production with respect to centrality and
+                                          √
+     reaction plane in Au+Au collisions at sNN =200 GeV,” Phys. Rev. C 87 (2013) 034911.
+
+[66] P. Christiansen, K. Tywoniuk, and V. Vislavicius, “Universal scaling dependence of QCD energy
+     loss from data driven studies,” Phys. Rev. C 89 (2014) 034912.
+
+[67] STAR Collaboration, B. Abelev et al., “Partonic flow and phi-meson production in Au + Au
+                  √
+     collisions at sNN = 200 GeV,” Phys. Rev. Lett. 99 (2007) 112301.
+
+                                                   38
+Nuclear modification factor of charged pions, kaons, and protons                  ALICE Collaboration
+
+
+[68] ALICE Collaboration, B. Abelev et al., “K ∗ (892)0 and Φ(1020) production in Pb-Pb collisions at
+     √
+       sNN =2.76 TeV,” Phys. Rev. C 91 (2015) 024609.
+
+[69] ALICE Collaboration, B. Abelev et al., “Elliptic flow of identified hadrons in Pb-Pb collisions at
+     √
+       sNN = 2.76 TeV,” JHEP 06 (2015) 190.
+
+[70] K. Werner, I. Karpenko, M. Bleicher, T. Pierog, and S. Porteboeuf-Houssais, “Jets, bulk matter,
+     and their interaction in heavy ion collisions at several tev,” Phys. Rev. C 85 (2012) 064907.
+
+[71] K. Werner, “Lambda-to-Kaon Ratio Enhancement in Heavy Ion Collisions at Several TeV,”
+     Phys. Rev. Lett. 109 (2012) 102301.
+
+[72] V. Minissale, F. Scardina, and V. Greco, “Hadrons from coalescence plus fragmentation in AA
+     collisions at energies available at the BNL Relativistic Heavy Ion Collider to the CERN Large
+     Hadron Collider,” Phys. Rev. C 92 (2015) 054904.
+
+[73] ALICE Collaboration, B. Abelev et al., “Transverse momentum distribution and nuclear
+                                                                   √
+     modification factor of charged particles in p-Pb collisions at sNN = 5.02 TeV,”
+     Phys. Rev. Lett. 110 (2013) 082302.
+
+
+
+
+                                                  39
+Nuclear modification factor of charged pions, kaons, and protons                                 ALICE Collaboration
+
+
+A    The ALICE Collaboration
+J. Adam40 , D. Adamová83 , M.M. Aggarwal87 , G. Aglieri Rinella36 , M. Agnello111 , N. Agrawal48 ,
+Z. Ahammed132 , S.U. Ahn68 , I. Aimo94 ,111 , S. Aiola137 , M. Ajaz16 , A. Akindinov58 , S.N. Alam132 ,
+D. Aleksandrov100 , B. Alessandro111 , D. Alexandre102 , R. Alfaro Molina64 , A. Alici105 ,12 , A. Alkin3 ,
+J.R.M. Almaraz119 , J. Alme38 , T. Alt43 , S. Altinpinar18 , I. Altsybeev131 , C. Alves Garcia Prado120 ,
+C. Andrei78 , A. Andronic97 , V. Anguelov93 , J. Anielski54 , T. Antičić98 , F. Antinori108 , P. Antonioli105 ,
+L. Aphecetche113 , H. Appelshäuser53 , S. Arcelli28 , N. Armesto17 , R. Arnaldi111 , I.C. Arsene22 ,
+M. Arslandok53 , B. Audurier113 , A. Augustinus36 , R. Averbeck97 , M.D. Azmi19 , M. Bach43 , A. Badalà107 ,
+Y.W. Baek44 , S. Bagnasco111 , R. Bailhache53 , R. Bala90 , A. Baldisseri15 , F. Baltasar Dos Santos Pedrosa36 ,
+R.C. Baral61 , A.M. Barbano111 , R. Barbera29 , F. Barile33 , G.G. Barnaföldi136 , L.S. Barnby102 , V. Barret70 ,
+P. Bartalini7 , K. Barth36 , J. Bartke117 , E. Bartsch53 , M. Basile28 , N. Bastid70 , S. Basu132 , B. Bathen54 ,
+G. Batigne113 , A. Batista Camejo70 , B. Batyunya66 , P.C. Batzing22 , I.G. Bearden80 , H. Beck53 , C. Bedda111 ,
+N.K. Behera48 ,49 , I. Belikov55 , F. Bellini28 , H. Bello Martinez2 , R. Bellwied122 , R. Belmont135 ,
+E. Belmont-Moreno64 , V. Belyaev76 , G. Bencedi136 , S. Beole27 , I. Berceanu78 , A. Bercuci78 , Y. Berdnikov85 ,
+D. Berenyi136 , R.A. Bertens57 , D. Berzano36 ,27 , L. Betev36 , A. Bhasin90 , I.R. Bhat90 , A.K. Bhati87 ,
+B. Bhattacharjee45 , J. Bhom128 , L. Bianchi122 , N. Bianchi72 , C. Bianchin135 ,57 , J. Bielčı́k40 , J. Bielčı́ková83 ,
+A. Bilandzic80 , R. Biswas4 , S. Biswas79 , S. Bjelogrlic57 , J.T. Blair118 , F. Blanco10 , D. Blau100 , C. Blume53 ,
+F. Bock93 ,74 , A. Bogdanov76 , H. Bøggild80 , L. Boldizsár136 , M. Bombara41 , J. Book53 , H. Borel15 ,
+A. Borissov96 , M. Borri82 , F. Bossú65 , E. Botta27 , S. Böttger52 , P. Braun-Munzinger97 , M. Bregant120 ,
+T. Breitner52 , T.A. Broker53 , T.A. Browning95 , M. Broz40 , E.J. Brucken46 , E. Bruna111 , G.E. Bruno33 ,
+D. Budnikov99 , H. Buesching53 , S. Bufalino111 , P. Buncic36 , O. Busch93 ,128 , Z. Buthelezi65 , J.B. Butt16 ,
+J.T. Buxton20 , D. Caffarri36 , X. Cai7 , H. Caines137 , L. Calero Diaz72 , A. Caliva57 , E. Calvo Villar103 ,
+P. Camerini26 , F. Carena36 , W. Carena36 , F. Carnesecchi28 , J. Castillo Castellanos15 , A.J. Castro125 ,
+E.A.R. Casula25 , C. Cavicchioli36 , C. Ceballos Sanchez9 , J. Cepila40 , P. Cerello111 , J. Cerkala115 ,
+B. Chang123 , S. Chapeland36 , M. Chartier124 , J.L. Charvet15 , S. Chattopadhyay132 , S. Chattopadhyay101 ,
+V. Chelnokov3 , M. Cherney86 , C. Cheshkov130 , B. Cheynis130 , V. Chibante Barroso36 , D.D. Chinellato121 ,
+P. Chochula36 , K. Choi96 , M. Chojnacki80 , S. Choudhury132 , P. Christakoglou81 , C.H. Christensen80 ,
+P. Christiansen34 , T. Chujo128 , S.U. Chung96 , Z. Chunhui57 , C. Cicalo106 , L. Cifarelli12 ,28 , F. Cindolo105 ,
+J. Cleymans89 , F. Colamaria33 , D. Colella36 ,33 ,59 , A. Collu25 , M. Colocci28 , G. Conesa Balbastre71 , Z. Conesa
+del Valle51 , M.E. Connors137 , J.G. Contreras11 ,40 , T.M. Cormier84 , Y. Corrales Morales27 , I. Cortés
+Maldonado2 , P. Cortese32 , M.R. Cosentino120 , F. Costa36 , P. Crochet70 , R. Cruz Albino11 , E. Cuautle63 ,
+L. Cunqueiro36 , T. Dahms92 ,37 , A. Dainese108 , A. Danu62 , D. Das101 , I. Das51 ,101 , S. Das4 , A. Dash121 ,
+S. Dash48 , S. De120 , A. De Caro31 ,12 , G. de Cataldo104 , J. de Cuveland43 , A. De Falco25 , D. De Gruttola12 ,31 ,
+N. De Marco111 , S. De Pasquale31 , A. Deisting97 ,93 , A. Deloff77 , E. Dénes136 , G. D’Erasmo33 , D. Di Bari33 ,
+A. Di Mauro36 , P. Di Nezza72 , M.A. Diaz Corchero10 , T. Dietel89 , P. Dillenseger53 , R. Divià36 ,
+Ø. Djuvsland18 , A. Dobrin57 ,81 , T. Dobrowolski77 ,i , D. Domenicis Gimenez120 , B. Dönigus53 , O. Dordic22 ,
+T. Drozhzhova53 , A.K. Dubey132 , A. Dubla57 , L. Ducroux130 , P. Dupieux70 , R.J. Ehlers137 , D. Elia104 ,
+H. Engel52 , B. Erazmus36 ,113 , I. Erdemir53 , F. Erhardt129 , D. Eschweiler43 , B. Espagnon51 , M. Estienne113 ,
+S. Esumi128 , J. Eum96 , D. Evans102 , S. Evdokimov112 , G. Eyyubova40 , L. Fabbietti37 ,92 , D. Fabris108 ,
+J. Faivre71 , A. Fantoni72 , M. Fasel74 , L. Feldkamp54 , D. Felea62 , A. Feliciello111 , G. Feofilov131 ,
+J. Ferencei83 , A. Fernández Téllez2 , E.G. Ferreiro17 , A. Ferretti27 , A. Festanti30 , V.J.G. Feuillard70 ,15 ,
+J. Figiel117 , M.A.S. Figueredo124 ,120 , S. Filchagin99 , D. Finogeev56 , E.M. Fiore33 , M.G. Fleck93 , M. Floris36 ,
+S. Foertsch65 , P. Foka97 , S. Fokin100 , E. Fragiacomo110 , A. Francescon30 ,36 , U. Frankenfeld97 , U. Fuchs36 ,
+C. Furget71 , A. Furs56 , M. Fusco Girard31 , J.J. Gaardhøje80 , M. Gagliardi27 , A.M. Gago103 , M. Gallio27 ,
+D.R. Gangadharan74 , P. Ganoti88 , C. Gao7 , C. Garabatos97 , E. Garcia-Solis13 , C. Gargiulo36 , P. Gasik92 ,37 ,
+M. Germain113 , A. Gheata36 , M. Gheata62 ,36 , P. Ghosh132 , S.K. Ghosh4 , P. Gianotti72 , P. Giubellino36 ,111 ,
+P. Giubilato30 , E. Gladysz-Dziadus117 , P. Glässel93 , D.M. Goméz Coral64 , A. Gomez Ramirez52 ,
+P. González-Zamora10 , S. Gorbunov43 , L. Görlich117 , S. Gotovac116 , V. Grabski64 , L.K. Graczykowski134 ,
+K.L. Graham102 , A. Grelli57 , A. Grigoras36 , C. Grigoras36 , V. Grigoriev76 , A. Grigoryan1 , S. Grigoryan66 ,
+B. Grinyov3 , N. Grion110 , J.F. Grosse-Oetringhaus36 , J.-Y. Grossiord130 , R. Grosso36 , F. Guber56 ,
+R. Guernane71 , B. Guerzoni28 , K. Gulbrandsen80 , H. Gulkanyan1 , T. Gunji127 , A. Gupta90 , R. Gupta90 ,
+R. Haake54 , Ø. Haaland18 , C. Hadjidakis51 , M. Haiduc62 , H. Hamagaki127 , G. Hamar136 , A. Hansen80 ,
+J.W. Harris137 , H. Hartmann43 , A. Harton13 , D. Hatzifotiadou105 , S. Hayashi127 , S.T. Heckel53 , M. Heide54 ,
+H. Helstrup38 , A. Herghelegiu78 , G. Herrera Corral11 , B.A. Hess35 , K.F. Hetland38 , T.E. Hilden46 ,
+H. Hillemanns36 , B. Hippolyte55 , R. Hosokawa128 , P. Hristov36 , M. Huang18 , T.J. Humanic20 , N. Hussain45 ,
+T. Hussain19 , D. Hutter43 , D.S. Hwang21 , R. Ilkaev99 , I. Ilkiv77 , M. Inaba128 , M. Ippolitov76 ,100 , M. Irfan19 ,
+
+
+                                                            40
+Nuclear modification factor of charged pions, kaons, and protons                               ALICE Collaboration
+
+
+M. Ivanov97 , V. Ivanov85 , V. Izucheev112 , P.M. Jacobs74 , S. Jadlovska115 , C. Jahnke120 , H.J. Jang68 ,
+M.A. Janik134 , P.H.S.Y. Jayarathna122 , C. Jena30 , S. Jena122 , R.T. Jimenez Bustamante97 , P.G. Jones102 ,
+H. Jung44 , A. Jusko102 , P. Kalinak59 , A. Kalweit36 , J. Kamin53 , J.H. Kang138 , V. Kaplin76 , S. Kar132 ,
+A. Karasu Uysal69 , O. Karavichev56 , T. Karavicheva56 , L. Karayan93 ,97 , E. Karpechev56 , U. Kebschull52 ,
+R. Keidel139 , D.L.D. Keijdener57 , M. Keil36 , K.H. Khan16 , M.M. Khan19 , P. Khan101 , S.A. Khan132 ,
+A. Khanzadeev85 , Y. Kharlov112 , B. Kileng38 , B. Kim138 , D.W. Kim68 ,44 , D.J. Kim123 , H. Kim138 , J.S. Kim44 ,
+M. Kim44 , M. Kim138 , S. Kim21 , T. Kim138 , S. Kirsch43 , I. Kisel43 , S. Kiselev58 , A. Kisiel134 , G. Kiss136 ,
+J.L. Klay6 , C. Klein53 , J. Klein36 ,93 , C. Klein-Bösing54 , A. Kluge36 , M.L. Knichel93 , A.G. Knospe118 ,
+T. Kobayashi128 , C. Kobdaj114 , M. Kofarago36 , T. Kollegger43 ,97 , A. Kolojvari131 , V. Kondratiev131 ,
+N. Kondratyeva76 , E. Kondratyuk112 , A. Konevskikh56 , M. Kopcik115 , M. Kour90 , C. Kouzinopoulos36 ,
+O. Kovalenko77 , V. Kovalenko131 , M. Kowalski117 , G. Koyithatta Meethaleveedu48 , J. Kral123 , I. Králik59 ,
+A. Kravčáková41 , M. Krelina40 , M. Kretz43 , M. Krivda102 ,59 , F. Krizek83 , E. Kryshen36 , M. Krzewicki43 ,
+A.M. Kubera20 , V. Kučera83 , T. Kugathasan36 , C. Kuhn55 , P.G. Kuijer81 , I. Kulakov43 , A. Kumar90 ,
+J. Kumar48 , L. Kumar79 ,87 , P. Kurashvili77 , A. Kurepin56 , A.B. Kurepin56 , A. Kuryakin99 , S. Kushpil83 ,
+M.J. Kweon50 , Y. Kwon138 , S.L. La Pointe111 , P. La Rocca29 , C. Lagana Fernandes120 , I. Lakomov36 ,
+R. Langoy42 , C. Lara52 , A. Lardeux15 , A. Lattuca27 , E. Laudi36 , R. Lea26 , L. Leardini93 , G.R. Lee102 ,
+S. Lee138 , I. Legrand36 , F. Lehas81 , R.C. Lemmon82 , V. Lenti104 , E. Leogrande57 , I. León Monzón119 ,
+M. Leoncino27 , P. Lévai136 , S. Li7 ,70 , X. Li14 , J. Lien42 , R. Lietava102 , S. Lindal22 , V. Lindenstruth43 ,
+C. Lippmann97 , M.A. Lisa20 , H.M. Ljunggren34 , D.F. Lodato57 , P.I. Loenne18 , V. Loginov76 , C. Loizides74 ,
+X. Lopez70 , E. López Torres9 , A. Lowe136 , P. Luettig53 , M. Lunardon30 , G. Luparello26 , P.H.F.N.D. Luz120 ,
+A. Maevskaya56 , M. Mager36 , S. Mahajan90 , S.M. Mahmood22 , A. Maire55 , R.D. Majka137 , M. Malaev85 ,
+I. Maldonado Cervantes63 , L. Malinina,ii,66 , D. Mal’Kevich58 , P. Malzacher97 , A. Mamonov99 , V. Manko100 ,
+F. Manso70 , V. Manzari36 ,104 , M. Marchisone27 , J. Mareš60 , G.V. Margagliotti26 , A. Margotti105 ,
+J. Margutti57 , A. Marı́n97 , C. Markert118 , M. Marquard53 , N.A. Martin97 , J. Martin Blanco113 ,
+P. Martinengo36 , M.I. Martı́nez2 , G. Martı́nez Garcı́a113 , M. Martinez Pedreira36 , Y. Martynov3 , A. Mas120 ,
+S. Masciocchi97 , M. Masera27 , A. Masoni106 , L. Massacrier113 , A. Mastroserio33 , H. Masui128 , A. Matyja117 ,
+C. Mayer117 , J. Mazer125 , M.A. Mazzoni109 , D. Mcdonald122 , F. Meddi24 , Y. Melikyan76 ,
+A. Menchaca-Rocha64 , E. Meninno31 , J. Mercado Pérez93 , M. Meres39 , Y. Miake128 , M.M. Mieskolainen46 ,
+K. Mikhaylov58 ,66 , L. Milano36 , J. Milosevic22 ,133 , L.M. Minervini104 ,23 , A. Mischke57 , A.N. Mishra49 ,
+D. Miśkowiec97 , J. Mitra132 , C.M. Mitu62 , N. Mohammadi57 , B. Mohanty132 ,79 , L. Molnar55 , L. Montaño
+Zetina11 , E. Montes10 , M. Morando30 , D.A. Moreira De Godoy113 ,54 , S. Moretto30 , A. Morreale113 ,
+A. Morsch36 , V. Muccifora72 , E. Mudnic116 , D. Mühlheim54 , S. Muhuri132 , M. Mukherjee132 ,
+J.D. Mulligan137 , M.G. Munhoz120 , S. Murray65 , L. Musa36 , J. Musinsky59 , B.K. Nandi48 , R. Nania105 ,
+E. Nappi104 , M.U. Naru16 , C. Nattrass125 , K. Nayak79 , T.K. Nayak132 , S. Nazarenko99 , A. Nedosekin58 ,
+L. Nellen63 , F. Ng122 , M. Nicassio97 , M. Niculescu62 ,36 , J. Niedziela36 , B.S. Nielsen80 , S. Nikolaev100 ,
+S. Nikulin100 , V. Nikulin85 , F. Noferini105 ,12 , P. Nomokonov66 , G. Nooren57 , J.C.C. Noris2 , J. Norman124 ,
+A. Nyanin100 , J. Nystrand18 , H. Oeschler93 , S. Oh137 , S.K. Oh67 , A. Ohlson36 , A. Okatan69 , T. Okubo47 ,
+L. Olah136 , J. Oleniacz134 , A.C. Oliveira Da Silva120 , M.H. Oliver137 , J. Onderwaater97 , C. Oppedisano111 ,
+R. Orava46 , A. Ortiz Velasquez63 , A. Oskarsson34 , J. Otwinowski117 , K. Oyama93 , M. Ozdemir53 ,
+Y. Pachmayer93 , P. Pagano31 , G. Paić63 , C. Pajares17 , S.K. Pal132 , J. Pan135 , A.K. Pandey48 , D. Pant48 ,
+P. Papcun115 , V. Papikyan1 , G.S. Pappalardo107 , P. Pareek49 , W.J. Park97 , S. Parmar87 , A. Passfeld54 ,
+V. Paticchio104 , R.N. Patra132 , B. Paul101 , T. Peitzmann57 , H. Pereira Da Costa15 , E. Pereira De Oliveira
+Filho120 , D. Peresunko100 ,76 , C.E. Pérez Lara81 , E. Perez Lezama53 , V. Peskov53 , Y. Pestov5 , V. Petráček40 ,
+V. Petrov112 , M. Petrovici78 , C. Petta29 , S. Piano110 , M. Pikna39 , P. Pillot113 , O. Pinazza105 ,36 , L. Pinsky122 ,
+D.B. Piyarathna122 , M. Płoskoń74 , M. Planinic129 , J. Pluta134 , S. Pochybova136 , P.L.M. Podesta-Lerma119 ,
+M.G. Poghosyan86 ,84 , B. Polichtchouk112 , N. Poljak129 , W. Poonsawat114 , A. Pop78 ,
+S. Porteboeuf-Houssais70 , J. Porter74 , J. Pospisil83 , S.K. Prasad4 , R. Preghenella36 ,105 , F. Prino111 ,
+C.A. Pruneau135 , I. Pshenichnov56 , M. Puccio111 , G. Puddu25 , P. Pujahari135 , V. Punin99 , J. Putschke135 ,
+H. Qvigstad22 , A. Rachevski110 , S. Raha4 , S. Rajput90 , J. Rak123 , A. Rakotozafindrabe15 , L. Ramello32 ,
+R. Raniwala91 , S. Raniwala91 , S.S. Räsänen46 , B.T. Rascanu53 , D. Rathee87 , K.F. Read125 , J.S. Real71 ,
+K. Redlich77 , R.J. Reed135 , A. Rehman18 , P. Reichelt53 , F. Reidt93 ,36 , X. Ren7 , R. Renfordt53 , A.R. Reolon72 ,
+A. Reshetin56 , F. Rettig43 , J.-P. Revol12 , K. Reygers93 , V. Riabov85 , R.A. Ricci73 , T. Richert34 , M. Richter22 ,
+P. Riedler36 , W. Riegler36 , F. Riggi29 , C. Ristea62 , A. Rivetti111 , E. Rocco57 , M. Rodrı́guez Cahuantzi2 ,
+A. Rodriguez Manso81 , K. Røed22 , E. Rogochaya66 , D. Rohr43 , D. Röhrich18 , R. Romita124 , F. Ronchetti72 ,
+L. Ronflette113 , P. Rosnet70 , A. Rossi30 ,36 , F. Roukoutakis88 , A. Roy49 , C. Roy55 , P. Roy101 , A.J. Rubio
+Montero10 , R. Rui26 , R. Russo27 , E. Ryabinkin100 , Y. Ryabov85 , A. Rybicki117 , S. Sadovsky112 , K. Šafařı́k36 ,
+
+
+
+                                                           41
+Nuclear modification factor of charged pions, kaons, and protons                               ALICE Collaboration
+
+
+B. Sahlmuller53 , P. Sahoo49 , R. Sahoo49 , S. Sahoo61 , P.K. Sahu61 , J. Saini132 , S. Sakai72 , M.A. Saleh135 ,
+C.A. Salgado17 , J. Salzwedel20 , S. Sambyal90 , V. Samsonov85 , X. Sanchez Castro55 , L. Šándor59 ,
+A. Sandoval64 , M. Sano128 , D. Sarkar132 , E. Scapparone105 , F. Scarlassara30 , R.P. Scharenberg95 ,
+C. Schiaua78 , R. Schicker93 , C. Schmidt97 , H.R. Schmidt35 , S. Schuchmann53 , J. Schukraft36 , M. Schulc40 ,
+T. Schuster137 , Y. Schutz113 ,36 , K. Schwarz97 , K. Schweda97 , G. Scioli28 , E. Scomparin111 , R. Scott125 ,
+J.E. Seger86 , Y. Sekiguchi127 , D. Sekihata47 , I. Selyuzhenkov97 , K. Senosi65 , J. Seo96 ,67 , E. Serradilla64 ,10 ,
+A. Sevcenco62 , A. Shabanov56 , A. Shabetai113 , O. Shadura3 , R. Shahoyan36 , A. Shangaraev112 , A. Sharma90 ,
+M. Sharma90 , M. Sharma90 , N. Sharma125 ,61 , K. Shigaki47 , K. Shtejer9 ,27 , Y. Sibiriak100 , S. Siddhanta106 ,
+K.M. Sielewicz36 , T. Siemiarczuk77 , D. Silvermyr84 ,34 , C. Silvestre71 , G. Simatovic129 , G. Simonetti36 ,
+R. Singaraju132 , R. Singh79 , S. Singha132 ,79 , V. Singhal132 , B.C. Sinha132 , T. Sinha101 , B. Sitar39 , M. Sitta32 ,
+T.B. Skaali22 , M. Slupecki123 , N. Smirnov137 , R.J.M. Snellings57 , T.W. Snellman123 , C. Søgaard34 , R. Soltz75 ,
+J. Song96 , M. Song138 , Z. Song7 , F. Soramel30 , S. Sorensen125 , M. Spacek40 , E. Spiriti72 , I. Sputowska117 ,
+M. Spyropoulou-Stassinaki88 , B.K. Srivastava95 , J. Stachel93 , I. Stan62 , G. Stefanek77 , M. Steinpreis20 ,
+E. Stenlund34 , G. Steyn65 , J.H. Stiller93 , D. Stocco113 , P. Strmen39 , A.A.P. Suaide120 , T. Sugitate47 ,
+C. Suire51 , M. Suleymanov16 , R. Sultanov58 , M. Šumbera83 , T.J.M. Symons74 , A. Szabo39 , A. Szanto de
+Toledo120 ,i , I. Szarka39 , A. Szczepankiewicz36 , M. Szymanski134 , J. Takahashi121 , G.J. Tambave18 ,
+N. Tanaka128 , M.A. Tangaro33 , J.D. Tapia Takaki,iii,51 , A. Tarantola Peloni53 , M. Tarhini51 , M. Tariq19 ,
+M.G. Tarzila78 , A. Tauro36 , G. Tejeda Muñoz2 , A. Telesca36 , K. Terasaki127 , C. Terrevoli30 ,25 , B. Teyssier130 ,
+J. Thäder74 ,97 , D. Thomas118 , R. Tieulent130 , A.R. Timmins122 , A. Toia53 , S. Trogolo111 , V. Trubnikov3 ,
+W.H. Trzaska123 , T. Tsuji127 , A. Tumkin99 , R. Turrisi108 , T.S. Tveter22 , K. Ullaland18 , A. Uras130 ,
+G.L. Usai25 , A. Utrobicic129 , M. Vajzer83 , M. Vala59 , L. Valencia Palomo70 , S. Vallero27 , J. Van Der Maarel57 ,
+J.W. Van Hoorne36 , M. van Leeuwen57 , T. Vanat83 , P. Vande Vyvre36 , D. Varga136 , A. Vargas2 , M. Vargyas123 ,
+R. Varma48 , M. Vasileiou88 , A. Vasiliev100 , A. Vauthier71 , V. Vechernin131 , A.M. Veen57 , M. Veldhoen57 ,
+A. Velure18 , M. Venaruzzo73 , E. Vercellin27 , S. Vergara Limón2 , R. Vernet8 , M. Verweij135 ,36 , L. Vickovic116 ,
+G. Viesti30 ,i , J. Viinikainen123 , Z. Vilakazi126 , O. Villalobos Baillie102 , A. Vinogradov100 , L. Vinogradov131 ,
+Y. Vinogradov99 ,i , T. Virgili31 , V. Vislavicius34 , Y.P. Viyogi132 , A. Vodopyanov66 , M.A. Völkl93 ,
+K. Voloshin58 , S.A. Voloshin135 , G. Volpe136 ,36 , B. von Haller36 , I. Vorobyev37 ,92 , D. Vranic36 ,97 ,
+J. Vrláková41 , B. Vulpescu70 , A. Vyushin99 , B. Wagner18 , J. Wagner97 , H. Wang57 , M. Wang7 ,113 ,
+Y. Wang93 , D. Watanabe128 , Y. Watanabe127 , M. Weber36 , S.G. Weber97 , J.P. Wessels54 , U. Westerhoff54 ,
+J. Wiechula35 , J. Wikne22 , M. Wilde54 , G. Wilk77 , J. Wilkinson93 , M.C.S. Williams105 , B. Windelband93 ,
+M. Winn93 , C.G. Yaldo135 , H. Yang57 , P. Yang7 , S. Yano47 , Z. Yin7 , H. Yokoyama128 , I.-K. Yoo96 ,
+V. Yurchenko3 , I. Yushmanov100 , A. Zaborowska134 , V. Zaccolo80 , A. Zaman16 , C. Zampolli105 ,
+H.J.C. Zanoli120 , S. Zaporozhets66 , N. Zardoshti102 , A. Zarochentsev131 , P. Závada60 , N. Zaviyalov99 ,
+H. Zbroszczyk134 , I.S. Zgura62 , M. Zhalov85 , H. Zhang18 ,7 , X. Zhang74 , Y. Zhang7 , C. Zhao22 ,
+N. Zhigareva58 , D. Zhou7 , Y. Zhou80 ,57 , Z. Zhou18 , H. Zhu18 ,7 , J. Zhu113 ,7 , X. Zhu7 , A. Zichichi12 ,28 ,
+A. Zimmermann93 , M.B. Zimmermann54 ,36 , G. Zinovjev3 , M. Zyzak43
+
+
+Affiliation notes
+     i
+         Deceased
+     ii Also at: M.V. Lomonosov Moscow State University, D.V. Skobeltsyn Institute of Nuclear, Physics,
+
+         Moscow, Russia
+    iii Also at: University of Kansas, Lawrence, Kansas, United States
+
+
+
+
+Collaboration Institutes
+    1 A.I. Alikhanyan National Science Laboratory (Yerevan Physics Institute) Foundation, Yerevan, Armenia
+    2 Benemérita Universidad Autónoma de Puebla, Puebla, Mexico
+    3 Bogolyubov Institute for Theoretical Physics, Kiev, Ukraine
+    4 Bose Institute, Department of Physics and Centre for Astroparticle Physics and Space Science (CAPSS),
+
+       Kolkata, India
+    5
+       Budker Institute for Nuclear Physics, Novosibirsk, Russia
+     6 California Polytechnic State University, San Luis Obispo, California, United States
+     7 Central China Normal University, Wuhan, China
+     8 Centre de Calcul de l’IN2P3, Villeurbanne, France
+     9 Centro de Aplicaciones Tecnológicas y Desarrollo Nuclear (CEADEN), Havana, Cuba
+    10 Centro de Investigaciones Energéticas Medioambientales y Tecnológicas (CIEMAT), Madrid, Spain
+
+
+
+                                                           42
+Nuclear modification factor of charged pions, kaons, and protons                         ALICE Collaboration
+
+
+   11 Centro de Investigación y de Estudios Avanzados (CINVESTAV), Mexico City and Mérida, Mexico
+   12 Centro Fermi - Museo Storico della Fisica e Centro Studi e Ricerche “Enrico Fermi”, Rome, Italy
+   13
+        Chicago State University, Chicago, Illinois, USA
+   14 China Institute of Atomic Energy, Beijing, China
+   15 Commissariat à l’Energie Atomique, IRFU, Saclay, France
+   16 COMSATS Institute of Information Technology (CIIT), Islamabad, Pakistan
+   17 Departamento de Fı́sica de Partı́culas and IGFAE, Universidad de Santiago de Compostela, Santiago de
+
+        Compostela, Spain
+   18 Department of Physics and Technology, University of Bergen, Bergen, Norway
+   19 Department of Physics, Aligarh Muslim University, Aligarh, India
+   20
+        Department of Physics, Ohio State University, Columbus, Ohio, United States
+   21 Department of Physics, Sejong University, Seoul, South Korea
+   22 Department of Physics, University of Oslo, Oslo, Norway
+   23 Dipartimento di Elettrotecnica ed Elettronica del Politecnico, Bari, Italy
+   24 Dipartimento di Fisica dell’Università ’La Sapienza’ and Sezione INFN Rome, Italy
+   25 Dipartimento di Fisica dell’Università and Sezione INFN, Cagliari, Italy
+   26 Dipartimento di Fisica dell’Università and Sezione INFN, Trieste, Italy
+   27 Dipartimento di Fisica dell’Università and Sezione INFN, Turin, Italy
+   28
+        Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Bologna, Italy
+   29 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Catania, Italy
+   30 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Padova, Italy
+   31 Dipartimento di Fisica ‘E.R. Caianiello’ dell’Università and Gruppo Collegato INFN, Salerno, Italy
+   32 Dipartimento di Scienze e Innovazione Tecnologica dell’Università del Piemonte Orientale and Gruppo
+
+        Collegato INFN, Alessandria, Italy
+   33 Dipartimento Interateneo di Fisica ‘M. Merlin’ and Sezione INFN, Bari, Italy
+   34 Division of Experimental High Energy Physics, University of Lund, Lund, Sweden
+   35
+        Eberhard Karls Universität Tübingen, Tübingen, Germany
+   36 European Organization for Nuclear Research (CERN), Geneva, Switzerland
+   37 Excellence Cluster Universe, Technische Universität München, Munich, Germany
+   38 Faculty of Engineering, Bergen University College, Bergen, Norway
+   39 Faculty of Mathematics, Physics and Informatics, Comenius University, Bratislava, Slovakia
+   40 Faculty of Nuclear Sciences and Physical Engineering, Czech Technical University in Prague, Prague,
+
+        Czech Republic
+   41 Faculty of Science, P.J. Šafárik University, Košice, Slovakia
+   42
+        Faculty of Technology, Buskerud and Vestfold University College, Vestfold, Norway
+   43 Frankfurt Institute for Advanced Studies, Johann Wolfgang Goethe-Universität Frankfurt, Frankfurt,
+
+      Germany
+   44
+      Gangneung-Wonju National University, Gangneung, South Korea
+   45 Gauhati University, Department of Physics, Guwahati, India
+   46 Helsinki Institute of Physics (HIP), Helsinki, Finland
+   47 Hiroshima University, Hiroshima, Japan
+   48 Indian Institute of Technology Bombay (IIT), Mumbai, India
+   49 Indian Institute of Technology Indore, Indore (IITI), India
+   50 Inha University, Incheon, South Korea
+   51 Institut de Physique Nucléaire d’Orsay (IPNO), Université Paris-Sud, CNRS-IN2P3, Orsay, France
+   52
+      Institut für Informatik, Johann Wolfgang Goethe-Universität Frankfurt, Frankfurt, Germany
+   53 Institut für Kernphysik, Johann Wolfgang Goethe-Universität Frankfurt, Frankfurt, Germany
+   54 Institut für Kernphysik, Westfälische Wilhelms-Universität Münster, Münster, Germany
+   55 Institut Pluridisciplinaire Hubert Curien (IPHC), Université de Strasbourg, CNRS-IN2P3, Strasbourg,
+
+      France
+   56 Institute for Nuclear Research, Academy of Sciences, Moscow, Russia
+   57 Institute for Subatomic Physics of Utrecht University, Utrecht, Netherlands
+   58 Institute for Theoretical and Experimental Physics, Moscow, Russia
+   59
+      Institute of Experimental Physics, Slovak Academy of Sciences, Košice, Slovakia
+   60 Institute of Physics, Academy of Sciences of the Czech Republic, Prague, Czech Republic
+   61 Institute of Physics, Bhubaneswar, India
+
+
+
+
+                                                         43
+Nuclear modification factor of charged pions, kaons, and protons                         ALICE Collaboration
+
+
+   62 Institute of Space Science (ISS), Bucharest, Romania
+   63 Instituto de Ciencias Nucleares, Universidad Nacional Autónoma de México, Mexico City, Mexico
+   64
+        Instituto de Fı́sica, Universidad Nacional Autónoma de México, Mexico City, Mexico
+   65 iThemba LABS, National Research Foundation, Somerset West, South Africa
+   66 Joint Institute for Nuclear Research (JINR), Dubna, Russia
+   67 Konkuk University, Seoul, South Korea
+   68 Korea Institute of Science and Technology Information, Daejeon, South Korea
+   69 KTO Karatay University, Konya, Turkey
+   70 Laboratoire de Physique Corpusculaire (LPC), Clermont Université, Université Blaise Pascal,
+
+      CNRS–IN2P3, Clermont-Ferrand, France
+   71
+      Laboratoire de Physique Subatomique et de Cosmologie, Université Grenoble-Alpes, CNRS-IN2P3,
+      Grenoble, France
+   72 Laboratori Nazionali di Frascati, INFN, Frascati, Italy
+   73 Laboratori Nazionali di Legnaro, INFN, Legnaro, Italy
+   74 Lawrence Berkeley National Laboratory, Berkeley, California, United States
+   75 Lawrence Livermore National Laboratory, Livermore, California, United States
+   76 Moscow Engineering Physics Institute, Moscow, Russia
+   77 National Centre for Nuclear Studies, Warsaw, Poland
+   78
+      National Institute for Physics and Nuclear Engineering, Bucharest, Romania
+   79 National Institute of Science Education and Research, Bhubaneswar, India
+   80 Niels Bohr Institute, University of Copenhagen, Copenhagen, Denmark
+   81 Nikhef, Nationaal instituut voor subatomaire fysica, Amsterdam, Netherlands
+   82 Nuclear Physics Group, STFC Daresbury Laboratory, Daresbury, United Kingdom
+   83 Nuclear Physics Institute, Academy of Sciences of the Czech Republic, Řež u Prahy, Czech Republic
+   84 Oak Ridge National Laboratory, Oak Ridge, Tennessee, United States
+   85 Petersburg Nuclear Physics Institute, Gatchina, Russia
+   86
+      Physics Department, Creighton University, Omaha, Nebraska, United States
+   87 Physics Department, Panjab University, Chandigarh, India
+   88 Physics Department, University of Athens, Athens, Greece
+   89 Physics Department, University of Cape Town, Cape Town, South Africa
+   90 Physics Department, University of Jammu, Jammu, India
+   91 Physics Department, University of Rajasthan, Jaipur, India
+   92 Physik Department, Technische Universität München, Munich, Germany
+   93 Physikalisches Institut, Ruprecht-Karls-Universität Heidelberg, Heidelberg, Germany
+   94
+      Politecnico di Torino, Turin, Italy
+   95 Purdue University, West Lafayette, Indiana, United States
+   96 Pusan National University, Pusan, South Korea
+   97
+      Research Division and ExtreMe Matter Institute EMMI, GSI Helmholtzzentrum für
+      Schwerionenforschung, Darmstadt, Germany
+   98 Rudjer Bošković Institute, Zagreb, Croatia
+   99 Russian Federal Nuclear Center (VNIIEF), Sarov, Russia
+  100 Russian Research Centre Kurchatov Institute, Moscow, Russia
+  101 Saha Institute of Nuclear Physics, Kolkata, India
+  102 School of Physics and Astronomy, University of Birmingham, Birmingham, United Kingdom
+  103 Sección Fı́sica, Departamento de Ciencias, Pontificia Universidad Católica del Perú, Lima, Peru
+  104
+      Sezione INFN, Bari, Italy
+  105 Sezione INFN, Bologna, Italy
+  106 Sezione INFN, Cagliari, Italy
+  107 Sezione INFN, Catania, Italy
+  108 Sezione INFN, Padova, Italy
+  109 Sezione INFN, Rome, Italy
+  110 Sezione INFN, Trieste, Italy
+  111 Sezione INFN, Turin, Italy
+  112
+      SSC IHEP of NRC Kurchatov institute, Protvino, Russia
+  113 SUBATECH, Ecole des Mines de Nantes, Université de Nantes, CNRS-IN2P3, Nantes, France
+  114 Suranaree University of Technology, Nakhon Ratchasima, Thailand
+
+
+
+
+                                                       44
+Nuclear modification factor of charged pions, kaons, and protons                           ALICE Collaboration
+
+
+  115 Technical University of Košice, Košice, Slovakia
+  116 Technical University of Split FESB, Split, Croatia
+  117
+        The Henryk Niewodniczanski Institute of Nuclear Physics, Polish Academy of Sciences, Cracow, Poland
+  118 The University of Texas at Austin, Physics Department, Austin, Texas, USA
+  119 Universidad Autónoma de Sinaloa, Culiacán, Mexico
+  120 Universidade de São Paulo (USP), São Paulo, Brazil
+  121 Universidade Estadual de Campinas (UNICAMP), Campinas, Brazil
+  122 University of Houston, Houston, Texas, United States
+  123 University of Jyväskylä, Jyväskylä, Finland
+  124 University of Liverpool, Liverpool, United Kingdom
+  125
+        University of Tennessee, Knoxville, Tennessee, United States
+  126 University of the Witwatersrand, Johannesburg, South Africa
+  127 University of Tokyo, Tokyo, Japan
+  128 University of Tsukuba, Tsukuba, Japan
+  129 University of Zagreb, Zagreb, Croatia
+  130 Université de Lyon, Université Lyon 1, CNRS/IN2P3, IPN-Lyon, Villeurbanne, France
+  131 V. Fock Institute for Physics, St. Petersburg State University, St. Petersburg, Russia
+  132 Variable Energy Cyclotron Centre, Kolkata, India
+  133
+        Vinča Institute of Nuclear Sciences, Belgrade, Serbia
+  134 Warsaw University of Technology, Warsaw, Poland
+  135 Wayne State University, Detroit, Michigan, United States
+  136 Wigner Research Centre for Physics, Hungarian Academy of Sciences, Budapest, Hungary
+  137 Yale University, New Haven, Connecticut, United States
+  138 Yonsei University, Seoul, South Korea
+  139 Zentrum für Technologietransfer und Telekommunikation (ZTT), Fachhochschule Worms, Worms,
+
+        Germany
+
+
+
+
+                                                         45

@@ -5897,6 +5897,7 @@ id = "C-1688"
 last_verified = "2026-08-06"
 statement = "At source revision 81a4ca6e, the single-band band_chern_number procedure reports retained values -1 for band 5 at delta_eps_s=0.05 and +1 for band 6 at 0.10 without checking band isolation. These numbers lack an admitted individual-band invariant at degeneracy. Real hopping gives spinless time reversal, which constrains an isolated time-reversal-invariant band or separated invariant subspace; it does not define individual-band Chern numbers at band touchings."
 status = "Provisional"
+status_note = "E-305/C-1751 certifies exact stored source Table I/II bundles, with the reviewed real-hopping zero-Chern argument. Those models differ from the historical delta_eps_s=0.05/0.10 rank-one assignments. Preserve the historical outputs and their failed individual-band admission."
 where_stated = "crates/quantum_core/src/tight_binding.rs; historical implementation at git revision 81a4ca6e"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
@@ -6718,6 +6719,7 @@ id = "C-1711"
 last_verified = "2026-08-06"
 statement = "Historical CUJET-array and shifted-ansatz scores against six ALICE5.02 TeV 0-5 percent charged-particle points remain descriptive unmatched comparisons. The cited CUJET source arXiv1508.00552v3 Figure3(a) instead describes charged hadrons at2.76 TeV and20-30 percent centrality; Figures4/5 describe transport coefficients. HEPData59944v1 Table19 supplies a matching experimental population, but the historical numerical vectors lack authenticated curve provenance. Source identity and covariance must be admitted before physical model ranking. The separately cited arXiv2401.03757 is Jai Prakash: Figure4 treats static-medium charm quarks at6 fm/c, rather than centrality-specific final D mesons."
 status = "Provisional"
+status_note = "The source-identity intake retains seven authenticated RAA tables with 323 rows: charged-particle Pb-Pb populations at 2.76/5.02 TeV and explicitly averaged prompt D0,D+,D*+ populations at 5.02 TeV. The original theory vectors remain quarantined. Exact species/centrality adoption and a sourced covariance decomposition are required before ranking. See data/output/audit/qgp-primary-reference-intake/adjudication.toml."
 where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
@@ -6781,6 +6783,7 @@ id = "C-1712"
 last_verified = "2026-08-06"
 statement = "CUJET3.0 source arXiv1508.00552v3 declares continuous alpha_c and c_m parameters together with discrete scheme choices. Figure3 uses schemes calibrated to charged-particle R_AA near0.3 at12.5 GeV and lattice magnetic screening mass. Two named model parameters do not by themselves establish the effective fitted degrees of freedom or a BIC penalty for a new comparison; the retained five-parameter code value lacks a source-derived fitting procedure."
 status = "Provisional"
+status_note = "HEPData 59944v1/t19 identifies charged-particle RAA at 2.76 TeV and 20-30% centrality, matching the authenticated CUJET figure population. Retained theory arrays, curve-extraction uncertainty and covariance remain unadmitted; experiment identity alone leaves the historical model comparison unresolved. See data/output/audit/qgp-primary-reference-intake/adjudication.toml."
 where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
 evidence_layer = "source_proposition"
 depth_status = "declared"
@@ -6818,9 +6821,9 @@ inconclusive_outcomes = ["Unverified section identity or unspecified parameter r
 [[claim]]
 id = "C-1713"
 last_verified = "2026-08-06"
-statement = "The retained alice_pbpb_5020_mc_glauber epsilon2 sequence lacks an identified source table and estimator definition in the enumerated primary-source audit. Its interpretation as a two-particle-cumulant eccentricity remains unadmitted. Partial agreement of participant counts with an older-energy table establishes neither eccentricity identity nor the full reference population."
+statement = "The historical epsilon2 citation PRC 93 (2016) 034913 identifies an ALICE charged-pion, kaon and proton RAA paper at 2.76 TeV (DOI 10.1103/PhysRevC.93.034913; arXiv:1506.07287; HEPData 71310v1). The inspected primary source and its 16 advertised tables supply no eccentricity estimator table. The retained alice_pbpb_5020_mc_glauber epsilon2 sequence therefore remains unadmitted as a two-particle-cumulant eccentricity reference. Participant-count comparisons and retrieved experimental RAA tables do not establish its estimator or nine-row source identity. The original values and comparisons remain preserved."
 status = "Provisional"
-where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
+where_stated = "data/output/audit/qgp-primary-reference-intake/adjudication.toml; data/output/audit/qgp-primary-reference-intake/inspire-eccentricity.json; data/output/audit/qgp-primary-reference-intake/hepdata-eccentricity-citation.json; data/output/audit/qgp-reference-population/adjudication.toml; original attribution retained in canonical history"
 evidence_layer = "source_proposition"
 depth_status = "declared"
 lift_depth = 0
@@ -6844,12 +6847,12 @@ training_boundary = "The fixed table lookup and definition comparison fit zero p
 
 [claim.decisive_experiment]
 experiment_ids = ["E-075"]
-protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
-protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
-description = "Retrieve the actual source table, retain its hash and definition, and map every row before using the E-075 geometry comparison."
+protocol_artifact = "data/output/audit/qgp-primary-reference-intake/adjudication.toml"
+protocol_sha256 = "5ba14c90db872771b6cca2af8eceda6042d2a75330082542fc9a95fc8f839d08"
+description = "Compare the cited DOI and its 16 advertised HEPData tables with the claimed eccentricity estimator. Retain the exact primary-source identity and nine-row source gap before using the E-075 geometry comparison; source intake performs zero model fits."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["The retained source audit supplies exact searched table identities and leaves the epsilon2 sequence without an admitted estimator definition; verification applies to that bounded provenance result."]
+verification_outcomes = ["DOI 10.1103/PhysRevC.93.034913 identifies pion/kaon/proton RAA at 2.76 TeV; the declared primary-source search and 16-table inventory supply no eccentricity estimator table.", "The retained source audit supplies exact searched table identities and leaves the epsilon2 sequence without an admitted estimator definition; verification applies to that bounded provenance result."]
 revision_outcomes = ["Only a subset of rows or a different population is traced: restrict the identity finding to the traced subset and preserve unresolved rows."]
 abandonment_outcomes = ["A source receipt already present on the enumerated surface identifies every row and estimator, refuting the stated documentary omission."]
 inconclusive_outcomes = ["Unidentified source leaves the column unverified rather than proving an alternative definition.", "An ordering comparison with another optical model does not establish a universal cumulant inequality without matched ensemble and geometry assumptions."]
@@ -6859,6 +6862,7 @@ id = "C-1714"
 last_verified = "2026-08-06"
 statement = "The retained alice_pbpb_5020_npart source citation does not identify the per-row participant population. Primary2.76 TeV ALICE centrality tables match some retained entries (329.7 and260.5) while other entries differ (382 or382.7 versus382.8). The audit retains those partial matches and the original5.02 TeV citation; exact per-row lineage remains unresolved."
 status = "Provisional"
+status_note = "The retrieved official auxiliary table contains ten participant coordinates with distinct numerical values and lacks per-row centrality labels. The table does not authenticate the retained nine-row centrality/Npart/uncertainty sequence. Preserve both populations separately pending exact row lineage. See data/output/audit/qgp-primary-reference-intake/adjudication.toml."
 where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
 evidence_layer = "source_proposition"
 depth_status = "declared"
@@ -7991,6 +7995,7 @@ id = "C-1747"
 last_verified = "2026-09-05"
 statement = "Using Kaman et al. arXiv:2601.03210v2 fitted Tables I/II, the independent finite geometry and rectangular-folding replay agrees within 1.8e-14 GHz. Admitted rendered spectral support passes the declared 0.03 GHz two-way distance gate: worst distances are 0.0258413 GHz for Figure 5 and 0.0172003 GHz for Figure 6. The initial Figure 6 failure at 0.0852987 GHz came from an inset border and remains retained with its coordinate-bound extraction amendment. Source fitting freedom is five and seven parameters; replay fitting is zero. Separated subspaces pass the declared finite-grid checks, while degenerate individual bands fail admission. Local valley flux remains nonquantized. The result establishes bounded source reproduction, separate from global-gap proof or independent physical agreement."
 status = "Verified"
+status_note = "E-299 retains finite source reproduction and sampled topology. E-305/C-1751 separately certifies complete-torus external gaps for exact stored Table I/II coefficients. Source rounding and fitting uncertainty, physical calibration and device prediction remain outside that certificate. The author-code provider recheck retains the identical HTTP403 response."
 where_stated = "data/output/audit/magnonic-source-projection/adjudication.toml; crates/quantum_core/tests/magnonic_source_projection.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
@@ -8214,6 +8219,75 @@ verification_outcomes = ["All six raw-versus-projected source comparisons stay w
 revision_outcomes = ["General fields, new kinematics, xi_bar different from zero or a different endpoint prescription require separate source derivation and finite admission.", "An alternative full-vector normalization requires a newly declared instrument and retention of the original failed gate."]
 abandonment_outcomes = ["A same-source corrected replay violates a declared tensor or Ward fixture gate, or omitting B.4/B.36 ceases to change the independently assembled tensor.", "The scalar convention mapping or fixed source coefficients disagree with the cited source under the declared momentum convention."]
 inconclusive_outcomes = ["Missing source/producer identity or failed numerical admission prevents replay.", "Finite sampled transversality leaves universal Ward identities and certified quadrature/Taylor/interpolation remainders unassessed.", "The original normalized full-vector gate and scalar 1e-6 omission predicate remain failed and cannot be promoted by the separate source-conformance pass."]
+
+[[claim]]
+id = "C-1751"
+last_verified = "2026-09-05"
+statement = "For the exact stored-dyadic nine-orbital source Table I and Table II coefficients retained by E-305, directed eigenvalue and variation enclosures certify the requested external bundle gaps over the complete reciprocal torus. Table I admits 1648 terminal cells with minimum gap lower bound 3.24092414407728348e-4 GHz; Table II admits 65536 with 2.01553006777746950e-2 GHz, both above the unchanged 1e-10 GHz gate. Exact real hoppings and the reviewed spinless-time-reversal projector argument imply zero first Chern number for each globally isolated contiguous bundle, allowing internal degeneracies. The result covers the represented coefficients under the stated finite IEEE arithmetic admission, with five/seven upstream source-fitted parameters and zero replay fitting. Source-coefficient uncertainty, physical device prediction, and the historical C-1688 parameter sets remain separate."
+status = "Verified"
+where_stated = "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/results.toml; data/output/audit/magnonic-global-gap-certificate/protocol.toml; docs/engineering/magnonic-isolated-bundle-time-reversal.md; crates/quantum_core/src/spectral_gap_certificate.rs; crates/quantum_core/tests/magnonic_global_gap_certificate.rs"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The certificate establishes properties of exact stored binary64 model coefficients through computational maps. Physical interpretation and source-coefficient uncertainty require separate admission."
+fixed_hyperparameters = ["Frozen protocol SHA256 796a12138fe9046513df65e82ca2d228104523e3c5e9693374eeb3ff24094f3b", "Source Table I boundaries [2,6]; Table II boundaries [1,2,4,6,7]; indices separate ordered eigenvalues b-1 and b", "Maximum dyadic depth 10; strict cell gap lower bound greater than 1e-10 GHz", "IEEE binary64 basic operations with outward neighbor expansion, finite enclosure admission and runtime gradual-underflow checks", "Exact real hopping amplitudes and complete prefix-free integer-area torus cover", "Final replay coefficient-bit tables and compressed terminal-cell tables identify the represented models"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 4
+computational_stage_count = 4
+
+[[claim.intervening_maps]]
+name = "source_geometry_to_stored_coefficients"
+branch = "global_isolation"
+description = "Construct source-fitted Table I/II nine-orbital models and retain every final on-site and hopping binary64 bit pattern, including rounded geometry projections. The certificate treats those patterns as exact dyadic coefficients."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "directed_center_spectrum_enclosure"
+branch = "global_isolation"
+description = "Enclose exact fractional phases with Machin pi and Taylor remainders, then bound full-square candidate basis orthogonality and transformed residual. Polar orthonormalization yields a sorted eigenvalue error radius."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "complete_dyadic_gap_cover"
+branch = "global_isolation"
+description = "Subtract twice the eigenvalue radius and the incident-hopping variation bound from each requested center gap. Require every terminal cell above the frozen gate and verify exact total area with duplicate and ancestor overlap rejection."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "real_hopping_time_reversal_projector_argument"
+branch = "bundle_topology"
+description = "Apply the reviewed analytic H(-q)=conjugate(H(q)) argument to globally isolated contiguous ordered bundles. Projector curvature is odd and the two-dimensional inversion preserves orientation, so each bundle has zero first Chern number despite possible internal degeneracies."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "source_table_i"
+count = 5
+names = ["eps_s", "eps_p", "eps_k", "t_sk", "t_pk"]
+training_boundary = "Source authors fitted the imported Table I constants upstream; the certificate establishes the represented model rather than independent observational agreement."
+
+[[claim.fitted_parameters]]
+branch = "source_table_ii"
+count = 7
+names = ["eps_s", "eps_p", "eps_k", "t_sk", "t_pk", "delta_eps_s", "delta_eps_p"]
+training_boundary = "Source authors fitted the imported Table II constants upstream; the A/B sign map and stored coefficient identity remain fixed."
+
+[[claim.fitted_parameters]]
+branch = "replay"
+count = 0
+names = []
+training_boundary = "The certificate replay fits zero parameters and preserves the frozen gap gate, maximum depth and requested boundaries."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-305"]
+protocol_artifact = "data/output/audit/magnonic-global-gap-certificate/protocol.toml"
+protocol_sha256 = "796a12138fe9046513df65e82ca2d228104523e3c5e9693374eeb3ff24094f3b"
+description = "Replay the final exclusive-create coefficient and terminal-cell artifacts, establish finite IEEE arithmetic admission, reject malformed covers and degenerate spectra with controls, and verify all requested gap boundaries globally before applying the exact-real-hopping projector argument."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["The exact identified Table I model admits all 1648 terminal cells and Table II all 65536 terminal cells; each complete cover has integer area 1048576 and every requested gap lower bound exceeds 1e-10 GHz.", "Exact-real hopping checks and the complete external gaps satisfy the reviewed analytic projector theorem for Table I bundles [0,2),[2,6),[6,9) and Table II bundles [0,1),[1,2),[2,4),[4,6),[6,7),[7,9).", "Arithmetic, incorrect-spectrum, degenerate-gap and omitted/duplicated/overlapping-cell controls retain their declared discrimination."]
+revision_outcomes = ["Different coefficient bits, complex hopping, requested boundaries or a changed source table require a separately identified model and new certificate.", "Extending the result to uncertain source decimals or geometric projections requires an additional coefficient perturbation enclosure."]
+abandonment_outcomes = ["Independent checking finds an inward numerical bound, missing cover region or invalid eigenvalue ordering that invalidates the retained positive global-gap admission.", "The exact-real premise fails for a retained topology model or the analytic projector argument fails under its declared hypotheses.", "The verifier admits a declared degenerate spectrum or malformed cover under its negative controls."]
+inconclusive_outcomes = ["A failed IEEE/finite-arithmetic admission, missing coefficient identity or unresolved terminal cell leaves global isolation unproved for that replay.", "The historical C-1688 delta_eps_s=.05/.10 model, degenerate rank-one invariants, physical GHz calibration, device prediction, defect localization and source-uncertainty intervals remain outside the certificate.", "Sampled Cartesian eigensolver comparisons establish evaluator consistency only and contribute zero evidence to global cover completeness."]
 
 [[claim]]
 id = "C-176"

@@ -1,0 +1,1053 @@
+[
+  {
+    "recid": 89396,
+    "version": 1,
+    "doi": "10.17182/hepdata.89396.v1",
+    "title": "Analysis of the apparent nuclear modification in peripheral Pb-Pb collisions at 5.02 TeV",
+    "record_resources": [],
+    "table_count": 45,
+    "table_resources": [],
+    "covariance_named_tables": [],
+    "tables": [
+      {
+        "name": "Table 1",
+        "id": 413643,
+        "doi": "10.17182/hepdata.89396.v1/t1",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 0-5% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 2",
+        "id": 413644,
+        "doi": "10.17182/hepdata.89396.v1/t2",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 5-10% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 3",
+        "id": 413645,
+        "doi": "10.17182/hepdata.89396.v1/t3",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 10-15% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 4",
+        "id": 413646,
+        "doi": "10.17182/hepdata.89396.v1/t4",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 15-20% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 5",
+        "id": 413647,
+        "doi": "10.17182/hepdata.89396.v1/t5",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 20-25% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 6",
+        "id": 413648,
+        "doi": "10.17182/hepdata.89396.v1/t6",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 25-30% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 7",
+        "id": 413649,
+        "doi": "10.17182/hepdata.89396.v1/t7",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 30-35% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 8",
+        "id": 413650,
+        "doi": "10.17182/hepdata.89396.v1/t8",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 35-40% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 9",
+        "id": 413651,
+        "doi": "10.17182/hepdata.89396.v1/t9",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 40-45% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 10",
+        "id": 413652,
+        "doi": "10.17182/hepdata.89396.v1/t10",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 45-50% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 11",
+        "id": 413653,
+        "doi": "10.17182/hepdata.89396.v1/t11",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 50-55% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 12",
+        "id": 413654,
+        "doi": "10.17182/hepdata.89396.v1/t12",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 55-60% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 13",
+        "id": 413655,
+        "doi": "10.17182/hepdata.89396.v1/t13",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 60-65% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 14",
+        "id": 413656,
+        "doi": "10.17182/hepdata.89396.v1/t14",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 65-70% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 15",
+        "id": 413657,
+        "doi": "10.17182/hepdata.89396.v1/t15",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 70-75% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 16",
+        "id": 413658,
+        "doi": "10.17182/hepdata.89396.v1/t16",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 75-80% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 17",
+        "id": 413659,
+        "doi": "10.17182/hepdata.89396.v1/t17",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 80-85% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 18",
+        "id": 413660,
+        "doi": "10.17182/hepdata.89396.v1/t18",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 85-90% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 19",
+        "id": 413661,
+        "doi": "10.17182/hepdata.89396.v1/t19",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 90-95% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 20",
+        "id": 413662,
+        "doi": "10.17182/hepdata.89396.v1/t20",
+        "description": "Nuclear modification factor RAA versus pT for charged particles at midrapidity in 95-100% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 21",
+        "id": 413663,
+        "doi": "10.17182/hepdata.89396.v1/t21",
+        "description": "Average RAA for 8 &lt; pT &lt; 20 GeV/c versus centrality percentile",
+        "resources": []
+      },
+      {
+        "name": "Table 22",
+        "id": 413664,
+        "doi": "10.17182/hepdata.89396.v1/t22",
+        "description": "Slope of a linear fit to RAA for 8 &lt; pT &lt; 20 GeV/c versus centrality percentile",
+        "resources": []
+      },
+      {
+        "name": "Table 23",
+        "id": 413665,
+        "doi": "10.17182/hepdata.89396.v1/t23",
+        "description": "Slope of a linear fit to RAA for 0.5 &lt; pT &lt; 2 GeV/c versus centrality percentile",
+        "resources": []
+      },
+      {
+        "name": "Table 24",
+        "id": 413666,
+        "doi": "10.17182/hepdata.89396.v1/t24",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 5-10% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 25",
+        "id": 413667,
+        "doi": "10.17182/hepdata.89396.v1/t25",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 10-15% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 26",
+        "id": 413668,
+        "doi": "10.17182/hepdata.89396.v1/t26",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 15-20% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 27",
+        "id": 413669,
+        "doi": "10.17182/hepdata.89396.v1/t27",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 20-25% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 28",
+        "id": 413670,
+        "doi": "10.17182/hepdata.89396.v1/t28",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 25-30% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 29",
+        "id": 413671,
+        "doi": "10.17182/hepdata.89396.v1/t29",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 30-35% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 30",
+        "id": 413672,
+        "doi": "10.17182/hepdata.89396.v1/t30",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 35-40% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 31",
+        "id": 413673,
+        "doi": "10.17182/hepdata.89396.v1/t31",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 40-45% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 32",
+        "id": 413674,
+        "doi": "10.17182/hepdata.89396.v1/t32",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 45-50% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 33",
+        "id": 413675,
+        "doi": "10.17182/hepdata.89396.v1/t33",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 50-55% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 34",
+        "id": 413676,
+        "doi": "10.17182/hepdata.89396.v1/t34",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 55-60% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 35",
+        "id": 413677,
+        "doi": "10.17182/hepdata.89396.v1/t35",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 60-65% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 36",
+        "id": 413678,
+        "doi": "10.17182/hepdata.89396.v1/t36",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 65-70% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 37",
+        "id": 413679,
+        "doi": "10.17182/hepdata.89396.v1/t37",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 70-75% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 38",
+        "id": 413680,
+        "doi": "10.17182/hepdata.89396.v1/t38",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 75-80% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 39",
+        "id": 413681,
+        "doi": "10.17182/hepdata.89396.v1/t39",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 80-85% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 40",
+        "id": 413682,
+        "doi": "10.17182/hepdata.89396.v1/t40",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 85-90% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 41",
+        "id": 413683,
+        "doi": "10.17182/hepdata.89396.v1/t41",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 90-95% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 42",
+        "id": 413684,
+        "doi": "10.17182/hepdata.89396.v1/t42",
+        "description": "R_{+1} versus pT for charged particles at midrapidity in 95-100% central Pb-Pb collisions at 5.02 TeV",
+        "resources": []
+      },
+      {
+        "name": "Table 43",
+        "id": 413685,
+        "doi": "10.17182/hepdata.89396.v1/t43",
+        "description": "Average R_{+1} for 8 &lt; pT &lt; 20 GeV/c versus centrality percentile",
+        "resources": []
+      },
+      {
+        "name": "Table 44",
+        "id": 413686,
+        "doi": "10.17182/hepdata.89396.v1/t44",
+        "description": "Slope of a linear fit to R_{+1} for 8 &lt; pT &lt; 20 GeV/c versus centrality percentile",
+        "resources": []
+      },
+      {
+        "name": "Table 45",
+        "id": 413687,
+        "doi": "10.17182/hepdata.89396.v1/t45",
+        "description": "Slope of a linear fit to R_{+1} for 0.5 &lt; pT &lt; 2 GeV/c versus centrality percentile",
+        "resources": []
+      }
+    ]
+  },
+  {
+    "recid": 59944,
+    "version": 1,
+    "doi": "10.17182/hepdata.59944.v1",
+    "title": "Centrality Dependence of Charged Particle Production at Large Transverse Momentum in Pb--Pb Collisions at $\\sqrt{s_{\\rm{NN}}} = 2.76$ TeV",
+    "record_resources": [
+      {
+        "description": "Rivet analysis",
+        "type": "rivet",
+        "url": "https://rivet.hepforge.org/analyses/ALICE_2012_I1127497"
+      }
+    ],
+    "table_count": 30,
+    "table_resources": [],
+    "covariance_named_tables": [],
+    "tables": [
+      {
+        "name": "Table 1",
+        "id": 52466,
+        "doi": "10.17182/hepdata.59944.v1/t1",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 0-5%.",
+        "resources": []
+      },
+      {
+        "name": "Table 2",
+        "id": 52467,
+        "doi": "10.17182/hepdata.59944.v1/t2",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 5-10%.",
+        "resources": []
+      },
+      {
+        "name": "Table 3",
+        "id": 52468,
+        "doi": "10.17182/hepdata.59944.v1/t3",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 10-20%.",
+        "resources": []
+      },
+      {
+        "name": "Table 4",
+        "id": 52469,
+        "doi": "10.17182/hepdata.59944.v1/t4",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 20-30%.",
+        "resources": []
+      },
+      {
+        "name": "Table 5",
+        "id": 52470,
+        "doi": "10.17182/hepdata.59944.v1/t5",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 30-40%.",
+        "resources": []
+      },
+      {
+        "name": "Table 6",
+        "id": 52471,
+        "doi": "10.17182/hepdata.59944.v1/t6",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 40-50%.",
+        "resources": []
+      },
+      {
+        "name": "Table 7",
+        "id": 52472,
+        "doi": "10.17182/hepdata.59944.v1/t7",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 50-60%.",
+        "resources": []
+      },
+      {
+        "name": "Table 8",
+        "id": 52473,
+        "doi": "10.17182/hepdata.59944.v1/t8",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 60-70%.",
+        "resources": []
+      },
+      {
+        "name": "Table 9",
+        "id": 52474,
+        "doi": "10.17182/hepdata.59944.v1/t9",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 70-80%.",
+        "resources": []
+      },
+      {
+        "name": "Table 10",
+        "id": 52475,
+        "doi": "10.17182/hepdata.59944.v1/t10",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 0-10%.",
+        "resources": []
+      },
+      {
+        "name": "Table 11",
+        "id": 52476,
+        "doi": "10.17182/hepdata.59944.v1/t11",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 0-20%.",
+        "resources": []
+      },
+      {
+        "name": "Table 12",
+        "id": 52477,
+        "doi": "10.17182/hepdata.59944.v1/t12",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 20-40%.",
+        "resources": []
+      },
+      {
+        "name": "Table 13",
+        "id": 52478,
+        "doi": "10.17182/hepdata.59944.v1/t13",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 40-60%.",
+        "resources": []
+      },
+      {
+        "name": "Table 14",
+        "id": 52481,
+        "doi": "10.17182/hepdata.59944.v1/t14",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 40-80%.",
+        "resources": []
+      },
+      {
+        "name": "Table 15",
+        "id": 52483,
+        "doi": "10.17182/hepdata.59944.v1/t15",
+        "description": "Normalized differential primary charged particle yield in the centrality interval 60-80%.",
+        "resources": []
+      },
+      {
+        "name": "Table 16",
+        "id": 52485,
+        "doi": "10.17182/hepdata.59944.v1/t16",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 0-5%.",
+        "resources": []
+      },
+      {
+        "name": "Table 17",
+        "id": 52487,
+        "doi": "10.17182/hepdata.59944.v1/t17",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 5-10%.",
+        "resources": []
+      },
+      {
+        "name": "Table 18",
+        "id": 52489,
+        "doi": "10.17182/hepdata.59944.v1/t18",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 10-20%.",
+        "resources": []
+      },
+      {
+        "name": "Table 19",
+        "id": 52492,
+        "doi": "10.17182/hepdata.59944.v1/t19",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 20-30%.",
+        "resources": []
+      },
+      {
+        "name": "Table 20",
+        "id": 52494,
+        "doi": "10.17182/hepdata.59944.v1/t20",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 30-40%.",
+        "resources": []
+      },
+      {
+        "name": "Table 21",
+        "id": 52496,
+        "doi": "10.17182/hepdata.59944.v1/t21",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 40-50%.",
+        "resources": []
+      },
+      {
+        "name": "Table 22",
+        "id": 52498,
+        "doi": "10.17182/hepdata.59944.v1/t22",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 50-60%.",
+        "resources": []
+      },
+      {
+        "name": "Table 23",
+        "id": 52500,
+        "doi": "10.17182/hepdata.59944.v1/t23",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 60-70%.",
+        "resources": []
+      },
+      {
+        "name": "Table 24",
+        "id": 52501,
+        "doi": "10.17182/hepdata.59944.v1/t24",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 70-80%.",
+        "resources": []
+      },
+      {
+        "name": "Table 25",
+        "id": 52503,
+        "doi": "10.17182/hepdata.59944.v1/t25",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 0-10%.",
+        "resources": []
+      },
+      {
+        "name": "Table 26",
+        "id": 52505,
+        "doi": "10.17182/hepdata.59944.v1/t26",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 0-20%.",
+        "resources": []
+      },
+      {
+        "name": "Table 27",
+        "id": 52508,
+        "doi": "10.17182/hepdata.59944.v1/t27",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 20-40%.",
+        "resources": []
+      },
+      {
+        "name": "Table 28",
+        "id": 52510,
+        "doi": "10.17182/hepdata.59944.v1/t28",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 40-60%.",
+        "resources": []
+      },
+      {
+        "name": "Table 29",
+        "id": 52512,
+        "doi": "10.17182/hepdata.59944.v1/t29",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 40-80%.",
+        "resources": []
+      },
+      {
+        "name": "Table 30",
+        "id": 52514,
+        "doi": "10.17182/hepdata.59944.v1/t30",
+        "description": "Nuclear Modification Factor RAA in the centrality interval 60-80%.",
+        "resources": []
+      }
+    ]
+  },
+  {
+    "recid": 78365,
+    "version": 1,
+    "doi": "10.17182/hepdata.78365.v1",
+    "title": "Centrality dependence of the pseudorapidity density distribution for charged particles in Pb-Pb collisions at $\\sqrt{s_{\\rm NN}}=5.02$ TeV",
+    "record_resources": [
+      {
+        "description": "Rivet analysis",
+        "type": "rivet",
+        "url": "https://rivet.hepforge.org/analyses/ALICE_2016_I1507090"
+      }
+    ],
+    "table_count": 5,
+    "table_resources": [],
+    "covariance_named_tables": [],
+    "tables": [
+      {
+        "name": "DN/DETARAP",
+        "id": 126148,
+        "doi": "10.17182/hepdata.78365.v1/t1",
+        "description": "Charged-particle pseudorapidity density for ten centrality classes over a broad $\\eta$ range in Pb-Pb collisions at $\\sqrt{s_{_{\\mathrm{NN}}}}=5.02\\,\\mathrm{TeV}$. Boxes around the...",
+        "resources": []
+      },
+      {
+        "name": "DN/DETARAP(ETARAP=0)",
+        "id": 126149,
+        "doi": "10.17182/hepdata.78365.v1/t2",
+        "description": "Charged-particle pseudorapidity density at midrapidity in most perihperhal (80-90%) Pb-Pb collisions at $\\sqrt{s_{\\scriptscriptstyle\\mathrm{NN}}}=5.02\\,\\mathrm{TeV}$.",
+        "resources": []
+      },
+      {
+        "name": "MULT",
+        "id": 126150,
+        "doi": "10.17182/hepdata.78365.v1/t3",
+        "description": "Total number of charged particles as a function of the mean number of participating nucleons [PRC88.044909]. The total charged-particle multiplicity...",
+        "resources": []
+      },
+      {
+        "name": "DN/DYRAP",
+        "id": 126151,
+        "doi": "10.17182/hepdata.78365.v1/t4",
+        "description": "Estimation of $\\mathrm{d}N_{\\mathrm{ch}}/\\mathrm{d}y$ for in the most central Pb-Pb collisions at $\\sqrt{s_{_{\\mathrm{NN}}}}=5.02\\,\\mathrm{TeV}$. Also shown is a fit of Gaussian distribution...",
+        "resources": []
+      },
+      {
+        "name": "SIGMA DN/DYRAP",
+        "id": 126152,
+        "doi": "10.17182/hepdata.78365.v1/t5",
+        "description": "Scaling behaviour as a function $\\sqrt{s_{_{\\mathrm{NN}}}}$ of the width of the charged-particle or -pion rapidity-density distribution with respect to the...",
+        "resources": []
+      }
+    ]
+  },
+  {
+    "recid": 88168,
+    "version": 1,
+    "doi": "10.17182/hepdata.88168.v1",
+    "title": "Measurement of D$^0$, D$^+$, D$^{*+}$ and D$^+_{\\rm s}$ production in Pb-Pb collisions at $\\mathbf{\\sqrt{s_{\\rm NN}}}= 5.02$ TeV",
+    "record_resources": [
+      {
+        "description": "Rivet analysis",
+        "type": "rivet",
+        "url": "https://rivet.hepforge.org/analyses/ALICE_2018_I1669819"
+      }
+    ],
+    "table_count": 43,
+    "table_resources": [],
+    "covariance_named_tables": [],
+    "tables": [
+      {
+        "name": "Table 1",
+        "id": 367691,
+        "doi": "10.17182/hepdata.88168.v1/t1",
+        "description": "pT-differential yield of prompt D0 mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 2",
+        "id": 367692,
+        "doi": "10.17182/hepdata.88168.v1/t2",
+        "description": "pT-differential yield of prompt D+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 3",
+        "id": 367693,
+        "doi": "10.17182/hepdata.88168.v1/t3",
+        "description": "pT-differential yield of prompt D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 4",
+        "id": 367694,
+        "doi": "10.17182/hepdata.88168.v1/t4",
+        "description": "pT-differential yield of prompt D/s+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 5",
+        "id": 367695,
+        "doi": "10.17182/hepdata.88168.v1/t5",
+        "description": "pT-differential yield of prompt D0 mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 6",
+        "id": 367696,
+        "doi": "10.17182/hepdata.88168.v1/t6",
+        "description": "pT-differential yield of prompt D+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 7",
+        "id": 367697,
+        "doi": "10.17182/hepdata.88168.v1/t7",
+        "description": "pT-differential yield of prompt D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 8",
+        "id": 367698,
+        "doi": "10.17182/hepdata.88168.v1/t8",
+        "description": "pT-differential yield of prompt D/s+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 9",
+        "id": 367699,
+        "doi": "10.17182/hepdata.88168.v1/t9",
+        "description": "pT-differential yield of prompt D0 mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 60-80% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 10",
+        "id": 367700,
+        "doi": "10.17182/hepdata.88168.v1/t10",
+        "description": "pT-differential yield of prompt D+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 60-80% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 11",
+        "id": 367701,
+        "doi": "10.17182/hepdata.88168.v1/t11",
+        "description": "pT-differential yield of prompt D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 60-80% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 12",
+        "id": 367702,
+        "doi": "10.17182/hepdata.88168.v1/t12",
+        "description": "pT-differential yield of prompt D/s+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 60-80% in the rapidity...",
+        "resources": []
+      },
+      {
+        "name": "Table 13",
+        "id": 367703,
+        "doi": "10.17182/hepdata.88168.v1/t13",
+        "description": "Ratio of D+ to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 0-10% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 14",
+        "id": 367704,
+        "doi": "10.17182/hepdata.88168.v1/t14",
+        "description": "Ratio of D*+ to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 0-10% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 15",
+        "id": 367705,
+        "doi": "10.17182/hepdata.88168.v1/t15",
+        "description": "Ratio of Ds to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 0-10% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 16",
+        "id": 367706,
+        "doi": "10.17182/hepdata.88168.v1/t16",
+        "description": "Ratio of Ds to D+ meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 0-10% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 17",
+        "id": 367707,
+        "doi": "10.17182/hepdata.88168.v1/t17",
+        "description": "Ratio of D+ to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 30-50% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 18",
+        "id": 367708,
+        "doi": "10.17182/hepdata.88168.v1/t18",
+        "description": "Ratio of D*+ to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 30-50% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 19",
+        "id": 367709,
+        "doi": "10.17182/hepdata.88168.v1/t19",
+        "description": "Ratio of Ds to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 30-50% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 20",
+        "id": 367710,
+        "doi": "10.17182/hepdata.88168.v1/t20",
+        "description": "Ratio of Ds to D+ meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 30-50% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 21",
+        "id": 367711,
+        "doi": "10.17182/hepdata.88168.v1/t21",
+        "description": "Ratio of D+ to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 60-80% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 22",
+        "id": 367712,
+        "doi": "10.17182/hepdata.88168.v1/t22",
+        "description": "Ratio of D*+ to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 60-80% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 23",
+        "id": 367713,
+        "doi": "10.17182/hepdata.88168.v1/t23",
+        "description": "Ratio of Ds to D0 meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 60-80% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 24",
+        "id": 367714,
+        "doi": "10.17182/hepdata.88168.v1/t24",
+        "description": "Ratio of Ds to D+ meson yield in Pb-Pb collisions at sqrt{sNN}=5.02 TeV, 60-80% centrality, in |y| &lt; 0.5 as...",
+        "resources": []
+      },
+      {
+        "name": "Table 25",
+        "id": 367715,
+        "doi": "10.17182/hepdata.88168.v1/t25",
+        "description": "pT-differential nuclear modification factor of prompt D0 mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 26",
+        "id": 367716,
+        "doi": "10.17182/hepdata.88168.v1/t26",
+        "description": "pT-differential nuclear modification factor of prompt D+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 27",
+        "id": 367717,
+        "doi": "10.17182/hepdata.88168.v1/t27",
+        "description": "pT-differential nuclear modification factor of prompt D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 28",
+        "id": 367718,
+        "doi": "10.17182/hepdata.88168.v1/t28",
+        "description": "pT-differential nuclear modification factor of prompt D/s+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 0-10% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 29",
+        "id": 367719,
+        "doi": "10.17182/hepdata.88168.v1/t29",
+        "description": "pT-differential nuclear modification factor of average prompt D0, D+, D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality...",
+        "resources": []
+      },
+      {
+        "name": "Table 30",
+        "id": 367720,
+        "doi": "10.17182/hepdata.88168.v1/t30",
+        "description": "pT-differential nuclear modification factor of prompt D0 mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 31",
+        "id": 367721,
+        "doi": "10.17182/hepdata.88168.v1/t31",
+        "description": "pT-differential nuclear modification factor of prompt D+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 32",
+        "id": 367722,
+        "doi": "10.17182/hepdata.88168.v1/t32",
+        "description": "pT-differential nuclear modification factor of prompt D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 33",
+        "id": 367723,
+        "doi": "10.17182/hepdata.88168.v1/t33",
+        "description": "pT-differential nuclear modification factor of prompt D/s+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 30-50% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 34",
+        "id": 367724,
+        "doi": "10.17182/hepdata.88168.v1/t34",
+        "description": "pT-differential nuclear modification factor of average prompt D0, D+, D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality...",
+        "resources": []
+      },
+      {
+        "name": "Table 35",
+        "id": 367725,
+        "doi": "10.17182/hepdata.88168.v1/t35",
+        "description": "pT-differential nuclear modification factor of prompt D0 mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 60-80% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 36",
+        "id": 367726,
+        "doi": "10.17182/hepdata.88168.v1/t36",
+        "description": "pT-differential nuclear modification factor of prompt D+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 60-80% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 37",
+        "id": 367727,
+        "doi": "10.17182/hepdata.88168.v1/t37",
+        "description": "pT-differential nuclear modification factor of prompt D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 60-80% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 38",
+        "id": 367728,
+        "doi": "10.17182/hepdata.88168.v1/t38",
+        "description": "pT-differential nuclear modification factor of prompt D/s+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality class 60-80% in...",
+        "resources": []
+      },
+      {
+        "name": "Table 39",
+        "id": 367729,
+        "doi": "10.17182/hepdata.88168.v1/t39",
+        "description": "pT-differential nuclear modification factor of average prompt D0, D+, D*+ mesons in Pb-Pb collisions at sqrt{sNN}=5.02 TeV in the centrality...",
+        "resources": []
+      },
+      {
+        "name": "Table 40",
+        "id": 367730,
+        "doi": "10.17182/hepdata.88168.v1/t40",
+        "description": "pT-differential nuclear modification factor of average prompt D0, D+, D*+ mesons in Pb-Pb collisions at sqrt{sNN}=2.76 TeV in the centrality...",
+        "resources": []
+      },
+      {
+        "name": "Table 41",
+        "id": 367731,
+        "doi": "10.17182/hepdata.88168.v1/t41",
+        "description": "Ratio of prompt D meson (D0, D+, D*+ average) and charged particles nuclear modification factors (RAA) as a function of...",
+        "resources": []
+      },
+      {
+        "name": "Table 42",
+        "id": 367732,
+        "doi": "10.17182/hepdata.88168.v1/t42",
+        "description": "Ratio of prompt D meson (D0, D+, D*+ average) and charged particles nuclear modification factors (RAA) as a function of...",
+        "resources": []
+      },
+      {
+        "name": "Table 43",
+        "id": 367734,
+        "doi": "10.17182/hepdata.88168.v1/t43",
+        "description": "Ratio of prompt D meson (D0, D+, D*+ average) and charged particles nuclear modification factors (RAA) as a function of...",
+        "resources": []
+      }
+    ]
+  },
+  {
+    "recid": 71310,
+    "version": 1,
+    "doi": "10.17182/hepdata.71310.v1",
+    "title": "Centrality dependence of the nuclear modification factor of charged pions, kaons, and protons in Pb-Pb collisions at $\\sqrt{s_{\\rm NN}}=2.76$ TeV",
+    "record_resources": [],
+    "table_count": 16,
+    "table_resources": [],
+    "covariance_named_tables": [],
+    "tables": [
+      {
+        "name": "Table 1",
+        "id": 63242,
+        "doi": "10.17182/hepdata.71310.v1/t1",
+        "description": "Invariant yields of identified pions in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 2",
+        "id": 63243,
+        "doi": "10.17182/hepdata.71310.v1/t2",
+        "description": "Invariant yields of identified kaons in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 3",
+        "id": 63244,
+        "doi": "10.17182/hepdata.71310.v1/t3",
+        "description": "Invariant yields of identified protons in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 4",
+        "id": 63245,
+        "doi": "10.17182/hepdata.71310.v1/t4",
+        "description": "Invariant yields of identified pions in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 5",
+        "id": 63246,
+        "doi": "10.17182/hepdata.71310.v1/t5",
+        "description": "Invariant yields of identified kaons in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 6",
+        "id": 63247,
+        "doi": "10.17182/hepdata.71310.v1/t6",
+        "description": "Invariant yields of identified protons in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 7",
+        "id": 63248,
+        "doi": "10.17182/hepdata.71310.v1/t7",
+        "description": "The nuclear modification factor RAA as a function of pT for different particle species in 0-5% Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 8",
+        "id": 63249,
+        "doi": "10.17182/hepdata.71310.v1/t8",
+        "description": "The nuclear modification factor RAA as a function of pT for different particle species in 5-10% Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 9",
+        "id": 63250,
+        "doi": "10.17182/hepdata.71310.v1/t9",
+        "description": "The nuclear modification factor RAA as a function of pT for different particle species in 10-20% Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 10",
+        "id": 63251,
+        "doi": "10.17182/hepdata.71310.v1/t10",
+        "description": "The nuclear modification factor RAA as a function of pT for different particle species in 20-40% Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 11",
+        "id": 63252,
+        "doi": "10.17182/hepdata.71310.v1/t11",
+        "description": "The nuclear modification factor RAA as a function of pT for different particle species in 40-60% Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 12",
+        "id": 63253,
+        "doi": "10.17182/hepdata.71310.v1/t12",
+        "description": "The nuclear modification factor RAA as a function of pT for different particle species in 60-80% Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 13",
+        "id": 63254,
+        "doi": "10.17182/hepdata.71310.v1/t13",
+        "description": "Kaon-to-pion ratios as a function of pT measured in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 14",
+        "id": 63255,
+        "doi": "10.17182/hepdata.71310.v1/t14",
+        "description": "Proton-to-pion ratios as a function of pT measured in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 15",
+        "id": 63256,
+        "doi": "10.17182/hepdata.71310.v1/t15",
+        "description": "Kaon-to-pion ratio integrated for pT &gt; 10 GeV/c measured in Pb-Pb collisions.",
+        "resources": []
+      },
+      {
+        "name": "Table 16",
+        "id": 63257,
+        "doi": "10.17182/hepdata.71310.v1/t16",
+        "description": "Proton-to-pion ratio integrated for pT &gt; 10 GeV/c measured in Pb-Pb collisions.",
+        "resources": []
+      }
+    ]
+  }
+]
