@@ -12,7 +12,7 @@ updated = "2026-08-01"
 authoritative = true
 status = "active"
 status_token = "ACTIVE"
-document_count = 135
+document_count = 138
 [[owner]]
 path = "README_GPU_STEPS.md"
 owner_group = "project"
@@ -789,3 +789,20 @@ path = "docs/reports/enso_91103_outlook_2026_09_01.md"
 owner_group = "project"
 removal_status = "active"
 removal_reason = ""
+
+[[owner]]
+path = "vendor/proc-macro-error2/CHANGELOG.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Preserve upstream release history with the checksum-verified vendored dependency."
+
+[[owner]]
+path = "vendor/proc-macro-error2/README.md"
+owner_group = "third_party"
+removal_status = "locked"
+removal_reason = "Preserve upstream documentation with the checksum-verified vendored dependency."
+
+[[owner]]
+path = "docs/engineering/staples-retained-result-audit.md"
+owner_group = "project"
+removal_status = "active"

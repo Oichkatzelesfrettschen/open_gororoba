@@ -12,7 +12,9 @@ pub mod lbm_dispatch;
 pub mod nonlocal_report;
 pub mod staple_associator;
 pub mod staple_benchmark;
+pub mod staple_calibration;
 pub mod staple_controls;
+pub mod staple_logistic;
 pub mod voyager_arrow;
 pub mod voyager_encounter;
 

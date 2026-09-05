@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "admitted_file_count": 813,
+  "independent_file_count": 813,
+  "mismatches": [],
+  "admitted_equal_timestamp_pairs": 503,
+  "independent_equal_timestamp_pairs": 503,
+  "admitted_backward_pairs": 0,
+  "independent_backward_pairs": 0
+}
