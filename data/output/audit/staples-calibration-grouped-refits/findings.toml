@@ -211,10 +211,19 @@ mechanism = "Both experiment emitters validate the historical/canonical pair aga
 validation = "Three focused tests pass for valid alias rendering, absent/mismatched/duplicate/unnamed alias rejection, and ordinary parenthetical title preservation. Nightly rustfmt check passes."
 
 [verification]
-repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1: exit 0; 660 tests pass, zero skipped; scoped Clippy and all governance checks pass."
+repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1: exit 0; 661 tests pass, zero skipped; scoped Clippy and all governance checks pass."
 repository_gate_log = "data/output/audit/staples-calibration-grouped-refits/validation.log"
 emitter_clippy = "cargo clippy --offline --locked -j 2 --profile validation -p gororoba_cli_data --bin registry-emit -- -D warnings: exit 0."
 toml = "taplo check --no-auto-config parses all eight audit, transition, replay, experiment, and standalone manifest TOMLs successfully."
 independent_completion = "The locked standalone auditor exits 0 and verifies the exact 105 planned records and all 750 converged fits. Its complete-mode negative test rejects the partial 70-draw set."
 canonical_exports = "provenance verify-control-plane: exit 0; 1555 claims, 250 experiments, 388 binaries."
 diff = "git diff --check: exit 0."
+
+[registry_metadata_repairs]
+experiment_note = "A partial experiment fragment omitted status_note and the upsert wrote SQL NULL over an existing canonical note. The conflict update now coalesces an omitted note with the stored value; an explicit supplied note still replaces it. The regression checks canonical readback and compatibility export."
+alias_source = "The emitter read experiments from the selected canonical database while resolving aliases beside the input TOML. Alias lookup now follows the same source selection as the experiment reader: the registry parent of a canonical directory, the sibling directory of a standalone database, or the input directory when the database is absent."
+alias_tests = "The regression supplies conflicting input-side and database-side maps, requires the selected database map, rejects a historical suffix when that map is missing, and checks standalone-database and compatibility-input layouts. All four emitter tests pass."
+upsert_tests = "Both experiment-upsert preservation tests pass."
+scientific_preservation = "The production summary and independent completion audit retain SHA-256 f4e8303d669f6a0b28162c16785f2875af40f17a677df5bd9d51c07474ae20d6 and c9c9e8e19be7549d3b1d9cabd682c8d1c1830510e777c9761c828218c08630f8. The metadata repairs leave every production source-identity file unchanged."
+independent_recheck = "The complete independent audit exits 0 after the metadata repairs and emits a byte-identical completion report."
+foreign_database_export = "Both experiment emitters exit 0 from an unrelated working directory with default input paths, an explicit database in a separate registry/canonical directory, and the alias map beside that registry."
