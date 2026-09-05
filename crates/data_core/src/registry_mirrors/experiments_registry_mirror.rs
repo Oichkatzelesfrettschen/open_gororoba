@@ -4311,7 +4311,7 @@
 //!
 //! Run command:
 //! ```bash
-//! RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results --mode cv
+//! RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode cv
 //! ```
 //!
 //! ## E-281: THEMIS-A paired train-file and test-file bootstrap with logistic refitting
@@ -4329,5 +4329,5 @@
 //!
 //! Run command:
 //! ```bash
-//! RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results --mode all
+//! RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode all
 //! ```

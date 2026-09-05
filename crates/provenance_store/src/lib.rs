@@ -1087,6 +1087,7 @@ impl ProvenanceStore {
     /// Insert or update the `[[experiment]]` rows in `raw` without deleting
     /// any other canonical experiment.
     /// An omitted status note preserves the existing canonical note.
+    /// Explicit notes append revisions in the same transaction as the upsert.
     pub fn upsert_experiments_from_registry_text(
         &mut self,
         repo_root: &Path,
@@ -1097,18 +1098,23 @@ impl ProvenanceStore {
         if experiments.is_empty() {
             bail!("experiment spec contains no [[experiment]] rows");
         }
-        let tx = self.conn.transaction()?;
+        let note_reason = format!(
+            "Apply explicit status_note from experiment fragment {}",
+            to_repo_rel(repo_root, source_path)
+        );
+        let tx = self
+            .conn
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
         let mut ids = Vec::new();
         for experiment in &experiments {
             tx.execute(
                 "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
-                 VALUES(?1, ?2, ?3, ?4, ?5, ?6, ?7)
+                 VALUES(?1, ?2, ?3, ?4, ?5, NULL, ?6)
                  ON CONFLICT(id) DO UPDATE SET
                     title = excluded.title,
                     status = excluded.status,
                     binary_name = excluded.binary_name,
                     claim_refs_json = excluded.claim_refs_json,
-                    status_note = COALESCE(excluded.status_note, experiments_cp.status_note),
                     compat_toml_text = excluded.compat_toml_text",
                 params![
                     experiment.id,
@@ -1116,10 +1122,24 @@ impl ProvenanceStore {
                     experiment.status,
                     experiment.binary,
                     serde_json::to_string(&experiment.claim_refs)?,
-                    experiment.status_note,
                     experiment.compat_toml_text
                 ],
             )?;
+            if let Some(note) = &experiment.status_note {
+                Self::entity_update_field_in_transaction(
+                    &tx,
+                    &experiment.id,
+                    note,
+                    "experiment-registry-upsert",
+                    Some(&note_reason),
+                    EntityFieldTarget {
+                        table: "experiments_cp",
+                        revisions_table: "experiment_revisions",
+                        fk_col: "experiment_id",
+                        field: "status_note",
+                    },
+                )?;
+            }
             tx.execute(
                 "DELETE FROM claim_experiment_refs WHERE experiment_id = ?1",
                 params![experiment.id],
@@ -3737,6 +3757,23 @@ impl ProvenanceStore {
         reason: Option<&str>,
         target: EntityFieldTarget<'_>,
     ) -> Result<StatusNoteRevision> {
+        let tx = self
+            .conn
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let revision =
+            Self::entity_update_field_in_transaction(&tx, id, new_value, actor, reason, target)?;
+        tx.commit()?;
+        Ok(revision)
+    }
+
+    fn entity_update_field_in_transaction(
+        tx: &rusqlite::Transaction<'_>,
+        id: &str,
+        new_value: &str,
+        actor: &str,
+        reason: Option<&str>,
+        target: EntityFieldTarget<'_>,
+    ) -> Result<StatusNoteRevision> {
         let EntityFieldTarget {
             table,
             revisions_table,
@@ -3751,9 +3788,6 @@ impl ProvenanceStore {
               actor, reason, operation, application_id)
              VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)"
         );
-        let tx = self
-            .conn
-            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
         let prev: Option<String> = tx
             .query_row(&select_sql, params![id], |row| row.get(0))
             .map_err(|e| anyhow::anyhow!("{} {} not found in canonical DB: {}", table, id, e))?;
@@ -3779,7 +3813,6 @@ impl ProvenanceStore {
             ],
         )?;
         let revision_id = tx.last_insert_rowid();
-        tx.commit()?;
         Ok(StatusNoteRevision {
             entity_id: id.to_string(),
             field_name: field.to_string(),
@@ -5527,6 +5560,7 @@ claim_refs = ["C-001"]
             ReimportOptions::destructive(&fixture.db),
         )?;
         store.experiment_update_status_note("E-001", "Retained evidence", "test", None)?;
+        let initial_revisions = lane_test_rows(&store, "experiment_revisions")?;
         let fragment = r#"
 [[experiment]]
 id = "E-001"
@@ -5547,6 +5581,10 @@ claim_refs = ["C-001"]
         let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
         assert!(rendered.contains("status_note = \"Retained evidence\""));
         assert!(rendered.contains("title = \"Updated experiment\""));
+        assert_eq!(
+            lane_test_rows(&store, "experiment_revisions")?,
+            initial_revisions
+        );
 
         let explicit_note = format!("{fragment}status_note = \"Updated evidence\"\n");
         store.upsert_experiments_from_registry_text(
@@ -5558,6 +5596,99 @@ claim_refs = ["C-001"]
             store.experiment_status_note("E-001")?.as_deref(),
             Some("Updated evidence")
         );
+        let read_latest = |store: &ProvenanceStore| -> Result<_> {
+            Ok(store.conn.query_row(
+                "SELECT experiment_id, field_name, prev_value_sha256, new_value_sha256,
+                        actor, reason, operation, application_id
+                 FROM experiment_revisions ORDER BY id DESC LIMIT 1",
+                [],
+                |row| {
+                    Ok((
+                        row.get::<_, String>(0)?,
+                        row.get::<_, String>(1)?,
+                        row.get::<_, Option<String>>(2)?,
+                        row.get::<_, String>(3)?,
+                        row.get::<_, String>(4)?,
+                        row.get::<_, Option<String>>(5)?,
+                        row.get::<_, String>(6)?,
+                        row.get::<_, i64>(7)?,
+                    ))
+                },
+            )?)
+        };
+        let expected_reason = format!(
+            "Apply explicit status_note from experiment fragment {}",
+            to_repo_rel(&fixture.root, &fixture.experiments)
+        );
+        assert_eq!(
+            read_latest(&store)?,
+            (
+                "E-001".to_owned(),
+                "status_note".to_owned(),
+                Some(sha256_hex("Retained evidence")),
+                sha256_hex("Updated evidence"),
+                "experiment-registry-upsert".to_owned(),
+                Some(expected_reason.clone()),
+                "update".to_owned(),
+                CLI_APPLICATION_ID,
+            )
+        );
+        let updated_rows = lane_test_rows(&store, "experiments_cp")?;
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            &explicit_note,
+        )?;
+        assert_eq!(lane_test_rows(&store, "experiments_cp")?, updated_rows);
+        let repeated = read_latest(&store)?;
+        assert_eq!(repeated.2, Some(sha256_hex("Updated evidence")));
+        assert_eq!(repeated.3, sha256_hex("Updated evidence"));
+        assert_eq!(repeated.6, "touch");
+        assert_eq!(
+            lane_test_rows(&store, "experiment_revisions")?.len(),
+            initial_revisions.len() + 2
+        );
+
+        let inserted_note = explicit_note.replace("E-001", "E-002");
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            &inserted_note,
+        )?;
+        let inserted = read_latest(&store)?;
+        assert_eq!(inserted.0, "E-002");
+        assert_eq!(inserted.2, None);
+        assert_eq!(inserted.3, sha256_hex("Updated evidence"));
+        assert_eq!(inserted.6, "update");
+
+        let tables = [
+            "experiments_cp",
+            "experiment_revisions",
+            "claim_experiment_refs",
+            "export_runs",
+        ];
+        let before = tables
+            .iter()
+            .map(|table| lane_test_rows(&store, table))
+            .collect::<Result<Vec<_>>>()?;
+        store.conn.execute_batch(
+            "CREATE TRIGGER reject_experiment_revision BEFORE INSERT ON experiment_revisions
+             WHEN NEW.experiment_id = 'E-001'
+             BEGIN SELECT RAISE(ABORT, 'injected revision failure'); END;",
+        )?;
+        let rejected = format!(
+            "{}\n{}\n{}",
+            inserted_note.replace("Updated evidence", "Rolled back evidence"),
+            inserted_note.replace("E-002", "E-003"),
+            explicit_note.replace("Updated evidence", "Rejected evidence")
+        );
+        let error = store
+            .upsert_experiments_from_registry_text(&fixture.root, &fixture.experiments, &rejected)
+            .unwrap_err();
+        assert!(error.to_string().contains("injected revision failure"));
+        for (table, original) in tables.iter().zip(before) {
+            assert_eq!(lane_test_rows(&store, table)?, original, "{table}");
+        }
         Ok(())
     }
 
