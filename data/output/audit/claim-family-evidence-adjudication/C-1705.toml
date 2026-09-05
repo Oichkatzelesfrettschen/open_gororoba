@@ -1,0 +1,55 @@
+claim_id = "C-1705"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Compare held-out numerical error of the fixed pole-derived source construction and an unconstrained pole fit. Source procedure fidelity and physical parameter inference remain separate."
+fixed_hyperparameters = ["Frozen training41 Chebyshev nodes, validation41 midpoint nodes, disjoint test grid over0.22..0.233","Unique channels l=0,1,2; preserve each channel before weights1,2,2","The historical reported maxima are about5.69e-2 and3.02e-2; reproduce full-precision values before rounding"]
+[[intervening_maps]]
+branch = "source_fixed"
+name = "root_to_fixed_tcmt"
+kind = "computational"
+description = "Extract fixed channel resonance and background parameters from the declared Mie root construction; this is a repository construction, not the paper curve-fitting method."
+[[intervening_maps]]
+branch = "pole_l0"
+name = "training_fit_and_heldout_error"
+kind = "computational"
+description = "Fit complex b+a/(omega-(omega0-i*gamma)) for l=0 on training nodes; select by validation and retain held-out errors."
+[[intervening_maps]]
+branch = "pole_l1"
+name = "training_fit_and_heldout_error"
+kind = "computational"
+description = "Fit complex b+a/(omega-(omega0-i*gamma)) for l=1 on training nodes; select by validation and retain held-out errors."
+[[intervening_maps]]
+branch = "pole_l2"
+name = "training_fit_and_heldout_error"
+kind = "computational"
+description = "Fit complex b+a/(omega-(omega0-i*gamma)) for l=2 on training nodes; select by validation and retain held-out errors."
+[[fitted_parameters]]
+branch = "source_fixed"
+count = 0
+names = []
+training_boundary = "Root-derived parameters are fixed during comparison; zero curve-fit parameters enter this branch."
+[[fitted_parameters]]
+branch = "pole_l0"
+count = 6
+names = ["b_real","b_imag","a_real","a_imag","omega0","gamma"]
+training_boundary = "Six real parameters per unique channel, fitted on training and selected on validation only. Test coordinates remain excluded from fitting and selection."
+[[fitted_parameters]]
+branch = "pole_l1"
+count = 6
+names = ["b_real","b_imag","a_real","a_imag","omega0","gamma"]
+training_boundary = "Six real parameters per unique channel, fitted on training and selected on validation only. Test coordinates remain excluded from fitting and selection."
+[[fitted_parameters]]
+branch = "pole_l2"
+count = 6
+names = ["b_real","b_imag","a_real","a_imag","omega0","gamma"]
+training_boundary = "Six real parameters per unique channel, fitted on training and selected on validation only. Test coordinates remain excluded from fitting and selection."
+[decisive_experiment]
+experiment_ids = ["E-289"]
+protocol_artifact = "data/output/audit/2026-08-04/p2b-preregistration.toml"
+description = "E-289 binds the actual p2b-ruan-fan-reproduction producer and retained independent fixture. E-076 and the historical E-241 manifest collision remain preserved. The replay preserves every numerical field, threshold and fitting budget; separate archive, extracted TeX and PDF receipts establish the admitted source subset."
+[what_would_verify_refute]
+verification_outcomes = ["On identical admitted held-out coordinates, the independently recomputed maximum error of the fixed source construction exceeds that of the six-parameter-per-channel pole fit, reproducing the retained numerical ordering."]
+revision_outcomes = ["The quoted maxima select different channels, supports or model branches: revise to the matched comparison and preserve original totals and all channel values."]
+abandonment_outcomes = ["A source-identified replay on identical coordinates reverses the asserted ordering: abandon this numerical ordering for that producer."]
+inconclusive_outcomes = ["Producer mismatch, source-root ambiguity, training/test leakage, ill conditioning or missing fit-coordinate identity blocks comparison.","Lower error with greater fitting freedom alone establishes neither physical superiority nor fidelity to the paper fitting procedure."]

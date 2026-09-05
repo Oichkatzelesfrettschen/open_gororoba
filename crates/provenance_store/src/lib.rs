@@ -29,7 +29,9 @@ mod artifact_retrieval;
 pub use artifact_retrieval::{
     ArtifactRetrievalSpec, DocumentIdentityStatus, RetrievalEvidenceFile, RetrievalRequestEvidence,
 };
+mod claim_content;
 mod entity_revisions;
+pub use claim_content::ClaimContentSpec;
 mod experiment_operations;
 mod exports;
 mod queries;

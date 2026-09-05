@@ -1,0 +1,68 @@
+schema_version = 1
+experiment_id = "E-294"
+protocol_sha256 = "6aee5abff4bc063d420423e49cb2a4a27c2e5cfd9fca4501d2770da17c247f9c"
+producer = "crates/quantum_core/tests/magnonic_localization.rs"
+producer_sha256 = "892e9953754d26da2f735bf401ab4c4f2107d796fd5e8bcd4c65139dfbc31e11"
+replay_path = "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-replay.txt"
+replay_sha256 = "fff4d5e28f47964dd45c1f7c32868d9e998b04ee0479443fca2f9b0c56a42846"
+executed_magnonic_crystal_sha256 = "99901e97500ef56aef26b3e7ada145a5083b8d19c98b6040061d628875fbaec6"
+executed_tight_binding_sha256 = "40debd19893a5f08ced38c5903db0b1ace9c27cdc215a4488be45eb93c93fe0a"
+source_identity_note = "The recorded execution hash precedes documentation-only clarification of point_defect_modes; numerical implementation stays identical."
+tests_passed = 2
+tests_failed = 0
+elapsed_test_seconds = 0.44
+clippy_diagnostic = "pass with -D warnings"
+physical_scope = "Repository reference model energies only; source-calibrated physical GHz agreement remains unadmitted."
+
+[paired_patches]
+radii = [2,3,4]
+pristine_orbitals = [225,441,729]
+defect_orbitals = [224,440,728]
+sampled_gap_low = 1.80964100577051701
+sampled_gap_high = 2.23664264422176462
+pristine_raw_selected = [18,28,48]
+defect_raw_selected = [15,25,52]
+independent_patch_selected_matches_producer = true
+pristine_interior_beyond_existing_tolerance = [14,20,26]
+defect_interior_beyond_existing_tolerance = [15,21,27]
+pristine_upper_endpoint_group_multiplicity = [12,30,56]
+defect_upper_endpoint_group_multiplicity = [11,29,55]
+endpoint_sensitivity_scope = "Descriptive reanalysis uses the already declared 1e-10 numerical tolerance to expose strict endpoint sensitivity; the historical selector and raw counts remain unchanged. Interior counts are a sensitivity observation, not a replacement admission gate."
+
+[edge_group]
+model_energy = 2.18173716801693
+multiplicity = [5,7,9]
+pristine_boundary_projector_trace = [5.00000000000000533,7.00000000000000178,9.00000000000001954]
+defect_boundary_projector_trace = [5.00000000000000178,7.00000000000001066,9.00000000000000888]
+center_projector_trace = [0.0,0.0,0.0]
+interpretation = "Full group projector weight lies on the open boundary. The historical bulk-flat-band attribution for this group is contradicted by basis-invariant spatial evidence."
+
+[central_defect_candidate]
+model_energies = [1.84022963871055634,1.84022963875290779,1.84022963875291667]
+ipr_sum_probability_squared = [0.90200609314022517,0.90200610071693277,0.90200610071833676]
+participation_number_reciprocal = [1.10863996108786900,1.10863995177546992,1.10863995177374419]
+central_cell_probability = [0.97498650300644940,0.97498650690632549,0.97498650690705946]
+boundary_cell_probability = [0.00000202183317767,0.00000000024846920,0.00000000000003149]
+matched_pristine_modes_in_rounded_1_840_to_1_841_window = [0,0,0]
+window_scope = "Descriptive lookup of the historical rounded candidate; this window was not used as a fitted admission or localization cutoff."
+interpretation = "Finite central localization and decreasing edge weight support the narrower candidate reading. Historical IPR 1.1 describes reciprocal participation; normalized IPR lies between 1/N and 1. Uniqueness and asymptotic size independence remain unproved."
+
+[periodic_walls]
+cells = 20
+k_fraction_b1 = 0.30
+sign_transitions = 2
+nonzero_wrapped_hoppings = 6
+central_mask = [9,10]
+seam_mask = [19,0]
+model_energies = [1.83092249232392223,1.84525033146617057,2.23002956003267006,2.23435187533214297]
+central_wall_probability = [0.0,0.0,0.91864383779491510,0.83811654664597512]
+seam_probability = [0.99993320158960841,0.99994523330742446,0.00000000000001331,0.00000000000011172]
+interpretation = "Both the internal sign boundary and periodic seam carry the retained modes with the recorded spatial weights. The four rounded historical energies reproduce in repository model units; topology and physical calibration require their separate checks."
+
+[operational_changes]
+api_scope = "point_defect_modes retains its API and numerical selector; documentation names spectral-gap candidates and unassessed localization."
+cli_scope = "Defect JSON uses n_gap_candidates and candidate_model_frequencies_ghz with localization_status=unassessed and parameter_origin=repository_reference. Text names candidates and candidate energy spacing."
+compatibility = "Defect JSON field names intentionally change to remove unsupported defect-localization assertions; downstream consumers must update the two renamed keys."
+cli_clippy = "pass with -D warnings"
+cli_build = "pass"
+cli_smoke = "defect --radius 2 --json reports 15 candidates, 15 model frequencies, unassessed localization and repository reference parameter origin; jq predicate passes."

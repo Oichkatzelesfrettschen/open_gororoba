@@ -1,0 +1,24 @@
+schema_version = 1
+activation_protocol = "plans/crossing-detector-operational-utility.toml"
+inspection_boundary = ["plans/crossing-detector-operational-utility.toml", "plans/crossing-detector-utility-experiments.toml", "data/output/audit/crossing-detector-utility-instrument"]
+status = "awaiting_independent_observation_inputs"
+fixture_boundary = "The registered utility outputs in the inspected instrument directory are mathematical fixtures. They remain instrument validation."
+user_input_request = "Independent whole-block labels, randomized analyst review observations and genuine stream receipt/alert sources requested; collection identity remains unspecified."
+[[track]]
+experiment_id = "E-284"
+activation = "blocked_independent_labels_and_review_observations"
+required_inputs = ["immutable continuous population manifest", "independent timing interval labels and ambiguous cases", "blinded whole-block review", "randomized analyst assignment", "active review durations", "sealed operating points and matching policy"]
+measurable_after_admission = ["crossing-time error", "review time per validated crossing and exposure hour", "missed events", "duplicate burden"]
+strict_catalog_and_adjudicated_reports = "separate"
+[[track]]
+experiment_id = "E-285"
+activation = "blocked_genuine_arrival_and_clock_provenance"
+required_inputs = ["genuine stream receipt UTC and monotonic timestamps", "clock uncertainty and synchronization provenance", "feature-ready and emission timestamps", "outages and product calibration identity", "independent crossing labels"]
+measurable_after_admission = ["receipt-to-alert latency", "feature-ready-to-emission latency", "first admissible alert delay", "false alert episodes per valid exposure hour", "missed events"]
+archival_event_time = "insufficient_for_receipt_latency"
+[[track]]
+experiment_id = "E-286"
+activation = "blocked_measured_counts_and_overhead"
+required_inputs = ["paired admitted event counts", "common exposure and ambiguity bounds", "measured compute and analyst overhead", "sealed paired uncertainty draws"]
+owner_costs = "pending; keep valuations conditional"
+measurable_after_admission = ["cost-ratio frontier conditional on owner valuations", "bounded utility intervals"]

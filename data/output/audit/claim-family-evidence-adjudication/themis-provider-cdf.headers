@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Date: Sat, 05 Sep 2026 16:10:44 GMT
+Server: Apache/2.4.62 (Red Hat Enterprise Linux) OpenSSL/3.5.1 mod_fcgid/2.3.9 SVN/1.14.1
+Last-Modified: Tue, 22 Aug 2023 22:57:45 GMT
+ETag: "173e60e-6038aec5820a6"
+Accept-Ranges: bytes
+Content-Length: 24372750
+Cache-Control: max-age=0
+Expires: Sat, 05 Sep 2026 16:10:44 GMT
+Content-Type: application/x-netcdf
+

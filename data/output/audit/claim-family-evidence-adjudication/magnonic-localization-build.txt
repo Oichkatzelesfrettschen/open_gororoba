@@ -1,0 +1,4 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 23.51s
+     Running tests/magnonic_localization.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/magnonic_localization-cb67ac7ffd9dc80d)

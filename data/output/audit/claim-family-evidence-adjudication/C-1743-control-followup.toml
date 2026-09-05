@@ -1,0 +1,143 @@
+claim_id = "C-1743"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+depth_rationale = "The claim measures discrimination on an admitted calibrated-product archive. The enumerated maps are computational stages shared by the declared model branches. A physical interpretation of the staple embedding and cubic contraction has not been assessed; computational stage counts do not establish physical lift depth."
+fixed_hyperparameters = [
+  "Post-hoc exact-support follow-up: recover all 120 final canonical/control kernels using frozen models; simultaneous centered max-absolute paired whole-file bootstrap across 114 contrasts at confidence 0.95",
+  "Original baseline requirement 0.005 remains fixed. Practical equivalence remains unadjudicated until a separately declared margin; geometric capacity control requires its own matched training-only fit",
+  "Training epochs 2007-2012; descriptive validation epochs 2013-2014; final epochs 2015 and 2016",
+  "Six strictly earlier unique timestamp batches; current decision vector excluded",
+  "Maximum positive gap 30 seconds and maximum six-vector feature span 30 seconds",
+  "Common admission requires 1024 preceding increments before the six-vector window for every width and tensor",
+  "Fixed local RMS widths 64, 256 and 1024; every width enters the primary global minimum",
+  "Crossing localization radius 120 seconds using the hash-admitted full V2 same-probe catalog including adjacent UTC dates",
+  "Exact finite fill sentinel -1e30; malformed and duplicate batches reset segments; backward time rejects the file",
+  "16-dimensional overlapping staple embedding and 1848-term ordered tensor support",
+  "Canonical tensor plus 19 independent exact-support coefficient-sign controls at seeds 1000 through 1018",
+  "Shared norm-product denominator epsilon 1e-30",
+  "Fixed ln(score+1e-12) transform; logged features stored as f32",
+  "Ridge penalty 1e-6; maximum Newton iterations 25; relative deviance tolerance 1e-8",
+  "2000 paired whole-daily-file bootstrap draws with seed 20260904; linear 2.5 and 97.5 percentile endpoints",
+  "Bootstrap conditions on frozen training fits and observed final years; training parameters remain fixed across draws",
+  "Minimum useful discrimination increment 0.005 ROC-AUC, chosen by the investigator before execution",
+  "At least 30 admitted files and 10 positive-containing files per final year; empty classes, nonfinite metrics and nonconverged fits fail numerical admission",
+  "External probe D, years 2015 and 2016, every planned crossing date; apply frozen THEMIS-A transforms and coefficients"
+]
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "timestamp_batch_admission"
+kind = "computational"
+description = "Close each timestamp batch at the next strictly later timestamp. Admit exactly one valid vector per closed batch; score at decision t using only already closed earlier batches. Apply the declared fill, malformed-row, duplicate, gap and backward-time rules."
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "common_raw_support_selection"
+kind = "computational"
+description = "Select six earlier field vectors and the preceding maximum-width increment history. Every width, canonical tensor, sign control and geometric baseline uses the identical admitted decisions and raw dependency support."
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "catalog_localization_labels"
+kind = "computational"
+description = "Label decision t by a same-probe V2 crossing within 120 seconds, retaining adjacent-date crossings. Labels never select raw feature supports or fit transforms on final or external observations."
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "six_geometric_predictors"
+kind = "computational"
+description = "Compute last-pair magnitude change per second, last-pair rotation, six-sample cumulative rotation, maximum rotation, maximum increment divided by the declared preceding RMS, and maximum absolute determinant of three consecutive increment vectors."
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "fixed_preceding_increment_rms"
+kind = "computational"
+description = "For each fixed width W, divide the maximum of five feature-window increment norms by the RMS of exactly W increments strictly preceding the six-vector window. The local statistic uses fixed coefficients and zero population-fitted parameters; its full input support is declared and shared."
+
+[[intervening_maps]]
+branch = "all_augmented_models"
+name = "magnitude_augmentation_and_overlapping_staples"
+kind = "computational"
+description = "Augment each GSE magnetic vector with its Euclidean magnitude. Pack four consecutive augmented vectors into R16 and construct three overlapping staples spanning the same six admitted field samples."
+
+[[intervening_maps]]
+branch = "all_augmented_models"
+name = "matched_sparse_cubic_contraction"
+kind = "computational"
+description = "Evaluate the canonical associator and each coefficient-sign control through the same 1848-term sparse contraction. Preserve ordered input support, coefficient magnitudes, output XOR rule and dimension; only coefficient signs vary. Generic cubic controls need not define algebras."
+
+[[intervening_maps]]
+branch = "all_augmented_models"
+name = "shared_norm_product_normalization"
+kind = "computational"
+description = "Normalize every cubic score by the product of the three staple norms plus 1e-30. Append exactly one canonical or control score to the six shared geometric predictors."
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "fixed_log_transform"
+kind = "computational"
+description = "Apply ln(score+1e-12) to each predictor and retain f32 logged features. The transform has fixed coefficients and estimates zero population parameters."
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "training_only_standardization"
+kind = "computational"
+description = "Fit each logged predictor mean and population standard deviation exclusively on admitted THEMIS-A training rows from 2007-2012. Freeze six means and six scales for each baseline, or seven means and seven scales for each augmented model."
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "training_only_ridge_logistic_fit"
+kind = "computational"
+description = "Fit the intercept and six baseline slopes or seven augmented slopes with the shared convergence-checked ridge logistic procedure. Freeze all coefficients for validation, final epochs, bootstrap evaluation and any subsequently admitted external inference."
+
+[[intervening_maps]]
+branch = "shared_all_models"
+name = "paired_epoch_metric_and_global_minimum"
+kind = "computational"
+description = "Compute paired augmented-minus-baseline ROC-AUC in each final year and width. In every paired whole-file bootstrap draw take the global minimum canonical increment across both final years and all three widths. Compare its interval separately with zero and the declared 0.005 useful-increment threshold; control comparisons retain their own uncertainty boundary."
+
+[[fitted_parameters]]
+branch = "fixed_local_features"
+count = 0
+names = []
+training_boundary = "The preceding-window RMS, geometric transforms, staple embedding, canonical/control tensor coefficients and norm/log transforms estimate zero population parameters. Local statistics remain input features with full causal raw support; control seeds and tensor coefficients stay fixed before fitting."
+
+[[fitted_parameters]]
+branch = "logistic_baseline_per_width"
+count = 19
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6"]
+training_boundary = "Per fixed width: seven logistic coefficients plus twelve standardization parameters, fitted exclusively on admitted THEMIS-A 2007-2012 training rows. Three baseline models retain separate fitted values. Final-year bootstrap draws resample evaluation files while retaining the original frozen training fits."
+
+[[fitted_parameters]]
+branch = "logistic_augmentation_per_width_and_tensor"
+count = 22
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "slope_cubic", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "mean_cubic", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6", "std_cubic"]
+training_boundary = "Per fixed width and canonical/control tensor: eight logistic coefficients plus fourteen standardization parameters, fitted exclusively on the identical THEMIS-A 2007-2012 training rows. Each of sixty augmented models has the same parameter and optimizer budget. Final and external observations supply zero fitted parameters."
+
+[decisive_experiment]
+experiment_ids = ["E-282", "E-283"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/control-uncertainty-protocol.toml"
+protocol_sha256 = "ef1a5ffc076475ff0b62d9c10dbf8b0e4771bdce9668b56b4116031ec32fe8ef"
+description = "E-282 executes the sealed timestamp-causal epoch and exact-support-control comparison. Its retained approximate 95 percent global-minimum interval [0.0010149049086891153, 0.0029188809429172872] supports a small positive conditional increment and rejects the investigator-defined 0.005 useful increment. E-283 remains blocked at external input admission after the native source independently confirms the backward timestamp; external numerical inference has not run."
+
+[what_would_verify_refute]
+verification_outcomes = [
+  "An independent faithful replay of E-282 reproduces the hash-admitted population, frozen training fits and global-minimum interval with lower endpoint above zero and upper endpoint below 0.005, verifying the two distinct bounded predicates of positive effect and insufficient declared useful increment.",
+  "A separately declared, fully admitted external replication applies the frozen THEMIS-A models and reports its own positive-effect and 0.005-threshold intervals; any surviving extension earns a separate scope declaration rather than promoting the completed internal result retroactively."
+]
+revision_outcomes = [
+  "An independently resolved admission or numerical correction changes the retained population or interval: preserve C-1743 and the historical parents, record the correction provenance, and register only the narrower successor supported by the corrected experiment.",
+  "Adequately precise canonical-minus-control comparisons reproduce the predictive signal with exact-support generic cubic controls: retain the supported detector observation while revising any separately proposed algebra-specific explanation. The observed point ranks alone do not establish that uncertainty-adjusted conclusion.",
+  "A faithful corrected replay produces an interval that touches or crosses 0.005: revise the below-threshold classification to inconclusive for the corrected evidence instead of selecting a favorable final width or secondary metric."
+]
+abandonment_outcomes = [
+  "After resolving implementation and input provenance, a faithful replay or sufficiently precise replication yields a global-minimum interval wholly at or below zero: abandon the positive-increment assertion for that tested scope while preserving the original reported observation.",
+  "After resolving implementation and input provenance, a faithful corrected replay yields a lower endpoint strictly above 0.005: abandon the below-threshold assertion for the corrected scope because the declared useful increment survives its preregistered criterion.",
+  "A sufficiently precise admitted interval has upper endpoint strictly below 0.005: reject the proposed useful discrimination increment for that scope, even when its lower endpoint exceeds zero. E-282 supplies this completed rejection; operational cost-benefit remains a separate unmeasured predicate."
+]
+inconclusive_outcomes = [
+  "An interval contains zero, or dependence and support uncertainty prevents a sufficiently precise positive-effect decision: the positive-effect extension remains inconclusive rather than becoming an absence-of-effect claim.",
+  "An interval touches or crosses 0.005, or the declared file/class/precision requirements fail: the proposed useful increment remains inconclusive.",
+  "Canonical-minus-control simultaneous uncertainty intervals remain unrun or contain zero: algebra-specific superiority remains inconclusive despite fourteen to sixteen controls equaling or exceeding canonical point ROC-AUC in every final panel.",
+  "External retrieval, identity or chronological admission remains unresolved: E-283 remains blocked with zero numerical inference. Provider-corrected source bytes require preserved provenance and a separately declared intake; sorting, deduplicating or omitting the failed date cannot manufacture campaign completion."
+]

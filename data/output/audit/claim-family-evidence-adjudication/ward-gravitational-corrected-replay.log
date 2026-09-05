@@ -1,0 +1,21 @@
+    Blocking waiting for file lock on build directory
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 10.26s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/gr_core-943b1a45853b3f3f)
+
+running 7 tests
+test photon_graviton::gravitational_ward::tests::affine_virtuality_extrapolation_preserves_component_signs ... ok
+test photon_graviton::gravitational_ward::tests::p1_final_grid ... ok
+on_shell_tadpole loop=Scalar rank_one=[[Complex { re: 0.0, im: 0.000623980932153647 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: -0.000623980932153647, im: 0.0 }]] photon_contracted=0+0i absolute=0.0000000000000000e0 normalized=0.0000000000000000e0 passes=true
+on_shell_tadpole loop=Spinor rank_one=[[Complex { re: 0.0, im: 0.0024963414983068953 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: -0.0024963414983068953, im: 0.0 }]] photon_contracted=0+0i absolute=0.0000000000000000e0 normalized=0.0000000000000000e0 passes=true
+test photon_graviton::gravitational_ward::tests::on_shell_tadpole_variation_retains_a_component_residual ... ok
+off_shell loop=Scalar lhs=[[Complex { re: 0.0, im: 4.981071478542536e-6 }, Complex { re: 0.0, im: -1.5561657430588646e-5 }, Complex { re: 0.0, im: -3.735803608906905e-6 }, Complex { re: 0.0, im: 0.0 }]] one_photon=[[Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }]] two_photon=[[Complex { re: 0.0, im: 4.981071478777108e-6 }, Complex { re: 0.0, im: -1.5561657431585587e-5 }, Complex { re: 0.0, im: -3.7358036090828357e-6 }, Complex { re: 0.0, im: 0.0 }]] rhs=[[Complex { re: 0.0, im: 4.981071478777108e-6 }, Complex { re: 0.0, im: -1.5561657431585587e-5 }, Complex { re: 0.0, im: -3.7358036090828357e-6 }, Complex { re: 0.0, im: 0.0 }]] defect=[[Complex { re: 0.0, im: -2.345722222149224e-16 }, Complex { re: 0.0, im: 9.969408382593664e-16 }, Complex { re: 0.0, im: 1.7593086072708632e-16 }, Complex { re: 0.0, im: 0.0 }]] absolute=1.0391664112067463e-15 normalized=6.1998919569017500e-11
+test photon_graviton::gravitational_ward::tests::off_shell_comparison_retains_all_lower_point_components ... ok
+on_shell_combined loop=Scalar samples=[(Complex { re: 0.10000000000000009, im: 0.0 }, 0.002184620990198001), (Complex { re: 0.050000000000000155, im: 0.0 }, 0.002273825618507603), (Complex { re: 0.010000000000000009, im: 0.0 }, 0.002344888422686233), (Complex { re: 0.0050000000000001155, im: 0.0 }, 0.002353753816963351)] extrapolated=[[Complex { re: 0.0, im: -0.0016706214256510116 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0016706319459206655, im: 0.0 }]] extrapolated_norm=2.3626229167124594e-3 convergence=9.7130837916573759e-8 passes=false
+test photon_graviton::gravitational_ward::tests::on_shell_omission_and_tadpole_trace_controls_break_the_invariant ... ok
+on_shell_combined loop=Spinor samples=[(Complex { re: 0.10000000000000009, im: 0.0 }, 0.0056978177402349185), (Complex { re: 0.050000000000000155, im: 0.0 }, 0.005783848477198113), (Complex { re: 0.010000000000000009, im: 0.0 }, 0.005851473537977064), (Complex { re: 0.0050000000000001155, im: 0.0 }, 0.005859853440507171)] extrapolated=[[Complex { re: 0.0, im: -0.004149462544623555 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.004149482351575439, im: 0.0 }]] extrapolated_norm=5.8682402128125109e-3 convergence=2.4780793423536252e-7 passes=false
+test photon_graviton::gravitational_ward::tests::combined_on_shell_ladder_retains_limit_status_without_a_floor ... ok
+test photon_graviton::gravitational_ward::tests::p1_calibration_records_scalar_identity_conditioning ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 889 filtered out; finished in 1.61s
+

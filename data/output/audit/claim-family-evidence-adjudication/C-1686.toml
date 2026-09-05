@@ -1,0 +1,31 @@
+claim_id = "C-1686"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Freeze the historical parker_spiral_b and MhdField::parker_spiral_init at 81a4ca6e. Retain 0.195,44.87,45.38 degrees and dt=148.696 s as historical values requiring identical-input reconciliation."]
+[[intervening_maps]]
+branch = "parker_angle_units"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Map grid radius, angular rate, physical speed, timestep and source radius to one SI evaluation point."
+[[intervening_maps]]
+branch = "parker_angle_units"
+name = "independent_predicate"
+kind = "computational"
+description = "Compare both implementations with atan2(abs(B_phi),abs(B_r)) from the declared SI Parker expression at identical radius/speed/colatitude/source surface."
+[[fitted_parameters]]
+branch = "parker_angle_units"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-112","E-114"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-112/E-114 as the recorded family binding, not evidence of completed replay. Compare both implementations with atan2(abs(B_phi),abs(B_r)) from the declared SI Parker expression at identical radius/speed/colatitude/source surface. Different radius conventions or unspecified source surface prevent exact angle adjudication; source-prescribed agreement remains separate from spacecraft observation."
+[what_would_verify_refute]
+verification_outcomes = ["The historical mixed-unit evaluation reproduces its small angle, and independent SI evaluation identifies the missing conversion for the same inputs."]
+revision_outcomes = ["Split the two producer claims or revise 44.87 versus 45.38 degrees when their physical radii/speeds differ; bind corrected ParkerSpiralSi tests to a distinct implementation boundary."]
+abandonment_outcomes = ["The historical producers already perform the complete SI conversion at the stated point, refuting the claimed unit defect."]
+inconclusive_outcomes = ["Different radius conventions or unspecified source surface prevent exact angle adjudication; source-prescribed agreement remains separate from spacecraft observation."]

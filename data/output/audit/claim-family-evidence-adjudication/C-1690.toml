@@ -1,0 +1,30 @@
+claim_id = "C-1690"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Finite Hamiltonian geometry and normalized eigenvector weights adjudicate the repository supercell only; physical GHz agreement remains separate."
+fixed_hyperparameters = ["Repository kaman_default parameters and inversion shifts, a_nm=100", "20 cells; k=0.30*b1; periodic a2 boundary retained", "Wall masks cover cells 9,10 at the central wall and 19,0 at the seam; report every mode and complementary weight", "Eigenpair residual and normalization tolerance 1e-10; no fitted localization cutoff"]
+[[intervening_maps]]
+branch = "supercell"
+name = "periodic_sign_boundary_count"
+kind = "computational"
+description = "Count signed onsite transitions including the last-to-first adjacency and verify nonzero seam hopping."
+[[intervening_maps]]
+branch = "supercell"
+name = "spatial_eigenvector_weights"
+kind = "computational"
+description = "Diagonalize the finite Bloch Hamiltonian and retain each eigenvalue, both wall masks and complementary bulk weight; avoid labeling all modes as wall-localized."
+[[fitted_parameters]]
+branch = "supercell"
+count = 0
+names = []
+training_boundary = "Fixed diagnostic geometry and masks precede execution; zero fit or outcome-selected threshold."
+[decisive_experiment]
+experiment_ids = ["E-294"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-protocol.toml"
+description = "New magnonic_localization integration producer supplements historical E-142 with both-wall spatial observations."
+[what_would_verify_refute]
+verification_outcomes = ["Signed onsite regions have exactly two periodic transitions and nonzero seam coupling; normalized eigenvector records account for both named walls."]
+revision_outcomes = ["The geometry has two walls but quoted eigenvalues or spatial assignment fail replay: retain the geometry result and replace the numerical attribution with measured weights."]
+abandonment_outcomes = ["The admitted construction has one transition or lacks seam coupling: abandon the two-wall attribution for that implementation."]
+inconclusive_outcomes = ["Degenerate modes have basis-dependent individual weights; use whole-subspace projector weights before localization attribution.", "Finite spatial weights alone establish neither topological protection nor agreement with physical GHz data."]

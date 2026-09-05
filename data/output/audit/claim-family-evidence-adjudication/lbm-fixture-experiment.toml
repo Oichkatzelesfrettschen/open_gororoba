@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-291"
+title = "Evolving CPU CUDA population parity and graph dependency reuse"
+status = "active"
+binary = "test_gpu_cpu_equivalence"
+claim_refs = ["C-1696", "C-1700"]
+deterministic = true
+gpu = true
+reproducibility_class = "deterministic_replay"
+input = "8 cubed periodic evolving FP32 BGK density/shear fixture, 12 steps; force replacement and odd-step reinitialization; admitted RTX 4070 Ti."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"]
+method = "Compare cell-major distributions and independently summed density at the same evolution stage; compare direct/captured paths while preserving cudarc dependency tracking."
+run = "cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence --profile validation -- --include-ignored --nocapture"
+output = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"]
+status_note = "Original density-time-level and capture-isolation failures are retained. Corrected replay passes two real CUDA fixtures and the frozen-evolution control at unchanged tolerances. Full null catalog and galaxy resolution studies remain separate."

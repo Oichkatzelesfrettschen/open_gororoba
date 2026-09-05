@@ -1,0 +1,16 @@
+[transition]
+transition_key = "c-659-retained-measurement-reconciliation"
+source_claim_id = "C-659"
+expected_prior_status = "Established"
+experiment_verdict = "Inconclusive"
+evidence_artifact_ids = ["LOCAL-CLAIM-MEASUREMENT-RECONCILIATION"]
+experiment_ids = ["E-027"]
+exercised_falsifier = "Apply the claim evidence contract in data/output/audit/claim-family-evidence-adjudication/C-659.toml against retained contradiction-evidence.toml."
+proposed_claim_status = "Provisional"
+rationale = "The retained historical percolation p value 0.5841584158415841 after 100 permutations exceeds 0.05. Preserve the test as inconclusive and retire the unsupported Established significance label."
+unresolved_assumptions = ["Physical generalization requires independent source and input admission beyond the retained implementation result."]
+actor = "claim-evidence-adjudication"
+reason = "Reconcile statement, status, tested implementation and retained result."
+transition_timestamp = "2026-09-05T16:06:41Z"
+expected_source_state_sha256 = "1841e7edfa57f83dc75d3b788c835643089579426f867292ebb2874726bd34b9"
+expected_claim_id_max = 1743

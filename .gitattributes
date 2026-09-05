@@ -8,11 +8,22 @@ data/output/heliosphere/soho/celias_pm_native_5min.csv    -text
 registry/canonical/*.sqlite3 -filter -diff -merge -text
 *.csv    -text
 *.bin    -text
+# Hash-bound source and replay receipts preserve provider whitespace and line endings.
+data/output/audit/claim-family-evidence-adjudication/*.log -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/*replay.txt -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/moreno-zero-divisors-source.tex -text whitespace=-blank-at-eol,-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/*.headers -text whitespace=-blank-at-eol,-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/optics-replay/*.headers -text whitespace=-blank-at-eol,-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/geometric-evaluation/kernel-*.json    -text
+data/output/audit/claim-family-evidence-adjudication/geometric-evaluation/joint-control-uncertainty.json    -text
 *.pdf    -text
 *.nsys-rep    -text
 *.sqlite    -text
 *.h5    -text
 *.cdf    -text
+data/output/audit/claim-family-evidence-adjudication/control-recovery/kernel-*.json    -text
+data/output/audit/claim-family-evidence-adjudication/control-recovery/control-uncertainty.json    -text
 data/output/audit/staples-causal-validation/source-archives/external-intake.tar.zst    -text
 data/output/audit/staples-causal-validation/source-archives/calibration-research.tar.zst    -text
 data/output/audit/artifact-retrieval-correspondence/headers-*.txt -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol

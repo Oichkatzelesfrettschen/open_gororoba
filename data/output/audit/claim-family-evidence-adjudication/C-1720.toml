@@ -1,0 +1,25 @@
+claim_id = "C-1720"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Per-field source identity and mass-splitting convention of the NuFit60 struct. The fixed source-comparison branch fits zero parameters; physical model fitting remains outside its scope."
+fixed_hyperparameters = ["Preserve original literals; distinguish Delta_m_squared_31 from Delta_m_squared_32"]
+[[intervening_maps]]
+branch = "source_comparison"
+name = "identity_and_predicate"
+kind = "computational"
+description = "Per-field source identity and mass-splitting convention of the NuFit60 struct with explicit source artifact, version and equation/table locator."
+[[fitted_parameters]]
+branch = "source_comparison"
+count = 0
+names = []
+training_boundary = "A fixed reference lookup, interval-membership operation or theorem-hypothesis comparison fits zero parameters. Published global-fit freedoms and repository physical model freedoms remain separate."
+[decisive_experiment]
+experiment_ids = ["E-287"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+description = "Registered E-287 executes crates/algebra_experimental/tests/nufit_reference_identity.rs. Both NuFit6.0 analysis variants are checked against six source-transcribed contours. The historical composite stays separately named and all30 literals are preserved. NuFit6.1 coverage remains theta23 only."
+[what_would_verify_refute]
+verification_outcomes = ["An admitted per-field provenance ledger establishes the asserted multiple-source origin and the mislabeled mass splitting for the identified struct revision."]
+revision_outcomes = ["A repaired version-specific struct and explicit mass-splitting convention replace the composite; preserve the historical values and identify the corrected successor."]
+abandonment_outcomes = ["Primary-source provenance establishes the historical struct is a faithful single-release table with correct mass convention: abandon the composite/mislabel diagnosis."]
+inconclusive_outcomes = ["Per-field original-source receipts for the historical NuFit5.0, NuFit5.2 and PDG2021/2022 attributions remain unresolved. Numeric mismatch with6.0 establishes a failed release identity, not a unique historical origin.", "Ratio boxes from marginal dm21 and dm31 bounds lack joint confidence without covariance or a joint likelihood; preserve the historical denominator convention defect separately."]

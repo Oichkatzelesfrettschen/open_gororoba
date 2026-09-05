@@ -1,0 +1,55 @@
+   Compiling algebra_analysis v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_analysis)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 3.86s
+     Running tests/motif_exact_rank.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/motif_exact_rank-edcb31680f707112)
+
+running 3 tests
+test modular_rank_detects_singular_and_nonsingular_integer_controls ... ok
+test two_level_population_spacing_variance_has_exact_integer_identity ... ok
+
+dimension = 16
+components = 7
+minimum_degree = 4
+maximum_degree = 4
+distinct_degree_profiles = 1
+cocktail_party_components = 7
+
+
+
+dimension = 32
+components = 15
+minimum_degree = 4
+maximum_degree = 12
+distinct_degree_profiles = 2
+cocktail_party_components = 8
+
+
+
+dimension = 64
+components = 31
+minimum_degree = 4
+maximum_degree = 28
+distinct_degree_profiles = 4
+cocktail_party_components = 9
+
+
+
+dimension = 128
+components = 63
+minimum_degree = 4
+maximum_degree = 60
+distinct_degree_profiles = 8
+cocktail_party_components = 10
+
+
+
+dimension = 256
+components = 127
+minimum_degree = 4
+maximum_degree = 124
+distinct_degree_profiles = 16
+cocktail_party_components = 11
+
+test every_enumerated_motif_has_certified_rational_rank ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.24s
+

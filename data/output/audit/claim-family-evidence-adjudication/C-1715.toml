@@ -1,0 +1,35 @@
+claim_id = "C-1715"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates the finite motif census at D=16,32,64,128,256. Degree measurements are separate from any asymptotic spectral-gap claim."
+fixed_hyperparameters = ["Cross-assessor motif graph, all connected components, integer adjacency", "Dimensions16,32,64,128,256; component counts7,15,31,63,127", "Each component has D/2-2 vertices; aggregate minimum degree4 and maximum degreeD/2-4"]
+
+[[intervening_maps]]
+branch = "exact_graph"
+name = "cross_assessor_component_enumeration"
+kind = "computational"
+description = "Generate integer zero-product motif adjacency and enumerate all connected components at the five declared dimensions."
+
+[[intervening_maps]]
+branch = "exact_graph"
+name = "exact_degree_census"
+kind = "computational"
+description = "Count every vertex degree and component size directly from integer adjacency; retain per-component and aggregate counts."
+
+[[fitted_parameters]]
+branch = "exact_graph"
+count = 0
+names = []
+training_boundary = "Exact combinatorial and arithmetic comparisons fit zero physical parameters."
+
+[decisive_experiment]
+experiment_ids = ["E-295", "E-084"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+description = "E-295 checks every finite component using motif_exact_rank. E-084 retains its historical spectral producer. Exact degrees do not supply an unproved all-dimension spectral-gap argument."
+
+[what_would_verify_refute]
+verification_outcomes = ["Every enumerated component has D/2-2 vertices; counts equal7,15,31,63,127 and aggregate degree extrema equal4 andD/2-4 at the declared dimensions."]
+revision_outcomes = ["An exact component or degree counterexample changes a finite count: retain the counterexample and revise that bounded predicate."]
+abandonment_outcomes = ["An exact complete census contradicts the stated finite formula under the declared graph identity: abandon that formula for the failed dimensions."]
+inconclusive_outcomes = ["Incomplete component coverage or a different partner graph cannot adjudicate the finite motif claim.", "Any all-dimension spectral-gap or non-expansion extension remains unproved until a separate graph-family argument is supplied."]

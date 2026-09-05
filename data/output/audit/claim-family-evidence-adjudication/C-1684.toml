@@ -1,0 +1,31 @@
+claim_id = "C-1684"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Retain the historical 131178.947368 to 239325.927107 mass report over 500 steps and its exact producer; an 82 percent change alone is not a conservation residual."]
+[[intervening_maps]]
+branch = "boundary_mass_balance"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Separate periodic streaming, min-x population reconstruction, collision and each physical boundary flux."
+[[intervening_maps]]
+branch = "boundary_mass_balance"
+name = "independent_predicate"
+kind = "computational"
+description = "Compute M_final-M_initial minus measured integrated net inflow and source terms, with a preregistered numerical tolerance; compare each stage in its actual storage layout."
+[[fitted_parameters]]
+branch = "boundary_mass_balance"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-112","E-119"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-112/E-119 as the recorded family binding, not evidence of completed replay. Compute M_final-M_initial minus measured integrated net inflow and source terms, with a preregistered numerical tolerance; compare each stage in its actual storage layout. An open outflow and flux ledger are unspecified; the driver uses periodic x wrapping plus inlet overwrite. E-119 radial IC lacks admitted SI metadata. The periodic one-step Guo sweep cannot decide open-system conservation."
+[what_would_verify_refute]
+verification_outcomes = ["The historical total-mass increase and inlet population overwrite are reproduced for the retained input; verification supports an inventory change rather than conservation failure."]
+revision_outcomes = ["Replace unconditional nonconservation language if boundary mass accounting explains the change. The repaired AoSoA inlet requires a successor source identity and retains the original mismatch."]
+abandonment_outcomes = ["A complete admitted flux/source ledger closes within tolerance, refuting the claim that total-mass increase alone demonstrates nonconservation."]
+inconclusive_outcomes = ["An open outflow and flux ledger are unspecified; the driver uses periodic x wrapping plus inlet overwrite. E-119 radial IC lacks admitted SI metadata. The periodic one-step Guo sweep cannot decide open-system conservation."]

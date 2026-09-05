@@ -1,0 +1,35 @@
+claim_id = "C-1718"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Exact rational adjacency rank and nullity for every component atD=16,32,64,128,256. Universal dimension extension and physical interpretation remain separate claims."
+fixed_hyperparameters = ["Dimensions16,32,64,128,256; all243 connected components", "vertex_count=D/2-2;2*nullity=vertex_count", "Rank upper bound from exact duplicate columns; lower bound by elimination modulo prime1000000007", "Degree-profile counts are1,2,4,8,16; shared degree sequences do not establish graph isomorphism", "Historical abs(eigenvalue)<1e-6 remains a distinct floating predicate"]
+
+[[intervening_maps]]
+branch = "exact_graph"
+name = "cross_assessor_component_enumeration"
+kind = "computational"
+description = "Generate integer zero-product motif adjacency and enumerate every connected component at the five declared dimensions."
+
+[[intervening_maps]]
+branch = "exact_graph"
+name = "exact_rational_rank_certificate"
+kind = "computational"
+description = "Group identical integer columns for the rank upper bound and eliminate modulo prime1000000007 for the lower bound; equality proves rational rank and nullity."
+
+[[fitted_parameters]]
+branch = "exact_graph"
+count = 0
+names = []
+training_boundary = "Exact combinatorial and arithmetic comparisons fit zero physical parameters."
+
+[decisive_experiment]
+experiment_ids = ["E-295", "E-168"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+description = "E-295 is the exact motif integration-test producer. E-168 retains the distinct partner-graph experiment and is excluded from the motif exact-rank certificate. Every adjacency and column-equivalence class is retained."
+
+[what_would_verify_refute]
+verification_outcomes = ["Each of all243 components hasD/2-2 vertices; its modular rank lower bound equals its duplicate-column upper bound and both equal half the vertex count, proving rational nullityN/2."]
+revision_outcomes = ["An exact component violates the vertex formula or rank equality: retain the counterexample and narrow the finite statement.", "Finite equalities hold while the universal proof remains absent: retain the bounded result and mark the extension conjectural."]
+abandonment_outcomes = ["An exact complete census disproves the asserted half-nullity identity for the declared motif graph at an admitted dimension."]
+inconclusive_outcomes = ["The rank bounds differ, a component is omitted, or the input is a partner graph: the exact finite certificate remains incomplete.", "Hardcoded fraction proofs and thresholded floating eigenvalues do not certify rational adjacency rank."]

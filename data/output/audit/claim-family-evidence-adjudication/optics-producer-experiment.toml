@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-289"
+title = "Ruan-Fan retained producer replay and source receipt reconciliation"
+status = "active"
+binary = "p2b-ruan-fan-reproduction"
+claim_refs = ["C-1705", "C-1706", "C-1707", "C-1709"]
+deterministic = true
+gpu = false
+reproducibility_class = "numeric_close"
+input = "Frozen numerical protocol and retained 80-decimal independent pole output; newly retrieved arXiv0909.3323v2 archive and separately hashed extracted TeX and PDF."
+input_path_refs = ["data/output/audit/2026-08-04/p2b-preregistration.toml", "data/output/audit/2026-08-04/p2b-independent-pole-output.txt", "data/output/audit/claim-family-evidence-adjudication/optics-replay/arxiv-source.download", "data/output/audit/claim-family-evidence-adjudication/optics-replay/Fano_Scattering.tex", "data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf"]
+method = "Replay the unchanged pole/fit producer, retain every numerical field and compare parsed output with historical evidence after excluding only the code_commit_sha metadata field. Preserve the original0.01 error gates, fitting freedom and malformed producer TeX-hash metadata. Verify new source receipts separately with Rust SHA256 tests and inspect primary TeX method and rounded landmarks."
+run = "cargo run -p optics_core --bin p2b-ruan-fan-reproduction --profile validation -- data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml 81a4ca6e8e3a2f9b4d00b5e14b0ddd739088a7d9 data/output/audit/2026-08-04/p2b-independent-pole-output.txt"
+output = ["Complete numerical replay TOML", "Source-receipt test output", "Bounded adjudication and unresolved source-landmark discrepancy"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml", "data/output/audit/claim-family-evidence-adjudication/optics-adjudication.toml"]
+status_note = "The historical standalone manifest called this producer E-241, but canonical E-241 owns staples-layout-sweep. Preserve that collision and canonical E-241; E-289 supplies the explicit optics identity. E-076 retains its historical fano-scattering producer. Source receipt integrity is repaired only for the enumerated intake subset, not the repository-wide C-1708 assertion."

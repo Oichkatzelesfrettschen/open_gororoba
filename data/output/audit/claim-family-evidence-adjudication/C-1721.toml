@@ -1,0 +1,30 @@
+claim_id = "C-1721"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The claim compares accepted formal theorem scopes and assumptions with source propositions. The source propositions and their general model discharge remain separate evidence layers."
+fixed_hyperparameters = ["Literal Moreno e-print TeX SHA256 ad9bf59860da8079a640648b7ac8bc2425042a746e0bb2711025ed46a6d3c928", "Corollary 1.6 unrestricted four-way zero-product chain for n>=4", "Proposition 1.7 skew symmetry under purity; kernel equality belongs to the following Remark", "Rocq 9.1.1 and OCaml 5.5.0 with retained dependency identities"]
+[[intervening_maps]]
+branch = "source_comparison"
+name = "source_proposition_identity"
+kind = "computational"
+description = "Identify each proposition, hypotheses and conjugated factor directly in hash-retained TeX; preserve proposition versus remark provenance."
+[[intervening_maps]]
+branch = "source_comparison"
+name = "theorem_and_assumption_comparison"
+kind = "computational"
+description = "Compile focused bodies, query freshly compiled functors and concrete sedenion assumptions, and compare the resulting implication scopes with the source propositions."
+[[fitted_parameters]]
+branch = "source_comparison"
+count = 0
+names = []
+training_boundary = "Source identification and formal hypothesis comparison fit zero physical parameters."
+[decisive_experiment]
+experiment_ids = ["E-288"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+description = "E-288 replays focused theorem bodies and a printed-assumptions query. The retained source map separates the narrower constructive Corollary 1.6 route, source-matching skew-adjoint statements, and kernel equality dependent on additional local axioms."
+[what_would_verify_refute]
+verification_outcomes = ["Fresh theorem inspection confirms the extra purity/nonzero assumptions for C1538 two-way symmetry; C1539 skew-adjoint conclusions match the source purity scope; concrete kernel-equality assumptions still include im_lx_eq_im_rx and im_rx_eq_im_lx."]
+revision_outcomes = ["A stronger source-faithful theorem removes the extra restrictions or discharges a local kernel axiom: retain the historical partial result and update that formal edge."]
+abandonment_outcomes = ["Mechanical theorem inspection with discharged CD models proves the full source propositions without the identified restrictions or extra axioms: abandon the partial-formalization diagnosis for that implementation."]
+inconclusive_outcomes = ["A compilation log without source identity, exact theorem types and dependency assumptions cannot establish full source fidelity.", "Concrete dimension-16 model discharge alone leaves the general CD-dimension extension unresolved."]

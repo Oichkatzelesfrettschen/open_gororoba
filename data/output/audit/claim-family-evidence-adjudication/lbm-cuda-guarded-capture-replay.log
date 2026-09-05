@@ -1,0 +1,21 @@
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 6.06s
+     Running tests/test_gpu_cpu_equivalence.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/test_gpu_cpu_equivalence-f95653167ebc7174)
+
+running 2 tests
+captured=false population_rms=0.08233906328966702 density_rms=0.0000003289109547143455 velocity_rms=0.00000003351313212098577
+
+thread 'evolving_cpu_gpu_and_captured_steps_remain_consistent_fp32' (1353091) panicked at crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs:108:9:
+assertion failed: population_error.is_finite() && population_error < 2e-5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test evolving_cpu_gpu_and_captured_steps_remain_consistent_fp32 ... FAILED
+test captured_force_replacement_matches_uncaptured_steps ... ok
+
+failures:
+
+failures:
+    evolving_cpu_gpu_and_captured_steps_remain_consistent_fp32
+
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.32s
+
+error: test failed, to rerun pass `-p lbm_3d_cuda --test test_gpu_cpu_equivalence`

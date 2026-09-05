@@ -1,0 +1,5 @@
+claim_id = "C-834"
+expected_statement = "R_cas/R_dir < 5% at 10 um for paper-calibrated wavevector mismatches."
+expected_where_stated = "crates/optics_core/src/sfwm.rs (rate_ratio_with_dk), crates/optics_core/tests/test_sfwm_son_chekhova.rs (test_paper_dominance_ratio_at_10um)"
+statement = "At the fixed nominal Son-Chekhova source inputs and thickness 10 um, the corrected signed SFWM implementation gives R_cas/R_dir = 0.0477442355934858 < 0.05 and matches the retained 80-digit reference. The deterministic input envelope [0.04088750057509066, 0.05578719347757] crosses 0.05, leaving source-input threshold robustness provisional."
+where_stated = "crates/optics_core/src/sfwm_source.rs::source_amplitudes,source_rates; crates/optics_core/tests/test_sfwm_source_reference.rs::independent_mpmath_fixtures_match_componentwise,corrected_paper_input_reproduces_the_source_ratio_boundary; data/output/audit/2026-08-04/sfwm-p2c1-results/independent-mpmath-fixtures.csv"

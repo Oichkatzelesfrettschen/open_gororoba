@@ -1,0 +1,39 @@
+schema_version = 1
+scope = "Explicit registration and producer prerequisites for staged evidence contracts. These declarations do not adjudicate claim status."
+
+[[blocker]]
+claim_ids = ["C-1708"]
+reason = "The assertion quantifies every SHA256 field under a directory without a finite admitted manifest. The Ruan-Fan experiment does not own a repository-wide receipt-integrity predicate."
+required = "Enumerate artifact/receipt pairs, define path and parser boundaries, register a dedicated reproducible hash-gate experiment and preserve each incorrect historical receipt. Then create a typed contract against that experiment."
+
+[[amendment]]
+experiment_id = "E-073"
+claims = ["C-1635", "C-1637", "C-1666"]
+required = "Add the actual scalar/spinor tensor paths and retained numerical-protocol/manifest identity to the existing photon_graviton test-family registration. Preserve its historical spinor-only method text."
+
+[[amendment]]
+experiment_id = "E-076"
+claims = ["C-1705", "C-1706", "C-1707", "C-1709"]
+required = "Bind p2b_ruan_fan_reproduction.rs and its frozen protocol through an explicit amendment or a dedicated successor experiment. The existing fano-scattering command remains its own historical producer. Source archive identity repair precedes a source-fit replay."
+
+[[amendment]]
+experiment_id = "E-084"
+claims = ["C-1715"]
+required = "Add all-component exact graph witnesses and a separate dimension-general proof obligation; floating spectral census does not discharge a universal theorem."
+
+[[amendment]]
+experiment_id = "E-086"
+claims = ["C-1716", "C-1717"]
+required = "Add exact adjacency-isomorphism and normalized-spacing derivation predicates. Preserve the existing floating KDE/Brody producer and its fitting freedoms as a separate path."
+
+[[registration]]
+experiment_id = "E-287"
+spec = "data/output/audit/claim-family-evidence-adjudication/source-reference-experiments.toml"
+claims = ["C-1719", "C-1720", "C-1722"]
+scope = "Initial Rust test and PDF receipt check cover C-1722 only. Periodic delta_CP fixtures and the historical composite-source ledger remain unadmitted."
+
+[[registration]]
+experiment_id = "E-288"
+spec = "data/output/audit/claim-family-evidence-adjudication/source-reference-experiments.toml"
+claims = ["C-1721"]
+scope = "Planned Rocq/source comparison; complete source-hypothesis mapping and model-interface discharge remain required."

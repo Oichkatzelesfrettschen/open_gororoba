@@ -1,0 +1,23 @@
+   Compiling algebra_experimental v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_experimental)
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+   Compiling pathion_ellip v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/pathion_ellip)
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+   Compiling spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+   Compiling cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 53.55s
+     Running unittests src/bin/mrt_stability_audit.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/mrt_stability_audit-da7b4d23460ccb4c)
+
+running 3 tests
+test tests::finite_explosion_and_invalid_fields_fail_separate_predicates ... ok
+test tests::nonfinite_post_step_population_rejects_finite_cached_macros ... ok
+test tests::budgets_are_explicit_and_calm_trial_is_measured ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

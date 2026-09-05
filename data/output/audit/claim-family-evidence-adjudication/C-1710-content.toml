@@ -1,0 +1,5 @@
+claim_id = "C-1710"
+expected_statement = "The Arleo-Falmagne power-law R_AA ansatz is falsified against ALICE 5.02 TeV data at published precision independently of any competitor, at chi-squared per degree of freedom of order 300 per centrality bin."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+statement = "The retained ALICE comparison reports large diagonal-error residuals for the declared R_AA ansatz. A calibrated physical rejection requires source-population, covariance, model and fitting-freedom admission. The independent six-point replay confirms that extract_epsilon minimizes its own shift objective; a different historical scoring formula caused the apparent optimizer discrepancy. The retained large residuals remain descriptive pending those admission obligations."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml; data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-adjudication.toml; data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml"

@@ -1,0 +1,31 @@
+claim_id = "C-1683"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Freeze wind_swe::knudsen_number and the exact n(r),T(r) profiles that produced 2.167e8; physical cell size remains a separately declared variable."]
+[[intervening_maps]]
+branch = "knudsen_denominator"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Derive mean-free-path and implemented denominator dimensions from the source expression."
+[[intervening_maps]]
+branch = "knudsen_denominator"
+name = "independent_predicate"
+kind = "computational"
+description = "Compare analytic radial substitution with the implemented diagnostic and independently calculate lambda_mfp/dx using an admitted uniform SI mesh."
+[[fitted_parameters]]
+branch = "knudsen_denominator"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-118"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-118 as the recorded family binding, not evidence of completed replay. Compare analytic radial substitution with the implemented diagnostic and independently calculate lambda_mfp/dx using an admitted uniform SI mesh. E-118 input placeholders and missing physical dx prevent a BGK validity boundary; equality under prescribed profiles cannot establish an observed heliospheric regime."
+[what_would_verify_refute]
+verification_outcomes = ["The recorded fixed profiles yield the reported radius-invariant number and the source denominator differs from the grid length promised by E-118."]
+revision_outcomes = ["Register a separate grid-based diagnostic if admitted dx changes lambda_mfp/dx; retain the historical proxy result with its actual denominator."]
+abandonment_outcomes = ["The frozen source and profiles produce radius dependence or a different denominator/value, refuting the claimed invariance for those inputs."]
+inconclusive_outcomes = ["E-118 input placeholders and missing physical dx prevent a BGK validity boundary; equality under prescribed profiles cannot establish an observed heliospheric regime."]

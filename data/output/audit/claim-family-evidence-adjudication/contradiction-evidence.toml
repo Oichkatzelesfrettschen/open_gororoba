@@ -1,0 +1,26 @@
+schema_version = 1
+base_commit = "81a4ca6e"
+[[observation]]
+claim_id = "C-659"
+path = "data/e027/e027_results.toml"
+sha256 = "770540689bcb04767fe3f96c2fb770ffc4805673ad3564e32f30d3603eb88dfe"
+p_value = 0.5841584158415841
+permutations_used = 100
+stop_reason = "NonSignificantEarly"
+verdict = "Inconclusive"
+producer = "crates/gororoba_cli/src/bin/percolation_experiment.rs::run_besag_clifford_null"
+identity_boundary = "The retained historical percolation result differs from the live E-027 topology-analyzer registration. The latter reports a different statistic and cannot replace this result."
+interpretation = "The retained p value exceeds 0.05. Statistical power and spatial specificity remain unestablished by this observation."
+additional_evidence_boundary = "E-088 names data/evidence/clustering_256.toml; that path is absent in the inspected checkout."
+[[observation]]
+claim_id = "C-834"
+path = "data/output/audit/2026-08-04/sfwm-p2c1-results/independent-mpmath-fixtures.csv"
+sha256 = "45ec9fc66b6bd482399761d12d92fd0c29347a7dbaa1e64d5b6f8b9a4e5279b3"
+reference_decimal_digits = 80
+nominal_ratio = 0.0477442355934858
+input_envelope = [0.04088750057509066, 0.05578719347757]
+test_command = "cargo test -p optics_core --profile validation --test test_sfwm_source_reference"
+tests_passed = 7
+tests_failed = 0
+exit_status = 0
+interpretation = "Signed source implementation reproduces the nominal reference. The retained deterministic input envelope crosses 0.05; source-input robustness remains provisional."

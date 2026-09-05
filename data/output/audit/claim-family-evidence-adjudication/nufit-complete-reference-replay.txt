@@ -1,0 +1,20 @@
+
+running 4 tests
+cp analysis=IC24 with SK atmospheric data angle=165 one_sigma=false three_sigma=true
+cp analysis=IC24 with SK atmospheric data angle=93 one_sigma=false three_sigma=false
+ratio analysis=IC24 with SK atmospheric data best=0.02980501392757660 prediction=0.0304 difference=0.00059498607242340 marginal_one_sigma_box=[0.02880820836621942,0.03079390537289494] marginal_three_sigma_box=[0.02684251357641583,0.03284373725010200] joint_confidence=unassessed
+cp analysis=IC19 without SK atmospheric data angle=165 one_sigma=true three_sigma=true
+cp analysis=IC19 without SK atmospheric data angle=93 one_sigma=false three_sigma=false
+ratio analysis=IC19 without SK atmospheric data best=0.02955801104972376 prediction=0.0304 difference=0.00084198895027624 marginal_one_sigma_box=[0.02852676826885502,0.03058542413381123] marginal_three_sigma_box=[0.02655410590943976,0.03268371904181892] joint_confidence=unassessed
+historical_composite cp_a_one_sigma=true cp_b_one_sigma=false cp_b_three_sigma=true mislabeled_slot_ratio=0.03069710558499796 source_population=unresolved
+test complete_nufit60_source_rows_cp_targets_and_mass_ratio ... ok
+test source_variant_and_historical_universal_exclusion_mutations_fail ... ok
+test historical_composite_values_and_comparisons_remain_separate ... ok
+release=6.0 analysis=IC19 without SK atmospheric data theta23=48.99 inside_one_sigma=true inside_three_sigma=true
+release=6.0 analysis=IC24 with SK atmospheric data theta23=48.99 inside_one_sigma=false inside_three_sigma=true
+release=6.1 analysis=IC23 without SK atmospheric data theta23=48.99 inside_one_sigma=false inside_three_sigma=true
+release=6.1 analysis=IC24 with SK atmospheric data theta23=48.99 inside_one_sigma=false inside_three_sigma=true
+test fixed_angle_reference_membership_and_pdf_receipts_agree ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 199
+event_count = 203
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4264,3 +4264,87 @@ transition_spec_sha256 = "7689608ef6eda5c94af19ee72104e3d2c0ba51e724f77a9e7216ea
 proposal_key = "staples-causal-increment-below-declared-useful-threshold"
 canonical_claim_id = "C-1743"
 relation_kind = "refines"
+
+[[transition]]
+event_id = 200
+transition_key = "c-659-retained-measurement-reconciliation"
+source_claim_id = "C-659"
+expected_prior_status = "Established"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Apply the claim evidence contract in data/output/audit/claim-family-evidence-adjudication/C-659.toml against retained contradiction-evidence.toml."
+rationale = "The retained historical percolation p value 0.5841584158415841 after 100 permutations exceeds 0.05. Preserve the test as inconclusive and retire the unsupported Established significance label."
+unresolved_assumptions = ["Physical generalization requires independent source and input admission beyond the retained implementation result."]
+evidence_artifact_ids = ["LOCAL-CLAIM-MEASUREMENT-RECONCILIATION"]
+experiment_ids = ["E-027"]
+actor = "claim-evidence-adjudication"
+reason = "Reconcile statement, status, tested implementation and retained result."
+transition_timestamp = "2026-09-05T16:06:41Z"
+transition_spec_sha256 = "71fb3efaa0e92f628b63d58f931b343e3cad57e36f41d91bd95ff1bffe45ef9e"
+successors = []
+
+[[transition]]
+event_id = 201
+transition_key = "c-834-retained-measurement-reconciliation"
+source_claim_id = "C-834"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Apply the claim evidence contract in data/output/audit/claim-family-evidence-adjudication/C-834.toml against retained contradiction-evidence.toml."
+rationale = "All seven corrected signed source reference tests pass. Nominal ratio 0.0477442355934858 satisfies 0.05; the retained input envelope crosses 0.05, preserving Provisional physical threshold robustness."
+unresolved_assumptions = ["Physical generalization requires independent source and input admission beyond the retained implementation result."]
+evidence_artifact_ids = ["LOCAL-CLAIM-MEASUREMENT-RECONCILIATION"]
+experiment_ids = ["E-074"]
+actor = "claim-evidence-adjudication"
+reason = "Reconcile statement, status, tested implementation and retained result."
+transition_timestamp = "2026-09-05T16:06:41Z"
+transition_spec_sha256 = "4a875a33831e84ac8c931c078c6583b7435d77b53172d512b3e8079d0d70609b"
+successors = []
+
+[[transition]]
+event_id = 202
+transition_key = "themis-joint-geometric-tensor-uncertainty"
+source_claim_id = "C-1743"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Joint 120-contrast paired whole-file bootstrap under geometric-capacity-protocol.toml, including the 114 exact-support comparisons and six matched geometric-capacity comparisons."
+rationale = "The baseline increment and rejected 0.005 useful-increment requirement remain supported within the archive. Joint uncertainty refines the mechanism comparison; the new claim carries the bounded inference separately."
+unresolved_assumptions = ["Post-hoc analysis conditions on fitted models and treats daily files as independent resampling units within each final year.", "External chronology admission remains blocked.", "A practical-equivalence margin remains undeclared."]
+evidence_artifact_ids = ["LOCAL-JOINT-CONTROL-UNCERTAINTY"]
+experiment_ids = ["E-282"]
+actor = "claim-evidence-adjudication"
+reason = "Preserve detector result and register bounded mechanism uncertainty"
+transition_timestamp = "2026-09-05T17:05:37Z"
+transition_spec_sha256 = "92ad4296fe836c1e1e3d70c3522ceb3e77491f122b048784ed67d6c199721c4f"
+
+[[transition.successors]]
+proposal_key = "themis-paired-control-uncertainty"
+canonical_claim_id = "C-1744"
+relation_kind = "refines"
+
+[[transition]]
+event_id = 203
+transition_key = "lbm-evolving-cuda-conformance"
+source_claim_id = "C-1696"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Evolving population parity, frozen-evolution negative control and direct/captured force replacement fixtures on admitted CUDA hardware."
+rationale = "Preserve the historical equilibrium-only fixture finding and register the corrected bounded implementation separately."
+unresolved_assumptions = ["FP32 BGK periodic 8-cubed fixture only; full null trials, physical interpretation and resolution convergence remain separate."]
+evidence_artifact_ids = ["LOCAL-LBM-EVOLVING-CUDA"]
+experiment_ids = ["E-291"]
+actor = "claim-evidence-adjudication"
+reason = "Register real evolving CUDA conformance while preserving original failed runs"
+transition_timestamp = "2026-09-05T17:25:19Z"
+transition_spec_sha256 = "dcb56e0cad2d64577ed87db206dbad795194dff25f426eccf75ea79bf512941f"
+
+[[transition.successors]]
+proposal_key = "lbm-evolving-population-and-capture-conformance"
+canonical_claim_id = "C-1745"
+relation_kind = "implementation_split"

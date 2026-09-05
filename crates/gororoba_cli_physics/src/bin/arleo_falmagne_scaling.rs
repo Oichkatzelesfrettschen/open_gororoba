@@ -192,6 +192,13 @@ fn main() {
             run_cross_validate(&data_dir, pt_min, n_gl);
         }
         Commands::BicCompare { data_dir, pt_min } => {
+            if let Err(error) = competing_models::retained_bic_population_admission() {
+                eprintln!("{error}");
+                eprintln!(
+                    "Supply matched source curves and admitted covariance/fitting counts before physical ranking. Historical numerical comparisons remain retained in the claim audit."
+                );
+                std::process::exit(2);
+            }
             run_bic_compare(&data_dir, pt_min);
         }
     }
@@ -1460,8 +1467,9 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
         .map(|p| RaaDataPoint {
             pt: p.pt,
             raa: p.raa,
-            stat_err: p.total_err * 0.7, // approximate split
-            syst_err: p.total_err * 0.7,
+            // Preserve the scored diagonal variance exactly in the fit objective.
+            stat_err: p.total_err,
+            syst_err: 0.0,
         })
         .collect();
 

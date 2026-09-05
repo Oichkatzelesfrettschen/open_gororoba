@@ -1,0 +1,126 @@
+schema_version = 1
+title = "Claim family measurement repair and evidence adjudication"
+base_commit = "81a4ca6e"
+canonical_target = "registry/canonical/control_plane.sqlite3"
+completion_rule = "Close each row only after its retained evidence, typed contract, canonical statement, status and implementation locator agree. External observation requirements remain explicit blockers."
+
+[[task]]
+id = "contradiction-evidence"
+status = "completed"
+action = "Trace C-659 to retained percolation output and replay C-834 signed reference tests"
+acceptance = "Retain input hashes, exact test results, uncertainty limits and experiment identity differences."
+
+[[task]]
+id = "canonical-content-revision"
+status = "completed"
+depends_on = ["contradiction-evidence"]
+action = "Support audited atomic statement and implementation locator corrections"
+acceptance = "CLI rejects stale state; revision retains original content; tests verify transaction and export consistency."
+
+[[task]]
+id = "contradiction-transitions"
+status = "completed"
+depends_on = ["canonical-content-revision"]
+action = "Apply supported C-659 and C-834 canonical transitions and evidence contracts"
+acceptance = "C-659 records inconclusive retained test; C-834 binds nominal signed result and preserves input-envelope uncertainty."
+
+[[task]]
+id = "family-contracts"
+status = "completed"
+progress = "The canonical register contains 47 typed contracts across the requested families. Contracts separate measured implementation and source predicates from physical, universal and external-intake obligations."
+depends_on = ["contradiction-transitions"]
+action = "Attach evidence layers, maps, fitting budgets and outcome rules to dependency families"
+acceptance = "Canonical typed declarations identify decisive comparisons and separate verify, revise, abandon and inconclusive outcomes."
+
+[[task]]
+id = "nufit-variant-contradiction"
+status = "completed"
+depends_on = ["contradiction-transitions"]
+action = "Correct C-1722 exclusion wording against the NuFit 6.0 without-SK source interval"
+acceptance = "Retain original comparison; represent the 48.99-degree inclusion in [47.6,49.2] and the other release variants independently."
+
+[[task]]
+id = "external-chronology-admission"
+status = "blocked"
+blocker = "Fresh provider v01 bytes reproduce the retained backward timestamp; a corrected provider revision or separately admitted intake amendment is required. Zero external inference has run."
+depends_on = ["family-contracts"]
+action = "Resolve E-283 chronology using provider evidence or declared intake amendment"
+acceptance = "Preserve failed bytes and hash; reproduce admission or identify exact unresolved provider requirement before inference."
+
+[[task]]
+id = "paired-control-uncertainty"
+status = "completed"
+progress = "Joint 120-contrast simultaneous intervals favor 47 controls and leave 73 directions unresolved; all six geometric intervals cross zero. C-1744 and its typed contract retain the bounded result. Equivalence remains unadjudicated without a margin."
+depends_on = ["family-contracts"]
+action = "Estimate paired canonical-minus-control intervals with multiplicity and matched capacity"
+acceptance = "Preserve common support and fitting budget; classify superiority, practical equivalence or insufficient precision."
+
+[[task]]
+id = "operational-activation"
+status = "blocked"
+blocker = "Independent whole-block labels, randomized analyst observations and genuine receipt/alert timestamps await real data sources."
+depends_on = ["paired-control-uncertainty"]
+action = "Audit activation inputs for E-284 through E-286 and collect admitted observations"
+acceptance = "Seal relevant gates before final access; separate human labels, randomized review and genuine arrival timestamps from fixtures; retain missing-input blockers."
+
+[[task]]
+id = "force-units-sensitivity"
+status = "pending"
+progress = "Strict SI IC admission, density-weighted forcing and AoSoA inlet correction pass focused tests. The 90-row periodic sensitivity sweep resolves tested forces at or above 1e-14. Gravitational frame, outflow/flux ledger, admitted physical inputs and coupled sensitivity remain open."
+depends_on = ["family-contracts"]
+action = "Repair drag and magnetic units, Parker scaling and open-boundary balance"
+acceptance = "Physical force units and numerical error budget support the bounded comparison across both claim generations."
+
+[[task]]
+id = "lbm-failure-discrimination"
+status = "pending"
+progress = "Evolving real CUDA and graph-reuse fixtures pass unchanged gates after independently resolving time-level and capture dependency failures. C-1745 records bounded conformance. Full null conditions, paired resolutions and outlier accounting remain open."
+depends_on = ["force-units-sensitivity"]
+action = "Exercise evolving CPU/GPU fields, null execution and explosion rejection"
+acceptance = "Correctness, stability, paired resolution and outlier accounting have independent retained predicates."
+
+[[task]]
+id = "magnonic-source-invariants"
+status = "pending"
+progress = "Angular/exchange slopes, source Tables I/II, sampled topology admission and local-frame invariance pass focused checks. Paired patches distinguish edge states, reciprocal participation and both walls. Full source band projection and global topology convergence remain open."
+depends_on = ["family-contracts"]
+action = "Resolve magnonic parameter and frequency provenance, topology and localization"
+acceptance = "Gap-admitted band or subspace invariants, defect localization and both domain walls pass separate checks."
+
+[[task]]
+id = "ward-optics-reproduction"
+status = "pending"
+progress = "Independent Ward arithmetic fixes the intercept sign while retaining norm failures and exposes quadrature sensitivity. Faithful optics replay preserves the 0.01 gate failure at 0.01594 and separates archive/TeX/PDF identities. Contact terms, certified error and source-landmark discrepancies remain open."
+depends_on = ["family-contracts"]
+action = "Replay Ward and optics predicates with independent residuals and omission controls"
+acceptance = "Retain failed thresholds and distinguish identity class, contact terms, on-shell limits and fitting procedure."
+
+[[task]]
+id = "reference-population-identity"
+status = "pending"
+progress = "QGP CLI rejects mismatched populations before ranking; independent minimization identifies and repairs the fit/score formula mismatch. NuFit release and SK variants have explicit source intervals and retained composite comparisons. Source-bound QGP curves and covariance remain required."
+depends_on = ["family-contracts"]
+action = "Correct QGP populations and NuFit release identities before agreement comparisons"
+acceptance = "Every comparison declares source population, uncertainty or covariance and fitting freedom; original comparisons remain retained."
+
+[[task]]
+id = "finite-theorem-boundaries"
+status = "pending"
+progress = "All 243 finite motif components pass exact rank witnesses at D=16..256. Canonical degree and spacing statements are corrected; universal extension remains conjectural. Focused Rocq bodies compile and explicit kernel-equality axioms remain visible."
+depends_on = ["family-contracts"]
+action = "Verify exact finite graph identities and compare Moreno source hypotheses with Rocq"
+acceptance = "Finite checks state enumerated dimensions; universal claims match proved hypotheses and conclusions."
+
+[[task]]
+id = "canonical-evidence-reconciliation"
+status = "completed"
+action = "Reconcile new measurements, producer identities, typed contracts and historical source locators"
+acceptance = "Every edited claim cites its executed or blocked producer, preserves prior evidence and separates finite implementation results from physical or universal claims."
+
+[[task]]
+id = "canonical-validation-publication"
+status = "completed"
+progress = "Full validate-local passes scoped clippy, 1624 tests with 19 skips, and governance. All 264 experiment lineages pass; 22 sealed source hashes match and twelve canonical history table dumps remain identical across final producer normalization. The atomic review package retains pending physical campaigns and explicit prerequisites."
+depends_on = ["canonical-evidence-reconciliation"]
+action = "Export canonical views, refresh signatures and validate the completed bounded repairs for review"
+acceptance = "Focused tests and required governance pass; database, exports and evidence commit atomically; pending campaign rows and missing-input blockers remain explicit."

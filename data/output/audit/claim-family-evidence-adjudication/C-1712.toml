@@ -1,0 +1,25 @@
+claim_id = "C-1712"
+evidence_layer = "source_proposition"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Source parameter enumeration is a textual identity check, separate from theory calibration and physical model selection."
+fixed_hyperparameters = ["Xu, Liao and Gyulassy JHEP02(2016)169 Section6; alpha_c and c_m", "Distinguish declared theory parameters, externally calibrated or scanned values, and parameters fitted to the six retained comparison points"]
+[[intervening_maps]]
+branch = "source_identity"
+name = "parameter_role_transcription"
+kind = "computational"
+description = "Admit source bytes and section, enumerate alpha_c/c_m and their calibration or scan roles, and compare the historical five-parameter label."
+[[fitted_parameters]]
+branch = "source_identity"
+count = 0
+names = []
+training_boundary = "The source lookup fits zero parameters. The retained digitized competitor fits zero parameters to these six points; this count does not characterize theoretical calibration freedom."
+[decisive_experiment]
+experiment_ids = ["E-075"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+description = "E-075 provides comparison context; source-section transcription and byte receipt are separate required evidence and the physical driver alone does not verify them."
+[what_would_verify_refute]
+verification_outcomes = ["Admitted Section6 explicitly identifies alpha_c and c_m as the two model parameters; source-role ledger separates fixed calibration and scanned schemes from zero retained-point refits."]
+revision_outcomes = ["Additional source freedoms or constraints alter the count: revise the theory-level enumeration and retain the distinct zero-refit comparison count."]
+abandonment_outcomes = ["The admitted source supports the historical five-parameter enumeration in the same declared model scope: abandon the two-parameter correction."]
+inconclusive_outcomes = ["Unverified section identity or unspecified parameter roles blocks the theory count; a fixed curve alone establishes neither a parameter-free theory nor a valid BIC penalty."]

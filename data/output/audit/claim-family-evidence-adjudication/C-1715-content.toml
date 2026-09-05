@@ -1,0 +1,5 @@
+claim_id = "C-1715"
+expected_statement = "Over D = 32 through 256 the zero-divisor motif components split into classes whose minimum degree is fixed at 4 while maximum degree grows as D/2 - 3, so the gap ratio is bounded above by 4/(D/2 - 2) and tends to zero. No constant bounds the family spectral gap ratio from below, and the family fails the definition of an expander family in both the bounded-degree and normalized-gap senses."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
+statement = "For D=16,32,64,128,256, the complete finite cross-assessor motif census has 7,15,31,63,127 connected components respectively, each with D/2-2 vertices. Across components at each dimension, minimum degree is 4 and maximum degree is D/2-4. These finite degree observations establish neither an all-dimension spectral-gap bound nor asymptotic non-expansion."
+where_stated = "data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml; data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml; crates/algebra_analysis/tests/motif_exact_rank.rs"

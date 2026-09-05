@@ -1,0 +1,12 @@
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 4.63s
+     Running tests/test_gpu_cpu_equivalence.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/test_gpu_cpu_equivalence-f95653167ebc7174)
+
+running 2 tests
+captured=false population_rms=0.000000031221105175961436 density_rms=0.0000003289109547143455 velocity_rms=0.00000003351313212098577
+test captured_force_replacement_matches_uncaptured_steps ... ok
+captured=true population_rms=0.000000031221105175961436 density_rms=0.0000003289109547143455 velocity_rms=0.00000003351313212098577
+test evolving_cpu_gpu_and_captured_steps_remain_consistent_fp32 ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.37s
+

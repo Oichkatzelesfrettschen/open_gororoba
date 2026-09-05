@@ -1,0 +1,50 @@
+schema_version = 1
+family_experiment_id = "E-075"
+producer = "crates/qgp_scaling/tests/epsilon_objective_identity.rs"
+producer_sha256 = "8518e55d8cdfa3be6022add7909f9861549e4789ff8fc9e0a544b30c84c7a517"
+fixture = "crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv"
+fixture_sha256 = "6c892ea7dd988220ecde94074eff6a48c04d470ca15f3a28312d61386b484624"
+source_doi = "10.17182/hepdata.89396.v1/t1"
+source_population = "ALICE charged particles at midrapidity, Pb-Pb 5.02 TeV, 0-5% centrality"
+retained_original = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+optimizer_source = "crates/qgp_scaling/src/epsilon_fit.rs"
+optimizer_sha256 = "3eb9e4bab7fa8228d4e30d0b0769ccedd0f5b630d322c8bf73d0ac8a7abb8440"
+optimizer_changed = false
+replay = "data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-replay.txt"
+replay_sha256 = "2dffbb220c0e9e6d12faf1e3834cb342c6f83fb143497f977ea5415a6b4291b6"
+run = "cargo test -p qgp_scaling --test epsilon_objective_identity --profile validation -- --nocapture"
+tests_passed = 1
+tests_failed = 0
+clippy = "pass with -D warnings"
+
+[fixed_inputs]
+pt = [5.5,7.0,9.0,11.5,16.5,25.0]
+n_spectral = 6.1
+epsilon_bounds = [0.1,20.0]
+production_tolerance = 1e-6
+fitted_parameters = 1
+covariance = "Preserved historical diagonal stat-plus-upward-systematic variance; normalization column remains excluded as in original producer."
+fit_error_split = "Historical CLI uses stat=syst=0.7*total_error, giving fit variance0.98 times the scoring variance. This common scale changes chi2 but leaves the minimizer unchanged."
+
+[oracle]
+method = "Independent analytic ansatz evaluation; 20,001 evenly spaced bounded scan points followed by100 golden-section iterations within the adjacent grid interval."
+epsilon_agreement_gate = 1e-5
+chi2_agreement_gate = 1e-7
+scope = "Finite dense-grid and independent local-refinement corroboration on the retained six-point objective, not a universal minimizer proof."
+
+[results]
+production_fitted_ansatz = "max(1-epsilon/pt,0)^(n-1)"
+historical_scored_ansatz = "(1+epsilon/pt)^(-n)"
+production_epsilon = 2.92089760824633515
+production_own_chi2 = 3866.21121368402646112
+independent_same_objective_epsilon = 2.92089740576627577
+independent_same_objective_chi2 = 3866.21121368388776318
+independent_scored_objective_epsilon = 3.40397530853244845
+independent_scored_objective_chi2_original_scoring_variance = 1916.55421351686459275
+scored_objective_chi2_at_production_epsilon_original_scoring_variance = 2412.61289764109505995
+
+[adjudication]
+optimizer_attribution = "The retained2.921 versus3.404 discrepancy comes from fitting and scoring different ansatz functions. The production minimizer agrees with an independent oracle for its own objective within the declared tolerances. The historical attribution to Brent failure is refuted for this frozen input."
+repair_boundary = "Use one explicitly declared ansatz for both fitting and scoring. Reusing quenching::r_aa_model in the comparison curve preserves the fitted objective; source fidelity remains a separate claim. Parent owns comparison/CLI repairs."
+physical_ranking = "Blocked by independent population/covariance/calibration admission; numerical optimizer conformance does not reopen model ranking."
+original_evidence = "Retain the original numerical observations and mistaken optimizer attribution in the historical artifact; the narrower root-cause correction lives here."

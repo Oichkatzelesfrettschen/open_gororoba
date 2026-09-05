@@ -1,0 +1,25 @@
+claim_id = "C-1709"
+evidence_layer = "source_proposition"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Ruan-Fan Figure5 source fitting procedure identity. The declaration separates a fixed source or implementation predicate from physical model fitting. Preserved historical failures remain evidence; a repaired producer needs a separately identified result."
+fixed_hyperparameters = ["Ruan-Fan arXiv0909.3323v2 Figure5 method sentence; preserve paper version"]
+[[intervening_maps]]
+branch = "comparison"
+name = "declared_source_and_producer"
+kind = "computational"
+description = "Ruan-Fan Figure5 source fitting procedure identity with separate source/artifact/implementation identities."
+[[fitted_parameters]]
+branch = "comparison"
+count = 0
+names = []
+training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
+[decisive_experiment]
+experiment_ids = ["E-289"]
+protocol_artifact = "data/output/audit/2026-08-04/p2b-preregistration.toml"
+description = "E-289 binds the actual p2b-ruan-fan-reproduction producer and retained independent fixture. E-076 and the historical E-241 manifest collision remain preserved. The replay preserves every numerical field, threshold and fitting budget; separate archive, extracted TeX and PDF receipts establish the admitted source subset."
+[what_would_verify_refute]
+verification_outcomes = ["The admitted primary-source method states fitting simulated cross-section curves and supplies no claimed complex-pole-identification procedure; retain the repository pole method as a construction."]
+revision_outcomes = ["Additional primary source identifies a more specific fitting procedure: revise the method mapping while preserving the original extraction."]
+abandonment_outcomes = ["The admitted primary source explicitly establishes the disputed pole-identification procedure: abandon the source-method denial."]
+inconclusive_outcomes = ["Unadmitted source archive, missing figure/source provenance or ambiguous method text leaves the source procedure unresolved.","Preserve the original failed reproduction thresholds and historical source receipts."]

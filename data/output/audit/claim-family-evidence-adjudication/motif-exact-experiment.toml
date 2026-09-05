@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-295"
+title = "Exact finite cross-assessor motif adjacency rank and spectral witnesses"
+status = "active"
+binary = "motif_exact_rank"
+claim_refs = ["C-1715", "C-1716", "C-1717", "C-1718"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "All cross-assessor motif components at dimensions16,32,64,128,256; integer adjacency and prime1000000007."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"]
+method = "Compare rational rank upper bounds from repeated columns with modular-rank lower bounds for every component; verify cocktail-party adjacency and exact integer Laplacian eigenvectors; distinguish population and sample spacing variance."
+run = "MOTIF_EXACT_OUTPUT=$PWD/data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml cargo test -p algebra_analysis --profile validation --test motif_exact_rank -- --nocapture"
+output = ["All243 component adjacencies and exact rank witnesses", "Five finite dimension summaries", "Explicit unproved dimension extensions"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml", "data/output/audit/claim-family-evidence-adjudication/motif-exact-replay.log"]
+status_note = "Exact rank witnesses pass every enumerated component, including16 and32. Measured maximum degrees are D/2-4. A universal CD-dimension claim remains unproved. E-084/E-086 and E-168 preserve their original producer and partner-graph scopes."

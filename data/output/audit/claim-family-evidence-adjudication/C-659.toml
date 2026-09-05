@@ -1,0 +1,35 @@
+claim_id = "C-659"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a synthetic percolation permutation-test result. Physical interpretation of the prescribed viscosity coupling lies outside this predicate."
+fixed_hyperparameters = ["Historical grid 16 cubed, 500 LBM steps, nu_base 0.333 and lambda 5", "Two-sided absolute Welch t statistic, alpha 0.05", "Adaptive batches 20, minimum permutations 100, confidence 0.99; retain actual count and stop reason"]
+[[intervening_maps]]
+branch = "percolation_test"
+name = "prescribed_viscosity"
+kind = "computational"
+description = "Map synthetic imbalance to viscosity through the declared exponential coupling."
+[[intervening_maps]]
+branch = "percolation_test"
+name = "lbm_channel_statistic"
+kind = "computational"
+description = "Evolve LBM, threshold velocities, detect connected channels and compute absolute channel-background Welch t statistic."
+[[intervening_maps]]
+branch = "percolation_test"
+name = "paired_permutation_adjudication"
+kind = "computational"
+description = "Shuffle spatial imbalance, repeat identical viscosity/evolution/channel operations and count null statistics at least as extreme as observed."
+[[fitted_parameters]]
+branch = "percolation_test"
+count = 0
+names = []
+training_boundary = "The retained synthetic run estimates zero population-fit parameters; nu_base, lambda and numerical configuration are prescribed. Channel thresholds are computational sample statistics."
+[decisive_experiment]
+experiment_ids = ["E-027", "E-088"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/contradiction-evidence.toml"
+description = "Retained historical percolation output owns p=0.5841584158415841 and 100 permutations; live E-027 topology registration denotes a different producer. A reopened test must seal the percolation producer and retain every attempted permutation, rejecting initialization failures instead of counting them as valid draws."
+[what_would_verify_refute]
+verification_outcomes = ["An admitted percolation replay with the declared statistic and valid adaptive procedure yields p < 0.05; retain complete inputs and actual permutation counts before considering a significance successor."]
+revision_outcomes = ["Producer, null statistic, failed-draw accounting or adaptive-test correction changes the estimand: retain historical C-659 and register the narrower tested scope."]
+abandonment_outcomes = ["Independent validation establishes that the test implementation or its null randomization is invalid: abandon that implementation as significance evidence and preserve its output."]
+inconclusive_outcomes = ["The retained p=0.5841584158415841 is at least 0.05: significance remains inconclusive; absence of effect and inadequate power remain separate unproved explanations.", "Missing raw inputs, seed receipt, valid permutation accounting or unambiguous producer identity blocks a faithful replay claim."]

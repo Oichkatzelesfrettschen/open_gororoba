@@ -1,19 +1,18 @@
 //! Dark matter gravitational force field for LBM coupling.
 //!
 //! Computes the gravitational acceleration from an NFW dark matter halo
-//! profile on the LBM grid. The force field is static (precomputed once)
-//! and added to the Lorentz force via `combine_forces()` before passing
-//! to `LbmSolver3D::set_force_field()`.
+//! profile on the LBM grid. The gravitational acceleration is static and
+//! precomputed once; the scattering acceleration depends on relative velocity.
 //!
-//! Physics: at 1 AU with canonical local DM density (0.3 GeV/cm^3) and
-//! MW virial mass (1e12 Msun), the DM gravitational perturbation on solar
-//! wind is delta_rho/rho < 10^-15 -- a rigorous null result confirming
-//! the 15-order-of-magnitude gap between DM gravity and Lorentz forces.
+//! Gravity and drag accelerations require conversion to force density before
+//! coupling to Guo forcing. Physical force comparisons additionally require
+//! consistent magnetic normalization, spatial coordinates and reference frame.
 //!
 //! # References
 //! - Couture (2022), Phys.Rev.D 105, 055003: Solar wind bremsstrahlung off DM in the
-//!   Solar System -- the physical motivation for DM-baryon coupling in this module,
-//!   and for the sigma_chi_b cross-section and drag kappa_field fields.
+//!   Solar System -- motivation for DM-baryon coupling. The cold-stream elastic
+//!   momentum-transfer law below is a declared model, rather than reproduction
+//!   of the bremsstrahlung calculation or a thermally averaged halo prediction.
 
 use crate::boundary::GridIndex;
 use cosmology_core::concentration_mass_relation;
@@ -48,6 +47,9 @@ const V_CHI_DISPERSION_KMS: f64 = 220.0;
 /// 1 GeV/c^2 in kg.
 const GEV_TO_KG: f64 = 1.783e-27;
 
+/// Proton mass used by the declared approximate cold-stream drag model.
+pub const DRAG_PROTON_MASS_KG: f64 = M_PROTON_GEV * GEV_TO_KG;
+
 /// 1 km/s in m/s.
 const KMS_TO_MS: f64 = 1.0e3;
 
@@ -64,14 +66,18 @@ pub struct DmForceConfig {
     pub v_dm_wind: [f64; 3],
     /// Gravitational focusing wake amplitude (0.0 = isotropic, >0 = upstream enhancement).
     pub eta_wake: f64,
-    /// Non-dimensionalization factor: physical acceleration (m/s^2) -> LBM lattice force.
+    /// Non-dimensionalization factor: physical acceleration (m/s^2) -> lattice acceleration.
     /// Computed as delta_t^2 / delta_x where delta_x and delta_t are the LBM
     /// lattice spacing and timestep in physical units.
     pub force_scale: f64,
-    /// DM-baryon scattering cross-section (cm^2). Default 0 = pure gravity.
+    /// Velocity-independent DM-proton momentum-transfer cross-section (cm^2).
+    /// Drag assumes cold monokinetic streams and elastic momentum transfer;
+    /// thermal averaging and a velocity-dependent cross-section require another model.
+    /// Default 0 = pure gravity.
     pub sigma_chi_b: f64,
     /// Reference proton density (cm^-3) for drag unit conversion.
-    /// Used to precompute kappa_drag. Default: 5.9 (OMNI2 median).
+    /// Baryon density cancels from the acceleration and is required separately
+    /// for force density. Default: 5.9 (OMNI2 median).
     pub n_ref_cm3: f64,
     /// Reference bulk speed (km/s) for drag unit conversion.
     /// Used to precompute kappa_drag. Default: 393.0 (OMNI2 median).
@@ -158,7 +164,8 @@ pub struct DmForceField {
     pub nx: usize,
     pub ny: usize,
     pub nz: usize,
-    /// Gravitational force per grid cell in LBM lattice units, [fx, fy, fz].
+    /// Gravitational acceleration per grid cell in lattice units.
+    /// Multiply by local lattice density before supplying a Guo force density.
     pub force: Vec<[f64; 3]>,
     /// DM density at each grid cell (kg/m^3), for diagnostic output.
     pub dm_density: Vec<f64>,
@@ -166,7 +173,8 @@ pub struct DmForceField {
     pub config: DmForceConfig,
     /// Per-cell lattice-native drag coefficient (dimensionless).
     ///
-    /// kappa(r) = n_chi(r) * sigma * (m_reduced / m_proton) * (v_ref / u_scale) * force_scale
+    /// kappa(r) = n_chi(r) * sigma * (m_reduced / m_proton)
+    ///          * (v_ref / u_scale)^2 * force_scale = n_chi * sigma * mass_ratio * dx.
     /// At solar system scales n_chi is approximately constant (NFW ~ uniform),
     /// but this field enables spatial variation for extended radial domains.
     pub kappa_field: Vec<f64>,
@@ -185,6 +193,26 @@ impl DmForceField {
     /// y, z are transverse. Physical radius at each cell is computed from
     /// the grid position using linear interpolation between r_min and r_max.
     pub fn new(nx: usize, ny: usize, nz: usize, config: DmForceConfig) -> Self {
+        assert!(
+            config.u_scale.is_finite()
+                && config.u_scale > 0.0
+                && config.v_ref_kms.is_finite()
+                && config.v_ref_kms > 0.0
+                && config.force_scale.is_finite()
+                && config.force_scale > 0.0,
+            "drag conversion scales must be positive and finite"
+        );
+        assert!(
+            config.sigma_chi_b.is_finite()
+                && config.sigma_chi_b >= 0.0
+                && config.rho_dm_local_gev_cm3.is_finite()
+                && config.rho_dm_local_gev_cm3 >= 0.0
+                && config
+                    .v_dm_wind
+                    .iter()
+                    .all(|component| component.is_finite()),
+            "drag density, cross-section and wind must be finite with nonnegative density and cross-section"
+        );
         let n = nx * ny * nz;
         let mut force = vec![[0.0; 3]; n];
         let mut dm_density = vec![0.0; n];
@@ -317,14 +345,15 @@ impl DmForceField {
 
         // Precompute per-cell lattice-native drag coefficient kappa.
         //
-        // kappa(r) = n_chi(r) * sigma * (m_reduced / m_proton) * (v_ref / u_scale) * force_scale
+        // Quadratic velocity conversion makes kappa dimensionless:
+        // n_chi * sigma * mass_ratio * (dx/dt)^2 * (dt^2/dx).
         // where n_chi(r) = dm_density[idx] / (M_CHI_GEV * GEV_TO_KG).
         // At solar system scales, dm_density is approximately constant (rho_dm_local).
         let sigma_m2 = config.sigma_chi_b * 1.0e-4; // cm^2 -> m^2
         let mass_ratio = M_REDUCED_GEV / M_PROTON_GEV; // dimensionless
         let v_ref_ms = config.v_ref_kms * KMS_TO_MS;
         let vel_conversion = v_ref_ms / config.u_scale;
-        let kappa_base = sigma_m2 * mass_ratio * vel_conversion * config.force_scale;
+        let kappa_base = sigma_m2 * mass_ratio * vel_conversion.powi(2) * config.force_scale;
         let m_chi_kg = M_CHI_GEV * GEV_TO_KG;
 
         let mut kappa_field = vec![0.0; n];
@@ -377,14 +406,25 @@ impl DmForceField {
             .fold(0.0_f64, f64::max)
     }
 
-    /// Compute drag force using precomputed kappa (lattice-native, no per-cell conversion).
-    ///
-    /// Uses kappa_drag and v_dm_lattice precomputed at construction time.
-    /// Inner loop: `drag[idx] = kappa * |v_rel| * v_rel_hat` (all in lattice units).
-    ///
-    /// Returns zero-filled vec when sigma_chi_b <= 0.
+    /// Return lattice acceleration; the historical name does not denote force density.
+    /// Use `drag_force_density_lattice` for the Guo force-density input.
     pub fn drag_force_lattice(&self, baryon_velocity: &[[f64; 3]]) -> Vec<[f64; 3]> {
+        self.drag_acceleration_lattice(baryon_velocity)
+    }
+
+    /// Cold-stream acceleration kappa * |u_dm-u_b| * (u_dm-u_b).
+    /// The velocity-independent cross-section includes the momentum-transfer
+    /// angular weight; a halo velocity distribution is not integrated here.
+    pub fn drag_acceleration_lattice(&self, baryon_velocity: &[[f64; 3]]) -> Vec<[f64; 3]> {
         let n = self.force.len();
+        assert_eq!(baryon_velocity.len(), n, "drag velocity length mismatch");
+        assert!(
+            baryon_velocity
+                .iter()
+                .flatten()
+                .all(|value| value.is_finite()),
+            "drag velocity must be finite"
+        );
         if self.kappa_drag <= 0.0 {
             return vec![[0.0; 3]; n];
         }
@@ -403,24 +443,40 @@ impl DmForceField {
                 continue;
             }
             let scale = kappa * vr_mag;
-            *d = [
-                scale * vr[0] / vr_mag,
-                scale * vr[1] / vr_mag,
-                scale * vr[2] / vr_mag,
-            ];
+            *d = [scale * vr[0], scale * vr[1], scale * vr[2]];
         }
 
         drag
     }
 
-    /// Compute dynamic DM-baryon drag force from scattering cross-section.
-    ///
-    /// **Deprecated**: prefer `drag_force_lattice()` which uses precomputed kappa
-    /// and avoids per-cell unit conversion. This method is kept for backward
-    /// compatibility and validation.
-    ///
-    /// F_drag = n_chi * n_b * sigma_chi_b * m_reduced * |v_rel| * v_rel_hat
-    /// per unit volume, converted to lattice acceleration.
+    /// Return lattice force density rho_lattice * acceleration_lattice for Guo forcing.
+    pub fn drag_force_density_lattice(
+        &self,
+        baryon_density: &[f64],
+        baryon_velocity: &[[f64; 3]],
+    ) -> Vec<[f64; 3]> {
+        assert_eq!(
+            baryon_density.len(),
+            self.force.len(),
+            "drag density length mismatch"
+        );
+        assert!(
+            baryon_density
+                .iter()
+                .all(|density| density.is_finite() && *density >= 0.0),
+            "drag density must be finite and nonnegative"
+        );
+        self.drag_acceleration_lattice(baryon_velocity)
+            .into_iter()
+            .zip(baryon_density)
+            .map(|(acceleration, density)| acceleration.map(|component| component * density))
+            .collect()
+    }
+
+    /// Compute cold-stream scattering through SI force density, returning lattice acceleration.
+    /// F_drag = n_chi * n_b * sigma_MT * m_reduced * |v_rel| * v_rel.
+    /// Baryon density cancels when force density is divided by mass density.
+    /// `drag_acceleration_lattice` avoids the per-cell SI conversion.
     ///
     /// Arguments:
     /// - `baryon_density`: proton density per cell in LBM units (rho field)
@@ -434,6 +490,33 @@ impl DmForceField {
         n_ref_cm3: f64,
         v_ref_kms: f64,
     ) -> Vec<[f64; 3]> {
+        assert_eq!(
+            baryon_density.len(),
+            self.force.len(),
+            "drag density length mismatch"
+        );
+        assert_eq!(
+            baryon_velocity.len(),
+            self.force.len(),
+            "drag velocity length mismatch"
+        );
+        assert!(
+            baryon_density
+                .iter()
+                .all(|density| density.is_finite() && *density > 0.0),
+            "SI drag acceleration requires positive finite baryon density"
+        );
+        assert!(
+            n_ref_cm3.is_finite() && n_ref_cm3 > 0.0 && v_ref_kms.is_finite() && v_ref_kms > 0.0,
+            "SI drag reference scales must be positive and finite"
+        );
+        assert!(
+            baryon_velocity
+                .iter()
+                .flatten()
+                .all(|value| value.is_finite()),
+            "drag velocity must be finite"
+        );
         let sigma = self.config.sigma_chi_b;
         if sigma <= 0.0 {
             return vec![[0.0; 3]; self.force.len()];
@@ -452,9 +535,9 @@ impl DmForceField {
         let sigma_m2 = sigma * 1.0e-4;
         // DM wind in physical units (m/s)
         let v_dm_phys = [
-            self.config.v_dm_wind[0] * v_ref_kms * KMS_TO_MS / 0.05,
-            self.config.v_dm_wind[1] * v_ref_kms * KMS_TO_MS / 0.05,
-            self.config.v_dm_wind[2] * v_ref_kms * KMS_TO_MS / 0.05,
+            self.config.v_dm_wind[0] * v_ref_kms * KMS_TO_MS / self.config.u_scale,
+            self.config.v_dm_wind[1] * v_ref_kms * KMS_TO_MS / self.config.u_scale,
+            self.config.v_dm_wind[2] * v_ref_kms * KMS_TO_MS / self.config.u_scale,
         ];
         // Default DM velocity if no wind specified: use dispersion along x
         let v_dm_default = [V_CHI_DISPERSION_KMS * KMS_TO_MS, 0.0, 0.0];
@@ -470,9 +553,9 @@ impl DmForceField {
 
             // Convert baryon velocity from LBM to physical (m/s)
             let v_b = [
-                baryon_velocity[idx][0] * v_ref_kms * KMS_TO_MS / 0.05,
-                baryon_velocity[idx][1] * v_ref_kms * KMS_TO_MS / 0.05,
-                baryon_velocity[idx][2] * v_ref_kms * KMS_TO_MS / 0.05,
+                baryon_velocity[idx][0] * v_ref_kms * KMS_TO_MS / self.config.u_scale,
+                baryon_velocity[idx][1] * v_ref_kms * KMS_TO_MS / self.config.u_scale,
+                baryon_velocity[idx][2] * v_ref_kms * KMS_TO_MS / self.config.u_scale,
             ];
 
             // Relative velocity
@@ -484,10 +567,10 @@ impl DmForceField {
                 continue;
             }
 
-            // F_drag = n_chi * n_b * sigma * m_red * |v_rel| * v_rel_hat (N/m^3)
+            // Collision rate n_chi*sigma*speed times momentum m_red*speed.
             // Then convert to LBM acceleration: a_lattice = F * force_scale / rho_phys
-            let f_mag = n_chi_m3 * n_b_m3 * sigma_m2 * m_red_kg * v_rel_mag;
-            let a_phys = f_mag / (n_b_m3 * M_PROTON_GEV * GEV_TO_KG);
+            let f_mag = n_chi_m3 * n_b_m3 * sigma_m2 * m_red_kg * v_rel_mag.powi(2);
+            let a_phys = f_mag / (n_b_m3 * DRAG_PROTON_MASS_KG);
             let a_lattice = a_phys * self.config.force_scale;
 
             drag[idx] = [
@@ -516,6 +599,78 @@ pub fn combine_forces(a: &[[f64; 3]], b: &[[f64; 3]]) -> Vec<[f64; 3]> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn dimensional_drag_field(spacing_m: f64) -> DmForceField {
+        let timestep_s: f64 = 1e-4;
+        let velocity_unit = spacing_m / timestep_s;
+        DmForceField::new(
+            1,
+            1,
+            1,
+            DmForceConfig {
+                sigma_chi_b: 1e-30,
+                v_ref_kms: 300.0,
+                u_scale: 300_000.0 / velocity_unit,
+                v_dm_wind: [300_000.0 / velocity_unit, 0.0, 0.0],
+                force_scale: timestep_s.powi(2) / spacing_m,
+                ..DmForceConfig::default()
+            },
+        )
+    }
+
+    #[test]
+    fn drag_dimensional_si_oracle_and_lattice_units() {
+        // Cold proton stream: collision rate times transferred momentum per proton.
+        let number_density_m3 = 0.3 / 4.69 * 1e6;
+        let cross_section_m2 = 1e-30 * 1e-4;
+        let relative_speed_ms: f64 = 200_000.0;
+        let expected_si =
+            number_density_m3 * cross_section_m2 * (5.0 / 6.0) * relative_speed_ms.powi(2);
+        for spacing_m in [1000.0, 2000.0] {
+            let field = dimensional_drag_field(spacing_m);
+            let velocity = [[100_000.0 * 1e-4 / spacing_m, 0.0, 0.0]];
+            let lattice = field.drag_acceleration_lattice(&velocity)[0][0];
+            let legacy = field.drag_force(&[2.7], &velocity, 8.1, 300.0)[0][0];
+            for acceleration in [lattice, legacy] {
+                let recovered_si = acceleration / field.config.force_scale;
+                assert!((recovered_si / expected_si - 1.0).abs() < 2e-15);
+            }
+            let expected_kappa = number_density_m3 * cross_section_m2 * (5.0 / 6.0) * spacing_m;
+            assert!((field.kappa_drag / expected_kappa - 1.0).abs() < 2e-15);
+        }
+    }
+
+    #[test]
+    fn drag_dimensional_speed_density_and_direction_predicates() {
+        let field = dimensional_drag_field(1000.0);
+        let slow = [[0.02, 0.0, 0.0]];
+        let fast = [[0.01, 0.0, 0.0]];
+        let slow_acceleration = field.drag_acceleration_lattice(&slow)[0][0];
+        let fast_acceleration = field.drag_acceleration_lattice(&fast)[0][0];
+        assert!((fast_acceleration / slow_acceleration - 4.0).abs() < 2e-14);
+        let density_one = field.drag_force_density_lattice(&[1.0], &fast)[0][0];
+        let density_three = field.drag_force_density_lattice(&[3.0], &fast)[0][0];
+        assert!((density_three / density_one - 3.0).abs() < 1e-15);
+        let acceleration_one = field.drag_force(&[1.0], &fast, 5.0, 300.0)[0][0];
+        let acceleration_three = field.drag_force(&[3.0], &fast, 5.0, 300.0)[0][0];
+        assert!((acceleration_three / acceleration_one - 1.0).abs() < 2e-15);
+        assert_eq!(
+            field.drag_force_density_lattice(&[0.0], &fast),
+            vec![[0.0; 3]]
+        );
+        assert_eq!(
+            field.drag_acceleration_lattice(&[field.v_dm_lattice]),
+            vec![[0.0; 3]]
+        );
+        let reversed = field.drag_acceleration_lattice(&[[0.05, 0.0, 0.0]])[0][0];
+        assert!((reversed / fast_acceleration + 1.0).abs() < 2e-15);
+    }
+
+    #[test]
+    #[should_panic(expected = "drag velocity length mismatch")]
+    fn drag_dimensional_rejects_short_velocity_field() {
+        dimensional_drag_field(1000.0).drag_acceleration_lattice(&[]);
+    }
 
     fn default_field(nx: usize, ny: usize, nz: usize) -> DmForceField {
         DmForceField::new(nx, ny, nz, DmForceConfig::default())

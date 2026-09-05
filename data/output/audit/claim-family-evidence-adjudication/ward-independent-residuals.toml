@@ -1,0 +1,104 @@
+schema_version = 1
+evidence_layer = "implementation_conformance"
+independence = "Independent component contraction, RHS assembly and Lagrange intercept; shared physics tensors and quadrature"
+error_budget_status = "heuristic refinement sensitivity; certified quadrature and extrapolation remainder unresolved"
+
+[[gauge]]
+loop_type = "Scalar"
+absolute = 2.39577649274166288e-20
+normalized = 6.60276151109878193e-17
+passes = true
+
+[[gauge_omission]]
+loop_type = "Scalar"
+mutation = "OmitJ1"
+absolute = 2.39577649274166288e-20
+tensor_delta_norm = 1.86646210342888942e-4
+
+[[gauge_omission]]
+loop_type = "Scalar"
+mutation = "OmitJ2"
+absolute = 5.23154954400167125e-24
+tensor_delta_norm = 4.08058222348056080e-4
+
+[[gauge_omission]]
+loop_type = "Scalar"
+mutation = "OmitJ3"
+absolute = 9.58325130464093779e-21
+tensor_delta_norm = 1.88046480089814513e-7
+
+[[off_shell_gravitational]]
+loop_type = "Scalar"
+absolute = 1.03916622000535831e-15
+normalized = 6.19989081615284523e-11
+one_photon_norm = 0.00000000000000000e0
+two_photon_norm = 1.67610406508768409e-5
+omit_one_photon_absolute = 1.03916622000535831e-15
+omit_two_photon_absolute = 1.67610406498423155e-5
+one_photon_omission_discriminates = false
+
+[[on_shell_limit]]
+loop_type = "Scalar"
+virtualities = [0.1, 0.05, 0.01, 0.005]
+linear_norm = 2.36262291671245853e-3
+quadratic_norm = 2.36261528538140317e-3
+quadratic_spread = 1.07923153248347392e-8
+quadrature_spread = 4.11146865991231290e-4
+ladder_spread = 9.71308379174411207e-8
+omit_external_norm = 2.41610205236437786e-3
+omit_irreducible_norm = 5.34791356646309446e-5
+passes_original_gate = false
+certified_zero_exclusion = false
+linear_components_real = [0.0, 0.0, 0.0, 0.0016706319459206648]
+linear_components_imaginary = [-0.0016706214256510116, 0.0, 0.0, 0.0]
+refined_linear_norm = 2.77376978270369020e-3
+
+[[gauge]]
+loop_type = "Spinor"
+absolute = 9.92020035292996450e-5
+normalized = 8.95257789612068783e-2
+passes = false
+
+[[gauge_omission]]
+loop_type = "Spinor"
+mutation = "OmitJ1"
+absolute = 9.92020035292996450e-5
+tensor_delta_norm = 7.46499180425051929e-4
+
+[[gauge_omission]]
+loop_type = "Spinor"
+mutation = "OmitJ2"
+absolute = 1.72529198849661661e-7
+tensor_delta_norm = 1.16945217766307595e-3
+
+[[gauge_omission]]
+loop_type = "Spinor"
+mutation = "OmitJ3"
+absolute = 9.90294743626615406e-5
+tensor_delta_norm = 2.24956096727827192e-6
+
+[[off_shell_gravitational]]
+loop_type = "Spinor"
+absolute = 3.79799606141989073e-5
+normalized = 5.66932511889008728e-1
+one_photon_norm = 0.00000000000000000e0
+two_photon_norm = 6.69920313577543363e-5
+omit_one_photon_absolute = 3.79799606141989073e-5
+omit_two_photon_absolute = 3.57259605569938232e-5
+one_photon_omission_discriminates = false
+
+[[on_shell_limit]]
+loop_type = "Spinor"
+virtualities = [0.1, 0.05, 0.01, 0.005]
+linear_norm = 5.86824021281251006e-3
+quadratic_norm = 5.86821680937755271e-3
+quadratic_spread = 2.75342149160436619e-8
+quadrature_spread = 1.64458746876664928e-3
+ladder_spread = 2.47807934235957138e-7
+omit_external_norm = 6.08422740121735209e-3
+omit_irreducible_norm = 2.15987188504166057e-4
+passes_original_gate = false
+certified_zero_exclusion = false
+linear_components_real = [0.0, 0.0, 0.0, 0.004149482351575438]
+linear_components_imaginary = [-0.004149462544623554, 0.0, 0.0, 0.0]
+refined_linear_norm = 7.51282768157878617e-3

@@ -1,0 +1,35 @@
+claim_id = "C-1694"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates fixed source/implementation predicates; physical mapping and unknown model calibration require separate admission."
+fixed_hyperparameters = ["Historical magnonic.rs at commit 81a4ca6e","Cyclic gyromagnetic ratio gamma/(2*pi)=28e9 Hz/T; angular gamma=2*pi*28e9 rad/(s*T)","One tesla change in external field at fixed k and magnetization changes cyclic frequency by 28 GHz","Exchange field coefficient 2*A_ex/M_s has units T*m^2; multiply by angular gamma and k^2 once"]
+
+[[intervening_maps]]
+branch = "implementation_audit"
+name = "frequency_unit_trace"
+kind = "computational"
+description = "Trace angular/cyclic conventions from YigParams::gamma through magnon_frequency_homogeneous and rad_per_s_to_ghz; independently derive the exchange-field coefficient."
+
+[[intervening_maps]]
+branch = "implementation_audit"
+name = "consumer_inventory"
+kind = "computational"
+description = "Enumerate call sites before making a universal consumer assertion; require independently evaluated SI field and exchange slopes."
+
+[[fitted_parameters]]
+branch = "implementation_audit"
+count = 0
+names = []
+training_boundary = "The fixed implementation audit fits zero parameters. Source/model parameter fitting and phenomenological prediction remain outside this declared audit."
+
+[decisive_experiment]
+experiment_ids = ["E-142"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+description = "E-142 is the magnonic dispersion family; its tight-binding landmarks alone do not exercise magnonic.rs frequency conversion. Run focused homogeneous-frequency unit fixtures and bind their actual source revision before considering any GHz source-agreement claim."
+
+[what_would_verify_refute]
+verification_outcomes = ["Historical gamma=2.8e10 is treated as angular and then divided by 2*pi: the external-field cyclic-frequency slope is smaller than 28 GHz/T by 2*pi, confirming the bounded unit defect."]
+revision_outcomes = ["A repaired angular gamma and correctly dimensioned exchange term pass independent field and k-squared slopes: preserve the historical finding and register corrected implementation conformance separately from source reproduction."]
+abandonment_outcomes = ["An admitted historical producer has exactly one conversion and reproduces the independent 28 GHz/T slope; abandon the factor-of-2*pi attribution for that producer."]
+inconclusive_outcomes = ["A broad 1-to-20 GHz range gate alone leaves the unit convention unresolved.","Source parameter identity, field geometry and the effective-field sign remain separate obligations before comparing measured GHz landmarks."]

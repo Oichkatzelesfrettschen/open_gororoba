@@ -85,6 +85,7 @@ pub(super) struct Features {
     pub(super) geometry: [f32; 5],
     pub(super) pvi: [f32; 3],
     pub(super) tensors: [f32; 20],
+    pub(super) geometric_capacity: [f32; 3],
 }
 
 fn norm(vector: &[f64; 3]) -> f64 {
@@ -165,9 +166,17 @@ pub(super) fn construct(
         *output = log(value)?;
     }
     let mut pvi = [0.0; 3];
-    for (output, &width) in pvi.iter_mut().zip(widths) {
+    let mut geometric_capacity = [0.0; 3];
+    let geometric_numerator = (increments
+        .iter()
+        .map(|delta| delta.iter().map(|v| v * v).sum::<f64>())
+        .sum::<f64>()
+        / 5.0)
+        .sqrt();
+    for (index, (output, &width)) in pvi.iter_mut().zip(widths).enumerate() {
         let rms = preceding_rms(history, start, width)?;
         *output = log(numerator / rms)?;
+        geometric_capacity[index] = log(geometric_numerator / rms)?;
     }
     let staples = staple_embedding(&vectors);
     let denominator = staples
@@ -196,6 +205,7 @@ pub(super) fn construct(
         geometry,
         pvi,
         tensors,
+        geometric_capacity,
     })
 }
 
@@ -218,6 +228,67 @@ fn preceding_rms(history: &[Sample], feature_start: usize, width: usize) -> Resu
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn geometric_ratio_uses_all_five_increments_and_excludes_calibration_bridge() {
+        let values = [
+            0.0, 1.0, 3.0, 6.0, 10.0, 100.0, 101.0, 103.0, 106.0, 110.0, 115.0,
+        ];
+        let mut history: Vec<_> = values
+            .iter()
+            .enumerate()
+            .map(|(index, &value)| Sample {
+                nanos: index as i64 * 1_000_000_000,
+                raw_index: index as u64,
+                vector: [value, 0.0, 0.0],
+            })
+            .collect();
+        let ensemble = Ensemble::new(&(1000..1019).collect::<Vec<_>>()).unwrap();
+        let epsilon = 1e-12;
+        let original = construct(&history, &[1, 2, 4], epsilon, &ensemble).unwrap();
+        for (index, denominator) in [4.0, (12.5_f64).sqrt(), (7.5_f64).sqrt()]
+            .into_iter()
+            .enumerate()
+        {
+            assert_eq!(
+                original.pvi[index],
+                (5.0 / denominator + epsilon).ln() as f32
+            );
+            assert_eq!(
+                original.geometric_capacity[index],
+                (11.0_f64.sqrt() / denominator + epsilon).ln() as f32
+            );
+        }
+        assert_eq!(
+            original.geometry,
+            [
+                (5.0 + epsilon).ln() as f32,
+                epsilon.ln() as f32,
+                epsilon.ln() as f32,
+                epsilon.ln() as f32,
+                epsilon.ln() as f32
+            ]
+        );
+        history[5].vector[0] = 103.0;
+        let omitted_first = construct(&history, &[1, 2, 4], epsilon, &ensemble).unwrap();
+        assert_ne!(
+            original.geometric_capacity,
+            omitted_first.geometric_capacity
+        );
+        history[5].vector[0] = 100.0;
+        history[0].vector[0] = -10.0;
+        let changed_calibration = construct(&history, &[1, 2, 4], epsilon, &ensemble).unwrap();
+        assert_eq!(original.geometry, changed_calibration.geometry);
+        assert_eq!(original.tensors, changed_calibration.tensors);
+        assert_eq!(
+            original.geometric_capacity[..2],
+            changed_calibration.geometric_capacity[..2]
+        );
+        assert_ne!(
+            original.geometric_capacity[2],
+            changed_calibration.geometric_capacity[2]
+        );
+    }
 
     #[test]
     fn feature_window_cannot_change_preceding_calibration() {

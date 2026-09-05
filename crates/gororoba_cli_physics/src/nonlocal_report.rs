@@ -6,7 +6,8 @@ use optics_core::absorber_benchmark::{
 };
 use quantum_core::{
     BravaisLattice2D, Complex64, Hopping, InversionBreakingParams, MagnonicTBParams, OrbitalSite,
-    TightBindingModel, Valley, Vec2, compute_magnonic_bands, valley_chern_number,
+    TightBindingModel, Valley, Vec2, compute_magnonic_bands,
+    tight_binding::{TopologyAdmission, checked_subspace_topology},
 };
 use serde::{Deserialize, Serialize};
 use std::{fs, path::Path};
@@ -27,6 +28,14 @@ pub struct NonlocalTopologyResult {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+pub struct BandTopologyRecord {
+    pub band: usize,
+    pub chern: Option<f64>,
+    pub valley_k: Option<f64>,
+    pub error: Option<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub struct NonlocalSpectralCrosscheck {
     pub reggiani_partner_degeneracies: Vec<NonlocalDegeneracyRow>,
     pub zd_flat_band_fraction: f64,
@@ -36,10 +45,10 @@ pub struct NonlocalSpectralCrosscheck {
     pub zd_crystal_distinct_eigenvalue_count: usize,
     pub magnonic_flat_band_indices: Vec<usize>,
     pub magnonic_min_bandwidth_ghz: f64,
-    pub magnonic_band_cherns: Vec<f64>,
-    pub magnonic_valley_cherns_k: Vec<f64>,
-    pub graphene_valley_chern_k: f64,
-    pub graphene_valley_chern_kprime: f64,
+    pub magnonic_band_cherns: Vec<BandTopologyRecord>,
+    pub graphene_valley_chern_k: Option<f64>,
+    pub graphene_valley_chern_kprime: Option<f64>,
+    pub graphene_topology_error: Option<String>,
     pub sersic_index_n: f64,
     pub sersic_effective_radius: f64,
     pub sersic_layout_min: f64,
@@ -125,7 +134,8 @@ fn build_spectral_crosscheck(model: &SyntheticCouplingModel) -> NonlocalSpectral
         9,
         1000.0,
     );
-    let (graphene_valley_chern_k, graphene_valley_chern_kprime) = graphene_valley_reference();
+    let (graphene_valley_chern_k, graphene_valley_chern_kprime, graphene_topology_error) =
+        graphene_valley_reference();
     let (sersic_layout_min, sersic_layout_max) = sersic_layout_span(model);
 
     NonlocalSpectralCrosscheck {
@@ -147,10 +157,20 @@ fn build_spectral_crosscheck(model: &SyntheticCouplingModel) -> NonlocalSpectral
             .iter()
             .copied()
             .fold(f64::INFINITY, f64::min),
-        magnonic_band_cherns: magnonic.band_cherns,
-        magnonic_valley_cherns_k: magnonic.valley_cherns_k,
+        magnonic_band_cherns: magnonic
+            .band_cherns
+            .iter()
+            .enumerate()
+            .map(|(band, &chern)| BandTopologyRecord {
+                band,
+                chern,
+                valley_k: magnonic.valley_cherns_k[band],
+                error: magnonic.topology_errors[band].clone(),
+            })
+            .collect(),
         graphene_valley_chern_k,
         graphene_valley_chern_kprime,
+        graphene_topology_error,
         sersic_index_n: 4.0,
         sersic_effective_radius: 4.0,
         sersic_layout_min,
@@ -172,7 +192,7 @@ fn sersic_layout_span(model: &SyntheticCouplingModel) -> (f64, f64) {
     (min, max)
 }
 
-fn graphene_valley_reference() -> (f64, f64) {
+fn graphene_valley_reference() -> (Option<f64>, Option<f64>, Option<String>) {
     let lattice = BravaisLattice2D::hexagonal(1.0);
     let s3 = 3.0_f64.sqrt();
     let model = TightBindingModel {
@@ -210,10 +230,14 @@ fn graphene_valley_reference() -> (f64, f64) {
             },
         ],
     };
-    (
-        valley_chern_number(&model, 0, 15, Valley::K),
-        valley_chern_number(&model, 0, 15, Valley::KPrime),
-    )
+    match checked_subspace_topology(&model, 0..1, 15, TopologyAdmission::default()) {
+        Ok(topology) => (
+            Some(topology.valley_chern_number(Valley::K)),
+            Some(topology.valley_chern_number(Valley::KPrime)),
+            None,
+        ),
+        Err(error) => (None, None, Some(error.to_string())),
+    }
 }
 
 #[cfg(test)]

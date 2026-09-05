@@ -1,0 +1,41 @@
+claim_id = "C-1688"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates fixed source/implementation predicates; physical mapping and unknown model calibration require separate admission."
+fixed_hyperparameters = ["Use the E-143 nine-band model with admitted parameter identity","Band isolation is a prerequisite for individual-band topology","Use degenerate-subspace projector invariants when an individual eigenspace is unresolved","Retain grid refinement and overlap-conditioning failures independently of topology"]
+
+[[intervening_maps]]
+branch = "implementation_audit"
+name = "spectral_gap_admission"
+kind = "computational"
+description = "Evaluate separating gaps across the Brillouin domain and admit a band or grouped subspace before assigning a Chern number."
+
+[[intervening_maps]]
+branch = "implementation_audit"
+name = "projector_invariant"
+kind = "computational"
+description = "Compute a gauge-invariant isolated-band or grouped-subspace invariant, testing invariance under basis rotations within each admitted subspace."
+
+[[intervening_maps]]
+branch = "implementation_audit"
+name = "time_reversal_scope"
+kind = "computational"
+description = "State which admitted bundle time reversal acts on and derive the corresponding Chern constraint; a degeneracy leaves individual-band labels undefined."
+
+[[fitted_parameters]]
+branch = "implementation_audit"
+count = 0
+names = []
+training_boundary = "The fixed implementation audit fits zero parameters. Source/model parameter fitting and phenomenological prediction remain outside this declared audit."
+
+[decisive_experiment]
+experiment_ids = ["E-143"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+description = "E-143 numerical Chern sweeps require a gap-admission amendment before individual-band interpretation. Compare isolated-band or degenerate-subspace invariants, symmetry and mesh refinement independently; retain the original band labels and outputs."
+
+[what_would_verify_refute]
+verification_outcomes = ["An admitted isolated band invariant satisfies its correctly derived time-reversal constraint and independent gauge/basis checks over refined meshes."]
+revision_outcomes = ["A band degeneracy invalidates an individual-band assignment: narrow the assertion to the isolated grouped subspace whose invariant is defined.","An independently computed nonzero invariant survives the admitted symmetry and gap obligations: revise the asserted zero-Chern scope."]
+abandonment_outcomes = ["The proposed symmetry argument acts on a different bundle or fails its hypotheses; abandon that argument as justification for the specified Chern assignment."]
+inconclusive_outcomes = ["Unresolved gaps, vanishing link overlaps, mesh instability or missing source parameters preclude a defined individual-band invariant.","A numerically returned integer at a degeneracy supplies no individual-band topological proof."]

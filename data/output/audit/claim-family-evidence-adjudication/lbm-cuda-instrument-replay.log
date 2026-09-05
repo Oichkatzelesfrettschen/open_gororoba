@@ -1,0 +1,28 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 20.02s
+     Running tests/test_gpu_cpu_equivalence.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/test_gpu_cpu_equivalence-f95653167ebc7174)
+
+running 2 tests
+
+thread 'captured_force_replacement_matches_uncaptured_steps' (1301919) panicked at crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs:123:24:
+called `Result::unwrap()` on an `Err` value: DriverError(CUDA_ERROR_STREAM_CAPTURE_ISOLATION, "dependency created on uncaptured work in another stream")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'evolving_cpu_gpu_and_captured_steps_remain_consistent_fp32' (1301920) panicked at crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs:102:9:
+density RMS=0.00419259415765046, captured=false
+test captured_force_replacement_matches_uncaptured_steps ... FAILED
+test evolving_cpu_gpu_and_captured_steps_remain_consistent_fp32 ... FAILED
+
+failures:
+
+failures:
+    captured_force_replacement_matches_uncaptured_steps
+    evolving_cpu_gpu_and_captured_steps_remain_consistent_fp32
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 1 filtered out; finished in 4.15s
+
+error: test failed, to rerun pass `-p lbm_3d_cuda --test test_gpu_cpu_equivalence`

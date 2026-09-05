@@ -5,12 +5,81 @@
 //! - Mass conservation error
 //! - Crash threshold (density contrast where solver diverges)
 //!
-//! Expected result: MRT survives 3-5x higher density contrast than BGK
-//! at matched tau, confirming ghost-moment damping advantage.
+//! Survival requires finite fields, positive density and explicitly supplied
+//! mass-error/Mach budgets. Numerical survival does not establish physical validity.
 
 use clap::Parser;
 use gororoba_cli_physics::lbm_dispatch::LbmBackend;
 use lbm_3d::solver::CollisionMode;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn finite_explosion_and_invalid_fields_fail_separate_predicates() {
+        let args = Args::parse_from([
+            "audit",
+            "--max-relative-mass-error",
+            "0.000001",
+            "--max-mach",
+            "0.3",
+        ]);
+        let explosion = assess(true, 1.0, 1e113, 0.1, &args);
+        assert!(explosion.finite_state);
+        assert!(!explosion.mass_within_budget);
+        assert!(!explosion.passed());
+        assert!(!assess(true, -1.0, 0.0, 0.1, &args).positive_density);
+        assert!(!assess(false, 1.0, 0.0, 0.1, &args).finite_state);
+        assert!(!assess(true, 1.0, 0.0, 1e100, &args).mach_within_budget);
+        assert!(assess(true, 1.0, 1e-8, 0.1, &args).passed());
+    }
+    #[test]
+    fn budgets_are_explicit_and_calm_trial_is_measured() {
+        assert!(Args::try_parse_from(["audit"]).is_err());
+        let args = Args::parse_from([
+            "audit",
+            "--max-relative-mass-error",
+            "0.000001",
+            "--max-mach",
+            "0.3",
+            "--n",
+            "4",
+            "--steps",
+            "2",
+        ]);
+        let result = run_trial(&args, 1.0, CollisionMode::Bgk);
+        assert!(result.survived && result.assessment.passed());
+        assert_eq!(result.observed_step, Some(2));
+        assert_eq!(result.observation_stage, "post_step_population_moments");
+    }
+    #[test]
+    fn nonfinite_post_step_population_rejects_finite_cached_macros() {
+        let args = Args::parse_from([
+            "audit",
+            "--max-relative-mass-error",
+            "0.000001",
+            "--max-mach",
+            "0.3",
+        ]);
+        let mut solver = lbm_3d::solver::LbmSolver3D::new(4, 4, 4, 0.8);
+        solver.initialize_uniform(1.0, [0.0; 3]);
+        assert!(solver.rho.iter().all(|value| value.is_finite()));
+        solver.f[lbm_3d::solver::aosoa_idx(63, 18)] = f64::NAN;
+        let mut backend = LbmBackend::Avx2(Box::new(solver));
+        let observation = inspect_fields(&mut backend).unwrap();
+        assert!(!observation.finite);
+        assert!(
+            !assess(
+                observation.finite,
+                observation.minimum_density,
+                (observation.mass / 64.0 - 1.0).abs(),
+                observation.mach,
+                &args
+            )
+            .passed()
+        );
+    }
+}
 
 #[derive(Parser)]
 #[command(name = "mrt-stability-audit")]
@@ -62,6 +131,12 @@ struct Args {
     /// stepping between checks. Default 1 (check every step).
     #[arg(long, default_value = "1")]
     mach_interval: usize,
+    /// Investigator-declared relative mass-error acceptance budget.
+    #[arg(long)]
+    max_relative_mass_error: f64,
+    /// Investigator-declared maximum Mach acceptance budget.
+    #[arg(long)]
+    max_mach: f64,
 }
 
 /// Result of one stability trial.
@@ -72,6 +147,110 @@ struct TrialResult {
     max_mach: f64,
     mass_err: f64,
     final_step: usize,
+    assessment: StabilityAssessment,
+    observed_step: Option<usize>,
+    observation_stage: &'static str,
+}
+
+#[derive(Clone, Copy, Debug)]
+struct StabilityAssessment {
+    finite_state: bool,
+    positive_density: bool,
+    mass_within_budget: bool,
+    mach_within_budget: bool,
+}
+impl StabilityAssessment {
+    fn passed(self) -> bool {
+        self.finite_state
+            && self.positive_density
+            && self.mass_within_budget
+            && self.mach_within_budget
+    }
+    fn failed() -> Self {
+        Self {
+            finite_state: false,
+            positive_density: false,
+            mass_within_budget: false,
+            mach_within_budget: false,
+        }
+    }
+}
+fn assess(
+    finite_fields: bool,
+    minimum_density: f64,
+    mass_error: f64,
+    mach: f64,
+    args: &Args,
+) -> StabilityAssessment {
+    StabilityAssessment {
+        finite_state: finite_fields
+            && minimum_density.is_finite()
+            && mass_error.is_finite()
+            && mach.is_finite(),
+        positive_density: minimum_density.is_finite() && minimum_density > 0.0,
+        mass_within_budget: mass_error.is_finite() && mass_error <= args.max_relative_mass_error,
+        mach_within_budget: mach.is_finite() && mach >= 0.0 && mach <= args.max_mach,
+    }
+}
+struct PopulationObservation {
+    finite: bool,
+    minimum_density: f64,
+    mass: f64,
+    mach: f64,
+}
+
+fn inspect_populations(populations: &[f64]) -> anyhow::Result<PopulationObservation> {
+    anyhow::ensure!(
+        !populations.is_empty() && populations.len().is_multiple_of(19),
+        "complete cell-major D3Q19 populations required"
+    );
+    let lattice = lbm_3d::lattice::D3Q19Lattice::new();
+    let mut observation = PopulationObservation {
+        finite: true,
+        minimum_density: f64::INFINITY,
+        mass: 0.0,
+        mach: 0.0,
+    };
+    for cell in populations.chunks_exact(19) {
+        observation.finite &= cell.iter().all(|value| value.is_finite());
+        let density: f64 = cell.iter().sum();
+        let mut momentum = [0.0; 3];
+        for (direction, &population) in cell.iter().enumerate() {
+            let velocity = lattice.velocity(direction);
+            for axis in 0..3 {
+                momentum[axis] += population * f64::from(velocity[axis]);
+            }
+        }
+        let mach = momentum
+            .into_iter()
+            .map(|value| (value / density).powi(2))
+            .sum::<f64>()
+            .sqrt()
+            * 3.0_f64.sqrt();
+        observation.finite &= density.is_finite() && mach.is_finite();
+        observation.minimum_density = observation.minimum_density.min(density);
+        observation.mass += density;
+        observation.mach = observation.mach.max(mach);
+    }
+    Ok(observation)
+}
+
+fn inspect_fields(backend: &mut LbmBackend) -> anyhow::Result<PopulationObservation> {
+    let populations: Vec<f64> = match backend {
+        LbmBackend::Avx2(solver) => (0..solver.nx * solver.ny * solver.nz)
+            .flat_map(|cell| {
+                let source = &solver.f;
+                (0..19).map(move |direction| source[lbm_3d::solver::aosoa_idx(cell, direction)])
+            })
+            .collect(),
+        #[cfg(feature = "gpu")]
+        LbmBackend::Cuda(solver) => solver
+            .read_populations_fp32()?
+            .into_iter()
+            .map(f64::from)
+            .collect(),
+    };
+    inspect_populations(&populations)
 }
 
 /// Build Gaussian density perturbation centered on the grid.
@@ -124,9 +303,13 @@ fn run_trial(args: &Args, contrast: f64, mode: CollisionMode) -> TrialResult {
         .initialize_custom(&rho, &u_zero)
         .expect("initialize_custom failed");
 
-    let initial_mass = backend.total_mass().expect("total_mass failed");
+    let initial_mass = inspect_fields(&mut backend)
+        .expect("initial population observation failed")
+        .mass;
     let mut max_mach = 0.0_f64;
     let mut final_step = 0;
+    let mut last_assessment = StabilityAssessment::failed();
+    let mut last_mass_error = f64::NAN;
     let interval = args.mach_interval.max(1);
 
     // Bulk-step with periodic Mach monitoring.
@@ -144,7 +327,10 @@ fn run_trial(args: &Args, contrast: f64, mode: CollisionMode) -> TrialResult {
                     survived: false,
                     max_mach,
                     mass_err: f64::NAN,
-                    final_step: step + chunk,
+                    final_step: step,
+                    assessment: StabilityAssessment::failed(),
+                    observed_step: None,
+                    observation_stage: "step_failed",
                 };
             }
         } else if backend.step().is_err() {
@@ -154,39 +340,72 @@ fn run_trial(args: &Args, contrast: f64, mode: CollisionMode) -> TrialResult {
                 survived: false,
                 max_mach,
                 mass_err: f64::NAN,
-                final_step: step + 1,
+                final_step: step,
+                assessment: StabilityAssessment::failed(),
+                observed_step: None,
+                observation_stage: "step_failed",
             };
         }
 
         step += chunk;
         final_step = step;
 
-        let ma = backend.max_mach_number().unwrap_or(f64::NAN);
-        if !ma.is_finite() {
+        let observation = match inspect_fields(&mut backend) {
+            Ok(observation) => observation,
+            Err(_) => {
+                return TrialResult {
+                    contrast,
+                    mode: mode_name(mode),
+                    survived: false,
+                    max_mach,
+                    mass_err: f64::NAN,
+                    final_step,
+                    assessment: StabilityAssessment::failed(),
+                    observed_step: None,
+                    observation_stage: "population_readback_failed",
+                };
+            }
+        };
+        let ma = observation.mach;
+        if ma.is_finite() {
+            max_mach = max_mach.max(ma);
+        }
+        let mass = observation.mass;
+        let mass_err = ((mass - initial_mass) / initial_mass).abs();
+        let assessment = assess(
+            observation.finite,
+            observation.minimum_density,
+            mass_err,
+            ma,
+            args,
+        );
+        if !assessment.passed() {
             return TrialResult {
                 contrast,
                 mode: mode_name(mode),
                 survived: false,
                 max_mach,
-                mass_err: f64::NAN,
+                mass_err,
                 final_step,
+                assessment,
+                observed_step: Some(step),
+                observation_stage: "post_step_population_moments",
             };
         }
-        if ma > max_mach {
-            max_mach = ma;
-        }
+        last_assessment = assessment;
+        last_mass_error = mass_err;
     }
-
-    let final_mass = backend.total_mass().expect("total_mass failed");
-    let mass_err = ((final_mass - initial_mass) / initial_mass).abs();
 
     TrialResult {
         contrast,
         mode: mode_name(mode),
-        survived: true,
+        survived: last_assessment.passed(),
         max_mach,
-        mass_err,
+        mass_err: last_mass_error,
         final_step,
+        assessment: last_assessment,
+        observed_step: Some(final_step),
+        observation_stage: "post_step_population_moments",
     }
 }
 
@@ -200,29 +419,54 @@ fn mode_name(mode: CollisionMode) -> &'static str {
 fn print_result(result: &TrialResult, csv: bool) {
     if csv {
         println!(
-            "{:.2},{},{},{:.6},{:.2e},{}",
+            "{:.2},{},{},{:.6},{:.2e},{},{},{},{},{},{},{}",
             result.contrast,
             result.mode,
             result.survived,
             result.max_mach,
             result.mass_err,
-            result.final_step
+            result.final_step,
+            result.assessment.finite_state,
+            result.assessment.positive_density,
+            result.assessment.mass_within_budget,
+            result.assessment.mach_within_budget,
+            result
+                .observed_step
+                .map_or_else(|| "unobserved".to_owned(), |step| step.to_string()),
+            result.observation_stage
         );
     } else {
         println!(
-            "{:>10.2} {:>5} {:>8} {:>10.6} {:>12.2e} {:>10}",
+            "{:>10.2} {:>5} {:>8} {:>10.6} {:>12.2e} {:>10} {:?} observed_step={:?} observation_stage={}",
             result.contrast,
             result.mode,
             if result.survived { "OK" } else { "CRASH" },
             result.max_mach,
             result.mass_err,
-            result.final_step
+            result.final_step,
+            result.assessment,
+            result.observed_step,
+            result.observation_stage
         );
     }
 }
 
 fn main() {
     let args = Args::parse();
+    assert!(
+        args.steps > 0
+            && args.max_relative_mass_error.is_finite()
+            && args.max_relative_mass_error >= 0.0
+            && args.max_mach.is_finite()
+            && args.max_mach > 0.0,
+        "positive steps and finite declared stability budgets required"
+    );
+    eprintln!(
+        "declared budgets: relative_mass_error={} max_mach={} observation_interval={} steps; post-step population readback and moment-reduction overhead included",
+        args.max_relative_mass_error,
+        args.max_mach,
+        args.mach_interval.max(1)
+    );
 
     #[cfg(not(feature = "gpu"))]
     if args.gpu {
@@ -250,7 +494,9 @@ fn main() {
         ""
     };
     if args.csv {
-        println!("contrast,mode,survived,max_mach,mass_err,final_step");
+        println!(
+            "contrast,mode,survived,max_mach,mass_err,final_step,finite_state,positive_density,mass_within_budget,mach_within_budget,observed_step,observation_stage"
+        );
     } else {
         eprintln!(
             "MRT Stability Audit [{backend_name}{kernel_tag}]: {}^3 grid, tau={}, {} steps (Mach interval={}), {} levels [{:.1}..{:.1}]",

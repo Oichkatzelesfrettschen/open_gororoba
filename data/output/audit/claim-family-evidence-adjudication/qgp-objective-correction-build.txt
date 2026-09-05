@@ -1,0 +1,4 @@
+    Blocking waiting for file lock on build directory
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 7.47s
+     Running tests/epsilon_objective_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/epsilon_objective_identity-9dfa355a710d5361)

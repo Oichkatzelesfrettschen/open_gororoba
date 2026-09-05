@@ -10,6 +10,71 @@
 //! J = curl(B)/mu_0) couples back to the LBM via the Guo forcing scheme.
 
 use crate::boundary::GridIndex;
+use crate::units::{LatticeUnits, ParkerSpiralSi, UniformCartesianMesh, UnitError};
+
+#[cfg(test)]
+mod physical_unit_tests {
+    use super::*;
+    use crate::units::VACUUM_PERMEABILITY_H_M;
+
+    #[test]
+    fn normalized_lorentz_matches_si_linear_field_across_units() {
+        for timestep_s in [2.0, 4.0] {
+            let mesh = UniformCartesianMesh::new([5, 3, 3], [0.0; 3], 1e6).unwrap();
+            let units = LatticeUnits::new(&mesh, timestep_s, 1e-20).unwrap();
+            let mut field = MhdField::new(5, 3, 3, MhdConfig::default());
+            let base_t = 5e-9;
+            let gradient_t_m = 1e-16;
+            for z in 0..3 {
+                for y in 0..3 {
+                    for x in 0..5 {
+                        let index = z * 15 + y * 5 + x;
+                        field.by[index] = (base_t + gradient_t_m * x as f64 * mesh.spacing_m())
+                            / units.magnetic_unit_t();
+                    }
+                }
+            }
+            let force = field.lorentz_force();
+            for x in 1..4 {
+                let expected = -gradient_t_m
+                    * (base_t + gradient_t_m * x as f64 * mesh.spacing_m())
+                    / VACUUM_PERMEABILITY_H_M;
+                let observed = units.force_density_to_si(force[15 + 5 + x][0]);
+                assert!((observed / expected - 1.0).abs() < 2e-14);
+                assert_eq!(force[15 + 5 + x][1], 0.0);
+                assert_eq!(force[15 + 5 + x][2], 0.0);
+            }
+        }
+    }
+
+    #[test]
+    fn physical_parker_initializer_converts_once_and_rejects_atomically() {
+        let mesh = UniformCartesianMesh::new([2, 1, 1], [1.496e11, 0.0, 0.0], 1e6).unwrap();
+        let units = LatticeUnits::new(&mesh, 2.0, 1e-20).unwrap();
+        let model = ParkerSpiralSi {
+            radial_field_at_reference_t: 3e-9,
+            reference_radius_m: 1.496e11,
+            source_radius_m: 0.0,
+            rotation_rad_s: 2.662e-6,
+            radial_speed_m_s: 400e3,
+        };
+        let mut field = MhdField::new(2, 1, 1, MhdConfig::default());
+        field.initialize_parker_si(&mesh, &units, &model).unwrap();
+        assert!((units.magnetic_to_nt(field.bx[0]) - 3.0).abs() < 1e-14);
+        let expected = model
+            .field_t(1.496e11, std::f64::consts::FRAC_PI_2)
+            .unwrap();
+        assert!((field.by[0] * units.magnetic_unit_t() / expected[2] - 1.0).abs() < 1e-15);
+        let previous = (field.bx.clone(), field.by.clone(), field.bz.clone());
+        let invalid = UniformCartesianMesh::new([2, 1, 1], [0.0; 3], 1e6).unwrap();
+        assert!(
+            field
+                .initialize_parker_si(&invalid, &units, &model)
+                .is_err()
+        );
+        assert_eq!((field.bx, field.by, field.bz), previous);
+    }
+}
 
 /// Configuration for MHD simulation parameters.
 #[derive(Clone, Debug)]
@@ -75,7 +140,8 @@ impl MhdField {
         }
     }
 
-    /// Initialize with Parker spiral magnetic field.
+    /// Initialize an uncalibrated legacy lattice Parker construction.
+    /// Use `initialize_parker_si` for declared SI parameters and mesh conversion.
     ///
     /// The Parker spiral in Cartesian coordinates centered on the Sun:
     ///   B_r = B_0 * (r_0/r)^2
@@ -123,6 +189,54 @@ impl MhdField {
                 }
             }
         }
+    }
+
+    /// Populate normalized Cartesian B from a heliocentric SI mesh and Parker model.
+    /// The mesh origin is relative to the Sun; polar axes are the model's rotation
+    /// axis. The complete field is validated before mutation. Magnetic permeability
+    /// becomes one in lattice units. External or bias fields require a separate model.
+    pub fn initialize_parker_si(
+        &mut self,
+        mesh: &UniformCartesianMesh,
+        units: &LatticeUnits,
+        model: &ParkerSpiralSi,
+    ) -> Result<(), UnitError> {
+        if mesh.dimensions() != [self.nx, self.ny, self.nz] || mesh.spacing_m() != units.spacing_m()
+        {
+            return Err(UnitError("MHD mesh dimensions or unit spacing mismatch"));
+        }
+        let mut fields = Vec::with_capacity(self.bx.len());
+        for z in 0..self.nz {
+            for y in 0..self.ny {
+                for x in 0..self.nx {
+                    let position = mesh.position_m([x, y, z])?;
+                    let radius = position[0].hypot(position[1]).hypot(position[2]);
+                    if radius == 0.0 {
+                        return Err(UnitError("Parker mesh includes the Sun"));
+                    }
+                    let colatitude = (position[2] / radius).clamp(-1.0, 1.0).acos();
+                    let longitude = position[1].atan2(position[0]);
+                    let field = model.field_t(radius, colatitude)?;
+                    let normalized = [
+                        field[0] * colatitude.sin() * longitude.cos() - field[2] * longitude.sin(),
+                        field[0] * colatitude.sin() * longitude.sin() + field[2] * longitude.cos(),
+                        field[0] * colatitude.cos(),
+                    ]
+                    .map(|component| component / units.magnetic_unit_t());
+                    if !normalized.iter().all(|component| component.is_finite()) {
+                        return Err(UnitError("normalized Parker field overflow"));
+                    }
+                    fields.push(normalized);
+                }
+            }
+        }
+        for (index, field) in fields.iter().enumerate() {
+            self.bx[index] = field[0];
+            self.by[index] = field[1];
+            self.bz[index] = field[2];
+        }
+        self.config.mu_0 = 1.0;
+        Ok(())
     }
 
     /// Evolve B-field by one MHD timestep using the induction equation.

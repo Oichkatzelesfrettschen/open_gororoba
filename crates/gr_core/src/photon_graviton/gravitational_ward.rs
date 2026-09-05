@@ -293,7 +293,7 @@ fn extrapolate_pair(
     first: &OnShellCombinedSample,
     second: &OnShellCombinedSample,
 ) -> Result<(ComplexFourVector, f64), TensorEvaluationError> {
-    let denominator = second.virtuality - first.virtuality;
+    let denominator = first.virtuality - second.virtuality;
     if denominator.norm() <= f64::EPSILON {
         return Err(TensorEvaluationError::InvalidQuadrature);
     }
@@ -673,6 +673,24 @@ mod tests {
                 residual.passes,
             );
         }
+    }
+
+    #[test]
+    fn affine_virtuality_extrapolation_preserves_component_signs() {
+        let intercept =
+            ComplexFourVector::from_fn(|component, _| Complex64::new(component as f64 + 1.0, -0.5));
+        let slope =
+            ComplexFourVector::from_fn(|component, _| Complex64::new(0.2, component as f64));
+        let sample = |virtuality: f64| {
+            let combined_components = intercept + slope * Complex64::new(virtuality, 0.0);
+            OnShellCombinedSample {
+                virtuality: Complex64::new(virtuality, 0.0),
+                absolute_norm: vector_norm(&combined_components),
+                combined_components,
+            }
+        };
+        let extracted = extrapolate_pair(&sample(0.1), &sample(0.05)).unwrap().0;
+        assert!(vector_norm(&(extracted - intercept)) < 1e-14);
     }
 
     #[test]

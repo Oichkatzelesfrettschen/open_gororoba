@@ -1343,6 +1343,19 @@ fn cmd_claim_mutation(
     args: &ClaimMutationArgs,
 ) -> Result<()> {
     match &args.action {
+        ClaimMutationAction::CorrectContent {
+            spec,
+            actor,
+            reason,
+        } => {
+            let path = resolve_cli_path(repo_root, spec);
+            let text = fs::read_to_string(&path)
+                .with_context(|| format!("read claim content correction {}", path.display()))?;
+            let spec = ProvenanceStore::parse_claim_content_spec(&text)?;
+            for revision in store.correct_claim_content(&spec, actor, reason)? {
+                print_revision_summary("claim", &revision);
+            }
+        }
         ClaimMutationAction::SetEvidence {
             spec,
             actor,

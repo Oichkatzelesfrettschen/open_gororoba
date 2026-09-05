@@ -12,6 +12,27 @@
 //! NFW halo, grid config, D_f before/after LBM, and elapsed time).
 
 use clap::Parser;
+
+#[cfg(any(test, feature = "euclid-catalog"))]
+fn validate_null_design(alpha: f64, trials: usize) -> anyhow::Result<()> {
+    anyhow::ensure!(
+        alpha.is_finite() && alpha > 0.0,
+        "null control requires positive alpha_zd to distinguish force conditions"
+    );
+    anyhow::ensure!(trials > 0, "null control requires at least one noise trial");
+    Ok(())
+}
+
+#[cfg(test)]
+mod null_design_tests {
+    #[test]
+    fn collapsed_controls_are_rejected() {
+        assert!(super::validate_null_design(0.0, 10).is_err());
+        assert!(super::validate_null_design(f64::NAN, 10).is_err());
+        assert!(super::validate_null_design(0.1, 0).is_err());
+        assert!(super::validate_null_design(0.1, 10).is_ok());
+    }
+}
 #[cfg(feature = "euclid-catalog")]
 use cosmology_core::galaxy_pipeline::{GalaxyDfRecord, GalaxyPipelineConfig, analyze_df_sweep};
 #[cfg(feature = "euclid-catalog")]
@@ -105,8 +126,9 @@ struct Args {
     density_floor: f64,
 
     /// Run null-hypothesis control experiment (6 conditions, C0-C5).
-    /// Tests whether D_f=2.73 is a genuine morphology+topology signal
-    /// or a pipeline artifact.  Requires --catalog for C4/C5.
+    /// Evaluate six fixed numerical control contrasts around D_f=2.73.
+    /// Physical interpretation requires separate convergence and model evidence.
+    /// Requires --catalog for C4/C5.
     #[arg(long)]
     null_hypothesis: bool,
 
@@ -194,6 +216,8 @@ fn main() {
 fn run_sweep(args: &Args, config: &GalaxyPipelineConfig, use_gpu: bool) {
     // Null hypothesis control experiment bypasses catalog sweep entirely
     if args.null_hypothesis {
+        validate_null_design(config.alpha_zd, args.null_n_trials)
+            .expect("invalid null-control design");
         if use_gpu {
             #[cfg(feature = "gpu")]
             run_null_hypothesis_gpu(args, config);
@@ -564,8 +588,8 @@ fn run_cpu_sweep(
                     let idx = iz * g * g + iy * g + ix;
                     let rho_init = setup.rho_total[idx];
                     let f_eq = BgkCollision::initialize_rest(rho_init, lattice);
-                    for dir in 0..19 {
-                        solver.f[lbm_3d::solver::aosoa_idx(idx, dir)] = f_eq[dir];
+                    for (dir, &population) in f_eq.iter().enumerate() {
+                        solver.f[lbm_3d::solver::aosoa_idx(idx, dir)] = population;
                     }
                     solver.rho[idx] = rho_init;
                     solver.u[idx] = [0.0, 0.0, 0.0];
@@ -731,15 +755,11 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
     let dx = config.dx_kpc;
 
     // Create GPU solver (reused across all conditions via initialize_custom)
-    let mut solver = if args.mrt {
-        LbmSolver3DCuda::new_mrt(g, g, g, tau, Precision::FP32)
-    } else {
-        LbmSolver3DCuda::new(g, g, g, tau, Precision::FP32)
-    }
-    .unwrap_or_else(|e| {
-        eprintln!("ERROR: CUDA solver init failed: {e}");
-        std::process::exit(1);
-    });
+    let mut solver = LbmSolver3DCuda::new_capture_capable(g, g, g, tau, Precision::FP32, args.mrt)
+        .unwrap_or_else(|e| {
+            eprintln!("ERROR: CUDA solver init failed: {e}");
+            std::process::exit(1);
+        });
 
     if args.tiling {
         solver.set_tiling(true);
@@ -749,10 +769,11 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
         eprintln!("WARNING: L2 pinning failed: {e} (non-fatal, continuing without)");
     }
 
-    let mut box_counter = GpuBoxCounter::new(solver.context()).unwrap_or_else(|e| {
-        eprintln!("ERROR: GpuBoxCounter init failed: {e}");
-        std::process::exit(1);
-    });
+    let mut box_counter = GpuBoxCounter::new_with_stream(solver.context(), solver.stream().clone())
+        .unwrap_or_else(|e| {
+            eprintln!("ERROR: GpuBoxCounter init failed: {e}");
+            std::process::exit(1);
+        });
 
     let zeros_u = vec![[0.0_f64; 3]; n_cells];
     let zeros_f: Vec<[f64; 3]> = vec![[0.0; 3]; n_cells];
@@ -802,13 +823,13 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
             let df_initial = box_counter
                 .fractal_dimension_device_auto(solver.d_rho_bytes(), g, g, g)
                 .map(|r| r.d_f)
-                .unwrap_or(3.0);
+                .expect("initial control box-count measurement failed");
 
             let t0 = Instant::now();
             if use_smag {
                 for step in 0..steps {
                     if step % 10 == 0 {
-                        let _ = solver.update_smagorinsky_tau(smag, dx, tau);
+                        solver.update_smagorinsky_tau(smag, dx, tau).expect("null-control viscosity update failed");
                     }
                     solver.step().expect("LBM step");
                 }
@@ -819,7 +840,7 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
             let df_final = box_counter
                 .fractal_dimension_device_auto(solver.d_rho_bytes(), g, g, g)
                 .map(|r| r.d_f)
-                .unwrap_or(3.0);
+                .expect("final control box-count measurement failed");
 
             let elapsed = t0.elapsed().as_millis() as u64;
             eprintln!("  {label}[{trial}]: D_f = {df_initial:.4} -> {df_final:.4} ({elapsed}ms)");
@@ -888,7 +909,6 @@ fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
         0,
     ));
 
-    drop(run_trial);
     report_null_hypothesis(&results);
 }
 
@@ -947,12 +967,12 @@ fn run_null_hypothesis_cpu(args: &Args, config: &GalaxyPipelineConfig) {
         };
 
         let lattice = &solver.collider.lattice;
-        for idx in 0..n_cells {
-            let f_eq = BgkCollision::initialize_rest(rho[idx], lattice);
+        for (idx, &density) in rho.iter().enumerate() {
+            let f_eq = BgkCollision::initialize_rest(density, lattice);
             for (dir, &val) in f_eq.iter().enumerate() {
                 solver.f[aosoa_idx(idx, dir)] = val;
             }
-            solver.rho[idx] = rho[idx];
+            solver.rho[idx] = density;
             solver.u[idx] = [0.0, 0.0, 0.0];
         }
         solver
@@ -1021,15 +1041,15 @@ fn run_null_hypothesis_cpu(args: &Args, config: &GalaxyPipelineConfig) {
     report_null_hypothesis(&results);
 }
 
-/// Emit CSV + statistical verdict for the 6-condition null hypothesis experiment.
+/// Emit CSV and fixed-threshold predicates for the six control conditions.
 ///
-/// Pass criteria (ALL must hold for null hypothesis rejection):
+/// All predicates must hold for the declared numerical control check:
 /// - C0 D_f > 2.95 (uniform stays trivial)
 /// - C1 |D_f - 2.73| > 0.10 (ZD alone does not produce the signal)
 /// - C2 D_f > 2.90 (noise homogenizes under MRT diffusion)
 /// - C3 |D_f - 2.73| > 0.10 (noise + ZD does not produce the signal)
 /// - C4 |D_f - 2.73| > 0.10 (morphology alone diffuses away)
-/// - C5 |D_f - 2.73| < 0.07 (positive control reproduces E-166)
+/// - C5 |D_f - 2.73| < 0.07 (positive-control tolerance)
 #[cfg(feature = "euclid-catalog")]
 fn report_null_hypothesis(results: &[NullTrialResult]) {
     // CSV output (stdout)
@@ -1043,7 +1063,7 @@ fn report_null_hypothesis(results: &[NullTrialResult]) {
 
     // Per-condition statistics
     let e166_mean = 2.732;
-    let sigma_3 = 0.10; // 3-sigma separation threshold
+    let separation_tolerance = 0.10; // Fixed separation tolerance; calibrated uncertainty is unassessed.
 
     let c0 = results.iter().find(|r| r.condition == "C0-uniform-zero");
     let c1 = results.iter().find(|r| r.condition == "C1-uniform-fzd");
@@ -1077,7 +1097,7 @@ fn report_null_hypothesis(results: &[NullTrialResult]) {
     let (c2_mean, c2_std) = mean_std(&c2_vals);
     let (c3_mean, c3_std) = mean_std(&c3_vals);
 
-    eprintln!("\n=== Null Hypothesis Verdict ===");
+    eprintln!("\n=== Numerical Control Predicates ===");
     let mut all_pass = true;
 
     // C0: D_f > 2.95 (uniform should stay near 3.0)
@@ -1096,7 +1116,7 @@ fn report_null_hypothesis(results: &[NullTrialResult]) {
     // C1: |D_f - 2.73| > 0.10 (ZD alone must not produce 2.73)
     if let Some(r) = c1 {
         let delta = (r.df_final - e166_mean).abs();
-        let pass = delta > sigma_3;
+        let pass = delta > separation_tolerance;
         if !pass {
             all_pass = false;
         }
@@ -1105,7 +1125,7 @@ fn report_null_hypothesis(results: &[NullTrialResult]) {
             r.df_final,
             if pass { "PASS" } else { "**FAIL**" },
             delta,
-            sigma_3,
+            separation_tolerance,
         );
     }
 
@@ -1127,7 +1147,7 @@ fn report_null_hypothesis(results: &[NullTrialResult]) {
     // C3: |mean D_f - 2.73| > 0.10 (noise + ZD must not produce 2.73)
     {
         let delta = (c3_mean - e166_mean).abs();
-        let pass = delta > sigma_3;
+        let pass = delta > separation_tolerance;
         if !pass {
             all_pass = false;
         }
@@ -1138,14 +1158,14 @@ fn report_null_hypothesis(results: &[NullTrialResult]) {
             c3_vals.len(),
             if pass { "PASS" } else { "**FAIL**" },
             delta,
-            sigma_3,
+            separation_tolerance,
         );
     }
 
     // C4: |D_f - 2.73| > 0.10 (morphology alone diffuses)
     if let Some(r) = c4 {
         let delta = (r.df_final - e166_mean).abs();
-        let pass = delta > sigma_3;
+        let pass = delta > separation_tolerance;
         if !pass {
             all_pass = false;
         }
@@ -1154,11 +1174,11 @@ fn report_null_hypothesis(results: &[NullTrialResult]) {
             r.df_final,
             if pass { "PASS" } else { "**FAIL**" },
             delta,
-            sigma_3,
+            separation_tolerance,
         );
     }
 
-    // C5: |D_f - 2.73| < 0.07 (positive control, 2-sigma of E-166)
+    // C5 uses a fixed positive-control tolerance around the recorded reference mean.
     if let Some(r) = c5 {
         let delta = (r.df_final - e166_mean).abs();
         let pass = delta < 0.07;
@@ -1175,9 +1195,9 @@ fn report_null_hypothesis(results: &[NullTrialResult]) {
 
     eprintln!("---");
     if all_pass {
-        eprintln!("NULL HYPOTHESIS REJECTED: D_f=2.73 is genuine morphological signal.");
+        eprintln!("control_predicates=passed physical_interpretation=unassessed");
     } else {
-        eprintln!("NULL HYPOTHESIS NOT REJECTED: Pipeline artifact detected.");
+        eprintln!("control_predicates=failed physical_interpretation=unassessed");
         eprintln!("INVESTIGATION REQUIRED before proceeding with 1000-galaxy sweep.");
     }
 }

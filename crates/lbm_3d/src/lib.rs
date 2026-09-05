@@ -11,5 +11,6 @@ pub mod lattice;
 pub mod mhd;
 pub mod pulp_compat;
 pub mod solver;
+pub mod units;
 pub mod viscosity_field;
 pub mod zpe_injection;

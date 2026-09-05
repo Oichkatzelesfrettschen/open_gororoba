@@ -1,0 +1,133 @@
+Axioms:
+ClassicalDedekindReals.sig_forall_dec :
+  forall P : nat -> Prop,
+  (forall n : nat, {P n} + {~ P n}) ->
+  {n : nat | ~ P n} + {forall n : nat, P n}
+FunctionalExtensionality.functional_extensionality_dep :
+  forall (A : Type) (B : A -> Type) (f g : forall x : A, B x),
+  (forall x : A, f x = g x) -> f = g
+Axioms:
+ClassicalDedekindReals.sig_forall_dec :
+  forall P : nat -> Prop,
+  (forall n : nat, {P n} + {~ P n}) ->
+  {n : nat | ~ P n} + {forall n : nat, P n}
+FunctionalExtensionality.functional_extensionality_dep :
+  forall (A : Type) (B : A -> Type) (f g : forall x : A, B x),
+  (forall x : A, f x = g x) -> f = g
+Axioms:
+ClassicalDedekindReals.sig_forall_dec :
+  forall P : nat -> Prop,
+  (forall n : nat, {P n} + {~ P n}) ->
+  {n : nat | ~ P n} + {forall n : nat, P n}
+AuditedSkew.im_rx_eq_im_lx :
+  forall x y : SedMoreno.A,
+  SedMoreno.conj x = SedMoreno.neg x ->
+  (forall z : SedMoreno.A,
+   SedMoreno.inner y (SedMoreno.mul z x) = Rdefinitions.IZR BinNums.Z0) ->
+  forall z : SedMoreno.A,
+  SedMoreno.inner y (SedMoreno.mul x z) = Rdefinitions.IZR BinNums.Z0
+AuditedSkew.im_lx_eq_im_rx :
+  forall x y : SedMoreno.A,
+  SedMoreno.conj x = SedMoreno.neg x ->
+  (forall z : SedMoreno.A,
+   SedMoreno.inner y (SedMoreno.mul x z) = Rdefinitions.IZR BinNums.Z0) ->
+  forall z : SedMoreno.A,
+  SedMoreno.inner y (SedMoreno.mul z x) = Rdefinitions.IZR BinNums.Z0
+FunctionalExtensionality.functional_extensionality_dep :
+  forall (A : Type) (B : A -> Type) (f g : forall x : A, B x),
+  (forall x : A, f x = g x) -> f = g
+Symmetry.zd_symmetry
+     : forall x y : Alg.A,
+       Alg.conj x = Alg.neg x ->
+       x <> Alg.zero -> Alg.mul x y = Alg.zero <-> Alg.mul y x = Alg.zero
+Symmetry.zd_conj_vanishes
+     : forall x y : Alg.A,
+       Alg.conj x = Alg.neg x ->
+       Alg.mul x y = Alg.zero -> Alg.mul (Alg.conj x) y = Alg.zero
+Axioms:
+Alg.zero : Alg.A
+ClassicalDedekindReals.sig_forall_dec :
+  forall P : nat -> Prop,
+  (forall n : nat, {P n} + {~ P n}) ->
+  {n : nat | ~ P n} + {forall n : nat, P n}
+Alg.scale_zero_left :
+  forall x : Alg.A, Alg.scale (Rdefinitions.IZR BinNums.Z0) x = Alg.zero
+Alg.scale_scale :
+  forall (r s : Rdefinitions.RbaseSymbolsImpl.R) (x : Alg.A),
+  Alg.scale r (Alg.scale s x) =
+  Alg.scale (Rdefinitions.RbaseSymbolsImpl.Rmult r s) x
+Alg.scale_neg_r :
+  forall (r : Rdefinitions.RbaseSymbolsImpl.R) (x : Alg.A),
+  Alg.scale (Rdefinitions.RbaseSymbolsImpl.Ropp r) x =
+  Alg.neg (Alg.scale r x)
+Alg.scale : Rdefinitions.RbaseSymbolsImpl.R -> Alg.A -> Alg.A
+Alg.real_part : Alg.A -> Rdefinitions.RbaseSymbolsImpl.R
+Alg.one : Alg.A
+Alg.norm_sq_scale :
+  forall (r : Rdefinitions.RbaseSymbolsImpl.R) (x : Alg.A),
+  Alg.norm_sq (Alg.scale r x) =
+  Rdefinitions.RbaseSymbolsImpl.Rmult (Rpow_def.pow r 2) (Alg.norm_sq x)
+Alg.norm_sq_pos :
+  forall x : Alg.A,
+  x <> Alg.zero ->
+  Rdefinitions.Rgt (Alg.norm_sq x) (Rdefinitions.IZR BinNums.Z0)
+Alg.norm_sq : Alg.A -> Rdefinitions.RbaseSymbolsImpl.R
+Alg.neg_zero : Alg.neg Alg.zero = Alg.zero
+Alg.neg_neg : forall x : Alg.A, Alg.neg (Alg.neg x) = x
+Alg.neg_mul_right :
+  forall x y : Alg.A, Alg.mul x (Alg.neg y) = Alg.neg (Alg.mul x y)
+Alg.neg_mul_left :
+  forall x y : Alg.A, Alg.mul (Alg.neg x) y = Alg.neg (Alg.mul x y)
+Alg.neg : Alg.A -> Alg.A
+Alg.mul_scale_right :
+  forall (r : Rdefinitions.RbaseSymbolsImpl.R) (x y : Alg.A),
+  Alg.mul x (Alg.scale r y) = Alg.scale r (Alg.mul x y)
+Alg.mul_one_right : forall x : Alg.A, Alg.mul x Alg.one = x
+Alg.mul_add_left :
+  forall x y z : Alg.A,
+  Alg.mul x (Alg.add y z) = Alg.add (Alg.mul x y) (Alg.mul x z)
+Alg.mul : Alg.A -> Alg.A -> Alg.A
+Alg.inner_symm : forall x y : Alg.A, Alg.inner x y = Alg.inner y x
+Alg.inner_self_norm : forall x : Alg.A, Alg.inner x x = Alg.norm_sq x
+Alg.inner_scale_left :
+  forall (r : Rdefinitions.RbaseSymbolsImpl.R) (x y : Alg.A),
+  Alg.inner (Alg.scale r x) y =
+  Rdefinitions.RbaseSymbolsImpl.Rmult r (Alg.inner x y)
+Alg.inner_neg_right :
+  forall x y : Alg.A,
+  Alg.inner x (Alg.neg y) =
+  Rdefinitions.RbaseSymbolsImpl.Ropp (Alg.inner x y)
+Alg.inner_adj_left :
+  forall x y z : Alg.A,
+  Alg.inner (Alg.mul x y) z = Alg.inner y (Alg.mul (Alg.conj x) z)
+Alg.inner : Alg.A -> Alg.A -> Rdefinitions.RbaseSymbolsImpl.R
+Alg.imaginary_square :
+  forall x : Alg.A,
+  Alg.conj x = Alg.neg x ->
+  Alg.mul x x =
+  Alg.scale (Rdefinitions.RbaseSymbolsImpl.Ropp (Alg.norm_sq x)) Alg.one
+Alg.im_part_perp_one :
+  forall y : Alg.A,
+  Alg.inner (Alg.im_part y) Alg.one = Rdefinitions.IZR BinNums.Z0
+Alg.im_part : Alg.A -> Alg.A
+FunctionalExtensionality.functional_extensionality_dep :
+  forall (A : Type) (B : A -> Type) (f g : forall x : A, B x),
+  (forall x : A, f x = g x) -> f = g
+Alg.decompose :
+  forall y : Alg.A,
+  y = Alg.add (Alg.scale (Alg.real_part y) Alg.one) (Alg.im_part y)
+Alg.conj_zero : Alg.conj Alg.zero = Alg.zero
+Alg.conj_invol : forall x : Alg.A, Alg.conj (Alg.conj x) = x
+Alg.conj_decompose :
+  forall y : Alg.A,
+  Alg.conj y =
+  Alg.add (Alg.scale (Alg.real_part y) Alg.one) (Alg.neg (Alg.im_part y))
+Alg.conj_antimorphism :
+  forall x y : Alg.A,
+  Alg.conj (Alg.mul x y) = Alg.mul (Alg.conj y) (Alg.conj x)
+Alg.conj : Alg.A -> Alg.A
+Alg.add_zero_left : forall x : Alg.A, Alg.add Alg.zero x = x
+Alg.add_neg_cancel :
+  forall x y : Alg.A, Alg.add x y = Alg.zero -> y = Alg.neg x
+Alg.add : Alg.A -> Alg.A -> Alg.A
+Alg.A : Type

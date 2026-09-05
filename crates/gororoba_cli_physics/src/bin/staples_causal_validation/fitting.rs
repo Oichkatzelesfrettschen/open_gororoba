@@ -14,6 +14,8 @@ use super::{
 pub(super) struct Model {
     pub(super) width: usize,
     pub(super) tensor: Option<usize>,
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub(super) geometric_capacity: bool,
     pub(super) training_rows: usize,
     pub(super) training_positives: usize,
     pub(super) means: Vec<f64>,
@@ -33,7 +35,12 @@ pub(super) fn name(tensor: Option<usize>, config: &Config) -> String {
     }
 }
 
-fn feature_values(row: &Row, width_index: usize, tensor: Option<usize>) -> [f32; 7] {
+pub(super) fn feature_values(
+    row: &Row,
+    width_index: usize,
+    tensor: Option<usize>,
+    geometric: bool,
+) -> [f32; 7] {
     let geometry = row.features.geometry;
     [
         geometry[0],
@@ -42,11 +49,19 @@ fn feature_values(row: &Row, width_index: usize, tensor: Option<usize>) -> [f32;
         geometry[3],
         row.features.pvi[width_index],
         geometry[4],
-        tensor.map_or(0.0, |index| row.features.tensors[index]),
+        if geometric {
+            row.features.geometric_capacity[width_index]
+        } else {
+            tensor.map_or(0.0, |index| row.features.tensors[index])
+        },
     ]
 }
 
-fn standardize(features: &[f32], rows: &[u32], columns: usize) -> Result<(Vec<f64>, Vec<f64>)> {
+pub(super) fn standardize(
+    features: &[f32],
+    rows: &[u32],
+    columns: usize,
+) -> Result<(Vec<f64>, Vec<f64>)> {
     ensure!(!rows.is_empty(), "empty training epochs");
     let mut means = vec![0.0; columns];
     for &row in rows {
@@ -81,14 +96,28 @@ pub(super) fn fit(
     width_index: usize,
     tensor: Option<usize>,
 ) -> Result<Model> {
+    fit_selected(data, config, width_index, tensor, false)
+}
+
+pub(super) fn fit_geometric(data: &Dataset, config: &Config, width_index: usize) -> Result<Model> {
+    fit_selected(data, config, width_index, None, true)
+}
+
+fn fit_selected(
+    data: &Dataset,
+    config: &Config,
+    width_index: usize,
+    tensor: Option<usize>,
+    geometric: bool,
+) -> Result<Model> {
     let rows = splits::training_rows(data, config);
     let features: Vec<f32> = data
         .rows
         .iter()
-        .flat_map(|row| feature_values(row, width_index, tensor))
+        .flat_map(|row| feature_values(row, width_index, tensor, geometric))
         .collect();
     let labels: Vec<u8> = data.rows.iter().map(|row| row.label).collect();
-    let columns = if tensor.is_some() { 7 } else { 6 };
+    let columns = if tensor.is_some() || geometric { 7 } else { 6 };
     let (means, scales) = standardize(&features, &rows, columns)?;
     let fitted = fit_irls(
         &features,
@@ -110,6 +139,7 @@ pub(super) fn fit(
     let model = Model {
         width: config.widths[width_index],
         tensor,
+        geometric_capacity: geometric,
         training_rows: rows.len(),
         training_positives: rows
             .iter()
@@ -129,7 +159,15 @@ pub(super) fn fit(
 
 impl Model {
     pub(super) fn validate(&self, config: &Config) -> Result<()> {
-        let columns = if self.tensor.is_some() { 7 } else { 6 };
+        let columns = if self.tensor.is_some() || self.geometric_capacity {
+            7
+        } else {
+            6
+        };
+        ensure!(
+            !self.geometric_capacity || self.tensor.is_none(),
+            "geometric model cannot carry tensor identity"
+        );
         ensure!(
             config.widths.contains(&self.width) && self.tensor.is_none_or(|index| index < 20),
             "model identity outside sealed plan"
@@ -173,7 +211,7 @@ impl Model {
         Ok(())
     }
     pub(super) fn predict(&self, row: &Row, width_index: usize) -> f64 {
-        let features = feature_values(row, width_index, self.tensor);
+        let features = feature_values(row, width_index, self.tensor, self.geometric_capacity);
         self.coefficients[0]
             + (0..self.means.len())
                 .map(|column| {
@@ -199,6 +237,7 @@ mod tests {
                         geometry: std::array::from_fn(|_| random.random::<f32>()),
                         pvi: std::array::from_fn(|_| random.random::<f32>()),
                         tensors: std::array::from_fn(|_| random.random::<f32>()),
+                        geometric_capacity: std::array::from_fn(|_| random.random::<f32>()),
                     },
                     label: u8::from(random.random::<bool>()),
                     file: 0,
@@ -208,13 +247,30 @@ mod tests {
         };
         let config = crate::test_config();
         let original = super::fit(&data, &config, 0, Some(0)).unwrap();
+        let geometric = super::fit_geometric(&data, &config, 0).unwrap();
+        assert!(
+            serde_json::to_value(&original)
+                .unwrap()
+                .get("geometric_capacity")
+                .is_none()
+        );
+        assert_eq!(
+            serde_json::to_value(&geometric).unwrap()["geometric_capacity"],
+            true
+        );
+        assert!(geometric.tensor.is_none());
         for row in &mut data.rows[100..] {
             row.features.geometry.fill(1e10);
             row.features.pvi.fill(-1e10);
             row.features.tensors.fill(5e9);
+            row.features.geometric_capacity.fill(-2e8);
             row.label ^= 1;
         }
         let changed = super::fit(&data, &config, 0, Some(0)).unwrap();
+        assert_eq!(
+            serde_json::to_value(geometric).unwrap(),
+            serde_json::to_value(super::fit_geometric(&data, &config, 0).unwrap()).unwrap()
+        );
         assert_eq!(
             serde_json::to_value(original).unwrap(),
             serde_json::to_value(changed).unwrap()

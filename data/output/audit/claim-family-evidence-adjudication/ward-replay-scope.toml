@@ -1,0 +1,177 @@
+schema_version = 1
+claims = ["C-1635", "C-1637", "C-1666"]
+evidence_layer = "implementation_conformance"
+source_proposition = "arXiv:2601.23279v1 equations 7.1, 7.2, 7.5 through 7.7"
+source_manifest = "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+original_manifest_inputs_hash_matched_before_repair = 13
+physics_scope = "D=4 Euclidean pure-magnetic tensors with unit-natural loop parameters; one off-shell fixture and one four-point virtuality ladder, Scalar and Spinor"
+independence = "The oracle reuses physics tensors and quadrature. Reverse-order component contraction, lower-point effective-polarization assembly, hypot norms and Lagrange zero-intercepts are independent. The oracle does not independently derive the worldline integrand."
+fitted_parameter_count = 0
+interpolation = "Two-point degree-one and three-point degree-two interpolation of computational virtuality; not a phenomenological fit"
+original_evidence_preservation = "Original p1_* artifacts and experiment manifest remain unchanged; pre-repair logs retain signed limit components."
+
+[fixture]
+magnetic_field_01 = 0.1
+momentum_real = [0.15, 0.0, 0.2, 0.0]
+momentum_imaginary = [0.0, 0.0, 0.0, 0.0]
+gravitational_parameter = [0.2, 0.1, -0.3, 0.4]
+virtuality = 0.0625
+lower_point_momentum = [0.0, 0.0, 0.0, 0.0]
+
+[quadrature]
+base_u_nodes = 32
+base_t_nodes = 64
+refined_u_nodes = 64
+refined_t_nodes = 128
+t_min = 1e-6
+t_max = 20.0
+refinement_preserves_integration_domain = true
+
+[on_shell_ladder]
+virtualities = [0.1, 0.05, 0.01, 0.005]
+momentum = "[1,0,0,i*sqrt(1-virtuality)]"
+gravitational_parameter = [0.0, 1.0, 0.0, 0.0]
+tolerance_absolute = 1e-12
+tolerance_normalized = 1e-6
+limit_status = "Both sampled loops fail the original cancellation gate after the intercept sign repair."
+uncertainty_status = "Uncertified: fixed-domain quadrature refinement changes components more than virtuality-order refinement; a numerical error budget remains unresolved."
+zero_interval_admission = "No rigorous residual interval was constructed. Observed discretization spreads are diagnostics, not confidence intervals or remainder bounds."
+
+[arithmetic_repair]
+function = "gr_core::photon_graviton::gravitational_ward::extrapolate_pair"
+original_denominator = "second.virtuality - first.virtuality"
+corrected_denominator = "first.virtuality - second.virtuality"
+numerator = "second.components * first.virtuality - first.components * second.virtuality"
+effect = "All extrapolated component signs reverse. Euclidean norms, convergence-estimate norms and passing predicates remain unchanged."
+regression_test = "affine_virtuality_extrapolation_preserves_component_signs"
+independent_falsifier = "Lagrange interpolation at zero disagreed with every nonzero component of the original production intercept; the corrected production intercept agrees within 1e-12 vector norm."
+failed_oracle_log = "data/output/audit/claim-family-evidence-adjudication/ward-independent-replay.log"
+
+[omission_scope]
+gauge = "Every J omission changes the tensor at the fixture. Scalar gauge residuals remain below threshold, and omit-J1 leaves the gauge residual unchanged for both loops. Gauge transversality alone therefore does not establish amplitude completeness."
+one_photon = "The constant-background fixture has zero lower-point momentum and zero one-photon coefficient. Omitting that term has zero measured effect and fails to provide a discriminating control."
+two_photon = "Omitting the vacuum-polarization RHS changes the scalar off-shell defect from approximately 1.04e-15 to 1.68e-5."
+external_and_irreducible = "Both separate on-shell diagram limits are nonzero. The combined limit also fails; an omission does not turn a passing full identity into failure at this fixture."
+tadpole = "The retained trace perturbation test independently changes the zero photon-contracted tadpole residual to a nonzero value."
+spinor_cause = "Missing contact or integration-by-parts boundary contributions remain a source-derived hypothesis; the oracle does not establish the causal repair."
+
+[replay]
+gauge_command = "cargo test -p gr_core --profile validation --lib photon_graviton::tensor_ward -- --nocapture"
+gravitational_command = "cargo test -p gr_core --profile validation --lib photon_graviton::gravitational_ward -- --nocapture"
+independent_command = "WARD_INDEPENDENT_OUTPUT=<checkout>/data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml cargo test -p gr_core --profile validation --test ward_independent_residuals -- --nocapture"
+cargo_home = "/home/eirikr/Github/open_gororoba/.cache/cargo-home"
+cargo_target_dir = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target"
+cargo_build_build_dir = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e"
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/tensor_types.rs"
+original_sha256 = "76492a430db87f6ddddbf51648dc039ae4719ea7c0cbafa3c81229dfcc94265f"
+replayed_sha256 = "76492a430db87f6ddddbf51648dc039ae4719ea7c0cbafa3c81229dfcc94265f"
+changed = false
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/worldline_tensor.rs"
+original_sha256 = "d0bbe1d5d1e18922b0137b974e838b17fd3693f47fe0aa8878e746761d629671"
+replayed_sha256 = "d0bbe1d5d1e18922b0137b974e838b17fd3693f47fe0aa8878e746761d629671"
+changed = false
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/tensor_integrands.rs"
+original_sha256 = "571ab6c9c95d6c4e3952d09cef0cc9883e58b5ad1d63cda3632c5eb1f511ffb7"
+replayed_sha256 = "571ab6c9c95d6c4e3952d09cef0cc9883e58b5ad1d63cda3632c5eb1f511ffb7"
+changed = false
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/vacuum_pol_tensor.rs"
+original_sha256 = "927efe2b8eeddedec233cd2e35d1aff5183ac4781da84fb92b2a1e3cdb99d7c6"
+replayed_sha256 = "927efe2b8eeddedec233cd2e35d1aff5183ac4781da84fb92b2a1e3cdb99d7c6"
+changed = false
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/irreducible_tensor.rs"
+original_sha256 = "5b0a9d362243511e831c22007ea2ebbcd87a2988b97cc24debc31c7eb98f8f1a"
+replayed_sha256 = "5b0a9d362243511e831c22007ea2ebbcd87a2988b97cc24debc31c7eb98f8f1a"
+changed = false
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/tadpole_tensor.rs"
+original_sha256 = "abc690ccb514c4d3791d243b6775756f4498235f1885587dd6ec0c2b2d4d862e"
+replayed_sha256 = "abc690ccb514c4d3791d243b6775756f4498235f1885587dd6ec0c2b2d4d862e"
+changed = false
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/external_tensor.rs"
+original_sha256 = "1411342b706eaf8056e74d36563020fb712d1833a962d6ea39721567be8aac33"
+replayed_sha256 = "1411342b706eaf8056e74d36563020fb712d1833a962d6ea39721567be8aac33"
+changed = false
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/gravitational_ward.rs"
+original_sha256 = "7aa66f0b6272a1708f4536789a446eb3a3637c7a2864beda933cb611f115014b"
+replayed_sha256 = "af8fd04619be9cf1f1ac1c007b5e6831aa8a4fa8b59563b8cb82fdcef29cc708"
+changed = true
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/tensor_ward.rs"
+original_sha256 = "d7c1c9f66fe41a7ff8a6b371c19df003b164601fa1b6a95a1605e1dc48260186"
+replayed_sha256 = "d7c1c9f66fe41a7ff8a6b371c19df003b164601fa1b6a95a1605e1dc48260186"
+changed = false
+
+[[source_identity]]
+path = "crates/gr_core/src/photon_graviton/independent_falsifier.rs"
+original_sha256 = "317d39f2ef11a931acae0ffe6149d24234b3ebd9e6437948f5b70c374df2e008"
+replayed_sha256 = "317d39f2ef11a931acae0ffe6149d24234b3ebd9e6437948f5b70c374df2e008"
+changed = false
+
+[[source_identity]]
+path = "docs/engineering/photon-graviton-ward-tcmt-source-contract-2026-08-02.md"
+original_sha256 = "05a81f933d44503bcd32d14e30fd640e02eac29c2add94940b2532fef4d5f00f"
+replayed_sha256 = "05a81f933d44503bcd32d14e30fd640e02eac29c2add94940b2532fef4d5f00f"
+changed = false
+
+[[source_identity]]
+path = "data/output/audit/2026-08-02/p1_source_equation_ledger.toml"
+original_sha256 = "4d7134b7ad9bdca2102378ef8850b55ea05d6b94c34603311020ae2452192dd2"
+replayed_sha256 = "4d7134b7ad9bdca2102378ef8850b55ea05d6b94c34603311020ae2452192dd2"
+changed = false
+
+[[source_identity]]
+path = "data/output/audit/2026-08-02/p1_numerical_protocol.toml"
+original_sha256 = "4d80ddb3b0469686a32bb7523af4b2f22131e59178979dbf7bacae74e2a08d3c"
+replayed_sha256 = "4d80ddb3b0469686a32bb7523af4b2f22131e59178979dbf7bacae74e2a08d3c"
+changed = false
+
+[[artifact]]
+path = "crates/gr_core/tests/ward_independent_residuals.rs"
+sha256 = "1babaa79f4dfeda73a6db17db9922f95c8f0ecc6244403868d4394f43cbe5722"
+
+[[artifact]]
+path = "data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"
+sha256 = "b33245a0f5e284f9d5fe9bc9a3e9e2f5043a10c8a0a03018939db91311fd3421"
+
+[[artifact]]
+path = "data/output/audit/claim-family-evidence-adjudication/ward-independent-replay.log"
+sha256 = "1bbdbfedbee42783fa585ba5114e16b558262595b1beb42fd1106a6164e356bb"
+
+[[artifact]]
+path = "data/output/audit/claim-family-evidence-adjudication/ward-gravitational-replay.log"
+sha256 = "87619d93ee705b2d4978f4caf7164cd7904a973b3c4a49576428c45380f7ff74"
+
+[[artifact]]
+path = "data/output/audit/claim-family-evidence-adjudication/ward-gravitational-corrected-replay.log"
+sha256 = "5b16bca17319d62dbd0941b3744ad5372db0b12e6b79fa7d0e65fdd0857aacc5"
+
+[[artifact]]
+path = "data/output/audit/claim-family-evidence-adjudication/ward-on-shell-controls-replay.toml"
+sha256 = "025adb5395400f0f219ff2c20de05b695d54bc836c209cb632b825511b9dc994"
+
+[validation]
+rustc = "1.97.0 (2d8144b78 2026-07-07)"
+cargo = "1.97.0 (c980f4866 2026-06-30)"
+original_gauge_tests_passed = 5
+original_gravitational_tests_passed = 6
+original_independent_oracle_failures = 1
+corrected_gravitational_tests_passed = 7
+corrected_independent_tests_passed = 1
+clippy = "cargo clippy -p gr_core --profile validation --all-targets -- -D warnings"
+clippy_exit_code = 0

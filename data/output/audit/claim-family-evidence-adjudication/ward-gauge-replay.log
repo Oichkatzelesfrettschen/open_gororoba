@@ -1,0 +1,54 @@
+    Blocking waiting for file lock on build directory
+   Compiling serde_core v1.0.228
+   Compiling bytemuck_derive v1.10.2
+   Compiling nalgebra-macros v0.3.0
+   Compiling rand_chacha v0.9.0
+   Compiling equator-macro v0.4.2
+   Compiling serde_derive v1.0.228
+   Compiling thiserror-impl v1.0.69
+   Compiling csv-core v0.1.13
+   Compiling nalgebra-macros v0.2.2
+   Compiling rand v0.9.3
+   Compiling equator v0.4.2
+   Compiling thiserror v1.0.69
+   Compiling atlas-embeddings v0.1.1
+   Compiling aligned-vec v0.6.4
+   Compiling bytemuck v1.25.0
+   Compiling rand_distr v0.5.1
+   Compiling num-complex v0.4.6
+   Compiling safe_arch v0.7.4
+   Compiling safe_arch v1.0.0
+   Compiling dyn-stack v0.13.2
+   Compiling wide v0.7.33
+   Compiling pulp v0.22.2
+   Compiling rustfft v6.4.1
+   Compiling fwht v0.1.0 (https://github.com/Oichkatzelesfrettschen/cratesgororobas?rev=28b5310d3a6755b81b7c1ceb79f9f79f67f1af70#28b5310d)
+   Compiling wide v1.2.0
+   Compiling serde v1.0.228
+   Compiling csv v1.4.0
+   Compiling serde_json v1.0.149
+   Compiling simba v0.9.1
+   Compiling realfft v3.5.0
+   Compiling nalgebra v0.34.2
+   Compiling nalgebra v0.33.3
+   Compiling gauss-quad v0.3.1
+   Compiling verified_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/verified_core)
+   Compiling ode_solvers v0.6.1
+   Compiling diffusionx v0.11.3
+   Compiling cd_kernel v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_kernel)
+   Compiling moreno_1997 v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/moreno_1997)
+   Compiling algebra_analysis v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_analysis)
+   Compiling gororoba_algebra v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_algebra)
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 47.17s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/gr_core-943b1a45853b3f3f)
+
+running 5 tests
+test photon_graviton::tensor_ward::tests::tadpole_gauge_residual_retains_a_zero_matrix_not_a_scalar ... ok
+test photon_graviton::tensor_ward::tests::wrong_contraction_momentum_changes_the_rank_two_residual ... ok
+test photon_graviton::tensor_ward::tests::declared_integrated_mutations_change_the_rank_three_tensor ... ok
+test photon_graviton::tensor_ward::tests::scalar_integrated_gauge_residuals_pass_the_frozen_protocol ... ok
+test photon_graviton::tensor_ward::tests::spinor_irreducible_residual_retains_the_contact_boundary_gap ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 890 filtered out; finished in 0.17s
+

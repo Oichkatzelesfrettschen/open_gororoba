@@ -1,0 +1,30 @@
+claim_id = "C-1681"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The predicate diagnoses the dimensions and speed exponent of a fixed drag implementation. Halo interpretation, cross-section inference and a physical dark-matter bound require separate admission."
+fixed_hyperparameters = ["Historical producer crates/lbm_3d/src/dm_force.rs at commit 81a4ca6e; repaired implementations require a distinct successor boundary", "Evaluate nonzero relative velocities v and 2v at fixed number density, cross-section and mass ratio", "Report pre-conversion collision-rate dimensions 1/time and post-conversion s/m separately from physical acceleration length/time^2"]
+[[intervening_maps]]
+branch = "drag_units"
+name = "si_factor_dimensions"
+kind = "computational"
+description = "Independently compose dimensions of number density, cross-section, mass ratio and relative speed before applying force_scale."
+[[intervening_maps]]
+branch = "drag_units"
+name = "lattice_conversion_and_speed_scaling"
+kind = "computational"
+description = "Trace drag_force and drag_force_lattice through kappa_field, velocity conversion and direction normalization; compare against the independent dimensional expression."
+[[fitted_parameters]]
+branch = "drag_units"
+count = 0
+names = []
+training_boundary = "A symbolic dimension and fixed-input implementation check fits zero parameters. Chosen halo and cross-section values are held inputs; physical parameter estimation is excluded."
+[decisive_experiment]
+experiment_ids = ["E-112"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+description = "Adjudicate the drag-unit defect in the E-112 implementation family before physical replay. Bind crates/lbm_3d/src/dm_force.rs and the solar wind-dm-mhd call path. E-112 default gravitational execution alone does not exercise a nonzero drag cross-section; retain an explicit nonzero-drag diagnostic invocation."
+[what_would_verify_refute]
+verification_outcomes = ["The historical pre-conversion expression has inverse-time units, its declared conversion leaves s/m, and both implementations scale linearly with relative speed; retain source identity and exact dimension algebra supporting C-1681."]
+revision_outcomes = ["A repaired implementation yields SI acceleration with quadratic relative-speed scaling and invariant SI results under lattice-unit changes: preserve the historical defect claim and register the corrected implementation successor.", "The legacy and lattice-native branches have different dimensions or speed exponents: split the claim by producer instead of combining them."]
+abandonment_outcomes = ["Independent dimension algebra for the historical producer establishes acceleration units and the claimed quadratic law, contradicting the recorded diagnosis: abandon C-1681's defect attribution for that producer."]
+inconclusive_outcomes = ["An ambiguous force_scale or absent nonzero drag execution prevents diagnosis of the production path.", "Physical force bounds remain inconclusive until magnetic normalization, boundary balance and numerical sensitivity are independently admitted."]

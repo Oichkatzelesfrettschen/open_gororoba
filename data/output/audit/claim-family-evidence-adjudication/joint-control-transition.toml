@@ -1,0 +1,26 @@
+[transition]
+transition_key = "themis-joint-geometric-tensor-uncertainty"
+source_claim_id = "C-1743"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-JOINT-CONTROL-UNCERTAINTY"]
+experiment_ids = ["E-282"]
+exercised_falsifier = "Joint 120-contrast paired whole-file bootstrap under geometric-capacity-protocol.toml, including the 114 exact-support comparisons and six matched geometric-capacity comparisons."
+proposed_claim_status = "Verified"
+rationale = "The baseline increment and rejected 0.005 useful-increment requirement remain supported within the archive. Joint uncertainty refines the mechanism comparison; the new claim carries the bounded inference separately."
+unresolved_assumptions = ["Post-hoc analysis conditions on fitted models and treats daily files as independent resampling units within each final year.", "External chronology admission remains blocked.", "A practical-equivalence margin remains undeclared."]
+actor = "claim-evidence-adjudication"
+reason = "Preserve detector result and register bounded mechanism uncertainty"
+transition_timestamp = "2026-09-05T17:05:37Z"
+expected_source_state_sha256 = "aba47c96cce32ec5304ed72b9f4ca3b9350d4df2d984479cb8730a39f6d6e03f"
+expected_claim_id_max = 1743
+
+[[successor]]
+proposal_key = "themis-paired-control-uncertainty"
+statement = "On the admitted THEMIS-A final 2015/2016 archive, a declared post-hoc paired whole-daily-file bootstrap with 2000 draws and simultaneous 95 percent intervals across 120 canonical-minus-control ROC-AUC contrasts yields 47 control-superiority intervals, 73 intervals crossing zero, and zero canonical-superiority intervals. The family includes nineteen exact-support sign controls and one matched geometric-capacity control at widths 64, 256 and 1024 in each year. All six geometric intervals cross zero. Algebra-specific superiority is unestablished; practical equivalence is unadjudicated without a declared margin. The result conditions on frozen fits, admits no external replication, and leaves the separate 0.005 useful-increment requirement unchanged."
+initial_status = "Verified"
+source_or_implementation_boundary = "Frozen 2007-2012 models; admitted 2015/2016 daily files; geometric-capacity-protocol.toml; joint-control-uncertainty.json."
+required_falsifier = "A hash-bound replay changes any contrast count or interval; a support, normalization, fitting-budget or freeze mismatch invalidates the inference. Independent admitted replication with multiplicity-adjusted positive canonical-minus-control intervals revises the bounded mechanism conclusion."
+where_stated = ["data/output/audit/claim-family-evidence-adjudication/geometric-evaluation/joint-control-uncertainty.json", "data/output/audit/claim-family-evidence-adjudication/geometric-capacity-protocol.toml"]
+evidence_artifact_ids = ["LOCAL-JOINT-CONTROL-UNCERTAINTY"]
+predecessor_relation_kind = "refines"

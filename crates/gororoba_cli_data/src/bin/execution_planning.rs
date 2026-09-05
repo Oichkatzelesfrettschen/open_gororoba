@@ -83,7 +83,7 @@ fn build_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
             binaries.insert(name, row);
         }
     }
-    let bench_targets = load_workspace_bench_targets(repo_root)?;
+    let bench_targets = load_workspace_execution_targets(repo_root)?;
 
     let dataset_path_index = load_dataset_path_index(repo_root)?;
     let dataset_label_aliases = load_dataset_label_aliases(repo_root)?;
@@ -292,7 +292,7 @@ fn verify_execution_planning(repo_root: &Path, args: &Args) -> Result<()> {
         .map(|row| string_field(row, "name"))
         .filter(|name| !name.is_empty())
         .collect::<BTreeSet<_>>();
-    let bench_target_names = load_workspace_bench_targets(repo_root)?;
+    let bench_target_names = load_workspace_execution_targets(repo_root)?;
     let execution_target_names = binary_names
         .iter()
         .cloned()
@@ -1155,9 +1155,8 @@ fn build_experiment_rows(
         let binary_row = binaries
             .get(&binary)
             .or_else(|| binaries.get(execution_target_head(&binary)));
-        let binary_registered = binary_row.is_some()
-            || bench_targets.contains(&binary)
-            || bench_targets.contains(execution_target_head(&binary));
+        let binary_registered =
+            binary_row.is_some() || execution_target_registered(&binary, bench_targets);
         let binary_experiment_declared = {
             let registered = binary_row
                 .map(|row| string_field(row, "experiment"))
@@ -2703,7 +2702,7 @@ fn load_requirements_compat_export(repo_root: &Path, db_rel_path: &Path) -> Resu
     Ok(Some(text))
 }
 
-fn load_workspace_bench_targets(repo_root: &Path) -> Result<BTreeSet<String>> {
+fn load_workspace_execution_targets(repo_root: &Path) -> Result<BTreeSet<String>> {
     let root_manifest = load_toml(&repo_root.join("Cargo.toml"))?;
     let members = root_manifest
         .get("workspace")
@@ -2726,11 +2725,140 @@ fn load_workspace_bench_targets(repo_root: &Path) -> Result<BTreeSet<String>> {
             continue;
         }
         let manifest = load_toml(&manifest_path)?;
+        let package = table_value(&manifest, "package");
+        let package_name = string_field(&package, "name");
+        let package_root = manifest_path.parent().context("package manifest parent")?;
+        let explicit_tests = table_array(&manifest, "test")?;
+        let mut test_names = BTreeSet::new();
+        let mut explicit_names = BTreeSet::new();
+        let mut explicit_paths = BTreeSet::new();
+        for target in &explicit_tests {
+            let name = string_field(target, "name");
+            let declared_path = string_field(target, "path");
+            let relative_path = if declared_path.is_empty() {
+                format!("tests/{name}.rs")
+            } else {
+                declared_path
+            };
+            explicit_names.insert(name.clone());
+            let target_path = package_root.join(relative_path);
+            if let Ok(canonical_path) = target_path.canonicalize() {
+                explicit_paths.insert(canonical_path);
+            }
+            if !name.is_empty() && target_path.is_file() {
+                test_names.insert(name);
+            }
+        }
+        if package.get("autotests").and_then(Value::as_bool) != Some(false) {
+            let tests_dir = package_root.join("tests");
+            if tests_dir.is_dir() {
+                for entry in fs::read_dir(tests_dir)? {
+                    let path = entry?.path();
+                    let name = if path.is_file() && path.extension().is_some_and(|ext| ext == "rs")
+                    {
+                        path.file_stem()
+                    } else if path.is_dir() && path.join("main.rs").is_file() {
+                        path.file_name()
+                    } else {
+                        None
+                    };
+                    if let Some(name) = name.and_then(|name| name.to_str()) {
+                        let source_path = if path.is_dir() {
+                            path.join("main.rs")
+                        } else {
+                            path.clone()
+                        };
+                        if explicit_names.contains(name)
+                            || explicit_paths.contains(&source_path.canonicalize()?)
+                        {
+                            continue;
+                        }
+                        test_names.insert(name.to_string());
+                    }
+                }
+            }
+        }
+        for name in test_names {
+            targets.insert(format!("cargo-test:{package_name}:{name}"));
+        }
         for bench in table_array(&manifest, "bench")? {
             let name = string_field(&bench, "name");
             if !name.is_empty() {
                 targets.insert(name);
             }
+        }
+    }
+    targets.extend(load_external_execution_targets(repo_root)?);
+    Ok(targets)
+}
+
+/// Admit retained external instrument receipts without executing their commands.
+fn load_external_execution_targets(repo_root: &Path) -> Result<BTreeSet<String>> {
+    let declaration = repo_root.join("plans/external-execution-targets.toml");
+    if !declaration.exists() {
+        return Ok(BTreeSet::new());
+    }
+    let mut targets = BTreeSet::new();
+    for row in table_array(&load_toml(&declaration)?, "external_target")? {
+        let name = string_field(&row, "name");
+        let version = string_field(&row, "version");
+        let executable = string_field(&row, "executable");
+        if name.is_empty()
+            || version.is_empty()
+            || !Path::new(&executable).is_absolute()
+            || name
+                .chars()
+                .chain(version.chars())
+                .any(|character| character.is_whitespace() || character == ':')
+        {
+            bail!("invalid external execution target identity: {name}");
+        }
+        let receipt_path = string_field(&row, "receipt");
+        let relative = Path::new(&receipt_path);
+        if relative.is_absolute()
+            || relative
+                .components()
+                .any(|component| !matches!(component, std::path::Component::Normal(_)))
+        {
+            bail!("external target receipt must be repository relative: {name}");
+        }
+        let bytes = fs::read(repo_root.join(relative))?;
+        if sha256_hex(&bytes) != string_field(&row, "receipt_sha256") {
+            bail!("external target receipt hash mismatch: {name}");
+        }
+        let receipt: Table = toml::from_str(std::str::from_utf8(&bytes)?)?;
+        for (field, expected) in [
+            ("name", &name),
+            ("version", &version),
+            ("executable", &executable),
+        ] {
+            if string_field(&receipt, field) != *expected {
+                bail!("external target receipt {field} mismatch: {name}");
+            }
+        }
+        let executable_hash = string_field(&receipt, "executable_sha256");
+        if executable_hash.len() != 64
+            || !executable_hash.bytes().all(|byte| byte.is_ascii_hexdigit())
+        {
+            bail!("external target receipt lacks executable digest: {name}");
+        }
+        let source_receipt = string_field(&receipt, "source_receipt");
+        let source_relative = Path::new(&source_receipt);
+        if source_receipt.is_empty()
+            || source_relative.is_absolute()
+            || source_relative
+                .components()
+                .any(|component| !matches!(component, std::path::Component::Normal(_)))
+        {
+            bail!("external source receipt must be repository relative: {name}");
+        }
+        if sha256_hex(&fs::read(repo_root.join(source_relative))?)
+            != string_field(&receipt, "source_receipt_sha256")
+        {
+            bail!("external source receipt hash mismatch: {name}");
+        }
+        if !targets.insert(format!("external:{name}:{version}")) {
+            bail!("duplicate external execution target: {name}");
         }
     }
     Ok(targets)
@@ -2843,10 +2971,112 @@ mod tests {
     }
 
     #[test]
-    fn load_workspace_bench_targets_includes_named_bench() -> Result<()> {
+    fn load_workspace_execution_targets_includes_named_bench() -> Result<()> {
         let fixture = make_test_workspace("bench_targets")?;
-        let benches = load_workspace_bench_targets(&fixture.root)?;
+        let benches = load_workspace_execution_targets(&fixture.root)?;
         assert!(benches.contains("x87_bench"));
+        Ok(())
+    }
+
+    #[test]
+    fn integration_target_identity_preserves_package_and_autodiscovery() -> Result<()> {
+        let fixture = make_test_workspace("integration_targets")?;
+        write_ascii(
+            &fixture.root.join("crates/test_cli/tests/probe.rs"),
+            "#[test] fn probe() {}\n",
+        )?;
+        let targets = load_workspace_execution_targets(&fixture.root)?;
+        assert!(execution_target_registered(
+            "cargo-test:test_cli:probe",
+            &targets
+        ));
+        assert!(!execution_target_registered("probe", &targets));
+        assert!(!execution_target_registered(
+            "cargo-test:other:probe",
+            &targets
+        ));
+        assert!(!execution_target_registered(
+            "cargo-test:test_cli:probe extra",
+            &targets
+        ));
+        let manifest_path = fixture.root.join("crates/test_cli/Cargo.toml");
+        let manifest = fs::read_to_string(&manifest_path)?
+            .replace("[package]", "[package]\nautotests = false");
+        fs::write(&manifest_path, &manifest)?;
+        assert!(
+            !load_workspace_execution_targets(&fixture.root)?.contains("cargo-test:test_cli:probe")
+        );
+        fs::write(
+            &manifest_path,
+            format!("{manifest}\n[[test]]\nname = \"declared\"\npath = \"tests/probe.rs\"\n"),
+        )?;
+        let targets = load_workspace_execution_targets(&fixture.root)?;
+        assert!(targets.contains("cargo-test:test_cli:declared"));
+        assert!(!targets.contains("cargo-test:test_cli:probe"));
+        let enabled =
+            fs::read_to_string(&manifest_path)?.replace("autotests = false", "autotests = true");
+        fs::write(&manifest_path, &enabled)?;
+        let targets = load_workspace_execution_targets(&fixture.root)?;
+        assert!(targets.contains("cargo-test:test_cli:declared"));
+        assert!(!targets.contains("cargo-test:test_cli:probe"));
+        fs::write(
+            &manifest_path,
+            format!("{enabled}\n[[test]]\nname = \"probe\"\npath = \"tests/missing.rs\"\n"),
+        )?;
+        assert!(
+            !load_workspace_execution_targets(&fixture.root)?.contains("cargo-test:test_cli:probe")
+        );
+        Ok(())
+    }
+
+    #[test]
+    fn external_target_requires_matching_identity_and_retained_digests() -> Result<()> {
+        let fixture = make_test_workspace("external_targets")?;
+        write_ascii(
+            &fixture.root.join("evidence/source.toml"),
+            "scope = 'focused'\n",
+        )?;
+        let source_hash = sha256_hex(&fs::read(fixture.root.join("evidence/source.toml"))?);
+        let receipt = format!(
+            "name = 'proof'\nversion = '1.0'\nexecutable = '/usr/bin/proof'\nexecutable_sha256 = '{}'\nsource_receipt = 'evidence/source.toml'\nsource_receipt_sha256 = '{source_hash}'\n",
+            "a".repeat(64)
+        );
+        write_ascii(&fixture.root.join("evidence/tool.toml"), &receipt)?;
+        let declaration = format!(
+            "[[external_target]]\nname = 'proof'\nversion = '1.0'\nexecutable = '/usr/bin/proof'\nreceipt = 'evidence/tool.toml'\nreceipt_sha256 = '{}'\n",
+            sha256_hex(receipt.as_bytes())
+        );
+        write_ascii(
+            &fixture.root.join("plans/external-execution-targets.toml"),
+            &declaration,
+        )?;
+        let targets = load_external_execution_targets(&fixture.root)?;
+        assert!(execution_target_registered("external:proof:1.0", &targets));
+        assert!(!execution_target_registered(
+            "external:proof:1.0 extra",
+            &targets
+        ));
+        assert!(!execution_target_registered("proof", &targets));
+        write_ascii(
+            &fixture.root.join("evidence/source.toml"),
+            "scope = 'altered'\n",
+        )?;
+        assert!(load_external_execution_targets(&fixture.root).is_err());
+        write_ascii(
+            &fixture.root.join("evidence/source.toml"),
+            "scope = 'focused'\n",
+        )?;
+        write_ascii(
+            &fixture.root.join("evidence/tool.toml"),
+            &receipt.replace("version = '1.0'", "version = '2.0'"),
+        )?;
+        assert!(load_external_execution_targets(&fixture.root).is_err());
+        write_ascii(&fixture.root.join("evidence/tool.toml"), &receipt)?;
+        write_ascii(
+            &fixture.root.join("plans/external-execution-targets.toml"),
+            &declaration.replace("version = '1.0'", "version = '2.0'"),
+        )?;
+        assert!(load_external_execution_targets(&fixture.root).is_err());
         Ok(())
     }
 
@@ -3289,6 +3519,9 @@ fn execution_target_head(target: &str) -> &str {
 /// Whether an execution-target citation names a registered target, accepting
 /// both the bare target and the dispatcher-plus-lane form.
 fn execution_target_registered(target: &str, registered: &BTreeSet<String>) -> bool {
+    if target.starts_with("cargo-test:") || target.starts_with("external:") {
+        return registered.contains(target);
+    }
     registered.contains(target) || registered.contains(execution_target_head(target))
 }
 

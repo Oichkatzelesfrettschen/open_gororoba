@@ -74,7 +74,7 @@ fn benchmark_writes_sidecar_rich_summary() {
     let summary = fs::read_to_string(&summary_path).expect("read benchmark summary");
     assert!(summary.contains("[spectral_crosscheck]"));
     assert!(summary.contains("zd_flat_band_fraction"));
-    assert!(summary.contains("graphene_valley_chern_k"));
+    assert!(summary.contains("graphene_topology_error"));
     assert!(summary.contains("[[topologies]]"));
     assert!(summary.contains("projection_gate_verdict"));
 

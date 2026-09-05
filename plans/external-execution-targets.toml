@@ -1,0 +1,7 @@
+# External instrument registration binds retained receipts, independently of Cargo targets.
+[[external_target]]
+name = "rocq"
+version = "9.1.1"
+executable = "/usr/bin/rocq"
+receipt = "data/output/audit/claim-family-evidence-adjudication/rocq-execution-identity.toml"
+receipt_sha256 = "384fe599f7cb21f8e3d129c6fd0cc363e214577b1caaf868a52cc589d27608da"

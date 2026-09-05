@@ -1,0 +1,6 @@
+File "./proofs/theories/C1538_MorZDSymmetry.v", line 31, characters 0-45:
+Error:
+Error when parsing .vo (from file /home/eirikr/Github/open_gororoba/proofs/theories/CDTraceZero.vo) for library OpenGororoba.CDTraceZero: The file /home/eirikr/Github/open_gororoba/proofs/theories/CDTraceZero.vo was compiled with OCaml
+5.5.0 while this instance of Rocq was compiled with OCaml 5.4.0.
+Rocq object files need to be compiled with the same OCaml toolchain to be compatible.
+

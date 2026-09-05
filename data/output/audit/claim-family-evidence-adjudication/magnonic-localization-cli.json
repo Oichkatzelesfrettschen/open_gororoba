@@ -1,0 +1,9 @@
+{
+  "radius": 2,
+  "supercell_side": 5,
+  "n_orbitals": 224,
+  "localization_status": "unassessed",
+  "parameter_origin": "repository_reference",
+  "n_gap_candidates": 15,
+  "candidate_model_frequencies_ghz": [1.840230, 2.181737, 2.181737, 2.181737, 2.181737, 2.181737, 2.197770, 2.199400, 2.202003, 2.204644, 2.218714, 2.219293, 2.220364, 2.221939, 2.223363]
+}

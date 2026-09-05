@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 256
-edge_count = 1321
+lineage_count = 264
+edge_count = 1384
 
 [[lineage]]
 id = "XL-001"
@@ -4663,6 +4663,150 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-257"
+experiment_id = "E-287"
+binary = "cargo-test:algebra_experimental:nufit_reference_identity"
+deterministic = true
+gpu = false
+run_command = "cargo test -p algebra_experimental --test nufit_reference_identity --profile validation"
+run_command_sha256 = "2a7d86a34d836bb015005a316c95f8e468207f97e772a5c8466c99a051af12b5"
+claim_refs = ["C-1719", "C-1720", "C-1722"]
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf", "data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf", "data/output/audit/claim-family-evidence-adjudication/nufit-variant-intervals.toml"]
+output_path_refs = []
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p algebra_experimental --test nufit_reference_identity --profile validation", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-258"
+experiment_id = "E-288"
+binary = "external:rocq:9.1.1"
+deterministic = true
+gpu = false
+run_command = "/usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q .cache/moreno-proof-check '' -o .cache/moreno-proof-check/moreno_proof_assumption_query.vo data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"
+run_command_sha256 = "4d4b25c9009c007413e7f167b10746d6ea18e4c0bfc584ba47394b547a45bb09"
+claim_refs = ["C-1721"]
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml", "data/output/audit/claim-family-evidence-adjudication/moreno-zero-divisors-source.tex", "data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v", "proofs/theories/C1538_MorZDSymmetry.v", "proofs/theories/C1539_MorSkewSymm.v", "proofs/theories/MorenoSedenionInstance.v"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml", "data/output/audit/claim-family-evidence-adjudication/moreno-proof-assumptions.log", "data/output/audit/claim-family-evidence-adjudication/moreno-skew-proof-replay.log", "data/output/audit/claim-family-evidence-adjudication/moreno-symmetry-matched-runtime.log"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "/usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q .cache/moreno-proof-check '' -o .cache/moreno-proof-check/moreno_proof_assumption_query.vo data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-259"
+experiment_id = "E-289"
+binary = "p2b-ruan-fan-reproduction"
+deterministic = true
+gpu = false
+run_command = "cargo run -p optics_core --bin p2b-ruan-fan-reproduction --profile validation -- data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml 81a4ca6e8e3a2f9b4d00b5e14b0ddd739088a7d9 data/output/audit/2026-08-04/p2b-independent-pole-output.txt"
+run_command_sha256 = "3590942443e0ec89c522a33d7fdb2d8bf18b4c150d5ceffe7c937b5d65683563"
+claim_refs = ["C-1705", "C-1706", "C-1707", "C-1709"]
+input_path_refs = ["data/output/audit/2026-08-04/p2b-independent-pole-output.txt", "data/output/audit/2026-08-04/p2b-preregistration.toml", "data/output/audit/claim-family-evidence-adjudication/optics-replay/Fano_Scattering.tex", "data/output/audit/claim-family-evidence-adjudication/optics-replay/arxiv-source.download", "data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/optics-adjudication.toml", "data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run -p optics_core --bin p2b-ruan-fan-reproduction --profile validation -- data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml 81a4ca6e8e3a2f9b4d00b5e14b0ddd739088a7d9 data/output/audit/2026-08-04/p2b-independent-pole-output.txt", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-260"
+experiment_id = "E-290"
+binary = "cargo-test:gr_core:ward_independent_residuals"
+deterministic = true
+gpu = false
+run_command = "cargo test -p gr_core --test ward_independent_residuals --profile validation -- --nocapture"
+run_command_sha256 = "57bfae74309f5e13150f9e5218d65425b8d63cc02460d87951fbe53da39e91a3"
+claim_refs = ["C-1635", "C-1637", "C-1666"]
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p gr_core --test ward_independent_residuals --profile validation -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-261"
+experiment_id = "E-291"
+binary = "cargo-test:lbm_3d_cuda:test_gpu_cpu_equivalence"
+deterministic = true
+gpu = true
+run_command = "cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence --profile validation -- --include-ignored --nocapture"
+run_command_sha256 = "2faf149fcf11959327fb4dce2e099b04b90fd23c1d86d20110d33ff011da0d48"
+claim_refs = ["C-1696", "C-1700"]
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence --profile validation -- --include-ignored --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-262"
+experiment_id = "E-294"
+binary = "cargo-test:quantum_core:magnonic_localization"
+deterministic = true
+gpu = false
+run_command = "cargo test -p quantum_core --test magnonic_localization --profile validation -- --nocapture --test-threads=1"
+run_command_sha256 = "99278c64d0b1f07ef98fb11b073b5ac8c5a8fb5f90e954bb132f9b08f51fb126"
+claim_refs = ["C-1690", "C-1693"]
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/magnonic-localization-protocol.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/magnonic-localization-adjudication.toml", "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-replay.txt"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p quantum_core --test magnonic_localization --profile validation -- --nocapture --test-threads=1", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-263"
+experiment_id = "E-295"
+binary = "cargo-test:algebra_analysis:motif_exact_rank"
+deterministic = true
+gpu = false
+run_command = "MOTIF_EXACT_OUTPUT=$PWD/data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml cargo test -p algebra_analysis --profile validation --test motif_exact_rank -- --nocapture"
+run_command_sha256 = "55d7abac455ecf46ed3bee6bebca78f0a60f1954ffde09dad1f97152c97c1b1e"
+claim_refs = ["C-1715", "C-1716", "C-1717", "C-1718"]
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml", "data/output/audit/claim-family-evidence-adjudication/motif-exact-replay.log"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "MOTIF_EXACT_OUTPUT=$PWD/data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml cargo test -p algebra_analysis --profile validation --test motif_exact_rank -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-264"
+experiment_id = "E-296"
+binary = "cargo-test:qgp_scaling:epsilon_objective_identity"
+deterministic = true
+gpu = false
+run_command = "cargo test -p qgp_scaling --test epsilon_objective_identity --profile validation -- --nocapture"
+run_command_sha256 = "1ec211e72ab2533e77d9001427e53375d94be3999646cef3bdda4b669537446e"
+claim_refs = ["C-1710", "C-1711"]
+input_path_refs = ["crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml", "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-replay.txt", "data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-adjudication.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --test epsilon_objective_identity --profile validation -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -16552,5 +16696,572 @@ from_id = "E-286"
 to_ref = "plans/crossing-detector-operational-utility.toml"
 to_kind = "path"
 edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01322"
+lineage_id = "XL-257"
+from_id = "E-287"
+to_ref = "cargo-test:algebra_experimental:nufit_reference_identity"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01323"
+lineage_id = "XL-257"
+from_id = "E-287"
+to_ref = "C-1719"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01324"
+lineage_id = "XL-257"
+from_id = "E-287"
+to_ref = "C-1720"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01325"
+lineage_id = "XL-257"
+from_id = "E-287"
+to_ref = "C-1722"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01326"
+lineage_id = "XL-257"
+from_id = "E-287"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01327"
+lineage_id = "XL-257"
+from_id = "E-287"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01328"
+lineage_id = "XL-257"
+from_id = "E-287"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/nufit-variant-intervals.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01329"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "external:rocq:9.1.1"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01330"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "C-1721"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01331"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01332"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/moreno-zero-divisors-source.tex"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01333"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01334"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "proofs/theories/C1538_MorZDSymmetry.v"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01335"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "proofs/theories/C1539_MorSkewSymm.v"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01336"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "proofs/theories/MorenoSedenionInstance.v"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01337"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01338"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/moreno-proof-assumptions.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01339"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/moreno-skew-proof-replay.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01340"
+lineage_id = "XL-258"
+from_id = "E-288"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/moreno-symmetry-matched-runtime.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01341"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "p2b-ruan-fan-reproduction"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01342"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "C-1705"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01343"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "C-1706"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01344"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "C-1707"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01345"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "C-1709"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01346"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "data/output/audit/2026-08-04/p2b-independent-pole-output.txt"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01347"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "data/output/audit/2026-08-04/p2b-preregistration.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01348"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/optics-replay/Fano_Scattering.tex"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01349"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/optics-replay/arxiv-source.download"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01350"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01351"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/optics-adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01352"
+lineage_id = "XL-259"
+from_id = "E-289"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01353"
+lineage_id = "XL-260"
+from_id = "E-290"
+to_ref = "cargo-test:gr_core:ward_independent_residuals"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01354"
+lineage_id = "XL-260"
+from_id = "E-290"
+to_ref = "C-1635"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01355"
+lineage_id = "XL-260"
+from_id = "E-290"
+to_ref = "C-1637"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01356"
+lineage_id = "XL-260"
+from_id = "E-290"
+to_ref = "C-1666"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01357"
+lineage_id = "XL-260"
+from_id = "E-290"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01358"
+lineage_id = "XL-260"
+from_id = "E-290"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01359"
+lineage_id = "XL-261"
+from_id = "E-291"
+to_ref = "cargo-test:lbm_3d_cuda:test_gpu_cpu_equivalence"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01360"
+lineage_id = "XL-261"
+from_id = "E-291"
+to_ref = "C-1696"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01361"
+lineage_id = "XL-261"
+from_id = "E-291"
+to_ref = "C-1700"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01362"
+lineage_id = "XL-261"
+from_id = "E-291"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01363"
+lineage_id = "XL-261"
+from_id = "E-291"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01364"
+lineage_id = "XL-262"
+from_id = "E-294"
+to_ref = "cargo-test:quantum_core:magnonic_localization"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01365"
+lineage_id = "XL-262"
+from_id = "E-294"
+to_ref = "C-1690"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01366"
+lineage_id = "XL-262"
+from_id = "E-294"
+to_ref = "C-1693"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01367"
+lineage_id = "XL-262"
+from_id = "E-294"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01368"
+lineage_id = "XL-262"
+from_id = "E-294"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01369"
+lineage_id = "XL-262"
+from_id = "E-294"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-replay.txt"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01370"
+lineage_id = "XL-263"
+from_id = "E-295"
+to_ref = "cargo-test:algebra_analysis:motif_exact_rank"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01371"
+lineage_id = "XL-263"
+from_id = "E-295"
+to_ref = "C-1715"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01372"
+lineage_id = "XL-263"
+from_id = "E-295"
+to_ref = "C-1716"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01373"
+lineage_id = "XL-263"
+from_id = "E-295"
+to_ref = "C-1717"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01374"
+lineage_id = "XL-263"
+from_id = "E-295"
+to_ref = "C-1718"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01375"
+lineage_id = "XL-263"
+from_id = "E-295"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01376"
+lineage_id = "XL-263"
+from_id = "E-295"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01377"
+lineage_id = "XL-263"
+from_id = "E-295"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/motif-exact-replay.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01378"
+lineage_id = "XL-264"
+from_id = "E-296"
+to_ref = "cargo-test:qgp_scaling:epsilon_objective_identity"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01379"
+lineage_id = "XL-264"
+from_id = "E-296"
+to_ref = "C-1710"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01380"
+lineage_id = "XL-264"
+from_id = "E-296"
+to_ref = "C-1711"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01381"
+lineage_id = "XL-264"
+from_id = "E-296"
+to_ref = "crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01382"
+lineage_id = "XL-264"
+from_id = "E-296"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01383"
+lineage_id = "XL-264"
+from_id = "E-296"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-replay.txt"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01384"
+lineage_id = "XL-264"
+from_id = "E-296"
+to_ref = "data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
 verified = true
 

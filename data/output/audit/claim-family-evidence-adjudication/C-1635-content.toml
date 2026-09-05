@@ -1,0 +1,5 @@
+claim_id = "C-1635"
+expected_statement = "The repository tensor implementation reproduces the declared gauge Ward contraction across the predeclared kinematic grid."
+expected_where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+statement = "The retained tensor implementation passes the declared scalar electromagnetic gauge contraction on its recorded grid; the spinor irreducible path retains an unresolved contact or integration-by-parts boundary residual. Independent component contraction at the declared replay fixture confirms the bounded scalar result. Gauge transversality alone does not establish amplitude completeness: some omitted structures change the tensor while preserving a small gauge residual."
+where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml; data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml; data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"

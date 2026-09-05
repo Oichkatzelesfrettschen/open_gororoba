@@ -1,0 +1,5 @@
+claim_id = "C-1637"
+expected_statement = "The repository tensor implementation reproduces the declared gravitational Ward identity and diagram decomposition across the predeclared kinematic grid."
+expected_where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"
+statement = "The retained tensor implementation reproduces the scalar off-shell gravitational lower-point identity on its declared grid, while the spinor off-shell comparison and combined irreducible-plus-external on-shell cancellation fail their declared predicates. Tadpole physical contraction is a separate passing predicate. These implementation boundaries leave source-identity reproduction unresolved."
+where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml; data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml; data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"

@@ -36,6 +36,94 @@ pub fn linear_interp(xs: &[f64], ys: &[f64], x_query: f64) -> Option<f64> {
     Some(y0 + t * (y1 - y0))
 }
 
+/// Collision and observable identity required before a physical comparison.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ReferencePopulation {
+    pub collision_system: &'static str,
+    pub energy_gev: u32,
+    pub species: &'static str,
+    pub centrality_percent: (u8, u8),
+}
+
+/// Admit physical model ranking only for the same observable population.
+/// Covariance provenance and fitted parameter counts require additional checks.
+pub fn require_matched_population(
+    measured: &ReferencePopulation,
+    predicted: &ReferencePopulation,
+) -> Result<(), String> {
+    for population in [measured, predicted] {
+        if population.collision_system.trim().is_empty()
+            || population.species.trim().is_empty()
+            || population.energy_gev == 0
+            || population.centrality_percent.0 >= population.centrality_percent.1
+            || population.centrality_percent.1 > 100
+        {
+            return Err("reference admission failed: invalid population identity".to_string());
+        }
+    }
+    let mut mismatches = Vec::new();
+    if measured.collision_system != predicted.collision_system {
+        mismatches.push("collision system");
+    }
+    if measured.energy_gev != predicted.energy_gev {
+        mismatches.push("collision energy");
+    }
+    if measured.species != predicted.species {
+        mismatches.push("particle species");
+    }
+    if measured.centrality_percent != predicted.centrality_percent {
+        mismatches.push("centrality");
+    }
+    if mismatches.is_empty() {
+        Ok(())
+    } else {
+        Err(format!(
+            "reference admission failed: {}",
+            mismatches.join(", ")
+        ))
+    }
+}
+
+/// Check the declared populations used by the retained three-curve comparison.
+pub fn retained_bic_population_admission() -> Result<(), String> {
+    let measured = ReferencePopulation {
+        collision_system: "Pb-Pb",
+        energy_gev: 5020,
+        species: "charged hadron",
+        centrality_percent: (0, 5),
+    };
+    let competitors = [
+        (
+            "CUJET3.0",
+            ReferencePopulation {
+                energy_gev: 2760,
+                ..measured.clone()
+            },
+        ),
+        (
+            "fractional Langevin",
+            ReferencePopulation {
+                species: "D meson",
+                centrality_percent: (0, 10),
+                ..measured.clone()
+            },
+        ),
+    ];
+    let failures: Vec<_> = competitors
+        .iter()
+        .filter_map(|(name, population)| {
+            require_matched_population(&measured, population)
+                .err()
+                .map(|error| format!("{name}: {error}"))
+        })
+        .collect();
+    if failures.is_empty() {
+        Ok(())
+    } else {
+        Err(failures.join("; "))
+    }
+}
+
 /// A digitized theoretical R_AA prediction curve.
 #[derive(Debug, Clone)]
 pub struct TheoreticalRaaCurve {
@@ -236,12 +324,10 @@ pub fn langevin_pbpb_5020_30_50() -> TheoreticalRaaCurve {
     }
 }
 
-/// Arleo-Falmagne scaling ansatz as a "model" for BIC comparison.
-///
-/// Given pre-extracted epsilon_bar and spectral index n, the R_AA model
-/// is R_AA(pT) = (1 + epsilon_bar / pT)^{-n}. This has 2 effective
-/// free parameters per centrality (epsilon_bar extracted from data, n from pp spectrum).
-/// For the BIC comparison, we treat {beta, K} as the 2 global parameters.
+/// Generate the same declared shift ansatz fitted by `epsilon_fit::extract_epsilon`.
+/// Sharing `quenching::r_aa_model` keeps fitted and scored objectives consistent.
+/// The comparison counts one fitted epsilon with fixed spectral index; source
+/// conformance and matched-population likelihood admission remain separate.
 pub fn arleo_falmagne_raa(
     epsilon_bar: f64,
     n_spectral: f64,
@@ -249,11 +335,11 @@ pub fn arleo_falmagne_raa(
 ) -> TheoreticalRaaCurve {
     let raa: Vec<f64> = pt_points
         .iter()
-        .map(|&pt| (1.0 + epsilon_bar / pt).powf(-n_spectral))
+        .map(|&pt| crate::quenching::r_aa_model(pt, epsilon_bar, n_spectral))
         .collect();
     TheoreticalRaaCurve {
         name: "Arleo-Falmagne",
-        n_params: 2,
+        n_params: 1,
         pt: pt_points.to_vec(),
         raa,
     }
@@ -397,15 +483,14 @@ mod tests {
 
     #[test]
     fn test_arleo_falmagne_raa_model() {
-        // R_AA = (1 + eps/pT)^{-n}
         let eps = 3.0;
         let n = 6.0;
         let pts = vec![5.0, 10.0, 20.0, 50.0];
         let curve = arleo_falmagne_raa(eps, n, &pts);
 
-        assert_eq!(curve.n_params, 2);
+        assert_eq!(curve.n_params, 1);
         for (i, &pt) in pts.iter().enumerate() {
-            let expected = (1.0 + eps / pt).powf(-n);
+            let expected = ((pt - eps) / pt).powf(n - 1.0);
             assert!(
                 (curve.raa[i] - expected).abs() < 1e-12,
                 "Mismatch at pT={}: {} vs {}",

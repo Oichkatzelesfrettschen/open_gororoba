@@ -1,0 +1,19 @@
+schema_version = 1
+experiment_id = "E-294"
+producer = "crates/quantum_core/tests/magnonic_localization.rs"
+protocol_state = "frozen_before_diagnostic_execution"
+parameters = "MagnonicTBParams::kaman_default(); InversionBreakingParams::kaman_default(); a_nm=100"
+radii = [2,3,4]
+wall_cells = 20
+wall_k_fraction_b1 = 0.30
+central_wall_cells = [9,10]
+seam_wall_cells = [19,0]
+eigenpair_relative_residual_tolerance = 1e-10
+normalization_tolerance = 1e-10
+degeneracy_absolute_tolerance = 1e-10
+sampled_bulk_grid = 30
+fitted_parameters = 0
+localization_cutoff = "undeclared; report continuous observations rather than classify by an invented universal threshold"
+outputs = ["all finite eigenvalues and IPR/participation/center/edge weights", "degenerate-group projector traces", "pristine versus defect counts in identical sampled gap", "both-wall mode weights and periodic transitions"]
+physical_scope = "Repository model energy units; source calibration and physical GHz prediction remain unadmitted."
+run = "cargo test -p quantum_core --test magnonic_localization --profile validation -- --nocapture --test-threads=1"

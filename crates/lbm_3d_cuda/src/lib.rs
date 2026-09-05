@@ -540,6 +540,36 @@ impl LbmSolver3DCuda {
     }
 
     pub fn new(nx: usize, ny: usize, nz: usize, tau: f64, precision: Precision) -> Result<Self> {
+        Self::new_on_stream(nx, ny, nz, tau, precision, false)
+    }
+
+    /// Allocate on an explicit stream that permits CUDA graph capture.
+    /// Consumers of device fields must use `stream()` or explicit event ordering.
+    pub fn new_capture_capable(
+        nx: usize,
+        ny: usize,
+        nz: usize,
+        tau: f64,
+        precision: Precision,
+        mrt: bool,
+    ) -> Result<Self> {
+        ensure!(
+            !mrt || precision == Precision::FP32,
+            "MRT collision requires FP32 precision"
+        );
+        let mut solver = Self::new_on_stream(nx, ny, nz, tau, precision, true)?;
+        solver.use_mrt = mrt;
+        Ok(solver)
+    }
+
+    fn new_on_stream(
+        nx: usize,
+        ny: usize,
+        nz: usize,
+        tau: f64,
+        precision: Precision,
+        capture_capable: bool,
+    ) -> Result<Self> {
         let n_cells = nx * ny * nz;
         // Route context acquisition through the consolidated helper so the
         // gpu_cuda crate owns the device-count probe plus raw cudarc context
@@ -548,7 +578,11 @@ impl LbmSolver3DCuda {
         let ctx_wrapper = gororoba_gpu_cuda::Context::with_default_device()
             .map_err(|e| anyhow::anyhow!("CUDA Init Failed: {}", e))?;
         let ctx = ctx_wrapper.raw().clone();
-        let stream = ctx.default_stream();
+        let stream = if capture_capable {
+            ctx.new_stream()?
+        } else {
+            ctx.default_stream()
+        };
         let cuda_props = probe_cuda_device_props();
         let src = match precision {
             Precision::FP32 => KERNEL_SRC,
@@ -1102,6 +1136,8 @@ impl LbmSolver3DCuda {
     }
 
     pub fn initialize_custom(&mut self, rho: &[f64], u: &[[f64; 3]]) -> Result<()> {
+        // A repeated trial can begin with the opposite ping-pong buffer parity.
+        self.invalidate_graph();
         ensure!(
             rho.len() == self.n_cells,
             "rho length mismatch: got {}, expected {}",
@@ -1227,6 +1263,8 @@ impl LbmSolver3DCuda {
     }
 
     pub fn set_force_field(&mut self, force_field: &[[f64; 3]]) -> Result<()> {
+        // Captured kernels retain the force-buffer address that upload replaces.
+        self.invalidate_graph();
         ensure!(
             force_field.len() == self.n_cells,
             "force field length mismatch: got {}, expected {}",
@@ -1272,6 +1310,8 @@ impl LbmSolver3DCuda {
     }
 
     pub fn set_viscosity_field(&mut self, viscosity_field: &[f64]) -> Result<()> {
+        // Captured kernels retain the viscosity-buffer address that upload replaces.
+        self.invalidate_graph();
         ensure!(
             viscosity_field.len() == self.n_cells,
             "viscosity field length mismatch: got {}, expected {}",
@@ -1577,6 +1617,7 @@ impl LbmSolver3DCuda {
     }
 
     pub fn step(&mut self) -> Result<()> {
+        self.invalidate_graph();
         self.launch_step_kernel()?;
         if self.use_aa {
             // A-A: toggle parity, no buffer swap needed (single buffer)
@@ -1597,13 +1638,67 @@ impl LbmSolver3DCuda {
     ///
     /// For odd total step counts, use `step_n()` which handles the remainder.
     pub fn step_graph_pair(&mut self) -> Result<()> {
-        use cudarc::driver::sys;
+        use cudarc::driver::{DevicePtrMut, sys};
 
         ensure!(
             self.use_soa,
             "step_graph_pair() requires SoA layout (use_soa=true)"
         );
 
+        ensure!(!self.use_aa, "graph pairs require ping-pong populations");
+        let kernel = if self.use_tiling {
+            if self.use_mrt {
+                &self.soa_mrt_tiled_step_kernel
+            } else {
+                &self.soa_tiled_step_kernel
+            }
+        } else if self.use_coarsening {
+            if self.use_mrt {
+                &self.soa_mrt_coarsened_step_kernel
+            } else {
+                &self.soa_coarsened_step_kernel
+            }
+        } else if self.use_pull_stream {
+            if self.use_mrt {
+                &self.soa_mrt_pull_step_kernel
+            } else {
+                &self.soa_pull_step_kernel
+            }
+        } else if self.use_mrt {
+            &self.soa_mrt_step_kernel
+        } else {
+            &self.soa_step_kernel
+        }
+        .as_ref()
+        .context("SoA graph kernel missing")?;
+        let config = if self.use_tiling {
+            CudaLaunchConfig::launch_blocks_3d(
+                (self.nx as u32).div_ceil(8),
+                (self.ny as u32).div_ceil(8),
+                (self.nz as u32).div_ceil(4),
+                8,
+                8,
+                4,
+            )
+        } else {
+            let cells = if self.use_coarsening {
+                (self.n_cells as u32).div_ceil(2)
+            } else {
+                self.n_cells as u32
+            };
+            CudaLaunchConfig::launch_1d_with_block(cells, 128)
+        };
+        let (nx, ny, nz) = (self.nx as i32, self.ny as i32, self.nz as i32);
+        // DevicePtr guards enqueue prior-use waits before capture and record
+        // graph completion after launch. Captured kernels use the guarded
+        // addresses; event tracking remains enabled for every consumer.
+        let (population_a, _population_a_use) = self.d_f.device_ptr_mut(&self.stream);
+        let (population_b, _population_b_use) = self.d_f_tmp.device_ptr_mut(&self.stream);
+        let (density, _density_use) = self.d_rho.device_ptr_mut(&self.stream);
+        let (velocity, _velocity_use) = self.d_u.device_ptr_mut(&self.stream);
+        let (tau, _tau_use) = self.d_tau.device_ptr(&self.stream);
+        let (force, _force_use) = self.d_force.device_ptr(&self.stream);
+        self._ctx.check_err()?;
         if self.step_graph_cache.is_none() {
             // WHY THREAD_LOCAL, not GLOBAL: GLOBAL blocks all streams in the
             // context during capture. In the multi-stream galaxy pipeline, stream B
@@ -1616,20 +1711,33 @@ impl LbmSolver3DCuda {
             self.stream
                 .begin_capture(sys::CUstreamCaptureMode::CU_STREAM_CAPTURE_MODE_THREAD_LOCAL)?;
 
-            // Step 1: A -> B
-            self.launch_step_kernel()?;
-            std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
+            let capture_result = (|| -> Result<()> {
+                for (input, output) in [(population_a, population_b), (population_b, population_a)]
+                {
+                    let mut launch = self.stream.launch_builder(kernel);
+                    launch
+                        .arg(&input)
+                        .arg(&output)
+                        .arg(&density)
+                        .arg(&velocity)
+                        .arg(&tau)
+                        .arg(&force)
+                        .arg(&nx)
+                        .arg(&ny)
+                        .arg(&nz);
+                    // SAFETY: DevicePtr guards retain buffers and order all
+                    // reads/writes around the graph's two kernel launches.
+                    unsafe { launch.launch(config) }?;
+                }
+                Ok(())
+            })();
 
-            // Step 2: B -> A (after swap, d_f is B, d_f_tmp is A)
-            self.launch_step_kernel()?;
-            std::mem::swap(&mut self.d_f, &mut self.d_f_tmp);
-
-            let graph = self
-                .stream
-                .end_capture(
-                    sys::CUgraphInstantiate_flags::CUDA_GRAPH_INSTANTIATE_FLAG_AUTO_FREE_ON_LAUNCH,
-                )?
-                .context("Failed to capture 2-step kernel pair into CUDA graph")?;
+            let graph_result = self.stream.end_capture(
+                sys::CUgraphInstantiate_flags::CUDA_GRAPH_INSTANTIATE_FLAG_AUTO_FREE_ON_LAUNCH,
+            );
+            capture_result?;
+            let graph =
+                graph_result?.context("Failed to capture 2-step kernel pair into CUDA graph")?;
             self.step_graph_cache = Some(SendSyncGraph(graph));
         }
 
@@ -1980,6 +2088,33 @@ impl LbmSolver3DCuda {
         self.use_mrt
     }
 
+    /// Read FP32 ping-pong populations in cell-major D3Q19 order.
+    /// The snapshot exposes the post-step populations independently of the
+    /// fused kernel's pre-collision macroscopic output buffers.
+    pub fn read_populations_fp32(&self) -> Result<Vec<f32>> {
+        ensure!(
+            self.precision == Precision::FP32 && !self.use_aa,
+            "population snapshot requires FP32 ping-pong storage"
+        );
+        let bytes = self.stream.clone_dtoh(&self.d_f)?;
+        let mut stored = vec![0.0; self.n_cells * 19];
+        Self::decode_f32_from_bytes(&bytes, &mut stored)?;
+        if self.use_soa {
+            let mut cell_major = vec![0.0; stored.len()];
+            for cell in 0..self.n_cells {
+                for direction in 0..19 {
+                    cell_major[cell * 19 + direction] = stored[direction * self.n_cells + cell];
+                }
+            }
+            Ok(cell_major)
+        } else {
+            Ok(stored)
+        }
+    }
+
+    /// Copy the latest fused-kernel macroscopic observations to host memory.
+    /// Push kernels observe populations entering their final collision, one
+    /// timestep before the post-stream population snapshot.
     pub fn sync_to_host(&mut self) -> Result<()> {
         let rho_bytes = self.stream.clone_dtoh(&self.d_rho)?;
         let u_bytes = self.stream.clone_dtoh(&self.d_u)?;

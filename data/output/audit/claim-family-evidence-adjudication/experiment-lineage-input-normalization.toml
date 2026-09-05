@@ -1,0 +1,143 @@
+[[experiment]]
+binary = "nufit_reference_identity"
+claims = ["C-1719", "C-1720", "C-1722"]
+claim_refs = ["C-1719", "C-1720", "C-1722"]
+deterministic = true
+gpu = false
+id = "E-287"
+input = "Retained NuFit6.0 and6.1 PDF tables, exact SHA256 identities and four normal-ordering analysis variants; fixed scorecard theta23=48.99."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf", "data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf", "data/output/audit/claim-family-evidence-adjudication/nufit-variant-intervals.toml"]
+method = "Rust integration tests verify source PDF hashes, reference-column identities and fixed-angle membership. Extended fixtures verify all six NuFit6.0 IC24 and IC19 contours, periodic CP-A165 and CP-B93 memberships, preserved historical composite literals, and dm21/dm31 marginal-bound ratio boxes. NuFit6.1 coverage remains theta23 only; historical source attribution and joint ratio confidence remain unresolved."
+output = ["Rust integration test output"]
+output_path_refs = []
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p algebra_experimental --test nufit_reference_identity --profile validation"
+status = "active"
+status_note = "Four Rust integration tests passed, including source PDF SHA256 verification through the required native sha256sum executable. Retained original result: nufit-reference-test-result.toml. Extended result: nufit-complete-reference-adjudication.toml. Physical model and published global-fit parameter estimation are excluded."
+title = "NuFit release-specific reference membership audit"
+
+[[experiment]]
+binary = "rocq"
+claims = ["C-1721"]
+claim_refs = ["C-1721"]
+deterministic = true
+gpu = false
+id = "E-288"
+input = "Hash-retained Moreno e-print TeX Corollary 1.6, Proposition 1.7 and following Remark; source-matched Rocq bodies and concrete sedenion interface."
+input_path_refs = ["proofs/theories/C1538_MorZDSymmetry.v", "proofs/theories/C1539_MorSkewSymm.v", "proofs/theories/MorenoSedenionInstance.v", "data/output/audit/claim-family-evidence-adjudication/moreno-zero-divisors-source.tex", "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml", "data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"]
+method = "Replay the two Moreno theorem bodies with the exact commands in formal_replay_commands of the source map, then query their assumptions using the freshly compiled objects. Match Rocq 9.1.1 and OCaml 5.5.0 to retained primary dependency objects; retain the rejected OCaml 5.4.0 attempt. Compare theorem conclusions and hypotheses against literal TeX with conjugate overbars. The separate C1262 arithmetic body belongs to the graph/source audit and establishes no Moreno theorem."
+output = ["Focused theorem-body replay", "Printed concrete and abstract assumptions", "Source-to-theorem implication map"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/moreno-symmetry-matched-runtime.log", "data/output/audit/claim-family-evidence-adjudication/moreno-skew-proof-replay.log", "data/output/audit/claim-family-evidence-adjudication/moreno-proof-assumptions.log", "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"]
+reproducibility_class = "deterministic_replay"
+run = "/usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q .cache/moreno-proof-check '' -o .cache/moreno-proof-check/moreno_proof_assumption_query.vo data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"
+status = "active"
+status_note = "Both focused Moreno bodies and the fresh-object assumptions query pass. Corollary 1.6 formalization retains extra purity/nonzero restrictions. Proposition 1.7 skew-adjoint statements match source scope and have a concrete sedenion instance. The kernel-equality Remark depends on two additional functor-local axioms. General CD model discharge remains unresolved; compilation does not discharge those assumptions."
+title = "Moreno source and Rocq theorem hypothesis comparison"
+
+[[experiment]]
+binary = "p2b-ruan-fan-reproduction"
+claims = ["C-1705", "C-1706", "C-1707", "C-1709"]
+claim_refs = ["C-1705", "C-1706", "C-1707", "C-1709"]
+deterministic = true
+gpu = false
+id = "E-289"
+input = "Frozen numerical protocol and retained 80-decimal independent pole output; newly retrieved arXiv0909.3323v2 archive and separately hashed extracted TeX and PDF."
+input_path_refs = ["data/output/audit/2026-08-04/p2b-preregistration.toml", "data/output/audit/2026-08-04/p2b-independent-pole-output.txt", "data/output/audit/claim-family-evidence-adjudication/optics-replay/arxiv-source.download", "data/output/audit/claim-family-evidence-adjudication/optics-replay/Fano_Scattering.tex", "data/output/audit/claim-family-evidence-adjudication/optics-replay/ruan-fan-0909.3323v2.pdf"]
+method = "Replay the unchanged pole/fit producer, retain every numerical field and compare parsed output with historical evidence after excluding only the code_commit_sha metadata field. Preserve the original0.01 error gates, fitting freedom and malformed producer TeX-hash metadata. Verify new source receipts separately with Rust SHA256 tests and inspect primary TeX method and rounded landmarks."
+output = ["Complete numerical replay TOML", "Source-receipt test output", "Bounded adjudication and unresolved source-landmark discrepancy"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml", "data/output/audit/claim-family-evidence-adjudication/optics-adjudication.toml"]
+reproducibility_class = "numeric_close"
+run = "cargo run -p optics_core --bin p2b-ruan-fan-reproduction --profile validation -- data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml 81a4ca6e8e3a2f9b4d00b5e14b0ddd739088a7d9 data/output/audit/2026-08-04/p2b-independent-pole-output.txt"
+status = "active"
+status_note = "The historical standalone manifest called this producer E-241, but canonical E-241 owns staples-layout-sweep. Preserve that collision and canonical E-241; E-289 supplies the explicit optics identity. E-076 retains its historical fano-scattering producer. Source receipt integrity is repaired only for the enumerated intake subset, not the repository-wide C-1708 assertion."
+title = "Ruan-Fan retained producer replay and source receipt reconciliation"
+
+[[experiment]]
+binary = "ward_independent_residuals"
+claims = ["C-1635", "C-1637", "C-1666"]
+claim_refs = ["C-1635", "C-1637", "C-1666"]
+deterministic = true
+gpu = false
+id = "E-290"
+input = "Declared Euclidean off-shell fixture, virtuality ladder and fixed-domain quadrature refinement; shared worldline tensors with independent contractions and Lagrange intercepts."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml"]
+method = "Independent reverse-order contraction, lower-point RHS assembly, omission controls and zero-intercept evaluation. Separate electromagnetic, gravitational, tadpole and on-shell predicates."
+output = ["data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p gr_core --test ward_independent_residuals --profile validation -- --nocapture"
+status = "active"
+status_note = "The independent oracle falsified the original intercept sign. Corrected signed components pass the arithmetic oracle; original norm thresholds remain failed. Quadrature error certification remains unresolved. E-073 retains its historical producer scope."
+title = "Independent Ward component contractions and zero-virtuality intercepts"
+
+[[experiment]]
+binary = "test_gpu_cpu_equivalence"
+claims = ["C-1696", "C-1700"]
+claim_refs = ["C-1696", "C-1700"]
+deterministic = true
+gpu = true
+id = "E-291"
+input = "8 cubed periodic evolving FP32 BGK density/shear fixture, 12 steps; force replacement and odd-step reinitialization; admitted RTX 4070 Ti."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"]
+method = "Compare cell-major distributions and independently summed density at the same evolution stage; compare direct/captured paths while preserving cudarc dependency tracking."
+output = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence --profile validation -- --include-ignored --nocapture"
+status = "active"
+status_note = "Original density-time-level and capture-isolation failures are retained. Corrected replay passes two real CUDA fixtures and the frozen-evolution control at unchanged tolerances. Full null catalog and galaxy resolution studies remain separate."
+title = "Evolving CPU CUDA population parity and graph dependency reuse"
+
+[[experiment]]
+binary = "magnonic_localization integration test"
+claims = ["C-1690", "C-1693"]
+claim_refs = ["C-1690", "C-1693"]
+deterministic = true
+gpu = false
+id = "E-294"
+input = "Repository reference parameters; paired pristine/defect radii 2,3,4; 20-cell periodic wall supercell."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/magnonic-localization-protocol.toml"]
+method = "Independently assemble open patches; compare producer gap-selected eigenvalues; retain all normalized participation and center/edge probabilities plus degenerate-group projector weights. Count periodic sign transitions and retain both-wall spatial weights. Preserve historical E-142."
+output = ["Finite paired spectra and continuous localization observations", "Both-wall spatial accounting", "Bounded implementation adjudication"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/magnonic-localization-replay.txt", "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-adjudication.toml"]
+reproducibility_class = "numeric_close"
+run = "cargo test -p quantum_core --test magnonic_localization --profile validation -- --nocapture --test-threads=1"
+status = "active"
+status_note = "Protocol frozen and canonically attached before execution. Two diagnostic tests and warnings-as-errors Clippy pass; paired boundary states, endpoint sensitivity, corrected participation definition and both walls are retained. Physical GHz calibration remains outside the implementation experiment."
+title = "Magnonic pristine-defect participation and periodic-wall spatial diagnostics"
+
+[[experiment]]
+binary = "motif_exact_rank"
+claims = ["C-1715", "C-1716", "C-1717", "C-1718"]
+claim_refs = ["C-1715", "C-1716", "C-1717", "C-1718"]
+deterministic = true
+gpu = false
+id = "E-295"
+input = "All cross-assessor motif components at dimensions16,32,64,128,256; integer adjacency and prime1000000007."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"]
+method = "Compare rational rank upper bounds from repeated columns with modular-rank lower bounds for every component; verify cocktail-party adjacency and exact integer Laplacian eigenvectors; distinguish population and sample spacing variance."
+output = ["All243 component adjacencies and exact rank witnesses", "Five finite dimension summaries", "Explicit unproved dimension extensions"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml", "data/output/audit/claim-family-evidence-adjudication/motif-exact-replay.log"]
+reproducibility_class = "deterministic_replay"
+run = "MOTIF_EXACT_OUTPUT=$PWD/data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml cargo test -p algebra_analysis --profile validation --test motif_exact_rank -- --nocapture"
+status = "active"
+status_note = "Exact rank witnesses pass every enumerated component, including16 and32. Measured maximum degrees are D/2-4. A universal CD-dimension claim remains unproved. E-084/E-086 and E-168 preserve their original producer and partner-graph scopes."
+title = "Exact finite cross-assessor motif adjacency rank and spectral witnesses"
+
+[[experiment]]
+binary = "epsilon_objective_identity integration test"
+claims = ["C-1710", "C-1711"]
+claim_refs = ["C-1710", "C-1711"]
+deterministic = true
+gpu = false
+id = "E-296"
+input = "Exact retained ALICE table1 CSV, six points above5GeV; n=6.1, one epsilon bounded0.1..20; historical diagonal weights and0.98 variance factor preserved."
+input_path_refs = ["crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv"]
+method = "Independent20001-point grid plus golden refinement corroborates the fitted objective. Explicit historical plus-shift oracle preserves the differing scored minimum; corrected production curve and scorer must equal the fitted objective at equal weights. Source population and covariance admission remain separate."
+output = ["Independent objective minima", "Corrected same-weight scorer equality", "Preserved historical mismatch and variance scaling"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-adjudication.toml", "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml", "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-replay.txt"]
+reproducibility_class = "numeric_close"
+run = "cargo test -p qgp_scaling --test epsilon_objective_identity --profile validation -- --nocapture"
+status = "active"
+status_note = "Two tests and Clippy pass. The actual producer is crates/qgp_scaling/tests/epsilon_objective_identity.rs; E-075 remains the separate physical driver. One fitted epsilon and zero fixed-competitor refits describe only this retained comparison, not theoretical calibration freedom. Physical ranking stays blocked."
+title = "QGP fit-scoring objective identity and independent bounded minimization"

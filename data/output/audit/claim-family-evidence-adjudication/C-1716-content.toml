@@ -1,0 +1,5 @@
+claim_id = "C-1716"
+expected_statement = "At every D = 2^k at least 16 the densest zero-divisor motif class is the cocktail-party graph on m = D/4 - 1 parts, whose Laplacian spectrum has exactly two distinct positive levels, so the gap ratio tends to one and any nearest-neighbour spacing statistic on it is undefined rather than integrable."
+expected_where_stated = "data/csv/zd_nnsd.csv; data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
+statement = "At enumerated D=16,32,64,128,256, the densest cross-assessor motif components satisfy the exact cocktail-party adjacency predicate K_(2,...,2), with m=D/4-1 parts. Conditional on that graph identity, the Laplacian spectrum is 0 with multiplicity 1, 2m-2 with multiplicity m, and 2m with multiplicity m-1. The universal motif identity remains conjectural. Two-level spacing statistics retaining multiplicity are degenerate rather than undefined."
+where_stated = "data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml; data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml; crates/algebra_analysis/tests/motif_exact_rank.rs"

@@ -1,13 +1,8 @@
-//! D3Q19 LBM + MHD + dark matter gravitational coupling (E-112).
+//! D3Q19 LBM + MHD + density-weighted dark matter forcing.
 //!
-//! Extends the solar wind MHD simulation (E-111) with NFW dark matter
-//! halo gravitational forcing. The DM force field is static (precomputed
-//! once from NFW profile) and combined with the Lorentz force via the
-//! existing Guo forcing scheme.
-//!
-//! The key result is a rigorous null measurement: the ratio
-//! max|F_DM| / max|F_Lorentz| ~ O(10^-12), confirming that DM gravity
-//! alone cannot produce observable solar wind perturbations at 1 AU.
+//! Guo coupling consumes force density. Diagnostics compare maxima of lattice
+//! force-density fields, not a physical suppression bound: magnetic normalization,
+//! mesh consistency, gravitational frame and numerical sensitivity remain unresolved.
 
 use clap::Args;
 use cosmology_core::concentration_mass_relation;
@@ -16,6 +11,7 @@ use lbm_3d::{
     dm_force::{DmForceConfig, DmForceField, combine_forces},
     mhd::{MhdConfig, MhdField},
     solver::{BgkCollision, LbmSolver3D},
+    units::{LatticeUnits, UniformCartesianMesh},
 };
 use std::{
     fs,
@@ -27,7 +23,7 @@ use std::{
 ///
 /// Couples the magnetized solar wind simulation (Parker spiral B-field,
 /// Zou-He inlet, Guo forcing) with a static NFW DM halo gravitational
-/// force field. Quantifies the DM/Lorentz force ratio as a null test.
+/// acceleration field. Reports lattice force-density diagnostics.
 #[derive(Args)]
 pub struct Cli {
     /// Grid size in x (radial direction)
@@ -129,9 +125,9 @@ pub struct Cli {
     #[arg(long, default_value_t = false)]
     no_dm: bool,
 
-    /// Path to initial condition CSV from solar wind-ic.
-    /// Format: x,y,z,rho,ux,uy,uz,bx,by,bz (header row skipped).
-    /// When provided, uses real spacecraft data instead of uniform+Parker init.
+    /// Initial-condition CSV with complete SI mesh and magnetic-normalization metadata.
+    /// Every cell supplies x,y,z,rho,ux,uy,uz,bx,by,bz in declared lattice units.
+    /// Legacy solar wind-ic exports require a separately justified metadata amendment.
     #[arg(long)]
     ic_file: Option<PathBuf>,
 }
@@ -150,7 +146,10 @@ fn write_snapshot(
 
     let filename = path.join(format!("snapshot_{step:06}.csv"));
     let mut file = fs::File::create(&filename)?;
-    writeln!(file, "x,y,rho,ux,uy,uz,bx,by,bz,dm_fx,dm_fy,dm_fz,dm_rho")?;
+    writeln!(
+        file,
+        "x,y,rho,ux,uy,uz,bx,by,bz,dm_ax_lattice,dm_ay_lattice,dm_az_lattice,dm_density_kg_m3"
+    )?;
 
     for y in 0..ny {
         for x in 0..nx {
@@ -191,17 +190,139 @@ fn max_force_mag(f: &[[f64; 3]]) -> f64 {
         .fold(0.0_f64, f64::max)
 }
 
-/// Load initial conditions from a CSV file produced by solar wind-ic.
-///
-/// Format: x,y,z,rho,ux,uy,uz,bx,by,bz (header row skipped).
-/// Populates solver (rho, u, f) and mhd (bx, by, bz) fields directly
-/// from real spacecraft data.
-/// IC metadata parsed from comment header lines (# key=value).
+fn gravitational_force_density(
+    dm: &DmForceField,
+    density: &[f64],
+) -> anyhow::Result<Vec<[f64; 3]>> {
+    anyhow::ensure!(
+        dm.force.len() == density.len(),
+        "gravity density length mismatch"
+    );
+    anyhow::ensure!(
+        density
+            .iter()
+            .all(|value| value.is_finite() && *value >= 0.0),
+        "gravity density must be finite and nonnegative"
+    );
+    let force: Vec<_> = dm
+        .force
+        .iter()
+        .zip(density)
+        .map(|(acceleration, rho)| acceleration.map(|component| component * rho))
+        .collect();
+    anyhow::ensure!(
+        force.iter().flatten().all(|value| value.is_finite()),
+        "gravity force density must be finite"
+    );
+    Ok(force)
+}
+
+fn ratio_of_maxima(numerator: f64, denominator: f64) -> anyhow::Result<Option<f64>> {
+    anyhow::ensure!(
+        numerator.is_finite() && numerator >= 0.0 && denominator.is_finite() && denominator >= 0.0,
+        "force maxima must be finite and nonnegative"
+    );
+    if denominator == 0.0 {
+        return Ok(None);
+    }
+    let ratio = numerator / denominator;
+    anyhow::ensure!(ratio.is_finite(), "force ratio overflow");
+    Ok(Some(ratio))
+}
+
+/// Physical input declarations parsed from CSV comment headers.
+/// Unit admission verifies consistency; provenance and observational independence
+/// require separate evidence.
 #[derive(Debug, Default)]
 struct IcMetadata {
     n_ref_cm3: Option<f64>,
     v_ref_kms: Option<f64>,
     u_scale: Option<f64>,
+    physical_units: Option<LatticeUnits>,
+    physical_mesh: Option<UniformCartesianMesh>,
+}
+
+fn admit_ic_metadata(lines: &[String], dimensions: [usize; 3]) -> anyhow::Result<IcMetadata> {
+    let mut fields = std::collections::BTreeMap::new();
+    for line in lines {
+        if let Some((key, value)) = line
+            .trim()
+            .strip_prefix('#')
+            .and_then(|s| s.trim().split_once('='))
+        {
+            anyhow::ensure!(
+                fields.insert(key.trim(), value.trim()).is_none(),
+                "duplicate IC metadata key: {}",
+                key.trim()
+            );
+        }
+    }
+    let required = |key: &str| -> anyhow::Result<&str> {
+        fields
+            .get(key)
+            .copied()
+            .ok_or_else(|| anyhow::anyhow!("IC physical admission requires metadata {key}"))
+    };
+    anyhow::ensure!(
+        required("mesh_kind")? == "uniform_cartesian",
+        "IC physical admission requires uniform_cartesian mesh; logarithmic radial grids require a separate solver/discretization"
+    );
+    anyhow::ensure!(
+        required("coordinate_frame")? == "heliocentric_cartesian",
+        "IC coordinates require an explicit heliocentric_cartesian declaration; gravitational acceleration frame remains a separate model choice"
+    );
+    anyhow::ensure!(
+        required("field_storage")? == "lattice",
+        "IC fields must declare lattice storage"
+    );
+    anyhow::ensure!(
+        required("magnetic_normalization")? == "sqrt_mu0_rho_ref_dx_over_dt",
+        "IC magnetic normalization must use sqrt(mu0*rho_ref)*dx/dt"
+    );
+    let number = |key: &str| -> anyhow::Result<f64> { Ok(required(key)?.parse()?) };
+    let mesh = UniformCartesianMesh::new(
+        dimensions,
+        [
+            number("origin_x_m")?,
+            number("origin_y_m")?,
+            number("origin_z_m")?,
+        ],
+        number("spacing_m")?,
+    )?;
+    let units = LatticeUnits::new(&mesh, number("timestep_s")?, number("density_ref_kg_m3")?)?;
+    let magnetic_unit = number("magnetic_unit_t")?;
+    anyhow::ensure!(
+        magnetic_unit.is_finite() && (magnetic_unit / units.magnetic_unit_t() - 1.0).abs() <= 1e-12,
+        "IC magnetic unit disagrees with SI mesh and mass-density normalization"
+    );
+    let n_ref = number("n_ref_cm3")?;
+    let v_ref = number("v_ref_kms")?;
+    let u_scale = number("u_scale")?;
+    anyhow::ensure!(
+        [n_ref, v_ref, u_scale]
+            .into_iter()
+            .all(|v| v.is_finite() && v > 0.0),
+        "IC reference values must be finite and positive"
+    );
+    anyhow::ensure!(
+        (v_ref * 1000.0 / u_scale / units.velocity_unit_m_s() - 1.0).abs() <= 1e-12,
+        "IC velocity reference disagrees with dx/dt"
+    );
+    // The drag interface assumes a proton plasma; a composition change needs
+    // a declared mass-per-reference-particle contract.
+    anyhow::ensure!(
+        (n_ref * 1e6 * lbm_3d::dm_force::DRAG_PROTON_MASS_KG / units.density_ref_kg_m3() - 1.0)
+            .abs()
+            <= 1e-12,
+        "IC proton number and mass density references disagree with declared drag model"
+    );
+    Ok(IcMetadata {
+        n_ref_cm3: Some(n_ref),
+        v_ref_kms: Some(v_ref),
+        u_scale: Some(u_scale),
+        physical_units: Some(units),
+        physical_mesh: Some(mesh),
+    })
 }
 
 fn load_ic_file(
@@ -210,39 +331,35 @@ fn load_ic_file(
     mhd: &mut MhdField,
 ) -> anyhow::Result<(usize, IcMetadata)> {
     let file = fs::File::open(path)?;
-    let reader = std::io::BufReader::new(file);
+    let lines: Vec<String> = std::io::BufReader::new(file)
+        .lines()
+        .collect::<Result<_, _>>()?;
+    load_ic_lines(lines, solver, mhd)
+}
+
+fn load_ic_lines(
+    lines: Vec<String>,
+    solver: &mut LbmSolver3D,
+    mhd: &mut MhdField,
+) -> anyhow::Result<(usize, IcMetadata)> {
     let lattice = &solver.collider.lattice;
     let nx = solver.nx;
     let ny = solver.ny;
 
     let mut loaded = 0usize;
-    let mut meta = IcMetadata::default();
+    let meta = admit_ic_metadata(&lines, [nx, ny, solver.nz])?;
+    let mut cells = vec![None; nx * ny * solver.nz];
 
-    for line in reader.lines() {
-        let line = line?;
+    for line in lines {
         let line = line.trim();
-        if line.is_empty() || line.starts_with('x') {
-            continue;
-        }
-        // Parse metadata from comment header
-        if let Some(rest) = line.strip_prefix("# ") {
-            if let Some((key, val)) = rest.split_once('=') {
-                match key.trim() {
-                    "n_ref_cm3" => meta.n_ref_cm3 = val.trim().parse().ok(),
-                    "v_ref_kms" => meta.v_ref_kms = val.trim().parse().ok(),
-                    "u_scale" => meta.u_scale = val.trim().parse().ok(),
-                    _ => {}
-                }
-            }
+        if line.is_empty() || line == "x,y,z,rho,ux,uy,uz,bx,by,bz" {
             continue;
         }
         if line.starts_with('#') {
             continue;
         }
         let fields: Vec<&str> = line.split(',').collect();
-        if fields.len() < 10 {
-            continue;
-        }
+        anyhow::ensure!(fields.len() == 10, "IC row requires exactly ten fields");
         let x: usize = fields[0].trim().parse()?;
         let y: usize = fields[1].trim().parse()?;
         let z: usize = fields[2].trim().parse()?;
@@ -254,11 +371,38 @@ fn load_ic_file(
         let by: f64 = fields[8].trim().parse()?;
         let bz: f64 = fields[9].trim().parse()?;
 
-        if x >= nx || y >= ny || z >= solver.nz {
-            continue;
-        }
+        anyhow::ensure!(
+            x < nx && y < ny && z < solver.nz,
+            "IC cell outside declared mesh"
+        );
         let idx = z * (nx * ny) + y * nx + x;
-
+        anyhow::ensure!(
+            [rho, ux, uy, uz, bx, by, bz]
+                .into_iter()
+                .all(f64::is_finite)
+                && rho > 0.0,
+            "IC fields must be finite with positive density"
+        );
+        anyhow::ensure!(
+            BgkCollision::initialize_with_velocity(rho, [ux, uy, uz], lattice)
+                .into_iter()
+                .all(f64::is_finite),
+            "IC equilibrium populations overflow"
+        );
+        anyhow::ensure!(
+            cells[idx].replace([rho, ux, uy, uz, bx, by, bz]).is_none(),
+            "duplicate IC cell"
+        );
+        loaded += 1;
+    }
+    anyhow::ensure!(
+        loaded == cells.len(),
+        "IC requires every mesh cell exactly once: loaded {loaded} of {}",
+        cells.len()
+    );
+    for (idx, cell) in cells.into_iter().enumerate() {
+        let [rho, ux, uy, uz, bx, by, bz] =
+            cell.ok_or_else(|| anyhow::anyhow!("IC missing cell {idx}"))?;
         solver.rho[idx] = rho;
         solver.u[idx] = [ux, uy, uz];
 
@@ -271,16 +415,17 @@ fn load_ic_file(
         mhd.bx[idx] = bx;
         mhd.by[idx] = by;
         mhd.bz[idx] = bz;
-
-        loaded += 1;
     }
     Ok((loaded, meta))
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
+    eprintln!(
+        "physical_comparison_admission=blocked: periodic x streaming has an inlet overwrite; open outflow, population flux ledger and gravitational acceleration frame require separate specifications"
+    );
     let dm_label = if cli.no_dm { "OFF" } else { "ON" };
     let ic_label = if cli.ic_file.is_some() {
-        "real-data"
+        "declared-input"
     } else {
         "synthetic"
     };
@@ -350,6 +495,22 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     // Initialize DM force field (if enabled)
     let dm_field = if !cli.no_dm {
+        if let Some(mesh) = &ic_meta.physical_mesh {
+            let origin = mesh.origin_m();
+            let upper = mesh.position_m([cli.nx - 1, 0, 0])?;
+            let au_m = 1.496e11;
+            let close = |left: f64, right: f64| {
+                (left - right).abs() <= 1e-12 * left.abs().max(right.abs()).max(1.0)
+            };
+            anyhow::ensure!(
+                cli.nx > 1
+                    && close(origin[0], cli.dm_r_min * au_m)
+                    && close(upper[0], cli.dm_r_max * au_m)
+                    && close(origin[1], -(cli.ny as f64) * mesh.spacing_m() / 2.0)
+                    && close(origin[2], -(cli.nz as f64) * mesh.spacing_m() / 2.0),
+                "DM grid mapping disagrees with admitted SI mesh; declare matching radial endpoints and centered transverse coordinates"
+            );
+        }
         // Use IC metadata for unit conversion when available (overrides CLI defaults)
         let n_ref = ic_meta.n_ref_cm3.unwrap_or(cli.dm_n_ref);
         let v_ref = ic_meta.v_ref_kms.unwrap_or(cli.dm_v_ref);
@@ -366,9 +527,15 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         // delta_x = 1 AU / nx, delta_t = delta_x * (v_sw_lattice / v_sw_phys),
         // force_scale = delta_t^2 / delta_x.
         let au_m = 1.496e11;
-        let delta_x = au_m / cli.nx as f64;
+        let delta_x = ic_meta
+            .physical_units
+            .as_ref()
+            .map_or(au_m / cli.nx as f64, LatticeUnits::spacing_m);
         let v_sw_phys = v_ref * 1.0e3; // km/s -> m/s
-        let delta_t = delta_x * (u_sc / v_sw_phys);
+        let delta_t = ic_meta
+            .physical_units
+            .as_ref()
+            .map_or(delta_x * (u_sc / v_sw_phys), LatticeUnits::timestep_s);
         let force_scale = delta_t * delta_t / delta_x;
 
         let dm_config = DmForceConfig {
@@ -388,7 +555,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         };
         let field = DmForceField::new(cli.nx, cli.ny, cli.nz, dm_config);
         eprintln!(
-            "DM max |F_grav|: {:.6e} (lattice units)",
+            "DM max |a_grav|: {:.6e} (lattice acceleration)",
             field.max_force_magnitude()
         );
         if cli.dm_sigma > 0.0 {
@@ -427,7 +594,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         }
 
         // 2. Apply Zou-He velocity inlet BC at x=0
-        zou_he.apply_velocity_inlet_min_x(&mut solver.f, cli.nx, cli.ny, cli.nz, u_sw);
+        zou_he.apply_velocity_inlet_min_x_aosoa(&mut solver.f, cli.nx, cli.ny, cli.nz, u_sw);
 
         // 3. Recompute macroscopic from BC-modified post-stream distributions
         solver.compute_macroscopic();
@@ -438,10 +605,11 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         // 5. Combine with DM gravitational force (if enabled)
         let combined = match &dm_field {
             Some(dm) => {
-                let grav_combined = combine_forces(&lorentz, &dm.force);
+                let gravity = gravitational_force_density(dm, &solver.rho)?;
+                let grav_combined = combine_forces(&lorentz, &gravity);
                 // Add dynamic drag force when sigma_chi_b > 0 (kappa-based)
                 if dm.config.sigma_chi_b > 0.0 {
-                    let drag = dm.drag_force_lattice(&solver.u);
+                    let drag = dm.drag_force_density_lattice(&solver.rho, &solver.u);
                     combine_forces(&grav_combined, &drag)
                 } else {
                     grav_combined
@@ -468,19 +636,21 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
             // Compute force ratio
             let lorentz_now = mhd.lorentz_force();
             let max_lorentz = max_force_mag(&lorentz_now);
-            let max_dm = dm_field.as_ref().map_or(0.0, |d| d.max_force_magnitude());
-            let ratio = if max_lorentz > 0.0 {
-                max_dm / max_lorentz
-            } else {
-                0.0
+            let max_dm = match &dm_field {
+                Some(dm) => max_force_mag(&gravitational_force_density(dm, &solver.rho)?),
+                None => 0.0,
+            };
+            let ratio = match ratio_of_maxima(max_dm, max_lorentz)? {
+                Some(value) => format!("{value:.3e}"),
+                None => "undefined_zero_lorentz".to_owned(),
             };
 
             // Report drag force magnitude when sigma > 0 (kappa-based)
             let drag_info = if let Some(dm) = dm_field.as_ref() {
                 if dm.config.sigma_chi_b > 0.0 {
-                    let drag = dm.drag_force_lattice(&solver.u);
+                    let drag = dm.drag_force_density_lattice(&solver.rho, &solver.u);
                     let max_drag = max_force_mag(&drag);
-                    format!("  |F_drag|={max_drag:.3e}")
+                    format!("  max_drag_force_density_lattice={max_drag:.3e}")
                 } else {
                     String::new()
                 }
@@ -489,7 +659,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
             };
 
             eprintln!(
-                "step={:>6}  mass={mass:.6}  B_energy={energy:.6e}  max|divB|={div:.6e}  |F_DM|/|F_L|={ratio:.3e}{drag_info}",
+                "step={:>6}  mass={mass:.6}  B_energy={energy:.6e}  max|divB|={div:.6e}  max_gravity_force_density_lattice={max_dm:.3e}  max_lorentz_force_density_lattice={max_lorentz:.3e}  gravity_to_lorentz_ratio_of_maxima={ratio}{drag_info}  physical_bound=unassessed",
                 step + 1,
             );
 
@@ -501,4 +671,106 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     eprintln!("done.");
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    fn admitted_fixture() -> Vec<String> {
+        let density_ref = 5e6 * lbm_3d::dm_force::DRAG_PROTON_MASS_KG;
+        let mesh = UniformCartesianMesh::new([2; 3], [0.0; 3], 1e6).unwrap();
+        let units = LatticeUnits::new(&mesh, 0.125, density_ref).unwrap();
+        let mut lines = format!("# mesh_kind=uniform_cartesian\n# coordinate_frame=heliocentric_cartesian\n# field_storage=lattice\n# magnetic_normalization=sqrt_mu0_rho_ref_dx_over_dt\n# origin_x_m=0\n# origin_y_m=0\n# origin_z_m=0\n# spacing_m=1000000\n# timestep_s=0.125\n# density_ref_kg_m3={density_ref:.17e}\n# magnetic_unit_t={:.17e}\n# n_ref_cm3=5\n# v_ref_kms=400\n# u_scale=0.05", units.magnetic_unit_t())
+            .lines().map(str::to_owned).collect::<Vec<_>>();
+        for z in 0..2 {
+            for y in 0..2 {
+                for x in 0..2 {
+                    lines.push(format!("{x},{y},{z},1,0.05,0,0,0.001,0,0"));
+                }
+            }
+        }
+        lines
+    }
+
+    #[test]
+    fn physical_ic_admission_rejects_missing_logarithmic_and_mismatched_units() {
+        let valid = admitted_fixture();
+        assert!(admit_ic_metadata(&valid, [2; 3]).is_ok());
+        assert!(admit_ic_metadata(&[], [2; 3]).is_err());
+        for (key, replacement) in [
+            ("mesh_kind", "log_radial"),
+            ("magnetic_unit_t", "1"),
+            ("spacing_m", "0"),
+            ("v_ref_kms", "300"),
+            ("density_ref_kg_m3", "1"),
+        ] {
+            let prefix = format!("# {key}=");
+            let changed = valid
+                .iter()
+                .map(|line| {
+                    if line.starts_with(&prefix) {
+                        format!("{prefix}{replacement}")
+                    } else {
+                        line.clone()
+                    }
+                })
+                .collect::<Vec<_>>();
+            assert!(
+                admit_ic_metadata(&changed, [2; 3]).is_err(),
+                "accepted {key}"
+            );
+        }
+    }
+
+    #[test]
+    fn malformed_ic_preserves_all_target_fields() {
+        let valid = admitted_fixture();
+        for malformed in [
+            "0,0,0,1,0,0,0,0,0,0",
+            "2,0,0,1,0,0,0,0,0,0",
+            "0,0,0,NaN,0,0,0,0,0,0",
+            "0,0,0",
+        ] {
+            let mut lines = valid.clone();
+            lines.push(malformed.to_owned());
+            let mut solver = LbmSolver3D::new(2, 2, 2, 0.8);
+            let mut mhd = MhdField::new(2, 2, 2, MhdConfig::default());
+            let before = (
+                solver.f.clone(),
+                solver.rho.clone(),
+                solver.u.clone(),
+                mhd.bx.clone(),
+                mhd.by.clone(),
+                mhd.bz.clone(),
+            );
+            assert!(load_ic_lines(lines, &mut solver, &mut mhd).is_err());
+            assert_eq!(
+                before,
+                (solver.f, solver.rho, solver.u, mhd.bx, mhd.by, mhd.bz)
+            );
+        }
+        let mut solver = LbmSolver3D::new(2, 2, 2, 0.8);
+        let mut mhd = MhdField::new(2, 2, 2, MhdConfig::default());
+        let mut missing = valid.clone();
+        missing.pop();
+        assert!(load_ic_lines(missing, &mut solver, &mut mhd).is_err());
+        assert_eq!(load_ic_lines(valid, &mut solver, &mut mhd).unwrap().0, 8);
+        assert!(solver.rho.iter().all(|density| *density == 1.0));
+    }
+
+    #[test]
+    fn density_weighting_and_undefined_ratio_are_explicit() {
+        let mut field = DmForceField::new(2, 1, 1, DmForceConfig::default());
+        field.force = vec![[0.01, 0.0, 0.0]; 2];
+        assert_eq!(
+            gravitational_force_density(&field, &[2.0, 3.0]).unwrap(),
+            vec![[0.02, 0.0, 0.0], [0.03, 0.0, 0.0]]
+        );
+        assert!(gravitational_force_density(&field, &[1.0]).is_err());
+        assert!(gravitational_force_density(&field, &[1.0, f64::NAN]).is_err());
+        assert_eq!(ratio_of_maxima(2.0, 4.0).unwrap(), Some(0.5));
+        assert_eq!(ratio_of_maxima(2.0, 0.0).unwrap(), None);
+        assert_eq!(ratio_of_maxima(0.0, 0.0).unwrap(), None);
+        assert!(ratio_of_maxima(f64::NAN, 1.0).is_err());
+    }
 }

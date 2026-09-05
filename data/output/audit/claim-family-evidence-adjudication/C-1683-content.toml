@@ -1,0 +1,5 @@
+claim_id = "C-1683"
+expected_statement = "knudsen_number(n, T) is invariant with heliocentric distance under the standard solar-wind scalings, equalling 2.167e8 at all radii, so it cannot locate any BGK validity boundary."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+statement = "At source revision 81a4ca6e, knudsen_number(n, T) is invariant with heliocentric distance under the standard solar-wind scalings, equalling 2.167e8 at all radii, so it cannot locate any BGK validity boundary."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml; historical source at git revision 81a4ca6e; data/output/audit/claim-family-evidence-adjudication/dm-dimensional-admission-and-sensitivity.toml"

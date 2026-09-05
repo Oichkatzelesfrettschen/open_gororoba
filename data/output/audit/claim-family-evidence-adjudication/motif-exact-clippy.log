@@ -1,0 +1,18 @@
+    Checking num-integer v0.1.46
+    Checking serde_core v1.0.228
+    Checking num-complex v0.4.6
+    Checking num-rational v0.4.2
+    Checking simba v0.9.1
+    Checking pulp v0.22.2
+    Checking serde v1.0.228
+    Checking serde_json v1.0.149
+    Checking ciborium v0.2.2
+    Checking tinytemplate v1.2.1
+    Checking criterion v0.8.2
+    Checking nalgebra v0.34.2
+    Checking gauss-quad v0.3.1
+    Checking verified_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/verified_core)
+    Checking cd_kernel v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_kernel)
+    Checking moreno_1997 v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/moreno_1997)
+    Checking algebra_analysis v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_analysis)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 8.07s

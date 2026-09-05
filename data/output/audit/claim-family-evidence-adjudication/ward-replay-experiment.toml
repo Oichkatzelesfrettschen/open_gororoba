@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-290"
+title = "Independent Ward component contractions and zero-virtuality intercepts"
+status = "active"
+binary = "ward_independent_residuals"
+claim_refs = ["C-1635", "C-1637", "C-1666"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Declared Euclidean off-shell fixture, virtuality ladder and fixed-domain quadrature refinement; shared worldline tensors with independent contractions and Lagrange intercepts."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml"]
+method = "Independent reverse-order contraction, lower-point RHS assembly, omission controls and zero-intercept evaluation. Separate electromagnetic, gravitational, tadpole and on-shell predicates."
+run = "cargo test -p gr_core --test ward_independent_residuals --profile validation -- --nocapture"
+output = ["data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"]
+status_note = "The independent oracle falsified the original intercept sign. Corrected signed components pass the arithmetic oracle; original norm thresholds remain failed. Quadrature error certification remains unresolved. E-073 retains its historical producer scope."

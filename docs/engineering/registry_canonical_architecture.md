@@ -152,6 +152,17 @@ name counts; a retained binary name can still have an owner change.
 
 ## Typed empirical evidence contracts
 
+`gororoba-db claim correct-content --spec <correction.toml> --actor <actor>
+--reason <reason>` repairs a statement and its implementation locator together.
+The specification declares `claim_id`, `expected_statement`,
+`expected_where_stated`, `statement`, and `where_stated`. The transaction rejects
+a changed expected pair, updates both columns and the compatibility body, and
+appends two field revisions. Each revision retains the complete before/after
+specification in a `claim_content_correction_v1` JSON reason envelope. Status
+adjudication uses the separate typed transition command; obtain its fingerprint
+after applying the content correction. Re-export and refresh signatures after
+the complete batch.
+
 Use `gororoba-db claim set-evidence --spec <contract.toml> --actor <actor>
 --reason <reason>` for empirical declarations. `ClaimEvidenceSpec` in
 `provenance_store::claim_evidence` requires an evidence layer, intervening maps

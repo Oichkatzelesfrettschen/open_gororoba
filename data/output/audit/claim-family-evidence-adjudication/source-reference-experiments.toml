@@ -1,0 +1,33 @@
+[[experiment]]
+id = "E-287"
+title = "NuFit release-specific reference membership audit"
+status = "active"
+binary = "nufit_reference_identity"
+claim_refs = ["C-1719", "C-1720", "C-1722"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Retained NuFit6.0 and6.1 PDF tables, exact SHA256 identities and four normal-ordering analysis variants; fixed scorecard theta23=48.99."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf", "data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf", "data/output/audit/claim-family-evidence-adjudication/nufit-variant-intervals.toml"]
+method = "Rust integration tests verify source PDF hashes, reference-column identities and fixed-angle membership. Extended fixtures verify all six NuFit6.0 IC24 and IC19 contours, periodic CP-A165 and CP-B93 memberships, preserved historical composite literals, and dm21/dm31 marginal-bound ratio boxes. NuFit6.1 coverage remains theta23 only; historical source attribution and joint ratio confidence remain unresolved."
+run = "cargo test -p algebra_experimental --test nufit_reference_identity --profile validation"
+output = ["Rust integration test output"]
+output_path_refs = []
+status_note = "Four Rust integration tests passed, including source PDF SHA256 verification through the required native sha256sum executable. Retained original result: nufit-reference-test-result.toml. Extended result: nufit-complete-reference-adjudication.toml. Physical model and published global-fit parameter estimation are excluded."
+
+[[experiment]]
+id = "E-288"
+title = "Moreno source and Rocq theorem hypothesis comparison"
+status = "planned"
+binary = "rocq"
+claim_refs = ["C-1721"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Moreno q-alg/9710013 source TeX Corollary1.6, Proposition1.7 and kernel-equality remark; Rocq theorem statements and interface assumptions."
+input_path_refs = ["proofs/theories/C1538_MorZDSymmetry.v", "proofs/theories/C1539_MorSkewSymm.v", "data/papers/intake/2026_08_06_claim_falsification/pdf_success/moreno_1997_zero_divisors_cd_arxiv_e_print_q_alg_9710013.tex"]
+method = "Compile retained theorem bodies, enumerate exact hypotheses and conclusions, and check their implication relationship with source propositions. Preserve conjugate overbars from TeX. Compilation alone does not discharge the source-map or model-interface obligations."
+run = "make -C proofs vok"
+output = ["Rocq body-check output", "Source-to-theorem hypothesis map"]
+output_path_refs = []
+status_note = "Blocked on an explicit complete source-hypothesis mapping and interface model-discharge evidence; the retained audit establishes a partial-formalization concern."
