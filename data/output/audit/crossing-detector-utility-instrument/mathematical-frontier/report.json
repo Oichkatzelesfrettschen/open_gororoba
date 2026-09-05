@@ -1,0 +1,408 @@
+{
+  "cells": [
+    {
+      "cost_ratio": 0.0,
+      "interval": {
+        "draws": 2,
+        "lower": 3.525,
+        "lower_quantile": 0.025,
+        "upper": 4.4750000000000005,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -2.0,
+      "point_utility": 4.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 1.0,
+      "interval": {
+        "draws": 2,
+        "lower": 2.525,
+        "lower_quantile": 0.025,
+        "upper": 3.475,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -2.0,
+      "point_utility": 3.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 2.0,
+      "interval": {
+        "draws": 2,
+        "lower": 1.525,
+        "lower_quantile": 0.025,
+        "upper": 2.475,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -2.0,
+      "point_utility": 2.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 3.0,
+      "interval": {
+        "draws": 2,
+        "lower": 0.525,
+        "lower_quantile": 0.025,
+        "upper": 1.4749999999999999,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -2.0,
+      "point_utility": 1.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 4.0,
+      "interval": {
+        "draws": 2,
+        "lower": -0.475,
+        "lower_quantile": 0.025,
+        "upper": 0.475,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -2.0,
+      "point_utility": 0.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 0.0,
+      "interval": {
+        "draws": 2,
+        "lower": 2.275,
+        "lower_quantile": 0.025,
+        "upper": 3.2249999999999996,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -0.75,
+      "point_utility": 2.75,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 1.0,
+      "interval": {
+        "draws": 2,
+        "lower": 1.275,
+        "lower_quantile": 0.025,
+        "upper": 2.225,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -0.75,
+      "point_utility": 1.75,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 2.0,
+      "interval": {
+        "draws": 2,
+        "lower": 0.275,
+        "lower_quantile": 0.025,
+        "upper": 1.225,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -0.75,
+      "point_utility": 0.75,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 3.0,
+      "interval": {
+        "draws": 2,
+        "lower": -0.725,
+        "lower_quantile": 0.025,
+        "upper": 0.22499999999999998,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -0.75,
+      "point_utility": -0.25,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 4.0,
+      "interval": {
+        "draws": 2,
+        "lower": -1.725,
+        "lower_quantile": 0.025,
+        "upper": -0.775,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": -0.75,
+      "point_utility": -1.25,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 0.0,
+      "interval": {
+        "draws": 2,
+        "lower": 1.025,
+        "lower_quantile": 0.025,
+        "upper": 1.975,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 0.5,
+      "point_utility": 1.5,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 1.0,
+      "interval": {
+        "draws": 2,
+        "lower": 0.025,
+        "lower_quantile": 0.025,
+        "upper": 0.975,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 0.5,
+      "point_utility": 0.5,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 2.0,
+      "interval": {
+        "draws": 2,
+        "lower": -0.975,
+        "lower_quantile": 0.025,
+        "upper": -0.025000000000000022,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 0.5,
+      "point_utility": -0.5,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 3.0,
+      "interval": {
+        "draws": 2,
+        "lower": -1.9749999999999999,
+        "lower_quantile": 0.025,
+        "upper": -1.025,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 0.5,
+      "point_utility": -1.5,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 4.0,
+      "interval": {
+        "draws": 2,
+        "lower": -2.9749999999999996,
+        "lower_quantile": 0.025,
+        "upper": -2.025,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 0.5,
+      "point_utility": -2.5,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 0.0,
+      "interval": {
+        "draws": 2,
+        "lower": -0.22499999999999998,
+        "lower_quantile": 0.025,
+        "upper": 0.725,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 1.75,
+      "point_utility": 0.25,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 1.0,
+      "interval": {
+        "draws": 2,
+        "lower": -1.225,
+        "lower_quantile": 0.025,
+        "upper": -0.275,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 1.75,
+      "point_utility": -0.75,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 2.0,
+      "interval": {
+        "draws": 2,
+        "lower": -2.225,
+        "lower_quantile": 0.025,
+        "upper": -1.2750000000000001,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 1.75,
+      "point_utility": -1.75,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 3.0,
+      "interval": {
+        "draws": 2,
+        "lower": -3.2249999999999996,
+        "lower_quantile": 0.025,
+        "upper": -2.2750000000000004,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 1.75,
+      "point_utility": -2.75,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 4.0,
+      "interval": {
+        "draws": 2,
+        "lower": -4.225,
+        "lower_quantile": 0.025,
+        "upper": -3.275,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 1.75,
+      "point_utility": -3.75,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 0.0,
+      "interval": {
+        "draws": 2,
+        "lower": -1.4749999999999999,
+        "lower_quantile": 0.025,
+        "upper": -0.525,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 3.0,
+      "point_utility": -1.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 1.0,
+      "interval": {
+        "draws": 2,
+        "lower": -2.475,
+        "lower_quantile": 0.025,
+        "upper": -1.525,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 3.0,
+      "point_utility": -2.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 2.0,
+      "interval": {
+        "draws": 2,
+        "lower": -3.475,
+        "lower_quantile": 0.025,
+        "upper": -2.525,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 3.0,
+      "point_utility": -3.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 3.0,
+      "interval": {
+        "draws": 2,
+        "lower": -4.4750000000000005,
+        "lower_quantile": 0.025,
+        "upper": -3.5250000000000004,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 3.0,
+      "point_utility": -4.0,
+      "region": "manual_review"
+    },
+    {
+      "cost_ratio": 4.0,
+      "interval": {
+        "draws": 2,
+        "lower": -5.475,
+        "lower_quantile": 0.025,
+        "upper": -4.525,
+        "upper_quantile": 0.975
+      },
+      "normalized_overhead_shift": 3.0,
+      "point_utility": -5.0,
+      "region": "manual_review"
+    }
+  ],
+  "coefficients": {
+    "a": 2.0,
+    "b": 1.0,
+    "k": 0.0
+  },
+  "decision_boundary": "Conditional decision model only. Operational admission, independent reference quality and owner valuations require separate evidence. Missing uncertainty yields Manual Review.",
+  "frontier_at_measured_overhead": {
+    "exclusive_ratio": 2.0,
+    "kind": "positive_below"
+  },
+  "grid": {
+    "max_cost_ratio": 4.0,
+    "max_overhead_shift": 3.0,
+    "min_overhead_shift": -2.0,
+    "size": 5
+  },
+  "inference_boundary": "Pointwise empirical 2.5/97.5 paired-draw percentiles; supplied resampling design determines coverage. Grid colors are not simultaneous confidence regions or permission to optimize on final data.",
+  "input_sha256": "45271c50b94a1b09beb2f5417de120ffdb1e5f9396114fdb36b1e835771692bd",
+  "plot_admission": "Interval-sign colors require empirical adjudicated inputs and at least 1000 paired draws. The draw floor is a computational safeguard, not a confidence-coverage guarantee. Every other input remains Manual Review.",
+  "request": {
+    "evidence_kind": "mathematical_fixture",
+    "measurement_boundary": "MATHEMATICAL FIXTURE ONLY: two-hour synthetic exposure, not spacecraft measurements",
+    "reference": "mathematical_fixture",
+    "schema_version": 1,
+    "sources": [],
+    "utility": {
+      "accounting": {
+        "augmented": {
+          "false_positives": 4,
+          "true_positives": 7
+        },
+        "baseline": {
+          "false_positives": 2,
+          "true_positives": 3
+        },
+        "exposure_hours": 2.0,
+        "kind": "event",
+        "true_events": 10
+      },
+      "additional_overhead": 0.0,
+      "benefit_per_true_detection": 1.0,
+      "paired_draws": [
+        {
+          "accounting": {
+            "augmented": {
+              "false_positives": 4,
+              "true_positives": 7
+            },
+            "baseline": {
+              "false_positives": 2,
+              "true_positives": 3
+            },
+            "exposure_hours": 2.0,
+            "kind": "event",
+            "true_events": 10
+          },
+          "additional_overhead": -1.0
+        },
+        {
+          "accounting": {
+            "augmented": {
+              "false_positives": 4,
+              "true_positives": 7
+            },
+            "baseline": {
+              "false_positives": 2,
+              "true_positives": 3
+            },
+            "exposure_hours": 2.0,
+            "kind": "event",
+            "true_events": 10
+          },
+          "additional_overhead": 1.0
+        }
+      ]
+    }
+  },
+  "schema_version": 1,
+  "unit": "per_exposure_hour"
+}

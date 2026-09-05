@@ -7,9 +7,9 @@
 //! Authoritative source: `registry/markdown_governance.toml`.
 //!
 //! - Generated at: deterministic
-//! - Document count: 138
+//! - Document count: 139
 //! - TOML generated mirrors: 15
-//! - TOML manual sources: 46
+//! - TOML manual sources: 47
 //! - Generated artifacts: 36
 //! - Manual narratives: 41
 //! - Immutable transcripts: 0
@@ -1087,7 +1087,7 @@
 //! - Header required: `true`
 //! - Notes: Generated Markdown mirror with an explicit immutable header.
 //!
-//! ### MDG-0130: `docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md`
+//! ### MDG-0130: `docs/research/crossing-detector-statistical-benefit.md`
 //!
 //! - Kind: `manual_source`
 //! - Mode: `toml_manual_source`
@@ -1096,56 +1096,65 @@
 //!   - `registry/research_narratives.toml`
 //! - Notes: Manual Markdown source with a declared TOML destination; mirror promotion remains open.
 //!
-//! ### MDG-0131: `docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md`
+//! ### MDG-0131: `docs/research/nanograv_15yr_cayley_dickson_synthesis_2026.md`
+//!
+//! - Kind: `manual_source`
+//! - Mode: `toml_manual_source`
+//! - Header required: `false`
+//! - Source TOML refs:
+//!   - `registry/research_narratives.toml`
+//! - Notes: Manual Markdown source with a declared TOML destination; mirror promotion remains open.
+//!
+//! ### MDG-0132: `docs/tickets/TICKET_PIONEER_FLYBY_FRACTAL_BRIDGE.md`
 //!
 //! - Kind: `generated_markdown`
 //! - Mode: `toml_generated_mirror`
 //! - Header required: `true`
 //! - Notes: Generated Markdown mirror with an explicit immutable header.
 //!
-//! ### MDG-0132: `docs/toolchain/heasarc-catalog-walker.md`
+//! ### MDG-0133: `docs/toolchain/heasarc-catalog-walker.md`
 //!
 //! - Kind: `manual_source`
 //! - Mode: `manual_narrative`
 //! - Header required: `false`
 //! - Notes: Manual narrative source retained until a canonical registry lane is assigned.
 //!
-//! ### MDG-0133: `docs/toolchain/mast-enumeration-policy.md`
+//! ### MDG-0134: `docs/toolchain/mast-enumeration-policy.md`
 //!
 //! - Kind: `manual_source`
 //! - Mode: `manual_narrative`
 //! - Header required: `false`
 //! - Notes: Manual narrative source retained until a canonical registry lane is assigned.
 //!
-//! ### MDG-0134: `docs/toolchain/nightly-2026-04-05-ice.md`
+//! ### MDG-0135: `docs/toolchain/nightly-2026-04-05-ice.md`
 //!
 //! - Kind: `manual_source`
 //! - Mode: `manual_narrative`
 //! - Header required: `false`
 //! - Notes: Manual narrative source retained until a canonical registry lane is assigned.
 //!
-//! ### MDG-0135: `docs/toolchain/shell-retirement.md`
+//! ### MDG-0136: `docs/toolchain/shell-retirement.md`
 //!
 //! - Kind: `manual_source`
 //! - Mode: `manual_narrative`
 //! - Header required: `false`
 //! - Notes: Manual narrative source retained until a canonical registry lane is assigned.
 //!
-//! ### MDG-0136: `plans/README.md`
+//! ### MDG-0137: `plans/README.md`
 //!
 //! - Kind: `manual_source`
 //! - Mode: `manual_narrative`
 //! - Header required: `false`
 //! - Notes: Manual narrative source retained until a canonical registry lane is assigned.
 //!
-//! ### MDG-0137: `vendor/proc-macro-error2/CHANGELOG.md`
+//! ### MDG-0138: `vendor/proc-macro-error2/CHANGELOG.md`
 //!
 //! - Kind: `manual_source`
 //! - Mode: `manual_narrative`
 //! - Header required: `false`
 //! - Notes: Manual narrative source retained until a canonical registry lane is assigned.
 //!
-//! ### MDG-0138: `vendor/proc-macro-error2/README.md`
+//! ### MDG-0139: `vendor/proc-macro-error2/README.md`
 //!
 //! - Kind: `manual_source`
 //! - Mode: `manual_narrative`

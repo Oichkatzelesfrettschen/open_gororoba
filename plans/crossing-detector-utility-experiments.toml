@@ -1,0 +1,44 @@
+[[experiment]]
+id = "E-284"
+title = "Continuous crossing catalog curation utility and timing accuracy"
+status = "planned"
+binary = "crossing-utility-frontier"
+claims = ["C-1743"]
+claim_refs = ["C-1743"]
+input = "Prospective independently adjudicated continuous blocks, randomized analyst assignment, active review logs and paired detector event counts. Collection and activation remain pending."
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+method = "Measure review time per validated crossing and exposure hour, crossing-time errors with reference uncertainty, missed events and duplicate burden. Compare strict-catalog and blinded adjudicated labels separately. Apply event utility and cost-ratio frontiers after measurements are admitted."
+output = []
+run = ""
+deterministic = false
+status_note = "Measurement design registered before new final analysis. Await independent reference review, continuous population manifest, analyst observations, frozen event policy and sealed activation manifest. The registered binary evaluates paired counts; it does not collect human observations. No empirical utility or timing improvement has been measured."
+
+[[experiment]]
+id = "E-285"
+title = "Continuous spacecraft shadow alerts utility and arrival latency"
+status = "planned"
+binary = "crossing-utility-frontier"
+claims = ["C-1743"]
+claim_refs = ["C-1743"]
+input = "Prospective genuine stream receipt, processing and alert timestamps, independent crossing references, paired event counts and mission-owner consequence valuations. Collection and activation remain pending."
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+method = "Measure false alert episodes per exposure hour, event recall, first-alert latency, compute latency, outages and interruption costs on continuous streams including quiet intervals. Apply frozen development-only thresholds and exact-support controls."
+output = []
+run = ""
+deterministic = false
+status_note = "Measurement design registered before new final analysis. Await live shadow-stream access, clocks and product provenance, independent labels, owner costs and sealed activation manifest. Archival event-time replay cannot establish historical receipt-to-alert latency. The registered binary evaluates paired counts; the live observation collector remains an activation requirement."
+
+[[experiment]]
+id = "E-286"
+title = "Crossing detector dual-unit cost-ratio sensitivity frontier"
+status = "planned"
+binary = "crossing-utility-frontier"
+claims = ["C-1743"]
+claim_refs = ["C-1743"]
+input = "Admitted paired sample or event counts, common exposure, resource overhead and paired uncertainty draws from the activated curation or alerting track."
+input_path_refs = ["plans/crossing-detector-operational-utility.toml"]
+method = "Compute a-r*b-k in distinct per-decision or per-exposure-hour units. Render signed breakeven contours and pointwise uncertainty with missing or inadequate uncertainty assigned Manual Review. Keep cost-ratio results conditional until owner valuations exist."
+output = []
+run = ""
+deterministic = true
+status_note = "Instrument implemented and validated on explicitly mathematical fixtures; empirical sensitivity remains pending paired observations and sealed activation. Positive, negative and zero false-alarm increments have separate decision rules. Original E-282 threshold 0.005 and its failed-target verdict remain unchanged. Empty run/output fields represent an unactivated experiment, not a runnable scientific result."

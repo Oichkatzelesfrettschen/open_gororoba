@@ -1,0 +1,13 @@
+status = "instrument_validated_empirical_tracks_await_activation"
+new_empirical_streams_analyzed = 0
+new_analyst_review_sessions = 0
+mission_valuations = "unmeasured"
+physical_timing_improvement = "unmeasured"
+latency_improvement = "unmeasured"
+operational_utility_verdict = "unestablished"
+experiments = ["E-284", "E-285", "E-286"]
+registration_scope = "Planned measurement designs; complete activation manifests and prospective final population identities remain required."
+fixture_boundary = "mathematical-fixture.json supplies synthetic arithmetic checks only. Its coefficients and plot are not spacecraft performance evidence."
+original_requirement = "E-282 minimum ROC-AUC increment 0.005 remains unchanged and unmet."
+original_protocol_sha256 = "ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586c5e520c14dd70aa3aea6"
+blocking_inputs = ["independent continuous-block adjudication", "analyst observations", "genuine receipt/alert logs", "owner valuations for unconditional utility", "sealed activation policies"]

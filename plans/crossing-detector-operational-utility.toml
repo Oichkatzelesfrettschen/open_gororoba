@@ -1,0 +1,134 @@
+schema_version = 1
+title = "Continuous crossing detection: curation, alerts and cost-ratio utility"
+status = "registered_measurement_design_awaiting_activation"
+experiments = ["E-284", "E-285", "E-286"]
+tracks = ["catalog_curation", "real_time_alerts", "cost_ratio_frontier"]
+parent_experiments = ["E-282", "E-283"]
+parent_claims = ["C-1740", "C-1741", "C-1743"]
+parent_protocol = "data/output/audit/staples-causal-validation/protocol.toml"
+parent_protocol_sha256 = "ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586c5e520c14dd70aa3aea6"
+parent_threshold = 0.005
+parent_verdict = "rejects_declared_useful_increment"
+new_empirical_analysis = "blocked_until_activation_gates_pass"
+registration_boundary = "This file fixes measurement rules. A canonical experiment registration and immutable activation manifest must seal population, operating points, adjudication policy, analysis code and uncertainty design before final stream access. A design document alone is not a completed preregistration or executed experiment."
+
+[historical_result]
+primary_interval = [0.0010149049086891153, 0.0029188809429172872]
+estimand = "Minimum paired ROC-AUC increment across all three widths and both final years under frozen fitted models."
+interpretation = "Small positive archive-conditional pairwise-ranking increment; upper endpoint below the original 0.005 target."
+metric_boundary = "A 0.2 percentage-point pairwise-ranking gain does not equal a 0.2 percent increase in detected physical events."
+uncertainty = "Approximate daily-file bootstrap conditions on frozen fits and observed epochs; interday dependence can affect coverage."
+
+[utility]
+sample_equation = "delta_U = B*pi*delta_TPR - C*(1-pi)*delta_FPR - delta_K"
+sample_units = "Benefit B per additional true-positive decision, cost C per additional false-positive decision, prevalence pi per sampled decision opportunity, delta_K in the same utility units per opportunity."
+event_equation = "delta_U_per_hour = B*delta_matched_events/H - C*delta_unmatched_alerts/H - delta_K_total/H"
+event_units = "B per additional matched physical event; C per additional unmatched alert episode; H common valid exposure hours. Duplicate unmatched episodes contribute to cost."
+event_prevalence = "Estimate event occurrence per valid exposure hour separately. The occupied +/-120-second sample fraction is not physical-event prevalence."
+valuation = "Measure analyst minutes and compute resources directly. Mission owners supply benefit, missed-event severity and false-alert valuations with provenance, uncertainty and common units. Valuations are decision inputs, not quantities identifiable from AUC."
+double_counting = "If C includes analyst review, delta_K excludes the same review cost. Log components separately. Report compute and review quantities even when conversion to common utility units remains unavailable."
+missing_values = "Unmeasured costs and benefits remain missing; never impute zero."
+
+[cost_ratio_frontier]
+formula = "delta_U/B = a - r*b - k, with r=C/B >= 0, B>0, and k=delta_K/B in the declared exposure unit"
+sample_coefficients = "a=pi*delta_TPR; b=(1-pi)*delta_FPR; k per sample opportunity"
+event_coefficients = "a=delta_matched_events/H; b=delta_unmatched_alerts/H; k per exposure hour"
+output = "Report measured a and b with paired uncertainty, measured overhead components, and the full conditional half-plane k < a-r*b. Equality gives zero incremental utility."
+zero_or_negative_b = "Handle b=0 directly; when b<0 the benefit of avoided false alerts grows with r. Do not assume every frontier has a maximum acceptable cost ratio."
+claim_rule = "Report a conditional sensitivity frontier until an owner supplies valuations. Positive utility requires a positive lower uncertainty bound at prespecified costs; an upper bound below zero rejects incremental utility there; overlap is inconclusive."
+selection = "Do not select costs, a width, a control seed or an operating threshold from final utility results. Owner-selected values arriving after final inspection require a new confirmatory holdout."
+
+[continuous_population]
+selection = "Seal probe/product/version, contiguous UTC start/end times, and development/final partitions in an activation manifest using availability and physical scope, independently of crossing labels and detector scores. Include every routine day and every intended timestamp."
+coverage = "Retain the complete planned interval manifest, retrieval identities, valid exposure, outages, fill values and rejected samples. Report planned-time coverage beside valid-time metrics; exclude outages from valid exposure while retaining events missed during outages in deployment reporting."
+labels = "Independently adjudicate full continuous final blocks while blinded to model identity and candidate scores. Candidate-only review cannot establish missed-event counts or prevalence. Use a second reviewer and record disagreement and adjudicated timing intervals."
+reference_absence = "Treat an unlisted catalog event as unknown until adjudicated. Catalog absence alone cannot establish a true negative."
+admission = "Preserve strict timestamp causality and the parent fill, equal-time, gap and common-support rules. Retain E-283's backward-time failure; any proposed repair belongs to an explicit amendment and fresh intake receipt."
+transfer = "Separate later-epoch transfer, another THEMIS probe, and an independent mission. Shared instruments and catalog methods limit independence. Admit external units, coordinates, cadence and calibration through a sealed source contract."
+
+[operating_points]
+development = "Estimate thresholds exclusively on independently adjudicated development exposure. Use the same allowed false-alert budget and common support for each detector; freeze thresholds before final access. The frozen score models retain parent training identities unless a separately registered training extension is activated."
+required_manifest_fields = ["decision_cadence", "false_alert_budgets_per_hour", "threshold_per_model_and_budget", "threshold_equality_rule", "hysteresis", "debounce", "refractory_period", "gap_reset", "matching_tolerance", "matching_tie_rule"]
+low_false_alarm_region = "Report TPR at each prespecified strict false-alert budget, achieved final false alerts per exposure hour, sample FPR and the descriptive partial ROC area over the prespecified region. A low sample FPR alone does not establish a low event-alert burden."
+matching = "Use deterministic one-to-one event/alert matching: maximize the number of admissible matches, then minimize total absolute timing error, then break ties by timestamp and stable ID. Seal tolerance and reference-time convention before final access. Count unmatched duplicate alerts."
+existing_matcher_boundary = "data_core::crossing_lists::match_crossings independently finds the nearest transition for each reference and can reuse an alert; that routine cannot supply event-utility counts."
+
+[catalog_curation]
+objective = "Increase independently confirmed crossing yield or timing accuracy at a measured analyst-time budget."
+experiment = "Randomize baseline and augmented review assistance across matched continuous blocks and analysts; conceal algorithm identity and use separate reference adjudicators. Prevent the same analyst from learning a block through the other interface. Retain assignment seed, workload and analyst/block effects."
+measurements = ["active_review_seconds", "paused_seconds", "candidate_count", "accepted_crossings", "missed_reference_crossings", "unmatched_candidates", "signed_timing_error_seconds", "absolute_timing_error_seconds", "reference_interval_distance_seconds", "inter_reviewer_disagreement", "compute_seconds"]
+reporting = "Report review minutes per exposure hour and per accepted crossing, timing error quantiles, and missed-event fraction together. Timing among matched events alone can improve by discarding difficult events."
+value = "Use measured analyst-time savings as a resource outcome. The scientific value of additional events and improved timing remains a separately declared valuation."
+
+[real_time_alerts]
+objective = "Improve event detection under explicit false-alert, latency and processing budgets."
+mode = "Shadow collection records genuine receipt and processing times before any operational action is authorized. Archived event-time replay measures compute cost and retrospective localization only."
+measurements = ["source_event_timestamp", "source_receipt_timestamp", "feature_ready_timestamp", "score_start_timestamp", "score_end_timestamp", "alert_emit_timestamp", "acknowledgement_timestamp", "clock_offset_uncertainty", "outage_intervals", "product_calibration_version", "cpu_time", "memory_bytes"]
+latency = "Report receipt-to-emission, feature-ready-to-emission, compute latency and physical-event-to-alert delay separately. Use monotonic clocks for local duration and synchronized UTC with uncertainty for cross-system delay."
+burden = "Report unmatched alert episodes per valid hour/day, duplicate alerts, missed-event fraction, events during outages and alert counts on routine days."
+miss_cost = "Collect owner-supplied missed-event consequences and severity strata before final evaluation; timing-critical and retrospective science detections may have different benefit functions."
+
+[physical_outcomes]
+primary = "Crossing-time accuracy relative to independently adjudicated timing intervals, accompanied by event recall and false-alert burden."
+secondary = "Signed timing bias and downstream parameter-estimation bias require a named physical estimator, independently justified reference, units and reference uncertainty."
+parameter_bias_gate = "A fitted value or inter-model difference alone is not estimation bias. Block a bias claim until the activation manifest names an independent reference and propagation procedure."
+reference_uncertainty = "Report distance to the adjudicated interval and signed delay from a declared reference. Preserve uncertain/unresolvable events and sensitivity bounds. The parent 120-second label pad is not measured timing uncertainty."
+
+[controls]
+geometric = "Retain the six-feature geometric baseline. Add prespecified simpler nonlinear geometric augmentations with one extra predictor and the same fitting budget to test additional model capacity. Freeze their definitions on development data."
+exact_support = "Retain all 19 coefficient-sign scrambles with seeds 1000 through 1018 plus the canonical tensor; preserve ordered 1848-term support, dimension, coefficient magnitudes, output rule, six-vector history, normalization, learned preprocessing and optimizer budget."
+algebra_interpretation = "Scrambled tensors are generic cubic controls, not necessarily algebras. GL/sign orbits can move support and address a separate estimand."
+comparison = "Use paired event, operating-point and physical-outcome differences on common exposure. Report simultaneous uncertainty for prespecified canonical-control comparisons; a point rank alone cannot establish a physical mechanism."
+claim_transition = "Useful prediction reproduced by simpler controls supports a bounded detector claim while requiring revision of algebra specificity. Preserve every parent and refutation; register a successor only after its declared decisive comparison completes."
+
+[uncertainty]
+unit = "Resample paired continuous blocks preserving all models, operating points and labels; account separately for analyst randomization in curation and reference-label uncertainty."
+activation = "Seal block duration, primary operating budget, simultaneous comparison family, confidence level, precision or exposure stopping rule and seed using development evidence before final access. Calendar days alone do not establish independent clusters."
+sparse_events = "Insufficient event or false-alert counts produce an uncertainty bound or inconclusive result, rather than zero risk. Holdout-dependent sample-size extension requires a prospectively specified sequential design."
+
+[activation_gates]
+required = ["immutable_continuous_population_manifest", "independent_label_and_timing_reference_plan", "development_only_operating_point_freeze", "event_episode_and_one_to_one_matching_policy", "paired_uncertainty_and_precision_plan", "timestamped_prediction_and_resource_logger_validation", "curation_randomization_and_review_timer", "shadow_stream_arrival_and_clock_provenance", "canonical_experiment_registration", "git_commit_and_protocol_sha256"]
+owner_values = "Owner valuations are required for an unconditional operational-utility verdict; the conditional sensitivity frontier can run after the other relevant gates pass."
+track_independence = "Activate each track separately when its own gates pass; archival availability cannot satisfy live-arrival or human-review gates."
+final_access_rule = "Keep final labels and model comparisons unopened until the relevant activation manifest and analysis version are sealed. Amendment history records every changed rule and whether final outcomes were accessed."
+
+[evidence_availability]
+available = ["sealed parent protocol", "frozen training models", "exact-support tensors and seeds", "hash-admitted archival vectors", "catalog identity", "per-file timestamp support records"]
+missing = ["representative independently adjudicated continuous final exposure", "catalog timing uncertainty", "analyst review observations", "genuine stream receipt/alert timestamps", "mission-owner benefit and cost valuations", "independent physical parameter-bias reference"]
+runner_gap = "Parent metrics retain aggregate AUC and daily kernels. Event utility requires retained timestamped predictions linked to raw support plus one-to-one event matching."
+
+[adjudication]
+classes = ["true_uncataloged_crossing", "ambiguous_boundary", "true_false_positive"]
+candidate_pool = "Pool detections from baseline, canonical and every control with catalog events; deduplicate intervals before blinded review, retaining per-model membership privately. Include independent whole-block review and routine intervals to measure misses and prevalence."
+order = "Freeze scores and candidate-generation policy, conceal model identity/output from reference adjudicators, seal adjudicated labels, then compute comparison metrics. Final adjudication must not tune the detector or operating threshold."
+reports = ["strict_catalog_matching", "independently_adjudicated_reference"]
+strict_scope = "An unmatched catalog alert is a catalog discrepancy. Only independent adjudication can label an uncataloged physical detection a false positive."
+ambiguity = "Retain ambiguous intervals separately and report best/worst admissible label bounds on fixed exposure. Dropping ambiguous events can bias prevalence, false-alarm rates and utility."
+
+[frontier_decisions]
+positive_false_alarm_increment = "When b>0, r_star=(a-k)/b; positive utility requires 0<=r<r_star. A nonpositive r_star can leave no favorable nonnegative ratio."
+negative_false_alarm_increment = "When b<0, positive utility requires r>r_star; avoided false alarms become more valuable as r increases."
+zero_false_alarm_increment = "When b=0, utility is a-k independently of r; there is no finite cost-ratio cutoff."
+zero_prevalence = "Normalized POD/TPR formulae require positive denominators. Count-based utility remains defined for zero-event or single-class exposure but does not estimate undefined conditional rates."
+regions = ["Deploy: conditional positive lower utility bound and all operational gates passed", "Maintain Baseline: upper utility bound below zero", "Manual Review: interval overlaps zero or required valuations/admission remain unresolved"]
+plot_boundary = "Plots show sensitivity to costs, not permission to deploy. Exact equality is breakeven. Missing uncertainty cannot be represented as zero uncertainty."
+
+[frontier_instrument]
+binary = "crossing-utility-frontier"
+input = "Typed JSON paired counts, common exposure, benefit-normalized costs and optional paired resampling draws; source paths and SHA256 receipts accompany empirical requests."
+outputs = ["report.json", "frontier.csv", "frontier.svg"]
+validation_scope = "Arithmetic fixtures exercise the instrument and are never scientific measurements. The instrument consumes already adjudicated paired counts; it cannot create independent labels, measure analyst time or recover historical receipt timestamps."
+visualization_gate = "Empirical adjudicated inputs require at least 1000 supplied draws before plot regions use interval signs. Fewer draws, fixture inputs and strict-catalog references remain Manual Review. The 1000-draw floor is a computational guard, not proof of coverage or effective sample size."
+uncertainty_scope = "Pointwise paired-draw percentiles are not simultaneous confidence bands over the plotted grid. Confirmatory operating-point families require the activation manifest's multiplicity procedure."
+latency_scope = "Report first admissible alert latency separately from the maximum-cardinality/minimum-timing-error matching metric; optimized matching must not hide early duplicates or late responses."
+
+[physical_metric_definitions]
+review_time_saved = "Baseline minus assisted active-review seconds per independently validated crossing, plus the corresponding difference per common exposure hour and accepted/missed counts. Wall-clock logging latency is reported separately from active labor."
+delta_sigma_time = "Baseline minus augmented standard deviation of signed timing residuals on the common set of independently referenced events matched by both detectors. Positive values indicate reduced spread. Also report mean signed bias, RMSE, interval distance, each detector's full matched-event metrics and event recall to expose selection effects."
+latency_reduction = "Baseline minus augmented first-admissible-alert delay under the same frozen matching tolerance, with both detector-specific misses and common-detected-event comparisons retained."
+interruption_cost = "Record alert-initiated downstream actions, duration and owner-valued consequences separately from alert count; shadow alerts alone cannot measure consequences of actual interventions."
+
+[geometric_capacity_control]
+definition = "Add one scalar: RMS norm of the five increments in the six-vector window divided by RMS norm of the W strictly preceding calibration increments, at each parent width. This substitutes RMS for the baseline's maximum-increment numerator."
+fitting = "Use the identical training-only log transform, standardization, seven-predictor-plus-intercept fit and optimization budget as canonical augmentation. Apply the parent's denominator/fill admission to common rows."
+nondegeneracy = "Check training-feature rank and condition number. Powers or products that collapse to linear combinations after the log transform do not supply an independent extra predictor. Retain rank failures as control-admission failures before final access."
