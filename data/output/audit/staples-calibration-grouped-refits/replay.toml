@@ -19,7 +19,7 @@ expected = "true; exit 0; both arrays contain 813 records"
 
 [independent_result_audit]
 instructions = "docs/engineering/staples-retained-result-audit.md"
-command = 'CARGO_TARGET_DIR="$PWD/.cache/retained-result-audit-target" cargo run --locked --release --manifest-path data/output/audit/staples-calibration-grouped-refits/retained-result-audit/Cargo.toml -- "$PWD" --complete'
+command = 'CARGO_TARGET_DIR="$PWD/.cache/retained-result-audit-target" cargo run --locked --release --manifest-path data/output/audit/staples-calibration-grouped-refits/retained-result-audit/Cargo.toml -- "$PWD" --complete --source-ref 291ce5023d4ae8ca30c5ee4535bd9152520233ef'
 expected = "Exit 0; complete=true; 5 CV records, 100 bootstrap records, 750 converged fits, exact planned set, and independently recomputed summary percentiles."
 
 [dependency_documentation]
@@ -31,6 +31,7 @@ verification = "make validate-governance REPO_SHARE_PRIMARY_CACHE=1"
 mutation_specs = ["data/output/audit/staples-calibration-grouped-refits/pvi-calibration-survival-transition.toml", "data/output/audit/staples-calibration-grouped-refits/logistic-grouped-refit-survival-transition.toml"]
 claim_ids = ["C-1740", "C-1741"]
 experiments = "gororoba-db experiment upsert-from-toml --spec data/output/audit/staples-calibration-grouped-refits/experiments.toml --regen-toml false"
+historical_decision_correction = "gororoba-db experiment upsert-from-toml --spec data/output/audit/staples-calibration-grouped-refits/experiment-decision-correction.toml --regen-toml false"
 exports = ["provenance export-control-plane", "execution-planning --repo-root .", "registry-emit experiments-mirror", "registry-emit claims-mirror", "registry-integrity", "provenance verify-control-plane"]
 preservation_baseline = "git show 6fbf4947c59cf699ad5462dbe966851ffcc6a354:registry/canonical/control_plane.sqlite3 > .cache/calibration-run/base-control-plane.sqlite3"
-preservation_method = "ATTACH the baseline SQLite, then compare SELECT * FROM baseline.TABLE EXCEPT SELECT * FROM main.TABLE for each table named by canonical-preservation.json. Every original row remains equal in all measured columns."
+preservation_method = "ATTACH the baseline SQLite, then compare SELECT * FROM baseline.TABLE EXCEPT SELECT * FROM main.TABLE for each table named by canonical-preservation.json. E-242 is the single changed original row among the 15 measured tables; only compat_toml_text.method changes. Every other original row compares equal in all measured columns."

@@ -3,7 +3,7 @@
 # That keeps scope classification independent of the full data CLI
 # dependency graph while preserving workspace-routing semantics.
 #
-# Prefer the cached binary at SOURCE_CHECKOUT/.cache/gate-target/validation-tools/workspace-routing to skip cargo's
+# Prefer the cached binary at <checkout>/.cache/gate-target/validation-tools/workspace-routing to skip cargo's
 # metadata walk. The validation-tools target dependencies rebuild the cached binary
 # when workspace_routing.rs changes.
 #
@@ -30,38 +30,28 @@
 #   make validate-local RUST_NEXTEST_KIND_MODE=all
 [rust-regression-scoped] clippy scope: -p data_core -p gororoba_cli_data -p gororoba_cli_physics -p gororoba_db -p provenance_store
 [rust-regression-scoped] nextest scope: -p data_core -p gororoba_cli_data -p gororoba_cli_physics -p gororoba_db -p provenance_store (scope_mode=direct kinds=--lib)
-    Checking provenance_store v0.1.0 (SOURCE_CHECKOUT/crates/provenance_store)
-    Checking gororoba_cli v0.1.0 (SOURCE_CHECKOUT/crates/gororoba_cli)
-    Checking gororoba_db v0.1.0 (SOURCE_CHECKOUT/crates/gororoba_db)
-    Checking gororoba_cli_data v0.1.0 (SOURCE_CHECKOUT/crates/gororoba_cli_data)
-    Finished `dev` profile [optimized + debuginfo] target(s) in 16.43s
+    Checking gororoba_cli_physics v0.1.0 (<checkout>/crates/gororoba_cli_physics)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 18.09s
 [rust-regression-scoped] local skip filter enabled
 [local-nextest] skip gororoba_db: no inline lib tests and no integration tests
 [local-nextest] run data_core: lib
 [local-nextest] run gororoba_cli_data: lib
 [local-nextest] run gororoba_cli_physics: lib
 [local-nextest] run provenance_store: lib
-   Compiling provenance_store v0.1.0 (SOURCE_CHECKOUT/crates/provenance_store)
-   Compiling gororoba_cli v0.1.0 (SOURCE_CHECKOUT/crates/gororoba_cli)
-   Compiling gororoba_cli_data v0.1.0 (SOURCE_CHECKOUT/crates/gororoba_cli_data)
-    Finished `test` profile [optimized + debuginfo] target(s) in 11.75s
+    Finished `test` profile [optimized + debuginfo] target(s) in 4.88s
 ────────────
- Nextest run ID 63c676fa-275f-4628-80f1-df7f25576e2a with nextest profile: default
+ Nextest run ID 2824991c-d9c0-4898-969a-4c4fed797850 with nextest profile: default
     Starting 661 tests across 4 binaries
 ────────────
-     Summary [   2.527s] 661 tests run: 661 passed, 0 skipped
+     Summary [   2.674s] 661 tests run: 661 passed, 0 skipped
 [local-nextest] skip integration-test phase for 2 packages (kinds=lib). Run with --kinds all to include.
 OK: scoped Rust validation passed (clippy + nextest).
-make[1]: Leaving directory 'SOURCE_CHECKOUT'
-make[1]: Entering directory 'SOURCE_CHECKOUT'
+make[1]: Leaving directory '<checkout>'
+make[1]: Entering directory '<checkout>'
 [validation-tools] building registry validation tools in one Cargo session
-   Compiling provenance_store v0.1.0 (SOURCE_CHECKOUT/crates/provenance_store)
-   Compiling gororoba_cli v0.1.0 (SOURCE_CHECKOUT/crates/gororoba_cli)
-   Compiling gororoba_cli_provenance v0.1.0 (SOURCE_CHECKOUT/crates/gororoba_cli_provenance)
-   Compiling gororoba_cli_data v0.1.0 (SOURCE_CHECKOUT/crates/gororoba_cli_data)
-    Finished `validation` profile [optimized + debuginfo] target(s) in 1m 10s
-OK: registry validation tools cached at SOURCE_CHECKOUT/.cache/gate-target/validation-tools/.
-SOURCE_CHECKOUT/.cache/gate-target/validation-tools/markdown-registry verify-all
+    Finished `validation` profile [optimized + debuginfo] target(s) in 0.51s
+OK: registry validation tools cached at <checkout>/.cache/gate-target/validation-tools/.
+<checkout>/.cache/gate-target/validation-tools/markdown-registry verify-all
 PASS: markdown inventory compatibility gate
   registered=138 on_disk=138
 [done] verify-inventory-toml-first
@@ -72,7 +62,7 @@ PASS: markdown owner map valid
   locked=2
 [done] verify-owner-map
 [done] verify-research-narrative-root-docs
-SOURCE_CHECKOUT/.cache/gate-target/validation-tools/governance-verify validate-all
+<checkout>/.cache/gate-target/validation-tools/governance-verify validate-all
 OK: schema signatures verified for 9 registries (4 DB-backed compat exports skipped).
 [done] schema-signatures
 OK: cross-registry references verified. checks claims=16724 insights=29 experiments=1884 sources=57 datasets=136
@@ -105,7 +95,7 @@ PASS: markdown removal policy
 [done] markdown-removal-policy
 OK: experiment reference identity verified. references=1735 experiments=250 legacy_aliases=17 bin_targets=397
 [done] experiment-reference-identity
-SOURCE_CHECKOUT/.cache/gate-target/validation-tools/execution-planning --verify --repo-root .
+<checkout>/.cache/gate-target/validation-tools/execution-planning --verify --repo-root .
 OK: execution-planning registry lane verified (canonical registry-verify-execution-planning script). experiments=250 lineages=250 edges=1283 workstreams=15 todo=69 actions=38 req_modules=14 mr_packages=146
 
 ==========================================
@@ -122,5 +112,5 @@ REGISTRY GOVERNANCE VALIDATION: PASSED
 
 SQLite-first governance checks are operational.
 ==========================================
-make[1]: Leaving directory 'SOURCE_CHECKOUT'
+make[1]: Leaving directory '<checkout>'
 [validate-local] OK: scoped validation passed.
