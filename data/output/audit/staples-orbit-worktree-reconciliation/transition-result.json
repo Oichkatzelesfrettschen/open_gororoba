@@ -1,0 +1,14 @@
+{
+  "transition_key": "staples-alternative-orbit-family-adjudication",
+  "transition_spec_sha256": "116dea93933ece717e961a700051133a8ad4684cbce108e046cc9fe01c49c507",
+  "event_id": 198,
+  "allocated_successors": [
+    {
+      "proposal_key": "staples-alternative-and-isomorphic-family-comparison",
+      "canonical_claim_id": "C-1742",
+      "relation_kind": "narrows"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}

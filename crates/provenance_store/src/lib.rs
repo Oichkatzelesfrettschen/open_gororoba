@@ -1092,13 +1092,39 @@ impl ProvenanceStore {
     /// Insert or update the `[[experiment]]` rows in `raw` without deleting
     /// any other canonical experiment.
     /// An omitted status note preserves the existing canonical note.
-    /// Explicit notes append revisions in the same transaction as the upsert.
+    /// Changed fields and explicit notes append revisions atomically with a
+    /// complete before/after audit record.
     pub fn upsert_experiments_from_registry_text(
         &mut self,
         repo_root: &Path,
         source_path: &Path,
         raw: &str,
     ) -> Result<Vec<String>> {
+        let value: Value = toml::from_str(raw).context("parse experiment mutation")?;
+        let rows = value
+            .get("experiment")
+            .and_then(Value::as_array)
+            .context("experiment array missing")?;
+        let mut seen_ids = BTreeSet::new();
+        for row in rows {
+            for field in ["id", "title", "status", "binary"] {
+                let text = row
+                    .get(field)
+                    .and_then(Value::as_str)
+                    .filter(|text| !text.trim().is_empty())
+                    .with_context(|| format!("experiment requires nonempty string {field}"))?;
+                if field == "id" {
+                    if !text.strip_prefix("E-").is_some_and(|suffix| {
+                        !suffix.is_empty() && suffix.bytes().all(|byte| byte.is_ascii_digit())
+                    }) {
+                        bail!("invalid experiment ID {text:?}: expected E- followed by digits");
+                    }
+                    if !seen_ids.insert(text.to_owned()) {
+                        bail!("duplicate experiment ID {text}");
+                    }
+                }
+            }
+        }
         let experiments = load_experiments_from_registry(raw)?;
         if experiments.is_empty() {
             bail!("experiment spec contains no [[experiment]] rows");
@@ -1111,25 +1137,81 @@ impl ProvenanceStore {
             .conn
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
         let mut ids = Vec::new();
+        let mut changes = Vec::new();
+        let read_row = |tx: &rusqlite::Transaction<'_>,
+                        id: &str|
+         -> Result<Option<serde_json::Value>> {
+            let mut record = tx.query_row(
+                    "SELECT title, status, binary_name, claim_refs_json, status_note, compat_toml_text
+                     FROM experiments_cp WHERE id = ?1",
+                    params![id],
+                    |row| {
+                        Ok(serde_json::json!({
+                            "id": id,
+                            "title": row.get::<_, String>(0)?,
+                            "status": row.get::<_, String>(1)?,
+                            "binary_name": row.get::<_, Option<String>>(2)?,
+                            "claim_refs_json": row.get::<_, String>(3)?,
+                            "status_note": row.get::<_, Option<String>>(4)?,
+                            "compat_toml_text": row.get::<_, String>(5)?,
+                        }))
+                    },
+                ).optional()?;
+            if let Some(record) = &mut record {
+                let mut statement = tx.prepare(
+                        "SELECT claim_id FROM claim_experiment_refs WHERE experiment_id = ?1 ORDER BY claim_id",
+                    )?;
+                let references = statement
+                    .query_map(params![id], |row| row.get::<_, String>(0))?
+                    .collect::<rusqlite::Result<Vec<_>>>()?;
+                record["claim_experiment_refs"] = serde_json::json!(references);
+            }
+            Ok(record)
+        };
         for experiment in &experiments {
+            let before = read_row(&tx, &experiment.id)?;
+            let claim_refs_json = serde_json::to_string(&experiment.claim_refs)?;
             tx.execute(
                 "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
                  VALUES(?1, ?2, ?3, ?4, ?5, NULL, ?6)
-                 ON CONFLICT(id) DO UPDATE SET
-                    title = excluded.title,
-                    status = excluded.status,
-                    binary_name = excluded.binary_name,
-                    claim_refs_json = excluded.claim_refs_json,
-                    compat_toml_text = excluded.compat_toml_text",
+                 ON CONFLICT(id) DO NOTHING",
                 params![
                     experiment.id,
                     experiment.title,
                     experiment.status,
                     experiment.binary,
-                    serde_json::to_string(&experiment.claim_refs)?,
+                    claim_refs_json,
                     experiment.compat_toml_text
                 ],
             )?;
+            if let Some(previous) = &before {
+                for (field, new_value) in [
+                    ("title", experiment.title.as_str()),
+                    ("status", experiment.status.as_str()),
+                    (
+                        "binary_name",
+                        experiment.binary.as_deref().expect("validated binary"),
+                    ),
+                    ("claim_refs_json", claim_refs_json.as_str()),
+                    ("compat_toml_text", experiment.compat_toml_text.as_str()),
+                ] {
+                    if previous[field].as_str() != Some(new_value) {
+                        Self::entity_update_field_in_transaction(
+                            &tx,
+                            &experiment.id,
+                            new_value,
+                            "experiment-registry-upsert",
+                            Some("Apply validated experiment fragment"),
+                            EntityFieldTarget {
+                                table: "experiments_cp",
+                                revisions_table: "experiment_revisions",
+                                fk_col: "experiment_id",
+                                field,
+                            },
+                        )?;
+                    }
+                }
+            }
             if let Some(note) = &experiment.status_note {
                 Self::entity_update_field_in_transaction(
                     &tx,
@@ -1158,16 +1240,27 @@ impl ProvenanceStore {
                 )?;
             }
             ids.push(experiment.id.clone());
+            changes.push(serde_json::json!({
+                "before": before, "after": read_row(&tx, &experiment.id)?,
+            }));
         }
-        tx.commit()?;
-        self.record_control_plane_run(
-            "upsert_experiments_from_registry_text",
-            &serde_json::json!({
-                "source_path": to_repo_rel(repo_root, source_path),
-                "experiment_ids": ids,
-            })
-            .to_string(),
+        tx.execute(
+            "INSERT INTO control_plane_runs(action, created_at, details_json) VALUES (?1, ?2, ?3)",
+            params![
+                "upsert_experiments_from_registry_text",
+                Utc::now().to_rfc3339(),
+                serde_json::json!({
+                    "source_path": to_repo_rel(repo_root, source_path),
+                    "actor": "experiment-registry-upsert",
+                    "reason": "Apply validated experiment fragment",
+                    "spec_sha256": sha256_hex(raw),
+                    "experiment_ids": ids,
+                    "changes": changes,
+                })
+                .to_string()
+            ],
         )?;
+        tx.commit()?;
         Ok(ids)
     }
 
@@ -5561,6 +5654,93 @@ claim_refs = ["C-001"]
     }
 
     #[test]
+    fn upsert_experiments_validates_before_writes_and_audits_atomically() -> Result<()> {
+        let fixture = make_test_workspace("experiment_validation_audit")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        let fragment = "[[experiment]]\nid = \"E-002\"\ntitle = \"Evidence\"\nstatus = \"active\"\nbinary = \"mini-bin\"\n";
+        let tables = [
+            "experiments_cp",
+            "experiment_revisions",
+            "claim_experiment_refs",
+            "control_plane_runs",
+        ];
+        let before = tables
+            .iter()
+            .map(|table| lane_test_rows(&store, table))
+            .collect::<Result<Vec<_>>>()?;
+        let mut malformed = vec![
+            format!("{fragment}\n{fragment}"),
+            fragment.replace("E-002", "invalid"),
+        ];
+        for (field, value) in [
+            ("id", "E-002"),
+            ("title", "Evidence"),
+            ("status", "active"),
+            ("binary", "mini-bin"),
+        ] {
+            let assignment = format!("{field} = \"{value}\"\n");
+            for replacement in [
+                String::new(),
+                format!("{field} = 1\n"),
+                format!("{field} = \" \"\n"),
+            ] {
+                malformed.push(fragment.replace(&assignment, &replacement));
+            }
+        }
+        for invalid in malformed {
+            assert!(
+                store
+                    .upsert_experiments_from_registry_text(
+                        &fixture.root,
+                        &fixture.experiments,
+                        &invalid
+                    )
+                    .is_err()
+            );
+            for (table, expected) in tables.iter().zip(&before) {
+                assert_eq!(&lane_test_rows(&store, table)?, expected, "{table}");
+            }
+        }
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            fragment,
+        )?;
+        let changed = fragment
+            .replace("Evidence", "Revised evidence")
+            .replace("active", "blocked");
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            &changed,
+        )?;
+        let details: String = store.conn.query_row(
+            "SELECT details_json FROM control_plane_runs ORDER BY id DESC LIMIT 1",
+            [],
+            |row| row.get(0),
+        )?;
+        let details: serde_json::Value = serde_json::from_str(&details)?;
+        assert_eq!(details["changes"][0]["before"]["title"], "Evidence");
+        assert_eq!(details["changes"][0]["after"]["title"], "Revised evidence");
+        assert_eq!(details["spec_sha256"], sha256_hex(&changed));
+        let revisions: i64 = store.conn.query_row("SELECT COUNT(*) FROM experiment_revisions WHERE field_name IN ('title', 'status', 'compat_toml_text')", [], |row| row.get(0))?;
+        assert_eq!(revisions, 3);
+        let before = tables
+            .iter()
+            .map(|table| lane_test_rows(&store, table))
+            .collect::<Result<Vec<_>>>()?;
+        store.conn.execute_batch("CREATE TRIGGER reject_experiment_audit BEFORE INSERT ON control_plane_runs BEGIN SELECT RAISE(ABORT, 'injected audit failure'); END;")?;
+        let error = store
+            .upsert_experiments_from_registry_text(&fixture.root, &fixture.experiments, fragment)
+            .unwrap_err();
+        assert!(error.to_string().contains("injected audit failure"));
+        for (table, expected) in tables.iter().zip(before) {
+            assert_eq!(lane_test_rows(&store, table)?, expected, "{table}");
+        }
+        Ok(())
+    }
+
+    #[test]
     fn upsert_experiments_preserves_omitted_status_note() -> Result<()> {
         let fixture = make_test_workspace("upsert_experiment_note")?;
         let mut store = ProvenanceStore::open(&fixture.db)?;
@@ -5597,9 +5777,15 @@ claim_refs = ["C-001"]
         let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
         assert!(rendered.contains("status_note = \"Retained evidence\""));
         assert!(rendered.contains("title = \"Updated experiment\""));
+        let omitted_revisions = lane_test_rows(&store, "experiment_revisions")?;
+        assert!(omitted_revisions.len() > initial_revisions.len());
         assert_eq!(
-            lane_test_rows(&store, "experiment_revisions")?,
-            initial_revisions
+            store.conn.query_row(
+                "SELECT COUNT(*) FROM experiment_revisions WHERE field_name = 'status_note'",
+                [],
+                |row| row.get::<_, i64>(0),
+            )?,
+            1
         );
 
         let explicit_note = format!("{fragment}status_note = \"Updated evidence\"\n");
@@ -5650,6 +5836,7 @@ claim_refs = ["C-001"]
             )
         );
         let updated_rows = lane_test_rows(&store, "experiments_cp")?;
+        let updated_revision_count = lane_test_rows(&store, "experiment_revisions")?.len();
         store.upsert_experiments_from_registry_text(
             &fixture.root,
             &fixture.experiments,
@@ -5662,7 +5849,7 @@ claim_refs = ["C-001"]
         assert_eq!(repeated.6, "touch");
         assert_eq!(
             lane_test_rows(&store, "experiment_revisions")?.len(),
-            initial_revisions.len() + 2
+            updated_revision_count + 1
         );
 
         let inserted_note = explicit_note.replace("E-001", "E-002");
@@ -5682,6 +5869,7 @@ claim_refs = ["C-001"]
             "experiment_revisions",
             "claim_experiment_refs",
             "export_runs",
+            "control_plane_runs",
         ];
         let before = tables
             .iter()

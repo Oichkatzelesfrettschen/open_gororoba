@@ -41,6 +41,15 @@ use rand_chacha::ChaCha8Rng;
 
 use crate::staple_associator::STAPLE_DIM;
 
+/// Require both label classes before computing a Mann-Whitney ROC-AUC.
+pub fn require_auc_classes(labels: &[bool], population: &str) -> anyhow::Result<()> {
+    anyhow::ensure!(
+        labels.iter().any(|&label| label) && labels.iter().any(|&label| !label),
+        "{population} requires at least one positive and one negative label"
+    );
+    Ok(())
+}
+
 /// A sign function sigma(i,j) in {+1,-1} on the 16-element basis: the twist
 /// of a unital XOR-graded algebra, e_i e_j = sigma(i,j) e_{i XOR j}.
 pub type Twist = [[i8; STAPLE_DIM]; STAPLE_DIM];
@@ -91,6 +100,273 @@ pub fn twist_sha256(sigma: &Twist) -> String {
         .iter()
         .map(|byte| format!("{byte:02x}"))
         .collect()
+}
+
+/// The 35 lines of PG(3, 2), ordered canonically: each line is (a, b, c)
+/// with 1 <= a < b < c <= 15 and a ^ b = c.
+pub const PG32_LINE_COUNT: usize = 35;
+
+/// Enumerate all 35 projective lines in PG(3, 2) = ((Z_2)^4 \ {0}) / ~ .
+pub fn pg32_lines() -> [(usize, usize, usize); PG32_LINE_COUNT] {
+    let mut lines = [(0, 0, 0); PG32_LINE_COUNT];
+    let mut count = 0;
+    for a in 1..STAPLE_DIM {
+        for b in (a + 1)..STAPLE_DIM {
+            let c = a ^ b;
+            if b < c {
+                lines[count] = (a, b, c);
+                count += 1;
+            }
+        }
+    }
+    assert_eq!(count, PG32_LINE_COUNT);
+    lines
+}
+
+/// The 15 Fano planes of PG(3, 2): kernels of the 15 nonzero linear forms
+/// on (Z_2)^4, each with 7 nonzero points.
+pub fn pg32_planes() -> [[usize; 7]; 15] {
+    let mut planes = [[0usize; 7]; 15];
+    for (slot, func) in (1u32..16).enumerate() {
+        let mut n = 0;
+        for x in 1..16u32 {
+            if (func & x).count_ones() % 2 == 0 {
+                planes[slot][n] = x as usize;
+                n += 1;
+            }
+        }
+        assert_eq!(n, 7);
+    }
+    planes
+}
+
+/// Associator support of `sigma` restricted to one Fano plane.
+/// Cayley-Dickson sedenions put this at 168 on exactly eight of the fifteen
+/// planes (those planes are octonion subalgebras).
+pub fn plane_associator_terms(sigma: &Twist, plane: &[usize; 7]) -> usize {
+    let mut terms = 0;
+    for &i in plane {
+        for &j in plane {
+            for &k in plane {
+                let c = i32::from(sigma[i][j]) * i32::from(sigma[i ^ j][k])
+                    - i32::from(sigma[j][k]) * i32::from(sigma[i][j ^ k]);
+                if c != 0 {
+                    terms += 1;
+                }
+            }
+        }
+    }
+    terms
+}
+
+/// How many of the 15 planes are octonion (168 associator terms) for `sigma`.
+pub fn octonion_plane_count(sigma: &Twist) -> usize {
+    pg32_planes()
+        .iter()
+        .filter(|plane| plane_associator_terms(sigma, plane) == 168)
+        .count()
+}
+
+/// Number of the 15 planes that contain the line and are octonion for `sigma`.
+pub fn line_octonion_incidence(sigma: &Twist, line: (usize, usize, usize)) -> usize {
+    let (a, b, c) = line;
+    pg32_planes()
+        .iter()
+        .filter(|plane| {
+            plane.contains(&a)
+                && plane.contains(&b)
+                && plane.contains(&c)
+                && plane_associator_terms(sigma, plane) == 168
+        })
+        .count()
+}
+
+/// Build a basis-alternative, anticommutative unital twist from orientation
+/// signs on the 35 lines of PG(3, 2).
+///
+/// For each line (a, b, c) with a ^ b = c, sign s in {+1, -1}:
+/// cyclic pairs: sigma(a, b) = sigma(b, c) = sigma(c, a) = s
+/// anticyclic:   sigma(b, a) = sigma(c, b) = sigma(a, c) = -s
+/// imaginary squares: sigma(i, i) = -1
+/// identity row/col: sigma(0, i) = sigma(i, 0) = +1.
+///
+/// This construction guarantees that every pair of basis elements generates
+/// an associative (quaternionic or sub-quaternionic) algebra: [e_i, e_i, e_j] = 0,
+/// [e_i, e_j, e_j] = 0, and [e_i, e_j, e_i] = 0 identically for all i, j.
+pub fn twist_from_line_orientations(
+    lines: &[(usize, usize, usize); PG32_LINE_COUNT],
+    signs: &[i8; PG32_LINE_COUNT],
+) -> Twist {
+    let mut sigma = [[1i8; STAPLE_DIM]; STAPLE_DIM];
+    for (i, row) in sigma.iter_mut().enumerate().skip(1) {
+        row[i] = -1;
+    }
+    for (&(a, b, c), &s) in lines.iter().zip(signs.iter()) {
+        sigma[a][b] = s;
+        sigma[b][c] = s;
+        sigma[c][a] = s;
+        sigma[b][a] = -s;
+        sigma[c][b] = -s;
+        sigma[a][c] = -s;
+    }
+    sigma
+}
+
+/// Extract line orientations from an existing basis-alternative twist (e.g. CD).
+pub fn extract_line_orientations(
+    sigma: &Twist,
+    lines: &[(usize, usize, usize); PG32_LINE_COUNT],
+) -> [i8; PG32_LINE_COUNT] {
+    let mut signs = [0i8; PG32_LINE_COUNT];
+    for (k, &(a, b, _c)) in lines.iter().enumerate() {
+        signs[k] = sigma[a][b];
+    }
+    signs
+}
+
+/// A uniformly random basis-alternative twist: fair draw of the 35 line signs.
+pub fn random_alternative_twist(
+    lines: &[(usize, usize, usize); PG32_LINE_COUNT],
+    rng: &mut ChaCha8Rng,
+) -> Twist {
+    let mut signs = [1i8; PG32_LINE_COUNT];
+    for s in signs.iter_mut() {
+        *s = if rng.random_range(0..2) == 0 { 1 } else { -1 };
+    }
+    twist_from_line_orientations(lines, &signs)
+}
+
+/// Generate a uniformly random invertible 4x4 matrix over GF(2) (an element of GL(4, Z_2)).
+/// Group order is (16-1)(16-2)(16-4)(16-8) = 15 * 14 * 12 * 8 = 20,160.
+pub fn random_gl4_z2(rng: &mut ChaCha8Rng) -> [u8; 4] {
+    let r0 = rng.random_range(1..16) as u8;
+    let mut r1 = rng.random_range(1..16) as u8;
+    while r1 == r0 {
+        r1 = rng.random_range(1..16) as u8;
+    }
+    let span2 = [0, r0, r1, r0 ^ r1];
+    let mut r2 = rng.random_range(1..16) as u8;
+    while span2.contains(&r2) {
+        r2 = rng.random_range(1..16) as u8;
+    }
+    let mut span3 = [0u8; 8];
+    for (idx, &x) in span2.iter().enumerate() {
+        span3[idx] = x;
+        span3[idx + 4] = x ^ r2;
+    }
+    let mut r3 = rng.random_range(1..16) as u8;
+    while span3.contains(&r3) {
+        r3 = rng.random_range(1..16) as u8;
+    }
+    [r0, r1, r2, r3]
+}
+
+/// Apply a GL(4, Z_2) matrix to an index in 0..15.
+pub fn apply_gl4(matrix: &[u8; 4], v: usize) -> usize {
+    let mut out = 0;
+    for (bit, &row) in matrix.iter().enumerate() {
+        let dot = (row as usize & v).count_ones() % 2;
+        out |= dot << bit;
+    }
+    out as usize
+}
+
+/// Construct an algebra-isomorphic relabeling of the Cayley-Dickson twist.
+///
+/// Under any linear automorphism pi in GL(4, Z_2) and signs s in {+1, -1}^16 (s[0]=+1):
+/// sigma'(i, j) = s[i] * s[j] * s[i ^ j] * sigma0(pi(i), pi(j)).
+///
+/// The map F: e_i -> s[i] * e_{pi(i)} is an algebra isomorphism from (A, sigma')
+/// to (A, sigma0). Its associator tensor has identically 1848 terms (924 positive,
+/// 924 negative) with coefficients in {-2, +2}. GL relabelings can move the
+/// nonzero coordinate triples; equal cardinality does not imply equal support.
+pub fn isomorphic_twist(sigma0: &Twist, matrix: &[u8; 4], signs: &[i8; STAPLE_DIM]) -> Twist {
+    let mut perm = [0usize; STAPLE_DIM];
+    for (i, p) in perm.iter_mut().enumerate() {
+        *p = apply_gl4(matrix, i);
+    }
+    let mut sigma = [[1i8; STAPLE_DIM]; STAPLE_DIM];
+    for i in 0..STAPLE_DIM {
+        for j in 0..STAPLE_DIM {
+            let pi_i = perm[i];
+            let pi_j = perm[j];
+            let raw = sigma0[pi_i][pi_j];
+            let s = signs[i] * signs[j] * signs[i ^ j];
+            sigma[i][j] = raw * s;
+        }
+    }
+    sigma
+}
+
+/// Random draw from the algebra-isomorphic relabeling orbit.
+pub fn random_isomorphic_twist(sigma0: &Twist, rng: &mut ChaCha8Rng) -> Twist {
+    let matrix = random_gl4_z2(rng);
+    let mut signs = [1i8; STAPLE_DIM];
+    for s in signs.iter_mut().skip(1) {
+        *s = if rng.random_range(0..2) == 0 { 1 } else { -1 };
+    }
+    isomorphic_twist(sigma0, &matrix, &signs)
+}
+
+/// Generate a uniformly random normalized 2-cocycle on (Z_2)^4:
+/// sigma(i, j) = (-1)^{i^T B j} * tau(i) * tau(j) * tau(i ^ j)
+/// where B is a random 4x4 matrix over GF(2) and tau: {0..15} -> {+1, -1}
+/// with tau(0) = +1.
+///
+/// A normalized 2-cocycle defines an associative twisted group algebra,
+/// so its associator tensor is identically zero (0 terms).
+pub fn random_normalized_cocycle(rng: &mut ChaCha8Rng) -> Twist {
+    let mut b = [[0u8; 4]; 4];
+    for row in b.iter_mut() {
+        for entry in row.iter_mut() {
+            *entry = rng.random_range(0..2) as u8;
+        }
+    }
+    let mut tau = [1i8; STAPLE_DIM];
+    for entry in tau.iter_mut().skip(1) {
+        *entry = if rng.random_range(0..2) == 0 { 1 } else { -1 };
+    }
+    let mut sigma = [[1i8; STAPLE_DIM]; STAPLE_DIM];
+    for i in 0..STAPLE_DIM {
+        for j in 0..STAPLE_DIM {
+            let mut quad = 0u32;
+            for (p, row) in b.iter().enumerate() {
+                if ((i >> p) & 1) != 0 {
+                    for (q, &entry) in row.iter().enumerate() {
+                        if ((j >> q) & 1) != 0 && entry == 1 {
+                            quad ^= 1;
+                        }
+                    }
+                }
+            }
+            let sign_b: i8 = if quad == 1 { -1 } else { 1 };
+            sigma[i][j] = sign_b * tau[i] * tau[j] * tau[i ^ j];
+        }
+    }
+    sigma
+}
+
+/// Where a canonical score sits relative to an ensemble's central 95 percent interval.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum EnsembleIntervalPosition {
+    Below,
+    Inside,
+    Above,
+}
+
+/// Compare `canonical` to `[p2_5, p97_5]`. Equality on a fence sits inside.
+pub fn ensemble_interval_position(
+    canonical: f64,
+    p2_5: f64,
+    p97_5: f64,
+) -> EnsembleIntervalPosition {
+    if canonical > p97_5 {
+        EnsembleIntervalPosition::Above
+    } else if canonical < p2_5 {
+        EnsembleIntervalPosition::Below
+    } else {
+        EnsembleIntervalPosition::Inside
+    }
 }
 
 /// Sparse rank-3 tensor over the 16-component staple space: terms are
@@ -198,6 +474,33 @@ impl SparseCubicTensor {
         let nb = b.iter().map(|x| x * x).sum::<f64>().sqrt();
         let nc = c.iter().map(|x| x * x).sum::<f64>().sqrt();
         raw / (na * nb * nc + 1e-30)
+    }
+
+    /// Read-only access to the non-zero terms (i, j, k, coeff).
+    pub fn terms(&self) -> &[(u8, u8, u8, i8)] {
+        &self.terms
+    }
+
+    /// Score a single staple triple with a precomputed inverse denominator.
+    pub fn score_triple_precomputed(
+        &self,
+        a: &[f64; STAPLE_DIM],
+        b: &[f64; STAPLE_DIM],
+        c: &[f64; STAPLE_DIM],
+        inv_denom: f64,
+    ) -> f64 {
+        if self.terms.is_empty() {
+            return 0.0;
+        }
+        let mut out = [0.0_f64; STAPLE_DIM];
+        for &(i, j, k, coeff) in &self.terms {
+            let prod = a[i as usize] * b[j as usize] * c[k as usize];
+            if prod != 0.0 {
+                out[(i ^ j ^ k) as usize] += f64::from(coeff) * prod;
+            }
+        }
+        let raw_sq: f64 = out.iter().map(|x| x * x).sum();
+        raw_sq.sqrt() * inv_denom
     }
 
     /// Scores over consecutive staple triples, aligned with
@@ -450,6 +753,293 @@ mod tests {
                 .iter()
                 .zip(&base.cum_rotation)
                 .all(|(m, c)| m <= c)
+        );
+    }
+
+    #[test]
+    fn score_triple_precomputed_matches_normalized_score() {
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = SparseCubicTensor::from_associator(&table);
+        let rows = synthetic_rows(10);
+        let staples = staple_embedding(&rows);
+        let a = &staples[0];
+        let b = &staples[1];
+        let c = &staples[2];
+        let na = a.iter().map(|x| x * x).sum::<f64>().sqrt();
+        let nb = b.iter().map(|x| x * x).sum::<f64>().sqrt();
+        let nc = c.iter().map(|x| x * x).sum::<f64>().sqrt();
+        let inv_denom = 1.0 / (na * nb * nc + 1e-30);
+        let s1 = cd.normalized_score(a, b, c);
+        let s2 = cd.score_triple_precomputed(a, b, c, inv_denom);
+        assert!((s1 - s2).abs() <= 1e-12 * s1.abs().max(1.0));
+    }
+
+    #[test]
+    fn pg32_lines_reproduce_cd_twist() {
+        let lines = pg32_lines();
+        assert_eq!(lines.len(), 35);
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = cd_twist(&table);
+        let signs = extract_line_orientations(&cd, &lines);
+        let reconstructed = twist_from_line_orientations(&lines, &signs);
+        assert_eq!(reconstructed, cd);
+    }
+
+    #[test]
+    fn normalized_cocycles_have_zero_associator() {
+        let mut rng = ChaCha8Rng::seed_from_u64(12345);
+        for _ in 0..20 {
+            let cocycle = random_normalized_cocycle(&mut rng);
+            // Verify unital
+            for (i, row) in cocycle.iter().enumerate() {
+                assert_eq!(cocycle[0][i], 1);
+                assert_eq!(row[0], 1);
+            }
+            let tensor = SparseCubicTensor::from_twist(&cocycle);
+            assert_eq!(
+                tensor.term_count(),
+                0,
+                "any 2-cocycle must have vanishing associator"
+            );
+        }
+    }
+
+    #[test]
+    fn isomorphic_twists_preserve_terms_and_balance() {
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = cd_twist(&table);
+        let canonical = SparseCubicTensor::from_twist(&cd);
+        let support = |tensor: &SparseCubicTensor| {
+            tensor
+                .terms()
+                .iter()
+                .map(|&(first, second, third, _)| (first, second, third))
+                .collect::<std::collections::BTreeSet<_>>()
+        };
+        let canonical_support = support(&canonical);
+        let mut moved_support = false;
+        let mut rng = ChaCha8Rng::seed_from_u64(54321);
+        for _ in 0..10 {
+            let iso = random_isomorphic_twist(&cd, &mut rng);
+            let tensor = SparseCubicTensor::from_twist(&iso);
+            assert_eq!(
+                tensor.term_count(),
+                1848,
+                "isomorphic twists must have 1848 terms"
+            );
+            let (pos, neg) = tensor.sign_counts();
+            assert_eq!(pos, 924);
+            assert_eq!(neg, 924);
+            moved_support |= support(&tensor) != canonical_support;
+        }
+        assert!(
+            moved_support,
+            "GL relabeling can move support despite matching cardinality"
+        );
+    }
+
+    #[test]
+    fn auc_requires_both_classes() {
+        for labels in [&[][..], &[true, true], &[false, false]] {
+            assert!(require_auc_classes(labels, "fixture").is_err());
+        }
+        assert!(require_auc_classes(&[false, true], "fixture").is_ok());
+    }
+
+    #[test]
+    fn random_alternative_twists_satisfy_basis_alternativity() {
+        let lines = pg32_lines();
+        let mut rng = ChaCha8Rng::seed_from_u64(999);
+        for _ in 0..5 {
+            let sigma = random_alternative_twist(&lines, &mut rng);
+            for i in 1..STAPLE_DIM {
+                assert_eq!(sigma[i][i], -1);
+                for j in 1..STAPLE_DIM {
+                    if i != j {
+                        assert_eq!(sigma[i][j], -sigma[j][i], "anticommutative");
+                        // Left alternativity [e_i, e_i, e_j] = 0 <=> sigma(i, i ^ j) == -sigma(i, j)
+                        assert_eq!(sigma[i][i ^ j], -sigma[i][j], "left alternative on basis");
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn pg32_hyperplane_octonion_count_is_eight() {
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = cd_twist(&table);
+        assert_eq!(octonion_plane_count(&cd), 8);
+    }
+
+    #[test]
+    fn alternative_twist_term_counts_are_1080_plus_96k() {
+        let lines = pg32_lines();
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = cd_twist(&table);
+        let cd_n = SparseCubicTensor::from_twist(&cd).term_count();
+        assert_eq!(cd_n, 1848);
+        assert_eq!((cd_n - 1080) % 96, 0);
+        assert_eq!((cd_n - 1080) / 96, 8);
+
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        for _ in 0..128 {
+            let sigma = random_alternative_twist(&lines, &mut rng);
+            let n = SparseCubicTensor::from_twist(&sigma).term_count();
+            assert_eq!(n % 24, 0);
+            assert!((1080..=1656).contains(&n) || n == 1848);
+            assert_eq!((n - 1080) % 96, 0, "term count {n} is not 1080 + 96 k");
+        }
+    }
+
+    #[test]
+    fn hamming1_term_drop_tracks_octonion_incidence() {
+        let lines = pg32_lines();
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = cd_twist(&table);
+        let cd_signs = extract_line_orientations(&cd, &lines);
+        let mut drop_by_inc = [Vec::<usize>::new(), Vec::new(), Vec::new(), Vec::new()];
+        let mut inc3_points = std::collections::BTreeSet::new();
+        let mut inc3_lines = 0usize;
+        for (k, &line) in lines.iter().enumerate() {
+            let inc = line_octonion_incidence(&cd, line);
+            let mut signs = cd_signs;
+            signs[k] = -signs[k];
+            let n = SparseCubicTensor::from_twist(&twist_from_line_orientations(&lines, &signs))
+                .term_count();
+            let drop = 1848 - n;
+            drop_by_inc[inc].push(drop);
+            if inc == 3 {
+                inc3_lines += 1;
+                inc3_points.insert(line.0);
+                inc3_points.insert(line.1);
+                inc3_points.insert(line.2);
+            }
+        }
+        assert_eq!(inc3_lines, 7);
+        assert_eq!(inc3_points.len(), 15);
+        let inc3: Vec<(usize, usize, usize)> = lines
+            .iter()
+            .copied()
+            .filter(|line| line_octonion_incidence(&cd, *line) == 3)
+            .collect();
+        let mut common: Vec<usize> = vec![inc3[0].0, inc3[0].1, inc3[0].2];
+        for &(a, b, c) in &inc3 {
+            common.retain(|p| *p == a || *p == b || *p == c);
+        }
+        assert_eq!(common, vec![8], "288-drop lines are the pencil through e_8");
+        assert_eq!(8 / 4, 2, "e_8 is lag 2 in the staple packing");
+        assert_eq!(8 % 4, 0, "e_8 is channel 0 (Bx) in the staple packing");
+        for (inc, drops) in drop_by_inc.iter().enumerate() {
+            if drops.is_empty() {
+                continue;
+            }
+            let lo = *drops.iter().min().unwrap();
+            let hi = *drops.iter().max().unwrap();
+            assert_eq!(
+                lo, hi,
+                "Hamming-1 drop is not constant on octonion-incidence {inc}: {drops:?}"
+            );
+        }
+        assert!(
+            !drop_by_inc[0].is_empty() || !drop_by_inc[1].is_empty(),
+            "expected some lines off the octonion planes"
+        );
+    }
+
+    #[test]
+    fn reconstructed_cd_has_1848_terms_random_alternative_twists_do_not() {
+        let lines = pg32_lines();
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd = cd_twist(&table);
+        let reconstructed =
+            twist_from_line_orientations(&lines, &extract_line_orientations(&cd, &lines));
+        let cd_tensor = SparseCubicTensor::from_twist(&reconstructed);
+        assert_eq!(cd_tensor.term_count(), 1848);
+        let (cd_pos, cd_neg) = cd_tensor.sign_counts();
+        assert_eq!((cd_pos, cd_neg), (924, 924));
+
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        let mut max_terms = 0;
+        for _ in 0..64 {
+            let sigma = random_alternative_twist(&lines, &mut rng);
+            let tensor = SparseCubicTensor::from_twist(&sigma);
+            let (pos, neg) = tensor.sign_counts();
+            assert_eq!(pos, neg, "35-line twists keep sign balance");
+            assert!(tensor.term_count() < 1848);
+            max_terms = max_terms.max(tensor.term_count());
+        }
+        assert!(max_terms >= 1080);
+    }
+
+    #[test]
+    fn cd_1848_term_orientation_is_isolated_at_hamming_one() {
+        let lines = pg32_lines();
+        let table = CdMultTable::generate(STAPLE_DIM);
+        let cd_signs = extract_line_orientations(&cd_twist(&table), &lines);
+        let cd_terms =
+            SparseCubicTensor::from_twist(&twist_from_line_orientations(&lines, &cd_signs))
+                .term_count();
+        assert_eq!(cd_terms, 1848);
+
+        let mut hamming1_max = 0usize;
+        let mut hamming1_at_1848 = 0usize;
+        for k in 0..PG32_LINE_COUNT {
+            let mut signs = cd_signs;
+            signs[k] = -signs[k];
+            let n = SparseCubicTensor::from_twist(&twist_from_line_orientations(&lines, &signs))
+                .term_count();
+            hamming1_max = hamming1_max.max(n);
+            if n == 1848 {
+                hamming1_at_1848 += 1;
+            }
+        }
+        assert_eq!(
+            hamming1_at_1848, 0,
+            "a Hamming-1 neighbor of the CD orientation has 1848 terms"
+        );
+        assert!(
+            hamming1_max < 1848,
+            "Hamming-1 neighbor term-count max is {hamming1_max}"
+        );
+
+        let mut hamming2_at_1848 = 0usize;
+        for a in 0..PG32_LINE_COUNT {
+            for b in (a + 1)..PG32_LINE_COUNT {
+                let mut signs = cd_signs;
+                signs[a] = -signs[a];
+                signs[b] = -signs[b];
+                let n =
+                    SparseCubicTensor::from_twist(&twist_from_line_orientations(&lines, &signs))
+                        .term_count();
+                if n == 1848 {
+                    hamming2_at_1848 += 1;
+                }
+            }
+        }
+        assert_eq!(
+            hamming2_at_1848, 0,
+            "a Hamming-2 neighbor of the CD orientation has 1848 terms"
+        );
+    }
+
+    #[test]
+    fn ensemble_interval_position_splits_on_the_fences() {
+        assert_eq!(
+            ensemble_interval_position(0.8274, 0.8280, 0.8373),
+            EnsembleIntervalPosition::Below
+        );
+        assert_eq!(
+            ensemble_interval_position(0.8300, 0.8280, 0.8373),
+            EnsembleIntervalPosition::Inside
+        );
+        assert_eq!(
+            ensemble_interval_position(0.8400, 0.8280, 0.8373),
+            EnsembleIntervalPosition::Above
+        );
+        assert_eq!(
+            ensemble_interval_position(0.8280, 0.8280, 0.8373),
+            EnsembleIntervalPosition::Inside
         );
     }
 }

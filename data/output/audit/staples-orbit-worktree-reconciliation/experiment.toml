@@ -1,0 +1,25 @@
+[[experiment]]
+id = "E-279"
+title = "35-line alternative-twist ensemble and algebra-isomorphic relabeling orbit against the sedenion associator"
+status = "active"
+status_token = "ACTIVE"
+status_note = "Retained ensemble scores pass reconstruction of all 550 tensor identities. Canonical AUC lies below the alternative-family central interval and inside the isomorphic interval. The invariant-family threshold in C-1732's registered falsifier fires."
+binary = "staples-twist-orbit"
+binary_experiment_declared = "E-279"
+binary_registered = true
+claim_refs = ["C-1732", "C-1742"]
+claims = ["C-1732", "C-1742"]
+lineage_id = "XL-249"
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+input = "Deduplicated THEMIS-A daily FGM files and Staples crossing catalog: 813 admitted files, 1,733,470 sampled windows and 578,320 positives, seed 42."
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+method = "Five declared maps: catalog-time labels on six-sample windows; four-lag B/magnitude packing into 16D; normalized cubic contraction of overlapping staples; seeded per-file negative subsampling; pooled average-rank AUC and ensemble quantiles. Fifty normalized cocycles give zero associators; 250 basis-alternative twists change support and cardinality; 250 GL/sign relabelings preserve 1848-term cardinality and 924/924 balance while moving support indices. Seed additions and multiplications wrap modulo 2^64. Retained-score replay reconstructs tensor identities and regenerates summaries without repeating FGM scoring."
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_orbit.json --n-cocycles 50 --n-invariant-twists 250 --n-isomorphic-orbits 250 --seed 42 --neg-fraction 0.05"
+output = ["data/output/staples_twist_orbit.json"]
+output_path_refs = ["data/output/staples_twist_orbit.json"]
+dataset_label_refs = []
+dataset_refs = []
+truth_surface_consumption = []

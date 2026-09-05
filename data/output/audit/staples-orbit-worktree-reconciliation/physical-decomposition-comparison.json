@@ -1,0 +1,91 @@
+{
+  "files": 813,
+  "samples": 1733470,
+  "positives": 578320,
+  "changes": [
+    {
+      "name": "cd_associator",
+      "before": 0.8274468073358886,
+      "after": 0.8274468073358886,
+      "delta": 0
+    },
+    {
+      "name": "max_rotation",
+      "before": 0.8383099421523968,
+      "after": 0.8383099421523968,
+      "delta": 0
+    },
+    {
+      "name": "mag_jump",
+      "before": 0.7377189337602665,
+      "after": 0.7377189337602665,
+      "delta": 0
+    },
+    {
+      "name": "cd_magnitude_zeroed",
+      "before": 0.8297470784497126,
+      "after": 0.8297470784497126,
+      "delta": 0
+    },
+    {
+      "name": "cd_e8_zeroed",
+      "before": 0.826970261178645,
+      "after": 0.8270202885010008,
+      "delta": 5.002732235581675e-05
+    },
+    {
+      "name": "cd_quaternion_lag0",
+      "before": 0.5,
+      "after": 0.5,
+      "delta": 0
+    },
+    {
+      "name": "cd_octonion_two_lag",
+      "before": 0.8264093284392897,
+      "after": 0.8264454819308436,
+      "delta": 3.61534915538364e-05
+    },
+    {
+      "name": "cd_lags_1_2",
+      "before": 0.8337857087544471,
+      "after": 0.8339461972090595,
+      "delta": 0.00016048845461236194
+    },
+    {
+      "name": "cd_lags_2_3",
+      "before": 0.827169643692147,
+      "after": 0.8272865095940918,
+      "delta": 0.00011686590194481816
+    },
+    {
+      "name": "mva_lm_rotation",
+      "before": 0.8340243992008172,
+      "after": 0.8340243992008172,
+      "delta": 0
+    },
+    {
+      "name": "mva_delta_bl",
+      "before": 0.7795003731073461,
+      "after": 0.7795003731073461,
+      "delta": 0
+    },
+    {
+      "name": "b_path_length",
+      "before": 0.7763740522715948,
+      "after": 0.7763740522715948,
+      "delta": 0
+    },
+    {
+      "name": "gram_volume",
+      "before": 0.7846353112755883,
+      "after": 0.7846353112755883,
+      "delta": 0
+    },
+    {
+      "name": "rank_rotation_plus_mag_jump",
+      "before": 0.8220000551047096,
+      "after": 0.8220000557685857,
+      "delta": 6.638760652322162e-10
+    }
+  ]
+}
