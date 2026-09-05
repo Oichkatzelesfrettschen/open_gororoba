@@ -1,0 +1,11 @@
+{
+  "body_bytes": 702621,
+  "body_sha256": "3696e8ee35c29c74c02e31a95734a1946026acf72cc777d5b02b94eff75322e1",
+  "completed": true,
+  "final_url": "https://zenodo.org/records/1431095/files/article.pdf",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:45Z",
+  "requested_url": "https://zenodo.org/record/1431095/files/article.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

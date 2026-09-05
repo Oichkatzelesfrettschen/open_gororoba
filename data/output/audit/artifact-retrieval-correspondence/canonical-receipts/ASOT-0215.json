@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://doi.org/10.1038/s41586-025-09917-9",
+    "key": "doi:10.1038/s41586-025-09917-9",
+    "links": [
+      [
+        "https://doi.org/10.1038/s41586-025-09917-9",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/sensational_primary/2026_02_14/ri-033-primary-6.html",
+      "citation": "https://doi.org/10.1038/s41586-025-09917-9",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "https://doi.org/10.1038/s41586-025-09917-9"
+    }
+  },
+  "before": {
+    "canonical_url": "https://doi.org/10.1038/s41586-025-09917-9",
+    "key": "doi:10.1038/s41586-025-09917-9",
+    "links": [
+      [
+        "https://doi.org/10.1038/s41586-025-09917-9",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/sensational_primary/2026_02_14/ri-033-primary-6.html",
+      "citation": "https://doi.org/10.1038/s41586-025-09917-9",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "https://doi.org/10.1038/s41586-025-09917-9"
+    }
+  },
+  "digest_matches": false,
+  "outcome": "expected_bytes_mismatched",
+  "request": {
+    "body_bytes": 424594,
+    "body_sha256": "057c50133213bb7c2a15d3675a057517b5a44c84012b058bdf05118e45343896",
+    "completed": true,
+    "final_url": "https://www.nature.com/articles/s41586-025-09917-9?error=cookies_not_supported&code=3d6e187a-f574-4311-80a9-31ebf1e986c2",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:38Z",
+    "requested_url": "https://doi.org/10.1038/s41586-025-09917-9",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-0215",
+    "artifact_key": "doi:10.1038/s41586-025-09917-9",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 469659,
+    "expected_canonical_url": "https://doi.org/10.1038/s41586-025-09917-9",
+    "expected_sha256": "2ea06a2f49bfc7485875b7c560344286b7a64030af64fe7a341878bfe4076857",
+    "observation_key": "exact-response-ASOT-0215-77689db5b5d645c7afbcbaadf7f49e5968d2d7009ebac235a9da4c3e1c5d4b30",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-06.json",
+      "sha256": "77689db5b5d645c7afbcbaadf7f49e5968d2d7009ebac235a9da4c3e1c5d4b30"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-06.bin",
+      "sha256": "057c50133213bb7c2a15d3675a057517b5a44c84012b058bdf05118e45343896"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "10ad60ff56ae0449c842dd39008e4c97e79d0e577368be85c3b0479aed970af9"
+}

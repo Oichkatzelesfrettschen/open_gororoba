@@ -75,5 +75,6 @@ quality = "Do not interpret parser-assigned fom=100.0 as source-supplied confide
 selection = "Crossing-day non-crossing samples measure discrimination conditional on known crossing days; operational false-alarm claims need admitted non-crossing days"
 version_pin = "Pin version DOI10655312 plus digest; concept DOI3700503 can resolve changing versions"
 epoch_partition = "Block spacecraft-correlated events and shared epochs across train/test; distinct probes can observe the same physical disturbance"
-coverage_reconciliation = "Raw A count9490 differs from derived benchmark count9455; preserve explicit filtering/coverage losses before generalization"
+coverage_reconciliation = "Live raw A and primary derived A each contain9490 rows with identical timestamp sets: omitted0, added0, duplicate0. Derived R matches the raw GSE Euclidean norm, and year/doy match the UTC timestamp. catalog-a-set-reconciliation.json retains both source hashes and exact differences."
+superseded_note = "The initial research comparison reused a historical narrative count9455 as if it described the live derived catalog. Direct byte-bound set reconciliation supersedes that unverified35-row discrepancy."
 uncertainty = "Classification-method/timing-uncertainty claims await primary manuscript section3.1; catalog schema alone cannot establish zero label uncertainty"

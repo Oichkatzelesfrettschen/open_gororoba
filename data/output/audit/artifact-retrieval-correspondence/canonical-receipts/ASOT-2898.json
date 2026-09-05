@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/pdf/math/0511691.pdf",
+    "key": "url:https://arxiv.org/pdf/math/0511691.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/math/0511691.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_0022_large_annihilators_arxiv_arxiv_org_pdf_math_0511691_pdf.pdf",
+      "citation": "tags/s1",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "tags/s1"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/pdf/math/0511691.pdf",
+    "key": "url:https://arxiv.org/pdf/math/0511691.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/math/0511691.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_0022_large_annihilators_arxiv_arxiv_org_pdf_math_0511691_pdf.pdf",
+      "citation": "tags/s1",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "tags/s1"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 374167,
+    "body_sha256": "3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5",
+    "completed": true,
+    "final_url": "https://arxiv.org/pdf/math/0511691",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:30Z",
+    "requested_url": "https://arxiv.org/pdf/math/0511691.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2898",
+    "artifact_key": "url:https://arxiv.org/pdf/math/0511691.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 374167,
+    "expected_canonical_url": "https://arxiv.org/pdf/math/0511691.pdf",
+    "expected_sha256": "3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5",
+    "observation_key": "exact-response-ASOT-2898-c80564d61882847dc94aee0d3c214d9c2e584fd2844e1bccdcacbabac7e21b95",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-22.json",
+      "sha256": "c80564d61882847dc94aee0d3c214d9c2e584fd2844e1bccdcacbabac7e21b95"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-22.bin",
+      "sha256": "3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "e9e0f43e29cf43fc81f06a64557825642fcf08405bc38a7d540e094fb489e5c0"
+}

@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-3067"
+artifact_key = "url:https://pubmed.ncbi.nlm.nih.gov/36655553/"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 2627
+expected_canonical_url = "https://pubmed.ncbi.nlm.nih.gov/36655553/"
+expected_sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+observation_key = "exact-response-ASOT-3067-f7e9f57228bdea35717db54dbf9432954675be574da66b3813917a6ff182a5c2"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-29.json"
+sha256 = "f7e9f57228bdea35717db54dbf9432954675be574da66b3813917a6ff182a5c2"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-29.bin"
+sha256 = "3ac143a472ea9564c799d59fa03e1339baa73e3768c24b73df11c16a6171ff85"

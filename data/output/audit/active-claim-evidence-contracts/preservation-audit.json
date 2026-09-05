@@ -1,0 +1,5 @@
+[{"surface":"historical_claims","expected_rows":1556,"missing_or_changed_rows":0},
+{"surface":"historical_transitions","expected_rows":198,"missing_or_changed_rows":0},
+{"surface":"curated_binary_metadata","expected_rows":392,"missing_or_changed_rows":0},
+{"surface":"historical_artifact_metadata","expected_rows":3283,"missing_or_changed_rows":0},
+{"surface":"historical_artifact_links","expected_rows":2120,"missing_or_changed_rows":0}]

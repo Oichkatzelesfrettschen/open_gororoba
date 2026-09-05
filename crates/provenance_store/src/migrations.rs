@@ -124,5 +124,11 @@ pub(crate) fn migrations() -> Migrations<'static> {
         M::up(include_str!(
             "../../../db/migrations/0019_theorem_identity_evidence.sql"
         )),
+        M::up(include_str!(
+            "../../../db/migrations/0020_claim_evidence.sql"
+        )),
+        M::up(include_str!(
+            "../../../db/migrations/0021_artifact_retrieval_identity.sql"
+        )),
     ])
 }

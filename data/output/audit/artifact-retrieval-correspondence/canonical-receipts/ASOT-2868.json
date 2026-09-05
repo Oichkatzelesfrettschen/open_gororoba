@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/pdf/2411.18881.pdf",
+    "key": "url:https://arxiv.org/pdf/2411.18881.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/2411.18881.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/hypothesis_runtime_hott/2411.18881.pdf",
+      "citation": "m3/zero-divisors",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "m3/zero-divisors"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/pdf/2411.18881.pdf",
+    "key": "url:https://arxiv.org/pdf/2411.18881.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/2411.18881.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/hypothesis_runtime_hott/2411.18881.pdf",
+      "citation": "m3/zero-divisors",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "m3/zero-divisors"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 226232,
+    "body_sha256": "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18",
+    "completed": true,
+    "final_url": "https://arxiv.org/pdf/2411.18881",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:29Z",
+    "requested_url": "https://arxiv.org/pdf/2411.18881.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2868",
+    "artifact_key": "url:https://arxiv.org/pdf/2411.18881.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 226232,
+    "expected_canonical_url": "https://arxiv.org/pdf/2411.18881.pdf",
+    "expected_sha256": "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18",
+    "observation_key": "exact-response-ASOT-2868-9938bd5fa67fa47717ce48c430a34b93f40535c7a118c4f6d38bfa7b577ed286",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-19.json",
+      "sha256": "9938bd5fa67fa47717ce48c430a34b93f40535c7a118c4f6d38bfa7b577ed286"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-19.bin",
+      "sha256": "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "db406176db46f9a4aa7d7ae8f06a55edb7785205594117cf1b12905aeb178a77"
+}

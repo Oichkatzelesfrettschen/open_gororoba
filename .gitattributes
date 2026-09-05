@@ -13,8 +13,15 @@ registry/canonical/*.sqlite3 -filter -diff -merge -text
 *.sqlite    -text
 *.h5    -text
 *.cdf    -text
+data/output/audit/staples-causal-validation/source-archives/external-intake.tar.zst    -text
+data/output/audit/staples-causal-validation/source-archives/calibration-research.tar.zst    -text
+data/output/audit/artifact-retrieval-correspondence/headers-*.txt -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/provenance-experiment-module-ownership/replay-comparison-*.json    -text
+data/output/audit/staples-causal-validation/results/bootstrap.json    -text
 # Preserve the vendored release archive's original text bytes and licenses.
 vendor/proc-macro-error2/** -text
 vendor/proc-macro-error2/LICENSE-APACHE whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 # Unified-diff context markers are retained evidence bytes on empty lines.
 data/output/audit/staples-orbit-worktree-reconciliation/e8-uncommitted-before.patch whitespace=-blank-at-eol -text
+# Retained replay payloads stay materialized for numerical audits through LFS.
+data/output/audit/provenance-experiment-module-ownership/historical-replay/*.json    -text

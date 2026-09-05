@@ -1,0 +1,62 @@
+{
+  "attempts": [
+    {
+      "admission": "admitted",
+      "bytes": 1789365,
+      "curl_exit": 0,
+      "elapsed_seconds": 3.128974,
+      "final_url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=THD_L2_FGM%400&parameters=Time,thd_fgs_gse&time.min=2015-08-02T00:00:00Z&time.max=2015-08-03T00:00:00Z&format=csv",
+      "finished_at": "2026-09-05T04:36:44.965Z",
+      "headers_path": "/home/eirikr/worktrees/open_gororoba/empirical-claim-evidence-contracts/.cache/staples-external-intake/2015-08-02/attempt-1.headers",
+      "http_status": 200,
+      "raw_path": "/home/eirikr/worktrees/open_gororoba/empirical-claim-evidence-contracts/.cache/staples-external-intake/2015-08-02/attempt-1.body",
+      "requested_url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=THD_L2_FGM%400&parameters=Time,thd_fgs_gse&time.min=2015-08-02T00:00:00Z&time.max=2015-08-03T00:00:00Z&format=csv",
+      "sha256": "2f67edacc93a98428259427cfc1e98d57079242f91c62214631a98c00393ad1f",
+      "started_at": "2026-09-05T04:36:41.831Z",
+      "stderr": ""
+    }
+  ],
+  "bytes": 1789365,
+  "coverage": {
+    "cadence_microseconds_histogram": {
+      "0": 1,
+      "3148000": 90,
+      "3149000": 121,
+      "3150000": 148,
+      "3151000": 183,
+      "3152000": 224,
+      "3153000": 328,
+      "3154000": 15678,
+      "3155000": 10593,
+      "6296000": 1,
+      "6300000": 1,
+      "6301000": 1,
+      "6306000": 2,
+      "6308000": 1,
+      "6309000": 5,
+      "9463000": 1
+    },
+    "columns": [
+      "Time",
+      "thd_fgs_gse[0]",
+      "thd_fgs_gse[1]",
+      "thd_fgs_gse[2]"
+    ],
+    "coverage_scope": "Returned samples belong to requested UTC day; partial-day coverage and gaps are measured, not filled",
+    "duplicate_timestamps": 1,
+    "fill_rows": 0,
+    "finite_nonfill_rows": 27379,
+    "first_timestamp": "2015-08-02T00:00:01.906+00:00",
+    "gaps_above_30_seconds": 0,
+    "last_timestamp": "2015-08-02T23:59:57.472+00:00",
+    "nonfinite_rows": 0,
+    "rows": 27379,
+    "server_supplied_header": false
+  },
+  "date": "2015-08-02",
+  "final_url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=THD_L2_FGM%400&parameters=Time,thd_fgs_gse&time.min=2015-08-02T00:00:00Z&time.max=2015-08-03T00:00:00Z&format=csv",
+  "raw_path": "/home/eirikr/worktrees/open_gororoba/empirical-claim-evidence-contracts/.cache/staples-external-intake/2015-08-02/attempt-1.body",
+  "requested_url": "https://cdaweb.gsfc.nasa.gov/hapi/data?id=THD_L2_FGM%400&parameters=Time,thd_fgs_gse&time.min=2015-08-02T00:00:00Z&time.max=2015-08-03T00:00:00Z&format=csv",
+  "sha256": "2f67edacc93a98428259427cfc1e98d57079242f91c62214631a98c00393ad1f",
+  "status": "admitted"
+}

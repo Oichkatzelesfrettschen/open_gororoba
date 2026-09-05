@@ -1,0 +1,19 @@
+actor = "codex"
+artifact_id = "ASOT-0702"
+artifact_key = "doi:10.1126/science.adl2348"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 9222
+expected_canonical_url = "https://doi.org/10.1126/science.adl2348"
+expected_sha256 = "21aa27b531553969f1726786204fe9ffe8484dc7ce9bd0cdd45506a5b8acdc8c"
+observation_key = "exact-response-ASOT-0702-85bc82cec0eedcf63415c3de532af2884d3ff23e4368609737ba38645acac654"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-09.json"
+sha256 = "85bc82cec0eedcf63415c3de532af2884d3ff23e4368609737ba38645acac654"

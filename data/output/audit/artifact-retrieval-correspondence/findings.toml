@@ -1,0 +1,15 @@
+schema_version = 1
+historical_audit = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+historical_rows = 40
+unique_get_requests = 31
+canonical_observations = 37
+canonical_artifact_ids = 36
+expected_byte_matches = 21
+canonical_url_corrections = 1
+unresolved_canonical_ids = ["ASOT-3272", "ASOT-3279", "ASOT-3280", "ASOT-3283"]
+identity_boundary = "Expected-byte matches establish URL-to-bytes correspondence only; document identity remains explicitly unresolved. Original hashes remain unchanged."
+association_correction = "ASOT-2652 retains its historical abstract URL as a link and records the versioned PDF URL after a complete HTTP200 GET matched the historical expected SHA256 and byte count."
+already_correct_association = "ASOT-2828 retains both the obsolete URL's HTTP404 observation and an exact expected-byte match at its already-correct canonical versioned PDF URL. Historical expectation URL and canonical prestate URL are separately pinned."
+residual = "Four historical compatibility IDs lack matching canonical identities. Seven contaminated audit rows share an unrelated source-pack CSV digest; fetched page hashes remain observations and do not replace those historical expectations. Failed retrievals and digest mismatches remain explicit."
+consumed_evidence_priority = "The active C-1740/C-1741 inputs are separately hash-admitted by the scientific protocols. Matching remote paper bytes does not validate spacecraft labels or the physical interpretation of a detector."
+mutation_workflow = "Stage expectation/request/body evidence, then invoke gororoba-db artifact record-retrieval --spec for each ASOT TOML. Receipt replay checks exact spec identity and canonical prestate; all receipts are retained under canonical-receipts/."

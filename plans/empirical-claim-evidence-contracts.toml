@@ -13,82 +13,131 @@ acceptance = "Enumerate claim IDs, experiment references, provenance uncertainti
 id = "calibration-research"
 action = "Review primary calibration and validation research and apply justified protocol changes"
 active_form = "Reviewing primary calibration and validation research and applying justified protocol changes"
-status = "in_progress"
+status = "completed"
 acceptance = "Retain verified primary sources and map each adopted finding to an admission, calibration or inference rule."
 
 [[task]]
 id = "provenance-source-ownership"
 action = "Move provenance implementation and entrypoints to owning crates"
 active_form = "Moving provenance implementation and entrypoints to owning crates"
-status = "pending"
+status = "completed"
 acceptance = "Owner routing tests and focused tests pass; record dependency closure and build timing."
 
 [[task]]
 id = "store-module-boundaries"
 action = "Extract store operations behind unchanged methods"
 active_form = "Extracting store operations behind unchanged methods"
-status = "pending"
+status = "completed"
 acceptance = "Transaction, revision-history, rollback and export tests pass."
 
 [[task]]
 id = "runner-module-boundaries"
 action = "Extract historical runner splitting, fitting, metrics and evidence modules"
 active_form = "Extracting historical runner splitting, fitting, metrics and evidence modules"
-status = "pending"
+status = "completed"
 acceptance = "Existing runner tests pass and retained numerical evidence replays through unchanged interfaces."
 
 [[task]]
 id = "typed-claim-declarations"
 action = "Implement canonical typed evidence declarations and revision history"
 active_form = "Implementing canonical typed evidence declarations and revision history"
-status = "pending"
+status = "completed"
 acceptance = "CLI mutation, invalid-input rejection, rollback, history and compatibility roundtrip tests pass."
 
 [[task]]
 id = "causal-protocol"
 action = "Seal causal admission, epoch partitions, widths and decision thresholds"
 active_form = "Sealing causal admission, epoch partitions, widths and decision thresholds"
-status = "pending"
+status = "completed"
 acceptance = "Hash protocol before evaluating final holdouts; separate discrimination from operational utility."
 
 [[task]]
 id = "causal-runner"
 action = "Implement causal features and training-only fitted transformations"
 active_form = "Implementing causal features and training-only fitted transformations"
-status = "pending"
+status = "completed"
 acceptance = "Suffix perturbation, equal-time, gap, common-support and holdout-isolation tests pass."
 
 [[task]]
 id = "matched-control-ensembles"
 action = "Run exact-support ensembles against matched geometric models"
 active_form = "Running exact-support ensembles against matched geometric models"
-status = "pending"
+status = "completed"
 acceptance = "Retain every prespecified seed, support digest, fitted budget and paired outcome."
 
 [[task]]
 id = "external-validation"
 action = "Evaluate held-out epochs and admit suitable spacecraft evidence"
 active_form = "Evaluating held-out epochs and admitting suitable spacecraft evidence"
-status = "pending"
+status = "completed"
 acceptance = "Report threshold-relative intervals and explicit data-admission blockers."
 
 [[task]]
 id = "retrieval-correspondence"
 action = "Verify active-claim retrieval associations and retain historical identities"
 active_form = "Verifying active-claim retrieval associations and retaining historical identities"
-status = "pending"
+status = "completed"
 acceptance = "A correction records exact URL, successful full retrieval, expected digest, observed digest and historical association."
 
 [[task]]
 id = "canonical-frontier-refresh"
 action = "Apply active declarations and evidence-supported claim transitions"
 active_form = "Applying active declarations and evidence-supported claim transitions"
-status = "pending"
+status = "completed"
 acceptance = "Canonical CLI updates, compatibility exports, generated documentation and signatures agree."
 
 [[task]]
 id = "validation-integration"
-action = "Validate separated changes and integrate through reviewed pull requests"
-active_form = "Validating separated changes and integrating through reviewed pull requests"
+action = "Run repository validation and resolve scoped failures"
+active_form = "Running repository validation and resolving scoped failures"
+status = "completed"
+acceptance = "Required local gates pass on the final source and generated evidence; focused numerical and canonical audits agree."
+
+[[task]]
+id = "binary-owner-reconciliation"
+action = "Reconcile retained binary owners against Cargo declarations"
+active_form = "Reconciling retained binary owners against Cargo declarations"
+status = "completed"
+acceptance = "Sync and dry-run report owner changes while curated descriptions and experiment bindings remain unchanged."
+
+[[task]]
+id = "retain-calibration-source-bytes"
+action = "Retain verified external and research source bytes outside disposable caches"
+active_form = "Retaining verified external and research source bytes outside disposable caches"
+status = "completed"
+acceptance = "Every admitted source hash resolves to retained bytes after worktree cleanup; private response headers remain excluded from publication."
+
+[[task]]
+id = "typed-export-parent-association"
+action = "Fix typed TOML child-table ordering and verify exact claim association"
+active_form = "Fixing typed TOML child-table ordering and verifying exact claim association"
+status = "completed"
+acceptance = "Multi-claim roundtrip binds every declaration to its intended ID; regenerated semantic and documentation lanes consume only the corrected export."
+
+[[task]]
+id = "source-redistribution-boundary"
+action = "Verify public source licenses and preserve restricted copies privately"
+active_form = "Verifying public source licenses and preserving restricted copies privately"
+status = "completed"
+acceptance = "Public archives contain permitted material and factual metadata; all privately retained source bytes have verified durable primary-checkout copies."
+
+[[task]]
+id = "publish-reviewed-changes"
+action = "Commit canonical evidence atomically and publish the reviewed pull request"
+active_form = "Committing canonical evidence atomically and publishing the reviewed pull request"
+status = "in_progress"
+acceptance = "Source, database, generated exports and documentation agree; pre-push hooks and required PR checks pass."
+
+[[task]]
+id = "canonical-sync-and-cleanup"
+action = "Merge the pull request, verify canonical parity and clean scoped worktree residue"
+active_form = "Merging the pull request, verifying canonical parity and cleaning scoped worktree residue"
 status = "pending"
-acceptance = "Required local gates pass; remote merge and canonical checkout parity are measured."
+acceptance = "Merged main, remote main and the canonical checkout resolve to the same commit; retained evidence and private source copies survive cleanup."
+
+[[task]]
+id = "experiment-lineage-projections"
+action = "Generate and verify execution metadata for the new canonical experiments"
+active_form = "Generating and verifying execution metadata for the new canonical experiments"
+status = "completed"
+acceptance = "The owning execution-planning generator derives status tokens, command hashes, binary registration and lineage rows; its verifier passes and historical preservation remains exact."

@@ -1,0 +1,32 @@
+HTTP/2 301 
+location: /pdf/2411.18881
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: text/html; charset=utf-8
+server: Google Frontend
+x-cloud-trace-context: 06b9f35be6321e52db88297dab920b98
+accept-ranges: bytes
+age: 0
+date: Sat, 05 Sep 2026 04:50:29 GMT
+x-served-by: cache-lga21991-LGA, cache-lga21991-LGA, cache-lga21934-LGA, cache-hhr-khhr2060045-HHR
+x-cache: MISS, MISS, MISS
+x-timer: S1788583830.693831,VS0,VE154
+content-length: 217
+
+HTTP/2 200 
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+last-modified: Mon, 02 Dec 2024 01:17:52 GMT
+link: <https://arxiv.org/pdf/2411.18881>; rel='canonical'
+server: Google Frontend
+content-disposition: inline; filename="2411.18881v1.pdf"
+x-cloud-trace-context: 34a39965c7ee4923ceb42e7f9e45542f
+access-control-allow-origin: *
+content-type: application/pdf
+etag: CNaJrYr1h4oDEAI=
+accept-ranges: bytes
+age: 1714566
+date: Sat, 05 Sep 2026 04:50:29 GMT
+x-served-by: cache-lga21993-LGA, cache-lga21993-LGA, cache-lga21950-LGA, cache-hhr-khhr2060045-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1788583830.862756,VS0,VE1
+content-length: 226232
+

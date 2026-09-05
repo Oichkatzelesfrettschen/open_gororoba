@@ -1,0 +1,29 @@
+{
+  "transition_key": "staples-causal-epoch-bounded-increment",
+  "transition_spec_sha256": "7689608ef6eda5c94af19ee72104e3d2c0ba51e724f77a9e7216ea59420b5fa7",
+  "source_claim_id": "C-1741",
+  "current_status": "Verified",
+  "expected_prior_status": "Verified",
+  "proposed_claim_status": "Verified",
+  "experiment_verdict": "SurvivesChallenge",
+  "evidence_artifact_ids": [
+    "LOCAL-STAPLES-CAUSAL-EPOCH-CONTROLS"
+  ],
+  "experiment_ids": [
+    "E-282",
+    "E-283"
+  ],
+  "allocated_successors": [
+    {
+      "proposal_key": "staples-causal-increment-below-declared-useful-threshold",
+      "canonical_claim_id": "C-1743",
+      "relation_kind": "refines"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "status_count_delta": {
+    "Verified": 1
+  },
+  "exact_replay": false,
+  "replay_event_id": null
+}

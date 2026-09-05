@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-2898"
+artifact_key = "url:https://arxiv.org/pdf/math/0511691.pdf"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 374167
+expected_canonical_url = "https://arxiv.org/pdf/math/0511691.pdf"
+expected_sha256 = "3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5"
+observation_key = "exact-response-ASOT-2898-c80564d61882847dc94aee0d3c214d9c2e584fd2844e1bccdcacbabac7e21b95"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-22.json"
+sha256 = "c80564d61882847dc94aee0d3c214d9c2e584fd2844e1bccdcacbabac7e21b95"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-22.bin"
+sha256 = "3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5"

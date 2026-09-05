@@ -1,0 +1,11 @@
+
+running 7 tests
+test artifact_retrieval::tests::rejects_false_evidence_stale_identity_and_unattributed_document ... ok
+test artifact_retrieval::tests::late_insert_failure_rolls_back_url_and_history ... ok
+test artifact_retrieval::tests::head_response_and_stale_canonical_url_fail_admission ... ok
+test artifact_retrieval::tests::correction_preserves_expectation_and_replays_exactly ... ok
+test artifact_retrieval::tests::historical_expectation_and_canonical_prestate_are_independently_pinned ... ok
+test artifact_retrieval::tests::replay_refuses_changed_specification_and_post_state ... ok
+test artifact_retrieval::tests::mismatch_and_failure_record_observations_without_correction ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 52 filtered out; finished in 0.46s

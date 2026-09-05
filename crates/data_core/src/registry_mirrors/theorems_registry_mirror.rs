@@ -84,8 +84,6 @@
 //! | `THM-LEGACY-C1470_PathionTrilinearity` | `C1470_PathionTrilinearity` | `proofs/verified/C1470_PathionTrilinearity.v` | kernel_checked | explicit_link | C-1470 |
 //! | `THM-LEGACY-C1471_HigherCDTrilinearity` | `C1471_HigherCDTrilinearity` | `proofs/verified/C1471_HigherCDTrilinearity.v` | kernel_checked | explicit_link | C-1471 |
 //! | `THM-LEGACY-C1474_FuelAdequacy` | `C1474_FuelAdequacy` | `proofs/verified/C1474_FuelAdequacy.v` | kernel_checked | explicit_link | C-1474 |
-//! | `THM-LEGACY-C1628_IDCT8ButterflyCompaction` | `C1628_IDCT8ButterflyCompaction` | `proofs/verified/C1628_IDCT8ButterflyCompaction.v` | kernel_checked | unresolved | - |
-//! | `THM-LEGACY-C1629_IDCT8DP4ExactBound` | `C1629_IDCT8DP4ExactBound` | `proofs/verified/C1629_IDCT8DP4ExactBound.v` | kernel_checked | unresolved | - |
 //! | `THM-LEGACY-C1630_SedenionOctonionDowncast` | `C1630_SedenionOctonionDowncast` | `proofs/verified/C1630_SedenionOctonionDowncast.v` | kernel_checked | explicit_link | C-1630 |
 //! | `THM-LEGACY-C868_PainleveGullstrand` | `C868_PainleveGullstrand` | `proofs/verified/C868_PainleveGullstrand.v` | kernel_checked | explicit_link | C-868 |
 //! | `THM-LEGACY-C869_InteriorFlat` | `C869_InteriorFlat` | `proofs/verified/C869_InteriorFlat.v` | kernel_checked | explicit_link | C-869 |
@@ -171,5 +169,7 @@
 //! | `THM-LEGACY-C_WECImpliesNEC` | `C_WECImpliesNEC` | `proofs/verified/C_WECImpliesNEC.v` | kernel_checked | legacy_alias | - |
 //! | `THM-LEGACY-C_WarpEnergyNonpositive` | `C_WarpEnergyNonpositive` | `proofs/verified/C_WarpEnergyNonpositive.v` | kernel_checked | legacy_alias | - |
 //! | `THM-OCTONION-DOWNCAST-ZERO-DIVISORS-001` | `C1638_OctonionDowncastNoZeroDivisors` | `proofs/verified/C1638_OctonionDowncastNoZeroDivisors.v` | kernel_checked | explicit_link | C-1647 |
+//! | `THM-R300-IDCT8-BUTTERFLY-001` | `C1628_IDCT8ButterflyCompaction` | `proofs/verified/C1628_IDCT8ButterflyCompaction.v` | kernel_checked | explicit_link | C-1735 |
+//! | `THM-R300-IDCT8-DP4-EXACT-001` | `C1629_IDCT8DP4ExactBound` | `proofs/verified/C1629_IDCT8DP4ExactBound.v` | kernel_checked | explicit_link | C-1736 |
 //! | `THM-R300-SEDENION-ZERO-DIVISOR-001` | `C1637_R300SedenionZeroDivisor` | `proofs/verified/C1637_R300SedenionZeroDivisor.v` | kernel_checked | explicit_link | C-1648 |
 //! | `THM-SASS-DRIVER-001` | `C1635_SedenionDriverSemantics` | `proofs/verified/C1635_SedenionDriverSemantics.v` | kernel_checked | explicit_link | C-1649 |

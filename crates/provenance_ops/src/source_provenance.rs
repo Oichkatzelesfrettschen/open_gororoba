@@ -233,6 +233,7 @@ pub fn default_repo_root() -> PathBuf {
 
 mod host_observations;
 mod metadata_completeness;
+mod retrieval_identity;
 use metadata_completeness::remote_identity_is_usable;
 
 // Text normalization and regular expressions share one module.
@@ -1494,6 +1495,7 @@ pub fn stage_artifact_source_of_truth(
     let prior_rows = load_prior_rows(out_registry);
     let retained_prior_row_count = seed_missing_prior_rows(&mut artifacts, &prior_rows);
     let ids = assign_stable_ids(&artifacts, &prior_rows);
+    let verified_retrievals = retrieval_identity::load_verified_retrievals(repo_root)?;
     extend_download_map_from_local_artifacts(&mut download_map, &artifacts);
     let carry_forward = load_durable_facts(out_registry);
     classify_artifacts(
@@ -1504,6 +1506,7 @@ pub fn stage_artifact_source_of_truth(
         retention,
         &carry_forward,
     );
+    retrieval_identity::apply_verified_retrievals(&mut artifacts, &verified_retrievals, retention);
     let registry_text =
         render_artifact_registry(&artifacts, &ids, &source_tables, &source_files, &now);
     let report_text = render_reconciliation_report(&artifacts, &now);

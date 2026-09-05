@@ -802,6 +802,7 @@ fn insert_successor_claim(
                 formal_proof: None,
                 status_note: None,
                 compat_toml_text: compat_toml_text.clone(),
+                evidence_spec_json: None,
             }),
             transition.actor,
             transition.reason,
@@ -972,6 +973,7 @@ struct ClaimSourceState {
     formal_proof: Option<String>,
     status_note: Option<String>,
     compat_toml_text: String,
+    evidence_spec_json: Option<String>,
 }
 
 fn claim_transition_source_state_on_conn(
@@ -980,7 +982,8 @@ fn claim_transition_source_state_on_conn(
 ) -> Result<ClaimSourceState> {
     conn.query_row(
         "SELECT id, status, statement, where_stated, last_verified, formal_proof,
-                status_note, compat_toml_text
+                status_note, compat_toml_text,
+                (SELECT spec_json FROM claim_evidence WHERE claim_id = claims.id)
          FROM claims WHERE id = ?1",
         params![id],
         |row| {
@@ -993,6 +996,7 @@ fn claim_transition_source_state_on_conn(
                 formal_proof: row.get(5)?,
                 status_note: row.get(6)?,
                 compat_toml_text: row.get(7)?,
+                evidence_spec_json: row.get(8)?,
             })
         },
     )
@@ -1501,7 +1505,7 @@ fn status_count_delta_from_statuses(
 }
 
 fn sha256_claim_state(state: &ClaimSourceState) -> String {
-    let canonical = [
+    let mut canonical = [
         state.id.as_str(),
         state.statement.as_str(),
         state.status.as_str(),
@@ -1515,6 +1519,9 @@ fn sha256_claim_state(state: &ClaimSourceState) -> String {
     .map(|value| format!("{}:{}", value.len(), value))
     .collect::<Vec<_>>()
     .join("|");
+    if let Some(evidence) = &state.evidence_spec_json {
+        canonical.push_str(&format!("|claim_evidence:{}:{}", evidence.len(), evidence));
+    }
     crate::sha256_hex(&canonical)
 }
 
@@ -1638,6 +1645,7 @@ statement = "source statement""#;
             formal_proof: None,
             status_note: None,
             compat_toml_text: compat.to_string(),
+            evidence_spec_json: None,
         })
     }
 
@@ -1674,6 +1682,37 @@ statement = "source statement""#;
         }
     }
 
+    #[test]
+    fn evidence_contract_changes_invalidate_pending_transition_hashes() -> Result<()> {
+        let mut store = transition_test_store();
+        let mut spec = transition_spec("contract-prestate");
+        assert_eq!(
+            store.claim_transition_source_state_sha256("C-1")?,
+            source_state_hash()
+        );
+        store.conn.execute("INSERT INTO claim_evidence VALUES ('C-1', '{\"evidence_layer\":\"implementation_conformance\"}')", [])?;
+        assert!(
+            store
+                .apply_claim_transition(&spec, "contract-prestate-v1")
+                .is_err()
+        );
+        spec.transition.expected_source_state_sha256 =
+            store.claim_transition_source_state_sha256("C-1")?;
+        store.conn.execute("UPDATE claim_evidence SET spec_json='{\"evidence_layer\":\"phenomenological_mapping\"}' WHERE claim_id='C-1'", [])?;
+        assert!(
+            store
+                .apply_claim_transition(&spec, "contract-prestate-v1")
+                .is_err()
+        );
+        assert_eq!(
+            store.claim_by_id("C-1")?.expect("source").status,
+            "Verified"
+        );
+        spec.transition.expected_source_state_sha256 =
+            store.claim_transition_source_state_sha256("C-1")?;
+        store.apply_claim_transition(&spec, "contract-prestate-v1")?;
+        Ok(())
+    }
     #[test]
     fn apply_is_atomic_and_exact_replay_is_idempotent() -> Result<()> {
         let mut store = transition_test_store();

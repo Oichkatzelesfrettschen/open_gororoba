@@ -622,5 +622,4 @@ impl ProvenanceStore {
         }
         Ok(rows)
     }
-
 }

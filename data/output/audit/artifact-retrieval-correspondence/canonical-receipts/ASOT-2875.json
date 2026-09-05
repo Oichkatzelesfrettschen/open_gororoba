@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/pdf/2509.08099.pdf",
+    "key": "url:https://arxiv.org/pdf/2509.08099.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/2509.08099.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/sensational_primary/2026_02_14/ri-034-candidate-pdf-11.pdf",
+      "citation": "link: <>; rel='canonical'",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "link: <>; rel='canonical'"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/pdf/2509.08099.pdf",
+    "key": "url:https://arxiv.org/pdf/2509.08099.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/2509.08099.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/sensational_primary/2026_02_14/ri-034-candidate-pdf-11.pdf",
+      "citation": "link: <>; rel='canonical'",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "link: <>; rel='canonical'"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 1569347,
+    "body_sha256": "8514216587c4a21797b6ebe69643712395daf280a3646542cbe8b8824892f809",
+    "completed": true,
+    "final_url": "https://arxiv.org/pdf/2509.08099",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:30Z",
+    "requested_url": "https://arxiv.org/pdf/2509.08099.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2875",
+    "artifact_key": "url:https://arxiv.org/pdf/2509.08099.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 1569347,
+    "expected_canonical_url": "https://arxiv.org/pdf/2509.08099.pdf",
+    "expected_sha256": "8514216587c4a21797b6ebe69643712395daf280a3646542cbe8b8824892f809",
+    "observation_key": "exact-response-ASOT-2875-f6e4911f17de315632c27a4cfd40e495ca9c0a73f0e808bf757c910391179e0e",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-20.json",
+      "sha256": "f6e4911f17de315632c27a4cfd40e495ca9c0a73f0e808bf757c910391179e0e"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-20.bin",
+      "sha256": "8514216587c4a21797b6ebe69643712395daf280a3646542cbe8b8824892f809"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "d69e79bdeb687270193af9845e4d062f5bf5aef91c1790418a71a69c1bfd78fa"
+}

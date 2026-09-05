@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/pdf/1602.02317v2.pdf",
+    "key": "url:https://arxiv.org/pdf/1602.02317v2.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/1602.02317v2.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/bales_2016_arxiv_withdrawn_versions_arxiv_org_pdf_1602_02317v2_pdf.pdf",
+      "citation": "https://arxiv.org/pdf/1602.02317v2.pdf",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "https://arxiv.org/pdf/1602.02317v2.pdf"
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/pdf/1602.02317v2.pdf",
+    "key": "url:https://arxiv.org/pdf/1602.02317v2.pdf",
+    "links": [
+      [
+        "https://arxiv.org/pdf/1602.02317v2.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/bales_2016_arxiv_withdrawn_versions_arxiv_org_pdf_1602_02317v2_pdf.pdf",
+      "citation": "https://arxiv.org/pdf/1602.02317v2.pdf",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "https://arxiv.org/pdf/1602.02317v2.pdf"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 192196,
+    "body_sha256": "ae9f792ff949b552e3988ee3138fe07846bfcf4002ef5c3e6c001933af7b6766",
+    "completed": true,
+    "final_url": "https://arxiv.org/pdf/1602.02317v2",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:29Z",
+    "requested_url": "https://arxiv.org/pdf/1602.02317v2.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2830",
+    "artifact_key": "url:https://arxiv.org/pdf/1602.02317v2.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 192196,
+    "expected_canonical_url": "https://arxiv.org/pdf/1602.02317v2.pdf",
+    "expected_sha256": "ae9f792ff949b552e3988ee3138fe07846bfcf4002ef5c3e6c001933af7b6766",
+    "observation_key": "exact-response-ASOT-2830-d18f0fd576468ca7fde916f2a61cb1d09334a2906ad994c9444274a8f4c44138",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-17.json",
+      "sha256": "d18f0fd576468ca7fde916f2a61cb1d09334a2906ad994c9444274a8f4c44138"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-17.bin",
+      "sha256": "ae9f792ff949b552e3988ee3138fe07846bfcf4002ef5c3e6c001933af7b6766"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "0aa60399bbed22511b36a312261a5a0f1a36359c2ee247edec2594018c4c5505"
+}

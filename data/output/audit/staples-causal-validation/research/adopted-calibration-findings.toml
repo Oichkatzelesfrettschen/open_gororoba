@@ -28,8 +28,8 @@ adopted_rule = "Record quality/calibration metadata coverage explicitly rather t
 [[source]]
 doi = "10.5281/zenodo.10655312"
 retained = "research/staples-source-findings.toml"
-observation = "The official V2 bytes match the retained raw catalog. V2 has no timing-uncertainty or confidence columns. The derived A-only table contains 35 fewer rows than the raw A subset."
-adopted_rule = "Label directly from the hash-admitted full V2 probe subset, including adjacent dates; treat the two-minute pad as an analyst choice and retain the coverage reconciliation."
+observation = "The official V2 bytes match the retained raw catalog. V2 has no timing-uncertainty or confidence columns. Exact timestamp-set reconciliation finds 9490 entries in both raw A and the derived A-only table; the earlier 9455 count was a stale narrative."
+adopted_rule = "Label directly from the hash-admitted full V2 probe subset, including adjacent dates; treat the two-minute pad as an analyst choice and retain the exact set reconciliation."
 
 [[source]]
 doi = "10.1007/s10994-020-05910-7"

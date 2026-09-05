@@ -567,3 +567,16 @@ fn test_analysis_report_display() {
     assert!(output.contains("Total claims: 2"));
     assert!(output.contains("Non-Canonical Statuses"));
 }
+
+#[test]
+fn structured_falsifiers_preserve_dependencies_from_every_outcome_category() {
+    let claim: FullClaimEntry = toml::from_str(
+        "id='C-100'\nstatus='Provisional'\n[what_would_verify_refute]\nverification_outcomes=['verify C-101']\nrevision_outcomes=['revise C-102']\nabandonment_outcomes=['abandon C-103']\ninconclusive_outcomes=['inconclusive C-104']\n",
+    ).expect("structured falsifier accepted by public claim facade");
+    let mut claims = vec![claim];
+    enrich_metadata(&mut claims, &[], &[]);
+    assert_eq!(
+        claims[0].dependencies.as_ref().unwrap(),
+        &["C-101", "C-102", "C-103", "C-104"]
+    );
+}

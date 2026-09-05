@@ -5,10 +5,10 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 180
-experiment_count = 251
+deterministic_count = 181
+experiment_count = 253
 gpu_count = 29
-seeded_count = 48
+seeded_count = 49
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 updated = "2026-02-10"
 
@@ -6587,4 +6587,59 @@ status = "active"
 status_note = "Completed: 5 grouped CV assignments and 100 paired refit draws; all 750 fits converge. Independent retained-record audit passes. Both separate global endpoint intervals have positive lower percentiles under the conditional procedure; see retained summary and C-1740/C-1741."
 status_token = "ACTIVE"
 title = "THEMIS-A paired train-file and test-file bootstrap with logistic refitting"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-causal-validation"
+binary_experiment_declared = "E-282"
+binary_registered = true
+claim_refs = ["C-1740", "C-1741", "C-1743"]
+claims = ["C-1740", "C-1741", "C-1743"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = false
+external_source_refs = []
+gpu = false
+id = "E-282"
+input = "Hash-admitted THEMIS-A daily vectors and official V2 crossing catalog; training 2007-2012, descriptive validation 2013-2014, final epochs 2015 and 2016."
+input_path_refs = ["data/external/crossing_lists/themis_mp_crossings_v2.txt", "data/output/audit/staples-causal-validation/protocol.toml", "data/output/benchmark_scores.files.csv"]
+lineage_id = "XL-252"
+method = "Strict timestamp-causal six-vector features and preceding-window calibration at widths 64, 256 and 1024. Freeze training-only preprocessing and logistic coefficients. Compare canonical associator against 19 exact-support sign scrambles and six geometric predictors. Use paired whole-daily-file bootstrap intervals and preregistered global minimum ROC-AUC increment threshold 0.005."
+output = ["data/output/audit/staples-causal-validation/protocol.toml", "data/output/audit/staples-causal-validation/results/summary.json", "data/output/audit/staples-causal-validation/results/bootstrap.json", "data/output/audit/staples-causal-validation/results/dataset.json", "data/output/audit/staples-causal-validation/findings.toml"]
+output_path_refs = ["data/output/audit/staples-causal-validation/findings.toml", "data/output/audit/staples-causal-validation/protocol.toml", "data/output/audit/staples-causal-validation/results/bootstrap.json", "data/output/audit/staples-causal-validation/results/dataset.json", "data/output/audit/staples-causal-validation/results/summary.json"]
+reproducibility_class = "seeded_stochastic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/results-replay --mode all"
+run_command_sha256 = "e2ec43bfc8a74cec574f8f5d575762b42f6b3111526e8c21c7df43d85f06c505"
+seed = 20260904
+status = "active"
+status_note = "Protocol sealed at commit 1ad0e782 before new numerical evaluation; SHA256 ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586c5e520c14dd70aa3aea6. Completed 63 models and 2000 paired daily-file bootstrap draws on 22263526 decisions; global-minimum interval [0.0010149049086891153, 0.0029188809429172872] rejects the declared useful increment 0.005 while supporting a small positive archive-conditional increment. Exact-support controls frequently exceed canonical point estimates; mechanism comparison intervals remain unrun. Historical claims retain their bounded evidence."
+status_token = "ACTIVE"
+title = "THEMIS-A timestamp-causal epoch validation with exact-support controls"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-causal-validation"
+binary_experiment_declared = "E-283"
+binary_registered = true
+claim_refs = ["C-1740", "C-1741", "C-1743"]
+claims = ["C-1740", "C-1741", "C-1743"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-283"
+input = "All 166 official V2 probe-D crossing dates in 2015-2016, retained HAPI GET responses, and independent native CDF for the rejected date."
+input_path_refs = ["data/output/audit/staples-causal-validation/external-intake-manifest.json", "data/output/audit/staples-causal-validation/protocol.toml"]
+lineage_id = "XL-253"
+method = "Apply sealed input admission before using frozen THEMIS-A models. Require complete planned-date accounting and monotonic source ordering; retain every failed date."
+output = ["data/output/audit/staples-causal-validation/external-intake-summary.json", "data/output/audit/staples-causal-validation/external-native-source-rca.toml", "data/output/audit/staples-causal-validation/external-cdf-order-findings.json"]
+output_path_refs = ["data/output/audit/staples-causal-validation/external-cdf-order-findings.json", "data/output/audit/staples-causal-validation/external-intake-summary.json", "data/output/audit/staples-causal-validation/external-native-source-rca.toml"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv"
+run_command_sha256 = "a592d7616b2323764db392b5b87172cdd7d5cd506bfcb3e1ff6a167311833d8f"
+status = "active"
+status_note = "Blocked input admission: 165 of 166 dates admitted; 2016-09-02 contains a backward timestamp independently confirmed in native official CDF. External scientific inference remains unperformed. Sorting, dropping, or silently replacing the date would violate the sealed protocol."
+status_token = "ACTIVE"
+title = "THEMIS-D external validation admission and native-source ordering audit"
 truth_surface_consumption = []

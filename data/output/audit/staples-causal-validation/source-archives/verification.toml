@@ -1,0 +1,55 @@
+schema_version = 1
+archive_format = "GNU tar regular-file members, Zstandard level 19, one compression thread"
+tar_version = "1.35"
+zstd_version = "1.5.7"
+normalized_mtime_unix_seconds = 0
+normalized_uid = 0
+normalized_gid = 0
+normalized_file_mode = "0644"
+entry_order = "LC_ALL=C lexical path order"
+extraction_policy = "New destination directory; tar --keep-old-files --no-same-owner"
+existing_member_extraction_exit_status = 2
+existing_member_test = "A second extraction of tha-fgm-hapi-info.json was refused; every extracted research file still passed its SHA256 check."
+original_cache_post_archive_hash_checks = "All 727 original source files match the public and private entry SHA256 manifests."
+original_caches_retained = true
+excluded_executable = ".cache/staples-external-intake/2016-09-02/cdf-inspect"
+excluded_executable_bytes = 4870576
+excluded_private_archive = ".cache/artifact-retrieval-private-headers"
+intake_sensitive_header_name_matches = 0
+intake_transport_password_key_values = "The two URL password keys in berkeley-cdf-transport.json are null."
+lfs_rules = "Two exact archive paths in repository .gitattributes; git check-attr reports filter=lfs for both."
+
+[[archive]]
+path = "external-intake.tar.zst"
+file_count = 684
+source_bytes = 318826464
+compressed_bytes = 80005650
+sha256 = "9cab6bb3047a931dde66516dd36d59d9ef1d285ec0060cbad735a5f8aa10a22b"
+entry_list_matches_archive = true
+decoded_file_sha256_checks_passed = 684
+decoded_tar_sha256 = "414fdee378c7669e10a64e69dd7f64a091b2741d03fb150003f73291674f4f48"
+independently_regenerated_tar_sha256_matches = true
+
+[[archive]]
+path = "calibration-research.tar.zst"
+file_count = 24
+source_bytes = 2812107
+compressed_bytes = 627245
+sha256 = "e8c402432380aa5311ab2028e47c005c49551e84e8fe63b7d3bd0c1f3a276f0d"
+entry_list_matches_archive = true
+decoded_file_sha256_checks_passed = 24
+independently_rebuilt_compressed_bytes_match = true
+
+[private_research]
+file_count = 19
+source_bytes = 1844239
+primary_checkout_path = ".cache/empirical-claim-private-research"
+working_checkout_copy_retained = true
+primary_checkout_copy_retained = true
+original_research_archive_sha256 = "4cddd2b33ade6c94753ef9faaaef8eed4744d146a2dc404305206f0dd4214fdd"
+original_research_archive_bytes = 1653147
+original_research_member_count = 43
+public_private_partition_matches_original_entries = true
+full_original_inventory_entries_sha256 = "787272e61730bde312f63cef89eea5d6ae301dbbc8a60d53a9140b60fcaa2573"
+private_file_hash_inventory = "calibration-research-private.sha256"
+license_evidence = "license-evidence.md"

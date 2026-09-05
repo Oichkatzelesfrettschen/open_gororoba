@@ -310,5 +310,4 @@ impl ProvenanceStore {
         )?;
         Ok(())
     }
-
 }

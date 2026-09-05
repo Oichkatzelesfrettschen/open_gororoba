@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://bibliotekanauki.pl/articles/729117.pdf",
+    "key": "url:https://bibliotekanauki.pl/articles/729117.pdf",
+    "links": [
+      [
+        "https://bibliotekanauki.pl/articles/729117.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_0062_cawagas_2004_bibliotekanauki_bibliotekanauki_pl_articles_729117_pdf.pdf",
+      "citation": "m3/zero-divisors",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "m3/zero-divisors"
+    }
+  },
+  "before": {
+    "canonical_url": "https://bibliotekanauki.pl/articles/729117.pdf",
+    "key": "url:https://bibliotekanauki.pl/articles/729117.pdf",
+    "links": [
+      [
+        "https://bibliotekanauki.pl/articles/729117.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_0062_cawagas_2004_bibliotekanauki_bibliotekanauki_pl_articles_729117_pdf.pdf",
+      "citation": "m3/zero-divisors",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "m3/zero-divisors"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 393173,
+    "body_sha256": "b3876255599bcd50f7e51ed50044e4f2b74cd2e7945b4416b6fb196bc6eae010",
+    "completed": true,
+    "final_url": "https://bibliotekanauki.pl/articles/729117.pdf",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:32Z",
+    "requested_url": "https://bibliotekanauki.pl/articles/729117.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2906",
+    "artifact_key": "url:https://bibliotekanauki.pl/articles/729117.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 393173,
+    "expected_canonical_url": "https://bibliotekanauki.pl/articles/729117.pdf",
+    "expected_sha256": "b3876255599bcd50f7e51ed50044e4f2b74cd2e7945b4416b6fb196bc6eae010",
+    "observation_key": "exact-response-ASOT-2906-fb8c9846eff1ba3d685da30b7e887b84ffc6f83469c0498bf03c266a19abcd93",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-23.json",
+      "sha256": "fb8c9846eff1ba3d685da30b7e887b84ffc6f83469c0498bf03c266a19abcd93"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-23.bin",
+      "sha256": "b3876255599bcd50f7e51ed50044e4f2b74cd2e7945b4416b6fb196bc6eae010"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "4f66b1d0e0f02e0a289d19ab80209e4825e4a61fb29cdbfafc3859caef19a89d"
+}

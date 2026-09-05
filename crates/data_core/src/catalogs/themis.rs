@@ -231,7 +231,7 @@ pub fn parse_themis_fgm_hapi_csv(content: &str) -> Vec<ThemisFgmRecord> {
 /// THEMIS-A) and within `[start, end]` (inclusive) are returned.
 ///
 /// WHY: The Staples catalog is a peer-reviewed, independently verified ground
-/// truth (JGR 2020, doi:10.1029/2019JA027190).  Unlike FPI-derived events, it
+/// truth (JGR 2020, doi:10.1029/2019JA027289).  Unlike FPI-derived events, it
 /// represents expert classification across a 9-year span, providing a
 /// scale-independent reference for the CD associator methods paper.
 pub fn parse_staples_crossing_catalog(

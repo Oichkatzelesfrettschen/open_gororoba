@@ -1,0 +1,32 @@
+HTTP/2 301 
+location: /pdf/math/0403113
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-type: text/html; charset=utf-8
+server: Google Frontend
+x-cloud-trace-context: cdce6b81bddae9ee21374bf906978635
+accept-ranges: bytes
+age: 0
+date: Sat, 05 Sep 2026 04:50:30 GMT
+x-served-by: cache-lga21943-LGA, cache-lga21943-LGA, cache-lga21945-LGA, cache-hhr-khhr2060052-HHR
+x-cache: MISS, MISS, MISS
+x-timer: S1788583830.491436,VS0,VE141
+content-length: 221
+
+HTTP/2 200 
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+last-modified: Wed, 11 Aug 2021 08:48:09 GMT
+link: <https://arxiv.org/pdf/math/0403113>; rel='canonical'
+server: Google Frontend
+content-disposition: inline; filename="0403113v1.pdf"
+x-cloud-trace-context: 7584832565c368c081f4ec4d8e92ebf0
+access-control-allow-origin: *
+content-type: application/pdf
+etag: CN766+vKqPICEAE=
+accept-ranges: bytes
+age: 1768659
+date: Sat, 05 Sep 2026 04:50:30 GMT
+x-served-by: cache-lga21993-LGA, cache-lga21993-LGA, cache-lga21942-LGA, cache-hhr-khhr2060052-HHR
+x-cache: MISS, HIT, HIT
+x-timer: S1788583831.645716,VS0,VE1
+content-length: 206494
+
