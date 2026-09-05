@@ -1,0 +1,23 @@
+error[E0432]: unresolved import `num_rational::BigRational`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:4:5
+   |
+ 4 | use num_rational::BigRational;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^ no `BigRational` in the root
+   |
+note: found an item that was configured out
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-rational-0.4.2/src/lib.rs:71:10
+   |
+69 | #[cfg(feature = "num-bigint")]
+   |       ---------------------- the item is gated behind the `num-bigint` feature
+70 | /// Alias for arbitrary precision rationals.
+71 | pub type BigRational = Ratio<BigInt>;
+   |          ^^^^^^^^^^^
+help: a similar name exists in the module
+   |
+ 4 - use num_rational::BigRational;
+ 4 + use num_rational::Rational;
+   |
+
+error: aborting due to 1 previous error
+
+For more information about this error, try `rustc --explain E0432`.

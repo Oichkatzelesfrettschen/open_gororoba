@@ -1,0 +1,81 @@
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 3.29s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/qgp_scaling-67f4d420ba99be2a)
+
+running 73 tests
+test competing_models::tests::test_arleo_falmagne_raa_model ... ok
+test competing_models::tests::test_bic_computation ... ok
+test competing_models::tests::test_cujet3_curves_valid ... ok
+test competing_models::tests::test_bic_excludes_out_of_range ... ok
+test competing_models::tests::test_langevin_curves_valid ... ok
+test competing_models::tests::test_linear_interp_basic ... ok
+test competing_models::tests::test_linear_interp_nonuniform ... ok
+test competing_models::tests::test_model_comparison_ordering ... ok
+test critical_point::tests::test_c4_c2_ratio ... ok
+test data_tables::tests::test_auau_npart_ordering ... ok
+test data_tables::tests::test_eccentricity_event_by_event_lookup ... ok
+test data_tables::tests::test_pbpb_central_npart ... ok
+test data_tables::tests::test_pbpb_mc_glauber_aperp_physical ... ok
+test data_tables::tests::test_pbpb_mc_glauber_central_npart ... ok
+test data_tables::tests::test_pbpb_mc_glauber_npart_ordering ... ok
+test data_tables::tests::test_pbpb_npart_ordering ... ok
+test data_tables::tests::test_xexe_mc_glauber_ordering ... ok
+test density_scaling::tests::test_golden_section_parabola ... ok
+test density_scaling::tests::test_density_scaling_recovery ... ok
+test epsilon_fit::tests::test_brent_minimize_parabola ... ok
+test epsilon_fit::tests::test_delta_chi2_crossing ... ok
+test epsilon_fit::tests::test_epsilon_extraction_noisy ... ok
+test epsilon_fit::tests::test_epsilon_extraction_synthetic ... ok
+test flow_cumulants::tests::test_v2_2 ... ok
+test density_scaling::tests::test_multi_k_density_scaling ... ok
+test flow_cumulants::tests::test_v2_4 ... ok
+test glauber::tests::test_eccentricity_headon ... ok
+test glauber::tests::test_eccentricity_peripheral ... ok
+test glauber::tests::test_inelastic_probability_limits ... ok
+test glauber::tests::test_npart_decreases_with_b ... ok
+test glauber::tests::test_overlap_area_headon ... ok
+test glauber::tests::test_npart_headon_pbpb ... ok
+test glauber::tests::test_overlap_area_no_overlap ... ok
+test glauber::tests::test_overlap_decreases_with_b ... ok
+test glauber::tests::test_overlap_headon ... ok
+test glauber::tests::test_overlap_vanishes_large_b ... ok
+test multiplicity::tests::test_all_systems_nonempty ... ok
+test multiplicity::tests::test_dnch_dy_conversion ... ok
+test multiplicity::tests::test_pbpb_5020_central_value ... ok
+test multiplicity::tests::test_pbpb_5020_centrality_ordering ... ok
+test nuclear_modification::tests::test_compute_raa ... ok
+test nucleus::tests::test_au197_radius ... ok
+test nucleus::tests::test_hard_sphere_density_normalization ... ok
+test nucleus::tests::test_hard_sphere_density_outside ... ok
+test nucleus::tests::test_o16_radius ... ok
+test nucleus::tests::test_integrated_thickness_normalization ... ok
+test nucleus::tests::test_pb208_radius ... ok
+test nucleus::tests::test_thickness_function_center ... ok
+test nucleus::tests::test_thickness_function_edge ... ok
+test nucleus::tests::test_xe129_radius ... ok
+test quenching::tests::test_analytic_log_derivative ... ok
+test quenching::tests::test_log_derivative_matches_analytic ... ok
+test quenching::tests::test_log_derivative_smooth ... ok
+test quenching::tests::test_raa_model_basic ... ok
+test quenching::tests::test_raa_model_zero_below_epsilon ... ok
+test quenching::tests::test_scaling_function_matches_raa ... ok
+test straggling::tests::test_r_aa_straggling_falls_back_to_discrete_when_sigma_zero ... ok
+test straggling::tests::test_r_aa_straggling_large_pt_approaches_discrete ... ok
+test straggling::tests::test_r_aa_straggling_normalization_at_small_epsilon ... ok
+test straggling::tests::test_r_aa_straggling_smooth_near_epsilon ... ok
+test straggling::tests::test_r_aa_straggling_monotone_in_pt ... ok
+test straggling::tests::test_straggling_sigma_zero_for_nonpositive ... ok
+test straggling::tests::test_straggling_grid_lookup_matches_direct ... ok
+test v2_relation::tests::test_v2_relation_recovery_intercept ... ok
+test v2_relation::tests::test_v2_relation_linearity ... ok
+test straggling::tests::test_straggling_grid_clamp_above ... ok
+test v2_relation::tests::test_v2_relation_recovery_origin ... ok
+test straggling::tests::test_straggling_grid_clamp_below ... ok
+test straggling::tests::test_straggling_grid_construction ... ok
+test straggling::tests::test_straggling_sigma_basic ... ok
+test epsilon_fit::tests::test_epsilon_straggling_extraction_synthetic ... ok
+test epsilon_fit::tests::test_epsilon_straggling_extraction_noisy ... ok
+test straggling::tests::test_straggling_grid_lookup_interpolation_accuracy ... ok
+
+test result: ok. 73 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

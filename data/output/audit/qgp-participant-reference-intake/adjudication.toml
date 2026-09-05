@@ -1,0 +1,91 @@
+schema_version = 1
+claims = ["C-1713", "C-1714"]
+operation = "Admit a separately named participant reference; preserve historical participant inputs and caller selection"
+source_report = "ALICE-PUBLIC-2018-011"
+source_title = "Centrality determination in heavy ion collisions"
+source_author = "ALICE Collaboration"
+source_locator = "PDF page 7, Table 1; population and uncertainty definitions on PDF page 4"
+source_pdf = "data/output/audit/qgp-participant-reference-intake/alice-public-2018-011.pdf"
+source_pdf_sha256 = "de4d98816c22c0991e13e1669d9d708ffea7b470b56a020bbe90e38625ef7a6c"
+source_version_boundary = "The retained INSPIRE attachment carries report ALICE-PUBLIC-2018-011 on its front page and PDF creation metadata October 12, 2020. The receipt identifies exact bytes; publication-update parity remains unassessed."
+
+[retrieval]
+metadata_request = "https://inspirehep.net/api/literature?q=reportnumber%20ALICE-PUBLIC-2018-011&size=2"
+metadata_path = "data/output/audit/qgp-participant-reference-intake/inspire-report-metadata.json"
+metadata_sha256 = "a5610cce2ea750c01d305b2d416ea503e5a22a16119c5f58155976dff3259028"
+inspire_record = "1821843"
+cds_record = "2636623"
+document_request = "https://inspirehep.net/files/7616388e2d08c6f210a6b20a0367e21a"
+document_key = "7616388e2d08c6f210a6b20a0367e21a"
+provider_document_source = "CDS"
+command = "curl -L --max-time 40 -sS URL -o DESTINATION"
+metadata_curl_exit = 0
+document_curl_exit = 0
+http_status = "unrecorded"
+headers = "unrecorded"
+identity_check = "Provider report number and CDS identifier resolve the named attachment; PDF front page identifies the same report and title; file identifies PDF version 1.5; pdfinfo reports 28 pages."
+prior_failure = "The retained fleet receipt data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml records a CDS request that returned HTML. The successful INSPIRE attachment retrieval leaves that earlier observation intact."
+
+[transcription]
+rows = 9
+selection = "The nine centrality bins matching the retained constructor, selected from the larger Table 1"
+artifact = "data/output/audit/qgp-participant-reference-intake/table1-participant-rows.csv"
+artifact_sha256 = "4f3a75421dfce58918562f4b73b87ed4aa9c4623097cf14e4126fe907410e585"
+visual_check = "Rendered PDF page 7 with pdftoppm and inspected all nine rows against the table headers; mean, RMS and systematic columns transcribed separately"
+render = "data/output/audit/qgp-participant-reference-intake/table1-page7.png"
+text = "data/output/audit/qgp-participant-reference-intake/extracted-text.json"
+text_encoding = "JSON string preserves pdftotext -layout output, including mathematical control glyphs"
+collision_system = "Pb-Pb"
+sqrt_s_nn_tev = 5.02
+centrality_definition = "Sharp cuts in simulated V0M multiplicity distribution using an NBD-Glauber fit"
+mean_definition = "Mean participating-nucleon count within the selected population"
+rms_definition = "Dispersion of the event distribution, not standard error or systematic uncertainty of the mean"
+systematic_definition = "Absolute mean uncertainty from independent Glauber parameter variations; source contributions combined in quadrature"
+covariance_status = "The selected table supplies per-row systematic uncertainties; cross-bin covariance remains unadmitted"
+
+[comparison]
+centrality_percent = ["0-5", "5-10", "10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80"]
+historical_means = [382.8, 329.7, 260.5, 186.4, 128.9, 85.0, 52.8, 30.0, 15.8]
+historical_errors = [3.1, 4.6, 4.4, 3.8, 3.3, 2.6, 2.0, 1.3, 0.6]
+admitted_means = [383.4, 331.2, 262.0, 187.9, 130.8, 87.14, 54.34, 30.97, 15.72]
+admitted_systematics = [0.568, 1.03, 1.15, 1.34, 1.33, 0.928, 0.802, 0.57, 0.241]
+identity_result = "All nine source means and systematic uncertainties differ from the historical arrays. The new source is an authenticated alternative; original-row provenance remains unresolved."
+optical_locator = "crates/qgp_scaling/src/glauber.rs::centrality_to_b and compute_centrality_bins"
+optical_difference = "The optical solver maps centrality percentiles to impact-parameter cuts. Table 1 selects simulated V0M multiplicity with a fitted NBD-Glauber model; source page 4 explicitly distinguishes the selections. Comparing values alone does not establish model conformance."
+eccentricity_boundary = "Table 1 contains Npart, Ncoll and nuclear overlap, not an eccentricity column. A case-insensitive search of the retained PDF text for eccentricity, epsilon, participant-plane and reaction-plane produced zero matches. C-1713 requires a separately identified estimator and source table."
+
+[implementation]
+constructor = "qgp_scaling::data_tables::alice_public_2018_011_table1_participants"
+row_type = "qgp_scaling::data_tables::ParticipantDistributionReference"
+metadata_type = "qgp_scaling::data_tables::ParticipantReferenceTable"
+legacy_constructor = "qgp_scaling::data_tables::alice_pbpb_5020_npart"
+legacy_boundary = "Existing rows and callers retain their historical constructor. The added constructor exposes source identity and distinct distribution/uncertainty fields without implicit conversion to NpartReference."
+source_pre_edit_sha256 = "04184c0524fe42a5fc77019f8ece6ffb40155e89ecde5754e438dfd8b35132b2"
+test = "crates/qgp_scaling/tests/alice_participant_reference.rs"
+test_scope = "Check nine typed rows against independently retained source transcription, all population metadata, all historical means/errors, and the distinction between RMS and mean uncertainty"
+source_post_edit_sha256 = "4a5f319a1e9e0fa81a73952e531f7b21a555287f8591659c0e994ea9d2d6285f"
+test_sha256 = "41bcd9f702d6a70826458d5788e8181663e5d434063b608560cc36f867a23d60"
+preservation_measurement = "Removing only the added contiguous type/constructor block from the resulting data_tables.rs reproduces the pre-edit SHA256 04184c0524fe42a5fc77019f8ece6ffb40155e89ecde5754e438dfd8b35132b2; every preexisting source byte is preserved."
+
+[validation]
+focused_command = "CARGO_TARGET_DIR=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target cargo test -p qgp_scaling --profile validation --test alice_participant_reference"
+focused_result = "2 passed, 0 failed"
+focused_log = "data/output/audit/qgp-participant-reference-intake/test.log"
+clippy_command = "cargo clippy -p qgp_scaling --all-targets --profile validation -- -D warnings"
+clippy_result = "pass"
+clippy_log = "data/output/audit/qgp-participant-reference-intake/clippy.log"
+regression_command = "cargo test -p qgp_scaling --profile validation --lib"
+regression_log = "data/output/audit/qgp-participant-reference-intake/regression.log"
+shared_cargo_home = "/home/eirikr/Github/open_gororoba/.cache/cargo-home"
+shared_cargo_build_build_dir = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e"
+cargo_target_dir = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target"
+shared_cache_scope = "Clippy and library regression use the named shared cargo-home and build-dir; the earlier focused test uses the target-dir with default cargo-home/build-dir resolution."
+format_command = "DPRINT_CACHE_DIR=$PWD/.cache/dprint dprint check crates/qgp_scaling/src/data_tables.rs crates/qgp_scaling/tests/alice_participant_reference.rs"
+format_result = "pass"
+format_log = "data/output/audit/qgp-participant-reference-intake/format.log"
+format_note = "Initial stable rustfmt emitted warnings for the repository's nightly-only options. The final dprint formatter and checker completed successfully."
+rustc = "1.97.0 (2d8144b78 2026-07-07)"
+cargo = "1.97.0 (c980f4866 2026-06-30)"
+dprint = "0.53.0"
+pdftotext = "26.08.0"
+regression_result = "73 passed, 0 failed"

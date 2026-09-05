@@ -269,3 +269,30 @@ id = "qgp-source-quenching-identity"
 status = "completed"
 action = "Admit the cited quenching equations and bind failed fits to the implemented ansatz"
 acceptance = "Retain versioned source bytes, parameter maps and canonical correction; preserve the original objective and identify source convolution as a separate implementation prerequisite."
+
+[[task]]
+id = "qgp-source-curve-geometry"
+status = "completed"
+action = "Identify source curve styles, axes and reference population for CUJET Figure 3a"
+acceptance = "Bind the exact PDF, panel, schemes, energy, centrality, species and coordinate transforms before extracting numerical curves."
+
+[[task]]
+id = "qgp-source-curve-extraction"
+status = "completed"
+depends_on = ["qgp-source-curve-geometry"]
+action = "Extract source-bound curves with explicit coordinate and interpolation uncertainty"
+acceptance = "Replayable extraction preserves original arrays, source bytes and all curve identities; independent checks bound digitization error."
+
+[[task]]
+id = "qgp-source-population-adjudication"
+status = "completed"
+depends_on = ["qgp-source-curve-extraction"]
+action = "Adjudicate matched QGP populations, uncertainty treatment and fitting freedom"
+acceptance = "Each admissible comparison names its reference population and conditional likelihood; missing covariance or model maps remain explicit."
+
+[[task]]
+id = "qgp-source-comparison-validation"
+status = "completed"
+depends_on = ["qgp-source-population-adjudication"]
+action = "Validate and publish source-identity canonical revisions and retained comparisons"
+acceptance = "Canonical history, exported views, numerical extraction checks and publication gates agree."

@@ -1,0 +1,18 @@
+schema_version = 1
+source_pdf = "data/output/audit/qgp-reference-population/cujet-source.pdf"
+source_sha256 = "ad8be4887d36bb658d246142f3331f82be2dd71713fa17622d1396e3ea982a68"
+pdf_page = 19
+panel = "Figure 3(a), PDF Form XObject Im5, object 718"
+native_stream_sha256 = "dbd2d0af8a6c9981b1853e5b99c55db334e764bf03c3859cf1f7853cb611c010"
+independent_decoders = ["mutool 1.28.0 show -b SOURCE 718", "qpdf 12.4.1 --show-object=718 --filtered-stream-data SOURCE"]
+decoded_bytes_identical = true
+renderer = "pdftoppm 26.08.0, page19, scale-to1600"
+failed_converter = "pdftocairo 26.08.0 -svg emitted a closing svg tag and then exited134 at cairo-hash.c:217, hash_table->live_entries == 0. That converter is excluded from numerical admission."
+reference_json = "data/output/audit/qgp-reference-population/alice2760-table19.json"
+reference_json_sha256 = "fc39ef496a32f687c416fc6849be809f439d11f364167491374e317e885c01cc"
+reference_csv = "hepdata59944v1-table19.csv"
+reference_csv_sha256 = "13aea28ffdfb57c1cb587c13ebb86606da2e18c5ff23a76e91ad832659deac2d"
+csv_transformation = "Each JSON values row maps x[0].low/high, y[0].value, stat and sys symerror, and the separately identified4.64% normalization to six CSV columns; original row order and decimal strings are retained."
+source_domain = "pT greater than8 GeV; comparison retains bins with lower edge at least8 GeV and upper edge at most120 GeV. Drawn vertices outside that range remain retained separately."
+fit_boundary = "Source Eqs3.7-3.9 choose alpha_c and c_m plus a categorical liberation scheme to fit RAA near pT12.5GeV and lattice screening information. The exact calibration-data lineage remains separate. Exclude any bin containing12.5GeV from the calibration-point-excluded diagnostic; independent holdout admission remains unresolved."
+uncertainty_scope = "Retain statistical, systematic and shared normalization columns separately. Graphic stroke and across-bin envelopes are geometric bounds, not theoretical or statistical confidence intervals. No BIC or chi-square probability is admitted without covariance and calibration lineage."

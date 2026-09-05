@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 274
-edge_count = 1490
+lineage_count = 276
+edge_count = 1507
 
 [[lineage]]
 id = "XL-001"
@@ -4987,6 +4987,42 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo build -p gororoba_cli_physics --bin euclid-df-sweep --features euclid-catalog,gpu --profile validation; run euclid-df-sweep --catalog data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet --grid 16 --steps 24 --tau 0.8 --dx-kpc 1 --alpha-zd 0.1 --density-floor 0.045 --softening-eps 0.5 --smagorinsky-cs 0 --mrt --null-hypothesis --null-n-trials 10 --seed 42 --max-relative-mass-error 0.00001 --max-mach 0.3 --null-evidence-dir <fresh-directory>; add --cpu for CPU. Both retained producer exits are 1.", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-275"
+experiment_id = "E-307"
+binary = "external:qgp-cujet-vector-extractor:4ab62909f190d3c4"
+deterministic = true
+gpu = false
+run_command = "rustc --edition 2024 -D warnings -O data/output/audit/qgp-cujet-source-curves/extract_cujet_vectors.rs -o .cache/qgp-source-curves/extract-cujet-vectors; .cache/qgp-source-curves/extract-cujet-vectors data/output/audit/qgp-cujet-source-curves <fresh-output-directory>"
+run_command_sha256 = "64747da81dfeb65b48ffd2b10f95560216567064e27d0400734d80611cc80dcc"
+claim_refs = ["C-1711"]
+input_path_refs = ["data/output/audit/qgp-cujet-source-curves/hepdata59944v1-table19.csv", "data/output/audit/qgp-cujet-source-curves/intake.toml", "data/output/audit/qgp-cujet-source-curves/panel-a-native.stream"]
+output_path_refs = ["data/output/audit/qgp-cujet-source-curves/adjudication.toml", "data/output/audit/qgp-cujet-source-curves/extraction/matched-bin-envelopes.csv", "data/output/audit/qgp-cujet-source-curves/extraction/source-vertices.csv", "data/output/audit/qgp-cujet-source-curves/extraction/summary.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "rustc --edition 2024 -D warnings -O data/output/audit/qgp-cujet-source-curves/extract_cujet_vectors.rs -o .cache/qgp-source-curves/extract-cujet-vectors; .cache/qgp-source-curves/extract-cujet-vectors data/output/audit/qgp-cujet-source-curves <fresh-output-directory>", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-276"
+experiment_id = "E-308"
+binary = "cargo-test:qgp_scaling:alice_participant_reference"
+deterministic = true
+gpu = false
+run_command = "cargo test -p qgp_scaling --test alice_participant_reference --profile validation; cargo test -p gororoba_cli_physics --bin arleo-falmagne-scaling --profile validation participant_"
+run_command_sha256 = "f19ce716d18f2881870cd9bfab7c4232ddaff51bb66c9650e4bf48bd623be037"
+claim_refs = ["C-1714"]
+input_path_refs = ["data/output/audit/qgp-participant-reference-intake/adjudication.toml", "data/output/audit/qgp-participant-reference-intake/alice-public-2018-011.pdf", "data/output/audit/qgp-participant-reference-intake/table1-participant-rows.csv"]
+output_path_refs = ["data/output/audit/qgp-participant-reference-intake/adjudication.toml", "data/output/audit/qgp-participant-reference-intake/cli-reporting-repair.toml", "data/output/audit/qgp-participant-reference-intake/test.log"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --test alice_participant_reference --profile validation; cargo test -p gororoba_cli_physics --bin arleo-falmagne-scaling --profile validation participant_", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -18395,6 +18431,159 @@ id = "XLE-01490"
 lineage_id = "XL-274"
 from_id = "E-306"
 to_ref = "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/trials.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01491"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "external:qgp-cujet-vector-extractor:4ab62909f190d3c4"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01492"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "C-1711"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01493"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "data/output/audit/qgp-cujet-source-curves/hepdata59944v1-table19.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01494"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "data/output/audit/qgp-cujet-source-curves/intake.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01495"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "data/output/audit/qgp-cujet-source-curves/panel-a-native.stream"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01496"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "data/output/audit/qgp-cujet-source-curves/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01497"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "data/output/audit/qgp-cujet-source-curves/extraction/matched-bin-envelopes.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01498"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "data/output/audit/qgp-cujet-source-curves/extraction/source-vertices.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01499"
+lineage_id = "XL-275"
+from_id = "E-307"
+to_ref = "data/output/audit/qgp-cujet-source-curves/extraction/summary.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01500"
+lineage_id = "XL-276"
+from_id = "E-308"
+to_ref = "cargo-test:qgp_scaling:alice_participant_reference"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01501"
+lineage_id = "XL-276"
+from_id = "E-308"
+to_ref = "C-1714"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01502"
+lineage_id = "XL-276"
+from_id = "E-308"
+to_ref = "data/output/audit/qgp-participant-reference-intake/adjudication.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01503"
+lineage_id = "XL-276"
+from_id = "E-308"
+to_ref = "data/output/audit/qgp-participant-reference-intake/alice-public-2018-011.pdf"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01504"
+lineage_id = "XL-276"
+from_id = "E-308"
+to_ref = "data/output/audit/qgp-participant-reference-intake/table1-participant-rows.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01505"
+lineage_id = "XL-276"
+from_id = "E-308"
+to_ref = "data/output/audit/qgp-participant-reference-intake/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01506"
+lineage_id = "XL-276"
+from_id = "E-308"
+to_ref = "data/output/audit/qgp-participant-reference-intake/cli-reporting-repair.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01507"
+lineage_id = "XL-276"
+from_id = "E-308"
+to_ref = "data/output/audit/qgp-participant-reference-intake/test.log"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

@@ -6717,18 +6717,18 @@ inconclusive_outcomes = ["A large diagonal chi2 alone leaves physical rejection 
 [[claim]]
 id = "C-1711"
 last_verified = "2026-08-06"
-statement = "Historical CUJET-array and shifted-ansatz scores against six ALICE5.02 TeV 0-5 percent charged-particle points remain descriptive unmatched comparisons. The cited CUJET source arXiv1508.00552v3 Figure3(a) instead describes charged hadrons at2.76 TeV and20-30 percent centrality; Figures4/5 describe transport coefficients. HEPData59944v1 Table19 supplies a matching experimental population, but the historical numerical vectors lack authenticated curve provenance. Source identity and covariance must be admitted before physical model ranking. The separately cited arXiv2401.03757 is Jai Prakash: Figure4 treats static-medium charm quarks at6 fm/c, rather than centrality-specific final D mesons."
+statement = "E-307 extracts three authenticated CUJET3.0 source curves from arXiv1508.00552v3 Figure3(a) for charged-hadron Pb-Pb2.76 TeV20-30 percent and compares them with HEPData59944v1/t19. All three pass the declared20-bin component-box feasibility check with one shared normalization nuisance bounded by4.64 percent. Source calibration near12.5 GeV and lattice screening, detector-acceptance matching and covariance remain explicit limits; the result establishes descriptive feasibility rather than statistical agreement or superiority. Historical unmatched six-point arrays and scores remain preserved."
 status = "Provisional"
-status_note = "The source-identity intake retains seven authenticated RAA tables with 323 rows: charged-particle Pb-Pb populations at 2.76/5.02 TeV and explicitly averaged prompt D0,D+,D*+ populations at 5.02 TeV. The original theory vectors remain quarantined. Exact species/centrality adoption and a sourced covariance decomposition are required before ranking. See data/output/audit/qgp-primary-reference-intake/adjudication.toml."
-where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
+status_note = "E-307 retains three native source curves and all65 matched-reference rows. Each scheme passes the declared20-bin component-box feasibility check. Calibration-point exclusion leaves holdout independence unresolved; covariance and detector acceptance remain admission requirements for physical model ranking. Historical arrays remain retained. See data/output/audit/qgp-cujet-source-curves/adjudication.toml."
+where_stated = "data/output/audit/qgp-cujet-source-curves/adjudication.toml; data/output/audit/qgp-cujet-source-curves/extract_cujet_vectors.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The contract checks the retained numerical comparison and its reference-population admission. A physical superiority claim requires matched collision populations, covariance and a separate phenomenological contract."
 fixed_hyperparameters = ["Historical ALICE charged-hadron Pb-Pb 5.02 TeV centrality 0-5 percent, pT>=5 GeV, six retained points", "Historical CUJET digitization labels Pb-Pb 2.76 TeV", "Historical AF n=6.1 held fixed", "Historical diagonal error sqrt(stat^2+syst_up^2) is retained for reproduction, without claiming full published covariance"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
-intervening_map_count = 3
-computational_stage_count = 3
+intervening_map_count = 4
+computational_stage_count = 4
 
 [[claim.intervening_maps]]
 name = "population_tuple_admission"
@@ -6747,6 +6747,18 @@ name = "frozen_curve_scoring"
 branch = "fixed_competitor"
 description = "Score the frozen CUJET curve on the identical six points using the same historical residual convention, retaining its mismatched energy label."
 kind = "computational"
+
+[[claim.intervening_maps]]
+name = "native_polyline_component_box"
+branch = "source_curves"
+description = "E-307 verifies source curves, population labels, native axis transforms and whole-bin stroke envelopes; intersect component boxes under one shared normalization nuisance after excluding the bin containing12.5 GeV. Calibration independence remains unadmitted."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "source_curves"
+count = 1
+names = ["shared_normalization_nuisance"]
+training_boundary = "Zero local model parameters are fitted. One normalization nuisance ranges over the published4.64 percent bound across the same20 bins scored. Source alpha_c and c_m plus categorical liberation choice are externally calibrated near12.5 GeV and lattice screening; exact lineage remains unresolved."
 
 [[claim.fitted_parameters]]
 branch = "reference_identity"
@@ -6767,15 +6779,15 @@ names = []
 training_boundary = "The digitized CUJET curve is held fixed in this comparison. Its underlying theory parameter count and external calibration are separate from parameters refitted to these six points."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-075", "E-296"]
-protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
-protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
+experiment_ids = ["E-075", "E-296", "E-307"]
+protocol_artifact = "data/output/audit/qgp-cujet-source-curves/adjudication.toml"
+protocol_sha256 = "51563f55c32ad1077e27317595166dc29a76608169d9769a5aeb935a4d2bb01a"
 description = "E-075 owns arleo-falmagne-scaling and its data/fit family. Bind the actual comparison subcommand and competing_models.rs rather than assuming the registered full run alone reproduces this ranking. Independently recompute the historical chi-squared values about 1200 and 1917, retaining exact values and optimizer outcome, then report population admission separately."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Historical scoring remains separately reproducible under its preserved inputs and formula; primary source figures identify the mismatched populations, and source admission rejects all five unsupported vectors even when display labels are changed."]
-revision_outcomes = ["Source identity or optimizer repair changes the numerical ordering or fitted minimum: preserve the original comparison and register the corrected numerical result.", "Matched-population curves become available: preregister their covariance, fit freedoms and comparison protocol before deriving a physical model-ranking successor."]
-abandonment_outcomes = ["Independent identical-input scoring contradicts the retained numerical result, or authenticated source text contradicts the declared population; abandon the affected clause.", "An unsupported vector passes source admission after a display-only relabeling, refuting the quarantine implementation predicate."]
+verification_outcomes = ["Independent native-stream extraction and arithmetic reproduce all three E-307 normalization intersections and retained input identities; verification supports component-box feasibility alone.", "Independent scoring of identical six-point inputs reproduces the historical ordering CUJET chi-squared below the independently minimized AF value while explicitly retaining the 2.76-versus-5.02 TeV mismatch; verification supports the bounded numerical statement alone."]
+revision_outcomes = ["Independent extraction or uncertainty mapping changes an E-307 intersection: preserve the previous output and revise the feasibility result.", "Source identity or optimizer repair changes the numerical ordering or fitted minimum: preserve the original comparison and register the corrected numerical result.", "Matched-population curves become available: preregister their covariance, fit freedoms and comparison protocol before deriving a physical model-ranking successor."]
+abandonment_outcomes = ["An authenticated curve or reference correction makes a scheme intersection empty: abandon the asserted component-box feasibility for that scheme.", "Independent calculation on the identified historical inputs reverses the asserted chi-squared ordering: abandon the numerical ordering claim for that producer."]
 inconclusive_outcomes = ["Collision energy, species, centrality or uncertainty treatment differs across model/data populations: physical superiority remains inconclusive regardless of the numerical ordering.", "Unknown covariance, competitor calibration provenance or optimizer failure blocks an inferential model-selection claim; the diagonal historical residual calculation remains separately reproducible."]
 
 [[claim]]
@@ -6860,10 +6872,10 @@ inconclusive_outcomes = ["Unidentified source leaves the column unverified rathe
 [[claim]]
 id = "C-1714"
 last_verified = "2026-08-06"
-statement = "The retained alice_pbpb_5020_npart source citation does not identify the per-row participant population. Primary2.76 TeV ALICE centrality tables match some retained entries (329.7 and260.5) while other entries differ (382 or382.7 versus382.8). The audit retains those partial matches and the original5.02 TeV citation; exact per-row lineage remains unresolved."
+statement = "The retained alice_pbpb_5020_npart nine-row historical sequence has unresolved per-row provenance. E-308 admits ALICE-PUBLIC-2018-011 Table1, PDF page7, as a separately named Pb-Pb5.02 TeV participant reference: all nine means differ from the historical sequence. The typed constructor separates mean, event RMS and systematic mean uncertainty. Source V0M/NBD-Glauber selection differs from optical impact-parameter cuts; the CLI preserves the historical strict5 percent diagnostic and identifies its fixture scope. Physical agreement and historical row identity remain unresolved."
 status = "Provisional"
-status_note = "The retrieved official auxiliary table contains ten participant coordinates with distinct numerical values and lacks per-row centrality labels. The table does not authenticate the retained nine-row centrality/Npart/uncertainty sequence. Preserve both populations separately pending exact row lineage. See data/output/audit/qgp-primary-reference-intake/adjudication.toml."
-where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
+status_note = "E-308 admits ALICE-PUBLIC-2018-011 Table1 page7 with separate mean, event RMS and systematic fields. All nine means differ from the historical arrays. The CLI identifies the retained strict5 percent comparison as a fixture diagnostic. Original row lineage, cross-bin covariance and V0M versus impact-parameter selection matching remain unresolved. See data/output/audit/qgp-participant-reference-intake/adjudication.toml."
+where_stated = "data/output/audit/qgp-participant-reference-intake/adjudication.toml; crates/qgp_scaling/src/data_tables.rs::alice_public_2018_011_table1_participants; crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs::npart_pbpb_report"
 evidence_layer = "source_proposition"
 depth_status = "declared"
 lift_depth = 0
@@ -6886,16 +6898,16 @@ names = []
 training_boundary = "The source lookup fits zero parameters. Glauber calibration freedoms and downstream physical fits remain separate."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-075"]
-protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
-protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
+experiment_ids = ["E-075", "E-308"]
+protocol_artifact = "data/output/audit/qgp-participant-reference-intake/adjudication.toml"
+protocol_sha256 = "c91c632a77da4bbd1f781d3a3671c2bfcc17c5b73d69d67b6964478b78ab8067"
 description = "Admit cited source bytes and enumerated searched surfaces, then produce exact row locators or bounded absence; E-075 numeric agreement cannot supply source identity."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["The admitted cited publication and enumerated supplements lack the asserted nine-row table; retain the failed citation and exact searched surfaces."]
-revision_outcomes = ["A different admitted source supplies some or all rows: correct canonical provenance while preserving the original citation mismatch and unresolved rows."]
+verification_outcomes = ["All nine Table1 means and separate RMS/systematic fields reproduce the typed constructor while the original historical arrays and strict CLI threshold remain unchanged; source identity verification admits an alternative population only.", "The admitted cited publication and enumerated supplements lack the asserted nine-row table; retain the failed citation and exact searched surfaces."]
+revision_outcomes = ["A source transcription or typed metadata mismatch appears: correct the admitted alternative and retain previous bytes before rerunning E-308.", "A different admitted source supplies some or all rows: correct canonical provenance while preserving the original citation mismatch and unresolved rows."]
 abandonment_outcomes = ["An exact table/page locator in the cited publication supplies the asserted rows with matching population: abandon the claimed citation mismatch."]
-inconclusive_outcomes = ["Unavailable source bytes or an unenumerated supplement surface leaves absence unresolved.", "Numerically nearby Glauber values do not establish the actual table source or its uncertainty population."]
+inconclusive_outcomes = ["Optical impact-parameter selection and source V0M/NBD-Glauber selection remain unmatched, or covariance remains unadmitted: physical agreement remains inconclusive.", "Unavailable source bytes or an unenumerated supplement surface leaves absence unresolved.", "Numerically nearby Glauber values do not establish the actual table source or its uncertainty population."]
 
 [[claim]]
 id = "C-1715"

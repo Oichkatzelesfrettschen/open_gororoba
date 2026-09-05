@@ -257,32 +257,42 @@ fn run_glauber_only(n_gl: usize) {
             );
         }
 
-        // Validate against published Npart
+        // Preserve fixture diagnostics separately from source-defined populations.
         if *label == "Pb-Pb 5.02 TeV" {
-            validate_npart_pbpb(&bins);
+            eprintln!("{}", npart_pbpb_report(&bins));
         }
 
         eprintln!();
     }
 }
 
-fn validate_npart_pbpb(bins: &[CentralityBinGeometry]) {
+fn historical_npart_diagnostic(computed: f64, fixture: f64) -> (f64, bool) {
+    let difference_percent = 100.0 * (computed - fixture).abs() / fixture;
+    (difference_percent, difference_percent < 5.0)
+}
+
+fn npart_pbpb_report(bins: &[CentralityBinGeometry]) -> String {
     let refs = data_tables::alice_pbpb_5020_npart();
-    eprintln!();
-    eprintln!("  Npart validation (ALICE PLB 772, 2017):");
-    eprintln!(
+    let mut lines = vec![
+        String::new(),
+        "  Historical Npart fixture diagnostics (row-level source admission unresolved):".into(),
+        "  Computed bins use optical impact-parameter selection; the 5% predicate is historical."
+            .into(),
+    ];
+    lines.push(format!(
         "  {:>10} {:>10} {:>10} {:>10} {:>6}",
-        "Centrality", "Computed", "Published", "Diff%", "Pass?"
-    );
+        "Centrality", "Computed", "Fixture", "Diff%", "<5%?"
+    ));
 
     for r in &refs {
         // Find matching centrality bin
         if let Some(bin) = bins.iter().find(|b| {
             (b.cent_lo - r.cent_lo).abs() < 0.001 && (b.cent_hi - r.cent_hi).abs() < 0.001
         }) {
-            let diff_pct = 100.0 * (bin.n_part - r.n_part).abs() / r.n_part;
-            let pass = if diff_pct < 5.0 { "OK" } else { "FAIL" };
-            eprintln!(
+            let (diff_pct, within_historical_gate) =
+                historical_npart_diagnostic(bin.n_part, r.n_part);
+            let pass = if within_historical_gate { "yes" } else { "no" };
+            lines.push(format!(
                 "  {:>4.0}-{:<5.0}% {:>10.1} {:>10.1} {:>9.1}% {:>6}",
                 r.cent_lo * 100.0,
                 r.cent_hi * 100.0,
@@ -290,9 +300,49 @@ fn validate_npart_pbpb(bins: &[CentralityBinGeometry]) {
                 r.n_part,
                 diff_pct,
                 pass
-            );
+            ));
         }
     }
+    let reference = data_tables::alice_public_2018_011_table1_participants();
+    lines.push(format!(
+        "  Distinct reference: {}, {}, PDF page {}; {} {:.2} TeV",
+        reference.source_report,
+        reference.source_table,
+        reference.source_pdf_page,
+        reference.collision_system,
+        reference.sqrt_s_nn_tev
+    ));
+    lines.push(format!(
+        "  Source PDF SHA256: {}",
+        reference.source_pdf_sha256
+    ));
+    lines.push(format!(
+        "  Selection: {}; model: {}",
+        reference.centrality_selection, reference.distribution_model
+    ));
+    lines.push("  Selection matching is unadmitted: optical impact-parameter bins and V0M NBD-Glauber bins establish no physical agreement.".into());
+    lines.push(format!(
+        "  Mean systematic uncertainty: {}",
+        reference.systematic_definition
+    ));
+    lines.push(
+        "  RMS is event-distribution dispersion, separate from uncertainty on the mean.".into(),
+    );
+    lines.push(format!(
+        "  {:>10} {:>10} {:>10} {:>14}",
+        "Centrality", "Mean", "RMS", "Mean syst."
+    ));
+    for row in reference.rows {
+        lines.push(format!(
+            "  {:>4.0}-{:<5.0}% {:>10.2} {:>10.2} {:>14.3}",
+            row.cent_lo * 100.0,
+            row.cent_hi * 100.0,
+            row.mean,
+            row.rms,
+            row.mean_systematic
+        ));
+    }
+    lines.join("\n")
 }
 
 fn alice_straggling_pt_range(
@@ -1565,8 +1615,45 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
 
 #[cfg(test)]
 mod tests {
-    use super::{RaaDataPoint, alice_straggling_pt_range};
+    use super::{
+        RaaDataPoint, alice_straggling_pt_range, historical_npart_diagnostic, npart_pbpb_report,
+    };
     use qgp_scaling::quenching::{r_aa_model, scaling_function};
+
+    #[test]
+    fn participant_diagnostics_preserve_strict_historical_gate() {
+        assert_eq!(historical_npart_diagnostic(104.0, 100.0), (4.0, true));
+        assert_eq!(historical_npart_diagnostic(105.0, 100.0), (5.0, false));
+        assert_eq!(historical_npart_diagnostic(95.0, 100.0), (5.0, false));
+    }
+
+    #[test]
+    fn participant_report_separates_fixture_and_source_selection() {
+        let fixture = &qgp_scaling::data_tables::alice_pbpb_5020_npart()[0];
+        let report = npart_pbpb_report(&[qgp_scaling::glauber::CentralityBinGeometry {
+            cent_lo: fixture.cent_lo,
+            cent_hi: fixture.cent_hi,
+            b_lo: 0.0,
+            b_hi: 1.0,
+            n_part: fixture.n_part,
+            a_perp: 1.0,
+            l_avg: 1.0,
+            eccentricity: 0.0,
+        }]);
+        assert!(report.contains("Historical Npart fixture diagnostics"));
+        assert!(report.contains("ALICE-PUBLIC-2018-011, Table 1, PDF page 7"));
+        assert!(report.contains("Sharp cuts in simulated V0M multiplicity"));
+        assert!(report.contains(
+            "optical impact-parameter bins and V0M NBD-Glauber bins establish no physical agreement"
+        ));
+        assert!(report.contains("RMS is event-distribution dispersion"));
+        assert!(!report.contains("Published"));
+        assert!(!report.contains("Pass?"));
+        assert!(report.contains(&format!(
+            "{:>10.1} {:>10.1} {:>9.1}% {:>6}",
+            fixture.n_part, fixture.n_part, 0.0, "yes"
+        )));
+    }
 
     #[test]
     fn test_scaling_collapse_concept() {

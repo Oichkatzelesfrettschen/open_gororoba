@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-307"
+title = "CUJET source-vector extraction and matched centrality component-box feasibility"
+status = "active"
+binary = "external:qgp-cujet-vector-extractor:4ab62909f190d3c4"
+claims = ["C-1711"]
+claim_refs = ["C-1711"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "arXiv1508.00552v3 Figure3(a) native stream and HEPData59944v1/t19; charged Pb-Pb2.76 TeV20-30 percent, three source schemes and65 reference rows."
+input_path_refs = ["data/output/audit/qgp-cujet-source-curves/intake.toml", "data/output/audit/qgp-cujet-source-curves/panel-a-native.stream", "data/output/audit/qgp-cujet-source-curves/hepdata59944v1-table19.csv"]
+method = "Extract duplicated native polylines, verify axes and styles, compute whole-bin graphical envelopes, exclude the bin containing12.5 GeV and intersect shared normalization feasibility ranges. Preserve source calibration, covariance and acceptance limitations."
+run = "rustc --edition 2024 -D warnings -O data/output/audit/qgp-cujet-source-curves/extract_cujet_vectors.rs -o .cache/qgp-source-curves/extract-cujet-vectors; .cache/qgp-source-curves/extract-cujet-vectors data/output/audit/qgp-cujet-source-curves <fresh-output-directory>"
+output = ["data/output/audit/qgp-cujet-source-curves/extraction/summary.toml"]
+output_path_refs = ["data/output/audit/qgp-cujet-source-curves/extraction/source-vertices.csv", "data/output/audit/qgp-cujet-source-curves/extraction/matched-bin-envelopes.csv", "data/output/audit/qgp-cujet-source-curves/extraction/summary.toml", "data/output/audit/qgp-cujet-source-curves/adjudication.toml"]
+status_note = "Three source schemes each pass the declared20-bin component-box feasibility predicate; extraction fits zero model parameters and varies one shared normalization nuisance. Calibration-point exclusion does not establish independent holdout. Statistical agreement, BIC and model superiority remain unadmitted."

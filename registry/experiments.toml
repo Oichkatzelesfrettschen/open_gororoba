@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 200
-experiment_count = 274
+deterministic_count = 202
+experiment_count = 276
 gpu_count = 33
 seeded_count = 49
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -7209,4 +7209,58 @@ status = "active"
 status_note = "All 50 rows and 100 original input arrays remain accounted for; 44 rows pass numerical admission and six Sersic rows fail Mach .3 at step 1. Corrected impulse conformance is E-300. The zero-force initial density streaming predicts Mach .3126692521383215 independently. Retain E-298 separately; numerical accuracy, paired physical resolution and morphology interpretation remain unassessed."
 status_token = "ACTIVE"
 title = "Corrected MRT paired null replay with retained initial-field Mach failures"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "external:qgp-cujet-vector-extractor:4ab62909f190d3c4"
+binary_experiment_declared = "E-307"
+binary_registered = true
+claim_refs = ["C-1711"]
+claims = ["C-1711"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-307"
+input = "arXiv1508.00552v3 Figure3(a) native stream and HEPData59944v1/t19; charged Pb-Pb2.76 TeV20-30 percent, three source schemes and65 reference rows."
+input_path_refs = ["data/output/audit/qgp-cujet-source-curves/hepdata59944v1-table19.csv", "data/output/audit/qgp-cujet-source-curves/intake.toml", "data/output/audit/qgp-cujet-source-curves/panel-a-native.stream"]
+lineage_id = "XL-275"
+method = "Extract duplicated native polylines, verify axes and styles, compute whole-bin graphical envelopes, exclude the bin containing12.5 GeV and intersect shared normalization feasibility ranges. Preserve source calibration, covariance and acceptance limitations."
+output = ["data/output/audit/qgp-cujet-source-curves/extraction/summary.toml"]
+output_path_refs = ["data/output/audit/qgp-cujet-source-curves/adjudication.toml", "data/output/audit/qgp-cujet-source-curves/extraction/matched-bin-envelopes.csv", "data/output/audit/qgp-cujet-source-curves/extraction/source-vertices.csv", "data/output/audit/qgp-cujet-source-curves/extraction/summary.toml"]
+reproducibility_class = "deterministic_replay"
+run = "rustc --edition 2024 -D warnings -O data/output/audit/qgp-cujet-source-curves/extract_cujet_vectors.rs -o .cache/qgp-source-curves/extract-cujet-vectors; .cache/qgp-source-curves/extract-cujet-vectors data/output/audit/qgp-cujet-source-curves <fresh-output-directory>"
+run_command_sha256 = "64747da81dfeb65b48ffd2b10f95560216567064e27d0400734d80611cc80dcc"
+status = "active"
+status_note = "Three source schemes each pass the declared20-bin component-box feasibility predicate; extraction fits zero model parameters and varies one shared normalization nuisance. Calibration-point exclusion does not establish independent holdout. Statistical agreement, BIC and model superiority remain unadmitted."
+status_token = "ACTIVE"
+title = "CUJET source-vector extraction and matched centrality component-box feasibility"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "cargo-test:qgp_scaling:alice_participant_reference"
+binary_experiment_declared = "E-308"
+binary_registered = true
+claim_refs = ["C-1714"]
+claims = ["C-1714"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-308"
+input = "ALICE-PUBLIC-2018-011 Table1 PDF page7, nine typed participant-distribution rows and separately preserved historical arrays."
+input_path_refs = ["data/output/audit/qgp-participant-reference-intake/adjudication.toml", "data/output/audit/qgp-participant-reference-intake/alice-public-2018-011.pdf", "data/output/audit/qgp-participant-reference-intake/table1-participant-rows.csv"]
+lineage_id = "XL-276"
+method = "Verify typed reference values and population metadata against retained transcription; separate event RMS and systematic mean uncertainty; preserve historical arrays and strict5 percent diagnostic while correcting CLI source labels."
+output = ["data/output/audit/qgp-participant-reference-intake/adjudication.toml"]
+output_path_refs = ["data/output/audit/qgp-participant-reference-intake/adjudication.toml", "data/output/audit/qgp-participant-reference-intake/cli-reporting-repair.toml", "data/output/audit/qgp-participant-reference-intake/test.log"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p qgp_scaling --test alice_participant_reference --profile validation; cargo test -p gororoba_cli_physics --bin arleo-falmagne-scaling --profile validation participant_"
+run_command_sha256 = "f19ce716d18f2881870cd9bfab7c4232ddaff51bb66c9650e4bf48bd623be037"
+status = "active"
+status_note = "Two typed-reference tests and two CLI tests pass. All nine admitted means differ from the historical arrays. Table1 supplies an authenticated alternative, rather than recovered historical lineage; V0M/NBD-Glauber selection differs from optical impact-parameter cuts. Cross-bin covariance and eccentricity provenance remain unresolved."
+status_token = "ACTIVE"
+title = "ALICE participant table identity and historical reporting preservation"
 truth_surface_consumption = []

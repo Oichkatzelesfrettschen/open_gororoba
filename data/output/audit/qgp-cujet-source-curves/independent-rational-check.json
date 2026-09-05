@@ -1,0 +1,10 @@
+{
+  "checked_values": 3113,
+  "bound": "1e-12",
+  "all_exact_errors_below_bound": true,
+  "maximum_error_approximate": 5.639e-14,
+  "maximum_error_exact_numerator": "5639",
+  "maximum_error_exact_denominator": "100000000000000000",
+  "method": "Independent fixed-source regular-expression extraction into arbitrary-precision Rational decimal values; duplicate path equality; exact affine axes, segment interpolation, whole-bin stroke envelopes and per-bin normalization feasibility. Compare every declared output against exact rational evaluation.",
+  "source_sha256": "dbd2d0af8a6c9981b1853e5b99c55db334e764bf03c3859cf1f7853cb611c010"
+}

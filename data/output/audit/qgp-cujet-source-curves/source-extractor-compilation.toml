@@ -1,0 +1,16 @@
+schema_version = 1
+experiment = "E-307"
+producer_kind = "standalone_rust_source_vector_extractor"
+source = "data/output/audit/qgp-cujet-source-curves/extract_cujet_vectors.rs"
+source_sha256 = "dd10d8715a0fedc9df6a1acdb92604ffcf62a0354d2c778d4a8d1889bbfb5878"
+compiled_executable = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/qgp-source-curves/extract-cujet-vectors"
+compiled_executable_sha256 = "4ab62909f190d3c43c71b77095ccec56a83395bc96c5a92d791a76e19fc8e651"
+command = "rustc --edition 2024 -D warnings -O data/output/audit/qgp-cujet-source-curves/extract_cujet_vectors.rs -o .cache/qgp-source-curves/extract-cujet-vectors"
+compiler = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+compile_exit = 0
+execution = ".cache/qgp-source-curves/extract-cujet-vectors data/output/audit/qgp-cujet-source-curves <fresh-output-directory>"
+execution_exit = 0
+replay = "Fresh extraction matches all three retained output files byte for byte; rerunning into that existing output directory fails with AlreadyExists."
+output_creation = "create_dir and File::create_new require fresh output paths."
+source_retention = "Retained Rust source and measured executable identify the producer; the cache path requires reconstruction after cache cleanup."

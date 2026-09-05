@@ -1,0 +1,6 @@
+checked_values = 3497
+strict_absolute_error_bound = "1e-12"
+maximum_error_numerator = "5639"
+maximum_error_denominator = "100000000000000000"
+all_exact_errors_below_bound = true
+scope = "Exact decimal arithmetic and full retained row inventory; shared source axes and observational calibration remain separate evidence"

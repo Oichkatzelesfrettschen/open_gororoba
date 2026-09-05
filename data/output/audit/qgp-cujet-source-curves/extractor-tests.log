@@ -1,0 +1,8 @@
+
+running 3 tests
+test tests::interpolation_and_bin_envelope_have_independent_controls ... ok
+test tests::lexer_keeps_literal_operators_opaque ... ok
+test tests::source_mutations_fail_admission ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+

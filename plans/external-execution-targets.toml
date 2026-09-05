@@ -19,3 +19,10 @@ version = "e9ae82daed8e9085"
 executable = "/tmp/optics-figure5-vector-extractor"
 receipt = "data/output/audit/optics-landmark-identity/external-execution-identity.toml"
 receipt_sha256 = "329bd7d84b93437029cb5d67b23a564a2f1b5fe095b21ab99ae1415a6c286c47"
+
+[[external_target]]
+name = "qgp-cujet-vector-extractor"
+version = "4ab62909f190d3c4"
+executable = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/qgp-source-curves/extract-cujet-vectors"
+receipt = "data/output/audit/qgp-cujet-source-curves/external-execution-identity.toml"
+receipt_sha256 = "c7d7cf03d9adfd9edc34764fca1d72bb7b873c22eaabfecf0d21fe2bf6b2ff7a"

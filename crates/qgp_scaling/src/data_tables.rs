@@ -29,6 +29,78 @@ pub struct NpartReference {
     pub n_part_err: f64,
 }
 
+/// Participant distribution and mean uncertainty for a source-defined centrality bin.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct ParticipantDistributionReference {
+    /// Centrality lower edge as a fraction of the collision cross section.
+    pub cent_lo: f64,
+    /// Centrality upper edge as a fraction of the collision cross section.
+    pub cent_hi: f64,
+    /// Mean number of participating nucleons.
+    pub mean: f64,
+    /// Event-distribution dispersion, distinct from uncertainty on the mean.
+    pub rms: f64,
+    /// Absolute systematic uncertainty on the mean participant count.
+    pub mean_systematic: f64,
+}
+
+/// Source and selection identity needed to compare participant distributions.
+#[derive(Debug, Clone, PartialEq)]
+pub struct ParticipantReferenceTable {
+    pub source_report: &'static str,
+    pub source_table: &'static str,
+    pub source_pdf_page: u32,
+    pub source_pdf_sha256: &'static str,
+    pub collision_system: &'static str,
+    pub sqrt_s_nn_tev: f64,
+    pub centrality_selection: &'static str,
+    pub distribution_model: &'static str,
+    pub systematic_definition: &'static str,
+    pub rows: [ParticipantDistributionReference; 9],
+}
+
+/// ALICE-PUBLIC-2018-011 Table 1 participant means for Pb-Pb at 5.02 TeV.
+///
+/// V0M multiplicity selection differs from impact-parameter selection in
+/// `qgp_scaling::glauber`. The table admits a reference population rather than
+/// establishing optical-model conformance. RMS describes event dispersion;
+/// systematic uncertainty describes the mean under Glauber parameter variations.
+#[must_use]
+pub fn alice_public_2018_011_table1_participants() -> ParticipantReferenceTable {
+    let rows = [
+        (0.00, 0.05, 383.4, 17.8, 0.568),
+        (0.05, 0.10, 331.2, 19.6, 1.03),
+        (0.10, 0.20, 262.0, 27.2, 1.15),
+        (0.20, 0.30, 187.9, 21.6, 1.34),
+        (0.30, 0.40, 130.8, 17.0, 1.33),
+        (0.40, 0.50, 87.14, 13.2, 0.928),
+        (0.50, 0.60, 54.34, 9.87, 0.802),
+        (0.60, 0.70, 30.97, 6.97, 0.57),
+        (0.70, 0.80, 15.72, 4.58, 0.241),
+    ]
+    .map(
+        |(cent_lo, cent_hi, mean, rms, mean_systematic)| ParticipantDistributionReference {
+            cent_lo,
+            cent_hi,
+            mean,
+            rms,
+            mean_systematic,
+        },
+    );
+    ParticipantReferenceTable {
+        source_report: "ALICE-PUBLIC-2018-011",
+        source_table: "Table 1",
+        source_pdf_page: 7,
+        source_pdf_sha256: "de4d98816c22c0991e13e1669d9d708ffea7b470b56a020bbe90e38625ef7a6c",
+        collision_system: "Pb-Pb",
+        sqrt_s_nn_tev: 5.02,
+        centrality_selection: "Sharp cuts in simulated V0M multiplicity",
+        distribution_model: "NBD-Glauber fit and Glauber Monte Carlo",
+        systematic_definition: "Absolute mean uncertainty from independent Glauber parameter variations; source contributions combined in quadrature",
+        rows,
+    }
+}
+
 /// Retained Pb-Pb 5.02 TeV Npart rows with unresolved per-row source admission.
 #[must_use]
 pub fn alice_pbpb_5020_npart() -> Vec<NpartReference> {
