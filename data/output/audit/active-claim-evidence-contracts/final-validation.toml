@@ -1,12 +1,13 @@
 command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
 exit_status = 0
-scoped_library_tests_passed = 817
+scoped_library_tests_passed = 819
 scoped_library_tests_skipped = 0
 clippy = "passed with warnings denied"
 governance = "passed canonical integrity, signatures, references and execution lineage"
 completion_audit = "129 records, 813 support files, 22263526 support records and 12000 panel increments independently verified; seven mutation probes passed"
 preservation_audit = "preservation-audit.sql verifies all 1556 original claims, 198 transitions, 392 curated binary metadata rows, 3283 artifact metadata rows and 2120 artifact links"
-format_boundary = "Focused changed-file formatting passes; 24 byte-identical baseline files retain pre-existing formatter failures, recorded in format-validation.toml"
+format_boundary = "Focused changed-file formatting passes; 23 byte-identical baseline files retain pre-existing formatter failures after the reimport guard is formatted, recorded in format-validation.toml"
 numerical_boundary = "Historical replay preserves all 6045 ROC-AUC/AP values, interval endpoints and decisions; floating fit differences remain recorded in the module-ownership evidence"
 scientific_boundary = "Internal inference rejects the declared 0.005 useful increment; external inference remains blocked by backward timestamps; mechanism comparison uncertainty remains uncomputed"
 retrieval_boundary = "Historical hashes and retrieval receipts remain retained; document identity and unresolved retrieval rows remain explicit"
+consumer_boundary_validation = "claim-consumer-boundary-validation.toml records structured output, pre-write refusal, retained protocol admission and focused integration checks"

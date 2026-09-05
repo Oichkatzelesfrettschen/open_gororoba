@@ -28,6 +28,7 @@ fn make_claim(id: &str, statement: &str, status: &str) -> FullClaimEntry {
         claims: None,
         insights: None,
         status_note: None,
+        additional_fields: Default::default(),
     }
 }
 
@@ -579,4 +580,59 @@ fn structured_falsifiers_preserve_dependencies_from_every_outcome_category() {
         claims[0].dependencies.as_ref().unwrap(),
         &["C-101", "C-102", "C-103", "C-104"]
     );
+}
+
+#[test]
+fn typed_and_legacy_claims_preserve_semantics_through_file_output() {
+    let original = r#"
+[[claim]]
+id = "C-100"
+status = "Provisional"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+intervening_map_count = 1
+fixed_hyperparameters = ["width=64"]
+[claim.decisive_experiment]
+experiment_ids = ["E-201"]
+protocol_artifact = "protocol.toml"
+description = "Adjudicate the retained claim"
+[[claim.intervening_maps]]
+name = "normalize"
+kind = "computational"
+branch = "detector"
+description = "Normalize admitted vectors"
+[[claim.fitted_parameters]]
+branch = "detector"
+count = 1
+names = ["intercept"]
+training_boundary = "training epochs"
+[claim.what_would_verify_refute]
+verification_outcomes = ["verify C-101"]
+revision_outcomes = ["revise C-102"]
+abandonment_outcomes = ["abandon C-103"]
+inconclusive_outcomes = ["inconclusive C-104"]
+[[claim]]
+id = "C-200"
+status = "Verified"
+what_would_verify_refute = "legacy C-201"
+[[claim]]
+id = "C-300"
+status = "Refuted"
+"#;
+    let claims = load_claims_from_str(original, "typed roundtrip fixture").unwrap();
+    let directory = tempfile::tempdir().unwrap();
+    let path = directory.path().join("claims.toml");
+    write_claims(&path, &claims).unwrap();
+    let output = std::fs::read_to_string(&path).unwrap();
+    let expected: toml::Value = toml::from_str(original).unwrap();
+    let observed: toml::Value = toml::from_str(&output).unwrap();
+    assert_eq!(observed, expected);
+    let reloaded = load_claims(&path).unwrap();
+    for (before, after) in claims.iter().zip(&reloaded) {
+        assert_eq!(
+            before.what_would_verify_refute,
+            after.what_would_verify_refute
+        );
+        assert_eq!(before.additional_fields, after.additional_fields);
+    }
 }

@@ -16,6 +16,7 @@ use std::{
     path::Path,
 };
 
+use provenance_core::falsifier_text::ClaimFalsifier;
 use regex::Regex;
 use serde::{Deserialize, Serialize};
 
@@ -25,7 +26,7 @@ use super::schema::normalize_status;
 // Serde structs
 // ---------------------------------------------------------------------------
 
-/// Full claim entry with all 16 union keys as optional (except id and status).
+/// Claim entry retaining source fields during compatibility transformations.
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct FullClaimEntry {
     pub id: String,
@@ -38,11 +39,8 @@ pub struct FullClaimEntry {
     pub status: String,
     #[serde(default)]
     pub last_verified: Option<String>,
-    #[serde(
-        default,
-        deserialize_with = "provenance_core::falsifier_text::deserialize_optional_text"
-    )]
-    pub what_would_verify_refute: Option<String>,
+    #[serde(default)]
+    pub what_would_verify_refute: Option<ClaimFalsifier>,
     #[serde(default)]
     pub supporting_evidence: Option<Vec<String>>,
     #[serde(default)]
@@ -61,6 +59,8 @@ pub struct FullClaimEntry {
     pub insights: Option<Vec<String>>,
     #[serde(default)]
     pub status_note: Option<String>,
+    #[serde(flatten)]
+    pub additional_fields: BTreeMap<String, toml::Value>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -463,7 +463,7 @@ pub fn enrich_metadata(
                 dep_refs.extend(extract_claim_refs(stmt));
             }
             if let Some(ref wvr) = claim.what_would_verify_refute {
-                dep_refs.extend(extract_claim_refs(wvr));
+                dep_refs.extend(extract_claim_refs(&wvr.project()));
             }
             // Remove self-references
             dep_refs.retain(|r| r != &claim.id);
@@ -556,7 +556,7 @@ pub fn build_crossref_graph(
             }
         }
         if let Some(ref wvr) = claim.what_would_verify_refute {
-            for r in extract_claim_refs(wvr) {
+            for r in extract_claim_refs(&wvr.project()) {
                 if r != claim.id && valid_ids.contains(&r) {
                     refs.insert(r);
                 }
@@ -823,7 +823,7 @@ pub fn resolve_conflict_markers(
                     && claim
                         .what_would_verify_refute
                         .as_ref()
-                        .is_some_and(|w| w.len() > 100)
+                        .is_some_and(|w| w.project().len() > 100)
                     && marker.status.as_deref() == Some("open")
                 {
                     marker.status = Some("resolved-detailed-verification".to_string());
@@ -938,7 +938,7 @@ pub fn analyze(
                         && claim
                             .what_would_verify_refute
                             .as_ref()
-                            .is_some_and(|w| w.len() > 100)))
+                            .is_some_and(|w| w.project().len() > 100)))
             {
                 report.conflict_markers_resolvable += 1;
                 break;
@@ -1120,6 +1120,7 @@ mod tests {
             claims: None,
             insights: None,
             status_note: None,
+            additional_fields: BTreeMap::new(),
         }
     }
 

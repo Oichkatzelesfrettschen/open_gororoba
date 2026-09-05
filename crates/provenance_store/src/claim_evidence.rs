@@ -1,9 +1,14 @@
 //! Typed empirical evidence contracts and transactional revision history.
-use std::collections::{BTreeMap, BTreeSet};
+use std::{
+    collections::{BTreeMap, BTreeSet},
+    fs,
+    path::Path,
+};
 
 use anyhow::{Context, Result, bail, ensure};
 use rusqlite::{Connection, OptionalExtension, params};
 use serde::{Deserialize, Serialize};
+use sha2::{Digest, Sha256};
 
 use crate::ProvenanceStore;
 
@@ -52,6 +57,8 @@ pub struct FittedParameterBranch {
 pub struct DecisiveExperiment {
     pub experiment_ids: Vec<String>,
     pub protocol_artifact: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub protocol_sha256: Option<String>,
     pub description: String,
 }
 
@@ -162,6 +169,15 @@ impl ClaimEvidenceSpec {
                     .all(|part| matches!(part, std::path::Component::Normal(_))),
             "protocol_artifact must be a repository-relative path"
         );
+        if let Some(digest) = &self.decisive_experiment.protocol_sha256 {
+            ensure!(
+                digest.len() == 64
+                    && digest
+                        .bytes()
+                        .all(|byte| byte.is_ascii_digit() || (b'a'..=b'f').contains(&byte)),
+                "protocol_sha256 must be lowercase SHA256"
+            );
+        }
         let outcomes = &self.what_would_verify_refute;
         unique_text(
             &outcomes.verification_outcomes,
@@ -197,6 +213,31 @@ impl ClaimEvidenceSpec {
 }
 
 impl ProvenanceStore {
+    /// Return legacy claim IDs whose retained protocol is admitted without a
+    /// declaration-bound digest. Sealed declarations also verify exact bytes.
+    pub fn verify_claim_evidence_artifacts(&self, repo_root: &Path) -> Result<Vec<String>> {
+        let mut statement = self
+            .conn
+            .prepare("SELECT claim_id,spec_json FROM claim_evidence ORDER BY claim_id")?;
+        let mut rows = statement.query([])?;
+        let mut legacy_unsealed = Vec::new();
+        while let Some(row) = rows.next()? {
+            let claim_id: String = row.get(0)?;
+            let spec: ClaimEvidenceSpec = serde_json::from_str(&row.get::<_, String>(1)?)?;
+            ensure!(
+                spec.claim_id == claim_id,
+                "claim evidence identity differs for {claim_id}"
+            );
+            spec.validate()?;
+            admit_protocol(repo_root, &spec)
+                .with_context(|| format!("verify protocol for {claim_id}"))?;
+            if spec.decisive_experiment.protocol_sha256.is_none() {
+                legacy_unsealed.push(claim_id);
+            }
+        }
+        Ok(legacy_unsealed)
+    }
+
     pub fn parse_claim_evidence_spec(text: &str) -> Result<ClaimEvidenceSpec> {
         let spec: ClaimEvidenceSpec =
             toml::from_str(text).context("parse claim evidence specification")?;
@@ -220,6 +261,7 @@ impl ProvenanceStore {
 
     pub fn set_claim_evidence(
         &mut self,
+        repo_root: &Path,
         spec: &ClaimEvidenceSpec,
         actor: &str,
         reason: &str,
@@ -227,6 +269,9 @@ impl ProvenanceStore {
         spec.validate()?;
         require_text(actor, "actor")?;
         require_text(reason, "reason")?;
+        let mut sealed = spec.clone();
+        sealed.decisive_experiment.protocol_sha256 = Some(admit_protocol(repo_root, spec)?);
+        let spec = &sealed;
         let next = serde_json::to_string(spec)?;
         let transaction = self
             .conn
@@ -261,6 +306,7 @@ impl ProvenanceStore {
                 params![revision, experiment_id],
             )?;
         }
+        admit_protocol(repo_root, spec).context("recheck protocol before claim evidence commit")?;
         transaction.commit()?;
         Ok(revision)
     }
@@ -336,6 +382,42 @@ impl ProvenanceStore {
     }
 }
 
+fn admit_protocol(repo_root: &Path, spec: &ClaimEvidenceSpec) -> Result<String> {
+    let relative = &spec.decisive_experiment.protocol_artifact;
+    let expected = if let Some(expected) = &spec.decisive_experiment.protocol_sha256 {
+        expected.clone()
+    } else {
+        let mut full = repo_root.canonicalize()?;
+        for component in Path::new(relative).components() {
+            ensure!(
+                matches!(component, std::path::Component::Normal(_)),
+                "protocol path must be repository-relative"
+            );
+            full.push(component);
+            let metadata = fs::symlink_metadata(&full)
+                .with_context(|| format!("inspect protocol {relative}"))?;
+            ensure!(
+                !metadata.file_type().is_symlink(),
+                "protocol path contains a symlink: {relative}"
+            );
+        }
+        ensure!(
+            fs::metadata(&full)?.is_file(),
+            "protocol artifact must be a regular file: {relative}"
+        );
+        Sha256::digest(fs::read(full)?)
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect()
+    };
+    let bytes = crate::artifact_paths::verified_file_bytes(repo_root, relative, &expected)?;
+    ensure!(
+        !bytes.is_empty(),
+        "protocol artifact must contain retained content: {relative}"
+    );
+    Ok(expected)
+}
+
 /// Parsed table positions belong to the source document. Clearing every nested
 /// position makes transplanted tables follow their owning claim during emission.
 fn clear_transplanted_table_positions(item: &mut toml_edit::Item) {
@@ -391,12 +473,51 @@ pub(crate) fn refuse_claim_evidence_history_loss(connection: &Connection) -> Res
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::{path::PathBuf, process::Command};
 
-    fn fixture() -> Result<ProvenanceStore> {
+    const PROTOCOL: &[u8] = b"Frozen protocol with explicit holdouts and outcomes.\n";
+
+    struct ProtocolRepo {
+        root: PathBuf,
+    }
+    impl Drop for ProtocolRepo {
+        fn drop(&mut self) {
+            let _ = fs::remove_dir_all(&self.root);
+        }
+    }
+    fn git(root: &Path, arguments: &[&str]) -> Result<()> {
+        let mut command = Command::new("git");
+        for (name, _) in std::env::vars_os() {
+            if name.as_encoded_bytes().starts_with(b"GIT_") {
+                command.env_remove(name);
+            }
+        }
+        let output = command.arg("-C").arg(root).args(arguments).output()?;
+        ensure!(
+            output.status.success(),
+            "Git fixture failure: {}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+        Ok(())
+    }
+
+    fn fixture() -> Result<(ProvenanceStore, ProtocolRepo)> {
+        let root = std::env::temp_dir().join(format!(
+            "gororoba-claim-protocol-{}-{}",
+            std::process::id(),
+            chrono::Utc::now()
+                .timestamp_nanos_opt()
+                .context("clock range")?
+        ));
+        fs::create_dir_all(root.join("docs"))?;
+        let protocol_repo = ProtocolRepo { root };
+        fs::write(protocol_repo.root.join("docs/protocol.toml"), PROTOCOL)?;
+        git(&protocol_repo.root, &["init", "--quiet"])?;
+        git(&protocol_repo.root, &["add", "docs/protocol.toml"])?;
         let store = ProvenanceStore::open(std::path::Path::new(":memory:"))?;
         store.conn.execute("INSERT INTO claims (id,statement,status,where_stated,last_verified) VALUES ('C-1','bounded empirical result','Provisional','','')", [])?;
         store.conn.execute("INSERT INTO experiments_cp (id,title,status,claim_refs_json) VALUES ('E-1','held-out comparison','planned','[]')", [])?;
-        Ok(store)
+        Ok((store, protocol_repo))
     }
 
     fn spec() -> ClaimEvidenceSpec {
@@ -423,6 +544,12 @@ mod tests {
             decisive_experiment: DecisiveExperiment {
                 experiment_ids: vec!["E-1".into()],
                 protocol_artifact: "docs/protocol.toml".into(),
+                protocol_sha256: Some(
+                    Sha256::digest(PROTOCOL)
+                        .iter()
+                        .map(|byte| format!("{byte:02x}"))
+                        .collect(),
+                ),
                 description: "Frozen external-epoch comparison".into(),
             },
             what_would_verify_refute: FalsifierOutcomes {
@@ -437,9 +564,157 @@ mod tests {
     }
 
     #[test]
+    fn protocol_admission_seals_bytes_and_rejects_invalid_paths_without_mutation() -> Result<()> {
+        let (mut store, protocol_repo) = fixture()?;
+        let mut declaration = spec();
+        declaration.decisive_experiment.protocol_sha256 = None;
+        store.set_claim_evidence(
+            &protocol_repo.root,
+            &declaration,
+            "reviewer",
+            "seal retained protocol",
+        )?;
+        let sealed = store.claim_evidence("C-1")?.unwrap();
+        assert_eq!(
+            sealed.decisive_experiment.protocol_sha256,
+            spec().decisive_experiment.protocol_sha256
+        );
+        assert!(
+            store
+                .verify_claim_evidence_artifacts(&protocol_repo.root)?
+                .is_empty()
+        );
+        fs::write(protocol_repo.root.join("docs/untracked.toml"), PROTOCOL)?;
+        fs::write(protocol_repo.root.join("docs/empty.toml"), b"")?;
+        git(&protocol_repo.root, &["add", "docs/empty.toml"])?;
+        let mut invalid_paths = vec![
+            "docs/missing.toml".to_owned(),
+            "docs".into(),
+            "../outside.toml".into(),
+            protocol_repo
+                .root
+                .join("docs/protocol.toml")
+                .to_string_lossy()
+                .into_owned(),
+            "docs/untracked.toml".into(),
+            "docs/empty.toml".into(),
+        ];
+        #[cfg(unix)]
+        {
+            std::os::unix::fs::symlink(
+                "protocol.toml",
+                protocol_repo.root.join("docs/linked.toml"),
+            )?;
+            std::os::unix::fs::symlink("docs", protocol_repo.root.join("linked-directory"))?;
+            invalid_paths.extend([
+                "docs/linked.toml".into(),
+                "linked-directory/protocol.toml".into(),
+            ]);
+        }
+        for path in invalid_paths {
+            let mut invalid = declaration.clone();
+            invalid.decisive_experiment.protocol_artifact = path.clone();
+            assert!(
+                store
+                    .set_claim_evidence(
+                        &protocol_repo.root,
+                        &invalid,
+                        "reviewer",
+                        "reject invalid admission"
+                    )
+                    .is_err(),
+                "admitted {path}"
+            );
+            assert_eq!(store.claim_evidence("C-1")?, Some(sealed.clone()));
+            let revisions: i64 = store.conn.query_row(
+                "SELECT count(*) FROM claim_evidence_revisions",
+                [],
+                |row| row.get(0),
+            )?;
+            assert_eq!(revisions, 1, "revision written for {path}");
+        }
+        let mut incorrect_digest = declaration;
+        incorrect_digest.decisive_experiment.protocol_sha256 = Some("0".repeat(64));
+        assert!(
+            store
+                .set_claim_evidence(
+                    &protocol_repo.root,
+                    &incorrect_digest,
+                    "reviewer",
+                    "reject wrong bytes"
+                )
+                .is_err()
+        );
+        assert_eq!(store.claim_evidence("C-1")?, Some(sealed));
+        Ok(())
+    }
+
+    #[test]
+    fn protocol_invariants_recheck_retention_and_distinguish_legacy_unsealed_contracts()
+    -> Result<()> {
+        let (mut store, protocol_repo) = fixture()?;
+        store.set_claim_evidence(&protocol_repo.root, &spec(), "reviewer", "seal protocol")?;
+        let path = protocol_repo.root.join("docs/protocol.toml");
+        fs::write(&path, b"changed protocol")?;
+        assert!(
+            store
+                .verify_claim_evidence_artifacts(&protocol_repo.root)
+                .is_err()
+        );
+        assert!(
+            store
+                .verify_control_plane_invariants(&protocol_repo.root)
+                .unwrap_err()
+                .to_string()
+                .contains("SHA256 mismatch")
+        );
+        fs::remove_file(&path)?;
+        assert!(
+            store
+                .verify_claim_evidence_artifacts(&protocol_repo.root)
+                .is_err()
+        );
+        fs::create_dir(&path)?;
+        assert!(
+            store
+                .verify_claim_evidence_artifacts(&protocol_repo.root)
+                .is_err()
+        );
+        fs::remove_dir(&path)?;
+        fs::write(&path, PROTOCOL)?;
+        assert!(
+            store
+                .verify_claim_evidence_artifacts(&protocol_repo.root)?
+                .is_empty()
+        );
+        let mut legacy = spec();
+        legacy.decisive_experiment.protocol_sha256 = None;
+        store.conn.execute(
+            "UPDATE claim_evidence SET spec_json=?1 WHERE claim_id='C-1'",
+            [serde_json::to_string(&legacy)?],
+        )?;
+        assert_eq!(
+            store.verify_claim_evidence_artifacts(&protocol_repo.root)?,
+            vec!["C-1"]
+        );
+        fs::write(&path, b"legacy content lacks a declaration-bound digest")?;
+        assert_eq!(
+            store.verify_claim_evidence_artifacts(&protocol_repo.root)?,
+            vec!["C-1"]
+        );
+        fs::remove_file(&path)?;
+        assert!(
+            store
+                .verify_claim_evidence_artifacts(&protocol_repo.root)
+                .is_err()
+        );
+        Ok(())
+    }
+
+    #[test]
     fn evidence_overlay_preserves_early_middle_and_late_claim_ownership() -> Result<()> {
         for selected in [vec![1], vec![4], vec![7], vec![1, 4, 7]] {
-            let mut store = fixture()?;
+            let (mut store, protocol_repo) = fixture()?;
             let mut rendered = "[metadata]\nmarker = 'keep metadata'\n".to_owned();
             for index in 1..=7 {
                 if index > 1 {
@@ -458,6 +733,7 @@ mod tests {
                 declaration.what_would_verify_refute.revision_outcomes =
                     vec![format!("Revise C-{index} on matched-control reproduction")];
                 store.set_claim_evidence(
+                    &protocol_repo.root,
                     &declaration,
                     "reviewer",
                     "bind nested tables to claim ID",
@@ -531,17 +807,22 @@ mod tests {
 
     #[test]
     fn evidence_roundtrip_exports_named_fields_and_complete_history() -> Result<()> {
-        let mut store = fixture()?;
+        let (mut store, protocol_repo) = fixture()?;
         let original = spec();
         let parsed = ProvenanceStore::parse_claim_evidence_spec(&toml::to_string(&original)?)?;
         assert_eq!(parsed, original);
-        store.set_claim_evidence(&parsed, "reviewer", "preregister")?;
+        store.set_claim_evidence(&protocol_repo.root, &parsed, "reviewer", "preregister")?;
         let mut updated = original.clone();
         updated.depth_status = DepthStatus::Declared;
         updated.lift_depth = Some(0);
         updated.depth_rationale =
             "The declared estimand is predictive performance without an interpretive map".into();
-        store.set_claim_evidence(&updated, "reviewer", "specify estimand")?;
+        store.set_claim_evidence(
+            &protocol_repo.root,
+            &updated,
+            "reviewer",
+            "specify estimand",
+        )?;
         assert_eq!(store.claim_evidence("C-1")?, Some(updated.clone()));
         let (previous, next): (String, String) = store.conn.query_row("SELECT previous_spec_json,new_spec_json FROM claim_evidence_revisions ORDER BY id DESC LIMIT 1", [], |row| Ok((row.get(0)?, row.get(1)?)))?;
         assert_eq!(
@@ -556,7 +837,12 @@ mod tests {
         assert_eq!(claim["computational_stage_count"].as_integer(), Some(1));
         assert!(claim.get("what_would_verify_refute").is_some());
         assert_eq!(store.overlay_claim_evidence(rendered.clone())?, rendered);
-        store.set_claim_evidence(&original, "reviewer", "retain unassessed interpretation")?;
+        store.set_claim_evidence(
+            &protocol_repo.root,
+            &original,
+            "reviewer",
+            "retain unassessed interpretation",
+        )?;
         let unassessed: toml::Value = toml::from_str(&store.overlay_claim_evidence(rendered)?)?;
         assert!(unassessed["claim"][0].get("lift_depth").is_none());
         assert_eq!(
@@ -580,7 +866,7 @@ mod tests {
 
     #[test]
     fn evidence_rejects_unknown_fields_duplicates_depth_and_references() -> Result<()> {
-        let mut store = fixture()?;
+        let (mut store, protocol_repo) = fixture()?;
         let original = spec();
         let text = format!("unknown_field = true\n{}", toml::to_string(&original)?);
         assert!(ProvenanceStore::parse_claim_evidence_spec(&text).is_err());
@@ -599,17 +885,21 @@ mod tests {
         malformed.decisive_experiment.experiment_ids = vec!["E-missing".into()];
         assert!(
             store
-                .set_claim_evidence(&malformed, "reviewer", "reject")
+                .set_claim_evidence(&protocol_repo.root, &malformed, "reviewer", "reject")
                 .is_err()
         );
         malformed = original.clone();
         malformed.claim_id = "C-missing".into();
         assert!(
             store
-                .set_claim_evidence(&malformed, "reviewer", "reject")
+                .set_claim_evidence(&protocol_repo.root, &malformed, "reviewer", "reject")
                 .is_err()
         );
-        assert!(store.set_claim_evidence(&original, " ", "reject").is_err());
+        assert!(
+            store
+                .set_claim_evidence(&protocol_repo.root, &original, " ", "reject")
+                .is_err()
+        );
         assert_eq!(store.claim_evidence("C-1")?, None);
         Ok(())
     }
@@ -617,15 +907,15 @@ mod tests {
     #[test]
     fn evidence_revision_failure_rolls_back_payload_and_import_guard_preserves_history()
     -> Result<()> {
-        let mut store = fixture()?;
+        let (mut store, protocol_repo) = fixture()?;
         let original = spec();
-        store.set_claim_evidence(&original, "reviewer", "initial")?;
+        store.set_claim_evidence(&protocol_repo.root, &original, "reviewer", "initial")?;
         store.conn.execute_batch("CREATE TRIGGER reject_evidence_revision BEFORE INSERT ON claim_evidence_revisions BEGIN SELECT RAISE(ABORT,'injected history failure'); END;")?;
         let mut updated = original.clone();
         updated.depth_rationale = "changed rationale".into();
         assert!(
             store
-                .set_claim_evidence(&updated, "reviewer", "update")
+                .set_claim_evidence(&protocol_repo.root, &updated, "reviewer", "update")
                 .is_err()
         );
         assert_eq!(store.claim_evidence("C-1")?, Some(original));
@@ -644,12 +934,22 @@ mod tests {
 
     #[test]
     fn evidence_retains_historical_experiment_references_across_lane_replacement() -> Result<()> {
-        let mut store = fixture()?;
+        let (mut store, protocol_repo) = fixture()?;
         store.conn.execute("INSERT INTO experiments_cp (id,title,status,claim_refs_json) VALUES ('E-2','successor comparison','planned','[]')", [])?;
         let mut declaration = spec();
-        store.set_claim_evidence(&declaration, "reviewer", "initial experiment")?;
+        store.set_claim_evidence(
+            &protocol_repo.root,
+            &declaration,
+            "reviewer",
+            "initial experiment",
+        )?;
         declaration.decisive_experiment.experiment_ids = vec!["E-2".into()];
-        store.set_claim_evidence(&declaration, "reviewer", "successor experiment")?;
+        store.set_claim_evidence(
+            &protocol_repo.root,
+            &declaration,
+            "reviewer",
+            "successor experiment",
+        )?;
         let replacement = "[[experiment]]\nid='E-2'\ntitle='successor comparison'\nstatus='planned'\nclaim_refs=[]\n";
         let root = std::path::Path::new(".");
         let source = root.join("registry/experiments.toml");
@@ -676,8 +976,13 @@ mod tests {
 
     #[test]
     fn evidence_file_rebuild_refusal_preserves_bytes() -> Result<()> {
-        let mut store = fixture()?;
-        store.set_claim_evidence(&spec(), "reviewer", "retain canonical history")?;
+        let (mut store, protocol_repo) = fixture()?;
+        store.set_claim_evidence(
+            &protocol_repo.root,
+            &spec(),
+            "reviewer",
+            "retain canonical history",
+        )?;
         let filename = format!(
             "gororoba-claim-evidence-{}-{}.sqlite3",
             std::process::id(),
