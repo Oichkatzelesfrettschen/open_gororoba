@@ -198,7 +198,8 @@ relation = "refines"
 preservation = "data/output/audit/staples-calibration-grouped-refits/canonical-preservation.json"
 original_claims_preserved = 1553
 original_transition_events_preserved = 195
-original_experiments_preserved = 248
+original_experiments_preserved = 247
+original_experiment_correction = "E-242 alone changes among the 248 baseline experiment rows: compat_toml_text.method replaces the redundancy inference with an inconclusive decision and separates numerator support from RMS context. All other fields retain their baseline values. Git commit 6fbf4947c59cf699ad5462dbe966851ffcc6a354 retains the historical declaration."
 final_claims = 1555
 final_transition_events = 197
 final_experiments = 250
@@ -220,10 +221,21 @@ canonical_exports = "provenance verify-control-plane: exit 0; 1555 claims, 250 e
 diff = "git diff --check: exit 0."
 
 [registry_metadata_repairs]
+claim_map_declarations = "C-1740 and C-1741 status notes enumerate ordered computational branches: four associator stages and four PVI stages; C-1741 adds three model stages and enumerates the remaining geometric branches. The notes distinguish computational stage counts, evaluation operations and unestablished physical interpretation. Canonical revisions 570 and 571 retain the additions."
+historical_decision_correction = "experiment-decision-correction.toml updates E-242 through the canonical upsert path. A zero-containing incremental ROC-AUC interval is inconclusive about increment and redundancy; shared numerator support leaves daily-file RMS calibration context unmatched. The method identifies the original preregistration assertion as historical."
+calibration_order_correction = "E-280 method uses preceding input-row order for the 256-increment RMS. Equal timestamps prevent a strict temporal-precedence claim. The sealed protocol remains the historical declaration."
 experiment_note = "A partial experiment fragment omitted status_note and the upsert wrote SQL NULL over an existing canonical note. The conflict update now coalesces an omitted note with the stored value; an explicit supplied note still replaces it. The regression checks canonical readback and compatibility export."
 alias_source = "The emitter read experiments from the selected canonical database while resolving aliases beside the input TOML. Alias lookup now follows the same source selection as the experiment reader: the registry parent of a canonical directory, the sibling directory of a standalone database, or the input directory when the database is absent."
 alias_tests = "The regression supplies conflicting input-side and database-side maps, requires the selected database map, rejects a historical suffix when that map is missing, and checks standalone-database and compatibility-input layouts. All four emitter tests pass."
 upsert_tests = "Both experiment-upsert preservation tests pass."
-scientific_preservation = "The production summary and independent completion audit retain SHA-256 f4e8303d669f6a0b28162c16785f2875af40f17a677df5bd9d51c07474ae20d6 and c9c9e8e19be7549d3b1d9cabd682c8d1c1830510e777c9761c828218c08630f8. The metadata repairs leave every production source-identity file unchanged."
+scientific_preservation = "The production summary and independent completion audit retain SHA-256 f4e8303d669f6a0b28162c16785f2875af40f17a677df5bd9d51c07474ae20d6 and c9c9e8e19be7549d3b1d9cabd682c8d1c1830510e777c9761c828218c08630f8. The initial metadata-only repairs preserved every production source-identity file. The preparation-error repair changes the runner source; the independent audit now verifies the retained production source at explicit commit 291ce5023d4ae8ca30c5ee4535bd9152520233ef."
 independent_recheck = "The complete independent audit exits 0 after the metadata repairs and emits a byte-identical completion report."
 foreign_database_export = "Both experiment emitters exit 0 from an unrelated working directory with default input paths, an explicit database in a separate registry/canonical directory, and the alias map beside that registry."
+
+[preparation_failure_and_source_boundary]
+mechanism = "Preparation errors enter the content-addressed failure-admission record path. Records retain source identity, input paths, available post-failure hashes, original error and explicit unavailable dataset/raw-file identity boundaries. Retention errors preserve the original rejection in the error chain. Successful numerical preparation and fitting remain unchanged."
+runner_tests = "All 11 staples-calibration-refits tests pass, including actual malformed score-header and missing raw-file preparation failures, admission-record idempotence and failure-retention error chaining. Focused Clippy passes with warnings denied."
+auditor_source_selection = "Live-source hashing remains the default. The explicit --source-ref option requires a full commit ID and reads Git source blobs with replacement objects disabled. Every recorded source hash must match; live retained results and protocol remain checksum-verified."
+production_source = "291ce5023d4ae8ca30c5ee4535bd9152520233ef"
+auditor_validation = "The strict argument test passes. Complete audit against the production commit exits 0 and emits byte-identical completion-audit.json. Live modified source, absent commit and wrong baseline commit each fail. The production summary and all numerical record bytes remain unchanged."
+repository_validation = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0 after the preparation/source-boundary and canonical-record repairs; scoped Clippy, 661 library tests and governance pass. Independent read-only review finds the map declarations consistent with the implementation."

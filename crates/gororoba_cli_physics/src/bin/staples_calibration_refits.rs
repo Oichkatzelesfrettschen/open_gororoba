@@ -1185,6 +1185,64 @@ fn admit_protocol(args: &Args, data: &PreparedDataset) -> Result<Value> {
     )
 }
 
+fn retain_preparation_result(
+    args: &Args,
+    sources: &Value,
+    result: Result<PreparedDataset>,
+) -> Result<PreparedDataset> {
+    result.map_err(|error| {
+        let inputs: Vec<Value> = [
+            ("scores", &args.scores),
+            ("file_map", &args.file_map),
+            ("catalog", &args.catalog),
+        ]
+        .into_iter()
+        .map(|(role, path)| match hash_file(path) {
+            Ok(hash) => json!({"role":role,"path":path,"sha256":hash}),
+            Err(error) => json!({"role":role,"path":path,"identity_error":format!("{error:#}")}),
+        })
+        .collect();
+        let evidence = json!({
+            "status":"preparation_rejected_before_inference",
+            "protocol_sha256":PROTOCOL_HASH,
+            "sources":sources,
+            "input_root":args.input_root,
+            "inputs":inputs,
+            "identity_boundary":"Input hashes observed after preparation failed; raw-file identities and partial dataset measurements are unavailable. Inputs may have changed during preparation.",
+            "data":null,
+            "files":null,
+            "error":format!("{error:#}"),
+        });
+        retain_failure(&args.out_dir, &evidence, error)
+    })
+}
+
+fn retain_failure(directory: &Path, evidence: &Value, error: anyhow::Error) -> anyhow::Error {
+    let retained = (|| -> Result<PathBuf> {
+        let identity = digest(&serde_json::to_vec(evidence)?);
+        let destination = directory.join(format!("failure-admission-{identity}.json"));
+        if destination.exists() {
+            let existing: Value = serde_json::from_reader(File::open(&destination)?)?;
+            ensure!(
+                existing == *evidence,
+                "retained admission evidence checksum collision"
+            );
+        } else {
+            atomic_json(&destination, evidence)?;
+        }
+        Ok(destination)
+    })();
+    match retained {
+        Ok(destination) => error.context(format!(
+            "admission diagnostics retained at {}",
+            destination.display()
+        )),
+        Err(retention_error) => error.context(format!(
+            "admission diagnostic retention failed: {retention_error:#}"
+        )),
+    }
+}
+
 fn retain_admission_result(
     directory: &Path,
     sources: &Value,
@@ -1202,23 +1260,7 @@ fn retain_admission_result(
                 "files": data.files,
                 "error": format!("{error:#}"),
             });
-            let identity = digest(&serde_json::to_vec(&evidence)?);
-            let destination = directory.join(format!("failure-admission-{identity}.json"));
-            if destination.exists() {
-                let existing: Value = serde_json::from_reader(File::open(&destination)?)?;
-                ensure!(
-                    existing == evidence,
-                    "retained admission evidence checksum collision"
-                );
-            } else {
-                atomic_json(&destination, &evidence)?;
-            }
-            Err(error).with_context(|| {
-                format!(
-                    "admission diagnostics retained at {}",
-                    destination.display()
-                )
-            })
+            Err(retain_failure(directory, &evidence, error))
         }
     }
 }
@@ -1247,13 +1289,14 @@ fn main() -> Result<()> {
     let _lock = OutputLock(lock_path);
     let root = source_root()?;
     let sources = source_identity(&root)?;
-    let data = prepare(
+    let preparation = prepare(
         &args.input_root,
         &args.scores,
         &args.file_map,
         &args.catalog,
         256,
-    )?;
+    );
+    let data = retain_preparation_result(&args, &sources, preparation)?;
     let configuration =
         retain_admission_result(&args.out_dir, &sources, &data, admit_protocol(&args, &data))?;
     let mut positive_gradients: Vec<f64> = data
@@ -1576,6 +1619,79 @@ mod tests {
         assert!(error.contains("bootstrap-100.json"));
         fs::remove_file(directory.join("bootstrap-100.json")).unwrap();
         fs::remove_dir(directory).unwrap();
+    }
+
+    #[test]
+    fn preparation_errors_retain_available_identity_and_original_error() {
+        let directory = std::env::temp_dir().join(format!(
+            "staples-preparation-failure-{}",
+            std::process::id()
+        ));
+        fs::create_dir(&directory).unwrap();
+        let args = Args {
+            input_root: directory.clone(),
+            scores: directory.join("scores.csv"),
+            file_map: directory.join("files.csv"),
+            catalog: directory.join("catalog.csv"),
+            out_dir: directory.clone(),
+            protocol: directory.join("protocol.toml"),
+            prepare_only: true,
+            mode: Mode::All,
+            cv_seed: None,
+            bootstrap_index: None,
+        };
+        fs::write(&args.file_map, "file_id,path\n0,missing-raw.csv\n").unwrap();
+        fs::write(&args.catalog, "TIMESTAMP\n2020-01-01T00:00:00Z\n").unwrap();
+        let sources = json!({"source":"digest"});
+        for (header, expected) in [
+            ("wrong\n", "unexpected retained score header"),
+            (
+                "file_id,assoc,dbdt,rot,bmag,label,cumrot6,maxrot6,pvi6,gram6,scram,chperm\n",
+                "reconstruct file 0: missing-raw.csv",
+            ),
+        ] {
+            fs::write(&args.scores, header).unwrap();
+            let result = prepare(
+                &args.input_root,
+                &args.scores,
+                &args.file_map,
+                &args.catalog,
+                256,
+            );
+            let error = retain_preparation_result(&args, &sources, result)
+                .err()
+                .unwrap();
+            assert!(format!("{error:#}").contains(expected));
+            assert!(error.to_string().contains("diagnostics retained"));
+        }
+        let records: Vec<PathBuf> = fs::read_dir(&directory)
+            .unwrap()
+            .map(|entry| entry.unwrap().path())
+            .filter(|path| {
+                path.extension()
+                    .is_some_and(|extension| extension == "json")
+            })
+            .collect();
+        assert_eq!(records.len(), 2);
+        for path in records {
+            let record: Value = serde_json::from_reader(File::open(&path).unwrap()).unwrap();
+            assert_eq!(record["status"], "preparation_rejected_before_inference");
+            assert!(record["data"].is_null());
+            assert!(record["files"].is_null());
+            assert_eq!(
+                record["inputs"][1]["sha256"],
+                hash_file(&args.file_map).unwrap()
+            );
+            assert_eq!(record["sources"], sources);
+        }
+        let error = retain_failure(
+            &directory.join("missing-parent"),
+            &json!({}),
+            anyhow::anyhow!("original rejection"),
+        );
+        assert!(format!("{error:#}").contains("original rejection"));
+        assert!(error.to_string().contains("retention failed"));
+        fs::remove_dir_all(directory).unwrap();
     }
 
     #[test]

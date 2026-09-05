@@ -3,7 +3,7 @@ use rand::{RngExt, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
-use std::{collections::BTreeSet, error::Error, fs, path::Path};
+use std::{collections::BTreeSet, error::Error, fs, path::Path, process::Command};
 
 type AuditResult<T> = Result<T, Box<dyn Error>>;
 const ARMS: [&str; 3] = ["daily_file", "frozen_training", "prewindow_rolling"];
@@ -196,10 +196,87 @@ fn check_interval(summary: &Value, values: &mut [f64]) -> Value {
     );
     json!({"lower":lower,"upper":upper,"median":median,"adverse_nonpositive":adverse})
 }
+fn options(arguments: &[String]) -> AuditResult<(bool, Option<&str>)> {
+    let mut complete = false;
+    let mut source_ref = None;
+    let mut arguments = arguments.iter();
+    while let Some(argument) = arguments.next() {
+        match argument.as_str() {
+            "--complete" if !complete => complete = true,
+            "--source-ref" if source_ref.is_none() => {
+                let reference = arguments
+                    .next()
+                    .ok_or("--source-ref requires a full commit ID")?;
+                if reference.len() != 40 || !reference.bytes().all(|byte| byte.is_ascii_hexdigit())
+                {
+                    return Err("--source-ref requires a full 40-digit commit ID".into());
+                }
+                source_ref = Some(reference.as_str());
+            }
+            _ => return Err(format!("unexpected or repeated argument: {argument}").into()),
+        }
+    }
+    Ok((complete, source_ref))
+}
+
+fn source_bytes(root: &Path, path: &str, source_ref: Option<&str>) -> AuditResult<Vec<u8>> {
+    match source_ref {
+        None => Ok(fs::read(root.join(path))?),
+        Some(reference) => {
+            let output = Command::new("git")
+                .arg("-C")
+                .arg(root)
+                .args([
+                    "--no-replace-objects",
+                    "show",
+                    &format!("{reference}^{{commit}}:{path}"),
+                ])
+                .output()?;
+            if !output.status.success() {
+                return Err(format!(
+                    "read source {reference}:{path}: {}",
+                    String::from_utf8_lossy(&output.stderr)
+                )
+                .into());
+            }
+            Ok(output.stdout)
+        }
+    }
+}
+
+#[test]
+fn source_reference_options_are_explicit_and_strict() {
+    let parse = |arguments: &[&str]| {
+        options(
+            &arguments
+                .iter()
+                .map(|argument| (*argument).to_owned())
+                .collect::<Vec<_>>(),
+        )
+        .map(|(complete, reference)| (complete, reference.map(str::to_owned)))
+    };
+    assert_eq!(parse(&[]).unwrap(), (false, None));
+    assert_eq!(parse(&["--complete"]).unwrap(), (true, None));
+    let reference = "291ce5023d4ae8ca30c5ee4535bd9152520233ef";
+    assert_eq!(
+        parse(&["--source-ref", reference, "--complete"]).unwrap(),
+        (true, Some(reference.to_owned()))
+    );
+    for arguments in [
+        vec!["--source-ref"],
+        vec!["--source-ref", "HEAD"],
+        vec!["--complet"],
+        vec!["--complete", "--complete"],
+        vec!["--source-ref", reference, "--source-ref", reference],
+    ] {
+        assert!(parse(&arguments).is_err());
+    }
+}
+
 fn main() -> AuditResult<()> {
     let args: Vec<String> = std::env::args().collect();
     let root = Path::new(args.get(1).ok_or("source checkout argument required")?);
-    let complete = args.get(2).is_some_and(|argument| argument == "--complete");
+    let (complete, source_ref) = options(&args[2..])?;
     let audit = root.join("data/output/audit/staples-calibration-grouped-refits");
     let results = audit.join("results");
     let dataset = read(&results.join("dataset.json"))?;
@@ -208,10 +285,14 @@ fn main() -> AuditResult<()> {
     for (path, expected) in dataset["provenance"]["sources"].as_object().unwrap() {
         assert_eq!(
             expected.as_str().unwrap(),
-            hash(&fs::read(root.join(path))?),
+            hash(&source_bytes(root, path, source_ref)?),
             "source hash mismatch {path}"
         );
     }
+    eprintln!(
+        "Verified production source hashes against {}",
+        source_ref.unwrap_or("live checkout")
+    );
     assert_eq!(
         dataset["provenance"]["configuration"]["protocol_sha256"],
         hash(&fs::read(audit.join("protocol.toml"))?)

@@ -1,0 +1,26 @@
+[[experiment]]
+binary = "staples-incremental-information"
+binary_experiment_declared = "E-242"
+binary_registered = true
+claim_refs = ["C-1631", "C-1731"]
+claims = ["C-1631", "C-1731"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+gpu = false
+id = "E-242"
+input = "data/output/benchmark_scores.csv from E-239 (23,664,374 rows, 578,320 positives, 813 daily files): columns dbdt, rot, cumrot6, maxrot6, pvi6, gram6 as the baseline feature set and assoc as the candidate, label as the target, file_id as the cluster."
+input_path_refs = ["data/output/benchmark_scores.csv"]
+lineage_id = "XL-217"
+method = "Preregistered before execution. Features enter as ln(x + 1e-12). Model B: logistic regression on the six baselines; model B+A adds assoc. Fit by Newton-Raphson with a fixed ridge 1e-6 on standardized coefficients, at most 25 iterations, deviance tolerance 1e-8, no tuning. Outer validation: 5 folds grouped by file_id, fold assignment by one ChaCha8(seed 42) shuffle of the sorted file ids dealt round-robin; standardization fitted on training folds only; both models fitted on identical rows and predicted on identical held-out rows. Metrics on out-of-fold predictions: average-rank ROC-AUC, average-precision PR-AUC, log loss, Brier score, ten equal-count calibration bins with expected calibration error. Paired bootstrap: 1000 resamples of the 813 files with replacement (ChaCha8 keyed on seed and resample), samples reweighted by file draw count, weighted AUC, PR-AUC and log loss from one pass over a global sort per model, paired deltas B+A minus B with 95 percent percentile intervals. Corrected decision rule: a positive delta ROC-AUC interval excluding zero supports incremental discrimination for the declared fitted model and calibration context; an interval containing zero is inconclusive about incremental discrimination and redundancy. Five-increment numerator support matches six samples, while daily-file RMS extends the PVI calibration context beyond that window. Historical preregistration asserted redundancy at matched receptive field for a zero-containing interval; that assertion is retained in Git history and superseded by this correction. I-212 remains open on a zero-containing interval."
+output = ["data/output/staples_incremental_information.json"]
+output_path_refs = ["data/output/staples_incremental_information.json"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-incremental-information -- --scores data/output/benchmark_scores.csv --out data/output/staples_incremental_information.json --seed 42 --n-boot 1000"
+run_command_sha256 = "d2d5088f81d445e69ff27e103934bfba95eda7b44a6e63155dd37b5f15713c5f"
+status = "active"
+status_token = "ACTIVE"
+title = "Incremental information of the staple associator over the six-sample geometric baselines under file-grouped cross-validation"
+truth_surface_consumption = []
+
