@@ -1293,11 +1293,10 @@ fn print_revision_summary(entity_kind: &str, revision: &provenance_store::Status
 
 /// If `regen_toml` is true, spawn `provenance export-control-plane` to
 /// regenerate the compatibility-export TOMLs and downstream mirror files.
-/// The `provenance` binary lives in the slim gororoba_cli_provenance crate
-/// (which path-imports the source from gororoba_cli_data); spawning it as
-/// a subprocess keeps the gororoba-db dep graph small (no provenance_ops
-/// dep). Errors are propagated; the caller's mutation has already
-/// committed by the time we reach this function.
+/// `gororoba_cli_provenance` owns the CLI entrypoint and delegates the
+/// implementation to `provenance_ops`. Subprocess execution keeps those
+/// implementation dependencies outside `gororoba_db`. Errors propagate after
+/// the caller's mutation has committed.
 fn maybe_regen_toml(regen_toml: bool) -> Result<()> {
     if !regen_toml {
         eprintln!(
@@ -1353,7 +1352,7 @@ fn cmd_claim_mutation(
             let text = fs::read_to_string(&path)
                 .with_context(|| format!("read claim evidence {}", path.display()))?;
             let spec = ProvenanceStore::parse_claim_evidence_spec(&text)?;
-            let revision = store.set_claim_evidence(&spec, actor, reason)?;
+            let revision = store.set_claim_evidence(repo_root, &spec, actor, reason)?;
             println!("claim={} evidence_revision={revision}", spec.claim_id);
         }
         ClaimMutationAction::Transition(transition_args) => {

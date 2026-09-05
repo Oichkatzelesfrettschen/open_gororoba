@@ -933,6 +933,9 @@ impl ProvenanceStore {
 
     pub fn verify_control_plane_invariants(&self, repo_root: &Path) -> Result<()> {
         let mut failures = Vec::new();
+        if let Err(error) = self.verify_claim_evidence_artifacts(repo_root) {
+            failures.push(format!("{error:#}"));
+        }
         if let Err(error) = self.verify_claim_transition_invariants() {
             failures.push(error.to_string());
         }

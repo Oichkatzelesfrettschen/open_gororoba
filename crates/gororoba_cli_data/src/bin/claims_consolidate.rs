@@ -67,6 +67,14 @@ enum Command {
 
 fn main() {
     let cli = Cli::parse();
+    if let Err(error) = run(cli) {
+        eprintln!("ERROR: {error}");
+        std::process::exit(1);
+    }
+}
+
+fn run(cli: Cli) -> Result<(), String> {
+    ensure_claims_write_allowed(&cli)?;
 
     let repo_root = std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."));
     let claims_path = cli.registry_dir.join("claims.toml");
@@ -248,6 +256,56 @@ fn main() {
             }
         }
     }
+    Ok(())
+}
+
+fn ensure_claims_write_allowed(cli: &Cli) -> Result<(), String> {
+    if !cli.dry_run
+        && !matches!(cli.command, Command::Analyze)
+        && output_requires_canonical_sync(cli)?
+    {
+        ProvenanceStore::ensure_control_plane_reimport_safe(&cli.canonical_db).map_err(
+            |error| {
+                format!("in-place claims consolidation requires a safe canonical reimport: {error}")
+            },
+        )?;
+    }
+    Ok(())
+}
+
+fn output_requires_canonical_sync(cli: &Cli) -> Result<bool, String> {
+    let Some(output) = &cli.output else {
+        return Ok(true);
+    };
+    let canonical = cli.registry_dir.join("claims.toml");
+    let resolve = |path: &std::path::Path| -> Result<PathBuf, String> {
+        if path.exists() {
+            return std::fs::canonicalize(path)
+                .map_err(|error| format!("resolve output {}: {error}", path.display()));
+        }
+        let parent = path
+            .parent()
+            .filter(|parent| !parent.as_os_str().is_empty())
+            .unwrap_or_else(|| std::path::Path::new("."));
+        let parent = std::fs::canonicalize(parent)
+            .map_err(|error| format!("resolve output parent {}: {error}", parent.display()))?;
+        let name = path
+            .file_name()
+            .ok_or_else(|| format!("output lacks a filename: {}", path.display()))?;
+        Ok(parent.join(name))
+    };
+    if resolve(output)? == resolve(&canonical)? {
+        return Ok(true);
+    }
+    #[cfg(unix)]
+    if let (Ok(output_metadata), Ok(canonical_metadata)) =
+        (std::fs::metadata(output), std::fs::metadata(&canonical))
+    {
+        use std::os::unix::fs::MetadataExt;
+        return Ok(output_metadata.dev() == canonical_metadata.dev()
+            && output_metadata.ino() == canonical_metadata.ino());
+    }
+    Ok(false)
 }
 
 /// Bundle of registry paths consumed by the claims-write + control-plane-sync
@@ -269,11 +327,15 @@ fn write_claims_output(
     paths: ClaimsWritePaths<'_>,
     claims: &[consolidate::FullClaimEntry],
 ) {
+    let canonical_sync = output_requires_canonical_sync(cli).unwrap_or_else(|error| {
+        eprintln!("ERROR: {error}");
+        std::process::exit(1);
+    });
     let target = cli.output.as_deref().unwrap_or(paths.default_path);
     match consolidate::write_claims(target, claims) {
         Ok(()) => {
             println!("Updated: {}", target.display());
-            if cli.output.is_none() {
+            if canonical_sync {
                 sync_control_plane_after_claim_write(
                     &cli.canonical_db,
                     ClaimsWritePaths {
@@ -377,4 +439,179 @@ fn sync_control_plane_after_claim_write(
         "Synchronized canonical DB {} after in-place claims update.",
         canonical_db.display()
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::{collections::BTreeMap, fs, path::Path};
+
+    fn fixture() -> tempfile::TempDir {
+        populate_fixture(tempfile::tempdir().unwrap())
+    }
+
+    fn populate_fixture(directory: tempfile::TempDir) -> tempfile::TempDir {
+        for name in [
+            "claims.toml",
+            "insights.toml",
+            "experiments.toml",
+            "binaries.toml",
+            "conflict_markers.toml",
+        ] {
+            fs::write(directory.path().join(name), format!("retained {name}\n")).unwrap();
+        }
+        let connection =
+            rusqlite::Connection::open(directory.path().join("canonical.sqlite3")).unwrap();
+        connection.execute_batch("CREATE TABLE claim_evidence_revisions (id INTEGER PRIMARY KEY, new_spec_json TEXT NOT NULL);
+            INSERT INTO claim_evidence_revisions VALUES (1, '{\"retained\":true}');
+            CREATE TRIGGER immutable_revision BEFORE DELETE ON claim_evidence_revisions BEGIN SELECT RAISE(ABORT, 'immutable history'); END;").unwrap();
+        directory
+    }
+
+    fn cli(directory: &Path, command: Command) -> Cli {
+        Cli {
+            command,
+            registry_dir: directory.to_owned(),
+            canonical_db: directory.join("canonical.sqlite3"),
+            dry_run: false,
+            output: None,
+        }
+    }
+
+    fn snapshot(directory: &Path) -> BTreeMap<PathBuf, Vec<u8>> {
+        fs::read_dir(directory)
+            .unwrap()
+            .map(|entry| {
+                let path = entry.unwrap().path();
+                let bytes = if path.is_file() {
+                    fs::read(&path).unwrap()
+                } else {
+                    Vec::new()
+                };
+                (path, bytes)
+            })
+            .collect()
+    }
+
+    fn assert_history(directory: &Path) {
+        let connection = rusqlite::Connection::open_with_flags(
+            directory.join("canonical.sqlite3"),
+            rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
+        )
+        .unwrap();
+        let rows: Vec<(i64, String)> = connection
+            .prepare("SELECT id,new_spec_json FROM claim_evidence_revisions ORDER BY id")
+            .unwrap()
+            .query_map([], |row| Ok((row.get(0)?, row.get(1)?)))
+            .unwrap()
+            .collect::<rusqlite::Result<_>>()
+            .unwrap();
+        assert_eq!(rows, vec![(1, "{\"retained\":true}".into())]);
+    }
+
+    #[test]
+    fn every_in_place_mutation_refuses_before_registry_or_database_writes() {
+        let directory = fixture();
+        let before = snapshot(directory.path());
+        for command in [
+            Command::Normalize,
+            Command::Enrich,
+            Command::Crosslink,
+            Command::Merge,
+            Command::Full,
+        ] {
+            let error = run(cli(directory.path(), command)).unwrap_err();
+            assert!(error.contains("claim evidence revisions"), "{error}");
+            assert_eq!(snapshot(directory.path()), before);
+            assert_history(directory.path());
+        }
+    }
+
+    #[test]
+    fn absolute_and_relative_explicit_canonical_outputs_require_preflight() {
+        let directory =
+            populate_fixture(tempfile::tempdir_in(std::env::current_dir().unwrap()).unwrap());
+        let before = snapshot(directory.path());
+        let absolute = directory.path().join("claims.toml");
+        let relative = absolute
+            .strip_prefix(std::env::current_dir().unwrap())
+            .unwrap()
+            .to_owned();
+        for output in [absolute, relative] {
+            let mut arguments = cli(directory.path(), Command::Normalize);
+            arguments.output = Some(output);
+            assert!(output_requires_canonical_sync(&arguments).unwrap());
+            assert!(
+                run(arguments)
+                    .unwrap_err()
+                    .contains("claim evidence revisions")
+            );
+            assert_eq!(snapshot(directory.path()), before);
+            assert_history(directory.path());
+        }
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn canonical_symlink_and_hardlink_outputs_preserve_claims_conflicts_and_history() {
+        let directory = fixture();
+        let canonical = directory.path().join("claims.toml");
+        let symlink = directory.path().join("claim-link.toml");
+        let hardlink = directory.path().join("claim-hardlink.toml");
+        std::os::unix::fs::symlink(&canonical, &symlink).unwrap();
+        fs::hard_link(&canonical, &hardlink).unwrap();
+        let before = snapshot(directory.path());
+        for output in [canonical, symlink, hardlink] {
+            let mut arguments = cli(directory.path(), Command::Full);
+            arguments.output = Some(output);
+            assert!(
+                run(arguments)
+                    .unwrap_err()
+                    .contains("claim evidence revisions")
+            );
+            assert_eq!(snapshot(directory.path()), before);
+            assert_history(directory.path());
+        }
+    }
+
+    #[test]
+    fn separate_explicit_output_remains_available_with_protected_history() {
+        let directory = fixture();
+        let before = snapshot(directory.path());
+        let output = directory.path().join("reviewed-claims.toml");
+        let mut arguments = cli(directory.path(), Command::Normalize);
+        arguments.output = Some(output.clone());
+        ensure_claims_write_allowed(&arguments).unwrap();
+        write_claims_output(
+            &arguments,
+            ClaimsWritePaths {
+                repo_root: directory.path(),
+                default_path: &directory.path().join("claims.toml"),
+                insights: &directory.path().join("insights.toml"),
+                experiments: &directory.path().join("experiments.toml"),
+                binaries: &directory.path().join("binaries.toml"),
+                proofs_project: &directory.path().join("_RocqProject"),
+            },
+            &[],
+        );
+        let mut after = snapshot(directory.path());
+        assert!(after.remove(&output).is_some());
+        assert_eq!(after, before);
+        assert_history(directory.path());
+    }
+
+    #[test]
+    fn read_only_modes_skip_mutation_preflight_and_absent_databases_stay_absent() {
+        let directory = fixture();
+        let before = snapshot(directory.path());
+        ensure_claims_write_allowed(&cli(directory.path(), Command::Analyze)).unwrap();
+        let mut arguments = cli(directory.path(), Command::Full);
+        arguments.dry_run = true;
+        ensure_claims_write_allowed(&arguments).unwrap();
+        ProvenanceStore::ensure_control_plane_reimport_safe(
+            &directory.path().join("absent.sqlite3"),
+        )
+        .unwrap();
+        assert_eq!(snapshot(directory.path()), before);
+    }
 }

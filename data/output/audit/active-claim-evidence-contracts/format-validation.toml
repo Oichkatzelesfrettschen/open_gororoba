@@ -6,3 +6,5 @@ changed_or_moved_failing_files = 7
 repair = "Apply the repository formatter to the seven changed or moved files, then require their focused check to pass. The remaining 24 reported files have byte-identical content to base commit 33c21a6f."
 focused_exit = 0
 boundary = "The workspace-wide formatter has retained pre-existing failures outside the edited surfaces. New runner and schema files pass their focused formatting checks; the broad failure does not establish a clean workspace-wide format state."
+review_repair = "The reimport preflight fix touches and formats provenance_store/src/reimport_guard.rs, one of the 24 baseline failures. The remaining baseline failure count is 23."
+remaining_unchanged_baseline_failing_files = 23
