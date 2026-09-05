@@ -1,0 +1,45 @@
+claim_id = "C-1711"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract checks the retained numerical comparison and its reference-population admission. A physical superiority claim requires matched collision populations, covariance and a separate phenomenological contract."
+fixed_hyperparameters = ["Historical ALICE charged-hadron Pb-Pb 5.02 TeV centrality 0-5 percent, pT>=5 GeV, six retained points", "Historical CUJET digitization labels Pb-Pb 2.76 TeV", "Historical AF n=6.1 held fixed", "Historical diagonal error sqrt(stat^2+syst_up^2) is retained for reproduction, without claiming full published covariance"]
+[[intervening_maps]]
+branch = "reference_identity"
+name = "population_tuple_admission"
+kind = "computational"
+description = "Compare collision system, energy, particle species, centrality, pT support and uncertainty treatment for data and each model curve; require equality before physical ranking."
+[[intervening_maps]]
+branch = "af_fit"
+name = "epsilon_fit_and_independent_minimum"
+kind = "computational"
+description = "Fit epsilon_bar to the six retained points at fixed n and independently verify the numerical minimum before recomputing chi-squared."
+[[intervening_maps]]
+branch = "fixed_competitor"
+name = "frozen_curve_scoring"
+kind = "computational"
+description = "Score the frozen CUJET curve on the identical six points using the same historical residual convention, retaining its mismatched energy label."
+[[fitted_parameters]]
+branch = "reference_identity"
+count = 0
+names = []
+training_boundary = "Reference-label equality fits zero parameters; uncertainties and theory assumptions remain explicit metadata."
+[[fitted_parameters]]
+branch = "af_fit"
+count = 1
+names = ["epsilon_bar"]
+training_boundary = "The retained comparison fits one AF epsilon_bar to the same six ALICE points on which it is scored, with n=6.1 fixed. This is in-sample fit quality, not held-out prediction."
+[[fitted_parameters]]
+branch = "fixed_competitor"
+count = 0
+names = []
+training_boundary = "The digitized CUJET curve is held fixed in this comparison. Its underlying theory parameter count and external calibration are separate from parameters refitted to these six points."
+[decisive_experiment]
+experiment_ids = ["E-075", "E-296"]
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+description = "E-075 owns arleo-falmagne-scaling and its data/fit family. Bind the actual comparison subcommand and competing_models.rs rather than assuming the registered full run alone reproduces this ranking. Independently recompute the historical chi-squared values about 1200 and 1917, retaining exact values and optimizer outcome, then report population admission separately."
+[what_would_verify_refute]
+verification_outcomes = ["Historical scoring remains separately reproducible under its preserved inputs and formula; primary source figures identify the mismatched populations, and source admission rejects all five unsupported vectors even when display labels are changed."]
+revision_outcomes = ["Source identity or optimizer repair changes the numerical ordering or fitted minimum: preserve the original comparison and register the corrected numerical result.", "Matched-population curves become available: preregister their covariance, fit freedoms and comparison protocol before deriving a physical model-ranking successor."]
+abandonment_outcomes = ["Independent identical-input scoring contradicts the retained numerical result, or authenticated source text contradicts the declared population; abandon the affected clause.", "An unsupported vector passes source admission after a display-only relabeling, refuting the quarantine implementation predicate."]
+inconclusive_outcomes = ["Collision energy, species, centrality or uncertainty treatment differs across model/data populations: physical superiority remains inconclusive regardless of the numerical ordering.", "Unknown covariance, competitor calibration provenance or optimizer failure blocks an inferential model-selection claim; the diagonal historical residual calculation remains separately reproducible."]

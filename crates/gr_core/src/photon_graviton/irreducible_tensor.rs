@@ -1,6 +1,7 @@
 //! Rank-three irreducible photon-graviton tensors.
 //!
-//! Equations 4.9, 4.10, and 4.11 are assembled from the complete J1, J2,
+//! Ahmadiniaz et al., arXiv:2601.23279v1, equations 4.9 through 4.11
+//! supply the J1, J2,
 //! and J3 structures before the graviton indices are symmetrized. Scalar
 //! loops use the orbital terms and the source global scalar-loop factor.
 
@@ -171,7 +172,9 @@ pub fn irreducible_tensor_renormalized(
             let source_term = rank_three_scale(&total, Complex64::new(determinant, 0.0) * exponent);
             let counterterm = rank_three_scale(
                 &tree_tensor(&kinematics.field_strength, &kinematics.k),
-                Complex64::new(0.0, 4.0 / 3.0 * loop_config.charge * proper_time.powi(2)),
+                // Eq. 4.10 uses dT/T after both insertion times are rescaled;
+                // the T^2 factor in Eq. 4.9 has already entered the measure.
+                Complex64::new(0.0, 4.0 / 3.0 * loop_config.charge),
             );
             Ok(rank_three_add(&source_term, &counterterm))
         },

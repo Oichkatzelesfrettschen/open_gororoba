@@ -1,0 +1,8 @@
+physical_comparison_admission=blocked: numerical open-x population closure is measured; its physical suitability, MHD magnetic boundary conditions and gravitational acceleration frame require separate specifications
+solar wind-dm-mhd: 5x3x2, 1 steps, tau=0.8, B0=0 nT, v_sw=0.04, DM=OFF, IC=synthetic
+div(B) projection: 0.000000e0 -> 0.000000e0
+initial magnetic energy (post-projection): 0.000000e0
+step,mass_before,min_x_outgoing,max_x_outgoing,min_x_incoming,max_x_incoming,mass_after_streaming,mass_after_boundary,mass_after_collision,streaming_residual,boundary_residual,collision_mass_delta,step_mass_residual,cumulative_net_inflow,cumulative_mass_residual
+mass_ledger_units=lattice_population_mass x_outflow=zero_gradient_populations transverse_boundaries=periodic budget=0.00000000000000000e0
+1,3.00000000000000000e1,8.84800000000000142e-1,1.12479999999999980e0,1.12479999999999980e0,8.84800000000000142e-1,2.79904000000000011e1,3.00000000000000000e1,3.00000000000000000e1,1.11022302462515654e-15,-9.99200722162640886e-16,0.00000000000000000e0,2.22044604925031308e-16,-2.22044604925031308e-16,2.22044604925031308e-16
+Error: mass-ledger budget exceeded at step 1; retained row includes collision and flux residuals

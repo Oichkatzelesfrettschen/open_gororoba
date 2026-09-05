@@ -1,0 +1,5 @@
+claim_id = "C-1712"
+expected_statement = "CUJET3.0 carries two free parameters, alpha_c and c_m, not the five asserted in crates/qgp_scaling/src/competing_models.rs, per Xu, Liao and Gyulassy JHEP02(2016)169 Section 6."
+expected_where_stated = "crates/qgp_scaling/src/competing_models.rs"
+statement = "CUJET3.0 source arXiv1508.00552v3 declares continuous alpha_c and c_m parameters together with discrete scheme choices. Figure3 uses schemes calibrated to charged-particle R_AA near0.3 at12.5 GeV and lattice magnetic screening mass. Two named model parameters do not by themselves establish the effective fitted degrees of freedom or a BIC penalty for a new comparison; the retained five-parameter code value lacks a source-derived fitting procedure."
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"

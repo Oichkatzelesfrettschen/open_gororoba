@@ -182,17 +182,43 @@ fn smhm_invert_moster2013(m_star: f64) -> f64 {
     10.0_f64.powf(0.5 * (lo + hi))
 }
 
+/// A rejected physical catalog row retains its original position and reason.
+#[cfg(feature = "euclid-catalog")]
+#[derive(Debug)]
+pub struct RejectedEuclidRow {
+    pub source_row: usize,
+    pub object_id: Option<i64>,
+    pub reason: &'static str,
+    pub field: &'static str,
+}
+
+/// Catalog admission separates model inputs from nullable unused metadata.
+#[cfg(feature = "euclid-catalog")]
+pub struct EuclidPhysicalCatalog {
+    pub entries: Vec<EuclidSersicParams>,
+    pub rows_read: usize,
+    pub rejected_rows: Vec<RejectedEuclidRow>,
+}
+
 /// Read physical measurements from Euclid Q1 parquet catalog.
 ///
 /// Uses Apache Arrow `parquet` crate for pure-Rust zero-copy columnar reads.
-/// Filters: n > 0, r_e > 0, photo_z > 0 (valid Sersic fits with redshift).
+/// Requires finite non-null model fields, positive shape/radius/redshift and unique IDs.
 ///
 /// Returns sorted by object_id for deterministic output.
 #[cfg(feature = "euclid-catalog")]
 pub fn read_euclid_physical_measurements(
     parquet_path: &str,
 ) -> Result<Vec<EuclidSersicParams>, String> {
-    use arrow_array::RecordBatch;
+    Ok(read_euclid_physical_measurements_audited(parquet_path)?.entries)
+}
+
+/// Read model-admitted rows and retain the complete rejected-row denominator.
+#[cfg(feature = "euclid-catalog")]
+pub fn read_euclid_physical_measurements_audited(
+    parquet_path: &str,
+) -> Result<EuclidPhysicalCatalog, String> {
+    use arrow_array::{Array, RecordBatch};
     use parquet::arrow::arrow_reader::ParquetRecordBatchReaderBuilder;
     use std::{fs::File, path::Path};
 
@@ -239,6 +265,9 @@ pub fn read_euclid_physical_measurements(
         .map_err(|e| format!("Failed to build reader: {e}"))?;
 
     let mut result = Vec::new();
+    let mut rejected_rows = Vec::new();
+    let mut rows_read = 0usize;
+    let mut admitted_ids = std::collections::BTreeSet::new();
 
     for batch_result in reader {
         let batch: RecordBatch = batch_result.map_err(|e| format!("Failed to read batch: {e}"))?;
@@ -255,22 +284,66 @@ pub fn read_euclid_physical_measurements(
         let sfr = col_f64(&batch, "phz_pp_median_sfr")?;
 
         for i in 0..batch.num_rows() {
+            let source_row = rows_read;
+            rows_read += 1;
+            let identity = (!object_id.is_null(i)).then(|| object_id.value(i));
+            let model_columns = [
+                ("sersic_sersic_vis_index", &sersic_n),
+                ("semimajor_axis", &semi_a),
+                ("phz_pp_median_redshift", &photo_z),
+                ("phz_pp_median_stellarmass", &stellar_mass),
+                ("phz_pp_median_luminosity", &luminosity),
+                ("position_angle", &pa),
+            ];
+            let rejection = if identity.is_none() {
+                Some(("null_object_id", "object_id"))
+            } else if let Some((field, _)) =
+                model_columns.iter().find(|(_, column)| column.is_null(i))
+            {
+                Some(("null_model_input", *field))
+            } else if let Some((field, _)) = model_columns
+                .iter()
+                .find(|(_, column)| !column.value(i).is_finite())
+            {
+                Some(("nonfinite_model_input", *field))
+            } else if let Some((field, _)) = model_columns[..3]
+                .iter()
+                .find(|(_, column)| column.value(i) <= 0.0)
+            {
+                Some(("nonpositive_shape_or_redshift", *field))
+            } else {
+                None
+            };
+            if let Some((reason, field)) = rejection {
+                rejected_rows.push(RejectedEuclidRow {
+                    source_row,
+                    object_id: identity,
+                    reason,
+                    field,
+                });
+                continue;
+            }
+            let identity = identity.expect("admitted object ID");
+            if !admitted_ids.insert(identity) {
+                return Err(format!(
+                    "duplicate admitted object_id {identity} at source row {source_row}"
+                ));
+            }
             let n = sersic_n.value(i);
             let r_e = semi_a.value(i);
             let z = photo_z.value(i);
-
-            // Filter: valid Sersic fit with positive radius and redshift
-            if n <= 0.0 || r_e <= 0.0 || z <= 0.0 || !n.is_finite() || !r_e.is_finite() {
-                continue;
-            }
 
             // semimajor_axis is in VIS pixels; convert to arcsec
             let r_e_arcsec = r_e * EUCLID_VIS_PLATE_SCALE;
 
             result.push(EuclidSersicParams {
-                object_id: object_id.value(i),
-                ra_deg: ra.value(i),
-                dec_deg: dec.value(i),
+                object_id: identity,
+                ra_deg: if ra.is_null(i) { f64::NAN } else { ra.value(i) },
+                dec_deg: if dec.is_null(i) {
+                    f64::NAN
+                } else {
+                    dec.value(i)
+                },
                 n,
                 r_e_arcsec,
                 ellipticity: 0.0, // circular approximation; not in this file
@@ -278,14 +351,22 @@ pub fn read_euclid_physical_measurements(
                 photo_z: z,
                 log_stellar_mass: stellar_mass.value(i),
                 log_luminosity: luminosity.value(i),
-                log_sfr: sfr.value(i),
+                log_sfr: if sfr.is_null(i) {
+                    f64::NAN
+                } else {
+                    sfr.value(i)
+                },
             });
         }
     }
 
     // Sort by object_id for deterministic output
     result.sort_by_key(|p| p.object_id);
-    Ok(result)
+    Ok(EuclidPhysicalCatalog {
+        entries: result,
+        rows_read,
+        rejected_rows,
+    })
 }
 
 /// Read Euclid Q1 visual morphology classifications from the Zenodo parquet.

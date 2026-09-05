@@ -317,7 +317,7 @@ fn independent_ward_residuals_preserve_failures_and_omission_scope() {
             .collect();
         assert!(norm(&component_difference) < 1e-12);
         assert!(!retained.passes);
-        assert!(linear_norm > 1e-3);
+        assert!(linear_norm > tolerance.absolute);
         let linear_real: Vec<_> = linear.iter().map(|value| value.re).collect();
         let linear_imaginary: Vec<_> = linear.iter().map(|value| value.im).collect();
         let omit_external = norm(&intercept(&abscissae[2..], &irreducible_samples[2..]));

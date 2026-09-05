@@ -1,0 +1,32 @@
+{
+  "alpha_zd": 0.1,
+  "backend": "CUDA_FP32",
+  "catalog": "data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet",
+  "collision": "MRT",
+  "condition": "C5-sersic-fzd",
+  "density_floor": 0.045,
+  "dx_kpc": 1.0,
+  "force.xyz.f64le": {
+    "bytes": 98304,
+    "encoding": "IEEE754_f64_little_endian",
+    "sha256": "2b9a0fd30a1d5768faaa4a6c985686069895a9d3d24f6d2e72190bf99b896cf7"
+  },
+  "grid": 16,
+  "max_mach": 0.3,
+  "max_relative_mass_error": 0.00001,
+  "observation": "direct_every_step_post_step_population_moments",
+  "rho.f64le": {
+    "bytes": 32768,
+    "encoding": "IEEE754_f64_little_endian",
+    "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+  },
+  "seed": null,
+  "selected_object_id": "-670764856480109543",
+  "smagorinsky_cs": 0.0,
+  "softening_eps": 0.5,
+  "steps": 24,
+  "tau": 0.8,
+  "tiling": false,
+  "trial": 0,
+  "zero_initial_velocity": true
+}

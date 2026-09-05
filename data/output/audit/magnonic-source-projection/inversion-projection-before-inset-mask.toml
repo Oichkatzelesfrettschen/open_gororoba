@@ -1,0 +1,115 @@
+schema_version = 1
+source = 'Kaman Figure 6a model panel'
+figure_gate_ghz = 0.03
+plot_left_pixel = 693
+plot_right_pixel = 1153
+plot_top_pixel = 128
+plot_bottom_pixel = 1283
+minimum_frequency_ghz = 0.5
+maximum_frequency_ghz = 3.0
+frequency_windows_ghz = [[1.23,1.445],[1.56,1.99],[2.055,2.40],[2.80,2.93]]
+scope = 'Rendered lower bands only; frequency masks exclude inset and gap-label text, grayscale mask excludes cyan shading and purple valley markers.'
+
+[[projection]]
+parameters = 'table_ii'
+ky_samples = 96
+pixel_threshold = 220
+column_count = 42
+maximum_two_way_support_distance_ghz = 8.2646263398927999e-2
+passes_figure_gate = false
+witness_pixel_x = 836
+witness_kx_per_um = -3.568593300200
+witness_frequency_ghz = 1.231601731602
+witness_nearest_frequency_ghz = 1.314247995001
+witness_direction = 'source_to_model'
+
+[[projection]]
+parameters = 'table_ii'
+ky_samples = 96
+pixel_threshold = 240
+column_count = 42
+maximum_two_way_support_distance_ghz = 8.5298712407398947e-2
+passes_figure_gate = false
+witness_pixel_x = 1016
+witness_kx_per_um = 3.814703182972
+witness_frequency_ghz = 1.231601731602
+witness_nearest_frequency_ghz = 1.316900444009
+witness_direction = 'source_to_model'
+
+[[projection]]
+parameters = 'table_ii'
+ky_samples = 192
+pixel_threshold = 220
+column_count = 42
+maximum_two_way_support_distance_ghz = 8.2646263398927999e-2
+passes_figure_gate = false
+witness_pixel_x = 836
+witness_kx_per_um = -3.568593300200
+witness_frequency_ghz = 1.231601731602
+witness_nearest_frequency_ghz = 1.314247995001
+witness_direction = 'source_to_model'
+
+[[projection]]
+parameters = 'table_ii'
+ky_samples = 192
+pixel_threshold = 240
+column_count = 42
+maximum_two_way_support_distance_ghz = 8.5298712407398947e-2
+passes_figure_gate = false
+witness_pixel_x = 1016
+witness_kx_per_um = 3.814703182972
+witness_frequency_ghz = 1.231601731602
+witness_nearest_frequency_ghz = 1.316900444009
+witness_direction = 'source_to_model'
+
+[[projection]]
+parameters = 'repository_reference'
+ky_samples = 96
+pixel_threshold = 220
+column_count = 42
+maximum_two_way_support_distance_ghz = 5.7948030737533385e-1
+passes_figure_gate = false
+witness_pixel_x = 926
+witness_kx_per_um = 0.123054941386
+witness_frequency_ghz = 2.898268398268
+witness_nearest_frequency_ghz = 2.318788090893
+witness_direction = 'source_to_model'
+
+[[projection]]
+parameters = 'repository_reference'
+ky_samples = 96
+pixel_threshold = 240
+column_count = 42
+maximum_two_way_support_distance_ghz = 5.7948030737533385e-1
+passes_figure_gate = false
+witness_pixel_x = 926
+witness_kx_per_um = 0.123054941386
+witness_frequency_ghz = 2.898268398268
+witness_nearest_frequency_ghz = 2.318788090893
+witness_direction = 'source_to_model'
+
+[[projection]]
+parameters = 'repository_reference'
+ky_samples = 192
+pixel_threshold = 220
+column_count = 42
+maximum_two_way_support_distance_ghz = 5.7948030737533385e-1
+passes_figure_gate = false
+witness_pixel_x = 926
+witness_kx_per_um = 0.123054941386
+witness_frequency_ghz = 2.898268398268
+witness_nearest_frequency_ghz = 2.318788090893
+witness_direction = 'source_to_model'
+
+[[projection]]
+parameters = 'repository_reference'
+ky_samples = 192
+pixel_threshold = 240
+column_count = 42
+maximum_two_way_support_distance_ghz = 5.7948030737533385e-1
+passes_figure_gate = false
+witness_pixel_x = 926
+witness_kx_per_um = 0.123054941386
+witness_frequency_ghz = 2.898268398268
+witness_nearest_frequency_ghz = 2.318788090893
+witness_direction = 'source_to_model'

@@ -10,6 +10,7 @@
 
 use clap::Parser;
 use gororoba_cli_physics::lbm_dispatch::LbmBackend;
+use gororoba_cli_physics::lbm_population_diagnostics::inspect_fields;
 use lbm_3d::solver::CollisionMode;
 
 #[cfg(test)]
@@ -192,67 +193,6 @@ fn assess(
         mach_within_budget: mach.is_finite() && mach >= 0.0 && mach <= args.max_mach,
     }
 }
-struct PopulationObservation {
-    finite: bool,
-    minimum_density: f64,
-    mass: f64,
-    mach: f64,
-}
-
-fn inspect_populations(populations: &[f64]) -> anyhow::Result<PopulationObservation> {
-    anyhow::ensure!(
-        !populations.is_empty() && populations.len().is_multiple_of(19),
-        "complete cell-major D3Q19 populations required"
-    );
-    let lattice = lbm_3d::lattice::D3Q19Lattice::new();
-    let mut observation = PopulationObservation {
-        finite: true,
-        minimum_density: f64::INFINITY,
-        mass: 0.0,
-        mach: 0.0,
-    };
-    for cell in populations.chunks_exact(19) {
-        observation.finite &= cell.iter().all(|value| value.is_finite());
-        let density: f64 = cell.iter().sum();
-        let mut momentum = [0.0; 3];
-        for (direction, &population) in cell.iter().enumerate() {
-            let velocity = lattice.velocity(direction);
-            for axis in 0..3 {
-                momentum[axis] += population * f64::from(velocity[axis]);
-            }
-        }
-        let mach = momentum
-            .into_iter()
-            .map(|value| (value / density).powi(2))
-            .sum::<f64>()
-            .sqrt()
-            * 3.0_f64.sqrt();
-        observation.finite &= density.is_finite() && mach.is_finite();
-        observation.minimum_density = observation.minimum_density.min(density);
-        observation.mass += density;
-        observation.mach = observation.mach.max(mach);
-    }
-    Ok(observation)
-}
-
-fn inspect_fields(backend: &mut LbmBackend) -> anyhow::Result<PopulationObservation> {
-    let populations: Vec<f64> = match backend {
-        LbmBackend::Avx2(solver) => (0..solver.nx * solver.ny * solver.nz)
-            .flat_map(|cell| {
-                let source = &solver.f;
-                (0..19).map(move |direction| source[lbm_3d::solver::aosoa_idx(cell, direction)])
-            })
-            .collect(),
-        #[cfg(feature = "gpu")]
-        LbmBackend::Cuda(solver) => solver
-            .read_populations_fp32()?
-            .into_iter()
-            .map(f64::from)
-            .collect(),
-    };
-    inspect_populations(&populations)
-}
-
 /// Build Gaussian density perturbation centered on the grid.
 fn gaussian_density(n: usize, contrast: f64) -> Vec<f64> {
     let center = n / 2;

@@ -1,0 +1,1847 @@
+                                EUROPEAN ORGANIZATION FOR NUCLEAR RESEARCH
+
+
+
+                                                                                                                    CERN-PH-EP-2012-368
+                                                                                                                            18 Dec 2012
+
+
+                                                      Centrality determination of Pb–Pb collisions
+                                                               √
+                                                            at sNN= 2.76 TeV with ALICE
+
+                                                                                ALICE Collaboration ∗
+
+
+
+
+arXiv:1301.4361v3 [nucl-ex] 13 Sep 2014
+                                                                                         Abstract
+
+                                             This publication describes the methods used to measure the centrality of inelastic Pb–Pb
+                                             collisions at a center-of-mass energy of 2.76 TeV per colliding nucleon pair with ALICE.
+                                             The centrality is a key parameter in the study of the properties of QCD matter at extreme
+                                             temperature and energy density, because it is directly related to the initial overlap region
+                                             of the colliding nuclei. Geometrical properties of the collision, such as the number of
+                                             participating nucleons and number of binary nucleon-nucleon collisions, are deduced from
+                                             a Glauber model with a sharp impact parameter selection, and shown to be consistent with
+                                             those extracted from the data. The centrality determination provides a tool to compare
+                                             ALICE measurements with those of other experiments and with theoretical calculations.
+
+
+
+
+                                          ∗ See Appendix B for the list of collaboration members
+Centrality determination with ALICE                                           ALICE Collaboration
+
+
+1   Introduction
+Ultra-relativistic heavy-ion collisions at the Large Hadron Collider (LHC) produce strongly
+interacting matter under extreme conditions of temperature and energy density, similar to those
+prevailing in the first few microseconds after the Big Bang [1].
+Since nuclei are extended objects, the volume of the interacting region depends on the impact
+parameter (b) of the collision, defined as the distance between the centers of the two colliding
+nuclei in a plane transverse to the beam axis. It is customary in the field of heavy-ion physics
+to introduce the concept of the centrality of the collision, which is directly related to the impact
+parameter, and inferred by comparison of data with simulations of the collisions.
+The purely geometrical Glauber model [2], which typically is used in this context, has its ori-
+gins in the quantum mechanical model for p–A and A–A scattering described in [3–5]. The
+model treats a nuclear collision as a superposition of binary nucleon-nucleon interactions. The
+volume of the initial overlap region is expressed via the number of participant nucleons. A
+participant nucleon of one nucleus is defined as a nucleon that undergoes one or more binary
+collisions with nucleons of the other nucleus. The number of participants and spectators, Npart
+and Nspec = 2A − Npart , where A is the total number of nucleons in the nucleus (mass number),
+and the number of binary collisions Ncoll are calculated for a given value of the impact parameter
+and for a realistic initial distribution of nucleons inside the nucleus, and assuming that nucleons
+follow straight trajectories. This approach provides a consistent description of p–A, d–A, and
+A–A collisions, and is especially useful when comparing data from different experiments or
+from different collision systems and to theoretical calculations.
+Neither the impact parameter nor geometrical quantities, such as Npart , Nspec , or Ncoll are directly
+measurable. Two experimental observables related to the collision geometry are the average
+charged-particle multiplicity Nch and the energy carried by particles close to the beam direc-
+tion and deposited in Zero-Degree Calorimeters (ZDC), called the zero-degree energy EZDC .
+The average charged-particle multiplicity is assumed to decrease monotonically with increas-
+ing impact parameter. The energy deposited in the zero-degree calorimeters, EZDC , is directly
+related to the number of spectator nucleons Nspec , which constitute the part of the nuclear vol-
+ume not involved in the interaction. However, unlike Nch , EZDC does not depend monotonically
+on the impact parameter b because nucleons bound in nuclear fragments with similar magnetic
+rigidity as the beam nuclei remain inside the beam-pipe and therefore are not detected in the
+ZDC. Since fragment formation is more important in peripheral collisions, the monotonic re-
+lationship between EZDC and b is valid only for relatively central events (small b). For this
+reason, the zero-degree energy measurement needs to be combined with another observable
+that is monotonically correlated with b.
+The centrality is usually expressed as a percentage of the total nuclear interaction cross section
+σ [2]. The centrality percentile c of an A–A collision with an impact parameter b is defined by
+                                                     0
+integrating the impact parameter distribution dσ /db as
+                                   Rb
+                                    dσ /db0 db0
+                                                     Z b
+                                  0                1     dσ 0
+                              c= R∞       0   0
+                                                =           db .                                  (1)
+                                  0 dσ /db db     σAA 0 db0
+
+In ALICE, the centrality is defined as the percentile of the hadronic cross section corresponding
+to a particle multiplicity above a given threshold (Nch T HR ) or an energy deposited in the ZDC
+
+
+
+                                                  2
+Centrality determination with ALICE                                            ALICE Collaboration
+
+
+                      T HR ) in the ZDC energy distribution dσ /dE 0
+below a given value (EZDC                                         ZDC
+                                                         Z E T HR
+                          1            dσ           1                dσ
+                               Z ∞
+                                                              ZDC
+                                              0                             0
+                    c≈                   0  dNch ≈                    0   dEZDC .              (2)
+                         σAA     T HR dN
+                                Nch                σAA    0         dEZDC
+                                         ch
+
+The procedure can be simplified by replacing the cross section with the number of observed
+events, corrected for the trigger efficiency. However, at LHC energies, the strong electromag-
+netic fields generated by the heavy ions moving at relativistic velocity lead to large cross sec-
+tions for QED processes [6–9]. Although the cross sections for these processes exceed those for
+the hadronic cross section by several orders of magnitude, they only contaminate the hadronic
+cross section in the most peripheral collisions. For this reason one may choose to restrict the
+centrality determination to the region where such contamination is negligible. The fraction of
+hadronic events excluded by such cut as well as the trigger efficiency can be estimated using a
+model of the nuclear collision and the related particle production.
+In this paper, we report on the centrality determination used in the analyses of the Pb–Pb col-
+lision data from the 2010 and 2011 run recorded with the ALICE detector [10]. Specifically
+the analysis presented here is done with a subset of the 2010 data, but the methods and results
+are valid for 2011 as well. In Section 2, we describe the implementation of the Glauber model
+used by ALICE. We extract mean numbers of the relevant geometrical quantities for typical
+centrality classes defined by classifying the events according to their impact parameter. Sec-
+tion 3 describes the experimental conditions and the event selection with particular emphasis
+on the rejection of QED and machine-induced backgrounds. Section 4 presents the methods
+employed by ALICE for the determination of the hadronic cross section, needed for the abso-
+lute determination of the centrality. The main method uses the VZERO amplitude distribution
+fitted with the Glauber model. The systematic uncertainty is obtained by comparing the fit to
+an unbiased VZERO distribution obtained by correcting the measured one by the efficiency of
+the event selection and the purity of the event sample. Section 5 presents the determination
+of the centrality classes using either the multiplicity at mid-rapidity or the energy deposited in
+the ZDC. We discuss the relation between the measured multiplicity and geometrical quanti-
+ties connected to centrality, established by the Glauber Model. These are nearly identical to
+those obtained in Section 2, classifying the events according to their impact parameter, which
+are therefore used as reference in all ALICE analyses. Section 6 presents the precision of the
+centrality determination in ALICE. Section 7 summarizes and concludes the paper.
+
+
+2   The Glauber Model
+The Glauber model is widely used to describe the dependence of Npart and Ncoll on b in p–A, d–A
+and A–A collisions [2–5]. The purpose of Monte Carlo implementations of the Glauber model
+[19, 20] is to compose two nuclei out of nucleons and simulate their collision process event-
+by-event. Geometrical quantities are calculated by simulating many nucleus-nucleus collisions.
+Mean values of these quantities are calculated for centrality classes defined by classifying the
+events according to their impact parameter b.
+Following [21], the first step in the Glauber Monte Carlo is to prepare a model of the two nuclei
+by defining stochastically the position of the nucleons in each nucleus. The nucleon position
+in the 208 Pb nucleus is determined by the nuclear density function, modeled by the functional
+
+
+                                                3
+Centrality determination with ALICE                                                    ALICE Collaboration
+
+
+
+
+Fig. 1: (Color online) Compilation of total σNN tot , elastic σ el , and inelastic σ inel cross sections of pp and
+                                                               NN                   NN
+                              el curve is a fit performed by the COMPETE Collaboration also available
+pp̄ collisions [11–13]. The σNN
+at [12, 14]. The pp data from ATLAS [15], CMS [16], TOTEM, [17] and ALICE [18] agree well with
+                       inel .
+the interpolation for σNN
+
+form (modified Woods-Saxon or 2-parameter Fermi distribution):
+
+                                                     1 + w(r/R)2
+                                          ρ(r) = ρ0                                                           (3)
+                                                    1 + exp r−R
+                                                                
+                                                              a
+
+The parameters are based on data from low energy electron-nucleus scattering experiments [22].
+Protons and neutrons are assumed to have the same nuclear profile. The parameter ρ0 is the
+nucleon density, which provides the overall normalization, not relevant for the Monte Carlo
+simulation, R = (6.62 ± 0.06) fm is the radius parameter of the 208 Pb nucleus and a = (0.546 ±
+0.010) fm is the skin thickness of the nucleus, which indicates how quickly the nuclear density
+falls off near the edge of the nucleus. The additional parameter w is needed to describe nuclei
+whose maximum density is reached at radii r > 0 (w = 0 for Pb). In the Monte Carlo procedure
+the radial coordinate of a nucleon is randomly drawn      from the distribution 4πr2 ρ(r) and ρ0
+is determined by the overall normalization condition ρ(r)d 3 r = A. We require a hard-sphere
+                                                        R
+
+exclusion distance of dmin = 0.4 fm between the centers of the nucleons, i.e. no pair of nucleons
+inside the nucleus has a distance less than dmin . The hard-sphere exclusion distance, character-
+istic of the length of the repulsive nucleon-nucleon force, is not known experimentally and thus
+is varied by 100% (dmin = (0.4 ± 0.4) fm).
+The second step is to simulate a nuclear collision. The impact parameter b is randomly selected
+from the geometrical distribution dP/db ∼ b up to a maximum bmax ≃ 20 fm > 2RPb . The
+maximum value of the impact parameter bmax is chosen large enough to simulate collisions until
+the interaction probability becomes zero. This is particularly important for the calculation of the
+total Pb–Pb cross section. The nucleus-nucleus collision is treated as a sequence of independent
+binary nucleon-nucleon collisions, where the nucleons travel on straight-line trajectories and the
+inelastic nucleon-nucleon cross section is assumed to be independent of the number of collisions
+a nucleon underwent previously, i.e. the same cross section is used for all successive collisions.
+Two nucleons from different nuclei are assumed to collide if the relative transverse distance
+between centers is less than the distance corresponding to the inelastic nucleon-nucleon cross
+
+                                                        4
+   Centrality determination with ALICE                                                 ALICE Collaboration
+
+               q
+   section d < σNN  inel /π. A Gaussian overlap function can be used as an alternative to the black-
+
+   disk nucleon-nucleon overlap function [23]. It makes no significant difference within systematic
+   uncertainty in the global event properties.
+
+   Table 1: Geometric properties (Npart , Ncoll , TAA ) of Pb–Pb collisions for centrality classes defined by
+   sharp cuts in the impact parameter b (in fm). The mean values, the RMS, and the systematic uncertainties
+   are obtained with a Glauber Monte Carlo calculation.
+Centrality    bmin   bmax    hNpart i   RMS   (sys.)   hNcoll i   RMS   (sys.)    hTAA i    RMS       (sys.)
+             (fm)    (fm)                                                        1/mbarn   1/mbarn   1/mbarn
+  0–1%       0.00    1.57    403.8      4.9    1.8     1861        82    210      29.08       1.3      0.95
+  1–2%       1.57    2.22    393.6      6.5    2.6     1766        79    200       27.6       1.2      0.87
+  2–3%       2.22    2.71    382.9      7.7    3.0     1678        75    190      26.22       1.2      0.83
+  3–4%       2.71    3.13    372.0      8.6    3.5     1597        72    180      24.95       1.1      0.81
+  4–5%       3.13    3.50    361.1      9.3    3.8     1520        70    170      23.75       1.1      0.81
+ 5–10%       3.50    4.94    329.4      18     4.3     1316       110    140      20.56      1.7       0.67
+10–15%       4.94    6.05    281.2      17     4.1     1032        91    110      16.13       1.4      0.52
+15–20%       6.05    6.98    239.0      16     3.5     809.8       79     82      12.65       1.2      0.39
+20–25%       6.98    7.81    202.1      16     3.3     629.6       69     62      9.837       1.1      0.30
+25–30%       7.81    8.55    169.5      15     3.3     483.7       61     47      7.558      0.96      0.25
+30–35%       8.55    9.23    141.0      14     3.1     366.7       54     35       5.73      0.85      0.20
+35–40%       9.23    9.88    116.0      14     2.8     273.4       48     26      4.272      0.74      0.17
+40–45%       9.88    10.47   94.11      13     2.6     199.4       41     19      3.115      0.64      0.14
+45–50%       10.47   11.04    75.3      13      2.3    143.1       34     13       2.235     0.54       0.11
+50–55%       11.04   11.58   59.24      12      1.8    100.1       28     8.6      1.564     0.45      0.082
+55–60%       11.58   12.09   45.58      11      1.4    68.46       23     5.3       1.07     0.36      0.060
+60–65%       12.09   12.58   34.33      10      1.1    45.79       18     3.5     0.7154     0.28      0.042
+65–70%       12.58   13.05   25.21      9.0    0.87    29.92       14     2.2     0.4674     0.22      0.031
+70–75%       13.05   13.52   17.96      7.8    0.66    19.08       11     1.3     0.2981     0.17      0.020
+75–80%       13.52   13.97   12.58      6.5    0.45    12.07      7.8    0.77     0.1885     0.12      0.013
+80–85%       13.97   14.43   8.812      5.2    0.26    7.682      5.7    0.41      0.12     0.089     0.0088
+85–90%       14.43   14.96   6.158      3.9    0.19    4.904      4.0    0.24    0.07662    0.062     0.0064
+90–95%       14.96   15.67   4.376      2.8    0.10    3.181      2.7    0.13     0.0497    0.042     0.0042
+95–100%      15.67   20.00   3.064      1.8   0.059    1.994      1.7   0.065    0.03115    0.026     0.0027
+  0–5%       0.00    3.50    382.7      17     3.0     1685       140    190      26.32      2.2       0.85
+ 5–10%       3.50    4.94    329.4      18     4.3     1316       110    140      20.56      1.7       0.67
+10–20%       4.94    6.98    260.1      27     3.8     921.2      140     96      14.39       2.2      0.45
+20–40%       6.98    9.88    157.2      35     3.1     438.4      150     42      6.850       2.3      0.23
+40–60%       9.88    12.09   68.56      22     2.0     127.7       59     11      1.996      0.92     0.097
+60–80%       12.09   13.97   22.52      12     0.77    26.71       18     2.0     0.4174     0.29      0.026
+80–100%      13.97   20.00   5.604      4.2    0.14    4.441      4.4    0.21    0.06939    0.068     0.0055
+
+   The number of collisions Ncoll and the number of participants Npart are determined by count-
+   ing, respectively, the binary nucleon collisions and the nucleons that experience at least one
+   collision. Following the notation in [2], the geometric nuclear overlap function TAA is then
+   calculated as TAA = Ncoll /σNNinel , and represents the effective nucleon luminosity in the collision
+
+   process.
+                               √                               inel = (64 ± 5) mb, estimated by inter-
+   For nuclear collisions at sNN = 2.76 TeV, we use σNN
+   polation [11] of pp data at different center-of-mass energies and from cosmic rays [12, 14],
+   and subtracting the elastic scattering cross section from the total cross section. The interpo-
+   lation is in good agreement with the ALICE measurement of the pp inelastic cross section at
+   √                      inel = (62.8 ± 2.4+1.2 ) mb [18], and with the measurements of ATLAS
+     sNN = 2.76 TeV, σNN
+                                             √ −4.0
+   [15], CMS [16], and TOTEM [17] at sNN = 7 TeV, as shown in Fig. 1.
+
+                                                          5
+Centrality determination with ALICE                                              ALICE Collaboration
+
+
+The total Pb–Pb cross section is calculated as σPbPb = Nevt (Ncoll ≥ 1)/Nevt (Ncoll ≥ 0) × πb2max ,
+i.e. the geometrical value corrected by the fraction of events with at least one nucleon-nucleon
+collision. We obtain σPbPb = (7.64 ± 0.22(syst.)) b, in agreement with the ALICE measurement
+σPbPb = (7.7 ± 0.1(stat.)+0.6
+                          −0.5 (syst.)) b [9].
+Table 1 report the mean number of participants hNpart i and collisions hNcoll i, and the mean
+nuclear thickness function hTAA i for centrality classes defined by sharp cuts in the impact pa-
+rameter b calculated with the Glauber model (Fig. 2). The root mean square (RMS) of these
+distributions is a measure for the magnitude of the dispersion of the quantities.
+The systematic uncertainties on the mean values are obtained by independently varying the
+parameters of the Glauber model within their estimated uncertainties. More specifically, the
+default value of the nucleon–nucleon cross section of σNN  inel = 64 mb was varied between 59 mb
+
+and 69 mb. The Woods-Saxon parameters were varied by one standard deviation to determine
+uncertainties related to the nuclear density profile. The minimum distance of 0.4 fm between
+two nucleons of the same nucleus was varied by 100%, from 0 to 0.8 fm to evaluate the effects
+of a nucleon hard core (as mentioned above). Figure 3 shows the resulting variations for Pb–Pb
+              √
+collisions at sNN = 2.76 TeV. The total systematic uncertainty reported in Table 1 was obtained
+by adding in quadrature the deviations from the default result for each of the variations listed
+above. The uncertainty of Npart ranges from about 3–4% in peripheral collisions to < 1% in
+central collisions, the uncertainty of Ncoll ranges from about 7% in peripheral collisions to about
+11% in central collisions, the uncertainty of TAA ranges from about 6% in peripheral collisions
+to about 3% in central collisions. The nuclear overlap function TAA is often used to compare
+observables related to hard processes in A–A and pp collisions. Since TAA = Ncoll /σNN   inel , it has
+                                                                             inel
+the same systematic uncertainties as Ncoll except that the uncertainty on σNN cancels out.
+Finally it is worth noting that more sophisticated implementations of the Glauber model [23–
+25] suggest that effects not included in our Glauber model, such as the changes of the excluded
+volume on the nuclear density and two-body correlations, can be approximated by slightly
+adjusting the Woods-Saxon parameters. The modified parameters, however, are well covered
+by the systematic uncertainty quoted above for the parameters that we use.
+
+
+
+
+                                                       √
+Fig. 2: Geometric properties of Pb–Pb collisions at sNN = 2.76 TeV obtained from a Glauber Monte
+Carlo calculation: Impact parameter distribution (left), sliced for percentiles of the hadronic cross sec-
+tion, and distributions of the number of participants (right) for the corresponding centrality classes.
+
+
+
+
+                                                    6
+Centrality determination with ALICE                                                ALICE Collaboration
+
+
+
+
+Fig. 3: Sensitivity of Npart (left) and Ncoll (right) to variations of parameters in the Glauber Monte Carlo
+                                  √
+model of Pb–Pb collisions at sNN = 2.76 TeV. The gray band represents the RMS of Npart and Ncoll
+respectively. It is scaled by a factor 0.1 for visibility.
+
+3     Experimental Conditions
+3.1   The ALICE detector
+ALICE is an experiment dedicated to the study of heavy-ion collisions at the LHC. A detailed
+description of the apparatus is given in Ref. [10]. Here, we briefly describe the detector compo-
+nents used in this analysis.
+The Silicon Pixel Detector (SPD) is the innermost part of the Inner Tracking System (ITS). It
+consists of two cylindrical layers of hybrid silicon pixel assemblies positioned at average radial
+distances of 3.9 and 7.6 cm from the beam line, with a total of 9.8 × 106 pixels of size 50 ×
+425 µm2 , read out by 1200 electronic chips. The SPD coverage for particles originating from
+the center of the detector is |η| < 2.0 and |η| < 1.4 for the inner and outer layers, respectively.
+Each chip provides a fast signal if at least one of its pixels is hit. The signals from the 1200
+chips are combined in a programmable logic unit which supplies a trigger signal. The fraction
+of SPD channels active during 2010 data taking was 70% for the inner and 78% for the outer
+layers.
+The VZERO detector consists of two arrays of 32 scintillator cells placed at distances z =
+3.4 m and z = −0.9 m from the nominal interaction point, along the beam line, covering the
+full azimuth. The VZERO detector is within 2.8 < η < 5.1 (VZERO-A) and −3.7 < η <
+−1.7 (VZERO-C). Both amplitude and time of signals in each scintillator are recorded. The
+VZERO time resolution is better than 1 ns, allowing discrimination of beam–beam collisions
+from background events produced upstream of the experiment. The VZERO is also used to
+provide a trigger signal (see 3.2).
+The Time Projection Chamber (TPC) is used for charged particle trajectory reconstruction, track
+momentum measurement and particle identification. The ALICE TPC is a large cylindrical drift
+detector whose active volume extends radially from 85 to 247 cm, and from -250 to +250 cm
+along the beam direction. The active volume of nearly 90 m3 is filled with a gas mixture of Ne
+(85.7%), CO2 (9.5%) and N2 (4.8%) until the end of 2010, and Ne (90%) and CO2 (10%) since
+the beginning of 2011. A central electrode maintained at -100 kV divides the TPC into two
+sections. The end-caps are equipped with multiwire proportional chambers with cathode pad
+readout. For a particle traversing the TPC up to 159 position signals (clusters) are recorded.
+The cluster data are used to reconstruct the charged particle trajectory as well as to calculate the
+particle’s specific energy loss used to identify the species of the particle which has produced the
+
+                                                     7
+Centrality determination with ALICE                                          ALICE Collaboration
+
+
+track.
+The two Zero Degree Calorimeters (ZDC) in the ALICE experiment measure the energy of
+spectator (non-interacting) nucleons: ZP measures protons and ZN measures neutrons. They
+are situated about 114 m from the interaction point on each side of the experiment [10]. Each
+ZDC consists of two quartz fiber sampling calorimeters: the neutron calorimeter positioned
+between the two beam pipes downstream of the first machine dipole that separates the two
+charged particle beams, and the proton calorimeter positioned externally to the outgoing beam
+pipe. The energy resolution at beam energy is estimated to be 20% for the neutron (20.0% for
+ZNC, 21.2% for ZNA) and 24% for the proton calorimeters, respectively.
+
+
+
+
+Fig. 4: Time distribution of signals in the VZERO detector on the A side. The peaks corresponding to
+beam-beam, beam-gas and satellite collision events are clearly visible.
+
+3.2      Data set and online event selection
+During the first LHC Pb–Pb run in 2010, beams of four bunches with about 107 Pb ions per
+                   √
+bunch collided at sNN = 2.76 TeV, with an estimated luminosity of 5 × 1023 cm−2 s−1 . AL-
+ICE collected about 90 million nuclear collision events using different interaction triggers with
+increasingly tighter conditions. These triggers used VZERO and SPD detector signals in coin-
+cidence with a bunch crossing corresponding to a beam-beam collision:
+
+   − V0AND: signals in VZERO-A and VZERO-C;
+   − 3-out-of-3: signals in VZERO-A and VZERO-C and at least 2 chips hit in the outer layer
+     of the SPD;
+   − 2-out-of-3: two of the three conditions listed above.
+
+The threshold in the VZERO detector for each of the VZERO tiles corresponded approximately
+to the energy deposition of one minimum ionizing particle.
+Control events were also collected with the same trigger logic, in coincidence with only one
+beam crossing the ALICE interaction point (from either the A or the C side) or with no beam at
+
+                                                 8
+Centrality determination with ALICE                                             ALICE Collaboration
+
+
+all (“empty”). The luminous region had an RMS width of 5.9 cm in the longitudinal direction
+and 50 µm in the transverse direction. For the estimated luminosity, using the least selective of
+the interaction triggers, the observed rate was about 50 Hz. This was mainly due to electromag-
+netically induced processes [26]. These processes have large cross sections at LHC energies
+but generate low multiplicities and therefore do not contribute to the typical particle multiplici-
+ties of interest for the present paper. The trigger rate without beam was negligible and the rate
+in coincidence with bunches of only one beam was about 1 Hz. The probability for collision
+pile-up per triggered event was less than 10−4 .
+
+
+
+
+Fig. 5: (Color online) Correlation between the sum and the difference of times recorded by the neutron
+ZDC on either side of the interaction region. The large cluster in the middle corresponds to collisions
+between ions in the nominal RF buckets of each beam, while the small clusters along the diagonals
+(spaced by 2.5 ns in the time difference) correspond to collisions in which one of the ions is displaced
+by one or more RF buckets.
+
+
+3.3     Offline event selection
+The offline event selection is applied with the purpose of selecting hadronic interactions with the
+highest possible efficiency, while rejecting the machine-induced and physical backgrounds. The
+offline event selection replays the on-line trigger condition, using the same quantities calculated
+offline, so that events triggered by noise in the SPD are discarded, and the weighted time average
+over all channels is used for the VZERO, leading to a better time resolution. In addition, the
+offline event selection rejects the machine-induced background and parasitic collisions. This
+contamination amounts to about 25% of all collected events. To keep the conditions of all
+detectors as uniform as possible (in particular those around mid-rapidity, such as the SPD), the
+centrality analysis was restricted to a region around the vertex, |zvtx | . 10 cm.
+
+3.3.1    Machine-Induced Background
+One source of machine-induced background is due to beam-gas events, caused by one of the
+beams interacting with the residual gas in the beam-pipe; another source of background are
+events where ions in the beam halo interact with mechanical structures in the machine. These
+
+
+                                                   9
+Centrality determination with ALICE                                          ALICE Collaboration
+
+
+interactions mostly occur outside of the interaction region and thus produce a signal that is "too
+early" in the same-side VZERO, compared to a collision that occurs in the nominal interaction
+region between the VZERO detectors. Therefore these events can be rejected using the timing
+information of the VZERO. This is illustrated in Fig. 4 which shows the arrival time of particles
+at the VZERO A detector relative to the nominal beam crossing time. Beam-halo or beam-gas
+interactions are visible as secondary peaks in the time distribution because particles produced
+in background interactions arrive at earlier times in the detector relative to particles produced in
+beam-beam collisions at the nominal vertex, which are the majority of the signals. Other small
+peaks between these main ones arise from satellite collisions.
+Another source of machine-induced background is due to parasitic collisions from debunched
+ions. The radio-frequency (RF) structure of the LHC of 400 MHz is such that there are 10
+equidistant RF buckets within the 25 ns time interval between two possible nominal bunch
+positions. Therefore the buckets are spaced by 2.5 ns. Only one of them should be populated by
+ions [27]. However, ions can “jump” into one of the neighboring buckets. Therefore collisions
+occur either between ions in the nominal RF buckets but also between one or two ions displaced
+by one or more RF buckets. This causes a displacement in the Z-vertex position of 2.5 ns/2 · c =
+37.5 cm, well outside the fiducial region |zvtx | . 10 cm. Those events are thus to be considered
+as “background” and are rejected using the correlation between the sum and the difference of
+times measured in each of the neutron ZDCs, as shown in Fig. 5. Such satellite collisions can
+also be rejected using the vertex cut.
+After the event selection, the remaining machine-induced background, estimated from the con-
+trol triggers (i.e. triggers that fire for coincidences between empty and filled or empty and empty
+bunches), is negligible.
+
+3.3.2   Electromagnetic interaction background
+At the LHC energy, the cross sections for electromagnetic (EM) processes, generated by the
+EM fields of relativistic heavy ions, are enormous (O(kbarn)) [6–9]. This is the main physical
+background, and needs to be rejected in heavy-ion collisions to isolate hadronic interactions.
+QED processes consist of: photo-production and photo-nuclear interactions. Photo-production
+results in the creation of an e+ e− pair. Photo-nuclear interactions, where one photon from the
+EM field of one of the nuclei interacts with the other nucleus, possibly fluctuating to a vector
+meson, yield a low multiplicity of soft particles in the ALICE central barrel. In the case of
+single photo-production the particle multiplicity is asymmetric within the event. Along the
+beam direction the electromagnetic dissociation (EMD) cross sections are large resulting in a
+non-negligible probability for one neutron emission from either nucleus.
+The EMD cross sections have been measured in a special run triggering on a signal in one of
+the neutron ZDCs, ZNA or ZNC, with a threshold placed well below the single neutron signal
+to detect the neutrons from Giant Dipole Resonance (GDR) decay emitted very close to beam
+rapidity[9]. The recorded event sample is dominated by electromagnetic dissociation of one
+or both nuclei measured to be σ single EMD = 187.4 ± 0.2(stat.)+13.2
+                                                                −11.2 (syst.) b compared to the
+mutual EMD cross section of σ    mutual EMD = 5.7 ± 0.1(stat.) ± 0.4(syst.) b. The single EMD
+events can be clearly identified when correlating the response of ZNA and ZNCs (Fig. 6). The
+additional requirement of a signal in an electromagnetic calorimeter close to beam rapidity
+(ZEM) allows one to distinguish between mutual EMD and hadronic interaction events.
+
+
+
+                                                10
+Centrality determination with ALICE                                             ALICE Collaboration
+
+
+
+
+Fig. 6: (Color online) Correlation between signals in the two neutron zero-degree calorimeters, ZNA and
+ZNC. The figure is taken from [9]. Single electromagnetic dissociation events produce signal in only one
+of the calorimeters. Mutual dissociation and hadronic interactions populate interior of the plot and can
+be distinguished from each other by the signal in ZEM.
+
+In order to reduce the contribution due to single neutron emission, we require a ZDC signal
+three standard deviations above the single neutron peak. This selection rejects about 3% of
+all events within 10 cm from the nominal interaction point after removal of beam-gas and par-
+asitic collisions, and only removes events for peripheral collisions (in the 90–100% region).
+The coincidence of the ZDC signals rejects all the single neutron emission events. The simul-
+tanous emissions from both nuclei still are accepted, which, however, are only relevant for very
+peripheral collisions.
+For systematic studies, another selection based on the information from the TPC is used, where
+at least one track reconstructed in the TPC is requested in order to keep the event. This selection
+removes few peripheral hadronic interactions, and strongly suppresses the EM background.
+
+
+4   Determination of the hadronic cross section
+In order to classify the collisions in percentiles of the hadronic cross section using the charged
+particle multiplicity, it is necessary to know the particle multiplicity at which the purity of the
+event sample and the efficiency of the event selection becomes 100%. We define the Anchor
+Point (AP) as the amplitude of the VZERO detector equivalent to 90% of the hadronic cross
+section, which determines the absolute scale of the centrality. The determination of the AP
+requires the knowledge of the trigger efficiency and the remaining background contamination
+in nuclear collision events. Two methods have been used to study this. The difference in the
+results obtained with the two methods is used to estimate the systematic uncertainty by:
+
+
+
+                                                  11
+Centrality determination with ALICE                                            ALICE Collaboration
+
+
+
+
+Fig. 7: (Color online) Efficiency of the three online triggers (2−out − of−3, V0AND, 3−out − of−3)
+used for Pb–Pb collisions as a function of the VZERO amplitude calculated with HIJING and AMPT,
+and measured in dedicated pp runs. The efficiency in the simulation has been calculated for events with
+Npart = 2.
+
+   − Simulating the multiplicity distribution (see Sec. 4.1). In the first approach, we use
+     a full simulation of hadronic and EM processes, including a detailed description of the
+     detector response, to study the efficiency of the event selection (Sec. 4.1.1) and to estimate
+     the background contamination (Sec. 4.1.2). The real multiplicity distribution, corrected
+     for efficiency and purity, allows direct access to the AP.
+
+   − Fitting the multiplicity distribution (see Sec. 4.2). In the second method, we use the
+     Glauber Monte Carlo, combined with a simple model for particle production, to simulate
+     a multiplicity distribution which is then compared to the experimental one. The simulated
+     distribution describes the experimental one down to the most peripheral events where
+     they start to deviate due to background contamination and limited trigger efficiency. The
+     location of the divergence between the data and simulation can be used to define the AP.
+
+The centrality determination is performed for different trigger and detector settings. The differ-
+ent triggers change the fraction of accepted events from EM processes, which determines the
+shape of the multiplicity distribution for very peripheral collisions below the AP. The position
+of the AP is very stable for the entire 2010 (and 2011) run period and does not change within the
+quoted systematic uncertainty discussed below. Small variations in detector conditions induce
+small changes in the position of the edge of the multiplicity distribution for most central events.
+Nevertheless, the centrality determination, adjusted to account for small changes in the detector
+configuration, provides a stable centrality selection for the entire data-taking period (the mean
+fraction of events in the 0-1% bin is 0.01 with a RMS of 0.001, and in the 40-50% bin the mean
+fraction is 0.101 with an RMS of 0.002).
+
+
+
+                                                  12
+Centrality determination with ALICE                                          ALICE Collaboration
+
+
+4.1     Method 1: Correcting the multiplicity distribution
+With this method the AP is determined by evaluating the efficiency of the event selection and
+by estimating the purity of the obtained event sample.
+
+4.1.1    Efficiency of the event selection
+The efficiency for the different event selections is studied with simulations of hadronic reactions
+and with dedicated pp runs. For simulations we use HIJING [28] or AMPT [29] with a full
+GEANT [30] description of the ALICE detector and a trigger emulator. In the simulations the
+efficiency is defined as the ratio of events selected by a given condition to all generated
+                                                                                   √         events.
+In the two dedicated pp runs, which were taken at the end of the 2010 run at s = 7 TeV, the
+detector conditions were similar to those in the Pb–Pb run. The VZERO gain was adjusted such
+that the response to minimum ionizing particles (MIP) corresponded to 3 ADC channels for
+one run, or 6 for the other run. For the Pb–Pb run, it was set to 4 channels, i.e. between the
+two tested conditions. In the special pp runs, we used a minimum interaction trigger, which
+requires a logical OR between a hit in the SPD and in either of the two VZERO detectors
+(CINT1 trigger condition). The same event selection criteria as used in the Pb–Pb run as the
+trigger have been applied. The relative event selection efficiency is defined as the ratio of events
+selected by a given condition to all the events recorded with the pp minimum-bias interaction
+trigger (CINT1). Since the pp minimum-bias interaction trigger (CINT1) has an efficiency that
+is effectively 100% for non-diffractive events [18], the relative efficiency measured in the pp
+runs, shown in Fig. 7, can be qualitatively compared to that obtained in Pb–Pb simulations with
+Npart = 2. Except for very low amplitudes, results from HIJING and AMPT are in very good
+agreement. AMPT predicts a slightly higher efficiency (about 0.5%), as a consequence of the
+broader rapidity distribution. The comparison with the pp runs shows a reasonable agreement
+for the “MIP = 6” case, while the “MIP = 3” is clearly lower.
+For the Pb–Pb run, the efficiency of the event selection is calculated using the average of results
+obtained with HIJING and AMPT. The efficiency of the interaction triggers is 99.4%, 97.1%,
+96.9% respectively for 2-out-of-3, V0AND, 3-out-of-3 using HIJING and 99.7%, 98.6%, 98.4%
+using AMPT. The line in Fig. 7, corresponding to the 90% of the hadronic cross section, shows
+that the trigger is always fully efficient for the 90% most central collisions, except for the “MIP
+= 3” pp case, where the efficiency is 95%.
+
+4.1.2    Remaining contamination
+The purity of the data sample passing a given event selection is estimated using HIJING sim-
+ulations [28] for hadronic processes and QED [8] and STARLIGHT [7] for the simulations of
+the EM background. For the electromagnetic dissociation we assume that the selection based
+on the signal 3σ above the single-neutron peak in the ZDCs (see 3.3.2) is fully efficient.
+In Fig. 8, data taken with the V0AND interaction trigger are compared to the sum of HIJING and
+background (QED + STARLIGHT) simulations with the same event selection. The simulations
+are scaled to the known cross sections:
+
+   − HIJING (hadronic): σH = 7.66 b [28];
+
+   − QED (EM): σQ = 92 kb [8];
+
+
+                                                13
+Centrality determination with ALICE                                       ALICE Collaboration
+
+
+
+
+Fig. 8: (Color online) VZERO amplitude distribution in data (red points) and simulations with the
+V0AND interaction trigger. The data are compared to the sum of HIJING + QED + STARLIGHT
+simulations (histogram) with the same event selection.
+
+   − STARLIGHT (single neutron dissociation): σSNS = 24.2 b [7];
+   − STARLIGHT (double neutron dissociation): σSND = 240 mb [7].
+
+The sum of the simulations is normalized to the data in the region 150 < VZERO amplitude <
+500, where there is no background contamination. The contribution from QED is completely
+removed by the V0AND trigger. The dashed lines, indicating respectively 80% and 90% of the
+hadronic cross section, show that there is no significant background contamination for colli-
+sions more central than 90%. The region 90–100% is reasonably understood as the agreement
+between data and simulation is quite good. The remaining discrepancy between the data and
+the sum of all contributions is included in the systematic uncertainty.
+To assign a systematic uncertainty, the comparison is made for the three online interaction
+triggers and other event selections requiring (i) V0AND + TPC: one track fully reconstructed in
+the TPC on top of the V0AND trigger; (ii) V0AND + ZDC: 3σ cut above single neutron peak
+in ZDC on top of the V0AND trigger. For all these variations a cross section is calculated and
+the difference is included in the systematic uncertainty.
+Figure 9 shows the purity of the various Pb–Pb event samples after those selections. The pu-
+rity, plotted as a function of the VZERO amplitude (V), is defined as the fraction of hadronic
+collisions over all the events selected with a given condition:
+                                              dNx    σH
+                                               dV |H NH
+                 purity = dN σ       dNx     σSNS   dNx     σSND   dNx σQ
+                                                                            .                 (4)
+                          dV |H NH + dV |SNS NSNS + dV |SND NSND + dV |Q NQ
+                            x    H
+
+
+
+
+where σx and Nx are the cross sections and number of events for a given process, x, where
+
+                                               14
+Centrality determination with ALICE                                           ALICE Collaboration
+
+
+
+
+Fig. 9: (Color online) Purity of the 3 online interaction triggers (2-out-of-3, V0AND, 3-out-of-3) and
+other event selections used for Pb–Pb collisions as a function of the VZERO amplitude calculated with
+HIJING, STARLIGHT and QED simulations. The dashed line indicates 90% of the hadronic cross
+section.
+
+x = H, SNS, SND, and Q, for HIJING, STARLIGHT single, STARLIGHT double, and QED,
+respectively.
+The purity of the event sample can be verified using the correlation of the energy deposition in
+the two sides of the ZN calorimeter, similar to the one shown in Fig.6. Single neutron peaks are
+visible in the 80–90% centrality class, which may indicate some remaining contamination from
+EMD events. However their origin can be also attributed to asymmetric Pb–Pb events, as well
+as a pile up of an EMD and a hadronic collision. Since this contamination can not be easily
+removed, analyses that use peripheral classes like 80–90% assign an additional 6% systematic
+uncertainty on the event selection to take into account the possible contamination from EMD.
+
+4.2   Method 2: Fitting the multiplicity distribution
+Another independent way to define the AP uses a phenomenological approach based on the
+Glauber Monte Carlo to fit the experimental multiplicity distribution. The Glauber Monte Carlo
+uses the assumptions mentioned above plus a convolution of a model for particle production,
+based on a negative binomial distribution (NBD). This latter assumption is motivated by the
+fact that in minimum bias pp and pp collisions at high energy, the charged particle multi-
+plicity dσ /dNch has been measured over a wide range of rapidity and is well described by a
+NBD [31, 32]. This approach allows one to simulate an experimental multiplicity distribution
+(e.g. VZERO amplitude), which can be compared with the one from data.
+Figure 10 shows the distribution of VZERO amplitudes for all events triggered with the 3-out-of-
+3 trigger (see 3.2) after removing the beam background (see 3.3.1), part of the EM background
+with the ZDC cut (see 3.3.2 ) and a Z-vertex cut |zvtx | < 10 cm. The multiplicity distribution has
+the classical shape of a peak corresponding to most peripheral collisions (contaminated by EM
+background and by missing events due to the trigger inefficiency), a plateau of the intermediate
+region and an edge for the central collisions, which is sensitive to the intrinsic fluctuations of
+
+
+                                                 15
+Centrality determination with ALICE                                              ALICE Collaboration
+
+
+
+
+Fig. 10: (Color online) Distribution of the sum of amplitudes in the VZERO scintillators. The distribution
+is fitted with the NBD-Glauber fit (explained in the text) shown as a line. The centrality classes used in
+the analysis are indicated in the figure. The inset shows a zoom of the most peripheral region.
+
+Npart and dNch /dη and to detector acceptance and resolution.
+The Glauber Monte Carlo defines, for an event with a given impact parameter b, the correspond-
+ing Npart and Ncoll . The particle multiplicity per nucleon-nucleon collision is parametrized by
+a NBD. To apply this model to any collision with a given Npart and Ncoll value we introduce
+the concept of “ancestors”, i.e. independently emitting sources of particles. We assume that
+the number of ancestors Nancestors can be parameterized by Nancestors = f · Npart + (1 − f ) · Ncoll .
+This is inspired by two-component models [33, 34], which decompose nucleus–nucleus col-
+lisions into soft and hard interactions, where the soft interactions produce particles with an
+average multiplicity proportional to Npart , and the probability for hard interactions to occur is
+proportional to Ncoll . We discuss the independence of the fit results of this assumption below
+(Sec. 4.2.1).
+To generate the number of particles produced per interaction, we use the negative binomial
+distribution
+                                      Γ(n + k)       (µ/k)n
+                         Pµ,k (n) =             ·              ,                       (5)
+                                    Γ(n + 1)Γ(k) (µ/k + 1)n+k
+which gives the probability of measuring n hits per ancestor, where µ is the mean multiplicity
+per ancestor and k controls the width. For every Glauber Monte Carlo event, the NBD is sam-
+pled Nancestors times to obtain the averaged simulated VZERO amplitude for this event, which
+is proportional to the number of particles hitting the hodoscopes. The VZERO amplitude dis-
+tribution is simulated for an ensemble of events and for various values of the NBD parameters
+µ, k, and the Nancestors parameter f . A minimization procedure is applied to find the parame-
+ters which result in the smallest χ 2 , also shown in Fig. 10. The fit is performed for VZERO
+amplitudes large enough so that the purity of the event sample and the efficiency of the event
+selection is 100%. That leaves a very broad range in the amplitude values that can be fitted to
+extract parameters f , µ and k directly from the data. The amplitude, above which we have 90%
+of the hadronic cross section, defines the AP. The quality of the fit is good, as the χ 2 /NDF is
+approximately unity for all fits. We note that the high multiplicity tail, which is quite sensitive
+
+
+                                                   16
+Centrality determination with ALICE                                                ALICE Collaboration
+
+
+to fluctuations and the detector resolution not implemented in the model, is not perfectly well
+described. Even replacing the black-disk nucleon-nucleon overlap function with a Gaussian
+does not improve the fit, as the difference in the Npart distribution is washed out in the Nch distri-
+bution. However, it is important to remark that the fit is used solely to determine the AP, which
+is quite insensitive to the detailed shape of the high multiplicity tail.
+An equivalent procedure was applied to fit, with the NBD-Glauber method, the distribution of
+the hits collected in the outer layer of the SPD, and the tracks reconstructed in the TPC. All
+these analyses give consistent results, which are summarized in Sec. 4.3.
+
+
+
+
+Fig. 11: (Color online) Centrality dependence of dNch /dη per participant pair as a function of Npart ,
+                              √
+measured in the Pb–Pb data at sNN = 2.76 TeV fitted with various parametrizations of Npart and Ncoll ,
+calculated with the Glauber model. The fit parameters are given in the figure. Data are from [35].
+
+4.2.1   Ancestor dependence
+The number of emitting sources Nancestors is determined by a function inspired by the two-
+component models, i.e. Nancestors = f · Npart + (1 − f ) · Ncoll . However, other assumptions can
+be made leading to a different parametrization, which are briefly discussed in the following.
+The ancestor dependence on Npart and Ncoll derives from a parametrization of the dependence
+of the charged particle multiplicity on Npart and Ncoll . Systematic studies of this dependence
+performed at the SPS [36–38], at RHIC [39], and recently at the LHC [35, 40, 41], have been
+used in an attempt to constrain different models of particle production.
+Table 2: Parameters of the fit to the charged particle multiplicity for the three different parametrizations
+discussed in the text, with error and χ 2 /NDF.
+           Model                Normalization Error         Fit Par. Error         χ 2 /NDF
+ f · Npart + (1 − f ) · Ncoll      2.441      0.281        f = 0.788 0.021          0.347
+           Npart α                 1.317      0.116        α = 1.190 0.017          0.182
+           Ncoll β                 4.102      0.297        β = 0.803 0.012          0.225
+The charged particle multiplicity is expected to scale with Npart in scenarios dominated by soft
+processes. In this case, all the participant nucleons can be assumed to contribute with the same
+
+                                                    17
+Centrality determination with ALICE                                          ALICE Collaboration
+
+
+amount of energy to particle production, and the scaling with Npart is approximately linear.
+By contrast, a scaling with Ncoll is expected for nuclear collisions in an energy regime where
+hard processes dominate over soft particle production. In this case, nuclear collisions can be
+considered as a superposition of binary nucleon-nucleon collisions. Two-component models
+are used to quantify the relative importance of soft and hard processes in the particle production
+mechanism at different energies.
+To determine the scaling behavior of the particle production, the charged particle multiplicity
+dNch /dη as a function of the number of participants Npart was fitted with a power-law function
+                          α . While at SPS energy the scaling with N
+of Npart i.e. dNch /dη ∝ Npart                                       part is approximately linear,
+i.e. α ∼ 1 [36–38], results from the experiments at RHIC show evidence of a large contribution
+of hard processes to particle production, resulting in α > 1.
+                                                                              
+The charged particle multiplicity per participant pair dNch /dη / 0.5Npart measured by AL-
+ICE [35] is fitted (Fig. 11) with three different parametrizations of the ancestor dependence
+mentioned above:
+
+   − a two-components model: dNch /dη ∝ f · Npart + (1 − f ) · Ncoll ;
+
+   − a power-law function of Npart : dNch /dη ∝ Npart
+                                                 α ;
+
+                                                     β
+   − a power-law function of Ncoll : dNch /dη ∝ Ncoll .
+
+and the fit parameters are reported in Tab. 2. We note that the value obtained for f is in a good
+agreement with the value obtained in the NBD-Glauber fit, shown in Fig. 10.
+While the value obtained for α and for β with the power-law parametrization of Npart and
+Ncoll indicate that neither of these scalings perfectly describes the data (α > 1 and β < 1), we
+note that the value of α is similar to that measured at RHIC (1.16 ± 0.04 [39]) and slightly
+higher than that at the SPS (α ∼ 1, see [36] for a review). The results obtained with the two-
+component model, where 0 < f < 1, indicate that both the contribution of Npart and Ncoll are
+needed to explain the particle production confirm this. However, the χ 2 /NDF reported in Table
+2, indicate an equally good fit for all models, thus revealing that no unique physics conclusion
+can be drawn from such fits and that the particular choice of parametrization has no influence
+on the results of the centrality determination.
+
+4.3   Systematic uncertainty on the Anchor Point
+The determination of the AP by either correcting or fitting the multiplicity distribution is eval-
+uated in Fig. 12 by comparing the VZERO amplitude distributions for various event selections.
+The systematic uncertainty on the AP is estimated by comparing the percentage of the hadronic
+cross section at the VZERO amplitude chosen as the AP (V0AP ) obtained correcting or fitting the
+multiplicity distribution. For the first method (Sec. 4.1), we used the results from the HIJING
+and AMPT simulations. For the second method (Sec. 4.2), we used alternative centrality defi-
+nitions based on (i) TPC tracks; (ii) SPD hit multiplicities, and obtaining a value for the V0AP
+using the correlation between SPD or TPC and VZERO; (iii) different ranges for the Glauber
+model fit; (iv) different ancestor dependence of the particle production model to a power law of
+Npart ; (v) different nucleon-nucleon cross section and parameters of the Woods-Saxon distribu-
+tion within their estimated uncertainties. All the results, compared in Table 3, allow to define the
+
+                                                18
+Centrality determination with ALICE                                          ALICE Collaboration
+
+
+
+
+Fig. 12: (Color online) Distribution of the VZERO amplitude zoomed in the most peripheral region. The
+distribution is compared to the NBD-Glauber fit and to the sum of the HIJING + STARLIGHT + QED
+simulations.
+
+AP as the VZERO amplitude above which we obtain 90% of the hadronic cross section with the
+NBD-Glauber fit (the baseline in Tab.3) with a systematic uncertainty of 1%, determined as the
+RMS of all the results presented in Table 3. The variations of the AP are not part of the quoted
+systematic uncertainties for Npart , Ncoll and TAA , which include only variations of the Glauber
+parameters. The uncertainty on the AP is typically included in our analyses as an uncertainty on
+the limits of the centrality classes and propagated into an uncertainty on the specific measured
+observable.
+
+
+5     Centrality classes and their relation with geometrical quantities
+5.1   Determination of the centrality classes with the multiplicity distributions
+The percentile of the hadronic cross section is determined for any value of the VZERO am-
+plitude by integrating the measured VZERO amplitude distribution normalized at the anchor
+point V0AP , i.e. 90% of the hadronic cross section. For example, if we define V as the VZERO
+amplitude, the top 10% central class is defined by the boundary V010 which satisfies
+                                     R∞
+                                      V0      (dNevt /dV ) dV       1
+                                     R ∞ 10                     =                                (6)
+                                      V 0AP (dNevt /dV ) dV         9
+
+The same is done for the number of clusters in the SPD and the number of reconstructed tracks
+in the TPC. The events with multiplicity lower than that of the anchor point, contaminated by
+EM background and trigger inefficiency, are not used in the physics analyses.
+One can divide the experimental distribution into classes, by defining sharp cuts on e.g. VZERO
+amplitude, which correspond to well defined percentile intervals of the hadronic cross section.
+The number of centrality classes that one can define is connected with the resolution achieved
+
+                                                    19
+Centrality determination with ALICE                                             ALICE Collaboration
+
+
+Table 3: Comparison of the percentage of the hadronic cross section above the VZERO amplitude chosen
+as AP (V0AP ) for various cases considered in the systematic studies of the Glauber fits and with HIJING
+and AMPT simulations.
+                   Method           % of total cross section above the V0AP
+                Glauber Fits
+                   Baseline                           90.00
+             (i) fit TPC tracks                       89.88
+           (ii) fit SPD clusters                      89.87
+    (iii) fit only 50% of cross sec                   90.11
+ (iv) different ancestor dependence                   90.66
+   (v) different Wood-Saxons par                      90.43
+          HIJING simulations
+               2−out − of−3                           92.50
+                   V0AND                              89.05
+               3−out − of−3                           90.15
+              V0AND + TPC                             91.12
+             V0AND + ZDC                              89.52
+           AMPT simulations
+               2−out − of−3                           92.49
+                   V0AND                              89.49
+               3−out − of−3                           90.59
+              V0AND + TPC                             91.36
+             V0AND + ZDC                              89.00
+
+on the quantities used in the definition. In general, centrality classes are defined so that the
+separation between the central values of b and Npart for two adjacent classes is significantly
+larger than the resolution of that variable (see Sec. 6).
+
+5.2   Finding the number of participants with the multiplicity distributions
+In Sec. 4.2 we fit the measured VZERO amplitude distribution with the amplitude distribution
+simulated with the NBD-Glauber. This creates a connection between an experimental observ-
+able and the geometrical model of nuclear collisions used in the Glauber Monte Carlo. From
+this we can access the geometrical properties, like Npart , Ncoll , TAA . A given centrality class, de-
+fined by sharp cuts in the measured distribution, corresponds to the same class in the simulated
+distribution. For the simulated distribution we retain the input information from the Glauber
+model. Therefore, we can calculate the mean number of participants hNpart i, the mean number
+of collisions hNcoll i and the average nuclear overlap function hTAA i for centrality classes de-
+fined by sharp cuts in the simulated multiplicity distribution, corresponding to given percentiles
+of the hadronic cross section. As shown in Table A.1, the mean values and their dispersions
+differ from those calculated for geometrical classes, defined by sharp cuts in the impact param-
+eter b (Table 1), by less than 1% for the most central classes (up to about 50%) and by less than
+2% for the most peripheral ones (above 50%). This confirms that multiplicity fluctuations and
+detector resolution only play a minor role in the centrality determination.
+
+
+
+
+                                                  20
+Centrality determination with ALICE                                            ALICE Collaboration
+
+
+
+
+Fig. 13: (Color online) Spectator energy deposited in the ZDC calorimeters as a function of ZEM ampli-
+tude. The same correlation is shown for different centrality classes (5%, 10%, 20% and 30%) obtained
+by selecting specific VZERO amplitudes. The lines are a fit to the boundaries of the centrality classes
+with linear functions, where only the slope is fitted and the offset point is fixed (see text).
+
+5.3   Determination of the centrality classes with the ZDC
+Another way to determine the centrality is to measure the energy deposited by the spectators in
+the ZDC. The spectator neutrons and protons having a rapidity close to that of the beam, are
+detected in the ZDC. Naively, measurement of the number of spectator neutrons and protons
+would give direct measurement of the number of participants since Npart would simply be given
+by
+                                   Npart = 2A − EZDC /EA                                    (7)
+where EZDC is the energy measured in the ZDC, A = 208 is the mass number of Pb, and EA
+is the beam energy per nucleon. However, fragment formation amongst the spectator nucleons
+breaks the simple linear and monotonic relation in the measured variables, since some spectator
+nucleons are bound into light nuclear fragments that have a charge over mass ratio similar to
+the beam, therefore, remaining inside the beam-pipe and are undetected by the ZDC [42, 43].
+This effect becomes quantitatively important for peripheral events and therefore Eq. 7 cannot
+be used as a reliable estimate of Npart .
+Consequently, the ZDC information needs to be correlated to another quantity that has a mono-
+tonic relation with Npart . In our case, we use the energy measured by two small EM calorimeters
+(ZEM). These detectors are placed only on the A side about 7.5 m from the interaction point,
+covering the region 4.8 < η < 5.7 [10].
+Since the ZDC calorimeters are far from the interaction region, and therefore have an acceptance
+insensitive to the vertex position, a centrality measurement based on the ZDC is particularly
+suited for any analysis that does not require a vertex cut [44].
+Centrality classes are defined by cuts on the two-dimensional distribution of the ZDC energy
+as a function of the ZEM amplitude. The ZDC signal is proportional to Npart for central events,
+while the ZEM amplitude is an unknown function of Npart and Ncoll . Therefore the definition
+
+                                                  21
+Centrality determination with ALICE                                          ALICE Collaboration
+
+
+
+
+Fig. 14: (Color online) VZERO amplitude distribution of events of various centrality classes selected
+from the correlation between ZDC and ZEM amplitudes explained in the text.
+
+of the centrality classes in this two-dimensional space is not trivial. As shown in Fig. 13,
+centrality classes are defined by using the centrality classes defined previously with the VZERO
+amplitude to determine regions in the ZDC-ZEM plane, corresponding to a given centrality. The
+boundaries between centrality classes, or the points belonging to the same narrow centrality
+class c (c ± δ c) can be fitted with linear functions. All these lines are found to intersect at a
+common point. Using this common point, we refitted the boundaries of the various centrality
+classes with the linear functions shown in Fig. 13.
+As can be seen from the figure, the slopes of the fitted functions increase going from central
+to peripheral collisions and tend to infinity, as the lines become almost straight vertical lines,
+when approaching the point where the correlation between ZDC and ZEM inverts its sign. The
+value of the slope that defines a centrality class in the ZDC vs ZEM phase-space is proportional
+to the tangent of the percentile, which implies that the percentiles behave like an angle in the
+ZDC vs ZEM phase-space.
+This function of ZDC and ZEM can then be used as centrality estimator for the most central
+events (0–30%) above the turning-point of ZDC. Figure 14 shows the distribution of the VZERO
+amplitude for all triggered events and for various centrality classes selected with this method.
+
+
+6   Resolution of the centrality determination
+As described above, two independent methods are used to determine experimentally the cen-
+trality of the collision. The first one uses the multiplicity distributions from various detectors
+covering different pseudo-rapidity ranges. Specifically we use the sum of the amplitude in the
+VZERO detectors (A and C side), the number of clusters in the outer layer of the SPD detector,
+and the number of tracks reconstructed in the TPC. The second method uses the ZDC correlated
+with the ZEM.
+The accuracy of the experimental determination of the centrality was evaluated by comparing
+the different estimates event-by-event. For example, in Fig. 15 we compare the estimates based
+on the SPD multiplicity and the VZERO amplitude. The VZERO amplitude distribution is
+shown for two centrality classes selected by the SPD multiplicity. The distributions for the two
+
+                                                 22
+Centrality determination with ALICE                                           ALICE Collaboration
+
+
+centrality classes are reasonably well fitted with a Gaussian distribution.
+
+
+
+
+Fig. 15: (Color online) Top: Correlation between SPD multiplicity and VZERO amplitude. The rapidity
+coverage of each detector is indicated on the figure. Bottom: VZERO amplitude distributions for the
+centrality classes selected by SPD. Two centrality classes (1-2% and 40-45%) are indicated and fitted
+with a Gaussian.
+
+The resolution in the experimental definition of the centrality classes is evaluated event-by-
+event as the RMS of the distribution of the differences between the centrality determined over
+all estimators and the mean value of the centrality for the event. First the average value of
+the centrality hci is calculated for each event by averaging the centrality determined by each
+estimator:
+                                                  ∑N  ci
+                                           hci = i=0 .                                         (8)
+                                                    N
+ci is the centrality of an event determined by an estimator i, where i is the index running over
+all N = 6 centrality estimators used: VZERO (A and C), SPD, TPC, ZDC. In the next step, the
+centrality is weighted by ∆i = ci − hci: the difference between the centrality determined by each
+estimator and the mean value of the centrality from Eq. 8:
+
+                                                ∑N        2
+                                                 i=0 ci /∆i
+                                        hci =               .                                    (9)
+                                                ∑N
+                                                 i=0 1/∆i
+                                                          2
+
+
+This latter calculation is performed iteratively replacing hci by the new value until convergence
+is achieved which typically occurs after the second iteration. Finally, the centrality resolution
+of an estimator is evaluated as the RMS of its ∆i distribution for each centrality.
+The ZDC-ZEM estimator is ignored for peripheral events (hci > 35%) since its results are re-
+liable only for the most central collisions. The resolution is shown in Fig. 16 (left panel) as a
+function of the centrality percentile.
+
+                                                 23
+Centrality determination with ALICE                                             ALICE Collaboration
+
+
+
+
+Fig. 16: (Color online) Left: Centrality resolution ∆i for all the estimators evaluated in the analysis.
+                                                √
+Right: Resolution, in arbitrary units, scaled by Nch measured in each detector.
+
+The resolution depends on the rapidity coverage of the detector used. The best centrality res-
+olution is achieved when combining the VZERO-A and VZERO-C detector, due to the large
+pseudo-rapidity coverage (4.3 units in total). It ranges from 0.5% in central to 2% in peripheral
+collisions. The resolution obtained with the SPD and the TPC ranges from 1% in central to 3%
+in peripheral collisions (& 80%).
+We measured the pseudo-rapidity dependence of the charged particle multiplicity at midrapid-
+ity [45] with the SPD, and at forward rapidity [46] using all the rapidity coverage of the SPD,
+the VZERO and the FMD detectors. The total charged     √ particle multiplicity Nch is obtained by
+integration. The centrality resolution was scaled by Nch measured in the rapidity window of
+each detector (see right panel of Fig. 16). The figure shows that all the results are consistent on
+an arbitrary unit scale, except for the ZDC-ZEM estimator which is better for central collisions
+because it uses information from two detectors.
+The centrality resolution was tested with a full HIJING and GEANT detector simulation. In
+the HIJING simulations the true value of the event centrality (ctrue ) is known for every given
+event. After using GEANT one obtains the signals in VZERO, SPD, TPC for the given event
+and hence using these centrality estimators can calculate the value of the hci for the given event
+with Eq.8. The real centrality resolution, given for the given event by the difference between the
+ctrue and the hci calculated for each extimator, is consistent with the one calculated with data.
+
+
+7   Summary
+Heavy-ion collisions can be characterized by the number of charged particles produced in the
+collision. In principle, when normalized to the trigger efficiency used to collect the data sample,
+the charged particle multiplicity could provide a measurement of the hadronic cross section.
+However, at the LHC the large cross section for EM processes contaminates the very peripheral
+collisions. This problem was overcome in two ways.
+In the first method, dedicated simulations of hadronic and EM processes (Fig. 8) were per-
+formed and data were corrected for efficiency of the event selection (Fig. 7) and purity of the
+event sample (Fig. 9). In the second method, the measured multiplicity distribution was fitted
+with a Glauber calculation (Fig. 10). Both methods allow to determine a centrality value above
+which the background contamination is negligible and the event selection is fully efficient. The
+
+
+                                                  24
+Centrality determination with ALICE                                        ALICE Collaboration
+
+
+corresponding value of multiplicity and centrality is defined as the anchor point, and is used for
+the centrality normalization (Table 3).
+Using the AP, the measured event sample can be divided in centrality classes which correspond
+to well defined percentiles of the hadronic cross section. Several approaches were developed.
+The first method uses charged particle multiplicity (measured by various detectors, with differ-
+ent rapidity coverage, such as the VZERO, the SPD, and the TPC). The second method uses
+the ZDC, which measures the nucleon spectators directly, as well as the correlation to the ZEM
+energy in order to resolve the ambiguity due to nuclear fragmentation. The centrality is ob-
+tained from linear functions that fit the contours of the classes defined by the VZERO, in the
+ZDC-ZEM plane (Fig. 13). As standard method, typically used in ALICE physics analyses, we
+used the NBD-Glauber fit to the VZERO amplitude (Fig. 10) to determine the AP, and the other
+methods described to asses a systematic uncertainty on the centrality determination.
+The resolution of the centrality determination, which depends on the pseudo-rapidity coverage
+of the detector used, was determined as the weighed RMS of all the estimates; it ranges from
+0.5% in central to 2% in peripheral collisions (Fig. 16).
+Finally, mean numbers of the relevant geometrical quantities, such as Npart and Ncoll , were
+calculated for typical centrality classes, using the Glauber Model and the fit to the measured
+multiplicity distribution (Table 1). This fit creates a mapping between a measured quantity
+and one obtained with a phenomenological calculation for which the geometrical properties
+are known. The results, nearly identical to those obtained for centrality classes defined by
+classifying the events according to their impact parameter, provide a general tool to compare
+ALICE measurements with those of other experiments, at different energies and with different
+colliding systems as well as theoretical calculations.
+
+
+Acknowledgements
+The ALICE collaboration would like to thank all its engineers and technicians for their invalu-
+able contributions to the construction of the experiment and the CERN accelerator teams for the
+outstanding performance of the LHC complex.
+The ALICE collaboration acknowledges the following funding agencies for their support in
+building and running the ALICE detector:
+State Committee of Science, Calouste Gulbenkian Foundation from Lisbon and Swiss Fonds
+Kidagan, Armenia;
+Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq), Financiadora de Es-
+tudos e Projetos (FINEP), Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP);
+National Natural Science Foundation of China (NSFC), the Chinese Ministry of Education
+(CMOE) and the Ministry of Science and Technology of China (MSTC);
+Ministry of Education and Youth of the Czech Republic;
+Danish Natural Science Research Council, the Carlsberg Foundation and the Danish National
+Research Foundation;
+The European Research Council under the European Community’s Seventh Framework Pro-
+gramme;
+Helsinki Institute of Physics and the Academy of Finland;
+French CNRS-IN2P3, the ‘Region Pays de Loire’, ‘Region Alsace’, ‘Region Auvergne’ and
+CEA, France;
+
+
+                                               25
+Centrality determination with ALICE                                       ALICE Collaboration
+
+
+German BMBF and the Helmholtz Association;
+General Secretariat for Research and Technology, Ministry of Development, Greece;
+Hungarian OTKA and National Office for Research and Technology (NKTH);
+Department of Atomic Energy and Department of Science and Technology of the Government
+of India;
+Istituto Nazionale di Fisica Nucleare (INFN) and Centro Fermi - Museo Storico della Fisica e
+Centro Studi e Ricerche "Enrico Fermi", Italy;
+MEXT Grant-in-Aid for Specially Promoted Research, Japan;
+Joint Institute for Nuclear Research, Dubna;
+National Research Foundation of Korea (NRF);
+CONACYT, DGAPA, México, ALFA-EC and the HELEN Program (High-Energy physics Latin-
+American–European Network);
+Stichting voor Fundamenteel Onderzoek der Materie (FOM) and the Nederlandse Organisatie
+voor Wetenschappelijk Onderzoek (NWO), Netherlands;
+Research Council of Norway (NFR);
+Polish Ministry of Science and Higher Education;
+National Authority for Scientific Research - NASR (Autoritatea Naţională pentru Cercetare Şti-
+inţifică - ANCS);
+Ministry of Education and Science of Russian Federation, International Science and Technol-
+ogy Center, Russian Academy of Sciences, Russian Federal Agency of Atomic Energy, Russian
+Federal Agency for Science and Innovations and CERN-INTAS;
+Ministry of Education of Slovakia;
+Department of Science and Technology, South Africa;
+CIEMAT, EELA, Ministerio de Educación y Ciencia of Spain, Xunta de Galicia (Consellería de
+Educación), CEADEN, Cubaenergía, Cuba, and IAEA (International Atomic Energy Agency);
+Swedish Research Council (VR) and Knut & Alice Wallenberg Foundation (KAW);
+Ukraine Ministry of Education and Science;
+United Kingdom Science and Technology Facilities Council (STFC);
+The United States Department of Energy, the United States National Science Foundation, the
+State of Texas, and the State of Ohio.
+
+
+References
+ [1] D. Schwarz, Annalen Phys.12:220-270,2003 (2003), arXiv:astro-ph/0303574v3 .
+ [2] M. Miller, K. Reygers, S. J. Sanders, and P. Steinberg, Ann. Rev. Nucl. Part. Sci. 57, 205
+     (2007), arXiv:nucl-ex/0701025 .
+ [3] R. Glauber, Phys. Rev. 100 (1955).
+ [4] R. Glauber, ed WE Brittin and LG Dunham 1 (1959).
+ [5] R. Glauber, Nucl. Phys. A 774 (2006).
+ [6] R. Bruce et al., Phys. Rev. ST Accel. Beams 12 (2009).
+ [7] O. Djuvsland and J. Nystrand, (2010), arXiv:1011.4908, arXiv:1011.4908 [hep-ph] .
+ [8] K. Hencken, Y. Kharlov,      and S. Sadovsk, Alice Internal note ALICE-INT-2002-27
+     (2003).
+
+                                              26
+Centrality determination with ALICE                                    ALICE Collaboration
+
+
+ [9] B. Abelev et al. (ALICE Collaboration), Phys.Rev.Lett. 109, 252302 (2012),
+     arXiv:1203.2436 [nucl-ex] .
+
+[10] K. Aamodt et al. (ALICE), J. Instrum. 3, S08002 (2008).
+
+[11] D. D’Enterria and K. Reygers, private communication (2011).
+
+[12] K. Nakamura et al. (Particle Data Group), J. Phys. G37, 075021 (2010).
+
+[13] M. Block, arXiv:hep-ph/1109.2940. .
+
+[14] J. Cudell et al. (COMPETE), Phys.Rev.Lett. 89 (2002).
+
+[15] G. Aad et al. (ATLAS), (2011), arXiv:hep-ex/1104.0326 .
+
+[16] Performance Analysis Note CMS-PASFWD-11-001. (2011).
+
+[17] G. Antchev et al. (TOTEM), (2011), arXiv:hep-ex/1110.1395 .
+
+[18] B. Abelev et al. (ALICE Collaboration), (2012), arXiv:1208.4968 [hep-ex] .
+
+[19] A. P. T.W. Ludlam and A. Shor, BNL 51921 (1985).
+
+[20] A. Shor and R. Longacre, Phys. Lett. B 218 (1989).
+
+[21] B. Alver, M. Baker, C. Loizides, and P. Steinberg, (2008), arXiv:0805.4411 [nucl-ex] .
+
+[22] H. De Vries, C. W. De Jager, and C. De Vries, Atom. Data Nucl. Data Tabl. 36, 495
+     (1987).
+
+[23] M. Rybczynski and W. Broniowski, Phys.Rev. C84, 064913 (2011), arXiv:1110.2609
+     [nucl-th] .
+
+[24] W. Broniowski, P. Bozek,          and M. Rybczynski, Phys.Rev. C76, 054905 (2007),
+     arXiv:0706.4266 [nucl-th] .
+
+[25] W. Broniowski and M. Rybczynski, Phys.Rev. C81, 064909 (2010), arXiv:1003.1088
+     [nucl-th] .
+
+[26] G. Baur, K. Hencken, D. Trautmann, S. Sadovsky, and Y. Kharlov, Phys. Rept. 364, 359
+     (2002), arXiv:hep-ph/0112211 .
+
+[27] L. Evans and P. Bryant, JINST 3, S08001 (2008).
+
+[28] X.-N. Wang and M. Gyulassy, Phys. Rev. D 44, 3501 (1991).
+
+[29] R. Engel, Z. Phys. C 66 (1995).
+
+[30] R. Brun et al., CERN Program Library Long Write-up, W5013, GEANT Detector De-
+     scription and Simulation Tool (1994).
+
+[31] K. Aamodt et al. (ALICE), Eur. Phys. J. C 65, 111 (2010).
+
+[32] K. Aamodt et al. (ALICE), Eur. Phys. J. C 68, 89 (2010).
+
+                                              27
+Centrality determination with ALICE                                          ALICE Collaboration
+
+
+[33] D. Kharzeev, E. Levin,        and M. Nardi, Nucl. Phys. A747, 609 (2005), arXiv:hep-
+     ph/0408050 .
+
+[34] W. Deng, X. Wang, and R. Xu, (2010), arXiv:1008.1841 [hep-ph] .
+
+[35] K. Aamodt et al. (ALICE), Phys. Rev. Lett. 106 (2011).
+
+[36] M. C. Abreu et al. (NA50), Phys. Lett. B530, 43 (2002).
+
+[37] M. M. Aggarwal et al. (WA98), Eur. Phys. J. C18, 651 (2001).
+
+[38] F. Antinori et al. (NA57 and WA97 Collaborations), J.Phys. G27, 391 (2001).
+
+[39] S. Adler et al. (PHENIX), Phys. Rev. C71 (2005).
+
+[40] G. Aad et al. (ATLAS), Phys. Lett. B 710, 363 (2012).
+
+[41] S. Chatrchyan et al. (CMS), JHEP 141, 1108 (2011), arXiv:nucl-ex/1107.4800 .
+
+[42] M. G. et al (ALICE), CERN-LHCC-1999-05 (1999).
+
+[43] C. Oppedisano, ALICE Internal Note 2002-08 (2001).
+
+[44] Physics Letters B , (2013).
+
+[45] K. Aamodt et al. (ALICE Collaboration), Phys.Rev.Lett. 105, 252301 (2010),
+     arXiv:1011.3916 [nucl-ex] .
+
+[46] A. Toia (ALICE), J. Phys. G (2011).
+
+
+
+A    Tables
+As described in Sec. 2, for the physics in ALICE analyses the average values of Npart , Ncoll ,
+or TAA for centrality classes defined by sharp cuts in the impact parameter distributions are
+used. These are reported in Table 1. Therefore hNpart i, hNcoll i and hTAA i depend exclusively
+on the nuclear geometrical parameters, and not on any measured quantity. Their uncertainty
+is calculated by varying the parameters of the Glauber calculations (i.e. the parameters of the
+Woods-Saxon and the hadronic cross section σNN       inel ) by the known uncertainty. We label the
+                                             geo
+hNpart i calculated with this procedure as hNpart i.
+Another possibility, discussed in Sec.5.2, is to define the average values of Npart , Ncoll , or TAA
+for centrality classes by sharp cuts in the fitted multiplicity distribution. Following this strat-
+egy, it is also possible to incorporate in the uncertainty, besides the uncertainties related to the
+Glauber calculation, those related to the measurement of the AP: the experimental region which
+is actually being used for the physics analyses, because it is free of background and the trigger
+efficiency is known. In this case, the AP can be varied by the uncertainty that was estimated
+(90% ± 1%) and recalculate hNpart i, hNcoll i and hTAA i with these variations. The hNpart i calcu-
+                                            data i. The variations for the AP are labelled hN data+ i
+lated with this procedure is labled as hNpart                                                  part
+        data−
+and hNpart i respectively.
+
+
+
+                                                 28
+Centrality determination with ALICE                                                       ALICE Collaboration
+
+                                              √
+Table A.1: Npart for Pb–Pb collisions at sNN = 2.76 TeV with the corresponding uncertainties derived
+from a Glauber calculation. The hNpart data i are calculated from the NBD-Glauber fit to the VZERO ampli-
+                   geo                                                                     data i is also calculated
+tude, while the hNpart i are obtained by slicing the impact parameter distribution. hNpart
+                                                            data+                   data+
+for two variations of the AP, i.e. moving it to 91% (hNpart i) and to 89% (hNpart i) respectively. The last
+                                                        geo        data i and hN data iwith the uncertainty of the
+three columns report the discrepancies between hNpart i and hNpart              part
+AP.
+                geo                                    data+        data−
+    Cent.    hNpart i (syst. %)      data i
+                                  hNpart      RMS    hNpart  i   hNpart   i   ∆data
+                                                                               geo (%)   ∆data+
+                                                                                          data (%)    ∆data−
+                                                                                                       data (%)
+    0-1%       403.8 (0.35)        400.8       7.8    400.8       400.7         0.38      0.0041       0.0066
+    1-2%       393.6 (0.46)        392.5       11     392.7       392.3         0.14       0.021        0.018
+    2-3%       382.9 (0.6)         382.9       12     383.2       382.6       0.00013      0.037        0.035
+    3-4%        372 (0.73)         372.2       13     372.7       371.8        0.033       0.057        0.062
+    4-5%       361.1 (0.83)        361.4       13      362        360.9        0.047       0.081        0.072
+   5-10%       329.4 (1.1)         329.7       20     330.5       328.8        0.047        0.12         0.13
+  10-15%       281.2 (1.4)         281.6       18     282.8       280.3        0.064        0.21         0.23
+  15-20%        239 (1.6)          239.5       17      241        237.9        0.099        0.31         0.32
+  20-25%       202.1 (1.8)         202.7       15     204.4       200.9         0.14        0.42         0.43
+  25-30%       169.5 (1.9)         170.1       14     171.9       168.2         0.17        0.53         0.56
+  30-35%         141 (2)           141.7       12     143.6       139.7         0.24        0.66          0.7
+  35-40%        116 (2.2)          116.7       11     118.6       114.7         0.31        0.81         0.86
+  40-45%       94.11 (2.1)         94.77       9.7    96.68       92.83         0.35          1            1
+  45-50%        75.3 (2.3)         75.91       8.4    77.72       74.02          0.4         1.2          1.3
+  50-55%       59.24 (2.5)         59.77       7.3    61.49       58.02         0.44         1.4          1.5
+  55-60%       45.58 (2.9)         46.1        6.3    47.66       44.47         0.57         1.7          1.8
+  60-65%       34.33 (2.6)         34.65       5.4    36.09        33.2         0.47          2           2.1
+  65-70%        25.21 (4)          25.38       4.5    26.62       24.16         0.34         2.4          2.5
+  70-75%       17.96 (3.3)         18.06       3.8    19.07         17          0.27         2.7           3
+  75-80%       12.58 (3.7)         12.45        3     13.25       11.61         0.54         3.1          3.5
+  80-85%       8.812 (2.8)         8.275       2.4    8.914       7.646          3.1         3.7           4
+  85-90%       6.158 (2.4)         5.516       1.8    6.035       3.406          5.5         4.5          24
+                      geo               data i for various centrality classes. The default values
+In Table A.1 hNpart i is compared to hNpart
+      data i are compared to the values obtained by varying the AP. The discrepancies ∆ are
+of hNpart
+calculated as                                 geo       data i|
+                                         |hNpart i − hNpart
+                                    ∆=        geo       data i)
+                                                                                            (A.1)
+                                         (hNpart i + hNpart
+Same comparison is done in Tables A.2 and A.3 for hNcoll iand hTAA irespectively. Table A.4
+gives the comparison for the three quantities but for bigger centrality classes.
+
+
+
+
+                                                         29
+Centrality determination with ALICE                                                         ALICE Collaboration
+
+
+
+
+                                    Table A.2: Same as Table A.1 for Ncoll .
+              geo                                                    data−
+   Cent.    hNcoll i (syst. %)       data i
+                                  hNcoll      RMS       data+
+                                                      hNcoll  i    hNcoll  i     ∆data
+                                                                                  geo (%)   ∆data+
+                                                                                             data (%)   ∆data−
+                                                                                                         data (%)
+   0-1%       1861 (8.2)           1863        83      1864         1863           0.059      0.016       0.018
+   1-2%       1766 (8.2)           1761        79      1762         1759            0.15       0.04       0.047
+   2-3%       1678 (8.2)           1678        79      1680         1676          0.0063      0.063       0.067
+   3-4%       1597 (8.3)           1596        78      1599         1592           0.039      0.096         0.1
+   4-5%       1520 (8.1)           1520        77      1524         1516           0.002       0.12        0.12
+  5-10%       1316 (8.2)           1316       110      1321         1310          0.0099        0.2         0.2
+  10-15%      1032 (8.2)           1034        95      1040         1027           0.083       0.32        0.34
+  15-20%       809.8 (8)           811.7       80      819.2        803.9           0.11       0.46        0.48
+  20-25%      629.6 (7.8)           631        68       639         622.9           0.11       0.63        0.65
+  25-30%      483.7 (7.5)          485.8       57      493.6        477.7           0.22       0.79        0.85
+  30-35%      366.7 (7.4)          368.4       49      375.9        360.7           0.23         1          1.1
+  35-40%      273.4 (7.4)          274.8       40      281.7        267.8           0.26        1.2         1.3
+  40-45%      199.4 (6.9)          200.7       33      206.8        194.5           0.32        1.5         1.6
+  45-50%      143.1 (6.6)          143.8       26       149         138.6           0.26        1.8         1.9
+  50-55%      100.1 (6.5)          100.6       20      104.9        96.22           0.25        2.1         2.2
+  55-60%      68.46 (6.2)          68.7        15      72.12        65.28           0.18        2.4         2.6
+  60-65%      45.79 (5.7)          45.79       12      48.47        43.12         0.0038        2.8          3
+  65-70%      29.92 (6.8)          29.66       8.3     31.68        27.73           0.43        3.3         3.4
+  70-75%      19.08 (5.7)          18.82       5.8     20.22        17.39           0.68        3.6          4
+  75-80%      12.07 (5.7)          11.62        4      12.61        10.63           1.9         4.1         4.4
+  80-85%      7.682 (5.1)          6.925       2.7     7.595        6.269           5.2         4.6          5
+  85-90%      4.904 (4.1)          4.148       1.8     4.651        2.257           8.4         5.7         30
+
+
+
+
+                                    Table A.3: Same as Table A.1 for TAA .
+             geo                                         data+         data−
+   Cent.   hTAB i (syst. %)          data i
+                                  hTAB        RMS     hTAB     i   hTAB      i   ∆data
+                                                                                  geo (%)   ∆data+
+                                                                                             data (%)   ∆data−
+                                                                                                         data (%)
+  0-1%       29.08 (3.2)           29.11       1.3     29.12          29.1        0.056       0.016       0.018
+  1-2%        27.6 (3.2)           27.51       1.2     27.53         27.48         0.16        0.04       0.047
+  2-3%       26.22 (3.2)           26.22       1.2     26.25         26.19        0.0038      0.063       0.067
+  3-4%       24.95 (3.2)           24.93       1.2     24.98         24.88        0.032       0.096         0.1
+  4-5%       23.75 (3.2)           23.75       1.2      23.8         23.69        0.0019       0.12        0.12
+  5-10%      20.56 (3.3)           20.56       1.8     20.64         20.47        0.0036        0.2         0.2
+ 10-15%      16.13 (3.6)           16.15       1.5     16.26         16.04        0.068        0.32        0.34
+ 15-20%      12.65 (3.7)           12.68       1.2      12.8         12.56         0.13        0.46        0.48
+ 20-25%      9.837 (3.7)            9.86       1.1     9.984         9.733         0.12        0.63        0.65
+ 25-30%      7.558 (3.4)           7.591       0.9     7.713         7.463         0.22        0.79        0.85
+ 30-35%       5.73 (3.3)           5.756      0.76     5.873         5.636         0.23          1          1.1
+ 35-40%      4.272 (3.7)           4.294      0.63     4.402         4.184         0.26         1.2         1.3
+ 40-45%      3.115 (3.9)           3.136      0.51     3.231         3.039         0.33         1.5         1.6
+ 45-50%      2.235 (4.2)           2.248      0.41     2.328         2.165         0.28         1.8         1.9
+ 50-55%      1.564 (4.7)           1.572      0.32     1.639         1.504         0.25         2.1         2.2
+ 55-60%       1.07 (5.2)           1.073      0.24     1.127          1.02         0.16         2.4         2.6
+ 60-65%      0.7154 (5)           0.7154       0.18    0.7573       0.6737        0.0007        2.8          3
+ 65-70%     0.4674 (6.2)          0.4635       0.13    0.4949       0.4333         0.42         3.3         3.4
+ 70-75%     0.2981 (6.4)          0.2941      0.091    0.3159       0.2717         0.68         3.6          4
+ 75-80%     0.1885 (6.9)          0.1815      0.062    0.197        0.1661          1.9         4.1         4.4
+ 80-85%       0.12 (6.5)          0.1082      0.042    0.1187      0.09795          5.2         4.6          5
+ 85-90%     0.07662 (5.9)        0.06481      0.028   0.07267      0.03526          8.4         5.7         30
+
+
+
+
+                                                          30
+Centrality determination with ALICE                                                        ALICE Collaboration
+
+
+
+
+                        Table A.4: Same as above with bigger centrality classes
+            geo                                         data+         data−
+  Cent.   hNpart i (syst. %)      data i
+                               hNpart       RMS      hNpart   i   hNpart    i   ∆data
+                                                                                 geo (%)   ∆data+
+                                                                                            data (%)   ∆data−
+                                                                                                        data (%)
+  0-5%      382.7 (0.77)         382          17       382.3        381.7        0.096        0.04       0.038
+ 5-10%       329.6 (1.3)        329.7         18       330.5        328.8        0.015        0.13        0.13
+ 10-20%      260.1 (1.5)        260.5         27       261.9        259.1        0.079        0.26        0.27
+ 20-40%       157.2 (2)         157.8         35       159.6        155.9         0.19        0.58         0.6
+ 40-60%      68.56 (2.9)        69.13         22       70.89        67.35         0.42         1.3         1.3
+ 60-80%      22.52 (3.4)        22.64         12       23.76        21.51         0.27         2.4         2.6
+             geo                                        data+         data−
+          hNcoll i (syst. %)      data i
+                               hNcoll       RMS      hNcoll   i   hNcoll    i   ∆data
+                                                                                 geo (%)   ∆data+
+                                                                                            data (%)   ∆data−
+                                                                                                        data (%)
+  0-5%        1685 (11)         1684       1.4e+02     1686         1681         0.044       0.065       0.067
+ 5-10%        1316 (11)         1316       1.1e+02     1321         1310         0.011         0.2         0.2
+ 10-20%      921.2 (10)         922.7      1.4e+02     929.8        915.3        0.079        0.39         0.4
+ 20-40%      438.4 (9.7)         440       1.5e+02     447.5        432.3         0.19        0.85        0.89
+ 40-60%      127.7 (8.8)        128.4         59       133.2        123.7         0.29         1.8         1.9
+ 60-80%      26.71 (7.3)        26.48         18       28.25        24.74         0.43         3.2         3.4
+             geo                                        data+         data−
+          hTAB i (syst. %)        data i
+                               hTAB         RMS      hTAB     i   hTAB      i   ∆data
+                                                                                 geo (%)   ∆data+
+                                                                                            data (%)   ∆data−
+                                                                                                        data (%)
+  0-5%       26.32 (3.2)        26.31         2.2      26.34        26.27        0.028       0.066       0.066
+ 5-10%       20.56 (3.3)        20.56         1.7      20.64        20.47        0.0051        0.2         0.2
+ 10-20%      14.39 (3.1)        14.42         2.2      14.53         14.3        0.092        0.39         0.4
+ 20-40%       6.85 (3.3)        6.876         2.3      6.993        6.754         0.19        0.85        0.89
+ 40-60%      1.996 (4.9)        2.007        0.92      2.081        1.933         0.28         1.8         1.9
+ 60-80%     0.4174 (6.3)       0.4137        0.29     0.4414       0.3865         0.44         3.2         3.4
+
+
+
+
+                                                       31
+Centrality determination with ALICE                                                 ALICE Collaboration
+
+
+B    ALICE Collaboration
+B. Abelev71 , J. Adam37 , D. Adamová78 , A.M. Adare127 , M.M. Aggarwal82 , G. Aglieri Rinella33 ,
+M. Agnello102 ,88 , A.G. Agocs126 , A. Agostinelli27 , Z. Ahammed122 , N. Ahmad17 ,
+A. Ahmad Masoodi17 , S.U. Ahn40 ,64 , S.A. Ahn64 , M. Ajaz15 , A. Akindinov50 , D. Aleksandrov94 ,
+B. Alessandro102 , A. Alici98 ,12 , A. Alkin3 , E. Almaráz Aviña60 , J. Alme35 , T. Alt39 , V. Altini31 ,
+S. Altinpinar18 , I. Altsybeev123 , C. Andrei74 , A. Andronic91 , V. Anguelov87 , J. Anielski58 ,
+C. Anson19 , T. Antičić92 , F. Antinori99 , P. Antonioli98 , L. Aphecetche107 , H. Appelshäuser56 ,
+N. Arbor67 , S. Arcelli27 , A. Arend56 , N. Armesto16 , R. Arnaldi102 , T. Aronsson127 , I.C. Arsene91 ,
+M. Arslandok56 , A. Asryan123 , A. Augustinus33 , R. Averbeck91 , T.C. Awes79 , J. Äystö42 ,
+M.D. Azmi17 ,84 , M. Bach39 , A. Badalà105 , Y.W. Baek66 ,40 , R. Bailhache56 , R. Bala85 ,102 ,
+R. Baldini Ferroli12 , A. Baldisseri14 , F. Baltasar Dos Santos Pedrosa33 , J. Bán51 , R.C. Baral52 ,
+R. Barbera26 , F. Barile31 , G.G. Barnaföldi126 , L.S. Barnby96 , V. Barret66 , J. Bartke110 , M. Basile27 ,
+N. Bastid66 , S. Basu122 , B. Bathen58 , G. Batigne107 , B. Batyunya62 , C. Baumann56 , I.G. Bearden76 ,
+H. Beck56 , N.K. Behera44 , I. Belikov61 , F. Bellini27 , R. Bellwied116 , E. Belmont-Moreno60 ,
+G. Bencedi126 , S. Beole22 , I. Berceanu74 , A. Bercuci74 , Y. Berdnikov80 , D. Berenyi126 ,
+A.A.E. Bergognon107 , D. Berzano22 ,102 , L. Betev33 , A. Bhasin85 , A.K. Bhati82 , J. Bhom120 ,
+N. Bianchi68 , L. Bianchi22 , J. Bielčík37 , J. Bielčíková78 , A. Bilandzic76 , S. Bjelogrlic49 ,
+F. Blanco116 , F. Blanco10 , D. Blau94 , C. Blume56 , M. Boccioli33 , S. Böttger55 , A. Bogdanov72 ,
+H. Bøggild76 , M. Bogolyubsky47 , L. Boldizsár126 , M. Bombara38 , J. Book56 , H. Borel14 ,
+A. Borissov125 , F. Bossú84 , M. Botje77 , E. Botta22 , E. Braidot70 , P. Braun-Munzinger91 ,
+M. Bregant107 , T. Breitner55 , T.A. Broker56 , T.A. Browning89 , M. Broz36 , R. Brun33 , E. Bruna22 ,102 ,
+G.E. Bruno31 , D. Budnikov93 , H. Buesching56 , S. Bufalino22 ,102 , P. Buncic33 , O. Busch87 ,
+Z. Buthelezi84 , D. Caballero Orduna127 , D. Caffarri28 ,99 , X. Cai7 , H. Caines127 , E. Calvo Villar97 ,
+P. Camerini24 , V. Canoa Roman11 , G. Cara Romeo98 , F. Carena33 , W. Carena33 , N. Carlin Filho113 ,
+F. Carminati33 , A. Casanova Díaz68 , J. Castillo Castellanos14 , J.F. Castillo Hernandez91 ,
+E.A.R. Casula23 , V. Catanescu74 , C. Cavicchioli33 , C. Ceballos Sanchez9 , J. Cepila37 , P. Cerello102 ,
+B. Chang42 ,129 , S. Chapeland33 , J.L. Charvet14 , S. Chattopadhyay122 , S. Chattopadhyay95 ,
+I. Chawla82 , M. Cherney81 , C. Cheshkov33 ,115 , B. Cheynis115 , V. Chibante Barroso33 ,
+D.D. Chinellato116 , P. Chochula33 , M. Chojnacki76 , S. Choudhury122 , P. Christakoglou77 ,
+C.H. Christensen76 , P. Christiansen32 , T. Chujo120 , S.U. Chung90 , C. Cicalo101 , L. Cifarelli27 ,33 ,12 ,
+F. Cindolo98 , J. Cleymans84 , F. Coccetti12 , F. Colamaria31 , D. Colella31 , A. Collu23 ,
+G. Conesa Balbastre67 , Z. Conesa del Valle33 , M.E. Connors127 , G. Contin24 , J.G. Contreras11 ,
+T.M. Cormier125 , Y. Corrales Morales22 , P. Cortese30 , I. Cortés Maldonado2 , M.R. Cosentino70 ,
+F. Costa33 , M.E. Cotallo10 , E. Crescio11 , P. Crochet66 , E. Cruz Alaniz60 , R. Cruz Albino11 ,
+E. Cuautle59 , L. Cunqueiro68 , A. Dainese28 ,99 , H.H. Dalsgaard76 , A. Danu54 , S. Das4 , D. Das95 ,
+K. Das95 , I. Das46 , S. Dash44 , A. Dash114 , S. De122 , G.O.V. de Barros113 , A. De Caro29 ,12 ,
+G. de Cataldo104 , J. de Cuveland39 , A. De Falco23 , D. De Gruttola29 , H. Delagrange107 , A. Deloff73 ,
+N. De Marco102 , E. Dénes126 , S. De Pasquale29 , A. Deppman113 , G. D Erasmo31 , R. de Rooij49 ,
+M.A. Diaz Corchero10 , D. Di Bari31 , T. Dietel58 , C. Di Giglio31 , S. Di Liberto100 , A. Di Mauro33 ,
+P. Di Nezza68 , R. Divià33 , Ø. Djuvsland18 , A. Dobrin125 ,32 , T. Dobrowolski73 , B. Dönigus91 ,
+O. Dordic21 , O. Driga107 , A.K. Dubey122 , A. Dubla49 , L. Ducroux115 , P. Dupieux66 ,
+A.K. Dutta Majumdar95 , D. Elia104 , D. Emschermann58 , H. Engel55 , B. Erazmus33 ,107 , H.A. Erdal35 ,
+B. Espagnon46 , M. Estienne107 , S. Esumi120 , D. Evans96 , G. Eyyubova21 , D. Fabris28 ,99 , J. Faivre67 ,
+D. Falchieri27 , A. Fantoni68 , M. Fasel91 ,87 , R. Fearick84 , D. Fehlker18 , L. Feldkamp58 , D. Felea54 ,
+A. Feliciello102 , B. Fenton-Olsen70 , G. Feofilov123 , A. Fernández Téllez2 , A. Ferretti22 ,
+A. Festanti28 , J. Figiel110 , M.A.S. Figueredo113 , S. Filchagin93 , D. Finogeev48 , F.M. Fionda31 ,
+E.M. Fiore31 , E. Floratos83 , M. Floris33 , S. Foertsch84 , P. Foka91 , S. Fokin94 , E. Fragiacomo103 ,
+A. Francescon33 ,28 , U. Frankenfeld91 , U. Fuchs33 , C. Furget67 , M. Fusco Girard29 , J.J. Gaardhøje76 ,
+M. Gagliardi22 , A. Gago97 , M. Gallio22 , D.R. Gangadharan19 , P. Ganoti79 , C. Garabatos91 ,
+
+
+                                                     32
+Centrality determination with ALICE                                                 ALICE Collaboration
+
+
+E. Garcia-Solis13 , C. Gargiulo33 , I. Garishvili71 , J. Gerhard39 , M. Germain107 , C. Geuna14 ,
+A. Gheata33 , M. Gheata54 ,33 , B. Ghidini31 , P. Ghosh122 , P. Gianotti68 , M.R. Girard124 ,
+P. Giubellino33 , E. Gladysz-Dziadus110 , P. Glässel87 , R. Gomez112 ,11 , E.G. Ferreiro16 ,
+L.H. González-Trueba60 , P. González-Zamora10 , S. Gorbunov39 , A. Goswami86 , S. Gotovac109 ,
+L.K. Graczykowski124 , R. Grajcarek87 , A. Grelli49 , C. Grigoras33 , A. Grigoras33 , V. Grigoriev72 ,
+A. Grigoryan1 , S. Grigoryan62 , B. Grinyov3 , N. Grion103 , P. Gros32 , J.F. Grosse-Oetringhaus33 ,
+J.-Y. Grossiord115 , R. Grosso33 , F. Guber48 , R. Guernane67 , B. Guerzoni27 , M. Guilbaud115 ,
+K. Gulbrandsen76 , H. Gulkanyan1 , T. Gunji119 , A. Gupta85 , R. Gupta85 , R. Haake58 , Ø. Haaland18 ,
+C. Hadjidakis46 , M. Haiduc54 , H. Hamagaki119 , G. Hamar126 , B.H. Han20 , L.D. Hanratty96 ,
+A. Hansen76 , Z. Harmanová-Tóthová38 , J.W. Harris127 , M. Hartig56 , A. Harton13 , D. Hatzifotiadou98 ,
+S. Hayashi119 , A. Hayrapetyan33 ,1 , S.T. Heckel56 , M. Heide58 , H. Helstrup35 , A. Herghelegiu74 ,
+G. Herrera Corral11 , N. Herrmann87 , B.A. Hess121 , K.F. Hetland35 , B. Hicks127 , B. Hippolyte61 ,
+Y. Hori119 , P. Hristov33 , I. Hřivnáčová46 , M. Huang18 , T.J. Humanic19 , D.S. Hwang20 , R. Ichou66 ,
+R. Ilkaev93 , I. Ilkiv73 , M. Inaba120 , E. Incani23 , P.G. Innocenti33 , G.M. Innocenti22 , M. Ippolitov94 ,
+M. Irfan17 , C. Ivan91 , V. Ivanov80 , A. Ivanov123 , M. Ivanov91 , O. Ivanytskyi3 , A. Jachołkowski26 ,
+P. M. Jacobs70 , H.J. Jang64 , M.A. Janik124 , R. Janik36 , P.H.S.Y. Jayarathna116 , S. Jena44 ,
+D.M. Jha125 , R.T. Jimenez Bustamante59 , P.G. Jones96 , H. Jung40 , A. Jusko96 , A.B. Kaidalov50 ,
+S. Kalcher39 , P. Kaliňák51 , T. Kalliokoski42 , A. Kalweit57 ,33 , J.H. Kang129 , V. Kaplin72 ,
+A. Karasu Uysal33 ,128 ,65 , O. Karavichev48 , T. Karavicheva48 , E. Karpechev48 , A. Kazantsev94 ,
+U. Kebschull55 , R. Keidel130 , P. Khan95 , S.A. Khan122 , M.M. Khan17 , K. H. Khan15 ,
+A. Khanzadeev80 , Y. Kharlov47 , B. Kileng35 , T. Kim129 , S. Kim20 , M. Kim129 , B. Kim129 , M.Kim40 ,
+J.S. Kim40 , J.H. Kim20 , D.J. Kim42 , D.W. Kim40 ,64 , S. Kirsch39 , I. Kisel39 , S. Kiselev50 ,
+A. Kisiel124 , J.L. Klay6 , J. Klein87 , C. Klein-Bösing58 , M. Kliemant56 , A. Kluge33 , M.L. Knichel91 ,
+A.G. Knospe111 , M.K. Köhler91 , T. Kollegger39 , A. Kolojvari123 , M. Kompaniets123 ,
+V. Kondratiev123 , N. Kondratyeva72 , A. Konevskikh48 , V. Kovalenko123 , M. Kowalski110 , S. Kox67 ,
+G. Koyithatta Meethaleveedu44 , J. Kral42 , I. Králik51 , F. Kramer56 , A. Kravčáková38 ,
+T. Krawutschke87 ,34 , M. Krelina37 , M. Kretz39 , M. Krivda96 ,51 , F. Krizek42 , M. Krus37 ,
+E. Kryshen80 , M. Krzewicki91 , Y. Kucheriaev94 , T. Kugathasan33 , C. Kuhn61 , P.G. Kuijer77 ,
+I. Kulakov56 , J. Kumar44 , P. Kurashvili73 , A.B. Kurepin48 , A. Kurepin48 , A. Kuryakin93 ,
+V. Kushpil78 , S. Kushpil78 , H. Kvaerno21 , M.J. Kweon87 , Y. Kwon129 , P. Ladrón de Guevara59 ,
+I. Lakomov46 , R. Langoy18 , S.L. La Pointe49 , C. Lara55 , A. Lardeux107 , P. La Rocca26 , R. Lea24 ,
+M. Lechman33 , K.S. Lee40 , S.C. Lee40 , G.R. Lee96 , I. Legrand33 , J. Lehnert56 , M. Lenhardt91 ,
+V. Lenti104 , H. León60 , I. León Monzón112 , H. León Vargas56 , P. Lévai126 , S. Li7 , J. Lien18 ,
+R. Lietava96 , S. Lindal21 , V. Lindenstruth39 , C. Lippmann91 ,33 , M.A. Lisa19 , H.M. Ljunggren32 ,
+D.F. Lodato49 , P.I. Loenne18 , V.R. Loggins125 , V. Loginov72 , D. Lohner87 , C. Loizides70 ,
+K.K. Loo42 , X. Lopez66 , E. López Torres9 , G. Løvhøiden21 , X.-G. Lu87 , P. Luettig56 ,
+M. Lunardon28 , J. Luo7 , G. Luparello49 , C. Luzzi33 , R. Ma127 , K. Ma7 ,
+D.M. Madagodahettige-Don116 , A. Maevskaya48 , M. Mager57 ,33 , D.P. Mahapatra52 , A. Maire87 ,
+M. Malaev80 , I. Maldonado Cervantes59 , L. Malinina62 ,i , D. Mal’Kevich50 , P. Malzacher91 ,
+A. Mamonov93 , L. Manceau102 , L. Mangotra85 , V. Manko94 , F. Manso66 , V. Manzari104 , Y. Mao7 ,
+M. Marchisone66 ,22 , J. Mareš53 , G.V. Margagliotti24 ,103 , A. Margotti98 , A. Marín91 , C. Markert111 ,
+M. Marquard56 , I. Martashvili118 , N.A. Martin91 , P. Martinengo33 , M.I. Martínez2 ,
+A. Martínez Davalos60 , G. Martínez García107 , Y. Martynov3 , A. Mas107 , S. Masciocchi91 ,
+M. Masera22 , A. Masoni101 , L. Massacrier107 , A. Mastroserio31 , A. Matyja110 , C. Mayer110 ,
+J. Mazer118 , M.A. Mazzoni100 , F. Meddi25 , A. Menchaca-Rocha60 , J. Mercado Pérez87 , M. Meres36 ,
+Y. Miake120 , L. Milano22 , J. Milosevic21 ,ii , A. Mischke49 , A.N. Mishra86 ,45 , D. Miśkowiec91 ,
+C. Mitu54 , S. Mizuno120 , J. Mlynarz125 , B. Mohanty122 ,75 , L. Molnar126 ,33 ,61 , L. Montaño Zetina11 ,
+M. Monteno102 , E. Montes10 , T. Moon129 , M. Morando28 , D.A. Moreira De Godoy113 , S. Moretto28 ,
+A. Morreale42 , A. Morsch33 , V. Muccifora68 , E. Mudnic109 , S. Muhuri122 , M. Mukherjee122 ,
+H. Müller33 , M.G. Munhoz113 , S. Murray84 , L. Musa33 , J. Musinsky51 , A. Musso102 , B.K. Nandi44 ,
+
+
+                                                     33
+Centrality determination with ALICE                                                 ALICE Collaboration
+
+
+R. Nania98 , E. Nappi104 , C. Nattrass118 , T.K. Nayak122 , S. Nazarenko93 , A. Nedosekin50 ,
+M. Nicassio31 ,91 , M.Niculescu54 ,33 , B.S. Nielsen76 , T. Niida120 , S. Nikolaev94 , V. Nikolic92 ,
+S. Nikulin94 , V. Nikulin80 , B.S. Nilsen81 , M.S. Nilsson21 , F. Noferini98 ,12 , P. Nomokonov62 ,
+G. Nooren49 , N. Novitzky42 , A. Nyanin94 , A. Nyatha44 , C. Nygaard76 , J. Nystrand18 , A. Ochirov123 ,
+H. Oeschler57 ,33 , S. Oh127 , S.K. Oh40 , J. Oleniacz124 , A.C. Oliveira Da Silva113 , C. Oppedisano102 ,
+A. Ortiz Velasquez32 ,59 , A. Oskarsson32 , P. Ostrowski124 , J. Otwinowski91 , K. Oyama87 ,
+K. Ozawa119 , Y. Pachmayer87 , M. Pachr37 , F. Padilla22 , P. Pagano29 , G. Paić59 , F. Painke39 ,
+C. Pajares16 , S.K. Pal122 , A. Palaha96 , A. Palmeri105 , V. Papikyan1 , G.S. Pappalardo105 , W.J. Park91 ,
+A. Passfeld58 , B. Pastirčák51 , D.I. Patalakha47 , V. Paticchio104 , B. Paul95 , A. Pavlinov125 ,
+T. Pawlak124 , T. Peitzmann49 , H. Pereira Da Costa14 , E. Pereira De Oliveira Filho113 , D. Peresunko94 ,
+C.E. Pérez Lara77 , D. Perini33 , D. Perrino31 , W. Peryt124 , A. Pesci98 , V. Peskov33 ,59 , Y. Pestov5 ,
+V. Petráček37 , M. Petran37 , M. Petris74 , P. Petrov96 , M. Petrovici74 , C. Petta26 , S. Piano103 ,
+M. Pikna36 , P. Pillot107 , O. Pinazza33 , L. Pinsky116 , N. Pitz56 , D.B. Piyarathna116 , M. Planinic92 ,
+M. Płoskoń70 , J. Pluta124 , T. Pocheptsov62 , S. Pochybova126 , P.L.M. Podesta-Lerma112 ,
+M.G. Poghosyan33 , K. Polák53 , B. Polichtchouk47 , A. Pop74 , S. Porteboeuf-Houssais66 , V. Pospíšil37 ,
+B. Potukuchi85 , S.K. Prasad125 , R. Preghenella98 ,12 , F. Prino102 , C.A. Pruneau125 , I. Pshenichnov48 ,
+G. Puddu23 , V. Punin93 , M. Putiš38 , J. Putschke125 , E. Quercigh33 , H. Qvigstad21 , A. Rachevski103 ,
+A. Rademakers33 , T.S. Räihä42 , J. Rak42 , A. Rakotozafindrabe14 , L. Ramello30 , A. Ramírez Reyes11 ,
+R. Raniwala86 , S. Raniwala86 , S.S. Räsänen42 , B.T. Rascanu56 , D. Rathee82 , K.F. Read118 ,
+J.S. Real67 , K. Redlich73 ,iii , R.J. Reed127 , A. Rehman18 , P. Reichelt56 , M. Reicher49 , R. Renfordt56 ,
+A.R. Reolon68 , A. Reshetin48 , F. Rettig39 , J.-P. Revol33 , K. Reygers87 , L. Riccati102 , R.A. Ricci69 ,
+T. Richert32 , M. Richter21 , P. Riedler33 , W. Riegler33 , F. Riggi26 ,105 , M. Rodríguez Cahuantzi2 ,
+A. Rodriguez Manso77 , K. Røed18 ,21 , D. Rohr39 , D. Röhrich18 , R. Romita91 ,106 , F. Ronchetti68 ,
+P. Rosnet66 , S. Rossegger33 , A. Rossi33 ,28 , P. Roy95 , C. Roy61 , A.J. Rubio Montero10 , R. Rui24 ,
+R. Russo22 , E. Ryabinkin94 , A. Rybicki110 , S. Sadovsky47 , K. Šafařík33 , R. Sahoo45 , P.K. Sahu52 ,
+J. Saini122 , H. Sakaguchi43 , S. Sakai70 , D. Sakata120 , C.A. Salgado16 , J. Salzwedel19 , S. Sambyal85 ,
+V. Samsonov80 , X. Sanchez Castro61 , L. Šándor51 , A. Sandoval60 , M. Sano120 , G. Santagati26 ,
+R. Santoro33 ,12 , J. Sarkamo42 , E. Scapparone98 , F. Scarlassara28 , R.P. Scharenberg89 , C. Schiaua74 ,
+R. Schicker87 , H.R. Schmidt121 , C. Schmidt91 , S. Schuchmann56 , J. Schukraft33 , T. Schuster127 ,
+Y. Schutz33 ,107 , K. Schwarz91 , K. Schweda91 , G. Scioli27 , E. Scomparin102 , R. Scott118 ,
+P.A. Scott96 , G. Segato28 , I. Selyuzhenkov91 , S. Senyukov61 , J. Seo90 , S. Serci23 , E. Serradilla10 ,60 ,
+A. Sevcenco54 , A. Shabetai107 , G. Shabratova62 , R. Shahoyan33 , N. Sharma82 ,118 , S. Sharma85 ,
+S. Rohni85 , K. Shigaki43 , K. Shtejer9 , Y. Sibiriak94 , E. Sicking58 , S. Siddhanta101 , T. Siemiarczuk73 ,
+D. Silvermyr79 , C. Silvestre67 , G. Simatovic59 ,92 , G. Simonetti33 , R. Singaraju122 , R. Singh85 ,
+S. Singha122 ,75 , V. Singhal122 , T. Sinha95 , B.C. Sinha122 , B. Sitar36 , M. Sitta30 , T.B. Skaali21 ,
+K. Skjerdal18 , R. Smakal37 , N. Smirnov127 , R.J.M. Snellings49 , C. Søgaard76 ,32 , R. Soltz71 ,
+H. Son20 , J. Song90 , M. Song129 , C. Soos33 , F. Soramel28 , I. Sputowska110 ,
+M. Spyropoulou-Stassinaki83 , B.K. Srivastava89 , J. Stachel87 , I. Stan54 , G. Stefanek73 ,
+M. Steinpreis19 , E. Stenlund32 , G. Steyn84 , J.H. Stiller87 , D. Stocco107 , M. Stolpovskiy47 ,
+P. Strmen36 , A.A.P. Suaide113 , M.A. Subieta Vásquez22 , T. Sugitate43 , C. Suire46 , R. Sultanov50 ,
+M. Šumbera78 , T. Susa92 , T.J.M. Symons70 , A. Szanto de Toledo113 , I. Szarka36 ,
+A. Szczepankiewicz110 ,33 , M. Szymański124 , J. Takahashi114 , M.A. Tangaro31 , J.D. Tapia Takaki46 ,
+A. Tarantola Peloni56 , A. Tarazona Martinez33 , A. Tauro33 , G. Tejeda Muñoz2 , A. Telesca33 ,
+A. Ter Minasyan72 ,94 , C. Terrevoli31 , J. Thäder91 , D. Thomas49 , R. Tieulent115 , A.R. Timmins116 ,
+D. Tlusty37 , A. Toia39 ,28 ,99 , H. Torii119 , L. Toscano102 , V. Trubnikov3 , D. Truesdale19 ,
+W.H. Trzaska42 , T. Tsuji119 , A. Tumkin93 , R. Turrisi99 , T.S. Tveter21 , J. Ulery56 , K. Ullaland18 ,
+J. Ulrich63 ,55 , A. Uras115 , J. Urbán38 , G.M. Urciuoli100 , G.L. Usai23 , M. Vajzer37 ,78 , M. Vala62 ,51 ,
+L. Valencia Palomo46 , S. Vallero87 , P. Vande Vyvre33 , M. van Leeuwen49 , L. Vannucci69 , A. Vargas2 ,
+R. Varma44 , M. Vasileiou83 , A. Vasiliev94 , V. Vechernin123 , M. Veldhoen49 , M. Venaruzzo24 ,
+E. Vercellin22 , S. Vergara2 , R. Vernet8 , M. Verweij49 , L. Vickovic109 , G. Viesti28 , J. Viinikainen42 ,
+
+
+                                                     34
+Centrality determination with ALICE                                               ALICE Collaboration
+
+
+Z. Vilakazi84 , O. Villalobos Baillie96 , Y. Vinogradov93 , A. Vinogradov94 , L. Vinogradov123 ,
+T. Virgili29 , Y.P. Viyogi122 , A. Vodopyanov62 , K. Voloshin50 , S. Voloshin125 , G. Volpe33 ,
+B. von Haller33 , I. Vorobyev123 , D. Vranic91 , J. Vrláková38 , B. Vulpescu66 , A. Vyushin93 ,
+V. Wagner37 , B. Wagner18 , R. Wan7 , D. Wang7 , Y. Wang87 , M. Wang7 , Y. Wang7 , K. Watanabe120 ,
+M. Weber116 , J.P. Wessels33 ,58 , U. Westerhoff58 , J. Wiechula121 , J. Wikne21 , M. Wilde58 , G. Wilk73 ,
+A. Wilk58 , M.C.S. Williams98 , B. Windelband87 , L. Xaplanteris Karampatsos111 , C.G. Yaldo125 ,
+Y. Yamaguchi119 , S. Yang18 , H. Yang14 ,49 , S. Yasnopolskiy94 , J. Yi90 , Z. Yin7 , I.-K. Yoo90 ,
+J. Yoon129 , W. Yu56 , X. Yuan7 , I. Yushmanov94 , V. Zaccolo76 , C. Zach37 , C. Zampolli98 ,
+S. Zaporozhets62 , A. Zarochentsev123 , P. Závada53 , N. Zaviyalov93 , H. Zbroszczyk124 , P. Zelnicek55 ,
+I.S. Zgura54 , M. Zhalov80 , X. Zhang70 ,66 ,7 , H. Zhang7 , F. Zhou7 , Y. Zhou49 , D. Zhou7 , J. Zhu7 ,
+J. Zhu7 , X. Zhu7 , H. Zhu7 , A. Zichichi27 ,12 , A. Zimmermann87 , G. Zinovjev3 , Y. Zoccarato115 ,
+M. Zynovyev3 , M. Zyzak56
+
+
+Affiliation notes
+     i Also at: M.V.Lomonosov Moscow State University, D.V.Skobeltsyn Institute of Nuclear Physics,
+
+      Moscow, Russia
+     ii Also at: University of Belgrade, Faculty of Physics and "Vinvca" Institute of Nuclear Sciences,
+
+      Belgrade, Serbia
+    iii Also at: Institute of Theoretical Physics, University of Wroclaw, Wroclaw, Poland
+
+
+
+
+Collaboration Institutes
+    1 A. I. Alikhanyan National Science Laboratory (Yerevan Physics Institute) Foundation, Yerevan,
+
+      Armenia
+    2 Benemérita Universidad Autónoma de Puebla, Puebla, Mexico
+    3 Bogolyubov Institute for Theoretical Physics, Kiev, Ukraine
+    4 Bose Institute, Department of Physics and Centre for Astroparticle Physics and Space Science
+
+      (CAPSS), Kolkata, India
+    5 Budker Institute for Nuclear Physics, Novosibirsk, Russia
+    6 California Polytechnic State University, San Luis Obispo, California, United States
+    7 Central China Normal University, Wuhan, China
+    8 Centre de Calcul de l’IN2P3, Villeurbanne, France
+    9 Centro de Aplicaciones Tecnológicas y Desarrollo Nuclear (CEADEN), Havana, Cuba
+   10 Centro de Investigaciones Energéticas Medioambientales y Tecnológicas (CIEMAT), Madrid,
+
+      Spain
+   11 Centro de Investigación y de Estudios Avanzados (CINVESTAV), Mexico City and Mérida,
+
+      Mexico
+   12 Centro Fermi - Museo Storico della Fisica e Centro Studi e Ricerche “Enrico Fermi”, Rome, Italy
+   13 Chicago State University, Chicago, United States
+   14 Commissariat à l’Energie Atomique, IRFU, Saclay, France
+   15 COMSATS Institute of Information Technology (CIIT), Islamabad, Pakistan
+   16 Departamento de Física de Partículas and IGFAE, Universidad de Santiago de Compostela,
+
+      Santiago de Compostela, Spain
+   17 Department of Physics Aligarh Muslim University, Aligarh, India
+   18 Department of Physics and Technology, University of Bergen, Bergen, Norway
+   19 Department of Physics, Ohio State University, Columbus, Ohio, United States
+   20 Department of Physics, Sejong University, Seoul, South Korea
+   21 Department of Physics, University of Oslo, Oslo, Norway
+   22 Dipartimento di Fisica dell’Università and Sezione INFN, Turin, Italy
+
+
+
+                                                    35
+Centrality determination with ALICE                                              ALICE Collaboration
+
+
+   23 Dipartimento di Fisica dell’Università and Sezione INFN, Cagliari, Italy
+   24 Dipartimento di Fisica dell’Università and Sezione INFN, Trieste, Italy
+   25 Dipartimento di Fisica dell’Università ‘La Sapienza’ and Sezione INFN, Rome, Italy
+   26 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Catania, Italy
+   27 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Bologna, Italy
+   28 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Padova, Italy
+   29 Dipartimento di Fisica ‘E.R. Caianiello’ dell’Università and Gruppo Collegato INFN, Salerno,
+
+      Italy
+   30 Dipartimento di Scienze e Innovazione Tecnologica dell’Università del Piemonte Orientale and
+
+      Gruppo Collegato INFN, Alessandria, Italy
+   31 Dipartimento Interateneo di Fisica ‘M. Merlin’ and Sezione INFN, Bari, Italy
+   32 Division of Experimental High Energy Physics, University of Lund, Lund, Sweden
+   33 European Organization for Nuclear Research (CERN), Geneva, Switzerland
+   34 Fachhochschule Köln, Köln, Germany
+   35 Faculty of Engineering, Bergen University College, Bergen, Norway
+   36 Faculty of Mathematics, Physics and Informatics, Comenius University, Bratislava, Slovakia
+   37 Faculty of Nuclear Sciences and Physical Engineering, Czech Technical University in Prague,
+
+      Prague, Czech Republic
+   38 Faculty of Science, P.J. Šafárik University, Košice, Slovakia
+   39 Frankfurt Institute for Advanced Studies, Johann Wolfgang Goethe-Universität Frankfurt,
+
+      Frankfurt, Germany
+   40 Gangneung-Wonju National University, Gangneung, South Korea
+   41 Gauhati University, Department of Physics, Guwahati, India
+   42 Helsinki Institute of Physics (HIP) and University of Jyväskylä, Jyväskylä, Finland
+   43 Hiroshima University, Hiroshima, Japan
+   44 Indian Institute of Technology Bombay (IIT), Mumbai, India
+   45 Indian Institute of Technology Indore, Indore, India (IITI)
+   46 Institut de Physique Nucléaire d’Orsay (IPNO), Université Paris-Sud, CNRS-IN2P3, Orsay,
+
+      France
+   47 Institute for High Energy Physics, Protvino, Russia
+   48 Institute for Nuclear Research, Academy of Sciences, Moscow, Russia
+   49 Nikhef, National Institute for Subatomic Physics and Institute for Subatomic Physics of Utrecht
+
+      University, Utrecht, Netherlands
+   50 Institute for Theoretical and Experimental Physics, Moscow, Russia
+   51 Institute of Experimental Physics, Slovak Academy of Sciences, Košice, Slovakia
+   52 Institute of Physics, Bhubaneswar, India
+   53 Institute of Physics, Academy of Sciences of the Czech Republic, Prague, Czech Republic
+   54 Institute of Space Sciences (ISS), Bucharest, Romania
+   55 Institut für Informatik, Johann Wolfgang Goethe-Universität Frankfurt, Frankfurt, Germany
+   56 Institut für Kernphysik, Johann Wolfgang Goethe-Universität Frankfurt, Frankfurt, Germany
+   57 Institut für Kernphysik, Technische Universität Darmstadt, Darmstadt, Germany
+   58 Institut für Kernphysik, Westfälische Wilhelms-Universität Münster, Münster, Germany
+   59 Instituto de Ciencias Nucleares, Universidad Nacional Autónoma de México, Mexico City,
+
+      Mexico
+   60 Instituto de Física, Universidad Nacional Autónoma de México, Mexico City, Mexico
+   61 Institut Pluridisciplinaire Hubert Curien (IPHC), Université de Strasbourg, CNRS-IN2P3,
+
+      Strasbourg, France
+   62 Joint Institute for Nuclear Research (JINR), Dubna, Russia
+   63 Kirchhoff-Institut für Physik, Ruprecht-Karls-Universität Heidelberg, Heidelberg, Germany
+   64 Korea Institute of Science and Technology Information, Daejeon, South Korea
+
+
+
+                                                  36
+Centrality determination with ALICE                                          ALICE Collaboration
+
+
+   65 KTO Karatay University, Konya, Turkey
+   66 Laboratoire de Physique Corpusculaire (LPC), Clermont Université, Université Blaise Pascal,
+
+      CNRS–IN2P3, Clermont-Ferrand, France
+   67 Laboratoire de Physique Subatomique et de Cosmologie (LPSC), Université Joseph Fourier,
+
+      CNRS-IN2P3, Institut Polytechnique de Grenoble, Grenoble, France
+   68 Laboratori Nazionali di Frascati, INFN, Frascati, Italy
+   69 Laboratori Nazionali di Legnaro, INFN, Legnaro, Italy
+   70 Lawrence Berkeley National Laboratory, Berkeley, California, United States
+   71 Lawrence Livermore National Laboratory, Livermore, California, United States
+   72 Moscow Engineering Physics Institute, Moscow, Russia
+   73 National Centre for Nuclear Studies, Warsaw, Poland
+   74 National Institute for Physics and Nuclear Engineering, Bucharest, Romania
+   75 National Institute of Science Education and Research, Bhubaneswar, India
+   76 Niels Bohr Institute, University of Copenhagen, Copenhagen, Denmark
+   77 Nikhef, National Institute for Subatomic Physics, Amsterdam, Netherlands
+   78 Nuclear Physics Institute, Academy of Sciences of the Czech Republic, Řež u Prahy, Czech
+
+      Republic
+   79 Oak Ridge National Laboratory, Oak Ridge, Tennessee, United States
+   80 Petersburg Nuclear Physics Institute, Gatchina, Russia
+   81 Physics Department, Creighton University, Omaha, Nebraska, United States
+   82 Physics Department, Panjab University, Chandigarh, India
+   83 Physics Department, University of Athens, Athens, Greece
+   84 Physics Department, University of Cape Town and iThemba LABS, National Research
+
+      Foundation, Somerset West, South Africa
+   85 Physics Department, University of Jammu, Jammu, India
+   86 Physics Department, University of Rajasthan, Jaipur, India
+   87 Physikalisches Institut, Ruprecht-Karls-Universität Heidelberg, Heidelberg, Germany
+   88 Politecnico di Torino, Turin, Italy
+   89 Purdue University, West Lafayette, Indiana, United States
+   90 Pusan National University, Pusan, South Korea
+   91 Research Division and ExtreMe Matter Institute EMMI, GSI Helmholtzzentrum für
+
+      Schwerionenforschung, Darmstadt, Germany
+   92 Rudjer Bošković Institute, Zagreb, Croatia
+   93 Russian Federal Nuclear Center (VNIIEF), Sarov, Russia
+   94 Russian Research Centre Kurchatov Institute, Moscow, Russia
+   95 Saha Institute of Nuclear Physics, Kolkata, India
+   96 School of Physics and Astronomy, University of Birmingham, Birmingham, United Kingdom
+   97 Sección Física, Departamento de Ciencias, Pontificia Universidad Católica del Perú, Lima, Peru
+   98 Sezione INFN, Bologna, Italy
+   99 Sezione INFN, Padova, Italy
+  100 Sezione INFN, Rome, Italy
+  101 Sezione INFN, Cagliari, Italy
+  102 Sezione INFN, Turin, Italy
+  103 Sezione INFN, Trieste, Italy
+  104 Sezione INFN, Bari, Italy
+  105 Sezione INFN, Catania, Italy
+  106 Nuclear Physics Group, STFC Daresbury Laboratory, Daresbury, United Kingdom
+  107 SUBATECH, Ecole des Mines de Nantes, Université de Nantes, CNRS-IN2P3, Nantes, France
+  108 Suranaree University of Technology, Nakhon Ratchasima, Thailand
+  109 Technical University of Split FESB, Split, Croatia
+
+
+
+                                                    37
+Centrality determination with ALICE                                              ALICE Collaboration
+
+
+  110 The Henryk Niewodniczanski Institute of Nuclear Physics, Polish Academy of Sciences, Cracow,
+
+      Poland
+  111 The University of Texas at Austin, Physics Department, Austin, TX, United States
+  112 Universidad Autónoma de Sinaloa, Culiacán, Mexico
+  113 Universidade de São Paulo (USP), São Paulo, Brazil
+  114 Universidade Estadual de Campinas (UNICAMP), Campinas, Brazil
+  115 Université de Lyon, Université Lyon 1, CNRS/IN2P3, IPN-Lyon, Villeurbanne, France
+  116 University of Houston, Houston, Texas, United States
+  117 University of Technology and Austrian Academy of Sciences, Vienna, Austria
+  118 University of Tennessee, Knoxville, Tennessee, United States
+  119 University of Tokyo, Tokyo, Japan
+  120 University of Tsukuba, Tsukuba, Japan
+  121 Eberhard Karls Universität Tübingen, Tübingen, Germany
+  122 Variable Energy Cyclotron Centre, Kolkata, India
+  123 V. Fock Institute for Physics, St. Petersburg State University, St. Petersburg, Russia
+  124 Warsaw University of Technology, Warsaw, Poland
+  125 Wayne State University, Detroit, Michigan, United States
+  126 Wigner Research Centre for Physics, Hungarian Academy of Sciences, Budapest, Hungary
+  127 Yale University, New Haven, Connecticut, United States
+  128 Yildiz Technical University, Istanbul, Turkey
+  129 Yonsei University, Seoul, South Korea
+  130 Zentrum für Technologietransfer und Telekommunikation (ZTT), Fachhochschule Worms,
+
+      Worms, Germany
+
+
+
+
+                                                   38
+

@@ -1,0 +1,105 @@
+schema_version = 1
+claim_ids = ["C-1287", "C-1697", "C-1703"]
+evidence_layer = "implementation_conformance"
+scope = "Read-only reconciliation of retained report populations, declared commands and historical source; raw paired-row adjudication remains blocked."
+physical_runs_executed = 0
+canonical_mutations_executed = 0
+report = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+report_sha256 = "d01864be64aedd889b7ee35302c3df0aacc0bfbfb5a1670de6d07d3b726be6a0"
+
+[original_claim_run]
+provenance = "C-1287 statement, last_verified 2026-03-11; distinct from the later fleet replays."
+grid_64_claimed_count = 100
+grid_128_claimed_count = 100
+grid_64_claimed_mean = 2.748
+grid_64_claimed_std = 0.607
+grid_128_claimed_mean = 2.732
+grid_128_claimed_std = 0.034
+claimed_outlier_count = 6
+rounded_standard_deviation_ratio = 17.852941176470587
+status = "Historical aggregates retained; raw source rows and producer digest unavailable in the searched surfaces."
+
+[fleet_replay]
+source_sections = ["finding for C-1287", "finding for C-1282", "finding for C-1288", "TWO LIMITATIONS OF WHAT WAS RUN"]
+grid_64_reported_count = 100
+grid_128_reported_count = 70
+grid_128_requested_count = 100
+grid_128_uncompleted_count = 30
+grid_64_reported_csv_sha256 = "58c0fb47229071eecfecdc7f565b23ecdc29771a752a2d1a0dfeffe128b591ec"
+grid_128_reported_csv_sha256 = "0b94db8b0481d1d0e5e195811ff34e2ac581d1861b5875a099bb96efacc4365e"
+outlier_rule = "df_final < 1.0 at grid 64"
+grid_64_reported_outlier_count = 7
+outliers_reported_present_at_128 = 6
+grid_64_reported_nonoutlier_count = 93
+matched_nonoutlier_count_implied_by_report = 64
+reported_outlier_values_at_64 = [0.6205,0.2371,0.4019,0.6912,0.3907,0.5748]
+reported_matched_values_at_128 = [2.6800,2.6808,2.6895,2.6785,2.6836,2.6858]
+exact_object_id_disclosed_by_report = -860502946079758004
+object_id_scope = "The source report discloses one outlier ID while refuting the Sersic/high-redshift attribution. It supplies neither the complete seven-ID set nor IDs for the six printed before/after pairs."
+grid_64_all_reported_mean = 2.7427
+grid_64_all_reported_std = 0.6241
+grid_64_nonoutlier_reported_mean = 2.9116
+grid_64_nonoutlier_reported_std = 0.0742
+grid_128_all_reported_mean = 2.7384
+grid_128_all_reported_std = 0.0374
+grid_128_reported_ci_half_width = 0.0088
+ci_method_admission = "The report omits a precise interval construction for that number. A Gaussian 1.96*std/sqrt(70) calculation from rounded aggregates gives 0.008761503797864841, consistent with the printed value; consistency does not identify the actual method."
+standard_deviation_denominator = "The report omits the n versus n-1 convention; raw rows and original analysis are required to establish it."
+paired_uncertainty = "Unavailable: exact paired rows are required for covariance and the standard deviation of paired changes."
+selection_scope = "The report says the missing 30 are the tail of catalog ordering. Ordered missingness alone does not establish absence of selection bias."
+
+[contradiction_resolution]
+six_versus_seven = "Seven refers to all 100 grid-64 replay objects; six refers to the outliers present among the 70 completed grid-128 replay objects. The original six-of-100 statement describes an earlier run and remains separately unverified."
+ratio_from_fleet_rounded_aggregates = 16.687165775401066
+outlier_exclusion_factor_from_rounded_aggregates = 8.4110512129380055
+second_factor_from_rounded_aggregates = 1.9839572192513368
+product_of_published_rounded_factors = 16.6518
+factorization_scope = "0.6241/0.0742 times 0.0742/0.0374 telescopes arithmetically, but the second factor compares 93 grid-64 nonoutliers with all 70 grid-128 rows. It does not measure within-paired-subset tightening. Its 16.69 total belongs to the fleet replay; the original 17.85 ratio belongs to another run."
+reported_mean_difference = 0.1732
+mean_difference_scope = "2.9116-2.7384 compares 93 grid-64 nonoutliers with all 70 grid-128 rows, including six stabilized low-tail objects. The source calls the second population bulk, but the arithmetic uses an unmatched marginal comparison."
+convergence_scope = "Two-grid change establishes neither asymptotic convergence nor asymptotic nonconvergence. Even a paired shift requires matched physical domain, spacing, duration, softening and measurement procedure before interpreting it as discretization error."
+stability_scope = "A df_final threshold is an outlier rule, not a positivity, mass-conservation, bounded-Mach or numerical-stability predicate."
+
+[producer_identity]
+reported_binary = ".cache/gate-target/release/euclid-df-sweep"
+reported_binary_mtime = "2026-04-12"
+reported_binary_digest = "unrecorded"
+reported_rebuild = "Fleet report says source rebuild was killed at its timeout; measurements used the prebuilt executable."
+historical_source_commit = "ff9850ad"
+historical_cli_snapshot = "cli-source-ff9850ad.rs.txt"
+historical_cli_sha256 = "bf3af7dc8bc3c3c003c99e2412f7c293f850618cc399e63fd8a40524af724d9d"
+historical_pipeline_snapshot = "pipeline-source-ff9850ad.rs.txt"
+historical_pipeline_sha256 = "6aadb2bb7b82cd23f1012d57e508e6f9d6954af68fd5468ec5e91a4f99c7499a"
+identity_limit = "Matching source date and executable mtime does not establish source-to-binary equality. Source-implied settings below remain distinct from verified runtime settings."
+
+[source_implied_settings]
+declared_experiments = ["E-163","E-166"]
+declared_steps = 200
+cli_default_dx_kpc = 1.0
+cli_default_softening_cells = 0.5
+cli_default_tau = 0.7
+cli_default_density_floor = 0.045
+cli_default_alpha_zd = 0.0
+registered_command_dx_override = false
+implied_box_lengths_kpc = [64.0,128.0]
+implied_softening_kpc = [0.5,0.5]
+physical_duration = "Unassigned: the inspected CLI and GalaxyPipelineConfig supply lattice step count and spatial scale, but expose no seconds-per-step conversion."
+physical_refinement_failure = "With registered commands and inspected defaults, grid 64 to 128 enlarges the physical domain at fixed 1 kpc spacing and fixed 0.5 kpc softening. It does not refine a fixed domain or improve resolution of the softening core."
+force_normalization = "prepare_galaxy computes max_g over the sampled domain and normalizes the NFW acceleration shape to force_target=1e-4 in lattice units. The normalization is domain-dependent by construction; an actual change of max_g between these nested domains remains unmeasured."
+measurement_path = "E-163 declares zero-copy GPU box-counting; E-166 declares a pre-zero-copy readback path. Their declared measurement implementations differ, and the exact replay binary identity remains unrecorded."
+row_schema_limit = "GalaxyDfRecord retains object_id, grid_dim, lbm_steps, tau and rounded df values, but omits dx_kpc, physical timestep, softening, binary digest and catalog digest. CSV recovery alone cannot establish those settings."
+
+[retrieval_boundary]
+searched = ["Worktree and primary data/output/audit reports and matching paths", "Primary data CSV/log/text contents for df_final and object_id/Sersic headers", "Primary/worktree data and cache filename inventories for euclid_df and fleet names", "Current /tmp/euclid_df_gpu_mrt* and /tmp root matching names", "Tracked historical trees/logs for Euclid CSV and fleet artifacts", "Registry/docs references to the two printed replay CSV hashes"]
+observed_absence = "The searches locate the fleet report and the distinct E-177 CSV; they do not locate either hash-identified E-163/E-166 replay CSV. /tmp/euclid_df_gpu_mrt_128_100.csv and the reported primary prebuilt executable path are absent."
+distinct_surviving_csv = "data/output/e177_ysu_tiled.csv"
+distinct_surviving_csv_sha256 = "0cc47e1370411e33d6ba552dcca638e53c9d2caa0a4990707f564858b5fd73ac"
+distinct_surviving_row_count = 100
+distinct_surviving_identity = "E-177, grid 128, --tiling; different experiment and producer configuration. Its rows are not substituted for E-166."
+intake_condition = "Recover both exact replay CSV hashes, execution/catalog identity, and complete object lists. Then join by unique object_id and recompute all-object, exact common-object and common nonoutlier statistics with one denominator convention and paired uncertainty."
+bounded_blocker = "Exact matched object IDs, seventh unmatched outlier identity, full-precision statistics, paired intervals and runtime physical settings remain unresolved on the searched surfaces."
+
+[canonical_recommendation]
+C1287 = "Preserve historical aggregates; distinguish original six-of-100 claim from replay seven-of-100/six-of-70 populations. Replace resolution-convergence and softening-core explanation with the measured/source-implied limits."
+C1697 = "Record the reported unmatched marginal shift and its population definitions. Replace asymptotic nonconvergence at 128 with unresolved convergence under missing paired fixed-domain evidence."
+C1703 = "Retain the rounded arithmetic as a cross-population factorization of replay spreads, not a causal separation of outlier disappearance and resolution. Preserve the original 18-fold claim as a separate historical result."

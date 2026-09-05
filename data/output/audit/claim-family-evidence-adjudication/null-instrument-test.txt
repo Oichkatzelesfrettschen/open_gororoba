@@ -1,0 +1,27 @@
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+   Compiling spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+   Compiling cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 26.85s
+     Running unittests src/bin/euclid_df_sweep.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/euclid_df_sweep-9e9df5fac574339f)
+
+running 3 tests
+test null_design_tests::collapsed_controls_are_rejected ... ok
+test control_instrument_tests::exact_rows_pairing_and_invalid_states_are_required ... ok
+test control_instrument_tests::paired_seeds_recreate_exact_density_and_budgets_are_mandatory ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/bin/mrt_stability_audit.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/mrt_stability_audit-0cd503bce018528f)
+
+running 3 tests
+test tests::finite_explosion_and_invalid_fields_fail_separate_predicates ... ok
+test tests::nonfinite_post_step_population_rejects_finite_cached_macros ... ok
+test tests::budgets_are_explicit_and_calm_trial_is_measured ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

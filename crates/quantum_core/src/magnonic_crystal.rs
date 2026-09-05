@@ -1,13 +1,13 @@
 //! 9-band magnonic crystal tight-binding model.
 //!
-//! Implements the Kaman, Lim, Liu & Hoffmann (2026) 9-band tight-binding
-//! Hamiltonian for magnonic crystals in hexagonal antidot arrays of YIG.
+//! Builds a nearest-neighbor realization of the Kaman, Lim, Liu & Hoffmann
+//! (2026) orbital geometry for hexagonal antidot arrays of YIG.
 //! The model combines 6 honeycomb orbitals (s, px, py on A and B sublattices)
-//! with 3 kagome orbitals (s on K1, K2, K3 bond midpoints), yielding:
-//! - Graphene-like Dirac cones near 1.5 GHz
-//! - Kagome flat band near 2.08 GHz (~1000x DOS enhancement)
-//! - Valley-Hall topological boundary modes under inversion breaking
-//! - Point defect modes with Q ~ 4100
+//! with 3 kagome orbitals (s on K1, K2, K3 bond midpoints). Constructors
+//! separate the paper's fitted frequency tables from repository reference
+//! parameters. Source-band reproduction, sampled topological admission and
+//! spatial localization have separate checks. Damping and micromagnetic
+//! excitation intensities lie outside the Hermitian tight-binding model.
 //!
 //! # Orbital Basis (9 per primitive cell)
 //!

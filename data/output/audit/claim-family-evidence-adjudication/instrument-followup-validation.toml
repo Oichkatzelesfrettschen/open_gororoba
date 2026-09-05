@@ -1,0 +1,23 @@
+schema_version = 1
+scope = "Validated follow-up measurement instruments and canonical adjudication; physical and operational campaigns retain explicit unresolved admission."
+timestamp = "2026-09-05T19:51:11Z"
+command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+exit_status = 0
+tests_passed = 1990
+tests_skipped = 19
+experiment_lineages = 269
+canonical_claims = 1563
+typed_contracts = 51
+protected_history_tables = 12
+sealed_source_build_hashes = 22
+staged_evidence_files_checked = 317
+tested_staged_tree = "770a4d1abda006c737771b5afc59cb0b11fc0dcb"
+validation_log = "data/output/audit/claim-family-evidence-adjudication/instrument-followup-validation.log"
+validation_log_sha256 = "85ae4a94c7ec0e3800f271e74d33040194c18fe45bcf8257f63dd11f6ae28307"
+history_receipt = "data/output/audit/claim-family-evidence-adjudication/instrument-followup-history-preservation.json"
+history_receipt_sha256 = "0ee551d8d5b9bcf617ad72af747d5e4260c4b0142813c249c47a9327922ec6f5"
+focused_scope = "Focused integration/GPU/source checks retain their individual before/after receipts in E-297 through E-301. The full gate count is the scoped nextest library set, not a replacement for feature-specific integration receipts."
+review = "Read-only review identified and resolved C-1710 contract scope and E-297/E-300 historical producer preservation gaps."
+external_review = "Draft PR172 remains open; prior automated draft status skipped substantive review."
+remaining = "Operational labels/review/timestamps; external chronology; physical spacecraft/frame/magnetic/outflow/sensitivity admission; paired fixed-domain galaxy convergence; magnonic global isolation and independent device prediction; Ward distributional/scalar coefficient completion and certified error; optics source discrepancy; QGP curve/covariance lineage; universal motif and source-general kernel proof extensions."

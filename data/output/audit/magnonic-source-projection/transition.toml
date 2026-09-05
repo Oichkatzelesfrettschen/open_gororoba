@@ -1,0 +1,26 @@
+[transition]
+transition_timestamp = "2026-09-05T18:58:38Z"
+transition_key = "magnonic-fitted-source-support-reproduction"
+source_claim_id = "C-1692"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-MAGNONIC-SOURCE-PROJECTION"]
+experiment_ids = ["E-299"]
+exercised_falsifier = "Compare independently reconstructed geometric matrices and complete rectangular-cell spectra with admitted source raster support at the unchanged 0.03 GHz gate; repository-reference parameters serve as a negative control."
+proposed_claim_status = "Provisional"
+rationale = "Preserve the reference-parameter provenance defect while registering source-table reproduction as a separate finite implementation result."
+unresolved_assumptions = ["The source tables contain five and seven hand-fitted parameters; independent physical prediction remains unassessed.", "Global gap proofs, exact author-code identity and independent micromagnetic agreement remain separate obligations."]
+actor = "claim-evidence-adjudication"
+reason = "Bind source geometry, fitted spectral support and finite subspace invariants without promoting a physical prediction"
+expected_source_state_sha256 = "556ae99e2df368b42cd08a73a05a75bacb99057406a0b1119c9ccadb58d46505"
+expected_claim_id_max = 1746
+
+[[successor]]
+proposal_key = "magnonic-source-geometry-and-frequency-support"
+statement = "Using Kaman et al. arXiv:2601.03210v2 fitted Tables I/II, the independent finite geometry and rectangular-folding replay agrees within 1.8e-14 GHz. Admitted rendered spectral support passes the declared 0.03 GHz two-way distance gate: worst distances are 0.0258413 GHz for Figure 5 and 0.0172003 GHz for Figure 6. The initial Figure 6 failure at 0.0852987 GHz came from an inset border and remains retained with its coordinate-bound extraction amendment. Source fitting freedom is five and seven parameters; replay fitting is zero. Separated subspaces pass the declared finite-grid checks, while degenerate individual bands fail admission. Local valley flux remains nonquantized. The result establishes bounded source reproduction, separate from global-gap proof or independent physical agreement."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-299; data/output/audit/magnonic-source-projection/adjudication.toml source, figure and producer hashes."
+required_falsifier = "An unchanged admitted replay exceeds the fixed geometry or spectral-support gates, accepts a degenerate individual band, or treats local finite-patch flux as a quantized global invariant."
+where_stated = ["data/output/audit/magnonic-source-projection/adjudication.toml", "crates/quantum_core/tests/magnonic_source_projection.rs"]
+evidence_artifact_ids = ["LOCAL-MAGNONIC-SOURCE-PROJECTION"]
+predecessor_relation_kind = "implementation_split"

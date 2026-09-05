@@ -1,0 +1,5 @@
+claim_id = "C-1697"
+expected_statement = "Galaxy-scale fractal dimension from this pipeline is not converged at 128 cubed: the non-outlier bulk mean moves from 2.9116 at 64 cubed to 2.7384 at 128 cubed, a shift of 0.173, roughly 20 times the 128 cubed confidence-interval half-width of 0.0088."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+statement = "The retained fleet report gives a marginal D_f difference of 0.1732 between 93 grid-64 nonoutliers (mean 2.9116) and all 70 completed grid-128 objects (mean 2.7384), including six corresponding low-tail objects. The reported grid-128 half-width is 0.0088 with unspecified interval construction. The difference compares unmatched populations and does not establish a paired bulk shift or asymptotic nonconvergence. Exact paired CSVs, producer identity and matched physical domain, duration and measurement procedure remain required."
+where_stated = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml; data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; source-implied settings at ff9850ad, replay binary digest unrecorded"

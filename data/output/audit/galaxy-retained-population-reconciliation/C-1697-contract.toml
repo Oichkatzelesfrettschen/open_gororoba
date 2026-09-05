@@ -1,0 +1,30 @@
+claim_id = "C-1697"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Retain historical 2.9116,2.7384,0.173 shift and 0.0088 half-width. Declare one common object subset and the actual confidence-interval method before recomputation."]
+[[intervening_maps]]
+branch = "paired_bulk_shift"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Join object-level rows and separate paired differences, marginal confidence intervals and exclusion effects."
+[[intervening_maps]]
+branch = "paired_bulk_shift"
+name = "independent_predicate"
+kind = "computational"
+description = "Recompute the paired bulk mean shift and uncertainty on identical object IDs; separately test a declared convergence tolerance with a third matched resolution."
+[[fitted_parameters]]
+branch = "paired_bulk_shift"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-163","E-166"]
+protocol_artifact = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml"
+description = "E-163/E-166 retain historical bindings. The retained adjudication separates original100/100 aggregates from later100/70 populations and source-implied box enlargement; exact paired inference requires the two named CSV hashes and execution identity."
+[what_would_verify_refute]
+verification_outcomes = ["The retained report and historical source reproduce the explicitly bounded population counts, rounded arithmetic and source-implied settings in adjudication.toml."]
+revision_outcomes = ["Recovered exact CSVs and producer identity revise membership or statistics through a retained canonical correction.", "A separately declared fixed-domain multi-grid experiment with common object IDs, physical duration, softening, normalization and stability gates may establish a narrower convergence successor."]
+abandonment_outcomes = ["The cited report contradicts the declared counts or rounded operands, or the cited source contradicts the stated default spatial scale; abandon the affected documentary clause."]
+inconclusive_outcomes = ["Missing exact paired CSV hashes, binary digest and runtime physical settings leave paired uncertainty, causal outlier attribution and convergence unassessed."]

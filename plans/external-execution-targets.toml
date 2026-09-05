@@ -5,3 +5,10 @@ version = "9.1.1"
 executable = "/usr/bin/rocq"
 receipt = "data/output/audit/claim-family-evidence-adjudication/rocq-execution-identity.toml"
 receipt_sha256 = "384fe599f7cb21f8e3d129c6fd0cc363e214577b1caaf868a52cc589d27608da"
+
+[[external_target]]
+name = "euclid-null-pilot-retained"
+version = "8e3c3bbe66002936"
+executable = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/claim-family-evidence-adjudication/null-pilot-producer-before-mrt-correction.bin"
+receipt = "data/output/audit/claim-family-evidence-adjudication/null-pilot-execution-identity.toml"
+receipt_sha256 = "54345052fe6c3c98e0b4f9d4b4b33b5b0a33ff44d25ae82a3435c975ee0e3a12"

@@ -1,0 +1,101 @@
+schema_version = 1
+experiment = "E-298"
+evidence_layer = "implementation_conformance"
+result = "failed numerical-control pilot with complete retained trial inventory"
+protocol = "data/output/audit/claim-family-evidence-adjudication/null-control-instrument-protocol.toml"
+protocol_sha256 = "d6e133e7c9847263ef8f553dbc3513e5f051d27f0ffacc8ce2b8f2f5fa996d25"
+original_protocol_sha256 = "27f5d7f8451ce4767994fc6de4427896643d47faf2185b37f742212c7004c342"
+amendment_boundary = "The strict nonnegative-population admission and direct-step observation amendment preceded both pilot executions."
+
+[producer]
+binary = "null-pilot-producer-before-mrt-correction.bin"
+binary_sha256 = "8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2"
+solver_revision = "c9132da123438615638fb3f99a922bb471996e11"
+solver_source = "crates/lbm_3d/src/solver.rs"
+solver_sha256 = "00af5393fbfc5ae44cc5506068234b72e8292a57ba02a72b76622d5cee4217a9"
+cuda_source = "crates/lbm_3d_cuda/src/kernels_soa.cu"
+cuda_sha256 = "8876f7f5e27697dbf76b616ee8b8136d6f26783927260f2c0b53d9542fc2fa04"
+runner_source = "crates/gororoba_cli_physics/src/bin/euclid_df_sweep.rs"
+runner_build_sha256 = "22baf437fa2735651ef6cd7c2c0bd50f5801c6988bcfe88fde7ea7f3a335ddac"
+source_boundary = "The runner contained working-tree instrument edits; solver_revision identifies solver/kernel contents, not a fully committed pilot producer. The retained binary identifies the executable."
+force_defect = "E-300 independently establishes that this producer applies the BGK Guo scalar prefactor to conserved MRT momentum, delivering 0.375 of prescribed force-density impulse at tau 0.8. CPU/CUDA agreement cannot establish correctness against this shared defect."
+force_defect_receipt = "mrt-force-density-conformance-result.toml"
+replay_boundary = "Historical replay requires the retained executable and a fresh evidence directory per backend. Rebuilding corrected sources creates a distinct producer and requires separate results."
+
+[intake]
+catalog = "euclid-physical-measurements.parquet"
+catalog_sha256 = "4ab4ab1b363871c7bbbba6a9ec55e889732e3ce1629843c31ce2561a6f29c474"
+catalog_bytes = 67720067
+provider_md5 = "2bdaea95a50fdddbccbff2e7b1a05996"
+source_rows = 399562
+admitted_rows = 383308
+rejected_rows = 16254
+rejection_ledger = "euclid-catalog-rejected-rows.csv"
+admission_receipt = "euclid-catalog-admission.toml"
+selected_object_id = "-670764856480109543"
+input_arrays = 100
+cross_backend_input_pairs = 25
+
+[observations]
+grid = [16, 16, 16]
+requested_steps = 24
+collision = "MRT"
+tau = 0.8
+alpha_zd = 0.1
+noise_trials_per_condition = 10
+noise_seeds = [42, 43, 44, 45, 46, 47, 48, 49, 50, 51]
+relative_mass_budget = 0.00001
+mach_budget = 0.3
+cpu_exit = 1
+cuda_exit = 1
+cpu_rows = 25
+cuda_rows = 25
+total_rows = 50
+admitted_final_rows = 44
+admitted_same_stage_pairs = 22
+failed_rows = 6
+failed_conditions = ["C4-sersic-zero", "C5-sersic-fzd", "C6-sersic-nfw"]
+failed_attempted_step = 1
+failed_observed_step = 1
+failed_predicate = "raw population-moment Mach budget exceeded"
+failed_rows_passing_predicates = ["finite_state", "positive_density", "nonnegative_population", "mass_within_budget"]
+failed_max_mach_cpu = [0.31266925213832153, 0.3126150229681583, 0.3126154478275948]
+failed_max_mach_cuda = [0.31266918312176134, 0.3126181794446863, 0.3126185791595804]
+c1_cpu_df = 2.20768155970508273
+c1_cpu_minus_cuda_df = 0.012579204139776756
+noise_cross_backend_df_differences = "All twenty C2/C3 same-condition CPU-minus-CUDA Df differences equal zero. The noise Df observations are measured values near 2.6, distinct from the scalar-3 empty-mask convention."
+accuracy_gate = "unassessed"
+resolution_convergence = "unassessed"
+physical_interpretation = "unassessed"
+sersic_force_contrast = "unadmitted: all six Sersic rows fail at step 1 before final Df"
+cpu_trials_sha256 = "c194f3f5e2c4861636481d873e6a8d3fbd968c09b1dbeeefe43b0a14f23319e9"
+cuda_trials_sha256 = "eb825c1c7d65b016adbc571efc77b5f32143feda17323c637bfdcdebb79cb64e"
+independent_analysis = "null-pilot-independent-analysis.json"
+independent_analysis_sha256 = "c069b23cc4698dd0a29f63eb903f941a5fa6ac880878d4b290c3df3b9c6c6616"
+
+[amplitude_diagnostic]
+source = "crates/gororoba_cli_physics/tests/box_counting_amplitude_identity.rs"
+source_sha256 = "4c087f9870bb2f4001099676e2e1e741d5ea0fddd385198cfb217c9b51dca8ba"
+result = "box-counting-amplitude-success.txt"
+result_sha256 = "68b4263a33732e0cbb4132c503f0e0befdeeadac229b7109f36f3f719e4ae357"
+replayed_field = "box-counting-c1-replay-final-rho.f64le"
+replayed_field_sha256 = "4974a70e7e4bc64cb0bbdc565138c528cfb7b3c49f1d95ad48dbb3d0cb09ffbb"
+transformation = "rho -> 1 + amplitude*(rho-1)"
+amplitudes = [0.00390625, 1.0, 256.0]
+adaptive_mask_sha256 = "2d6abb306f0a5bfeac7dcd44775877013fac13c420ae89b112a2c4b2572099b8"
+adaptive_counts = [768, 160, 32, 8]
+adaptive_df = 2.20768155970508273
+fixed_threshold = 1.00000095367431641
+fixed_counts = [[0, 0, 0, 0], [1088, 184, 56, 8], [1480, 216, 64, 8]]
+fixed_measured_slope_present = [false, true, true]
+fixed_scalar_df = [3.0, 2.29785955577504186, 2.43490318837123976]
+plane_controls = "Offsets 0 and 1, amplitudes 1, 2^-20 and 2^-40 preserve counts [256,64,16,4] and measured slope 2."
+uniform_control = "Exact uniform density has threshold 1 and zero occupied boxes at every scale; measured slope is absent and production scalar 3 is a convention."
+mechanism = "Range-normalized Otsu bins preserve positive-affine superlevel geometry in ideal arithmetic. The tested finite-precision controls preserve the mask. Adaptive Df alone therefore measures neither perturbation amplitude nor algebra specificity."
+validation = "Two diagnostic tests and focused Clippy pass; the initial output-path failure and corrected absolute-path replay remain retained separately."
+
+[adjudication]
+c1696 = "Retain historical equilibrium-fixture defect. E-298 records evolving observations but lacks a numerical accuracy gate; C1 backend disagreement and E-300 shared impulse failure prohibit an equivalence promotion."
+c1700 = "Retain historical E-174 64/128-cubed captured-MRT failure. E-298 restores bounded direct-step trial emission at 16 cubed, retains every row, and fails numerical admission. Captured execution and completed historical conditions remain separate obligations."
+c1702 = "Retain historical finite-explosion classifier defect. E-298 demonstrates six strict Mach rejections with complete failure receipts; classifier tests and stability of accepted dynamics require their own evidence."
+required_successor_gates = ["Admit corrected producer identity and independent force-density impulse oracle", "Declare numerical error budget before interpreting CPU/GPU agreement", "Retain every outlier and failed condition", "Demonstrate paired resolution convergence before physical fractal interpretation", "Measure informative box-counting scales separately from scalar fallback conventions"]

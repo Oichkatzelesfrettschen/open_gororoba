@@ -5,6 +5,62 @@ canonical_target = "registry/canonical/control_plane.sqlite3"
 completion_rule = "Close each row only after its retained evidence, typed contract, canonical statement, status and implementation locator agree. External observation requirements remain explicit blockers."
 
 [[task]]
+id = "remaining-instrument-source-audit"
+status = "completed"
+action = "Inspect open-boundary, null-control and magnonic source-reproduction residuals"
+acceptance = "Identify executable defects independently of the missing operational and physical inputs."
+progress = "Null controls retain mismatched observation times, unpaired noise seeds, missing stability admission and a gravity-confounded Sersic contrast. Open-x transport and source-projected magnonic bands require separate instruments."
+
+[[task]]
+id = "null-control-pilot-protocol"
+status = "completed"
+action = "Identify retained catalog bytes and freeze a bounded instrument replay specification"
+acceptance = "Declare input identity, paired conditions, numerical budgets, observation stage and preserved historical thresholds before replay."
+progress = "Retained catalog matches provider size and MD5; SHA256 and a 16-cubed/24-step paired CPU/CUDA instrument protocol are frozen before execution."
+
+[[task]]
+id = "euclid-catalog-row-admission"
+status = "completed"
+depends_on = ["null-control-pilot-protocol"]
+action = "Reject null model cells and retain the catalog row denominator"
+acceptance = "Nullable unused metadata remain explicit; missing model cells and duplicate admitted IDs fail their intended gates; each rejected source row retains its field and reason."
+
+[[task]]
+id = "null-control-measurement-repair"
+status = "completed"
+depends_on = ["remaining-instrument-source-audit"]
+action = "Repair observation time, paired controls, completeness and stability admission"
+acceptance = "Adversarial tests reject missing rows and finite explosions; paired conditions share inputs and post-step measurement conventions."
+
+[[task]]
+id = "open-x-flux-instrument"
+status = "completed"
+depends_on = ["remaining-instrument-source-audit"]
+action = "Implement explicit open-x streaming and measured face-flux accounting"
+acceptance = "Independent packet fixtures reject periodic wraparound; flux and collision budgets close; numerical closure and physical suitability remain distinct."
+
+[[task]]
+id = "magnonic-source-band-reproduction"
+status = "completed"
+depends_on = ["remaining-instrument-source-audit"]
+action = "Replay source-defined bands and topology admission using primary-source parameters"
+acceptance = "Retain source identities and source-model differences; report sampled and global obligations separately."
+
+[[task]]
+id = "instrument-pilot-replay"
+status = "completed"
+depends_on = ["null-control-pilot-protocol", "null-control-measurement-repair"]
+action = "Run the bounded null instrument and retain every condition and numerical failure"
+acceptance = "The instrument measures actual solver evolution and reports predicate failures without claiming physical convergence."
+
+[[task]]
+id = "instrument-followup-canonical-validation"
+status = "completed"
+depends_on = ["open-x-flux-instrument", "magnonic-source-band-reproduction", "instrument-pilot-replay"]
+action = "Reconcile instrument results through canonical revisions and verify the integrated follow-up"
+acceptance = "Canonical statements and contracts match retained results; focused checks and publication governance pass."
+
+[[task]]
 id = "contradiction-evidence"
 status = "completed"
 action = "Trace C-659 to retained percolation output and replay C-834 signed reference tests"
@@ -27,7 +83,7 @@ acceptance = "C-659 records inconclusive retained test; C-834 binds nominal sign
 [[task]]
 id = "family-contracts"
 status = "completed"
-progress = "The canonical register contains 47 typed contracts across the requested families. Contracts separate measured implementation and source predicates from physical, universal and external-intake obligations."
+progress = "The canonical register contains 51 typed contracts across the requested families and bounded implementation successors. Contracts separate measured implementation and source predicates from physical, universal and external-intake obligations."
 depends_on = ["contradiction-transitions"]
 action = "Attach evidence layers, maps, fitting budgets and outcome rules to dependency families"
 acceptance = "Canonical typed declarations identify decisive comparisons and separate verify, revise, abandon and inconclusive outcomes."
@@ -66,7 +122,7 @@ acceptance = "Seal relevant gates before final access; separate human labels, ra
 [[task]]
 id = "force-units-sensitivity"
 status = "pending"
-progress = "Strict SI IC admission, density-weighted forcing and AoSoA inlet correction pass focused tests. The 90-row periodic sensitivity sweep resolves tested forces at or above 1e-14. Gravitational frame, outflow/flux ledger, admitted physical inputs and coupled sensitivity remain open."
+progress = "Strict SI IC admission, density-weighted forcing and AoSoA inlet correction pass focused tests. The 90-row periodic sensitivity sweep resolves tested forces at or above 1e-14. E-297/C-1746 verifies finite open-x face accounting. Gravitational frame, physical outflow and magnetic admission, matched physical inputs and coupled sensitivity remain open."
 depends_on = ["family-contracts"]
 action = "Repair drag and magnetic units, Parker scaling and open-boundary balance"
 acceptance = "Physical force units and numerical error budget support the bounded comparison across both claim generations."
@@ -74,7 +130,7 @@ acceptance = "Physical force units and numerical error budget support the bounde
 [[task]]
 id = "lbm-failure-discrimination"
 status = "pending"
-progress = "Evolving real CUDA and graph-reuse fixtures pass unchanged gates after independently resolving time-level and capture dependency failures. C-1745 records bounded conformance. Full null conditions, paired resolutions and outlier accounting remain open."
+progress = "Evolving real CUDA and graph-reuse fixtures pass unchanged gates after independently resolving time-level and capture dependency failures. C-1745 records bounded conformance. E-298 retains all50 direct null trial rows with six Mach failures; E-300/C-1748 repairs independently measured MRT impulse. Historical population accounting is corrected; physical paired resolution remains unadmitted."
 depends_on = ["force-units-sensitivity"]
 action = "Exercise evolving CPU/GPU fields, null execution and explosion rejection"
 acceptance = "Correctness, stability, paired resolution and outlier accounting have independent retained predicates."
@@ -82,7 +138,7 @@ acceptance = "Correctness, stability, paired resolution and outlier accounting h
 [[task]]
 id = "magnonic-source-invariants"
 status = "pending"
-progress = "Angular/exchange slopes, source Tables I/II, sampled topology admission and local-frame invariance pass focused checks. Paired patches distinguish edge states, reciprocal participation and both walls. Full source band projection and global topology convergence remain open."
+progress = "Angular/exchange slopes, source Tables I/II, sampled topology admission and local-frame invariance pass focused checks. Paired patches distinguish edge states, reciprocal participation and both walls. E-299/C-1747 passes source-fitted band support and geometry/folding checks. Global topology convergence and independent device prediction remain open."
 depends_on = ["family-contracts"]
 action = "Resolve magnonic parameter and frequency provenance, topology and localization"
 acceptance = "Gap-admitted band or subspace invariants, defect localization and both domain walls pass separate checks."
@@ -90,7 +146,7 @@ acceptance = "Gap-admitted band or subspace invariants, defect localization and 
 [[task]]
 id = "ward-optics-reproduction"
 status = "pending"
-progress = "Independent Ward arithmetic fixes the intercept sign while retaining norm failures and exposes quadrature sensitivity. Faithful optics replay preserves the 0.01 gate failure at 0.01594 and separates archive/TeX/PDF identities. Contact terms, certified error and source-landmark discrepancies remain open."
+progress = "Independent Ward arithmetic fixes the intercept sign while retaining norm failures and exposes quadrature sensitivity. Faithful optics replay preserves the 0.01 gate failure at 0.01594 and separates archive/TeX/PDF identities. E-301/C-1749 repairs the source proper-time counterterm measure and separates transverse from full-vector predicates. Distributional contacts, scalar coefficient conventions, certified error and optics source-landmark discrepancies remain open."
 depends_on = ["family-contracts"]
 action = "Replay Ward and optics predicates with independent residuals and omission controls"
 acceptance = "Retain failed thresholds and distinguish identity class, contact terms, on-shell limits and fitting procedure."
@@ -105,7 +161,7 @@ acceptance = "Every comparison declares source population, uncertainty or covari
 
 [[task]]
 id = "finite-theorem-boundaries"
-status = "pending"
+status = "completed"
 progress = "All 243 finite motif components pass exact rank witnesses at D=16..256. Canonical degree and spacing statements are corrected; universal extension remains conjectural. Focused Rocq bodies compile and explicit kernel-equality axioms remain visible."
 depends_on = ["family-contracts"]
 action = "Verify exact finite graph identities and compare Moreno source hypotheses with Rocq"
@@ -124,3 +180,34 @@ progress = "Full validate-local passes scoped clippy, 1624 tests with 19 skips, 
 depends_on = ["canonical-evidence-reconciliation"]
 action = "Export canonical views, refresh signatures and validate the completed bounded repairs for review"
 acceptance = "Focused tests and required governance pass; database, exports and evidence commit atomically; pending campaign rows and missing-input blockers remain explicit."
+
+[[task]]
+id = "mrt-conserved-momentum-audit"
+status = "completed"
+action = "Test MRT forcing against an independent periodic momentum impulse"
+acceptance = "The measured total population-momentum increment equals the declared force-density impulse; CPU/CUDA agreement cannot hide a shared collision-source defect."
+
+[[task]]
+id = "adaptive-box-threshold-falsifier"
+status = "completed"
+action = "Test amplitude and offset dependence of the adaptive box-count measurement"
+acceptance = "Retain masks, occupancy counts and slope validity under fixed affine transformations and a separately fixed absolute threshold."
+progress = "The retained C1 replay reproduces D_f 2.20768156. Adaptive masks and counts remain identical under contrast scales1/256,1,256; exact uniform input returns3 by convention with an undefined measured slope."
+
+[[task]]
+id = "galaxy-population-reference-reconciliation"
+status = "completed"
+action = "Correct the population and domain identities behind reported resolution statistics"
+acceptance = "Separate historical100-row claims from100/70-row replays, preserve all rounded aggregates, and require exact paired CSVs plus fixed physical domain before convergence interpretation."
+
+[[task]]
+id = "qgp-primary-curve-identity"
+status = "completed"
+action = "Bind frozen QGP curves to actual source authors, figures and physical populations"
+acceptance = "Source descriptions and admissibility follow primary paper identities; mislabeled historical vectors remain preserved and excluded from unsupported comparisons."
+
+[[task]]
+id = "ward-source-rescaling-and-polarization"
+status = "completed"
+action = "Check source counterterm rescaling and physical transverse identity with independent omission controls"
+acceptance = "Preserve original full-vector failures; distinguish renormalized source expression, polarization-contracted identity and generic nonzero omission controls."

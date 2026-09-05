@@ -1,0 +1,31 @@
+claim_id = "C-1666"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Separate the source transverse amplitude predicate from stronger full-vector diagnostics and counterterm-measure conformance; physical interpretation remains unassessed."
+fixed_hyperparameters = ["Preserve historical renormalized full-vector residuals and their original source identity", "Declare unrenormalized versus renormalized branches, physical transverse polarization/gauge vectors and each virtuality ladder separately", "Retain absolute 1e-12 and normalized 1e-6 amplitude gates; certify quadrature and interpolation remainders before a mathematical zero/nonzero conclusion"]
+[[intervening_maps]]
+branch = "ward_scope"
+name = "source_contraction_identity"
+kind = "computational"
+description = "Source Eq. 7.6 contracts the photon polarization under on-shell transverse conditions in the unrenormalized Ward discussion. Record full-vector and renormalized predicates separately."
+[[intervening_maps]]
+branch = "ward_scope"
+name = "independent_contraction_and_refinement"
+kind = "computational"
+description = "Recompute tensor components and zero-virtuality intercepts independently, retain diagram omissions and require discriminating amplitudes before interpreting cancellation. Assess quadrature and interpolation errors separately."
+[[fitted_parameters]]
+branch = "ward_scope"
+count = 0
+names = []
+training_boundary = "The fixed finite source comparison fits zero coefficients. Scalar and spinor subtraction/contact prescriptions require source derivation rather than fitted cancellation."
+[decisive_experiment]
+experiment_ids = ["E-073", "E-290", "E-301"]
+protocol_artifact = "data/output/audit/ward-residual-scope/counterterm-measure-protocol.toml"
+protocol_sha256 = "a45b23a4aac00e09b8fab228b30ee3313dac13a11d2cc17ac055a9b3f479392b"
+description = "E-290 retains original independent full-vector residuals. E-301 separates the source projection, repairs the proper-time measure and preserves failed full-vector and spinor projected gates. Its fixed transverse ladder supports a finite scalar pair only; a certified identity still requires source contact/UV and scalar coefficient reconciliation plus numerical remainder bounds."
+[what_would_verify_refute]
+verification_outcomes = ["A source-identified projected amplitude satisfies both fixed gates with diagram-discriminating omissions and certified quadrature/extrapolation error; promote only that declared branch and fixture."]
+revision_outcomes = ["A corrected producer changes residuals: retain the original result and register the supported mechanism separately, as C-1749 does for the spinor counterterm measure.", "A source contraction differs from the historical vector predicate: correct the attribution while preserving the historical vector measurement."]
+abandonment_outcomes = ["An independent replay contradicts a retained finite residual under the identical producer and inputs.", "A certified projected comparison violates the claimed amplitude bound for that declared branch."]
+inconclusive_outcomes = ["Spinor contact/distributional completion, scalar source coefficient/convention or numerical remainder bounds remain unresolved.", "Nondiscriminating diagram omissions or a passing regression that preserves a known failed identity cannot verify a Ward identity.", "Finite full-vector residuals alone establish neither source Eq. 7.6 failure nor a certified nonzero physical on-shell limit."]

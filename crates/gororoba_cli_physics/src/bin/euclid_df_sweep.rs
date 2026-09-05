@@ -125,16 +125,28 @@ struct Args {
     #[arg(long, default_value = "0.045")]
     density_floor: f64,
 
-    /// Run null-hypothesis control experiment (6 conditions, C0-C5).
+    /// Run C0-C5 historical controls plus C6 matched Sersic NFW-only control.
     /// Evaluate six fixed numerical control contrasts around D_f=2.73.
     /// Physical interpretation requires separate convergence and model evidence.
-    /// Requires --catalog for C4/C5.
+    /// Requires --catalog for C4/C5/C6 and explicit mass/Mach budgets.
     #[arg(long)]
     null_hypothesis: bool,
 
     /// Noise realizations per stochastic condition (C2, C3).
     #[arg(long, default_value = "10")]
     null_n_trials: usize,
+
+    /// Required null-control relative mass-error budget, measured from populations.
+    #[arg(long, required_if_eq("null_hypothesis", "true"))]
+    max_relative_mass_error: Option<f64>,
+
+    /// Required null-control raw population-moment Mach budget.
+    #[arg(long, required_if_eq("null_hypothesis", "true"))]
+    max_mach: Option<f64>,
+
+    /// New directory for exact null-control inputs and receipts; existing paths are refused.
+    #[arg(long, required_if_eq("null_hypothesis", "true"))]
+    null_evidence_dir: Option<std::path::PathBuf>,
 
     /// Enable shared-memory tiled GPU kernels (8x8x4 tile + halo).
     /// Highest priority dispatch: overrides coarsening and pull-streaming.
@@ -218,16 +230,9 @@ fn run_sweep(args: &Args, config: &GalaxyPipelineConfig, use_gpu: bool) {
     if args.null_hypothesis {
         validate_null_design(config.alpha_zd, args.null_n_trials)
             .expect("invalid null-control design");
-        if use_gpu {
-            #[cfg(feature = "gpu")]
-            run_null_hypothesis_gpu(args, config);
-            #[cfg(not(feature = "gpu"))]
-            {
-                eprintln!("WARNING: GPU not enabled, using CPU for null hypothesis");
-                run_null_hypothesis_cpu(args, config);
-            }
-        } else {
-            run_null_hypothesis_cpu(args, config);
+        if let Err(error) = run_null_hypothesis(args, config, use_gpu) {
+            eprintln!("null_control_failed: {error:#}");
+            std::process::exit(1);
         }
         return;
     }
@@ -676,17 +681,98 @@ fn run_cpu_sweep(
 }
 
 // ---------------------------------------------------------------------------
-// Null hypothesis control experiment (Phase 14)
+// Null hypothesis control experiment
 // ---------------------------------------------------------------------------
 
 /// Result of one null-hypothesis trial.
 #[cfg(feature = "euclid-catalog")]
+#[derive(Clone, Debug)]
 struct NullTrialResult {
     condition: String,
     trial: usize,
     df_initial: f64,
     df_final: f64,
     elapsed_ms: u64,
+    seed: Option<u64>,
+    observed_step: usize,
+    attempted_step: usize,
+    mass_error: f64,
+    max_mach: f64,
+    minimum_population: f64,
+    minimum_density: f64,
+    finite_state: bool,
+    positive_density: bool,
+    nonnegative_population: bool,
+    mass_within_budget: bool,
+    mach_within_budget: bool,
+    failure: Option<String>,
+}
+
+#[cfg(feature = "euclid-catalog")]
+fn retain_trial_inputs(
+    directory: &std::path::Path,
+    rho: &[f64],
+    force: &[[f64; 3]],
+    mut metadata: serde_json::Value,
+) -> anyhow::Result<()> {
+    use sha2::{Digest, Sha256};
+    std::fs::create_dir(directory)?;
+    for (name, values) in [
+        ("rho.f64le", rho.to_vec()),
+        ("force.xyz.f64le", force.iter().flatten().copied().collect()),
+    ] {
+        let bytes: Vec<_> = values.into_iter().flat_map(f64::to_le_bytes).collect();
+        let digest = Sha256::digest(&bytes)
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>();
+        let mut file = std::fs::File::create_new(directory.join(name))?;
+        file.write_all(&bytes)?;
+        file.sync_all()?;
+        metadata[name] = serde_json::json!({"sha256": digest, "bytes": bytes.len(), "encoding": "IEEE754_f64_little_endian"});
+    }
+    let mut receipt = std::fs::File::create_new(directory.join("input.json"))?;
+    serde_json::to_writer_pretty(&mut receipt, &metadata)?;
+    receipt.write_all(b"\n")?;
+    receipt.sync_all()?;
+    Ok(())
+}
+
+#[cfg(feature = "euclid-catalog")]
+fn record_null_observation(
+    result: &mut NullTrialResult,
+    observation: &gororoba_cli_physics::lbm_population_diagnostics::PopulationObservation,
+    initial_mass: f64,
+    budgets: (f64, f64),
+    step: usize,
+) {
+    let mass_error = (observation.mass / initial_mass - 1.0).abs();
+    let finite = observation.finite && mass_error.is_finite();
+    let positive = observation.minimum_density.is_finite() && observation.minimum_density > 0.0;
+    let nonnegative =
+        observation.minimum_population.is_finite() && observation.minimum_population >= 0.0;
+    let mass_ok = mass_error.is_finite() && mass_error <= budgets.0;
+    let mach_ok = observation.mach.is_finite() && observation.mach <= budgets.1;
+    if step == 0 {
+        result.finite_state = finite;
+        result.positive_density = positive;
+        result.nonnegative_population = nonnegative;
+        result.mass_within_budget = mass_ok;
+        result.mach_within_budget = mach_ok;
+    } else {
+        result.finite_state &= finite;
+        result.positive_density &= positive;
+        result.nonnegative_population &= nonnegative;
+        result.mass_within_budget &= mass_ok;
+        result.mach_within_budget &= mach_ok;
+    }
+    result.observed_step = step;
+    result.mass_error = mass_error;
+    result.max_mach = result.max_mach.max(observation.mach);
+    result.minimum_population = result
+        .minimum_population
+        .min(observation.minimum_population);
+    result.minimum_density = result.minimum_density.min(observation.minimum_density);
 }
 
 /// Generate white-noise density field with uniform distribution [lo, hi).
@@ -742,462 +828,712 @@ fn compute_zd_force_standalone(
     force
 }
 
-#[cfg(all(feature = "euclid-catalog", feature = "gpu"))]
-fn run_null_hypothesis_gpu(args: &Args, config: &GalaxyPipelineConfig) {
-    use lbm_3d_cuda::{LbmSolver3DCuda, Precision, box_counting_gpu::GpuBoxCounter};
+#[cfg(feature = "euclid-catalog")]
+const NULL_CONDITIONS: [&str; 7] = [
+    "C0-uniform-zero",
+    "C1-uniform-fzd",
+    "C2-noise-zero",
+    "C3-noise-fzd",
+    "C4-sersic-zero",
+    "C5-sersic-fzd",
+    "C6-sersic-nfw",
+];
 
-    let g = config.grid_dim;
-    let n_cells = g * g * g;
-    let steps = config.lbm_steps;
-    let smag = args.smagorinsky_cs;
-    let use_smag = smag > 0.0;
-    let tau = config.tau;
-    let dx = config.dx_kpc;
-
-    // Create GPU solver (reused across all conditions via initialize_custom)
-    let mut solver = LbmSolver3DCuda::new_capture_capable(g, g, g, tau, Precision::FP32, args.mrt)
-        .unwrap_or_else(|e| {
-            eprintln!("ERROR: CUDA solver init failed: {e}");
-            std::process::exit(1);
-        });
-
-    if args.tiling {
-        solver.set_tiling(true);
-    }
-
-    if let Err(e) = solver.set_l2_pinning(true) {
-        eprintln!("WARNING: L2 pinning failed: {e} (non-fatal, continuing without)");
-    }
-
-    let mut box_counter = GpuBoxCounter::new_with_stream(solver.context(), solver.stream().clone())
-        .unwrap_or_else(|e| {
-            eprintln!("ERROR: GpuBoxCounter init failed: {e}");
-            std::process::exit(1);
-        });
-
-    let zeros_u = vec![[0.0_f64; 3]; n_cells];
-    let zeros_f: Vec<[f64; 3]> = vec![[0.0; 3]; n_cells];
-
-    // Load first valid galaxy for C4/C5 and R_e reference
-    let entries = read_euclid_physical_measurements(&args.catalog).unwrap_or_else(|e| {
-        eprintln!("ERROR: {e}");
-        std::process::exit(1);
-    });
-    let first_setup = entries
-        .iter()
-        .find_map(|e| prepare_galaxy(e, config))
-        .unwrap_or_else(|| {
-            eprintln!("ERROR: no valid galaxy in catalog for positive control");
-            std::process::exit(1);
-        });
-    let r_e_kpc = first_setup.record_template.r_e_kpc;
-
-    eprintln!(
-        "=== Null Hypothesis Control (GPU) ===\n\
-         Reference galaxy: obj={}, R_e={:.2} kpc, type={}",
-        first_setup.record_template.object_id,
-        r_e_kpc,
-        first_setup.record_template.morphological_type,
-    );
-
-    // ZD force field (standalone, no NFW component)
-    let zd_force = if config.alpha_zd > 0.0 {
-        compute_zd_force_standalone(g, config.dx_kpc, r_e_kpc, config.alpha_zd)
-    } else {
-        eprintln!("WARNING: alpha_zd=0 -- C1/C3 degenerate to C0/C2 (no ZD forcing)");
-        zeros_f.clone()
-    };
-
-    let rho_uniform: Vec<f64> = vec![1.0; n_cells];
-
-    // Closure: run one trial and return result.
-    // Captures &mut solver, &mut box_counter, &zeros_u, and Copy scalars.
-    // Arguments (rho, force) are NOT captured -- passed per call.
-    let mut run_trial =
-        |rho: &[f64], force: &[[f64; 3]], label: String, trial: usize| -> NullTrialResult {
-            solver
-                .initialize_custom(rho, &zeros_u)
-                .expect("init failed");
-            solver.set_force_field(force).expect("force failed");
-
-            let df_initial = box_counter
-                .fractal_dimension_device_auto(solver.d_rho_bytes(), g, g, g)
-                .map(|r| r.d_f)
-                .expect("initial control box-count measurement failed");
-
-            let t0 = Instant::now();
-            if use_smag {
-                for step in 0..steps {
-                    if step % 10 == 0 {
-                        solver.update_smagorinsky_tau(smag, dx, tau).expect("null-control viscosity update failed");
-                    }
-                    solver.step().expect("LBM step");
-                }
-            } else {
-                solver.step_n(steps).expect("LBM step_n");
-            }
-
-            let df_final = box_counter
-                .fractal_dimension_device_auto(solver.d_rho_bytes(), g, g, g)
-                .map(|r| r.d_f)
-                .expect("final control box-count measurement failed");
-
-            let elapsed = t0.elapsed().as_millis() as u64;
-            eprintln!("  {label}[{trial}]: D_f = {df_initial:.4} -> {df_final:.4} ({elapsed}ms)");
-            NullTrialResult {
-                condition: label,
-                trial,
-                df_initial,
-                df_final,
-                elapsed_ms: elapsed,
-            }
-        };
-
-    let mut results: Vec<NullTrialResult> = Vec::new();
-
-    // C0: Uniform density + zero force
-    results.push(run_trial(
-        &rho_uniform,
-        &zeros_f,
-        "C0-uniform-zero".into(),
-        0,
-    ));
-
-    // C1: Uniform density + ZD force only (no NFW gravity)
-    results.push(run_trial(
-        &rho_uniform,
-        &zd_force,
-        "C1-uniform-fzd".into(),
-        0,
-    ));
-
-    // C2: White noise density + zero force (N trials)
-    for trial in 0..args.null_n_trials {
-        let rho_noise = generate_white_noise(n_cells, 0.5, 1.5, trial as u64);
-        results.push(run_trial(
-            &rho_noise,
-            &zeros_f,
-            "C2-noise-zero".into(),
-            trial,
-        ));
-    }
-
-    // C3: White noise density + ZD force (N trials)
-    for trial in 0..args.null_n_trials {
-        let rho_noise = generate_white_noise(n_cells, 0.5, 1.5, trial as u64 + 1000);
-        results.push(run_trial(
-            &rho_noise,
-            &zd_force,
-            "C3-noise-fzd".into(),
-            trial,
-        ));
-    }
-
-    // C4: Sersic galaxy density + zero force (morphology without dynamics)
-    results.push(run_trial(
-        &first_setup.rho_total,
-        &zeros_f,
-        "C4-sersic-zero".into(),
-        0,
-    ));
-
-    // C5: Sersic galaxy + full force (positive control -- should match E-166)
-    results.push(run_trial(
-        &first_setup.rho_total,
-        &first_setup.force_field,
-        "C5-sersic-fzd".into(),
-        0,
-    ));
-
-    report_null_hypothesis(&results);
+#[cfg(feature = "euclid-catalog")]
+fn trial_seed(seed: u64, trial: usize) -> u64 {
+    seed.wrapping_add(trial as u64)
 }
 
 #[cfg(feature = "euclid-catalog")]
-fn run_null_hypothesis_cpu(args: &Args, config: &GalaxyPipelineConfig) {
-    use lbm_3d::solver::{BgkCollision, LbmSolver3D, aosoa_idx};
-
-    let g = config.grid_dim;
-    let n_cells = g * g * g;
-    let use_smag = args.smagorinsky_cs > 0.0;
-
-    let entries = read_euclid_physical_measurements(&args.catalog).unwrap_or_else(|e| {
-        eprintln!("ERROR: {e}");
-        std::process::exit(1);
-    });
-    let first_setup = entries
-        .iter()
-        .find_map(|e| prepare_galaxy(e, config))
-        .unwrap_or_else(|| {
-            eprintln!("ERROR: no valid galaxy in catalog for positive control");
-            std::process::exit(1);
-        });
-    let r_e_kpc = first_setup.record_template.r_e_kpc;
-
-    eprintln!(
-        "=== Null Hypothesis Control (CPU) ===\n\
-         Reference galaxy: obj={}, R_e={:.2} kpc, type={}",
-        first_setup.record_template.object_id,
-        r_e_kpc,
-        first_setup.record_template.morphological_type,
-    );
-
-    let zd_force = if config.alpha_zd > 0.0 {
-        compute_zd_force_standalone(g, config.dx_kpc, r_e_kpc, config.alpha_zd)
+fn null_backend(
+    args: &Args,
+    config: &GalaxyPipelineConfig,
+    use_gpu: bool,
+) -> anyhow::Result<gororoba_cli_physics::lbm_dispatch::LbmBackend> {
+    use gororoba_cli_physics::lbm_dispatch::LbmBackend;
+    let dimension = config.grid_dim;
+    let mode = if args.mrt {
+        lbm_3d::solver::CollisionMode::Mrt
     } else {
-        eprintln!("WARNING: alpha_zd=0 -- C1/C3 degenerate to C0/C2 (no ZD forcing)");
-        vec![[0.0; 3]; n_cells]
+        lbm_3d::solver::CollisionMode::Bgk
     };
-
-    let zeros_f: Vec<[f64; 3]> = vec![[0.0; 3]; n_cells];
-    let rho_uniform: Vec<f64> = vec![1.0; n_cells];
-
-    let mut results: Vec<NullTrialResult> = Vec::new();
-
-    // Helper: run one CPU trial with a fresh solver.
-    // Takes force by reference and clones for set_force_field (which takes Vec).
-    let run_cpu_trial = |rho: &[f64],
-                         force: &[[f64; 3]],
-                         label: &str,
-                         trial: usize|
-     -> NullTrialResult {
-        let mut solver = if args.mrt {
-            LbmSolver3D::new_mrt(g, g, g, config.tau)
-        } else {
-            LbmSolver3D::new(g, g, g, config.tau)
-        };
-
-        let lattice = &solver.collider.lattice;
-        for (idx, &density) in rho.iter().enumerate() {
-            let f_eq = BgkCollision::initialize_rest(density, lattice);
-            for (dir, &val) in f_eq.iter().enumerate() {
-                solver.f[aosoa_idx(idx, dir)] = val;
-            }
-            solver.rho[idx] = density;
-            solver.u[idx] = [0.0, 0.0, 0.0];
+    let mut backend = if use_gpu {
+        #[cfg(feature = "gpu")]
+        {
+            LbmBackend::cuda(dimension, dimension, dimension, config.tau, mode)?
         }
-        solver
-            .set_force_field(force.to_vec())
-            .expect("force size mismatch");
+        #[cfg(not(feature = "gpu"))]
+        {
+            anyhow::bail!(
+                "requested CUDA null-control backend requires gpu feature; select --cpu explicitly"
+            );
+        }
+    } else {
+        LbmBackend::cpu(dimension, dimension, dimension, config.tau, mode)
+    };
+    anyhow::ensure!(
+        !args.tiling || use_gpu,
+        "tiling requires CUDA; CPU cannot execute this configuration"
+    );
+    backend.set_tiling(args.tiling);
+    Ok(backend)
+}
 
-        let df_initial = box_counting_fractal_dim(&solver.rho, g, g, g);
-        let t0 = Instant::now();
-
+#[cfg(feature = "euclid-catalog")]
+fn run_null_trial(
+    args: &Args,
+    config: &GalaxyPipelineConfig,
+    use_gpu: bool,
+    rho: &[f64],
+    force: &[[f64; 3]],
+    identity: (&str, usize, Option<u64>, &str),
+) -> NullTrialResult {
+    use gororoba_cli_physics::lbm_population_diagnostics::inspect_fields;
+    use sha2::{Digest, Sha256};
+    let (condition, trial, seed, object_id) = identity;
+    let mut density_hash = Sha256::new();
+    for value in rho {
+        density_hash.update(value.to_le_bytes());
+    }
+    let mut force_hash = Sha256::new();
+    for value in force.iter().flatten() {
+        force_hash.update(value.to_le_bytes());
+    }
+    eprintln!(
+        "trial_input condition={condition} trial={trial} seed={seed:?} rho_f64le_sha256={} force_xyz_f64le_sha256={}",
+        density_hash
+            .finalize()
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>(),
+        force_hash
+            .finalize()
+            .iter()
+            .map(|byte| format!("{byte:02x}"))
+            .collect::<String>()
+    );
+    let start = Instant::now();
+    let mut result = NullTrialResult {
+        condition: condition.into(),
+        trial,
+        seed,
+        df_initial: f64::NAN,
+        df_final: f64::NAN,
+        elapsed_ms: 0,
+        observed_step: 0,
+        attempted_step: 0,
+        mass_error: f64::NAN,
+        max_mach: 0.0,
+        minimum_population: f64::INFINITY,
+        minimum_density: f64::INFINITY,
+        finite_state: false,
+        positive_density: false,
+        nonnegative_population: false,
+        mass_within_budget: false,
+        mach_within_budget: false,
+        failure: None,
+    };
+    let execution = (|| -> anyhow::Result<()> {
+        let evidence_root = args
+            .null_evidence_dir
+            .as_ref()
+            .ok_or_else(|| anyhow::anyhow!("null evidence directory required"))?;
+        retain_trial_inputs(
+            &evidence_root.join(format!("{condition}-{trial}")),
+            rho,
+            force,
+            serde_json::json!({
+                "condition":condition,"trial":trial,"seed":seed,"selected_object_id":object_id,
+                "backend":if use_gpu {"CUDA_FP32"}else{"CPU_FP64"},"catalog":args.catalog,
+                "grid":config.grid_dim,"steps":config.lbm_steps,"tau":config.tau,"dx_kpc":config.dx_kpc,
+                "alpha_zd":config.alpha_zd,"density_floor":config.density_floor,"softening_eps":config.softening_eps,
+                "smagorinsky_cs":args.smagorinsky_cs,"collision":if args.mrt {"MRT"}else{"BGK"},
+                "max_relative_mass_error":args.max_relative_mass_error,"max_mach":args.max_mach,
+            "observation":"direct_every_step_post_step_population_moments","zero_initial_velocity":true,"tiling":args.tiling
+            }),
+        )?;
+        anyhow::ensure!(
+            rho.len() == config.grid_dim.pow(3)
+                && force.len() == rho.len()
+                && force.iter().flatten().all(|value| value.is_finite()),
+            "invalid trial input dimensions or force values"
+        );
+        let mut backend = null_backend(args, config, use_gpu)?;
+        backend.initialize_custom(rho, &vec![[0.0; 3]; rho.len()])?;
+        backend.set_force_field(force.to_vec())?;
+        let initial = inspect_fields(&mut backend)?;
+        let mass_budget = args
+            .max_relative_mass_error
+            .ok_or_else(|| anyhow::anyhow!("mass budget required"))?;
+        let mach_budget = args
+            .max_mach
+            .ok_or_else(|| anyhow::anyhow!("Mach budget required"))?;
+        record_null_observation(
+            &mut result,
+            &initial,
+            initial.mass,
+            (mass_budget, mach_budget),
+            0,
+        );
+        initial.require_stable(initial.mass, mass_budget, mach_budget)?;
+        result.df_initial = box_counting_fractal_dim(
+            &initial.density,
+            config.grid_dim,
+            config.grid_dim,
+            config.grid_dim,
+        );
+        anyhow::ensure!(
+            result.df_initial.is_finite() && (0.0..=3.0).contains(&result.df_initial),
+            "initial box-count dimension outside finite[0,3]"
+        );
+        let mut final_density = initial.density;
         for step in 0..config.lbm_steps {
-            if use_smag && step % 10 == 0 {
-                let _ =
-                    solver.update_smagorinsky_tau(args.smagorinsky_cs, config.dx_kpc, config.tau);
+            result.attempted_step = step + 1;
+            if args.smagorinsky_cs > 0.0 && step % 10 == 0 {
+                match &mut backend {
+                    gororoba_cli_physics::lbm_dispatch::LbmBackend::Avx2(solver) => solver
+                        .update_smagorinsky_tau(args.smagorinsky_cs, config.dx_kpc, config.tau)?,
+                    #[cfg(feature = "gpu")]
+                    gororoba_cli_physics::lbm_dispatch::LbmBackend::Cuda(solver) => solver
+                        .update_smagorinsky_tau(args.smagorinsky_cs, config.dx_kpc, config.tau)?,
+                }
             }
-            solver.evolve_one_step();
+            backend.step()?;
+            let observation = inspect_fields(&mut backend)?;
+            record_null_observation(
+                &mut result,
+                &observation,
+                initial.mass,
+                (mass_budget, mach_budget),
+                step + 1,
+            );
+            observation.require_stable(initial.mass, mass_budget, mach_budget)?;
+            final_density = observation.density;
         }
-
-        let df_final = box_counting_fractal_dim(&solver.rho, g, g, g);
-        let elapsed = t0.elapsed().as_millis() as u64;
-
-        eprintln!("  {label}[{trial}]: D_f = {df_initial:.4} -> {df_final:.4} ({elapsed}ms)");
-        NullTrialResult {
-            condition: label.to_string(),
-            trial,
-            df_initial,
-            df_final,
-            elapsed_ms: elapsed,
-        }
-    };
-
-    // C0: Uniform + zero force
-    results.push(run_cpu_trial(&rho_uniform, &zeros_f, "C0-uniform-zero", 0));
-
-    // C1: Uniform + ZD force only
-    results.push(run_cpu_trial(&rho_uniform, &zd_force, "C1-uniform-fzd", 0));
-
-    // C2: White noise + zero force (N trials)
-    for trial in 0..args.null_n_trials {
-        let rho_noise = generate_white_noise(n_cells, 0.5, 1.5, trial as u64);
-        results.push(run_cpu_trial(&rho_noise, &zeros_f, "C2-noise-zero", trial));
+        result.df_final = box_counting_fractal_dim(
+            &final_density,
+            config.grid_dim,
+            config.grid_dim,
+            config.grid_dim,
+        );
+        anyhow::ensure!(
+            result.df_final.is_finite() && (0.0..=3.0).contains(&result.df_final),
+            "final box-count dimension outside finite[0,3]"
+        );
+        Ok(())
+    })();
+    if let Err(error) = execution {
+        result.failure = Some(error.to_string());
     }
-
-    // C3: White noise + ZD force (N trials)
-    for trial in 0..args.null_n_trials {
-        let rho_noise = generate_white_noise(n_cells, 0.5, 1.5, trial as u64 + 1000);
-        results.push(run_cpu_trial(&rho_noise, &zd_force, "C3-noise-fzd", trial));
-    }
-
-    // C4: Sersic + zero force
-    results.push(run_cpu_trial(
-        &first_setup.rho_total,
-        &zeros_f,
-        "C4-sersic-zero",
-        0,
-    ));
-
-    // C5: Sersic + full force (positive control)
-    results.push(run_cpu_trial(
-        &first_setup.rho_total,
-        &first_setup.force_field,
-        "C5-sersic-fzd",
-        0,
-    ));
-
-    let _ = run_cpu_trial;
-    report_null_hypothesis(&results);
+    result.elapsed_ms = start.elapsed().as_millis() as u64;
+    result
 }
 
-/// Emit CSV and fixed-threshold predicates for the six control conditions.
-///
-/// All predicates must hold for the declared numerical control check:
-/// - C0 D_f > 2.95 (uniform stays trivial)
-/// - C1 |D_f - 2.73| > 0.10 (ZD alone does not produce the signal)
-/// - C2 D_f > 2.90 (noise homogenizes under MRT diffusion)
-/// - C3 |D_f - 2.73| > 0.10 (noise + ZD does not produce the signal)
-/// - C4 |D_f - 2.73| > 0.10 (morphology alone diffuses away)
-/// - C5 |D_f - 2.73| < 0.07 (positive-control tolerance)
 #[cfg(feature = "euclid-catalog")]
-fn report_null_hypothesis(results: &[NullTrialResult]) {
-    // CSV output (stdout)
-    println!("condition,trial,df_initial,df_final,elapsed_ms");
-    for r in results {
-        println!(
-            "{},{},{:.4},{:.4},{}",
-            r.condition, r.trial, r.df_initial, r.df_final, r.elapsed_ms
-        );
+fn run_null_hypothesis(
+    args: &Args,
+    config: &GalaxyPipelineConfig,
+    use_gpu: bool,
+) -> anyhow::Result<()> {
+    use cosmology_core::euclid_morphology::read_euclid_physical_measurements_audited;
+    validate_null_design(config.alpha_zd, args.null_n_trials)?;
+    anyhow::ensure!(
+        args.tau.is_finite() && args.tau >= 0.501 && args.tau == config.tau,
+        "null trials require an explicit finite tau>=0.501 without clamping"
+    );
+    anyhow::ensure!(
+        config.dx_kpc.is_finite()
+            && config.dx_kpc > 0.0
+            && args.smagorinsky_cs.is_finite()
+            && args.smagorinsky_cs >= 0.0,
+        "positive finite spatial scale and nonnegative finite Smagorinsky coefficient required"
+    );
+    anyhow::ensure!(
+        config.grid_dim.checked_pow(3).is_some(),
+        "grid cell count overflow"
+    );
+    anyhow::ensure!(
+        config.grid_dim >= 4 && config.lbm_steps > 0,
+        "null trials require grid>=4 and steps>0"
+    );
+    anyhow::ensure!(
+        !args.skip_lbm,
+        "null trials require evolution; skip-lbm changes the declared experiment"
+    );
+    let mass_budget = args
+        .max_relative_mass_error
+        .ok_or_else(|| anyhow::anyhow!("mass budget required"))?;
+    let mach_budget = args
+        .max_mach
+        .ok_or_else(|| anyhow::anyhow!("Mach budget required"))?;
+    anyhow::ensure!(
+        mass_budget.is_finite()
+            && mass_budget >= 0.0
+            && mach_budget.is_finite()
+            && mach_budget > 0.0,
+        "invalid mass/Mach budgets"
+    );
+    let catalog =
+        read_euclid_physical_measurements_audited(&args.catalog).map_err(anyhow::Error::msg)?;
+    let (entry, setup) = catalog
+        .entries
+        .iter()
+        .find_map(|entry| prepare_galaxy(entry, config).map(|setup| (entry, setup)))
+        .ok_or_else(|| anyhow::anyhow!("catalog lacks an admitted galaxy setup"))?;
+    let mut nfw_config = config.clone();
+    nfw_config.alpha_zd = 0.0;
+    let nfw_setup = prepare_galaxy(entry, &nfw_config)
+        .ok_or_else(|| anyhow::anyhow!("NFW-only paired setup failed"))?;
+    anyhow::ensure!(
+        setup.rho_total == nfw_setup.rho_total,
+        "paired galaxy force controls require identical density"
+    );
+    anyhow::ensure!(
+        setup.force_field != nfw_setup.force_field,
+        "full and NFW-only forces coincide; ZD increment is unidentifiable"
+    );
+    eprintln!(
+        "catalog_rows={} rejected_rows={} admitted_entries={} selected_object={} backend={} observation=post_step_population_moments df_oracle=host_box_counting observation_interval=1 mass_budget={} mach_budget={} readback_and_initialization_overhead=included",
+        catalog.rows_read,
+        catalog.rejected_rows.len(),
+        catalog.entries.len(),
+        entry.object_id,
+        if use_gpu { "CUDA_FP32" } else { "CPU_FP64" },
+        mass_budget,
+        mach_budget
+    );
+    let cells = config.grid_dim.pow(3);
+    let uniform = vec![1.0; cells];
+    let zero = vec![[0.0; 3]; cells];
+    let zd = compute_zd_force_standalone(
+        config.grid_dim,
+        config.dx_kpc,
+        setup.record_template.r_e_kpc,
+        config.alpha_zd,
+    );
+    let mut results = Vec::new();
+    let evidence_root = args
+        .null_evidence_dir
+        .as_ref()
+        .ok_or_else(|| anyhow::anyhow!("null evidence directory required"))?;
+    std::fs::create_dir(evidence_root)?;
+    let selected_object = entry.object_id.to_string();
+    for (condition, force) in [(NULL_CONDITIONS[0], &zero), (NULL_CONDITIONS[1], &zd)] {
+        results.push(run_null_trial(
+            args,
+            config,
+            use_gpu,
+            &uniform,
+            force,
+            (condition, 0, None, &selected_object),
+        ));
     }
-
-    // Per-condition statistics
-    let e166_mean = 2.732;
-    let separation_tolerance = 0.10; // Fixed separation tolerance; calibrated uncertainty is unassessed.
-
-    let c0 = results.iter().find(|r| r.condition == "C0-uniform-zero");
-    let c1 = results.iter().find(|r| r.condition == "C1-uniform-fzd");
-    let c4 = results.iter().find(|r| r.condition == "C4-sersic-zero");
-    let c5 = results.iter().find(|r| r.condition == "C5-sersic-fzd");
-
-    let c2_vals: Vec<f64> = results
-        .iter()
-        .filter(|r| r.condition == "C2-noise-zero")
-        .map(|r| r.df_final)
-        .collect();
-    let c3_vals: Vec<f64> = results
-        .iter()
-        .filter(|r| r.condition == "C3-noise-fzd")
-        .map(|r| r.df_final)
-        .collect();
-
-    let mean_std = |vals: &[f64]| -> (f64, f64) {
-        if vals.is_empty() {
-            return (f64::NAN, 0.0);
+    for trial in 0..args.null_n_trials {
+        let seed = trial_seed(args.seed, trial);
+        let noise = generate_white_noise(cells, 0.5, 1.5, seed);
+        for (condition, force) in [(NULL_CONDITIONS[2], &zero), (NULL_CONDITIONS[3], &zd)] {
+            results.push(run_null_trial(
+                args,
+                config,
+                use_gpu,
+                &noise,
+                force,
+                (condition, trial, Some(seed), &selected_object),
+            ));
         }
-        let m = vals.iter().sum::<f64>() / vals.len() as f64;
-        let v = if vals.len() < 2 {
-            0.0
-        } else {
-            vals.iter().map(|x| (x - m).powi(2)).sum::<f64>() / (vals.len() as f64 - 1.0)
-        };
-        (m, v.sqrt())
+    }
+    for (condition, force) in [
+        (NULL_CONDITIONS[4], &zero),
+        (NULL_CONDITIONS[5], &setup.force_field),
+        (NULL_CONDITIONS[6], &nfw_setup.force_field),
+    ] {
+        results.push(run_null_trial(
+            args,
+            config,
+            use_gpu,
+            &setup.rho_total,
+            force,
+            (condition, 0, None, &selected_object),
+        ));
+    }
+    let mut retained_rows = std::fs::File::create_new(evidence_root.join("trials.csv"))?;
+    write_null_rows(&results, &mut retained_rows)?;
+    retained_rows.sync_all()?;
+    report_null_hypothesis(
+        &results,
+        args.null_n_trials,
+        args.seed,
+        config.lbm_steps,
+        mass_budget,
+        mach_budget,
+    )
+}
+
+#[cfg(feature = "euclid-catalog")]
+fn validate_trial_rows(
+    results: &[NullTrialResult],
+    trials: usize,
+    seed: u64,
+    steps: usize,
+    mass_budget: f64,
+    mach_budget: f64,
+) -> anyhow::Result<()> {
+    anyhow::ensure!(
+        mass_budget.is_finite()
+            && mass_budget >= 0.0
+            && mach_budget.is_finite()
+            && mach_budget > 0.0,
+        "invalid mass/Mach budgets"
+    );
+    let mut expected = std::collections::BTreeSet::new();
+    for (index, condition) in NULL_CONDITIONS.iter().enumerate() {
+        for trial in 0..if index == 2 || index == 3 { trials } else { 1 } {
+            expected.insert((*condition, trial));
+        }
+    }
+    let mut observed = std::collections::BTreeSet::new();
+    for row in results {
+        anyhow::ensure!(
+            observed.insert((row.condition.as_str(), row.trial)),
+            "duplicate trial row"
+        );
+        anyhow::ensure!(
+            row.failure.is_none() && row.observed_step == steps && row.attempted_step == steps,
+            "trial failed or incomplete: {}[{}] {:?}",
+            row.condition,
+            row.trial,
+            row.failure
+        );
+        anyhow::ensure!(
+            row.df_initial.is_finite()
+                && row.df_final.is_finite()
+                && (0.0..=3.0).contains(&row.df_final),
+            "invalid dimension"
+        );
+        anyhow::ensure!(
+            row.finite_state
+                && row.positive_density
+                && row.nonnegative_population
+                && row.mass_within_budget
+                && row.mach_within_budget
+                && row.minimum_density.is_finite()
+                && row.minimum_density > 0.0,
+            "population assessment failed"
+        );
+        anyhow::ensure!(
+            row.mass_error.is_finite()
+                && row.mass_error >= 0.0
+                && row.mass_error <= mass_budget
+                && row.max_mach.is_finite()
+                && row.max_mach >= 0.0
+                && row.max_mach <= mach_budget
+                && row.minimum_population.is_finite()
+                && row.minimum_population >= 0.0,
+            "invalid population diagnostics"
+        );
+        let expected_seed =
+            if row.condition == NULL_CONDITIONS[2] || row.condition == NULL_CONDITIONS[3] {
+                Some(trial_seed(seed, row.trial))
+            } else {
+                None
+            };
+        anyhow::ensure!(row.seed == expected_seed, "unpaired trial seed");
+    }
+    anyhow::ensure!(
+        trials > 0 && observed == expected,
+        "missing, extra or wrongly indexed trial rows"
+    );
+    Ok(())
+}
+
+#[cfg(feature = "euclid-catalog")]
+fn null_predicates(
+    results: &[NullTrialResult],
+    trials: usize,
+    seed: u64,
+    steps: usize,
+    mass_budget: f64,
+    mach_budget: f64,
+) -> anyhow::Result<[bool; 6]> {
+    validate_trial_rows(results, trials, seed, steps, mass_budget, mach_budget)?;
+    let mean = |condition: &str| {
+        let values: Vec<_> = results
+            .iter()
+            .filter(|row| row.condition == condition)
+            .map(|row| row.df_final)
+            .collect();
+        values.iter().sum::<f64>() / values.len() as f64
     };
+    Ok([
+        mean(NULL_CONDITIONS[0]) > 2.95,
+        (mean(NULL_CONDITIONS[1]) - 2.732).abs() > 0.10,
+        mean(NULL_CONDITIONS[2]) > 2.90,
+        (mean(NULL_CONDITIONS[3]) - 2.732).abs() > 0.10,
+        (mean(NULL_CONDITIONS[4]) - 2.732).abs() > 0.10,
+        (mean(NULL_CONDITIONS[5]) - 2.732).abs() < 0.07,
+    ])
+}
 
-    let (c2_mean, c2_std) = mean_std(&c2_vals);
-    let (c3_mean, c3_std) = mean_std(&c3_vals);
+#[cfg(feature = "euclid-catalog")]
+fn write_null_rows(results: &[NullTrialResult], output: &mut impl Write) -> anyhow::Result<()> {
+    writeln!(
+        output,
+        "condition,trial,seed,df_initial,df_final,elapsed_ms,observed_step,attempted_step,mass_error,max_mach,minimum_population,minimum_density,finite_state,positive_density,nonnegative_population,mass_within_budget,mach_within_budget,failure"
+    )?;
+    for row in results {
+        writeln!(
+            output,
+            "{},{},{},{:.17},{:.17},{},{},{},{:.17},{:.17},{:.17},{:.17},{},{},{},{},{},\"{}\"",
+            row.condition,
+            row.trial,
+            row.seed.map(|value| value.to_string()).unwrap_or_default(),
+            row.df_initial,
+            row.df_final,
+            row.elapsed_ms,
+            row.observed_step,
+            row.attempted_step,
+            row.mass_error,
+            row.max_mach,
+            row.minimum_population,
+            row.minimum_density,
+            row.finite_state,
+            row.positive_density,
+            row.nonnegative_population,
+            row.mass_within_budget,
+            row.mach_within_budget,
+            row.failure.as_deref().unwrap_or("").replace('"', "\"\"")
+        )?;
+    }
+    Ok(())
+}
 
-    eprintln!("\n=== Numerical Control Predicates ===");
-    let mut all_pass = true;
-
-    // C0: D_f > 2.95 (uniform should stay near 3.0)
-    if let Some(r) = c0 {
-        let pass = r.df_final > 2.95;
-        if !pass {
-            all_pass = false;
-        }
+#[cfg(feature = "euclid-catalog")]
+fn report_null_hypothesis(
+    results: &[NullTrialResult],
+    trials: usize,
+    seed: u64,
+    steps: usize,
+    mass_budget: f64,
+    mach_budget: f64,
+) -> anyhow::Result<()> {
+    write_null_rows(results, &mut std::io::stdout().lock())?;
+    let predicates = null_predicates(results, trials, seed, steps, mass_budget, mach_budget)?;
+    for (index, passed) in predicates.iter().enumerate() {
         eprintln!(
-            "C0 uniform+zero:   D_f={:.4}  {}  (threshold: >2.95)",
-            r.df_final,
-            if pass { "PASS" } else { "**FAIL**" },
+            "condition={} historical_predicate_pass={passed}",
+            NULL_CONDITIONS[index]
+        );
+    }
+    let paired: Vec<_> = (0..trials)
+        .map(|trial| {
+            let value = |condition: &str| {
+                results
+                    .iter()
+                    .find(|row| row.condition == condition && row.trial == trial)
+                    .unwrap()
+                    .df_final
+            };
+            value(NULL_CONDITIONS[3]) - value(NULL_CONDITIONS[2])
+        })
+        .collect();
+    let mean = paired.iter().sum::<f64>() / trials as f64;
+    let sd = (trials > 1).then(|| {
+        (paired
+            .iter()
+            .map(|value| (value - mean).powi(2))
+            .sum::<f64>()
+            / (trials - 1) as f64)
+            .sqrt()
+    });
+    let galaxy = |condition: &str| {
+        results
+            .iter()
+            .find(|row| row.condition == condition)
+            .unwrap()
+            .df_final
+    };
+    eprintln!(
+        "paired_noise_zd_increment_mean={mean:.17} paired_sample_sd={} confidence_interval=unassessed sersic_zd_increment={:.17} sersic_nfw_increment={:.17} physical_interpretation=unassessed convergence=unassessed",
+        sd.map(|value| value.to_string())
+            .unwrap_or_else(|| "unassessed_single_pair".into()),
+        galaxy(NULL_CONDITIONS[5]) - galaxy(NULL_CONDITIONS[6]),
+        galaxy(NULL_CONDITIONS[6]) - galaxy(NULL_CONDITIONS[4])
+    );
+    anyhow::ensure!(
+        predicates.iter().all(|passed| *passed),
+        "historical numerical control predicates failed"
+    );
+    Ok(())
+}
+
+#[cfg(all(test, feature = "euclid-catalog"))]
+mod control_instrument_tests {
+    use super::*;
+    fn passing_rows() -> Vec<NullTrialResult> {
+        NULL_CONDITIONS
+            .iter()
+            .enumerate()
+            .map(|(index, condition)| NullTrialResult {
+                condition: (*condition).into(),
+                trial: 0,
+                seed: [2, 3].contains(&index).then_some(42),
+                df_initial: 3.0,
+                df_final: if index == 5 { 2.732 } else { 3.0 },
+                elapsed_ms: 0,
+                observed_step: 24,
+                attempted_step: 24,
+                mass_error: 0.0,
+                max_mach: 0.0,
+                minimum_population: 0.01,
+                minimum_density: 1.0,
+                finite_state: true,
+                positive_density: true,
+                nonnegative_population: true,
+                mass_within_budget: true,
+                mach_within_budget: true,
+                failure: None,
+            })
+            .collect()
+    }
+    fn outcome(rows: &[NullTrialResult]) -> anyhow::Result<[bool; 6]> {
+        null_predicates(rows, 1, 42, 24, 1e-5, 0.3)
+    }
+    #[test]
+    fn exact_rows_pairing_and_invalid_states_are_required() {
+        let baseline = passing_rows();
+        assert!(outcome(&baseline).unwrap().iter().all(|passed| *passed));
+        for missing in 0..7 {
+            let mut changed = baseline.clone();
+            changed.remove(missing);
+            assert!(outcome(&changed).is_err());
+        }
+        let mut changed = baseline.clone();
+        changed.push(changed[0].clone());
+        assert!(outcome(&changed).is_err());
+        let mut changed = baseline.clone();
+        changed[3].seed = Some(1042);
+        assert!(outcome(&changed).is_err());
+        for value in [f64::NAN, f64::INFINITY, -1.0, 3.1] {
+            let mut changed = baseline.clone();
+            changed[1].df_final = value;
+            assert!(outcome(&changed).is_err());
+        }
+        let mut changed = baseline.clone();
+        changed[0].mass_error = 1e113;
+        assert!(outcome(&changed).is_err());
+        let mut changed = baseline.clone();
+        changed[0].minimum_population = -1e-9;
+        assert!(outcome(&changed).is_err());
+        let mut changed = baseline.clone();
+        changed[0].max_mach = 0.31;
+        assert!(outcome(&changed).is_err());
+        let mut changed = baseline.clone();
+        changed[0].observed_step = 23;
+        assert!(outcome(&changed).is_err());
+        let mut changed = baseline;
+        changed[5].df_final = 3.0;
+        assert!(!outcome(&changed).unwrap()[5]);
+        assert!(report_null_hypothesis(&changed, 1, 42, 24, 1e-5, 0.3).is_err());
+    }
+    #[test]
+    fn paired_seeds_recreate_exact_density_and_budgets_are_mandatory() {
+        for trial in 0..10 {
+            let seed = trial_seed(42, trial);
+            assert_eq!(seed, 42 + trial as u64);
+            assert_eq!(
+                generate_white_noise(64, 0.5, 1.5, seed),
+                generate_white_noise(64, 0.5, 1.5, seed)
+            );
+        }
+        assert!(
+            Args::try_parse_from(["sweep", "--catalog", "fixture", "--null-hypothesis"]).is_err()
         );
     }
 
-    // C1: |D_f - 2.73| > 0.10 (ZD alone must not produce 2.73)
-    if let Some(r) = c1 {
-        let delta = (r.df_final - e166_mean).abs();
-        let pass = delta > separation_tolerance;
-        if !pass {
-            all_pass = false;
+    #[test]
+    fn failed_attempt_still_serializes_every_planned_row() {
+        let baseline = passing_rows();
+        let mut rows: Vec<_> = baseline
+            .iter()
+            .filter(|row| row.seed.is_none())
+            .cloned()
+            .collect();
+        for trial in 0..10 {
+            for template in [&baseline[2], &baseline[3]] {
+                let mut row = template.clone();
+                row.trial = trial;
+                row.seed = Some(trial_seed(42, trial));
+                rows.push(row);
+            }
         }
-        eprintln!(
-            "C1 uniform+fzd:    D_f={:.4}  {}  (delta={:.3}, threshold: >{:.2})",
-            r.df_final,
-            if pass { "PASS" } else { "**FAIL**" },
-            delta,
-            separation_tolerance,
-        );
+        rows[0].attempted_step = 1;
+        rows[0].observed_step = 0;
+        rows[0].failure = Some("post-step population readback failed".into());
+        rows[0].df_final = f64::NAN;
+        let mut bytes = Vec::new();
+        write_null_rows(&rows, &mut bytes).unwrap();
+        let text = String::from_utf8(bytes).unwrap();
+        assert_eq!(text.lines().count(), 26);
+        let columns: Vec<_> = text.lines().nth(1).unwrap().split(',').collect();
+        assert_eq!(columns[6], "0");
+        assert_eq!(columns[7], "1");
+        assert!(text.contains("post-step population readback failed"));
+        assert!(null_predicates(&rows, 10, 42, 24, 1e-5, 0.3).is_err());
     }
+}
 
-    // C2: mean D_f > 2.90 (noise homogenizes)
-    {
-        let pass = c2_mean > 2.90;
-        if !pass {
-            all_pass = false;
+#[cfg(all(test, feature = "euclid-catalog"))]
+mod retained_input_tests {
+    use super::*;
+    #[test]
+    fn exact_arrays_receipts_and_exclusive_creation_agree() {
+        use sha2::{Digest, Sha256};
+        let directory = std::env::temp_dir().join(format!(
+            "null-input-receipt-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .unwrap()
+                .as_nanos()
+        ));
+        let rho = [1.0, -0.0, 0.5];
+        let force = [[0.1, 0.2, -0.3]; 3];
+        let metadata = serde_json::json!({"condition":"fixture","trial":0,"seed":42,"selected_object_id":"123"});
+        retain_trial_inputs(&directory, &rho, &force, metadata.clone()).unwrap();
+        let receipt: serde_json::Value =
+            serde_json::from_reader(std::fs::File::open(directory.join("input.json")).unwrap())
+                .unwrap();
+        assert_eq!(receipt["seed"], 42);
+        assert_eq!(receipt["selected_object_id"], "123");
+        for (name, expected) in [
+            ("rho.f64le", rho.to_vec()),
+            ("force.xyz.f64le", force.into_iter().flatten().collect()),
+        ] {
+            let bytes = std::fs::read(directory.join(name)).unwrap();
+            let decoded: Vec<_> = bytes
+                .chunks_exact(8)
+                .map(|chunk| f64::from_le_bytes(chunk.try_into().unwrap()))
+                .collect();
+            assert_eq!(
+                decoded
+                    .iter()
+                    .map(|value| value.to_bits())
+                    .collect::<Vec<_>>(),
+                expected
+                    .iter()
+                    .map(|value| value.to_bits())
+                    .collect::<Vec<_>>()
+            );
+            let digest = Sha256::digest(&bytes)
+                .iter()
+                .map(|byte| format!("{byte:02x}"))
+                .collect::<String>();
+            assert_eq!(receipt[name]["sha256"], digest);
+            assert_eq!(receipt[name]["bytes"], bytes.len());
         }
-        eprintln!(
-            "C2 noise+zero:     D_f={:.4}+/-{:.4} (N={})  {}  (threshold: >2.90)",
-            c2_mean,
-            c2_std,
-            c2_vals.len(),
-            if pass { "PASS" } else { "**FAIL**" },
-        );
-    }
-
-    // C3: |mean D_f - 2.73| > 0.10 (noise + ZD must not produce 2.73)
-    {
-        let delta = (c3_mean - e166_mean).abs();
-        let pass = delta > separation_tolerance;
-        if !pass {
-            all_pass = false;
-        }
-        eprintln!(
-            "C3 noise+fzd:      D_f={:.4}+/-{:.4} (N={})  {}  (delta={:.3}, threshold: >{:.2})",
-            c3_mean,
-            c3_std,
-            c3_vals.len(),
-            if pass { "PASS" } else { "**FAIL**" },
-            delta,
-            separation_tolerance,
-        );
-    }
-
-    // C4: |D_f - 2.73| > 0.10 (morphology alone diffuses)
-    if let Some(r) = c4 {
-        let delta = (r.df_final - e166_mean).abs();
-        let pass = delta > separation_tolerance;
-        if !pass {
-            all_pass = false;
-        }
-        eprintln!(
-            "C4 sersic+zero:    D_f={:.4}  {}  (delta={:.3}, threshold: >{:.2})",
-            r.df_final,
-            if pass { "PASS" } else { "**FAIL**" },
-            delta,
-            separation_tolerance,
-        );
-    }
-
-    // C5 uses a fixed positive-control tolerance around the recorded reference mean.
-    if let Some(r) = c5 {
-        let delta = (r.df_final - e166_mean).abs();
-        let pass = delta < 0.07;
-        if !pass {
-            all_pass = false;
-        }
-        eprintln!(
-            "C5 sersic+fzd:     D_f={:.4}  {}  (delta={:.3}, threshold: <0.07)",
-            r.df_final,
-            if pass { "PASS" } else { "**FAIL**" },
-            delta,
-        );
-    }
-
-    eprintln!("---");
-    if all_pass {
-        eprintln!("control_predicates=passed physical_interpretation=unassessed");
-    } else {
-        eprintln!("control_predicates=failed physical_interpretation=unassessed");
-        eprintln!("INVESTIGATION REQUIRED before proceeding with 1000-galaxy sweep.");
+        let before = std::fs::read(directory.join("rho.f64le")).unwrap();
+        assert!(retain_trial_inputs(&directory, &[9.0; 3], &force, metadata).is_err());
+        assert_eq!(std::fs::read(directory.join("rho.f64le")).unwrap(), before);
+        std::fs::remove_dir_all(directory).unwrap();
     }
 }

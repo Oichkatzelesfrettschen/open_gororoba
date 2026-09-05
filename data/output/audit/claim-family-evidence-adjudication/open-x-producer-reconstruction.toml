@@ -1,0 +1,13 @@
+schema_version = 1
+experiment = "E-297"
+original_receipt = "data/output/audit/claim-family-evidence-adjudication/open-x-flux-result.toml"
+original_receipt_sha256 = "7b90357d445e45097dc80c840fe7c0c651d8c2e510daa4c045b855721c0c9296"
+solver_source = "git:c9132da123438615638fb3f99a922bb471996e11:crates/lbm_3d/src/solver.rs"
+solver_sha256 = "00af5393fbfc5ae44cc5506068234b72e8292a57ba02a72b76622d5cee4217a9"
+library_integration = "data/output/audit/claim-family-evidence-adjudication/open-x-library-integration.rs.txt"
+library_sha256 = "ed170f80281519926fa5d1056b06cf5af828676cd6b4ccc29826c84afda0d35f"
+library_change = "The snapshot adds only pub mod open_x_boundary to the parent lib.rs."
+retained_runner = "data/output/audit/claim-family-evidence-adjudication/open-x-runner-retained.bin"
+retained_runner_sha256 = "383ecb753cae8856d33b49afac55990bfbf2ddb8e7ae1d04532de8c8db8ec041"
+source_reconstruction = "Use parent solver and retained lib integration with original receipt hash-bound open_x_boundary.rs, open_x_flux.rs and wind_dm_mhd.rs. The later MRT-corrected solver is a separate producer."
+scope = "The retained binary matches the originally recorded solar executable SHA256. Source reconstruction describes the measured local source changes; historical bit-identical recompilation and complete transitive build-environment reconstruction remain untested."

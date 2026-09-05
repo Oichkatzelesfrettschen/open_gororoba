@@ -4,12 +4,12 @@
 //! force-density fields, not a physical suppression bound: magnetic normalization,
 //! mesh consistency, gravitational frame and numerical sensitivity remain unresolved.
 
-use clap::Args;
+use clap::{Args, ValueEnum};
 use cosmology_core::concentration_mass_relation;
 use lbm_3d::{
-    boundary::ZouHeBoundary,
     dm_force::{DmForceConfig, DmForceField, combine_forces},
     mhd::{MhdConfig, MhdField},
+    open_x_boundary::{OpenXBoundary, XOutflow, population_mass},
     solver::{BgkCollision, LbmSolver3D},
     units::{LatticeUnits, UniformCartesianMesh},
 };
@@ -26,6 +26,13 @@ use std::{
 /// acceleration field. Reports lattice force-density diagnostics.
 #[derive(Args)]
 pub struct Cli {
+    /// Explicit numerical max-x closure; physical suitability requires separate validation.
+    #[arg(long, value_enum)]
+    x_outflow: XOutflowChoice,
+
+    /// Relative mass-ledger residual budget; collision has zero allowed mass source.
+    #[arg(long)]
+    max_relative_mass_ledger_error: f64,
     /// Grid size in x (radial direction)
     #[arg(long, default_value_t = 128)]
     nx: usize,
@@ -130,6 +137,18 @@ pub struct Cli {
     /// Legacy solar wind-ic exports require a separately justified metadata amendment.
     #[arg(long)]
     ic_file: Option<PathBuf>,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum XOutflowChoice {
+    ZeroGradientPopulations,
+}
+impl From<XOutflowChoice> for XOutflow {
+    fn from(value: XOutflowChoice) -> Self {
+        match value {
+            XOutflowChoice::ZeroGradientPopulations => Self::ZeroGradientPopulations,
+        }
+    }
 }
 
 /// Write a CSV snapshot of the midplane (z=nz/2) with extended DM columns.
@@ -420,8 +439,16 @@ fn load_ic_lines(
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
+    anyhow::ensure!(
+        cli.nx >= 2 && cli.ny > 0 && cli.nz > 0 && cli.snap_interval > 0,
+        "positive grid/snapshot sizes and nx >= 2 required"
+    );
+    anyhow::ensure!(
+        cli.max_relative_mass_ledger_error.is_finite() && cli.max_relative_mass_ledger_error >= 0.0,
+        "finite nonnegative mass-ledger budget required"
+    );
     eprintln!(
-        "physical_comparison_admission=blocked: periodic x streaming has an inlet overwrite; open outflow, population flux ledger and gravitational acceleration frame require separate specifications"
+        "physical_comparison_admission=blocked: numerical open-x population closure is measured; its physical suitability, MHD magnetic boundary conditions and gravitational acceleration frame require separate specifications"
     );
     let dm_label = if cli.no_dm { "OFF" } else { "ON" };
     let ic_label = if cli.ic_file.is_some() {
@@ -569,13 +596,28 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         None
     };
 
-    // Zou-He boundary for velocity inlet
-    let zou_he = ZouHeBoundary::new();
+    let mut open_boundary = OpenXBoundary::new([cli.nx, cli.ny, cli.nz])?;
 
     // Output directory setup
     if let Some(ref dir) = cli.out {
         fs::create_dir_all(dir)?;
     }
+    let mut ledger_file = cli
+        .out
+        .as_ref()
+        .map(|dir| fs::File::create(dir.join("mass_flux_ledger.csv")))
+        .transpose()?;
+    let ledger_header = "step,mass_before,min_x_outgoing,max_x_outgoing,min_x_incoming,max_x_incoming,mass_after_streaming,mass_after_boundary,mass_after_collision,streaming_residual,boundary_residual,collision_mass_delta,step_mass_residual,cumulative_net_inflow,cumulative_mass_residual";
+    println!("{ledger_header}");
+    if let Some(file) = &mut ledger_file {
+        writeln!(file, "{ledger_header}")?;
+    }
+    let initial_population_mass = population_mass(&solver)?;
+    let mut cumulative_net_inflow = 0.0;
+    eprintln!(
+        "mass_ledger_units=lattice_population_mass x_outflow=zero_gradient_populations transverse_boundaries=periodic budget={:.17e}",
+        cli.max_relative_mass_ledger_error
+    );
 
     // Time loop (stream-collide ordering)
     //
@@ -584,20 +626,11 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
     //
     // This ensures forces are computed from the post-streaming velocity,
     // making the force field and collision velocity temporally consistent.
-    // On step 0 we skip streaming since initial conditions are set directly.
+    // Each iteration transports initialized populations, reconstructs x faces,
+    // and collides. The ledger uses populations rather than cached density.
     for step in 0..cli.steps {
-        // 1. Stream (propagate f_i along lattice velocities)
-        //    Skipped on step 0: initial f_i from initialize_from_ic() is
-        //    already the "post-collision" state ready for first streaming.
-        if step > 0 {
-            let _ = solver.phase2_streaming();
-        }
-
-        // 2. Apply Zou-He velocity inlet BC at x=0
-        zou_he.apply_velocity_inlet_min_x_aosoa(&mut solver.f, cli.nx, cli.ny, cli.nz, u_sw);
-
-        // 3. Recompute macroscopic from BC-modified post-stream distributions
-        solver.compute_macroscopic();
+        let ledger =
+            open_boundary.stream_and_reconstruct(&mut solver, u_sw, cli.x_outflow.into())?;
 
         // 4. Compute Lorentz force from current B-field
         let lorentz = mhd.lorentz_force();
@@ -619,10 +652,58 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         };
 
         // 6. Set combined force field for Guo scheme
-        solver.set_force_field(combined).expect("force field set");
+        solver.set_force_field(combined)?;
 
         // 7. Collision (BGK + Phi_i source term with consistent u and F)
-        let _ = solver.phase1_collision();
+        solver.phase1_collision()?;
+        let mass_after_collision = population_mass(&solver)?;
+        let collision_mass_delta = mass_after_collision - ledger.mass_after_boundary;
+        let step_mass_residual =
+            mass_after_collision - ledger.mass_before - ledger.face.net_incoming();
+        cumulative_net_inflow += ledger.face.net_incoming();
+        let cumulative_mass_residual =
+            mass_after_collision - initial_population_mass - cumulative_net_inflow;
+        let row = format!(
+            "{},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e},{:.17e}",
+            step + 1,
+            ledger.mass_before,
+            ledger.face.min_x_outgoing,
+            ledger.face.max_x_outgoing,
+            ledger.face.min_x_incoming,
+            ledger.face.max_x_incoming,
+            ledger.mass_after_streaming,
+            ledger.mass_after_boundary,
+            mass_after_collision,
+            ledger.streaming_residual(),
+            ledger.boundary_residual(),
+            collision_mass_delta,
+            step_mass_residual,
+            cumulative_net_inflow,
+            cumulative_mass_residual
+        );
+        println!("{row}");
+        if let Some(file) = &mut ledger_file {
+            writeln!(file, "{row}")?;
+            file.flush()?;
+        }
+        let scale = initial_population_mass
+            .abs()
+            .max(ledger.mass_before.abs())
+            .max(1.0);
+        anyhow::ensure!(
+            [
+                ledger.streaming_residual(),
+                ledger.boundary_residual(),
+                collision_mass_delta,
+                step_mass_residual,
+                cumulative_mass_residual
+            ]
+            .into_iter()
+            .all(|residual| residual.is_finite()
+                && residual.abs() <= cli.max_relative_mass_ledger_error * scale),
+            "mass-ledger budget exceeded at step {}; retained row includes collision and flux residuals",
+            step + 1
+        );
 
         // 8. Evolve B-field using force-corrected velocity u*
         mhd.evolve_b_field(&solver.u);
@@ -631,7 +712,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         if (step + 1) % cli.snap_interval == 0 || step == 0 {
             let energy = mhd.magnetic_energy();
             let div = mhd.max_div_b();
-            let mass = solver.total_mass();
+            let mass = mass_after_collision;
 
             // Compute force ratio
             let lorentz_now = mhd.lorentz_force();

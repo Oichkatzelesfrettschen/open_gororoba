@@ -1,0 +1,5 @@
+claim_id = "C-1713"
+expected_statement = "The 5.02 TeV eccentricity column in alice_pbpb_5020_mc_glauber is not epsilon_2 measured by the two-particle cumulant."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+statement = "The retained alice_pbpb_5020_mc_glauber epsilon2 sequence lacks an identified source table and estimator definition in the enumerated primary-source audit. Its interpretation as a two-particle-cumulant eccentricity remains unadmitted. Partial agreement of participant counts with an older-energy table establishes neither eccentricity identity nor the full reference population."
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"

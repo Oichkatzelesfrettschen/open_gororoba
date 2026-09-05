@@ -1,0 +1,35 @@
+claim_id = "C-1692"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates fixed source/implementation predicates; physical mapping and unknown model calibration require separate admission."
+fixed_hyperparameters = ["Freeze repository and source parameter table identities","Compare all twelve Table I/II values, both hopping sign conventions and four geometry constants","Separate observed paper frequency outputs from input model parameters"]
+
+[[intervening_maps]]
+branch = "implementation_audit"
+name = "source_table_identity"
+kind = "computational"
+description = "Admit Kaman et al. arXiv:2601.03210v2, enumerate table entries with units and signs, and bind each repository constant to its source proposition."
+
+[[intervening_maps]]
+branch = "implementation_audit"
+name = "landmark_reuse_audit"
+kind = "computational"
+description = "Trace each onsite-energy assignment to either a source input or an observed output before describing predictive agreement."
+
+[[fitted_parameters]]
+branch = "implementation_audit"
+count = 0
+names = []
+training_boundary = "The fixed implementation audit fits zero parameters. Source/model parameter fitting and phenomenological prediction remain outside this declared audit."
+
+[decisive_experiment]
+experiment_ids = ["E-142","E-299"]
+protocol_artifact = "data/output/audit/magnonic-source-projection/adjudication.toml"
+description = "E-142 retains the repository-reference parameter identity. E-299 separately binds source Tables I/II, their five/seven hand-fitted parameters, geometric matrix/folding comparisons and admitted raster support. Replay fitting is zero, while imported model fitting is recorded in C-1747. The inset-extraction failure and amendment remain retained."
+
+[what_would_verify_refute]
+verification_outcomes = ["All twelve parameter comparisons and four geometry comparisons differ, with both hopping signs differing under aligned conventions, and onsite landmarks reuse observed outputs: retain the source-provenance defect for that producer."]
+revision_outcomes = ["An aligned sign convention or corrected parameter mapping changes any comparison count: narrow the defect statement to the exact differing entries.","A corrected source-parameter model earns a separate source-reproduction predicate using held-out observables."]
+abandonment_outcomes = ["All admitted source inputs agree under a documented convention transformation; abandon the assertion that the repository parameter set differs."]
+inconclusive_outcomes = ["Missing source identity, table transcription or sign/geometry convention blocks parameter-adjudication completion.","Reproducing onsite values assigned from observed landmarks leaves independent predictive agreement unestablished."]

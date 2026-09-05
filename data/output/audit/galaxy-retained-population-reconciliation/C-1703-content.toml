@@ -1,0 +1,5 @@
+claim_id = "C-1703"
+expected_statement = "The 18-fold standard-deviation reduction is dominated by outlier disappearance rather than resolution: 8.41 of it comes from removing the seven galaxies with fractal dimension below 1.0, and only 1.98 from tightening of the remainder."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+statement = "The retained fleet spreads satisfy the arithmetic factorization (0.6241/0.0742)*(0.0742/0.0374)=16.6872, with factors 8.4111 and 1.9840. The second factor compares 93 grid-64 nonoutliers with all 70 completed grid-128 objects; it is not within-subset tightening. The historical 17.8529 ratio from 0.607/0.034 belongs to a separate claimed 100-object comparison. These rounded cross-population ratios establish arithmetic only; causal outlier attribution and resolution convergence remain unresolved."
+where_stated = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml; data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; source-implied settings at ff9850ad, replay binary digest unrecorded"

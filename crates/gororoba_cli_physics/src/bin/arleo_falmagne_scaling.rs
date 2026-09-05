@@ -1415,7 +1415,7 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
     eprintln!("=== BIC Model Comparison: Arleo-Falmagne vs CUJET3.0 vs Frac. Langevin ===");
     eprintln!();
 
-    // Load ALICE Pb-Pb R_AA data (0-5% centrality for comparison with CUJET3.0)
+    // Load the retained ALICE Pb-Pb 5.02 TeV, 0-5% score fixture.
     let alice_dir = PathBuf::from(data_dir).join(hic_raa::ALICE_PBPB_RAA_DIR);
     let path_0_5 = alice_dir.join("table_1.csv"); // 0-5% centrality
 
@@ -1453,10 +1453,10 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
     eprintln!();
 
     // Build model curves
-    // 1. CUJET3.0 at 2.76 TeV, 0-5% (closest available centrality)
+    // Preserve the quarantined CUJET vector for numerical replay.
     let cujet3 = competing_models::cujet3_pbpb_2760_0_5();
 
-    // 2. Fractional Langevin at 5.02 TeV, 0-10%
+    // Preserve the quarantined Langevin vector for numerical replay.
     let langevin = competing_models::langevin_pbpb_5020_0_10();
 
     // 3. Arleo-Falmagne: compute R_AA from extracted epsilon_bar
@@ -1553,9 +1553,13 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
     // Caveats
     eprintln!();
     eprintln!("  CAVEATS:");
-    eprintln!("  - CUJET3.0 predictions are at 2.76 TeV (not 5.02 TeV)");
-    eprintln!("  - Frac. Langevin is for D mesons (heavy quarks), not light hadrons");
-    eprintln!("  - Digitized values have ~5% reading uncertainty");
+    eprintln!(
+        "  - CUJET vectors lack authenticated extraction; source Figure 3(a) uses 2.76 TeV, 20-30%"
+    );
+    eprintln!("  - Prakash Figure 4 uses static charm quarks at 6 fm/c and 250/350 MeV");
+    eprintln!(
+        "  - Retained vector reading uncertainty and legacy parameter penalties remain unverified"
+    );
     eprintln!("  - Arleo-Falmagne is self-consistent (fitted to same data)");
 }
 

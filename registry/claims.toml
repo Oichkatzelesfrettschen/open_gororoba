@@ -2435,10 +2435,10 @@ where_stated = "E-162 floor=0.045/tau=0.7/MRT/eps=0.5"
 [[claim]]
 id = "C-1282"
 last_verified = "2026-03-11"
-statement = "GPU MRT collision kernel (d'Humieres D3Q19 SoA) produces D_f within 0.05 of CPU MRT at identical parameters for all test galaxies at 64^3 and 128^3."
+statement = "The proposed absolute CPU/GPU MRT D_f difference bound of 0.05 for every test galaxy at 64-cubed and 128-cubed remains unadjudicated: E-163/E-164 GPU sweeps lack matched admitted CPU arms. E-298 retains paired pilot arrays and six Sersic Mach-gate failures at step 1 under its historical producers. E-300 exposes a shared MRT force-density defect: the original CPU and CUDA implementations deliver 0.375 of prescribed impulse at tau 0.8 despite passing all bounded backend comparisons. The repaired standard FP32 push direct/captured implementation passes a separate impulse oracle and conformance gates, recorded narrowly as C-1748. That finite result leaves the galaxy-wide D_f denominator, alternate precision/dispatch admission, physical interpretation and resolution convergence unresolved."
 status = "Provisional"
-status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding not_run. DURABLE CHECK that would decide this claim: Paired invocation of euclid-df-sweep at --grid 64 --max-galaxies 10 --mrt with and without --cpu, asserting per-object_id |df_final_gpu - df_final_cpu| <= 0.05. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
-where_stated = "E-163/E-164 GPU MRT sweeps"
+status_note = "The historical 0.05 per-object D_f comparison remains unadjudicated. E-300/C-1748 supplies independent bounded MRT impulse and population conformance; it does not establish the galaxy-wide morphology bound. E-298 retains failed Sersic Mach admission and the pre-correction producer. Any paired galaxy comparison must first admit numerical budgets and exact object denominators; ten selected objects can support only that finite subset. Typed evidence outcomes govern promotion."
+where_stated = "E-163/E-164 GPU MRT sweeps; data/output/audit/claim-family-evidence-adjudication/null-pilot-independent-analysis.json; data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-result.toml; crates/lbm_3d_cuda/tests/mrt_population_conformance.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
@@ -2451,7 +2451,7 @@ computational_stage_count = 2
 [[claim.intervening_maps]]
 name = "source_and_input_identity"
 branch = "mrt_backend_equivalence"
-description = "Match CPU and GPU population observation times and convert their storage layouts before macroscopic comparison."
+description = "Match CPU and GPU population observation times and convert their storage layouts before macroscopic comparison. Admit prescribed force-density impulse independently: backend agreement alone hid the shared pre-correction MRT defect in E-300."
 kind = "computational"
 
 [[claim.intervening_maps]]
@@ -2467,16 +2467,16 @@ names = []
 training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-163", "E-164"]
+experiment_ids = ["E-163", "E-164", "E-298", "E-300"]
 protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
 protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "Use E-163/E-164 as the recorded family binding, not evidence of completed replay. For each admitted object and resolution retain CPU-minus-GPU D_f with identical initial conditions and analysis; list unavailable/failed runs separately from passing pairs. E-163 and E-164 register GPU sweeps, not matching CPU arms; amend experiment identity first. Existing bounded BGK CUDA tests do not establish MRT galaxy equivalence."
+description = "E-163/E-164 retain the recorded GPU-only family binding. E-298 provides a retained pilot denominator, including six Sersic Mach-gate failures at step 1; its original producers remain historical. E-300 independently tests prescribed force-density impulse and repairs the standard FP32 MRT push direct/captured instrument, with its narrow successor C-1748. The 64-cubed/128-cubed galaxy experiment still requires matched admitted CPU arms, exact object IDs, per-object D_f differences and explicit failed/unavailable rows. The retained family-frontier protocol governs that unresolved denominator; the separate E-300 protocol governs only its bounded instrument."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Every enumerated admitted CPU/GPU MRT pair has absolute D_f difference at most 0.05 and independently passes evolving-field conformance and finite-state gates."]
+verification_outcomes = ["Every enumerated admitted CPU/GPU MRT pair has absolute D_f difference at most 0.05 and independently passes evolving-field conformance, prescribed force-density impulse and finite-state gates."]
 revision_outcomes = ["Any omitted/failed object narrows the all-galaxies denominator; distinguish numerical backend mismatch from threshold or fitting mismatch before registering a successor."]
 abandonment_outcomes = ["Any admitted pair exceeds 0.05, refuting the universal finite-corpus bound."]
-inconclusive_outcomes = ["E-163 and E-164 register GPU sweeps, not matching CPU arms; amend experiment identity first. Existing bounded BGK CUDA tests do not establish MRT galaxy equivalence."]
+inconclusive_outcomes = ["E-163/E-164 lack matched admitted CPU arms; repair experiment identity and freeze the complete object denominator first.", "The repaired E-300 fixture establishes finite implementation conformance, while alternate dispatch/precision admission and paired galaxy resolution remain unresolved.", "E-298 Sersic Mach failures remain outside admitted final-state comparison; a source correction cannot retroactively admit historical output."]
 
 [[claim]]
 id = "C-1283"
@@ -2512,15 +2512,15 @@ where_stated = "E-164/E-165 performance comparison"
 [[claim]]
 id = "C-1287"
 last_verified = "2026-03-11"
-statement = "Resolution convergence 64^3 -> 128^3: D_f tightens from 2.748 +/- 0.607 to 2.732 +/- 0.034 (18x reduction in std, N=100). All 6 outlier galaxies (D_f < 1.0 at 64^3) stabilize at 128^3 as the softening core resolves correctly. 100/100 galaxies stable."
+statement = "The historical C-1287 report gives D_f 2.748 +/- 0.607 and 2.732 +/- 0.034 for two claimed 100-object runs, with six low-tail objects. Those aggregates remain distinct from the later fleet replay of 100 grid-64 and 70 grid-128 objects, with seven low-tail objects at grid 64 and six present among the 70 completed grid-128 rows. Exact historical and replay paired rows remain unavailable on the enumerated retrieval surfaces. Registered commands and inspected source defaults imply fixed 1 kpc spacing and box enlargement from 64 to 128 kpc, rather than fixed-domain refinement; the prebuilt replay binary lacks a recorded digest. Convergence, resolved softening and all-object numerical stability remain unestablished."
 status = "Provisional"
-status_note = "Legacy status token: Active | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: Replay both grids and assert separately that (a) every object_id with df_final < 1.0 at 64^3 exceeds 2.5 at 128^3, and (b) the outlier-excluded 64^3 std exceeds 5x the 128^3 std -- (b) currently fails at 1.98x, so the 18x must be restated as an outlier effect; add a 256^3 point before any convergence language. Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
-where_stated = "E-163/E-166 resolution convergence comparison"
+status_note = "The historical 100/100 aggregates and later 100/70 fleet report remain separate observations. The reported 1.98 spread factor compares unmatched populations and establishes arithmetic rather than a causal outlier effect. Exact paired CSVs, producer identity and fixed-domain physical resolution are required before convergence or stable-all-object claims. Typed evidence outcomes and data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml govern adjudication; prior wording remains in canonical revision history."
+where_stated = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml; data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; source-implied settings at ff9850ad, replay binary digest unrecorded"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
-fixed_hyperparameters = ["Retain historical claimed 100-object means/spreads, six-outlier assertion and original source artifacts; compare the observed seven-outlier membership explicitly. Freeze a physical box, time and smoothing definition before a three-grid successor."]
+fixed_hyperparameters = ["Retain original claimed100/100 aggregates and the separate replay100/70 report; distinguish their six/seven outlier counts and unresolved exact membership. Freeze a physical box, time and smoothing definition before a three-grid successor."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -2545,15 +2545,15 @@ training_boundary = "The declared validation comparison fits zero parameters. Im
 
 [claim.decisive_experiment]
 experiment_ids = ["E-163", "E-166"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "Use E-163/E-166 as the recorded family binding, not evidence of completed replay. Recompute all-object and predefined common-subset statistics separately at 64/128; then require paired 64/128/256 errors under a preregistered convergence tolerance. E-166 names a historical readback build and /tmp CSV; producer and retained rows need admission. Two-grid variance reduction and the one-step force sweep do not establish convergence or a fractal interpretation."
+protocol_artifact = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml"
+protocol_sha256 = "6bcc58fb7ef32170b93b9535e0c8dfd98f207aa2b1a81e1eb58842e3b2474cdd"
+description = "E-163/E-166 retain historical bindings. The retained adjudication separates original100/100 aggregates from later100/70 populations and source-implied box enlargement; exact paired inference requires the two named CSV hashes and execution identity."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["The historical numerical summaries and exact claimed membership reproduce from retained per-object rows; this verifies those summaries only."]
-revision_outcomes = ["Seven detected outliers or altered subsets revise the six-outlier and 18x descriptions. Register convergence separately only after matched third-grid evidence and bounded stability gates."]
-abandonment_outcomes = ["The identical declared population fails the claimed statistics or the all-100 stable predicate, refuting those bounded clauses."]
-inconclusive_outcomes = ["E-166 names a historical readback build and /tmp CSV; producer and retained rows need admission. Two-grid variance reduction and the one-step force sweep do not establish convergence or a fractal interpretation."]
+verification_outcomes = ["The retained report and historical source reproduce the explicitly bounded population counts, rounded arithmetic and source-implied settings in adjudication.toml."]
+revision_outcomes = ["Recovered exact CSVs and producer identity revise membership or statistics through a retained canonical correction.", "A separately declared fixed-domain multi-grid experiment with common object IDs, physical duration, softening, normalization and stability gates may establish a narrower convergence successor."]
+abandonment_outcomes = ["The cited report contradicts the declared counts or rounded operands, or the cited source contradicts the stated default spatial scale; abandon the affected documentary clause."]
+inconclusive_outcomes = ["Missing exact paired CSV hashes, binary digest and runtime physical settings leave paired uncertainty, causal outlier attribution and convergence unassessed."]
 
 [[claim]]
 id = "C-1288"
@@ -5081,10 +5081,10 @@ where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/c
 [[claim]]
 id = "C-1635"
 last_verified = "2026-08-04"
-statement = "The retained tensor implementation passes the declared scalar electromagnetic gauge contraction on its recorded grid; the spinor irreducible path retains an unresolved contact or integration-by-parts boundary residual. Independent component contraction at the declared replay fixture confirms the bounded scalar result. Gauge transversality alone does not establish amplitude completeness: some omitted structures change the tensor while preserving a small gauge residual."
+statement = "The retained scalar electromagnetic gauge contraction passes its declared fixture, while the spinor contraction fails. E-301 source-measure correction preserves that split: scalar normalized residual6.60e-17 and spinor8.95e-2 on the independently contracted retained grid. Gauge transversality alone cannot establish amplitude completeness: omission controls can change tensor components while preserving a small gauge residual. Regular-node quadrature leaves distributional contact and ultraviolet cancellation unresolved."
 status = "Provisional"
-status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: cargo test --release -p gr_core --lib photon_graviton::tensor_ward::tests::scalar_integrated_gauge_residuals_pass_the_frozen_protocol and ...::spinor_irreducible_residual_retains_the_contact_boundary_gap Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
-where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml; data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml; data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"
+status_note = "E-290 and E-301 retain independent component contractions and separate tensor-change omission controls. Scalar gauge residual passes the declared fixture; spinor gauge residual fails. Passing regression tests can preserve that failure and therefore do not establish a passing spinor Ward identity. Source-measure conformance, contact terms and ultraviolet cancellation remain separate predicates."
+where_stated = "data/output/audit/ward-residual-scope/vector-residuals-after.toml; data/output/audit/ward-residual-scope/adjudication.toml; E-290 retained original residual receipts"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
@@ -5113,15 +5113,15 @@ names = []
 training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-073", "E-290"]
-protocol_artifact = "data/output/audit/2026-08-02/p1_numerical_protocol.toml"
-protocol_sha256 = "4d80ddb3b0469686a32bb7523af4b2f22131e59178979dbf7bacae74e2a08d3c"
+experiment_ids = ["E-073", "E-290", "E-301"]
+protocol_artifact = "data/output/audit/ward-residual-scope/adjudication.toml"
+protocol_sha256 = "97e80f639feffa4bdf2ac97ca1ff1917e7c1904327b25d55859a67b840338977"
 description = "E-073 owns cargo test -p gr_core -- photon_graviton. Amend its legacy spinor method to explicitly bind the scalar/spinor tensor producer and the retained E-P1-PHOTON-GRAVITON-TENSOR-WARD manifest before calling that manifest an E-073 replay. Actual tests: scalar_integrated_gauge_residuals_pass_the_frozen_protocol; spinor_irreducible_residual_retains_the_contact_boundary_gap. Locate tensor_ward.rs and gravitational_ward.rs under crates/gr_core/src/photon_graviton/."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Every admitted gauge component passes absolute 1e-12 and normalized 1e-6 gates with explained refinement behavior, while declared omission controls exceed the 1e-10 mutation threshold."]
+verification_outcomes = ["Independent contraction reproduces the declared scalar pass and spinor failure at unchanged gates; tensor-changing omissions remain classified separately from gauge residuals."]
 revision_outcomes = ["A scalar subset passes while spinor contact-boundary residual remains unresolved: retain separate loop/diagram predicates rather than promote the combined statement."]
-abandonment_outcomes = ["Independent stable residual violates a frozen gate in a declared case: abandon the universal implementation-reproduction statement and retain the failing components."]
+abandonment_outcomes = ["An independently corroborated same-producer, same-input calculation reverses the declared passing/failing predicate; abandon the affected bounded result."]
 inconclusive_outcomes = ["Unresolved spinor contact prescription, undefined separate on-shell external amplitude, failed refinement or missing exact producer identity prevents the corresponding identity adjudication.", "A passing test that deliberately preserves a known residual gap establishes the regression predicate, not a passing Ward identity."]
 
 [[claim]]
@@ -5135,10 +5135,10 @@ where_stated = "https://arxiv.org/pdf/2601.23279; data/output/audit/2026-08-02/c
 [[claim]]
 id = "C-1637"
 last_verified = "2026-08-04"
-statement = "The retained tensor implementation reproduces the scalar off-shell gravitational lower-point identity on its declared grid, while the spinor off-shell comparison and combined irreducible-plus-external on-shell cancellation fail their declared predicates. Tadpole physical contraction is a separate passing predicate. These implementation boundaries leave source-identity reproduction unresolved."
+statement = "The independently contracted scalar off-shell gravitational lower-point identity passes its declared fixture; the spinor comparison fails. After the E-301 counterterm-measure correction, scalar absolute/normalized residuals are1.04e-15/6.20e-11 and spinor3.80e-5/0.567. The tested one-photon RHS vanishes, so its omission is nondiscriminating; omission of the scalar two-photon RHS produces1.68e-5. The source polarization-contracted unrenormalized on-shell identity and the retained renormalized full-vector predicate are separate checks. Tadpole physical contraction remains a separate passing predicate."
 status = "Provisional"
-status_note = "(status_note is NULL) | ADJUDICATED 2026-08-06 by the claim falsification fleet: status Provisional, fleet finding partially_confirmed. DURABLE CHECK that would decide this claim: cargo test --release -p gr_core --lib photon_graviton::gravitational_ward::tests::off_shell_comparison_retains_all_lower_point_components, ...::combined_on_shell_ladder_retains_limit_status_without_a_floor, ...::on_shell_omission_and_tadpole_trace_controls_break_the_invariant Retained finding: data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml"
-where_stated = "data/output/audit/2026-08-02/p1_claim_results.toml; data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml; data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml; data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"
+status_note = "E-301 retains the scalar off-shell pass, spinor off-shell failure and nondiscriminating zero one-photon omission. The source transverse unrenormalized amplitude, renormalized transverse comparison and full-vector norm each have separate receipts and unchanged gates. Passing failure-characterization tests do not promote the corresponding physical identity."
+where_stated = "data/output/audit/ward-residual-scope/vector-residuals-after.toml; data/output/audit/ward-residual-scope/adjudication.toml; E-290 retained original residual receipts"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
@@ -5167,15 +5167,15 @@ names = []
 training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-073", "E-290"]
-protocol_artifact = "data/output/audit/2026-08-02/p1_numerical_protocol.toml"
-protocol_sha256 = "4d80ddb3b0469686a32bb7523af4b2f22131e59178979dbf7bacae74e2a08d3c"
+experiment_ids = ["E-073", "E-290", "E-301"]
+protocol_artifact = "data/output/audit/ward-residual-scope/adjudication.toml"
+protocol_sha256 = "97e80f639feffa4bdf2ac97ca1ff1917e7c1904327b25d55859a67b840338977"
 description = "E-073 owns cargo test -p gr_core -- photon_graviton. Amend its legacy spinor method to explicitly bind the scalar/spinor tensor producer and the retained E-P1-PHOTON-GRAVITON-TENSOR-WARD manifest before calling that manifest an E-073 replay. Actual tests: off_shell_comparison_retains_all_lower_point_components; combined_on_shell_ladder_retains_limit_status_without_a_floor; on_shell_omission_and_tadpole_trace_controls_break_the_invariant. Locate tensor_ward.rs and gravitational_ward.rs under crates/gr_core/src/photon_graviton/."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Every admitted off-shell component matches its complete lower-point RHS at the frozen 1e-12 absolute and 1e-6 normalized gates; source-declared on-shell limits separately pass with omission sensitivity."]
+verification_outcomes = ["Independent lower-point assembly reproduces the declared scalar off-shell pass and spinor failure at unchanged gates; the zero one-photon term is explicitly nondiscriminating while scalar two-photon omission breaks the predicate."]
 revision_outcomes = ["Off-shell identity passes while the on-shell combined limit remains nonzero: retain the narrower off-shell implementation result and preserve on-shell failure."]
-abandonment_outcomes = ["Independent stable residual violates a frozen gate in a declared case: abandon the universal implementation-reproduction statement and retain the failing components."]
+abandonment_outcomes = ["An independently corroborated same-producer, same-input calculation reverses the declared passing/failing predicate; abandon the affected bounded result."]
 inconclusive_outcomes = ["Unresolved spinor contact prescription, undefined separate on-shell external amplitude, failed refinement or missing exact producer identity prevents the corresponding identity adjudication.", "A passing test that deliberately preserves a known residual gap establishes the regression predicate, not a passing Ward identity."]
 
 [[claim]]
@@ -5423,47 +5423,47 @@ where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs; crates/gr_cor
 [[claim]]
 id = "C-1666"
 last_verified = "2026-08-06"
-statement = "The source-declared on-shell irreducible-plus-external cancellation fails the retained numerical gate: the sampled scalar and spinor extrapolated norms are approximately 0.00236262 and 0.00586824. A corrected zero-virtuality intercept reverses historical component signs while preserving those norms. The virtuality-ladder spreads of approximately 9.71e-8 and 2.48e-7 do not bound quadrature error: fixed-domain node refinement changes components by norms 4.11147e-4 and 1.64459e-3. A certified numerical error budget remains unresolved."
+statement = "The retained historical renormalized full-vector on-shell extrapolations have scalar and spinor norms approximately 0.00236262 and 0.00586824. Those vectors test a stronger predicate than source Eq. 7.6, which concerns polarization-contracted unrenormalized amplitudes with on-shell transverse conditions. E-301 corrects an extra T-squared counterterm factor in the rescaled proper-time measure; the resulting full-vector scalar and spinor norms are approximately 0.00529674 and 6.32320e-9, still outside the unchanged numerical gates. A separate transverse decisive pair passes the scalar amplitude gates and fails the spinor gates on the declared finite ladder. C-1749 records only counterterm-measure conformance. Spinor contact/UV completion, scalar source coefficient/convention reconciliation and certified quadrature/extrapolation errors remain unresolved; these finite residuals establish neither a universal Ward identity nor a certified nonzero on-shell limit."
 status = "Provisional"
-where_stated = "crates/gr_core/src/photon_graviton/irreducible.rs; data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml; data/output/audit/claim-family-evidence-adjudication/ward-replay-scope.toml; data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"
+where_stated = "crates/gr_core/src/photon_graviton/irreducible_tensor.rs; crates/gr_core/tests/ward_source_scope.rs; crates/gr_core/tests/ward_independent_residuals.rs; data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml; data/output/audit/ward-residual-scope/adjudication.toml"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
-depth_rationale = "Nonzero combined irreducible-plus-external on-shell limit. The declaration separates a fixed source or implementation predicate from physical model fitting. Preserved historical failures remain evidence; a repaired producer needs a separately identified result."
-fixed_hyperparameters = ["D=4 Euclidean pure magnetic positive-z convention; k0=-k; retained source Eq.7.1 through7.7", "Field ratios0.01,0.10; omega/m0.05,0.20; theta pi/6,pi/3; scalar/spinor", "Absolute1e-12, normalized1e-6; mutation1e-10; preserve virtuality ladder0.4,0.2,0.1,0.05 times omega squared"]
+depth_rationale = "Separate the source transverse amplitude predicate from stronger full-vector diagnostics and counterterm-measure conformance; physical interpretation remains unassessed."
+fixed_hyperparameters = ["Preserve historical renormalized full-vector residuals and their original source identity", "Declare unrenormalized versus renormalized branches, physical transverse polarization/gauge vectors and each virtuality ladder separately", "Retain absolute 1e-12 and normalized 1e-6 amplitude gates; certify quadrature and interpolation remainders before a mathematical zero/nonzero conclusion"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
 
 [[claim.intervening_maps]]
-name = "source_tensor_contraction"
-branch = "ward"
-description = "Nonzero combined irreducible-plus-external on-shell limit; independently recompute complex residual components before norms."
+name = "source_contraction_identity"
+branch = "ward_scope"
+description = "Source Eq. 7.6 contracts the photon polarization under on-shell transverse conditions in the unrenormalized Ward discussion. Record full-vector and renormalized predicates separately."
 kind = "computational"
 
 [[claim.intervening_maps]]
-name = "refinement_and_omission"
-branch = "ward"
-description = "Apply frozen quadrature/cutoff/virtuality ladders and omit each required diagram/contact contribution separately."
+name = "independent_contraction_and_refinement"
+branch = "ward_scope"
+description = "Recompute tensor components and zero-virtuality intercepts independently, retain diagram omissions and require discriminating amplitudes before interpreting cancellation. Assess quadrature and interpolation errors separately."
 kind = "computational"
 
 [[claim.fitted_parameters]]
-branch = "ward"
+branch = "ward_scope"
 count = 0
 names = []
-training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
+training_boundary = "The fixed finite source comparison fits zero coefficients. Scalar and spinor subtraction/contact prescriptions require source derivation rather than fitted cancellation."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-073", "E-290"]
-protocol_artifact = "data/output/audit/2026-08-02/p1_numerical_protocol.toml"
-protocol_sha256 = "4d80ddb3b0469686a32bb7523af4b2f22131e59178979dbf7bacae74e2a08d3c"
-description = "E-073 owns cargo test -p gr_core -- photon_graviton. Amend its legacy spinor method to explicitly bind the scalar/spinor tensor producer and the retained E-P1-PHOTON-GRAVITON-TENSOR-WARD manifest before calling that manifest an E-073 replay. Actual tests: combined_on_shell_ladder_retains_limit_status_without_a_floor. Locate tensor_ward.rs and gravitational_ward.rs under crates/gr_core/src/photon_graviton/."
+experiment_ids = ["E-073", "E-290", "E-301"]
+protocol_artifact = "data/output/audit/ward-residual-scope/counterterm-measure-protocol.toml"
+protocol_sha256 = "a45b23a4aac00e09b8fab228b30ee3313dac13a11d2cc17ac055a9b3f479392b"
+description = "E-290 retains original independent full-vector residuals. E-301 separates the source projection, repairs the proper-time measure and preserves failed full-vector and spinor projected gates. Its fixed transverse ladder supports a finite scalar pair only; a certified identity still requires source contact/UV and scalar coefficient reconciliation plus numerical remainder bounds."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Independent componentwise extrapolation reproduces a finite nonzero combined norm beyond the declared quadrature and adjacent-pair uncertainty for the identified scalar/spinor fixtures."]
-revision_outcomes = ["A corrected tensor/contact prescription yields zero within the frozen error gates: retain the historical residual and register the corrected producer; changed conventions require a separate result."]
-abandonment_outcomes = ["Independent replay of the same historical producer establishes zero within the numerical error budget: abandon the claimed nonzero-limit diagnosis for that producer."]
-inconclusive_outcomes = ["Unresolved spinor contact prescription, undefined separate on-shell external amplitude, failed refinement or missing exact producer identity prevents the corresponding identity adjudication.", "A passing test that deliberately preserves a known residual gap establishes the regression predicate, not a passing Ward identity."]
+verification_outcomes = ["A source-identified projected amplitude satisfies both fixed gates with diagram-discriminating omissions and certified quadrature/extrapolation error; promote only that declared branch and fixture."]
+revision_outcomes = ["A corrected producer changes residuals: retain the original result and register the supported mechanism separately, as C-1749 does for the spinor counterterm measure.", "A source contraction differs from the historical vector predicate: correct the attribution while preserving the historical vector measurement."]
+abandonment_outcomes = ["An independent replay contradicts a retained finite residual under the identical producer and inputs.", "A certified projected comparison violates the claimed amplitude bound for that declared branch."]
+inconclusive_outcomes = ["Spinor contact/distributional completion, scalar source coefficient/convention or numerical remainder bounds remain unresolved.", "Nondiscriminating diagram omissions or a passing regression that preserves a known failed identity cannot verify a Ward identity.", "Finite full-vector residuals alone establish neither source Eq. 7.6 failure nor a certified nonzero physical on-shell limit."]
 
 [[claim]]
 id = "C-1667"
@@ -5715,9 +5715,9 @@ inconclusive_outcomes = ["E-118 input placeholders and missing physical dx preve
 [[claim]]
 id = "C-1684"
 last_verified = "2026-08-06"
-statement = "The retained 500-step driver run increases total mass from 131178.947368 to 239325.927107, about 82 percent. The historical driver combines periodic streaming with inlet overwrites and passes AoSoA populations to an AoS boundary routine. A face-flux ledger is required to distinguish boundary transport from numerical mass error; the closed-box 1e-10 fixture does not adjudicate that open-driver run. The layout-aware inlet repair has separate bounded sentinel tests, while physical outflow and mass-balance admission remain unresolved."
+statement = "The retained 500-step driver run at source revision 81a4ca6e increases total mass from 131178.947368 to 239325.927107, about 82 percent. The historical driver combines periodic streaming with inlet overwrites and passes AoSoA populations to an AoS boundary routine; the closed-box 1e-10 fixture cannot adjudicate its open-driver mass change. E-297 independently verifies the repaired finite open-x population transport and face-flux ledger, recorded separately as C-1746. Physical outflow suitability, magnetic boundary conditions and a coupled physical mass/force bound remain unassessed."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml; historical source at git revision 81a4ca6e; data/output/audit/claim-family-evidence-adjudication/dm-dimensional-admission-and-sensitivity.toml"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml; historical source at git revision 81a4ca6e; data/output/audit/claim-family-evidence-adjudication/open-x-flux-result.toml"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
@@ -5746,16 +5746,16 @@ names = []
 training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-112", "E-119"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "Use E-112/E-119 as the recorded family binding, not evidence of completed replay. Compute M_final-M_initial minus measured integrated net inflow and source terms, with a preregistered numerical tolerance; compare each stage in its actual storage layout. An open outflow and flux ledger are unspecified; the driver uses periodic x wrapping plus inlet overwrite. E-119 radial IC lacks admitted SI metadata. The periodic one-step Guo sweep cannot decide open-system conservation."
+experiment_ids = ["E-112", "E-119", "E-297"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/open-x-flux-protocol.toml"
+protocol_sha256 = "1f92e032efe86f84d70dfcf93748c65959cd7047405c74630ee21a959818dc54"
+description = "E-112/E-119 retain the historical family binding and unadmitted radial SI input. E-297 independently verifies explicit open-x population transport, face inventory and collision residuals. Its finite numerical closure has a separate successor C-1746; physical outflow, magnetic boundaries, frame and coupled sensitivity remain unassessed."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["The historical total-mass increase and inlet population overwrite are reproduced for the retained input; verification supports an inventory change rather than conservation failure."]
 revision_outcomes = ["Replace unconditional nonconservation language if boundary mass accounting explains the change. The repaired AoSoA inlet requires a successor source identity and retains the original mismatch."]
-abandonment_outcomes = ["A complete admitted flux/source ledger closes within tolerance, refuting the claim that total-mass increase alone demonstrates nonconservation."]
-inconclusive_outcomes = ["An open outflow and flux ledger are unspecified; the driver uses periodic x wrapping plus inlet overwrite. E-119 radial IC lacks admitted SI metadata. The periodic one-step Guo sweep cannot decide open-system conservation."]
+abandonment_outcomes = ["An admitted identical historical report contradicts the recorded mass values or source-layout diagnosis.", "Independent transport or face-sum oracles fail the declared E-297 replay; abandon the successor conformance result rather than treating total-mass increase as conservation error."]
+inconclusive_outcomes = ["The numerical zero-gradient outflow lacks physical reflected-wave/backflow admission, magnetic boundary specification, matched SI spacecraft inputs and a gravitational-frame choice.", "Finite flux accounting leaves coupled physical sensitivity and a physical force bound unassessed."]
 
 [[claim]]
 id = "C-1685"
@@ -5932,10 +5932,10 @@ names = []
 training_boundary = "The fixed implementation audit fits zero parameters. Source/model parameter fitting and phenomenological prediction remain outside this declared audit."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-143"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "E-143 numerical Chern sweeps require a gap-admission amendment before individual-band interpretation. Compare isolated-band or degenerate-subspace invariants, symmetry and mesh refinement independently; retain the original band labels and outputs."
+experiment_ids = ["E-143", "E-299"]
+protocol_artifact = "data/output/audit/magnonic-source-projection/adjudication.toml"
+protocol_sha256 = "e0960c2d07346429f1eb6d10abef815a08068d7f15b92e7c79f51c1e97948bb9"
+description = "Preserve E-143 historical integer outputs and failed individual-band admission. E-299 tests finite-grid separated subspaces, orbital gauge and local valley-patch flux on source-defined models. Globally isolated time-reversal-preserved bundles have zero first Chern number; finite-grid gap checks leave the global premise unproved. Local source valley flux is explicitly nonquantized."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["An admitted isolated band invariant satisfies its correctly derived time-reversal constraint and independent gauge/basis checks over refined meshes."]
@@ -6012,9 +6012,9 @@ where_stated = "crates/quantum_core/src/magnonic_crystal.rs; data/output/audit/2
 [[claim]]
 id = "C-1692"
 last_verified = "2026-08-06"
-statement = "The repository magnonic tight-binding parameters are not those of Kaman et al.: twelve of twelve Table I and II values differ, both hopping signs are flipped, and four of four geometry constants differ. The onsite energies 1.50, 1.80 and 2.08 GHz match frequencies the paper reports as observed outputs, so agreement of the model with those same landmarks is not an independent prediction."
+statement = "The repository-reference magnonic tight-binding parameter set retained from revision 81a4ca6e differs from Kaman et al. source Tables I/II; its onsite energies 1.50, 1.80 and 2.08 GHz reuse reported output landmarks and establish no independent prediction. Separate kaman_table_i and kaman_table_ii constructors retain the source-fitted values. Main-text section IV explicitly describes hand fitting: Table I has five fitted parameters and Table II has seven. E-299 reproduces their admitted rendered frequency support with zero replay fitting, under explicit geometry, orbital-gauge and rectangular-folding conventions. Source reproduction of fitted bands remains distinct from independent micromagnetic or measured-device agreement."
 status = "Provisional"
-where_stated = "https://arxiv.org/abs/2601.03210; data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"
+where_stated = "https://arxiv.org/abs/2601.03210v2, sectionIV and TablesI/II; crates/quantum_core/src/magnonic_crystal.rs::MagnonicTBParams; data/output/audit/magnonic-source-projection/adjudication.toml"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
@@ -6043,10 +6043,10 @@ names = []
 training_boundary = "The fixed implementation audit fits zero parameters. Source/model parameter fitting and phenomenological prediction remain outside this declared audit."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-142"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "Audit E-142 input provenance before replaying dispersion. Retain both parameter sets and table/geometry/sign comparisons. A fixed parameter identity audit estimates zero values; the physical fitting freedom of constructed model constants remains a separate declared question."
+experiment_ids = ["E-142", "E-299"]
+protocol_artifact = "data/output/audit/magnonic-source-projection/adjudication.toml"
+protocol_sha256 = "e0960c2d07346429f1eb6d10abef815a08068d7f15b92e7c79f51c1e97948bb9"
+description = "E-142 retains the repository-reference parameter identity. E-299 separately binds source Tables I/II, their five/seven hand-fitted parameters, geometric matrix/folding comparisons and admitted raster support. Replay fitting is zero, while imported model fitting is recorded in C-1747. The inset-extraction failure and amendment remain retained."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["All twelve parameter comparisons and four geometry comparisons differ, with both hopping signs differing under aligned conventions, and onsite landmarks reuse observed outputs: retain the source-provenance defect for that producer."]
@@ -6133,10 +6133,10 @@ names = []
 training_boundary = "The fixed implementation audit fits zero parameters. Source/model parameter fitting and phenomenological prediction remain outside this declared audit."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-142"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "E-142 is the magnonic dispersion family; its tight-binding landmarks alone do not exercise magnonic.rs frequency conversion. Run focused homogeneous-frequency unit fixtures and bind their actual source revision before considering any GHz source-agreement claim."
+experiment_ids = ["E-142", "E-299"]
+protocol_artifact = "data/output/audit/magnonic-source-projection/adjudication.toml"
+protocol_sha256 = "e0960c2d07346429f1eb6d10abef815a08068d7f15b92e7c79f51c1e97948bb9"
+description = "E-142 identifies the historical dispersion family. E-299 retains eight independent homogeneous-frequency unit tests and separates their angular/cyclic and exchange slopes from fitted tight-binding GHz tables. The source-table replay bypasses the homogeneous effective-field helper and supplies no evidence for its physical field geometry."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["Historical gamma=2.8e10 is treated as angular and then divided by 2*pi: the external-field cyclic-frequency slope is smaller than 28 GHz/T by 2*pi, confirming the bounded unit defect."]
@@ -6161,7 +6161,7 @@ evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The contract tests the coverage and hardware outcome of CPU/GPU equivalence instrumentation. It makes no physical galaxy or cosmological inference."
-fixed_hyperparameters = ["Inspected equilibrium test: 8 cubed, five steps, tau 0.6, uniform density 1 and zero velocity", "Inspected rho and velocity RMS gates 1e-2", "Enumerate the equivalence-test suite before adjudicating the word only"]
+fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "Inspected equilibrium test: 8 cubed, five steps, tau 0.6, uniform density 1 and zero velocity", "Inspected rho and velocity RMS gates 1e-2", "Enumerate the equivalence-test suite before adjudicating the word only"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -6185,23 +6185,23 @@ names = []
 training_boundary = "Test-coverage and execution-state inspection fit zero parameters. Future evolving-field error tolerances require a separate numerical budget rather than training to observed discrepancies."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-165"]
+experiment_ids = ["E-165", "E-298", "E-300"]
 protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
 protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "E-165 is the verified adjacent CPU/GPU box-counting validation registration, not the producer of equilibrium_cpu_gpu_remain_consistent_fp32 in crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs. Admit an explicit experiment amendment or successor binding before claiming an E-165 replay adjudicates C-1696. Inventory and source checks can establish the named test's bounded behavior meanwhile."
+description = "E-298 retains 50 evolving pilot rows but leaves numerical accuracy unassessed; six Sersic rows fail the Mach gate. Its pre-correction producer shares the E-300 force-density impulse defect. Treat those observations as descriptive and require independent impulse and population error gates before a successor equivalence claim. E-165 is the verified adjacent CPU/GPU box-counting validation registration, not the producer of equilibrium_cpu_gpu_remain_consistent_fp32 in crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs. Admit an explicit experiment amendment or successor binding before claiming an E-165 replay adjudicates C-1696. Inventory and source checks can establish the named test's bounded behavior meanwhile."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["A complete admitted suite inventory establishes that every available CPU/GPU equivalence path is equilibrium-only and accepts device unavailability, with the inspected five-step test as a retained witness."]
 revision_outcomes = ["Another evolving-field comparison exists in the admitted suite: remove the universal only wording and retain the bounded observation about the named equilibrium test.", "A repaired comparison demonstrates nonzero field evolution, executes both backends and retains independent numerical error gates: preserve the historical defect and register its tested successor."]
 abandonment_outcomes = ["The claimed historical test instead executes evolving fields and reports unavailable hardware as a distinct unexecuted outcome: abandon the defect attribution for that producer."]
-inconclusive_outcomes = ["E-165 producer identity remains mismatched, the suite denominator is incomplete, or CUDA admission fails; these outcomes establish neither equivalence nor exhaustive absence of an evolving test.", "A passing uniform equilibrium comparison leaves evolving-field correctness and all physical interpretations inconclusive."]
+inconclusive_outcomes = ["E-298 same-stage Df agreement lacks an independent numerical accuracy budget; shared CPU/CUDA force defects and adaptive-threshold invariance can preserve agreement while the dynamics are wrong.", "E-165 producer identity remains mismatched, the suite denominator is incomplete, or CUDA admission fails; these outcomes establish neither equivalence nor exhaustive absence of an evolving test.", "A passing uniform equilibrium comparison leaves evolving-field correctness and all physical interpretations inconclusive."]
 
 [[claim]]
 id = "C-1697"
 last_verified = "2026-08-06"
-statement = "Galaxy-scale fractal dimension from this pipeline is not converged at 128 cubed: the non-outlier bulk mean moves from 2.9116 at 64 cubed to 2.7384 at 128 cubed, a shift of 0.173, roughly 20 times the 128 cubed confidence-interval half-width of 0.0088."
+statement = "The retained fleet report gives a marginal D_f difference of 0.1732 between 93 grid-64 nonoutliers (mean 2.9116) and all 70 completed grid-128 objects (mean 2.7384), including six corresponding low-tail objects. The reported grid-128 half-width is 0.0088 with unspecified interval construction. The difference compares unmatched populations and does not establish a paired bulk shift or asymptotic nonconvergence. Exact paired CSVs, producer identity and matched physical domain, duration and measurement procedure remain required."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+where_stated = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml; data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; source-implied settings at ff9850ad, replay binary digest unrecorded"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
@@ -6231,15 +6231,15 @@ training_boundary = "The declared validation comparison fits zero parameters. Im
 
 [claim.decisive_experiment]
 experiment_ids = ["E-163", "E-166"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "Use E-163/E-166 as the recorded family binding, not evidence of completed replay. Recompute the paired bulk mean shift and uncertainty on identical object IDs; separately test a declared convergence tolerance with a third matched resolution. Retained paired rows or historical E-166 readback producer are missing/unsealed; 64/128 alone cannot prove asymptotic nonconvergence, and independent physical duration/softening matching remains pending."
+protocol_artifact = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml"
+protocol_sha256 = "6bcc58fb7ef32170b93b9535e0c8dfd98f207aa2b1a81e1eb58842e3b2474cdd"
+description = "E-163/E-166 retain historical bindings. The retained adjudication separates original100/100 aggregates from later100/70 populations and source-implied box enlargement; exact paired inference requires the two named CSV hashes and execution identity."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["The admitted common-subset data reproduce the reported mean shift and interval with their actual population definitions."]
-revision_outcomes = ["If shift and half-width use different populations or dependent uncertainty, revise the twenty-times comparison. Describe finite-grid disagreement separately from an untested asymptotic conclusion."]
-abandonment_outcomes = ["An identical-source common-subset recomputation refutes the stated shift or half-width, abandoning that numerical witness."]
-inconclusive_outcomes = ["Retained paired rows or historical E-166 readback producer are missing/unsealed; 64/128 alone cannot prove asymptotic nonconvergence, and independent physical duration/softening matching remains pending."]
+verification_outcomes = ["The retained report and historical source reproduce the explicitly bounded population counts, rounded arithmetic and source-implied settings in adjudication.toml."]
+revision_outcomes = ["Recovered exact CSVs and producer identity revise membership or statistics through a retained canonical correction.", "A separately declared fixed-domain multi-grid experiment with common object IDs, physical duration, softening, normalization and stability gates may establish a narrower convergence successor."]
+abandonment_outcomes = ["The cited report contradicts the declared counts or rounded operands, or the cited source contradicts the stated default spatial scale; abandon the affected documentary clause."]
+inconclusive_outcomes = ["Missing exact paired CSV hashes, binary digest and runtime physical settings leave paired uncertainty, causal outlier attribution and convergence unassessed."]
 
 [[claim]]
 id = "C-1698"
@@ -6272,7 +6272,7 @@ evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
-fixed_hyperparameters = ["Historical producer revision 81a4ca6e is distinct from repaired graph/event handling. Retain the original CUDA error and zero completed trials. E-174 requires a declared positive alpha_zd and at least one noise trial."]
+fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "Historical producer revision 81a4ca6e is distinct from repaired graph/event handling. Retain the original CUDA error and zero completed trials. E-174 requires a declared positive alpha_zd and at least one noise trial."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -6296,16 +6296,16 @@ names = []
 training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-174"]
+experiment_ids = ["E-174", "E-298"]
 protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
 protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "Use E-174 as the recorded family binding, not evidence of completed replay. Admit CUDA identity and exact source, then retain completion and per-condition trial counts for all six declared conditions with noncollapsed force contrasts. The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates."
+description = "E-298 is a separately declared 16-cubed direct-step pilot of the retained pre-MRT-correction executable. It emits all 50 CPU/CUDA trial rows, retains six first-step Mach failures, and exits 1 on both backends. E-298 does not retire the captured 64/128-cubed historical failure. Use E-174 as the recorded family binding, not evidence of completed replay. Admit CUDA identity and exact source, then retain completion and per-condition trial counts for all six declared conditions with noncollapsed force contrasts. The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["The historical declared producer fails at capture before completed trials on the specified hardware and inputs."]
-revision_outcomes = ["The bounded repaired BGK graph fixtures pass with retained population/time-level oracles; register instrument repair separately. Retire the historical failure for a new producer only when all declared E-174 conditions actually complete."]
+revision_outcomes = ["A new direct-step producer emits the exact 25-row-per-backend inventory with paired array hashes and explicit failures: register bounded instrument execution separately; retain E-298 failure and require a corrected-producer independent impulse oracle plus admitted completion before morphology interpretation.", "The bounded repaired BGK graph fixtures pass with retained population/time-level oracles; register instrument repair separately. Retire the historical failure for a new producer only when all declared E-174 conditions actually complete."]
 abandonment_outcomes = ["The identical historical producer and input complete all declared trials, contradicting the recorded universal execution failure."]
-inconclusive_outcomes = ["The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates."]
+inconclusive_outcomes = ["E-298 C4/C5/C6 fail the frozen Mach gate at step 1 on both backends; Sersic contrasts, resolution convergence and physical interpretation remain unadmitted.", "The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates."]
 
 [[claim]]
 id = "C-1701"
@@ -6324,7 +6324,7 @@ evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The predicate checks whether the survival classifier accepts a finite numerical explosion. Physical solver stability and galaxy interpretation require independent error and convergence contracts."
-fixed_hyperparameters = ["E-167 Gaussian contrast sweep at n=16, tau=0.7, 200 steps; retain each actual contrast and mode", "Historical diagnostic witness has finite mass error of order 1e113", "Inspect the actual survived assignment and finite-Mach/error branches"]
+fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "E-167 Gaussian contrast sweep at n=16, tau=0.7, 200 steps; retain each actual contrast and mode", "Historical diagnostic witness has finite mass error of order 1e113", "Inspect the actual survived assignment and finite-Mach/error branches"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -6348,28 +6348,28 @@ names = []
 training_boundary = "The fixed classifier is inspected and exercised without fitting. A repaired scientific stability threshold must be preregistered from its numerical error budget."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-167"]
+experiment_ids = ["E-167", "E-298"]
 protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
 protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "Bind crates/gororoba_cli_physics/src/bin/mrt_stability_audit.rs to retained E-167 telemetry. Replay or independently exercise its classification with the historical finite explosion witness; preserve the original survived output alongside any corrected instrument result."
+description = "E-298 independently retains six strict Mach-gate failures under the shared post-step population diagnostic, with finite-state, positive-density, nonnegative-population and mass predicates all passing. That result establishes these six rejections, while numerical accuracy and accepted-field stability remain unassessed. Bind crates/gororoba_cli_physics/src/bin/mrt_stability_audit.rs to retained E-167 telemetry. Replay or independently exercise its classification with the historical finite explosion witness; preserve the original survived output alongside any corrected instrument result."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["A finite trial with mass error of order 1e113 is classified survived=true, and independent predicate inspection shows mass error cannot change that outcome: retain the instrument-defect finding."]
-revision_outcomes = ["A repaired predicate rejects the retained finite explosion and separately reports finite-state, mass, positivity and Mach gates: register the bounded repaired-instrument successor after negative-control checks."]
+revision_outcomes = ["The E-298 paired pilot retains every first failed predicate and exits 1 for six Mach failures: record bounded classifier execution separately from historical E-167 and from solver correctness.", "A repaired predicate rejects the retained finite explosion and separately reports finite-state, mass, positivity and Mach gates: register the bounded repaired-instrument successor after negative-control checks."]
 abandonment_outcomes = ["The identified historical classifier rejects the retained finite explosion through a measured mass or equivalent bounded-state gate: abandon the claimed defect for that source identity."]
-inconclusive_outcomes = ["Missing historical trial identity or inputs blocks numerical replay; source inspection alone supports only the inspected predicate's behavior.", "Rejecting one explosive case leaves stability of accepted trials inconclusive until scientific tolerances and resolution convergence are declared."]
+inconclusive_outcomes = ["Passing the declared E-298 engineering mass and Mach budgets alone leaves physical accuracy unresolved; the historical producer also carries the independent E-300 shared MRT force defect.", "Missing historical trial identity or inputs blocks numerical replay; source inspection alone supports only the inspected predicate's behavior.", "Rejecting one explosive case leaves stability of accepted trials inconclusive until scientific tolerances and resolution convergence are declared."]
 
 [[claim]]
 id = "C-1703"
 last_verified = "2026-08-06"
-statement = "The 18-fold standard-deviation reduction is dominated by outlier disappearance rather than resolution: 8.41 of it comes from removing the seven galaxies with fractal dimension below 1.0, and only 1.98 from tightening of the remainder."
+statement = "The retained fleet spreads satisfy the arithmetic factorization (0.6241/0.0742)*(0.0742/0.0374)=16.6872, with factors 8.4111 and 1.9840. The second factor compares 93 grid-64 nonoutliers with all 70 completed grid-128 objects; it is not within-subset tightening. The historical 17.8529 ratio from 0.607/0.034 belongs to a separate claimed 100-object comparison. These rounded cross-population ratios establish arithmetic only; causal outlier attribution and resolution convergence remain unresolved."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+where_stated = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml; data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; source-implied settings at ff9850ad, replay binary digest unrecorded"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
-fixed_hyperparameters = ["Freeze outlier rule D_f<1 at 64 cubed, exact seven object IDs and the corresponding 128-cubed rows; retain historical six-object assertion as a competing recorded population."]
+fixed_hyperparameters = ["Retain the D_f<1 outlier rule and distinguish original six-of-100 from replay seven-of-100 and six-of-70; complete identities remain unresolved."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -6383,7 +6383,7 @@ kind = "computational"
 [[claim.intervening_maps]]
 name = "independent_predicate"
 branch = "outlier_accounting"
-description = "Reproduce the factorization into outlier-removal and within-subset tightening; report 8.41 and 1.98 with full-precision rows and their product against the claimed 18-fold description."
+description = "Verify the reported rounded cross-population factorization; require exact common-subset rows before estimating any within-subset spread change."
 kind = "computational"
 
 [[claim.fitted_parameters]]
@@ -6394,15 +6394,15 @@ training_boundary = "The declared validation comparison fits zero parameters. Im
 
 [claim.decisive_experiment]
 experiment_ids = ["E-163", "E-166"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "Use E-163/E-166 as the recorded family binding, not evidence of completed replay. Reproduce the factorization into outlier-removal and within-subset tightening; report 8.41 and 1.98 with full-precision rows and their product against the claimed 18-fold description. E-163/E-166 retained rows, producer identities or exclusion membership are unavailable. Spread decomposition cannot identify the physical cause of outliers or establish convergence."
+protocol_artifact = "data/output/audit/galaxy-retained-population-reconciliation/adjudication.toml"
+protocol_sha256 = "6bcc58fb7ef32170b93b9535e0c8dfd98f207aa2b1a81e1eb58842e3b2474cdd"
+description = "E-163/E-166 retain historical bindings. The retained adjudication separates original100/100 aggregates from later100/70 populations and source-implied box enlargement; exact paired inference requires the two named CSV hashes and execution identity."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Exact matched populations reproduce the two recorded factors and demonstrate which arithmetic contribution dominates the spread ratio."]
-revision_outcomes = ["Different membership/counts or rounded-factor products revise quantitative factors; label decomposition as statistical accounting rather than causal resolution evidence."]
-abandonment_outcomes = ["The admitted matched-row calculation gives incompatible factors or fails the stated dominance, refuting that bounded decomposition."]
-inconclusive_outcomes = ["E-163/E-166 retained rows, producer identities or exclusion membership are unavailable. Spread decomposition cannot identify the physical cause of outliers or establish convergence."]
+verification_outcomes = ["The retained report and historical source reproduce the explicitly bounded population counts, rounded arithmetic and source-implied settings in adjudication.toml."]
+revision_outcomes = ["Recovered exact CSVs and producer identity revise membership or statistics through a retained canonical correction.", "A separately declared fixed-domain multi-grid experiment with common object IDs, physical duration, softening, normalization and stability gates may establish a narrower convergence successor."]
+abandonment_outcomes = ["The cited report contradicts the declared counts or rounded operands, or the cited source contradicts the stated default spatial scale; abandon the affected documentary clause."]
+inconclusive_outcomes = ["Missing exact paired CSV hashes, binary digest and runtime physical settings leave paired uncertainty, causal outlier attribution and convergence unassessed."]
 
 [[claim]]
 id = "C-1704"
@@ -6652,22 +6652,23 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/cs
 [[claim]]
 id = "C-1710"
 last_verified = "2026-08-06"
-statement = "The retained ALICE comparison reports large diagonal-error residuals for the declared R_AA ansatz. A calibrated physical rejection requires source-population, covariance, model and fitting-freedom admission. The independent six-point replay confirms that extract_epsilon minimizes its own shift objective; a different historical scoring formula caused the apparent optimizer discrepancy. The retained large residuals remain descriptive pending those admission obligations."
+statement = "The retained ALICE fixture matches all 38 freshly retrieved HEPData89396v1 Table1 rows for charged particles in Pb-Pb at 5.02 TeV, 0-5 percent centrality, including the supplied error columns. Historical diagonal stat-plus-systematic residuals omit the separately tabulated normalization uncertainty. Independent E-296 replay establishes shared fit/scoring objective conformance; physical rejection still requires admitted covariance, source ansatz and declared calibration freedom."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml; data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-adjudication.toml; data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml"
-evidence_layer = "phenomenological_mapping"
-depth_status = "not_assessed"
-depth_rationale = "Physical rejection needs admitted source ansatz, population and joint error model; the numerical objective replay alone leaves interpretive depth unassessed."
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The bounded predicate checks exact retained table columns and the independent numerical objective. Physical rejection remains a separate unadmitted claim."
 fixed_hyperparameters = ["Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay", "Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds", "Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
-computational_stage_count = 1
+computational_stage_count = 2
 
 [[claim.intervening_maps]]
-name = "source_ansatz_to_observable"
+name = "retained_objective_identity"
 branch = "physical_fit"
-description = "Identify the energy-loss ansatz and its domain before mapping epsilon and fixed spectral index into charged-particle R_AA."
-kind = "interpretive"
+description = "Compare the declared retained objective and scoring formula at identical epsilon and fixed spectral index; physical ansatz admission remains separate."
+kind = "computational"
 
 [[claim.intervening_maps]]
 name = "admitted_covariance_residual"
@@ -6683,22 +6684,22 @@ training_boundary = "One epsilon is fitted to the same six retained points with 
 
 [claim.decisive_experiment]
 experiment_ids = ["E-075", "E-296"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml"
-protocol_sha256 = "0d810510e70d4e972bfcae0778e936e17f90b1334d58368f58c26fb71d6cc2c9"
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
 description = "E-296 owns the independent numerical objective test; E-075 owns the physical driver. Numerical agreement between fit and score precedes separately preregistered covariance/population admission."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["An independently corroborated fit to each named admitted centrality fails its preregistered residual acceptance rule under source-correct covariance and declared fitted freedom."]
-revision_outcomes = ["Corrected ansatz identity, covariance or population changes residuals: retain historical values and restrict the rejection to the exact tested model and inputs."]
-abandonment_outcomes = ["The admitted model passes the declared residual gate for a centrality covered by the universal rejection: abandon that universal claim and report each centrality separately."]
+verification_outcomes = ["All 38 retained HEPData table rows match edges, RAA and stated error columns exactly; the diagonal historical scoring omits separately tabulated normalization uncertainty.", "E-296 independently reproduces the shared corrected numerical objective at identical parameters and weights."]
+revision_outcomes = ["A new provider release or corrected model definition receives a separate source identity and canonical revision; preserve original columns and objective results.", "An admitted physical model comparison requires its own covariance, calibration freedom, interpretive maps and rejection rule."]
+abandonment_outcomes = ["An identical-source row or uncertainty column differs, or independent same-input objective evaluation disagrees; abandon the affected implementation identity clause."]
 inconclusive_outcomes = ["A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted."]
 
 [[claim]]
 id = "C-1711"
 last_verified = "2026-08-06"
-statement = "On the retained six ALICE Pb-Pb 5.02 TeV 0-5 percent charged-hadron points above 5 GeV, the historical digitized CUJET3.0 curve has descriptive chi-squared about 1200 and the separately optimized plus-shift scoring formula has about 1917. That plus-shift formula differs from the objective fitted by extract_epsilon; the shared corrected fit/scoring ansatz agrees exactly at equal weights. The CUJET3.0 curve targets 2.76 TeV, so this retained numerical ordering does not establish a matched-population physical model preference."
+statement = "Historical CUJET-array and shifted-ansatz scores against six ALICE5.02 TeV 0-5 percent charged-particle points remain descriptive unmatched comparisons. The cited CUJET source arXiv1508.00552v3 Figure3(a) instead describes charged hadrons at2.76 TeV and20-30 percent centrality; Figures4/5 describe transport coefficients. HEPData59944v1 Table19 supplies a matching experimental population, but the historical numerical vectors lack authenticated curve provenance. Source identity and covariance must be admitted before physical model ranking. The separately cited arXiv2401.03757 is Jai Prakash: Figure4 treats static-medium charm quarks at6 fm/c, rather than centrality-specific final D mesons."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml; data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-adjudication.toml; data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml"
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
@@ -6746,22 +6747,22 @@ training_boundary = "The digitized CUJET curve is held fixed in this comparison.
 
 [claim.decisive_experiment]
 experiment_ids = ["E-075", "E-296"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
 description = "E-075 owns arleo-falmagne-scaling and its data/fit family. Bind the actual comparison subcommand and competing_models.rs rather than assuming the registered full run alone reproduces this ranking. Independently recompute the historical chi-squared values about 1200 and 1917, retaining exact values and optimizer outcome, then report population admission separately."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["Independent scoring of identical six-point inputs reproduces the historical ordering CUJET chi-squared below the independently minimized AF value while explicitly retaining the 2.76-versus-5.02 TeV mismatch; verification supports the bounded numerical statement alone."]
+verification_outcomes = ["Historical scoring remains separately reproducible under its preserved inputs and formula; primary source figures identify the mismatched populations, and source admission rejects all five unsupported vectors even when display labels are changed."]
 revision_outcomes = ["Source identity or optimizer repair changes the numerical ordering or fitted minimum: preserve the original comparison and register the corrected numerical result.", "Matched-population curves become available: preregister their covariance, fit freedoms and comparison protocol before deriving a physical model-ranking successor."]
-abandonment_outcomes = ["Independent calculation on the identified historical inputs reverses the asserted chi-squared ordering: abandon the numerical ordering claim for that producer."]
+abandonment_outcomes = ["Independent identical-input scoring contradicts the retained numerical result, or authenticated source text contradicts the declared population; abandon the affected clause.", "An unsupported vector passes source admission after a display-only relabeling, refuting the quarantine implementation predicate."]
 inconclusive_outcomes = ["Collision energy, species, centrality or uncertainty treatment differs across model/data populations: physical superiority remains inconclusive regardless of the numerical ordering.", "Unknown covariance, competitor calibration provenance or optimizer failure blocks an inferential model-selection claim; the diagonal historical residual calculation remains separately reproducible."]
 
 [[claim]]
 id = "C-1712"
 last_verified = "2026-08-06"
-statement = "CUJET3.0 carries two free parameters, alpha_c and c_m, not the five asserted in crates/qgp_scaling/src/competing_models.rs, per Xu, Liao and Gyulassy JHEP02(2016)169 Section 6."
+statement = "CUJET3.0 source arXiv1508.00552v3 declares continuous alpha_c and c_m parameters together with discrete scheme choices. Figure3 uses schemes calibrated to charged-particle R_AA near0.3 at12.5 GeV and lattice magnetic screening mass. Two named model parameters do not by themselves establish the effective fitted degrees of freedom or a BIC penalty for a new comparison; the retained five-parameter code value lacks a source-derived fitting procedure."
 status = "Provisional"
-where_stated = "crates/qgp_scaling/src/competing_models.rs"
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
 evidence_layer = "source_proposition"
 depth_status = "declared"
 lift_depth = 0
@@ -6785,9 +6786,9 @@ training_boundary = "The source lookup fits zero parameters. The retained digiti
 
 [claim.decisive_experiment]
 experiment_ids = ["E-075"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "E-075 provides comparison context; source-section transcription and byte receipt are separate required evidence and the physical driver alone does not verify them."
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
+description = "The primary-source audit retains CUJET section and figure identities, continuous parameters, discrete schemes and calibration. E-075 remains comparison context; source enumeration cannot assign an effective BIC penalty."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["Admitted Section6 explicitly identifies alpha_c and c_m as the two model parameters; source-role ledger separates fixed calibration and scanned schemes from zero retained-point refits."]
@@ -6798,9 +6799,9 @@ inconclusive_outcomes = ["Unverified section identity or unspecified parameter r
 [[claim]]
 id = "C-1713"
 last_verified = "2026-08-06"
-statement = "The 5.02 TeV eccentricity column in alice_pbpb_5020_mc_glauber is not epsilon_2 measured by the two-particle cumulant."
+statement = "The retained alice_pbpb_5020_mc_glauber epsilon2 sequence lacks an identified source table and estimator definition in the enumerated primary-source audit. Its interpretation as a two-particle-cumulant eccentricity remains unadmitted. Partial agreement of participant counts with an older-energy table establishes neither eccentricity identity nor the full reference population."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
 evidence_layer = "source_proposition"
 depth_status = "declared"
 lift_depth = 0
@@ -6824,22 +6825,22 @@ training_boundary = "The fixed table lookup and definition comparison fit zero p
 
 [claim.decisive_experiment]
 experiment_ids = ["E-075"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
 description = "Retrieve the actual source table, retain its hash and definition, and map every row before using the E-075 geometry comparison."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["The admitted actual source defines the implementation column as another statistic or geometry quantity, establishing the bounded cumulant mislabel."]
+verification_outcomes = ["The retained source audit supplies exact searched table identities and leaves the epsilon2 sequence without an admitted estimator definition; verification applies to that bounded provenance result."]
 revision_outcomes = ["Only a subset of rows or a different population is traced: restrict the identity finding to the traced subset and preserve unresolved rows."]
-abandonment_outcomes = ["An admitted matching-population source explicitly gives the same rows including0.029 as epsilon2{2}: abandon the mislabel claim for that source-defined column."]
+abandonment_outcomes = ["A source receipt already present on the enumerated surface identifies every row and estimator, refuting the stated documentary omission."]
 inconclusive_outcomes = ["Unidentified source leaves the column unverified rather than proving an alternative definition.", "An ordering comparison with another optical model does not establish a universal cumulant inequality without matched ensemble and geometry assumptions."]
 
 [[claim]]
 id = "C-1714"
 last_verified = "2026-08-06"
-statement = "The reference table alice_pbpb_5020_npart is not sourced to ALICE PLB 772 (2017) 567; that paper tabulates no per-centrality participant number."
+statement = "The retained alice_pbpb_5020_npart source citation does not identify the per-row participant population. Primary2.76 TeV ALICE centrality tables match some retained entries (329.7 and260.5) while other entries differ (382 or382.7 versus382.8). The audit retains those partial matches and the original5.02 TeV citation; exact per-row lineage remains unresolved."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
 evidence_layer = "source_proposition"
 depth_status = "declared"
 lift_depth = 0
@@ -6863,8 +6864,8 @@ training_boundary = "The source lookup fits zero parameters. Glauber calibration
 
 [claim.decisive_experiment]
 experiment_ids = ["E-075"]
-protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
-protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
 description = "Admit cited source bytes and enumerated searched surfaces, then produce exact row locators or bounded absence; E-075 numeric agreement cannot supply source identity."
 
 [claim.what_would_verify_refute]
@@ -6966,9 +6967,9 @@ inconclusive_outcomes = ["Spectral resemblance alone does not prove isomorphism.
 [[claim]]
 id = "C-1717"
 last_verified = "2026-08-06"
-statement = "For any spectrum of N values taking exactly two distinct levels, the mean-normalized nearest-neighbour spacing variance equals N minus 2 identically, so a reported variance of N minus 2 is evidence of two-level degeneracy and not of super-Poisson statistics."
+statement = "For N>=2 sorted spectral values at exactly two distinct populated levels, the N-1 adjacent spacings including multiplicities contain one positive gap. After division by their mean, their population variance with denominator N-1 equals N-2 exactly. Sample variance instead equals N-1 for N>2 and is undefined for N=2. The dimension-independent identity diagnoses the declared two-level spacing construction rather than generic super-Poisson statistics."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
+where_stated = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml; crates/algebra_analysis/tests/motif_exact_rank.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
@@ -7920,6 +7921,216 @@ verification_outcomes = ["Both actual CUDA fixtures and the frozen-evolution rej
 revision_outcomes = ["Additional MRT, boundaries, grids or device precision require separate conformance evidence and a bounded successor."]
 abandonment_outcomes = ["An admitted faithful replay violates an RMS gate or graph-reuse predicate.", "A frozen or equilibrium substitute passes the evolving oracle: the instrument fails to discriminate evolution."]
 inconclusive_outcomes = ["CUDA hardware admission fails or the hardware tests are skipped.", "Time level, layout, source identity or dependency ordering is ambiguous.", "Passing fixture conformance leaves physical interpretation and resolution convergence unassessed."]
+
+[[claim]]
+id = "C-1746"
+last_verified = "2026-09-05"
+statement = "The explicit open-x D3Q19 transport instrument passes independent outgoing/interior packet and fixed-direction face-sum tests. In a nonuniform 5x3x2 domain over 20 steps, mass changes from 30.6 to 31.2888816925378848 lattice mass units; the maximum absolute cumulative residual after measured boundary flux is 1.791899961745e-13. Five tests and a three-step no-DM, zero-magnetic-field runner pass their declared gates; an exact-zero budget control fails after retaining its ledger row. The zero-gradient incoming-population closure is a tested finite numerical mechanism. Physical outflow suitability, magnetic boundaries and a dark-matter force bound remain unassessed."
+status = "Verified"
+where_stated = "data/output/audit/claim-family-evidence-adjudication/open-x-flux-result.toml; crates/lbm_3d/tests/open_x_flux.rs; data/output/audit/claim-family-evidence-adjudication/open-x-producer-reconstruction.toml"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Finite transport and independently measured population mass inventory; physical boundary interpretation is unassessed."
+fixed_hyperparameters = ["D3Q19 AoSoA populations", "5x3x2 nonuniform domain and20 evolving steps", "Periodic y/z with explicitly nonperiodic x", "Zou-He min-x inlet and explicit zero-gradient incoming-population max-x closure", "Relative engineering gate1e-12", "Zero-budget failure control"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 2
+computational_stage_count = 2
+
+[[claim.intervening_maps]]
+name = "directional_stream_and_face_reconstruction"
+branch = "population_transport"
+description = "Move each population to its discrete destination; outgoing x populations leave the domain, while declared rules reconstruct incoming face slots."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "independent_packets_and_fixed_direction_sums"
+branch = "mass_inventory"
+description = "Analytical packet destinations and fixed direction lists test the transport and face accounting independently of ledger equality."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "transport_and_ledger"
+count = 0
+names = []
+training_boundary = "Deterministic numerical fixtures fit zero parameters; the outflow closure is explicitly selected rather than inferred from physical data."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-297"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/open-x-flux-protocol.toml"
+protocol_sha256 = "1f92e032efe86f84d70dfcf93748c65959cd7047405c74630ee21a959818dc54"
+description = "Replay independent packet/face-sum tests, nonuniform evolution and runner failure retention against the source hashes in open-x-flux-result.toml."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["Outgoing packets leave without opposite-face wrap, interior destinations and face sums match analytical oracles, and evolving residuals pass the declared gate."]
+revision_outcomes = ["A different closure, magnetic boundary, dimensional grid or physical conversion requires its own measured conformance and physical admission."]
+abandonment_outcomes = ["An outgoing packet reaches the opposite x face or an independent analytical face sum disagrees.", "The declared finite replay exceeds its unchanged residual gate or the zero-budget failure is silently accepted."]
+inconclusive_outcomes = ["Missing input/source identity prevents replay.", "Finite ledger agreement leaves physical reflected-wave/backflow behavior, magnetic boundaries and coupled force sensitivity unassessed."]
+
+[[claim]]
+id = "C-1747"
+last_verified = "2026-09-05"
+statement = "Using Kaman et al. arXiv:2601.03210v2 fitted Tables I/II, the independent finite geometry and rectangular-folding replay agrees within 1.8e-14 GHz. Admitted rendered spectral support passes the declared 0.03 GHz two-way distance gate: worst distances are 0.0258413 GHz for Figure 5 and 0.0172003 GHz for Figure 6. The initial Figure 6 failure at 0.0852987 GHz came from an inset border and remains retained with its coordinate-bound extraction amendment. Source fitting freedom is five and seven parameters; replay fitting is zero. Separated subspaces pass the declared finite-grid checks, while degenerate individual bands fail admission. Local valley flux remains nonquantized. The result establishes bounded source reproduction, separate from global-gap proof or independent physical agreement."
+status = "Verified"
+where_stated = "data/output/audit/magnonic-source-projection/adjudication.toml; crates/quantum_core/tests/magnonic_source_projection.rs"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Source-defined finite geometry and frequency-support reproduction; physical model-to-observable interpretation remains unassessed."
+fixed_hyperparameters = ["arXiv:2601.03210v2 Tables I/II and original Figure 5/6 rasters", "Unchanged 0.03 GHz raster-support gate", "ky grids 96 and192; grayscale thresholds220 and240", "Declared coordinate-bound inset exclusion with original failure retained", "Explicit periodic-cell and embedded-orbital gauges", "Finite-grid separated-subspace admission"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 3
+computational_stage_count = 3
+
+[[claim.intervening_maps]]
+name = "geometric_hopping_and_rectangular_folding"
+branch = "source_reproduction"
+description = "Construct bonds from source geometry and directional orbital projections; compare independent complex matrices and 18-band rectangular folding."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "rendered_frequency_support"
+branch = "source_reproduction"
+description = "Compare two-way frequency support at declared columns and ky grids; separate raster quantization and masked/occluded regions from observed support."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "gap_admitted_determinant_links"
+branch = "topology"
+description = "Admit sampled separated subspaces and conditioned links; reject degenerate individual bands and separate local embedded valley flux from global Chern invariants."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "source_table_i"
+count = 5
+names = ["eps_s", "eps_p", "eps_k", "t_sk", "t_pk"]
+training_boundary = "Imported source parameters hand-fitted by the source authors. Their spectral reproduction is not a parameter-free physical prediction."
+
+[[claim.fitted_parameters]]
+branch = "source_table_ii"
+count = 7
+names = ["eps_s", "eps_p", "eps_k", "t_sk", "t_pk", "delta_eps_s", "delta_eps_p"]
+training_boundary = "Imported source parameters hand-fitted by the source authors, with an explicit A/B sign map."
+
+[[claim.fitted_parameters]]
+branch = "replay"
+count = 0
+names = []
+training_boundary = "The replay adjusts zero constants; thresholds and geometry remain fixed across the retained failed and corrected extraction."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-299"]
+protocol_artifact = "data/output/audit/magnonic-source-projection/adjudication.toml"
+protocol_sha256 = "e0960c2d07346429f1eb6d10abef815a08068d7f15b92e7c79f51c1e97948bb9"
+description = "Replay source geometry, rectangular folding, two raster-support thresholds and ky grids, repository-reference negative control, and sampled topology/valley-sign predicates against retained source hashes."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["Both source tables pass admitted rendered-support gates and independent matrix/folding comparisons, while the mismatched reference parameters fail.", "Declared separated components pass finite-grid checks; degenerate individual bands retain failed admission and local flux stays explicitly nonquantized."]
+revision_outcomes = ["An identified raster artifact requires a separately retained coordinate-bound intake amendment, with source/model constants and gate preserved.", "A new source version, fitting convention, gap or physical observable requires separate admission."]
+abandonment_outcomes = ["An unchanged admitted replay exceeds the fixed source-support or geometry gates.", "The instrument accepts degenerate individual-band topology or promotes local patch flux to a quantized global invariant."]
+inconclusive_outcomes = ["Missing source identities or occluded raster regions prevent the relevant comparison.", "Finite sampled gaps leave the global-gap premise unproved.", "Provider HTTP403 blocks exact author-code replay; fitted-source agreement leaves independent micromagnetic and measured-device agreement unassessed."]
+
+[[claim]]
+id = "C-1748"
+last_verified = "2026-09-05"
+statement = "On the admitted RTX 4070 Ti with driver 610.57.04, the corrected periodic D3Q19 MRT 8-cubed fixture at tau 0.8 passes 36 forced/unforced CPU f64 versus standard push SoA CUDA FP32 direct/captured comparisons over twelve steps. Post-step population, independently summed density and raw-momentum RMS errors meet the unchanged 2e-5 gates, and a separate prescribed force-density impulse check passes. At forced step 12, CPU and CUDA mean-impulse errors are 5.2041704279e-18 and 1.5133991837e-9. The original producers passed backend comparisons while delivering only 0.375 of prescribed impulse; that failure remains retained. CPU scalar/SIMD-tail tests also pass 72 mass/impulse observations across two shapes and three relaxation times. The evidence establishes bounded implementation conformance for standard FP32 push direct/captured paths; other precisions, alternate dispatch validation, galaxy-wide D_f bounds, physical interpretation and resolution convergence remain unassessed."
+status = "Verified"
+where_stated = "data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-result.toml; data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-protocol.toml; crates/lbm_3d_cuda/tests/mrt_population_conformance.rs"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract tests finite discrete momentum balance and backend conformance. Its two branches contain computational maps only; galaxy physics and resolution convergence remain unassessed."
+fixed_hyperparameters = ["Periodic D3Q19 MRT 8x8x8, tau 0.8, twelve steps and observations at 2, 4, 6, 8, 10, 12", "Source-hash-bound sinusoidal density/velocity and time-independent force density; matched zero-force control", "CPU f64 and standard push SoA CUDA FP32 on RTX 4070 Ti driver 610.57.04", "Absolute RMS population/density/raw-momentum gate 2e-5; independent mean-impulse maximum-component gate 2e-5", "Explicit direct stepping and step_graph_pair capture/replay", "Separate CPU extension: shapes 8x8x8 and 5x3x2, tau .6/.8/1.1, twelve steps, 1e-12 mass/impulse gate"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 3
+computational_stage_count = 3
+
+[[claim.intervening_maps]]
+name = "evolving_population_update_and_layout_conversion"
+branch = "backend_conformance"
+description = "Evolve the identical declared fixture through collision and periodic streaming, then convert CPU AoSoA and CUDA cell-major readback to common f64 values at each matched post-step observation."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "independent_moment_reduction"
+branch = "backend_conformance"
+description = "Reduce density and raw momentum directly from D3Q19 populations; compare each metric with its fixed absolute RMS gate. Cached macroscopic outputs remain outside the oracle."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "periodic_force_density_inventory"
+branch = "prescribed_impulse"
+description = "Sum the prescribed force-density field and multiply by elapsed steps. Compare the mean raw-momentum increment with that independent inventory. Constant initial/final half-force offsets cancel for the time-independent input."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "backend_conformance"
+count = 0
+names = []
+training_boundary = "The numerical fixture, observation steps and inherited engineering gates are fixed before execution."
+
+[[claim.fitted_parameters]]
+branch = "prescribed_impulse"
+count = 0
+names = []
+training_boundary = "The impulse comes directly from the prescribed force density and periodic domain; the oracle fits neither a response scale nor a correction factor."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-300"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-protocol.toml"
+protocol_sha256 = "c409005145b1430b2378e8c89e5661134dec445f6e27342b2bdd3b87801dd22c"
+description = "Replay the unchanged forced/unforced fixture and separate impulse oracle against producer hashes in mrt-force-density-conformance-result.toml. The original shared 0.375 impulse response is a retained failure control despite passing backend comparisons. The serialized protocol explicitly identifies its retrospective extraction from the pre-run fixture declaration."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["All 36 corrected conformance rows pass their 2e-5 population/density/raw-momentum gates, and CPU plus CUDA meet the separate prescribed-impulse gate.", "The CPU force-density inventory remains accurate within 1e-12 over the declared 72 observations spanning relaxation times and scalar/SIMD execution."]
+revision_outcomes = ["A different precision, CUDA dispatch, boundary, force time dependence or initial-field family requires its own admitted contract and replay.", "A galaxy D_f discrepancy persists after solver admission: investigate threshold, analysis and paired resolution sensitivity separately."]
+abandonment_outcomes = ["A hash-bound corrected replay violates either conformance or independent impulse gates; agreement between two incorrect implementations cannot rescue the claim.", "A frozen-evolution substitute satisfies the evolving-density discriminator."]
+inconclusive_outcomes = ["Source identity or admitted CUDA hardware is unavailable.", "Eight precision-specific MRT kernels and alternate FP32 dispatches lack independent numerical admission.", "The finite implementation check leaves physical galaxy interpretation, universal D_f bounds and resolution convergence unassessed."]
+
+[[claim]]
+id = "C-1749"
+last_verified = "2026-09-05"
+statement = "The corrected spinor photon-graviton counterterm implements the rescaled proper-time measure of arXiv:2601.23279v1 Eq. 4.10: a constant counterterm under dT/T. At masses 0.8 and 1.3 on T=[0.125,4], independently assembled A.13 tree components and Simpson integration reproduce the renormalized-minus-unrenormalized tensor difference with relative errors 2.21911387229665020e-13 and 3.60977311493619630e-13, inside the fixed 1e-9 gate. The erroneous extra-T-squared measure differs by approximately 0.120666 and 0.711205 and the omission controls discriminate. The original failed producer remains retained. This result verifies the bounded spinor counterterm measure; it leaves scalar source coefficient reconciliation, spinor contact/UV completion, complete Ward identities and certified quadrature/extrapolation remainders unresolved."
+status = "Verified"
+where_stated = "data/output/audit/ward-residual-scope/adjudication.toml; data/output/audit/ward-residual-scope/counterterm-measure-protocol.toml; crates/gr_core/tests/ward_source_scope.rs"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Finite source-expression conformance of the spinor counterterm measure; computational rescaling and numerical integration introduce no physical interpretation."
+fixed_hyperparameters = ["D=4, e=kappa=1, masses 0.8/1.3, source-bound off-shell fixture", "T=[0.125,4], n_u=24, n_t=96", "Independent A.13 tree components and 16384-interval Simpson integration", "Relative measure gate 1e-9, wrong-measure separation greater than 0.05, omitted-counterterm norm greater than 1e-5"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 2
+computational_stage_count = 2
+
+[[claim.intervening_maps]]
+name = "source_rescaling"
+branch = "counterterm_measure"
+description = "Source Eq. 4.9 rescaling to Eq. 4.10 changes the counterterm from T-squared under dT/T-cubed to a constant under dT/T."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "independent_subtraction_oracle"
+branch = "counterterm_measure"
+description = "Compare all tensor components of renormalized-minus-unrenormalized output with an independently assembled A.13 tree tensor times the spinor coefficient and Simpson integral."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "counterterm_measure"
+count = 0
+names = []
+training_boundary = "The source fixes the spinor coefficient; the replay fits zero coefficients or scales. Scalar coefficient reconciliation remains outside this claim."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-301"]
+protocol_artifact = "data/output/audit/ward-residual-scope/counterterm-measure-protocol.toml"
+protocol_sha256 = "a45b23a4aac00e09b8fab228b30ee3313dac13a11d2cc17ac055a9b3f479392b"
+description = "Replay the two spinor mass fixtures against the source and implementation hashes in adjudication.toml. Preserve the pre-repair wrong-measure match. Scalar branch measurements condition on the inherited coefficient and establish only shared measure behavior."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["Both spinor counterterm differences meet the 1e-9 relative source-measure gate while wrong-measure separation exceeds 0.05 and omitted-counterterm norms exceed 1e-5."]
+revision_outcomes = ["Changed subtraction coefficients, contact prescriptions, domains or conventions require separately retained source comparisons."]
+abandonment_outcomes = ["The same hash-bound spinor fixture violates the measure gate or its declared wrong-measure/omission controls cease to discriminate."]
+inconclusive_outcomes = ["Missing source or producer identity prevents replay.", "Counterterm measure conformance leaves spinor UV/contact completion, scalar source coefficient, complete Ward identities and certified numerical remainders unresolved."]
 
 [[claim]]
 id = "C-175"

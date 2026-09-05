@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-298"
+title = "Paired direct-step MRT null controls with retained population admission failures"
+status = "active"
+binary = "external:euclid-null-pilot-retained:8e3c3bbe66002936"
+claims = ["C-1696", "C-1700", "C-1702"]
+claim_refs = ["C-1696", "C-1700", "C-1702"]
+deterministic = true
+gpu = true
+reproducibility_class = "deterministic_replay"
+input = "Sealed Euclid catalog and 100 retained numerical input arrays; paired 16-cubed CPU FP64/CUDA FP32, 24 direct MRT steps, tau .8, alpha .1, ten matched noise seeds."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/null-control-instrument-protocol.toml", "data/output/audit/claim-family-evidence-adjudication/euclid-catalog-admission.toml"]
+method = "Inspect post-step D3Q19 populations every step; preserve every trial and first failed predicate; compare admitted same-stage host box counts. Independently audit array hashes and demonstrate adaptive-threshold amplitude invariance."
+run = "From the audit directory, use the retained binary: ./null-pilot-producer-before-mrt-correction.bin --catalog euclid-physical-measurements.parquet --grid 16 --steps 24 --tau 0.8 --dx-kpc 1 --alpha-zd 0.1 --density-floor 0.045 --softening-eps 0.5 --smagorinsky-cs 0 --mrt --null-hypothesis --null-n-trials 10 --seed 42 --max-relative-mass-error 0.00001 --max-mach 0.3 --null-evidence-dir <fresh-backend-directory>; add --cpu for CPU. Each parent directory must exist and each evidence directory must be fresh. Expected historical exit is 1."
+output = ["data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml", "data/output/audit/claim-family-evidence-adjudication/null-pilot-cpu/trials.csv", "data/output/audit/claim-family-evidence-adjudication/null-pilot-cuda/trials.csv", "data/output/audit/claim-family-evidence-adjudication/null-pilot-independent-analysis.json", "data/output/audit/claim-family-evidence-adjudication/box-counting-amplitude-success.txt"]
+status_note = "Both backends exit 1; all 50 trial rows remain retained, including six first-step Mach failures. Twenty-two pairs reach step 24. Numerical accuracy, resolution convergence and physical interpretation remain unassessed. The retained producer predates the E-300 MRT force correction and cannot inherit corrected-source results."

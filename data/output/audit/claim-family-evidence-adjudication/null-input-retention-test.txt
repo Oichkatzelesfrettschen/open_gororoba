@@ -1,0 +1,30 @@
+    Blocking waiting for file lock on build directory
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+   Compiling cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+   Compiling spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 45.13s
+     Running unittests src/bin/euclid_df_sweep.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/euclid_df_sweep-9e9df5fac574339f)
+
+running 5 tests
+condition,trial,seed,df_initial,df_final,elapsed_ms,observed_step,attempted_step,mass_error,max_mach,minimum_population,minimum_density,finite_state,positive_density,nonnegative_population,mass_within_budget,mach_within_budget,failure
+C0-uniform-zero,0,,3.00000000000000000,3.00000000000000000,0,24,24,0.00000000000000000,0.00000000000000000,0.01000000000000000,1.00000000000000000,true,true,true,true,true,""
+C1-uniform-fzd,0,,3.00000000000000000,3.00000000000000000,0,24,24,0.00000000000000000,0.00000000000000000,0.01000000000000000,1.00000000000000000,true,true,true,true,true,""
+C2-noise-zero,0,42,3.00000000000000000,3.00000000000000000,0,24,24,0.00000000000000000,0.00000000000000000,0.01000000000000000,1.00000000000000000,true,true,true,true,true,""
+C3-noise-fzd,0,42,3.00000000000000000,3.00000000000000000,0,24,24,0.00000000000000000,0.00000000000000000,0.01000000000000000,1.00000000000000000,true,true,true,true,true,""
+C4-sersic-zero,0,,3.00000000000000000,3.00000000000000000,0,24,24,0.00000000000000000,0.00000000000000000,0.01000000000000000,1.00000000000000000,true,true,true,true,true,""
+C5-sersic-fzd,0,,3.00000000000000000,3.00000000000000000,0,24,24,0.00000000000000000,0.00000000000000000,0.01000000000000000,1.00000000000000000,true,true,true,true,true,""
+C6-sersic-nfw,0,,3.00000000000000000,3.00000000000000000,0,24,24,0.00000000000000000,0.00000000000000000,0.01000000000000000,1.00000000000000000,true,true,true,true,true,""
+test null_design_tests::collapsed_controls_are_rejected ... ok
+test control_instrument_tests::failed_attempt_still_serializes_every_planned_row ... ok
+test control_instrument_tests::exact_rows_pairing_and_invalid_states_are_required ... ok
+test control_instrument_tests::paired_seeds_recreate_exact_density_and_budgets_are_mandatory ... ok
+test retained_input_tests::exact_arrays_receipts_and_exclusive_creation_agree ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+

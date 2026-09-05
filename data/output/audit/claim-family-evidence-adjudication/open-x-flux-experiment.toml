@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-297"
+title = "Open-x population transport and independently checked face mass inventory"
+status = "active"
+binary = "cargo-test:lbm_3d:open_x_flux"
+claims = ["C-1684"]
+claim_refs = ["C-1684"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Independent outgoing/interior packet fixtures; nonuniform 5x3x2 domain for20 evolving steps; explicitly selected zero-gradient incoming-population outflow; synthetic B=0 no-DM runner."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/open-x-flux-protocol.toml"]
+method = "Verify analytical packet destinations and fixed-direction face sums independently of the flux ledger; measure streaming, reconstruction and collision mass residuals; retain a zero-budget failure."
+run = "cargo test -p lbm_3d --test open_x_flux --profile validation -- --nocapture"
+output = ["data/output/audit/claim-family-evidence-adjudication/open-x-flux-result.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/open-x-producer-reconstruction.toml", "data/output/audit/claim-family-evidence-adjudication/open-x-flux-result.toml", "data/output/audit/claim-family-evidence-adjudication/open-x-flux-replay.log", "data/output/audit/claim-family-evidence-adjudication/open-x-runner-fixture/mass_flux_ledger.csv"]
+status_note = "Five independent tests and a three-step numerical runner pass; the exact-zero budget control fails after preserving its row. Physical outflow suitability, magnetic boundaries, spacecraft input, gravitational frame and coupled force sensitivity remain unassessed."

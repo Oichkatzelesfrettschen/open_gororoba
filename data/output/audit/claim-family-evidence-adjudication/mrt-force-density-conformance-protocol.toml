@@ -1,0 +1,57 @@
+protocol = "Bounded MRT force-density impulse and CPU CUDA population conformance"
+experiment = "E-300"
+registration_boundary = "Retrospective serialization of the fixture and fixed gates declared in mrt_population_conformance.rs before the first GPU replay; this document does not assert a separately registered pre-run protocol."
+source_receipt = "data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-result.toml"
+initial_oracle_sha256 = "f2aa111eeca1b37a3dca2d447a06469af9edbca64cc3ae83c0df46e699719cd8"
+final_oracle_sha256 = "25d95f861bf81affc944cceb972cb6099c4b6f6b8afceb629e1c517dcae3397a"
+fixture_revision_boundary = "The forced/unforced 8-cubed GPU fixture and its gates retain their first-run values; later regular CPU tests add relaxation-time and scalar-tail coverage."
+evidence_layer = "implementation_conformance"
+interpretive_depth = 0
+fitted_parameters = 0
+actor = "claim-evidence-adjudication"
+
+[fixture]
+grid = [8, 8, 8]
+steps = 12
+observation_steps = [2, 4, 6, 8, 10, 12]
+tau = 0.8
+collision = "D3Q19 MRT"
+boundary = "periodic xyz"
+density = "1 + .03*cos(2*pi*x/8) + .01*sin(2*pi*z/8)"
+velocity = "[.02*sin(2*pi*y/8), .01*cos(2*pi*z/8), .005*sin(2*pi*x/8)]"
+forced_input = "[.0002 + .0001*cos(2*pi*y/8), .00008*sin(2*pi*z/8), .00005*cos(2*pi*x/8)]"
+force_semantics = "Time-independent prescribed force density in lattice units; input receives no density multiplication."
+unforced_control = "Identical density and velocity with zero force."
+expected_forced_mean_impulse_x_at_step12 = 0.0024
+backends = ["CPU f64 collision then streaming", "CUDA FP32 standard push SoA direct", "CUDA FP32 standard push SoA explicit step_graph_pair capture and replay"]
+hardware = "NVIDIA GeForce RTX 4070 Ti, GPU-9cdd53e3-7a94-8392-e7ce-ee6079352f3e, driver 610.57.04"
+
+[predicates]
+population_observation = "Cell-major post-step populations; convert CPU AoSoA and CUDA readback to f64 for comparison."
+macroscopic_observation = "Independently sum D3Q19 populations for density and raw momentum at the same completed observation step. Cached macro arrays remain outside the comparison."
+conformance_gate = 0.00002
+conformance_gate_units = "Absolute RMS over populations, density cells and momentum components separately."
+conformance_gate_origin = "Inherited from the existing evolving FP32 population oracle before the first MRT GPU run."
+state_admission = "Finite complete populations; finite positive density; finite momentum; nonnegative populations."
+impulse_gate = 0.00002
+impulse_gate_units = "Absolute maximum component error in mean momentum increment."
+impulse_oracle = "mean(j_raw_final-j_raw_initial) = step*sum(force_density)/cell_count"
+physical_momentum = "j_physical = j_raw + force_density/2; the prescribed time-independent field has identical initial and final half-force offsets, which cancel in the increment."
+comparisons_per_observation = ["CPU versus direct CUDA", "CPU versus captured CUDA", "direct versus captured CUDA"]
+comparison_rows = 36
+failure_policy = "Retain every comparison row before aggregate failure. A conformance pass cannot replace a failed independent impulse predicate."
+
+[cpu_extension]
+shapes = [[8, 8, 8], [5, 3, 2]]
+relaxation_times = [0.6, 0.8, 1.1]
+steps = 12
+forced_observations = 72
+mass_and_impulse_gate = 1e-12
+purpose = "Check relaxation-independent force-density impulse and mass conservation across SIMD and scalar-tail execution."
+unforced_negative_control = "The initial density must evolve by RMS greater than 0.001, excluding a frozen equilibrium comparison."
+
+[outcomes]
+verify = ["All 36 conformance rows meet the fixed population/density/raw-momentum gate and both backends satisfy the independent impulse gate.", "Regular CPU mass and impulse checks pass across the declared shapes and relaxation times."]
+revise = ["A different precision, dispatch, force time dependence or grid requires a separate protocol and outcome.", "A matched galaxy analysis differs despite admitted populations: investigate threshold and analysis sensitivity separately from solver conformance."]
+abandon = ["Hash-bound replay exceeds a fixed conformance or independent impulse gate, even if CPU and CUDA agree with each other.", "A frozen-evolution substitute passes the declared evolving-field control."]
+inconclusive = ["Hardware, source identity or retained input admission prevents replay.", "The finite fixture leaves galaxy resolution convergence, physical validity and alternate dispatch/precision behavior unassessed."]

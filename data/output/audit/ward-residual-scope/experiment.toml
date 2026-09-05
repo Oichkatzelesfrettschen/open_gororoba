@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-301"
+title = "Photon-graviton counterterm proper-time measure and Ward contraction scope"
+status = "active"
+binary = "cargo-test:gr_core:ward_source_scope"
+claims = ["C-1635", "C-1637", "C-1666"]
+claim_refs = ["C-1635", "C-1637", "C-1666"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Source arXiv:2601.23279v1 Eqs.4.9/4.10/A.13 and 7.3-7.7; retained scalar-source gr-qc/0412095v2; two mass fixtures with independent Simpson counterterm integration, transverse polarization/gauge basis pairs, and original full-vector residuals."
+input_path_refs = ["data/output/audit/ward-residual-scope/counterterm-measure-protocol.toml", "data/output/audit/ward-residual-scope/source.pdf", "data/output/audit/ward-residual-scope/scalar-source.pdf"]
+method = "Isolate renormalized-minus-unrenormalized tensors and compare with independently assembled A.13 tree coefficients times integral exp(-m^2*T)/T. Retain the erroneous extra-T-squared failure. Evaluate transverse projected, full-vector and regular-node UV predicates separately with omission controls."
+run = "cargo test -p gr_core --profile validation --offline --test ward_source_scope --test ward_independent_residuals -- --nocapture"
+output = ["data/output/audit/ward-residual-scope/adjudication.toml"]
+output_path_refs = ["data/output/audit/ward-residual-scope/adjudication.toml", "data/output/audit/ward-residual-scope/counterterm-before.log", "data/output/audit/ward-residual-scope/counterterm-after.log", "data/output/audit/ward-residual-scope/vector-residuals-after.toml", "data/output/audit/ward-residual-scope/focused-tests.log"]
+status_note = "The proper-time measure correction passes its 1e-9 relative gate with independently discriminating wrong-measure and omission controls. The sampled transverse scalar decisive pair passes the fixed amplitude gates; spinor fails. Original full-vector thresholds remain failed. Spinor contact/UV completion, scalar source subtraction coefficient and certified quadrature/interpolation remainders remain unresolved. Four focused tests and three unit tests pass as scoped regression predicates, not as a universal Ward identity."

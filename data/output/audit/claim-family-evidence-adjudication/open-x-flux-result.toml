@@ -1,0 +1,81 @@
+schema = "open-x-flux-result-v1"
+reserved_experiment_id = "E-297"
+canonical_registration_owner = "root integration"
+historical_claim = "C-1684"
+evidence_layer = "implementation_conformance"
+source_parent_revision = "c9132da1"
+protocol = "data/output/audit/claim-family-evidence-adjudication/open-x-flux-protocol.toml"
+protocol_sha256 = "1f92e032efe86f84d70dfcf93748c65959cd7047405c74630ee21a959818dc54"
+physical_suitability = "unassessed"
+physical_force_bound = "unassessed"
+gravitational_frame = "unresolved and unchanged"
+
+[mechanism]
+module = "crates/lbm_3d/src/open_x_boundary.rs"
+module_sha256 = "7ac41e5a71fe71a08feb7e09625208df1760a02089adec07e7fc01e90d150ea8"
+streaming = "D3Q19 populations advect to their destination; outgoing min/max-x populations are counted and leave the domain. Transverse y/z destinations wrap periodically. Missing incoming x-face slots start at zero."
+min_x = "Zou-He velocity reconstruction in AoSoA storage; measure every incoming positive-x population"
+max_x = "Explicit ZeroGradientPopulations closure copies only incoming negative-x populations from the adjacent streamed interior cell; measure the inserted population mass"
+mutation = "Validate dimensions, storage, finite prestate, inlet velocity, timestep and reconstructed values before swapping populations; failed admission preserves solver populations and timestep"
+ledger = "Record mass before streaming, outgoing and incoming mass at both x faces, mass after streaming, mass after reconstruction and independent population mass after collision"
+residuals = "Streaming and boundary residuals are separate. Collision mass delta is tested against zero. Step and cumulative conservation residuals subtract measured net boundary influx, without treating collision error as an allowed mass source."
+units = "Lattice population mass inventory per step; physical kilograms require rho_ref*dx^3 and a rate additionally requires division by dt"
+timing = "Every declared step streams, reconstructs and collides, including the first step from initialized equilibrium populations. The historical first-step streaming omission is retained at the parent revision."
+
+[independent_tests]
+source = "crates/lbm_3d/tests/open_x_flux.rs"
+source_sha256 = "d89cc5a0bc6da77a3bf858879fab7d5070c73501fd3b3c8657e8d06061dd9a7f"
+command = "cargo test -p lbm_3d --test open_x_flux --profile validation -- --nocapture"
+passed = 5
+failed = 0
+log = "open-x-flux-replay.log"
+log_sha256 = "2e2a318c59ab39cf0749235d47989eb95717034187f1cc2d6bc9f7420c1c460f"
+oracles = ["Four outgoing packet/direction cases leave zero stored mass and zero opposite-face packet", "Three interior packet cases reach analytically fixed destinations, including y/z wrap", "Fixed positive/negative-x direction lists give independent analytical nonuniform face sums", "Twenty evolving nonuniform open-boundary steps account for net flux and separately test zero collision mass source", "Invalid inlet velocity or nonfinite population preserves population bits and timestep"]
+dimensions = [5, 3, 2]
+nonuniform_steps = 20
+nonuniform_initial_mass = 30.6
+nonuniform_final_mass = 31.2888816925378848
+maximum_absolute_collision_mass_delta = 1.66977542903623544e-13
+maximum_absolute_cumulative_residual = 1.79189996174500266e-13
+relative_engineering_gate = 1e-12
+interpretation = "Mass change in the declared finite numerical domain is accounted for by face flux to floating-point residual; ledger equality is supported by independent transport and face-sum oracles."
+
+[runner]
+source = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
+source_sha256 = "ea96ec8a34fbb50037c1210558dca605208e97f3ac50fa62b3e5fb7e498dbcb8"
+binary_sha256 = "383ecb753cae8856d33b49afac55990bfbf2ddb8e7ae1d04532de8c8db8ec041"
+command = "cargo run -p gororoba_cli_physics --bin solar --profile validation -- wind-dm-mhd --nx 5 --ny 3 --nz 2 --steps 3 --tau 0.8 --b0 0 --v-sw 0.04 --no-dm --snap-interval 1 --x-outflow zero-gradient-populations --max-relative-mass-ledger-error 1e-12 --out data/output/audit/claim-family-evidence-adjudication/open-x-runner-fixture"
+input = "Declared synthetic uniform density 1, velocity [0.04,0,0], zero magnetic field, disabled DM"
+exit_status = 0
+log = "open-x-runner-replay.log"
+log_sha256 = "3d6e84bb1f0c8ebce5901de87ae6bd7ee904f27a573b1791ebe6ee58f68e8c06"
+ledger = "open-x-runner-fixture/mass_flux_ledger.csv"
+ledger_sha256 = "82c28e80ec93cb18fce37d9a0d11b6aebe3d5884e548359a0990652a7aca95a3"
+retained_steps = 3
+final_mass = 30.0
+final_cumulative_residual = -2.22044604925031308e-16
+admission = "CLI requires an explicit x-outflow selection and finite nonnegative relative mass-ledger budget. Numerical CSV is emitted to stdout and retained under --out. Each row is flushed before budget adjudication."
+
+[budget_failure_control]
+command = ".cache/gate-target/validation/solar wind-dm-mhd --nx 5 --ny 3 --nz 2 --steps 1 --tau 0.8 --b0 0 --v-sw 0.04 --no-dm --snap-interval 1 --x-outflow zero-gradient-populations --max-relative-mass-ledger-error 0 --out data/output/audit/claim-family-evidence-adjudication/open-x-zero-budget-fixture"
+exit_status = 1
+reason = "Observed nonzero roundoff residual exceeds the exact-zero declared budget; failure is retained rather than silently accepted"
+log = "open-x-zero-budget-replay.log"
+log_sha256 = "801ece193d1f4d2fad5f2719fcc070a8b0bd6f033caccbd75ac9af2ad8cfc2cd"
+ledger = "open-x-zero-budget-fixture/mass_flux_ledger.csv"
+ledger_sha256 = "02563148c3790d502893f1cf38dcbf2e61695cce994d5308ecad5291f2c7e032"
+retained_steps = 1
+
+[validation]
+clippy_command = "cargo clippy -p lbm_3d --lib --test open_x_flux -p gororoba_cli_physics --bin solar --profile validation -- -D warnings"
+clippy_log = "open-x-flux-clippy.log"
+clippy_exit_status = 0
+diff_check = "passed"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+cargo_home = "/home/eirikr/Github/open_gororoba/.cache/cargo-home"
+cargo_target_dir = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target"
+cargo_build_build_dir = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e"
+
+[remaining_admission]
+items = ["Physical justification and reflected-wave/backflow behavior of the selected population outflow", "MHD magnetic boundary model; magnetic evolution retains its own existing boundary treatment", "Matched spacecraft SI input identity and normalization", "Gravitational acceleration frame", "Full coupled numerical sensitivity and resolution convergence"]
+result_scope = "A finite conservative population-streaming and boundary accounting instrument; excludes a physical heliospheric outflow model, a large simulation or a dark-matter bound"

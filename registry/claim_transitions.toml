@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 203
+event_count = 207
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4347,4 +4347,96 @@ transition_spec_sha256 = "dcb56e0cad2d64577ed87db206dbad795194dff25f426eccf75ea7
 [[transition.successors]]
 proposal_key = "lbm-evolving-population-and-capture-conformance"
 canonical_claim_id = "C-1745"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 204
+transition_key = "open-x-population-flux-conformance"
+source_claim_id = "C-1684"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Independent outgoing packets and fixed-direction face sums reject periodic wraparound and a self-consistent but incorrect flux ledger."
+rationale = "Preserve the historical open-boundary mass-growth observation and register the repaired numerical transport instrument separately from physical outflow admission."
+unresolved_assumptions = ["Zero-gradient population outflow requires independent physical reflection/backflow validation.", "Magnetic boundary conditions, spacecraft SI input, gravitational frame and coupled physical sensitivity remain unassessed."]
+evidence_artifact_ids = ["LOCAL-OPEN-X-FLUX"]
+experiment_ids = ["E-297"]
+actor = "claim-evidence-adjudication"
+reason = "Bind independent conservative transport evidence without promoting a physical dark-matter bound"
+transition_timestamp = "2026-09-05T18:43:56Z"
+transition_spec_sha256 = "e5c6b8e5b043720db95cb27d41b622a2c09a4265d9cb595d69175fbd35cc8748"
+
+[[transition.successors]]
+proposal_key = "open-x-population-flux-instrument"
+canonical_claim_id = "C-1746"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 205
+transition_key = "magnonic-fitted-source-support-reproduction"
+source_claim_id = "C-1692"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Compare independently reconstructed geometric matrices and complete rectangular-cell spectra with admitted source raster support at the unchanged 0.03 GHz gate; repository-reference parameters serve as a negative control."
+rationale = "Preserve the reference-parameter provenance defect while registering source-table reproduction as a separate finite implementation result."
+unresolved_assumptions = ["The source tables contain five and seven hand-fitted parameters; independent physical prediction remains unassessed.", "Global gap proofs, exact author-code identity and independent micromagnetic agreement remain separate obligations."]
+evidence_artifact_ids = ["LOCAL-MAGNONIC-SOURCE-PROJECTION"]
+experiment_ids = ["E-299"]
+actor = "claim-evidence-adjudication"
+reason = "Bind source geometry, fitted spectral support and finite subspace invariants without promoting a physical prediction"
+transition_timestamp = "2026-09-05T18:58:38Z"
+transition_spec_sha256 = "6e70b7c3ac62ae2ba9bcc30e502a338e0d83f882c6ed5344793902cdf992d1e9"
+
+[[transition.successors]]
+proposal_key = "magnonic-source-geometry-and-frequency-support"
+canonical_claim_id = "C-1747"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 206
+transition_key = "mrt-force-density-impulse-conformance"
+source_claim_id = "C-1282"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Compare evolving CPU/CUDA post-step populations with an independent periodic force-density impulse inventory. The original producers pass all 36 backend comparisons but deliver only 0.375 of the required impulse at tau 0.8; corrected producers meet both fixed predicates."
+rationale = "The bounded MRT correction supports an implementation successor. The all-galaxies D_f bound at 64-cubed and 128-cubed remains unadjudicated; retain the parent and historical producer failures."
+unresolved_assumptions = ["E-163/E-164 GPU sweeps lack a matched admitted CPU denominator.", "E-298 Sersic trials fail their Mach gate at step 1 and retain historical producers; later repair cannot retrospectively promote their physics.", "Alternate FP32 dispatch numerical checks and eight independent precision-specific MRT implementations remain unresolved.", "Galaxy resolution convergence, analysis sensitivity and physical interpretation remain unassessed."]
+evidence_artifact_ids = ["LOCAL-MRT-FORCE-DENSITY-CONFORMANCE"]
+experiment_ids = ["E-300"]
+actor = "claim-evidence-adjudication"
+reason = "Separate bounded impulse-correct MRT conformance from the unadjudicated galaxy-wide morphology bound"
+transition_timestamp = "2026-09-05T19:21:33Z"
+transition_spec_sha256 = "84d27c3bf6d7769137e17a8f336c5a3a321a875ad6b2013ae02c86d36ba6cc53"
+
+[[transition.successors]]
+proposal_key = "mrt-force-density-impulse-and-push-conformance"
+canonical_claim_id = "C-1748"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 207
+transition_key = "photon-graviton-counterterm-measure-conformance"
+source_claim_id = "C-1666"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "An independent source A.13 tree expression and Simpson integral distinguish dT/T from the erroneous extra-T-squared counterterm measure; separate projected and full-vector Ward predicates retain remaining failures."
+rationale = "Register finite source-measure conformance separately while the parent identity and certified nonzero-limit interpretation remain unresolved."
+unresolved_assumptions = ["Eq. 7.6 is polarization-contracted and arises in the unrenormalized source discussion; full-vector zero is a stronger predicate.", "Spinor contact/UV completion, scalar subtraction coefficient/convention reconciliation and certified quadrature/extrapolation error remain unresolved."]
+evidence_artifact_ids = ["LOCAL-WARD-COUNTERTERM-MEASURE"]
+experiment_ids = ["E-301"]
+actor = "claim-evidence-adjudication"
+reason = "Preserve Ward failures while separating the corrected proper-time measure"
+transition_timestamp = "2026-09-05T19:48:02Z"
+transition_spec_sha256 = "61f82f7adfb147eac8f2ee413d9eb9289e5eb036af68f031de049ea347385b12"
+
+[[transition.successors]]
+proposal_key = "spinor-counterterm-proper-time-measure"
+canonical_claim_id = "C-1749"
 relation_kind = "implementation_split"

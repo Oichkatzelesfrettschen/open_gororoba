@@ -1,0 +1,119 @@
+schema_version = 1
+experiment_id = "E-299"
+evidence_layer = "implementation_conformance"
+interpretive_depth = 0
+fitted_parameters_in_replay = 0
+source_table_i_fitted_parameters = 5
+source_table_ii_fitted_parameters = 7
+producer = "crates/quantum_core/tests/magnonic_source_projection.rs"
+producer_sha256 = "9b40dd82bbbdbf64bc684eaed44d29ce7cb4244c4ee66f63b8de97cfa554ae35"
+model = "crates/quantum_core/src/magnonic_crystal.rs"
+model_sha256 = "fc89c4d82973b16169a62784869f4537abf9ecc0af69cf3630c7953ab9fb2426"
+result = "Source-table geometry, rectangular folding and admitted rendered spectral support pass their declared finite comparisons. Symmetric individual-band topology fails degeneracy admission; separated subspaces pass finite-grid checks."
+physical_scope = "The replay reproduces fitted tight-binding frequency support in source figures. The replay establishes neither independent micromagnetic prediction nor measured-device agreement, damping, excitation intensity, or a global spectral-gap proof."
+
+[primary_source]
+identity = "Kaman, Lim, Liu and Hoffmann, Emulating 2D Materials with Magnons, arXiv:2601.03210v2"
+pdf = "data/output/audit/claim-family-evidence-adjudication/kaman-magnonic-source.pdf"
+pdf_sha256 = "79148155cfb54d20b64c06b6826f0f4cc3bc79099d09beaf268db01c7815e56d"
+archive_url = "https://arxiv.org/src/2601.03210v2"
+archive_sha256 = "ffb33e43e60ec13e53e27cc323ce5701ed1171f62170242c1059e918fa4633d0"
+archive_retention = "Selected original members are retained byte-for-byte: Crystal.tex, Crystal_SUPPLEMENTAL.tex, 05_TBFigure_grouped.png and 06_Invbreaking_FigureFull.png. The downloaded archive remains a local temporary acquisition, outside the reproducibility dependency set."
+fitting_quote_section = "Main text IV, Tight-binding-like analysis"
+fitting_quote = "Using only nearest-neighbor hoppings, we implement this model using the PythTB package [67] and adjust parameters by hand."
+valley_quote_section = "Supplemental V, Valley Chern numbers"
+valley_quote = "VCNs are not true Chern numbers and are therefore not strictly quantized."
+large_gap_quote = "As band gaps get larger, the BC is smeared out and the VCN is a less helpful metric as the necessary region of integration becomes less well-defined."
+source_unit = "Tables I and II specify cyclic frequencies in GHz; their tight-binding eigenvalues require no angular-frequency conversion."
+
+[geometry]
+construction = "Place honeycomb s,px,py orbitals at A=(0,0), B=(0,a/sqrt(3)); place kagome s orbitals at nearest-bond midpoints. Select honeycomb-kagome bonds by distance a/(2*sqrt(3)); project p coupling onto each physical bond direction."
+matrix_comparison = "Compare every complex element with build_magnonic_9band on 12x12,24x24,48x48 rectangular grids for both source tables. Maximum error 5.978733960281817e-16 GHz."
+rectangular_vectors = "(a,0),(0,sqrt(3)*a), containing primitive copies at 0 and a2."
+folding_identity = "The directly constructed 18-orbital spectrum equals the union of 9-orbital spectra at k and k+(0,2*pi/(sqrt(3)*a)); maximum sampled difference 1.776356839400251e-14 GHz."
+convention = "Table II Delta=(epsilon_B-epsilon_A)/2 maps to builder delta_A=-Delta and delta_B=+Delta. Reversing both sublattices preserves the spectrum and reverses embedded local valley flux."
+orbital_gauge = "The periodic-cell Hamiltonian carries exp(i*k*R). The embedded PythTB convention carries exp(i*k*(R+r_j-r_i)); eigenvectors transform by exp(-i*k*r_i). The transformation preserves spectra and full isolated-bundle Chern numbers while local flux depends on the declared embedding."
+unresolved = "The exact author PythTB source remains provider-blocked. Geometric matrix reconstruction and raster support constitute an independent, bounded source reproduction."
+
+[projection]
+gate_ghz = 0.03
+gate_origin = "Declared before comparison; operational raster-support threshold, separate from a statistical uncertainty or source-authored tolerance."
+method = "Two-way nearest-frequency distance between rendered grayscale support and complete rectangular-cell spectra over sampled ky, at each inspected kx column."
+table_i_columns = 45
+table_i_ky_samples = [96,192]
+table_i_thresholds = [220,240]
+table_i_worst_distance_ghz = 0.02584125693769179
+table_i_reference_control_worst_distance_ghz = 1.858552617867346
+table_i_scope = "All nine primitive bands represented through the 18-band rectangular folding in Figure 5b. Intensity is outside the predicate."
+table_ii_columns = 42
+table_ii_ky_samples = [96,192]
+table_ii_thresholds = [220,240]
+table_ii_worst_distance_ghz = 0.017200301231533155
+table_ii_source_pixels = [10395,10556]
+table_ii_model_samples_at_ky_96 = 48384
+table_ii_scope = "Only the lower frequency windows visible in Figure 6a; labelled gaps, colored markers, inset and unrendered upper bands are outside the observed support predicate."
+pixel_frequency_step_figure5_ghz = 0.005368098159509203
+pixel_frequency_step_figure6_ghz = 0.0021645021645021645
+uncertainty_scope = "Pixel centers have half-pixel quantization; plotted line widths and finite table precision remain additional uncertainties. Threshold sensitivity and ky doubling are retained separately. The 0.03 GHz gate is not a confidence interval."
+
+[intake_amendment]
+reason = "The first Figure 6 frequency-only inset exclusion admitted the black inset border as spectral support."
+original_result = "inversion-projection-before-inset-mask.toml"
+original_result_sha256 = "f5f84d49b40e8a870b00540e03ab7d2364deff5c2a9d356a5becbbf4e227df38"
+original_instrument = "instrument-before-inset-mask.rs.txt"
+original_instrument_sha256 = "1d36ab5c64319bdb99d649a7af771e97f9514d1ac7a903ce8356887c96ea896d"
+original_failed_gate_ghz = 0.08529871240739895
+original_witness_pixel = [1016,945]
+original_witness_kx_per_um = 3.814703182972
+original_witness_source_frequency_ghz = 1.231601731602
+original_witness_nearest_model_frequency_ghz = 1.316900444009
+inset_exclusion_rectangle_pixels = [825,1025,927,1237]
+excluded_pixels_in_scanned_columns = 660
+occluded_model_frequency_samples = 0
+occlusion_scope = "The inset rectangle is unobserved spectral support. The admitted model frequencies have zero samples inside that rectangle; the replay makes no assertion about possible physical curves hidden by the inset."
+preserved = "Source images, Table II constants, band geometry, folding, ky grids and 0.03 GHz gate remain identical across the intake amendment."
+corrected_worst_witness_pixel_x = 836
+corrected_worst_witness_pixel_y = 657
+corrected_worst_witness_kx_per_um = -3.568593300200
+corrected_worst_witness_model_ky_per_um = 0.0
+corrected_worst_witness_rectangular_band_zero_based = 3
+corrected_worst_witness_source_frequency_ghz = 1.854978354978
+corrected_worst_witness_model_frequency_ghz = 1.837778053747
+
+[topology]
+grids = [12,24,48,96]
+admission_gap_ghz = 1e-10
+minimum_link_determinant_gate = 1e-12
+symmetric_sampled_components_half_open = [[0,2],[2,6],[6,9]]
+broken_sampled_components_half_open = [[0,1],[1,2],[2,4],[4,6],[6,7],[7,9]]
+result = "Each listed component has admitted external gaps and conditioned determinant overlaps on every inspected grid; all component Chern sums have magnitude below 1e-8. Symmetric individual-band degeneracies are retained as failed admissions."
+exact_symmetry_statement = "Real hopping coefficients imply H(-k)=conjugate(H(k)). For a globally isolated spectral bundle preserved by spinless time reversal, the first Chern number vanishes. The finite-grid experiment checks the premise only at sampled k, so the theorem's global-gap premise remains a separate obligation."
+valley_patch = "Cartesian square at (+/-4*pi/3,0), half-width 0.1*(4*pi/3), lattice constant 1."
+valley_patch_grids = [12,24,48,96]
+small_mass_scale = 0.2
+small_mass_flux_bands_0_1_3_4_at_grid_96 = [0.29337696601303603,-0.29301064463125814,-0.08663598436228928,0.08708585033929776]
+full_mass_flux_bands_0_1_3_4_at_grid_96 = [0.043361755064547,-0.04118339853778054,0.006963674766459849,-0.004973715404035091]
+small_mass_maximum_grid_48_to_96_change = 8.1035627236e-7
+full_mass_maximum_grid_48_to_96_change = 2.3219345515e-7
+source_sign_checks = "At 20 percent Table II mass, local curvature-integral signs reverse across each s/p gap, between s and p gap bands, between valleys, and under mass reversal. At full mass the p-band local integral changes sign relative to the small-mass result."
+scope = "Patch-admitted individual-band flux is a local diagnostic. P-band degeneracies elsewhere prevent promoting those numbers to individual global Chern invariants; finite-patch flux is neither quantized nor a whole-zone invariant."
+
+[frequency_units]
+producer = "crates/quantum_core/src/magnonic.rs"
+oracle = "Angular gamma=2*pi*28e9 rad/(s*T); exchange angular coefficient gamma*2*A_ex/M_s. Independent cyclic field and k-squared slopes are replayed separately."
+boundary = "The additive homogeneous effective field is the retained repository model. Source fitted GHz bands bypass that helper, so their agreement supplies no evidence for its perpendicular-film demagnetizing-field interpretation."
+
+[author_code]
+doi = "10.13012/B2IDB-8460963_V1"
+datacite_relation = "IsSupplementTo 10.48550/arxiv.2601.03210"
+url = "https://databank.illinois.edu/datasets/IDB-8460963"
+http_status = 403
+retained_response = "databank-response.html"
+retained_response_sha256 = "58bf2215b395dcac74c009aa98701854e43cbe54a1cd3a95fee6a647ca9910d4"
+blocker = "Provider rejected public dataset retrieval. A provider-served code archive with version/hash identity permits direct author-code matrix and projection comparison."
+
+[replay]
+command = "MAGNONIC_SOURCE_WRITE_RESULTS=1 cargo test -p quantum_core --test magnonic_source_projection --test magnonic_source_parameters --profile validation -- --nocapture"
+read_boundary = "Source PPM derivatives and repository Rust modules; test discovery resolves the running checkout from current directory or explicit MAGNONIC_SOURCE_EVIDENCE_DIR."
+write_boundary = "With MAGNONIC_SOURCE_WRITE_RESULTS set, tests replace result TOMLs and projection-columns.csv under the explicit evidence directory. Cargo writes only its configured cache roots."
+ppm_conversion = "ImageMagick 7.1.2-30: magick source-figure5.png -depth 8 source-figure5.ppm; same command for Figure 6."

@@ -1,0 +1,831 @@
+                                            Anomalous diffusion of the heavy quarks through the fractional Langevin equation
+                                                                                                Jai Prakash1, 2, ∗
+                                                              1
+                                                                Department of Physics, Indian Institute of Technology Bombay, Mumbai 400076, India
+                                                         2
+                                                             School of Physical Sciences, Indian Institute of Technology Goa, Ponda-403401, Goa, India
+                                                          The dynamics of heavy quarks within the hot QCD medium have been revisited, considering
+                                                       the influence of anomalous diffusion. This study has been conducted using the framework of the
+                                                       fractional Langevin equation involving the Caputo fractional derivative. We introduce a numerical
+                                                       scheme for the fractional Langevin equation and demonstrate that the mean square displacement of
+                                                       the particle exhibits anomalous diffusion, deviating from a linear relationship with time. Our analysis
+                                                       calculates various entities, such as mean squared momentum, momentum spread, and the nuclear
+                                                       suppression factor, RAA . Notably, our findings indicate that superdiffusion strongly suppresses
+                                                       the RAA compared to normal diffusion in the hot QCD medium. The possible impacts on other
+                                                       parameters are also discussed.
+                                                       Keywords: Heavy quark, quark-gluon plasma, fractional Langevin equation, anomalous diffusion, Caputo
+                                                       fractional derivative.
+
+
+                                                             I.   INTRODUCTION                              by HQs within the QGP medium [46]. This prompts the
+
+
+
+
+arXiv:2401.03757v2 [hep-ph] 10 Jun 2024
+                                                                                                            question: Could the anomalous motion of HQs offer a
+                                             The ultra-relativistic heavy-ion collisions (HICs) at the      more suitable explanation for the observed data? Ad-
+                                          Relativistic Heavy-Ion Collider (RHIC) and the Large              dressing this question necessitates an investigation into
+                                          Hadron Collider (LHC) have predicted the existence of             whether the anomalous behaviour observed in the motion
+                                          Quark-Gluon Plasma (QGP); a state of matter where                 of non-relativistic Brownian particles can also occur in
+                                          quarks and gluons are free to move beyond the nucleonic           the motion of relativistic Brownian particles. By exam-
+                                          volume [1–5]. The QGP is short-lived, with an expected            ining this possibility, we can determine whether anoma-
+                                          lifespan of a few fm/c (approximately 4-5 fm/c at RHIC            lous motion could potentially provide insights into the
+                                          and 10-12 fm/c at LHC [6, 7]). Conversely, investigating          discrepancies observed in the energy loss of HQs within
+                                          the characteristics of the QGP by studying the dynam-             the QGP medium. Several processes exhibit anomalous
+                                          ics of heavy quarks (charm and beauty) is a subject of            diffusion, a phenomenon where the mean squared dis-
+                                          significant interest. In this context, The heavy quarks           placement of the particle does not vary linearly with time
+                                          (HQs) serve as prominent probes of QGP [8–37]. Due to             as predicted by Einstein’s law. Specifically, anomalous
+                                          their large masses (Mc /Mb ∼ 1.3/4.5 GeV), HQs are gen-           diffusion is characterized by a non-standard time depen-
+                                          erated at the early stages of HICs. Moreover, the ther-           dence of the mean squared displacement (⟨x(t)2 ⟩) written
+                                          malization of the HQs is delayed compared to the light            as follows [47–60],
+                                          partons of the bulk medium by a factor on the order of                                 ⟨x(t)2 ⟩ ∝ tµ , µ ̸= 1,             (1)
+                                          ∼ M/T . This delay renders the thermalization time of
+                                          the HQs comparable to the lifetime of the QGP fireball.           where t is the evolution time of the particle. The pro-
+                                          Since the HQs are not expected to achieve complete ther-          cess describes normal diffusion, corresponding to the case
+                                          malization, they retain the memory of their interaction           where µ = 1. Subdiffusion occurs when µ < 1, whereas
+                                          history. Hence, they serve as a novel probe for observ-           superdiffusion occurs when µ > 1 [49]. Despite the
+                                          ing the complete evolution of the QGP medium and act              crucial role played by the LE across several fields, it
+                                          as non-equilibrium entities within the equilibrated QGP.          fails to accurately describe certain behaviours, such as
+                                          The standard Langevin equation (LE) is used to study              anomalous diffusion (i.e., superdiffusion and subdiffu-
+                                          Brownian motion under the assumption of normal diffu-             sion). Therefore, fractional Langevin equations (FLE)
+                                          sion, which means a linear increase in the mean-square            have been proposed to study anomalous diffusion [61–
+                                          displacement of the particle with time for a sufficiently         64]. Mainardi et al., [65–67] introduced an FLE in their
+                                          large time [38]. By using the Langevin equation [39–43]           groundbreaking research. The Langevin method has pri-
+                                          in the context of the HQs momentum and position evolu-            marily been applied to study anomalous diffusion us-
+                                          tion in the hot QCD medium and numerous studies avail-            ing Caputo fractional derivative [68–70]. On the other
+                                          able for the experimental observables related to the HQs,         hand, there are several distinct formulations for frac-
+                                          such as the nuclear suppression factor, RAA and elliptic          tional derivatives, such as Riemann-Liouville derivative
+                                          flow, v2 [26, 44–46]. However, the conventional approach          [71], Riesz derivative [72], Feller derivative [73], and oth-
+                                          faces challenges in adequately explaining the experimen-          ers. In the subsequent, we will only use the Caputo frac-
+                                          tal observations concerning the energy loss experienced           tional derivative in our analysis to study the anomalous
+                                                                                                            diffusion of the particle in the medium.
+                                                                                                               Another valuable approach to studying anomalous dif-
+                                                                                                            fusion involves the investigation of the fractional diffu-
+                                          ∗ jaiprakashaggrawal2@gmail.com
+                                                                                                            sion equation, fractional Fokker-Planck equation [74],
+                                                                                                                           2
+
+and generalized Chapman-Kolmogorov equation [75].               of orders β and α [61, 62],
+Anomalous diffusion has been used in many fields, includ-
+ing molecular chemistry [76], biology [77], and anomalous                       C    β      p(t)
+                                                                                    D0+ x(t) =   ,                        (2)
+diffusion, polymer transport theory [78]. Also, when ac-                                     M
+                                                                                C α
+counting for interactions between the Brownian particle                          D0+ p(t) = −γp(t) + ξ(t),                (3)
+and the constituent particles of the medium, the fluctua-
+                                                                   where the momentum of a particle at time t is denoted
+tions are influenced by their prior states, a phenomenon
+                                                                as p(t), its position as x(t). C D0+
+                                                                                                   α
+                                                                                                       denotes Caputo frac-
+termed as memory. The current movement is affected by
+                                                                tional derivative, α and β are the fractional parameter,
+previous movements via a memory kernel in the general-                                           β
+ized Langevin equation. Such memory effects can result          with n − 1 < α ≤ n, and C D0+         with n − 1 < β ≤ n,
+in anomalous diffusion for a particular memory time [79–        n ∈ N (n is a natural number). Brownian particle en-
+85] and also plays a role in the QGP [86–90].                   counters two distinct forces: the dissipative force, char-
+                                                                acterized by the drag coefficient, denoted by γ, and the
+   Recently, the transverse momentum broadening of a            stochastic force, denoted as ξ(t). The latter governs the
+fast parton via superdiffusion in the QCD matter has            random noise, commonly referred to as white Gaussian
+been studied in Ref. [91].                                      noise. White noise gives rise to a fluctuating field without
+   With this motivation for the applications of superdif-       memory, characterized by instantaneous decay in corre-
+fusion on the HQs dynamics in hot QCD matter, we use            lations of the white noise, often referred to as a δ correla-
+FLE, a generalized form of the LE. Unlike the LE, the           tion. The random force satisfies certain properties, such
+FLE replaces integer-order derivatives with fractional-         as:
+order derivatives, specifically of Caputo type [92]. This
+may be the first attempt where we present an anomalous                           ⟨ξ(t)ξ(t′ )⟩ = 2Dδ(t − t′ ),             (4)
+diffusion for the HQ dynamics in the QGP medium. In                              ⟨ξ(t)⟩ = 0,                              (5)
+this article, we specifically study the effect of superdif-
+fusion on the HQ dynamics in the QGP medium. The                D is the diffusion coefficient of the heavy particle in a
+subdiffusion is not considered within the scope of the          medium of temperature, T . The drag coefficient (γ) is re-
+current analysis.                                               lated to the diffusion coefficient through the Fluctuation-
+                                                                Dissipation Theorem (FDT) as follows:
+   We anticipate a key outcome in our study, specifi-
+cally that in the presence of superdiffusion, there will                                         D
+                                                                                           γ=       .                     (6)
+be an increase in the energy loss experienced by the                                             MT
+HQs within the QGP medium. This conclusion is con-                The Caputo fractional derivative [92] is defined as,
+firmed by studying various key parameters, including the
+mean squared displacement, mean squared momentum,                                                  Z t
+momentum spread, dN/dpT , and the RAA of the HQs.                      C    ν              1             u(n) (s)
+                                                                           D0+ u(t) =                         1+ν−n
+                                                                                                                    ds,   (7)
+Notably, the latter holds particular significance in the                                Γ(n − ν)    0 (t − s)
+phenomenology of the HQs within the QGP. The strong
+suppression observed in RAA is anticipated to contribute        where u(n) denotes the nth derivative of u. The fractional
+significantly to developing a substantial elliptic flow (v2 )   derivative which corresponds to the superdiffusion, i.e.,
+for the HQs.                                                    when 1 < ν ≤ 2, is given by
+                                                                                               Z t
+   The article is structured as follows: Section II intro-               C ν             1           u(2) (s)
+duces the formalism; we analytically solve the FLE of                     D0+ u(t) =                          ds,      (8)
+                                                                                      Γ(2 − ν) 0 (t − s)ν−1
+non-relativistic heavy particles using the Laplace tech-
+nique, along with presenting a numerical scheme for solv-       where Γ(·) denotes the gamma function. In the follow-
+ing the relativistic FLE. Section III is dedicated to the       ing subsection, we solve analytically the FLE of non-
+presentation of our results. Lastly, Section IV provides a      relativistic Brownian particles.
+comprehensive summary of our conclusions.
+                                                                                A.      Analytical solutions
+
+
+  II.   THE FRACTION LANGEVIN EQUATION                            Analytically, we solve the FLE governing the motion
+          FOR BROWNIAN PARTICLES                                of non-relativistic Brownian particles. To achieve this,
+                                                                we use the Laplace technique, providing analytical ex-
+                                                                pressions for ⟨p2 (t)⟩ and ⟨x2 (t)⟩. Performing the Laplace
+  For illustrative purposes, we discuss the scenario of a       transformation of Caputo derivative for n − 1 < α ≤ n
+heavy particle with mass M undergoing one-dimensional           and n − 1 < β ≤ n [93],
+(1-D) motion within the nonrelativistic limit. We use
+the FLE to describe the dynamics of this particle. In                                            n−1
+                                                                                                 X
+                                                                  L C D0+
+                                                                       α
+                                                                          p(t) (z) = z α pb(z) −     z α−k−1 pk (0) . (9)
+                                                                                                                
+this framework, the evolution of the particle’s position
+and momentum is characterized by fractional derivatives                                             k=0
+                                                                                                                                           3
+
+In order to calculate the solution of p(t) and x(t) of the            with initial momentum, p(t0 ) = 0. Then to calculate
+heavy particle for a super-diffusive process, i.e., when 1 <        ⟨p2 (t)⟩ we follows Eq. (13) and Eq. (16), then we get
+α ≤ 2 and 1 < β ≤ 2, one can take the Laplace transform
+Eqs. (2), (3) and using Eq. (9), it can be obtained easily                               Z tZ t
+as                                                                                 1
+                                                                    ⟨p2 (t)⟩ =                     (t − s1 )α−1 (t − s2 )α−1 ⟨ξ(s1 )ξ(s2 )⟩
+                                                                                 Γ(α)2    0    0
+                                        pb(z)
+      b(z) − z β−1 x(t0 ) − z β−2 x′ (t0 ) =
+   zβ x                                       ,              (10)                                                               ds1 ds2 .
+                                          M
+                                                                                                                                         (17)
+           z α−1          z α−2 ′           ξ(z)
+                                            b
+   pb(z) = α     p(t0 ) + α     p (t0 ) + α      .           (11)
+          z +γ           z +γ              z +γ                     Solving further Eq. (17), using the correlation properties
+                                                                    defined in Eq. (4), we have,
+  Now, substituting Eq. (11) into Eq. (10), for simplicity,
+we take M = 1 [94], we obtain                                                                           Z t
+                                                                                                2D
+                       ′
+          x(t0 ) x (t0 ) z           α−β−1
+                                        z            α−β−2                        ⟨p2 (t)⟩ =                  (t − s)2α−2 ds,           (18)
+ x
+ b(z) =          +       + α    p(t0 ) + α    p′ (t0 )                                         Γ(α)2      0
+            z       z2     z +γ          z +γ
+              z −β b
+          + α      ξ(z).                          (12)                                                 2D t2α−1
+            z +γ                                                                         ⟨p2 (t)⟩ =                .                    (19)
+                                                                                                      Γ(α)2 2α − 1
+Taking the inverse Laplace transform of Eqs. (11) and
+(12), we obtain                                                     Similarly, one can calculate analytical solutions of ⟨x2 (t)⟩
+                                                                    for γ = 0, and with initial conditions, x(t0 ) = 0, using
+   p(t) = Eα,1 (−γtα )p(t0 ) + tEα,2 (−γtα )p′ (t0 )                Eqs. (14), (16) as
+            Z t
+          +     (t − s)α−1 Eα,α (−γ(t − s)α )ξ(s)ds,         (13)                                  Z t
+              0                                                                              2D
+                                                                            ⟨x2 (t)⟩ ≈                 (t − s)2α+2β−2 ds
+and                                                                                       Γ(α + β)2 0
+                                                                                               2D       t2α+2β−1
+  x(t) = x0 + tx′0 + tβ Eα,β+1 (−γtα )p(t0 )                                              =
+                                                                                            Γ(α + β)2 2α + 2β − 1
+                                                                                                                  .                     (20)
+          + tβ+1 Eα,β+2 (−γtα )p′ (t0 )
+            Z t                                                        We have plotted Fig. 1 for the case of purely diffusive
+          +     (t − s)β+α−1 Eα,β+α (−γ(t − s)α )ξ(s)ds,            motion, we depict the variation of ⟨p2 (t)⟩ over time (left
+             0                                                      panel) and ⟨x2 (t)⟩ (right panel), each for different values
+                                                             (14)   of α and β, while keeping D constant at 0.1 GeV2 /fm.
+                                                                    For simplicity, a non-relativistic case has been consid-
+where                                                               ered with M = 1 GeV. In Fig. 1 (left panel), results
+                                    ∞
+                                    X      zj                       obtained from Eq. (19) show that ⟨p2 (t)⟩ exhibits nearly
+                  Eα,β (z) =                                        linear evolution with time when α → 1 (as shown by
+                                        Γ(jα + β)
+                                    j=0                             black solid lines), which is giving ⟨p2 (t)⟩ = 2Dt. In this
+                                                                    scenario, the Caputo fractional derivative reduces to an
+is the two-parameter Mittag-Leffler function for α > 0,
+                                                                    ordinary first-order derivative; in this limit of α, the FLE
+β > 0, and z is a complex number [95] and the Laplace
+                                                                    is reduced back to the LE. On the other hand, when the
+transform of the two-parameter Mittag-Leffler function
+                                                                    value of α > 1, the linear increase in ⟨p2 (t)⟩ with time
+is [96],
+                                                                    converts into nonlinear growth over time. It becomes ev-
+                                                                    ident that the diffusion process evolves more gradually
+                                     z α−β                          during the initial time, particularly up to 1.5 fm/c. In
+           L xβ−1 Eα,β (−λxα ) (z) = α
+                             
+                                           .                 (15)   contrast, around 2 fm/c, the pattern is reversed, now a
+                                    z +λ
+                                                                    higher value of α, giving a faster diffusion. Similarly, with
+Next we calculate ⟨p2 (t)⟩, and ⟨x2 (t)⟩ analytically for the       the same input parameter, Fig. 1 (right panel) results ob-
+Brownian particle.                                                  tained from Eq. (20) depicts the mean square displace-
+                                                                    ment, ⟨x2 (t)⟩ varies with time. In the limit, α, β → 1(as
+                                                                    shown by black solid lines), ⟨x2 (t)⟩ varies with t3 (as
+                  1.       Purely diffusive motion                  shown by black solid lines), for the normal diffusion. In
+                                                                    this case, we considered the scenario of purely diffusive
+   We are calculating the ⟨p2 (t)⟩, and ⟨x2 (t)⟩ for a purely       motion (γ = 0 in the FLE), where the diffusion of the
+diffusive (when γ = 0 in the FLE), 1-D motion. Then                 Brownian particle predominates due to this approxima-
+Eq. (3) simplified to                                               tion. Consequently, ⟨x(t)2 ⟩ of the non-relativistic Brown-
+                           C    α
+                                                                    ian particle varies with t3 for pure normal diffusion. It is
+                               D0+ p(t) = ξ(t),              (16)   crucial to emphasize that because of γ= 0, the variation
+                                                                                                                                              4
+
+                            4                                                       40
+                                     α = 1.6                                                          β = α = 1.6
+                                     α = 1.4                                                          β = α = 1.4
+                                     α = 1.2
+                                     α = 1.001                                                        β = α = 1.2
+                            3                                                       30
+
+
+
+
+          <p (t) > [GeV ]
+         2                           α = 1.001, Numer.                                                β = α = 1.001
+
+
+
+
+                                                                   <x (t) > [fm ]
+                                                                  2
+                                     α = 1.2, Numer.                                                  β = α = 1.001, Numar.
+                                     α = 1.4, Numer.                                                  β = α = 1.2, Numar.
+                                     α = 1.6, Numer.                                                  β = α = 1.4, Numar.
+                            2                                     2                 20
+         2                                                                                            β = α = 1.6, Numar.
+
+
+
+                            1                                                       10
+
+
+
+                            0                                                        0
+                             0   1        2        3     4   5                        0          1         2        3         4    5
+                                        Time [fm/c]                                                      Time [fm/c]
+FIG. 1: ⟨p2 (t)⟩ versus time (left panel) and ⟨x2 (t)⟩ versus time (right panel) for a 1-D, purely diffusive motion for
+different values of α and β. Analytic solutions are represented by solid lines, and numerical (Numer.) solutions are
+                                             represented by dashed lines.
+
+
+of ⟨x(t)2 ⟩ with t3 is unrelated to Eq (1). Given the limit-     rized as indirect or direct. Since time-fractional differen-
+ing nature of this scenario, the calculated results seem to      tial equations can generally be reformulated into integro-
+contradict the expected behaviour of normal diffusion, as        differential equations, solving such equations corresponds
+expected in Eq. (1). Once our analytical and numerical           to indirect methods. On the other hand, direct methods
+calculations align, we will incorporate the drag term into       focus on approximating the time-fractional derivative it-
+the relativistic Langevin equation for the charm quark in        self. This aspect constitutes the core of our work, where
+the subsequent subsection. The reason for choosing this          our goal is to discretize the fractional derivative directly
+limiting case will be discussed in the following subsec-         without transforming the associated differential equation
+tion. With the higher values of α and β, ⟨x2 (t)⟩ varies         into its integral form. Our numerical algorithm for solv-
+with the power of time greater than cubic power.                 ing the FLE is based on the three-step scheme using the
+                                                                 central difference method shown in Appendix VI.
+
+B.   A numerical scheme for the fractional Langevin
+                     equation                                                1.          The fractional Langevin equation of relativistic
+                                                                                                 Brownian particles: QGP
+   In classical stochastic differential equations driven by
+Brownian motion, the Itô or Stratonovich stochastic cal-           We extended the solution of FLE for the non-
+culus is typically employed for solutions. However, these        relativistic Brownian pariticle as defined in Eqs. (2),(3),
+methods are not applicable to the FLE driven by frac-            to describe the HQs dynamics in the QGP medium in
+tional Brownian motion, as it is not a semimartingale            the relativistic limit as follows,
+(see Ref. [97] for detailed proof). Although the Monte
+Carlo method is a reliable solution for stochastic differ-
+ential equations, it is not appropriate in this case because                                    C    β           p(t)
+                                                                                                    D0+ x(t) =        ,                     (21)
+it relies on independent sequences. Still, the sequences in                                                      E(t)
+fractional noise are dependent. Therefore, we have em-                                          C    α
+                                                                                                    D0+ p(t) = −γp(t) + ξ(t),               (22)
+ployed L2 numerical schemes, as detailed in [98]. These
+schemes are among the most effective for discretizing the                     p
+                                                                 where, E = p2 + M 2 represents the energy, and p de-
+Caputo fractional derivative and provide a key contri-           notes the momentum of the HQs. The γ can be related
+bution to this article. We numerically solve the FLE in          to the diffusion coefficient through an FDT as [99–101],
+Eqs. (2), (3). To validate our numerical computations, we
+compared the numerical results with the analytical ones                                                          D
+for the 1-D FLE, considering γ = 0. This step is crucial to                                                γ=       .                       (23)
+                                                                                                                 ET
+ensure the accuracy of our numerical method, which will
+be employed in solving the relativistic Langevin equation        Since both Eq. (21) and Eq. (22) are non-linear differ-
+that will be discussed in the following subsection. To           ential integral equations, preventing analytical solutions
+solve the FLE, numerical methods are commonly catego-            through methods such as Laplace transformations, as
+                                                                                                                            5
+
+done for the non-relativistic case for Eqs. (2),(3). The so-      momentum distribution, and RAA of the HQs. For su-
+lution of relativistic FLE defined in Eq. (22) and Eq. (21)       perdiffusion, the relativistic FLE can be written in the
+is possible solely through numerical methods. We utilize          discrete form using Eq. (30) ( given in appendix VI) as
+the numerical approach to compute ⟨x2 (t)⟩, ⟨p2 (t)⟩, the         follows,
+
+
+
+                                     
+                                p(t0 )
+          
+           x(t1 ) = x(t0 ) +            k                                                                     : n = 1,
+                                E(t0 ) 
+          
+          
+          
+                                                 
+          
+                                          p(t1 )
+          
+           x(t2 ) = 2x(t1 ) − x(t0 ) +             k                                                          : n = 2,
+                                           E(t1")
+          
+          
+          
+                                                  p(tn−1 )                                                                (24)
+           x(tn ) = 2x(tn−1 ) − x(tn−2 ) +
+                                                  E(t n−1 )
+          
+          
+          
+          
+             n−2
+                                                                                                   #
+                                                                2−α           2−α
+          
+          
+             X                                               n     − (n − 1)
+          −       bj (x(tn−j ) − 2x(tn−j−1 ) + x(tn−j−2 )) +                     (x(t1 ) − x(t0 )) k          : n ≥ 3,
+          
+          
+                                                                       k
+          
+                j=1
+
+and
+                               h              p          i
+           
+           
+           p(t 1 ) = p(t0 ) +   −γp(t   0 ) +   2D/∆tη     k                                                 : n = 1,
+           
+                                           h            p        i
+           
+           
+           
+           p(t 2 ) = 2p(t 1 ) −  p(t0 ) +   −γp(t 1 ) +   2D/∆tη   k                                         : n = 2,
+           
+                                                "
+                                                                p
+            p(tn ) = 2p(tn−1 ) − p(tn−2 ) + − γp(tn−1 ) + 2D/∆tη                                                          (25)
+           
+           
+                                                                                                      #
+              n−2
+           
+                                                                    2−α           2−α
+           
+           
+             X                                                   n     − (n − 1)
+           −
+           
+                   bj (p(tn−j ) − 2p(tn−j−1 ) + p(tn−j−2 )) +                        (p(t1 ) − p(t0 )) k     : n ≥ 3,
+                                                                           k
+           
+              j=1
+
+
+
+
+where k = ∆tα Γ(3−α), with t1 = t0 +∆t, tn = tn−1 +∆t.            and α = β = 1.2 (grey dashed line), α = β = 1.4 (red
+Here t0 is the initial time, and ∆t is the time step.             dashed line), and α = β = 1.6 (orange dashed line) is dis-
+                                                                  played. Again, the numerical results match the analytic
+                                                                  results from Eq. (20). One can notice that the numerical
+                      III.   RESULTS                              simulation agrees with the analytical result, indicating
+                                                                  that our numerical scheme works correctly.
+           A.    A check for non-relativistic
+                                                                   B.    The evolution of ⟨p2 (t)⟩ and ⟨x2 (t)⟩ of the HQs.
+   To analyze the numerical scheme of FLE, we compute
+⟨x2 (t)⟩ from Eq. (24) and ⟨p2 (t)⟩ from Eq. (25), sub-             For our analysis, the definition we used for ⟨p2 (t)⟩ is
+sequently comparing the results with the analytical so-           given by
+lutions derived from Eq. (20) and Eq. (19), respectively.
+The FLE has been solved for the 1-D motion of the heavy                             ⟨p2 (t)⟩ = ⟨p2x (t) + p2y (t)⟩.       (26)
+particle within the nonrelativistic limit, as explained in
+Sec. II. For illustrative purposes, we have considered con-       We have computed ⟨p2 (t)⟩ over time for four different
+stant diffusion coefficient, D = 0.1 GeV2 /fm and mass of         values of α, namely α = 1.001 (black line), α = 1.2 (red
+the heavy particle, M = 1 GeV and γ = 0 (i.e., pure               line), α = 1.4 (green line), and α = 1.6 (blue line) at
+diffusion case) in FLE. In the left panel of Fig. 1, the nu-      T = 250 MeV, M = 1.3 GeV and D = 0.1 GeV2 /fm
+merically computed ⟨p2 (t)⟩ for α = 1.001 (brown dashed           correspond to the charm quark. The corresponding re-
+line), α = 1.2 (grey dashed line), α = 1.4 (red dashed            sults are shown in Fig. 2. In this scenario, the initial
+line), and α = 1.6 (orange dashed line) is presented. No-         momentum is set to be px (t0 ) = py (t0 ) = 0.
+tably, these numerical results align with the analytic so-           From the left panel of Fig. 2, it is evident that as the
+lutions from Eq. (19) and match the other values of the           magnitude of α increases, the behaviour of the process
+α. For an additional test of our numerical approach, we           indicates superdiffusion for the charm quark within the
+have calculated ⟨x2 (t)⟩ of the heavy particle as shown in        hot QCD medium. The impact of superdiffusion becomes
+Fig. 1 (right panel). In the same figure, the numerically         more noticeable at higher values of α. It is noticeable
+calculated ⟨x2 (t)⟩ for α = β = 1.001 (brown dashed line)         that as α → 1, the superdiffusion process converges back
+                                                                                                                                                                  6
+
+                          12                                                                  3
+                                     α = 1.001                                                                      α = 1.001
+                          10         α = 1.2                                        2.5                             α = 1.2
+                                     α = 1.4                                                                        α = 1.4
+                                     α = 1.6                                                                        α = 1.6
+
+
+
+
+         <p(t) > [GeV ]                                            <p(t) > [GeV ]
+        2                                                         2
+                           8                                                                  2
+
+                           6                                                        1.5
+        2                                                         2
+
+                           4                                                                  1
+
+                           2                                                        0.5
+
+                           0                                                                  0
+                            0   10               20     30                                     0        1       2          3         4        5        6
+                                Time [fm/c]                                                                     Time [fm/c]
+         FIG. 2: ⟨p2 (t)⟩ versus time, for the various values of the α and D = 0.1 GeV2 /fm at T = 250 MeV.
+
+
+to normal diffusion. Additionally, in the later stages, the
+mean squared momentum ⟨p2 (t)⟩ tends to approach 3M T                                         600                        β = α = 1.001
+[100], and also the FLE defined in Eq. (25) simplifies to                                                                β = α = 1.2
+the standard LE described in Ref. [39, 40, 43, 45, 100].                                                                 β = α = 1.4
+
+
+
+
+                                                                              <x(t) > [fm ]
+This transition emphasizes the connection between su-                   2
+perdiffusive behaviour governed by the FLE and the con-                                       400
+ventional diffusion process characterized by the standard
+LE. In the right panel of Fig. 2, we present a subset of the            2
+results depicted in the left panel, focusing on the early-
+time evolution of ⟨p2 (t)⟩ for four different values of α. It
+                                                                                              200
+is worth noting that in the initial time, the diffusion pro-
+cess gradually evolves for higher values of α. However,
+for times beyond 3 fm/c, the trend reverses, and larger α
+corresponds to a faster diffusion, as anticipated in Fig. 2
+(left panel).                                                                                      0
+                                                                                                    0       5       10         15        20       25       30
+   In Fig. 3, we have calculated the evolution of ⟨x2 (t)⟩                                                           Time [fm/c]
+of the relativistic charm quark over time for three values
+of α = β = 1.001, 1.2, 1.4, maintaining other parameters        FIG. 3: ⟨x2 (t)⟩ versus time, for the various values of the
+consistent with those illustrated in Fig. 2. The initial             α, β and D = 0.1 GeV2 /fm at T = 250 MeV.
+conditions are set to be x(t0 ) = y(t0 ) = 0. It can be
+noticed that both α = β = 1.2, 1.4, a distinct shift to-
+wards superdiffusion is observed (shown in Fig. 3) as we        transport coefficients for elastic processes with the well-
+discussed initially in Eq. (1). The larger values of α and      established diffusion coefficients [102]. Here, the Debye
+β contribute to this notable change in behaviour, under-        mass, mD = gT T screens the infrared divergence associ-
+lining the complex dynamics of the system. As α → 1             ated with the t-channel diagrams.
+and β → 1, the behaviour reflects normal diffusion. In
+this limit, at a later time, ⟨x2 (t)⟩ exhibits a proportional
+relationship with t (same as in Eq. (1)), as described in
+                                                                                                   C.   Nuclear modification factor
+[100, 102]. This puzzling behaviour of ⟨p2 (t)⟩ and ⟨x2 (t)⟩
+due to the anomalous diffusion, which was not explained
+before in the context of the HQ dynamics in a hot QCD              To analyze the impact of the superdiffusion on the ex-
+medium.                                                         perimental observable, we have calculated the nuclear
+   In the following sections, we have calculated RAA and        suppression factor, RAA (pT ) for the HQs, which is de-
+the charm quark momentum distribution, dN/dpT , to              fined as follows [100],
+see the effect of superdiffusion processes. To deter-
+mine the interaction of the HQ with the thermalized
+                                                                                                                               fτf (pT )
+bath consisting of massless quarks and gluons, we em-                                                       RAA (pT ) =                  .                      (27)
+ploy perturbative Quantum Chromodynamics (pQCD)                                                                                fτ0 (pT )
+                                                                                                                                7
+
+             1.4                                                            1.4
+                                                 α = 1.001                                                     α = 1.001
+                                                 α = 1.2                                                       α = 1.2
+             1.2                                 α = 1.4                    1.2                                α = 1.4
+                                                 α = 1.6                                                       α = 1.6
+              1                                                              1
+       RAA                                                            RAA
+             0.8                                                            0.8
+
+             0.6                                                            0.6
+
+             0.4                                                            0.4
+
+             0.2                                                            0.2
+               0   2     4     6      8     10      12       14               0   2     4     6     8     10      12       14
+                              pT [GeV]                                                       pT [GeV]
+
+FIG. 4: The RAA as a function of pT , with t = 6 fm/c, and at two different temperatures (T = 250 MeV (left panel)
+                         and T = 350 MeV (right panel) with four different values of α.
+
+
+The momentum spectrum, fτf (p), of charm quarks cal-                the significance of diffusion processes, resulting in a dis-
+culated for the time evolution, τf = 6 fm/c in our compu-           tinct pattern in the RAA as compared to RAA at T =
+tational results and fτi (p) is initial momentum distribu-          250 MeV. For α > 1, a significant reduction in the mag-
+tion of the charm quark. The initial momentum spectra,              nitude of RAA is observed, indicating more suppression
+fτi (p), is taken according to the fixed order + next-to-           at high pT . Notably, for the highest considered value of
+leading log (FONLL) calculations, which has been shown              α = 1.6, a larger proportion of particles tends to remain
+to be capable of reproducing the spectra of D-mesons                at low pT , a consequence of the superdiffusion process.
+produced in proton-proton collisions through fragmenta-             This behaviour underscores the complex dynamics asso-
+tion [103, 104], the initial momentum spectrum is written           ciated with superdiffusion and its impact on the RAA of
+as,                                                                 the HQs in the QGP medium.
+                    dN         x0
+                         =              ,                    (28)
+                   d2 pT   (x1 + pT )x2                                           D.   Momentum spread of HQs
+ where the parameters are estimated as follow; x0 =
+ 6.365480 × 108 , x1 = 9.0 and x2 = 10.27890. RAA (pT )                We show the evolution of charm momentum distribu-
+̸= 1 implies that charm quarks undergo interactions with            tion, dN/dpT , at static temperatures, T = 250 MeV (top
+ the medium. These interactions lead to modifications in            panel) and T = 350 MeV (bottom panel) in Fig. 5. The
+ the spectrum of charm quarks.                                      dN/dpT evolution is performed for various values of α
+    In Fig. 4, the behaviour of RAA is depicted as a func-          at a final evolution time of τf = 6 fm/c. To understand
+ tion of pT , which are calculated using the FLE as defined         the impact of superdiffusion on charm quarks within the
+ in Eq. (25) for different values of α. The calculations are        QGP, we take initial conditions where all charm quarks
+ performed at two distinct temperatures, T = 250 MeV                are concentrated within an extremely narrow pT bin, cre-
+ (left panel) and T = 350 MeV (right panel). At T = 250             ating a delta-like distribution at p(t0 ) = 10 GeV (ma-
+ MeV, the dominating influence is the drag force across             genta line). It is observed that the interaction of the
+ the entire range of pT . As pT increases, the significance         HQs with the QGP medium results in the spreading of
+ of energy loss becomes more pronounced, which can be               dN/dpT . Subsequently, the evolution of this distribution
+ noticed in Fig. 4 (left panel). When α > 1, the nor-               is analyzed using the FLE as defined in Eq. (25). We have
+ mal diffusion converts into superdiffusion, it is evident          observed the evolution of dN/dpT at higher values of α
+ for α = 1.2 (red line), α = 1.4 (blue line), and α = 1.6           for the case of superdiffusion, where, α = 1.2 (red line),
+ (green line). With an increasing value of α, there is a            α = 1.4 (blue line), and α = 1.6 (green line). As depicted
+ notable decrease in magnitude RAA (more suppression)               in Fig. 5, when α > 1, the distribution dN/dpT undergoes
+ at high pT . For α → 1 (depicted by the black line),               a notable spread and average momentum shifts towards
+ the behaviour of the RAA aligns with normal diffusion,             lower values of pT under the influence of diffusion and
+ consistent with findings available in the literature for the       drag coefficients, respectively. Specifically, for α = 1.6
+ same input parameters [40, 43, 46]. Fig. 4 (right panel),          (represented by the blue line), the extent of spreading
+ corresponds to T = 350 MeV, the observed behaviour                 is more pronounced, and the average momentum shifts
+ is attributed to the diffusion-dominated propagation of            towards the lower pT compared to other α values such
+ the HQs within the hot QCD medium. This dominance                  as 1.001, 1.2, and 1.4. However, for α = 1.001 (black
+ of diffusion mechanisms effectively leads to the diffusion         line), corresponding to the normal diffusion coefficient as
+ of low-momentum charm quarks to higher momentum                    explained in Ref. [41, 43]. At the same time, the total
+ states. The high temperature, T = 350 MeV, enhances                area under the curve remains constant for all values of α
+                                                                                                                                    8
+
+                    20000
+                                                                          sion for relativistic charm quarks (as discussed in Eq.
+                               T= 250 MeV               α = 1.001         (1)). Several key quantities characterizing the dynam-
+                                                        α = 1.2           ics of the HQs under superdiffusion have been computed,
+                    15000                               α = 1.4
+                                                                          including the ⟨p2 (t)⟩, ⟨x2 (t)⟩. Extending our analysis,
+
+   dN/dp T [GeV ]
+  -1                                                    α = 1.6
+                                                       p0 = 10 GeV        we incorporated physical observables RAA of the HQs in
+                    10000
+                                                                          the QGP medium. We then shifted our focus to the mo-
+                                                                          mentum spread, dN/dpT , utilizing an initial momentum
+                                                                          distribution at p(t0 ) = 10 GeV. The FLE, with the HQs
+                    5000                                                  moving under dissipative and random forces, was solved
+                                                                          with transport coefficients serving as input parameters.
+                                                                          Our findings indicate that superdiffusion results in more
+                       0                                                  suppression in RAA . To select specific values for α and
+                          0         5          10       15           20   β within the ranges of 1 < α ≤ 2 and 1 < β ≤ 2, it
+                                            pT [GeV]
+                    15000                                                 is essential to be able to simultaneously describe the ex-
+                                                                          perimental observables, such as RAA and v2 , for the en-
+                              T= 350 MeV                α = 1.001
+                                                                          tire measured range of pT . Initially, the formation of
+                                                        α = 1.2
+                                                        α = 1.4           a small RAA (signifying strong suppression) can occur
+                                                                          rapidly at the beginning of the QGP, while the devel-
+
+   dN/dp T [GeV ]
+  -1                10000                               α = 1.6
+                                                       p0 = 10 GeV        opment of significant v2 is more sensitive to later stages
+                                                                          of evolution. Consequently, substantial interactions may
+                                                                          not coincide with a significant build-up of v2 since the
+                    5000                                                  bulk medium has yet to establish significant elliptic flow.
+                                                                          Exploring anomalous diffusion may offer the potential to
+                                                                          generate notable v2 magnitude, possibly leading to in-
+                                                                          tensified interactions between the HQs and the evolving
+                       0
+                          0         5          10       15           20   bulk at later stages. However, a thorough analysis of v2
+                                            pT [GeV]                      in the presence of anomalous diffusion requires a refined
+                                                                          study incorporating realistic initial conditions, including
+FIG. 5: The evolution of charm quark momentum distri-                     the initial geometry and expansion of the fireball. Subse-
+bution at τf = 6 fm/c as a function of pT , for various α                 quent comparison with experimental data will be crucial
+and at two different temperatures (T = 250 MeV (above                     for validating and refining these findings, representing an
+panel) and T = 350 MeV (below panel). Assuming an                         essential aspect of future investigations in this study.
+ initial delta distribution centered at p(t0 ) = 10 GeV.                     In the future, we plan to explore the impact of superdif-
+                                                                          fusion on the HQ dynamics in the QGP medium, espe-
+                                                                          cially considering the time correlation of thermal noise.
+and both temperatures.                                                    This study devotes the groundwork for more realistic con-
+                                                                          ditions, which should incorporate an exact initial geom-
+                                                                          etry and an expanding medium in the near future. Su-
+                    IV.       CONCLUSION AND OUTLOOKS                     perdiffusion might impact various observables, such as
+                                                                          HQs directed flow, particle correlations, etc. Given the
+                                                                          simplifying assumptions made in our current study, it is
+   In this paper, we have discussed anomalous diffusion
+                                                                          challenging to anticipate the specific modifications. A
+through the FLE with the Caputo fractional derivative,
+                                                                          more comprehensive and quantitative analysis will be
+specifically focusing on superdiffusion in the context of
+                                                                          performed in near future investigations to understand
+the HQs in the QGP medium. Notably, the mean squared
+                                                                          these phenomena further.
+displacement of the particle exhibits a power-law depen-
+dence on time (as shown in Fig. 3). Our analysis dis-
+cussed the scenarios where the values of α and β were
+taken as 1.001, 1.2, 1.4, and 1.6, showcasing the effects                             V.    ACKNOWLEDGMENTS
+of superdiffusion. We have demonstrated that as α ap-
+proaches 1, the superdiffusion reverts to normal diffu-                      I gratefully acknowledge Dr. Santosh Kumar Das for
+sion, verified by numerical and analytical calculations for               his invaluable advice, Aditi Tomar for insightful discus-
+⟨x2 (t)⟩ and ⟨p2 (t)⟩ in the non-relativistic 1-D case (see               sions and inspirational encouragement, and Mohammad
+Fig. 1). Initially, in Section II.A.1, we focused on purely               Yousuf Jamal for his numerous informative contributions,
+diffusive motion with γ = 0 in the FLE. Because of the                    collectively enriching the content of this paper. Addition-
+dominance of the diffusion term, ⟨x(t)2 ⟩ varies with t3 ,                ally, I acknowledge the partial support from DAE-BRNS,
+contrary to normal diffusion expectations. Upon aligning                  India, Grant No. 57/14/02/ 2021-BRNS. I also acknowl-
+analytical and numerical results, then we later incorpo-                  edge partial support from the SERB Fellowship Project
+rated γ into relativistic FLE, confirming normal diffu-                   Code No.RD/0122-SERBF30-001.
+                                                                                                                                 9
+
+                     VI.   APPENDIX                                   approximation is used for the case of superdiffusion. The
+                                                                      second derivative u(2) is approximated using a central
+                                                                      difference formula, and the resulting numerical scheme
+   Consider a partition {tn = nT  N , ; 0 ≤ n ≤ N } of time           involves the values of u at the previous three-time points
+interval [0, T ]. The three-step numerical scheme called L2           un−1 , un−2 , and un−3 .
+
+
+  For 1 < ν ≤ 2, superdiffusion
+                                               Z tn
+                C    ν                1         u(2) (s)
+                    D0+ u(tn ) =                            ds
+                                   Γ(2 − ν)
+                                          0  (tn − s)ν−1
+                                          n
+                                         X Z tj
+                                   1                  u(2) (s)
+                              =                                ds
+                                Γ(2 − ν) j=1 tj−1 (tn − s)ν−1
+                                             n
+                                                u(tj ) − 2u(tj−1 ) + u(tj−2 ) tj
+                                                                             Z
+                                      1     X                                            1
+                              ≈                                                                 ds
+                                   Γ(2 − ν) j=1             ∆t2               tj−1 (t n − s)ν−1
+                                             n
+                                      1     X   ((tn − tj−1 )2−ν − (tn − tj )2−ν )
+                              =                                                    (u(tj ) − 2u(tj−1 ) + u(tj−2 ))
+                                   Γ(3 − ν) j=1                ∆t2
+                                   n−2
+                                   X
+                              =          bj (u(tn−j ) − 2u(tn−j−1 ) + u(tn−j−2 ))
+                                   j=0
+
+                                   n2−ν − (n − 1)2−ν
+                              +                      (u(t1 ) − u(t0 )).                                                       (29)
+                                     Γ(3 − ν)∆tν
+
+
+                                     u1 − u0
+                                 
+                                 
+                                                                                        : n=1
+                                   ∆tν Γ(3 − ν)
+                                 
+                                 
+                                 
+                                   u2 − 2u1 + u0
+                                 
+                                 
+                                 
+                                 
+                                 
+                                  ∆tν Γ(3 − ν)
+                                                                                        : n=2
+                     C ν
+                      Dn u(tn ) = un − 2un−1 + un−2 n−2X                                                                      (30)
+                                                     +     bj (un−j − 2un−j−1 + un−j−2 )
+                                 
+                                 
+                                 
+                                 
+                                        ν
+                                      ∆t Γ(3 − ν)
+                                 
+                                                      j=1
+                                     n2−ν − (n − 1)2−ν 1
+                                 
+                                 
+                                                      (u − u0 )
+                                 
+                                 +
+                                                                                        : n≥3
+                                        Γ(3 − ν)∆tν
+
+
+                                         2−ν   2−ν
+                                    −j
+where the coefficients bj = (j+1)
+                              Γ(3−ν)∆tν  in the scheme                derivative and are used to account for the fractional or-
+is determined by the difference formula for the second                der.
+
+
+
+
+  [1] J. Adams et al. (STAR), Phys. Rev. Lett. 97, 162301               [8] T. Song, H. Berrehrah, D. Cabrera, J. M. Torres-
+      (2006), arXiv:nucl-ex/0604018.                                        Rincon, L. Tolos, W. Cassing, and E. Bratkovskaya,
+  [2] J. Adams et al. (STAR), Nucl. Phys. A 757, 102 (2005),                Phys. Rev. C 92, 014910 (2015), arXiv:1503.03039 [nucl-
+      arXiv:nucl-ex/0501009.                                                th].
+  [3] K. Adcox et al. (PHENIX), Nucl. Phys. A 757, 184                  [9] A. Andronic et al., Eur. Phys. J. C 76, 107 (2016),
+      (2005), arXiv:nucl-ex/0410003.                                        arXiv:1506.03981 [nucl-ex].
+  [4] K. Aamodt et al. (ALICE), Phys. Rev. Lett. 105,                  [10] X. Dong and V. Greco, Prog. Part. Nucl. Phys. 104, 97
+      252301 (2010), arXiv:1011.3916 [nucl-ex].                             (2019).
+  [5] I. Arsene et al. (BRAHMS), Phys. Rev. C 72, 014908               [11] S. Cao et al., Phys. Rev. C 99, 054907 (2019),
+      (2005), arXiv:nucl-ex/0503010.                                        arXiv:1809.07894 [nucl-th].
+  [6] H. van Hees and R. Rapp, Phys. Rev. C 71, 034907                 [12] A. Beraudo et al., Nucl. Phys. A 979, 21 (2018),
+      (2005), arXiv:nucl-th/0412015.                                        arXiv:1803.03824 [nucl-th].
+  [7] R. Rapp and H. van Hees (2010) pp. 111–206,                      [13] F. Prino and R. Rapp, J. Phys. G 43, 093002 (2016),
+      arXiv:0903.1096 [hep-ph].                                             arXiv:1603.00529 [nucl-ex].
+                                                                                                                          10
+
+[14] G. Aarts et al., Eur. Phys. J. A 53, 93 (2017),                Phys. Rev. Lett. 100, 192301 (2008), arXiv:0709.2884
+     arXiv:1612.08032 [nucl-th].                                    [hep-ph].
+[15] J. Uphoff, O. Fochler, Z. Xu, and C. Greiner, Phys.       [43] S. K. Das, F. Scardina, S. Plumari, and V. Greco, Phys.
+     Rev. C 84, 024908 (2011), arXiv:1104.2295 [hep-ph].            Rev. C 90, 044901 (2014), arXiv:1312.6857 [nucl-th].
+[16] M. Golam Mustafa, D. Pal, and D. Kumar Srivastava,        [44] M. He, H. van Hees, and R. Rapp, Prog. Part. Nucl.
+     Phys. Rev. C 57, 889 (1998), [Erratum: Phys.Rev.C 57,          Phys. 130, 104020 (2023), arXiv:2204.09299 [hep-ph].
+     3499–3499 (1998)], arXiv:nucl-th/9706001.                 [45] M. He, R. J. Fries, and R. Rapp, Phys. Rev. C 86,
+[17] S. Plumari, V. Minissale, S. K. Das, G. Coci,                  014903 (2012).
+     and V. Greco, Eur. Phys. J. C 78, 348 (2018),             [46] S. K. Das, F. Scardina, S. Plumari, and V. Greco, Phys.
+     arXiv:1712.00730 [hep-ph].                                     Lett. B 747, 260 (2015), arXiv:1502.03757 [nucl-th].
+[18] P. B. Gossiaux and J. Aichelin, Phys. Rev. C 78, 014904   [47] R. Balescu, Physical Review E 51, 4807 (1995).
+     (2008), arXiv:0802.2525 [hep-ph].                         [48] J.-P. Bouchaud and A. Georges, Physics reports 195,
+[19] J. Prakash, M. Kurian, S. K. Das, and V. Chandra,              127 (1990).
+     Phys. Rev. D 103, 094009 (2021), arXiv:2102.07082         [49] R. Metzler and J. Klafter, Physics reports 339, 1 (2000).
+     [hep-ph].                                                 [50] A. Caspi, R. Granek, and M. Elbaum, Phys. Rev. Lett.
+[20] J. Prakash, V. Chandra, and S. K. Das, Phys. Rev. D            85, 5655 (2000).
+     108, 096016 (2023), arXiv:2306.07966 [hep-ph].            [51] S. C. Weber, A. J. Spakowitz, and J. A. Theriot, Phys.
+[21] J. Prakash and M. Y. Jamal, (2023), arXiv:2304.04003           Rev. Lett. 104, 238102 (2010).
+     [nucl-th].                                                [52] S. Vitali, V. Sposini, O. Sliusarenko, P. Paradisi,
+[22] M. Singh, M. Kurian, S. Jeon, and C. Gale, Phys. Rev.          G. Castellani, and G. Pagnini, Journal of The Royal
+     C 108, 054901 (2023), arXiv:2306.09514 [nucl-th].              Society Interface 15, 20180282 (2018).
+[23] M. Kurian, M. Singh, V. Chandra, S. Jeon, and C. Gale,    [53] F. A. Oliveira, R. M. Ferreira, L. C. Lapas, and M. H.
+     Phys. Rev. C 102, 044907 (2020), arXiv:2007.07705              Vainstein, Frontiers in Physics 7, 18 (2019).
+     [hep-ph].                                                 [54] I. M. Sokolov and J. Klafter, Chaos: An Interdisci-
+[24] S. Cao, T. Luo, G.-Y. Qin, and X.-N. Wang, Phys. Rev.          plinary Journal of Nonlinear Science 15 (2005).
+     C 94, 014909 (2016), arXiv:1605.06447 [nucl-th].          [55] E. Lutz, Phys. Rev. E 64, 051106 (2001).
+[25] S. Mazumder, T. Bhattacharyya, J.-e. Alam, and S. K.      [56] S. Lim and L. Teo, Journal of Statistical Mechanics:
+     Das, Phys. Rev. C 84, 044901 (2011), arXiv:1106.2615           Theory and Experiment 2009, P08015 (2009).
+     [nucl-th].                                                [57] X. Wang and Y. Chen, Phys. Rev. E 107, 024105 (2023).
+[26] C. Zhang, L. Zheng, S. Shi, and Z.-W. Lin, Phys. Lett.    [58] Y. Liang, W. Wang, R. Metzler, and A. G. Cherstvy,
+     B 846, 138219 (2023), arXiv:2210.07767 [nucl-th].              Phys. Rev. E 108, 034113 (2023).
+[27] M. Y. Jamal, S. K. Das, and M. Ruggieri, Phys. Rev.       [59] W. Wang and E. Barkai, Phys. Rev. Lett. 125, 240606
+     D 103, 054030 (2021).                                          (2020).
+[28] M. Y. Jamal and B. Mohanty, Eur. Phys. J. C 81, 616       [60] A. G. Cherstvy, W. Wang, R. Metzler, and I. M.
+     (2021), arXiv:2101.00164 [nucl-th].                            Sokolov, Phys. Rev. E 104, 024115 (2021).
+[29] M. Y. Jamal and B. Mohanty, Eur. Phys. J. Plus 136,       [61] C. Li, F. Zeng, and F. Liu, Fractional Calculus and
+     130 (2021), arXiv:2002.09230 [nucl-th].                        Applied Analysis 15, 383 (2012).
+[30] Y. Sun, S. Plumari, and S. K. Das, Phys. Lett. B 843,     [62] V. Kobelev and E. Romanov, Progress of Theoretical
+     138043 (2023), arXiv:2304.12792 [nucl-th].                     Physics Supplement 139, 470 (2000).
+[31] S. Plumari, G. Coci, V. Minissale, S. K. Das, Y. Sun,     [63] W. T. Coffey, Y. P. Kalmykov, and J. T. Waldron,
+     and V. Greco, Phys. Lett. B 805, 135460 (2020),                World Scientific Publishing Co., Inc., River Edge, NJ
+     arXiv:1912.09350 [hep-ph].                                     105 (2004), 10.1142/5343.
+[32] J. Prakash and M. Y. Jamal, Journal of Physics G: Nu-     [64] E. Megas, A. Khalili Golmankhaneh, and A. Deppman,
+     clear and Particle Physics 51, 025101 (2023).                  Physics Letters B 848, 138370 (2024).
+[33] M. Debnath, R. Ghosh, M. Y. Jamal, M. Kurian,             [65] R. Gorenflo and F. Mainardi, CISM Courses and Lect.,
+     and J. Prakash, Phys. Rev. D 109, L011503 (2024),              378, 223 (1997).
+     arXiv:2311.16005 [hep-ph].                                [66] F. Mainardi and P. Pironi, Extracta Math. 11, 140
+[34] X. Du and W. Qian, arXiv preprint arXiv:2312.16294             (1996).
+     (2023).                                                   [67] F. Mainardi, CISM Courses and Lect., 378, 291 (1997).
+[35] A. Shaikh, M. Kurian, S. K. Das, V. Chandra, S. Dash,     [68] P. Guo, C. Zeng, C. Li, and Y. Chen, Fractional Cal-
+     and B. K. Nandi, Phys. Rev. D 104, 034017 (2021),              culus and Applied Analysis 16, 123 (2013).
+     arXiv:2105.14296 [hep-ph].                                [69] C. Li and F. Zeng, Numerical Functional Analysis and
+[36] A. Kumar, M. Kurian, S. K. Das, and V. Chandra,                Optimization 34, 149 (2013).
+     Phys. Rev. C 105, 054903 (2022), arXiv:2111.07563         [70] K. S. Miller and B. Ross, John Wiley & Sons, Inc., New
+     [hep-ph].                                                      York , xvi+366 (1993).
+[37] S. K. Das et al., International Journal of Modern         [71] A. Carpinteri and F. Mainardi, Fractals and Fractional
+     Physics E , 2250097 (2022).                                    Calculus in Continuum Mechanics 378 (2014).
+[38] R. Kubo, M. Toda, and N. Hashitsume, 31 (2012).           [72] O. P. Agrawal, Journal of Physics A: Mathematical and
+[39] C. Young, B. Schenke, S. Jeon, and C. Gale, Phys. Rev.         Theoretical 40, 6287 (2007).
+     C 86, 034905 (2012).                                      [73] W. Feller, John Wiley and Sons (1971).
+[40] T. Lang, H. van Hees, G. Inghirami, J. Steinheimer,       [74] R. Metzler, E. Barkai, and J. Klafter, Phys. Rev. Lett.
+     and M. Bleicher, Phys. Rev. C 93, 014901 (2016).               82, 3563 (1999).
+[41] S. Cao and S. A. Bass, Phys. Rev. C 84, 064902 (2011).    [75] R. Metzler, Phys. Rev. E 62, 6233 (2000).
+[42] H. van Hees, M. Mannarelli, V. Greco, and R. Rapp,        [76] G. Zumofen and J. Klafter, Chemical physics letters
+                                                                                                                         11
+
+     219, 303 (1994).                                                L051501 (2022), arXiv:2109.12041 [hep-ph].
+[77] M. A. Lomholt, T. Ambjörnsson, and R. Metzler, Phys.      [92] M. Caputo, Geophysical Journal International 13, 529
+     Rev. Lett. 95, 260603 (2005).                                   (1967).
+[78] M. F. Shlesinger, G. M. Zaslavsky, and J. Klafter, Na-     [93] I. Podlubny, Fractional Differential Equations, Aca-
+     ture 363, 31 (1993).                                            demic Press, San Diego, 1999.
+[79] K. Wang and M. Tokuyama, Physica A: Statistical Me-        [94] T. Sandev, R. Metzler, and . Tomovski, Fractional Cal-
+     chanics and its Applications 265, 341 (1999).                   culus and Applied Analysis 15, 426 (2012).
+[80] K. Wang, Physical Review A 45, 833 (1992).                 [95] A. Erdélyi, W. Magnus, F. Oberhettinger, and F. Tri-
+[81] J. M. Porrà, K.-G. Wang, and J. Masoliver, Phys. Rev.          comi, Higher transcendental functions 2, 133 (1953).
+     E 53, 5872 (1996).                                         [96] R. Hilfer, World Scientific Publishing Co., Inc., River
+[82] K. G. Wang, Phys. Rev. A 45, 833 (1992).                        Edge, NJ , viii+463 (2000).
+[83] K. S. Fa, Phys. Rev. E 73, 061104 (2006).                  [97] L. C. G. Rogers, Mathematical finance 7, 95 (1997).
+[84] P. Siegle, I. Goychuk, and P. Hänggi, Phys. Rev. Lett.    [98] K. B. Oldham and J. Spanier, Mathematics in Science
+     105, 100602 (2010).                                             and Engineering 111 (1974), 2105.14296.
+[85] W. Chen, C. Greiner, and Z. Xu, Phys. Rev. E 107,          [99] D. B. Walton and J. Rafelski, Phys. Rev. Lett. 84, 31
+     064131 (2023).                                                  (2000).
+[86] J. Hammelmann, J. M. Torres-Rincon, J.-B. Rose,           [100] G. D. Moore and D. Teaney, Phys. Rev. C 71, 064904
+     M. Greif, and H. Elfner, Phys. Rev. D 99, 076015                (2005), arXiv:hep-ph/0412346.
+     (2019).                                                   [101] S. Mazumder, T. Bhattacharyya, and J.-e. Alam, Phys.
+[87] J. I. Kapusta, B. Müller, and M. Stephanov, Phys. Rev.         Rev. D 89, 014002 (2014), arXiv:1305.6445 [nucl-th].
+     C 85, 054906 (2012).                                      [102] B. Svetitsky, Phys. Rev. D 37, 2484 (1988).
+[88] M. Ruggieri, Pooja, J. Prakash, and S. K. Das, Phys.      [103] M. Cacciari, P. Nason, and R. Vogt, Phys. Rev. Lett.
+     Rev. D 106, 034032 (2022), arXiv:2203.06712 [hep-ph].           95, 122001 (2005), arXiv:hep-ph/0502203.
+[89] Pooja, S. K. Das, V. Greco, and M. Ruggieri, Phys.        [104] M. Cacciari, S. Frixione, N. Houdeau, M. L. Mangano,
+     Rev. D 108, 054026 (2023), arXiv:2306.13749 [hep-ph].           P. Nason, and G. Ridolfi, JHEP 10, 137 (2012),
+[90] J.-H. Liu, S. K. Das, V. Greco, and M. Ruggieri, Phys.          arXiv:1205.6344 [hep-ph].
+     Rev. D 103, 034029 (2021).
+[91] P. Caucal and Y. Mehtar-Tani, Phys. Rev. D 106,
+

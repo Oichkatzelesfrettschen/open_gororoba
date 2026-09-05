@@ -1,0 +1,41 @@
+claim_id = "C-1748"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract tests finite discrete momentum balance and backend conformance. Its two branches contain computational maps only; galaxy physics and resolution convergence remain unassessed."
+fixed_hyperparameters = ["Periodic D3Q19 MRT 8x8x8, tau 0.8, twelve steps and observations at 2, 4, 6, 8, 10, 12", "Source-hash-bound sinusoidal density/velocity and time-independent force density; matched zero-force control", "CPU f64 and standard push SoA CUDA FP32 on RTX 4070 Ti driver 610.57.04", "Absolute RMS population/density/raw-momentum gate 2e-5; independent mean-impulse maximum-component gate 2e-5", "Explicit direct stepping and step_graph_pair capture/replay", "Separate CPU extension: shapes 8x8x8 and 5x3x2, tau .6/.8/1.1, twelve steps, 1e-12 mass/impulse gate"]
+[[intervening_maps]]
+branch = "backend_conformance"
+name = "evolving_population_update_and_layout_conversion"
+kind = "computational"
+description = "Evolve the identical declared fixture through collision and periodic streaming, then convert CPU AoSoA and CUDA cell-major readback to common f64 values at each matched post-step observation."
+[[intervening_maps]]
+branch = "backend_conformance"
+name = "independent_moment_reduction"
+kind = "computational"
+description = "Reduce density and raw momentum directly from D3Q19 populations; compare each metric with its fixed absolute RMS gate. Cached macroscopic outputs remain outside the oracle."
+[[intervening_maps]]
+branch = "prescribed_impulse"
+name = "periodic_force_density_inventory"
+kind = "computational"
+description = "Sum the prescribed force-density field and multiply by elapsed steps. Compare the mean raw-momentum increment with that independent inventory. Constant initial/final half-force offsets cancel for the time-independent input."
+[[fitted_parameters]]
+branch = "backend_conformance"
+count = 0
+names = []
+training_boundary = "The numerical fixture, observation steps and inherited engineering gates are fixed before execution."
+[[fitted_parameters]]
+branch = "prescribed_impulse"
+count = 0
+names = []
+training_boundary = "The impulse comes directly from the prescribed force density and periodic domain; the oracle fits neither a response scale nor a correction factor."
+[decisive_experiment]
+experiment_ids = ["E-300"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-protocol.toml"
+protocol_sha256 = "c409005145b1430b2378e8c89e5661134dec445f6e27342b2bdd3b87801dd22c"
+description = "Replay the unchanged forced/unforced fixture and separate impulse oracle against producer hashes in mrt-force-density-conformance-result.toml. The original shared 0.375 impulse response is a retained failure control despite passing backend comparisons. The serialized protocol explicitly identifies its retrospective extraction from the pre-run fixture declaration."
+[what_would_verify_refute]
+verification_outcomes = ["All 36 corrected conformance rows pass their 2e-5 population/density/raw-momentum gates, and CPU plus CUDA meet the separate prescribed-impulse gate.", "The CPU force-density inventory remains accurate within 1e-12 over the declared 72 observations spanning relaxation times and scalar/SIMD execution."]
+revision_outcomes = ["A different precision, CUDA dispatch, boundary, force time dependence or initial-field family requires its own admitted contract and replay.", "A galaxy D_f discrepancy persists after solver admission: investigate threshold, analysis and paired resolution sensitivity separately."]
+abandonment_outcomes = ["A hash-bound corrected replay violates either conformance or independent impulse gates; agreement between two incorrect implementations cannot rescue the claim.", "A frozen-evolution substitute satisfies the evolving-density discriminator."]
+inconclusive_outcomes = ["Source identity or admitted CUDA hardware is unavailable.", "Eight precision-specific MRT kernels and alternate FP32 dispatches lack independent numerical admission.", "The finite implementation check leaves physical galaxy interpretation, universal D_f bounds and resolution convergence unassessed."]

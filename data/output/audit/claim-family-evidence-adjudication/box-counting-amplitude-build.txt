@@ -1,0 +1,6 @@
+    Blocking waiting for file lock on build directory
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 8m 03s
+     Running tests/box_counting_amplitude_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/box_counting_amplitude_identity-40c08e2d1ed2b6b1)
+Error: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+error: test failed, to rerun pass `-p gororoba_cli_physics --test box_counting_amplitude_identity`
