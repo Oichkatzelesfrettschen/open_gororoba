@@ -676,6 +676,12 @@ fn run_pt_sweep(data_dir: &str, n_gl: usize) {
 /// and reports the beta shift. If |delta_beta| < 0.2, eccentricity assumption is robust.
 fn run_ecc_compare(data_dir: &str, pt_min: f64, n_gl: usize) {
     eprintln!("=== Eccentricity Model Comparison: Optical vs Event-by-Event ===");
+    eprintln!(
+        "Historical estimator sensitivity: optical spatial moments versus an unadmitted cumulant table."
+    );
+    eprintln!(
+        "The source relation uses directional-path eccentricity. Centrality pooling and source conformance remain unadmitted; the retained delta-beta threshold measures fixture sensitivity."
+    );
     eprintln!();
 
     let pb = NucleusParams::pb208();

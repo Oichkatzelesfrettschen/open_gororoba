@@ -6672,17 +6672,17 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/cs
 [[claim]]
 id = "C-1710"
 last_verified = "2026-08-06"
-statement = "The retained ALICE fixture matches all 38 freshly retrieved HEPData89396v1 Table1 rows for charged particles in Pb-Pb at 5.02 TeV, 0-5 percent centrality, including the supplied error columns. Historical diagonal stat-plus-systematic residuals omit the separately tabulated normalization uncertainty. Independent E-296 replay establishes shared fit/scoring objective conformance; physical rejection still requires admitted covariance, source ansatz and declared calibration freedom. Primary-source admission identifies arXiv2212.01324v1 Eq2 and arXiv1703.10852v1 Eq5 as positive-shift quenching-weight convolutions. The retained r_aa_model instead evaluates a negative-shift fixed-loss power with a hard cutoff. E-296 therefore validates an objective for a different ansatz; its failed fit cannot reject the identified source convolution. The source fragmentation map, pp-spectrum fit, quenching distribution and likelihood remain admission prerequisites."
+statement = "The retained ALICE fixture matches all 38 freshly retrieved HEPData89396v1 Table1 rows for charged particles in Pb-Pb at 5.02 TeV, 0-5 percent centrality, including the supplied error columns. Historical diagonal stat-plus-systematic residuals omit the separately tabulated normalization uncertainty. Independent E-296 replay establishes shared fit/scoring objective conformance; physical rejection still requires admitted covariance, source ansatz and declared calibration freedom. Primary-source admission identifies arXiv2212.01324v1 Eq2 and arXiv1703.10852v1 Eq5 as positive-shift quenching-weight convolutions. The retained r_aa_model instead evaluates a negative-shift fixed-loss power with a hard cutoff. E-296 therefore validates an objective for a different ansatz; its failed fit cannot reject the identified source convolution. The source fragmentation map, pp-spectrum fit, quenching distribution and likelihood remain admission prerequisites. Source Eq9 also differs from the retained collision-weighted radial distance returned by avg_path_length. E-309 verifies fixed-field directional joint moments; angular and centrality pooling require separate admission before source scaling fits."
 status = "Provisional"
-where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history; data/output/audit/qgp-source-quenching-identity/adjudication.toml"
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history; data/output/audit/qgp-source-quenching-identity/adjudication.toml; data/output/audit/qgp-directional-path-identity/adjudication.toml; crates/qgp_scaling/src/directional_path.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The bounded predicate checks exact retained table columns and the independent numerical objective. Physical rejection remains a separate unadmitted claim."
 fixed_hyperparameters = ["Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay", "Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds", "Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication", "Source identity receipt data/output/audit/qgp-source-quenching-identity/adjudication.toml; sha256 db39a83311cca946588803f420299fe037c75a9aa09599f759f5adbe438c3f18. Source convolution and retained fixed-loss ansatz are different models."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
-intervening_map_count = 2
-computational_stage_count = 2
+intervening_map_count = 3
+computational_stage_count = 3
 
 [[claim.intervening_maps]]
 name = "retained_objective_identity"
@@ -6696,6 +6696,18 @@ branch = "physical_fit"
 description = "Match collision system, energy, species, centrality and pT support, then evaluate residuals with admitted covariance and degrees of freedom."
 kind = "computational"
 
+[[claim.intervening_maps]]
+name = "directional_path_identity"
+branch = "geometry_identity"
+description = "Compare the Eq9 joint forward-ray moments with the retained radial-distance statistic; E-309 tests a declared fixed-field implementation. Angular and centrality pooling remain separate source-model admission obligations."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "geometry_identity"
+count = 0
+names = []
+training_boundary = "Fixed geometry, density and grid conventions fit zero parameters; physical event selection and pooling remain unresolved."
+
 [[claim.fitted_parameters]]
 branch = "physical_fit"
 count = 1
@@ -6703,7 +6715,7 @@ names = ["epsilon_bar"]
 training_boundary = "One epsilon is fitted to the same six retained points with n fixed; broader model calibration and published nuisance parameters are separate obligations."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-075", "E-296"]
+experiment_ids = ["E-075", "E-296", "E-309"]
 protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
 protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
 description = "E-296 owns the independent numerical objective test; E-075 owns the physical driver. Numerical agreement between fit and score precedes separately preregistered covariance/population admission. Before source-model rejection, implement and independently verify the admitted positive-shift quenching-weight convolution, fragmentation scale and pp-spectrum parameter map. E-296 remains a shared-objective check for the retained negative-shift ansatz."
@@ -6712,7 +6724,7 @@ description = "E-296 owns the independent numerical objective test; E-075 owns t
 verification_outcomes = ["All 38 retained HEPData table rows match edges, RAA and stated error columns exactly; the diagonal historical scoring omits separately tabulated normalization uncertainty.", "E-296 independently reproduces the shared corrected numerical objective at identical parameters and weights."]
 revision_outcomes = ["A new provider release or corrected model definition receives a separate source identity and canonical revision; preserve original columns and objective results.", "An admitted physical model comparison requires its own covariance, calibration freedom, interpretive maps and rejection rule.", "A source-implementation mismatch narrows the failed fit to its actual ansatz; preserve the result and require independently verified source convolution before physical rejection."]
 abandonment_outcomes = ["An identical-source row or uncertainty column differs, or independent same-input objective evaluation disagrees; abandon the affected implementation identity clause."]
-inconclusive_outcomes = ["A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted.", "Authenticated source equations differ from the implemented law: source-model fit agreement or rejection remains unadjudicated."]
+inconclusive_outcomes = ["Using retained radial distances or moment eccentricity leaves source geometry-to-observable mapping unadmitted even when a numerical fit passes. Fixed-field directional conformance does not establish centrality pooling.", "A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted.", "Authenticated source equations differ from the implemented law: source-model fit agreement or rejection remains unadjudicated."]
 
 [[claim]]
 id = "C-1711"
@@ -6833,23 +6845,35 @@ inconclusive_outcomes = ["Unverified section identity or unspecified parameter r
 [[claim]]
 id = "C-1713"
 last_verified = "2026-08-06"
-statement = "The historical epsilon2 citation PRC 93 (2016) 034913 identifies an ALICE charged-pion, kaon and proton RAA paper at 2.76 TeV (DOI 10.1103/PhysRevC.93.034913; arXiv:1506.07287; HEPData 71310v1). The inspected primary source and its 16 advertised tables supply no eccentricity estimator table. The retained alice_pbpb_5020_mc_glauber epsilon2 sequence therefore remains unadmitted as a two-particle-cumulant eccentricity reference. Participant-count comparisons and retrieved experimental RAA tables do not establish its estimator or nine-row source identity. The original values and comparisons remain preserved."
+statement = "The historical epsilon2 citation PRC 93 (2016) 034913 identifies an ALICE charged-pion, kaon and proton RAA paper at 2.76 TeV (DOI 10.1103/PhysRevC.93.034913; arXiv:1506.07287; HEPData 71310v1). The inspected primary source and its 16 advertised tables supply no eccentricity estimator table. The retained alice_pbpb_5020_mc_glauber epsilon2 sequence therefore remains unadmitted as a two-particle-cumulant eccentricity reference. Participant-count comparisons and retrieved experimental RAA tables do not establish its estimator or nine-row source identity. The original values and comparisons remain preserved. Source arXiv2212.01324v1 Eqs9/12 defines eccentricity through globally weighted directional paths, which differs from the centered spatial moments used by the historical optical comparison. E-309 verifies a declared fixed-field forward-ray implementation using independent geometric and weighting controls; fixed-impact grid sensitivity is retained separately. Centrality pooling and the original cumulant-table identity remain unresolved."
 status = "Provisional"
-where_stated = "data/output/audit/qgp-primary-reference-intake/adjudication.toml; data/output/audit/qgp-primary-reference-intake/inspire-eccentricity.json; data/output/audit/qgp-primary-reference-intake/hepdata-eccentricity-citation.json; data/output/audit/qgp-reference-population/adjudication.toml; original attribution retained in canonical history"
+where_stated = "data/output/audit/qgp-primary-reference-intake/adjudication.toml; data/output/audit/qgp-primary-reference-intake/inspire-eccentricity.json; data/output/audit/qgp-primary-reference-intake/hepdata-eccentricity-citation.json; data/output/audit/qgp-reference-population/adjudication.toml; original attribution retained in canonical history; data/output/audit/qgp-directional-path-identity/adjudication.toml; crates/qgp_scaling/src/directional_path.rs"
 evidence_layer = "source_proposition"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The contract tests table and cumulant identity; physical geometry-to-observable mapping remains separate."
 fixed_hyperparameters = ["alice_pbpb_5020_mc_glauber rows including central0-5% eccentricity0.029", "Match5.02TeV Pb-Pb, centrality definition, event weighting, participant/reaction plane and epsilon2 cumulant convention"]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
-intervening_map_count = 1
-computational_stage_count = 1
+intervening_map_count = 2
+computational_stage_count = 2
 
 [[claim.intervening_maps]]
 name = "row_and_cumulant_provenance"
 branch = "table_identity"
 description = "Trace every implementation row to an admitted source table and its exact epsilon2 definition; distinguish smooth geometry from event-ensemble cumulants."
 kind = "computational"
+
+[[claim.intervening_maps]]
+name = "directional_vs_moment_definition"
+branch = "estimator_identity"
+description = "Bind source Eq9/12 to joint directional integrals and compare the actual legacy second-moment and radial-distance functions. E-309 independently verifies the declared fixed-field forward-ray implementation; centrality pooling remains separate."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "estimator_identity"
+count = 0
+names = []
+training_boundary = "Source definitions and fixed-field numerical oracles fit zero parameters; selected hard-sphere fields are numerical instruments rather than calibration data."
 
 [[claim.fitted_parameters]]
 branch = "table_identity"
@@ -6858,16 +6882,16 @@ names = []
 training_boundary = "The fixed table lookup and definition comparison fit zero parameters; source Glauber calibration and physical interpretation remain independently declared."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-075"]
-protocol_artifact = "data/output/audit/qgp-primary-reference-intake/adjudication.toml"
-protocol_sha256 = "5ba14c90db872771b6cca2af8eceda6042d2a75330082542fc9a95fc8f839d08"
-description = "Compare the cited DOI and its 16 advertised HEPData tables with the claimed eccentricity estimator. Retain the exact primary-source identity and nine-row source gap before using the E-075 geometry comparison; source intake performs zero model fits."
+experiment_ids = ["E-075", "E-309"]
+protocol_artifact = "data/output/audit/qgp-directional-path-identity/adjudication.toml"
+protocol_sha256 = "bb2e8de73bb2b1ac9d0b854be2ef5f09359dd752aa8fa84610cffd54dde8b883"
+description = "Retrieve the actual source table, retain its hash and definition, and map every row before using the E-075 geometry comparison."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["DOI 10.1103/PhysRevC.93.034913 identifies pion/kaon/proton RAA at 2.76 TeV; the declared primary-source search and 16-table inventory supply no eccentricity estimator table.", "The retained source audit supplies exact searched table identities and leaves the epsilon2 sequence without an admitted estimator definition; verification applies to that bounded provenance result."]
-revision_outcomes = ["Only a subset of rows or a different population is traced: restrict the identity finding to the traced subset and preserve unresolved rows."]
-abandonment_outcomes = ["A source receipt already present on the enumerated surface identifies every row and estimator, refuting the stated documentary omission."]
-inconclusive_outcomes = ["Unidentified source leaves the column unverified rather than proving an alternative definition.", "An ordering comparison with another optical model does not establish a universal cumulant inequality without matched ensemble and geometry assumptions."]
+verification_outcomes = ["The retained source Eq12 and actual legacy moment implementation differ, and the independent rectangle gives path eccentricity1/3 versus moment3/5. E-309 establishes fixed-field numerical conformance alone.", "The admitted actual source defines the implementation column as another statistic or geometry quantity, establishing the bounded cumulant mislabel."]
+revision_outcomes = ["A directional integration, density-weighting or grid-sensitivity gate fails: preserve all rows and revise the numerical conformance scope before fitting physical data.", "Only a subset of rows or a different population is traced: restrict the identity finding to the traced subset and preserve unresolved rows."]
+abandonment_outcomes = ["Independent joint-integral evaluation contradicts the directional implementation: abandon the affected finite conformance predicate.", "An admitted matching-population source explicitly gives the same rows including0.029 as epsilon2{2}: abandon the mislabel claim for that source-defined column."]
+inconclusive_outcomes = ["Undefined centrality pooling, angular averaging, event weighting or source cumulant identity blocks physical source-reproduction claims; fixed-b success does not discharge those obligations.", "Unidentified source leaves the column unverified rather than proving an alternative definition.", "An ordering comparison with another optical model does not establish a universal cumulant inequality without matched ensemble and geometry assumptions."]
 
 [[claim]]
 id = "C-1714"

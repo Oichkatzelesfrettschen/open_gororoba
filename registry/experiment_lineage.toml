@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 276
-edge_count = 1507
+lineage_count = 277
+edge_count = 1517
 
 [[lineage]]
 id = "XL-001"
@@ -5023,6 +5023,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --test alice_participant_reference --profile validation; cargo test -p gororoba_cli_physics --bin arleo-falmagne-scaling --profile validation participant_", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-277"
+experiment_id = "E-309"
+binary = "cargo-test:qgp_scaling:directional_path_identity"
+deterministic = true
+gpu = false
+run_command = "cargo test -p qgp_scaling --test directional_path_identity --profile validation -- --nocapture; cargo test -p qgp_scaling --lib --profile validation directional_path::tests"
+run_command_sha256 = "7773ae6406ccb001587804063341741069633f7e43a85869b9db4e82420c40a5"
+claim_refs = ["C-1710", "C-1713"]
+input_path_refs = ["data/output/audit/qgp-directional-path-identity/numerical-protocol.toml", "data/output/audit/qgp-directional-path-identity/source-identity.toml", "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324v1.pdf"]
+output_path_refs = ["data/output/audit/qgp-directional-path-identity/adjudication.toml", "data/output/audit/qgp-directional-path-identity/fixed-impact-grid-results.csv", "data/output/audit/qgp-directional-path-identity/historical-source-preservation.json", "data/output/audit/qgp-directional-path-identity/test.log"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --test directional_path_identity --profile validation -- --nocapture; cargo test -p qgp_scaling --lib --profile validation directional_path::tests", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -18584,6 +18602,96 @@ id = "XLE-01507"
 lineage_id = "XL-276"
 from_id = "E-308"
 to_ref = "data/output/audit/qgp-participant-reference-intake/test.log"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01508"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "cargo-test:qgp_scaling:directional_path_identity"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01509"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "C-1710"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01510"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "C-1713"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01511"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "data/output/audit/qgp-directional-path-identity/numerical-protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01512"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "data/output/audit/qgp-directional-path-identity/source-identity.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01513"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324v1.pdf"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01514"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "data/output/audit/qgp-directional-path-identity/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01515"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "data/output/audit/qgp-directional-path-identity/fixed-impact-grid-results.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01516"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "data/output/audit/qgp-directional-path-identity/historical-source-preservation.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01517"
+lineage_id = "XL-277"
+from_id = "E-309"
+to_ref = "data/output/audit/qgp-directional-path-identity/test.log"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

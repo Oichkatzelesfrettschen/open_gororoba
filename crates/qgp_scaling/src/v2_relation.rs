@@ -1,15 +1,16 @@
 //! v2/eccentricity vs d(ln R_AA)/d(ln pT) linear relation.
 //!
-//! Arleo & Falmagne showed that the azimuthal anisotropy v2 divided by
-//! the spatial eccentricity e is linearly related to the logarithmic
-//! slope of R_AA:
+//! Arleo and Falmagne derive a first-order relation between azimuthal
+//! anisotropy divided by directional-path eccentricity and the logarithmic
+//! slope of R_AA, under their angular-path and harmonic approximations:
 //!
 //!   v2 / e = (beta / 2) * d(ln R_AA) / d(ln pT)
 //!
-//! This provides an independent extraction of the path-length exponent
-//! beta from v2 data alone, without fitting epsilon_bar.
+//! The regression requires matched v2 and R_AA populations and the source
+//! path estimator. Substitution of spatial moments or unidentified cumulant
+//! tables defines a separate comparison rather than source conformance.
 //!
-//! Reference: Arleo & Falmagne arXiv:2411.13258, Eq.(7).
+//! Reference: Arleo and Falmagne arXiv:2212.01324, Eqs. (12), (16) and (17).
 
 /// Data point for the v2/eccentricity vs slope relation.
 #[derive(Debug, Clone)]

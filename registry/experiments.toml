@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 202
-experiment_count = 276
+deterministic_count = 203
+experiment_count = 277
 gpu_count = 33
 seeded_count = 49
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -7263,4 +7263,31 @@ status = "active"
 status_note = "Two typed-reference tests and two CLI tests pass. All nine admitted means differ from the historical arrays. Table1 supplies an authenticated alternative, rather than recovered historical lineage; V0M/NBD-Glauber selection differs from optical impact-parameter cuts. Cross-bin covariance and eccentricity provenance remain unresolved."
 status_token = "ACTIVE"
 title = "ALICE participant table identity and historical reporting preservation"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "cargo-test:qgp_scaling:directional_path_identity"
+binary_experiment_declared = "E-309"
+binary_registered = true
+claim_refs = ["C-1710", "C-1713"]
+claims = ["C-1710", "C-1713"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-309"
+input = "Retained arXiv2212.01324v1 Eq9/12/17; declared forward rays, independent rectangles and unequal sampled fields; Pb208 hard-sphere optical fields at fixed b0/8 fm on64/128/256 grids."
+input_path_refs = ["data/output/audit/qgp-directional-path-identity/numerical-protocol.toml", "data/output/audit/qgp-directional-path-identity/source-identity.toml", "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324v1.pdf"]
+lineage_id = "XL-277"
+method = "Compare joint path moments with exact rectangle and independently enumerated ray-cell intersections. Test weighting, units, symmetries and failed support admission; report raw moments and fixed-b grid sensitivity separately from physical fit conformance."
+output = ["data/output/audit/qgp-directional-path-identity/adjudication.toml"]
+output_path_refs = ["data/output/audit/qgp-directional-path-identity/adjudication.toml", "data/output/audit/qgp-directional-path-identity/fixed-impact-grid-results.csv", "data/output/audit/qgp-directional-path-identity/historical-source-preservation.json", "data/output/audit/qgp-directional-path-identity/test.log"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p qgp_scaling --test directional_path_identity --profile validation -- --nocapture; cargo test -p qgp_scaling --lib --profile validation directional_path::tests"
+run_command_sha256 = "7773ae6406ccb001587804063341741069633f7e43a85869b9db4e82420c40a5"
+status = "active"
+status_note = "Six integration tests and three module tests pass; all six optical grid rows remain retained. b8 fm finest-grid eccentricity sensitivity0.000967782 passes the declared0.001 gate with a small margin. Source centrality pooling, angular averaging and physical-fit admission remain unresolved; historical moment and radial-distance inputs remain preserved."
+status_token = "ACTIVE"
+title = "Directional path estimator identity and fixed-field numerical conformance"
 truth_surface_consumption = []

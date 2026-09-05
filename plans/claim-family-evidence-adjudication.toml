@@ -296,3 +296,37 @@ status = "completed"
 depends_on = ["qgp-source-population-adjudication"]
 action = "Validate and publish source-identity canonical revisions and retained comparisons"
 acceptance = "Canonical history, exported views, numerical extraction checks and publication gates agree."
+
+[[task]]
+id = "qgp-directional-path-source-identity"
+status = "completed"
+action = "Bind source directional paths, normalization and eccentricity to exact equations"
+acceptance = "Separate source directional-path eccentricity, retained spatial moments and unresolved cumulant-table rows."
+
+[[task]]
+id = "qgp-directional-path-numerical-contract"
+status = "completed"
+depends_on = ["qgp-directional-path-source-identity"]
+action = "Declare independent path-integral oracles and numerical sensitivity gates"
+acceptance = "Analytic geometry, symmetry, invalid-input and paired quadrature/domain comparisons discriminate implementation failure."
+
+[[task]]
+id = "qgp-directional-path-implementation"
+status = "completed"
+depends_on = ["qgp-directional-path-numerical-contract"]
+action = "Implement the source directional-path estimator with explicit numerical controls"
+acceptance = "Typed results preserve units and estimator identity; historical APIs and numerical fixtures remain separately reproducible."
+
+[[task]]
+id = "qgp-directional-path-canonical-adjudication"
+status = "completed"
+depends_on = ["qgp-directional-path-implementation"]
+action = "Bind C-1713 to source identity and tested implementation with typed outcomes"
+acceptance = "Canonical statements and contracts preserve historical comparisons and distinguish finite conformance from physical agreement."
+
+[[task]]
+id = "qgp-directional-path-publication"
+status = "completed"
+depends_on = ["qgp-directional-path-canonical-adjudication"]
+action = "Validate the integrated estimator repair and publish retained evidence"
+acceptance = "Focused tests, warnings-as-errors, canonical history, exports and publication gates agree."

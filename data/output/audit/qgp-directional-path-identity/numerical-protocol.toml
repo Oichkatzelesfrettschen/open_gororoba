@@ -1,0 +1,20 @@
+schema_version = 1
+claim = "C-1713"
+scope = "Fixed-field numerical conformance for declared forward-ray Eq9 convention; centrality-bin inference and physical fits remain separate."
+source_contract = "data/output/audit/qgp-directional-path-identity/source-identity.toml"
+representation = "Collision and participant densities sampled at rectangular cell centers in fm^-2. Origins use midpoint area quadrature. Participant density is piecewise constant within each cell and zero outside the declared rectangle. Exact segment integrals accumulate line mass and first distance moment before a global ratio."
+normalization = "D=sum dx*dy*rho_coll*integral rho_part ds; N=sum dx*dy*rho_coll*integral s*rho_part ds; L=2N/D. Retain D in fm^-1 and dimensionless N."
+invalid_inputs = "Reject nonfinite or negative densities, invalid extents/spacing/lengths, nonfinite directions, arithmetic overflow and zero joint support."
+rectangle_oracle = "Uniform [-a,a]x[-b,b], nx by ny origins: Lx=4a/3-a/(3nx^2), Ly=4b/3-b/(3ny^2). The midpoint error against continuous4a/3 falls by four when nx doubles."
+rectangle_orders = [8, 16, 32]
+rectangle_absolute_tolerance_fm = 0.000000000001
+rectangle_eccentricity = "At a=1,b=2 and nx=ny the common finite-cell factor cancels, giving1/3 exactly; second-moment eccentricity is3/5."
+invariance_checks = ["Independent scaling of either density leaves L and e unchanged", "Uniform coordinate scaling multiplies L by that scale and leaves e unchanged", "Reflection plus ray reversal preserves the joint integrals", "Swapping axes swaps Lx/Ly and changes the sign of e", "Zero collision support and disjoint forward support fail normalization admission"]
+optical_model = "Hard-sphere thickness from nucleus::thickness_function. Physical TA=A*TA_norm and TB=B*TB_norm. rho_coll=sigma*TA*TB; rho_part=TA*(1-exp(-sigma*TB))+TB*(1-exp(-sigma*TA)). Use exp_m1 for small optical depth."
+optical_population = "Fixed Pb208/Pb208 impact parameters0 and8 fm, sigma67.6 mb. The parameter choices define an instrument sample, rather than a source centrality fit."
+optical_grids = [64, 128, 256]
+optical_finest_relative_length_change_gate = 0.005
+optical_finest_absolute_eccentricity_change_gate = 0.001
+optical_symmetry_absolute_gate = 0.000000000001
+uncertainty_scope = "Successive-grid differences measure sensitivity on the declared hierarchy; they do not prove an asymptotic error bound. Report every grid and retain failed gates."
+physical_admission = "A source-defined centrality selection, pooling measure and ratio ordering are required before replacing inputs in the legacy v2 or density fits. The moment-estimator arrays remain historical inputs."

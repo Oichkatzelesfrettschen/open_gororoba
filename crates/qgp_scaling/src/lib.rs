@@ -1,8 +1,8 @@
 //! QGP parton energy-loss path-length scaling.
 //!
-//! Reproduction of Arleo & Falmagne (arXiv:2411.13258, PRD 109 L051503)
-//! establishing that parton energy loss in QGP follows epsilon ~ L^beta
-//! with beta ~ 1.02, consistent with BDMPS in a longitudinally expanding medium.
+//! Numerical instruments for comparisons with Arleo and Falmagne
+//! (arXiv:2212.01324, PRD 109 L051503). Source-model conformance requires
+//! identified quenching weights, geometry estimators and reference populations.
 //!
 //! # Modules
 //!
@@ -11,6 +11,7 @@
 //! - [`quenching`]: R_AA model and scaling function f(u,n)
 //! - [`epsilon_fit`]: Chi-square epsilon_bar extraction per centrality
 //! - [`density_scaling`]: Multi-system fit epsilon_bar = K * (dNch/dy / A_perp) * L^beta
+//! - [`directional_path`]: Globally weighted forward-ray path integrals on sampled densities
 //! - [`straggling`]: Quantum straggling (Gaussian-smeared R_AA) and precomputed lookup grid
 //! - [`v2_relation`]: v2/eccentricity vs d(ln R_AA)/d(ln pT) linear analysis
 //! - [`multiplicity`]: Hardcoded dNch/dy tables per collision system and centrality
@@ -25,6 +26,7 @@ pub mod competing_models;
 pub mod critical_point;
 pub mod data_tables;
 pub mod density_scaling;
+pub mod directional_path;
 pub mod epsilon_fit;
 pub mod flow_cumulants;
 pub mod glauber;

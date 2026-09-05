@@ -1,0 +1,16 @@
+schema_version = 1
+command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+exit_status = 0
+tests_passed = 1995
+tests_skipped = 19
+focused_integration_tests = 6
+new_module_tests = 3
+experiment_lineages = 277
+canonical_claims = 1565
+typed_contracts = 53
+protected_history_tables = 12
+validation_log = "data/output/audit/qgp-directional-path-identity/validation.log"
+validation_log_sha256 = "a0fbe5ab355bb02c44e2c3220227d391865b4d28079b0ce9ee1a304cd7ffbe3a"
+review = "Independent source and implementation review confirms fixed-field scope and all declared controls after coverage repair."
+scope = "Finite sampled-field numerical conformance and measured grid sensitivity. Angular and centrality pooling, source quenching distribution and physical reference admission remain separate requirements."
