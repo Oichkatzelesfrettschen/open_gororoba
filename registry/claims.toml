@@ -5841,6 +5841,20 @@ status = "Verified"
 where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`"
 
 [[claim]]
+id = "C-1740"
+last_verified = "2026-09-05"
+statement = "On the common warmup-filtered THEMIS-A Staples benchmark (23,456,246 rows, 574,716 positives, 813 files), the retained staple associator exceeds PVI with daily-file RMS, pooled training-file RMS, and preceding-256-increment RMS calibration. Across 100 paired whole-train-file and whole-test-file bootstrap draws in the fixed seed-42 fold-0 partition, the global minimum associator-minus-PVI ROC-AUC across all three arms and bulk/low-gradient/high-gradient strata has median 0.0275574649038679 and linear 2.5/97.5 percentile interval [0.02049497475492511, 0.03547971075569095]. All 100 global margins are positive. Calibration and both logistic models are refitted in each arm and draw; standalone comparisons use actual divided f64 scores. The PVI numerator remains five increments over six samples. The positive interval supports dominance under the declared conditional procedure, with limited tail precision."
+status = "Verified"
+where_stated = "data/output/audit/staples-calibration-grouped-refits/findings.toml; data/output/audit/staples-calibration-grouped-refits/results/summary.json; data/output/audit/staples-calibration-grouped-refits/completion-audit.json; E-280; E-281"
+
+[[claim]]
+id = "C-1741"
+last_verified = "2026-09-05"
+statement = "On 23,456,246 warmup-filtered THEMIS-A benchmark rows (574,716 positives, 813 files), adding logged staple-associator magnitude to the fixed six-feature ridge-logistic baseline yields positive pooled out-of-fold ROC-AUC increments in every one of five file-grouped five-fold assignments (seeds 42 through 46): daily-file RMS 0.0020033257278800898 to 0.0020158658710166533, training-file RMS 0.002394591060060347 to 0.002422900809169848, and preceding-256-increment RMS 0.0033726281856922835 to 0.0034006522849118204. Across 100 paired whole-train-file and whole-test-file bootstrap draws in the fixed seed-42 fold-0 partition, with RMS, standardization, and both models refitted in each arm and draw, the minimum incremental ROC-AUC across all three arms has median 0.0017528829999793327 and linear 2.5/97.5 percentile interval [0.0010345135981383064, 0.002696001071597234]. All 100 minima are positive, and all 750 planned fits converge. The CV ranges describe correlated split sensitivity; the interval supports a positive predictive increment only under the declared conditional procedure."
+status = "Verified"
+where_stated = "data/output/audit/staples-calibration-grouped-refits/findings.toml; data/output/audit/staples-calibration-grouped-refits/results/summary.json; data/output/audit/staples-calibration-grouped-refits/completion-audit.json; E-280; E-281"
+
+[[claim]]
 id = "C-175"
 last_verified = "2026-02-01"
 statement = "Associator subspace Assoc(A) = span{A(a,b,c)} has rank = dim - 1 (= pure imaginary part) at all tested dims (8-64). It is NOT a two-sided ideal: x*w for x in A and w in Assoc(A) has 10-29% residual outside Assoc(A). Left and right residuals are equal. Residual decreases with dimension."

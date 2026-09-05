@@ -61,13 +61,17 @@ reserved_claim_id = "C-1737 belongs to the separate physics/staples-twist-orbit-
 target = "streaming or fixed-calibration generalization"
 design = "Preregister a frozen training-file RMS and a past-only rolling RMS as separate PVI controls; keep evaluation files, labels, score alignment, and model complexity fixed, then refit and evaluate each arm."
 decision = "Abandon any extension of the retained PVI dominance claim to an arm whose simultaneous margin is nonpositive; retain the offline result with its original calibration boundary."
-status = "not run; requires a separately specified benchmark experiment"
+status = "E-280 complete: all three calibration arms retain positive standalone margins under the declared common population and paired bootstrap; global interval [0.02049497475492511, 0.03547971075569095]."
+experiment = "E-280"
+protocol = "data/output/audit/staples-calibration-grouped-refits/protocol.toml"
 
 [[follow_up]]
 target = "increment robustness across training and fold assignments"
 design = "Repeat file-grouped splits and refit both models inside each replicate, including preprocessing; preregister seeds, learner class, and uncertainty procedure."
 decision = "A delta interval containing zero defeats a positive-increment generalization under that procedure; a negative interval supports reversal."
-status = "not run; the retained bootstrap holds predictions and the fold assignment fixed"
+status = "E-281 complete: all 750 fits converge; five grouped split assignments retain positive increments in all arms; global conditional refit interval [0.0010345135981383064, 0.002696001071597234]."
+experiment = "E-281"
+protocol = "data/output/audit/staples-calibration-grouped-refits/protocol.toml"
 
 [validation]
 focused_tests = "8 passed, 0 failed"
@@ -81,3 +85,13 @@ mirror_refresh = "The claims documentation mirror counted 1543 rows before regen
 wide_provenance_check = "provenance verify --verify-exports fails: 13 artifacts have missing lane assignments in both source and repair databases, and the isolated checkout omits local-only data paths. The failure bounds corpus-wide availability; the claim/export check passes separately."
 format_scope = "Nightly rustfmt checks the two touched source files. A package-wide format check also reports pre-existing formatting differences in other binaries."
 dependency_warning = "Rust 1.97.0 reports future-incompatibility E0365 in proc-macro-error2 2.0.1: a private extern crate proc_macro is publicly re-exported. The external dependency warning is outside the scientific correction."
+
+[decision_experiment_resolution]
+findings = "data/output/audit/staples-calibration-grouped-refits/findings.toml"
+replay = "data/output/audit/staples-calibration-grouped-refits/replay.toml"
+summary = "data/output/audit/staples-calibration-grouped-refits/results/summary.json"
+scope = "The follow-up retains 23,456,246 rows and 574,716 positives from 813 files after the shared warmup mask. Five correlated CV assignments measure sensitivity; 100 paired whole-train-file and whole-test-file refits give approximate conditional intervals with limited tail precision."
+temporal_boundary = "Sample-count windows preserve 503 equal-time pairs and can cross gaps up to 27506.728 seconds. The label remains at k+4 and complete feature availability at k+5. Streaming validity remains untested."
+artifact_lane_resolution = "All 13 missing canonical PDF lane assignments are repaired while original artifact metadata, paths, and source references remain equal to the base database."
+dependency_resolution = "A checksum-verified proc-macro-error2 2.0.1 vendor patch makes the proc_macro binding public. The owning workspace library and bench check reports zero dependencies with future-incompatible warnings."
+remaining_provenance = "Five historical path rows remain unresolved: ASOT-1099, ASOT-1105, ASOT-1118, ASOT-1119, and ASOT-1479. The detailed findings retain path identities, migration evidence, and the Moreno table's transformed-copy distinction."

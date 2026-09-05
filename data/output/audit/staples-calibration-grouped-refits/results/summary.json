@@ -1,0 +1,517 @@
+{
+  "arms": [
+    {
+      "arm": "daily_file",
+      "conditional_increment_descriptive": {
+        "adverse_nonpositive_count": 0,
+        "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+        "decision": "positive_under_conditional_procedure",
+        "denominator": 100,
+        "median": 0.0017528829999793327,
+        "monte_carlo_resolution": 0.009900990099009901,
+        "percentile_2_5": 0.0010345135981383064,
+        "percentile_97_5": 0.002696001071597234,
+        "replicates": 100
+      },
+      "conditional_standalone_minimum_descriptive": {
+        "adverse_nonpositive_count": 0,
+        "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+        "decision": "positive_under_conditional_procedure",
+        "denominator": 100,
+        "median": 0.04410545389997311,
+        "monte_carlo_resolution": 0.009900990099009901,
+        "percentile_2_5": 0.0323851989870111,
+        "percentile_97_5": 0.0601128595829945,
+        "replicates": 100
+      },
+      "cv_delta_roc_auc": [
+        0.002010318983378334,
+        0.0020033257278800898,
+        0.0020157886968290573,
+        0.0020158658710166533,
+        0.002013406247221128
+      ],
+      "cv_seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "observed_split_maximum": 0.0020158658710166533,
+      "observed_split_minimum": 0.0020033257278800898,
+      "primary_fixed_partition_point": {
+        "arm": "daily_file",
+        "augmented": {
+          "average_precision": 0.0850897239951418,
+          "log_loss": 0.08995337120614064,
+          "roc_auc": 0.8388459958629786
+        },
+        "baseline": {
+          "average_precision": 0.08484933882751118,
+          "log_loss": 0.08994205290808086,
+          "roc_auc": 0.8370295154215056
+        },
+        "delta": {
+          "average_precision": 0.00024038516763061346,
+          "log_loss": 0.000011318298059781462,
+          "roc_auc": 0.0018164804414729785
+        },
+        "fits": [
+          {
+            "coefficients": [
+              -4.502617552420861,
+              -0.21652642917057421,
+              0.10320083788300974,
+              -0.740651060212037,
+              1.606832541135754,
+              0.34930330341708804,
+              0.2759254397067181
+            ],
+            "converged": true,
+            "feature_count": 6,
+            "iterations": 7,
+            "penalized_deviance_trajectory": [
+              4397381.443474587,
+              4147253.2090253863,
+              3673293.6507447828,
+              3643333.092514784,
+              3642952.1945598708,
+              3642952.0222520176,
+              3642952.022251953
+            ]
+          },
+          {
+            "coefficients": [
+              -4.487065052074713,
+              -0.1749450861272377,
+              0.11066473530109919,
+              -0.1581721176751951,
+              1.6283421589153475,
+              0.34595846080452636,
+              0.2596810658889337,
+              -0.6451109432597076
+            ],
+            "converged": true,
+            "feature_count": 7,
+            "iterations": 7,
+            "penalized_deviance_trajectory": [
+              4397381.443474586,
+              4213855.881204722,
+              3668822.129015138,
+              3637294.137880201,
+              3636852.5981867244,
+              3636852.332126213,
+              3636852.3321260475
+            ]
+          }
+        ],
+        "standalone": {
+          "associator_auc": [
+            0.8223617361379749,
+            0.7515372037392084,
+            0.8941148005480798
+          ],
+          "delta_auc": [
+            0.05643356143260925,
+            0.06833154974169175,
+            0.04437958673517606
+          ],
+          "frozen_divisor_oracle": null,
+          "minimum_delta_auc": 0.04437958673517606,
+          "pvi_auc": [
+            0.7659281747053657,
+            0.6832056539975166,
+            0.8497352138129037
+          ],
+          "strata": [
+            "bulk",
+            "low_gradient_positive",
+            "high_gradient_positive"
+          ]
+        },
+        "training_mean": [
+          -1.39188629344985,
+          -5.037311652531476,
+          -3.2170136509338505,
+          -4.305107031866215,
+          -3.7207363949232284,
+          -2.4501071318644847,
+          -9.41508433962137
+        ],
+        "training_population_std": [
+          2.332553763264201,
+          2.2064721650621366,
+          1.918779396231106,
+          1.9423997765954615,
+          1.7941568952520213,
+          5.869694977538973,
+          4.008369090031218
+        ],
+        "training_rms": 78.21429691769511,
+        "training_rows_with_multiplicity": 18745444
+      },
+      "split_boundary": "Five correlated grouped split sensitivity measurements; range is not a population confidence interval."
+    },
+    {
+      "arm": "frozen_training",
+      "conditional_increment_descriptive": {
+        "adverse_nonpositive_count": 0,
+        "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+        "decision": "positive_under_conditional_procedure",
+        "denominator": 100,
+        "median": 0.0021519645073996285,
+        "monte_carlo_resolution": 0.009900990099009901,
+        "percentile_2_5": 0.001369897556095559,
+        "percentile_97_5": 0.0030900024075085513,
+        "replicates": 100
+      },
+      "conditional_standalone_minimum_descriptive": {
+        "adverse_nonpositive_count": 0,
+        "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+        "decision": "positive_under_conditional_procedure",
+        "denominator": 100,
+        "median": 0.0275574649038679,
+        "monte_carlo_resolution": 0.009900990099009901,
+        "percentile_2_5": 0.02049497475492511,
+        "percentile_97_5": 0.03547971075569095,
+        "replicates": 100
+      },
+      "cv_delta_roc_auc": [
+        0.002394591060060347,
+        0.0023949909071705466,
+        0.0024089692960455045,
+        0.002422900809169848,
+        0.002403505713747922
+      ],
+      "cv_seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "observed_split_maximum": 0.002422900809169848,
+      "observed_split_minimum": 0.002394591060060347,
+      "primary_fixed_partition_point": {
+        "arm": "frozen_training",
+        "augmented": {
+          "average_precision": 0.08260659549362782,
+          "log_loss": 0.09008801639670062,
+          "roc_auc": 0.8387888726500176
+        },
+        "baseline": {
+          "average_precision": 0.08210445191687643,
+          "log_loss": 0.09007733472397576,
+          "roc_auc": 0.8365763207809693
+        },
+        "delta": {
+          "average_precision": 0.0005021435767513932,
+          "log_loss": 0.000010681672724860425,
+          "roc_auc": 0.0022125518690482293
+        },
+        "fits": [
+          {
+            "coefficients": [
+              -4.5078299244942075,
+              -0.18128720310093976,
+              0.06650413658677902,
+              -1.0762698746619481,
+              1.9944312507378912,
+              -0.10402742002556398,
+              0.6781114413709434
+            ],
+            "converged": true,
+            "feature_count": 6,
+            "iterations": 7,
+            "penalized_deviance_trajectory": [
+              4397381.443474587,
+              4143735.5702629224,
+              3689598.706276141,
+              3659497.196871005,
+              3658908.38665738,
+              3658907.132311777,
+              3658907.1323021282
+            ]
+          },
+          {
+            "coefficients": [
+              -4.491338599039604,
+              -0.13196506450265974,
+              0.07502654063729094,
+              -0.4809421667183447,
+              2.0416948920301943,
+              -0.13119589008567364,
+              0.6853459512343423,
+              -0.6896913656648519
+            ],
+            "converged": true,
+            "feature_count": 7,
+            "iterations": 7,
+            "penalized_deviance_trajectory": [
+              4397381.443474587,
+              4210949.434030626,
+              3684849.2513294904,
+              3653007.8688852927,
+              3652324.9750235328,
+              3652323.2105910494,
+              3652323.21057185
+            ]
+          }
+        ],
+        "standalone": {
+          "associator_auc": [
+            0.8223617361379749,
+            0.7515372037392084,
+            0.8941148005480798
+          ],
+          "delta_auc": [
+            0.046743507499133585,
+            0.06557160919982885,
+            0.027668563432527438
+          ],
+          "frozen_divisor_oracle": {
+            "boundary": "Positive real division preserves ranks; f64 division can merge adjacent scores. Standalone AUC uses actual divided f64 scores and reports deviation from raw numerator ranks. Additive epsilon and f32 storage permit log-feature shift deviations; zero numerators are excluded from the positive log-shift error. Standardized-feature invariance remains unasserted.",
+            "calibrated_minus_raw_auc": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "max_positive_f32_log_shift_error": 6.850928002677392e-7,
+            "max_positive_log_shift_error": 6.479548453341977e-9,
+            "merged_adjacent_pairs": 37,
+            "minimum_positive_numerator": 0.011916618647923372,
+            "ranking_and_tie_partition_preserved": false,
+            "raw_numerator_auc": [
+              0.7756182286388413,
+              0.6859655945393796,
+              0.8664462371155524
+            ],
+            "score_order_preserved": true,
+            "zero_log_shift_error": 4.35945245587527,
+            "zero_numerators": 0
+          },
+          "minimum_delta_auc": 0.027668563432527438,
+          "pvi_auc": [
+            0.7756182286388413,
+            0.6859655945393796,
+            0.8664462371155524
+          ],
+          "strata": [
+            "bulk",
+            "low_gradient_positive",
+            "high_gradient_positive"
+          ]
+        },
+        "training_mean": [
+          -1.39188629344985,
+          -5.037311652531476,
+          -3.2170136509338505,
+          -4.305107031866215,
+          -4.128565358050419,
+          -2.4501071318644847,
+          -9.41508433962137
+        ],
+        "training_population_std": [
+          2.332553763264201,
+          2.2064721650621366,
+          1.918779396231106,
+          1.9423997765954615,
+          1.6642668948644328,
+          5.869694977538974,
+          4.008369090031218
+        ],
+        "training_rms": 78.21429691769511,
+        "training_rows_with_multiplicity": 18745444
+      },
+      "split_boundary": "Five correlated grouped split sensitivity measurements; range is not a population confidence interval."
+    },
+    {
+      "arm": "prewindow_rolling",
+      "conditional_increment_descriptive": {
+        "adverse_nonpositive_count": 0,
+        "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+        "decision": "positive_under_conditional_procedure",
+        "denominator": 100,
+        "median": 0.0031723232894135256,
+        "monte_carlo_resolution": 0.009900990099009901,
+        "percentile_2_5": 0.0022753417638616434,
+        "percentile_97_5": 0.004304890365889924,
+        "replicates": 100
+      },
+      "conditional_standalone_minimum_descriptive": {
+        "adverse_nonpositive_count": 0,
+        "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+        "decision": "positive_under_conditional_procedure",
+        "denominator": 100,
+        "median": 0.1998016118335209,
+        "monte_carlo_resolution": 0.009900990099009901,
+        "percentile_2_5": 0.18394036075809583,
+        "percentile_97_5": 0.2151931992465097,
+        "replicates": 100
+      },
+      "cv_delta_roc_auc": [
+        0.0033726281856922835,
+        0.0033759953358659667,
+        0.0033948454302888953,
+        0.0034006522849118204,
+        0.0033903252880045365
+      ],
+      "cv_seeds": [
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "observed_split_maximum": 0.0034006522849118204,
+      "observed_split_minimum": 0.0033726281856922835,
+      "primary_fixed_partition_point": {
+        "arm": "prewindow_rolling",
+        "augmented": {
+          "average_precision": 0.07457849702796261,
+          "log_loss": 0.08923372337757672,
+          "roc_auc": 0.844895183872203
+        },
+        "baseline": {
+          "average_precision": 0.07257693417554038,
+          "log_loss": 0.08922160676983286,
+          "roc_auc": 0.8416330071579994
+        },
+        "delta": {
+          "average_precision": 0.0020015628524222284,
+          "log_loss": 0.000012116607743861696,
+          "roc_auc": 0.0032621767142035907
+        },
+        "fits": [
+          {
+            "coefficients": [
+              -4.671159404649112,
+              -0.2089547978489138,
+              0.06453841778155844,
+              -1.7450860494168006,
+              2.758164617426468,
+              -0.38534106976873955,
+              0.7082206766036544
+            ],
+            "converged": true,
+            "feature_count": 6,
+            "iterations": 7,
+            "penalized_deviance_trajectory": [
+              4397381.443474587,
+              4083818.2291490124,
+              3634574.918050862,
+              3599273.708834187,
+              3598475.0897408165,
+              3598474.048452245,
+              3598474.0484496695
+            ]
+          },
+          {
+            "coefficients": [
+              -4.650647316220448,
+              -0.16754315425755326,
+              0.07434626700208538,
+              -1.1555879992571403,
+              2.7959275013922755,
+              -0.37958782670732677,
+              0.6818005804797369,
+              -0.6712885032926873
+            ],
+            "converged": true,
+            "feature_count": 7,
+            "iterations": 7,
+            "penalized_deviance_trajectory": [
+              4397381.443474587,
+              4148752.111311881,
+              3630829.521795531,
+              3593363.5834751953,
+              3592447.518946263,
+              3592446.0126708127,
+              3592446.0126650822
+            ]
+          }
+        ],
+        "standalone": {
+          "associator_auc": [
+            0.8223617361379749,
+            0.7515372037392084,
+            0.8941148005480798
+          ],
+          "delta_auc": [
+            0.2900951665629047,
+            0.377874384195619,
+            0.20116513563511196
+          ],
+          "frozen_divisor_oracle": null,
+          "minimum_delta_auc": 0.20116513563511196,
+          "pvi_auc": [
+            0.5322665695750702,
+            0.37366281954358943,
+            0.6929496649129678
+          ],
+          "strata": [
+            "bulk",
+            "low_gradient_positive",
+            "high_gradient_positive"
+          ]
+        },
+        "training_mean": [
+          -1.39188629344985,
+          -5.037311652531476,
+          -3.2170136509338505,
+          -4.305107031866215,
+          0.10467871898389976,
+          -2.4501071318644847,
+          -9.41508433962137
+        ],
+        "training_population_std": [
+          2.332553763264201,
+          2.2064721650621366,
+          1.918779396231106,
+          1.9423997765954615,
+          0.733286510017153,
+          5.869694977538973,
+          4.008369090031218
+        ],
+        "training_rms": 78.21429691769511,
+        "training_rows_with_multiplicity": 18745444
+      },
+      "split_boundary": "Five correlated grouped split sensitivity measurements; range is not a population confidence interval."
+    }
+  ],
+  "completed_bootstrap_replicates": 100,
+  "completed_cv_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "completed_fits": 750,
+  "decision_boundary": "Primary percentile procedure is conditional on the fixed seed42 fold0 partition. An interval containing zero remains inconclusive and establishes no redundancy.",
+  "global_increment": {
+    "adverse_nonpositive_count": 0,
+    "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+    "decision": "positive_under_conditional_procedure",
+    "denominator": 100,
+    "median": 0.0017528829999793327,
+    "monte_carlo_resolution": 0.009900990099009901,
+    "percentile_2_5": 0.0010345135981383064,
+    "percentile_97_5": 0.002696001071597234,
+    "replicates": 100
+  },
+  "global_standalone_margin": {
+    "adverse_nonpositive_count": 0,
+    "coverage_boundary": "Empirical linear percentiles conditional on seed42 fold0 partition;100 draws limit tail precision and establish approximate intervals rather than demonstrated95-percent coverage.",
+    "decision": "positive_under_conditional_procedure",
+    "denominator": 100,
+    "median": 0.0275574649038679,
+    "monte_carlo_resolution": 0.009900990099009901,
+    "percentile_2_5": 0.02049497475492511,
+    "percentile_97_5": 0.03547971075569095,
+    "replicates": 100
+  },
+  "identity": "a3b736df29c6ce09e84d3580c9094c0c20a1d22d47c7e26a729b9114623bff49",
+  "separate_estimands": "Global increment and global standalone margin answer separate questions; per-arm intervals are descriptive. Average precision and log loss are secondary tradeoffs in individual records."
+}

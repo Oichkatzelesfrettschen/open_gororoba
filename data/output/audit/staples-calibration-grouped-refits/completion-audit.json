@@ -1,0 +1,70 @@
+{
+  "bootstrap_records": 100,
+  "checks": [
+    "source and protocol hashes",
+    "dataset and payload checksums",
+    "seeded partitions and paired training/test counts",
+    "training RMS and row multiplicities",
+    "fit stopping criterion and finite coefficients",
+    "paired metrics and standalone strata",
+    "global minima",
+    "exact planned set and summary linear percentiles in complete mode"
+  ],
+  "complete": true,
+  "conditional_intervals": {
+    "global_increment": {
+      "adverse_nonpositive": 0,
+      "lower": 0.0010345135981383064,
+      "median": 0.0017528829999793327,
+      "upper": 0.002696001071597234
+    },
+    "global_standalone": {
+      "adverse_nonpositive": 0,
+      "lower": 0.02049497475492511,
+      "median": 0.0275574649038679,
+      "upper": 0.03547971075569095
+    }
+  },
+  "converged_fits": 750,
+  "cv": [
+    {
+      "arm": "daily_file",
+      "cv_roc_auc_deltas": [
+        0.002010318983378334,
+        0.0020033257278800898,
+        0.0020157886968290573,
+        0.0020158658710166533,
+        0.002013406247221128
+      ],
+      "maximum": 0.0020158658710166533,
+      "minimum": 0.0020033257278800898
+    },
+    {
+      "arm": "frozen_training",
+      "cv_roc_auc_deltas": [
+        0.002394591060060347,
+        0.0023949909071705466,
+        0.0024089692960455045,
+        0.002422900809169848,
+        0.002403505713747922
+      ],
+      "maximum": 0.002422900809169848,
+      "minimum": 0.002394591060060347
+    },
+    {
+      "arm": "prewindow_rolling",
+      "cv_roc_auc_deltas": [
+        0.0033726281856922835,
+        0.0033759953358659667,
+        0.0033948454302888953,
+        0.0034006522849118204,
+        0.0033903252880045365
+      ],
+      "maximum": 0.0034006522849118204,
+      "minimum": 0.0033726281856922835
+    }
+  ],
+  "cv_records": 5,
+  "identity": "a3b736df29c6ce09e84d3580c9094c0c20a1d22d47c7e26a729b9114623bff49",
+  "schema_version": 1
+}

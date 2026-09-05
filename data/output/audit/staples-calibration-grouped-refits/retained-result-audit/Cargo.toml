@@ -1,0 +1,21 @@
+[package]
+name = "staples-retained-result-audit"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "staples-retained-result-audit"
+path = "../retained_result_audit.rs"
+
+[dependencies]
+rand = "=0.10.1"
+rand_chacha = "=0.10.0"
+serde_json = { version = "=1.0.149", features = ["float_roundtrip"] }
+sha2 = "=0.11.0"
+
+[lints.rust]
+warnings = "deny"

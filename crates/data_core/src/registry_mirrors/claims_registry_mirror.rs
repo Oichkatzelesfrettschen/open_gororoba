@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total claims: 1553
+//! Total claims: 1555
 //!
 //! ## C-001
 //!
@@ -12430,4 +12430,20 @@
 //! - Last verified: 2026-09-04
 //! - Statement: On the retained deduplicated THEMIS-A Staples benchmark (23,664,374 samples, 578,320 positives, 813 daily files), adding ln(assoc) to a fixed logistic model on ln(dbdt), ln(rot), ln(cumrot6), ln(maxrot6), ln(pvi6), and ln(gram6) raises out-of-fold ROC-AUC from 0.8428282833 to 0.8448147157. The model uses ridge 1e-6, Newton-Raphson fitting, training-fold standardization, and one five-fold daily-file-grouped seed-42 assignment. The dbdt and rot features use two samples; cumrot6 and maxrot6 and gram6 use six; pvi6 uses a six-sample increment numerator with complete daily-file RMS calibration. A paired bootstrap of 1,000 file resamples of the frozen out-of-fold predictions gives a delta ROC-AUC interval [0.0016817229, 0.0023033193], with zero adverse ROC-AUC resamples. Delta PR-AUC has interval [0.0000948498, 0.0008139584], with five adverse resamples; delta log loss has interval [-0.0001824100, -0.0000688957]. The result measures incremental predictive discrimination for this offline feature set, model, and fold assignment; its uncertainty excludes variation from repeated model fitting.
 //! - Where stated: data/output/staples_incremental_information.json; data/output/audit/claims-pvi-calibration-boundary/findings.toml; E-242
+//! - What would verify/refute it:
+//!
+//! ## C-1740
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-05
+//! - Statement: On the common warmup-filtered THEMIS-A Staples benchmark (23,456,246 rows, 574,716 positives, 813 files), the retained staple associator exceeds PVI with daily-file RMS, pooled training-file RMS, and preceding-256-increment RMS calibration. Across 100 paired whole-train-file and whole-test-file bootstrap draws in the fixed seed-42 fold-0 partition, the global minimum associator-minus-PVI ROC-AUC across all three arms and bulk/low-gradient/high-gradient strata has median 0.0275574649038679 and linear 2.5/97.5 percentile interval [0.02049497475492511, 0.03547971075569095]. All 100 global margins are positive. Calibration and both logistic models are refitted in each arm and draw; standalone comparisons use actual divided f64 scores. The PVI numerator remains five increments over six samples. The positive interval supports dominance under the declared conditional procedure, with limited tail precision.
+//! - Where stated: data/output/audit/staples-calibration-grouped-refits/findings.toml; data/output/audit/staples-calibration-grouped-refits/results/summary.json; data/output/audit/staples-calibration-grouped-refits/completion-audit.json; E-280; E-281
+//! - What would verify/refute it:
+//!
+//! ## C-1741
+//!
+//! - Status: `Verified`
+//! - Last verified: 2026-09-05
+//! - Statement: On 23,456,246 warmup-filtered THEMIS-A benchmark rows (574,716 positives, 813 files), adding logged staple-associator magnitude to the fixed six-feature ridge-logistic baseline yields positive pooled out-of-fold ROC-AUC increments in every one of five file-grouped five-fold assignments (seeds 42 through 46): daily-file RMS 0.0020033257278800898 to 0.0020158658710166533, training-file RMS 0.002394591060060347 to 0.002422900809169848, and preceding-256-increment RMS 0.0033726281856922835 to 0.0034006522849118204. Across 100 paired whole-train-file and whole-test-file bootstrap draws in the fixed seed-42 fold-0 partition, with RMS, standardization, and both models refitted in each arm and draw, the minimum incremental ROC-AUC across all three arms has median 0.0017528829999793327 and linear 2.5/97.5 percentile interval [0.0010345135981383064, 0.002696001071597234]. All 100 minima are positive, and all 750 planned fits converge. The CV ranges describe correlated split sensitivity; the interval supports a positive predictive increment only under the declared conditional procedure.
+//! - Where stated: data/output/audit/staples-calibration-grouped-refits/findings.toml; data/output/audit/staples-calibration-grouped-refits/results/summary.json; data/output/audit/staples-calibration-grouped-refits/completion-audit.json; E-280; E-281
 //! - What would verify/refute it:
