@@ -1,0 +1,49 @@
+schema_version = 1
+repair_key = "artifact-document-ownership-and-moreno-extraction"
+actor = "codex"
+reason = "Separate owning documents from referenced paths and retain byte-identified historical extraction with its transformed copy."
+
+[[repair]]
+id = "ASOT-1099"
+expected_canonical_path = "papers/MANIFEST.toml"
+expected_downloaded_paths = ["papers/MANIFEST.toml"]
+replacement_path = "registry/book_docs.toml"
+replacement_sha256 = "7f429501b2ff6efd031e2e81c467ed1e24fb690fc9acef42b14441c9defd0993"
+old_path_relation = "referenced"
+
+[[repair]]
+id = "ASOT-1105"
+expected_canonical_path = "papers/extracted/"
+expected_downloaded_paths = ["papers/extracted/", "papers/pdf/"]
+replacement_path = "registry/book_docs.toml"
+replacement_sha256 = "7f429501b2ff6efd031e2e81c467ed1e24fb690fc9acef42b14441c9defd0993"
+old_path_relation = "referenced"
+
+[[repair]]
+id = "ASOT-1118"
+expected_canonical_path = "papers/"
+expected_downloaded_paths = ["papers/"]
+replacement_path = "registry/book_docs.toml"
+replacement_sha256 = "7f429501b2ff6efd031e2e81c467ed1e24fb690fc9acef42b14441c9defd0993"
+old_path_relation = "referenced"
+
+[[repair]]
+id = "ASOT-1119"
+expected_canonical_path = "papers/MANIFEST.toml"
+expected_downloaded_paths = ["data/papers/transport/", "papers/MANIFEST.toml"]
+replacement_path = "reports/repo_quick_context_chunks_2026_02_14.toml"
+replacement_sha256 = "1551f264c623cf88b3eda855e3befaaea548d587e54bb835ed17a6dd8dabc571"
+old_path_relation = "referenced"
+
+[[repair]]
+id = "ASOT-1479"
+expected_canonical_path = "papers/extracted/moreno-2005-math0512516/table_1.csv"
+expected_downloaded_paths = ["papers/extracted/moreno-2005-math0512516/table_1.csv"]
+replacement_path = "data/output/audit/artifact-document-path-provenance/moreno-table-original.csv"
+replacement_sha256 = "02c1ed06b04730be3d425a5cab33ea11aee7cb73dfc931e115180362f696393c"
+old_path_relation = "historical_download"
+
+[[repair.related_path]]
+path = "data/output/audit/artifact-document-path-provenance/moreno-table-minus-normalized.csv"
+sha256 = "fae8fefb401a0c100c6c38bb38117b8d3e2c12cda076e2cc0ff5dc8247da3c4e"
+relation = "transformed_copy"

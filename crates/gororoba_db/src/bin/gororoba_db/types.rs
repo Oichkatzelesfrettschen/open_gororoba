@@ -505,6 +505,11 @@ pub(crate) enum TheoremIdentityAction {
 
 #[derive(Subcommand, Debug)]
 pub(crate) enum ArtifactAction {
+    /// Reconcile artifact paths using a hash-verified, transactional specification.
+    RepairPaths {
+        #[arg(long)]
+        spec: PathBuf,
+    },
     /// Add a compatibility lane to existing artifacts while preserving their records.
     AssignLane {
         /// Exact canonical artifact ID. Repeat for an atomic batch.
