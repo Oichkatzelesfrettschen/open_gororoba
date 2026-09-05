@@ -2,11 +2,17 @@
 
 use anyhow::{Context, Result, ensure};
 use clap::Parser;
-use gororoba_cli_physics::detection_utility::{UtilityInput, UtilityInterval, UtilityUnit};
+use gororoba_cli_physics::{
+    detection_utility::{UtilityInput, UtilityInterval, UtilityUnit},
+    detection_utility_output::publish_bundle,
+};
 use plotters::prelude::*;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
-use std::{fs, path::PathBuf};
+use std::{
+    fs,
+    path::{Component, Path, PathBuf},
+};
 
 fn sha256(bytes: &[u8]) -> String {
     Sha256::digest(bytes)
@@ -54,6 +60,48 @@ enum Reference {
 struct SourceReceipt {
     path: PathBuf,
     sha256: String,
+}
+
+fn validate_source_receipt(request_directory: &Path, receipt: &SourceReceipt) -> Result<()> {
+    ensure!(
+        !receipt.path.as_os_str().is_empty()
+            && receipt
+                .path
+                .components()
+                .all(|component| matches!(component, Component::Normal(_)))
+            && receipt.path.as_os_str()
+                == receipt.path.components().collect::<PathBuf>().as_os_str(),
+        "source receipt must use a normalized relative path without parent components"
+    );
+    let directory = if request_directory.as_os_str().is_empty() {
+        Path::new(".")
+    } else {
+        request_directory
+    };
+    let root = directory
+        .canonicalize()
+        .context("resolve request directory")?;
+    let path = root
+        .join(&receipt.path)
+        .canonicalize()
+        .context("resolve receipt source")?;
+    ensure!(
+        path.starts_with(&root),
+        "receipt source resolves outside request directory"
+    );
+    ensure!(
+        path.is_file(),
+        "source is not a regular file: {}",
+        path.display()
+    );
+    let contents = fs::read(&path)?;
+    ensure!(!contents.is_empty(), "empty source evidence");
+    ensure!(
+        sha256(&contents) == receipt.sha256,
+        "source digest mismatch: {}",
+        path.display()
+    );
+    Ok(())
 }
 
 #[derive(Deserialize, Serialize)]
@@ -296,23 +344,7 @@ fn main() -> Result<()> {
         );
     }
     for source in &request.sources {
-        let path = args
-            .input
-            .parent()
-            .unwrap_or(std::path::Path::new("."))
-            .join(&source.path);
-        ensure!(
-            path.is_file(),
-            "source is not a regular file: {}",
-            path.display()
-        );
-        let contents = fs::read(&path)?;
-        ensure!(!contents.is_empty(), "empty source evidence");
-        ensure!(
-            sha256(&contents) == source.sha256,
-            "source digest mismatch: {}",
-            path.display()
-        );
+        validate_source_receipt(args.input.parent().unwrap_or(Path::new(".")), source)?;
     }
     let cells = calculate(&request, &args)?;
     let svg = plot(&request, &args, &cells)?;
@@ -359,11 +391,7 @@ fn main() -> Result<()> {
         "cells": cells,
     });
     let report_bytes = serde_json::to_vec_pretty(&report)?;
-    fs::create_dir(&args.out_dir)
-        .context("output directory must be new and its parent must exist")?;
-    fs::write(args.out_dir.join("report.json"), report_bytes)?;
-    fs::write(args.out_dir.join("frontier.csv"), csv_bytes)?;
-    fs::write(args.out_dir.join("frontier.svg"), svg)?;
+    publish_bundle(&args.out_dir, &report_bytes, &csv_bytes, svg.as_bytes())?;
     println!("Wrote conditional frontier to {}", args.out_dir.display());
     Ok(())
 }
@@ -371,6 +399,51 @@ fn main() -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn source_receipts_require_normalized_contained_paths_and_matching_bytes() {
+        let parent =
+            std::env::temp_dir().join(format!("gororoba-utility-receipts-{}", std::process::id()));
+        fs::create_dir(&parent).unwrap();
+        struct Cleanup(PathBuf);
+        impl Drop for Cleanup {
+            fn drop(&mut self) {
+                fs::remove_dir_all(&self.0).unwrap();
+            }
+        }
+        let _cleanup = Cleanup(parent.clone());
+        let root = parent.join("request");
+        fs::create_dir_all(root.join("data")).unwrap();
+        fs::write(root.join("data/evidence"), b"paired counts").unwrap();
+        fs::write(parent.join("outside"), b"paired counts").unwrap();
+        let receipt = |path: PathBuf| SourceReceipt {
+            path,
+            sha256: sha256(b"paired counts"),
+        };
+        validate_source_receipt(&root, &receipt(PathBuf::from("data/evidence"))).unwrap();
+        for path in [
+            parent.join("outside"),
+            PathBuf::from("../outside"),
+            PathBuf::from("data/../data/evidence"),
+            PathBuf::from("./data/evidence"),
+            PathBuf::from("data//evidence"),
+            PathBuf::from("data/./evidence"),
+            PathBuf::new(),
+        ] {
+            let error = validate_source_receipt(&root, &receipt(path)).unwrap_err();
+            assert!(error.to_string().contains("normalized relative path"));
+        }
+        let mut mismatch = receipt(PathBuf::from("data/evidence"));
+        mismatch.sha256 = sha256(b"different bytes");
+        assert!(validate_source_receipt(&root, &mismatch).is_err());
+        #[cfg(unix)]
+        {
+            std::os::unix::fs::symlink(parent.join("outside"), root.join("escape")).unwrap();
+            let error =
+                validate_source_receipt(&root, &receipt(PathBuf::from("escape"))).unwrap_err();
+            assert!(error.to_string().contains("outside request directory"));
+        }
+    }
 
     fn fixture() -> Request {
         serde_json::from_value(serde_json::json!({

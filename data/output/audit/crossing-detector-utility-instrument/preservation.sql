@@ -1,5 +1,4 @@
--- Run from the repository root after reconstructing the parent database:
--- git show a19b7f3144b748c6530841e34ff9505197244ba6:registry/canonical/control_plane.sqlite3 > .cache/utility-before.sqlite3
+-- Compare retained canonical rows against a reference snapshot.
 ATTACH DATABASE '.cache/utility-before.sqlite3' AS prior;
 SELECT 'original_claim_rows_changed_or_missing' AS check_name, count(*) AS violations
 FROM (SELECT * FROM prior.claims EXCEPT SELECT * FROM main.claims)

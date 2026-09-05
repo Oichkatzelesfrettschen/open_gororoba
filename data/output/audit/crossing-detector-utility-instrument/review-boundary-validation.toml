@@ -1,0 +1,12 @@
+focused_library_tests_passed = 98
+focused_cli_tests_passed = 4
+receipt_validation = "Normalized relative paths, matching bytes and containment are required; tests reject absolute paths, parent components, redundant separators, dot components, digest mismatch and symlink escape."
+output_publication = "CSV and SVG precede staged completion report; report.json is renamed last."
+output_rollback = "Injected partial second and final writes and failed report rename remove the owned bundle and allow retry. Existing empty directories, nonempty directories, regular files and sibling content remain preserved."
+interruption_boundary = "Process interruption can leave a directory without a completion report. Cleanup errors are returned explicitly."
+comment_hygiene = "SQL source carries a content-based comment; governed documentation owns the replay command."
+full_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+full_gate_exit = 0
+scoped_tests_passed = 634
+scoped_tests_skipped = 0
+fixture_success_parity = "Final executable produces byte-identical report.json, frontier.csv and frontier.svg for the retained mathematical fixture."

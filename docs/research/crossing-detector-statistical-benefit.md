@@ -157,3 +157,22 @@ E-284, E-285 and E-286 register the curation, alerting and conditional-frontier
 measurement designs as planned. Their empirical run commands and outputs remain
 unset until the respective activation manifests are sealed. The original
 E-282/E-283 protocols, evidence and verdicts retain their historical identities.
+
+Receipt paths must be normalized relative paths inside the request directory.
+Absolute paths, parent components and resolved paths outside that directory are
+rejected. Empirical inputs carry the source files beside the request or below
+it, so a bundle can retain its own evidence identities.
+
+The output publisher writes the CSV and SVG before committing `report.json` as
+the completion marker. Ordinary write failures remove only the newly owned
+bundle and permit retry. Existing output paths remain untouched. An interrupted
+process can leave an incomplete directory; consumers require the completion
+report before treating the bundle as a completed run.
+
+The preservation query compares original canonical rows against a retained
+parent snapshot. Replay from the repository root:
+
+```bash
+git show a19b7f3144b748c6530841e34ff9505197244ba6:registry/canonical/control_plane.sqlite3 > .cache/utility-before.sqlite3
+sqlite3 -json registry/canonical/control_plane.sqlite3 < data/output/audit/crossing-detector-utility-instrument/preservation.sql
+```
