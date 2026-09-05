@@ -1,0 +1,58 @@
+research_status = "primary-source review completed over declared surfaces"
+application = "protocol.toml admission, calibration, inference and external sections"
+
+[[source]]
+url = "https://themis.ssl.berkeley.edu/fgm_desc.shtml"
+sha256 = "8b7b67b71209c9422b4ef4494562504901c63ef5a7080bf9cfd93da921f9288a"
+observation = "Official documentation identifies FGS as spin-resolution Level-2 magnetic vectors in DSL, GSE and GSM; units are nanotesla."
+adopted_rule = "Require probe-specific FGS GSE variables; report sample-count and physical-time support separately."
+
+[[source]]
+url = "https://cdaweb.gsfc.nasa.gov/hapi/info?id=THA_L2_FGM%400"
+retained = "research/tha-fgm-hapi-info.json"
+observation = "Official HAPI metadata identifies tha_fgs_gse as spin-resolution approximately three-second GSE data, with fill value -1.0E30."
+adopted_rule = "Reject exact finite fill values as well as nonfinite vectors. A finite-number check alone admits the fill sentinel."
+
+[[source]]
+url = "https://themis.ssl.berkeley.edu/fgm_proc_history.shtml"
+sha256 = "d9dd07817c167d7c5fac149ec512fc20fdff5d05811ef4d5a3e6167fc17ff86b"
+observation = "The official processing history records repeated whole-mission and probe-specific calibration updates, including full-mission reprocessing in 2012 and later revisions of 2015/2016 observations."
+adopted_rule = "Declare archived calibrated-product evaluation and retain input byte identities. Chronological epoch splits establish transfer within the admitted archive; they do not establish historical real-time calibration or arrival latency."
+
+[[source]]
+url = "https://themis.ssl.berkeley.edu/downloads/Data_Variable_Descriptions"
+sha256 = "81e1b36385d16a4c106afeb71a9a0903309d02468a5dfc14377be360e1564cad"
+observation = "The official variable table distinguishes FGS vectors, FIT spin-fit variance and state maneuver flags. The consumed vector-only CSVs omit those companion observations."
+adopted_rule = "Record quality/calibration metadata coverage explicitly rather than assign a synthetic quality score."
+
+[[source]]
+doi = "10.5281/zenodo.10655312"
+retained = "research/staples-source-findings.toml"
+observation = "The official V2 bytes match the retained raw catalog. V2 has no timing-uncertainty or confidence columns. The derived A-only table contains 35 fewer rows than the raw A subset."
+adopted_rule = "Label directly from the hash-admitted full V2 probe subset, including adjacent dates; treat the two-minute pad as an analyst choice and retain the coverage reconciliation."
+
+[[source]]
+doi = "10.1007/s10994-020-05910-7"
+sections = "2.1-2.2, 3.4, 5-6 of arXiv:1905.11744v1"
+adopted_rule = "Use chronological development and separate subsequent final epochs. The paper motivates design under possible nonstationarity; it does not prove coverage for irregular binary crossing data."
+
+[[source]]
+doi = "10.1016/j.csda.2017.11.003"
+sections = "2-3 and 7 of the author-hosted 2017-07-23 preprint"
+adopted_rule = "Keep random grouped CV as a bounded historical measurement. Its validity under a stationary autoregressive model does not establish transfer across spacecraft or epochs."
+
+[[source]]
+doi = "10.1177/1948550617697177"
+sections = "Testing for Equivalence; Setting Equivalence Bounds; Discussion"
+adopted_rule = "Compare intervals to the declared useful-effect bound. An upper endpoint below the bound rejects the declared useful increment; an overlapping interval remains inconclusive. One-sided usefulness rejection is distinct from two-sided equivalence."
+
+[[source]]
+url = "https://scikit-learn.org/stable/common_pitfalls.html#data-leakage"
+sections = "12.2-12.2.2"
+adopted_rule = "Fit learned preprocessing and model coefficients only on training data. Fixed causal local-window transformations remain input features with explicitly admitted raw support."
+
+[limits]
+investigator_choices = "The research does not determine widths 64/256/1024, the 30-second gap/support bound, 2000 bootstrap draws, or minimum increment 0.005. These are fixed study choices."
+conditional_uncertainty = "The bootstrap conditions on frozen training estimates and the admitted final years. Temporal dependence between daily clusters can affect nominal coverage."
+operational_scope = "Crossing-day selection supports conditional localization. Ordinary-day alert rates, independent-mission transfer and operational cost-benefit remain untested."
+retrieval_failures = "The publisher Auster PDF route returned HTML; the response was retained as HTML and excluded as paper evidence. Staples full-text section 3.1 remains unverified after challenged/timed-out primary routes."

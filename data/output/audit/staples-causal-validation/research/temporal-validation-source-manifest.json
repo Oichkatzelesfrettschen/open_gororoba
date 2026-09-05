@@ -1,0 +1,37 @@
+{
+  "retrieved_at_utc": "2026-09-05T04:15:48Z",
+  "sources": [
+    {
+      "file": "bergmeir-hyndman-koo-cross-validation.pdf",
+      "url": "https://robjhyndman.com/papers/cv-wp.pdf",
+      "version": "author-hosted 2017-07-23 preprint; DOI metadata identifies 2018 journal publication",
+      "doi": "10.1016/j.csda.2017.11.003",
+      "sha256": "fc083acb269cb22e7a533572b46b64f5b88831ead50f3232b20c4d5016960dd7",
+      "size_bytes": 237603
+    },
+    {
+      "file": "cerqueira-temporal-evaluation.pdf",
+      "url": "https://arxiv.org/pdf/1905.11744",
+      "version": "arXiv:1905.11744v1 dated 2019-05-28; DOI metadata identifies 2020 journal publication",
+      "doi": "10.1007/s10994-020-05910-7",
+      "sha256": "ccc008eb7834a91fdb801cc701a03a485da02a759b7cc79a5bcd0ab144393de1",
+      "size_bytes": 749599
+    },
+    {
+      "file": "lakens-equivalence.xml",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC5502906/fullTextXML",
+      "version": "Europe PMC full text, PMC5502906; DOI appears in article XML",
+      "doi": "10.1177/1948550617697177",
+      "sha256": "13b10764c494385e99f54096032ca81d329cf9fd629f73ca5f77958955b5d1aa",
+      "size_bytes": 101020
+    },
+    {
+      "file": "sklearn-common-pitfalls.html",
+      "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+      "version": "official software documentation; mutable stable URL",
+      "doi": null,
+      "sha256": "a72acc13a7fc7f6b556a80836084b3ef065f29db34511f4981419d17daf88f4e",
+      "size_bytes": 109818
+    }
+  ]
+}
