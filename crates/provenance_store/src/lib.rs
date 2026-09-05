@@ -25,12 +25,21 @@ use toml::Value;
 // live in the `migrations` submodule. Items are pub(crate) and brought
 // back into lib.rs scope via plain use statements.
 mod artifact_operations;
+mod artifact_retrieval;
+pub use artifact_retrieval::{
+    ArtifactRetrievalSpec, DocumentIdentityStatus, RetrievalEvidenceFile, RetrievalRequestEvidence,
+};
 mod entity_revisions;
 mod experiment_operations;
 mod exports;
 mod queries;
 
+mod claim_evidence;
 mod migrations;
+pub use claim_evidence::{
+    ClaimEvidenceSpec, DecisiveExperiment, DepthStatus, EvidenceLayer, FalsifierOutcomes,
+    FittedParameterBranch, InterveningMap, MapKind,
+};
 use migrations::migrations;
 
 // Compatibility-TOML renderers for the three planning lanes
@@ -163,8 +172,8 @@ pub(crate) struct ProofInventory {
 pub use provenance_core::BinaryRecord;
 pub mod types;
 pub use types::{
-    ActionCompatRow, ActionItem, ActionItemWithEvidence, BinariesSyncSummary, CompatExportPaths,
-    ControlPlaneCompatKind, EntityFieldTarget, ExecutionTargetRetarget,
+    ActionCompatRow, ActionItem, ActionItemWithEvidence, BinariesSyncSummary, BinaryOwnerChange,
+    CompatExportPaths, ControlPlaneCompatKind, EntityFieldTarget, ExecutionTargetRetarget,
     ExecutionTargetRetargetSummary, ManifestRow, NotebookSessionRow, NotebookSessionSummary,
     PlanningCompatTable, RegistryImportPaths, RequirementCoverageGapCompatRow,
     RequirementCoverageGapItem, RequirementModuleCompatRow, RequirementModuleItem,
@@ -2230,53 +2239,64 @@ impl ProvenanceStore {
         Ok(pending)
     }
 
-    /// Names `binaries_sync` would add and remove, without writing.
-    pub fn preview_binaries_sync(
-        &self,
-        declared: &[BinaryRecord],
-    ) -> Result<(Vec<String>, Vec<String>)> {
-        let existing: BTreeSet<String> = self
-            .list_binaries()?
-            .into_iter()
-            .map(|record| record.name)
+    /// Names and crate owners `binaries_sync` would reconcile, without writing.
+    pub fn preview_binaries_sync(&self, declared: &[BinaryRecord]) -> Result<BinariesSyncSummary> {
+        let existing_records = self.list_binaries()?;
+        let existing: BTreeSet<String> = existing_records
+            .iter()
+            .map(|record| record.name.clone())
             .collect();
         let declared_names: BTreeSet<String> =
             declared.iter().map(|record| record.name.clone()).collect();
-        Ok((
-            declared_names.difference(&existing).cloned().collect(),
-            existing.difference(&declared_names).cloned().collect(),
-        ))
+        let owner_changes = existing_records
+            .iter()
+            .filter_map(|record| {
+                declared
+                    .iter()
+                    .find(|candidate| candidate.name == record.name)
+                    .filter(|candidate| candidate.crate_name != record.crate_name)
+                    .map(|candidate| BinaryOwnerChange {
+                        name: record.name.clone(),
+                        previous_crate: record.crate_name.clone(),
+                        declared_crate: candidate.crate_name.clone(),
+                    })
+            })
+            .collect();
+        Ok(BinariesSyncSummary {
+            added: declared_names.difference(&existing).cloned().collect(),
+            removed: existing.difference(&declared_names).cloned().collect(),
+            owner_changes,
+            retained: existing.intersection(&declared_names).count(),
+        })
     }
 
     /// Reconcile `binaries_cp` against the binary targets cargo declares.
     ///
-    /// Rows carry curated descriptions, so a name already present keeps its
-    /// row untouched; only absent names are inserted and stale names deleted.
-    /// This is the discovery half of the registry, and it drifts whenever a
-    /// `[[bin]]` is added, removed, or folded into a subcommand tree.
+    /// Existing names retain curated descriptions, experiment links, and sources.
+    /// Cargo owns crate membership, so crate moves update only `crate_name`.
+    /// Absent names are inserted and stale names deleted in the same transaction.
     pub fn binaries_sync(&mut self, declared: &[BinaryRecord]) -> Result<BinariesSyncSummary> {
-        let existing: BTreeSet<String> = self
-            .list_binaries()?
-            .into_iter()
-            .map(|record| record.name)
-            .collect();
-        let declared_names: BTreeSet<String> =
-            declared.iter().map(|record| record.name.clone()).collect();
-
-        let mut summary = BinariesSyncSummary {
-            retained: existing.intersection(&declared_names).count(),
-            ..Default::default()
-        };
+        let summary = self.preview_binaries_sync(declared)?;
 
         let tx = self
             .conn
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        for name in existing.difference(&declared_names) {
+        for name in &summary.removed {
             tx.execute("DELETE FROM binaries_cp WHERE name = ?1", params![name])?;
-            summary.removed.push(name.clone());
+        }
+        for change in &summary.owner_changes {
+            let changed = tx.execute(
+                "UPDATE binaries_cp SET crate_name = ?2 WHERE name = ?1 AND crate_name = ?3",
+                params![change.name, change.declared_crate, change.previous_crate],
+            )?;
+            anyhow::ensure!(
+                changed == 1,
+                "binary owner changed after preview: {}",
+                change.name
+            );
         }
         for record in declared {
-            if existing.contains(&record.name) {
+            if !summary.added.contains(&record.name) {
                 continue;
             }
             tx.execute(
@@ -2290,7 +2310,6 @@ impl ProvenanceStore {
                     record.source
                 ],
             )?;
-            summary.added.push(record.name.clone());
         }
         tx.commit()?;
         Ok(summary)
@@ -2791,6 +2810,7 @@ impl ProvenanceStore {
     pub fn ensure_artifact_reimport_safe(db_path: &Path) -> Result<()> {
         if db_path.exists() {
             let existing = Connection::open_with_flags(db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
+            claim_evidence::refuse_claim_evidence_history_loss(&existing)?;
             table_ops::refuse_artifact_path_history_loss(&existing)?;
         }
         Ok(())
@@ -3404,6 +3424,66 @@ mod tests {
     use super::*;
     use rusqlite::{Connection, params};
     use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn binaries_sync_reconciles_owner_and_preserves_curated_fields() -> Result<()> {
+        let mut connection = Connection::open_in_memory()?;
+        migrations().to_latest(&mut connection)?;
+        let mut store = ProvenanceStore { conn: connection };
+        let original = BinaryRecord {
+            name: "download-recovery".into(),
+            crate_name: "gororoba_cli_data".into(),
+            description: "Curated retrieval description".into(),
+            experiment: Some("E-curated".into()),
+            source: "curated-source".into(),
+        };
+        store.binaries_sync(std::slice::from_ref(&original))?;
+        let declared = BinaryRecord {
+            crate_name: "gororoba_cli_provenance".into(),
+            description: "Cargo discovery description".into(),
+            experiment: None,
+            source: "cargo-metadata".into(),
+            ..original.clone()
+        };
+        let preview = store.preview_binaries_sync(std::slice::from_ref(&declared))?;
+        assert!(preview.added.is_empty() && preview.removed.is_empty());
+        assert_eq!(preview.retained, 1);
+        assert_eq!(
+            preview.owner_changes,
+            vec![BinaryOwnerChange {
+                name: original.name.clone(),
+                previous_crate: original.crate_name.clone(),
+                declared_crate: declared.crate_name.clone(),
+            }]
+        );
+        assert_eq!(store.list_binaries()?, vec![original.clone()]);
+        let summary = store.binaries_sync(std::slice::from_ref(&declared))?;
+        assert_eq!(summary.owner_changes, preview.owner_changes);
+        let expected = BinaryRecord {
+            crate_name: declared.crate_name.clone(),
+            ..original
+        };
+        assert_eq!(store.list_binaries()?, vec![expected.clone()]);
+        assert!(
+            store
+                .binaries_sync(std::slice::from_ref(&declared))?
+                .owner_changes
+                .is_empty()
+        );
+
+        store.conn.execute_batch("CREATE TRIGGER reject_binary_insert BEFORE INSERT ON binaries_cp BEGIN SELECT RAISE(ABORT, 'injected binary insert failure'); END;")?;
+        let moved_again = BinaryRecord {
+            crate_name: "another_owner".into(),
+            ..declared.clone()
+        };
+        let added = BinaryRecord {
+            name: "new-binary".into(),
+            ..declared
+        };
+        assert!(store.binaries_sync(&[moved_again, added]).is_err());
+        assert_eq!(store.list_binaries()?, vec![expected]);
+        Ok(())
+    }
 
     #[test]
     fn retarget_consumes_the_existing_argument_separator() {

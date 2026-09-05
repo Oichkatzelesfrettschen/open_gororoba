@@ -34,7 +34,7 @@ struct Claim {
     where_stated: String,
     status: String,
     last_verified: String,
-    what_would_verify_refute: String,
+    what_would_verify_refute: provenance_core::falsifier_text::ClaimFalsifier,
 }
 
 fn extract_status_token(status_text: &str) -> String {
@@ -101,7 +101,9 @@ fn main() {
             where_stated,
             status,
             last_verified,
-            what_would_verify_refute: what_would,
+            what_would_verify_refute: provenance_core::falsifier_text::ClaimFalsifier::Legacy(
+                what_would,
+            ),
         });
     }
 

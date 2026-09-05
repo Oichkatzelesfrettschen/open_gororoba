@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://arxiv.org/abs/math/0403113",
+    "key": "url:https://arxiv.org/abs/math/0403113",
+    "links": [
+      [
+        "https://arxiv.org/abs/math/0403113",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/asot_8219_fix_arxiv_math_0403113_arxiv_org_pdf_math_0403113_pdf.pdf",
+      "citation": "**de Marrais, R. P. C.** (2004). *Box-Kites III: Quizzical Quaternions, Mock Octonions, and Other Zero-Divisor-Suppressing \"Sleeper Cell\" Structures in the Sedenions and 2^n-ions*. [arXiv:math/0403113](https://arxiv.org/abs/math/0403113).",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "**de Marrais, R. P. C.** (2004). *Box-Kites III: Quizzical Quaternions, Mock Octonions, and Other Zero-Divisor-Suppressing \"Sleeper Cell\" Structures in the Sedenions and 2^n-ions*. [arXiv:math/0403113](https://arxiv.org/abs/math/0403113)."
+    }
+  },
+  "before": {
+    "canonical_url": "https://arxiv.org/abs/math/0403113",
+    "key": "url:https://arxiv.org/abs/math/0403113",
+    "links": [
+      [
+        "https://arxiv.org/abs/math/0403113",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/intake/2026_02_15_manual_override_fetch/pdf_success/asot_8219_fix_arxiv_math_0403113_arxiv_org_pdf_math_0403113_pdf.pdf",
+      "citation": "**de Marrais, R. P. C.** (2004). *Box-Kites III: Quizzical Quaternions, Mock Octonions, and Other Zero-Divisor-Suppressing \"Sleeper Cell\" Structures in the Sedenions and 2^n-ions*. [arXiv:math/0403113](https://arxiv.org/abs/math/0403113).",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "**de Marrais, R. P. C.** (2004). *Box-Kites III: Quizzical Quaternions, Mock Octonions, and Other Zero-Divisor-Suppressing \"Sleeper Cell\" Structures in the Sedenions and 2^n-ions*. [arXiv:math/0403113](https://arxiv.org/abs/math/0403113)."
+    }
+  },
+  "digest_matches": false,
+  "outcome": "expected_bytes_mismatched",
+  "request": {
+    "body_bytes": 42105,
+    "body_sha256": "16f3ac08ce1d8fa75cd46456627c2d74a79666d34cd2eddf9ffe5765c98a05fd",
+    "completed": true,
+    "final_url": "https://arxiv.org/abs/math/0403113",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:28Z",
+    "requested_url": "https://arxiv.org/abs/math/0403113",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2793",
+    "artifact_key": "url:https://arxiv.org/abs/math/0403113",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 206494,
+    "expected_canonical_url": "https://arxiv.org/abs/math/0403113",
+    "expected_sha256": "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872",
+    "observation_key": "exact-response-ASOT-2793-60efe96c7bb5ebf26ccdc3d53d09df05d6c13e95f874d3de0ae26f5223974f69",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-14.json",
+      "sha256": "60efe96c7bb5ebf26ccdc3d53d09df05d6c13e95f874d3de0ae26f5223974f69"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-14.bin",
+      "sha256": "16f3ac08ce1d8fa75cd46456627c2d74a79666d34cd2eddf9ffe5765c98a05fd"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "13f17af2e78ff1153f4950c4c89802372349f8e1f7d0c8eaccacf9bb3aabbd6d"
+}

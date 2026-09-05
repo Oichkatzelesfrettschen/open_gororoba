@@ -1,0 +1,25 @@
+schema_version = 1
+profile = "validation"
+lock_policy = "--locked"
+rust_warnings = "denied"
+test_capture = "Direct execution of the Cargo-produced validation test binaries after successful Cargo test runs; each retained invocation exited 0."
+
+[[check]]
+command = "cargo test --locked --profile validation -p gororoba_cli_data -p gororoba_cli --bin claims-audit --bin semantic-atoms --test test_consolidate"
+passed = 37
+evidence = ["consumer-consolidate-tests.txt", "consumer-claims-audit-tests.txt", "consumer-semantic-atoms-tests.txt"]
+
+[[check]]
+command = "cargo test --locked --profile validation -p provenance_store --lib artifact_retrieval"
+passed = 7
+evidence = ["retrieval-association-tests.txt"]
+
+[[check]]
+command = "cargo test --locked --profile validation -p provenance_store --lib claim_transitions"
+passed = 13
+evidence = ["transition-contract-tests.txt"]
+
+[[check]]
+command = "cargo clippy --locked --profile validation -p provenance_store -p provenance_core -p gororoba_cli -p gororoba_cli_data --lib --bin registry-emit -- -D warnings"
+exit_status = 0
+evidence_source = "Cargo tool output"

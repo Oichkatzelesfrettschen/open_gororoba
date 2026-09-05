@@ -38,7 +38,10 @@ pub struct FullClaimEntry {
     pub status: String,
     #[serde(default)]
     pub last_verified: Option<String>,
-    #[serde(default)]
+    #[serde(
+        default,
+        deserialize_with = "provenance_core::falsifier_text::deserialize_optional_text"
+    )]
     pub what_would_verify_refute: Option<String>,
     #[serde(default)]
     pub supporting_evidence: Option<Vec<String>>,

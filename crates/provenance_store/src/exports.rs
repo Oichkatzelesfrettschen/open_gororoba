@@ -250,7 +250,7 @@ impl ProvenanceStore {
             .control_plane_meta_toml("experiments")?
             .unwrap_or_default();
         Ok(ControlPlaneCompatOutputs {
-            claims: render_claims_registry(&self.list_claims()?),
+            claims: self.overlay_claim_evidence(render_claims_registry(&self.list_claims()?))?,
             insights: render_insights_registry(&self.list_insights_for_compat()?),
             experiments: render_experiments_registry(
                 &experiments_meta,

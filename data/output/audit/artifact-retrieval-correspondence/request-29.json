@@ -1,0 +1,11 @@
+{
+  "body_bytes": 5565,
+  "body_sha256": "3ac143a472ea9564c799d59fa03e1339baa73e3768c24b73df11c16a6171ff85",
+  "completed": true,
+  "final_url": "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+  "http_status": 203,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:43Z",
+  "requested_url": "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

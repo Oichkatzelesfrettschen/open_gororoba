@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-0029"
+artifact_key = "doi:10.1002/adma.202209988"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 2627
+expected_canonical_url = "https://arxiv.org/abs/1710.01373"
+expected_sha256 = "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40"
+observation_key = "exact-response-ASOT-0029-a61acf5ecd7ac57519a690ceccf1c991382bfb8a06475189f590645d6e4bb5d4"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-02.json"
+sha256 = "a61acf5ecd7ac57519a690ceccf1c991382bfb8a06475189f590645d6e4bb5d4"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-02.bin"
+sha256 = "6717d20733428edfa41b365941839979be6a2019890ca850806867a9802fc199"

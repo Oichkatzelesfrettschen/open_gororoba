@@ -348,7 +348,16 @@ pub struct ExecutionTargetRetargetSummary {
 pub struct BinariesSyncSummary {
     pub added: Vec<String>,
     pub removed: Vec<String>,
+    pub owner_changes: Vec<BinaryOwnerChange>,
     pub retained: usize,
+}
+
+/// A Cargo-declared crate move for an existing binary name.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct BinaryOwnerChange {
+    pub name: String,
+    pub previous_crate: String,
+    pub declared_crate: String,
 }
 
 /// Append-only audit record returned by claim/insight/experiment

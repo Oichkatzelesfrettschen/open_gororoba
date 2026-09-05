@@ -1,0 +1,17 @@
+
+running 13 tests
+test claim_transitions::tests::allocates_successors_by_proposal_key ... ok
+test claim_transitions::tests::status_delta_is_explicit ... ok
+test claim_transitions::tests::allocation_skips_reserved_numeric_prefixes ... ok
+test claim_transitions::tests::direct_status_mutation_requires_transition_event ... ok
+test claim_transitions::tests::stale_status_is_rejected_before_writes ... ok
+test claim_transitions::tests::relation_cycle_is_rejected ... ok
+test claim_transitions::tests::evidence_contract_changes_invalidate_pending_transition_hashes ... ok
+test claim_transitions::tests::nonexistent_experiment_rolls_back_before_event_insert ... ok
+test claim_transitions::tests::missing_evidence_rolls_back_without_status_change ... ok
+test claim_transitions::tests::dry_run_allocates_the_same_ids_as_apply ... ok
+test claim_transitions::tests::successor_collision_is_rejected ... ok
+test claim_transitions::tests::apply_is_atomic_and_exact_replay_is_idempotent ... ok
+test claim_transitions::tests::invalid_status_and_verdict_are_rejected ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 46 filtered out; finished in 0.15s

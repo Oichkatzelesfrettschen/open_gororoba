@@ -100,8 +100,9 @@ impl StagedWriteSet {
         temp_paths: &mut Vec<(PathBuf, PathBuf)>,
     ) -> Result<()> {
         for output in &self.outputs {
-            toml::from_str::<toml::Value>(&output.contents)
-                .with_context(|| format!("staged output does not parse: {}", output.path.display()))?;
+            toml::from_str::<toml::Value>(&output.contents).with_context(|| {
+                format!("staged output does not parse: {}", output.path.display())
+            })?;
             let after = count_rows(&output.contents, output.row_marker);
             let before = if output.path.exists() {
                 let previous = fs::read_to_string(&output.path)
@@ -199,7 +200,9 @@ mod tests {
             .collect::<String>();
         let mut set = StagedWriteSet::new();
         set.stage(&path, after, "[[artifact]]");
-        let reports = set.commit(&ShrinkPolicy::default()).expect("3 percent loss");
+        let reports = set
+            .commit(&ShrinkPolicy::default())
+            .expect("3 percent loss");
         assert_eq!(reports[0].before, Some(100));
         assert_eq!(reports[0].after, 97);
     }
@@ -212,7 +215,11 @@ mod tests {
         fs::write(&good, "[[artifact]]\nid = \"keep\"\n").expect("seed good");
         fs::write(&bad, "[[artifact]]\nid = \"keep\"\n").expect("seed bad");
         let mut set = StagedWriteSet::new();
-        set.stage(&good, "[[artifact]]\nid = \"new\"\n".to_string(), "[[artifact]]");
+        set.stage(
+            &good,
+            "[[artifact]]\nid = \"new\"\n".to_string(),
+            "[[artifact]]",
+        );
         set.stage(&bad, "id = = broken".to_string(), "[[artifact]]");
         let error = set
             .commit(&ShrinkPolicy::default())

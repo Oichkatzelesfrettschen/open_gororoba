@@ -1,0 +1,11 @@
+{
+  "body_bytes": 189748,
+  "body_sha256": "e9fe7bdb8f8a570c0fe04e176b9c534332a7907a7e004f0ef888d6105f6373e8",
+  "completed": true,
+  "final_url": "https://dn760009.eu.archive.org/0/items/arxiv-1602.02317/1602.02317.pdf",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:27Z",
+  "requested_url": "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

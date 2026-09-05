@@ -1,0 +1,11 @@
+{
+  "body_bytes": 0,
+  "body_sha256": null,
+  "completed": false,
+  "final_url": "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n",
+  "http_status": 403,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:41Z",
+  "requested_url": "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

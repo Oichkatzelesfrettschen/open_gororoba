@@ -20,6 +20,8 @@ impl ProvenanceStore {
             let mut statement = tx.prepare(
                 "SELECT experiment_id FROM claim_transition_experiments
                  UNION
+                 SELECT experiment_id FROM claim_evidence_revision_experiments
+                 UNION
                  SELECT experiment_id FROM experiment_revisions",
             )?;
             statement
@@ -53,6 +55,8 @@ impl ProvenanceStore {
             "DELETE FROM experiments_cp
              WHERE id NOT IN (
                  SELECT experiment_id FROM claim_transition_experiments
+                 UNION
+                 SELECT experiment_id FROM claim_evidence_revision_experiments
                  UNION
                  SELECT experiment_id FROM experiment_revisions
              )",

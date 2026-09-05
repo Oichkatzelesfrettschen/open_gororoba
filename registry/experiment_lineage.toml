@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 251
-edge_count = 1290
+lineage_count = 253
+edge_count = 1311
 
 [[lineage]]
 id = "XL-001"
@@ -4572,6 +4572,43 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode all", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-252"
+experiment_id = "E-282"
+binary = "staples-causal-validation"
+deterministic = false
+seed = 20260904
+gpu = false
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/results-replay --mode all"
+run_command_sha256 = "e2ec43bfc8a74cec574f8f5d575762b42f6b3111526e8c21c7df43d85f06c505"
+claim_refs = ["C-1740", "C-1741", "C-1743"]
+input_path_refs = ["data/external/crossing_lists/themis_mp_crossings_v2.txt", "data/output/audit/staples-causal-validation/protocol.toml", "data/output/benchmark_scores.files.csv"]
+output_path_refs = ["data/output/audit/staples-causal-validation/findings.toml", "data/output/audit/staples-causal-validation/protocol.toml", "data/output/audit/staples-causal-validation/results/bootstrap.json", "data/output/audit/staples-causal-validation/results/dataset.json", "data/output/audit/staples-causal-validation/results/summary.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/results-replay --mode all", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-253"
+experiment_id = "E-283"
+binary = "staples-causal-validation"
+deterministic = true
+gpu = false
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv"
+run_command_sha256 = "a592d7616b2323764db392b5b87172cdd7d5cd506bfcb3e1ff6a167311833d8f"
+claim_refs = ["C-1740", "C-1741", "C-1743"]
+input_path_refs = ["data/output/audit/staples-causal-validation/external-intake-manifest.json", "data/output/audit/staples-causal-validation/protocol.toml"]
+output_path_refs = ["data/output/audit/staples-causal-validation/external-cdf-order-findings.json", "data/output/audit/staples-causal-validation/external-intake-summary.json", "data/output/audit/staples-causal-validation/external-native-source-rca.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -16180,6 +16217,195 @@ id = "XLE-01290"
 lineage_id = "XL-251"
 from_id = "E-281"
 to_ref = "data/output/audit/staples-calibration-grouped-refits/results/summary.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01291"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "staples-causal-validation"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01292"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "C-1740"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01293"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "C-1741"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01294"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "C-1743"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01295"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01296"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "data/output/audit/staples-causal-validation/protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01297"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "data/output/benchmark_scores.files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01298"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "data/output/audit/staples-causal-validation/findings.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01299"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "data/output/audit/staples-causal-validation/protocol.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01300"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "data/output/audit/staples-causal-validation/results/bootstrap.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01301"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "data/output/audit/staples-causal-validation/results/dataset.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01302"
+lineage_id = "XL-252"
+from_id = "E-282"
+to_ref = "data/output/audit/staples-causal-validation/results/summary.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01303"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "staples-causal-validation"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01304"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "C-1740"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01305"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "C-1741"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01306"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "C-1743"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01307"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "data/output/audit/staples-causal-validation/external-intake-manifest.json"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01308"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "data/output/audit/staples-causal-validation/protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01309"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "data/output/audit/staples-causal-validation/external-cdf-order-findings.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01310"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "data/output/audit/staples-causal-validation/external-intake-summary.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01311"
+lineage_id = "XL-253"
+from_id = "E-283"
+to_ref = "data/output/audit/staples-causal-validation/external-native-source-rca.toml"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

@@ -5847,6 +5847,96 @@ statement = "On the common warmup-filtered THEMIS-A Staples benchmark (23,456,24
 status = "Verified"
 status_note = "Map counting convention: count each named feature-construction or model-transformation stage once along a branch, including a fitted transform as one stage; shared branches are reported separately rather than summed. These computational stage counts are declared bookkeeping, not phenomenological interpretive depth or evidence of a physical algebra-to-observable derivation. Associator score has 4 ordered maps: (1) augment each magnetic vector with its Euclidean magnitude; (2) pack four consecutive augmented vectors into R16, taking three overlapping staples over k..k+5; (3) compute the Euclidean norm of the 16D Cayley-Dickson associator (ab)c-a(bc); (4) divide by the product of the three staple norms plus 1e-30. PVI score has 4 ordered stages: (1) lag-one vector-increment norms; (2) maximum of five increments spanning k..k+5; (3) estimate the denominator RMS from daily-file increments, pooled training-file increments, or 256 preceding input-row increments; (4) divide that maximum by the arm-specific RMS. RMS estimation is a parallel calibration branch entering stage 4. Equal timestamps restrict the rolling arm to input-row precedence. Evaluation maps are recorded separately from score construction: retain the common k>=256 warmup population; label k+4 within two minutes of a catalog crossing while feature availability reaches k+5; form descriptive gradient strata from the common-population positive dbdt median; split by whole file with seeds 42..46; resample whole training and test files in 100 paired draws on seed-42 fold-0; compute ROC-AUC, differences, the declared global minimum and linear 2.5/97.5 percentile endpoints. These conditional empirical comparisons establish neither streaming/precursor performance nor a physical interpretation of the embedding."
 where_stated = "data/output/audit/staples-calibration-grouped-refits/findings.toml; data/output/audit/staples-calibration-grouped-refits/results/summary.json; data/output/audit/staples-calibration-grouped-refits/completion-audit.json; E-280; E-281"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+depth_rationale = "The retained claim measures detector discrimination on an archived sample. Computational feature stages are enumerated; a physical interpretation of the embedding has not been assessed. Computational stage counts do not assert a physical lift depth."
+fixed_hyperparameters = ["16-dimensional embedding", "six local field samples", "norm denominator epsilon 1e-30", "rolling calibration width 256", "five grouped CV seeds 42 through 46", "100 paired bootstrap draws", "fixed seed-42 fold-0 uncertainty population", "historical label at k+4 with feature availability at k+5"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 8
+computational_stage_count = 8
+
+[[claim.intervening_maps]]
+name = "magnitude_augmentation"
+branch = "associator"
+description = "Augment each GSE magnetic vector with its Euclidean magnitude."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "overlapping_staple_embedding"
+branch = "associator"
+description = "Pack four consecutive augmented vectors into R16 and use three overlapping staples spanning six field samples."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "cayley_dickson_associator_norm"
+branch = "associator"
+description = "Compute the Euclidean norm of (ab)c-a(bc) using the 16D Cayley-Dickson multiplication table."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "norm_product_normalization"
+branch = "associator"
+description = "Divide by the product of staple norms plus 1e-30."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "lag_one_increment_norms"
+branch = "pvi"
+description = "Compute Euclidean norms of successive magnetic-vector differences."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "six_sample_maximum"
+branch = "pvi"
+description = "Take the maximum of five increments spanning the same six samples."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "arm_specific_rms"
+branch = "pvi"
+description = "Estimate complete-daily-file, pooled-training-file, or preceding-256-row increment RMS in the declared arm."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "rms_normalization"
+branch = "pvi"
+description = "Divide the maximum increment by its arm-specific RMS in f64."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "associator"
+count = 0
+names = []
+training_boundary = "The associator feature has fixed algebraic coefficients and fixed norm normalization."
+
+[[claim.fitted_parameters]]
+branch = "daily_file_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One scale per complete daily file, including future rows. Historical offline arm; the scale is not restricted to training data."
+
+[[claim.fitted_parameters]]
+branch = "pooled_training_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One pooled scale per training split or resampled training multiset, using whole-file increment sufficient statistics and multiplicities."
+
+[[claim.fitted_parameters]]
+branch = "preceding_input_row_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One local RMS per score from 256 preceding parsed-row increments. Equal timestamps limit precedence to input-row order. The count describes one estimator instance, not the number of instances."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-280", "E-281"]
+protocol_artifact = "data/output/audit/staples-calibration-grouped-refits/protocol.toml"
+description = "Replay the sealed common-population calibration comparison and paired train-file/test-file resampling to adjudicate the historical result. The separate timestamp-causal protocol tests extension beyond that result and does not retroactively redefine it."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["Independent replay reproduces the declared population and positive global minimum associator-minus-PVI interval under the sealed procedure."]
+revision_outcomes = ["A reproducible admission or calculation correction changes the population or endpoint; preserve the original observation and register the corrected bounded successor.", "A useful externally validated detector is reproduced by matched generic controls; retain predictive utility while revising any separately proposed algebra-specific explanation."]
+abandonment_outcomes = ["An independently verified replay on the identical admitted population and sealed algorithm contradicts the reported positive global standalone margin; abandon that numerical claim after resolving implementation provenance."]
+inconclusive_outcomes = ["A new causal or external interval crosses the declared useful-increment threshold; the extension remains inconclusive and the historical bounded result retains its own evidence.", "A decisive input or source identity fails admission; the experiment remains blocked rather than supplying a numerical verdict."]
 
 [[claim]]
 id = "C-1741"
@@ -5855,6 +5945,156 @@ statement = "On 23,456,246 warmup-filtered THEMIS-A benchmark rows (574,716 posi
 status = "Verified"
 status_note = "Map counting convention: count each named feature-construction or model-transformation stage once along a branch, including a fitted transform as one stage; shared branches are reported separately rather than summed. These computational stage counts are declared bookkeeping, not phenomenological interpretive depth or evidence of a physical algebra-to-observable derivation. Associator score has 4 ordered maps: (1) augment each magnetic vector with its Euclidean magnitude; (2) pack four consecutive augmented vectors into R16, taking three overlapping staples over k..k+5; (3) compute the Euclidean norm of the 16D Cayley-Dickson associator (ab)c-a(bc); (4) divide by the product of the three staple norms plus 1e-30. PVI score has 4 ordered stages: (1) lag-one vector-increment norms; (2) maximum of five increments spanning k..k+5; (3) estimate the denominator RMS from daily-file increments, pooled training-file increments, or 256 preceding input-row increments; (4) divide that maximum by the arm-specific RMS. RMS estimation is a parallel calibration branch entering stage 4. Equal timestamps restrict the rolling arm to input-row precedence. Each model branch adds 3 maps: (1) ln(score+1e-12) with f32 storage; (2) training-fitted mean/population-standard-deviation standardization; (3) fixed-ridge logistic fitting and f64 prediction. Thus the associator-to-model branch has 7 stages and the calibrated PVI-to-model branch has 7 stages. The other baseline branches are: dbdt, 2 stages (field magnitude, absolute k+3/k+4 magnitude difference without time division); rot, 1 stage (clamped normalized-dot-product angle at k+3/k+4); cumrot6 and maxrot6, 2 stages each (five consecutive angles over six samples, sum or maximum); gram6, 3 stages (five vector increments, absolute determinant of each consecutive increment triple, maximum). Adding the same 3 model maps gives respective branch counts 5, 4, 5, 5 and 6. Every grouped split and bootstrap draw refits RMS where training-defined, standardization, and both models. Evaluation maps are recorded separately from score construction: retain the common k>=256 warmup population; label k+4 within two minutes of a catalog crossing while feature availability reaches k+5; form descriptive gradient strata from the common-population positive dbdt median; split by whole file with seeds 42..46; resample whole training and test files in 100 paired draws on seed-42 fold-0; compute ROC-AUC, differences, the declared global minimum and linear 2.5/97.5 percentile endpoints. These conditional empirical comparisons establish neither streaming/precursor performance nor a physical interpretation of the embedding."
 where_stated = "data/output/audit/staples-calibration-grouped-refits/findings.toml; data/output/audit/staples-calibration-grouped-refits/results/summary.json; data/output/audit/staples-calibration-grouped-refits/completion-audit.json; E-280; E-281"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+depth_rationale = "The retained claim measures detector discrimination on an archived sample. Computational feature stages are enumerated; a physical interpretation of the embedding has not been assessed. Computational stage counts do not assert a physical lift depth."
+fixed_hyperparameters = ["16-dimensional embedding", "six local field samples", "norm denominator epsilon 1e-30", "rolling calibration width 256", "five grouped CV seeds 42 through 46", "100 paired bootstrap draws", "fixed seed-42 fold-0 uncertainty population", "historical label at k+4 with feature availability at k+5", "ridge penalty 1e-6", "log transform epsilon 1e-12", "maximum Newton iterations 25", "relative deviance tolerance 1e-8"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 16
+computational_stage_count = 16
+
+[[claim.intervening_maps]]
+name = "magnitude_augmentation"
+branch = "associator"
+description = "Augment each GSE magnetic vector with its Euclidean magnitude."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "overlapping_staple_embedding"
+branch = "associator"
+description = "Pack four consecutive augmented vectors into R16 and use three overlapping staples spanning six field samples."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "cayley_dickson_associator_norm"
+branch = "associator"
+description = "Compute the Euclidean norm of (ab)c-a(bc) using the 16D Cayley-Dickson multiplication table."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "norm_product_normalization"
+branch = "associator"
+description = "Divide by the product of staple norms plus 1e-30."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "lag_one_increment_norms"
+branch = "pvi"
+description = "Compute Euclidean norms of successive magnetic-vector differences."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "six_sample_maximum"
+branch = "pvi"
+description = "Take the maximum of five increments spanning the same six samples."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "arm_specific_rms"
+branch = "pvi"
+description = "Estimate complete-daily-file, pooled-training-file, or preceding-256-row increment RMS in the declared arm."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "rms_normalization"
+branch = "pvi"
+description = "Divide the maximum increment by its arm-specific RMS in f64."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "geometric_feature_construction"
+branch = "logistic_baseline"
+description = "Construct magnitude change and pair angle at k+3/k+4, six-sample cumulative and maximum rotation, calibrated PVI, and maximum determinant magnitude of consecutive increment triples. These branches use the historical offsets."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "fixed_log_transform"
+branch = "logistic_baseline"
+description = "Apply ln(score+1e-12) with f32 feature storage."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "training_standardization"
+branch = "logistic_baseline"
+description = "Fit the six feature means and population standard deviations on training rows with training-file multiplicities."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "ridge_logistic_fit"
+branch = "logistic_baseline"
+description = "Fit an intercept and six slopes using ridge 1e-6 and the shared convergence-checked Newton procedure; retain f64 predictions."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "append_associator"
+branch = "logistic_augmented"
+description = "Append the fixed associator score to the same six baseline features."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "fixed_log_transform"
+branch = "logistic_augmented"
+description = "Apply ln(score+1e-12) to all seven features with f32 feature storage."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "training_standardization"
+branch = "logistic_augmented"
+description = "Fit seven feature means and population standard deviations on training rows with training-file multiplicities."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "ridge_logistic_fit"
+branch = "logistic_augmented"
+description = "Fit an intercept and seven slopes using ridge 1e-6 and the shared convergence-checked Newton procedure; retain f64 predictions."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "associator"
+count = 0
+names = []
+training_boundary = "The associator feature has fixed algebraic coefficients and fixed norm normalization."
+
+[[claim.fitted_parameters]]
+branch = "daily_file_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One scale per complete daily file, including future rows. Historical offline arm; the scale is not restricted to training data."
+
+[[claim.fitted_parameters]]
+branch = "pooled_training_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One pooled scale per training split or resampled training multiset, using whole-file increment sufficient statistics and multiplicities."
+
+[[claim.fitted_parameters]]
+branch = "preceding_input_row_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One local RMS per score from 256 preceding parsed-row increments. Equal timestamps limit precedence to input-row order. The count describes one estimator instance, not the number of instances."
+
+[[claim.fitted_parameters]]
+branch = "logistic_baseline"
+count = 19
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6"]
+training_boundary = "Seven logistic coefficients and twelve preprocessing parameters per arm/split/draw, exclusively from that training multiset. Calibration estimators are enumerated separately."
+
+[[claim.fitted_parameters]]
+branch = "logistic_augmented"
+count = 22
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "slope_assoc", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "mean_assoc", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6", "std_assoc"]
+training_boundary = "Eight logistic coefficients and fourteen preprocessing parameters per arm/split/draw, exclusively from that training multiset. Every training bootstrap draw refits all parameters."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-280", "E-281"]
+protocol_artifact = "data/output/audit/staples-calibration-grouped-refits/protocol.toml"
+description = "Replay the sealed common-population calibration comparison and paired train-file/test-file resampling to adjudicate the historical result. The separate timestamp-causal protocol tests extension beyond that result and does not retroactively redefine it."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["Independent replay reproduces the declared population and positive global minimum augmented-minus-baseline logistic ROC-AUC interval under the sealed procedure."]
+revision_outcomes = ["A reproducible admission or calculation correction changes the population or endpoint; preserve the original observation and register the corrected bounded successor.", "A useful externally validated detector is reproduced by matched generic controls; retain predictive utility while revising any separately proposed algebra-specific explanation."]
+abandonment_outcomes = ["An independently verified replay on the identical admitted population and sealed algorithm contradicts the reported positive global logistic increment; abandon that numerical claim after resolving implementation provenance."]
+inconclusive_outcomes = ["A new causal or external interval crosses the declared useful-increment threshold; the extension remains inconclusive and the historical bounded result retains its own evidence.", "A decisive input or source identity fails admission; the experiment remains blocked rather than supplying a numerical verdict."]
 
 [[claim]]
 formal_proof = "na_empirical:retained-benchmark-family-comparison"
@@ -5863,6 +6103,121 @@ last_verified = "2026-09-05"
 statement = "On the retained E-240 subsample (1,733,470 samples, 578,320 positives, 813 THEMIS-A files, seed 42), canonical CD AUC is 0.8274468073. Fifty normalized 2-cocycles yield zero associator terms and AUC 0.5. The 250 basis-alternative 35-line twists yield mean 0.8327338828, central 95 percent interval [0.8280412950, 0.8372935340], maximum 0.8393409816 and 246 draws at or above canonical; canonical lies below that interval. The 250 algebra-isomorphic GL/sign relabelings yield mean 0.8311273052, interval [0.8146826435, 0.8406922873], maximum 0.8424133188 and 217 draws at or above canonical; canonical lies inside that interval. The alternative family has 1080 to 1656 terms; the orbit preserves 1848-term cardinality and 924/924 balance while moving support indices. These families extend the earlier exact-support sign-scramble and random-unital-twist comparisons and refute the registered broader invariant-family criterion; the original E-240 numerical results remain separately retained."
 status = "Verified"
 where_stated = "data/output/staples_twist_orbit.json; E-279; data/output/audit/staples-orbit-worktree-reconciliation/findings.toml"
+
+[[claim]]
+id = "C-1743"
+last_verified = "2026-09-05"
+statement = "On the timestamp-causal THEMIS-A crossing-day archive (22,263,526 admitted decisions, 543,911 positives, 813 daily files), training-only preprocessing and ridge-logistic fits on 2007-2012 produce a small positive canonical-associator increment over six matched geometric predictors in held-out 2015 and 2016. Across 2,000 paired whole-daily-file bootstrap draws, the global minimum ROC-AUC increment over calibration widths 64, 256 and 1024 and both final years has approximate 95 percent interval [0.0010149049086891153, 0.0029188809429172872]. The upper endpoint lies below the preregistered investigator-defined 0.005 minimum and rejects the declared useful discrimination increment within the admitted archive. Fourteen to sixteen of nineteen exact-support sign controls equal or exceed canonical point ROC-AUC in every final panel; mechanism-comparison intervals remain unrun. External probe-D inference remains blocked by a backward timestamp independently confirmed in the native source product."
+status = "Verified"
+where_stated = "data/output/audit/staples-causal-validation/findings.toml; data/output/audit/staples-causal-validation/results/summary.json; data/output/audit/staples-causal-validation/results/bootstrap.json; E-282; E-283"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+depth_rationale = "The claim measures discrimination on an admitted calibrated-product archive. The enumerated maps are computational stages shared by the declared model branches. A physical interpretation of the staple embedding and cubic contraction has not been assessed; computational stage counts do not establish physical lift depth."
+fixed_hyperparameters = ["Training epochs 2007-2012; descriptive validation epochs 2013-2014; final epochs 2015 and 2016", "Six strictly earlier unique timestamp batches; current decision vector excluded", "Maximum positive gap 30 seconds and maximum six-vector feature span 30 seconds", "Common admission requires 1024 preceding increments before the six-vector window for every width and tensor", "Fixed local RMS widths 64, 256 and 1024; every width enters the primary global minimum", "Crossing localization radius 120 seconds using the hash-admitted full V2 same-probe catalog including adjacent UTC dates", "Exact finite fill sentinel -1e30; malformed and duplicate batches reset segments; backward time rejects the file", "16-dimensional overlapping staple embedding and 1848-term ordered tensor support", "Canonical tensor plus 19 independent exact-support coefficient-sign controls at seeds 1000 through 1018", "Shared norm-product denominator epsilon 1e-30", "Fixed ln(score+1e-12) transform; logged features stored as f32", "Ridge penalty 1e-6; maximum Newton iterations 25; relative deviance tolerance 1e-8", "2000 paired whole-daily-file bootstrap draws with seed 20260904; linear 2.5 and 97.5 percentile endpoints", "Bootstrap conditions on frozen training fits and observed final years; training parameters remain fixed across draws", "Minimum useful discrimination increment 0.005 ROC-AUC, chosen by the investigator before execution", "At least 30 admitted files and 10 positive-containing files per final year; empty classes, nonfinite metrics and nonconverged fits fail numerical admission", "External probe D, years 2015 and 2016, every planned crossing date; apply frozen THEMIS-A transforms and coefficients"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 12
+computational_stage_count = 12
+
+[[claim.intervening_maps]]
+name = "timestamp_batch_admission"
+branch = "shared_all_models"
+description = "Close each timestamp batch at the next strictly later timestamp. Admit exactly one valid vector per closed batch; score at decision t using only already closed earlier batches. Apply the declared fill, malformed-row, duplicate, gap and backward-time rules."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "common_raw_support_selection"
+branch = "shared_all_models"
+description = "Select six earlier field vectors and the preceding maximum-width increment history. Every width, canonical tensor, sign control and geometric baseline uses the identical admitted decisions and raw dependency support."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "catalog_localization_labels"
+branch = "shared_all_models"
+description = "Label decision t by a same-probe V2 crossing within 120 seconds, retaining adjacent-date crossings. Labels never select raw feature supports or fit transforms on final or external observations."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "six_geometric_predictors"
+branch = "shared_all_models"
+description = "Compute last-pair magnitude change per second, last-pair rotation, six-sample cumulative rotation, maximum rotation, maximum increment divided by the declared preceding RMS, and maximum absolute determinant of three consecutive increment vectors."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "fixed_preceding_increment_rms"
+branch = "shared_all_models"
+description = "For each fixed width W, divide the maximum of five feature-window increment norms by the RMS of exactly W increments strictly preceding the six-vector window. The local statistic uses fixed coefficients and zero population-fitted parameters; its full input support is declared and shared."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "magnitude_augmentation_and_overlapping_staples"
+branch = "all_augmented_models"
+description = "Augment each GSE magnetic vector with its Euclidean magnitude. Pack four consecutive augmented vectors into R16 and construct three overlapping staples spanning the same six admitted field samples."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "matched_sparse_cubic_contraction"
+branch = "all_augmented_models"
+description = "Evaluate the canonical associator and each coefficient-sign control through the same 1848-term sparse contraction. Preserve ordered input support, coefficient magnitudes, output XOR rule and dimension; only coefficient signs vary. Generic cubic controls need not define algebras."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "shared_norm_product_normalization"
+branch = "all_augmented_models"
+description = "Normalize every cubic score by the product of the three staple norms plus 1e-30. Append exactly one canonical or control score to the six shared geometric predictors."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "fixed_log_transform"
+branch = "shared_all_models"
+description = "Apply ln(score+1e-12) to each predictor and retain f32 logged features. The transform has fixed coefficients and estimates zero population parameters."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "training_only_standardization"
+branch = "shared_all_models"
+description = "Fit each logged predictor mean and population standard deviation exclusively on admitted THEMIS-A training rows from 2007-2012. Freeze six means and six scales for each baseline, or seven means and seven scales for each augmented model."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "training_only_ridge_logistic_fit"
+branch = "shared_all_models"
+description = "Fit the intercept and six baseline slopes or seven augmented slopes with the shared convergence-checked ridge logistic procedure. Freeze all coefficients for validation, final epochs, bootstrap evaluation and any subsequently admitted external inference."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "paired_epoch_metric_and_global_minimum"
+branch = "shared_all_models"
+description = "Compute paired augmented-minus-baseline ROC-AUC in each final year and width. In every paired whole-file bootstrap draw take the global minimum canonical increment across both final years and all three widths. Compare its interval separately with zero and the declared 0.005 useful-increment threshold; control comparisons retain their own uncertainty boundary."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "fixed_local_features"
+count = 0
+names = []
+training_boundary = "The preceding-window RMS, geometric transforms, staple embedding, canonical/control tensor coefficients and norm/log transforms estimate zero population parameters. Local statistics remain input features with full causal raw support; control seeds and tensor coefficients stay fixed before fitting."
+
+[[claim.fitted_parameters]]
+branch = "logistic_baseline_per_width"
+count = 19
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6"]
+training_boundary = "Per fixed width: seven logistic coefficients plus twelve standardization parameters, fitted exclusively on admitted THEMIS-A 2007-2012 training rows. Three baseline models retain separate fitted values. Final-year bootstrap draws resample evaluation files while retaining the original frozen training fits."
+
+[[claim.fitted_parameters]]
+branch = "logistic_augmentation_per_width_and_tensor"
+count = 22
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "slope_cubic", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "mean_cubic", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6", "std_cubic"]
+training_boundary = "Per fixed width and canonical/control tensor: eight logistic coefficients plus fourteen standardization parameters, fitted exclusively on the identical THEMIS-A 2007-2012 training rows. Each of sixty augmented models has the same parameter and optimizer budget. Final and external observations supply zero fitted parameters."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-282", "E-283"]
+protocol_artifact = "data/output/audit/staples-causal-validation/protocol.toml"
+description = "E-282 executes the sealed timestamp-causal epoch and exact-support-control comparison. Its retained approximate 95 percent global-minimum interval [0.0010149049086891153, 0.0029188809429172872] supports a small positive conditional increment and rejects the investigator-defined 0.005 useful increment. E-283 remains blocked at external input admission after the native source independently confirms the backward timestamp; external numerical inference has not run."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["An independent faithful replay of E-282 reproduces the hash-admitted population, frozen training fits and global-minimum interval with lower endpoint above zero and upper endpoint below 0.005, verifying the two distinct bounded predicates of positive effect and insufficient declared useful increment.", "A separately declared, fully admitted external replication applies the frozen THEMIS-A models and reports its own positive-effect and 0.005-threshold intervals; any surviving extension earns a separate scope declaration rather than promoting the completed internal result retroactively."]
+revision_outcomes = ["An independently resolved admission or numerical correction changes the retained population or interval: preserve C-1743 and the historical parents, record the correction provenance, and register only the narrower successor supported by the corrected experiment.", "Adequately precise canonical-minus-control comparisons reproduce the predictive signal with exact-support generic cubic controls: retain the supported detector observation while revising any separately proposed algebra-specific explanation. The observed point ranks alone do not establish that uncertainty-adjusted conclusion.", "A faithful corrected replay produces an interval that touches or crosses 0.005: revise the below-threshold classification to inconclusive for the corrected evidence instead of selecting a favorable final width or secondary metric."]
+abandonment_outcomes = ["After resolving implementation and input provenance, a faithful replay or sufficiently precise replication yields a global-minimum interval wholly at or below zero: abandon the positive-increment assertion for that tested scope while preserving the original reported observation.", "After resolving implementation and input provenance, a faithful corrected replay yields a lower endpoint strictly above 0.005: abandon the below-threshold assertion for the corrected scope because the declared useful increment survives its preregistered criterion.", "A sufficiently precise admitted interval has upper endpoint strictly below 0.005: reject the proposed useful discrimination increment for that scope, even when its lower endpoint exceeds zero. E-282 supplies this completed rejection; operational cost-benefit remains a separate unmeasured predicate."]
+inconclusive_outcomes = ["An interval contains zero, or dependence and support uncertainty prevents a sufficiently precise positive-effect decision: the positive-effect extension remains inconclusive rather than becoming an absence-of-effect claim.", "An interval touches or crosses 0.005, or the declared file/class/precision requirements fail: the proposed useful increment remains inconclusive.", "Canonical-minus-control uncertainty intervals remain unrun or insufficiently precise: algebra-specific superiority remains inconclusive despite fourteen to sixteen controls equaling or exceeding canonical point ROC-AUC in every final panel.", "External retrieval, identity or chronological admission remains unresolved: E-283 remains blocked with zero numerical inference. Provider-corrected source bytes require preserved provenance and a separately declared intake; sorting, deduplicating or omitting the failed date cannot manufacture campaign completion."]
 
 [[claim]]
 id = "C-175"

@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+    "key": "url:https://pubmed.ncbi.nlm.nih.gov/36655553/",
+    "links": [
+      [
+        "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/csv/c010_nonlocal_material_calibrations.csv",
+      "citation": "Nonlocal Cable-Network Metamaterials",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "Nonlocal Cable-Network Metamaterials"
+    }
+  },
+  "before": {
+    "canonical_url": "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+    "key": "url:https://pubmed.ncbi.nlm.nih.gov/36655553/",
+    "links": [
+      [
+        "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/csv/c010_nonlocal_material_calibrations.csv",
+      "citation": "Nonlocal Cable-Network Metamaterials",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "Nonlocal Cable-Network Metamaterials"
+    }
+  },
+  "digest_matches": false,
+  "outcome": "expected_bytes_mismatched",
+  "request": {
+    "body_bytes": 5565,
+    "body_sha256": "3ac143a472ea9564c799d59fa03e1339baa73e3768c24b73df11c16a6171ff85",
+    "completed": true,
+    "final_url": "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+    "http_status": 203,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:43Z",
+    "requested_url": "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-3067",
+    "artifact_key": "url:https://pubmed.ncbi.nlm.nih.gov/36655553/",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 2627,
+    "expected_canonical_url": "https://pubmed.ncbi.nlm.nih.gov/36655553/",
+    "expected_sha256": "a8647e2952a0a89c70f5ccf31a9e2dee3c8f27e60435a0f9df4155606dbe5f40",
+    "observation_key": "exact-response-ASOT-3067-f7e9f57228bdea35717db54dbf9432954675be574da66b3813917a6ff182a5c2",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-29.json",
+      "sha256": "f7e9f57228bdea35717db54dbf9432954675be574da66b3813917a6ff182a5c2"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-29.bin",
+      "sha256": "3ac143a472ea9564c799d59fa03e1339baa73e3768c24b73df11c16a6171ff85"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "672fef76c9aeaf32a62c55951939c268b55016f052b2c53d7fd45db3e10ee6ba"
+}

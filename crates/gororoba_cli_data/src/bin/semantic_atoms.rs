@@ -247,7 +247,17 @@ fn load_claims(
             let mut out = Vec::new();
             for row in claims {
                 let where_stated = row.where_stated.clone();
-                let verify_rule = row.status_note.clone().unwrap_or_default();
+                let declaration = match store.claim_evidence(&row.id)? {
+                    Some(evidence) => Some(Value::try_from(&evidence.what_would_verify_refute)?),
+                    None if row.compat_toml_text.trim().is_empty() => None,
+                    None => {
+                        let compat: Value = toml::from_str(&row.compat_toml_text)?;
+                        compat.get("what_would_verify_refute").cloned()
+                    }
+                };
+                let verify_rule = provenance_core::falsifier_text::project_optional(declaration)?
+                    .or_else(|| row.status_note.clone())
+                    .unwrap_or_default();
                 let status_detail = collapse(&row.status);
                 let statement = collapse(&row.statement);
                 out.push(ClaimAtom {
@@ -286,7 +296,10 @@ fn load_claims(
         let claim_id = collapse(table_str(row, "id"));
         let statement = collapse(table_str(row, "statement"));
         let where_stated = table_str(row, "where_stated").to_string();
-        let verify_rule = table_str(row, "what_would_verify_refute").to_string();
+        let verify_rule = provenance_core::falsifier_text::project_optional(
+            row.get("what_would_verify_refute").cloned(),
+        )?
+        .unwrap_or_default();
         let status_detail = collapse(table_str(row, "status"));
         out.push(ClaimAtom {
             claim_id,
@@ -1785,4 +1798,66 @@ fn sha256_hex(bytes: &[u8]) -> String {
         .iter()
         .map(|byte| format!("{byte:02x}"))
         .collect()
+}
+
+#[cfg(test)]
+mod claim_falsifier_tests {
+    use super::*;
+
+    #[test]
+    fn canonical_evidence_precedes_legacy_text_and_preserves_all_reference_categories() -> Result<()>
+    {
+        let fixture = tempfile::tempdir()?;
+        let database = fixture.path().join("claims.sqlite3");
+        drop(ProvenanceStore::open(&database)?);
+        let connection = rusqlite::Connection::open(&database)?;
+        connection.execute("INSERT INTO claims (id,statement,status,where_stated,last_verified,status_note,compat_toml_text) VALUES ('C-100','empirical claim','Provisional','','','older status note',?1)", ["what_would_verify_refute='legacy C-105'"])?;
+        let evidence = serde_json::json!({
+            "claim_id":"C-100", "evidence_layer":"phenomenological_mapping", "depth_status":"not_assessed",
+            "lift_depth":null, "depth_rationale":"fixture", "intervening_maps":[],"fitted_parameters":[],
+            "fixed_hyperparameters":[],"decisive_experiment":{"experiment_ids":[],"protocol_artifact":"protocol.toml","description":"fixture"},
+            "what_would_verify_refute":{"verification_outcomes":["verify C-101 `verify.rs`"],"revision_outcomes":["revise C-102 `revise.rs`"],"abandonment_outcomes":["abandon C-103 `abandon.rs`"],"inconclusive_outcomes":["inconclusive C-104 `inconclusive.rs`"]}
+        });
+        connection.execute(
+            "INSERT INTO claim_evidence VALUES ('C-100',?1)",
+            [evidence.to_string()],
+        )?;
+        let (claims, _) = load_claims(
+            fixture.path(),
+            Path::new("claims.sqlite3"),
+            Path::new("absent.toml"),
+        )?;
+        for reference in ["C-101", "C-102", "C-103", "C-104"] {
+            assert!(claims[0].verification_rule.contains(reference));
+        }
+        for reference in ["verify.rs", "revise.rs", "abandon.rs", "inconclusive.rs"] {
+            assert!(
+                claims[0]
+                    .verification_refs
+                    .iter()
+                    .any(|value| value == reference)
+            );
+        }
+        assert!(!claims[0].verification_rule.contains("older status note"));
+        connection.execute("DELETE FROM claim_evidence", [])?;
+        let (claims, _) = load_claims(
+            fixture.path(),
+            Path::new("claims.sqlite3"),
+            Path::new("absent.toml"),
+        )?;
+        assert_eq!(claims[0].verification_rule, "legacy C-105");
+        connection.execute(
+            "UPDATE claims SET compat_toml_text='what_would_verify_refute=42'",
+            [],
+        )?;
+        assert!(
+            load_claims(
+                fixture.path(),
+                Path::new("claims.sqlite3"),
+                Path::new("absent.toml")
+            )
+            .is_err()
+        );
+        Ok(())
+    }
 }

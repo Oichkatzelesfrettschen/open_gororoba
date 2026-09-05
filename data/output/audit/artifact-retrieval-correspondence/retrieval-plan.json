@@ -1,0 +1,133 @@
+{
+  "audit_sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a",
+  "method": "GET",
+  "requests": [
+    {
+      "index": 12,
+      "url": "https://archive.org/download/arxiv-1602.02317/1602.02317.pdf"
+    },
+    {
+      "index": 2,
+      "url": "https://arxiv.org/abs/1710.01373"
+    },
+    {
+      "index": 11,
+      "url": "https://arxiv.org/abs/2411.18881"
+    },
+    {
+      "index": 13,
+      "url": "https://arxiv.org/abs/2509.08099"
+    },
+    {
+      "index": 14,
+      "url": "https://arxiv.org/abs/math/0403113"
+    },
+    {
+      "index": 15,
+      "url": "https://arxiv.org/pdf/0910.2569.pdf"
+    },
+    {
+      "index": 16,
+      "url": "https://arxiv.org/pdf/1602.02317.pdf"
+    },
+    {
+      "index": 0,
+      "url": "https://arxiv.org/pdf/1602.02317v1.pdf"
+    },
+    {
+      "index": 17,
+      "url": "https://arxiv.org/pdf/1602.02317v2.pdf"
+    },
+    {
+      "index": 18,
+      "url": "https://arxiv.org/pdf/2311.18594.pdf"
+    },
+    {
+      "index": 19,
+      "url": "https://arxiv.org/pdf/2411.18881.pdf"
+    },
+    {
+      "index": 20,
+      "url": "https://arxiv.org/pdf/2509.08099.pdf"
+    },
+    {
+      "index": 21,
+      "url": "https://arxiv.org/pdf/math/0403113.pdf"
+    },
+    {
+      "index": 22,
+      "url": "https://arxiv.org/pdf/math/0511691.pdf"
+    },
+    {
+      "index": 23,
+      "url": "https://bibliotekanauki.pl/articles/729117.pdf"
+    },
+    {
+      "index": 24,
+      "url": "https://core.ac.uk/download/pdf/229066012.pdf"
+    },
+    {
+      "index": 25,
+      "url": "https://docs.amd.com/api/khub/documents/w13cmcpL4f9MCT4WPN6eDg/content"
+    },
+    {
+      "index": 3,
+      "url": "https://doi.org/10.1021/acsphotonics.5c01385"
+    },
+    {
+      "index": 4,
+      "url": "https://doi.org/10.1038/s41467-020-15940-3"
+    },
+    {
+      "index": 5,
+      "url": "https://doi.org/10.1038/s41467-022-31140-7"
+    },
+    {
+      "index": 6,
+      "url": "https://doi.org/10.1038/s41586-025-09917-9"
+    },
+    {
+      "index": 7,
+      "url": "https://doi.org/10.1038/s42005-021-00719-9"
+    },
+    {
+      "index": 8,
+      "url": "https://doi.org/10.1103/PhysRevD.110.116016"
+    },
+    {
+      "index": 9,
+      "url": "https://doi.org/10.1126/science.adl2348"
+    },
+    {
+      "index": 26,
+      "url": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf"
+    },
+    {
+      "index": 27,
+      "url": "https://journals.aps.org/prl/abstract/10.1103/6c61-fm1n"
+    },
+    {
+      "index": 1,
+      "url": "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf"
+    },
+    {
+      "index": 10,
+      "url": "https://projecteuclid.org/journals/missouri-journal-of-mathematical-sciences/volume-28/issue-1/An-Alternate-Cayley-Dickson-Product/10.35834/mjms/1474295358.pdf"
+    },
+    {
+      "index": 28,
+      "url": "https://projecteuclid.org/journals/pacific-journal-of-mathematics/volume-117/issue-1/Derivations-and-Cayley-derivations-of-generalized-Cayley-Dickson-algebras/pjm/1102706933.pdf"
+    },
+    {
+      "index": 29,
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36655553/"
+    },
+    {
+      "index": 30,
+      "url": "https://zenodo.org/record/1431095/files/article.pdf"
+    }
+  ],
+  "rows": 40,
+  "timeout_seconds": 45,
+  "user_agent": "Mozilla/5.0 (compatible; Gororoba evidence retrieval)"
+}

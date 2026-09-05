@@ -6,7 +6,7 @@
 //!
 //! Authoritative source: `registry/canonical/control_plane.sqlite3`.
 //!
-//! Total experiments: 251
+//! Total experiments: 253
 //!
 //! ## E-001: Cayley-Dickson Motif Census
 //!
@@ -4347,4 +4347,39 @@
 //! Run command:
 //! ```bash
 //! RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode all
+//! ```
+//!
+//! ## E-282: THEMIS-A timestamp-causal epoch validation with exact-support controls
+//!
+//! - Binary: `staples-causal-validation`
+//! - Input: Hash-admitted THEMIS-A daily vectors and official V2 crossing catalog; training 2007-2012, descriptive validation 2013-2014, final epochs 2015 and 2016.
+//! - Output: data/output/audit/staples-causal-validation/protocol.toml, data/output/audit/staples-causal-validation/results/summary.json, data/output/audit/staples-causal-validation/results/bootstrap.json, data/output/audit/staples-causal-validation/results/dataset.json, data/output/audit/staples-causal-validation/findings.toml
+//! - Deterministic: `false`
+//! - Seed: `20260904`
+//! - GPU: `false`
+//! - Claims: C-1740, C-1741, C-1743
+//!
+//! Method:
+//! Strict timestamp-causal six-vector features and preceding-window calibration at widths 64, 256 and 1024. Freeze training-only preprocessing and logistic coefficients. Compare canonical associator against 19 exact-support sign scrambles and six geometric predictors. Use paired whole-daily-file bootstrap intervals and preregistered global minimum ROC-AUC increment threshold 0.005.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/results-replay --mode all
+//! ```
+//!
+//! ## E-283: THEMIS-D external validation admission and native-source ordering audit
+//!
+//! - Binary: `staples-causal-validation`
+//! - Input: All 166 official V2 probe-D crossing dates in 2015-2016, retained HAPI GET responses, and independent native CDF for the rejected date.
+//! - Output: data/output/audit/staples-causal-validation/external-intake-summary.json, data/output/audit/staples-causal-validation/external-native-source-rca.toml, data/output/audit/staples-causal-validation/external-cdf-order-findings.json
+//! - Deterministic: `true`
+//! - GPU: `false`
+//! - Claims: C-1740, C-1741, C-1743
+//!
+//! Method:
+//! Apply sealed input admission before using frozen THEMIS-A models. Require complete planned-date accounting and monotonic source ordering; retain every failed date.
+//!
+//! Run command:
+//! ```bash
+//! cargo run --profile validation -p gororoba_cli_physics --bin staples-causal-validation -- --input-root . --protocol data/output/audit/staples-causal-validation/protocol.toml --out-dir data/output/audit/staples-causal-validation/external-results-replay --mode external --external-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --file-map data/output/audit/staples-causal-validation/external-file-map.csv
 //! ```

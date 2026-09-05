@@ -1,0 +1,23 @@
+actor = "codex"
+artifact_id = "ASOT-2830"
+artifact_key = "url:https://arxiv.org/pdf/1602.02317v2.pdf"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 192196
+expected_canonical_url = "https://arxiv.org/pdf/1602.02317v2.pdf"
+expected_sha256 = "ae9f792ff949b552e3988ee3138fe07846bfcf4002ef5c3e6c001933af7b6766"
+observation_key = "exact-response-ASOT-2830-d18f0fd576468ca7fde916f2a61cb1d09334a2906ad994c9444274a8f4c44138"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-17.json"
+sha256 = "d18f0fd576468ca7fde916f2a61cb1d09334a2906ad994c9444274a8f4c44138"
+
+[response]
+path = "data/output/audit/artifact-retrieval-correspondence/response-17.bin"
+sha256 = "ae9f792ff949b552e3988ee3138fe07846bfcf4002ef5c3e6c001933af7b6766"

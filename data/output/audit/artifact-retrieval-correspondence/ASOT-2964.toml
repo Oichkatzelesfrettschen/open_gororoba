@@ -1,0 +1,19 @@
+actor = "codex"
+artifact_id = "ASOT-2964"
+artifact_key = "url:https://files01.core.ac.uk/download/pdf/229066012.pdf"
+correct_canonical_url = false
+document_identity = "unresolved"
+expected_bytes = 3539055
+expected_canonical_url = "https://core.ac.uk/download/pdf/229066012.pdf"
+expected_sha256 = "616df668e92555c458abd965474548a23e2cff64c1d03bbbbfd3dedf93c39e68"
+observation_key = "exact-response-ASOT-2964-4904b70a9444e13af89936eb8e4c3231ff715c5c91cf2ffa18d83fe5cae3d227"
+reason = "Reconcile exact response bytes with preserved historical inventory expectation"
+schema_version = 1
+
+[expectation_source]
+path = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+sha256 = "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+
+[request_evidence]
+path = "data/output/audit/artifact-retrieval-correspondence/request-24.json"
+sha256 = "4904b70a9444e13af89936eb8e4c3231ff715c5c91cf2ffa18d83fe5cae3d227"

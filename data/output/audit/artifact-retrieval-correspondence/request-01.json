@@ -1,0 +1,11 @@
+{
+  "body_bytes": 1613071,
+  "body_sha256": "38e184b36049403ed03c4b99c96d33c4b6f6c08a0d99fbfa73744b2b5eaacab1",
+  "completed": true,
+  "final_url": "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:41Z",
+  "requested_url": "https://msp.org/pjm/1985/117-1/pjm-v117-n1-p10-s.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

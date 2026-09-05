@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 198
+event_count = 199
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4241,3 +4241,26 @@ transition_spec_sha256 = "116dea93933ece717e961a700051133a8ad4684cbce108e046cc9f
 proposal_key = "staples-alternative-and-isomorphic-family-comparison"
 canonical_claim_id = "C-1742"
 relation_kind = "narrows"
+
+[[transition]]
+event_id = 199
+transition_key = "staples-causal-epoch-bounded-increment"
+source_claim_id = "C-1741"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Does the positive increment extend to timestamp-causal features, training-only learned transforms, and entire subsequent epochs? The global-minimum interval remains positive. Separately, its upper endpoint is below 0.005 and rejects the proposed useful discrimination increment. External transfer remains blocked and algebra-specific superiority remains inconclusive."
+rationale = "Retain the historical grouped-refit claim and register the separately bounded causal result. Positive predictive information and a practically sufficient increment are distinct predicates; the campaign supports the former within the archive and rejects the latter under the investigator threshold."
+unresolved_assumptions = ["Daily cluster exchangeability and nominal bootstrap coverage remain unproven; estimates condition on frozen training fits and fixed final epochs.", "Selected crossing days do not establish ordinary-day false alarms, online arrival latency or operational cost-benefit.", "The external probe-D intake has one native-source backward-time date; external numerical inference remains unperformed.", "Exact-support control point ranks fail canonical dominance, but canonical-minus-control uncertainty intervals remain unrun."]
+evidence_artifact_ids = ["LOCAL-STAPLES-CAUSAL-EPOCH-CONTROLS"]
+experiment_ids = ["E-282", "E-283"]
+actor = "codex"
+reason = "Register the completed causal campaign while preserving every historical claim and refutation"
+transition_timestamp = "2026-09-05T05:20:49Z"
+transition_spec_sha256 = "7689608ef6eda5c94af19ee72104e3d2c0ba51e724f77a9e7216ea59420b5fa7"
+
+[[transition.successors]]
+proposal_key = "staples-causal-increment-below-declared-useful-threshold"
+canonical_claim_id = "C-1743"
+relation_kind = "refines"

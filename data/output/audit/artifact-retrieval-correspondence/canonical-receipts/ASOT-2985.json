@@ -1,0 +1,77 @@
+{
+  "after": {
+    "canonical_url": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+    "key": "url:https://isidore.co/misc/physics%20papers%20and%20books/modern%20papers/good%20overview%20of%20aharanov-bohm%20effect%3a%20proc.%20r.%20soc.%20lond.%20a-1984-berry-45-57.pdf",
+    "links": [
+      [
+        "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_0030_berry_1984_mirrors_isidore_co_misc_physics_20papers_20and_20books_modern_20papers_good_20overview_20of_20aharanov_bohm_20effect_3a_20proc_20r_20soc_20lond_20a_1984_berry_45_57.pdf",
+      "citation": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf"
+    }
+  },
+  "before": {
+    "canonical_url": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+    "key": "url:https://isidore.co/misc/physics%20papers%20and%20books/modern%20papers/good%20overview%20of%20aharanov-bohm%20effect%3a%20proc.%20r.%20soc.%20lond.%20a-1984-berry-45-57.pdf",
+    "links": [
+      [
+        "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+        "all_links"
+      ]
+    ],
+    "metadata": {
+      "canonical_download_path": "data/papers/corpus/asot_0030_berry_1984_mirrors_isidore_co_misc_physics_20papers_20and_20books_modern_20papers_good_20overview_20of_20aharanov_bohm_20effect_3a_20proc_20r_20soc_20lond_20a_1984_berry_45_57.pdf",
+      "citation": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+      "minimum_requirement_met": 1,
+      "status": "downloaded",
+      "title": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf"
+    }
+  },
+  "digest_matches": true,
+  "outcome": "expected_bytes_matched",
+  "request": {
+    "body_bytes": 1395398,
+    "body_sha256": "9cee71a56cee9675c561db43d8010b04abeb5163a8af3a38371c12ae0287f0d5",
+    "completed": true,
+    "final_url": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+    "http_status": 200,
+    "method": "GET",
+    "observed_at": "2026-09-05T04:50:41Z",
+    "requested_url": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+    "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+  },
+  "schema_version": 1,
+  "spec": {
+    "actor": "codex",
+    "artifact_id": "ASOT-2985",
+    "artifact_key": "url:https://isidore.co/misc/physics%20papers%20and%20books/modern%20papers/good%20overview%20of%20aharanov-bohm%20effect%3a%20proc.%20r.%20soc.%20lond.%20a-1984-berry-45-57.pdf",
+    "correct_canonical_url": false,
+    "document_identity": "unresolved",
+    "document_identity_evidence": null,
+    "expectation_source": {
+      "path": "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml",
+      "sha256": "e32bef6aba2d9d5344cbbc514ff5483b487757abd25d9bf9d18f6b16487af01a"
+    },
+    "expected_bytes": 1395398,
+    "expected_canonical_url": "https://isidore.co/misc/Physics%20papers%20and%20books/Modern%20Papers/Good%20overview%20of%20Aharanov-Bohm%20effect%3A%20Proc.%20R.%20Soc.%20Lond.%20A-1984-Berry-45-57.pdf",
+    "expected_sha256": "9cee71a56cee9675c561db43d8010b04abeb5163a8af3a38371c12ae0287f0d5",
+    "observation_key": "exact-response-ASOT-2985-1dcf662ac45e2eb0c12cef9d39fad6431f65410564dc82890c5b0900e8503a00",
+    "reason": "Reconcile exact response bytes with preserved historical inventory expectation",
+    "request_evidence": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/request-26.json",
+      "sha256": "1dcf662ac45e2eb0c12cef9d39fad6431f65410564dc82890c5b0900e8503a00"
+    },
+    "response": {
+      "path": "data/output/audit/artifact-retrieval-correspondence/response-26.bin",
+      "sha256": "9cee71a56cee9675c561db43d8010b04abeb5163a8af3a38371c12ae0287f0d5"
+    },
+    "schema_version": 1
+  },
+  "spec_sha256": "7f1c2d34d787ed6ca6e891c6b53047fd67ee21dc71e31af41e05071adb1f348b"
+}

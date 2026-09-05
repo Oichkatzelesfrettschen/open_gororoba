@@ -138,7 +138,10 @@ impl ProvenanceStore {
         let doc: toml_edit::DocumentMut = compat
             .parse()
             .with_context(|| format!("parse compat TOML body of insight {id}"))?;
-        Ok(doc.get("summary").and_then(|v| v.as_str()).map(str::to_string))
+        Ok(doc
+            .get("summary")
+            .and_then(|v| v.as_str())
+            .map(str::to_string))
     }
 
     /// Rewrite the summary inside an insight's cached compat TOML body in one
@@ -165,7 +168,10 @@ impl ProvenanceStore {
         let mut doc: toml_edit::DocumentMut = compat
             .parse()
             .with_context(|| format!("parse compat TOML body of insight {id}"))?;
-        let prev = doc.get("summary").and_then(|v| v.as_str()).map(str::to_string);
+        let prev = doc
+            .get("summary")
+            .and_then(|v| v.as_str())
+            .map(str::to_string);
         let prev_value_sha256 = prev.as_deref().map(sha256_hex);
         let new_value_sha256 = sha256_hex(new_summary);
         let operation = if prev.as_deref() == Some(new_summary) {
@@ -383,5 +389,4 @@ impl ProvenanceStore {
             },
         )
     }
-
 }

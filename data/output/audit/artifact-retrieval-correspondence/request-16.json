@@ -1,0 +1,11 @@
+{
+  "body_bytes": 0,
+  "body_sha256": null,
+  "completed": false,
+  "final_url": "https://arxiv.org/pdf/1602.02317",
+  "http_status": 404,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:28Z",
+  "requested_url": "https://arxiv.org/pdf/1602.02317.pdf",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

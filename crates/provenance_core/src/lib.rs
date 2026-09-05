@@ -1,6 +1,8 @@
 use camino::Utf8PathBuf;
 use serde::{Deserialize, Serialize};
 
+pub mod falsifier_text;
+
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub enum ArtifactStatus {
     Downloaded,

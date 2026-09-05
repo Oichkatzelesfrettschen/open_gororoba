@@ -22,13 +22,13 @@ generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "agents.toml"
-sha256 = "123e4825ca8d2ce95194bb67b24e2d994d6b092db5a110386274c5373153b27d"
-size_bytes = 48712
-line_count = 844
-claim_ref_count = 17
+sha256 = "af4a3a7184a99a8c47a2ad1c9ff2da76de72f6829e203c32d5f1cff12cffa913"
+size_bytes = 49580
+line_count = 853
+claim_ref_count = 20
 insight_ref_count = 2
 experiment_ref_count = 1
-link_count = 352
+link_count = 353
 link_sample = ["$(CURDIR)/.cache/gate-target", "$(HOME)/worktrees", "*.md", ".cache", ".cache/", ".cache/exp-<name>-target/", ".cache/gate-target/debug/.cache/gate-target", ".cargo/config.toml"]
 
 [[document]]
@@ -41,13 +41,13 @@ generated = false
 status = "active"
 migration_priority = "medium"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "123e4825ca8d2ce95194bb67b24e2d994d6b092db5a110386274c5373153b27d"
-size_bytes = 48712
-line_count = 844
-claim_ref_count = 17
+sha256 = "af4a3a7184a99a8c47a2ad1c9ff2da76de72f6829e203c32d5f1cff12cffa913"
+size_bytes = 49580
+line_count = 853
+claim_ref_count = 20
 insight_ref_count = 2
 experiment_ref_count = 1
-link_count = 352
+link_count = 353
 link_sample = ["$(CURDIR)/.cache/gate-target", "$(HOME)/worktrees", "*.md", ".cache", ".cache/", ".cache/exp-<name>-target/", ".cache/gate-target/debug/.cache/gate-target", ".cargo/config.toml"]
 
 [[document]]
@@ -887,13 +887,13 @@ generated = false
 status = "active"
 migration_priority = "high"
 toml_backing = "registry/research_narratives.toml"
-sha256 = "36a50cbba909987b3c09aaf582b5730646a63b565bd3f3e6709460b6894bab52"
-size_bytes = 11018
-line_count = 254
-claim_ref_count = 1
+sha256 = "da0b42462f5e2c86eb483fdd6a59a853e4b849a8689f048808435472c3bfc0f0"
+size_bytes = 17310
+line_count = 356
+claim_ref_count = 4
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 85
+link_count = 120
 link_sample = [".gitignore", "// @generated", "control_plane.sqlite3-shm", "control_plane.sqlite3-wal", "crates/gororoba_cli_data/src/bin/repo_audit.rs", "crates/provenance_store/src/lib.rs", "db/migrations/*.sql", "db/migrations/0015_revisions_audit.sql"]
 
 [[document]]
@@ -1020,14 +1020,14 @@ generated = false
 status = "active"
 migration_priority = "high"
 toml_backing = "registry/research_narratives.toml"
-sha256 = "4bb8267c02fb587cc8f45f6cc47c2a43496586d5b649dc2c947650ef23b88694"
-size_bytes = 1589
-line_count = 32
+sha256 = "65e48f1d6127b8afcbf6146ac5ea83ae534941c5da9cd29bb2a8331692695443"
+size_bytes = 2474
+line_count = 44
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 5
-link_sample = ["dataset.json"]
+link_count = 7
+link_sample = ["dataset.json", "replay.toml"]
 
 [[document]]
 id = "DOC-0055"

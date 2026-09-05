@@ -1,0 +1,18 @@
+HTTP/2 200 
+cache-control: private
+content-type: application/pdf
+server: Microsoft-IIS/10.0
+x-aspnetmvc-version: 5.2
+x-aspnet-version: 4.0.30319
+set-cookie: [REDACTED]
+x-powered-by: ASP.NET
+x-frame-options: SAMEORIGIN
+date: Sat, 05 Sep 2026 04:50:42 GMT
+content-length: 1450466
+set-cookie: [REDACTED]
+set-cookie: [REDACTED]
+set-cookie: [REDACTED]
+strict-transport-security: max-age=31536000
+x-cdn: Imperva
+x-iinfo: 12-73317560-73314273 pNNy RT(1788583842539 59) q(0 0 0 0) r(2 2) U2
+

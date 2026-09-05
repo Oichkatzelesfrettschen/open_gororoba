@@ -1344,6 +1344,18 @@ fn cmd_claim_mutation(
     args: &ClaimMutationArgs,
 ) -> Result<()> {
     match &args.action {
+        ClaimMutationAction::SetEvidence {
+            spec,
+            actor,
+            reason,
+        } => {
+            let path = resolve_cli_path(repo_root, spec);
+            let text = fs::read_to_string(&path)
+                .with_context(|| format!("read claim evidence {}", path.display()))?;
+            let spec = ProvenanceStore::parse_claim_evidence_spec(&text)?;
+            let revision = store.set_claim_evidence(&spec, actor, reason)?;
+            println!("claim={} evidence_revision={revision}", spec.claim_id);
+        }
         ClaimMutationAction::Transition(transition_args) => {
             let ClaimTransitionAction::Apply { spec, regen_toml } = &transition_args.action else {
                 unreachable!(
@@ -1672,14 +1684,25 @@ fn cmd_binaries_mutation(
         } => {
             let declared = declared_binary_targets(repo_root)?;
             if *dry_run {
-                let (added, removed) = store.preview_binaries_sync(&declared)?;
-                for name in &removed {
+                let summary = store.preview_binaries_sync(&declared)?;
+                for name in &summary.removed {
                     println!("would remove {name}");
                 }
-                for name in &added {
+                for name in &summary.added {
                     println!("would add {name}");
                 }
-                println!("{} add(s), {} removal(s)", added.len(), removed.len());
+                for change in &summary.owner_changes {
+                    println!(
+                        "would change owner {}: {} -> {}",
+                        change.name, change.previous_crate, change.declared_crate
+                    );
+                }
+                println!(
+                    "{} add(s), {} removal(s), {} owner change(s)",
+                    summary.added.len(),
+                    summary.removed.len(),
+                    summary.owner_changes.len()
+                );
                 return Ok(());
             }
             let actor = resolve_actor(actor.clone());
@@ -1690,15 +1713,22 @@ fn cmd_binaries_mutation(
             for name in &summary.added {
                 println!("added {name}");
             }
+            for change in &summary.owner_changes {
+                println!(
+                    "changed owner {}: {} -> {}",
+                    change.name, change.previous_crate, change.declared_crate
+                );
+            }
             println!(
-                "Synced binaries_cp by {actor}{}: {} retained, {} added, {} removed.",
+                "Synced binaries_cp by {actor}{}: {} retained, {} added, {} removed, {} owner changes.",
                 reason
                     .as_deref()
                     .map(|r| format!(" ({r})"))
                     .unwrap_or_default(),
                 summary.retained,
                 summary.added.len(),
-                summary.removed.len()
+                summary.removed.len(),
+                summary.owner_changes.len()
             );
             maybe_regen_toml(*regen_toml)?;
         }
@@ -1717,6 +1747,12 @@ fn cmd_artifact_mutation(
             let specification: provenance_store::ArtifactPathRepairSpec =
                 toml::from_str(&fs::read_to_string(&spec)?)?;
             let report = store.repair_artifact_paths(repo_root, &specification)?;
+            println!("{}", serde_json::to_string_pretty(&report)?);
+        }
+        ArtifactAction::RecordRetrieval { spec } => {
+            let specification: provenance_store::ArtifactRetrievalSpec =
+                toml::from_str(&fs::read_to_string(repo_root.join(spec))?)?;
+            let report = store.record_artifact_retrieval(repo_root, &specification)?;
             println!("{}", serde_json::to_string_pretty(&report)?);
         }
         ArtifactAction::AssignLane {

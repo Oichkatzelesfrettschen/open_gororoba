@@ -1,0 +1,21 @@
+HTTP/2 404 
+date: Sat, 05 Sep 2026 04:50:33 GMT
+content-type: application/json
+set-cookie: [REDACTED]
+set-cookie: [REDACTED]
+server: Apache
+ft-req-id: hdwakt
+ft-called-app: ft/server
+ft-called-app-version: 5.3.46:5368ede6cfd9ea43a52de6ef3704a92022cd015a
+ft-called-app-instance: z5zc9
+vary: origin,access-control-request-method,access-control-request-headers,accept-encoding
+x-content-type-options: nosniff
+strict-transport-security: max-age=31536000; includeSubDomains
+referrer-policy: same-origin
+reporting-endpoints: csp-violation-endpoint="https://docs.amd.com/internal/api/debug/csp-violations"
+content-security-policy: frame-ancestors 'self' http://10.254.48.114:3001 http://10.31.201.119:8080 http://172.31.138.4:3001 http://172.31.15.48:3001 http://172.31.15.48:5173 http://tdltoolbox.xilinx.com:91 http://tdltoolbox.xilinx.com:93 https://xilinx-staging.fluidtopics.net; report-uri https://docs.amd.com/internal/api/debug/csp-violations; report-to csp-violation-endpoint
+content-disposition: attachment; filename="api.json"; filename*=UTF-8''api.json
+set-cookie: [REDACTED]
+set-cookie: [REDACTED]
+front: front01 ohio
+

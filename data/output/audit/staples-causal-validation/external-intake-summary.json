@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "planned_count": 166,
+  "accounted_count": 166,
+  "admitted_count": 165,
+  "failed_count": 1,
+  "complete_accounting": true,
+  "retained_get_attempts": 168,
+  "get_statuses": [
+    200
+  ],
+  "admitted_rows": 4398570,
+  "admitted_equal_timestamp_count": 11,
+  "admitted_long_gap_count": 12,
+  "failed_dates": [
+    "2016-09-02"
+  ],
+  "byte_verification": "All 168 retained vector GET bodies independently pass sha256sum --check",
+  "external_verdict": "blocked_input_admission_backward_timestamp"
+}

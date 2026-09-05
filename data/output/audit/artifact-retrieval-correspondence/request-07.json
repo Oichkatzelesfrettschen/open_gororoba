@@ -1,0 +1,11 @@
+{
+  "body_bytes": 460009,
+  "body_sha256": "fc274b124c9e9f6984fccdb57cc3b823c28883bd17f7eb0a0a06bb7a2655ac60",
+  "completed": true,
+  "final_url": "https://www.nature.com/articles/s42005-021-00719-9?error=cookies_not_supported&code=d1b2007b-6ae4-47a4-b3ab-97c5cae7c8f4",
+  "http_status": 200,
+  "method": "GET",
+  "observed_at": "2026-09-05T04:50:40Z",
+  "requested_url": "https://doi.org/10.1038/s42005-021-00719-9",
+  "tool": "curl with Mozilla/5.0 user-agent; transport success never substitutes for expected-byte verification"
+}

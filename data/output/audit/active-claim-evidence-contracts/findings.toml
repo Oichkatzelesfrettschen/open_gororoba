@@ -1,0 +1,14 @@
+schema_version = 1
+scope = "Active Staples empirical frontier and its causal successor"
+selection_reason = "C-1740 and C-1741 own the grouped-refit frontier named by the requested campaign. C-1743 records the completed causal experiment at its measured scope. Historical rows outside that frontier remain unbackfilled."
+canonical_claims_before = 1556
+canonical_claims_after = 1557
+typed_claim_ids = ["C-1740", "C-1741", "C-1743"]
+evidence_layer = "phenomenological_mapping"
+physical_depth_status = "not_assessed"
+physical_depth_boundary = "The schema types optional lift_depth and validates it against declared interpretive maps. These detector records enumerate computational maps and fitted budgets while leaving physical interpretation unassessed; omitted numerical depth does not mean zero."
+mutation_commands = ["gororoba-db claim set-evidence --spec C-1740.toml --actor codex --reason <reason>", "gororoba-db claim set-evidence --spec C-1741.toml --actor codex --reason <reason>", "gororoba-db claim set-evidence --spec C-1743.toml --actor codex --reason <reason>"]
+original_history = "preservation-audit.sql compares every original claim, transition, curated binary field, artifact metadata field and historical artifact link against the pre-mutation Git baseline. The audit admits new rows and links while detecting any missing or changed original row on those measured surfaces."
+revision_integrity = "Complete canonical declaration revisions and their experiment references are append-only. Transition fingerprints include the declaration, so a concurrent contract change invalidates an earlier transition plan. Destructive rebuild and registry reimport guards protect declaration history."
+compatibility = "Structured falsifier outcomes overlay compatibility claim exports; strict shared consumers retain support for historical text falsifiers. Exported map counts remain executable metadata rather than prose-only declarations."
+validation = "Store and DB tests cover malformed declarations, missing experiment references, history preservation, exact export behavior, rollback and stale transition fingerprints. Consumer runtime tests and all-target Clippy pass."

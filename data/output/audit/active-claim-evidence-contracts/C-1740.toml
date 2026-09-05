@@ -1,0 +1,78 @@
+claim_id = "C-1740"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+depth_rationale = "The retained claim measures detector discrimination on an archived sample. Computational feature stages are enumerated; a physical interpretation of the embedding has not been assessed. Computational stage counts do not assert a physical lift depth."
+fixed_hyperparameters = ["16-dimensional embedding", "six local field samples", "norm denominator epsilon 1e-30", "rolling calibration width 256", "five grouped CV seeds 42 through 46", "100 paired bootstrap draws", "fixed seed-42 fold-0 uncertainty population", "historical label at k+4 with feature availability at k+5"]
+
+[[intervening_maps]]
+branch = "associator"
+name = "magnitude_augmentation"
+kind = "computational"
+description = "Augment each GSE magnetic vector with its Euclidean magnitude."
+[[intervening_maps]]
+branch = "associator"
+name = "overlapping_staple_embedding"
+kind = "computational"
+description = "Pack four consecutive augmented vectors into R16 and use three overlapping staples spanning six field samples."
+[[intervening_maps]]
+branch = "associator"
+name = "cayley_dickson_associator_norm"
+kind = "computational"
+description = "Compute the Euclidean norm of (ab)c-a(bc) using the 16D Cayley-Dickson multiplication table."
+[[intervening_maps]]
+branch = "associator"
+name = "norm_product_normalization"
+kind = "computational"
+description = "Divide by the product of staple norms plus 1e-30."
+[[intervening_maps]]
+branch = "pvi"
+name = "lag_one_increment_norms"
+kind = "computational"
+description = "Compute Euclidean norms of successive magnetic-vector differences."
+[[intervening_maps]]
+branch = "pvi"
+name = "six_sample_maximum"
+kind = "computational"
+description = "Take the maximum of five increments spanning the same six samples."
+[[intervening_maps]]
+branch = "pvi"
+name = "arm_specific_rms"
+kind = "computational"
+description = "Estimate complete-daily-file, pooled-training-file, or preceding-256-row increment RMS in the declared arm."
+[[intervening_maps]]
+branch = "pvi"
+name = "rms_normalization"
+kind = "computational"
+description = "Divide the maximum increment by its arm-specific RMS in f64."
+
+[[fitted_parameters]]
+branch = "associator"
+count = 0
+names = []
+training_boundary = "The associator feature has fixed algebraic coefficients and fixed norm normalization."
+[[fitted_parameters]]
+branch = "daily_file_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One scale per complete daily file, including future rows. Historical offline arm; the scale is not restricted to training data."
+[[fitted_parameters]]
+branch = "pooled_training_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One pooled scale per training split or resampled training multiset, using whole-file increment sufficient statistics and multiplicities."
+[[fitted_parameters]]
+branch = "preceding_input_row_rms"
+count = 1
+names = ["increment_rms"]
+training_boundary = "One local RMS per score from 256 preceding parsed-row increments. Equal timestamps limit precedence to input-row order. The count describes one estimator instance, not the number of instances."
+
+[decisive_experiment]
+experiment_ids = ["E-280", "E-281"]
+protocol_artifact = "data/output/audit/staples-calibration-grouped-refits/protocol.toml"
+description = "Replay the sealed common-population calibration comparison and paired train-file/test-file resampling to adjudicate the historical result. The separate timestamp-causal protocol tests extension beyond that result and does not retroactively redefine it."
+
+[what_would_verify_refute]
+verification_outcomes = ["Independent replay reproduces the declared population and positive global minimum associator-minus-PVI interval under the sealed procedure."]
+revision_outcomes = ["A reproducible admission or calculation correction changes the population or endpoint; preserve the original observation and register the corrected bounded successor.", "A useful externally validated detector is reproduced by matched generic controls; retain predictive utility while revising any separately proposed algebra-specific explanation."]
+abandonment_outcomes = ["An independently verified replay on the identical admitted population and sealed algorithm contradicts the reported positive global standalone margin; abandon that numerical claim after resolving implementation provenance."]
+inconclusive_outcomes = ["A new causal or external interval crosses the declared useful-increment threshold; the extension remains inconclusive and the historical bounded result retains its own evidence.", "A decisive input or source identity fails admission; the experiment remains blocked rather than supplying a numerical verdict."]

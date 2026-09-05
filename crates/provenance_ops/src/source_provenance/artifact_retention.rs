@@ -224,8 +224,14 @@ mod tests {
 
         let text = render_host_materialization(&[tracked, absent], "2026-09-01");
         let parsed: toml::Value = toml::from_str(&text).expect("manifest parses");
-        assert_eq!(parsed["host_materialization"]["present_count"].as_integer(), Some(1));
-        assert_eq!(parsed["host_materialization"]["git_tracked_count"].as_integer(), Some(1));
+        assert_eq!(
+            parsed["host_materialization"]["present_count"].as_integer(),
+            Some(1)
+        );
+        assert_eq!(
+            parsed["host_materialization"]["git_tracked_count"].as_integer(),
+            Some(1)
+        );
     }
 
     #[test]
