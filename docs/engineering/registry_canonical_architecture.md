@@ -96,7 +96,7 @@ in `docs/engineering/evidence_ledger_operating_contract_2026_08_01.md`.
   or downstream consumer that knew the TOML format keeps working. They
   are regenerated from Layer 1 by `provenance export-control-plane`
   (binary in `gororoba_cli_provenance`, source in
-  `gororoba_cli_data/src/bin/provenance.rs`). Each Layer-2 TOML starts
+  `gororoba_cli_provenance/src/bin/provenance.rs`). Each Layer-2 TOML starts
   with a header line that begins
   `# AUTO-GENERATED: READ-ONLY COMPATIBILITY EXPORT.` -- if you see
   that header, do not edit by hand.
