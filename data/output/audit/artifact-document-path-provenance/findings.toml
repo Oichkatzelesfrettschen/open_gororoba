@@ -37,7 +37,7 @@ command = 'CARGO_TARGET_DIR="$PWD/.cache/gate-target" cargo run --locked --profi
 exports = ["provenance export-control-plane", "registry-integrity", "provenance verify-control-plane"]
 
 [verification]
-api = "Seven artifact path repair tests pass, including full-row metadata preservation, exact replay, invalid admissions, symlink components and late-trigger transaction rollback."
+api = "Eight artifact path repair tests pass, including full-row metadata preservation, exact replay, invalid admissions, symlink components, inherited Git environment isolation and late-trigger transaction rollback."
 scanner = "All 26 provenance_ops library tests pass, including document, context-chunk and generic artifact regressions. provenance_ops all-target Clippy passes with warnings denied."
 idempotence = "Two canonical CLI applications emit byte-identical reports and retain one repair event."
 finite_delta = "All 14 SQL assertions pass: exactly five canonical-path changes, seven removed downloaded relations and thirteen added typed relations; original artifact metadata, source references, citations, lanes, claims, transitions and prior export history remain preserved."
@@ -56,5 +56,6 @@ rebuild_test = "A CLI rebuild of a scratch copy using --allow-transition-history
 tracked_targets = "Admission checks the exact Git worktree root and one regular stage-0 index entry for each replacement and related path. Untracked, ignored, unresolved and nonrepository paths fail. Materialized SHA256 remains authoritative because Git LFS index entries store pointer bytes."
 specialized_identity = "Book ownership conversion is restricted to registry/book_docs.toml. End-to-end candidate extraction combines specialized external-source and generic passes: DOI and arXiv dossiers plus a citing book yield five candidates and exactly three intended artifacts."
 relative_spec = "A real CLI invocation from /tmp using an absolute --repo-root and repository-relative --spec emits a byte-identical retained repair report."
-focused_validation = "All 44 provenance_store library tests and all 26 provenance_ops library tests pass."
+focused_validation = "All 45 provenance_store library tests and all 26 provenance_ops library tests pass."
 early_preflight = "Both provenance index --refresh-compat-exports and provenance export-artifact-scan --reindex-after reject a scratch database holding repair history before export writes. The database and sentinel export remain byte-identical; the four-file scratch inventory remains unchanged."
+hook_environment = "The initial review push failed because fixture Git subprocesses inherited hook GIT_* overrides. Git init changed primary core.bare to true and fixture adds staged replacement.txt and transformed.txt in the feature index. The operator restored core.bare=false and removed those two fixture-only index entries; primary main remained at the base commit with clean tracked status. Repository Git subprocesses now clear inherited GIT_* overrides. A child-process regression injects redirected Git directories, index and core.bare configuration, runs the exact repair/replay test, and verifies the caller directory remains empty."
