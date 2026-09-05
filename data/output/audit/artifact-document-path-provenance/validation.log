@@ -239,3 +239,13 @@ Scratch index --refresh-compat-exports and export-artifact-scan --reindex-after:
 both exit nonzero with the artifact-history refusal (1 repair event, 8 canonical-only relations).
 Database and sentinel export compare byte-identical after each command.
 Scratch inventory retains exactly four files: database, database baseline, sentinel export, export baseline.
+
+Hook-environment falsification and repair:
+The first review push failed: 58/63 tests passed, 5 fixture tests failed.
+Inherited Git hook overrides redirected fixture Git init/add into the caller repository.
+Observed effects: primary core.bare=true; feature index added replacement.txt and transformed.txt.
+Restoration: core.bare=false; remove only the two fixture-only index entries.
+Primary tracked status clean at 5663248a8b042c742a64b6277f545fe68418042c.
+Repair: clear inherited GIT_* overrides on every explicit-root Git subprocess.
+Regression: child repair/replay test under redirected Git paths/configuration passes and caller directory remains empty.
+Focused rerun: 71 tests pass, 0 skipped (45 provenance_store, 26 provenance_ops).

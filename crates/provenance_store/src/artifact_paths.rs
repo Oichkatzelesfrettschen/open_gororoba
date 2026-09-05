@@ -111,10 +111,21 @@ fn verify_file(root: &Path, relative: &str, expected: &str) -> Result<()> {
     Ok(())
 }
 
+fn repository_git(root: &Path) -> Command {
+    let mut command = Command::new("git");
+    // Hook environments can redirect Git to the caller's index and common dir.
+    // Repository admission and test fixtures must resolve the explicit root.
+    for (name, _) in std::env::vars_os() {
+        if name.as_encoded_bytes().starts_with(b"GIT_") {
+            command.env_remove(name);
+        }
+    }
+    command.arg("-C").arg(root);
+    command
+}
+
 fn verify_tracked_file(root: &Path, relative: &str) -> Result<()> {
-    let repository = Command::new("git")
-        .arg("-C")
-        .arg(root)
+    let repository = repository_git(root)
         .args(["rev-parse", "--show-toplevel"])
         .output()
         .context("resolve artifact repository Git root")?;
@@ -128,10 +139,8 @@ fn verify_tracked_file(root: &Path, relative: &str) -> Result<()> {
     if Path::new(observed_root).canonicalize()? != root.canonicalize()? {
         bail!("artifact repository root must match the Git worktree root");
     }
-    let indexed = Command::new("git")
+    let indexed = repository_git(root)
         .arg("--literal-pathspecs")
-        .arg("-C")
-        .arg(root)
         .args([
             "ls-files",
             "--error-unmatch",
@@ -436,9 +445,7 @@ mod tests {
     }
 
     fn git(root: &Path, arguments: &[&str]) {
-        let output = Command::new("git")
-            .arg("-C")
-            .arg(root)
+        let output = repository_git(root)
             .args(arguments)
             .output()
             .unwrap();
@@ -447,6 +454,36 @@ mod tests {
             "{}",
             String::from_utf8_lossy(&output.stderr)
         );
+    }
+
+    #[test]
+    fn artifact_path_repair_isolates_inherited_git_environment() {
+        let fixture = fixture();
+        let caller = fixture.root.join("caller");
+        fs::create_dir(&caller).unwrap();
+        let output = Command::new(std::env::current_exe().unwrap())
+            .args([
+                "--exact",
+                "artifact_paths::tests::artifact_path_repair_preserves_metadata_and_replays_exactly",
+                "--nocapture",
+            ])
+            .env("GIT_DIR", caller.join("redirected.git"))
+            .env("GIT_COMMON_DIR", caller.join("common.git"))
+            .env("GIT_WORK_TREE", &caller)
+            .env("GIT_INDEX_FILE", caller.join("index"))
+            .env("GIT_CONFIG_COUNT", "1")
+            .env("GIT_CONFIG_KEY_0", "core.bare")
+            .env("GIT_CONFIG_VALUE_0", "true")
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "stdout: {}\nstderr: {}",
+            String::from_utf8_lossy(&output.stdout),
+            String::from_utf8_lossy(&output.stderr)
+        );
+        assert!(String::from_utf8_lossy(&output.stdout).contains("1 passed"));
+        assert_eq!(fs::read_dir(&caller).unwrap().count(), 0);
     }
 
     #[test]
