@@ -1,0 +1,250 @@
+schema_version = 1
+audit = "staples-calibration-grouped-refits"
+base_commit = "6fbf4947c59cf699ad5462dbe966851ffcc6a354"
+protocol_commit = "a2e7f93519f3805c5bdb4b6e32b21c595780533f"
+protocol_sha256 = "20bdf30fe878db6e92977df82088bea79104cf81fd3353f4c736effdc362b4d3"
+experiments = ["E-280", "E-281"]
+status = "production complete; both preregistered global endpoints positive under the conditional procedure"
+
+[registration]
+replay = "gororoba-db experiment upsert-from-toml --spec data/output/audit/staples-calibration-grouped-refits/experiments.toml --regen-toml false"
+experiments_before = 248
+experiments_after = 250
+original_experiment_rows_changed_or_removed = 0
+claims_changed = 0
+transition_rows_changed = 0
+transition_count = 195
+
+[artifact_lane_repair]
+cause = "Thirteen canonical PDF artifacts already appear in the papers_pdf compatibility lane, while canonical lane_assignments omitted their membership. Re-registering the artifacts would replace metadata and provenance."
+mechanism = "The artifact assign-lane transaction validates every artifact ID and the lane before inserting memberships and an audit event. Repeating the assignment adds zero rows."
+artifact_ids = ["ASOT-3237", "ASOT-3238", "ASOT-3239", "ASOT-3240", "ASOT-3241", "ASOT-3242", "ASOT-3243", "ASOT-3244", "ASOT-3245", "ASOT-3246", "ASOT-3247", "ASOT-3248", "ASOT-3249"]
+lane = "papers_pdf"
+replay = "gororoba-db artifact assign-lane --id ASOT-3237 --id ASOT-3238 --id ASOT-3239 --id ASOT-3240 --id ASOT-3241 --id ASOT-3242 --id ASOT-3243 --id ASOT-3244 --id ASOT-3245 --id ASOT-3246 --id ASOT-3247 --id ASOT-3248 --id ASOT-3249 --lane papers_pdf --actor codex --reason 'Reconcile existing PDF source-lane records with canonical artifact membership'"
+artifact_count = 3279
+unassigned_before = 13
+unassigned_after = 0
+memberships_added = 13
+memberships_removed = 0
+artifact_metadata_changed = 0
+artifact_paths_changed = 0
+record_sources_changed = 0
+validation = "Two preservation/idempotence/rollback tests pass; provenance_store and gororoba_db Clippy pass with warnings denied."
+remaining_boundary = "Lane membership classifies records. Repository-wide availability still depends on local data paths; the numerical input admission separately checks every consumed raw file and score row."
+
+[json_resume_repair]
+cause = "The cached serde_json parser changes some f64 values on deserialization; hashing a reserialized payload or comparing the admitted dataset Value can reject valid records."
+probe = "data/output/audit/staples-calibration-grouped-refits/json_roundtrip_probe.rs"
+probe_sha256 = "7b7ea5bea9551b205f727aca5260ee71b7c5e650b0f0f233fe04dbb505c929eb"
+baseline_serde_json_rlib_sha256 = "d24fc6e7201012e8dcfdda39002da36bcee25c784f1df48c9392481e1d38e927"
+sample_count = 100000
+baseline_reserialization_mismatches = 10568
+float_roundtrip_reserialization_mismatches = 0
+float_roundtrip_serde_json_rlib_sha256 = "c44c5a1d8f9bfb60e0e722423e8f9322bb742ae98a31a2911e67c27dc2382965"
+example_original = "2.4641099530828617e-9"
+example_parsed = "2.4641099530828613e-9"
+sampling = "xorshift64 seed 42, shifts 13/7/17; state as f64 divided by u64::MAX as f64"
+measurement_boundary = "Identical probe source, compiler and sample stream produce 10568 mismatches with the default+std cached library and zero with the float_roundtrip cached library. Library fingerprints identify the feature difference; the final runner also requires its own regression check."
+repair = "Enable serde_json float_roundtrip for the physics crate and validate exact JSON roundtrips before admitting resumable production records."
+
+[dependency_repair]
+crate = "proc-macro-error2 2.0.1"
+cause = "The private proc_macro extern-crate binding is publicly re-exported, which Rust 1.97.0 reports as future-incompatible E0365."
+upstream_index = "https://index.crates.io/pr/oc/proc-macro-error2"
+upstream_source = "https://raw.githubusercontent.com/GnomedDev/proc-macro-error-2/master/src/lib.rs"
+release_check = "The sparse index lists five versions and 2.0.1 as the latest stable release. The upstream master source retains the private binding."
+repair = "A root Cargo patch selects vendor/proc-macro-error2; the root binding becomes pub extern crate proc_macro."
+archive_sha256 = "11ec05c52be0a07b08061f7dd003e7d7092e0472bc731b4af7bb1ef876109802"
+upstream_comparison = "Recursive comparison against the checksum-verified crate archive finds exactly the one-line visibility change and the added patch-provenance.toml. All upstream source, tests, documentation and license files otherwise compare equal."
+consumers = ["tabled_derive 0.11.0", "iai-callgrind-macros 0.6.1"]
+consumer_replay = "cargo check -p cd_kernel -p gororoba_cli_physics --lib --benches --profile validation --future-incompat-report"
+remaining_action = "Replace the local patch when a released dependency carries the equivalent fix, then repeat consumer validation."
+
+[execution_environment]
+source_commit = "291ce5023d4ae8ca30c5ee4535bd9152520233ef"
+executable_sha256 = "bfffc2d695f3edd262bd602adb6bdc390b034a1b57efa84fb429eae04162bbe8"
+dataset_identity = "a3b736df29c6ce09e84d3580c9094c0c20a1d22d47c7e26a729b9114623bff49"
+production_exit_status = 0
+elapsed_seconds = 2017.26
+maximum_resident_kib = 3590780
+production_log = "data/output/audit/staples-calibration-grouped-refits/production.log"
+rustc = "1.97.0 (2d8144b78 2026-07-07)"
+rustc_commit = "2d8144b7880597b6e6d3dfd63a9a9efae3f533d3"
+llvm = "22.1.6"
+target = "x86_64-unknown-linux-gnu"
+processor = "AMD Ryzen 5 5600X3D 6-Core Processor"
+physical_cores = 6
+logical_cpus = 12
+rayon_threads = 6
+
+[cadence_admission]
+initial_source_commit = "141f68c0ac18b2184b7d26624d4a4a67569732b6"
+initial_exit_status = 1
+initial_elapsed_seconds = 41.59
+initial_log = "data/output/audit/staples-calibration-grouped-refits/admission-chronology-failure.log"
+initial_log_sha256 = "f40cea40067fe472580f336274c3b04788c79dfef4af174de5217093620e6c19"
+initial_local_log_sha256 = "ce6b18c3b0b346d587586a4d3488bf1eb7a637f50ee1064404870783ef84b934"
+log_sanitization = "Replace the absolute source-checkout and input-checkout prefixes with SOURCE_CHECKOUT and INPUT_ROOT."
+failure_evidence = "data/output/audit/staples-calibration-grouped-refits/admission-chronology-evidence/failure-admission-91fdc07c5a0b261a481739b5b802dbde5d1bdeaf893fde3d6edc3079959f1c48.json"
+failure_evidence_source_commit = "e15e31da"
+failure = "The additional strictly-increasing-timestamp implementation gate rejected equal-time rows after every numeric score and label matched. The sealed protocol requires sample-count windows and cadence reporting."
+probe = "data/output/audit/staples-calibration-grouped-refits/cadence_probe.rs"
+probe_sha256 = "c856e5652f17e6962c416d2deb2d4087967ca7dbc9bb19b729cfe6907f752d49"
+report = "data/output/audit/staples-calibration-grouped-refits/cadence_report.json"
+report_sha256 = "7f088bcfd401381d6d3c36f853ded13d142f7b9bf06dc6097944ea9b1f820313"
+files = 813
+finite_raw_rows = 23668439
+equal_timestamp_pairs = 503
+files_with_equal_timestamp_pairs = 270
+equal_time_different_vector_pairs = 502
+identical_csv_record_pairs = 1
+backward_intervals = 0
+positive_submillisecond_intervals = 0
+minimum_positive_interval_seconds = 2.25
+maximum_interval_seconds = 27506.728
+repair = "Preserve all parsed rows and their ordering. Record exact equal-time, backward-time and submillisecond counts; admit nondecreasing timestamps and reject exact backward steps. The implementation follows the sealed sample-count population contract."
+interpretation = "Equal-time measurements have retained row order within a timestamp. Six-sample support and one-sample lookahead describe sample indices; windows can straddle multi-hour gaps and establish neither fixed-duration locality nor streaming availability."
+legacy_score_rows = 23664374
+legacy_positives = 578320
+common_score_rows = 23456246
+common_positives = 574716
+warmup_rows_removed = 208128
+warmup_positives_removed = 3604
+
+[remaining_wide_provenance]
+check = "provenance --repo-root INPUT_CHECKOUT --db AUDIT_CHECKOUT/registry/canonical/control_plane.sqlite3 verify"
+exit_status = 1
+missing_path_rows = 5
+artifact_ids = ["ASOT-1099", "ASOT-1105", "ASOT-1118", "ASOT-1119", "ASOT-1479"]
+paths = ["papers/MANIFEST.toml", "papers/extracted/", "papers/", "papers/MANIFEST.toml", "papers/extracted/moreno-2005-math0512516/table_1.csv"]
+cause = "Historical document-reference imports retain papers/ paths deleted by commit 44767ff888bfe57a920b3a25b539d307f4833eae. The recorded external migration destination is absent on the inspected host."
+identity_boundary = "ASOT-1099/1105/1118 describe book documents; ASOT-1119 describes CTX-08 in the quick-context report. Correcting their imported document identities requires preserving obsolete paper paths as historical relations. The modern corpus/MANIFEST.toml has a different contract."
+moreno_retained_path = "data/papers/documents_extracted/moreno-2005-math0512516-companion/table_1.csv"
+moreno_historical_sha256 = "02c1ed06b04730be3d425a5cab33ea11aee7cb73dfc931e115180362f696393c"
+moreno_retained_sha256 = "fae8fefb401a0c100c6c38bb38117b8d3e2c12cda076e2cc0ff5dc8247da3c4e"
+moreno_relation = "The retained table replaces two ASCII hyphens with Unicode minus signs in its final line. Register a transformed-copy relationship instead of asserting byte identity."
+scientific_boundary = "The five historical paths belong to the repository-wide provenance frontier. E-280/E-281 independently admit every consumed raw file and retained score row."
+
+[independent_input_crosscheck]
+artifact = "data/output/audit/staples-calibration-grouped-refits/cadence-admission-crosscheck.json"
+comparison = "Join admission provenance.files and independent cadence files by sorted ID; compare ID, path, sha256 versus input_sha256, finite rows, discarded rows, and exact equal-time, backward-time, and positive-submillisecond counts."
+admitted_files = 813
+independent_files = 813
+mismatched_files = 0
+equal_timestamp_pairs = 503
+backward_pairs = 0
+interpretation = "The independent cadence evidence and production admission describe identical raw inputs and row-order observations."
+
+[review_boundary]
+scientific_review = "The independent source review verifies paired resampling, training-multiplicity preprocessing, held-out file weights, and separate global estimands."
+comparison_with_ancestor = "Comparisons between calibration arms share the common population and numerical representation. Comparisons with the older C-1739 result also change warmup filtering and prediction-logit storage from f32 to f64; their differences cannot be attributed solely to calibration."
+vendor_retention = "The Markdown ignore rule hid the unchanged upstream CHANGELOG.md. An explicit allowlist retains the file so a fresh checkout preserves the upstream documentation."
+
+[secondary_metric_tradeoff]
+population = "The five completed grouped CV assignments on the common admitted population."
+daily_augmented_auc_range = [0.8446077124092102, 0.8451549871173395]
+rolling_augmented_auc_range = [0.8516164543630124, 0.8524437488796367]
+daily_augmented_average_precision_range = [0.1023570722190233, 0.1037190081520996]
+rolling_augmented_average_precision_range = [0.0892929004096578, 0.09023051710829388]
+daily_augmented_log_loss_range = [0.09563966617436868, 0.09577071163752633]
+rolling_augmented_log_loss_range = [0.0945321150355216, 0.09468870734477694]
+interpretation = "The rolling-calibration augmented model improves ROC-AUC and log loss relative to daily calibration while average precision decreases. Calibration selection therefore depends on the evaluation metric. These secondary descriptive comparisons create no additional primary significance claim."
+
+[production_result]
+independent_audit = "data/output/audit/staples-calibration-grouped-refits/completion-audit.json"
+independent_audit_sha256 = "c9c9e8e19be7549d3b1d9cabd682c8d1c1830510e777c9761c828218c08630f8"
+independent_audit_exit_status = 0
+claims = ["C-1740", "C-1741"]
+summary = "data/output/audit/staples-calibration-grouped-refits/results/summary.json"
+summary_sha256 = "f4e8303d669f6a0b28162c16785f2875af40f17a677df5bd9d51c07474ae20d6"
+cv_seeds = [42, 43, 44, 45, 46]
+bootstrap_draws = 100
+converged_fits = 750
+global_increment_interval = [0.0010345135981383064, 0.002696001071597234]
+global_increment_median = 0.0017528829999793327
+global_standalone_margin_interval = [0.02049497475492511, 0.03547971075569095]
+global_standalone_margin_median = 0.0275574649038679
+increment_nonpositive_draws = 0
+standalone_nonpositive_draws = 0
+draw_denominator = 100
+monte_carlo_resolution = 0.009900990099009901
+decision = "Both separate global endpoints have positive lower linear percentiles under the sealed fixed-partition procedure. All 100 paired draws have positive global increments and positive global standalone margins."
+interpretation = "The associator's measured PVI dominance survives the three tested calibration contexts, and its logistic increment survives the declared refitting procedure. The result strengthens a bounded predictive claim rather than a physical mechanism or streaming claim."
+scope = "23,456,246 retained rows, 574,716 positives, 813 THEMIS-A files; one 256-increment rolling width; sample-count windows, equal-time rows, long gaps, and one-sample lookahead. The five CV assignments are correlated sensitivity measurements. The 100-draw bootstrap intervals are approximate and conditional on seed-42 fold-0 holdout, with limited tail precision."
+remaining_decisive_frontier = "Streaming or precursor claims require a separately preregistered experiment that removes the one-sample lookahead and adjudicates equal-time and gap handling. Generalization across held-out epochs or spacecraft and across other rolling widths remains untested."
+
+[[calibration_result]]
+arm = "daily_file"
+cv_increment_range = [0.0020033257278800898, 0.0020158658710166533]
+conditional_increment_interval = [0.0010345135981383064, 0.002696001071597234]
+conditional_standalone_minimum_interval = [0.0323851989870111, 0.0601128595829945]
+
+[[calibration_result]]
+arm = "frozen_training"
+cv_increment_range = [0.002394591060060347, 0.002422900809169848]
+conditional_increment_interval = [0.001369897556095559, 0.0030900024075085513]
+conditional_standalone_minimum_interval = [0.02049497475492511, 0.03547971075569095]
+
+[[calibration_result]]
+arm = "prewindow_rolling"
+cv_increment_range = [0.0033726281856922835, 0.0034006522849118204]
+conditional_increment_interval = [0.0022753417638616434, 0.004304890365889924]
+conditional_standalone_minimum_interval = [0.18394036075809583, 0.2151931992465097]
+
+[canonical_result_registration]
+artifact = "LOCAL-STAPLES-CALIBRATION-GROUPED-REFITS"
+transition_events = [196, 197]
+relation = "refines"
+preservation = "data/output/audit/staples-calibration-grouped-refits/canonical-preservation.json"
+original_claims_preserved = 1553
+original_transition_events_preserved = 195
+original_experiments_preserved = 247
+original_experiment_correction = "E-242 alone changes among the 248 baseline experiment rows: compat_toml_text.method replaces the redundancy inference with an inconclusive decision and separates numerator support from RMS context. All other fields retain their baseline values. Git commit 6fbf4947c59cf699ad5462dbe966851ffcc6a354 retains the historical declaration."
+final_claims = 1555
+final_transition_events = 197
+final_experiments = 250
+source_statuses = "C-1738 and C-1739 remain Verified; every original claim column compares equal to the base database."
+experiment_status_boundary = "The canonical lifecycle status becomes active, matching the experiment registry vocabulary. E-280/E-281 status_note records completed execution and the retained decision evidence."
+
+[experiment_mirror_repair]
+cause = "The canonical titles of six experiments contain retired-ID suffixes. The experiment emitter copied those tokens into active mirrors, which the experiment-reference-identity gate rejects."
+mechanism = "Both experiment emitters validate the historical/canonical pair against exactly one named alias, retain the scientific heading, and cite the EIA record for historical identity. Canonical experiment titles remain unchanged."
+validation = "Three focused tests pass for valid alias rendering, absent/mismatched/duplicate/unnamed alias rejection, and ordinary parenthetical title preservation. Nightly rustfmt check passes."
+
+[verification]
+repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1: exit 0; 661 tests pass, zero skipped; scoped Clippy and all governance checks pass."
+repository_gate_log = "data/output/audit/staples-calibration-grouped-refits/validation.log"
+emitter_clippy = "cargo clippy --offline --locked -j 2 --profile validation -p gororoba_cli_data --bin registry-emit -- -D warnings: exit 0."
+toml = "taplo check --no-auto-config parses all eight audit, transition, replay, experiment, and standalone manifest TOMLs successfully."
+independent_completion = "The locked standalone auditor exits 0 and verifies the exact 105 planned records and all 750 converged fits. Its complete-mode negative test rejects the partial 70-draw set."
+canonical_exports = "provenance verify-control-plane: exit 0; 1555 claims, 250 experiments, 388 binaries."
+diff = "git diff --check: exit 0."
+
+[registry_metadata_repairs]
+claim_map_declarations = "C-1740 and C-1741 status notes enumerate ordered computational branches: four associator stages and four PVI stages; C-1741 adds three model stages and enumerates the remaining geometric branches. The notes distinguish computational stage counts, evaluation operations and unestablished physical interpretation. Canonical revisions 570 and 571 retain the additions."
+historical_decision_correction = "experiment-decision-correction.toml updates E-242 through the canonical upsert path. A zero-containing incremental ROC-AUC interval is inconclusive about increment and redundancy; shared numerator support leaves daily-file RMS calibration context unmatched. The method identifies the original preregistration assertion as historical."
+calibration_order_correction = "E-280 method uses preceding input-row order for the 256-increment RMS. Equal timestamps prevent a strict temporal-precedence claim. The sealed protocol remains the historical declaration."
+experiment_note = "A partial experiment fragment omitted status_note and the upsert wrote SQL NULL over an existing canonical note. The conflict update now coalesces an omitted note with the stored value; an explicit supplied note still replaces it. The regression checks canonical readback and compatibility export."
+alias_source = "The emitter read experiments from the selected canonical database while resolving aliases beside the input TOML. Alias lookup now follows the same source selection as the experiment reader: the registry parent of a canonical directory, the sibling directory of a standalone database, or the input directory when the database is absent."
+alias_tests = "The regression supplies conflicting input-side and database-side maps, requires the selected database map, rejects a historical suffix when that map is missing, and checks standalone-database and compatibility-input layouts. All four emitter tests pass."
+upsert_tests = "Both experiment-upsert preservation tests pass."
+scientific_preservation = "The production summary and independent completion audit retain SHA-256 f4e8303d669f6a0b28162c16785f2875af40f17a677df5bd9d51c07474ae20d6 and c9c9e8e19be7549d3b1d9cabd682c8d1c1830510e777c9761c828218c08630f8. The initial metadata-only repairs preserved every production source-identity file. The preparation-error repair changes the runner source; the independent audit now verifies the retained production source at explicit commit 291ce5023d4ae8ca30c5ee4535bd9152520233ef."
+independent_recheck = "The complete independent audit exits 0 after the metadata repairs and emits a byte-identical completion report."
+foreign_database_export = "Both experiment emitters exit 0 from an unrelated working directory with default input paths, an explicit database in a separate registry/canonical directory, and the alias map beside that registry."
+
+[preparation_failure_and_source_boundary]
+mechanism = "Preparation errors enter the content-addressed failure-admission record path. Records retain source identity, input paths, available post-failure hashes, original error and explicit unavailable dataset/raw-file identity boundaries. Retention errors preserve the original rejection in the error chain. Successful numerical preparation and fitting remain unchanged."
+runner_tests = "All 11 staples-calibration-refits tests pass, including actual malformed score-header and missing raw-file preparation failures, admission-record idempotence and failure-retention error chaining. Focused Clippy passes with warnings denied."
+auditor_source_selection = "Live-source hashing remains the default. The explicit --source-ref option requires a full commit ID and reads Git source blobs with replacement objects disabled. Every recorded source hash must match; live retained results and protocol remain checksum-verified."
+production_source = "291ce5023d4ae8ca30c5ee4535bd9152520233ef"
+auditor_validation = "The strict argument test passes. Complete audit against the production commit exits 0 and emits byte-identical completion-audit.json. Live modified source, absent commit and wrong baseline commit each fail. The production summary and all numerical record bytes remain unchanged."
+repository_validation = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0 after the preparation/source-boundary and canonical-record repairs; scoped Clippy, 661 library tests and governance pass. Independent read-only review finds the map declarations consistent with the implementation."
+
+[registered_replay_directory]
+mechanism = "Canonical E-280/E-281 run commands target results-replay. Retained output references continue to identify the sealed production evidence under results; rebuilding the repaired runner establishes a new source/executable identity. Replays require a fresh directory or an identity-matching resumable run."
+verification = "The canonical upsert regenerates experiment compatibility records, lineage command hashes and the experiment mirror. Both canonical run commands use results-replay; production evidence paths retain results."
+
+[experiment_note_revision_history]
+mechanism = "Bulk experiment upserts preserve omitted notes and route explicit notes through the shared transaction-aware field updater. Revision rows retain prior/new hashes, actor experiment-registry-upsert, fragment-path reason, operation and application ID. Repeated identical notes append touch revisions; new notes record a NULL prior hash."
+regression = "The expanded upsert test checks revision contents, omitted-note history preservation, identical-note touches, new-note history and whole-batch rollback after an injected later revision failure. The rollback compares experiment values, claim references, revision history and export runs."
+verification = "All 35 provenance-store library tests pass; strengthened focused upsert tests and all-target Clippy pass. The repeated make validate-local REPO_SHARE_PRIMARY_CACHE=1 gate exits 0 with 661 library tests and governance. The independent production audit remains byte-identical."

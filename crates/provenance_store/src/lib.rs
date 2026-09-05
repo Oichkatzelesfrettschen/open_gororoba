@@ -1084,6 +1084,88 @@ impl ProvenanceStore {
         Ok(experiments.len())
     }
 
+    /// Insert or update the `[[experiment]]` rows in `raw` without deleting
+    /// any other canonical experiment.
+    /// An omitted status note preserves the existing canonical note.
+    /// Explicit notes append revisions in the same transaction as the upsert.
+    pub fn upsert_experiments_from_registry_text(
+        &mut self,
+        repo_root: &Path,
+        source_path: &Path,
+        raw: &str,
+    ) -> Result<Vec<String>> {
+        let experiments = load_experiments_from_registry(raw)?;
+        if experiments.is_empty() {
+            bail!("experiment spec contains no [[experiment]] rows");
+        }
+        let note_reason = format!(
+            "Apply explicit status_note from experiment fragment {}",
+            to_repo_rel(repo_root, source_path)
+        );
+        let tx = self
+            .conn
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let mut ids = Vec::new();
+        for experiment in &experiments {
+            tx.execute(
+                "INSERT INTO experiments_cp(id, title, status, binary_name, claim_refs_json, status_note, compat_toml_text)
+                 VALUES(?1, ?2, ?3, ?4, ?5, NULL, ?6)
+                 ON CONFLICT(id) DO UPDATE SET
+                    title = excluded.title,
+                    status = excluded.status,
+                    binary_name = excluded.binary_name,
+                    claim_refs_json = excluded.claim_refs_json,
+                    compat_toml_text = excluded.compat_toml_text",
+                params![
+                    experiment.id,
+                    experiment.title,
+                    experiment.status,
+                    experiment.binary,
+                    serde_json::to_string(&experiment.claim_refs)?,
+                    experiment.compat_toml_text
+                ],
+            )?;
+            if let Some(note) = &experiment.status_note {
+                Self::entity_update_field_in_transaction(
+                    &tx,
+                    &experiment.id,
+                    note,
+                    "experiment-registry-upsert",
+                    Some(&note_reason),
+                    EntityFieldTarget {
+                        table: "experiments_cp",
+                        revisions_table: "experiment_revisions",
+                        fk_col: "experiment_id",
+                        field: "status_note",
+                    },
+                )?;
+            }
+            tx.execute(
+                "DELETE FROM claim_experiment_refs WHERE experiment_id = ?1",
+                params![experiment.id],
+            )?;
+            for claim_id in &experiment.claim_refs {
+                tx.execute(
+                    "INSERT INTO claim_experiment_refs (claim_id, experiment_id)
+                     VALUES (?1, ?2)
+                     ON CONFLICT(claim_id, experiment_id) DO NOTHING",
+                    params![claim_id, experiment.id],
+                )?;
+            }
+            ids.push(experiment.id.clone());
+        }
+        tx.commit()?;
+        self.record_control_plane_run(
+            "upsert_experiments_from_registry_text",
+            &serde_json::json!({
+                "source_path": to_repo_rel(repo_root, source_path),
+                "experiment_ids": ids,
+            })
+            .to_string(),
+        )?;
+        Ok(ids)
+    }
+
     pub fn control_plane_compat_text(&mut self, kind: ControlPlaneCompatKind) -> Result<String> {
         self.backfill_control_plane_compat_from_snapshots()?;
         let outputs = self.render_control_plane_compat_outputs()?;
@@ -2377,6 +2459,68 @@ impl ProvenanceStore {
         Ok(())
     }
 
+    /// Add lane membership atomically while retaining artifact metadata and evidence.
+    pub fn assign_artifact_lane(
+        &mut self,
+        ids: &[String],
+        lane_name: &str,
+        actor: Option<&str>,
+        reason: Option<&str>,
+    ) -> Result<usize> {
+        if !matches!(
+            lane_name,
+            "datasets" | "papers_pdf" | "slides_artifacts" | "web_references"
+        ) {
+            bail!("unsupported artifact lane {lane_name}");
+        }
+        if ids.is_empty() {
+            bail!("artifact lane assignment requires at least one ID");
+        }
+        for (field, value) in ids
+            .iter()
+            .map(|id| ("id", id.as_str()))
+            .chain(actor.map(|value| ("actor", value)))
+            .chain(reason.map(|value| ("reason", value)))
+        {
+            if value.trim().is_empty() || !value.is_ascii() {
+                bail!("artifact {field} must be a non-empty ASCII string");
+            }
+        }
+        let distinct_ids: BTreeSet<&str> = ids.iter().map(String::as_str).collect();
+        let tx = self.conn.transaction()?;
+        for id in &distinct_ids {
+            let exists: bool = tx.query_row(
+                "SELECT EXISTS(SELECT 1 FROM artifacts WHERE id = ?1)",
+                params![id],
+                |row| row.get(0),
+            )?;
+            if !exists {
+                bail!("unknown artifact ID {id}");
+            }
+        }
+        let mut added_ids = Vec::new();
+        for id in distinct_ids {
+            if tx.execute(
+                "INSERT INTO lane_assignments (artifact_id, lane_name) VALUES (?1, ?2)
+                 ON CONFLICT(artifact_id, lane_name) DO NOTHING",
+                params![id, lane_name],
+            )? != 0
+            {
+                added_ids.push(id);
+            }
+        }
+        if !added_ids.is_empty() {
+            let details = serde_json::json!({"artifact_ids":added_ids,"lane":lane_name,"actor":actor,"reason":reason});
+            tx.execute(
+                "INSERT INTO export_runs (action, created_at, artifact_count, document_count, details_json)
+                 VALUES ('assign-artifact-lane', ?1, ?2, 0, ?3)",
+                params![Utc::now().to_rfc3339(), added_ids.len() as i64, details.to_string()],
+            )?;
+        }
+        tx.commit()?;
+        Ok(added_ids.len())
+    }
+
     pub fn register_local_artifact(
         &mut self,
         repo_root: &Path,
@@ -3613,6 +3757,23 @@ impl ProvenanceStore {
         reason: Option<&str>,
         target: EntityFieldTarget<'_>,
     ) -> Result<StatusNoteRevision> {
+        let tx = self
+            .conn
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let revision =
+            Self::entity_update_field_in_transaction(&tx, id, new_value, actor, reason, target)?;
+        tx.commit()?;
+        Ok(revision)
+    }
+
+    fn entity_update_field_in_transaction(
+        tx: &rusqlite::Transaction<'_>,
+        id: &str,
+        new_value: &str,
+        actor: &str,
+        reason: Option<&str>,
+        target: EntityFieldTarget<'_>,
+    ) -> Result<StatusNoteRevision> {
         let EntityFieldTarget {
             table,
             revisions_table,
@@ -3627,9 +3788,6 @@ impl ProvenanceStore {
               actor, reason, operation, application_id)
              VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)"
         );
-        let tx = self
-            .conn
-            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
         let prev: Option<String> = tx
             .query_row(&select_sql, params![id], |row| row.get(0))
             .map_err(|e| anyhow::anyhow!("{} {} not found in canonical DB: {}", table, id, e))?;
@@ -3655,7 +3813,6 @@ impl ProvenanceStore {
             ],
         )?;
         let revision_id = tx.last_insert_rowid();
-        tx.commit()?;
         Ok(StatusNoteRevision {
             entity_id: id.to_string(),
             field_name: field.to_string(),
@@ -5346,6 +5503,303 @@ claim_refs = ["C-001"]
         assert!(rendered.contains("id = \"E-002\""));
         assert!(!rendered.contains("id = \"E-001\""));
         assert!(rendered.contains("experiment_count = 1"));
+        Ok(())
+    }
+
+    #[test]
+    fn upsert_experiments_from_registry_text_keeps_existing_rows() -> Result<()> {
+        let fixture = make_test_workspace("upsert_experiments")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
+        )?;
+        store.build_crossrefs()?;
+
+        let fragment = r#"
+[[experiment]]
+id = "E-002"
+title = "Added experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+"#;
+        let ids = store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            fragment,
+        )?;
+        assert_eq!(ids, vec!["E-002".to_string()]);
+
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        assert!(rendered.contains("id = \"E-001\""));
+        assert!(rendered.contains("id = \"E-002\""));
+        Ok(())
+    }
+
+    #[test]
+    fn upsert_experiments_preserves_omitted_status_note() -> Result<()> {
+        let fixture = make_test_workspace("upsert_experiment_note")?;
+        let mut store = ProvenanceStore::open(&fixture.db)?;
+        store.reindex_control_plane_from_registries(
+            &fixture.root,
+            RegistryImportPaths {
+                claims: &fixture.claims,
+                insights: &fixture.insights,
+                experiments: &fixture.experiments,
+                binaries: &fixture.binaries,
+                rocq_project: &fixture.rocq_project,
+            },
+            ReimportOptions::destructive(&fixture.db),
+        )?;
+        store.experiment_update_status_note("E-001", "Retained evidence", "test", None)?;
+        let initial_revisions = lane_test_rows(&store, "experiment_revisions")?;
+        let fragment = r#"
+[[experiment]]
+id = "E-001"
+title = "Updated experiment"
+status = "active"
+binary = "mini-bin"
+claim_refs = ["C-001"]
+"#;
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            fragment,
+        )?;
+        assert_eq!(
+            store.experiment_status_note("E-001")?.as_deref(),
+            Some("Retained evidence")
+        );
+        let rendered = store.control_plane_compat_text(ControlPlaneCompatKind::Experiments)?;
+        assert!(rendered.contains("status_note = \"Retained evidence\""));
+        assert!(rendered.contains("title = \"Updated experiment\""));
+        assert_eq!(
+            lane_test_rows(&store, "experiment_revisions")?,
+            initial_revisions
+        );
+
+        let explicit_note = format!("{fragment}status_note = \"Updated evidence\"\n");
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            &explicit_note,
+        )?;
+        assert_eq!(
+            store.experiment_status_note("E-001")?.as_deref(),
+            Some("Updated evidence")
+        );
+        let read_latest = |store: &ProvenanceStore| -> Result<_> {
+            Ok(store.conn.query_row(
+                "SELECT experiment_id, field_name, prev_value_sha256, new_value_sha256,
+                        actor, reason, operation, application_id
+                 FROM experiment_revisions ORDER BY id DESC LIMIT 1",
+                [],
+                |row| {
+                    Ok((
+                        row.get::<_, String>(0)?,
+                        row.get::<_, String>(1)?,
+                        row.get::<_, Option<String>>(2)?,
+                        row.get::<_, String>(3)?,
+                        row.get::<_, String>(4)?,
+                        row.get::<_, Option<String>>(5)?,
+                        row.get::<_, String>(6)?,
+                        row.get::<_, i64>(7)?,
+                    ))
+                },
+            )?)
+        };
+        let expected_reason = format!(
+            "Apply explicit status_note from experiment fragment {}",
+            to_repo_rel(&fixture.root, &fixture.experiments)
+        );
+        assert_eq!(
+            read_latest(&store)?,
+            (
+                "E-001".to_owned(),
+                "status_note".to_owned(),
+                Some(sha256_hex("Retained evidence")),
+                sha256_hex("Updated evidence"),
+                "experiment-registry-upsert".to_owned(),
+                Some(expected_reason.clone()),
+                "update".to_owned(),
+                CLI_APPLICATION_ID,
+            )
+        );
+        let updated_rows = lane_test_rows(&store, "experiments_cp")?;
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            &explicit_note,
+        )?;
+        assert_eq!(lane_test_rows(&store, "experiments_cp")?, updated_rows);
+        let repeated = read_latest(&store)?;
+        assert_eq!(repeated.2, Some(sha256_hex("Updated evidence")));
+        assert_eq!(repeated.3, sha256_hex("Updated evidence"));
+        assert_eq!(repeated.6, "touch");
+        assert_eq!(
+            lane_test_rows(&store, "experiment_revisions")?.len(),
+            initial_revisions.len() + 2
+        );
+
+        let inserted_note = explicit_note.replace("E-001", "E-002");
+        store.upsert_experiments_from_registry_text(
+            &fixture.root,
+            &fixture.experiments,
+            &inserted_note,
+        )?;
+        let inserted = read_latest(&store)?;
+        assert_eq!(inserted.0, "E-002");
+        assert_eq!(inserted.2, None);
+        assert_eq!(inserted.3, sha256_hex("Updated evidence"));
+        assert_eq!(inserted.6, "update");
+
+        let tables = [
+            "experiments_cp",
+            "experiment_revisions",
+            "claim_experiment_refs",
+            "export_runs",
+        ];
+        let before = tables
+            .iter()
+            .map(|table| lane_test_rows(&store, table))
+            .collect::<Result<Vec<_>>>()?;
+        store.conn.execute_batch(
+            "CREATE TRIGGER reject_experiment_revision BEFORE INSERT ON experiment_revisions
+             WHEN NEW.experiment_id = 'E-001'
+             BEGIN SELECT RAISE(ABORT, 'injected revision failure'); END;",
+        )?;
+        let rejected = format!(
+            "{}\n{}\n{}",
+            inserted_note.replace("Updated evidence", "Rolled back evidence"),
+            inserted_note.replace("E-002", "E-003"),
+            explicit_note.replace("Updated evidence", "Rejected evidence")
+        );
+        let error = store
+            .upsert_experiments_from_registry_text(&fixture.root, &fixture.experiments, &rejected)
+            .unwrap_err();
+        assert!(error.to_string().contains("injected revision failure"));
+        for (table, original) in tables.iter().zip(before) {
+            assert_eq!(lane_test_rows(&store, table)?, original, "{table}");
+        }
+        Ok(())
+    }
+
+    fn artifact_lane_fixture(label: &str) -> Result<(TestWorkspace, ProvenanceStore)> {
+        let fixture = make_test_workspace(label)?;
+        let store = ProvenanceStore::open(&fixture.db)?;
+        store.conn.execute_batch(
+            "INSERT INTO artifacts VALUES ('A-1', 'artifact-one', 'Title', 'Citation', 'partial', 0, 'https://example.org/source', 'data/source.pdf');
+             INSERT INTO artifacts VALUES ('A-2', 'artifact-two', 'Other title', 'Other citation', 'downloaded', 1, NULL, 'data/other.pdf');
+             INSERT INTO artifact_paths VALUES ('A-1', 'data/source.pdf', 'downloaded');
+             INSERT INTO record_sources VALUES ('artifact', 'A-1', 'source-record');
+             INSERT INTO lane_assignments VALUES ('A-1', 'web_references');
+             INSERT INTO export_runs VALUES (1, 'prior-run', '2026-01-01', 2, 0, '{}');
+             INSERT INTO download_jobs (id, requested_url, transfer_kind, requested_backend, route_scheme, route_backends_json, status, created_at)
+             VALUES (1, 'https://example.org/source', 'https', 'curl', 'https', '[]', 'complete', '2026-01-01');
+             INSERT INTO download_attempts (job_id, backend, bytes, is_pdf, note, recorded_at)
+             VALUES (1, 'curl', 123, 1, 'retained history', '2026-01-01');"
+        )?;
+        Ok((fixture, store))
+    }
+
+    fn lane_test_rows(
+        store: &ProvenanceStore,
+        table: &str,
+    ) -> Result<Vec<Vec<rusqlite::types::Value>>> {
+        let mut statement = store
+            .conn
+            .prepare(&format!("SELECT * FROM {table} ORDER BY 1"))?;
+        let count = statement.column_count();
+        let rows =
+            statement.query_map([], |row| (0..count).map(|column| row.get(column)).collect())?;
+        Ok(rows.collect::<rusqlite::Result<_>>()?)
+    }
+
+    #[test]
+    fn assign_artifact_lane_preserves_evidence_and_is_idempotent() -> Result<()> {
+        let (_fixture, mut store) = artifact_lane_fixture("artifact_lane_preservation")?;
+        let tables = [
+            "artifacts",
+            "artifact_paths",
+            "record_sources",
+            "download_jobs",
+            "download_attempts",
+        ];
+        let before = tables
+            .iter()
+            .map(|table| lane_test_rows(&store, table))
+            .collect::<Result<Vec<_>>>()?;
+        let history = lane_test_rows(&store, "export_runs")?;
+        let ids = vec!["A-1".to_string(), "A-2".to_string(), "A-1".to_string()];
+        assert_eq!(
+            store.assign_artifact_lane(
+                &ids,
+                "papers_pdf",
+                Some("test"),
+                Some("restore export membership")
+            )?,
+            2
+        );
+        let after = tables
+            .iter()
+            .map(|table| lane_test_rows(&store, table))
+            .collect::<Result<Vec<_>>>()?;
+        assert_eq!(before, after);
+        assert_eq!(lane_test_rows(&store, "lane_assignments")?.len(), 3);
+        let updated_history = lane_test_rows(&store, "export_runs")?;
+        assert_eq!(updated_history.len(), history.len() + 1);
+        assert_eq!(updated_history[0], history[0]);
+        assert_eq!(
+            store.assign_artifact_lane(&ids, "papers_pdf", Some("test"), None)?,
+            0
+        );
+        assert_eq!(lane_test_rows(&store, "export_runs")?, updated_history);
+        Ok(())
+    }
+
+    #[test]
+    fn assign_artifact_lane_rejects_invalid_batches_and_rolls_back_audit_failure() -> Result<()> {
+        let (_fixture, mut store) = artifact_lane_fixture("artifact_lane_rollback")?;
+        let before = lane_test_rows(&store, "lane_assignments")?;
+        let history = lane_test_rows(&store, "export_runs")?;
+        assert!(
+            store
+                .assign_artifact_lane(&[], "papers_pdf", None, None)
+                .is_err()
+        );
+        assert!(
+            store
+                .assign_artifact_lane(&["A-1".into()], "unknown_lane", None, None)
+                .is_err()
+        );
+        assert!(
+            store
+                .assign_artifact_lane(&["A-1".into(), "missing".into()], "papers_pdf", None, None)
+                .is_err()
+        );
+        assert!(
+            store
+                .assign_artifact_lane(&["A-1".into()], "papers_pdf", Some(" "), None)
+                .is_err()
+        );
+        assert_eq!(lane_test_rows(&store, "lane_assignments")?, before);
+        assert_eq!(lane_test_rows(&store, "export_runs")?, history);
+        store.conn.execute_batch("CREATE TEMP TRIGGER reject_lane_audit BEFORE INSERT ON export_runs WHEN NEW.action = 'assign-artifact-lane' BEGIN SELECT RAISE(ABORT, 'test audit failure'); END;")?;
+        assert!(
+            store
+                .assign_artifact_lane(&["A-1".into(), "A-2".into()], "papers_pdf", None, None)
+                .is_err()
+        );
+        assert_eq!(lane_test_rows(&store, "lane_assignments")?, before);
+        assert_eq!(lane_test_rows(&store, "export_runs")?, history);
         Ok(())
     }
 

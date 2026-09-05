@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 248
-edge_count = 1158
+lineage_count = 250
+edge_count = 1283
 
 [[lineage]]
 id = "XL-001"
@@ -4516,6 +4516,44 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo run --release -p gororoba_cli_data --bin lotss-analysis", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-250"
+experiment_id = "E-280"
+binary = "staples-calibration-refits"
+deterministic = false
+seed = 42
+gpu = false
+run_command = "RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode cv"
+run_command_sha256 = "cd78f6cf4b54c1dfaa51adea5517f8e3081a27c2a0e7bd8fd83f82163c4cc351"
+claim_refs = ["C-1738", "C-1739", "C-1740", "C-1741"]
+input_path_refs = ["data/output/benchmark_scores.csv", "data/output/benchmark_scores.files.csv", "data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+output_path_refs = ["data/output/audit/staples-calibration-grouped-refits/results/cv-seed-42.json", "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-43.json", "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-44.json", "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-45.json", "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-46.json", "data/output/audit/staples-calibration-grouped-refits/results/dataset.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode cv", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-251"
+experiment_id = "E-281"
+binary = "staples-calibration-refits"
+deterministic = false
+seed = 10000
+gpu = false
+run_command = "RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode all"
+run_command_sha256 = "abaf7c271344b48c58fe051512537ade9e15ea5fa6ff75782172e17efb6ffa2b"
+claim_refs = ["C-1738", "C-1739", "C-1740", "C-1741"]
+input_path_refs = ["data/output/benchmark_scores.csv", "data/output/benchmark_scores.files.csv", "data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+output_path_refs = ["data/output/audit/staples-calibration-grouped-refits/results/bootstrap-000.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-001.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-002.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-003.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-004.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-005.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-006.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-007.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-008.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-009.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-010.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-011.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-012.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-013.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-014.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-015.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-016.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-017.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-018.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-019.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-020.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-021.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-022.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-023.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-024.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-025.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-026.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-027.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-028.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-029.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-030.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-031.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-032.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-033.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-034.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-035.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-036.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-037.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-038.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-039.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-040.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-041.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-042.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-043.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-044.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-045.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-046.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-047.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-048.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-049.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-050.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-051.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-052.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-053.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-054.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-055.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-056.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-057.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-058.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-059.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-060.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-061.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-062.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-063.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-064.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-065.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-066.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-067.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-068.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-069.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-070.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-071.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-072.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-073.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-074.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-075.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-076.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-077.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-078.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-079.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-080.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-081.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-082.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-083.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-084.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-085.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-086.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-087.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-088.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-089.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-090.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-091.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-092.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-093.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-094.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-095.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-096.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-097.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-098.json", "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-099.json", "data/output/audit/staples-calibration-grouped-refits/results/summary.json"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "RAYON_NUM_THREADS=6 cargo run --profile validation -p gororoba_cli_physics --bin staples-calibration-refits -- --input-root . --scores data/output/benchmark_scores.csv --file-map data/output/benchmark_scores.files.csv --catalog data/output/cat_themis_a.csv --protocol data/output/audit/staples-calibration-grouped-refits/protocol.toml --out-dir data/output/audit/staples-calibration-grouped-refits/results-replay --mode all", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -14936,6 +14974,1131 @@ id = "XLE-01158"
 lineage_id = "XL-248"
 from_id = "E-278"
 to_ref = "data/output/lotss_ultrametric_report.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01159"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "staples-calibration-refits"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01160"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "C-1738"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01161"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "C-1739"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01162"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "C-1740"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01163"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "C-1741"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01164"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/benchmark_scores.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01165"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/benchmark_scores.files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01166"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/cat_themis_a.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01167"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/tha_matched_files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01168"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-42.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01169"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-43.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01170"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-44.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01171"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-45.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01172"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/cv-seed-46.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01173"
+lineage_id = "XL-250"
+from_id = "E-280"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/dataset.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01174"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "staples-calibration-refits"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01175"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "C-1738"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01176"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "C-1739"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01177"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "C-1740"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01178"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "C-1741"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01179"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/benchmark_scores.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01180"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/benchmark_scores.files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01181"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/cat_themis_a.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01182"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/tha_matched_files.csv"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01183"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-000.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01184"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-001.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01185"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-002.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01186"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-003.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01187"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-004.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01188"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-005.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01189"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-006.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01190"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-007.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01191"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-008.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01192"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-009.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01193"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-010.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01194"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-011.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01195"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-012.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01196"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-013.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01197"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-014.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01198"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-015.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01199"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-016.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01200"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-017.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01201"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-018.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01202"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-019.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01203"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-020.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01204"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-021.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01205"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-022.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01206"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-023.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01207"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-024.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01208"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-025.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01209"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-026.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01210"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-027.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01211"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-028.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01212"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-029.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01213"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-030.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01214"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-031.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01215"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-032.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01216"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-033.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01217"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-034.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01218"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-035.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01219"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-036.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01220"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-037.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01221"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-038.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01222"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-039.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01223"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-040.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01224"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-041.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01225"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-042.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01226"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-043.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01227"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-044.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01228"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-045.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01229"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-046.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01230"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-047.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01231"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-048.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01232"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-049.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01233"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-050.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01234"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-051.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01235"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-052.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01236"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-053.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01237"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-054.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01238"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-055.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01239"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-056.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01240"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-057.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01241"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-058.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01242"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-059.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01243"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-060.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01244"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-061.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01245"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-062.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01246"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-063.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01247"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-064.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01248"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-065.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01249"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-066.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01250"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-067.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01251"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-068.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01252"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-069.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01253"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-070.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01254"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-071.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01255"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-072.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01256"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-073.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01257"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-074.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01258"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-075.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01259"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-076.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01260"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-077.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01261"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-078.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01262"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-079.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01263"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-080.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01264"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-081.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01265"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-082.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01266"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-083.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01267"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-084.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01268"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-085.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01269"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-086.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01270"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-087.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01271"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-088.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01272"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-089.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01273"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-090.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01274"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-091.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01275"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-092.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01276"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-093.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01277"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-094.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01278"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-095.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01279"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-096.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01280"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-097.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01281"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-098.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01282"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/bootstrap-099.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01283"
+lineage_id = "XL-251"
+from_id = "E-281"
+to_ref = "data/output/audit/staples-calibration-grouped-refits/results/summary.json"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

@@ -286,6 +286,9 @@ path = "src/bin/themis_staples_score_export.rs"
 name = "staples-incremental-information"
 path = "src/bin/staples_incremental_information.rs"
 [[bin]]
+name = "staples-calibration-refits"
+path = "src/bin/staples_calibration_refits.rs"
+[[bin]]
 name = "staples-twist-ladder"
 path = "src/bin/staples_twist_ladder.rs"
 [[bin]]
@@ -718,7 +721,7 @@ rayon = { workspace = true }
 rusqlite = { workspace = true }
 rustfft = { workspace = true }
 serde = { workspace = true }
-serde_json = { workspace = true }
+serde_json = { workspace = true, features = ["float_roundtrip"] }
 sha2 = { workspace = true }
 sign_imbalance = { path = "../sign_imbalance" }
 snia_core = { path = "../snia_core" }

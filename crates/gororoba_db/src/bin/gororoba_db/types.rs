@@ -505,6 +505,18 @@ pub(crate) enum TheoremIdentityAction {
 
 #[derive(Subcommand, Debug)]
 pub(crate) enum ArtifactAction {
+    /// Add a compatibility lane to existing artifacts while preserving their records.
+    AssignLane {
+        /// Exact canonical artifact ID. Repeat for an atomic batch.
+        #[arg(long = "id", required = true)]
+        ids: Vec<String>,
+        #[arg(long)]
+        lane: String,
+        #[arg(long)]
+        actor: Option<String>,
+        #[arg(long)]
+        reason: Option<String>,
+    },
     /// Register a local evidence bundle and its repository-relative paths.
     RegisterLocal {
         /// Stable artifact identity.
@@ -574,6 +586,14 @@ pub(crate) enum ExperimentMutationAction {
         /// Report the rows that would change without writing them.
         #[arg(long)]
         dry_run: bool,
+        #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
+        regen_toml: bool,
+    },
+    /// Insert or update experiment rows from a TOML fragment of `[[experiment]]`
+    /// tables without deleting any other canonical experiment.
+    UpsertFromToml {
+        #[arg(long)]
+        spec: PathBuf,
         #[arg(long, action = clap::ArgAction::Set, default_value_t = true)]
         regen_toml: bool,
     },

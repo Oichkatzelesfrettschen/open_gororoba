@@ -274,6 +274,7 @@ credentials.*
 !docs/dependencies/
 !docs/dependencies/*.md
 !docs/glossary.md
+!vendor/proc-macro-error2/CHANGELOG.md
 
 # ------------------------------------------------------------------------------
 # 7. Root Directory Protection (Keep Root Clean)

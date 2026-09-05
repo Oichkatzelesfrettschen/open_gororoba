@@ -1,0 +1,26 @@
+[transition]
+transition_key = "staples-pvi-calibration-context-survival"
+source_claim_id = "C-1738"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-STAPLES-CALIBRATION-GROUPED-REFITS"]
+experiment_ids = ["E-280", "E-281"]
+exercised_falsifier = "The preregistered global minimum standalone margin interval remains wholly positive after replacing full-day RMS with training-file and preceding-window RMS. A zero-containing interval would leave the extension inconclusive; a negative upper percentile would support reversal. The exact 105 planned records and 750 converged fits pass independent retained-record validation."
+proposed_claim_status = "Verified"
+rationale = "The altered-calibration experiment supports a separate refinement on the common population. C-1738 retains its original offline computation, population, and bootstrap boundary."
+unresolved_assumptions = ["Offline predictive discrimination on the common warmup-filtered THEMIS-A sample-localization benchmark. The three arms share labels, population, model complexity, and six-sample PVI numerator; their RMS calibration context differs. Windows count parsed samples, include equal-time observations, can cross multi-hour gaps, and retain label k+4 versus complete feature k+5. One rolling width and five correlated CV assignments bound the result. The 100-draw linear-percentile procedure is conditional on the fixed seed-42 fold-0 partition and has limited tail precision.", "File-resampling exchangeability and transfer to other epochs or spacecraft remain untested.", "C-1633 retains the stronger standalone angular-control comparison; PVI dominance establishes a comparator-specific result."]
+actor = "codex"
+reason = "Register the completed calibration and grouped-refit experiment at its measured predictive boundary."
+transition_timestamp = "2026-09-05T00:09:00Z"
+expected_source_state_sha256 = "ca56aa261ec4658671d70580323bd337b970cb021dcc35d015bd7fc5256c1a9c"
+expected_claim_id_max = 1739
+
+[[successor]]
+proposal_key = "staples-associator-dominance-across-declared-calibration-contexts"
+statement = "On the common warmup-filtered THEMIS-A Staples benchmark (23,456,246 rows, 574,716 positives, 813 files), the retained staple associator exceeds PVI with daily-file RMS, pooled training-file RMS, and preceding-256-increment RMS calibration. Across 100 paired whole-train-file and whole-test-file bootstrap draws in the fixed seed-42 fold-0 partition, the global minimum associator-minus-PVI ROC-AUC across all three arms and bulk/low-gradient/high-gradient strata has median 0.0275574649038679 and linear 2.5/97.5 percentile interval [0.02049497475492511, 0.03547971075569095]. All 100 global margins are positive. Calibration and both logistic models are refitted in each arm and draw; standalone comparisons use actual divided f64 scores. The PVI numerator remains five increments over six samples. The positive interval supports dominance under the declared conditional procedure, with limited tail precision."
+initial_status = "Verified"
+source_or_implementation_boundary = "Offline predictive discrimination on the common warmup-filtered THEMIS-A sample-localization benchmark. The three arms share labels, population, model complexity, and six-sample PVI numerator; their RMS calibration context differs. Windows count parsed samples, include equal-time observations, can cross multi-hour gaps, and retain label k+4 versus complete feature k+5. One rolling width and five correlated CV assignments bound the result. The 100-draw linear-percentile procedure is conditional on the fixed seed-42 fold-0 partition and has limited tail precision."
+required_falsifier = "A faithful replay of the sealed protocol producing a nonpositive global lower percentile defeats the positive-bound assertion under that procedure. A wholly negative interval supports reversal. Other rolling widths, elapsed-time windows, causal feature alignment, spacecraft, and epochs require separate adjudication."
+where_stated = ["data/output/audit/staples-calibration-grouped-refits/findings.toml", "data/output/audit/staples-calibration-grouped-refits/results/summary.json", "data/output/audit/staples-calibration-grouped-refits/completion-audit.json", "E-280", "E-281"]
+evidence_artifact_ids = ["LOCAL-STAPLES-CALIBRATION-GROUPED-REFITS"]
+predecessor_relation_kind = "refines"

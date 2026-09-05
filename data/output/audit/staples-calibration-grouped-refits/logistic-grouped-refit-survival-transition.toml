@@ -1,0 +1,26 @@
+[transition]
+transition_key = "staples-logistic-grouped-refit-survival"
+source_claim_id = "C-1739"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-STAPLES-CALIBRATION-GROUPED-REFITS"]
+experiment_ids = ["E-280", "E-281"]
+exercised_falsifier = "The extension from fixed out-of-fold predictions to paired training-file refitting and test-file sampling retains a positive global lower percentile. All declared split/arm increments are positive. The independent audit verifies all 750 converged fits, seeded partitions and multiplicities, global minima, and linear percentiles."
+proposed_claim_status = "Verified"
+rationale = "The grouped-refit experiment addresses training variation absent from the predecessor bootstrap. C-1739 retains its original computation. Warmup filtering and f64 prediction logits also differ from the predecessor, so old-versus-new changes cannot be attributed solely to calibration."
+unresolved_assumptions = ["Offline predictive discrimination on the common warmup-filtered THEMIS-A sample-localization benchmark. The three arms share labels, population, model complexity, and six-sample PVI numerator; their RMS calibration context differs. Windows count parsed samples, include equal-time observations, can cross multi-hour gaps, and retain label k+4 versus complete feature k+5. One rolling width and five correlated CV assignments bound the result. The 100-draw linear-percentile procedure is conditional on the fixed seed-42 fold-0 partition and has limited tail precision.", "File-resampling exchangeability and transfer to other epochs or spacecraft remain untested.", "C-1633 retains the stronger standalone angular-control comparison; PVI dominance establishes a comparator-specific result."]
+actor = "codex"
+reason = "Register the completed calibration and grouped-refit experiment at its measured predictive boundary."
+transition_timestamp = "2026-09-05T00:09:01Z"
+expected_source_state_sha256 = "9331117dbb3c55d507c658e5af0ae34c1428dc0fd7a12f9d7e88cc3462ec3afa"
+expected_claim_id_max = 1740
+
+[[successor]]
+proposal_key = "staples-associator-increment-across-calibration-and-grouped-refits"
+statement = "On 23,456,246 warmup-filtered THEMIS-A benchmark rows (574,716 positives, 813 files), adding logged staple-associator magnitude to the fixed six-feature ridge-logistic baseline yields positive pooled out-of-fold ROC-AUC increments in every one of five file-grouped five-fold assignments (seeds 42 through 46): daily-file RMS 0.0020033257278800898 to 0.0020158658710166533, training-file RMS 0.002394591060060347 to 0.002422900809169848, and preceding-256-increment RMS 0.0033726281856922835 to 0.0034006522849118204. Across 100 paired whole-train-file and whole-test-file bootstrap draws in the fixed seed-42 fold-0 partition, with RMS, standardization, and both models refitted in each arm and draw, the minimum incremental ROC-AUC across all three arms has median 0.0017528829999793327 and linear 2.5/97.5 percentile interval [0.0010345135981383064, 0.002696001071597234]. All 100 minima are positive, and all 750 planned fits converge. The CV ranges describe correlated split sensitivity; the interval supports a positive predictive increment only under the declared conditional procedure."
+initial_status = "Verified"
+source_or_implementation_boundary = "Offline predictive discrimination on the common warmup-filtered THEMIS-A sample-localization benchmark. The three arms share labels, population, model complexity, and six-sample PVI numerator; their RMS calibration context differs. Windows count parsed samples, include equal-time observations, can cross multi-hour gaps, and retain label k+4 versus complete feature k+5. One rolling width and five correlated CV assignments bound the result. The 100-draw linear-percentile procedure is conditional on the fixed seed-42 fold-0 partition and has limited tail precision."
+required_falsifier = "A faithful replay with a nonpositive global lower percentile defeats the positive-bound assertion under the sealed conditional procedure. A zero-containing interval is inconclusive; a negative upper percentile supports reversal. A nonpositive pooled increment in a declared split/arm refutes the all-positive split-sensitivity statement. The result establishes neither model-independent information nor physical causation."
+where_stated = ["data/output/audit/staples-calibration-grouped-refits/findings.toml", "data/output/audit/staples-calibration-grouped-refits/results/summary.json", "data/output/audit/staples-calibration-grouped-refits/completion-audit.json", "E-280", "E-281"]
+evidence_artifact_ids = ["LOCAL-STAPLES-CALIBRATION-GROUPED-REFITS"]
+predecessor_relation_kind = "refines"
