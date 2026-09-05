@@ -105,3 +105,9 @@ replay_boundary = "The retained 750-fit campaign audits against production commi
 status = "resolved"
 findings = "data/output/audit/artifact-document-path-provenance/findings.toml"
 repaired_artifacts = ["ASOT-1099", "ASOT-1105", "ASOT-1118", "ASOT-1119", "ASOT-1479"]
+
+[provenance_integration_residual]
+merge_commit = "9f80be0bedd1a05376ee56e0a6ce74a8de9e24ef"
+canonical_availability = "All 1659 canonical path rows resolve in the primary checkout; zero missing canonical paths."
+compatibility_inventory = "The broader provenance verifier reaches the unchanged artifact compatibility inventory and reports 533 missing mirror-status evidence findings. Canonical control-plane verification and all 14 path-repair preservation assertions pass."
+owner = "data/output/audit/artifact-document-path-provenance/findings.toml"
