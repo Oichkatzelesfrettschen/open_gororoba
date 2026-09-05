@@ -47,7 +47,7 @@ comparison_baseline = "mkdir -p .cache/artifact-provenance; git show 5663248a8b0
 comparison = "sqlite3 registry/canonical/control_plane.sqlite3 < data/output/audit/artifact-document-path-provenance/verify-preservation.sql"
 availability = "provenance --repo-root MATERIALIZED_CHECKOUT --db MATERIALIZED_CHECKOUT/registry/canonical/control_plane.sqlite3 verify"
 availability_boundary = "Repository-wide availability depends on the materialized checkout. The five repaired canonical paths are tracked files; other pre-existing downloaded artifacts can be host-local."
-repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0; scoped Clippy, library tests and governance pass. The scanner source is compiled by provenance_ops through a path import, so its separate 26-test suite and all-target Clippy supply coverage beyond direct-path gate routing."
+repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0; scoped Clippy, 64 library tests and governance pass. The scanner source is compiled by provenance_ops through a path import, so its separate 26-test suite and all-target Clippy supply coverage beyond direct-path gate routing."
 preintegration_availability = "All 1658 canonical path rows resolve in the union of the worktree tracked files and primary local materialization. Final single-root availability is checked after integration."
 
 [review_hardening]

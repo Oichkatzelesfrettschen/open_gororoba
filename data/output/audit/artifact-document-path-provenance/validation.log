@@ -249,3 +249,7 @@ Primary tracked status clean at 5663248a8b042c742a64b6277f545fe68418042c.
 Repair: clear inherited GIT_* overrides on every explicit-root Git subprocess.
 Regression: child repair/replay test under redirected Git paths/configuration passes and caller directory remains empty.
 Focused rerun: 71 tests pass, 0 skipped (45 provenance_store, 26 provenance_ops).
+Normal pre-push retry: 64 selected tests pass, 0 skipped; scoped Clippy and governance pass; push succeeds.
+Primary Git configuration and index match their pre-retry SHA256s.
+Feature index entries match HEAD; feature and primary tracked status are clean.
+Final read-only review of Git-environment isolation reports no remaining correctness issue.
