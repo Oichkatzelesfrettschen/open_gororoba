@@ -231,24 +231,15 @@ pub fn default_repo_root() -> PathBuf {
     repo_root::resolve!()
 }
 
-// Cached Regex factories (url_re, url_inline_re, doi_re, bib_entry_re)
-// and pure text helpers (ascii_sanitize, escape_toml, render_list,
-// assert_ascii, slug) live in the `text_helpers` submodule. The #[path]
-// attribute is required because source_provenance.rs is itself loaded
-// via #[path] from the provenance_ops crate (see
-// crates/provenance_ops/src/lib.rs); the relative submodule lookup
-// otherwise resolves against provenance_ops/src/source_provenance/,
-// not the canonical gororoba_cli_data/src/source_provenance/ location.
-#[path = "source_provenance/text_helpers.rs"]
+mod host_observations;
+mod metadata_completeness;
+use metadata_completeness::remote_identity_is_usable;
+
+// Text normalization and regular expressions share one module.
 mod text_helpers;
 use text_helpers::{assert_ascii, escape_toml, render_list, slug, url_re};
 
-// DOI parsing/identity helpers (normalize_doi, extract_dois,
-// doi_to_url, doi_from_url, extract_dois_from_urls) live in the
-// `doi_helpers` submodule. Uses the same #[path] indirection as
-// text_helpers because source_provenance.rs is loaded via #[path]
-// from the provenance_ops crate.
-#[path = "source_provenance/doi_helpers.rs"]
+// DOI parsing keeps source identity normalization consistent.
 mod doi_helpers;
 use doi_helpers::{doi_to_url, extract_dois_from_urls, normalize_doi};
 
@@ -257,7 +248,6 @@ use doi_helpers::{doi_to_url, extract_dois_from_urls, normalize_doi};
 // filter_tracking_query_params, normalize_url,
 // is_non_reference_service_url, find_urls) live in the `url_helpers`
 // submodule.
-#[path = "source_provenance/url_helpers.rs"]
 mod url_helpers;
 use url_helpers::{find_urls, normalize_url};
 
@@ -266,13 +256,11 @@ use url_helpers::{find_urls, normalize_url};
 // mdpi_path_looks_article, cambridge_content_id,
 // canonical_identity_url, expand_reference_aliases) live in the
 // `identity_aliases` submodule.
-#[path = "source_provenance/identity_aliases.rs"]
 mod identity_aliases;
 use identity_aliases::{cambridge_content_id, canonical_identity_url, expand_reference_aliases};
 
 // File-loading helpers (load_toml_value, read_text_lossy,
 // read_tsv_rows, derive_status) live in the `file_io` submodule.
-#[path = "source_provenance/file_io.rs"]
 mod file_io;
 use file_io::load_toml_value;
 
@@ -282,7 +270,6 @@ use file_io::load_toml_value;
 // provenance_intake_roots, extend_download_map_from_local_artifacts,
 // register_download_aliases) lives in the `download_pipeline`
 // submodule.
-#[path = "source_provenance/download_pipeline.rs"]
 mod download_pipeline;
 use download_pipeline::{
     collect_download_map, collect_link_observations, extend_download_map_from_local_artifacts,
@@ -292,7 +279,6 @@ use download_pipeline::{
 // is_citation_locator_url, key_is_citation_locator,
 // is_artifact_local_path) live in the `reference_predicates`
 // submodule.
-#[path = "source_provenance/reference_predicates.rs"]
 mod reference_predicates;
 use reference_predicates::{
     is_artifact_local_path, is_citation_locator_url, key_is_citation_locator,
@@ -302,22 +288,17 @@ use reference_predicates::{
 // (extract_candidates_from_source_file dispatcher + the 3 format
 // extractors + classify_toml_field_key + pick_first_str) lives in
 // the `candidate_extract` submodule.
-#[path = "source_provenance/candidate_extract.rs"]
 mod candidate_extract;
 use candidate_extract::extract_candidates_from_source_file;
 
 // Two-phase output writer and the retention predicate that separates
-// repository truth from per-host materialization. Same #[path] indirection.
-#[path = "source_provenance/inventory_repair.rs"]
+// repository truth from per-host materialization.
 pub mod inventory_repair;
 #[cfg(test)]
-#[path = "source_provenance/materializability_tests.rs"]
 mod materializability_tests;
-#[path = "source_provenance/staged_write.rs"]
 pub mod staged_write;
 pub use staged_write::{DEFAULT_SHRINK_THRESHOLD, RowCountReport, ShrinkPolicy, StagedWriteSet};
 
-#[path = "source_provenance/artifact_retention.rs"]
 pub mod artifact_retention;
 pub use artifact_retention::{
     HostMaterializationRow, RetentionSet, observe_host_materialization,
@@ -881,58 +862,12 @@ fn classify_artifacts(
     carry_forward: &HashMap<String, DurableFacts>,
 ) {
     for artifact in artifacts {
-        let mut working = Vec::new();
-        let mut working_pdf = Vec::new();
-        let mut nonworking = Vec::new();
-        let mut unverified = Vec::new();
-        let mut downloaded = artifact.local_paths.clone();
-
-        for url in &artifact.links {
-            let obs_list = observations.get(url).cloned().unwrap_or_default();
-            let statuses = obs_list
-                .iter()
-                .map(|obs| obs.status.as_str())
-                .collect::<Vec<_>>();
-            let has_pdf_ok = obs_list.iter().any(|obs| obs.status == "pdf_ok");
-            let has_ok = obs_list.iter().any(|obs| obs.status == "ok_nonpdf");
-            let has_nonworking = statuses.iter().any(|status| {
-                (status.starts_with("http_")
-                    && !matches!(
-                        *status,
-                        "http_200" | "http_201" | "http_202" | "http_203" | "http_204"
-                    ))
-                    || *status == "failed"
-            });
-            if has_pdf_ok {
-                working.push(url.clone());
-                working_pdf.push(url.clone());
-            } else if has_ok {
-                working.push(url.clone());
-            } else if has_nonworking {
-                nonworking.push(url.clone());
-            } else {
-                unverified.push(url.clone());
-            }
-            if let Some(paths) = download_map.get(url) {
-                downloaded.extend(paths.clone());
-            }
-        }
-
-        artifact.working_mirrors = dedupe(working);
-        artifact.working_pdf_mirrors = dedupe(working_pdf);
-        artifact.nonworking_mirrors = dedupe(nonworking);
-        artifact.unverified_mirrors = dedupe(unverified);
-
-        // Split the observed paths by the retention predicate. A path git
-        // tracks is repository truth and keeps the `downloaded` status; a path
-        // that exists only in this checkout is host state, so it leaves the
-        // registry row and moves to the materialization manifest.
-        let observed_paths = dedupe(downloaded);
-        let (retained, host_only): (Vec<String>, Vec<String>) = observed_paths
-            .into_iter()
-            .partition(|path| retention.contains(path));
-        artifact.downloaded_paths = retained;
-        artifact.host_only_paths = host_only;
+        host_observations::classify_paths_and_mirrors(
+            artifact,
+            observations,
+            download_map,
+            retention,
+        );
 
         let citation_locator_identity = key_is_citation_locator(&artifact.key);
         let citation_locator_only_links = !artifact.links.is_empty()
@@ -981,11 +916,7 @@ fn classify_artifacts(
         // copy is present the previously exported values carry forward, so a
         // checkout missing the PDFs never erases a hash another host measured.
         let carried = carry_forward.get(&artifact.key);
-        let measured = artifact
-            .downloaded_paths
-            .iter()
-            .chain(artifact.host_only_paths.iter())
-            .find_map(|path| artifact_retention::file_identity(&repo_root.join(path)));
+        let measured = host_observations::first_local_identity(artifact, repo_root);
         match measured {
             Some(identity) => {
                 artifact.sha256 = identity.sha256;
@@ -1015,8 +946,7 @@ fn classify_artifacts(
         // Measured and carried identities use the same admission predicate.
         artifact.status = if !artifact.downloaded_paths.is_empty() {
             "downloaded"
-        } else if remote_identity_is_usable(&artifact.canonical_functional_url, &artifact.sha256)
-        {
+        } else if remote_identity_is_usable(&artifact.canonical_functional_url, &artifact.sha256) {
             "remotely_materializable"
         } else if !artifact.working_mirrors.is_empty() {
             "downloadable"
@@ -1064,13 +994,6 @@ fn classify_artifacts(
             String::new()
         };
     }
-}
-
-fn remote_identity_is_usable(canonical_url: &str, sha256: &str) -> bool {
-    url::Url::parse(canonical_url)
-        .is_ok_and(|url| matches!(url.scheme(), "https" | "http") && url.host_str().is_some())
-        && sha256.len() == 64
-        && sha256.bytes().all(|byte| byte.is_ascii_hexdigit())
 }
 
 /// Assigns the lane from every extension the artifact is known by.

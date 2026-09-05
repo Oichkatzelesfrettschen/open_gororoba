@@ -1,0 +1,38 @@
+base_commit = "33c21a6fa5309cc18a4870925509b9392a56c7cb"
+change_class = "behavior-preserving source ownership and module extraction"
+
+[provenance]
+implementation_owner = "provenance_ops"
+entrypoint_owner = "gororoba_cli_provenance"
+source_lines_before = 2906
+source_lines_after_mechanical_extraction = 2829
+unchanged_child_files = 12
+owner_tests_passed = 37
+routing_tests_passed = 3
+old_physical_path_selected_packages = 1
+new_owner_reverse_closure_packages = 6
+new_owner_reverse_closure = ["provenance_ops", "gororoba_cli_provenance", "gororoba_cli_governance", "gororoba_cli_data", "gororoba_cli", "gororoba_cli_warp"]
+routing_result = "Source ownership corrects under-selection; the measured dependency closure increases."
+owner_library_rebuild_wall_seconds = 6.97
+owner_library_fresh_repeat_wall_seconds = 23.69
+build_interpretation = "The repeat reports fresh artifacts and carries no Cargo lock-wait message. Host-wide contention remains unmeasured; these timings establish neither a speedup nor a slowdown caused by extraction."
+
+[store]
+lib_lines_before = 6547
+lib_lines_after_mechanical_extraction = 4662
+modules = ["artifact_operations", "entity_revisions", "experiment_operations", "exports", "queries"]
+method_boundary = "Public methods retain their names and statements; internal moved methods use parent-scoped visibility. Existing transaction/history/rollback tests remain in the parent module."
+verification = "The combined store with subsequent typed-metadata features passes 51 tests; focused Clippy passes with warnings denied. An isolated pre-feature timed rebuild remains unmeasured."
+
+[historical_runner]
+cli_lines_before = 1764
+cli_lines_after = 666
+modules = ["splitting", "fitting", "metrics", "evidence"]
+tests_passed = 11
+numerical_source_comparison = "Main and test bodies retain byte identity. Extracted numerical bodies match after normalizing only visibility, formatting whitespace and optional trailing commas."
+source_identity = "SOURCE_FILES includes the four new modules. Extraction changes execution-source identity even when numerical methods are preserved."
+retained_numerical_replay = "pending; retained source-ref audit and full corpus replay remain separate checks"
+reverse_closure = ["gororoba_cli_physics", "gororoba_cli", "gororoba_cli_data", "gororoba_cli_warp"]
+passing_test_invocation_seconds = 92.71
+clippy_invocation_seconds = 305.47
+timing_boundary = "Both elapsed times include shared Cargo lock waits and cold artifacts; comparative warm performance remains unmeasured."
