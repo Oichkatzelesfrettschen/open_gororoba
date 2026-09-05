@@ -59,3 +59,15 @@ relative_spec = "A real CLI invocation from /tmp using an absolute --repo-root a
 focused_validation = "All 45 provenance_store library tests and all 26 provenance_ops library tests pass."
 early_preflight = "Both provenance index --refresh-compat-exports and provenance export-artifact-scan --reindex-after reject a scratch database holding repair history before export writes. The database and sentinel export remain byte-identical; the four-file scratch inventory remains unchanged."
 hook_environment = "The initial review push failed because fixture Git subprocesses inherited hook GIT_* overrides. Git init changed primary core.bare to true and fixture adds staged replacement.txt and transformed.txt in the feature index. The operator restored core.bare=false and removed those two fixture-only index entries; primary main remained at the base commit with clean tracked status. Repository Git subprocesses now clear inherited GIT_* overrides. A child-process regression injects redirected Git directories, index and core.bare configuration, runs the exact repair/replay test, and verifies the caller directory remains empty."
+
+[integration_verification]
+merge_commit = "9f80be0bedd1a05376ee56e0a6ce74a8de9e24ef"
+checkout = "/home/eirikr/Github/open_gororoba"
+canonical_path_rows = 1659
+missing_canonical_path_rows = 0
+path_query = "SELECT canonical_download_path FROM artifacts WHERE canonical_download_path IS NOT NULL AND canonical_download_path != '' ORDER BY id"
+path_check = "Every query row resolves with test -e relative to the primary checkout; the denominator includes the registered repair bundle."
+control_plane = "provenance verify-control-plane --verify-compat-exports exits 0: 1555 claims, 183 insights, 250 experiments, 388 binaries, 162 theorems, 163 kernel-checked claims and 298 proof files."
+preservation = "All 14 verify-preservation.sql assertions pass on primary after integration."
+wide_verifier = "provenance verify --verify-exports passes canonical store invariants, then exits 1 with 533 artifact compatibility inventory findings: neither nonworking nor unverified mirrors recorded despite missing minimum."
+residual_boundary = "registry/artifact_source_of_truth.toml and registry/source_infrastructure.toml compare unchanged against the base commit. The 533 mirror-status evidence gaps remain a separate compatibility inventory frontier; path existence establishes local availability and does not establish mirror health or source-document accuracy."
