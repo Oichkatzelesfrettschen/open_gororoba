@@ -1,0 +1,9 @@
+schema_version = 1
+repaired_count = 533
+artifact_count = 3531
+master_before_sha256 = "71a3aa3f73dfc8e3e35154796ee9a3749849fd9f6737371a564fb263483f82e8"
+master_after_sha256 = "d84cc80fb1735ed42b7d145f5a6de4656efa5b24840cf3b09f6acba36bcbaeee"
+report_before_sha256 = "f7c7115a0a5b2587b6628cb6dee569eb76341350acaceffdaaae30e96f03c11b"
+report_after_sha256 = "767daead29a5a35654371bfe3c904e8a26f767ac542d5361f6034ec2fe906a60"
+preserved_fields = "Every row field except selected status; all header fields except remote and citation counts"
+canonical_database_action = "unopened"

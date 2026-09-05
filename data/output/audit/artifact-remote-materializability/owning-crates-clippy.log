@@ -1,0 +1,13 @@
+    Blocking waiting for file lock on build directory
+   Compiling cd_kernel v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/cd_kernel)
+    Checking verified_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/verified_core)
+    Checking gororoba_gpu_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/gororoba_gpu_bridge)
+    Checking provenance_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/provenance_core)
+    Checking gororoba_contracts v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/gororoba_contracts)
+    Checking gororoba_sparse_grid v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/gororoba_sparse_grid)
+    Checking provenance_store v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/provenance_store)
+    Checking data_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/data_core)
+    Checking lit_search v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/lit_search)
+    Checking provenance_ops v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/provenance_ops)
+    Checking gororoba_cli_provenance v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/gororoba_cli_provenance)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 1m 37s

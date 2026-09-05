@@ -1,0 +1,27 @@
+baseline_commit = "91467ad14eeeade63177e15f45acc592564b7869"
+artifact_count = 3531
+changed_rows = 533
+changed_fields_per_row = ["status"]
+changed_header_fields = ["remotely_materializable_count", "citation_only_no_link_count"]
+other_master_fields_identical = true
+other_reconciliation_fields_identical = true
+reconciliation_changed_rows = 533
+canonical_database_bytes_identical = true
+exact_spec_witness_set = true
+lane_unique_members = 3531
+lane_all_projected_fields_match_master_under_documented_whitespace_normalization = true
+lane_status_counts_match = true
+empty_hashes_retained = 245
+nonempty_hashes_retained = 288
+
+[changed_rows_by_lane]
+datasets = 203
+papers_pdf = 3
+slides_artifacts = 6
+web_references = 321
+
+[lane_members]
+datasets = 1371
+papers_pdf = 351
+slides_artifacts = 7
+web_references = 1802
