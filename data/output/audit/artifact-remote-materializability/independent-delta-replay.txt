@@ -1,0 +1,24 @@
+The independent verifier compares the retained inventory with commit
+`91467ad14eeeade63177e15f45acc592564b7869`. It checks the full parsed master
+and reconciliation documents, exact repair witnesses, canonical database bytes,
+and every lane member and projected field. The lane renderer trims strings and
+source-reference whitespace; the verifier applies that declared projection rule.
+
+Run from the repository root after compiling `provenance_ops` with the pinned
+Rust toolchain. Set `proof_dependency_dir` to the build directory's
+`validation/deps` directory and `proof_toml_rlib` to a compatible `libtoml-*.rlib`
+within that directory. The recorded run used:
+
+```bash
+proof_dependency_dir=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps
+proof_toml_rlib="$proof_dependency_dir/libtoml-26448a51696ed800.rlib"
+mkdir -p .cache/mirror-delta-proof
+rustc --edition=2024 data/output/audit/artifact-remote-materializability/verify-inventory-delta.rs --extern "toml=$proof_toml_rlib" -L "dependency=$proof_dependency_dir" -o .cache/mirror-delta-proof/verify
+.cache/mirror-delta-proof/verify
+```
+
+The command exits zero only after every assertion passes. Its stdout is retained
+in `independent-delta-verification.toml`. The verifier reads canonical database
+bytes and launches read-only Git commands; its executable writes stdout only.
+Later canonical mutations require a new baseline and a separately justified
+preservation boundary.

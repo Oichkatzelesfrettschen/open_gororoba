@@ -1,0 +1,49 @@
+schema_version = 1
+status = "validated_inventory_correction"
+base_commit = "91467ad14eeeade63177e15f45acc592564b7869"
+scope = "Host-neutral artifact inventory classification and exact linkless correction"
+root_cause = "classify_artifacts assigned remotely_materializable from host_only_paths before establishing a retrieval URL or content identity. Local availability therefore manufactured remote-status assertions for 533 linkless records."
+repair = "Classification follows measured or carried identity; remote metadata requires an HTTP(S) URL and a 64-hex SHA256. The verifier shares the predicate. Host materialization selection follows observed paths independently of status."
+mutation = "repair-spec.toml seals the original master and reconciliation report SHA256 values and exact 533 ID/key witnesses. The repair checks every prerequisite, changes only selected statuses and two header counts, and proves complete semantic equality with the permitted transformation. Existing renderers regenerate four lane projections and infrastructure reports."
+canonical_database_sha256 = "12e4a6eaaf4d332ade177175f143d3a5bdd84497092710f1079351dcb0d3191d"
+canonical_boundary = "The repair leaves canonical SQLite unopened. Before-and-after SHA256 observations match. Canonical artifact statuses and transition history stay outside the inventory mutation."
+spec = "data/output/audit/artifact-remote-materializability/repair-spec.toml"
+result = "data/output/audit/artifact-remote-materializability/repair-result.toml"
+retrieval_audit = "data/output/audit/artifact-remote-materializability/remote-identity-audit.toml"
+
+[counts]
+artifact_count = 3531
+corrected_count = 533
+remote_before = 573
+remote_after = 40
+citation_only_before = 2310
+citation_only_after = 2843
+missing_minimum_before = 3033
+missing_minimum_after = 3033
+corrected_with_retained_hash = 288
+corrected_without_hash = 245
+datasets = 203
+papers_pdf = 3
+slides_artifacts = 6
+web_references = 321
+
+[validation]
+independent_preservation = "independent-delta-verification.toml records an independent Rust comparison: exact 533 status changes, all other master/report fields equal, canonical database bytes equal, and all 3531 unique lane memberships and projected fields equal under the renderer's whitespace normalization. independent-delta-replay.txt retains the replay command."
+repository_gate = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0; scoped Clippy, 19 selected repository tests, and SQLite-first governance pass. validation.log retains the complete gate output. Explicit Clippy for provenance_ops and gororoba_cli_provenance passes with warnings denied."
+unit_tests = "37 provenance_ops library tests pass, including exact correction/replay, metadata drift and mixed-application rejection, witness mismatch, directory handling, carried identity, tracked retention, DOI-key admission, and host manifest membership. provenance-tests.log retains the complete output."
+inventory = "The fresh provenance binary verifies the corrected inventory against primary-checkout materialized paths: artifacts=3531, downloaded=141, lanes=4. Infrastructure in that pre-merge command resolves against primary; the final integrated check covers regenerated projections."
+idempotency = "A second repair invocation reports already_applied=true; reverse transformation recovers the sealed original master/report hashes and renders identical outputs."
+falsifier = "Any changed field beyond the sealed status/count frontier, missing or duplicate witness, mixed application, or altered original hash makes the repair fail before staging output."
+
+[replay]
+build = 'CARGO_TARGET_DIR="$PWD/.cache/gate-target" cargo build --locked --profile validation -p gororoba_cli_provenance --bin provenance'
+plan_original_state = '.cache/gate-target/validation/provenance plan-linkless-materializability --spec data/output/audit/artifact-remote-materializability/repair-spec.toml --repaired-at 2026-09-04'
+repair_or_verify_replay = '.cache/gate-target/validation/provenance repair-linkless-materializability --spec data/output/audit/artifact-remote-materializability/repair-spec.toml --audit data/output/audit/artifact-remote-materializability/repair-result.toml'
+verify_integrated = '.cache/gate-target/validation/provenance verify'
+tests = 'cargo test --locked --profile validation -p provenance_ops --lib'
+gate = 'make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2'
+boundary = "Plan runs on the sealed base inventory. Repair accepts either that exact pre-state or its exact corrected post-state. Later inventory changes require a newly reviewed specification. Full provenance verification requires the primary checkout's materialized canonical paths."
+
+[retrieval_boundary]
+meaning = "Remote materialization metadata describes a URL and content identity; successful retrieval of those exact bytes requires independent observations. The 533 correction creates neither mirror observations nor downloaded status."
+method = "wget with a Mozilla user agent supplies bounded retrieval probes. HTTP completion, file type, content hash and correspondence to the expected document are separate observations. A user-agent change cannot repair a wrong URL/hash association."

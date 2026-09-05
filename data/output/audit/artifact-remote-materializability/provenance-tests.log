@@ -1,0 +1,45 @@
+    Blocking waiting for file lock on build directory
+   Compiling provenance_ops v0.1.0 (/home/eirikr/worktrees/open_gororoba/artifact-remote-materializability/crates/provenance_ops)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 2m 31s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/provenance_ops-3cfc9c9e7399a25a)
+
+running 37 tests
+test source_provenance::artifact_retention::tests::retrieval_command_records_a_gap_rather_than_a_plausible_line ... ok
+test source_provenance::artifact_retention::tests::materializable_state_separates_a_tracked_pdf_from_an_absent_one ... ok
+test source_provenance::inventory_repair::tests::sealed_repair_rejects_partial_witnesses_and_mirror_evidence ... ok
+test source_provenance::materializability_tests::doi_key_with_measured_direct_content_admits_remote_metadata ... ok
+test source_provenance::candidate_extract::tests::artifact_download_paths_keep_materialized_copy_semantics ... ok
+test source_provenance::candidate_extract::tests::combined_candidate_scan_preserves_external_publication_and_book_identities ... ok
+test source_provenance::candidate_extract::tests::context_chunk_owns_report_and_retains_referenced_paths ... ok
+test source_provenance::materializability_tests::carried_identity_admits_remote_metadata_without_local_bytes ... ok
+test source_provenance::inventory_repair::tests::correction_preserves_unknown_fields_and_replays_byte_identically ... ok
+test source_provenance::materializability_tests::remote_url_and_measured_host_file_admit_materialization_metadata ... ok
+test source_provenance::inventory_repair::tests::sealed_repair_rejects_metadata_drift_and_mixed_application ... ok
+test source_provenance::materializability_tests::host_directory_without_content_identity_is_unverified ... ok
+test source_provenance::materializability_tests::malformed_remote_identity_fails_classification_and_validation ... ok
+test source_provenance::materializability_tests::staging_keeps_linkless_host_file_in_materialization_manifest ... ok
+test source_provenance::candidate_extract::tests::book_document_owns_registry_record_and_retains_reference_identifiers ... ok
+test source_provenance::materializability_tests::linkless_host_file_keeps_identity_without_claiming_remote_retrieval ... ok
+test source_provenance::materializability_tests::tracked_file_admits_retention_without_remote_identity ... ok
+test source_provenance::staged_write::tests::staged_write_accepts_a_shrink_under_the_threshold ... ok
+test source_provenance::tests::actaphys_r_pdf_surface_expands_to_fulltext_alias ... ok
+test source_provenance::tests::artifact_local_path_filter_rejects_agents ... ok
+test source_provenance::tests::aps_abstract_pages_are_citation_locators ... ok
+test source_provenance::staged_write::tests::staged_write_leaves_every_original_untouched_when_one_output_fails ... ok
+test source_provenance::staged_write::tests::staged_write_refuses_a_shrink_beyond_the_threshold ... ok
+test source_provenance::tests::normalize_url_rewrites_archive_onion_aliases_to_public_archive ... ok
+test source_provenance::tests::cambridge_content_id_unifies_article_and_pdf_variants ... ok
+test source_provenance::tests::cambridge_service_pages_are_citation_locators ... ok
+test source_provenance::tests::canonical_identity_prefers_mdpi_pdf_variant ... ok
+test source_provenance::tests::iastate_download_surface_expands_to_api_content_alias ... ok
+test source_provenance::tests::normalize_url_upgrades_dx_doi_and_ou_http_fallbacks ... ok
+test source_provenance::tests::normalize_url_upgrades_mdpi_http_and_drops_query_noise ... ok
+test source_provenance::tests::numdam_item_pages_are_citation_locators_but_pdfs_are_not ... ok
+test source_provenance::tests::lane_classification_prefers_dataset ... ok
+test source_provenance::tests::identity_key_keeps_cambridge_identity_prefix ... ok
+test source_provenance::tests::prior_rows_the_scan_did_not_observe_are_reseeded_in_key_order ... ok
+test source_provenance::tests::soho_archive_portals_are_citation_locators ... ok
+test source_provenance::tests::stable_ids_keep_prior_numbers_and_allocate_after_the_maximum ... ok
+test tests::default_repo_root_exists ... ok
+
+test result: ok. 37 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
