@@ -1,0 +1,26 @@
+[transition]
+transition_key = "c-1732-twist-orbit-2026-09-03"
+source_claim_id = "C-1732"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-ORBIT-20260903"]
+experiment_ids = ["E-279"]
+exercised_falsifier = "An invariant-matched nonassociative twist ensemble whose 97.5th percentile exceeds 0.8274."
+proposed_claim_status = "Verified"
+rationale = "E-279 ran the two matched families C-1732 left open, plus the cocycle negative control. On the identical E-240 subsample (1,733,470 samples, 578,320 positives, 813 files, ChaCha8 seed 42) the canonical CD tensor still scores ROC-AUC 0.8274. All 50 normalized 2-cocycles have zero associator terms and AUC 0.5000. 250 uniform 35-line basis-alternative twists score mean 0.8327, 2.5th percentile 0.8280, 97.5th percentile 0.8373, maximum 0.8393, term counts 1080 to 1656, 246 of 250 draws at or above the canonical value (tail probability 0.9841); canonical AUC 0.8274 sits below that 2.5th percentile, so the C-1732 required falsifier on an invariant-matched ensemble whose 97.5th percentile exceeds 0.8274 fires, and the 35-line family is not support-matched. 250 algebra-isomorphic relabeling-orbit draws at exact 1848-term 924/924 support score mean 0.8311, 2.5th percentile 0.8147, 97.5th percentile 0.8407, maximum 0.8424, 217 of 250 draws at or above the canonical value (tail probability 0.8685); the canonical tensor sits inside that orbit. The E-240 random-unital and sign-scramble numbers in C-1732 are unchanged. The successor states the two new families separately and records that CD is typical of its isomorphism class and below the 35-line alternative-twist bulk."
+unresolved_assumptions = ["The 35-line ensemble matches algebraic invariants and not the 1848-term support; a support-matched sample from that 2^35 family was not drawn because 64 random alternative twists all had fewer than 1848 terms. n_draws is 250 per arm rather than 999. The result is one benchmark and one seed."]
+actor = "staples-twist-orbit-e279"
+reason = "Register the E-279 verdict and the two-family successor of C-1732."
+transition_timestamp = "2026-09-03T22:00:00Z"
+expected_source_state_sha256 = "cb68a280309944d47c7c1d2c90ef1de73dad0017fda83b95503daf06129f1981"
+expected_claim_id_max = 1736
+
+[[successor]]
+proposal_key = "staples-cd-typical-among-alternative-and-isomorphic-twists"
+statement = "On the E-240 subsample of the deduplicated THEMIS-A Staples benchmark (1,733,470 samples, 578,320 positives, 813 daily files, ChaCha8 seed 42) the canonical Cayley-Dickson associator tensor (1848 terms, 924 positive and 924 negative) reaches ROC-AUC 0.8274. Three control results, stated separately: (1) 50 normalized 2-cocycles on (Z_2)^4 have vanishing associator (0 terms) and chance-level AUC 0.5000; (2) 250 uniform 35-line basis-alternative twists (unital, anticommutative, imaginary squares -1, quaternion triads on the 35 lines of PG(3, 2), term counts 1080 to 1656) reach mean 0.8327, 2.5th percentile 0.8280, 97.5th percentile 0.8373 and maximum 0.8393, 246 of 250 draws at or above the canonical value (tail probability 0.9841), so the canonical AUC sits below that ensemble's 2.5th percentile; (3) 250 algebra-isomorphic relabeling-orbit draws under GL(4, Z_2) x (Z_2)^15 at identical 1848-term 924/924 support reach mean 0.8311, 2.5th percentile 0.8147, 97.5th percentile 0.8407 and maximum 0.8424, 217 of 250 draws at or above the canonical value (tail probability 0.8685), so the canonical tensor is a typical member of its isomorphism class. Discrimination that is extreme among unstructured unital twists (C-1732) is typical among basis-alternative twists and among algebra-isomorphic copies of the sedenion twist."
+initial_status = "Verified"
+source_or_implementation_boundary = "Phenomenological mapping on one benchmark at interpretive depth 0; the 35-line family is algebraic-invariant and not support-matched; the isomorphic orbit is support-matched; the cocycle family is a negative control with vanishing associator."
+required_falsifier = "A re-run of staples-twist-orbit with a different seed, or with n_invariant_twists or n_isomorphic_orbits raised to 999, in which the canonical AUC exceeds the 97.5th percentile of the 35-line ensemble or of the isomorphic orbit; or a support-matched sample of 35-line twists with 1848 terms whose 97.5th percentile lies below 0.8274."
+where_stated = ["data/output/staples_twist_orbit.json", "E-279"]
+evidence_artifact_ids = ["LOCAL-STAPLES-TWIST-ORBIT-20260903"]
+predecessor_relation_kind = "refines"

@@ -1,0 +1,16 @@
+Focused validation:
+33 E8 library tests pass, including exact Weyl/combinatorial equality and invalid-input rejection.
+55 staple library tests pass, including support-index movement, fixed normalization, and mean tied ranks.
+Four runner tests pass, including empty/one-class rejection and retained replay mutation rejection.
+Three viewer tests pass for dynamic bounds, live flip deltas and header separation.
+Three canonical upsert tests pass, including malformed fragments and injected revision/audit failures.
+Targeted Clippy passes with warnings denied.
+Twist replay reconstructs all 550 tensor identities and reproduces numeric scores/summaries exactly.
+Physical rerun exits 0 on 813 files, 1733470 samples and 578320 positives in 26 seconds.
+E8 CLI reports 240 roots, 120 positive roots, height 29, 112 integer and 128 spinor roots, exact set match.
+Canonical control-plane verifier passes with 1556 claims, 251 experiments, 392 binaries.
+All 29 integration SQL preservation assertions pass after semantic/lineage regeneration.
+Negative SQL probe removes the C1742/E279 relation from a scratch database and fails at the required relation assertion.
+Full gate: make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2 exits 0.
+Clippy and 1117 selected library tests pass; 27 tests excluded by the local-test policy.
+Governance, semantic atoms, execution lineage and canonical compatibility checks pass.

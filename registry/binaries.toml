@@ -539,6 +539,11 @@ crate = "gororoba_cli"
 description = "E-027 v2: Imbalance-topology spatial correlation with VR persistent homology, multi-grid sweep, and GPU dispatch"
 
 [[binary]]
+name = "e8-root-decompose"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "eht-pathion-separation"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from crates/gororoba_cli_physics/Cargo.toml; registry metadata pending."
@@ -1701,6 +1706,11 @@ crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "staples-physical-decompose"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
 name = "staples-roc-block-bootstrap"
 crate = "gororoba_cli_physics"
 description = "Block-bootstrap ROC-AUC comparison for the Staples THEMIS benchmark: average-rank Mann-Whitney AUC for the normalized CD staple-associator vs field-rotation and |B|-gradient baselines, with moving-block (Kunsch 1989) percentile 95% CIs on each AUC, the paired bulk delta, per-subtype (compressive/rotational) paired deltas, the worst-case-AUC delta, and a half/double block-length sensitivity sweep; fixed ChaCha8 seed makes every interval bit-reproducible."
@@ -1714,6 +1724,16 @@ description = "File-cluster bootstrap for the Staples THEMIS benchmark: resample
 name = "staples-twist-ladder"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "staples-twist-orbit"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
+
+[[binary]]
+name = "staples-twist-orbit-view"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "sterile-neutrino-audit"

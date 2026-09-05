@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 179
-experiment_count = 250
+deterministic_count = 180
+experiment_count = 251
 gpu_count = 29
 seeded_count = 48
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -6504,6 +6504,33 @@ run_command_sha256 = "ca932d1c229551ad9b641d6ca426bed9e8be83c99ee06a8abee45217a4
 status = "active"
 status_token = "ACTIVE"
 title = "LoTSS DR2 MaNGA-overlap ultrametric fraction test with column-shuffled null (source literal E-199)"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-twist-orbit"
+binary_experiment_declared = "E-279"
+binary_registered = true
+claim_refs = ["C-1732", "C-1742"]
+claims = ["C-1732", "C-1742"]
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = ["SRC-THEMIS-THA-FGM-DAILY"]
+gpu = false
+id = "E-279"
+input = "Deduplicated THEMIS-A daily FGM files and Staples crossing catalog: 813 admitted files, 1,733,470 sampled windows and 578,320 positives, seed 42."
+input_path_refs = ["data/output/cat_themis_a.csv", "data/output/tha_matched_files.csv"]
+lineage_id = "XL-249"
+method = "Five declared maps: catalog-time labels on six-sample windows; four-lag B/magnitude packing into 16D; normalized cubic contraction of overlapping staples; seeded per-file negative subsampling; pooled average-rank AUC and ensemble quantiles. Fifty normalized cocycles give zero associators; 250 basis-alternative twists change support and cardinality; 250 GL/sign relabelings preserve 1848-term cardinality and 924/924 balance while moving support indices. Seed additions and multiplications wrap modulo 2^64. Retained-score replay reconstructs tensor identities and regenerates summaries without repeating FGM scoring."
+output = ["data/output/staples_twist_orbit.json"]
+output_path_refs = ["data/output/staples_twist_orbit.json"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-twist-orbit -- --matched-files data/output/tha_matched_files.csv --catalog data/output/cat_themis_a.csv --out data/output/staples_twist_orbit.json --n-cocycles 50 --n-invariant-twists 250 --n-isomorphic-orbits 250 --seed 42 --neg-fraction 0.05"
+run_command_sha256 = "6f0aaff93183308430358aa758a8491fa944c12c81ef33950a977ddee1b39c7d"
+status = "active"
+status_note = "Retained ensemble scores pass reconstruction of all 550 tensor identities. Canonical AUC lies below the alternative-family central interval and inside the isomorphic interval. The invariant-family threshold in C-1732's registered falsifier fires."
+status_token = "ACTIVE"
+title = "35-line alternative-twist ensemble and algebra-isomorphic relabeling orbit against the sedenion associator"
 truth_surface_consumption = []
 
 [[experiment]]

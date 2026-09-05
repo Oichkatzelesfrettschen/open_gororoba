@@ -1,0 +1,230 @@
+diff --git a/crates/gororoba_algebra/src/lie/e8/root_system.rs b/crates/gororoba_algebra/src/lie/e8/root_system.rs
+index ec08f3b8..6be48430 100644
+--- a/crates/gororoba_algebra/src/lie/e8/root_system.rs
++++ b/crates/gororoba_algebra/src/lie/e8/root_system.rs
+@@ -40,7 +40,7 @@
+ //! `A_ij = 2 (alpha_i, alpha_j) / (alpha_i, alpha_i)`. The cross-derivation
+ //! is asserted in `tests::cartan_matrix_derives_from_simple_roots`.
+ 
+-use std::collections::HashMap;
++use std::collections::{HashMap, HashSet};
+ 
+ // ============================================================================
+ // Root vector and lattice type
+@@ -98,9 +98,17 @@ impl E8Lattice {
+         }
+     }
+ 
+-    /// Number of positive roots (always 120 = 240 / 2).
++    /// Number of lexicographically positive roots (first nonzero coord > 0).
+     pub fn positive_root_count(&self) -> usize {
+-        120
++        self.positive_roots().len()
++    }
++
++    /// Roots whose first nonzero Euclidean coordinate is positive.
++    pub fn positive_roots(&self) -> Vec<&E8Root> {
++        self.roots
++            .iter()
++            .filter(|r| first_nonzero_positive(&r.coords))
++            .collect()
+     }
+ 
+     /// Sanity-check the stored Cartan matrix: diagonal entries are 2 and
+@@ -316,6 +324,106 @@ pub fn e8_fundamental_weights() -> [[f64; 8]; 8] {
+     })
+ }
+ 
++/// Simple reflection `s_alpha(v) = v - 2 (v,alpha)/(alpha,alpha) alpha`.
++/// For E8 roots, `(alpha,alpha) = 2`, so this is `v - (v,alpha) alpha`.
++#[allow(clippy::needless_range_loop)]
++pub fn weyl_reflect(v: &E8Root, alpha: &E8Root) -> E8Root {
++    let ip = v.inner_product(alpha);
++    let mut coords = [0.0_f64; 8];
++    for i in 0..8 {
++        coords[i] = v.coords[i] - ip * alpha.coords[i];
++    }
++    E8Root::new(coords)
++}
++
++fn quantize_root(coords: &[f64; 8]) -> [i8; 8] {
++    coords.map(|x| (2.0 * x).round() as i8)
++}
++
++/// Generate all 240 E8 roots as the Weyl orbit of the eight simple roots.
++pub fn generate_e8_roots_by_weyl() -> Vec<E8Root> {
++    let simple = e8_simple_roots();
++    let mut seen: HashSet<[i8; 8]> = HashSet::new();
++    let mut roots: Vec<E8Root> = Vec::with_capacity(240);
++    let mut stack: Vec<E8Root> = Vec::new();
++    for s in &simple {
++        let q = quantize_root(&s.coords);
++        if seen.insert(q) {
++            roots.push(s.clone());
++            stack.push(s.clone());
++        }
++    }
++    while let Some(v) = stack.pop() {
++        for alpha in &simple {
++            let w = weyl_reflect(&v, alpha);
++            let q = quantize_root(&w.coords);
++            if seen.insert(q) {
++                stack.push(w.clone());
++                roots.push(w);
++            }
++        }
++    }
++    roots
++}
++
++/// Expand `root` in the simple-root basis: `root = sum c_i alpha_i`.
++/// Integer for every root in the Weyl orbit of [`e8_simple_roots`].
++pub fn simple_coordinates(root: &E8Root) -> [i32; 8] {
++    let simple = e8_simple_roots();
++    let mut m = nalgebra::SMatrix::<f64, 8, 8>::zeros();
++    for (j, alpha) in simple.iter().enumerate() {
++        for (i, &x) in alpha.coords.iter().enumerate() {
++            m[(i, j)] = x;
++        }
++    }
++    let rhs = nalgebra::SVector::<f64, 8>::from(root.coords);
++    let c = m
++        .lu()
++        .solve(&rhs)
++        .expect("simple roots of E8 are a basis of R^8");
++    [0, 1, 2, 3, 4, 5, 6, 7].map(|i| c[i].round() as i32)
++}
++
++fn first_nonzero_positive(coords: &[f64; 8]) -> bool {
++    for &x in coords {
++        if x > 1e-10 {
++            return true;
++        }
++        if x < -1e-10 {
++            return false;
++        }
++    }
++    false
++}
++
++/// Highest root of the Weyl orbit of the stored simple system (height 29).
++pub fn weyl_highest_root() -> E8Root {
++    generate_e8_roots_by_weyl()
++        .into_iter()
++        .max_by_key(|r| height(r))
++        .expect("Weyl orbit of E8 simple roots is nonempty")
++}
++
++/// Height: sum of simple-root coefficients.
++pub fn height(root: &E8Root) -> i32 {
++    simple_coordinates(root).iter().sum()
++}
++
++/// 112 D8-type roots (two ±1, six 0) vs 128 half-integer spinor roots.
++pub fn e8_root_type_counts(roots: &[E8Root]) -> (usize, usize) {
++    let mut d8 = 0usize;
++    let mut spinor = 0usize;
++    for r in roots {
++        let half = r.coords.iter().any(|x| (x.abs() - 0.5).abs() < 1e-9);
++        if half {
++            spinor += 1;
++        } else {
++            d8 += 1;
++        }
++    }
++    (d8, spinor)
++}
++
+ // ============================================================================
+ // Tests
+ // ============================================================================
+@@ -410,6 +518,75 @@ mod tests {
+         }
+     }
+ 
++    #[test]
++    fn weyl_orbit_of_simple_roots_is_240_distinct_norm_two() {
++        let weyl = generate_e8_roots_by_weyl();
++        assert_eq!(weyl.len(), 240);
++        let set: HashSet<[i8; 8]> = weyl.iter().map(|r| quantize_root(&r.coords)).collect();
++        assert_eq!(set.len(), 240);
++        for r in &weyl {
++            assert!(r.is_valid_root());
++        }
++        let (d8, spinor) = e8_root_type_counts(&weyl);
++        assert_eq!((d8, spinor), (112, 128));
++    }
++
++    #[test]
++    fn simple_roots_have_height_one_and_reconstruct() {
++        let simple = e8_simple_roots();
++        for (i, alpha) in simple.iter().enumerate() {
++            let c = simple_coordinates(alpha);
++            assert_eq!(height(alpha), 1);
++            for (j, &cj) in c.iter().enumerate() {
++                let expect = if i == j { 1 } else { 0 };
++                assert_eq!(cj, expect, "simple root {i} coord {j} = {cj}");
++            }
++        }
++    }
++
++    #[test]
++    fn every_root_reconstructs_from_simple_coordinates() {
++        let simple = e8_simple_roots();
++        for root in &generate_e8_roots_by_weyl() {
++            let c = simple_coordinates(root);
++            let mut rec = [0.0_f64; 8];
++            for (j, alpha) in simple.iter().enumerate() {
++                for i in 0..8 {
++                    rec[i] += f64::from(c[j]) * alpha.coords[i];
++                }
++            }
++            for i in 0..8 {
++                assert!(
++                    (rec[i] - root.coords[i]).abs() < 1e-8,
++                    "recon mismatch at {i}: {} vs {}",
++                    rec[i],
++                    root.coords[i]
++                );
++            }
++        }
++    }
++
++    #[test]
++    fn highest_root_has_height_29_and_120_positive_roots() {
++        let lattice = E8Lattice::new();
++        assert_eq!(height(&weyl_highest_root()), 29);
++        assert_eq!(lattice.positive_roots().len(), 120);
++        let weyl = generate_e8_roots_by_weyl();
++        assert_eq!(weyl.iter().filter(|r| height(r) > 0).count(), 120);
++        let (d8, spinor) = e8_root_type_counts(&lattice.roots);
++        assert_eq!((d8, spinor), (112, 128));
++    }
++
++    #[test]
++    fn reflecting_a_simple_root_through_itself_negates_it() {
++        let alpha = &e8_simple_roots()[3];
++        let neg = weyl_reflect(alpha, alpha);
++        for i in 0..8 {
++            assert!((neg.coords[i] + alpha.coords[i]).abs() < 1e-10);
++        }
++        assert_eq!(height(&neg), -1);
++    }
++
+     /// The E8 Cartan in this module must match the E8 Cartan in
+     /// [`crate::lie::kac_moody`] entry-by-entry, so the affine/hyperbolic
+     /// extensions `E_9, E_10, E_11` see a consistent base.
+diff --git a/crates/gororoba_cli_physics/Cargo.toml b/crates/gororoba_cli_physics/Cargo.toml
+index 8d1ff9d9..e4e037ac 100644
+--- a/crates/gororoba_cli_physics/Cargo.toml
++++ b/crates/gororoba_cli_physics/Cargo.toml
+@@ -298,6 +298,9 @@ path = "src/bin/staples_twist_orbit_view.rs"
+ name = "staples-physical-decompose"
+ path = "src/bin/staples_physical_decompose.rs"
+ [[bin]]
++name = "e8-root-decompose"
++path = "src/bin/e8_root_decompose.rs"
++[[bin]]
+ name = "staples-layout-sweep"
+ path = "src/bin/staples_layout_sweep.rs"
+ [[bin]]
