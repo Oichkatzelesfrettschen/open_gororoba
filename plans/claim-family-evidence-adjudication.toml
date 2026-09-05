@@ -130,23 +130,23 @@ acceptance = "Physical force units and numerical error budget support the bounde
 [[task]]
 id = "lbm-failure-discrimination"
 status = "pending"
-progress = "Evolving real CUDA and graph-reuse fixtures pass unchanged gates after independently resolving time-level and capture dependency failures. C-1745 records bounded conformance. E-298 retains all50 direct null trial rows with six Mach failures; E-300/C-1748 repairs independently measured MRT impulse. Historical population accounting is corrected; physical paired resolution remains unadmitted."
+progress = "Evolving real CUDA and graph-reuse fixtures pass unchanged gates after independently resolving time-level and capture dependency failures. C-1745 records bounded conformance. E-298 retains all50 direct null trial rows with six Mach failures; E-300/C-1748 repairs independently measured MRT impulse. Historical population accounting is corrected; E-306 repeats all50 rows after the force correction and retains six first-step Mach failures. Independent rest-equilibrium streaming explains the zero-force failure; physical initial-field admission and paired resolution remain required."
 depends_on = ["force-units-sensitivity"]
 action = "Exercise evolving CPU/GPU fields, null execution and explosion rejection"
 acceptance = "Correctness, stability, paired resolution and outlier accounting have independent retained predicates."
 
 [[task]]
 id = "magnonic-source-invariants"
-status = "pending"
-progress = "Angular/exchange slopes, source Tables I/II, sampled topology admission and local-frame invariance pass focused checks. Paired patches distinguish edge states, reciprocal participation and both walls. E-299/C-1747 passes source-fitted band support and geometry/folding checks. E-305/C-1751 certifies full-torus bundle gaps and zero bundle Chern number for exact stored Table I/II models. Source uncertainty, independent device prediction and historical alternate parameter sets retain separate obligations."
+status = "completed"
+progress = "Angular/exchange slopes, source Tables I/II, sampled topology admission and local-frame invariance pass focused checks. Paired patches distinguish edge states, reciprocal participation and both walls. E-299/C-1747 passes source-fitted band support and geometry/folding checks. E-305/C-1751 certifies full-torus bundle gaps and zero bundle Chern number for exact stored Table I/II models. Historical alternate-model rank-one outputs remain inadmissible at degeneracy and lack exact runtime identity. Source uncertainty, independent device prediction and positive replacement invariants are separate successor obligations."
 depends_on = ["family-contracts"]
 action = "Resolve magnonic parameter and frequency provenance, topology and localization"
 acceptance = "Gap-admitted band or subspace invariants, defect localization and both domain walls pass separate checks."
 
 [[task]]
 id = "ward-optics-reproduction"
-status = "pending"
-progress = "Independent Ward arithmetic fixes the intercept sign while retaining norm failures and exposes quadrature sensitivity. Faithful optics replay preserves the 0.01 gate failure at 0.01594 and separates archive/TeX/PDF identities. E-301/C-1749 repairs the source proper-time counterterm measure and separates transverse from full-vector predicates. E-304/C-1750 derives contacts, source constants and scalar momentum conventions independently; finite gauge, gravitational and transverse checks pass while the original normalized full-vector gate remains failed. E-302/E-303 separate finite frequency grids, drawn fits and sampled source markers; certified error and source fitting reconciliation remain open."
+status = "completed"
+progress = "Independent Ward arithmetic fixes the intercept sign while retaining norm failures and exposes quadrature sensitivity. Faithful optics replay preserves the 0.01 gate failure at 0.01594 and separates archive/TeX/PDF identities. E-301/C-1749 repairs the source proper-time counterterm measure and separates transverse from full-vector predicates. E-304/C-1750 derives contacts, source constants and scalar momentum conventions independently; finite gauge, gravitational and transverse checks pass while the original normalized full-vector gate remains failed. E-302/E-303 separate finite frequency grids, drawn fits and sampled source markers; source fitting identity is reconciled; certified continuum error bounds are separate successor research. Original failed thresholds remain retained."
 depends_on = ["family-contracts"]
 action = "Replay Ward and optics predicates with independent residuals and omission controls"
 acceptance = "Retain failed thresholds and distinguish identity class, contact terms, on-shell limits and fitting procedure."
@@ -154,7 +154,7 @@ acceptance = "Retain failed thresholds and distinguish identity class, contact t
 [[task]]
 id = "reference-population-identity"
 status = "pending"
-progress = "QGP CLI rejects mismatched populations before ranking; independent minimization identifies and repairs the fit/score formula mismatch. NuFit release and SK variants have explicit source intervals and retained composite comparisons. The official intake retains seven experimental RAA tables with 323 rows and exposes the eccentricity citation mismatch; theory-curve identity, covariance and nine-row geometry lineage remain required."
+progress = "QGP CLI rejects mismatched populations before ranking; independent minimization identifies and repairs the fit/score formula mismatch. NuFit release and SK variants have explicit source intervals and retained composite comparisons. The official intake retains seven experimental RAA tables with 323 rows and exposes the eccentricity citation mismatch; Primary-source equations identify a positive-shift quenching convolution distinct from the implemented negative-shift law; C-1710 preserves E-296 as objective conformance. Source-law implementation, theory-curve identity, covariance and nine-row geometry lineage remain required."
 depends_on = ["family-contracts"]
 action = "Correct QGP populations and NuFit release identities before agreement comparisons"
 acceptance = "Every comparison declares source population, uncertainty or covariance and fitting freedom; original comparisons remain retained."
@@ -242,3 +242,30 @@ id = "magnonic-qgp-canonical-validation"
 status = "completed"
 action = "Verify global-gap and reference-intake canonical exports, retained bytes and publication gates"
 acceptance = "Typed contracts, source identities and directed cell certificates agree; full validation passes and the atomic package is ready for draft-PR publication."
+
+[[task]]
+id = "corrected-mrt-null-replay"
+status = "completed"
+depends_on = ["null-control-measurement-repair"]
+action = "Rebuild the corrected MRT producer and replay the frozen bounded null protocol"
+acceptance = "Retain distinct producer identity, all 50 trial rows, unchanged numerical gates, paired input hashes and independent receipt checks; preserve E-298."
+
+[[task]]
+id = "corrected-mrt-null-adjudication"
+status = "completed"
+depends_on = ["corrected-mrt-null-replay"]
+action = "Adjudicate corrected-producer stability and register the bounded result"
+acceptance = "Canonical experiment, contracts and statements separate corrected impulse, measured stability, unassessed accuracy and physical resolution."
+
+[[task]]
+id = "corrected-mrt-null-publication"
+status = "completed"
+depends_on = ["corrected-mrt-null-adjudication"]
+action = "Validate and publish the corrected-producer evidence package"
+acceptance = "Focused receipt checks, required governance and publication gates pass with preserved histories and sealed crossing inputs."
+
+[[task]]
+id = "qgp-source-quenching-identity"
+status = "completed"
+action = "Admit the cited quenching equations and bind failed fits to the implemented ansatz"
+acceptance = "Retain versioned source bytes, parameter maps and canonical correction; preserve the original objective and identify source convolution as a separate implementation prerequisite."

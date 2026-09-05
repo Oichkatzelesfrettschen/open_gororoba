@@ -1,0 +1,1040 @@
+
+running 4 tests
+test rejects_tampered_array_hash_and_count ... ok
+test rejects_missing_rows ... ok
+independent_rest_streaming_max_mach=0.31266925213832153
+test unforced_rest_streaming_predicts_initial_mach_failure ... ok
+{
+  "admitted_same_stage_pairs": [
+    {
+      "condition": "C0-uniform-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 0
+    },
+    {
+      "condition": "C1-uniform-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 0
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 0
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 1
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 2
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 3
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 4
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 5
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 6
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 7
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 8
+    },
+    {
+      "condition": "C2-noise-zero",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 9
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 0
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 1
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 2
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 3
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 4
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 5
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": -0.00020536584597152796,
+      "observed_step": 24,
+      "trial": 6
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 7
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 8
+    },
+    {
+      "condition": "C3-noise-fzd",
+      "cpu_minus_cuda_df": 0.0,
+      "observed_step": 24,
+      "trial": 9
+    }
+  ],
+  "array_count": 100,
+  "cross_backend_pairs": 25,
+  "failures": [
+    {
+      "attempted_step": 1,
+      "backend": "CPU_FP64",
+      "condition": "C4-sersic-zero",
+      "failure": "raw population-moment Mach budget exceeded",
+      "finite_state": true,
+      "mach_within_budget": false,
+      "mass_within_budget": true,
+      "max_mach": 0.31266925213832153,
+      "nonnegative_population": true,
+      "observed_step": 1,
+      "positive_density": true,
+      "trial": 0
+    },
+    {
+      "attempted_step": 1,
+      "backend": "CUDA_FP32",
+      "condition": "C4-sersic-zero",
+      "failure": "raw population-moment Mach budget exceeded",
+      "finite_state": true,
+      "mach_within_budget": false,
+      "mass_within_budget": true,
+      "max_mach": 0.31266918312176134,
+      "nonnegative_population": true,
+      "observed_step": 1,
+      "positive_density": true,
+      "trial": 0
+    },
+    {
+      "attempted_step": 1,
+      "backend": "CPU_FP64",
+      "condition": "C5-sersic-fzd",
+      "failure": "raw population-moment Mach budget exceeded",
+      "finite_state": true,
+      "mach_within_budget": false,
+      "mass_within_budget": true,
+      "max_mach": 0.31253325778433483,
+      "nonnegative_population": true,
+      "observed_step": 1,
+      "positive_density": true,
+      "trial": 0
+    },
+    {
+      "attempted_step": 1,
+      "backend": "CUDA_FP32",
+      "condition": "C5-sersic-fzd",
+      "failure": "raw population-moment Mach budget exceeded",
+      "finite_state": true,
+      "mach_within_budget": false,
+      "mass_within_budget": true,
+      "max_mach": 0.3125331934074021,
+      "nonnegative_population": true,
+      "observed_step": 1,
+      "positive_density": true,
+      "trial": 0
+    },
+    {
+      "attempted_step": 1,
+      "backend": "CPU_FP64",
+      "condition": "C6-sersic-nfw",
+      "failure": "raw population-moment Mach budget exceeded",
+      "finite_state": true,
+      "mach_within_budget": false,
+      "mass_within_budget": true,
+      "max_mach": 0.312534304919101,
+      "nonnegative_population": true,
+      "observed_step": 1,
+      "positive_density": true,
+      "trial": 0
+    },
+    {
+      "attempted_step": 1,
+      "backend": "CUDA_FP32",
+      "condition": "C6-sersic-nfw",
+      "failure": "raw population-moment Mach budget exceeded",
+      "finite_state": true,
+      "mach_within_budget": false,
+      "mass_within_budget": true,
+      "max_mach": 0.31253424954887576,
+      "nonnegative_population": true,
+      "observed_step": 1,
+      "positive_density": true,
+      "trial": 0
+    }
+  ],
+  "historical_pilot_exit_status": 1,
+  "inputs": [
+    {
+      "backend": "CPU_FP64",
+      "condition": "C0-uniform-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "9a45827bba99b57a6a77140b115eace2ac37f3bd3b49a4b1e5c034dbe3b86d15",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C0-uniform-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "e9cadef6c278d8f3f877e05c5c80466eb0a81b8e1cd61e982b07dce330941649",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C1-uniform-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "fdde142e49e3f547cb86fe8aac00a57da414c387f727507f5abd451a76b59542",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C1-uniform-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "2d42e8a5375db53405da3aba8a41f6971a5b8d0d67ce1fba9d476a25d9ca307f",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "d0282fbb710b34cf1df28ee543a00b4afbddf45a75b24f7fadec800fc796ffc3",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e7bcd56f5dfb14c53e1468c8f4fa51f6ab203c46418943ef28870390a7eb9edd"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "bfb702b9f53e5ff23c2692cbd21fe723fc4313e6901d669377364d855e6a06c8",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e7bcd56f5dfb14c53e1468c8f4fa51f6ab203c46418943ef28870390a7eb9edd"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "fd979afa87f74510f165079f2bbd88a655533ce376c2c3252a6d77eb30e45994",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "65585b83e98950a7487a0800747762be7b4f2b14878e57da6b5318e7ae8a271d"
+      },
+      "trial": 1
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "9a1c8ab9c37042724ce99ae5f21e6447c70fd79b1df9e3ba9710ba85331ede86",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "65585b83e98950a7487a0800747762be7b4f2b14878e57da6b5318e7ae8a271d"
+      },
+      "trial": 1
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "7699bc91d203058dff7499a6aaf2fc8ef9c64c04eb02e299c415319ca5f5004d",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e47f88e9ff1a7964547ecaf177e49b24e4875b005081a6211570269d8e9788e0"
+      },
+      "trial": 2
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "036768b5bc069e039ba536c835b91fd36f05c538123263746669169cec499473",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e47f88e9ff1a7964547ecaf177e49b24e4875b005081a6211570269d8e9788e0"
+      },
+      "trial": 2
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "981ddfe9e1fe808c2e408252dc3e2799dbbc4a6ffee634b99997c8afaad6a94e",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "9c9ab67cd00368c11d2bf978acb0c27c612857d98fdc982c006398dd169d0015"
+      },
+      "trial": 3
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "8d8beda9c24dbb46d0717a16e74bf031916820ccba5ebca9dede687edc320daf",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "9c9ab67cd00368c11d2bf978acb0c27c612857d98fdc982c006398dd169d0015"
+      },
+      "trial": 3
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "24cab21931519f0d0fb0204241d10e58f4da06380efadd2ed683d3aac40bb232",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "da820f4bbf567a63dc11ab90908bc5b87884e91ab6f8bdedc5161e5034880152"
+      },
+      "trial": 4
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "f3d20e15e1e1a41e902118aec41f1ee94f720b92f8d5ede282bf4226c8a4833a",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "da820f4bbf567a63dc11ab90908bc5b87884e91ab6f8bdedc5161e5034880152"
+      },
+      "trial": 4
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "e3ec95c94cdee50ccad17176bbab37150ac0ff4a6f647f974da20c9ea8e029d1",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e07164d0e30e95509069071e61333df90cbbb8e49efdaf3cc3910487e1d00e3f"
+      },
+      "trial": 5
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "8691a4645d67947085193e25d2ad1dfa38677d78750a3cd5d10cab29be3f899b",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e07164d0e30e95509069071e61333df90cbbb8e49efdaf3cc3910487e1d00e3f"
+      },
+      "trial": 5
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "23517f3ab8c8c4ae83a45281ba95edf6973c0cd1737ea1e4d85a2fafbcbae7ee",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "af69cc243f09cdb13f8142c3c8aa3c2d67f92cdab2dd80d8006f034328604693"
+      },
+      "trial": 6
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "6109012ef41570ae43f86f2b27ac6b39132ac687b00dafef8d704fdf49bc0623",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "af69cc243f09cdb13f8142c3c8aa3c2d67f92cdab2dd80d8006f034328604693"
+      },
+      "trial": 6
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "8934a321a7a3e210f7beb4c648db00517476e18b5f4da746c01dcfd60b48ecc0",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "a68dbe9c273b5482d021d82d11df85126add7c6b7aae2aca5a6f1a86730dafaf"
+      },
+      "trial": 7
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "af191d26832483c7b73dbbc1554ce49b899d8cf64623fcb9422d6c20637488de",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "a68dbe9c273b5482d021d82d11df85126add7c6b7aae2aca5a6f1a86730dafaf"
+      },
+      "trial": 7
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "4948ee7618c6b3f896503b53ee264cd43a003297c0d2f9b41debec1d42274f95",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "86339ca02c65a16ffbd1e68df0dedef9b283f27c2b579c76c374e5209d0c0e8a"
+      },
+      "trial": 8
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "59019ab097adcd6cea5c1bf94aa00e907ca9c391cdde0ab3d723d59b2911b23c",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "86339ca02c65a16ffbd1e68df0dedef9b283f27c2b579c76c374e5209d0c0e8a"
+      },
+      "trial": 8
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "42d73b1164644bbe03de6b1cf5b67ecd8f0ae40b13444f59bdc8b48b2a0a081b",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "a7a8d48af23a42623858cb8785351879ece6d6e09940618c0a27619d75f80015"
+      },
+      "trial": 9
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C2-noise-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "5a7b6c24e7b991b652a44228a46dedaeeb4a0f36d1d89114e0bfb7f9417982cc",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "a7a8d48af23a42623858cb8785351879ece6d6e09940618c0a27619d75f80015"
+      },
+      "trial": 9
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "5d46c40abf6f998d9f77204fbacc19db83dd1e680d9bae61daecb4c8a5636c07",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e7bcd56f5dfb14c53e1468c8f4fa51f6ab203c46418943ef28870390a7eb9edd"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "16f27c96c41ad492363cf2fe55a69de0423a2be064066d0ca5d5cdbd6451e446",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e7bcd56f5dfb14c53e1468c8f4fa51f6ab203c46418943ef28870390a7eb9edd"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "2230bb17b5b8eb41280ddd4127a5ee362e2e2b6231e8ed2df6433a91c2f6abd4",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "65585b83e98950a7487a0800747762be7b4f2b14878e57da6b5318e7ae8a271d"
+      },
+      "trial": 1
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "f92d12dbf6ee7f95074cdc4006dd3af93b1a743a61a091dd7ad613056d6ffd47",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "65585b83e98950a7487a0800747762be7b4f2b14878e57da6b5318e7ae8a271d"
+      },
+      "trial": 1
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "ebe84948515028ba86a691cc64efd3cd7d4853671d51795a62953fc1ad9f95ab",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e47f88e9ff1a7964547ecaf177e49b24e4875b005081a6211570269d8e9788e0"
+      },
+      "trial": 2
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "52653bc1ca2a5c9e2444828e0078d95c5a32d8397aff49ce3df42a44d4b45e67",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e47f88e9ff1a7964547ecaf177e49b24e4875b005081a6211570269d8e9788e0"
+      },
+      "trial": 2
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "7bf75b97d1aba20164af7118e6494cc87b7381e6e2d826fe21f85758b236d1cb",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "9c9ab67cd00368c11d2bf978acb0c27c612857d98fdc982c006398dd169d0015"
+      },
+      "trial": 3
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "fc9039a41a2914347d068732e35ca3f681873e578f3b2bfeeb021d367d6b8409",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "9c9ab67cd00368c11d2bf978acb0c27c612857d98fdc982c006398dd169d0015"
+      },
+      "trial": 3
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "50593c2d8bf1ca409bb8cb24f1272eb65c81463733090337a1d8cf4fde9e4f2c",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "da820f4bbf567a63dc11ab90908bc5b87884e91ab6f8bdedc5161e5034880152"
+      },
+      "trial": 4
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "cf3dd9cb1bcf479f1788739d134c79d99a789dd1fa1a24daa4b422e2e0845765",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "da820f4bbf567a63dc11ab90908bc5b87884e91ab6f8bdedc5161e5034880152"
+      },
+      "trial": 4
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "6435bc00951bfbeebb126adf30289103133374f209dd54676caea2829367a1d2",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e07164d0e30e95509069071e61333df90cbbb8e49efdaf3cc3910487e1d00e3f"
+      },
+      "trial": 5
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "84886a1376b2041b52725d7736d6d15187ccf0fe1062cd2ac40731dd449b1a89",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "e07164d0e30e95509069071e61333df90cbbb8e49efdaf3cc3910487e1d00e3f"
+      },
+      "trial": 5
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "14ee2b92798bd0eab9a99b966118b8714d0d7064e6576107509b5f0674e4d066",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "af69cc243f09cdb13f8142c3c8aa3c2d67f92cdab2dd80d8006f034328604693"
+      },
+      "trial": 6
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "698304b4b2a66cb77a0bc6251db7354f83584110d9c35f157099ffd8bd08e9f6",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "af69cc243f09cdb13f8142c3c8aa3c2d67f92cdab2dd80d8006f034328604693"
+      },
+      "trial": 6
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "23dd4ac93e6af5a1cb2526fb248af340155160126e2855a2a320545ea4ebc664",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "a68dbe9c273b5482d021d82d11df85126add7c6b7aae2aca5a6f1a86730dafaf"
+      },
+      "trial": 7
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "8ee0f48c2773700b650be2ddcc3581fcb95c7d439c074e6f65f26e59e5ee0bd4",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "a68dbe9c273b5482d021d82d11df85126add7c6b7aae2aca5a6f1a86730dafaf"
+      },
+      "trial": 7
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "09fd8eb6fa4d20c809f2980cead9d02e5d62417de4b7127c8eedca0876bdf941",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "86339ca02c65a16ffbd1e68df0dedef9b283f27c2b579c76c374e5209d0c0e8a"
+      },
+      "trial": 8
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "c015c12fbe8045f7dd6e4ef82ff6c4a0f0ea65ca015554052e88c5e4974c9d56",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "86339ca02c65a16ffbd1e68df0dedef9b283f27c2b579c76c374e5209d0c0e8a"
+      },
+      "trial": 8
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "6c7549d8af4a8a9e4f8a9eb574593bd7a522d871def3de8ee1802a3658f382bd",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "a7a8d48af23a42623858cb8785351879ece6d6e09940618c0a27619d75f80015"
+      },
+      "trial": 9
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C3-noise-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+      },
+      "metadata_sha256": "074c16b688b54b71eaa3e5a4f312b2f84da3b9de69e5e3a53c7710c38153cc82",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "a7a8d48af23a42623858cb8785351879ece6d6e09940618c0a27619d75f80015"
+      },
+      "trial": 9
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C4-sersic-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "7028d8e30142232da31226d561a93a934e736f6d859dd5c06d5ffbdb445ea035",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C4-sersic-zero",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+      },
+      "metadata_sha256": "b8be6ca57e40d41cf09ee2feaec56a40ebcd818d3cad78a1b25eb5ebc12689a8",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C5-sersic-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2b9a0fd30a1d5768faaa4a6c985686069895a9d3d24f6d2e72190bf99b896cf7"
+      },
+      "metadata_sha256": "4618e8450d39f5655f745a33663a0a9594388f89ead9a17d5a716c1678d160bc",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C5-sersic-fzd",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "2b9a0fd30a1d5768faaa4a6c985686069895a9d3d24f6d2e72190bf99b896cf7"
+      },
+      "metadata_sha256": "32fe679012a268011b115655b642b8230f4b28f87f9acc523a8fe10aa058f470",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CPU_FP64",
+      "condition": "C6-sersic-nfw",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "21ddea8efececbd3dbb59f1d81c84a54c76fabd2f9bd6b5dc3dc9f254e2eeb73"
+      },
+      "metadata_sha256": "9aec9b4edbde1ec41bcd41ef68a0227f9876030abf32311af68c460ef910c107",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+      },
+      "trial": 0
+    },
+    {
+      "backend": "CUDA_FP32",
+      "condition": "C6-sersic-nfw",
+      "force": {
+        "bytes": 98304,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "21ddea8efececbd3dbb59f1d81c84a54c76fabd2f9bd6b5dc3dc9f254e2eeb73"
+      },
+      "metadata_sha256": "a01c21badc801664d80a8b4ee4cec79562547ee3534c087acad5348f15d829bf",
+      "rho": {
+        "bytes": 32768,
+        "encoding": "IEEE754_f64_little_endian",
+        "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+      },
+      "trial": 0
+    }
+  ],
+  "numerical_accuracy_gate": "unassessed",
+  "scope": "Receipt integrity and descriptive same-stage comparison; pilot failure remains a failed numerical control result.",
+  "trial_count": 50
+}
+test audit_retained_pilot_receipts ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+

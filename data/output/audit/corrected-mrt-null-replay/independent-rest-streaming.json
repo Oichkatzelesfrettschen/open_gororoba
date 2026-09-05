@@ -1,0 +1,17 @@
+{
+  "scope": "Independent one-step unforced rest-equilibrium streaming convolution; separate summation order and generated D3Q19 directions; f64 arithmetic, not interval certification",
+  "density_sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492",
+  "formula": "f_i(x,1)=w_i*rho(x-c_i,0); rho1=sum_i f_i; j1=sum_i c_i*f_i; Ma=sqrt(3)*norm(j1)/rho1",
+  "assumption": "Periodic 16-cubed, zero initial velocity and force, collision preserves local rest equilibrium",
+  "max_mach": 0.3126692521383215,
+  "max_location": [
+    6,
+    7,
+    7
+  ],
+  "cpu_observed_max_mach": 0.31266925213832153,
+  "absolute_discrepancy": 5.551115123125783e-17,
+  "gate": 0.3,
+  "gate_passes": false,
+  "implication": "The zero-force first-step density streaming already exceeds the frozen low-Mach gate. Changing the MRT force impulse or relaxation time cannot remove that ideal first-step mechanism. Physical initial-field/lattice-unit admission is required before changing the profile or mapping."
+}

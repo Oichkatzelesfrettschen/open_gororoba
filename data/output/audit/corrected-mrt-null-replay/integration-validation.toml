@@ -1,0 +1,18 @@
+schema_version = 1
+experiment = "E-306"
+claim_count = 1565
+typed_contract_count = 53
+experiment_lineages = 274
+command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+exit_status = 0
+library_tests_passed = 1992
+library_tests_skipped = 19
+explicit_receipt_tests_passed = 4
+warnings_as_errors = true
+protected_history_tables_across_normalization = 12
+qgp_primary_source_checksums_verified = 9
+qgp_noncomment_bytes_identical = true
+review = "Independent staged review found the canonical statements and contracts consistent with retained outcomes and original stopping-rule boundaries."
+backend_comparison = "22 admitted pairs; maximum absolute Df difference is 0.00020536584597152796 at C3 seed48. Numerical accuracy is unassessed."
+formatting = "Targeted dprint check passes. Direct rustfmt initially reported two repository nightly-only configuration warnings; dprint is the repository formatting entry point."
+scope = "Corrected MRT instrument failure and primary QGP source identity; physical initial-field admission, numerical convergence, source-convolution implementation and genuine operational observations remain open."

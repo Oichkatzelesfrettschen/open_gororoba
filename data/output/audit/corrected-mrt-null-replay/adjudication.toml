@@ -1,0 +1,63 @@
+schema_version = 1
+experiment = "E-306"
+evidence_layer = "implementation_conformance"
+result = "Corrected MRT direct-step pilot retains six first-step Mach failures"
+cpu_exit = 1
+cuda_exit = 1
+trial_rows = 50
+admitted_rows = 44
+failed_rows = 6
+same_stage_backend_pairs = 22
+historical_input_arrays_identical = 100
+historical_experiment = "E-298"
+force_oracle = "E-300"
+mach_gate = 0.3
+relative_mass_gate = 0.00001
+accuracy = "unassessed"
+resolution = "unassessed"
+physical_interpretation = "unassessed"
+failure_mechanism = "Unforced streaming of the retained rest-equilibrium Sersic density already yields Mach 0.3126692521383215. The CPU measurement differs by 5.56e-17. The initial density profile/lattice mapping violates the frozen low-Mach gate independently of the repaired force impulse."
+next_admission = "Admit the physical initial-density and lattice-unit mapping before changing the profile or grid; retain the unchanged failed pilot. Relaxation tuning does not change ideal unforced first-step equilibrium streaming."
+runner_log_exit_boundary = "cpu.exit and cuda.exit hold producer status 1; the tmux wrapper reports exit 0 after retaining each producer status."
+
+[[failure]]
+backend = "cpu"
+condition = "C4-sersic-zero"
+attempted_step = 1
+max_mach = 0.31266925213832153
+predicate = "raw population-moment Mach budget exceeded"
+
+[[failure]]
+backend = "cpu"
+condition = "C5-sersic-fzd"
+attempted_step = 1
+max_mach = 0.31253325778433483
+predicate = "raw population-moment Mach budget exceeded"
+
+[[failure]]
+backend = "cpu"
+condition = "C6-sersic-nfw"
+attempted_step = 1
+max_mach = 0.31253430491910100
+predicate = "raw population-moment Mach budget exceeded"
+
+[[failure]]
+backend = "cuda"
+condition = "C4-sersic-zero"
+attempted_step = 1
+max_mach = 0.31266918312176134
+predicate = "raw population-moment Mach budget exceeded"
+
+[[failure]]
+backend = "cuda"
+condition = "C5-sersic-fzd"
+attempted_step = 1
+max_mach = 0.31253319340740210
+predicate = "raw population-moment Mach budget exceeded"
+
+[[failure]]
+backend = "cuda"
+condition = "C6-sersic-nfw"
+attempted_step = 1
+max_mach = 0.31253424954887576
+predicate = "raw population-moment Mach budget exceeded"

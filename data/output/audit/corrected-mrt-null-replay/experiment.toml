@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-306"
+title = "Corrected MRT paired null replay with retained initial-field Mach failures"
+status = "active"
+binary = "euclid-df-sweep"
+claims = ["C-1696", "C-1700", "C-1702"]
+claim_refs = ["C-1696", "C-1700", "C-1702"]
+deterministic = true
+gpu = true
+reproducibility_class = "deterministic_replay"
+input = "Unchanged E-298 catalog and all 100 numerical input arrays; corrected E-300 MRT producer, periodic 16-cubed, 24 steps, tau .8, alpha .1 and ten matched noise seeds."
+input_path_refs = ["data/output/audit/corrected-mrt-null-replay/protocol.toml", "data/output/audit/corrected-mrt-null-replay/producer.toml"]
+method = "Retain every condition, inspect post-step populations under unchanged gates, compare paired input hashes and independent receipt admission, and isolate zero-force first-step equilibrium streaming."
+run = "cargo build -p gororoba_cli_physics --bin euclid-df-sweep --features euclid-catalog,gpu --profile validation; run euclid-df-sweep --catalog data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet --grid 16 --steps 24 --tau 0.8 --dx-kpc 1 --alpha-zd 0.1 --density-floor 0.045 --softening-eps 0.5 --smagorinsky-cs 0 --mrt --null-hypothesis --null-n-trials 10 --seed 42 --max-relative-mass-error 0.00001 --max-mach 0.3 --null-evidence-dir <fresh-directory>; add --cpu for CPU. Both retained producer exits are 1."
+output = ["data/output/audit/corrected-mrt-null-replay/adjudication.toml"]
+output_path_refs = ["data/output/audit/corrected-mrt-null-replay/adjudication.toml", "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/trials.csv", "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/trials.csv", "data/output/audit/corrected-mrt-null-replay/independent-rest-streaming.json"]
+status_note = "All 50 rows and 100 original input arrays remain accounted for; 44 rows pass numerical admission and six Sersic rows fail Mach .3 at step 1. Corrected impulse conformance is E-300. The zero-force initial density streaming predicts Mach .3126692521383215 independently. Retain E-298 separately; numerical accuracy, paired physical resolution and morphology interpretation remain unassessed."

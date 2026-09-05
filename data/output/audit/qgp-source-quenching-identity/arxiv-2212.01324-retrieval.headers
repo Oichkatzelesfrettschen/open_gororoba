@@ -1,0 +1,18 @@
+HTTP/2 200 
+x-cloud-trace-context: 788c1cd371138f0e97463bf400b7e40a
+etag: COfdraaa3vwCEAE=
+access-control-allow-origin: *
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-disposition: inline; filename="2212.01324v1.pdf"
+content-type: application/pdf
+last-modified: Mon, 23 Jan 2023 17:22:29 GMT
+server: Google Frontend
+link: <https://arxiv.org/pdf/2212.01324>; rel='canonical'
+accept-ranges: bytes
+age: 1222122
+date: Sat, 05 Sep 2026 21:19:25 GMT
+x-served-by: cache-lga21980-LGA, cache-lga21980-LGA, cache-lga21967-LGA, cache-hhr-khhr2060048-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1788643166.614454,VS0,VE74
+content-length: 536198
+

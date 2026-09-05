@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 273
-edge_count = 1480
+lineage_count = 274
+edge_count = 1490
 
 [[lineage]]
 id = "XL-001"
@@ -4969,6 +4969,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "MAGNONIC_GAP_OUTPUT=data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay cargo test -p quantum_core --test magnonic_global_gap_certificate --profile validation --offline retain_table_i_then_table_ii_global_certificate -- --ignored --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-274"
+experiment_id = "E-306"
+binary = "euclid-df-sweep"
+deterministic = true
+gpu = true
+run_command = "cargo build -p gororoba_cli_physics --bin euclid-df-sweep --features euclid-catalog,gpu --profile validation; run euclid-df-sweep --catalog data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet --grid 16 --steps 24 --tau 0.8 --dx-kpc 1 --alpha-zd 0.1 --density-floor 0.045 --softening-eps 0.5 --smagorinsky-cs 0 --mrt --null-hypothesis --null-n-trials 10 --seed 42 --max-relative-mass-error 0.00001 --max-mach 0.3 --null-evidence-dir <fresh-directory>; add --cpu for CPU. Both retained producer exits are 1."
+run_command_sha256 = "177036ace01c80440295a5f57ecfb567a1e6f475d62bea9920c7954955f37667"
+claim_refs = ["C-1696", "C-1700", "C-1702"]
+input_path_refs = ["data/output/audit/corrected-mrt-null-replay/producer.toml", "data/output/audit/corrected-mrt-null-replay/protocol.toml"]
+output_path_refs = ["data/output/audit/corrected-mrt-null-replay/adjudication.toml", "data/output/audit/corrected-mrt-null-replay/independent-rest-streaming.json", "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/trials.csv", "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/trials.csv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo build -p gororoba_cli_physics --bin euclid-df-sweep --features euclid-catalog,gpu --profile validation; run euclid-df-sweep --catalog data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet --grid 16 --steps 24 --tau 0.8 --dx-kpc 1 --alpha-zd 0.1 --density-floor 0.045 --softening-eps 0.5 --smagorinsky-cs 0 --mrt --null-hypothesis --null-n-trials 10 --seed 42 --max-relative-mass-error 0.00001 --max-mach 0.3 --null-evidence-dir <fresh-directory>; add --cpu for CPU. Both retained producer exits are 1.", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -18287,6 +18305,96 @@ id = "XLE-01480"
 lineage_id = "XL-273"
 from_id = "E-305"
 to_ref = "data/output/audit/magnonic-global-gap-certificate/exclusive-create-replay/table-ii-terminal-cells.csv.zst"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01481"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "euclid-df-sweep"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01482"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "C-1696"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01483"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "C-1700"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01484"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "C-1702"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01485"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "data/output/audit/corrected-mrt-null-replay/producer.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01486"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "data/output/audit/corrected-mrt-null-replay/protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01487"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "data/output/audit/corrected-mrt-null-replay/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01488"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "data/output/audit/corrected-mrt-null-replay/independent-rest-streaming.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01489"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/trials.csv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01490"
+lineage_id = "XL-274"
+from_id = "E-306"
+to_ref = "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/trials.csv"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

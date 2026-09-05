@@ -1,0 +1,9 @@
+binary = ".cache/gate-target/validation/euclid-df-sweep"
+binary_sha256 = "d6fbacfd89bc092685b14ae7b6e75b387828aa527bd565f30e43db49e5ca74a8"
+source_commit = "a0800278e8794d30bec3b22324d72992dd1e66dd"
+features = ["euclid-catalog", "gpu"]
+profile = "validation"
+build_exit = 0
+gpu = "NVIDIA GeForce RTX 4070 Ti"
+driver = "610.57.04"
+protocol_sha256 = "f68f2037572643545799c91e597d1c1a530882fc244238bc608bfcc5455606bb"

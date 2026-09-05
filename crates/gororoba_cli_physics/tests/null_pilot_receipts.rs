@@ -331,3 +331,75 @@ fn audit_retained_pilot_receipts() -> Result<()> {
     }
     Ok(())
 }
+
+#[test]
+#[ignore = "requires retained pilot arrays; set NULL_PILOT_AUDIT_ROOT"]
+fn unforced_rest_streaming_predicts_initial_mach_failure() -> Result<()> {
+    let root = std::env::var("NULL_PILOT_AUDIT_ROOT")
+        .context("set NULL_PILOT_AUDIT_ROOT to the retained audit directory")?;
+    let root = Path::new(&root);
+    let trials = load_backend(
+        |name| Ok(std::fs::read(root.join("null-pilot-cpu").join(name))?),
+        "CPU_FP64",
+    )?;
+    let trial = &trials[&("C4-sersic-zero".into(), 0)];
+    ensure!(
+        trial
+            .force
+            .chunks_exact(8)
+            .all(|bytes| { f64::from_le_bytes(bytes.try_into().unwrap()) == 0.0 }),
+        "unforced oracle requires zero force"
+    );
+    let density: Vec<_> = trial
+        .density
+        .chunks_exact(8)
+        .map(|bytes| f64::from_le_bytes(bytes.try_into().unwrap()))
+        .collect();
+    // Rest equilibrium is invariant under an unforced collision. Generate
+    // the D3Q19 stencil independently and stream the retained density once.
+    let mut maximum_mach = 0.0_f64;
+    for cell in 0..16usize.pow(3) {
+        let position = [cell % 16, cell / 16 % 16, cell / 256];
+        let mut streamed_density = 0.0;
+        let mut momentum = [0.0; 3];
+        for velocity_x in -1_i32..=1 {
+            for velocity_y in -1_i32..=1 {
+                for velocity_z in -1_i32..=1 {
+                    let velocity = [velocity_x, velocity_y, velocity_z];
+                    let squared_speed = velocity.iter().map(|value| value * value).sum::<i32>();
+                    let weight = match squared_speed {
+                        0 => 1.0 / 3.0,
+                        1 => 1.0 / 18.0,
+                        2 => 1.0 / 36.0,
+                        _ => continue,
+                    };
+                    let source: [usize; 3] = std::array::from_fn(|axis| {
+                        (position[axis] as i32 - velocity[axis]).rem_euclid(16) as usize
+                    });
+                    let population = weight * density[source[0] + 16 * source[1] + 256 * source[2]];
+                    streamed_density += population;
+                    for axis in 0..3 {
+                        momentum[axis] += f64::from(velocity[axis]) * population;
+                    }
+                }
+            }
+        }
+        let mach = (3.0 * momentum.iter().map(|value| value * value).sum::<f64>()).sqrt()
+            / streamed_density;
+        maximum_mach = maximum_mach.max(mach);
+    }
+    ensure!(
+        trial.row.observed_step == 1,
+        "first-step observation required"
+    );
+    ensure!(
+        maximum_mach > 0.3,
+        "frozen Mach gate must discriminate failure"
+    );
+    ensure!(
+        (maximum_mach - trial.row.max_mach).abs() < 1e-12,
+        "independent equilibrium-streaming oracle disagrees"
+    );
+    println!("independent_rest_streaming_max_mach={maximum_mach:.17}");
+    Ok(())
+}

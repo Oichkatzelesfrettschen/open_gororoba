@@ -1,0 +1,5 @@
+executable = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/null_pilot_receipts-43d3309a3e51f831"
+executable_sha256 = "82b6fcf0f82cacca1ee678f63b707c5cae68d30c98827223131fcedf88ba9ae0"
+source = "crates/gororoba_cli_physics/tests/null_pilot_receipts.rs"
+source_sha256 = "47702407ac2b5bd57e88dc7b2447959d41232c6b0014dd88c3183abb98532068"
+exit_status = 0

@@ -6155,14 +6155,14 @@ where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm
 [[claim]]
 id = "C-1696"
 last_verified = "2026-08-06"
-statement = "At source revision 81a4ca6e, the audited 8-cubed BGK CPU/GPU equivalence fixture evolves a uniform-at-rest equilibrium and returns early when GPU initialization fails. That fixture alone cannot discriminate evolving-field errors or establish GPU execution."
+statement = "At source revision 81a4ca6e, the audited 8-cubed BGK CPU/GPU equivalence fixture evolves a uniform-at-rest equilibrium and returns early when GPU initialization fails. That fixture alone cannot discriminate evolving-field errors or establish GPU execution. E-306 replays the corrected MRT producer under the unchanged 16-cubed protocol: all 50 trial rows are retained, 44 pass numerical admission, and six Sersic rows fail the Mach 0.3 gate at step 1. All 100 numerical input arrays match E-298. Independent unforced equilibrium streaming predicts the zero-force first-step failure; physical initial-field admission and paired resolution remain required."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e; data/output/audit/corrected-mrt-null-replay/adjudication.toml; data/output/audit/corrected-mrt-null-replay/producer.toml; crates/gororoba_cli_physics/tests/null_pilot_receipts.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The contract tests the coverage and hardware outcome of CPU/GPU equivalence instrumentation. It makes no physical galaxy or cosmological inference."
-fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "Inspected equilibrium test: 8 cubed, five steps, tau 0.6, uniform density 1 and zero velocity", "Inspected rho and velocity RMS gates 1e-2", "Enumerate the equivalence-test suite before adjudicating the word only"]
+fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "Inspected equilibrium test: 8 cubed, five steps, tau 0.6, uniform density 1 and zero velocity", "Inspected rho and velocity RMS gates 1e-2", "Enumerate the equivalence-test suite before adjudicating the word only", "E-306 corrected producer replay: data/output/audit/corrected-mrt-null-replay/adjudication.toml; sha256 e3199d6091f5176bdd4fe0872621b3244b59f1817a97f2075ce4e710b412f07d. All 100 input arrays match E-298; six first-step Mach failures persist."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -6186,16 +6186,16 @@ names = []
 training_boundary = "Test-coverage and execution-state inspection fit zero parameters. Future evolving-field error tolerances require a separate numerical budget rather than training to observed discrepancies."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-165", "E-298", "E-300"]
+experiment_ids = ["E-165", "E-298", "E-300", "E-306"]
 protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
 protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "E-298 retains 50 evolving pilot rows but leaves numerical accuracy unassessed; six Sersic rows fail the Mach gate. Its pre-correction producer shares the E-300 force-density impulse defect. Treat those observations as descriptive and require independent impulse and population error gates before a successor equivalence claim. E-165 is the verified adjacent CPU/GPU box-counting validation registration, not the producer of equilibrium_cpu_gpu_remain_consistent_fp32 in crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs. Admit an explicit experiment amendment or successor binding before claiming an E-165 replay adjudicates C-1696. Inventory and source checks can establish the named test's bounded behavior meanwhile."
+description = "E-298 retains 50 evolving pilot rows but leaves numerical accuracy unassessed; six Sersic rows fail the Mach gate. Its pre-correction producer shares the E-300 force-density impulse defect. Treat those observations as descriptive and require independent impulse and population error gates before a successor equivalence claim. E-165 is the verified adjacent CPU/GPU box-counting validation registration, not the producer of equilibrium_cpu_gpu_remain_consistent_fp32 in crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs. Admit an explicit experiment amendment or successor binding before claiming an E-165 replay adjudicates C-1696. Inventory and source checks can establish the named test's bounded behavior meanwhile. E-306 executes the corrected MRT producer with unchanged E-298 gates and inputs; all 50 rows are retained and six Sersic trials fail at step 1. Corrected impulse conformance remains independent of failed initial-field admission."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["A complete admitted suite inventory establishes that every available CPU/GPU equivalence path is equilibrium-only and accepts device unavailability, with the inspected five-step test as a retained witness."]
 revision_outcomes = ["Another evolving-field comparison exists in the admitted suite: remove the universal only wording and retain the bounded observation about the named equilibrium test.", "A repaired comparison demonstrates nonzero field evolution, executes both backends and retains independent numerical error gates: preserve the historical defect and register its tested successor."]
 abandonment_outcomes = ["The claimed historical test instead executes evolving fields and reports unavailable hardware as a distinct unexecuted outcome: abandon the defect attribution for that producer."]
-inconclusive_outcomes = ["E-298 same-stage Df agreement lacks an independent numerical accuracy budget; shared CPU/CUDA force defects and adaptive-threshold invariance can preserve agreement while the dynamics are wrong.", "E-165 producer identity remains mismatched, the suite denominator is incomplete, or CUDA admission fails; these outcomes establish neither equivalence nor exhaustive absence of an evolving test.", "A passing uniform equilibrium comparison leaves evolving-field correctness and all physical interpretations inconclusive."]
+inconclusive_outcomes = ["E-298 same-stage Df agreement lacks an independent numerical accuracy budget; shared CPU/CUDA force defects and adaptive-threshold invariance can preserve agreement while the dynamics are wrong.", "E-165 producer identity remains mismatched, the suite denominator is incomplete, or CUDA admission fails; these outcomes establish neither equivalence nor exhaustive absence of an evolving test.", "A passing uniform equilibrium comparison leaves evolving-field correctness and all physical interpretations inconclusive.", "E-306 retains first-step Sersic Mach failures after force correction; require physically admitted initial fields and paired resolution before a morphology or force comparison."]
 
 [[claim]]
 id = "C-1697"
@@ -6266,14 +6266,14 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/cs
 [[claim]]
 id = "C-1700"
 last_verified = "2026-08-06"
-statement = "At source revision 81a4ca6e, The null-hypothesis control path is non-functional: euclid-df-sweep with the null-hypothesis flag panics at euclid_df_sweep.rs line 816 with CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED before emitting any trial, reproducibly at 64 cubed and 128 cubed and independently of alpha_zd, on hardware where the ordinary GPU sweep runs to completion."
+statement = "At source revision 81a4ca6e, The null-hypothesis control path is non-functional: euclid-df-sweep with the null-hypothesis flag panics at euclid_df_sweep.rs line 816 with CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED before emitting any trial, reproducibly at 64 cubed and 128 cubed and independently of alpha_zd, on hardware where the ordinary GPU sweep runs to completion. E-306 replays the corrected MRT producer under the unchanged 16-cubed protocol: all 50 trial rows are retained, 44 pass numerical admission, and six Sersic rows fail the Mach 0.3 gate at step 1. All 100 numerical input arrays match E-298. Independent unforced equilibrium streaming predicts the zero-force first-step failure; physical initial-field admission and paired resolution remain required."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e; data/output/audit/corrected-mrt-null-replay/adjudication.toml; data/output/audit/corrected-mrt-null-replay/producer.toml; crates/gororoba_cli_physics/tests/null_pilot_receipts.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
-fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "Historical producer revision 81a4ca6e is distinct from repaired graph/event handling. Retain the original CUDA error and zero completed trials. E-174 requires a declared positive alpha_zd and at least one noise trial."]
+fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "Historical producer revision 81a4ca6e is distinct from repaired graph/event handling. Retain the original CUDA error and zero completed trials. E-174 requires a declared positive alpha_zd and at least one noise trial.", "E-306 corrected producer replay: data/output/audit/corrected-mrt-null-replay/adjudication.toml; sha256 e3199d6091f5176bdd4fe0872621b3244b59f1817a97f2075ce4e710b412f07d. All 100 input arrays match E-298; six first-step Mach failures persist."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -6297,16 +6297,16 @@ names = []
 training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-174", "E-298"]
+experiment_ids = ["E-174", "E-298", "E-306"]
 protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
 protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "E-298 is a separately declared 16-cubed direct-step pilot of the retained pre-MRT-correction executable. It emits all 50 CPU/CUDA trial rows, retains six first-step Mach failures, and exits 1 on both backends. E-298 does not retire the captured 64/128-cubed historical failure. Use E-174 as the recorded family binding, not evidence of completed replay. Admit CUDA identity and exact source, then retain completion and per-condition trial counts for all six declared conditions with noncollapsed force contrasts. The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates."
+description = "E-298 is a separately declared 16-cubed direct-step pilot of the retained pre-MRT-correction executable. It emits all 50 CPU/CUDA trial rows, retains six first-step Mach failures, and exits 1 on both backends. E-298 does not retire the captured 64/128-cubed historical failure. Use E-174 as the recorded family binding, not evidence of completed replay. Admit CUDA identity and exact source, then retain completion and per-condition trial counts for all six declared conditions with noncollapsed force contrasts. The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates. E-306 executes the corrected MRT producer with unchanged E-298 gates and inputs; all 50 rows are retained and six Sersic trials fail at step 1. Corrected impulse conformance remains independent of failed initial-field admission."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["The historical declared producer fails at capture before completed trials on the specified hardware and inputs."]
 revision_outcomes = ["A new direct-step producer emits the exact 25-row-per-backend inventory with paired array hashes and explicit failures: register bounded instrument execution separately; retain E-298 failure and require a corrected-producer independent impulse oracle plus admitted completion before morphology interpretation.", "The bounded repaired BGK graph fixtures pass with retained population/time-level oracles; register instrument repair separately. Retire the historical failure for a new producer only when all declared E-174 conditions actually complete."]
 abandonment_outcomes = ["The identical historical producer and input complete all declared trials, contradicting the recorded universal execution failure."]
-inconclusive_outcomes = ["E-298 C4/C5/C6 fail the frozen Mach gate at step 1 on both backends; Sersic contrasts, resolution convergence and physical interpretation remain unadmitted.", "The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates."]
+inconclusive_outcomes = ["E-298 C4/C5/C6 fail the frozen Mach gate at step 1 on both backends; Sersic contrasts, resolution convergence and physical interpretation remain unadmitted.", "The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates.", "E-306 retains first-step Sersic Mach failures after force correction; require physically admitted initial fields and paired resolution before a morphology or force comparison."]
 
 [[claim]]
 id = "C-1701"
@@ -6318,14 +6318,14 @@ where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm
 [[claim]]
 id = "C-1702"
 last_verified = "2026-08-06"
-statement = "At source revision 81a4ca6e, The survived field of mrt-stability-audit cannot detect numerical explosion: it is false only on a step error or a non-finite Mach number, so a trial ending with mass error 1e113 is reported as survived and printed as OK."
+statement = "At source revision 81a4ca6e, The survived field of mrt-stability-audit cannot detect numerical explosion: it is false only on a step error or a non-finite Mach number, so a trial ending with mass error 1e113 is reported as survived and printed as OK. E-306 replays the corrected MRT producer under the unchanged 16-cubed protocol: all 50 trial rows are retained, 44 pass numerical admission, and six Sersic rows fail the Mach 0.3 gate at step 1. All 100 numerical input arrays match E-298. Independent unforced equilibrium streaming predicts the zero-force first-step failure; physical initial-field admission and paired resolution remain required."
 status = "Provisional"
-where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e"
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e; data/output/audit/corrected-mrt-null-replay/adjudication.toml; data/output/audit/corrected-mrt-null-replay/producer.toml; crates/gororoba_cli_physics/tests/null_pilot_receipts.rs"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The predicate checks whether the survival classifier accepts a finite numerical explosion. Physical solver stability and galaxy interpretation require independent error and convergence contracts."
-fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "E-167 Gaussian contrast sweep at n=16, tau=0.7, 200 steps; retain each actual contrast and mode", "Historical diagnostic witness has finite mass error of order 1e113", "Inspect the actual survived assignment and finite-Mach/error branches"]
+fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.", "E-167 Gaussian contrast sweep at n=16, tau=0.7, 200 steps; retain each actual contrast and mode", "Historical diagnostic witness has finite mass error of order 1e113", "Inspect the actual survived assignment and finite-Mach/error branches", "E-306 corrected producer replay: data/output/audit/corrected-mrt-null-replay/adjudication.toml; sha256 e3199d6091f5176bdd4fe0872621b3244b59f1817a97f2075ce4e710b412f07d. All 100 input arrays match E-298; six first-step Mach failures persist."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -6349,16 +6349,16 @@ names = []
 training_boundary = "The fixed classifier is inspected and exercised without fitting. A repaired scientific stability threshold must be preregistered from its numerical error budget."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-167", "E-298"]
+experiment_ids = ["E-167", "E-298", "E-306"]
 protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
 protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
-description = "E-298 independently retains six strict Mach-gate failures under the shared post-step population diagnostic, with finite-state, positive-density, nonnegative-population and mass predicates all passing. That result establishes these six rejections, while numerical accuracy and accepted-field stability remain unassessed. Bind crates/gororoba_cli_physics/src/bin/mrt_stability_audit.rs to retained E-167 telemetry. Replay or independently exercise its classification with the historical finite explosion witness; preserve the original survived output alongside any corrected instrument result."
+description = "E-298 independently retains six strict Mach-gate failures under the shared post-step population diagnostic, with finite-state, positive-density, nonnegative-population and mass predicates all passing. That result establishes these six rejections, while numerical accuracy and accepted-field stability remain unassessed. Bind crates/gororoba_cli_physics/src/bin/mrt_stability_audit.rs to retained E-167 telemetry. Replay or independently exercise its classification with the historical finite explosion witness; preserve the original survived output alongside any corrected instrument result. E-306 executes the corrected MRT producer with unchanged E-298 gates and inputs; all 50 rows are retained and six Sersic trials fail at step 1. Corrected impulse conformance remains independent of failed initial-field admission."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["A finite trial with mass error of order 1e113 is classified survived=true, and independent predicate inspection shows mass error cannot change that outcome: retain the instrument-defect finding."]
 revision_outcomes = ["The E-298 paired pilot retains every first failed predicate and exits 1 for six Mach failures: record bounded classifier execution separately from historical E-167 and from solver correctness.", "A repaired predicate rejects the retained finite explosion and separately reports finite-state, mass, positivity and Mach gates: register the bounded repaired-instrument successor after negative-control checks."]
 abandonment_outcomes = ["The identified historical classifier rejects the retained finite explosion through a measured mass or equivalent bounded-state gate: abandon the claimed defect for that source identity."]
-inconclusive_outcomes = ["Passing the declared E-298 engineering mass and Mach budgets alone leaves physical accuracy unresolved; the historical producer also carries the independent E-300 shared MRT force defect.", "Missing historical trial identity or inputs blocks numerical replay; source inspection alone supports only the inspected predicate's behavior.", "Rejecting one explosive case leaves stability of accepted trials inconclusive until scientific tolerances and resolution convergence are declared."]
+inconclusive_outcomes = ["Passing the declared E-298 engineering mass and Mach budgets alone leaves physical accuracy unresolved; the historical producer also carries the independent E-300 shared MRT force defect.", "Missing historical trial identity or inputs blocks numerical replay; source inspection alone supports only the inspected predicate's behavior.", "Rejecting one explosive case leaves stability of accepted trials inconclusive until scientific tolerances and resolution convergence are declared.", "E-306 retains first-step Sersic Mach failures after force correction; require physically admitted initial fields and paired resolution before a morphology or force comparison."]
 
 [[claim]]
 id = "C-1703"
@@ -6672,14 +6672,14 @@ where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/cs
 [[claim]]
 id = "C-1710"
 last_verified = "2026-08-06"
-statement = "The retained ALICE fixture matches all 38 freshly retrieved HEPData89396v1 Table1 rows for charged particles in Pb-Pb at 5.02 TeV, 0-5 percent centrality, including the supplied error columns. Historical diagonal stat-plus-systematic residuals omit the separately tabulated normalization uncertainty. Independent E-296 replay establishes shared fit/scoring objective conformance; physical rejection still requires admitted covariance, source ansatz and declared calibration freedom."
+statement = "The retained ALICE fixture matches all 38 freshly retrieved HEPData89396v1 Table1 rows for charged particles in Pb-Pb at 5.02 TeV, 0-5 percent centrality, including the supplied error columns. Historical diagonal stat-plus-systematic residuals omit the separately tabulated normalization uncertainty. Independent E-296 replay establishes shared fit/scoring objective conformance; physical rejection still requires admitted covariance, source ansatz and declared calibration freedom. Primary-source admission identifies arXiv2212.01324v1 Eq2 and arXiv1703.10852v1 Eq5 as positive-shift quenching-weight convolutions. The retained r_aa_model instead evaluates a negative-shift fixed-loss power with a hard cutoff. E-296 therefore validates an objective for a different ansatz; its failed fit cannot reject the identified source convolution. The source fragmentation map, pp-spectrum fit, quenching distribution and likelihood remain admission prerequisites."
 status = "Provisional"
-where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history; data/output/audit/qgp-source-quenching-identity/adjudication.toml"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0
 depth_rationale = "The bounded predicate checks exact retained table columns and the independent numerical objective. Physical rejection remains a separate unadmitted claim."
-fixed_hyperparameters = ["Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay", "Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds", "Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication"]
+fixed_hyperparameters = ["Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay", "Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds", "Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication", "Source identity receipt data/output/audit/qgp-source-quenching-identity/adjudication.toml; sha256 db39a83311cca946588803f420299fe037c75a9aa09599f759f5adbe438c3f18. Source convolution and retained fixed-loss ansatz are different models."]
 lift_depth_convention = "maximum_interpretive_maps_per_branch"
 intervening_map_count = 2
 computational_stage_count = 2
@@ -6706,13 +6706,13 @@ training_boundary = "One epsilon is fitted to the same six retained points with 
 experiment_ids = ["E-075", "E-296"]
 protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
 protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
-description = "E-296 owns the independent numerical objective test; E-075 owns the physical driver. Numerical agreement between fit and score precedes separately preregistered covariance/population admission."
+description = "E-296 owns the independent numerical objective test; E-075 owns the physical driver. Numerical agreement between fit and score precedes separately preregistered covariance/population admission. Before source-model rejection, implement and independently verify the admitted positive-shift quenching-weight convolution, fragmentation scale and pp-spectrum parameter map. E-296 remains a shared-objective check for the retained negative-shift ansatz."
 
 [claim.what_would_verify_refute]
 verification_outcomes = ["All 38 retained HEPData table rows match edges, RAA and stated error columns exactly; the diagonal historical scoring omits separately tabulated normalization uncertainty.", "E-296 independently reproduces the shared corrected numerical objective at identical parameters and weights."]
-revision_outcomes = ["A new provider release or corrected model definition receives a separate source identity and canonical revision; preserve original columns and objective results.", "An admitted physical model comparison requires its own covariance, calibration freedom, interpretive maps and rejection rule."]
+revision_outcomes = ["A new provider release or corrected model definition receives a separate source identity and canonical revision; preserve original columns and objective results.", "An admitted physical model comparison requires its own covariance, calibration freedom, interpretive maps and rejection rule.", "A source-implementation mismatch narrows the failed fit to its actual ansatz; preserve the result and require independently verified source convolution before physical rejection."]
 abandonment_outcomes = ["An identical-source row or uncertainty column differs, or independent same-input objective evaluation disagrees; abandon the affected implementation identity clause."]
-inconclusive_outcomes = ["A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted."]
+inconclusive_outcomes = ["A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted.", "Authenticated source equations differ from the implemented law: source-model fit agreement or rejection remains unadjudicated."]
 
 [[claim]]
 id = "C-1711"
