@@ -11,6 +11,7 @@ use std::{
     collections::BTreeSet,
     fs,
     path::{Component, Path},
+    process::Command,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -105,6 +106,69 @@ fn verify_file(root: &Path, relative: &str, expected: &str) -> Result<()> {
     let digest = sha256(fs::read(&full)?);
     if digest != expected {
         bail!("SHA256 mismatch for {relative}: expected {expected}, observed {digest}");
+    }
+    verify_tracked_file(root, relative)?;
+    Ok(())
+}
+
+fn verify_tracked_file(root: &Path, relative: &str) -> Result<()> {
+    let repository = Command::new("git")
+        .arg("-C")
+        .arg(root)
+        .args(["rev-parse", "--show-toplevel"])
+        .output()
+        .context("resolve artifact repository Git root")?;
+    if !repository.status.success() {
+        bail!(
+            "artifact repository Git root lookup failed: {}",
+            String::from_utf8_lossy(&repository.stderr).trim()
+        );
+    }
+    let observed_root = std::str::from_utf8(&repository.stdout)?.trim_end_matches('\n');
+    if Path::new(observed_root).canonicalize()? != root.canonicalize()? {
+        bail!("artifact repository root must match the Git worktree root");
+    }
+    let indexed = Command::new("git")
+        .arg("--literal-pathspecs")
+        .arg("-C")
+        .arg(root)
+        .args([
+            "ls-files",
+            "--error-unmatch",
+            "--stage",
+            "-z",
+            "--",
+            relative,
+        ])
+        .output()
+        .context("inspect artifact Git index membership")?;
+    if !indexed.status.success() {
+        bail!(
+            "artifact path must be Git-tracked: {relative}: {}",
+            String::from_utf8_lossy(&indexed.stderr).trim()
+        );
+    }
+    let records: Vec<_> = indexed
+        .stdout
+        .split(|byte| *byte == 0)
+        .filter(|record| !record.is_empty())
+        .collect();
+    if records.len() != 1 {
+        bail!("artifact path requires one resolved Git index entry: {relative}");
+    }
+    let separator = records[0]
+        .iter()
+        .position(|byte| *byte == b'\t')
+        .context("malformed artifact Git index entry")?;
+    let metadata = &records[0][..separator];
+    let indexed_path = &records[0][separator + 1..];
+    let fields: Vec<_> = std::str::from_utf8(metadata)?.split_whitespace().collect();
+    if fields.len() != 3
+        || !matches!(fields[0], "100644" | "100755")
+        || fields[2] != "0"
+        || indexed_path != relative.as_bytes()
+    {
+        bail!("artifact path requires a regular resolved Git index entry: {relative}");
     }
     Ok(())
 }
@@ -314,6 +378,8 @@ mod tests {
         fs::create_dir(&root).unwrap();
         fs::write(root.join("replacement.txt"), b"retained bytes").unwrap();
         fs::write(root.join("transformed.txt"), b"transformed bytes").unwrap();
+        git(&root, &["init", "--quiet"]);
+        git(&root, &["add", "--", "replacement.txt", "transformed.txt"]);
         let store = ProvenanceStore::open(&root.join("test.sqlite3")).unwrap();
         for id in ["A", "B"] {
             store.conn.execute("INSERT INTO artifacts VALUES (?1, ?1, 'title', 'citation', 'local', 1, 'https://example.org', 'old.txt')", [id]).unwrap();
@@ -367,6 +433,62 @@ mod tests {
             }],
         };
         Fixture { root, store, spec }
+    }
+
+    fn git(root: &Path, arguments: &[&str]) {
+        let output = Command::new("git")
+            .arg("-C")
+            .arg(root)
+            .args(arguments)
+            .output()
+            .unwrap();
+        assert!(
+            output.status.success(),
+            "{}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+    }
+
+    #[test]
+    fn artifact_path_repair_rejects_untracked_and_ignored_witnesses() {
+        for related in [false, true] {
+            for ignored in [false, true] {
+                let mut fixture = fixture();
+                let target = if related {
+                    "transformed.txt"
+                } else {
+                    "replacement.txt"
+                };
+                git(&fixture.root, &["rm", "--cached", "--", target]);
+                if ignored {
+                    fs::write(fixture.root.join(".gitignore"), format!("{target}\n")).unwrap();
+                }
+                let before = snapshot(&fixture.store.conn, "A").unwrap();
+                let error = fixture
+                    .store
+                    .repair_artifact_paths(&fixture.root, &fixture.spec)
+                    .unwrap_err();
+                assert!(
+                    error.to_string().contains("must be Git-tracked"),
+                    "{error:#}"
+                );
+                assert_eq!(snapshot(&fixture.store.conn, "A").unwrap(), before);
+            }
+        }
+    }
+
+    #[test]
+    fn artifact_path_repair_rejects_missing_git_repository() {
+        let mut fixture = fixture();
+        fs::rename(fixture.root.join(".git"), fixture.root.join("retained-git")).unwrap();
+        let error = fixture
+            .store
+            .repair_artifact_paths(&fixture.root, &fixture.spec)
+            .unwrap_err();
+        assert!(
+            error.to_string().contains("Git root lookup failed"),
+            "{error:#}"
+        );
     }
 
     #[test]

@@ -516,6 +516,7 @@ fn main() -> Result<()> {
 }
 
 fn run_index(repo_root: &Path, db_path: &Path, args: IndexArgs) -> Result<()> {
+    ProvenanceStore::ensure_artifact_reimport_safe(db_path)?;
     if args.refresh_compat_exports {
         rebuild_compatibility_exports(
             repo_root,
@@ -571,6 +572,7 @@ fn run_export_artifact_scan(
     // artifact_ref array in each lane. Prove that before any rename, so a
     // reindex that cannot succeed never leaves a rewritten registry behind.
     if export.reindex_after {
+        ProvenanceStore::ensure_artifact_reimport_safe(db_path)?;
         ensure_reindex_preconditions(repo_root, &export)?;
     }
     let policy = source_provenance::ShrinkPolicy {
