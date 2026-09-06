@@ -1,0 +1,16 @@
+e25f67f892940e7f8d39258abe0da6d8b4e1071d19e48c8fb9eedab10a96b043  data/output/audit/insight-reference-role-pilot/canonical-snapshot.json
+e254e4e99ce15da6f2204026a15293b1b4340b064db7b9807b92938e4949096e  data/output/audit/insight-reference-role-pilot/coverage-validation.json
+966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209  data/output/audit/insight-reference-role-pilot/findings.json
+618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a  data/output/audit/insight-reference-role-pilot/followup-claims.json
+a55c5b8f0778a2e22b797e6ca6dc742c087922aed7ab01bc67aa6b1c7e30ea88  data/output/audit/insight-reference-role-pilot/mechanism_oracles.rs
+184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f  data/output/audit/insight-reference-role-pilot/oracle-results.toml
+1bf52fdea70555f1156a06d5122a91bd8e028104d40a988eac17295bfa744b14  data/output/audit/insight-reference-role-pilot/pilot-snapshot.sql
+2c5aa4cab4c8250d9c6b2fc1a336cf7cc2b4d5dc973b448d5ff08b49f7d9c129  data/output/audit/insight-reference-role-pilot/retention-locators.json
+b56e8baf1f8b9e0827287cf23b46b5ebd89793ca9ec5765289913c1a20414a41  data/output/audit/insight-reference-role-pilot/source-hashes.sha256
+58c9a4ba1aa28a661190e408771ad3c20369af69afc09219e7f976fa1500a35f  data/output/audit/insight-reference-role-pilot/source-receipts.toml
+63734212c8b6c476170cd341310924172c3d3fa0ab8d9b4d6f6c8ff929e84638  data/output/audit/insight-reference-role-pilot/sources/li-http-wget.log.gz
+ee22113a6ee97709dfa2dd83b0d40cf4e09a029a432374b282022ad9ebb1bb46  data/output/audit/insight-reference-role-pilot/sources/li-wget.log.gz
+bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025  data/output/audit/insight-reference-role-pilot/sources/macquart-2005.13161v1.pdf
+375650e140336a226576b43da29ba5d3d24dbed1b44e7d52a2e30c870bf3a07d  data/output/audit/insight-reference-role-pilot/sources/macquart-wget.log.gz
+361694830868092ed02ed08bf602cca776255a6a06ff8b4f97edc8d216d4bb10  data/output/audit/insight-reference-role-pilot/validation.toml
+1a90521cacca53a91a94e8f936aa26490d2e9da9c525ce74f747a2324c23f28e  data/output/audit/insight-reference-role-pilot/verify-pilot.jq

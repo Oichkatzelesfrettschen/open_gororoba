@@ -1,0 +1,15 @@
+schema_version = 1
+scope = "Independent finite and arithmetic witnesses; scientific producers were not replayed"
+permutations_checked = 720
+qualifying_triples_per_permutation = 5
+total_triples_per_permutation = 20
+binary_adic_triples_checked = 560
+initial_bisection_width = 10.0
+bisection_tolerance = 1e-8
+required_halvings = 30
+code_constants_prefactor = 927.936546121689
+source_helium_factor = 0.875
+same_constants_with_source_helium = 811.944477856478
+reported_fwhm = 0.0008
+fourier_bin_spacing = 0.000198216056
+rank_samples_per_cycle_at_0_214 = 4.672897196262

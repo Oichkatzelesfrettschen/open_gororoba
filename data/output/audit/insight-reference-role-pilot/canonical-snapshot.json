@@ -1,0 +1,484 @@
+{
+  "insights": [
+    {
+      "id": "I-001",
+      "title": "Macquart Relation Fills the Comoving Distance Gap",
+      "status": "verified",
+      "claim_refs": [
+        "C-071"
+      ],
+      "status_note": null,
+      "compat_toml_text": "claims = [\"C-071\"]\ndate = \"2026-02-06\"\nid = \"I-001\"\nsprint = 6\nstatus = \"verified\"\nsummary = \"The Macquart relation connects FRB dispersion measures to redshift via integrated baryon density: DM_cosmic(z) = 935 * integral (1+z')/E(z') dz'. Bisection inversion (DM->z) converges in ~27 iterations. Foundation for comoving distance in ultrametric analysis.\"\ntitle = \"Macquart Relation Fills the Comoving Distance Gap\"\n"
+    },
+    {
+      "id": "I-002",
+      "title": "Ultrametric Structure Lives in Representations, Not Scalars",
+      "status": "verified",
+      "claim_refs": [
+        "C-071"
+      ],
+      "status_note": null,
+      "compat_toml_text": "claims = [\"C-071\"]\ndate = \"2026-02-06\"\nid = \"I-002\"\nsprint = 6\nstatus = \"verified\"\nsummary = \"C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces.\"\ntitle = \"Ultrametric Structure Lives in Representations, Not Scalars\"\n"
+    },
+    {
+      "id": "I-094",
+      "title": "Sedenion Ghost Is L-Band and Large-Scale Specific",
+      "status": "verified",
+      "claim_refs": [
+        "C-784",
+        "C-785",
+        "C-786",
+        "C-787",
+        "C-788",
+        "C-789"
+      ],
+      "status_note": null,
+      "compat_toml_text": "claims = [\"C-784\", \"C-785\", \"C-786\", \"C-787\", \"C-788\", \"C-789\"]\nconfidence = \"high\"\ndate = \"2026-02-18\"\nid = \"I-094\"\nphase = \"spectral\"\nstatus = \"verified\"\nsummary = \"Cross-catalog rho-ghost-fft analysis (E-060, E-061) reveals the phi^{-1/2} ghost frequency is L-band/large-scale specific. Positive detections (SNR>4) occur in L-band radio catalogs (CHIME FRB, ATNF pulsars) and optical SNIa (Pantheon+), all probing megaparsec-scale path lengths. Ghost is NULL in S-band (2.25 GHz Wow! follow-up), nuclear (ALICE Pb-Pb), solar (SORCE TSI), geomagnetic (Swarm), and local stellar (Gaia DR3) regimes. Scale dependence suggests vacuum topology modulation over megaparsec path lengths or frequency-locking to the 21cm hydrogen line. The ghost sharpens with statistics: CHIME Cat2 (5045 sources) has FWHM=0.0008 vs Cat1 (600 sources) FWHM=0.016.\"\ntitle = \"Sedenion Ghost Is L-Band and Large-Scale Specific\"\n"
+    },
+    {
+      "id": "I-095",
+      "title": "Ghost Is a Vacuum-Scale Resonance, Not a Universal Constant",
+      "status": "verified",
+      "claim_refs": [
+        "C-784",
+        "C-785",
+        "C-786",
+        "C-787",
+        "C-788",
+        "C-789",
+        "C-790",
+        "C-791"
+      ],
+      "status_note": null,
+      "compat_toml_text": "claims = [\"C-784\", \"C-785\", \"C-786\", \"C-787\", \"C-788\", \"C-789\", \"C-790\", \"C-791\"]\nconfidence = \"high\"\ndate = \"2026-02-18\"\nid = \"I-095\"\nphase = \"spectral\"\nstatus = \"verified\"\nsummary = \"The phi^{-1/2} Ghost is not a universal constant imprinted on all matter (like pi or e). It is a structure of the large-scale vacuum itself. Evidence: (1) Appears in FRBs/pulsars/SNIa that traverse Gpc/kpc of space, accumulating phase dispersion from the Sedenion ZD lattice. (2) Absent in local/short-range measurements (Wow! S-band, Swarm, SORCE) where path length is too short. (3) Absent in high-energy nuclear regime (ALICE) where deconfinement energy scale exceeds ZD coupling. (4) CWT analysis (E-062) confirms absence is physical, not methodological. (5) Marginal ALICE peak at 0.2105 (C-791) hints at QGP-scale coupling pending Run 3 statistics. The Ghost is a vacuum topology modulation over megaparsec path lengths, consistent with the 21cm hydrogen line as a resonant carrier.\"\ntitle = \"Ghost Is a Vacuum-Scale Resonance, Not a Universal Constant\"\n"
+    },
+    {
+      "id": "I-096",
+      "title": "FFT of Sorted Catalog Values Tests Distributional Shape, Not Physical Periodicity",
+      "status": "verified",
+      "claim_refs": [
+        "C-784",
+        "C-785",
+        "C-786",
+        "C-789",
+        "C-797",
+        "C-798"
+      ],
+      "status_note": null,
+      "compat_toml_text": "claims = [\"C-797\", \"C-798\", \"C-784\", \"C-785\", \"C-786\", \"C-789\"]\nconfidence = \"high\"\ndate = \"2026-02-18\"\nid = \"I-096\"\nphase = \"spectral\"\nstatus = \"verified\"\nsummary = \"FFT of sorted catalog values (the quantile function) measures regularity of the inverse CDF, not temporal or spatial periodicity. A peak at f~0.214 describes the curvature structure of the distribution at ~1/5 of its support, not a physical signal. This is methodologically analogous to the debunked redshift periodicity claims (Karlsson 1971), which were shown by Tang & Zhang 2005 and Hawkins et al. 2002 to arise from survey selection effects and distributional artifacts. The correct spectral method for sorted distributional data is the quantile periodogram (Li 2012), not standard FFT. Sprint 50 hardening via 7 independent methods (bootstrap null, BH-FDR, permutation test, Lomb-Scargle+Baluev, multitaper F-test, IAAFT surrogates, Stouffer combination) confirms: synthetic sorted distributions do NOT produce significant ghost peaks, and the existing detections (C-784..C-786) require re-verification on real data with corrected statistics.\"\ntitle = \"FFT of Sorted Catalog Values Tests Distributional Shape, Not Physical Periodicity\"\n"
+    },
+    {
+      "id": "I-207",
+      "title": "Exact reconstruction beats label substitution in legacy algebra audits",
+      "status": "verified",
+      "claim_refs": [
+        "C-019",
+        "C-020",
+        "C-021",
+        "C-046",
+        "C-047",
+        "C-543"
+      ],
+      "status_note": null,
+      "compat_toml_text": "claims = [\"C-019\", \"C-020\", \"C-021\", \"C-046\", \"C-047\", \"C-543\"]\ndate = \"2026-03-18\"\nid = \"I-207\"\nsprint = \"S84\"\nstatus = \"verified\"\nsummary = \"Across wheels, lattice, moonshine, fractal-doping, and E-series legacy claims, renamed columns and analogical labels do not survive exact Rust reconstruction. Same-parity masks are not zero-divisor adjacency, ad hoc exceptional cuts break the idea of a clean basis-to-lattice function, trivial logarithmic columns are not spin-foam amplitudes, and categorical substitutions such as E9/E10/E11-as-lattices do not create mechanism.\"\ntitle = \"Exact reconstruction beats label substitution in legacy algebra audits\"\n"
+    },
+    {
+      "id": "I-209",
+      "title": "Blind baselines break PMNS and spectral-pattern analogies",
+      "status": "verified",
+      "claim_refs": [
+        "C-068",
+        "C-069",
+        "C-070",
+        "C-077",
+        "C-081",
+        "C-092"
+      ],
+      "status_note": null,
+      "compat_toml_text": "claims = [\"C-068\", \"C-069\", \"C-070\", \"C-077\", \"C-081\", \"C-092\"]\ndate = \"2026-03-18\"\nid = \"I-209\"\nsprint = \"S84\"\nstatus = \"verified\"\nsummary = \"Neutrino, mass-spectrum, associator-power, and SO(7) pattern matches fail for the same reason: the target can be approximated or reparameterized without a stable invariant. The surviving rule is to demand blind matching, unit/base invariance, and continuous-orbit or null controls before treating a pattern resemblance as physics.\"\ntitle = \"Blind baselines break PMNS and spectral-pattern analogies\"\n"
+    },
+    {
+      "id": "I-212",
+      "title": "Equal-receptive-field controls expose temporal support as a benchmark confound",
+      "status": "verified",
+      "claim_refs": [
+        "C-1628",
+        "C-1631",
+        "C-1633"
+      ],
+      "status_note": "E-242 (2026-09-01) ran the conditional-information follow-up: under 5-fold file-grouped cross-validation a logistic model on the six matched six-sample baselines reaches out-of-fold ROC-AUC 0.8428, above the standalone associator's 0.8274, and adding the associator raises it by +0.0020 [0.0017, 0.0023] (C-1731). The confound stands: most of the associator's standalone discrimination is carried by six-sample angular and magnitude statistics, and the associator's unique contribution at matched receptive field is small and nonzero. The insight is not closed.",
+      "compat_toml_text": "claims = [\"C-1628\", \"C-1631\", \"C-1633\"]\ndate = \"2026-07-18\"\nid = \"I-212\"\nsprint = \"\"\nstatus = \"verified\"\nstatus_note = \"E-242 (2026-09-01) ran the conditional-information follow-up: under 5-fold file-grouped cross-validation a logistic model on the six matched six-sample baselines reaches out-of-fold ROC-AUC 0.8428, above the standalone associator's 0.8274, and adding the associator raises it by +0.0020 [0.0017, 0.0023] (C-1731). The confound stands: most of the associator's standalone discrimination is carried by six-sample angular and magnitude statistics, and the associator's unique contribution at matched receptive field is small and nonzero. The insight is not closed.\"\nsummary = \"Matching only input variables and labels is insufficient when detectors consume different temporal windows: the staple-associator reads six raw samples while one-step rotation reads two, and equal-receptive-field controls (cumrot6, maxrot6) reverse the apparent associator-versus-rotation ranking on the same benchmark. Temporal support is a confound that decides the ranking; every baseline battery must state and match the receptive field per detector before a dominance claim is registered.\"\ntitle = \"Equal-receptive-field controls expose temporal support as a benchmark confound\"\n"
+    }
+  ],
+  "references": [
+    {
+      "insight_id": "I-001",
+      "claim_id": "C-071",
+      "claim_status": "Refuted",
+      "statement": "FRB dispersion measures exhibit p-adic ultrametric structure.",
+      "where_stated": "`crates/stats_core/src/ultrametric/mod.rs`, `crates/gororoba_cli_data/src/bin/frb_ultrametric.rs`, `data/csv/c071_frb_ultrametric.csv`, `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-002",
+      "claim_id": "C-071",
+      "claim_status": "Refuted",
+      "statement": "FRB dispersion measures exhibit p-adic ultrametric structure.",
+      "where_stated": "`crates/stats_core/src/ultrametric/mod.rs`, `crates/gororoba_cli_data/src/bin/frb_ultrametric.rs`, `data/csv/c071_frb_ultrametric.csv`, `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-094",
+      "claim_id": "C-784",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in CHIME FRB Catalog 2 dispersion measures at f=0.218 normalized, SNR=6.11, FWHM=0.0008. Strongest detection across all catalogs.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit (Rigorous+Bonferroni, Permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test) on real CHIME Cat2 bonsai_dm (N=5045). All 5 methods FAIL TO REJECT null. Rigorous corrected SNR=1.99, p_bonf=1.0, permutation p=0.29. Original SNR=6.11 was inflated by mean noise floor. Ghost frequency not significant. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-094",
+      "claim_id": "C-785",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit on real ATNF data. DM (N=4233): corrected SNR=1.19, p_bonf=1.0, permutation p=0.40. Period (N=4286): corrected SNR=1.12, p_bonf=1.0, permutation p=0.50. All 10 tests (5 per column) FAIL TO REJECT null. Original SNR was inflated by mean noise floor. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-094",
+      "claim_id": "C-786",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit on real Pantheon+ MU_SH0ES (N=1701). Corrected SNR=0.21, p_bonf=1.0, permutation p=1.0, Lomb-Scargle FAP=1.0. Ghost power (7e-7) two orders of magnitude below null mean (2.5e-3). Completely noise-dominated. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-094",
+      "claim_id": "C-787",
+      "claim_status": "Verified",
+      "statement": "Ghost frequency phi^{-1/2} absent in S-band (2.25 GHz) Wow! GBT follow-up data. Stacked SNR=0.38 across 12 filterbank files. Spectral analysis is clean with no algebraic signatures at S-band.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/wow_followup_snr.csv`",
+      "status_note": "E-061 completed. Null result at S-band (2.25 GHz). Ghost is L-band/large-scale specific."
+    },
+    {
+      "insight_id": "I-094",
+      "claim_id": "C-788",
+      "claim_status": "Verified",
+      "statement": "Ghost frequency phi^{-1/2} absent in BH entropy, Gaia DR3 parallax, SDSS DR18 quasar redshift, ALICE Pb-Pb R_AA, Swarm magnetic field, and SORCE TSI datasets. Eight independent null controls confirm ghost is not a processing artifact.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-060 completed. All control datasets yield ghost SNR < 1.0. Controls span scalar (BH entropy), stellar (Gaia), quasar (SDSS), hadronic (ALICE), geomagnetic (Swarm), and solar (SORCE) regimes."
+    },
+    {
+      "insight_id": "I-094",
+      "claim_id": "C-789",
+      "claim_status": "Refuted",
+      "statement": "FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "Sprint 50 statistical hardening FALSIFIED this claim. (1) FWHM=0.0008 is below FFT resolution limit 1/5045=0.0002; the reported value is a cubic interpolation artifact. peak_fwhm_clamped() now floors at 1/N. (2) Frequency scatter: std dev of detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) is 0.008, consistent with random sampling from a flat distribution near 0.214, not monotonic convergence. (3) Follows C-071 precedent: honest self-falsification. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-095",
+      "claim_id": "C-784",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in CHIME FRB Catalog 2 dispersion measures at f=0.218 normalized, SNR=6.11, FWHM=0.0008. Strongest detection across all catalogs.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit (Rigorous+Bonferroni, Permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test) on real CHIME Cat2 bonsai_dm (N=5045). All 5 methods FAIL TO REJECT null. Rigorous corrected SNR=1.99, p_bonf=1.0, permutation p=0.29. Original SNR=6.11 was inflated by mean noise floor. Ghost frequency not significant. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-095",
+      "claim_id": "C-785",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit on real ATNF data. DM (N=4233): corrected SNR=1.19, p_bonf=1.0, permutation p=0.40. Period (N=4286): corrected SNR=1.12, p_bonf=1.0, permutation p=0.50. All 10 tests (5 per column) FAIL TO REJECT null. Original SNR was inflated by mean noise floor. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-095",
+      "claim_id": "C-786",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit on real Pantheon+ MU_SH0ES (N=1701). Corrected SNR=0.21, p_bonf=1.0, permutation p=1.0, Lomb-Scargle FAP=1.0. Ghost power (7e-7) two orders of magnitude below null mean (2.5e-3). Completely noise-dominated. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-095",
+      "claim_id": "C-787",
+      "claim_status": "Verified",
+      "statement": "Ghost frequency phi^{-1/2} absent in S-band (2.25 GHz) Wow! GBT follow-up data. Stacked SNR=0.38 across 12 filterbank files. Spectral analysis is clean with no algebraic signatures at S-band.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/wow_followup_snr.csv`",
+      "status_note": "E-061 completed. Null result at S-band (2.25 GHz). Ghost is L-band/large-scale specific."
+    },
+    {
+      "insight_id": "I-095",
+      "claim_id": "C-788",
+      "claim_status": "Verified",
+      "statement": "Ghost frequency phi^{-1/2} absent in BH entropy, Gaia DR3 parallax, SDSS DR18 quasar redshift, ALICE Pb-Pb R_AA, Swarm magnetic field, and SORCE TSI datasets. Eight independent null controls confirm ghost is not a processing artifact.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-060 completed. All control datasets yield ghost SNR < 1.0. Controls span scalar (BH entropy), stellar (Gaia), quasar (SDSS), hadronic (ALICE), geomagnetic (Swarm), and solar (SORCE) regimes."
+    },
+    {
+      "insight_id": "I-095",
+      "claim_id": "C-789",
+      "claim_status": "Refuted",
+      "statement": "FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "Sprint 50 statistical hardening FALSIFIED this claim. (1) FWHM=0.0008 is below FFT resolution limit 1/5045=0.0002; the reported value is a cubic interpolation artifact. peak_fwhm_clamped() now floors at 1/N. (2) Frequency scatter: std dev of detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) is 0.008, consistent with random sampling from a flat distribution near 0.214, not monotonic convergence. (3) Follows C-071 precedent: honest self-falsification. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-095",
+      "claim_id": "C-790",
+      "claim_status": "Verified",
+      "statement": "CWT Ricker wavelet analysis confirms Ghost absence in Wow! S-band (ghost-band power 4%) and Swarm magnetic field (ghost-band power 0%). The phi^{-1/2} signal is physically absent in these datasets, not hidden as a delocalized scale-invariant feature below FFT resolution.",
+      "where_stated": "`src/scripts/analysis/cwt_ghost_analysis.py`, `data/csv/cwt_ghost_validation.csv`",
+      "status_note": "E-062 completed. Ricker CWT at widths 2-100. Wow! S-band top scale width=50 (f~0.0074), low-frequency drift dominates. Ghost band (width~24, f~0.214) power fraction: 4% Wow!, 0% Swarm. Methodological complement ruling out scale-hidden resonance."
+    },
+    {
+      "insight_id": "I-095",
+      "claim_id": "C-791",
+      "claim_status": "Refuted",
+      "statement": "ALICE Pb-Pb R_AA data shows a marginal peak at f=0.2105, below detection threshold. If confirmed with higher statistics (LHC Run 3), this would indicate the Sedenion ZD lattice operates at the QGP deconfinement scale, not only at cosmological path lengths.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv`",
+      "status_note": "Sprint 54B: Full ALICE Pb-Pb dataset (HEPData 89396, 45 tables, 20 centrality bins x 38-39 pts = 780 total). Batch permutation: ALL 20 bins p>0.986, combined Fisher p=1.0, Stouffer Z=-12.88 (strongly null). Parametric false positives in 14/20 bins from MAD inflation on smooth physics curves. Bootstrap N/A (non-monotonic). No ghost frequency at any centrality. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-096",
+      "claim_id": "C-784",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in CHIME FRB Catalog 2 dispersion measures at f=0.218 normalized, SNR=6.11, FWHM=0.0008. Strongest detection across all catalogs.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit (Rigorous+Bonferroni, Permutation N=10000, Lomb-Scargle Baluev FAP, IAAFT N=1000, Multitaper F-test) on real CHIME Cat2 bonsai_dm (N=5045). All 5 methods FAIL TO REJECT null. Rigorous corrected SNR=1.99, p_bonf=1.0, permutation p=0.29. Original SNR=6.11 was inflated by mean noise floor. Ghost frequency not significant. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-096",
+      "claim_id": "C-785",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in ATNF Pulsar Catalog dispersion measures at f=0.206 normalized, SNR=5.93, and in pulsar periods at f=0.221, SNR=5.14. Two independent columns from the same catalog yield consistent detections.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit on real ATNF data. DM (N=4233): corrected SNR=1.19, p_bonf=1.0, permutation p=0.40. Period (N=4286): corrected SNR=1.12, p_bonf=1.0, permutation p=0.50. All 10 tests (5 per column) FAIL TO REJECT null. Original SNR was inflated by mean noise floor. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-096",
+      "claim_id": "C-786",
+      "claim_status": "Refuted",
+      "statement": "Ghost frequency phi^{-1/2} detected in Pantheon+ SNIa distance moduli at f=0.211 normalized, SNR=4.43. Third independent messenger (optical SNIa) with consistent ghost detection.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "E-071 Phase 5 re-verification: 5-method audit on real Pantheon+ MU_SH0ES (N=1701). Corrected SNR=0.21, p_bonf=1.0, permutation p=1.0, Lomb-Scargle FAP=1.0. Ghost power (7e-7) two orders of magnitude below null mean (2.5e-3). Completely noise-dominated. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-096",
+      "claim_id": "C-789",
+      "claim_status": "Refuted",
+      "statement": "FALSIFIED: Ghost peak FWHM=0.0008 was an interpolation artifact below the FFT resolution limit 1/N. The claimed convergence (0.016 to 0.0008) represents interpolation precision, not physical sharpening. Detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) have std dev ~0.008, consistent with sampling variability, not convergence toward 0.2138.",
+      "where_stated": "`crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `data/csv/zd_resonance_real_distribution.csv`",
+      "status_note": "Sprint 50 statistical hardening FALSIFIED this claim. (1) FWHM=0.0008 is below FFT resolution limit 1/5045=0.0002; the reported value is a cubic interpolation artifact. peak_fwhm_clamped() now floors at 1/N. (2) Frequency scatter: std dev of detected frequencies (0.206, 0.211, 0.218, 0.221, 0.227) is 0.008, consistent with random sampling from a flat distribution near 0.214, not monotonic convergence. (3) Follows C-071 precedent: honest self-falsification. | Legacy status token: Falsified"
+    },
+    {
+      "insight_id": "I-096",
+      "claim_id": "C-797",
+      "claim_status": "Verified",
+      "statement": "Statistical hardening of ghost frequency analysis via 7 independent methods (MAD robust noise floor, BH-FDR correction, Bonferroni correction, permutation test, sorted-distribution bootstrap null, Lomb-Scargle with Baluev FAP, multitaper F-test) demonstrates that sorted synthetic distributions do NOT produce significant ghost peaks. All 17 synthetic datasets (4 null controls, 5 sorted distributions, 4 signal injections, 4 mock catalogs) produce correct verdicts: injected signals detected, all null/sorted/mock datasets NULL.",
+      "where_stated": "`crates/spectral_core/src/ghost_spectral.rs`, `crates/gororoba_cli_physics/src/bin/rho_ghost_fft.rs`, `crates/gororoba_cli_physics/src/bin/ghost_spectral_audit.rs`, `src/ghost_stats/`",
+      "status_note": "E-068 completed. 17 datasets tested. 3 injected signals all DETECTED (p_bonf=0, p_perm=9.99e-4). 14 null/sorted/mock datasets all NULL. Bootstrap null correctly scoped to sorted data only. Combined Fisher p=0.96 for sorted bootstrap (not significant). Pipeline is correctly calibrated: false positive rate <5%, true positive rate 100%."
+    },
+    {
+      "insight_id": "I-096",
+      "claim_id": "C-798",
+      "claim_status": "Verified",
+      "statement": "FFT of sorted catalog values tests distributional shape (quantile function regularity), not physical periodicity. The frequency f~0.214 in sorted data describes the inverse CDF's curvature structure, analogous to debunked redshift periodicity claims (Karlsson 1971, falsified by Tang & Zhang 2005 and Hawkins et al. 2002 as survey selection effects). The correct spectral method for sorted distributional data is the quantile periodogram (Li 2012), not standard FFT.",
+      "where_stated": "`crates/spectral_core/src/ghost_spectral.rs` (methodology_note), `src/ghost_stats/quantile_periodogram.py`, Sprint 50 plan",
+      "status_note": "Sprint 50 audit. No published precedent for FFT of sorted catalog values as a detection method. Historical analog (Karlsson 1971 redshift periodicity) debunked as selection effect. Quantile periodogram is the theoretically justified approach for distributional data."
+    },
+    {
+      "insight_id": "I-207",
+      "claim_id": "C-019",
+      "claim_status": "Refuted",
+      "statement": "Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions.",
+      "where_stated": "convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `CURRENT::PATH crates/gororoba_algebra/src/construction/wheels.rs (LEGACY::PATH crates/algebra_core/src/construction/wheels.rs)`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`",
+      "status_note": "Kernel-checked via Rocq 9.1: proofs/verified/C019_WheelsNoContent.v"
+    },
+    {
+      "insight_id": "I-207",
+      "claim_id": "C-020",
+      "claim_status": "Refuted",
+      "statement": "REFUTED: Legacy 16D \"Zero-Divisor Adjacency Matrix\" does NOT represent valid algebra. Found to be noise/hallucination when verified against commutator/parity matrices.",
+      "where_stated": "`data/csv/legacy/`",
+      "status_note": "Kernel-checked via Rocq 9.1: proofs/verified/C020_BasisNonzero.v"
+    },
+    {
+      "insight_id": "I-207",
+      "claim_id": "C-021",
+      "claim_status": "Refuted",
+      "statement": "REFUTED: Hypothesis tested: 1024D Basis-to-Lattice mapping is a consistent function.... Result: This claim was empirically refuted.",
+      "where_stated": "`data/csv/legacy/`",
+      "status_note": "Kernel-checked via Rocq 9.1: proofs/verified/C021_LatticeInconsistency.v"
+    },
+    {
+      "insight_id": "I-207",
+      "claim_id": "C-046",
+      "claim_status": "Refuted",
+      "statement": "\"Fractal Doping\" (sum x/n^beta) stabilizes zero divisors.",
+      "where_stated": "`archive/legacy_conjectures/`",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-207",
+      "claim_id": "C-047",
+      "claim_status": "Refuted",
+      "statement": "E9, E10, E11 are Euclidean sphere-packing lattices.",
+      "where_stated": "`archive/legacy_conjectures/`, `docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `tests/test_c047_e_series_cartan_signature.py`",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-207",
+      "claim_id": "C-543",
+      "claim_status": "Refuted",
+      "statement": "Legacy Monstrous Moonshine Claims Assessment: Four legacy CSVs claim connections between Cayley-Dickson algebras and the Monster group. Findings: (1) 'Spin Foam Amplitudes vs Monster Group Coefficients' column 'Spin Foam Amplitude' is exactly ln(n+1)/1000 -- a trivial logarithmic function unrelated to spin foams (Ponzano-Regge, Turaev-Viro, or EPRL models). (2) The 'Scaled Monster Coeffs' column correctly reproduces j-function coefficients c(1)..c(9) divided by 1e9, but c(10) has a 3.6% error (23123279 vs 22312779). (3) Comparing logarithmic growth (spin foam column) to exponential growth (j-coefficients ~ exp(4*pi*sqrt(n))) is mathematically meaningless. (4) The 'Monstrous Moonshine and Infinite-Dimensional Extensions' CSV claims Moonshine structure at CD dims 16384..262144 without exhibiting any vertex operator algebra, j-function coefficient match, or Monster group representation. (5) The Griess algebra dimension 196884 = 2^2 * 3^3 * 1823 is NOT a power of 2, so is NOT a CD algebra. (6) No j-function coefficient is a power of 2. The actual CD-Monster path goes through E8 -> Leech lattice (Borcherds), not through high-dimensional CD algebras.",
+      "where_stated": "`crates/algebra_analysis/src/legacy_crossval.rs` (test_moonshine_j_function_coefficients, test_moonshine_spin_foam_column_is_trivial, test_moonshine_cd_connection_assessment)",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-209",
+      "claim_id": "C-068",
+      "claim_status": "Refuted",
+      "statement": "Sedenion 84-ZD interaction matrix eigenvalue spectrum matches PDG particle masses.",
+      "where_stated": "`src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`, `docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, inputs: `data/csv/reggiani_standard_zero_divisors.csv`",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-209",
+      "claim_id": "C-069",
+      "claim_status": "Refuted",
+      "statement": "Three octonionic subalgebra principal angles reproduce PMNS neutrino mixing angles.",
+      "where_stated": "`src/scripts/analysis/cd_algebraic_experiments.py`, `data/csv/cd_algebraic_experiments.json`",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-209",
+      "claim_id": "C-070",
+      "claim_status": "Closed/Methodology-Insufficient",
+      "statement": "CD associator power spectrum shape matches NANOGrav GW background.",
+      "where_stated": "`docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c070_nanograv_shape_match_audit.py`, `data/csv/c070_nanograv_shape_match_summary.csv`, `tests/test_c070_nanograv_shape_match_audit.py`",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-209",
+      "claim_id": "C-077",
+      "claim_status": "Refuted",
+      "statement": "Subalgebra associator mixing matrix resembles PMNS matrix.",
+      "where_stated": "`src/scripts/analysis/c077_associator_mixing_pmns_audit.py`, `data/csv/c077_associator_mixing_summary.csv`, `tests/test_c077_associator_mixing_pmns_audit.py`, `data/csv/cd_algebraic_experiments_v3.json` (exp5v3_associator_mixing)",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-209",
+      "claim_id": "C-081",
+      "claim_status": "Refuted",
+      "statement": "Multi-parameter Givens rotation finds exact PMNS angles.",
+      "where_stated": "`src/scripts/analysis/cd_algebraic_experiments_v4.py`, `data/csv/cd_algebraic_experiments_v4.json`",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-209",
+      "claim_id": "C-092",
+      "claim_status": "Refuted",
+      "statement": "SO(7) orbit structure of ZD spectrum is continuous, not discrete.",
+      "where_stated": "`src/scripts/analysis/c092_so7_orbit_structure_audit.py`, `data/csv/c092_so7_orbit_structure_summary.csv`, `tests/test_c092_so7_orbit_structure_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v6.json` (results.P)",
+      "status_note": null
+    },
+    {
+      "insight_id": "I-212",
+      "claim_id": "C-1628",
+      "claim_status": "Verified",
+      "statement": "On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files parsing from 815 unique days; the prior matched list carried 836 rows, 834 parsing successfully, and double-listed 21 days under two filename conventions; it is superseded), the normalized 16D Cayley-Dickson staple-associator strictly dominates the one-step field-rotation-angle baseline on ROC-AUC across the three selected coordinates simultaneously: bulk delta +0.005572, high-gradient-positive stratum delta +0.009081, low-gradient-positive stratum delta +0.002063, hence simultaneous margin M = min(deltas) = +0.002063 > 0. These are exact pooled point estimates from deterministic computation (E-239 rerun of the E-237 design); the strata are per-time-point sample regimes (median |dB/dt| split among positives), not crossing-event classes. Scope: AUC dominance over the one-step baselines only; when temporal receptive fields are matched at six samples, cumulative and maximum rotation exceed the associator (C-1633), so the advantage over one-step rotation partly measures temporal-context asymmetry. The negative class consists of non-crossing samples on known crossing days, not arbitrary operational days.",
+      "where_stated": "data/output/staples_cluster_bootstrap_assoc_vs_rot.json; E-239",
+      "status_note": "Deterministic computational claim on the fixed deduplicated benchmark; verified by E-239's pooled estimands (data/output/staples_cluster_bootstrap_assoc_vs_rot.json, seed-independent point values). Shares the associator observable with C-1617/C-1618 but is related to, not supporting of, their cross-domain precursor mechanism."
+    },
+    {
+      "insight_id": "I-212",
+      "claim_id": "C-1631",
+      "claim_status": "Superseded",
+      "statement": "On the deduplicated THEMIS-A Staples crossing-day sample-localization benchmark (23,664,374 time points, 578,320 positives, 813 daily files), the normalized 16D staple-associator has pooled ROC-AUC 0.8274 with file-cluster-bootstrap 95% CI [0.8205, 0.8348], and it strictly outperforms the matched six-sample PVI and Gram-determinant controls across bulk and both predeclared gradient strata: assoc-minus-PVI6 simultaneous margin +0.0436 [0.0365, 0.0506], assoc-minus-Gram6 simultaneous margin +0.0216 [0.0184, 0.0249] (2,000 intact-daily-file resamples, ChaCha8 seed 42, all tail proportions < 1/2001). The associator therefore exceeds equal-receptive-field increment-magnitude and volume statistics, not merely one-step baselines.",
+      "where_stated": "data/output/staples_cluster_bootstrap_assoc_vs_pvi6.json; data/output/staples_cluster_bootstrap_assoc_vs_gram6.json; E-239",
+      "status_note": "Deterministic file-cluster bootstrap on the fixed benchmark (E-239). Controls consume exactly the six raw samples B_t..B_t+5 that the three overlapping staples consume. Related to C-1617/C-1618 through the shared observable; does not support their precursor mechanism."
+    },
+    {
+      "insight_id": "I-212",
+      "claim_id": "C-1633",
+      "claim_status": "Verified",
+      "statement": "When temporal receptive fields are matched at six samples on the deduplicated THEMIS-A Staples benchmark, direct angular statistics outperform the staple-associator: six-sample cumulative rotation reaches ROC-AUC 0.8352 and maximum stepwise rotation 0.8383 versus the associator's 0.8274, with assoc-minus-control bulk deltas -0.0077 [-0.0086, -0.0069] and -0.0109 [-0.0118, -0.0099] and negative simultaneous margins -0.0104 and -0.0137 (all 2,000 file-cluster resamples nonpositive-favoring-control). The associator therefore does not dominate conventional angular statistics at equal temporal support, and its advantage over one-step rotation (C-1628) partly measures temporal-context asymmetry rather than uniquely non-associative information. The tested channel permutation [1,2,0] through the intact CD tensor is practically AUC-equivalent to the canonical assignment (0.8281 vs 0.8274, delta -0.0006 [-0.0007, -0.0006]); this is predictive equivalence of one permutation, not algebraic invariance. Standalone rotation-family dominance is established; subsumption (zero conditional information from the associator given cumrot6 and maxrot6) is untested.",
+      "where_stated": "data/output/staples_cluster_bootstrap_assoc_vs_cumrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_maxrot6.json; data/output/staples_cluster_bootstrap_assoc_vs_chperm.json; E-239",
+      "status_note": "Negative-result claim, deterministic on the fixed benchmark (E-239). Ranking on pooled AUC: maxrot6 > cumrot6 > assoc > gram6 > pvi6. The chperm delta is consistently negative across all 2,000 draws but tiny; a formal equivalence test with a predeclared margin has not been run. Conditional-information (joint-model) analysis is the designated follow-up."
+    }
+  ],
+  "counts": {
+    "claims": 1570,
+    "insights": 183,
+    "experiments": 285
+  },
+  "relations": [
+    {
+      "predecessor": "C-1631",
+      "successor": "C-1738",
+      "kind": "narrows",
+      "event": 193
+    },
+    {
+      "predecessor": "C-1631",
+      "successor": "C-1731",
+      "kind": "refines",
+      "event": 189
+    },
+    {
+      "predecessor": "C-1633",
+      "successor": "C-1730",
+      "kind": "refines",
+      "event": 188
+    },
+    {
+      "predecessor": "C-1730",
+      "successor": "C-1733",
+      "kind": "narrows",
+      "event": 191
+    },
+    {
+      "predecessor": "C-1731",
+      "successor": "C-1734",
+      "kind": "narrows",
+      "event": 192
+    },
+    {
+      "predecessor": "C-1734",
+      "successor": "C-1739",
+      "kind": "narrows",
+      "event": 194
+    },
+    {
+      "predecessor": "C-1738",
+      "successor": "C-1740",
+      "kind": "refines",
+      "event": 196
+    },
+    {
+      "predecessor": "C-1739",
+      "successor": "C-1741",
+      "kind": "refines",
+      "event": 197
+    },
+    {
+      "predecessor": "C-1741",
+      "successor": "C-1743",
+      "kind": "refines",
+      "event": 199
+    },
+    {
+      "predecessor": "C-1743",
+      "successor": "C-1744",
+      "kind": "refines",
+      "event": 202
+    },
+    {
+      "predecessor": "C-1743",
+      "successor": "C-1754",
+      "kind": "refines",
+      "event": 212
+    }
+  ]
+}

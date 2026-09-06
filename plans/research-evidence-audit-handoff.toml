@@ -111,9 +111,11 @@ acceptance = "Live checkout identities and finite record denominators are record
 
 [[next_task]]
 id = "audit-insight-reference-pilot"
-status = "pending"
+status = "completed_bounded_source_and_reference_review"
 depends_on = ["verify-authority-and-refresh-inventory"]
 acceptance = "All eight pilot insights have traced proposition/evidence relationships and falsifiers; valid negative-result lessons survive."
+result = "data/output/audit/insight-reference-role-pilot/findings.json"
+completion_boundary = "All 37 declared links across 26 claims have roles and limits. Canonical mutations and original scientific replays remain pending. Live identity and pilot authority owners are verified; broader inventory-owner mapping remains open."
 
 [[next_task]]
 id = "design-and-validate-family-records"
@@ -144,3 +146,10 @@ id = "validate-integrate-and-refresh-dependents"
 status = "pending"
 depends_on = ["adjudicate-and-test-successor-results"]
 acceptance = "Canonical changes, generated outputs, numerical/source tests, independent review and required publication gates agree; downstream review candidates are recomputed."
+
+[pilot_result]
+findings = "data/output/audit/insight-reference-role-pilot/findings.json"
+validation = "data/output/audit/insight-reference-role-pilot/validation.toml"
+source_receipts = "data/output/audit/insight-reference-role-pilot/source-receipts.toml"
+next_focus = "Review the proposed predicate-level corrections, admit missing historical evidence, and design canonical insight roles before expanding the candidate families."
+scientific_boundary = "Negative-result lessons survive with narrower predicates. Newly exposed null-power, source-convention and reference-scope issues remain explicit obligations; the pilot changes audit artifacts rather than canonical scientific records."
