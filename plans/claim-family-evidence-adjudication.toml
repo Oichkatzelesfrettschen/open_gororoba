@@ -584,7 +584,7 @@ progress = "NRL source PDF is retained outside LFS; 13 data-core tests, 32 solar
 
 [[task]]
 id = "external-admission-claim-publication"
-status = "in_progress"
-progress = "Independent review corrections, 2558 scoped library tests, 32 solar binary tests, archive support replay and the full local gate pass. PR integration remains active."
+status = "completed"
+progress = "Independent review corrections, 2558 scoped library tests, 32 solar binary tests, archive support replay and the full local gate pass. PRs #172 and #173 are merged; primary main fast-forwards to 4b39cb51. Retained-source and active-owner worktrees remain intentionally preserved."
 action = "Review the integrated delta, regenerate canonical views and run publication gates"
 acceptance = "Retained evidence, canonical claims, exports, source tests and the full repository gate agree; integrate through reviewed PRs."
