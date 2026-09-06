@@ -6,168 +6,16 @@
 //! The B-field evolves via the induction equation:
 //!   dB/dt = curl(v x B) - eta * curl(curl(B))
 //!
-//! where eta is magnetic diffusivity. The implementation uses a seven-point
-//! Laplacian, whose continuum identity assumes divergence-free B.
-//! The Lorentz force J x B (with
+//! where eta is magnetic resistivity. The Lorentz force J x B (with
 //! J = curl(B)/mu_0) couples back to the LBM via the Guo forcing scheme.
 
 use crate::boundary::GridIndex;
 use crate::units::{LatticeUnits, ParkerSpiralSi, UniformCartesianMesh, UnitError};
 
-/// Invalid transport inputs or an unrepresentable prospective update.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub struct MhdError(pub &'static str);
-
-impl std::fmt::Display for MhdError {
-    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        formatter.write_str(self.0)
-    }
-}
-
-impl std::error::Error for MhdError {}
-
-/// Admitted magnetic diffusivity on a unit-spacing lattice.
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub struct MagneticDiffusivity(f64);
-
-impl MagneticDiffusivity {
-    pub fn from_lattice(value: f64) -> Result<Self, MhdError> {
-        if !value.is_finite() || value < 0.0 {
-            return Err(MhdError(
-                "magnetic diffusivity must be finite and nonnegative",
-            ));
-        }
-        Ok(Self(value))
-    }
-
-    pub fn from_si(value_m2_s: f64, units: &LatticeUnits) -> Result<Self, MhdError> {
-        Self::from_lattice(value_m2_s)?;
-        let converted = units.diffusivity_to_lattice(value_m2_s);
-        if value_m2_s > 0.0 && converted == 0.0 {
-            return Err(MhdError("SI magnetic diffusivity conversion underflow"));
-        }
-        Self::from_lattice(converted)
-    }
-
-    pub fn lattice_value(self) -> f64 {
-        self.0
-    }
-}
-
-fn validate_configuration(dimensions: [usize; 3], config: &MhdConfig) -> Result<usize, MhdError> {
-    let cells = dimensions
-        .into_iter()
-        .try_fold(1usize, |product, dimension| {
-            if dimension == 0 {
-                return Err(MhdError("MHD dimensions must be positive"));
-            }
-            product
-                .checked_mul(dimension)
-                .ok_or(MhdError("MHD grid product overflow"))
-        })?;
-    if cells > (isize::MAX as usize) / std::mem::size_of::<f64>() {
-        return Err(MhdError(
-            "MHD array byte length exceeds addressable capacity",
-        ));
-    }
-    MagneticDiffusivity::from_lattice(config.eta)?;
-    if !config.dt_mhd.is_finite() || config.dt_mhd <= 0.0 {
-        return Err(MhdError("MHD timestep must be finite and positive"));
-    }
-    if !config.mu_0.is_finite() || config.mu_0 <= 0.0 {
-        return Err(MhdError("MHD permeability must be finite and positive"));
-    }
-    if !config.cleaning_rate.is_finite() || config.cleaning_rate < 0.0 {
-        return Err(MhdError(
-            "MHD cleaning coefficient must be finite and nonnegative",
-        ));
-    }
-    let spectral_sum: f64 = dimensions
-        .into_iter()
-        .map(|dimension| {
-            (std::f64::consts::PI * (dimension / 2) as f64 / dimension as f64)
-                .sin()
-                .powi(2)
-        })
-        .sum();
-    let diffusion_number = config.eta * config.dt_mhd * spectral_sum;
-    if !diffusion_number.is_finite() || diffusion_number > 0.5 {
-        return Err(MhdError(
-            "finite-periodic diffusion-only Euler bound exceeded",
-        ));
-    }
-    Ok(cells)
-}
-
 #[cfg(test)]
 mod physical_unit_tests {
     use super::*;
     use crate::units::VACUUM_PERMEABILITY_H_M;
-
-    #[test]
-    fn diffusivity_conversion_and_invalid_values() {
-        let mesh = UniformCartesianMesh::new([2, 2, 2], [0.0; 3], 4.0).unwrap();
-        let units = LatticeUnits::new(&mesh, 2.0, 1.0).unwrap();
-        assert_eq!(
-            MagneticDiffusivity::from_si(2.0, &units)
-                .unwrap()
-                .lattice_value(),
-            0.25
-        );
-        assert_eq!(
-            MagneticDiffusivity::from_si(0.0, &units)
-                .unwrap()
-                .lattice_value(),
-            0.0
-        );
-        assert!(MagneticDiffusivity::from_si(f64::from_bits(1), &units).is_err());
-        for invalid in [-1.0, f64::NAN, f64::INFINITY] {
-            assert!(MagneticDiffusivity::from_lattice(invalid).is_err());
-            assert!(MagneticDiffusivity::from_si(invalid, &units).is_err());
-        }
-    }
-
-    #[test]
-    fn mutable_transport_rejects_invalid_configuration() {
-        assert!(MhdField::try_new(0, 2, 2, MhdConfig::default()).is_err());
-        assert!(MhdField::try_new(usize::MAX, 2, 2, MhdConfig::default()).is_err());
-        for invalid in [-1.0, f64::NAN, f64::INFINITY] {
-            for parameter in 0..4 {
-                let mut field = MhdField::new(2, 2, 2, MhdConfig::default());
-                match parameter {
-                    0 => field.config.eta = invalid,
-                    1 => field.config.cleaning_rate = invalid,
-                    2 => field.config.dt_mhd = invalid,
-                    _ => field.config.mu_0 = invalid,
-                }
-                assert!(field.try_evolve_b_field(&[[0.0; 3]; 8]).is_err());
-                assert!(
-                    field
-                        .bx
-                        .iter()
-                        .chain(&field.by)
-                        .chain(&field.bz)
-                        .chain(&field.psi)
-                        .all(|value| value.to_bits() == 0)
-                );
-            }
-        }
-        for parameter in 0..2 {
-            let mut field = MhdField::new(2, 2, 2, MhdConfig::default());
-            if parameter == 0 {
-                field.config.dt_mhd = 0.0;
-            } else {
-                field.config.mu_0 = 0.0;
-            }
-            assert!(field.validate_transport().is_err());
-        }
-        let mut field = MhdField::new(2, 2, 2, MhdConfig::default());
-        field.config.eta = 0.2;
-        assert!(field.validate_transport().is_err());
-        field.config.eta = 0.0;
-        field.psi.pop();
-        assert!(field.validate_transport().is_err());
-    }
 
     #[test]
     fn normalized_lorentz_matches_si_linear_field_across_units() {
@@ -238,12 +86,11 @@ pub struct MhdConfig {
     /// Magnetic permeability of free space (H/m) in simulation units.
     /// For dimensionless LBM, set to 1.0.
     pub mu_0: f64,
-    /// Magnetic diffusivity in lattice units (dx squared per LBM timestep).
-    /// The compatibility name eta denotes diffusivity, not electrical resistivity.
+    /// Magnetic resistivity (Ohmic dissipation). 0.0 for ideal MHD.
     pub eta: f64,
     /// MHD sub-timestep relative to LBM dt. Typically 1.0.
     pub dt_mhd: f64,
-    /// Algebraic divergence damping coefficient. 0.0 disables damping.
+    /// Divergence cleaning rate (Dedner hyperbolic cleaning). 0.0 to disable.
     pub cleaning_rate: f64,
 }
 
@@ -271,7 +118,7 @@ pub struct MhdField {
     pub by: Vec<f64>,
     /// B-field z-component.
     pub bz: Vec<f64>,
-    /// Algebraic divergence damping potential psi = -cleaning_rate^2 div B.
+    /// Divergence cleaning potential (Dedner psi).
     pub psi: Vec<f64>,
     /// Configuration parameters.
     pub config: MhdConfig,
@@ -280,13 +127,8 @@ pub struct MhdField {
 impl MhdField {
     /// Create a zero-initialized MHD field on the given grid.
     pub fn new(nx: usize, ny: usize, nz: usize, config: MhdConfig) -> Self {
-        Self::try_new(nx, ny, nz, config).expect("invalid MHD construction")
-    }
-
-    /// Construct a field after checking grid capacity and transport parameters.
-    pub fn try_new(nx: usize, ny: usize, nz: usize, config: MhdConfig) -> Result<Self, MhdError> {
-        let n = validate_configuration([nx, ny, nz], &config)?;
-        Ok(Self {
+        let n = nx * ny * nz;
+        Self {
             nx,
             ny,
             nz,
@@ -295,22 +137,7 @@ impl MhdField {
             bz: vec![0.0; n],
             psi: vec![0.0; n],
             config,
-        })
-    }
-
-    /// Check mutable fields and the isolated diffusion Euler bound.
-    /// Admission does not establish stability of induction, cleaning, or coupled flow.
-    pub fn validate_transport(&self) -> Result<(), MhdError> {
-        let cells = validate_configuration([self.nx, self.ny, self.nz], &self.config)?;
-        for component in [&self.bx, &self.by, &self.bz, &self.psi] {
-            if component.len() != cells {
-                return Err(MhdError("MHD component length mismatch"));
-            }
-            if !component.iter().all(|value| value.is_finite()) {
-                return Err(MhdError("MHD input component must be finite"));
-            }
         }
-        Ok(())
     }
 
     /// Initialize an uncalibrated legacy lattice Parker construction.
@@ -414,18 +241,12 @@ impl MhdField {
 
     /// Evolve B-field by one MHD timestep using the induction equation.
     ///
-    /// dB/dt = curl(v x B) + eta * Laplacian(B)
+    /// dB/dt = curl(v x B) - eta * curl(curl(B))
     ///
     /// Uses forward-time centered-space (FTCS) finite differences with
     /// periodic boundary conditions. For ideal MHD (eta=0), this reduces
     /// to dB/dt = curl(v x B).
     pub fn evolve_b_field(&mut self, u: &[[f64; 3]]) {
-        self.try_evolve_b_field(u).expect("invalid MHD update");
-    }
-
-    /// Compute a prospective update and commit only finite admitted fields.
-    pub fn try_evolve_b_field(&mut self, u: &[[f64; 3]]) -> Result<(), MhdError> {
-        self.validate_transport()?;
         let nx = self.nx;
         let ny = self.ny;
         let nz = self.nz;
@@ -433,11 +254,7 @@ impl MhdField {
         let dt = self.config.dt_mhd;
         let eta = self.config.eta;
 
-        if u.len() != n || !u.iter().flatten().all(|value| value.is_finite()) {
-            return Err(MhdError(
-                "MHD velocity length mismatch or nonfinite component",
-            ));
-        }
+        debug_assert_eq!(u.len(), n, "velocity field length mismatch");
 
         // Compute v x B at each grid point
         let mut vxb_x = vec![0.0; n];
@@ -484,9 +301,9 @@ impl MhdField {
                     dby[idx] = curl_vxb_y;
                     dbz[idx] = curl_vxb_z;
 
-                    // Seven-point magnetic diffusion. The continuum replacement
-                    // of -curl(curl(B)) by Laplacian(B) assumes div B = 0;
-                    // centered discrete curl compositions use a different stencil.
+                    // Resistive term: -eta * curl(curl(B)) = eta * Laplacian(B)
+                    // (using vector identity: curl(curl(B)) = grad(div B) - Lap(B),
+                    //  and div B = 0 ideally)
                     if eta > 0.0 {
                         let lap_bx = self.bx[xp]
                             + self.bx[xm]
@@ -519,15 +336,12 @@ impl MhdField {
 
         // Euler forward step
         for idx in 0..n {
-            dbx[idx] = self.bx[idx] + dt * dbx[idx];
-            dby[idx] = self.by[idx] + dt * dby[idx];
-            dbz[idx] = self.bz[idx] + dt * dbz[idx];
+            self.bx[idx] += dt * dbx[idx];
+            self.by[idx] += dt * dby[idx];
+            self.bz[idx] += dt * dbz[idx];
         }
 
-        // Reuse a cross-product buffer for the prospective algebraic potential.
-        let mut next_psi = vxb_x;
-        next_psi.copy_from_slice(&self.psi);
-        // Algebraic divergence damping, without a hyperbolic psi evolution.
+        // Divergence cleaning (Dedner hyperbolic)
         if self.config.cleaning_rate > 0.0 {
             let ch = self.config.cleaning_rate;
             for z in 0..nz {
@@ -541,11 +355,11 @@ impl MhdField {
                         let zp = ((z + 1) % nz) * (nx * ny) + y * nx + x;
                         let zm = ((z + nz - 1) % nz) * (nx * ny) + y * nx + x;
 
-                        let div_b = 0.5 * (dbx[xp] - dbx[xm])
-                            + 0.5 * (dby[yp] - dby[ym])
-                            + 0.5 * (dbz[zp] - dbz[zm]);
+                        let div_b = 0.5 * (self.bx[xp] - self.bx[xm])
+                            + 0.5 * (self.by[yp] - self.by[ym])
+                            + 0.5 * (self.bz[zp] - self.bz[zm]);
 
-                        next_psi[idx] = -ch * ch * div_b;
+                        self.psi[idx] = -ch * ch * div_b;
                     }
                 }
             }
@@ -561,26 +375,13 @@ impl MhdField {
                         let zp = ((z + 1) % nz) * (nx * ny) + y * nx + x;
                         let zm = ((z + nz - 1) % nz) * (nx * ny) + y * nx + x;
 
-                        dbx[idx] -= dt * 0.5 * (next_psi[xp] - next_psi[xm]);
-                        dby[idx] -= dt * 0.5 * (next_psi[yp] - next_psi[ym]);
-                        dbz[idx] -= dt * 0.5 * (next_psi[zp] - next_psi[zm]);
+                        self.bx[idx] -= dt * 0.5 * (self.psi[xp] - self.psi[xm]);
+                        self.by[idx] -= dt * 0.5 * (self.psi[yp] - self.psi[ym]);
+                        self.bz[idx] -= dt * 0.5 * (self.psi[zp] - self.psi[zm]);
                     }
                 }
             }
         }
-        if [&dbx, &dby, &dbz, &next_psi]
-            .into_iter()
-            .any(|component| component.iter().any(|value| !value.is_finite()))
-        {
-            return Err(MhdError(
-                "prospective MHD update contains nonfinite components",
-            ));
-        }
-        self.bx = dbx;
-        self.by = dby;
-        self.bz = dbz;
-        self.psi = next_psi;
-        Ok(())
     }
 
     /// Compute Lorentz force density: F = J x B / mu_0.

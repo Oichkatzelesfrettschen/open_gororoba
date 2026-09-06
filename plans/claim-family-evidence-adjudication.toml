@@ -402,7 +402,48 @@ acceptance = "Canonical statement, typed evidence and retained inputs agree whil
 
 [[task]]
 id = "qgp-pp-reference-publication"
-status = "in_progress"
+status = "completed"
 depends_on = ["qgp-pp-reference-canonical-adjudication"]
 action = "Validate and publish pp reference identity and calibration prerequisites"
 acceptance = "Warnings-as-errors, source hashes, canonical histories and publication gates pass."
+
+[[task]]
+id = "mhd-diffusivity-evidence-contract"
+status = "completed"
+action = "Bind magnetic transport units and the actual periodic diffusion stencil"
+acceptance = "Declare lattice and SI diffusivity, a diffusion-only timestep gate and evolving Fourier amplitude/energy falsifiers before testing."
+
+[[task]]
+id = "mhd-diffusivity-admission-implementation"
+status = "completed"
+depends_on = ["mhd-diffusivity-evidence-contract"]
+action = "Validate magnetic diffusivity at construction and every mutable-config update"
+acceptance = "Negative/nonfinite diffusivity, invalid timestep, malformed state and unstable diffusion configurations reject before mutation; admitted legacy inputs preserve arithmetic."
+
+[[task]]
+id = "mhd-diffusivity-cli-units"
+status = "completed"
+depends_on = ["mhd-diffusivity-admission-implementation"]
+action = "Expose explicit lattice diffusivity and admitted SI conversion"
+acceptance = "Legacy eta flags retain their lattice meaning; SI diffusivity requires physical unit metadata and converts once."
+
+[[task]]
+id = "mhd-diffusivity-fourier-verification"
+status = "completed"
+depends_on = ["mhd-diffusivity-cli-units"]
+action = "Verify evolving mode amplification, energy and rejected-step preservation"
+acceptance = "Independent seven-point Fourier oracles distinguish diffusion, timestep instability and unchanged valid-input behavior from coupled physical interpretations."
+
+[[task]]
+id = "mhd-diffusivity-canonical-publication"
+status = "in_progress"
+depends_on = ["mhd-diffusivity-fourier-verification"]
+action = "Register bounded transport evidence and publish validated artifacts"
+acceptance = "Refuted physical parents remain intact; typed outcomes, canonical history, retained tests and publication gates agree."
+
+[[task]]
+id = "mhd-stable-induction-contract"
+status = "pending"
+depends_on = ["mhd-diffusivity-canonical-publication"]
+action = "Research and declare a stable induction integrator with independent energy and convergence oracles"
+acceptance = "Retain the centered forward-Euler growth failure; bind replacement stability, timestep and boundary scopes before coupled physical simulations."

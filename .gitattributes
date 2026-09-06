@@ -74,3 +74,5 @@ data/output/audit/qgp-quenching-weight-identity/*.log -text whitespace=-blank-at
 data/output/audit/qgp-pp-spectrum-calibration/*.headers -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
 data/output/audit/qgp-pp-spectrum-calibration/*.log -text whitespace=-blank-at-eof,-blank-at-eol
 data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml -text whitespace=-blank-at-eof,-blank-at-eol
+
+data/output/audit/mhd-magnetic-diffusivity/*.log -text whitespace=-blank-at-eof,-blank-at-eol

@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-312"
+title = "Magnetic diffusivity units and evolving periodic transport admission"
+status = "active"
+binary = "cargo-test:lbm_3d:mhd_diffusivity_identity"
+claims = ["C-1685"]
+claim_refs = ["C-1685"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Frozen periodic MhdField update at76002323; declared lattice/SI diffusivity maps, transverse Fourier fields and invalid-state controls."
+input_path_refs = ["data/output/audit/mhd-magnetic-diffusivity/protocol.toml", "data/output/audit/mhd-magnetic-diffusivity/retained-producer.json"]
+method = "Check finite-grid Laplacian amplification and energy, explicit diffusion admission, SI conversion, rejected-state preservation and retained valid arithmetic; separate centered-induction instability from diffusion conformance."
+run = "cargo test -p lbm_3d --profile validation --test mhd_diffusivity_identity -- --nocapture"
+output = ["data/output/audit/mhd-magnetic-diffusivity/adjudication.toml"]
+status_note = "Five independent tests pass: 24 Fourier rows satisfy the unchanged 1e-12 gates; 5760 retained B/psi component comparisons match bitwise; invalid updates reject atomically. CLI alias and synthetic SI admission controls pass. Centered forward-Euler induction fails the independent energy-stability predicate (multiplier 1.00146446609406747); physical force bounds remain unresolved."

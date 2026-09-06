@@ -1,0 +1,14 @@
+{
+  "claim_transition_events": "d26e6859f479b6a0a8ab47902af3f4f60617b6c734e353d7abf588d2585d4ec7",
+  "claim_transition_assumptions": "30741ee510ffd5b64f86e388302bb4989aaf5b8c1dd5c0d9ae0d96ad4d7ea5aa",
+  "claim_transition_evidence": "4cc7fcbabbe6b50246552cdbc5ff7f724a649e7a2cc7a1c1d5fd2f3d133a032b",
+  "claim_transition_experiments": "e841ff7d190ce0117b9db8d907bd1e0f988d02bc66e1d8006c9b37d08659da5b",
+  "claim_transition_successors": "0b543ee8baae294f726965f8ce45cc7e448575ea7dd1db7c6615cfe7067d8970",
+  "claim_transition_successor_evidence": "0aef1a5697175a4608ab12dceccc564740b02046f54de67a8f9b4b3765c134f3",
+  "claim_transition_successor_where_stated": "d3e70a3cbcf6e1f6bb291e273910a393294b069e4984263ad4f465b48c786fef",
+  "claim_evidence": "fc9c2a34e4c337f0e171389f9745d54a62c3b4fafdc60b023ba26cbd934820f6",
+  "claim_evidence_revisions": "36e9d3e80fc3e87f3383ecf9c779e3e9d7cc308d990afae2c906e0570ab11919",
+  "claim_evidence_revision_experiments": "a287133df9d13c9429faa4d9bc0c58a7199fe2b417924d69f4f37c590bdc9e42",
+  "claim_revisions": "ade5a7431dd33da4efc436c5b143b44a0a9323b873bae4d2140754e390bfacef",
+  "artifact_retrieval_observations": "5c4ae1c007bf45e4648e4d21f3b43ab78050f16e5ecf6f4c085e3cfa87d56571"
+}

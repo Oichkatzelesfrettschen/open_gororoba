@@ -1,0 +1,8 @@
+{
+  "revision": "7600232336836c0cdb608905342517bcd22a7c02",
+  "source_path": "crates/lbm_3d/src/mhd.rs",
+  "source_sha256": "088410c675b6f2dc5df02d87842a7c7b5e5ad267751b9146322adb77210732f0",
+  "step_sha256": "8b1713548b9e3eea8b739b20e910c2a4d75693644d925718407faa4c893dfedb",
+  "adapted_step_sha256": "f1e1a12576c281ac8364f83de70c4cab1f994dc349fc5c6c59f181b1854276be",
+  "adaptation": "Extract evolve_b_field through the next Lorentz method documentation, rename method receiver to field argument and replace self-dot tokens with field-dot; preserve arithmetic."
+}

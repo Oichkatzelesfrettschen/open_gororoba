@@ -8,7 +8,7 @@ use clap::{Args, ValueEnum};
 use cosmology_core::concentration_mass_relation;
 use lbm_3d::{
     dm_force::{DmForceConfig, DmForceField, combine_forces},
-    mhd::{MhdConfig, MhdField},
+    mhd::{MagneticDiffusivity, MhdConfig, MhdField},
     open_x_boundary::{OpenXBoundary, XOutflow, population_mass},
     solver::{BgkCollision, LbmSolver3D},
     units::{LatticeUnits, UniformCartesianMesh},
@@ -61,9 +61,17 @@ pub struct Cli {
     #[arg(long, default_value_t = 0.05)]
     v_sw: f64,
 
-    /// Magnetic resistivity (0.0 = ideal MHD)
-    #[arg(long, default_value_t = 0.0)]
+    /// Magnetic diffusivity in lattice length squared per LBM timestep (0 = ideal MHD).
+    #[arg(
+        long = "magnetic-diffusivity-lattice",
+        alias = "eta",
+        default_value_t = 0.0
+    )]
     eta: f64,
+
+    /// Magnetic diffusivity in m^2/s, converted using admitted IC mesh and timestep metadata.
+    #[arg(long, conflicts_with = "eta", requires = "ic_file")]
+    magnetic_diffusivity_m2_s: Option<f64>,
 
     /// Snapshot interval (write output every N steps)
     #[arg(long, default_value_t = 500)]
@@ -473,7 +481,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         dt_mhd: 1.0,
         cleaning_rate: 0.1,
     };
-    let mut mhd = MhdField::new(cli.nx, cli.ny, cli.nz, mhd_config);
+    let mut mhd = MhdField::try_new(cli.nx, cli.ny, cli.nz, mhd_config)?;
 
     // Initialize state: real data from IC file, or synthetic uniform+Parker
     let (u_sw, ic_meta) = if let Some(ref ic_path) = cli.ic_file {
@@ -513,6 +521,27 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         mhd.parker_spiral_init(cli.v_sw);
         (u_init, IcMetadata::default())
     };
+
+    mhd.config.eta = admitted_magnetic_diffusivity(
+        cli.eta,
+        cli.magnetic_diffusivity_m2_s,
+        ic_meta.physical_units.as_ref(),
+    )?
+    .lattice_value();
+    mhd.validate_transport()?;
+    eprintln!(
+        "magnetic_diffusivity_lattice={:.17e} dt_mhd={:.17e} diffusion_gate_scope=periodic_diffusion_only",
+        mhd.config.eta, mhd.config.dt_mhd,
+    );
+    if let Some(requested_m2_s) = cli.magnetic_diffusivity_m2_s {
+        let units = ic_meta.physical_units.as_ref().ok_or_else(|| {
+            anyhow::anyhow!("SI magnetic diffusivity receipt requires admitted IC physical units")
+        })?;
+        eprintln!(
+            "magnetic_diffusivity_m2_s={requested_m2_s:.17e} magnetic_diffusivity_m2_s_per_lattice_unit={:.17e}",
+            units.diffusivity_to_si(1.0),
+        );
+    }
 
     // Helmholtz projection: remove magnetic monopoles from Cartesian discretization
     let (div_before, div_after) = mhd.project_divergence_free(5000, 1e-12);
@@ -706,7 +735,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         );
 
         // 8. Evolve B-field using force-corrected velocity u*
-        mhd.evolve_b_field(&solver.u);
+        mhd.try_evolve_b_field(&solver.u)?;
 
         // 9. Periodic output
         if (step + 1) % cli.snap_interval == 0 || step == 0 {
@@ -754,9 +783,107 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
     Ok(())
 }
 
+fn admitted_magnetic_diffusivity(
+    lattice_value: f64,
+    physical_value: Option<f64>,
+    units: Option<&LatticeUnits>,
+) -> anyhow::Result<MagneticDiffusivity> {
+    match physical_value {
+        Some(value) => {
+            let units = units.ok_or_else(|| {
+                anyhow::anyhow!("SI magnetic diffusivity requires admitted IC physical units")
+            })?;
+            Ok(MagneticDiffusivity::from_si(value, units)?)
+        }
+        None => Ok(MagneticDiffusivity::from_lattice(lattice_value)?),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use clap::Parser;
+
+    #[derive(Parser)]
+    struct TestArgs {
+        #[command(flatten)]
+        cli: Cli,
+    }
+
+    fn parse_diffusivity(extra: &[&str]) -> Result<TestArgs, clap::Error> {
+        TestArgs::try_parse_from(
+            [
+                "solar",
+                "--x-outflow",
+                "zero-gradient-populations",
+                "--max-relative-mass-ledger-error",
+                "1e-10",
+            ]
+            .into_iter()
+            .chain(extra.iter().copied()),
+        )
+    }
+
+    #[test]
+    fn magnetic_diffusivity_cli_preserves_lattice_alias_and_requires_si_admission() {
+        assert_eq!(
+            parse_diffusivity(&[]).unwrap().cli.eta.to_bits(),
+            0.0_f64.to_bits()
+        );
+        for flag in ["--eta", "--magnetic-diffusivity-lattice"] {
+            assert_eq!(
+                parse_diffusivity(&[flag, "0.125"])
+                    .unwrap()
+                    .cli
+                    .eta
+                    .to_bits(),
+                0.125_f64.to_bits()
+            );
+            assert!(
+                parse_diffusivity(&[
+                    flag,
+                    "0",
+                    "--magnetic-diffusivity-m2-s",
+                    "4e8",
+                    "--ic-file",
+                    "input.csv"
+                ])
+                .is_err()
+            );
+        }
+        assert!(parse_diffusivity(&["--magnetic-diffusivity-m2-s", "4e8"]).is_err());
+        let parsed = parse_diffusivity(&[
+            "--magnetic-diffusivity-m2-s",
+            "4e8",
+            "--ic-file",
+            "input.csv",
+        ])
+        .unwrap()
+        .cli;
+        assert!(
+            admitted_magnetic_diffusivity(parsed.eta, parsed.magnetic_diffusivity_m2_s, None)
+                .is_err()
+        );
+    }
+
+    #[test]
+    fn magnetic_diffusivity_si_conversion_uses_admitted_mesh_and_timestep() {
+        let metadata = admit_ic_metadata(&admitted_fixture(), [2; 3]).unwrap();
+        let units = metadata.physical_units.as_ref();
+        let converted = admitted_magnetic_diffusivity(0.0, Some(4e8), units).unwrap();
+        assert!((converted.lattice_value() - 5e-5).abs() < 1e-18);
+        for invalid in [-1.0, f64::NAN, f64::INFINITY] {
+            assert!(admitted_magnetic_diffusivity(0.0, Some(invalid), units).is_err());
+        }
+        assert_eq!(
+            admitted_magnetic_diffusivity(0.125, None, None)
+                .unwrap()
+                .lattice_value()
+                .to_bits(),
+            0.125_f64.to_bits()
+        );
+    }
+
     fn admitted_fixture() -> Vec<String> {
         let density_ref = 5e6 * lbm_3d::dm_force::DRAG_PROTON_MASS_KG;
         let mesh = UniformCartesianMesh::new([2; 3], [0.0; 3], 1e6).unwrap();

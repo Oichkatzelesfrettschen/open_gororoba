@@ -1,0 +1,6 @@
+error: the following required arguments were not provided:
+  --ic-file <IC_FILE>
+
+Usage: solar wind-dm-mhd --x-outflow <X_OUTFLOW> --max-relative-mass-ledger-error <MAX_RELATIVE_MASS_LEDGER_ERROR> --ic-file <IC_FILE> --nx <NX> --ny <NY> --nz <NZ> --steps <STEPS> --snap-interval <SNAP_INTERVAL> --no-dm --b0 <B0> --tau <TAU> --v-sw <V_SW> --magnetic-diffusivity-m2-s <MAGNETIC_DIFFUSIVITY_M2_S> --out <OUT>
+
+For more information, try '--help'.

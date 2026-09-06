@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 279
-edge_count = 1534
+lineage_count = 280
+edge_count = 1539
 
 [[lineage]]
 id = "XL-001"
@@ -5077,6 +5077,24 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo test -p data_core --profile validation --test hepdata_pp_identity -- --nocapture; cargo test -p data_core --lib --profile validation catalogs::hepdata_table::tests", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-280"
+experiment_id = "E-312"
+binary = "cargo-test:lbm_3d:mhd_diffusivity_identity"
+deterministic = true
+gpu = false
+run_command = "cargo test -p lbm_3d --profile validation --test mhd_diffusivity_identity -- --nocapture"
+run_command_sha256 = "e8bb590040df83c13b981cb04338d1116fa081d2f48bccaa0a02adaac3ccc3c0"
+claim_refs = ["C-1685"]
+input_path_refs = ["data/output/audit/mhd-magnetic-diffusivity/protocol.toml", "data/output/audit/mhd-magnetic-diffusivity/retained-producer.json"]
+output_path_refs = ["data/output/audit/mhd-magnetic-diffusivity/adjudication.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p lbm_3d --profile validation --test mhd_diffusivity_identity -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -18881,6 +18899,51 @@ id = "XLE-01534"
 lineage_id = "XL-279"
 from_id = "E-311"
 to_ref = "data/output/audit/qgp-pp-spectrum-calibration/provider-representation-comparison.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01535"
+lineage_id = "XL-280"
+from_id = "E-312"
+to_ref = "cargo-test:lbm_3d:mhd_diffusivity_identity"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01536"
+lineage_id = "XL-280"
+from_id = "E-312"
+to_ref = "C-1685"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-01537"
+lineage_id = "XL-280"
+from_id = "E-312"
+to_ref = "data/output/audit/mhd-magnetic-diffusivity/protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01538"
+lineage_id = "XL-280"
+from_id = "E-312"
+to_ref = "data/output/audit/mhd-magnetic-diffusivity/retained-producer.json"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01539"
+lineage_id = "XL-280"
+from_id = "E-312"
+to_ref = "data/output/audit/mhd-magnetic-diffusivity/adjudication.toml"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

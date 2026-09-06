@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 209
+event_count = 210
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4485,4 +4485,27 @@ transition_spec_sha256 = "0f8f808012f438e4d424ee03c10d8c34b91889f777d16cc6a93c15
 [[transition.successors]]
 proposal_key = "magnonic-exact-dyadic-global-bundle-isolation"
 canonical_claim_id = "C-1751"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 210
+transition_key = "mhd-diffusivity-admission-conformance"
+source_claim_id = "C-1685"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Independent periodic Fourier amplitude and energy, invalid-state atomicity, SI conversion and retained arithmetic comparisons adjudicate the diffusivity instrument. The centered-induction omission control separately fails energy stability."
+rationale = "Preserve the parent magnetic-normalization investigation and split bounded transport conformance from physical force interpretation and full-induction stability."
+unresolved_assumptions = ["Centered forward-Euler induction exhibits Fourier energy growth even when diffusion admission passes.", "Physical spacecraft fields, gravitational frame, magnetic boundary conditions, outflow and force sensitivity require separate admission."]
+evidence_artifact_ids = ["LOCAL-MHD-DIFFUSIVITY"]
+experiment_ids = ["E-312"]
+actor = "claim-evidence-adjudication"
+reason = "Register numerical diffusivity conformance while retaining the failed induction-stability predicate"
+transition_timestamp = "2026-09-06T00:04:49Z"
+transition_spec_sha256 = "d787151d14f190f1f02d87d0e78e0f446ddb6dcfec7805d0e225f36c98be1a8f"
+
+[[transition.successors]]
+proposal_key = "mhd-diffusivity-instrument"
+canonical_claim_id = "C-1752"
 relation_kind = "implementation_split"

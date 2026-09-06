@@ -51,8 +51,12 @@ pub struct Cli {
     #[arg(long, default_value_t = 0.05)]
     v_sw: f64,
 
-    /// Magnetic resistivity (0.0 = ideal MHD)
-    #[arg(long, default_value_t = 0.0)]
+    /// Magnetic diffusivity in lattice length squared per LBM timestep (0 = ideal MHD).
+    #[arg(
+        long = "magnetic-diffusivity-lattice",
+        alias = "eta",
+        default_value_t = 0.0
+    )]
     eta: f64,
 
     /// Snapshot interval (write output every N steps)
@@ -178,7 +182,11 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         dt_mhd: 1.0,
         cleaning_rate: 0.1,
     };
-    let mut mhd = MhdField::new(cli.nx, cli.ny, cli.nz, mhd_config);
+    let mut mhd = MhdField::try_new(cli.nx, cli.ny, cli.nz, mhd_config)?;
+    eprintln!(
+        "magnetic_diffusivity_lattice={:.17e} dt_mhd={:.17e} diffusion_gate_scope=periodic_diffusion_only",
+        mhd.config.eta, mhd.config.dt_mhd,
+    );
 
     // Initialize state: real data from IC file, or synthetic uniform+Parker
     let u_sw = if let Some(ref ic_path) = cli.ic_file {
@@ -236,7 +244,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         solver.evolve_one_step();
 
         // 4. Evolve B-field using updated velocity
-        mhd.evolve_b_field(&solver.u);
+        mhd.try_evolve_b_field(&solver.u)?;
 
         // 5. Periodic output
         if (step + 1) % cli.snap_interval == 0 || step == 0 {
@@ -256,4 +264,39 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     eprintln!("done.");
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use clap::Parser;
+
+    #[derive(Parser)]
+    struct TestArgs {
+        #[command(flatten)]
+        cli: Cli,
+    }
+
+    #[test]
+    fn magnetic_diffusivity_cli_preserves_lattice_alias() {
+        assert_eq!(
+            TestArgs::try_parse_from(["solar"])
+                .unwrap()
+                .cli
+                .eta
+                .to_bits(),
+            0.0_f64.to_bits()
+        );
+        for flag in ["--eta", "--magnetic-diffusivity-lattice"] {
+            assert_eq!(
+                TestArgs::try_parse_from(["solar", flag, "0.125"])
+                    .unwrap()
+                    .cli
+                    .eta
+                    .to_bits(),
+                0.125_f64.to_bits()
+            );
+        }
+        assert!(TestArgs::try_parse_from(["solar", "--magnetic-diffusivity-m2-s", "1"]).is_err());
+    }
 }
