@@ -1,0 +1,29 @@
+{
+  "declared_tables_without_exact_sql_table": [
+    "agents_contract",
+    "book_docs",
+    "claim_tickets",
+    "claims_evidence_edges",
+    "data_artifact_narratives",
+    "data_governance",
+    "data_semantic_validators",
+    "dataset_label_aliases",
+    "docs_convos",
+    "docs_root_narratives",
+    "download_host_policies",
+    "engineering_standards",
+    "experiment_id_aliases",
+    "experiment_lineage",
+    "experiment_lineage_edges",
+    "materials_viscosity",
+    "mcp_server_matrix",
+    "project_metadata",
+    "reports_narratives",
+    "source_infrastructure",
+    "terminology_standards",
+    "test_taxonomy"
+  ],
+  "note": "An absent exact-name table requires tracing its owning generator and compatibility lane; it does not prove absent evidence.",
+  "source_entries": 38,
+  "declared_nonempty_table_fields": 37
+}

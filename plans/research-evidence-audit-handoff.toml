@@ -1,0 +1,146 @@
+schema_version = 1
+status = "handoff_prepared_scientific_audits_pending"
+prepared_date = "2026-09-06"
+objective = "Audit related claims, insights and other research records together by shared mechanisms and evidence, preserve falsification results, and develop independently tested successor results."
+primary_checkout = "/home/eirikr/Github/open_gororoba"
+primary_branch = "main"
+baseline_commit = "d59c8fa086614dc248eeb22f5406cb8205c75464"
+baseline_database_sha256 = "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8"
+handoff_checkout = "/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure"
+handoff_branch = "docs/research-evidence-audit-handoff"
+inventory_root = "data/output/audit/research-evidence-family-inventory"
+families_file = "data/output/audit/research-evidence-family-inventory/candidate-families.toml"
+online_methodology = "data/output/audit/research-evidence-family-inventory/methodology-sources.toml"
+local_downloads = ".cache/research-evidence-audit-handoff/sources"
+work_completed = "Read-only canonical inventory, selected relationship checks, twelve candidate audit families, primary online methodology review and a resumable handoff. Scientific source code, canonical records and historical evidence remain unchanged."
+work_pending = "Source-level family membership validation, semantic relationship roles, scientific falsification, domain-specific literature searches, any schema changes, experiments and canonical adjudication."
+scope_limit = "The seeds are not an exhaustive clustering and their membership is not a scientific verdict. Empty SQL tables do not establish missing knowledge across generated registries and documents."
+
+[resume]
+read_first = ["AGENTS.md", "plans/research-evidence-audit-handoff.toml", "data/output/audit/research-evidence-family-inventory/candidate-families.toml", "data/output/audit/research-evidence-family-inventory/methodology-sources.toml", "docs/engineering/registry_canonical_architecture.md", "docs/engineering/claim-family-evidence-adjudication.md"]
+first_action = "Verify both checkout branches, clean/dirty state, HEAD and the database hash. If main or the database differs from the baseline, refresh the inventory before using its counts or review ordering."
+initial_focus = "registry-authority-and-evidence-roles"
+pilot_insights = ["I-001", "I-002", "I-094", "I-095", "I-096", "I-207", "I-209", "I-212"]
+pilot_reason = "The set spans positive interpretations, negative-result lessons and superseded parents. It tests relation semantics before the audit expands or the schema changes."
+first_deliverable = "Eight insight records with atomic propositions, linked claim predicates, source evidence, relationship roles, falsifiers and per-record dispositions; retain unchanged records when their existing wording is justified."
+
+[measured_inventory]
+claims = 1570
+insights = 183
+experiments = 285
+typed_claim_contracts = 58
+typed_implementation_contracts = 47
+typed_phenomenological_contracts = 5
+typed_source_contracts = 6
+theorems = 162
+theorem_identities = 162
+formal_link_rows = 145
+distinct_formally_linked_claims = 139
+bibliography_entries = 442
+artifacts = 3304
+external_source_contracts = 158
+external_source_dossiers = 29
+binaries = 396
+lacunae = 186
+insights_unknown = 67
+insights_open = 37
+insights_verified = 75
+insights_without_claim_refs = 13
+insight_claim_reference_rows = 549
+dangling_insight_claim_references = 0
+asymmetric_normalized_insight_claim_references = 0
+insights_with_refuted_or_superseded_reference = 33
+verified_insights_with_such_reference = 19
+candidate_families = 12
+unique_seed_insights = 104
+unique_seed_claims = 236
+unique_linked_experiments = 84
+unassigned_seed_insights = 79
+unassigned_seed_claims = 1334
+interpretation = "These are different record populations, not additive evidence counts. A verified insight citing a refutation can be a valid lesson. Unknown status or missing typed contract alone does not refute a record."
+
+[authority_frontier]
+manifest_source_entries = 38
+nonempty_declared_table_fields = 37
+declared_names_without_exact_sql_table = 22
+empty_sql_tables = ["equation_atoms", "proof_atoms", "derivation_steps", "proof_skeletons", "research_narratives", "evidence_edges"]
+generated_claim_evidence_edge_rows = 6107
+owner_question = "registry/claims_evidence_edges.toml declares 6107 generated semantic edges while SQLite evidence_edges contains zero rows. Their schemas differ. Trace semantic_atoms and the source manifest before designing a canonical migration."
+additional_categories = ["Theorem propositions, assumptions and proof artifacts", "Equations, derivations and proof skeletons", "Narratives, scorecards and literature novelty assertions", "Experiments, calibration contracts and lineage", "Data/source artifacts and retrieval histories", "Implementations, binary identities and numerical oracles", "Lacunae, requirements and planning records", "Claim/insight references, typed relations and revision histories"]
+classification_rule = "Separate scientific propositions, empirical generalizations, fitted constructions, hypotheses, negative-result lessons, engineering observations and planning proposals before choosing validation criteria."
+
+[audit_design]
+grouping_rule = "Group by a traced shared source, dataset, transformation, estimator, implementation, assumption, calibration or falsifier. Titles and keywords nominate candidates. They do not justify merging propositions or counting repeated analyses as independent evidence."
+membership = "Allow a record to belong to several audit families; retain one canonical record and explicit relationship roles."
+proposed_reference_roles = ["supports", "refutes", "negative_result_about", "motivates", "depends_on", "shares_pipeline", "shares_source", "supersedes"]
+schema_rule = "These roles are design candidates. Audit actual examples and existing table owners before implementing a migration; the existing claim_relations vocabulary cannot be silently extended by ad hoc writes."
+required_family_fields = ["Atomic source and repository propositions", "Record IDs and evidence layer", "Primary sources and inclusion/exclusion log", "Data/code identities and execution boundary", "Intervening maps and free-parameter budget", "Independent and shared evidence roles", "Matched controls and cheapest decisive falsifier", "Verification, revision, abandonment and inconclusive outcomes", "Exploratory successor hypothesis and independent test", "Canonical write owner, regeneration and verification commands", "Unassigned records and residual obligations"]
+research_cycle = ["Preserve the original statement and evidence", "Trace the mechanism and declare a decisive falsifier", "Execute only after inputs and protocol are admitted", "Record support, refutation, revision or inconclusiveness at the supported layer", "Extract a narrower result, obstruction or methodological lesson", "Treat newly suggested explanations as exploratory hypotheses", "Declare an independent or held-out test before promotion", "Update typed canonical records and recompute dependent review candidates"]
+success_rule = "An accurate negative result, obstruction, corrected instrument or narrower mechanism is a valid result. The audit does not promise a positive finding or force every record to change."
+priority_rule = "Resolve authority and evidence-role blockers first; then choose high-fanout interpretive dependencies with decisive offline tests. Keep source-only, CPU, GPU and externally blocked lanes distinct."
+
+[scientific_boundaries]
+recent_work = "PRs #172-175 are merged. The latest correction separates effect evidence, historical target attainment and practical utility. Reuse the retained results instead of repeating their experiments without a new reason."
+threshold_rule = "The detector's 0.005 ROC-AUC value remains a historical discrimination target without established application-based justification. It supplies neither a general scientific gate nor a usefulness verdict."
+evidence_layer_rule = "Source propositions, implementation conformance and phenomenological mappings require different evidence. Success at one layer does not promote another."
+negative_result_rule = "Review the meaning of an insight's reference before propagating a parent's refutation; lessons from refutation can remain valid."
+same_data_rule = "A successor explanation discovered during falsification is exploratory until independently tested; reusing the discovery data does not turn it into a new confirmation."
+
+[retrieval]
+user_preference = "Use wget with a Mozilla user agent. Try HTTP mirrors when HTTPS fails and supported rsync, FTP, FTPS or other transport endpoints when needed."
+example = "wget --user-agent='Mozilla/5.0' --timeout=30 --tries=2 -O <local-file> <source-url>"
+source_priority = "Primary publisher or author sources, institutional repositories and identified preprint/source releases; confirm DOI, title, authors, edition and relevant equation/table."
+lfs_rule = "An LFS pointer is a locator, not an admitted paper or dataset. Retrieve actual non-LFS bytes or an independently identified source version and record the distinction."
+identity_rule = "Retain requested/final URLs, protocol, dates, response outcome, byte length, hash and source version. A different edition or body receives its own identity rather than satisfying an old digest expectation."
+absence_rule = "A failed endpoint proves only that attempt failed. Record searched surfaces and an intake condition instead of asserting global unavailability."
+search_log_fields = ["Family question", "Database or website", "Exact query", "Search date", "Candidate identity", "Included or excluded", "Reason", "Source version", "Relevant section/equation", "Retrieval receipt"]
+
+[repository_workflow]
+canonical_write_target = "registry/canonical/control_plane.sqlite3"
+mutation_rule = "Use gororoba-db owning commands, then export-control-plane, execution-planning as needed and registry-integrity. Preserve append-only transition and revision history. Never hand-edit generated compatibility exports."
+destructive_import_rule = "Do not rebuild/import the canonical database to refresh exports. Such operations can discard history."
+implementation_rule = "Pure Rust; warnings as errors; narrow source changes, meaningful tests and independent review. New Markdown requires the repository's allowance policy; prefer existing docs or TOML planning artifacts."
+cache_rule = "The retained handoff checkout supports REPO_SHARE_PRIMARY_CACHE=1. Pass absolute Cargo roots. Its source remains different from the historical frozen runner."
+publication_rule = "The next execution pass should use isolated changes, focused validation and the required full pre-push gate before PR integration. The present handoff is a local planning commit, not a scientific adjudication."
+preserve_worktrees = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication contains another session's work; inspect and preserve", "/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source is retained for exact historical runner identity"]
+
+[[next_task]]
+id = "verify-authority-and-refresh-inventory"
+status = "pending"
+acceptance = "Live checkout identities and finite record denominators are recorded; generated lanes, canonical tables and standalone registries have explicit owners."
+
+[[next_task]]
+id = "audit-insight-reference-pilot"
+status = "pending"
+depends_on = ["verify-authority-and-refresh-inventory"]
+acceptance = "All eight pilot insights have traced proposition/evidence relationships and falsifiers; valid negative-result lessons survive."
+
+[[next_task]]
+id = "design-and-validate-family-records"
+status = "pending"
+depends_on = ["audit-insight-reference-pilot"]
+acceptance = "The family and relation schema represents observed cases without duplicate canonical records, untyped promotion or forced status changes."
+
+[[next_task]]
+id = "expand-source-traced-family-frontier"
+status = "pending"
+depends_on = ["design-and-validate-family-records"]
+acceptance = "Candidate memberships are admitted or rejected by source tracing; remaining claims/insights and additional categories stay explicitly enumerated."
+
+[[next_task]]
+id = "research-and-declare-decisive-falsifiers"
+status = "pending"
+depends_on = ["expand-source-traced-family-frontier"]
+acceptance = "Chosen family has primary-source search receipts, matched controls, outcome rules and a frozen protocol before new inference."
+
+[[next_task]]
+id = "adjudicate-and-test-successor-results"
+status = "pending"
+depends_on = ["research-and-declare-decisive-falsifiers"]
+acceptance = "Original evidence and failures remain retained; new explanations are distinguished from independently tested successor results."
+
+[[next_task]]
+id = "validate-integrate-and-refresh-dependents"
+status = "pending"
+depends_on = ["adjudicate-and-test-successor-results"]
+acceptance = "Canonical changes, generated outputs, numerical/source tests, independent review and required publication gates agree; downstream review candidates are recomputed."

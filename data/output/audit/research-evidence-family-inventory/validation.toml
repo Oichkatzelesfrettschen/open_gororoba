@@ -1,0 +1,14 @@
+schema_version = 1
+validation_scope = "Inventory and handoff artifacts; scientific auditing and schema changes remain pending"
+toml_files_checked = 4
+json_files_checked = 7
+candidate_families = 12
+unique_seed_claim_ids_verified = 236
+unique_seed_insight_ids_verified = 104
+linked_experiment_ids = 84
+input_anchors_verified = 22
+read_only_query_replay = "inventory-queries.sql executes successfully with sqlite3 -readonly"
+database_sha256_before_and_after = "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8"
+primary_checkout = "main at d59c8fa086614dc248eeb22f5406cb8205c75464; git status --porcelain is empty"
+scientific_execution = "Zero canonical mutations, scientific source edits, model fits or new physical inference runs"
+checks = ["taplo check for the handoff, family list, methodology receipts and validation TOMLs", "jq parsing for seven inventory JSON files", "Every seeded claim/insight ID resolves in the canonical snapshot", "Experiment associations are drawn from canonical claim_experiment_refs", "All 22 unique source anchors exist", "Database SHA256 agrees before and after the inventory", "git diff --cached --check"]
