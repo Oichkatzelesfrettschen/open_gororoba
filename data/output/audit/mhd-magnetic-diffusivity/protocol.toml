@@ -1,0 +1,23 @@
+schema_version = 1
+family_claims = ["C-1685", "C-1145"]
+evidence_layer = "implementation_conformance"
+retained_revision = "7600232336836c0cdb608905342517bcd22a7c02"
+coefficient_identity = "The implemented eta multiplies the seven-point Laplacian on unit-spacing lattice cells. It is magnetic diffusivity eta_m, not electrical resistivity eta_e. In SI, eta_m=eta_e/mu0 has m2/s units; eta_lattice=eta_m*dt_LBM/dx2."
+implemented_operator = "Forward Euler: B_next=B+dt_mhd*(centered_curl(u cross B)+eta_lattice*seven_point_Laplacian(B)); optional algebraic divergence damping follows. The continuum replacement of minus curl curl by Laplacian requires divergence-free B; distinct discrete stencils remain explicit."
+transport_admission = "Require positive nonoverflowing grid dimensions, matching finite B/psi/u arrays, finite nonnegative magnetic diffusivity and cleaning coefficient, finite positive timestep and permeability. Mutable configuration is checked at each update; invalid or nonfinite prospective output rejects before committing fields."
+diffusion_gate = "For the finite periodic grid, Smax=sum_j sin(pi*floor(Nj/2)/Nj)^2. Admit computed eta_lattice*dt_mhd*Smax <= 1/2. The condition bounds the isolated seven-point diffusion Euler amplification; it does not establish full induction or coupled-flow stability."
+si_admission = "Finite nonnegative SI diffusivity converts once through admitted LatticeUnits. Reject nonzero conversion underflow, nonfinite conversion, and SI CLI requests without admitted IC unit metadata. The legacy eta flag remains an explicit alias for lattice diffusivity."
+mode_amplification = "At u=0 and cleaning=0, a Fourier mode with lattice wavevector k evolves by g=1-4*eta_lattice*dt_mhd*sum_j sin(k_j/2)^2; after m steps, amplitude is g^m and magnetic energy is E0*g^(2m)."
+mode_shapes = [[16,4,3],[8,8,8],[16,1,1]]
+mode_steps = [1,2,8,32]
+mode_tolerance = 0.000000000001
+zero_diffusivity = "At u=0 and cleaning=0, B remains unchanged; retain any ordinary floating evaluation effect separately."
+nyquist_control = "Use a nonzero cosine checkerboard, not sin(pi*x) sampled at integers. A transverse vector on the three-axis checkerboard witnesses g=1-12*eta*dt; eta*dt=0.2 has energy multiplier1.96 and must fail diffusion admission."
+advection_omission_control = "For eta=0, cleaning=0, uniform u_x and transverse B_y Fourier mode, the retained centered forward-Euler induction has energy multiplier1+(u_x*dt_mhd*sin(k_x))^2. Growth despite diffusion admission proves the gate cannot certify full induction stability."
+legacy_behavior = "Freeze the retained update body and compare all B/psi bits on admitted finite configurations, including nonzero velocity and cleaning. Historical negative/NaN eta silently skips diffusion; retain that control separately from corrected admission."
+invalid_state_control = "Snapshot all B/psi components before invalid configuration, shape, nonfinite input or prospective overflow. Rejection retains identical component bit patterns."
+fitted_parameter_count = 0
+verification_outcome = "Fourier amplitude and energy match independent formulas within1e-12; source-unit conversion and rejection predicates pass; admitted retained-update states agree bitwise."
+revision_outcome = "A failed mode or unit oracle requires repairing the instrument before a coupled force bound. Retain the original discrepancy and threshold."
+abandonment_outcome = "An unstable diffusion step, wrong unit, ambiguous SI intake or invalid state passes admission, or a rejected update changes B/psi bits: abandon the corresponding conformance predicate."
+inconclusive_outcome = "Pure diffusion agreement does not establish full centered-induction, cleaning, boundary, coupled LBM/MHD stability or physical force sensitivity. Actual spacecraft fields, gravitational frame and physical outflow remain separate prerequisites."

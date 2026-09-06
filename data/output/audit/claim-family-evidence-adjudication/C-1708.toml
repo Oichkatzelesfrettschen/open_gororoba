@@ -1,0 +1,25 @@
+claim_id = "C-1708"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Receipt syntax and byte identity checks have computational scope."
+fixed_hyperparameters = ["SHA256 encodes exactly 64 hexadecimal characters", "Compressed archive, extracted TeX and PDF are separate byte objects", "Retain original malformed and mislabeled fields"]
+[[intervening_maps]]
+branch = "receipt_identity"
+name = "exact_byte_hash_and_field_classification"
+kind = "computational"
+description = "Compare declared source fields to the exact independently retained archive, extracted TeX and PDF hashes; classify malformed digest length separately from wrong byte-object identity."
+[[fitted_parameters]]
+branch = "receipt_identity"
+count = 0
+names = []
+training_boundary = "Exact deterministic byte identity; zero fitted parameters."
+[decisive_experiment]
+experiment_ids = ["E-289"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/optics-adjudication.toml"
+description = "Replay the Ruan-Fan source receipt integration tests for the finite admitted source objects."
+[what_would_verify_refute]
+verification_outcomes = ["The historical TeX field has 61 characters, while the independently retained archive and extracted TeX have distinct valid digests; all admitted source hashes reproduce."]
+revision_outcomes = ["Corrected producer metadata identifies each exact object: retain historical defects and bind the corrected producer separately."]
+abandonment_outcomes = ["A faithful byte-level replay contradicts the recorded malformed length or artifact identity."]
+inconclusive_outcomes = ["Missing source bytes or undeclared receipt targets block identity admission.", "A repository-wide receipt assertion remains unadmitted until every receipt and target belongs to an explicit finite manifest."]

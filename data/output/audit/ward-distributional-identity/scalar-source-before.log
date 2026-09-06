@@ -1,0 +1,21 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 3.25s
+     Running tests/ward_source_scope.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_source_scope-60858c86059d693d)
+
+running 1 test
+counterterm loop=Spinor mass=0.8 source_relative_error=2.21865383216254413e-13 wrong_measure_relative_error=1.20666022709121121e-1 omitted_norm=5.71532993224750413e-4
+counterterm loop=Scalar mass=0.8 source_relative_error=2.99999999999955591e0 wrong_measure_relative_error=2.87933397729021312e0 omitted_norm=1.42883248306187603e-4
+
+thread 'rescaled_counterterm_matches_source_measure' (413372) panicked at crates/gr_core/tests/ward_source_scope.rs:358:13:
+rescaled source counterterm differs
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test rescaled_counterterm_matches_source_measure ... FAILED
+
+failures:
+
+failures:
+    rescaled_counterterm_matches_source_measure
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.03s
+
+error: test failed, to rerun pass `-p gr_core --test ward_source_scope`

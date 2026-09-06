@@ -1,0 +1,5 @@
+claim_id = "C-1684"
+expected_statement = "The LBM driver does not conserve mass: total mass rose from 131178.947368 to 239325.927107 over 500 steps, 82 percent, because the Zou-He inlet is an open mass source, so the 1e-10 bound applies only to the closed-box unit test."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+statement = "The retained 500-step driver run increases total mass from 131178.947368 to 239325.927107, about 82 percent. The historical driver combines periodic streaming with inlet overwrites and passes AoSoA populations to an AoS boundary routine. A face-flux ledger is required to distinguish boundary transport from numerical mass error; the closed-box 1e-10 fixture does not adjudicate that open-driver run. The layout-aware inlet repair has separate bounded sentinel tests, while physical outflow and mass-balance admission remain unresolved."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml; historical source at git revision 81a4ca6e; data/output/audit/claim-family-evidence-adjudication/dm-dimensional-admission-and-sensitivity.toml"

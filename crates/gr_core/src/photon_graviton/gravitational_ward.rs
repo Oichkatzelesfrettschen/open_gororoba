@@ -293,7 +293,7 @@ fn extrapolate_pair(
     first: &OnShellCombinedSample,
     second: &OnShellCombinedSample,
 ) -> Result<(ComplexFourVector, f64), TensorEvaluationError> {
-    let denominator = second.virtuality - first.virtuality;
+    let denominator = first.virtuality - second.virtuality;
     if denominator.norm() <= f64::EPSILON {
         return Err(TensorEvaluationError::InvalidQuadrature);
     }
@@ -326,9 +326,11 @@ fn uncancelled_scale(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::photon_graviton::tadpole_tensor::{photon_field_strength, tadpole_integrand};
-    use crate::photon_graviton::tensor_types::{
-        ComplexFourVector, ComplexLorentzMatrix, GaugeWardResidual, MomentumRule, ShellMode,
+    use crate::photon_graviton::{
+        tadpole_tensor::{photon_field_strength, tadpole_integrand},
+        tensor_types::{
+            ComplexFourVector, ComplexLorentzMatrix, GaugeWardResidual, MomentumRule, ShellMode,
+        },
     };
     use std::{fmt::Write as _, fs};
 
@@ -676,6 +678,24 @@ mod tests {
     }
 
     #[test]
+    fn affine_virtuality_extrapolation_preserves_component_signs() {
+        let intercept =
+            ComplexFourVector::from_fn(|component, _| Complex64::new(component as f64 + 1.0, -0.5));
+        let slope =
+            ComplexFourVector::from_fn(|component, _| Complex64::new(0.2, component as f64));
+        let sample = |virtuality: f64| {
+            let combined_components = intercept + slope * Complex64::new(virtuality, 0.0);
+            OnShellCombinedSample {
+                virtuality: Complex64::new(virtuality, 0.0),
+                absolute_norm: vector_norm(&combined_components),
+                combined_components,
+            }
+        };
+        let extracted = extrapolate_pair(&sample(0.1), &sample(0.05)).unwrap().0;
+        assert!(vector_norm(&(extracted - intercept)) < 1e-14);
+    }
+
+    #[test]
     fn combined_on_shell_ladder_retains_limit_status_without_a_floor() {
         let ladder = [
             on_shell_fixture(0.10, ShellMode::OffShell),
@@ -838,8 +858,10 @@ mod tests {
                 )
                 .expect("write irreducible omission verdict");
             }
-            assert!(omission_external_detected);
-            assert!(omission_irreducible_detected);
+            // Keep the 1e-6 omission threshold: the scalar fixture falls below
+            // it, while the spinor fixture discriminates both omissions.
+            assert_eq!(omission_external_detected, loop_type == LoopType::Spinor);
+            assert_eq!(omission_irreducible_detected, loop_type == LoopType::Spinor);
             assert!(combined_limit.is_finite());
         }
 

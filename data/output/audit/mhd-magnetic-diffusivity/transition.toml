@@ -1,0 +1,26 @@
+[transition]
+transition_timestamp = "2026-09-06T00:04:49Z"
+transition_key = "mhd-diffusivity-admission-conformance"
+source_claim_id = "C-1685"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-MHD-DIFFUSIVITY"]
+experiment_ids = ["E-312"]
+exercised_falsifier = "Independent periodic Fourier amplitude and energy, invalid-state atomicity, SI conversion and retained arithmetic comparisons adjudicate the diffusivity instrument. The centered-induction omission control separately fails energy stability."
+proposed_claim_status = "Provisional"
+rationale = "Preserve the parent magnetic-normalization investigation and split bounded transport conformance from physical force interpretation and full-induction stability."
+unresolved_assumptions = ["Centered forward-Euler induction exhibits Fourier energy growth even when diffusion admission passes.", "Physical spacecraft fields, gravitational frame, magnetic boundary conditions, outflow and force sensitivity require separate admission."]
+actor = "claim-evidence-adjudication"
+reason = "Register numerical diffusivity conformance while retaining the failed induction-stability predicate"
+expected_source_state_sha256 = "1558c01864ce3179826cd418b0eec0a1f0530160999a7c7e1a831496b167a9b2"
+expected_claim_id_max = 1751
+
+[[successor]]
+proposal_key = "mhd-diffusivity-instrument"
+statement = "The magnetic diffusivity instrument in lbm_3d::mhd passes 24 periodic Fourier amplitude/energy comparisons against independent seven-point stencil formulas within the unchanged 1e-12 gates, 5760 retained B/psi component bit comparisons, SI conversion fixtures and rejected-update atomicity controls. The computed finite-grid admission bound applies only to isolated periodic diffusion. The separate centered forward-Euler induction control fails energy stability with measured multiplier 1.00146446609406747. Synthetic zero-B, no-DM CLI runs establish unit intake and alias parity only; physical force sensitivity remains unresolved."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-312; producer.json binds source hashes; crates/lbm_3d/tests/mhd_diffusivity_identity.rs and retained CLI receipt bind the executed boundaries."
+required_falsifier = "An independent declared diffusion oracle exceeds 1e-12, an invalid update changes B/psi bits, an unstable diffusion coefficient passes admission, or the declared SI conversion fails."
+where_stated = ["data/output/audit/mhd-magnetic-diffusivity/adjudication.toml", "crates/lbm_3d/tests/mhd_diffusivity_identity.rs"]
+evidence_artifact_ids = ["LOCAL-MHD-DIFFUSIVITY"]
+predecessor_relation_kind = "implementation_split"

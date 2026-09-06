@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-304"
+title = "Distributional photon-graviton source identity and finite Ward predicates"
+status = "active"
+binary = "cargo-test:gr_core:ward_distributional_identity"
+claims = ["C-1635", "C-1637", "C-1666"]
+claim_refs = ["C-1635", "C-1637", "C-1666"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Source arXiv:2601.23279v1 Eqs.4.3-4.11 and Appendix B, retained TeX archive, and scalar gr-qc/0412095v2 Eqs.3.3-3.11 at xi_bar=0. Three fixed proper times, independently transcribed tensor components, periodic delta and signed endpoint controls; retained integrated/transverse/UV fixtures."
+input_path_refs = ["data/output/audit/ward-distributional-identity/adjudication.toml", "data/output/audit/ward-distributional-identity/source.tex", "data/output/audit/ward-residual-scope/source.pdf", "data/output/audit/ward-residual-scope/scalar-source.pdf"]
+method = "Independently compare unreduced orbital/fermion source tensors and analytic contact distributions with production Eq.4.11; omit B.4/B.36 and endpoint contributions separately. Derive the scalar momentum/counterterm mapping, test the small-field branch and source UV coefficients, and retain each original integrated gate."
+run = "cargo test -p gr_core --test ward_distributional_identity --test ward_source_scope --test ward_independent_residuals --profile validation --offline -- --nocapture"
+output = ["data/output/audit/ward-distributional-identity/adjudication.toml"]
+output_path_refs = ["data/output/audit/ward-distributional-identity/adjudication.toml", "data/output/audit/ward-distributional-identity/full-before.log", "data/output/audit/ward-distributional-identity/scalar-source-before.log", "data/output/audit/ward-distributional-identity/final-tests.log", "data/output/audit/ward-distributional-identity/final-integrated.toml"]
+status_note = "Six fixed-time corrected source comparisons meet the 1e-10 tensor gate; complete spinor gauge contraction is at most 3.46513e-14. Both source-contact omissions fail the independent tensor comparison, although B.36 omission preserves gauge transversality. Corrected integrated scalar/spinor gauge, off-shell and declared transverse predicates pass. The original normalized full-vector gate and scalar 1e-6 omission criterion remain failed. Eight integration and 204 unit tests pass as scoped predicates; universal identities and certified quadrature/Taylor/interpolation remainders remain unassessed. E-301 source and failure receipts remain retained."

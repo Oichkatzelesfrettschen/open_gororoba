@@ -1,0 +1,18 @@
+schema_version = 1
+claims = ["C-1710", "C-1713"]
+experiment = "E-309"
+source = "arXiv2212.01324v1 Eqs9,12,17 and footnote60; source-identity.toml binds exact bytes and visual checks"
+contradiction = "The source v2 relation uses directional-path eccentricity. The historical optical input computes centered second moments, and avg_path_length computes a collision-weighted radial distance. The retained cumulant table has a third, unresolved estimator identity."
+implementation = "qgp_scaling::directional_path::TransverseDensityGrid::directional_moments accumulates cell-center production weights and exact piecewise-constant medium segment integrals. path_eccentricity forms the two-axis ratio. qgp_scaling::glauber::directional_density_grid samples a declared hard-sphere optical model at fixed impact parameter."
+units = "rho_coll and rho_part in fm^-2, joint denominator in fm^-1, first-distance numerator dimensionless, L in fm, eccentricity dimensionless."
+convention = "Positive rays from each origin, zero exterior density, midpoint production sampling. Eq9 leaves ray bounds implicit; signed-ray equivalence requires inversion symmetry."
+result = "Six independent integration tests and three module tests pass. Rectangle factor-two/global-normalization, unequal density weights, independent density rescalings, coordinate scaling, reflection, axis exchange, disjoint forward support and all-cell ray intersections distinguish failures."
+rectangle_result = "Uniform1-by2 fm half-widths give path eccentricity1/3 and moment eccentricity3/5. The declared finite-cell length correction agrees within1e-12 fm and the continuous rectangle length error decreases by four on grid doubling."
+grid_results = "fixed-impact-grid-results.csv retains all six fixed-b/grid observations and both raw directional moments."
+head_on_256 = "Lx6.75489120759569861 fm; Ly6.75489120759563733 fm; e=-4.54e-15"
+impact_8fm_256 = "Lx2.90449267837468339 fm; Ly5.08923303456734555 fm; e0.27330689526355856"
+finest_grid_sensitivity = "At b8 fm the128-to256 eccentricity change is0.00096778224556776, inside the predeclared0.001 gate; relative length changes pass0.005. Retain the coarser rows and the small gate margin. Successive-grid differences are sensitivity measurements, rather than a certified asymptotic bound."
+historical_preservation = "historical-source-preservation.json verifies identical noncomment bytes for preexisting glauber.rs after excluding the new sampler, and for v2_relation.rs. Historical APIs and numerical callers retain their original inputs; CLI text labels the estimator comparison as historical sensitivity."
+review_repair = "Independent review found missing individually scaled-density, axis-exchange and disjoint-forward-support controls. The final six-test suite adds those predicates and preserves the earlier five-test log."
+physical_boundary = "Centrality selection, event weights, field averaging and ratio ordering remain unresolved. E-309 supplies fixed-field numerical conformance; it does not replace the geometry in a source physical fit or authenticate the historical epsilon2 rows."
+downstream_boundary = "C-1710 source scaling additionally requires a source-compatible angular and centrality path prescription; retained radial distance and moment eccentricity do not supply that map. Quenching-weight, pp calibration and covariance prerequisites remain in force."

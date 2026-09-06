@@ -1,0 +1,5 @@
+claim_id = "C-1685"
+expected_statement = "The reported ratio of dark-matter to Lorentz force scales exactly as b_scale^-2, so the exponent in the order 1e-12 null result is set by the lattice magnetic normalisation and not by heliospheric physics."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+statement = "At source revision 81a4ca6e, The reported ratio of dark-matter to Lorentz force scales exactly as b_scale^-2, so the exponent in the order 1e-12 null result is set by the lattice magnetic normalisation and not by heliospheric physics."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml; historical source at git revision 81a4ca6e; data/output/audit/claim-family-evidence-adjudication/dm-dimensional-admission-and-sensitivity.toml"

@@ -1,0 +1,41 @@
+--2026-09-05 18:08:14--  https://api.github.com/repos/hpoppenb/BashPhox/git/trees/499d004f514e721b0aa4d0347ee5e004fc01fa29?recursive=1
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving api.github.com (api.github.com)... 20.29.134.17
+Connecting to api.github.com (api.github.com)|20.29.134.17|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Date: Sun, 06 Sep 2026 01:08:15 GMT
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=86400, s-maxage=86400
+  Vary: Accept,Accept-Encoding, Accept, X-Requested-With
+  ETag: W/"595c27981bcac72f774de42f009599c73681a06a374992111a4c42eb8e8550a7"
+  Last-Modified: Mon, 19 Sep 2022 06:02:06 GMT
+  X-GitHub-Media-Type: github.v3; format=json
+  x-github-api-version-selected: 2022-11-28
+  Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning
+  Access-Control-Allow-Origin: *
+  Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+  X-Frame-Options: deny
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 0
+  Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'none'
+  Server: github.com
+  Accept-Ranges: bytes
+  X-RateLimit-Limit: 60
+  X-RateLimit-Remaining: 56
+  X-RateLimit-Used: 4
+  X-RateLimit-Resource: core
+  X-RateLimit-Reset: 1788660493
+  Transfer-Encoding: chunked
+  X-GitHub-Request-Id: 9F9A:16E9A4:694CC8:9CAB21:6A9CBCFE
+  x-github-edge-region: westus2
+Length: unspecified [application/json]
+Saving to: ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-tree.json’
+
+     0K .......... .......... .......... .......... ..........  565K
+    50K .......... .......... .......... .......... .......... 1.13M
+   100K .......... .......... .......... ...                   32.1M=0.1s
+
+2026-09-05 18:08:15 (1010 KB/s) - ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-tree.json’ saved [137183]
+

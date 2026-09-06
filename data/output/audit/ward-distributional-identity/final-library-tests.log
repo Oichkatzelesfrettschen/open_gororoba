@@ -1,0 +1,229 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 6.62s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/gr_core-943b1a45853b3f3f)
+
+running 204 tests
+test photon_graviton::benchmarks::tests::bench_bernoulli_odd_vanish ... ok
+test photon_graviton::benchmarks::tests::bench_decoherence_length_formula ... ok
+test photon_graviton::benchmarks::tests::bench_birefringence_consistency ... ok
+test photon_graviton::benchmarks::tests::bench_bernoulli_textbook_values ... ok
+test photon_graviton::benchmarks::tests::bench_decoherence_length_si_lab_field ... ok
+test photon_graviton::benchmarks::tests::bench_eh_scalar_f2_coefficient ... ok
+test photon_graviton::benchmarks::tests::bench_eh_spinor_f2_coefficient ... ok
+test photon_graviton::benchmarks::tests::bench_eh_spinor_to_scalar_ratio ... ok
+test photon_graviton::benchmarks::tests::bench_gertsenshtein_scaling_matches_tree ... ok
+test photon_graviton::benchmarks::tests::bench_high_energy_greens_functions ... ok
+test photon_graviton::benchmarks::tests::bench_high_energy_tree_level ... ok
+test photon_graviton::benchmarks::tests::bench_hurwitz_riemann_zeta_2 ... ok
+test photon_graviton::benchmarks::tests::bench_hurwitz_zeta_2_half ... ok
+test photon_graviton::benchmarks::tests::bench_hurwitz_zeta_4 ... ok
+test photon_graviton::benchmarks::tests::bench_irreducible_weak_field_dichroism_scalar ... ok
+test photon_graviton::benchmarks::tests::bench_irreducible_weak_field_dichroism_spinor ... ok
+test photon_graviton::benchmarks::tests::bench_n_par_plus_n_perp_correction ... ok
+test photon_graviton::benchmarks::tests::bench_strong_field_det_factors ... ok
+test photon_graviton::benchmarks::tests::bench_strong_field_greens_functions ... ok
+test photon_graviton::benchmarks::tests::bench_scalar_spinor_tadpole_ratio ... ok
+test photon_graviton::benchmarks::tests::bench_tadpole_no_dichroism ... ok
+test photon_graviton::benchmarks::tests::bench_strong_field_tadpole_increases ... ok
+test photon_graviton::benchmarks::tests::bench_tree_level_no_dichroism ... ok
+test photon_graviton::constants::tests::test_alpha_em ... ok
+test photon_graviton::benchmarks::tests::bench_tadpole_nonzero_for_nonzero_field ... ok
+test photon_graviton::constants::tests::test_cross_section_conversion ... ok
+test photon_graviton::constants::tests::test_b_cr_natural ... ok
+test photon_graviton::constants::tests::test_e_natural_squared ... ok
+test photon_graviton::constants::tests::test_ev_to_natural ... ok
+test photon_graviton::constants::tests::test_kappa_tiny ... ok
+test photon_graviton::constants::tests::test_tesla_to_natural ... ok
+test photon_graviton::external::tests::test_external_subdominant ... ok
+test photon_graviton::external::tests::test_external_zero_field ... ok
+test photon_graviton::external_tensor::tests::effective_vector_rejects_zero_virtuality_without_a_floor ... ok
+test photon_graviton::gertsenshtein::tests::test_birefringence_positive ... ok
+test photon_graviton::gertsenshtein::tests::test_birefringence_scales_as_b_squared ... ok
+test photon_graviton::gertsenshtein::tests::test_birefringence_si_pvlas_target ... ok
+test photon_graviton::gertsenshtein::tests::test_decoherence_length_decreases_with_field ... ok
+test photon_graviton::gertsenshtein::tests::test_decoherence_length_infinite_at_zero_field ... ok
+test photon_graviton::gertsenshtein::tests::test_decoherence_length_scales_as_b_minus_2 ... ok
+test photon_graviton::gertsenshtein::tests::test_dichroism_ratio_from_eh_is_4_over_7 ... ok
+test photon_graviton::gertsenshtein::tests::test_dlm_forward_scattering ... ok
+test photon_graviton::gertsenshtein::tests::test_dlm_incredibly_tiny ... ok
+test photon_graviton::gertsenshtein::tests::test_dlm_total_scales_as_omega_squared ... ok
+test photon_graviton::gertsenshtein::tests::test_eh_permeability_near_unity ... ok
+test photon_graviton::gertsenshtein::tests::test_eh_permittivity_near_unity ... ok
+test photon_graviton::gertsenshtein::tests::test_eh_scalar_coefficients ... ok
+test photon_graviton::gertsenshtein::tests::test_eh_spinor_dominates_scalar ... ok
+test photon_graviton::gertsenshtein::tests::test_eh_spinor_ratio_4_to_7 ... ok
+test photon_graviton::gertsenshtein::tests::test_gauss_to_natural ... ok
+test photon_graviton::gertsenshtein::tests::test_gertsenshtein_eh_reduces_to_vacuum ... ok
+test photon_graviton::gertsenshtein::tests::test_gertsenshtein_eh_suppressed_vs_vacuum ... ok
+test photon_graviton::gertsenshtein::tests::test_gertsenshtein_probability_bounded ... ok
+test photon_graviton::gertsenshtein::tests::test_gertsenshtein_probability_zero_distance ... ok
+test photon_graviton::gertsenshtein::tests::test_gertsenshtein_probability_zero_field ... ok
+test photon_graviton::gertsenshtein::tests::test_gertsenshtein_weak_mixing_quadratic ... ok
+test photon_graviton::gertsenshtein::tests::test_ns_conversion_tiny ... ok
+test photon_graviton::gertsenshtein::tests::test_phase_velocity_decreases_with_field ... ok
+test photon_graviton::gertsenshtein::tests::test_pvlas_qed_within_measurement_uncertainty ... ok
+test photon_graviton::gertsenshtein::tests::test_refractive_index_at_zero_field ... ok
+test photon_graviton::gertsenshtein::tests::test_refractive_index_dichroism_ratio ... ok
+test photon_graviton::gertsenshtein::tests::test_refractive_index_vanishes_parallel_propagation ... ok
+test photon_graviton::gertsenshtein::tests::test_resonance_plasma_freq_positive ... ok
+test photon_graviton::gravitational_ward::tests::affine_virtuality_extrapolation_preserves_component_signs ... ok
+test photon_graviton::external::tests::test_external_nonzero ... ok
+test photon_graviton::benchmarks::tests::bench_full_amplitude_irr_dominates ... ok
+test photon_graviton::benchmarks::tests::bench_scalar_spinor_irreducible_ratio ... ok
+test photon_graviton::benchmarks::tests::bench_strong_field_irreducible_finite ... ok
+test photon_graviton::gravitational_ward::tests::p1_final_grid ... okindependent loop=Scalar max_l2_difference=0.0000000000000000e0 reference_components=[Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.006347512037875452 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -3.998764692578628e-5 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 2.9990735194339377e-5 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.012120815864477275 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -3.998764692578628e-5 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 2.9990735194339377e-5 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.006245168312828016 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.012120815864477275 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.009090611898357956 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.009050590617972379 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.012120815864477275 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.012120815864477275 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.009090611898357956 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.011861051640020022 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.009050590617972379 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.011821030359634443 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }]
+
+independent loop=Spinor max_l2_difference=0.0000000000000000e0 reference_components=[Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.006581101892131023 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.01498695869783662 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -4.078887831034937e-5 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.007723337002782519 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.01498695869783662 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -4.078887831034937e-5 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.02330933010885442 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.007652621216873624 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.0207867048177491 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.020732115267736974 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.007723337002782519 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.007652621216873624 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.0207867048177491 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.018075196951695505 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: -0.020732115267736974 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.018115133057039823 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }]
+test photon_graviton::independent_falsifier::dense_source_reference_agrees_component_by_component ... ok
+test photon_graviton::irreducible::tests::audit_c820_on_shell_factor_hides_nonzero_integrand ... ok
+on_shell_tadpole loop=Scalar rank_one=[[Complex { re: 0.0, im: 0.000623980932153647 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: -0.000623980932153647, im: 0.0 }]] photon_contracted=0+0i absolute=0.0000000000000000e0 normalized=0.0000000000000000e0 passes=true
+test photon_graviton::external::tests::test_external_scales_with_field ... ok
+test photon_graviton::benchmarks::tests::bench_ward_identity_multiple_fields ... ok
+test photon_graviton::irreducible::tests::test_irreducible_nonzero ... ok
+test photon_graviton::irreducible::tests::test_irreducible_vanishes_zero_field ... ok
+test photon_graviton::irreducible::tests::test_irreducible_vanishes_parallel_propagation ... ok
+test photon_graviton::irreducible::tests::test_weak_field_dichroism_ratio ... ok
+test photon_graviton::irreducible_tensor::tests::each_j_mutation_changes_a_non_degenerate_fixture ... ok
+test photon_graviton::irreducible_tensor::tests::j_structures_retain_rank_and_symmetrization ... ok
+test photon_graviton::irreducible::tests::test_irreducible_scalar_nonzero ... ok
+test photon_graviton::irreducible_tensor::tests::scalar_path_uses_orbital_rank_three_terms ... ok
+on_shell_tadpole loop=Spinor rank_one=[[Complex { re: 0.0, im: 0.002496341498306896 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: -0.002496341498306896, im: 0.0 }]] photon_contracted=0+0i absolute=0.0000000000000000e0 normalized=0.0000000000000000e0 passes=true
+test photon_graviton::one_photon::tests::weak_field_exponent_has_the_source_zero_field_limit ... ok
+test photon_graviton::one_photon::tests::one_photon_coefficient_is_finite_away_from_zero_momentum ... ok
+test photon_graviton::gravitational_ward::tests::on_shell_tadpole_variation_retains_a_component_residual ... ok
+test photon_graviton::one_photon::tests::zero_momentum_retains_distributional_disposition ... ok
+test photon_graviton::irreducible::tests::test_irreducible_ward_identity ... ok
+test photon_graviton::quadrature::tests::test_double_integral_product ... ok
+test photon_graviton::quadrature::tests::test_estimate_error_convergence ... ok
+test photon_graviton::quadrature::tests::test_gl_integrate_complex_exp ... ok
+test photon_graviton::quadrature::tests::test_gl_integrate_polynomial ... ok
+test photon_graviton::quadrature::tests::test_gl_integrate_sine ... ok
+test photon_graviton::quadrature::tests::test_proper_time_integral_exponential ... ok
+test photon_graviton::quadrature::tests::test_quadrature_configs ... ok
+test photon_graviton::special_functions::tests::test_bernoulli_b12 ... ok
+test photon_graviton::special_functions::tests::test_bernoulli_known_values ... ok
+test photon_graviton::special_functions::tests::test_bernoulli_odd_vanish ... ok
+test photon_graviton::special_functions::tests::test_coth_minus_inv_one ... ok
+test photon_graviton::special_functions::tests::test_coth_minus_inv_zero ... ok
+test photon_graviton::special_functions::tests::test_det_factor_scalar_crossover ... ok
+test photon_graviton::special_functions::tests::test_det_factor_scalar_known ... ok
+test photon_graviton::special_functions::tests::test_det_factor_scalar_zero ... ok
+test photon_graviton::special_functions::tests::test_det_factor_spinor_crossover ... ok
+test photon_graviton::special_functions::tests::test_det_factor_spinor_known ... ok
+test photon_graviton::special_functions::tests::test_det_factor_spinor_zero ... ok
+test photon_graviton::special_functions::tests::test_gamma_integer ... ok
+test photon_graviton::special_functions::tests::test_hurwitz_zeta_half ... ok
+test photon_graviton::special_functions::tests::test_hurwitz_zeta_is_riemann ... ok
+test photon_graviton::special_functions::tests::test_hurwitz_zeta_s4 ... ok
+test photon_graviton::special_functions::tests::test_hurwitz_zeta_shifted ... ok
+test photon_graviton::tadpole::tests::test_tadpole_bernoulli_nonzero ... ok
+test photon_graviton::tadpole::tests::test_tadpole_bernoulli_zero_field ... ok
+test photon_graviton::tadpole::tests::test_tadpole_hurwitz_nonzero ... ok
+test photon_graviton::tadpole::tests::test_tadpole_hurwitz_zero_field ... ok
+test photon_graviton::tadpole::tests::test_tadpole_nonzero ... ok
+test photon_graviton::tadpole::tests::test_tadpole_proper_time_vs_bernoulli ... ok
+test photon_graviton::tadpole::tests::test_tadpole_scalar_vs_spinor ... ok
+test photon_graviton::tadpole::tests::test_tadpole_vanishes_zero_field ... ok
+test photon_graviton::tadpole::tests::test_tadpole_scales_with_field ... ok
+test photon_graviton::tadpole_tensor::tests::epsilon_equals_k_gives_zero_field_strength ... ok
+test photon_graviton::tadpole_tensor::tests::tadpole_gauge_contraction_is_structural ... ok
+test photon_graviton::tadpole_tensor::tests::tadpole_node_retains_trace_inputs_and_rank ... ok
+test photon_graviton::tensor_types::tests::kinematics_accepts_declared_off_shell_virtuality ... ok
+test photon_graviton::tensor_types::tests::kinematics_rejects_non_antisymmetric_field ... ok
+test photon_graviton::tensor_types::tests::kinematics_rejects_nonsymmetric_graviton_polarization ... ok
+test photon_graviton::tensor_types::tests::kinematics_rejects_virtuality_mismatch ... ok
+test photon_graviton::tensor_types::tests::rank_three_contractions_preserve_shapes ... ok
+test photon_graviton::tensor_types::tests::residuals_retain_components_before_norms ... ok
+test photon_graviton::tensor_ward::tests::tadpole_gauge_residual_retains_a_zero_matrix_not_a_scalar ... ok
+test photon_graviton::tensor_ward::tests::wrong_contraction_momentum_changes_the_rank_two_residual ... ok
+test photon_graviton::tests::test_conversion_probability_tiny ... ok
+test photon_graviton::tests::test_gravitational_coupling_tiny ... ok
+test photon_graviton::irreducible::tests::test_irreducible_increases_with_field ... ok
+test photon_graviton::tests::test_mixing_amplitude_negligible ... ok
+test photon_graviton::tests::test_mixing_amplitude_scales_quadratically ... ok
+test photon_graviton::tests::test_mixing_amplitude_zero_field ... ok
+test photon_graviton::tests::test_magnetic_dichroism_basic ... ok
+test photon_graviton::tests::test_one_loop_all_channels ... ok
+test photon_graviton::tests::test_one_loop_amplitude_zero_field ... ok
+test photon_graviton::tests::test_schwinger_critical_field ... ok
+test photon_graviton::tests::test_one_loop_amplitude_structure ... ok
+test photon_graviton::tree_level::tests::test_gauge_ward_identity ... ok
+test photon_graviton::tree_level::tests::test_tree_level_amplitude_tiny ... ok
+test photon_graviton::tree_level::tests::test_tree_level_no_dichroism ... ok
+test photon_graviton::benchmarks::tests::bench_dichroism_within_physical_range ... ok
+test photon_graviton::tree_level::tests::test_tree_level_omega_scaling ... ok
+test photon_graviton::tree_level::tests::test_tree_level_scales_correctly ... ok
+test photon_graviton::tree_level::tests::test_tree_level_vanishes_at_zero_field ... ok
+test photon_graviton::tree_level::tests::test_tree_level_vanishes_parallel_propagation ... ok
+test photon_graviton::external_tensor::tests::external_tensor_is_finite_off_shell ... ok
+test photon_graviton::types::tests::test_all_channels_count ... ok
+test photon_graviton::types::tests::test_field_config_crossed ... ok
+test photon_graviton::types::tests::test_field_config_general ... ok
+test photon_graviton::types::tests::test_field_config_pure_electric ... ok
+test photon_graviton::types::tests::test_field_config_pure_magnetic ... ok
+test photon_graviton::types::tests::test_helicity_channel_decomposition ... ok
+test photon_graviton::types::tests::test_z_param ... ok
+test photon_graviton::vacuum_pol::tests::test_effective_polarization_vector ... ok
+test photon_graviton::tests::test_ward_identities_pass ... ok
+test photon_graviton::vacuum_pol::tests::test_vacuum_pol_zero_field ... ok
+test photon_graviton::vacuum_pol::tests::test_vacuum_pol_nonzero ... ok
+test photon_graviton::vacuum_pol_tensor::tests::renormalized_and_unrenormalized_paths_are_distinct ... ok
+test photon_graviton::vacuum_pol_tensor::tests::source_tensor_has_full_lorentz_components ... ok
+test photon_graviton::vacuum_pol_tensor::tests::transverse_subtraction_is_not_a_projector_guess ... ok
+test photon_graviton::vacuum_pol::tests::test_vacuum_pol_scalar_vs_spinor ... ok
+test photon_graviton::ward::tests::audit_c822_gravitational_gate_ignores_other_diagrams ... ok
+test photon_graviton::ward::tests::test_gauge_ward_external ... ok
+test photon_graviton::ward::tests::test_gauge_ward_irreducible ... ok
+test photon_graviton::ward::tests::test_gauge_ward_tadpole ... ok
+test photon_graviton::benchmarks::tests::bench_full_amplitude_decomposition_consistent ... ok
+test photon_graviton::vacuum_pol::tests::test_vacuum_pol_scales_with_field ... ok
+test photon_graviton::ward::tests::test_ward_zero_field ... ok
+test photon_graviton::ward::tests::test_full_ward_check ... ok
+test photon_graviton::worldline_greens::tests::test_ab12_dot_numerical ... ok
+test photon_graviton::worldline_greens::tests::test_ab12_free_field ... ok
+test photon_graviton::worldline_greens::tests::test_ab12_weak_field_agreement ... ok
+test photon_graviton::worldline_greens::tests::test_af12_free_field ... ok
+test photon_graviton::worldline_greens::tests::test_exp_factor_zero_field ... ok
+test photon_graviton::worldline_greens::tests::test_sb12_at_boundary ... ok
+test photon_graviton::worldline_greens::tests::test_sb12_dot_numerical ... ok
+test photon_graviton::worldline_greens::tests::test_sb12_free_field ... ok
+test photon_graviton::worldline_greens::tests::test_sb12_midpoint ... ok
+test photon_graviton::worldline_greens::tests::test_sb12_symmetry ... ok
+test photon_graviton::worldline_greens::tests::test_sb12_taylor_crossover ... ok
+test photon_graviton::worldline_greens::tests::test_sf12_even_symmetry ... ok
+test photon_graviton::worldline_greens::tests::test_sb12_weak_field_agreement ... ok
+test photon_graviton::worldline_greens::tests::test_sf12_free_field ... ok
+test photon_graviton::ward::tests::test_gravitational_ward ... ok
+test photon_graviton::worldline_tensor::tests::coincidence_limits_keep_contact_coefficients_explicit ... ok
+test photon_graviton::worldline_tensor::tests::derivatives_match_finite_difference_away_from_contacts ... ok
+test photon_graviton::worldline_tensor::tests::determinant_weak_field_limits_are_unity ... ok
+test photon_graviton::worldline_tensor::tests::field_sign_changes_the_antisymmetric_matrix_part ... ok
+test photon_graviton::worldline_tensor::tests::invalid_worldline_nodes_are_rejected ... ok
+test photon_graviton::worldline_tensor::tests::magnetic_rotation_has_the_source_plane_algebra ... ok
+test photon_graviton::worldline_tensor::tests::projectors_partition_the_euclidean_space ... ok
+test photon_graviton::worldline_tensor::tests::pure_magnetic_matrices_obey_u_symmetries ... ok
+test photon_graviton::worldline_tensor::tests::zero_field_limit_is_the_free_worldline ... ok
+off_shell loop=Scalar lhs=[[Complex { re: 0.0, im: 4.9866221214326635e-6 }, Complex { re: 0.0, im: -1.557894879239077e-5 }, Complex { re: 0.0, im: -3.7399665910745e-6 }, Complex { re: 0.0, im: 0.0 }]] one_photon=[[Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }]] two_photon=[[Complex { re: 0.0, im: 4.9866221214381624e-6 }, Complex { re: 0.0, im: -1.557894879241413e-5 }, Complex { re: 0.0, im: -3.73996659107862e-6 }, Complex { re: 0.0, im: 0.0 }]] rhs=[[Complex { re: 0.0, im: 4.9866221214381624e-6 }, Complex { re: 0.0, im: -1.557894879241413e-5 }, Complex { re: 0.0, im: -3.73996659107862e-6 }, Complex { re: 0.0, im: 0.0 }]] defect=[[Complex { re: 0.0, im: -5.498937893574918e-18 }, Complex { re: 0.0, im: 2.3361168685273603e-17 }, Complex { re: 0.0, im: 4.119968255444917e-18 }, Complex { re: 0.0, im: 0.0 }]] absolute=2.4350701401090607e-17 normalized=1.4512024583639910e-12
+test photon_graviton::gravitational_ward::tests::off_shell_comparison_retains_all_lower_point_components ... ok
+test photon_graviton::vacuum_pol_tensor::tests::tensor_vacuum_polarization_integrates_deterministically ... ok
+on_shell_combined loop=Scalar samples=[(Complex { re: 0.10000000000000009, im: 0.0 }, 1.8027028068792865e-15), (Complex { re: 0.050000000000000155, im: 0.0 }, 1.8753332713847663e-15), (Complex { re: 0.010000000000000009, im: 0.0 }, 1.9366934733493757e-15), (Complex { re: 0.0050000000000001155, im: 0.0 }, 1.9315092989325645e-15)] extrapolated=[[Complex { re: 0.0, im: 1.383536839781597e-15 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: -1.340721018363785e-15, im: 0.0 }]] extrapolated_norm=1.9265791019616281e-15 convergence=4.9045455377112733e-17 passes=false
+
+thread 'photon_graviton::gravitational_ward::tests::on_shell_omission_and_tadpole_trace_controls_break_the_invariant' (449141) panicked at crates/gr_core/src/photon_graviton/gravitational_ward.rs:863:13:
+assertion failed: !omission_external_detected
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test photon_graviton::gravitational_ward::tests::on_shell_omission_and_tadpole_trace_controls_break_the_invariant ... FAILED
+on_shell_combined loop=Spinor samples=[(Complex { re: 0.10000000000000009, im: 0.0 }, 3.608754401605996e-15), (Complex { re: 0.050000000000000155, im: 0.0 }, 3.74990908688215e-15), (Complex { re: 0.010000000000000009, im: 0.0 }, 3.852680151757937e-15), (Complex { re: 0.0050000000000001155, im: 0.0 }, 3.8683910774161906e-15)] extrapolated=[[Complex { re: 0.0, im: -2.7598366300618523e-15 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 0.0, im: 0.0 }, Complex { re: 2.733097493982928e-15, im: 0.0 }]] extrapolated_norm=3.8841369873173789e-15 convergence=1.5339619343655026e-17 passes=false
+test photon_graviton::gravitational_ward::tests::combined_on_shell_ladder_retains_limit_status_without_a_floor ... ok
+test photon_graviton::tensor_ward::tests::declared_integrated_mutations_change_the_rank_three_tensor ... ok
+test photon_graviton::tensor_ward::tests::scalar_integrated_gauge_residuals_pass_the_frozen_protocol ... ok
+test photon_graviton::tensor_ward::tests::spinor_irreducible_contact_preserves_gauge_transversality ... ok
+test photon_graviton::gravitational_ward::tests::p1_calibration_records_scalar_identity_conditioning ... ok
+
+failures:
+
+failures:
+    photon_graviton::gravitational_ward::tests::on_shell_omission_and_tadpole_trace_controls_break_the_invariant
+
+test result: FAILED. 203 passed; 1 failed; 0 ignored; 0 measured; 692 filtered out; finished in 1.62s
+
+error: test failed, to rerun pass `-p gr_core --lib`

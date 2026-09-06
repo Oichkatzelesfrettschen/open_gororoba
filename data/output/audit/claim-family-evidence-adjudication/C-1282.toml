@@ -1,0 +1,31 @@
+claim_id = "C-1282"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Declare exact common object IDs, 64 and 128 cubed grids, MRT collision matrix, boundaries, initial fields, physical duration, precision, density floor, Otsu bins, box sizes and fit procedure before execution. Preserve the stated 0.05 gate."]
+[[intervening_maps]]
+branch = "mrt_backend_equivalence"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Match CPU and GPU population observation times and convert their storage layouts before macroscopic comparison."
+[[intervening_maps]]
+branch = "mrt_backend_equivalence"
+name = "independent_predicate"
+kind = "computational"
+description = "For each admitted object and resolution retain CPU-minus-GPU D_f with identical initial conditions and analysis; list unavailable/failed runs separately from passing pairs."
+[[fitted_parameters]]
+branch = "mrt_backend_equivalence"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-163","E-164"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-163/E-164 as the recorded family binding, not evidence of completed replay. For each admitted object and resolution retain CPU-minus-GPU D_f with identical initial conditions and analysis; list unavailable/failed runs separately from passing pairs. E-163 and E-164 register GPU sweeps, not matching CPU arms; amend experiment identity first. Existing bounded BGK CUDA tests do not establish MRT galaxy equivalence."
+[what_would_verify_refute]
+verification_outcomes = ["Every enumerated admitted CPU/GPU MRT pair has absolute D_f difference at most 0.05 and independently passes evolving-field conformance and finite-state gates."]
+revision_outcomes = ["Any omitted/failed object narrows the all-galaxies denominator; distinguish numerical backend mismatch from threshold or fitting mismatch before registering a successor."]
+abandonment_outcomes = ["Any admitted pair exceeds 0.05, refuting the universal finite-corpus bound."]
+inconclusive_outcomes = ["E-163 and E-164 register GPU sweeps, not matching CPU arms; amend experiment identity first. Existing bounded BGK CUDA tests do not establish MRT galaxy equivalence."]

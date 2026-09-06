@@ -1,0 +1,28 @@
+schema_version = 1
+experiment = "E-311"
+executable = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/hepdata_pp_identity-55a58de6231e1c13"
+executable_sha256 = "11a9bce6b45b9a8a203118cb59578c28497abac62d5b6a5f563068e49afc8646"
+command = "cargo test -p data_core --profile validation --test hepdata_pp_identity -- --nocapture"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+test_result = "2 passed; 0 failed;390 lexical comparisons"
+test_log_sha256 = "88b9472ee44aa14a990c9cc470ee88fabd9c537c61a7b7173ed7be3935f8454f"
+
+[[source]]
+path = "crates/data_core/src/catalogs/hepdata_table.rs"
+sha256 = "b880f1081545d3b0fa78d0d5e553c493c824412020081eaf2d991dc64430ca72"
+
+[[source]]
+path = "crates/data_core/src/catalogs/mod.rs"
+sha256 = "8e8ecbbb3fbb7186321af697ad48589ca2df17e833a3a6bc6141aeae2014b07d"
+
+[[source]]
+path = "crates/data_core/tests/hepdata_pp_identity.rs"
+sha256 = "2fbf130da7521279777d50d33f6a030d00aacd8d2e74c1e4982e8274facba425"
+
+[[source]]
+path = "Cargo.lock"
+sha256 = "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e"
+
+[[source]]
+path = "rust-toolchain.toml"
+sha256 = "c0864e4045ce7847ebe68e13423671c7007fbbe77d8b10ad5f5bacb8a1601ab3"

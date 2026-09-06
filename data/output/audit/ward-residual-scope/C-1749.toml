@@ -1,0 +1,31 @@
+claim_id = "C-1749"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Finite source-expression conformance of the spinor counterterm measure; computational rescaling and numerical integration introduce no physical interpretation."
+fixed_hyperparameters = ["D=4, e=kappa=1, masses 0.8/1.3, source-bound off-shell fixture", "T=[0.125,4], n_u=24, n_t=96", "Independent A.13 tree components and 16384-interval Simpson integration", "Relative measure gate 1e-9, wrong-measure separation greater than 0.05, omitted-counterterm norm greater than 1e-5"]
+[[intervening_maps]]
+branch = "counterterm_measure"
+name = "source_rescaling"
+kind = "computational"
+description = "Source Eq. 4.9 rescaling to Eq. 4.10 changes the counterterm from T-squared under dT/T-cubed to a constant under dT/T."
+[[intervening_maps]]
+branch = "counterterm_measure"
+name = "independent_subtraction_oracle"
+kind = "computational"
+description = "Compare all tensor components of renormalized-minus-unrenormalized output with an independently assembled A.13 tree tensor times the spinor coefficient and Simpson integral."
+[[fitted_parameters]]
+branch = "counterterm_measure"
+count = 0
+names = []
+training_boundary = "The source fixes the spinor coefficient; the replay fits zero coefficients or scales. Scalar coefficient reconciliation remains outside this claim."
+[decisive_experiment]
+experiment_ids = ["E-301"]
+protocol_artifact = "data/output/audit/ward-residual-scope/counterterm-measure-protocol.toml"
+protocol_sha256 = "a45b23a4aac00e09b8fab228b30ee3313dac13a11d2cc17ac055a9b3f479392b"
+description = "Replay the two spinor mass fixtures against the source and implementation hashes in adjudication.toml. Preserve the pre-repair wrong-measure match. Scalar branch measurements condition on the inherited coefficient and establish only shared measure behavior."
+[what_would_verify_refute]
+verification_outcomes = ["Both spinor counterterm differences meet the 1e-9 relative source-measure gate while wrong-measure separation exceeds 0.05 and omitted-counterterm norms exceed 1e-5."]
+revision_outcomes = ["Changed subtraction coefficients, contact prescriptions, domains or conventions require separately retained source comparisons."]
+abandonment_outcomes = ["The same hash-bound spinor fixture violates the measure gate or its declared wrong-measure/omission controls cease to discriminate."]
+inconclusive_outcomes = ["Missing source or producer identity prevents replay.", "Counterterm measure conformance leaves spinor UV/contact completion, scalar source coefficient, complete Ward identities and certified numerical remainders unresolved."]

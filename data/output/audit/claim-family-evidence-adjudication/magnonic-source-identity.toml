@@ -1,0 +1,19 @@
+schema_version = 1
+source = "arXiv:2601.03210v2"
+source_path = "data/output/audit/claim-family-evidence-adjudication/kaman-magnonic-source.pdf"
+sha256 = "79148155cfb54d20b64c06b6826f0f4cc3bc79099d09beaf268db01c7815e56d"
+inspection = "PDF pages 6 and 7 rendered and visually checked against text extraction."
+energy_unit = "GHz"
+source_fitting_freedom = "Table I declares five fitted tight-binding parameters; Table II declares seven. Reusing those fitted values does not establish independent phenomenological agreement."
+reference_implementation = "crates/quantum_core/src/magnonic_crystal.rs::MagnonicTBParams::kaman_default"
+reference_values = [1.50, 1.80, 2.08, 0.25, 0.15]
+table_i_values = [1.69, 3.15, 3.17, -0.38, -0.63]
+table_ii_values = [1.93, 2.83, 3.28, -0.45, -0.49]
+table_ii_delta_s = 0.12
+table_ii_delta_p = 0.35
+parameter_order = ["epsilon_s", "epsilon_p", "epsilon_k", "t_sk", "t_pk"]
+source_delta_definition = "(epsilon_B-epsilon_A)/2"
+builder_delta_definition = "(epsilon_A-epsilon_B)/2"
+source_constructor_conversion = "Negate both Table II delta values; retain signed hopping transcription."
+unresolved = ["Orbital gauge and full hopping-geometry comparison", "Rectangular projected band structure matching Figures 5 and 6", "Micromagnetic source reproduction and damping-dependent quality factors", "Localized defect versus bulk-flat-band state classification and both domain-wall accounting"]
+frequency_unit_result = "Angular gamma=2*pi*28e9 and exchange coefficient gamma*2*A_ex/M_s pass independent field and k-squared slope tests. Additive effective field remains a declared repository model, separate from perpendicular-film source reproduction."

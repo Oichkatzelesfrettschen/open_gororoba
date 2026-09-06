@@ -1,0 +1,6 @@
+schema_version = 1
+source_review = "Codex family_contract_inventory agent independently checks Eq2, Sec3.1, Fig3, energy groups, measure and covariance scope."
+implementation_review = "Root reviews exact admission boundary; canonical_claim_content agent implements and tests the parser."
+resolved_findings = ["Independent axis header becomes mandatory, preventing GeV/TeV relabeling.", "Exact normalized-decimal bin ordering rejects overlaps hidden by binary64 rounding.", "Recursive JSON deserialization rejects duplicate object keys before Value construction.", "Complete provider comparison uses exact string equality instead of floating conversion."]
+validation_scope = "Six parser tests and two full-table tests; selected numerical strings, qualifier spans, source DOI, axis/observable units, energy groups, errors and ordering."
+physical_scope = "Global2.3percent normalization and unadmitted cross-bin covariance remain separate; proposed amplitude/slope fit is unexecuted."

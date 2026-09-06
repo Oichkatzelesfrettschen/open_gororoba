@@ -1,0 +1,7 @@
+source = "crates/qgp_scaling/src/quenching.rs"
+base_commit = "a0800278e8794d30bec3b22324d72992dd1e66dd"
+before_sha256 = "b8cef7a6dedb9931ae71e99b9be12d359b05a2f3e08821224e38b0da7afa32b0"
+after_sha256 = "284b4b5b58e4fb6064f55d3fe02cd565230c309d6f275c9c58ce87491a41290b"
+noncomment_sha256 = "53eb610780fe2ed7838be6456a247f13a30b01d9440db442ea9620b450a6b244"
+noncomment_bytes_identical = true
+method = "Remove full lines whose left-trimmed text begins with //; compare every remaining byte. The diff changes full-line documentation comments only."

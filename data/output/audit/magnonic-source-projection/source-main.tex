@@ -1,0 +1,484 @@
+%% ****** Start of file apstemplate.tex ****** %
+%%
+%%
+%%   This file is part of the APS files in the REVTeX 4.2 distribution.%%
+%%   Copyright (c) 2024 The American Physical Society.
+%%
+%%   See the REVTeX 4 README file for restrictions and more information.
+%%
+%
+% This is a template for producing manuscripts for use with REVTEX 4.2
+% Copy this file to another name and then work on that file.
+% That way, you always have this original template file to use.
+%
+% Group addresses by affiliation; use superscriptaddress for long
+% author lists, or if there are many overlapping affiliations.
+%  N.B. The groupedaddress option will reorder the author list based
+%  on the order in which affiliations appear. Please be sure to check the author 
+
+%  order. You can also use the unsortedaddress(?) option instead to prevent that
+%  behavior.
+% For Phys. Rev. appearance, change preprint to twocolumn.
+% Choose physrev, prl, or rmp for journal
+%  N.B. physrev is appropriate for all APS journals except prl and rmp
+%  Add 'draft' option to mark overfull boxes with black boxes
+%  Add 'showkeys' option to make keywords appear
+\documentclass[aps,prx,twocolumn,superscriptaddress,floatfix]{revtex4-2}
+%\documentclass[aps,physrev,preprint,superscriptaddress]{revtex4-2}
+%\documentclass[aps,prl,preprint,superscriptaddress]{revtex4-2}
+%\documentclass[aps,prl,reprint,groupedaddress]{revtex4-2}
+%\documentclass[aps,rmp,preprint,superscriptaddress]{revtex4-2}
+%\documentclass[aps,rmp,reprint,groupedaddress]{revtex4-2}
+
+% You should use BibTeX and apsrev.bst for references
+% Choosing a journal automatically selects the correct APS
+% BibTeX style file (bst file), so only uncomment the line
+% below if necessary.
+%\bibliographystyle{apsrev4-2}
+%\UseRawInputEncoding
+\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}
+\usepackage{soul}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage[english]{babel}
+\usepackage{xr}
+\externaldocument[Supp-]{SUPPLEMENTAL}
+
+\begin{document}
+%\addbibresource{references.bib}
+% Use the \preprint command to place your local institutional report
+% number in the upper righthand corner of the title page in preprint mode.
+% Multiple \preprint commands are allowed.
+% Use the 'preprintnumbers' class option to override journal defaults
+% to display numbers if necessary
+%\preprint{}
+
+\title{\textbf{Emulating 2D Materials with Magnons}}
+
+\author{Bobby Kaman}\email{Contact Author: kaman3@illinois.edu}
+\affiliation{Department of Materials Science and Engineering and Materials Research Laboratory, The Grainger College of Engineering, University of Illinois Urbana-Champaign,  Urbana, Illinois 61801, USA}
+\author{Jinho Lim}
+\affiliation{Department of Materials Science and Engineering and Materials Research Laboratory, The Grainger College of Engineering, University of Illinois Urbana-Champaign,  Urbana, Illinois 61801, USA}
+\author{Yingkai Liu}
+\affiliation{Department of Physics and Institute for Condensed Matter Theory, The Grainger College of Engineering, University of Illinois Urbana-Champaign, Urbana, Illinois 61801, USA}
+
+\author{Axel Hoffmann}\email{Contact Author: axelh@illinois.edu}
+\affiliation{Department of Materials Science and Engineering and Materials Research Laboratory, The Grainger College of Engineering, University of Illinois Urbana-Champaign,  Urbana, Illinois 61801, USA}
+
+% repeat the \author .. \affiliation  etc. as needed
+% \email, \thanks, \homepage, \altaffiliation all apply to the current
+% author. Explanatory text should go in the []'s, actual e-mail
+% address or url should go in the {}'s for \email and \homepage.
+% Please use the appropriate macro foreach each type of information
+
+% \affiliation command applies to all authors since the last
+% \affiliation command. The \affiliation command should follow the
+% other information
+% \affiliation can be followed by \email, \homepage, \thanks as well.
+
+%\email[]{Your e-mail address}
+%\homepage[]{Your web page}
+%\thanks{}
+%\altaffiliation{}
+
+%Collaboration name if desired (requires use of superscriptaddress
+%option in \documentclass). \noaffiliation is required (may also be
+%used with the \author command).
+%\collaboration can be followed by \email, \homepage, \thanks as well.
+%\collaboration{}
+%\noaffiliation
+
+\date{\today}
+
+\begin{abstract}
+Spin waves (magnons) in 2D materials have received increasing interest due to their unique states and potential for tunability. However, many interesting features of these systems, including Dirac points and topological states, occur at high frequencies, where experimental probes are limited. Here, we study a crystal formed by patterning a hexagonal array of holes in a perpendicularly magnetized thin film. Through simulation, we find that the magnonic band structure imitates that of graphene, but additionally has some kagome-like character and includes a few flat bands. Surprisingly, its nature can be understood using a 9-band tight-binding Hamiltonian. This clear analogy to 2D materials enables band-gap engineering in 2D, topological magnons along 1D phase boundaries, and spectrally isolated modes at 0D point defects. Interestingly, the 1D phase boundaries allow access to the valley degree of freedom through a magnonic analog of the quantum valley-Hall insulator. These approaches can be extended to other magnonic systems, but are potentially more general due to the simplicity of the model, which resembles existing results from electron, phonon, photon, and cold atom systems. This finding brings the physics of spin waves in 2D materials to more experimentally accessible scales, augments it, and outlines a few principles for controlling magnonic states.
+\end{abstract}
+
+% insert suggested keywords - APS authors don't need to do this
+%\keywords{}
+
+%\maketitle must follow title, authors, abstract, and keywords
+\maketitle
+
+% body of paper here - Use proper section commands
+% References should be done using the \cite, \ref, and \label commands
+
+
+\section{Introduction}
+The isolation of single layers of carbon in 2004 essentially gave birth to the experimental field of two-dimensional (2D) materials \cite{novoselov_electric_2004}, and immediately prompted further study of the quasi-relativistic nature of charge carriers in graphene \cite{katsnelson_chiral_2006, li_observation_2007, guinea_energy_2010}. The catalog of 2D materials grew to include a zoo of electronic phases, including semiconductors \cite{podzorov_high-mobility_2004} and insulators \cite{novoselov_two-dimensional_2005} at first, but later more exotic interacting phases \cite{ugeda_characterization_2016,cao_unconventional_2018,zeng_thermodynamic_2023}. Among the later species to join the zoo are 2D magnetic materials \cite{han_graphene_2014,huang_layer-dependent_2017,gong_discovery_2017}. For example, ferromagnetism resembling both Ising-like and XY spins can be found within the family of chromium halides \cite{liu_thickness-dependent_2019, bedoya-pinto_intrinsic_2021} and antiferromagnetism can be found in nickel halides \cite{ liu_vapor_2020,bikaljevic_noncollinear_2021}. However, much of this research goes beyond the equilibrium states of 2D magnets, and focuses also on novel magnetization dynamics. 
+
+In magnetically ordered solids, including 2D materials, the low-energy spin excitations are usually wave-like collective excitations called spin waves (whose quanta are magnons -- the terms will be used interchangably). Magnons are promising as charge-free information carriers for low-power computing devices in a field of study referred to as magnonics \cite{kruglyak_magnonics_2010, serga_yig_2010, chumak_magnon_2015}. Unique applications of magnons include signal guiding using broken time-reversal symmetry and inference tasks that exploit their inherent nonlinearities \cite{wang_inverse-design_2021, papp_nanoscale_2021, zenbaa_universal_2025, korber_pattern_2023}.
+Magnons in 2D and layered magnets bear similarities to their electronic counterparts and can host, for example, Dirac points \cite{schneeloch_gapless_2022}, topological gaps \cite{chen_topological_2018}, and flat bands \cite{riberolles_chiral_2024}. Although some properties of these states are attractive, their applications seem distant because of their high frequency (on the order of THz) and limited number of experimentally readily accessible probes.
+
+One strategy of controlling magnons is given by magnonic crystals, analogous to the more well-known photonic crystals \cite{krauss_two-dimensional_1996, joannopoulos_photonic_1997, nikitov_spin_2001}. By patterning a magnetic material into an artificial lattice, one may modify dispersion relations and open band gaps at the Brillouin zone (BZ) edges \cite{chumak_current-controlled_2009, wang_nanostructured_2010, tacchi_band_2011}. This is a powerful control scheme for magnon transport that may find application in next-generation microwave and information technologies \cite{chumak_magnonic_2017}. In this study, we outline a general strategy towards mapping between a few 2D materials and magnonic crystals supported by magnetization dynamics simulations and simple models. Understanding this mapping allows engineering of magnonic band structures using principles from 2D electronics. This brings some of the physics of 2D materials to more accessible frequency and length scales in a system that allows the addition of tailored defects and other spatial inhomogeneities.  Therefore we provide a simple experimentally feasible platform that allows to probe directly the emerging physics of 2D materials, while also providing a design strategy for functional devices at microwave frequencies.
+
+\section{Spin Dynamics Simulations}
+Phenomenologically, classical magnetization dynamics are described by the Landau-Lifshitz-Gilbert [LLG] equation \cite{landau_theory_1935, gilbert_phenomenological_2004}: 
+\begin{equation}
+    \partial_t\mathbf{M}=-\gamma\mu_0\mathbf{M}\times\mathbf{H}_{\text{eff}} + \dfrac{\alpha}
+{M_S}\left(\mathbf{M}\times\partial_t\mathbf{M}\right),
+\end{equation}
+where $\mathbf{M}$ is the magnetization with magnitude $M_S$, $\gamma$ is the gyromagnetic ratio, and $\mathbf{H}_{\text{eff}}$ is an \textit{effective} magnetic field having contributions from externally applied fields, the exchange interaction, crystalline anisotropies, the demagnetizing field, etc. This first term gives rise to the well-known precessional motion of the magnetization $\mathbf{M}$. $\alpha$, the contribution of Gilbert, is a phenomenological damping parameter that weakens precession over time. A magnetic material may be thought of as being composed of many volume elements, known as \textit{macrospins}, whose internal magnetization profiles are roughly uniform and who each individually follow this equation of motion. It is possible to perform simulations based on this principle, in which $\mathbf{H}_{\text{eff}}$ is calculated for each macrospin and time is evolved in steps. This approach to numerical simulations, referred to as 'micromagnetism,' \cite{brown_micromagnetics_1963} is rich in phenomena and is particularly helpful in studying magnetization switching, complex geometries and ground states, and nonlinear/soliton dynamics. Here, we use the GPU-accelerated micromagnetics program \textsc{MuMax}3 \cite{vansteenkiste_design_2014} to study spin waves. [Fig. \ref{fig:Geom}(a,b)]. We choose realistic material parameters of the prototypical magnonics material yttrium-iron garnet (YIG), which is widely used in magnonic devices due to its low dissipation. See SM sec. \ref{Supp-sec:S_Geometry} for details \cite{Supplemental}.
+
+\subsection{Geometry}
+Any periodic magnetic structure can be considered a magnonic crystal. However, geometries like arrays of disks face a disadvantage in being coupled only by the relatively weak magnetic dipole-dipole interaction. One approach is to embed magnetic components in a different magnetic matrix so the components may be loosely thought of as resonators coupled through spin waves in the matrix \cite{puszkarski_magnonic_2003, krawczyk_magnonic_2013, centala_compact_2023, yang_flatbands_2025}. Another approach uses the so-called "anti-dot" lattice, in which a continuous thin film is patterned with an array of holes \cite{neusser_anisotropic_2010, ulrichs_magnonic_2010, bali_high-symmetry_2012, gros_phase_2021, wang_observation_2023}. The anti-dot lattice is different because it cannot generally be thought of as a clear set of coupled resonators. For instance, a lattice with vanishingly small holes should approach the behavior of a pristine film. Note that similar geometries have been explored in the artificial spin ice community, mostly for their interesting ground states \cite{qi_direct_2008, gartside_realization_2018}.
+
+In general, a spin wave dispersion relation depends upon the magnetic ground state. Even for pristine thin films, the dispersion is anisotropic for an in-plane magnetization due to the dipole-dipole interaction \cite{stancil_magnetostatic_2009}. To emulate the isotropic dispersion that is natural for electrons in 2D, we choose an out-of-plane (OOP) ground state by applying an external field $B_{\text{ext}}|| \hat{ z}$ sufficient to saturate the thin film [Fig. \ref{fig:Geom}(c)].  Alternatively, one could also assume magnetic thin films that have perpendicular magnetic anisotropy. We choose anti-dot spacings of 100's of nm to balance experimental feasibility with large frequency band widths. Due to the rectangular shape of micromagnetic cells, it is tremendously convenient to work with a rectangular unit cell. We define a rectangular supercell containing two primitive cells [see Fig.~\ref{fig:Geom}(d)]. As a result, the BZ is halved and contains double the number of bands [Fig.~\ref{fig:Geom}(e)]. Note that special points in the hexagonal BZ ($\mathbf{K}$ and $\mathbf{K'}$, for instance) now fall inside the rectangular BZ, as shown in Fig.~\ref{fig:Geom}(f). These are technically new points, but we will refer to them as $\mathbf{K}$ and $\mathbf{K'}$ for simplicity.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{01_Figure_Geometry.png}
+    \caption{\label{fig:Geom}
+    Spin waves in (a) 1D and (b) 2D. Each arrow indicates a macrospin and its color indicates the direction of the in-plane magnetization and hence the phase of the precession. System geometry: (c) The hexagonal anti-dot lattice with a perpendicular field, leaving a film similar to a honeycomb lattice. (d) (shaded) our rectangular supercell, with orthogonal lattice vectors $333 \text{ nm } \times 589 \text{ nm}$, and (dashed) the typical unit cell of the hexagonal lattice. (e) Corresponding Brillouin zone (BZ) for the rectangular unit cell, with a few special points $\mathbf{X}$ and $\mathbf{Y}$ marked. (f) relationship between special points in the typical BZ (dashed, black letters), and their placement in the rectangular BZ (shaded, colored letters). 
+    }
+\end{figure}
+
+For numerical simulations, a rectangular unit cell tens of micromagnetic cells in width is tiled tens of times; these two sizes determine real-space and inverse-space resolution, respectively. The simulation contains only one micromagnetic cell in the $\hat{z}$-direction -- this is a good approximation for very thin films, in which the exchange interaction penalizes $\hat{z}$-direction texturing and standing waves (see supplemental Sec.~\ref{Supp-sec:S_Geometry} \cite{Supplemental}). A film thickness of $15\text{ nm}$ is chosen to ensure accuracy. After the structure is relaxed to its OOP equilibrium state with periodic boundary conditions in the $x$ and $y$ directions, excitation can be applied to probe the magnonic band structure. 
+
+\subsection{Excitation and analysis}
+An excitation meant to probe a band structure should couple to many wavevectors and frequencies -- in other words, it should resemble a $\delta(\mathbf{r},t)$-function. Therefore, within a small region, a radio frequency ({\em rf}) pulse is applied of the form $B_x(t)=B_0\frac{\text{sin}\left[2\pi f(t-t_0)\right]}{2\pi f(t-t_0)}$, whose spectrum contains all frequencies between $-f$ and $+f$. $B_0$ is chosen to be small ($ \approx 0.1 \text{ mT}$ or less) to make sure we stay in the linear regime. We time-evolve the system under the LLG equation and record the magnetization state $\mathbf{m}(t,x,y,z)$ as a unit vector. Precession about $\hat{z}$ is assumed, so the complex field:
+\begin{equation}
+    \Psi\equiv m_x+im_y
+\end{equation}
+ is a convenient representation that will be used frequently. This field can be interpreted as a wavefunction in some sense. Assuming circular precession and neglecting damping, eigenmodes (by definition) should keep their shape $|\Psi(\mathbf{r},t)|^2$ and time-evolve only by a phase:  $\partial_t \Psi(\mathbf{r},t)=i\omega \Psi(\mathbf{r},t)$ for a specific angular frequency $\omega=2\pi f$. To give a relevant example, the linearized Landau-Lifshitz equation, including an exchange interaction of strength $D_{\text{ex}}$ and an externally applied field $H_z(\mathbf{r})$ can be rewritten (see appendix \ref{sec:App_Schrodinger}) in a Schr{\"o}dinger-like form assuming a $\hat{z}$-polarized ground state\cite{landau_magnetism_nodate, herring_theory_1951, lim_ferromagnetic_2021}:
+\begin{equation}
+ \partial_t\Psi(\mathbf{r},t)=i\gamma  \mu_0\left(H(\mathbf{r})-D_{\text{ex}}\nabla^2\right) \Psi(\mathbf{r},t)
+\label{eq:Schrodinger-like}
+\end{equation}
+This equation is not used here \textit{except} to provide an intuitive interpretation of mode profiles as wavefunctions. In the simulations of this study, the dipole-dipole interaction is included, which, of course, deviates from this form. The $\Psi$ representation is not necesssary, but is convenient and will be enlightening in drawing parallels to electrons in real 2D materials.
+
+The time evolution of the magnetization after excitation is written in terms of $\Psi(\mathbf{r},t)$. Because it is a result of the excitation, we will refer to it as a response. Bloch's theorem can be used to extract the magnonic band structure from the response: the signal is folded into $\Psi(t,x,y,i,j)$ where $(i,j)$ are unit cell indices and $(x,y)$ label positions within the unit cell. Then, the signal is Fourier transformed along the $t$, $i$, and $j$ axes, resulting in the complex amplitude $\Psi(f,x,y,k_x,k_y)$ associated with frequency $f$ and crystal momentum $(k_x,k_y)$. This approach is similar to Ref.~\onlinecite{feilhauer_unidirectional_2023}. %The magnonic band structure can then be measured by the magnitude of the response $|\Psi(f,k_x,k_y)|$ after summing over the unit cell. Alternatively, for a given frequency and wavevector pair, the remaining information $\Psi(x,y)$ is the cell-periodic part of the response, i.e. resembles a Bloch function, and describes the form of spin wave modes in real space.
+%\section{Results and Discussion}
+\section{Magnonic band structures}
+Though our analysis methods are general, we focus mainly on the YIG hexagonal anti-dot lattice. A few magnonic band structures are plotted in Fig.~\ref{fig:Bands}. After summing over the unit cell $(x,y)$, the magnitude of the response $|\Psi(f,k_x,k_y)|$ is a function of frequency and wavevector, so it can displayed as a projection on the $f,k_x$ plane or plotted in 3D as volumetric information. 
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{02_Cellinset_series_3D.png}
+    \caption{The effect of hole diameter $d$ on YIG films with lattice parameter $a=333\text{ nm}$, thickness $t=15\text{ nm}$. Band structures are plotted as projections in the $(k_x,f)$ plane for: (a) $d/a=0.0$ (no holes; equivalent to the free spin wave spectrum), (b) $d/a=0.4$, and (c) $d/a=0.8$. Rectangular unit cells appear as insets. $B_{\text{ext}} ||\hat{z}$ is varied to keep the lowest-frequency mode constant. (d) a 3D volumetric plot of the projection in (c), more clearly showing the isotropic character of flat bands. The $d/a=0.8$ geometry is the main subject of this study. To be more precise, the plots are the magnitude of the response $|\Psi(f,x,y,k_x,k_y)|$ to a $\delta$-like excitation, displayed as projections on to only a few axes: $(k_x,f)$ for 2D, or $(k_x,k_y,f)$ for 3D.}
+    \label{fig:Bands}
+\end{figure}
+As expected, a continuous film [see Fig.~\ref{fig:Bands}(a)] has a magnonic band structure equivalent to the zone-folded representation of a free dispersion -- the "nearly-free-magnon." Small holes [see Fig.~\ref{fig:Bands}(b)] significantly change the dispersion but do not open spectral gaps. However, large holes open spectral gaps and bring about some curious features [see Figs.\ref{fig:Bands}(c) and (d)]: near $1.5\text{ GHz}$, the band structure resembles that of graphene. Near $2.5\text{ GHz}$, the band structure seems to have a second set of  Dirac points, and additionally has a few flat bands that meet dispersive bands at the $\mathbf{\Gamma}$ point. The nature of the transition between Fig.~\ref{fig:Bands}(b) and ~\ref{fig:Bands}(c) is not obvious; see supplemental Sec. \ref{Supp-sec:S_MoreBandStructures} \cite{Supplemental} for an expanded figure. 
+
+Because of its curious features, this third geometry appearing in Fig.~\ref{fig:Bands}(c) is the main subject of this study. Our primary goals are to:
+\begin{enumerate}
+\item Point out and understand the curious features which naturally occur in this anti-dot lattice
+\item Propose potential uses of its unique properties
+\item Use understanding from the field of 2D materials to engineer these excitations in ways not possible with natural van der Waals systems
+
+\end{enumerate}
+
+The isotropic flat bands of this system are particularly interesting. A truly flat band is one which has zero group velocity everywhere; its excitations are immobile. Fig.~\ref{fig:Flatband}  illustrates this immobility. A rectangular region is continuously excited at the first flat band frequency. In the non-flat cases [see Figs.~\ref{fig:Flatband}(a) and (b)], the power radiates away as usual. However, the flat band state cannot propagate and is instead excited to $\approx 1000\times$ the density of its counterparts [see Fig.~\ref{fig:Flatband}(c)]. This is a rare feature, making this system potentially useful in nonlinear magnonics experiments (magnon Bose-Einstein condensation, for instance, in which large magnon densities must be achieved) \cite{demokritov_boseeinstein_2006, tiberkevich_excitation_2019}. Outside magnonics, interactions in flat bands on the kagome lattice is a popular topic \cite{wang_quantum_2023} -- given the inherent nonlinearity of magnons, it is possible that this may provide a platform for an analog of interacting phases when this localized state is excited to large magnon number \cite{wu_flat_2007}.
+
+Interestingly, the reason behind localization here can be understood from existing principles in 2D materials. Figure~\ref{fig:Flatband}(d) is a zoomed-in version of Fig.~\ref{fig:Flatband}(c), plotted using a phase-sensitive scheme. This reveals that the excited mode closely resembles the famous localized electronic wavefunction of the kagome lattice, whose localization property can be understood as the result of destructive interference between neighboring sites \cite{rhim_singular_2021, chen_visualizing_2023, multer_imaging_2023}. This spin wave mode is also similar to localized spin excitations observed in the flat bands of layered kagome magnets, which can be understood by the same means \cite{chisnell_topological_2015, riberolles_chiral_2024}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{03_Flat_Powermap_Figure2_abcd.png}
+    \caption{Under periodic boundary conditions, a rectangular region (yellow) is continuously excited at the first flat band frequency of 2.08~GHz. Scaled profiles of $|\Psi|^2$ are plotted after 50~ns for the geometries corresponding to (a,b,c) in Fig.~\ref{fig:Bands}. The strong localization in (c) demonstrates the exceptional flatness of the band. Note the scale differences: the flat band mode is excited to $\approx1000 \times$ the density of its counterparts, making it potentially useful in easily reaching the nonlinear regime. (d) Zoomed-in plot of the mode in (c), with phase encoded in color. (left) Key for color plots and (right) the localized wavefunction of the kagome lattice, which this mode closely resembles. This is an example of how $\Psi$ can be useful to interpret as a wavefunction.}
+    \label{fig:Flatband}
+\end{figure}
+
+To understand the real nature of the excitations, $\Psi(x,y)$ can be examined at a few $(f,k_x,k_y)$ points. This cell-periodic part of the response can be interpreted as a Bloch function. The magnon band structure is plotted along a few paths in Fig.~\ref{fig:Bloch}(a), and some Bloch-like functions for $\mathbf{\Gamma}$-point modes are plotted in Fig.~\ref{fig:Bloch}(b). One finding is that the lowest set of bands is indeed graphene-like: this figure demonstrates the Dirac point more clearly, but perhaps more incriminating is the fact that $\mathbf{\Gamma}$-point modes $1$ and $2$ in Fig.~\ref{fig:Bloch}(b) are given by acoustic and optical modes of the honeycomb lattice. Actually, there exists a tiny gap at the Dirac point due to the dipole-dipole interaction, which is not easy to resolve (see supplemental Sec.~\ref{Supp-sec:S_DipoleGap} \cite{Supplemental}). This is interesting but will be the primary subject of another study; here, we focus on a simple picture of the band structure.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{04_0.8_185mT_bloch_functions.png}
+    \caption{(a) Magnonic band structure for $d/a=0.8$ and $B_{\text{ext}}=185\text{ mT}$ along a few paths in the rectangular BZ. (b) A few examples of Bloch function-like responses at the $\mathbf{\Gamma}$ point, and (c) their reconstructions using a small number of basis 'orbitals,' discussed in more detail in Sec.~\ref{sec:TB_Analysis}.  (right) Key for color plots of $\Psi$. The main finding is that the Bloch functions are simple, suggesting a tight-binding model.}
+    \label{fig:Bloch}
+\end{figure}
+
+The most important finding demonstrated by Fig. \ref{fig:Bloch} is that not just the graphene-like modes, but \textit{all} the $\mathbf{\Gamma}$-point modes may be understood with a simple set of basis functions (or "orbitals"). Figure~\ref{fig:Bloch}(c) is an illustration of reconstructions using this set of functions, which consists of: $(1)$ $s$-like spin wave modes on the honeycomb lattice, $(2)$ $p$-like modes on the honeycomb lattice, and $(3)$ $s$-like modes on the kagome lattice, for a total of 9 degrees of freedom per primitive unit cell, or 18 per rectangular cell. 1--2~GHz bands appear to be composed of $s$-like modes and 2--3.5~GHz bands of $p$-like modes -- we refer to these as $s$-bands and $p$-bands, respectively. A natural question is: If the Bloch functions can be reconstructed using these basis orbitals, can the band structure also be reproduced? The latter part of this study is dedicated to this type of understanding and the engineering it enables.
+
+
+\section{Tight-binding-like Analysis}\label{sec:TB_Analysis}
+Taking a step back, a simple Heisenberg spin chain under an externally applied magnetic field has the hamiltonian \cite{stancil_quantum_2009}
+\begin{equation}
+    \mathcal{H}=-2\dfrac{\mathcal{J}}{\hbar^2}\sum_{\langle ij\rangle}{\mathbf{S}_i \cdot \mathbf{S}_{j}}-\dfrac{g\mu_BB_0}{\hbar}\sum_i{S_{i}^z}
+\end{equation}
+for an externally applied field $B_0||\hat{z}$ and ferromagnetic exchange parameter $\mathcal{J}$ which couples neighboring spins $\langle ij\rangle$.
+    This can be rewritten using spin raising and lowering operators $S^{\pm}\equiv S_x\pm iS_y$. The Holstein-Primakoff (HP) transformation \cite{holstein_field_1940} can then be used to rewrite this problem with magnon operators, assuming total spin $s$ parallel to $\hat{z}$ and small magnon number:
+\begin{equation}
+\begin{split}
+    S^+_i&\approx\hbar\sqrt{2s}a_i \\
+    S^-_i&\approx\hbar\sqrt{2s}a_i^\dagger
+\end{split}
+\end{equation}
+\begin{equation}
+\begin{split}
+    \mathcal{H}=-2\mathcal{J}s\sum_{\langle ij\rangle}{\left( a_i^\dagger a_{j}+a_i a_{j}^\dagger-a_i^\dagger a_i-a_{j}^\dagger a_{j}+s \right)} \\
+    +g\mu_BB_0\sum_i{\left(s-a_i^\dagger a_i\right)}
+\end{split}
+\end{equation}
+Defining constants $t=-2\mathcal{J}s$, $\varepsilon=g\mu_BB_0+4\mathcal{J}s$, and keeping only terms with magnon operators, this can be rewritten as
+\begin{equation}
+    \mathcal{H}=t\sum_{\langle ij\rangle}{\left(a_i^\dagger a_j +a_i a_j^\dagger\right) }+\varepsilon \sum_i{a_i^\dagger a_i}
+\end{equation}
+This is the generic form of a tight-binding (TB) model for a 1D atomic chain, except that operators refer to magnons in the HP formalism. This suggests that TB models with appropriate parameters can generically describe exchange-only systems with ferromagnetic ground states. The interpretation is the same when these operators act on macrospins in nanostructures \cite{iacocca_reconfigurable_2016}. With this TB picture in mind, it is not a large stretch to expect that nonuniform spin wave modes may also be represented by operators in this model, as long as the hopping parameters $t_{ij}$ and energies $\varepsilon_i$ are properly adjusted. For example, an array of exchange-coupled elements may be described by an effective TB model in which $a_i^\dagger$ creates a magnon in a nonuniform mode $i$, mainly confined to a single magnetic element \cite{shindou_chiral_2013}. To be more precise, the nonuniform mode operators can be thought of as superpositions of magnon operators on many macrospins, with new hopping parameters that are simple to calculate from old parameters. In this picture, the hamiltonian becomes:
+\begin{equation}
+    \mathcal{H}=\sum_{ij}{t_{ij}\left(a_i^\dagger a_j +a_i a_j^\dagger\right) }+ \sum_i{\varepsilon_i a_i^\dagger a_i}
+\end{equation}
+in which $i,j$ may now refer to different types of nonuniform modes.
+
+Motivated by the observation that the Bloch functions [see Fig.~\ref{fig:Bloch}(b)] are made of $s$ and $p$ 'orbitals,' we choose this basis for a TB model. Using only nearest-neighbor hoppings, we implement this model using the \textsc{PythTB} package \cite{coh_python_2022} and adjust parameters by hand. Fit parameters are listed in table \ref{tab:TBParams} in units of frequency. Figure~\ref{fig:TB}(a) is the same band structure appearing earlier, and Fig.~\ref{fig:TB}(b) is its corresponding model, displayed in a manner similar to the simulations, using basis orbitals shown in Fig.~\ref{fig:TB}(c) and (d). More precisely, we plot the spectrum of a supercell extended in the $\hat{y}$-direction with semitransparent coloring, and only plot the $k_x$ extent of the rectangular BZ.
+
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=1\linewidth]{05_TBFigure_grouped.png}
+    \caption{(a) Simulated $k_x$-projected band structure as plotted in Fig.~\ref{fig:Bands}(c), and (b) its 9-band tight-binding model using fitting parameters listed in table \ref{tab:TBParams}. (c) Basis orbitals for the TB model (left to right): $s,p_x,p_y$ orbitals on honeycomb sites, and $s$ orbitals on kagome sites. (d) Illustration of fitting parameters.}
+    \label{fig:TB}
+\end{figure}
+
+\begin{table}
+\begin{tabular}{|l|c l |}
+    
+    \hline
+    $\varepsilon_s$ & 1.69 & GHz\\
+    $\varepsilon _p$ & 3.15& GHz\\ 
+    $\varepsilon _k$ & 3.17& GHz\\
+    \hline
+    $t_{sk}$ &-0.38 & GHz\\
+    $t_{pk}$ & -0.63& GHz\\
+    \hline
+    
+\end{tabular}
+\caption{Tight-binding parameters and their values as used in Fig.~\ref{fig:TB}. $\varepsilon_i$ are 'on-site' frequencies for orbital $i$ and $t_{ij}$ are hopping parameters between orbitals $i$ and $j$. Subscripts $s$ and $p$ denote $s$-like and $p_{x,y}$-like modes on the honeycomb lattice. Subscripts $k$ denote $s$-like modes on the kagome lattice. }
+\label{tab:TBParams}
+\end{table}
+
+It is remarkable that a TB model works well in an anti-dot lattice. The orbitals emerge naturally from the structure without any careful engineering. The fact that a simple model works suggests that this is a general feature of the geometry that has nothing to do with spin waves. Indeed, simply solving the Schr{\"o}dinger equation for a massive particle in a potential resembling this anti-dot lattice can yield a similar band structure (see supplemental Sec. \ref{Supp-sec:S_Schrodinger} \cite{Supplemental}). This phenomenon can be understood from Eq.~\ref{eq:Schrodinger-like}. In fact, as a representation of the simplicity of excitations in this system, similar band structures have been discussed and observed in electronic, photon/polariton, acoustic, and cold-atom systems \cite{milicevic_type-iii_2019, gao_visualization_2024, wu_p_xy-orbital_2008, polini_artificial_2013, mangussi_multi-orbital_2020, ding_experimental_2019}.
+
+Although the model appears to work, there are some inconsistencies. At the $\mathbf{\Gamma}$ point of the lowest band, the dispersion in the simulation is linear due to the dipole-dipole interaction \cite{stancil_magnetostatic_2009}, which is explicitly ignored by the TB model. Small mid-band gaps are also observable in the simulations, but this is only an artifact of the imperfect reconstruction of the hexagonal lattice using pixels, which breaks its $C_6$ symmetry down to $C_2$. Such gaps are not expected for real lattices. In addition, the model is less accurate at high frequencies. This is because the real wavelength of spin waves becomes small compared to the lattice features. For larger hole sizes (smaller lattice features), these high-frequency bands approach a more TB-like form (see supplemental Sec. \ref{Supp-sec:S_MoreBandStructures} \cite{Supplemental}). Other subtle inconsistencies exist, in part due to the TB model's exclusion of the dipole-dipole interaction.
+
+The fact that TB works well is curious but does not teach us anything fundamentally new. However, understanding this band structure in terms of graphene-like $s$ and $p_{x,y}$ excitations enables engineering using existing principles from the field of 2D materials. 
+
+\section{Spin wave engineering}
+\subsection{Inversion-broken crystals}\label{sec:Invbroken}
+In graphene, the masslessness of Dirac electrons is protected in part by inversion symmetry. Hexagonal boron nitride (h-BN), another 2D compound, is isostructural but with different atoms on each honeycomb sublattice. This breaks the inversion symmetry of the unit cell, and the Dirac points gap (for this reason, these symmetry-breaking terms are sometimes called \textit{mass terms}). As a result, h-BN is an insulator. This is shown schematically in Fig.~\ref{fig:InvBreaking}(b). Even stacking graphene on h-BN has this result because of the small amount of symmetry breaking \cite{giovannetti_substrate-induced_2007, xue_scanning_2011}. This principle is powerful because, unless the system is fine-tuned, any method of breaking inversion symmetry should result in a gap.
+
+To mimic the relationship between graphene and h-BN, we create new unit cells that break inversion symmetry and perform simulations again. Figure~\ref{fig:InvBreaking}(a)  displays the resulting band structures in the same manner as before.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{06_Invbreaking_FigureFull.png}
+    \caption{The effect of inversion symmetry breaking on the $s$ and $p$ bands. (a) Band structure for a unit cell with broken symmetry, plotted in the same manner as before. The spectrum can still be modeled with TB. Symmetry breaking enters the model as terms that discriminate between the honeycomb sublattices, $\Delta \varepsilon_{s} $ and $\Delta \varepsilon_{p}$, resulting in band gaps for both the $s$- and $p$-bands. (b) Analogy to graphene and its symmetry-broken sister h-BN: a gap (highlighted in blue) opens at $\mathbf{K}$ and $\mathbf{K'}$ points. Fit parameters are listed in table \ref{tab:TBParams_Invbroken}. (c) The dependence of induced gaps and flat band frequencies on externally applied field, extracted from simulations. This tunability is one of the unique benefits of magnonic systems. }
+    \label{fig:InvBreaking}
+\end{figure}
+
+As predicted, a gap is present in the inversion-broken geometries. In analogy to h-BN, the symmetry breaking can be described in TB by a difference $\Delta\varepsilon\equiv\frac{1}{2} \left( \varepsilon_B-\varepsilon_A \right)$ in the energies of the two sublattices. For simplicity, this is the only addition made to the model. Controllable spin wave band gaps are desirable for {\em rf} applications; it is interesting to note that this is an example of gaps whose width is tunable using guidance from the analogy to 2D materials. Furthermore, the frequency of these gaps (along with all other features) can be tuned by an externally applied magnetic field as shown in Figure \ref{fig:InvBreaking}(c). This tunability is natural to magnonic crystals and, from a functionality perspective, is a benefit compared to photonic and phononic crystals.
+\begin{table}
+\begin{tabular}{|l|c l |}
+    
+    \hline
+    $\varepsilon_s$ & 1.93 & GHz\\
+    $\varepsilon _p$ & 2.83& GHz\\ 
+    $\varepsilon _k$ & 3.28& GHz\\
+    \hline
+    $\Delta\varepsilon_s$ & 0.12 & GHz\\
+    $\Delta\varepsilon_p$ & 0.35 & GHz\\
+    \hline
+    $t_{sk}$ &-0.45 & GHz\\
+    $t_{pk}$ & -0.49& GHz\\
+    \hline
+    
+\end{tabular}
+\caption{Tight-binding parameters and their values as used in Fig.~\ref{fig:InvBreaking}, following the same labeling as in table \ref{tab:TBParams}.}
+\label{tab:TBParams_Invbroken}
+\end{table}
+
+In graphene-like systems, these symmetry-breaking mass terms do more than simply open a gap. For small mass terms, opening such a gap generates sharply peaked Berry curvature near the valleys $\mathbf{K}$ and $\mathbf{K'}$. Integrating the Berry curvature over the vicinity of a single valley yields an approximately quantized value, often referred to as a valley Chern number (VCN) \cite{zhang_valley_2013}. The two valleys carry opposite VCNs, so the total Chern number over the full Brillouin zone is zero. Nevertheless, a change in VCN across a domain wall implies valley-polarized boundary modes \cite{semenoff_domain_2008, jung_valley-hall_2011}, which remain robust as long as intervalley scattering remains weak \cite{zhang_valley_2013}. TB calculations in this $s,p_{x,y}$ system show that symmetry breaking has this effect for \textit{both} the $s$-band gaps and the $p$-band gaps. At a single valley, the sign of the Berry curvature is opposite above and below the gap for both $s$ and $p$ bands, but notably has a different sign in each ($s,p$) case. Upon changing the sign of the symmetry-breaking terms $\Delta\varepsilon_s$ and $\Delta\varepsilon_p$, the sign of curvature flips (see supplemental Sec.~\ref{Supp-sec:S_BerryCurvature} \cite{Supplemental}), schematically illustrated in Fig. ~\ref{fig:Boundary_combined}(a). 
+
+This magnetic thin film geometry, unlike vdW systems, is continuously tunable between distinct gapped phases. Partially inspired by the Jackiw-Rebbi model \cite{jackiw_solitons_1976}, we investigate a boundary between these gapped phases. Figure~\ref{fig:Boundary_combined}(b) shows a gradual phase boundary in which the unit cell changes shape over a few lattice spacings, making a smooth transition between the two phases. 
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{07_Figure_Combined_schematic.png}
+    \caption{A boundary between different gapped phases. (a) Two distinct gapped phases with different Berry curvature at a given valley. (b) The simulated geometry, including a boundary between the phases. (c) The corresponding TB setup, in which the symmetry-breaking terms change sign along the $\hat{y}$-direction. (d) Simulated and modeled band structures. In the simulation, the excitation is at the boundary. To mimic this, the TB spectrum is plotted with opacity given by amplitude at the boundary. Magnon states bridging the gaps (highlighted in blue) indicates \textit{two instances} of quantum valley-Hall insulator behavior. However, the states bridging the two gaps have opposite propagation: (e) $s$ modes (in the lower gap) have $\mathbf{K'}$-polarized waves moving to the right, while $p$ modes (in the upper gap) have $\mathbf{K'}$-polarized waves moving to the left.}
+    \label{fig:Boundary_combined}
+\end{figure}
+In the corresponding TB model, we create a long supercell with varying mass terms [Fig.~\ref{fig:Boundary_combined}(c)]. The band structure of the TB model contains the essential features of the simulation, most notably the presence of states that bridge the gap at each valley, highlighted in Fig.~\ref{fig:Boundary_combined}(d). These will be referred to as boundary modes.%Inaccuracies in the $p$ bands may be attributed to the fact that hopping parameters $t_{ij}$ are kept constant, while there is, of course, no such constraint in the simulations. 
+
+In our TB model, as we increase mass terms, Berry curvature is no longer localized to the valleys and the VCN loses its quantization (supplemental Sec. \ref{Supp-sec:S_BerryCurvature} \cite{Supplemental}). This behavior is common in realistic systems \cite{lee_gapped_2022, zhu_design_2018, lee_quantum_2020}, where the absolute value of the VCN is smaller than its quantized value in the small-gap limit and varies smoothly with system parameters. However, since the bulk gap does not close as we vary mass parameters, the boundary modes we observe are adiabatically connected to those in the small-gap limit. They remain (for example, in our simulations) visible well beyond the regime where the VCN is sharply quantized. This phenomenon of boundary-localized states has been seen before in many other graphene-like systems \cite{lu_observation_2017, yang_acoustic_2018, wang_extended_2022, noh_observation_2018, zhang_achieving_2018, wang_ultracompact_2022, funayama_quantum_2024}, but occurs here for both the $s$ and $p$ bands. Because the $\Delta\varepsilon$ terms affect the $s$ and $p$ gaps in different ways, the corresponding magnon boundary modes bridge the gaps with opposite chiralities: in the lower gap, $\mathbf{K}$($\mathbf{K'}$)-valley magnons propagate to the left (right), while in the upper gap, $\mathbf{K}$($\mathbf{K'}$)-valley magnons propagate to the left (right). The direction of this valley-polarized magnon current can be reversed by changing the sign of the symmetry-breaking terms (see supplemental Sec. \ref{Supp-sec:S_InvertedBoundary} \cite{Supplemental}). By calculating the VCNs of the bulk bands in the small-gap limit, we thus identify these boundary states as the magnonic analog of quantum valley Hall (QVH) edge states\cite{yao_edge_2009, zhang_valley_2013}, as illustrated in Fig. ~\ref{fig:Boundary_combined}(e). This is a more accessible realization of the type of state proposed for 2D honeycomb magnets with controllable staggered anisotropies \cite{hidalgo-sacoto_magnon_2020}. For a more complete discussion including Berry curvature maps, see the supplemental Sec. ~\ref{Supp-sec:S_BerryCurvature} \cite{Supplemental}.
+
+\subsection{Topological Magnon Waveguiding}\label{sec:Topological_Waveguiding}
+The QVH-like states that are localized to the boundary may be used as a frequency-selective waveguide for valley-polarized magnons.
+\begin{figure*}
+    \centering
+    \includegraphics[width=1\linewidth]{08_ZFigureVertical_Geometry_reflection.png}
+    \caption{Demonstration of spin wave transport along phase boundaries. (a) Simulation geometry, the same as that in Fig.~\ref{fig:Boundary_combined}.  (b) Spin wave profile $30 \text{ ns}$ after the peak of a $2.7 \text{ GHz}$ pulse (inside the $p$-band gap). Left- and right-moving modes are valley polarized and move only along the boundary. The excitation (yellow) is tilted to match the phase profile of the spin waves and allow efficient coupling. The boundary can be reduced in width and still allow directed transport, even along sharp turns. Profiles are plotted after $500 \text{ ns}$ of continuous excitation at (c) 1.55~GHz in the $s$-band gap, and (d) 2.55~GHz in the $p$-band gap. Unlike the edge states of Chern insulators, because there exist co-localized left- and right- moving edge states, inter-valley scattering is allowed. To demonstrate this, we show (e) Gaussian wavepackets scattering from a point defect formed by removing a honeycomb site. Space-time plots of the spin wave profiles are shown for (f) the $s$-gap mode and (g) the $p$-gap mode with the defect position marked in gray. Profiles are examined after the collision and give calculated reflections of $\approx6\%$ and $\approx22\%$ respectively.}
+    \label{fig:3D}
+\end{figure*}
+In the same geometry as before, shown again in Fig.~\ref{fig:3D}(a), an excitation is applied inside a localized region. At the in-gap frequency of $2.7 \text{ GHz}$, spin waves are launched \textit{only} along the phase boundary, as shown in Fig.~\ref{fig:3D}(b). Because of the valley-specific topological origin of these modes, left- and right- moving modes are oppositely valley polarized -- an interesting feature because valley polarization is occasionally thought of as an information-carrying degree of freedom in discussions of next-generation information technologies \cite{schaibley_valleytronics_2016}. The transition between the insulating phases can be reduced in width, and the states persist, even following sharp turns made by the phase boundary. This phenomenon occurs for both $s$ and $p$ boundary modes [see Figs. \ref{fig:3D}(c) and (d), respectively]. In both cases, magnon transport remains completely localized to the boundary after $500 \text{ ns}$ of continuous excitation.
+It is worth noting a few limitations here. Geometry does not only affect the shape of the band structure; there can be a constant frequency offset as a result of the demagnetizing field. This is the same reason $B_{\text{ext}}$ is varied for the different geometries in Fig.~\ref{fig:Bands}. When geometry is varied over space, this varying frequency offset can result in a spectral overlap of the localized mode with other bulk modes. In this case, a large-area excitation like that in Fig.~\ref{fig:3D}(a) would excite both boundary and bulk modes. In other words, the appealing boundary-specific transport demonstrated by Fig.~\ref{fig:3D} may not exist in all geometries with phase boundaries. Also note that these modes are not protected against backscattering, making them fundamentally different from more famous examples of topological edge states in metamaterials, in \cite{shindou_topological_2013,hafezi_imaging_2013} for example. Scattering between valley modes caused by a point defect is demonstrated in Fig. ~\ref{fig:3D}(e-g) for both $s$-gap and $p$-gap modes, returning differing reflection amplitudes for each case. This is discussed in more detail in the supplemental Sec. \ref{Supp-sec:S_Backscattering} \cite{Supplemental}.
+
+\subsection{Isolated defect modes}
+The unique power of patterned crystals lies in the ability to control its properties in a spatially varying way. In the previous section, this ability was used to exploit valley band topology and waveguide magnons along a one-dimensional boundary. It is also worth discussing magnons that are confined to zero-dimensional point defects. Here we demonstrate a simple case of this: only one honeycomb site is replaced with a disk similar to that in the inversion-broken unit cells [see Fig.~\ref{fig:Defects}(a)], analogous to a substitutional defect in graphene  (nitrogen or boron, for example).
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{09_CoupledDefects.png}
+    \caption{Level structure of point-defect modes under $B_{\text{ext}}=200 \text{ mT } \hat{z}$. (a) Simulation geometry: A single defect resembling that used in the inversion-broken structures of section~\ref{sec:Invbroken}. (b) The localized modes of a single defect versus two adjacent defects. When coupled, they split by $2\Delta\approx0.18\text{ GHz}$, producing a two-level magnon spectrum that appears entirely below the continuum. These modes are plotted in the same fashion as the Bloch-like functions of Fig.~\ref{fig:Bloch}.}
+    \label{fig:Defects}
+\end{figure}
+In a phenomenon similar to spin wave "edge modes," \cite{maranville_characterization_2006, mcmichael_edge_2006} A single defect has a localized mode which lies \textit{below} the bulk uniform precession mode. Two such defect modes couple when placed in adjacent sites. Using the TB interpretation, the level should split into symmetric and antisymmetric superpositions of the original modes, separated in frequency by twice the coupling parameter $\Delta$. This is apparently a good interpretation, as evidenced by the mode profiles in Fig.~\ref{fig:Defects}(b). A single-defect mode at $1.47 \text{ GHz}$ splits into a symmetric mode at $1.38 \text{ GHz}$ and an antisymmetric mode at $1.56 \text{ GHz}$ (for details, see supplemental Sec.~\ref{Supp-sec:S_Defects} \cite{Supplemental}). It happens that this whole level structure appears below the continuum, which implies that these defect-localized magnons may be interacted with separately from propagating waves, suggesting further application in magnonics. For the chosen Gilbert damping parameter of $\alpha=10^{-4}$, these modes have quality factors $\approx4100$.
+
+\section{Other TB-like systems}\label{sec:OtherTBSystems}
+In the previous sections, it was demonstrated that a TB-like understanding can be used to engineer magnonic band structures in analogy to a few popular 2D materials. It is worthwhile to show that this TB approach is applicable in at least a few other cases. Fig.~\ref{fig:OtherTB} shows two such examples: a square anti-dot lattice and an artificial kagome lattice.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{10_OtherTB.png}
+    \caption{Other geometries which can be thought of as TB-like, using 15-nm YIG films with a lattice spacing a~=~300~nm and $B_{\text{ext}}||\hat{z}=185 \text{ mT}$. (a) The square anti-dot lattice, and (b) its TB model, using (c) basis orbitals similar to those used in the hexagonal anti-dot model. Some inconsistencies are due to hybridization with higher-order modes like $d$-orbitals (see supplemental Sec.~\ref{Supp-sec:S_OtherTB} \cite{Supplemental}), which are not included for simplicity. (d) Shows the artificial kagome lattice and (e) its TB model using only $s$ orbitals on kagome sites.}
+    \label{fig:OtherTB}
+\end{figure}
+The magnonic structure of the perpendicularly magnetized square anti-dot lattice [see Fig. \ref{fig:OtherTB}(a)] happens to be analyzable using the same approach. A TB model with $s$ and $p$ orbitals in the middle of the unit cell and $s$ orbitals between these sites can approximate the band structure with the right fitting parameters. Its spectrum is plotted in Fig.~\ref{fig:OtherTB}(b), using the basis orbitals in Fig.~\ref{fig:OtherTB}(c). This square lattice is apparently another case of emergent "atomic orbitals" (see supplemental Sec.~\ref{Supp-sec:S_OtherTB} \cite{Supplemental} for details). There is a simpler (albeit less experimentally feasible) approach to engineer magnonic band structures. Figure~\ref{fig:OtherTB} also shows an artificial kagome lattice, where it is assumed that disks will host $s$-like modes, so the disks are arranged to mimic the kagome lattice [see Fig.~\ref{fig:OtherTB}(d)]. In this case, a simple model of $s$-orbitals on the kagome lattice can approximate the band structure [see Fig. \ref{fig:OtherTB}(e)]. This is similar to results previously reported for magnetic rods embedded in a magnetic matrix \cite{yang_flatbands_2025, liang_dirac_2024}. In this case, the relative decrease in momentum space resolution is due to the fact that the unit cell must be simulated with greater resolution, so the whole simulation field has fewer unit cells for computationally practical reasons.
+
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=1\linewidth]{Boundarymodes_fig3.png}
+%     \caption{The use of the phase boundary as a magnonic waveguide. A region (yellow) is excited using a Gaussian pulse with $\text{FWHM}\approx 16 \text{ ns}$, centered at the frequencies of in-gap modes observed in figure \ref{fig:Boundary_combined}. (a) Squared amplitude $0$, $20$,  and $40 \text{ ns}$ after the peak of a $1.6 \text{ GHz}$ pulse, possessing a group velocity of $\approx 130 \text{ m/s}$. (b) the same for a $2.7 \text{ GHz}$ pulse, $\approx 180 \text{ m/s}$. The excitation region is tilted to match the mode's phase profile and allow efficient coupling.}
+%     \label{fig:Boundary_Timedomain}
+% \end{figure}
+
+\section{Experimental feasibility}
+The YIG anti-dot lattices studied in this work may be fabricated by standard electron beam lithography procedures including a hard mask and ion etch step, or by focused ion beam (FIB) milling for the fabrication of single devices. There is already a significant amount of work on these structures \cite{neusser_anisotropic_2010, ulrichs_magnonic_2010, bali_high-symmetry_2012, gros_phase_2021, wang_observation_2023}, albeit with somewhat different dimensions. Preliminary work indicates that FIB can yield devices with sufficient scale and tolerances. In the supplemental material Sec.~\ref{Supp-sec:S_Deadlayer} \cite{Supplemental}, we verify that lattices with a thin magnetic dead layer caused by ion damage are expected to yield similar physics. We also verify that in the presence of edge roughness, flat modes, band gaps, defect-localized modes, and QVH-like modes persist with only moderate modification (Sec. ~\ref{Supp-sec:S_Disorder} \cite{Supplemental}). All simulations are conducted for a Gilbert damping parameter $\alpha=10^{-4}$ and $M_{S}=\SI{140}{\kilo  \ampere / \meter}$, which is realistic for YIG \cite{dubs_low_2020,li_epitaxial_2015}. Overall, the anti-dot lattice is a more realistic experimental route to these types of magnonic flat bands compared to existing proposals, which mainly focus on ferromagnetic rods embedded in a matrix\cite{centala_compact_2023, liang_dirac_2024,yang_flatbands_2025}.
+
+\section{Discussion and Conclusion}
+Because the magnonic crystals discussed here demonstrate unique properties, it is worth discussing their potential applications.
+
+First, the existence of isotropic flat bands of Fig.~\ref{fig:Flatband}  is notable. In the TB picture, it is trivially easy to achieve flat bands in one sense: an array of decoupled resonators has no dispersion. However, here, the modes are strongly coupled and flatness emerges from the symmetry of the basis orbitals and the geometry of the lattice. Bloch functions in this band contain singularities at band touching points, a property which sometimes awards it the title of "topological flat band" in electronics \cite{liu_orbital_2022, rhim_singular_2021}. Furthermore, these states may be of interest for exploring magnon-magnon interactions, particularly as analogs of interacting electronic phases on the kagome lattice. The localization property of these magnons indicates that they could easily be excited to large magnon numbers, potentially resulting in emergent modes which already have some theoretical description in the hot research area of interacting kagome flat bands. The excitation enhancement due to flat band magnons has been studied before, for example in \cite{wang_broad-wave-vector_2024}.
+
+Second, the topological magnons of Sec.~\ref{sec:Topological_Waveguiding} are, of course, attractive for precise control of magnon propagation. However, they are additionally interesting because we can exercise control over the valley degree of freedom. For example, in the setup of Fig.~\ref{fig:3D}(a), any spin wave device to the right of the antenna should only ever receive $\mathbf{K}$-polarized spin waves at the frequency of $2.7$~GHz. This work may prove an important step in realistic magnon-valleytronics. 
+
+Third, additional control over the valley degree of freedom could reasonably be exercised here through an inhomogeneous pattern that mimics a strain field. Inhomogeneous strain fields can result in an effective gauge field for Dirac point excitations, commonly called a pseudo-magnetic field \cite{pereira_strain_2009, kang_pseudo-magnetic_2021}. The freedom associated with patterning in this system might be used to realize magnon valley filters, lenses, collimators, and (pseudo-)Landau levels for magnons \cite{sun_magnon_2021, wei_strain-engineered_2024, jamadi_direct_2020}.
+
+Fourth, point defects such as those in Fig.~\ref{fig:Defects} may be useful in magnonics because of their spatial localization and spectral isolation. This implies that a carefully placed waveguide could selectively excite these quasi-uniform localized modes -- making them potentially useful as a magnonic memory because spin waves will not radiate away from the defect. Additionally, the fact that a coupled two-mode structure of such defects still lies below the continuum is interesting. We envision classical spin wave analogs of effects like induced transparency and Rabi oscillation. If sufficiently long magnon lifetimes can be achieved, possibly aided by the localization of the modes\cite{serha_ultra-long-living_2025}, then this may also be an interesting perspective for designing quantum magnonic systems.
+
+Fifth, these findings are generalizable in a few ways. Sec.~\ref{sec:OtherTBSystems} demonstrates that tight binding is somewhat accurate in a few other cases of perpendicularly magnetized YIG films, implying that the 2D-analog engineering done in the previous sections can be extended to other magnon systems. However, in Sec. \ref{sec:TB_Analysis} we mention that both tight-binding and the Schr{\"o}dinger equation can reproduce band structures similar to the ones observed here -- implying that some of these engineering strategies are applicable not only to magnonic systems, but any system which can reasonably be described by a simple Schr{\"o}dinger equation.
+
+Finally, because there exists similar physics in other analog systems \cite{milicevic_type-iii_2019, gao_visualization_2024, wu_p_xy-orbital_2008, polini_artificial_2013, mangussi_multi-orbital_2020, ding_experimental_2019}, it is worth noting a few novelties and benefits associated with this magnonic system. The literature tends to focus on $s$-like modes, but we show that it's also possible to accomplish valley-specific physics with $p$-like modes, and we show that it can be understood through the same TB lens. This amplifies the potential for valley-tronics because there are two channels through which valley information may propagate. There are also benefits that are unique to magnonic systems. Most importantly, the whole band structure is tunable not just by geometry, but also by externally applied field, as was demonstrated in Fig. ~\ref{fig:InvBreaking}(c). This suggests that a constant microwave signal may be tuned on the fly to be blocked by band gaps, waveguided, valley- or orbitally polarized, strongly localized in flat bands, interacting with defect modes, etc. simply by varying the external field. Spin waves also are associated with a unique combination of small wavelengths and low frequencies; it is a significant result that a microwave signal can be localized to these phase boundaries by some band topology manipulation.
+
+In conclusion, patterning a hexagonal array of holes into perpendicularly magnetized YIG thin films is found to lead to some unexpected features. Namely, the band structure mimics a few unique properties of 2D systems, and can be understood using a tight-binding model. This new understanding allows the engineering of magnonic states using existing principles from 2D materials to produce controllable band gaps, topological magnons along 1D channels, and spectrally isolated magnons at 0D point defects. These design principles seem to be generalizable to other geometries and even other excitations, but here represent an important step in achieving and manipulating physical states that are usually reserved for van der Waals systems.
+
+
+
+
+\section{Acknowledgements}
+All aspects of this work were mainly supported by the Illinois Materials Research Science and Engineering Center (MRSEC) under grant no. DMR-2309037. Additional contributions to data analysis and manuscript preparation were supported by the U.S. DOE, Office of Science, Basic Energy Sciences, Materials Science and Engineering Division under contract No. DE-SC0022060. Other contributions to analysis were supported by the U.S. Office of Naval Research (ONR) Multidisciplinary University Research Initiative (MURI) Grant N00014-20-1-2325 on Robust Photonic Materials with High-Order Topological Protection for support. We thank Taylor Hughes for stimulating and fruitful discussions.
+\section{Suppelemental Material and Data Availability}
+See Supplemental Material \cite{Supplemental} for a document containing items cited in the text. Codes used for simulation and analysis are also openly available in Ref. ~\cite{sim_code}.
+
+\section{Appendix}
+\subsection{Schr{\"o}dinger-like form of the LL Equation}\label{sec:App_Schrodinger}
+Beginning with the Landau-Lifshitz-Gilbert equation:
+\begin{equation*}
+\partial_t\mathbf{M}=-\gamma\mu_0\mathbf{M}\times\mathbf{H}_{\text{eff}} + \dfrac{\alpha}
+{M_S}\left(\mathbf{M}\times\partial_t\mathbf{M}\right)
+\end{equation*}for magnetization $\mathbf{M}$ of magnitude $M_S$, gyromagnetic ratio $\gamma$ and permeability of free space $\mu_0$. Neglecting damping and rewriting in terms of the reduced magnetization vector $\mathbf{m}\equiv\mathbf{ M}/M_S$,
+\begin{equation*}
+    \partial_t \mathbf{m}=-\gamma\mu_0\mathbf{m}\times\mathbf{H}_{\text{eff}}
+\end{equation*}
+Assuming $\mathbf{H}_{\text{eff}}||\hat{z}\equiv H$, $\mathbf{m}\approx \hat{z}$, the linear limit,
+\begin{align*}
+\qquad\partial_t m_x&=-\gamma \mu_0H m_y\\
+\qquad \partial_t m_y&=\gamma \mu_0H m_x\\
+\partial_t(m_x+im_y)&=\gamma \mu_0H(im_x-m_y)\\\\
+\text{defining:}\qquad \Psi &\equiv m_x+im_y\\\\
+\partial_t \Psi&=i\gamma \mu_0H \Psi\\
+\end{align*}
+Because we have introduced no $\mathbf{H}_{\text{eff}}$ term which couples spins over space, this should also be true for a set of macrospins organized in space: 
+\begin{equation*}
+    \partial_t\Psi(\mathbf{r})=i\gamma  \mu_0H(\mathbf{r}) \Psi(\mathbf{r})
+\end{equation*}
+Including the exchange interaction of strength $D_{\text{ex}}$ in the effective field (and assuming its direction is $+\hat{z}$), this can be written in a form \cite{landau_magnetism_nodate, herring_theory_1951, lim_ferromagnetic_2021}:
+\begin{equation*}
+    \partial_t\Psi(\mathbf{r})=i\gamma  \mu_0\left(H(\mathbf{r})-D_{\text{ex}}\nabla^2\right) \Psi(\mathbf{r})
+\end{equation*}
+Which resembles a Schr{\"o}dinger equation for a massive particle in a potential $\gamma\mu_0H(\mathbf{r})$. See ref. \cite{lim_ferromagnetic_2021} for an application of this idea to quantized spin waves modes in finite-size systems.
+% If in two-column mode, this environment will change to single-column
+% format so that long equations can be displayed. Use
+% sparingly.
+%\begin{widetext}
+% put long equation here
+%\end{widetext}
+
+% figures should be put into the text as floats.
+% Use the graphics or graphicx packages (distributed with LaTeX2e)
+% and the \includegraphics macro defined in those packages.
+% See the LaTeX Graphics Companion by Michel Goosens, Sebastian Rahtz,
+% and Frank Mittelbach for instance.
+%
+% Here is an example of the general form of a figure:
+% Fill in the caption in the braces of the \caption{} command. Put the label
+% that you will use with \ref{} command in the braces of the \label{} command.
+% Use the figure* environment if the figure should span across the
+% entire page. There is no need to do explicit centering.
+
+% \begin{figure}
+% \includegraphics{}%
+% \caption{\label{}}
+% \end{figure}
+
+% Surround figure environment with turnpage environment for landscape
+% figure
+% \begin{turnpage}
+% \begin{figure}
+% \includegraphics{}%
+% \caption{\label{}}
+% \end{figure}
+% \end{turnpage}
+
+% tables should appear as floats within the text
+%
+% Here is an example of the general form of a table:
+% Fill in the caption in the braces of the \caption{} command. Put the label
+% that you will use with \ref{} command in the braces of the \label{} command.
+% Insert the column specifiers (l, r, c, d, etc.) in the empty braces of the
+% \begin{tabular}{} command.
+% The ruledtabular enviroment adds doubled rules to table and sets a
+% reasonable default table settings.
+% Use the table* environment to get a full-width table in two-column
+% Add \usepackage{longtable} and the longtable (or longtable*}
+% environment for nicely formatted long tables. Or use the the [H]
+% placement option to break a long table (with less control than 
+% in longtable).
+% \begin{table}%[H] add [H] placement to break table across pages
+% \caption{\label{}}
+% \begin{ruledtabular}
+% \begin{tabular}{}
+% Lines of table here ending with \\
+% \end{tabular}
+% \end{ruledtabular}
+% \end{table}
+
+% Surround table environment with turnpage environment for landscape
+% table
+% \begin{turnpage}
+% \begin{table}
+% \caption{\label{}}
+% \begin{ruledtabular}
+% \begin{tabular}{}
+% \end{tabular}
+% \end{ruledtabular}
+% \end{table}
+% \end{turnpage}
+
+% Specify following sections are appendices. Use \appendix* if there
+% only one appendix.
+%\appendix
+%\section{}
+
+% If you have acknowledgments, this puts in the proper section head.
+%\begin{acknowledgments}
+% put your acknowledgments here.
+%\end{acknowledgments}
+
+% Create the reference section using BibTeX:
+%\printbibliography
+%\bibliography{references}
+\bibliography{references-2}
+
+\end{document}
+%
+% ****** End of file apstemplate.tex ******
+

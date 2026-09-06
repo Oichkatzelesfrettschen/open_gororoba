@@ -1,0 +1,20 @@
+    Blocking waiting for file lock on build directory
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 8.71s
+     Running tests/ward_independent_residuals.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_independent_residuals-b2137b8378eeaf6c)
+
+running 1 test
+
+thread 'independent_ward_residuals_preserve_failures_and_omission_scope' (1262733) panicked at crates/gr_core/tests/ward_independent_residuals.rs:318:9:
+assertion failed: norm(&component_difference) < 1e-12
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test independent_ward_residuals_preserve_failures_and_omission_scope ... FAILED
+
+failures:
+
+failures:
+    independent_ward_residuals_preserve_failures_and_omission_scope
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+error: test failed, to rerun pass `-p gr_core --test ward_independent_residuals`

@@ -1,0 +1,11 @@
+
+running 2 tests
+corrected_same_weight_chi2=3866.21121368402646112 corrected_original_scoring_weight_chi2=3788.88698941034635936 fitted_parameters=1 physical_population_admission=separate
+test corrected_scoring_uses_the_fitted_ansatz_at_identical_weights ... ok
+production_epsilon=2.92089760824633515 production_chi2=3866.21121368402646112
+same_objective_oracle_epsilon=2.92089740576627577 same_objective_chi2=3866.21121368388776318
+different_scored_objective_oracle_epsilon=3.40397530853244845 different_scored_chi2=1916.55421351686459275 score_at_fitted_epsilon=2412.61289764109505995
+test frozen_data_separates_minimizer_from_scored_ansatz ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

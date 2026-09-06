@@ -1,0 +1,16 @@
+[transition]
+transition_key = "c-834-retained-measurement-reconciliation"
+source_claim_id = "C-834"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-CLAIM-MEASUREMENT-RECONCILIATION"]
+experiment_ids = ["E-074"]
+exercised_falsifier = "Apply the claim evidence contract in data/output/audit/claim-family-evidence-adjudication/C-834.toml against retained contradiction-evidence.toml."
+proposed_claim_status = "Provisional"
+rationale = "All seven corrected signed source reference tests pass. Nominal ratio 0.0477442355934858 satisfies 0.05; the retained input envelope crosses 0.05, preserving Provisional physical threshold robustness."
+unresolved_assumptions = ["Physical generalization requires independent source and input admission beyond the retained implementation result."]
+actor = "claim-evidence-adjudication"
+reason = "Reconcile statement, status, tested implementation and retained result."
+transition_timestamp = "2026-09-05T16:06:41Z"
+expected_source_state_sha256 = "7b4bbdeb06504450eaa8d42e1e6473da93fefbf059cbe8b93e297bd403003701"
+expected_claim_id_max = 1743

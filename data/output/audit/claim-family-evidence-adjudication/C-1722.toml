@@ -1,0 +1,25 @@
+claim_id = "C-1722"
+evidence_layer = "source_proposition"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Membership of fixed theta23=48.99 degrees in NuFit6.0/6.1 normal-ordering published intervals. The fixed source-comparison branch fits zero parameters; physical model fitting remains outside its scope."
+fixed_hyperparameters = ["Four release/analysis columns and asymmetric intervals retained in nufit-variant-intervals.toml; angle48.99 fixed"]
+[[intervening_maps]]
+branch = "source_comparison"
+name = "identity_and_predicate"
+kind = "computational"
+description = "Membership of fixed theta23=48.99 degrees in NuFit6.0/6.1 normal-ordering published intervals with explicit source artifact, version and equation/table locator."
+[[fitted_parameters]]
+branch = "source_comparison"
+count = 0
+names = []
+training_boundary = "A fixed reference lookup, interval-membership operation or theorem-hypothesis comparison fits zero parameters. Published global-fit freedoms and repository physical model freedoms remain separate."
+[decisive_experiment]
+experiment_ids = ["E-287"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/nufit-variant-intervals.toml"
+description = "E-287 is proposed in source-reference-experiments.toml and must be canonically registered before contract admission. The Rust integration producer is crates/algebra_experimental/tests/nufit_reference_identity.rs. Its initial executed scope is C-1722 only; other source-comparison predicates remain explicitly blocked."
+[what_would_verify_refute]
+verification_outcomes = ["The fixed angle lies inside NuFit6.0 without-SK1-sigma, outside the other three1-sigma intervals, and inside all four3-sigma intervals."]
+revision_outcomes = ["A source-column or interval correction changes membership: retain the historical ledger and canonically revise only the affected variant-specific statement."]
+abandonment_outcomes = ["An admitted source comparison contradicts the asserted membership vector under the declared columns: abandon that reference-membership statement."]
+inconclusive_outcomes = ["The test verifies transcription identity and membership of a fixed value; independent model fitting, uncertainty propagation and physical agreement require separate contracts."]

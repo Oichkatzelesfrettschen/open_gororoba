@@ -1,0 +1,33 @@
+schema_version = 1
+claim = "C-1710"
+source_model = "Asymptotic outgoing-parton BDMPS spectrum, Arleo hep-ph/0210104v3 Eq2.7, independent-emission Poisson transform Eq2.3 and BDMS hep-ph/0106347v1 Eq18b"
+spectrum = "x=omega/omega_c; dI/dx=alpha*shape(x)/x; alpha=2*alpha_s*C_R/pi; shape=ln|cos((1+i)/sqrt(2x))|"
+laplace = "Ptilde(s)=exp(-Psi(s)); Psi(s)=alpha*integral_0^infinity shape(x)*(1-exp(-s*x))*dx/x."
+energy_scale = "The exact outgoing mean loss divided by omega_c is m=alpha_s*C_R/2. The2017 variable u=pT/omega_bar_c differs from the2022 mean-loss variable v=pT/mean_loss; u=m*v after the same fragmentation scaling."
+gamma_identity = "For n>0 and X>=0, (1+X/u)^(-n)=integral_0^infinity t^(n-1)*exp(-t)*exp(-t*X/u)dt/Gamma(n). Tonelli applies to nonnegative integrands. Thus the exact source power-law convolution is a gamma-weighted mean of Ptilde(t/u); it differs from the large-n approximation Ptilde(n/u)."
+model_boundary = "The transform evaluates the full asymptotic source spectrum. It introduces neither lognormal substitution nor finite-energy clipping, reweighting or an infrared cutoff. Source assumptions and physical validity remain distinct from quadrature conformance."
+inner_quadrature = "Gauss-Legendre orders128 and256 over log(x); retain order difference separately from analytic omitted-tail bounds."
+outer_quadrature = "Generalized Gauss-Laguerre orders64 and128 for t^(n-1)*exp(-t), with positive finite weights normalized by their sum."
+numerical_gate = 0.00000001
+cutoff_target = 0.0000000001
+laplace_arguments = [0.2, 1.0, 5.0]
+momentum_over_omega_c = [0.5, 2.0, 10.0]
+spectral_indices = [3.0, 6.1, 10.0]
+reference_alpha_s = 0.5
+reference_casimir = 1.3333333333333333
+infrared_bound = "shape(x)<=1/sqrt(2x) and1-exp(-s*x)<=s*x imply omitted Psi below xmin is at most alpha*sqrt(2)*s*sqrt(xmin)."
+ultraviolet_bound = "The cosine product gives shape(x)=.5*sum_k ln(1+[4/(pi^2*(2k+1)^2*x)]^2)<=1/(12*x^2). Omitted Psi above xmax is at most alpha/(24*xmax^2)."
+tail_propagation = "For nonnegative exponents, exp(-Psi) is1-Lipschitz. Positive normalized gamma weights propagate the weighted analytic exponent-tail bounds into the convolution. Quadrature-order differences remain empirical sensitivity measures, rather than certified bounds."
+independent_laplace_oracle = "Composite Simpson integration after x=(t/(1-t))^2 on0<=t<=1. Endpoint values follow analytically; direct real cosh/sin evaluation and the cosine product independently evaluate the source spectrum. Retain grid-doubling differences and spectrum remainder bounds."
+independent_mean_oracle = "The cosine product integrates termwise to integral shape(x)dx=pi/4, giving mean=alpha*pi/4=alpha_s*C_R/2. Numerically integrate the spectrum with the compactified variable and compare with the source mean."
+required_controls = ["Laplace normalization at s0 and exact zero-coupling convolution", "Positive suppression and monotonicity in momentum and spectral index", "Consistent mean-loss and omega_c coordinates", "Jensen lower bound (1+m/u)^(-n) for the convex loss response", "Gamma identity against a unit-delta analytic control", "Invalid-input and unrepresentable-quadrature admission"]
+failure_outcome = "Retain failed numerical gates and refine the numerical instrument before admitting model output; preserve the original fixed-loss failed fits."
+physical_prerequisites = ["matched pp spectral-index fit", "fragmentation and parton identity", "source calibration freedom", "matched covariance and reference population", "geometry and centrality pooling"]
+
+[retained_refinement]
+initial_result = "initial-independent-tests.log: u0.5 n3 inner-order delta1.3554406401326145e-8 exceeds unchanged1e-8 gate."
+refined_inner_quadrature = "Gauss-Legendre orders256 and512 for convolution; standalone Laplace comparison retains128 and256."
+refined_result = "refined-independent-tests.log: all nine convolution cases pass unchanged1e-8 gate."
+tail_scope = "ConvolutionEstimate.tail_bound bounds omitted spectrum tails in the discrete normalized Laguerre sums. It excludes continuous-mixture quadrature error."
+independent_outer = "Composite Simpson on t in[0,80],4096/8192 intervals at n3; independent compactified inner Simpson4096 intervals. Gamma probability above80 is exp(-80)*(1+80+80^2/2)<6e-32. Compare u0.5,2,10 with production and analytic delta-loss convolution."
+reference_shape_remainder = "For x<0.001 the omitted logarithmic correction is below4e-20. For x>10 retain1024 cosine-product terms; the remainder is at most8/(pi^4*x^2)*(2049^-4+2049^-3/6). The middle branch uses direct real cosh/sin evaluation. Floating rounding and Simpson truncation remain empirical order-sensitivity terms."

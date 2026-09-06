@@ -1,0 +1,47 @@
+claim_id = "C-1685"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Freeze density, velocity, halo field, mesh and observation timestep; distinguish changing the physical magnetic amplitude from changing only its numerical unit."]
+[[intervening_maps]]
+branch = "magnetic_normalization"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Derive lattice and SI Lorentz force-density expressions including permeability, density, spacing and timestep."
+[[intervening_maps]]
+branch = "magnetic_normalization"
+name = "independent_predicate"
+kind = "computational"
+description = "Replay the historical B multiplier values 0.005,0.05,0.5,5,50 at the historical producer; separately change lattice units while holding the physical field fixed and convert both forces to N/m3."
+[[fitted_parameters]]
+branch = "magnetic_normalization"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[[intervening_maps]]
+branch = "magnetic_transport"
+name = "diffusivity_unit_admission"
+kind = "computational"
+description = "Admit eta_m in m2/s through dt/dx2 or explicitly select lattice diffusivity; electrical resistivity requires division by permeability."
+[[intervening_maps]]
+branch = "magnetic_transport"
+name = "periodic_stencil_and_state_admission"
+kind = "computational"
+description = "Check mutable configuration and prospective field state, then compare the isolated periodic seven-point diffusion update with Fourier amplitude and energy."
+[[fitted_parameters]]
+branch = "magnetic_transport"
+count = 0
+names = []
+training_boundary = "Declared numerical modes and unit fixtures fit zero parameters; spacecraft values and coupled physical parameters remain unadmitted."
+[decisive_experiment]
+
+experiment_ids = ["E-112","E-113","E-312"]
+protocol_artifact = "data/output/audit/mhd-magnetic-diffusivity/protocol.toml"
+protocol_sha256 = "0b388e656bae003898ca334236317e0e73d0e0973a28aefd2471901d5dc872db"
+description = "Use E-112/E-113 as the recorded family binding, not evidence of completed replay. Replay the historical B multiplier values 0.005,0.05,0.5,5,50 at the historical producer; separately change lattice units while holding the physical field fixed and convert both forces to N/m3. Density/permeability/mesh/field identity, gravitational frame, outflow and full coupled sensitivity remain unresolved. E-113 placeholder IC prevents physical replay; a physical amplitude change legitimately changes Lorentz force."
+[what_would_verify_refute]
+verification_outcomes = ["E-312 Fourier amplitude and energy agree within1e-12, unit conversion and invalid-state rejection pass, and admitted retained-update states agree bitwise; verification applies to that numerical instrument alone.","At fixed historical numerical convention the enumerated multiplier sweep yields the recorded inverse-square ratio; the arbitrary unit convention cannot establish a physical exponent."]
+revision_outcomes = ["E-312 centered-induction energy growth requires a stable integrator with independent energy and convergence evidence before coupled force-bound simulations.","A consistent SI conversion preserves the physical ratio under unit changes; retain the historical normalization defect and register a physically admitted successor only after all inputs and sensitivity pass."]
+abandonment_outcomes = ["An unstable diffusion step, wrong unit or invalid state passes transport admission, a rejected step mutates fields, or the independent Fourier oracle fails: abandon the affected instrument predicate.","The frozen force ratio fails inverse-square scaling on the declared static inputs, refuting the exact historical scaling assertion."]
+inconclusive_outcomes = ["A passed isolated diffusion test does not establish centered-induction, cleaning, boundary or coupled LBM/MHD stability. E-312 passes the isolated diffusion predicates and reproduces centered-induction energy growth of 1.00146446609406747 per step on the declared mode; full-induction stability fails. Physical force sensitivity remains unresolved.","Density/permeability/mesh/field identity, gravitational frame, outflow and full coupled sensitivity remain unresolved. E-113 placeholder IC prevents physical replay; a physical amplitude change legitimately changes Lorentz force."]

@@ -1,0 +1,30 @@
+{
+  "before": {
+    "claim_revisions": "d4308d0aa5de97b80aa4c8695038b101880cb376c8b2de7be0cf5311b80ee12c",
+    "claim_relations": "11a8337327ed3d4993bc729cf2ac640ed0423b934eb460f46e5612ce66119604",
+    "claim_transition_events": "4e656f692a3208c1252244c4dcaefa56ebfcda85b65acc851efed0203d2ffe74",
+    "claim_transition_assumptions": "99047037c74adaa0d5a669a2104b041b068758bceb69cf9a6b127824299bd7c4",
+    "claim_transition_evidence": "84ac3c018b2891e27dbbebd1c8b4e7c542d5955393dde416dfdf1e95bc61feda",
+    "claim_transition_experiments": "9d2c2b476ba763be503804a4153503b02ea305cc9090f4d54822ad4e6173adc7",
+    "claim_transition_successors": "3562ff9a41718c096adb8421f0fb2988619603d54115d79f8b4ebf94b3f8138d",
+    "claim_transition_successor_evidence": "f987bafd7e5f39eb2f0a1bb0f09122864d34ceef59699d7c066e60e650bca2ab",
+    "claim_transition_successor_where_stated": "641ca99e5b3d85ee2122289838e5fa8e1b12b45dfda165d1e2f547f2326a35d1",
+    "claim_evidence_revisions": "986c821ec2a53438a4a0f7dea613ccb14d1f65cfbeb66b62cee4340f61ba149e",
+    "claim_evidence_revision_experiments": "a29d40fba082cc9c4a15a96997182ae6d683950fee86b03035c88fc89f34eb11",
+    "artifact_retrieval_observations": "5c4ae1c007bf45e4648e4d21f3b43ab78050f16e5ecf6f4c085e3cfa87d56571"
+  },
+  "after": {
+    "claim_revisions": "d4308d0aa5de97b80aa4c8695038b101880cb376c8b2de7be0cf5311b80ee12c",
+    "claim_relations": "11a8337327ed3d4993bc729cf2ac640ed0423b934eb460f46e5612ce66119604",
+    "claim_transition_events": "4e656f692a3208c1252244c4dcaefa56ebfcda85b65acc851efed0203d2ffe74",
+    "claim_transition_assumptions": "99047037c74adaa0d5a669a2104b041b068758bceb69cf9a6b127824299bd7c4",
+    "claim_transition_evidence": "84ac3c018b2891e27dbbebd1c8b4e7c542d5955393dde416dfdf1e95bc61feda",
+    "claim_transition_experiments": "9d2c2b476ba763be503804a4153503b02ea305cc9090f4d54822ad4e6173adc7",
+    "claim_transition_successors": "3562ff9a41718c096adb8421f0fb2988619603d54115d79f8b4ebf94b3f8138d",
+    "claim_transition_successor_evidence": "f987bafd7e5f39eb2f0a1bb0f09122864d34ceef59699d7c066e60e650bca2ab",
+    "claim_transition_successor_where_stated": "641ca99e5b3d85ee2122289838e5fa8e1b12b45dfda165d1e2f547f2326a35d1",
+    "claim_evidence_revisions": "986c821ec2a53438a4a0f7dea613ccb14d1f65cfbeb66b62cee4340f61ba149e",
+    "claim_evidence_revision_experiments": "a29d40fba082cc9c4a15a96997182ae6d683950fee86b03035c88fc89f34eb11",
+    "artifact_retrieval_observations": "5c4ae1c007bf45e4648e4d21f3b43ab78050f16e5ecf6f4c085e3cfa87d56571"
+  }
+}

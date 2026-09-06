@@ -48,6 +48,7 @@ pub mod pseudospectrum;
 pub mod qua_ten_net_bridge;
 pub mod quantum_frequency_conversion;
 pub mod scaling_laws;
+pub mod spectral_gap_certificate;
 pub mod spinor_mechanics;
 pub mod superfluid;
 pub mod tensor_network_classical;

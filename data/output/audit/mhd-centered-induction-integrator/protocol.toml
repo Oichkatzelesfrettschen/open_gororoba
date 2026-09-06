@@ -1,0 +1,26 @@
+schema_version = 1
+evidence_layer = "implementation_conformance"
+parent_experiment = "E-312"
+retained_revision = "605dc7204829a4b07ca7d00620f32f1b2e520130"
+scope = "Explicitly selected SSPRK3 integration of periodic centered induction, seven-point diffusion and centered gradient-divergence damping with prescribed velocity frozen through each step."
+legacy_boundary = "Keep LegacyEuler as the compatibility default and preserve E-312 component-bit replay. Explicit SspRk3 selection uses its own stage calculation."
+rhs = "L(B)=curl_h(u cross B)+eta*Laplacian_7(B)+cleaning_rate^2*grad_h(div_h B). The RK mode integrates damping at every stage; psi records -cleaning_rate^2*div_h(B_final)."
+stages = "B1=B0+dt*L(B0); B2=3/4*B0+1/4*(B1+dt*L(B1)); Bnext=1/3*B0+2/3*(B2+dt*L(B2))."
+polynomial = "R(z)=1+z+z^2/2+z^3/6. For uniform velocity and discretely solenoidal modes, z=-eta*ell*dt-i*(u dot q)*dt, q_j=sin(k_j), ell=4*sum_j sin(k_j/2)^2."
+scalar_stability = "Check |R(-d+ia)|^2 <= 1 for every finite-grid mode using the combined polynomial, not separate diffusion and advection limits. Re=1-d+(d^2-a^2)/2-d^3/6+d*a^2/2; Im=a*(1-d+d^2/2-a^2/6). Report computed binary64 admission separately from a real-arithmetic certificate."
+longitudinal_scope = "For zero velocity a longitudinal centered-divergence mode has z=-dt*(eta*ell+cleaning_rate^2*|q|^2). Uniform-velocity non-solenoidal fields can have nonnormal coupling; scalar transverse admission does not establish their norm stability. Nyquist checkerboards have q=0 and evade centered divergence damping."
+variable_velocity_scope = "Spatially variable velocity permits physical magnetic stretching. Finite-state admission does not certify its stability; a uniform-velocity spectral diagnostic rejects nonuniform input rather than certifying it."
+admission = "Validate each stage and final B/psi before committing. Preserve invalid-input and overflow rejection atomicity. Keep the inherited conservative diffusion-only coefficient admission; the spectral diagnostic is an additional explicitly scoped check rather than a general stability guarantee."
+fourier_shapes = [[16,1,1],[9,5,3],[8,8,8]]
+fourier_steps = [1,2,8,32]
+fourier_error_gate = 1e-12
+fourier_oracle = "Project independently onto sine/cosine amplitudes and compare complex gain with R(z)^m, including mixed transport, longitudinal damping, odd axes, singleton axes and exact nonzero checkerboards."
+stability_controls = "Compare pure-imaginary a=1 (stable) and a=2 (unstable); reject a combined mixed point d=2,a=1.5 even though each axis separately lies in its stable interval. Include the retained Euler instability and exact imaginary-polynomial identity as omission controls."
+temporal_oracle = "At fixed grid and final time compare with the semidiscrete exponential. Halve dt three times for a smooth nonzero mode; require consecutive error ratios between 7 and 9 while errors exceed 1e-12. Report a roundoff-limited row as inconclusive rather than relaxing the gate."
+spatial_oracle = "Use fixed periodic physical length and wave number on 16,32,64 cells with timestep small enough that measured temporal sensitivity is below 1 percent of spatial error. Compare with the continuum advected wave; require consecutive error ratios between 3.5 and 4.5."
+stretching_oracle = "At eta=0 use u=(U*sin(k*y),0,0), B_initial=(0,B0,0). The exact semidiscrete Bx=B0*U*sin(k)*t*cos(k*y) increases magnetic energy physically. Compare field components within 1e-12 and retain energy growth separately from the unstable uniform-advection control."
+fitted_parameter_count = 0
+verification_outcome = "Declared Fourier, atomicity and legacy predicates pass; third-order temporal and second-order spatial gates pass for the specified prescribed-velocity controls."
+revision_outcome = "An oracle, convergence or admission failure requires instrument repair and retained failed results before coupled physical simulations."
+abandonment_outcome = "A declared unstable uniform transverse mode passes the spectral diagnostic, an invalid stage mutates committed fields, or the method fails its declared convergence gates outside the roundoff-limited region."
+inconclusive_outcome = "Prescribed frozen-velocity RK3 does not establish third-order coupled LBM/MHD accuracy, variable-velocity stability, physical boundary suitability, spacecraft agreement or force sensitivity."

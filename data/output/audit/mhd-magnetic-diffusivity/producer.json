@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "base_commit": "7600232336836c0cdb608905342517bcd22a7c02",
+  "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication",
+  "artifacts": [
+    {
+      "path": "crates/lbm_3d/src/mhd.rs",
+      "sha256": "e8bad9c8197e472c0a28d18414cfcc119eda6dfefcdc7594a32591a66f5adcb9",
+      "bytes": 42864
+    },
+    {
+      "path": "crates/lbm_3d/tests/mhd_diffusivity_identity.rs",
+      "sha256": "432b1bd82dd8ae55d4e7ec7fe07e49f175707ab9dfb56d2428b83c97a4432cc5",
+      "bytes": 8436
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs",
+      "sha256": "d0fc1c4874704c4f27274886d69768d076de61dd24c2711821115cc7694825ce",
+      "bytes": 36157
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/solar/wind_mhd_sim.rs",
+      "sha256": "11dcd59810a3768819c581aa95ad4d2de67fb5ae3a8e116bd441b4cc364f2517",
+      "bytes": 9196
+    },
+    {
+      "path": "data/output/audit/mhd-magnetic-diffusivity/retained-step.rs",
+      "sha256": "f1e1a12576c281ac8364f83de70c4cab1f994dc349fc5c6c59f181b1854276be",
+      "bytes": 5944
+    },
+    {
+      "path": "data/output/audit/mhd-magnetic-diffusivity/independent-tests.log",
+      "sha256": "a1586c0854ee1669a22cced5262d66f9344b788ebf2dac2809551d125ed24f96",
+      "bytes": 6544
+    },
+    {
+      "path": "data/output/audit/mhd-magnetic-diffusivity/cli/receipt.toml",
+      "sha256": "c551bfc3b4c0b98283e9bd941b446636d0c60d61b22a2c4eb62bfd3b8a5ab986",
+      "bytes": 8605
+    }
+  ],
+  "test_executable": {
+    "path": "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/mhd_diffusivity_identity-9f84b6404ab9e72f",
+    "sha256": "cdbc21eb98f8d9a552210a4365a2a33e4634cfe857e6761b3714c74b25ba53b6"
+  },
+  "test_command": "CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=$PWD/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e cargo test -p lbm_3d --profile validation --test mhd_diffusivity_identity -- --nocapture",
+  "focused_clippy": {
+    "command": "cargo clippy -p lbm_3d --lib --test mhd_diffusivity_identity --profile validation -- -D warnings",
+    "exit_status": 0
+  }
+}

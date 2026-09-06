@@ -1,0 +1,17 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+    Checking algebra_experimental v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_experimental)
+    Checking gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Checking quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+    Checking pathion_ellip v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/pathion_ellip)
+    Checking cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+    Checking sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+    Checking lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+    Checking neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+    Checking lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+    Checking spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+    Checking cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+    Checking gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 16.37s

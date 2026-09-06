@@ -1,0 +1,14 @@
+panel=scattering total_mie_markers=87
+mie_marker omega=0.227994951384 value=0.038602941176
+mie_marker omega=0.228143231114 value=0.028799019608
+mie_marker omega=0.228289080030 value=0.037990196078
+mie_marker omega=0.228439790576 value=0.066176470588
+mie_marker_linear_interpolation_at_0_2282=0.032376508296
+panel=absorption total_mie_markers=87
+mie_marker omega=0.227992467532 value=0.313308373043
+mie_marker omega=0.228141038961 value=0.279952348536
+mie_marker omega=0.228289610390 value=0.255173587474
+mie_marker omega=0.228441558442 value=0.237780803268
+mie_marker_linear_interpolation_at_0_2282=0.270118819234
+scattering_fitted_total_polygon_intersections_at_0_2282=[0.04803113553113542, 0.027106695521018097]
+absorption_fitted_total_interpolation_at_0_2282=0.296809748001

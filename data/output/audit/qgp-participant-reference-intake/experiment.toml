@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-308"
+title = "ALICE participant table identity and historical reporting preservation"
+status = "active"
+binary = "cargo-test:qgp_scaling:alice_participant_reference"
+claims = ["C-1714"]
+claim_refs = ["C-1714"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "ALICE-PUBLIC-2018-011 Table1 PDF page7, nine typed participant-distribution rows and separately preserved historical arrays."
+input_path_refs = ["data/output/audit/qgp-participant-reference-intake/alice-public-2018-011.pdf", "data/output/audit/qgp-participant-reference-intake/table1-participant-rows.csv", "data/output/audit/qgp-participant-reference-intake/adjudication.toml"]
+method = "Verify typed reference values and population metadata against retained transcription; separate event RMS and systematic mean uncertainty; preserve historical arrays and strict5 percent diagnostic while correcting CLI source labels."
+run = "cargo test -p qgp_scaling --test alice_participant_reference --profile validation; cargo test -p gororoba_cli_physics --bin arleo-falmagne-scaling --profile validation participant_"
+output = ["data/output/audit/qgp-participant-reference-intake/adjudication.toml"]
+output_path_refs = ["data/output/audit/qgp-participant-reference-intake/test.log", "data/output/audit/qgp-participant-reference-intake/cli-reporting-repair.toml"]
+status_note = "Two typed-reference tests and two CLI tests pass. All nine admitted means differ from the historical arrays. Table1 supplies an authenticated alternative, rather than recovered historical lineage; V0M/NBD-Glauber selection differs from optical impact-parameter cuts. Cross-bin covariance and eccentricity provenance remain unresolved."

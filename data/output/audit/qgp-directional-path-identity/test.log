@@ -1,0 +1,21 @@
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 3.39s
+     Running tests/directional_path_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/directional_path_identity-ab3a70bf5068642f)
+
+running 6 tests
+impact_parameter_fm,grid,Lx_fm,Ly_fm,path_eccentricity,Dx_per_fm,Nx,Dy_per_fm,Ny
+test cell_traversal_matches_independent_all_cell_ray_intersections ... ok
+test unequal_fields_use_global_moments_and_reflect_with_the_ray ... ok
+test axis_exchange_reverses_eccentricity_and_forward_support_is_required ... ok
+test density_and_coordinate_scalings_preserve_the_declared_ratios ... ok
+test joint_rectangle_oracle_discriminates_factor_normalization_and_moment_estimators ... ok
+0,64,6.75619206103169745,6.75619206103171877,0.00000000000000158,46547.41674149516620673,157241.64372521179029718,46547.41674149507161928,157241.64372521196492016
+0,128,6.75528418316800838,6.75528418316802171,0.00000000000000099,46546.10812412946688710,157216.09399947986821644,46546.10812412914674496,157216.09399947908241302
+0,256,6.75489120759569861,6.75489120759563733,-0.00000000000000454,46543.65705338999396190,157198.66989964680396952,46543.65705339029955212,157198.66989964639651589
+8,64,2.92964906970415262,5.09348350622489221,0.26969944919178612,3736.03817595941018226,5472.64038328934293531,6518.54930543783393659,16601.06168588066793745
+8,128,2.91103824667234301,5.09004659587276986,0.27233911301799080,3710.55668902080606131,5400.78621909273078927,6512.77451687608026987,16575.16287965600713505
+8,256,2.90449267837468339,5.08923303456734555,0.27330689526355856,3700.27754499456023041,5373.71451869547399838,6509.24465812834205281,16563.53147211389295990
+test hard_sphere_fixed_impact_grid_sensitivity_is_reported_separately ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+

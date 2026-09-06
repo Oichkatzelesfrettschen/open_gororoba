@@ -1,0 +1,23 @@
+schema_version = 1
+family_experiment_id = "E-075"
+producer = "crates/qgp_scaling/tests/epsilon_objective_identity.rs"
+prior_evidence = "data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-adjudication.toml"
+replay = "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-replay.txt"
+mechanism = "Production arleo_falmagne_raa now calls the same quenching::r_aa_model used by extract_epsilon; comparison counts one fitted epsilon with spectral index fixed."
+tests_passed = 2
+tests_failed = 0
+clippy = "pass with -D warnings"
+unchanged_epsilon = 2.92089760824633515
+fit_chi2 = 3866.21121368402646112
+corrected_scorer_equal_weights_chi2 = 3866.21121368402646112
+corrected_scorer_original_weights_chi2 = 3788.88698941034635936
+historical_variance_factor = 0.98
+fitted_parameters = 1
+points_used = 6
+points_excluded = 0
+preserved_historical_scored_ansatz = "The independent historical_plus_shift oracle retains (1+epsilon/pt)^(-n), its minimum at3.40397530853244845 with chi2=1916.55421351686459275 and its score2412.61289764109505995 at the fitted epsilon."
+weight_scope = "The test retains the original0.7/0.7 error split, proves equal-weight fitting/scoring equality, then rescales only the diagnostic score by the historical0.98 common variance factor. Input uncertainty values and physical fitting freedom are unchanged."
+physical_scope = "Numerical objective conformance only; population admission, covariance and source ansatz fidelity remain separate. Physical model ranking stays blocked."
+producer_sha256 = "99c398a4bfe54f2dc80e16177e825bf5e14dd605dc2c85791047d9c0d7a56be9"
+scorer_source_sha256 = "c526560476c64654184c1d64c92223aa2a0a3672f9be8f207d9080e4cd5fe6df"
+replay_sha256 = "3fbc8874c17734b3dd1ce956bd3dce0ea5ea3301dbc904270561ae5331d94cee"

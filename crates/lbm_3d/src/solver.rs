@@ -538,9 +538,14 @@ impl LbmSolver3D {
                             ff[base_cell + 2][2],
                             ff[base_cell + 3][2],
                         ]);
-                        let prefactor =
-                            f64x4::splat(1.0) - f64x4::splat(1.0) / (f64x4::splat(2.0) * tau4);
-                        for (dir, f_val) in f_local.iter_mut().enumerate() {
+                        let prefactor = match mode {
+                            CollisionMode::Bgk => {
+                                f64x4::splat(1.0) - f64x4::splat(1.0) / (f64x4::splat(2.0) * tau4)
+                            }
+                            CollisionMode::Mrt => f64x4::splat(1.0),
+                        };
+                        let mut source = [f64x4::splat(0.0); 19];
+                        for (dir, source_value) in source.iter_mut().enumerate() {
                             let w = f64x4::splat(lattice.weights[dir]);
                             let cx = f64x4::splat(lattice.velocities[dir][0] as f64);
                             let cy = f64x4::splat(lattice.velocities[dir][1] as f64);
@@ -551,7 +556,20 @@ impl LbmSolver3D {
                             let ei_dot_f = cx * fx + cy * fy + cz * fz;
                             let phi_i = ei_minus_u_dot_f * f64x4::splat(3.0)
                                 + (ei_dot_u * ei_dot_f) * f64x4::splat(9.0);
-                            *f_val += prefactor * w * phi_i;
+                            *source_value = prefactor * w * phi_i;
+                        }
+                        if mode == CollisionMode::Mrt {
+                            // A zero-equilibrium collision is A=I-M^-1*S*M, so
+                            // (Phi+A*Phi)/2 applies the MRT Guo factor I-S/2.
+                            let zero = f64x4::splat(0.0);
+                            let relaxed =
+                                collide_mrt_d3q19_x4(&source, zero, zero, zero, zero, tau4);
+                            for (value, transformed) in source.iter_mut().zip(relaxed) {
+                                *value = (*value + transformed) * f64x4::splat(0.5);
+                            }
+                        }
+                        for (population, source_value) in f_local.iter_mut().zip(source) {
+                            *population += source_value;
                         }
                     }
 
@@ -602,8 +620,12 @@ impl LbmSolver3D {
             }
             if let Some(ff) = force_field {
                 let force = ff[idx];
-                let prefactor = 1.0 - 1.0 / (2.0 * tau);
-                for (i, f_val) in f_local.iter_mut().enumerate() {
+                let prefactor = match mode {
+                    CollisionMode::Bgk => 1.0 - 1.0 / (2.0 * tau),
+                    CollisionMode::Mrt => 1.0,
+                };
+                let mut source = [0.0; 19];
+                for (i, source_value) in source.iter_mut().enumerate() {
                     let ei = lattice.velocities[i];
                     let ei_f64 = [ei[0] as f64, ei[1] as f64, ei[2] as f64];
                     let ei_minus_u_dot_f = (ei_f64[0] - u_star[0]) * force[0]
@@ -614,7 +636,17 @@ impl LbmSolver3D {
                     let ei_dot_f =
                         ei_f64[0] * force[0] + ei_f64[1] * force[1] + ei_f64[2] * force[2];
                     let phi_i = ei_minus_u_dot_f * 3.0 + (ei_dot_u * ei_dot_f) * 9.0;
-                    *f_val += prefactor * lattice.weights[i] * phi_i;
+                    *source_value = prefactor * lattice.weights[i] * phi_i;
+                }
+                if mode == CollisionMode::Mrt {
+                    // MRT conserved momentum has S=0 and receives the full source.
+                    let relaxed = collide_mrt_d3q19(&source, 0.0, 0.0, 0.0, 0.0, tau);
+                    for (value, transformed) in source.iter_mut().zip(relaxed) {
+                        *value = (*value + transformed) * 0.5;
+                    }
+                }
+                for (population, source_value) in f_local.iter_mut().zip(source) {
+                    *population += source_value;
                 }
             }
             for (dir, &f_val) in f_local.iter().enumerate() {

@@ -203,8 +203,12 @@ fn cconj(a: c64) -> c64 {
 
 /// Diagonalize Hermitian matrix, returning sorted (eigenvalues, eigenvectors).
 fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
+    try_diagonalize(h).expect("Hermitian eigendecomposition failed")
+}
+
+fn try_diagonalize(h: &Mat<c64>) -> Option<(Vec<f64>, Mat<c64>)> {
     let n = h.nrows();
-    let eig = h.self_adjoint_eigen(Side::Lower).unwrap();
+    let eig = h.self_adjoint_eigen(Side::Lower).ok()?;
 
     let s_diag = eig.S();
     let eigenvalues_raw: Vec<f64> = (0..n).map(|i| s_diag.column_vector()[i].re).collect();
@@ -214,7 +218,7 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
         .enumerate()
         .map(|(i, &e)| (i, e))
         .collect();
-    indexed.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+    indexed.sort_by(|a, b| a.1.total_cmp(&b.1));
 
     let eigenvalues: Vec<f64> = indexed.iter().map(|(_, e)| *e).collect();
 
@@ -226,7 +230,7 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
         }
     }
 
-    (eigenvalues, eigenvectors)
+    Some((eigenvalues, eigenvectors))
 }
 
 // ---------------------------------------------------------------------------
@@ -359,114 +363,342 @@ pub fn hexagonal_symmetry_labels(lattice: &BravaisLattice2D) -> Vec<(String, f64
 // FHS Berry curvature and Chern numbers
 // ---------------------------------------------------------------------------
 
-/// Compute FHS Berry curvature for a single band over the full BZ.
-///
-/// The BZ is the parallelogram spanned by b1, b2, discretized into
-/// n_grid x n_grid plaquettes.
+/// Numerical admission thresholds, in Hamiltonian energy units for gaps.
+#[derive(Clone, Copy, Debug)]
+pub struct TopologyAdmission {
+    pub minimum_gap: f64,
+    pub minimum_link_determinant: f64,
+}
+
+impl Default for TopologyAdmission {
+    fn default() -> Self {
+        Self {
+            minimum_gap: 1e-10,
+            minimum_link_determinant: 1e-12,
+        }
+    }
+}
+
+/// A failed sampled topology predicate; an error never represents zero curvature.
+#[derive(Clone, Debug, PartialEq)]
+pub enum TopologyError {
+    InvalidInput,
+    DiagonalizationFailure {
+        point: [usize; 2],
+    },
+    NonFiniteHamiltonian {
+        point: [usize; 2],
+    },
+    SampledGap {
+        point: [usize; 2],
+        gap: f64,
+    },
+    SingularLink {
+        point: [usize; 2],
+        axis: usize,
+        determinant_norm: f64,
+    },
+}
+
+impl std::fmt::Display for TopologyError {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(formatter, "{self:?}")
+    }
+}
+impl std::error::Error for TopologyError {}
+
+/// FHS determinant curvature for a subspace admitted on a finite grid.
+/// Sampled isolation does not establish a gap between sampled points, and
+/// integer sums alone do not establish resolution convergence.
+#[derive(Clone, Debug)]
+pub struct SampledTopology {
+    pub curvature: Vec<Vec<f64>>,
+    pub bands: std::ops::Range<usize>,
+    /// Absent when the selected subspace contains every orbital.
+    pub minimum_sampled_gap: Option<f64>,
+    pub minimum_link_determinant: f64,
+}
+
+impl SampledTopology {
+    pub fn chern_number(&self) -> f64 {
+        let mut sum = crate::kahan::KahanSum::new();
+        for value in self.curvature.iter().flatten() {
+            sum.add(*value);
+        }
+        sum.total() / (2.0 * PI)
+    }
+
+    /// Fractional-coordinate half-zone integral, not a quantized invariant.
+    pub fn valley_chern_number(&self, valley: Valley) -> f64 {
+        let mut sum = crate::kahan::KahanSum::new();
+        for (row_index, row) in self.curvature.iter().enumerate() {
+            for (column_index, value) in row.iter().enumerate() {
+                let selected = match valley {
+                    Valley::K => row_index > column_index,
+                    Valley::KPrime => row_index < column_index,
+                };
+                if selected {
+                    sum.add(*value);
+                }
+            }
+        }
+        sum.total() / (2.0 * PI)
+    }
+}
+
+fn overlap_determinant(left: &Mat<c64>, right: &Mat<c64>, bands: std::ops::Range<usize>) -> c64 {
+    let count = bands.len();
+    let mut overlap = Mat::from_fn(count, count, |row, column| {
+        let mut sum = c64::new(0.0, 0.0);
+        for orbital in 0..left.nrows() {
+            sum +=
+                cconj(left[(orbital, bands.start + row)]) * right[(orbital, bands.start + column)];
+        }
+        sum
+    });
+    let mut determinant = c64::new(1.0, 0.0);
+    for column in 0..count {
+        let pivot = (column..count)
+            .max_by(|&left_row, &right_row| {
+                overlap[(left_row, column)]
+                    .norm()
+                    .total_cmp(&overlap[(right_row, column)].norm())
+            })
+            .expect("nonempty pivot range");
+        if overlap[(pivot, column)].norm() == 0.0 {
+            return c64::new(0.0, 0.0);
+        }
+        if pivot != column {
+            for index in 0..count {
+                let temporary = overlap[(pivot, index)];
+                overlap[(pivot, index)] = overlap[(column, index)];
+                overlap[(column, index)] = temporary;
+            }
+            determinant = -determinant;
+        }
+        let diagonal = overlap[(column, column)];
+        determinant *= diagonal;
+        for row in column + 1..count {
+            let factor = overlap[(row, column)] / diagonal;
+            for index in column + 1..count {
+                let subtract = factor * overlap[(column, index)];
+                overlap[(row, index)] -= subtract;
+            }
+        }
+    }
+    determinant
+}
+
+fn topology_from_frames(
+    frames: &[Vec<Mat<c64>>],
+    bands: std::ops::Range<usize>,
+    admission: TopologyAdmission,
+    minimum_sampled_gap: Option<f64>,
+) -> Result<SampledTopology, TopologyError> {
+    let grid = frames.len();
+    let mut links = vec![vec![[c64::new(0.0, 0.0); 2]; grid]; grid];
+    let mut minimum_link = f64::INFINITY;
+    for row in 0..grid {
+        for column in 0..grid {
+            for (axis, link) in links[row][column].iter_mut().enumerate() {
+                let neighbor = if axis == 0 {
+                    [(row + 1) % grid, column]
+                } else {
+                    [row, (column + 1) % grid]
+                };
+                let determinant = overlap_determinant(
+                    &frames[row][column],
+                    &frames[neighbor[0]][neighbor[1]],
+                    bands.clone(),
+                );
+                let norm = determinant.norm();
+                if !norm.is_finite() || norm <= admission.minimum_link_determinant {
+                    return Err(TopologyError::SingularLink {
+                        point: [row, column],
+                        axis,
+                        determinant_norm: norm,
+                    });
+                }
+                minimum_link = minimum_link.min(norm);
+                *link = determinant / norm;
+            }
+        }
+    }
+    let curvature = (0..grid)
+        .map(|row| {
+            (0..grid)
+                .map(|column| {
+                    let plaquette = links[row][column][0]
+                        * links[(row + 1) % grid][column][1]
+                        * cconj(links[row][(column + 1) % grid][0])
+                        * cconj(links[row][column][1]);
+                    plaquette.im.atan2(plaquette.re)
+                })
+                .collect()
+        })
+        .collect();
+    Ok(SampledTopology {
+        curvature,
+        bands,
+        minimum_sampled_gap,
+        minimum_link_determinant: minimum_link,
+    })
+}
+
+fn admits_bloch_grid(model: &TightBindingModel) -> bool {
+    let lattice = &model.lattice;
+    let direct = [lattice.a1, lattice.a2];
+    let reciprocal = [lattice.b1, lattice.b2];
+    if direct
+        .iter()
+        .chain(&reciprocal)
+        .any(|vector| !vector.x.is_finite() || !vector.y.is_finite())
+        || model
+            .hoppings
+            .iter()
+            .any(|hopping| hopping.from >= model.n_orbitals() || hopping.to >= model.n_orbitals())
+    {
+        return false;
+    }
+    for vectors in [direct, reciprocal] {
+        let determinant = vectors[0].x * vectors[1].y - vectors[0].y * vectors[1].x;
+        if !determinant.is_finite() || determinant == 0.0 {
+            return false;
+        }
+    }
+    // Public lattice fields must describe the same reciprocal cell. The
+    // tolerance covers rounding in the two dot-product terms, not a fit.
+    for (direct_index, direct_vector) in direct.iter().enumerate() {
+        for (reciprocal_index, reciprocal_vector) in reciprocal.iter().enumerate() {
+            let horizontal = direct_vector.x * reciprocal_vector.x;
+            let vertical = direct_vector.y * reciprocal_vector.y;
+            let expected = if direct_index == reciprocal_index {
+                2.0 * PI
+            } else {
+                0.0
+            };
+            let scale = (horizontal.abs() + vertical.abs()).max(2.0 * PI);
+            let actual = horizontal + vertical;
+            if !scale.is_finite()
+                || !actual.is_finite()
+                || (actual - expected).abs() > 64.0 * f64::EPSILON * scale
+            {
+                return false;
+            }
+        }
+    }
+    true
+}
+
+/// Admit a contiguous isolated band or separated subspace on a finite BZ grid.
+/// Internal degeneracies are allowed; each sampled external gap must exceed
+/// the declared absolute tolerance. Determinant links reject singular overlaps.
+pub fn checked_subspace_topology(
+    model: &TightBindingModel,
+    bands: std::ops::Range<usize>,
+    n_grid: usize,
+    admission: TopologyAdmission,
+) -> Result<SampledTopology, TopologyError> {
+    if !admits_bloch_grid(model)
+        || n_grid < 2
+        || bands.is_empty()
+        || bands.end > model.n_orbitals()
+        || !admission.minimum_gap.is_finite()
+        || admission.minimum_gap < 0.0
+        || !admission.minimum_link_determinant.is_finite()
+        || admission.minimum_link_determinant <= 0.0
+    {
+        return Err(TopologyError::InvalidInput);
+    }
+    let mut minimum_gap = f64::INFINITY;
+    let mut frames = Vec::with_capacity(n_grid);
+    for row in 0..n_grid {
+        let mut frame_row = Vec::with_capacity(n_grid);
+        for column in 0..n_grid {
+            let momentum = model.lattice.b1.scale(row as f64 / n_grid as f64)
+                + model.lattice.b2.scale(column as f64 / n_grid as f64);
+            let hamiltonian = model.hamiltonian_at_k(momentum.x, momentum.y);
+            if (0..hamiltonian.nrows()).any(|row| {
+                (0..hamiltonian.ncols()).any(|column| {
+                    let value = hamiltonian[(row, column)];
+                    !value.re.is_finite() || !value.im.is_finite()
+                })
+            }) {
+                return Err(TopologyError::NonFiniteHamiltonian {
+                    point: [row, column],
+                });
+            }
+            let (energies, frame) =
+                try_diagonalize(&hamiltonian).ok_or(TopologyError::DiagonalizationFailure {
+                    point: [row, column],
+                })?;
+            for boundary in [bands.start, bands.end] {
+                if boundary == 0 || boundary == energies.len() {
+                    continue;
+                }
+                let gap = energies[boundary] - energies[boundary - 1];
+                if !gap.is_finite() || gap <= admission.minimum_gap {
+                    return Err(TopologyError::SampledGap {
+                        point: [row, column],
+                        gap,
+                    });
+                }
+                minimum_gap = minimum_gap.min(gap);
+            }
+            frame_row.push(frame);
+        }
+        frames.push(frame_row);
+    }
+    topology_from_frames(
+        &frames,
+        bands,
+        admission,
+        minimum_gap.is_finite().then_some(minimum_gap),
+    )
+}
+
+/// Checked single-band curvature with default absolute tolerances.
+/// Panics on failed sampled admission; use `checked_subspace_topology` to retain errors.
 pub fn fhs_berry_curvature(model: &TightBindingModel, band: usize, n_grid: usize) -> Vec<Vec<f64>> {
-    let n_orb = model.n_orbitals();
-    let b1 = model.lattice.b1;
-    let b2 = model.lattice.b2;
-
-    // Build eigenvector grid over parallelogram BZ
-    let mut evecs: Vec<Vec<Mat<c64>>> = Vec::with_capacity(n_grid);
-    for i in 0..n_grid {
-        let mut row = Vec::with_capacity(n_grid);
-        for j in 0..n_grid {
-            let s = i as f64 / n_grid as f64;
-            let t = j as f64 / n_grid as f64;
-            let k = b1.scale(s) + b2.scale(t);
-            let h = model.hamiltonian_at_k(k.x, k.y);
-            let (_, evec) = diagonalize(&h);
-            row.push(evec);
-        }
-        evecs.push(row);
-    }
-
-    // U(1) link variable: <psi(k1)|psi(k2)> / |<...>|
-    let link = |i1: usize, j1: usize, i2: usize, j2: usize| -> c64 {
-        let v1 = &evecs[i1][j1];
-        let v2 = &evecs[i2][j2];
-        let mut overlap = c64::new(0.0, 0.0);
-        for orb in 0..n_orb {
-            let a = v1[(orb, band)];
-            let b = v2[(orb, band)];
-            overlap = c64::new(
-                overlap.re + a.re * b.re + a.im * b.im,
-                overlap.im + a.re * b.im - a.im * b.re,
-            );
-        }
-        let norm = (overlap.re * overlap.re + overlap.im * overlap.im).sqrt();
-        if norm > 1e-15 {
-            c64::new(overlap.re / norm, overlap.im / norm)
-        } else {
-            c64::new(1.0, 0.0)
-        }
-    };
-
-    let mut curvature = vec![vec![0.0; n_grid]; n_grid];
-    for (i, curv_row) in curvature.iter_mut().enumerate() {
-        for (j, curv_ij) in curv_row.iter_mut().enumerate() {
-            let i_next = (i + 1) % n_grid;
-            let j_next = (j + 1) % n_grid;
-
-            let u_x = link(i, j, i_next, j);
-            let u_y = link(i_next, j, i_next, j_next);
-            let u_x_inv = cconj(link(i, j_next, i_next, j_next));
-            let u_y_inv = cconj(link(i, j, i, j_next));
-
-            let p1 = cmul(u_x, u_y);
-            let p2 = cmul(p1, u_x_inv);
-            let plaquette = cmul(p2, u_y_inv);
-
-            *curv_ij = plaquette.im.atan2(plaquette.re);
-        }
-    }
-
-    curvature
+    checked_subspace_topology(
+        model,
+        band..band.saturating_add(1),
+        n_grid,
+        TopologyAdmission::default(),
+    )
+    .expect("single-band sampled topology admission failed")
+    .curvature
 }
 
-/// Compute Chern number for a single band (should be integer).
-///
-/// Uses Kahan compensated summation to guarantee O(eps) accumulation error
-/// instead of O(n^2 * eps), ensuring correct integer rounding for large n_grid.
+/// Checked finite-grid single-band sum; a successful sum is not a convergence proof.
+/// Panics on failed admission; use `checked_subspace_topology` for scientific reports.
 pub fn band_chern_number(model: &TightBindingModel, band: usize, n_grid: usize) -> f64 {
-    let curvature = fhs_berry_curvature(model, band, n_grid);
-    let mut f_sum = crate::kahan::KahanSum::new();
-    for row in &curvature {
-        for &f_ij in row {
-            f_sum.add(f_ij);
-        }
-    }
-    f_sum.total() / (2.0 * PI)
+    checked_subspace_topology(
+        model,
+        band..band.saturating_add(1),
+        n_grid,
+        TopologyAdmission::default(),
+    )
+    .expect("single-band sampled topology admission failed")
+    .chern_number()
 }
 
-/// Compute valley Chern number by integrating Berry curvature over half BZ.
-///
-/// The parallelogram BZ is split by the diagonal s = t in fractional
-/// coordinates: K valley has s > t, K' valley has s < t.
+/// Checked half-zone integral with default tolerances; not a quantized invariant.
+/// Panics on failed admission; use `checked_subspace_topology` for scientific reports.
 pub fn valley_chern_number(
     model: &TightBindingModel,
     band: usize,
     n_grid: usize,
     valley: Valley,
 ) -> f64 {
-    let curvature = fhs_berry_curvature(model, band, n_grid);
-    let mut f_sum = crate::kahan::KahanSum::new();
-    for (i, row) in curvature.iter().enumerate() {
-        for (j, &f_ij) in row.iter().enumerate() {
-            let s = (i as f64 + 0.5) / n_grid as f64;
-            let t = (j as f64 + 0.5) / n_grid as f64;
-            let in_valley = match valley {
-                Valley::K => s > t,
-                Valley::KPrime => s < t,
-            };
-            if in_valley {
-                f_sum.add(f_ij);
-            }
-        }
-    }
-    f_sum.total() / (2.0 * PI)
+    checked_subspace_topology(
+        model,
+        band..band.saturating_add(1),
+        n_grid,
+        TopologyAdmission::default(),
+    )
+    .expect("single-band sampled topology admission failed")
+    .valley_chern_number(valley)
 }
 
 /// Detect flat bands: bands with bandwidth below threshold.
@@ -672,25 +904,184 @@ mod tests {
     }
 
     #[test]
-    fn test_graphene_chern_zero() {
+    fn gapless_graphene_rejects_individual_band_but_admits_full_subspace() {
         let model = graphene_model(-1.0);
-        let c0 = band_chern_number(&model, 0, 21);
-        let c1 = band_chern_number(&model, 1, 21);
-        assert!(c0.abs() < 0.1, "Band 0 Chern ~0, got {:.4}", c0);
-        assert!((c0 + c1).abs() < 0.1, "Sum ~0, got {:.4}", c0 + c1);
+        assert!(matches!(
+            checked_subspace_topology(&model, 0..1, 21, TopologyAdmission::default()),
+            Err(TopologyError::SampledGap { .. })
+        ));
+        let topology =
+            checked_subspace_topology(&model, 0..2, 21, TopologyAdmission::default()).unwrap();
+        assert!(topology.chern_number().abs() < 1e-12);
+        assert_eq!(topology.minimum_sampled_gap, None);
     }
 
     #[test]
-    fn test_graphene_valley_chern_antisymmetric() {
+    fn gapped_graphene_admits_isolated_bands() {
+        let mut model = graphene_model(-1.0);
+        model.orbitals[0].on_site_energy = 0.3;
+        model.orbitals[1].on_site_energy = -0.3;
+        for band in 0..2 {
+            let topology =
+                checked_subspace_topology(&model, band..band + 1, 21, TopologyAdmission::default())
+                    .unwrap();
+            assert!(topology.minimum_sampled_gap.unwrap() >= 0.6 - 1e-12);
+            assert!(topology.chern_number().abs() < 1e-12);
+        }
+    }
+
+    #[test]
+    fn separated_degenerate_pair_admits_only_subspace_invariant() {
+        let mut model = graphene_model(0.0);
+        let mut separated = model.orbitals[0].clone();
+        separated.on_site_energy = 2.0;
+        model.orbitals.push(separated);
+        assert!(matches!(
+            checked_subspace_topology(&model, 0..1, 3, TopologyAdmission::default()),
+            Err(TopologyError::SampledGap { .. })
+        ));
+        let topology =
+            checked_subspace_topology(&model, 0..2, 3, TopologyAdmission::default()).unwrap();
+        assert_eq!(topology.minimum_sampled_gap, Some(2.0));
+        assert!(topology.chern_number().abs() < 1e-12);
+    }
+
+    #[test]
+    fn singular_overlap_rejects_instead_of_substituting_unity() {
+        let identity = Mat::identity(2, 2);
+        let swapped = Mat::from_fn(2, 2, |row, column| c64::new(f64::from(row != column), 0.0));
+        let frames = vec![
+            vec![identity.clone(), swapped],
+            vec![identity.clone(), identity],
+        ];
+        assert!(matches!(
+            topology_from_frames(&frames, 0..1, TopologyAdmission::default(), Some(1.0)),
+            Err(TopologyError::SingularLink { .. })
+        ));
+    }
+
+    #[test]
+    fn subspace_curvature_is_invariant_under_local_unitary_rotations() {
+        let grid = 15;
+        // A two-band Chern insulator plus an inert occupied orbital supplies
+        // nonzero curvature; rotations mix both occupied eigenvectors.
+        let baseline: Vec<Vec<_>> = (0..grid)
+            .map(|row| {
+                (0..grid)
+                    .map(|column| {
+                        let momentum_x = 2.0 * PI * row as f64 / grid as f64;
+                        let momentum_y = 2.0 * PI * column as f64 / grid as f64;
+                        let mass = -1.0 + momentum_x.cos() + momentum_y.cos();
+                        let mut hamiltonian = Mat::zeros(3, 3);
+                        hamiltonian[(0, 0)] = c64::new(mass, 0.0);
+                        hamiltonian[(1, 1)] = c64::new(-mass, 0.0);
+                        hamiltonian[(0, 1)] = c64::new(momentum_x.sin(), -momentum_y.sin());
+                        hamiltonian[(1, 0)] = cconj(hamiltonian[(0, 1)]);
+                        hamiltonian[(2, 2)] = c64::new(-5.0, 0.0);
+                        diagonalize(&hamiltonian).1
+                    })
+                    .collect()
+            })
+            .collect();
+        let frames: Vec<Vec<_>> = baseline
+            .iter()
+            .enumerate()
+            .map(|(row, entries)| {
+                entries
+                    .iter()
+                    .enumerate()
+                    .map(|(column, frame)| {
+                        let angle = 0.13 * (row + 2 * column) as f64;
+                        let phase_angle = 0.31 * (2 * row + column) as f64;
+                        let phase = c64::new(phase_angle.cos(), phase_angle.sin());
+                        let mut rotated = frame.clone();
+                        for orbital in 0..3 {
+                            rotated[(orbital, 0)] = phase
+                                * (frame[(orbital, 0)] * angle.cos()
+                                    - frame[(orbital, 1)] * angle.sin());
+                            rotated[(orbital, 1)] = frame[(orbital, 0)] * angle.sin()
+                                + frame[(orbital, 1)] * angle.cos();
+                        }
+                        rotated
+                    })
+                    .collect()
+            })
+            .collect();
+        let rotated =
+            topology_from_frames(&frames, 0..2, TopologyAdmission::default(), Some(1.0)).unwrap();
+        let reference =
+            topology_from_frames(&baseline, 0..2, TopologyAdmission::default(), Some(1.0)).unwrap();
+        assert!((reference.chern_number().abs() - 1.0).abs() < 1e-12);
+        for (actual, expected) in rotated
+            .curvature
+            .iter()
+            .flatten()
+            .zip(reference.curvature.iter().flatten())
+        {
+            assert!((actual - expected).abs() < 1e-12);
+        }
+    }
+
+    #[test]
+    fn topology_rejects_hopping_endpoints_before_matrix_indexing() {
         let model = graphene_model(-1.0);
-        let vcn_k = valley_chern_number(&model, 0, 21, Valley::K);
-        let vcn_kp = valley_chern_number(&model, 0, 21, Valley::KPrime);
-        assert!(
-            (vcn_k + vcn_kp).abs() < 0.15,
-            "VCN(K)+VCN(K') ~ 0, got {:.4}+{:.4}",
-            vcn_k,
-            vcn_kp
+        for endpoint in [0, 1] {
+            let mut invalid = model.clone();
+            if endpoint == 0 {
+                invalid.hoppings[0].from = invalid.n_orbitals();
+            } else {
+                invalid.hoppings[0].to = invalid.n_orbitals();
+            }
+            assert_eq!(
+                checked_subspace_topology(&invalid, 0..1, 3, TopologyAdmission::default())
+                    .unwrap_err(),
+                TopologyError::InvalidInput
+            );
+        }
+    }
+
+    #[test]
+    fn topology_rejects_invalid_geometry_even_for_momentum_independent_hamiltonians() {
+        let mut model = graphene_model(0.0);
+        model.hoppings.clear();
+        model.orbitals[0].on_site_energy = -1.0;
+        model.orbitals[1].on_site_energy = 1.0;
+        assert!(checked_subspace_topology(&model, 0..1, 3, TopologyAdmission::default()).is_ok());
+        let mut invalid_lattices = Vec::new();
+        let mut nonfinite = model.lattice.clone();
+        nonfinite.b1.x = f64::NAN;
+        invalid_lattices.push(nonfinite);
+        let mut degenerate_reciprocal = model.lattice.clone();
+        degenerate_reciprocal.b2 = degenerate_reciprocal.b1;
+        invalid_lattices.push(degenerate_reciprocal);
+        let mut degenerate_direct = model.lattice.clone();
+        degenerate_direct.a2 = degenerate_direct.a1;
+        invalid_lattices.push(degenerate_direct);
+        let mut inconsistent_reciprocal = model.lattice.clone();
+        inconsistent_reciprocal.b1 = inconsistent_reciprocal.b1.scale(2.0);
+        invalid_lattices.push(inconsistent_reciprocal);
+        for lattice in invalid_lattices {
+            model.lattice = lattice;
+            assert_eq!(
+                checked_subspace_topology(&model, 0..1, 3, TopologyAdmission::default())
+                    .unwrap_err(),
+                TopologyError::InvalidInput
+            );
+        }
+    }
+
+    #[test]
+    fn topology_rejects_invalid_grid_and_nonfinite_hamiltonian() {
+        let mut model = graphene_model(-1.0);
+        assert_eq!(
+            checked_subspace_topology(&model, 0..1, 0, TopologyAdmission::default()).unwrap_err(),
+            TopologyError::InvalidInput
         );
+        model.orbitals[0].on_site_energy = f64::NAN;
+        assert!(matches!(
+            checked_subspace_topology(&model, 0..1, 3, TopologyAdmission::default()),
+            Err(TopologyError::NonFiniteHamiltonian { .. })
+        ));
     }
 
     #[test]

@@ -1,0 +1,85 @@
+schema_version = 1
+claim_id = "C-1713"
+evidence_layer = "source proposition and implementation specification"
+source_path = "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324v1.pdf"
+source_sha256 = "0522b734aea9802fd8c124c913fc1813dd944d5f0e19e217143e826a817b72f7"
+source_identity = "F. Arleo and G. Falmagne, arXiv:2212.01324v1"
+network_requests = 0
+source_version_boundary = "The audit binds to the retained v1 bytes and does not establish parity with later versions."
+visual_verification = "Rendered and inspected PDF pages 2, 3 and 6 with Poppler; equations, factor two, denominator, directional prescription, approximation signs and footnote wording checked against page images."
+page_renders = ["source-page2.png", "source-page3.png", "source-page6.png"]
+text_excerpts = ["source-equations-excerpt.json", "source-footnotes-excerpt.json"]
+excerpt_encoding = "JSON strings retain pdftotext -layout output, including mathematical control glyphs"
+
+[eq9]
+locator = "PDF page 2, right column, Eq. (9) and adjacent paragraphs"
+printed_integral_ascii = "L = 2 * integral d ell d x rho_coll(x) rho_part(x + ell) |ell| / integral d ell d x rho_coll(x) rho_part(x + ell)"
+normalization = "Both numerator and denominator integrate over origin x and displacement ell. The numerator has an explicit factor 2 and one additional power of displacement. A mean of separately normalized per-origin paths generally differs from the ratio of these joint integrals."
+production_weight = "rho_coll: transverse binary nucleon-nucleon collision distribution; source identifies it as the hard-parton production-point distribution"
+medium_weight = "rho_part: transverse participant-number distribution evaluated at the displaced position"
+nominal_model = "Optical Glauber with hard-sphere nuclear densities"
+alternative_models = "PDF page 3 left column lists constant rho_part, Woods-Saxon nuclear densities and Glauber Monte Carlo as alternatives used for uncertainty estimates."
+reference_35 = "C. Loizides, J. Kamin and D. d'Enterria, Phys. Rev. C 97, 054910 (2018), erratum C 99, 019901 (2019), arXiv:1710.07098"
+source_underspecification = "Eq. (9) prints d ell d x without explicit integration bounds or dimensional exponents. The adjacent text identifies transverse distributions; page 3 specifies ell along phi for directional paths. Explicit forward-ray limits and an angular averaging measure require implementation declarations rather than attribution to printed bounds."
+
+[directional_specification]
+locator = "PDF page 3, left column after Eq. (10)"
+source_prescription = "L(phi) is given by (9) with ell along phi, and phi=0 is the direction of impact parameter b."
+explicit_forward_ray_convention = "For fixed fields and a declared direction n_phi, define D_phi=integral_R2 d2x integral_0^infinity ds rho_coll(x) rho_part(x+s*n_phi), N_phi=integral_R2 d2x integral_0^infinity ds rho_coll(x) rho_part(x+s*n_phi)*s, and L_phi=2*N_phi/D_phi when D_phi>0."
+convention_status = "The forward ray is an explicit implementation convention consistent with propagation from an origin; the source paragraph leaves the printed integration bounds implicit."
+signed_ray_limit = "For fields invariant under a common central inversion, the positive and negative ray joint integrals coincide, so integrating over the signed line with |s| gives the same ratio. Generic asymmetric fields require separate directional treatment."
+units = "With coordinates in fm and both transverse densities in fm^-2, D_phi has units fm^-1 and N_phi is dimensionless, so L_phi has units fm. Multiplying either density by a positive constant cancels from the ratio."
+normalization_failure = "Zero support, zero denominator, negative densities or nonfinite integrals require an explicit invalid result; a zero-length or zero-eccentricity substitution would conceal failed admission."
+
+[eq11]
+locator = "PDF page 3, right column, Eq. (11)"
+formula = "L(phi) = L * (1 - e*cos(2*phi))"
+scope = "The preceding sentence calls the angular form an approximation. Higher harmonics of an independently evaluated directional path are outside the two-axis reconstruction."
+
+[eq12]
+locator = "PDF page 3, right column, Eq. (12)"
+formula = "e = (L(pi/2) - L(0)) / (L(pi/2) + L(0))"
+units = "dimensionless"
+nondegenerate_scope = "Positive finite directional lengths give a positive denominator and |e|<1. An absent medium or zero denominator leaves the estimator undefined."
+axis_average_limit = "(L(0)+L(pi/2))/2 equals the L of Eq. (11) under its harmonic ansatz. That identity does not establish an arbitrary angular or centrality average of Eq. (9)."
+
+[eq17]
+locator = "PDF page 3, right column, Eqs. (14)-(17)"
+formula = "v2(pT)/e approximately (beta/2) * [pT/RAA(pT)] * dRAA(pT)/dpT"
+units = "Both sides are dimensionless; the derivative has inverse momentum units."
+assumptions = ["Directional suppression follows Eq. (10) using the source quenching function", "Angular path dependence is approximated by Eq. (11)", "Higher even harmonics are neglected in Eq. (14)", "Eq. (15) is expanded to first order in e", "RAA and v2 belong to the same collision system and momentum population"]
+source_check_scope = "The source compares the approximate formula with a model calculation fitting the first three even harmonics and reports particularly good agreement for centralities within 5-60 percent."
+normalization_scope = "A momentum-independent multiplicative RAA normalization cancels in the logarithmic derivative. Shape uncertainty and cross-point covariance require separate propagation."
+zero_e_scope = "At exact circular symmetry both v2 and e can vanish; direct v2/e evaluation is undefined unless a separately established limiting construction is used."
+
+[footnote60]
+locator = "PDF page 6, right column, footnote 60"
+wording = "This definition of e is different than the usual eccentricity ... used to scale v2 at low p_perp."
+printed_formula_ascii = "epsilon = (<y>^2 - <x>^2) / (<y>^2 + <x>^2)"
+typography_boundary = "The rendered footnote places the power outside each expectation bracket. The audit preserves that typography instead of silently replacing it with second moments. The explicit directional Eq. (12) and the prose distinction determine the source estimator."
+implementation_comparison = "qgp_scaling::glauber::eccentricity computes centered second moments weighted by T_A*T_B. Its definition differs from the Eq. (9)/(12) directional ratio independently of the footnote typography. The unadmitted MC epsilon2 vector is a third estimator identity."
+
+[centrality]
+source_scope = "The paper applies the construction to collision systems and centrality classes; the inspected equations and adjacent paragraphs supply no explicit centrality-bin averaging measure, event-weighting prescription, or instruction to average ratios versus numerator/denominator separately."
+implementation_boundary = "A fixed-impact-parameter directional calculation is a bounded implementation surface. Bin admission must separately declare selection, event or hard-process weights, field averaging and the ordering of ratios."
+required_distinctions = ["Mean of eventwise L_phi versus ratio of pooled N_phi and D_phi", "Mean of eventwise e versus e formed from averaged directional lengths", "Impact-parameter selection versus V0M multiplicity selection", "Directional average of ratios versus ratio of angularly pooled moments"]
+exclusion = "Footnote 61 states that the 0-5 percent data are omitted because important fluctuations affect e and those data deviate from the scaling seen in other classes."
+
+[[analytic_oracles]]
+name = "uniform-shared-rectangle"
+input = "rho_coll=A and rho_part=B inside [-a,a] x [-b,b], zero outside, with a,b,A,B positive; forward rays along coordinate axes"
+normalization_x = "D_x=4*A*B*a^2*b"
+first_moment_x = "N_x=(8/3)*A*B*a^3*b"
+lengths = "L_x=4*a/3; L_y=4*b/3"
+eccentricity = "e=(b-a)/(b+a)"
+derivation = "At origin (x,y), the positive x ray has support 0<=s<=a-x. Integrating 1 and s over that interval gives a-x and (a-x)^2/2; integration over the rectangle gives D_x and N_x. Swap a and b for y."
+decisive_example = "a=1 fm,b=2 fm: L_x=4/3 fm,L_y=8/3 fm,e=1/3; centered moment eccentricity is (b^2-a^2)/(b^2+a^2)=3/5."
+falsifiers = ["Omitting the factor two halves both lengths", "Normalizing each origin before averaging gives L_x=a rather than 4*a/3", "Using moment eccentricity gives 3/5 rather than 1/3 in the stated example", "Scaling either density changes the result", "Uniformly scaling both geometry axes fails to scale both lengths linearly"]
+
+[[analytic_oracles]]
+name = "unequal-gaussian-production-and-medium-widths"
+input = "Centered independent anisotropic Gaussian rho_coll and rho_part with positive coordinate standard deviations sigma_cx,sigma_cy,sigma_px,sigma_py; forward coordinate-axis rays"
+convolution = "The position-integrated ray weight along axis j is proportional to exp(-s^2/(2*S_j^2)), with S_j^2=sigma_cj^2+sigma_pj^2."
+lengths = "L_j=2*sqrt(2/pi)*S_j"
+eccentricity = "e=(S_y-S_x)/(S_y+S_x)"
+role = "Unequal production and medium widths expose replacement of rho_coll by rho_part. Infinite-domain Gaussian tails require explicit truncation bounds before numerical agreement is asserted."

@@ -1,0 +1,34 @@
+schema_version = 1
+name = "corrected-mrt-paired-null-instrument"
+source_commit = "a0800278e8794d30bec3b22324d72992dd1e66dd"
+execution_status_at_declaration = "Neither corrected-producer backend has run"
+parent_experiment = "E-298"
+correction_evidence = "E-300"
+scope = "Replay the frozen 16-cubed 24-step direct MRT protocol with the corrected force producer. Preserve every numerical gate, seed, input and historical threshold."
+accuracy = "unassessed"
+physical_resolution = "unassessed"
+outcome = "Report stability and complete trial inventory independently of impulse conformance. Failed conditions remain inadmissible for morphology or force contrasts. Backend agreement alone establishes neither physical accuracy nor algebra specificity."
+
+[[identity]]
+path = "data/output/audit/claim-family-evidence-adjudication/null-control-instrument-protocol.toml"
+sha256 = "d6e133e7c9847263ef8f553dbc3513e5f051d27f0ffacc8ce2b8f2f5fa996d25"
+
+[[identity]]
+path = "data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet"
+sha256 = "4ab4ab1b363871c7bbbba6a9ec55e889732e3ce1629843c31ce2561a6f29c474"
+
+[[identity]]
+path = "crates/lbm_3d/src/solver.rs"
+sha256 = "80473ef20765163366f3858af71e02cc6fdefc802c210ac97d537452fd546f5c"
+
+[[identity]]
+path = "crates/lbm_3d_cuda/src/kernels_soa.cu"
+sha256 = "6c55f10ccc6f90d8732823e78fc86b53773b488736335c9a85a49ddb146ba322"
+
+[[identity]]
+path = "crates/gororoba_cli_physics/src/bin/euclid_df_sweep.rs"
+sha256 = "22baf437fa2735651ef6cd7c2c0bd50f5801c6988bcfe88fde7ea7f3a335ddac"
+
+[[identity]]
+path = "Cargo.lock"
+sha256 = "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e"

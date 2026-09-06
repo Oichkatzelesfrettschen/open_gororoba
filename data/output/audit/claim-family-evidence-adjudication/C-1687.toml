@@ -1,0 +1,31 @@
+claim_id = "C-1687"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Freeze the historical MhdField::parker_spiral_init; hold nonzero omega, radial speed and equatorial direction fixed. Exact asymptotic ratio 1/2 uses source_radius=0."]
+[[intervening_maps]]
+branch = "parker_radial_scaling"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Derive B_r(r) and B_phi(r) symbolically before numerical evaluation."
+[[intervening_maps]]
+branch = "parker_radial_scaling"
+name = "independent_predicate"
+kind = "computational"
+description = "Compare r and 2r using an independent SI expression: B_r ratio 1/4 and B_phi ratio 1/2 for zero source radius; use the declared finite-source expression otherwise."
+[[fitted_parameters]]
+branch = "parker_radial_scaling"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-112","E-114"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-112/E-114 as the recorded family binding, not evidence of completed replay. Compare r and 2r using an independent SI expression: B_r ratio 1/4 and B_phi ratio 1/2 for zero source radius; use the declared finite-source expression otherwise. Zero omega, axial evaluation or mismatched source surfaces make the ratio indecisive. E-114 prescribes radial structure and has input placeholders; observational agreement requires independent data."
+[what_would_verify_refute]
+verification_outcomes = ["The historical expression cancels its r dependence in B_phi and disagrees with the declared zero-source Parker scaling."]
+revision_outcomes = ["Retain the historical constant-B_phi defect and register the corrected ParkerSpiralSi implementation with explicit source radius; revise exact 1/r language when finite-source terms apply."]
+abandonment_outcomes = ["The historical frozen expression already yields the declared radial scaling on identical inputs, refuting the attributed missing factor."]
+inconclusive_outcomes = ["Zero omega, axial evaluation or mismatched source surfaces make the ratio indecisive. E-114 prescribes radial structure and has input placeholders; observational agreement requires independent data."]

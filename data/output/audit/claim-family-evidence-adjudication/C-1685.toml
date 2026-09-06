@@ -1,0 +1,31 @@
+claim_id = "C-1685"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Freeze density, velocity, halo field, mesh and observation timestep; distinguish changing the physical magnetic amplitude from changing only its numerical unit."]
+[[intervening_maps]]
+branch = "magnetic_normalization"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Derive lattice and SI Lorentz force-density expressions including permeability, density, spacing and timestep."
+[[intervening_maps]]
+branch = "magnetic_normalization"
+name = "independent_predicate"
+kind = "computational"
+description = "Replay the historical B multiplier values 0.005,0.05,0.5,5,50 at the historical producer; separately change lattice units while holding the physical field fixed and convert both forces to N/m3."
+[[fitted_parameters]]
+branch = "magnetic_normalization"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-112","E-113"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-112/E-113 as the recorded family binding, not evidence of completed replay. Replay the historical B multiplier values 0.005,0.05,0.5,5,50 at the historical producer; separately change lattice units while holding the physical field fixed and convert both forces to N/m3. Density/permeability/mesh/field identity, gravitational frame, outflow and full coupled sensitivity remain unresolved. E-113 placeholder IC prevents physical replay; a physical amplitude change legitimately changes Lorentz force."
+[what_would_verify_refute]
+verification_outcomes = ["At fixed historical numerical convention the enumerated multiplier sweep yields the recorded inverse-square ratio; the arbitrary unit convention cannot establish a physical exponent."]
+revision_outcomes = ["A consistent SI conversion preserves the physical ratio under unit changes; retain the historical normalization defect and register a physically admitted successor only after all inputs and sensitivity pass."]
+abandonment_outcomes = ["The frozen force ratio fails inverse-square scaling on the declared static inputs, refuting the exact historical scaling assertion."]
+inconclusive_outcomes = ["Density/permeability/mesh/field identity, gravitational frame, outflow and full coupled sensitivity remain unresolved. E-113 placeholder IC prevents physical replay; a physical amplitude change legitimately changes Lorentz force."]

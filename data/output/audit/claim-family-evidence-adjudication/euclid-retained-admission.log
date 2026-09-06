@@ -1,0 +1,9 @@
+    Finished `validation` profile [optimized + debuginfo] target(s) in 0.26s
+     Running tests/euclid_catalog_admission.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/euclid_catalog_admission-2d25dced1fd449af)
+
+running 1 test
+rows_read=399562 rows_admitted=383308 rows_rejected=16254
+test retained_catalog_admission ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.40s
+

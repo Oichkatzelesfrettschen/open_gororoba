@@ -1,0 +1,108 @@
+[
+  {
+    "variant": "default_real32",
+    "operation": "fortran-build",
+    "argv": [
+      "gfortran",
+      "-O0",
+      "-std=legacy",
+      "-ffp-contract=off",
+      "-c",
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-fdss.f",
+      "-o",
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32.o"
+    ],
+    "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication",
+    "exit_status": 0,
+    "stdout": "data/output/audit/qgp-fragmentation-interpolation/default_real32-fortran-build.stdout",
+    "stderr": "data/output/audit/qgp-fragmentation-interpolation/default_real32-fortran-build.stderr"
+  },
+  {
+    "variant": "default_real32",
+    "operation": "rust-build",
+    "argv": [
+      "rustc",
+      "--edition=2024",
+      "-D",
+      "warnings",
+      "-C",
+      "opt-level=0",
+      "-C",
+      "link-arg=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32.o",
+      "-C",
+      "link-arg=-lgfortran",
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/qgp-fragmentation-interpolation/reference-driver.rs",
+      "-o",
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32"
+    ],
+    "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication",
+    "exit_status": 0,
+    "stdout": "data/output/audit/qgp-fragmentation-interpolation/default_real32-rust-build.stdout",
+    "stderr": "data/output/audit/qgp-fragmentation-interpolation/default_real32-rust-build.stderr"
+  },
+  {
+    "variant": "default_real32",
+    "operation": "replay",
+    "argv": [
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real32"
+    ],
+    "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference",
+    "exit_status": 0,
+    "stdout": "data/output/audit/qgp-fragmentation-interpolation/default_real32.csv",
+    "stderr": "data/output/audit/qgp-fragmentation-interpolation/default_real32-replay.stderr"
+  },
+  {
+    "variant": "default_real64_knots_and_exponent_amendment",
+    "operation": "fortran-build",
+    "argv": [
+      "gfortran",
+      "-O0",
+      "-std=legacy",
+      "-ffp-contract=off",
+      "-fdefault-real-8",
+      "-fdefault-double-8",
+      "-c",
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-fdss.f",
+      "-o",
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment.o"
+    ],
+    "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication",
+    "exit_status": 0,
+    "stdout": "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-fortran-build.stdout",
+    "stderr": "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-fortran-build.stderr"
+  },
+  {
+    "variant": "default_real64_knots_and_exponent_amendment",
+    "operation": "rust-build",
+    "argv": [
+      "rustc",
+      "--edition=2024",
+      "-D",
+      "warnings",
+      "-C",
+      "opt-level=0",
+      "-C",
+      "link-arg=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment.o",
+      "-C",
+      "link-arg=-lgfortran",
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/qgp-fragmentation-interpolation/reference-driver.rs",
+      "-o",
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment"
+    ],
+    "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication",
+    "exit_status": 0,
+    "stdout": "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-rust-build.stdout",
+    "stderr": "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-rust-build.stderr"
+  },
+  {
+    "variant": "default_real64_knots_and_exponent_amendment",
+    "operation": "replay",
+    "argv": [
+      "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference/default_real64_knots_and_exponent_amendment"
+    ],
+    "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/dss-reference",
+    "exit_status": 0,
+    "stdout": "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment.csv",
+    "stderr": "data/output/audit/qgp-fragmentation-interpolation/default_real64_knots_and_exponent_amendment-replay.stderr"
+  }
+]

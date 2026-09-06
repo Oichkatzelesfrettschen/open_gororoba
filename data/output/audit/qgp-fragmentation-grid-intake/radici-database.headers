@@ -1,0 +1,7 @@
+HTTP/1.1 301 Moved Permanently
+Date: Sun, 06 Sep 2026 00:56:49 GMT
+Server: Apache/2.4.37 (centos) OpenSSL/1.1.1k
+Location: http://www2.pv.infn.it/~radici/FFdatabase/
+Content-Length: 250
+Content-Type: text/html; charset=iso-8859-1
+

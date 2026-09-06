@@ -1,0 +1,49 @@
+schema_version = 1
+claim_id = "C-1722"
+evidence_layer = "source_proposition"
+ordering = "normal"
+theta23_degrees = 48.99
+comparison_fitted_parameters = 0
+scope = "Membership of a fixed scorecard angle in precisely identified published intervals; source fit dimensionality and physical model fitting remain separate."
+source_inspection = "pdftotext -layout and full-page rendered table inspection"
+historical_comparison = "data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml"
+[[reference]]
+release = "6.0"
+analysis = "IC19 without SK atmospheric data"
+source = "nufit-v60-parameters.pdf"
+sha256 = "d39bb902b607bb27d4271646aefb48d073005eb4c764d536e50b1bab9238c658"
+best_fit_degrees = 48.5
+one_sigma_degrees = [47.6, 49.2]
+three_sigma_degrees = [41.0, 50.5]
+inside_one_sigma = true
+inside_three_sigma = true
+[[reference]]
+release = "6.0"
+analysis = "IC24 with SK atmospheric data"
+source = "nufit-v60-parameters.pdf"
+sha256 = "d39bb902b607bb27d4271646aefb48d073005eb4c764d536e50b1bab9238c658"
+best_fit_degrees = 43.3
+one_sigma_degrees = [42.5, 44.3]
+three_sigma_degrees = [41.3, 49.9]
+inside_one_sigma = false
+inside_three_sigma = true
+[[reference]]
+release = "6.1"
+analysis = "IC23 without SK atmospheric data"
+source = "nufit-v61-parameters.pdf"
+sha256 = "a22a4538894dd911f0988831c8a857fc3d3b405806e0ccaa25a4b5d3458bcc61"
+best_fit_degrees = 43.27
+one_sigma_degrees = [42.45, 44.27]
+three_sigma_degrees = [41.11, 50.02]
+inside_one_sigma = false
+inside_three_sigma = true
+[[reference]]
+release = "6.1"
+analysis = "IC24 with SK atmospheric data"
+source = "nufit-v61-parameters.pdf"
+sha256 = "a22a4538894dd911f0988831c8a857fc3d3b405806e0ccaa25a4b5d3458bcc61"
+best_fit_degrees = 43.29
+one_sigma_degrees = [42.50, 44.25]
+three_sigma_degrees = [41.27, 49.86]
+inside_one_sigma = false
+inside_three_sigma = true

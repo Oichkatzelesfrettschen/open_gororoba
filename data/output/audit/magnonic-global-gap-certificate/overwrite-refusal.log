@@ -1,0 +1,18 @@
+    Finished `validation` profile [optimized + debuginfo] target(s) in 0.19s
+     Running tests/magnonic_global_gap_certificate.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/magnonic_global_gap_certificate-259bd873c3add1dd)
+
+running 1 test
+
+thread 'retain_table_i_then_table_ii_global_certificate' (836077) panicked at crates/quantum_core/tests/magnonic_global_gap_certificate.rs:119:10:
+Use a fresh destination for each retained campaign: Os { code: 17, kind: AlreadyExists, message: "File exists" }
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test retain_table_i_then_table_ii_global_certificate ... FAILED
+
+failures:
+
+failures:
+    retain_table_i_then_table_ii_global_certificate
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `-p quantum_core --test magnonic_global_gap_certificate`

@@ -1,0 +1,68 @@
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 8.96s
+     Running tests/mhd_diffusivity_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/mhd_diffusivity_identity-9f84b6404ab9e72f)
+
+running 5 tests
+centered induction eta0 expected_energy_multiplier=1.00146446609406725e0 observed=1.00146446609406747e0
+retained bitwise eta=0 cleaning=0 step=1 components=240
+retained bitwise eta=0 cleaning=0 step=2 components=240
+retained bitwise eta=0 cleaning=0 step=3 components=240
+mode shape=[16, 4, 3] k=[1, 0, 0] eta=0.1 dt=0.5 step=1 g=9.92387953251128718e-1 amplitude_error=1.11022302462515654e-16 energy_error=1.77635683940025046e-15
+SI eta_m2_s=400000000 dx_m=1000000 dt_s=0.125 eta_lattice=5.00000000000000024e-5
+SI eta_m2_s=400000000 dx_m=2000000 dt_s=0.5 eta_lattice=5.00000000000000024e-5
+SI eta_m2_s=400000000 dx_m=1000000 dt_s=0.25 eta_lattice=1.00000000000000005e-4
+test admitted_diffusion_does_not_certify_centered_induction_stability ... retained bitwise eta=0 cleaning=0 step=4 components=240
+retained invalid eta=-0.1 silently_skips_diffusion=true corrected_rejects=true
+retained bitwise eta=0 cleaning=0.1 step=1 components=240
+ok
+mode shape=[16, 4, 3] k=[1, 0, 0] eta=0.1 dt=0.5 step=2 g=9.92387953251128718e-1 amplitude_error=1.11022302462515654e-16 energy_error=7.77156117237609578e-16
+retained bitwise eta=0 cleaning=0.1 step=2 components=240
+retained invalid eta=NaN silently_skips_diffusion=true corrected_rejects=true
+test si_diffusivity_preserves_the_dimensionless_transport_number ... ok
+retained bitwise eta=0 cleaning=0.1 step=3 components=240
+mode shape=[16, 4, 3] k=[1, 0, 0] eta=0.1 dt=0.5 step=8 g=9.92387953251128718e-1 amplitude_error=2.77555756156289135e-16 energy_error=0.00000000000000000e0
+retained bitwise eta=0 cleaning=0.1 step=4 components=240
+retained bitwise eta=0.01 cleaning=0 step=1 components=240
+retained bitwise eta=0.01 cleaning=0 step=2 components=240
+retained unstable diffusion energy_multiplier=1.96000000000001418e0 corrected_rejects=true
+retained bitwise eta=0.01 cleaning=0 step=3 components=240
+retained bitwise eta=0.01 cleaning=0 step=4 components=240
+retained bitwise eta=0.01 cleaning=0.1 step=1 components=240
+test invalid_updates_preserve_fields_and_retained_failures ... ok
+retained bitwise eta=0.01 cleaning=0.1 step=2 components=240
+retained bitwise eta=0.01 cleaning=0.1 step=3 components=240
+retained bitwise eta=0.01 cleaning=0.1 step=4 components=240
+retained bitwise eta=0.1 cleaning=0 step=1 components=240
+retained bitwise eta=0.1 cleaning=0 step=2 components=240
+retained bitwise eta=0.1 cleaning=0 step=3 components=240
+retained bitwise eta=0.1 cleaning=0 step=4 components=240
+retained bitwise eta=0.1 cleaning=0.1 step=1 components=240
+retained bitwise eta=0.1 cleaning=0.1 step=2 components=240
+retained bitwise eta=0.1 cleaning=0.1 step=3 components=240
+retained bitwise eta=0.1 cleaning=0.1 step=4 components=240
+test admitted_states_match_retained_arithmetic_bitwise ... ok
+mode shape=[16, 4, 3] k=[1, 0, 0] eta=0.1 dt=0.5 step=32 g=9.92387953251128718e-1 amplitude_error=6.66133814775093924e-16 energy_error=4.44089209850062616e-16
+mode shape=[16, 4, 3] k=[3, 0, 0] eta=0.1 dt=0.5 step=1 g=9.38268343236508984e-1 amplitude_error=2.22044604925031308e-16 energy_error=4.44089209850062616e-16
+mode shape=[16, 4, 3] k=[3, 0, 0] eta=0.1 dt=0.5 step=2 g=9.38268343236508984e-1 amplitude_error=4.44089209850062616e-16 energy_error=1.11022302462515654e-15
+mode shape=[16, 4, 3] k=[3, 0, 0] eta=0.1 dt=0.5 step=8 g=9.38268343236508984e-1 amplitude_error=7.77156117237609578e-16 energy_error=2.77555756156289135e-16
+mode shape=[16, 4, 3] k=[3, 0, 0] eta=0.1 dt=0.5 step=32 g=9.38268343236508984e-1 amplitude_error=6.93889390390722838e-16 energy_error=3.46944695195361419e-18
+mode shape=[8, 8, 8] k=[1, 1, 0] eta=0.125 dt=1 step=1 g=8.53553390593273731e-1 amplitude_error=2.22044604925031308e-16 energy_error=2.33146835171282873e-15
+mode shape=[8, 8, 8] k=[1, 1, 0] eta=0.125 dt=1 step=2 g=8.53553390593273731e-1 amplitude_error=3.33066907387546962e-16 energy_error=2.44249065417534439e-15
+mode shape=[8, 8, 8] k=[1, 1, 0] eta=0.125 dt=1 step=8 g=8.53553390593273731e-1 amplitude_error=1.66533453693773481e-16 energy_error=0.00000000000000000e0
+mode shape=[8, 8, 8] k=[1, 1, 0] eta=0.125 dt=1 step=32 g=8.53553390593273731e-1 amplitude_error=5.37764277552810199e-17 energy_error=8.13151629364128326e-20
+mode shape=[8, 8, 8] k=[4, 4, 4] eta=0.125 dt=1 step=1 g=-5.00000000000000000e-1 amplitude_error=0.00000000000000000e0 energy_error=0.00000000000000000e0
+mode shape=[8, 8, 8] k=[4, 4, 4] eta=0.125 dt=1 step=2 g=-5.00000000000000000e-1 amplitude_error=0.00000000000000000e0 energy_error=0.00000000000000000e0
+mode shape=[8, 8, 8] k=[4, 4, 4] eta=0.125 dt=1 step=8 g=-5.00000000000000000e-1 amplitude_error=0.00000000000000000e0 energy_error=0.00000000000000000e0
+mode shape=[8, 8, 8] k=[4, 4, 4] eta=0.125 dt=1 step=32 g=-5.00000000000000000e-1 amplitude_error=0.00000000000000000e0 energy_error=0.00000000000000000e0
+mode shape=[16, 1, 1] k=[3, 0, 0] eta=0.4 dt=1 step=1 g=5.06146745892071870e-1 amplitude_error=1.60982338570647698e-15 energy_error=5.55111512312578270e-17
+mode shape=[16, 1, 1] k=[3, 0, 0] eta=0.4 dt=1 step=2 g=5.06146745892071870e-1 amplitude_error=7.21644966006351751e-16 energy_error=8.32667268468867405e-17
+mode shape=[16, 1, 1] k=[3, 0, 0] eta=0.4 dt=1 step=8 g=5.06146745892071870e-1 amplitude_error=5.46654735367191336e-16 energy_error=5.42101086242752217e-20
+mode shape=[16, 1, 1] k=[3, 0, 0] eta=0.4 dt=1 step=32 g=5.06146745892071870e-1 amplitude_error=3.16203189448468794e-16 energy_error=1.43891040970031359e-31
+mode shape=[16, 4, 3] k=[1, 0, 0] eta=0 dt=1 step=1 g=1.00000000000000000e0 amplitude_error=0.00000000000000000e0 energy_error=0.00000000000000000e0
+mode shape=[16, 4, 3] k=[1, 0, 0] eta=0 dt=1 step=2 g=1.00000000000000000e0 amplitude_error=0.00000000000000000e0 energy_error=0.00000000000000000e0
+mode shape=[16, 4, 3] k=[1, 0, 0] eta=0 dt=1 step=8 g=1.00000000000000000e0 amplitude_error=0.00000000000000000e0 energy_error=0.00000000000000000e0
+mode shape=[16, 4, 3] k=[1, 0, 0] eta=0 dt=1 step=32 g=1.00000000000000000e0 amplitude_error=0.00000000000000000e0 energy_error=0.00000000000000000e0
+test evolving_fourier_modes_match_amplitude_and_energy ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

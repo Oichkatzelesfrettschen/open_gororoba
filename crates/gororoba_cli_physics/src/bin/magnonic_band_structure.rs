@@ -19,7 +19,7 @@ use quantum_core::{
         InversionBreakingParams, MagnonicTBParams, build_domain_wall_supercell,
         build_magnonic_9band, compute_magnonic_bands, point_defect_modes,
     },
-    tight_binding::{Valley, band_chern_number, detect_flat_bands, valley_chern_number},
+    tight_binding::{TopologyAdmission, Valley, checked_subspace_topology, detect_flat_bands},
 };
 
 #[derive(Parser)]
@@ -103,7 +103,7 @@ enum Commands {
         output: Option<String>,
     },
 
-    /// Point defect localized mode solver
+    /// Spectral-gap candidates in an open point-defect patch; localization unassessed
     Defect {
         /// Supercell radius (total side = 2*radius+1)
         #[arg(long, default_value = "3")]
@@ -248,65 +248,32 @@ fn run_chern(n_grid: usize, json: bool) {
 }
 
 fn print_chern_json(model: &quantum_core::tight_binding::TightBindingModel, n_grid: usize) {
-    let n = model.n_orbitals();
-    let cherns: Vec<f64> = (0..n)
-        .map(|b| band_chern_number(model, b, n_grid))
-        .collect();
-    let vcn_k: Vec<f64> = (0..n)
-        .map(|b| valley_chern_number(model, b, n_grid, Valley::K))
-        .collect();
-    let vcn_kp: Vec<f64> = (0..n)
-        .map(|b| valley_chern_number(model, b, n_grid, Valley::KPrime))
-        .collect();
+    let bands: Vec<_> = (0..model.n_orbitals()).map(|band| {
+        match checked_subspace_topology(model, band..band + 1, n_grid, TopologyAdmission::default()) {
+            Ok(topology) => serde_json::json!({"band": band, "chern": topology.chern_number(), "vcn_k": topology.valley_chern_number(Valley::K), "vcn_kprime": topology.valley_chern_number(Valley::KPrime), "scope": "sampled_gap_and_links"}),
+            Err(error) => serde_json::json!({"band": band, "chern": null, "vcn_k": null, "vcn_kprime": null, "admission_error": error.to_string()}),
+        }
+    }).collect();
     println!(
-        "    \"chern\": [{}],",
-        cherns
-            .iter()
-            .map(|c| format!("{:.4}", c))
-            .collect::<Vec<_>>()
-            .join(", ")
-    );
-    println!(
-        "    \"vcn_k\": [{}],",
-        vcn_k
-            .iter()
-            .map(|c| format!("{:.4}", c))
-            .collect::<Vec<_>>()
-            .join(", ")
-    );
-    println!(
-        "    \"vcn_kprime\": [{}]",
-        vcn_kp
-            .iter()
-            .map(|c| format!("{:.4}", c))
-            .collect::<Vec<_>>()
-            .join(", ")
+        "    \"bands\": {}",
+        serde_json::to_string(&bands).expect("finite topology records")
     );
 }
 
 fn print_chern_table(model: &quantum_core::tight_binding::TightBindingModel, n_grid: usize) {
-    let n = model.n_orbitals();
-    println!(
-        "{:>5}  {:>8}  {:>8}  {:>8}",
-        "Band", "Chern", "VCN(K)", "VCN(K')"
-    );
-    println!("{:-<5}  {:-<8}  {:-<8}  {:-<8}", "", "", "", "");
-
-    let mut total_c = 0.0;
-    for b in 0..n {
-        let c = band_chern_number(model, b, n_grid);
-        let vk = valley_chern_number(model, b, n_grid, Valley::K);
-        let vkp = valley_chern_number(model, b, n_grid, Valley::KPrime);
-        total_c += c;
-        println!("{:5}  {:+8.4}  {:+8.4}  {:+8.4}", b, c, vk, vkp);
+    println!("Band  Chern  VCN(K)  VCN(K')  sampled admission");
+    for band in 0..model.n_orbitals() {
+        match checked_subspace_topology(model, band..band + 1, n_grid, TopologyAdmission::default())
+        {
+            Ok(topology) => println!(
+                "{band:5} {:+8.4} {:+8.4} {:+8.4} admitted",
+                topology.chern_number(),
+                topology.valley_chern_number(Valley::K),
+                topology.valley_chern_number(Valley::KPrime)
+            ),
+            Err(error) => println!("{band:5} unavailable: {error}"),
+        }
     }
-    println!("{:-<5}  {:-<8}  {:-<8}  {:-<8}", "", "", "", "");
-    println!("{:>5}  {:+8.4}", "Total", total_c);
-    println!(
-        "  Sum of Chern = {:.4} (should be 0): {}",
-        total_c,
-        if total_c.abs() < 0.5 { "PASS" } else { "FAIL" }
-    );
 }
 
 fn run_flat_band(n_k: usize, threshold: f64, json: bool) {
@@ -408,8 +375,11 @@ fn run_sweep(param: &str, min: f64, max: f64, steps: usize, n_grid: usize, outpu
         }
         // Chern numbers for bands near Dirac point (bands 2-3 typically)
         for b in 0..9_usize.min(model.n_orbitals()) {
-            let c = band_chern_number(&model, b, n_grid);
-            row.push(format!("{:.4}", c));
+            match checked_subspace_topology(&model, b..b + 1, n_grid, TopologyAdmission::default())
+            {
+                Ok(topology) => row.push(format!("{:.4}", topology.chern_number())),
+                Err(error) => row.push(format!("unavailable: {error}")),
+            }
         }
         rows.push(row);
 
@@ -498,7 +468,7 @@ fn run_defect(radius: usize, json: bool) {
     let n_orb = side * side * 9 - 1; // one kagome site removed
 
     if !json {
-        println!("Magnonic Crystal Point Defect Modes");
+        println!("Magnonic Crystal Spectral-Gap Candidates");
         println!("====================================");
         println!(
             "Supercell: {}x{} = {} cells ({} orbitals)",
@@ -522,9 +492,11 @@ fn run_defect(radius: usize, json: bool) {
         println!("  \"radius\": {},", radius);
         println!("  \"supercell_side\": {},", side);
         println!("  \"n_orbitals\": {},", n_orb);
-        println!("  \"n_defect_modes\": {},", modes.len());
+        println!("  \"localization_status\": \"unassessed\",");
+        println!("  \"parameter_origin\": \"repository_reference\",");
+        println!("  \"n_gap_candidates\": {},", modes.len());
         println!(
-            "  \"mode_frequencies_ghz\": [{}]",
+            "  \"candidate_model_frequencies_ghz\": [{}]",
             modes
                 .iter()
                 .map(|f| format!("{:.6}", f))
@@ -533,13 +505,14 @@ fn run_defect(radius: usize, json: bool) {
         );
         println!("}}");
     } else {
-        println!("Defect modes in bulk gap: {}", modes.len());
+        println!("Candidates in sampled bulk gap: {}", modes.len());
+        println!("Localization: unassessed; repository reference model frequencies");
         for (i, &f) in modes.iter().enumerate() {
-            println!("  Mode {}: {:.4} GHz", i, f);
+            println!("  Candidate {}: {:.4} model GHz", i, f);
         }
         if modes.len() >= 2 {
             let splitting = (modes[1] - modes[0]).abs();
-            println!("\nFirst mode splitting: {:.4} GHz", splitting);
+            println!("\nFirst candidate energy spacing: {:.4} model GHz", splitting);
         }
     }
 }

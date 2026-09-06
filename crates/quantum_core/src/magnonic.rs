@@ -12,7 +12,7 @@
 //! - Saturation magnetization M_s = 1.4e5 A/m
 //! - Gilbert damping alpha ~ 1e-4 (ultra-low)
 //! - Exchange stiffness A_ex = 3.5e-12 J/m
-//! - Gyromagnetic ratio gamma = 2.8e10 rad/(s*T)
+//! - Angular gyromagnetic ratio gamma = 2*pi*28e9 rad/(s*T)
 //!
 //! # Literature
 //!
@@ -20,7 +20,7 @@
 
 use std::f64::consts::PI;
 
-/// Vacuum permeability mu_0 in T*m/A (SI exact since 2019 redefinition).
+/// Vacuum permeability reference value mu_0 in T*m/A.
 pub const MU_0: f64 = 1.256_637_062_12e-6;
 
 /// Bohr magneton in J/T.
@@ -45,14 +45,14 @@ pub struct YigParams {
 }
 
 impl YigParams {
-    /// Standard YIG parameters from Kaman et al. and literature.
+    /// YIG reference parameter set; source-table reproduction is a separate predicate.
     pub fn kaman_standard() -> Self {
         Self {
             m_s: 1.4e5,
             alpha: 1e-4,
             a_ex: 3.5e-12,
             thickness: 20e-9,
-            gamma: 2.8e10,
+            gamma: 2.0 * PI * 28.0e9,
         }
     }
 
@@ -61,9 +61,10 @@ impl YigParams {
         (2.0 * self.a_ex / (MU_0 * self.m_s * self.m_s)).sqrt()
     }
 
-    /// Exchange stiffness in frequency units: D_ex = 2*A_ex / (mu_0*M_s) in m^2*rad/s.
+    /// Angular-frequency dispersion coefficient gamma*2*A_ex/M_s in rad*m^2/s.
+    /// The exchange field coefficient 2*A_ex/M_s carries T*m^2, matching gamma in rad/(s*T).
     pub fn exchange_stiffness_freq(&self) -> f64 {
-        2.0 * self.a_ex / (MU_0 * self.m_s)
+        self.gamma * 2.0 * self.a_ex / self.m_s
     }
 }
 
@@ -79,7 +80,7 @@ pub struct MagnonicCrystalGeometry {
 }
 
 impl MagnonicCrystalGeometry {
-    /// Kaman et al. standard geometry: a=400nm, d/a=0.6, B=50mT.
+    /// Repository reference geometry: a=400nm, d/a=0.6, B=50mT.
     pub fn kaman_standard() -> Self {
         Self {
             lattice_constant: 400e-9,
@@ -96,10 +97,11 @@ impl MagnonicCrystalGeometry {
 
 /// Homogeneous magnon frequency (no patterning, k-dependent).
 ///
-/// omega(k) = gamma * mu_0 * (B_ext + mu_0*M_s) + gamma * D_ex * k^2
+/// omega(k) = gamma * (B_ext + mu_0*M_s) + D_ex * k^2
 ///
-/// The first term is the FMR frequency at k=0; the second is exchange-driven
-/// dispersion. Returns angular frequency in rad/s.
+/// The additive effective-field convention is a repository model; its geometry
+/// and demagnetizing-field interpretation require independent source validation.
+/// The exchange term and field term both return angular frequency in rad/s.
 pub fn magnon_frequency_homogeneous(
     yig: &YigParams,
     geom: &MagnonicCrystalGeometry,
@@ -107,7 +109,7 @@ pub fn magnon_frequency_homogeneous(
 ) -> f64 {
     let omega_0 = yig.gamma * MU_0 * (geom.b_ext / MU_0 + yig.m_s);
     let d_ex = yig.exchange_stiffness_freq();
-    omega_0 + yig.gamma * d_ex * k * k
+    omega_0 + d_ex * k * k
 }
 
 /// Holstein-Primakoff validity bound: maximum magnon occupation number.
@@ -180,6 +182,38 @@ mod tests {
             omega_k > omega_0,
             "Exchange should increase frequency with k"
         );
+    }
+
+    #[test]
+    fn external_field_slope_matches_cyclic_gyromagnetic_reference() {
+        let yig = YigParams::kaman_standard();
+        let lower = MagnonicCrystalGeometry::kaman_standard();
+        let mut upper = lower.clone();
+        upper.b_ext += 0.25;
+        let frequency_difference = rad_per_s_to_ghz(
+            magnon_frequency_homogeneous(&yig, &upper, 0.0)
+                - magnon_frequency_homogeneous(&yig, &lower, 0.0),
+        );
+        assert!((frequency_difference - 7.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn exchange_shift_matches_independent_si_field_oracle() {
+        let yig = YigParams::kaman_standard();
+        let geometry = MagnonicCrystalGeometry::kaman_standard();
+        let wave_number = 1.0e7;
+        let exchange_field_t = 2.0 * 3.5e-12 / 1.4e5 * wave_number * wave_number;
+        let expected_shift_ghz = 28.0 * exchange_field_t;
+        let observed_shift_ghz = rad_per_s_to_ghz(
+            magnon_frequency_homogeneous(&yig, &geometry, wave_number)
+                - magnon_frequency_homogeneous(&yig, &geometry, 0.0),
+        );
+        assert!((observed_shift_ghz - expected_shift_ghz).abs() < 1e-12);
+        let doubled_shift_ghz = rad_per_s_to_ghz(
+            magnon_frequency_homogeneous(&yig, &geometry, 2.0 * wave_number)
+                - magnon_frequency_homogeneous(&yig, &geometry, 0.0),
+        );
+        assert!((doubled_shift_ghz - 4.0 * expected_shift_ghz).abs() < 1e-12);
     }
 
     #[test]

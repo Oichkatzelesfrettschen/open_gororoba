@@ -1,0 +1,23 @@
+HTTP/2 200 
+date: Sat, 05 Sep 2026 23:09:05 GMT
+content-type: application/json
+server: cloudflare
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 59
+x-ratelimit-reset: 1788649806
+retry-after: 60
+permissions-policy: interest-cohort=()
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+referrer-policy: strict-origin-when-cross-origin
+access-control-allow-origin: *
+set-cookie: session=5022856b49c29332_6a9ca111.p2lz1jKm7xVQpfuNeYGdSjRUD4s; Expires=Sun, 06 Sep 2026 11:09:05 GMT; HttpOnly; Path=/; SameSite=Lax
+x-proxy-backend: hepdata-prod_hepdata-web_http
+alt-svc: h3=":443"; ma=86400
+vary: Accept-Encoding
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=poAugWAEj6cAXAAddVT1pddeeYlZlYfEeRAorQViMUSawoxOalPRr%2BFI6XscMWIubHXHlgvYXhCtVCfdWN%2Fkgkqt3UtvAjSgAD1UohEwzm9R6PnflnNPoZRjnJz14JubyJ4%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: BYPASS
+cf-ray: a368e64afcd9f051-SJC
+

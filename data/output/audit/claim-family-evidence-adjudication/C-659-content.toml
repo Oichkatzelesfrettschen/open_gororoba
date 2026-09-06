@@ -1,0 +1,5 @@
+claim_id = "C-659"
+expected_statement = "Besag-Clifford Null Model Rejection (Thesis 1 Robustness): Spatially-shuffled viscosity fields produce distinguishable percolation patterns. Adaptive Besag-Clifford test (1000 permutations) yields p < 0.05."
+expected_where_stated = "stats_core/src/ultrametric/adaptive.rs, crates/gororoba_cli/src/bin/percolation_experiment.rs (E-027 step 8)"
+statement = "The retained 16^3 historical E-027 percolation run reports an adaptive two-sided null-test p value of 0.5841584158415841 after 100 permutations with NonSignificantEarly stopping. The proposed p < 0.05 spatial-shuffle rejection remains inconclusive for that run."
+where_stated = "crates/gororoba_cli/src/bin/percolation_experiment.rs::run_besag_clifford_null; crates/stats_core/src/ultrametric/adaptive.rs; data/e027/e027_results.toml [null_model]; data/output/audit/claim-family-evidence-adjudication/contradiction-evidence.toml"

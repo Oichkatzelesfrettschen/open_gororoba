@@ -1,0 +1,30 @@
+claim_id = "C-1637"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Gravitational off-shell identity and on-shell diagram decomposition. The declaration separates a fixed source or implementation predicate from physical model fitting. Preserved historical failures remain evidence; a repaired producer needs a separately identified result."
+fixed_hyperparameters = ["D=4 Euclidean pure magnetic positive-z convention; k0=-k; retained source Eq.7.1 through7.7","Field ratios0.01,0.10; omega/m0.05,0.20; theta pi/6,pi/3; scalar/spinor","Absolute1e-12, normalized1e-6; mutation1e-10; preserve virtuality ladder0.4,0.2,0.1,0.05 times omega squared"]
+[[intervening_maps]]
+branch = "ward"
+name = "source_tensor_contraction"
+kind = "computational"
+description = "Gravitational off-shell identity and on-shell diagram decomposition; independently recompute complex residual components before norms."
+[[intervening_maps]]
+branch = "ward"
+name = "refinement_and_omission"
+kind = "computational"
+description = "Apply frozen quadrature/cutoff/virtuality ladders and omit each required diagram/contact contribution separately."
+[[fitted_parameters]]
+branch = "ward"
+count = 0
+names = []
+training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
+[decisive_experiment]
+experiment_ids = ["E-073", "E-290"]
+protocol_artifact = "data/output/audit/2026-08-02/p1_numerical_protocol.toml"
+description = "E-073 owns cargo test -p gr_core -- photon_graviton. Amend its legacy spinor method to explicitly bind the scalar/spinor tensor producer and the retained E-P1-PHOTON-GRAVITON-TENSOR-WARD manifest before calling that manifest an E-073 replay. Actual tests: off_shell_comparison_retains_all_lower_point_components; combined_on_shell_ladder_retains_limit_status_without_a_floor; on_shell_omission_and_tadpole_trace_controls_break_the_invariant. Locate tensor_ward.rs and gravitational_ward.rs under crates/gr_core/src/photon_graviton/."
+[what_would_verify_refute]
+verification_outcomes = ["Every admitted off-shell component matches its complete lower-point RHS at the frozen 1e-12 absolute and 1e-6 normalized gates; source-declared on-shell limits separately pass with omission sensitivity."]
+revision_outcomes = ["Off-shell identity passes while the on-shell combined limit remains nonzero: retain the narrower off-shell implementation result and preserve on-shell failure."]
+abandonment_outcomes = ["Independent stable residual violates a frozen gate in a declared case: abandon the universal implementation-reproduction statement and retain the failing components."]
+inconclusive_outcomes = ["Unresolved spinor contact prescription, undefined separate on-shell external amplitude, failed refinement or missing exact producer identity prevents the corresponding identity adjudication.","A passing test that deliberately preserves a known residual gap establishes the regression predicate, not a passing Ward identity."]

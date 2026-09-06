@@ -1,0 +1,40 @@
+schema_version = 1
+worktree = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+test = "crates/qgp_scaling/tests/dss_fragmentation_identity.rs"
+test_command = "CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e cargo test -p qgp_scaling --test dss_fragmentation_identity --profile validation -- --nocapture > data/output/audit/qgp-fragmentation-interpolation/independent-tests.log 2> data/output/audit/qgp-fragmentation-interpolation/independent-tests.stderr"
+test_exit_status = 0
+test_count = 5
+test_failures = 0
+clippy_command = "CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e cargo clippy -p qgp_scaling --test dss_fragmentation_identity --profile validation -- -D warnings > data/output/audit/qgp-fragmentation-interpolation/clippy.log 2> data/output/audit/qgp-fragmentation-interpolation/clippy.stderr"
+clippy_exit_status = 0
+absolute_gate = 2e-12
+relative_gate = 2e-11
+mesh_validation = "Exact header/channel order,13 fields, finite values, bit-identical z/Q2 membership, exact unique order/charge/z/Q2 Cartesian key set1152 per variant"
+negative_controls = "Wrong precision and average-as-charge-sum each must exceed the unchanged numerical gate for at least one channel; observed counts retained below."
+immutable_control = "Separate LO/NLO grid construction in reversed order and reversed query mesh gives10368 identical component bits per precision variant."
+admission_controls = ["missing/extra record", "wrong width", "NaN/Inf decimal", "nonzero decimal underflow", "decimal overflow", "endpoint normalization overflow with exact rejection reason", "malformed decimal", "tab character", "empty provenance", "nearest representable outside z/Q2 boundaries", "nonfinite queries"]
+endpoint = "All nine channels and all four charges return exact numerical zero at z1 for both orders and both precisions."
+synthetic_oracle = "Geometric log-cell midpoint; independent endpoint factor expressed using products and sqrt; absolute discrepancy1.77635683940025046e-15."
+reference_mutations = ["missing key", "duplicate key", "wrong header identity", "unknown charge label"]
+untriggered_branch = "Final interpolation/charge-reconstruction nonfinite-output guard was not triggered. Finite reduced-grid admission and bounded endpoint factors constrain reachable output magnitudes; this receipt does not claim exhaustive branch coverage."
+adversarial_boundary = "Two pinned mirrors share table bytes; the reference and Rust reader share declared source equations and external grid data. The finite-mesh comparison establishes implementation conformance only, not independent physics or original-release authenticity."
+
+[[variant]]
+name = "default_real32"
+rows = 1152
+channels = 10368
+maximum_absolute_error = 1.33226762955018785e-15
+maximum_gate_ratio = 3.20429096743348986e-5
+gate_failures = 0
+wrong_precision_failures = 7535
+wrong_charge_factor_failures = 2153
+
+[[variant]]
+name = "default_real64_knots_and_exponent_amendment"
+rows = 1152
+channels = 10368
+maximum_absolute_error = 8.88178419700125232e-16
+maximum_gate_ratio = 2.16719038182633206e-5
+gate_failures = 0
+wrong_precision_failures = 7535
+wrong_charge_factor_failures = 2153

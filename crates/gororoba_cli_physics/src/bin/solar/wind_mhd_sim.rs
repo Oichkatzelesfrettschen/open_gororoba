@@ -7,10 +7,10 @@
 //! Supports loading initial conditions from solar wind-ic CSV files
 //! containing real spacecraft data (NASA OMNI2 or ACE SWEPAM).
 
-use clap::Args;
+use clap::{Args, ValueEnum};
 use lbm_3d::{
     boundary::ZouHeBoundary,
-    mhd::{MhdConfig, MhdField},
+    mhd::{MhdConfig, MhdField, MhdIntegrator},
     solver::{BgkCollision, LbmSolver3D},
 };
 use std::{
@@ -23,6 +23,10 @@ use std::{
 /// spiral B-field and Zou-He velocity inlet.
 #[derive(Args)]
 pub struct Cli {
+    /// Magnetic evolution method; finite-stage admission does not certify coupled stability.
+    #[arg(long, value_enum, default_value = "legacy-euler")]
+    mhd_integrator: MhdIntegratorChoice,
+
     /// Grid size in x (radial direction)
     #[arg(long, default_value_t = 128)]
     nx: usize,
@@ -51,8 +55,12 @@ pub struct Cli {
     #[arg(long, default_value_t = 0.05)]
     v_sw: f64,
 
-    /// Magnetic resistivity (0.0 = ideal MHD)
-    #[arg(long, default_value_t = 0.0)]
+    /// Magnetic diffusivity in lattice length squared per LBM timestep (0 = ideal MHD).
+    #[arg(
+        long = "magnetic-diffusivity-lattice",
+        alias = "eta",
+        default_value_t = 0.0
+    )]
     eta: f64,
 
     /// Snapshot interval (write output every N steps)
@@ -68,6 +76,32 @@ pub struct Cli {
     /// When provided, uses real spacecraft data instead of uniform+Parker init.
     #[arg(long)]
     ic_file: Option<PathBuf>,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum MhdIntegratorChoice {
+    LegacyEuler,
+    SspRk3,
+}
+
+impl MhdIntegratorChoice {
+    fn method(self) -> MhdIntegrator {
+        match self {
+            Self::LegacyEuler => MhdIntegrator::LegacyEuler,
+            Self::SspRk3 => MhdIntegrator::SspRk3,
+        }
+    }
+
+    fn receipt(self) -> &'static str {
+        match self {
+            Self::LegacyEuler => {
+                "mhd_integrator=legacy-euler transport_admission_scope=periodic_diffusion_coefficient_and_finite_state"
+            }
+            Self::SspRk3 => {
+                "mhd_integrator=ssp-rk3 transport_admission_scope=prescribed_frozen_velocity_finite_stage_admission"
+            }
+        }
+    }
 }
 
 /// Write a CSV snapshot of the midplane (z=nz/2) fields.
@@ -178,7 +212,12 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         dt_mhd: 1.0,
         cleaning_rate: 0.1,
     };
-    let mut mhd = MhdField::new(cli.nx, cli.ny, cli.nz, mhd_config);
+    let mut mhd = MhdField::try_new(cli.nx, cli.ny, cli.nz, mhd_config)?;
+    eprintln!("{}", cli.mhd_integrator.receipt());
+    eprintln!(
+        "magnetic_diffusivity_lattice={:.17e} dt_mhd={:.17e} diffusion_gate_scope=periodic_diffusion_only",
+        mhd.config.eta, mhd.config.dt_mhd,
+    );
 
     // Initialize state: real data from IC file, or synthetic uniform+Parker
     let u_sw = if let Some(ref ic_path) = cli.ic_file {
@@ -236,7 +275,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         solver.evolve_one_step();
 
         // 4. Evolve B-field using updated velocity
-        mhd.evolve_b_field(&solver.u);
+        mhd.try_evolve_b_field_with_integrator(&solver.u, cli.mhd_integrator.method())?;
 
         // 5. Periodic output
         if (step + 1) % cli.snap_interval == 0 || step == 0 {
@@ -256,4 +295,65 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
 
     eprintln!("done.");
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use clap::Parser;
+
+    #[derive(Parser)]
+    struct TestArgs {
+        #[command(flatten)]
+        cli: Cli,
+    }
+
+    #[test]
+    fn mhd_integrator_cli_requires_explicit_rk3_selection() {
+        assert!(matches!(
+            TestArgs::try_parse_from(["solar"])
+                .unwrap()
+                .cli
+                .mhd_integrator
+                .method(),
+            MhdIntegrator::LegacyEuler
+        ));
+        for (name, expected) in [
+            ("legacy-euler", "mhd_integrator=legacy-euler"),
+            ("ssp-rk3", "mhd_integrator=ssp-rk3"),
+        ] {
+            let parsed = TestArgs::try_parse_from(["solar", "--mhd-integrator", name])
+                .unwrap()
+                .cli;
+            assert!(parsed.mhd_integrator.receipt().starts_with(expected));
+            assert_eq!(
+                matches!(parsed.mhd_integrator.method(), MhdIntegrator::SspRk3),
+                name == "ssp-rk3"
+            );
+        }
+        assert!(TestArgs::try_parse_from(["solar", "--mhd-integrator", "automatic"]).is_err());
+    }
+
+    #[test]
+    fn magnetic_diffusivity_cli_preserves_lattice_alias() {
+        assert_eq!(
+            TestArgs::try_parse_from(["solar"])
+                .unwrap()
+                .cli
+                .eta
+                .to_bits(),
+            0.0_f64.to_bits()
+        );
+        for flag in ["--eta", "--magnetic-diffusivity-lattice"] {
+            assert_eq!(
+                TestArgs::try_parse_from(["solar", flag, "0.125"])
+                    .unwrap()
+                    .cli
+                    .eta
+                    .to_bits(),
+                0.125_f64.to_bits()
+            );
+        }
+        assert!(TestArgs::try_parse_from(["solar", "--magnetic-diffusivity-m2-s", "1"]).is_err());
+    }
 }

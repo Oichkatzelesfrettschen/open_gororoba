@@ -1,0 +1,10 @@
+{
+  "method": "Independent YAML scalar-tree decode compared with JSON strings using arbitrary-precision decimal equality; both are representations from the same provider",
+  "groups": 2,
+  "rows_per_group": 39,
+  "decimal_comparisons": 390,
+  "all_equal": true,
+  "json_sha256": "05aa5a52bc5bb6f2392be12d85719766cb032fb3cb64dc4121937e058414b59b",
+  "yaml_sha256": "5b9598f4527033e92ba1b1c472a30a0a5afde6b3bbc2bf418aae69e8e602bee0",
+  "csv_sha256": "7f2a90fdd024f4d252cf6d3bd1d506507a9ea92395ae106b4273000004fc3b00"
+}

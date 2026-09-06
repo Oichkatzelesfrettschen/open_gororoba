@@ -1,0 +1,29 @@
+schema_version = 1
+experiment_id = "E-314"
+claim_id = "C-1710"
+claim_status = "Provisional"
+evidence_layer = "implementation_conformance"
+protocol = "protocol.toml"
+protocol_sha256 = "445f40bf3419240103637039ccbab9e37edc7dd622557536c20a4a2e88cb72c7"
+reference_receipt = "reference-receipt.toml"
+verification = "verification.toml"
+independent_review = "review.toml"
+integration_tests_passed = 5
+module_tests_passed = 2
+precision_variants = 2
+rows_per_variant = 1152
+channels_per_variant = 10368
+gate = "abs(actual-reference)<=2e-12+2e-11*abs(reference), every finite channel"
+matching_failures = [0,0]
+max_absolute_residual = [1.33226762955018785e-15,8.88178419700125232e-16]
+max_gate_fraction = [3.20429096743348986e-5,2.16719038182633206e-5]
+wrong_precision_failures_per_variant = [7535,7535]
+average_as_sum_failures_per_variant = [2153,2153]
+reverse_order_bit_comparisons_per_variant = [10368,10368]
+synthetic_log_cell_absolute_error = 1.77635683940025046e-15
+outcome = "Both explicit source-real variants satisfy finite-mesh interpolation conformance against the pinned mirror. Wrong precision and charge normalization are discriminated by the unchanged gates."
+admission = "Immutable instances preserve caller-declared order/provenance. Strict fixed-width parsing rejects malformed counts/widths, invalid/nonfinite/underflowed decimal values and normalization overflow. Query bounds reject before logarithms; every endpoint channel and charge returns exact zero."
+oracle_coverage = "Reference admission requires the exact Cartesian mesh, channel header, finite fields and unique keys. Missing and duplicate rows and wrong header/charge mutations reject."
+overflow_scope = "The final finite-output guard remains untriggered. Conditional on finite convex interpolation, endpoint-factor bounds leave light<0.21M, heavy<0.29M and gluon<0.34M for M=max finite binary64; final charge reconstruction has headroom. Intermediate floating sums remain a separate defensive-check scope."
+physical_scope = "Original-author release authentication, upstream reuse terms, source-fit uncertainty,2017 fragmentation Jacobian convention, production weights/scales, pp covariance, angular/centrality pooling and physical model agreement remain unadmitted."
+preservation = "The retained mirror source and grid bytes remain unchanged. E-296 failed objective thresholds, E-310 initial quadrature failure and the earlier source comparisons remain canonical history."

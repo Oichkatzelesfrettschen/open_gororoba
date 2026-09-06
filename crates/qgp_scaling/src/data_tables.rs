@@ -1,9 +1,10 @@
-//! Published Glauber Monte Carlo tables from ALICE.
+//! Retained Glauber reference vectors and derived collision geometry.
 //!
-//! These reference values provide both Npart validation data and full
-//! MC Glauber centrality geometry (Npart, Ncoll, TAA, b, derived A_perp, L_avg).
+//! The vectors preserve centrality geometry inputs for reproducible comparisons.
+//! The Pb-Pb 5.02 TeV Npart rows and eccentricity estimator require row-level
+//! source admission before physical use; lookup availability is a separate property.
 //!
-//! Sources:
+//! Historical source attributions:
 //! - ALICE Pb-Pb 5.36 TeV: arXiv:2504.02505 (2025), Table 2 + CERN Glauber MC
 //! - ALICE Pb-Pb 5.02 TeV: PLB 772 (2017) 567, Table 1 (arXiv:1612.08966)
 //! - ALICE Pb-Pb 2.76 TeV: PRC 88 (2013) 044909 (arXiv:1301.4361)
@@ -12,9 +13,10 @@
 //! Derived quantities:
 //! - A_perp = sigma_NN * Npart^2 / (4 * Ncoll) [effective participant overlap area]
 //! - L_avg = (4/pi) * sqrt(A_perp / pi) [mean chord through equivalent disc]
-//! - eccentricity from epsilon_2{2} published in PRC 93 (2016) 034913
+//!
+//! Eccentricity values retain an unresolved estimator and source-table identity.
 
-/// Published Npart value for a centrality bin.
+/// Retained Npart value for a centrality bin.
 #[derive(Debug, Clone)]
 pub struct NpartReference {
     /// Centrality bin lower edge (fraction).
@@ -27,7 +29,79 @@ pub struct NpartReference {
     pub n_part_err: f64,
 }
 
-/// ALICE Pb-Pb 5.02 TeV Glauber Npart from PLB 772 (2017) 567, Table 1.
+/// Participant distribution and mean uncertainty for a source-defined centrality bin.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct ParticipantDistributionReference {
+    /// Centrality lower edge as a fraction of the collision cross section.
+    pub cent_lo: f64,
+    /// Centrality upper edge as a fraction of the collision cross section.
+    pub cent_hi: f64,
+    /// Mean number of participating nucleons.
+    pub mean: f64,
+    /// Event-distribution dispersion, distinct from uncertainty on the mean.
+    pub rms: f64,
+    /// Absolute systematic uncertainty on the mean participant count.
+    pub mean_systematic: f64,
+}
+
+/// Source and selection identity needed to compare participant distributions.
+#[derive(Debug, Clone, PartialEq)]
+pub struct ParticipantReferenceTable {
+    pub source_report: &'static str,
+    pub source_table: &'static str,
+    pub source_pdf_page: u32,
+    pub source_pdf_sha256: &'static str,
+    pub collision_system: &'static str,
+    pub sqrt_s_nn_tev: f64,
+    pub centrality_selection: &'static str,
+    pub distribution_model: &'static str,
+    pub systematic_definition: &'static str,
+    pub rows: [ParticipantDistributionReference; 9],
+}
+
+/// ALICE-PUBLIC-2018-011 Table 1 participant means for Pb-Pb at 5.02 TeV.
+///
+/// V0M multiplicity selection differs from impact-parameter selection in
+/// `qgp_scaling::glauber`. The table admits a reference population rather than
+/// establishing optical-model conformance. RMS describes event dispersion;
+/// systematic uncertainty describes the mean under Glauber parameter variations.
+#[must_use]
+pub fn alice_public_2018_011_table1_participants() -> ParticipantReferenceTable {
+    let rows = [
+        (0.00, 0.05, 383.4, 17.8, 0.568),
+        (0.05, 0.10, 331.2, 19.6, 1.03),
+        (0.10, 0.20, 262.0, 27.2, 1.15),
+        (0.20, 0.30, 187.9, 21.6, 1.34),
+        (0.30, 0.40, 130.8, 17.0, 1.33),
+        (0.40, 0.50, 87.14, 13.2, 0.928),
+        (0.50, 0.60, 54.34, 9.87, 0.802),
+        (0.60, 0.70, 30.97, 6.97, 0.57),
+        (0.70, 0.80, 15.72, 4.58, 0.241),
+    ]
+    .map(
+        |(cent_lo, cent_hi, mean, rms, mean_systematic)| ParticipantDistributionReference {
+            cent_lo,
+            cent_hi,
+            mean,
+            rms,
+            mean_systematic,
+        },
+    );
+    ParticipantReferenceTable {
+        source_report: "ALICE-PUBLIC-2018-011",
+        source_table: "Table 1",
+        source_pdf_page: 7,
+        source_pdf_sha256: "de4d98816c22c0991e13e1669d9d708ffea7b470b56a020bbe90e38625ef7a6c",
+        collision_system: "Pb-Pb",
+        sqrt_s_nn_tev: 5.02,
+        centrality_selection: "Sharp cuts in simulated V0M multiplicity",
+        distribution_model: "NBD-Glauber fit and Glauber Monte Carlo",
+        systematic_definition: "Absolute mean uncertainty from independent Glauber parameter variations; source contributions combined in quadrature",
+        rows,
+    }
+}
+
+/// Retained Pb-Pb 5.02 TeV Npart rows with unresolved per-row source admission.
 #[must_use]
 pub fn alice_pbpb_5020_npart() -> Vec<NpartReference> {
     vec![
@@ -143,12 +217,10 @@ pub fn phenix_auau_200_npart() -> Vec<NpartReference> {
     ]
 }
 
-/// Published MC Glauber centrality geometry for ALICE Pb-Pb 5.02 TeV.
+/// Retained Pb-Pb 5.02 TeV centrality geometry with unresolved source admission.
 #[must_use]
-// Published physics constant: ALICE collaboration's mean impact parameter
-// (b_mean = 2.43 fm at 0-5% centrality) coincidentally matches std::f64::
-// consts::E to a few digits; precision in the published table is what
-// matters for QGP fits, not symbolic identification with E.
+// Keep recorded impact-parameter decimals at their retained precision;
+// an incidental resemblance to a mathematical constant does not justify substitution.
 #[allow(clippy::approx_constant)]
 pub fn alice_pbpb_5020_mc_glauber() -> Vec<crate::glauber::CentralityBinGeometry> {
     let sigma_nn_fm2 = 67.6 * 0.1;
@@ -418,11 +490,11 @@ pub fn star_bes2_cumulants() -> Vec<CumulantReference> {
     ]
 }
 
-/// Look up published MC Glauber epsilon_2{2} for a given centrality bin and system.
+/// Look up retained eccentricity inputs for a centrality bin and system.
 ///
 /// Returns `Some(epsilon_2)` if the bin matches (within 1%), `None` otherwise.
-/// This provides event-by-event eccentricity values as an alternative to
-/// optical Glauber computation.
+/// The Pb-Pb estimator and source table require independent admission before
+/// interpreting the retained values as event-by-event cumulants.
 ///
 /// Supported systems: "pbpb" (Pb-Pb 5.02 TeV), "xexe" (Xe-Xe 5.44 TeV), "oo" (O-O 5.36 TeV).
 #[must_use]

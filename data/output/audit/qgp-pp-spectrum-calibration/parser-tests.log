@@ -1,0 +1,13 @@
+    Finished `validation` profile [optimized + debuginfo] target(s) in 0.19s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/data_core-78d817d280049512)
+
+running 6 tests
+test catalogs::hepdata_table::tests::exact_decimal_order_handles_sign_scale_and_zero ... ok
+test catalogs::hepdata_table::tests::duplicate_object_keys_are_rejected_recursively ... ok
+test catalogs::hepdata_table::tests::lexical_values_and_group_order_are_preserved ... ok
+test catalogs::hepdata_table::tests::independent_units_and_sub_float_overlap_are_rejected ... ok
+test catalogs::hepdata_table::tests::identity_group_and_error_mutations_fail ... ok
+test catalogs::hepdata_table::tests::spans_and_numerical_admission_fail_closed ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 492 filtered out; finished in 0.00s
+

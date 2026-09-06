@@ -1,0 +1,25 @@
+claim_id = "C-1707"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Separate source-landmark scattering and absorption comparison. The declaration separates a fixed source or implementation predicate from physical model fitting. Preserved historical failures remain evidence; a repaired producer needs a separately identified result."
+fixed_hyperparameters = ["rho/lambda_p=(0.36,0.73,1.0), epsilon_d12.96, damping0.001*omega_p; preserve each observable"]
+[[intervening_maps]]
+branch = "comparison"
+name = "declared_source_and_producer"
+kind = "computational"
+description = "Separate source-landmark scattering and absorption comparison with separate source/artifact/implementation identities."
+[[fitted_parameters]]
+branch = "comparison"
+count = 0
+names = []
+training_boundary = "The fixed numerical or source comparison fits zero physical parameters; numerical quadrature, exact algebra and reference lookup remain computational operations."
+[decisive_experiment]
+experiment_ids = ["E-289"]
+protocol_artifact = "data/output/audit/2026-08-04/p2b-preregistration.toml"
+description = "E-289 binds the actual p2b-ruan-fan-reproduction producer and retained independent fixture. E-076 and the historical E-241 manifest collision remain preserved. The replay preserves every numerical field, threshold and fitting budget; separate archive, extracted TeX and PDF receipts establish the admitted source subset."
+[what_would_verify_refute]
+verification_outcomes = ["Independent layered-cylinder evaluation at omega/omega_p=0.2282 reproduces scattering and absorption discrepancy factors about4.72 and1.244 against the respective printed0.03 and0.32 anchors."]
+revision_outcomes = ["Corrected geometry, convention or source identity changes a factor: retain each original discrepancy and bind the corrected comparison separately."]
+abandonment_outcomes = ["An independent replay on the same identified source and numerical producer contradicts the alleged discrepancy: abandon that defect attribution."]
+inconclusive_outcomes = ["Missing original source numerical data or independent cylinder oracle and unresolved graphical reading intervals prevent a quantitative source-reproduction adjudication.","Preserve the original failed reproduction thresholds and historical source receipts."]

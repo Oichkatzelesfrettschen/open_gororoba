@@ -1,0 +1,30 @@
+claim_id = "C-1696"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract tests the coverage and hardware outcome of CPU/GPU equivalence instrumentation. It makes no physical galaxy or cosmological inference."
+fixed_hyperparameters = ["Inspected equilibrium test: 8 cubed, five steps, tau 0.6, uniform density 1 and zero velocity", "Inspected rho and velocity RMS gates 1e-2", "Enumerate the equivalence-test suite before adjudicating the word only"]
+[[intervening_maps]]
+branch = "equivalence_instrument"
+name = "suite_and_initial_state_inventory"
+kind = "computational"
+description = "Enumerate admitted CPU/GPU comparison entry points and inspect initial fields, stepping and device-unavailable handling."
+[[intervening_maps]]
+branch = "equivalence_instrument"
+name = "nonzero_evolution_and_comparison"
+kind = "computational"
+description = "Record each field's change from initial state before interpreting CPU/GPU residuals; report device-unavailable separately from an executed comparison."
+[[fitted_parameters]]
+branch = "equivalence_instrument"
+count = 0
+names = []
+training_boundary = "Test-coverage and execution-state inspection fit zero parameters. Future evolving-field error tolerances require a separate numerical budget rather than training to observed discrepancies."
+[decisive_experiment]
+experiment_ids = ["E-165"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+description = "E-165 is the verified adjacent CPU/GPU box-counting validation registration, not the producer of equilibrium_cpu_gpu_remain_consistent_fp32 in crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs. Admit an explicit experiment amendment or successor binding before claiming an E-165 replay adjudicates C-1696. Inventory and source checks can establish the named test's bounded behavior meanwhile."
+[what_would_verify_refute]
+verification_outcomes = ["A complete admitted suite inventory establishes that every available CPU/GPU equivalence path is equilibrium-only and accepts device unavailability, with the inspected five-step test as a retained witness."]
+revision_outcomes = ["Another evolving-field comparison exists in the admitted suite: remove the universal only wording and retain the bounded observation about the named equilibrium test.", "A repaired comparison demonstrates nonzero field evolution, executes both backends and retains independent numerical error gates: preserve the historical defect and register its tested successor."]
+abandonment_outcomes = ["The claimed historical test instead executes evolving fields and reports unavailable hardware as a distinct unexecuted outcome: abandon the defect attribution for that producer."]
+inconclusive_outcomes = ["E-165 producer identity remains mismatched, the suite denominator is incomplete, or CUDA admission fails; these outcomes establish neither equivalence nor exhaustive absence of an evolving test.", "A passing uniform equilibrium comparison leaves evolving-field correctness and all physical interpretations inconclusive."]

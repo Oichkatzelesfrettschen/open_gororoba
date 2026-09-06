@@ -354,6 +354,15 @@ pub(crate) enum ClaimTransitionAction {
 
 #[derive(Subcommand, Debug)]
 pub(crate) enum ClaimMutationAction {
+    /// Correct statement and implementation locator with retained full prestate.
+    CorrectContent {
+        #[arg(long)]
+        spec: PathBuf,
+        #[arg(long)]
+        actor: String,
+        #[arg(long)]
+        reason: String,
+    },
     /// Declare typed evidence and append a complete canonical revision.
     SetEvidence {
         #[arg(long)]

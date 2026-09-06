@@ -1,0 +1,29 @@
+--2026-09-05 18:07:34--  http://www.pv.infn.it/~radici/FFdatabase/
+Resolving www.pv.infn.it (www.pv.infn.it)... 192.84.142.21
+Connecting to www.pv.infn.it (www.pv.infn.it)|192.84.142.21|:80... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 301 Moved Permanently
+  Date: Sun, 06 Sep 2026 01:07:34 GMT
+  Server: Apache/2.4.37 (centos) OpenSSL/1.1.1k
+  Location: https://www.pv.infn.it/~radici/FFdatabase/
+  Content-Length: 250
+  Keep-Alive: timeout=5, max=100
+  Connection: Keep-Alive
+  Content-Type: text/html; charset=iso-8859-1
+Location: https://www.pv.infn.it/~radici/FFdatabase/ [following]
+--2026-09-05 18:07:34--  https://www.pv.infn.it/~radici/FFdatabase/
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Connecting to www.pv.infn.it (www.pv.infn.it)|192.84.142.21|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 301 Moved Permanently
+  Date: Sun, 06 Sep 2026 01:07:35 GMT
+  Server: Apache/2.4.37 (centos) OpenSSL/1.1.1k
+  Location: http://www2.pv.infn.it/~radici/FFdatabase/
+  Content-Length: 250
+  Keep-Alive: timeout=5, max=100
+  Connection: Keep-Alive
+  Content-Type: text/html; charset=iso-8859-1
+Location: http://www2.pv.infn.it/~radici/FFdatabase/ [following]
+--2026-09-05 18:07:35--  http://www2.pv.infn.it/~radici/FFdatabase/
+Resolving www2.pv.infn.it (www2.pv.infn.it)... 192.84.142.28
+Connecting to www2.pv.infn.it (www2.pv.infn.it)|192.84.142.28|:80... failed: No route to host.

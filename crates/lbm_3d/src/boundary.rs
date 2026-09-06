@@ -274,6 +274,7 @@ impl ZouHeBoundary {
     ///   13: `[1,0,-1]`  14: `[-1,0,1]`
     ///   15: `[0,1,1]`  16: `[0,-1,-1]`
     ///   17: `[0,1,-1]`  18: `[0,-1,1]`
+    /// Apply the min-x inlet to cell-major AoS D3Q19 populations.
     pub fn apply_velocity_inlet_min_x(
         &self,
         f_grid: &mut [f64],
@@ -312,6 +313,31 @@ impl ZouHeBoundary {
                     let f_eq_i = lattice.equilibrium(rho, u_inlet, i);
                     let f_eq_opp = lattice.equilibrium(rho, u_inlet, opp);
                     f[i] = f[opp] + f_eq_i - f_eq_opp;
+                }
+            }
+        }
+    }
+
+    /// Apply the same inlet reconstruction to solver::LbmSolver3D AoSoA storage.
+    /// Each cell is gathered into the AoS reconstruction and scattered through
+    /// solver::aosoa_idx; transverse and interior cell populations retain their addresses.
+    pub fn apply_velocity_inlet_min_x_aosoa(
+        &self,
+        populations: &mut [f64],
+        nx: usize,
+        ny: usize,
+        nz: usize,
+        inlet_velocity: [f64; 3],
+    ) {
+        for z in 0..nz {
+            for y in 0..ny {
+                let cell = z * nx * ny + y * nx;
+                let mut local = std::array::from_fn::<_, 19, _>(|direction| {
+                    populations[crate::solver::aosoa_idx(cell, direction)]
+                });
+                self.apply_velocity_inlet_min_x(&mut local, 1, 1, 1, inlet_velocity);
+                for (direction, value) in local.into_iter().enumerate() {
+                    populations[crate::solver::aosoa_idx(cell, direction)] = value;
                 }
             }
         }
@@ -369,6 +395,49 @@ pub enum BoundaryPlane {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn aosoa_inlet_matches_aos_and_preserves_interior_sentinels() {
+        use crate::solver::{LbmSolver3D, aosoa_idx};
+        let (nx, ny, nz) = (5, 3, 2);
+        let cells = nx * ny * nz;
+        let mut solver = LbmSolver3D::new(nx, ny, nz, 0.8);
+        for cell in 0..cells {
+            solver.rho[cell] = 1.0 + cell as f64 * 0.01;
+            solver.u[cell] = [0.01, 0.002, -0.003];
+        }
+        solver.reinitialize_from_macroscopic();
+        let before = solver.f.clone();
+        let mut aos = vec![0.0; cells * 19];
+        for cell in 0..cells {
+            for direction in 0..19 {
+                aos[cell * 19 + direction] = before[aosoa_idx(cell, direction)];
+            }
+        }
+        let boundary = super::ZouHeBoundary::new();
+        let velocity = [0.07, 0.001, -0.002];
+        boundary.apply_velocity_inlet_min_x(&mut aos, nx, ny, nz, velocity);
+        boundary.apply_velocity_inlet_min_x_aosoa(&mut solver.f, nx, ny, nz, velocity);
+        let mut changed_inlets = 0;
+        for cell in 0..cells {
+            for direction in 0..19 {
+                let index = aosoa_idx(cell, direction);
+                assert_eq!(solver.f[index], aos[cell * 19 + direction]);
+                if cell % nx != 0 {
+                    assert_eq!(solver.f[index], before[index]);
+                } else if solver.f[index] != before[index] {
+                    changed_inlets += 1;
+                }
+            }
+        }
+        assert_eq!(changed_inlets, ny * nz * 5);
+        for cell in cells..solver.f.len() / 19 {
+            for direction in 0..19 {
+                let index = aosoa_idx(cell, direction);
+                assert_eq!(solver.f[index], before[index]);
+            }
+        }
+    }
+
     use super::*;
 
     #[test]

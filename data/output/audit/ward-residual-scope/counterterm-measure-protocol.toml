@@ -1,0 +1,68 @@
+protocol = "Proper-time counterterm measure and distinct Ward contraction predicates"
+experiment = "E-301"
+registration_boundary = "Serialization of retained source-scope tests and their fixed numerical predicates; the retained adjudication records source revisions, outcomes and failures."
+adjudication = "data/output/audit/ward-residual-scope/adjudication.toml"
+adjudication_sha256 = "97e80f639feffa4bdf2ac97ca1ff1917e7c1904327b25d55859a67b840338977"
+source_test_sha256 = "fe29d39e1e9a132fb93d61817cee7cedbca97d134a1c2c53018004ef7d93b8f0"
+corrected_implementation_sha256 = "7ebdd7c9cdcf5d3c18855123aec95f239d757795b9360359e3ef33124393c60c"
+source = "Ahmadiniaz et al., One loop photon-graviton mixing in an electromagnetic field: Part 3, arXiv:2601.23279v1"
+source_pdf_sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+source_equations = ["4.10: rescaled spinor amplitude with dT/T and constant 4*i*e*C/3 subtraction", "A.13: independently assembled tree tensor", "7.6: on-shell polarization-contracted irreducible plus external cancellation in the unrenormalized Ward discussion"]
+scalar_source = "Bastianelli and Schubert, Part 1, arXiv:gr-qc/0412095v2"
+scalar_source_pdf_sha256 = "c64080db26d0b46dfcdb1dd12acd04e300f918bea3bc31d5fd0c6b7fe84becc1"
+evidence_layer = "implementation_conformance"
+interpretive_depth = 0
+fitted_parameters = 0
+
+[counterterm_fixture]
+dimension = 4
+metric = "Euclidean complex continuation"
+momentum = [0.15, -0.11, 0.2, 0.07]
+gravity_momentum = "negative photon momentum"
+photon_polarization = [0.11, 0.15, 0.0, 0.0]
+gravity_gauge_vector = [0.2, 0.1, -0.3, 0.4]
+gravity_polarization = "identity matrix"
+field = "F[0,1]=0.1, F[1,0]=-0.1; other entries zero"
+masses = [0.8, 1.3]
+charge = 1.0
+kappa = 1.0
+n_u = 24
+n_t = 96
+t_min = 0.125
+t_max = 4.0
+independent_integrator = "Composite Simpson, 16384 intervals, integral exp(-mass^2*T)/T"
+wrong_measure_control = "Composite Simpson integral exp(-mass^2*T)*T"
+comparison = "All 64 tensor components of renormalized minus unrenormalized output against independently assembled source A.13 tree tensor times the prescribed coefficient and integral."
+source_relative_error_gate = 1e-9
+wrong_measure_relative_error_minimum = 0.05
+omitted_counterterm_norm_minimum = 1e-5
+coefficient_scope = "Eq. 4.10 supplies spinor 4/3. The scalar routine is checked under its inherited coefficient as a computational branch; its distinct source coefficient remains unresolved."
+
+[transverse_diagnostics]
+spatial_momentum = [0.6666666666666666, 0.3333333333333333, 0.6666666666666666]
+temporal_momentum = "i*sqrt(1-virtuality)"
+transverse_basis = ["[1,-2,0]/sqrt(5)", "[4,2,-5]/(3*sqrt(5))"]
+virtualities = [0.02, 0.01, 0.005]
+intercept = "Independent three-point Lagrange interpolation evaluated at zero virtuality"
+branches = ["scalar unrenormalized", "scalar renormalized", "spinor unrenormalized", "spinor renormalized"]
+polarization_gauge_pairs_per_branch = 4
+n_u = 48
+n_t = 96
+t_min = 1e-4
+t_max = 20.0
+absolute_gate = 1e-12
+normalized_gate = 1e-6
+omission_admission = "Each individual irreducible and external projected contribution exceeds 1e-8. Rows below that threshold retain numerical values but do not establish diagram-discriminating cancellation."
+source_scope = "The source Eq. 7.6 amplitude contracts photon polarization and imposes on-shell transverse conditions. Full-vector norms and renormalized branches are separate implementation diagnostics."
+
+[uv_diagnostics]
+proper_times = [0.1, 0.03, 0.01, 0.003, 0.001]
+u_nodes = 64
+component = "tensor[0,0,1] divided by i*e*F[0,1]*k[0]"
+scope = "Regular quadrature nodes measure the implemented short-time coefficient; the probe leaves contact/distributional completion and source subtraction coefficients unresolved."
+
+[outcomes]
+verify = ["The spinor counterterm difference matches the source proper-time measure within 1e-9 for both masses, while wrong-measure and omitted-counterterm controls remain discriminating."]
+revise = ["A different subtraction coefficient, contact prescription, quadrature domain or tensor convention requires a separate retained comparison."]
+abandon = ["The same source-bound spinor counterterm replay violates its declared relative error gate or loses the wrong-measure/omission distinction."]
+inconclusive = ["Missing source or producer identity prevents replay.", "Counterterm-measure conformance leaves the full Ward identity, spinor contact/UV completion, scalar subtraction coefficient and certified quadrature/extrapolation budget unresolved."]

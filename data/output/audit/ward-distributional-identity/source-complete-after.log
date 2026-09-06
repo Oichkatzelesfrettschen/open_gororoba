@@ -1,0 +1,25 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 7.58s
+     Running tests/ward_distributional_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_distributional_identity-97e1da603122ece3)
+
+running 3 tests
+endpoint time=0.07 signed_jump=3.79062450551953483e-13 omit_lower=6.36876946433110369e0 omit_upper=6.36876946433110369e0
+endpoint time=0.3 signed_jump=0.00000000000000000e0 omit_lower=1.48604620834391743e0 omit_upper=1.48604620834391743e0
+endpoint time=1.2 signed_jump=0.00000000000000000e0 omit_lower=3.71511552085979357e-1 omit_upper=3.71511552085979357e-1
+test signed_total_derivative_endpoints_cancel_without_dropping_each_endpoint ... ok
+uv_complete time=1.00099999999999998e-2 coefficient=-1.33305835185173183e0 subtraction_remainder=2.74981481601432876e-4 omit_contact_coefficient=6.66941648148267840e-1
+fixed_time time=0.07 loop=Scalar raw_tilde_error=2.17971198257352835e-13 contact_norm=0.00000000000000000e0 regular_gauge=3.46339125536455825e-14 complete_gauge=3.46339125536455825e-14 production_regular_difference=2.17971198257352835e-13
+uv_complete time=9.99000000000000062e-3 coefficient=-1.33305890227658841e0 subtraction_remainder=2.74431056744850466e-4 omit_contact_coefficient=6.66941097723411369e-1
+uv_complete time=1.00000000000000005e-4 coefficient=-1.33333059128269560e0 subtraction_remainder=2.74205063766075341e-6 omit_contact_coefficient=6.66669408717304512e-1
+fixed_time time=0.07 loop=Spinor raw_tilde_error=2.17975034900561533e-13 contact_norm=6.22243804161893774e-2 regular_gauge=7.41702116259708184e-3 complete_gauge=3.46512950477381983e-14 production_regular_difference=6.22243804160181324e-2
+uv_complete time=9.99999999999999955e-7 coefficient=-1.33333330591332788e0 subtraction_remainder=2.74200053773654417e-8 omit_contact_coefficient=6.66666694086672118e-1
+fixed_time time=0.3 loop=Scalar raw_tilde_error=1.38090003183348039e-15 contact_norm=0.00000000000000000e0 regular_gauge=2.21826577705160310e-16 complete_gauge=2.21826577705160310e-16 production_regular_difference=1.38090003183348039e-15
+uv_complete time=1.00000000000000002e-8 coefficient=-1.33333333305913304e0 subtraction_remainder=2.74200218086662062e-10 omit_contact_coefficient=6.66666666940866737e-1
+test spinor_contact_restores_the_source_uv_coefficient_through_small_field_branch ... ok
+fixed_time time=0.3 loop=Spinor raw_tilde_error=1.41182098476514245e-15 contact_norm=6.22067358432884798e-2 regular_gauge=7.41491796491350504e-3 complete_gauge=2.28353036342112920e-16 production_regular_difference=6.22067358432873974e-2
+fixed_time time=1.2 loop=Scalar raw_tilde_error=1.09359608656384632e-16 contact_norm=0.00000000000000000e0 regular_gauge=1.85398285114848007e-17 complete_gauge=1.85398285114848007e-17 production_regular_difference=1.09359608656384632e-16
+fixed_time time=1.2 loop=Spinor raw_tilde_error=1.16241167244069663e-16 contact_norm=6.19284252784666270e-2 regular_gauge=7.38174390459733938e-3 complete_gauge=2.09232639860890843e-17 production_regular_difference=6.19284252784666894e-2
+test unreduced_source_contact_and_production_are_separate ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

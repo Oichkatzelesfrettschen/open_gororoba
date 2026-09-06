@@ -1,0 +1,25 @@
+claim_id = "C-1719"
+evidence_layer = "source_proposition"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "delta_CP modulo360 membership in admitted NuFit6.0 IC24 with-SK and IC19 without-SK normal-ordering intervals. The fixed source-comparison branch fits zero parameters; physical model fitting remains outside its scope."
+fixed_hyperparameters = ["NuFit6.0 IC24 CP one-sigma171..238 and three-sigma124..364; IC19 one-sigma157..196 and three-sigma96..422", "Fixed CP-A165 and CP-B93 degree targets; zero comparison fits; preserve unwrapped edges above360", "NuFit6.1 coverage remains theta23 only; its CP contours remain unexecuted"]
+[[intervening_maps]]
+branch = "source_comparison"
+name = "identity_and_predicate"
+kind = "computational"
+description = "delta_CP modulo360 membership in admitted NuFit6.0 IC24 with-SK and IC19 without-SK normal-ordering intervals with explicit source artifact, version and equation/table locator."
+[[fitted_parameters]]
+branch = "source_comparison"
+count = 0
+names = []
+training_boundary = "A fixed reference lookup, interval-membership operation or theorem-hypothesis comparison fits zero parameters. Published global-fit freedoms and repository physical model freedoms remain separate."
+[decisive_experiment]
+experiment_ids = ["E-287"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+description = "Registered E-287 executes crates/algebra_experimental/tests/nufit_reference_identity.rs with the source-hashed JSON fixture. All six NuFit6.0 normal-ordering rows and periodic CP-A165/CP-B93 membership are exercised; NuFit6.1 coverage stays limited to theta23."
+[what_would_verify_refute]
+verification_outcomes = ["Periodic membership check on the precisely identified primary-source intervals excludes93 degrees in every admitted variant."]
+revision_outcomes = ["Any admitted variant contains93 degrees: revise the universal exclusion and retain the variant-specific outcomes."]
+abandonment_outcomes = ["The selected primary-source variant was mislabeled or its interval was not transcribed faithfully: abandon that reference comparison."]
+inconclusive_outcomes = ["NuFit6.1 CP intervals and earlier releases remain outside the executed CP scope.", "Published marginal intervals establish membership only; circular descriptive pulls do not establish a joint Gaussian significance."]

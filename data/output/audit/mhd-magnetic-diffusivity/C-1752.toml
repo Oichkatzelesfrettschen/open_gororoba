@@ -1,0 +1,32 @@
+claim_id = "C-1752"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Periodic mode shapes, steps and 1e-12 gates are frozen by the E-312 protocol; velocity and cleaning vanish in isolated diffusion tests."]
+[[intervening_maps]]
+branch = "magnetic_transport"
+name = "diffusivity_unit_admission"
+kind = "computational"
+description = "Admit eta_m in m2/s through dt/dx2 or explicitly select lattice diffusivity; electrical resistivity requires division by permeability."
+[[intervening_maps]]
+branch = "magnetic_transport"
+name = "periodic_stencil_and_state_admission"
+kind = "computational"
+description = "Check mutable configuration and prospective field state, then compare the isolated periodic seven-point diffusion update with Fourier amplitude and energy."
+[[fitted_parameters]]
+branch = "magnetic_transport"
+count = 0
+names = []
+training_boundary = "Declared numerical modes and unit fixtures fit zero parameters; spacecraft values and coupled physical parameters remain unadmitted."
+[decisive_experiment]
+
+experiment_ids = ["E-312"]
+protocol_artifact = "data/output/audit/mhd-magnetic-diffusivity/protocol.toml"
+protocol_sha256 = "0b388e656bae003898ca334236317e0e73d0e0973a28aefd2471901d5dc872db"
+description = "E-312 independently measures Fourier amplification, SI conversion, invalid-update atomicity and retained arithmetic. The centered-induction omission control fails energy stability; physical force bounds remain outside the verified instrument boundary."
+[what_would_verify_refute]
+verification_outcomes = ["All 24 Fourier amplitude and energy rows meet 1e-12, 5760 retained component comparisons match bitwise, SI conversion and invalid-state atomicity pass."]
+revision_outcomes = ["A failed declared oracle requires repairing and replaying the bounded instrument before further use.", "The reproduced centered-induction energy growth requires a stable integrator with independent energy and convergence evidence before coupled force-bound simulations."]
+abandonment_outcomes = ["An unstable diffusion coefficient or invalid state passes admission, a rejected update changes B/psi bits, a SI conversion fails or a declared Fourier error exceeds 1e-12."]
+inconclusive_outcomes = ["The isolated periodic diffusion tests provide insufficient evidence for cleaning, boundary or coupled-flow stability and physical force sensitivity."]

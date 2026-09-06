@@ -1,0 +1,19 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 4.92s
+     Running tests/ward_source_scope.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_source_scope-60858c86059d693d)
+
+running 1 test
+uv_coefficient loop=Scalar time=1.00000000000000006e-1 real=6.65810352305169606e-1 imaginary=-1.35164391037617457e-24
+uv_coefficient loop=Scalar time=2.99999999999999989e-2 real=6.66419445244358810e-1 imaginary=4.15952614306628732e-26
+uv_coefficient loop=Scalar time=1.00000000000000002e-2 real=6.66585182601739934e-1 imaginary=3.24172323585638175e-28
+uv_coefficient loop=Scalar time=3.00000000000000006e-3 real=6.66642318427771885e-1 imaginary=-3.86787068344790199e-27
+uv_coefficient loop=Scalar time=1.00000000000000002e-3 real=6.66658559825103469e-1 imaginary=-6.74549886532339309e-29
+uv_coefficient loop=Spinor time=1.00000000000000006e-1 real=6.68958401929568680e-1 imaginary=-1.35737190949706291e-24
+uv_coefficient loop=Spinor time=2.99999999999999989e-2 real=6.67343985548402463e-1 imaginary=4.16457900972253207e-26
+uv_coefficient loop=Spinor time=1.00000000000000002e-2 real=6.66891465356663549e-1 imaginary=3.23994382219450400e-28
+uv_coefficient loop=Spinor time=3.00000000000000006e-3 real=6.66734003891448990e-1 imaginary=-3.86838921208911394e-27
+uv_coefficient loop=Spinor time=1.00000000000000002e-3 real=6.66689102654931864e-1 imaginary=-6.74572874090801314e-29
+test orbital_and_spinor_uv_coefficients_are_separate ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+

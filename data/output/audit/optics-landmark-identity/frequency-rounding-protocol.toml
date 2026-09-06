@@ -1,0 +1,15 @@
+schema_version = 1
+claim_id = "C-1707"
+evidence_layer = "implementation_conformance"
+question = "Can the printed frequency precision alone account for the Figure5 landmark discrepancy?"
+source = "Ruan/Fan0909.3323v2, multiple-channel section; exact source bytes retained in optics-replay"
+printed_frequency = 0.2282
+frequency_interval = [0.22815, 0.22825]
+interval_status = "Hypothetical rounding-to-nearest envelope; retain exact-frequency result separately and do not assert the source used rounding."
+scattering_interval = [0.025, 0.035]
+absorption_interval = [0.315, 0.325]
+geometry = "Fixed source radii0.36,0.73,1.0 lambda_p; epsilon_d12.96; omega_p1; gamma_d0.001; Hz TM; channels0,+/-1,+/-2"
+frequency_intervals_per_grid = [200, 2000]
+fitted_parameters = 0
+method = "Uniform nested frequency grids, retain extrema and jointly admitted counts. Finite sampled absence excludes only sampled points; universal interval exclusion requires a separate analytical or validated interval bound."
+original_gates = "Preserve complex-S0.01 and exact-frequency source-anchor gates unchanged."

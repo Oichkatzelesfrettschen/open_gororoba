@@ -1,0 +1,222 @@
+# workspace-routing source lives beside the data CLI, but
+# rust-regression-scoped builds it through the slim governance proxy binary.
+# That keeps scope classification independent of the full data CLI
+# dependency graph while preserving workspace-routing semantics.
+#
+# Prefer the cached binary at /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/workspace-routing to skip cargo's
+# metadata walk. The validation-tools target dependencies rebuild the cached binary
+# when workspace_routing.rs changes.
+#
+# Preserve routing CLI stderr so scope-selection failures reach the validation
+# operator. The fallback remains "--workspace" after the diagnostic is
+# emitted.
+# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
+# WHY: clippy lints fire on the package owning the source -- a change in a
+# hub crate cannot induce a new lint on a downstream consumer whose source
+# is unchanged. Skipping the closure for clippy saves the bulk of compile
+# time (gororoba_cli_data with 100+ binaries is the worst offender).
+# Nextest in the LOCAL pre-push fast path also runs only on directly
+# changed crates. Trust the layered model:
+#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
+#   - Full reverse-closure regression = CI on PR open (validate-ci-rust).
+# Set RUST_NEXTEST_SCOPE_MODE=closure to opt back into the wide scope for
+# a single invocation when needed (e.g. after toolchain bumps).
+# Pre-push test kind: `lib` runs only library unit tests; `all` runs
+# lib + integration test binaries (--lib --tests). Integration test
+# compile is the largest single contributor to gate wall-time (the
+# 441-binary link phase, ~4m30s); restricting to --lib at pre-push
+# makes the gate a true smoke gate. CI on PR open runs the full
+# `all` suite. Override per invocation:
+#   make validate-local RUST_NEXTEST_KIND_MODE=all
+[rust-regression-scoped] clippy scope: -p algebra_analysis -p algebra_experimental -p gororoba_cli_data -p gororoba_cli_physics -p gororoba_db -p gr_core -p lbm_3d -p lbm_3d_cuda -p optics_core -p provenance_store -p qgp_scaling -p quantum_core
+[rust-regression-scoped] nextest scope: -p algebra_analysis -p algebra_experimental -p gororoba_cli_data -p gororoba_cli_physics -p gororoba_db -p gr_core -p lbm_3d -p lbm_3d_cuda -p optics_core -p provenance_store -p qgp_scaling -p quantum_core (scope_mode=direct kinds=--lib)
+    Checking verified_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/verified_core)
+    Checking lbm_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_core)
+    Checking anise v0.9.6
+    Checking optics_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/optics_core)
+   Compiling materials_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/materials_data)
+    Checking qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+    Checking gororoba_gpu_vulkan v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_gpu_vulkan)
+    Checking cd_kernel v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_kernel)
+    Checking tensor_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/tensor_core)
+    Checking grmhd_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/grmhd_core)
+    Checking lbm_vulkan v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_vulkan)
+    Checking casimir_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/casimir_core)
+    Checking cr_transport v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cr_transport)
+    Checking provenance_store v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/provenance_store)
+    Checking gororoba_pipeline v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_pipeline)
+    Checking provenance_ops v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/provenance_ops)
+    Checking lit_search v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lit_search)
+    Checking moreno_1997 v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/moreno_1997)
+    Checking gororoba_structurable v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_structurable)
+    Checking algebra_analysis v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_analysis)
+    Checking docpipe v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/docpipe)
+    Checking flavor_lifts v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/flavor_lifts)
+    Checking scrolls_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/scrolls_core)
+    Checking data_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/data_core)
+    Checking ciborium-ll v0.2.2
+    Checking itertools v0.13.0
+    Checking ciborium v0.2.2
+    Checking tinytemplate v1.2.1
+    Checking gororoba_db v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_db)
+    Checking gororoba_algebra v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_algebra)
+    Checking criterion-plot v0.8.2
+    Checking criterion v0.8.2
+    Checking algebra_experimental v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_experimental)
+    Checking gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Checking stats_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/stats_core)
+    Checking spin_tomography_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spin_tomography_core)
+    Checking materials_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/materials_core)
+    Checking quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+    Checking pathion_ellip v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/pathion_ellip)
+    Checking cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+    Checking lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+    Checking sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+    Checking neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+    Checking lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+    Checking spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+    Checking cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+    Checking lattice_filtration v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lattice_filtration)
+    Checking gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Checking gororoba_engine v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_engine)
+    Checking gororoba_cli v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli)
+    Checking gororoba_cli_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_data)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 38.89s
+[rust-regression-scoped] local skip filter enabled
+[local-nextest] skip gororoba_db: no inline lib tests and no integration tests
+[local-nextest] run algebra_experimental: lib
+[local-nextest] run gororoba_cli_data: lib
+[local-nextest] run gororoba_cli_physics: lib
+[local-nextest] run lbm_3d: lib
+[local-nextest] run lbm_3d_cuda: lib
+[local-nextest] run optics_core: lib
+[local-nextest] run provenance_store: lib
+[local-nextest] run qgp_scaling: lib
+[local-nextest] run quantum_core: lib
+   Compiling verified_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/verified_core)
+   Compiling lbm_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_core)
+   Compiling anise v0.9.6
+   Compiling materials_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/materials_data)
+   Compiling optics_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/optics_core)
+   Compiling ciborium-ll v0.2.2
+   Compiling gororoba_gpu_vulkan v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_gpu_vulkan)
+   Compiling cd_kernel v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_kernel)
+   Compiling itertools v0.13.0
+   Compiling lbm_vulkan v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_vulkan)
+   Compiling criterion-plot v0.8.2
+   Compiling ciborium v0.2.2
+   Compiling tensor_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/tensor_core)
+   Compiling grmhd_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/grmhd_core)
+   Compiling moreno_1997 v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/moreno_1997)
+   Compiling gororoba_structurable v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_structurable)
+   Compiling data_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/data_core)
+   Compiling casimir_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/casimir_core)
+   Compiling flavor_lifts v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/flavor_lifts)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+   Compiling algebra_analysis v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_analysis)
+   Compiling cr_transport v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cr_transport)
+   Compiling tinytemplate v1.2.1
+   Compiling criterion v0.8.2
+   Compiling gororoba_pipeline v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_pipeline)
+   Compiling provenance_store v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/provenance_store)
+   Compiling provenance_ops v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/provenance_ops)
+   Compiling lit_search v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lit_search)
+   Compiling gororoba_algebra v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_algebra)
+   Compiling docpipe v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/docpipe)
+   Compiling scrolls_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/scrolls_core)
+   Compiling algebra_experimental v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_experimental)
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+   Compiling stats_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/stats_core)
+   Compiling spin_tomography_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spin_tomography_core)
+   Compiling materials_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/materials_core)
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+   Compiling pathion_ellip v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/pathion_ellip)
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+   Compiling spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+   Compiling cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+   Compiling lattice_filtration v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lattice_filtration)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+   Compiling gororoba_engine v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_engine)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli)
+   Compiling gororoba_cli_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_data)
+    Finished `test` profile [optimized + debuginfo] target(s) in 1m 07s
+────────────
+ Nextest run ID 1240c3bf-c354-47f3-ba58-db60892472f2 with nextest profile: default
+    Starting 1624 tests across 9 binaries (19 tests skipped)
+────────────
+     Summary [  10.291s] 1624 tests run: 1624 passed, 19 skipped
+[local-nextest] skip integration-test phase for 8 packages (kinds=lib). Run with --kinds all to include.
+[rust-regression-scoped] SKIP heavy nextest in local fast path:  -p algebra_analysis -p gr_core
+OK: scoped Rust validation passed (clippy + nextest).
+make[1]: Leaving directory '/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication'
+make[1]: Entering directory '/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication'
+[validation-tools] building registry validation tools in one Cargo session
+    Finished `validation` profile [optimized + debuginfo] target(s) in 0.53s
+OK: registry validation tools cached at /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/.
+/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/markdown-registry verify-all
+PASS: markdown inventory compatibility gate
+  registered=140 on_disk=140
+[done] verify-inventory-toml-first
+PASS: markdown owner map valid
+  entries=140
+  active=137
+  archived=1
+  locked=2
+[done] verify-owner-map
+[done] verify-research-narrative-root-docs
+/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/governance-verify validate-all
+OK: schema signatures verified for 9 registries (4 DB-backed compat exports skipped).
+[done] schema-signatures
+OK: cross-registry references verified. checks claims=16904 insights=29 experiments=2044 sources=58 datasets=136
+[done] crossrefs
+OK: dataset label aliases verified. aliases=14 experiments=264 lineages=264
+[done] dataset-label-aliases
+OK: canonical control-plane declarations are aligned
+[done] canonical-control-plane
+OK: planning/requirements authority and narrative bindings verified
+[done] planning-requirements-authority
+OK: temp-root policy verified
+[done] temp-roots-policy
+OK: SIMD containment policy verified for stable LLVM pin (12 SIMD-exposed crates inventoried)
+[done] simd-containment-policy
+OK: heavy feature policy verified
+[done] heavy-feature-policy
+OK: parity alias policy verified
+[done] parity-alias-policy
+OK: restored registry source headers and guidance verified
+[done] restored-registry-sources
+OK: source comment chronology policy verified
+[done] source-comment-chronology
+OK: external-source operational contracts verified. docs=29 anomaly_experiments=3
+[done] external-source-operational-contracts
+PASS: markdown removal policy
+  total_documents=140
+  active=137
+  archived=1
+  locked=2
+[done] markdown-removal-policy
+OK: experiment reference identity verified. references=1791 experiments=264 legacy_aliases=17 bin_targets=401
+[done] experiment-reference-identity
+/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/execution-planning --verify --repo-root .
+OK: execution-planning registry lane verified (canonical registry-verify-execution-planning script). experiments=264 lineages=264 edges=1384 workstreams=15 todo=69 actions=38 req_modules=14 mr_packages=146
+
+==========================================
+REGISTRY GOVERNANCE VALIDATION: PASSED
+==========================================
+[done] Markdown inventory validated (SQLite-first with TOML compatibility checks)
+[done] Markdown owner map verified
+[done] Registry schema signatures checked
+[done] Cross-reference integrity verified
+[done] Dataset label aliases verified
+[done] Canonical control-plane declarations verified
+[done] External-source operational contracts verified
+[done] Markdown governance removal policy checked
+
+SQLite-first governance checks are operational.
+==========================================
+make[1]: Leaving directory '/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication'
+[validate-local] OK: scoped validation passed.

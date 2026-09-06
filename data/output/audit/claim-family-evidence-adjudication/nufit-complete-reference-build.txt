@@ -1,0 +1,3 @@
+   Compiling algebra_experimental v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_experimental)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 12.98s
+     Running tests/nufit_reference_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/nufit_reference_identity-60df31e7b22edb85)

@@ -1,0 +1,25 @@
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 10.63s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/lbm_3d-f18755fdcd505c1c)
+
+running 17 tests
+test boundary::tests::aosoa_inlet_matches_aos_and_preserves_interior_sentinels ... ok
+test boundary::tests::test_bounce_back_no_slip ... ok
+test boundary::tests::test_bounce_back_reflection ... ok
+test boundary::tests::test_bounce_back_stability ... ok
+test boundary::tests::test_grid_index_is_boundary ... ok
+test boundary::tests::test_grid_index_delinearize ... ok
+test boundary::tests::test_grid_index_linearize ... ok
+test boundary::tests::test_grid_index_periodic_wrap ... ok
+test boundary::tests::test_inject_boundary_from_voxels_mass_conservation ... ok
+test boundary::tests::test_inject_boundary_from_voxels_no_solids ... ok
+test boundary::tests::test_inject_boundary_from_voxels_single_solid ... ok
+test boundary::tests::test_inject_boundary_from_voxels_wrong_grid_size - should panic ... ok
+test boundary::tests::test_inject_boundary_from_voxels_wrong_voxel_size - should panic ... ok
+test boundary::tests::test_periodic_conservation ... ok
+test boundary::tests::test_periodic_neighbor ... ok
+test boundary::tests::test_zou_he_mass_conservation ... ok
+test boundary::tests::test_zou_he_stability ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 104 filtered out; finished in 0.00s
+

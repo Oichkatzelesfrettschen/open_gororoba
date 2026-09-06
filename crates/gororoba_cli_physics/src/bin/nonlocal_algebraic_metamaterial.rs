@@ -172,10 +172,13 @@ fn main() -> Result<()> {
                 report.spectral_crosscheck.magnonic_min_bandwidth_ghz
             );
             println!(
-                "  Graphene valley check: C_K={:.4}, C_K'={:.4}",
+                "  Graphene valley check: C_K={:?}, C_K'={:?}",
                 report.spectral_crosscheck.graphene_valley_chern_k,
                 report.spectral_crosscheck.graphene_valley_chern_kprime
             );
+            if let Some(error) = &report.spectral_crosscheck.graphene_topology_error {
+                println!("  Graphene topology admission: {error}");
+            }
             println!(
                 "  Sersic layout span (n=4, non-gating): {:.4} .. {:.4}",
                 report.spectral_crosscheck.sersic_layout_min,

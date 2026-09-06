@@ -1,0 +1,48 @@
+claim_id = "C-1710"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The bounded predicate checks exact retained table columns and the independent numerical objective. Physical rejection remains a separate unadmitted claim."
+fixed_hyperparameters = ["Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay","Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds","Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication","Source identity receipt data/output/audit/qgp-source-quenching-identity/adjudication.toml; sha256 db39a83311cca946588803f420299fe037c75a9aa09599f759f5adbe438c3f18. Source convolution and retained fixed-loss ansatz are different models."]
+
+[[intervening_maps]]
+name = "retained_objective_identity"
+branch = "physical_fit"
+description = "Compare the declared retained objective and scoring formula at identical epsilon and fixed spectral index; physical ansatz admission remains separate."
+kind = "computational"
+
+[[intervening_maps]]
+name = "admitted_covariance_residual"
+branch = "physical_fit"
+description = "Match collision system, energy, species, centrality and pT support, then evaluate residuals with admitted covariance and degrees of freedom."
+kind = "computational"
+
+[[intervening_maps]]
+name = "directional_path_identity"
+branch = "geometry_identity"
+kind = "computational"
+description = "Compare the Eq9 joint forward-ray moments with the retained radial-distance statistic; E-309 tests a declared fixed-field implementation. Angular and centrality pooling remain separate source-model admission obligations."
+
+[[fitted_parameters]]
+branch = "geometry_identity"
+count = 0
+names = []
+training_boundary = "Fixed geometry, density and grid conventions fit zero parameters; physical event selection and pooling remain unresolved."
+
+[[fitted_parameters]]
+branch = "physical_fit"
+count = 1
+names = ["epsilon_bar"]
+training_boundary = "One epsilon is fitted to the same six retained points with n fixed; broader model calibration and published nuisance parameters are separate obligations."
+
+[decisive_experiment]
+experiment_ids = ["E-075","E-296","E-309"]
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+protocol_sha256 = "e7a6f3072ec70869ea068cf9606f34ed9619b2173be287531e87b346ccb89a10"
+description = "E-296 owns the independent numerical objective test; E-075 owns the physical driver. Numerical agreement between fit and score precedes separately preregistered covariance/population admission. Before source-model rejection, implement and independently verify the admitted positive-shift quenching-weight convolution, fragmentation scale and pp-spectrum parameter map. E-296 remains a shared-objective check for the retained negative-shift ansatz."
+
+[what_would_verify_refute]
+verification_outcomes = ["All 38 retained HEPData table rows match edges, RAA and stated error columns exactly; the diagonal historical scoring omits separately tabulated normalization uncertainty.","E-296 independently reproduces the shared corrected numerical objective at identical parameters and weights."]
+revision_outcomes = ["A new provider release or corrected model definition receives a separate source identity and canonical revision; preserve original columns and objective results.","An admitted physical model comparison requires its own covariance, calibration freedom, interpretive maps and rejection rule.","A source-implementation mismatch narrows the failed fit to its actual ansatz; preserve the result and require independently verified source convolution before physical rejection."]
+abandonment_outcomes = ["An identical-source row or uncertainty column differs, or independent same-input objective evaluation disagrees; abandon the affected implementation identity clause."]
+inconclusive_outcomes = ["Using retained radial distances or moment eccentricity leaves source geometry-to-observable mapping unadmitted even when a numerical fit passes. Fixed-field directional conformance does not establish centrality pooling.","A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.","The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted.","Authenticated source equations differ from the implemented law: source-model fit agreement or rejection remains unadjudicated."]

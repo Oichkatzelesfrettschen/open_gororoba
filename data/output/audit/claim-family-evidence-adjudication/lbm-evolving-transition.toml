@@ -1,0 +1,26 @@
+[transition]
+transition_key = "lbm-evolving-cuda-conformance"
+source_claim_id = "C-1696"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-LBM-EVOLVING-CUDA"]
+experiment_ids = ["E-291"]
+exercised_falsifier = "Evolving population parity, frozen-evolution negative control and direct/captured force replacement fixtures on admitted CUDA hardware."
+proposed_claim_status = "Provisional"
+rationale = "Preserve the historical equilibrium-only fixture finding and register the corrected bounded implementation separately."
+unresolved_assumptions = ["FP32 BGK periodic 8-cubed fixture only; full null trials, physical interpretation and resolution convergence remain separate."]
+actor = "claim-evidence-adjudication"
+reason = "Register real evolving CUDA conformance while preserving original failed runs"
+transition_timestamp = "2026-09-05T17:25:19Z"
+expected_source_state_sha256 = "4b804ea5e47e21edad698046d43c725534ed6c9fed1c4b1e641cc869dca2697c"
+expected_claim_id_max = 1744
+
+[[successor]]
+proposal_key = "lbm-evolving-population-and-capture-conformance"
+statement = "On the admitted RTX 4070 Ti with driver 610.57.04, the corrected 8-cubed FP32 BGK periodic fixture passes evolving CPU/CUDA population comparison, direct/captured stepping, force replacement and odd-step reinitialization. Post-step population RMS is 3.1221105176e-8 and independently summed density RMS is 3.3354056045e-7, within the unchanged 2e-5 gate. The observation stage is explicit; original time-level and capture-isolation failures remain retained. This fixture establishes bounded implementation conformance, separate from full null-catalog execution, physical interpretation or resolution convergence."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-291; lbm-instrument-repair.toml corrected_replay source and executable hashes; test_gpu_cpu_equivalence.rs."
+required_falsifier = "Hash-bound replay violates the declared population/density/velocity gates, force replacement or odd-parity captured reuse; a frozen equilibrium substitute must fail the evolving-field oracle."
+where_stated = ["data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml","crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs"]
+evidence_artifact_ids = ["LOCAL-LBM-EVOLVING-CUDA"]
+predecessor_relation_kind = "implementation_split"

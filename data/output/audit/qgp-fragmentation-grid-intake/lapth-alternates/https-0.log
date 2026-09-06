@@ -1,0 +1,16 @@
+--2026-09-05 18:03:33--  https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving lapth.cnrs.fr (lapth.cnrs.fr)... 134.158.101.236
+Connecting to lapth.cnrs.fr (lapth.cnrs.fr)|134.158.101.236|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 500 Internal Server Error
+  date: Sun, 06 Sep 2026 01:03:33 GMT
+  server: Apache
+  content-length: 536
+  content-type: text/html; charset=iso-8859-1
+Saving to: ‘https-0.body’
+
+     0K                                                       100% 40.4M=0s
+
+2026-09-05 18:03:33 ERROR 500: Internal Server Error.
+

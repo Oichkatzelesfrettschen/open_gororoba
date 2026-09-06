@@ -1,0 +1,26 @@
+[transition]
+transition_timestamp = "2026-09-05T19:21:33Z"
+transition_key = "mrt-force-density-impulse-conformance"
+source_claim_id = "C-1282"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+evidence_artifact_ids = ["LOCAL-MRT-FORCE-DENSITY-CONFORMANCE"]
+experiment_ids = ["E-300"]
+exercised_falsifier = "Compare evolving CPU/CUDA post-step populations with an independent periodic force-density impulse inventory. The original producers pass all 36 backend comparisons but deliver only 0.375 of the required impulse at tau 0.8; corrected producers meet both fixed predicates."
+proposed_claim_status = "Provisional"
+rationale = "The bounded MRT correction supports an implementation successor. The all-galaxies D_f bound at 64-cubed and 128-cubed remains unadjudicated; retain the parent and historical producer failures."
+unresolved_assumptions = ["E-163/E-164 GPU sweeps lack a matched admitted CPU denominator.", "E-298 Sersic trials fail their Mach gate at step 1 and retain historical producers; later repair cannot retrospectively promote their physics.", "Alternate FP32 dispatch numerical checks and eight independent precision-specific MRT implementations remain unresolved.", "Galaxy resolution convergence, analysis sensitivity and physical interpretation remain unassessed."]
+actor = "claim-evidence-adjudication"
+reason = "Separate bounded impulse-correct MRT conformance from the unadjudicated galaxy-wide morphology bound"
+expected_source_state_sha256 = "756ddf1654ce9d82d769f711641df33e5abc367b16d4c01c98c382ef7421791c"
+expected_claim_id_max = 1747
+
+[[successor]]
+proposal_key = "mrt-force-density-impulse-and-push-conformance"
+statement = "On the admitted RTX 4070 Ti with driver 610.57.04, the corrected periodic D3Q19 MRT 8-cubed fixture at tau 0.8 passes 36 forced/unforced CPU f64 versus standard push SoA CUDA FP32 direct/captured comparisons over twelve steps. Post-step population, independently summed density and raw-momentum RMS errors meet the unchanged 2e-5 gates, and a separate prescribed force-density impulse check passes. At forced step 12, CPU and CUDA mean-impulse errors are 5.2041704279e-18 and 1.5133991837e-9. The original producers passed backend comparisons while delivering only 0.375 of prescribed impulse; that failure remains retained. CPU scalar/SIMD-tail tests also pass 72 mass/impulse observations across two shapes and three relaxation times. The evidence establishes bounded implementation conformance for standard FP32 push direct/captured paths; other precisions, alternate dispatch validation, galaxy-wide D_f bounds, physical interpretation and resolution convergence remain unassessed."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-300; mrt-force-density-conformance-result.toml producer hashes; lbm_3d solver scalar/SIMD MRT Guo weighting; lbm_3d_cuda standard FP32 SoA push kernel and explicit graph pairs; mrt_population_conformance.rs."
+required_falsifier = "A hash-bound corrected replay violates any fixed population/density/raw-momentum gate or the independent force-density impulse gate, even if CPU and CUDA agree; a frozen-evolution substitute must fail the evolving-density discriminator."
+where_stated = ["data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-result.toml", "data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-protocol.toml", "crates/lbm_3d_cuda/tests/mrt_population_conformance.rs"]
+evidence_artifact_ids = ["LOCAL-MRT-FORCE-DENSITY-CONFORMANCE"]
+predecessor_relation_kind = "implementation_split"

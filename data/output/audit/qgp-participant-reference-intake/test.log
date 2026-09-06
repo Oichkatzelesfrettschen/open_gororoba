@@ -1,0 +1,22 @@
+   Compiling libm v0.2.16
+   Compiling autocfg v1.5.0
+   Compiling paste v1.0.15
+   Compiling typenum v1.19.0
+   Compiling num-traits v0.2.19
+   Compiling approx v0.5.1
+   Compiling num-integer v0.1.46
+   Compiling num-complex v0.4.6
+   Compiling num-rational v0.4.2
+   Compiling simba v0.9.1
+   Compiling nalgebra v0.34.2
+   Compiling gauss-quad v0.3.1
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 12.16s
+     Running tests/alice_participant_reference.rs (.cache/gate-target/validation/deps/alice_participant_reference-d5e4c911eccf8243)
+
+running 2 tests
+test legacy_values_remain_a_distinct_reference ... ok
+test source_table_preserves_population_and_distinct_uncertainties ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

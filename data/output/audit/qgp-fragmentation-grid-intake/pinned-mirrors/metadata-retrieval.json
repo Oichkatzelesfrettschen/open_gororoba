@@ -1,0 +1,70 @@
+[
+  {
+    "url": "https://api.github.com/repos/JeffersonLab/simc_gfortran",
+    "argv": [
+      "wget",
+      "--no-hsts",
+      "--user-agent=Mozilla/5.0",
+      "--timeout=20",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-repository.json",
+      "https://api.github.com/repos/JeffersonLab/simc_gfortran"
+    ],
+    "exit_code": 0,
+    "bytes": 6539,
+    "sha256": "b4cf0ea47846a7b4e8d31c220356c6b9639e18438b88f4c7344830d1245328db"
+  },
+  {
+    "url": "https://api.github.com/repos/JeffersonLab/simc_gfortran/git/trees/26521e4fd39eb69b19c7e812cc7c05a8421688af?recursive=1",
+    "argv": [
+      "wget",
+      "--no-hsts",
+      "--user-agent=Mozilla/5.0",
+      "--timeout=20",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-tree.json",
+      "https://api.github.com/repos/JeffersonLab/simc_gfortran/git/trees/26521e4fd39eb69b19c7e812cc7c05a8421688af?recursive=1"
+    ],
+    "exit_code": 0,
+    "bytes": 154301,
+    "sha256": "db1882c49c3f6be663a69514a07806aa7d9bdbd10095b4c486b7832b43d38180"
+  },
+  {
+    "url": "https://api.github.com/repos/hpoppenb/BashPhox",
+    "argv": [
+      "wget",
+      "--no-hsts",
+      "--user-agent=Mozilla/5.0",
+      "--timeout=20",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-repository.json",
+      "https://api.github.com/repos/hpoppenb/BashPhox"
+    ],
+    "exit_code": 0,
+    "bytes": 5050,
+    "sha256": "9094fa9d85a08063d5feb5b756d81769ffd261f01931c7b212720beab029e479"
+  },
+  {
+    "url": "https://api.github.com/repos/hpoppenb/BashPhox/git/trees/499d004f514e721b0aa4d0347ee5e004fc01fa29?recursive=1",
+    "argv": [
+      "wget",
+      "--no-hsts",
+      "--user-agent=Mozilla/5.0",
+      "--timeout=20",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-tree.json",
+      "https://api.github.com/repos/hpoppenb/BashPhox/git/trees/499d004f514e721b0aa4d0347ee5e004fc01fa29?recursive=1"
+    ],
+    "exit_code": 0,
+    "bytes": 137183,
+    "sha256": "be8d23e7c909e61dfcc28e6ae7558b85381606f25fd97535ec60efde0539fc45"
+  }
+]

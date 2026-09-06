@@ -1,0 +1,5 @@
+claim_id = "C-1688"
+expected_statement = "band_chern_number returns spurious nonzero integers for the exactly degenerate flat bands, -1.000 for band 5 at delta_eps_s = 0.05 and +1.000 for band 6 at 0.10, although all hoppings are real, so H(-k) equals the conjugate of H(k) and spinless time reversal forces the Chern number to zero for every band."
+expected_where_stated = "crates/quantum_core/src/tight_binding.rs"
+statement = "At source revision 81a4ca6e, the single-band band_chern_number procedure reports retained values -1 for band 5 at delta_eps_s=0.05 and +1 for band 6 at 0.10 without checking band isolation. These numbers lack an admitted individual-band invariant at degeneracy. Real hopping gives spinless time reversal, which constrains an isolated time-reversal-invariant band or separated invariant subspace; it does not define individual-band Chern numbers at band touchings."
+where_stated = "crates/quantum_core/src/tight_binding.rs; historical implementation at git revision 81a4ca6e"

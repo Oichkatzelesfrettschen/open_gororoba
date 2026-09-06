@@ -1,0 +1,120 @@
+{
+  "source_class": "pinned third-party mirror; original author release authentication unresolved",
+  "executed_source": false,
+  "requests": [
+    {
+      "repository": "JeffersonLab/simc_gfortran",
+      "commit": "26521e4fd39eb69b19c7e812cc7c05a8421688af",
+      "path": "fdss/fdss.f",
+      "url": "https://raw.githubusercontent.com/JeffersonLab/simc_gfortran/26521e4fd39eb69b19c7e812cc7c05a8421688af/fdss/fdss.f",
+      "argv": [
+        "wget",
+        "--no-hsts",
+        "--user-agent=Mozilla/5.0",
+        "--timeout=25",
+        "--tries=1",
+        "--server-response",
+        "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-fdss.f",
+        "https://raw.githubusercontent.com/JeffersonLab/simc_gfortran/26521e4fd39eb69b19c7e812cc7c05a8421688af/fdss/fdss.f"
+      ],
+      "exit_code": 0,
+      "bytes": 9401,
+      "sha256": "c66db60db93f8a336f1bc35c1dd8a699b6356f9cda3ee5055c4f504195c6177d"
+    },
+    {
+      "repository": "JeffersonLab/simc_gfortran",
+      "commit": "26521e4fd39eb69b19c7e812cc7c05a8421688af",
+      "path": "fdss/HNLO.GRID",
+      "url": "https://raw.githubusercontent.com/JeffersonLab/simc_gfortran/26521e4fd39eb69b19c7e812cc7c05a8421688af/fdss/HNLO.GRID",
+      "argv": [
+        "wget",
+        "--no-hsts",
+        "--user-agent=Mozilla/5.0",
+        "--timeout=25",
+        "--tries=1",
+        "--server-response",
+        "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-HNLO.GRID",
+        "https://raw.githubusercontent.com/JeffersonLab/simc_gfortran/26521e4fd39eb69b19c7e812cc7c05a8421688af/fdss/HNLO.GRID"
+      ],
+      "exit_code": 0,
+      "bytes": 74256,
+      "sha256": "16fd57fffd854c35e2ec086bd2b03d1706b5d422c94ac2306b075a1a2ddea2b2"
+    },
+    {
+      "repository": "JeffersonLab/simc_gfortran",
+      "commit": "26521e4fd39eb69b19c7e812cc7c05a8421688af",
+      "path": "fdss/HLO.GRID",
+      "url": "https://raw.githubusercontent.com/JeffersonLab/simc_gfortran/26521e4fd39eb69b19c7e812cc7c05a8421688af/fdss/HLO.GRID",
+      "argv": [
+        "wget",
+        "--no-hsts",
+        "--user-agent=Mozilla/5.0",
+        "--timeout=25",
+        "--tries=1",
+        "--server-response",
+        "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-HLO.GRID",
+        "https://raw.githubusercontent.com/JeffersonLab/simc_gfortran/26521e4fd39eb69b19c7e812cc7c05a8421688af/fdss/HLO.GRID"
+      ],
+      "exit_code": 0,
+      "bytes": 74256,
+      "sha256": "f6edf2403d54094338dd3b9da1dca00e83cbcebd613c82d227ee959952303f90"
+    },
+    {
+      "repository": "hpoppenb/BashPhox",
+      "commit": "499d004f514e721b0aa4d0347ee5e004fc01fa29",
+      "path": "frag/dss/fDSS.f",
+      "url": "https://raw.githubusercontent.com/hpoppenb/BashPhox/499d004f514e721b0aa4d0347ee5e004fc01fa29/frag/dss/fDSS.f",
+      "argv": [
+        "wget",
+        "--no-hsts",
+        "--user-agent=Mozilla/5.0",
+        "--timeout=25",
+        "--tries=1",
+        "--server-response",
+        "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-fDSS.f",
+        "https://raw.githubusercontent.com/hpoppenb/BashPhox/499d004f514e721b0aa4d0347ee5e004fc01fa29/frag/dss/fDSS.f"
+      ],
+      "exit_code": 0,
+      "bytes": 24737,
+      "sha256": "37c1842402a4539c4369e9881c4ed0593bfb96682e559b723f349ac17e9436d1"
+    },
+    {
+      "repository": "hpoppenb/BashPhox",
+      "commit": "499d004f514e721b0aa4d0347ee5e004fc01fa29",
+      "path": "frag/dss/HNLO.GRID",
+      "url": "https://raw.githubusercontent.com/hpoppenb/BashPhox/499d004f514e721b0aa4d0347ee5e004fc01fa29/frag/dss/HNLO.GRID",
+      "argv": [
+        "wget",
+        "--no-hsts",
+        "--user-agent=Mozilla/5.0",
+        "--timeout=25",
+        "--tries=1",
+        "--server-response",
+        "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-HNLO.GRID",
+        "https://raw.githubusercontent.com/hpoppenb/BashPhox/499d004f514e721b0aa4d0347ee5e004fc01fa29/frag/dss/HNLO.GRID"
+      ],
+      "exit_code": 0,
+      "bytes": 74256,
+      "sha256": "16fd57fffd854c35e2ec086bd2b03d1706b5d422c94ac2306b075a1a2ddea2b2"
+    },
+    {
+      "repository": "hpoppenb/BashPhox",
+      "commit": "499d004f514e721b0aa4d0347ee5e004fc01fa29",
+      "path": "frag/dss/HLO.GRID",
+      "url": "https://raw.githubusercontent.com/hpoppenb/BashPhox/499d004f514e721b0aa4d0347ee5e004fc01fa29/frag/dss/HLO.GRID",
+      "argv": [
+        "wget",
+        "--no-hsts",
+        "--user-agent=Mozilla/5.0",
+        "--timeout=25",
+        "--tries=1",
+        "--server-response",
+        "--output-document=data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-HLO.GRID",
+        "https://raw.githubusercontent.com/hpoppenb/BashPhox/499d004f514e721b0aa4d0347ee5e004fc01fa29/frag/dss/HLO.GRID"
+      ],
+      "exit_code": 0,
+      "bytes": 74256,
+      "sha256": "f6edf2403d54094338dd3b9da1dca00e83cbcebd613c82d227ee959952303f90"
+    }
+  ]
+}

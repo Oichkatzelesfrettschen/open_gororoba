@@ -1,0 +1,31 @@
+claim_id = "C-1746"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Finite transport and independently measured population mass inventory; physical boundary interpretation is unassessed."
+fixed_hyperparameters = ["D3Q19 AoSoA populations", "5x3x2 nonuniform domain and20 evolving steps", "Periodic y/z with explicitly nonperiodic x", "Zou-He min-x inlet and explicit zero-gradient incoming-population max-x closure", "Relative engineering gate1e-12", "Zero-budget failure control"]
+[[intervening_maps]]
+branch = "population_transport"
+name = "directional_stream_and_face_reconstruction"
+kind = "computational"
+description = "Move each population to its discrete destination; outgoing x populations leave the domain, while declared rules reconstruct incoming face slots."
+[[intervening_maps]]
+branch = "mass_inventory"
+name = "independent_packets_and_fixed_direction_sums"
+kind = "computational"
+description = "Analytical packet destinations and fixed direction lists test the transport and face accounting independently of ledger equality."
+[[fitted_parameters]]
+branch = "transport_and_ledger"
+count = 0
+names = []
+training_boundary = "Deterministic numerical fixtures fit zero parameters; the outflow closure is explicitly selected rather than inferred from physical data."
+[decisive_experiment]
+experiment_ids = ["E-297"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/open-x-flux-protocol.toml"
+protocol_sha256 = "1f92e032efe86f84d70dfcf93748c65959cd7047405c74630ee21a959818dc54"
+description = "Replay independent packet/face-sum tests, nonuniform evolution and runner failure retention against the source hashes in open-x-flux-result.toml."
+[what_would_verify_refute]
+verification_outcomes = ["Outgoing packets leave without opposite-face wrap, interior destinations and face sums match analytical oracles, and evolving residuals pass the declared gate."]
+revision_outcomes = ["A different closure, magnetic boundary, dimensional grid or physical conversion requires its own measured conformance and physical admission."]
+abandonment_outcomes = ["An outgoing packet reaches the opposite x face or an independent analytical face sum disagrees.", "The declared finite replay exceeds its unchanged residual gate or the zero-budget failure is silently accepted."]
+inconclusive_outcomes = ["Missing input/source identity prevents replay.", "Finite ledger agreement leaves physical reflected-wave/backflow behavior, magnetic boundaries and coupled force sensitivity unassessed."]

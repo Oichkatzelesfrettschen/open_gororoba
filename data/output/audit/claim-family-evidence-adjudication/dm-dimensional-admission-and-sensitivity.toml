@@ -1,0 +1,76 @@
+schema = "dm-dimensional-admission-and-sensitivity-v1"
+claim = "C-1681"
+related_claims = ["C-1682", "C-1683", "C-1684", "C-1685", "C-1686", "C-1687"]
+evidence_layer = "implementation_conformance"
+physical_comparison_admission = "blocked"
+physical_suppression_bound = "unassessed"
+gravitational_frame = "unresolved; absolute Galactic acceleration versus heliocentric tidal acceleration remains an owner/model decision"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+cargo_home = "/home/eirikr/Github/open_gororoba/.cache/cargo-home"
+cargo_target_dir = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target"
+cargo_build_build_dir = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e"
+
+[input_admission]
+implementation = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs::admit_ic_metadata and load_ic_lines"
+required_metadata = ["mesh_kind=uniform_cartesian", "coordinate_frame=heliocentric_cartesian", "field_storage=lattice", "magnetic_normalization=sqrt_mu0_rho_ref_dx_over_dt", "origin_x_m", "origin_y_m", "origin_z_m", "spacing_m", "timestep_s", "density_ref_kg_m3", "magnetic_unit_t", "n_ref_cm3", "v_ref_kms", "u_scale"]
+unit_relations = ["velocity_unit=spacing_m/timestep_s", "magnetic_unit=sqrt(mu0*density_ref)*velocity_unit", "density_ref=n_ref*1e6*DRAG_PROTON_MASS_KG", "v_ref_kms*1000/u_scale=velocity_unit"]
+relative_consistency_tolerance = 1e-12
+proton_mass_convention = "declared approximate drag model: 0.938 GeV/c2 times 1.783e-27 kg per GeV/c2; independent physical constant uncertainty remains separate"
+grid_consistency = "DM radial endpoints and centered transverse geometry must equal admitted SI mesh coordinates; force_scale uses admitted dt squared over dx"
+row_contract = "exactly ten columns, unique in-range cell indices, finite fields, positive density, finite equilibrium populations, complete cell coverage"
+atomicity_observation = "malformed-row fixtures retain identical f, rho, u, bx, by and bz vectors"
+legacy_producer = "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs writes n_ref_cm3, v_ref_kms, u_scale and Knudsen metadata; radial generation applies logarithmic radius and arbitrary b_scale"
+legacy_disposition = "missing physical metadata and logarithmic meshes fail admission; changing a label alone cannot justify admission"
+tests_command = "cargo test -p gororoba_cli_physics --bin solar --profile validation wind_dm_mhd::tests"
+tests_passed = 3
+tests_log = "dm-ic-admission-replay.log"
+tests_log_sha256 = "751d7b6bb740396edd77baff4e776145aa593aa75d368ae445c9e566a624c036"
+
+[inlet_layout]
+contradiction = "solar driver supplied AoSoA solver.f to a boundary method indexing cell-major AoS"
+repair = "apply_velocity_inlet_min_x_aosoa gathers each inlet cell through solver::aosoa_idx, applies the existing local AoS reconstruction, and scatters to the same AoSoA addresses"
+existing_aos_api = "preserved"
+test_surface = "5 by 3 by 2 grid with distinct per-cell density; AoS versus AoSoA equality for all populations; interior and padded population sentinels unchanged; all 30 inlet unknown populations change"
+tests_command = "cargo test -p lbm_3d --lib --profile validation boundary::tests"
+tests_passed = 17
+tests_log = "dm-inlet-layout-replay.log"
+tests_log_sha256 = "554835122cb44daa8f36493465f2114e0c4ec04a274994c51e1d1dc0578f470b"
+
+[guo_sensitivity]
+protocol = "dm-unit-sensitivity-protocol.toml"
+protocol_sha256 = "68dbdf7f9c9c292ff84012f58c8f6e57d048bacf9f2b0643300f2fc375ee2739"
+command = "cargo test -p lbm_3d --test dm_guo_sensitivity --profile validation -- --nocapture"
+log = "dm-guo-sensitivity-replay.log"
+log_sha256 = "fa6808ccb1275da139a4dda600282b18df2cca82c1ed5e6811633c46ea661fdb"
+exit_status = 0
+rows = 90
+boundary = "one FP64 Guo timestep, 4 cubed periodic uniform cells, zero/positive/negative paired force; three densities and three tau values"
+smallest_tested_force_resolved_for_every_pair = 1e-14
+next_smaller_tested_force = 1e-16
+next_smaller_disposition = "fails preregistered all-pairs resolution criterion"
+zero_response_force_levels = [1e-18, 1e-20]
+zero_response_rows = 18
+maximum_relative_error_at_or_above_resolved_level = 0.00752739484732956043
+maximum_zero_control_velocity_drift = 5.55111512312578270e-17
+maximum_relative_mass_error = 1.11022302462515654e-16
+interpretation = "demonstrated response for the enumerated single-step instrument, not a universal machine epsilon floor or full-system sensitivity bound"
+drag_arithmetic_scope = "corrected quadratic cold-stream acceleration and density-weighted force API have independent SI and unit-change tests; the response sweep supplies force directly and does not promote drag microphysics"
+
+[remaining_physical_inputs]
+items = ["retained IC with justified uniform SI geometry and normalization", "spacecraft provenance and source-variable mapping", "independently specified magnetic amplitude and resistivity/diffusivity units", "gravitational acceleration frame", "open outflow and transverse boundary specification", "population boundary-flux ledger", "full coupled numerical sensitivity and resolution convergence", "independent observation distinct from prescribed invariant initialization"]
+streaming_source = "crates/lbm_3d/src/solver.rs::phase2_streaming uses rem_euclid in x, y and z"
+boundary_source = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs::run applies a min-x inlet overwrite after periodic streaming; an open outflow remains unspecified"
+mass_ledger_required = ["mass before streaming", "incoming and outgoing population flux per physical face", "mass change from boundary reconstruction", "mass change from collision", "post-step residual after flux and source accounting"]
+admission_effect = "runtime explicitly reports physical_comparison_admission=blocked; diagnostics remain lattice ratios of force-density maxima"
+
+[source_identity]
+sensitivity_test_sha256 = "f0e8add85f91a4bcb2e6360a0e934a53d0a995094d31046cda06da443e813d80"
+drag_source_sha256 = "e52f724877310b962d9308438613c7716329f03896d935d9bab02dc3a3508f81"
+boundary_source_sha256 = "4ea712f7d3bb56af70526c3fadc02fdf2d7674f8a2819b060576000e421429a7"
+solar_driver_source_sha256 = "e0ae060eb76c9e44e1d8d86f60f2b875966e76c7231eb786f8d4a6350ef304bf"
+
+[verification]
+clippy_command = "cargo clippy -p gororoba_cli_physics --bin solar -p lbm_3d --lib --test dm_guo_sensitivity --profile validation -- -D warnings"
+clippy_log = "dm-layout-admission-final-clippy.log"
+clippy_exit_status = 0
+diff_check = "passed"

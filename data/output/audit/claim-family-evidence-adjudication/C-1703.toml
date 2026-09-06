@@ -1,0 +1,31 @@
+claim_id = "C-1703"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Freeze outlier rule D_f<1 at 64 cubed, exact seven object IDs and the corresponding 128-cubed rows; retain historical six-object assertion as a competing recorded population."]
+[[intervening_maps]]
+branch = "outlier_accounting"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Compute sample standard deviations using the same denominator convention for all-object and common non-outlier populations."
+[[intervening_maps]]
+branch = "outlier_accounting"
+name = "independent_predicate"
+kind = "computational"
+description = "Reproduce the factorization into outlier-removal and within-subset tightening; report 8.41 and 1.98 with full-precision rows and their product against the claimed 18-fold description."
+[[fitted_parameters]]
+branch = "outlier_accounting"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-163","E-166"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-163/E-166 as the recorded family binding, not evidence of completed replay. Reproduce the factorization into outlier-removal and within-subset tightening; report 8.41 and 1.98 with full-precision rows and their product against the claimed 18-fold description. E-163/E-166 retained rows, producer identities or exclusion membership are unavailable. Spread decomposition cannot identify the physical cause of outliers or establish convergence."
+[what_would_verify_refute]
+verification_outcomes = ["Exact matched populations reproduce the two recorded factors and demonstrate which arithmetic contribution dominates the spread ratio."]
+revision_outcomes = ["Different membership/counts or rounded-factor products revise quantitative factors; label decomposition as statistical accounting rather than causal resolution evidence."]
+abandonment_outcomes = ["The admitted matched-row calculation gives incompatible factors or fails the stated dominance, refuting that bounded decomposition."]
+inconclusive_outcomes = ["E-163/E-166 retained rows, producer identities or exclusion membership are unavailable. Spread decomposition cannot identify the physical cause of outliers or establish convergence."]

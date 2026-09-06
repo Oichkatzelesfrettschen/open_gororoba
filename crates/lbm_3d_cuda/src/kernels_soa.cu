@@ -619,6 +619,39 @@ __device__ __forceinline__ void mrt_collision_d3q19(
 // Identical signature and structure to lbm_step_soa_fused (BGK), but replaces
 // the BGK collision with the d'Humieres MRT operator above. Macroscopic
 // computation, Guo forcing, and push-streaming are identical.
+// Force density contributes its full first moment when the MRT momentum rate is zero.
+// The zero-equilibrium operator A gives (Phi+A*Phi)/2 = M^-1*(I-S/2)*M*Phi.
+__device__ __forceinline__ void mrt_collision_forced_d3q19(
+    float* populations, float density, float ux, float uy, float uz,
+    float inv_tau, float fx, float fy, float fz
+) {
+    if (fx == 0.0f && fy == 0.0f && fz == 0.0f) {
+        mrt_collision_d3q19(populations, density, ux, uy, uz, inv_tau);
+        return;
+    }
+    float half_inverse_density = 0.5f / density;
+    ux += fx * half_inverse_density;
+    uy += fy * half_inverse_density;
+    uz += fz * half_inverse_density;
+    mrt_collision_d3q19(populations, density, ux, uy, uz, inv_tau);
+    float source[19], relaxed_source[19];
+    #pragma unroll
+    for (int direction = 0; direction < 19; ++direction) {
+        float cx = (float)CX[direction], cy = (float)CY[direction], cz = (float)CZ[direction];
+        float velocity_dot_force = (cx - ux) * fx + (cy - uy) * fy + (cz - uz) * fz;
+        float direction_dot_velocity = cx * ux + cy * uy + cz * uz;
+        float direction_dot_force = cx * fx + cy * fy + cz * fz;
+        source[direction] = W[direction] * (3.0f * velocity_dot_force
+            + 9.0f * direction_dot_velocity * direction_dot_force);
+        relaxed_source[direction] = source[direction];
+    }
+    mrt_collision_d3q19(relaxed_source, 0.0f, 0.0f, 0.0f, 0.0f, inv_tau);
+    #pragma unroll
+    for (int direction = 0; direction < 19; ++direction) {
+        populations[direction] += 0.5f * (source[direction] + relaxed_source[direction]);
+    }
+}
+
 extern "C" __global__ void lbm_step_soa_mrt_fused(
     const float* __restrict__ f_in,
     float* __restrict__ f_out,
@@ -670,26 +703,10 @@ extern "C" __global__ void lbm_step_soa_mrt_fused(
 
     // 2. MRT collision (replaces BGK)
     float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
-
-    // 3. Guo forcing (SoA force layout, identical to BGK path)
-    float fx = __ldg(&force[idx]);
-    float fy = __ldg(&force[N + idx]);
-    float fz = __ldg(&force[2 * N + idx]);
-    float force_mag_sq = fx * fx + fy * fy + fz * fz;
-
-    if (force_mag_sq >= 1e-40f) {
-        float prefactor = 1.0f - 0.5f * inv_tau;
-
-        #pragma unroll
-        for (int i = 0; i < 19; i++) {
-            float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
-            float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-            float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-            float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-            f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
-        }
-    }
+    float fx = force == NULL ? 0.0f : __ldg(&force[idx]);
+    float fy = force == NULL ? 0.0f : __ldg(&force[N + idx]);
+    float fz = force == NULL ? 0.0f : __ldg(&force[2 * N + idx]);
+    mrt_collision_forced_d3q19(f_local, rho_local, ux, uy, uz, inv_tau, fx, fy, fz);
 
     // 4. Streaming (push scheme, periodic BC)
     #pragma unroll
@@ -863,24 +880,10 @@ __device__ __forceinline__ void process_cell_mrt(
     u_out[2 * N + idx] = uz;
 
     float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
-
-    float fx = __ldg(&force[idx]);
-    float fy = __ldg(&force[N + idx]);
-    float fz = __ldg(&force[2 * N + idx]);
-    float force_mag_sq = fx * fx + fy * fy + fz * fz;
-
-    if (force_mag_sq >= 1e-40f) {
-        float prefactor = 1.0f - 0.5f * inv_tau;
-        #pragma unroll
-        for (int i = 0; i < 19; i++) {
-            float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
-            float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-            float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-            float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-            f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
-        }
-    }
+    float fx = force == NULL ? 0.0f : __ldg(&force[idx]);
+    float fy = force == NULL ? 0.0f : __ldg(&force[N + idx]);
+    float fz = force == NULL ? 0.0f : __ldg(&force[2 * N + idx]);
+    mrt_collision_forced_d3q19(f_local, rho_local, ux, uy, uz, inv_tau, fx, fy, fz);
 
     #pragma unroll
     for (int i = 0; i < 19; i++) {
@@ -1160,25 +1163,10 @@ lbm_step_soa_mrt_tiled(
 
     // Phase 4: MRT collision
     float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
-
-    // Phase 5: Guo forcing
-    float fx = __ldg(&force[idx]);
-    float fy = __ldg(&force[N + idx]);
-    float fz = __ldg(&force[2 * N + idx]);
-    float force_mag_sq = fx * fx + fy * fy + fz * fz;
-
-    if (force_mag_sq >= 1e-40f) {
-        float prefactor = 1.0f - 0.5f * inv_tau;
-        #pragma unroll
-        for (int i = 0; i < 19; i++) {
-            float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
-            float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-            float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-            float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-            f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
-        }
-    }
+    float fx = force == NULL ? 0.0f : __ldg(&force[idx]);
+    float fy = force == NULL ? 0.0f : __ldg(&force[N + idx]);
+    float fz = force == NULL ? 0.0f : __ldg(&force[2 * N + idx]);
+    mrt_collision_forced_d3q19(f_local, rho_local, ux, uy, uz, inv_tau, fx, fy, fz);
 
     // Phase 6: Coalesced global write
     #pragma unroll
@@ -1441,24 +1429,10 @@ lbm_step_soa_mrt_coarsened(
         u_out[2 * N + idx] = uz;
 
         float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
-        mrt_collision_d3q19(f0, rho_local, ux, uy, uz, inv_tau);
-
-        float fx = __ldg(&force[idx]);
-        float fy = __ldg(&force[N + idx]);
-        float fz = __ldg(&force[2 * N + idx]);
-        float force_mag_sq = fx * fx + fy * fy + fz * fz;
-
-        if (force_mag_sq >= 1e-40f) {
-            float prefactor = 1.0f - 0.5f * inv_tau;
-            #pragma unroll
-            for (int i = 0; i < 19; i++) {
-                float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
-                float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-                float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-                float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-                f0[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
-            }
-        }
+        float fx = force == NULL ? 0.0f : __ldg(&force[idx]);
+        float fy = force == NULL ? 0.0f : __ldg(&force[N + idx]);
+        float fz = force == NULL ? 0.0f : __ldg(&force[2 * N + idx]);
+        mrt_collision_forced_d3q19(f0, rho_local, ux, uy, uz, inv_tau, fx, fy, fz);
 
         #pragma unroll
         for (int i = 0; i < 19; i++) {
@@ -1502,24 +1476,10 @@ lbm_step_soa_mrt_coarsened(
         u_out[2 * N + idx] = uz;
 
         float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
-        mrt_collision_d3q19(f1, rho_local, ux, uy, uz, inv_tau);
-
-        float fx = __ldg(&force[idx]);
-        float fy = __ldg(&force[N + idx]);
-        float fz = __ldg(&force[2 * N + idx]);
-        float force_mag_sq = fx * fx + fy * fy + fz * fz;
-
-        if (force_mag_sq >= 1e-40f) {
-            float prefactor = 1.0f - 0.5f * inv_tau;
-            #pragma unroll
-            for (int i = 0; i < 19; i++) {
-                float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
-                float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-                float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-                float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-                f1[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
-            }
-        }
+        float fx = force == NULL ? 0.0f : __ldg(&force[idx]);
+        float fy = force == NULL ? 0.0f : __ldg(&force[N + idx]);
+        float fz = force == NULL ? 0.0f : __ldg(&force[2 * N + idx]);
+        mrt_collision_forced_d3q19(f1, rho_local, ux, uy, uz, inv_tau, fx, fy, fz);
 
         #pragma unroll
         for (int i = 0; i < 19; i++) {
@@ -1737,24 +1697,10 @@ extern "C" __global__ void lbm_step_soa_mrt_aa(
     u_out[2 * N + idx] = uz;
 
     float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
-
-    float fx = __ldg(&force[idx]);
-    float fy = __ldg(&force[N + idx]);
-    float fz = __ldg(&force[2 * N + idx]);
-    float force_mag_sq = fx * fx + fy * fy + fz * fz;
-
-    if (force_mag_sq >= 1e-40f) {
-        float prefactor = 1.0f - 0.5f * inv_tau;
-        #pragma unroll
-        for (int i = 0; i < 19; i++) {
-            float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
-            float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-            float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-            float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-            f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
-        }
-    }
+    float fx = force == NULL ? 0.0f : __ldg(&force[idx]);
+    float fy = force == NULL ? 0.0f : __ldg(&force[N + idx]);
+    float fz = force == NULL ? 0.0f : __ldg(&force[2 * N + idx]);
+    mrt_collision_forced_d3q19(f_local, rho_local, ux, uy, uz, inv_tau, fx, fy, fz);
 
     #pragma unroll
     for (int i = 0; i < 19; i++) {
@@ -1844,28 +1790,10 @@ extern "C" __global__ void lbm_step_soa_mrt_aa_ephemeral(
     }
 
     float inv_tau = __ldg(&tau[idx]);  // stores precomputed 1/tau
-    mrt_collision_d3q19(f_local, rho_local, ux, uy, uz, inv_tau);
-
-    // Guo forcing: skip entirely when force pointer is NULL (free-decay flows).
-    // Saves 12.9 GB VRAM at 1024^3 (3 * f32 * 1.07B cells).
-    if (force != NULL) {
-        float fx = __ldg(&force[idx]);
-        float fy = __ldg(&force[N + idx]);
-        float fz = __ldg(&force[2 * N + idx]);
-        float force_mag_sq = fx * fx + fy * fy + fz * fz;
-
-        if (force_mag_sq >= 1e-40f) {
-            float prefactor = 1.0f - 0.5f * inv_tau;
-            #pragma unroll
-            for (int i = 0; i < 19; i++) {
-                float eix = (float)CX[i], eiy = (float)CY[i], eiz = (float)CZ[i];
-                float em_u_dot_f = (eix - ux) * fx + (eiy - uy) * fy + (eiz - uz) * fz;
-                float ei_dot_u = eix * ux + eiy * uy + eiz * uz;
-                float ei_dot_f = eix * fx + eiy * fy + eiz * fz;
-                f_local[i] += prefactor * W[i] * (em_u_dot_f * 3.0f + ei_dot_u * ei_dot_f * 9.0f);
-            }
-        }
-    }
+    float fx = force == NULL ? 0.0f : __ldg(&force[idx]);
+    float fy = force == NULL ? 0.0f : __ldg(&force[N + idx]);
+    float fz = force == NULL ? 0.0f : __ldg(&force[2 * N + idx]);
+    mrt_collision_forced_d3q19(f_local, rho_local, ux, uy, uz, inv_tau, fx, fy, fz);
 
     #pragma unroll
     for (int i = 0; i < 19; i++) {

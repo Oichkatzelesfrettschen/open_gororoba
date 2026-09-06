@@ -8,12 +8,16 @@ use std::{collections::BTreeSet, fs, path::PathBuf};
 
 #[path = "staples_causal_validation/admission.rs"]
 mod admission;
+#[path = "staples_causal_validation/control_uncertainty.rs"]
+mod control_uncertainty;
 #[path = "staples_causal_validation/evidence.rs"]
 mod evidence;
 #[path = "staples_causal_validation/features.rs"]
 mod features;
 #[path = "staples_causal_validation/fitting.rs"]
 mod fitting;
+#[path = "staples_causal_validation/geometric_capacity.rs"]
+mod geometric_capacity;
 #[path = "staples_causal_validation/metrics.rs"]
 mod metrics;
 #[path = "staples_causal_validation/splits.rs"]
@@ -49,6 +53,9 @@ enum Mode {
     Prepare,
     All,
     External,
+    RecoverControls,
+    GeometricTrain,
+    GeometricEvaluate,
 }
 
 #[derive(Parser)]
@@ -68,6 +75,17 @@ struct Args {
     file_map: Option<PathBuf>,
     #[arg(long)]
     models_dir: Option<PathBuf>,
+    /// Explicit practical-equivalence margin for the post-hoc control analysis.
+    #[arg(long)]
+    equivalence_margin: Option<f64>,
+    #[arg(long)]
+    geometric_protocol: Option<PathBuf>,
+    #[arg(long)]
+    geometric_protocol_sha256: Option<String>,
+    #[arg(long)]
+    geometric_models_dir: Option<PathBuf>,
+    #[arg(long)]
+    recovery_dir: Option<PathBuf>,
 }
 
 fn main() -> Result<()> {
@@ -167,6 +185,16 @@ fn run_locked(args: &Args, sources: &Value) -> Result<()> {
     ensure!(
         failures.is_empty(),
         "retained execution failure requires explicit review before retry"
+    );
+    if args.mode == Mode::RecoverControls {
+        return control_uncertainty::recover(args, &config, sources);
+    }
+    if matches!(args.mode, Mode::GeometricTrain | Mode::GeometricEvaluate) {
+        return geometric_capacity::run(args, &config, sources);
+    }
+    ensure!(
+        args.equivalence_margin.is_none(),
+        "equivalence margin requires recover-controls mode"
     );
     let probe = if args.mode == Mode::External {
         "d"

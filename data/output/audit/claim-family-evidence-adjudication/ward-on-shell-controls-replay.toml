@@ -1,0 +1,33 @@
+# On-shell diagram omission and tadpole trace controls.
+[meta]
+artifact_id = "p1-photon-graviton-on-shell-controls"
+tolerance_absolute = 1.00000000000000000e-12
+tolerance_normalized = 1.00000000000000000e-06
+
+[[diagram_omission]]
+loop_type = "Scalar"
+irreducible_plus_external_extrapolated_norm = 2.36262291671245940e-3
+omit_external_extrapolated_norm = 2.41610205236437786e-3
+omit_irreducible_extrapolated_norm = 5.34791356646309852e-5
+omit_external_detected = true
+omit_irreducible_detected = true
+
+[[diagram_omission]]
+loop_type = "Spinor"
+irreducible_plus_external_extrapolated_norm = 5.86824021281251006e-3
+omit_external_extrapolated_norm = 6.08422740121735035e-3
+omit_irreducible_extrapolated_norm = 2.15987188504166219e-4
+omit_external_detected = true
+omit_irreducible_detected = true
+
+[[tadpole_trace_perturbation]]
+loop_type = "Scalar"
+invariant_trace = "0.00000000000000000e0+0.00000000000000000e0i"
+perturbed_trace = "1.97249189064144653e-2+0.00000000000000000e0i"
+detected = true
+
+[[tadpole_trace_perturbation]]
+loop_type = "Spinor"
+invariant_trace = "0.00000000000000000e0+0.00000000000000000e0i"
+perturbed_trace = "-3.93491102358234091e-2+0.00000000000000000e0i"
+detected = true

@@ -1,0 +1,5 @@
+claim_id = "C-1700"
+expected_statement = "The null-hypothesis control path is non-functional: euclid-df-sweep with the null-hypothesis flag panics at euclid_df_sweep.rs line 816 with CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED before emitting any trial, reproducibly at 64 cubed and 128 cubed and independently of alpha_zd, on hardware where the ordinary GPU sweep runs to completion."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+statement = "At source revision 81a4ca6e, The null-hypothesis control path is non-functional: euclid-df-sweep with the null-hypothesis flag panics at euclid_df_sweep.rs line 816 with CUDA_ERROR_STREAM_CAPTURE_UNSUPPORTED before emitting any trial, reproducibly at 64 cubed and 128 cubed and independently of alpha_zd, on hardware where the ordinary GPU sweep runs to completion."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e"

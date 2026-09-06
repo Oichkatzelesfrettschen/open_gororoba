@@ -1,0 +1,381 @@
+	   <html>
+	    <head>
+	    <title>FF generator</title>
+	    </head>
+
+	    <BODY BGCOLOR="#E2E2E2">
+
+	    <FONT FACE="Veranda, sans-serif">
+
+	    <ALIGN=CENTER>
+
+	    <center>
+	    <H2><strong> FF generator
+	    </strong></H2></font></center>
+
+	    <FONT SIZE=+0>
+	    <FONT COLOR="#111111">
+	<!--<form method=POST action="http://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl"> -->
+	<!--<form method=POST action="http://lapth.in2p3.fr/cgi-bin/ffgenerator/ffcalc.pl"> -->
+	<form method=POST action="http://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl">
+	Using the form below you can calculate, in real time, values of z D<sub>i</sub><sup>k</sup>(z, Q<sup>2</sup>)
+	for any of the fragmentation functions from the groups AESSS, AKK, BFG, BFGW, BKK, DSS, DSV, HKNS, KKKS08, KKP, Kretzer.  You can
+	also generate and compare plots of z D<sub>i</sub><sup>k</sup>(z, Q<sup>2</sup>) vs z at any Q<sup>2</sup> for up to 4 different parton types, FF sets or particle species.
+
+
+
+	<p>
+	<b>xmin =</b> <input type=text name=xmin value=0.1 size=4>
+	<b>xmax =</b> <input type=text name=xmax value=0.9 size=4>
+	<b>step =</b> <input type=text name=xinc value=0.05 size=4>
+	<b>Q2 =</b> <input type=text name=scale value=20 size=6> GeV2<br>
+	<b>ymin =</b> <input type=text name=ymin value=0.05 size=4>
+
+	<b>ymax =</b> <input type=text name=ymax value=2.0 size=4><!--&nbsp;
+	<input type=checkbox name=optyaxis> optimized values for y-axis<br>--><br>
+	<b>x-scale:</b>  lin <input type=radio name=xbinning value=0 checked> log <input type=radio name=xbinning value=1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>y-scale:</b>  lin <input type=radio name=ybinning value=0> log <input type=radio name=ybinning value=1 checked><br>
+	<!--select either numbers<input type=radio name=numplot value=num>
+	or plot<input type=radio name=numplot value=plot checked>
+	or ROOT macro file<input type=radio name=numplot value=kumac>-->
+<p>
+1 <input type=checkbox name=plot1 checked>
+<select name=parton1>
+	<option value=5> b
+	<option value=4> c
+	<option value=3> s
+	<option value=2> u
+	<option value=1> d
+	<option value=0 selected> g
+	<option value=-1> dbar
+	<option value=-2> ubar
+	<option value=-3> sbar
+	<option value=-4> cbar
+	<option value=-5> bbar
+	</select>
+
+<select name=hadron1>
+	<option value=11 selected> pi+ + pi-
+	<option value=13> pi+
+	<option value=14> pi-
+	<option value=12> pi0
+
+	<option value=21> K+ + K-
+	<option value=24> K+
+	<option value=25> K-
+	<option value=23> K0 + K0bar
+	<option value=62> eta
+	<option value=31> p + pbar
+	<option value=32> p
+	<option value=33> pbar
+	<option value=41> h+ + h-
+	<option value=42> h+
+
+	<option value=43> h-
+	<option value=81> &Lambda; + &Lambda;bar
+	<option value=0> photon
+	<option value=70> neutral cluster
+
+	<option value=90> D*
+	<option value=91> D0
+	<option value=92> D+
+	</select>
+<select name=ffset1>
+<option value=141>AESSS NLO
+<option value=41>AKK05 NLO
+<option value=11>AKK08 NLO
+<option value=111>BFGI NLO
+<option value=121>BFGII NLO
+<option value=81>BFGW NLO
+<option value=91>BFGW+ NLO
+<option value=101>BFGW- NLO
+<option value=50>BKK LO
+<option value=51>BKK NLO
+<option value=20>DSS LO
+<option value=21>DSS NLO
+<option value=150>DSV LO
+<option value=151>DSV NLO
+<option value=30>HKNS LO
+<option value=31>HKNS NLO
+<option value=131>KKKS08 NLO
+<option value=60>KKP LO
+<option value=61>KKP NLO
+<option value=70>Kretzer LO
+<option value=71>Kretzer NLO
+</select>
+scale-factor<input type=text name=sf1 value=1.0 size=4><br>
+2 <input type=checkbox name=plot2>
+<select name=parton2>
+	<option value=5> b
+	<option value=4> c
+	<option value=3> s
+	<option value=2> u
+	<option value=1> d
+	<option value=0 selected> g
+	<option value=-1> dbar
+	<option value=-2> ubar
+	<option value=-3> sbar
+	<option value=-4> cbar
+	<option value=-5> bbar
+	</select>
+
+<select name=hadron2>
+	<option value=11 selected> pi+ + pi-
+	<option value=13> pi+
+	<option value=14> pi-
+	<option value=12> pi0
+
+	<option value=21> K+ + K-
+	<option value=24> K+
+	<option value=25> K-
+	<option value=23> K0 + K0bar
+	<option value=62> eta
+	<option value=31> p + pbar
+	<option value=32> p
+	<option value=33> pbar
+	<option value=41> h+ + h-
+	<option value=42> h+
+
+	<option value=43> h-
+	<option value=81> &Lambda; + &Lambda;bar
+	<option value=0> photon
+	<option value=70> neutral cluster
+
+	<option value=90> D*
+	<option value=91> D0
+	<option value=92> D+
+	</select>
+<select name=ffset2>
+<option value=141>AESSS NLO
+<option value=41>AKK05 NLO
+<option value=11>AKK08 NLO
+<option value=111>BFGI NLO
+<option value=121>BFGII NLO
+<option value=81>BFGW NLO
+<option value=91>BFGW+ NLO
+<option value=101>BFGW- NLO
+<option value=50>BKK LO
+<option value=51>BKK NLO
+<option value=20>DSS LO
+<option value=21>DSS NLO
+<option value=150>DSV LO
+<option value=151>DSV NLO
+<option value=30>HKNS LO
+<option value=31>HKNS NLO
+<option value=131>KKKS08 NLO
+<option value=60>KKP LO
+<option value=61>KKP NLO
+<option value=70>Kretzer LO
+<option value=71>Kretzer NLO
+</select>
+scale-factor<input type=text name=sf2 value=1.0 size=4><br>
+3 <input type=checkbox name=plot3>
+<select name=parton3>
+	<option value=5> b
+	<option value=4> c
+	<option value=3> s
+	<option value=2> u
+	<option value=1> d
+	<option value=0 selected> g
+	<option value=-1> dbar
+	<option value=-2> ubar
+	<option value=-3> sbar
+	<option value=-4> cbar
+	<option value=-5> bbar
+	</select>
+
+<select name=hadron3>
+	<option value=11 selected> pi+ + pi-
+	<option value=13> pi+
+	<option value=14> pi-
+	<option value=12> pi0
+
+	<option value=21> K+ + K-
+	<option value=24> K+
+	<option value=25> K-
+	<option value=23> K0 + K0bar
+	<option value=62> eta
+	<option value=31> p + pbar
+	<option value=32> p
+	<option value=33> pbar
+	<option value=41> h+ + h-
+	<option value=42> h+
+
+	<option value=43> h-
+	<option value=81> &Lambda; + &Lambda;bar
+	<option value=0> photon
+	<option value=70> neutral cluster
+
+	<option value=90> D*
+	<option value=91> D0
+	<option value=92> D+
+	</select>
+<select name=ffset3>
+<option value=141>AESSS NLO
+<option value=41>AKK05 NLO
+<option value=11>AKK08 NLO
+<option value=111>BFGI NLO
+<option value=121>BFGII NLO
+<option value=81>BFGW NLO
+<option value=91>BFGW+ NLO
+<option value=101>BFGW- NLO
+<option value=50>BKK LO
+<option value=51>BKK NLO
+<option value=20>DSS LO
+<option value=21>DSS NLO
+<option value=150>DSV LO
+<option value=151>DSV NLO
+<option value=30>HKNS LO
+<option value=31>HKNS NLO
+<option value=131>KKKS08 NLO
+<option value=60>KKP LO
+<option value=61>KKP NLO
+<option value=70>Kretzer LO
+<option value=71>Kretzer NLO
+</select>
+scale-factor<input type=text name=sf3 value=1.0 size=4><br>
+4 <input type=checkbox name=plot4>
+<select name=parton4>
+	<option value=5> b
+	<option value=4> c
+	<option value=3> s
+	<option value=2> u
+	<option value=1> d
+	<option value=0 selected> g
+	<option value=-1> dbar
+	<option value=-2> ubar
+	<option value=-3> sbar
+	<option value=-4> cbar
+	<option value=-5> bbar
+	</select>
+
+<select name=hadron4>
+	<option value=11 selected> pi+ + pi-
+	<option value=13> pi+
+	<option value=14> pi-
+	<option value=12> pi0
+
+	<option value=21> K+ + K-
+	<option value=24> K+
+	<option value=25> K-
+	<option value=23> K0 + K0bar
+	<option value=62> eta
+	<option value=31> p + pbar
+	<option value=32> p
+	<option value=33> pbar
+	<option value=41> h+ + h-
+	<option value=42> h+
+
+	<option value=43> h-
+	<option value=81> &Lambda; + &Lambda;bar
+	<option value=0> photon
+	<option value=70> neutral cluster
+
+	<option value=90> D*
+	<option value=91> D0
+	<option value=92> D+
+	</select>
+<select name=ffset4>
+<option value=141>AESSS NLO
+<option value=41>AKK05 NLO
+<option value=11>AKK08 NLO
+<option value=111>BFGI NLO
+<option value=121>BFGII NLO
+<option value=81>BFGW NLO
+<option value=91>BFGW+ NLO
+<option value=101>BFGW- NLO
+<option value=50>BKK LO
+<option value=51>BKK NLO
+<option value=20>DSS LO
+<option value=21>DSS NLO
+<option value=150>DSV LO
+<option value=151>DSV NLO
+<option value=30>HKNS LO
+<option value=31>HKNS NLO
+<option value=131>KKKS08 NLO
+<option value=60>KKP LO
+<option value=61>KKP NLO
+<option value=70>Kretzer LO
+<option value=71>Kretzer NLO
+</select>
+scale-factor<input type=text name=sf4 value=1.0 size=4><br>
+	<input type=checkbox name=ratio> also plot fragmentation function ratios (2/1, 3/1, 4/1)<br>
+
+	<p>
+	<input type=submit value="Make the Plot/Calculation ">
+	<input type=reset value="Reset the Form">
+	<p>
+	</form>
+<b>Remarks</b>
+<ul>
+<li> Mind that some species are not available for all sets!
+<li> "Neutral cluster" means pi0+eta. The FF set chosen is that of pi0 (eta FF is given by the AESSS fit).
+</ul>
+
+	<b>References</b>
+<ul>
+<li>	AESSS, C. Aidala, F. Ellinghaus, R. Sassot, J. Seele, M. Stratmann, <a href="http://arXiv.org/abs/1009.6145">arXiv:1009.6145</a><br>
+
+<li>	AKK05, S. Albino, B. A. Kniehl and G. Kramer,  Nucl. Phys. B725 (2005) 181 <a href="http://arXiv.org/abs/hep-ph/0502188">hep-ph/0502188</a>; Nucl. Phys. B734 (2006) 50 <a href="http://arXiv.org/abs/hep-ph/0510173">hep-ph/0510173</a><br>
+
+<li>	AKK08, S. Albino, B. A. Kniehl and G. Kramer,  Nucl. Phys. B803 (2008) 42
+	  <a href="http://arXiv.org/abs/0803.2768">0803.2768</a><br>
+
+<li>	BFG, L. Bourhis, M. Fontannaz and J.-P. Guillet,  Eur. Phys. J. C2 (1998)
+	  529 <a href="http://arXiv.org/abs/hep-ph/9704447">hep-ph/9704447</a><br>
+
+<li>	BFGW, L. Bourhis, M. Fontannaz, J.-P. Guillet and M. Werlen,  Eur. Phys. J. C19
+	  (2001) 89 <a href="http://arXiv.org/abs/hep-ph/0009101">
+	  hep-ph/0009101</a><br>
+
+<li>	BKK, J. Binnewies, B. A. Kniehl and G. Kramer,  Z. Phys. C65 (1995) 471
+	  <a href="http://arXiv.org/abs/hep-ph/9407347">hep-ph/9407347</a><br>
+
+<li>	DSS, D. de Florian, R. Sassot and M. Stratmann,  Phys. Rev. D75 (2007) 114010
+	  <a href="http://arXiv.org/abs/hep-ph/0703242">hep-ph/0703242</a>; Phys. Rev. D76 (2007) 074033  <a href="http://arXiv.org/abs/0707.1506">0707.1506</a>;<br>
+
+<li>	  DSV, D. de Florian, M. Stratmann and W. Vogelsang,  Phys. Rev. D57 (1998)
+	  5811 <a href="http://arXiv.org/abs/hep-ph/9711387">
+	  hep-ph/9711387</a><br>
+
+<li>	HKNS, M. Hirai, S. Kumano, T. H. Nagai and K. Sudoh,  Phys. Rev. D75 (2007)
+	  094009 <a href="http://arXiv.org/abs/hep-ph/0702250">hep-ph/0702250</a><br>
+
+<li>	KKP, B. A. Kniehl, G. Kramer and B. P&ouml;tter,  Nucl. Phys. B582 (2000)
+	  514 <a href="http://arXiv.org/abs/hep-ph/0010289">hep-ph/0010289</a><br>
+
+<li>	KKKS08, T. Kneesch, B. A. Kniehl, G. Kramer, and I. Schienbein, Nucl. Phys. B799 (2008) 34 <a href="http://arXiv.org/abs/0712.0481">0712.0481</a><br>
+
+<li>	S. Kretzer,  Phys. Rev. D62 (2000) 054001
+	  <a href="http://arXiv.org/abs/hep-ph/0003177">hep-ph/0003177</a>
+</ul>
+	<b>Downloads</b>
+<ul>
+<li>	<a href="kkks/kkks08-package.tgz">KKKS08</a>
+</ul>
+	<b>Recent reviews</b>
+<ul>
+<li>	S. Albino et al., Proceedings of the <a href="http://arleo.web.cern.ch/arleo/ff_vacuum_medium_ect08/">Trento workshop on fragmentation functions</a>, <a href="http://arXiv.org/abs/0804.2021">0804.2021</a><br>
+<li>	F. Arleo, <a href="http://www.springerlink.com/content/r0801136601732xq">Eur. Phys. J. C 61 (2009) 603</a> <a href="http://arXiv.org/abs/0810.1193">0810.1193</a><br>
+<li>	S. Albino, <a href="http://arXiv.org/abs/0810.4255">0810.4255</a>
+</ul>
+	You can also visit Marco Radici's fragmentation function database <a href="http://www.pv.infn.it/~radici/FFdatabase/">website</a>.
+	 </table>
+
+	<hr size=3>
+	 <table BORDER="0" CELLSPACING="0" CELLPADDING="2" >
+	  <tr>
+	   <td ALIGN="LEFT" VALIGN="MIDDLE" WIDTH="1%">
+	   <img  alt="LAPTH" align=middle src="lapth.png" width=60> 
+	   </td>
+
+	   <td ALIGN="LEFT" VALIGN="TOP">
+
+	    <p><font SIZE="-1">
+	       Created by Fran&ccedil;ois Arleo and Jean-Philippe Guillet, and inspired by the <a HREF="http://durpdg.dur.ac.uk/hepdata/pdf3.html">Parton Distribution Generator</a>. Visit also the <a HREF="http://lapth.cnrs.fr/npdfgenerator">nuclear Parton Distribution Function Generator</a>
+	<br>Questions and comments to <a HREF="mailto:arleo@lapth.cnrs.fr">arleo@lapth.cnrs.fr</a><br>
+	       Updated: January 2011<br>
+
+	    </font></p>
+	   </td>
+	  </tr>
+	 </table>

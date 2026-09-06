@@ -1,0 +1,95 @@
+schema_version = 1
+evidence_layer = "implementation_conformance"
+claims = ["C-1635", "C-1637", "C-1666"]
+scope = "Source counterterm measure, transverse gravitational amplitude, retained full-vector and regular-node UV failures"
+fitted_parameters = 0
+source = "Ahmadiniaz et al., arXiv:2601.23279v1"
+source_pdf_sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+source_retrieval_url = "https://arxiv.org/pdf/2601.23279v1"
+secondary_source = "Bastianelli and Schubert, gr-qc/0412095, JHEP0502(2005)069"
+secondary_pdf_sha256 = "c64080db26d0b46dfcdb1dd12acd04e300f918bea3bc31d5fd0c6b7fe84becc1"
+secondary_retrieval_url = "https://arxiv.org/pdf/gr-qc/0412095"
+text_derivation = "pdftotext -layout; C0 controls except tab/newline/carriage return removed from text copies; PDFs retained byte-for-byte"
+
+[measure]
+primary_equations = "4.9, 4.10, A.13; source PDF printed pages 12, 13, 20"
+source_before_rescaling = "Eq4.9: dT/T^3 times [det integral d(tau1)d(tau2) exp J + (4/3)i T^2 e C]"
+source_after_rescaling = "Eq4.10: dT/T times [det integral du exp sum tildeJ + (4/3)i e C]"
+implementation = "crates/gr_core/src/photon_graviton/irreducible_tensor.rs::irreducible_tensor_renormalized"
+integrator = "crates/gr_core/src/photon_graviton/tensor_integrands.rs::double_integrate_rank_three, power=1"
+original_defect = "The rescaled dT/T path retained an extra T^2 multiplying the counterterm."
+repair = "Remove only the extra proper_time.powi(2); preserve the inherited coefficient and loop prefactors."
+independent_test = "crates/gr_core/tests/ward_source_scope.rs::rescaled_counterterm_matches_source_measure"
+independence = "Independent A.13 component tree expression and 16384-interval Simpson integration of exp(-m^2*T)/T; observed subtraction isolates renormalized minus unrenormalized tensors. Physics tensors remain shared."
+domain = "T=[0.125,4], n_u=24, n_t=96, masses=[0.8,1.3], e=kappa=1, B01=0.1, k=[0.15,-0.11,0.2,0.07]"
+source_relative_gate = 1e-9
+wrong_measure_min_relative_separation = 0.05
+omission_min_norm = 1e-5
+before_spinor_mass_08_source_relative_error = 0.120666022709337628
+before_spinor_mass_08_wrong_measure_relative_error = 5.33875665199471350e-15
+after_max_relative_error = 3.61075499198515442e-13
+after_wrong_measure_relative_separations = [0.120666022709121, 0.711205462874669]
+after_omission_norm_range = [1.67979422008161772e-4, 5.71532993224750413e-4]
+scalar_scope = "Scalar checks establish the shared integration measure conditional on the inherited 4/3 coefficient. They do not authenticate the scalar source coefficient or establish UV finiteness."
+before_receipt = "counterterm-before.log"
+after_receipt = "counterterm-after.log"
+
+[transverse]
+primary_equations = "7.3 through 7.7; source PDF printed pages 17-18"
+source_scope = "The source returns to off-shell unrenormalized amplitudes before deriving 7.6; the on-shell amplitude includes transverse photon polarization. Renormalized runs are reported separately."
+instrument = "crates/gr_core/tests/ward_source_scope.rs::transverse_source_identity_retains_diagram_omissions_and_vector_defects"
+momentum = "k=[2/3,1/3,2/3,i*sqrt(1-q)]"
+transverse_basis = "e1=[1,-2,0,0]/sqrt(5); e2=[4,2,-5,0]/(3*sqrt(5)); both zeta and photon polarization range over e1,e2"
+virtualities = [0.02, 0.01, 0.005]
+quadrature = "T=[1e-4,20], n_u=48, n_t=96; degree-two Lagrange zero-intercept"
+decisive_pair = "polarization=e1, zeta=e2; each omitted diagram retains a nonzero amplitude"
+scalar_unrenormalized_absolute = 1.04235874489114200e-17
+scalar_unrenormalized_normalized = 2.39971235872095274e-11
+scalar_renormalized_absolute = 6.01043991459810842e-18
+scalar_renormalized_normalized = 1.38372004984733028e-11
+scalar_omission_scale = 4.34368202965e-7
+spinor_unrenormalized_absolute = 7.09067887921571629e-12
+spinor_unrenormalized_normalized = 7.12754467597947958e-6
+spinor_renormalized_absolute = 7.09075140302369315e-12
+spinor_renormalized_normalized = 7.12761757691023301e-6
+spinor_omission_scale = 9.9482770036e-7
+gate = "absolute<=1e-12 AND normalized<=1e-6; scalar decisive pair passes, spinor decisive pair fails on this fixed ladder"
+symmetry_controls = "Other basis pairs with diagram amplitudes below 1e-8 remain nondiscriminating; their normalized values are retained rather than used as verification."
+uncertainty = "Fixed-grid, fixed-ladder computational results; quadrature tails and interpolation remainders remain uncertified."
+
+[retained_full_vector]
+original_receipt = "data/output/audit/claim-family-evidence-adjudication/ward-independent-residuals.toml"
+after_receipt = "vector-residuals-after.toml"
+original_scalar_norm = 2.36262291671245853e-3
+original_spinor_norm = 5.86824021281251006e-3
+after_scalar_norm = 5.29674078749403643e-3
+after_spinor_norm = 6.32320160755795870e-9
+after_refined_scalar_norm = 6.53018138706832132e-3
+after_refined_spinor_norm = 6.32433346318278867e-9
+scientific_gate = "Both full-vector predicates remain failed at unchanged absolute1e-12 and normalized1e-6 thresholds."
+scope_discrepancy = "A full-vector zero requirement is stronger than transverse amplitude cancellation. At k=[1,0,0,i], the original retained vectors have exactly zero e1/e2 components and nearly longitudinal remaining components."
+original_scalar_longitudinal_remainder = 1.052026965325456e-8
+original_spinor_longitudinal_remainder = 1.980695188419368e-8
+characterization_update = "The auxiliary assertion norm>1e-3 became stale after repair; replace it with norm>declared_absolute_tolerance while retaining assert(!production.passes). Preserve its post-repair failure in retained-vector-gates-after.log and the original oracle source in independent-oracle-before.rs.txt."
+
+[remaining_uv_scope]
+instrument = "crates/gr_core/tests/ward_source_scope.rs::orbital_and_spinor_uv_coefficients_are_separate"
+observed_channel = "integral du [det*exp*J(0,0,1)]/(i*e*C(0,0,1)), C(0,0,1)=B*k0; 64 u nodes"
+proper_times = [0.1, 0.03, 0.01, 0.003, 0.001]
+scalar_coefficient_at_0001 = 0.666658559825103469
+spinor_coefficient_at_0001 = 0.666689102654931864
+finding = "Both regular-node coefficients approach +2/3 in the sampled channel. The spinor +4/3 counterterm therefore leaves a regular-node coefficient near2; source-measure conformance does not establish UV cancellation."
+source_contact_locators = "2601.23279v1 B.4/B.36 retain delta12; B.8/B.39 retain coincidence delta(0); Eq4.5 states a total derivative."
+implementation_contact_locators = "worldline_tensor.rs::pure_magnetic_coincidence stores equal2I coincidence contact coefficients; irreducible_tensor.rs::tilde_j_structures uses regular parts; noncoincident pure_magnetic_worldline omits delta12; Gauss-Legendre u integration samples the open interval."
+causal_limit = "Equal coincidence2I terms cancel in spinor J1; blindly adding a coincidence contact cannot explain the gauge defect. The noncoincident delta12 and integration-by-parts jump contributions require separate derivation."
+next_decisive_test = "At fixed proper time, independently integrate the unreduced Eq4.3/4.4 representation, add the signed Eq4.5 endpoint jump and explicit B.4/B.36 distribution coefficients, then compare componentwise to Eq4.11; omit each distribution/jump separately under the same endpoint convention."
+scalar_source_blocker = "gr-qc/0412095 Eq3.11 uses a2/3 counterterm and an oppositely signed orbital J convention;2601.23279 Eq4.11 gives the spinor representation with a scalar remove-fermion/global-factor prescription. Scalar coefficient/convention reconciliation remains unresolved; coefficients were not fitted to cancel the numerical result."
+
+[validation]
+tests = "cargo test -p gr_core --profile validation --offline --test ward_source_scope --test ward_independent_residuals -- --nocapture"
+focused_tests_passed = 4
+unit_tests = "cargo test -p gr_core --lib photon_graviton::irreducible_tensor --profile validation --offline -- --nocapture"
+unit_tests_passed = 3
+clippy = "cargo clippy -p gr_core --all-targets --profile validation --offline -- -D warnings"
+format = "rustfmt +nightly --edition2024 on touched Rust files"
+original_artifacts = "Original claim-family receipts and original source PDF hash remain unchanged; new before/after outputs use ward-residual-scope paths."

@@ -4,7 +4,7 @@
 //! - T_AB(b): nuclear overlap function
 //! - Npart(b): number of participants
 //! - A_perp(b): transverse overlap area
-//! - L(b): average path length through the medium
+//! - L(b): retained collision-weighted radial-distance statistic
 //! - epsilon(b): spatial eccentricity
 //!
 //! Uses Gauss-Legendre quadrature for 2D integrals over the transverse
@@ -16,6 +16,83 @@
 use crate::nucleus::{NucleusParams, thickness_function};
 use gauss_quad::GaussLegendre;
 use std::{f64::consts::PI, num::NonZeroUsize};
+
+/// Sample physical hard-sphere optical densities at fixed impact parameter.
+///
+/// Collision density is sigma*TA*TB; participant density uses the optical
+/// Poisson interaction probability. Coordinates and spacing are in fm and both
+/// densities are in fm^-2. The rectangle encloses both nuclear disks, with
+/// centers at (-b/2, 0) and (b/2, 0). Centrality pooling requires a separate
+/// selection and averaging prescription.
+pub fn directional_density_grid(
+    impact_parameter_fm: f64,
+    sigma: &SigmaNN,
+    nucleus_a: &NucleusParams,
+    nucleus_b: &NucleusParams,
+    columns: usize,
+    rows: usize,
+) -> Result<crate::directional_path::TransverseDensityGrid, crate::directional_path::PathError> {
+    use crate::directional_path::{PathError, TransverseDensityGrid};
+    if !impact_parameter_fm.is_finite()
+        || impact_parameter_fm < 0.0
+        || !sigma.sigma_mb.is_finite()
+        || sigma.sigma_mb <= 0.0
+        || nucleus_a.a == 0
+        || nucleus_b.a == 0
+        || !nucleus_a.r_a.is_finite()
+        || nucleus_a.r_a <= 0.0
+        || !nucleus_b.r_a.is_finite()
+        || nucleus_b.r_a <= 0.0
+        || columns == 0
+        || rows == 0
+    {
+        return Err(PathError::InvalidInput("optical geometry parameters"));
+    }
+    let count = columns
+        .checked_mul(rows)
+        .ok_or(PathError::InvalidInput("optical grid size"))?;
+    let radius = nucleus_a.r_a.max(nucleus_b.r_a);
+    let half_width = radius + impact_parameter_fm / 2.0;
+    let spacing_x = 2.0 * half_width / columns as f64;
+    let spacing_y = 2.0 * radius / rows as f64;
+    if !spacing_x.is_finite() || !spacing_y.is_finite() {
+        return Err(PathError::InvalidInput("optical grid extent"));
+    }
+    let mut collision_density = Vec::new();
+    let mut participant_density = Vec::new();
+    collision_density
+        .try_reserve_exact(count)
+        .map_err(|_| PathError::InvalidInput("optical grid allocation"))?;
+    participant_density
+        .try_reserve_exact(count)
+        .map_err(|_| PathError::InvalidInput("optical grid allocation"))?;
+    let cross_section_fm2 = sigma.sigma_fm2();
+    for row in 0..rows {
+        let position_y = -radius + (row as f64 + 0.5) * spacing_y;
+        for column in 0..columns {
+            let position_x = -half_width + (column as f64 + 0.5) * spacing_x;
+            let distance_a = (position_x + impact_parameter_fm / 2.0).hypot(position_y);
+            let distance_b = (position_x - impact_parameter_fm / 2.0).hypot(position_y);
+            let thickness_a = f64::from(nucleus_a.a) * thickness_function(distance_a, nucleus_a);
+            let thickness_b = f64::from(nucleus_b.a) * thickness_function(distance_b, nucleus_b);
+            collision_density.push(cross_section_fm2 * thickness_a * thickness_b);
+            participant_density.push(
+                -thickness_a * (-cross_section_fm2 * thickness_b).exp_m1()
+                    - thickness_b * (-cross_section_fm2 * thickness_a).exp_m1(),
+            );
+        }
+    }
+    TransverseDensityGrid::new(
+        columns,
+        rows,
+        -half_width,
+        -radius,
+        spacing_x,
+        spacing_y,
+        collision_density,
+        participant_density,
+    )
+}
 
 /// Inelastic nucleon-nucleon cross-sections (mb) at various sqrt(s).
 /// 1 mb = 0.1 fm^2.
@@ -93,7 +170,7 @@ pub struct CentralityBinGeometry {
     pub n_part: f64,
     /// Transverse overlap area in fm^2.
     pub a_perp: f64,
-    /// Average path length in fm.
+    /// Retained collision-weighted radial distance in fm, separate from directional paths.
     pub l_avg: f64,
     /// Spatial eccentricity epsilon = (<y^2>-<x^2>)/(<y^2>+<x^2>).
     pub eccentricity: f64,
@@ -314,12 +391,14 @@ pub fn overlap_area(b: f64, r_a: f64, r_b: f64) -> f64 {
         - b * ((r_a * r_a - d1 * d1).max(0.0)).sqrt()
 }
 
-/// Average path length through the overlap region at impact parameter b.
+/// Retained collision-weighted radial distance at impact parameter b.
 ///
-/// L(b) = integral |s| * T_A(s) * T_B(|s-b|) d^2s / integral T_A(s) * T_B(|s-b|) d^2s
+/// The numerator weights |s - (b/2, 0)| by T_A(s)*T_B(|s-b|).
+/// The denominator is the integral of T_A(s)*T_B(|s-b|).
 ///
-/// This is the T_AB-weighted average distance from the collision axis,
-/// giving a measure of how far partons travel through the medium.
+/// The historical name preserves existing callers. Directional propagation
+/// additionally requires the displaced participant density and the joint
+/// normalization implemented by `qgp_scaling::directional_path`.
 #[must_use]
 pub fn avg_path_length(b: f64, nuc_a: &NucleusParams, nuc_b: &NucleusParams, n_gl: usize) -> f64 {
     let gl = GaussLegendre::new(

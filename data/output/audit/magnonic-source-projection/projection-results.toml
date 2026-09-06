@@ -1,0 +1,73 @@
+schema_version = 1
+source = 'Kaman Figure 5b'
+figure_gate_ghz = 0.03
+plot_left_pixel = 395
+plot_right_pixel = 634
+plot_top_pixel = 74
+plot_bottom_pixel = 726
+minimum_frequency_ghz = 1.0
+maximum_frequency_ghz = 4.5
+
+[[projection]]
+parameters = 'table_i'
+ky_samples = 96
+pixel_threshold = 220
+column_count = 45
+maximum_two_way_support_distance_ghz = 2.4854048788112815e-2
+passes_figure_gate = true
+
+[[projection]]
+parameters = 'table_i'
+ky_samples = 96
+pixel_threshold = 240
+column_count = 45
+maximum_two_way_support_distance_ghz = 2.5841256937691792e-2
+passes_figure_gate = true
+
+[[projection]]
+parameters = 'table_i'
+ky_samples = 192
+pixel_threshold = 220
+column_count = 45
+maximum_two_way_support_distance_ghz = 2.4854048788112815e-2
+passes_figure_gate = true
+
+[[projection]]
+parameters = 'table_i'
+ky_samples = 192
+pixel_threshold = 240
+column_count = 45
+maximum_two_way_support_distance_ghz = 2.5841256937691792e-2
+passes_figure_gate = true
+
+[[projection]]
+parameters = 'repository_reference'
+ky_samples = 96
+pixel_threshold = 220
+column_count = 45
+maximum_two_way_support_distance_ghz = 1.8585526178673457e0
+passes_figure_gate = false
+
+[[projection]]
+parameters = 'repository_reference'
+ky_samples = 96
+pixel_threshold = 240
+column_count = 45
+maximum_two_way_support_distance_ghz = 1.8585526178673457e0
+passes_figure_gate = false
+
+[[projection]]
+parameters = 'repository_reference'
+ky_samples = 192
+pixel_threshold = 220
+column_count = 45
+maximum_two_way_support_distance_ghz = 1.8585526178673457e0
+passes_figure_gate = false
+
+[[projection]]
+parameters = 'repository_reference'
+ky_samples = 192
+pixel_threshold = 240
+column_count = 45
+maximum_two_way_support_distance_ghz = 1.8585526178673457e0
+passes_figure_gate = false

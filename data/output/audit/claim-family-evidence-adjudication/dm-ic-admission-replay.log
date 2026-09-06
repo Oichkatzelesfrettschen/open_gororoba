@@ -1,0 +1,12 @@
+    Blocking waiting for file lock on build directory
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 8.43s
+     Running unittests src/bin/solar/main.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/solar-bb4b902af7c96e5a)
+
+running 3 tests
+test wind_dm_mhd::tests::density_weighting_and_undefined_ratio_are_explicit ... ok
+test wind_dm_mhd::tests::physical_ic_admission_rejects_missing_logarithmic_and_mismatched_units ... ok
+test wind_dm_mhd::tests::malformed_ic_preserves_all_target_fields ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 21 filtered out; finished in 0.00s
+

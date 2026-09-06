@@ -1,0 +1,31 @@
+claim_id = "C-1682"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Freeze the historical DmForceField::new at 81a4ca6e; hold force_scale, halo density/mass/concentration and grid fixed when testing spacecraft-field independence. Separately vary v_ref/u_scale and radius at full precision."]
+[[intervening_maps]]
+branch = "spacecraft_dependence"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Enumerate each input reaching gravitational acceleration, lattice conversion and density-weighted force separately."
+[[intervening_maps]]
+branch = "spacecraft_dependence"
+name = "independent_predicate"
+kind = "computational"
+description = "Compare one-input perturbations at identical retained source/input hashes and report full-precision per-cell differences alongside the historical seven-digit rendering."
+[[fitted_parameters]]
+branch = "spacecraft_dependence"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-112","E-113","E-116"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-112/E-113/E-116 as the recorded family binding, not evidence of completed replay. Compare one-input perturbations at identical retained source/input hashes and report full-precision per-cell differences alongside the historical seven-digit rendering. E-113 contains <wind_ic.csv>; spacecraft files and normalized IC metadata require intake admission. Prescribed invariance supplies no independent observational agreement."
+[what_would_verify_refute]
+verification_outcomes = ["Historical fixed-conversion acceleration is independent of spacecraft rho/u/B fields and the enumerated radius probes render identically at seven digits."]
+revision_outcomes = ["Any reference-speed or local-density perturbation changes the lattice force: narrow the every-input assertion to the actual invariant subexpression. Resolve seven-digit equality separately from exact equality."]
+abandonment_outcomes = ["A spacecraft observable directly changes the claimed invariant acceleration under the frozen comparison, refuting that bounded invariant."]
+inconclusive_outcomes = ["E-113 contains <wind_ic.csv>; spacecraft files and normalized IC metadata require intake admission. Prescribed invariance supplies no independent observational agreement."]

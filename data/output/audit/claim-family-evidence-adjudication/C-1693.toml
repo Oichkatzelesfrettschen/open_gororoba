@@ -1,0 +1,30 @@
+claim_id = "C-1693"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Paired finite open patches test the spectral selector and localization interpretation without a physical frequency calibration."
+fixed_hyperparameters = ["Repository kaman_default parameters and inversion shifts, a_nm=100; radii 2,3,4", "Pristine and one removed central kagome orbital 6 use identical open boundaries", "Bulk gap selector uses the producer 30x30 reciprocal grid and largest adjacent-band gap", "IPR=sum|psi|^4 for normalized eigenvectors; participation number=1/IPR; bounds 1/N<=IPR<=1", "Report every eigenvalue, central-cell and boundary-cell probability, and matched pristine counts; no universal localization cutoff", "Eigenpair residual and normalization tolerance 1e-10; degenerate groups within 1e-10 report projector weights"]
+[[intervening_maps]]
+branch = "paired_patch"
+name = "finite_spectrum_and_gap_selector"
+kind = "computational"
+description = "Independently assemble pristine and defect finite patches, verify selected defect eigenvalues against point_defect_modes, and compare both counts inside the same sampled gap."
+[[intervening_maps]]
+branch = "paired_patch"
+name = "participation_and_spatial_scaling"
+kind = "computational"
+description = "Retain normalized IPR and reciprocal participation, central and boundary weights across fixed radii; compare degenerate-group projector weights rather than assigning arbitrary eigenbasis localization."
+[[fitted_parameters]]
+branch = "paired_patch"
+count = 0
+names = []
+training_boundary = "Fixed patch radii, geometry and masks; numerical invariant tolerances precede replay."
+[decisive_experiment]
+experiment_ids = ["E-294"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-protocol.toml"
+description = "New magnonic_localization integration producer supplements historical E-142."
+[what_would_verify_refute]
+verification_outcomes = ["Gap-selected counts grow across the fixed radii and paired pristine patches also contain selected modes: eigenvalue-in-gap selection alone does not isolate defect states. Full boundary projector weight identifies an open-edge group; a band-edge group within the declared numerical tolerance remains admission-sensitive."]
+revision_outcomes = ["Historical IPR above one reproduces as reciprocal participation: correct the definition and retain both measured quantities.", "Finite modes show mixed center and boundary or degenerate-subspace weight: replace a unique localized-state assertion with the measured finite observations."]
+abandonment_outcomes = ["The gap selector uniquely isolates a defect-only state across admitted radii and pristine controls have zero selected modes: abandon the non-defect-contamination assertion for that tested parameter set."]
+inconclusive_outcomes = ["Three finite radii without asymptotic bounds establish finite scaling only; no universal localization theorem follows.", "A near-degenerate individual eigenvector is basis dependent; projector weights, sampled-gap limitations and open-edge states require separate interpretation."]

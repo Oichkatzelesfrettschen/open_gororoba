@@ -1,0 +1,1374 @@
+                                EUROPEAN ORGANIZATION FOR NUCLEAR RESEARCH
+
+
+
+                                                                                                                              CERN-EP-2018-115
+                                                                                                                                    9 May 2018
+
+
+                                                          Analysis of the apparent nuclear modification
+                                                           in peripheral Pb–Pb collisions at 5.02 TeV
+
+
+
+
+arXiv:1805.05212v2 [nucl-ex] 8 Nov 2019
+                                                                                     ALICE Collaboration∗
+
+
+                                                                                       November 11, 2019
+
+                                                                                             Abstract
+
+                                                  Charged-particle spectra at midrapidity are measured in Pb–Pb collisions at the centre-
+                                                                                                 √
+                                                  of-mass energy per nucleon–nucleon pair sNN = 5.02 TeV and presented in centrality
+                                                  classes ranging from most central (0–5%) to most peripheral (95–100%) collisions. Possi-
+                                                  ble medium effects are quantified using the nuclear modification factor (RAA ) by comparing
+                                                  the measured spectra with those from proton–proton collisions, scaled by the number of in-
+                                                  dependent nucleon–nucleon collisions obtained from a Glauber model. At large transverse
+                                                  momenta (8 < pT < 20 GeV/c), the average RAA is found to increase from about 0.15 in
+                                                  0–5% central to a maximum value of about 0.8 in 75–85% peripheral collisions, beyond
+                                                  which it falls off strongly to below 0.2 for the most peripheral collisions. Furthermore, RAA
+                                                  initially exhibits a positive slope as a function of pT in the 8–20 GeV/c interval, while for
+                                                  collisions beyond the 80% class the slope is negative. To reduce uncertainties related to
+                                                  event selection and normalization, we also provide the ratio of RAA in adjacent centrality
+                                                  intervals. Our results in peripheral collisions are consistent with a PYTHIA-based model
+                                                  without nuclear modification, demonstrating that biases caused by the event selection and
+                                                  collision geometry can lead to the apparent suppression in peripheral collisions. This ex-
+                                                  plains the unintuitive observation that RAA is below unity in peripheral Pb–Pb, but equal to
+                                                  unity in minimum-bias p–Pb collisions despite similar charged-particle multiplicities.
+
+
+
+
+                                          c 2018 CERN for the benefit of the ALICE Collaboration.
+                                          Reproduction of this article or parts of it is allowed as specified in the CC-BY-4.0 license.
+                                            ∗
+                                                See Appendix A for the list of collaboration members
+Analysis of the apparent nuclear modification . . .                        ALICE Collaboration
+
+
+1   Introduction
+Transport properties of the Quark-Gluon Plasma (QGP) can be extracted from measurements of
+observables in high-energy nucleus–nucleus (AA) collisions, which involve large momentum
+transfers, such as jets originating from hard parton-parton scatterings in the early stage of the
+collision. While propagating through the expanding medium, these hard partons lose energy
+due to medium-induced gluon radiation and collisional energy loss, a process known as “jet
+quenching” [1, 2]. Due to the energy loss, the rate of high-pT particles is expected to be sup-
+pressed relative to proton–proton collisions. The effect is typically quantified by the nuclear
+modification factor
+                                          AA /dp              AA /dp
+                                 1 dNch          T     1 dNch        T
+                       RAA =              pp       =          pp       ,                      (1)
+                               hNcoll i dNch /dpT    hTAA i dσch /dpT
+
+defined as the ratio of the per-event yields in AA and pp collisions normalized to an incoher-
+ent superposition of hNcoll i binary pp collisions. The average number of collisions hNcoll i is
+determined from a Monte Carlo Glauber model [3–5] and related to the average nuclear over-
+                         NN , where σ NN is the total inelastic nucleon-nucleon cross section. The
+lap hTAA i = hNcoll i /σinel         inel
+yields measured in AA collisions, as well as hNcoll i, depend on the collision centrality, and
+RAA is constructed to be unity in the absence of nuclear effects where particle production is
+dominated by hard processes. The collision centrality is expressed in percentiles of the total
+hadronic cross section, with the highest (lowest) centrality 0% (100%) refering to the most cen-
+tral (peripheral) collisions with zero (maximal) impact parameter. Experimentally, centrality
+is typically determined by ordering events according to multiplicity or energy deposition in a
+limited rapidity range and by fitting the corresponding distribution with a Glauber-based model
+of particle production [6].
+Numerous measurements of RAA reported by experiments at the Relativistic Heavy-Ion Collider
+(RHIC) [7–16] and at the Large Hadron Collider (LHC) [17–22] revealed that high-pT parti-
+cle production is suppressed strongly in central collisions, and that the suppression reduces with
+decreasing centrality. Furthermore, control measurements of possible nuclear modification aris-
+ing from the initial state in d–Au and p–Pb collisions [23–28] and with electromagnetic probes
+in AA collisions [29–33] (which should not be affected by partonic matter) demonstrated that
+the observed suppression is due to final state interactions, such as parton energy loss. Con-
+trary to expectations, RAA was also found to be below unity at high pT in peripheral collisions,
+reaching an approximately constant value of about 0.80 above 3 GeV/c in 80–92% Au–Au col-
+          √
+lisions at sNN = 0.2 TeV [16] and about 0.75 above 10 GeV/c in 70–90% Pb–Pb collisions at
+√
+   sNN = 5.02 TeV [21]. In a final-state dominated scenario, such differences relative to unity
+imply a large jet quenching parameter for peripheral collisions, up to an order of magnitude
+larger than for cold nuclear matter [34], and consequently raise expectations of the relevance
+of parton energy loss even in small collision systems [35–37]. However, it has been pointed
+out recently [38] that event selection and geometry biases — just like those discussed for p–Pb
+collisions [39] — can cause an apparent suppression of RAA in peripheral collisions, even in
+the absence of nuclear effects, while self-normalized coincidence observables [40, 41] are not
+affected.
+The impact parameter of individual NN collisions is correlated to the overall collision geometry
+leading to an NN impact parameter bias in the transverse plane [42], for peripheral collisions
+the NN impact parameter is biased towards larger values. Centrality classification based on
+
+                                                 2
+Analysis of the apparent nuclear modification . . .                          ALICE Collaboration
+
+
+multiplicity can bias the mean multiplicity of individual nucleon–nucleon (NN) collisions, and
+hence the yield of hard processes in AA collisions due to correlated soft and hard particle
+production, amplifying the inherent NN impact parameter bias. The presence of the multiplicity
+bias in peripheral Pb–Pb collisions was already demonstrated in Ref. [39] showing the averaged
+multiplicity of the Glauber-NBD fit is lower than the average number of ancestors times the
+mean multiplicity of NBD (left panel of figure 8 in Ref. [39]). In the present paper, we aim
+                                                                              √
+to study its relevance on charged-particle spectra in Pb–Pb collisions at sNN = 5.02 TeV, in
+20 centrality classes ranging from 0–5% to 95–100% collisions. The spectra at midrapidity
+are measured in the range 0.15 < pT < 30 GeV/c except for the 95–100% class, where it is
+0.15 < pT < 20 GeV/c. Using the charged-particle spectra from pp collisions at the same
+energy [22], we construct the nuclear-modification factor and study the centrality dependence
+of its average at high pT , as well as its slope at low and high pT . To reduce uncertainties related
+to event selection and normalization, which are particularly large for peripheral collisions, we
+also provide the ratio of RAA in adjacent centrality intervals, defined as
+                                                         AA,i
+                               i   RiAA   hNcoll ii+1 dNch /dpT
+                        R+1 ≡ R+1 = i+1 =                          ,                             (2)
+                                   RAA     hNcoll ii dNch
+                                                       AA,i+1
+                                                              /dpT
+where i + 1 denotes a 5% more central centrality class than i. The definition of R+1 corresponds
+approximately to the change of log RAA with centrality, and its value would be constant for an
+exponential dependence.
+Similar to RAA , we quantify the centrality dependence of the average R+1 at high pT , as well as
+its slope at low and at high pT . Where possible, the results are compared to a PYTHIA-based
+model of independent pp collisions without nuclear modification [38]. The remainder of the
+paper is structured as follows: Section 2 describes the experimental setup. Section 3 describes
+the charged particle measurement with emphasis on corrections and uncertainties related to the
+most peripheral collisions. Section 4 describes the results. Section 5 provides a summary of our
+findings.
+
+
+2   Experimental setup
+The ALICE detector is described in detail in Ref. [43], and a summary of its performance
+can be found in Ref. [44]. Charged-particle reconstruction at midrapidity is based on tracking
+information from the Inner Tracking System (ITS) and the Time Projection Chamber (TPC),
+both located inside a solenoidal magnetic field of 0.5 T parallel to the beam axis.
+The ITS [45] consists of three sub-detectors, each composed of two layers to measure the tra-
+jectories of charged particles and to reconstruct primary vertices. The two innermost layers are
+the Silicon Pixel Detectors (SPD), the middle two layers are Silicon Drift Detectors (SDD), the
+outer two layers are Silicon Strip Detectors (SSD).
+The TPC [46] is a large (90 m3 ) cylindrical drift detector. It covers a pseudorapidity range of
+|η| < 0.9 over full azimuth, providing up to 159 reconstructed space points per track. Charged
+particles originating from the primary vertex can be reconstructed down to pT ≈ 100 MeV/c.
+The relative pT resolution depends on momentum, is approximately 4% at 0.15 GeV/c, 1% at
+1 GeV/c and increases linearly approaching 4% at 50 GeV/c.
+                                     √
+The pp and Pb–Pb collision data at sNN = 5.02 TeV were recorded in 2015. In total, about
+110 · 106 pp and 25 · 106 Pb–Pb events satisfying the minimum bias trigger and a number of
+
+                                                 3
+Analysis of the apparent nuclear modification . . .                         ALICE Collaboration
+
+
+offline event selection criteria were used in the analysis. The minimum-bias trigger required a
+signal in both, the V0-A and V0-C, scintillator arrays, covering 2.8 < η < 5.1 and −3.7 < η <
+−1.7, respectively [47]. Beam background events were rejected efficiently by exploiting the
+timing signals in the V0 detectors, and in Pb–Pb collisions also by using the two Zero Degree
+Calorimeters (ZDCs). The latter are positioned close to beam rapidity on both sides of the
+interaction point.
+
+
+3   Data analysis
+                                                                               √
+The measurements of charged-particle spectra in pp and Pb–Pb collisions at      sNN = 5.02 TeV
+are described in detail in Ref. [22].
+The collision point or primary event vertex was determined from reconstructed tracks. If no
+vertex was found using tracks, the vertex reconstruction was performed using track segments
+constructed from the two innermost layers of the ITS. Events with a reconstructed vertex within
+±10 cm from the centre of the detector along the beam direction are used to ensure a uniform
+acceptance and reconstruction efficiency at midrapidity.
+Primary charged particles [48] were measured in the kinematic range of |η| < 0.8 and 0.15 <
+pT < 30 GeV/c. The detector simulations were performed using the PYTHIA [49] and HI-
+JING [50] Monte Carlo event generators with GEANT3 [51] for modeling the detector response.
+Track-level corrections include acceptance, efficiency, purity and pT resolution, which were ob-
+tained using an improved method tuned on data to reduce the systematic uncertainties related
+to particle species dependence (see Ref. [22] for details). Events are classified in percentiles of
+the hadronic cross-section using the sum of the amplitudes of the V0-A and V0-C signals (V0M
+estimator) [6]. The absolute scale of the centrality is defined by the range of 0–90% central-
+ity in which a Glauber-based multiplicity model is fitted to the V0M distribution. The lower
+centrality limit of 90% of this range with its corresponding V0M signal is denoted the anchor
+point (AP). The multiplicity for each particle source is modeled with a negative binomial dis-
+tribution, where the effective number of independent particle production sources is described
+by a linear combination of the number of participants (Npart ) and collisions (Ncoll ). The AP was
+shifted by ±0.5%, leading to a systematic uncertainty in the normalization of the spectra of up
+to 6.7% for the 85–90% centrality class. Unlike previous measurements in Pb–Pb collisions,
+the analysis was not limited to 0–90% most central events, where effects of trigger inefficiency
+and contamination by electromagnetic processes are negligible, but also included the 90–100%
+most peripheral collisions. The V0M value corresponding to 95% of the hadronic cross section
+was determined by selecting either 95% of the events given by the Glauber-NBD parametriza-
+tion, or the number of events in the 0–90% centrality class multiplied by the factor 95/90, where
+the latter is used as a variation to assess the systematic uncertainty of the approach. The dif-
+ference on the measured yields between the two ways was assigned as additional systematic
+uncertainty. For the centrality class 90–95% (95–100%) the combined uncertainty amounts to
+a fully correlated part of 10.8% (11.7%) on the normalization of the spectra and a 2.9% (4.6%)
+residual effect on the shape.
+The trigger and event-vertex reconstruction efficiency and the related systematic uncertainties
+for peripheral Pb–Pb collisions were estimated from simulations using HIJING and PYTHIA
+including single- and double-diffractive processes, but ignoring possible differences from nu-
+clear effects. The V0M distribution in the simulations was reweighted with the measured V0M
+
+
+                                                 4
+Analysis of the apparent nuclear modification . . .                                                           ALICE Collaboration
+
+                             〉
+                             geo         coll
+
+
+
+
+                             〈 N mult 〉 / 〈 N
+                                                  1
+                                         coll
+
+
+                                                0.9
+
+
+                                                0.8
+
+
+
+                                                0.7
+
+
+                                                0.6       ALICE, Pb-Pb, sNN = 5.02 TeV
+
+                                                               Glauber NBD fit to V0M data
+                                                0.5
+                                                      0       20        40       60          80        100
+                                                                                             Centrality (%)
+
+                                                                              mult ) divided by the number
+Fig. 1: Ratio of number of collisions determined by slicing in multiplicity (Ncoll
+                                                                geo
+of collisions determined directly from the impact parameter (Ncoll ).
+
+               Centrality class                             Npart         hNcoll i                     hTAA i (mb−1 )
+                         0–5%                          382.3 ± 2.4     1752 ± 28                        25.92 ± 0.37
+                        5–10%                          329.1 ± 5.0     1367 ± 37                        20.22 ± 0.52
+                       10–15%                          281.1 ± 5.2     1080 ± 26                        15.98 ± 0.36
+                       15–20%                          239.4 ± 5.2      850 ± 26                        12.57 ± 0.37
+                       20–25%                          202.7 ± 4.6      662 ± 25                         9.79 ± 0.36
+                       25–30%                          170.8 ± 3.1      513 ± 16                         7.58 ± 0.22
+                       30–35%                          142.5 ± 3.0      390 ± 13                         5.77 ± 0.18
+                       35–40%                          118.0 ± 2.1   293.4 ± 7.4                         4.34 ± 0.11
+                       40–45%                           96.3 ± 2.0   215.2 ± 6.4                      3.184 ± 0.095
+                       45–50%                           77.5 ± 1.5   154.8 ± 4.0                      2.290 ± 0.066
+                       50–55%                         61.29 ± 0.86   109.0 ± 1.8                      1.612 ± 0.033
+                       55–60%                         47.43 ± 0.59    74.1 ± 1.4                      1.096 ± 0.026
+                       60–65%                         35.84 ± 0.67    49.2 ± 1.2                      0.728 ± 0.020
+                       65–70%                         26.19 ± 0.56    31.6 ± 1.1                      0.468 ± 0.018
+                       70–75%                         18.60 ± 0.40 19.89 ± 0.77                       0.294 ± 0.012
+                       75–80%                         12.78 ± 0.32 12.19 ± 0.46                     0.1803 ± 0.0075
+                       80–85%                          8.50 ± 0.23   7.22 ± 0.30                    0.1068 ± 0.0048
+                       85–90%                          5.45 ± 0.11   4.12 ± 0.13                    0.0609 ± 0.0021
+                       90–95%                          3.31 ± 0.19   2.18 ± 0.16                    0.0323 ± 0.0024
+                     95–100%                           2.24 ± 0.11 1.223 ± 0.096                    0.0181 ± 0.0014
+Table 1: Summary of the average Npart , Ncoll , TAA for all centrality classes obtained by slicing the
+V0M amplitude distribution instead of the impact parameter. All uncertainties listed are systematic
+uncertainties. Statistical uncertainties are negligible.
+
+distribution. The combined efficiency was found to be 0.985 ± 0.015 for the 90–95% and
+0.802 ± 0.057 for the 95–100% centrality classes, respectively, while fully efficient for more
+central collisions. In addition, in the most peripheral bin a pT -dependent signal loss of up to
+14.7% at low pT is corrected for. To account for diffractive processes in this correction and
+its systematic uncertainty, two limiting scenarios have been considered: a) the signal loss is
+
+                                                                          5
+Analysis of the apparent nuclear modification . . .                            ALICE Collaboration
+
+
+            Centrality class    dNch /dη hpT i>0.15 (GeV/c) hpT i>0 (GeV/c)
+                      0–5%    1910 ± 49        0.729 ± 0.010   0.681 ± 0.010
+                    5–10%     1547 ± 40        0.731 ± 0.010   0.683 ± 0.010
+                   10–15%     1273 ± 30        0.732 ± 0.009   0.683 ± 0.009
+                   15–20%     1048 ± 25        0.733 ± 0.009   0.683 ± 0.009
+                   20–25%       863 ± 19       0.730 ± 0.009   0.678 ± 0.008
+                   25–30%       703 ± 16       0.727 ± 0.009   0.676 ± 0.008
+                   30–35%       568 ± 13       0.723 ± 0.008   0.671 ± 0.008
+                   35–40%       453 ± 11       0.719 ± 0.008   0.666 ± 0.008
+                   40–45%    356.6 ± 8.4       0.710 ± 0.008   0.657 ± 0.008
+                   45–50%    275.1 ± 6.8       0.704 ± 0.008   0.650 ± 0.007
+                   50–55%    208.5 ± 5.6       0.695 ± 0.008   0.640 ± 0.008
+                   55–60%    154.1 ± 4.5       0.687 ± 0.008   0.631 ± 0.007
+                   60–65%    111.4 ± 3.5       0.676 ± 0.007   0.619 ± 0.007
+                   65–70%     78.0 ± 2.8       0.667 ± 0.007   0.609 ± 0.007
+                   70–75%     53.1 ± 2.1       0.659 ± 0.007   0.599 ± 0.007
+                   75–80%     34.9 ± 1.6       0.650 ± 0.008   0.589 ± 0.007
+                   80–85%     22.0 ± 1.4       0.636 ± 0.014   0.575 ± 0.013
+                   85–90% 12.87 ± 0.98         0.612 ± 0.014   0.551 ± 0.013
+                   90–95%    6.46 ± 0.78       0.574 ± 0.017   0.516 ± 0.015
+                 95–100%     2.71 ± 0.51       0.524 ± 0.031   0.471 ± 0.028
+Table 2: Summary of the average dNch /dη and hpT i in |η| < 0.8 for all centrality classes. While
+hpT i>0.15 is averaged over the measured range 0.15 < pT < 10 GeV/c, hpT i>0 is extrapolated to pT = 0.
+All uncertainties listed are systematic uncertainties. Statistical uncertainties are negligible.
+
+assumed to be as in pp collisions in the V0M range of the 95–100% bin; b) only the fraction of
+events with a single nucleon–nucleon collision are corrected for assuming the signal loss from
+minimum-bias pp collisions.
+Contamination of the peripheral bins by electromagnetic interactions was studied in the data by
+removing all events with small energy deposits in the neutron ZDCs. The resulting change of
+the spectrum with the requirements of at least a five-neutron equivalent energy in both neutron
+ZDCs amounts to 5% for the 95–100% centrality class, 3% for the 90-95% class and 2% for
+the 80-85% and 85-90% classes and is assigned as systematic uncertainty. To account for
+contamination of the trigger from events without reconstructed vertex, those events are removed
+from the analysis and the effect is assigned as systematic uncertainty on the normalization (6.8%
+in the 95–100% class and 0.5% in the 90–95% class).
+Systematic uncertainties related to vertex selection, track selection, secondary-particle contam-
+ination, primary-particle composition, pT resolution, material budget and tracking efficiency
+were estimated as described in Ref. [22] and are assigned as bin-by-bin uncertainties. The sys-
+tematic uncertainties related to the centrality selection were estimated by a comparison of the
+pT spectra when the limits of the centrality classes are shifted due to an uncertainty of ±0.5%
+in the fraction of the hadronic cross section used in the analysis. They are split into two parts:
+one part that is fully correlated between the pT bins assigned as a normalization uncertainty
+plus an additional part taking into account residual differences in the spectral shape assigned as
+a bin-by-bin uncertainty. The overall normalization uncertainty of RAA contains the uncertainty
+related to the centrality selection, the uncertainty of Ncoll , the uncertainty of the trigger effi-
+
+                                                  6
+Analysis of the apparent nuclear modification . . .                          ALICE Collaboration
+
+
+ciency, the uncertainty of the trigger contamination and the normalization uncertainty of the pp
+reference spectrum added in quadrature. Note that most uncertainties are correlated to a large
+extent between adjacent centrality bins leading to reduced uncertainties in R+1 .
+Ordering events according to multiplicity introduces a bias relative to using the impact param-
+eter in Glauber-based particle production models. It is expected that part of the bias introduced
+by the ordering can be canceled in RAA , when Ncoll is also obtained in the same way as in the
+data. The difference relative to averaging over impact parameter is quantified in Fig. 1, which
+shows the ratio of hNcoll i by slicing either in multiplicity (estimated using the V0M amplitude)
+   mult or impact parameter N geo , as carried out so far at the LHC. The difference is below
+ Ncoll                             coll
+5% up to 80% centrality, and then increases strongly up to 40% for more peripheral classes. The
+average quantities for a centrality class, such as the number of participants Npart , the number of
+binary collisions Ncoll and the nuclear overlap function TAA , were obtained by averaging over
+the V0M multiplicity intervals, and are summarized in Tab. 1. For the calculation of RAA and
+R+1 we use only those multiplicity averaged quantities. As before [5, 6], the uncertainties on
+the mean were obtained by changing the various ingredients of the Glauber MC model by one
+standard deviation. The resulting relative uncertainties on the mean are below 6%, however
+in particular for peripheral collisions the widths of the respective distributions are significantly
+larger.
+The charged particle multiplicity dNch /dη and the average transverse momentum hpT i for all
+centrality intervals are listed in Tab. 2, values given for dNch /dηand hpT i>0 are extrapolated to
+pT = 0 using a modified Hagedorn function fitted to the data, as described in Ref. [52].
+
+
+4   Results
+Figure 2 presents the nuclear-modification factor, given in Eq. 1, versus pT for charged particles
+                                         √
+at midrapidity in Pb–Pb collisions at sNN = 5.02 TeV for 5%-wide centrality classes. The
+focus of the presented analysis is mainly on the peripheral classes, which for convenience are
+displayed in filled, coloured symbols with their corresponding global uncertainties of about 10–
+20% denoted at pT ∼ 0.1 GeV/c. As usual, if not otherwise stated, vertical error bars denote
+statistical uncertainties, while the boxes denote the systematic uncertainties.
+From central to peripheral collisions RAA increases, which in particular above about 10 GeV/c
+can be understood as the progressive reduction of medium-induced parton energy loss. Further-
+more, the shape is similar from the most central up to the 80–85% centrality class, namely an
+increase at low pT , a maximum around 2–3 GeV/c, related to radial flow, then a decrease with
+a local minimum at about 7 GeV/c, followed by a mild increase. Above 80–85% centrality, the
+evolution is different as already at low pT the slope is negative and RAA decreases monotonously
+with increasing pT . The change in behaviour seems to occur in the 75–85% interval, since the
+80–85% RAA values appear to be the same or even lower than those of the 75–80% interval. For
+the most peripheral classes, the reduction of the nuclear modification factor with increasing pT
+is qualitatively similar to the one observed for low multiplicity p–Pb [39] collisions, indicating
+that the underlying bias towards more peripheral collisions with a reduced rate of hard scatter-
+                                                                         mult , we had used N geo in
+ings per nucleon–nucleon collisions is the same. If instead of using Ncoll                   coll
+the normalization of RAA , the results for peripheral collisions above 80% would be even lower,
+namely by the ratio quantified in Fig. 1.
+To quantify these observations we provide in Fig. 3 the average RAA at high pT (within 8 < pT <
+
+                                                 7
+Analysis of the apparent nuclear modification . . .                               ALICE Collaboration
+
+
+   R AA
+                          0-5%         5-10%         10-15%       15-20%        20-25%
+                          25-30%       30-35%        35-40%       40-45%        45-50%
+      1.2
+                          50-55%       55-60%        60-65%       65-70%        70-75%
+                          75-80%       80-85%        85-90%       90-95%        95-100%
+          1
+
+
+      0.8
+
+
+      0.6
+
+
+      0.4
+
+
+      0.2
+                      ALICE, Pb-Pb, sNN = 5.02 TeV
+                      charged particles, | η | < 0.8
+          0
+              10−1                              1                                10       p (GeV/c )
+                                                                                            T
+
+Fig. 2: Nuclear-modification factor versus pT for charged particles at midrapidity in Pb–Pb collisions
+   √
+at sNN = 5.02 TeV for 5%-wide centrality classes. The filled, coloured markers are for the five most
+peripheral classes, with the corresponding global uncertainties denoted close to pT = 0.1 GeV/c. Ver-
+tical error bars denote statistical uncertainties, while the boxes denote the systematic uncertainties. For
+visibility, the uncertainties are only drawn for the peripheral classes.
+
+20 GeV/c), which increases smoothly from most central up to 70–75% centrality and drops
+strongly beyond the 80–85% centrality class. The data are compared to the high pT limit of a
+PYTHIA-based model (HG-PYTHIA) [38], which for every binary nucleon–nucleon collision
+superimposes a number of PYTHIA events incoherently without nuclear modification. The es-
+sential feature of the model is that particle production per nucleon–nucleon collision originates
+from a fluctuating number of multiple partonic interactions depending on the nucleon–nucleon
+impact parameter. Despite the fact that HG-PYTHIA is a rather simple approach, for 75–80%
+and more peripheral collisions, it describes the average RAA relatively well suggesting that the
+apparent suppression for peripheral collisions is not caused by parton energy loss, but rather by
+the event selection criteria imposed to determine the centrality of the collisions. The data are
+significantly lower than the model calculation for the most peripheral centrality classes, possi-
+bly due to a significant contribution of diffraction, which is not modeled in HG-PYTHIA. The
+slope of a linear fit to RAA performed for 8 < pT < 20 GeV/c, the region where the RAA in
+central collisions rises after its minimum, is shown in Fig. 4 as a function of centrality. This
+high-pT slope is positive and initially increasing mildly before decreasing with decreasing cen-
+trality up to about 80% centrality, beyond which it is close to zero, and then even is negative
+in the highest centrality class. At low to intermediate pT (within 0.4–1.2 GeV/c), the regime
+which is strongly influenced by the hydrodynamic expansion, the RAA exhibits another rise. The
+slope extracted in the pT range 0.4–1.2 GeV/c is also shown in Fig. 4. The RAA at low and high
+
+
+                                                    8
+Analysis of the apparent nuclear modification . . .                                                                                   ALICE Collaboration
+
+
+ R AA
+
+
+
+                                                                                R AA slope parameter
+                  Pb-Pb, sNN = 5.02 TeV, charged particles, | η | < 0.8
+                                                                                                       0.3
+        1.2              ALICE data, 8 < p < 20 GeV/ c
+                                           T
+                         HG-PYTHIA, PLB 773 (2017) 408
+                                                                                                       0.2
+          1
+                                                                                                       0.1
+        0.8
+                                                                                                        0
+
+        0.6
+                                                                                              −0.1
+
+        0.4                                                                                −0.2                  ALICE, Pb-Pb, sNN = 5.02 TeV
+                                                                                                                 charged particles, | η | < 0.8
+        0.2                                                                                −0.3
+                                                                                                                     0.4 < p < 1.2 GeV/c
+                                                                                                                            T
+                                                                                                                     8 < p < 20 GeV/ c (× 20)
+                                                                                           −0.4                           T
+         0
+              0           20         40        60         80        100                                      0          20       40        60     80        100
+                                                          Centrality (%)                                                                          Centrality (%)
+
+
+Fig. 3: Average RAA for 8 < pT < 20 GeV/c                                      Fig. 4: Slope of RAA at low pT (in 0.4 <
+versus centrality percentile in Pb–Pb collisions at                            pT < 1.2 GeV/c) and at high pT (in 8 < pT <
+√
+   sNN = 5.02 TeV compared to predictions from                                 20 GeV/c) scaled by factor 15 for visibility ver-
+HG-PYTHIA [38]. Vertical error bars denote sta-                                sus centrality percentile in Pb–Pb collisions at
+                                                                               √
+tistical uncertainties, while the boxes denote the                                sNN = 5.02 TeV. Vertical error bars denote sta-
+systematic uncertainties.                                                      tistical uncertainties, while the boxes denote the
+                                                                               systematic uncertainties.
+
+pT is consistent with being linearly dependent on pT in the chosen fit ranges, resulting χ 2 /NDF
+are below unity. While the absolute values of the slopes are very different (note the normali-
+sation), the shape of the centrality dependence of the slope at low pT is remarkably similar to
+that extracted at high pT . This hints at a close correlation between these two regimes, possibly
+induced by the geometry or density dependence of parton energy loss on the one hand and col-
+lective expansion on the other hand. In peripheral collisions, in particular above 90% centrality,
+the low pT slope is negative, indicating that the very peripheral events are increasingly softer.
+In order to study the shape evolution of RAA in more detail, we compute the ratio of adjacent
+centrality intervals, as given by Eq. 2. In this way a large part of the global uncertainties as
+well as of the systematic uncertainties cancel. Figure 5 presents R+1 versus pT for charged par-
+                                               √
+ticles at midrapidity in Pb–Pb collisions at sNN = 5.02 TeV for 5%-wide centrality classes.
+As for RAA the peripheral collisions are displayed in colour, with their corresponding global
+uncertainties, which are significantly smaller than for RAA except for the most peripheral class,
+denoted around 0.1 on the abscissa. The ratio is found to be nearly identical for 0–5% central
+to 70–75% peripheral collisions (14 curves) within 10%. In addition, in this centrality range,
+the ratio is only slightly pT -dependent, although explained typically by distinct mechanism (ra-
+dial flow at low pT and energy loss at high pT ). For more peripheral collisions, however, the
+R+1 changes significantly and reduces to about 0.4 for most peripheral collisions. While the
+quenching power of the medium apparently only gradually changes for about 75% of the Pb–Pb
+cross-section, the sudden drop for more than 75% peripheral collisions can hardly be explained
+by an increase in quenching.
+The evolution of the R+1 at high pT with centrality is characterized by taking the average R+1
+for 8 < pT < 20 GeV/c, shown in Fig. 6. The average is about 1.14, slightly decreasing with
+
+                                                                           9
+Analysis of the apparent nuclear modification . . .                              ALICE Collaboration
+
+
+    R +1
+                          5-10%        10-15%       15-20%        20-25%         25-30%
+       1.4                30-35%       35-40%       40-45%        45-50%         50-55%
+                          55-60%       60-65%       65-70%        70-75%         75-80%
+                          80-85%       85-90%       90-95%        95-100%
+       1.2
+
+           1
+
+       0.8
+
+       0.6
+
+       0.4
+
+       0.2
+                  ALICE, Pb-Pb, sNN = 5.02 TeV
+                  charged particles, | η | < 0.8
+           0
+               10−1                             1                                10       p (GeV/c )
+                                                                                           T
+
+                                                                                  √
+Fig. 5: R+1 versus pT for charged particles at midrapidity in Pb–Pb collisions at sNN = 5.02 TeV. R+1
+is defined as the ratio of Ncoll normalized spectra for a given centrality class relative to the 5% more
+central class, see Eq. 2. The filled, coloured markers are for the 5 most peripheral classes, with the
+corresponding global uncertainties denoted close to pT = 0.1 GeV/c on the pT -axis. Vertical error bars
+denote statistical uncertainties, while the boxes denote the systematic uncertainties. For visibility, the
+uncertainties are only drawn for the peripheral classes.
+
+decreasing centrality and beyond 75% centrality falls strongly, similar to predictions from HG-
+PYTHIA. An approximate constant value for R+1 up to about 60% centrality implies an expo-
+nential dependence on centrality.
+Figure 7 shows the slope of a linear fit to the low momentum region (0.4–1.2 GeV/c) and the
+high-momentum region (8 < pT < 20 GeV/c) of R+1 . In the chosen fit ranges, the R+1 can
+be fitted by a linear function with χ 2 /NDF < 1. At low momentum, the slope of R+1 exhibits
+a mild centrality dependence, related to the reduced strength of radial flow, dropping strongly
+for peripheral collisions above 80%, as expected from ordering events according to multiplicity.
+At high momentum, the slope is non-zero, −0.0031 ± 0.0006, and within the uncertainties not
+dependent on centrality.
+
+
+5    Summary
+Charged-particle spectra at midrapidity were measured in Pb–Pb collisions at a centre-of-mass
+                            √
+energy per nucleon pair of sNN = 5.02 TeV and presented in centrality classes ranging from
+the most central (0–5%) to the most peripheral (95–100%) collisions. Measurements beyond the
+90% peripheral collisions at the LHC are presented for the first time. For a consistent treatment
+
+
+                                                    10
+Analysis of the apparent nuclear modification . . .                                                                                   ALICE Collaboration
+
+
+ R +1
+
+
+
+                                                                                  R +1 slope parameter
+                  Pb-Pb, s NN = 5.02 TeV, charged particles, | η | < 0.8
+        1.4                                                                                              0
+                         ALICE data, 8 < p < 20 GeV/ c
+                                            T
+                         HG-PYTHIA, PLB 773 (2017) 408
+        1.2
+
+          1
+
+        0.8                                                                                  −0.2
+
+
+        0.6
+
+                                                                                                                 ALICE, Pb-Pb, sNN = 5.02 TeV
+        0.4
+                                                                                                                 charged particles, | η | < 0.8
+
+        0.2                                                                                  −0.4                    0.4 < p < 1.2 GeV/c
+                                                                                                                            T
+                                                                                                                     8 < p < 20 GeV/ c
+                                                                                                                          T
+         0
+              0           20         40         60         80        100                                     0          20       40        60     80        100
+                                                           Centrality (%)                                                                         Centrality (%)
+
+
+Fig. 6: Average R+1 for 8 < pT < 20 GeV/c                                        Fig. 7: Slope of R+1 at low pT (in 0.4 <
+versus centrality percentile in Pb–Pb collisions at                              pT < 1.2 GeV/c) and at high pT (in 8 < pT <
+√
+   sNN = 5.02 TeV compared to predictions from                                   20 GeV/c) versus centrality percentile in Pb–Pb
+                                                                                              √
+HG-PYTHIA [38]. Vertical error bars denote sta-                                  collisions at sNN = 5.02 TeV. Vertical error bars
+tistical uncertainties, while the boxes denote the                               denote statistical uncertainties, while the boxes
+systematic uncertainties.                                                        denote the systematic uncertainties.
+
+of the most peripheral collisions the number of binary collisions was calculated from a Glauber
+model in intervals of multiplicity rather than in impact parameter (Fig. 1). Possible medium
+effects were quantified by comparing the measured spectra with those from proton–proton col-
+lisions normalized by the number of independent nucleon–nucleon collisions obtained from a
+Glauber model (Fig. 2). At large transverse momenta (8 < pT < 20 GeV/c), the average RAA
+increases from about 0.15 in the 0–5% most central collisions to a maximum value of about 0.8
+in the 75–85% peripheral collisions, beyond which it strongly falls off to below 0.2 for the most
+peripheral collisions (Fig. 3). Furthermore, RAA initially exhibits a positive slope as a function
+of pT in the 8–20 GeV/c interval, while for collisions beyond the 80% class the slope is nega-
+tive (Fig. 4). The shape of the slope extracted at low pT , within 0.4–1.2 GeV/c, is remarkably
+similar, indicating that there may be a close correlation between these two regimes. To reduce
+uncertainties related to event selection and normalization, the ratio of RAA in adjacent central-
+ity intervals was measured (Fig. 5). Up to about 60% peripheral collisions, this ratio is fairly
+constant, even as a function of pT . It then starts to decrease and finally, for centralities beyond
+75%, it falls off strongly (Fig. 6) with its slopes at low and high momentum varying only mildly
+or not at all except for the most peripheral centrality intervals (Fig. 7).
+The trends observed in peripheral collisions are consistent with a simple PYTHIA-based model
+without nuclear modification, demonstrating that biases caused by the event selection and col-
+lision geometry can lead to an apparent suppression in peripheral collisions. This explains the
+contradictory and hard to reconcile observation that RAA is below unity in peripheral Pb–Pb, but
+equal to unity in minimum-bias p–Pb collisions despite similar charged-particle multiplicities.
+With a correct treatment of the biases a smooth transition between Pb–Pb and minimum-bias
+p–Pb collisions is expected without the need to involve parton energy loss in peripheral colli-
+sions. Without such treatment, the measurement and interpretation of RAA in peripheral colli-
+
+
+                                                                            11
+Analysis of the apparent nuclear modification . . .                      ALICE Collaboration
+
+
+sions, in particular above 80% centrality, have complications similar to p–Pb collisions, where
+the observable was named QpPb [39] to distinguish it from the unbiased nuclear modification
+factor.
+
+
+Acknowledgements
+The ALICE Collaboration would like to thank all its engineers and technicians for their invalu-
+able contributions to the construction of the experiment and the CERN accelerator teams for
+the outstanding performance of the LHC complex. The ALICE Collaboration gratefully ac-
+knowledges the resources and support provided by all Grid centres and the Worldwide LHC
+Computing Grid (WLCG) collaboration. The ALICE Collaboration acknowledges the fol-
+lowing funding agencies for their support in building and running the ALICE detector: A. I.
+Alikhanyan National Science Laboratory (Yerevan Physics Institute) Foundation (ANSL), State
+Committee of Science and World Federation of Scientists (WFS), Armenia; Austrian Academy
+of Sciences and Nationalstiftung für Forschung, Technologie und Entwicklung, Austria; Min-
+istry of Communications and High Technologies, National Nuclear Research Center, Azerbai-
+jan; Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq), Universidade
+Federal do Rio Grande do Sul (UFRGS), Financiadora de Estudos e Projetos (Finep) and Fun-
+dação de Amparo à Pesquisa do Estado de São Paulo (FAPESP), Brazil; Ministry of Science
+& Technology of China (MSTC), National Natural Science Foundation of China (NSFC) and
+Ministry of Education of China (MOEC) , China; Ministry of Science and Education, Croatia;
+Ministry of Education, Youth and Sports of the Czech Republic, Czech Republic; The Dan-
+ish Council for Independent Research | Natural Sciences, the Carlsberg Foundation and Danish
+National Research Foundation (DNRF), Denmark; Helsinki Institute of Physics (HIP), Finland;
+Commissariat à l’Energie Atomique (CEA) and Institut National de Physique Nucléaire et de
+Physique des Particules (IN2P3) and Centre National de la Recherche Scientifique (CNRS),
+France; Bundesministerium für Bildung, Wissenschaft, Forschung und Technologie (BMBF)
+and GSI Helmholtzzentrum für Schwerionenforschung GmbH, Germany; General Secretariat
+for Research and Technology, Ministry of Education, Research and Religions, Greece; National
+Research, Development and Innovation Office, Hungary; Department of Atomic Energy Gov-
+ernment of India (DAE), Department of Science and Technology, Government of India (DST),
+University Grants Commission, Government of India (UGC) and Council of Scientific and In-
+dustrial Research (CSIR), India; Indonesian Institute of Science, Indonesia; Centro Fermi -
+Museo Storico della Fisica e Centro Studi e Ricerche Enrico Fermi and Istituto Nazionale di
+Fisica Nucleare (INFN), Italy; Institute for Innovative Science and Technology , Nagasaki Insti-
+tute of Applied Science (IIST), Japan Society for the Promotion of Science (JSPS) KAKENHI
+and Japanese Ministry of Education, Culture, Sports, Science and Technology (MEXT), Japan;
+Consejo Nacional de Ciencia (CONACYT) y Tecnología, through Fondo de Cooperación In-
+ternacional en Ciencia y Tecnología (FONCICYT) and Dirección General de Asuntos del Per-
+sonal Academico (DGAPA), Mexico; Nederlandse Organisatie voor Wetenschappelijk Onder-
+zoek (NWO), Netherlands; The Research Council of Norway, Norway; Commission on Science
+and Technology for Sustainable Development in the South (COMSATS), Pakistan; Pontificia
+Universidad Católica del Perú, Peru; Ministry of Science and Higher Education and National
+Science Centre, Poland; Korea Institute of Science and Technology Information and National
+Research Foundation of Korea (NRF), Republic of Korea; Ministry of Education and Scientific
+Research, Institute of Atomic Physics and Romanian National Agency for Science, Technology
+and Innovation, Romania; Joint Institute for Nuclear Research (JINR), Ministry of Education
+
+                                                12
+Analysis of the apparent nuclear modification . . .                     ALICE Collaboration
+
+
+and Science of the Russian Federation and National Research Centre Kurchatov Institute, Rus-
+sia; Ministry of Education, Science, Research and Sport of the Slovak Republic, Slovakia;
+National Research Foundation of South Africa, South Africa; Centro de Aplicaciones Tec-
+nológicas y Desarrollo Nuclear (CEADEN), Cubaenergía, Cuba and Centro de Investigaciones
+Energéticas, Medioambientales y Tecnológicas (CIEMAT), Spain; Swedish Research Council
+(VR) and Knut & Alice Wallenberg Foundation (KAW), Sweden; European Organization for
+Nuclear Research, Switzerland; National Science and Technology Development Agency (NS-
+DTA), Suranaree University of Technology (SUT) and Office of the Higher Education Com-
+mission under NRU project of Thailand, Thailand; Turkish Atomic Energy Agency (TAEK),
+Turkey; National Academy of Sciences of Ukraine, Ukraine; Science and Technology Facil-
+ities Council (STFC), United Kingdom; National Science Foundation of the United States of
+America (NSF) and United States Department of Energy, Office of Nuclear Physics (DOE NP),
+United States of America.
+
+
+References
+ [1] M. Gyulassy and M. Plumer, “Jet quenching in dense matter,” Phys. Lett. B243 (1990)
+     432–438.
+
+ [2] R. Baier, Y. L. Dokshitzer, S. Peigne, and D. Schiff, “Induced gluon radiation in a QCD
+     medium,” Phys. Lett. B345 (1995) 277–286, arXiv:hep-ph/9411409 [hep-ph].
+
+ [3] B. Alver, M. Baker, C. Loizides, and P. Steinberg, “The PHOBOS Glauber Monte Carlo,”
+     arXiv:0805.4411 [nucl-ex].
+
+ [4] C. Loizides, J. Nagle, and P. Steinberg, “Improved version of the PHOBOS Glauber
+     Monte Carlo,” SoftwareX 1-2 (2015) 13–18, arXiv:1408.2549 [nucl-ex].
+
+ [5] C. Loizides, J. Kamin, and D. d’Enterria, “Precision Monte Carlo Glauber predictions at
+     present and future nuclear colliders,” arXiv:1710.07098 [nucl-ex].
+
+ [6] ALICE Collaboration, B. Abelev et al., “Centrality determination of Pb–Pb collisions at
+     √
+       sNN = 2.76 TeV with ALICE,” Phys. Rev. C88 no. 4, (2013) 044909,
+     arXiv:1301.4361 [nucl-ex].
+
+ [7] PHENIX Collaboration, K. Adcox et al., “Suppression of hadrons with large transverse
+                                             √
+     momentum in central Au–Au collisions at sNN = 130 GeV,” Phys. Rev. Lett. 88 (2002)
+     022301, arXiv:nucl-ex/0109003 [nucl-ex].
+
+ [8] STAR Collaboration, C. Adler et al., “Centrality dependence of high pT hadron
+                                       √
+     suppression in Au–Au collisions at sNN = 130 GeV,” Phys. Rev. Lett. 89 (2002)
+     202301, arXiv:nucl-ex/0206011 [nucl-ex].
+
+ [9] PHENIX Collaboration, K. Adcox et al., “Centrality dependence of the high pT charged
+                                              √
+     hadron suppression in Au–Au collisions at sNN = 130 GeV,” Phys. Lett. B561 (2003)
+     82–92, arXiv:nucl-ex/0207009 [nucl-ex].
+
+[10] PHENIX Collaboration, S. S. Adler et al., “Suppressed π 0 production at large transverse
+                                              √
+     momentum in central Au–Au collisions at sNN = 200 GeV,” Phys. Rev. Lett. 91 (2003)
+     072301, arXiv:nucl-ex/0304022 [nucl-ex].
+
+                                                13
+Analysis of the apparent nuclear modification . . .                      ALICE Collaboration
+
+
+[11] STAR Collaboration, J. Adams et al., “Transverse momentum and collision energy
+     dependence of high pT hadron suppression in Au–Au collisions at ultrarelativistic
+     energies,” Phys. Rev. Lett. 91 (2003) 172302, arXiv:nucl-ex/0305015 [nucl-ex].
+
+[12] PHOBOS Collaboration, B. B. Back et al., “Charged hadron transverse momentum
+                                         √
+     distributions in Au–Au collisions at sNN = 200 GeV,” Phys. Lett. B578 (2004)
+     297–303, arXiv:nucl-ex/0302015 [nucl-ex].
+
+[13] PHOBOS Collaboration, B. Alver et al., “System size and centrality dependence of
+     charged hadron transverse momentum spectra in Au–Au and Cu–Cu collisions at
+     √
+       sNN = 62.4 GeV and 200 GeV,” Phys. Rev. Lett. 96 (2006) 212301,
+     arXiv:nucl-ex/0512016 [nucl-ex].
+
+[14] PHENIX Collaboration, S. S. Adler et al., “A detailed study of high-pT neutral pion
+                                                                 √
+     suppression and azimuthal anisotropy in Au–Au collisions at sNN = 200 GeV,” Phys.
+     Rev. C76 (2007) 034904, arXiv:nucl-ex/0611007 [nucl-ex].
+
+[15] PHENIX Collaboration, A. Adare et al., “Quantitative constraints on the opacity of hot
+     partonic matter from semi-inclusive single high transverse momentum pion suppression
+     in Au–Au collisions at snn = 200 GeV,” Phys. Rev. C77 (2008) 064907,
+     arXiv:0801.1665 [nucl-ex].
+
+[16] PHENIX Collaboration, A. Adare et al., “Neutral pion production with respect to
+                                                         √
+     centrality and reaction plane in Au–Au collisions at sNN = 200 GeV,” Phys. Rev. C87
+     no. 3, (2013) 034911, arXiv:1208.2254 [nucl-ex].
+
+[17] ALICE Collaboration, K. Aamodt et al., “Suppression of charged Particle production at
+                                                             √
+     large transverse momentum in central Pb–Pb collisions at sNN = 2.76 TeV,” Phys. Lett.
+     B 696 (2011) 30–39, arXiv:1012.1004 [nucl-ex].
+
+[18] ALICE Collaboration, B. Abelev et al., “Centrality dependence of charged particle
+     production at large transverse momentum in Pb–Pb collisions at snn = 2.76 TeV,” Phys.
+     Lett. B720 (2013) 52–62, arXiv:1208.2711 [hep-ex].
+
+[19] CMS Collaboration, S. Chatrchyan et al., “Study of high-pT charged particle suppression
+                                          √
+     in Pb–Pb compared to pp collisions at sNN = 2.76 TeV,” Eur. Phys. J. C 72 (2012)
+     1945, arXiv:1202.2554 [nucl-ex].
+
+[20] ATLAS Collaboration, G. Aad et al., “Measurement of charged-particle spectra in Pb–Pb
+                  √
+     collisions at sNN = 2.76 TeV with the ATLAS detector at the LHC,” JHEP 09 (2015)
+     050, arXiv:1504.04337 [hep-ex].
+
+[21] CMS Collaboration, V. Khachatryan et al., “Charged-particle nuclear modification
+                                            √
+     factors in Pb–Pb and p–Pb collisions at sNN = 5.02 TeV,” JHEP 04 (2017) 039,
+     arXiv:1611.01664 [nucl-ex].
+
+[22] ALICE Collaboration, S. Acharya et al., “Transverse momentum spectra and nuclear
+     modification factors of charged particles in pp, p-Pb and Pb-Pb collisions at the LHC,”
+     JHEP 11 (2018) 013, arXiv:1802.09145 [nucl-ex].
+
+
+
+                                                14
+Analysis of the apparent nuclear modification . . .                    ALICE Collaboration
+
+
+[23] BRAHMS Collaboration, I. Arsene et al., “Transverse momentum spectra in Au–Au and
+                       √
+     d–Au collisions at sNN = 200 GeV and the pseudorapidity dependence of high pT
+     suppression,” Phys. Rev. Lett. 91 (2003) 072305, arXiv:nucl-ex/0307003 [nucl-ex].
+
+[24] STAR Collaboration, J. Adams et al., “Evidence from d–Au measurements for final state
+     suppression of high pT hadrons in Au–Au collisions at RHIC,” Phys. Rev. Lett. 91 (2003)
+     072304, arXiv:nucl-ex/0306024 [nucl-ex].
+
+[25] ALICE Collaboration, B. Abelev et al., “Transverse momentum distribution and nuclear
+                                                                   √
+     modification factor of charged particles in p–Pb collisions at sNN = 5.02 TeV,” Phys.
+     Rev. Lett. 110 no. 8, (2013) 082302, arXiv:1210.4520 [nucl-ex].
+
+[26] ALICE Collaboration, B. B. Abelev et al., “Transverse momentum dependence of
+                                                                        √
+     inclusive primary charged-particle production in p–Pb collisions at sNN = 5.02 TeV,”
+     Eur. Phys. J. C74 no. 9, (2014) 3054, arXiv:1405.2737 [nucl-ex].
+
+[27] CMS Collaboration, V. Khachatryan et al., “Nuclear effects on the transverse momentum
+                                                       √
+     spectra of charged particles in p–Pb collisions at sNN = 5.02 TeV,” Eur. Phys. J. C75
+     no. 5, (2015) 237, arXiv:1502.05387 [nucl-ex].
+
+[28] ATLAS Collaboration, G. Aad et al., “Transverse momentum, rapidity, and centrality
+                                                           √
+     dependence of inclusive charged-particle production in sNN = 5.02 TeV p–Pb
+     collisions measured by the ATLAS experiment,” Phys. Lett. B763 (2016) 313–336,
+     arXiv:1605.06436 [hep-ex].
+
+[29] CMS Collaboration, S. Chatrchyan et al., “Study of Z boson production in Pb–Pb
+                  √
+     collisions at sNN = 2.76 TeV,” Phys. Rev. Lett. 106 (2011) 212301, arXiv:1102.5435
+     [nucl-ex].
+
+[30] PHENIX Collaboration, S. Afanasiev et al., “Measurement of direct photons in Au–Au
+                  √
+     collisions at sNN = 200 GeV,” Phys. Rev. Lett. 109 (2012) 152302, arXiv:1205.5759
+     [nucl-ex].
+
+[31] CMS Collaboration, S. Chatrchyan et al., “Measurement of isolated photon production in
+                               √
+     pp and Pb–Pb collisions at sNN = 2.76 TeV,” Phys. Lett. B710 (2012) 256–277,
+     arXiv:1201.3093 [nucl-ex].
+
+[32] CMS Collaboration, S. Chatrchyan et al., “Study of W boson production in Pb–Pb and
+                     √
+     pp collisions at sNN = 2.76 TeV,” Phys. Lett. B715 (2012) 66–87, arXiv:1205.6334
+     [nucl-ex].
+
+[33] ATLAS Collaboration, G. Aad et al., “Centrality, rapidity and transverse momentum
+                                                                               √
+     dependence of isolated prompt photon production in lead-lead collisions at sNN = 2.76
+     TeV measured with the ATLAS detector,” Phys. Rev. C93 no. 3, (2016) 034914,
+     arXiv:1506.08552 [hep-ex].
+
+[34] A. Dainese, C. Loizides, and G. Paic, “Leading-particle suppression in high energy
+     nucleus-nucleus collisions,” Eur. Phys. J. C38 (2005) 461–474, arXiv:hep-ph/0406201
+     [hep-ph].
+
+
+
+                                                15
+Analysis of the apparent nuclear modification . . .                      ALICE Collaboration
+
+
+[35] X. Zhang and J. Liao, “Jet quenching and its azimuthal anisotropy in Å and possibly high
+     multiplicity p–A and d–Au collisions,” arXiv:1311.5463 [nucl-th].
+
+[36] K. Tywoniuk, “Is there jet quenching in p–Pb?,” Nucl. Phys. A926 (2014) 85–91.
+
+[37] C. Shen, C. Park, J.-F. Paquet, G. S. Denicol, S. Jeon, and C. Gale, “Direct photon
+     production and jet energy-loss in small systems,” Nucl. Phys. A956 (2016) 741–744,
+     arXiv:1601.03070 [hep-ph].
+
+[38] C. Loizides and A. Morsch, “Absence of jet quenching in peripheral nucleus–nucleus
+     collisions,” Phys. Lett. B773 (2017) 408–411, arXiv:1705.08856 [nucl-ex].
+
+[39] ALICE Collaboration, J. Adam et al., “Centrality dependence of particle production in
+                       √
+     p–Pb collisions at sNN = 5.02 TeV,” Phys. Rev. C91 no. 6, (2015) 064905,
+     arXiv:1412.6828 [nucl-ex].
+
+[40] ALICE Collaboration, J. Adam et al., “Measurement of jet quenching with
+                                                                           √
+     semi-inclusive hadron-jet distributions in central Pb–Pb collisions at sNN = 2.76 TeV,”
+     JHEP 09 (2015) 170, arXiv:1506.03984 [nucl-ex].
+
+[41] ALICE Collaboration, S. Acharya et al., “Constraints on jet quenching in p-Pb collisions
+       √
+     at sNN = 5.02 TeV measured by the event-activity dependence of semi-inclusive
+     hadron-jet distributions,” arXiv:1712.05603 [nucl-ex].
+
+[42] J. Jia, “Influence of the nucleon-nucleon collision geometry on the determination of the
+     nuclear modification factor for nucleon-nucleus and nucleus-nucleus collisions,” Phys.
+     Lett. B681 (2009) 320–325, arXiv:0907.4175 [nucl-th].
+
+[43] ALICE Collaboration, K. Aamodt et al., “The ALICE experiment at the CERN LHC,”
+     JINST 3 (2008) S08002.
+
+[44] ALICE Collaboration, B. B. Abelev et al., “Performance of the ALICE experiment at the
+     CERN LHC,” Int. J. Mod. Phys. A29 (2014) 1430044, arXiv:1402.4476 [nucl-ex].
+
+[45] ALICE Collaboration, K. Aamodt et al., “Alignment of the ALICE Inner Tracking
+     System with cosmic-ray tracks,” JINST 5 (2010) P03003, arXiv:1001.0502
+     [physics.ins-det].
+
+[46] J. Alme et al., “The ALICE TPC, a large 3-dimensional tracking device with fast readout
+     for ultra-high multiplicity events,” Nucl. Instrum. Meth. A622 (2010) 316–367,
+     arXiv:1001.1950 [physics.ins-det].
+
+[47] ALICE Collaboration, E. Abbas et al., “Performance of the ALICE VZERO system,”
+     JINST 8 (2013) P10016, arXiv:1306.3130 [nucl-ex].
+
+[48] ALICE Collaboration, “The ALICE definition of primary particles,”.
+     https://cds.cern.ch/record/2270008.
+
+[49] T. Sjostrand, S. Mrenna, and P. Z. Skands, “PYTHIA 6.4 Physics and Manual,” JHEP 05
+     (2006) 026, arXiv:hep-ph/0603175 [hep-ph].
+
+
+
+                                                16
+Analysis of the apparent nuclear modification . . .                  ALICE Collaboration
+
+
+[50] X.-N. Wang and M. Gyulassy, “HIJING: A Monte Carlo model for multiple jet
+     production in pp, p–A and Å collisions,” Phys. Rev. D44 (1991) 3501–3516.
+
+[51] R. Brun, F. Carminati, and S. Giani, “GEANT Detector Description and Simulation
+     Tool,” CERN Program Library Long Write-up, W5013 (1994) .
+
+[52] ALICE Collaboration, S. Acharya et al., “Transverse momentum spectra and nuclear
+                                                                     √
+     modification factors of charged particles in Xe-Xe collisions at sNN = 5.44 TeV,”
+     arXiv:1805.04399 [nucl-ex].
+
+
+
+
+                                                17
+Analysis of the apparent nuclear modification . . .                                  ALICE Collaboration
+
+
+A     The ALICE Collaboration
+S. Acharya139 , F.T.-. Acosta20 , D. Adamová93 , J. Adolfsson80 , M.M. Aggarwal98 , G. Aglieri
+Rinella34 , M. Agnello31 , N. Agrawal48 , Z. Ahammed139 , S.U. Ahn76 , S. Aiola144 , A. Akindinov64 ,
+M. Al-Turany104 , S.N. Alam139 , D.S.D. Albuquerque121 , D. Aleksandrov87 , B. Alessandro58 ,
+R. Alfaro Molina72 , Y. Ali15 , A. Alici10 ,27 ,53 , A. Alkin2 , J. Alme22 , T. Alt69 , L. Altenkamper22 ,
+I. Altsybeev111 , M.N. Anaam6 , C. Andrei47 , D. Andreou34 , H.A. Andrews108 , A. Andronic142 ,104 ,
+M. Angeletti34 , V. Anguelov102 , C. Anson16 , T. Antičić105 , F. Antinori56 , P. Antonioli53 ,
+R. Anwar125 , N. Apadula79 , L. Aphecetche113 , H. Appelshäuser69 , S. Arcelli27 , R. Arnaldi58 ,
+O.W. Arnold103 ,116 , I.C. Arsene21 , M. Arslandok102 , A. Augustinus34 , R. Averbeck104 ,
+M.D. Azmi17 , A. Badalà55 , Y.W. Baek60 ,40 , S. Bagnasco58 , R. Bailhache69 , R. Bala99 ,
+A. Baldisseri135 , M. Ball42 , R.C. Baral85 , A.M. Barbano26 , R. Barbera28 , F. Barile52 , L. Barioglio26 ,
+G.G. Barnaföldi143 , L.S. Barnby92 , V. Barret132 , P. Bartalini6 , K. Barth34 , E. Bartsch69 , N. Bastid132 ,
+S. Basu141 , G. Batigne113 , B. Batyunya75 , P.C. Batzing21 , J.L. Bazo Alba109 , I.G. Bearden88 ,
+H. Beck102 , C. Bedda63 , N.K. Behera60 , I. Belikov134 , F. Bellini34 , H. Bello Martinez44 ,
+R. Bellwied125 , L.G.E. Beltran119 , V. Belyaev91 , G. Bencedi143 , S. Beole26 , A. Bercuci47 ,
+Y. Berdnikov96 , D. Berenyi143 , R.A. Bertens128 , D. Berzano34 ,58 , L. Betev34 , P.P. Bhaduri139 ,
+A. Bhasin99 , I.R. Bhat99 , H. Bhatt48 , B. Bhattacharjee41 , J. Bhom117 , A. Bianchi26 , L. Bianchi125 ,
+N. Bianchi51 , J. Bielčík37 , J. Bielčíková93 , A. Bilandzic116 ,103 , G. Biro143 , R. Biswas3 , S. Biswas3 ,
+J.T. Blair118 , D. Blau87 , C. Blume69 , G. Boca137 , F. Bock34 , A. Bogdanov91 , L. Boldizsár143 ,
+M. Bombara38 , G. Bonomi138 , M. Bonora34 , H. Borel135 , A. Borissov142 , M. Borri127 , E. Botta26 ,
+C. Bourjau88 , L. Bratrud69 , P. Braun-Munzinger104 , M. Bregant120 , T.A. Broker69 , M. Broz37 ,
+E.J. Brucken43 , E. Bruna58 , G.E. Bruno34 ,33 , D. Budnikov106 , H. Buesching69 , S. Bufalino31 ,
+P. Buhler112 , P. Buncic34 , O. Busch131 ,i , Z. Buthelezi73 , J.B. Butt15 , J.T. Buxton95 , J. Cabala115 ,
+D. Caffarri89 , H. Caines144 , A. Caliva104 , E. Calvo Villar109 , R.S. Camacho44 , P. Camerini25 ,
+A.A. Capon112 , F. Carena34 , W. Carena34 , F. Carnesecchi27 ,10 , J. Castillo Castellanos135 ,
+A.J. Castro128 , E.A.R. Casula54 , C. Ceballos Sanchez8 , S. Chandra139 , B. Chang126 , W. Chang6 ,
+S. Chapeland34 , M. Chartier127 , S. Chattopadhyay139 , S. Chattopadhyay107 , A. Chauvin103 ,116 ,
+C. Cheshkov133 , B. Cheynis133 , V. Chibante Barroso34 , D.D. Chinellato121 , S. Cho60 , P. Chochula34 ,
+T. Chowdhury132 , P. Christakoglou89 , C.H. Christensen88 , P. Christiansen80 , T. Chujo131 ,
+S.U. Chung18 , C. Cicalo54 , L. Cifarelli10 ,27 , F. Cindolo53 , J. Cleymans124 , F. Colamaria52 ,
+D. Colella65 ,52 , A. Collu79 , M. Colocci27 , M. Concas58 ,ii , G. Conesa Balbastre78 , Z. Conesa del
+Valle61 , J.G. Contreras37 , T.M. Cormier94 , Y. Corrales Morales58 , P. Cortese32 , M.R. Cosentino122 ,
+F. Costa34 , S. Costanza137 , J. Crkovská61 , P. Crochet132 , E. Cuautle70 , L. Cunqueiro142 ,94 ,
+T. Dahms103 ,116 , A. Dainese56 , S. Dani66 , M.C. Danisch102 , A. Danu68 , D. Das107 , I. Das107 ,
+S. Das3 , A. Dash85 , S. Dash48 , S. De49 , A. De Caro30 , G. de Cataldo52 , C. de Conti120 , J. de
+Cuveland39 , A. De Falco24 , D. De Gruttola10 ,30 , N. De Marco58 , S. De Pasquale30 , R.D. De
+Souza121 , H.F. Degenhardt120 , A. Deisting104 ,102 , A. Deloff84 , S. Delsanto26 , C. Deplano89 ,
+P. Dhankher48 , D. Di Bari33 , A. Di Mauro34 , B. Di Ruzza56 , R.A. Diaz8 , T. Dietel124 ,
+P. Dillenseger69 , Y. Ding6 , R. Divià34 , Ø. Djuvsland22 , A. Dobrin34 , D. Domenicis Gimenez120 ,
+B. Dönigus69 , O. Dordic21 , L.V.R. Doremalen63 , A.K. Dubey139 , A. Dubla104 , L. Ducroux133 ,
+S. Dudi98 , A.K. Duggal98 , M. Dukhishyam85 , P. Dupieux132 , R.J. Ehlers144 , D. Elia52 , E. Endress109 ,
+H. Engel74 , E. Epple144 , B. Erazmus113 , F. Erhardt97 , M.R. Ersdal22 , B. Espagnon61 , G. Eulisse34 ,
+J. Eum18 , D. Evans108 , S. Evdokimov90 , L. Fabbietti103 ,116 , M. Faggin29 , J. Faivre78 , A. Fantoni51 ,
+M. Fasel94 , L. Feldkamp142 , A. Feliciello58 , G. Feofilov111 , A. Fernández Téllez44 , A. Ferretti26 ,
+A. Festanti34 , V.J.G. Feuillard102 , J. Figiel117 , M.A.S. Figueredo120 , S. Filchagin106 , D. Finogeev62 ,
+F.M. Fionda22 , G. Fiorenza52 , F. Flor125 , M. Floris34 , S. Foertsch73 , P. Foka104 , S. Fokin87 ,
+E. Fragiacomo59 , A. Francescon34 , A. Francisco113 , U. Frankenfeld104 , G.G. Fronze26 , U. Fuchs34 ,
+C. Furget78 , A. Furs62 , M. Fusco Girard30 , J.J. Gaardhøje88 , M. Gagliardi26 , A.M. Gago109 ,
+K. Gajdosova88 , M. Gallio26 , C.D. Galvan119 , P. Ganoti83 , C. Garabatos104 , E. Garcia-Solis11 ,
+
+
+                                                      18
+Analysis of the apparent nuclear modification . . .                               ALICE Collaboration
+
+
+K. Garg28 , C. Gargiulo34 , P. Gasik116 ,103 , E.F. Gauger118 , M.B. Gay Ducati71 , M. Germain113 ,
+J. Ghosh107 , P. Ghosh139 , S.K. Ghosh3 , P. Gianotti51 , P. Giubellino104 ,58 , P. Giubilato29 ,
+P. Glässel102 , D.M. Goméz Coral72 , A. Gomez Ramirez74 , V. Gonzalez104 , P. González-Zamora44 ,
+S. Gorbunov39 , L. Görlich117 , S. Gotovac35 , V. Grabski72 , L.K. Graczykowski140 , K.L. Graham108 ,
+L. Greiner79 , A. Grelli63 , C. Grigoras34 , V. Grigoriev91 , A. Grigoryan1 , S. Grigoryan75 ,
+J.M. Gronefeld104 , F. Grosa31 , J.F. Grosse-Oetringhaus34 , R. Grosso104 , R. Guernane78 ,
+B. Guerzoni27 , M. Guittiere113 , K. Gulbrandsen88 , T. Gunji130 , A. Gupta99 , R. Gupta99 ,
+I.B. Guzman44 , R. Haake34 , M.K. Habib104 , C. Hadjidakis61 , H. Hamagaki81 , G. Hamar143 ,
+M. Hamid6 , J.C. Hamon134 , R. Hannigan118 , M.R. Haque63 , A. Harlenderova104 , J.W. Harris144 ,
+A. Harton11 , H. Hassan78 , D. Hatzifotiadou53 ,10 , S. Hayashi130 , S.T. Heckel69 , E. Hellbär69 ,
+H. Helstrup36 , A. Herghelegiu47 , E.G. Hernandez44 , G. Herrera Corral9 , F. Herrmann142 ,
+K.F. Hetland36 , T.E. Hilden43 , H. Hillemanns34 , C. Hills127 , B. Hippolyte134 , B. Hohlweger103 ,
+D. Horak37 , S. Hornung104 , R. Hosokawa131 ,78 , J. Hota66 , P. Hristov34 , C. Huang61 , C. Hughes128 ,
+P. Huhn69 , T.J. Humanic95 , H. Hushnud107 , N. Hussain41 , T. Hussain17 , D. Hutter39 , D.S. Hwang19 ,
+J.P. Iddon127 , S.A. Iga Buitron70 , R. Ilkaev106 , M. Inaba131 , M. Ippolitov87 , M.S. Islam107 ,
+M. Ivanov104 , V. Ivanov96 , V. Izucheev90 , B. Jacak79 , N. Jacazio27 , P.M. Jacobs79 , M.B. Jadhav48 ,
+S. Jadlovska115 , J. Jadlovsky115 , S. Jaelani63 , C. Jahnke120 ,116 , M.J. Jakubowska140 , M.A. Janik140 ,
+C. Jena85 , M. Jercic97 , O. Jevons108 , R.T. Jimenez Bustamante104 , M. Jin125 , P.G. Jones108 ,
+A. Jusko108 , P. Kalinak65 , A. Kalweit34 , J.H. Kang145 , V. Kaplin91 , S. Kar6 , A. Karasu Uysal77 ,
+O. Karavichev62 , T. Karavicheva62 , P. Karczmarczyk34 , E. Karpechev62 , U. Kebschull74 , R. Keidel46 ,
+D.L.D. Keijdener63 , M. Keil34 , B. Ketzer42 , Z. Khabanova89 , A.M. Khan6 , S. Khan17 , S.A. Khan139 ,
+A. Khanzadeev96 , Y. Kharlov90 , A. Khatun17 , A. Khuntia49 , M.M. Kielbowicz117 , B. Kileng36 ,
+B. Kim131 , D. Kim145 , D.J. Kim126 , E.J. Kim13 , H. Kim145 , J.S. Kim40 , J. Kim102 , M. Kim60 ,102 ,
+S. Kim19 , T. Kim145 , T. Kim145 , S. Kirsch39 , I. Kisel39 , S. Kiselev64 , A. Kisiel140 , J.L. Klay5 ,
+C. Klein69 , J. Klein34 ,58 , C. Klein-Bösing142 , S. Klewin102 , A. Kluge34 , M.L. Knichel34 ,
+A.G. Knospe125 , C. Kobdaj114 , M. Kofarago143 , M.K. Köhler102 , T. Kollegger104 , N. Kondratyeva91 ,
+E. Kondratyuk90 , A. Konevskikh62 , P.J. Konopka34 , M. Konyushikhin141 , O. Kovalenko84 ,
+V. Kovalenko111 , M. Kowalski117 , I. Králik65 , A. Kravčáková38 , L. Kreis104 , M. Krivda65 ,108 ,
+F. Krizek93 , M. Krüger69 , E. Kryshen96 , M. Krzewicki39 , A.M. Kubera95 , V. Kučera93 ,60 ,
+C. Kuhn134 , P.G. Kuijer89 , J. Kumar48 , L. Kumar98 , S. Kumar48 , S. Kundu85 , P. Kurashvili84 ,
+A. Kurepin62 , A.B. Kurepin62 , A. Kuryakin106 , S. Kushpil93 , J. Kvapil108 , M.J. Kweon60 ,
+Y. Kwon145 , S.L. La Pointe39 , P. La Rocca28 , Y.S. Lai79 , I. Lakomov34 , R. Langoy123 , K. Lapidus144 ,
+A. Lardeux21 , P. Larionov51 , E. Laudi34 , R. Lavicka37 , R. Lea25 , L. Leardini102 , S. Lee145 ,
+F. Lehas89 , S. Lehner112 , J. Lehrbach39 , R.C. Lemmon92 , I. León Monzón119 , P. Lévai143 , X. Li12 ,
+X.L. Li6 , J. Lien123 , R. Lietava108 , B. Lim18 , S. Lindal21 , V. Lindenstruth39 , S.W. Lindsay127 ,
+C. Lippmann104 , M.A. Lisa95 , V. Litichevskyi43 , A. Liu79 , H.M. Ljunggren80 , W.J. Llope141 ,
+D.F. Lodato63 , V. Loginov91 , C. Loizides94 ,79 , P. Loncar35 , X. Lopez132 , E. López Torres8 ,
+A. Lowe143 , P. Luettig69 , J.R. Luhder142 , M. Lunardon29 , G. Luparello59 , M. Lupi34 ,
+A. Maevskaya62 , M. Mager34 , S.M. Mahmood21 , A. Maire134 , R.D. Majka144 , M. Malaev96 ,
+Q.W. Malik21 , L. Malinina75 ,iii , D. Mal’Kevich64 , P. Malzacher104 , A. Mamonov106 , V. Manko87 ,
+F. Manso132 , V. Manzari52 , Y. Mao6 , M. Marchisone129 ,73 ,133 , J. Mareš67 , G.V. Margagliotti25 ,
+A. Margotti53 , J. Margutti63 , A. Marín104 , C. Markert118 , M. Marquard69 , N.A. Martin104 ,
+P. Martinengo34 , J.L. Martinez125 , M.I. Martínez44 , G. Martínez García113 , M. Martinez Pedreira34 ,
+S. Masciocchi104 , M. Masera26 , A. Masoni54 , L. Massacrier61 , E. Masson113 , A. Mastroserio52 ,136 ,
+A.M. Mathis116 ,103 , P.F.T. Matuoka120 , A. Matyja117 ,128 , C. Mayer117 , M. Mazzilli33 ,
+M.A. Mazzoni57 , F. Meddi23 , Y. Melikyan91 , A. Menchaca-Rocha72 , E. Meninno30 , J. Mercado
+Pérez102 , M. Meres14 , C.S. Meza109 , S. Mhlanga124 , Y. Miake131 , L. Micheletti26 ,
+M.M. Mieskolainen43 , D.L. Mihaylov103 , K. Mikhaylov64 ,75 , A. Mischke63 , A.N. Mishra70 ,
+D. Miśkowiec104 , J. Mitra139 , C.M. Mitu68 , N. Mohammadi34 , A.P. Mohanty63 , B. Mohanty85 ,
+M. Mohisin Khan17 ,iv , D.A. Moreira De Godoy142 , L.A.P. Moreno44 , S. Moretto29 , A. Morreale113 ,
+
+
+                                                    19
+Analysis of the apparent nuclear modification . . .                                   ALICE Collaboration
+
+
+A. Morsch34 , T. Mrnjavac34 , V. Muccifora51 , E. Mudnic35 , D. Mühlheim142 , S. Muhuri139 ,
+M. Mukherjee3 , J.D. Mulligan144 , M.G. Munhoz120 , K. Münning42 , M.I.A. Munoz79 , R.H. Munzer69 ,
+H. Murakami130 , S. Murray73 , L. Musa34 , J. Musinsky65 , C.J. Myers125 , J.W. Myrcha140 , B. Naik48 ,
+R. Nair84 , B.K. Nandi48 , R. Nania53 ,10 , E. Nappi52 , A. Narayan48 , M.U. Naru15 , A.F. Nassirpour80 ,
+H. Natal da Luz120 , C. Nattrass128 , S.R. Navarro44 , K. Nayak85 , R. Nayak48 , T.K. Nayak139 ,
+S. Nazarenko106 , R.A. Negrao De Oliveira69 ,34 , L. Nellen70 , S.V. Nesbo36 , G. Neskovic39 , F. Ng125 ,
+M. Nicassio104 , J. Niedziela140 ,34 , B.S. Nielsen88 , S. Nikolaev87 , S. Nikulin87 , V. Nikulin96 ,
+F. Noferini10 ,53 , P. Nomokonov75 , G. Nooren63 , J.C.C. Noris44 , J. Norman78 , A. Nyanin87 ,
+J. Nystrand22 , H. Oh145 , A. Ohlson102 , J. Oleniacz140 , A.C. Oliveira Da Silva120 , M.H. Oliver144 ,
+J. Onderwaater104 , C. Oppedisano58 , R. Orava43 , M. Oravec115 , A. Ortiz Velasquez70 ,
+A. Oskarsson80 , J. Otwinowski117 , K. Oyama81 , Y. Pachmayer102 , V. Pacik88 , D. Pagano138 ,
+G. Paić70 , P. Palni6 , J. Pan141 , A.K. Pandey48 , S. Panebianco135 , V. Papikyan1 , P. Pareek49 , J. Park60 ,
+J.E. Parkkila126 , S. Parmar98 , A. Passfeld142 , S.P. Pathak125 , R.N. Patra139 , B. Paul58 , H. Pei6 ,
+T. Peitzmann63 , X. Peng6 , L.G. Pereira71 , H. Pereira Da Costa135 , D. Peresunko87 , E. Perez
+Lezama69 , V. Peskov69 , Y. Pestov4 , V. Petráček37 , M. Petrovici47 , C. Petta28 , R.P. Pezzi71 ,
+S. Piano59 , M. Pikna14 , P. Pillot113 , L.O.D.L. Pimentel88 , O. Pinazza53 ,34 , L. Pinsky125 , S. Pisano51 ,
+D.B. Piyarathna125 , M. Płoskoń79 , M. Planinic97 , F. Pliquett69 , J. Pluta140 , S. Pochybova143 ,
+P.L.M. Podesta-Lerma119 , M.G. Poghosyan94 , B. Polichtchouk90 , N. Poljak97 , W. Poonsawat114 ,
+A. Pop47 , H. Poppenborg142 , S. Porteboeuf-Houssais132 , V. Pozdniakov75 , S.K. Prasad3 ,
+R. Preghenella53 , F. Prino58 , C.A. Pruneau141 , I. Pshenichnov62 , M. Puccio26 , V. Punin106 ,
+J. Putschke141 , S. Raha3 , S. Rajput99 , J. Rak126 , A. Rakotozafindrabe135 , L. Ramello32 , F. Rami134 ,
+R. Raniwala100 , S. Raniwala100 , S.S. Räsänen43 , B.T. Rascanu69 , V. Ratza42 , I. Ravasenga31 ,
+K.F. Read128 ,94 , K. Redlich84 ,v , A. Rehman22 , P. Reichelt69 , F. Reidt34 , X. Ren6 , R. Renfordt69 ,
+A. Reshetin62 , J.-P. Revol10 , K. Reygers102 , V. Riabov96 , T. Richert63 , M. Richter21 , P. Riedler34 ,
+W. Riegler34 , F. Riggi28 , C. Ristea68 , S.P. Rode49 , M. Rodríguez Cahuantzi44 , K. Røed21 ,
+R. Rogalev90 , E. Rogochaya75 , D. Rohr34 , D. Röhrich22 , P.S. Rokita140 , F. Ronchetti51 ,
+E.D. Rosas70 , K. Roslon140 , P. Rosnet132 , A. Rossi29 , A. Rotondi137 , F. Roukoutakis83 , C. Roy134 ,
+P. Roy107 , O.V. Rueda70 , R. Rui25 , B. Rumyantsev75 , A. Rustamov86 , E. Ryabinkin87 , Y. Ryabov96 ,
+A. Rybicki117 , S. Saarinen43 , S. Sadhu139 , S. Sadovsky90 , K. Šafařík34 , S.K. Saha139 , B. Sahoo48 ,
+P. Sahoo49 , R. Sahoo49 , S. Sahoo66 , P.K. Sahu66 , J. Saini139 , S. Sakai131 , M.A. Saleh141 ,
+S. Sambyal99 , V. Samsonov96 ,91 , A. Sandoval72 , A. Sarkar73 , D. Sarkar139 , N. Sarkar139 , P. Sarma41 ,
+M.H.P. Sas63 , E. Scapparone53 , F. Scarlassara29 , B. Schaefer94 , H.S. Scheid69 , C. Schiaua47 ,
+R. Schicker102 , C. Schmidt104 , H.R. Schmidt101 , M.O. Schmidt102 , M. Schmidt101 ,
+N.V. Schmidt94 ,69 , J. Schukraft34 , Y. Schutz34 ,134 , K. Schwarz104 , K. Schweda104 , G. Scioli27 ,
+E. Scomparin58 , M. Šefčík38 , J.E. Seger16 , Y. Sekiguchi130 , D. Sekihata45 , I. Selyuzhenkov104 ,91 ,
+S. Senyukov134 , E. Serradilla72 , P. Sett48 , A. Sevcenco68 , A. Shabanov62 , A. Shabetai113 ,
+R. Shahoyan34 , W. Shaikh107 , A. Shangaraev90 , A. Sharma98 , A. Sharma99 , M. Sharma99 ,
+N. Sharma98 , A.I. Sheikh139 , K. Shigaki45 , M. Shimomura82 , S. Shirinkin64 , Q. Shou6 ,110 ,
+K. Shtejer26 , Y. Sibiriak87 , S. Siddhanta54 , K.M. Sielewicz34 , T. Siemiarczuk84 , D. Silvermyr80 ,
+G. Simatovic89 , G. Simonetti34 ,103 , R. Singaraju139 , R. Singh85 , R. Singh99 , V. Singhal139 ,
+T. Sinha107 , B. Sitar14 , M. Sitta32 , T.B. Skaali21 , M. Slupecki126 , N. Smirnov144 , R.J.M. Snellings63 ,
+T.W. Snellman126 , J. Song18 , F. Soramel29 , S. Sorensen128 , F. Sozzi104 , I. Sputowska117 ,
+J. Stachel102 , I. Stan68 , P. Stankus94 , E. Stenlund80 , D. Stocco113 , M.M. Storetvedt36 , P. Strmen14 ,
+A.A.P. Suaide120 , T. Sugitate45 , C. Suire61 , M. Suleymanov15 , M. Suljic34 ,25 , R. Sultanov64 ,
+M. Šumbera93 , S. Sumowidagdo50 , K. Suzuki112 , S. Swain66 , A. Szabo14 , I. Szarka14 ,
+U. Tabassam15 , J. Takahashi121 , G.J. Tambave22 , N. Tanaka131 , M. Tarhini113 , M. Tariq17 ,
+M.G. Tarzila47 , A. Tauro34 , G. Tejeda Muñoz44 , A. Telesca34 , C. Terrevoli29 , B. Teyssier133 ,
+D. Thakur49 , S. Thakur139 , D. Thomas118 , F. Thoresen88 , R. Tieulent133 , A. Tikhonov62 ,
+A.R. Timmins125 , A. Toia69 , N. Topilskaya62 , M. Toppi51 , S.R. Torres119 , S. Tripathy49 ,
+S. Trogolo26 , G. Trombetta33 , L. Tropp38 , V. Trubnikov2 , W.H. Trzaska126 , T.P. Trzcinski140 ,
+
+
+                                                      20
+Analysis of the apparent nuclear modification . . .                              ALICE Collaboration
+
+
+B.A. Trzeciak63 , T. Tsuji130 , A. Tumkin106 , R. Turrisi56 , T.S. Tveter21 , K. Ullaland22 ,
+E.N. Umaka125 , A. Uras133 , G.L. Usai24 , A. Utrobicic97 , M. Vala115 , J.W. Van Hoorne34 , M. van
+Leeuwen63 , P. Vande Vyvre34 , D. Varga143 , A. Vargas44 , M. Vargyas126 , R. Varma48 , M. Vasileiou83 ,
+A. Vasiliev87 , A. Vauthier78 , O. Vázquez Doce103 ,116 , V. Vechernin111 , A.M. Veen63 , E. Vercellin26 ,
+S. Vergara Limón44 , L. Vermunt63 , R. Vernet7 , R. Vértesi143 , L. Vickovic35 , J. Viinikainen126 ,
+Z. Vilakazi129 , O. Villalobos Baillie108 , A. Villatoro Tello44 , A. Vinogradov87 , T. Virgili30 ,
+V. Vislavicius88 ,80 , A. Vodopyanov75 , M.A. Völkl101 , K. Voloshin64 , S.A. Voloshin141 , G. Volpe33 ,
+B. von Haller34 , I. Vorobyev116 ,103 , D. Voscek115 , D. Vranic104 ,34 , J. Vrláková38 , B. Wagner22 ,
+H. Wang63 , M. Wang6 , Y. Watanabe131 , M. Weber112 , S.G. Weber104 , A. Wegrzynek34 ,
+D.F. Weiser102 , S.C. Wenzel34 , J.P. Wessels142 , U. Westerhoff142 , A.M. Whitehead124 , J. Wiechula69 ,
+J. Wikne21 , G. Wilk84 , J. Wilkinson53 , G.A. Willems142 ,34 , M.C.S. Williams53 , E. Willsher108 ,
+B. Windelband102 , W.E. Witt128 , R. Xu6 , S. Yalcin77 , K. Yamakawa45 , S. Yano45 , Z. Yin6 ,
+H. Yokoyama78 ,131 , I.-K. Yoo18 , J.H. Yoon60 , V. Yurchenko2 , V. Zaccolo58 , A. Zaman15 ,
+C. Zampolli34 , H.J.C. Zanoli120 , N. Zardoshti108 , A. Zarochentsev111 , P. Závada67 , N. Zaviyalov106 ,
+H. Zbroszczyk140 , M. Zhalov96 , X. Zhang6 , Y. Zhang6 , Z. Zhang6 ,132 , C. Zhao21 ,
+V. Zherebchevskii111 , N. Zhigareva64 , D. Zhou6 , Y. Zhou88 , Z. Zhou22 , H. Zhu6 , J. Zhu6 , Y. Zhu6 ,
+A. Zichichi27 ,10 , M.B. Zimmermann34 , G. Zinovjev2 , J. Zmeskal112 , S. Zou6 ,
+
+
+Affiliation notes
+     i Deceased
+     ii Dipartimento DET del Politecnico di Torino, Turin, Italy
+    iii M.V. Lomonosov Moscow State University, D.V. Skobeltsyn Institute of Nuclear, Physics,
+
+      Moscow, Russia
+    iv Department of Applied Physics, Aligarh Muslim University, Aligarh, India
+     v Institute of Theoretical Physics, University of Wroclaw, Poland
+
+
+
+
+Collaboration Institutes
+    1 A.I. Alikhanyan National Science Laboratory (Yerevan Physics Institute) Foundation, Yerevan,
+
+      Armenia
+    2 Bogolyubov Institute for Theoretical Physics, National Academy of Sciences of Ukraine, Kiev,
+
+      Ukraine
+    3 Bose Institute, Department of Physics and Centre for Astroparticle Physics and Space Science
+
+      (CAPSS), Kolkata, India
+    4 Budker Institute for Nuclear Physics, Novosibirsk, Russia
+    5 California Polytechnic State University, San Luis Obispo, California, United States
+    6 Central China Normal University, Wuhan, China
+    7 Centre de Calcul de l’IN2P3, Villeurbanne, Lyon, France
+    8 Centro de Aplicaciones Tecnológicas y Desarrollo Nuclear (CEADEN), Havana, Cuba
+    9 Centro de Investigación y de Estudios Avanzados (CINVESTAV), Mexico City and Mérida,
+
+      Mexico
+   10 Centro Fermi - Museo Storico della Fisica e Centro Studi e Ricerche “Enrico Fermi’, Rome, Italy
+   11 Chicago State University, Chicago, Illinois, United States
+   12 China Institute of Atomic Energy, Beijing, China
+   13 Chonbuk National University, Jeonju, Republic of Korea
+   14 Comenius University Bratislava, Faculty of Mathematics, Physics and Informatics, Bratislava,
+
+      Slovakia
+   15 COMSATS Institute of Information Technology (CIIT), Islamabad, Pakistan
+   16 Creighton University, Omaha, Nebraska, United States
+
+
+
+                                                   21
+Analysis of the apparent nuclear modification . . .                              ALICE Collaboration
+
+
+   17 Department of Physics, Aligarh Muslim University, Aligarh, India
+   18 Department of Physics, Pusan National University, Pusan, Republic of Korea
+   19 Department of Physics, Sejong University, Seoul, Republic of Korea
+   20 Department of Physics, University of California, Berkeley, California, United States
+   21 Department of Physics, University of Oslo, Oslo, Norway
+   22 Department of Physics and Technology, University of Bergen, Bergen, Norway
+   23 Dipartimento di Fisica dell’Università ’La Sapienza’ and Sezione INFN, Rome, Italy
+   24 Dipartimento di Fisica dell’Università and Sezione INFN, Cagliari, Italy
+   25 Dipartimento di Fisica dell’Università and Sezione INFN, Trieste, Italy
+   26 Dipartimento di Fisica dell’Università and Sezione INFN, Turin, Italy
+   27 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Bologna, Italy
+   28 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Catania, Italy
+   29 Dipartimento di Fisica e Astronomia dell’Università and Sezione INFN, Padova, Italy
+   30 Dipartimento di Fisica ‘E.R. Caianiello’ dell’Università and Gruppo Collegato INFN, Salerno,
+
+      Italy
+   31 Dipartimento DISAT del Politecnico and Sezione INFN, Turin, Italy
+   32 Dipartimento di Scienze e Innovazione Tecnologica dell’Università del Piemonte Orientale and
+
+      INFN Sezione di Torino, Alessandria, Italy
+   33 Dipartimento Interateneo di Fisica ‘M. Merlin’ and Sezione INFN, Bari, Italy
+   34 European Organization for Nuclear Research (CERN), Geneva, Switzerland
+   35 Faculty of Electrical Engineering, Mechanical Engineering and Naval Architecture, University of
+
+      Split, Split, Croatia
+   36 Faculty of Engineering and Science, Western Norway University of Applied Sciences, Bergen,
+
+      Norway
+   37 Faculty of Nuclear Sciences and Physical Engineering, Czech Technical University in Prague,
+
+      Prague, Czech Republic
+   38 Faculty of Science, P.J. Šafárik University, Košice, Slovakia
+   39 Frankfurt Institute for Advanced Studies, Johann Wolfgang Goethe-Universität Frankfurt,
+
+      Frankfurt, Germany
+   40 Gangneung-Wonju National University, Gangneung, Republic of Korea
+   41 Gauhati University, Department of Physics, Guwahati, India
+   42 Helmholtz-Institut für Strahlen- und Kernphysik, Rheinische Friedrich-Wilhelms-Universität
+
+      Bonn, Bonn, Germany
+   43 Helsinki Institute of Physics (HIP), Helsinki, Finland
+   44 High Energy Physics Group, Universidad Autónoma de Puebla, Puebla, Mexico
+   45 Hiroshima University, Hiroshima, Japan
+   46 Hochschule Worms, Zentrum für Technologietransfer und Telekommunikation (ZTT), Worms,
+
+      Germany
+   47 Horia Hulubei National Institute of Physics and Nuclear Engineering, Bucharest, Romania
+   48 Indian Institute of Technology Bombay (IIT), Mumbai, India
+   49 Indian Institute of Technology Indore, Indore, India
+   50 Indonesian Institute of Sciences, Jakarta, Indonesia
+   51 INFN, Laboratori Nazionali di Frascati, Frascati, Italy
+   52 INFN, Sezione di Bari, Bari, Italy
+   53 INFN, Sezione di Bologna, Bologna, Italy
+   54 INFN, Sezione di Cagliari, Cagliari, Italy
+   55 INFN, Sezione di Catania, Catania, Italy
+   56 INFN, Sezione di Padova, Padova, Italy
+   57 INFN, Sezione di Roma, Rome, Italy
+   58 INFN, Sezione di Torino, Turin, Italy
+
+
+
+                                                   22
+Analysis of the apparent nuclear modification . . .                           ALICE Collaboration
+
+
+   59 INFN, Sezione di Trieste, Trieste, Italy
+   60 Inha University, Incheon, Republic of Korea
+   61 Institut de Physique Nucléaire d’Orsay (IPNO), Institut National de Physique Nucléaire et de
+
+      Physique des Particules (IN2P3/CNRS), Université de Paris-Sud, Université Paris-Saclay, Orsay,
+      France
+   62 Institute for Nuclear Research, Academy of Sciences, Moscow, Russia
+   63 Institute for Subatomic Physics, Utrecht University/Nikhef, Utrecht, Netherlands
+   64 Institute for Theoretical and Experimental Physics, Moscow, Russia
+   65 Institute of Experimental Physics, Slovak Academy of Sciences, Košice, Slovakia
+   66 Institute of Physics, Homi Bhabha National Institute, Bhubaneswar, India
+   67 Institute of Physics of the Czech Academy of Sciences, Prague, Czech Republic
+   68 Institute of Space Science (ISS), Bucharest, Romania
+   69 Institut für Kernphysik, Johann Wolfgang Goethe-Universität Frankfurt, Frankfurt, Germany
+   70 Instituto de Ciencias Nucleares, Universidad Nacional Autónoma de México, Mexico City,
+
+      Mexico
+   71 Instituto de Física, Universidade Federal do Rio Grande do Sul (UFRGS), Porto Alegre, Brazil
+   72 Instituto de Física, Universidad Nacional Autónoma de México, Mexico City, Mexico
+   73 iThemba LABS, National Research Foundation, Somerset West, South Africa
+   74 Johann-Wolfgang-Goethe Universität Frankfurt Institut für Informatik, Fachbereich Informatik
+
+      und Mathematik, Frankfurt, Germany
+   75 Joint Institute for Nuclear Research (JINR), Dubna, Russia
+   76 Korea Institute of Science and Technology Information, Daejeon, Republic of Korea
+   77 KTO Karatay University, Konya, Turkey
+   78 Laboratoire de Physique Subatomique et de Cosmologie, Université Grenoble-Alpes,
+
+      CNRS-IN2P3, Grenoble, France
+   79 Lawrence Berkeley National Laboratory, Berkeley, California, United States
+   80 Lund University Department of Physics, Division of Particle Physics, Lund, Sweden
+   81 Nagasaki Institute of Applied Science, Nagasaki, Japan
+   82 Nara Women’s University (NWU), Nara, Japan
+   83 National and Kapodistrian University of Athens, School of Science, Department of Physics ,
+
+      Athens, Greece
+   84 National Centre for Nuclear Research, Warsaw, Poland
+   85 National Institute of Science Education and Research, Homi Bhabha National Institute, Jatni,
+
+      India
+   86 National Nuclear Research Center, Baku, Azerbaijan
+   87 National Research Centre Kurchatov Institute, Moscow, Russia
+   88 Niels Bohr Institute, University of Copenhagen, Copenhagen, Denmark
+   89 Nikhef, National institute for subatomic physics, Amsterdam, Netherlands
+   90 NRC Kurchatov Institute IHEP, Protvino, Russia
+   91 NRNU Moscow Engineering Physics Institute, Moscow, Russia
+   92 Nuclear Physics Group, STFC Daresbury Laboratory, Daresbury, United Kingdom
+   93 Nuclear Physics Institute of the Czech Academy of Sciences, Řež u Prahy, Czech Republic
+   94 Oak Ridge National Laboratory, Oak Ridge, Tennessee, United States
+   95 Ohio State University, Columbus, Ohio, United States
+   96 Petersburg Nuclear Physics Institute, Gatchina, Russia
+   97 Physics department, Faculty of science, University of Zagreb, Zagreb, Croatia
+   98 Physics Department, Panjab University, Chandigarh, India
+   99 Physics Department, University of Jammu, Jammu, India
+  100 Physics Department, University of Rajasthan, Jaipur, India
+  101 Physikalisches Institut, Eberhard-Karls-Universität Tübingen, Tübingen, Germany
+
+
+
+                                                 23
+Analysis of the apparent nuclear modification . . .                           ALICE Collaboration
+
+
+  102 Physikalisches Institut, Ruprecht-Karls-Universität Heidelberg, Heidelberg, Germany
+  103 Physik Department, Technische Universität München, Munich, Germany
+  104 Research Division and ExtreMe Matter Institute EMMI, GSI Helmholtzzentrum für
+
+      Schwerionenforschung GmbH, Darmstadt, Germany
+  105 Rudjer Bošković Institute, Zagreb, Croatia
+  106 Russian Federal Nuclear Center (VNIIEF), Sarov, Russia
+  107 Saha Institute of Nuclear Physics, Homi Bhabha National Institute, Kolkata, India
+  108 School of Physics and Astronomy, University of Birmingham, Birmingham, United Kingdom
+  109 Sección Física, Departamento de Ciencias, Pontificia Universidad Católica del Perú, Lima, Peru
+  110 Shanghai Institute of Applied Physics, Shanghai, China
+  111 St. Petersburg State University, St. Petersburg, Russia
+  112 Stefan Meyer Institut für Subatomare Physik (SMI), Vienna, Austria
+  113 SUBATECH, IMT Atlantique, Université de Nantes, CNRS-IN2P3, Nantes, France
+  114 Suranaree University of Technology, Nakhon Ratchasima, Thailand
+  115 Technical University of Košice, Košice, Slovakia
+  116 Technische Universität München, Excellence Cluster ’Universe’, Munich, Germany
+  117 The Henryk Niewodniczanski Institute of Nuclear Physics, Polish Academy of Sciences, Cracow,
+
+      Poland
+  118 The University of Texas at Austin, Austin, Texas, United States
+  119 Universidad Autónoma de Sinaloa, Culiacán, Mexico
+  120 Universidade de São Paulo (USP), São Paulo, Brazil
+  121 Universidade Estadual de Campinas (UNICAMP), Campinas, Brazil
+  122 Universidade Federal do ABC, Santo Andre, Brazil
+  123 University College of Southeast Norway, Tonsberg, Norway
+  124 University of Cape Town, Cape Town, South Africa
+  125 University of Houston, Houston, Texas, United States
+  126 University of Jyväskylä, Jyväskylä, Finland
+  127 University of Liverpool, Liverpool, United Kingdom
+  128 University of Tennessee, Knoxville, Tennessee, United States
+  129 University of the Witwatersrand, Johannesburg, South Africa
+  130 University of Tokyo, Tokyo, Japan
+  131 University of Tsukuba, Tsukuba, Japan
+  132 Université Clermont Auvergne, CNRS/IN2P3, LPC, Clermont-Ferrand, France
+  133 Université de Lyon, Université Lyon 1, CNRS/IN2P3, IPN-Lyon, Villeurbanne, Lyon, France
+  134 Université de Strasbourg, CNRS, IPHC UMR 7178, F-67000 Strasbourg, France, Strasbourg,
+
+      France
+  135 Université Paris-Saclay Centre d¿Études de Saclay (CEA), IRFU, Department de Physique
+
+      Nucléaire (DPhN), Saclay, France
+  136 Università degli Studi di Foggia, Foggia, Italy
+  137 Università degli Studi di Pavia, Pavia, Italy
+  138 Università di Brescia, Brescia, Italy
+  139 Variable Energy Cyclotron Centre, Homi Bhabha National Institute, Kolkata, India
+  140 Warsaw University of Technology, Warsaw, Poland
+  141 Wayne State University, Detroit, Michigan, United States
+  142 Westfälische Wilhelms-Universität Münster, Institut für Kernphysik, Münster, Germany
+  143 Wigner Research Centre for Physics, Hungarian Academy of Sciences, Budapest, Hungary
+  144 Yale University, New Haven, Connecticut, United States
+  145 Yonsei University, Seoul, Republic of Korea
+
+
+
+
+                                                      24
+

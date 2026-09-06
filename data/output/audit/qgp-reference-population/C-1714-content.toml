@@ -1,0 +1,5 @@
+claim_id = "C-1714"
+expected_statement = "The reference table alice_pbpb_5020_npart is not sourced to ALICE PLB 772 (2017) 567; that paper tabulates no per-centrality participant number."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+statement = "The retained alice_pbpb_5020_npart source citation does not identify the per-row participant population. Primary2.76 TeV ALICE centrality tables match some retained entries (329.7 and260.5) while other entries differ (382 or382.7 versus382.8). The audit retains those partial matches and the original5.02 TeV citation; exact per-row lineage remains unresolved."
+where_stated = "data/output/audit/qgp-reference-population/adjudication.toml; data/output/audit/qgp-reference-population/SHA256SUMS; preserved prior comparisons in canonical content revision history"

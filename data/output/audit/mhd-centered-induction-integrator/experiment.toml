@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-313"
+title = "Centered induction RK3 conformance and prescribed-velocity convergence"
+status = "active"
+binary = "cargo-test:lbm_3d:mhd_rk3_identity"
+claims = ["C-1685"]
+claim_refs = ["C-1685"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Retained E-312 Euler failure; frozen periodic Fourier, longitudinal damping and shear controls."
+input_path_refs = ["data/output/audit/mhd-centered-induction-integrator/protocol.toml"]
+method = "Explicit SSPRK3 selection with independent complex-gain, convergence, physical-stretching and rejected-stage controls; separate scalar uniform-velocity stability from general coupled MHD."
+run = "cargo test -p lbm_3d --profile validation --test mhd_rk3_identity -- --nocapture"
+output = ["data/output/audit/mhd-centered-induction-integrator/adjudication.toml"]
+status_note = "Eight RK3 integration tests and five retained Euler integration tests pass. Thirty-two transverse/cyclic and four longitudinal rows satisfy 1e-12; temporal ratios are 8.0013 to 8.0034 and spatial ratios 3.9768 to 3.9943. Mixed unstable scalar and later-stage overflow controls discriminate failure. Three synthetic CLI routing runs pass. Coupled physical sensitivity remains unresolved."

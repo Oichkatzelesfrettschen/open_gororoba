@@ -1,0 +1,5 @@
+claim_id = "C-1687"
+expected_statement = "MhdField::parker_spiral_init produces B_phi constant in r rather than proportional to r^-1, because b_phi = -b0*(r0/r)*(omega*r)/v_sw cancels the radial dependence; one factor of r0/r is missing."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+statement = "At source revision 81a4ca6e, MhdField::parker_spiral_init produces B_phi constant in r rather than proportional to r^-1, because b_phi = -b0*(r0/r)*(omega*r)/v_sw cancels the radial dependence; one factor of r0/r is missing."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml; historical source at git revision 81a4ca6e; data/output/audit/claim-family-evidence-adjudication/dm-dimensional-admission-and-sensitivity.toml"

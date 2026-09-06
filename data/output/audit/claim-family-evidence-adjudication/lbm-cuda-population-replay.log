@@ -1,0 +1,103 @@
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+error[E0599]: no method named `device_ptr_mut` found for struct `CudaSlice<T>` in the current scope
+    --> crates/lbm_3d_cuda/src/lib.rs:1670:58
+     |
+1670 |         let (population_a, _population_a_use) = self.d_f.device_ptr_mut(&self.stream);
+     |                                                          ^^^^^^^^^^^^^^
+     |
+    ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cudarc-0.19.8/src/driver/safe/core.rs:1244:8
+     |
+1244 |     fn device_ptr_mut<'a>(
+     |        -------------- the method is available for `CudaSlice<u8>` here
+     |
+     = help: items from traits can only be used if the trait is in scope
+help: trait `DevicePtrMut` which provides `device_ptr_mut` is implemented but not in scope; perhaps you want to import it
+     |
+  52 + use cudarc::driver::DevicePtrMut;
+     |
+help: there is a method `device_ptr` with a similar name
+     |
+1670 -         let (population_a, _population_a_use) = self.d_f.device_ptr_mut(&self.stream);
+1670 +         let (population_a, _population_a_use) = self.d_f.device_ptr(&self.stream);
+     |
+
+error[E0599]: no method named `device_ptr_mut` found for struct `CudaSlice<T>` in the current scope
+    --> crates/lbm_3d_cuda/src/lib.rs:1671:62
+     |
+1671 |         let (population_b, _population_b_use) = self.d_f_tmp.device_ptr_mut(&self.stream);
+     |                                                              ^^^^^^^^^^^^^^
+     |
+    ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cudarc-0.19.8/src/driver/safe/core.rs:1244:8
+     |
+1244 |     fn device_ptr_mut<'a>(
+     |        -------------- the method is available for `CudaSlice<u8>` here
+     |
+     = help: items from traits can only be used if the trait is in scope
+help: trait `DevicePtrMut` which provides `device_ptr_mut` is implemented but not in scope; perhaps you want to import it
+     |
+  52 + use cudarc::driver::DevicePtrMut;
+     |
+help: there is a method `device_ptr` with a similar name
+     |
+1671 -         let (population_b, _population_b_use) = self.d_f_tmp.device_ptr_mut(&self.stream);
+1671 +         let (population_b, _population_b_use) = self.d_f_tmp.device_ptr(&self.stream);
+     |
+
+error[E0599]: no method named `device_ptr_mut` found for struct `CudaSlice<T>` in the current scope
+    --> crates/lbm_3d_cuda/src/lib.rs:1672:50
+     |
+1672 |         let (density, _density_use) = self.d_rho.device_ptr_mut(&self.stream);
+     |                                                  ^^^^^^^^^^^^^^
+     |
+    ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cudarc-0.19.8/src/driver/safe/core.rs:1244:8
+     |
+1244 |     fn device_ptr_mut<'a>(
+     |        -------------- the method is available for `CudaSlice<u8>` here
+     |
+     = help: items from traits can only be used if the trait is in scope
+help: trait `DevicePtrMut` which provides `device_ptr_mut` is implemented but not in scope; perhaps you want to import it
+     |
+  52 + use cudarc::driver::DevicePtrMut;
+     |
+help: there is a method `device_ptr` with a similar name
+     |
+1672 -         let (density, _density_use) = self.d_rho.device_ptr_mut(&self.stream);
+1672 +         let (density, _density_use) = self.d_rho.device_ptr(&self.stream);
+     |
+
+error[E0599]: no method named `device_ptr_mut` found for struct `CudaSlice<T>` in the current scope
+    --> crates/lbm_3d_cuda/src/lib.rs:1673:50
+     |
+1673 |         let (velocity, _velocity_use) = self.d_u.device_ptr_mut(&self.stream);
+     |                                                  ^^^^^^^^^^^^^^
+     |
+    ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/cudarc-0.19.8/src/driver/safe/core.rs:1244:8
+     |
+1244 |     fn device_ptr_mut<'a>(
+     |        -------------- the method is available for `CudaSlice<u8>` here
+     |
+     = help: items from traits can only be used if the trait is in scope
+help: trait `DevicePtrMut` which provides `device_ptr_mut` is implemented but not in scope; perhaps you want to import it
+     |
+  52 + use cudarc::driver::DevicePtrMut;
+     |
+help: there is a method `device_ptr` with a similar name
+     |
+1673 -         let (velocity, _velocity_use) = self.d_u.device_ptr_mut(&self.stream);
+1673 +         let (velocity, _velocity_use) = self.d_u.device_ptr(&self.stream);
+     |
+
+error[E0609]: no field `ctx` on type `&mut LbmSolver3DCuda`
+    --> crates/lbm_3d_cuda/src/lib.rs:1676:14
+     |
+1676 |         self.ctx.check_err()?;
+     |              ^^^ unknown field
+     |
+help: a field with a similar name exists
+     |
+1676 |         self._ctx.check_err()?;
+     |              +
+
+Some errors have detailed explanations: E0599, E0609.
+For more information about an error, try `rustc --explain E0599`.
+error: could not compile `lbm_3d_cuda` (lib) due to 5 previous errors

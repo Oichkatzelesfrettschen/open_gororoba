@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-299"
+title = "Magnonic source-table projected spectra and admitted subspace invariants"
+status = "active"
+binary = "cargo-test:quantum_core:magnonic_source_projection"
+claims = ["C-1688", "C-1692", "C-1694"]
+claim_refs = ["C-1688", "C-1692", "C-1694"]
+deterministic = true
+gpu = false
+reproducibility_class = "numeric_close"
+input = "Hash-retained arXiv:2601.03210v2 tables, original source Figure 5/6 rasters, supplemental valley-curvature propositions and declared rectangular geometry."
+input_path_refs = ["data/output/audit/magnonic-source-projection/adjudication.toml", "data/output/audit/magnonic-source-projection/source-main.tex", "data/output/audit/magnonic-source-projection/source-supplemental.tex", "data/output/audit/magnonic-source-projection/source-figure5.ppm", "data/output/audit/magnonic-source-projection/source-figure6.ppm"]
+method = "Construct bonds independently from geometric distances/directional orbital projections; compare complex matrices and rectangular folding; compare rendered spectral support with fixed 0.03 GHz error gate and repository-reference negative control; admit separated subspaces before determinant-link topology; compare embedded-orbital local flux across mass/valley signs and grids. Retain the failed inset-contaminated extraction and its coordinate-bound intake amendment."
+run = "MAGNONIC_SOURCE_WRITE_RESULTS=1 cargo test -p quantum_core --test magnonic_source_projection --test magnonic_source_parameters --profile validation -- --nocapture"
+output = ["Source-frequency raster-support comparisons", "Rectangular-folding and geometry residuals", "Retained gap failures and subspace invariants", "Local valley-patch flux with declared embedding", "Independent homogeneous-frequency unit replay"]
+output_path_refs = ["data/output/audit/magnonic-source-projection/adjudication.toml", "data/output/audit/magnonic-source-projection/geometry-folding-results.toml", "data/output/audit/magnonic-source-projection/projection-results.toml", "data/output/audit/magnonic-source-projection/inversion-projection-results.toml", "data/output/audit/magnonic-source-projection/topology-refinement-results.toml", "data/output/audit/magnonic-source-projection/valley-patch-results.toml", "data/output/audit/magnonic-source-projection/frequency-unit-replay.log", "data/output/audit/magnonic-source-projection/replay.log"]
+status_note = "Both source table projections pass their admitted rendered-support gates after the separately retained inset-mask correction; repository reference parameters fail. Symmetric individual bands retain degeneracy failures, while declared separated groups pass finite-grid zero-Chern checks. Small-gap local flux obeys source sign predictions and remains nonquantized. Global-gap proofs, exact author-code reproduction (provider HTTP403), source micromagnetics and independent physical predictions remain unresolved."

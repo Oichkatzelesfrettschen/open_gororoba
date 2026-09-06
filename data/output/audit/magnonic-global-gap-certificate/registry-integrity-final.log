@@ -1,0 +1,3 @@
+OK: registry validation tools cached at /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/.
+/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/registry-integrity --repo-root .
+Wrote registry-integrity registry lane artifacts (canonical registry-integrity tool): conflict_markers=122 lacunae=184 schema_signatures=13

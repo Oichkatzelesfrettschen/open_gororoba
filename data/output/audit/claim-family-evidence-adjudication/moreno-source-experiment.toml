@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-288"
+title = "Moreno source and Rocq theorem hypothesis comparison"
+status = "active"
+binary = "rocq"
+claim_refs = ["C-1721"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Hash-retained Moreno e-print TeX Corollary 1.6, Proposition 1.7 and following Remark; source-matched Rocq bodies and concrete sedenion interface."
+input_path_refs = ["proofs/theories/C1538_MorZDSymmetry.v", "proofs/theories/C1539_MorSkewSymm.v", "proofs/theories/MorenoSedenionInstance.v", "data/output/audit/claim-family-evidence-adjudication/moreno-zero-divisors-source.tex", "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml", "data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"]
+method = "Replay the two Moreno theorem bodies with the exact commands in formal_replay_commands of the source map, then query their assumptions using the freshly compiled objects. Match Rocq 9.1.1 and OCaml 5.5.0 to retained primary dependency objects; retain the rejected OCaml 5.4.0 attempt. Compare theorem conclusions and hypotheses against literal TeX with conjugate overbars. The separate C1262 arithmetic body belongs to the graph/source audit and establishes no Moreno theorem."
+run = "/usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q .cache/moreno-proof-check '' -o .cache/moreno-proof-check/moreno_proof_assumption_query.vo data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"
+output = ["Focused theorem-body replay", "Printed concrete and abstract assumptions", "Source-to-theorem implication map"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/moreno-symmetry-matched-runtime.log", "data/output/audit/claim-family-evidence-adjudication/moreno-skew-proof-replay.log", "data/output/audit/claim-family-evidence-adjudication/moreno-proof-assumptions.log", "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"]
+status_note = "Both focused Moreno bodies and the fresh-object assumptions query pass. Corollary 1.6 formalization retains extra purity/nonzero restrictions. Proposition 1.7 skew-adjoint statements match source scope and have a concrete sedenion instance. The kernel-equality Remark depends on two additional functor-local axioms. General CD model discharge remains unresolved; compilation does not discharge those assumptions."

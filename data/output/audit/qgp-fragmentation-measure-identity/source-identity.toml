@@ -1,0 +1,86 @@
+schema_version = 1
+claim_id = "C-1710"
+evidence_layer = "source_proposition"
+review_method = "Compare retained versioned primary PDFs, decoded text and rendered equations; separate source transcription from physical calibration."
+new_physical_fits = 0
+
+[printed_2017]
+source = "arXiv:1703.10852v1"
+pdf = "data/output/audit/qgp-source-quenching-identity/arxiv-1703.10852v1.pdf"
+equation_locator = "PDF page2 Eq2; page4 fragmentation-moment paragraph"
+equation = "sum_k integral dz D_k(z) integral dx sigma_k((p+omega_c*x)/z)*(1/z)*Pbar_k(x/z)"
+change_of_variable = "y=x/z; dx=z*dy cancels the displayed 1/z, leaving integral dz D_k(z) integral dy sigma_k((p+z*omega_c*y)/z)*Pbar_k(y)"
+power_law_measure = "d sigma/(dy dpT) proportional to pT^(-n)"
+printed_weight = "D_k(z)*z^n"
+printed_mean_z = "M_(n+1)/M_n, where M_r=integral dz z^r D_k(z)"
+dominance_assumption = "One dominant fragmenting partonic channel; the typical-z extraction also assumes slowly varying scaled quenching weight."
+physical_ingestion = "unadmitted_measure_convention"
+
+[jacobian_comparison]
+assumption = "Ordinary number-density FF D_std(z) dz with p_h=z*p_parton and spectrum differential in dpT"
+pushforward = "delta(p_h-z*p_parton) integration supplies 1/z"
+conventional_weight = "D_std(z)*z^(n-1)"
+conventional_mean_z = "M_n/M_(n-1)"
+possible_reconciliation = "D_printed=D_std/z makes the two conventions agree; the inspected 2017 text does not declare that definition."
+scope = "A measure comparison identifies an unresolved convention, rather than a demonstrated author error. Preserve the printed equation and require an explicit map before standard-FF ingestion."
+
+[example_2022]
+source = "arXiv:2212.01324v1"
+pdf = "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324v1.pdf"
+locator = "PDF page3 paragraph on theoretical K; reference44"
+alpha_s = 0.3
+casimir_gluon = 3.0
+mean_z_gluon = 0.5
+beta = 1.0
+theoretical_K = 0.43
+interpretation = "Conditional magnitude estimate with explicitly uncertain coupling, parton nature and fragmentation; physical fragmentation calibration remains unexecuted."
+cited_fragmentation_source = "hep-ph/0703242, PhysRevD75:114010, pion and kaon FFs"
+
+[[reference_population]]
+source = "arXiv:1008.0540v1"
+locator = "Figure6 and Eq4, PDF page7; SecIII default settings"
+species = "neutral_pion"
+energy_gev = 7000
+selection = "pT dependence at eta=0; eta dependence at pT=25GeV"
+mean_z_definition = "Full NLO cross-section integrand weighted by an additional z, divided by the same cross section"
+pdf_release = "CTEQ6.6"
+fragmentation_release = "DSS identified-hadron sets; unidentified charged-hadron comparisons separately cite PRD76:074033"
+perturbative_order = "NLO MSbar"
+scales = "mu_f=mu_fprime=mu_r=pT, varied together by factors one-half and two"
+uncertainty = "Scale/PDF/FF sensitivities; Figure6 supplies no matched ALICE5.02TeV charged-particle covariance or calibrated constant-z interval"
+target_population_match = false
+
+[[reference_population]]
+source = "hep-ph/0703242v1"
+title = "Global Analysis of Fragmentation Functions for Pions and Kaons and Their Uncertainties"
+species = "identified_pions_and_kaons"
+observable = "Global SIA, SIDIS and hadronic identified-particle inputs; hadronic Eq14 uses an invariant cross section with schematic convolutions"
+fitted_parameter_counts = [23,24]
+fitted_parameter_groups = ["positive_pion","positive_kaon"]
+uncertainty = "Lagrange-multiplier fit sensitivity; neither a charged-total calibration nor a matched ALICE covariance"
+target_population_match = false
+
+[[reference_population]]
+source = "arXiv:0707.1506v1"
+title = "Global Analysis of Fragmentation Functions for Protons and Charged Hadrons"
+species = "protons_and_inclusive_charged_hadrons"
+locator = "Eq7 and SecII; reference31"
+charged_sum = "D_hplus=D_piplus+D_Kplus+D_proton+D_residual; analogous charge-conjugate sum for hminus"
+fitted_parameter_counts = [17,18]
+fitted_parameter_groups = ["proton","residual_charged_hadrons"]
+inherited_fit_groups = ["pion23_parameters","kaon24_parameters"]
+parameter_count_scope = "Sequential source fit groups with inherited components; the counts are not a new independent fit to ALICE data."
+uncertainty = "Lagrange-multiplier fit sensitivity; requires propagation through matched production and species definitions"
+release_role = "NLO2010 reference8 supplies the charged-total component omitted by the pion/kaon-only identity"
+table_admission = "Primary PDF admitted; evolved numerical FF package, scale prescription and matched channel weights remain unadmitted. The source offers its Fortran package upon request."
+
+[target]
+source = "HEPData86210v1 Table4 group0; E-311"
+energy_gev = 5020
+species = "primary_charged_particles"
+selection = "INEL pp; abs(eta)<0.8"
+measure = "per-event dN/deta/dpT"
+covariance = "unadmitted_cross_bin"
+local_fit_count = 0
+declared_unexecuted_pp_fit_count = 2
+additional_maps = ["eta-to-y and mass/species treatment", "ordinary-FF to printed-2017 measure convention", "evolved charged-total FF release and scales", "pT-dependent parton mixture", "full fragmentation integral versus typical-z approximation"]

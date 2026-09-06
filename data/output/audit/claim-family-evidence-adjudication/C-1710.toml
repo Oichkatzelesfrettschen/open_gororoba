@@ -1,0 +1,29 @@
+claim_id = "C-1710"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+depth_rationale = "Physical rejection needs admitted source ansatz, population and joint error model; the numerical objective replay alone leaves interpretive depth unassessed."
+fixed_hyperparameters = ["Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay", "Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds", "Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication"]
+[[intervening_maps]]
+branch = "physical_fit"
+name = "source_ansatz_to_observable"
+kind = "interpretive"
+description = "Identify the energy-loss ansatz and its domain before mapping epsilon and fixed spectral index into charged-particle R_AA."
+[[intervening_maps]]
+branch = "physical_fit"
+name = "admitted_covariance_residual"
+kind = "computational"
+description = "Match collision system, energy, species, centrality and pT support, then evaluate residuals with admitted covariance and degrees of freedom."
+[[fitted_parameters]]
+branch = "physical_fit"
+count = 1
+names = ["epsilon_bar"]
+training_boundary = "One epsilon is fitted to the same six retained points with n fixed; broader model calibration and published nuisance parameters are separate obligations."
+[decisive_experiment]
+experiment_ids = ["E-075", "E-296"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml"
+description = "E-296 owns the independent numerical objective test; E-075 owns the physical driver. Numerical agreement between fit and score precedes separately preregistered covariance/population admission."
+[what_would_verify_refute]
+verification_outcomes = ["An independently corroborated fit to each named admitted centrality fails its preregistered residual acceptance rule under source-correct covariance and declared fitted freedom."]
+revision_outcomes = ["Corrected ansatz identity, covariance or population changes residuals: retain historical values and restrict the rejection to the exact tested model and inputs."]
+abandonment_outcomes = ["The admitted model passes the declared residual gate for a centrality covered by the universal rejection: abandon that universal claim and report each centrality separately."]
+inconclusive_outcomes = ["A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted."]

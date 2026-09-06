@@ -1,0 +1,31 @@
+claim_id = "C-1700"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Historical producer revision 81a4ca6e is distinct from repaired graph/event handling. Retain the original CUDA error and zero completed trials. E-174 requires a declared positive alpha_zd and at least one noise trial."]
+[[intervening_maps]]
+branch = "null_path_execution"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Trace stream ownership, graph capture, buffer event waits, force replacement and initialization parity."
+[[intervening_maps]]
+branch = "null_path_execution"
+name = "independent_predicate"
+kind = "computational"
+description = "Admit CUDA identity and exact source, then retain completion and per-condition trial counts for all six declared conditions with noncollapsed force contrasts."
+[[fitted_parameters]]
+branch = "null_path_execution"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-174"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-174 as the recorded family binding, not evidence of completed replay. Admit CUDA identity and exact source, then retain completion and per-condition trial counts for all six declared conditions with noncollapsed force contrasts. The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates."
+[what_would_verify_refute]
+verification_outcomes = ["The historical declared producer fails at capture before completed trials on the specified hardware and inputs."]
+revision_outcomes = ["The bounded repaired BGK graph fixtures pass with retained population/time-level oracles; register instrument repair separately. Retire the historical failure for a new producer only when all declared E-174 conditions actually complete."]
+abandonment_outcomes = ["The identical historical producer and input complete all declared trials, contradicting the recorded universal execution failure."]
+inconclusive_outcomes = ["The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates."]

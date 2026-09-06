@@ -1,0 +1,12 @@
+    Blocking waiting for file lock on build directory
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 14.78s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/gr_core-943b1a45853b3f3f)
+
+running 3 tests
+test photon_graviton::irreducible_tensor::tests::j_structures_retain_rank_and_symmetrization ... ok
+test photon_graviton::irreducible_tensor::tests::scalar_path_uses_orbital_rank_three_terms ... ok
+test photon_graviton::irreducible_tensor::tests::each_j_mutation_changes_a_non_degenerate_fixture ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 893 filtered out; finished in 0.00s
+

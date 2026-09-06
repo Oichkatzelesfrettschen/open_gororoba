@@ -1,0 +1,21 @@
+schema_version = 1
+source = "check_cujet_rationals.rs"
+source_sha256 = "85c7cf0d68ae64ca37b3d0904b1782779021fd46b41fa8e9e664ee8a237a8baf"
+executable = "/tmp/check-cujet-rationals"
+executable_sha256 = "7d03a597ba805d44b958aea72c07bd253186afd26413eb374cb3438fd2b28269"
+result = "checker-result.toml"
+result_sha256 = "eb712083765bb4400487c6a44c51e4a87d863d427be21e899a35161b0920fe15"
+compile_command = "rustc --edition 2024 -D warnings data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs --extern num_rational=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/libnum_rational-28a79162aa0efeed.rlib --extern num_bigint=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/libnum_bigint-8e4e4e1ed89d43c8.rlib -L dependency=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps -o /tmp/check-cujet-rationals"
+run_command = "/tmp/check-cujet-rationals data/output/audit/qgp-cujet-source-curves"
+test_command = "Compile the same source and dependencies with --test -o /tmp/check-cujet-rationals-tests; run /tmp/check-cujet-rationals-tests"
+compile_exit = 0
+run_exit = 0
+tests_passed = 3
+num_rational_version = "0.4.2"
+num_bigint_version = "0.4.6"
+num_rational_rlib_sha256 = "1742bb351420dcc3a3b402cfb30a8fe5eea112fd7b50f355a1c1aa93fa583179"
+num_bigint_rlib_sha256 = "f1b8532687c7d68374bb8ef49b78168a2e71a4dbfbb7b6c859be053d9b1912ec"
+dependency_admission = "Both linked libraries use identical num_integer and num_traits dependency instances. Initial unmatched cached libraries failed compilation and their diagnostics remain in checker-compilation.log and checker-compilation-generic.log. Generic Ratio<BigInt> permits exact arithmetic with the admitted num-rational library lacking its optional BigRational alias."
+independence = "Fixed-source block/triple parser and arbitrary precision rational arithmetic share neither the extractor lexer nor its floating arithmetic. Axes, source bytes and geometric model are shared declared premises; the checker supplies arithmetic conformance, not independent calibration or physics evidence."
+checked_surface = "668 vertices with exact native and transformed coordinates, all63 selected curve/bin rows including copied measurement fields, calibration overlap, center and full-bin envelopes, per-bin feasible shifts and six common-normalization endpoints. Exact row counts and duplicate native path/stroke identities are enforced."
+initial_parser_repair = "The final parser excludes short legend strokes before requiring the six full source curves. An initial seven-path assertion failed before that source-geometry distinction was added."

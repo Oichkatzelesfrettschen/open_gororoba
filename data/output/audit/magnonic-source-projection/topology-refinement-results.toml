@@ -1,0 +1,2030 @@
+schema_version = 1
+scope = 'Finite reciprocal-grid external gaps and determinant-link topology; grid refinement does not prove a global gap.'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 1
+admitted = false
+error = 'SampledGap { point: [4, 8], gap: 2.220446049250313e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 1
+bands_end_exclusive = 2
+admitted = false
+error = 'SampledGap { point: [4, 8], gap: 2.220446049250313e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 0.0 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 0.0 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 6
+bands_end_exclusive = 7
+admitted = false
+error = 'SampledGap { point: [4, 8], gap: 2.6645352591003757e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = 6.7227870220170683e-17
+minimum_link_determinant = 9.7230782351065959e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [4, 8], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = -8.7520471703466564e-17
+minimum_link_determinant = 9.2032801342068427e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 4
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [4, 8], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = 2.9265520506521940e-17
+minimum_link_determinant = 9.3500163660572333e-1
+minimum_sampled_external_gap_ghz = 4.6911731969557779e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 7
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [4, 8], gap: 2.6645352591003757e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = -1.0891743245115950e-16
+minimum_link_determinant = 9.7230782351065626e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = -6.3914792426979386e-17
+minimum_link_determinant = 9.9999999999999456e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 1
+admitted = false
+error = 'SampledGap { point: [8, 16], gap: 2.220446049250313e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 1
+bands_end_exclusive = 2
+admitted = false
+error = 'SampledGap { point: [8, 16], gap: 2.220446049250313e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 0.0 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 0.0 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 6
+bands_end_exclusive = 7
+admitted = false
+error = 'SampledGap { point: [8, 16], gap: 2.6645352591003757e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = 1.6400597856971569e-16
+minimum_link_determinant = 9.9259057107365278e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [8, 16], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = 1.4094385111867406e-16
+minimum_link_determinant = 9.7843929564518251e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 4
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [8, 16], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = -3.6288555203546958e-17
+minimum_link_determinant = 9.8261323806510781e-1
+minimum_sampled_external_gap_ghz = 4.6911731969557779e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 7
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [8, 16], gap: 2.6645352591003757e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = 3.4409418892721348e-16
+minimum_link_determinant = 9.9259057107365356e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = 1.1229090489162233e-16
+minimum_link_determinant = 9.9999999999999289e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 1
+admitted = false
+error = 'SampledGap { point: [16, 32], gap: 2.220446049250313e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 1
+bands_end_exclusive = 2
+admitted = false
+error = 'SampledGap { point: [16, 32], gap: 2.220446049250313e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 0.0 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 0.0 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 6
+bands_end_exclusive = 7
+admitted = false
+error = 'SampledGap { point: [16, 32], gap: 2.6645352591003757e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = 1.2901806523419885e-16
+minimum_link_determinant = 9.9811187782551292e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [16, 32], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = -5.2221094544162749e-16
+minimum_link_determinant = 9.9448981187790209e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 4
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [16, 32], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = -5.1000691278936467e-16
+minimum_link_determinant = 9.9557161354238211e-1
+minimum_sampled_external_gap_ghz = 4.6911731969557779e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 7
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [16, 32], gap: 2.6645352591003757e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = -2.5264051582017657e-16
+minimum_link_determinant = 9.9811187782551336e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = 1.9015686083836737e-16
+minimum_link_determinant = 9.9999999999999123e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 1
+admitted = false
+error = 'SampledGap { point: [32, 64], gap: 2.220446049250313e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 1
+bands_end_exclusive = 2
+admitted = false
+error = 'SampledGap { point: [32, 64], gap: 2.220446049250313e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 0.0 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 0.0 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 6
+bands_end_exclusive = 7
+admitted = false
+error = 'SampledGap { point: [32, 64], gap: 2.6645352591003757e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = 1.6961607510143975e-16
+minimum_link_determinant = 9.9952563242460568e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 5.329070518200751e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [32, 64], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = 5.6952705096096338e-16
+minimum_link_determinant = 9.9861462617176155e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 4
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [32, 64], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = -2.3338589341307106e-15
+minimum_link_determinant = 9.9888759975408503e-1
+minimum_sampled_external_gap_ghz = 4.6911731969557779e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 7
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [32, 64], gap: 2.6645352591003757e-15 }'
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = -2.2708549145541054e-16
+minimum_link_determinant = 9.9952563242460668e-1
+minimum_sampled_external_gap_ghz = 3.7876217074370100e-1
+
+[[topology]]
+parameters = 'table_i'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = -1.5120905382213821e-15
+minimum_link_determinant = 9.9999999999999201e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 1
+admitted = true
+chern = -1.5633585836620803e-17
+minimum_link_determinant = 9.4252075028884530e-1
+minimum_sampled_external_gap_ghz = 1.4333370812256940e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 1
+bands_end_exclusive = 2
+admitted = true
+chern = -3.8100394621698378e-17
+minimum_link_determinant = 8.9672386648517022e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 6
+bands_end_exclusive = 7
+admitted = true
+chern = -6.1162522072739985e-17
+minimum_link_determinant = 9.4984268678108497e-1
+minimum_sampled_external_gap_ghz = 7.5100187236071925e-2
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = 1.1043592643970545e-17
+minimum_link_determinant = 8.9970937325580258e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 4
+admitted = true
+chern = 1.4356670437161707e-17
+minimum_link_determinant = 8.9941029016202467e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = -2.2087185287941090e-17
+minimum_link_determinant = 8.7093612358976458e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 4
+bands_end_exclusive = 6
+admitted = true
+chern = -1.8375502822756613e-16
+minimum_link_determinant = 9.5034032099688071e-1
+minimum_sampled_external_gap_ghz = 4.7748650761992906e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = -1.7494819448433727e-16
+minimum_link_determinant = 9.4905120842028379e-1
+minimum_sampled_external_gap_ghz = 9.7855707014757209e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 7
+bands_end_exclusive = 9
+admitted = true
+chern = -5.6201533189706354e-17
+minimum_link_determinant = 9.3056764618372345e-1
+minimum_sampled_external_gap_ghz = 7.5100187236071925e-2
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = 1.4853632106140383e-16
+minimum_link_determinant = 8.9970937325580380e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = -3.0784014495067775e-17
+minimum_link_determinant = 9.9999999999999512e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 1
+admitted = true
+chern = 9.9284486211321131e-18
+minimum_link_determinant = 9.8478313837492559e-1
+minimum_sampled_external_gap_ghz = 1.4333370812256940e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 1
+bands_end_exclusive = 2
+admitted = true
+chern = 5.6460367392299414e-17
+minimum_link_determinant = 9.5997028924298333e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 6
+bands_end_exclusive = 7
+admitted = true
+chern = -1.4157152405996223e-16
+minimum_link_determinant = 9.8701982004254296e-1
+minimum_sampled_external_gap_ghz = 7.5100187236071925e-2
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = -2.6918757069678201e-17
+minimum_link_determinant = 9.6129759321250774e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 4
+admitted = true
+chern = -4.1137382598790276e-17
+minimum_link_determinant = 9.6089573656516014e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = 3.7258320682595622e-16
+minimum_link_determinant = 9.5353936866037048e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 4
+bands_end_exclusive = 6
+admitted = true
+chern = 2.9446057362830603e-16
+minimum_link_determinant = 9.8736885325713142e-1
+minimum_sampled_external_gap_ghz = 4.7748650761992906e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = 1.0663322061327575e-16
+minimum_link_determinant = 9.8704875947608484e-1
+minimum_sampled_external_gap_ghz = 9.7855707014757209e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 7
+bands_end_exclusive = 9
+admitted = true
+chern = -6.8077709185351239e-17
+minimum_link_determinant = 9.8192387167760387e-1
+minimum_sampled_external_gap_ghz = 7.5100187236071925e-2
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = -2.5966247204135741e-16
+minimum_link_determinant = 9.6129759321250907e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = -3.7065057811326532e-17
+minimum_link_determinant = 9.9999999999999445e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 1
+admitted = true
+chern = 2.7636752362912907e-17
+minimum_link_determinant = 9.9612979983342598e-1
+minimum_sampled_external_gap_ghz = 1.4333370812256940e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 1
+bands_end_exclusive = 2
+admitted = true
+chern = -1.2058222718135339e-16
+minimum_link_determinant = 9.8816597728566935e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 6
+bands_end_exclusive = 7
+admitted = true
+chern = -4.7990826969324638e-17
+minimum_link_determinant = 9.9672504316605237e-1
+minimum_sampled_external_gap_ghz = 7.5100187236071925e-2
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = -8.3862281640151318e-18
+minimum_link_determinant = 9.8850781339886162e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 4
+admitted = true
+chern = -6.8380545202385114e-16
+minimum_link_determinant = 9.8840200061585659e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = -8.2714783341988758e-16
+minimum_link_determinant = 9.8651174626306859e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 4
+bands_end_exclusive = 6
+admitted = true
+chern = 5.0202241687729091e-17
+minimum_link_determinant = 9.9682822096736778e-1
+minimum_sampled_external_gap_ghz = 4.7748650761992906e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = 1.5107488468665344e-16
+minimum_link_determinant = 9.9674869039503922e-1
+minimum_sampled_external_gap_ghz = 9.7855707014757209e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 7
+bands_end_exclusive = 9
+admitted = true
+chern = -1.2291281348053505e-16
+minimum_link_determinant = 9.9543290137626461e-1
+minimum_sampled_external_gap_ghz = 7.5100187236071925e-2
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = 2.0679127225834843e-16
+minimum_link_determinant = 9.8850781339886140e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = -9.8680539738601787e-18
+minimum_link_determinant = 9.9999999999999278e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 1
+admitted = true
+chern = -1.8014759393366563e-17
+minimum_link_determinant = 9.9902758264885883e-1
+minimum_sampled_external_gap_ghz = 1.4333370812256940e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 1
+bands_end_exclusive = 2
+admitted = true
+chern = 1.8135002709513896e-16
+minimum_link_determinant = 9.9689403956817069e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 6
+bands_end_exclusive = 7
+admitted = true
+chern = -3.3692716085381098e-16
+minimum_link_determinant = 9.9917935062789853e-1
+minimum_sampled_external_gap_ghz = 7.5100187236071925e-2
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 8.881784197001252e-16 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = -7.6709829841829776e-17
+minimum_link_determinant = 9.9697986345625000e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.3322676295501878e-15 }'
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 4
+admitted = true
+chern = -2.5435421393651143e-16
+minimum_link_determinant = 9.9695344536638431e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = -1.2336404777372229e-15
+minimum_link_determinant = 9.9647656355018077e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 4
+bands_end_exclusive = 6
+admitted = true
+chern = -3.8785762650410905e-16
+minimum_link_determinant = 9.9920620745125788e-1
+minimum_sampled_external_gap_ghz = 4.7748650761992906e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = 8.6111534430779569e-16
+minimum_link_determinant = 9.9918632697001886e-1
+minimum_sampled_external_gap_ghz = 9.7855707014757209e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 7
+bands_end_exclusive = 9
+admitted = true
+chern = -2.7799635917747840e-16
+minimum_link_determinant = 9.9885516646762962e-1
+minimum_sampled_external_gap_ghz = 7.5100187236071925e-2
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = 2.3942163739858017e-18
+minimum_link_determinant = 9.9697986345625078e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = 9.0572774037545129e-16
+minimum_link_determinant = 9.9999999999999234e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 1
+admitted = true
+chern = -9.7235382107459408e-17
+minimum_link_determinant = 9.2085794893365491e-1
+minimum_sampled_external_gap_ghz = 1.4333370812256874e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 1
+bands_end_exclusive = 2
+admitted = true
+chern = 6.3224567886731366e-17
+minimum_link_determinant = 9.0363085152441869e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 6
+bands_end_exclusive = 7
+admitted = true
+chern = -2.2777409828189248e-18
+minimum_link_determinant = 9.8541051823818882e-1
+minimum_sampled_external_gap_ghz = 7.5100187236070148e-2
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.7763568394002505e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.7763568394002505e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = -8.3379124461977605e-17
+minimum_link_determinant = 9.0656934627080055e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 4
+admitted = true
+chern = -2.4213076871905418e-16
+minimum_link_determinant = 8.8296097479009517e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = 1.0022060324403270e-16
+minimum_link_determinant = 8.9906203814176489e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 4
+bands_end_exclusive = 6
+admitted = true
+chern = -3.7858816032611521e-17
+minimum_link_determinant = 9.6323020791547265e-1
+minimum_sampled_external_gap_ghz = 4.7748650761992995e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = 1.1043592643970545e-17
+minimum_link_determinant = 9.7560782047588679e-1
+minimum_sampled_external_gap_ghz = 9.7855707014756810e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 7
+bands_end_exclusive = 9
+admitted = true
+chern = -7.5010151911468677e-17
+minimum_link_determinant = 9.8044766097816194e-1
+minimum_sampled_external_gap_ghz = 7.5100187236070148e-2
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = 1.7117568598154344e-17
+minimum_link_determinant = 9.0656934627080155e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 12
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = -1.0104887269233032e-16
+minimum_link_determinant = 9.9999999999999434e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 1
+admitted = true
+chern = -1.3874160344494480e-16
+minimum_link_determinant = 9.7871625449871325e-1
+minimum_sampled_external_gap_ghz = 1.4333370812256874e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 1
+bands_end_exclusive = 2
+admitted = true
+chern = 3.9342798794145066e-17
+minimum_link_determinant = 9.6217222629834154e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 6
+bands_end_exclusive = 7
+admitted = true
+chern = -1.6716375584135101e-18
+minimum_link_determinant = 9.9620245561315801e-1
+minimum_sampled_external_gap_ghz = 7.5100187236070148e-2
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.7763568394002505e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.7763568394002505e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = -3.4511227012407952e-17
+minimum_link_determinant = 9.6348438773983125e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 4
+admitted = true
+chern = -1.0177360845959104e-16
+minimum_link_determinant = 9.5664152847699602e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = 3.5857164865891859e-16
+minimum_link_determinant = 9.6137933339557591e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 4
+bands_end_exclusive = 6
+admitted = true
+chern = -7.5583901060549963e-17
+minimum_link_determinant = 9.9062503476583563e-1
+minimum_sampled_external_gap_ghz = 4.7748650761992995e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = 6.8818082852351801e-17
+minimum_link_determinant = 9.9379798306187983e-1
+minimum_sampled_external_gap_ghz = 9.7855707014756810e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 7
+bands_end_exclusive = 9
+admitted = true
+chern = -5.6245750699316000e-17
+minimum_link_determinant = 9.9489823175515613e-1
+minimum_sampled_external_gap_ghz = 7.5100187236070148e-2
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = 4.1689562230988803e-17
+minimum_link_determinant = 9.6348438773983569e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 24
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = -3.7936466293389447e-16
+minimum_link_determinant = 9.9999999999999345e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 1
+admitted = true
+chern = 6.0949792712483824e-17
+minimum_link_determinant = 9.9461395783396678e-1
+minimum_sampled_external_gap_ghz = 1.4333370812256874e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 1
+bands_end_exclusive = 2
+admitted = true
+chern = -2.9222381472756434e-17
+minimum_link_determinant = 9.8876906708652923e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 6
+bands_end_exclusive = 7
+admitted = true
+chern = -7.4177568559794334e-18
+minimum_link_determinant = 9.9904034560777499e-1
+minimum_sampled_external_gap_ghz = 7.5100187236070148e-2
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.7763568394002505e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.7763568394002505e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = 1.1242032199291891e-17
+minimum_link_determinant = 9.8910881622327440e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 4
+admitted = true
+chern = 2.4477087758550338e-17
+minimum_link_determinant = 9.8734648404273584e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = -5.6340440878431292e-16
+minimum_link_determinant = 9.8855842089620904e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 4
+bands_end_exclusive = 6
+admitted = true
+chern = 3.9913312515693931e-17
+minimum_link_determinant = 9.9764444766260552e-1
+minimum_sampled_external_gap_ghz = 4.7748650761992995e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = 4.7868204265846169e-16
+minimum_link_determinant = 9.9844294273508727e-1
+minimum_sampled_external_gap_ghz = 9.7855707014756810e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 7
+bands_end_exclusive = 9
+admitted = true
+chern = -1.5092002229590927e-16
+minimum_link_determinant = 9.9871006185776068e-1
+minimum_sampled_external_gap_ghz = 7.5100187236070148e-2
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = 4.5454737098042517e-16
+minimum_link_determinant = 9.8910881622327418e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 48
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = 6.7558315218814440e-16
+minimum_link_determinant = 9.9999999999999267e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 1
+admitted = true
+chern = -6.7711431826785951e-18
+minimum_link_determinant = 9.9864775960977858e-1
+minimum_sampled_external_gap_ghz = 1.4333370812256874e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 1
+bands_end_exclusive = 2
+admitted = true
+chern = 3.4662213630587235e-17
+minimum_link_determinant = 9.9704884868111898e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 3
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 3
+bands_end_exclusive = 4
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 4.440892098500626e-16 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 4
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 5
+bands_end_exclusive = 6
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 6
+bands_end_exclusive = 7
+admitted = true
+chern = 2.1258275494610840e-17
+minimum_link_determinant = 9.9975942919747074e-1
+minimum_sampled_external_gap_ghz = 7.5100187236070148e-2
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 7
+bands_end_exclusive = 8
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.7763568394002505e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 8
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 1.7763568394002505e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 2
+admitted = true
+chern = 2.7754575848884956e-17
+minimum_link_determinant = 9.9713395677899264e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 5
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 5
+bands_end_exclusive = 9
+admitted = false
+error = 'SampledGap { point: [0, 0], gap: 3.552713678800501e-15 }'
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 4
+admitted = true
+chern = -4.2669950697102227e-16
+minimum_link_determinant = 9.9669012192212669e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 6
+admitted = true
+chern = -1.0617152510440037e-15
+minimum_link_determinant = 9.9699529396135089e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 4
+bands_end_exclusive = 6
+admitted = true
+chern = 6.8837111210526808e-16
+minimum_link_determinant = 9.9941036706942077e-1
+minimum_sampled_external_gap_ghz = 4.7748650761992995e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 6
+bands_end_exclusive = 9
+admitted = true
+chern = 5.9651194893202033e-16
+minimum_link_determinant = 9.9961032525894744e-1
+minimum_sampled_external_gap_ghz = 9.7855707014756810e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 7
+bands_end_exclusive = 9
+admitted = true
+chern = -8.9168767000328514e-16
+minimum_link_determinant = 9.9967658965880501e-1
+minimum_sampled_external_gap_ghz = 7.5100187236070148e-2
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 2
+bands_end_exclusive = 9
+admitted = true
+chern = 5.5621421033144657e-16
+minimum_link_determinant = 9.9713395677899452e-1
+minimum_sampled_external_gap_ghz = 1.2651764272506649e-1
+
+[[topology]]
+parameters = 'table_ii_reversed'
+grid = 96
+bands_start = 0
+bands_end_exclusive = 9
+admitted = true
+chern = 4.9071837231696062e-16
+minimum_link_determinant = 9.9999999999999245e-1

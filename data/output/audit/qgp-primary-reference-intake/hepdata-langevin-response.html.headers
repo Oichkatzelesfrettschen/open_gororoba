@@ -1,0 +1,21 @@
+HTTP/2 404 
+date: Sat, 05 Sep 2026 20:39:38 GMT
+content-type: text/html; charset=utf-8
+server: cloudflare
+access-control-allow-origin: *
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 55
+x-ratelimit-reset: 1788640803
+retry-after: 25
+permissions-policy: interest-cohort=()
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+referrer-policy: strict-origin-when-cross-origin
+x-proxy-backend: hepdata-prod_hepdata-web_http
+alt-svc: h3=":443"; ma=86400
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-cache-status: BYPASS
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=yjtGjg4wtCFiRM8UMwZH6CGI8QDiISiUyl75CizKWRH%2BrJeyJr8gTXKJbJbdZsRFlCQ8%2BavH5TGDsQJa6kPoYH0Z2Qi2gEotT48VXEbi68Yu66b%2Fu312lIqGODAkwbLDU4A%3D"}]}
+cf-ray: a3680b5d7ae8de42-SJC
+

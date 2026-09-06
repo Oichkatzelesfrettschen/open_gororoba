@@ -1,0 +1,33 @@
+schema_version = 1
+name = "crossing-detector-frozen-control-kernel-recovery"
+analysis_status = "post_hoc_protocol_after_point_rankings"
+claim_id = "C-1743"
+experiment_id = "E-282"
+parent_identity = "f13a679883d27c29b05ec6bdd2457e88c96394012269d9fc96b071f52b26d9ba"
+parent_directory = "data/output/audit/staples-causal-validation/results"
+implementation = "crates/gororoba_cli_physics/src/bin/staples_causal_validation/control_uncertainty.rs"
+retained_blocker = "The sealed runner retained AUC kernels only for baseline and canonical models. All 114 final exact-support control cells have point metrics but require frozen inference replay to recover paired file kernels."
+recovery = "Use recover-controls mode with the sealed original protocol and parent models directory. Admit only final-year files; require original raw hashes, complete file evidence, support/label hashes, and original point AUC within 1e-12. Check unchanged scientific/build source identities except the runner and evidence orchestration modules. Retain new source/executable identity and parent model/point receipt hashes."
+training_fits = 0
+manifest_identity_amendment = "The parent manifest SHA256 ad463ce5e684b984244f537e1b236f8f4943a7efe8c4ddbcca48b0ca494be645 matches commit 1aa3a7b0. Commit 36c24029 adds exactly the crossing-utility-frontier binary stanza and a blank line. Recovery removes that exact stanza in memory and requires the resulting bytes to match the parent digest; dependency, feature, and other manifest changes still fail. The new executable and actual manifest hashes remain retained."
+widths = [64, 256, 1024]
+years = [2015, 2016]
+control_seeds = [1000,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,1011,1012,1013,1014,1015,1016,1017,1018]
+contrasts = 114
+bootstrap_draws = 2000
+bootstrap_seed = 20260904
+confidence = 0.95
+estimand = "Canonical ROC-AUC minus exact-support control ROC-AUC within each fixed width and final year."
+resampling = "Sample whole files with replacement independently within each year; share each year's multiplicities across all widths and tensors. Require identical file IDs and positive/negative counts; refuse draws lacking either class."
+multiple_comparisons = "Use the 95th percentile of the maximum absolute centered bootstrap deviation across all 114 contrasts as one simultaneous symmetric interval radius. Coverage is approximate, conditional on the bootstrap assumptions."
+superiority = "Canonical superiority when a simultaneous lower endpoint exceeds zero; control superiority when an upper endpoint is below zero; otherwise insufficient directional precision."
+equivalence = "Only evaluate practical equivalence after an explicit caller-supplied --equivalence-margin in ROC-AUC units. An interval wholly inside the declared symmetric margin supports practical equivalence conditional on that assumption. Statistical direction and practical equivalence remain separate predicates."
+minimum_useful_increment = 0.005
+minimum_useful_increment_scope = "The unchanged canonical-minus-baseline requirement belongs to the retained original experiment. Canonical-minus-control intervals neither replace nor relax it."
+limits = "Frozen-fit uncertainty excludes training uncertainty. Catalog-selected days exclude ordinary-day utility. Interday independence remains unestablished. The protocol follows observed point rankings and supplies post-hoc inference rather than a new preregistered replication."
+anticipated_cost = "235 final-year files and 6557897 admitted rows; 60 frozen models evaluated over two years. Feature replay and score sorting dominate inference. The bootstrap evaluates approximately 3.2 billion file-pair cells before arithmetic constants; parallel execution shares sampled file weights. Actual timing remains unmeasured."
+
+[matched_geometric_capacity]
+status = "blocked_missing_training_fit_and_predictions"
+required = "Declare a geometric feature family with identical dimensionality, six-sample temporal support, normalization, feature count, ridge and fitting budget. Fit only on 2007-2012; freeze all coefficients and transforms before final evaluation. Preserve all widths and both years, retain per-file kernels, and expand the simultaneous comparison family before examining new outcomes."
+boundary = "Existing exact-support tensor controls do not constitute the separately required matched geometric capacity control."

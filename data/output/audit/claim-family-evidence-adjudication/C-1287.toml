@@ -1,0 +1,31 @@
+claim_id = "C-1287"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Retain historical claimed 100-object means/spreads, six-outlier assertion and original source artifacts; compare the observed seven-outlier membership explicitly. Freeze a physical box, time and smoothing definition before a three-grid successor."]
+[[intervening_maps]]
+branch = "resolution_distribution"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Join exact object identities across grids and retain missing, failed and outlier objects in the denominator."
+[[intervening_maps]]
+branch = "resolution_distribution"
+name = "independent_predicate"
+kind = "computational"
+description = "Recompute all-object and predefined common-subset statistics separately at 64/128; then require paired 64/128/256 errors under a preregistered convergence tolerance."
+[[fitted_parameters]]
+branch = "resolution_distribution"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-163","E-166"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "Use E-163/E-166 as the recorded family binding, not evidence of completed replay. Recompute all-object and predefined common-subset statistics separately at 64/128; then require paired 64/128/256 errors under a preregistered convergence tolerance. E-166 names a historical readback build and /tmp CSV; producer and retained rows need admission. Two-grid variance reduction and the one-step force sweep do not establish convergence or a fractal interpretation."
+[what_would_verify_refute]
+verification_outcomes = ["The historical numerical summaries and exact claimed membership reproduce from retained per-object rows; this verifies those summaries only."]
+revision_outcomes = ["Seven detected outliers or altered subsets revise the six-outlier and 18x descriptions. Register convergence separately only after matched third-grid evidence and bounded stability gates."]
+abandonment_outcomes = ["The identical declared population fails the claimed statistics or the all-100 stable predicate, refuting those bounded clauses."]
+inconclusive_outcomes = ["E-166 names a historical readback build and /tmp CSV; producer and retained rows need admission. Two-grid variance reduction and the one-step force sweep do not establish convergence or a fractal interpretation."]

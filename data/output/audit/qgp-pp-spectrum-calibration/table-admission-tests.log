@@ -1,0 +1,11 @@
+   Compiling data_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/data_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 10.20s
+     Running tests/hepdata_pp_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/hepdata_pp_identity-55a58de6231e1c13)
+
+running 2 tests
+provider representation: 2 groups, 39 rows each, 390 numeric fields agree
+test both_pp_populations_match_complete_yaml_reference ... ok
+test energy_exchange_cannot_pass_selected_population ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

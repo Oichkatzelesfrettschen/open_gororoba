@@ -1,0 +1,18 @@
+URL transformed to HTTPS due to an HSTS policy
+--2026-09-05 18:03:51--  https://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving lappweb.in2p3.fr (lappweb.in2p3.fr)... 134.158.101.236
+Connecting to lappweb.in2p3.fr (lappweb.in2p3.fr)|134.158.101.236|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 404 Not Found
+  date: Sun, 06 Sep 2026 01:03:52 GMT
+  server: Apache
+  strict-transport-security: max-age=63072000
+  content-length: 196
+  content-type: text/html; charset=iso-8859-1
+Saving to: ‘http-2.body’
+
+     0K                                                       100% 1.40G=0s
+
+2026-09-05 18:03:52 ERROR 404: Not Found.
+

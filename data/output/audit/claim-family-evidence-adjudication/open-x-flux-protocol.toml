@@ -1,0 +1,12 @@
+schema = "open-x-flux-protocol-v1"
+claim = "C-1684"
+evidence_layer = "implementation_conformance"
+fitted_parameters = 0
+boundary = "D3Q19 CPU FP64 AoSoA populations; open min/max x, periodic y/z; Zou-He velocity inlet; explicitly selected zero-gradient incoming-population outflow"
+physical_suitability = "unassessed; outflow reflection, backflow stability, magnetic boundary conditions and gravitational frame require separate specifications"
+decisive_comparisons = ["directional packets leaving either x face are counted and absent at the opposite face", "interior packets arrive at analytically selected destinations including periodic y/z wrapping", "outflow fills only missing incoming populations from the adjacent streamed interior cell", "nonuniform finite populations satisfy independent analytical face sums", "mass change equals incoming minus outgoing flux before collision", "collision mass change is tested against zero rather than subtracted away as an allowed source", "nonfinite or incompatible prestate fails before population mutation"]
+test_dimensions = [5, 3, 2]
+relative_engineering_mass_gate = 1e-12
+revision = "A directional wrap, incorrect face classification or unexplained mass residual rejects the numerical boundary instrument."
+abandonment = "Abandon a physical open-system conservation or force-bound interpretation if the physical outflow/magnetic boundary models or coupled sensitivity remain unadmitted."
+retention = "Keep original periodic-x/inlet evidence and distinguish the new source identity and CLI-selected closure."

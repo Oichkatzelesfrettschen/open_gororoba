@@ -1,0 +1,25 @@
+claim_id = "C-1713"
+evidence_layer = "source_proposition"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract tests table and cumulant identity; physical geometry-to-observable mapping remains separate."
+fixed_hyperparameters = ["alice_pbpb_5020_mc_glauber rows including central0-5% eccentricity0.029", "Match5.02TeV Pb-Pb, centrality definition, event weighting, participant/reaction plane and epsilon2 cumulant convention"]
+[[intervening_maps]]
+branch = "table_identity"
+name = "row_and_cumulant_provenance"
+kind = "computational"
+description = "Trace every implementation row to an admitted source table and its exact epsilon2 definition; distinguish smooth geometry from event-ensemble cumulants."
+[[fitted_parameters]]
+branch = "table_identity"
+count = 0
+names = []
+training_boundary = "The fixed table lookup and definition comparison fit zero parameters; source Glauber calibration and physical interpretation remain independently declared."
+[decisive_experiment]
+experiment_ids = ["E-075"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+description = "Retrieve the actual source table, retain its hash and definition, and map every row before using the E-075 geometry comparison."
+[what_would_verify_refute]
+verification_outcomes = ["The admitted actual source defines the implementation column as another statistic or geometry quantity, establishing the bounded cumulant mislabel."]
+revision_outcomes = ["Only a subset of rows or a different population is traced: restrict the identity finding to the traced subset and preserve unresolved rows."]
+abandonment_outcomes = ["An admitted matching-population source explicitly gives the same rows including0.029 as epsilon2{2}: abandon the mislabel claim for that source-defined column."]
+inconclusive_outcomes = ["Unidentified source leaves the column unverified rather than proving an alternative definition.", "An ordering comparison with another optical model does not establish a universal cumulant inequality without matched ensemble and geometry assumptions."]

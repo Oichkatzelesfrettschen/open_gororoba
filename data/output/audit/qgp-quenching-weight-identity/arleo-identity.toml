@@ -1,0 +1,69 @@
+schema_version = 1
+claim_id = "C-1710"
+evidence_layer = "source_proposition"
+source_path = "data/output/audit/qgp-quenching-weight-identity/arleo-source.pdf"
+source_sha256 = "1985a339ccacb17d265cafe02bc3261bfd29a24a54c76548724c28cf51869865"
+source_identity = "Francois Arleo, Tomography of cold and hot QCD matter: tools and diagnosis, JHEP 11 (2002) 044, arXiv:hep-ph/0210104v3, 14 January 2005"
+version_check = "Front-page margin and PDF Title metadata agree on v3 and January 14, 2005. The PDF creation metadata describes later file production, not the article revision date."
+visual_checks = ["arleo-page1.png: title/version", "arleo-page4.png: Poisson and transform definitions", "arleo-page5.png: outgoing spectrum, coupling and omega_c", "arleo-page6.png: incoming spectrum and UV comparison", "arleo-page10.png: lognormal Eq3.7 and Table1", "arleo-page11.png: Fig4 and mean formulas", "arleo-page13.png: infrared cutoff and discrete zero-loss weight", "arleo-page16.png: finite-energy correction and empirical parameters"]
+text_excerpts = ["arleo-spectrum-excerpt.json", "arleo-lognormal-excerpt.json", "arleo-limits-excerpt.json"]
+network_requests_by_auditor = 0
+numerical_distribution_recomputed = false
+
+[poisson]
+locator = "PDF page4, printed page3, Eq2.1 and footnote1"
+assumptions = ["Independent primary gluon emissions after neglecting interference effects suppressed by alpha_s", "Secondary gluon emissions omitted", "Soft total loss epsilon much smaller than leading parton energy E"]
+formula = "D(epsilon)=exp(-N(0))*sum_n (1/n!)*integral product_i[domega_i*dI/domega_i]*delta(epsilon-sum_i omega_i)"
+normalization = "For finite emission intensity the complete Poisson sum integrates to one, including n=0. The uncut BDMPS soft spectrum has divergent N(0); the resummed transform supplies the limit rather than separately evaluating zero times a divergent series."
+transform = "Eq2.3: D_tilde(nu)=exp[-nu*integral_0^infinity domega exp(-nu*omega)*N(omega)]; Eq2.4: N(omega)=integral_omega^infinity domega_prime*dI/domega_prime."
+numerical_route = "Eqs2.5/2.6 numerically invert the transform through sine/cosine integrals of N. Those numerical BDMPS results define the solid curves that Section3.3 approximates."
+
+[spectra]
+locator = "PDF pages5/6, printed pages4/5, Eqs2.7/2.8/2.14"
+variable = "u=sqrt(omega_c/(2*omega)); alpha=2*alpha_s*C_R/pi"
+outgoing = "dI/domega=(alpha/omega)*ln|cos((1+i)*u)|=(alpha/(2*omega))*ln[cosh(u)^2-sin(u)^2]"
+incoming = "dI/domega=(alpha/omega)*ln|sin((1+i)*u)/((1+i)*u)|=(alpha/(2*omega))*ln[(cosh(u)^2-cos(u)^2)/(2*u^2)]"
+parton_scope = "The numerical and Table1 examples concern hard quarks: C_F=4/3 and alpha_s approximately1/2. The spectrum writes general C_R, but the tabulated quark lognormal parameters do not establish a gluon parameterization at C_A=3."
+boundary_conditions = "Outgoing quarks are produced in the medium; the source attributes their enhanced emission to radiation after the hard process and before the first scattering. Incoming quarks use the different Eq2.14 boundary condition."
+omega_c = "omega_c=qhat*L^2/2"
+unit_scope = "omega_c and epsilon are energies. The source page5 writes qhat in GeV/fm^2, making its displayed L-in-fm convention explicit. A code accepting qhat in GeV^2/fm requires the corresponding natural-unit conversion rather than direct numerical substitution."
+uv_control = "Eqs2.11/2.16: N_out approximately alpha/(24*omega_bar^2), N_in approximately alpha/(360*omega_bar^2), where omega_bar=omega/omega_c. Their factor15 difference discriminates the boundary conditions."
+
+[lognormal]
+locator = "PDF page10, printed page9, Section3.3 Eq3.7/Table1; comparison Fig4 on PDF page11"
+formula = "Dbar(y)=exp[-(ln(y)-mu)^2/(2*sigma^2)]/[sqrt(2*pi)*sigma*y], y=epsilon/omega_c>0"
+rescaling_definition = "Eq3.1 on PDF page7: Dbar(epsilon/omega_c)=omega_c*D(epsilon)."
+normalization = "Integral_0^infinity Dbar(y)dy=1 for sigma>0. The ordinary lognormal contains no discrete atom at zero."
+outgoing_mu = -1.5
+outgoing_sigma = 0.73
+incoming_mu = -2.55
+incoming_sigma = 0.57
+source_rounded_means = "Table1 rounds the outgoing mean to0.3*omega_c and incoming to0.1*omega_c."
+fitting_scope = "The source calls Eq3.7 an empirical analytical expression. The two shape parameters approximate its numerical BDMPS result; footnote5 notes a small clear anticorrelation. The inspected table gives neither a parameter covariance nor a certified maximum approximation error."
+conformance_boundary = "Implementing Eq3.7 with Table1 values establishes lognormal-approximation conformance. Numerical BDMPS spectrum/inversion conformance remains a separate predicate. Figure4's visual agreement does not prove exact identity."
+
+[mean_conversion]
+locator = "PDF page11, printed page10, Eqs3.8/3.9"
+lognormal_mean = "m_lognormal=<epsilon>/omega_c=exp(mu+sigma^2/2)"
+bdmps_outgoing_quark_mean = "m_BDMPS=alpha_s*C_F/2=1/3 at the stated quark coupling"
+bdmps_incoming_quark_mean = "m_BDMPS=alpha_s*C_F/6=1/9 at the stated quark coupling"
+identity_limit = "The tabulated lognormal means approximate the BDMPS means; they are unequal. Treating the rounded0.3 or exact1/3 as the exact mean of Table1's outgoing lognormal would misnormalize the mean-loss parameter."
+mean_scaled_density = "For x=epsilon/<epsilon> and the actual chosen distribution mean m, P_mean(x)=m*Dbar(m*x). The Jacobian preserves probability and gives unit mean."
+mean_scaled_lognormal = "Using its own mean, the lognormal parameter becomes mu_mean=mu-ln(m)=-sigma^2/2, with sigma unchanged."
+fragmentation_boundary = "The later source's hadron scale epsilon_bar=<z>*<epsilon_parton> requires the declared fragmentation map; omega_c, omega_bar_c=<z>*omega_c and mean-weighted epsilon_bar remain distinct quantities."
+
+[infrared_limit]
+locator = "PDF page13, printed page12, Eqs4.6-4.9"
+cutoff = "The source investigates an explicitly arbitrary truncated spectrum dI/domega=0 below omega_min as a Bethe-Heitler sensitivity study."
+zero_atom = "Finite N(0) gives p0=exp[-integral dI/domega], and D(epsilon)=p0*delta(epsilon)+d(epsilon). The continuous component integrates to1-p0."
+numerical_implication = "The source subtracts p0 before inverse transformation, Eq4.9. A continuous lognormal normalized to one does not reproduce that cutoff model."
+
+[finite_energy]
+locator = "PDF page16, printed page15, Eqs4.14-4.17; outgoing-quark Fig7 on PDF page17"
+spectrum_correction = "dI(omega,E)/domega=(1-omega/E)*(dI(omega)/domega)*Theta(E-omega), neglecting terms of order(omega/E)^2."
+energy_conservation_limit = "The single-gluon bound omega<E does not constrain the independent Poisson sum epsilon=sum omega_i to epsilon<=E. The source explicitly observes probability in epsilon>E and associates it with eikonal breakdown at small E, roughly below omega_c/2."
+finite_mu = "mu(Ebar)=-1.5+0.81*(exp(-0.2/Ebar)-1), Ebar=E/omega_c"
+finite_sigma = "sigma(Ebar)=0.72+0.33*(exp(-0.2/Ebar)-1)"
+parameter_scope = "Eqs4.16/4.17 are an outgoing-quark empirical lognormal extension. Its Ebar->infinity sigma is0.72, differing from Table1's0.73. Preserve those separately named prescriptions."
+normalization_limit = "The finite-energy lognormal still has support(0,infinity). Truncating at E and renormalizing or accumulating excess probability at E changes the declared distribution and requires a separate prescription."
+physical_boundary = "A source integral over unbounded loss in the soft/eikonal limit does not establish finite-energy conservation. The E-dependent extension, infrared truncation, and uncut soft distribution are distinct models."

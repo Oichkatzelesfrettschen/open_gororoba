@@ -1,0 +1,67 @@
+schema_version = 1
+claim_id = "C-1710"
+experiment_id = "E-296"
+evidence_layer = "source-proposition and implementation-declaration comparison"
+scope = "Read retained source versions and optimizer declarations; physical fits remain pending source-model and reference admission."
+
+[[artifacts]]
+path = "data/output/audit/qgp-source-quenching-identity/arxiv-1703.10852v1.pdf"
+sha256 = "dd21cf31ee61df4d523817bfd988287eefac2e6e6a5b194a53fab9ce3c50273f"
+locators = ["PDF page 2, Eq. (5) and preceding pp-spectrum paragraph: n depends on hadron species and collision energy", "PDF page 3, paragraph beginning In this simple energy loss model: n obtained from a fit to pp data at corresponding energy", "PDF page 3, right column paragraph containing agnostic 1-parameter fit: energy-loss scale fitted per dataset", "PDF page 4, paragraph beginning Apart from investigating: systematic errors correlate across centrality classes and mean parton loss requires fragmentation fraction"]
+
+[[artifacts]]
+path = "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324v1.pdf"
+sha256 = "0522b734aea9802fd8c124c913fc1813dd944d5f0e19e217143e826a817b72f7"
+locators = ["PDF page 1, Eqs. (1)-(3): positive-shift quenching-weight convolution and species/energy-dependent pp slope", "PDF page 2, Table I and paragraph beginning RAA measurements: population list, approximately 10 GeV momentum cut, and epsilon_bar fit per nuclei/energy/centrality system", "PDF page 2, Eq. (8) and paragraph beginning The energy loss scales: downstream light-hadron scale fit with K and beta free", "PDF page 6, footnote 58: displayed statistical errors and removal of plotted points with uncertainty above 0.1"]
+
+[[artifacts]]
+path = "crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs"
+sha256 = "fdc6ec1bd8ffe78b1f5b700267fa4b0dbaf48880699f3d203ccc3ca58db27065"
+locators = ["line 357: n_spectral = 6.1 with comment identifying 5.02 TeV pp spectrum", "lines 527, 807, 1237, 1464: additional fixed 6.1 declarations"]
+
+[[artifacts]]
+path = "crates/qgp_scaling/tests/epsilon_objective_identity.rs"
+sha256 = "99c398a4bfe54f2dc80e16177e825bf5e14dd605dc2c85791047d9c0d7a56be9"
+locators = ["lines 6-26: retained CSV ingestion, midpoint momentum, 5 GeV cut, and 0.7/0.7 uncertainty split", "lines 94-111: fixed n=6.1, one epsilon fit, six points and one-parameter assertion", "lines 112-120: historical 0.98 variance-factor diagnostic"]
+
+[[artifacts]]
+path = "crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv"
+sha256 = "6c892ea7dd988220ecde94074eff6a48c04d470ca15f3a28312d61386b484624"
+locators = ["CSV consumed by epsilon_objective_identity::data"]
+
+[[parameter_stages]]
+name = "conditional-optimizer-replay"
+fitted_parameters = ["epsilon_bar"]
+fitted_parameter_count = 1
+fixed_parameters = ["n=6.1", "epsilon bounds 0.1..20"]
+interpretation = "E-296 establishes conditional objective identity. Its one-parameter count is accurate within the frozen replay."
+
+[[parameter_stages]]
+name = "matching-pp-spectrum-calibration"
+fitted_parameters = ["spectral exponent n"]
+conditional_nuisance_parameters = ["pp-spectrum normalization if the declared calibration likelihood fits an absolute power-law amplitude"]
+population_key = ["hadron species", "collision energy", "acceptance", "momentum fit range"]
+interpretation = "Source reproduction requires an admitted matching pp fit and propagated slope uncertainty. The inspected driver declaration and fixture provide a fixed value rather than a pp-calibration receipt. The total calibration parameter count depends on the declared likelihood and normalization treatment."
+
+[[parameter_stages]]
+name = "source-raa-energy-loss-extraction"
+fitted_parameters = ["one energy-loss scale per admitted RAA dataset or declared population grouping"]
+interpretation = "The 2022 source defines the system through nuclei species, energy and centrality; hadron population and the associated n and fragmentation maps remain explicit. The 2017 source extracts its scale per dataset."
+
+[[parameter_stages]]
+name = "downstream-light-hadron-density-scaling"
+fitted_parameters = ["K", "beta"]
+fitted_parameter_count = 2
+input = "Energy-loss scales extracted from light-hadron RAA populations"
+interpretation = "These two parameters belong to the later Eq. (8) fit. Adding them to E-296's conditional six-point fit count would combine different likelihoods."
+
+[selection]
+retained_momenta_gev = [5.5, 7.0, 9.0, 11.5, 16.5, 25.0]
+source_approximate_minimum_momentum_gev = 10.0
+retained_points_below_source_cut_gev = [5.5, 7.0, 9.0]
+interpretation = "The frozen six-point replay preserves historical inputs. A new source-faithful inference requires a separately declared source-domain selection."
+
+[admission]
+required_maps = ["Matching hadron/energy pp-spectrum inputs, slope-fit procedure and uncertainty propagation", "BDMPS rescaled quenching-weight convolution from the source references", "Fragmentation-weighted energy scale to parton energy loss", "RAA population, acceptance, centrality and momentum-selection identity", "Correlated experimental uncertainty and normalization treatment", "Second-stage covariance propagation from extracted scales into K/beta inference"]
+covariance_scope = "The 2017 source explicitly describes strongly correlated centrality errors dominated by systematics. The 2022 footnote 58 concerns plotting and does not authenticate the fixture's diagonal covariance."
+status_effect = "Retain E-296 as implementation conformance; physical source agreement and model ranking require the listed admissions."

@@ -192,6 +192,13 @@ fn main() {
             run_cross_validate(&data_dir, pt_min, n_gl);
         }
         Commands::BicCompare { data_dir, pt_min } => {
+            if let Err(error) = competing_models::retained_bic_population_admission() {
+                eprintln!("{error}");
+                eprintln!(
+                    "Supply matched source curves and admitted covariance/fitting counts before physical ranking. Historical numerical comparisons remain retained in the claim audit."
+                );
+                std::process::exit(2);
+            }
             run_bic_compare(&data_dir, pt_min);
         }
     }
@@ -250,32 +257,42 @@ fn run_glauber_only(n_gl: usize) {
             );
         }
 
-        // Validate against published Npart
+        // Preserve fixture diagnostics separately from source-defined populations.
         if *label == "Pb-Pb 5.02 TeV" {
-            validate_npart_pbpb(&bins);
+            eprintln!("{}", npart_pbpb_report(&bins));
         }
 
         eprintln!();
     }
 }
 
-fn validate_npart_pbpb(bins: &[CentralityBinGeometry]) {
+fn historical_npart_diagnostic(computed: f64, fixture: f64) -> (f64, bool) {
+    let difference_percent = 100.0 * (computed - fixture).abs() / fixture;
+    (difference_percent, difference_percent < 5.0)
+}
+
+fn npart_pbpb_report(bins: &[CentralityBinGeometry]) -> String {
     let refs = data_tables::alice_pbpb_5020_npart();
-    eprintln!();
-    eprintln!("  Npart validation (ALICE PLB 772, 2017):");
-    eprintln!(
+    let mut lines = vec![
+        String::new(),
+        "  Historical Npart fixture diagnostics (row-level source admission unresolved):".into(),
+        "  Computed bins use optical impact-parameter selection; the 5% predicate is historical."
+            .into(),
+    ];
+    lines.push(format!(
         "  {:>10} {:>10} {:>10} {:>10} {:>6}",
-        "Centrality", "Computed", "Published", "Diff%", "Pass?"
-    );
+        "Centrality", "Computed", "Fixture", "Diff%", "<5%?"
+    ));
 
     for r in &refs {
         // Find matching centrality bin
         if let Some(bin) = bins.iter().find(|b| {
             (b.cent_lo - r.cent_lo).abs() < 0.001 && (b.cent_hi - r.cent_hi).abs() < 0.001
         }) {
-            let diff_pct = 100.0 * (bin.n_part - r.n_part).abs() / r.n_part;
-            let pass = if diff_pct < 5.0 { "OK" } else { "FAIL" };
-            eprintln!(
+            let (diff_pct, within_historical_gate) =
+                historical_npart_diagnostic(bin.n_part, r.n_part);
+            let pass = if within_historical_gate { "yes" } else { "no" };
+            lines.push(format!(
                 "  {:>4.0}-{:<5.0}% {:>10.1} {:>10.1} {:>9.1}% {:>6}",
                 r.cent_lo * 100.0,
                 r.cent_hi * 100.0,
@@ -283,9 +300,49 @@ fn validate_npart_pbpb(bins: &[CentralityBinGeometry]) {
                 r.n_part,
                 diff_pct,
                 pass
-            );
+            ));
         }
     }
+    let reference = data_tables::alice_public_2018_011_table1_participants();
+    lines.push(format!(
+        "  Distinct reference: {}, {}, PDF page {}; {} {:.2} TeV",
+        reference.source_report,
+        reference.source_table,
+        reference.source_pdf_page,
+        reference.collision_system,
+        reference.sqrt_s_nn_tev
+    ));
+    lines.push(format!(
+        "  Source PDF SHA256: {}",
+        reference.source_pdf_sha256
+    ));
+    lines.push(format!(
+        "  Selection: {}; model: {}",
+        reference.centrality_selection, reference.distribution_model
+    ));
+    lines.push("  Selection matching is unadmitted: optical impact-parameter bins and V0M NBD-Glauber bins establish no physical agreement.".into());
+    lines.push(format!(
+        "  Mean systematic uncertainty: {}",
+        reference.systematic_definition
+    ));
+    lines.push(
+        "  RMS is event-distribution dispersion, separate from uncertainty on the mean.".into(),
+    );
+    lines.push(format!(
+        "  {:>10} {:>10} {:>10} {:>14}",
+        "Centrality", "Mean", "RMS", "Mean syst."
+    ));
+    for row in reference.rows {
+        lines.push(format!(
+            "  {:>4.0}-{:<5.0}% {:>10.2} {:>10.2} {:>14.3}",
+            row.cent_lo * 100.0,
+            row.cent_hi * 100.0,
+            row.mean,
+            row.rms,
+            row.mean_systematic
+        ));
+    }
+    lines.join("\n")
 }
 
 fn alice_straggling_pt_range(
@@ -619,6 +676,12 @@ fn run_pt_sweep(data_dir: &str, n_gl: usize) {
 /// and reports the beta shift. If |delta_beta| < 0.2, eccentricity assumption is robust.
 fn run_ecc_compare(data_dir: &str, pt_min: f64, n_gl: usize) {
     eprintln!("=== Eccentricity Model Comparison: Optical vs Event-by-Event ===");
+    eprintln!(
+        "Historical estimator sensitivity: optical spatial moments versus an unadmitted cumulant table."
+    );
+    eprintln!(
+        "The source relation uses directional-path eccentricity. Centrality pooling and source conformance remain unadmitted; the retained delta-beta threshold measures fixture sensitivity."
+    );
     eprintln!();
 
     let pb = NucleusParams::pb208();
@@ -1408,7 +1471,7 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
     eprintln!("=== BIC Model Comparison: Arleo-Falmagne vs CUJET3.0 vs Frac. Langevin ===");
     eprintln!();
 
-    // Load ALICE Pb-Pb R_AA data (0-5% centrality for comparison with CUJET3.0)
+    // Load the retained ALICE Pb-Pb 5.02 TeV, 0-5% score fixture.
     let alice_dir = PathBuf::from(data_dir).join(hic_raa::ALICE_PBPB_RAA_DIR);
     let path_0_5 = alice_dir.join("table_1.csv"); // 0-5% centrality
 
@@ -1446,10 +1509,10 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
     eprintln!();
 
     // Build model curves
-    // 1. CUJET3.0 at 2.76 TeV, 0-5% (closest available centrality)
+    // Preserve the quarantined CUJET vector for numerical replay.
     let cujet3 = competing_models::cujet3_pbpb_2760_0_5();
 
-    // 2. Fractional Langevin at 5.02 TeV, 0-10%
+    // Preserve the quarantined Langevin vector for numerical replay.
     let langevin = competing_models::langevin_pbpb_5020_0_10();
 
     // 3. Arleo-Falmagne: compute R_AA from extracted epsilon_bar
@@ -1460,8 +1523,9 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
         .map(|p| RaaDataPoint {
             pt: p.pt,
             raa: p.raa,
-            stat_err: p.total_err * 0.7, // approximate split
-            syst_err: p.total_err * 0.7,
+            // Preserve the scored diagonal variance exactly in the fit objective.
+            stat_err: p.total_err,
+            syst_err: 0.0,
         })
         .collect();
 
@@ -1545,16 +1609,57 @@ fn run_bic_compare(data_dir: &str, pt_min: f64) {
     // Caveats
     eprintln!();
     eprintln!("  CAVEATS:");
-    eprintln!("  - CUJET3.0 predictions are at 2.76 TeV (not 5.02 TeV)");
-    eprintln!("  - Frac. Langevin is for D mesons (heavy quarks), not light hadrons");
-    eprintln!("  - Digitized values have ~5% reading uncertainty");
+    eprintln!(
+        "  - CUJET vectors lack authenticated extraction; source Figure 3(a) uses 2.76 TeV, 20-30%"
+    );
+    eprintln!("  - Prakash Figure 4 uses static charm quarks at 6 fm/c and 250/350 MeV");
+    eprintln!(
+        "  - Retained vector reading uncertainty and legacy parameter penalties remain unverified"
+    );
     eprintln!("  - Arleo-Falmagne is self-consistent (fitted to same data)");
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{RaaDataPoint, alice_straggling_pt_range};
+    use super::{
+        RaaDataPoint, alice_straggling_pt_range, historical_npart_diagnostic, npart_pbpb_report,
+    };
     use qgp_scaling::quenching::{r_aa_model, scaling_function};
+
+    #[test]
+    fn participant_diagnostics_preserve_strict_historical_gate() {
+        assert_eq!(historical_npart_diagnostic(104.0, 100.0), (4.0, true));
+        assert_eq!(historical_npart_diagnostic(105.0, 100.0), (5.0, false));
+        assert_eq!(historical_npart_diagnostic(95.0, 100.0), (5.0, false));
+    }
+
+    #[test]
+    fn participant_report_separates_fixture_and_source_selection() {
+        let fixture = &qgp_scaling::data_tables::alice_pbpb_5020_npart()[0];
+        let report = npart_pbpb_report(&[qgp_scaling::glauber::CentralityBinGeometry {
+            cent_lo: fixture.cent_lo,
+            cent_hi: fixture.cent_hi,
+            b_lo: 0.0,
+            b_hi: 1.0,
+            n_part: fixture.n_part,
+            a_perp: 1.0,
+            l_avg: 1.0,
+            eccentricity: 0.0,
+        }]);
+        assert!(report.contains("Historical Npart fixture diagnostics"));
+        assert!(report.contains("ALICE-PUBLIC-2018-011, Table 1, PDF page 7"));
+        assert!(report.contains("Sharp cuts in simulated V0M multiplicity"));
+        assert!(report.contains(
+            "optical impact-parameter bins and V0M NBD-Glauber bins establish no physical agreement"
+        ));
+        assert!(report.contains("RMS is event-distribution dispersion"));
+        assert!(!report.contains("Published"));
+        assert!(!report.contains("Pass?"));
+        assert!(report.contains(&format!(
+            "{:>10.1} {:>10.1} {:>9.1}% {:>6}",
+            fixture.n_part, fixture.n_part, 0.0, "yes"
+        )));
+    }
 
     #[test]
     fn test_scaling_collapse_concept() {

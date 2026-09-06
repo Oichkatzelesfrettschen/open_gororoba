@@ -11,6 +11,7 @@ pub mod flyby;
 pub mod heliosphere_boundary;
 pub mod heliosphere_eval;
 pub mod lbm_dispatch;
+pub mod lbm_population_diagnostics;
 pub mod nonlocal_report;
 pub mod staple_associator;
 pub mod staple_benchmark;

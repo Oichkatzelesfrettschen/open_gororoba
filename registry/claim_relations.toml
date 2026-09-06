@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_relations
 [meta]
 surface = "typed predecessor and successor claim relations"
-relation_count = 102
+relation_count = 112
 relation_kinds = ["source_split", "implementation_split", "narrows", "refines", "supersedes"]
 
 [[relation]]
@@ -720,3 +720,73 @@ predecessor_claim_id = "C-1741"
 successor_claim_id = "C-1743"
 relation_kind = "refines"
 transition_event_id = 199
+
+[[relation]]
+relation_id = 103
+predecessor_claim_id = "C-1743"
+successor_claim_id = "C-1744"
+relation_kind = "refines"
+transition_event_id = 202
+
+[[relation]]
+relation_id = 104
+predecessor_claim_id = "C-1696"
+successor_claim_id = "C-1745"
+relation_kind = "implementation_split"
+transition_event_id = 203
+
+[[relation]]
+relation_id = 105
+predecessor_claim_id = "C-1684"
+successor_claim_id = "C-1746"
+relation_kind = "implementation_split"
+transition_event_id = 204
+
+[[relation]]
+relation_id = 106
+predecessor_claim_id = "C-1692"
+successor_claim_id = "C-1747"
+relation_kind = "implementation_split"
+transition_event_id = 205
+
+[[relation]]
+relation_id = 107
+predecessor_claim_id = "C-1282"
+successor_claim_id = "C-1748"
+relation_kind = "implementation_split"
+transition_event_id = 206
+
+[[relation]]
+relation_id = 108
+predecessor_claim_id = "C-1666"
+successor_claim_id = "C-1749"
+relation_kind = "implementation_split"
+transition_event_id = 207
+
+[[relation]]
+relation_id = 109
+predecessor_claim_id = "C-1666"
+successor_claim_id = "C-1750"
+relation_kind = "implementation_split"
+transition_event_id = 208
+
+[[relation]]
+relation_id = 110
+predecessor_claim_id = "C-1747"
+successor_claim_id = "C-1751"
+relation_kind = "implementation_split"
+transition_event_id = 209
+
+[[relation]]
+relation_id = 111
+predecessor_claim_id = "C-1685"
+successor_claim_id = "C-1752"
+relation_kind = "implementation_split"
+transition_event_id = 210
+
+[[relation]]
+relation_id = 112
+predecessor_claim_id = "C-1685"
+successor_claim_id = "C-1753"
+relation_kind = "implementation_split"
+transition_event_id = 211

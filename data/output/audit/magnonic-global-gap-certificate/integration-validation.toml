@@ -1,0 +1,23 @@
+schema_version = 1
+experiment = "E-305"
+successor = "C-1751"
+claim_count = 1565
+typed_contract_count = 53
+experiment_lineages = 273
+command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+exit_status = 0
+log = "data/output/audit/magnonic-global-gap-certificate/publication-validation.log"
+library_tests_passed = 1992
+library_tests_skipped = 19
+focused_gap_control_tests_passed = 1
+focused_interval_control_tests_passed = 2
+explicit_global_certificate_campaigns_passed = 2
+warnings_as_errors = true
+protected_history_tables = 12
+history_receipt = "data/output/audit/magnonic-global-gap-certificate/history-preservation.json"
+sealed_crossing_source_build_hashes = 22
+independent_retained_cover_check = "data/output/audit/magnonic-global-gap-certificate/independent-retained-cover-check.json"
+qgp_source_checksums_verified = 66
+qgp_code_preservation = "data/output/audit/qgp-primary-reference-intake/code-comment-repair.toml"
+retained_gate_failures = ["QGP doc paragraph separator rejected by warnings-as-errors and corrected", "New mathematical document rejected until registered through markdown-registry"]
+scope = "Exact represented magnonic bundle gaps and source-reference identity. Source-coefficient uncertainty, historical alternate models, QGP theory curves/covariance, physical convergence and actual operational observations remain separate obligations."

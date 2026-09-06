@@ -1,0 +1,65 @@
+schema_version = 1
+review_scope = "Static inspection of the two pinned Fortran mirrors and byte-hash comparison of their charged-hadron grids"
+retrieval_identity = "retrieval.json"
+numerical_execution = false
+original_author_release_authenticated = false
+physical_calibration = false
+
+[grid_parity]
+command = "sha256sum *GRID; wc -l *GRID"
+hlo_sha256 = "f6edf2403d54094338dd3b9da1dca00e83cbcebd613c82d227ee959952303f90"
+hnlo_sha256 = "16fd57fffd854c35e2ec086bd2b03d1706b5d422c94ac2306b075a1a2ddea2b2"
+matching_pairs = [["jeffersonlab-HLO.GRID", "bashphox-HLO.GRID"], ["jeffersonlab-HNLO.GRID", "bashphox-HNLO.GRID"]]
+rows_per_file = 816
+scope = "Pairwise identical mirror bytes establish shared numerical tables, not independent original-release authentication or independent scientific validation."
+
+[interface]
+locators = ["jeffersonlab-fdss.f:7-36", "bashphox-fDSS.f:7-36"]
+hadron = "IH=4 selects charged hadrons; IH1/2/3 select pion/kaon/proton"
+order = "IO0=LO; IO1=NLO"
+charge = "IC1=positive; IC-1=negative; IC0=arithmetic average of positive and negative"
+output_measure = "X times the fragmentation distribution, zD(z,Q2), rather than D itself"
+scale = "Q2 in GeV squared; the documented range is1 through1e5"
+documented_z_range = [0.05, 1.0]
+grid_z_range = [0.01, 1.0]
+charged_sum = "For each returned parton component, the charge sum is twice IC0, or the sum of separately evaluated IC1 and IC-1. IC0 alone is half the charged sum."
+heavy_flavors = "Returned C equals Cbar and B equals Bbar, each half its corresponding interpolated total column; those outputs are individual parton channels, not quark-plus-antiquark totals."
+charge_code_locators = ["jeffersonlab-fdss.f:163-203", "bashphox-fDSS.f:640-680"]
+
+[grid_interpretation]
+locators = ["jeffersonlab-fdss.f:43-61", "jeffersonlab-fdss.f:106-161", "bashphox-fDSS.f:532-551", "bashphox-fDSS.f:582-638"]
+shape = "34 stored z rows times24 Q2 rows,9 columns per record; outer loop z, inner loop Q2; an additional z=1 interpolation endpoint is inserted as zero"
+format = "Fortran9(1PE10.3) fixed-width decimal fields"
+columns = ["z*(Du+Dubar) for positive hadron", "z*(Dd+Ddbar) for positive hadron", "z*(Ds+Dsbar) for positive hadron", "z*(Dc+Dcbar) for positive hadron", "z*(Db+Dbbar) for positive hadron", "z*Dgluon for positive hadron", "z*(Du-Dubar) for positive hadron", "z*(Dd-Ddbar) for positive hadron", "z*(Ds-Dsbar) for positive hadron"]
+interpolation = "Strip endpoint factors, interpolate bilinearly in log(z),log(Q2), then restore factors at query z; raw zD columns are not directly bilinearly interpolated."
+light_total_and_valence_factor = "(1-z)^4*z^0.5"
+heavy_total_factor = "(1-z)^7*z^0.3"
+gluon_factor = "(1-z)^4*z^0.3"
+knot_precision_caution = "Both XB DATA arrays use decimal literals without D exponents, whereas QS uses D exponents. Default-real literal precision and conversion into double arrays depend on the Fortran compiler settings; an independent replay must identify the resulting knot bits rather than silently substitute decimal-to-binary64 knots."
+
+[jeffersonlab_behavior]
+source = "jeffersonlab-fdss.f"
+initialization_locators = ["33-36", "49-52", "75-115"]
+cache = "Single shared COMMON/FRAGINI/FINI selects one saved grid. Caller must initialize FINI=0 and reset when IH or IO changes. With FINI nonzero the code skips selection, including IH/IO validation, and reuses saved arrays."
+concurrency = "Shared COMMON, SAVE arrays and fixed Fortran I/O units lack synchronization in the inspected routine; concurrent use requires a separately justified wrapper."
+range_locators = ["62-72", "149-161", "213-246"]
+range_policy = "Warnings preserve requested X and Q2. Boundary interpolation intervals permit extrapolation; the0.01-0.05 knots exist despite the documented0.05 lower range."
+invalid_input = "The source has no finite/positive argument admission before logarithms. Invalid charge and an invalid set on initialization terminate through STOP; file reads have no explicit IOSTAT admission."
+
+[bashphox_behavior]
+source = "bashphox-fDSS.f"
+initialization_locators = ["39-54", "530-542", "569-592"]
+cache = "Wrapper dispatches separate hadron routines, each holding its own DATA/SAVE FINI. Per-hadron arrays are initialized once. IO changes after initialization reuse the first order's grid; the header's COMMON reset instruction does not describe this modified implementation because COMMON is commented out."
+range_locators = ["553-566", "681-682"]
+range_policy = "Out-of-range finite X and Q2 are clamped to0.05..1 and1..1e5 during calculation; original arguments are restored before return. Header extrapolation prose differs from implemented clamping."
+invalid_input = "Finite-value checks are absent; NaN comparisons can bypass range checks. Invalid charge and invalid order on initialization terminate through STOP."
+concurrency = "Saved per-hadron state and fixed I/O units require synchronization; static inspection supplies no thread-safety evidence."
+
+[licensing]
+status = "unresolved"
+inspection = "Search of both retained .f files for license, copyright and permission yielded zero matching lines."
+scope = "Author and publication attribution appears in headers, but the inspected source files do not supply an explicit reuse grant. Repository-level license applicability and upstream package terms remain unassessed by this review."
+
+[admission]
+result = "Pinned mirrored source and byte-identical charged grids support explicit ingestion design. Numerical interpolation, release authenticity, reuse terms and physical matching remain separately adjudicated."
+required_checks = ["Declare charged sum versus average and zD versus D", "Admit fixed-width grid shape, column identities and source knot precision", "Verify interpolation at nodes and off-grid queries against a separately admitted oracle", "Reject or explicitly declare out-of-range policy instead of conflating mirror variants", "Separate immutable hadron/order instances or prove cache reset behavior", "Preserve physical FF/Jacobian and matched-population blockers"]

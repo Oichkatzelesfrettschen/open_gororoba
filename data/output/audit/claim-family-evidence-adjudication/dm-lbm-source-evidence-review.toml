@@ -1,0 +1,50 @@
+schema = "dm-lbm-source-evidence-review-v1"
+scope = "Changed DM/LBM runtime sources, CLI admission and retained bounded instrument evidence"
+review_type = "source_and_receipt_consistency"
+source_hashes_matched = 6
+source_hash_boundary = ["lbm_3d_cuda/src/lib.rs", "lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs", "lbm_3d/src/dm_force.rs", "lbm_3d/src/boundary.rs", "gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "lbm_3d/tests/dm_guo_sensitivity.rs"]
+numerical_log_hashes_matched = 4
+numerical_logs = ["lbm-cuda-corrected-instrument-replay.log", "dm-guo-sensitivity-replay.log", "dm-inlet-layout-replay.log", "dm-ic-admission-replay.log"]
+receipt_owners = ["lbm-instrument-repair.toml", "dm-dimensional-admission-and-sensitivity.toml"]
+measurement_replay = "Existing passing targeted measurements retained; review reran hashing and diff-check. The numerical fixtures were unchanged."
+
+[concrete_report_repair]
+source = "crates/gororoba_cli_physics/src/bin/euclid_df_sweep.rs::report_null_hypothesis"
+defect = "A fixed-threshold pass printed genuine morphological signal; a failed check printed pipeline artifact detected. Neither inference follows from the deterministic predicates."
+result = "Reporter emits control_predicates=passed or failed and physical_interpretation=unassessed; thresholds, trial execution and numerical CSV behavior retain their definitions."
+clippy_command = "cargo clippy -p gororoba_cli_physics --features gpu,euclid-catalog --bin euclid-df-sweep --profile validation -- -D warnings"
+clippy_log = "lbm-control-report-clippy.log"
+clippy_exit_status = 0
+diff_check = "passed"
+
+[cli_admission]
+null_controls = "Positive finite alpha_zd and nonempty noise trials prevent collapsed force contrasts. CUDA admission and measurement errors remain failures."
+stability = "Explicit finite mass-error and Mach budgets are required. The finite explosive witness is rejected by a separate mass predicate."
+solar_ic = "Missing or inconsistent uniform SI metadata and malformed/incomplete cells fail admission before target field mutation."
+physical_scope = "Solar diagnostics explicitly block physical comparison pending gravitational-frame, open-outflow and flux specifications."
+execution_scope = "Existing exploratory lattice solvers remain callable; the new admission checks reject unsupported input declarations instead of choosing substitute physical behavior."
+
+[limits]
+cuda_observation = "Fused push rho/u buffers observe the populations entering the last collision. The GPU equivalence fixture compares that time level separately from post-stream population and density-sum oracles."
+stability_observation = "The audit reads post-step population storage and computes independent moments; finite cached macros cannot conceal a nonfinite final population. Hardware campaign evidence remains bounded to the separately admitted BGK fixtures."
+null_inference = "Bounded graph repair does not establish full MRT catalog-control completion, statistical uncertainty or resolution convergence."
+force_sensitivity = "The 90-row one-step periodic Guo response sweep establishes its enumerated lattice response only; spacecraft drag microphysics and full coupled physical sensitivity remain unassessed."
+boundary_physics = "AoSoA inlet indexing is repaired; periodic x streaming plus inlet overwrite remains distinct from an open-boundary flux model."
+
+[post_step_stability_repair]
+source = "crates/gororoba_cli_physics/src/bin/mrt_stability_audit.rs"
+source_sha256 = "bc8307101d08bfe36eef90d02a8881c3667c51060a52a393cff2273400d509b8"
+defect = "The earlier audit read CUDA pre-collision rho/u buffers while reporting completed-step indices."
+mechanism = "Read CPU AoSoA or CUDA FP32 ping-pong populations in cell-major order; check every population for finiteness and independently sum density, momentum, total mass and Mach. The audit includes population-readback and moment-reduction overhead."
+output = "CSV appends observed_step and observation_stage=post_step_population_moments; failed advance/readback reports unobserved with a failure stage. final_step records successfully completed commands, excluding an attempted failing chunk."
+test_command = "cargo test -p gororoba_cli_physics --features gpu --bin mrt-stability-audit --profile validation"
+test_log = "lbm-post-step-stability-replay.log"
+test_log_sha256 = "6a942d3060e9ac6a42a636d8af6cf5d858801a7845a65713d90e5da95501f0b1"
+tests_passed = 3
+negative_control = "A final population containing NaN is rejected while cached rho remains finite."
+observed_step_control = "A two-step CPU trial reports observed_step=2 and post_step_population_moments."
+hardware_scope = "Tests execute host fixtures with GPU feature compilation; they do not establish a complete MRT CUDA stability campaign."
+cuda_source_and_fixture_hashes = "identical to retained numerical receipt"
+clippy_command = "cargo clippy -p gororoba_cli_physics --features gpu --bin mrt-stability-audit --profile validation -- -D warnings"
+clippy_log = "lbm-post-step-stability-clippy.log"
+clippy_exit_status = 0

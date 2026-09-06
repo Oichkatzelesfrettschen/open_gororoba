@@ -1,0 +1,5 @@
+claim_id = "C-1702"
+expected_statement = "The survived field of mrt-stability-audit cannot detect numerical explosion: it is false only on a step error or a non-finite Mach number, so a trial ending with mass error 1e113 is reported as survived and printed as OK."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+statement = "At source revision 81a4ca6e, The survived field of mrt-stability-audit cannot detect numerical explosion: it is false only on a step error or a non-finite Mach number, so a trial ending with mass error 1e113 is reported as survived and printed as OK."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e"

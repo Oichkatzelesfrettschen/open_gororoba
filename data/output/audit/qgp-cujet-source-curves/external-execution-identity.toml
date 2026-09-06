@@ -1,0 +1,7 @@
+name = "qgp-cujet-vector-extractor"
+version = "4ab62909f190d3c4"
+executable = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/qgp-source-curves/extract-cujet-vectors"
+executable_sha256 = "4ab62909f190d3c43c71b77095ccec56a83395bc96c5a92d791a76e19fc8e651"
+source_receipt = "data/output/audit/qgp-cujet-source-curves/source-extractor-compilation.toml"
+source_receipt_sha256 = "6b0a34c62ef4e99cd48bb4a17642170a90996608481673f945c366b985f6e3d3"
+scope = "Hash-bound Figure3a native-stream extraction; reconstruction requires the retained compiler command and fresh output path."

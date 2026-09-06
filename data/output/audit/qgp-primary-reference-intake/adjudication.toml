@@ -1,0 +1,153 @@
+schema_version = 1
+claims = ["C-1710", "C-1711", "C-1712", "C-1713", "C-1714"]
+layer = "source_identity_intake"
+result = "Seven identified experimental RAA tables and one auxiliary participant-coordinate table retrieved; theory-vector and covariance admission remain separate."
+model_fits_executed = 0
+physical_simulations_executed = 0
+canonical_mutations_executed = 0
+scope = "Official HEPData record/data endpoints, INSPIRE DOI/arXiv identity metadata, authenticated publisher pages/PDF and primary arXiv PDFs. Original model arrays and earlier comparisons remain historical evidence."
+table_inventory = "table-resource-inventory.json"
+measurement_inventory = "admitted-table-inventory.json"
+measurement_table_count = 7
+measurement_rows = 323
+auxiliary_table_count = 1
+auxiliary_rows = 10
+
+[[measurement]]
+claims = ["C-1710", "C-1711"]
+artifact = "alice5020-table1.json"
+endpoint = "https://www.hepdata.net/record/data/89396/413643/1/"
+doi = "10.17182/hepdata.89396.v1/t1"
+source = "arXiv1805.05212; doi10.1016/j.physletb.2019.04.047"
+population = "Charged particles, Pb-Pb 5.02TeV,0-5% centrality, midrapidity"
+rows = 38
+pt_edges_gev = [0.15, 30.0]
+error_labels = ["stat", "syst", "norm"]
+admission = "The DOI, table description and complete numerical columns identify the retained experimental population; the table itself carries an empty qualifiers object, so the parent/table description supplies the population."
+prior_identity_sha256 = "a5f950222479fec3c65e2dca6fcb286862c04827528c952baf6cc68e0313d8c9"
+prior_identity_check = "jq -cS '{doi,qualifiers,headers,values}' gives the same SHA256 for earlier and new Table1 receipts."
+
+[[measurement]]
+claims = ["C-1711"]
+artifact = "alice2760-table16.json"
+endpoint = "https://www.hepdata.net/record/data/59944/52485/1/"
+doi = "10.17182/hepdata.59944.v1/t16"
+population = "Charged particles, Pb-Pb2.76TeV,0-5%,eta[-.8,.8]"
+rows = 65
+pt_edges_gev = [0.15, 50.0]
+normalization_percent = 4.53
+binding = "Experimental population matches the first legacy CUJET vector label, not its unverified numerical source."
+
+[[measurement]]
+claims = ["C-1711"]
+artifact = "alice2760-table18.json"
+endpoint = "https://www.hepdata.net/record/data/59944/52489/1/"
+doi = "10.17182/hepdata.59944.v1/t18"
+population = "Charged particles, Pb-Pb2.76TeV,10-20%,eta[-.8,.8]"
+rows = 65
+pt_edges_gev = [0.15, 50.0]
+normalization_percent = 4.4
+binding = "Experimental population matches the second legacy CUJET vector label, not its unverified numerical source."
+
+[[measurement]]
+claims = ["C-1711", "C-1712"]
+artifact = "alice2760-table19.json"
+endpoint = "https://www.hepdata.net/record/data/59944/52492/1/"
+doi = "10.17182/hepdata.59944.v1/t19"
+population = "Charged particles, Pb-Pb2.76TeV,20-30%,eta[-.8,.8]"
+rows = 65
+pt_edges_gev = [0.15, 50.0]
+normalization_percent = 4.64
+binding = "Experimental population matches authenticated CUJET Figure3(a). Original theory-curve arrays and their extraction uncertainty remain required."
+prior_identity_sha256 = "1560d4b913b3b7391f258a1d18cf860a51576de2cdc49c1ceabd0b24ae822eb7"
+prior_identity_check = "jq -cS '{doi,qualifiers,headers,values}' gives the same SHA256 for earlier and new Table19 receipts."
+
+[[measurement]]
+claims = ["C-1711"]
+artifact = "alice2760-table20.json"
+endpoint = "https://www.hepdata.net/record/data/59944/52494/1/"
+doi = "10.17182/hepdata.59944.v1/t20"
+population = "Charged particles, Pb-Pb2.76TeV,30-40%,eta[-.8,.8]"
+rows = 65
+pt_edges_gev = [0.15, 50.0]
+normalization_percent = 4.79
+binding = "Experimental population matches the third legacy CUJET vector label, not its unverified numerical source."
+
+[[measurement]]
+claims = ["C-1711"]
+artifact = "dmeson5020-table29.json"
+endpoint = "https://www.hepdata.net/record/data/88168/367719/1/"
+doi = "10.17182/hepdata.88168.v1/t29"
+source = "ALICE arXiv1804.09083; JHEP10(2018)174"
+population = "Average prompt D0,D+,D*+ mesons, Pb-Pb5.02TeV,0-10%,|y|<.5"
+rows = 13
+pt_edges_gev = [1.0, 50.0]
+normalization_percent = 4.0
+binding = "A specifically identified experimental candidate for the legacy D-meson label; average prompt species and acceptance must be adopted explicitly. Static charm-quark theory is a different observable."
+
+[[measurement]]
+claims = ["C-1711"]
+artifact = "dmeson5020-table34.json"
+endpoint = "https://www.hepdata.net/record/data/88168/367724/1/"
+doi = "10.17182/hepdata.88168.v1/t34"
+source = "ALICE arXiv1804.09083; JHEP10(2018)174"
+population = "Average prompt D0,D+,D*+ mesons, Pb-Pb5.02TeV,30-50%,|y|<.5"
+rows = 12
+pt_edges_gev = [1.0, 36.0]
+normalization_percent = 4.9
+binding = "A specifically identified experimental candidate; the source provides separate D0,D+,D*+,Ds+ tables if another species definition is intended. The existing fractional-Langevin arrays remain quarantined."
+
+[covariance_inventory]
+records = [89396, 59944, 78365, 88168, 71310]
+record_versions = [1, 1, 1, 1, 1]
+record_table_counts = [45, 30, 5, 43, 16]
+advertised_tables = 139
+covariance_named_tables = 0
+search_predicate = "Case-insensitive covariance|correlation matrix in every advertised table name and description."
+attached_table_resources = 0
+record_resources = "Three records link a Rivet analysis; the other two record resource arrays are empty. Rivet references identify analyses, not covariance matrices."
+admitted_table_resources = "All eight fetched data tables have empty resources and associated_files arrays. The seven RAA tables supply named per-point statistical/systematic/normalization errors, rather than matrix-valued fields."
+scope_limit = "The inventory establishes bounded absence on these advertised names/resources and eight fetched table schemas. It does not prove global absence of covariance data or inspect every numerical cell of all139 tables."
+dmeson_source_treatment = "Primary PDF section5 states feed-down FONLL uncertainty is correlated between Pb-Pb and pp. Species averaging uses inverse statistical-plus-uncorrelated-systematic variances; tracking, feed-down and pp energy-scaling terms are fully correlated across species. Those statements do not reconstruct a complete pT-bin covariance matrix from aggregate table errors."
+rank_one_normalization = "A declared fully correlated multiplicative normalization component can be represented separately. Aggregate systematic error bars cannot by themselves identify all shape correlations."
+ranking_intake_condition = "Obtain a covariance matrix or an explicitly sourced decomposition of nuisance and independent components; preregister the common likelihood and fitted/calibrated freedoms before model ranking."
+
+[theory_resources]
+cujet_inspire = "inspire-cujet.json identifies DOI10.1007/JHEP02(2016)169 and INSPIRE1386282."
+cujet_hepdata = "https://www.hepdata.net/record/ins1386282?format=json returns HTTP404; retained response and sanitized headers identify that checked endpoint only."
+cujet_publisher = "The authenticated Springer article and PDF return HTTP200 after a cookies_not_supported redirect. The response is an actual article/PDF, verified by DOI metadata and PDF type; the article HTML supplies no supplementary/esm/static-content/attachment data link in the inspected href search."
+cujet_blocker = "Publisher material preserves the source paper but supplies no authenticated numerical vector through the inspected links. Historical vectors lack point-wise source identity and extraction uncertainty; continuous parameters, discrete scheme and external calibration retain separate counting obligations."
+langevin_inspire = "inspire-langevin.json identifies Jai Prakash, DOI10.1103/PhysRevD.109.114004 and INSPIRE2744315."
+langevin_hepdata = "https://www.hepdata.net/record/ins2744315?format=json returns HTTP404."
+langevin_publisher = "The authenticated APS abstract endpoint returns HTTP403; supplementary-resource enumeration remains blocked on that provider surface."
+langevin_blocker = "The retained source Figure4 models static charm quarks at fixed medium temperature and time. D-meson data availability supplies neither hadronization nor a collision-centrality mapping, and cannot authenticate the five retained vectors."
+elsevier = "DOI redirects identify correct PIIs S0370269319302801 and S0370269313000920. The DOI/linkinghub responses return200, while direct ScienceDirect article endpoints return403; publisher supplementary-resource enumeration remains blocked there."
+unadmitted_probe = "An initial guessed PII S0370269319302724 returned403 and remains a failed routing artifact only. Its response is excluded from authenticated publication identity."
+
+[participant_reference]
+claim = "C-1714"
+source = "arXiv1612.08966; DOI10.1016/j.physletb.2017.07.017; official HEPData78365v1"
+artifact = "multiplicity-table3.json"
+endpoint = "https://www.hepdata.net/record/data/78365/126150/1/"
+table_doi = "10.17182/hepdata.78365.v1/t3"
+observable = "Total charged multiplicity versus mean Npart; the table description cites PRC88.044909 for participant numbers."
+rows = 10
+npart_coordinate_midpoints = [7.32, 15.402, 29.581, 53.07, 85.43, 129.702, 187.4, 263.205, 332.804, 389.3007]
+coordinate_scope = "Midpoints are arithmetic averages of retained x.low and x.high fields, not inferred source error bars. The table has an empty qualifiers object and lacks a per-row centrality column."
+blocker = "The official supplementary table provides participant coordinates but does not authenticate the repository's nine centrality/Npart/error rows. Its different coordinates cannot be substituted through an inferred order; a per-row centrality and uncertainty source remains required."
+
+[eccentricity_reference]
+claim = "C-1713"
+code_citation = "crates/qgp_scaling/src/data_tables.rs names PRC93(2016)034913 for epsilon2{2}."
+authenticated_identity = "DOI10.1103/PhysRevC.93.034913 identifies Centrality dependence of the nuclear modification factor of charged pions, kaons, and protons in Pb-Pb collisions at sqrt(sNN)=2.76TeV; arXiv1506.07287; INSPIRE1377750; HEPData71310v1."
+metadata = "inspire-eccentricity.json; hepdata-eccentricity-citation.json"
+primary_source = "eccentricity-citation-source.pdf"
+source_check = "The official record advertises16 tables; their names/descriptions identify zero eccentricity/epsilon/Glauber/covariance tables. Case-insensitive eccentric|cumulant search over the retained pdftotext output returns zero matches; the one Glauber mention describes Ncoll."
+blocker = "The cited reference population concerns identified-particle RAA. The nine epsilon2 values and their estimator definition remain unadmitted; a precisely identified eccentricity source is required."
+
+[retrieval_and_validation]
+transport = "curl --location --silent --show-error --max-time45 --dump-header HEADER --output BODY URL"
+headers = "Retained headers omit Set-Cookie lines. Response bodies retain downloaded bytes; SHA256SUMS covers the retained files."
+metadata_validation = "jq verifies JSON syntax and enumerates exact record versions, DOIs, table IDs, population qualifiers, error labels and row counts."
+source_extraction = "pdftotext -layout -nopgbrk on authenticated PDFs; source bytes remain separate from extracted text."
+new_obligations = ["Choose explicit prompt-D species/average before any comparison", "Keep retained theory vectors quarantined pending source identity", "Admit covariance decomposition and common calibration budget", "Resolve exact nine-row Npart lineage", "Replace the epsilon2 citation with an authenticated estimator table before physical use"]

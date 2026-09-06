@@ -1,0 +1,288 @@
+
+\documentclass[aps,physrev,preprint,superscriptaddress]{revtex4-2}
+%\documentclass[aps,physrev,preprint,superscriptaddress]{revtex4-2}
+%\documentclass[aps,prl,preprint,superscriptaddress]{revtex4-2}
+%\documentclass[aps,prl,reprint,groupedaddress]{revtex4-2}
+%\documentclass[aps,rmp,preprint,superscriptaddress]{revtex4-2}
+%\documentclass[aps,rmp,reprint,groupedaddress]{revtex4-2}
+
+% You should use BibTeX and apsrev.bst for references
+% Choosing a journal automatically selects the correct APS
+% BibTeX style file (bst file), so only uncomment the line
+% below if necessary.
+
+\bibliographystyle{apsrev4-2}
+
+\usepackage[table]{xcolor}% http://ctan.org/pkg/xcolor
+
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}
+\usepackage{soul}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage[english]{babel}
+\usepackage{xr}
+
+\begin{document}
+
+% Use the \preprint command to place your local institutional report
+% number in the upper righthand corner of the title page in preprint mode.
+% Multiple \preprint commands are allowed.
+% Use the 'preprintnumbers' class option to override journal defaults
+% to display numbers if necessary
+%\preprint{}
+
+%Title of paper
+%\title{\textbf{Analog Graphene and Flat Bands in a Magnonic Crystal}}
+\title{\textbf{Supplemental Material}}
+\author{Bobby Kaman}\email{Contact Author: kaman3@illinois.edu}
+\affiliation{Department of Materials Science and Engineering and Materials Research Laboratory, The Grainger College of Engineering, University of Illinois Urbana-Champaign,  Urbana, Illinois 61801, USA}
+\author{Jinho Lim}
+\affiliation{Department of Materials Science and Engineering and Materials Research Laboratory, The Grainger College of Engineering, University of Illinois Urbana-Champaign,  Urbana, Illinois 61801, USA}
+\author{Yingkai Liu}
+\affiliation{Department of Physics and Institute for Condensed Matter Theory, The Grainger College of Engineering, University of Illinois Urbana-Champaign, Urbana, Illinois 61801, USA}
+
+\author{Axel Hoffmann}\email{Contact Author: axelh@illinois.edu}
+\affiliation{Department of Materials Science and Engineering and Materials Research Laboratory, The Grainger College of Engineering, University of Illinois Urbana-Champaign,  Urbana, Illinois 61801, USA}
+\date{\today}
+
+\maketitle
+\section{Ground state and Geometry}\label{sec:S_Geometry}
+For all micromagnetic simulations, to simulate the properties of YIG, we choose a magnetization $M_{S}=\SI{140}{\kilo  \ampere / \meter}$ and a Gilbert damping of $\alpha=10^{-4}$. Discretization cells are approximately $11\times11\times15$ nm. These numbers are chosen carefully to represent the hexagonal lattice well with a finite number of pixels, and are numerically equal to $\left(\dfrac{100}{9},\dfrac{250}{39}\times\sqrt{3},15\right)$ nm. Time is evolved using \texttt{MuMax3}'s built-in Runge–Kutta–Fehlberg solver, with a timestep that is not fixed, but varies such that each step has an error no greater than $10^{-11}$.
+
+It is asserted that, for 15-nm YIG thin films, in the given magnetic field and frequency range, the approximation of 1 micromagnetic cell in the $\hat{z}$ direction is a good approximation. Here we justify this. For a single magnonic crystal unit cell of \SI{15}{\nano\meter} YIG in the $d/a=0.8$ geometry under periodic boundary conditions, the resonant modes are extracted using a procedure similar to that in the main text. This is done for a $\hat{z}$-resolution of $N_z=1,10$ micromagnetic cells under $B_{\text{ext}}=180 \text{ mT }\hat{z}$. The approximation can be considered good if the spectra are the same. These are both plotted in Fig. \ref{fig:Zcell}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{Supp_zcell.jpg}
+    \caption{Simulations of the response of single unit cells(inset) under different $\hat{z}$-resolutions.}
+    \label{fig:Zcell}
+\end{figure}
+Perpendicular standing spin wave modes lie far above the relevant frequency range. The fact that one cell is good enough is tremendously convenient; more cells would make simulations of the desired wavevector resolution computationally intensive to perform and analyze.
+
+\section{More band structures}\label{sec:S_MoreBandStructures}
+From the plots in the main text, it is not immediately clear how the transition from small holes to large holes affects the band structure. Fig. \ref{fig:Supp_extendedBandStructures} is a series of plots meant to show this transition in the same style as the main text.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Supp_0.4-0.9_Xproj.png}
+    \caption{A series of band structures resembling those in the main text, but for different hole diameter to lattice parameter ratios $d/a$ ($a$ is still fixed to \SI{333}{\nano\meter}). These are projections of the response into the $(k_x,f)$ plane.}
+    \label{fig:Supp_extendedBandStructures}
+\end{figure}
+This demonstrates the increasing band flattening as a function of $d/a$ ratio as well as the increasing accuracy of TB, especially in the higher bands near \SI{4}{\giga\hertz}.
+
+
+\section{Dipole induced gap}\label{sec:S_DipoleGap}
+The Dirac points are gapped slightly by the dipole-dipole interaction. The gap is visible when plotted at a greater frequency resolution in Fig. \ref{fig:Supp_Dipolegap}, and is apparently not present in the simulations with dipole-dipole interactions excluded. This is the subject of  another study in progress; this publication focuses on the ability of tight-binding to model very thin YIG films. 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Supp_diracgap.png}
+    \caption{Dispersion near the Dirac point in (a) \SI{15}{\nano\meter} thick thin film in the $d/a=0.8$ geometry which is discussed in the main text, under $B_{\text{ext}}=185 \text{ mT }\hat{z}$ (b) the same with the demagnetizing field artificially turned off, under $B_{\text{ext}}=5 \text{ mT }\hat{z}$}
+    \label{fig:Supp_Dipolegap}
+\end{figure}
+
+\section{Schr\"odinger Equation}\label{sec:S_Schrodinger}
+The main text claims that the interesting features of the band structure have little to do with spin waves because the Schr\"odinger equation can yield similar features in a similar geometry. This means many of the findings reported here are generalizable, and should exist, for example, in engineered electronic potentials. Here, we prepared a python script which takes a grayscale image representing a unit cell's potential energy landscape, and solves the Schr\"odinger equation $E\psi(\mathbf{r})=\mathcal{H}\psi(\mathbf{r}) =\left(V(\mathbf{r})-\dfrac{\nabla^2}{2m}\right)\psi(\mathbf{r})$ in a finite-element way for different momenta to map out a dispersion relation. This involves writing $\mathcal{H}$ as a matrix where $\mathcal{H}_{ii}$ is given by the potential, i.e. the grayscale value pulled from the image, and $\mathcal{H}_{ij}$ is calculated by the discrete version of $\nabla^2$. The matrix can then be diagonalized to yield energies. For nonzero momenta, the boundary conditions are not perfectly periodic, but instead acquire a Bloch phase $\psi(\mathbf{r+\delta\mathbf{r}})=e^{i\mathbf{k}\cdot\delta\mathbf{r}}\psi({\mathbf{r}})$. The diagonalization can then be repeated while varying the 2D vector $\mathbf{k}$ to map out a disperion relation. To confine the electrons to the "film," the chosen electronic potential is an antidot lattice with a high potential outside the antidot geometry. With unitless parameters for simplicity, the mass is set to $1$ and the potential height $|V|$ is set to $600$ -- the goal is \textit{not} to make good predictions using this method, but to demonstrate that seemingly different physics can yield similar results. To point out one issue, this implementation yields boundary conditions at edges which are different from the case of sipn waves.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Supp_Schrodinger.png}
+    \caption{Band structure from the Schrodinger equation in a $d/a=0.8$ antidot-shaped potential (inset). This is similar to the $d/a=0.8$ and $d/a=0.9$ geometries' magnonic band structures. (right) some examples of $\mathbf{\Gamma}$-point Bloch functions, which resemble the eigenmodes of magnons in the antidot lattice.}
+    \label{fig:Schrodinger}
+\end{figure}
+
+The unitless dispersion for the unit cell inset is plotted in Fig \ref{fig:Schrodinger}. Differences are likely related to the dipole-dipole interaction or the boundary conditions applied in the micromagnetic simulations (which are different from those naturally enforced by a suddenly varying potential), but it is not entirely clear. For a solution to a very similar problem in the context of cold atoms, see \cite{wu_p_xy-orbital_2008}. This reference finds a similar band structure for cold atoms in a hexagonal optical lattice, where the effective atomic potential follows an anti-dot-like profile.
+
+\section{Berry curvature calculations in inversion-broken crystals}\label{sec:S_BerryCurvature}
+\subsection{Berry curvature maps}
+To motivate the existence of states on the boundary between different inversion-broken phases, we examine the Berry curvature (BC) in our tight-binding models. We choose small inversion-breaking terms $\Delta\varepsilon_s$ and $\Delta\varepsilon_p$ so the curvature is concentrated near gap openings and thus has an obvious interpretation. Using \textsc{PythTB}, we calculate the BC for different signs of $\varepsilon_s$ and $\varepsilon_p$ in the relevant bands. (More precisely, we calculate the Berry flux through spaces on a dense grid; this quantity is plotted for each grid point.)
+
+
+The important demonstration here is the sign of the Berry curvature at small gaps:
+\begin{enumerate}
+    \item Always opposite above and below each gap
+    \item Opposite for different signs of $\Delta\varepsilon_s,\Delta\varepsilon_p$.
+    \item Opposite for $s$ (bands 0,1) and $p$ (bands 3,4) cases
+    
+\end{enumerate}
+This second observation motivates that a boundary between the two phases may have an edge state; the third observation motivates that edge states in the two gaps will have opposite propagation. These calculations closely follow an instructive \textsc{PythTB} example problem for graphene \cite{coh_python_2022}.
+The dependence of the BC maps on the size of band gaps is not straightforward, so we also include a series of plots that show this evolution. The results are summarized in Figures \ref{fig:S_BC_Bands} and \ref{fig:BC}. Figure \ref{fig:S_BC_Bands} shows band structures as a function of symmetry-breaking parameters and \ref{fig:BC} shows the BC textures of the first 6 bands.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{BC_Bands.png}
+    \caption{Band structures as a function of the strength of symmetry breaking. (a-b) band structures for small differently-signed parameters. (c-e) band structures for parameters increasing to approach those used in the main text. Note that no bands cross as the gap increases.}
+    \label{fig:S_BC_Bands}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{BC_Maps.png}
+    \caption{Berry curvature maps. (a) band structure with labeled band indices.
+    (b-c) Berry curvature for small gaps $=\pm0.2\Delta\varepsilon$ (i.e. $20\%$ of normal), demonstrating the opposite BC texture for opposite symmetry-breaking parameters.(c-e) the same for larger band gaps $(0.4, 0.6, 0.8)\Delta\varepsilon$. In the lowest bands, BC is strongly concentrated. In bands 3 and 4, the BC is strongly concentrated at the valleys for small band gaps, but it is smeared out for larger band gaps and is overshadowed by the BC texture inherited from the neighboring flat bands.}
+    \label{fig:BC}
+\end{figure}
+
+
+\subsection{Valley Chern numbers}
+Valley Chern numbers (VCNs) can be calculated by the integration of the BC in the vicinity of a valley. Because this involves a small portion of the Brillouin zone, VCNs are not true Chern numbers and are therefore not strictly quantized. However, they are still a useful diagnostic when BC is strongly localized in momentum space. For instance, the small-gap BC maps shown in Figure \ref{fig:BC} have curvature strongly localized near valleys, so the VCN can be considered a good metric of band topology. As band gaps get larger, the BC is smeared out and the VCN is a less helpful metric as the necessary region of integration becomes less well-defined. This is illustrated in Figure \ref{fig:S_VCN}, which shows the numerical VCN calculation from integration in a small region near a valley. At small gaps, the VCNs are indeed quantized to their ideal values of $\pm1/2$. At larger gaps, the VCNs lose their quantization. However, because no bands cross as the gap increases (the band structures are adiabatically connected), the bands stay in the quantum valley-Hall phase, and boundary states persist. This interpretation is supported by the existence of boundary modes in large-gap cases, as well as their change in character upon inverting the phase boundary (section \ref{sec:S_InvertedBoundary}).
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{S_VCN.png}
+    \caption{Valley Chern number calculations near the $\mathbf{K}$ point. For very small gaps $\Delta\varepsilon\approx0$, the VCNs are quantized to their ideal values of $\pm1/2$. The VCN picture breaks down more quickly for bands 3 and 4.}
+    \label{fig:S_VCN}
+\end{figure}
+
+
+
+
+\section{Inverted boundary modes}\label{sec:S_InvertedBoundary}
+The above section \ref{sec:S_BerryCurvature} demonstrates that the signs of Berry curvatures switch along with the sign of inversion-breaking terms $\Delta\varepsilon_s$ and $\Delta\varepsilon_p$. Naively, a boundary of inverted type should have edge states which bridge the gaps in opposite ways. This turns out to be true, and is demonstrated by a TB model in Fig. \ref{fig:Supp_invertedboundary}. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{Supp_invertedboundary.png}
+    \caption{Phase boundaries related by inversion. (a) the situation in the main text, (b) its brother, related by inversion, with an opposite sign of symmetry-breaking terms. The states at the boundary (those plotted with dark opacity) bridge the gap in opposite ways. This provides strong support for the QVH interpretation despite the breakdown of VCNs for larger gaps.}
+    \label{fig:Supp_invertedboundary}
+\end{figure}
+
+%\section{Z-shaped magnon waveguide}\label{sec:S_Z-Waveguide}
+\section{Backscattering of boundary modes}\label{sec:S_Backscattering}
+Typically, excitations referred to as topological are seen as attractive because they are in some sense robust to imperfections - if their existence can be argued from a band topology point of view, then the states should be robust to imperfections that do not change band topology. However, if translation symmetry is broken, edge states are free scatter into each other if they share a frequency (i.e., satisfy energy conservation). It is important to note that the attractive one-way transport of Chern insulators is not present in our system. To demonstrate this, we excite Gaussian wavepackets of QVH-like states and show their scattering from a defect in Figure \ref{fig:S_Backscattering}. One honeycomb site is removed and a right-propagating state is allowed to collide with it so reflection and transmission amplitudes are calculable. Using the maximum power on either side of the defect, we define $|R|^2=\dfrac{\text{max}(|\Psi_{\text{left}} |^2)}{\text{max}(|\Psi_{\text{left}} |^2)+\text{max}(|\Psi_{\text{right}} |^2)}$. The two boundary modes experience different reflection coefficients. It is helpful to compare the real-space momentum (i.e., not the crystal momentum) of each mode to the size of the defect: the defect is large compared to $p$-mode wavelengths, but small compared to $s$-mode wavelengths.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Reflection_figure.png}
+    \caption{Backscattering of boundary states from a defect. (a) Spin waves are excited and move along the boundary between different gapped phases. About $\SI{20}{\micro \meter}$ away, a defect is formed by removing a single honeycomb site. $|\Psi|^2$ is plotted as a function of time and position to quantify backscattering amplitudes. (b) shows a line-cut of the power for the $s$-gap mode after the scattering event marked by the dashed line. Solid gray lines mark the position of the defect. (c) shows the same for the $p$-gap mode. Despite the defect taking up a significant portion of the boundary, the $s$-gap mode at $\SI{1.6}{\giga \hertz}$ has a small reflection, $\approx 6\%$. The $p$-gap mode at $\SI{2.7}{\giga \hertz}$ backscatters more strongly, $\approx 22 \%$. (d,e) phase-resolved plot of each snapshot, demonstrating the real-space wavelength of each mode.}
+    \label{fig:S_Backscattering}
+\end{figure}
+
+\section{Defects}\label{sec:S_Defects}
+To simulate the modes of point defects, the simulation field is halved in size and resolution is doubled. All real dimensions are kept the same. A single defect and a pair of defects are placed on different sides of the field to avoid unintentional coupling.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\linewidth]{Supp_defects.png}
+    \caption{Simulation geometry. Boxed in red are the two sites of interest, with expanded versions to the right. Very small excitation regions are marked in blue. Scale bar: \SI{2}{\micro\meter}}.
+    \label{fig:Supp_DefectGeom}
+    
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Supp_CoupledDefects_Response.png}
+    \caption{Response $|\psi(f)|^2$ as a function of frequency of the left and the right side of the geometry of Fig. \ref{fig:Supp_DefectGeom}, showing the single (left) and coupled (right) spectra as well as the onset of bulk modes at $1.60 \text{ GHz}$. }
+    \label{fig:Supp_DefectResponse}
+\end{figure}
+The response of the left side of the geometry clearly has a resonance at $1.47\text{ GHz}$, corresponding to the single defect-localized mode. The right side of the geometry has no such peak, but has instead one at $1.38\text{ GHz}$ and one at $1.56\text{ GHz}$. The profile $\psi(x,y,f)$ is plotted in the main text to show the nature of these two peaks. Other defect modes were resolved in this simulation, like the $p_{x,y}$-like coupled mode appearing at $1.82\text{ GHz}$, but these are of less interest because they spectrally overlap with bulk modes. 
+In a tight-binding-like interpretation, localized defect states $|A\rangle$ and $|B\rangle$ are degenerate when very far away from each other, with some energy $\varepsilon$. When they are brought close together, they are coupled by some real parameter $-\Delta\equiv\langle B|\hat{H}|A\rangle$ and the new eigenmodes are given by $\dfrac{|A\rangle\pm|B\rangle}{\sqrt{2}}$ with energies $\varepsilon\mp\Delta$, resulting in a splitting of $2\Delta$. In the simulated response spectrum, the fact that the shift up- and down- in frequency is equal shows that this interpretation is good.
+
+\section{Other TB models}\label{sec:S_OtherTB}
+To show the applicability of the tight-binding type approach to other systems, we also study a square anti-dot lattice and a kagome lattice of disks. 
+The kagome lattice is fairly self-explanatory, but the square lattice will be discussed a little more here.
+In the same fashion as the hexagonal anti-dot lattice, we examine some Bloch-like functions. Some examples of these at the $\Gamma$ point are plotted using the same convention as in the main text.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Supp_SquareBloch.png}
+    \caption{Bloch-like responses of $\Gamma$-point modes on the square anti-dot lattice. These resemble a similar basis as that used in the hexagonal case (basis included in main text figure))}
+    \label{fig:Supp_Squrebloch}
+\end{figure}
+The constants used are listed in table \ref{tab:SquareTB}. The third and fourth bands are indeed $p_{x,y}$-like, but are split into $p_x\pm ip_y$. This is due to the dipole-dipole interaction, and has been observed before, for example in \cite{lim_ferromagnetic_2021}. This phenomenon is closely related to the splitting of the Dirac point modes, and will be the subject of a following publication. The fact that the fifth mode has an apparently small response is uninteresting and is related to the exact geometry of the $\delta$-like excitation -- its overlap with this mode happens to be small.
+\begin{table}
+\begin{tabular}{|l|c l |}
+    \hline
+    $\varepsilon_s$ & 1.35 & GHz\\
+    $\varepsilon _p$ & 2.34& GHz\\ 
+    $\varepsilon _k$ & 2.25& GHz\\
+    \hline
+    $t_{sk}$ &-0.22 & GHz\\
+    $t_{pk}$ & -0.29& GHz\\
+    \hline
+\end{tabular}
+\caption{Tight-binding parameters and their values. All $\varepsilon_i$ are 'on-site' frequencies for orbital $i$ and $t_{ij}$ are hopping parameters between orbitals $i$ and $j$. Subscripts $s$ and $p$ denote $s$-like and $p_{x,y}$-like modes on the square lattice. Subscripts $k$ denote $s$-like modes between $s$ and $p$ orbitals. }
+\label{tab:SquareTB}
+\end{table}
+It is also notable that some Bloch-like functions (one of which is plotted in Fig. \ref{fig:Supp_Squrebloch}, resemble $d$-orbitals, implying that some higher bands may also fit into a simple tight-binding like representation. For simplicity, we do not augment the model to include these. Anway, high wavevector means that these modes are likely inaccessible in experiment.
+
+
+\section{Effects of inhomogeneous magnetization}\label{sec:S_Deadlayer}
+
+One likely route to fabrication involves ion milling. Because yttrium-iron garnet is ferrimagnetic, its magnetization crucially depends on order. Ion milling locally damages the film and may lead to a magnetic dead layer. We perform simulations including an inhomogeneous saturation magnetization to mimic this scenario. The setup and results are shown in Figure \ref{fig:S_Deadlayer}. The band structure essentially resembles that of the other films, with a modified effective hole size.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Deadlayer.png}
+    \caption{Comparison of pristine film and film with a magnetic dead layer. (a) Spatial map of the saturation magnetization for $d/a=0.7$, as seen above in Figure \ref{fig:Supp_extendedBandStructures}. (b) Spatial map of a modified saturation magnetization meant to mimic realistic fabrication imperfections. Band structures of (c) the uniform film and (d) the film with a small magnetic dead layer $\approx30$ nm wide. This can also be compared to band structures from Figure \ref{fig:Supp_extendedBandStructures} to determine that the effects of the dead layer on the nature of spin waves is not drastic. In specific, the dead layer geometry seems to have an effective hole size between $\approx 0.6-0.7$.}
+    \label{fig:S_Deadlayer}
+\end{figure}
+
+
+\section{Effects of disorder}\label{sec:S_Disorder}
+To be experimentally relevant, the system and its attractive features must be present in the presence of realistic amounts of disorder. In a realistic fabrication scheme (for example, electron beam lithography or focused ion beam milling), the hole spacing will be consistent but edges may be distorted. To emulate this effect, we apply distortions and filters to the image that defines our 2D geometry. We then characterize these distortions in a separate analysis step. The process is as follows, and is summarized schematically in Figure \ref{fig:S_DisorderProcess}:
+\begin{enumerate}
+    \item For each row of pixels, shift the pixel intensity laterally by a random value in the range of $[-n,n]$ pixels.
+    \item For each column of pixels, repeat the same in the vertical direction.
+    \item To recover realistic edges, apply a median filter with a radius of 2 pixels.
+    \item To characterize the effect this process has on the pattern, apply an edge detection filter to both the original and the distorted images. 
+    \item Along line cuts through the image, measure the deviation between the position of distorted edges and original edges. The statistics of these deviations can characterize the effective linear displacement applied by this process. Dividing this deviation by the original edge spacing gives a percentage of displacement, which is a useful scalar metric of disorder.
+\end{enumerate}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Disorder_Process.png}
+    \caption{Process for simulating random edge roughness. Measured linear displacements can be compared to average edge spacings to determine a percentage change in linear dimension. For 1px and 2px shifts, this works out to be $\approx6\%$ and $\approx11\%$ respectively.}
+    \label{fig:S_DisorderProcess}
+\end{figure}
+\subsection{Flat bands and gaps}
+The effect of disorder on inversion-broken band structures is illustrated in Figure \ref{fig:S_DisorderInvBroken}. Disorder results in a slight overall frequency shift and broadening of flat band frequencies. It's interesting to note that flat band wavefunctions are more localized than extended states, so it's possible that this could be thought of as an inhomogeneous broadening for localized wavefunctions in different environments.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{InvBroken_DisorderFigure.png}
+    \caption{The effect of disorder on gapped phases. Using the process outlined above, we prepare three geometries with increasing amounts of disorder: a) $0\%$, b) $6\%$, and c) $11\%$ disorder. For each case, a representative area is shown along with the projected band structure and the total response as a function of frequency. The effect of disorder is surprisingly minimal. The band structures experience  a frequency shift of $\approx-50$ MHz and broadening particularly in the flat bands. The first flat band can be seen to increase from a FWHM of $20$ MHz at $0\%$ disorder to $80$ MHz at $11\%$ disorder. The upper flat band also experiences this broadening, reducing the effective band gap.}
+    \label{fig:S_DisorderInvBroken}
+\end{figure}
+
+\subsection{Boundary modes}
+The effects of disorder on boundary-localized modes are shown in Figure \ref{fig:S_Disorder_boundary}. The reciprocal space picture does not provide an intuitive demonstration of the protection or destruction of boundary-localized modes, so we also show the excitation of boundary modes for disordered geometries. The localization of these states survives disorder, but for larger amounts of disorder, there exists noticeable (inter-valley) back-scattering and excitation of other modes -- but with a magnitude that is only a small fraction of the total wavepacket power. 
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Boundarymodes_Disorder.png}
+    \caption{Boundary modes and disorder. The same geometry studied in the main text with varying amounts of disorder: a) $0\%$, b) $6\%$, and c) $11\%$ random displacement. As expected, disorder immediately affects wavevector resolution as crystal momentum is no longer well-defined, but some states remain mostly intact. For a real-space demonstration, the $s$-like and $p$-like boundary modes are excited as a Gaussian wavepacket, and the spin wave power is shown $30$ ns after its peak. This is done for (d,e) $6\%$ disorder, with $s$-modes and $p$-modes respectively, and (f,g) $11\%$ disorder. For small disorder, small distortions to the profile are visible. This becomes more noticeable when the disorder is larger, where the trail left by the wavepacket corresponds to backscattered spin waves.}
+    \label{fig:S_Disorder_boundary}
+
+
+    
+\end{figure}
+\subsection{Defect modes}
+The localizes modes at defects may be practically useless unless their spectral isolation is robust to disorder. To investigate this, we perform the same simulation as described in Figure \ref{fig:Supp_DefectResponse} with increasing amounts of disorder. The results are summarized in Figure \ref{fig:S_Defects_disorder}. Isolation appears to be preserved, with the effect amounting to slight frequency shifts.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Defects_disorder_figure.png}
+    \caption{Defect modes in the presence of disorder. The response spectrum is plotted for geometries with (a) $0$px, (b) $1$px, (c) $2$px, and (d) $5$px random shifts. Changes are minimal and seem to result only in slight frequency shifts.}
+    \label{fig:S_Defects_disorder}
+\end{figure}
+
+\section{Attenuation and Quality factors}
+\subsection{Attenuation lengths}
+Boundary-localized spin wave transport is useless if energy dissipates over a very short distance. Here we measure the attenuation length of each boundary mode. For these simulations (along with all other simulations), we use the realistic Gilbert damping parameter of $\alpha=10^{-4}$. At an applied field $\mu_0H_z=\SI{200}{\milli \tesla}$, we excite Gaussian wavepackets of boundary-localized spin waves in the same manner as before centered around either $\SI{1.6}{\giga \hertz}$ in the $s$-band gap or $\SI{2.7}{\giga \hertz}$ in the $p$-band gap. As a metric for attenuation length, we measure the propagation distance of a wavepacket after the integrated spin wave profile has decayed to a fraction $e^{-1}$ of its maximum value. The results are shown in Figure \ref{fig:S_Attenuation}. Attenuation lengths are calculated as $\SI{63}{\micro \meter}$ and $\SI{61}{\micro \meter}$ for the $s$-gap and $p$-gap modes respectively. The fact that they are similar is a coincidence, as the two modes have different attenuation times and group velocities. These lengths are equal to about 180 unit cells, indicating that the modes are indeed expected to propagate to experimentally relevant distances.
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Attenuation_figure.png}
+    \caption{Attenuation length of boundary-localized modes. Space-time plots of the spin wave profile are displayed next to their integrated amplitudes $|\Psi|^2$ as a function of time, for (a) the $s$-gap mode and (b) the $p$-gap mode. The simulation takes place on a ribbon with periodic boundary conditions, so each wavepacket leaves the $\pm x$ edge to return from the $\mp x$ edge. Attenuation times are given by the time taken to decay to a fraction $1/e$ of the original power, and attenuation length can be considered the propagation length during this time. These are calculated to be $\SI{63}{\micro \meter}$ and $\SI{61}{\micro \meter}$ respectively.}
+    \label{fig:S_Attenuation}
+\end{figure}
+\subsection{Defect Q-Factors}
+From an application perspective, it is also helpful to estimate quality (Q-) factors of resonances. We perform long-time simulations to resolve the frequencies of modes localized at defects to estimate quality factors. Results are shown in Figure \ref{fig:S_Defect_Qfactor}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Defect-Q.png}
+    \caption{Localized resonance modes at defects. Using the same setup as before, high-resolution simulations can be used to estimate Q-factors. Amplitudes are plotted as a function of frequency near (a) the one-defect mode, (b) the acoustic coupled-defect mode, and (c) the optical coupled-defect mode.}
+    \label{fig:S_Defect_Qfactor}
+\end{figure}
+Using the definition $Q\equiv f/\Delta f_{\text{FWHM}}$ gives $Q\approx4350,4060,$ and $ 4130$ for the one-defect, acoustic and optical modes respectively. This result is approximate due to the limited frequency resolution, and is not particularly interesting because Q- factors are essentially set by the chosen damping parameter in micromagnetic simulations. However, it is interesting to note that these linewidths are small compared to the shifts expected from disorder, for example in Figures \ref{fig:S_DisorderInvBroken} and \ref{fig:S_Defects_disorder}. Having a localized character should protect an individual mode from inhomogenous broadening.
+
+
+
+\bibliography{references-2}
+\end{document}

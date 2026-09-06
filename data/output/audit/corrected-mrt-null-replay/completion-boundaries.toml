@@ -1,0 +1,38 @@
+schema_version = 1
+basis = "Original user stopping criteria and retained evidence at a0800278, plus E-306 and primary QGP source intake"
+
+[[requirement]]
+item = 6
+status = "open"
+evidence = "E-297 open-x accounting and periodic sensitivity receipts"
+remaining = "Physical SI initial fields, spacecraft lineage, gravitational frame, magnetic/outflow admission and coupled numerical sensitivity. A one-step periodic sensitivity result does not establish the physical bound."
+
+[[requirement]]
+item = 7
+status = "open"
+evidence = "E-298 historical pilot; E-300 corrected impulse; E-306 corrected-producer null replay"
+remaining = "Admit physical initial-field mapping before replacing the Sersic profile. The retained unforced profile independently fails first-step Mach admission. Require stable fixed-domain paired resolutions, accuracy gates and complete cohort/outlier accounting before fractal interpretation."
+
+[[requirement]]
+item = 8
+status = "completed_scoped_adjudication"
+evidence = "E-294 localization and two-wall checks; E-299 source Tables I/II; E-305 globally isolated stored-coefficient bundles"
+boundary = "Historical C-1688 alternate-model individual-band integers remain inadmissible at degeneracy and lack exact scratch-executable/grid identity. Positive replacement topology for those models is successor research. Source parameter uncertainty and independent device prediction are separate extensions."
+
+[[requirement]]
+item = 9
+status = "completed_scoped_adjudication"
+evidence = "E-289 failed optics threshold; E-302/E-303 source landmarks and fitting identity; E-301/E-304 Ward contacts and independent residuals"
+boundary = "The original full-vector Ward and optics reproduction thresholds remain failed. Passing finite predicates state identity class, contacts and source fitting scope. Certified continuum error bounds or making failed source reproduction pass would strengthen successors."
+
+[[requirement]]
+item = 10
+status = "open"
+evidence = "Named NuFit release/analysis variants; identified HEPData populations; source/history and quenching-equation receipts"
+remaining = "Admit QGP source-model implementation, theory curves with extraction uncertainty, likelihood/covariance and participant/eccentricity row identities. E-296 concerns the retained objective; its fit failure cannot reject the different source convolution."
+
+[[requirement]]
+item = 11
+status = "completed_scoped_adjudication"
+evidence = "finite-motif-moreno-source-map.toml; corrected C-1715 through C-1718 and C-1721"
+boundary = "All 243 enumerated components have exact rank witnesses at dimensions16 through256. Universal graph extensions stay conjectural; C-1721 exposes narrower hypotheses, concrete sedenion scope and two kernel-equality axioms. Proving stronger universal statements is successor research."

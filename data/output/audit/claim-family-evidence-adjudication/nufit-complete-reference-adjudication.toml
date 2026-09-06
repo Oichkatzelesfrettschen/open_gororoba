@@ -1,0 +1,67 @@
+schema_version = 1
+experiment_id = "E-287"
+producer = "crates/algebra_experimental/tests/nufit_reference_identity.rs"
+fixture = "crates/algebra_experimental/tests/fixtures/nufit_reference_intervals.json"
+source = "data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf"
+source_sha256 = "d39bb902b607bb27d4271646aefb48d073005eb4c764d536e50b1bab9238c658"
+source_locator = "Page1, Normal Ordering columns in IC19 without SK atmospheric data and IC24 with SK atmospheric data blocks; theta12, theta13, theta23, deltaCP, dm21 squared and dm3l squared rows. For normal ordering l=1."
+source_review = "Independent full-page Poppler rendering and layout-text inspection; all six production contour rows match the two printed normal-ordering variants."
+measured_scope = "NuFit6.0: six rows times five contour values times two variants. NuFit6.1: theta23 interval membership only."
+comparison_fitted_parameters = 0
+model_fitting_scope = "Fixed CP-A165, CP-B93 and ratio0.0304 targets. Their physical construction and published global-fit nuisance/oscillation parameters remain separate from zero-parameter reference lookup."
+replay = "data/output/audit/claim-family-evidence-adjudication/nufit-complete-reference-replay.txt"
+tests_passed = 4
+tests_failed = 0
+elapsed_test_seconds = 0.01
+
+[[comparison]]
+analysis = "NuFit6.0 IC24 with SK atmospheric data, normal ordering"
+cp_one_sigma_unwrapped = [171.0,238.0]
+cp_three_sigma_unwrapped = [124.0,364.0]
+cp_a_165_one_sigma = false
+cp_a_165_three_sigma = true
+cp_b_93_one_sigma = false
+cp_b_93_three_sigma = false
+dm21_over_dm31_best = 0.02980501392757660
+ratio_target = 0.0304
+ratio_difference = 0.00059498607242340
+ratio_marginal_one_sigma_box = [0.02880820836621942,0.03079390537289494]
+ratio_marginal_three_sigma_box = [0.02684251357641583,0.03284373725010200]
+
+[[comparison]]
+analysis = "NuFit6.0 IC19 without SK atmospheric data, normal ordering"
+cp_one_sigma_unwrapped = [157.0,196.0]
+cp_three_sigma_unwrapped = [96.0,422.0]
+cp_a_165_one_sigma = true
+cp_a_165_three_sigma = true
+cp_b_93_one_sigma = false
+cp_b_93_three_sigma = false
+dm21_over_dm31_best = 0.02955801104972376
+ratio_target = 0.0304
+ratio_difference = 0.00084198895027624
+ratio_marginal_one_sigma_box = [0.02852676826885502,0.03058542413381123]
+ratio_marginal_three_sigma_box = [0.02655410590943976,0.03268371904181892]
+
+[historical_composite]
+constructor = "NuFit60::historical_composite_reference"
+all_30_literals_preserved = true
+cp_best = 195.0
+cp_a_165_one_sigma = true
+cp_b_93_one_sigma = false
+cp_b_93_three_sigma = true
+mislabeled_slot_ratio = 0.03069710558499796
+identity_scope = "The retained literals differ from both admitted NuFit6.0 variants. Original attribution to particular older NuFit/PDG sources remains unresolved; matching literals alone cannot prove origin. The historical dm31 slot convention defect remains explicitly labeled."
+
+[uncertainty]
+ratio_envelope_method = "For positive marginals, divide numerator lower by denominator upper and numerator upper by denominator lower."
+ratio_target_in_both_marginal_boxes = true
+joint_confidence = "unassessed: marginal interval rectangles are not joint confidence regions; covariance and the joint likelihood were not admitted"
+cp_pull_scope = "Periodic membership and descriptive asymmetric displacement are distinct; marginal CP intervals do not justify Gaussian significance."
+residuals = ["NuFit6.1 CP and remaining five contour rows remain outside execution.", "Historical per-field source provenance remains unresolved.", "Source-reference correctness does not validate the physical model or eliminate its fitting freedom."]
+
+[verification]
+clippy = "pass with -D warnings"
+producer_sha256 = "45bf538cce066e38b115d706a56544b84722bdbfe5711d700313a55e4d819990"
+fixture_sha256 = "f13320542c8bd4c62c181ac86641f592fe00d6d811aa4e40322ffee85bd4a83d"
+production_source_sha256 = "ac71e728d3a68734b6def05d69152c086912b4899b2ab1bfd8714668ef5f78b6"
+replay_sha256 = "882a0778d301c33a7c3f4bc634fa70522b0fecf830a18a43ee702782ae584a3a"

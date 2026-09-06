@@ -1,0 +1,802 @@
+{
+  "verified_files": 199,
+  "retained_repair": "Two header entries required git add --renormalize after the -text attribute was declared; final staged bytes match retained CRLF inputs.",
+  "files": [
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/C-1696-content.toml",
+      "sha256": "debb4bd443d5612d20d976aa78eb94c449a0aa69de7aa07f16c3e3b5208977bb"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/C-1696-contract.toml",
+      "sha256": "be464509e1a83824a527a31dae7d5cad98871d7bcfa2ab12d61a8b41e1ff0330"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/C-1700-content.toml",
+      "sha256": "361a36dfab517d36d8676a5347210a81bfb71c5fd518570e6a7747ff6245bbbd"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/C-1700-contract.toml",
+      "sha256": "da1a9dd2b01e2a603727b6a6cfafc4aecc9a0099591773f0042ce191401f7be3"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/C-1702-content.toml",
+      "sha256": "aeec61e554da03df74c3a443ccf75a6d9b371f13fcd3298d5cd7c40a0d7c21ab"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/C-1702-contract.toml",
+      "sha256": "abdd50fb4995c7f3c47f077e86b458bd96c87c1dc5033f6bf5d97a345b51a2c9"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/adjudication.toml",
+      "sha256": "e3199d6091f5176bdd4fe0872621b3244b59f1817a97f2075ce4e710b412f07d"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/build.log",
+      "sha256": "4512e14b63cfa9a5daf0cbe098a27534bd9bcad55f7b8521ce61ec42a1ac4870"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/completion-boundaries.toml",
+      "sha256": "5b50720600e0e0e6befc05577d69dd38e94637ea7fae639f6368ee397ff1299a"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/cpu.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/cpu.log",
+      "sha256": "613a6c744d5529774db247d24f2f39e6f961b501cc3ad6bb4a76309a8c597d17"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/cuda.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/cuda.log",
+      "sha256": "f02c151cac2b66c5729e9b2686f32c099e010aadf3438d76c8a6e9e64eae3c85"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/experiment.toml",
+      "sha256": "8d2080db2433afac1a6a2efd3a9538119ea4ecced0e1f37d195d74c2058c6dee"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/export.log",
+      "sha256": "a255d7839690e0b8c3652f131c4d86e902da8e88a1c71a805197e99a3a1c280c"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/final-independent-analysis.json",
+      "sha256": "1d439803be9a2cb896440bc6d952c73469b3f2affafbf9c024cf4d985f329b04"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/final-receipt-check.log",
+      "sha256": "277495cf9aa4d1af9bf1f23dc64c0ff39c76521ff8c4160bc313c55334dccae5"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/final-receipt-producer.toml",
+      "sha256": "bf94b3e6936463c613b3019816c6545a84c13a5d83e326837515216469c9f589"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/history-before-normalization.json",
+      "sha256": "ee59cfeb51bc4685a21601b69e41c454a6e59a38665542f6079369520fa27ce0"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/history-normalization-preservation.json",
+      "sha256": "9e050024aaab242e69438774b53ae85d3c110f946d4d89ef750c2d134354fcd5"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/history-pre-mutation.json",
+      "sha256": "fd67bfd8dce09a6fa3a8fe66829dbdaade08158fcb4b4ffefb442e45e0170ce1"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/independent-analysis.json",
+      "sha256": "1d439803be9a2cb896440bc6d952c73469b3f2affafbf9c024cf4d985f329b04"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/independent-rest-streaming.json",
+      "sha256": "adc1ff629abad0300d88ddfdcf85320815db0b4875f2f3700fa768fffe0088f0"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/integration-validation.toml",
+      "sha256": "d94b3587a502828f2fe47a501a978e60cfa175a30f3e51e7f520e6c292ce9505"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/normalization.log",
+      "sha256": "4e760be501acf38d3c4392a1056a49f5b191b3103311dc4c576a4b369788a76f"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C0-uniform-zero-0/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C0-uniform-zero-0/input.json",
+      "sha256": "9a45827bba99b57a6a77140b115eace2ac37f3bd3b49a4b1e5c034dbe3b86d15"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C0-uniform-zero-0/rho.f64le",
+      "sha256": "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C1-uniform-fzd-0/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C1-uniform-fzd-0/input.json",
+      "sha256": "fdde142e49e3f547cb86fe8aac00a57da414c387f727507f5abd451a76b59542"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C1-uniform-fzd-0/rho.f64le",
+      "sha256": "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-0/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-0/input.json",
+      "sha256": "d0282fbb710b34cf1df28ee543a00b4afbddf45a75b24f7fadec800fc796ffc3"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-0/rho.f64le",
+      "sha256": "e7bcd56f5dfb14c53e1468c8f4fa51f6ab203c46418943ef28870390a7eb9edd"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-1/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-1/input.json",
+      "sha256": "fd979afa87f74510f165079f2bbd88a655533ce376c2c3252a6d77eb30e45994"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-1/rho.f64le",
+      "sha256": "65585b83e98950a7487a0800747762be7b4f2b14878e57da6b5318e7ae8a271d"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-2/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-2/input.json",
+      "sha256": "7699bc91d203058dff7499a6aaf2fc8ef9c64c04eb02e299c415319ca5f5004d"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-2/rho.f64le",
+      "sha256": "e47f88e9ff1a7964547ecaf177e49b24e4875b005081a6211570269d8e9788e0"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-3/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-3/input.json",
+      "sha256": "981ddfe9e1fe808c2e408252dc3e2799dbbc4a6ffee634b99997c8afaad6a94e"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-3/rho.f64le",
+      "sha256": "9c9ab67cd00368c11d2bf978acb0c27c612857d98fdc982c006398dd169d0015"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-4/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-4/input.json",
+      "sha256": "24cab21931519f0d0fb0204241d10e58f4da06380efadd2ed683d3aac40bb232"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-4/rho.f64le",
+      "sha256": "da820f4bbf567a63dc11ab90908bc5b87884e91ab6f8bdedc5161e5034880152"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-5/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-5/input.json",
+      "sha256": "e3ec95c94cdee50ccad17176bbab37150ac0ff4a6f647f974da20c9ea8e029d1"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-5/rho.f64le",
+      "sha256": "e07164d0e30e95509069071e61333df90cbbb8e49efdaf3cc3910487e1d00e3f"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-6/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-6/input.json",
+      "sha256": "23517f3ab8c8c4ae83a45281ba95edf6973c0cd1737ea1e4d85a2fafbcbae7ee"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-6/rho.f64le",
+      "sha256": "af69cc243f09cdb13f8142c3c8aa3c2d67f92cdab2dd80d8006f034328604693"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-7/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-7/input.json",
+      "sha256": "8934a321a7a3e210f7beb4c648db00517476e18b5f4da746c01dcfd60b48ecc0"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-7/rho.f64le",
+      "sha256": "a68dbe9c273b5482d021d82d11df85126add7c6b7aae2aca5a6f1a86730dafaf"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-8/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-8/input.json",
+      "sha256": "4948ee7618c6b3f896503b53ee264cd43a003297c0d2f9b41debec1d42274f95"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-8/rho.f64le",
+      "sha256": "86339ca02c65a16ffbd1e68df0dedef9b283f27c2b579c76c374e5209d0c0e8a"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-9/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-9/input.json",
+      "sha256": "42d73b1164644bbe03de6b1cf5b67ecd8f0ae40b13444f59bdc8b48b2a0a081b"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C2-noise-zero-9/rho.f64le",
+      "sha256": "a7a8d48af23a42623858cb8785351879ece6d6e09940618c0a27619d75f80015"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-0/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-0/input.json",
+      "sha256": "5d46c40abf6f998d9f77204fbacc19db83dd1e680d9bae61daecb4c8a5636c07"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-0/rho.f64le",
+      "sha256": "e7bcd56f5dfb14c53e1468c8f4fa51f6ab203c46418943ef28870390a7eb9edd"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-1/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-1/input.json",
+      "sha256": "2230bb17b5b8eb41280ddd4127a5ee362e2e2b6231e8ed2df6433a91c2f6abd4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-1/rho.f64le",
+      "sha256": "65585b83e98950a7487a0800747762be7b4f2b14878e57da6b5318e7ae8a271d"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-2/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-2/input.json",
+      "sha256": "ebe84948515028ba86a691cc64efd3cd7d4853671d51795a62953fc1ad9f95ab"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-2/rho.f64le",
+      "sha256": "e47f88e9ff1a7964547ecaf177e49b24e4875b005081a6211570269d8e9788e0"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-3/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-3/input.json",
+      "sha256": "7bf75b97d1aba20164af7118e6494cc87b7381e6e2d826fe21f85758b236d1cb"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-3/rho.f64le",
+      "sha256": "9c9ab67cd00368c11d2bf978acb0c27c612857d98fdc982c006398dd169d0015"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-4/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-4/input.json",
+      "sha256": "50593c2d8bf1ca409bb8cb24f1272eb65c81463733090337a1d8cf4fde9e4f2c"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-4/rho.f64le",
+      "sha256": "da820f4bbf567a63dc11ab90908bc5b87884e91ab6f8bdedc5161e5034880152"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-5/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-5/input.json",
+      "sha256": "6435bc00951bfbeebb126adf30289103133374f209dd54676caea2829367a1d2"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-5/rho.f64le",
+      "sha256": "e07164d0e30e95509069071e61333df90cbbb8e49efdaf3cc3910487e1d00e3f"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-6/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-6/input.json",
+      "sha256": "14ee2b92798bd0eab9a99b966118b8714d0d7064e6576107509b5f0674e4d066"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-6/rho.f64le",
+      "sha256": "af69cc243f09cdb13f8142c3c8aa3c2d67f92cdab2dd80d8006f034328604693"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-7/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-7/input.json",
+      "sha256": "23dd4ac93e6af5a1cb2526fb248af340155160126e2855a2a320545ea4ebc664"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-7/rho.f64le",
+      "sha256": "a68dbe9c273b5482d021d82d11df85126add7c6b7aae2aca5a6f1a86730dafaf"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-8/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-8/input.json",
+      "sha256": "09fd8eb6fa4d20c809f2980cead9d02e5d62417de4b7127c8eedca0876bdf941"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-8/rho.f64le",
+      "sha256": "86339ca02c65a16ffbd1e68df0dedef9b283f27c2b579c76c374e5209d0c0e8a"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-9/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-9/input.json",
+      "sha256": "6c7549d8af4a8a9e4f8a9eb574593bd7a522d871def3de8ee1802a3658f382bd"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C3-noise-fzd-9/rho.f64le",
+      "sha256": "a7a8d48af23a42623858cb8785351879ece6d6e09940618c0a27619d75f80015"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C4-sersic-zero-0/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C4-sersic-zero-0/input.json",
+      "sha256": "7028d8e30142232da31226d561a93a934e736f6d859dd5c06d5ffbdb445ea035"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C4-sersic-zero-0/rho.f64le",
+      "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C5-sersic-fzd-0/force.xyz.f64le",
+      "sha256": "2b9a0fd30a1d5768faaa4a6c985686069895a9d3d24f6d2e72190bf99b896cf7"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C5-sersic-fzd-0/input.json",
+      "sha256": "4618e8450d39f5655f745a33663a0a9594388f89ead9a17d5a716c1678d160bc"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C5-sersic-fzd-0/rho.f64le",
+      "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C6-sersic-nfw-0/force.xyz.f64le",
+      "sha256": "21ddea8efececbd3dbb59f1d81c84a54c76fabd2f9bd6b5dc3dc9f254e2eeb73"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C6-sersic-nfw-0/input.json",
+      "sha256": "9aec9b4edbde1ec41bcd41ef68a0227f9876030abf32311af68c460ef910c107"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/C6-sersic-nfw-0/rho.f64le",
+      "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cpu/trials.csv",
+      "sha256": "a504e5ab6a13bd2819ad5b5e8603a9d16dafb86beefde8def9c43c524366a809"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C0-uniform-zero-0/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C0-uniform-zero-0/input.json",
+      "sha256": "e9cadef6c278d8f3f877e05c5c80466eb0a81b8e1cd61e982b07dce330941649"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C0-uniform-zero-0/rho.f64le",
+      "sha256": "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C1-uniform-fzd-0/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C1-uniform-fzd-0/input.json",
+      "sha256": "2d42e8a5375db53405da3aba8a41f6971a5b8d0d67ce1fba9d476a25d9ca307f"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C1-uniform-fzd-0/rho.f64le",
+      "sha256": "9ad28ff0dbb91703f930756f2c9d0f2a9f7655d6e0efeb120b4c23f9321bdaa7"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-0/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-0/input.json",
+      "sha256": "bfb702b9f53e5ff23c2692cbd21fe723fc4313e6901d669377364d855e6a06c8"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-0/rho.f64le",
+      "sha256": "e7bcd56f5dfb14c53e1468c8f4fa51f6ab203c46418943ef28870390a7eb9edd"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-1/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-1/input.json",
+      "sha256": "9a1c8ab9c37042724ce99ae5f21e6447c70fd79b1df9e3ba9710ba85331ede86"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-1/rho.f64le",
+      "sha256": "65585b83e98950a7487a0800747762be7b4f2b14878e57da6b5318e7ae8a271d"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-2/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-2/input.json",
+      "sha256": "036768b5bc069e039ba536c835b91fd36f05c538123263746669169cec499473"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-2/rho.f64le",
+      "sha256": "e47f88e9ff1a7964547ecaf177e49b24e4875b005081a6211570269d8e9788e0"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-3/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-3/input.json",
+      "sha256": "8d8beda9c24dbb46d0717a16e74bf031916820ccba5ebca9dede687edc320daf"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-3/rho.f64le",
+      "sha256": "9c9ab67cd00368c11d2bf978acb0c27c612857d98fdc982c006398dd169d0015"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-4/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-4/input.json",
+      "sha256": "f3d20e15e1e1a41e902118aec41f1ee94f720b92f8d5ede282bf4226c8a4833a"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-4/rho.f64le",
+      "sha256": "da820f4bbf567a63dc11ab90908bc5b87884e91ab6f8bdedc5161e5034880152"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-5/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-5/input.json",
+      "sha256": "8691a4645d67947085193e25d2ad1dfa38677d78750a3cd5d10cab29be3f899b"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-5/rho.f64le",
+      "sha256": "e07164d0e30e95509069071e61333df90cbbb8e49efdaf3cc3910487e1d00e3f"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-6/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-6/input.json",
+      "sha256": "6109012ef41570ae43f86f2b27ac6b39132ac687b00dafef8d704fdf49bc0623"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-6/rho.f64le",
+      "sha256": "af69cc243f09cdb13f8142c3c8aa3c2d67f92cdab2dd80d8006f034328604693"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-7/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-7/input.json",
+      "sha256": "af191d26832483c7b73dbbc1554ce49b899d8cf64623fcb9422d6c20637488de"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-7/rho.f64le",
+      "sha256": "a68dbe9c273b5482d021d82d11df85126add7c6b7aae2aca5a6f1a86730dafaf"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-8/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-8/input.json",
+      "sha256": "59019ab097adcd6cea5c1bf94aa00e907ca9c391cdde0ab3d723d59b2911b23c"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-8/rho.f64le",
+      "sha256": "86339ca02c65a16ffbd1e68df0dedef9b283f27c2b579c76c374e5209d0c0e8a"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-9/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-9/input.json",
+      "sha256": "5a7b6c24e7b991b652a44228a46dedaeeb4a0f36d1d89114e0bfb7f9417982cc"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C2-noise-zero-9/rho.f64le",
+      "sha256": "a7a8d48af23a42623858cb8785351879ece6d6e09940618c0a27619d75f80015"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-0/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-0/input.json",
+      "sha256": "16f27c96c41ad492363cf2fe55a69de0423a2be064066d0ca5d5cdbd6451e446"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-0/rho.f64le",
+      "sha256": "e7bcd56f5dfb14c53e1468c8f4fa51f6ab203c46418943ef28870390a7eb9edd"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-1/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-1/input.json",
+      "sha256": "f92d12dbf6ee7f95074cdc4006dd3af93b1a743a61a091dd7ad613056d6ffd47"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-1/rho.f64le",
+      "sha256": "65585b83e98950a7487a0800747762be7b4f2b14878e57da6b5318e7ae8a271d"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-2/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-2/input.json",
+      "sha256": "52653bc1ca2a5c9e2444828e0078d95c5a32d8397aff49ce3df42a44d4b45e67"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-2/rho.f64le",
+      "sha256": "e47f88e9ff1a7964547ecaf177e49b24e4875b005081a6211570269d8e9788e0"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-3/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-3/input.json",
+      "sha256": "fc9039a41a2914347d068732e35ca3f681873e578f3b2bfeeb021d367d6b8409"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-3/rho.f64le",
+      "sha256": "9c9ab67cd00368c11d2bf978acb0c27c612857d98fdc982c006398dd169d0015"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-4/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-4/input.json",
+      "sha256": "cf3dd9cb1bcf479f1788739d134c79d99a789dd1fa1a24daa4b422e2e0845765"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-4/rho.f64le",
+      "sha256": "da820f4bbf567a63dc11ab90908bc5b87884e91ab6f8bdedc5161e5034880152"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-5/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-5/input.json",
+      "sha256": "84886a1376b2041b52725d7736d6d15187ccf0fe1062cd2ac40731dd449b1a89"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-5/rho.f64le",
+      "sha256": "e07164d0e30e95509069071e61333df90cbbb8e49efdaf3cc3910487e1d00e3f"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-6/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-6/input.json",
+      "sha256": "698304b4b2a66cb77a0bc6251db7354f83584110d9c35f157099ffd8bd08e9f6"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-6/rho.f64le",
+      "sha256": "af69cc243f09cdb13f8142c3c8aa3c2d67f92cdab2dd80d8006f034328604693"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-7/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-7/input.json",
+      "sha256": "8ee0f48c2773700b650be2ddcc3581fcb95c7d439c074e6f65f26e59e5ee0bd4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-7/rho.f64le",
+      "sha256": "a68dbe9c273b5482d021d82d11df85126add7c6b7aae2aca5a6f1a86730dafaf"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-8/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-8/input.json",
+      "sha256": "c015c12fbe8045f7dd6e4ef82ff6c4a0f0ea65ca015554052e88c5e4974c9d56"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-8/rho.f64le",
+      "sha256": "86339ca02c65a16ffbd1e68df0dedef9b283f27c2b579c76c374e5209d0c0e8a"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-9/force.xyz.f64le",
+      "sha256": "2050ed246e70e02a6aadafedc5f70147ba7ee980d937435c9dc16931f6557166"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-9/input.json",
+      "sha256": "074c16b688b54b71eaa3e5a4f312b2f84da3b9de69e5e3a53c7710c38153cc82"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C3-noise-fzd-9/rho.f64le",
+      "sha256": "a7a8d48af23a42623858cb8785351879ece6d6e09940618c0a27619d75f80015"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C4-sersic-zero-0/force.xyz.f64le",
+      "sha256": "3a3ed164e42500a1c5b2d0093f0a813d27dc50d038f330cc100a7e70ece2e6e4"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C4-sersic-zero-0/input.json",
+      "sha256": "b8be6ca57e40d41cf09ee2feaec56a40ebcd818d3cad78a1b25eb5ebc12689a8"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C4-sersic-zero-0/rho.f64le",
+      "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C5-sersic-fzd-0/force.xyz.f64le",
+      "sha256": "2b9a0fd30a1d5768faaa4a6c985686069895a9d3d24f6d2e72190bf99b896cf7"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C5-sersic-fzd-0/input.json",
+      "sha256": "32fe679012a268011b115655b642b8230f4b28f87f9acc523a8fe10aa058f470"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C5-sersic-fzd-0/rho.f64le",
+      "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C6-sersic-nfw-0/force.xyz.f64le",
+      "sha256": "21ddea8efececbd3dbb59f1d81c84a54c76fabd2f9bd6b5dc3dc9f254e2eeb73"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C6-sersic-nfw-0/input.json",
+      "sha256": "a01c21badc801664d80a8b4ee4cec79562547ee3534c087acad5348f15d829bf"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/C6-sersic-nfw-0/rho.f64le",
+      "sha256": "7329cbca527f5cd5ef62abf6daba1ddf8a166fcbf45fc286e288e8347b859492"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/null-pilot-cuda/trials.csv",
+      "sha256": "3204d9ec5f6bf69913b4bdfa0808b381e2145425de96f536ffdb0a05fce07790"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/oracle-build.jsonl",
+      "sha256": "894622772d4becd30a0b7fbd3c083b7668a985f1a3c961c696dc81083dc18060"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/oracle-build.log",
+      "sha256": "6464e1be1553a48f52317050894d0ea745b937d5adaeac073a4e99e85b49a9f2"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/producer.toml",
+      "sha256": "629cba92389d78f1c25a9fbbade41defa79233ecc4206cc0ea3197f9e4dd659a"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/protocol.toml",
+      "sha256": "f68f2037572643545799c91e597d1c1a530882fc244238bc608bfcc5455606bb"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/publication-validation.log",
+      "sha256": "dbc7928950f0d6702d2c706aba24b71acacd6c3d6057de9736248f473fb352d2"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/receipt-check.log",
+      "sha256": "95debbd974bea0a7d7582b621be7b36cc65d51865210e022cdcdf36ef6ae6900"
+    },
+    {
+      "path": "data/output/audit/corrected-mrt-null-replay/registry-integrity.log",
+      "sha256": "bea0d55b908c515c163d1bf229f0990f74b1cad5c5d999d9b101fa7861480a54"
+    },
+    {
+      "path": "data/output/audit/qgp-primary-reference-intake/ansatz-and-history-audit.toml",
+      "sha256": "507c8b26dcb7b1ab10c64c3b629b84611013c3e2cc9e2b676aab726d829ef4f0"
+    },
+    {
+      "path": "data/output/audit/qgp-primary-reference-intake/quenching-comment-preservation.toml",
+      "sha256": "383f137ade5d149543918cfe07476828e864ab67c4575436eb1611ffd9323f0d"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/C-1710-content.toml",
+      "sha256": "c055d6f7031988a8a472ab6732c44e7ea20ee1a31c621e4eed6b7ccab103e36c"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/C-1710-contract.toml",
+      "sha256": "37e8161f08ca15dab21473932bae2276a91fcdd32dd1c16bfa2e390cc0ac946a"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/SHA256SUMS",
+      "sha256": "93d20e5599b388f60b6352fee0cc676304723f332556617d8c60db86575ecc79"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/adjudication.toml",
+      "sha256": "db39a83311cca946588803f420299fe037c75a9aa09599f759f5adbe438c3f18"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/arxiv-1703.10852-extracted-text.json",
+      "sha256": "afa09a685ec57abfa70334fc22dcaf354fb965c163619fe4704adf8859f9ea30"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/arxiv-1703.10852-page2.png",
+      "sha256": "38411698ab4e8ac3835c8540b3fa8d77fb05de3936c93db05e67844ce8d59d24"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/arxiv-1703.10852-retrieval.headers",
+      "sha256": "c336bf2640018d65d4ae6d0af626d27cd05934252680960c309e86f06352c485"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/arxiv-1703.10852v1.pdf",
+      "sha256": "dd21cf31ee61df4d523817bfd988287eefac2e6e6a5b194a53fab9ce3c50273f"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324-extracted-text.json",
+      "sha256": "d5d468ddcfd23a1915f96c9c3ae64032551f2f6a6a877324e8cbea786fca5684"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324-page1.png",
+      "sha256": "ebffec00b1b8fe52545442fd3f7496843dd6750c275bd8b24fa782007cea3837"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324-retrieval.headers",
+      "sha256": "4f63acbbe774724ba7b023da2b948c6c2d918717070d796ffc6ed530c2de2b8c"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/arxiv-2212.01324v1.pdf",
+      "sha256": "0522b734aea9802fd8c124c913fc1813dd944d5f0e19e217143e826a817b72f7"
+    },
+    {
+      "path": "data/output/audit/qgp-source-quenching-identity/calibration-boundaries.toml",
+      "sha256": "7e9737bc69b7c8c124911a8fcba7e7a5a7f01e1939b65ece224b7406b8a27904"
+    }
+  ]
+}

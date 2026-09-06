@@ -1,0 +1,38 @@
+--2026-09-05 18:07:22--  https://raw.githubusercontent.com/hpoppenb/BashPhox/499d004f514e721b0aa4d0347ee5e004fc01fa29/frag/dss/fDSS.f
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.109.133, 185.199.108.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Connection: keep-alive
+  Content-Length: 24737
+  Cache-Control: max-age=300
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox
+  Content-Type: text/plain; charset=utf-8
+  ETag: "96b387389dc09c0532042a211db4fe9fab4850f0f05a9878f535c05634b5cfe3"
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: deny
+  X-XSS-Protection: 1; mode=block
+  X-GitHub-Request-Id: D204:103023:2E19D4:57A970:6A9CBCCA
+  x-github-edge-region: uksouth
+  Accept-Ranges: bytes
+  Date: Sun, 06 Sep 2026 01:07:23 GMT
+  Via: 1.1 varnish
+  X-Served-By: cache-hhr-khhr2060026-HHR
+  X-Cache: MISS
+  X-Cache-Hits: 0
+  X-Timer: S1788656843.744483,VS0,VE303
+  Vary: Authorization,Accept-Encoding
+  Access-Control-Allow-Origin: *
+  Cross-Origin-Resource-Policy: cross-origin
+  X-Fastly-Request-ID: 003b98ff8cfb13bff9b840782b6e2a9ec69ff93d
+  Expires: Sun, 06 Sep 2026 01:12:23 GMT
+  Source-Age: 0
+Length: 24737 (24K) [text/plain]
+Saving to: ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-fDSS.f’
+
+     0K .......... .......... ....                            100% 6.88M=0.003s
+
+2026-09-05 18:07:23 (6.88 MB/s) - ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/bashphox-fDSS.f’ saved [24737/24737]
+

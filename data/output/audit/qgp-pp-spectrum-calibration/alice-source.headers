@@ -1,0 +1,18 @@
+HTTP/2 200 
+server: Google Frontend
+link: <https://arxiv.org/pdf/1802.09145>; rel='canonical'
+etag: "sha256:996041c6f16739590e84f40423854e2a153f2496f8d3991b5bc3522fc41b38df"
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+last-modified: Sun, 22 Jan 2023 20:40:43 GMT
+access-control-allow-origin: *
+content-type: application/pdf
+x-cloud-trace-context: 8124cbf667e7b9cb5735783387c5924e
+content-disposition: inline; filename="1802.09145v2.pdf"
+accept-ranges: bytes
+age: 74876
+date: Sat, 05 Sep 2026 23:09:31 GMT
+x-served-by: cache-lga21991-LGA, cache-lga21991-LGA, cache-lga21924-LGA, cache-hhr-khhr2060040-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1788649771.375110,VS0,VE86
+content-length: 1203659
+

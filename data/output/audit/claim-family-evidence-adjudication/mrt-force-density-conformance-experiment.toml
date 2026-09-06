@@ -1,0 +1,17 @@
+[[experiment]]
+id = "E-300"
+title = "MRT force-density impulse correction and evolving FP32 population conformance"
+status = "active"
+binary = "cargo-test:lbm_3d_cuda:mrt_population_conformance"
+claims = ["C-1282"]
+claim_refs = ["C-1282"]
+deterministic = true
+gpu = true
+reproducibility_class = "deterministic_replay"
+input = "Periodic D3Q19 MRT 8-cubed field, tau 0.8, twelve steps, spatially varying density/velocity, prescribed time-independent force density and matched unforced control. CPU scalar-tail extension covers two shapes and three relaxation times."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-protocol.toml"]
+method = "Compare post-step populations and independently reduced density/raw momentum across CPU, standard FP32 CUDA push SoA direct, and explicit captured graph pairs. Independently require the prescribed total force-density impulse. Retain the shared pre-correction failure and both producer identities."
+run = "cargo test -p lbm_3d_cuda --test mrt_population_conformance --profile validation; on explicitly admitted CUDA hardware run the built test harness with --ignored --nocapture and MRT_CONFORMANCE_OUTPUT naming a fresh receipt."
+output = ["data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-result.toml"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/mrt-population-before-force-correction.rs.txt", "data/output/audit/claim-family-evidence-adjudication/mrt-force-density-conformance-result.toml", "data/output/audit/claim-family-evidence-adjudication/mrt-population-before-force-correction.txt", "data/output/audit/claim-family-evidence-adjudication/mrt-population-after-force-correction.txt"]
+status_note = "The original CPU and CUDA MRT implementations deliver 0.375 of prescribed impulse at tau 0.8 while all 36 cross-backend comparisons pass. Corrected source weighting and half-force velocity pass all 36 conformance and impulse rows at the unchanged 2e-5 gates. CPU extensions, 38 existing force tests and the unchanged BGK oracle pass. Numerical replay covers standard FP32 push direct/captured paths only. Eight independent precision kernels and alternate FP32 dispatch validation remain unresolved; E-298 historical pilots retain their original producer identity."

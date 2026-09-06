@@ -1,0 +1,96 @@
+experiment = "E-300"
+layer = "implementation_conformance"
+result = "shared MRT force-density impulse defect reproduced and repaired on CPU scalar/SIMD and FP32 CUDA SoA"
+producer_before_commit = "c9132da123438615638fb3f99a922bb471996e11"
+producer_before_identity = "git show of solver.rs and kernels_soa.cu at producer_before_commit reproduces both measured source hashes"
+pre_correction_solver_sha256 = "00af5393fbfc5ae44cc5506068234b72e8292a57ba02a72b76622d5cee4217a9"
+pre_correction_cuda_soa_sha256 = "8876f7f5e27697dbf76b616ee8b8136d6f26783927260f2c0b53d9542fc2fa04"
+pre_correction_oracle_sha256 = "f2aa111eeca1b37a3dca2d447a06469af9edbca64cc3ae83c0df46e699719cd8"
+post_correction_solver_sha256 = "80473ef20765163366f3858af71e02cc6fdefc802c210ac97d537452fd546f5c"
+post_correction_cuda_soa_sha256 = "6c55f10ccc6f90d8732823e78fc86b53773b488736335c9a85a49ddb146ba322"
+post_correction_oracle_sha256 = "25d95f861bf81affc944cceb972cb6099c4b6f6b8afceb629e1c517dcae3397a"
+oracle = "crates/lbm_3d_cuda/tests/mrt_population_conformance.rs"
+original_result = "mrt-population-before-force-correction.txt"
+original_result_sha256 = "08082dbb2edac5e8cd7e8e55ebbf0002b5544321a244cd7745b2806836760ae4"
+corrected_result = "mrt-population-after-force-correction.txt"
+corrected_result_sha256 = "3c3ff7220ce1c6a8eb4fe84199919f146425de18fc2702c5955dedc0782a2f5d"
+original_test_exit = 101
+corrected_test_exit = 0
+historical_result_boundary = "E-298 pilot arrays and results remain historical producer outputs; the source repair establishes no retrospective physical validation."
+
+[protocol]
+grid = [8, 8, 8]
+steps = 12
+observation_steps = [2, 4, 6, 8, 10, 12]
+tau = 0.8
+collision = "MRT D3Q19"
+precision = ["CPU f64", "CUDA f32"]
+boundary = "periodic xyz"
+initial_density = "1 + .03*cos(2*pi*x/8) + .01*sin(2*pi*z/8)"
+initial_velocity = "[.02*sin(2*pi*y/8), .01*cos(2*pi*z/8), .005*sin(2*pi*x/8)]"
+forced_input = "[.0002 + .0001*cos(2*pi*y/8), .00008*sin(2*pi*z/8), .00005*cos(2*pi*x/8)]"
+force_semantics = "prescribed time-independent force density in lattice units; input is not acceleration and receives no density multiplication"
+unforced_control = "identical density/velocity with zero force"
+paths = ["CPU collision then streaming", "CUDA direct two steps per observation", "CUDA explicit step_graph_pair capture/replay"]
+comparison = "Cell-major post-step populations; independently summed density and raw momentum from D3Q19 directions"
+engineering_gate = 0.00002
+engineering_gate_origin = "inherited unchanged from test_gpu_cpu_equivalence.rs evolving population oracle before first MRT run"
+impulse_gate = 0.00002
+impulse_comparison = "maximum component of mean raw-momentum increment minus step*sum(force_density)/cell_count"
+physical_momentum_convention = "Physical momentum is raw momentum plus force_density/2. The prescribed time-independent force gives identical half-force offsets at the initial and final times, so the offset cancels in the increment."
+interpretive_depth = 0
+fitted_parameters = 0
+
+[mechanism]
+prior_source = "MRT conserved momentum uses relaxation rate zero, but both backends applied the BGK scalar Guo prefactor 1-1/(2*tau) to every source moment."
+prior_cpu_cuda_difference = "CPU evaluated nonconserved equilibrium/source moments at u+F/(2*rho); CUDA evaluated them at raw u."
+correction = "Evaluate MRT collision and Guo source at u+F/(2*rho); apply M^-1*(I-S/2)*M to the raw source."
+implementation_identity = "Existing zero-equilibrium linear MRT collision gives A=I-M^-1*S*M; (Phi+A*Phi)/2 equals the required weighted source without duplicating the moment basis or rates."
+source_routes = "CPU scalar tail and SIMD; seven FP32 CUDA SoA MRT call sites share mrt_collision_forced_d3q19."
+
+[before]
+comparison_rows = 36
+cross_backend_gate_passing_rows = 36
+impulse_gate_failing_rows = 18
+expected_forced_final_mean_impulse_x = 0.0024
+cpu_delivered_forced_final_mean_impulse_x = 0.0009
+cpu_forced_final_impulse_error = 0.00150000000000000285
+cuda_forced_final_impulse_error = 0.00149999951341888110
+delivered_fraction = 0.375
+finding = "CPU/CUDA conformance passed while the independent force-density impulse predicate failed."
+
+[after]
+comparison_rows = 36
+cross_backend_gate_passing_rows = 36
+impulse_gate_passing_rows = 36
+forced_final_population_rms = 1.46848333275679151e-8
+forced_final_density_rms = 1.15830210318251831e-7
+forced_final_momentum_rms = 2.22535200190035824e-8
+cpu_forced_final_impulse_error = 5.20417042793042128e-18
+cuda_forced_final_impulse_error = 1.51339918370345990e-9
+direct_captured = "identical population arrays at all six observation steps in both controls"
+
+[validation]
+cpu_regular_tests = "2 passed: evolving unforced conservation; force-density impulse across tau .6/.8/1.1, shapes8x8x8 and5x3x2, twelve observations each (72 forced observations, including SIMD/scalar tail)."
+cpu_force_regressions = "cargo test -p lbm_3d --lib force --profile validation: 38 passed"
+bgk_oracle = "Existing test_gpu_cpu_equivalence.rs: one regular and two explicit CUDA tests passed; source file unchanged"
+bgk_population_rms = 3.1221105175961436e-8
+bgk_post_stream_density_rms = 3.335405604493378e-7
+clippy = "cargo clippy -p lbm_3d -p lbm_3d_cuda --lib --profile validation -- -D warnings; cargo clippy -p lbm_3d_cuda --test mrt_population_conformance --profile validation -- -D warnings: passed"
+diff_check = "git diff --check on modified solver/kernel: passed"
+gpu = "NVIDIA GeForce RTX 4070 Ti"
+gpu_uuid = "GPU-9cdd53e3-7a94-8392-e7ce-ee6079352f3e"
+driver = "610.57.04"
+cargo_home = "/home/eirikr/Github/open_gororoba/.cache/cargo-home"
+cargo_target_dir = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target"
+cargo_build_build_dir = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e"
+build = "cargo test -p lbm_3d_cuda --test mrt_population_conformance --profile validation"
+replay = "Set MRT_CONFORMANCE_OUTPUT to a fresh path; run the built mrt_population_conformance test harness with --ignored --nocapture. create_new preserves existing receipts."
+
+[limits]
+physical_interpretation = "unassessed; bounded implementation and discrete momentum balance only"
+resolution_convergence = "unassessed"
+performance = "unmeasured; forced collision applies an additional linear moment transform"
+other_fp32_dispatches = "Seven call sites route through the compiled helper; numerical replay covers standard push SoA direct/captured only. Tiled, pull, coarsened and AA dispatch correctness remains unassessed."
+independent_precision_kernels = ["kernels_fp64_soa.cu", "kernels_fp16_soa.cu", "kernels_fp16_soa_half2.cu", "kernels_bf16_soa.cu", "kernels_int8_soa.cu", "kernels_int16_soa.cu", "kernels_fp8_soa.cu", "kernels_fp8_e5m2_soa.cu"]
+precision_residual = "Independent precision-specific MRT implementations remain outside the FP32 source repair and require source audit plus separately admitted impulse/conformance tests before forced-dynamics interpretation."

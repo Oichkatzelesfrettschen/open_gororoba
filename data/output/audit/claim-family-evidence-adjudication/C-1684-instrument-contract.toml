@@ -1,0 +1,30 @@
+claim_id = "C-1684"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["Retain the historical 131178.947368 to 239325.927107 mass report over 500 steps and its exact producer; an 82 percent change alone is not a conservation residual."]
+[[intervening_maps]]
+branch = "boundary_mass_balance"
+name = "source_and_input_identity"
+kind = "computational"
+description = "Separate periodic streaming, min-x population reconstruction, collision and each physical boundary flux."
+[[intervening_maps]]
+branch = "boundary_mass_balance"
+name = "independent_predicate"
+kind = "computational"
+description = "Compute M_final-M_initial minus measured integrated net inflow and source terms, with a preregistered numerical tolerance; compare each stage in its actual storage layout."
+[[fitted_parameters]]
+branch = "boundary_mass_balance"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+[decisive_experiment]
+experiment_ids = ["E-112","E-119","E-297"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/open-x-flux-protocol.toml"
+description = "E-112/E-119 retain the historical family binding and unadmitted radial SI input. E-297 independently verifies explicit open-x population transport, face inventory and collision residuals. Its finite numerical closure has a separate successor C-1746; physical outflow, magnetic boundaries, frame and coupled sensitivity remain unassessed."
+[what_would_verify_refute]
+verification_outcomes = ["The historical total-mass increase and inlet population overwrite are reproduced for the retained input; verification supports an inventory change rather than conservation failure."]
+revision_outcomes = ["Replace unconditional nonconservation language if boundary mass accounting explains the change. The repaired AoSoA inlet requires a successor source identity and retains the original mismatch."]
+abandonment_outcomes = ["An admitted identical historical report contradicts the recorded mass values or source-layout diagnosis.", "Independent transport or face-sum oracles fail the declared E-297 replay; abandon the successor conformance result rather than treating total-mass increase as conservation error."]
+inconclusive_outcomes = ["The numerical zero-gradient outflow lacks physical reflected-wave/backflow admission, magnetic boundary specification, matched SI spacecraft inputs and a gravitational-frame choice.", "Finite flux accounting leaves coupled physical sensitivity and a physical force bound unassessed."]

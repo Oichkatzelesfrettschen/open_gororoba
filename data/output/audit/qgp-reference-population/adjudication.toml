@@ -1,0 +1,49 @@
+schema_version = 1
+claims = ["C-1710", "C-1711", "C-1712", "C-1713", "C-1714"]
+scope = "Primary-source reference identity; retained model arrays remain historical observations."
+physical_ranking = "blocked"
+
+[alice_original]
+source = "arXiv:1805.05212; doi:10.1016/j.physletb.2019.04.047"
+table = "doi:10.17182/hepdata.89396.v1/t1"
+population = "charged particles, Pb-Pb, sqrt(sNN)=5020 GeV, centrality 0-5%, midrapidity"
+verification = "All 38 CSV rows match freshly retrieved Table 1 JSON exactly for lower/upper pT edges, RAA, statistical error, systematic error and normalization error."
+retained_columns = "alice5020-verified-values.csv"
+fixture_sha256 = "6c892ea7dd988220ecde94074eff6a48c04d470ca15f3a28312d61386b484624"
+covariance = "Paper section 3 separates fully correlated centrality normalization from residual bin-by-bin shape uncertainty; overall normalization combines centrality, Ncoll, trigger and pp reference terms. Frozen diagonal stat+syst scoring omits the separately tabulated normalization."
+
+[cujet]
+source = "arXiv:1508.00552v3; Xu, Liao and Gyulassy; JHEP02(2016)169"
+contradiction = "Figures 4 and 5 are temperature-dependent transport coefficients. Historical arrays cite those figures as centrality-specific RAA curves."
+actual_curve = "Figure 3(a), charged hadrons Pb-Pb 2.76 TeV, 20-30% centrality"
+scope = "Figure caption pT>8 GeV; section 6 pT>10 GeV/c. A common comparison can restrict pT>10 GeV/c."
+parameters = "Figure 3 schemes: (alpha_c,c_m,chi_T)=(0.95,0.3,L),(0.95,0.4,u),(1.33,0.3,u). Caption states calibration to charged RAA at pT=12.5 GeV approximately 0.3 and lattice magnetic screening mass."
+fitting_budget = "Two model parameters plus discrete scheme choice and external calibration; an effective BIC penalty requires a declared joint fitting procedure. Historical n_params=5 lacks derivation here."
+blocker = "Exact numerical source identity and extraction uncertainty of historical arrays remain unresolved; corrected experimental population alone cannot admit those arrays."
+
+[aligned_candidate]
+source = "arXiv:1208.2711; doi:10.1016/j.physletb.2013.01.051"
+table = "doi:10.17182/hepdata.59944.v1/t19"
+artifact = "alice2760-table19.json"
+population = "PB PB --> CHARGED X; sqrt(sNN)=2760 GeV; centrality 20.0-30.0 pct; eta -0.8 to 0.8"
+errors = "Table supplies statistical, systematic and 4.64% normalization uncertainty. A full covariance matrix is absent from the retained table."
+admission = "Experimental population matches CUJET Figure 3(a); numerical theory-curve identity and covariance treatment remain prerequisites to model ranking."
+
+[fractional_langevin]
+source = "arXiv:2401.03757; Jai Prakash; Anomalous diffusion of the heavy quarks through the fractional Langevin equation"
+contradiction = "Historical metadata names Feal/Salgado, Figure 3 and centrality-specific D mesons. Source Figure 3 is mean squared displacement versus time."
+actual_curve = "Figure 4, charm-quark RAA in a static medium at t=6 fm/c, T=250 or 350 MeV, four alpha values."
+initial_spectrum = "FONLL-inspired x0/(x1+pT)^x2, x0=6.365480e8, x1=9, x2=10.27890."
+blocker = "Source does not establish the claimed final D-meson species or 0-10%/30-50% populations; a hadronization and collision mapping would introduce additional assumptions."
+
+[geometry]
+cited_source = "arXiv:1612.08966; Pb-Pb 5.02 TeV multiplicity"
+candidate_source = "arXiv:1301.4361; ALICE Pb-Pb 2.76 TeV centrality"
+finding = "Older-energy centrality tables share some retained participant values: Appendix A4 data-weighted 5-10%=329.7 and 10-20%=260.5. Other entries differ; 0-5% is 382 data-weighted or 382.7 geometric, versus retained 382.8."
+blocker = "Exact per-row Npart lineage remains unresolved. A matching subset does not identify the full population. The retained epsilon2 sequence lacks an identified source table or definition."
+
+[outcomes]
+revision = "Replace source-attribution statements with the bounded identities above; retain historical curves and scores as unmatched comparisons."
+verification = "Admit a ranking only after all numerical model curves share identified energy, species, centrality, acceptance and pT range; declare common covariance/normalization treatment and calibration/fitting counts."
+abandonment = "Abandon the claimed physical ranking when authenticated source curves belong to incompatible populations and no independently validated mapping exists."
+inconclusive = "Retain source blockers while exact curve or geometry provenance remains absent."

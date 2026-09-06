@@ -1,0 +1,12 @@
+    Blocking waiting for file lock on build directory
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 27.33s
+     Running tests/euclid_catalog_admission.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/euclid_catalog_admission-2d25dced1fd449af)
+
+running 3 tests
+test retained_catalog_admission ... ignored, requires explicit retained catalog input and audit output directory
+test duplicate_admitted_identity_blocks_ambiguous_pairing ... ok
+test model_nulls_and_nonfinite_inputs_preserve_rejection_denominator ... ok
+
+test result: ok. 2 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,30 @@
+claim_id = "C-1710"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The bounded predicate checks exact retained table columns and the independent numerical objective. Physical rejection remains a separate unadmitted claim."
+fixed_hyperparameters = ["Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay", "Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds", "Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication"]
+[[intervening_maps]]
+branch = "physical_fit"
+name = "retained_objective_identity"
+kind = "computational"
+description = "Compare the declared retained objective and scoring formula at identical epsilon and fixed spectral index; physical ansatz admission remains separate."
+[[intervening_maps]]
+branch = "physical_fit"
+name = "admitted_covariance_residual"
+kind = "computational"
+description = "Match collision system, energy, species, centrality and pT support, then evaluate residuals with admitted covariance and degrees of freedom."
+[[fitted_parameters]]
+branch = "physical_fit"
+count = 1
+names = ["epsilon_bar"]
+training_boundary = "One epsilon is fitted to the same six retained points with n fixed; broader model calibration and published nuisance parameters are separate obligations."
+[decisive_experiment]
+experiment_ids = ["E-075", "E-296"]
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+description = "E-296 owns the independent numerical objective test; E-075 owns the physical driver. Numerical agreement between fit and score precedes separately preregistered covariance/population admission."
+[what_would_verify_refute]
+verification_outcomes = ["All 38 retained HEPData table rows match edges, RAA and stated error columns exactly; the diagonal historical scoring omits separately tabulated normalization uncertainty.", "E-296 independently reproduces the shared corrected numerical objective at identical parameters and weights."]
+revision_outcomes = ["A new provider release or corrected model definition receives a separate source identity and canonical revision; preserve original columns and objective results.", "An admitted physical model comparison requires its own covariance, calibration freedom, interpretive maps and rejection rule."]
+abandonment_outcomes = ["An identical-source row or uncertainty column differs, or independent same-input objective evaluation disagrees; abandon the affected implementation identity clause."]
+inconclusive_outcomes = ["A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.", "The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted."]

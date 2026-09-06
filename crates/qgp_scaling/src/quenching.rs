@@ -1,9 +1,10 @@
 //! R_AA model and scaling function for parton energy loss.
 //!
-//! Implements the scaling-collapse approach of Arleo & Falmagne
-//! (arXiv:2411.13258): R_AA(pT) = ((pT - epsilon_bar) / pT)^{n-1}
-//! where epsilon_bar is the average energy loss and n is the spectral
-//! index of the pp production spectrum (dN/dpT ~ pT^{-n}).
+//! Evaluates the fixed-loss ansatz R_AA(pT) = ((pT - epsilon_bar) / pT)^{n-1}.
+//! Arleo and Falmagne (arXiv:2212.01324, Eq. 2) instead integrate
+//! Pbar(x) * (1 + x/u)^(-n) over nonnegative x, with u = pT/epsilon_bar.
+//! Source-model conformance requires that quenching-weight integral and its
+//! fragmentation and pp-spectrum parameter maps.
 //!
 //! Also provides the Savitzky-Golay logarithmic derivative
 //! d(ln R_AA)/d(ln pT) needed for the v2/eccentricity relation.
@@ -13,11 +14,9 @@
 /// R_AA(pT) = ((pT - epsilon_bar) / pT)^{n-1} for pT > epsilon_bar
 ///          = 0                                  for pT <= epsilon_bar
 ///
-/// This is the large-pT limit of the medium-modified spectrum ratio
-/// when the pp spectrum follows a power law dN/dpT ~ pT^{-n} and
-/// each parton loses a fixed energy epsilon_bar.
-///
-/// Reference: Arleo, JHEP 0211 (2002) 044; Arleo & Falmagne Eq.(1).
+/// The retained ansatz uses a hard cutoff and a negative shift. Even a
+/// unit-delta quenching weight in Arleo and Falmagne Eq. 2 instead gives
+/// (1 + epsilon_bar/pT)^(-n), so the two formulas define different models.
 #[must_use]
 pub fn r_aa_model(pt: f64, epsilon_bar: f64, n: f64) -> f64 {
     if pt <= epsilon_bar || epsilon_bar < 0.0 {
@@ -26,10 +25,10 @@ pub fn r_aa_model(pt: f64, epsilon_bar: f64, n: f64) -> f64 {
     ((pt - epsilon_bar) / pt).powf(n - 1.0)
 }
 
-/// Universal scaling function f(u, n) = ((u-1)/u)^{n-1} where u = pT / epsilon_bar.
+/// Fixed-loss scaling function f(u, n) = ((u-1)/u)^{n-1} where u = pT / epsilon_bar.
 ///
 /// R_AA(pT) = f(pT / epsilon_bar, n) after rescaling the pT axis.
-/// This collapses R_AA curves from different centralities onto a single curve.
+/// For fixed n, the ansatz collapses its epsilon_bar dependence onto u.
 #[must_use]
 pub fn scaling_function(u: f64, n: f64) -> f64 {
     if u <= 1.0 {

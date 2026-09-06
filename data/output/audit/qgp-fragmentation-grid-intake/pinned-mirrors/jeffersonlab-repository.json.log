@@ -1,0 +1,39 @@
+--2026-09-05 18:08:13--  https://api.github.com/repos/JeffersonLab/simc_gfortran
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving api.github.com (api.github.com)... 20.29.134.17
+Connecting to api.github.com (api.github.com)|20.29.134.17|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Date: Sun, 06 Sep 2026 01:08:13 GMT
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=60, s-maxage=60
+  Vary: Accept,Accept-Encoding, Accept, X-Requested-With
+  ETag: W/"609112d72ae9e4230fbd4c2198b5689ea0c24e97f92bdc387bafe81c1cef7859"
+  Last-Modified: Thu, 03 Sep 2026 15:44:25 GMT
+  X-GitHub-Media-Type: github.v3; format=json
+  x-github-api-version-selected: 2022-11-28
+  Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning
+  Access-Control-Allow-Origin: *
+  Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+  X-Frame-Options: deny
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 0
+  Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'none'
+  Server: github.com
+  Accept-Ranges: bytes
+  X-RateLimit-Limit: 60
+  X-RateLimit-Remaining: 59
+  X-RateLimit-Used: 1
+  X-RateLimit-Resource: core
+  X-RateLimit-Reset: 1788660493
+  Content-Length: 6539
+  X-GitHub-Request-Id: 9F7A:1A3832:774810:AAA90B:6A9CBCFD
+  x-github-edge-region: westus2
+Length: 6539 (6.4K) [application/json]
+Saving to: ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-repository.json’
+
+     0K ......                                                100%  122M=0s
+
+2026-09-05 18:08:13 (122 MB/s) - ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-repository.json’ saved [6539/6539]
+

@@ -1,0 +1,26 @@
+[transition]
+transition_timestamp = "2026-09-05T19:48:02Z"
+transition_key = "photon-graviton-counterterm-measure-conformance"
+source_claim_id = "C-1666"
+expected_prior_status = "Provisional"
+experiment_verdict = "Inconclusive"
+evidence_artifact_ids = ["LOCAL-WARD-COUNTERTERM-MEASURE"]
+experiment_ids = ["E-301"]
+exercised_falsifier = "An independent source A.13 tree expression and Simpson integral distinguish dT/T from the erroneous extra-T-squared counterterm measure; separate projected and full-vector Ward predicates retain remaining failures."
+proposed_claim_status = "Provisional"
+rationale = "Register finite source-measure conformance separately while the parent identity and certified nonzero-limit interpretation remain unresolved."
+unresolved_assumptions = ["Eq. 7.6 is polarization-contracted and arises in the unrenormalized source discussion; full-vector zero is a stronger predicate.", "Spinor contact/UV completion, scalar subtraction coefficient/convention reconciliation and certified quadrature/extrapolation error remain unresolved."]
+actor = "claim-evidence-adjudication"
+reason = "Preserve Ward failures while separating the corrected proper-time measure"
+expected_source_state_sha256 = "0dafc3aa0eef380ed8e59fca64ad60eddd980a3d1a310416a763abbb941e15af"
+expected_claim_id_max = 1748
+
+[[successor]]
+proposal_key = "spinor-counterterm-proper-time-measure"
+statement = "The corrected spinor photon-graviton counterterm implements the rescaled proper-time measure of arXiv:2601.23279v1 Eq. 4.10: a constant counterterm under dT/T. At masses 0.8 and 1.3 on T=[0.125,4], independently assembled A.13 tree components and Simpson integration reproduce the renormalized-minus-unrenormalized tensor difference with relative errors 2.21911387229665020e-13 and 3.60977311493619630e-13, inside the fixed 1e-9 gate. The erroneous extra-T-squared measure differs by approximately 0.120666 and 0.711205 and the omission controls discriminate. The original failed producer remains retained. This result verifies the bounded spinor counterterm measure; it leaves scalar source coefficient reconciliation, spinor contact/UV completion, complete Ward identities and certified quadrature/extrapolation remainders unresolved."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-301; ward-residual-scope/adjudication.toml; irreducible_tensor.rs::irreducible_tensor_renormalized; ward_source_scope.rs::rescaled_counterterm_matches_source_measure."
+required_falsifier = "A hash-bound spinor replay violates its 1e-9 relative source-measure gate, wrong-measure separation 0.05 or omitted-counterterm norm 1e-5."
+where_stated = ["data/output/audit/ward-residual-scope/adjudication.toml", "data/output/audit/ward-residual-scope/counterterm-measure-protocol.toml", "crates/gr_core/tests/ward_source_scope.rs"]
+evidence_artifact_ids = ["LOCAL-WARD-COUNTERTERM-MEASURE"]
+predecessor_relation_kind = "implementation_split"

@@ -1,0 +1,76 @@
+schema = "lbm-instrument-repair-v1"
+claims = ["C-1696", "C-1700", "C-1702"]
+evidence_layer = "implementation_conformance"
+physical_interpretation = "unassessed"
+gpu_admission = "passed"
+gpu_device = "NVIDIA GeForce RTX 4070 Ti"
+gpu_uuid = "GPU-9cdd53e3-7a94-8392-e7ce-ee6079352f3e"
+driver_version = "610.57.04"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+command = "CUDA_VISIBLE_DEVICES=0 CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence --profile validation -- --ignored --nocapture"
+exit_status = 101
+passed = 0
+failed = 2
+log = "lbm-cuda-instrument-replay.log"
+log_sha256 = "0b5a063a4ff3f71c91b447e92dc315d765237bff90d9a028c20cffdd30b7be05"
+device_log = "lbm-cuda-device.txt"
+device_log_sha256 = "967fd09a603c2163c7fba45a6e2ed759ca8efd159fb00b1ea64aa99a15ec8a22"
+test_executable_sha256 = "70ca6fa9786805a47e300c33ddde3dcfa30bf8004dd54027c7572e6302435963"
+solver_source_sha256 = "41b9a2dba593996b2a711d88fb47c072063eb04c58c3da7a4ee870c69e7da72f"
+fixture_source_sha256 = "dd9d2bb2d5bccada418c3fd55564bb020d5cf5f7b144dbd1293edbcb086e84c5"
+soa_kernel_source_sha256 = "8876f7f5e27697dbf76b616ee8b8136d6f26783927260f2c0b53d9542fc2fa04"
+
+[evolving_fields]
+dimensions = [8, 8, 8]
+steps = 12
+tau = 0.8
+precision = "FP32"
+density_rms_error = 0.00419259415765046
+engineering_rms_gate = 0.00002
+result = "failed_direct_step_comparison"
+captured_comparison = "unreached_after_direct_assertion"
+investigation = "CPU phase2_streaming recomputes post-stream macroscopic fields; fused CUDA kernels expose input-population macroscopic fields. Kernel selection and time-level equivalence require a decisive follow-up before attributing the discrepancy."
+
+[captured_mutation]
+result = "failed_capture_admission"
+failure = 'CUDA_ERROR_STREAM_CAPTURE_ISOLATION: dependency created on uncaptured work in another stream'
+failure_site = "captured_force_replacement_matches_uncaptured_steps: first step_n(4)"
+force_replacement_comparison = "unreached"
+reinitialization_comparison = "unreached"
+investigation = "Explicit stream allocation resolves legacy-default-stream eligibility but cudarc DevicePtr inserts write-event waits during graph capture. Event ownership and capture lifecycle require repair and replay."
+
+[host_predicates]
+stability_tests_passed = 2
+null_design_tests_passed = 1
+frozen_evolution_oracle_tests_passed = 1
+focused_clippy = "passed_with_D_warnings"
+survival_rule = "finite state AND positive density AND declared relative mass budget AND declared Mach budget"
+finite_explosion_control = "rejected"
+remaining_gate = "CUDA instrument failures block null-campaign and CPU-GPU conformance promotion; paired galaxy resolution studies and physical interpretations remain pending."
+
+[corrected_replay]
+supersedes_instrument_failure = true
+original_failure_retained = true
+evidence_scope = "8 cubed FP32 BGK periodic fixture, 12 evolving steps; graph/direct force replacement and odd-step reinitialization; same-stream box counting"
+command = "CUDA_VISIBLE_DEVICES=0 CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence --profile validation -- --include-ignored --nocapture"
+exit_status = 0
+passed = 3
+failed = 0
+log = "lbm-cuda-corrected-instrument-replay.log"
+log_sha256 = "2e55cd816526d3aee525d5bcc297bf7cefa1b96365eb623cb0458fe975e73f5f"
+solver_source_sha256 = "9ade2c10fdb50405ea3c240eb700719fb299d2c383f344f33b7a63e60febea9d"
+fixture_source_sha256 = "045c17fd5d12e2c18657a162f101f7c3f68565a9e101b785fb74b8768f5b4d71"
+test_executable_sha256 = "ce3d417e5e0eedc03e1f294035fd7ce449914409d7a52fe341fb8865390bccb4"
+engineering_rms_gate = 0.00002
+direct_and_captured_population_rms = 0.000000031221105175961436
+direct_and_captured_post_stream_density_rms = 0.0000003335405604493378
+direct_and_captured_aligned_density_rms = 0.0000003289109547143455
+direct_and_captured_aligned_velocity_rms = 0.00000003351313212098577
+population_identity = "CPU AoSoA and CUDA SoA snapshots are independently converted to cell-major D3Q19 order. All 19 populations per cell are compared after 12 steps; their summed density is compared with CPU post-stream density."
+observation_identity = "Fused push CUDA rho/u outputs observe populations entering the twelfth collision, equivalent to CPU macroscopic fields after eleven steps. CPU post-stream density after twelve steps is separately compared with the CUDA population sum."
+capture_repair = "DevicePtr and DevicePtrMut guards enqueue prior-use waits before capture, retain addresses through the graph launch, and record read/write completion after launch. Every replay acquires guards. Context event tracking remains enabled. End-capture executes on both capture outcomes."
+mutation_repair = "Force, viscosity and initialization invalidate the graph; direct steps invalidate cached ping-pong parity."
+clippy_command = "cargo clippy -p lbm_3d_cuda --test test_gpu_cpu_equivalence --profile validation -- -D warnings"
+clippy_exit_status = 0
+clippy_log = "lbm-cuda-corrected-clippy.log"
+remaining_gate = "Full catalog null inference, MRT/backend variants, paired galaxy resolution and physical interpretation require their own evidence; the bounded BGK instrument predicates pass."

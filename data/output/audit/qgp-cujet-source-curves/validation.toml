@@ -1,0 +1,19 @@
+schema_version = 1
+command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+exit_status = 0
+tests_passed = 1992
+tests_skipped = 19
+focused_participant_tests = 2
+focused_cli_tests = 2
+extractor_tests = 3
+independent_checker_tests = 3
+independent_rational_comparisons = 3497
+experiment_lineages = 276
+canonical_claims = 1565
+typed_contracts = 53
+protected_history_tables = 12
+validation_log = "data/output/audit/qgp-cujet-source-curves/validation.log"
+validation_log_sha256 = "97a59dd71de8b5f91ece0f06ec42ce2cf9559162e1da147991be70ae262172a0"
+scientific_scope = "Source/reference conformance and deterministic component-box feasibility; physical ranking, calibration independence and covariance remain unadmitted."
+review = "Independent review found holdout overstatement and missing replayable rational producer. Final extraction uses calibration-point-excluded naming and retains the exact Rust checker."

@@ -1,0 +1,10 @@
+schema_version = 1
+source = "crates/qgp_scaling/src/data_tables.rs"
+base_commit = "a00fe4ae8c39b86a7065dfac772a37ae68c0df5e"
+before_sha256 = "abdd7421c1eefbfc983155ecbc2e9e09c25b806f77820916ca547a96c7facc76"
+after_sha256 = "04184c0524fe42a5fc77019f8ece6ffb40155e89ecde5754e438dfd8b35132b2"
+initial_comment_repair_sha256 = "596c2b83fc5837ed7183550c42bdbd41a49aa640f996c8da455330b9c21041fb"
+formatting_repair = "Insert the required doc paragraph separator after the derived-quantity list; retain the rejected doc_lazy_continuation gate log."
+noncomment_source_sha256 = "4b7d0a53e063e2349063a53050c353271b3e261cc125675f63233c63379cedc9"
+comparison = "Remove only lines beginning with // after left whitespace; all remaining source bytes compare identical. The reviewed diff changes comment lines only."
+result = "The source removes the false eccentricity citation and marks retained Pb-Pb reference admission explicitly; numerical arrays and lookup expressions retain identical non-comment source bytes."

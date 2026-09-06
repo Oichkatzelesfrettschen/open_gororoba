@@ -279,9 +279,8 @@ mod tests {
     }
 
     #[test]
-    fn spinor_irreducible_residual_retains_the_contact_boundary_gap() {
+    fn spinor_irreducible_contact_preserves_gauge_transversality() {
         let tolerance = ResidualTolerance::new(1.0e-12, 1.0e-8).expect("frozen tolerance");
-        let mut residuals = Vec::new();
         for quadrature in [
             QuadratureConfig::fast(),
             QuadratureConfig::default(),
@@ -297,15 +296,11 @@ mod tests {
             .expect("spinor integrated gauge residuals");
             assert!(results[1].passes, "spinor tadpole gauge residual failed");
             assert!(results[2].passes, "spinor external gauge residual failed");
-            assert!(!results[0].passes);
-            assert!(results[0].absolute_norm > 1.0e-6);
-            assert!(results[0].normalized_norm > 1.0e-3);
-            residuals.push(results[0].absolute_norm);
+            assert!(
+                results[0].passes,
+                "spinor irreducible contact residual failed"
+            );
         }
-        let minimum = residuals.iter().copied().fold(f64::INFINITY, f64::min);
-        let maximum = residuals.iter().copied().fold(0.0, f64::max);
-        assert!(minimum.is_finite() && maximum.is_finite());
-        assert!(maximum / minimum < 2.0);
     }
 
     #[test]

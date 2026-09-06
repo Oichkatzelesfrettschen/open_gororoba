@@ -1,0 +1,29 @@
+reference_rows = 65
+source_curve_vertices = [226, 223, 219]
+source_curve_copies = 2
+local_fitted_parameters = 0
+statistical_model_ranking = "unadmitted"
+
+[[scheme]]
+id = 1
+selected_bins = 21
+calibration_point_excluded_bins = 20
+common_normalization_low = -0.04640000000000000
+common_normalization_high = -0.04390983665879755
+component_box_compatible = true
+
+[[scheme]]
+id = 2
+selected_bins = 21
+calibration_point_excluded_bins = 20
+common_normalization_low = -0.04640000000000000
+common_normalization_high = -0.03651819825775371
+component_box_compatible = true
+
+[[scheme]]
+id = 3
+selected_bins = 21
+calibration_point_excluded_bins = 20
+common_normalization_low = -0.04640000000000000
+common_normalization_high = -0.00860271369639276
+component_box_compatible = true

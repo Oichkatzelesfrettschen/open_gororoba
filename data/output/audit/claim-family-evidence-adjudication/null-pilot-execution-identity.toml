@@ -1,0 +1,7 @@
+name = "euclid-null-pilot-retained"
+version = "8e3c3bbe66002936"
+executable = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/data/output/audit/claim-family-evidence-adjudication/null-pilot-producer-before-mrt-correction.bin"
+executable_sha256 = "8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2"
+source_receipt = "data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml"
+source_receipt_sha256 = "6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7"
+scope = "Retained executable for original E-298. Identity registration checks receipt bytes; runtime replay requires a fresh output directory and admitted backend. Corrected-source builds are separate producers."

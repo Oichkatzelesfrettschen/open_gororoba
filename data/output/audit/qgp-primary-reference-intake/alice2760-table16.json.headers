@@ -1,0 +1,24 @@
+HTTP/2 200 
+date: Sat, 05 Sep 2026 20:39:57 GMT
+content-type: application/json
+server: cloudflare
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 52
+x-ratelimit-reset: 1788640803
+retry-after: 5
+permissions-policy: interest-cohort=()
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+referrer-policy: strict-origin-when-cross-origin
+access-control-allow-origin: *
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=PSzhccnx2xno0vfbwS%2F4rKVxPObCAoyi3UCucEgSXBpc2q5EbWYhZ%2FMqYyK%2BS6TuDypeTncyG6gY0fgsBFzAA1nscbAnHbxfNQxiL32XP55d0EANAjYfHlcJe%2F0xDx4eZmM%3D"}]}
+x-proxy-backend: hepdata-prod_hepdata-web_http
+alt-svc: h3=":443"; ma=86400
+vary: Accept-Encoding
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+last-modified: Sat, 05 Sep 2026 20:39:57 GMT
+cache-control: max-age=14400
+cf-cache-status: MISS
+cf-ray: a3680bd35ae4252f-LAX
+

@@ -1,0 +1,18 @@
+HTTP/2 200 
+server: Google Frontend
+etag: COa1i7bi2/wCEAE=
+access-control-allow-origin: *
+last-modified: Sun, 22 Jan 2023 18:07:10 GMT
+link: <https://arxiv.org/pdf/1703.10852>; rel='canonical'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+content-disposition: inline; filename="1703.10852v1.pdf"
+x-cloud-trace-context: 1e124f3ff3da4dbc8f777f6a5181c3dc
+content-type: application/pdf
+accept-ranges: bytes
+age: 485137
+date: Sat, 05 Sep 2026 21:19:25 GMT
+x-served-by: cache-lga21939-LGA, cache-lga21939-LGA, cache-lga21952-LGA, cache-hhr-khhr2060031-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1788643166.614533,VS0,VE79
+content-length: 459088
+

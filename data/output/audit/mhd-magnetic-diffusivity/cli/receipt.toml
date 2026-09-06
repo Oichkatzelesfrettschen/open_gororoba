@@ -1,0 +1,162 @@
+schema_version = 1
+scope = "Synthetic zero-magnetic-field, no-DM, 2x2x2, three-step CLI unit admission and alias parity. No spacecraft observations, coupled stability, physical force bound or replication is established."
+binary_path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar"
+binary_sha256 = "68e3caebcb90eac46164991696ff4adc7372cd5b31dbdee10f236a9da0179069"
+build_command = "CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e cargo build -p gororoba_cli_physics --bin solar --profile validation"
+build_exit_status = 0
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+
+[[runs]]
+name = "legacy-eta"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar","wind-dm-mhd","--nx","2","--ny","2","--nz","2","--steps","3","--snap-interval","1","--no-dm","--b0","0","--tau","0.8","--v-sw","0.05","--x-outflow","zero-gradient-populations","--max-relative-mass-ledger-error","1e-10","--eta","0.00005","--out","data/output/audit/mhd-magnetic-diffusivity/cli/legacy-eta/snapshots"]
+exit_status = 0
+
+[[runs]]
+name = "named-lattice"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar","wind-dm-mhd","--nx","2","--ny","2","--nz","2","--steps","3","--snap-interval","1","--no-dm","--b0","0","--tau","0.8","--v-sw","0.05","--x-outflow","zero-gradient-populations","--max-relative-mass-ledger-error","1e-10","--magnetic-diffusivity-lattice","0.00005","--out","data/output/audit/mhd-magnetic-diffusivity/cli/named-lattice/snapshots"]
+exit_status = 0
+
+[[runs]]
+name = "admitted-si"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar","wind-dm-mhd","--nx","2","--ny","2","--nz","2","--steps","3","--snap-interval","1","--no-dm","--b0","0","--tau","0.8","--v-sw","0.05","--x-outflow","zero-gradient-populations","--max-relative-mass-ledger-error","1e-10","--magnetic-diffusivity-m2-s","4e8","--ic-file","data/output/audit/mhd-magnetic-diffusivity/cli/synthetic-admitted-ic.csv","--out","data/output/audit/mhd-magnetic-diffusivity/cli/admitted-si/snapshots"]
+exit_status = 0
+
+[[runs]]
+name = "missing-units-si"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar","wind-dm-mhd","--nx","2","--ny","2","--nz","2","--steps","3","--snap-interval","1","--no-dm","--b0","0","--tau","0.8","--v-sw","0.05","--x-outflow","zero-gradient-populations","--max-relative-mass-ledger-error","1e-10","--magnetic-diffusivity-m2-s","4e8","--ic-file","data/output/audit/mhd-magnetic-diffusivity/cli/synthetic-missing-units-ic.csv","--out","data/output/audit/mhd-magnetic-diffusivity/cli/missing-units-si/snapshots"]
+exit_status = 1
+
+[[runs]]
+name = "missing-path-si"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar","wind-dm-mhd","--nx","2","--ny","2","--nz","2","--steps","3","--snap-interval","1","--no-dm","--b0","0","--tau","0.8","--v-sw","0.05","--x-outflow","zero-gradient-populations","--max-relative-mass-ledger-error","1e-10","--magnetic-diffusivity-m2-s","4e8","--out","data/output/audit/mhd-magnetic-diffusivity/cli/missing-path-si/snapshots"]
+exit_status = 2
+
+[validation]
+alias_snapshot_and_ledger_sha256_equal = true
+alias_output_filename_sets_equal = true
+alias_compared_filenames = ["mass_flux_ledger.csv","snapshot_000001.csv","snapshot_000002.csv","snapshot_000003.csv"]
+missing_units_rejection = "IC physical admission requires metadata mesh_kind"
+missing_path_rejection = "clap requires --ic-file"
+alias_compared_file_count = 4
+si_resolved_receipts_match = true
+physical_observation = false
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/admitted-si/snapshots/mass_flux_ledger.csv"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/admitted-si/snapshots/snapshot_000001.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/admitted-si/snapshots/snapshot_000002.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/admitted-si/snapshots/snapshot_000003.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/admitted-si/stderr.txt"
+sha256 = "ad1db730ddecf00dd826042ef07dc06e3107dc0c69aeef466d5aedfad0c2e53f"
+bytes = 1712
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/admitted-si/stdout.txt"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/legacy-eta/snapshots/mass_flux_ledger.csv"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/legacy-eta/snapshots/snapshot_000001.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/legacy-eta/snapshots/snapshot_000002.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/legacy-eta/snapshots/snapshot_000003.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/legacy-eta/stderr.txt"
+sha256 = "e681e5e23e2723aba4c3e81dc49f4c8ed1c4a07c7f0091dca0efd488a5f79c6e"
+bytes = 1397
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/legacy-eta/stdout.txt"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/missing-path-si/stderr.txt"
+sha256 = "75394c55b5769ac8b212a825aa7fe51c3e82e7e94587cb39af04f0a1a4dbef89"
+bytes = 444
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/missing-path-si/stdout.txt"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/missing-units-si/stderr.txt"
+sha256 = "f9ceec8480953493fb39bdc7b0c911bee36752273e25a0a813a17c2e69d1d05a"
+bytes = 363
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/missing-units-si/stdout.txt"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/named-lattice/snapshots/mass_flux_ledger.csv"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/named-lattice/snapshots/snapshot_000001.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/named-lattice/snapshots/snapshot_000002.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/named-lattice/snapshots/snapshot_000003.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/named-lattice/stderr.txt"
+sha256 = "e681e5e23e2723aba4c3e81dc49f4c8ed1c4a07c7f0091dca0efd488a5f79c6e"
+bytes = 1397
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/named-lattice/stdout.txt"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/synthetic-admitted-ic.csv"
+sha256 = "e29ff1c0b6dd7a277c366d0b58576e8a084220d32fc7982717941445fb29ee2c"
+bytes = 603
+
+[[artifacts]]
+path = "data/output/audit/mhd-magnetic-diffusivity/cli/synthetic-missing-units-ic.csv"
+sha256 = "be8b215dacd7446ead5e49eefd647bafc3574679d4fd7288c9652ed6986c2db6"
+bytes = 240

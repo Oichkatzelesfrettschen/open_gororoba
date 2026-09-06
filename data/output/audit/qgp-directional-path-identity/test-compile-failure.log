@@ -1,0 +1,9 @@
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+error[E0282]: type annotations needed
+  --> crates/qgp_scaling/tests/directional_path_identity.rs:44:21
+   |
+44 |             assert!((previous / error - 4.0_f64).abs() < 1e-8);
+   |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ cannot infer type
+
+For more information about this error, try `rustc --explain E0282`.
+error: could not compile `qgp_scaling` (test "directional_path_identity") due to 1 previous error

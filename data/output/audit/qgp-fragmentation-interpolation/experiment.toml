@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-314"
+title = "Pinned charged fragmentation interpolation identity"
+status = "active"
+binary = "cargo-test:qgp_scaling:dss_fragmentation_identity"
+claims = ["C-1710"]
+claim_refs = ["C-1710"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Two byte-matched pinned DSS charged LO/NLO grids and unmodified JeffersonLab mirror source; explicit default-real32 and default-real64 compiler variants."
+input_path_refs = ["data/output/audit/qgp-fragmentation-interpolation/protocol.toml"]
+method = "Independent Rust immutable-grid interpolation versus separately compiled source with source-real precision, charge and output measure fixed."
+run = "cargo test -p qgp_scaling --profile validation --test dss_fragmentation_identity -- --nocapture"
+output = ["data/output/audit/qgp-fragmentation-interpolation/adjudication.toml"]
+status_note = "Five independent integration tests pass: both1152-row variants satisfy all10368 channel gates each at abs2e-12 plus rel2e-11. Wrong precision fails7535 channels and average-as-sum fails2153 per variant. Exact mesh coverage, malformed input, immutable order and synthetic interpolation controls pass. Physical calibration and author-release authentication remain unadmitted."

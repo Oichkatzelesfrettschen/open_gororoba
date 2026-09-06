@@ -1,0 +1,38 @@
+schema_version = 1
+energy_unit = 'GHz'
+
+[[comparison]]
+parameters = 'table_i'
+grid = 12
+maximum_matrix_error_ghz = 5.7571915325881188e-16
+maximum_rectangular_folding_error_ghz = 1.4210854715202004e-14
+
+[[comparison]]
+parameters = 'table_i'
+grid = 24
+maximum_matrix_error_ghz = 5.9787339602818165e-16
+maximum_rectangular_folding_error_ghz = 1.5987211554602254e-14
+
+[[comparison]]
+parameters = 'table_i'
+grid = 48
+maximum_matrix_error_ghz = 5.9787339602818165e-16
+maximum_rectangular_folding_error_ghz = 1.7763568394002505e-14
+
+[[comparison]]
+parameters = 'table_ii'
+grid = 12
+maximum_matrix_error_ghz = 3.9252311467094378e-16
+maximum_rectangular_folding_error_ghz = 1.5543122344752192e-14
+
+[[comparison]]
+parameters = 'table_ii'
+grid = 24
+maximum_matrix_error_ghz = 3.9252311467094378e-16
+maximum_rectangular_folding_error_ghz = 1.5543122344752192e-14
+
+[[comparison]]
+parameters = 'table_ii'
+grid = 48
+maximum_matrix_error_ghz = 3.9600359306669260e-16
+maximum_rectangular_folding_error_ghz = 1.5543122344752192e-14

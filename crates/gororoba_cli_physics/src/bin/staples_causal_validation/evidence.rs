@@ -12,6 +12,14 @@ use std::{
 
 const SOURCES: &[(&str, &[u8])] = &[
     (
+        "crates/gororoba_cli_physics/src/bin/staples_causal_validation/geometric_capacity.rs",
+        include_bytes!("geometric_capacity.rs"),
+    ),
+    (
+        "crates/gororoba_cli_physics/src/bin/staples_causal_validation/control_uncertainty.rs",
+        include_bytes!("control_uncertainty.rs"),
+    ),
+    (
         "crates/gororoba_cli_physics/src/bin/staples_causal_validation.rs",
         include_bytes!("../staples_causal_validation.rs"),
     ),

@@ -1,13 +1,13 @@
 //! 9-band magnonic crystal tight-binding model.
 //!
-//! Implements the Kaman, Lim, Liu & Hoffmann (2026) 9-band tight-binding
-//! Hamiltonian for magnonic crystals in hexagonal antidot arrays of YIG.
+//! Builds a nearest-neighbor realization of the Kaman, Lim, Liu & Hoffmann
+//! (2026) orbital geometry for hexagonal antidot arrays of YIG.
 //! The model combines 6 honeycomb orbitals (s, px, py on A and B sublattices)
-//! with 3 kagome orbitals (s on K1, K2, K3 bond midpoints), yielding:
-//! - Graphene-like Dirac cones near 1.5 GHz
-//! - Kagome flat band near 2.08 GHz (~1000x DOS enhancement)
-//! - Valley-Hall topological boundary modes under inversion breaking
-//! - Point defect modes with Q ~ 4100
+//! with 3 kagome orbitals (s on K1, K2, K3 bond midpoints). Constructors
+//! separate the paper's fitted frequency tables from repository reference
+//! parameters. Source-band reproduction, sampled topological admission and
+//! spatial localization have separate checks. Damping and micromagnetic
+//! excitation intensities lie outside the Hermitian tight-binding model.
 //!
 //! # Orbital Basis (9 per primitive cell)
 //!
@@ -30,14 +30,15 @@
 use faer::c64;
 
 use crate::tight_binding::{
-    BravaisLattice2D, Hopping, OrbitalSite, TightBindingModel, Valley, Vec2, band_chern_number,
-    detect_flat_bands, hexagonal_high_symmetry_path, hexagonal_symmetry_labels,
-    valley_chern_number,
+    BravaisLattice2D, Hopping, OrbitalSite, TightBindingModel, TopologyAdmission, Valley, Vec2,
+    checked_subspace_topology, detect_flat_bands, hexagonal_high_symmetry_path,
+    hexagonal_symmetry_labels,
 };
 
 /// Tight-binding parameters for the 9-band magnonic crystal model.
 ///
-/// All energies in GHz (matching Kaman et al. convention).
+/// All energies in GHz. Source-table values and repository reference values
+/// have separate constructors because parameter agreement requires provenance.
 #[derive(Clone, Debug)]
 pub struct MagnonicTBParams {
     /// Honeycomb s-orbital on-site energy (GHz).
@@ -53,10 +54,8 @@ pub struct MagnonicTBParams {
 }
 
 impl MagnonicTBParams {
-    /// Symmetric-case parameters from Kaman et al. Table I.
-    ///
-    /// These reproduce the MuMax3 micromagnetic simulation band structure
-    /// for a hexagonal antidot array with d/a = 0.6, B_ext = 50 mT.
+    /// Repository reference parameters retained for reproducible model comparisons.
+    /// The values differ from Kaman et al. Table I.
     pub fn kaman_default() -> Self {
         Self {
             eps_s: 1.50,
@@ -64,6 +63,30 @@ impl MagnonicTBParams {
             eps_k: 2.08,
             t_sk: 0.25,
             t_pk: 0.15,
+        }
+    }
+
+    /// Fitted frequencies from Kaman et al., arXiv:2601.03210v2, Table I.
+    /// Transcription alone does not establish orbital-gauge or geometry conformance.
+    pub fn kaman_table_i() -> Self {
+        Self {
+            eps_s: 1.69,
+            eps_p: 3.15,
+            eps_k: 3.17,
+            t_sk: -0.38,
+            t_pk: -0.63,
+        }
+    }
+
+    /// Fitted frequencies from Kaman et al., arXiv:2601.03210v2, Table II.
+    /// Pair with `InversionBreakingParams::kaman_table_ii` for the declared A/B map.
+    pub fn kaman_table_ii() -> Self {
+        Self {
+            eps_s: 1.93,
+            eps_p: 2.83,
+            eps_k: 3.28,
+            t_sk: -0.45,
+            t_pk: -0.49,
         }
     }
 }
@@ -82,11 +105,20 @@ pub struct InversionBreakingParams {
 }
 
 impl InversionBreakingParams {
-    /// Broken-symmetry parameters from Kaman et al. Table I.
+    /// Repository inversion-breaking reference values, distinct from Table II.
     pub fn kaman_default() -> Self {
         Self {
             delta_eps_s: 0.10,
             delta_eps_p: 0.05,
+        }
+    }
+
+    /// Kaman et al. Table II uses Delta=(epsilon_B-epsilon_A)/2.
+    /// The builder adds delta to A and subtracts delta from B, so both signs reverse.
+    pub fn kaman_table_ii() -> Self {
+        Self {
+            delta_eps_s: -0.12,
+            delta_eps_p: -0.35,
         }
     }
 
@@ -109,9 +141,11 @@ pub struct MagnonicBandResult {
     /// High-symmetry point labels and their k-distance positions.
     pub symmetry_labels: Vec<(String, f64)>,
     /// Chern number for each band.
-    pub band_cherns: Vec<f64>,
+    pub band_cherns: Vec<Option<f64>>,
     /// Valley Chern number (K valley) for each band.
-    pub valley_cherns_k: Vec<f64>,
+    pub valley_cherns_k: Vec<Option<f64>>,
+    /// Failed sampled gap or overlap predicates, indexed by band.
+    pub topology_errors: Vec<Option<String>>,
     /// Indices of flat bands (bandwidth < threshold).
     pub flat_band_indices: Vec<usize>,
     /// Bandwidth of each band in GHz.
@@ -352,14 +386,32 @@ pub fn compute_magnonic_bands(
 
     let n_bands = model.n_orbitals();
 
-    // Chern numbers for all bands
-    let band_cherns: Vec<f64> = (0..n_bands)
-        .map(|b| band_chern_number(&model, b, n_chern))
+    let topology: Vec<_> = (0..n_bands)
+        .map(|band| {
+            checked_subspace_topology(
+                &model,
+                band..band + 1,
+                n_chern,
+                TopologyAdmission::default(),
+            )
+        })
         .collect();
-
-    // Valley Chern numbers (K valley)
-    let valley_cherns_k: Vec<f64> = (0..n_bands)
-        .map(|b| valley_chern_number(&model, b, n_chern, Valley::K))
+    let band_cherns = topology
+        .iter()
+        .map(|result| result.as_ref().ok().map(|value| value.chern_number()))
+        .collect();
+    let valley_cherns_k = topology
+        .iter()
+        .map(|result| {
+            result
+                .as_ref()
+                .ok()
+                .map(|value| value.valley_chern_number(Valley::K))
+        })
+        .collect();
+    let topology_errors = topology
+        .iter()
+        .map(|result| result.as_ref().err().map(ToString::to_string))
         .collect();
 
     // Flat band detection
@@ -371,6 +423,7 @@ pub fn compute_magnonic_bands(
         symmetry_labels,
         band_cherns,
         valley_cherns_k,
+        topology_errors,
         flat_band_indices: flat_info.flat_band_indices,
         bandwidths: flat_info.bandwidths,
     }
@@ -479,11 +532,14 @@ pub fn build_domain_wall_supercell(
     }
 }
 
-/// Compute point defect localized modes in a supercell.
+/// Select spectral-gap candidate energies from an open defect supercell.
 ///
 /// Creates a `(2*radius+1) x (2*radius+1)` supercell with one missing
 /// kagome site (simulating a filled hole) at the center. Returns
-/// eigenvalues that fall within the bulk band gap.
+/// eigenvalues strictly inside the largest gap of a sampled bulk spectrum.
+/// The energy selector leaves localization unassessed: open-edge states and
+/// rounded band-edge eigenvalues can enter the returned candidates. Defect
+/// attribution requires paired pristine spectra and spatial eigenvector weights.
 pub fn point_defect_modes(
     params: &MagnonicTBParams,
     inv: &InversionBreakingParams,
@@ -722,7 +778,9 @@ mod tests {
             &InversionBreakingParams::none(),
             400.0,
         );
-        let total: f64 = (0..9).map(|b| band_chern_number(&model, b, 15)).sum();
+        let total = checked_subspace_topology(&model, 0..9, 15, TopologyAdmission::default())
+            .unwrap()
+            .chern_number();
         assert!(
             total.abs() < 0.5,
             "Total Chern should be ~0, got {:.4}",
@@ -769,6 +827,18 @@ mod tests {
         assert_eq!(result.band_energies.len(), 9);
         assert_eq!(result.band_cherns.len(), 9);
         assert_eq!(result.valley_cherns_k.len(), 9);
+        assert_eq!(result.topology_errors.len(), 9);
+        for band in 0..9 {
+            assert_eq!(
+                result.band_cherns[band].is_none(),
+                result.topology_errors[band].is_some()
+            );
+            assert_eq!(
+                result.valley_cherns_k[band].is_none(),
+                result.topology_errors[band].is_some()
+            );
+        }
+        assert!(result.topology_errors.iter().any(Option::is_some));
         assert!(!result.k_distances.is_empty());
     }
 }

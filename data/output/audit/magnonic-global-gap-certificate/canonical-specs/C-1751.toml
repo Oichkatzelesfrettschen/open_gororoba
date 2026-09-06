@@ -1,0 +1,51 @@
+claim_id = "C-1751"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The certificate establishes properties of exact stored binary64 model coefficients through computational maps. Physical interpretation and source-coefficient uncertainty require separate admission."
+fixed_hyperparameters = ["Frozen protocol SHA256 796a12138fe9046513df65e82ca2d228104523e3c5e9693374eeb3ff24094f3b", "Source Table I boundaries [2,6]; Table II boundaries [1,2,4,6,7]; indices separate ordered eigenvalues b-1 and b", "Maximum dyadic depth 10; strict cell gap lower bound greater than 1e-10 GHz", "IEEE binary64 basic operations with outward neighbor expansion, finite enclosure admission and runtime gradual-underflow checks", "Exact real hopping amplitudes and complete prefix-free integer-area torus cover", "Final replay coefficient-bit tables and compressed terminal-cell tables identify the represented models"]
+[[intervening_maps]]
+branch = "global_isolation"
+name = "source_geometry_to_stored_coefficients"
+kind = "computational"
+description = "Construct source-fitted Table I/II nine-orbital models and retain every final on-site and hopping binary64 bit pattern, including rounded geometry projections. The certificate treats those patterns as exact dyadic coefficients."
+[[intervening_maps]]
+branch = "global_isolation"
+name = "directed_center_spectrum_enclosure"
+kind = "computational"
+description = "Enclose exact fractional phases with Machin pi and Taylor remainders, then bound full-square candidate basis orthogonality and transformed residual. Polar orthonormalization yields a sorted eigenvalue error radius."
+[[intervening_maps]]
+branch = "global_isolation"
+name = "complete_dyadic_gap_cover"
+kind = "computational"
+description = "Subtract twice the eigenvalue radius and the incident-hopping variation bound from each requested center gap. Require every terminal cell above the frozen gate and verify exact total area with duplicate and ancestor overlap rejection."
+[[intervening_maps]]
+branch = "bundle_topology"
+name = "real_hopping_time_reversal_projector_argument"
+kind = "computational"
+description = "Apply the reviewed analytic H(-q)=conjugate(H(q)) argument to globally isolated contiguous ordered bundles. Projector curvature is odd and the two-dimensional inversion preserves orientation, so each bundle has zero first Chern number despite possible internal degeneracies."
+[[fitted_parameters]]
+branch = "source_table_i"
+count = 5
+names = ["eps_s", "eps_p", "eps_k", "t_sk", "t_pk"]
+training_boundary = "Source authors fitted the imported Table I constants upstream; the certificate establishes the represented model rather than independent observational agreement."
+[[fitted_parameters]]
+branch = "source_table_ii"
+count = 7
+names = ["eps_s", "eps_p", "eps_k", "t_sk", "t_pk", "delta_eps_s", "delta_eps_p"]
+training_boundary = "Source authors fitted the imported Table II constants upstream; the A/B sign map and stored coefficient identity remain fixed."
+[[fitted_parameters]]
+branch = "replay"
+count = 0
+names = []
+training_boundary = "The certificate replay fits zero parameters and preserves the frozen gap gate, maximum depth and requested boundaries."
+[decisive_experiment]
+experiment_ids = ["E-305"]
+protocol_artifact = "data/output/audit/magnonic-global-gap-certificate/protocol.toml"
+protocol_sha256 = "796a12138fe9046513df65e82ca2d228104523e3c5e9693374eeb3ff24094f3b"
+description = "Replay the final exclusive-create coefficient and terminal-cell artifacts, establish finite IEEE arithmetic admission, reject malformed covers and degenerate spectra with controls, and verify all requested gap boundaries globally before applying the exact-real-hopping projector argument."
+[what_would_verify_refute]
+verification_outcomes = ["The exact identified Table I model admits all 1648 terminal cells and Table II all 65536 terminal cells; each complete cover has integer area 1048576 and every requested gap lower bound exceeds 1e-10 GHz.", "Exact-real hopping checks and the complete external gaps satisfy the reviewed analytic projector theorem for Table I bundles [0,2),[2,6),[6,9) and Table II bundles [0,1),[1,2),[2,4),[4,6),[6,7),[7,9).", "Arithmetic, incorrect-spectrum, degenerate-gap and omitted/duplicated/overlapping-cell controls retain their declared discrimination."]
+revision_outcomes = ["Different coefficient bits, complex hopping, requested boundaries or a changed source table require a separately identified model and new certificate.", "Extending the result to uncertain source decimals or geometric projections requires an additional coefficient perturbation enclosure."]
+abandonment_outcomes = ["Independent checking finds an inward numerical bound, missing cover region or invalid eigenvalue ordering that invalidates the retained positive global-gap admission.", "The exact-real premise fails for a retained topology model or the analytic projector argument fails under its declared hypotheses.", "The verifier admits a declared degenerate spectrum or malformed cover under its negative controls."]
+inconclusive_outcomes = ["A failed IEEE/finite-arithmetic admission, missing coefficient identity or unresolved terminal cell leaves global isolation unproved for that replay.", "The historical C-1688 delta_eps_s=.05/.10 model, degenerate rank-one invariants, physical GHz calibration, device prediction, defect localization and source-uncertainty intervals remain outside the certificate.", "Sampled Cartesian eigensolver comparisons establish evaluator consistency only and contribute zero evidence to global cover completeness."]

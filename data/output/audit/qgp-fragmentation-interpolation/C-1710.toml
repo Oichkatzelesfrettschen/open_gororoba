@@ -1,0 +1,108 @@
+claim_id = "C-1710"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The bounded predicate checks exact retained table columns and the independent numerical objective. Physical rejection remains a separate unadmitted claim."
+fixed_hyperparameters = ["E-310 retained numerical gates: data/output/audit/qgp-quenching-weight-identity/numerical-protocol.toml; sha256 89c0adff868c96b05192b10f802a58d69fa6c11306df8fcfb823ff45a26274e5","Retained n=6.1; epsilon bounded0.1..20; six0-5% charged-particle points at5.02TeV for the bounded replay","Preserve historical diagonal stat-plus-systematic errors, the0.98 fit/scoring variance factor and original failed fit thresholds","Historical chi2/ndf below about2 falsifier remains historical; preregister an exact rejection rule and covariance before new physical adjudication","Source identity receipt data/output/audit/qgp-source-quenching-identity/adjudication.toml; sha256 db39a83311cca946588803f420299fe037c75a9aa09599f759f5adbe438c3f18. Source convolution and retained fixed-loss ansatz are different models."]
+
+[[intervening_maps]]
+name = "retained_objective_identity"
+branch = "physical_fit"
+description = "Compare the declared retained objective and scoring formula at identical epsilon and fixed spectral index; physical ansatz admission remains separate."
+kind = "computational"
+
+[[intervening_maps]]
+name = "admitted_covariance_residual"
+branch = "physical_fit"
+description = "Match collision system, energy, species, centrality and pT support, then evaluate residuals with admitted covariance and degrees of freedom."
+kind = "computational"
+
+[[intervening_maps]]
+name = "directional_path_identity"
+branch = "geometry_identity"
+kind = "computational"
+description = "Compare the Eq9 joint forward-ray moments with the retained radial-distance statistic; E-309 tests a declared fixed-field implementation. Angular and centrality pooling remain separate source-model admission obligations."
+
+[[fitted_parameters]]
+branch = "geometry_identity"
+count = 0
+names = []
+training_boundary = "Fixed geometry, density and grid conventions fit zero parameters; physical event selection and pooling remain unresolved."
+
+[[fitted_parameters]]
+branch = "physical_fit"
+count = 1
+names = ["epsilon_bar"]
+training_boundary = "One epsilon is fitted to the same six retained points with n fixed; broader model calibration and published nuisance parameters are separate obligations."
+
+[[intervening_maps]]
+name = "outgoing_spectrum_gamma_convolution"
+branch = "quenching_identity"
+kind = "computational"
+description = "Full outgoing spectrum to independent-emission Laplace functional to exact positive-shift Gamma convolution; source mean converts omega_c and mean-loss coordinates."
+
+[[fitted_parameters]]
+branch = "quenching_identity"
+count = 0
+names = []
+training_boundary = "Fixed source coupling, Casimir and declared u/n grid; no physical observations fitted."
+
+[[intervening_maps]]
+name = "pp_table_population_and_measure"
+branch = "pp_reference"
+kind = "computational"
+description = "Bind HEPData86210v1 Table4 group0 to explicit energy, reaction, acceptance, bin edges and deta dpT per-event yield; preserve raw decimal strings and independent provider-representation identity."
+
+[[intervening_maps]]
+name = "pp_bin_integrated_power_fit"
+branch = "pp_fit"
+kind = "computational"
+description = "Declared, unexecuted bin-integrated amplitude/slope fit in the admitted yield measure; covariance admission precedes physical calibration. Scalar67.6mb conversion changes amplitude; eta-to-y and fragmentation remain separate physical maps."
+
+[[fitted_parameters]]
+branch = "pp_reference"
+count = 0
+names = []
+training_boundary = "Source and table identity use no fitted physical parameters."
+
+[[fitted_parameters]]
+branch = "pp_fit"
+count = 2
+names = ["amplitude", "spectral_index"]
+training_boundary = "Declared and withheld pending covariance: primary10-30GeV support contains bins10-13,13-20,20-30; n6.1 remains frozen historical input, not an admitted fit."
+
+[[intervening_maps]]
+name = "fragmentation_source_population_identity"
+branch = "fragmentation_admission"
+kind = "computational"
+description = "Distinguish the2017 printed moment from the ordinary per-pT Jacobian, the2022 conditional K example, NLO2010 neutral-pion7TeV mean-z and identified versus charged-total DSS releases. Require an explicit standard-FF map and matching production weights before physical calibration."
+[[fitted_parameters]]
+branch = "fragmentation_admission"
+count = 0
+names = []
+training_boundary = "Source review fits zero new parameters. Imported pion23/kaon24/proton17/residual18 source fit groups remain explicitly recorded in source-identity.toml; their inherited correlations and uncertainties require propagation rather than treating the physical pipeline as parameter-free."
+[[intervening_maps]]
+name = "fragmentation_mirror_interpolation"
+branch = "fragmentation_interpolation"
+kind = "computational"
+description = "Pinned charged grids to explicit source-real knots and exponent, endpoint-factor log interpolation, flavor reconstruction and charge projection. Independent retained Fortran replay tests finite implementation conformance only."
+
+[[fitted_parameters]]
+branch = "fragmentation_interpolation"
+count = 0
+names = []
+training_boundary = "Frozen16 by9 query mesh, two orders, four charges and two source-real conventions; mirror source and imported FF fits are retained rather than refitted."
+
+[decisive_experiment]
+
+
+experiment_ids = ["E-075","E-296","E-309","E-310","E-311","E-314"]
+protocol_artifact = "data/output/audit/qgp-fragmentation-interpolation/protocol.toml"
+protocol_sha256 = "445f40bf3419240103637039ccbab9e37edc7dd622557536c20a4a2e88cb72c7"
+description = "E-075 preserves the historical physical driver; E-296 verifies its numerical objective, E-309 fixed-field directional moments, E-310 finite-grid outgoing quenching and E-311 exact pp table admission. Physical source-model comparison still requires covariance, pp calibration, fragmentation and geometry pooling."
+
+[what_would_verify_refute]
+verification_outcomes = ["E-314 both source-real variants pass all10368 per-channel comparisons each at abs2e-12 plus rel2e-11 and independent malformed-input, identity and charge controls discriminate failure.","E-311 admits all39 pp bins at each explicit energy and rejects identity/unit/group/error/decimal-order ambiguity; the two provider representations agree in390 checked numeric fields. This establishes reference identity alone.","E-310 independent mean, transform and convolution residuals and refined paired orders pass the unchanged1e-8 gate on the declared finite grid; the original failing order pair remains retained.","All 38 retained HEPData table rows match edges, RAA and stated error columns exactly; the diagonal historical scoring omits separately tabulated normalization uncertainty.","E-296 independently reproduces the shared corrected numerical objective at identical parameters and weights."]
+revision_outcomes = ["Correct source attribution if a7TeV neutral-pion plot or pion/kaon-only release is presented as a5.02TeV inclusive charged calibration; retain the original comparison and declare the appropriate population.","A new provider release or corrected model definition receives a separate source identity and canonical revision; preserve original columns and objective results.","An admitted physical model comparison requires its own covariance, calibration freedom, interpretive maps and rejection rule.","A source-implementation mismatch narrows the failed fit to its actual ansatz; preserve the result and require independently verified source convolution before physical rejection."]
+abandonment_outcomes = ["E-314 a precision-matched channel exceeds its frozen gate or malformed input passes admission: abandon the affected finite-mesh conformance predicate until corrected and replayed.","Any wrong source DOI, differential measure, group, bin or uncertainty passes pp admission, or any corresponding provider-representation value differs: abandon the affected table-identity predicate.","Independent source mean, Laplace or convolution residual exceeds1e-8 on the admitted grid: abandon the affected numerical conformance predicate. A paired-order failure withholds output admission until the instrument is refined at unchanged gates.","An identical-source row or uncertainty column differs, or independent same-input objective evaluation disagrees; abandon the affected implementation identity clause."]
+inconclusive_outcomes = ["Source passports identify different species/energies and FF releases. The ordinary-FF versus printed2017 Jacobian map, evolved charged-total package, channel weights/scales and propagated uncertainty remain unadmitted.","Matching pp rows and a declared two-parameter fit leave calibration unexecuted while cross-bin covariance remains unadmitted. Per-source quadrature is not evidence of bin independence; the global2.3percent uncertainty remains separate.","Finite-grid quenching conformance leaves physical pp calibration, fragmentation, parton mixture, covariance and geometry pooling unadmitted; empirical order changes do not certify a continuous-mixture error bound.","Using retained radial distances or moment eccentricity leaves source geometry-to-observable mapping unadmitted even when a numerical fit passes. Fixed-field directional conformance does not establish centrality pooling.","A large diagonal chi2 alone leaves physical rejection unresolved when covariance, source ansatz or population remains unadmitted.","The six-point E-296 test establishes optimizer/objective conformance only; extrapolation to every centrality remains unexecuted.","Authenticated source equations differ from the implemented law: source-model fit agreement or rejection remains unadjudicated."]

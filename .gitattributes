@@ -10,11 +10,22 @@ data/retention/** -text
 crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv -text whitespace=-blank-at-eof
 *.csv    -text
 *.bin    -text
+# Hash-bound source and replay receipts preserve provider whitespace and line endings.
+data/output/audit/claim-family-evidence-adjudication/*.log -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/*replay.txt -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/moreno-zero-divisors-source.tex -text whitespace=-blank-at-eol,-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/*.headers -text whitespace=-blank-at-eol,-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/optics-replay/*.headers -text whitespace=-blank-at-eol,-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/geometric-evaluation/kernel-*.json    -text
+data/output/audit/claim-family-evidence-adjudication/geometric-evaluation/joint-control-uncertainty.json    -text
 *.pdf    -text
 *.nsys-rep    -text
 *.sqlite    -text
 *.h5    -text
 *.cdf    -text
+data/output/audit/claim-family-evidence-adjudication/control-recovery/kernel-*.json    -text
+data/output/audit/claim-family-evidence-adjudication/control-recovery/control-uncertainty.json    -text
 data/output/audit/staples-causal-validation/source-archives/external-intake.tar.zst    -text
 data/output/audit/staples-causal-validation/source-archives/calibration-research.tar.zst    -text
 data/output/audit/artifact-retrieval-correspondence/headers-*.txt -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
@@ -26,3 +37,53 @@ vendor/proc-macro-error2/LICENSE-APACHE whitespace=blank-at-eol,blank-at-eof,spa
 # Unified-diff context markers are retained evidence bytes on empty lines.
 data/output/audit/staples-orbit-worktree-reconciliation/e8-uncommitted-before.patch whitespace=-blank-at-eol -text
 data/output/audit/provenance-experiment-module-ownership/historical-replay/*.json    -text
+data/output/audit/claim-family-evidence-adjudication/euclid-physical-measurements.parquet    -text
+data/output/audit/claim-family-evidence-adjudication/**/*.f64le    -text
+data/output/audit/claim-family-evidence-adjudication/box-counting-amplitude-success.txt -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/null-input-retention-test.txt -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/null-instrument-final-test.txt -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/null-instrument-test.txt -text whitespace=-blank-at-eof
+data/output/audit/claim-family-evidence-adjudication/population-diagnostics-test.txt -text whitespace=-blank-at-eof
+# Provider bytes and raw replay logs retain their original whitespace.
+data/output/audit/magnonic-source-projection/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/magnonic-source-projection/source-*.tex -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/magnonic-source-projection/source-*.ppm -text -diff
+data/output/audit/magnonic-source-projection/databank-response.html -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/ward-residual-scope/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/ward-residual-scope/source.txt -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/ward-residual-scope/scalar-source.txt -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/claim-family-evidence-adjudication/instrument-followup-validation.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/optics-landmark-identity/FanoCloak-lossy-abs.eps -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/optics-landmark-identity/FanoCloak-lossy-sct.eps -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/optics-landmark-identity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/optics-landmark-identity/source-pdf.txt -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/ward-distributional-identity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/ward-distributional-identity/source.tex -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/magnonic-global-gap-certificate/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-primary-reference-intake/*.headers -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/qgp-primary-reference-intake/*.html -text whitespace=-blank-at-eof,-blank-at-eol,-space-before-tab,cr-at-eol
+data/output/audit/qgp-primary-reference-intake/*source.txt -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-primary-reference-intake/publisher-cujet-pdf.txt -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-source-quenching-identity/*.headers -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/corrected-mrt-null-replay/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-cujet-source-curves/*.stream -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-cujet-source-curves/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-participant-reference-intake/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-directional-path-identity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-quenching-weight-identity/*.headers -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/qgp-quenching-weight-identity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-pp-spectrum-calibration/*.headers -text whitespace=-blank-at-eof,-blank-at-eol,cr-at-eol
+data/output/audit/qgp-pp-spectrum-calibration/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml -text whitespace=-blank-at-eof,-blank-at-eol
+
+data/output/audit/mhd-magnetic-diffusivity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+
+data/output/audit/mhd-centered-induction-integrator/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+
+data/output/audit/qgp-fragmentation-measure-identity/*.headers -text whitespace=-blank-at-eof,-blank-at-eol
+# Provider responses and mirrored reference files preserve retrieved bytes.
+data/output/audit/qgp-fragmentation-grid-intake/** -text whitespace=-blank-at-eof,-blank-at-eol,-space-before-tab,cr-at-eol
+data/output/audit/qgp-fragmentation-interpolation/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-fragmentation-interpolation/*.stdout -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-fragmentation-interpolation/*.stderr -text whitespace=-blank-at-eof,-blank-at-eol
+data/output/audit/qgp-fragmentation-interpolation/*-version.txt -text whitespace=-blank-at-eof,-blank-at-eol

@@ -1,0 +1,234 @@
+schema_version = 1
+scope = "Bounded public endpoint discovery for the retained Radici INFN fragmentation database paths. TLS failures and certificate-unverified discovery are retained separately; certificate-unverified bodies do not authenticate source identity. No grids admitted and no scientific inference executed."
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+hsts_file = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts"
+user_agent = "Mozilla/5.0"
+finding = "The advertised www.pv.infn.it database path redirects to www2.pv.infn.it over HTTP, whose port80 is unreachable in these probes. Direct www2 HTTPS fails certificate trust. Separately authorized certificate-unverified HTTPS reaches that database path and its parent Radici page, both returning404. The www2 root meta-refresh points back to the reachable www.pv institutional root. The linked theoretical-physics page identifies Marco Radici by a public mailto link but supplies no replacement fragmentation database link in the inspected page."
+grid_admission = "unresolved_provider_artifact"
+contacts_sent = 0
+
+[[requests]]
+name = "verified-0"
+url = "https://www.pv.infn.it/~radici/FFdatabase/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-0.body","https://www.pv.infn.it/~radici/FFdatabase/"]
+exit_status = 4
+certificate_verification = true
+observed_http_status_lines = ["HTTP/1.1 301 Moved Permanently"]
+observed_redirect_lines = ["Location: http://www2.pv.infn.it/~radici/FFdatabase/","Location: http://www2.pv.infn.it/~radici/FFdatabase/ [following]"]
+
+[[requests]]
+name = "verified-1"
+url = "https://www2.pv.infn.it/~radici/FFdatabase/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-1.body","https://www2.pv.infn.it/~radici/FFdatabase/"]
+exit_status = 5
+certificate_verification = true
+observed_http_status_lines = []
+observed_redirect_lines = []
+
+[[requests]]
+name = "verified-2"
+url = "http://www.pv.infn.it/~radici/FFdatabase/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-2.body","http://www.pv.infn.it/~radici/FFdatabase/"]
+exit_status = 4
+certificate_verification = true
+observed_http_status_lines = ["HTTP/1.1 301 Moved Permanently","HTTP/1.1 301 Moved Permanently"]
+observed_redirect_lines = ["Location: https://www.pv.infn.it/~radici/FFdatabase/","Location: https://www.pv.infn.it/~radici/FFdatabase/ [following]","Location: http://www2.pv.infn.it/~radici/FFdatabase/","Location: http://www2.pv.infn.it/~radici/FFdatabase/ [following]"]
+
+[[requests]]
+name = "verified-3"
+url = "http://www2.pv.infn.it/~radici/FFdatabase/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-3.body","http://www2.pv.infn.it/~radici/FFdatabase/"]
+exit_status = 4
+certificate_verification = true
+observed_http_status_lines = []
+observed_redirect_lines = []
+
+[[requests]]
+name = "certificate-unverified-discovery"
+url = "https://www2.pv.infn.it/~radici/FFdatabase/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","--no-check-certificate","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/certificate-unverified-discovery.body","https://www2.pv.infn.it/~radici/FFdatabase/"]
+exit_status = 8
+certificate_verification = false
+scope = "discovery_only_unauthenticated"
+observed_http_status_lines = ["HTTP/1.1 404 Not Found"]
+observed_redirect_lines = []
+
+[[requests]]
+name = "parent-discovery-0"
+url = "https://www2.pv.infn.it/~radici/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","--no-check-certificate","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-0.body","https://www2.pv.infn.it/~radici/"]
+exit_status = 8
+certificate_verification = false
+scope = "discovery_only_unauthenticated"
+observed_http_status_lines = ["HTTP/1.1 404 Not Found"]
+observed_redirect_lines = []
+
+[[requests]]
+name = "parent-discovery-1"
+url = "https://www2.pv.infn.it/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","--no-check-certificate","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-1.body","https://www2.pv.infn.it/"]
+exit_status = 0
+certificate_verification = false
+scope = "discovery_only_unauthenticated"
+observed_http_status_lines = ["HTTP/1.1 200 OK"]
+observed_redirect_lines = []
+
+[[requests]]
+name = "parent-discovery-2"
+url = "https://www.pv.infn.it/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-2.body","https://www.pv.infn.it/"]
+exit_status = 0
+certificate_verification = true
+scope = "institutional_root_discovery"
+observed_http_status_lines = ["HTTP/1.1 200 OK"]
+observed_redirect_lines = []
+
+[[requests]]
+name = "linked-theory"
+url = "https://www.pv.infn.it/fisica-teorica/"
+argv = ["wget","--timeout=10","--tries=1","--server-response","--content-on-error","--user-agent=Mozilla/5.0","--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts","-O","data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/linked-theory.body","https://www.pv.infn.it/fisica-teorica/"]
+exit_status = 0
+certificate_verification = true
+discovered_from = "parent-discovery-2.body"
+observed_http_status_lines = ["HTTP/1.1 200 OK"]
+observed_redirect_lines = []
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/certificate-unverified-discovery.body"
+sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+bytes = 196
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/certificate-unverified-discovery.log"
+sha256 = "554359e2f36a27e9c3aff2ab9c63b023f7154e9804d64c85fbf39dd8fd83a598"
+bytes = 953
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/certificate-unverified-discovery.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/linked-theory.body"
+sha256 = "d7c9a3987046a37e03ff9dac3f3bfe4c1a67ac380e390e155f789023756492dc"
+bytes = 55180
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/linked-theory.log"
+sha256 = "4f8b6774129f173b95ef1732de7c5acaac6e355e0951c76fc8a5823bde7fe94c"
+bytes = 1290
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/linked-theory.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-0.body"
+sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
+bytes = 196
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-0.log"
+sha256 = "1c19d48be78581342ff76355611574288ef43231769e2aecf1ca17187314a395"
+bytes = 928
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-0.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-1.body"
+sha256 = "7a55f418b749ca24f2bfe5f95fce9bc53a1b37237e963072b2637e31dc886d55"
+bytes = 413
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-1.log"
+sha256 = "e2a006c32189c06b44a6ed9e530889b5b84c92926a38efcf807dd4d23882821b"
+bytes = 1134
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-1.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-2.body"
+sha256 = "1be3dd883bdae1cd3e25aafd02a0d2fd658df9cc700025d2ff3d590a94ba515b"
+bytes = 67249
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-2.log"
+sha256 = "8c64a215d787f84a104a85832ab3156b93cdd0fea5f9f69069d308776371584d"
+bytes = 1279
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-2.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/requests.json"
+sha256 = "099e9fd92de676e61243ea02a74fc562fdd5f697165488642ce116c5b7c1cdd2"
+bytes = 5439
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-0.body"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-0.log"
+sha256 = "dfab613ea1af04ec7733c8d461bb1c78869ec285fdf94cd5c3e115452bfadd02"
+bytes = 895
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-0.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-1.body"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-1.log"
+sha256 = "c96b1bbff4e54f317adb15057c6f1677c5b1755e84253421f88890f62ec30397"
+bytes = 411
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-1.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-2.body"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-2.log"
+sha256 = "60bb83e29df51c2d2391c72d255a8040a280d1dac85e1fc61c5b1b3db2c9846d"
+bytes = 1446
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-2.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-3.body"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-3.log"
+sha256 = "7b98d6d285c2a7e732448f0549d1fe0fc99f4a1839b3d0bef15ea72e80361852"
+bytes = 224
+
+[[artifacts]]
+path = "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-3.stdout"
+sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+bytes = 0

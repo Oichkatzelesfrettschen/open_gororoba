@@ -1,0 +1,30 @@
+claim_id = "C-1745"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Population evolution and execution dependency conformance; physical interpretation is outside the fixture."
+fixed_hyperparameters = ["8 cubed periodic FP32 BGK", "12 evolving steps", "Original RMS gate 2e-5", "RTX 4070 Ti driver 610.57.04", "Force replacement and odd-step reinitialization", "cudarc event tracking enabled"]
+[[intervening_maps]]
+branch = "population_comparison"
+name = "layout_and_time_level_alignment"
+kind = "computational"
+description = "Convert CPU AoSoA and CUDA SoA distributions to cell-major at the same post-step time; independently sum density and compare explicitly staged macro fields."
+[[intervening_maps]]
+branch = "capture_comparison"
+name = "dependency_tracked_graph_reuse"
+kind = "computational"
+description = "Retain device dependency guards through capture and launch; compare direct stepping with capture after force replacement and odd-step reinitialization."
+[[fitted_parameters]]
+branch = "all_fixtures"
+count = 0
+names = []
+training_boundary = "Deterministic fixtures fit zero parameters; tolerances remain fixed across failed and corrected runs."
+[decisive_experiment]
+experiment_ids = ["E-291"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/lbm-instrument-repair.toml"
+description = "Replay both admitted CUDA fixtures and the frozen-evolution negative control against hash-bound source and retained original failures."
+[what_would_verify_refute]
+verification_outcomes = ["Both actual CUDA fixtures and the frozen-evolution rejection pass the declared unchanged gates."]
+revision_outcomes = ["Additional MRT, boundaries, grids or device precision require separate conformance evidence and a bounded successor."]
+abandonment_outcomes = ["An admitted faithful replay violates an RMS gate or graph-reuse predicate.", "A frozen or equilibrium substitute passes the evolving oracle: the instrument fails to discriminate evolution."]
+inconclusive_outcomes = ["CUDA hardware admission fails or the hardware tests are skipped.", "Time level, layout, source identity or dependency ordering is ambiguous.", "Passing fixture conformance leaves physical interpretation and resolution convergence unassessed."]

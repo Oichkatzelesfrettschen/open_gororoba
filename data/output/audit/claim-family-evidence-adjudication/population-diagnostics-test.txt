@@ -1,0 +1,9 @@
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 14.07s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/gororoba_cli_physics-94fcdd5436132c14)
+
+running 1 test
+test lbm_population_diagnostics::tests::raw_population_admission_rejects_negative_nonfinite_and_exploded_states ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 98 filtered out; finished in 0.00s
+

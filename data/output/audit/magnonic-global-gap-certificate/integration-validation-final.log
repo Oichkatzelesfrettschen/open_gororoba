@@ -1,0 +1,96 @@
+# workspace-routing source lives beside the data CLI, but
+# rust-regression-scoped builds it through the slim governance proxy binary.
+# That keeps scope classification independent of the full data CLI
+# dependency graph while preserving workspace-routing semantics.
+#
+# Prefer the cached binary at /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/workspace-routing to skip cargo's
+# metadata walk. The validation-tools target dependencies rebuild the cached binary
+# when workspace_routing.rs changes.
+#
+# Preserve routing CLI stderr so scope-selection failures reach the validation
+# operator. The fallback remains "--workspace" after the diagnostic is
+# emitted.
+# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
+# WHY: clippy lints fire on the package owning the source -- a change in a
+# hub crate cannot induce a new lint on a downstream consumer whose source
+# is unchanged. Skipping the closure for clippy saves the bulk of compile
+# time (gororoba_cli_data with 100+ binaries is the worst offender).
+# Nextest in the LOCAL pre-push fast path also runs only on directly
+# changed crates. Trust the layered model:
+#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
+#   - Full reverse-closure regression = CI on PR open (validate-ci-rust).
+# Set RUST_NEXTEST_SCOPE_MODE=closure to opt back into the wide scope for
+# a single invocation when needed (e.g. after toolchain bumps).
+# Pre-push test kind: `lib` runs only library unit tests; `all` runs
+# lib + integration test binaries (--lib --tests). Integration test
+# compile is the largest single contributor to gate wall-time (the
+# 441-binary link phase, ~4m30s); restricting to --lib at pre-push
+# makes the gate a true smoke gate. CI on PR open runs the full
+# `all` suite. Override per invocation:
+#   make validate-local RUST_NEXTEST_KIND_MODE=all
+[rust-regression-scoped] clippy scope: -p algebra_analysis -p algebra_experimental -p cosmology_core -p gororoba_cli_data -p gororoba_cli_physics -p gororoba_db -p gr_core -p lbm_3d -p lbm_3d_cuda -p optics_core -p provenance_store -p qgp_scaling -p quantum_core
+[rust-regression-scoped] nextest scope: -p algebra_analysis -p algebra_experimental -p cosmology_core -p gororoba_cli_data -p gororoba_cli_physics -p gororoba_db -p gr_core -p lbm_3d -p lbm_3d_cuda -p optics_core -p provenance_store -p qgp_scaling -p quantum_core (scope_mode=direct kinds=--lib)
+    Checking cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+    Checking qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+    Checking quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+    Checking lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+    Checking sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+    Checking neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+    Checking lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+    Checking spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+    Checking cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+    Checking lattice_filtration v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lattice_filtration)
+    Checking gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+    Checking gororoba_engine v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_engine)
+    Checking gororoba_cli v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli)
+    Checking gororoba_cli_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_data)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 30.04s
+[rust-regression-scoped] local skip filter enabled
+[local-nextest] skip gororoba_db: no inline lib tests and no integration tests
+[local-nextest] run algebra_experimental: lib
+[local-nextest] run cosmology_core: lib
+[local-nextest] run gororoba_cli_data: lib
+[local-nextest] run gororoba_cli_physics: lib
+[local-nextest] run lbm_3d: lib
+[local-nextest] run lbm_3d_cuda: lib
+[local-nextest] run optics_core: lib
+[local-nextest] run provenance_store: lib
+[local-nextest] run qgp_scaling: lib
+[local-nextest] run quantum_core: lib
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/neural_homotopy)
+   Compiling lbm_3d_cuda v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d_cuda)
+   Compiling cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_spin_bridge)
+   Compiling spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/spectral_core)
+   Compiling lattice_filtration v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lattice_filtration)
+   Compiling gororoba_engine v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_engine)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli)
+   Compiling gororoba_cli_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_data)
+    Finished `test` profile [optimized + debuginfo] target(s) in 25.74s
+────────────
+ Nextest run ID 3e76e379-0da0-4517-b530-8be69874539b with nextest profile: default
+    Starting 1992 tests across 10 binaries (19 tests skipped)
+────────────
+     Summary [  10.866s] 1992 tests run: 1992 passed, 19 skipped
+[local-nextest] skip integration-test phase for 9 packages (kinds=lib). Run with --kinds all to include.
+[rust-regression-scoped] SKIP heavy nextest in local fast path:  -p algebra_analysis -p gr_core
+OK: scoped Rust validation passed (clippy + nextest).
+make[1]: Leaving directory '/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication'
+make[1]: Entering directory '/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication'
+[validation-tools] building registry validation tools in one Cargo session
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_physics)
+   Compiling gororoba_cli v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli)
+   Compiling gororoba_cli_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gororoba_cli_data)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 1m 03s
+OK: registry validation tools cached at /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/.
+/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation-tools/markdown-registry verify-all
+Error: UNREGISTERED: docs/engineering/magnonic-isolated-bundle-time-reversal.md exists on disk but has no entry in registry/markdown_owner_map.toml
+make[1]: *** [Makefile:338: validate-governance] Error 1
+make[1]: Leaving directory '/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication'
+make: *** [Makefile:562: validate-local] Error 2

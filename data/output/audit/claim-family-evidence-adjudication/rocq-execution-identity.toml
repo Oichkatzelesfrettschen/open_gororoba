@@ -1,0 +1,10 @@
+name = "rocq"
+version = "9.1.1"
+executable = "/usr/bin/rocq"
+executable_sha256 = "55adffa598c4145ea1798447d8d2595dac75c37a2c20756a5b917f28d501e840"
+version_probe_arguments = ["--version"]
+version_probe_stdout = "The Rocq Prover, version 9.1.1\ncompiled with OCaml 5.5.0\n"
+version_probe_exit_code = 0
+source_receipt = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+source_receipt_sha256 = "4567746dae0aa048912c34bf97891a7370075c6267662363cc2ff5bbd9097137"
+scope = "Retained local tool identity and focused proof-source receipt; registration checks retained bytes and does not execute a command or establish portability of dependency objects."

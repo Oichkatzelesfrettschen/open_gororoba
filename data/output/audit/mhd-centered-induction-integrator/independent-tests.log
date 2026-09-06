@@ -1,0 +1,55 @@
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 5.10s
+     Running tests/mhd_rk3_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/mhd_rk3_identity-c63e02c15989c476)
+
+running 5 tests
+fourier shape=[16, 1, 1] mode=[1, 0, 0] step=1 error=2.22044604925031308e-16
+scalar d=0 a=1 gain_squared=9.44444444444444531e-1 stable=true
+scalar d=0 a=2 gain_squared=1.44444444444444464e0 stable=false
+scalar d=2 a=0 gain_squared=1.11111111111111063e-1 stable=true
+longitudinal step=1 gain=9.23695647406712728e-1
+fourier shape=[16, 1, 1] mode=[1, 0, 0] step=2 error=3.33066907387546962e-16
+temporal steps=8 dt=4.00000000000000022e-1 error=1.27703612438132685e-4
+longitudinal step=2 gain=9.23695647406712728e-1
+scalar d=0 a=1.5 gain_squared=8.94531250000000000e-1 stable=true
+scalar d=2 a=1.5 gain_squared=1.50564236111111116e0 stable=false
+fourier shape=[16, 1, 1] mode=[1, 0, 0] step=8 error=6.80011602582908381e-16
+temporal steps=16 dt=2.00000000000000011e-1 error=1.59561313109277762e-5
+longitudinal step=8 gain=9.23695647406712728e-1
+test mixed_stability_and_atomicity_controls_reject_failures ... ok
+fourier shape=[16, 1, 1] mode=[1, 0, 0] step=32 error=2.10942374678779743e-15
+fourier shape=[16, 1, 1] mode=[3, 0, 0] step=1 error=8.88178419700125232e-16
+shear error=3.60822483003175876e-16 energy_ratio=1.04686291501015205e0
+fourier shape=[16, 1, 1] mode=[3, 0, 0] step=2 error=1.33226762955018785e-15
+test shear_energy_growth_matches_physical_stretching ... ok
+fourier shape=[16, 1, 1] mode=[3, 0, 0] step=8 error=9.43689570931383059e-16
+temporal steps=32 dt=1.00000000000000006e-1 error=1.99392318921022535e-6
+longitudinal step=32 gain=9.23695647406712728e-1
+test longitudinal_damping_matches_staged_operator ... ok
+fourier shape=[16, 1, 1] mode=[3, 0, 0] step=32 error=4.70977423727703126e-16
+fourier shape=[9, 5, 3] mode=[2, 1, 0] step=1 error=3.33066907387546962e-16
+fourier shape=[9, 5, 3] mode=[2, 1, 0] step=2 error=3.33066907387546962e-16
+temporal steps=64 dt=5.00000000000000028e-2 error=2.49198822038926878e-7
+temporal ratio=8.00341949747387105e0
+temporal ratio=8.00238013042410756e0
+temporal ratio=8.00133472901713105e0
+fourier shape=[9, 5, 3] mode=[2, 1, 0] step=8 error=1.38777878078144568e-16
+fourier shape=[9, 5, 3] mode=[2, 1, 0] step=32 error=2.38744706513097094e-17
+fourier shape=[8, 8, 8] mode=[1, 2, 0] step=1 error=3.33066907387546962e-16
+fourier shape=[8, 8, 8] mode=[1, 2, 0] step=2 error=4.44089209850062616e-16
+fourier shape=[8, 8, 8] mode=[1, 2, 0] step=8 error=3.33066907387546962e-16
+spatial cells=16 error=1.69967113403501485e-2 temporal_sensitivity=1.50944982522037119e-9
+fourier shape=[8, 8, 8] mode=[1, 2, 0] step=32 error=6.46184494801360643e-17
+fourier shape=[8, 8, 8] mode=[4, 4, 4] step=1 error=2.77555756156289135e-17
+fourier shape=[8, 8, 8] mode=[4, 4, 4] step=2 error=0.00000000000000000e0
+fourier shape=[8, 8, 8] mode=[4, 4, 4] step=8 error=8.47032947254300339e-21
+fourier shape=[8, 8, 8] mode=[4, 4, 4] step=32 error=1.42940113059990161e-35
+test complex_fourier_gain_matches_independent_polynomial ... ok
+spatial cells=32 error=4.27392393806975187e-3 temporal_sensitivity=1.63125713446307827e-9
+spatial cells=64 error=1.07002846560264563e-3 temporal_sensitivity=1.66305865532168077e-9
+spatial ratio=3.97683992196324310e0
+spatial ratio=3.99421517787627778e0
+test prescribed_velocity_temporal_and_spatial_orders_discriminate ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+

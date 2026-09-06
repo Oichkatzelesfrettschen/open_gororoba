@@ -1,0 +1,13 @@
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/gr_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 4.82s
+     Running tests/ward_source_scope.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/ward_source_scope-60858c86059d693d)
+
+running 1 test
+counterterm loop=Spinor mass=0.8 source_relative_error=2.21911387229665020e-13 wrong_measure_relative_error=1.20666022709121065e-1 omitted_norm=5.71532993224750413e-4
+counterterm loop=Scalar mass=0.8 source_relative_error=2.21822277157476449e-13 wrong_measure_relative_error=1.20666022709121176e-1 omitted_norm=2.85766496612375207e-4
+counterterm loop=Spinor mass=1.3 source_relative_error=3.60977311493619630e-13 wrong_measure_relative_error=7.11205462874669458e-1 omitted_norm=3.35958844016323544e-4
+counterterm loop=Scalar mass=1.3 source_relative_error=3.61075499198515442e-13 wrong_measure_relative_error=7.11205462874669458e-1 omitted_norm=1.67979422008161772e-4
+test rescaled_counterterm_matches_source_measure ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+

@@ -1,0 +1,36 @@
+claim_id = "C-1700"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.","Historical producer revision 81a4ca6e is distinct from repaired graph/event handling. Retain the original CUDA error and zero completed trials. E-174 requires a declared positive alpha_zd and at least one noise trial.","E-306 corrected producer replay: data/output/audit/corrected-mrt-null-replay/adjudication.toml; sha256 e3199d6091f5176bdd4fe0872621b3244b59f1817a97f2075ce4e710b412f07d. All 100 input arrays match E-298; six first-step Mach failures persist."]
+
+[[intervening_maps]]
+name = "source_and_input_identity"
+branch = "null_path_execution"
+description = "Trace stream ownership, graph capture, buffer event waits, force replacement and initialization parity."
+kind = "computational"
+
+[[intervening_maps]]
+name = "independent_predicate"
+branch = "null_path_execution"
+description = "Admit CUDA identity and exact source, then retain completion and per-condition trial counts for all six declared conditions with noncollapsed force contrasts."
+kind = "computational"
+
+[[fitted_parameters]]
+branch = "null_path_execution"
+count = 0
+names = []
+training_boundary = "The declared validation comparison fits zero parameters. Imported catalog/profile fits and physical model freedoms must be separately enumerated before physical interpretation; their exclusion from this implementation check does not assert that the producer is parameter-free."
+
+[decisive_experiment]
+experiment_ids = ["E-174","E-298","E-306"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "E-298 is a separately declared 16-cubed direct-step pilot of the retained pre-MRT-correction executable. It emits all 50 CPU/CUDA trial rows, retains six first-step Mach failures, and exits 1 on both backends. E-298 does not retire the captured 64/128-cubed historical failure. Use E-174 as the recorded family binding, not evidence of completed replay. Admit CUDA identity and exact source, then retain completion and per-condition trial counts for all six declared conditions with noncollapsed force contrasts. The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates. E-306 executes the corrected MRT producer with unchanged E-298 gates and inputs; all 50 rows are retained and six Sersic trials fail at step 1. Corrected impulse conformance remains independent of failed initial-field admission."
+
+[what_would_verify_refute]
+verification_outcomes = ["The historical declared producer fails at capture before completed trials on the specified hardware and inputs."]
+revision_outcomes = ["A new direct-step producer emits the exact 25-row-per-backend inventory with paired array hashes and explicit failures: register bounded instrument execution separately; retain E-298 failure and require a corrected-producer independent impulse oracle plus admitted completion before morphology interpretation.","The bounded repaired BGK graph fixtures pass with retained population/time-level oracles; register instrument repair separately. Retire the historical failure for a new producer only when all declared E-174 conditions actually complete."]
+abandonment_outcomes = ["The identical historical producer and input complete all declared trials, contradicting the recorded universal execution failure."]
+inconclusive_outcomes = ["E-298 C4/C5/C6 fail the frozen Mach gate at step 1 on both backends; Sersic contrasts, resolution convergence and physical interpretation remain unadmitted.","The recorded E-174 command omits nonzero alpha_zd. The repaired 8-cubed BGK fixture is not a 128-cubed MRT catalog null experiment; full catalog identity, conditions and statistical rejection rule remain admission gates.","E-306 retains first-step Sersic Mach failures after force correction; require physically admitted initial fields and paired resolution before a morphology or force comparison."]

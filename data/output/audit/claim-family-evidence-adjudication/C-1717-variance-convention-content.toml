@@ -1,0 +1,5 @@
+claim_id = "C-1717"
+expected_statement = "For any spectrum of N values taking exactly two distinct levels, the mean-normalized nearest-neighbour spacing variance equals N minus 2 identically, so a reported variance of N minus 2 is evidence of two-level degeneracy and not of super-Poisson statistics."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml"
+statement = "For N>=2 sorted spectral values at exactly two distinct populated levels, the N-1 adjacent spacings including multiplicities contain one positive gap. After division by their mean, their population variance with denominator N-1 equals N-2 exactly. Sample variance instead equals N-1 for N>2 and is undefined for N=2. The dimension-independent identity diagnoses the declared two-level spacing construction rather than generic super-Poisson statistics."
+where_stated = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml; crates/algebra_analysis/tests/motif_exact_rank.rs"

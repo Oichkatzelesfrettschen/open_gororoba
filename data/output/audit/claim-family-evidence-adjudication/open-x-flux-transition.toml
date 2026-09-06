@@ -1,0 +1,26 @@
+[transition]
+transition_timestamp = "2026-09-05T18:43:56Z"
+transition_key = "open-x-population-flux-conformance"
+source_claim_id = "C-1684"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-OPEN-X-FLUX"]
+experiment_ids = ["E-297"]
+exercised_falsifier = "Independent outgoing packets and fixed-direction face sums reject periodic wraparound and a self-consistent but incorrect flux ledger."
+proposed_claim_status = "Provisional"
+rationale = "Preserve the historical open-boundary mass-growth observation and register the repaired numerical transport instrument separately from physical outflow admission."
+unresolved_assumptions = ["Zero-gradient population outflow requires independent physical reflection/backflow validation.", "Magnetic boundary conditions, spacecraft SI input, gravitational frame and coupled physical sensitivity remain unassessed."]
+actor = "claim-evidence-adjudication"
+reason = "Bind independent conservative transport evidence without promoting a physical dark-matter bound"
+expected_source_state_sha256 = "ace6187325d014edc3dd68006eeddd1638b66e878a7035c43b8ad2394fee2a08"
+expected_claim_id_max = 1745
+
+[[successor]]
+proposal_key = "open-x-population-flux-instrument"
+statement = "The explicit open-x D3Q19 transport instrument passes independent outgoing/interior packet and fixed-direction face-sum tests. In a nonuniform 5x3x2 domain over 20 steps, mass changes from 30.6 to 31.2888816925378848 lattice mass units; the maximum absolute cumulative residual after measured boundary flux is 1.791899961745e-13. Five tests and a three-step no-DM, zero-magnetic-field runner pass their declared gates; an exact-zero budget control fails after retaining its ledger row. The zero-gradient incoming-population closure is a tested finite numerical mechanism. Physical outflow suitability, magnetic boundaries and a dark-matter force bound remain unassessed."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-297; open-x-flux-result.toml source hashes; lbm_3d::open_x_boundary and open_x_flux integration tests."
+required_falsifier = "A declared outgoing packet reaches the opposite x face, fixed-direction analytical flux disagrees, or the evolving residual exceeds the unchanged declared gate."
+where_stated = ["data/output/audit/claim-family-evidence-adjudication/open-x-flux-result.toml", "crates/lbm_3d/tests/open_x_flux.rs"]
+evidence_artifact_ids = ["LOCAL-OPEN-X-FLUX"]
+predecessor_relation_kind = "implementation_split"

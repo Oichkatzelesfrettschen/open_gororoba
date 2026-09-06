@@ -1,0 +1,149 @@
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/qgp_scaling)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 5.94s
+     Running unittests src/lib.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/qgp_scaling-67f4d420ba99be2a)
+
+running 79 tests
+test bdmps_quenching::tests::invalid_input_and_zero_coupling ... ok
+test bdmps_quenching::tests::zero_coupling_accepts_tiny_positive_spectral_index ... ok
+test bdmps_quenching::tests::stable_spectrum_and_mean ... ok
+test competing_models::tests::test_arleo_falmagne_raa_model ... ok
+test competing_models::tests::test_bic_computation ... ok
+test competing_models::tests::test_bic_excludes_out_of_range ... ok
+test competing_models::tests::test_cujet3_curves_valid ... ok
+test competing_models::tests::test_langevin_curves_valid ... ok
+test competing_models::tests::test_linear_interp_basic ... ok
+test competing_models::tests::test_linear_interp_nonuniform ... ok
+test competing_models::tests::test_model_comparison_ordering ... ok
+test critical_point::tests::test_c4_c2_ratio ... ok
+test data_tables::tests::test_auau_npart_ordering ... ok
+test data_tables::tests::test_eccentricity_event_by_event_lookup ... ok
+test data_tables::tests::test_pbpb_central_npart ... ok
+test data_tables::tests::test_pbpb_mc_glauber_aperp_physical ... ok
+test data_tables::tests::test_pbpb_mc_glauber_central_npart ... ok
+test data_tables::tests::test_pbpb_mc_glauber_npart_ordering ... ok
+test data_tables::tests::test_pbpb_npart_ordering ... ok
+test data_tables::tests::test_xexe_mc_glauber_ordering ... ok
+test density_scaling::tests::test_golden_section_parabola ... ok
+test density_scaling::tests::test_density_scaling_recovery ... ok
+test directional_path::tests::diagonal_internal_corner_and_overflow ... ok
+test directional_path::tests::invalid_inputs_and_empty_normalization ... ok
+test directional_path::tests::single_cell_axis_and_diagonal_factor_two ... ok
+test epsilon_fit::tests::test_brent_minimize_parabola ... ok
+test epsilon_fit::tests::test_delta_chi2_crossing ... ok
+test density_scaling::tests::test_multi_k_density_scaling ... ok
+test epsilon_fit::tests::test_epsilon_extraction_noisy ... ok
+test epsilon_fit::tests::test_epsilon_extraction_synthetic ... ok
+test flow_cumulants::tests::test_v2_2 ... ok
+test flow_cumulants::tests::test_v2_4 ... ok
+test glauber::tests::test_eccentricity_headon ... ok
+test glauber::tests::test_eccentricity_peripheral ... ok
+test glauber::tests::test_inelastic_probability_limits ... ok
+test glauber::tests::test_overlap_area_headon ... ok
+test glauber::tests::test_npart_headon_pbpb ... ok
+test glauber::tests::test_npart_decreases_with_b ... ok
+test glauber::tests::test_overlap_area_no_overlap ... ok
+test glauber::tests::test_overlap_decreases_with_b ... ok
+test glauber::tests::test_overlap_headon ... ok
+test glauber::tests::test_overlap_vanishes_large_b ... ok
+test multiplicity::tests::test_all_systems_nonempty ... ok
+test multiplicity::tests::test_dnch_dy_conversion ... ok
+test multiplicity::tests::test_pbpb_5020_central_value ... ok
+test multiplicity::tests::test_pbpb_5020_centrality_ordering ... ok
+test nuclear_modification::tests::test_compute_raa ... ok
+test nucleus::tests::test_au197_radius ... ok
+test nucleus::tests::test_hard_sphere_density_normalization ... ok
+test nucleus::tests::test_hard_sphere_density_outside ... ok
+test nucleus::tests::test_o16_radius ... ok
+test nucleus::tests::test_integrated_thickness_normalization ... ok
+test nucleus::tests::test_pb208_radius ... ok
+test nucleus::tests::test_thickness_function_center ... ok
+test nucleus::tests::test_thickness_function_edge ... ok
+test nucleus::tests::test_xe129_radius ... ok
+test quenching::tests::test_analytic_log_derivative ... ok
+test quenching::tests::test_log_derivative_matches_analytic ... ok
+test quenching::tests::test_log_derivative_smooth ... ok
+test quenching::tests::test_raa_model_basic ... ok
+test quenching::tests::test_raa_model_zero_below_epsilon ... ok
+test quenching::tests::test_scaling_function_matches_raa ... ok
+test straggling::tests::test_r_aa_straggling_falls_back_to_discrete_when_sigma_zero ... ok
+test straggling::tests::test_r_aa_straggling_large_pt_approaches_discrete ... ok
+test straggling::tests::test_r_aa_straggling_normalization_at_small_epsilon ... ok
+test straggling::tests::test_r_aa_straggling_smooth_near_epsilon ... ok
+test straggling::tests::test_r_aa_straggling_monotone_in_pt ... ok
+test straggling::tests::test_straggling_sigma_basic ... ok
+test straggling::tests::test_straggling_sigma_zero_for_nonpositive ... ok
+test v2_relation::tests::test_v2_relation_linearity ... ok
+test v2_relation::tests::test_v2_relation_recovery_origin ... ok
+test straggling::tests::test_straggling_grid_lookup_matches_direct ... ok
+test v2_relation::tests::test_v2_relation_recovery_intercept ... ok
+test straggling::tests::test_straggling_grid_clamp_above ... ok
+test straggling::tests::test_straggling_grid_construction ... ok
+test straggling::tests::test_straggling_grid_clamp_below ... ok
+test epsilon_fit::tests::test_epsilon_straggling_extraction_synthetic ... ok
+test epsilon_fit::tests::test_epsilon_straggling_extraction_noisy ... ok
+test straggling::tests::test_straggling_grid_lookup_interpolation_accuracy ... ok
+
+test result: ok. 79 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/alice_participant_reference.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/alice_participant_reference-d5e4c911eccf8243)
+
+running 2 tests
+test legacy_values_remain_a_distinct_reference ... ok
+test source_table_preserves_population_and_distinct_uncertainties ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/bdmps_quenching_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/bdmps_quenching_identity-30eb47b6b8ddd634)
+
+running 3 tests
+test independent_compactified_mean_and_laplace ... ok
+test convolution_grid_obeys_convexity_and_coordinate_identity ... ok
+test independent_outer_convolution_and_delta_omission_control ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+     Running tests/directional_path_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/directional_path_identity-ab3a70bf5068642f)
+
+running 6 tests
+test cell_traversal_matches_independent_all_cell_ray_intersections ... ok
+test unequal_fields_use_global_moments_and_reflect_with_the_ray ... ok
+test axis_exchange_reverses_eccentricity_and_forward_support_is_required ... ok
+test density_and_coordinate_scalings_preserve_the_declared_ratios ... ok
+test joint_rectangle_oracle_discriminates_factor_normalization_and_moment_estimators ... ok
+test hard_sphere_fixed_impact_grid_sensitivity_is_reported_separately ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+     Running tests/epsilon_objective_identity.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/epsilon_objective_identity-9dfa355a710d5361)
+
+running 2 tests
+test corrected_scoring_uses_the_fitted_ansatz_at_identical_weights ... ok
+test frozen_data_separates_minimizer_from_scored_ansatz ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/reference_population.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/reference_population-eb65057d17f5b55c)
+
+running 4 tests
+test every_population_axis_discriminates_a_mismatch ... ok
+test retained_comparison_reports_both_incompatible_competitors ... ok
+test source_repair_preserves_all_retained_numerical_vectors ... ok
+test source_quarantine_survives_display_relabeling ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/test_light_ion_reconstruction.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/test_light_ion_reconstruction-b89dc2f3050411dd)
+
+running 3 tests
+test test_nene_5360_deformation_anchor ... ok
+test test_pi0_oo_comparison ... ok
+test test_oo_5360_reconstruction_consistency ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests qgp_scaling
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

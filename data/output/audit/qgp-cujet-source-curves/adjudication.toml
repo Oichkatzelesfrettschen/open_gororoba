@@ -1,0 +1,19 @@
+schema_version = 1
+claim = "C-1711"
+experiment = "E-307"
+source_identity = "arXiv1508.00552v3 Figure3(a), PDF page19, charged-hadron Pb-Pb2.76 TeV20-30 percent; native Form Im5 object718"
+reference_identity = "HEPData59944v1/t19, charged-particle Pb-Pb2.76 TeV20-30 percent, absolute pseudorapidity below0.8"
+source_acceptance_boundary = "The figure identifies charged hadrons and centrality; detector acceptance and source calibration lineage require separate admission before inferential agreement."
+source_scheme_parameters = ["solid: alpha_c=.95,c_m=.3,chi_T^L", "dashed: alpha_c=.95,c_m=.4,chi_T^u", "dot-dashed: alpha_c=1.33,c_m=.3,chi_T^u"]
+fitting_freedom = "The source selects two continuous parameters and a categorical liberation prescription using RAA near12.5 GeV and lattice screening. Extraction fits zero local model parameters. The feasibility check varies one shared normalization nuisance inside the published4.64 percent range."
+selection = "Retain all65 reference rows and all668 source vertices. Compare21 bins per scheme with lower edge at least8 GeV and upper edge at most120 GeV; exclude the bin containing12.5 GeV from the20-bin normalization intersection."
+independence = "Calibration-point exclusion is a geometric rule. Genuine held-out prediction remains unadmitted because the source calibration lineage is unresolved."
+graphic_envelope = "Piecewise-linear centerline extrema span each whole bin. Expanding native x and y by width*miter_limit/2 conservatively bounds stroke excursion. The envelope is geometric; it does not supply a theory confidence interval or a pp-spectrum-weighted bin prediction."
+component_box = "Intersect [(graphic_low-stat-sys)/observed-1,(graphic_high+stat+sys)/observed-1] across20 calibration-point-excluded bins with[-.0464,.0464]. Statistical and systematic component boxes are deterministic feasibility ranges, rather than a joint confidence region."
+normalization_intersections = ["[-.0464,-.04390983665879755]", "[-.0464,-.03651819825775371]", "[-.0464,-.00860271369639276]"]
+outcome = "All three source schemes pass the declared component-box feasibility predicate. Covariance, calibration lineage, detector-acceptance matching and full model maps remain prerequisites for statistical agreement or superiority."
+visual_check = "The overlay places independently extracted centerlines on all three original blue source paths; the source page and caption identify the panel and styles."
+decoder_check = "MuPDF1.28.0 and qpdf12.4.1 independently decode byte-identical native streams. The failed pdftocairo SVG conversion remains excluded as recorded in intake.toml."
+mapping_check = "All65 CSV rows match the provider JSON decimal strings for bin edges, value, stat and sys; all65 normalization labels report4.64 percent and map to.0464."
+replay_check = "Fresh extraction reproduces all three output files byte for byte. Reusing the output directory fails with AlreadyExists. Three extractor tests pass with denied compiler warnings."
+historical_boundary = "Original CUJET arrays and unmatched six-point comparisons remain preserved in the canonical history and prior evidence. Source extraction supplies a separately identified comparison."

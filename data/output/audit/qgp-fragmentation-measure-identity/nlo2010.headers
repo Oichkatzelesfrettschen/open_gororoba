@@ -1,0 +1,18 @@
+HTTP/2 200 
+content-type: application/pdf
+last-modified: Wed, 18 Jan 2023 20:40:08 GMT
+x-cloud-trace-context: e60384a4806f2eac3e0159a20e11737e
+link: <https://arxiv.org/pdf/1008.0540>; rel='canonical'
+content-disposition: inline; filename="1008.0540v1.pdf"
+access-control-allow-origin: *
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+server: Google Frontend
+etag: CNOlo5P90fwCEAE=
+accept-ranges: bytes
+date: Sun, 06 Sep 2026 00:35:59 GMT
+age: 333514
+x-served-by: cache-lga21950-LGA, cache-lga21950-LGA, cache-lga21954-LGA, cache-hhr-khhr2060056-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1788654960.524237,VS0,VE71
+content-length: 500498
+

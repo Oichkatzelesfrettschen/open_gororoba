@@ -1,0 +1,36 @@
+claim_id = "C-1702"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The predicate checks whether the survival classifier accepts a finite numerical explosion. Physical solver stability and galaxy interpretation require independent error and convergence contracts."
+fixed_hyperparameters = ["E-298 receipt: data/output/audit/claim-family-evidence-adjudication/null-pilot-adjudication.toml; sha256 6c7ea536ed08bb0f21d8fc4c42918c1e0cbd99ed04d7145efb311e84cc3b9bf7. Retained binary 8e3c3bbe66002936f875618500d593a3ce38e25a2dd7a8d51d855f0dd7a609b2 predates E-300 force correction.","E-167 Gaussian contrast sweep at n=16, tau=0.7, 200 steps; retain each actual contrast and mode","Historical diagnostic witness has finite mass error of order 1e113","Inspect the actual survived assignment and finite-Mach/error branches","E-306 corrected producer replay: data/output/audit/corrected-mrt-null-replay/adjudication.toml; sha256 e3199d6091f5176bdd4fe0872621b3244b59f1817a97f2075ce4e710b412f07d. All 100 input arrays match E-298; six first-step Mach failures persist."]
+
+[[intervening_maps]]
+name = "trial_observations"
+branch = "survival_classifier"
+description = "Retain initial and final mass, step status, maximum Mach and nonfinite state telemetry for each fixed trial."
+kind = "computational"
+
+[[intervening_maps]]
+name = "classification_predicate"
+branch = "survival_classifier"
+description = "Independently evaluate the implemented survived predicate and test whether a finite explosive mass residual changes its outcome."
+kind = "computational"
+
+[[fitted_parameters]]
+branch = "survival_classifier"
+count = 0
+names = []
+training_boundary = "The fixed classifier is inspected and exercised without fitting. A repaired scientific stability threshold must be preregistered from its numerical error budget."
+
+[decisive_experiment]
+experiment_ids = ["E-167","E-298","E-306"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/family-frontier.toml"
+protocol_sha256 = "070a42df6cb2e76d561adeef2c841cfb05a3a7f50b47a8de63514e64646d2d7a"
+description = "E-298 independently retains six strict Mach-gate failures under the shared post-step population diagnostic, with finite-state, positive-density, nonnegative-population and mass predicates all passing. That result establishes these six rejections, while numerical accuracy and accepted-field stability remain unassessed. Bind crates/gororoba_cli_physics/src/bin/mrt_stability_audit.rs to retained E-167 telemetry. Replay or independently exercise its classification with the historical finite explosion witness; preserve the original survived output alongside any corrected instrument result. E-306 executes the corrected MRT producer with unchanged E-298 gates and inputs; all 50 rows are retained and six Sersic trials fail at step 1. Corrected impulse conformance remains independent of failed initial-field admission."
+
+[what_would_verify_refute]
+verification_outcomes = ["A finite trial with mass error of order 1e113 is classified survived=true, and independent predicate inspection shows mass error cannot change that outcome: retain the instrument-defect finding."]
+revision_outcomes = ["The E-298 paired pilot retains every first failed predicate and exits 1 for six Mach failures: record bounded classifier execution separately from historical E-167 and from solver correctness.","A repaired predicate rejects the retained finite explosion and separately reports finite-state, mass, positivity and Mach gates: register the bounded repaired-instrument successor after negative-control checks."]
+abandonment_outcomes = ["The identified historical classifier rejects the retained finite explosion through a measured mass or equivalent bounded-state gate: abandon the claimed defect for that source identity."]
+inconclusive_outcomes = ["Passing the declared E-298 engineering mass and Mach budgets alone leaves physical accuracy unresolved; the historical producer also carries the independent E-300 shared MRT force defect.","Missing historical trial identity or inputs blocks numerical replay; source inspection alone supports only the inspected predicate's behavior.","Rejecting one explosive case leaves stability of accepted trials inconclusive until scientific tolerances and resolution convergence are declared.","E-306 retains first-step Sersic Mach failures after force correction; require physically admitted initial fields and paired resolution before a morphology or force comparison."]

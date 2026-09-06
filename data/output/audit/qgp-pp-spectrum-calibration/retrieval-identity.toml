@@ -1,0 +1,57 @@
+schema_version = 1
+claim = "C-1710"
+
+[[retrieval]]
+request_url = "https://www.hepdata.net/search/?q=1802.09145&format=json"
+http_status = 200
+curl_exit_status = 0
+body_path = "data/output/audit/qgp-pp-spectrum-calibration/hepdata-search.json"
+body_sha256 = "e1b2b4df4a10454aa8e18649f5ee8cf66f73c53845472132fa6f01450b908ac6"
+headers_path = "data/output/audit/qgp-pp-spectrum-calibration/hepdata-search.headers"
+headers_sha256 = "e9ad49b127a47f19f4bae5cde76e918f088662cd1ae1908d992707dfe6eca26d"
+log_path = "data/output/audit/qgp-pp-spectrum-calibration/hepdata-search.log"
+log_sha256 = "04b1b39874f529ffcf2f0b17e8c200790327db18b80f793e0eb63dd95f5c3b02"
+
+[[retrieval]]
+request_url = "https://www.hepdata.net/record/86210?format=json"
+http_status = 200
+curl_exit_status = 0
+body_path = "data/output/audit/qgp-pp-spectrum-calibration/hepdata-record.json"
+body_sha256 = "c5b2d5b36fdd6337ab53a76254c527c21a2b281d72a616247100ad5b6a6f7a84"
+headers_path = "data/output/audit/qgp-pp-spectrum-calibration/hepdata-record.headers"
+headers_sha256 = "15030eb2a7e748f035041687139795a368a82ded6bd5af17c32816b2e646afe2"
+log_path = "data/output/audit/qgp-pp-spectrum-calibration/hepdata-record.log"
+log_sha256 = "f349e228eb9067077ebef22706c15c59a7ac7914db9e7c659b7d652a3353b2ac"
+
+[[retrieval]]
+request_url = "https://arxiv.org/pdf/1802.09145"
+http_status = 200
+curl_exit_status = 0
+body_path = "data/output/audit/qgp-pp-spectrum-calibration/alice-source.pdf"
+body_sha256 = "3d0cc130f9e5decd8fed662a04119308916cd1a571c85ea44fcd1f1e15553d80"
+headers_path = "data/output/audit/qgp-pp-spectrum-calibration/alice-source.headers"
+headers_sha256 = "9bd7a3313c788e358e2e9f2a7945c5e6731d1b15a54d4006c0a598074a29ff0a"
+log_path = "data/output/audit/qgp-pp-spectrum-calibration/alice-source.log"
+log_sha256 = "8335984c59c01941954c7b27e80c0ab1d0fa0542c2cc6a49c9040eddb8500f34"
+
+[[retrieval]]
+request_url = "https://www.hepdata.net/record/data/86210/358372/1/"
+http_status = 200
+curl_exit_status = 0
+body_path = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.json"
+body_sha256 = "05aa5a52bc5bb6f2392be12d85719766cb032fb3cb64dc4121937e058414b59b"
+headers_path = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.headers"
+headers_sha256 = "ef98a48266534a5a17480879c160bdffffe2777a1a1831a659b6577f9ee2914e"
+log_path = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.log"
+log_sha256 = "5ca51d282a0f9c7d47a4e7361d29aa1725fd098ffa0d2fab394e4e3d614a9c6e"
+
+[[retrieval]]
+request_url = "https://www.hepdata.net/download/table/ins1657384/Table%204/yaml"
+http_status = 200
+curl_exit_status = 0
+body_path = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml"
+body_sha256 = "5b9598f4527033e92ba1b1c472a30a0a5afde6b3bbc2bf418aae69e8e602bee0"
+headers_path = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4-yaml.headers"
+headers_sha256 = "a1c8eb065d00162432e39a422712ab8505e42b3c89928dde3d5381095de17b3a"
+log_path = "data/output/audit/qgp-pp-spectrum-calibration/pp-table4-yaml.log"
+log_sha256 = "f139ee61ce8068dcdb4034edb041c48496a6504bcb2f27ce098f5ccb902eea60"

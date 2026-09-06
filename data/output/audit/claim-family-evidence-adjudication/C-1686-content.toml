@@ -1,0 +1,5 @@
+claim_id = "C-1686"
+expected_statement = "The Parker spiral angle in both parker_spiral_b and parker_spiral_init is 0.195 degrees rather than the physical 44.87 degrees, because omega in rad/s multiplies r in grid cells without the timestep delta_t; restoring delta_t = 148.696 s recovers 45.38 degrees at 1 AU."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"
+statement = "At source revision 81a4ca6e, The Parker spiral angle in both parker_spiral_b and parker_spiral_init is 0.195 degrees rather than the physical 44.87 degrees, because omega in rad/s multiplies r in grid cells without the timestep delta_t; restoring delta_t = 148.696 s recovers 45.38 degrees at 1 AU."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml; historical source at git revision 81a4ca6e; data/output/audit/claim-family-evidence-adjudication/dm-dimensional-admission-and-sensitivity.toml"

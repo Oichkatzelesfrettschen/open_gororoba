@@ -1,0 +1,218 @@
+{
+  "theta23_degrees": 48.99,
+  "ordering": "normal",
+  "references": [
+    {
+      "release": "6.0",
+      "analysis": "IC19 without SK atmospheric data",
+      "source": "data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf",
+      "sha256": "d39bb902b607bb27d4271646aefb48d073005eb4c764d536e50b1bab9238c658",
+      "one_sigma": [
+        47.6,
+        49.2
+      ],
+      "three_sigma": [
+        41.0,
+        50.5
+      ],
+      "inside_one_sigma": true,
+      "inside_three_sigma": true
+    },
+    {
+      "release": "6.0",
+      "analysis": "IC24 with SK atmospheric data",
+      "source": "data/output/audit/claim-family-evidence-adjudication/nufit-v60-parameters.pdf",
+      "sha256": "d39bb902b607bb27d4271646aefb48d073005eb4c764d536e50b1bab9238c658",
+      "one_sigma": [
+        42.5,
+        44.3
+      ],
+      "three_sigma": [
+        41.3,
+        49.9
+      ],
+      "inside_one_sigma": false,
+      "inside_three_sigma": true
+    },
+    {
+      "release": "6.1",
+      "analysis": "IC23 without SK atmospheric data",
+      "source": "data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf",
+      "sha256": "a22a4538894dd911f0988831c8a857fc3d3b405806e0ccaa25a4b5d3458bcc61",
+      "one_sigma": [
+        42.45,
+        44.27
+      ],
+      "three_sigma": [
+        41.11,
+        50.02
+      ],
+      "inside_one_sigma": false,
+      "inside_three_sigma": true
+    },
+    {
+      "release": "6.1",
+      "analysis": "IC24 with SK atmospheric data",
+      "source": "data/output/audit/claim-family-evidence-adjudication/nufit-v61-parameters.pdf",
+      "sha256": "a22a4538894dd911f0988831c8a857fc3d3b405806e0ccaa25a4b5d3458bcc61",
+      "one_sigma": [
+        42.5,
+        44.25
+      ],
+      "three_sigma": [
+        41.27,
+        49.86
+      ],
+      "inside_one_sigma": false,
+      "inside_three_sigma": true
+    }
+  ],
+  "nufit60": [
+    {
+      "analysis": "IC24 with SK atmospheric data",
+      "contours": [
+        [
+          33.68,
+          32.98,
+          34.41,
+          31.63,
+          35.95
+        ],
+        [
+          8.56,
+          8.45,
+          8.67,
+          8.19,
+          8.89
+        ],
+        [
+          43.3,
+          42.5,
+          44.3,
+          41.3,
+          49.9
+        ],
+        [
+          212,
+          171,
+          238,
+          124,
+          364
+        ],
+        [
+          0.0000749,
+          0.0000730,
+          0.0000768,
+          0.0000692,
+          0.0000805
+        ],
+        [
+          0.002513,
+          0.002494,
+          0.002534,
+          0.002451,
+          0.002578
+        ]
+      ],
+      "cp_a_one_sigma": false,
+      "cp_a_three_sigma": true,
+      "cp_b_one_sigma": false,
+      "cp_b_three_sigma": false
+    },
+    {
+      "analysis": "IC19 without SK atmospheric data",
+      "contours": [
+        [
+          33.68,
+          32.98,
+          34.41,
+          31.63,
+          35.95
+        ],
+        [
+          8.52,
+          8.41,
+          8.63,
+          8.18,
+          8.87
+        ],
+        [
+          48.5,
+          47.6,
+          49.2,
+          41.0,
+          50.5
+        ],
+        [
+          177,
+          157,
+          196,
+          96,
+          422
+        ],
+        [
+          0.0000749,
+          0.0000730,
+          0.0000768,
+          0.0000692,
+          0.0000805
+        ],
+        [
+          0.002534,
+          0.002511,
+          0.002559,
+          0.002463,
+          0.002606
+        ]
+      ],
+      "cp_a_one_sigma": true,
+      "cp_a_three_sigma": true,
+      "cp_b_one_sigma": false,
+      "cp_b_three_sigma": false
+    }
+  ],
+  "historical_composite_contours": [
+    [
+      33.41,
+      32.66,
+      34.18,
+      31.20,
+      35.79
+    ],
+    [
+      8.54,
+      8.42,
+      8.66,
+      8.13,
+      8.92
+    ],
+    [
+      49.0,
+      47.9,
+      50.0,
+      40.2,
+      51.5
+    ],
+    [
+      195,
+      138,
+      258,
+      0,
+      360
+    ],
+    [
+      0.0000753,
+      0.0000735,
+      0.0000771,
+      0.0000694,
+      0.0000814
+    ],
+    [
+      0.002453,
+      0.002420,
+      0.002486,
+      0.002347,
+      0.002557
+    ]
+  ]
+}

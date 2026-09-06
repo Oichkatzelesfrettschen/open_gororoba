@@ -1,0 +1,30 @@
+HTTP/2 302 
+date: Sat, 05 Sep 2026 20:41:00 GMT
+content-type: text/html;charset=utf-8
+location: https://linkinghub.elsevier.com/retrieve/pii/S0370269319302801
+server: cloudflare
+vary: Origin
+vary: Accept
+expires: Sat, 05 Sep 2026 21:09:00 GMT
+link: <https://dul.usage.elsevier.com/doi/>; rel=dul
+link: <https://dul.usage.elsevier.com/doi/>; rel=dul
+permissions-policy: interest-cohort=(),browsing-topics=()
+cf-cache-status: DYNAMIC
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=a0xy5yh2lZistMzBUeqqyebExOIEzoDKi1MnJFtqjYGAI9fETA0aDP9pulDA6ABRXbV9RqLvDxi4DlHiaX6eeBdQj%2Bj62fW7IeSGZ53A0WxMIj2HiaOEBYw%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+cf-ray: a3680d5eef21f7e5-LAX
+alt-svc: h3=":443"; ma=86400
+
+HTTP/2 200 
+date: Sat, 05 Sep 2026 20:41:00 GMT
+content-type: text/html;charset=UTF-8
+content-length: 2707
+pragma: no-cache
+cache-control: no-cache, no-store, must-revalidate
+expires: Thu, 01 Jan 1970 00:00:00 GMT
+p3p: CP="NON DSP COR CUR ADM DEV TAI PSA PSD OUR IND UNI NAV STA PRE COM INT CNT",policyref="https://linkinghub.elsevier.com/retrieve/static/P3P/IHUB-p3p.xml"
+tdm-reservation: 1
+tdm-policy: https://www.elsevier.com/tdm/tdmrep-policy.json
+content-language: en
+

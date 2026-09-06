@@ -1,0 +1,18 @@
+HTTP/2 200 
+last-modified: Wed, 18 Jan 2023 04:23:58 GMT
+content-type: application/pdf
+content-disposition: inline; filename="0106347v1.pdf"
+link: <https://arxiv.org/pdf/hep-ph/0106347>; rel='canonical'
+x-cloud-trace-context: 072551b80d1d29656b36a7145f65dedc
+etag: CMDR/Pqi0PwCEAE=
+access-control-allow-origin: *
+server: Google Frontend
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+accept-ranges: bytes
+age: 112952
+date: Sat, 05 Sep 2026 22:39:07 GMT
+x-served-by: cache-lga21931-LGA, cache-lga21931-LGA, cache-lga21960-LGA, cache-hhr-khhr2060026-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1788647948.715924,VS0,VE72
+content-length: 217169
+

@@ -1,0 +1,35 @@
+claim_id = "C-1717"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Population spacing variance follows from a two-level sorted spectrum and an explicit normalization; the analytic identity is separate from graph identity."
+fixed_hyperparameters = ["N>=2 sorted values at exactly two distinct populated levels", "M=N-1 spacings including multiplicities; mean normalizationDelta/M", "Population variance denominatorM; sample denominatorM-1 is separate"]
+
+[[intervening_maps]]
+branch = "exact_graph"
+name = "two_level_spacing_construction"
+kind = "computational"
+description = "Sort a spectrum with exactly two distinct populated levels and form all adjacent spacings including repeated eigenvalues."
+
+[[intervening_maps]]
+branch = "exact_graph"
+name = "population_spacing_normalization"
+kind = "computational"
+description = "Divide spacings by their positive mean and sum squared deviations from one with population denominator N-1; retain the sample-variance convention separately."
+
+[[fitted_parameters]]
+branch = "exact_graph"
+count = 0
+names = []
+training_boundary = "Exact combinatorial and arithmetic comparisons fit zero physical parameters."
+
+[decisive_experiment]
+experiment_ids = ["E-295", "E-086"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+description = "E-295 checks exact cross-multiplied integer identities forN=2..256 and retains a dimension-independent derivation in the source map. E-086 retains the original numerical spacing producer."
+
+[what_would_verify_refute]
+verification_outcomes = ["The normalized spacings are one valueM andM-1 zeros, so population variance((M-1)^2+M-1)/M equalsM-1=N-2 for everyN>=2."]
+revision_outcomes = ["Sample variance is used instead: forN>2 the value isN-1, whileN=2 has undefined sample variance. Preserve both convention labels."]
+abandonment_outcomes = ["An exact counterexample satisfies two distinct populated levels and the declared population normalization yet violatesN-2."]
+inconclusive_outcomes = ["A floating variance nearN-2 cannot independently establish exactly two input levels."]

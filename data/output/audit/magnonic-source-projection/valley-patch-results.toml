@@ -1,0 +1,645 @@
+schema_version = 1
+source = 'Kaman Supplemental V, Berry curvature calculations in inversion-broken crystals'
+bands = [0, 1, 3, 4]
+patch = 'Cartesian square centered at (+/-4*pi/3,0), half width 0.1*4*pi/3, lattice constant 1'
+scope = 'Local finite-patch flux; individual-band admission applies to patch samples and does not imply global band isolation or quantization.'
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = 1
+grid = 12
+embedded_orbital_gauge = true
+flux = [0.2933749254395726, -0.2930078934520397, -0.08662369700627491, 0.08706882449247474]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.8655639769677450e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = 1
+grid = 12
+embedded_orbital_gauge = false
+flux = [0.2817749789466557, -0.2785186116626745, -0.08048883253097834, 0.08502877834188748]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.8685216073132676e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = -1
+grid = 12
+embedded_orbital_gauge = true
+flux = [-0.2933749254395729, 0.2930078934520396, 0.08662369700627538, -0.08706882449247526]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.8655639769677450e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = -1
+grid = 12
+embedded_orbital_gauge = false
+flux = [-0.28177497894665604, 0.2785186116626747, 0.08048883253097862, -0.08502877834188795]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.8685216073132676e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = 1
+grid = 12
+embedded_orbital_gauge = true
+flux = [-0.29337492543957233, 0.2930078934520394, 0.08662369700627384, -0.08706882449247345]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.8655639769677739e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = 1
+grid = 12
+embedded_orbital_gauge = false
+flux = [-0.30451579890691444, 0.3070486556325425, 0.09288253421342714, -0.08923907383735688]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.8616960582793356e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = -1
+grid = 12
+embedded_orbital_gauge = true
+flux = [0.2933749254395723, -0.29300789345203915, -0.08662369700627381, 0.0870688244924735]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.8655639769677739e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = -1
+grid = 12
+embedded_orbital_gauge = false
+flux = [0.30451579890691416, -0.307048655632542, -0.09288253421342722, 0.08923907383735681]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.8616960582793356e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = 1
+grid = 24
+embedded_orbital_gauge = true
+flux = [0.293376481480378, -0.29300999110038445, -0.08663305974416212, 0.08708179815979189]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9647838429300772e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = 1
+grid = 24
+embedded_orbital_gauge = false
+flux = [0.2818495854524474, -0.2785558381108474, -0.08050534382060183, 0.08504197589819446]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9648151856056577e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = -1
+grid = 24
+embedded_orbital_gauge = true
+flux = [-0.29337648148037776, 0.2930099911003847, 0.08663305974416209, -0.08708179815979189]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9647838429300772e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = -1
+grid = 24
+embedded_orbital_gauge = false
+flux = [-0.28184958545244704, 0.27855583811084766, 0.0805053438206017, -0.0850419758981944]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9648151856056577e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = 1
+grid = 24
+embedded_orbital_gauge = true
+flux = [-0.29337648148037826, 0.2930099911003848, 0.08663305974416093, -0.08708179815979056]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9647838429300772e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = 1
+grid = 24
+embedded_orbital_gauge = false
+flux = [-0.30449508605388714, 0.30705847970422534, 0.0928883279783798, -0.08925073058626427]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9630432068927843e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = -1
+grid = 24
+embedded_orbital_gauge = true
+flux = [0.2933764814803779, -0.29300999110038434, -0.08663305974416106, 0.08708179815979081]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9647838429300772e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = -1
+grid = 24
+embedded_orbital_gauge = false
+flux = [0.30449508605388603, -0.3070584797042253, -0.09288832797838018, 0.08925073058626445]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9630432068927843e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = 1
+grid = 48
+embedded_orbital_gauge = true
+flux = [0.29337686917231415, -0.29301051400054784, -0.0866353994857618, 0.0870850399830254]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9911102707605215e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = 1
+grid = 48
+embedded_orbital_gauge = false
+flux = [0.28186821854610966, -0.27856514079470085, -0.08050946681704217, 0.08504526903354555]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9910764153709364e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = -1
+grid = 48
+embedded_orbital_gauge = true
+flux = [-0.2933768691723143, 0.29301051400054773, 0.08663539948576203, -0.08708503998302551]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9911102707605215e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = -1
+grid = 48
+embedded_orbital_gauge = false
+flux = [-0.28186821854610933, 0.27856514079470174, 0.08050946681704174, -0.08504526903354526]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9910764153709364e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = 1
+grid = 48
+embedded_orbital_gauge = true
+flux = [-0.2933768691723158, 0.29301051400054956, 0.08663539948576099, -0.08708503998302454]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9911102707605215e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = 1
+grid = 48
+embedded_orbital_gauge = false
+flux = [-0.3044899065827318, 0.30706092543304897, 0.09288977076023076, -0.0892536367057097]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9906298595485321e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = -1
+grid = 48
+embedded_orbital_gauge = true
+flux = [0.29337686917231465, -0.2930105140005488, -0.08663539948576099, 0.08708503998302485]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9911102707605215e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = -1
+grid = 48
+embedded_orbital_gauge = false
+flux = [0.30448990658273106, -0.30706092543304914, -0.09288977076023067, 0.08925363670570984]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9906298595485321e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = 1
+grid = 96
+embedded_orbital_gauge = true
+flux = [0.29337696601303603, -0.29301064463125814, -0.08663598436228928, 0.08708585033929776]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9977733164862503e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = 1
+grid = 96
+embedded_orbital_gauge = false
+flux = [0.28187287566139113, -0.278567466220359, -0.08051049726458616, 0.08504609192676345]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9977601239331915e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = -1
+grid = 96
+embedded_orbital_gauge = true
+flux = [-0.29337696601303603, 0.29301064463125853, 0.08663598436229002, -0.08708585033929708]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9977733164862503e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = 1
+valley_sign = -1
+grid = 96
+embedded_orbital_gauge = false
+flux = [-0.2818728756613912, 0.27856746622035966, 0.08051049726458584, -0.08504609192676289]
+minimum_sampled_patch_gap_ghz = 2.9862456848089414e-2
+minimum_overlap = 9.9977601239332015e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = 1
+grid = 96
+embedded_orbital_gauge = true
+flux = [-0.2933769660130367, 0.29301064463125925, 0.08663598436228857, -0.08708585033929661]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9977733164862426e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = 1
+grid = 96
+embedded_orbital_gauge = false
+flux = [-0.3044886116366373, 0.30706153622234683, 0.09289013110216175, -0.08925436273161524]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9976488070572045e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = -1
+grid = 96
+embedded_orbital_gauge = true
+flux = [0.2933769660130371, -0.29301064463125986, -0.08663598436228927, 0.08708585033929722]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9977733164862426e-1
+
+[[valley]]
+mass_scale = 0.2
+mass_sign = -1
+valley_sign = -1
+grid = 96
+embedded_orbital_gauge = false
+flux = [0.3044886116366394, -0.30706153622234533, -0.0928901311021619, 0.08925436273161533]
+minimum_sampled_patch_gap_ghz = 2.9862456848088081e-2
+minimum_overlap = 9.9976488070571978e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = 1
+grid = 12
+embedded_orbital_gauge = true
+flux = [0.043360406919516696, -0.041180993332831796, 0.0069670395226884944, -0.004978592121809757]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9935020787886830e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = 1
+grid = 12
+embedded_orbital_gauge = false
+flux = [0.03876196290491469, -0.033523052622567974, 0.008496235313253971, -0.0017391182296371574]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9907923179625979e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = -1
+grid = 12
+embedded_orbital_gauge = true
+flux = [-0.04336040691951676, 0.04118099333283201, -0.006967039522688631, 0.004978592121809772]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9935020787886830e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = -1
+grid = 12
+embedded_orbital_gauge = false
+flux = [-0.0387619629049147, 0.03352305262256805, -0.0084962353132538, 0.001739118229637169]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9907923179625979e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = 1
+grid = 12
+embedded_orbital_gauge = true
+flux = [-0.043360406919516516, 0.04118099333283171, -0.006967039522688709, 0.004978592121809742]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9935020787886708e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = 1
+grid = 12
+embedded_orbital_gauge = false
+flux = [-0.047887197326673, 0.04878034398764598, -0.005437085529903502, 0.008215568939986803]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9890345714933471e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = -1
+grid = 12
+embedded_orbital_gauge = true
+flux = [0.04336040691951684, -0.04118099333283187, 0.006967039522688715, -0.004978592121809751]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9935020787886708e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = -1
+grid = 12
+embedded_orbital_gauge = false
+flux = [0.0478871973266729, -0.048780343987646115, 0.005437085529903494, -0.008215568939986899]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9890345714933471e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = 1
+grid = 24
+embedded_orbital_gauge = true
+flux = [0.043361434113644994, -0.04118282595903419, 0.006964475803789512, -0.004974876402510287]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9983704403298590e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = 1
+grid = 24
+embedded_orbital_gauge = false
+flux = [0.03877841510966513, -0.03352901709962694, 0.008493819965860922, -0.001737422014649757]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9976926043418390e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = -1
+grid = 24
+embedded_orbital_gauge = true
+flux = [-0.043361434113645056, 0.04118282595903462, -0.006964475803789638, 0.004974876402510287]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9983704403298590e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = -1
+grid = 24
+embedded_orbital_gauge = false
+flux = [-0.038778415109665156, 0.03352901709962722, -0.008493819965860948, 0.0017374220146497879]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9976926043418390e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = 1
+grid = 24
+embedded_orbital_gauge = true
+flux = [-0.0433614341136449, 0.04118282595903419, -0.006964475803789661, 0.0049748764025101585]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9983704403298490e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = 1
+grid = 24
+embedded_orbital_gauge = false
+flux = [-0.047894449068901834, 0.04878987799797406, -0.0054344219913177476, 0.008211191207192277]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9972521538251113e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = -1
+grid = 24
+embedded_orbital_gauge = true
+flux = [0.04336143411364493, -0.04118282595903433, 0.006964475803789667, -0.004974876402510261]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9983704403298490e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = -1
+grid = 24
+embedded_orbital_gauge = false
+flux = [0.0478944490689019, -0.04878987799797413, 0.00543442199131772, -0.008211191207192303]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9972521538251113e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = 1
+grid = 48
+embedded_orbital_gauge = true
+flux = [0.04336169087616977, -0.04118328402648825, 0.006963834969170997, -0.004973947597490241]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9995922505225077e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = 1
+grid = 48
+embedded_orbital_gauge = false
+flux = [0.038782527517606497, -0.033530507953675084, 0.00849321623365974, -0.0017369980522883635]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9994228074186875e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = -1
+grid = 48
+embedded_orbital_gauge = true
+flux = [-0.043361690876169805, 0.04118328402648831, -0.006963834969170979, 0.004973947597490235]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9995922505225099e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = -1
+grid = 48
+embedded_orbital_gauge = false
+flux = [-0.03878252751760665, 0.03353050795367513, -0.00849321623365967, 0.001736998052288319]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9994228074186875e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = 1
+grid = 48
+embedded_orbital_gauge = true
+flux = [-0.043361690876169826, 0.041183284026488014, -0.0069638349691710415, 0.004973947597490327]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9995922505225066e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = 1
+grid = 48
+embedded_orbital_gauge = false
+flux = [-0.047896260045503736, 0.04879226042291293, -0.005433756221338109, 0.008210097011123919]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9993126312278047e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = -1
+grid = 48
+embedded_orbital_gauge = true
+flux = [0.043361690876169784, -0.04118328402648819, 0.00696383496917105, -0.00497394759749036]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9995922505225054e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = -1
+grid = 48
+embedded_orbital_gauge = false
+flux = [0.047896260045503715, -0.04879226042291319, 0.005433756221338095, -0.008210097011123943]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9993126312278047e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = 1
+grid = 96
+embedded_orbital_gauge = true
+flux = [0.043361755064547, -0.04118339853778054, 0.006963674766459849, -0.004973715404035091]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9998980433632445e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = 1
+grid = 96
+embedded_orbital_gauge = false
+flux = [0.03878355557939208, -0.033530880650650144, 0.008493065307147904, -0.0017368920674086775]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9998556803524152e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = -1
+grid = 96
+embedded_orbital_gauge = true
+flux = [-0.04336175506454719, 0.04118339853778064, -0.006963674766459737, 0.004973715404035064]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9998980433632367e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = 1
+valley_sign = -1
+grid = 96
+embedded_orbital_gauge = false
+flux = [-0.03878355557939221, 0.03353088065065028, -0.00849306530714795, 0.0017368920674086926]
+minimum_sampled_patch_gap_ghz = 5.7523859744119221e-2
+minimum_overlap = 9.9998556803524152e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = 1
+grid = 96
+embedded_orbital_gauge = true
+flux = [-0.04336175506454735, 0.0411833985377804, -0.006963674766459923, 0.004973715404035177]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9998980433632412e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = 1
+grid = 96
+embedded_orbital_gauge = false
+flux = [-0.04789671266730921, 0.048792855961831326, -0.0054335897860087416, 0.008209823476927027]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9998281323290683e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = -1
+grid = 96
+embedded_orbital_gauge = true
+flux = [0.04336175506454719, -0.041183398537780656, 0.006963674766459905, -0.004973715404035105]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9998980433632345e-1
+
+[[valley]]
+mass_scale = 1
+mass_sign = -1
+valley_sign = -1
+grid = 96
+embedded_orbital_gauge = false
+flux = [0.04789671266730929, -0.04879285596183125, 0.005433589786008727, -0.008209823476926885]
+minimum_sampled_patch_gap_ghz = 5.7523859744120109e-2
+minimum_overlap = 9.9998281323290683e-1

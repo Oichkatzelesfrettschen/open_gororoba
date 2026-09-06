@@ -1,0 +1,112 @@
+schema_version = 1
+claims = ["C-1635", "C-1637", "C-1666"]
+evidence_layer = "implementation_conformance"
+parent_commit = "5da4ec78"
+source = "Ahmadiniaz et al., arXiv:2601.23279v1, Eq4.3-4.11 and AppendixB"
+source_pdf = "data/output/audit/ward-residual-scope/source.pdf"
+source_pdf_sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+source_archive_url = "https://arxiv.org/src/2601.23279v1"
+source_archive_sha256 = "f40175b2d463b914bb1da4740294b1a56cc8bf4308c46700ff0166cfc1ba9fbc"
+source_tex_sha256 = "85cb9c936e6c92a31adf594e1e4969c93eb1a4219a210cbcb7f8b216bc20510e"
+scalar_source = "Bastianelli and Schubert, gr-qc/0412095, Eq3.3-3.11, xi_bar=0"
+scalar_source_pdf = "data/output/audit/ward-residual-scope/scalar-source.pdf"
+scalar_source_pdf_sha256 = "c64080db26d0b46dfcdb1dd12acd04e300f918bea3bc31d5fd0c6b7fe84becc1"
+fitted_parameters = 0
+
+[derivation]
+raw_equations = "source.tex lines1437-1491 independently transcribe orbital Eq4.3 and all seven fermion groups of Eq4.4, followed by mu/nu symmetrization"
+endpoint_equation = "source.tex lines1494-1505, Eq4.5: -1/2*d/dtau1[barDotGB(mu,alpha)*(barDotGB*k)(nu)*exp + mu<->nu]"
+endpoint_convention = "Periodic delta12 has total weight1 per insertion period, represented by half weight at each endpoint. Products use source coincidence values: barDotGB=0 and GF12=GF11; anti-periodic GF uses the average of the right value and the sign-reversed left value."
+endpoint_result = "barDotGB(0+)=I, barDotGB(1-)=-I. The quadratic primitive has equal one-sided endpoint values, so its signed upper-minus-lower jump vanishes. Each endpoint remains separately nonzero."
+contact_equations = "B.4 and B.36 each contribute2*delta12*I. Ghost-subtracted B.8/B.39 coincidence derivatives remain regular."
+spinor_contact = "After midpoint products and symmetrization, J2 contact=(GF11[mu,alpha]*k[nu]+GF11[nu,alpha]*k[mu])/T. The1/T factor follows delta(tau)=delta(u)/T. Determinant and dT/T measure remain external."
+scalar_contact = "Zero: the orbital contact multiplies barDotGB at coincidence."
+integration_owner = "tensor_integrands.rs::double_integrate_rank_three_with_contact adds the analytic contact once per proper-time node outside the open-interval Gauss-Legendre insertion sum."
+mutation_owner = "irreducible_tensor.rs::irreducible_contact_integrand binds the contact to J2: OmitJ2 removes it and FlipJ2Sign reverses it."
+
+[fixed_time_oracle]
+instrument = "crates/gr_core/tests/ward_distributional_identity.rs"
+independence = "Independent closed-form AppendixB matrices and unreduced Eq4.3/4.4 component expressions; production uses projected Eq4.11. The oracle inserts delta coefficients independently before simplifying them. Both use the Gauss-Legendre library."
+field_01 = 0.1
+photon_momentum = [0.15, -0.11, 0.2, 0.07]
+proper_times = [0.07, 0.3, 1.2]
+u_nodes = 96
+source_tensor_gate_absolute = 1e-10
+complete_gauge_gate_absolute = 1e-11
+max_raw_vs_projected_tensor_error = 2.17975034900561533e-13
+spinor_regular_gauge_range = [7.38174390459733938e-3, 7.41702116259708184e-3]
+max_spinor_complete_gauge = 3.46512950477381983e-14
+contact_tensor_norm_range = [6.19284252784666270e-2, 6.22243804161893774e-2]
+endpoint_jump_max = 3.79062450551953483e-13
+endpoint_omission_norm_range = [0.371511552085979357, 6.36876946433110369]
+before_receipt = "full-before.log"
+before_production_defect = "All six production comparisons fail before the source constant/contact repairs; scalar errors2.36e-5..3.96e-4, spinor errors approximately.062."
+after_receipt = "final-tests.log"
+
+[omission_controls]
+omit_B4 = "Tensor delta0.05854..0.05882; gauge residual0.007382..0.007417."
+omit_B36 = "Tensor delta0.07676..0.07712; gauge residual remains at roundoff."
+interpretation = "Gauge transversality alone cannot certify the fermionic B.36 contribution. The independent full tensor oracle rejects both omissions."
+one_photon = "Constant-background lower-point momentum remains zero; omitting the one-photon RHS is nondiscriminating."
+
+[worldline_repairs]
+constant = "AppendixB.2 full free-plane GB=T*(u*(1-u)-1/6), consistent with B.6 coincidence=-T/6. The prior mixed convention inserted a spurious T/6 into the field-free plane of the exponent."
+series = "Replace field-dropping small-z branches by source Taylor terms for GB, dotGB, ddotGB and coincidence matrices; evaluate finite fermion hyperbolic expressions continuously. Preserve field-odd terms through the UV limit."
+series_switch_abs_eBT = 1e-3
+scalar_determinant = "Correct z/sinh(z) fourth-order coefficient from1/120 to7/360."
+scope = "Pure magnetic D=4 implementation; finite Taylor truncation and floating-point evaluation remain distinct from a rigorous quadrature error enclosure."
+
+[scalar_convention]
+old_momentum = "Eq3.3 defines k=k1 in h(k1)A(k2): graviton momentum."
+new_momentum = "Eq4.2 eliminates k0=-k: photon momentum. Therefore k_old=-k_new."
+orbital_mapping = "At xi_bar=0 the old orbital expression is minus the new expression at equal momentum. Every term is odd in momentum, so J_old(-k_new)=J_new(k_new). The loop prefactor remains +e*kappa/(64*pi^2)."
+counterterm_mapping = "C_old(-k_new)=-C_new(k_new). Old scalar Eq3.11 coefficient +(2/3)i e C_old becomes -(2/3)i e C_new. Old spinor -4/3 maps to new+4/3, providing an independent convention cross-check."
+mapping_test = "scalar_source_momentum_mapping_preserves_orbital_terms_and_counterterm"
+tested_orbital_cases = 6
+max_orbital_mapping_error = 0.0
+omit_momentum_reversal_norm_range = [0.883424921013800546, 45.1247890425716562]
+before_scalar_source_relative_error = 2.99999999999955591
+before_scalar_receipt = "scalar-source-before.log"
+after_counterterm_max_relative_error = 3.61052723255739196e-13
+counterterm_gate_relative = 1e-9
+counterterm_omission_min_norm = 8.39897110040808861e-5
+physical_scope = "Source convention at xi_bar=0; finite-curvature/nonminimal-coupling extensions remain outside the implemented tensor family."
+
+[uv]
+test = "source_uv_coefficients_survive_the_small_field_branch"
+channel = "integral du det*exp*J(0,0,1)/(i*e*C(0,0,1)), with analytic contact included"
+proper_times = [0.01001, 0.00999, 1e-4, 1e-6, 1e-8]
+scalar_expected_coefficient = 0.666666666666666667
+spinor_expected_coefficient = -1.333333333333333333
+scalar_subtraction_remainder_at_1e8 = 3.11333181457484898e-11
+spinor_subtraction_remainder_at_1e8 = 2.74200218086662062e-10
+omitted_spinor_contact = "Coefficient returns to+2/3 and leaves a subtraction remainder near2."
+admission = "The sampled source UV coefficient survives the series switch and tends to the mapped subtraction. The measurement does not certify all proper-time truncation remainders."
+
+[integrated]
+receipt = "final-integrated.toml"
+scalar_gauge_absolute = 2.39577868612942303e-20
+spinor_gauge_absolute = 2.32905859448734928e-20
+scalar_offshell_gravity_absolute = 2.43536889859801491e-17
+spinor_offshell_gravity_absolute = 4.86547499462129312e-17
+scalar_fullvector_limit_absolute = 1.92658222175692639e-15
+spinor_fullvector_limit_absolute = 3.88411811938679558e-15
+scalar_refined_fullvector_limit_absolute = 8.55298548175218885e-15
+spinor_refined_fullvector_limit_absolute = 1.70400127906321948e-14
+original_fullvector_gate = "Remains failed at unchanged absolute1e-12 AND normalized1e-6 gate: normalization uses already-cancelled sample norms and is ill-conditioned at roundoff. Original failure receipts remain retained."
+original_omission_gate = "Keep1e-6 diagram-omission threshold: scalar approximately6.64e-7 remains below it; spinor approximately1.256e-6 exceeds it."
+source_transverse_gate = "For generic3D momentum, polarization=e1 and zeta=e2, both loops pass absolute1e-12 AND normalized1e-6 using uncancelled diagram scales; omissions exceed1e-8."
+scalar_transverse_unrenormalized_absolute = 2.28021269400857651e-18
+spinor_transverse_unrenormalized_absolute = 2.53974358904729414e-17
+scalar_transverse_renormalized_absolute = 2.60780268635917717e-19
+spinor_transverse_renormalized_absolute = 1.16107041244883219e-18
+scalar_transverse_omission_scale = 3.58822453704e-7
+spinor_transverse_omission_scale = 8.21538080295e-7
+
+[validation]
+integration_tests_passed = 8
+photon_graviton_unit_tests_passed = 204
+test_command = "cargo test -p gr_core --test ward_distributional_identity --test ward_source_scope --test ward_independent_residuals --profile validation --offline -- --nocapture"
+library_command = "cargo test -p gr_core --lib photon_graviton:: --profile validation --offline -- --nocapture"
+clippy_command = "cargo clippy -p gr_core --all-targets --profile validation --offline -- -D warnings"
+preservation = "Original ward-residual-scope and claim-family receipts remain unchanged. New source snapshots and before/after logs retain superseded predicates and failed production comparisons."

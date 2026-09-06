@@ -1,0 +1,18 @@
+schema_version = 1
+status = "frozen-before-execution"
+scope = "Exact dyadic coefficients stored by build_magnonic_9band; source decimal and geometric coefficient uncertainty excluded"
+arithmetic = "IEEE binary64 basic operations expanded one representable neighbor outward; finite-only admission"
+pi = "Machin identity 16 atan(1/5)-4 atan(1/239), 32 alternating terms with explicit next-term remainder"
+trigonometry = "Exact dyadic modulo-one fractional phases, interval Taylor recurrence through degree 47/46, Lagrange remainder using |x|<=pi"
+eigensolver = "Faer candidates treated as exact dyadic Q,D; independent interval Q*Q-I and Q*H Q-D row-sum enclosures"
+eigenvalue_radius = "(rho + max_abs_D * eta)/(1-eta), eta<1, via polar orthonormalization"
+cell_bound = "gap-2*eigenvalue_radius-4*pi*half_width*max_incident_hopping_offset_row_sum"
+cover = "Dyadic quadtree starting with whole unit torus; split every uncertified parent into all four children; retain every leaf"
+gap_gate_ghz = 1e-10
+maximum_depth = 10
+table_i_boundaries = [2, 6]
+table_ii_boundaries = [1, 2, 4, 6, 7]
+execution_order = ["Table I", "Table II"]
+failure_outcome = "Any unresolved leaf preserves global isolation as unproved"
+topology_outcome = "Admitted real-hopping isolated bundles have zero first Chern number by spinless time reversal; internal individual degeneracies remain excluded"
+controls = ["exact diagonal gap", "degenerate gap rejected", "nonorthogonal candidates rejected", "omitted or duplicated leaf rejected", "dyadic arithmetic enclosure", "trigonometric identities at rational phases"]

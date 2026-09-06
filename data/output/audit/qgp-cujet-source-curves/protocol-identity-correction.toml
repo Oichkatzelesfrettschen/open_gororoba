@@ -1,0 +1,19 @@
+schema_version = 1
+claim_id = "C-1711"
+previous_evidence_revision = 107
+appended_evidence_revision = 122
+original_commit = "c31de37b76b381efc3a0c148396acf3addf2d401"
+relation = "The augmented file contains the frozen protocol as its exact 3204-byte prefix, followed by a blank line and one independent_arithmetic_check assignment."
+reason = "The arithmetic annotation was appended after evidence revision107 sealed the protocol. Distinct retained paths restore the frozen identity and admit the annotation without changing scientific predicates."
+scientific_boundary = "Evidence layer, maps, fitted parameters, experiment IDs, outcomes, claim status and claim content remain unchanged. Arithmetic conformance does not establish covariance, calibration independence, acceptance matching or model superiority."
+failed_evidence = "The pdftocairo exit134, initial dependency compilation failures and initial seven-path parser assertion remain in their original intake and checker receipts."
+
+[frozen]
+path = "data/output/audit/qgp-cujet-source-curves/adjudication.toml"
+byte_length = 3204
+sha256 = "51563f55c32ad1077e27317595166dc29a76608169d9769a5aeb935a4d2bb01a"
+
+[augmented]
+path = "data/output/audit/qgp-cujet-source-curves/adjudication-with-arithmetic.toml"
+byte_length = 3498
+sha256 = "4ca618f17d6947923f9255cde822107e3cd904d53e660db55e27fb962ded25cf"

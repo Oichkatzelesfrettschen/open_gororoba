@@ -1,0 +1,307 @@
+schema_version = 1
+purpose = "Evidence inventory and contract admission gates; execution and adjudication remain separate."
+scope = "User items 6 through 11, with an immediate reference contradiction in C-1722."
+inspection_boundary = "Selected registry rows, fleet findings and source excerpts; historical scientific workloads remain unreplayed."
+contract_rule = "Separate source, implementation and physical layers. Count fitting per branch. Retain refuted parents and failed thresholds."
+
+[[family]]
+id = "neutrino-reference-identity"
+priority = "reference_membership_corrected_full_contract_pending"
+claims = ["C-1719", "C-1720", "C-1722"]
+sources = ["crates/algebra_experimental/src/experimental_predictions.rs", "registry/scorecard.toml"]
+retained_audits = ["data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml"]
+verified_experiment_ids = []
+evidence_layers = ["source_proposition", "implementation_conformance", "phenomenological_mapping"]
+dependencies = ["Admit NuFit PDF identities, release, ordering, SK variant and interval conventions before changing comparison baselines."]
+contract_admission_blockers = ["Selected experiment rows supply no verified binding for these successor claims.", "Physical model fitting freedom and intervening extraction maps require a separate contract."]
+
+[[family.claim]]
+id = "C-1722"
+contradiction = "Historical wording excluded all four variants; 48.99 lies inside NuFit 6.0 without-SK [47.6,49.2]. Root reports canonical correction after rendered-PDF inspection; nufit-variant-intervals.toml retains intervals and hashes."
+required_falsifier = "Recompute membership from each admitted PDF column. A single claimed exclusion with membership true refutes the universal wording. Retain the 6.0 without-SK exception."
+unresolved = ["Full neutrino contracts remain pending; corrected interval membership alone establishes that reference comparison.", "Local Gaussianized pulls differ from non-Gaussian confidence levels."]
+
+[[family.claim]]
+id = "C-1720"
+required_falsifier = "Match each literal to a precise release and column; check Delta_m_squared_31 versus Delta_m_squared_32 before ratio formation. A composite table fails single-release identity."
+unresolved = ["Retain original literals and their old label alongside a corrected release-specific table."]
+
+[[family.claim]]
+id = "C-1719"
+required_falsifier = "Compare the angle modulo 360 against each published interval, including endpoints above 360; any admitted interval containing 93 invalidates the all-four exclusion."
+unresolved = ["NuFit releases before 6.0 remain outside the replay scope."]
+
+[[family]]
+id = "heliosphere-force-units"
+priority = "before_physical_simulation"
+claims = ["C-1681", "C-1682", "C-1683", "C-1684", "C-1685", "C-1686", "C-1687"]
+parent_claims = ["C-1143", "C-1144", "C-1145", "C-1146", "C-1147", "C-1148", "C-1149", "C-1150", "C-1151", "C-1152", "C-1153", "C-1154", "C-1155", "C-1156", "C-1157", "C-1158", "C-1159", "C-1160", "C-1161", "C-1162", "C-1163", "C-1164", "C-1165", "C-1166", "C-1167", "C-1168"]
+sources = ["crates/lbm_3d/src/dm_force.rs", "crates/lbm_3d/src/mhd.rs", "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs", "crates/data_core/src/catalogs/wind_swe.rs", "crates/lbm_3d/tests/test_guo_forcing.rs"]
+retained_audits = ["data/output/audit/2026-08-06/claim-falsification-fleet-c-dm-null.toml"]
+verified_experiment_ids = ["E-112", "E-113", "E-114", "E-115", "E-116", "E-117", "E-118", "E-119", "E-120"]
+evidence_layers = ["implementation_conformance", "phenomenological_mapping"]
+dependencies = ["SI force and magnetic conversions precede lattice force ratios.", "E-114 radial input admission precedes E-116, E-118 and E-119.", "Numerical sensitivity measurement precedes tiny-effect physical bounds."]
+contract_admission_blockers = ["Historical E-113 command contains an input placeholder; actual spacecraft IC identities need admission.", "Density, cross-section, halo, magnetic-normalization and profile-fit freedoms require branch-specific declarations.", "Historical audit reports missing E-112/E-113 output retention; live availability remains to be checked."]
+
+[[family.claim]]
+id = "C-1681"
+required_falsifier = "Derive SI dimensions independently from number density, cross-section, mass ratio and velocity. Doubling relative speed separates linear collision-rate behavior from quadratic acceleration; changing lattice reference units must preserve the same SI result."
+unresolved = ["Checking fixed implementation units estimates zero parameters; physical cross-section inference remains outside that check."]
+
+[[family.claim]]
+id = "C-1682"
+required_falsifier = "Change one spacecraft input at a time while retaining halo configuration; report full-precision force differences and evaluation radii. Distinguish prescribed numerator invariance from independent data agreement."
+unresolved = ["The historical seven printed significant figures bound the observed equality; exact equality needs full-precision witnesses."]
+
+[[family.claim]]
+id = "C-1683"
+required_falsifier = "Evaluate prescribed solar-wind scalings and identify the denominator analytically; a grid-validity successor must consume physical dx and calculate lambda_mfp/dx."
+unresolved = ["E-118 promises a grid ratio; the existing diagnostic and threshold require reconciliation."]
+
+[[family.claim]]
+id = "C-1684"
+required_falsifier = "Calculate M(t)-M(0)-integrated net boundary flux, including inlet and outlet, separately from closed-box conservation. An increase in open-system mass alone cannot establish conservation failure."
+unresolved = ["The production boundary-flux integral and a justified numerical tolerance remain missing."]
+
+[[family.claim]]
+id = "C-1685"
+required_falsifier = "Hold the physical problem fixed while changing numerical magnetic units; convert both forces to SI before comparison. Recover or reject the historical inverse-square normalization dependence."
+unresolved = ["Physical density, permeability and velocity/time/length conversions must be explicit before a physical bound is admitted."]
+
+[[family.claim]]
+id = "C-1686"
+required_falsifier = "Compare both implementations with atan(omega*r_m/v_m_per_s) at the same physical radius and speed; include the timestep conversion for lattice angular rate."
+unresolved = ["Different historical grid-radius choices produce 44.87 versus 45.38 degrees; freeze an identical physical input before asserting equality."]
+
+[[family.claim]]
+id = "C-1687"
+required_falsifier = "At fixed physical inputs away from the axis, assert B_phi(2r)/B_phi(r)=1/2 and B_r(2r)/B_r(r)=1/4 against an independent analytic evaluator."
+unresolved = ["Source-prescribed scaling and measured spacecraft agreement require separate outcomes."]
+
+[[family]]
+id = "lbm-galaxy-discrimination"
+priority = "instrument_repair_before_resolution_runs"
+claims = ["C-1696", "C-1700", "C-1702", "C-1282", "C-1287", "C-1697", "C-1703"]
+sources = ["crates/lbm_3d_cuda/tests/test_gpu_cpu_equivalence.rs", "crates/gororoba_cli_physics/src/bin/mrt_stability_audit.rs", "crates/gororoba_cli_physics/src/bin/euclid_df_sweep.rs", "crates/lbm_3d/src/solver.rs"]
+retained_audits = ["data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"]
+retained_results = ["data/output/e167_mrt_bgk_stability_n16_tau07.csv", "data/output/e167_rca_mrt_c29.csv"]
+verified_experiment_ids = ["E-163", "E-164", "E-165", "E-166", "E-167", "E-174"]
+evidence_layers = ["implementation_conformance", "phenomenological_mapping"]
+dependencies = ["Evolving-field equivalence and bounded stability gates precede galaxy runs.", "A working nondegenerate E-174 control path precedes algebra-specific interpretation.", "Paired resolution convergence precedes fractal-dimension interpretation."]
+contract_admission_blockers = ["E-165 registers box-counting equivalence, rather than the standalone equilibrium CPU/GPU test; an amended experiment or explicit adjacent-context binding is required.", "E-166 registers a historical readback implementation and a /tmp output path; the actual replay producer must be sealed.", "Physical duration, softening, thresholds, fits and catalog identities need explicit matching across grids."]
+
+[[family.claim]]
+id = "C-1696"
+required_falsifier = "Inventory the scoped equivalence suite; show a tested evolving field and a separate hardware-unavailable outcome. The inspected test uses uniform rest for five steps on 8 cubed and returns successfully on GPU construction failure."
+unresolved = ["The word only requires an enumerated suite boundary; inspection of one test alone establishes that test's behavior.", "Evolving-field tolerances require an independent error budget."]
+
+[[family.claim]]
+id = "C-1700"
+required_falsifier = "Trace the capture-unsupported failure to its actual CUDA operation and run all declared conditions to retained trial completion; reject zero alpha_zd when it collapses intended controls."
+unresolved = ["Historical E-174 omits nonzero alpha_zd; amend the intake and force conditions before replay.", "CUDA hardware and runtime admission remain required."]
+
+[[family.claim]]
+id = "C-1702"
+required_falsifier = "Feed or reproduce a finite trial with mass error 1e113 and verify its survival classification. Define separate finite-state, mass, positivity and Mach predicates before calling the repaired instrument stable."
+unresolved = ["A scientifically justified repaired stability threshold remains to be declared; the historical defect can be tested without inventing one."]
+
+[[family.claim]]
+id = "C-1282"
+required_falsifier = "Pair identical object IDs and parameters at 64 cubed and 128 cubed; any admitted object with absolute CPU-minus-GPU D_f above 0.05 refutes the universal bound."
+unresolved = ["Same collision, boundary, threshold, precision and fitting procedures must be retained."]
+
+[[family.claim]]
+id = "C-1287"
+required_falsifier = "Pair 64, 128 and 256 cubed runs by object ID, preserve all failed objects and compare all-object and predefined outlier-excluded distributions separately."
+unresolved = ["Two-grid variance narrowing alone does not establish convergence; admissible error and physical-resolution matching remain to be frozen."]
+
+[[family.claim]]
+id = "C-1697"
+required_falsifier = "Recompute paired retained 64/128 statistics and uncertainty with declared exclusion membership; test whether the reported 0.173 shift and 0.0088 half-width use compatible populations."
+unresolved = ["Fresh convergence requires a third resolution and numerical error budget."]
+
+[[family.claim]]
+id = "C-1703"
+required_falsifier = "Recompute all-object and matched non-outlier standard deviations, retain exact object IDs, and test the recorded factors 8.41 and 1.98 independently."
+unresolved = ["Historical count discrepancy between six claimed and seven detected outliers requires explicit accounting."]
+
+[[family]]
+id = "magnonic-source-topology-localization"
+priority = "units_and_source_before_spectral_interpretation"
+claims = ["C-1688", "C-1689", "C-1690", "C-1691", "C-1692", "C-1693", "C-1694"]
+sources = ["crates/quantum_core/src/magnonic.rs", "crates/quantum_core/src/magnonic_crystal.rs", "crates/quantum_core/src/tight_binding.rs"]
+retained_audits = ["data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"]
+verified_experiment_ids = []
+evidence_layers = ["source_proposition", "implementation_conformance", "phenomenological_mapping"]
+dependencies = ["Source parameter and gamma-unit admission precedes GHz comparison.", "Band isolation precedes individual-band Chern classification."]
+contract_admission_blockers = ["Selected experiment rows supply no verified successor binding.", "Source-derived versus tuned onsite/hopping parameters and geometry maps need explicit provenance."]
+
+[[family.claim]]
+id = "C-1692"
+required_falsifier = "Compare all twelve parameters and four geometry constants with admitted source tables, translating sign conventions explicitly. Identify observed output frequencies reused as onsite inputs."
+unresolved = ["Source artifact is kaman_2026_emulating_2d_materials_with_magnons_arxiv_2601_03210v2.pdf under data/papers/intake/2026_08_06_claim_falsification/pdf_success/."]
+
+[[family.claim]]
+id = "C-1694"
+required_falsifier = "Independent SI frequency evaluation must encounter exactly one factor of 2*pi conversion; trace every consumer through rad_per_s_to_ghz."
+unresolved = ["Canonical locator names magnonic_crystal.rs; implementation definitions actually reside in magnonic.rs.", "The existing broad 1 to 20 GHz test admits both conventions."]
+
+[[family.claim]]
+id = "C-1688"
+required_falsifier = "Admit a nonzero separating gap for an individual band, or compute a degenerate-subspace projector invariant; rotate the basis inside degenerate subspaces and require invariant output."
+unresolved = ["Time reversal does not define an individual-band invariant at exact degeneracy; the claim's every-band wording needs qualification."]
+
+[[family.claim]]
+id = "C-1689"
+required_falsifier = "Vary delta_eps_p and delta_eps_s independently with fixed source-admitted units and report bandwidth convergence versus Brillouin-zone sampling."
+unresolved = ["Exactness beyond finite numerical samples requires an algebraic null-vector argument."]
+
+[[family.claim]]
+id = "C-1691"
+required_falsifier = "Construct exact coupling nullspace or symbolic identities, then verify eigenpair residuals across sampled k. A finite bandwidth below roundoff supports a bounded numerical claim only."
+unresolved = ["The universal any-sampling assertion exceeds finite-grid numerical evidence."]
+
+[[family.claim]]
+id = "C-1693"
+required_falsifier = "Pair pristine and defect supercells across radii; require a defect-centered spatial profile and size-stable localized-state count, excluding matching bulk eigenstates."
+unresolved = ["Audit calls a value 1.1 IPR and proposes less than 2; define participation versus inverse participation before admitting that gate."]
+
+[[family.claim]]
+id = "C-1690"
+required_falsifier = "Enumerate sign changes including wraparound, localize states at both walls, and test finite-size hybridization against a zero-wall control."
+unresolved = ["Physical frequency claims depend on source and unit repairs."]
+
+[[family]]
+id = "ward-contraction-scope"
+priority = "independent_residual_replay"
+claims = ["C-1635", "C-1637", "C-1666"]
+sources = ["crates/gr_core/src/photon_graviton/tensor_ward.rs", "crates/gr_core/src/photon_graviton/gravitational_ward.rs", "crates/gr_core/src/photon_graviton/irreducible.rs", "crates/gr_core/src/photon_graviton/ward.rs"]
+retained_audits = ["data/output/audit/2026-08-06/claim-falsification-fleet-g-ward.toml", "data/output/audit/2026-08-02/p1_source_equation_ledger.toml", "data/output/audit/2026-08-02/p1_final_grid.toml", "data/output/audit/2026-08-02/p1_claim_results.toml", "data/output/audit/2026-08-02/photon-graviton-tensor-ward-experiment-manifest.toml"]
+verified_experiment_ids = []
+evidence_layers = ["implementation_conformance"]
+dependencies = ["Source equations 7.1 through 7.7 and frozen kinematics define each identity's scope."]
+contract_admission_blockers = ["Experiment manifest exists but its canonical E-ID binding was not established by the bounded inventory.", "Quadrature, extrapolation and residual normalization must be declared independently of fitted physical parameters."]
+
+[[family.claim]]
+id = "C-1635"
+required_falsifier = "Replay scalar_integrated_gauge_residuals_pass_the_frozen_protocol and spinor_irreducible_residual_retains_the_contact_boundary_gap, then independently contract retained tensor components with contact-term omission controls."
+unresolved = ["A test preserving a known contact gap does not certify universal gauge agreement."]
+
+[[family.claim]]
+id = "C-1637"
+required_falsifier = "Replay off_shell_comparison_retains_all_lower_point_components and on_shell_omission_and_tadpole_trace_controls_break_the_invariant; independently retain each lower-point right-hand-side term."
+unresolved = ["Off-shell agreement and on-shell cancellation require separate predicates."]
+
+[[family.claim]]
+id = "C-1666"
+required_falsifier = "Replay combined_on_shell_ladder_retains_limit_status_without_a_floor with independent limit extraction and numerical uncertainty; determine whether zero lies within the admitted residual interval."
+unresolved = ["Convergence to a nonzero limit establishes extrapolation behavior rather than Ward cancellation."]
+
+[[family]]
+id = "optics-source-error-gates"
+priority = "retrieval_identity_before_reproduction"
+claims = ["C-1705", "C-1706", "C-1707", "C-1708", "C-1709"]
+sources = ["crates/optics_core/src/fano_tcmt.rs", "crates/optics_core/src/bin/p2b_ruan_fan_reproduction.rs"]
+retained_audits = ["data/output/audit/2026-08-06/claim-falsification-fleet-h-optics.toml", "data/output/audit/2026-08-04/p2b-preregistration.toml", "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml", "data/output/audit/2026-08-04/p2a-ruan-fan-channel-oracle-evidence.toml"]
+verified_experiment_ids = []
+evidence_layers = ["source_proposition", "implementation_conformance"]
+dependencies = ["Admit Ruan-Fan source archive identity before source-fit reconstruction."]
+contract_admission_blockers = ["Experiment IDs and branch-specific fitting counts need explicit admission.", "Historical TeX retrieval hashes conflict; append repaired receipts while preserving original values."]
+
+[[family.claim]]
+id = "C-1705"
+required_falsifier = "Replay the same held-out grid for constrained and unconstrained fits, retain fitted parameters and compare maximum errors 5.69e-2 and 3.02e-2 without post-test refitting."
+unresolved = ["Source-constrained and unconstrained fitting freedoms require separate counts."]
+
+[[family.claim]]
+id = "C-1706"
+required_falsifier = "Compare maximum complex-S error with the original 1e-2 threshold. Preserve the historical 1.594e-2 failure; an enlarged observed-envelope threshold is a new predicate."
+unresolved = ["Reproduction repair must retain the frozen source parameters and grid identity."]
+
+[[family.claim]]
+id = "C-1707"
+required_falsifier = "Use independent layered-cylinder Mie evaluation at the declared geometry and omega/omega_p=0.2282; compare scattering and absorption factors separately."
+unresolved = ["Need original numerical data or an independent implementation; historical figure extraction could not separate markers and curves."]
+
+[[family.claim]]
+id = "C-1708"
+required_falsifier = "List every admitted receipt and target explicitly, require 64 hexadecimal characters and matching artifact SHA256, and retain failures."
+unresolved = ["The broad data/output/audit locator must become a finite manifest before an exhaustive claim is admitted."]
+
+[[family.claim]]
+id = "C-1709"
+required_falsifier = "Bind the source method sentence and curve-fitting procedure separately from the repository complex-pole construction; replay each under its own implementation locator."
+unresolved = ["Source-fit data and fit parameter declaration are required before source reproduction."]
+
+[[family]]
+id = "qgp-reference-population"
+priority = "reference_identity_before_model_ranking"
+claims = ["C-1710", "C-1711", "C-1712", "C-1713", "C-1714"]
+sources = ["crates/qgp_scaling/src/competing_models.rs", "crates/qgp_scaling/src/data_tables.rs", "crates/qgp_scaling/src/epsilon_fit.rs", "crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs"]
+retained_audits = ["data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"]
+verified_experiment_ids = ["E-075"]
+evidence_layers = ["source_proposition", "implementation_conformance", "phenomenological_mapping"]
+dependencies = ["Collision system, energy, species, centrality, pT range and covariance admission precede physical ranking.", "Independent optimizer check precedes fit-quality adjudication."]
+contract_admission_blockers = ["Parameter labels differ from actual fitted freedoms.", "Frozen competitor curve at 2.76 TeV and data at 5.02 TeV cannot support a matched-population ranking."]
+
+[[family.claim]]
+id = "C-1710"
+required_falsifier = "Verify fitted minimum independently, then evaluate residuals under an explicitly admitted covariance and degrees-of-freedom count."
+unresolved = ["Published systematic errors were combined diagonally in the historical comparison; covariance provenance remains required."]
+
+[[family.claim]]
+id = "C-1711"
+required_falsifier = "Recompute the six pT>=5 GeV points and require energy/species/centrality equality before any physical model ranking. Retain the historical 2.76-versus-5.02 TeV comparison as such."
+unresolved = ["AF fits one epsilon parameter while competitors are fixed curves; theory-level parameter counts are a separate quantity."]
+
+[[family.claim]]
+id = "C-1712"
+required_falsifier = "Check alpha_c and c_m against Xu, Liao and Gyulassy JHEP02(2016)169 Section 6; distinguish two theory parameters from parameters refitted in the retained comparison."
+unresolved = ["A fixed digitized curve has zero parameters fitted to this held comparison, without implying a parameter-free theory."]
+
+[[family.claim]]
+id = "C-1713"
+required_falsifier = "Retrieve the actual source table and verify epsilon_2 cumulant definition, centrality and energy for every row."
+unresolved = ["The inspected audit identifies an uncited table and inconsistency with fluctuation-dominated central eccentricity."]
+
+[[family.claim]]
+id = "C-1714"
+required_falsifier = "Locate each N_part row in the cited publication or replace provenance through a retained canonical correction; the audit finds no such table in PLB 772 (2017) 567."
+unresolved = ["Actual source population and uncertainties remain unadmitted."]
+
+[[family]]
+id = "finite-graph-and-moreno-theorems"
+priority = "exact_finite_checks_before_universal_extension"
+claims = ["C-1715", "C-1716", "C-1717", "C-1718", "C-1721"]
+sources = ["crates/algebra_analysis/src/spectral_dimension.rs", "crates/algebra_analysis/src/quantum_chaos.rs", "crates/algebra_analysis/src/flat_band_localization.rs", "crates/algebra_analysis/src/crystal_bands.rs", "proofs/verified/C1262_FlatBandFractionHalf.v", "proofs/theories/C1538_MorZDSymmetry.v", "proofs/theories/C1539_MorSkewSymm.v"]
+retained_audits = ["data/output/audit/2026-08-06/claim-falsification-fleet-j-zd-spectral.toml", "data/output/audit/2026-08-06/claim-falsification-fleet-k-pmns.toml"]
+retained_results = ["data/csv/cd_motif_components_32d.csv", "data/csv/zd_nnsd.csv", "data/csv/zd_motif_invariants.csv"]
+verified_experiment_ids = ["E-168"]
+evidence_layers = ["source_proposition", "implementation_conformance"]
+dependencies = ["Exact graph identity precedes rank and spectral claims.", "Finite witnesses precede a separately proved dimension extension."]
+contract_admission_blockers = ["E-168 names a partner graph and 16384 vertices; the retained motif graph census is a different declared object.", "Thresholded floating eigenvalues do not establish exact rank.", "Formal interface assumptions need model-discharge accounting."]
+
+[[family.claim]]
+id = "C-1715"
+required_falsifier = "Enumerate every component with exact degrees; a universal gap bound requires a graph-family proof and its assumptions beyond sampled dimensions."
+unresolved = ["Finite dimensions 32 through 256 alone cannot establish a limiting statement."]
+
+[[family.claim]]
+id = "C-1716"
+required_falsifier = "Verify exact adjacency isomorphism to the claimed multipartite graph before using its analytic spectrum; prove the dimension extension independently."
+unresolved = ["Two distinct positive levels make an ordinary spacing classification degenerate; report that admission outcome."]
+
+[[family.claim]]
+id = "C-1717"
+required_falsifier = "Derive population variance over N-1 sorted spacings at mean one and exactly two distinct levels; the result must be N-2."
+unresolved = ["Sample-variance normalization changes the identity and must be excluded or stated separately."]
+
+[[family.claim]]
+id = "C-1718"
+required_falsifier = "For dimensions 64,128,256, bind every component and motif class, compute exact rank or verified kernel/rank witnesses, and test vertex_count=D/2-2 and 2*nullity=vertex_count."
+unresolved = ["Retained audit used abs(eigenvalue)<1e-6 rather than exact arithmetic.", "Partner and motif graph differ at D=16; the universal extension and dimensions outside the census remain separate.", "C1262_FlatBandFractionHalf proves ratios of hardcoded naturals rather than a graph spectrum."]
+
+[[family.claim]]
+id = "C-1721"
+required_falsifier = "Compare source Corollary 1.6 and Proposition 1.7 plus its kernel-equality remark with each Rocq theorem and interface assumptions. Record purely-imaginary/nonzero restrictions and missing generality."
+unresolved = ["Source TeX is required to preserve conjugate overbars; PDF text extraction can lose them.", "The skew-adjoint proof and the kernel-equality obligation require separate formal edges."]

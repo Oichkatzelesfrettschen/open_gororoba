@@ -1,0 +1,17 @@
+HTTP/2 200 
+access-control-allow-origin: *
+last-modified: Tue, 10 Aug 2021 18:04:38 GMT
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+server: Google Frontend
+content-disposition: attachment; filename="arXiv-0909.3323v2.tar.gz"
+x-cloud-trace-context: 00ddb1245511254a64cac1346c34f3fc
+content-type: application/gzip
+etag: CNLOrq6Fp/ICEAE=
+accept-ranges: bytes
+age: 0
+date: Sat, 05 Sep 2026 17:13:56 GMT
+x-served-by: cache-lga21949-LGA, cache-lga21949-LGA, cache-lga21944-LGA, cache-hhr-khhr2060041-HHR
+x-cache: MISS, MISS, MISS
+x-timer: S1788628437.640943,VS0,VE306
+content-length: 103294
+

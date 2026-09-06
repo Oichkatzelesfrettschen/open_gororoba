@@ -1,0 +1,16 @@
+schema_version = 1
+command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1"
+exit_code = 0
+tests_passed = 1624
+tests_skipped = 19
+scoped_clippy = "passed"
+governance = "passed"
+canonical_claims = 1559
+typed_contracts = 47
+experiment_lineages = 264
+sealed_source_hashes_verified = 22
+canonical_history_tables_unchanged = 12
+validation_log_sha256 = "cf4e6bf694500c08e1e3ec93cd0e36b45a1e88bb3243c418baa06ee579ff30e9"
+history_dump_hashes_sha256 = "71b5e6a0f843dd60e006121b672d2f4615fac9cdfb307652f03e09705bc0af35"
+history_scope = "Before and after final experiment producer normalization, the twelve enumerated SQLite table dumps have identical hashes. Earlier operations and other tables lie outside this comparison."
+remaining_scope = "The dependency plan retains external intake, operational observations, physical sensitivity, source reproduction, convergence and universal proof obligations."

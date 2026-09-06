@@ -1,0 +1,10 @@
+    Checking approx v0.5.1
+    Checking tar v0.4.45
+    Checking tempfile v3.27.0
+    Checking simba v0.9.1
+    Checking nalgebra v0.34.2
+    Checking verified_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/verified_core)
+    Checking gauss-quad v0.3.1
+    Checking cd_kernel v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cd_kernel)
+    Checking data_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/data_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 9.53s

@@ -1,0 +1,71 @@
+schema_version = 1
+experiment_id = "E-289"
+producer = "crates/optics_core/src/bin/p2b_ruan_fan_reproduction.rs"
+code_commit = "81a4ca6e8e3a2f9b4d00b5e14b0ddd739088a7d9"
+producer_binary_sha256 = "bb3a34549b3ac2c890489e6098d09149abe3c3f647536928484f3246b0804935"
+replay_path = "data/output/audit/claim-family-evidence-adjudication/optics-replay/reproduction.toml"
+replay_sha256 = "02d83fa2fc6b6c1fb50949d5c3b981611d49ba2d44834049374488c7ad48f34b"
+elapsed_seconds = 0.54
+exit_code = 0
+historical_path = "data/output/audit/2026-08-04/p2b-ruan-fan-mie-tcmt-reproduction-evidence.toml"
+parsed_equality_excluded_fields = ["code_commit_sha"]
+parsed_equality = true
+normalized_sha256 = "d18c76828d2bce044238d52c9c1f0ff0b5db2ced8b35d309ce866295da8a2cd6"
+normalization_command = "taplo get -f FILE -o json | jq -cS 'del(.code_commit_sha)' | sha256sum"
+source_comparison_base = "cc482872db4ad8b52f05d32f2cc02817c0651119"
+unchanged_numerical_sources = ["p2b_ruan_fan_reproduction.rs", "p2b_fit.rs", "mie_poles.rs", "mie_cylinder.rs", "bessel.rs", "fano_tcmt.rs"]
+independent_fixture_path = "data/output/audit/2026-08-04/p2b-independent-pole-output.txt"
+independent_fixture_sha256 = "810dd48dcea5b13f7c8b8f6ba3250400d908e62483ed8c0e01d3c76f54642b0e"
+independent_fixture_scope = "Reuse of retained 80-decimal mpmath output; the independent generator was not rerun."
+identity_scope = "E-289 names the actual producer. Canonical E-241 remains staples-layout-sweep; the historical optics E-241 collision remains in its original artifact. E-076 remains fano-scattering."
+
+[source_receipts]
+archive_url = "https://arxiv.org/src/0909.3323v2"
+archive_path = "optics-replay/arxiv-source.download"
+archive_sha256 = "086721ff3a9a96a32d73bfe453be68026461472b4f751d1293ac6b2bdaaeba75"
+tex_archive_member = "Fano_Scattering.tex"
+tex_path = "optics-replay/Fano_Scattering.tex"
+tex_bytes = 43870
+tex_sha256 = "625f2dc473e5d50abba49daa3d1382ee9bd70b17746cd9452bfaf9b81c70bc28"
+pdf_path = "optics-replay/ruan-fan-0909.3323v2.pdf"
+pdf_sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+pdf_intake = "Copied from primary checkout data/papers/corpus/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf; SHA256 checked against retained expected PDF receipt."
+preserved_discrepancies = ["Preregistration source_tex_sha256 identifies compressed archive bytes, not extracted TeX.", "Historical and replay producer metadata retain a malformed 61-character extracted TeX digest."]
+source_method_lines = "Fano_Scattering.tex:579-583,598-600,608-620"
+source_method_quote = "We use the above theory to fit these curves."
+
+[results]
+original_complex_s_gate = 0.01
+figure4_rows = 120
+figure4_max_complex_s = 0.0159400034798379067
+figure4_lossless_gate = false
+figure4_lossy_gate = false
+source_fixed_max_test_complex_s = 0.0569019509845718197
+unconstrained_pole_max_test_complex_s = 0.0302331515826606938
+figure5_test_count = 227
+figure5_max_complex_s = 0.0303976134811303061
+figure5_aggregate_gate = false
+aggregate_cancellation = true
+landmark_omega = 0.2282
+landmark_mie_scattering = 0.141739879640738142
+landmark_mie_absorption = 0.398104096787583850
+source_scattering = 0.03
+source_absorption = 0.32
+printed_anchor_half_width = 0.005
+within_source_interval = false
+independent_reference_agreement = true
+post_test_refit = false
+
+[adjudication]
+C_1705 = "Retained fixed-versus-fitted ordering reproduced with frozen fitting budget."
+C_1706 = "Original 0.01 Figure4 reproduction gate fails again at 0.0159400034798379067; retain failed threshold."
+C_1707 = "Repository Mie implementation agrees with retained independent fixture, but source printed landmarks remain discrepant. Source-parameter, geometry or figure interpretation remains unresolved; numerical agreement does not refute the source theory."
+C_1708 = "Enumerated archive, TeX and PDF subset repaired. Repository-wide historical hash assertion remains open."
+C_1709 = "Retrieved primary TeX explicitly identifies curve fitting; repository fixed pole construction remains a separate procedure."
+
+[verification]
+rust_receipt_tests_passed = 2
+rust_receipt_tests_failed = 0
+clippy_warnings_as_errors = "pass"
+command_test = "cargo test -p optics_core --test ruan_fan_source_receipts --profile validation"
+command_clippy = "cargo clippy -p optics_core --test ruan_fan_source_receipts --profile validation -- -D warnings"

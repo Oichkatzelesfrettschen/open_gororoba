@@ -1,0 +1,34 @@
+schema_version = 1
+coefficient_scope = "exact stored dyadic values"
+maximum_depth = 10
+gap_gate_ghz = 1e-10
+
+[[model]]
+name = "table-i"
+boundaries = [2, 6]
+real_hoppings_exact = true
+admitted = true
+terminal_cells = 1648
+unresolved_cells = 0
+covered_integer_area = 1048576
+expected_integer_area = 1048576
+hopping_row_upper = 2.48119200876839452e0
+minimum_gap_lower_ghz = 3.24092414407728348e-4
+maximum_eigenvalue_radius_ghz = 2.60384850623258296e-12
+maximum_sampled_production_eigenvalue_difference_ghz = 2.04281036531028803e-14
+production_comparison_scope = "Sampled Cartesian evaluator consistency; excluded from global certificate proof"
+
+[[model]]
+name = "table-ii"
+boundaries = [1, 2, 4, 6, 7]
+real_hoppings_exact = true
+admitted = true
+terminal_cells = 65536
+unresolved_cells = 0
+covered_integer_area = 1048576
+expected_integer_area = 1048576
+hopping_row_upper = 2.23870489570875142e0
+minimum_gap_lower_ghz = 2.01553006777746950e-2
+maximum_eigenvalue_radius_ghz = 2.54150653246576644e-12
+maximum_sampled_production_eigenvalue_difference_ghz = 1.99840144432528177e-14
+production_comparison_scope = "Sampled Cartesian evaluator consistency; excluded from global certificate proof"

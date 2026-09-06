@@ -1,0 +1,5 @@
+claim_id = "C-1696"
+expected_statement = "The only CPU and GPU equivalence test in the repository is vacuous: it evolves a uniform-at-rest field, which is the equilibrium, under BGK on an 8 cubed grid, and returns early with a pass when no GPU is present."
+expected_where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml"
+statement = "At source revision 81a4ca6e, the audited 8-cubed BGK CPU/GPU equivalence fixture evolves a uniform-at-rest equilibrium and returns early when GPU initialization fails. That fixture alone cannot discriminate evolving-field errors or establish GPU execution."
+where_stated = "data/output/audit/2026-08-06/claim-falsification-fleet-e-gpu-lbm.toml; historical implementation at git revision 81a4ca6e"

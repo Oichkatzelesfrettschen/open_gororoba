@@ -1,0 +1,36 @@
+claim_id = "C-1713"
+evidence_layer = "source_proposition"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract tests table and cumulant identity; physical geometry-to-observable mapping remains separate."
+fixed_hyperparameters = ["alice_pbpb_5020_mc_glauber rows including central0-5% eccentricity0.029", "Match5.02TeV Pb-Pb, centrality definition, event weighting, participant/reaction plane and epsilon2 cumulant convention"]
+[[intervening_maps]]
+branch = "table_identity"
+name = "row_and_cumulant_provenance"
+kind = "computational"
+description = "Trace every implementation row to an admitted source table and its exact epsilon2 definition; distinguish smooth geometry from event-ensemble cumulants."
+[[intervening_maps]]
+branch = "estimator_identity"
+name = "directional_vs_moment_definition"
+kind = "computational"
+description = "Bind source Eq9/12 to joint directional integrals and compare the actual legacy second-moment and radial-distance functions. E-309 independently verifies the declared fixed-field forward-ray implementation; centrality pooling remains separate."
+[[fitted_parameters]]
+branch = "estimator_identity"
+count = 0
+names = []
+training_boundary = "Source definitions and fixed-field numerical oracles fit zero parameters; selected hard-sphere fields are numerical instruments rather than calibration data."
+[[fitted_parameters]]
+branch = "table_identity"
+count = 0
+names = []
+training_boundary = "The fixed table lookup and definition comparison fit zero parameters; source Glauber calibration and physical interpretation remain independently declared."
+[decisive_experiment]
+experiment_ids = ["E-075", "E-309"]
+protocol_artifact = "data/output/audit/qgp-directional-path-identity/adjudication.toml"
+protocol_sha256 = "bb2e8de73bb2b1ac9d0b854be2ef5f09359dd752aa8fa84610cffd54dde8b883"
+description = "Retrieve the actual source table, retain its hash and definition, and map every row before using the E-075 geometry comparison."
+[what_would_verify_refute]
+verification_outcomes = ["The retained source Eq12 and actual legacy moment implementation differ, and the independent rectangle gives path eccentricity1/3 versus moment3/5. E-309 establishes fixed-field numerical conformance alone.", "The admitted actual source defines the implementation column as another statistic or geometry quantity, establishing the bounded cumulant mislabel."]
+revision_outcomes = ["A directional integration, density-weighting or grid-sensitivity gate fails: preserve all rows and revise the numerical conformance scope before fitting physical data.", "Only a subset of rows or a different population is traced: restrict the identity finding to the traced subset and preserve unresolved rows."]
+abandonment_outcomes = ["Independent joint-integral evaluation contradicts the directional implementation: abandon the affected finite conformance predicate.", "An admitted matching-population source explicitly gives the same rows including0.029 as epsilon2{2}: abandon the mislabel claim for that source-defined column."]
+inconclusive_outcomes = ["Undefined centrality pooling, angular averaging, event weighting or source cumulant identity blocks physical source-reproduction claims; fixed-b success does not discharge those obligations.", "Unidentified source leaves the column unverified rather than proving an alternative definition.", "An ordering comparison with another optical model does not establish a universal cumulant inequality without matched ensemble and geometry assumptions."]

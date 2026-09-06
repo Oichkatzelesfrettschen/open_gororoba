@@ -1,0 +1,35 @@
+claim_id = "C-1716"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Exact cocktail-party adjacency and integer spectral witnesses on finite motif components; universal CD-dimension graph identity remains a separate conjecture."
+fixed_hyperparameters = ["Dimensions16,32,64,128,256", "m=D/4-1 equal parts of size2; N=2m", "Laplacian eigenvalues0,N-2,N with multiplicities1,m,m-1", "Spacing statistics retain repeated eigenvalues unless a separate admission rule is declared"]
+
+[[intervening_maps]]
+branch = "exact_graph"
+name = "cross_assessor_component_enumeration"
+kind = "computational"
+description = "Generate integer zero-product motif adjacency and enumerate all connected components at the five declared dimensions."
+
+[[intervening_maps]]
+branch = "exact_graph"
+name = "multipartite_adjacency_and_spectral_witnesses"
+kind = "computational"
+description = "Check complete cross-part and empty within-part adjacency for paired vertices, then verify integer Laplacian equations for constant, pair-difference and pair-sum-difference vectors."
+
+[[fitted_parameters]]
+branch = "exact_graph"
+count = 0
+names = []
+training_boundary = "Exact combinatorial and arithmetic comparisons fit zero physical parameters."
+
+[decisive_experiment]
+experiment_ids = ["E-295", "E-086"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/finite-motif-moreno-source-map.toml"
+description = "E-295 verifies the complete multipartite adjacency predicate and integer eigenvector equations for every enumerated cocktail-party component. E-086 retains the original floating spacing census."
+
+[what_would_verify_refute]
+verification_outcomes = ["Each densest component at the declared finite dimensions is exactly K_(2,...,2); the constant, pair-difference and pair-sum-difference vectors establish the stated conditional Laplacian spectrum."]
+revision_outcomes = ["An exact adjacency counterexample changes the densest motif: preserve it and restrict the finite statement to supported dimensions.", "A spacing calculation includes multiplicities: retain its defined degenerate statistic rather than labeling all spacing statistics undefined."]
+abandonment_outcomes = ["A purported cocktail-party adjacency violates its complete cross-part and empty within-part predicate, or its exact Laplacian eigenvector equations fail."]
+inconclusive_outcomes = ["Spectral resemblance alone does not prove isomorphism.", "The universal CD-dimension graph identity requires a separate construction beyond the finite census."]

@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-294"
+title = "Magnonic pristine-defect participation and periodic-wall spatial diagnostics"
+status = "active"
+binary = "magnonic_localization integration test"
+claim_refs = ["C-1690", "C-1693"]
+deterministic = true
+gpu = false
+reproducibility_class = "numeric_close"
+input = "Repository reference parameters; paired pristine/defect radii 2,3,4; 20-cell periodic wall supercell."
+input_path_refs = ["data/output/audit/claim-family-evidence-adjudication/magnonic-localization-protocol.toml"]
+method = "Independently assemble open patches; compare producer gap-selected eigenvalues; retain all normalized participation and center/edge probabilities plus degenerate-group projector weights. Count periodic sign transitions and retain both-wall spatial weights. Preserve historical E-142."
+run = "cargo test -p quantum_core --test magnonic_localization --profile validation -- --nocapture --test-threads=1"
+output = ["Finite paired spectra and continuous localization observations", "Both-wall spatial accounting", "Bounded implementation adjudication"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/magnonic-localization-replay.txt", "data/output/audit/claim-family-evidence-adjudication/magnonic-localization-adjudication.toml"]
+status_note = "Protocol frozen and canonically attached before execution. Two diagnostic tests and warnings-as-errors Clippy pass; paired boundary states, endpoint sensitivity, corrected participation definition and both walls are retained. Physical GHz calibration remains outside the implementation experiment."

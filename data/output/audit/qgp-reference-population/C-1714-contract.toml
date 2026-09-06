@@ -1,0 +1,25 @@
+claim_id = "C-1714"
+evidence_layer = "source_proposition"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Publication and per-row table identity are fixed source checks; physical agreement remains a separate layer."
+fixed_hyperparameters = ["ALICE PLB772(2017)567, arXiv1612.08966 and explicitly enumerated admitted supplements", "alice_pbpb_5020_npart nine values382.8,329.7,260.5,186.4,128.9,85.0,52.8,30.0,15.8"]
+[[intervening_maps]]
+branch = "table_identity"
+name = "publication_row_locator"
+kind = "computational"
+description = "Check each participant-number row against named publication pages or admitted supplements, retaining energy, centrality and uncertainty conventions."
+[[fitted_parameters]]
+branch = "table_identity"
+count = 0
+names = []
+training_boundary = "The source lookup fits zero parameters. Glauber calibration freedoms and downstream physical fits remain separate."
+[decisive_experiment]
+experiment_ids = ["E-075"]
+protocol_artifact = "data/output/audit/qgp-reference-population/adjudication.toml"
+description = "Admit cited source bytes and enumerated searched surfaces, then produce exact row locators or bounded absence; E-075 numeric agreement cannot supply source identity."
+[what_would_verify_refute]
+verification_outcomes = ["The admitted cited publication and enumerated supplements lack the asserted nine-row table; retain the failed citation and exact searched surfaces."]
+revision_outcomes = ["A different admitted source supplies some or all rows: correct canonical provenance while preserving the original citation mismatch and unresolved rows."]
+abandonment_outcomes = ["An exact table/page locator in the cited publication supplies the asserted rows with matching population: abandon the claimed citation mismatch."]
+inconclusive_outcomes = ["Unavailable source bytes or an unenumerated supplement surface leaves absence unresolved.", "Numerically nearby Glauber values do not establish the actual table source or its uncertainty population."]

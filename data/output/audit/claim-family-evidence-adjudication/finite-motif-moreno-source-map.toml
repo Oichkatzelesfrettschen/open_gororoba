@@ -1,0 +1,227 @@
+schema_version = 1
+claims = ["C-1715", "C-1716", "C-1717", "C-1718", "C-1721"]
+finite_evidence_layer = "implementation_conformance"
+source_evidence_layer = "source_proposition"
+fitted_parameter_count = 0
+finite_dimensions = [16, 32, 64, 128, 256]
+finite_component_count = 243
+producer = "algebra_analysis::boxkites::motif_components_for_cross_assessors"
+experiment_binding = "E-168's partner graph is a distinct object; the finite motif test is a separately named producer and requires its own canonical experiment binding."
+rank_witness_file = "data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml"
+rank_witness_test = "crates/algebra_analysis/tests/motif_exact_rank.rs"
+rank_proof = "Every integer adjacency has N/2 distinct columns, each repeated twice, so rank_Q <= N/2. Gaussian elimination modulo prime 1000000007 has rank N/2, implying an integer minor nonzero modulo that prime and therefore nonzero over Q. The two inequalities certify rank_Q=N/2 exactly."
+rank_scope = "Each of all 243 components is checked; the proof does not infer untested components from one degree-profile representative."
+class_scope = "The reported profile counts 1,2,4,8,16 are distinct sorted degree sequences. The test does not equate shared degree sequences with graph isomorphism."
+generator_scope = "The integer adjacency producer is shared with the repository. Independent rank witnesses and exact graph predicates verify its output; independent reconstruction of the Cayley-Dickson sign table remains outside this test."
+
+[[claim_disposition]]
+claim = "C-1715"
+measured = "Across D=16,32,64,128,256 the minimum degree is 4 and maximum degree is 4,12,28,60,124, respectively: D/2-4, contradicting the statement D/2-3."
+finite_spectral_basis = "Identical-column pair differences are exact Laplacian eigenvectors with their common degree. The retained matrices and complement-component counts support checking spectral bounds without a thresholded eigensolver."
+remaining = "An asymptotic non-expansion claim requires proving the sparse degree-4 subclass and required denominator scaling at every dimension beyond the census."
+
+[[claim_disposition]]
+claim = "C-1716"
+measured = "The exact complete multipartite predicate finds 7,8,9,10,11 cocktail-party components across the five dimensions. Each has m=D/4-1 parts of two vertices."
+spectral_proof = "For K_(2,...,2), the constant vector has Laplacian eigenvalue 0; m within-pair differences have eigenvalue N-2; m-1 pair-sum differences have eigenvalue N. These independent vectors span N=2m dimensions. The test verifies the integer eigenvector equations for every enumerated cocktail-party component."
+conditional_extension = "The spectrum formula applies to any graph already proved isomorphic to K_(2,...,2). The test does not prove that the densest motif graph retains that identity at all larger CD dimensions."
+spacing_scope = "A normalized spacing list including multiplicities is mathematically defined and has a two-level degenerate distribution. Generic continuous random-matrix spacing classification is not informative; declaring the statistic itself undefined requires an explicit distinct-level or unfolding admission rule."
+
+[[claim_disposition]]
+claim = "C-1717"
+analytic_proof = "For N>=2 sorted values at exactly two levels with both populated, the M=N-1 spacings contain one gap Delta>0 and M-1 zeros. Division by the mean Delta/M gives one spacing M and M-1 zeros. Population variance is ((M-1)^2+(M-1))/M=M-1=N-2. The argument covers all N and is independent of level separation and multiplicities."
+normalization_boundary = "With sample-variance denominator M-1 and N>2 the variance is M=N-1. At N=2 the sample variance is undefined."
+finite_arithmetic_check = "Integer cross-multiplied identities pass for N=2 through256; the general derivation is stated above rather than inferred from enumeration."
+
+[[claim_disposition]]
+claim = "C-1718"
+measured = "Every component at D=16,32,64,128,256 has N=D/2-2 vertices and exact rational adjacency nullity N/2. The finite evidence extends the historical 64,128,256 floating-threshold census to exact rank and additionally covers16,32."
+formal_boundary = "C1262_FlatBandFractionHalf defines 42/84 and105/210 using fixed naturals and proves arithmetic fractions. The file defines neither adjacency nor a spectrum and proves no motif-graph theorem."
+remaining = "The universal CD-dimension extension requires a construction proving the paired-column decomposition and invertible quotient for all dimensions. The finite modular-rank witnesses alone do not establish that extension."
+
+[source]
+retained_tex = "data/output/audit/claim-family-evidence-adjudication/moreno-zero-divisors-source.tex"
+sha256 = "ad9bf59860da8079a640648b7ac8bc2425042a746e0bb2711025ed46a6d3c928"
+retrieval_identity = "Existing primary-checkout e-print retained by the earlier audit, hash-identical copy; fresh provider retrieval was not performed."
+source_url = "https://arxiv.org/e-print/q-alg/9710013"
+conjugate_preservation = "Literal TeX overline{x} and overline{y} are retained; PDF plain text is not substituted."
+
+[[formal_edge]]
+claim = "C-1721"
+source = "Corollary1.6, TeX lines341-368"
+source_hypotheses = "x,y in A_n, n>=4; item1 has no purity or nonzero assumptions. Items2 and3 separately require the other factor nonzero."
+source_conclusion = "xy=0 iff yx=0 iff conjugate(x)y=0 iff x conjugate(y)=0; trace-zero consequences; x^2=0 iff x=0."
+formal_locator = "C1538_MorZDSymmetry.MorZDSymmetry.zd_symmetry; zd_conj_vanishes"
+formal_hypotheses = "CDAlgInnerTrace interface, conjugate(x)=-x and x!=0 for two-way symmetry; purity alone for the one-way conjugate lemma."
+formal_scope = "Partial source formalization. The concrete pair product witnesses establish that pair, rather than all x,y."
+missing_obligations = ["Remove the extra purity restriction for the full source chain", "Discharge the richer CDAlgInnerTrace model at declared CD dimensions", "Connect all four equivalences, trace-zero consequences and square-zero statement at source generality"]
+
+[[formal_edge]]
+claim = "C-1721"
+source = "Proposition1.7, TeX lines390-407"
+source_hypotheses = "x trace-zero; Euclidean inner product on A_n"
+source_conclusion = "Both L_x and R_x are skew-symmetric."
+formal_locator = "C1539_MorSkewSymm.MorSkewSymm.l_x_skew_symm and r_x_skew_symm"
+formal_scope = "The abstract conclusions and purity hypotheses match the source proposition. The concrete SedMoreno instance discharges structural assumptions at dimension16."
+printed_foundations = ["ClassicalDedekindReals.sig_forall_dec", "FunctionalExtensionality.functional_extensionality_dep"]
+missing_obligations = ["Model discharge at every dimension claimed beyond the concrete sedenion instance"]
+
+[[formal_edge]]
+claim = "C-1721"
+source = "Unnumbered Remark following Proposition1.7, TeX lines408-412"
+source_conclusion = "Ker L_x = Ker R_x for trace-zero x"
+formal_locator = "C1539_MorSkewSymm.MorSkewSymm.ker_lx_eq_ker_rx"
+formal_scope = "The theorem has the source purity hypothesis but its proof depends on two additional local axioms. Instantiating SedMoreno does not discharge these functor-local axioms."
+printed_additional_axioms = ["AuditedSkew.im_lx_eq_im_rx", "AuditedSkew.im_rx_eq_im_lx"]
+missing_obligations = ["Prove both orthogonal-image implications rather than introducing local axioms", "Alternatively connect the narrower constructive symmetry proof and cover its missing hypotheses"]
+
+[formal_replay]
+compiler = "/usr/bin/rocq, version9.1.1, OCaml5.5.0"
+initial_rejected_runtime = "opam switch rocq-9.1.1 provides Rocq9.1.1 built with OCaml5.4.0; primary CDTraceZero.vo requires OCaml5.5.0"
+compiled_bodies = ["C1538_MorZDSymmetry.v", "C1539_MorSkewSymm.v", "C1262_FlatBandFractionHalf.v"]
+compiled_body_count = 3
+assumptions_query = "data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"
+assumptions_log = "data/output/audit/claim-family-evidence-adjudication/moreno-proof-assumptions.log"
+output_boundary = "All generated proof objects and auxiliary files are under the worktree .cache/moreno-proof-check."
+dependency_boundary = "Focused body checks load existing primary-checkout .vo dependencies with matching Rocq/OCaml runtime. Those dependency bodies were not rebuilt in this run."
+
+[validation]
+finite_tests_passed = 3
+focused_clippy_exit_code = 0
+toml_check_exit_code = 0
+proof_bodies_compiled = 3
+assumptions_query_exit_code = 0
+source_dependency_closure_files = 17
+
+[[proof_input]]
+path = "proofs/theories/C1538_MorZDSymmetry.v"
+source_sha256 = "ae3bef6e24047ccf819157936b5608bea7eeba58a2ea2f95a90f3bfdcf439250"
+primary_source_matches = true
+primary_dependency_object_sha256 = "4c6b3c51599c3fa424237646cb9e3c53f3a646e700c0e1456031bf968cf99654"
+
+[[proof_input]]
+path = "proofs/theories/C1539_MorSkewSymm.v"
+source_sha256 = "4250a474c436018b2c06f790ac6d9087a0fb9345cecc0f40d58549f58a09d145"
+primary_source_matches = true
+primary_dependency_object_sha256 = "2e273c55288335d26e13e168fe67be48bfc8a57281ee6940fd985691c5d46515"
+
+[[proof_input]]
+path = "proofs/theories/CDConjAntimorph.v"
+source_sha256 = "49d84bdcf1e0b973179da526443218f293a28c7c2d7bcc82d666c03bc80b17c9"
+primary_source_matches = true
+primary_dependency_object_sha256 = "966e730e26e662ec130297a921a1cd64048e7f4b26a18ceff07a33af650cfe05"
+
+[[proof_input]]
+path = "proofs/theories/CDFusedBilinear.v"
+source_sha256 = "815594e02e9ebb7b3dff8d7845c10929d0e9d9fb4fd0908f2a9e4be0918fdbc6"
+primary_source_matches = true
+primary_dependency_object_sha256 = "7f9b2e91e2075dfb61f8bd6efef31023fea430fc7018753a60499b1a66346ecd"
+
+[[proof_input]]
+path = "proofs/theories/CDInnerProduct.v"
+source_sha256 = "05a67b0d057171e8e953de2016d41441e2a5f8655822a66da8294c418af050f5"
+primary_source_matches = true
+primary_dependency_object_sha256 = "c6f8323a989972115e7e0708b53885339df5b55f2106baf67f97f91fad3645f0"
+
+[[proof_input]]
+path = "proofs/theories/CDLinearLemmas.v"
+source_sha256 = "e8c43d7094d00f21512e7f1b34baa41fcff7159ae4c2697e5d5d9c03719f0a9c"
+primary_source_matches = true
+primary_dependency_object_sha256 = "cf03d670701dc28b31c205445f54e367d3bed6139c9a12b5ae79318ea77b81d2"
+
+[[proof_input]]
+path = "proofs/theories/CDNegLemmas.v"
+source_sha256 = "95447cba8efb0c7669ac2da16e283754bb1ff5bceb3f034ee5224f04e5d70c2d"
+primary_source_matches = true
+primary_dependency_object_sha256 = "3abf9f993c6e3a6f0b80b0bfdf86d3f5f84f5410a1586375456650748cfeee18"
+
+[[proof_input]]
+path = "proofs/theories/CDSignBridge.v"
+source_sha256 = "f9c1824d60b948ef0a0cc79348010b08d4657a1bfba109fb96068740b43a3198"
+primary_source_matches = true
+primary_dependency_object_sha256 = "bc6b2777ea2e3642feb73507132cb64b7c66f91c86afd948312b6f429f082f24"
+
+[[proof_input]]
+path = "proofs/theories/CDTraceZero.v"
+source_sha256 = "2573417c45473f973d1b36c9a2c94f2b95c1c754fe6ae6700716fbd8d8bce644"
+primary_source_matches = true
+primary_dependency_object_sha256 = "cb57eeeb10367ce6e5462602eeb624e0a874d080a09d1ace952e090d8f080258"
+
+[[proof_input]]
+path = "proofs/theories/CayleyDicksonAlgebra.v"
+source_sha256 = "4efa7709088041ceafce81f4e6fcf4d7e78ed9242c7ff2c9fb2e03cdb8d7f0c0"
+primary_source_matches = true
+primary_dependency_object_sha256 = "53d42c7f8118e60cfae19a4db29f24452571b7f1887cfa811bb719488adeb29e"
+
+[[proof_input]]
+path = "proofs/theories/MorenoSedenionInstance.v"
+source_sha256 = "36831adb9196953c14a0b42f5762d45b053ccc90a89176f3eb2b8b30087377cb"
+primary_source_matches = true
+primary_dependency_object_sha256 = "0d62f9624c367020bb3b29f34d9183016627487a1c5acc844224f99eedd4654a"
+
+[[proof_input]]
+path = "proofs/theories/OctonionNorm.v"
+source_sha256 = "3c65bb9f5c84a2775d9a6bebd202e8433f34f174c4d4808e79b582dfec17b51e"
+primary_source_matches = true
+primary_dependency_object_sha256 = "1c9a399afeeab0d227d31482ae0b36dfafee378cbcdee910c62c3417aabf930b"
+
+[[proof_input]]
+path = "proofs/theories/Prelude.v"
+source_sha256 = "ea2b955ee77feb89fadeb9a533260b8da4318b0111a1f079130e6db48886dafb"
+primary_source_matches = true
+primary_dependency_object_sha256 = "bf6f91ec0e05a7b24aeb8b5f9029e635ad41b735978b0b096d9ad7371a7d6d88"
+
+[[proof_input]]
+path = "proofs/theories/Sedenion.v"
+source_sha256 = "f7fa97304850eaa6004d3917fe37be555b40568fc65389887bbe489fbc922681"
+primary_source_matches = true
+primary_dependency_object_sha256 = "b992ee931d05b5f560a8f114b4e3ba23cd23b1f6d9bfb9e3bd6fb0aa23250099"
+
+[[proof_input]]
+path = "proofs/theories/SedenionSignBridge.v"
+source_sha256 = "7515538a4f20c8f1763d79397303d2f835dda49ab20857ae8365ab60a5380644"
+primary_source_matches = true
+primary_dependency_object_sha256 = "abebf02f51ab90c7ab66f24072964980dc5042b3d6bbcc7346843a986a6fa9d9"
+
+[[proof_input]]
+path = "proofs/theories/ZD_Criterion.v"
+source_sha256 = "21b359dc1800680a31c05a4efa964feb6c9ab211ca7bf17fdb1aafeafae1ab31"
+primary_source_matches = true
+primary_dependency_object_sha256 = "d476ebca308ad267d492d280e5fde4967879429a14b5a6aff2c212917a2788de"
+
+[[proof_input]]
+path = "proofs/verified/C1262_FlatBandFractionHalf.v"
+source_sha256 = "2fc8eb05b6a35160802b20db67a429e53963b91a2d610decb0075781a1589304"
+primary_source_matches = true
+primary_dependency_object_sha256 = "5e632542f1b763266b08158ef02f153a1fcf4ae39a44d564bf660c28b5523a87"
+
+[[artifact]]
+path = "crates/algebra_analysis/src/boxkites.rs"
+sha256 = "73749b7edf3498bec64fa0714194236c2beed06e4147c69c0a3fb2389800e1d2"
+
+[[artifact]]
+path = "crates/algebra_analysis/src/boxkites/cross_assessors.rs"
+sha256 = "a02d1bc3da7e1a76eeb202f0a6b465461da04c0c3fa3a63a25e5d350aca46266"
+
+[[artifact]]
+path = "crates/algebra_analysis/tests/motif_exact_rank.rs"
+sha256 = "f880f285b7cdc17c5499a30954de70a11b7d0b0421eba4fd9ca8aa6203c1c355"
+
+[[artifact]]
+path = "data/output/audit/claim-family-evidence-adjudication/motif-exact-rank.toml"
+sha256 = "4e87c4ca648a04a9c278b534058b9024ee44148c23bac838105d5d73dc55e460"
+
+[[artifact]]
+path = "data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"
+sha256 = "a74da267b46e3fe3668fb69c9589faf8eca1c1247fdf9fdc43bf0e58d2fe2d5e"
+
+[[artifact]]
+path = "data/output/audit/claim-family-evidence-adjudication/moreno-proof-assumptions.log"
+sha256 = "473e3e810b31bd3210335ece85a9740d38d5ab6a8814d3b40eb8878872ae6233"
+
+[formal_replay_commands]
+workdir = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+symmetry = "/usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/proofs/theories AuditProofs -o .cache/moreno-proof-check/C1538_MorZDSymmetry.vo proofs/theories/C1538_MorZDSymmetry.v"
+skew = "/usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/proofs/theories AuditProofs -o .cache/moreno-proof-check/C1539_MorSkewSymm.vo proofs/theories/C1539_MorSkewSymm.v"
+fractions = "/usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q /home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/proofs/verified AuditVerified -o .cache/moreno-proof-check/C1262_FlatBandFractionHalf.vo proofs/verified/C1262_FlatBandFractionHalf.v"
+assumptions = "/usr/bin/rocq compile -Q /home/eirikr/Github/open_gororoba/proofs/theories OpenGororoba -Q .cache/moreno-proof-check '' -o .cache/moreno-proof-check/moreno_proof_assumption_query.vo data/output/audit/claim-family-evidence-adjudication/moreno_proof_assumption_query.v"

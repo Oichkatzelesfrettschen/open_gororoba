@@ -1,0 +1,76 @@
+schema_version = 1
+claim = "C-1710"
+evidence_layer = "source_proposition"
+result = "The cited source defines a positive-shift quenching-weight convolution; the repository fixed-loss negative-shift power is a different ansatz."
+checkout_head = "a0800278e8794d30bec3b22324d72992dd1e66dd"
+source_or_canonical_edits = 0
+fits_or_simulations = 0
+
+[discovery]
+searched = ["Primary checkout data/papers recursive filename inventory including ignored files", "Isolated worktree data/papers recursive filename inventory including ignored files", "Retained QGP source/history receipts"]
+local_result = "The named inventories contain the2411.13258 proceedings, but yield zero matching filenames for1703.10852 or2212.01324 or their source titles."
+proceedings_path = "/home/eirikr/Github/open_gororoba/data/papers/corpus/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf"
+proceedings_sha256 = "b9f0db61ad9cc06ccabcdcdfb0a8cee407b2e282f1116c4b1658ed376d015b03"
+reference_route = "Proceedings reference1 identifies1703.10852; reference2 identifies2212.01324 as PRD109L051503. Exact primary references were retrieved only after the bounded local search."
+
+[[source]]
+id = "arxiv-1703.10852v1"
+request_url = "https://arxiv.org/pdf/1703.10852"
+effective_url = "https://arxiv.org/pdf/1703.10852"
+http_status = 200
+path = "arxiv-1703.10852v1.pdf"
+sha256 = "dd21cf31ee61df4d523817bfd988287eefac2e6e6a5b194a53fab9ce3c50273f"
+version_evidence = "PDF first-page margin identifies arXiv1703.10852v1,31Mar2017. The unversioned endpoint response is bound to those exact retained bytes; latest-version equivalence is unassessed."
+title = "Quenching of Hadron Spectra in Heavy Ion Collisions at the LHC"
+author = "Francois Arleo"
+headers = "arxiv-1703.10852-retrieval.headers"
+text = "arxiv-1703.10852-extracted-text.json"
+verified_render = "arxiv-1703.10852-page2.png"
+equations = "PDF page2 Eqs1-5; Eq5 explicitly gives R_AA^h(pT)=integral_0^infinity dx (1+x*omega_bar_c/pT)^(-n)*Pbar(x)."
+parameters = "omega_c=qhat*L^2/2; P(epsilon,E>>omega_c)=Pbar(epsilon/omega_c)/omega_c. Mean loss is <epsilon>=<x>*omega_c, with <x>=alpha_s*C_R/2 in the stated model. Fragmentation approximation defines omega_bar_c=<z>*omega_c. n describes the pp differential spectrum."
+source_assumptions = "One fragmenting partonic channel dominates; a slowly varying fragmentation-weight expression is evaluated at a typical <z>; the spectrum is a power law at large pT. These are explicit source approximations."
+
+[[source]]
+id = "arxiv-2212.01324v1"
+request_url = "https://arxiv.org/pdf/2212.01324"
+effective_url = "https://arxiv.org/pdf/2212.01324"
+http_status = 200
+path = "arxiv-2212.01324v1.pdf"
+sha256 = "0522b734aea9802fd8c124c913fc1813dd944d5f0e19e217143e826a817b72f7"
+version_evidence = "PDF first-page margin identifies arXiv2212.01324v1,2Dec2022. The retained v1 is the measured response, distinct from unverified later revisions or publisher-version parity."
+title = "Probing the path-length dependence of parton energy loss via scaling properties in heavy ion collisions"
+authors = ["Francois Arleo", "Guillaume Falmagne"]
+headers = "arxiv-2212.01324-retrieval.headers"
+text = "arxiv-2212.01324-extracted-text.json"
+verified_render = "arxiv-2212.01324-page1.png"
+equations = "PDF page1 Eq1: R_AA^h(pT,epsilon_bar,n)=f(u=pT/epsilon_bar,n). Eq2: f(u,n)=integral_0^infinity dx Pbar(x)*(1+x/u)^(-n). Eq3 approximates the kernel by exp(-n*x/u)."
+parameters = "epsilon_bar=<z>*<epsilon_parton>; the source calls epsilon_bar the mean parton loss multiplied by the mean fragmentation variable. n is obtained from a separate pp-spectrum fit, after which the stated model predicts the suppression shape."
+quenching_weight = "The rescaled probability Pbar is computed from the BDMPS medium-induced gluon spectrum; source references19/20 identify Baier et al.,JHEP09(2001)033,hep-ph/0106347 and Arleo,JHEP11(2002)044,hep-ph/0210104. Those distributions are required for the full source calculation."
+
+[implementation_comparison]
+source_path = "crates/qgp_scaling/src/quenching.rs"
+source_sha256 = "b8cef7a6dedb9931ae71e99b9be12d359b05a2f3e08821224e38b0da7afa32b0"
+function = "qgp_scaling::quenching::r_aa_model"
+implemented_law = "For pT>epsilon_bar and epsilon_bar>=0, return(1-epsilon_bar/pT)^(n-1); otherwise return0."
+source_law = "Integrate the positive-shift kernel(1+x*epsilon_bar/pT)^(-n) against the admitted rescaled loss distribution."
+discrepancies = ["Negative shift rather than positive shift in the spectral ratio", "Exponent n-1 rather than -n", "Missing quenching-weight convolution", "A hard cutoff absent from the source convolution formula", "Code parameter described as average loss without the explicit source fragmentation/scale map"]
+cutoff_scope = "The source physics applies at large pT. The cutoff difference describes the mathematical implementations; low-pT evaluation is not used as a physical falsifier outside the source validity domain."
+optimizer_scope = "E-296 remains evidence that fitting and scoring share the same retained repository objective. Objective conformance does not establish conformance to either primary-source quenching law."
+physical_rejection = "A failed fit of the repository law cannot reject the identified source convolution without implementation/source and likelihood admission. Original fit and reproduction failures remain retained for their actual producer."
+
+[delta_control]
+definition = "Substitute the unit point mass Pbar(x)=delta(x-1) into the source integral as a computational control."
+result = "f_delta(u,n)=(1+1/u)^(-n), equivalently(1+epsilon_bar/pT)^(-n)."
+comparison = "The delta control remains different from the implemented(1-epsilon_bar/pT)^(n-1). At large pT, the first-order coefficients at identical epsilon_bar are -n and -(n-1), respectively."
+role = "The delta control checks convolution sign, exponent and integration mechanics. It is a deliberately simplified input and does not reproduce the BDMPS quenching distribution or the published physical fit."
+parameter_rescaling = "Matching a leading asymptotic coefficient through parameter rescaling does not establish equality of the full functions or identify the source characteristic scale."
+
+[decisive_next_actions]
+items = ["Admit the exact intended primary-source version and retain any later-version difference separately", "Recover the source Pbar prescription and parameter choices from its named references before a full source-model claim", "Define source epsilon_bar, omega_bar_c, mean parton loss and fragmentation maps explicitly", "Test a standalone positive-shift convolution against the analytical delta control and independently evaluated nondegenerate weights", "Retain the historical negative-shift ansatz under its own identity and preserve E-296 optimizer evidence", "Admit pp spectral-index provenance, AA measurement population, covariance and fitting budget before physical model comparison"]
+
+[retention]
+request_command = "curl --location --silent --show-error --max-time45 --dump-header HEADER --output PDF https://arxiv.org/pdf/IDENTIFIER"
+text_command = "pdftotext -layout -nopgbrk PDF TEXT; jq -Rs . TEXT > extracted-text.json"
+text_encoding = "JSON string escaping preserves pdftotext output, including control characters used for mathematical glyphs. Formulas above were checked against rendered PDF pages rather than inferred from those glyph codes."
+render_command = "pdftoppm -f PAGE -l PAGE -r140 -png -singlefile PDF OUTPUT_PREFIX"
+headers_policy = "Copied retrieval headers omit Set-Cookie lines; source PDF bytes remain exact."

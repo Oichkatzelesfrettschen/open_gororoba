@@ -1,0 +1,630 @@
+error[E0599]: the associated function or constant `new` exists for struct `Ratio<BigInt>`, but its trait bounds were not satisfied
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:13:31
+   |
+13 |     if scale >= 0 { Rational::new(numerator, power) } else { Rational::from_integer(numerator * power) }
+   |                               ^^^ associated function or constant cannot be called on `Ratio<BigInt>` due to unsatisfied trait bounds
+   |
+  ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ----------------- doesn't satisfy `BigInt: num_integer::Integer`
+   |
+note: if you're trying to build a new `Ratio<BigInt>`, consider using `Ratio::<T>::new_raw` which returns `Ratio<_>`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-rational-0.4.2/src/lib.rs:80:5
+   |
+80 |     pub const fn new_raw(numer: T, denom: T) -> Ratio<T> {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: the following trait bounds were not satisfied:
+           `BigInt: num_integer::Integer`
+
+error[E0599]: the associated function or constant `from_integer` exists for struct `Ratio<BigInt>`, but its trait bounds were not satisfied
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:13:72
+   |
+13 |     if scale >= 0 { Rational::new(numerator, power) } else { Rational::from_integer(numerator * power) }
+   |                                                                        ^^^^^^^^^^^^ associated function or constant cannot be called on `Ratio<BigInt>` due to unsatisfied trait bounds
+   |
+  ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ----------------- doesn't satisfy `BigInt: num_integer::Integer`
+   |
+note: if you're trying to build a new `Ratio<BigInt>`, consider using `Ratio::<T>::new_raw` which returns `Ratio<_>`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-rational-0.4.2/src/lib.rs:80:5
+   |
+80 |     pub const fn new_raw(numer: T, denom: T) -> Ratio<T> {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: the following trait bounds were not satisfied:
+           `BigInt: num_integer::Integer`
+
+error[E0369]: binary operation `<` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:15:53
+   |
+15 | fn absolute(value: Rational) -> Rational { if value < rational("0") { -value } else { value } }
+   |                                               ----- ^ ------------- Ratio<BigInt>
+   |                                               |
+   |                                               Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0600]: cannot apply unary operator `-` to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:15:71
+   |
+15 | fn absolute(value: Rational) -> Rational { if value < rational("0") { -value } else { value } }
+   |                                                                       ^^^^^^ cannot apply unary operator `-`
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `==` cannot be applied to type `Vec<(Ratio<BigInt>, Ratio<BigInt>)>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:17:16
+   |
+16 | #[derive(Clone, PartialEq)]
+   |                 --------- in this derive macro expansion
+17 | struct Curve { points: Vec<(Rational, Rational)>, radius: Rational }
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `==` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:17:51
+   |
+16 | #[derive(Clone, PartialEq)]
+   |                 --------- in this derive macro expansion
+17 | struct Curve { points: Vec<(Rational, Rational)>, radius: Rational }
+   |                                                   ^^^^^^^^^^^^^^^^
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot multiply `Ratio<BigInt>` by `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:27:59
+   |
+27 |         let radius = rational(tokens[width_position - 1]) * rational(tokens[miter_position - 1]) / rational("2");
+   |                      ------------------------------------ ^ ------------------------------------ Ratio<BigInt>
+   |                      |
+   |                      Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `<` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:34:56
+   |
+34 |         assert!(points.windows(2).all(|pair| pair[0].0 < pair[1].0));
+   |                                              --------- ^ --------- Ratio<BigInt>
+   |                                              |
+   |                                              Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot subtract `Ratio<BigInt>` from `&Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:42:80
+   |
+42 | fn native_x(momentum: &Rational) -> Rational { rational("177.461") + (momentum - rational("20")) * rational("580.039") / rational("1...
+   |                                                                       -------- ^ -------------- Ratio<BigInt>
+   |                                                                       |
+   |                                                                       &Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot subtract `Ratio<BigInt>` from `&Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:43:71
+   |
+43 | fn momentum(native: &Rational) -> Rational { rational("20") + (native - rational("177.461")) * rational("100") / rational("580.039") }
+   |                                                                ------ ^ ------------------- Ratio<BigInt>
+   |                                                                |
+   |                                                                &Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot subtract `Ratio<BigInt>` from `&Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:44:49
+   |
+44 | fn raa(native: &Rational) -> Rational { (native - rational("82.285")) / rational("423.305") }
+   |                                          ------ ^ ------------------ Ratio<BigInt>
+   |                                          |
+   |                                          &Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `<=` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:46:62
+   |
+46 |     let pair = curve.points.windows(2).find(|pair| pair[0].0 <= *position && *position <= pair[1].0).expect("represented path domain");
+   |                                                    --------- ^^ --------- Ratio<BigInt>
+   |                                                    |
+   |                                                    Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `<=` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:46:88
+   |
+46 |     let pair = curve.points.windows(2).find(|pair| pair[0].0 <= *position && *position <= pair[1].0).expect("represented path domain");
+   |                                                                              --------- ^^ --------- Ratio<BigInt>
+   |                                                                              |
+   |                                                                              Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot subtract `&Ratio<BigInt>` from `&Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:48:25
+   |
+48 |     &left.1 + (&right.1 - &left.1) * (position - &left.0) / (&right.0 - &left.0)
+   |                -------- ^ ------- &Ratio<BigInt>
+   |                |
+   |                &Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot subtract `&Ratio<BigInt>` from `&Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:48:48
+   |
+48 |     &left.1 + (&right.1 - &left.1) * (position - &left.0) / (&right.0 - &left.0)
+   |                                       -------- ^ ------- &Ratio<BigInt>
+   |                                       |
+   |                                       &Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot subtract `&Ratio<BigInt>` from `&Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:48:71
+   |
+48 |     &left.1 + (&right.1 - &left.1) * (position - &left.0) / (&right.0 - &left.0)
+   |                                                              -------- ^ ------- &Ratio<BigInt>
+   |                                                              |
+   |                                                              &Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot subtract `&Ratio<BigInt>` from `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:52:30
+   |
+52 |     let left = native_x(low) - &radius;
+   |                ------------- ^ ------- &Ratio<BigInt>
+   |                |
+   |                Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot add `&Ratio<BigInt>` to `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:53:32
+   |
+53 |     let right = native_x(high) + &radius;
+   |                 -------------- ^ ------- &Ratio<BigInt>
+   |                 |
+   |                 Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0277]: the trait bound `BigInt: num_integer::Integer` is not satisfied
+    --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:56:29
+     |
+  56 |     (raa(&(ordinates.iter().min().unwrap() - &radius)), raa(&(ordinates.iter().max().unwrap() + &radius)))
+     |                             ^^^ the trait `num_integer::Integer` is not implemented for `BigInt`
+     |
+note: there are multiple different versions of crate `num_integer` in the dependency graph
+    --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-integer-0.1.46/src/lib.rs:33:1
+     |
+  33 | pub trait Integer: Sized + Num + PartialOrd + Ord + Eq {
+     | ------------------------------------------------------ this is the found trait
+     |
+    ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-integer-0.1.46/src/lib.rs:33:1
+     |
+  33 | pub trait Integer: Sized + Num + PartialOrd + Ord + Eq {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this is the expected trait
+     = help: you can use `cargo tree` to explore your dependency tree
+     = help: the following other types implement trait `num_integer::Integer`:
+               i128
+               i16
+               i32
+               i64
+               i8
+               isize
+               u128
+               u16
+             and 4 others
+     = note: required for `Ratio<BigInt>` to implement `Ord`
+     = note: 1 redundant requirement hidden
+     = note: required for `&Ratio<BigInt>` to implement `Ord`
+note: required by a bound in `std::iter::Iterator::min`
+    --> /home/eirikr/.rustup/toolchains/1.97.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/iter/traits/iterator.rs:3290:21
+     |
+3287 |     fn min(self) -> Option<Self::Item>
+     |        --- required by a bound in this associated function
+...
+3290 |         Self::Item: Ord,
+     |                     ^^^ required by this bound in `Iterator::min`
+
+error[E0369]: cannot subtract `&Ratio<BigInt>` from `&Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:56:44
+   |
+56 |     (raa(&(ordinates.iter().min().unwrap() - &radius)), raa(&(ordinates.iter().max().unwrap() + &radius)))
+   |            ------------------------------- ^ ------- &Ratio<BigInt>
+   |            |
+   |            &Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0277]: the trait bound `BigInt: num_integer::Integer` is not satisfied
+    --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:56:80
+     |
+  56 |     (raa(&(ordinates.iter().min().unwrap() - &radius)), raa(&(ordinates.iter().max().unwrap() + &radius)))
+     |                                                                                ^^^ the trait `num_integer::Integer` is not implemented for `BigInt`
+     |
+note: there are multiple different versions of crate `num_integer` in the dependency graph
+    --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-integer-0.1.46/src/lib.rs:33:1
+     |
+  33 | pub trait Integer: Sized + Num + PartialOrd + Ord + Eq {
+     | ------------------------------------------------------ this is the found trait
+     |
+    ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-integer-0.1.46/src/lib.rs:33:1
+     |
+  33 | pub trait Integer: Sized + Num + PartialOrd + Ord + Eq {
+     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ this is the expected trait
+     = help: you can use `cargo tree` to explore your dependency tree
+     = help: the following other types implement trait `num_integer::Integer`:
+               i128
+               i16
+               i32
+               i64
+               i8
+               isize
+               u128
+               u16
+             and 4 others
+     = note: required for `Ratio<BigInt>` to implement `Ord`
+     = note: 1 redundant requirement hidden
+     = note: required for `&Ratio<BigInt>` to implement `Ord`
+note: required by a bound in `std::iter::Iterator::max`
+    --> /home/eirikr/.rustup/toolchains/1.97.0-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/core/src/iter/traits/iterator.rs:3253:21
+     |
+3250 |     fn max(self) -> Option<Self::Item>
+     |        --- required by a bound in this associated function
+...
+3253 |         Self::Item: Ord,
+     |                     ^^^ required by this bound in `Iterator::max`
+
+error[E0369]: cannot add `&Ratio<BigInt>` to `&Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:56:95
+   |
+56 |     (raa(&(ordinates.iter().min().unwrap() - &radius)), raa(&(ordinates.iter().max().unwrap() + &radius)))
+   |                                                               ------------------------------- ^ ------- &Ratio<BigInt>
+   |                                                               |
+   |                                                               &Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot subtract `Ratio<BigInt>` from `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:61:48
+   |
+61 |         let error = absolute(rational(printed) - exact);
+   |                              ----------------- ^ ----- Ratio<BigInt>
+   |                              |
+   |                              Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `<` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:62:23
+   |
+62 |         assert!(error < rational("1e-12"), "reported value exceeds exact arithmetic bound: {printed}");
+   |                 ----- ^ ----------------- Ratio<BigInt>
+   |                 |
+   |                 Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0599]: the method `max` exists for struct `Ratio<BigInt>`, but its trait bounds were not satisfied
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:63:57
+   |
+63 |         self.maximum_error = self.maximum_error.clone().max(error);
+   |                                                         ^^^ method cannot be called on `Ratio<BigInt>` due to unsatisfied trait bounds
+   |
+  ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-rational-0.4.2/src/lib.rs:51:1
+   |
+51 | pub struct Ratio<T> {
+   | ------------------- doesn't satisfy `Ratio<BigInt>: Iterator` or `Ratio<BigInt>: Ord`
+   |
+  ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ----------------- doesn't satisfy `BigInt: num_integer::Integer`
+   |
+   = note: the following trait bounds were not satisfied:
+           `BigInt: num_integer::Integer`
+           which is required by `Ratio<BigInt>: Ord`
+           `Ratio<BigInt>: Ord`
+           which is required by `&Ratio<BigInt>: Ord`
+           `Ratio<BigInt>: Ord`
+           which is required by `&mut Ratio<BigInt>: Ord`
+           `Ratio<BigInt>: Iterator`
+           which is required by `&mut Ratio<BigInt>: Iterator`
+
+error[E0369]: binary operation `<=` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:88:47
+   |
+88 |             assert_eq!(row[6], (rational("8") <= pt && pt <= rational("120")).to_string());
+   |                                 ------------- ^^ -- Ratio<BigInt>
+   |                                 |
+   |                                 Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `<=` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:88:59
+   |
+88 |             assert_eq!(row[6], (rational("8") <= pt && pt <= rational("120")).to_string());
+   |                                                        -- ^^ --------------- Ratio<BigInt>
+   |                                                        |
+   |                                                        Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `>=` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:93:76
+   |
+93 |     let selected: Vec<_> = reference.iter().filter(|row| rational(&row[0]) >= rational("8") && rational(&row[1]) <= rational("120"))...
+   |                                                          ----------------- ^^ ------------- Ratio<BigInt>
+   |                                                          |
+   |                                                          Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `<=` cannot be applied to type `Ratio<BigInt>`
+  --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:93:114
+   |
+93 | ... rational(&row[0]) >= rational("8") && rational(&row[1]) <= rational("120")).collect();
+   |                                           ----------------- ^^ --------------- Ratio<BigInt>
+   |                                           |
+   |                                           Ratio<BigInt>
+   |
+note: `BigInt` does not implement `num_integer::Integer`
+  --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+   |
+57 | pub struct BigInt {
+   | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot add `Ratio<BigInt>` to `Ratio<BigInt>`
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:105:93
+    |
+105 |             let observed = rational(&original[2]); let uncertainty = rational(&original[3]) + rational(&original[4]);
+    |                                                                      ---------------------- ^ ---------------------- Ratio<BigInt>
+    |                                                                      |
+    |                                                                      Ratio<BigInt>
+    |
+note: `BigInt` does not implement `num_integer::Integer`
+   --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot add `&Ratio<BigInt>` to `&Ratio<BigInt>`
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:106:76
+    |
+106 |             check.value(&row[7], raa(&interpolate(curve, &native_x(&((&low + &high) / rational("2"))))));
+    |                                                                       ---- ^ ----- &Ratio<BigInt>
+    |                                                                       |
+    |                                                                       &Ratio<BigInt>
+    |
+note: `BigInt` does not implement `num_integer::Integer`
+   --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `<=` cannot be applied to type `Ratio<BigInt>`
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:110:43
+    |
+110 |             let calibration_overlap = low <= rational("12.5") && rational("12.5") <= high;
+    |                                       --- ^^ ---------------- Ratio<BigInt>
+    |                                       |
+    |                                       Ratio<BigInt>
+    |
+note: `BigInt` does not implement `num_integer::Integer`
+   --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: binary operation `<=` cannot be applied to type `Ratio<BigInt>`
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:110:83
+    |
+110 |             let calibration_overlap = low <= rational("12.5") && rational("12.5") <= high;
+    |                                                                  ---------------- ^^ ---- Ratio<BigInt>
+    |                                                                  |
+    |                                                                  Ratio<BigInt>
+    |
+note: `BigInt` does not implement `num_integer::Integer`
+   --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot divide `Ratio<BigInt>` by `&Ratio<BigInt>`
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:112:59
+    |
+112 |             let feasible_low = (graphic.0 - &uncertainty) / &observed - rational("1");
+    |                                -------------------------- ^ --------- &Ratio<BigInt>
+    |                                |
+    |                                Ratio<BigInt>
+    |
+note: `BigInt` does not implement `num_integer::Integer`
+   --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0369]: cannot divide `Ratio<BigInt>` by `&Ratio<BigInt>`
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:113:60
+    |
+113 |             let feasible_high = (graphic.1 + &uncertainty) / &observed - rational("1");
+    |                                 -------------------------- ^ --------- &Ratio<BigInt>
+    |                                 |
+    |                                 Ratio<BigInt>
+    |
+note: `BigInt` does not implement `num_integer::Integer`
+   --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error[E0599]: the method `max` exists for struct `Ratio<BigInt>`, but its trait bounds were not satisfied
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:115:90
+    |
+115 | ... common_low = common_low.max(feasible_low); common_high = common_high.min(feasible_high); }
+    |                             ^^^ method cannot be called on `Ratio<BigInt>` due to unsatisfied trait bounds
+    |
+   ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-rational-0.4.2/src/lib.rs:51:1
+    |
+ 51 | pub struct Ratio<T> {
+    | ------------------- doesn't satisfy `Ratio<BigInt>: Iterator` or `Ratio<BigInt>: Ord`
+    |
+   ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ----------------- doesn't satisfy `BigInt: num_integer::Integer`
+    |
+    = note: the following trait bounds were not satisfied:
+            `BigInt: num_integer::Integer`
+            which is required by `Ratio<BigInt>: Ord`
+            `Ratio<BigInt>: Ord`
+            which is required by `&Ratio<BigInt>: Ord`
+            `Ratio<BigInt>: Ord`
+            which is required by `&mut Ratio<BigInt>: Ord`
+            `Ratio<BigInt>: Iterator`
+            which is required by `&mut Ratio<BigInt>: Iterator`
+
+error[E0599]: the method `min` exists for struct `Ratio<BigInt>`, but its trait bounds were not satisfied
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:115:135
+    |
+115 | ...ommon_high = common_high.min(feasible_high); }
+    |                             ^^^ method cannot be called on `Ratio<BigInt>` due to unsatisfied trait bounds
+    |
+   ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-rational-0.4.2/src/lib.rs:51:1
+    |
+ 51 | pub struct Ratio<T> {
+    | ------------------- doesn't satisfy `Ratio<BigInt>: Iterator` or `Ratio<BigInt>: Ord`
+    |
+   ::: /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ----------------- doesn't satisfy `BigInt: num_integer::Integer`
+    |
+    = note: the following trait bounds were not satisfied:
+            `BigInt: num_integer::Integer`
+            which is required by `Ratio<BigInt>: Ord`
+            `Ratio<BigInt>: Ord`
+            which is required by `&Ratio<BigInt>: Ord`
+            `Ratio<BigInt>: Ord`
+            which is required by `&mut Ratio<BigInt>: Ord`
+            `Ratio<BigInt>: Iterator`
+            which is required by `&mut Ratio<BigInt>: Iterator`
+
+error[E0369]: binary operation `<=` cannot be applied to type `&Ratio<BigInt>`
+   --> data/output/audit/qgp-cujet-source-curves/check_cujet_rationals.rs:127:60
+    |
+127 |         assert_eq!(field("component_box_compatible"), (low <= high).to_string());
+    |                                                        --- ^^ ---- &Ratio<BigInt>
+    |                                                        |
+    |                                                        &Ratio<BigInt>
+    |
+note: `BigInt` does not implement `num_integer::Integer`
+   --> /home/eirikr/Github/open_gororoba/.cache/cargo-home/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/bigint.rs:57:1
+    |
+ 57 | pub struct BigInt {
+    | ^^^^^^^^^^^^^^^^^ `BigInt` is defined in another crate
+
+error: aborting due to 38 previous errors
+
+Some errors have detailed explanations: E0277, E0369, E0599, E0600.
+For more information about an error, try `rustc --explain E0277`.

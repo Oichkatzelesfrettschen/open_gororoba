@@ -1,0 +1,26 @@
+[transition]
+transition_timestamp = "2026-09-06T00:24:29Z"
+transition_key = "mhd-rk3-prescribed-velocity-conformance"
+source_claim_id = "C-1685"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-MHD-RK3"]
+experiment_ids = ["E-313"]
+exercised_falsifier = "Independent complex Fourier gain, axis permutations, longitudinal damping, semidiscrete temporal and continuum spatial convergence, shear stretching and later-stage atomicity discriminate RK3 failures."
+proposed_claim_status = "Provisional"
+rationale = "Register the prescribed-velocity integrator separately from physical force sensitivity; preserve the historical Euler failure and magnetic normalization parent."
+unresolved_assumptions = ["Centered forward-Euler induction exhibits Fourier energy growth even when diffusion admission passes.", "Physical spacecraft fields, gravitational frame, magnetic boundary conditions, outflow and force sensitivity require separate admission."]
+actor = "claim-evidence-adjudication"
+reason = "Register bounded RK3 conformance and convergence with coupled physical prerequisites intact"
+expected_source_state_sha256 = "37782f7d996656d162e6484ffa83a78cc5195b3202d6706f65ffa8f7db3820cb"
+expected_claim_id_max = 1752
+
+[[successor]]
+proposal_key = "mhd-rk3-instrument"
+statement = "Explicit SSPRK3 periodic magnetic transport passes 32 transverse/cyclic and four longitudinal Fourier rows within 1e-12, with temporal error ratios 8.0013 to 8.0034 and spatial ratios 3.9768 to 3.9943 under prescribed frozen velocity. Mixed scalar stability, physical shear stretching, explicit legacy bit replay and later-stage overflow controls distinguish the declared failures. The uniform transverse diagnostic is optional and scoped; coupled LBM/MHD accuracy, variable-velocity stability, physical boundaries and force sensitivity remain unresolved. E-312 preserves the centered Euler instability."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-313; producer.json binds source hashes; crates/lbm_3d/tests/mhd_rk3_identity.rs and retained CLI receipt bind the executed boundaries."
+required_falsifier = "A declared Fourier error exceeds 1e-12, a convergence ratio falls outside its frozen gate above roundoff, an unstable scalar mode passes the diagnostic, or invalid-stage rejection changes committed fields."
+where_stated = ["data/output/audit/mhd-centered-induction-integrator/adjudication.toml", "crates/lbm_3d/tests/mhd_rk3_identity.rs"]
+evidence_artifact_ids = ["LOCAL-MHD-RK3"]
+predecessor_relation_kind = "implementation_split"

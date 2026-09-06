@@ -1,0 +1,18 @@
+HTTP/2 200 
+etag: CLvQoILGz/wCEAE=
+last-modified: Tue, 17 Jan 2023 21:28:08 GMT
+x-cloud-trace-context: 2fa8ed780f093bdf4bb94eab164fb073
+access-control-allow-origin: *
+server: Google Frontend
+content-type: application/pdf
+content-disposition: inline; filename="0707.1506v1.pdf"
+link: <https://arxiv.org/pdf/0707.1506>; rel='canonical'
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+accept-ranges: bytes
+age: 111573
+date: Sun, 06 Sep 2026 00:38:58 GMT
+x-served-by: cache-lga21956-LGA, cache-lga21956-LGA, cache-lga21951-LGA, cache-hhr-khhr2060021-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1788655138.935476,VS0,VE72
+content-length: 469208
+

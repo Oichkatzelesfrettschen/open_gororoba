@@ -1,0 +1,104 @@
+HTTP/2 303 
+age: 0
+via: 1.1 google, 1.1 varnish
+cache-control: no-cache
+x-b3-sampled: 1
+location: https://idp.springer.com/authorize?response_type=cookie&client_id=springerlink&redirect_uri=https%3A%2F%2Flink.springer.com%2Fcontent%2Fpdf%2F10.1007%2FJHEP02%282016%29169.pdf
+x-dump-request-bodies: 0
+x-frame-options: DENY
+traceparent: 00-de5f361cb2c14d4743e2a3beb9e60630-62f083c50ed044c6-01
+server: Oscar Platform 0.1772.0
+x-b3-spanid: bf3b52dec407358f
+tracestate: gorouter=74a84cb8ab0c41b9
+x-vcap-request-id: de5f361c-b2c1-4d47-43e2-a3beb9e60630
+x-b3-traceid: ef64353a86e4160a
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 20:40:13 GMT
+x-served-by: cache-80ddffd4-internal, cache-hhr-khhr2060030-HHR, cache-hhr-khhr2060034-HHR
+x-cache: MISS, MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788640814.625076,VS0,VE211
+vary: x-frame-options,X-Oscar-Cache-Mode
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 302 
+location: https://idp.springer.com/transit?redirect_uri=https%3A%2F%2Flink.springer.com%2Fcontent%2Fpdf%2F10.1007%2FJHEP02%282016%29169.pdf&code=df79647b-4776-4aa6-845a-a00bced634a6
+x-xss-protection: 1; mode=block
+traceparent: 00-059aa9551f1f4424578e573b664a19ea-71495e7563f07b3c-01
+content-security-policy: frame-ancestors 'none';
+x-vcap-request-id: 059aa955-1f1f-4424-578e-573b664a19ea
+server-timing: traceparent;desc="00-059aa9551f1f4424578e573b664a19ea-71495e7563f07b3c-01"
+via: 1.1 google, 1.1 varnish
+x-frame-options: DENY
+strict-transport-security: max-age=31536000 ; includeSubDomains
+access-control-expose-headers: Server-Timing
+pragma: no-cache
+x-content-type-options: nosniff
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+expires: 0
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 20:40:14 GMT
+x-served-by: cache-hhr-khhr2060052-HHR, cache-hhr-khhr2060044-HHR
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788640814.964159,VS0,VE212
+vary: x-forwarded-proto
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 302 
+cache-control: no-cache, no-store, max-age=0, must-revalidate
+strict-transport-security: max-age=31536000 ; includeSubDomains
+content-language: en-US
+access-control-expose-headers: Server-Timing
+pragma: no-cache
+expires: 0
+via: 1.1 google, 1.1 varnish
+x-content-type-options: nosniff
+x-frame-options: DENY
+x-vcap-request-id: b9f22ef1-3506-42b6-669b-9b5fac8f8d0d
+location: https://link.springer.com/content/pdf/10.1007/JHEP02(2016)169.pdf?error=cookies_not_supported&code=df79647b-4776-4aa6-845a-a00bced634a6
+server-timing: traceparent;desc="00-b9f22ef1350642b6669b9b5fac8f8d0d-71cddb74198e02b3-01"
+x-xss-protection: 1; mode=block
+traceparent: 00-b9f22ef1350642b6669b9b5fac8f8d0d-71cddb74198e02b3-01
+content-security-policy: frame-ancestors 'none';
+accept-ranges: bytes
+date: Sat, 05 Sep 2026 20:40:14 GMT
+x-served-by: cache-hhr-khhr2060039-HHR, cache-hhr-khhr2060044-HHR
+x-cache: MISS, MISS
+x-cache-hits: 0, 0
+x-timer: S1788640814.193601,VS0,VE191
+vary: x-forwarded-proto
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 0
+
+HTTP/2 200 
+content-type: application/pdf
+x-guploader-uploadid: AJjja9acn97GGRd6g99MYSdyaxN9wEIMOZECYPxtTLkZJVzsMPiqxv6M2I49PjFqck6VurnX
+cache-control: private, max-age=0
+last-modified: Tue, 29 Aug 2017 11:48:36 GMT
+etag: "e9acff153348baf93d7db455db502850"
+x-goog-generation: 1504007316374899
+x-goog-metageneration: 3
+x-goog-stored-content-encoding: identity
+x-goog-stored-content-length: 2444195
+x-goog-hash: crc32c=OamOZg==
+x-goog-hash: md5=6az/FTNIuvk9fbRV21AoUA==
+x-goog-storage-class: MULTI_REGIONAL
+server: UploadServer
+x-cdn-origin: GCS
+accept-ranges: bytes
+age: 1
+date: Sat, 05 Sep 2026 20:40:16 GMT
+via: 1.1 varnish
+x-served-by: cache-hhr-khhr2060034-HHR
+x-cache: MISS
+x-cache-hits: 0
+x-timer: S1788640814.395059,VS0,VE1795
+vary: Origin
+link: <https://link.springer.com/article/10.1007/JHEP02(2016)169>; rel="canonical"
+x-robots-tag: nocache
+alt-svc: h3=":443";ma=86400,h3-29=":443";ma=86400,h3-27=":443";ma=86400
+content-length: 2444195
+

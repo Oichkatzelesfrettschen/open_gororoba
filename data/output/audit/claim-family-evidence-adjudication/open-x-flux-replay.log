@@ -1,0 +1,37 @@
+    Blocking waiting for file lock on build directory
+   Compiling algebra_experimental v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/algebra_experimental)
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/quantum_core)
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/cosmology_core)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/crates/lbm_3d)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 43.09s
+     Running tests/open_x_flux.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/open_x_flux-9c59623adeb7cde8)
+
+running 5 tests
+test invalid_inputs_preserve_populations_and_timestep ... ok
+test nonuniform_faces_match_independent_analytical_sums ... ok
+step=1 mass=3.05999853333333505e1 net_flux=-1.46666666673844759e-5 collision_delta=0.00000000000000000e0 cumulative_residual=-2.62012633811536944e-14
+test interior_packets_advect_with_only_transverse_wrapping ... ok
+test outgoing_packets_leave_without_opposite_face_wrap ... ok
+step=2 mass=3.06202987420833566e1 net_flux=2.03134087500733695e-2 collision_delta=-5.68434188608080149e-14 cumulative_residual=-9.34807786734381807e-14
+step=3 mass=3.06572506609557429e1 net_flux=3.69519188722808867e-2 collision_delta=7.10542735760100186e-14 cumulative_residual=1.19904086659516906e-14
+step=4 mass=3.07086019596854669e1 net_flux=5.13512987298876400e-2 collision_delta=-1.66977542903623544e-13 cumulative_residual=-1.51656465163796383e-13
+step=5 mass=3.07738971558199204e1 net_flux=6.52951961344714338e-2 collision_delta=-7.10542735760100186e-15 cumulative_residual=-1.69642078162723919e-13
+step=6 mass=3.08496317613991984e1 net_flux=7.57346055791225936e-2 collision_delta=1.59872115546022542e-13 cumulative_residual=-1.42108547152020037e-14
+step=7 mass=3.09306394915743184e1 net_flux=8.10077301751199741e-2 collision_delta=3.55271367880050093e-15 cumulative_residual=-1.42108547152020037e-14
+step=8 mass=3.10108085143499643e1 net_flux=8.01690227757556606e-2 collision_delta=-1.10134124042815529e-13 cumulative_residual=-1.23900889548167470e-13
+step=9 mass=3.10854323367685161e1 net_flux=7.46238224185529209e-2 collision_delta=2.48689957516035065e-14 cumulative_residual=-1.25011112572792626e-13
+step=10 mass=3.11510766136059125e1 net_flux=6.56442768373686203e-2 collision_delta=-7.10542735760100186e-15 cumulative_residual=-9.72555369571637129e-14
+step=11 mass=3.12060930977309852e1 net_flux=5.50164841251532533e-2 collision_delta=-7.10542735760100186e-14 cumulative_residual=-1.77857728544950078e-13
+step=12 mass=3.12497739448091210e1 net_flux=4.36808470780483127e-2 collision_delta=8.88178419700125232e-14 cumulative_residual=-9.03721542044877424e-14
+step=13 mass=3.12824055071898144e1 net_flux=3.26315623807185151e-2 collision_delta=3.55271367880050093e-15 cumulative_residual=-1.15463194561016280e-13
+step=14 mass=3.13046626786559621e1 net_flux=2.22571714660764197e-2 collision_delta=8.17124146124115214e-14 cumulative_residual=-4.41868763800812303e-14
+step=15 mass=3.13176787473868323e1 net_flux=1.30160687309262002e-2 collision_delta=-3.90798504668055102e-14 cumulative_residual=-1.00142116821189120e-13
+step=16 mass=3.13226657086780520e1 net_flux=4.98696129119835518e-3 collision_delta=2.13162820728030056e-14 cumulative_residual=-7.88258347483861144e-14
+step=17 mass=3.13209848006141236e1 net_flux=-1.68090806389709080e-3 collision_delta=-1.77635683940025046e-14 cumulative_residual=-1.10134124042815529e-13
+step=18 mass=3.13139318076063695e1 net_flux=-7.05299300768502668e-3 collision_delta=-2.84217094304040074e-14 cumulative_residual=-1.79189996174500266e-13
+step=19 mass=3.13028234890923116e1 net_flux=-1.11083185140976592e-2 collision_delta=3.90798504668055102e-14 cumulative_residual=-1.39444011892919661e-13
+step=20 mass=3.12888816925378848e1 net_flux=-1.39417965544335054e-2 collision_delta=-7.10542735760100186e-15 cumulative_residual=-1.32782673745168722e-13
+test repeated_open_steps_account_for_flux_and_zero_collision_mass_source ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

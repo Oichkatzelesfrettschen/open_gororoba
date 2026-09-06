@@ -1,0 +1,45 @@
+claim_id = "C-1747"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "Source-defined finite geometry and frequency-support reproduction; physical model-to-observable interpretation remains unassessed."
+fixed_hyperparameters = ["arXiv:2601.03210v2 Tables I/II and original Figure 5/6 rasters", "Unchanged 0.03 GHz raster-support gate", "ky grids 96 and192; grayscale thresholds220 and240", "Declared coordinate-bound inset exclusion with original failure retained", "Explicit periodic-cell and embedded-orbital gauges", "Finite-grid separated-subspace admission"]
+[[intervening_maps]]
+branch = "source_reproduction"
+name = "geometric_hopping_and_rectangular_folding"
+kind = "computational"
+description = "Construct bonds from source geometry and directional orbital projections; compare independent complex matrices and 18-band rectangular folding."
+[[intervening_maps]]
+branch = "source_reproduction"
+name = "rendered_frequency_support"
+kind = "computational"
+description = "Compare two-way frequency support at declared columns and ky grids; separate raster quantization and masked/occluded regions from observed support."
+[[intervening_maps]]
+branch = "topology"
+name = "gap_admitted_determinant_links"
+kind = "computational"
+description = "Admit sampled separated subspaces and conditioned links; reject degenerate individual bands and separate local embedded valley flux from global Chern invariants."
+[[fitted_parameters]]
+branch = "source_table_i"
+count = 5
+names = ["eps_s", "eps_p", "eps_k", "t_sk", "t_pk"]
+training_boundary = "Imported source parameters hand-fitted by the source authors. Their spectral reproduction is not a parameter-free physical prediction."
+[[fitted_parameters]]
+branch = "source_table_ii"
+count = 7
+names = ["eps_s", "eps_p", "eps_k", "t_sk", "t_pk", "delta_eps_s", "delta_eps_p"]
+training_boundary = "Imported source parameters hand-fitted by the source authors, with an explicit A/B sign map."
+[[fitted_parameters]]
+branch = "replay"
+count = 0
+names = []
+training_boundary = "The replay adjusts zero constants; thresholds and geometry remain fixed across the retained failed and corrected extraction."
+[decisive_experiment]
+experiment_ids = ["E-299"]
+protocol_artifact = "data/output/audit/magnonic-source-projection/adjudication.toml"
+description = "Replay source geometry, rectangular folding, two raster-support thresholds and ky grids, repository-reference negative control, and sampled topology/valley-sign predicates against retained source hashes."
+[what_would_verify_refute]
+verification_outcomes = ["Both source tables pass admitted rendered-support gates and independent matrix/folding comparisons, while the mismatched reference parameters fail.", "Declared separated components pass finite-grid checks; degenerate individual bands retain failed admission and local flux stays explicitly nonquantized."]
+revision_outcomes = ["An identified raster artifact requires a separately retained coordinate-bound intake amendment, with source/model constants and gate preserved.", "A new source version, fitting convention, gap or physical observable requires separate admission."]
+abandonment_outcomes = ["An unchanged admitted replay exceeds the fixed source-support or geometry gates.", "The instrument accepts degenerate individual-band topology or promotes local patch flux to a quantized global invariant."]
+inconclusive_outcomes = ["Missing source identities or occluded raster regions prevent the relevant comparison.", "Finite sampled gaps leave the global-gap premise unproved.", "Provider HTTP403 blocks exact author-code replay; fitted-source agreement leaves independent micromagnetic and measured-device agreement unassessed."]

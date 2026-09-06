@@ -1,0 +1,27 @@
+[
+  {
+    "path": "crates/qgp_scaling/src/quenching.rs",
+    "head_sha256": "284b4b5b58e4fb6064f55d3fe02cd565230c309d6f275c9c58ce87491a41290b",
+    "worktree_sha256": "284b4b5b58e4fb6064f55d3fe02cd565230c309d6f275c9c58ce87491a41290b"
+  },
+  {
+    "path": "crates/qgp_scaling/src/epsilon_fit.rs",
+    "head_sha256": "3eb9e4bab7fa8228d4e30d0b0769ccedd0f5b630d322c8bf73d0ac8a7abb8440",
+    "worktree_sha256": "3eb9e4bab7fa8228d4e30d0b0769ccedd0f5b630d322c8bf73d0ac8a7abb8440"
+  },
+  {
+    "path": "crates/qgp_scaling/src/glauber.rs",
+    "head_sha256": "1b92199eea399f3994000fd50f1280894ecdd2518d871399dea5b8bfa514e4e5",
+    "worktree_sha256": "1b92199eea399f3994000fd50f1280894ecdd2518d871399dea5b8bfa514e4e5"
+  },
+  {
+    "path": "crates/gororoba_cli_physics/src/bin/arleo_falmagne_scaling.rs",
+    "head_sha256": "fe66836963bf3863a29c3ee4278f50510e230aea386a5b198667d1f6db5a071b",
+    "worktree_sha256": "fe66836963bf3863a29c3ee4278f50510e230aea386a5b198667d1f6db5a071b"
+  },
+  {
+    "path": "Cargo.lock",
+    "head_sha256": "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e",
+    "worktree_sha256": "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e"
+  }
+]

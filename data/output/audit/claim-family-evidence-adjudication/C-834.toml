@@ -1,0 +1,35 @@
+claim_id = "C-834"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The predicate compares nominal signed source equations with retained high-precision fixtures. Physical sample and susceptibility robustness have separate admission requirements."
+fixed_hyperparameters = ["Thickness 10 micrometres", "chi2=2.5e-11 m/V; chi3=1.5e-20 m2/V2; pump_field_squared=1", "Signed source coherence anchors 33.3 and 3.1 micrometres; extraordinary n_sh=2.241115644643947", "Ratio reference 0.0477442355934858, absolute tolerance 1e-14, strict ratio threshold 0.05", "High-precision component tolerance 5e-11 times absolute reference plus 1e-45"]
+[[intervening_maps]]
+branch = "nominal_source"
+name = "signed_mismatch_closure"
+kind = "computational"
+description = "Derive signed SFWM, SHG and SPDC mismatches from the declared source coherence anchors."
+[[intervening_maps]]
+branch = "nominal_source"
+name = "coherent_amplitudes"
+kind = "computational"
+description = "Evaluate phase matching and coherent amplitudes with the full source Eq. 6 prefactor."
+[[intervening_maps]]
+branch = "nominal_source"
+name = "source_rate_ratio"
+kind = "computational"
+description = "Apply 4/9 and 9/16 rate factors to squared amplitude norms and divide cascaded by direct rate."
+[[fitted_parameters]]
+branch = "nominal_source"
+count = 0
+names = []
+training_boundary = "The reference comparison fits zero parameters. Source anchors and susceptibility values are prescribed inputs, with retained source-identity and envelope limitations."
+[decisive_experiment]
+experiment_ids = ["E-074"]
+protocol_artifact = "data/output/audit/claim-family-evidence-adjudication/contradiction-evidence.toml"
+description = "Replay optics_core test_sfwm_source_reference, including independent_mpmath_fixtures_match_componentwise, corrected_paper_input_reproduces_the_source_ratio_boundary and all omission controls. Preserve the existing source-input envelope [0.04088750057509066,0.05578719347757]."
+[what_would_verify_refute]
+verification_outcomes = ["All component reference gates and omission controls pass, abs(ratio-0.0477442355934858)<1e-14 and nominal ratio<0.05: verify nominal implementation conformance only."]
+revision_outcomes = ["A source-identity correction changes susceptibility, refractive index, wavelength or signed mismatch: preserve nominal evidence and register the corrected input scope."]
+abandonment_outcomes = ["An independently validated implementation yields nominal ratio>=0.05: abandon the nominal five-percent assertion for those fixed inputs."]
+inconclusive_outcomes = ["An admitted source-input envelope crosses 0.05: physical threshold robustness remains provisional.", "Missing sample identity or reference provenance blocks physical source-reproduction promotion even when implementation tests pass."]

@@ -1,0 +1,40 @@
+schema_version = 1
+experiment = "E-309"
+executable = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/directional_path_identity-ab3a70bf5068642f"
+executable_sha256 = "7832f69802a2d5c562f7302bdc937d5fc391695dd420692e7fd484f030f20834"
+command = "cargo test -p qgp_scaling --test directional_path_identity --profile validation -- --nocapture"
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+cargo_home = "/home/eirikr/Github/open_gororoba/.cache/cargo-home"
+cargo_target_dir = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target"
+cargo_build_build_dir = "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e"
+compiler = "rustc 1.97.0 (2d8144b78 2026-07-07)"
+test_result = "6 passed; 0 failed"
+test_log_sha256 = "3472aa5db680da9e7322402b1b63c5426cb8d4e5a180924a5e88f5ce2aad0704"
+
+[[source]]
+path = "crates/qgp_scaling/src/directional_path.rs"
+sha256 = "2cc1b707a3a913ac4c731dee94518cc3972ee5337b44905685536c2673179bfd"
+
+[[source]]
+path = "crates/qgp_scaling/src/glauber.rs"
+sha256 = "1b92199eea399f3994000fd50f1280894ecdd2518d871399dea5b8bfa514e4e5"
+
+[[source]]
+path = "crates/qgp_scaling/src/nucleus.rs"
+sha256 = "c8bbb6918641e2a2baba2694f8f6142fdad1e3a23c3173bf28d593d4b9264c67"
+
+[[source]]
+path = "crates/qgp_scaling/src/lib.rs"
+sha256 = "752746ccb00190f4157d6b71fbcd58d0498f782016a6930a544d46e903d3a84b"
+
+[[source]]
+path = "crates/qgp_scaling/tests/directional_path_identity.rs"
+sha256 = "55ccc4fc69e6c4aff060ee95b326ebf8cb61bcd7c8e7ec3d8bc8a6c174477622"
+
+[[source]]
+path = "Cargo.lock"
+sha256 = "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e"
+
+[[source]]
+path = "rust-toolchain.toml"
+sha256 = "c0864e4045ce7847ebe68e13423671c7007fbbe77d8b10ad5f5bacb8a1601ab3"

@@ -1,0 +1,65 @@
+schema_version = 1
+claims = ["C-1710", "C-1711", "C-1712", "C-1713", "C-1714"]
+scope = "Read-only source/history audit followed by creation of this receipt; numerical sources, canonical SQLite and retained inputs remain outside the write operation."
+checkout_head = "a0800278e8794d30bec3b22324d72992dd1e66dd"
+network_requests = 0
+fits_or_simulations = 0
+
+[ansatz]
+claim = "C-1710"
+source_path = "/home/eirikr/Github/open_gororoba/data/papers/corpus/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf"
+source_sha256 = "b9f0db61ad9cc06ccabcdcdfb0a8cee407b2e282f1116c4b1658ed376d015b03"
+source_identity = "Arleo and Falmagne, Path-length dependence of parton and jet energy loss from universal scaling laws; arXiv2411.13258v1, ICHEP2024 proceedings."
+prior_receipt = "data/output/audit/2026-08-06/claim-falsification-fleet-i-qgp.toml"
+identity_check = "The live corpus PDF SHA256 matches the prior receipt."
+equation = "PDF page2 Eq1: R_AA^h(pT,epsilon_bar,n) approximately f(u=pT/(n*epsilon_bar)). The paragraph identifies epsilon_bar as a characteristic energy-loss scale and refers to references1/2 for the model."
+reference_1 = "F. Arleo, Quenching of Hadron Spectra in Heavy Ion Collisions at the LHC, PRL119(2017)062302; arXiv1703.10852."
+reference_2 = "F. Arleo and G. Falmagne, Probing the path-length dependence of parton energy loss via scaling properties in heavy ion collisions, PRD109(2024)L051503; arXiv2212.01324."
+implementation_path = "crates/qgp_scaling/src/quenching.rs"
+implementation_sha256 = "b8cef7a6dedb9931ae71e99b9be12d359b05a2f3e08821224e38b0da7afa32b0"
+implementation_formula = "r_aa_model evaluates ((pT-epsilon_bar)/pT)^(n-1), with zero below threshold; its comment cites Arleo and Falmagne Eq1."
+source_limit = "The recovered proceedings equation does not establish that explicit fixed-loss formula or identify the code parameter with the source characteristic scale. Source conformance remains distinct from shared optimizer/scoring conformance."
+next_action = "Admit references1/2, recover the actual quenching function and parameter/fragmentation maps, and compare those equations with r_aa_model before interpreting a failed fit as physical rejection."
+
+[theory_history]
+claims = ["C-1711", "C-1712"]
+creation_revision = "66d5ef058a906959759f35f167459bee272a18dc"
+path = "crates/qgp_scaling/src/competing_models.rs"
+git_blob = "da36491f7c14e505261222e2e9320538bfffa701"
+source_sha256 = "924bed0c5e52ecbe0a9a7b457a4646d10744cce512ea2aa544485b92ba795887"
+observation = "The creation revision already contains all five hardcoded vectors, claims CUJET Figure4/5 and Feal/Salgado Figure3 digitization, and assigns unverified parameter counts. Its changed-file inventory adds no extraction or numerical source-data artifact."
+identity_limit = "Git authenticates the historical text and numbers, not the asserted digitization provenance."
+
+[theory_extraction]
+cujet_pdf = "data/output/audit/qgp-reference-population/cujet-source.pdf"
+cujet_sha256 = "ad8be4887d36bb658d246142f3331f82be2dd71713fa17622d1396e3ea982a68"
+cujet_identity = "Xu, Liao and Gyulassy, arXiv1508.00552v3; JHEP02(2016)169."
+cujet_figure = "Figure3(a): blue charged-hadron RAA curves for Pb-Pb2.76TeV20-30%; three source schemes distinguished by solid/dashed/dot-dashed styles. Figure4/5 describe transport coefficients."
+cujet_next = "Extract the three Figure3(a) curves as newly identified source vectors with axis coordinates, scheme labels and extraction uncertainty. Bind comparison to HEPData59944v1/t19 and the declared pT validity range; retain original arrays separately."
+langevin_pdf = "data/output/audit/qgp-reference-population/langevin-source.pdf"
+langevin_sha256 = "e105cfb1534bb5fda5f446901e0ce82d27c67cda6882d4b51b6cb9568db68d16"
+langevin_identity = "Jai Prakash, arXiv2401.03757; PRD109(2024)114004."
+langevin_figure = "Figure4: charm-quark RAA at t=6fm/c,T=250/350MeV and four alpha values. Figure3 plots mean squared displacement versus time."
+langevin_next = "Extract Figure4 only as static-charm source curves. Require separately admitted hadronization and collision/centrality mapping before any prompt-D comparison."
+vector_route = "pdfimages -list reports zero raster image rows for both retained PDFs. Vector-path extraction is an available next route; the audit performed neither coordinate extraction nor a claim of original numerical-array recovery."
+
+[participant_history]
+claim = "C-1714"
+creation_revision = "d666f641d9074410a127daca79cd10a8c0ff850f"
+path = "crates/qgp_scaling/src/data_tables.rs"
+git_blob = "ea63c17883b6b9591e9958c27a48cd98d25b6de2"
+source_sha256 = "7f5bbfb97253fc77a399188d2eef5d47f1a4dde3c3a46d08e0a7c1865fabc493"
+observation = "All nine Npart values and uncertainties enter with the PLB772(2017)567 Table1 attribution already present; the creation revision adds no source-table artifact."
+retained_comparison = "data/output/audit/qgp-reference-population/alice-centrality-source.txt TableA4 provides some older-energy matches, while the official HEPData78365v1/t3 receipt provides ten differing participant coordinates without per-row centrality qualifiers."
+identity_limit = "Partial numeric matches and creation history do not authenticate the nine-row population, geometric/data weighting convention or errors."
+next_action = "Recover an exact centrality/Npart/uncertainty table from an authenticated ALICE centrality source. The historical fleet notes an unsuccessful ALICE-PUBLIC-2018-011 CDS retrieval; use source metadata to identify an attachment before any renewed download. Preserve the original rows until every replacement row has a source locator."
+
+[eccentricity]
+claim = "C-1713"
+retained_identity = "data/output/audit/qgp-primary-reference-intake/adjudication.toml and inspire-eccentricity.json identify PRC93(2016)034913 as charged-pion/kaon/proton RAA, not an admitted epsilon2 estimator table."
+next_action = "Identify the actual eccentricity estimator, energy and centrality table; keep the nine values unadmitted until their row identities and fluctuation convention are explicit."
+
+[replay]
+source_commands = "git show REVISION:PATH; sha256sum FILE; pdftotext -layout PDF -; pdfimages -list PDF"
+finite_search = "Creation-history and changed-file inventories for the two named source files; retained theory PDFs; cited corpus PDF; named prior audit receipts."
+closure = "Historical bytes and several publication identities are recoverable immediately. Original digitization arrays, nine-row participant provenance, complete covariance and physical ansatz conformance remain distinct missing inputs."

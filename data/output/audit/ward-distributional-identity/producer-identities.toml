@@ -1,0 +1,15 @@
+schema_version = 1
+experiment = "E-304"
+historical_producer_commit = "5da4ec78a7cf638315f51e54e159d2f111726fe8"
+result = "data/output/audit/ward-distributional-identity/adjudication.toml"
+result_sha256 = "30a58ac0afea6e7bcdbd915d9afb23444ecc0a77f918021c5a06e84821e230d0"
+
+[tested_sources]
+"crates/gr_core/src/photon_graviton/gravitational_ward.rs" = "419e976fe98d8572ee4df6c911739881aec95fbf47423b6351e94db3451f6f50"
+"crates/gr_core/src/photon_graviton/irreducible_tensor.rs" = "d784f3fcbe0733c69f88e2ebef718988c89db909e9d418d8fe10a15409f7156c"
+"crates/gr_core/src/photon_graviton/tensor_integrands.rs" = "2a6ae20bbeebc40088077b8fb87fd7b4d1fc13c788794178df06574166411a9a"
+"crates/gr_core/src/photon_graviton/tensor_ward.rs" = "9ae0f76c35337fb6d99452529ef99eecffcfa40d799abe8562422994e248c705"
+"crates/gr_core/src/photon_graviton/worldline_tensor.rs" = "469f6b5e2c3c9c79bfb5cc0656adb4d0b1b02e68efba0e8818ef3ed21432aa11"
+"crates/gr_core/tests/ward_distributional_identity.rs" = "d08dae51c7d63fd14af95d4b9469db22537707a47a4990f0a56fd74be110a439"
+"crates/gr_core/tests/ward_source_scope.rs" = "a92df609c0474e71c8f41088957c0fb0b6fc97735b26456c27101d81001466e4"
+"crates/gr_core/tests/ward_independent_residuals.rs" = "d3b8049e12dd8bab71aea97388d63476ae2b01459426275d2cbe76976eef54f3"

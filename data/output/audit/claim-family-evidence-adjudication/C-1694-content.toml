@@ -1,0 +1,5 @@
+claim_id = "C-1694"
+expected_statement = "YigParams::gamma of 2.8e10 is documented as rad/(s*T) but is used, and is physically correct, as Hz/T, since gamma over 2 pi is 28 GHz/T. Every consumer that pipes magnon_frequency_homogeneous through rad_per_s_to_ghz is off by a factor of 2 pi."
+expected_where_stated = "crates/quantum_core/src/magnonic_crystal.rs"
+statement = "At source revision 81a4ca6e, YigParams::gamma=2.8e10 is documented as angular rad/(s*T), while its numerical value corresponds to 28 GHz/T cyclic frequency. Composing magnon_frequency_homogeneous with rad_per_s_to_ghz gives an external-field cyclic-frequency slope 28/(2*pi) GHz/T instead of 28 GHz/T. This bounded field-term defect is separate from exchange units and physical effective-field geometry."
+where_stated = "crates/quantum_core/src/magnonic.rs at git revision 81a4ca6e::YigParams, magnon_frequency_homogeneous, rad_per_s_to_ghz; data/output/audit/2026-08-06/claim-falsification-fleet-d-magnon.toml"

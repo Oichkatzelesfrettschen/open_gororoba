@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "operation": "Versioned primary-source retrieval and lossless text/render inspection",
+  "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication",
+  "curl_version": "curl 8.21.0 (x86_64-pc-linux-gnu) libcurl/8.21.0 OpenSSL/3.6.4 zlib/1.3.1.zlib-ng brotli/1.2.0 zstd/1.5.7 libidn2/2.3.8 libpsl/0.21.5 libssh2/1.11.1 nghttp2/1.70.0 ngtcp2/1.25.0 nghttp3/1.18.0 mit-krb5/1.22.2",
+  "pdftotext_version": "pdftotext version 26.08.0",
+  "clock_scope": "HTTP Date is retained provider metadata; local request start/end clocks were not independently sampled.",
+  "sources": [
+    {
+      "key": "nlo2010",
+      "request_url": "https://arxiv.org/pdf/1008.0540v1",
+      "command": [
+        "curl",
+        "--fail",
+        "--location",
+        "--retry",
+        "2",
+        "--dump-header",
+        "data/output/audit/qgp-fragmentation-measure-identity/nlo2010.headers",
+        "--output",
+        "data/output/audit/qgp-fragmentation-measure-identity/arxiv-1008.0540v1.pdf",
+        "https://arxiv.org/pdf/1008.0540v1"
+      ],
+      "exit_status": 0,
+      "release": "1008.0540v1",
+      "release_date": "2010-08-03",
+      "release_evidence": "Versioned URL, retained Content-Disposition and visually inspected arXiv front-page margin agree.",
+      "pdf": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/arxiv-1008.0540v1.pdf",
+        "sha256": "2428f0846684672dbfdced27b27c93b13a546e563138c566089c7128b696b571",
+        "bytes": 500498
+      },
+      "headers": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/nlo2010.headers",
+        "sha256": "145e09340a7cd65528846cc18a4857f3d9475e92af999e88daac292c8fef7f2b"
+      },
+      "extracted_text": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/nlo2010-text.json",
+        "sha256": "992764cb1b47138df342ec110ccbd9db081f38aa53754184137eeca9ed9e4d93",
+        "decoded_sha256": "2dc11d5a39584c7c3cb8305ab09d597e5d557b4fbea571d0f2144a8a9313a3ba"
+      },
+      "extraction_command": [
+        "pdftotext",
+        "-layout",
+        "data/output/audit/qgp-fragmentation-measure-identity/arxiv-1008.0540v1.pdf",
+        "<temporary-text>"
+      ],
+      "transformation": "JSON encoding retains each extracted code point, including form feeds; decoded text was independently compared with the temporary raw text.",
+      "http_status": [
+        200
+      ]
+    },
+    {
+      "key": "dss2007",
+      "request_url": "https://arxiv.org/pdf/hep-ph/0703242v1",
+      "command": [
+        "curl",
+        "--fail",
+        "--location",
+        "--retry",
+        "2",
+        "--dump-header",
+        "data/output/audit/qgp-fragmentation-measure-identity/dss2007.headers",
+        "--output",
+        "data/output/audit/qgp-fragmentation-measure-identity/hep-ph-0703242v1.pdf",
+        "https://arxiv.org/pdf/hep-ph/0703242v1"
+      ],
+      "exit_status": 0,
+      "release": "hep-ph/0703242v1",
+      "release_date": "2007-03-22",
+      "release_evidence": "Versioned URL, retained Content-Disposition and visually inspected arXiv front-page margin agree.",
+      "pdf": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/hep-ph-0703242v1.pdf",
+        "sha256": "b0d9215024e62e773add2ab6afdba8c6ef2b321b4c132323a609dc938c342b1e",
+        "bytes": 933656
+      },
+      "headers": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/dss2007.headers",
+        "sha256": "5f8c385bea16af900ef5914e65bd10d312cf074acd076346204f7c889c023d55"
+      },
+      "extracted_text": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/dss2007-text.json",
+        "sha256": "cbf4837412ab0470eeec4ad0cd5d1f4fe03b638b8b0b15b7b09414bf99d75548",
+        "decoded_sha256": "5f7ddd81388592f2e10d7a05d8e5ca6cbc23cadefb7fef86306bef0b2068f96a"
+      },
+      "extraction_command": [
+        "pdftotext",
+        "-layout",
+        "data/output/audit/qgp-fragmentation-measure-identity/hep-ph-0703242v1.pdf",
+        "<temporary-text>"
+      ],
+      "transformation": "JSON encoding retains each extracted code point, including form feeds; decoded text was independently compared with the temporary raw text.",
+      "http_status": [
+        200
+      ]
+    },
+    {
+      "key": "dss-charged2007",
+      "request_url": "https://arxiv.org/pdf/0707.1506v1",
+      "command": [
+        "curl",
+        "--fail",
+        "--location",
+        "--retry",
+        "2",
+        "--dump-header",
+        "data/output/audit/qgp-fragmentation-measure-identity/dss-charged2007.headers",
+        "--output",
+        "data/output/audit/qgp-fragmentation-measure-identity/arxiv-0707.1506v1.pdf",
+        "https://arxiv.org/pdf/0707.1506v1"
+      ],
+      "exit_status": 0,
+      "release": "0707.1506v1",
+      "release_date": "2007-07-10",
+      "release_evidence": "Versioned URL, retained Content-Disposition and visually inspected arXiv front-page margin agree.",
+      "pdf": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/arxiv-0707.1506v1.pdf",
+        "sha256": "df7c2bcb9b06be78766198438b8ac600f9e056518f933736e9234813b6e9bc63",
+        "bytes": 469208
+      },
+      "headers": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/dss-charged2007.headers",
+        "sha256": "ad2b36dd51efe2ced7b6dd11e2d87c98c9e5d93c2ff35776674b8d7aba4ca3a0"
+      },
+      "extracted_text": {
+        "path": "data/output/audit/qgp-fragmentation-measure-identity/dss-charged2007-text.json",
+        "sha256": "46684f7433ad228531906abd92ee7e8c029a5afe220c87279f12e31b18bafc9c",
+        "decoded_sha256": "81cac461068e78c8d27ae17cdabf697e2130244c28160ae7b4a24d3a5c87bf22"
+      },
+      "extraction_command": [
+        "pdftotext",
+        "-layout",
+        "data/output/audit/qgp-fragmentation-measure-identity/arxiv-0707.1506v1.pdf",
+        "<temporary-text>"
+      ],
+      "transformation": "JSON encoding retains each extracted code point, including form feeds; decoded text was independently compared with the temporary raw text.",
+      "http_status": [
+        200
+      ]
+    }
+  ]
+}

@@ -16,7 +16,7 @@
 //! | Observable | Class | Notes |
 //! |------------|-------|-------|
 //! | theta_12, theta_13, theta_23 | B (benchmark) | 4-param fit (Bin 2), not a zero-param derivation |
-//! | delta_CP CP-A (~165 deg) | F (falsification target) | Inside NuFit 6.0 1-sigma |
+//! | delta_CP CP-A (~165 deg) | F (falsification target) | Outside NuFit 6.0 IC24 with-SK 1-sigma |
 //! | delta_CP CP-B (~93 deg) | F (falsification target) | Outside NuFit 1-sigma; maximal CP-violation |
 //! | sin^2(theta_W) = 0.250 | H (heuristic) | G_2 structural estimate, NOT precision EW |
 //!
@@ -60,6 +60,26 @@ pub struct SigmaContour {
 }
 
 impl SigmaContour {
+    /// Membership in the published unwrapped CP interval, modulo 360 degrees.
+    pub fn in_one_sigma_degrees(self, angle: f64) -> bool {
+        angle.is_finite()
+            && (angle - self.one_sigma_low).rem_euclid(360.0)
+                <= self.one_sigma_high - self.one_sigma_low
+    }
+
+    /// Membership in the published unwrapped three-sigma CP interval.
+    pub fn in_three_sigma_degrees(self, angle: f64) -> bool {
+        angle.is_finite()
+            && (angle - self.three_sigma_low).rem_euclid(360.0)
+                <= self.three_sigma_high - self.three_sigma_low
+    }
+
+    /// Descriptive asymmetric displacement along the shorter circular arc.
+    /// The quotient is not a Gaussian significance for the global likelihood.
+    pub fn pull_degrees(self, angle: f64) -> f64 {
+        self.pull(self.best + (angle - self.best + 180.0).rem_euclid(360.0) - 180.0)
+    }
+
     /// True if `x` lies inside the 1-sigma interval.
     pub fn in_one_sigma(self, x: f64) -> bool {
         x >= self.one_sigma_low && x <= self.one_sigma_high
@@ -87,26 +107,15 @@ impl SigmaContour {
 
 // ---- NuFit 6.0 ------------------------------------------------------------
 
-/// NuFit 6.0 (2024) global oscillation fit -- normal ordering (NO), with SK atmospheric.
-///
-/// Source: www.nu-fit.org, NuFit 6.0 release.
-/// All angles are in degrees; mass-squared differences in eV^2.
-///
-/// | Parameter | Best | 1-sigma | 3-sigma |
-/// |-----------|------|---------|---------|
-/// | theta_12 | 33.41 | [32.66, 34.18] | [31.20, 35.79] |
-/// | theta_13 |  8.54 | [ 8.42,  8.66] | [ 8.13,  8.92] |
-/// | theta_23 | 49.0  | [47.9,  50.0]  | [40.2,  51.5]  |
-/// | delta_CP | 195   | [138, 258]     | [0, 360]       |
-/// | dm21_sq  | 7.53e-5 | [7.35e-5, 7.71e-5] | [6.94e-5, 8.14e-5] |
-/// | dm31_sq  | 2.453e-3 | [2.420e-3, 2.486e-3] | [2.347e-3, 2.557e-3] |
+/// NuFit 6.0 normal-ordering contours, angles in degrees and splittings in eV^2.
+/// Source: v60.tbl-parameters.pdf; IC24 includes SK atmospheric data.
+/// The historical composite reference remains separately named for audit replay.
 #[derive(Clone, Debug)]
 pub struct NuFit60 {
     pub theta_12: SigmaContour,
     pub theta_13: SigmaContour,
     pub theta_23: SigmaContour,
-    /// delta_CP 1-sigma is BROAD: [138, 258].  CP conservation (0 or 180) is
-    /// compatible within 1-sigma.  3-sigma covers the full 0-360 circle.
+    /// CP phase contour uses an unwrapped interval on the 360-degree circle.
     pub delta_cp: SigmaContour,
     /// dm^2_21 in eV^2.
     pub dm21_sq: SigmaContour,
@@ -115,8 +124,98 @@ pub struct NuFit60 {
 }
 
 impl NuFit60 {
-    /// Canonical values for normal ordering with SK atmospheric data.
+    /// NuFit 6.0 IC24 normal ordering with SK atmospheric data.
     pub fn normal_ordering() -> Self {
+        Self::normal_ordering_ic24_with_sk()
+    }
+
+    /// Published normal-ordering IC24 column, with SK atmospheric data.
+    pub fn normal_ordering_ic24_with_sk() -> Self {
+        Self {
+            theta_12: SigmaContour {
+                best: 33.68,
+                one_sigma_low: 32.98,
+                one_sigma_high: 34.41,
+                three_sigma_low: 31.63,
+                three_sigma_high: 35.95,
+            },
+            theta_13: SigmaContour {
+                best: 8.56,
+                one_sigma_low: 8.45,
+                one_sigma_high: 8.67,
+                three_sigma_low: 8.19,
+                three_sigma_high: 8.89,
+            },
+            theta_23: SigmaContour {
+                best: 43.3,
+                one_sigma_low: 42.5,
+                one_sigma_high: 44.3,
+                three_sigma_low: 41.3,
+                three_sigma_high: 49.9,
+            },
+            delta_cp: SigmaContour {
+                best: 212.0,
+                one_sigma_low: 171.0,
+                one_sigma_high: 238.0,
+                three_sigma_low: 124.0,
+                three_sigma_high: 364.0,
+            },
+            dm21_sq: SigmaContour {
+                best: 7.49e-5,
+                one_sigma_low: 7.30e-5,
+                one_sigma_high: 7.68e-5,
+                three_sigma_low: 6.92e-5,
+                three_sigma_high: 8.05e-5,
+            },
+            dm31_sq: SigmaContour {
+                best: 2.513e-3,
+                one_sigma_low: 2.494e-3,
+                one_sigma_high: 2.534e-3,
+                three_sigma_low: 2.451e-3,
+                three_sigma_high: 2.578e-3,
+            },
+        }
+    }
+
+    /// Published normal-ordering IC19 column, without SK atmospheric data.
+    pub fn normal_ordering_ic19_without_sk() -> Self {
+        Self {
+            theta_13: SigmaContour {
+                best: 8.52,
+                one_sigma_low: 8.41,
+                one_sigma_high: 8.63,
+                three_sigma_low: 8.18,
+                three_sigma_high: 8.87,
+            },
+            theta_23: SigmaContour {
+                best: 48.5,
+                one_sigma_low: 47.6,
+                one_sigma_high: 49.2,
+                three_sigma_low: 41.0,
+                three_sigma_high: 50.5,
+            },
+            delta_cp: SigmaContour {
+                best: 177.0,
+                one_sigma_low: 157.0,
+                one_sigma_high: 196.0,
+                three_sigma_low: 96.0,
+                three_sigma_high: 422.0,
+            },
+            dm31_sq: SigmaContour {
+                best: 2.534e-3,
+                one_sigma_low: 2.511e-3,
+                one_sigma_high: 2.559e-3,
+                three_sigma_low: 2.463e-3,
+                three_sigma_high: 2.606e-3,
+            },
+            ..Self::normal_ordering_ic24_with_sk()
+        }
+    }
+
+    /// Composite literals retained for historical comparison, not a NuFit release.
+    /// The dm31_sq slot contains a dm32_sq-like reference; callers must preserve
+    /// that convention defect when reproducing the historical result.
+    pub fn historical_composite_reference() -> Self {
         Self {
             theta_12: SigmaContour {
                 best: 33.41,
@@ -282,9 +381,9 @@ pub fn compute_cp_overlay() -> Vec<OverlayResult> {
             observable: label,
             our_value: val,
             nufit_best: fit.delta_cp.best,
-            pull: fit.delta_cp.pull(val),
-            in_one_sigma: fit.delta_cp.in_one_sigma(val),
-            in_three_sigma: fit.delta_cp.in_three_sigma(val),
+            pull: fit.delta_cp.pull_degrees(val),
+            in_one_sigma: fit.delta_cp.in_one_sigma_degrees(val),
+            in_three_sigma: fit.delta_cp.in_three_sigma_degrees(val),
             evid: EvidClass::F,
         })
         .collect()
@@ -395,7 +494,7 @@ pub fn print_overlay_table() {
     let juno = juno_sensitivity();
 
     println!("=== PMNS Experimental Overlay (Phase C) ===");
-    println!("  Reference: NuFit 6.0 (2024), Normal Ordering + SK atmospheric");
+    println!("  Reference: NuFit 6.0 (2024), IC24 Normal Ordering + SK atmospheric");
     println!("  Framework: scorecard.toml Bin 2 + Bin 3 (2026-03-23)");
     println!();
 
@@ -449,8 +548,12 @@ pub fn print_overlay_table() {
     }
     println!();
     println!(
-        "  NuFit 6.0 delta_CP: best={:.0} deg, 1-sigma=[{:.0},{:.0}], 3-sigma=[0,360]",
-        fit.delta_cp.best, fit.delta_cp.one_sigma_low, fit.delta_cp.one_sigma_high
+        "  NuFit 6.0 IC24 delta_CP: best={:.0} deg, 1-sigma=[{:.0},{:.0}], 3-sigma=[{:.0},{:.0}] modulo 360",
+        fit.delta_cp.best,
+        fit.delta_cp.one_sigma_low,
+        fit.delta_cp.one_sigma_high,
+        fit.delta_cp.three_sigma_low,
+        fit.delta_cp.three_sigma_high
     );
     println!("  NOTE: CP conservation compatible within 1-sigma.");
     println!();
@@ -472,9 +575,11 @@ pub fn print_overlay_table() {
         );
     }
     println!();
-    println!("  CP-A (~165 deg): INSIDE NuFit 1-sigma. Both DUNE and HyperK");
+    println!("  CP-A (~165 deg): OUTSIDE NuFit 6.0 IC24 with-SK 1-sigma. Both DUNE and HyperK");
     println!("    reach ~3.5 sigma here -- measurable but not guaranteed discovery.");
-    println!("  CP-B (~93 deg): OUTSIDE NuFit 1-sigma. Near-maximal CP-violation.");
+    println!(
+        "  CP-B (~93 deg): OUTSIDE NuFit 6.0 IC24 with-SK 3-sigma. Near-maximal CP-violation."
+    );
     println!("    Both experiments reach ~5 sigma -- this is highly distinguishable.");
     println!("  Both are FALSIFICATION TARGETS (class F). Experimental outcome decides.");
     println!();
@@ -538,70 +643,55 @@ mod tests {
         assert!((c.pull(8.0) + 1.0).abs() < 1e-12);
     }
 
-    /// All three mixing angles (Bin 2) must be inside NuFit 6.0 1-sigma.
-    ///
-    /// This is a regression test: if the Gauss-Newton optimization regresses,
-    /// the angle predictions will drift outside the 1-sigma contour and this
-    /// test will catch it.
     #[test]
-    fn test_angle_overlay_all_in_one_sigma() {
+    fn angle_overlay_uses_ic24_with_sk_intervals() {
         let results = compute_angle_overlay();
-        assert_eq!(results.len(), 3, "should have 3 mixing angle overlays");
-        for r in &results {
-            assert!(
-                r.in_one_sigma,
-                "{}: our value {:.3} deg is NOT inside NuFit 1-sigma (pull={:+.3})",
-                r.observable, r.our_value, r.pull,
-            );
-            assert!(
-                r.pull.abs() <= 1.0,
-                "{}: pull magnitude {:.3} should be <= 1.0",
-                r.observable,
-                r.pull
-            );
-        }
+        assert_eq!(
+            results
+                .iter()
+                .map(|row| row.in_one_sigma)
+                .collect::<Vec<_>>(),
+            [true, true, false]
+        );
+        assert!(results.iter().all(|row| row.in_three_sigma));
     }
 
-    /// CP-A (~165 deg) is inside the NuFit 6.0 1-sigma range for delta_CP.
-    ///
-    /// The 1-sigma range [138, 258] is broad; CP-A lies comfortably inside it.
-    /// This is class F (falsification target): DUNE/HyperK will test this.
     #[test]
-    fn test_cp_a_in_nufit_one_sigma() {
+    fn cp_predictions_use_release_specific_periodic_contours() {
         let results = compute_cp_overlay();
-        let cp_a = results
-            .iter()
-            .find(|r| r.observable == "delta_CP_CP-A")
-            .expect("CP-A result missing");
-        let fit = NuFit60::normal_ordering();
-        assert!(
-            cp_a.in_one_sigma,
-            "CP-A {:.1} deg should be inside NuFit 1-sigma [{:.0}, {:.0}]",
-            cp_a.our_value, fit.delta_cp.one_sigma_low, fit.delta_cp.one_sigma_high,
-        );
+        assert!(!results[0].in_one_sigma);
+        assert!(results[0].in_three_sigma);
+        assert!(!results[1].in_one_sigma);
+        assert!(!results[1].in_three_sigma);
+        let without_sk = NuFit60::normal_ordering_ic19_without_sk();
+        assert!(without_sk.delta_cp.in_one_sigma_degrees(165.0));
+        assert!(!without_sk.delta_cp.in_three_sigma_degrees(93.0));
     }
 
-    /// CP-B (~93 deg) is OUTSIDE NuFit 1-sigma but inside 3-sigma (trivially: 0-360).
-    ///
-    /// This reflects the amended scorecard note (2026-03-22): no route from the
-    /// framework to delta=195; CP-B is a genuine maximal-CP prediction, falsified
-    /// against the current global-fit best value but unresolved by 3-sigma.
     #[test]
-    fn test_cp_b_outside_one_sigma() {
-        let results = compute_cp_overlay();
-        let cp_b = results
-            .iter()
-            .find(|r| r.observable == "delta_CP_CP-B")
-            .expect("CP-B result missing");
-        let fit = NuFit60::normal_ordering();
-        assert!(
-            !cp_b.in_one_sigma,
-            "CP-B {:.1} deg should be OUTSIDE NuFit 1-sigma [{:.0}, {:.0}]",
-            cp_b.our_value, fit.delta_cp.one_sigma_low, fit.delta_cp.one_sigma_high,
+    fn periodic_contours_preserve_wrapped_endpoints() {
+        let contour = NuFit60::normal_ordering().delta_cp;
+        assert!(contour.in_three_sigma_degrees(0.0));
+        assert!(contour.in_three_sigma_degrees(4.0));
+        assert!(!contour.in_three_sigma_degrees(5.0));
+        assert!(contour.in_three_sigma_degrees(-1.0));
+        assert_eq!(
+            contour.in_one_sigma_degrees(212.0),
+            contour.in_one_sigma_degrees(572.0)
         );
+        assert!(!contour.in_three_sigma_degrees(f64::NAN));
+    }
+
+    #[test]
+    fn historical_composite_stays_available_with_explicit_identity() {
+        let legacy = NuFit60::historical_composite_reference();
+        assert_eq!(legacy.delta_cp.best, 195.0);
+        assert_eq!(legacy.dm31_sq.best, 2.453e-3);
+        assert!(legacy.delta_cp.in_one_sigma(165.0));
         assert!(
-            cp_b.in_three_sigma,
-            "CP-B should be inside trivial 3-sigma [0, 360]",
+            !NuFit60::normal_ordering()
+                .delta_cp
+                .in_one_sigma_degrees(165.0)
         );
     }
 

@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-296"
+title = "QGP fit-scoring objective identity and independent bounded minimization"
+status = "active"
+binary = "epsilon_objective_identity integration test"
+claim_refs = ["C-1710", "C-1711"]
+deterministic = true
+gpu = false
+reproducibility_class = "numeric_close"
+input = "Exact retained ALICE table1 CSV, six points above5GeV; n=6.1, one epsilon bounded0.1..20; historical diagonal weights and0.98 variance factor preserved."
+input_path_refs = ["crates/qgp_scaling/tests/fixtures/alice_pbpb_5020_raa_central.csv"]
+method = "Independent20001-point grid plus golden refinement corroborates the fitted objective. Explicit historical plus-shift oracle preserves the differing scored minimum; corrected production curve and scorer must equal the fitted objective at equal weights. Source population and covariance admission remain separate."
+run = "cargo test -p qgp_scaling --test epsilon_objective_identity --profile validation -- --nocapture"
+output = ["Independent objective minima", "Corrected same-weight scorer equality", "Preserved historical mismatch and variance scaling"]
+output_path_refs = ["data/output/audit/claim-family-evidence-adjudication/qgp-objective-identity-adjudication.toml", "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-adjudication.toml", "data/output/audit/claim-family-evidence-adjudication/qgp-objective-correction-replay.txt"]
+status_note = "Two tests and Clippy pass. The actual producer is crates/qgp_scaling/tests/epsilon_objective_identity.rs; E-075 remains the separate physical driver. One fitted epsilon and zero fixed-competitor refits describe only this retained comparison, not theoretical calibration freedom. Physical ranking stays blocked."

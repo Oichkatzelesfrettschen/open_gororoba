@@ -451,7 +451,7 @@ fn test_dynamic_drag_phi_i_mass_conservation() {
 
     let mut solver = LbmSolver3D::new(nx, ny, nz, tau);
     // Small bulk flow so drag has nonzero relative velocity
-    solver.initialize_uniform(1.0, [0.02, 0.0, 0.0]);
+    solver.initialize_uniform(2.7, [0.02, 0.0, 0.0]);
     let mass_initial = solver.total_mass();
 
     // Configure DM with drag enabled (sigma > 0)
@@ -480,8 +480,14 @@ fn test_dynamic_drag_phi_i_mass_conservation() {
         solver.compute_macroscopic();
 
         // Combine NFW gravitational force + dynamic drag
-        let drag = dm.drag_force_lattice(&solver.u);
-        let combined = combine_forces(&dm.force, &drag);
+        let drag = dm.drag_force_density_lattice(&solver.rho, &solver.u);
+        let gravity: Vec<_> = dm
+            .force
+            .iter()
+            .zip(&solver.rho)
+            .map(|(acceleration, density)| acceleration.map(|component| component * density))
+            .collect();
+        let combined = combine_forces(&gravity, &drag);
 
         solver.set_force_field(combined).expect("force field set");
         let _ = solver.phase1_collision();
@@ -503,5 +509,40 @@ fn test_dynamic_drag_phi_i_mass_conservation() {
             idx,
             solver.rho[idx],
         );
+    }
+}
+
+#[test]
+fn density_weighted_drag_and_gravity_preserve_acceleration_across_densities() {
+    use lbm_3d::dm_force::{DmForceConfig, DmForceField, combine_forces};
+    // Manufactured lattice coefficients isolate the Guo force-density interface.
+    let mut dm = DmForceField::new(4, 4, 4, DmForceConfig::default());
+    dm.force.fill([1e-6, 0.0, 0.0]);
+    dm.kappa_field.fill(0.01);
+    dm.kappa_drag = 0.01;
+    dm.v_dm_lattice = [0.05, 0.0, 0.0];
+    let expected_acceleration = 1e-6 + 0.01 * 0.05 * 0.05;
+    for density in [1.0, 2.7] {
+        let mut solver = LbmSolver3D::new(4, 4, 4, 0.8);
+        solver.initialize_uniform(density, [0.0; 3]);
+        let drag = dm.drag_force_density_lattice(&solver.rho, &solver.u);
+        let gravity: Vec<_> = dm
+            .force
+            .iter()
+            .zip(&solver.rho)
+            .map(|(acceleration, rho)| acceleration.map(|component| component * rho))
+            .collect();
+        solver
+            .set_force_field(combine_forces(&gravity, &drag))
+            .unwrap();
+        solver.phase1_collision().unwrap();
+        solver.compute_macroscopic();
+        for velocity in &solver.u {
+            assert!(
+                (velocity[0] - expected_acceleration).abs() < 2e-16,
+                "Guo acceleration differs at density {density}: {}",
+                velocity[0]
+            );
+        }
     }
 }
