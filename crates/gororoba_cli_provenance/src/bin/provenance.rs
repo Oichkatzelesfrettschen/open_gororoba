@@ -708,7 +708,7 @@ fn ensure_reindex_preconditions(repo_root: &Path, args: &ExportArgs) -> Result<(
 /// from the existing manifest, which is where host state lives, plus the
 /// downloaded rows the registry itself carries.
 fn run_materialize_status(repo_root: &Path, args: MaterializeStatusArgs) -> Result<()> {
-    let retention = source_provenance::RetentionSet::from_git_index(repo_root);
+    let retention = source_provenance::RetentionSet::from_repository(repo_root)?;
     let mut seen: Vec<(String, String, String, String)> = Vec::new();
 
     let manifest_path = repo_path(repo_root, &args.out_manifest);
@@ -1373,7 +1373,7 @@ fn rebuild_compatibility_exports_with_policy(
     let lane_dir = repo_path(repo_root, &args.lane_dir);
     let out_infrastructure_report = repo_path(repo_root, &args.out_infrastructure_report);
 
-    let retention = source_provenance::RetentionSet::from_git_index(repo_root);
+    let retention = source_provenance::RetentionSet::from_repository(repo_root)?;
     let mut set = source_provenance::StagedWriteSet::new();
     let (mut summary, master_text) = source_provenance::stage_artifact_source_of_truth(
         repo_root,

@@ -26,6 +26,7 @@ use toml::Value;
 // back into lib.rs scope via plain use statements.
 mod artifact_operations;
 mod artifact_retrieval;
+pub mod retained_archive;
 pub use artifact_retrieval::{
     ArtifactRetrievalSpec, DocumentIdentityStatus, RetrievalEvidenceFile, RetrievalRequestEvidence,
 };

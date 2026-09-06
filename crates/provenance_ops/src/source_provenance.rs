@@ -131,12 +131,12 @@ const BEST_PRACTICE_SOURCES: &[&str] = &[
     "https://openlineage.io/docs/",
 ];
 
-/// `downloaded` asserts the repository itself carries the bytes, so it holds
-/// only when git tracks the path (a Git LFS pointer counts). A file present in
-/// one checkout and gitignored everywhere else is
-/// `remotely_materializable`: the row records canonical_url, sha256,
-/// byte_length, retrieval_command and license_disposition, and per-host
-/// presence moves to the gitignored materialization manifest.
+/// `downloaded` records repository-managed retention through a Git-tracked
+/// path or an indexed hash-bound release archive member. Retention establishes
+/// neither provider availability nor host materialization. A usable canonical
+/// URL and content identity establish `remotely_materializable` when managed
+/// retention is absent. Per-host presence belongs to the gitignored
+/// materialization manifest.
 const VALID_STATUSES: &[&str] = &[
     "downloaded",
     "remotely_materializable",
@@ -1506,7 +1506,7 @@ pub fn stage_artifact_source_of_truth(
         retention,
         &carry_forward,
     );
-    retrieval_identity::apply_verified_retrievals(&mut artifacts, &verified_retrievals, retention);
+    retrieval_identity::apply_verified_retrievals(&mut artifacts, &verified_retrievals, retention)?;
     let registry_text =
         render_artifact_registry(&artifacts, &ids, &source_tables, &source_files, &now);
     let report_text = render_reconciliation_report(&artifacts, &now);
@@ -1567,7 +1567,7 @@ pub fn build_artifact_source_of_truth(
     out_registry: &Path,
     out_report: &Path,
 ) -> Result<BuildSummary> {
-    let retention = RetentionSet::from_git_index(repo_root);
+    let retention = RetentionSet::from_repository(repo_root)?;
     let mut set = StagedWriteSet::new();
     let (mut summary, _) =
         stage_artifact_source_of_truth(repo_root, out_registry, out_report, &retention, &mut set)?;

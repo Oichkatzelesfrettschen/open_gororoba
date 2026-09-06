@@ -63,14 +63,12 @@ pub(super) fn classify_paths_and_mirrors(
     artifact.nonworking_mirrors = dedupe(nonworking);
     artifact.unverified_mirrors = dedupe(unverified);
 
-    // Split the observed paths by the retention predicate. A path git
-    // tracks is repository truth and keeps the `downloaded` status; a path
-    // that exists only in this checkout is host state, so it leaves the
-    // registry row and moves to the materialization manifest.
+    // Git paths and indexed archive members establish managed retention.
+    // Other observed paths remain per-host materialization observations.
     let observed_paths = dedupe(downloaded);
     let (retained, host_only): (Vec<String>, Vec<String>) = observed_paths
         .into_iter()
-        .partition(|path| retention.contains(path));
+        .partition(|path| retention.is_retained(path));
     artifact.downloaded_paths = retained;
     artifact.host_only_paths = host_only;
 }

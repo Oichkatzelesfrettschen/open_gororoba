@@ -17,21 +17,15 @@ use crate::DocpipeError;
 ///
 /// Uses pdfium when available, falls back to pdf-extract/lopdf.
 pub fn extract_text(path: &Path) -> Result<Vec<PageText>> {
-    #[cfg(feature = "pdfium")]
+    #[cfg(all(feature = "pdfium", feature = "fallback"))]
     {
-        match crate::pdfium_backend::extract_text(path) {
-            Ok(pages) => Ok(pages),
-            Err(_pdfium_err) => {
-                #[cfg(feature = "fallback")]
-                {
-                    crate::fallback_backend::extract_text(path)
-                }
-                #[cfg(not(feature = "fallback"))]
-                {
-                    Err(_pdfium_err)
-                }
-            }
-        }
+        crate::pdfium_backend::extract_text(path)
+            .or_else(|_| crate::fallback_backend::extract_text(path))
+    }
+
+    #[cfg(all(feature = "pdfium", not(feature = "fallback")))]
+    {
+        crate::pdfium_backend::extract_text(path)
     }
 
     #[cfg(all(feature = "fallback", not(feature = "pdfium")))]
@@ -50,21 +44,15 @@ pub fn extract_text(path: &Path) -> Result<Vec<PageText>> {
 
 /// Extract text as a single concatenated string.
 pub fn extract_full_text(path: &Path) -> Result<String> {
-    #[cfg(feature = "pdfium")]
+    #[cfg(all(feature = "pdfium", feature = "fallback"))]
     {
-        match crate::pdfium_backend::extract_full_text(path) {
-            Ok(text) => Ok(text),
-            Err(_pdfium_err) => {
-                #[cfg(feature = "fallback")]
-                {
-                    crate::fallback_backend::extract_full_text(path)
-                }
-                #[cfg(not(feature = "fallback"))]
-                {
-                    Err(_pdfium_err)
-                }
-            }
-        }
+        crate::pdfium_backend::extract_full_text(path)
+            .or_else(|_| crate::fallback_backend::extract_full_text(path))
+    }
+
+    #[cfg(all(feature = "pdfium", not(feature = "fallback")))]
+    {
+        crate::pdfium_backend::extract_full_text(path)
     }
 
     #[cfg(all(feature = "fallback", not(feature = "pdfium")))]
@@ -81,21 +69,15 @@ pub fn extract_full_text(path: &Path) -> Result<String> {
 
 /// Get the page count from a PDF.
 pub fn page_count(path: &Path) -> Result<usize> {
-    #[cfg(feature = "pdfium")]
+    #[cfg(all(feature = "pdfium", feature = "fallback"))]
     {
-        match crate::pdfium_backend::page_count(path) {
-            Ok(count) => Ok(count),
-            Err(_pdfium_err) => {
-                #[cfg(feature = "fallback")]
-                {
-                    crate::fallback_backend::page_count(path)
-                }
-                #[cfg(not(feature = "fallback"))]
-                {
-                    Err(_pdfium_err)
-                }
-            }
-        }
+        crate::pdfium_backend::page_count(path)
+            .or_else(|_| crate::fallback_backend::page_count(path))
+    }
+
+    #[cfg(all(feature = "pdfium", not(feature = "fallback")))]
+    {
+        crate::pdfium_backend::page_count(path)
     }
 
     #[cfg(all(feature = "fallback", not(feature = "pdfium")))]
@@ -112,21 +94,15 @@ pub fn page_count(path: &Path) -> Result<usize> {
 
 /// Extract images from a PDF.
 pub fn extract_images(path: &Path) -> Result<Vec<PdfImage>> {
-    #[cfg(feature = "pdfium")]
+    #[cfg(all(feature = "pdfium", feature = "fallback"))]
     {
-        match crate::pdfium_backend::extract_images(path) {
-            Ok(images) => Ok(images),
-            Err(_pdfium_err) => {
-                #[cfg(feature = "fallback")]
-                {
-                    crate::fallback_backend::extract_images(path)
-                }
-                #[cfg(not(feature = "fallback"))]
-                {
-                    Err(_pdfium_err)
-                }
-            }
-        }
+        crate::pdfium_backend::extract_images(path)
+            .or_else(|_| crate::fallback_backend::extract_images(path))
+    }
+
+    #[cfg(all(feature = "pdfium", not(feature = "fallback")))]
+    {
+        crate::pdfium_backend::extract_images(path)
     }
 
     #[cfg(all(feature = "fallback", not(feature = "pdfium")))]
