@@ -1,0 +1,9 @@
+schema_version = 1
+scope = "Reporting semantics, source admission guards and insufficient-support summary propagation"
+reviewer = "Independent read-only claim_closure_audit agent"
+disposition = "bounded_approval_after_correction"
+finding = "The insufficient-support early return retained a legacy decision field that the revised summary would drop."
+correction = "The early return supplies schema-v2 assessment status, reason and per-year support. Effect remains inconclusive, target and practical utility remain unassessed. Summary extraction refuses a missing or nonobject assessment."
+regression = "Tests independently exercise 29 admitted files with 10 positive-containing files and 30 admitted files with 9 positive-containing files through bootstrap and the summary extraction helper."
+source_seals = "Runtime manifest/source admission remains strict. Matching fixture identities pass; changed, missing, extra and malformed identities reject. The current source remains distinct from historical frozen-source identities."
+numerical_boundary = "Reviewer found unchanged bootstrap sampling, AUC arithmetic, percentile calculation and fitting in the inspected delta. Reviewer performed source inspection and ran zero builds or experiments."

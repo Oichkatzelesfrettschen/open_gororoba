@@ -28,6 +28,16 @@ fn adjudicate(lower: f64, upper: f64, margin: Option<f64>) -> Value {
         "equivalence_margin":margin})
 }
 
+fn admit_utility_manifest(manifest: &str, parent_digest: &str) -> Result<()> {
+    let addition = "[[bin]]\nname = \"crossing-utility-frontier\"\npath = \"src/bin/crossing_utility_frontier.rs\"\n\n";
+    ensure!(
+        manifest.matches(addition).count() == 1
+            && evidence::digest(manifest.replacen(addition, "", 1).as_bytes()) == parent_digest,
+        "manifest differs beyond the independently added utility binary"
+    );
+    Ok(())
+}
+
 pub(super) fn recover(args: &Args, config: &Config, sources: &Value) -> Result<()> {
     ensure!(
         args.external_manifest.is_none() && args.file_map.is_none(),
@@ -64,13 +74,10 @@ pub(super) fn recover(args: &Args, config: &Config, sources: &Value) -> Result<(
         if path == "crates/gororoba_cli_physics/Cargo.toml" && sources.get(path) != Some(digest) {
             // The utility executable adds no dependency or feature to frozen models.
             let manifest = include_str!("../../../Cargo.toml");
-            let addition = "[[bin]]\nname = \"crossing-utility-frontier\"\npath = \"src/bin/crossing_utility_frontier.rs\"\n\n";
-            ensure!(
-                manifest.matches(addition).count() == 1
-                    && evidence::digest(manifest.replacen(addition, "", 1).as_bytes())
-                        == digest.as_str().context("manifest digest missing")?,
-                "manifest differs beyond the independently added utility binary"
-            );
+            admit_utility_manifest(
+                manifest,
+                digest.as_str().context("manifest digest missing")?,
+            )?;
             continue;
         }
         if path != "crates/gororoba_cli_physics/src/bin/staples_causal_validation.rs"
@@ -394,7 +401,7 @@ pub(super) fn bootstrap_extended(
         "method":"centered maximum absolute bootstrap deviation with common whole-file weights per year across every contrast; approximate simultaneous coverage",
         "assumptions":"Conditions on frozen training fits, observed final years and catalog-selected days. Interday independence is unestablished; bootstrap coverage is approximate. Post-hoc protocol has seen point rankings. Training uncertainty and selection bias remain outside the interval.",
         "equivalence_margin":margin,"margin_source":if margin.is_some(){"explicit caller assumption"}else{"undeclared; equivalence unadjudicated"},
-        "useful_increment_requirement":0.005,"useful_increment_scope":"Separate canonical-minus-baseline requirement; these canonical-minus-control intervals do not replace it.",
+        "declared_discrimination_target":super::metrics::target_declaration(config.minimum_increment),"practical_utility":super::metrics::practical_utility_boundary(),"target_scope":"Historical canonical-minus-baseline target; these canonical-minus-control intervals adjudicate a separate comparison.",
         "matched_geometric_capacity":if geometric.is_empty(){json!({"status":"blocked_missing_training_fit_and_predictions","required":"Declare matched feature count, six-sample support, dimensionality, fixed normalization and logistic ridge/fitting budget; fit geometric transform/model using training years only; freeze before final predictions. Extend the simultaneous family before inspecting new outcomes."})}else{json!({"status":"included_in_same_simultaneous_family","comparisons":6})}}),
     )
 }
@@ -403,13 +410,26 @@ pub(super) fn bootstrap_extended(
 mod tests {
     use super::*;
     #[test]
-    fn utility_manifest_stanza_is_the_exact_parent_manifest_delta() {
-        let manifest = include_str!("../../../Cargo.toml");
+    fn utility_manifest_admission_rejects_every_undeclared_delta() {
+        let parent = "[package]\nname = \"fixture\"\nversion = \"0.1.0\"\n\n";
         let addition = "[[bin]]\nname = \"crossing-utility-frontier\"\npath = \"src/bin/crossing_utility_frontier.rs\"\n\n";
-        assert_eq!(manifest.matches(addition).count(), 1);
-        assert_eq!(
-            evidence::digest(manifest.replacen(addition, "", 1).as_bytes()),
-            "ad463ce5e684b984244f537e1b236f8f4943a7efe8c4ddbcca48b0ca494be645"
+        let manifest = format!("{parent}{addition}");
+        let digest = evidence::digest(parent.as_bytes());
+        admit_utility_manifest(&manifest, &digest).unwrap();
+        for rejected in [
+            parent.to_owned(),
+            format!("{manifest}{addition}"),
+            format!("{manifest}[dependencies]\nanyhow = \"1\"\n"),
+            manifest.replace("0.1.0", "0.2.0"),
+        ] {
+            assert!(admit_utility_manifest(&rejected, &digest).is_err());
+        }
+        assert!(
+            admit_utility_manifest(
+                include_str!("../../../Cargo.toml"),
+                "ad463ce5e684b984244f537e1b236f8f4943a7efe8c4ddbcca48b0ca494be645"
+            )
+            .is_err()
         );
     }
     fn kernel() -> metrics::AucKernel {

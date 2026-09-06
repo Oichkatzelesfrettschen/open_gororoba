@@ -1,0 +1,114 @@
+# workspace-routing source lives beside the data CLI, but
+# rust-regression-scoped builds it through the slim governance proxy binary.
+# That keeps scope classification independent of the full data CLI
+# dependency graph while preserving workspace-routing semantics.
+#
+# Prefer the cached binary at /home/eirikr/worktrees/open_gororoba/external-admission-claim-closure/.cache/gate-target/validation-tools/workspace-routing to skip cargo's
+# metadata walk. The validation-tools target dependencies rebuild the cached binary
+# when workspace_routing.rs changes.
+#
+# Preserve routing CLI stderr so scope-selection failures reach the validation
+# operator. The fallback remains "--workspace" after the diagnostic is
+# emitted.
+# Clippy runs only on DIRECTLY changed crates (no reverse-closure expansion).
+# WHY: clippy lints fire on the package owning the source -- a change in a
+# hub crate cannot induce a new lint on a downstream consumer whose source
+# is unchanged. Skipping the closure for clippy saves the bulk of compile
+# time (gororoba_cli_data with 100+ binaries is the worst offender).
+# Nextest in the LOCAL pre-push fast path also runs only on directly
+# changed crates. Trust the layered model:
+#   - Direct-changed crate tests + clippy = pre-push smoke gate (< 3 min).
+#   - Full reverse-closure regression = CI on PR open (validate-ci-rust).
+# Set RUST_NEXTEST_SCOPE_MODE=closure to opt back into the wide scope for
+# a single invocation when needed (e.g. after toolchain bumps).
+# Pre-push test kind: `lib` runs only library unit tests; `all` runs
+# lib + integration test binaries (--lib --tests). Integration test
+# compile is the largest single contributor to gate wall-time (the
+# 441-binary link phase, ~4m30s); restricting to --lib at pre-push
+# makes the gate a true smoke gate. CI on PR open runs the full
+# `all` suite. Override per invocation:
+#   make validate-local RUST_NEXTEST_KIND_MODE=all
+[rust-regression-scoped] clippy scope: -p gororoba_cli_physics
+[rust-regression-scoped] nextest scope: -p gororoba_cli_physics (scope_mode=direct kinds=--lib)
+    Checking gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure/crates/gororoba_cli_physics)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 1.65s
+[rust-regression-scoped] local skip filter enabled
+[local-nextest] run gororoba_cli_physics: lib
+    Finished `test` profile [optimized + debuginfo] target(s) in 0.31s
+────────────
+ Nextest run ID ef44ceed-a0fb-4734-a525-dc7eb52c1143 with nextest profile: default
+    Starting 99 tests across 1 binary
+────────────
+     Summary [   0.226s] 99 tests run: 99 passed, 0 skipped
+[local-nextest] skip integration-test phase for 1 packages (kinds=lib). Run with --kinds all to include.
+OK: scoped Rust validation passed (clippy + nextest).
+make[1]: Leaving directory '/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure'
+make[1]: Entering directory '/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure'
+[validation-tools] building registry validation tools in one Cargo session
+    Finished `validation` profile [optimized + debuginfo] target(s) in 0.35s
+OK: registry validation tools cached at /home/eirikr/worktrees/open_gororoba/external-admission-claim-closure/.cache/gate-target/validation-tools/.
+/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure/.cache/gate-target/validation-tools/markdown-registry verify-all
+PASS: markdown inventory compatibility gate
+  registered=141 on_disk=141
+[done] verify-inventory-toml-first
+PASS: markdown owner map valid
+  entries=141
+  active=138
+  archived=1
+  locked=2
+[done] verify-owner-map
+[done] verify-research-narrative-root-docs
+/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure/.cache/gate-target/validation-tools/governance-verify validate-all
+OK: schema signatures verified for 9 registries (4 DB-backed compat exports skipped).
+[done] schema-signatures
+OK: cross-registry references verified. checks claims=17001 insights=29 experiments=2262 sources=58 datasets=136
+[done] crossrefs
+OK: dataset label aliases verified. aliases=14 experiments=285 lineages=285
+[done] dataset-label-aliases
+OK: canonical control-plane declarations are aligned
+[done] canonical-control-plane
+OK: planning/requirements authority and narrative bindings verified
+[done] planning-requirements-authority
+OK: temp-root policy verified
+[done] temp-roots-policy
+OK: SIMD containment policy verified for stable LLVM pin (12 SIMD-exposed crates inventoried)
+[done] simd-containment-policy
+OK: heavy feature policy verified
+[done] heavy-feature-policy
+OK: parity alias policy verified
+[done] parity-alias-policy
+OK: restored registry source headers and guidance verified
+[done] restored-registry-sources
+OK: source comment chronology policy verified
+[done] source-comment-chronology
+OK: external-source operational contracts verified. docs=29 anomaly_experiments=3
+[done] external-source-operational-contracts
+PASS: markdown removal policy
+  total_documents=141
+  active=138
+  archived=1
+  locked=2
+[done] markdown-removal-policy
+OK: experiment reference identity verified. references=1819 experiments=285 legacy_aliases=17 bin_targets=403
+[done] experiment-reference-identity
+/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure/.cache/gate-target/validation-tools/execution-planning --verify --repo-root .
+OK: execution-planning registry lane verified (canonical registry-verify-execution-planning script). experiments=285 lineages=285 edges=1562 workstreams=15 todo=69 actions=38 req_modules=14 mr_packages=146
+
+==========================================
+REGISTRY GOVERNANCE VALIDATION: PASSED
+==========================================
+[done] Markdown inventory validated (SQLite-first with TOML compatibility checks)
+[done] Markdown owner map verified
+[done] Registry schema signatures checked
+[done] Cross-reference integrity verified
+[done] Dataset label aliases verified
+[done] Canonical control-plane declarations verified
+[done] External-source operational contracts verified
+[done] Markdown governance removal policy checked
+
+SQLite-first governance checks are operational.
+==========================================
+make[1]: Leaving directory '/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure'
+[validate-local] OK: scoped validation passed.
+
+VALIDATION_EXIT=0

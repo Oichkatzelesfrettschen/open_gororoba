@@ -93,6 +93,15 @@ fn main() -> Result<()> {
     run(&args)
 }
 
+fn assessment_from_bootstrap(bootstrap: &Value) -> Result<&Value> {
+    let assessment = &bootstrap["discrimination_assessment"];
+    ensure!(
+        assessment.is_object(),
+        "bootstrap discrimination assessment is missing"
+    );
+    Ok(assessment)
+}
+
 fn validate_external(manifest: &Value, config: &Config, crossings: &[i64]) -> Result<bool> {
     use chrono::Datelike;
     ensure!(
@@ -496,7 +505,7 @@ fn execute_campaign(
         }
     }
     evidence::exact_records(&args.out_dir, &expected)?;
-    let summary = json!({"identity":identity,"status":"complete","completed_models":63,"new_training_fits":if args.mode==Mode::External {0}else{63},"point_records":63,"planned_record_names":expected,"bootstrap_decision":bootstrap["decision"],"primary_interval":bootstrap["interval"],"minimum_increment":config.minimum_increment,"panels":panels,"canonical_exceeds_every_control_on_every_final_panel":all_canonical_above,"mechanism_decision":"inconclusive_comparison_uncertainty","mechanism_boundary":"Finite ensemble point ranks describe exact-support comparisons; confidence intervals for canonical-minus-control comparisons were not run. Pointwise reproduction motivates revising an algebra-specific explanation independently of useful prediction.","external_models_training_identity":trained_identity,"claim_boundary":"Archived-data timestamp-causal localization on selected crossing days; historical online availability, precursor utility, general ordinary-day false alarms and independent-mission transfer remain unmeasured."});
+    let summary = json!({"identity":identity,"status":"complete","completed_models":63,"new_training_fits":if args.mode==Mode::External {0}else{63},"point_records":63,"planned_record_names":expected,"discrimination_assessment":assessment_from_bootstrap(&bootstrap)?,"primary_interval":bootstrap["interval"],"panels":panels,"canonical_exceeds_every_control_on_every_final_panel":all_canonical_above,"mechanism_decision":"inconclusive_comparison_uncertainty","mechanism_boundary":"Finite ensemble point ranks describe exact-support comparisons; confidence intervals for canonical-minus-control comparisons were not run. Pointwise reproduction motivates revising an algebra-specific explanation independently of predictive discrimination.","external_models_training_identity":trained_identity,"claim_boundary":"Archived-data timestamp-causal localization on selected crossing days; historical online availability, precursor utility, general ordinary-day false alarms and independent-mission transfer remain unmeasured."});
     evidence::record(
         &args.out_dir.join("summary.json"),
         identity,

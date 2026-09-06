@@ -1,0 +1,30 @@
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 6.72s
+     Running unittests src/bin/staples_causal_validation.rs (/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/staples_causal_validation-24bf6929a0bb628e)
+
+running 21 tests
+test control_uncertainty::tests::absent_kernels_and_unset_margin_cannot_establish_equivalence ... ok
+test control_uncertainty::tests::paired_support_rejects_identity_labels_and_invalid_wins ... ok
+test features::tests::feature_window_cannot_change_preceding_calibration ... ok
+test control_uncertainty::tests::utility_manifest_admission_rejects_every_undeclared_delta ... ok
+test fitting::tests::holdout_values_cannot_change_training_transforms ... ok
+test geometric_capacity::tests::gram_rank_detects_duplicate_predictor ... ok
+test metrics::tests::discrimination_target_cannot_adjudicate_effect_or_practical_utility ... ok
+test metrics::tests::pairwise_kernel_matches_tied_weighted_rank_auc ... ok
+test splits::tests::chronology_rejects_overlap_and_future_training ... ok
+{"assessment":{"assessment_status":"assessed","declared_discrimination_target":{"application_based_justification":"unestablished","basis":"historical_investigator_declared_discrimination_target","metric":"paired_roc_auc_increment","scope":"Target attainment is separate from effect evidence, algebra specificity and practical utility.","value":0.005},"effect_assessment":"positive","interval":[0.0010149049086891153,0.0029188809429172872],"practical_utility":{"required_evidence":["Defined application and operating point","Admitted event prevalence and ordinary-day false alarms","Missed-event, false-alarm and resource costs","Paired operational outcomes"],"scope":"An aggregate ROC-AUC increment alone establishes neither usefulness nor uselessness.","status":"unassessed"},"schema_version":2,"target_comparison":"below"},"claim_id":"C-1743","source":"data/output/audit/staples-causal-validation/findings.toml","source_sha256":"41f6c269d316d4045a1a89aa9832e16bae8d536b62d21ccb4876802b60a42bc2"}
+test metrics::tests::insufficient_support_survives_summary_extraction_without_target_or_utility_verdict ... ok
+{"assessment":{"assessment_status":"assessed","declared_discrimination_target":{"application_based_justification":"unestablished","basis":"historical_investigator_declared_discrimination_target","metric":"paired_roc_auc_increment","scope":"Target attainment is separate from effect evidence, algebra specificity and practical utility.","value":0.005},"effect_assessment":"positive","interval":[0.0007173048330896048,0.0024898116600369224],"practical_utility":{"required_evidence":["Defined application and operating point","Admitted event prevalence and ordinary-day false alarms","Missed-event, false-alarm and resource costs","Paired operational outcomes"],"scope":"An aggregate ROC-AUC increment alone establishes neither usefulness nor uselessness.","status":"unassessed"},"schema_version":2,"target_comparison":"below"},"claim_id":"C-1754","source":"data/output/audit/external-crossing-intake-amendment/findings.toml","source_sha256":"88f600221cab195fe2427342cbf4c38b035e8492497c4eb30809a217dbb531e4"}
+test metrics::tests::retained_internal_and_external_intervals_keep_positive_effect_below_target ... ok
+test tests::external_gate_preserves_failed_date_and_rejects_incomplete_or_wrong_units ... ok
+test fitting::tests::held_out_features_and_labels_leave_frozen_coefficients_identical ... ok
+test geometric_capacity::tests::source_admission_rejects_changed_missing_and_extra_compiled_sources ... ok
+test features::tests::geometric_ratio_uses_all_five_increments_and_excludes_calibration_bridge ... ok
+test admission::tests::duplicates_reset_future_history_without_revising_current_decision ... ok
+test admission::tests::all_widths_and_controls_share_one_admitted_row_set ... ok
+test admission::tests::current_vector_and_suffix_cannot_change_earlier_decision ... ok
+test control_uncertainty::tests::identical_controls_have_zero_simultaneous_radius ... ok
+test admission::tests::gaps_fill_invalid_rows_and_backward_times_have_explicit_boundaries ... ok
+test evidence::tests::resume_rejects_identity_drift_payload_mutation_and_overwrite ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
