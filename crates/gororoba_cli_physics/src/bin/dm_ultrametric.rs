@@ -41,7 +41,7 @@ struct Cli {
     #[arg(long, default_value = "dm_exc_ne2001")]
     dm_column: String,
 
-    /// Median host galaxy DM contribution to subtract (pc/cm^3).
+    /// Fixed observer-frame host DM to subtract (pc/cm^3), already redshift-diluted.
     #[arg(long, default_value = "50.0")]
     dm_host: f64,
 
@@ -94,7 +94,8 @@ fn main() {
             continue;
         }
 
-        // Subtract host DM
+        // NE2001 catalog excess and fixed observer-frame host define the inputs.
+        // Galactic halo subtraction and host-frame provenance require calibration.
         let dm_cosmic = dm_exc - cli.dm_host;
         if dm_cosmic <= 0.0 {
             continue;

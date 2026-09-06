@@ -1,0 +1,37 @@
+    Checking cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 2.09s
+lint_exit=0
+   Compiling cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 10.13s
+     Running tests/macquart_source_conformance.rs (<build-dir>/validation/deps/macquart_source_conformance-9937017135bfd270)
+
+running 4 tests
+test mean_dm_matches_analytic_expansion_limits ... ok
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.01 source_dm=8.140676577970 actual_dm=8.140676577970 relative_error=0.000000000000e0
+test distance_chain_uses_observer_frame_host_and_total_galactic_dm ... ok
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.1 source_dm=83.171547071685 actual_dm=83.171547071685 relative_error=1.665334536938e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=0.5 source_dm=441.059634793045 actual_dm=441.059634793047 relative_error=2.886579864025e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=1 source_dm=900.751906538023 actual_dm=900.751906538024 relative_error=1.332267629550e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=2 source_dm=1757.129786210994 actual_dm=1757.129786210996 relative_error=1.110223024625e-15
+omega_m=0.3153 omega_b=0.0493 h0=67.36 z=3 source_dm=2512.206199794313 actual_dm=2512.206199794316 relative_error=1.110223024625e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=0.01 source_dm=7.161557134053 actual_dm=7.161557134053 relative_error=1.332267629550e-15
+test inverse_recovers_source_generated_cosmic_dm ... ok
+omega_m=0.25 omega_b=0.04 h0=73 z=0.1 source_dm=73.496823993645 actual_dm=73.496823993645 relative_error=1.110223024625e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=0.5 source_dm=397.493211192817 actual_dm=397.493211192816 relative_error=1.887379141863e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=1 source_dm=828.030515326097 actual_dm=828.030515326098 relative_error=1.332267629550e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=2 source_dm=1653.436404036227 actual_dm=1653.436404036223 relative_error=2.442490654175e-15
+omega_m=0.25 omega_b=0.04 h0=73 z=3 source_dm=2391.994044609254 actual_dm=2391.994044609256 relative_error=8.881784197001e-16
+test mean_dm_matches_independent_si_density_integral ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+test_exit=0
+   Compiling cosmology_core v0.1.0 (<checkout>/crates/cosmology_core)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 7.91s
+────────────
+ Nextest run ID 96de875b-ffca-4793-8517-2c987692ab6b with nextest profile: default
+    Starting 355 tests across 1 binary
+────────────
+     Summary [   0.303s] 355 tests run: 355 passed, 0 skipped
+library_exit=0
+exit=0

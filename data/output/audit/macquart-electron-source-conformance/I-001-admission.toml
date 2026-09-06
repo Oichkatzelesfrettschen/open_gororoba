@@ -1,0 +1,154 @@
+admission_id = "macquart-electron-source-conformance:I-001"
+insight_id = "I-001"
+expected_previous_evidence_sha256 = "50597c5cb7560817d86bacca5b745df18c31e49a64a86245de02edba993e41ef"
+disposition = "verify_conditional_electron_normalization_preserve_physical_residuals"
+falsifier = "The source-derived SI-density integral, analytic expansion limits and source-generated inverse must agree with production under matched cosmology and foreground frames. Relative DM tolerance is 1e-10; absolute inverse-redshift tolerance is 1e-8. All four tests fail baseline and pass corrected production."
+successor = "A tested constant-fd mean-DM implementation with explicit electron and observer-frame foreground conventions; independent physical calibration remains a candidate experiment."
+residual = "Recover original FRB producers and result bodies; admit catalog halo/host provenance and localized-FRB calibration with uncertainties. Repair inverse invalid-input/bracket behavior and ignored dm-column selection under separate regression contracts. Audit the monograph interpretation and broader family authority map."
+
+[expected]
+title = "Mean-DM distance conversion requires explicit electron and host conventions"
+status = "partial"
+summary = "The implemented DM-to-redshift-to-comoving-distance construction supports a declared cosmology. Macquart et al. Eq. (2) defines a mean cosmic-DM relation with an explicit electron-density helium factor and diffuse baryon fraction; Eq. (1) separates Galactic, halo and redshift-scaled host contributions. The inspected routine omits the explicit 0.875 helium factor under its documented f_IGM convention. Its constants give 927.936546 rather than the approximate comment coefficient 935; multiplying by 0.875 gives only a conditional arithmetic value, 811.944478. An initial bisection bracket of width 10 requires 30 halvings to reach width 1e-8; expanded brackets require additional halvings. Caller host-frame conventions, scatter and physical calibration remain to be admitted. C-071 supplies research motivation rather than evidence for the Macquart formula or inversion convergence."
+status_note = "Partial denotes an implemented construction with unresolved source conformance. The retained primary source and arithmetic witness support the stated convention and iteration corrections. Source-faithful numerical repair, caller audit and independent astrophysical validation remain separate tasks."
+claim_refs = ["C-071"]
+
+[revised]
+title = "Mean-DM distance conversion requires explicit electron and host conventions"
+status = "partial"
+summary = "The mean cosmic-DM implementation includes the Macquart Eq. (2) electron factor 0.875 for helium mass fraction 0.25 and doubly ionized helium. A constant diffuse baryon mass fraction 0.83 specializes the source's fd(z). Independent SI-density quadrature agrees across 12 declared cases to relative error at most 2.9e-15; analytic expansion controls, source-generated inversion and an analytic foreground-subtracted distance test pass. Baseline production fails all four tests, including a measured 8/7 normalization excess. The tested mean-DM value at z=1 is 900.751906538024 pc/cm^3 for the declared Planck parameters. Both FRB callers subtract a fixed observer-frame host from NE2001 excess; catalog halo treatment and physical host-frame provenance remain unresolved. C-071 supplies motivation and retains its refuted disposition."
+status_note = "Partial records conditional implementation conformance on the declared finite grid. The correction resolves the missing electron factor and documents numerical foreground conventions. Inverse invalid inputs and upper-bracket exhaustion, ionization/diffuse-fraction evolution, scatter, independent astrophysical calibration and historical FRB producer replays remain open. Source tests establish their implementation layer; they supply no new ultrametric or physical-structure evidence."
+claim_refs = ["C-071"]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[evidence_files]]
+path = "data/output/audit/macquart-electron-source-conformance/findings.json"
+sha256 = "5b346512f38f368b55f46016b3e7fb30b3e5ee427ea8705c34b3cc11f1fb582f"
+
+[[evidence_files]]
+path = "data/output/audit/macquart-electron-source-conformance/protocol.toml"
+sha256 = "0e81a30d06e9df962cfad56f929cf155a7a74886ce79045cd7d3d592a4a2e721"
+
+[[evidence_files]]
+path = "data/output/audit/macquart-electron-source-conformance/baseline.log"
+sha256 = "30186d00217d8ac2b3bca29e8f171fea4d41fde115ed178c9246396b198a4bc8"
+
+[[evidence_files]]
+path = "data/output/audit/macquart-electron-source-conformance/corrected.log"
+sha256 = "8dee34492ade1e326e66a86e6bcb5bd20c9802b74f6b80b312ba5d349562001f"
+
+[[evidence_files]]
+path = "crates/cosmology_core/src/distances.rs"
+sha256 = "61b266f3f1b20a4ac382da15e6fa8c6a55b6f99d56d5717f5f0054df984d5486"
+
+[[evidence_files]]
+path = "crates/cosmology_core/tests/macquart_source_conformance.rs"
+sha256 = "6dcb0d1d39d59cf11cd40e298251fe2c1cfdf7722ef6ecc28d5bf5849cbc8e8a"
+
+[[evidence_files]]
+path = "crates/gororoba_cli_physics/src/bin/dm_ultrametric.rs"
+sha256 = "3f3545f63c07fad40dbb3c43082c4f1a96bef78a7662ed262144edde6b47c29b"
+
+[[evidence_files]]
+path = "crates/gororoba_cli_physics/src/bin/cosmic_dendrogram.rs"
+sha256 = "e319d8b2e3ddb4c407061e72b9df85b08369f472fe9a5ef717b9161d8e87ccfa"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/sources/macquart-2005.13161v1.pdf"
+sha256 = "bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025"
+
+[[predicates]]
+id = "dm-redshift"
+proposition = "The Macquart relation connects mean cosmic DM and redshift."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "supported"
+execution_status = "source_review"
+boundary = "Supported by the retrieved primary source Eq. (2), conditional on electron density, diffuse baryon fraction and cosmology."
+evidence_anchors = ["sources/macquart-2005.13161v1.pdf, Eq. (2), printed pp. 4-5","data/output/audit/insight-reference-role-pilot/findings.json#I-001/dm-redshift"]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/0/atomic_propositions/0"
+
+[[predicates]]
+id = "coefficient"
+proposition = "The constant-fd mean cosmic-DM normalization includes the source electron-density factor."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "supported"
+execution_status = "replayed"
+boundary = "Independent SI-density integration agrees on 12 declared cases with maximum relative error 2.9e-15. Analytic expansion controls pass. The baseline actual/source ratio is 8/7; multiplying production by 0.875 resolves the defect under fixed fd=0.83, Y_He=0.25 and retained constants."
+evidence_anchors = ["data/output/audit/macquart-electron-source-conformance/protocol.toml","data/output/audit/macquart-electron-source-conformance/baseline.log","data/output/audit/macquart-electron-source-conformance/corrected.log"]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/macquart-electron-source-conformance/findings.json"
+json_pointer = "/normalization"
+
+[[predicates]]
+id = "iterations"
+proposition = "Bisection converges in about 27 iterations."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "refuted"
+execution_status = "retained_result_review"
+boundary = "The initial width 10 and absolute width tolerance 1e-8 require 30 halvings in the unexpanded bracket. Expanded brackets need additional halvings. Runtime convergence on arbitrary inputs remains unmeasured."
+evidence_anchors = ["crates/cosmology_core/src/distances.rs:98-129; oracle-results.toml","data/output/audit/insight-reference-role-pilot/findings.json#I-001/iterations"]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/0/atomic_propositions/2"
+
+[[predicates]]
+id = "physical-distance"
+proposition = "The conversion supplies comoving distances for ultrametric analysis."
+kind = "asserted_proposition"
+evidence_layer = "phenomenological_mapping"
+outcome = "inconclusive"
+execution_status = "source_review"
+boundary = "The helper's observer-frame host and total Galactic subtraction passes an analytic distance test and a wrong-frame negative control. Both production callers use NE2001 excess and fixed observer-frame host subtraction; catalog halo treatment and physical host-frame provenance remain unresolved. The numerical test establishes the helper contract; physical calibration remains unexecuted."
+evidence_anchors = ["data/output/audit/macquart-electron-source-conformance/findings.json#foreground","data/output/audit/macquart-electron-source-conformance/findings.json#callers"]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/macquart-electron-source-conformance/findings.json"
+json_pointer = "/foreground"
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/macquart-electron-source-conformance/findings.json"
+json_pointer = "/callers"
+
+[[predicates]]
+id = "source-generated-inversion"
+proposition = "Source-generated cosmic DM recovers redshift on the declared finite grid."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "supported"
+execution_status = "replayed"
+boundary = "Six declared source-generated inputs recover redshift within absolute 1e-8. Invalid inputs, upper-bracket exhaustion and larger-redshift quadrature remain open."
+evidence_anchors = ["data/output/audit/macquart-electron-source-conformance/protocol.toml","data/output/audit/macquart-electron-source-conformance/corrected.log"]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/macquart-electron-source-conformance/findings.json"
+json_pointer = "/inverse"
+
+[[references]]
+claim_id = "C-071"
+predicate_id = "physical-distance"
+role = "motivates"
+provenance = "Pilot role motivates: Distance representations were proposed in the FRB ultrametric research context."
+boundary = "C-071 asserts FRB ultrametric structure, not a Macquart formula or numerical-convergence result."

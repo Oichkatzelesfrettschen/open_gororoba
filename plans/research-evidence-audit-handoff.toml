@@ -1,5 +1,5 @@
 schema_version = 1
-status = "insight_pilot_canonically_admitted_scientific_replays_pending"
+status = "insight_pilot_admitted_macquart_normalization_verified_scientific_residuals_open"
 prepared_date = "2026-09-06"
 objective = "Audit related claims, insights and other research records together by shared mechanisms and evidence, preserve falsification results, and develop independently tested successor results."
 primary_checkout = "/home/eirikr/Github/open_gororoba"
@@ -167,9 +167,20 @@ acceptance = "Canonical changes, generated outputs, numerical/source tests, inde
 findings = "data/output/audit/insight-reference-role-pilot/findings.json"
 validation = "data/output/audit/insight-reference-role-pilot/validation.toml"
 source_receipts = "data/output/audit/insight-reference-role-pilot/source-receipts.toml"
-next_focus = "Recover original input/result bodies and exact producers, repair source-convention defects under declared caller assumptions, and preregister decisive null-power and selection tests before expanding the candidate families."
-scientific_boundary = "Canonical admission narrows the eight insight interpretations and preserves negative-result lessons. Hash-bound audit assessments and source observations establish their own evidence surfaces; historical numerical replay, new physical mechanisms and independent successor results remain unexecuted."
+next_focus = "Recover original input/result bodies and exact producers; repair DM inverse boundary handling and catalog selection under explicit contracts; admit physical foreground conventions; preregister decisive null-power and selection tests before expanding candidate families. The Macquart electron normalization passes its separate finite source-conformance test."
+scientific_boundary = "Canonical admission narrows the eight insight interpretations and preserves negative-result lessons. The Macquart mean-DM normalization passes independent numerical source oracles under constant diffuse fraction and declared ionization assumptions. Historical producer replay, new physical mechanisms and independently tested physical successors remain unexecuted."
 canonical_admission = "data/output/audit/insight-canonical-admission/admission-results.json"
 source_admission = "data/output/audit/insight-source-admission/README.toml"
 validation_receipt = "data/output/audit/insight-canonical-admission/validation.toml"
 effective_source_history = "data/output/audit/insight-canonical-admission/effective-source-results.json"
+
+[macquart_source_conformance]
+status = "conditional_implementation_verified"
+baseline_commit = "26caa54ee7105af8f343f4602ff6b0a303ea855f"
+findings = "data/output/audit/macquart-electron-source-conformance/findings.json"
+protocol = "data/output/audit/macquart-electron-source-conformance/protocol.toml"
+canonical_spec = "data/output/audit/macquart-electron-source-conformance/I-001-admission.toml"
+result = "The missing electron fraction 0.875 explains the baseline 8/7 mean-DM excess. Four independent source/analytic tests fail baseline and pass corrected production; all 355 cosmology library tests pass. I-001 retains partial status and C-071 retains its refuted disposition."
+inventory_boundary = "The resumed canonical baseline contains 1570 claims, 183 insights, eight insight contracts and nine admissions. The I-001 revision appends admission 10 and changes the pilot predicate total from 31 to 32; all 45 reference roles remain. Full authority mapping remains pending; the candidate families retain their seed status."
+remaining = ["Inverse invalid-input and upper-bracket handling", "NE2001 catalog halo and physical host-frame provenance", "Ignored dm-ultrametric --dm-column selection", "Independent localized-FRB calibration and uncertainty", "Historical producer and result-body recovery", "Source and claim audit of the Macquart monograph interpretation", "Other pilot scientific residuals and broad authority mapping"]
+preservation = "Both historical evidence worktrees remain retained. The historical admission and review bundles remain the source of their original observations."
