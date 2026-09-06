@@ -1,0 +1,53 @@
+schema_version = 1
+status = "passed_bounded_pilot_checks"
+scope = "Eight insight records, 37 declared references, 26 distinct claims; source and retained-result review"
+rustc = "1.97.0 (2d8144b78 2026-07-07)"
+sqlite = "3.53.4"
+taplo = "0.10.0"
+
+[checks]
+replay_prerequisite = "mkdir -p .cache/insight-reference-role-pilot from the repository root before compiling or writing replay outputs"
+snapshot = "sqlite3 -readonly registry/canonical/control_plane.sqlite3 < data/output/audit/insight-reference-role-pilot/pilot-snapshot.sql | jq . reproduces canonical-snapshot.json"
+snapshot_order = "The same command with sqlite3 -cmd 'PRAGMA reverse_unordered_selects=ON' produces identical JSON bytes; each aggregated array declares its ORDER BY."
+coverage = "CARGO_TARGET_DIR=\"$(pwd)/.cache/gate-target\" cargo run --profile validation -p gororoba_cli_provenance --bin verify-insight-reference-pilot -- --findings data/output/audit/insight-reference-role-pilot/findings.json --snapshot data/output/audit/insight-reference-role-pilot/canonical-snapshot.json reproduces coverage-validation.json"
+coverage_negative_controls = "Seven Rust unit tests exercise missing, duplicated and substituted references/insights, blank fields, malformed JSON and inconsistent snapshot declarations. Focused clippy passes with -D warnings."
+normalized_references = "SQLite claim_insight_refs contains 37 rows for the pilot; exact declared pair equality is checked against the retained snapshot."
+compile = "rustc --edition 2024 -D warnings data/output/audit/insight-reference-role-pilot/mechanism_oracles.rs -o .cache/insight-reference-role-pilot/mechanism-oracles"
+oracle = "The compiled oracle exits 0; stdout matches oracle-results.toml byte for byte."
+format = "rustfmt --edition 2024 --config-path /dev/null --check passes for the standalone oracle. The empty config avoids workspace nightly-only formatting options under the pinned stable compiler."
+toml = "taplo check passes for the handoff, oracle results, source receipts and validation record."
+json = "jq parses all retained JSON records."
+character_policy = "GOROROBA_REPO_ROOT set to the handoff checkout; cached repo-utilities ansi-check --check exits 0. Tool digest is retained below; source-freshness rebuild was not run."
+character_policy_binary_sha256 = "bcca7ac832971304dfcfe0c553cf03139be2a84c8307cd20ceb630380ee5edc6"
+diff = "git diff --check and git diff --cached --check pass."
+independent_review = "Two read-only reviewers checked scientific scope and coverage. Applied their sample-duration, historical-normalization, source-convention, hypothesis-label and citation corrections."
+
+[observed_tool_limits]
+raw_log_whitespace = "The staged diff check rejected wget's trailing spaces and terminal blank lines. Deterministic gzip retains the raw log bytes; decompressed logs compare equal to the original captures and the final diff check passes."
+initial_format = "Initial rustfmt invocation emitted two warnings for workspace nightly-only options. The final standalone-format check uses an explicit empty config and passes warning-free."
+interrupted_scan = "xtask ascii-check --help dispatches the scan rather than help. Its source walks unpruned cache descendants and treats non-ASCII bytes as failures. The read-only scan was interrupted with SIGINT, exit 130, after reporting cache and pre-existing file findings. The Makefile's intended character gate is repo-utilities ansi-check."
+interrupted_binary_sha256 = "69461167266330d9291e7384e1ce0e79e882e95b1d874336fea3db29697e8f90"
+
+[evidence_limits]
+scientific_replay = "Not run: original catalog and angular-bootstrap bodies remain unmaterialized at inspected paths. Retained registry results are distinguished from numerical reproduction."
+oracle_scope = "The permutation probe enumerates 720 permutations of one six-value fixture. The p-adic probe checks 560 triples of integers 0 through 15. The general permutation argument rests on the unordered-triple bijection and inspected production mechanism."
+arithmetic_scope = "The FWHM inequality assumes cycles/sample and effective N=5045; original normalization remains unresolved. The helium-factor calculation holds the code constants fixed and does not calibrate diffuse baryon evolution."
+new_physics = "No new physical hypothesis was promoted. Successor tests remain declared follow-up requirements."
+full_publication_gate = "Historical prepublication observation at commit 4209476f: the full gate was not run for that local audit commit. Subsequent publication runs the required pre-push gate and records its outcome in the PR."
+
+[preservation]
+observation_scope = "Historical pilot observations before commit 4209476f; publication adds the Rust verifier and changes its crate manifest. Publication state and gate outcomes are recorded in PR 176."
+canonical_database_sha256_before_after = "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8"
+primary_database_sha256_before_after = "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8"
+primary_head_before_after = "d59c8fa086614dc248eeb22f5406cb8205c75464"
+primary_status = "git status --porcelain is empty at the initial and final precommit observations."
+preexisting_files = "All 8341 pre-existing tracked-file hashes matched before the intentional handoff update. Final precommit checks match the 8340 entries outside that handoff file."
+precommit_index_and_refs = "Index entries and local branch targets match the initial observations before staging. The local audit commit intentionally advances the handoff branch and index."
+write_boundary = "The pilot adds its audit bundle, updates the handoff plan, and writes build/download/check scratch files under .cache/insight-reference-role-pilot. wget may update its user HSTS store; that host file was not measured."
+other_worktrees = "Worktree registration and HEAD identities were inventoried. Tracked bytes in the other two worktrees were not independently hashed."
+
+[hash_generation]
+tool = "sha256sum (GNU coreutils) 9.11"
+scope = "Run from the repository root. source-paths.txt declares the evidence boundary; source-hashes.sha256 pins those bytes. Bundle enumeration excludes the manifest being generated."
+sources = "xargs -d '\\n' sha256sum < data/output/audit/insight-reference-role-pilot/source-paths.txt > .cache/insight-reference-role-pilot/source-hashes.next; cp .cache/insight-reference-role-pilot/source-hashes.next data/output/audit/insight-reference-role-pilot/source-hashes.sha256"
+bundle = "rg --files data/output/audit/insight-reference-role-pilot | rg -v '/checksums.sha256$' | LC_ALL=C sort | xargs sha256sum > .cache/insight-reference-role-pilot/bundle.next; cp .cache/insight-reference-role-pilot/bundle.next data/output/audit/insight-reference-role-pilot/checksums.sha256"

@@ -1,0 +1,45 @@
+schema_version = 1
+baseline_main = "d59c8fa086614dc248eeb22f5406cb8205c75464"
+scope = "Repository-owned worktrees, all local heads, all remote heads and open PRs observed before publication"
+initial_open_pr_count = 0
+initial_local_branches = ["main", "fix/claim-evidence-adjudication", "docs/research-evidence-audit-handoff"]
+initial_remote_branches = ["main", "fix/claim-evidence-adjudication"]
+
+[[surface]]
+name = "research-evidence-audit-handoff"
+head = "4209476f8a06f9396bbc7e42ee011f169f5c1cbc"
+disposition = "Publish the two unpublished audit commits and reviewed publication corrections through a PR."
+
+[[surface]]
+name = "claim-evidence-adjudication"
+head = "459c9a59dac536075178dfaddfc06bd5e65550a7"
+disposition = "HEAD is an ancestor of remote main through merged PR 172. Remove the redundant branch after integration; retain the instrument checkout at its declared runtime path."
+dirty_cargo_manifest = "Byte-identical to primary main."
+dirty_rust_source = "Byte-identical to tracked executed-intake-producer.rs.txt; active source changes function placement only."
+dirty_rust_sha256 = "40a6e69c191da3d26191f24c373b8e28e6b96d3d2597debf6ee53cf2ce6b61d1"
+dirty_audit_files = "All six untracked external-crossing-intake-amendment files match tracked main bytes."
+dirty_plan = "Obsolete progress state; main retains completion of the amendment tasks and additional progress. Reapplying the stale plan would regress the record."
+retention_reason = "plans/external-execution-targets.toml names executable paths in this checkout, including the QGP vector extractor. Cleanup preserves those paths and classified historical bytes."
+
+[[surface]]
+name = "themis-frozen-model-source"
+head = "c86e943b608ccd0d0441bd3dd3b8361967fe1763"
+disposition = "Detached HEAD is an ancestor of remote main; retain the historical model-source checkout."
+untracked_fixtures = "All nine materials_data fixtures match tracked primary-main bytes."
+retention_reason = "The frozen-source-identity receipt names this checkout and binds 20 source hashes. The historical producer boundary remains distinct from active main."
+
+[[surface]]
+name = "fix-magnetic-correctness"
+kind = "orphan directory with initialized SQLite database; Git worktree metadata is absent"
+database_sha256 = "f3c68e7545ed29fd2872b53264783e1c6b441b9bc684f8a88efee4ceb3ce930f"
+schema_version = 19
+claims = 0
+insights = 0
+experiments = 0
+manifest_seed_rows = 27
+comparison = "All 27 source-of-truth manifest seed rows occur in main when creation timestamps are excluded. Domain content and revision tables are empty; integrity_check returns ok."
+disposition = "Recoverable removal preserves the initialized database and its timestamp provenance; scientific integration requires zero additional records."
+
+[cleanup_boundary]
+rule = "Merge unique work, prove ancestry and dirty-byte coverage, then prune redundant branches. Preserve runtime-declared evidence checkouts and recoverably move obsolete scratch directories."
+excluded = "Worktrees owned by other Git common directories and unrelated repositories."

@@ -1,0 +1,160 @@
+schema_version = 1
+status = "candidate_families_require_source_trace"
+base_commit = "d59c8fa086614dc248eeb22f5406cb8205c75464"
+classification_boundary = "Review seeds use titles, explicit claim references and retained audit anchors. Shared causal mechanisms and admissible roles require source inspection. Membership is many-to-many, establishes no truth verdict, and is not a complete partition."
+
+[[family]]
+id = "registry-authority-and-evidence-roles"
+priority_band = "P0"
+status = "source_audit_pending"
+insight_ids = ["I-001","I-002","I-094","I-095","I-096","I-207","I-209","I-212"]
+claim_ids = ["C-019","C-020","C-021","C-046","C-047","C-068","C-069","C-070","C-071","C-077","C-081","C-092","C-1628","C-1631","C-1633","C-543","C-784","C-785","C-786","C-787","C-788","C-789","C-790","C-791","C-797","C-798"]
+experiment_ids_from_registry = ["E-002","E-060","E-061","E-062","E-064","E-068","E-203","E-206","E-207","E-239","E-241","E-242"]
+input_anchors = ["registry/source_manifest.toml","registry/claims_evidence_edges.toml","registry/insights.toml"]
+review_question = "Does each reference support the proposition, document its refutation, or carry a methodological lesson?"
+proposed_falsifier = "Trace the eight pilot insights to exact propositions and evidence layers. Reject a proposed support edge when its source establishes a different proposition; adjudicate negative-result lessons on their own merits."
+successor_opportunity = "Define typed cross-category reference roles and canonical ownership before schema migration; preserve original IDs and negative-result lessons."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "catalog-representations-and-signal-specificity"
+priority_band = "P1"
+status = "source_audit_pending"
+insight_ids = ["I-001","I-002","I-011","I-093","I-094","I-095","I-096","I-098"]
+claim_ids = ["C-071","C-436","C-437","C-438","C-439","C-440","C-442","C-782","C-784","C-785","C-786","C-787","C-788","C-789","C-790","C-791","C-796","C-797","C-798"]
+experiment_ids_from_registry = ["E-002","E-054","E-055","E-058","E-060","E-061","E-062","E-064","E-068"]
+input_anchors = ["registry/insights.toml","docs/engineering/claim-family-evidence-adjudication.md"]
+review_question = "Does the physical interpretation survive substitution or removal of sorting, coordinate encoding and shared transforms?"
+proposed_falsifier = "Trace transformations first; declare controls preserving marginal distributions, sample support and estimator budgets while destroying the proposed physical structure."
+successor_opportunity = "Separate distributional or representation invariants from physical periodicity; test distinguishing successors on unused observations."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "heliosphere-collision-force-and-transport-units"
+priority_band = "P1"
+status = "source_audit_pending"
+insight_ids = ["I-109","I-110","I-111","I-112","I-113","I-114","I-115","I-116","I-117","I-118","I-119","I-120","I-121","I-122","I-123","I-124"]
+claim_ids = ["C-1150","C-1151","C-1153","C-1157","C-1161","C-1162","C-1163","C-1173","C-1175","C-1176","C-1218","C-1219","C-1224","C-1225","C-1681","C-1682","C-1683","C-1684","C-1685","C-1686","C-1687","C-1755","C-1756"]
+experiment_ids_from_registry = ["E-113","E-114","E-115","E-119","E-123","E-125","E-126","E-127","E-138","E-297","E-312","E-313"]
+input_anchors = ["crates/data_core/src/catalogs/wind_swe.rs","crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs","data/output/audit/proton-collisional-scale-admission/"]
+review_question = "Do older resolution, Parker geometry, force-scale and PTE insights survive the repaired unit and physical-frame boundaries?"
+proposed_falsifier = "Check independent SI oracles, heliocentric/Galactocentric frames, differential acceleration, admitted gradient lengths and physical boundaries before coupled runs."
+successor_opportunity = "Retain implementation conformance; formulate physical transport or force successors only after source, scale and boundary admission."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "galaxy-lbm-morphology-and-precision"
+priority_band = "P1"
+status = "source_audit_pending"
+insight_ids = ["I-132","I-133","I-134","I-135","I-136","I-137","I-138","I-139","I-140","I-141","I-184","I-185","I-186","I-187","I-188","I-189","I-190","I-191","I-192","I-193"]
+claim_ids = ["C-1256","C-1260","C-1262","C-1263","C-1264","C-1265","C-1266","C-1267","C-1268","C-1271","C-1272","C-1273","C-1278","C-1300","C-1304","C-1305","C-1379","C-1380","C-1381","C-1382","C-1383","C-1385","C-1386","C-1387","C-1745","C-1748"]
+experiment_ids_from_registry = ["E-147","E-150","E-152","E-153","E-154","E-155","E-156","E-158","E-159","E-160","E-161","E-177"]
+input_anchors = ["crates/lbm_3d/","plans/claim-family-evidence-adjudication.toml"]
+review_question = "Which morphology and precision effects arise from initial-field admission, solver evolution, box-counting or hardware throughput?"
+proposed_falsifier = "Keep physical inputs and observation times matched; separate same-field estimator comparisons from evolved-state comparisons. Retain failed Mach/convergence rows and independent impulse/streaming oracles."
+successor_opportunity = "A numerical stability or estimator finding can replace a physical interpretation. Hardware speed and physical accuracy need separate evidence."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "halo-harmonic-stacking-and-population-selection"
+priority_band = "P1"
+status = "source_audit_pending"
+insight_ids = ["I-168","I-169","I-170","I-171","I-173","I-174","I-175","I-179","I-180","I-181","I-182","I-183","I-194","I-195","I-196","I-197","I-198","I-199","I-200","I-201","I-202","I-203","I-204","I-205","I-206"]
+claim_ids = ["C-1331","C-1341","C-1342","C-1343","C-1344","C-1345","C-1346","C-1347","C-1348","C-1350","C-1351","C-1352","C-1353","C-1354","C-1355","C-1356","C-1357","C-1358","C-1365","C-1366","C-1367","C-1368","C-1369","C-1370","C-1371","C-1372","C-1373","C-1411","C-1412","C-1415","C-1419","C-1420","C-1421","C-1422","C-1423","C-1424","C-1425","C-1426","C-1427","C-1428","C-1429","C-1430","C-1431","C-1432","C-1433","C-1434","C-1435","C-1436","C-1437","C-1438","C-1439"]
+experiment_ids_from_registry = ["E-183","E-184","E-185","E-186","E-187","E-191","E-192","E-201","E-202","E-206"]
+input_anchors = ["registry/insights.toml","registry/claims.toml"]
+review_question = "Do apparent recurrence and sensitivity measure shared normalization, selection or outlier weighting?"
+proposed_falsifier = "Audit normalization identities; compare null injection and recovery, matched alternatives, inclination strata and influence diagnostics under frozen selection."
+successor_opportunity = "Preserve calibration floors and estimator failures; new sensitivity claims require independent injection recovery and admitted observations."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "optical-response-causality-and-source-conventions"
+priority_band = "P1"
+status = "source_audit_pending"
+insight_ids = ["I-072","I-073","I-074","I-075","I-076","I-077","I-078","I-079","I-080","I-081","I-082","I-083","I-084","I-085","I-086","I-088","I-089","I-090"]
+claim_ids = ["C-707","C-708","C-709","C-710","C-714","C-716","C-718","C-719","C-722","C-723","C-724","C-725","C-726","C-727","C-728","C-729","C-730","C-731","C-732","C-733","C-734","C-735","C-736","C-737","C-738","C-740","C-741","C-742","C-743","C-744","C-745","C-746","C-747","C-748","C-750","C-751","C-752","C-753","C-754","C-755","C-757","C-758","C-759","C-760","C-761","C-762","C-763","C-764","C-765","C-766","C-834","C-849","C-850"]
+experiment_ids_from_registry = ["E-043","E-044","E-074","E-076","E-079"]
+input_anchors = ["crates/optics_core/","crates/quantum_core/src/casimir/","data/output/audit/proton-collisional-scale-admission/claim-adjudication.toml"]
+review_question = "Which conclusions share a dielectric kernel, sign convention, fitted constants or scalar/tensor approximation?"
+proposed_falsifier = "Trace primary formulas and common kernels; test passivity, causality/Kramers-Kronig, units and independent signed oracles. Inspect absolute-value guards for hidden invalid physics."
+successor_opportunity = "Split linear conformance, nonlinear extrapolation and device claims; a convention correction can yield a bounded reusable material-response result."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "microscopic-transport-and-kubo-mechanisms"
+priority_band = "P2"
+status = "source_audit_pending"
+insight_ids = ["I-067","I-068","I-069","I-087"]
+claim_ids = ["C-012","C-084","C-430","C-441","C-678","C-679","C-680","C-681","C-683","C-685","C-686","C-687","C-689"]
+experiment_ids_from_registry = ["E-034","E-206"]
+input_anchors = ["registry/insights.toml","registry/claims.toml"]
+review_question = "Are transport enhancements derived from the microscopic model, imposed by parameterization, or inferred by analogy?"
+proposed_falsifier = "Match primary Kubo definitions to code, conservation laws, limiting regimes and alternative mechanisms."
+successor_opportunity = "Register source-model conformance or bounded fits separately from mechanism claims requiring distinguishing predictions."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "algebraic-lifts-and-neutrino-observables"
+priority_band = "P1"
+status = "source_audit_pending"
+insight_ids = ["I-209"]
+claim_ids = ["C-068","C-069","C-070","C-077","C-081","C-092","C-1476","C-1478","C-1489","C-1492","C-1498","C-1502","C-1722"]
+experiment_ids_from_registry = ["E-206","E-207","E-287"]
+input_anchors = ["registry/scorecard.toml","registry/claims.toml","AGENTS.md"]
+review_question = "Which mixing/CP statements are invariants, fitted constructions, source-release comparisons or physical predictions?"
+proposed_falsifier = "Enumerate lifts, fitted parameters and symmetry obligations; freeze source release and conventions; test held-out observables without refitting."
+successor_opportunity = "Preserve fits and obstructions while separating parameter-free predictions; carry failures into explicit successor hypotheses."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "spectral-topology-and-theorem-identity"
+priority_band = "P2"
+status = "source_audit_pending"
+insight_ids = ["I-017","I-105","I-106","I-125","I-126","I-127","I-128","I-129","I-131","I-133"]
+claim_ids = ["C-1133","C-1134","C-1136","C-1137","C-1232","C-1233","C-1234","C-1236","C-1248","C-1250","C-1255","C-1256","C-1257","C-1747","C-476","C-477"]
+experiment_ids_from_registry = ["E-011","E-012","E-013","E-106","E-142","E-143","E-144","E-145","E-147","E-148","E-305"]
+input_anchors = ["proofs/","crates/provenance_store/src/theorem_identity.rs","docs/engineering/magnonic-isolated-bundle-time-reversal.md"]
+review_question = "Do shared geometry and spectral analogies establish the same theorem, representation, global gap or physical invariant?"
+proposed_falsifier = "Trace exact propositions and assumptions, representation maps, source Hamiltonians and global gaps; run counterexample or symmetry checks before sweeps."
+successor_opportunity = "Retain proven invariants with assumptions; require independent mappings before transferring them to physical claims."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "qgp-source-measures-and-calibration-identifiability"
+priority_band = "P1"
+status = "source_audit_pending"
+insight_ids = ["I-103"]
+claim_ids = ["C-1710","C-1713","C-833","C-922","C-931"]
+experiment_ids_from_registry = ["E-074","E-084","E-087","E-296","E-309","E-310","E-311","E-314"]
+input_anchors = ["plans/claim-family-evidence-adjudication.toml","docs/engineering/claim-family-evidence-adjudication.md"]
+review_question = "Do geometry, pp reference, fragmentation, quenching and covariance define a common admitted observable and identifiable fit?"
+proposed_falsifier = "Audit source measures, Jacobians, populations, channel weights, calibration overlap and covariance before fits. Shared spectral-dimension notation alone cannot justify pooling."
+successor_opportunity = "Source-conformance results remain reusable; physical comparisons require a jointly admitted likelihood and independent holdout."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "ward-distributions-and-renormalized-observables"
+priority_band = "P1"
+status = "source_audit_pending"
+insight_ids = []
+claim_ids = ["C-1666","C-1749"]
+experiment_ids_from_registry = ["E-290","E-301","E-304"]
+input_anchors = ["data/output/audit/ward-residual-scope/","docs/engineering/claim-family-evidence-adjudication.md"]
+review_question = "Which identities belong to the source proposition, distributional contacts, subtraction convention or implemented full-vector residual?"
+proposed_falsifier = "Match primary equations, contact terms and integration/subtraction order; compare independent component and limiting-case oracles."
+successor_opportunity = "Split source identity, component conformance and full-vector claims; register successors only for established predicates."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."
+
+[[family]]
+id = "detector-causal-support-and-operational-evidence"
+priority_band = "P2"
+status = "source_audit_pending"
+insight_ids = ["I-212"]
+claim_ids = ["C-1628","C-1631","C-1632","C-1633","C-1740","C-1741","C-1742","C-1743","C-1744","C-1754"]
+experiment_ids_from_registry = ["E-239","E-240","E-241","E-242","E-279","E-280","E-281","E-282","E-283","E-284","E-285","E-286"]
+input_anchors = ["data/output/audit/discrimination-target-interpretation/","data/output/audit/external-crossing-intake-amendment/","crates/gororoba_cli_physics/src/bin/staples_causal_validation.rs"]
+review_question = "Which derivative insights still conflate effect evidence, structure specificity, target attainment or practical utility?"
+proposed_falsifier = "Propagate completed findings first. New research needs matched temporal support and independent ordinary-day/operational observations; avoid rerunning completed gates without a new reason."
+successor_opportunity = "Preserve archived effects and historical targets; practical utility requires separate application and cost evidence."
+execution_boundary = "Start offline with sources and retained evidence. Declare protocols before new inference; apply device-specific authorization before hardware execution."

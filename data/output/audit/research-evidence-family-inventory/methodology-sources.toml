@@ -1,0 +1,52 @@
+schema_version = 1
+retrieval_date = "2026-09-06"
+scope = "Targeted primary-source methodology review; neither an exhaustive literature search nor scientific adjudication of the candidate families"
+retrieval_transport = "HTTPS curl before the user's wget preference arrived; all five primary requests returned HTTP 200. Further retrieval uses wget with Mozilla user agent and supported alternate transports."
+local_source_root = ".cache/research-evidence-audit-handoff/sources"
+retained_source_root = "data/output/audit/research-evidence-family-inventory/methodology-source-bodies"
+retained_encoding = "Each local_file is retained as local_file.gz using gzip -n. Decompression reproduces the source SHA256 declared in its row."
+extraction = "HTML text extraction strips script and iframe elements, then runs pandoc --sandbox. PDF text extraction uses pdftotext. Original downloaded bodies remain in the local source root."
+
+[[source]]
+id = "COS-PREREG"
+title = "Center for Open Science: Preregistration"
+url = "https://www.cos.io/initiatives/prereg"
+local_file = "cos-preregistration.html"
+sha256 = "1c44df7c10c8d58617db1ca42d713c4bd51a501b28b6dbfb3883db70c57e0afb"
+application = "Label planned and exploratory analyses separately. A hypothesis generated during falsification becomes a candidate successor requiring a new declared test or independent observations."
+
+[[source]]
+id = "COS-TOP"
+title = "Center for Open Science: Transparency and Openness Promotion Guidelines"
+url = "https://www.cos.io/initiatives/top-guidelines"
+local_file = "cos-top-guidelines.html"
+sha256 = "6e888f5c44ea5d591ba38bbf60116b608f4ad0616dcaa356c68b149646cadfc1"
+application = "Track availability, sharing and independent verification of protocols, data, materials and code separately. Consider replication, multiverse or many-analyst work only where the scientific question warrants it."
+
+[[source]]
+id = "W3C-PROV"
+title = "W3C PROV Overview"
+url = "https://www.w3.org/TR/prov-overview/"
+local_file = "w3c-prov-overview.html"
+sha256 = "fc45beed479aef763da4dd6e11d1f92e0e7b91e9c19c30a0ed9ba279de36b556"
+application = "Represent evidence entities, producing activities, responsible agents and derivation relationships explicitly. Use provenance to track revisions and shared inputs; shared provenance is not independent scientific support."
+limit = "The overview is non-normative. The proposed repository design is informed by PROV, not certified as PROV compliant."
+
+[[source]]
+id = "PRISMA-2020"
+title = "PRISMA 2020 Statement"
+url = "https://www.prisma-statement.org/prisma-2020-statement"
+doi = "10.1136/bmj.n71"
+local_file = "prisma-2020.html"
+sha256 = "1cd933983990e63a27627c218237046f7a1c3e6cd2a1ea16be49c67fcbb390a4"
+application = "Keep per-family search queries, sources, dates, inclusion/exclusion reasons and version identities. Separate included evidence from material excluded for source or scope mismatch."
+limit = "Adapt the reporting trail to mathematical and computational research. A targeted repository audit is not automatically a PRISMA-compliant systematic review."
+
+[[source]]
+id = "ASA-PVALUES"
+title = "American Statistical Association: Statement on Statistical Significance and P-Values"
+url = "https://www.amstat.org/asa/files/pdfs/P-ValueStatement.pdf"
+local_file = "asa-p-values.pdf"
+sha256 = "5327785901ea402c063458e9d061b131a2f4a81c8a6d46fd9e217238b61f8ca9"
+application = "Report effect size, uncertainty, model assumptions and complete analyses; a statistical threshold alone does not establish importance or justify a scientific decision."
+limit = "The source addresses p-values. Separation of ROC-AUC target attainment and operational utility is the repository's related decision-design application, not an ASA endorsement of a particular ROC-AUC rule."

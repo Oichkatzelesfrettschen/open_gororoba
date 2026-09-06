@@ -1,0 +1,58 @@
+schema_version = 1
+scope = "Two source questions prompted by the pilot; bounded primary-source retrieval rather than an exhaustive literature search"
+retrieval_tool = "GNU wget with Mozilla/5.0 user agent"
+date = "2026-09-06"
+
+[canonical_admission]
+status = "first_observation_registration_pending"
+scope = "These are retained audit observations, not entries in artifact_retrieval_observations."
+owner = "crates/provenance_store/src/artifact_retrieval.rs::ArtifactRetrievalSpec and validate_evidence"
+constraint = "Version 1 requires an existing canonical artifact URL and a hash-bound prior expectation inventory with expected digest and size. The six new source identities lack that prerequest body expectation; Li is citation-only and also lacks an expected body."
+registration_limit = "artifact register-local creates a NULL canonical URL. record-retrieval requires its string URL prestate. Synthesizing prior expectations from newly observed bytes would misstate provenance."
+additional_requirements = "A first-observation contract must represent absent prior expectations, optional URL prestate, observation-time precision and encoded body storage while retaining v1 digest-correction guarantees."
+next_action = "Design and validate first-observation admission before promoting these audit receipts into canonical retrieval history. Source bodies, hashes and failed attempts remain retained in the pilot and methodology bundles."
+
+[[source]]
+id = "macquart-mean-electron-density"
+question = "Does the code implement the primary mean-DM electron-density convention?"
+requested_url = "https://arxiv.org/pdf/2005.13161"
+final_url = "https://arxiv.org/pdf/2005.13161"
+protocol = "HTTPS"
+status = "body_retrieved_identity_verified"
+http_status = 200
+title = "A census of baryons in the Universe from localized fast radio bursts"
+authors = "J.-P. Macquart and collaborators"
+version = "arXiv:2005.13161v1, 27 May 2020; verified in PDF title page and Content-Disposition"
+body = "sources/macquart-2005.13161v1.pdf"
+byte_length = 3738281
+sha256 = "bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025"
+request_log = "sources/macquart-wget.log.gz"
+included = true
+reason = "Primary mean cosmic DM and electron-density formulas directly address I-001."
+anchor = "Equation (1), Equation (2), printed pages 4-5"
+observation = "The source defines n_e = f_d rho_b / m_p times (1-Y_He/2), with Y_He=0.25 and a diffuse ionized baryon fraction f_d(z). The source treats a mean relation and models sight-line scatter separately."
+interpretation_limit = "Applying the helium factor to the code's constants is a conditional arithmetic check, not a source-calibrated replacement for the source's redshift-dependent diffuse fraction."
+extraction = "pdftotext -layout; equation and adjacent definitions inspected in the extracted text"
+body_identity_limit = "Response ETag differs from the computed body SHA256; the retained digest names actual response bytes and does not claim ETag equivalence."
+
+[[source]]
+id = "li-quantile-periodograms"
+question = "Does Li2012 prescribe quantile periodograms for arbitrary sorted distributional data?"
+doi = "10.1080/01621459.2012.682815"
+title = "Quantile Periodograms"
+registry_locator = "ASOT-0242"
+requested_urls = ["https://www.tandfonline.com/doi/pdf/10.1080/01621459.2012.682815", "http://www.tandfonline.com/doi/pdf/10.1080/01621459.2012.682815"]
+request_logs = ["sources/li-wget.log.gz", "sources/li-http-wget.log.gz"]
+http_outcomes = ["HTTPS returned 403", "wget upgraded the HTTP URL to HTTPS under HSTS; HTTPS returned 403"]
+status = "body_unretrieved_source_proposition_unassessed"
+included = false
+reason = "Both publisher attempts failed; the declared canonical artifact is citation-only."
+scope_limit = "Both attempts reached HTTPS. An HTTP response was not measured. Author/institutional mirrors and alternate supported transports remain unsearched."
+intake_condition = "Admit an identified author or publisher body with version, relevant definition, actual bytes and SHA256 before source-level prescription."
+
+[retention]
+request_log_encoding = "gzip -n preserves each raw request log byte for byte after decompression; compressed storage avoids altering historical whitespace to satisfy diff checks."
+manifest = "data/retention/scientific-payloads.json"
+selected_locators = "retention-locators.json"
+boundary = "Selected C-071 and catalog paths have hash-bound archive declarations. Their original bodies were absent at inspected paths. The archive was not downloaded in the reference-role pilot."
+angular_result_boundary = "The three named rotation-bootstrap paths were absent, and their names matched zero entries in the inspected current-path retention manifest. That observation leaves historical object and other storage searches open."

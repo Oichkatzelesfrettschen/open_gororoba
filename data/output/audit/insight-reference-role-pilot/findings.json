@@ -1,0 +1,580 @@
+{
+  "schema_version": 1,
+  "status": "reference_role_pilot_complete_canonical_adjudication_pending",
+  "scope": "Source and retained-result review of exactly eight insights and their 37 declared claim references. Independent finite/arithmetic witnesses supplement source inspection. Historical scientific producers and new physical hypotheses were not executed.",
+  "identity": {
+    "handoff_head": "84e8223a7602e9d48cdc0ce74ea21b98be5864a2",
+    "handoff_branch": "docs/research-evidence-audit-handoff",
+    "primary_head": "d59c8fa086614dc248eeb22f5406cb8205c75464",
+    "primary_branch": "main",
+    "database_sha256": "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8",
+    "claims": 1570,
+    "insights": 183,
+    "experiments": 285,
+    "pilot_insights": 8,
+    "declared_references": 37,
+    "distinct_referenced_claims": 26
+  },
+  "role_convention": "Each role describes how a cited claim bears on an atomic insight proposition. Historical negative examples can support a methodological lesson while defeating the original physical interpretation. These audit labels are proposed semantics, not canonical schema values.",
+  "authority": [
+    {
+      "surface": "insights",
+      "owner": "SQLite insights; gororoba-db insight commands",
+      "finding": "Canonical columns supply status, title, references and status_note. Summary remains in compat_toml_text. Canonical status overrides cached compat text, which retains obsolete Verified values for some superseded claims."
+    },
+    {
+      "surface": "claim_insight_refs",
+      "owner": "SQLite normalized incidence table",
+      "finding": "Columns claim_id and insight_id contain incidence only. The pilot has 37 declared links. A link alone establishes neither supports nor refutes."
+    },
+    {
+      "surface": "registry/claims_evidence_edges.toml",
+      "owner": "crates/gororoba_cli_data/src/bin/semantic_atoms.rs::build_claim_edges and render_claim_edges",
+      "finding": "6107 generated rows use claim_id/edge_role/target_ref/target_kind. The generator derives where_stated, verification_rule and cross_reference roles from claim atoms, rather than audited scientific support."
+    },
+    {
+      "surface": "SQLite evidence_edges",
+      "owner": "crates/provenance_store/src/lib.rs::ingest_evidence_edges",
+      "finding": "The table has zero rows. The importer expects source/target and skips generated rows with empty values for those absent fields. The inspected format mismatch explains why the generated file cannot be ingested by that function; ingestion execution history remains unmeasured."
+    },
+    {
+      "surface": "claim_relations",
+      "owner": "Typed claim transition transactions",
+      "finding": "Canonical predecessor/successor edges admit source_split, implementation_split, narrows, refines and supersedes. They cover claim-to-claim transitions; extending them to insight roles requires explicit design and migration."
+    }
+  ],
+  "methodology": {
+    "reference": "../research-evidence-family-inventory/methodology-sources.toml",
+    "application": "COS separates exploratory successors from confirmation. PROV motivates source/activity/derivation identities, without equating provenance with support. PRISMA informs the bounded inclusion and retrieval trail. ASA motivates effect/uncertainty/decision separation; the repository's ROC-AUC application remains separately justified.",
+    "limits": "Targeted repository audit; neither a systematic review nor PROV compliance certification. Historical null non-rejection supplies a bounded test result and requires demonstrated power before a general refutation."
+  },
+  "records": [
+    {
+      "id": "I-001",
+      "disposition": "revise_reference_and_qualify_source_conformance",
+      "preserve": "The implemented DM-to-redshift-to-comoving-distance pipeline exists and remains useful as a declared cosmological construction.",
+      "atomic_propositions": [
+        {
+          "id": "dm-redshift",
+          "proposition": "The Macquart relation connects mean cosmic DM and redshift.",
+          "assessment": "Supported by the retrieved primary source Eq. (2), conditional on electron density, diffuse baryon fraction and cosmology.",
+          "evidence": "sources/macquart-2005.13161v1.pdf, Eq. (2), printed pp. 4-5"
+        },
+        {
+          "id": "coefficient",
+          "proposition": "DM_cosmic equals 935 times the stated integral.",
+          "assessment": "Approximate code comment differs from evaluated constants (927.936546). Source Eq. (2) also includes (1-Y_He/2)=0.875, omitted by the routine while f_IGM=0.83 remains explicit. Treat source conformance as unresolved; 811.944478 merely applies that factor to the same constants.",
+          "evidence": "crates/cosmology_core/src/distances.rs:53-88; oracle-results.toml"
+        },
+        {
+          "id": "iterations",
+          "proposition": "Bisection converges in about 27 iterations.",
+          "assessment": "The initial width 10 and absolute width tolerance 1e-8 require 30 halvings in the unexpanded bracket. Expanded brackets need additional halvings. Runtime convergence on arbitrary inputs remains unmeasured.",
+          "evidence": "crates/cosmology_core/src/distances.rs:98-129; oracle-results.toml"
+        },
+        {
+          "id": "physical-distance",
+          "proposition": "The conversion supplies comoving distances for ultrametric analysis.",
+          "assessment": "Implementation path exists. Source Eq. (1) separates Galactic, halo and host terms; source host contribution scales with 1/(1+z). The routine directly subtracts caller-supplied host DM. Its caller convention, scatter and physical validity need explicit admission.",
+          "evidence": "crates/cosmology_core/src/distances.rs:131-153; sources/macquart-2005.13161v1.pdf, Eqs. (1)-(2)"
+        }
+      ],
+      "references": [
+        {
+          "claim_id": "C-071",
+          "role": "motivates",
+          "predicate": "Distance representations were proposed in the FRB ultrametric research context.",
+          "boundary": "C-071 asserts FRB ultrametric structure, not a Macquart formula or numerical-convergence result."
+        }
+      ],
+      "falsifier": "Compare a source-derived electron-density integral with the actual routine under explicitly equal cosmological and host-frame assumptions; check inversion bracket and tolerance. The omitted explicit helium factor prevents establishing source conformance under the documented baryon-fraction convention. An effective fitted normalization would require its own evidence.",
+      "successor": "A source-faithful mean-DM conversion with explicit electron/host conventions and uncertainty is a candidate implementation result.",
+      "independent_test": "After declaring input conventions, compare against an independently derived unit-normalized integral and held-out localized FRB redshifts; separate numerical conformance from astrophysical calibration.",
+      "residual": "Source correction, caller convention audit and physical validation remain pending."
+    },
+    {
+      "id": "I-002",
+      "disposition": "preserve_representation_lesson_revise_definitive_refutation",
+      "preserve": "Encoding, metric and null choice determine what an ultrametric test measures.",
+      "atomic_propositions": [
+        {
+          "id": "historical-outcome",
+          "proposition": "The registry records a refutation of C-071 on two CHIME catalogs.",
+          "assessment": "The source dossier reports three columns and eight tests per column. Original CSV result bodies are archive-declared but absent at the inspected checkout paths; report identity differs from reproduced data evidence.",
+          "evidence": "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md; retention-locators.json"
+        },
+        {
+          "id": "null-power",
+          "proposition": "The raw scalar tests decisively refute physical ultrametric structure.",
+          "assessment": "Unsupported by the inspected null mechanism: a permutation induces a bijection on unordered triples and preserves any full-population statistic of their distances. Random triple sampling adds Monte Carlo variation, not a destroyed scientific structure. The independent 720-permutation witness retains 5/20 qualifying triples throughout.",
+          "evidence": "crates/stats_core/src/ultrametric/mod.rs:216-224,258-299,594-631; crates/stats_core/src/ultrametric/null_models.rs:29-45; oracle-results.toml"
+        },
+        {
+          "id": "metric",
+          "proposition": "Ultrametricity belongs to hierarchical organization rather than scalar distributions.",
+          "assessment": "Qualify the assertion: scalar values equipped with a p-adic metric are ultrametric. The 560-triple binary-adic witness and the production metric mechanism defeat a blanket exclusion of scalars. Euclidean distance on three distinct real scalars is a separate, non-ultrametric case.",
+          "evidence": "crates/stats_core/src/ultrametric/mod.rs:640-704; oracle-results.toml"
+        },
+        {
+          "id": "motivation",
+          "proposition": "The refutation motivated alternative representations.",
+          "assessment": "Retain as research history. Baire, temporal and dendrogram implementations exist; their existence establishes neither successful detection nor independent physical evidence.",
+          "evidence": "crates/stats_core/src/ultrametric/mod.rs:47-124"
+        }
+      ],
+      "references": [
+        {
+          "claim_id": "C-071",
+          "role": "negative_result_about",
+          "predicate": "Historical raw-DM null result motivates method review.",
+          "boundary": "Preserve the historical disposition while auditing null power; role classification supplies no automatic canonical status reversal."
+        }
+      ],
+      "falsifier": "A valid decisive null must destroy a declared alternative while preserving nuisance structure. Exact relabeling invariance and imposed p-adic ultrametricity defeat that requirement for the inspected raw-scalar fraction tests.",
+      "successor": "Specify the observable geometry and a null with demonstrated sensitivity before interpreting a raw-DM result.",
+      "independent_test": "Declare positive hierarchical injections and matched nonhierarchical controls at fixed marginal/support constraints before testing fresh catalog data.",
+      "residual": "Recover hash-bound results and original runner identity; inspect all test statistics and selection procedures before canonical re-adjudication."
+    },
+    {
+      "id": "I-094",
+      "disposition": "revise_physical_specificity_to_historical_hypothesis",
+      "preserve": "The registry retains heterogeneous catalog comparisons and later statistical refutations.",
+      "atomic_propositions": [
+        {
+          "id": "detections",
+          "proposition": "Positive FRB, pulsar and SNIa detections establish L-band/large-scale specificity.",
+          "assessment": "C-784/785/786 record E-071 corrected-statistics refutations. Shared transforms and heterogeneous catalog selection do not isolate band or path length.",
+          "evidence": "registry/claims.toml:13046-13067; registry/experiments.toml:1823-1835"
+        },
+        {
+          "id": "controls",
+          "proposition": "Local, solar and nuclear nondetections identify a physical scale.",
+          "assessment": "The recorded nondetections remain bounded observations. Catalogs differ in observable, noise, selection, transform and support; those controls do not isolate the proposed causal variable.",
+          "evidence": "registry/claims.toml:13070-13083"
+        },
+        {
+          "id": "sharpening",
+          "proposition": "FWHM=0.0008 versus 0.016 establishes statistical sharpening.",
+          "assessment": "C-789 is Refuted and its stated resolution arithmetic reverses an inequality if FWHM is in cycles/sample and effective FFT length is N=5045: 0.0008 exceeds 1/5045. Historical normalization and effective FFT length await original result recovery. The arithmetic correction does not restore a detection.",
+          "evidence": "registry/claims.toml:13086-13090; oracle-results.toml"
+        },
+        {
+          "id": "mechanism",
+          "proposition": "Vacuum topology or 21 cm frequency locking explains the comparisons.",
+          "assessment": "Exploratory explanations lack a traced physical map and matched distinguishing evidence in the inspected references.",
+          "evidence": "registry/insights.toml:1078-1087"
+        }
+      ],
+      "references": [
+        {
+          "claim_id": "C-784",
+          "role": "historical_positive_premise_refuted",
+          "predicate": "FRB detection premise.",
+          "boundary": "E-071 refutes corrected detection."
+        },
+        {
+          "claim_id": "C-785",
+          "role": "historical_positive_premise_refuted",
+          "predicate": "Pulsar detection premise.",
+          "boundary": "E-071 refutes corrected detection."
+        },
+        {
+          "claim_id": "C-786",
+          "role": "historical_positive_premise_refuted",
+          "predicate": "SNIa detection premise.",
+          "boundary": "E-071 refutes corrected detection."
+        },
+        {
+          "claim_id": "C-787",
+          "role": "contrasting_nondetection",
+          "predicate": "Wow follow-up nondetection.",
+          "boundary": "Heterogeneous comparison, not a matched band/path control."
+        },
+        {
+          "claim_id": "C-788",
+          "role": "contrasting_nondetection",
+          "predicate": "Other-regime nondetections.",
+          "boundary": "A pipeline-artifact exclusion exceeds those comparisons."
+        },
+        {
+          "claim_id": "C-789",
+          "role": "historical_sharpening_premise_refuted",
+          "predicate": "Catalog-size/FWHM comparison.",
+          "boundary": "The stated resolution arithmetic is reversed conditional on cycles/sample FWHM and effective N=5045; original normalization remains unresolved."
+        }
+      ],
+      "falsifier": "Trace physical coordinates and transforms; require detection under a declared multiplicity/null procedure and matched band/path controls. The recorded corrected-statistics failures already invalidate the affirmative detection premises at registry-evidence level.",
+      "successor": "A bounded distribution/selection diagnostic may survive after original result recovery.",
+      "independent_test": "Freeze a mechanism-specific observable and compare unused, selection-matched catalogs before promoting band/path specificity.",
+      "residual": "Historical numerical replay awaits recovered result bodies and input/runner hashes."
+    },
+    {
+      "id": "I-095",
+      "disposition": "retain_hypothesis_history_withdraw_verified_mechanism_reading",
+      "preserve": "Retain the historical vacuum-resonance explanation as a hypothesis candidate requiring a discriminating prediction, together with its failed premises.",
+      "atomic_propositions": [
+        {
+          "id": "vacuum",
+          "proposition": "The ghost is a structure of large-scale vacuum.",
+          "assessment": "The cited positive detection premises are refuted; the inspected evidence establishes neither a vacuum observable nor a derived coupling.",
+          "evidence": "registry/claims.toml:13046-13090"
+        },
+        {
+          "id": "absence",
+          "proposition": "CWT confirms that absence is physical rather than methodological.",
+          "assessment": "A second estimator's nondetection cannot exclude shared preprocessing, support, sensitivity or selection failures.",
+          "evidence": "registry/claims.toml:13094-13099"
+        },
+        {
+          "id": "couplings",
+          "proposition": "Path length, deconfinement or 21 cm carrier explain the pattern.",
+          "assessment": "Hypotheses require explicit predictions, units, intervening maps and matched controls. C-791's later ALICE null result cannot positively establish QGP coupling.",
+          "evidence": "registry/claims.toml:13102-13106"
+        }
+      ],
+      "references": [
+        {
+          "claim_id": "C-784",
+          "role": "historical_positive_premise_refuted",
+          "predicate": "FRB support for vacuum resonance.",
+          "boundary": "Refuted detection premise."
+        },
+        {
+          "claim_id": "C-785",
+          "role": "historical_positive_premise_refuted",
+          "predicate": "Pulsar support for vacuum resonance.",
+          "boundary": "Refuted detection premise."
+        },
+        {
+          "claim_id": "C-786",
+          "role": "historical_positive_premise_refuted",
+          "predicate": "SNIa support for vacuum resonance.",
+          "boundary": "Refuted detection premise."
+        },
+        {
+          "claim_id": "C-787",
+          "role": "motivates",
+          "predicate": "Short-path/band explanation.",
+          "boundary": "Nondetection supplies no isolated path-length mechanism."
+        },
+        {
+          "claim_id": "C-788",
+          "role": "motivates",
+          "predicate": "Local/nuclear-scale explanation.",
+          "boundary": "Heterogeneous controls confound regime and measurement."
+        },
+        {
+          "claim_id": "C-789",
+          "role": "historical_context",
+          "predicate": "Referenced sharpening context.",
+          "boundary": "Summary assigns no distinct support argument to this link."
+        },
+        {
+          "claim_id": "C-790",
+          "role": "methodological_exclusion_asserted",
+          "predicate": "CWT absence treated as physically decisive.",
+          "boundary": "Exclusion fails without sensitivity and shared-pipeline controls."
+        },
+        {
+          "claim_id": "C-791",
+          "role": "motivates",
+          "predicate": "Marginal ALICE peak motivates coupling.",
+          "boundary": "Later null audit defeats promotion from the marginal peak."
+        }
+      ],
+      "falsifier": "Require a physical observable, a derived or explicitly fitted coupling and a distinguishing controlled prediction. Existing null outcomes defeat claimed support, while untested mechanisms remain unverified hypotheses.",
+      "successor": "A preregistered mechanism hypothesis may be retained separately from historical detection claims.",
+      "independent_test": "Use independent observations and matched processing; include injection sensitivity before interpreting nondetection.",
+      "residual": "Quantitative mechanism and independent test remain undeclared."
+    },
+    {
+      "id": "I-096",
+      "disposition": "preserve_sorted_rank_lesson_correct_frequency_and_method_prescription",
+      "preserve": "Sorting discards physical ordering. A transform of sorted values measures their empirical distribution and declared preprocessing.",
+      "atomic_propositions": [
+        {
+          "id": "representation",
+          "proposition": "Sorted-value FFT measures distributional structure rather than physical periodicity.",
+          "assessment": "The insight correctly rejects that interpretation: equal multisets yield equal sorted inputs regardless of original order. Preserve the warning.",
+          "evidence": "crates/spectral_core/src/ghost_spectral.rs:171-208,572-577"
+        },
+        {
+          "id": "frequency",
+          "proposition": "f around 0.214 describes one fifth of distributional support.",
+          "assessment": "The implementation emits k/N cycles per sample. Reciprocal frequency is about 4.67 rank samples per cycle; neither a location nor one fifth of support follows.",
+          "evidence": "crates/spectral_core/src/ghost_spectral.rs:203-205; oracle-results.toml"
+        },
+        {
+          "id": "quantile-method",
+          "proposition": "Li's quantile periodogram is the correct spectral method for sorted distributional data.",
+          "assessment": "Universal prescription is unsupported. The implementation uses t=i and cannot recover discarded physical coordinates. The cited Li2012 body remains uninspected after recorded publisher HTTPS/HTTP failures.",
+          "evidence": "crates/stats_core/src/quantile_regression.rs:117-131; crates/gororoba_cli_algebra/src/bin/quantile-periodogram.rs:85-105; source-receipts.toml"
+        },
+        {
+          "id": "historical-reverification",
+          "proposition": "Real-data corrected-statistics re-verification remains pending.",
+          "assessment": "E-071 records completion and C-784/785/786 record refutations. Preserve the distinction between that recorded completion and this pilot's unexecuted numerical replay.",
+          "evidence": "registry/experiments.toml:1823-1835"
+        },
+        {
+          "id": "calibration",
+          "proposition": "Seven independent methods confirm the result.",
+          "assessment": "Methods share input and preprocessing; methodological diversity alone establishes no independent datasets or error structure. C-797 also needs its injection denominator reconciled and uncertainty stated.",
+          "evidence": "registry/claims.toml:13150-13163"
+        }
+      ],
+      "references": [
+        {
+          "claim_id": "C-784",
+          "role": "negative_result_about",
+          "predicate": "Historical detection requiring statistical correction.",
+          "boundary": "Preserve its later refutation."
+        },
+        {
+          "claim_id": "C-785",
+          "role": "negative_result_about",
+          "predicate": "Historical detection requiring statistical correction.",
+          "boundary": "Preserve its later refutation."
+        },
+        {
+          "claim_id": "C-786",
+          "role": "negative_result_about",
+          "predicate": "Historical detection requiring statistical correction.",
+          "boundary": "Preserve its later refutation."
+        },
+        {
+          "claim_id": "C-789",
+          "role": "negative_result_about",
+          "predicate": "Historical sharpening interpretation.",
+          "boundary": "Correct the independent resolution arithmetic."
+        },
+        {
+          "claim_id": "C-797",
+          "role": "supports_with_limits",
+          "predicate": "Synthetic calibration result.",
+          "boundary": "Injection counts and original retained bodies need reconciliation."
+        },
+        {
+          "claim_id": "C-798",
+          "role": "supports_with_limits",
+          "predicate": "Rank/distribution interpretation.",
+          "boundary": "Frequency units and universal quantile prescription exceed the inspected evidence."
+        }
+      ],
+      "falsifier": "A method whose input is invariant under permutations cannot recover physical ordering removed by sorting. Match the reported frequency to the code's k/N units; inspect Li's actual proposition before prescribing its estimator.",
+      "successor": "A distributional-shape statistic with declared rank coordinates and calibrated null ensemble is a bounded possible result.",
+      "independent_test": "Declare the scientific coordinate and estimator; test detection and false positives on held-out injections and unused physical-coordinate data.",
+      "residual": "Li source admission, historical CSV recovery and calibration-denominator reconciliation remain pending."
+    },
+    {
+      "id": "I-207",
+      "disposition": "preserve_negative_examples_narrow_reconstruction_coverage",
+      "preserve": "Names and analogies supply insufficient mathematical mechanism; retained reconstructions expose concrete mismatches.",
+      "atomic_propositions": [
+        {
+          "id": "coverage",
+          "proposition": "All six legacy references received exact Rust reconstruction.",
+          "assessment": "E-203 directly covers parity, lattice membership and hardcoded moonshine numbers. Original CSV binding remains unresolved; C-046/C-047 have secondary mirror evidence outside that report.",
+          "evidence": "data/output/claims_falsification/legacy_crossval_audit.toml; crates/gororoba_cli_algebra/src/bin/legacy_crossval_audit.rs:39-131"
+        },
+        {
+          "id": "functionhood",
+          "proposition": "Exceptional cuts prevent a clean basis-to-lattice function.",
+          "assessment": "Explicit exclusions can define a deterministic function. The evidence challenges natural derivation, rather than proving non-functionhood.",
+          "evidence": "data/output/claims_falsification/legacy_crossval_audit.toml:25; proofs/verified/C021_LatticeInconsistency.v:14"
+        },
+        {
+          "id": "proof-identity",
+          "proposition": "Claim-numbered Rocq wrappers prove the legacy refutations.",
+          "assessment": "C019 proves a specific zero product with positive operand norms; C020 proves octonion basis norms; C021 proves XOR determinism. Those propositions require separate mapping to the historical claims.",
+          "evidence": "proofs/verified/C019_WheelsNoContent.v:13; proofs/verified/C020_BasisNonzero.v:12; proofs/verified/C021_LatticeInconsistency.v:14"
+        }
+      ],
+      "references": [
+        {
+          "claim_id": "C-019",
+          "role": "historical_obstruction_context",
+          "predicate": "Specific CD zero-product obstruction.",
+          "boundary": "The witness neither defines wheels nor rejects all wheel interpretations."
+        },
+        {
+          "claim_id": "C-020",
+          "role": "negative_example",
+          "predicate": "98 reconstructed parity/commutativity mismatches.",
+          "boundary": "Original CSV identity came from manual inspection; a relation mismatch needs identity binding before attribution to those CSVs."
+        },
+        {
+          "claim_id": "C-021",
+          "role": "negative_example",
+          "predicate": "1024 accepted of 2048 parent points with two singleton exclusions.",
+          "boundary": "Membership exceptions challenge derivation rather than functionhood."
+        },
+        {
+          "claim_id": "C-046",
+          "role": "historical_negative_context",
+          "predicate": "Scalar-rescaling interpretation.",
+          "boundary": "Direct E-203 reconstruction is unresolved; secondary mirror and task record retain the claim."
+        },
+        {
+          "claim_id": "C-047",
+          "role": "historical_categorical_context",
+          "predicate": "E9/E10/E11 versus Euclidean lattice interpretation.",
+          "boundary": "The inspected E-203 artifact omits this reference; primary historical inputs remain unresolved."
+        },
+        {
+          "claim_id": "C-543",
+          "role": "negative_example",
+          "predicate": "Hardcoded logarithmic amplitude and coefficient reconstruction.",
+          "boundary": "Ten amplitudes agree within 1e-15, first-eight coefficients within 1e-4 relative tolerance; original CSVs are not read."
+        }
+      ],
+      "falsifier": "Bind original data hashes to parsed rows and compare the actual declared relations. For alleged failure of functionhood, require identical-input/conflicting-output witnesses rather than exceptional cases.",
+      "successor": "Retain separate exact numerical reconstructions and limited mathematical obstructions with original-input provenance.",
+      "independent_test": "Parse recovered original bodies and compare against independently implemented relations; prove each intended map's actual obligations.",
+      "residual": "Historical source bodies and claim-to-theorem identity remain separate obligations."
+    },
+    {
+      "id": "I-209",
+      "disposition": "preserve_failed_specificity_lessons_separate_mechanisms",
+      "preserve": "Prediction requires an invariant or distinguishing test; free parameter recovery alone supplies insufficient physical specificity.",
+      "atomic_propositions": [
+        {
+          "id": "common-cause",
+          "proposition": "All listed pattern matches fail for the same reason.",
+          "assessment": "The retained evidence separates coordinate-subspace discreteness, parameter recovery, transformation-dependent selection, degenerate metrics and one failed rotation action. A shared caution is justified; a common causal mechanism remains unproved.",
+          "evidence": "data/output/claims_falsification/particle_numerology_audit.toml; data/output/claims_falsification/cd_pattern_baseline_audit.toml"
+        },
+        {
+          "id": "blind-baseline",
+          "proposition": "The mass comparison supplies a fully blind baseline.",
+          "assessment": "The code selects a mass subset before applying the null to selected values. The null omits that selection step. Log versus linear changes the transformation, not merely logarithm base.",
+          "evidence": "crates/gororoba_cli_data/src/bin/cd_pattern_baseline_audit.rs:299-330"
+        },
+        {
+          "id": "parameterization",
+          "proposition": "Givens angle recovery fails.",
+          "assessment": "The retained runner recovers PMNS and five other targets. That supports parameterization and defeats predictive specificity; C-081's literal predicate and rejection need separate treatment.",
+          "evidence": "crates/gororoba_cli_data/src/bin/particle_numerology_audit.rs:455-479",
+          "kind": "reviewer_counterfactual"
+        },
+        {
+          "id": "continuous-action",
+          "proposition": "Generic rotation breakage excludes continuous symmetry.",
+          "assessment": "The inspected finite rotations act on left-octonion imaginary coordinates and break one retained zero-divisor pair. Continuous stabilizers and alternative actions remain open.",
+          "evidence": "crates/algebra_experimental/src/so7_drift.rs:102-152; crates/algebra_analysis/src/reggiani.rs:240-280"
+        }
+      ],
+      "references": [
+        {
+          "claim_id": "C-068",
+          "role": "negative_specificity_with_selection_limit",
+          "predicate": "Log/linear best mass subsets differ; log p=0.010742, linear p=0.430664.",
+          "boundary": "The null must repeat subset selection; selected significance is not a blind test."
+        },
+        {
+          "claim_id": "C-069",
+          "role": "bounded_negative_example",
+          "predicate": "15 coordinate subalgebras and 105 pairs yield 0/90-degree angles.",
+          "boundary": "General rotated embeddings lie outside the enumeration."
+        },
+        {
+          "claim_id": "C-070",
+          "role": "methodology_insufficient",
+          "predicate": "Observed and null/template distances coincide with zero null spread and p=1.",
+          "boundary": "The quantile comparison lacks demonstrated discriminating power and supplies no physical power-spectrum derivation."
+        },
+        {
+          "claim_id": "C-077",
+          "role": "bounded_negative_specificity",
+          "predicate": "Democratic-matrix distance 0.588767 with p=0.336914.",
+          "boundary": "The substituted matrix needs identity binding to the historical associator calculation."
+        },
+        {
+          "claim_id": "C-081",
+          "role": "supports_parameterization_refutes_predictive_specificity",
+          "predicate": "Exact recovery across unrelated targets.",
+          "boundary": "Successful angle recovery survives; a physical prediction requires restrictions beyond a freely fitted parameterization."
+        },
+        {
+          "claim_id": "C-092",
+          "role": "bounded_perturbation_counterexample",
+          "predicate": "One zero-divisor pair breaks under sampled left-component rotations.",
+          "boundary": "BFS connected components are not established group orbits; sampled breakage excludes neither stabilizers nor other actions."
+        }
+      ],
+      "falsifier": "Run the full selection pipeline inside each null replicate; require injection sensitivity for degenerate metrics; distinguish fitting success from out-of-sample prediction and specify the exact group action.",
+      "successor": "Register separate bounded constructions and obstructions instead of a single universal failure explanation.",
+      "independent_test": "Freeze selection, units, transformations and predicted observables before testing held-out targets. Derive group/stabilizer obligations before new rotation sampling.",
+      "residual": "Original input bodies, blind-selection calibration and source-faithful matrix construction remain unresolved."
+    },
+    {
+      "id": "I-212",
+      "disposition": "preserve_ranking_lesson_refresh_followup_scope_and_links",
+      "preserve": "Controls spanning six consecutive input rows reverse the associator-versus-one-step ranking in the retained registry account. Sample count, elapsed duration and calibration context belong in comparison contracts.",
+      "atomic_propositions": [
+        {
+          "id": "ranking",
+          "proposition": "Equal local windows expose temporal support as a ranking confound.",
+          "assessment": "The retained claim C-1633 reports maxrot6 0.8383 and cumrot6 0.8352 versus associator 0.8274; source defines six-sample angular controls. Named historical rotation-bootstrap bodies were absent at inspected paths, so the exact ranking is registry evidence rather than a fresh replay. Six consecutive rows establish sample-count support. Equal timestamps and gaps recorded in the calibration audit prevent equating that count with equal elapsed duration.",
+          "evidence": "canonical-snapshot.json; crates/gororoba_cli_physics/src/staple_controls.rs:1-34"
+        },
+        {
+          "id": "matched-context",
+          "proposition": "All six baseline features share six-sample support.",
+          "assessment": "False for the later model's complete dependency: dbdt/rot use two local samples and PVI uses complete-day RMS calibration. Canonical C-1738/C-1739 explicitly correct those scopes.",
+          "evidence": "data/output/audit/claims-pvi-calibration-boundary/findings.toml; crates/gororoba_cli_physics/src/staple_controls.rs:24-34"
+        },
+        {
+          "id": "unique-information",
+          "proposition": "E-242 proves a small nonzero unique associator contribution.",
+          "assessment": "Retained result bytes confirm ROC-AUC 0.8428282832626345 to 0.84481471574976. C-1739 narrows interpretation to fixed-model/fold predictive discrimination with frozen-prediction uncertainty; information-theoretic uniqueness is unsupported.",
+          "evidence": "data/output/staples_incremental_information.json; followup-claims.json"
+        },
+        {
+          "id": "lesson-survival",
+          "proposition": "Superseding C-1631 invalidates the temporal-support lesson.",
+          "assessment": "The lesson survives. C-1631 has a PVI calibration correction and C-1731 has model-scope descendants. Their transitions refine separate predicates rather than erase the historical angular-control comparison.",
+          "evidence": "canonical-snapshot.json; followup-claims.json",
+          "kind": "reviewer_counterfactual"
+        }
+      ],
+      "references": [
+        {
+          "claim_id": "C-1628",
+          "role": "contrast_baseline",
+          "predicate": "Associator exceeds one-step rotation on the fixed benchmark.",
+          "boundary": "Bounded deterministic comparison; temporal asymmetry limits interpretation."
+        },
+        {
+          "claim_id": "C-1631",
+          "role": "historical_comparison_refined",
+          "predicate": "Associator exceeds implemented PVI/Gram controls.",
+          "boundary": "Superseded by narrower evidence including C-1738; PVI calibration extends beyond its numerator window."
+        },
+        {
+          "claim_id": "C-1633",
+          "role": "supports_negative_result_lesson",
+          "predicate": "Matched local angular controls exceed associator.",
+          "boundary": "Preserve reported ranking while distinguishing result-body recovery from source/registry inspection."
+        }
+      ],
+      "additional_prose_reference": {
+        "claim_id": "C-1731",
+        "role": "historical_followup_refined",
+        "reason": "status_note cites a superseded interpretation. Trace C-1734 to C-1739, C-1741 and C-1743, with C-1744/C-1754 descendants, rather than retaining uniqueness language."
+      },
+      "falsifier": "Check each score's full data dependency including normalization and model fitting. A claimed unique contribution requires a declared model-independent information target; an AUC increment in one model class does not establish that target.",
+      "successor": "A comparison contract records local numerator window, calibration context, fit context and uncertainty conditioning separately.",
+      "independent_test": "Use already retained grouped-refit and held-out results for their declared predicates; new uniqueness or utility claims require separately declared targets and evidence.",
+      "residual": "Refresh canonical insight note and semantic links through an owning mutator; recover original angular-bootstrap result bodies before numerical replay."
+    }
+  ],
+  "residual_frontier": [
+    "Canonical insight and linked-claim mutations remain pending. The report proposes dispositions; it changes no registry status.",
+    "Recover original scientific inputs/results and historical producer identities before replay. Retention manifests are locators until body hashes are verified.",
+    "Design predicate-scoped roles with separate provenance, outcome and execution status. The 37-link pilot supplies examples, not a complete schema.",
+    "gororoba-db insight update-summary and update-status-note exist in crates/gororoba_db/src/bin/gororoba_db/types.rs. Canonical title/status/reference role changes need an owning transactional path and validation. Preserve append-only revisions and regenerate exports/signatures for subsequent mutations.",
+    "Expand the other candidate families only after their own traced membership and decisive protocols. Their scientific audits remain pending."
+  ],
+  "atomic_proposition_convention": "Propositions are audit paraphrases, not quotations. Entries labeled reviewer_counterfactual test potential misreadings rather than asserting that the insight contains those words."
+}
