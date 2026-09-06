@@ -13,6 +13,15 @@ use std::path::PathBuf;
 /// has no spatial resolution perpendicular to the flow).
 #[derive(Args)]
 pub struct Cli {
+    /// Declared macroscopic parallel gradient length in meters for proton collision diagnostics.
+    /// Omission leaves collisional scale separation unassessed.
+    #[arg(long)]
+    pub(crate) knudsen_parallel_length_m: Option<f64>,
+
+    /// Prescribed Coulomb logarithm for the NRL singly charged ion diagnostic.
+    #[arg(long, default_value_t = 20.0)]
+    pub(crate) coulomb_logarithm: f64,
+
     /// Path to NASA OMNI2 hourly data file (preferred: includes B-field).
     /// If not provided, uses built-in OMNI sample.
     #[arg(long)]

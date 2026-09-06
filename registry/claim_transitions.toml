@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 211
+event_count = 214
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4532,3 +4532,72 @@ transition_spec_sha256 = "be480d314d982c8d244d783f869349fc828e1d8fc0ca4fdb047547
 proposal_key = "mhd-rk3-instrument"
 canonical_claim_id = "C-1753"
 relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 212
+transition_key = "themis-d-retrospective-quarantine-replication"
+source_claim_id = "C-1743"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Verified"
+current_status = "Verified"
+exercised_falsifier = "Apply unchanged frozen THEMIS-A models to all166 THEMIS-D crossing dates under the declared timestamp-only quarantine and compare the global-minimum increment interval with zero and0.005."
+rationale = "External retrospective evidence replicates a positive small increment and rejects the declared useful increment. The original source-product admission failure remains historical evidence."
+unresolved_assumptions = ["Whole-file timestamp-quality selection uses lookahead and conditions the estimand on admitted support.", "Daily-file bootstrap independence and frozen fitted models bound uncertainty.", "Operational utility and ordinary-day online performance require independent observations."]
+evidence_artifact_ids = ["LOCAL-THEMIS-D-QUARANTINE-REPLICATION"]
+experiment_ids = ["E-315"]
+actor = "external-admission-claim-closure"
+reason = "Register independently audited retrospective external replication"
+transition_timestamp = "2026-09-06T04:26:14Z"
+transition_spec_sha256 = "04b83e1ba1652e52757c85f89a0c17ea90b48958332c78c3dfd4f8931c48892b"
+
+[[transition.successors]]
+proposal_key = "themis-d-quality-masked-frozen-replication"
+canonical_claim_id = "C-1754"
+relation_kind = "refines"
+
+[[transition]]
+event_id = 213
+transition_key = "proton-collisional-scale-conformance"
+source_claim_id = "C-1683"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Independent source-unit and scaling fixtures discriminate the historical implementation from its corrected numerical mechanism."
+rationale = "Preserve the historical producer diagnosis and register repaired implementation conformance separately."
+unresolved_assumptions = ["Physical inputs, closure assumptions and coupled numerical error require independently admitted observations."]
+evidence_artifact_ids = ["LOCAL-PROTON-SCALE-PARKER-CONFORMANCE"]
+experiment_ids = ["E-316"]
+actor = "external-admission-claim-closure"
+reason = "Retain bounded source and unit conformance"
+transition_timestamp = "2026-09-06T04:45:57Z"
+transition_spec_sha256 = "130cb7258e7ecc8eeabf5f66f41569e18c8e5b48b475864627d06ec6ee7a90f4"
+
+[[transition.successors]]
+proposal_key = "proton-collisional-scale-conformance"
+canonical_claim_id = "C-1755"
+relation_kind = "refines"
+
+[[transition]]
+event_id = 214
+transition_key = "parker-driver-si-initialization-conformance"
+source_claim_id = "C-1686"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Independent source-unit and scaling fixtures discriminate the historical implementation from its corrected numerical mechanism."
+rationale = "Preserve the historical producer diagnosis and register repaired implementation conformance separately."
+unresolved_assumptions = ["Physical inputs, closure assumptions and coupled numerical error require independently admitted observations."]
+evidence_artifact_ids = ["LOCAL-PROTON-SCALE-PARKER-CONFORMANCE"]
+experiment_ids = ["E-317"]
+actor = "external-admission-claim-closure"
+reason = "Retain bounded source and unit conformance"
+transition_timestamp = "2026-09-06T04:45:57Z"
+transition_spec_sha256 = "49238744ae1fc577fb439495f96c825c6e9a2d681224be1bdc80fd3f6a4e4010"
+
+[[transition.successors]]
+proposal_key = "parker-driver-si-initialization-conformance"
+canonical_claim_id = "C-1756"
+relation_kind = "refines"

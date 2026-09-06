@@ -411,62 +411,88 @@ pub fn wind_mfi_to_omni(records: &[WindMfiRecord]) -> Vec<OmniRecord> {
 // Knudsen number diagnostics
 // ---------------------------------------------------------------------------
 
-/// Collisionality regime classification based on Knudsen number.
+/// Numeric mean-free-path comparison, independent of plasma closure validity.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum KnudsenRegime {
-    /// Kn < 10: fluid approximation valid (LBM safe).
-    Fluid,
-    /// 10 <= Kn < 100: transitional (LBM results should be interpreted with caution).
-    Transitional,
-    /// Kn >= 100: kinetic regime (LBM not valid, PIC/Vlasov required).
-    Kinetic,
+    /// Inputs or the physical characteristic length remain unadmitted.
+    Unassessed,
+    /// Mean free path is smaller than the declared characteristic length.
+    BelowUnity,
+    /// Mean free path equals or exceeds the declared characteristic length.
+    AtOrAboveUnity,
 }
 
-/// Compute the Knudsen number for solar wind protons at 1 AU.
-///
-/// Kn = lambda_mfp / L_gradient where:
-///   lambda_mfp = proton Coulomb mean free path
-///   L_gradient = ion inertial length d_i = c / omega_pi
-///
-/// The proton mean free path in the solar wind is dominated by Coulomb
-/// collisions. At 1 AU with T ~ 10^5 K and n ~ 5 cm^-3:
-///   lambda_mfp ~ 2.4e11 * T^2 / (n * ln(Lambda)) meters
-///   where ln(Lambda) ~ 20 is the Coulomb logarithm.
-///
-/// The ion inertial length (gradient scale):
-///   d_i = c / omega_pi = 228 / sqrt(n_p) km
-///   where n_p is in cm^-3.
-///
-/// Returns NaN if any input is NaN or non-physical (n <= 0, T <= 0).
-pub fn knudsen_number(n_p_cm3: f64, t_p_k: f64) -> f64 {
-    if n_p_cm3.is_nan() || t_p_k.is_nan() || n_p_cm3 <= 0.0 || t_p_k <= 0.0 {
-        return f64::NAN;
+/// Proton collision scales under the NRL singly charged ion convention.
+#[derive(Debug, Clone, Copy)]
+pub struct ProtonCollisionality {
+    pub collision_time_s: f64,
+    pub thermal_speed_m_s: f64,
+    pub mean_free_path_m: f64,
+    pub characteristic_length_m: f64,
+    pub coulomb_logarithm: f64,
+    pub knudsen_number: f64,
+}
+
+/// Evaluate NRL Plasma Formulary (2019), pp. 29 and 36, for protons.
+/// The printed collision-time coefficient uses temperature in eV and density
+/// in cm^-3. Thermal speed is sqrt(k_B T / m_p). The caller declares the
+/// macroscopic length; a parallel length tests only the parallel ordering in
+/// the magnetized transport conditions on p. 38. Kn < 1 alone does not prove
+/// the stronger scale separation or other conditions required by a closure.
+pub fn proton_collisionality(
+    density_cm3: f64,
+    temperature_k: f64,
+    characteristic_length_m: f64,
+    coulomb_logarithm: f64,
+) -> Option<ProtonCollisionality> {
+    if ![
+        density_cm3,
+        temperature_k,
+        characteristic_length_m,
+        coulomb_logarithm,
+    ]
+    .into_iter()
+    .all(|value| value.is_finite() && value > 0.0)
+    {
+        return None;
     }
-
-    // Coulomb logarithm (weakly dependent on n, T; ~20 for solar wind)
-    let ln_lambda = 20.0;
-
-    // Proton mean free path (m): lambda = 2.4e11 * T^2 / (n * ln_lambda)
-    // From Spitzer (1962), scaled for proton-proton collisions.
-    // n in m^-3 = n_cm3 * 1e6
-    let n_m3 = n_p_cm3 * 1.0e6;
-    let lambda_mfp = 2.4e11 * t_p_k * t_p_k / (n_m3 * ln_lambda);
-
-    // Ion inertial length (m): d_i = c / omega_pi = 228 / sqrt(n_cm3) * 1e3
-    // where omega_pi = sqrt(n * e^2 / (m_p * epsilon_0))
-    let d_i = 228.0e3 / n_p_cm3.sqrt();
-
-    lambda_mfp / d_i
+    const BOLTZMANN_J_K: f64 = 1.380649e-23;
+    const ELEMENTARY_CHARGE_C: f64 = 1.602176634e-19;
+    const PROTON_MASS_KG: f64 = 1.67262192369e-27;
+    let temperature_ev = temperature_k * (BOLTZMANN_J_K / ELEMENTARY_CHARGE_C);
+    let collision_time_s = 2.09e7 * temperature_ev.powf(1.5) / density_cm3 / coulomb_logarithm;
+    let thermal_speed_m_s = (BOLTZMANN_J_K * temperature_k / PROTON_MASS_KG).sqrt();
+    let mean_free_path_m = thermal_speed_m_s * collision_time_s;
+    let knudsen_number = mean_free_path_m / characteristic_length_m;
+    if ![
+        collision_time_s,
+        thermal_speed_m_s,
+        mean_free_path_m,
+        knudsen_number,
+    ]
+    .into_iter()
+    .all(|value| value.is_finite() && value > 0.0)
+    {
+        return None;
+    }
+    Some(ProtonCollisionality {
+        collision_time_s,
+        thermal_speed_m_s,
+        mean_free_path_m,
+        characteristic_length_m,
+        coulomb_logarithm,
+        knudsen_number,
+    })
 }
 
-/// Classify the Knudsen number into a collisionality regime.
+/// Compare Kn with unity; invalid values remain explicitly unassessed.
 pub fn classify_knudsen(kn: f64) -> KnudsenRegime {
-    if kn.is_nan() || kn < 10.0 {
-        KnudsenRegime::Fluid
-    } else if kn < 100.0 {
-        KnudsenRegime::Transitional
+    if !kn.is_finite() || kn < 0.0 {
+        KnudsenRegime::Unassessed
+    } else if kn < 1.0 {
+        KnudsenRegime::BelowUnity
     } else {
-        KnudsenRegime::Kinetic
+        KnudsenRegime::AtOrAboveUnity
     }
 }
 
@@ -638,52 +664,55 @@ mod tests {
         assert_eq!(month_day_to_doy(2024, 12, 31), 366);
     }
 
-    // ---- Knudsen number tests ----
-
     #[test]
-    fn test_knudsen_quiet_solar_wind() {
-        // Quiet solar wind: n ~ 5 cm^-3, T ~ 1e5 K
-        // Expected Kn >> 100 (collisionless plasma)
-        let kn = knudsen_number(5.0, 1.0e5);
-        assert!(kn.is_finite(), "Kn should be finite");
-        assert!(kn > 100.0, "quiet SW should be kinetic regime: Kn={kn:.1}");
-        assert_eq!(classify_knudsen(kn), KnudsenRegime::Kinetic);
+    fn proton_collision_time_matches_source_ev_oracle() {
+        let one_ev_kelvin = 1.602176634e-19 / 1.380649e-23;
+        let scales = proton_collisionality(1.0, one_ev_kelvin, 1e10, 10.0).unwrap();
+        assert!((scales.collision_time_s / 2.09e6 - 1.0).abs() < 1e-14);
+        // NRL p. 29 rounds the one-eV proton thermal speed to 9.79e5 cm/s.
+        assert!((scales.thermal_speed_m_s / 9790.0 - 1.0).abs() < 5e-4);
+        assert!((scales.mean_free_path_m / (9790.0 * 2.09e6) - 1.0).abs() < 5e-4);
     }
 
     #[test]
-    fn test_knudsen_dense_cool_plasma() {
-        // Dense cool plasma: n ~ 100 cm^-3, T ~ 1e4 K
-        // Higher density + lower T -> shorter mean free path, possibly transitional
-        let kn = knudsen_number(100.0, 1.0e4);
-        assert!(kn.is_finite(), "Kn should be finite");
-        // Even dense solar wind is kinetic at 1 AU
-        assert!(kn > 1.0, "dense plasma still has Kn > 1: Kn={kn:.1}");
-    }
-
-    #[test]
-    fn test_knudsen_nan_inputs() {
-        assert!(knudsen_number(f64::NAN, 1e5).is_nan());
-        assert!(knudsen_number(5.0, f64::NAN).is_nan());
-        assert!(knudsen_number(-1.0, 1e5).is_nan());
-        assert!(knudsen_number(5.0, 0.0).is_nan());
+    fn proton_collision_scales_reject_invalid_and_overflowed_inputs() {
+        for coordinate in 0..4 {
+            for value in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY, -1.0, 0.0] {
+                let mut inputs = [5.0, 1e5, 1e9, 20.0];
+                inputs[coordinate] = value;
+                assert!(
+                    proton_collisionality(inputs[0], inputs[1], inputs[2], inputs[3]).is_none()
+                );
+            }
+        }
+        assert!(proton_collisionality(1e-300, 1e300, 1.0, 20.0).is_none());
     }
 
     #[test]
     fn test_knudsen_regime_classification() {
-        assert_eq!(classify_knudsen(5.0), KnudsenRegime::Fluid);
-        assert_eq!(classify_knudsen(50.0), KnudsenRegime::Transitional);
-        assert_eq!(classify_knudsen(500.0), KnudsenRegime::Kinetic);
-        assert_eq!(classify_knudsen(f64::NAN), KnudsenRegime::Fluid); // NaN -> Fluid (safe default)
+        assert_eq!(classify_knudsen(0.5), KnudsenRegime::BelowUnity);
+        assert_eq!(classify_knudsen(1.0), KnudsenRegime::AtOrAboveUnity);
+        for invalid in [f64::NAN, f64::INFINITY, -1.0] {
+            assert_eq!(classify_knudsen(invalid), KnudsenRegime::Unassessed);
+        }
     }
 
     #[test]
-    fn test_knudsen_monotonic_with_temperature() {
-        // Higher T -> longer mean free path -> higher Kn
-        let kn_low = knudsen_number(5.0, 5.0e4);
-        let kn_high = knudsen_number(5.0, 2.0e5);
-        assert!(
-            kn_high > kn_low,
-            "Kn should increase with T: low={kn_low:.1}, high={kn_high:.1}"
-        );
+    fn proton_mean_free_path_and_length_have_independent_scalings() {
+        let reference = proton_collisionality(5.0, 1e5, 1e9, 20.0).unwrap();
+        for (density, temperature, length, expected_ratio) in [
+            (5.0, 2e5, 1e9, 4.0),
+            (10.0, 1e5, 1e9, 0.5),
+            (5.0, 1e5, 2e9, 0.5),
+        ] {
+            let measured = proton_collisionality(density, temperature, length, 20.0).unwrap();
+            assert!(
+                (measured.knudsen_number / reference.knudsen_number - expected_ratio).abs() < 1e-13
+            );
+        }
+        // n proportional to r^-2 and T proportional to r^-1/2 leave the
+        // ion-inertial-length ratio constant; a fixed physical length does not.
+        let outer = proton_collisionality(5.0 / 16.0, 1e5 / 2.0, 1e9, 20.0).unwrap();
+        assert!((outer.knudsen_number / reference.knudsen_number - 4.0).abs() < 1e-13);
     }
 }

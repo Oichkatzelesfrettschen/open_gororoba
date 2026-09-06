@@ -319,14 +319,14 @@ impl MhdField {
     /// Initialize an uncalibrated legacy lattice Parker construction.
     /// Use `initialize_parker_si` for declared SI parameters and mesh conversion.
     ///
-    /// The Parker spiral in Cartesian coordinates centered on the Sun:
+    /// The equatorial radial-slab construction uses:
     ///   B_r = B_0 * (r_0/r)^2
-    ///   B_phi = -B_0 * (r_0/r) * (Omega * r * sin(theta)) / v_sw
+    ///   B_phi = -B_r * Omega * r / v_sw
     ///
-    /// We map the grid to a radial slab: x is radial (Sun -> outward),
-    /// y and z are transverse. The grid center is at 1 AU equivalent.
-    ///
-    /// `v_sw` is solar wind speed in simulation units (e.g., 0.1 in LBM lattice units).
+    /// Radius uses grid cells, velocity uses cells per lattice timestep, and
+    /// `config.omega` must use radians per lattice timestep. The reference
+    /// amplitude uses the caller's field units. Physical initialization requires
+    /// the separate SI mesh and normalization API.
     pub fn parker_spiral_init(&mut self, v_sw: f64) {
         let nx = self.nx;
         let ny = self.ny;
@@ -353,7 +353,7 @@ impl MhdField {
                     // B_phi along y-axis (azimuthal)
                     // Parker spiral angle: tan(psi) = Omega * r / v_sw
                     let b_phi = if v_sw.abs() > 1e-15 {
-                        -b0 * ratio * (omega * r) / v_sw
+                        -b_r * (omega * r) / v_sw
                     } else {
                         0.0
                     };
@@ -846,6 +846,8 @@ mod tests {
         let idx_near = GridIndex::new(2, 4, 4).linearize(16, 8);
         let idx_far = GridIndex::new(14, 4, 4).linearize(16, 8);
         assert!(field.bx[idx_near] > field.bx[idx_far]);
+        assert!((field.by[idx_far] / field.by[idx_near] - 2.0 / 14.0).abs() < 1e-14);
+        assert!((field.by[idx_near] / field.bx[idx_near] + field.config.omega * 2.0 / 0.1).abs() < 1e-14);
     }
 
     #[test]

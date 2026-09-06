@@ -1,0 +1,14 @@
+{
+  "transition_key": "themis-d-retrospective-quarantine-replication",
+  "transition_spec_sha256": "04b83e1ba1652e52757c85f89a0c17ea90b48958332c78c3dfd4f8931c48892b",
+  "event_id": 212,
+  "allocated_successors": [
+    {
+      "proposal_key": "themis-d-quality-masked-frozen-replication",
+      "canonical_claim_id": "C-1754",
+      "relation_kind": "refines"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}

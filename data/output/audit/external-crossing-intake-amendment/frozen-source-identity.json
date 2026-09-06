@@ -1,0 +1,28 @@
+{
+  "commit": "8bbf201a00ae3be2a3a6a31f492e067b96521654",
+  "snapshot": "/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source",
+  "model_identity": "f13a679883d27c29b05ec6bdd2457e88c96394012269d9fc96b071f52b26d9ba",
+  "verified_source_count": 20,
+  "sources": {
+    ".cargo/config.toml": "f1fee874b49d1e990d7b8d306f516d315ef3a028451179b282c552a448e5e0ba",
+    "Cargo.lock": "2d58fbc1a097e202d631cc197763e53ac44c6e9b1a92d02c2398e66af107700e",
+    "Cargo.toml": "3022093aa117e4882e583d380ce006d5267014bc514655d55c3206922899b68f",
+    "crates/cd_kernel/Cargo.toml": "b49a3ba5d87f731dfa22dd31140914502137e81d0b8543f628b48967906168d2",
+    "crates/cd_kernel/src/cayley_dickson/arith.rs": "d7eeb4c90328f2a737486d1cf07c8c173b1b4b3304be528bbb5c206d09a0bd2e",
+    "crates/cd_kernel/src/cayley_dickson/mod.rs": "70da463d0c923c8f8bcb30baa9ef7783658d729dd39e08f1a29375b909800c5a",
+    "crates/cd_kernel/src/lib.rs": "acca697f6866337536196f49e18e88eb1ac5f462c0492fa49b10a3dfd473e683",
+    "crates/cd_kernel/src/mult_table.rs": "998d505534a317d28317d3e4e70ea36a4bf7517f3e9a2facf7786147f3db269d",
+    "crates/gororoba_cli_physics/Cargo.toml": "ad463ce5e684b984244f537e1b236f8f4943a7efe8c4ddbcca48b0ca494be645",
+    "crates/gororoba_cli_physics/src/bin/staples_causal_validation.rs": "1384e5859c5986e7e09b1667753981d3ee10e53bb16b32b543c6b0f07a07a825",
+    "crates/gororoba_cli_physics/src/bin/staples_causal_validation/admission.rs": "965397a43ca80debe520448eb679d2aa465bc0fcae1b29e04c44015e5b0fe7e2",
+    "crates/gororoba_cli_physics/src/bin/staples_causal_validation/evidence.rs": "eed015ec0500db2f50d77bdee21e69cb00b3ef1049274e8ed22ea1b9c68a769d",
+    "crates/gororoba_cli_physics/src/bin/staples_causal_validation/features.rs": "b9d3b4a65e949fb305ae071c58db60d373fbde84d2d33ba326a358cce0fdb8f4",
+    "crates/gororoba_cli_physics/src/bin/staples_causal_validation/fitting.rs": "b200d05c7754ca771b4149c2cfd5bc864aa3bc2fd5d0cf4d717e2bb4f741929e",
+    "crates/gororoba_cli_physics/src/bin/staples_causal_validation/metrics.rs": "ea028cd03d7bed0e3cafbb603b734b82f130be448705c70ae4a74d33e441b261",
+    "crates/gororoba_cli_physics/src/bin/staples_causal_validation/splits.rs": "910867b57ae45f82ec74c52779d7b6123551d16ea5f99d85591346a195f821e5",
+    "crates/gororoba_cli_physics/src/staple_associator.rs": "f43afc133741fcc25be99bf4d13b38446d8c1faf2e7e595e20e2472a10b5df2e",
+    "crates/gororoba_cli_physics/src/staple_controls.rs": "b0be06c59247c48ed68c594b6f179b0c6806b92d7c44d1644cab560ed3ee5194",
+    "crates/gororoba_cli_physics/src/staple_logistic.rs": "14ea6d99681e8b6de644b13f14ef322b9f12eb993cc102e578bfa732c654c1e3",
+    "rust-toolchain.toml": "c0864e4045ce7847ebe68e13423671c7007fbbe77d8b10ad5f5bacb8a1601ab3"
+  }
+}

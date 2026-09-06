@@ -1,0 +1,34 @@
+[[experiment]]
+id = "E-316"
+title = "Source-defined proton collisional scales and explicit-length admission"
+status = "active"
+binary = "solar"
+claim_refs = ["C-1683"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "NRL 2019 collision-time and thermal-speed conventions; finite synthetic SI inputs and invalid-input controls."
+input_path_refs = ["data/output/audit/proton-collisional-scale-admission/source.toml", "data/output/audit/proton-collisional-scale-admission/nrl-formulary-2019.pdf"]
+method = "Check source-rounded electron-volt oracle, temperature/density/length scaling, invalid inputs, record denominator and output metadata."
+run = "cargo test -p data_core --lib catalogs::wind_swe::tests --profile validation && cargo test -p gororoba_cli_physics --bin solar collision_diagnostic --profile validation"
+output = ["Source and implementation conformance findings"]
+output_path_refs = ["data/output/audit/proton-collisional-scale-admission/findings.toml"]
+status_note = "13 owner-module tests and the solar diagnostic fixture pass. A physical parallel gradient scale remains user-declared; numeric Kn comparison does not establish plasma closure validity."
+
+[[experiment]]
+id = "E-317"
+title = "Synthetic Parker SI driver initialization and radial-law conformance"
+status = "active"
+binary = "solar"
+claim_refs = ["C-1685", "C-1686", "C-1687"]
+deterministic = true
+gpu = false
+reproducibility_class = "deterministic_replay"
+input = "Declared SI radial slab, wind speed, number density and reference radial field; two grid resolutions and two lattice speed normalizations."
+input_path_refs = ["crates/lbm_3d/src/units.rs", "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"]
+method = "Recover SI field and angle at the same physical radii across changed grids and timesteps; independently compare radial and azimuthal component ratios."
+run = "cargo test -p gororoba_cli_physics --bin solar synthetic_parker --profile validation && cargo test -p lbm_3d --lib --profile validation"
+output = ["Source and implementation conformance findings"]
+output_path_refs = ["data/output/audit/proton-collisional-scale-admission/findings.toml"]
+status_note = "32 solar tests and 126 LBM library tests pass. The synthetic source-radius-zero model establishes implementation conformance; gravitational frame, physical boundaries and coupled physical sensitivity remain separate."
+

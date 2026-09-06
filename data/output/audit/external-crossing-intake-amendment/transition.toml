@@ -1,0 +1,26 @@
+[transition]
+transition_key = "themis-d-retrospective-quarantine-replication"
+source_claim_id = "C-1743"
+expected_prior_status = "Verified"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-THEMIS-D-QUARANTINE-REPLICATION"]
+experiment_ids = ["E-315"]
+exercised_falsifier = "Apply unchanged frozen THEMIS-A models to all166 THEMIS-D crossing dates under the declared timestamp-only quarantine and compare the global-minimum increment interval with zero and0.005."
+proposed_claim_status = "Verified"
+rationale = "External retrospective evidence replicates a positive small increment and rejects the declared useful increment. The original source-product admission failure remains historical evidence."
+unresolved_assumptions = ["Whole-file timestamp-quality selection uses lookahead and conditions the estimand on admitted support.", "Daily-file bootstrap independence and frozen fitted models bound uncertainty.", "Operational utility and ordinary-day online performance require independent observations."]
+actor = "external-admission-claim-closure"
+reason = "Register independently audited retrospective external replication"
+transition_timestamp = "2026-09-06T04:26:14Z"
+expected_source_state_sha256 = "aba47c96cce32ec5304ed72b9f4ca3b9350d4df2d984479cb8730a39f6d6e03f"
+expected_claim_id_max = 1753
+
+[[successor]]
+proposal_key = "themis-d-quality-masked-frozen-replication"
+statement = "On all166 THEMIS-D V2 crossing dates in2015/2016, retrospective timestamp-only quarantine replaces four ambiguous timestamp fields while preserving original bytes by inverse reconstruction. The unchanged causal runner admits4219790 decisions with124834 positives and evaluates63 frozen THEMIS-A models with zero new training fits. Across2000 paired daily-file bootstrap draws, the global minimum canonical-associator ROC-AUC increment over the six-feature baseline across widths64,256,1024 and both years has approximate95 percent interval[0.0007173048330896048,0.0024898116600369224]. The interval supports a small positive external archive-conditional increment and rejects the unchanged investigator-defined0.005 useful-discrimination requirement. Independent support checks exclude quarantined rows and pre-reset history. Whole-file quality selection uses lookahead; online availability, ordinary-day false alerts and operational utility remain unmeasured. E-283 retains its failed provider-product admission."
+initial_status = "Verified"
+source_or_implementation_boundary = "E-315 frozen quarantine protocol; all166 retained THEMIS-D dates; unchanged source map and frozen THEMIS-A fits; independently audited1031-row causal support."
+required_falsifier = "A hash-bound replay changes the reported denominator or interval; any altered model, included quarantined row, dropped date or failed inverse reconstruction invalidates the conformance result."
+where_stated = ["data/output/audit/external-crossing-intake-amendment/findings.toml", "data/output/audit/external-crossing-intake-amendment/results/summary.json"]
+evidence_artifact_ids = ["LOCAL-THEMIS-D-QUARANTINE-REPLICATION"]
+predecessor_relation_kind = "refines"

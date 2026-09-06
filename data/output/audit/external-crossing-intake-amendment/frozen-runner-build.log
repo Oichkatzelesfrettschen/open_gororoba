@@ -1,0 +1,40 @@
+   Compiling gororoba_gpu_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_gpu_bridge)
+   Compiling cd_kernel v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/cd_kernel)
+   Compiling verified_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/verified_core)
+   Compiling repo_root v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/repo_root)
+   Compiling gororoba_contracts v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_contracts)
+   Compiling gororoba_sparse_grid v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_sparse_grid)
+   Compiling lbm_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/lbm_core)
+   Compiling proc-macro-error2 v2.0.1 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/vendor/proc-macro-error2)
+   Compiling materials_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/materials_data)
+   Compiling gororoba_gpu_readback v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_gpu_readback)
+   Compiling optics_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/optics_core)
+   Compiling cosmic_scheduler v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/cosmic_scheduler)
+   Compiling snia_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/snia_core)
+   Compiling gororoba_view_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_view_core)
+   Compiling gororoba_gpu_vulkan v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_gpu_vulkan)
+   Compiling tensor_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/tensor_core)
+   Compiling data_artifacts_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/data_artifacts_core)
+   Compiling grmhd_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/grmhd_core)
+   Compiling gororoba_view_raster v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_view_raster)
+   Compiling casimir_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/casimir_core)
+   Compiling tabled_derive v0.11.0
+   Compiling cr_transport v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/cr_transport)
+   Compiling qgp_scaling v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/qgp_scaling)
+error: failed to run custom build command for `materials_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/materials_data)`
+
+Caused by:
+  process didn't exit successfully: `/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/build/materials_data-e5d0b3f8a21a252d/build-script-build` (exit status: 101)
+  --- stdout
+  cargo:rerun-if-changed=build.rs
+  cargo:rerun-if-changed=data/
+  cargo:rerun-if-changed=data/nk/au_jc1972.csv
+
+  --- stderr
+
+  thread 'main' (3321903) panicked at crates/materials_data/build.rs:553:9:
+  assertion `left == right` failed: malformed CSV row 1 in "/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/materials_data/data/nk/au_jc1972.csv": "oid sha256:b3363905e2dbb7d52d60c431436218221279de6a08135d9d28f418cacd2b8f12"
+    left: 1
+   right: 3
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+warning: build failed, waiting for other jobs to finish...

@@ -1,0 +1,16 @@
+schema_version = 1
+title = "NRL proton collision time and macroscopic scale admission"
+source_title = "2019 NRL Plasma Formulary"
+source_author = "A. S. Richardson"
+url = "https://tanimislam.github.io/research/NRL_Formulary_2019.pdf"
+path = "data/output/audit/proton-collisional-scale-admission/nrl-formulary-2019.pdf"
+sha256 = "037290d47c8ff043cad3c846dba42f7233037a7c9077f61343564472d8ccf31b"
+bytes = 647682
+transport = "HTTPS with certificate verification; retrieved actual PDF bytes through public mirror"
+pages = [23, 28, 29, 36, 38]
+collision_time = "Page 36: tau_i = 2.09e7 sqrt(mu) T_i[eV]^(3/2)/(n[cm^-3] lnLambda) seconds for singly charged ions; proton specialization mu=1."
+thermal_speed = "Page 29: v_Ti = sqrt(k_B T_i / m_i); the printed one-eV proton coefficient 9.79e5 cm/s is rounded."
+length_definition = "Page 23: Kn=lambda/L. The implementation requires a declared positive finite characteristic length and computes lambda=v_Ti*tau_i."
+ordering = "Page 38 requires macroscopic rates much smaller than inverse collision time and strong scale separation. Magnetized parallel and perpendicular conditions differ. A scalar Kn comparison does not establish validity or invalidity of every plasma closure."
+coefficient_precision = "The page-36 2.09e7 time coefficient and page-28 4.80e-8 collision-rate coefficient are separately rounded; exact reciprocity is outside the retained source precision."
+historical_defect = "The former 2.4e11 Kelvin-based mean-free-path coefficient and hardcoded ion-inertial denominator do not implement the admitted source convention. Invalid and empty-input diagnostics formerly selected Fluid; the replacement retains Unassessed."

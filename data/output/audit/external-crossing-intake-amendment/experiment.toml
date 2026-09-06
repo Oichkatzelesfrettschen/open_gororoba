@@ -1,0 +1,16 @@
+[[experiment]]
+id = "E-315"
+title = "THEMIS-D retrospective chronology quarantine and frozen-model replication"
+status = "active"
+binary = "staples-intake-amendment"
+claim_refs = ["C-1743", "C-1754"]
+deterministic = true
+gpu = false
+reproducibility_class = "seeded_stochastic_replay"
+input = "All 166 retained E-283 THEMIS-D crossing dates, the frozen timestamp-only quarantine protocol, and the original THEMIS-A fitted models."
+input_path_refs = ["data/output/audit/external-crossing-intake-amendment/protocol.toml", "data/output/audit/staples-causal-validation/external-intake-manifest.json", "data/output/audit/staples-causal-validation/results"]
+method = "Quarantine every occurrence within closed timestamp-reversal intervals with inverse byte provenance. Preserve every planned date and apply the unchanged causal runner and frozen models with zero new fits. Retain the original 2000 paired daily-file bootstrap and 0.005 discrimination requirement. Whole-file timestamp selection makes the result retrospective and conditional on admitted support."
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-intake-amendment -- --parent-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --input-root .cache/staples-external-intake --protocol data/output/audit/external-crossing-intake-amendment/protocol.toml --out-dir .cache/external-crossing-derived-inputs"
+output = ["Byte-preserving derived-input manifest and ledger", "Frozen-model external replication summary and support audit"]
+output_path_refs = ["data/output/audit/external-crossing-intake-amendment/findings.toml", "data/output/audit/external-crossing-intake-amendment/results/summary.json", "data/output/audit/external-crossing-intake-amendment/support-audit.tsv"]
+status_note = "Completed on all 166 planned dates: 4219790 admitted decisions, 124834 positives, 63 frozen models and zero new training fits. The 2000-draw paired daily-file global-minimum interval [0.0007173048330896048,0.0024898116600369224] supports a small positive increment and rejects the unchanged 0.005 requirement. E-283 retains its failed provider-product admission. Whole-file timestamp-quality selection is retrospective; online availability and operational utility require separate evidence."

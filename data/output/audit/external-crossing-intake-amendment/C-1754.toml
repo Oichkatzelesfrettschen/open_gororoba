@@ -1,0 +1,52 @@
+claim_id = "C-1754"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+depth_rationale = "The result measures archive-conditional prediction. Computational feature maps do not establish a physical derivation of the algebraic embedding."
+fixed_hyperparameters = ["Retrospective timestamp-only closed-interval quarantine with inverse byte provenance", "All 166 original crossing dates retained", "Frozen THEMIS-A models and source map", "Widths 64, 256 and 1024", "2000 paired daily-file bootstrap draws at seed 20260904", "Unchanged minimum useful ROC-AUC increment 0.005"]
+
+[[intervening_maps]]
+branch = "all_models"
+name = "retrospective_timestamp_quality_selection"
+kind = "computational"
+description = "Inspect complete daily timestamp sequences and quarantine all occurrences inside inversion intervals. Membership uses timestamps; whole-file inspection uses lookahead."
+
+[[intervening_maps]]
+branch = "all_models"
+name = "causal_support_and_features"
+kind = "computational"
+description = "Apply the frozen 1031-row common-support admission, geometric predictors, magnitude-augmented overlapping staples, tensor contraction, norm normalization and fixed logarithmic transforms."
+
+[[intervening_maps]]
+branch = "all_models"
+name = "frozen_prediction_and_paired_metrics"
+kind = "computational"
+description = "Apply retained training-only standardization and logistic coefficients. Compute paired ROC-AUC differences and the minimum across three widths and two years in each daily-file bootstrap draw."
+
+[[fitted_parameters]]
+branch = "external_fit"
+count = 0
+names = []
+training_boundary = "External data fit zero parameters. The 63 inherited model records retain their original fitted coefficients and standardization parameters from THEMIS-A training; zero external fits does not mean zero inherited fitted parameters."
+
+[[fitted_parameters]]
+branch = "logistic_baseline_per_width"
+count = 19
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6"]
+training_boundary = "Per fixed width: seven logistic coefficients plus twelve standardization parameters, fitted exclusively on admitted THEMIS-A 2007-2012 training rows. Three baseline models retain separate fitted values. Final-year bootstrap draws resample evaluation files while retaining the original frozen training fits."
+
+[[fitted_parameters]]
+branch = "logistic_augmentation_per_width_and_tensor"
+count = 22
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "slope_cubic", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "mean_cubic", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6", "std_cubic"]
+training_boundary = "Per fixed width and canonical/control tensor: eight logistic coefficients plus fourteen standardization parameters, fitted exclusively on the identical THEMIS-A 2007-2012 training rows. Each of sixty augmented models has the same parameter and optimizer budget. Final and external observations supply zero fitted parameters."
+
+[decisive_experiment]
+experiment_ids = ["E-315"]
+protocol_artifact = "data/output/audit/external-crossing-intake-amendment/protocol.toml"
+description = "Replay all planned external dates with inverse source-byte reconstruction, frozen model identity and independently checked support before interpreting the unchanged discrimination gate."
+
+[what_would_verify_refute]
+verification_outcomes = ["Hash-bound replay reproduces 4219790 admitted decisions, 124834 positives, all 166 nonempty dates, zero new fits and the retained interval."]
+revision_outcomes = ["An independently admitted population or dependence model changes the interval: register a separately bounded successor."]
+abandonment_outcomes = ["A quarantined row reaches any support, inverse source reconstruction fails, a planned date disappears or a fitted model changes: invalidate amended replication."]
+inconclusive_outcomes = ["The interval crosses a specified comparison threshold, or source/model/support admission fails.", "Online availability, ordinary-day false alerts and operational utility require independent observations."]

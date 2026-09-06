@@ -537,3 +537,54 @@ depends_on = ["fragmentation-independent-reference-replay"]
 action = "Retain and adjudicate bounded interpolation conformance"
 acceptance = "Canonical contracts and retained outcomes agree, focused checks and governance pass, and physical admission remains separately scoped."
 progress = "E314 and C1710 typed revision121 precede replay. Content revisions744/745 retain full prior statement/locator. Five independent tests, two module tests and clippy pass;32 evidence files match index/LFS identity and12 protected history hashes survive export/signature normalization. Governance verifies282 lineages. Original-author release and physical calibration remain unadmitted."
+
+[[task]]
+id = "external-amendment-source-audit"
+status = "completed"
+action = "Audit chronology witnesses and recover frozen model source identity"
+acceptance = "Conflicting rows, reset semantics and all20 trained-source hashes identify an unchanged-runner amendment path."
+
+[[task]]
+id = "external-amendment-frozen-contract"
+status = "completed"
+progress = "E-315 registers the exact frozen protocol before transformation; C-1754 records the distinct retrospective replication boundary."
+action = "Register retrospective interval masking before transforming external inputs"
+acceptance = "Freeze all-occurrence interval semantics, original-byte identity, date denominator, lookahead scope and unchanged0.005 requirement."
+
+[[task]]
+id = "external-amendment-input-admission"
+status = "completed"
+progress = "All 166 dates and 4413426 original rows pass hash/size admission and inverse byte reconstruction; exactly four timestamp fields on the rejected date are quarantined."
+depends_on = ["external-amendment-frozen-contract"]
+action = "Validate and retain full-date derived inputs with inverse byte provenance"
+acceptance = "All166 dates retain original and derived identities; masks invert exactly and remaining chronology passes."
+
+[[task]]
+id = "external-amendment-frozen-inference"
+status = "completed"
+progress = "All 63 frozen models evaluate 4219790 decisions with 124834 positives and zero new fits. All 166 dates have support. Independent raw-ordinal audit verifies full warmup and quarantine exclusion. The interval [0.0007173048330896048,0.0024898116600369224] rejects the unchanged 0.005 requirement."
+depends_on = ["external-amendment-input-admission"]
+action = "Apply frozen THEMIS-A models to admitted external support"
+acceptance = "Zero new fits, complete support provenance, external discrimination and unchanged target remain separately reported."
+
+[[task]]
+id = "external-amendment-adjudication"
+status = "completed"
+progress = "C-1754 and its typed contract retain external archive-conditional replication. Generated exports and full local publication checks pass."
+depends_on = ["external-amendment-frozen-inference"]
+action = "Adjudicate amended replication while preserving the failed parent"
+acceptance = "Canonical lineage, retained outcomes and publication gates agree with retrospective selection scope."
+
+[[task]]
+id = "proton-scale-parker-driver-repair"
+status = "completed"
+action = "Repair source-defined collisional scales and SI Parker driver initialization"
+acceptance = "Independent source-unit, missing-input, metadata and physical-coordinate scaling tests pass."
+progress = "NRL source PDF is retained outside LFS; 13 data-core tests, 32 solar tests and 132 LBM/force/open-boundary tests pass. C-1755 and C-1756 retain bounded conformance. Physical closure, gravitational frame and boundary obligations remain distinct."
+
+[[task]]
+id = "external-admission-claim-publication"
+status = "in_progress"
+progress = "Independent review corrections, 2558 scoped library tests, 32 solar binary tests, archive support replay and the full local gate pass. PR integration remains active."
+action = "Review the integrated delta, regenerate canonical views and run publication gates"
+acceptance = "Retained evidence, canonical claims, exports, source tests and the full repository gate agree; integrate through reviewed PRs."

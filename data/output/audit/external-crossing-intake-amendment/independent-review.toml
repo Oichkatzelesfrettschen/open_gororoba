@@ -1,0 +1,36 @@
+schema_version = 1
+status = "bounded_source_review_saved_before_user_priority_change"
+protocol = "data/output/audit/external-crossing-intake-amendment/protocol.toml"
+protocol_sha256 = "1bcda67ce7af846e2c52d1e9affe554ceb55989baa50dce6d87673dbc37a32f6"
+producer = "crates/gororoba_cli_physics/src/bin/staples_intake_amendment.rs"
+review_scope = "Read-only comparison of source audit, frozen amendment protocol, unchanged admission and metric code, producer and synthetic test definitions."
+real_transformations_by_reviewer = 0
+inference_runs_by_reviewer = 0
+reviewer_test_runs = 0
+
+[selection]
+assessment = "The declared all-occurrences rule supersedes the earlier conflicting-duplicate-only proposal. Whole-file chronology inspection uses future records and defines retrospective quality selection, rather than online arrival feasibility."
+membership = "The producer adds closed timestamp intervals from each inversion to the preceding high-water mark, merges touching or overlapping intervals, and masks every occurrence within each merged interval. Membership reads timestamps rather than class labels, catalog distance or scores."
+algorithm_argument = "For a fixed later timestamp, its interval to the greatest preceding timestamp contains every interval from an earlier inversion and itself has an earlier-row witness. The union of high-water intervals therefore equals the union of all pairwise inversion intervals."
+synthetic_oracle = "The test enumerates all 4096 length-six sequences over four timestamp values and compares masked ordinals against a separate pairwise inversion predicate. Additional tests cover overlapping intervals, equal monotonic timestamps, CRLF and absent final newline."
+
+[repaired_alignment_issues]
+time_scalar = "The producer compares checked i64 Unix nanoseconds and rejects leap-second encodings, matching the declared scalar chronology surface."
+date_and_layout = "Every original timestamp passes UTC offset and planned-date checks before masking. Strict headerless, unquoted four-field layout is an explicit blocking precondition."
+vectors = "Finite vector admission now rejects NaN and infinities while retaining the finite fill value and original vector bytes."
+inverse = "Every transformed body runs inverse reconstruction against original bytes and SHA256 before output. Tests mutate vector bytes and replacement ranges to challenge the proof."
+manifest = "Historical attempt records move to parent_attempts; derived hashes and paths identify the derived bytes. The full original result remains in the ledger."
+protocol_binding = "The producer pins the exact protocol hash and amendment ID, pins the original parent-manifest hash, verifies per-file source hashes and byte counts, and retains the complete 166-date plan order."
+output_boundary = "All source preflight precedes writes. Exclusive output creation refuses replacement; the derived manifest is emitted last as the completion artifact."
+
+[missingness_and_uncertainty]
+reset = "The unchanged malformed-timestamp branch clears pending and history before producing a decision. New support requires the full 1031-sample closed-history capacity; the preceding pending sample can also be discarded at reset."
+bootstrap = "The unchanged AUC kernel constructs its file IDs from scored rows. Zero-support days remain in intake accounting but leave bootstrap membership. The frozen protocol explicitly conditions those intervals on nonempty admitted days and requires separate reporting of all 166 dates and zero-support dates."
+scientific_scope = "Catalog-selected crossing-day discrimination conditional on retrospective quality admission; ordinary-day false-alert rates, operational utility and online replication remain separate."
+unchanged_requirement = 0.005
+parent_status = "E-283 remains blocked_input_admission_backward_timestamp"
+
+[remaining_execution_gates]
+required = ["Canonical registration before real transformation", "Final producer Clippy after the latest hardening", "Full source and derived byte accounting across all 166 dates", "Frozen runner source, model and dataset identity checks", "Produced-support audit proving marker and preceding-segment exclusion", "Per-date raw, quarantined, warmup, admitted and class counts", "Explicit nonempty bootstrap-cluster denominator before interpretation"]
+producer_report = "Producer reports nine synthetic tests, formatting and diff checks passed. Final hardening Clippy was unrun when the user changed priority. The reviewer did not rerun or independently inspect that final test log."
+pause_reason = "Root relayed the user's priority change to Git LFS removal and history rewrite; scientific execution and further review edits paused."

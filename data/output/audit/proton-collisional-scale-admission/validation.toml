@@ -1,0 +1,12 @@
+schema_version = 1
+command = "make validate-local REPO_SHARE_PRIMARY_CACHE=1 CARGO_BUILD_JOBS=2"
+result = "passed"
+scoped_library_tests_passed = 2558
+scoped_library_tests_skipped = 19
+solar_binary_tests_passed = 32
+gate_log = "claim-admission-validate-local.log"
+initial_attempt = "The isolated checkout lacked four retained Cayley-Dickson lattice CSVs. The retry materialized their actual bytes from the primary checkout and verified all four SHA256 values against data/retention/scientific-payloads.json."
+support_roundtrip = "The independent auditor reread all extracted compressed support records and produced a TSV byte-identical to the retained support-audit.tsv."
+source_identity = "The retained NRL PDF, historical E027 result, executed producer source and support archive match their recorded SHA256 values. Git attributes assign neither the PDF nor the support archive an LFS filter."
+whitespace_check = "git -c core.whitespace=-blank-at-eof diff --cached --check passes. Historical transition specifications and raw producer output retain their exact trailing newlines for byte identity."
+scientific_boundary = "Passing software and governance gates establishes declared numerical and provenance predicates. Physical closure, gravity, boundaries, online availability and ordinary-day operational utility remain separately unadmitted."

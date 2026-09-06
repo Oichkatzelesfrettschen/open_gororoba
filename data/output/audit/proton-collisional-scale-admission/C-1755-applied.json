@@ -1,0 +1,14 @@
+{
+  "transition_key": "proton-collisional-scale-conformance",
+  "transition_spec_sha256": "130cb7258e7ecc8eeabf5f66f41569e18c8e5b48b475864627d06ec6ee7a90f4",
+  "event_id": 213,
+  "allocated_successors": [
+    {
+      "proposal_key": "proton-collisional-scale-conformance",
+      "canonical_claim_id": "C-1755",
+      "relation_kind": "refines"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}

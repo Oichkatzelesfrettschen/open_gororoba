@@ -8495,6 +8495,144 @@ abandonment_outcomes = ["A declared unstable scalar mode passes the diagnostic, 
 inconclusive_outcomes = ["Frozen prescribed-velocity conformance does not establish coupled LBM/MHD order, variable-velocity stability, physical boundaries, spacecraft agreement or force sensitivity.", "A final-potential-only overflow branch remains unexercised; final commit ordering is inspected separately."]
 
 [[claim]]
+id = "C-1754"
+last_verified = "2026-09-06"
+statement = "On all166 THEMIS-D V2 crossing dates in2015/2016, retrospective timestamp-only quarantine replaces four ambiguous timestamp fields while preserving original bytes by inverse reconstruction. The unchanged causal runner admits4219790 decisions with124834 positives and evaluates63 frozen THEMIS-A models with zero new training fits. Across2000 paired daily-file bootstrap draws, the global minimum canonical-associator ROC-AUC increment over the six-feature baseline across widths64,256,1024 and both years has approximate95 percent interval[0.0007173048330896048,0.0024898116600369224]. The interval supports a small positive external archive-conditional increment and rejects the unchanged investigator-defined0.005 useful-discrimination requirement. Independent support checks exclude quarantined rows and pre-reset history. Whole-file quality selection uses lookahead; online availability, ordinary-day false alerts and operational utility remain unmeasured. E-283 retains its failed provider-product admission."
+status = "Verified"
+where_stated = "data/output/audit/external-crossing-intake-amendment/findings.toml; data/output/audit/external-crossing-intake-amendment/results/summary.json"
+evidence_layer = "phenomenological_mapping"
+depth_status = "not_assessed"
+depth_rationale = "The result measures archive-conditional prediction. Computational feature maps do not establish a physical derivation of the algebraic embedding."
+fixed_hyperparameters = ["Retrospective timestamp-only closed-interval quarantine with inverse byte provenance", "All 166 original crossing dates retained", "Frozen THEMIS-A models and source map", "Widths 64, 256 and 1024", "2000 paired daily-file bootstrap draws at seed 20260904", "Unchanged minimum useful ROC-AUC increment 0.005"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 3
+computational_stage_count = 3
+
+[[claim.intervening_maps]]
+name = "retrospective_timestamp_quality_selection"
+branch = "all_models"
+description = "Inspect complete daily timestamp sequences and quarantine all occurrences inside inversion intervals. Membership uses timestamps; whole-file inspection uses lookahead."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "causal_support_and_features"
+branch = "all_models"
+description = "Apply the frozen 1031-row common-support admission, geometric predictors, magnitude-augmented overlapping staples, tensor contraction, norm normalization and fixed logarithmic transforms."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "frozen_prediction_and_paired_metrics"
+branch = "all_models"
+description = "Apply retained training-only standardization and logistic coefficients. Compute paired ROC-AUC differences and the minimum across three widths and two years in each daily-file bootstrap draw."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "external_fit"
+count = 0
+names = []
+training_boundary = "External data fit zero parameters. The 63 inherited model records retain their original fitted coefficients and standardization parameters from THEMIS-A training; zero external fits does not mean zero inherited fitted parameters."
+
+[[claim.fitted_parameters]]
+branch = "logistic_baseline_per_width"
+count = 19
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6"]
+training_boundary = "Per fixed width: seven logistic coefficients plus twelve standardization parameters, fitted exclusively on admitted THEMIS-A 2007-2012 training rows. Three baseline models retain separate fitted values. Final-year bootstrap draws resample evaluation files while retaining the original frozen training fits."
+
+[[claim.fitted_parameters]]
+branch = "logistic_augmentation_per_width_and_tensor"
+count = 22
+names = ["intercept", "slope_dbdt", "slope_rot", "slope_cumrot6", "slope_maxrot6", "slope_pvi6", "slope_gram6", "slope_cubic", "mean_dbdt", "mean_rot", "mean_cumrot6", "mean_maxrot6", "mean_pvi6", "mean_gram6", "mean_cubic", "std_dbdt", "std_rot", "std_cumrot6", "std_maxrot6", "std_pvi6", "std_gram6", "std_cubic"]
+training_boundary = "Per fixed width and canonical/control tensor: eight logistic coefficients plus fourteen standardization parameters, fitted exclusively on the identical THEMIS-A 2007-2012 training rows. Each of sixty augmented models has the same parameter and optimizer budget. Final and external observations supply zero fitted parameters."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-315"]
+protocol_artifact = "data/output/audit/external-crossing-intake-amendment/protocol.toml"
+protocol_sha256 = "1bcda67ce7af846e2c52d1e9affe554ceb55989baa50dce6d87673dbc37a32f6"
+description = "Replay all planned external dates with inverse source-byte reconstruction, frozen model identity and independently checked support before interpreting the unchanged discrimination gate."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["Hash-bound replay reproduces 4219790 admitted decisions, 124834 positives, all 166 nonempty dates, zero new fits and the retained interval."]
+revision_outcomes = ["An independently admitted population or dependence model changes the interval: register a separately bounded successor."]
+abandonment_outcomes = ["A quarantined row reaches any support, inverse source reconstruction fails, a planned date disappears or a fitted model changes: invalidate amended replication."]
+inconclusive_outcomes = ["The interval crosses a specified comparison threshold, or source/model/support admission fails.", "Online availability, ordinary-day false alerts and operational utility require independent observations."]
+
+[[claim]]
+id = "C-1755"
+last_verified = "2026-09-06"
+statement = "The proton collisionality implementation reproduces the NRL Plasma Formulary 2019 singly charged ion collision-time convention using Kelvin-to-eV conversion and thermal speed sqrt(k_B T/m_p). The caller supplies a positive finite macroscopic length and Coulomb logarithm. Independent fixtures verify source-rounded collision time, mean-free-path scaling proportional to T squared over density, inverse length scaling, invalid-input rejection, and explicit record denominators. Missing scale or all-invalid observations remain Unassessed. Numeric comparison with unity establishes neither general plasma closure validity nor a physical heliospheric BGK boundary."
+status = "Verified"
+where_stated = "crates/data_core/src/catalogs/wind_swe.rs; data/output/audit/proton-collisional-scale-admission/findings.toml"
+evidence_layer = "implementation_conformance"
+depth_status = "not_assessed"
+depth_rationale = "The fixture establishes source-unit and implementation conformance. Physical model interpretation remains separate."
+fixed_hyperparameters = ["Retained primary source equations", "Finite deterministic SI fixtures and invalid-input controls"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 1
+computational_stage_count = 1
+
+[[claim.intervening_maps]]
+name = "declared_units_and_source_formula"
+branch = "numerical_instrument"
+description = "Convert declared source inputs into the implementation's numerical units, evaluate the source formula and compare with independent source-unit and scaling oracles."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "numerical_instrument"
+count = 0
+names = []
+training_boundary = "Fixtures fit zero parameters. Declared physical/model constants are inputs."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-316"]
+protocol_artifact = "data/output/audit/proton-collisional-scale-admission/source.toml"
+protocol_sha256 = "e00e14479707c653ab94124759d908aae13c2e77826280ce0b79153acbf3d719"
+description = "Verify the retained source and finite Rust fixtures without promoting a physical closure or dark-matter force claim."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["All source-unit, scaling, invalid-input and output-admission fixtures pass."]
+revision_outcomes = ["A separately admitted source convention or model changes the numerical boundary."]
+abandonment_outcomes = ["An independent SI oracle or invalid-input fixture contradicts the implementation."]
+inconclusive_outcomes = ["Physical characteristic scale, gravitational frame or boundary conditions remain unadmitted."]
+
+[[claim]]
+id = "C-1756"
+last_verified = "2026-09-06"
+statement = "The solar wind-dm-mhd synthetic initializer evaluates ParkerSpiralSi on a declared uniform Cartesian SI mesh and applies LatticeUnits magnetic normalization. At matched physical radii, two radial resolutions and two lattice speeds recover the same SI reference field and spiral angle, with radial component scaling as inverse radius squared and azimuthal component scaling as inverse radius for the declared zero-source-radius model. The solar wind-ic synthetic slab independently converts its reference radius to meters and speed to m/s before applying rotation. The legacy lattice initializer also preserves the inverse-radius azimuthal law. These finite fixtures verify initialization and unit conformance; physical gravitational frame, magnetic boundaries and coupled dark-matter sensitivity remain separate obligations."
+status = "Verified"
+where_stated = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs; crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs; data/output/audit/proton-collisional-scale-admission/findings.toml"
+evidence_layer = "implementation_conformance"
+depth_status = "not_assessed"
+depth_rationale = "The fixture establishes source-unit and implementation conformance. Physical model interpretation remains separate."
+fixed_hyperparameters = ["Declared Parker SI radial and azimuthal field equations", "Finite deterministic SI fixtures and invalid-input controls"]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 1
+computational_stage_count = 1
+
+[[claim.intervening_maps]]
+name = "declared_units_and_source_formula"
+branch = "numerical_instrument"
+description = "Convert declared source inputs into the implementation's numerical units, evaluate the source formula and compare with independent source-unit and scaling oracles."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "numerical_instrument"
+count = 0
+names = []
+training_boundary = "Fixtures fit zero parameters. Declared physical/model constants are inputs."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-317"]
+protocol_artifact = "data/output/audit/proton-collisional-scale-admission/experiments.toml"
+protocol_sha256 = "4a32abdabe0929b8aa23a49aba7e1ace40f1f687e1534ab8f25754eabc3f4509"
+description = "Verify the retained source and finite Rust fixtures without promoting a physical closure or dark-matter force claim."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["All source-unit, scaling, invalid-input and output-admission fixtures pass."]
+revision_outcomes = ["A separately admitted source convention or model changes the numerical boundary."]
+abandonment_outcomes = ["An independent SI oracle or invalid-input fixture contradicts the implementation."]
+inconclusive_outcomes = ["Physical characteristic scale, gravitational frame or boundary conditions remain unadmitted."]
+
+[[claim]]
 id = "C-176"
 last_verified = "2026-02-01"
 statement = "Commutator/product norm ratio||[a,b]||/||ab||converges to 2.0 from below as dim increases: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.95 (dim=64), 1.99 (dim=256). Monotonically increasing. At dim=2 (complex), ratio = 0 (commutative)."
@@ -11944,7 +12082,7 @@ last_verified = "2026-02-13"
 statement = "The retained 16^3 historical E-027 percolation run reports an adaptive two-sided null-test p value of 0.5841584158415841 after 100 permutations with NonSignificantEarly stopping. The proposed p < 0.05 spatial-shuffle rejection remains inconclusive for that run."
 status = "Provisional"
 status_note = "Retained data/e027/e027_results.toml reports p=0.5841584158415841, 100 permutations and NonSignificantEarly. Significance remains inconclusive. Power and structural specificity require independent evidence. The historical percolation producer differs from the live E-027 topology-analyzer registration; E-088 output data/evidence/clustering_256.toml is absent in the inspected checkout."
-where_stated = "crates/gororoba_cli/src/bin/percolation_experiment.rs::run_besag_clifford_null; crates/stats_core/src/ultrametric/adaptive.rs; data/e027/e027_results.toml [null_model]; data/output/audit/claim-family-evidence-adjudication/contradiction-evidence.toml"
+where_stated = "crates/gororoba_cli/src/bin/percolation_experiment.rs::run_besag_clifford_null; crates/stats_core/src/ultrametric/adaptive.rs; data/output/audit/claim-family-evidence-adjudication/historical-e027-results.toml [null_model]; data/output/audit/claim-family-evidence-adjudication/contradiction-evidence.toml"
 evidence_layer = "implementation_conformance"
 depth_status = "declared"
 lift_depth = 0

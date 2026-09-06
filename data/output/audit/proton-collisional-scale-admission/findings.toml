@@ -1,0 +1,17 @@
+schema_version = 1
+claims = ["C-1681", "C-1682", "C-1683", "C-1684", "C-1685", "C-1686", "C-1687"]
+source = "source.toml"
+data_core_tests_passed = 13
+solar_tests_passed = 32
+lbm_library_tests_passed = 126
+force_sensitivity_tests_passed = 1
+open_boundary_tests_passed = 5
+source_collision_convention = "NRL 2019 p.36 collision time, Kelvin-to-eV conversion, and p.29 one-component proton thermal speed"
+diagnostic_admission = "Positive finite density, temperature, characteristic length and Coulomb logarithm; finite positive derived scales; missing length and all-invalid records remain Unassessed"
+diagnostic_output = "Mean free path, collision time, prescribed logarithm, parallel length, admitted/rejected counts and numeric comparison with unity; plasma closure validity remains separately unassessed"
+parker_driver = "solar wind-dm-mhd synthetic initialization binds the declared radial slab, number density, physical speed and lattice speed to UniformCartesianMesh, LatticeUnits and ParkerSpiralSi"
+parker_model = "Steady equatorial reference amplitude at 1 AU, zero source radius, fixed rotation 2.662e-6 rad/s; Cartesian field evaluated at each declared SI mesh point"
+parker_falsifier = "Two radial grid resolutions and two lattice speeds recover the same SI inner field and angle, Br outer/inner=1/4 and Bphi outer/inner=1/2 at doubled radius"
+legacy_radial_repair = "The uncalibrated lattice initializer uses -Br*Omega*r/v, preserving inverse-radius azimuthal scaling. Its callers still own lattice rotation and field units."
+historical_claims = "C-1681 through C-1687 retain their historical producer boundary. Passing implementation fixtures establish the repaired mechanisms, rather than physical dark-matter sensitivity."
+physical_residuals = ["Galactocentric gravitational orientation and Sun-comoving differential acceleration", "Physical outflow and magnetic boundary conditions", "Independent physical characteristic length and closure ordering", "Matched physical inputs and coupled numerical sensitivity"]

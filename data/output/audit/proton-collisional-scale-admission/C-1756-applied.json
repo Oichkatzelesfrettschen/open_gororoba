@@ -1,0 +1,14 @@
+{
+  "transition_key": "parker-driver-si-initialization-conformance",
+  "transition_spec_sha256": "49238744ae1fc577fb439495f96c825c6e9a2d681224be1bdc80fd3f6a4e4010",
+  "event_id": 214,
+  "allocated_successors": [
+    {
+      "proposal_key": "parker-driver-si-initialization-conformance",
+      "canonical_claim_id": "C-1756",
+      "relation_kind": "refines"
+    }
+  ],
+  "skipped_reserved_claim_ids": [],
+  "exact_replay": false
+}

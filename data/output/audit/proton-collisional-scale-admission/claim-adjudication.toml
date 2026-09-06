@@ -1,0 +1,29 @@
+schema_version = 1
+scope = "Requested historical claims and repaired implementation successors"
+
+[[claim]]
+id = "C-659"
+disposition = "Provisional; historical null rejection remains inconclusive"
+evidence = "The retained 629-byte historical result matches SHA256 770540689bcb04767fe3f96c2fb770ffc4805673ad3564e32f30d3603eb88dfe and reports p=0.5841584158415841 after 100 permutations. Its canonical locator now names the retained review-bundle copy."
+
+[[claim]]
+id = "C-834"
+disposition = "Provisional source-input robustness; nominal signed implementation verified"
+evidence = "Seven independent signed-reference tests pass, including omitted-prefactor, mismatch-sign and susceptibility-substitution controls. The nominal ratio is 0.0477442355934858; the input envelope [0.04088750057509066,0.05578719347757] crosses 0.05."
+
+[[claim]]
+id = "C-1681-C-1687"
+disposition = "Historical diagnoses retained; E-316/C-1755 and E-317/C-1756 register additional repaired implementation boundaries"
+evidence = "The 126-test LBM library suite plus force-sensitivity and five open-boundary tests pass. Source-defined collision scales, explicit-length admission, SI Parker driver integration and the missing legacy radial factor are repaired."
+residual = "A physical dark-matter or heliospheric closure claim requires a specified gravitational frame, physical fluid and magnetic boundaries, independently admitted macroscopic scales and matched numerical sensitivity. Historical producer claims do not supply those inputs."
+
+[[claim]]
+id = "C-849"
+disposition = "Refuted at the retained repository-defined 0.01 complex-amplitude gate"
+evidence = "Fresh Ruan-Fan replay reproduces maximum figure-4 complex-amplitude error 0.015940003479837907. Source parameter anchors and mutation controls pass. The numerical replay differs from the retained predecessor only in its code-commit metadata."
+
+[[claim]]
+id = "C-850"
+disposition = "Refuted at the retained held-out aggregate gate"
+evidence = "Fresh replay reproduces all 227 held-out rows and maximum complex-amplitude error 0.030397613481130306. Source PDF, archive and TeX identities pass two independent receipt tests. The paper states fitted curve agreement; the universal 1 percent requirement belongs to the repository."
+source_identity_limit = "The unchanged historical replay producer emits a 61-character source-TeX literal. The separate receipt test verifies the actual full SHA256 625f2dc473e5d50abba49daa3d1382ee9bd70b17746cd9452bfaf9b81c70bc28. The malformed literal establishes neither source identity nor successful retrieval."
