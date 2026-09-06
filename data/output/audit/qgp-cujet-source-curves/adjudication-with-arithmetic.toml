@@ -17,3 +17,5 @@ decoder_check = "MuPDF1.28.0 and qpdf12.4.1 independently decode byte-identical 
 mapping_check = "All65 CSV rows match the provider JSON decimal strings for bin edges, value, stat and sys; all65 normalization labels report4.64 percent and map to.0464."
 replay_check = "Fresh extraction reproduces all three output files byte for byte. Reusing the output directory fails with AlreadyExists. Three extractor tests pass with denied compiler warnings."
 historical_boundary = "Original CUJET arrays and unmatched six-point comparisons remain preserved in the canonical history and prior evidence. Source extraction supplies a separately identified comparison."
+
+independent_arithmetic_check = "check_cujet_rationals.rs independently verifies3497 values with exact decimal rational arithmetic; the strict1e-12 bound passes with maximum error5639/100000000000000000. checker-compilation.toml binds source, compiler invocation, dependencies and executable."

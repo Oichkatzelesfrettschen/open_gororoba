@@ -6871,8 +6871,8 @@ training_boundary = "The digitized CUJET curve is held fixed in this comparison.
 
 [claim.decisive_experiment]
 experiment_ids = ["E-075", "E-296", "E-307"]
-protocol_artifact = "data/output/audit/qgp-cujet-source-curves/adjudication.toml"
-protocol_sha256 = "51563f55c32ad1077e27317595166dc29a76608169d9769a5aeb935a4d2bb01a"
+protocol_artifact = "data/output/audit/qgp-cujet-source-curves/adjudication-with-arithmetic.toml"
+protocol_sha256 = "4ca618f17d6947923f9255cde822107e3cd904d53e660db55e27fb962ded25cf"
 description = "E-075 owns arleo-falmagne-scaling and its data/fit family. Bind the actual comparison subcommand and competing_models.rs rather than assuming the registered full run alone reproduces this ranking. Independently recompute the historical chi-squared values about 1200 and 1917, retaining exact values and optimizer outcome, then report population admission separately."
 
 [claim.what_would_verify_refute]
