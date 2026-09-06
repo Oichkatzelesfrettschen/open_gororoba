@@ -1,0 +1,6 @@
+--2026-09-05 18:07:33--  https://www2.pv.infn.it/~radici/FFdatabase/
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving www2.pv.infn.it (www2.pv.infn.it)... 192.84.142.28
+Connecting to www2.pv.infn.it (www2.pv.infn.it)|192.84.142.28|:443... connected.
+ERROR: The certificate of ‘www2.pv.infn.it’ is not trusted.
+ERROR: The certificate of ‘www2.pv.infn.it’ doesn't have a known issuer.

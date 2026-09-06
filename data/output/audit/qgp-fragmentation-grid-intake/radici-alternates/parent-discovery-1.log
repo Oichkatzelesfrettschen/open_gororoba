@@ -1,0 +1,24 @@
+--2026-09-05 18:08:24--  https://www2.pv.infn.it/
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving www2.pv.infn.it (www2.pv.infn.it)... 192.84.142.28
+Connecting to www2.pv.infn.it (www2.pv.infn.it)|192.84.142.28|:443... connected.
+WARNING: The certificate of ‘www2.pv.infn.it’ is not trusted.
+WARNING: The certificate of ‘www2.pv.infn.it’ doesn't have a known issuer.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Date: Sun, 06 Sep 2026 01:08:25 GMT
+  Server: Apache/2.4.62 (AlmaLinux) OpenSSL/3.5.5 mod_fcgid/2.3.9
+  Last-Modified: Thu, 06 Feb 2025 17:02:05 GMT
+  ETag: "19d-62d7c33a36d91"
+  Accept-Ranges: bytes
+  Content-Length: 413
+  Keep-Alive: timeout=5, max=100
+  Connection: Keep-Alive
+  Content-Type: text/html; charset=UTF-8
+Length: 413 [text/html]
+Saving to: ‘data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-1.body’
+
+     0K                                                       100% 20.6M=0s
+
+2026-09-05 18:08:25 (20.6 MB/s) - ‘data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-1.body’ saved [413/413]
+

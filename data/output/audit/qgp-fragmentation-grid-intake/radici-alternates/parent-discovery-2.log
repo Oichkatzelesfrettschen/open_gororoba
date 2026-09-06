@@ -1,0 +1,23 @@
+--2026-09-05 18:08:25--  https://www.pv.infn.it/
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving www.pv.infn.it (www.pv.infn.it)... 192.84.142.21
+Connecting to www.pv.infn.it (www.pv.infn.it)|192.84.142.21|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Date: Sun, 06 Sep 2026 01:08:26 GMT
+  Server: Apache/2.4.37 (centos) OpenSSL/1.1.1k
+  X-Powered-By: PHP/7.4.33
+  Link: <https://www.pv.infn.it/wp-json/>; rel="https://api.w.org/", <https://www.pv.infn.it/wp-json/wp/v2/pages/511>; rel="alternate"; type="application/json", <https://www.pv.infn.it/>; rel=shortlink
+  Set-Cookie: pll_language=it; expires=Mon, 06-Sep-2027 01:08:26 GMT; Max-Age=31536000; path=/; secure
+  Keep-Alive: timeout=5, max=100
+  Connection: Keep-Alive
+  Transfer-Encoding: chunked
+  Content-Type: text/html; charset=UTF-8
+Length: unspecified [text/html]
+Saving to: ‘data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-2.body’
+
+     0K .......... .......... .......... .......... ..........  141K
+    50K .......... .....                                       3.76M=0.4s
+
+2026-09-05 18:08:26 (184 KB/s) - ‘data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-2.body’ saved [67249]
+

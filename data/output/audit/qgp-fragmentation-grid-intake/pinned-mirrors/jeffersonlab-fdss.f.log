@@ -1,0 +1,38 @@
+--2026-09-05 18:07:21--  https://raw.githubusercontent.com/JeffersonLab/simc_gfortran/26521e4fd39eb69b19c7e812cc7c05a8421688af/fdss/fdss.f
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Connection: keep-alive
+  Content-Length: 9401
+  Cache-Control: max-age=300
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox
+  Content-Type: text/plain; charset=utf-8
+  ETag: "772d335f77f516f3f20acf41d4d6d9729e441d128e9d3e5815dfce4408920fd3"
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: deny
+  X-XSS-Protection: 1; mode=block
+  X-GitHub-Request-Id: D338:09E9:20275C:3C8400:6A9CBCC9
+  x-github-edge-region: uksouth
+  Accept-Ranges: bytes
+  Date: Sun, 06 Sep 2026 01:07:21 GMT
+  Via: 1.1 varnish
+  X-Served-By: cache-hhr-khhr2060036-HHR
+  X-Cache: MISS
+  X-Cache-Hits: 0
+  X-Timer: S1788656841.449783,VS0,VE309
+  Vary: Authorization,Accept-Encoding
+  Access-Control-Allow-Origin: *
+  Cross-Origin-Resource-Policy: cross-origin
+  X-Fastly-Request-ID: c1b2a1f6d0e452e49faa6fd132a20fa0bd63a69e
+  Expires: Sun, 06 Sep 2026 01:12:21 GMT
+  Source-Age: 0
+Length: 9401 (9.2K) [text/plain]
+Saving to: ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-fdss.f’
+
+     0K .........                                             100% 10.6M=0.001s
+
+2026-09-05 18:07:21 (10.6 MB/s) - ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-fdss.f’ saved [9401/9401]
+

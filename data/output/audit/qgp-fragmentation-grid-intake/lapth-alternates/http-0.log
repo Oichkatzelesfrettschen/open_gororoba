@@ -1,0 +1,25 @@
+--2026-09-05 18:03:49--  http://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl
+Resolving lapth.cnrs.fr (lapth.cnrs.fr)... 134.158.101.236
+Connecting to lapth.cnrs.fr (lapth.cnrs.fr)|134.158.101.236|:80... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 302 Found
+  content-length: 0
+  location: https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl
+  cache-control: no-cache
+  connection: close
+Location: https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl [following]
+--2026-09-05 18:03:49--  https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Connecting to lapth.cnrs.fr (lapth.cnrs.fr)|134.158.101.236|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 500 Internal Server Error
+  date: Sun, 06 Sep 2026 01:03:50 GMT
+  server: Apache
+  content-length: 536
+  content-type: text/html; charset=iso-8859-1
+Saving to: ‘http-0.body’
+
+     0K                                                       100% 56.3M=0s
+
+2026-09-05 18:03:50 ERROR 500: Internal Server Error.
+

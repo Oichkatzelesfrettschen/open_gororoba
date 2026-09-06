@@ -1,0 +1,42 @@
+--2026-09-05 18:08:13--  https://api.github.com/repos/JeffersonLab/simc_gfortran/git/trees/26521e4fd39eb69b19c7e812cc7c05a8421688af?recursive=1
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving api.github.com (api.github.com)... 20.29.134.17
+Connecting to api.github.com (api.github.com)|20.29.134.17|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Date: Sun, 06 Sep 2026 01:08:14 GMT
+  Content-Type: application/json; charset=utf-8
+  Cache-Control: public, max-age=86400, s-maxage=86400
+  Vary: Accept,Accept-Encoding, Accept, X-Requested-With
+  ETag: W/"3a6cb549a6fba327a92eaa23f9d3429d9481927104bb4d585d0ceaf3e8563424"
+  Last-Modified: Thu, 03 Sep 2026 15:44:25 GMT
+  X-GitHub-Media-Type: github.v3; format=json
+  x-github-api-version-selected: 2022-11-28
+  Access-Control-Expose-Headers: ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Used, X-RateLimit-Resource, X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval, X-GitHub-Media-Type, X-GitHub-SSO, X-GitHub-Request-Id, Deprecation, Sunset, Warning
+  Access-Control-Allow-Origin: *
+  Strict-Transport-Security: max-age=31536000; includeSubdomains; preload
+  X-Frame-Options: deny
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 0
+  Referrer-Policy: origin-when-cross-origin, strict-origin-when-cross-origin
+  Content-Security-Policy: default-src 'none'
+  Server: github.com
+  Accept-Ranges: bytes
+  X-RateLimit-Limit: 60
+  X-RateLimit-Remaining: 58
+  X-RateLimit-Used: 2
+  X-RateLimit-Resource: core
+  X-RateLimit-Reset: 1788660493
+  Transfer-Encoding: chunked
+  X-GitHub-Request-Id: 9F7C:363873:6976E6:9CD134:6A9CBCFD
+  x-github-edge-region: westus2
+Length: unspecified [application/json]
+Saving to: ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-tree.json’
+
+     0K .......... .......... .......... .......... ..........  550K
+    50K .......... .......... .......... .......... .......... 1.14M
+   100K .......... .......... .......... .......... .......... 8.83M
+   150K                                                        1.28T=0.1s
+
+2026-09-05 18:08:14 (1.06 MB/s) - ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-tree.json’ saved [154301]
+

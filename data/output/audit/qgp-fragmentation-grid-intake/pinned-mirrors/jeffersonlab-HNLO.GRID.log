@@ -1,0 +1,39 @@
+--2026-09-05 18:07:21--  https://raw.githubusercontent.com/JeffersonLab/simc_gfortran/26521e4fd39eb69b19c7e812cc7c05a8421688af/fdss/HNLO.GRID
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.108.133, 185.199.111.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  Connection: keep-alive
+  Content-Length: 74256
+  Cache-Control: max-age=300
+  Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; sandbox
+  Content-Type: text/plain; charset=utf-8
+  ETag: "1c5e6ee5a62d5748ef9911527b35fc7d166e31603b61ca37a4c4282be665260b"
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: deny
+  X-XSS-Protection: 1; mode=block
+  X-GitHub-Request-Id: 6ACE:38240A:2E1608:57A430:6A9CBCC9
+  x-github-edge-region: uksouth
+  Accept-Ranges: bytes
+  Date: Sun, 06 Sep 2026 01:07:22 GMT
+  Via: 1.1 varnish
+  X-Served-By: cache-hhr-khhr2060033-HHR
+  X-Cache: MISS
+  X-Cache-Hits: 0
+  X-Timer: S1788656842.855987,VS0,VE356
+  Vary: Authorization,Accept-Encoding
+  Access-Control-Allow-Origin: *
+  Cross-Origin-Resource-Policy: cross-origin
+  X-Fastly-Request-ID: 3b5036af5f686621c7107c596357678fb9212a27
+  Expires: Sun, 06 Sep 2026 01:12:22 GMT
+  Source-Age: 0
+Length: 74256 (73K) [text/plain]
+Saving to: ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-HNLO.GRID’
+
+     0K .......... .......... .......... .......... .......... 68% 2.55M 0s
+    50K .......... .......... ..                              100% 22.9M=0.02s
+
+2026-09-05 18:07:22 (3.53 MB/s) - ‘data/output/audit/qgp-fragmentation-grid-intake/pinned-mirrors/jeffersonlab-HNLO.GRID’ saved [74256/74256]
+

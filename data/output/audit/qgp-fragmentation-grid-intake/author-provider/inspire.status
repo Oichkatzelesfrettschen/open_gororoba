@@ -1,0 +1,3 @@
+http_status=200
+effective_url=https://inspirehep.net/api/literature?q=arxiv:0707.1506&size=1
+exit_status=0

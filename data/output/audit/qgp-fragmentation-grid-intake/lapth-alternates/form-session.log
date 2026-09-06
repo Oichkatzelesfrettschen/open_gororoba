@@ -1,0 +1,22 @@
+--2026-09-05 18:04:32--  https://lapth.cnrs.fr/ffgenerator/
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Resolving lapth.cnrs.fr (lapth.cnrs.fr)... 134.158.101.236
+Connecting to lapth.cnrs.fr (lapth.cnrs.fr)|134.158.101.236|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 200 OK
+  date: Sun, 06 Sep 2026 01:04:33 GMT
+  server: Apache
+  upgrade: h2
+  connection: Upgrade
+  last-modified: Wed, 24 May 2017 09:13:30 GMT
+  etag: "2eb2-550418491da6f"
+  accept-ranges: bytes
+  content-length: 11954
+  content-type: text/html; charset=UTF-8
+Length: 11954 (12K) [text/html]
+Saving to: ‘form-session.body’
+
+     0K .......... .                                          100% 69.5K=0.2s
+
+2026-09-05 18:04:33 (69.5 KB/s) - ‘form-session.body’ saved [11954/11954]
+

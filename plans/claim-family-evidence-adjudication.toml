@@ -485,6 +485,27 @@ acceptance = "Primary-source identity, retained comparisons, typed outcomes, sou
 [[task]]
 id = "qgp-fragmentation-numerical-intake"
 status = "pending"
-progress = "Bounded local inventory found source papers but no DSS grids, timelike evolution or NLO production adapters in Rust/manifests, docs/plans, QGP audit text and data/external. Ignored caches, other checkouts and network providers remain unsearched. Charged-source reference31 and pion/kaon reference48 offer an author-provided Fortran package; primary-provider retrieval remains the next intake step."
+progress = "Primary papers, current LHAPDF index, LAPTH form and documented legacy CGI hosts, Radici redirects and pinned DSS mirrors have retained intake receipts. LAPTH calculation requests fail; two pinned mirrors supply byte-identical charged LO/NLO grids. Charge-average versus sum, zD versus D, scale and wrapper behavior require explicit admission. Provider release authentication and the source fragmentation measure map remain unresolved."
 action = "Admit evolved charged-total fragmentation grids and explicit measure map"
 acceptance = "Provider release, evolution/scale choice, species components and Jacobian convention have reproducible admission before matched quenching calculations."
+
+[[task]]
+id = "fragmentation-provider-endpoint-recovery"
+status = "completed"
+action = "Retry documented LAPTH calculation endpoints with browser transport settings"
+acceptance = "Retain successful forms and failed calculations with exact commands, responses and transport state effects."
+progress = "Ten wget Mozilla requests retain current CGI HTTP500, historical host timeouts and lappweb HTTP404; zero service numerical rows admitted."
+
+[[task]]
+id = "fragmentation-pinned-mirror-identity"
+status = "completed"
+action = "Compare pinned DSS charged-grid bytes and wrapper conventions"
+acceptance = "Retain commit identities, retrieval hashes, charge conventions, interpolation domains and independent source review before numerical execution."
+
+[[task]]
+id = "fragmentation-provider-intake-verification"
+status = "completed"
+depends_on = ["fragmentation-provider-endpoint-recovery", "fragmentation-pinned-mirror-identity"]
+action = "Verify retained provider receipts and bounded intake findings"
+acceptance = "Artifact hashes, source locators and plan statuses agree; registry status changes require separately admitted numerical evidence."
+progress = "All142 manifest entries verify; all143 bundle files match staged Git bytes. Seven TOML files pass taplo; governance verifies281 experiment lineages. Numerical execution and canonical status changes remain false."

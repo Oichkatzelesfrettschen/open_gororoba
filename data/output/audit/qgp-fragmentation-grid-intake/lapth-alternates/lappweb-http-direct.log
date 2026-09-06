@@ -1,0 +1,26 @@
+--2026-09-05 18:04:48--  http://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl
+Resolving lappweb.in2p3.fr (lappweb.in2p3.fr)... 134.158.101.236
+Connecting to lappweb.in2p3.fr (lappweb.in2p3.fr)|134.158.101.236|:80... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 302 Found
+  content-length: 0
+  location: https://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl
+  cache-control: no-cache
+  connection: close
+Location: https://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl [following]
+--2026-09-05 18:04:48--  https://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl
+Loaded CA certificate '/etc/ssl/certs/ca-certificates.crt'
+Connecting to lappweb.in2p3.fr (lappweb.in2p3.fr)|134.158.101.236|:443... connected.
+HTTP request sent, awaiting response... 
+  HTTP/1.1 404 Not Found
+  date: Sun, 06 Sep 2026 01:04:49 GMT
+  server: Apache
+  strict-transport-security: max-age=63072000
+  content-length: 196
+  content-type: text/html; charset=iso-8859-1
+Saving to: ‘lappweb-http-direct.body’
+
+     0K                                                       100% 1.21G=0s
+
+2026-09-05 18:04:49 ERROR 404: Not Found.
+

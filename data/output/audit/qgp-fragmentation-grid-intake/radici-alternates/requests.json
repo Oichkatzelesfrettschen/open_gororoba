@@ -1,0 +1,172 @@
+[
+  {
+    "name": "verified-0",
+    "url": "https://www.pv.infn.it/~radici/FFdatabase/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-0.body",
+      "https://www.pv.infn.it/~radici/FFdatabase/"
+    ],
+    "exit_status": 4,
+    "certificate_verification": true
+  },
+  {
+    "name": "verified-1",
+    "url": "https://www2.pv.infn.it/~radici/FFdatabase/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-1.body",
+      "https://www2.pv.infn.it/~radici/FFdatabase/"
+    ],
+    "exit_status": 5,
+    "certificate_verification": true
+  },
+  {
+    "name": "verified-2",
+    "url": "http://www.pv.infn.it/~radici/FFdatabase/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-2.body",
+      "http://www.pv.infn.it/~radici/FFdatabase/"
+    ],
+    "exit_status": 4,
+    "certificate_verification": true
+  },
+  {
+    "name": "verified-3",
+    "url": "http://www2.pv.infn.it/~radici/FFdatabase/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/verified-3.body",
+      "http://www2.pv.infn.it/~radici/FFdatabase/"
+    ],
+    "exit_status": 4,
+    "certificate_verification": true
+  },
+  {
+    "name": "certificate-unverified-discovery",
+    "url": "https://www2.pv.infn.it/~radici/FFdatabase/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "--no-check-certificate",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/certificate-unverified-discovery.body",
+      "https://www2.pv.infn.it/~radici/FFdatabase/"
+    ],
+    "exit_status": 8,
+    "certificate_verification": false,
+    "scope": "discovery_only_unauthenticated"
+  },
+  {
+    "name": "parent-discovery-0",
+    "url": "https://www2.pv.infn.it/~radici/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "--no-check-certificate",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-0.body",
+      "https://www2.pv.infn.it/~radici/"
+    ],
+    "exit_status": 8,
+    "certificate_verification": false,
+    "scope": "discovery_only_unauthenticated"
+  },
+  {
+    "name": "parent-discovery-1",
+    "url": "https://www2.pv.infn.it/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "--no-check-certificate",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-1.body",
+      "https://www2.pv.infn.it/"
+    ],
+    "exit_status": 0,
+    "certificate_verification": false,
+    "scope": "discovery_only_unauthenticated"
+  },
+  {
+    "name": "parent-discovery-2",
+    "url": "https://www.pv.infn.it/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/parent-discovery-2.body",
+      "https://www.pv.infn.it/"
+    ],
+    "exit_status": 0,
+    "certificate_verification": true,
+    "scope": "institutional_root_discovery"
+  },
+  {
+    "name": "linked-theory",
+    "url": "https://www.pv.infn.it/fisica-teorica/",
+    "argv": [
+      "wget",
+      "--timeout=10",
+      "--tries=1",
+      "--server-response",
+      "--content-on-error",
+      "--user-agent=Mozilla/5.0",
+      "--hsts-file=data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/wget-hsts",
+      "-O",
+      "data/output/audit/qgp-fragmentation-grid-intake/radici-alternates/linked-theory.body",
+      "https://www.pv.infn.it/fisica-teorica/"
+    ],
+    "exit_status": 0,
+    "certificate_verification": true,
+    "discovered_from": "parent-discovery-2.body"
+  }
+]

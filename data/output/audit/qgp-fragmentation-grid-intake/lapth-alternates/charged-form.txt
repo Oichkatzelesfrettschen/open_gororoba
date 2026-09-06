@@ -1,0 +1,1 @@
+xmin=0.2&xmax=0.8&xinc=0.3&scale=100&ymin=0.00001&ymax=10&xbinning=0&ybinning=1&plot1=on&parton1=0&hadron1=41&ffset1=21&sf1=1.0&plot2=on&parton2=0&hadron2=42&ffset2=21&sf2=1.0&plot3=on&parton3=0&hadron3=43&ffset3=21&sf3=1.0&parton4=0&hadron4=11&ffset4=21&sf4=1.0

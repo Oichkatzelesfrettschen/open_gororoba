@@ -1,0 +1,39 @@
+schema_version = 1
+claim_id = "C-1710"
+scope = "Public fragmentation-provider recovery and pinned mirror source identity"
+canonical_status_change = false
+numerical_execution = false
+physical_calibration = false
+
+[service]
+lapth_receipt = "lapth-alternates/receipt.toml"
+lapth_request_count = 10
+lapth_outcome = "The form succeeds; current CGI calculations return HTTP500, documented legacy LAPTH connections time out and documented lappweb CGI returns HTTP404."
+lapth_numerical_rows_admitted = 0
+radici_receipt = "radici-alternates/receipt.toml"
+radici_request_count = 9
+radici_outcome = "Verified requests reach an unreachable HTTP redirect or a certificate-trust failure. Separately certificate-unverified discovery returns404 for database and author parent. Reachable linked institutional pages supply an author contact but no replacement database link in the inspected scope."
+author_receipt = "author-provider/receipt.toml"
+other_inventory = "The current LHAPDF index supplies1598 set names but identifies no requested DSS2007 FF set; the retained filtered Wayback query returns an empty array. These observations bound only the retained queries."
+
+[mirrors]
+retrieval = "pinned-mirrors/retrieval.json"
+metadata = "pinned-mirrors/metadata-retrieval.json"
+review = "pinned-mirrors/source-review.toml"
+jeffersonlab_commit = "26521e4fd39eb69b19c7e812cc7c05a8421688af"
+bashphox_commit = "499d004f514e721b0aa4d0347ee5e004fc01fa29"
+grid_bytes_each = 74256
+grid_rows_each = 816
+hlo_sha256 = "f6edf2403d54094338dd3b9da1dca00e83cbcebd613c82d227ee959952303f90"
+hnlo_sha256 = "16fd57fffd854c35e2ec086bd2b03d1706b5d422c94ac2306b075a1a2ddea2b2"
+finding = "Both mirror pairs are byte-identical. Each interface returns zD at Q2 in GeV squared and IC0 denotes charge average; charged sum requires twice that output."
+implementation_boundary = "JeffersonLab extrapolates and requires shared-cache reset on set changes. BashPhox clamps and caches the first order independently per hadron. Matching grids establish shared tables, not interchangeable wrappers or independent scientific replication."
+license_inventory = "GitHub metadata reports license null for both repositories. Complete pinned recursive trees contain643 and592 entries, respectively, with zero path matches for license/licence/copying. The retained routine headers supply attribution but zero license/copyright/permission text matches. Reuse terms remain unresolved."
+original_author_release_authenticated = false
+
+[next_admission]
+required = ["Resolve applicable package reuse terms before integration", "Bind an immutable hadron/order instance to exact grid hashes", "Admit fixed-width shape and finite fields", "Declare source knot precision and endpoint factors", "Test nodes and off-grid interpolation against an admitted independent oracle", "Declare zD-to-D and charge-average-to-sum maps", "Keep the2017 printed fragmentation Jacobian convention unresolved until supported", "Match physical population and fitting freedom before quenching comparison"]
+verification = "Independent source-bound numerical checks pass their declared error gates and preserve measure, charge and scale identities."
+revision = "A wrapper disagreement, grid identity mismatch or convention mismatch requires a separately named implementation and retained failed comparison."
+abandonment = "Unidentified outputs and provider errors are excluded from numerical reference evidence."
+inconclusive = "Mirrored tables alone establish neither original-release authentication nor the physical fragmentation/Jacobian map."

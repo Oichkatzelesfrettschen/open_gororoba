@@ -1,0 +1,19 @@
+HTTP/1.1 302 Found
+Date: Sun, 06 Sep 2026 00:54:15 GMT
+Server: Apache
+Location: http://users.df.uba.ar/deflo/
+Content-Length: 213
+Content-Type: text/html; charset=iso-8859-1
+
+HTTP/1.1 200 OK
+Date: Sun, 06 Sep 2026 00:54:17 GMT
+Server: Apache
+X-Frame-Options: SAMEORIGIN
+Last-Modified: Tue, 13 Dec 2016 15:08:27 GMT
+ETag: "51-5438b97a43710"
+Accept-Ranges: bytes
+Content-Length: 81
+X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff”
+Content-Type: text/html
+

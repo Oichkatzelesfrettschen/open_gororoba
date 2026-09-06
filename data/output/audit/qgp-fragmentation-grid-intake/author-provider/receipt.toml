@@ -1,0 +1,45 @@
+schema_version = 1
+observation_completed_utc = "2026-09-06T00:54:59Z"
+curl_version = "8.21.0; libcurl8.21.0; OpenSSL3.6.4"
+scope = "Public author-provider and primary-publication metadata discovery for DSS2007 numerical fragmentation functions"
+request_method = "GET; redirects followed with curl certificate verification enabled"
+replay_directory = "data/output/audit/qgp-fragmentation-grid-intake/author-provider"
+status_capture = "Each command redirects stdout to its .status file and stderr to .stderr; immediately capture shell exit status and append exit_status=<value> to .status."
+package_execution = false
+author_contact = false
+hash_manifest = "SHA256SUMS"
+
+[[request]]
+id = "deflo"
+command = "curl -L --max-time 20 -sS -D deflo.headers -o deflo.body -w 'http_status=%{http_code}\\neffective_url=%{url_effective}\\n' https://www.df.uba.ar/users/deflo/ > deflo.status 2> deflo.stderr"
+request_url = "https://www.df.uba.ar/users/deflo/"
+effective_url = "http://users.df.uba.ar/deflo/"
+http_status = 200
+exit_status = 0
+result = "Institutional author-page candidate redirects to the author user page; retained HTML contains a meta-refresh link to http://www.icas.unsam.edu.ar/deflo."
+provenance_boundary = "The initial institutional author-page URL is a discovery candidate; the subsequent ICAS URL is explicitly linked by its retained response. HTTP destination transport is unauthenticated."
+
+[[request]]
+id = "icas"
+command = "curl -L --max-time 20 -sS -D icas.headers -o icas.body -w 'http_status=%{http_code}\\neffective_url=%{url_effective}\\n' http://www.icas.unsam.edu.ar/deflo > icas.status 2> icas.stderr"
+request_url = "http://www.icas.unsam.edu.ar/deflo"
+http_status = 0
+exit_status = 6
+result = "DNS resolution failed for www.icas.unsam.edu.ar; stderr retains the curl error."
+body_state = "curl produced no icas.body file because name resolution failed; the zero-byte headers file and status/error records are retained."
+
+[[request]]
+id = "inspire"
+command = "curl -L --max-time 20 -sS -D inspire.headers -o inspire.body -w 'http_status=%{http_code}\\neffective_url=%{url_effective}\\n' 'https://inspirehep.net/api/literature?q=arxiv:0707.1506&size=1' > inspire.status 2> inspire.stderr"
+request_url = "https://inspirehep.net/api/literature?q=arxiv:0707.1506&size=1"
+http_status = 200
+exit_status = 0
+record_id = "755458"
+doi = "10.1103/PhysRevD.76.074033"
+result = "The matched record metadata has neither a urls field nor a documents field; the DOI identifies the charged-hadron publication. The complete API response is retained."
+inspection = "jq '.hits.hits[0] | {id,metadata:(.metadata|{urls,documents,dois})}' inspire.body"
+
+[adjudication]
+public_package_admitted = false
+blocker = "The explicit author-page link fails DNS admission and the queried publication metadata supplies no package link."
+boundary = "These three requests establish a bounded provider observation, not global absence of a public DSS2007 package."

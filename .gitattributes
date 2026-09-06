@@ -80,3 +80,5 @@ data/output/audit/mhd-magnetic-diffusivity/*.log -text whitespace=-blank-at-eof,
 data/output/audit/mhd-centered-induction-integrator/*.log -text whitespace=-blank-at-eof,-blank-at-eol
 
 data/output/audit/qgp-fragmentation-measure-identity/*.headers -text whitespace=-blank-at-eof,-blank-at-eol
+# Provider responses and mirrored reference files preserve retrieved bytes.
+data/output/audit/qgp-fragmentation-grid-intake/** -text whitespace=-blank-at-eof,-blank-at-eol,-space-before-tab,cr-at-eol

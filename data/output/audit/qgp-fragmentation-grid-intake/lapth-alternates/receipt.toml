@@ -1,0 +1,86 @@
+schema_version = 1
+tool = "GNU Wget1.25.0"
+scope = "Documented LAPTH FF generator alternate hosts and ordinary form submissions"
+source_html = "../lapth-ffgenerator.html"
+source_lines = "18-20: two commented legacy actions and current action;37-39: commented numplot=num option"
+charged_form = "Copied retained ../lapth-query-form.txt: DSS NLO gluon charged sum and separate charges"
+single_dss_form = "Visible default successful controls with only ffset1 changed to DSS NLO21; all unchecked plots omitted, their ordinary select/text controls retained"
+numerical_form = "single-dss-form.txt plus numplot=num from the commented documented numerical-output radio option"
+headers_location = "Each .log contains wget server-response headers, redirects, errors and timestamps; .body retains response/error body, .stdout retains stdout, .status records shell exit."
+tls_verification = "Enabled for every HTTPS connection."
+state_effect = "The initial six wget calls used default HSTS storage. http-2.log records HSTS upgrading lappweb HTTP to HTTPS; /home/eirikr/.wget-hsts observed mtime2026-09-05T18:03:52.609877551-07:00. Later calls explicitly use local-hsts. Prior HSTS bytes were not recorded."
+calculation_rows_admitted = 0
+outcome = "Current CGI responds HTTP500 across supplied charged, full single-DSS, and numerical-output forms; historical lapth.in2p3 host times out; lappweb path returns404. Form HTML succeeds, but calculation remains unresolved."
+boundary = "Observed endpoint responses do not establish whether the fault is input handling, missing numerical dependencies, or CGI configuration; server implementation was not inspected."
+hash_manifest = "SHA256SUMS"
+
+[[request]]
+id = "https-0"
+url = "https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --user-agent='Mozilla/5.0' --post-file=charged-form.txt -O https-0.body 'https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl' > https-0.stdout 2> https-0.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > https-0.status"
+exit_status = 8
+result = "http_500"
+
+[[request]]
+id = "https-1"
+url = "https://lapth.in2p3.fr/cgi-bin/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --user-agent='Mozilla/5.0' --post-file=charged-form.txt -O https-1.body 'https://lapth.in2p3.fr/cgi-bin/ffgenerator/ffcalc.pl' > https-1.stdout 2> https-1.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > https-1.status"
+exit_status = 4
+result = "connection_timeout"
+
+[[request]]
+id = "https-2"
+url = "https://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --user-agent='Mozilla/5.0' --post-file=charged-form.txt -O https-2.body 'https://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl' > https-2.stdout 2> https-2.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > https-2.status"
+exit_status = 8
+result = "http_404"
+
+[[request]]
+id = "http-0"
+url = "http://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --user-agent='Mozilla/5.0' --post-file=charged-form.txt -O http-0.body 'http://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl' > http-0.stdout 2> http-0.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > http-0.status"
+exit_status = 8
+result = "http_500"
+
+[[request]]
+id = "http-1"
+url = "http://lapth.in2p3.fr/cgi-bin/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --user-agent='Mozilla/5.0' --post-file=charged-form.txt -O http-1.body 'http://lapth.in2p3.fr/cgi-bin/ffgenerator/ffcalc.pl' > http-1.stdout 2> http-1.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > http-1.status"
+exit_status = 4
+result = "connection_timeout"
+
+[[request]]
+id = "http-2"
+url = "http://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --user-agent='Mozilla/5.0' --post-file=charged-form.txt -O http-2.body 'http://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl' > http-2.stdout 2> http-2.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > http-2.status"
+exit_status = 8
+result = "http_404"
+
+[[request]]
+id = "form-session"
+url = "https://lapth.cnrs.fr/ffgenerator/"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --hsts-file=local-hsts --save-cookies=session.cookies --keep-session-cookies --user-agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36' -O form-session.body 'https://lapth.cnrs.fr/ffgenerator/' > form-session.stdout 2> form-session.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > form-session.status"
+exit_status = 0
+result = "http_200_html_form"
+
+[[request]]
+id = "single-dss"
+url = "https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --hsts-file=local-hsts --load-cookies=session.cookies --referer=https://lapth.cnrs.fr/ffgenerator/ --user-agent='Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36' --post-file=single-dss-form.txt -O single-dss.body 'https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl' > single-dss.stdout 2> single-dss.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > single-dss.status"
+exit_status = 8
+result = "http_500"
+
+[[request]]
+id = "lappweb-http-direct"
+url = "http://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --hsts-file=local-hsts --user-agent='Mozilla/5.0' --post-file=charged-form.txt -O lappweb-http-direct.body 'http://lappweb.in2p3.fr/cgi-bin/cgi-lapth/ffgenerator/ffcalc.pl' > lappweb-http-direct.stdout 2> lappweb-http-direct.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > lappweb-http-direct.status"
+exit_status = 8
+result = "http_302_then_404"
+
+[[request]]
+id = "numerical"
+url = "https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl"
+command = "wget --timeout=15 --tries=1 --server-response --content-on-error --hsts-file=local-hsts --load-cookies=session.cookies --referer=https://lapth.cnrs.fr/ffgenerator/ --user-agent='Mozilla/5.0' --post-file=numerical-form.txt -O numerical.body 'https://lapth.cnrs.fr/cgi-bin/ffgenerator/ffcalc.pl' > numerical.stdout 2> numerical.log; request_status=$?; printf 'exit_status=%s\\n' \"$request_status\" > numerical.status"
+exit_status = 8
+result = "http_500"
+
