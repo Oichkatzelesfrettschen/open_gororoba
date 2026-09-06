@@ -1,0 +1,27 @@
+[transition]
+transition_key = "parker-driver-si-initialization-conformance"
+source_claim_id = "C-1686"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-PROTON-SCALE-PARKER-CONFORMANCE"]
+experiment_ids = ["E-317"]
+exercised_falsifier = "Independent source-unit and scaling fixtures discriminate the historical implementation from its corrected numerical mechanism."
+proposed_claim_status = "Provisional"
+rationale = "Preserve the historical producer diagnosis and register repaired implementation conformance separately."
+unresolved_assumptions = ["Physical inputs, closure assumptions and coupled numerical error require independently admitted observations."]
+actor = "external-admission-claim-closure"
+reason = "Retain bounded source and unit conformance"
+transition_timestamp = "2026-09-06T04:45:57Z"
+expected_source_state_sha256 = "dcd6c38ed54be3f75edac680eb447eaf439b5659a9da0f8ab3afb0564e1ec314"
+expected_claim_id_max = 1755
+
+[[successor]]
+proposal_key = "parker-driver-si-initialization-conformance"
+statement = "The solar wind-dm-mhd synthetic initializer evaluates ParkerSpiralSi on a declared uniform Cartesian SI mesh and applies LatticeUnits magnetic normalization. At matched physical radii, two radial resolutions and two lattice speeds recover the same SI reference field and spiral angle, with radial component scaling as inverse radius squared and azimuthal component scaling as inverse radius for the declared zero-source-radius model. The solar wind-ic synthetic slab independently converts its reference radius to meters and speed to m/s before applying rotation. The legacy lattice initializer also preserves the inverse-radius azimuthal law. These finite fixtures verify initialization and unit conformance; physical gravitational frame, magnetic boundaries and coupled dark-matter sensitivity remain separate obligations."
+initial_status = "Verified"
+source_or_implementation_boundary = "Declared source equations and finite deterministic Rust fixtures; physical closure validity remains unassessed."
+required_falsifier = "An independent source-unit oracle, invalid-input fixture or matched physical-coordinate scaling test fails."
+where_stated = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs","crates/gororoba_cli_physics/src/bin/solar/wind_ic.rs","data/output/audit/proton-collisional-scale-admission/findings.toml"]
+evidence_artifact_ids = ["LOCAL-PROTON-SCALE-PARKER-CONFORMANCE"]
+predecessor_relation_kind = "refines"
+

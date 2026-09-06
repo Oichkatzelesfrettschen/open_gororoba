@@ -38,8 +38,8 @@ use data_core::catalogs::{
     ulysses::{parse_ulysses_file, ulysses_to_omni},
     voyager::{VoyagerSpacecraft, parse_voyager_file, voyager_to_omni},
     wind_swe::{
-        KnudsenRegime, classify_knudsen, knudsen_number, merge_wind_swe_mfi, parse_wind_mfi_file,
-        parse_wind_swe_file, wind_mfi_to_omni,
+        classify_knudsen, merge_wind_swe_mfi, parse_wind_mfi_file, parse_wind_swe_file,
+        proton_collisionality, wind_mfi_to_omni,
     },
 };
 use std::{fs, io::Write, path::PathBuf};
@@ -209,7 +209,9 @@ struct CellIc {
     b: [f64; 3],
 }
 
-/// Parker spiral B-field fallback (used when no real B data available).
+/// Equatorial synthetic Parker slab with its radial reference at 1 AU.
+/// Grid radii convert to meters before applying rotation in rad/s and speed
+/// in m/s. The slab construction does not infer a spacecraft's spatial orbit.
 fn parker_spiral_b(
     x: usize,
     y: usize,
@@ -217,7 +219,7 @@ fn parker_spiral_b(
     ny: usize,
     b0: f64,
     omega: f64,
-    v_sw_local: f64,
+    speed_m_s: f64,
 ) -> [f64; 3] {
     let r0 = nx as f64 / 2.0;
     let y_center = ny as f64 / 2.0;
@@ -225,7 +227,8 @@ fn parker_spiral_b(
     let dy = y as f64 - y_center;
     let r_cyl = (dx * dx + dy * dy).sqrt().max(0.5);
     let b_r = b0 * (r0 / r_cyl).powi(2);
-    let b_phi = -b0 * omega * r0 * r0 / (v_sw_local.max(1e-30) * r_cyl);
+    let radius_m = r_cyl / r0 * 1.496e11;
+    let b_phi = -b_r * omega * radius_m / speed_m_s;
     let cos_phi = dx / r_cyl;
     let sin_phi = dy / r_cyl;
     [
@@ -285,7 +288,15 @@ fn generate_ic_from_omni(
                     let bz = if rec.bz_gse.is_nan() { 0.0 } else { rec.bz_gse };
                     [bx * cli.b_scale, by * cli.b_scale, bz * cli.b_scale]
                 } else {
-                    parker_spiral_b(x, y, nx, ny, cli.b_scale * 5.0, cli.omega, v_lbm)
+                    parker_spiral_b(
+                        x,
+                        y,
+                        nx,
+                        ny,
+                        cli.b_scale * 5.0,
+                        cli.omega,
+                        v_lbm * units.v_ref * 1000.0 / units.u_scale,
+                    )
                 };
 
                 data.push(CellIc { x, y, z, rho, u, b });
@@ -301,8 +312,7 @@ fn write_volume(
     path: &std::path::Path,
     data: &[CellIc],
     units: &UnitConversion,
-    kn_regime: KnudsenRegime,
-    kn_max: f64,
+    diagnostic: &KnudsenDiagnostic,
 ) -> std::io::Result<()> {
     if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
         fs::create_dir_all(parent)?;
@@ -313,8 +323,7 @@ fn write_volume(
     writeln!(file, "# n_ref_cm3={:.6}", units.n_ref)?;
     writeln!(file, "# v_ref_kms={:.6}", units.v_ref)?;
     writeln!(file, "# u_scale={:.6}", units.u_scale)?;
-    writeln!(file, "# kn_regime={kn_regime:?}")?;
-    writeln!(file, "# kn_max={kn_max:.2}")?;
+    diagnostic.write_metadata(&mut file)?;
     writeln!(file, "x,y,z,rho,ux,uy,uz,bx,by,bz")?;
     for c in data {
         writeln!(
@@ -713,7 +722,15 @@ fn triangulate_ic_from_multi_spacecraft(
                         bz_st * cli.b_scale,
                     ]
                 } else {
-                    parker_spiral_b(x, y, nx, ny, cli.b_scale * 5.0, cli.omega, v_lbm)
+                    parker_spiral_b(
+                        x,
+                        y,
+                        nx,
+                        ny,
+                        cli.b_scale * 5.0,
+                        cli.omega,
+                        v_lbm * units.v_ref * 1000.0 / units.u_scale,
+                    )
                 };
 
                 data.push(CellIc { x, y, z, rho, u, b });
@@ -1480,6 +1497,15 @@ fn latitude_modulation(
 }
 
 pub fn run(cli: Cli) -> anyhow::Result<()> {
+    anyhow::ensure!(
+        cli.coulomb_logarithm.is_finite() && cli.coulomb_logarithm > 0.0,
+        "Coulomb logarithm must be finite and positive"
+    );
+    anyhow::ensure!(
+        cli.knudsen_parallel_length_m
+            .is_none_or(|length| length.is_finite() && length > 0.0),
+        "Knudsen parallel length must be finite and positive"
+    );
     // Radial mode: multi-distance heliospheric profile
     if cli.radial_mode {
         return run_radial_mode(&cli);
@@ -1666,9 +1692,10 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
     };
 
     // Knudsen diagnostic from L1 records
-    let (kn_regime, kn_max) = compute_knudsen_diagnostic(window);
+    let diagnostic =
+        compute_knudsen_diagnostic(window, cli.knudsen_parallel_length_m, cli.coulomb_logarithm);
 
-    output_diagnostics_and_write(&data, &units, kn_regime, kn_max, &cli)
+    output_diagnostics_and_write(&data, &units, &diagnostic, &cli)
 }
 
 /// Radial mode: build heliospheric profile from multi-spacecraft data
@@ -1774,57 +1801,114 @@ fn run_radial_mode(cli: &Cli) -> anyhow::Result<()> {
     let data = generate_radial_ic(&profile, cli, &units, lat_profile.as_ref());
 
     // Knudsen diagnostic from all records
-    let (kn_regime, kn_max) = compute_knudsen_diagnostic(&all_records);
+    let diagnostic = compute_knudsen_diagnostic(
+        &all_records,
+        cli.knudsen_parallel_length_m,
+        cli.coulomb_logarithm,
+    );
 
-    output_diagnostics_and_write(&data, &units, kn_regime, kn_max, cli)
+    output_diagnostics_and_write(&data, &units, &diagnostic, cli)
 }
 
-/// Compute Knudsen number statistics from a set of OmniRecords.
-fn compute_knudsen_diagnostic(records: &[OmniRecord]) -> (KnudsenRegime, f64) {
-    let mut kinetic_count = 0usize;
-    let mut transitional_count = 0usize;
-    let mut kn_max = 0.0_f64;
-    for r in records {
-        if !r.proton_density.is_nan() && !r.proton_temperature.is_nan() {
-            let kn = knudsen_number(r.proton_density, r.proton_temperature);
-            if kn.is_finite() {
-                kn_max = kn_max.max(kn);
-                match classify_knudsen(kn) {
-                    KnudsenRegime::Kinetic => kinetic_count += 1,
-                    KnudsenRegime::Transitional => transitional_count += 1,
-                    KnudsenRegime::Fluid => {}
-                }
-            }
+struct KnudsenDiagnostic {
+    maximum: f64,
+    maximum_collision_time_s: f64,
+    maximum_mean_free_path_m: f64,
+    admitted: usize,
+    rejected: usize,
+    length_m: Option<f64>,
+    coulomb_logarithm: f64,
+}
+
+impl KnudsenDiagnostic {
+    fn write_metadata(&self, writer: &mut impl std::io::Write) -> std::io::Result<()> {
+        writeln!(writer, "# kn_regime={:?}", classify_knudsen(self.maximum))?;
+        writeln!(writer, "# kn_max={:.17e}", self.maximum)?;
+        writeln!(
+            writer,
+            "# kn_parallel_length_m={}",
+            self.length_m.map_or_else(
+                || "unassessed".to_owned(),
+                |length| format!("{length:.17e}")
+            )
+        )?;
+        writeln!(
+            writer,
+            "# kn_coulomb_logarithm={:.17e}",
+            self.coulomb_logarithm
+        )?;
+        writeln!(writer, "# kn_admitted_records={}", self.admitted)?;
+        writeln!(writer, "# kn_rejected_records={}", self.rejected)?;
+        writeln!(
+            writer,
+            "# kn_max_collision_time_s={:.17e}",
+            self.maximum_collision_time_s
+        )?;
+        writeln!(
+            writer,
+            "# kn_max_mean_free_path_m={:.17e}",
+            self.maximum_mean_free_path_m
+        )?;
+        writeln!(
+            writer,
+            "# kn_convention=NRL2019_p36_tau_i_p29_sqrt_kT_over_mp"
+        )?;
+        writeln!(
+            writer,
+            "# kn_scope=parallel_collisional_scale_comparison_only_closure_validity_unassessed"
+        )
+    }
+}
+
+/// Preserve the measured record denominator and explicit characteristic length.
+fn compute_knudsen_diagnostic(
+    records: &[OmniRecord],
+    length_m: Option<f64>,
+    coulomb_logarithm: f64,
+) -> KnudsenDiagnostic {
+    let mut diagnostic = KnudsenDiagnostic {
+        maximum: f64::NAN,
+        maximum_collision_time_s: f64::NAN,
+        maximum_mean_free_path_m: f64::NAN,
+        admitted: 0,
+        rejected: 0,
+        length_m,
+        coulomb_logarithm,
+    };
+    for record in records {
+        let measured = length_m.and_then(|length| {
+            proton_collisionality(
+                record.proton_density,
+                record.proton_temperature,
+                length,
+                coulomb_logarithm,
+            )
+        });
+        if let Some(measured) = measured {
+            diagnostic.maximum = diagnostic.maximum.max(measured.knudsen_number);
+            diagnostic.maximum_collision_time_s = diagnostic
+                .maximum_collision_time_s
+                .max(measured.collision_time_s);
+            diagnostic.maximum_mean_free_path_m = diagnostic
+                .maximum_mean_free_path_m
+                .max(measured.mean_free_path_m);
+            diagnostic.admitted += 1;
+        } else {
+            diagnostic.rejected += 1;
         }
     }
-    let kn_regime = if kinetic_count > 0 {
-        KnudsenRegime::Kinetic
-    } else if transitional_count > 0 {
-        KnudsenRegime::Transitional
-    } else {
-        KnudsenRegime::Fluid
-    };
     eprintln!(
-        "Kn diagnostic: max={kn_max:.1}, regime={kn_regime:?}, \
-         kinetic={kinetic_count}, transitional={transitional_count}/{} records",
-        records.len(),
+        "Proton collision diagnostic: max_Kn={:.6e}, assessed={}, rejected={}, closure_validity=unassessed",
+        diagnostic.maximum, diagnostic.admitted, diagnostic.rejected
     );
-    if kinetic_count > 0 {
-        eprintln!(
-            "WARNING: {kinetic_count} records in kinetic regime (Kn > 100). \
-             LBM fluid approximation may not be valid. Results should be \
-             interpreted as effective-viscosity averages, not kinetic physics."
-        );
-    }
-    (kn_regime, kn_max)
+    diagnostic
 }
 
 /// Print IC diagnostics and write output file(s).
 fn output_diagnostics_and_write(
     data: &[CellIc],
     units: &UnitConversion,
-    kn_regime: KnudsenRegime,
-    kn_max: f64,
+    diagnostic: &KnudsenDiagnostic,
     cli: &Cli,
 ) -> anyhow::Result<()> {
     let (rho_min, rho_max) = data.iter().fold((f64::MAX, f64::MIN), |(lo, hi), c| {
@@ -1844,11 +1928,13 @@ fn output_diagnostics_and_write(
     // Write output
     match cli.format.as_str() {
         "volume" => {
-            write_volume(&cli.out, data, units, kn_regime, kn_max)?;
+            write_volume(&cli.out, data, units, diagnostic)?;
             eprintln!("wrote volume: {}", cli.out.display());
         }
         "slices" => {
             write_slices(&cli.out, data, cli.nz)?;
+            diagnostic
+                .write_metadata(&mut fs::File::create(cli.out.join("collisionality.txt"))?)?;
             eprintln!("wrote {} slices to: {}", cli.nz, cli.out.display());
         }
         other => {
@@ -1863,6 +1949,43 @@ fn output_diagnostics_and_write(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use data_core::catalogs::wind_swe::KnudsenRegime;
+
+    #[test]
+    fn parker_slab_angle_uses_si_radius_and_speed_at_both_grid_resolutions() {
+        for nx in [16, 32] {
+            let reference = parker_spiral_b(nx / 2, 2, nx, 4, 5.0, 2.662e-6, 400e3);
+            let half_radius = parker_spiral_b(nx / 4, 2, nx, 4, 5.0, 2.662e-6, 400e3);
+            assert!((reference[1] / reference[0] + 2.662e-6 * 1.496e11 / 400e3).abs() < 1e-14);
+            assert!((half_radius[0] / reference[0] - 4.0).abs() < 1e-14);
+            assert!((half_radius[1] / reference[1] - 2.0).abs() < 1e-14);
+        }
+    }
+
+    #[test]
+    fn collision_diagnostic_requires_scale_and_preserves_record_denominator() {
+        let records = [
+            make_record(2024, 1, 0, 5.0, 400.0),
+            make_record(2024, 1, 1, f64::NAN, 400.0),
+        ];
+        let absent = compute_knudsen_diagnostic(&records, None, 20.0);
+        assert_eq!(classify_knudsen(absent.maximum), KnudsenRegime::Unassessed);
+        assert_eq!((absent.admitted, absent.rejected), (0, 2));
+        let invalid = compute_knudsen_diagnostic(&records[1..], Some(1e9), 20.0);
+        assert_eq!(classify_knudsen(invalid.maximum), KnudsenRegime::Unassessed);
+        let measured = compute_knudsen_diagnostic(&records, Some(1e9), 20.0);
+        assert_eq!((measured.admitted, measured.rejected), (1, 1));
+        assert!(measured.maximum.is_finite());
+        let mut metadata = Vec::new();
+        measured.write_metadata(&mut metadata).unwrap();
+        let text = String::from_utf8(metadata).unwrap();
+        assert!(text.contains("kn_admitted_records=1"));
+        assert!(text.contains("kn_rejected_records=1"));
+        assert!(text.contains("kn_parallel_length_m=1.00000000000000000e9"));
+        assert!(text.contains("closure_validity_unassessed"));
+        let longer = compute_knudsen_diagnostic(&records, Some(2e9), 20.0);
+        assert!((longer.maximum / measured.maximum - 0.5).abs() < 1e-14);
+    }
 
     /// `Cli` derives `Args` so the dispatcher can flatten it into a subcommand,
     /// and `Args` carries no `parse_from`. This wrapper gives the tests back an

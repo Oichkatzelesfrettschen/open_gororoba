@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 282
-edge_count = 1547
+lineage_count = 285
+edge_count = 1562
 
 [[lineage]]
 id = "XL-001"
@@ -5131,6 +5131,60 @@ dataset_label_refs = []
 external_source_refs = []
 truth_surface_consumption = []
 replay_steps = ["Confirm required input paths are available.", "cargo test -p qgp_scaling --profile validation --test dss_fragmentation_identity -- --nocapture", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-283"
+experiment_id = "E-315"
+binary = "staples-intake-amendment"
+deterministic = true
+gpu = false
+run_command = "cargo run --profile validation -p gororoba_cli_physics --bin staples-intake-amendment -- --parent-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --input-root .cache/staples-external-intake --protocol data/output/audit/external-crossing-intake-amendment/protocol.toml --out-dir .cache/external-crossing-derived-inputs"
+run_command_sha256 = "bf2793fdb2f3d0872a88893015e482dcd22c65a827497337826b82e2df7b79d8"
+claim_refs = []
+input_path_refs = ["data/output/audit/external-crossing-intake-amendment/protocol.toml", "data/output/audit/staples-causal-validation/external-intake-manifest.json", "data/output/audit/staples-causal-validation/results"]
+output_path_refs = ["data/output/audit/external-crossing-intake-amendment/findings.toml", "data/output/audit/external-crossing-intake-amendment/results/summary.json", "data/output/audit/external-crossing-intake-amendment/support-audit.tsv"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo run --profile validation -p gororoba_cli_physics --bin staples-intake-amendment -- --parent-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --input-root .cache/staples-external-intake --protocol data/output/audit/external-crossing-intake-amendment/protocol.toml --out-dir .cache/external-crossing-derived-inputs", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-284"
+experiment_id = "E-316"
+binary = "solar"
+deterministic = true
+gpu = false
+run_command = "cargo test -p data_core --lib catalogs::wind_swe::tests --profile validation && cargo test -p gororoba_cli_physics --bin solar collision_diagnostic --profile validation"
+run_command_sha256 = "74b64f2f0a20978c1d624df43b9281d2256c2012c4de4d0c58aa7db69fb45653"
+claim_refs = []
+input_path_refs = ["data/output/audit/proton-collisional-scale-admission/nrl-formulary-2019.pdf", "data/output/audit/proton-collisional-scale-admission/source.toml"]
+output_path_refs = ["data/output/audit/proton-collisional-scale-admission/findings.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p data_core --lib catalogs::wind_swe::tests --profile validation && cargo test -p gororoba_cli_physics --bin solar collision_diagnostic --profile validation", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-285"
+experiment_id = "E-317"
+binary = "solar"
+deterministic = true
+gpu = false
+run_command = "cargo test -p gororoba_cli_physics --bin solar synthetic_parker --profile validation && cargo test -p lbm_3d --lib --profile validation"
+run_command_sha256 = "5219f469d6843a85065caeea788ebee09f1871fc06eda01aadb4817a38f269b3"
+claim_refs = []
+input_path_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "crates/lbm_3d/src/units.rs"]
+output_path_refs = ["data/output/audit/proton-collisional-scale-admission/findings.toml"]
+dataset_refs = []
+dataset_label_refs = []
+external_source_refs = []
+truth_surface_consumption = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p gororoba_cli_physics --bin solar synthetic_parker --profile validation && cargo test -p lbm_3d --lib --profile validation", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Execution target is registered in registry/binaries.toml or the workspace bench catalog.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -19052,6 +19106,141 @@ id = "XLE-01547"
 lineage_id = "XL-282"
 from_id = "E-314"
 to_ref = "data/output/audit/qgp-fragmentation-interpolation/adjudication.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01548"
+lineage_id = "XL-283"
+from_id = "E-315"
+to_ref = "staples-intake-amendment"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01549"
+lineage_id = "XL-283"
+from_id = "E-315"
+to_ref = "data/output/audit/external-crossing-intake-amendment/protocol.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01550"
+lineage_id = "XL-283"
+from_id = "E-315"
+to_ref = "data/output/audit/staples-causal-validation/external-intake-manifest.json"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01551"
+lineage_id = "XL-283"
+from_id = "E-315"
+to_ref = "data/output/audit/staples-causal-validation/results"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01552"
+lineage_id = "XL-283"
+from_id = "E-315"
+to_ref = "data/output/audit/external-crossing-intake-amendment/findings.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01553"
+lineage_id = "XL-283"
+from_id = "E-315"
+to_ref = "data/output/audit/external-crossing-intake-amendment/results/summary.json"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01554"
+lineage_id = "XL-283"
+from_id = "E-315"
+to_ref = "data/output/audit/external-crossing-intake-amendment/support-audit.tsv"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01555"
+lineage_id = "XL-284"
+from_id = "E-316"
+to_ref = "solar"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01556"
+lineage_id = "XL-284"
+from_id = "E-316"
+to_ref = "data/output/audit/proton-collisional-scale-admission/nrl-formulary-2019.pdf"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01557"
+lineage_id = "XL-284"
+from_id = "E-316"
+to_ref = "data/output/audit/proton-collisional-scale-admission/source.toml"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01558"
+lineage_id = "XL-284"
+from_id = "E-316"
+to_ref = "data/output/audit/proton-collisional-scale-admission/findings.toml"
+to_kind = "path"
+edge_kind = "produces_path"
+verified = true
+
+[[edge]]
+id = "XLE-01559"
+lineage_id = "XL-285"
+from_id = "E-317"
+to_ref = "solar"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-01560"
+lineage_id = "XL-285"
+from_id = "E-317"
+to_ref = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01561"
+lineage_id = "XL-285"
+from_id = "E-317"
+to_ref = "crates/lbm_3d/src/units.rs"
+to_kind = "path"
+edge_kind = "consumes_path"
+verified = true
+
+[[edge]]
+id = "XLE-01562"
+lineage_id = "XL-285"
+from_id = "E-317"
+to_ref = "data/output/audit/proton-collisional-scale-admission/findings.toml"
 to_kind = "path"
 edge_kind = "produces_path"
 verified = true

@@ -1,0 +1,84 @@
+schema_version = 1
+scope = "Read-only audit of retained E283 chronology, frozen admission and model lineage; no amended data or inference produced"
+original_experiment = "E-283"
+original_status = "blocked_input_admission_backward_timestamp"
+original_inference_rows = 0
+proposed_estimand = "Retrospective localization on the original166 THEMIS-D crossing days conditional on an explicitly declared timestamp-quality quarantine and subsequent full causal warmup"
+
+[original_evidence]
+protocol = "data/output/audit/staples-causal-validation/protocol.toml"
+protocol_sha256 = "ff90167ae3d30e2e65fb99bbec4387b07f94fb7e4586c5e520c14dd70aa3aea6"
+intake_manifest = "data/output/audit/staples-causal-validation/external-intake-manifest.json"
+file_map = "data/output/audit/staples-causal-validation/external-file-map.csv"
+blocked_inference = "data/output/audit/staples-causal-validation/external-results/blocked-external-intake.json"
+native_audit = "data/output/audit/staples-causal-validation/external-native-source-rca.toml"
+native_witnesses = "data/output/audit/staples-causal-validation/external-cdf-order-findings.json"
+provider_replay = "data/output/audit/claim-family-evidence-adjudication/external-provider-admission.toml"
+archive = "data/output/audit/staples-causal-validation/source-archives/external-intake.tar.zst"
+archive_sha256 = "9cab6bb3047a931dde66516dd36d59d9ef1d285ec0060cbad735a5f8aa10a22b"
+failed_date = "2016-09-02"
+hapi_sha256 = "4835df62b595951d24e0bc93f0ae7d4cb001b4b958600f86453571d8320bb75c"
+native_sha256 = "eacb293d186d9549b1916af7432755658f87c3ee06ddf95b36ddb6c2d63d6646"
+conflicting_timestamps = ["2016-09-02T23:00:38.555Z", "2016-09-02T23:00:41.711Z"]
+native_conflicting_record_pairs_zero_based = [[13606,13608],[13607,13609]]
+hapi_conflicting_rows_one_based = [13726,13727,13728,13729]
+backward_step = "HAPI row13728 follows23:00:41.711 with23:00:38.555; native record13608 has the same reversal. Native vectors conflict between both timestamp pairs."
+coverage_boundary = "Native file has14784 records and crosses the UTC-day edge; HAPI day has14856 records.14737 overlapping records match. Native filename date does not authorize replacing the entire HAPI day."
+
+[selection_and_inspection]
+selection = "Every unique verified V2 probe-D crossing UTC date in2015/2016;166 dates,165 originally admitted and one failed"
+catalog = "data/external/crossing_lists/themis_mp_crossings_v2.txt"
+catalog_sha256 = "807b79b73b1266981d24c20627d8f85bca585475d07260d4162277a22ce660b5"
+previously_seen = "The V2 catalog determines the date selection and was inspected for intake; the failed raw chronology and conflicting vectors were inspected in native-source RCA. This amendment is retrospective rather than an unseen-data preregistration."
+scores = "Retained E283 blocked result records numerical_rows_consumed=0 and native RCA records scientific_predictions_evaluated=false. These inspected records establish no completed external scoring campaign; they do not establish universal absence of historical human exposure."
+prohibition = "Quarantine membership must depend on timestamp multiplicity/conflict and declared chronology checks, never catalog distance, class labels, detector scores or desired sample counts."
+
+[parser]
+path = "crates/gororoba_cli_physics/src/bin/staples_causal_validation/admission.rs"
+state_locators = "parse_file: capacity=max(widths)+7; pending timestamp batch; history; last_time"
+malformed_timestamp = "Rows with an unparseable timestamp clear history and pending and continue before the last_time update. Their raw row index and raw-row count remain in the parser accounting."
+backward_timestamp = "Negative nanos-last_time rejects the file before admission. Equal timestamp batches clear history and never admit their vectors."
+decision_scope = "A new timestamp closes its predecessor, applies the30s gap rule and scores only previously closed history; current vector validation follows decision generation. A quarantine must suppress decisions at every quarantined timestamp as well as their future feature participation."
+warmup = "Widths64/256/1024 share capacity1031 samples. After a reset, a decision requires1031 newly closed valid unique batches; six-vector feature span remains<=30s and positive gaps>30s reset again."
+mapping_requirement = "Retain original row indices and a reason for each quarantined row, reset boundary, warmup-suppressed decision and retained support; preserve the original date and every nonambiguous row even when it lacks admissible post-reset support."
+
+[models]
+directory = "data/output/audit/staples-causal-validation/results"
+dataset = "data/output/audit/staples-causal-validation/results/dataset.json"
+pattern = "model-width-{64,256,1024}-{baseline,canonical,scramble-1000..1018}.json"
+observed_model_file_count = 63
+training = "THEMIS-A2007-2012 training-only log-score standardization and ridge-logistic coefficients; fixed three widths and19 exact-support scrambles"
+loader = "crates/gororoba_cli_physics/src/bin/staples_causal_validation.rs:323-374"
+identity_checks = "Validate training dataset provenance digest, frozen protocol/probe/config, exact source map equality, model record identity and model width/tensor."
+source_map = "crates/gororoba_cli_physics/src/bin/staples_causal_validation/evidence.rs:SOURCES includes admission and runner bodies alongside feature/fitting sources."
+retained_boundary = "Changing source files changes the exact model-loader source-map check. An amendment must preserve executable compatibility or explicitly prove and register permitted differences; fabricating old source identities is prohibited."
+
+[prerequisites]
+declaration = "Register a separately identified intake amendment before transformation/inference; retain parent E283 failure and unchanged0.005 useful-increment requirement."
+row_audit = "Pre-scan all166 original files for repeated timestamps and complete conflicting groups; retain per-file byte hashes and raw-index witnesses. Residual backward timestamps after quarantine remain blockers."
+data_materialization = "Original external-file-map paths name the earlier empirical-claim-evidence-contracts worktree. Materialize or bind paths by verified original hashes and retain old and new maps separately."
+quality_accounting = "Account for all planned dates, original rows, quarantined groups, discarded supports, full reset/warmup effects and resulting class/day counts. Zero-support dates remain in accounting."
+comparison = "Prove parity for unaffected file bytes, raw supports, feature implementation and frozen coefficients; bootstrap uses paired whole original UTC days and retains all widths."
+physical_scope = "Crossing-day conditional discrimination only; archived retrospective quality screening does not establish real-time arrival causality, ordinary-day false-alert rates, operational utility or independent-mission replication."
+
+[derived_timestamp_marker_amendment]
+assessment = "Scientifically consistent as a separately declared retrospective intake estimand and technically compatible with the unchanged admission parser, subject to a sealed transformation rule and complete validation."
+mechanism = "Create derived copies replacing only the timestamp field of every occurrence in a declared conflicting repeated-timestamp group with an explicitly invalid timestamp marker. Preserve row order/count, separators and every vector literal; preserve original bytes separately."
+reset_effect = "The malformed_timestamp branch clears pending/history and continues before updating last_time. Masking all four witnessed overlapping rows leaves the last valid time before the overlap; the next surviving timestamp must still pass strict chronology and date gates."
+decision_effect = "The marker suppresses decisions at the ambiguous timestamp itself, including the first occurrence that the original one-pass parser might otherwise score before discovering a duplicate. Subsequent decisions require complete1031-sample closed-history warmup."
+scope_effect = "Complete-file ambiguity discovery uses future archived records. Feature timestamps remain causal within admitted segments, but quality selection is retrospective; historical online execution is not established."
+scan = "First scan every original planned file using the exact timestamp parser and a preregistered vector-comparison convention. Group repeated timestamps without changing sequence order; define conflict independently of labels/scores and quarantine every occurrence in each selected group. Second scan remaining timestamp sequence and reject every residual backward step; retain ordinary invalid/fill/duplicate/gap rules."
+unresolved_definition = "Before transformation, specify whether conflict compares parsed component bits or numerical equality, how malformed/fill rows participate, and whether all duplicate groups or only conflicting-vector groups are masked. The choice changes the retrospective selection and must not follow score inspection."
+proof_obligations = ["original_sha256 and derived_sha256 for each planned date", "exact list of replacement field byte ranges and original timestamps", "all bytes outside declared field ranges identical", "same row count/order and same vector literals", "complete repeated-group membership with original raw indices", "all166 original dates retained in plan order", "remaining valid timestamp sequence admitted without sorting", "explicit reset/warmup and excluded-decision counts", "frozen model and feature source identity"]
+manifest = "Keep the original failed manifest immutable. A separately named derived manifest may carry the frozen parent protocol_sha256 for the unchanged parser/model contract, but must additionally bind amendment ID/hash, original manifest/hash, original-to-derived rows/hashes and selection scope. Its admitted status denotes derived-input admission only."
+runner_constraints = "validate_external checks the original catalog date set and complete accounting; file-map/result raw hashes must identify derived bytes. The unchanged loader also requires the exact trained source map. Extra provenance must establish the amendment without claiming provider-corrected data or original E283 success."
+
+[frozen_runner_reconstruction]
+training_dataset_identity = "f13a679883d27c29b05ec6bdd2457e88c96394012269d9fc96b071f52b26d9ba"
+original_executable_sha256 = "bc864550c1af78820e365d95738ebcdd146b85345ac38dd79ee023ae4fa626d8"
+original_build_receipt = "data/output/audit/staples-causal-validation/runner-validation.toml"
+original_build_command = "cargo build --offline --locked --profile validation -p gororoba_cli_physics --bin staples-causal-validation"
+matching_source_commit = "8bbf201a"
+matched_trained_source_count = 20
+source_match_provenance = "Root investigator reported direct comparison of all20 training dataset source-map hashes with git commit8bbf201a. This subagent read the trained map and original executable/build receipt; root owns the executable reconstruction and detailed comparison receipt."
+rebuild_boundary = "A fresh build of the matching source snapshot may have a different executable hash; record that hash and build environment honestly, while enforcing the unchanged20-source map and model identity. Exact original executable availability remains unverified by this source audit."

@@ -1,0 +1,10 @@
+schema_version = 1
+review_scope = "Proton collisionality, solar diagnostics, synthetic Parker SI initialization, legacy radial law, and external timestamp amendment producer"
+review_method = "Independent read-only source review by claim_closure_audit; root reran the final solar binary tests"
+arithmetic_and_provenance = "Reviewer found no blocking arithmetic or byte-provenance defect within the inspected source scope."
+radial_field_help = "Corrected --b0 help to name the radial Parker field at 1 AU; density, speed and radial bounds describe synthetic initialization."
+si_diffusivity = "Removed the file-only CLI restriction because synthetic initialization supplies admitted mesh and timestep units; runtime conversion retains unit admission."
+final_solar_tests = 32
+final_solar_failures = 0
+validation_command = "cargo test -p gororoba_cli_physics --bin solar --profile validation --locked"
+retained_residuals = ["Parker divergence projection can change the field before evolution", "Galactocentric gravitational frame and physical magnetic/outflow boundaries remain unadmitted", "Legacy wind-IC clamping and normalization remain outside physical admission"]

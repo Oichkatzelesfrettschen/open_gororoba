@@ -11,7 +11,7 @@ use lbm_3d::{
     mhd::{MagneticDiffusivity, MhdConfig, MhdField, MhdIntegrator},
     open_x_boundary::{OpenXBoundary, XOutflow, population_mass},
     solver::{BgkCollision, LbmSolver3D},
-    units::{LatticeUnits, UniformCartesianMesh},
+    units::{LatticeUnits, ParkerSpiralSi, UniformCartesianMesh},
 };
 use std::{
     fs,
@@ -57,7 +57,7 @@ pub struct Cli {
     #[arg(long, default_value_t = 0.6)]
     tau: f64,
 
-    /// Initial B-field magnitude (nT)
+    /// Synthetic Parker radial field at 1 AU in nT, including runs with --no-dm.
     #[arg(long, default_value_t = 5.0)]
     b0: f64,
 
@@ -73,8 +73,8 @@ pub struct Cli {
     )]
     eta: f64,
 
-    /// Magnetic diffusivity in m^2/s, converted using admitted IC mesh and timestep metadata.
-    #[arg(long, conflicts_with = "eta", requires = "ic_file")]
+    /// Magnetic diffusivity in m^2/s, converted using admitted synthetic or file-based SI units.
+    #[arg(long, conflicts_with = "eta")]
     magnetic_diffusivity_m2_s: Option<f64>,
 
     /// Snapshot interval (write output every N steps)
@@ -120,22 +120,22 @@ pub struct Cli {
     #[arg(long, default_value_t = 0.0)]
     dm_sigma: f64,
 
-    /// Reference proton density (cm^-3) for drag unit conversion.
+    /// Reference proton density (cm^-3) for synthetic MHD and drag unit conversion.
     /// Typically the median solar wind density (~5.9 cm^-3 from OMNI2).
     #[arg(long, default_value_t = 5.9)]
     dm_n_ref: f64,
 
-    /// Reference bulk speed (km/s) for drag unit conversion.
+    /// Reference bulk speed (km/s) for synthetic MHD and drag unit conversion.
     /// Typically the median solar wind speed (~393 km/s from OMNI2).
     #[arg(long, default_value_t = 393.0)]
     dm_v_ref: f64,
 
-    /// Minimum heliocentric distance (AU) for DM force grid mapping.
+    /// Minimum heliocentric distance (AU) for the synthetic MHD slab and DM grid.
     /// x=0 maps to this distance. Default 0.5 (centered-on-1-AU slab).
     #[arg(long, default_value_t = 0.5)]
     dm_r_min: f64,
 
-    /// Maximum heliocentric distance (AU) for DM force grid mapping.
+    /// Maximum heliocentric distance (AU) for the synthetic MHD slab and DM grid.
     /// x=nx-1 maps to this distance. Default 1.5 (centered-on-1-AU slab).
     #[arg(long, default_value_t = 1.5)]
     dm_r_max: f64,
@@ -297,6 +297,60 @@ struct IcMetadata {
     u_scale: Option<f64>,
     physical_units: Option<LatticeUnits>,
     physical_mesh: Option<UniformCartesianMesh>,
+}
+
+/// Bind the synthetic Parker field to the declared physical slab and wind units.
+fn initialize_synthetic_parker(
+    dimensions: [usize; 3],
+    radial_bounds_au: [f64; 2],
+    density_cm3: f64,
+    speed_kms: f64,
+    lattice_speed: f64,
+    radial_field_nt: f64,
+    mhd: &mut MhdField,
+) -> anyhow::Result<IcMetadata> {
+    anyhow::ensure!(
+        dimensions[0] >= 2
+            && radial_bounds_au[0] > 0.0
+            && radial_bounds_au[1] > radial_bounds_au[0]
+            && speed_kms.is_finite()
+            && speed_kms > 0.0
+            && lattice_speed.is_finite()
+            && lattice_speed > 0.0,
+        "synthetic Parker slab requires ordered positive radii and positive speeds"
+    );
+    let au_m = 1.496e11;
+    let spacing_m = (radial_bounds_au[1] - radial_bounds_au[0]) * au_m / (dimensions[0] - 1) as f64;
+    let mesh = UniformCartesianMesh::new(
+        dimensions,
+        [
+            radial_bounds_au[0] * au_m,
+            -(dimensions[1] as f64) * spacing_m / 2.0,
+            -(dimensions[2] as f64) * spacing_m / 2.0,
+        ],
+        spacing_m,
+    )?;
+    let timestep_s = spacing_m * lattice_speed / (speed_kms * 1000.0);
+    let units = LatticeUnits::new(
+        &mesh,
+        timestep_s,
+        density_cm3 * 1e6 * lbm_3d::dm_force::DRAG_PROTON_MASS_KG,
+    )?;
+    let model = ParkerSpiralSi {
+        radial_field_at_reference_t: radial_field_nt * 1e-9,
+        reference_radius_m: au_m,
+        source_radius_m: 0.0,
+        rotation_rad_s: 2.662e-6,
+        radial_speed_m_s: speed_kms * 1000.0,
+    };
+    mhd.initialize_parker_si(&mesh, &units, &model)?;
+    Ok(IcMetadata {
+        n_ref_cm3: Some(density_cm3),
+        v_ref_kms: Some(speed_kms),
+        u_scale: Some(lattice_speed),
+        physical_units: Some(units),
+        physical_mesh: Some(mesh),
+    })
 }
 
 fn admit_ic_metadata(lines: &[String], dimensions: [usize; 3]) -> anyhow::Result<IcMetadata> {
@@ -548,8 +602,16 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
     } else {
         let u_init = [cli.v_sw, 0.0, 0.0];
         solver.initialize_uniform(1.0, u_init);
-        mhd.parker_spiral_init(cli.v_sw);
-        (u_init, IcMetadata::default())
+        let metadata = initialize_synthetic_parker(
+            [cli.nx, cli.ny, cli.nz],
+            [cli.dm_r_min, cli.dm_r_max],
+            cli.dm_n_ref,
+            cli.dm_v_ref,
+            cli.v_sw,
+            cli.b0,
+            &mut mhd,
+        )?;
+        (u_init, metadata)
     };
 
     mhd.config.eta = admitted_magnetic_diffusivity(
@@ -833,6 +895,37 @@ fn admitted_magnetic_diffusivity(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn synthetic_parker_uses_physical_angle_radial_law_and_unit_invariance() {
+        for radial_cells in [3, 5] {
+            for lattice_speed in [0.025, 0.05] {
+                let mut field =
+                    MhdField::try_new(radial_cells, 2, 2, MhdConfig::default()).unwrap();
+                let metadata = initialize_synthetic_parker(
+                    [radial_cells, 2, 2],
+                    [1.0, 2.0],
+                    5.0,
+                    400.0,
+                    lattice_speed,
+                    5.0,
+                    &mut field,
+                )
+                .unwrap();
+                let units = metadata.physical_units.unwrap();
+                let middle_plane = radial_cells * 3;
+                let inner = middle_plane;
+                let outer = middle_plane + radial_cells - 1;
+                let recovered_inner = field.bx[inner] * units.magnetic_unit_t();
+                assert!((recovered_inner / 5e-9 - 1.0).abs() < 1e-13);
+                assert!((field.bx[outer] / field.bx[inner] - 0.25).abs() < 1e-13);
+                assert!((field.by[outer] / field.by[inner] - 0.5).abs() < 1e-13);
+                let expected_ratio = -2.662e-6 * 1.496e11 / 400e3;
+                assert!((field.by[inner] / field.bx[inner] - expected_ratio).abs() < 1e-13);
+                assert!((units.velocity_to_si(lattice_speed) / 400e3 - 1.0).abs() < 1e-13);
+            }
+        }
+    }
     use clap::Parser;
 
     #[derive(Parser)]
@@ -902,7 +995,13 @@ mod tests {
                 .is_err()
             );
         }
-        assert!(parse_diffusivity(&["--magnetic-diffusivity-m2-s", "4e8"]).is_err());
+        assert_eq!(
+            parse_diffusivity(&["--magnetic-diffusivity-m2-s", "4e8"])
+                .unwrap()
+                .cli
+                .magnetic_diffusivity_m2_s,
+            Some(4e8)
+        );
         let parsed = parse_diffusivity(&[
             "--magnetic-diffusivity-m2-s",
             "4e8",

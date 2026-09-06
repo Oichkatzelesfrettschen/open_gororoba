@@ -939,6 +939,11 @@ crate = "gororoba_cli_data"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_data; consult crate source for authoritative behavior."
 
 [[binary]]
+name = "hydrate-scientific-payloads"
+crate = "gororoba_cli_provenance"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_provenance; registry metadata pending."
+
+[[binary]]
 name = "inclination-injection-calibration"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
@@ -1709,6 +1714,11 @@ description = "Workspace binary discovered from cargo metadata in crate gororoba
 name = "staples-incremental-information"
 crate = "gororoba_cli_physics"
 description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; consult crate source for authoritative behavior."
+
+[[binary]]
+name = "staples-intake-amendment"
+crate = "gororoba_cli_physics"
+description = "Workspace binary discovered from cargo metadata in crate gororoba_cli_physics; registry metadata pending."
 
 [[binary]]
 name = "staples-layout-sweep"

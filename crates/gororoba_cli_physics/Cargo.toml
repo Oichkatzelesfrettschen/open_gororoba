@@ -296,6 +296,9 @@ path = "src/bin/crossing_utility_frontier.rs"
 name = "staples-causal-validation"
 path = "src/bin/staples_causal_validation.rs"
 [[bin]]
+name = "staples-intake-amendment"
+path = "src/bin/staples_intake_amendment.rs"
+[[bin]]
 name = "staples-twist-ladder"
 path = "src/bin/staples_twist_ladder.rs"
 [[bin]]

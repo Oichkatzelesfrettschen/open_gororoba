@@ -1,0 +1,27 @@
+[transition]
+transition_key = "proton-collisional-scale-conformance"
+source_claim_id = "C-1683"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+evidence_artifact_ids = ["LOCAL-PROTON-SCALE-PARKER-CONFORMANCE"]
+experiment_ids = ["E-316"]
+exercised_falsifier = "Independent source-unit and scaling fixtures discriminate the historical implementation from its corrected numerical mechanism."
+proposed_claim_status = "Provisional"
+rationale = "Preserve the historical producer diagnosis and register repaired implementation conformance separately."
+unresolved_assumptions = ["Physical inputs, closure assumptions and coupled numerical error require independently admitted observations."]
+actor = "external-admission-claim-closure"
+reason = "Retain bounded source and unit conformance"
+transition_timestamp = "2026-09-06T04:45:57Z"
+expected_source_state_sha256 = "8d44e8488f3976ae16cd2f2e49863b729ec8aae9b02244a23ddda83da279539a"
+expected_claim_id_max = 1754
+
+[[successor]]
+proposal_key = "proton-collisional-scale-conformance"
+statement = "The proton collisionality implementation reproduces the NRL Plasma Formulary 2019 singly charged ion collision-time convention using Kelvin-to-eV conversion and thermal speed sqrt(k_B T/m_p). The caller supplies a positive finite macroscopic length and Coulomb logarithm. Independent fixtures verify source-rounded collision time, mean-free-path scaling proportional to T squared over density, inverse length scaling, invalid-input rejection, and explicit record denominators. Missing scale or all-invalid observations remain Unassessed. Numeric comparison with unity establishes neither general plasma closure validity nor a physical heliospheric BGK boundary."
+initial_status = "Verified"
+source_or_implementation_boundary = "Declared source equations and finite deterministic Rust fixtures; physical closure validity remains unassessed."
+required_falsifier = "An independent source-unit oracle, invalid-input fixture or matched physical-coordinate scaling test fails."
+where_stated = ["crates/data_core/src/catalogs/wind_swe.rs","data/output/audit/proton-collisional-scale-admission/findings.toml"]
+evidence_artifact_ids = ["LOCAL-PROTON-SCALE-PARKER-CONFORMANCE"]
+predecessor_relation_kind = "refines"
+

@@ -1,0 +1,27 @@
+   Compiling cd_kernel v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/cd_kernel)
+   Compiling materials_data v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/materials_data)
+   Compiling tabled v0.20.0
+   Compiling lbm_vulkan v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/lbm_vulkan)
+   Compiling anise v0.9.6
+   Compiling moreno_1997 v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/moreno_1997)
+   Compiling gororoba_structurable v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_structurable)
+   Compiling data_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/data_core)
+   Compiling flavor_lifts v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/flavor_lifts)
+   Compiling algebra_analysis v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/algebra_analysis)
+   Compiling gororoba_algebra v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_algebra)
+   Compiling algebra_experimental v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/algebra_experimental)
+   Compiling gr_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gr_core)
+   Compiling stats_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/stats_core)
+   Compiling spin_tomography_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/spin_tomography_core)
+   Compiling materials_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/materials_core)
+   Compiling quantum_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/quantum_core)
+   Compiling pathion_ellip v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/pathion_ellip)
+   Compiling cosmology_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/cosmology_core)
+   Compiling sign_imbalance v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/sign_imbalance)
+   Compiling lbm_3d v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/lbm_3d)
+   Compiling neural_homotopy v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/neural_homotopy)
+   Compiling spectral_core v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/spectral_core)
+   Compiling cd_spin_bridge v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/cd_spin_bridge)
+   Compiling gororoba_cli_physics v0.1.0 (/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source/crates/gororoba_cli_physics)
+    Finished `validation` profile [optimized + debuginfo] target(s) in 54.83s
+exit=0

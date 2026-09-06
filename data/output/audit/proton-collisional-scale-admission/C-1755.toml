@@ -1,0 +1,25 @@
+claim_id = "C-1755"
+evidence_layer = "implementation_conformance"
+depth_status = "not_assessed"
+depth_rationale = "The fixture establishes source-unit and implementation conformance. Physical model interpretation remains separate."
+fixed_hyperparameters = ["Retained primary source equations", "Finite deterministic SI fixtures and invalid-input controls"]
+[[intervening_maps]]
+branch = "numerical_instrument"
+name = "declared_units_and_source_formula"
+kind = "computational"
+description = "Convert declared source inputs into the implementation's numerical units, evaluate the source formula and compare with independent source-unit and scaling oracles."
+[[fitted_parameters]]
+branch = "numerical_instrument"
+count = 0
+names = []
+training_boundary = "Fixtures fit zero parameters. Declared physical/model constants are inputs."
+[decisive_experiment]
+experiment_ids = ["E-316"]
+protocol_artifact = "data/output/audit/proton-collisional-scale-admission/source.toml"
+description = "Verify the retained source and finite Rust fixtures without promoting a physical closure or dark-matter force claim."
+[what_would_verify_refute]
+verification_outcomes = ["All source-unit, scaling, invalid-input and output-admission fixtures pass."]
+revision_outcomes = ["A separately admitted source convention or model changes the numerical boundary."]
+abandonment_outcomes = ["An independent SI oracle or invalid-input fixture contradicts the implementation."]
+inconclusive_outcomes = ["Physical characteristic scale, gravitational frame or boundary conditions remain unadmitted."]
+

@@ -5,8 +5,8 @@
 
 [experiments]
 authoritative = true
-deterministic_count = 208
-experiment_count = 282
+deterministic_count = 211
+experiment_count = 285
 gpu_count = 33
 seeded_count = 49
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -7425,4 +7425,85 @@ status = "active"
 status_note = "Five independent integration tests pass: both1152-row variants satisfy all10368 channel gates each at abs2e-12 plus rel2e-11. Wrong precision fails7535 channels and average-as-sum fails2153 per variant. Exact mesh coverage, malformed input, immutable order and synthetic interpolation controls pass. Physical calibration and author-release authentication remain unadmitted."
 status_token = "ACTIVE"
 title = "Pinned charged fragmentation interpolation identity"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "staples-intake-amendment"
+binary_experiment_declared = "E-315"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-315"
+input = "All 166 retained E-283 THEMIS-D crossing dates, the frozen timestamp-only quarantine protocol, and the original THEMIS-A fitted models."
+input_path_refs = ["data/output/audit/external-crossing-intake-amendment/protocol.toml", "data/output/audit/staples-causal-validation/external-intake-manifest.json", "data/output/audit/staples-causal-validation/results"]
+lineage_id = "XL-283"
+method = "Quarantine every occurrence within closed timestamp-reversal intervals with inverse byte provenance. Preserve every planned date and apply the unchanged causal runner and frozen models with zero new fits. Retain the original 2000 paired daily-file bootstrap and 0.005 discrimination requirement. Whole-file timestamp selection makes the result retrospective and conditional on admitted support."
+output = ["Byte-preserving derived-input manifest and ledger", "Frozen-model external replication summary and support audit"]
+output_path_refs = ["data/output/audit/external-crossing-intake-amendment/findings.toml", "data/output/audit/external-crossing-intake-amendment/results/summary.json", "data/output/audit/external-crossing-intake-amendment/support-audit.tsv"]
+reproducibility_class = "deterministic_replay"
+run = "cargo run --profile validation -p gororoba_cli_physics --bin staples-intake-amendment -- --parent-manifest data/output/audit/staples-causal-validation/external-intake-manifest.json --input-root .cache/staples-external-intake --protocol data/output/audit/external-crossing-intake-amendment/protocol.toml --out-dir .cache/external-crossing-derived-inputs"
+run_command_sha256 = "bf2793fdb2f3d0872a88893015e482dcd22c65a827497337826b82e2df7b79d8"
+status = "active"
+status_note = "Completed on all 166 planned dates: 4219790 admitted decisions, 124834 positives, 63 frozen models and zero new training fits. The 2000-draw paired daily-file global-minimum interval [0.0007173048330896048,0.0024898116600369224] supports a small positive increment and rejects the unchanged 0.005 requirement. E-283 retains its failed provider-product admission. Whole-file timestamp-quality selection is retrospective; online availability and operational utility require separate evidence."
+status_token = "ACTIVE"
+title = "THEMIS-D retrospective chronology quarantine and frozen-model replication"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "solar"
+binary_experiment_declared = "E-316"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-316"
+input = "NRL 2019 collision-time and thermal-speed conventions; finite synthetic SI inputs and invalid-input controls."
+input_path_refs = ["data/output/audit/proton-collisional-scale-admission/nrl-formulary-2019.pdf", "data/output/audit/proton-collisional-scale-admission/source.toml"]
+lineage_id = "XL-284"
+method = "Check source-rounded electron-volt oracle, temperature/density/length scaling, invalid inputs, record denominator and output metadata."
+output = ["Source and implementation conformance findings"]
+output_path_refs = ["data/output/audit/proton-collisional-scale-admission/findings.toml"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p data_core --lib catalogs::wind_swe::tests --profile validation && cargo test -p gororoba_cli_physics --bin solar collision_diagnostic --profile validation"
+run_command_sha256 = "74b64f2f0a20978c1d624df43b9281d2256c2012c4de4d0c58aa7db69fb45653"
+status = "active"
+status_note = "13 owner-module tests and the solar diagnostic fixture pass. A physical parallel gradient scale remains user-declared; numeric Kn comparison does not establish plasma closure validity."
+status_token = "ACTIVE"
+title = "Source-defined proton collisional scales and explicit-length admission"
+truth_surface_consumption = []
+
+[[experiment]]
+binary = "solar"
+binary_experiment_declared = "E-317"
+binary_registered = true
+claim_refs = []
+claims = []
+dataset_label_refs = []
+dataset_refs = []
+deterministic = true
+external_source_refs = []
+gpu = false
+id = "E-317"
+input = "Declared SI radial slab, wind speed, number density and reference radial field; two grid resolutions and two lattice speed normalizations."
+input_path_refs = ["crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs", "crates/lbm_3d/src/units.rs"]
+lineage_id = "XL-285"
+method = "Recover SI field and angle at the same physical radii across changed grids and timesteps; independently compare radial and azimuthal component ratios."
+output = ["Source and implementation conformance findings"]
+output_path_refs = ["data/output/audit/proton-collisional-scale-admission/findings.toml"]
+reproducibility_class = "deterministic_replay"
+run = "cargo test -p gororoba_cli_physics --bin solar synthetic_parker --profile validation && cargo test -p lbm_3d --lib --profile validation"
+run_command_sha256 = "5219f469d6843a85065caeea788ebee09f1871fc06eda01aadb4817a38f269b3"
+status = "active"
+status_note = "32 solar tests and 126 LBM library tests pass. The synthetic source-radius-zero model establishes implementation conformance; gravitational frame, physical boundaries and coupled physical sensitivity remain separate."
+status_token = "ACTIVE"
+title = "Synthetic Parker SI driver initialization and radial-law conformance"
 truth_surface_consumption = []
