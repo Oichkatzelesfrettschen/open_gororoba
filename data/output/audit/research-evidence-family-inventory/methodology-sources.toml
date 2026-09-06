@@ -3,6 +3,8 @@ retrieval_date = "2026-09-06"
 scope = "Targeted primary-source methodology review; neither an exhaustive literature search nor scientific adjudication of the candidate families"
 retrieval_transport = "HTTPS curl before the user's wget preference arrived; all five primary requests returned HTTP 200. Further retrieval uses wget with Mozilla user agent and supported alternate transports."
 local_source_root = ".cache/research-evidence-audit-handoff/sources"
+retained_source_root = "data/output/audit/research-evidence-family-inventory/methodology-source-bodies"
+retained_encoding = "Each local_file is retained as local_file.gz using gzip -n. Decompression reproduces the source SHA256 declared in its row."
 extraction = "HTML text extraction strips script and iframe elements, then runs pandoc --sandbox. PDF text extraction uses pdftotext. Original downloaded bodies remain in the local source root."
 
 [[source]]

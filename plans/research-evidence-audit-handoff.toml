@@ -1,5 +1,5 @@
 schema_version = 1
-status = "handoff_prepared_scientific_audits_pending"
+status = "reference_role_pilot_complete_family_adjudication_pending"
 prepared_date = "2026-09-06"
 objective = "Audit related claims, insights and other research records together by shared mechanisms and evidence, preserve falsification results, and develop independently tested successor results."
 primary_checkout = "/home/eirikr/Github/open_gororoba"
@@ -12,14 +12,14 @@ inventory_root = "data/output/audit/research-evidence-family-inventory"
 families_file = "data/output/audit/research-evidence-family-inventory/candidate-families.toml"
 online_methodology = "data/output/audit/research-evidence-family-inventory/methodology-sources.toml"
 local_downloads = ".cache/research-evidence-audit-handoff/sources"
-work_completed = "Read-only canonical inventory, selected relationship checks, twelve candidate audit families, primary online methodology review and a resumable handoff. Scientific source code, canonical records and historical evidence remain unchanged."
-work_pending = "Source-level family membership validation, semantic relationship roles, scientific falsification, domain-specific literature searches, any schema changes, experiments and canonical adjudication."
+work_completed = "Canonical inventory, twelve candidate audit families, primary methodology review, and the eight-insight reference-role pilot with all 37 links traced, independent arithmetic/permutation witnesses, bounded dispositions and source receipts. Canonical scientific records retain their baseline bytes."
+work_pending = "Broader authority mapping, source-level family membership validation, canonical semantic roles, scientific falsification, domain-specific literature searches, schema changes, experiments and canonical adjudication."
 scope_limit = "The seeds are not an exhaustive clustering and their membership is not a scientific verdict. Empty SQL tables do not establish missing knowledge across generated registries and documents."
 
 [resume]
 read_first = ["AGENTS.md", "plans/research-evidence-audit-handoff.toml", "data/output/audit/research-evidence-family-inventory/candidate-families.toml", "data/output/audit/research-evidence-family-inventory/methodology-sources.toml", "docs/engineering/registry_canonical_architecture.md", "docs/engineering/claim-family-evidence-adjudication.md"]
 first_action = "Verify both checkout branches, clean/dirty state, HEAD and the database hash. If main or the database differs from the baseline, refresh the inventory before using its counts or review ordering."
-initial_focus = "registry-authority-and-evidence-roles"
+initial_focus = "pilot-predicate-corrections-and-canonical-role-design"
 pilot_insights = ["I-001", "I-002", "I-094", "I-095", "I-096", "I-207", "I-209", "I-212"]
 pilot_reason = "The set spans positive interpretations, negative-result lessons and superseded parents. It tests relation semantics before the audit expands or the schema changes."
 first_deliverable = "Eight insight records with atomic propositions, linked claim predicates, source evidence, relationship roles, falsifiers and per-record dispositions; retain unchanged records when their existing wording is justified."
@@ -105,14 +105,21 @@ publication_rule = "The next execution pass should use isolated changes, focused
 preserve_worktrees = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication contains another session's work; inspect and preserve", "/home/eirikr/worktrees/open_gororoba/themis-frozen-model-source is retained for exact historical runner identity"]
 
 [[next_task]]
+id = "verify-pilot-identity-and-authority"
+status = "completed"
+acceptance = "The handoff and main identities, canonical database digest, finite counts and pilot relation owners are verified against the recorded baseline."
+result = "data/output/audit/insight-reference-role-pilot/findings.json"
+
+[[next_task]]
 id = "verify-authority-and-refresh-inventory"
 status = "pending"
-acceptance = "Live checkout identities and finite record denominators are recorded; generated lanes, canonical tables and standalone registries have explicit owners."
+depends_on = ["verify-pilot-identity-and-authority"]
+acceptance = "Extend explicit ownership to every generated lane, canonical table and standalone registry; refresh live identities and denominators before extending the scientific audit."
 
 [[next_task]]
 id = "audit-insight-reference-pilot"
 status = "completed_bounded_source_and_reference_review"
-depends_on = ["verify-authority-and-refresh-inventory"]
+depends_on = ["verify-pilot-identity-and-authority"]
 acceptance = "All eight pilot insights have traced proposition/evidence relationships and falsifiers; valid negative-result lessons survive."
 result = "data/output/audit/insight-reference-role-pilot/findings.json"
 completion_boundary = "All 37 declared links across 26 claims have roles and limits. Canonical mutations and original scientific replays remain pending. Live identity and pilot authority owners are verified; broader inventory-owner mapping remains open."
@@ -120,7 +127,7 @@ completion_boundary = "All 37 declared links across 26 claims have roles and lim
 [[next_task]]
 id = "design-and-validate-family-records"
 status = "pending"
-depends_on = ["audit-insight-reference-pilot"]
+depends_on = ["audit-insight-reference-pilot", "verify-authority-and-refresh-inventory"]
 acceptance = "The family and relation schema represents observed cases without duplicate canonical records, untyped promotion or forced status changes."
 
 [[next_task]]

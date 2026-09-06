@@ -6,6 +6,7 @@ sqlite = "3.53.4"
 taplo = "0.10.0"
 
 [checks]
+replay_prerequisite = "mkdir -p .cache/insight-reference-role-pilot from the repository root before compiling or writing replay outputs"
 snapshot = "sqlite3 -readonly registry/canonical/control_plane.sqlite3 < data/output/audit/insight-reference-role-pilot/pilot-snapshot.sql | jq . reproduces canonical-snapshot.json"
 coverage = "jq -e --slurpfile snapshot canonical-snapshot.json -f verify-pilot.jq findings.json passes from the bundle directory"
 coverage_negative_controls = "Removing a declared reference and duplicating a declared reference each triggers the named coverage error."
@@ -31,7 +32,7 @@ scientific_replay = "Not run: original catalog and angular-bootstrap bodies rema
 oracle_scope = "The permutation probe enumerates 720 permutations of one six-value fixture. The p-adic probe checks 560 triples of integers 0 through 15. The general permutation argument rests on the unordered-triple bijection and inspected production mechanism."
 arithmetic_scope = "The FWHM inequality assumes cycles/sample and effective N=5045; original normalization remains unresolved. The helium-factor calculation holds the code constants fixed and does not calibrate diffuse baryon evolution."
 new_physics = "No new physical hypothesis was promoted. Successor tests remain declared follow-up requirements."
-full_publication_gate = "Not run: the pilot is retained as a local audit change. Push/PR integration requires the full repository pre-push gate."
+full_publication_gate = "Historical prepublication observation at commit 4209476f: the full gate was not run for that local audit commit. Subsequent publication runs the required pre-push gate and records its outcome in the PR."
 
 [preservation]
 canonical_database_sha256_before_after = "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8"
