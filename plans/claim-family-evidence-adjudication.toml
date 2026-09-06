@@ -464,7 +464,7 @@ acceptance = "Declared mixed Fourier, longitudinal cleaning, shear, boundary and
 
 [[task]]
 id = "mhd-rk3-canonical-publication"
-status = "in_progress"
+status = "completed"
 depends_on = ["mhd-rk3-independent-oracles"]
 action = "Adjudicate and publish the bounded induction integrator"
 acceptance = "Retain Euler failure and separate prescribed-velocity accuracy from coupled physical sensitivity."
