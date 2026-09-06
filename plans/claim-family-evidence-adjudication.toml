@@ -383,8 +383,9 @@ acceptance = "A typed protocol distinguishes d-sigma/d-pT from d-sigma/d-pT-squa
 id = "qgp-fragmentation-population-admission"
 status = "pending"
 depends_on = ["qgp-pp-spectrum-fit-contract"]
+progress = "Primary-source passports distinguish2017 printed versus ordinary per-pT measures, the2022 conditional K example,7TeV neutral-pion mean-z and pion/kaon versus inclusive charged DSS releases. Evolved charged-total FF ingestion, convention map, matched channel weights/scales and uncertainty remain required."
 action = "Bind fragmentation functions and parton mixture to the admitted population"
-acceptance = "Source2017 Eqs2/3 and its fragmentation moments distinguish dominant-channel assumptions from mixed channels; alpha_s0.3 Cg3 z0.5 remains a source example until calibrated."
+acceptance = "Source2017 Eqs2/3 and its fragmentation moments distinguish dominant-channel assumptions from mixed channels; the alpha_s0.3 Cg3 z0.5 example is bound to Source2022 and remains conditional until calibrated."
 
 [[task]]
 id = "qgp-pp-table-admission-verification"
@@ -468,3 +469,21 @@ status = "completed"
 depends_on = ["mhd-rk3-independent-oracles"]
 action = "Adjudicate and publish the bounded induction integrator"
 acceptance = "Retain Euler failure and separate prescribed-velocity accuracy from coupled physical sensitivity."
+
+[[task]]
+id = "qgp-fragmentation-source-identity"
+status = "completed"
+action = "Identify exact source measures, species and fitted component groups"
+acceptance = "Three versioned PDFs, lossless text and rendered equations distinguish source populations."
+
+[[task]]
+id = "qgp-fragmentation-source-publication"
+status = "in_progress"
+action = "Publish canonical fragmentation reference repairs"
+acceptance = "Primary-source identity, retained comparisons, typed outcomes, source hashes and governance agree."
+
+[[task]]
+id = "qgp-fragmentation-numerical-intake"
+status = "pending"
+action = "Admit evolved charged-total fragmentation grids and explicit measure map"
+acceptance = "Provider release, evolution/scale choice, species components and Jacobian convention have reproducible admission before matched quenching calculations."

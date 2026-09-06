@@ -1,0 +1,12 @@
+schema_version = 1
+claim_id = "C-1710"
+evidence_layer = "source_proposition"
+reopened_experiments = 0
+reference_passport = "data/output/audit/qgp-fragmentation-measure-identity/source-identity.toml"
+prior_pp_protocol = "data/output/audit/qgp-pp-spectrum-calibration/admission-protocol.toml"
+prior_quenching_protocol = "data/output/audit/qgp-quenching-weight-identity/numerical-protocol.toml"
+source_comparison = "Check2017 Eq2 and its printed moment,2022 K example and reference44, NLO2010 Figure6/Eq4 and references7/8, and the two distinct DSS2007 species releases."
+verification_outcomes = ["Exact release labels, species, energy, acceptance, measure and source fit groups agree with the retained primary pages.", "A physical successor explicitly declares the FF/Jacobian convention, evolved release/scales, charged-total components, matched channel weights and propagated calibration uncertainty before fitting."]
+revision_outcomes = ["A source contradicts a passport field: correct that field through canonical content history and retain the original comparison.", "A conventional FF is substituted into the printed measure without an explicit Jacobian map: revise the model identity before assessing physical agreement."]
+abandonment_outcomes = ["Abandon a claimed ALICE charged-total calibration if its only evidence is a7TeV neutral-pion typical-z plot or a pion/kaon-only release.", "Abandon source-reproduction attribution if the declared equation uses a different fragmentation measure without a separately identified construction."]
+inconclusive_outcomes = ["Authenticated paper identity alone leaves numerical FF ingestion, matching production weights, typical-z approximation error, pp covariance and physical quenching calibration unresolved."]

@@ -1,0 +1,18 @@
+HTTP/2 200 
+content-disposition: inline; filename="0703242v1.pdf"
+server: Google Frontend
+last-modified: Sat, 30 Nov 2024 01:30:22 GMT
+etag: COSK3ZL0gooDEAE=
+access-control-allow-origin: *
+via: 1.1 google, 1.1 varnish, 1.1 varnish, 1.1 varnish
+x-cloud-trace-context: e4a48e84d8e24c8f81b10d6bb2f60d60
+content-type: application/pdf
+link: <https://arxiv.org/pdf/hep-ph/0703242>; rel='canonical'
+accept-ranges: bytes
+age: 95297
+date: Sun, 06 Sep 2026 00:35:59 GMT
+x-served-by: cache-lga21992-LGA, cache-lga21992-LGA, cache-lga21937-LGA, cache-hhr-khhr2060022-HHR
+x-cache: MISS, HIT, MISS
+x-timer: S1788654960.524268,VS0,VE78
+content-length: 933656
+

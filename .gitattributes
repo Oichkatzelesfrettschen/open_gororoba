@@ -78,3 +78,5 @@ data/output/audit/qgp-pp-spectrum-calibration/pp-table4.yaml -text whitespace=-b
 data/output/audit/mhd-magnetic-diffusivity/*.log -text whitespace=-blank-at-eof,-blank-at-eol
 
 data/output/audit/mhd-centered-induction-integrator/*.log -text whitespace=-blank-at-eof,-blank-at-eol
+
+data/output/audit/qgp-fragmentation-measure-identity/*.headers -text whitespace=-blank-at-eof,-blank-at-eol

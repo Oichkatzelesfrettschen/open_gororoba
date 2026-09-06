@@ -1,0 +1,6 @@
+schema_version = 1
+review_scope = "Independent primary-source comparison of source-identity.toml and admission-protocol.toml against the retained2017/2022 and three retrieved fragmentation PDFs"
+factual_mismatches_reported = 0
+confirmed_fields = ["2017 printed moment and unresolved ordinary-FF Jacobian convention", "2022 conditional coupling/Casimir/fragmentation example", "NLO2010 neutral-pion7TeV Figure6 and full cross-section weighted mean", "DSS pion23/kaon24 and proton17/residual18 fit groups", "charged-total Eq7 species sum", "ALICE5.02TeV INEL abs(eta)<0.8 target", "author-provided Fortran package statement"]
+physical_calibration_performed = false
+remaining_admission = ["evolved charged-total FF package and provider identity", "explicit measure and Jacobian map", "matched production channels, scales and acceptance", "propagated source-fit uncertainty and pp covariance", "typical-z approximation error and full geometry pooling"]
