@@ -14,6 +14,9 @@
 use crate::boundary::GridIndex;
 use crate::units::{LatticeUnits, ParkerSpiralSi, UniformCartesianMesh, UnitError};
 
+mod integrator;
+pub use integrator::{MhdIntegrator, ssp_rk3_amplification_squared};
+
 /// Invalid transport inputs or an unrepresentable prospective update.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct MhdError(pub &'static str);

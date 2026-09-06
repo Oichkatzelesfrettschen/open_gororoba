@@ -4,7 +4,7 @@
 # Compatibility export lane: claim_transitions
 [meta]
 surface = "canonical claim transition events"
-event_count = 210
+event_count = 211
 history_policy = "append-only events retain prior status, verdict, evidence, assumptions, and successor IDs"
 
 [[transition]]
@@ -4508,4 +4508,27 @@ transition_spec_sha256 = "d787151d14f190f1f02d87d0e78e0f446ddb6dcfec7805d0e225f3
 [[transition.successors]]
 proposal_key = "mhd-diffusivity-instrument"
 canonical_claim_id = "C-1752"
+relation_kind = "implementation_split"
+
+[[transition]]
+event_id = 211
+transition_key = "mhd-rk3-prescribed-velocity-conformance"
+source_claim_id = "C-1685"
+expected_prior_status = "Provisional"
+experiment_verdict = "SurvivesChallenge"
+proposed_claim_status = "Provisional"
+current_status = "Provisional"
+exercised_falsifier = "Independent complex Fourier gain, axis permutations, longitudinal damping, semidiscrete temporal and continuum spatial convergence, shear stretching and later-stage atomicity discriminate RK3 failures."
+rationale = "Register the prescribed-velocity integrator separately from physical force sensitivity; preserve the historical Euler failure and magnetic normalization parent."
+unresolved_assumptions = ["Centered forward-Euler induction exhibits Fourier energy growth even when diffusion admission passes.", "Physical spacecraft fields, gravitational frame, magnetic boundary conditions, outflow and force sensitivity require separate admission."]
+evidence_artifact_ids = ["LOCAL-MHD-RK3"]
+experiment_ids = ["E-313"]
+actor = "claim-evidence-adjudication"
+reason = "Register bounded RK3 conformance and convergence with coupled physical prerequisites intact"
+transition_timestamp = "2026-09-06T00:24:29Z"
+transition_spec_sha256 = "be480d314d982c8d244d783f869349fc828e1d8fc0ca4fdb047547f56943f5d1"
+
+[[transition.successors]]
+proposal_key = "mhd-rk3-instrument"
+canonical_claim_id = "C-1753"
 relation_kind = "implementation_split"

@@ -8,7 +8,7 @@ use clap::{Args, ValueEnum};
 use cosmology_core::concentration_mass_relation;
 use lbm_3d::{
     dm_force::{DmForceConfig, DmForceField, combine_forces},
-    mhd::{MagneticDiffusivity, MhdConfig, MhdField},
+    mhd::{MagneticDiffusivity, MhdConfig, MhdField, MhdIntegrator},
     open_x_boundary::{OpenXBoundary, XOutflow, population_mass},
     solver::{BgkCollision, LbmSolver3D},
     units::{LatticeUnits, UniformCartesianMesh},
@@ -26,6 +26,10 @@ use std::{
 /// acceleration field. Reports lattice force-density diagnostics.
 #[derive(Args)]
 pub struct Cli {
+    /// Magnetic evolution method; finite-stage admission does not certify coupled stability.
+    #[arg(long, value_enum, default_value = "legacy-euler")]
+    mhd_integrator: MhdIntegratorChoice,
+
     /// Explicit numerical max-x closure; physical suitability requires separate validation.
     #[arg(long, value_enum)]
     x_outflow: XOutflowChoice,
@@ -145,6 +149,32 @@ pub struct Cli {
     /// Legacy solar wind-ic exports require a separately justified metadata amendment.
     #[arg(long)]
     ic_file: Option<PathBuf>,
+}
+
+#[derive(Clone, Copy, Debug, ValueEnum)]
+enum MhdIntegratorChoice {
+    LegacyEuler,
+    SspRk3,
+}
+
+impl MhdIntegratorChoice {
+    fn method(self) -> MhdIntegrator {
+        match self {
+            Self::LegacyEuler => MhdIntegrator::LegacyEuler,
+            Self::SspRk3 => MhdIntegrator::SspRk3,
+        }
+    }
+
+    fn receipt(self) -> &'static str {
+        match self {
+            Self::LegacyEuler => {
+                "mhd_integrator=legacy-euler transport_admission_scope=periodic_diffusion_coefficient_and_finite_state"
+            }
+            Self::SspRk3 => {
+                "mhd_integrator=ssp-rk3 transport_admission_scope=prescribed_frozen_velocity_finite_stage_admission"
+            }
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum)]
@@ -529,6 +559,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
     )?
     .lattice_value();
     mhd.validate_transport()?;
+    eprintln!("{}", cli.mhd_integrator.receipt());
     eprintln!(
         "magnetic_diffusivity_lattice={:.17e} dt_mhd={:.17e} diffusion_gate_scope=periodic_diffusion_only",
         mhd.config.eta, mhd.config.dt_mhd,
@@ -735,7 +766,7 @@ pub fn run(cli: Cli) -> anyhow::Result<()> {
         );
 
         // 8. Evolve B-field using force-corrected velocity u*
-        mhd.try_evolve_b_field(&solver.u)?;
+        mhd.try_evolve_b_field_with_integrator(&solver.u, cli.mhd_integrator.method())?;
 
         // 9. Periodic output
         if (step + 1) % cli.snap_interval == 0 || step == 0 {
@@ -822,6 +853,26 @@ mod tests {
             .into_iter()
             .chain(extra.iter().copied()),
         )
+    }
+
+    #[test]
+    fn mhd_integrator_cli_requires_explicit_rk3_selection() {
+        assert!(matches!(
+            parse_diffusivity(&[]).unwrap().cli.mhd_integrator.method(),
+            MhdIntegrator::LegacyEuler
+        ));
+        for (name, expected) in [
+            ("legacy-euler", "mhd_integrator=legacy-euler"),
+            ("ssp-rk3", "mhd_integrator=ssp-rk3"),
+        ] {
+            let parsed = parse_diffusivity(&["--mhd-integrator", name]).unwrap().cli;
+            assert!(parsed.mhd_integrator.receipt().starts_with(expected));
+            assert_eq!(
+                matches!(parsed.mhd_integrator.method(), MhdIntegrator::SspRk3),
+                name == "ssp-rk3"
+            );
+        }
+        assert!(parse_diffusivity(&["--mhd-integrator", "automatic"]).is_err());
     }
 
     #[test]

@@ -5809,16 +5809,16 @@ names = []
 training_boundary = "Declared numerical modes and unit fixtures fit zero parameters; spacecraft values and coupled physical parameters remain unadmitted."
 
 [claim.decisive_experiment]
-experiment_ids = ["E-112", "E-113", "E-312"]
-protocol_artifact = "data/output/audit/mhd-magnetic-diffusivity/protocol.toml"
-protocol_sha256 = "0b388e656bae003898ca334236317e0e73d0e0973a28aefd2471901d5dc872db"
+experiment_ids = ["E-112", "E-113", "E-312", "E-313"]
+protocol_artifact = "data/output/audit/mhd-centered-induction-integrator/protocol.toml"
+protocol_sha256 = "ae4b02f26b864e5968e06f6730023ee9c2ca1895fd52fe214419ea0ec387241b"
 description = "Use E-112/E-113 as the recorded family binding, not evidence of completed replay. Replay the historical B multiplier values 0.005,0.05,0.5,5,50 at the historical producer; separately change lattice units while holding the physical field fixed and convert both forces to N/m3. Density/permeability/mesh/field identity, gravitational frame, outflow and full coupled sensitivity remain unresolved. E-113 placeholder IC prevents physical replay; a physical amplitude change legitimately changes Lorentz force."
 
 [claim.what_would_verify_refute]
-verification_outcomes = ["E-312 Fourier amplitude and energy agree within1e-12, unit conversion and invalid-state rejection pass, and admitted retained-update states agree bitwise; verification applies to that numerical instrument alone.", "At fixed historical numerical convention the enumerated multiplier sweep yields the recorded inverse-square ratio; the arbitrary unit convention cannot establish a physical exponent."]
+verification_outcomes = ["E-313 requires the frozen RK3 Fourier, legacy and atomicity predicates, temporal ratios 7 to 9 and spatial ratios 3.5 to 4.5 outside roundoff limits; prescribed-velocity scope remains explicit.", "E-312 Fourier amplitude and energy agree within1e-12, unit conversion and invalid-state rejection pass, and admitted retained-update states agree bitwise; verification applies to that numerical instrument alone.", "At fixed historical numerical convention the enumerated multiplier sweep yields the recorded inverse-square ratio; the arbitrary unit convention cannot establish a physical exponent."]
 revision_outcomes = ["E-312 centered-induction energy growth requires a stable integrator with independent energy and convergence evidence before coupled force-bound simulations.", "A consistent SI conversion preserves the physical ratio under unit changes; retain the historical normalization defect and register a physically admitted successor only after all inputs and sensitivity pass."]
 abandonment_outcomes = ["An unstable diffusion step, wrong unit or invalid state passes transport admission, a rejected step mutates fields, or the independent Fourier oracle fails: abandon the affected instrument predicate.", "The frozen force ratio fails inverse-square scaling on the declared static inputs, refuting the exact historical scaling assertion."]
-inconclusive_outcomes = ["A passed isolated diffusion test does not establish centered-induction, cleaning, boundary or coupled LBM/MHD stability. E-312 passes the isolated diffusion predicates and reproduces centered-induction energy growth of 1.00146446609406747 per step on the declared mode; full-induction stability fails. Physical force sensitivity remains unresolved.", "Density/permeability/mesh/field identity, gravitational frame, outflow and full coupled sensitivity remain unresolved. E-113 placeholder IC prevents physical replay; a physical amplitude change legitimately changes Lorentz force."]
+inconclusive_outcomes = ["E-313 passes its declared finite Fourier and convergence controls; final-potential-only overflow remains an unexercised branch. Frozen prescribed-velocity accuracy cannot promote coupled physical accuracy or stability.", "A passed isolated diffusion test does not establish centered-induction, cleaning, boundary or coupled LBM/MHD stability. E-312 passes the isolated diffusion predicates and reproduces centered-induction energy growth of 1.00146446609406747 per step on the declared mode; full-induction stability fails. Physical force sensitivity remains unresolved.", "Density/permeability/mesh/field identity, gravitational frame, outflow and full coupled sensitivity remain unresolved. E-113 placeholder IC prevents physical replay; a physical amplitude change legitimately changes Lorentz force."]
 
 [[claim]]
 id = "C-1686"
@@ -8424,6 +8424,51 @@ verification_outcomes = ["All 24 Fourier amplitude and energy rows meet 1e-12, 5
 revision_outcomes = ["A failed declared oracle requires repairing and replaying the bounded instrument before further use.", "The reproduced centered-induction energy growth requires a stable integrator with independent energy and convergence evidence before coupled force-bound simulations."]
 abandonment_outcomes = ["An unstable diffusion coefficient or invalid state passes admission, a rejected update changes B/psi bits, a SI conversion fails or a declared Fourier error exceeds 1e-12."]
 inconclusive_outcomes = ["The isolated periodic diffusion tests provide insufficient evidence for cleaning, boundary or coupled-flow stability and physical force sensitivity."]
+
+[[claim]]
+id = "C-1753"
+last_verified = "2026-09-06"
+statement = "Explicit SSPRK3 periodic magnetic transport passes 32 transverse/cyclic and four longitudinal Fourier rows within 1e-12, with temporal error ratios 8.0013 to 8.0034 and spatial ratios 3.9768 to 3.9943 under prescribed frozen velocity. Mixed scalar stability, physical shear stretching, explicit legacy bit replay and later-stage overflow controls distinguish the declared failures. The uniform transverse diagnostic is optional and scoped; coupled LBM/MHD accuracy, variable-velocity stability, physical boundaries and force sensitivity remain unresolved. E-312 preserves the centered Euler instability."
+status = "Verified"
+where_stated = "data/output/audit/mhd-centered-induction-integrator/adjudication.toml; crates/lbm_3d/tests/mhd_rk3_identity.rs"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["E-313 freezes mode shapes, velocities, diffusivity, cleaning, steps and error gates; temporal and spatial comparisons vary only their declared refinement variables."]
+lift_depth_convention = "maximum_interpretive_maps_per_branch"
+intervening_map_count = 2
+computational_stage_count = 2
+
+[[claim.intervening_maps]]
+name = "prescribed_velocity_mode_construction"
+branch = "magnetic_transport"
+description = "Construct declared periodic fields and frozen velocity in lattice units, with finite dimensions, diffusivity, timestep and damping coefficients."
+kind = "computational"
+
+[[claim.intervening_maps]]
+name = "periodic_stencil_and_state_admission"
+branch = "magnetic_transport"
+description = "Apply three RK stages of centered induction, seven-point diffusion and gradient-divergence damping; compare finite modes and convergence at prescribed frozen velocity."
+kind = "computational"
+
+[[claim.fitted_parameters]]
+branch = "magnetic_transport"
+count = 0
+names = []
+training_boundary = "Declared numerical modes and unit fixtures fit zero parameters; spacecraft values and coupled physical parameters remain unadmitted."
+
+[claim.decisive_experiment]
+experiment_ids = ["E-313"]
+protocol_artifact = "data/output/audit/mhd-centered-induction-integrator/protocol.toml"
+protocol_sha256 = "ae4b02f26b864e5968e06f6730023ee9c2ca1895fd52fe214419ea0ec387241b"
+description = "E-313 independently measures complex gain, all-axis conformance, longitudinal damping, temporal/spatial convergence, shear stretching, legacy dispatch and rejected stages."
+
+[claim.what_would_verify_refute]
+verification_outcomes = ["The 32 transverse/cyclic and four longitudinal rows meet 1e-12, temporal ratios meet 7 to 9 above roundoff, spatial ratios meet 3.5 to 4.5 with temporal error below 1 percent, and declared scalar, shear, legacy and atomicity controls pass."]
+revision_outcomes = ["A failed declared oracle requires repair and retained failure evidence before coupled simulations."]
+abandonment_outcomes = ["A declared unstable scalar mode passes the diagnostic, invalid-stage rejection changes committed fields, or an above-roundoff convergence gate fails."]
+inconclusive_outcomes = ["Frozen prescribed-velocity conformance does not establish coupled LBM/MHD order, variable-velocity stability, physical boundaries, spacecraft agreement or force sensitivity.", "A final-potential-only overflow branch remains unexercised; final commit ordering is inspected separately."]
 
 [[claim]]
 id = "C-176"

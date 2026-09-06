@@ -1,0 +1,15 @@
+physical_comparison_admission=blocked: numerical open-x population closure is measured; its physical suitability, MHD magnetic boundary conditions and gravitational acceleration frame require separate specifications
+solar wind-dm-mhd: 2x2x2, 3 steps, tau=0.8, B0=0 nT, v_sw=0.05, DM=OFF, IC=declared-input
+loaded 8 cells from IC file: data/output/audit/mhd-centered-induction-integrator/cli/synthetic-admitted-ic.csv
+  IC metadata: n_ref=5.00 cm^-3
+  IC metadata: v_ref=400.0 km/s
+  IC metadata: u_scale=0.0500
+mhd_integrator=legacy-euler transport_admission_scope=periodic_diffusion_coefficient_and_finite_state
+magnetic_diffusivity_lattice=5.00000000000000024e-5 dt_mhd=1.00000000000000000e0 diffusion_gate_scope=periodic_diffusion_only
+div(B) projection: 0.000000e0 -> 0.000000e0
+initial magnetic energy (post-projection): 0.000000e0
+mass_ledger_units=lattice_population_mass x_outflow=zero_gradient_populations transverse_boundaries=periodic budget=1.00000000000000004e-10
+step=     1  mass=8.000000  B_energy=0.000000e0  max|divB|=0.000000e0  max_gravity_force_density_lattice=0.000e0  max_lorentz_force_density_lattice=0.000e0  gravity_to_lorentz_ratio_of_maxima=undefined_zero_lorentz  physical_bound=unassessed
+step=     2  mass=8.000000  B_energy=0.000000e0  max|divB|=0.000000e0  max_gravity_force_density_lattice=0.000e0  max_lorentz_force_density_lattice=0.000e0  gravity_to_lorentz_ratio_of_maxima=undefined_zero_lorentz  physical_bound=unassessed
+step=     3  mass=8.000000  B_energy=0.000000e0  max|divB|=0.000000e0  max_gravity_force_density_lattice=0.000e0  max_lorentz_force_density_lattice=0.000e0  gravity_to_lorentz_ratio_of_maxima=undefined_zero_lorentz  physical_bound=unassessed
+done.

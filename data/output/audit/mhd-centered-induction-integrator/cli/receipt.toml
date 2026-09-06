@@ -1,0 +1,146 @@
+schema_version = 1
+scope = "Synthetic zero-B, no-DM, 2x2x2, three-step CLI routing and input admission only. Independent evolving-field oracles establish dynamics; these fixtures establish neither RK3 order nor physical stability."
+working_directory = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication"
+binary_path = "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar"
+binary_sha256 = "c9d078430af5cf3829068b32878aa6360c01473e7138ee23d863f2651ba26efc"
+build_command = "CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e cargo build -p gororoba_cli_physics --bin solar --profile validation"
+build_exit_status = 0
+fixture_source = "data/output/audit/mhd-magnetic-diffusivity/cli/synthetic-admitted-ic.csv"
+fixture_source_sha256 = "e29ff1c0b6dd7a277c366d0b58576e8a084220d32fc7982717941445fb29ee2c"
+
+[[sources]]
+path = "crates/lbm_3d/src/mhd.rs"
+sha256 = "b8432959776e7a162d1a7670784117aa8dd5f4acc62e37601dfaa14f00fb4680"
+
+[[sources]]
+path = "crates/lbm_3d/src/mhd/integrator.rs"
+sha256 = "4e270139669008a342323d4b2aea2b7529b45b801ce348eb1c6d4d517afdc424"
+
+[[sources]]
+path = "crates/lbm_3d/tests/mhd_rk3_identity.rs"
+sha256 = "18a5f28f7c62d8a5e34cf2c0abcd338cba6c51367e123bfdac3b50df63caa6af"
+
+[[sources]]
+path = "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs"
+sha256 = "824ab2244fc5604507d9cb381931649c4b9a15148a9cc93c8fcac5a71c6c71ed"
+
+[[sources]]
+path = "crates/gororoba_cli_physics/src/bin/solar/wind_mhd_sim.rs"
+sha256 = "a139ed448c880f41c448772605929926029288b5e36cfceb4bd23acc3e596384"
+
+[[runs]]
+name = "default"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar","wind-dm-mhd","--nx","2","--ny","2","--nz","2","--steps","3","--snap-interval","1","--no-dm","--b0","0","--tau","0.8","--v-sw","0.05","--x-outflow","zero-gradient-populations","--max-relative-mass-ledger-error","1e-10","--magnetic-diffusivity-lattice","0.00005","--ic-file","data/output/audit/mhd-centered-induction-integrator/cli/synthetic-admitted-ic.csv","--out","data/output/audit/mhd-centered-induction-integrator/cli/default/snapshots"]
+exit_status = 0
+
+[[runs]]
+name = "explicit-legacy"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar","wind-dm-mhd","--nx","2","--ny","2","--nz","2","--steps","3","--snap-interval","1","--no-dm","--b0","0","--tau","0.8","--v-sw","0.05","--x-outflow","zero-gradient-populations","--max-relative-mass-ledger-error","1e-10","--magnetic-diffusivity-lattice","0.00005","--ic-file","data/output/audit/mhd-centered-induction-integrator/cli/synthetic-admitted-ic.csv","--mhd-integrator","legacy-euler","--out","data/output/audit/mhd-centered-induction-integrator/cli/explicit-legacy/snapshots"]
+exit_status = 0
+
+[[runs]]
+name = "explicit-rk3"
+argv = ["/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication/.cache/gate-target/validation/solar","wind-dm-mhd","--nx","2","--ny","2","--nz","2","--steps","3","--snap-interval","1","--no-dm","--b0","0","--tau","0.8","--v-sw","0.05","--x-outflow","zero-gradient-populations","--max-relative-mass-ledger-error","1e-10","--magnetic-diffusivity-lattice","0.00005","--ic-file","data/output/audit/mhd-centered-induction-integrator/cli/synthetic-admitted-ic.csv","--mhd-integrator","ssp-rk3","--out","data/output/audit/mhd-centered-induction-integrator/cli/explicit-rk3/snapshots"]
+exit_status = 0
+
+[validation]
+default_explicit_legacy_output_sets_equal = true
+default_explicit_legacy_file_hashes_equal = true
+compared_filenames = ["mass_flux_ledger.csv","snapshot_000001.csv","snapshot_000002.csv","snapshot_000003.csv"]
+method_scope_receipts_match = true
+rk3_claim_scope = "zero_B_CLI_routing_only"
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/default/snapshots/mass_flux_ledger.csv"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/default/snapshots/snapshot_000001.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/default/snapshots/snapshot_000002.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/default/snapshots/snapshot_000003.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/default/stderr.txt"
+sha256 = "ab37e1e306f7ce6f01a6d530cac3e2d56d22de9fdd81b61cd613edfdb630f506"
+bytes = 1709
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/default/stdout.txt"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-legacy/snapshots/mass_flux_ledger.csv"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-legacy/snapshots/snapshot_000001.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-legacy/snapshots/snapshot_000002.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-legacy/snapshots/snapshot_000003.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-legacy/stderr.txt"
+sha256 = "ab37e1e306f7ce6f01a6d530cac3e2d56d22de9fdd81b61cd613edfdb630f506"
+bytes = 1709
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-legacy/stdout.txt"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-rk3/snapshots/mass_flux_ledger.csv"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-rk3/snapshots/snapshot_000001.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-rk3/snapshots/snapshot_000002.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-rk3/snapshots/snapshot_000003.csv"
+sha256 = "f7e91a91b9174a076fad28a4b89f078c94d5239c8bf3d738b930aadf7ce1979d"
+bytes = 641
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-rk3/stderr.txt"
+sha256 = "d5a0f28eb7138eba665b232cc1dfd66bfcaffbb2bea69ea5fb331f3d887c332d"
+bytes = 1706
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/explicit-rk3/stdout.txt"
+sha256 = "9f17ee732d6342667211845e11659344ba0f623d727e64b0d059de6862655611"
+bytes = 1237
+
+[[artifacts]]
+path = "data/output/audit/mhd-centered-induction-integrator/cli/synthetic-admitted-ic.csv"
+sha256 = "e29ff1c0b6dd7a277c366d0b58576e8a084220d32fc7982717941445fb29ee2c"
+bytes = 603

@@ -1,0 +1,32 @@
+claim_id = "C-1753"
+evidence_layer = "implementation_conformance"
+depth_status = "declared"
+lift_depth = 0
+depth_rationale = "The contract adjudicates a bounded implementation, execution or retained-statistics predicate. Physical interpretive depth remains unassessed and requires a separate contract."
+fixed_hyperparameters = ["E-313 freezes mode shapes, velocities, diffusivity, cleaning, steps and error gates; temporal and spatial comparisons vary only their declared refinement variables."]
+[[intervening_maps]]
+branch = "magnetic_transport"
+name = "prescribed_velocity_mode_construction"
+kind = "computational"
+description = "Construct declared periodic fields and frozen velocity in lattice units, with finite dimensions, diffusivity, timestep and damping coefficients."
+[[intervening_maps]]
+branch = "magnetic_transport"
+name = "periodic_stencil_and_state_admission"
+kind = "computational"
+description = "Apply three RK stages of centered induction, seven-point diffusion and gradient-divergence damping; compare finite modes and convergence at prescribed frozen velocity."
+[[fitted_parameters]]
+branch = "magnetic_transport"
+count = 0
+names = []
+training_boundary = "Declared numerical modes and unit fixtures fit zero parameters; spacecraft values and coupled physical parameters remain unadmitted."
+[decisive_experiment]
+
+experiment_ids = ["E-313"]
+protocol_artifact = "data/output/audit/mhd-centered-induction-integrator/protocol.toml"
+protocol_sha256 = "ae4b02f26b864e5968e06f6730023ee9c2ca1895fd52fe214419ea0ec387241b"
+description = "E-313 independently measures complex gain, all-axis conformance, longitudinal damping, temporal/spatial convergence, shear stretching, legacy dispatch and rejected stages."
+[what_would_verify_refute]
+verification_outcomes = ["The 32 transverse/cyclic and four longitudinal rows meet 1e-12, temporal ratios meet 7 to 9 above roundoff, spatial ratios meet 3.5 to 4.5 with temporal error below 1 percent, and declared scalar, shear, legacy and atomicity controls pass."]
+revision_outcomes = ["A failed declared oracle requires repair and retained failure evidence before coupled simulations."]
+abandonment_outcomes = ["A declared unstable scalar mode passes the diagnostic, invalid-stage rejection changes committed fields, or an above-roundoff convergence gate fails."]
+inconclusive_outcomes = ["Frozen prescribed-velocity conformance does not establish coupled LBM/MHD order, variable-velocity stability, physical boundaries, spacecraft agreement or force sensitivity.", "A final-potential-only overflow branch remains unexercised; final commit ordering is inspected separately."]

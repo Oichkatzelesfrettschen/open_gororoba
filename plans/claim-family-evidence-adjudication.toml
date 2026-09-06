@@ -122,7 +122,7 @@ acceptance = "Seal relevant gates before final access; separate human labels, ra
 [[task]]
 id = "force-units-sensitivity"
 status = "pending"
-progress = "Strict SI IC admission, density-weighted forcing and AoSoA inlet correction pass focused tests. The 90-row periodic sensitivity sweep resolves tested forces at or above 1e-14. E-297/C-1746 verifies finite open-x face accounting. Gravitational frame, physical outflow and magnetic admission, matched physical inputs and coupled sensitivity remain open."
+progress = "Strict SI IC admission, density-weighted forcing and AoSoA inlet correction pass focused tests. The 90-row periodic sensitivity sweep resolves tested forces at or above 1e-14. E-297/C-1746 verifies finite open-x face accounting. E-312/C-1752 verifies diffusivity admission and retains centered Euler instability; E-313/C-1753 verifies explicitly selected RK3 under prescribed frozen velocity with separate temporal and spatial convergence. Gravitational frame, physical outflow and magnetic admission, matched physical inputs and coupled sensitivity remain open."
 depends_on = ["family-contracts"]
 action = "Repair drag and magnetic units, Parker scaling and open-boundary balance"
 acceptance = "Physical force units and numerical error budget support the bounded comparison across both claim generations."
@@ -154,7 +154,7 @@ acceptance = "Retain failed thresholds and distinguish identity class, contact t
 [[task]]
 id = "reference-population-identity"
 status = "pending"
-progress = "QGP CLI rejects mismatched populations before ranking; independent minimization identifies and repairs the fit/score formula mismatch. NuFit release and SK variants have explicit source intervals and retained composite comparisons. The official intake retains seven experimental RAA tables with 323 rows and exposes the eccentricity citation mismatch; Primary-source equations identify a positive-shift quenching convolution distinct from the implemented negative-shift law; C-1710 preserves E-296 as objective conformance. Source-law implementation, theory-curve identity, covariance and nine-row geometry lineage remain required."
+progress = "QGP CLI rejects mismatched populations before ranking; independent minimization identifies and repairs the fit/score formula mismatch. NuFit release and SK variants have explicit source intervals and retained composite comparisons. The official intake retains seven experimental RAA tables with 323 rows and exposes the eccentricity citation mismatch; Primary-source equations identify a positive-shift quenching convolution distinct from the implemented negative-shift law; C-1710 preserves E-296 as objective conformance. E-307 admits finite CUJET source vectors; E-309 repairs directional-path moments; E-310 implements the asymptotic positive-shift convolution with retained quadrature sensitivity; E-311 admits exact pp source identity and declares an unexecuted two-parameter fit. Cross-bin covariance, fragmentation, angular/centrality pooling and physical fit admission remain required."
 depends_on = ["family-contracts"]
 action = "Correct QGP populations and NuFit release identities before agreement comparisons"
 acceptance = "Every comparison declares source population, uncertainty or covariance and fitting freedom; original comparisons remain retained."
@@ -436,14 +436,35 @@ acceptance = "Independent seven-point Fourier oracles distinguish diffusion, tim
 
 [[task]]
 id = "mhd-diffusivity-canonical-publication"
-status = "in_progress"
+status = "completed"
 depends_on = ["mhd-diffusivity-fourier-verification"]
 action = "Register bounded transport evidence and publish validated artifacts"
 acceptance = "Refuted physical parents remain intact; typed outcomes, canonical history, retained tests and publication gates agree."
 
 [[task]]
 id = "mhd-stable-induction-contract"
-status = "pending"
+status = "completed"
 depends_on = ["mhd-diffusivity-canonical-publication"]
 action = "Research and declare a stable induction integrator with independent energy and convergence oracles"
 acceptance = "Retain the centered forward-Euler growth failure; bind replacement stability, timestep and boundary scopes before coupled physical simulations."
+
+[[task]]
+id = "mhd-rk3-transport"
+status = "completed"
+depends_on = ["mhd-stable-induction-contract"]
+action = "Implement explicitly selected transactional RK3 transport with staged divergence damping"
+acceptance = "Legacy Euler retains its arithmetic; stages admit finite inputs and commit atomically."
+
+[[task]]
+id = "mhd-rk3-independent-oracles"
+status = "completed"
+depends_on = ["mhd-rk3-transport"]
+action = "Verify scalar stability, temporal and spatial convergence and physical stretching"
+acceptance = "Declared mixed Fourier, longitudinal cleaning, shear, boundary and rejection controls discriminate failures."
+
+[[task]]
+id = "mhd-rk3-canonical-publication"
+status = "in_progress"
+depends_on = ["mhd-rk3-independent-oracles"]
+action = "Adjudicate and publish the bounded induction integrator"
+acceptance = "Retain Euler failure and separate prescribed-velocity accuracy from coupled physical sensitivity."

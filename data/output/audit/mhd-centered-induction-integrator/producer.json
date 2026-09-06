@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "base_commit": "605dc7204829a4b07ca7d00620f32f1b2e520130",
+  "working_directory": "/home/eirikr/worktrees/open_gororoba/claim-evidence-adjudication",
+  "artifacts": [
+    {
+      "path": "crates/lbm_3d/src/mhd.rs",
+      "sha256": "b8432959776e7a162d1a7670784117aa8dd5f4acc62e37601dfaa14f00fb4680",
+      "bytes": 42949
+    },
+    {
+      "path": "crates/lbm_3d/src/mhd/integrator.rs",
+      "sha256": "4e270139669008a342323d4b2aea2b7529b45b801ce348eb1c6d4d517afdc424",
+      "bytes": 10767
+    },
+    {
+      "path": "crates/lbm_3d/tests/mhd_rk3_identity.rs",
+      "sha256": "18a5f28f7c62d8a5e34cf2c0abcd338cba6c51367e123bfdac3b50df63caa6af",
+      "bytes": 15298
+    },
+    {
+      "path": "crates/lbm_3d/tests/mhd_diffusivity_identity.rs",
+      "sha256": "432b1bd82dd8ae55d4e7ec7fe07e49f175707ab9dfb56d2428b83c97a4432cc5",
+      "bytes": 8436
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/solar/wind_dm_mhd.rs",
+      "sha256": "824ab2244fc5604507d9cb381931649c4b9a15148a9cc93c8fcac5a71c6c71ed",
+      "bytes": 37986
+    },
+    {
+      "path": "crates/gororoba_cli_physics/src/bin/solar/wind_mhd_sim.rs",
+      "sha256": "a139ed448c880f41c448772605929926029288b5e36cfceb4bd23acc3e596384",
+      "bytes": 11183
+    },
+    {
+      "path": "data/output/audit/mhd-centered-induction-integrator/independent-tests-complete.log",
+      "sha256": "73a3575e04c2cc54e9f04c1cbe811e8a4ea509c056b561be731b56338870bfcf",
+      "bytes": 11425
+    },
+    {
+      "path": "data/output/audit/mhd-centered-induction-integrator/cli/receipt.toml",
+      "sha256": "87c6beb8aab0147e6167367cb501a95af2f488338404b35c5e6cdcda10da29de",
+      "bytes": 7834
+    }
+  ],
+  "test_executables": [
+    {
+      "path": "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/mhd_diffusivity_identity-9f84b6404ab9e72f",
+      "sha256": "a2e076ea7a850da5279ced12bae85ae8d5a5949c39eef119fd837af7aad2427b"
+    },
+    {
+      "path": "/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e/validation/deps/mhd_rk3_identity-c63e02c15989c476",
+      "sha256": "458c599e53c92f49610f50f77cb5caeb74bcb260ea5cd27e32cfc4415fad9a17"
+    }
+  ],
+  "test_command": "CARGO_HOME=/home/eirikr/Github/open_gororoba/.cache/cargo-home CARGO_TARGET_DIR=$PWD/.cache/gate-target CARGO_BUILD_BUILD_DIR=/home/eirikr/Github/open_gororoba/.cache/gate-cbuild/8ee62ced707fec8e cargo test -p lbm_3d --profile validation --test mhd_rk3_identity --test mhd_diffusivity_identity -- --nocapture",
+  "test_exit_status": 0
+}
