@@ -1,0 +1,159 @@
+admission_id = "insight-reference-predicate-admission:I-209"
+insight_id = "I-209"
+disposition = "preserve_failed_specificity_lessons_separate_mechanisms"
+falsifier = "Run the full selection pipeline inside each null replicate; require injection sensitivity for degenerate metrics; distinguish fitting success from out-of-sample prediction and specify the exact group action."
+successor = "Register separate bounded constructions and obstructions instead of a single universal failure explanation."
+residual = "Original input bodies, blind-selection calibration and source-faithful matrix construction remain unresolved."
+
+[expected]
+title = "Blind baselines break PMNS and spectral-pattern analogies"
+status = "verified"
+summary = "Neutrino, mass-spectrum, associator-power, and SO(7) pattern matches fail for the same reason: the target can be approximated or reparameterized without a stable invariant. The surviving rule is to demand blind matching, unit/base invariance, and continuous-orbit or null controls before treating a pattern resemblance as physics."
+claim_refs = [
+    "C-068",
+    "C-069",
+    "C-070",
+    "C-077",
+    "C-081",
+    "C-092",
+]
+
+[revised]
+title = "Pattern audits separate fitted parameterization from predictive specificity"
+status = "verified"
+summary = "The retained pattern audits identify distinct limits rather than one demonstrated common failure mechanism. Givens-angle recovery succeeds for PMNS and unrelated targets, supporting parameterization while defeating predictive specificity. The mass null operates on a preselected subset and must repeat the full selection pipeline to support a blind comparison. The retained degenerate quantile metric requires positive-control sensitivity. Coordinate-subalgebra enumeration bounds coordinate embeddings, and sampled rotations breaking one pair leave continuous stabilizers and alternative actions open. Bind the substituted associator matrix to the historical construction, declare transformation and unit conventions, and freeze selection and predictions before held-out tests."
+status_note = "Verified applies to the bounded distinction between fitting and prediction and the enumerated audit limits. Original-input recovery, selection-aware calibration, source-faithful matrix construction and group-action obligations remain open. C-081's successful parameter recovery survives the rejection of predictive specificity."
+claim_refs = [
+    "C-068",
+    "C-069",
+    "C-070",
+    "C-077",
+    "C-081",
+    "C-092",
+]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[predicates]]
+id = "common-cause"
+proposition = "All listed pattern matches fail for the same reason."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "inconclusive"
+execution_status = "source_review"
+boundary = "The retained evidence separates coordinate-subspace discreteness, parameter recovery, transformation-dependent selection, degenerate metrics and one failed rotation action. A shared caution is justified; a common causal mechanism remains unproved."
+evidence_anchors = [
+    "data/output/claims_falsification/particle_numerology_audit.toml; data/output/claims_falsification/cd_pattern_baseline_audit.toml",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-209/common-cause",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/6/atomic_propositions/0"
+
+[[predicates]]
+id = "blind-baseline"
+proposition = "The mass comparison supplies a fully blind baseline."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "refuted"
+execution_status = "source_review"
+boundary = "The code selects a mass subset before applying the null to selected values. The null omits that selection step. Log versus linear changes the transformation, not merely logarithm base."
+evidence_anchors = [
+    "crates/gororoba_cli_data/src/bin/cd_pattern_baseline_audit.rs:299-330",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-209/blind-baseline",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/6/atomic_propositions/1"
+
+[[predicates]]
+id = "parameterization"
+proposition = "Givens angle recovery fails."
+kind = "reviewer_counterfactual"
+evidence_layer = "implementation_conformance"
+outcome = "refuted"
+execution_status = "retained_result_review"
+boundary = "The retained runner recovers PMNS and five other targets. That supports parameterization and defeats predictive specificity; C-081's literal predicate and rejection need separate treatment."
+evidence_anchors = [
+    "crates/gororoba_cli_data/src/bin/particle_numerology_audit.rs:455-479",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-209/parameterization",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/6/atomic_propositions/2"
+
+[[predicates]]
+id = "continuous-action"
+proposition = "Generic rotation breakage excludes continuous symmetry."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "inconclusive"
+execution_status = "source_review"
+boundary = "The inspected finite rotations act on left-octonion imaginary coordinates and break one retained zero-divisor pair. Continuous stabilizers and alternative actions remain open."
+evidence_anchors = [
+    "crates/algebra_experimental/src/so7_drift.rs:102-152; crates/algebra_analysis/src/reggiani.rs:240-280",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-209/continuous-action",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/6/atomic_propositions/3"
+
+[[references]]
+claim_id = "C-068"
+predicate_id = "blind-baseline"
+role = "qualifies"
+provenance = "Pilot role negative_specificity_with_selection_limit: Log/linear best mass subsets differ; log p=0.010742, linear p=0.430664."
+boundary = "The null must repeat subset selection; selected significance is not a blind test."
+
+[[references]]
+claim_id = "C-069"
+predicate_id = "common-cause"
+role = "qualifies"
+provenance = "Pilot role bounded_negative_example: 15 coordinate subalgebras and 105 pairs yield 0/90-degree angles."
+boundary = "General rotated embeddings lie outside the enumeration."
+
+[[references]]
+claim_id = "C-070"
+predicate_id = "common-cause"
+role = "qualifies"
+provenance = "Pilot role methodology_insufficient: Observed and null/template distances coincide with zero null spread and p=1."
+boundary = "The quantile comparison lacks demonstrated discriminating power and supplies no physical power-spectrum derivation."
+
+[[references]]
+claim_id = "C-077"
+predicate_id = "common-cause"
+role = "qualifies"
+provenance = "Pilot role bounded_negative_specificity: Democratic-matrix distance 0.588767 with p=0.336914."
+boundary = "The substituted matrix needs identity binding to the historical associator calculation."
+
+[[references]]
+claim_id = "C-081"
+predicate_id = "parameterization"
+role = "refutes"
+provenance = "Pilot role supports_parameterization_refutes_predictive_specificity: Exact recovery across unrelated targets."
+boundary = "Successful angle recovery survives; a physical prediction requires restrictions beyond a freely fitted parameterization."
+
+[[references]]
+claim_id = "C-092"
+predicate_id = "continuous-action"
+role = "qualifies"
+provenance = "Pilot role bounded_perturbation_counterexample: One zero-divisor pair breaks under sampled left-component rotations."
+boundary = "BFS connected components are not established group orbits; sampled breakage excludes neither stabilizers nor other actions."

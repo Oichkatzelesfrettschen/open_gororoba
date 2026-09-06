@@ -1,25 +1,26 @@
 schema_version = 1
-status = "reference_role_pilot_complete_family_adjudication_pending"
+status = "insight_pilot_canonically_admitted_scientific_replays_pending"
 prepared_date = "2026-09-06"
 objective = "Audit related claims, insights and other research records together by shared mechanisms and evidence, preserve falsification results, and develop independently tested successor results."
 primary_checkout = "/home/eirikr/Github/open_gororoba"
 primary_branch = "main"
 baseline_commit = "d59c8fa086614dc248eeb22f5406cb8205c75464"
 baseline_database_sha256 = "49ab6870d67738b4af3cb665ee03313b0ef595201e2598b3e2d73172b5f235c8"
-handoff_checkout = "/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure"
-handoff_branch = "docs/research-evidence-audit-handoff"
+historical_handoff_checkout = "/home/eirikr/worktrees/open_gororoba/external-admission-claim-closure"
+historical_handoff_branch = "docs/research-evidence-audit-handoff"
+historical_handoff_disposition = "The merged scratch checkout was moved to recoverable trash. Resume from the primary checkout and inventory live worktrees before selecting an execution path."
 inventory_root = "data/output/audit/research-evidence-family-inventory"
 families_file = "data/output/audit/research-evidence-family-inventory/candidate-families.toml"
 online_methodology = "data/output/audit/research-evidence-family-inventory/methodology-sources.toml"
 local_downloads = ".cache/research-evidence-audit-handoff/sources"
-work_completed = "Canonical inventory, twelve candidate audit families, primary methodology review, and the eight-insight reference-role pilot with all 37 links traced, independent arithmetic/permutation witnesses, bounded dispositions and source receipts. Canonical scientific records retain their baseline bytes."
-work_pending = "Broader authority mapping, source-level family membership validation, canonical semantic roles, scientific falsification, domain-specific literature searches, schema changes, experiments and canonical adjudication."
+work_completed = "Canonical inventory, twelve candidate audit families, primary methodology review, eight-insight reference-role review and canonical admission. Eight insights carry 31 predicate assessments and 45 roles: all 37 original links plus eight I-212 follow-up links. Six retained source bodies and two failed Li requests have first-observation receipts. Historical claims and experimental evidence retain their dispositions and bytes."
+work_pending = "Original scientific input/result recovery and producer replays, source-conformance repair, quantitative physical hypotheses, null-power and selection calibration, broader authority mapping, source-traced family membership, domain-specific literature searches and independent successor tests."
 scope_limit = "The seeds are not an exhaustive clustering and their membership is not a scientific verdict. Empty SQL tables do not establish missing knowledge across generated registries and documents."
 
 [resume]
 read_first = ["AGENTS.md", "plans/research-evidence-audit-handoff.toml", "data/output/audit/research-evidence-family-inventory/candidate-families.toml", "data/output/audit/research-evidence-family-inventory/methodology-sources.toml", "docs/engineering/registry_canonical_architecture.md", "docs/engineering/claim-family-evidence-adjudication.md"]
-first_action = "Verify both checkout branches, clean/dirty state, HEAD and the database hash. If main or the database differs from the baseline, refresh the inventory before using its counts or review ordering."
-initial_focus = "pilot-predicate-corrections-and-canonical-role-design"
+first_action = "Verify main, live worktrees, clean/dirty state, HEAD and the database hash. The inventory baseline predates canonical insight admission; refresh its counts and authority map before expanding the research families. Read the canonical admission results before reopening completed administrative work."
+initial_focus = "recover-historical-producers-and-declare-decisive-pilot-tests"
 pilot_insights = ["I-001", "I-002", "I-094", "I-095", "I-096", "I-207", "I-209", "I-212"]
 pilot_reason = "The set spans positive interpretations, negative-result lessons and superseded parents. It tests relation semantics before the audit expands or the schema changes."
 first_deliverable = "Eight insight records with atomic propositions, linked claim predicates, source evidence, relationship roles, falsifiers and per-record dispositions; retain unchanged records when their existing wording is justified."
@@ -122,7 +123,15 @@ status = "completed_bounded_source_and_reference_review"
 depends_on = ["verify-pilot-identity-and-authority"]
 acceptance = "All eight pilot insights have traced proposition/evidence relationships and falsifiers; valid negative-result lessons survive."
 result = "data/output/audit/insight-reference-role-pilot/findings.json"
-completion_boundary = "All 37 declared links across 26 claims have roles and limits. Canonical mutations and original scientific replays remain pending. Live identity and pilot authority owners are verified; broader inventory-owner mapping remains open."
+completion_boundary = "The retained review snapshot traces all 37 declared links across 26 claims. The subsequent canonical-admission task records the mutations; original scientific replays and broader inventory-owner mapping remain open."
+
+[[next_task]]
+id = "admit-insight-predicate-contracts-and-source-observations"
+status = "completed"
+depends_on = ["audit-insight-reference-pilot"]
+acceptance = "Eight canonical insights carry bounded content, typed predicate roles, hash-bound audit evidence and immutable before/after history; eight source observations retain absent prerequest expectations and transport limits."
+result = "data/output/audit/insight-canonical-admission/admission-results.json"
+completion_boundary = "Canonical administrative admission is complete. The original review bundle remains historical evidence; original scientific replays and the per-record residuals remain pending."
 
 [[next_task]]
 id = "design-and-validate-family-records"
@@ -158,5 +167,9 @@ acceptance = "Canonical changes, generated outputs, numerical/source tests, inde
 findings = "data/output/audit/insight-reference-role-pilot/findings.json"
 validation = "data/output/audit/insight-reference-role-pilot/validation.toml"
 source_receipts = "data/output/audit/insight-reference-role-pilot/source-receipts.toml"
-next_focus = "Review the proposed predicate-level corrections, admit missing historical evidence, and design canonical insight roles before expanding the candidate families."
-scientific_boundary = "Negative-result lessons survive with narrower predicates. Newly exposed null-power, source-convention and reference-scope issues remain explicit obligations; the pilot changes audit artifacts rather than canonical scientific records."
+next_focus = "Recover original input/result bodies and exact producers, repair source-convention defects under declared caller assumptions, and preregister decisive null-power and selection tests before expanding the candidate families."
+scientific_boundary = "Canonical admission narrows the eight insight interpretations and preserves negative-result lessons. Hash-bound audit assessments and source observations establish their own evidence surfaces; historical numerical replay, new physical mechanisms and independent successor results remain unexecuted."
+canonical_admission = "data/output/audit/insight-canonical-admission/admission-results.json"
+source_admission = "data/output/audit/insight-source-admission/README.toml"
+validation_receipt = "data/output/audit/insight-canonical-admission/validation.toml"
+effective_source_history = "data/output/audit/insight-canonical-admission/effective-source-results.json"

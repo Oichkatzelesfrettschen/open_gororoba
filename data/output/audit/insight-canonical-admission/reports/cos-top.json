@@ -1,0 +1,43 @@
+{
+  "artifact_prestate": null,
+  "correspondence_basis": "retained_manifest_digest_association",
+  "cryptographic_request_binding": false,
+  "document_identity": "unresolved",
+  "observation_key": "insight-pilot-first-observation-cos-top",
+  "prior_body_expectation": null,
+  "schema_version": 1,
+  "scientific_promotion": false,
+  "spec": {
+    "absent_prior_expectation_reason": "The retained audit declares observed body identities after retrieval; a hash-bound prerequest body expectation is absent.",
+    "actor": "codex",
+    "artifact_prestate": null,
+    "body": {
+      "decoded_bytes": 80310,
+      "decoded_sha256": "6e888f5c44ea5d591ba38bbf60116b608f4ad0616dcaa356c68b149646cadfc1",
+      "encoding": "gzip",
+      "path": "data/output/audit/research-evidence-family-inventory/methodology-source-bodies/cos-top-guidelines.html.gz",
+      "storage_sha256": "21105371af18c3c227574b8c95ff31c064b02d5e95d501d578b4e838631a1be8"
+    },
+    "document_identity_limit": "The retained audit associates the URL, source title and body digest. Canonical document attribution remains unresolved; retention establishes measured bytes and audit provenance.",
+    "final_url": null,
+    "http_status": null,
+    "observation_key": "insight-pilot-first-observation-cos-top",
+    "observed_at": "2026-09-06",
+    "outcome": "body_retained",
+    "reason": "Admit retained pilot source observation without fabricating prerequest body expectations or promoting scientific claims.",
+    "request_evidence": {
+      "decoded_bytes": 3768,
+      "decoded_sha256": "9593765b25441eaed068f3ee7629eb6fe07aba98faf0c27da62edba1a4c4ba79",
+      "encoding": "identity",
+      "path": "data/output/audit/research-evidence-family-inventory/methodology-sources.toml",
+      "storage_sha256": "9593765b25441eaed068f3ee7629eb6fe07aba98faf0c27da62edba1a4c4ba79"
+    },
+    "request_evidence_limit": "Retained audit manifest attributes curl retrieval and the observation date. Raw request logs and final redirect URLs are absent from this evidence association. HTTP status is intentionally omitted despite the manifest-level aggregate statement.",
+    "requested_url": "https://www.cos.io/initiatives/top-guidelines",
+    "schema_version": 1,
+    "source_key": "COS-TOP",
+    "time_precision": "day",
+    "tool": "curl (audit-manifest attribution)"
+  },
+  "spec_sha256": "1fe0dd680d198c42191613412636692bf7587eb51b57457e48010b379f576a81"
+}

@@ -1,0 +1,18 @@
+[
+  {
+    "sha256": "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209",
+    "path": "data/output/audit/insight-reference-role-pilot/findings.json"
+  },
+  {
+    "sha256": "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd",
+    "path": "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+  },
+  {
+    "sha256": "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f",
+    "path": "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+  },
+  {
+    "sha256": "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a",
+    "path": "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+  }
+]

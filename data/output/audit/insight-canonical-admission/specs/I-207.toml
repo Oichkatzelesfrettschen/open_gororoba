@@ -1,0 +1,142 @@
+admission_id = "insight-reference-predicate-admission:I-207"
+insight_id = "I-207"
+disposition = "preserve_negative_examples_narrow_reconstruction_coverage"
+falsifier = "Bind original data hashes to parsed rows and compare the actual declared relations. For alleged failure of functionhood, require identical-input/conflicting-output witnesses rather than exceptional cases."
+successor = "Retain separate exact numerical reconstructions and limited mathematical obstructions with original-input provenance."
+residual = "Historical source bodies and claim-to-theorem identity remain separate obligations."
+
+[expected]
+title = "Exact reconstruction beats label substitution in legacy algebra audits"
+status = "verified"
+summary = "Across wheels, lattice, moonshine, fractal-doping, and E-series legacy claims, renamed columns and analogical labels do not survive exact Rust reconstruction. Same-parity masks are not zero-divisor adjacency, ad hoc exceptional cuts break the idea of a clean basis-to-lattice function, trivial logarithmic columns are not spin-foam amplitudes, and categorical substitutions such as E9/E10/E11-as-lattices do not create mechanism."
+claim_refs = [
+    "C-019",
+    "C-020",
+    "C-021",
+    "C-046",
+    "C-047",
+    "C-543",
+]
+
+[revised]
+title = "Legacy algebra reconstructions require original-input and theorem identity"
+status = "verified"
+summary = "Exact numerical relations and explicitly stated mathematical obligations support stronger audits than analogical labels. E-203 directly reconstructs parity, lattice membership and hardcoded moonshine numbers; original CSV binding and direct coverage of C-046/C-047 remain unresolved. Exceptional exclusions can define a deterministic function and challenge natural derivation rather than functionhood. The claim-numbered Rocq wrappers prove a particular zero-product witness, octonion basis norms and XOR determinism; their mapping to historical claims requires separate evidence. Preserve each bounded reconstruction and negative example while requiring original-input hashes and the precise intended theorem before broader attribution."
+status_note = "Verified applies to the evidence-identity lesson. Admission preserves historical negative claims; it supplies neither original-input recovery nor universal mathematical refutations."
+claim_refs = [
+    "C-019",
+    "C-020",
+    "C-021",
+    "C-046",
+    "C-047",
+    "C-543",
+]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[predicates]]
+id = "coverage"
+proposition = "All six legacy references received exact Rust reconstruction."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "revised"
+execution_status = "source_review"
+boundary = "E-203 directly covers parity, lattice membership and hardcoded moonshine numbers. Original CSV binding remains unresolved; C-046/C-047 have secondary mirror evidence outside that report."
+evidence_anchors = [
+    "data/output/claims_falsification/legacy_crossval_audit.toml; crates/gororoba_cli_algebra/src/bin/legacy_crossval_audit.rs:39-131",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-207/coverage",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/5/atomic_propositions/0"
+
+[[predicates]]
+id = "functionhood"
+proposition = "Exceptional cuts prevent a clean basis-to-lattice function."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "refuted"
+execution_status = "source_review"
+boundary = "Explicit exclusions can define a deterministic function. The evidence challenges natural derivation, rather than proving non-functionhood."
+evidence_anchors = [
+    "data/output/claims_falsification/legacy_crossval_audit.toml:25; proofs/verified/C021_LatticeInconsistency.v:14",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-207/functionhood",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/5/atomic_propositions/1"
+
+[[predicates]]
+id = "proof-identity"
+proposition = "Claim-numbered Rocq wrappers prove the legacy refutations."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "revised"
+execution_status = "source_review"
+boundary = "C019 proves a specific zero product with positive operand norms; C020 proves octonion basis norms; C021 proves XOR determinism. Those propositions require separate mapping to the historical claims."
+evidence_anchors = [
+    "proofs/verified/C019_WheelsNoContent.v:13; proofs/verified/C020_BasisNonzero.v:12; proofs/verified/C021_LatticeInconsistency.v:14",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-207/proof-identity",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/5/atomic_propositions/2"
+
+[[references]]
+claim_id = "C-019"
+predicate_id = "proof-identity"
+role = "historical_context"
+provenance = "Pilot role historical_obstruction_context: Specific CD zero-product obstruction."
+boundary = "The witness neither defines wheels nor rejects all wheel interpretations."
+
+[[references]]
+claim_id = "C-020"
+predicate_id = "coverage"
+role = "qualifies"
+provenance = "Pilot role negative_example: 98 reconstructed parity/commutativity mismatches."
+boundary = "Original CSV identity came from manual inspection; a relation mismatch needs identity binding before attribution to those CSVs."
+
+[[references]]
+claim_id = "C-021"
+predicate_id = "functionhood"
+role = "qualifies"
+provenance = "Pilot role negative_example: 1024 accepted of 2048 parent points with two singleton exclusions."
+boundary = "Membership exceptions challenge derivation rather than functionhood."
+
+[[references]]
+claim_id = "C-046"
+predicate_id = "coverage"
+role = "historical_context"
+provenance = "Pilot role historical_negative_context: Scalar-rescaling interpretation."
+boundary = "Direct E-203 reconstruction is unresolved; secondary mirror and task record retain the claim."
+
+[[references]]
+claim_id = "C-047"
+predicate_id = "coverage"
+role = "historical_context"
+provenance = "Pilot role historical_categorical_context: E9/E10/E11 versus Euclidean lattice interpretation."
+boundary = "The inspected E-203 artifact omits this reference; primary historical inputs remain unresolved."
+
+[[references]]
+claim_id = "C-543"
+predicate_id = "coverage"
+role = "qualifies"
+provenance = "Pilot role negative_example: Hardcoded logarithmic amplitude and coefficient reconstruction."
+boundary = "Ten amplitudes agree within 1e-15, first-eight coefficients within 1e-4 relative tolerance; original CSVs are not read."

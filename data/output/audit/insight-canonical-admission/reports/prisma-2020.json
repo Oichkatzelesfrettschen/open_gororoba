@@ -1,0 +1,43 @@
+{
+  "artifact_prestate": null,
+  "correspondence_basis": "retained_manifest_digest_association",
+  "cryptographic_request_binding": false,
+  "document_identity": "unresolved",
+  "observation_key": "insight-pilot-first-observation-prisma-2020",
+  "prior_body_expectation": null,
+  "schema_version": 1,
+  "scientific_promotion": false,
+  "spec": {
+    "absent_prior_expectation_reason": "The retained audit declares observed body identities after retrieval; a hash-bound prerequest body expectation is absent.",
+    "actor": "codex",
+    "artifact_prestate": null,
+    "body": {
+      "decoded_bytes": 217502,
+      "decoded_sha256": "1cd933983990e63a27627c218237046f7a1c3e6cd2a1ea16be49c67fcbb390a4",
+      "encoding": "gzip",
+      "path": "data/output/audit/research-evidence-family-inventory/methodology-source-bodies/prisma-2020.html.gz",
+      "storage_sha256": "16583a0b7357b2eb9da191ec03101b2b50e6233e1d61926f729a02c86dd60db0"
+    },
+    "document_identity_limit": "The retained audit associates the URL, source title and body digest. Canonical document attribution remains unresolved; retention establishes measured bytes and audit provenance.",
+    "final_url": null,
+    "http_status": null,
+    "observation_key": "insight-pilot-first-observation-prisma-2020",
+    "observed_at": "2026-09-06",
+    "outcome": "body_retained",
+    "reason": "Admit retained pilot source observation without fabricating prerequest body expectations or promoting scientific claims.",
+    "request_evidence": {
+      "decoded_bytes": 3768,
+      "decoded_sha256": "9593765b25441eaed068f3ee7629eb6fe07aba98faf0c27da62edba1a4c4ba79",
+      "encoding": "identity",
+      "path": "data/output/audit/research-evidence-family-inventory/methodology-sources.toml",
+      "storage_sha256": "9593765b25441eaed068f3ee7629eb6fe07aba98faf0c27da62edba1a4c4ba79"
+    },
+    "request_evidence_limit": "Retained audit manifest attributes curl retrieval and the observation date. Raw request logs and final redirect URLs are absent from this evidence association. HTTP status is intentionally omitted despite the manifest-level aggregate statement.",
+    "requested_url": "https://www.prisma-statement.org/prisma-2020-statement",
+    "schema_version": 1,
+    "source_key": "PRISMA-2020",
+    "time_precision": "day",
+    "tool": "curl (audit-manifest attribution)"
+  },
+  "spec_sha256": "e9f5007a2ef6a4e2d93e8009bd787fc037a64044f0edae0527c3a1281d08cc98"
+}

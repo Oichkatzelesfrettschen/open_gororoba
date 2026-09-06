@@ -1,0 +1,48 @@
+{
+  "artifact_prestate": {
+    "artifact_id": "ASOT-0242",
+    "canonical_url": "https://doi.org/10.1080/01621459.2012.682815",
+    "key": "doi:10.1080/01621459.2012.682815"
+  },
+  "corrects_observation_key": "insight-pilot-first-observation-li-https",
+  "correspondence_basis": "retained_failure_log_without_body",
+  "cryptographic_request_binding": false,
+  "document_identity": "unresolved",
+  "observation_key": "insight-pilot-first-observation-li-https-failure-correspondence-correction",
+  "prior_body_expectation": null,
+  "record_kind": "metadata_correction",
+  "schema_version": 1,
+  "scientific_promotion": false,
+  "spec": {
+    "absent_prior_expectation_reason": "The retained audit declares observed body identities after retrieval; a hash-bound prerequest body expectation is absent.",
+    "actor": "codex",
+    "artifact_prestate": {
+      "artifact_id": "ASOT-0242",
+      "artifact_key": "doi:10.1080/01621459.2012.682815",
+      "canonical_url": "https://doi.org/10.1080/01621459.2012.682815"
+    },
+    "body": null,
+    "corrects_observation_key": "insight-pilot-first-observation-li-https",
+    "document_identity_limit": "Publisher attempts returned 403 and retained request logs; the requested document body and source proposition remain unassessed.",
+    "final_url": "https://www.tandfonline.com/doi/pdf/10.1080/01621459.2012.682815",
+    "http_status": 403,
+    "observation_key": "insight-pilot-first-observation-li-https-failure-correspondence-correction",
+    "observed_at": "2026-09-06",
+    "outcome": "request_failed",
+    "reason": "Correct correspondence metadata to retained_failure_log_without_body; preserve the original observation and all acquisition fields.",
+    "request_evidence": {
+      "decoded_bytes": 2380,
+      "decoded_sha256": "dfed0da38412104d7130cfc919f9e27b03d6c7aeb1587d469756d3efec706fee",
+      "encoding": "gzip",
+      "path": "data/output/audit/insight-reference-role-pilot/sources/li-wget.log.gz",
+      "storage_sha256": "ee22113a6ee97709dfa2dd83b0d40cf4e09a029a432374b282022ad9ebb1bb46"
+    },
+    "request_evidence_limit": "Retained wget log records request URL, response status and terminal completion or failure. Day precision preserves the log date without inventing local clock timezone.",
+    "requested_url": "https://www.tandfonline.com/doi/pdf/10.1080/01621459.2012.682815",
+    "schema_version": 1,
+    "source_key": "li-quantile-periodograms",
+    "time_precision": "day",
+    "tool": "GNU wget (retained log)"
+  },
+  "spec_sha256": "1e654f791839fb3f3cd2f6720873e722e3cd473fe4e299ac88edfc8086ddd204"
+}

@@ -1,0 +1,110 @@
+admission_id = "insight-reference-predicate-admission:I-002"
+insight_id = "I-002"
+disposition = "preserve_representation_lesson_revise_definitive_refutation"
+falsifier = "A valid decisive null must destroy a declared alternative while preserving nuisance structure. Exact relabeling invariance and imposed p-adic ultrametricity defeat that requirement for the inspected raw-scalar fraction tests."
+successor = "Specify the observable geometry and a null with demonstrated sensitivity before interpreting a raw-DM result."
+residual = "Recover hash-bound results and original runner identity; inspect all test statistics and selection procedures before canonical re-adjudication."
+
+[expected]
+title = "Ultrametric Structure Lives in Representations, Not Scalars"
+status = "verified"
+summary = "C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces."
+claim_refs = ["C-071"]
+
+[revised]
+title = "Ultrametric inference depends on the metric, representation and null sensitivity"
+status = "partial"
+summary = "C-071 retains its historical refuted disposition. The inspected raw-scalar permutation null preserves the full population of unordered triple distances, so Monte Carlo triple sampling alone supplies no demonstrated power to destroy a proposed physical structure. A retained exhaustive witness preserves 5 qualifying triples of 20 across all 720 permutations. Scalar values with a p-adic metric can be ultrametric; three distinct Euclidean real scalars form a different metric case. Alternative Baire, temporal and dendrogram representations exist, but implementation existence establishes neither detection nor physical validation. Recover the original result bodies and producer identity, inspect every statistic and selection procedure, and demonstrate injection sensitivity before re-adjudicating the historical claim."
+status_note = "The metric and relabeling lessons are supported by inspected code and retained independent witnesses. Partial preserves the unresolved attribution and power of the original C-071 experiment; canonical admission changes the insight interpretation and leaves the claim disposition intact."
+claim_refs = ["C-071"]
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+sha256 = "966a8448285da44f97ce3a2d8163657502279c9e1740b868a1d8280c3a5a6209"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/canonical-snapshot.json"
+sha256 = "1d565e81877ca50adc6296bc4e1c8824178eb81e6d7d3a8d808fe998069c1dbd"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/oracle-results.toml"
+sha256 = "184b735ff5e63a9f0358e5676a159c869f30841656bcf0f59822501bf25ad48f"
+
+[[evidence_files]]
+path = "data/output/audit/insight-reference-role-pilot/followup-claims.json"
+sha256 = "618bbedefd0ec92d76e7de93e5460e778a92637175f76a5a1e6e43d71274851a"
+
+[[predicates]]
+id = "historical-outcome"
+proposition = "The registry records a refutation of C-071 on two CHIME catalogs."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "supported"
+execution_status = "retained_result_review"
+boundary = "The source dossier reports three columns and eight tests per column. Original CSV result bodies are archive-declared but absent at the inspected checkout paths; report identity differs from reproduced data evidence."
+evidence_anchors = [
+    "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md; retention-locators.json",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-002/historical-outcome",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/1/atomic_propositions/0"
+
+[[predicates]]
+id = "null-power"
+proposition = "The raw scalar tests decisively refute physical ultrametric structure."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "revised"
+execution_status = "retained_result_review"
+boundary = "Unsupported by the inspected null mechanism: a permutation induces a bijection on unordered triples and preserves any full-population statistic of their distances. Random triple sampling adds Monte Carlo variation, not a destroyed scientific structure. The independent 720-permutation witness retains 5/20 qualifying triples throughout."
+evidence_anchors = [
+    "crates/stats_core/src/ultrametric/mod.rs:216-224,258-299,594-631; crates/stats_core/src/ultrametric/null_models.rs:29-45; oracle-results.toml",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-002/null-power",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/1/atomic_propositions/1"
+
+[[predicates]]
+id = "metric"
+proposition = "Ultrametricity belongs to hierarchical organization rather than scalar distributions."
+kind = "asserted_proposition"
+evidence_layer = "implementation_conformance"
+outcome = "refuted"
+execution_status = "retained_result_review"
+boundary = "Qualify the assertion: scalar values equipped with a p-adic metric are ultrametric. The 560-triple binary-adic witness and the production metric mechanism defeat a blanket exclusion of scalars. Euclidean distance on three distinct real scalars is a separate, non-ultrametric case."
+evidence_anchors = [
+    "crates/stats_core/src/ultrametric/mod.rs:640-704; oracle-results.toml",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-002/metric",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/1/atomic_propositions/2"
+
+[[predicates]]
+id = "motivation"
+proposition = "The refutation motivated alternative representations."
+kind = "asserted_proposition"
+evidence_layer = "source_proposition"
+outcome = "supported"
+execution_status = "source_review"
+boundary = "Retain as research history. Baire, temporal and dendrogram implementations exist; their existence establishes neither successful detection nor independent physical evidence."
+evidence_anchors = [
+    "crates/stats_core/src/ultrametric/mod.rs:47-124",
+    "data/output/audit/insight-reference-role-pilot/findings.json#I-002/motivation",
+]
+
+[[predicates.evidence_bindings]]
+path = "data/output/audit/insight-reference-role-pilot/findings.json"
+json_pointer = "/records/1/atomic_propositions/3"
+
+[[references]]
+claim_id = "C-071"
+predicate_id = "historical-outcome"
+role = "historical_context"
+provenance = "Pilot role negative_result_about: Historical raw-DM null result motivates method review."
+boundary = "Preserve the historical disposition while auditing null power; role classification supplies no automatic canonical status reversal."

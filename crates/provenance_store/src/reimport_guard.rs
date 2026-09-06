@@ -19,6 +19,7 @@ impl crate::ProvenanceStore {
         if db_path.exists() {
             let existing = Connection::open_with_flags(db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
             crate::claim_evidence::refuse_claim_evidence_history_loss(&existing)?;
+            crate::insight_admission::refuse_insight_admission_history_loss(&existing)?;
         }
         Ok(())
     }

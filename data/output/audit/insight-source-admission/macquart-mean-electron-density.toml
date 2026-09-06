@@ -1,0 +1,29 @@
+schema_version = 1
+observation_key = "insight-pilot-first-observation-macquart-mean-electron-density"
+source_key = "macquart-mean-electron-density"
+actor = "codex"
+reason = "Admit retained pilot source observation without fabricating prerequest body expectations or promoting scientific claims."
+requested_url = "https://arxiv.org/pdf/2005.13161"
+final_url = "https://arxiv.org/pdf/2005.13161"
+http_status = 200
+outcome = "body_retained"
+observed_at = "2026-09-06"
+time_precision = "day"
+tool = "GNU wget (retained log)"
+request_evidence_limit = "Retained wget log records request URL, response status and terminal completion or failure. Day precision preserves the log date without inventing local clock timezone."
+absent_prior_expectation_reason = "The retained audit declares observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "The audit attributes arXiv:2005.13161v1 by title-page inspection and Content-Disposition. Canonical first-observation identity remains unresolved pending a typed attribution witness; the measured digest differs from the response ETag."
+
+[request_evidence]
+path = "data/output/audit/insight-reference-role-pilot/sources/macquart-wget.log.gz"
+storage_sha256 = "375650e140336a226576b43da29ba5d3d24dbed1b44e7d52a2e30c870bf3a07d"
+encoding = "gzip"
+decoded_sha256 = "e9d34ce8fdee882fec99f99e8457a2b9a15f8689a6c659d8a5e3ed8607310ec9"
+decoded_bytes = 6942
+
+[body]
+path = "data/output/audit/insight-reference-role-pilot/sources/macquart-2005.13161v1.pdf"
+storage_sha256 = "bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025"
+encoding = "identity"
+decoded_sha256 = "bd0bb66f9f5f5c635925b8f835590d75e80de70dc995156a42c55f172e238025"
+decoded_bytes = 3738281

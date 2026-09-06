@@ -1,0 +1,29 @@
+schema_version = 1
+review_scope = "Bounded independent source and scientific-scope review of both admission modules, SQL migrations, CLI, guards, exports, curated eight-insight decisions and receipts."
+review_boundary = "Review inspected code and retained artifacts. The reviewer performed no original scientific replay."
+status = "identified_findings_resolved"
+
+[[finding]]
+mechanism = "prior-contract-compare-and-swap"
+resolution = "A nullable expected previous-contract SHA256 participates in the immediate transaction; same-public-state conflicting contract revisions fail."
+verification = "stale prior-contract regression in insight_admission tests"
+
+[[finding]]
+mechanism = "predicate-to-retained-evidence-binding"
+resolution = "Each predicate binds a JSON pointer in a hash-verified evidence file. Missing paths and unresolved pointers fail; secondary source locators retain their separate scope."
+verification = "unrelated path and unresolved JSON-pointer regressions"
+
+[[finding]]
+mechanism = "request-body-correspondence-boundary"
+resolution = "Reports distinguish retained-manifest digest association, operator association with matching size and failed-request logs without bodies; all explicitly retain cryptographic_request_binding=false and document_identity=unresolved."
+verification = "same-length substitution, manifest metadata and failed-request regressions"
+
+[[finding]]
+mechanism = "failed-request-metadata-history"
+resolution = "Two append-only Li corrections preserve their predecessors and every acquisition field, while identifying failure-log correspondence. Correction actors and reasons retain separate authorship; each predecessor has one successor."
+verification = "nine source tests include immutable predecessor, pointer, changed-acquisition, different-actor, unique-successor and replay checks; effective-source-results.json resolves eight acquisitions from ten history rows"
+
+[[finding]]
+mechanism = "external-content-search-index-update"
+resolution = "The insight FTS update/delete triggers use the exact old indexed values in the FTS5 delete command before indexing revised content."
+verification = "populated legacy-index migration regression and FTS integrity check"

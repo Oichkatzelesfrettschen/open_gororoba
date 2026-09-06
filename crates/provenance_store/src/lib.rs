@@ -26,6 +26,17 @@ use toml::Value;
 // back into lib.rs scope via plain use statements.
 mod artifact_operations;
 mod artifact_retrieval;
+mod source_observation;
+pub use source_observation::{
+    SourceArtifactPrestate, SourceObservationSpec, SourceObservedFile, SourceStorageEncoding,
+    SourceTimePrecision, SourceTransportOutcome,
+};
+mod insight_admission;
+pub use insight_admission::{
+    InsightAdmissionSpec, InsightAdmissionState, InsightClaimRole, InsightEvidenceBinding,
+    InsightExecutionStatus, InsightOutcome, InsightPredicate, InsightPredicateKind,
+    InsightReferenceRole,
+};
 pub mod retained_archive;
 pub use artifact_retrieval::{
     ArtifactRetrievalSpec, DocumentIdentityStatus, RetrievalEvidenceFile, RetrievalRequestEvidence,
@@ -2817,6 +2828,7 @@ impl ProvenanceStore {
         if db_path.exists() {
             let existing = Connection::open_with_flags(db_path, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
             claim_evidence::refuse_claim_evidence_history_loss(&existing)?;
+            insight_admission::refuse_insight_admission_history_loss(&existing)?;
             table_ops::refuse_artifact_path_history_loss(&existing)?;
         }
         Ok(())

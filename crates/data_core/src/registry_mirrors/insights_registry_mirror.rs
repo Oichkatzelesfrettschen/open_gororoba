@@ -8,23 +8,23 @@
 //!
 //! Total insights: 183
 //!
-//! ## I-001: Macquart Relation Fills the Comoving Distance Gap
+//! ## I-001: Mean-DM distance conversion requires explicit electron and host conventions
 //!
 //! - Date: 2026-02-06
-//! - Status: verified
+//! - Status: partial
 //! - Sprint: 6
 //! - Claims: C-071
 //!
-//! The Macquart relation connects FRB dispersion measures to redshift via integrated baryon density: DM_cosmic(z) = 935 * integral (1+z')/E(z') dz'. Bisection inversion (DM->z) converges in ~27 iterations. Foundation for comoving distance in ultrametric analysis.
+//! The implemented DM-to-redshift-to-comoving-distance construction supports a declared cosmology. Macquart et al. Eq. (2) defines a mean cosmic-DM relation with an explicit electron-density helium factor and diffuse baryon fraction; Eq. (1) separates Galactic, halo and redshift-scaled host contributions. The inspected routine omits the explicit 0.875 helium factor under its documented f_IGM convention. Its constants give 927.936546 rather than the approximate comment coefficient 935; multiplying by 0.875 gives only a conditional arithmetic value, 811.944478. An initial bisection bracket of width 10 requires 30 halvings to reach width 1e-8; expanded brackets require additional halvings. Caller host-frame conventions, scatter and physical calibration remain to be admitted. C-071 supplies research motivation rather than evidence for the Macquart formula or inversion convergence.
 //!
-//! ## I-002: Ultrametric Structure Lives in Representations, Not Scalars
+//! ## I-002: Ultrametric inference depends on the metric, representation and null sensitivity
 //!
 //! - Date: 2026-02-06
-//! - Status: verified
+//! - Status: partial
 //! - Sprint: 6
 //! - Claims: C-071
 //!
-//! C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces.
+//! C-071 retains its historical refuted disposition. The inspected raw-scalar permutation null preserves the full population of unordered triple distances, so Monte Carlo triple sampling alone supplies no demonstrated power to destroy a proposed physical structure. A retained exhaustive witness preserves 5 qualifying triples of 20 across all 720 permutations. Scalar values with a p-adic metric can be ultrametric; three distinct Euclidean real scalars form a different metric case. Alternative Baire, temporal and dendrogram representations exist, but implementation existence establishes neither detection nor physical validation. Recover the original result bodies and producer identity, inspect every statistic and selection procedure, and demonstrate injection sensitivity before re-adjudicating the historical claim.
 //!
 //! ## I-003: Existing Rust Crate Ecosystem for Cosmological Analysis
 //!
@@ -822,32 +822,32 @@
 //!
 //! The Leech Lattice Lambda_24 CVP projection does NOT distinguish structured from noise-only signals at SNR=0.1. E-054 showed ON (1.5% deep) vs OFF (1.6% deep) with p=0.856. The deep hole classification is dominated by Gaussian noise geometry in 24D, which overwhelms any signal structure. This is a NEGATIVE result: the Monster Group symmetry of the lattice does not provide practical signal discrimination at astrophysically relevant SNR levels.
 //!
-//! ## I-094: Sedenion Ghost Is L-Band and Large-Scale Specific
+//! ## I-094: Catalog spectral comparisons leave band and path-length specificity untested
 //!
 //! - Date: 2026-02-18
-//! - Status: verified
+//! - Status: open
 //! - Sprint: 0
 //! - Claims: C-784, C-785, C-786, C-787, C-788, C-789
 //!
-//! Cross-catalog rho-ghost-fft analysis (E-060, E-061) reveals the phi^{-1/2} ghost frequency is L-band/large-scale specific. Positive detections (SNR>4) occur in L-band radio catalogs (CHIME FRB, ATNF pulsars) and optical SNIa (Pantheon+), all probing megaparsec-scale path lengths. Ghost is NULL in S-band (2.25 GHz Wow! follow-up), nuclear (ALICE Pb-Pb), solar (SORCE TSI), geomagnetic (Swarm), and local stellar (Gaia DR3) regimes. Scale dependence suggests vacuum topology modulation over megaparsec path lengths or frequency-locking to the 21cm hydrogen line. The ghost sharpens with statistics: CHIME Cat2 (5045 sources) has FWHM=0.0008 vs Cat1 (600 sources) FWHM=0.016.
+//! The registry retains cross-catalog spectral comparisons as research history. E-071 records corrected-statistics refutations of the positive C-784, C-785 and C-786 detection premises. Catalog differences in observable, noise, selection, transform and support confound the proposed band and path-length explanation. Local and nuclear nondetections remain bounded observations. For cycles-per-sample FWHM and effective FFT length 5045, 0.0008 exceeds 1/5045; original normalization and effective length await recovered result bodies. That conditional arithmetic correction leaves the refuted detection intact. Vacuum topology and 21 cm locking remain hypotheses requiring explicit physical maps and independently tested, matched predictions.
 //!
-//! ## I-095: Ghost Is a Vacuum-Scale Resonance, Not a Universal Constant
+//! ## I-095: Vacuum-resonance interpretation remains an untested mechanism hypothesis
 //!
 //! - Date: 2026-02-18
-//! - Status: verified
+//! - Status: open
 //! - Sprint: 0
 //! - Claims: C-784, C-785, C-786, C-787, C-788, C-789, C-790, C-791
 //!
-//! The phi^{-1/2} Ghost is not a universal constant imprinted on all matter (like pi or e). It is a structure of the large-scale vacuum itself. Evidence: (1) Appears in FRBs/pulsars/SNIa that traverse Gpc/kpc of space, accumulating phase dispersion from the Sedenion ZD lattice. (2) Absent in local/short-range measurements (Wow! S-band, Swarm, SORCE) where path length is too short. (3) Absent in high-energy nuclear regime (ALICE) where deconfinement energy scale exceeds ZD coupling. (4) CWT analysis (E-062) confirms absence is physical, not methodological. (5) Marginal ALICE peak at 0.2105 (C-791) hints at QGP-scale coupling pending Run 3 statistics. The Ghost is a vacuum topology modulation over megaparsec path lengths, consistent with the 21cm hydrogen line as a resonant carrier.
+//! The historical vacuum-resonance explanation remains a hypothesis candidate. Its cited positive detection premises are refuted in the registry. The inspected evidence supplies neither a defined vacuum observable nor a derived coupling. CWT nondetection cannot exclude shared preprocessing, support, sensitivity or selection failures; the later ALICE null supplies no positive evidence for QGP coupling. Path length, deconfinement and a 21 cm carrier require explicit predictions, units, intervening maps and matched controls. Declare a quantitative mechanism and demonstrate injection sensitivity before interpreting nondetection, then test independently acquired observations with matched processing.
 //!
-//! ## I-096: FFT of Sorted Catalog Values Tests Distributional Shape, Not Physical Periodicity
+//! ## I-096: Sorted-value spectra retain distributional structure while discarding physical order
 //!
 //! - Date: 2026-02-18
 //! - Status: verified
 //! - Sprint: 0
-//! - Claims: C-797, C-798, C-784, C-785, C-786, C-789
+//! - Claims: C-784, C-785, C-786, C-789, C-797, C-798
 //!
-//! FFT of sorted catalog values (the quantile function) measures regularity of the inverse CDF, not temporal or spatial periodicity. A peak at f~0.214 describes the curvature structure of the distribution at ~1/5 of its support, not a physical signal. This is methodologically analogous to the debunked redshift periodicity claims (Karlsson 1971), which were shown by Tang & Zhang 2005 and Hawkins et al. 2002 to arise from survey selection effects and distributional artifacts. The correct spectral method for sorted distributional data is the quantile periodogram (Li 2012), not standard FFT. Sprint 50 hardening via 7 independent methods (bootstrap null, BH-FDR, permutation test, Lomb-Scargle+Baluev, multitaper F-test, IAAFT surrogates, Stouffer combination) confirms: synthetic sorted distributions do NOT produce significant ghost peaks, and the existing detections (C-784..C-786) require re-verification on real data with corrected statistics.
+//! Sorting equal multisets produces equal estimator inputs regardless of their original physical ordering. A sorted-value FFT therefore describes the empirical distribution and declared preprocessing. The implementation reports k/N cycles per rank sample; frequency 0.214 corresponds to approximately 4.67 rank samples per cycle, rather than a location at one fifth of distributional support. Prescribing Li's quantile periodogram universally exceeds the inspected evidence; the cited body remains uninspected, and an estimator supplied t=i cannot recover discarded physical coordinates. E-071 records corrected real-data re-verification and C-784/C-785/C-786 refutations. Methods sharing input and preprocessing do not supply independent data confirmation. C-797 injection counts and uncertainty require reconciliation before interpreting calibration strength.
 //!
 //! ## I-097: Simplicial Homology via Z_2 Boundary Matrices Generalizes Graph Betti Numbers
 //!
@@ -1605,14 +1605,14 @@
 //!
 //! E-201/E-202 decisive experiment yields five actionable conclusions for the GHOST paper: (1) H1 face-on reanalysis confirms null (all modes within 1.58 sigma of envelope, C-1430). (2) The red-noise slope gamma=0.808 is an INCLINATION ARTIFACT -- face-on galaxies have gamma=-0.01 (flat spectrum, C-1431). This is the most significant new finding: the baryonic spectral floor shape depends on sample inclination distribution, not intrinsic galaxy physics. (3) H2 Q3 injection recovery DECISIVELY falsifies the Q3 SNR=3.60 'detection' as a sparse-bin artifact: pipeline is blind at 6 bins, delta_SNR=0 at all injection levels (C-1432). (4) Whitened matched filter after red-noise correction gives p=0.42, confirming no periodic structure survives spectral detrending (C-1433). (5) All spectral diagnostics (bispectral Fano ratio=1.0, persistence N=1, dip D=0.46 algebra-universal, MI NMI=0.0) confirm algebra-universal null across all statistical orders (C-1436-C-1439).
 //!
-//! ## I-207: Exact reconstruction beats label substitution in legacy algebra audits
+//! ## I-207: Legacy algebra reconstructions require original-input and theorem identity
 //!
 //! - Date: 2026-03-18
 //! - Status: verified
 //! - Sprint: 0
 //! - Claims: C-019, C-020, C-021, C-046, C-047, C-543
 //!
-//! Across wheels, lattice, moonshine, fractal-doping, and E-series legacy claims, renamed columns and analogical labels do not survive exact Rust reconstruction. Same-parity masks are not zero-divisor adjacency, ad hoc exceptional cuts break the idea of a clean basis-to-lattice function, trivial logarithmic columns are not spin-foam amplitudes, and categorical substitutions such as E9/E10/E11-as-lattices do not create mechanism.
+//! Exact numerical relations and explicitly stated mathematical obligations support stronger audits than analogical labels. E-203 directly reconstructs parity, lattice membership and hardcoded moonshine numbers; original CSV binding and direct coverage of C-046/C-047 remain unresolved. Exceptional exclusions can define a deterministic function and challenge natural derivation rather than functionhood. The claim-numbered Rocq wrappers prove a particular zero-product witness, octonion basis norms and XOR determinism; their mapping to historical claims requires separate evidence. Preserve each bounded reconstruction and negative example while requiring original-input hashes and the precise intended theorem before broader attribution.
 //!
 //! ## I-208: Mechanism-free exceptional coincidences collapse under baseline separation
 //!
@@ -1623,14 +1623,14 @@
 //!
 //! The exceptional-cosmology coincidence lane survives only as a negative-result laboratory: bigraph clustering and tilt values can be computed, but the alignments gamma~epsilon~1/4, w0=-5/6, and F4->26D do not upgrade to defended mechanism once observational baselines and model identifiability are enforced.
 //!
-//! ## I-209: Blind baselines break PMNS and spectral-pattern analogies
+//! ## I-209: Pattern audits separate fitted parameterization from predictive specificity
 //!
 //! - Date: 2026-03-18
 //! - Status: verified
 //! - Sprint: 0
 //! - Claims: C-068, C-069, C-070, C-077, C-081, C-092
 //!
-//! Neutrino, mass-spectrum, associator-power, and SO(7) pattern matches fail for the same reason: the target can be approximated or reparameterized without a stable invariant. The surviving rule is to demand blind matching, unit/base invariance, and continuous-orbit or null controls before treating a pattern resemblance as physics.
+//! The retained pattern audits identify distinct limits rather than one demonstrated common failure mechanism. Givens-angle recovery succeeds for PMNS and unrelated targets, supporting parameterization while defeating predictive specificity. The mass null operates on a preselected subset and must repeat the full selection pipeline to support a blind comparison. The retained degenerate quantile metric requires positive-control sensitivity. Coordinate-subalgebra enumeration bounds coordinate embeddings, and sampled rotations breaking one pair leave continuous stabilizers and alternative actions open. Bind the substituted associator matrix to the historical construction, declare transformation and unit conventions, and freeze selection and predictions before held-out tests.
 //!
 //! ## I-210: Negative-result observational lanes separate structure from tunability
 //!
@@ -1650,11 +1650,11 @@
 //!
 //! The later refutation wave is still informative: associator entropy shifts mark algebraic boundaries, but ghost frequencies, pulsed forcing gains, pathion sinks, eta-wake corrections, heavy-ion scaling collapses, and 0.1764 slope ratios are bounded by discretization, instability ceilings, or coincidence cancellation rather than a transported mechanism.
 //!
-//! ## I-212: Equal-receptive-field controls expose temporal support as a benchmark confound
+//! ## I-212: Detector comparisons require local windows, calibration and fitting boundaries
 //!
 //! - Date: 2026-07-18
 //! - Status: verified
 //! - Sprint: 0
-//! - Claims: C-1628, C-1631, C-1633
+//! - Claims: C-1628, C-1631, C-1633, C-1731, C-1734, C-1738, C-1739, C-1741, C-1743, C-1744, C-1754
 //!
-//! Matching only input variables and labels is insufficient when detectors consume different temporal windows: the staple-associator reads six raw samples while one-step rotation reads two, and equal-receptive-field controls (cumrot6, maxrot6) reverse the apparent associator-versus-rotation ranking on the same benchmark. Temporal support is a confound that decides the ranking; every baseline battery must state and match the receptive field per detector before a dominance claim is registered.
+//! The registry records six-sample angular controls maxrot6 and cumrot6 at ROC-AUC 0.8383 and 0.8352 versus associator 0.8274, reversing the one-step comparison on that benchmark. Original angular-bootstrap bodies require recovery before replay. Six consecutive rows specify sample count; equal timestamps and gaps prevent treating sample count as elapsed duration. Each comparison must separately declare local numerator window, calibration context, model-fit context and uncertainty conditioning. The later model includes two-sample dbdt/rotation features and full-day PVI calibration. Fixed-model AUC increments establish conditional discrimination in the tested model class; information-theoretic uniqueness and practical utility require separately defined targets and evidence.

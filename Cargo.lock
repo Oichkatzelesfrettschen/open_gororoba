@@ -9467,6 +9467,7 @@ dependencies = [
  "blake3",
  "camino",
  "chrono",
+ "flate2",
  "provenance_core",
  "rusqlite",
  "rusqlite_migration",

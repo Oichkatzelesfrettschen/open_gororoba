@@ -1,0 +1,29 @@
+schema_version = 1
+observation_key = "insight-pilot-first-observation-li-http-hsts-failure-correspondence-correction"
+corrects_observation_key = "insight-pilot-first-observation-li-http-hsts"
+source_key = "li-quantile-periodograms"
+actor = "codex"
+reason = "Correct correspondence metadata to retained_failure_log_without_body; preserve the original observation and all acquisition fields."
+requested_url = "http://www.tandfonline.com/doi/pdf/10.1080/01621459.2012.682815"
+final_url = "https://www.tandfonline.com/doi/pdf/10.1080/01621459.2012.682815"
+http_status = 403
+outcome = "request_failed"
+observed_at = "2026-09-06"
+time_precision = "day"
+tool = "GNU wget (retained log)"
+request_evidence_limit = "Retained wget log records an HSTS upgrade of the HTTP input to HTTPS and a 403 response; the HTTP endpoint response remains unmeasured. Day precision preserves the log date without inventing local clock timezone."
+absent_prior_expectation_reason = "The retained audit declares observed body identities after retrieval; a hash-bound prerequest body expectation is absent."
+document_identity_limit = "Publisher attempts returned 403 and retained request logs; the requested document body and source proposition remain unassessed."
+
+[request_evidence]
+path = "data/output/audit/insight-reference-role-pilot/sources/li-http-wget.log.gz"
+storage_sha256 = "63734212c8b6c476170cd341310924172c3d3fa0ab8d9b4d6f6c8ff929e84638"
+encoding = "gzip"
+decoded_sha256 = "7512e071134a4bcd58fea040c8acc3b9acf65247d644123ec4492c4c5c0ede6f"
+decoded_bytes = 2428
+
+
+[artifact_prestate]
+artifact_id = "ASOT-0242"
+artifact_key = "doi:10.1080/01621459.2012.682815"
+canonical_url = "https://doi.org/10.1080/01621459.2012.682815"

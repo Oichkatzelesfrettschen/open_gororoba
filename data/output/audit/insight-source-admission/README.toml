@@ -1,0 +1,59 @@
+schema_version = 1
+narrative = '''
+# Retained source first observations
+
+The eight specifications admit six retained source bodies and two failed Li
+publisher attempts into `source_observations`. Admission records measured storage
+and decoded SHA256 identities, observed dates, request evidence, and explicit
+limits. Admission leaves artifact metadata and scientific status unchanged.
+
+The five methodology records use the retained audit manifest as their request
+witness. The manifest establishes the declared source URL, day, and body hash.
+Those records omit response status and final URL because the retained package
+supplies an aggregate transport statement rather than individual raw logs.
+The parser checks each source ID, URL, date, and decoded digest against its
+manifest row. The tool field explicitly labels manifest attribution.
+
+The Macquart and two Li records use retained wget logs. The parser checks the
+single request URL, date, HTTP status, and terminal completion or error. The
+Macquart completion witness binds the measured body length. The HTTP Li input
+was upgraded by HSTS to HTTPS; its receipt establishes a failed HTTPS response,
+while the HTTP endpoint remains unmeasured. Admission uses day precision because
+the wget local clock lacks an explicit timezone. The recorded response Date
+header remains available in the original log.
+
+Each gzip witness retains both its compressed storage hash and its decompressed
+hash and length. Admission verifies tracked regular paths, hashes, bounded gzip
+decoding and absence of Git LFS pointer bodies. A matching replay verifies files
+again and returns the original receipt. Changed specifications under the same key
+and changed associated artifact prestates fail. SQLite rejects updates and deletes
+to admitted observation rows, and destructive compatibility imports refuse retained
+source history.
+
+The six source keys establish canonical observation identities. They do not invent
+prerequest body hashes or create artifact catalog entries with fabricated metadata.
+All eight rows retain unresolved document attribution. The Macquart specification
+preserves the pilot's title-page and Content-Disposition attribution in its limit,
+while reserving a typed document-identity assertion for separate evidence.
+
+Run each specification through `gororoba-db artifact record-source-observation
+--spec <path>` with the intended database and repository root. The command must use
+the canonical CLI transaction; compatibility exports and signatures follow the
+repository mutation workflow. The original pilot and methodology receipts remain
+historical evidence and retain their original admission-pending wording.
+
+'''
+
+[correspondence]
+wget_success = "operator_association_with_matching_size"
+wget_failure = "retained_failure_log_without_body"
+methodology = "retained_manifest_digest_association"
+cryptographic_request_binding = false
+limit = "The wget completion log records byte count, without a cryptographic digest of the downloaded body. An operator supplies the association between that log and the retained body. A different body of equal size with matching newly declared storage and decoded hashes passes byte-integrity admission and retains unresolved document identity. The methodology manifest supplies a retained digest association, rather than a cryptographically authenticated network-response binding. Failed wget attempts retain the request error and lack an associated response body."
+
+[metadata_corrections]
+scope = "Two Li follow-up records correct correspondence metadata while retaining the eight original observations byte for byte."
+record_kind = "metadata_correction"
+predecessor_field = "corrects_observation_key"
+validation = "A predecessor must exist under a distinct key and the same source key. Acquisition fields remain equal; the observation key, correction pointer, correction actor and reason can differ. Each predecessor accepts one successor. Correction chains remain append-only and preserve acquisition evidence and original attribution. An omitted correction pointer retains the original serialized specification hash."
+specifications = ["corrections/li-https.toml", "corrections/li-http-hsts.toml"]
